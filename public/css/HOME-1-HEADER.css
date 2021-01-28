@@ -1,0 +1,10 @@
+/* GENERAL */
+header {position: relative;}
+header p {
+    background-color: var(--azul);color: RGB(255, 255, 204);
+    display: flex;justify-content: center;align-items:center;
+    font-family: Monotype Corsiva;font-weight: bold;
+}
+header div {position: absolute;
+    
+}

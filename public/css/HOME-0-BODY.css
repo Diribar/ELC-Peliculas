@@ -1,0 +1,9 @@
+* {margin: 0;padding: 0;box-sizing: border-box;}
+body {margin:0px;}
+body {background-image: url("/img/Color de fondo.png");background-size: cover;background-attachment: fixed;}
+body{--azul: RGB(37, 64, 97);--celeste-claro: RGB(220,230,242);--gris-claro: RGB(242,242,242);--amarillo-claro:RGB(255,255,204)}
+
+header p {height: 9vh;font-size: 6.5vh;}
+#Sagrada-Familia {height:91vh;}
+
+

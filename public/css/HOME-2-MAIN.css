@@ -1,0 +1,17 @@
+main {display: flex;color: var(--azul);}
+#Main-y-Footer {display: flex;flex-grow: 1;flex-direction: column;justify-content:space-between;}
+button {border: none;border-radius: 5px;}
+
+#Sagrada-Familia {display: flex; justify-content: flex-end;}
+#Sagrada-Familia img {height: 100%; width:auto;}
+
+#Saludo {text-align: right;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+#Saludo button {font-size: 14px;font-weight: bold;padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}
+
+#Cuerpo {margin-left: 40px;margin-top: 10px;}
+#Cuerpo #Título {font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+#Cuerpo #Título {font-size: 16px;font-weight: bold;padding: 7px;background-color:var(--amarillo-claro);color: var(--azul);margin-bottom: 10px;}
+#Cuerpo #Título {margin-right: 10px};
+#Cuerpo #Opciones {font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif}
+#Cuerpo #Opciones {font-size: 16px;font-weight: bold;padding: 7px;background-color: var(--gris-claro);color: var(--azul);margin-bottom: 10px;}
+
