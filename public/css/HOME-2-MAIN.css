@@ -12,7 +12,6 @@ main {display: flex;}
 #Cuerpo {margin-left: 40px;margin-top: 10px;}
 #Cuerpo div {margin-left: 40px;margin-top: 10px;}
 
-
 /* CONFIGURAR BOTONES */
 #Saludo button {font-family: var(--Calibri);font-size: 14px;font-weight: bold;}
 #Saludo button {padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}
