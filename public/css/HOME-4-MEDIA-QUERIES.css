@@ -1,13 +1,10 @@
 /* FORMATO PARA MOBILE */
-@media (max-width: 823px) {
-    main #Sagrada-Familia, header {
-        display:none
-    }
-}
+@media (max-width: 823px) {main #Sagrada-Familia, header {display:none}}
 
 /* FORMATO PARA TABLET */
-@media (min-width: 768px) {
-}
+@media (min-width: 768px) {}
 
 /* FORMATO PARA DESKTOP */
 @media (min-width: 1200px) {main section article {width:22%}}
+
+/* FORMATO PARA IMPRIMIR EN HOJA A4 */

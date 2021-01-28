@@ -13,13 +13,12 @@
     <link rel="stylesheet" href="/css/HOME-2-MAIN.css">
     <link rel="stylesheet" href="/css/HOME-3-FOOTER.css">
     <link rel="stylesheet" href="/css/HOME-4-MEDIA-QUERIES.css">
+    <link rel="stylesheet" href="/css/imprimir.css" media="print">
 </head>
 <body>
   <header>
-    <div>
-      <a href="/audio/Música-de-fondo.mp3" target="_blank"><i class="fas fa-music"></i></a>
-      <audio autoplay src="/audio/Música-de-fondo.mp3"></audio>  
-    </div>
+    <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+    <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
     <p>El Consejero Católico</p>
   </header>
   <main>
@@ -29,9 +28,13 @@
           <button>Bienvenido Diego</button>
         </section>
         <section id="Cuerpo">
-          <p><button id="Título">Título</button>
-          <button id="Opciones">Grupo</button></p>
-          <p>prueba</p>
+          <p><button id="Título">Menú de Opciones</button></p>
+          <p><button id="Subtítulo">Subtítulo</button></p>
+          <div>
+            <p><button class="Activo">Películas</button></p>
+            <p><button class="Pasivo">Mensajería</button></p>
+            <p><button class="Pasivo">Conferencias</button></p>
+          </div>
         </section>
       </section>
       <footer>

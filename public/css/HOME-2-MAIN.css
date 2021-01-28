@@ -1,17 +1,27 @@
-main {display: flex;color: var(--azul);}
-#Main-y-Footer {display: flex;flex-grow: 1;flex-direction: column;justify-content:space-between;}
+/* GENERAL */
+main, * {color:var(--azul);}
 button {border: none;border-radius: 5px;}
 
-#Sagrada-Familia {display: flex; justify-content: flex-end;}
-#Sagrada-Familia img {height: 100%; width:auto;}
+/* CONFIGURAR SECCIONES */
+main {display: flex;}
+#Main-y-Footer {display: flex;flex-grow: 1;flex-direction: column;justify-content:space-between;}
 
-#Saludo {text-align: right;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-#Saludo button {font-size: 14px;font-weight: bold;padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}
-
+/* CONFIGURAR SUB-SECCIONES */
+#Sagrada-Familia img {height: 100%; }
+#Saludo {text-align: right;}
 #Cuerpo {margin-left: 40px;margin-top: 10px;}
-#Cuerpo #Título {font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-#Cuerpo #Título {font-size: 16px;font-weight: bold;padding: 7px;background-color:var(--amarillo-claro);color: var(--azul);margin-bottom: 10px;}
-#Cuerpo #Título {margin-right: 10px};
-#Cuerpo #Opciones {font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif}
-#Cuerpo #Opciones {font-size: 16px;font-weight: bold;padding: 7px;background-color: var(--gris-claro);color: var(--azul);margin-bottom: 10px;}
+#Cuerpo div {margin-left: 40px;margin-top: 10px;}
 
+
+/* CONFIGURAR BOTONES */
+#Saludo button {font-family: var(--Calibri);font-size: 14px;font-weight: bold;}
+#Saludo button {padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}
+#Cuerpo #Título {font-family: var(--Arial);background-color:var(--amarillo-claro);}
+#Cuerpo #Subtítulo {font-family: var(--Calibri);background-color: var(--gris-claro);}
+#Cuerpo #Título, #Cuerpo #Subtítulo {font-size: 16px;font-weight: bold;padding: 7px;margin-bottom: 20px;}
+#Cuerpo div button {font-family: var(--Calibri);color:var(--gris-claro)}
+#Cuerpo div button {font-size: 16px;font-weight: bold;padding: 10px 20px;margin-bottom: 20px;}
+#Cuerpo div button.Activo {background-color: var(--verde);}
+
+/* OCULTAR */
+#Cuerpo div button.Pasivo, #Cuerpo #Subtítulo {display:none;}
