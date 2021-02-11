@@ -1,6 +1,0 @@
-/* GENERAL */
-header {position: relative;}
-header p {background-color: var(--azul);color: var(--amarillo-claro);
-    display: flex;justify-content: center;align-items:center;
-    font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;
-}
