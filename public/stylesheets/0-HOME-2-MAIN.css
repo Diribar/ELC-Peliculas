@@ -3,7 +3,7 @@ main, * {color:var(--azul);}
 button {border: none;border-radius: 5px;}
 
 /* CONFIGURAR SECCIONES */
-main {display: flex;}
+main, #Main {display: flex;}
 #Main-y-Footer {display: flex;flex-grow: 1;flex-direction: column;justify-content:space-between;}
 
 /* CONFIGURAR SUB-SECCIONES */
