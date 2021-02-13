@@ -1,0 +1,4 @@
+#Saludo {position: absolute; right: 0px; top: 0px;}
+
+#Saludo button {font-family: var(--Calibri);font-size: 14px;font-weight: bold;}
+#Saludo button {padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}
