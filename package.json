@@ -1,19 +1,12 @@
 {
-  "name": "Express",
+  "name": "ecc",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "scripts": {
-    "start": "nodemon app.js"
-  },
+  "scripts": {"start": "nodemon app.js"},
   "keywords": [],
-  "author": "",
+  "author": "Diego Iribarren",
   "license": "ISC",
-  "dependencies": {
-    "ejs": "^3.1.6",
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+  "dependencies": {"express": "^4.17.1"},
+  "devDependencies": {"nodemon": "^2.0.7"}
 }

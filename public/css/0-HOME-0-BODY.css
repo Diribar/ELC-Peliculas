@@ -1,7 +1,7 @@
 /* GENERAL */
 * {margin: 0;padding: 0;box-sizing: border-box;}
 body {margin:0px;}
-body {background-image: url("/images/Color de fondo.png");background-size: cover;background-attachment: fixed;}
+body {background-image: url("/img/Color de fondo.png");background-size: cover;background-attachment: fixed;}
 body {--azul: RGB(37, 64, 97);--celeste-claro: RGB(220,230,242);--gris-claro: RGB(242,242,242);}
 body {--amarillo-claro:RGB(255,255,204);--verde:RGB(79,98,40);}
 body {--Calibri:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif}
