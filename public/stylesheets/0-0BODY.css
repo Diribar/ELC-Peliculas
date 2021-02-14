@@ -1,5 +1,6 @@
 /* GENERAL */
-*, body {margin: 0px;padding: 0;box-sizing: border-box;font-family: var(--Calibri); font-size: 16px;}
+*, body {margin: 0px;padding: 0;box-sizing: border-box;}
+*, body, button {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
 
 /* BACKGROUND IMAGE */
 body {background-image: url("/images/Color de fondo.png");background-size: cover;background-attachment: fixed;}
@@ -17,7 +18,7 @@ h1 {font-size: 16px;margin: 0px;}
 
 /* ALTURAS DE HEADER Y MAIN */
 header p {height: 9vh;}
-main, #Sagrada-Familia {height:91vh;}
+main, #sagrada-familia {height:91vh;}
 
 .flex-col {display: flex;flex-direction: column;}
 .flex-row {display: flex;flex-direction: row;}

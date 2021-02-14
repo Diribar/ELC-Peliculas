@@ -1,0 +1,7 @@
+/* CONTADOR DE PELÍCULAS */
+#contador-de-películas {position: absolute; right: 0px; top: 0px;}
+#contador-de-películas {border: solid 2px gray;}
+#contador-de-películas {font-size: 20px;font-weight: bold;}
+
+/* CRITERIO DE LISTADO */
+#criterio {margin-top: 20px;}

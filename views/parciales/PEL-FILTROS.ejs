@@ -1,4 +1,12 @@
-<div id="Filtros">
+<div id="filtros">
+    <form class="flex-col" action="" method="GET"><!--Público Recomendado-->
+      <h1>Filtro Personalizado</h1>
+      <select name="filtro-personalizado">
+        <option value="SF" selected>Sin Filtro</option>
+        <option value="DI">Diego e Inés</option>
+        <option value="FM">Para ver en familia</option>
+      </select>
+    </form>
     <form class="flex-col" action="" method="GET"><!--Público Recomendado-->
       <h1>Público Recomendado</h1>
       <select name="público" >
@@ -8,13 +16,19 @@
         <option value="MN">Menores</option>
       </select>
     </form>
-    <!--Agregar ATP (SF/SI)-->
+    <form action="" method="GET"><!--ATP-->
+      <h1>Aptas Todo Público</h1>
+      <div id="ratio" class="flex-row">
+        <label><input type="radio" name="ATP" value="NO" checked> Todas</label>
+        <label><input type="radio" name="ATP" value="SI"> Sólo ATP</label>
+      </div>
+    </form>
     <form class="flex-col" action="" method="GET"><!--Centradas en la Fe Católica-->
-      <h1>Fe Católica o Sólo Valores</h1>
+      <h1>Fe Católica o <br>Sólo Valores</h1>
       <select name="CFC-VPC">
         <option value="SF" selected>Sin Filtro</option>
-        <option value="CFC">Centradas en la fe católica</option>
-        <option value="VPC">Valores presentes en la cultura</option>
+        <option value="CFC">Centradas en la Fe Católica</option>
+        <option value="VPC">Valores Presentes en la Cultura</option>
       </select>
     </form>
     <form class="flex-col" action="" method="GET"><!--Incluir Películas Descartadas-->
@@ -25,23 +39,21 @@
         <option value="SD" >Sólo descartadas</option>
       </select>
     </form>
-    <form class="flex-col" action="" method="GET"><!--Década de Estreno-->
-      <h1>Década de Estreno</h1>
-      <div class="flex-row">
-        <label><input type="checkbox" name="década" value="1969" checked> <%= "< 1970" %> </label>
-        <label><input type="checkbox" name="década" value="1999" checked> 1970-1999</label>
-        <label><input type="checkbox" name="década" value="2014" checked> 2000-2014</label>
-        <label><input type="checkbox" name="década" value="2015" checked> >= 2015</label>
+    <form action="" method="GET"><!--Década de Estreno-->
+      <h1>Años de Estreno</h1>
+      <div id="checkbox" class="flex-col">
+        <label><input type="checkbox" name="década" value="1969" checked> Antes de 1970</label>
+        <label><input type="checkbox" name="década" value="1999" checked> 1970 - 1999</label>
+        <label><input type="checkbox" name="década" value="2014" checked> 2000 - 2014</label>
+        <label><input type="checkbox" name="década" value="2015" checked> 2015 - Presente</label>
       </div>
     </form>
-    <div id="búsqueda"> <!--BÚSQUEDA-->
+    <div id="búsqueda" class="flex-row"> <!--BÚSQUEDA-->
       <input type="text" placeholder="Texto de búsqueda">
       <button><i class="fas fa-search"></i></button>
     </div>
-    <div><!--Íconos y botones-->
-      <!--Agregar ícono de grabar-->
-      <!--Contador de cantidad de películas con este filtro-->
-      <button type="reset">Limpiar Filtros</button>
-      <button type="submit">Aplicar Filtros</button>
+    <div id="final" class="flex-row"><!--Íconos y botones-->
+      <i class="fas fa-save botones"></i>
+      <button class="botones" type="reset">Limpiar Filtros</button>
     </div>
   </div>

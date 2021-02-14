@@ -1,8 +1,6 @@
-/* CONFIGURAR BOTONES */
-#Cuerpo #Subtítulo {font-family: var(--Calibri);background-color: var(--gris-claro);}
-#Cuerpo div button {font-family: var(--Calibri);color:var(--gris-claro)}
-#Cuerpo div button {font-size: 16px;font-weight: bold;padding: 10px 20px;margin-bottom: 20px;}
-
 /* BOTONES DE RUBRO */
-#Cuerpo div button.Activo {background-color: var(--verde);}
-#Cuerpo div button.Pasivo, #Cuerpo #Subtítulo {display:none;}
+#cuerpo #rubro button {font-family: var(--Calibri);color:var(--gris-claro)}
+#cuerpo #rubro button {font-size: 16px;font-weight: bold;padding: 10px 20px;}
+#cuerpo button.activo {background-color: var(--verde);}
+#cuerpo button.pasivo {display:none;}
+#cuerpo #subtítulo {display:none;}

@@ -1,5 +1,26 @@
-#Filtros {margin-top:40px; margin-left:40px;}
-#Filtros select {margin-bottom: 0.7em;font-family: var(--Calibri);font-size: 16px;}
-#Filtros option {font-family: var(--Calibri);font-size: 14px;}
-form div.flex-row {flex-wrap: wrap;}
-form div.flex-row label {padding: 2px10px;}
+/* GENERAL */
+#filtros {align-items:center;}
+#filtros {margin-left:30px; padding: 20px; max-width: 190px;}
+#filtros {background-color: var(--gris-claro);}
+#filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);border-radius: 10px;}
+#filtros *, #filtros h1, #filtros button, #filtros select {font-size: 14px;}
+#filtros button {padding: 3px 5px;border-radius: 5px;border-style: none;}
+
+#filtros select {margin-bottom: 15px;font-family: var(--Calibri);}
+#filtros option {font-family: var(--Calibri);font-size: 14px;}
+
+/* APTA TODO PÚBLICO */
+#filtros form div#ratio {justify-content: space-around;}
+#filtros form div#ratio label {margin: 5px auto 15px;}
+
+/* DÉCADA DE ESTRENO */
+#filtros form div#checkbox label {padding-top: 4px; padding-left: 5px;}
+
+
+#filtros #búsqueda {flex-wrap: nowrap;margin-top:15px; margin-left: auto;}
+#filtros #búsqueda {padding-bottom:15px;border-bottom: solid 1px;}
+#filtros #búsqueda input {max-width:85%;}
+#filtros #búsqueda button .fa-search {transform: scale(.8);border-style: none;}
+#filtros #final {justify-content: space-around; align-items: center;flex-wrap:wrap;}
+#filtros #final .fa-save {transform: scale(1.5);}
+#filtros #final .botones {margin-top: 15px;border-style: solid;border-width: 1px;}
