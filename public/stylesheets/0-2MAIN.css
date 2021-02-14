@@ -1,4 +1,22 @@
-#Saludo {position: absolute; right: 0px; top: 0px;}
+/* GENERAL */
+main, * {color:var(--azul);}
+button {border: none;border-radius: 5px;}
 
+/* CONFIGURAR SECCIONES */
+#Main {position: relative;}
+#Main-y-Footer {flex-grow: 1;justify-content:space-between;}
+
+/* CONFIGURAR SUB-SECCIONES */
+#Sagrada-Familia img {height: 100%; }
+#Sagrada-Familia img {height: 100%; }
+#Cuerpo {margin-left: 40px;margin-top: 40px;}
+#Cuerpo div {margin-left: 40px;margin-top: 10px;}
+
+/* CONFIGURAR BOTONES */
+#Cuerpo #Título {font-family: var(--Arial);background-color:var(--amarillo-claro);}
+#Cuerpo #Título, #Cuerpo #Subtítulo {font-size: 16px;font-weight: bold;padding: 7px;margin-bottom: 20px;}
+
+/* CONFIGURAR BOTÓN DE SALUDO */
+#Saludo {position: absolute; right: 0px; top: 0px;}
 #Saludo button {font-family: var(--Calibri);font-size: 14px;font-weight: bold;}
 #Saludo button {padding: 7px;margin: 2px;border: none;border-radius: 10%;background-color:var(--celeste-claro);}

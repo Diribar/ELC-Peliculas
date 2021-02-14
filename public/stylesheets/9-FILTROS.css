@@ -1,0 +1,5 @@
+#Filtros {margin-top:40px; margin-left:40px;}
+#Filtros select {margin-bottom: 0.7em;font-family: var(--Calibri);font-size: 16px;}
+#Filtros option {font-family: var(--Calibri);font-size: 14px;}
+form div.flex-row {flex-wrap: wrap;}
+form div.flex-row label {padding: 2px10px;}

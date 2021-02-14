@@ -1,0 +1,47 @@
+<div id="Filtros">
+    <form class="flex-col" action="" method="GET"><!--Público Recomendado-->
+      <h1>Público Recomendado</h1>
+      <select name="público" >
+        <option value="SF" selected>Sin Filtro</option>
+        <option value="FM">Familia</option>
+        <option value="MY">Mayores</option>
+        <option value="MN">Menores</option>
+      </select>
+    </form>
+    <!--Agregar ATP (SF/SI)-->
+    <form class="flex-col" action="" method="GET"><!--Centradas en la Fe Católica-->
+      <h1>Fe Católica o Sólo Valores</h1>
+      <select name="CFC-VPC">
+        <option value="SF" selected>Sin Filtro</option>
+        <option value="CFC">Centradas en la fe católica</option>
+        <option value="VPC">Valores presentes en la cultura</option>
+      </select>
+    </form>
+    <form class="flex-col" action="" method="GET"><!--Incluir Películas Descartadas-->
+      <h1>Incluir Películas Descartadas</h1>
+      <select name="Descartadas">
+        <option value="NO" selected>NO</option>
+        <option value="SI">Sin Filtro</option>
+        <option value="SD" >Sólo descartadas</option>
+      </select>
+    </form>
+    <form class="flex-col" action="" method="GET"><!--Década de Estreno-->
+      <h1>Década de Estreno</h1>
+      <div class="flex-row">
+        <label><input type="checkbox" name="década" value="1969" checked> <%= "< 1970" %> </label>
+        <label><input type="checkbox" name="década" value="1999" checked> 1970-1999</label>
+        <label><input type="checkbox" name="década" value="2014" checked> 2000-2014</label>
+        <label><input type="checkbox" name="década" value="2015" checked> >= 2015</label>
+      </div>
+    </form>
+    <div id="búsqueda"> <!--BÚSQUEDA-->
+      <input type="text" placeholder="Texto de búsqueda">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+    <div><!--Íconos y botones-->
+      <!--Agregar ícono de grabar-->
+      <!--Contador de cantidad de películas con este filtro-->
+      <button type="reset">Limpiar Filtros</button>
+      <button type="submit">Aplicar Filtros</button>
+    </div>
+  </div>

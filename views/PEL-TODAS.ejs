@@ -1,0 +1,34 @@
+<%- include('./parciales/0-0PRE-HEAD') %>
+<head>
+  <%- include('./parciales/0-1HEAD') %>
+  <link rel="stylesheet" href="/stylesheets/9-FILTROS.css">
+  <title>Películas</title>
+</head>
+<body>
+  <header>
+    <%- include('./parciales/1-HEADER') %>
+    <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
+  </header>
+  <main class="flex-row">
+    <section id="Main-y-Footer" class="flex-col">
+      <section class="flex-row">
+        <%- include('./parciales/PEL-FILTROS') %>
+        <div id="Cuerpo"><!--MENÚ DE OPCIONES-->
+          <p><button id="Título">Menú de Opciones</button></p>
+          <select name="opción">
+            <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
+            <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>
+            <a href=""><option value="AÑO">TODAS - Por año de estreno</option></a>
+            <a href=""><option value="INC">TODAS - Por orden de incorporación a nuestra base de datos</option></a>
+            <a href=""><option value="AÑO">VISITADAS - Por orden de visita</option></a>
+          </select>
+        </div>
+      </section>
+      <%- include('./parciales/3-FOOTER') %>
+    </section>
+    <section id="Sagrada-Familia">
+      <img src="/images/Sagrada Familia.jpg" alt="Sagrada Familia">
+    </section>
+  </main>
+</body>
+</html>

@@ -1,13 +1,23 @@
 /* GENERAL */
-* {margin: 0;padding: 0;box-sizing: border-box;}
-body {margin:0px;}
+*, body {margin: 0px;padding: 0;box-sizing: border-box;font-family: var(--Calibri); font-size: 16px;}
+
+/* BACKGROUND IMAGE */
 body {background-image: url("/images/Color de fondo.png");background-size: cover;background-attachment: fixed;}
+
+/* COLORES */
 body {--azul: RGB(37, 64, 97);--celeste-claro: RGB(220,230,242);--gris-claro: RGB(242,242,242);}
 body {--amarillo-claro:RGB(255,255,204);--verde:RGB(79,98,40);}
+
+/* FONTS */
 body {--Calibri:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif}
 body {--Arial: Arial, Helvetica, sans-serif}
 
+/* ESTILOS */ 
+h1 {font-size: 16px;margin: 0px;}
+
+/* ALTURAS DE HEADER Y MAIN */
 header p {height: 9vh;}
 main, #Sagrada-Familia {height:91vh;}
 
-
+.flex-col {display: flex;flex-direction: column;}
+.flex-row {display: flex;flex-direction: row;}

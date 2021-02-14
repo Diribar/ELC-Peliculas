@@ -1,7 +1,7 @@
 <%- include('./parciales/0-0PRE-HEAD') %>
 <head>
   <%- include('./parciales/0-1HEAD') %>
-  <link rel="stylesheet" href="/stylesheets/0-HOME-MAIN.css">
+  <link rel="stylesheet" href="/stylesheets/1-ECC.css">
   <title>Home</title>
 </head>
 <body>
@@ -10,15 +10,14 @@
     <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
     <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
   </header>
-  <main>
-    <section id="Main-y-Footer">
-      <section id="Main">
-        <%- include('./parciales/2-MAIN') %>
+  <main class="flex-row">
+    <section id="Main-y-Footer" class="flex-col">
+      <section class="flex-row">
         <section id="Cuerpo">
           <p><button id="Título">Menú de Opciones</button></p>
           <p><button id="Subtítulo">Subtítulo</button></p>
           <div>
-            <a href="/peliculas"><p><button class="Activo">Películas</button></p></a>
+            <a href="/pel-todas"><p><button class="Activo">Películas</button></p></a>
             <p><button class="Pasivo">Mensajería</button></p>
             <p><button class="Pasivo">Conferencias</button></p>
           </div>
