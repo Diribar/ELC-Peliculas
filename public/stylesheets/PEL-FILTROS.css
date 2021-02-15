@@ -11,7 +11,8 @@
 /* VARIOS */
 #filtros form .ratio {margin: 2px auto 15px; justify-content: space-between;}
 #filtros .línea-divisoria {margin-bottom: 15px; border-bottom: solid .5px;}
-#personalizado h1, #personalizado select, #personalizado option {color: var(--verde);font-weight: bold;background-color: var(--amarillo-claro);}
+#filtros #personalizado h1, #filtros #personalizado select, 
+#filtros #personalizado option {color: var(--verde);font-weight: bold;background-color: var(--amarillo-claro);}
 
 /* BÚSQUEDA */
 #filtros #búsqueda {padding-bottom:15px;}

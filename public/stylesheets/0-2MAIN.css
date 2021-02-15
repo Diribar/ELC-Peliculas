@@ -1,5 +1,6 @@
 /* CONFIGURAR SECCIONES */
-main #main-y-footer {flex-grow: 1;justify-content:space-between;}
+main.flex-row {flex-direction: row-reverse;}
+main #main-y-footer {flex-direction: column-reverse;justify-content:space-between;}
 main #cuerpo-listado {margin-left: 40px; position: relative;}
 main #cuerpo-listado #rubro {margin-left: 40px;margin-top: 30px;}
 

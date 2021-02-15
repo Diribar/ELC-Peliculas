@@ -11,9 +11,7 @@
     <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
   </header>
   <main class="flex-row">
-    <%- include('./parciales/IMAGEN-DERECHA') %>
-    <section id="main-y-footer" class="flex-col grow">
-      <%- include('./parciales/3-FOOTER') %>
+    <section id="main-y-footer" class="flex-col">
       <section class="flex-row grow" id="cuerpo">
         <section class="flex-col">
           <%- include('./parciales/PEL-FILTROS') %>
@@ -32,6 +30,10 @@
           </select>
         </section>
       </section>
+      <%- include('./parciales/3-FOOTER') %>
+    </section>
+    <section id="sagrada-familia">
+      <img src="/images/Sagrada Familia.jpg" alt="Sagrada Familia">
     </section>
   </main>
 </body>
