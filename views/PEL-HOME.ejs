@@ -1,20 +1,20 @@
-<%- include('./parciales/0-0PRE-HEAD') %>
+<%- include('./parciales/0-Base/0-0PRE-HEAD') %>
 <head>
-  <%- include('./parciales/0-1HEAD') %>
-  <link rel="stylesheet" href="/stylesheets/PEL-1MAIN.css">
-  <link rel="stylesheet" href="/stylesheets/PEL-FILTROS.css">
-  <link rel="stylesheet" href="/stylesheets/PEL-LISTADO.css">
+  <%- include('./parciales/0-Base/0-1HEAD') %>
+  <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-0MAIN.css">
+  <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-0FILTROS.css">
+  <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-1LISTADO.css">
   <title>Películas</title>
 </head>
 <body>
   <header>
-    <%- include('./parciales/1-HEADER') %>
-    <a href="/pel-listado"><i class="fas fa-video rubro"></i></a>
+    <%- include('./parciales/0-Base/1-HEADER') %>
+    <a href="/pel-home"><i class="fas fa-video rubro"></i></a>
   </header>
   <main class="flex-row">
-    <%- include('./parciales/IMAGEN-DERECHA') %>
+    <%- include('./parciales/0-Base/IMAGEN-DERECHA') %>
     <section id="main-y-footer" class="flex-col grow">
-      <%- include('./parciales/3-FOOTER') %>
+      <%- include('./parciales/0-Base/3-FOOTER') %>
 
       <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
       <section class="flex-row grow" id="cuerpo">
@@ -23,7 +23,7 @@
           <div>  <!--CONTADOR-->
             <button type="text" id="contador-de-películas">Contador</button>
           </div>
-          <%- include('./parciales/PEL-FILTROS') %>
+          <%- include('./parciales/1-Películas/PEL-0FILTROS') %>
         </section>
 
         <section id="cuerpo-listado" class="flex-col">  <!--LISTADO DE PELÍCULAS / ECC / VPC-->
