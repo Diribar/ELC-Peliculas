@@ -14,15 +14,18 @@
     <%- include('./parciales/IMAGEN-DERECHA') %>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('./parciales/3-FOOTER') %>
-      <section class="flex-row grow" id="cuerpo">
-        <section class="flex-col">
+
+      <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
+
+      <section class="flex-row grow">
+        <section class="flex-col"><!--FILTROS-->
           <%- include('./parciales/PEL-FILTROS') %>
         </section>
-        <section id="cuerpo-listado" class="grow"><!--MENÚ DE OPCIONES-->
+        <section id="cuerpo-listado" class="grow"><!--LISTADO DE PELÍCULAS-->
           <div><!--CONTADOR DE PELÍCULAS-->
             <button type="text" id="contador-de-películas">Contador</button>
           </div>
-          <p><button id="título">Menú de Opciones</button></p>
+          <p><button id="título">Listado de Películas</button></p>
           <select id="criterio" name="opción"><!--CRITERIO DE LISTADO-->
             <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
             <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>
@@ -32,6 +35,9 @@
           </select>
         </section>
       </section>
+      
+      <!--ACÁ TERMINA LO PARTICULAR DE ESTA PÁGINA-->
+
     </section>
   </main>
 </body>

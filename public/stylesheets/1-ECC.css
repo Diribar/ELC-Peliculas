@@ -1,6 +1,6 @@
 /* BOTONES DE RUBRO */
-#cuerpo #rubro button {font-family: var(--Calibri);color:var(--gris-claro)}
-#cuerpo #rubro button {font-size: 16px;font-weight: bold;padding: 10px 20px;}
-#cuerpo button.activo {background-color: var(--verde);}
-#cuerpo button.pasivo {display:none;}
-#cuerpo #subtítulo {display:none;}
+#cuerpo-listado #rubro button {font-family: var(--Calibri);color:var(--gris-claro)}
+#cuerpo-listado #rubro button {font-size: 16px;font-weight: bold;padding: 10px 20px;}
+#cuerpo-listado button.activo {background-color: var(--verde);}
+#cuerpo-listado button.pasivo {display:none;}
+
