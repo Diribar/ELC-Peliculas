@@ -3,7 +3,7 @@
   <%- include('./parciales/0-Base/0-1HEAD') %>
   <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-0MAIN.css">
   <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-0FILTROS.css">
-  <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-1LISTADO.css">
+  <link rel="stylesheet" href="/stylesheets/1-Películas/PEL-11LISTADO.css">
   <title>Películas</title>
 </head>
 <body>
@@ -15,37 +15,24 @@
     <%- include('./parciales/0-Base/IMAGEN-DERECHA') %>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('./parciales/0-Base/3-FOOTER') %>
-
-      <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
+<!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
       <section class="flex-row grow" id="cuerpo">
-
-        <section class="flex-col">  <!--CONTADOR  Y FILTROS-->
-          <div>  <!--CONTADOR-->
-            <button type="text" id="contador-de-películas">Contador</button>
-          </div>
+        <button type="text" id="contador-de-películas">Contador</button> <!--CONTADOR-->
+        <section class="flex-col"> <!--FILTROS-->
           <%- include('./parciales/1-Películas/PEL-0FILTROS') %>
         </section>
-
-        <section id="cuerpo-listado" class="flex-col">  <!--LISTADO DE PELÍCULAS / ECC / VPC-->
-          <button id="título">Listado de Películas</button>
-
-          <select id="criterio-para-mostrar" name="criterio"><!--CRITERIO PARA MOSTRAR-->
-            <a href=""><option value="LP">Listado de Películas</option></a>
-            <a href=""><option value="CFC">Un paseo por CFC</option></a>
-            <a href=""><option value="VPC">Un paseo por VPC</option></a>
+        <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
+          <select id="título" name="criterio"><!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
+            <a href="#listado"><option value="LP">Listado de Películas</option></a>
+            <a href="#cfc"><option value="CFC">Un paseo por CFC</option></a>
+            <a href="#vpc"><option value="VPC">Un paseo por VPC</option></a>
           </select>
-
-          <select id="opciones-de-listado" name="listado"><!--OPCIONES DE LISTADO-->
-            <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
-            <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>
-            <a href=""><option value="AÑO">TODAS - Por año de estreno</option></a>
-            <a href=""><option value="INC">TODAS - Por orden de incorporación a nuestra base de datos</option></a>
-            <a href=""><option value="AÑO">VISITADAS - Por orden de visita</option></a>
-          </select>
+          <!--LISTADO DE PELÍCULAS--> <%- include('./parciales/1-Películas/PEL-11LISTADO') %>        <!--LISTADO DE PELÍCULAS-->
+          <!--CFC-->
+          <!--VPC-->
         </section>
-      </section>
-      
-      <!--ACÁ TERMINA LO PARTICULAR DE ESTA PÁGINA-->
+      </section>      
+<!------------------------------------------------------>
 
     </section>
   </main>

@@ -1,0 +1,16 @@
+/* CONFIGURAR SECCIONES */
+#cuerpo-listado {align-items:flex-start;margin-left: 40px;}
+#cuerpo-listado #rubro {margin-left: 40px;margin-top: 30px;}
+
+/* CONFIGURAR BOTONES */
+#cuerpo-listado #título {margin-top: 40px;padding: 7px;}
+#cuerpo-listado #título {border-style: none;border-radius: 5px;}
+#cuerpo-listado #título {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
+#cuerpo-listado #título {background-color:var(--amarillo-claro);}
+
+/* CRITERIO DE LISTADO */
+#cuerpo-listado #opciones-de-listado {margin: 20px 0px;padding: 7px;}
+#cuerpo-listado #opciones-de-listado {border-style: none;border-radius: 5px;}
+#cuerpo-listado #opciones-de-listado {font-family: var(--Calibri);font-size: 16px;font-weight: bold;}
+#cuerpo-listado #opciones-de-listado {background-color: var(--gris-claro);}
+#cuerpo-listado #opciones-de-listado {width:auto;}

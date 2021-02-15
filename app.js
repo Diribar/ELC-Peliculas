@@ -1,6 +1,6 @@
 const express = require('express')
 let path = require('path')
-const ruta = require('./2-rutas/rutas');
+const ruta = require('./controlador y rutas/rutas');
 
 const app = express()
 
