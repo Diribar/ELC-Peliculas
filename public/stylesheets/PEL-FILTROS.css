@@ -2,7 +2,7 @@
 #filtros {margin: auto;margin-left:30px; padding: 20px;}
 #filtros {max-width: 190px;background-color: var(--gris-claro);}
 #filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);border-radius: 10px;}
-#filtros h1, #filtros button, #filtros select, #filtros option {font-size: 14px;font-family: var(--Calibri);}
+#filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);font-size: 14px;}
 #filtros * {font-size: 14px;}
 
 #filtros select {margin-bottom: 15px;}

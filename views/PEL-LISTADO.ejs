@@ -8,7 +8,7 @@
 <body>
   <header>
     <%- include('./parciales/1-HEADER') %>
-    <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
+    <a href="/pel-listado"><i class="fas fa-video rubro"></i></a>
   </header>
   <main class="flex-row">
     <%- include('./parciales/IMAGEN-DERECHA') %>
@@ -18,7 +18,7 @@
       <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
       <section class="flex-row grow" id="cuerpo">
 
-        <section>  <!--CONTADOR  Y FILTROS-->
+        <section class="flex-col">  <!--CONTADOR  Y FILTROS-->
           <div>  <!--CONTADOR-->
             <button type="text" id="contador-de-películas">Contador</button>
           </div>
