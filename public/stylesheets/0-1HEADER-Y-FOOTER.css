@@ -1,0 +1,15 @@
+/* HEADER */
+header {position: relative;}
+header p {background-color: var(--azul);color: var(--amarillo-claro);}
+header p {display: flex;justify-content: center;align-items:center;}
+header p {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
+
+header .rubro, .user-id {position: absolute;top:35%; transform:scale(1.6);}
+header .rubro, .user-id {z-index: 1;color: var(--celeste-claro);}
+header .rubro {left:30px;}
+header .user-id {right:30px;}
+
+/* FOOTER */
+footer {justify-content: space-around;}
+footer {padding: .25em 5px; border-top: 2px solid rgb(31, 73, 125);}
+footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}

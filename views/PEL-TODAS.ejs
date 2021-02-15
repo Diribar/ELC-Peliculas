@@ -1,7 +1,7 @@
 <%- include('./parciales/0-0PRE-HEAD') %>
 <head>
   <%- include('./parciales/0-1HEAD') %>
-  <link rel="stylesheet" href="/stylesheets/9-FILTROS.css">
+  <link rel="stylesheet" href="/stylesheets/PEL-FILTROS.css">
   <link rel="stylesheet" href="/stylesheets/1-PELICULAS.css">
   <title>Películas</title>
 </head>
@@ -12,9 +12,11 @@
   </header>
   <main class="flex-row">
     <section id="main-y-footer" class="flex-col">
-      <section class="flex-row">
-        <%- include('./parciales/PEL-FILTROS') %>
-        <section id="cuerpo"><!--MENÚ DE OPCIONES-->
+      <section class="flex-row grow" id="cuerpo">
+        <section class="flex-col">
+          <%- include('./parciales/PEL-FILTROS') %>
+        </section>
+        <section id="cuerpo-listado" class="grow"><!--MENÚ DE OPCIONES-->
           <div><!--CONTADOR DE PELÍCULAS-->
             <button type="text" id="contador-de-películas">Contador</button>
           </div>

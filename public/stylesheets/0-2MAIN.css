@@ -1,14 +1,19 @@
 /* CONFIGURAR SECCIONES */
-#main-y-footer {flex-grow: 1;justify-content:space-between;}
-#cuerpo {margin-left: 40px;}
-#cuerpo {position: relative;flex-grow: 1;}
-#cuerpo #rubro {margin-left: 40px;margin-top: 30px;}
+main #main-y-footer {flex-grow: 1;justify-content:space-between;}
+main #cuerpo-listado {margin-left: 40px; position: relative;}
+main #cuerpo-listado #rubro {margin-left: 40px;margin-top: 30px;}
 
 /* CONFIGURAR BOTONES */
-#cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
-#cuerpo #título {margin-top: 40px;padding: 7px;}
-#cuerpo #título {background-color:var(--amarillo-claro);}
-#cuerpo #título {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
+main #cuerpo-listado button {padding: 3px 5px;border-style: none;border-radius: 5px;}
+main #cuerpo-listado #título {margin-top: 40px;padding: 7px;}
+main #cuerpo-listado #título {background-color:var(--amarillo-claro);}
+main #cuerpo-listado #título {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
 
 /* CONFIGURAR IMAGEN */
-#sagrada-familia img {height: 100%; }
+#sagrada-familia img {height: 100%;}
+
+/* ESTILOS Y CLASES */
+main h1 {font-size: 16px;margin: 0px;}
+.flex-col {display: flex;flex-direction: column;}
+.flex-row {display: flex;flex-direction: row;}
+.grow {flex-grow: 1;}

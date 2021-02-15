@@ -1,0 +1,22 @@
+/* GENERAL */
+#filtros {margin: auto;margin-left:30px; padding: 20px;}
+#filtros {max-width: 190px;background-color: var(--gris-claro);}
+#filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);border-radius: 10px;}
+#filtros h1, #filtros button, #filtros select, #filtros option {font-size: 14px;font-family: var(--Calibri);}
+#filtros * {font-size: 14px;}
+
+#filtros select {margin-bottom: 15px;}
+#filtros button {padding: 3px 5px;border-radius: 5px;border-style: none;}
+
+/* VARIOS */
+#filtros form .ratio {margin: 2px auto 15px; justify-content: space-between;}
+#filtros .línea-divisoria {margin-bottom: 15px; border-bottom: solid .5px;}
+#personalizado h1, #personalizado select, #personalizado option {color: var(--verde);font-weight: bold;background-color: var(--amarillo-claro);}
+
+/* BÚSQUEDA */
+#filtros #búsqueda {padding-bottom:15px;}
+
+/* FINAL */
+#filtros #final {justify-content: space-between; align-items: center;}
+#filtros #final .fa-save {transform: scale(1.5); border-style: none;color:green}
+#filtros #final .botones {border-style: solid; border-width: 2px; font-weight: bold;background-color: var(--azul);color: white;}
