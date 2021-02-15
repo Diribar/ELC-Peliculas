@@ -1,0 +1,52 @@
+<%- include('./parciales/0-0PRE-HEAD') %>
+<head>
+  <%- include('./parciales/0-1HEAD') %>
+  <link rel="stylesheet" href="/stylesheets/PEL-FILTROS.css">
+  <link rel="stylesheet" href="/stylesheets/PELICULAS.css">
+  <title>Películas</title>
+</head>
+<body>
+  <header>
+    <%- include('./parciales/1-HEADER') %>
+    <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
+  </header>
+  <main class="flex-row">
+    <%- include('./parciales/IMAGEN-DERECHA') %>
+    <section id="main-y-footer" class="flex-col grow">
+      <%- include('./parciales/3-FOOTER') %>
+
+      <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
+      <section class="flex-row grow" id="cuerpo">
+
+        <section>  <!--CONTADOR  Y FILTROS-->
+          <div>  <!--CONTADOR-->
+            <button type="text" id="contador-de-películas">Contador</button>
+          </div>
+          <%- include('./parciales/PEL-FILTROS') %>
+        </section>
+
+        <section id="cuerpo-listado">  <!--LISTADO DE PELÍCULAS / ECC / VPC-->
+          <p><button id="título">Listado de Películas</button></p>
+
+          <select id="criterio-para-mostrar" name="criterio"><!--CRITERIO PARA MOSTRAR-->
+            <a href=""><option value="LP">Listado de Películas</option></a>
+            <a href=""><option value="CFC">Un paseo por CFC</option></a>
+            <a href=""><option value="VPC">Un paseo por VPC</option></a>
+          </select>
+
+          <select id="opciones-de-listado" name="listado"><!--OPCIONES DE LISTADO-->
+            <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
+            <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>
+            <a href=""><option value="AÑO">TODAS - Por año de estreno</option></a>
+            <a href=""><option value="INC">TODAS - Por orden de incorporación a nuestra base de datos</option></a>
+            <a href=""><option value="AÑO">VISITADAS - Por orden de visita</option></a>
+          </select>
+        </section>
+      </section>
+      
+      <!--ACÁ TERMINA LO PARTICULAR DE ESTA PÁGINA-->
+
+    </section>
+  </main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <%- include('./parciales/0-0PRE-HEAD') %>
 <head>
   <%- include('./parciales/0-1HEAD') %>
-  <link rel="stylesheet" href="/stylesheets/1-ECC.css">
+  <link rel="stylesheet" href="/stylesheets/ECC.css">
   <title>Home</title>
 </head>
 <body>
@@ -16,18 +16,16 @@
       <%- include('./parciales/3-FOOTER') %>
 
       <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
-
-      <section class="grow" id="cuerpo-listado"><!--LISTADO DE RUBROS-->
+      <section id="cuerpo-listado"><!--LISTADO DE RUBROS-->
           <p><button id="título">Menú de Opciones</button></p>
           <div id="rubro">
-            <a href="/pel-todas"><p><button class="activo">Películas</button></p></a>
+            <a href="/pel-listado"><p><button class="activo">Películas</button></p></a>
             <p><button class="pasivo">Mensajería</button></p>
             <p><button class="pasivo">Conferencias</button></p>
           </div>
       </section>
 
       <!--ACÁ TERMINA LO PARTICULAR DE ESTA PÁGINA-->
-
     </section>
   </main>
 </body>
