@@ -1,8 +1,9 @@
 <%- include('./parciales/0-0PRE-HEAD') %>
 <head>
   <%- include('./parciales/0-1HEAD') %>
+  <link rel="stylesheet" href="/stylesheets/PEL-1MAIN.css">
   <link rel="stylesheet" href="/stylesheets/PEL-FILTROS.css">
-  <link rel="stylesheet" href="/stylesheets/PELICULAS.css">
+  <link rel="stylesheet" href="/stylesheets/PEL-LISTADO.css">
   <title>Películas</title>
 </head>
 <body>
@@ -25,8 +26,8 @@
           <%- include('./parciales/PEL-FILTROS') %>
         </section>
 
-        <section id="cuerpo-listado">  <!--LISTADO DE PELÍCULAS / ECC / VPC-->
-          <p><button id="título">Listado de Películas</button></p>
+        <section id="cuerpo-listado" class="flex-col">  <!--LISTADO DE PELÍCULAS / ECC / VPC-->
+          <button id="título">Listado de Películas</button>
 
           <select id="criterio-para-mostrar" name="criterio"><!--CRITERIO PARA MOSTRAR-->
             <a href=""><option value="LP">Listado de Películas</option></a>

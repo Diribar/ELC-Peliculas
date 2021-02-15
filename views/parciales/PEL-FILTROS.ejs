@@ -1,14 +1,14 @@
-<section id="filtros" class="flex-col">
-  <form class="flex-col" id="personalizado" action="" method="GET"><!--Filtro Personalizado-->
+<form id="filtros" class="flex-col" action="" method="GET">
+  <div id="personalizado"> <!--Filtro Personalizado-->
     <h1 >Filtro Personalizado</h1>
     <select name="filtro-personalizado">
       <option value="SF" selected>Sin Filtro</option>
       <option value="DI">Diego e Inés</option>
       <option value="FM">Para ver en familia</option>
-    </select>
-  </form>
-  <div class="línea-divisoria"></div>
-  <form class="flex-col" action="" method="GET"><!--Público Recomendado-->
+    </select>  
+  </div>
+  <div class="línea-divisoria"></div> <!--Línea Divisoria-->
+  <div class="flex-col">  <!--Público Recomendado-->
     <h1>Público Recomendado</h1>
     <select name="público" >
       <option value="SF" selected>Sin Filtro</option>
@@ -16,41 +16,41 @@
       <option value="MY">Mayores</option>
       <option value="MN">Menores</option>
     </select>
-  </form>
-  <form action="" method="GET"><!--ATP-->
+  </div>
+  <div>  <!--ATP-->
     <h1>Aptas Todo Público</h1>
     <div class="ratio flex-row">
       <label><input type="radio" name="ATP" value="NO" checked> Sin Filtro</label>
       <label><input type="radio" name="ATP" value="SI"> Sólo ATP</label>
     </div>
-  </form>
-  <form action="" method="GET"><!--Centradas en la Fe Católica-->
+
+  </div>
+  <div>  <!--Centradas en la Fe Católica-->
     <h1>Fe Católica</h1>
-      <div class="ratio flex-row">
-        <label><input type="radio" value="SF" checked> Sin Filtro</label>
-        <label><input type="radio" value="CFC"> Si</label>
-        <label><input type="radio" value="VPC"> No</label>
-      </div>
-    </select>
-  </form>
-  <form class="flex-col" action="" method="GET"><!--Incluir Películas Descartadas-->
+    <div class="ratio flex-row">
+      <label><input type="radio" name="Fe-Católica" value="SF" checked> Sin Filtro</label>
+      <label><input type="radio" name="Fe-Católica" value="CFC"> Si</label>
+      <label><input type="radio" name="Fe-Católica" value="VPC"> No</label>
+    </div>
+  </div>
+  <div class="flex-col">  <!--Incluir Películas Descartadas-->
     <h1>Incluir Descartadas</h1>
     <select name="Descartadas">
       <option value="NO" selected>NO</option>
       <option value="SI">Sin Filtro</option>
       <option value="SD" >Sólo descartadas</option>
     </select>
-  </form>
-  <form class="flex-col" action="" method="GET"><!--Década de Estreno-->
+  </div>
+  <div class="flex-col">    <!--Década de Estreno-->
     <h1>Época de Estreno</h1>
-    <select name="década">
+    <select name="época">
       <option value="SF" selected>Sin Filtro</option>
       <option value="1969">Antes de 1970</option>
       <option value="1999">1970 - 1999</option>
       <option value="2014">2000 - 2014</option>
       <option value="2015">2015 - Presente</option>
     </select>
-  </form>
+  </div>
   <div id="búsqueda" class="flex-row"> <!--BÚSQUEDA-->
     <input type="text" placeholder="Texto de búsqueda">
   </div>
@@ -59,4 +59,4 @@
     <i class="fas fa-save"></i>
     <button class="botones" type="reset">Limpiar Filtros</button>
   </div>
-</section>
+</form>

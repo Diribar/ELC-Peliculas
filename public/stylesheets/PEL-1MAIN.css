@@ -4,6 +4,3 @@ main #cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
 main #cuerpo #contador-de-películas {position: absolute; right: 0px; top: 0px;}
 main #cuerpo #contador-de-películas {border: solid 2px gray;}
 main #cuerpo #contador-de-películas {font-size: 20px;font-weight: bold;}
-
-/* CRITERIO DE LISTADO */
-#opciones-de-listado {margin-top: 20px;}

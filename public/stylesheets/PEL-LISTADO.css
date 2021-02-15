@@ -8,8 +8,5 @@
 #cuerpo-listado #título {background-color:var(--amarillo-claro);}
 #cuerpo-listado #título {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
 
-/* BOTONES DE RUBRO */
-#cuerpo-listado #rubro button {font-family: var(--Calibri);color:var(--gris-claro)}
-#cuerpo-listado #rubro button {font-size: 16px;font-weight: bold;padding: 10px 20px;}
-#cuerpo-listado button.activo {background-color: var(--verde);}
-#cuerpo-listado button.pasivo {display:none;}
+/* CRITERIO DE LISTADO */
+#opciones-de-listado {margin-top: 20px;}
