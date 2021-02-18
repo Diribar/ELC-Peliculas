@@ -1,29 +1,28 @@
 /* GENERAL */
-.filtro {margin-left:30px; padding: 20px;}
-.filtro {width: 190px;background-color: var(--gris-claro);}
-.filtro {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-.filtro h1, .filtro button, .filtro select, .filtro option {font-family: var(--Calibri);font-size: 14px;}
-.filtro * {font-size: 14px;}
+#filtros {margin: auto 40px; width: 190px;}
+#filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);font-size: 14px;}
+#filtros * {font-size: 14px;}
 
-/* BORDER RADIUS */
-#filtro-sup {border-top-left-radius: 10px;border-top-right-radius: 10px;margin-top: auto;}
-#filtro-inf {border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;;margin-bottom: auto;}
+/* FILTRO SUPERIOR */
+#filtro-sup {background-color: var(--azul);padding: 20px; border-bottom: solid 1px;}
+#filtro-sup {border-top-left-radius: 10px; border-top-right-radius: 10px;}
+#filtros #personalizado h1 {color: var(--celeste-claro);font-weight: bold;}
+#filtros #personalizado select {font-weight: bold; margin-bottom: 0px;}
+#filtros #personalizado select, #filtros #personalizado option {color: var(--azul);  background-color: var(--amarillo-claro);}
 
-.filtro select {margin-bottom: 15px;}
-.filtro button {padding: 3px 5px;border-radius: 5px;border-style: none;}
+/* FILTRO INFERIOR */
+#filtro-inf {background-color: var(--gris-claro); padding: 20px;}
+#filtro-inf {border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
 
 /* VARIOS */
-.filtro #personalizado h1, .filtro #personalizado select, 
-.filtro #personalizado option {color: var(--verde);font-weight: bold;background-color: var(--amarillo-claro);}
-.filtro .línea-divisoria {margin-bottom: 15px; border-bottom: solid .5px;}
-.filtro .ratio {margin: 2px auto 15px; justify-content: space-between;}
-
-/* BÚSQUEDA */
-.filtro #búsqueda {padding-bottom:15px;}
+#filtros select {margin-bottom: 15px;}
+#filtros .ratio {margin: 2px auto 15px; justify-content: space-between;}
+#filtros #búsqueda {padding-bottom:15px;}
 
 /* FINAL */
-.filtro #final {justify-content: space-around; align-items: center;}
-.filtro #final .fa-save {transform: scale(1.5); color:green; border-style: none;}
-.filtro #final .sin-boton {border: none;}
-.filtro #final .fa-times-circle {transform: scale(1.5); color:red;}
-.filtro #final .fa-arrow-alt-circle-right {transform: scale(1.5);}
+#filtros #final {justify-content: space-around; align-items: center;}
+#filtros #final button {border: none;}
+#filtros #final .fa-save {transform: scale(1.5); color:green; border-style: none;}
+#filtros #final .fa-times-circle {transform: scale(1.5); color:red;}
+#filtros #final .fa-arrow-alt-circle-right {transform: scale(1.5);}
