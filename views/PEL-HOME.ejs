@@ -19,15 +19,15 @@
       <section class="flex-row grow" id="cuerpo">
         <button type="text" id="contador-de-películas">Contador</button> <!--CONTADOR-->
         <section class="flex-col"> <!--FILTROS-->
-          <%- include('./parciales/1-Películas/PEL-0FILTROS') %>
+          <%- include('./parciales/1-Peliculas/PEL-0FILTROS') %>
         </section>
         <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
           <select id="título" name="criterio"><!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
-            <a href="#listado"><option value="LP">Listado de Películas</option></a>
-            <a href="#cfc"><option value="CFC">Un paseo por CFC</option></a>
-            <a href="#vpc"><option value="VPC">Un paseo por VPC</option></a>
+            <option value="LP">Listado de Películas</option>
+            <option value="CFC">Un paseo por CFC</option>
+            <option value="VPC">Un paseo por VPC</option>
           </select>
-          <!--LISTADO DE PELÍCULAS--> <%- include('./parciales/1-Películas/PEL-11LISTADO') %>        <!--LISTADO DE PELÍCULAS-->
+          <!--LISTADO DE PELÍCULAS--> <%- include('./parciales/1-Peliculas/PEL-11LISTADO') %>
           <!--CFC-->
           <!--VPC-->
         </section>

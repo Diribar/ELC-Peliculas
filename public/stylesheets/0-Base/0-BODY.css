@@ -3,7 +3,7 @@
 *, body, button, select, option {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
 
 /* BACKGROUND IMAGE */
-body {background-image: url("/images/Color de fondo.png");background-size: cover;background-attachment: fixed;}
+body {background-image: url("/images/0-Base/Color de fondo.png");background-size: cover;background-attachment: fixed;}
 
 /* COLORES */
 body {--azul: RGB(37, 64, 97);--celeste-claro: RGB(220,230,242);--gris-claro: RGB(242,242,242);}
