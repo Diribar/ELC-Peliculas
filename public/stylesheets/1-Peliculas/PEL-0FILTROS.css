@@ -1,5 +1,5 @@
 /* GENERAL */
-#filtros {margin: auto 40px; width: 190px;}
+#filtros {margin: auto 40px; width: 200px;}
 #filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);font-size: 14px;}
 #filtros * {font-size: 14px;}
@@ -16,9 +16,11 @@
 #filtro-inf {border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
 
 /* VARIOS */
-#filtros select {margin-bottom: 15px;}
-#filtros .ratio {margin: 2px auto 15px; justify-content: space-between;}
+#filtros select {margin-bottom: 15px;border-radius: 5px;}
+#filtros .radio {margin: 2px auto 15px; justify-content: space-between;}
+#filtros .radio input {margin-right: 2px;margin-top: 2px;}
 #filtros #búsqueda {padding-bottom:15px;}
+#filtros #búsqueda input {padding:0px 4px 0px 4px;}
 
 /* FINAL */
 #filtros #final {justify-content: space-around; align-items: center;}
