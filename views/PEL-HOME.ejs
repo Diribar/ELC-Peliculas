@@ -9,7 +9,7 @@
 <body>
   <header>
     <%- include('./parciales/0-Base/1-HEADER') %>
-    <a href="/pel-home"><i class="fas fa-video rubro"></i></a>
+    <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
   </header>
   <main class="flex-row">
     <%- include('./parciales/0-Base/IMAGEN-DERECHA') %>
@@ -23,9 +23,12 @@
         </section>
         <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
           <select id="título" name="criterio"><!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
-            <option value="LP">Listado de Películas</option>
-            <option value="CFC">Un paseo por CFC</option>
-            <option value="VPC">Un paseo por VPC</option>
+            <option value="SF">Elegí una opción...</option>
+            <option value="LP">Todas las Películas</option>
+            <optgroup label="Un paseo por..."> 
+              <option value="CFC">Películas Centradas en la Fe Católica</option>
+              <option value="VPC">Películas con Valores</option>
+            </optgroup> 
           </select>
           <!--LISTADO DE PELÍCULAS--> <%- include('./parciales/1-Peliculas/PEL-11LISTADO') %>
           <!--CFC-->
