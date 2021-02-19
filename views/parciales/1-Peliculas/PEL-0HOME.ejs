@@ -1,0 +1,21 @@
+<!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
+<section class="flex-row grow" id="cuerpo">
+  <button type="text" id="contador-de-películas">Contador</button> <!--CONTADOR-->
+  <section class="flex-col"> <!--FILTROS-->
+    <%- include('PEL-1FILTROS') %>
+  </section>
+  <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
+    <select id="título" name="criterio"><!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
+      <option value="SF">Elegí una opción...</option>
+      <option value="LP">Todas las Películas</option>
+      <optgroup label="Un paseo por..."> 
+        <option value="CFC">Películas Centradas en la Fe Católica</option>
+        <option value="VPC">Películas con Valores</option>
+      </optgroup> 
+    </select>
+    <!--LISTADO-->
+    <!--CFC-->
+    <!--VPC-->
+  </section>
+</section>      
+<!------------------------------------------------------>

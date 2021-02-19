@@ -4,39 +4,18 @@
   <link rel="stylesheet" href="/stylesheets/1-Peliculas/PEL-0MAIN.css">
   <link rel="stylesheet" href="/stylesheets/1-Peliculas/PEL-0FILTROS.css">
   <link rel="stylesheet" href="/stylesheets/1-Peliculas/PEL-11LISTADO.css">
-  <title>Películas</title>
 </head>
 <body>
   <header>
     <%- include('./parciales/0-Base/1-HEADER') %>
-    <a href="/peliculas"><i class="fas fa-video rubro"></i></a>
+    <%- título == "Películas" ? include('./parciales/1-Peliculas/PEL-1RUBRO') : "" %>
   </header>
   <main class="flex-row">
     <%- include('./parciales/0-Base/IMAGEN-DERECHA') %>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('./parciales/0-Base/3-FOOTER') %>
-<!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
-      <section class="flex-row grow" id="cuerpo">
-        <button type="text" id="contador-de-películas">Contador</button> <!--CONTADOR-->
-        <section class="flex-col"> <!--FILTROS-->
-          <%- include('./parciales/1-Peliculas/PEL-0FILTROS') %>
-        </section>
-        <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
-          <select id="título" name="criterio"><!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
-            <option value="SF">Elegí una opción...</option>
-            <option value="LP">Todas las Películas</option>
-            <optgroup label="Un paseo por..."> 
-              <option value="CFC">Películas Centradas en la Fe Católica</option>
-              <option value="VPC">Películas con Valores</option>
-            </optgroup> 
-          </select>
-          <!--LISTADO DE PELÍCULAS--> <%- include('./parciales/1-Peliculas/PEL-11LISTADO') %>
-          <!--CFC-->
-          <!--VPC-->
-        </section>
-      </section>      
-<!------------------------------------------------------>
-
+      <%- título == "ECC" ? include('./parciales/0-Base/ECC') : "" %>
+      <%- título == "Películas" ? include('./parciales/1-Peliculas/PEL-0HOME') : "" %>
     </section>
   </main>
 </body>

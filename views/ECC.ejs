@@ -2,7 +2,6 @@
 <head>
   <%- include('./parciales/0-Base/0-1HEAD') %>
   <link rel="stylesheet" href="/stylesheets/0-Base/ECC.css">
-  <title>ECC</title>
 </head>
 <body>
   <header>
@@ -14,18 +13,7 @@
     <%- include('./parciales/0-Base/IMAGEN-DERECHA') %>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('./parciales/0-Base/3-FOOTER') %>
-
-      <!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
-      <section id="cuerpo-listado"><!--LISTADO DE RUBROS-->
-          <p><button id="título">Menú de Opciones</button></p>
-          <div id="rubro">
-            <a href="/peliculas"><p><button class="activo">Películas</button></p></a>
-            <p><button class="pasivo">Mensajería</button></p>
-            <p><button class="pasivo">Conferencias</button></p>
-          </div>
-      </section>
-
-      <!--ACÁ TERMINA LO PARTICULAR DE ESTA PÁGINA-->
+      <%- include('./parciales/0-Base/ECC') %>
     </section>
   </main>
 </body>
