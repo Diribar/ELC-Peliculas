@@ -1,0 +1,15 @@
+<%- include('./0-Base/0-HEAD') %>
+<body>
+  <%- include('./0-Base/1-HEADER') %>
+  <main class="flex-row">
+    <%- include('./0-Base/IMAGEN-DERECHA') %>
+    <section id="main-y-footer" class="flex-col grow">
+      <%- include('./0-Base/3-FOOTER') %>
+<!-------------------------------- CUERPO ------------------------------------->
+      <%- título == "ECC" ? include('./0-Base/ECC') : "" %>
+      <%- título == "Películas" ? include('./1-Peliculas/PEL-0MAIN') : "" %>  
+<!-------------------------------- CUERPO ------------------------------------->
+</section>
+  </main>
+</body>
+</html>

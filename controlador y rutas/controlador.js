@@ -1,12 +1,16 @@
 const controlador = {
 	home: (req,res) => {
-		let título ="ECC";
-		res.render('ecc', {título})
+		let título = "ECC";
+		res.render('PLANTILLA', {título})
 	},
-	main: (req,res) => {res.render(req.params.id)},
+	main: (req,res) => {
+		let título = req.params.id;
+		res.render('PLANTILLA', {título})
+	},
+
 	peliculas: (req,res) => {
 		let título = "Películas"
-		res.render('pel-home', {título});
+		res.render('PLANTILLA', {título});
 	},
 	peli_filtros: (req,res) => {
 		let user_entry = req.query;

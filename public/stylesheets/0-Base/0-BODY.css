@@ -1,6 +1,6 @@
 /* GENERAL */
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
-*, body, button, select, option {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
+*, body, optgroup, button, select, option {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
 
 /* BACKGROUND IMAGE */
 body {background-image: url("/images/0-Base/Color de fondo.png");background-size: cover;background-attachment: fixed;}
@@ -16,3 +16,10 @@ body {--Arial: Arial, Helvetica, sans-serif}
 /* ALTURAS DE HEADER Y MAIN */
 header p {height: 9vh;}
 main, main #sagrada-familia {height:91vh;}
+
+/* ESTILOS Y CLASES */
+.flex-col {display: flex;flex-direction: column;}
+.flex-row {display: flex;flex-direction: row;}
+.grow {flex-grow: 1;}
+.cursiva {font-style: italic;}
+.not-cursiva {font-style: normal;}

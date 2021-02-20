@@ -7,6 +7,3 @@ main #main-y-footer {flex-direction: column-reverse;justify-content:space-betwee
 
 /* ESTILOS Y CLASES */
 main h1 {font-size: 16px;margin: 0px;}
-.flex-col {display: flex;flex-direction: column;}
-.flex-row {display: flex;flex-direction: row;}
-.grow {flex-grow: 1;}

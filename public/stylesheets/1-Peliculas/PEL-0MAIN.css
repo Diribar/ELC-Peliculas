@@ -1,6 +1,16 @@
 /* CONTADOR DE PELÍCULAS */
-main #cuerpo {position: relative;}
-main #cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
-main #cuerpo #contador-de-películas {position: absolute; right: 0px; top: 0px;}
-main #cuerpo #contador-de-películas {border: solid 2px gray;}
-main #cuerpo #contador-de-películas {font-size: 20px;font-weight: bold;}
+#cuerpo {position: relative;border: blue 1px solid}
+#cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
+#cuerpo #contador-de-películas {position: absolute; right: 0px; top: 0px;}
+#cuerpo #contador-de-películas {border: solid 2px gray;}
+#cuerpo #contador-de-películas {font-size: 20px;font-weight: bold;}
+
+/* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
+#cuerpo-listado {align-items:flex-start;margin-left: 30px;}
+#cuerpo-listado select#título {margin-top: 50px;padding: 7px;}
+#cuerpo-listado select#título {border-style: none;border-radius: 5px;}
+#cuerpo-listado select#título {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
+#cuerpo-listado select#título {background-color:var(--amarillo-claro);}
+#cuerpo-listado #título optgroup {font-weight: normal;}
+#cuerpo-listado #título option.bold {}
+
