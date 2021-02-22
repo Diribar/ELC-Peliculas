@@ -1,15 +1,31 @@
 /* GENERAL */
 #login {position:absolute; margin:0; height:100%; width:100%;z-index: 1;}
-#login {display:flex; justify-content:center; align-items: center;}
+#login {justify-content:center; align-items: center;}
 
+/* TAPAR EL FONDO */
 #login #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%;height:100%; width:100%;}
 #login #tapar-el-fondo {position: absolute;left:0px;top:0px}
 
-#login form {padding: 20px 20px;z-index: 2;background-color:gray;}
-#login form div {padding: 10px 10px;}
-#login form div input {border: none;width: 100%;}
-#login form div input, #login form button {padding: 5px 10px;border-radius: 10%;font-weight: bold;}
-#login form div #registrarse {margin-left: 15px;}
-#login form div#button {display: flex; justify-content: space-around;}
-#login form div#google-y-facebook {display:flex;justify-content: space-around;}
-#login form div#google-y-facebook img {height: 30px;}
+/* GENERAL DEL FORMULARIO */
+#login form {background-color:var(--azul-frances); border-radius: 20px;}
+#login form {padding: 25px;z-index: 2;align-items: stretch;}
+
+/* TÍTULO DEL FORMULARIO */
+#login form p {color: var(--amarillo-claro);margin-bottom: 10px;}
+#login form p {font-weight: bold; font-size: 1.5em; text-align: center;}
+
+/* GENERAL DE CADA FILA DEL FORMULARIO */
+#login form div {padding: 12px 10px;}
+
+/* CASILLEROS A COMPLETAR */
+#login form div input {border: none; width: 100%; padding: 5px 10px;}
+
+/* BOTONES */
+#login form #button {justify-content: space-between;}
+#login form #button {padding-left: 0px; padding-right: 0px;}
+#login form button {margin-left: 15px; margin-right: 15px;}
+#login form button {padding: 5px 10px; font-weight: bold;color:white;}
+#login form button {border: solid 3px var(--amarillo-claro); background-color: RGB(79,129,189);}
+
+/* GOOGLE Y FACEBOOK */
+#login form #google-y-facebook {justify-content: space-around;align-items: center;}
