@@ -10,6 +10,6 @@ app.use(express.static(path.resolve('public')));
 app.set("view engine", "ejs")
 app.listen(3001, () => console.log('Servidor funcionando en puerto 3001...'))
 
-app.get('/', ruta)
-app.get('/peliculas', ruta)
-app.get('/:id', ruta)
+app.use('/', ruta)
+app.use('/peliculas', ruta)
+app.use('/:id', ruta)

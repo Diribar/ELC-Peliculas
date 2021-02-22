@@ -1,0 +1,27 @@
+<section id="login">
+    <p id="tapar-el-fondo"></p>
+    <form action="/home" method="POST">
+        <div><!--Dirección de mail-->
+            <input type="email" name="e-mail" placeholder="Dirección de mail" required>
+        </div>
+        <div><!--Contraseña-->
+            <input type="password" name="password" placeholder="Contraseña" required>
+        </div>
+        <div id="button"><!--'Buttons Olvidó su contraseña' y 'Registrarse'-->
+            <a href="#">
+                <button type="button">¿Olvidó su contraseña?</button>
+            </a>
+            <a href="/registro" id="registrarse">
+                <button type="button">Registrarse</button>
+            </a>
+        </div>
+        <div id="button"><!--Buttons Enviar y Borrar-->
+            <button type="submit">Enviar</button>
+            <button type="reset">Borrar</button>
+        </div>
+        <div id="google-y-facebook">
+            <img src="/images/0-Base/Logo-Google.png" alt="Google">
+            <img src="/images/0-Base/Logo-Facebook.png" alt="Facebook">
+        </div>
+    </form>   
+</section>

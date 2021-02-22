@@ -1,8 +1,9 @@
-<!--DESDE AQUÍ COMIENZA LO PARTICULAR DE ESTA PÁGINA-->
 <section class="flex-row grow" id="cuerpo">
-  <button type="text" id="contador-de-películas">Contador</button> <!--CONTADOR-->
-  <%- include('PEL-10FILTROS') %>
-  <section id="cuerpo-listado" class="flex-col grow">  <!--ZONA DE PELÍCULAS-->
+   <!--********************** CONTADOR ****************************-->
+  <button type="text" id="contador-de-películas">Contador</button>
+  <%- include('PEL-1FILTROS') %>
+  <!--*************** COMIENZO - ZONA DE PELÍCULAS ****************-->
+  <section id="cuerpo-listado" class="flex-col grow">
     <!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
     <select id="título" name="criterio">
       <option class="cursiva" value="SF">Elegí una opción...</option>
@@ -16,5 +17,5 @@
     <!--CFC-->
     <!--VPC-->
   </section>
-</section>      
-<!------------------------------------------------------>
+  <!--************************** FIN ****************************-->
+</section>

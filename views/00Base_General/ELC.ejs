@@ -1,0 +1,22 @@
+<%- include('0-HEAD') %>
+<body>
+  <%- include('1-HEADER') %>
+  <main class="flex-row">
+    <%- include('IMAGEN-DERECHA') %>
+    <section id="main-y-footer" class="flex-col grow">
+      <%- include('3-FOOTER') %>
+<!--**************************** CUERPO ******************************-->
+      <% if (título == "Login") { %>
+        <%- include('../10Contenido_ECC/LOGIN') %>
+      <% } %>
+      <% if (título == "ECC") { %>
+        <%- include('../10Contenido_ECC/HOME') %>
+      <% } %>
+      <% if (título == "Películas") { %>
+        <%- include('../01Base_Peliculas/PEL-0MAIN') %>
+      <% } %>
+<!--****************************** FIN *******************************-->
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/* GENERAL */
+#login {position:absolute; margin:0; height:100%; width:100%;z-index: 1;}
+#login {display:flex; justify-content:center; align-items: center;}
+
+#login #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%;height:100%; width:100%;}
+#login #tapar-el-fondo {position: absolute;left:0px;top:0px}
+
+#login form {padding: 20px 20px;z-index: 2;background-color:gray;}
+#login form div {padding: 10px 10px;}
+#login form div input {border: none;width: 100%;}
+#login form div input, #login form button {padding: 5px 10px;border-radius: 10%;font-weight: bold;}
+#login form div #registrarse {margin-left: 15px;}
+#login form div#button {display: flex; justify-content: space-around;}
+#login form div#google-y-facebook {display:flex;justify-content: space-around;}
+#login form div#google-y-facebook img {height: 30px;}
