@@ -6,8 +6,9 @@
 body {background-image: url("/images/0-Base/Color de fondo.png");background-size: cover;background-attachment: fixed;}
 
 /* COLORES */
-body {--azul: RGB(37, 64, 97);--azul-frances: RGB(31,73,125);--celeste-claro: RGB(220,230,242);}
+body {--azul: RGB(37,64,97);--azul-frances: RGB(31,73,125);--celeste-claro: RGB(220,230,242);}
 body {--amarillo-claro:RGB(255,255,204);--verde:RGB(79,98,40);--gris-claro: RGB(242,242,242);}
+body {--rojo: RGB(192,80,77);}
 
 /* FONTS */
 body {--Calibri:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif}

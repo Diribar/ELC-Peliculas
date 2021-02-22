@@ -8,11 +8,11 @@
 
 /* GENERAL DEL FORMULARIO */
 #login form {background-color:var(--azul-frances); border-radius: 20px;}
-#login form {padding: 25px;z-index: 2;align-items: stretch;}
+#login form {padding: 20px;z-index: 2;align-items: stretch;}
 
 /* TÍTULO DEL FORMULARIO */
 #login form p {color: var(--amarillo-claro);margin-bottom: 10px;}
-#login form p {font-weight: bold; font-size: 1.5em; text-align: center;}
+#login form p {font-weight: bold; font-size: 1.3em; text-align: center;}
 
 /* GENERAL DE CADA FILA DEL FORMULARIO */
 #login form div {padding: 12px 10px;}
@@ -23,9 +23,11 @@
 /* BOTONES */
 #login form #button {justify-content: space-between;}
 #login form #button {padding-left: 0px; padding-right: 0px;}
-#login form button {margin-left: 15px; margin-right: 15px;}
-#login form button {padding: 5px 10px; font-weight: bold;color:white;}
-#login form button {border: solid 3px var(--amarillo-claro); background-color: RGB(79,129,189);}
+#login form #button button {margin-left: 15px; margin-right: 15px;}
+#login form #button button {padding: 2px 5px; font-weight: bold;color:white;}
+#login form #button button {border: solid 3px var(--amarillo-claro); background-color: var(--rojo);}
+#login form #button button#aceptar {background-color: var(--verde);}
+#login form #button button#registrarse {background-color: var(--azul);}
 
 /* GOOGLE Y FACEBOOK */
 #login form #google-y-facebook {justify-content: space-around;align-items: center;}
