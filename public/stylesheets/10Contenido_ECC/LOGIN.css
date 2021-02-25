@@ -31,3 +31,15 @@
 
 /* GOOGLE Y FACEBOOK */
 #login form #google-y-facebook {justify-content: space-around;align-items: center;}
+
+/* REGISTRO */
+main {background-color: var(--Gris-claro);}
+
+form {margin-left: 30px;margin-top: 10px;margin-bottom: 20px;}
+form div {padding-top: 15px;}
+form h1 {font-size:medium;}
+form input {border: none;}
+form button {margin-right: 10px;}
+label input {margin-right: 5px;}
+#vender {padding-left: 10px;}
+form input, form button {padding: 5px 10px;border-radius: 10%;}

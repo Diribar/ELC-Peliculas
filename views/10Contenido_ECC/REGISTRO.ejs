@@ -1,0 +1,36 @@
+<section id="login" class="flex-col">
+    <p id="tapar-el-fondo"></p>
+    <form action="/registro" method="POST">
+        <div><!--Nombre-->
+            <input type="text" name="nombre" placeholder="Nombre">
+        </div>
+        <div><!--Dirección de mail-->
+            <input type="email" name="email" placeholder="Dirección de mail" value="">
+        </div>
+        <div><!--Contraseña-->
+            <h1>Contraseña</h1>
+            <input type="password" name="contrasena">
+        </div>
+        <div><!--Contraseña-->
+            <h1>Repetir contraseña</h1>
+            <input type="password" name="repetir_contrasena">
+        </div>
+        <div><!--País donde vive-->
+            <h1>País donde vive</h1>
+            <select name="pais" >
+              <option value="AR" selected>Argentina</option>
+              <option value="NN">Otro país</option>
+            </select>
+        </div>
+        <div><!--Capcha-->
+        </div>
+        <div><!--Foto de usuario-->
+            <h1>Foto de usuario</h1>
+            <input id="file" type="file" name="foto" accept= "image/*">
+        </div>
+        <div><!--Buttons-->
+            <button type="submit">Enviar</button>
+            <button type="reset">Borrar</button>
+        </div>
+    </form>
+</section>

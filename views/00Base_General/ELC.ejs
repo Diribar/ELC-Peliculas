@@ -6,15 +6,10 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-FOOTER') %>
 <!--**************************** CUERPO ******************************-->
-      <% if (título == "Login") { %>
-        <%- include('../10Contenido_ECC/LOGIN') %>
-      <% } %>
-      <% if (título == "ECC") { %>
-        <%- include('../10Contenido_ECC/HOME') %>
-      <% } %>
-      <% if (título == "Películas") { %>
-        <%- include('../01Base_Peliculas/PEL-0MAIN') %>
-      <% } %>
+      <%- título == "Registro" ? include('../10Contenido_ECC/REGISTRO') : "" %>
+      <%- título == "Login" ? include('../10Contenido_ECC/LOGIN') : "" %>
+      <%- título == "ECC" ? include('../10Contenido_ECC/HOME') : "" %>
+      <%- título == "Películas" ? include('../01Base_Peliculas/PEL-0MAIN') : "" %>
 <!--****************************** FIN *******************************-->
     </section>
   </main>

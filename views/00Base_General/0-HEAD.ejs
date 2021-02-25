@@ -20,17 +20,9 @@
     <link rel="stylesheet" href="/stylesheets/00Base_General/3-MEDIA-QUERIES.css">
     <!---<link rel="stylesheet" href="/stylesheets/0-Base/imprimir.css" media="print">-->
 
-    <!--ESTILOS PERSONALIZADOS DE LOGIN-->
-    <% if (título == "Login") { %> 
-        <link rel="stylesheet" href="/stylesheets/10Contenido_ECC/LOGIN.css">
-    <% } %> 
-
-    <!--ESTILOS PERSONALIZADOS DE ECC-HOME-->
-    <% if (título == "ECC") { %> 
-        <link rel="stylesheet" href="/stylesheets/10Contenido_ECC/ECC.css">
-    <% } %> 
-
-    <!--ESTILOS PERSONALIZADOS DE PELÍCULAS-->
+    <!--ESTILOS PERSONALIZADOS POR PÁGINA-->
+    <% if (título == "Registro" || título == "Login") { %> <link rel="stylesheet" href="/stylesheets/10Contenido_ECC/LOGIN.css"> <% } %> 
+    <% if (título == "ECC") { %> <link rel="stylesheet" href="/stylesheets/10Contenido_ECC/ECC.css"> <% } %>
     <% if (título == "Películas") { %> 
         <link rel="stylesheet" href="/stylesheets/01Base_Peliculas/PEL-0MAIN.css">
         <link rel="stylesheet" href="/stylesheets/01Base_Peliculas/PEL-10FILTROS.css">
