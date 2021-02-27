@@ -16,9 +16,9 @@ const controlador = {
 	},
 
 	main: (req,res) => { /* HOME - QUIÉNES SOMOS - CONTÁCTANOS --> GET */
-		let página = req.params.id;
+		let url = req.params.id;
 		const títulos_web = JSON.parse(fs.readFileSync(path_titulos_web, 'utf-8'));
-		let título_web = títulos_web.find((n) => {return n.página == página})
+		let título_web = títulos_web.find((n) => {return n.url == url})
 		let título = título_web.título
 		res.render('00Base_General/ELC', {título})
 	},

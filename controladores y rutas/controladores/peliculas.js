@@ -1,8 +1,8 @@
 const controlador = {
 
-	peliculas: (req,res) => { /* HOME DE PELÍCULAS */
+	home: (req,res) => { // HOME DE PELÍCULAS
 		let título = "Películas";
-		res.render('00Base_General/ELC', {título});
+		res.render('ELC', {título});
 	},
 
 	peli_filtros: (req,res) => {
