@@ -10,36 +10,25 @@
 #login form {background-color:var(--azul-frances); border-radius: 20px;}
 #login form {padding: 20px;z-index: 2;align-items: stretch;}
 
-/* TÍTULO DEL FORMULARIO */
+/* PARTES DEL FORMULARIO */
 #login form p {color: var(--amarillo-claro);margin-bottom: 10px;}
-#login form p {font-weight: bold; font-size: 1.3em; text-align: center;}
+#login form p {font-weight: bold; font-size: 1.1em; text-align: center;}
 
-/* GENERAL DE CADA FILA DEL FORMULARIO */
-#login form div {padding: 12px 10px;}
-
-/* CASILLEROS A COMPLETAR */
-#login form div input {border: none; width: 100%; padding: 5px 10px;}
+#login form section div {padding: 5px 0px;}
+#login form section label, #login form section input {padding: 3px 10px;margin-top: 10px;}
+#login form section label {color: white;font-size: 1em;}
+#login form section input {border: none;}
+#login form section select {padding: 1px 5px;margin-top: 10px;}
+#login form section input[type="file"] {color:white;padding: 0px 0px;}
 
 /* BOTONES */
-#login form #button {justify-content: space-between;}
-#login form #button {padding-left: 0px; padding-right: 0px;}
-#login form #button button {margin-left: 15px; margin-right: 15px;}
-#login form #button button {padding: 2px 5px; font-weight: bold;color:white;}
-#login form #button button {border: solid 3px var(--amarillo-claro); background-color: var(--rojo);}
-#login form #button button#aceptar {background-color: var(--verde);}
-#login form #button button#registrarse {background-color: var(--azul);}
+#login form #buttons {margin-top: 20px;}
+#login form #buttons div {justify-content: space-evenly;}
+#login form #buttons div {padding-left: 0px; padding-right: 0px;}
+#login form #buttons div.margen-bottom-adicional {margin-bottom: 5px;}
+#login form #buttons div button {padding: 2px 5px; margin-left: 5px; margin-right: 5px;}
+#login form #buttons div button {font-size: 14px;font-weight: bold;color:white;}
+#login form #buttons div button {border: solid 2px var(--amarillo-claro); background-color: var(--rojo);}
+#login form #buttons div button[type="submit"] {background-color: var(--verde);}
 
-/* GOOGLE Y FACEBOOK */
-#login form #google-y-facebook {justify-content: space-around;align-items: center;}
-
-/* REGISTRO */
-main {background-color: var(--Gris-claro);}
-
-form {margin-left: 30px;margin-top: 10px;margin-bottom: 20px;}
-form div {padding-top: 15px;}
-form h1 {font-size:medium;}
-form input {border: none;}
-form button {margin-right: 10px;}
-label input {margin-right: 5px;}
-#vender {padding-left: 10px;}
-form input, form button {padding: 5px 10px;border-radius: 10%;}
+#login form #buttons div button#registrarse {background-color: var(--azul);}
