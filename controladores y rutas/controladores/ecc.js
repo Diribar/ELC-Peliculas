@@ -7,12 +7,12 @@ const controlador = {
 
 	login: (req,res) => { /* LOGIN --> GET */
 		let título = "Login";
-		res.render('00Base_General/ELC', {título})
+		res.render('ELC', {título})
 	},
 
 	registro: (req,res) => { /* REGISTRO --> GET */
 		let título = "Registro";
-		res.render('00Base_General/ELC', {título})
+		res.render('ELC', {título})
 	},
 
 	main: (req,res) => { /* HOME - QUIÉNES SOMOS - CONTÁCTANOS --> GET */
@@ -20,7 +20,7 @@ const controlador = {
 		const títulos_web = JSON.parse(fs.readFileSync(path_titulos_web, 'utf-8'));
 		let título_web = títulos_web.find((n) => {return n.url == url})
 		let título = título_web.título
-		res.render('00Base_General/ELC', {título})
+		res.render('ELC', {título})
 	},
 
 	login_realizado: (req,res) => { /* LOGIN --> POST */

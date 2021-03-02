@@ -12,5 +12,3 @@
 #cuerpo-listado select#opciones {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
 #cuerpo-listado select#opciones {background-color:var(--amarillo-claro);}
 #cuerpo-listado #opciones optgroup {font-weight: normal;}
-#cuerpo-listado #opciones option.bold {}
-

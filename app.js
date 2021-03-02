@@ -9,7 +9,11 @@ const app = express()
 app.use(express.static(path.resolve('public')));
 
 app.set("view engine", "ejs")
-app.set('views', [path.resolve(__dirname, './views'), path.resolve(__dirname, './views/00Base_General'), path.resolve(__dirname, './views/01Base_Peliculas'),path.resolve(__dirname, './views/10Contenido_ECC'), path.resolve(__dirname, './views/11Contenido_Peliculas')]);
+app.set('views', [
+    path.resolve(__dirname, './views/00-Base'), 
+    path.resolve(__dirname, './views/10-ECC'), 
+    path.resolve(__dirname, './views/11-Peliculas')
+]);
 
 app.listen(3001, () => console.log('Servidor funcionando en puerto 3001...'))
 
