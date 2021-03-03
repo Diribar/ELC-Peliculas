@@ -6,10 +6,12 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-FOOTER') %>
 <!--**************************** CUERPO ******************************-->
-      <%- título == "Registro" ? include('REGISTRO') : "" %>
-      <%- título == "Login" ? include('LOGIN') : "" %>
-      <%- título == "ECC" ? include('HOME') : "" %>
-      <%- título == "Películas" ? include('01-MAIN') : "" %>
+      <%- título == "Registro" ? include('Registro') : "" %>
+      <%- título == "Login" ? include('Login') : "" %>
+      <%- título == "Home" ? include('Home') : "" %>
+      <%- título == "Quiénes Somos" ? include('Quienes-Somos') : "" %>
+      <%- título == "Contactanos" ? include('Contactanos') : "" %>
+      <%- título == "Películas" ? include('01-Main') : "" %>
 <!--****************************** FIN *******************************-->
     </section>
   </main>

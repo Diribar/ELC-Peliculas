@@ -1,14 +1,14 @@
 [
     {
         "url": "home",
-        "título": "ECC"
+        "título": "Home"
     },
     {
-        "url": "nosotros",
-        "título": "Acerca de Nosotros"
+        "url": "quienes-somos",
+        "título": "Quiénes Somos"
     },
     {
-        "url": "contacto",
+        "url": "contactanos",
         "título": "Contactanos"
     }
 ]

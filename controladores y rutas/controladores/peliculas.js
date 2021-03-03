@@ -2,7 +2,7 @@ const controlador = {
 
 	home: (req,res) => { // HOME DE PELÍCULAS
 		let título = "Películas";
-		res.render('ELC', {título});
+		res.render('ECC', {título});
 	},
 
 	peli_filtros: (req,res) => {
