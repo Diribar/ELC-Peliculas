@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width", initial-scale=1.0>
 
     <!--SÍMBOLOS-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
@@ -11,24 +11,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 
     <!--NORMALIZE-->
-    <link rel="stylesheet" href="/stylesheets/00-Base/0-Normalize.css">
+    <link rel="stylesheet" href="/stylesheets/0-1Base/0-Normalize.css">
 
     <!--ESTILOS PERSONALIZADOS-->
-    <link rel="stylesheet" href="/stylesheets/00-Base/0-BODY.css">
-    <link rel="stylesheet" href="/stylesheets/00-Base/1-HEADER-Y-FOOTER.css">
-    <link rel="stylesheet" href="/stylesheets/00-Base/2-MAIN.css">
-    <link rel="stylesheet" href="/stylesheets/00-Base/3-MEDIA-QUERIES.css">
+    <link rel="stylesheet" href="/stylesheets/0-1Base/0-BODY.css">
+    <link rel="stylesheet" href="/stylesheets/0-1Base/1-HEADER-Y-FOOTER.css">
+    <link rel="stylesheet" href="/stylesheets/0-1Base/2-MAIN.css">
+    <link rel="stylesheet" href="/stylesheets/0-1Base/3-MEDIA-QUERIES.css">
     <!---<link rel="stylesheet" href="/stylesheets/0-Base/imprimir.css" media="print">-->
 
     <!--ESTILOS PERSONALIZADOS POR PÁGINA-->
-    <% if (título == "Login") { %> <link rel="stylesheet" href="/stylesheets/10-ECC/login.css"> <% } %> 
-    <% if (título == "Registro") { %> <link rel="stylesheet" href="/stylesheets/10-ECC/registro.css"> <% } %>
-    <% if (título == "Home") { %> <link rel="stylesheet" href="/stylesheets/10-ECC/home.css"> <% } %>
-    <% if (título == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/10-ECC/quienes-somos.css"> <% } %>
-    <% if (título == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/10-ECC/contactanos.css"> <% } %>
-    <% if (grupo == "Opciones") { %> 
-        <link rel="stylesheet" href="/stylesheets/11-Peliculas/01-Main.css">
-        <link rel="stylesheet" href="/stylesheets/11-Peliculas/02-Filtros.css">
+    <% if (título == "Login") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/login.css"> <% } %> 
+    <% if (título == "Registro") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/registro.css"> <% } %>
+    <% if (título == "Home") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/home.css"> <% } %>
+    <% if (título == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/quienes-somos.css"> <% } %>
+    <% if (título == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/contactanos.css"> <% } %>
+    <% if (título.slice(0,9) == "Películas" && opción_elegida.grupo == "Opciones") { %> 
+        <link rel="stylesheet" href="/stylesheets/1-Peliculas/01-Main.css">
+        <link rel="stylesheet" href="/stylesheets/1-Peliculas/02-Filtros.css">
     <% } %> 
 
     <!--LOGO EN LA PESTAÑA DE INTERNET-->

@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
-const usuarios = require('../../modelos/usuarios');
+const Registro = require('../../modelos/usuarios');
 const bcryptjs = require('bcryptjs')
 
 // ************ Funciones ************
@@ -27,7 +27,7 @@ module.exports = {
 			});
 		};
 		// Verificar si el mail ya está registrado
-		let registro_en_BD = registro.encontrar_por_campo("email", req.body.email);
+		let registro_en_BD = Registro.encontrar_por_campo("email", req.body.email);
 		if (registro_en_BD) {
 			return res.render('formAlta', {
 				Errores:{email:{msg: "Este mail ya está registrado"}},
@@ -41,7 +41,7 @@ module.exports = {
 			imagen: req.file.filename,
 		};
 		// crear el nuevo usuario
-		let registro_creado = registro.alta_guardar(registro);
+		let registro_creado = Registro.alta_guardar(registro);
 		
 		res.redirect("/home", {registro_creado});
 	},

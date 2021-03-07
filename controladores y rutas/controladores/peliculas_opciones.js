@@ -7,26 +7,46 @@ const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // ************ Variables ************
-const ruta_nombre = path.join(__dirname, '../../bases_de_datos/peliculas.json');
+const ruta_nombre_opciones = path.join(__dirname, '../../bases_de_datos/opciones_pelis.json');
+const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/peliculas.json');
 
 // *********** Controlador ***********
 module.exports = {
+	home: (req,res) => {
+		res.redirect("/peliculas/listado")
+	},
+
 	listado: (req, res) => {
-		let título = "Películas-Listado";
-		let grupo = "Opciones"
-		let BD = leer(ruta_nombre);
-		res.render('0-PlantillaPelis', {título, grupo, BD});
+		let código = "listado"
+		let BD_opciones = leer(ruta_nombre_opciones);
+		let opción_elegida = BD_opciones.find(n => n.código == código);
+		let título = opción_elegida.título;
+		let BD_pelis = leer(ruta_nombre_pelis);
+		res.render('0-PlantillaPelis', {título, opción_elegida, BD_opciones, BD_pelis});
 	},
+
 	cfc: (req, res) => {
-		res.send("cfc");
+		let código = "cfc"
+		let BD_opciones = leer(ruta_nombre_opciones);
+		let opción_elegida = BD_opciones.find(n => n.código == código);
+		let título = opción_elegida.título;
+		let BD_pelis = leer(ruta_nombre_pelis);
+		res.render('0-PlantillaPelis', {título, opción_elegida, BD_opciones, BD_pelis});
 	},
-	cfcid: (req, res) => {
+
+	vpc: (req, res) => {
+		let código = "vpc"
+		let BD_opciones = leer(ruta_nombre_opciones);
+		let opción_elegida = BD_opciones.find(n => n.código == código);
+		let título = opción_elegida.título;
+		let BD_pelis = leer(ruta_nombre_pelis);
+		res.render('0-PlantillaPelis', {título, opción_elegida, BD_opciones, BD_pelis});
+	},
+
+	cfcID: (req, res) => {
 		res.send("cfc-submenú");
 	},
-	vpc: (req, res) => {
-		res.send("vpc");
-	},
-	vpcid: (req, res) => {
+	vpcID: (req, res) => {
 		res.send("vpc-submenú");
 	},
 	filtros: (req,res) => {

@@ -6,8 +6,8 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
 <!--**************************** CUERPO ******************************-->
-      <%- grupo == "Opciones"   ? include("10-Opciones")   : "" %>
-      <%- grupo == "Individual" ? include("20-Individual") : "" %>
+      <%- opción_elegida.grupo == "Opciones"   ? include("10-Opciones")   : "" %>
+      <%- opción_elegida.grupo == "Individual" ? include("20-Individual") : "" %>
 <!--****************************** FIN *******************************-->
     </section>
   </main>

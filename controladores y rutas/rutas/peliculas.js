@@ -16,11 +16,12 @@ router.put('/editar/:id', CRUD.editarGuardar);                  // Modificar
 router.get('/detalle/:id', CRUD.detalle);                       // Detalle
 
 // ************************* Opciones ********************************
-router.get('/', opciones.listado);                              // Opción: Home
-router.get('/cfc', opciones.cfc);                               // Opción: CFC
-router.get('/vpc', opciones.vpc);                               // Opción: VPC
-router.get('/cfc/:id', opciones.cfcid);                         // Opción: CFC/id
-router.get('/vpc/:id', opciones.vpcid);                         // Opción: VPC/id
+router.get('/', opciones.home);                                 // Opción: Home
+router.get('/cfc/:id', opciones.cfcID);                           // Opción: CFC/id
+router.get('/vpc/:id', opciones.vpcID);                           // Opción: VPC/id
 router.post('/filtros/:id', login_rutaSI, opciones.filtros);    // Filtros
+router.get('/listado', opciones.listado);                       // Opción: Listado
+router.get('/cfc', opciones.cfc);                           // Opción: CFC
+router.get('/vpc', opciones.vpc);                           // Opción: /VPC
 
 module.exports = router;

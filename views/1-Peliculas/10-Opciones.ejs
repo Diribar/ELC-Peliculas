@@ -4,19 +4,28 @@
   <%- include('10-Filtros') %>
   <!--*************** COMIENZO - ZONA DE PELÍCULAS ****************-->
   <section id="cuerpo-listado" class="flex-col grow">
-    <!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
-    <select id="opciones" name="opciones">
-      <option value="" class="cursiva">Elegí una opción...</option>
-        <option value="TLP" class="not-cursiva">Todas las Películas</option>
-        <option value="FAV" class="not-cursiva">Mis favoritas</option>
-      <optgroup label="Un paseo por..." class="cursiva">
-        <option value="CFC" class="not-cursiva">Películas Centradas en la Fe Católica (CFC)</option>
-        <option value="VPC" class="not-cursiva">Películas con Valores (VPC)</option>
-      </optgroup> 
-    </select>
-    <!--LISTADO-->
-    <!--CFC-->
-    <!--VPC-->
+        <!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
+        <div class="flex-row">
+          <% for (let n of BD_opciones) { %>
+            <a href="/peliculas/<%= n.código %>"><button><%= n.abreviado %></button></a>
+          <% }%>    
+        </div>
+
+        <div>
+          <button><%= opción_elegida.nombre %></button>
+        </div>
+
+        <%- include(opción_elegida.rutinaEJS) %>    
+
+        <select id="opciones" name="opciones">
+          <option value="" class="cursiva">Elegí una opción...</option>
+            <option value="TLP" class="not-cursiva">Todas las Películas</option>
+          <optgroup label="Un paseo por..." class="cursiva">
+            <option value="CFC" class="not-cursiva">Películas Centradas en la Fe Católica (CFC)</option>
+            <option value="VPC" class="not-cursiva">Películas con Valores (VPC)</option>
+          </optgroup> 
+        </select>
+
   </section>
   <!--************************** FIN ****************************-->
 </section>
