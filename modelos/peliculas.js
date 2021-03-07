@@ -1,15 +1,19 @@
 // ************ Requires ************
 const fs = require('fs');
+const path = require('path')
 
 // ************ Funciones ************
-function LeerArchivo(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function GuardarArchivo(RutaNombre, Contenido) {fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
+
+
+const ruta_nombre = path.join(__dirname, '../bases_de_datos/peliculas.json');
 
 // ***** Soporte del Controlador *****
 module.exports = {
-	archivo: Ruta_y_Nombre_de_Archivo,
+	archivo: ruta_nombre,
 
-	leer_archivo: LeerArchivo(Ruta_y_Nombre_de_Archivo),
+	leer_archivo: leer(ruta_nombre),
 
 	encontrar_todos: function () {return this.leer_archivo()},
 
@@ -38,7 +42,7 @@ module.exports = {
 			...datos_usuario,
 		}
 		todos_los_usuarios.push(nuevo_usuario);
-		GuardarArchivo(Ruta_y_Nombre_de_Archivo, todos_los_usuarios);
+		GuardarArchivo(ruta_nombre, todos_los_usuarios);
 		return newUser;
 	},
 

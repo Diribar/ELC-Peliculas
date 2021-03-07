@@ -2,15 +2,15 @@
 const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
-const Registro = require('../modelos/Registro');
+const usuarios = require('../../modelos/usuarios');
 const bcryptjs = require('bcryptjs')
 
 // ************ Funciones ************
-function LeerArchivo(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function GuardarArchivo(RutaNombre, Contenido) {fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
 
 // ************ Variables ************
-const Ruta_y_Nombre_de_Archivo = path.join(__dirname, '../../bases_de_datos/usuarios.json');
+const ruta_nombre = path.join(__dirname, '../../bases_de_datos/usuarios.json');
 
 // *********** Controlador ***********
 module.exports = {
@@ -46,24 +46,24 @@ module.exports = {
 		res.redirect("/home", {registro_creado});
 	},
 	baja: (req, res) => {
-		let BD = LeerArchivo(Ruta_y_Nombre_de_Archivo);
+		let BD = leer(ruta_nombre);
 		let nuevaBD = BD.filter(n => n.id != req.params.id)
-		GuardarArchivo(Ruta_y_Nombre_de_Archivo, nuevaBD)
+		GuardarArchivo(ruta_nombre, nuevaBD)
 		res.redirect("/");
 	},
 	detalle: (req, res) => {
-		let BD = LeerArchivo(Ruta_y_Nombre_de_Archivo);		
+		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
 		res.render('detalle', {registro});
 	},
 	editarForm: (req, res) => {
-		let BD = LeerArchivo(Ruta_y_Nombre_de_Archivo);		
+		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
 		res.render('editar', {registro});
 	},
 	editarGuardar: (req, res) => {
 		// Obtener el contenido actualizado del registro
-		let BD = LeerArchivo(Ruta_y_Nombre_de_Archivo);		
+		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
 		const reg_actual = {
 			...registro,
@@ -78,7 +78,7 @@ module.exports = {
 		let indice = BD.indexOf(registro)
 		BD[indice] = reg_actual
 		// Guardar los cambios
-		GuardarArchivo(Ruta_y_Nombre_de_Archivo, BD);
+		GuardarArchivo(ruta_nombre, BD);
 		res.redirect("/usuario/" + req.params.id);
 	},	
 

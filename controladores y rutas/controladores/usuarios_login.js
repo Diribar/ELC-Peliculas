@@ -1,25 +1,15 @@
 // ************ Requires ************
-const fs = require('fs');
-const path = require('path')
-const {validationResult} = require('express-validator');
-const Registro = require('../modelos/Registro');
+const usuarios = require('../../modelos/usuarios');
 
-// ************ Funciones ************
-function LeerArchivo(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function GuardarArchivo(RutaNombre, Contenido) {
-    fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
-
-// ************ Variables ************
-const Ruta_y_Nombre_de_Archivo = path.join(__dirname, '../../bases_de_datos/usuarios.json');
 
 // *********** Controlador ***********
 module.exports = {
-	login_form: (req,res) => {
+	loginForm: (req,res) => {
 		return res.render("form_Login");
 	},
-	login_guardar: (req,res) => {
+	loginGuardar: (req,res) => {
 		// Verifica si el mail es correcto
-		let usuarioLogin = CRUD.encontrar_por_campo('email', req.body.email);
+		let usuarioLogin = usuarios.encontrar_por_campo('email', req.body.email);
 		if (usuarioLogin) {
 			// Verifica si la contraseña es correcta
 			let loginOK = bcryptjs.compareSync(req.body.contrasena, usuarioLogin.contrasena)
@@ -42,6 +32,12 @@ module.exports = {
 		res.render("form_Login", {
 			Errores: {email: {msg: "Credenciales inválidas."}}
 		})
+	},
+	recupContrForm: (req,res) => {
+		res.send("Recuperar contraseña")
+	},
+	recupContrGuardar: (req,res) => {
+		res.send("Recuperar contraseña")
 	},
 	logout: (req,res) => {
 		res.cleanCookie("email");

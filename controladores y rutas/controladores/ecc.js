@@ -1,24 +1,25 @@
 // ************ Requires ************
 const fs = require('fs');
-const path = require('path')
-const {validationResult} = require('express-validator');
-const Registro = require('../modelos/Registro');
+const path = require('path');
 
 // ************ Funciones ************
-function LeerArchivo(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function GuardarArchivo(RutaNombre, Contenido) {
-    fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
+function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // ************ Variables ************
-const Ruta_y_Nombre_de_Archivo = path.join(__dirname, '../../bases_de_datos/titulos_web.json');
-const BD = LeerArchivo(Ruta_y_Nombre_de_Archivo);
+const ruta_nombre = path.join(__dirname, '../../bases_de_datos/titulosELC.json');
+const BD = leer(ruta_nombre);
 
 // *********** Controlador ***********
 module.exports = {
+	home: (req,res) => {
+		let título="Home"
+		res.render("0-PlantillaUsuarios", {título});
+	},
 	main: (req,res) => { //* HOME - QUIÉNES SOMOS - CONTÁCTANOS
-		let url = req.params.id;
-		let título_web = BD.find((n) => {return n.url == url})
-		let título = título_web.título
-		res.render('ECC', {título})
+		url = req.params.id
+		let BD = leer(ruta_nombre);
+		let pagina = BD.find((n) => {return n.url == url})
+		let título = pagina.título
+		res.render('0-PlantillaUsuarios', {título})
 	},
 };
