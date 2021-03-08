@@ -1,0 +1,27 @@
+[
+    {
+        "nombre": "Sugeridas para el momento del año",
+        "abreviado": "Momento del Año",
+        "campo": "Pelis"
+    },
+    {
+        "nombre": "Por orden de calificación en nuestra página",
+        "abreviado": "Calificación",
+        "campo": "Pelis"
+    },
+    {
+        "nombre": "Por año de estreno",
+        "abreviado": "Año de Estreno",
+        "campo": "Pelis"
+    },
+    {
+        "nombre": "Por orden de incorporación a nuestra base de datos",
+        "abreviado": "Fecha de Incorporación",
+        "campo": "Pelis"
+    },
+    {
+        "nombre": "Por orden de visita",
+        "abreviado": "Fecha de Visita",
+        "campo": "Usuario"
+    }
+]

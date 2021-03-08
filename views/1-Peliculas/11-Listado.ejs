@@ -1,3 +1,10 @@
+<div class="flex-row">
+  <% for (let n of BD_listado) { %>
+    <button><%= n.abreviado %></button>
+  <% }%>    
+</div>
+
+
 <select id="opciones-de-listado" name="listado"><!--OPCIONES DE LISTADO-->
   <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
   <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>

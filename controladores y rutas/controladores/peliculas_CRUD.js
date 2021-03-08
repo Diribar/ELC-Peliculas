@@ -11,7 +11,7 @@ function GuardarArchivo(RutaNombre, Contenido) {
 function LimpiarNumero(n) {{n.replace(".", "").replace(",", ".").replace("$", "").replace(" ", "")}}
 
 // ************ Variables ************
-const ruta_nombre = path.join(__dirname, '../../bases_de_datos/peliculas.json');
+const ruta_nombre = path.join(__dirname, '../../bases_de_datos/peliculas_BD.json');
 
 // *********** Controlador ***********
 module.exports = {

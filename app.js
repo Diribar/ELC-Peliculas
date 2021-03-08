@@ -38,4 +38,4 @@ app.use('/peliculas', rutaPelis)    // Películas
 app.use('/', rutaECC)               // Home, Acerca de Nosotros, Contáctanos
 
 // ************************ Errores *******************************
-app.use((req,res) => {res.status(404).render('not found')})
+//app.use((req,res) => {res.status(404).render('not found')})

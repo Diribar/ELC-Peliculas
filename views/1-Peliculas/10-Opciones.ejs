@@ -14,9 +14,7 @@
         <div>
           <button><%= opción_elegida.nombre %></button>
         </div>
-
-        <%- include(opción_elegida.rutinaEJS) %>    
-
+        
         <select id="opciones" name="opciones">
           <option value="" class="cursiva">Elegí una opción...</option>
             <option value="TLP" class="not-cursiva">Todas las Películas</option>
@@ -25,6 +23,7 @@
             <option value="VPC" class="not-cursiva">Películas con Valores (VPC)</option>
           </optgroup> 
         </select>
+        <%- include(opción_elegida.rutinaEJS) %>    
 
   </section>
   <!--************************** FIN ****************************-->

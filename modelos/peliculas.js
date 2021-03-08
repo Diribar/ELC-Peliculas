@@ -7,7 +7,7 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function GuardarArchivo(RutaNombre, Contenido) {fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
 
 
-const ruta_nombre = path.join(__dirname, '../bases_de_datos/peliculas.json');
+const ruta_nombre = path.join(__dirname, '../bases_de_datos/peliculas_BD.json');
 
 // ***** Soporte del Controlador *****
 module.exports = {
