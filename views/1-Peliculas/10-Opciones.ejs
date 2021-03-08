@@ -5,8 +5,8 @@
   <%- grupo == "Opciones-3" ? include('10-Filtros') : "" %>
   <!--******************* ZONA DE PELÍCULAS **********************-->
   <section id="zona-de-pelis" class="flex-col grow">
-
-    <!--********************** OPCIONES 1 ************************-->
+    
+    <!--////////////////////// OPCIONES 1 ////////////////////////-->
     <div>
       <% if (grupo == "Opciones-1") { %>
         <!---------- TÍTULO PRINCIPAL: ELEGÍ UNA OPCIÓN ------------>
@@ -16,19 +16,19 @@
         <!--------------------- OPCIONES --------------------------->
         <div class="flex-col">
           <% for (let n of opciones_BD) { %>
-            <a href="/<%= rubro_url %>/<%= n.código %>"><button><%= n.nombre %></button></a>
+            <a href="/<%= rubro_url %>/<%= n.codigo %>"><button><%= n.nombre %></button></a>
           <% }%>    
         </div>
         <!------------------------ FIN ----------------------------->
       <% } %>  
     </div>
 
-    <!--********************** OPCIONES 2 ************************-->
+    <!--////////////////////// OPCIONES 2 ////////////////////////-->
     <div>
       <% if (grupo == "Opciones-2") { %>
         <!--------- TÍTULO PRINCIPAL: OPCIÓN YA ELEGIDA ------------>
         <div id="opciones">
-          <a href="/<%= rubro_url %>"><button><%= opción_objeto.nombre %></button></a>
+          <a href="/<%= rubro_url %>"><button><%= opcion_objeto.nombre %></button></a>
         </div>
         <!---------- TÍTULO SECUNDARIO: ELEGÍ UNA OPCIÓN ----------->
         <div id="opciones">
@@ -37,7 +37,7 @@
         <!----------------------- OPCIONES ------------------------->
         <div class="flex-col">
           <% for (let n of tipos_BD) { %>
-            <a href="/<%= rubro_url %>/<%= opción_objeto.código %>/<%= n.código %>"><button><%= n.nombre %></button></a>
+            <a href="/<%= rubro_url %>/<%= opcion_objeto.codigo %>/<%= n.codigo %>"><button><%= n.nombre %></button></a>
           <% } %>
         </div>
       <% } %>

@@ -16,11 +16,9 @@ router.put('/editar/:id', CRUD.editarGuardar);                  // Modificar
 router.get('/detalle/:id', CRUD.detalle);                       // Detalle
 
 // ************************* Opciones ********************************
-router.get('/', opciones.home);                                 // Home
-router.post('/filtros', login_rutaSI, opciones.filtros);        // Filtros
+router.get('/', opciones.rubro);                                // Home
 router.get('/:id', opciones.opcion);                            // Opciones
-router.get('/listado/:id', opciones.listadoID);                 // Opción: Listado
-router.get('/cfc/:id', opciones.cfcID);                         // Opción: CFC/id
-router.get('/vpc/:id', opciones.vpcID);                         // Opción: VPC/id
+router.get('/:id/:id', opciones.tipo);                          // Opción: Listado
+router.post('/filtros', opciones.filtros);                      // Filtros
 
 module.exports = router;

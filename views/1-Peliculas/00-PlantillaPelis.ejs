@@ -2,13 +2,14 @@
 <body>
   <%- include('1-Header') %>
   <main class="flex-row">
+
     <%- include('4-ImagenDerecha') %>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
-<!--**************************** CUERPO ******************************-->
+      <!--**************************** CUERPO ************************-->
       <%- grupo.slice(0,8) == "Opciones"   ? include("10-Opciones")   : "" %>
       <%- grupo == "Individual" ? include("20-Individual") : "" %>
-<!--****************************** FIN *******************************-->
+      <!--****************************** FIN *************************-->
     </section>
   </main>
 </body>

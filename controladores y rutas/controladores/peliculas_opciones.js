@@ -13,12 +13,12 @@ const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/peliculas_B
 
 // *********** Controlador ***********
 module.exports = {
-	home: (req,res) => {
+	rubro: (req,res) => {
 		// Obtener el código del rubro elegido (peliculas, etc.)
 		let rubro_url = req.originalUrl.slice(1)
 		// Obtener el título
 		let rubros_BD = leer(ruta_nombre_rubros);
-		let rubro_objeto = rubros_BD.find(n => n.código == rubro_url);
+		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
 		let título = rubro_objeto.título;
 		// Definir variables a enviar a la vista
 		grupo= "Opciones-1 (Rubro elegido)".slice(0,10)
@@ -34,36 +34,34 @@ module.exports = {
 
 	opcion: (req, res) => {
 		// Obtener el código de la opción elegida (listado, cfc, vpc, etc.)
-		let opción_url = req.url.slice(1) 
+		let opcion_url = req.url.slice(1) 
 		// Obtener el código del rubro elegido (en esta caso: peliculas)
 		let rubro_url = req.originalUrl				
-		rubro_url = rubro_url.slice(1,rubro_url.lastIndexOf("/")-1)
+		rubro_url = rubro_url.slice(1,rubro_url.lastIndexOf("/"))
 		// Obtener el título (rubro + opción)
 		let opciones_BD = leer(ruta_nombre_opciones);
-		let opción_objeto = opciones_BD.find(n => n.código == opción_url);
-		let título = opción_objeto.título;
+		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
+		let título = opcion_objeto.título;
 		// Definir variables a enviar a la vista
 		grupo= "Opciones-2 (Opción elegida)".slice(0,10)
-		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opción == opción_url);
+		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
+		// return res.send(tipos_BD)
 		res.render('00-PlantillaPelis', {
 			título,
 			grupo,
 			rubro_url,
-			opción_objeto,
+			opcion_objeto,
 			tipos_BD,
 		});
 	},
 
-	listadoID: (req, res) => {
-		res.send("listado-submenú");
+	tipo: (req, res) => {
+		// Obtener el código de la opción elegida (listado, cfc, vpc, etc.)
+		let tipo_url = req.url.slice(1)
+		res.send(tipo_url)
 	},
-	cfcID: (req, res) => {
-		res.send("cfc-submenú");
-	},
-	vpcID: (req, res) => {
-		res.send("vpc-submenú");
-	},
+
 	filtros: (req,res) => {
 		return res.send("Filtros")
 		//	let user_entry = req.query;

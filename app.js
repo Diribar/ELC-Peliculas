@@ -15,7 +15,7 @@ const logueado = require('./middlewares/login_global'); app.use(logueado); // Pa
 app.use(cookies());
 
 // *********** Para conectarse con el servidor ********************
-app.listen(3002, () => console.log('Servidor funcionando en puerto 3002...'))
+app.listen(3001, () => console.log('Servidor funcionando en puerto 3001...'))
 
 // ******** Terminación de los archivos de vista ******************
 app.set('view engine', 'ejs'); 
