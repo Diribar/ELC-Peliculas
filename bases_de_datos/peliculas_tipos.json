@@ -1,27 +1,44 @@
 [
     {
+        "opción": "listado",
         "nombre": "Sugeridas para el momento del año",
         "abreviado": "Momento del Año",
         "campo": "Pelis"
     },
     {
+        "opción": "listado",
         "nombre": "Por orden de calificación en nuestra página",
         "abreviado": "Calificación",
         "campo": "Pelis"
     },
     {
+        "opción": "listado",
         "nombre": "Por año de estreno",
         "abreviado": "Año de Estreno",
         "campo": "Pelis"
     },
     {
+        "opción": "listado",
         "nombre": "Por orden de incorporación a nuestra base de datos",
         "abreviado": "Fecha de Incorporación",
         "campo": "Pelis"
     },
     {
+        "opción": "listado",
         "nombre": "Por orden de visita",
         "abreviado": "Fecha de Visita",
         "campo": "Usuario"
-    }
+    },
+    {
+        "opción": "cfc",
+        "nombre": "Apariciones Marianas",
+        "abreviado": "Apariciones Marianas",
+        "campo": "Pelis"
+    },
+    {
+        "opción": "vpc",
+        "nombre": "Biografías e Historias",
+        "abreviado": "Biografías e Historias",
+        "campo": "Pelis"
+    }    
 ]

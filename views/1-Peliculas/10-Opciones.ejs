@@ -1,30 +1,48 @@
 <section class="flex-row grow" id="cuerpo">
-   <!--********************** CONTADOR ****************************-->
+  <!--********************** CONTADOR ****************************-->
   <button type="text" id="contador-de-películas">Contador</button>
-  <%- include('10-Filtros') %>
-  <!--*************** COMIENZO - ZONA DE PELÍCULAS ****************-->
-  <section id="cuerpo-listado" class="flex-col grow">
-        <!--CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC)-->
-        <div class="flex-row">
-          <% for (let n of BD_opciones) { %>
-            <a href="/peliculas/<%= n.código %>"><button><%= n.abreviado %></button></a>
+  <!--*********************** FILTROS ****************************-->
+  <%- grupo == "Opciones-3" ? include('10-Filtros') : "" %>
+  <!--******************* ZONA DE PELÍCULAS **********************-->
+  <section id="zona-de-pelis" class="flex-col grow">
+
+    <!--********************** OPCIONES 1 ************************-->
+    <div>
+      <% if (grupo == "Opciones-1") { %>
+        <!---------- TÍTULO PRINCIPAL: ELEGÍ UNA OPCIÓN ------------>
+        <div id="opciones">
+          <button>Elegí una opción</button>
+        </div>
+        <!--------------------- OPCIONES --------------------------->
+        <div class="flex-col">
+          <% for (let n of opciones_BD) { %>
+            <a href="/<%= rubro_url %>/<%= n.código %>"><button><%= n.nombre %></button></a>
           <% }%>    
         </div>
+        <!------------------------ FIN ----------------------------->
+      <% } %>  
+    </div>
 
-        <div>
-          <button><%= opción_elegida.nombre %></button>
+    <!--********************** OPCIONES 2 ************************-->
+    <div>
+      <% if (grupo == "Opciones-2") { %>
+        <!--------- TÍTULO PRINCIPAL: OPCIÓN YA ELEGIDA ------------>
+        <div id="opciones">
+          <a href="/<%= rubro_url %>"><button><%= opción_objeto.nombre %></button></a>
         </div>
-        
-        <select id="opciones" name="opciones">
-          <option value="" class="cursiva">Elegí una opción...</option>
-            <option value="TLP" class="not-cursiva">Todas las Películas</option>
-          <optgroup label="Un paseo por..." class="cursiva">
-            <option value="CFC" class="not-cursiva">Películas Centradas en la Fe Católica (CFC)</option>
-            <option value="VPC" class="not-cursiva">Películas con Valores (VPC)</option>
-          </optgroup> 
-        </select>
-        <%- include(opción_elegida.rutinaEJS) %>    
+        <!---------- TÍTULO SECUNDARIO: ELEGÍ UNA OPCIÓN ----------->
+        <div id="opciones">
+          <button>Elegí una opción</button>
+        </div>
+        <!----------------------- OPCIONES ------------------------->
+        <div class="flex-col">
+          <% for (let n of tipos_BD) { %>
+            <a href="/<%= rubro_url %>/<%= opción_objeto.código %>/<%= n.código %>"><button><%= n.nombre %></button></a>
+          <% } %>
+        </div>
+      <% } %>
 
+    </div>
   </section>
-  <!--************************** FIN ****************************-->
+  <!--*************************** FIN ****************************-->
 </section>

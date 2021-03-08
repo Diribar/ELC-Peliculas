@@ -26,7 +26,7 @@
     <% if (título == "Home") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/home.css"> <% } %>
     <% if (título == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/quienes-somos.css"> <% } %>
     <% if (título == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/contactanos.css"> <% } %>
-    <% if (título.slice(0,9) == "Películas" && opción_elegida.grupo == "Opciones") { %> 
+    <% if (título.slice(0,9) == "Películas" && grupo.slice(0,8) == "Opciones") { %>
         <link rel="stylesheet" href="/stylesheets/1-Peliculas/01-Main.css">
         <link rel="stylesheet" href="/stylesheets/1-Peliculas/02-Filtros.css">
     <% } %> 

@@ -1,14 +1,11 @@
 /* CONTADOR DE PELÍCULAS */
 #cuerpo {position: relative;}
-#cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
+#cuerpo #contador-de-películas {padding: 3px 5px;border-style: none;border-radius: 5px;}
 #cuerpo #contador-de-películas {position: absolute; right: 0px; top: 0px;}
 #cuerpo #contador-de-películas {border: solid 2px gray;}
 #cuerpo #contador-de-películas {font-size: 20px;font-weight: bold;}
 
 /* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
-#cuerpo-listado {align-items:flex-start;margin-left: 30px;border: red 1px solid;}
-#cuerpo-listado select#opciones {margin-top: 50px;padding: 7px;}
-#cuerpo-listado select#opciones {border-style: none;border-radius: 5px;}
-#cuerpo-listado select#opciones {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
-#cuerpo-listado select#opciones {background-color:var(--amarillo-claro);}
-#cuerpo-listado #opciones optgroup {font-weight: normal;}
+#cuerpo #zona-de-pelis {align-items:flex-start;margin: 50px 0 0 30px;}
+#cuerpo #zona-de-pelis #opciones button {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
+#cuerpo #zona-de-pelis #opciones button {padding: 7px; border-radius: 5px; background-color:var(--amarillo-claro);border: none;}
