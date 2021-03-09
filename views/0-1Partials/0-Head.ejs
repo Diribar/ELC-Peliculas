@@ -28,7 +28,7 @@
     <% if (título == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/contactanos.css"> <% } %>
     <% if (título.slice(0,9) == "Películas" && grupo.slice(0,8) == "Opciones") { %>
         <link rel="stylesheet" href="/stylesheets/1-Peliculas/01-Main.css">
-        <link rel="stylesheet" href="/stylesheets/1-Peliculas/02-Filtros.css">
+        <% if (grupo == "Opciones-3") { %><link rel="stylesheet" href="/stylesheets/1-Peliculas/02-Filtros.css"><% } %>
     <% } %> 
 
     <!--LOGO EN LA PESTAÑA DE INTERNET-->
