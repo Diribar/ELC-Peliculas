@@ -7,7 +7,6 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/titulosELC.json');
-const BD = leer(ruta_nombre);
 
 // *********** Controlador ***********
 module.exports = {

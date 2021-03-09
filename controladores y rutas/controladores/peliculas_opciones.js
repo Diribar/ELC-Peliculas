@@ -21,10 +21,10 @@ module.exports = {
 		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
 		let título = rubro_objeto.título;
 		// Definir variables a enviar a la vista
-		grupo= "Opciones-1 (Rubro elegido)".slice(0,10)
+		let grupo = "Opciones-1 (Rubro elegido)".slice(0,10)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
-		res.render('00-PlantillaPelis', {
+		res.render('10-Opciones', {
 			título,
 			grupo,
 			rubro_url,
@@ -41,25 +41,47 @@ module.exports = {
 		// Obtener el título (rubro + opción)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
-		let título = opcion_objeto.título;
+		let título = "Películas-" + opcion_objeto.título;
 		// Definir variables a enviar a la vista
-		grupo= "Opciones-2 (Opción elegida)".slice(0,10)
+		let grupo = "Opciones-2 (Opción elegida)".slice(0,10)
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
-		// return res.send(tipos_BD)
-		res.render('00-PlantillaPelis', {
+		res.render('10-Opciones', {
 			título,
 			grupo,
 			rubro_url,
 			opcion_objeto,
+			opciones_BD,
 			tipos_BD,
 		});
 	},
 
 	tipo: (req, res) => {
-		// Obtener el código de la opción elegida (listado, cfc, vpc, etc.)
-		let tipo_url = req.url.slice(1)
-		res.send(tipo_url)
+		// Obtener el código de Rubro, Opción, Tipo
+		let url = req.originalUrl.slice(1)
+		let rubro_url = url.slice(0,url.indexOf("/"))
+		let opcion_url = url.slice(url.indexOf("/")+1, url.lastIndexOf("/"))
+		let tipo_url = url.slice(url.lastIndexOf("/")+1)
+		// Obtener el título (rubro + opción)
+		let opciones_BD = leer(ruta_nombre_opciones);
+		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
+		let título = "Películas-" + opcion_objeto.título;
+		// Obtener el tipo_objeto
+		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
+		let tipo_objeto = tipos_BD.find(n => n.codigo == tipo_url);
+		// Definir variables a enviar a la vista
+		let grupo = "Opciones-3 (Tipo elegido)".slice(0,10)
+		// Ir a la vista
+		res.render('10-Opciones', {
+			título,
+			grupo,
+			rubro_url,
+			opcion_url,
+			opcion_objeto,
+			tipo_objeto,
+			opciones_BD,
+			tipos_BD,
+		});
 	},
 
 	filtros: (req,res) => {

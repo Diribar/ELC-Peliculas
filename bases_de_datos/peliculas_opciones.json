@@ -1,6 +1,6 @@
 [
     {
-        "título": "Películas-Listado",
+        "título": "Listado",
         "nombre": "Listado de Películas",
         "abreviado": "Listado",
         "codigo": "listado",
@@ -8,7 +8,7 @@
         "grupo": "Opciones"
     },
     {
-        "título": "Películas-CFC",
+        "título": "CFC",
         "nombre": "Películas Centradas en la Fe Católica",
         "abreviado": "CFC",
         "codigo": "cfc",
@@ -16,7 +16,7 @@
         "grupo": "Opciones"
     },
     {
-        "título": "Películas-VPC",
+        "título": "VPC",
         "nombre": "Películas con Valores Presentes en la Cultura",
         "abreviado": "VPC",
         "codigo": "vpc",
