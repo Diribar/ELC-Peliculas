@@ -1,0 +1,22 @@
+.dropbtn {
+  border-radius: 50%;
+  opacity: 0%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 45px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+  z-index: 2;
+}
+
+.dropdown-content a {
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.show {display: block;}

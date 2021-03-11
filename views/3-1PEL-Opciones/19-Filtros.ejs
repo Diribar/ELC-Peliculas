@@ -43,8 +43,8 @@
         <option value="SV" >SI, y sólo éstas</option>
       </select>
     </div>
-    <div class="flex-col">  <!--Mostrar Películas que no me interesan-->
-      <h1>Mostrar Películas que no me interesan</h1>
+    <div class="flex-col">  <!--Vistas / Interés-->
+      <h1>¿Cuáles mostrar?</h1>
       <select name="Vistas">
         <option value="NO" selected>NO</option>
         <option value="SI">SI</option>
@@ -65,9 +65,10 @@
       <input type="text" name="palabras_clave" placeholder="Palabras clave">
     </div>
     <div id="final" class="flex-row"><!--Íconos y botones-->
-      <button class="sin-boton" type="text"><i class="fas fa-save"></i></button>
-      <button class="sin-boton" type="reset"><i class="fas fa-times-circle"></i></button>
-      <button class="sin-boton" type="submit"><i class="fas fa-arrow-alt-circle-right"></i></button>
+      <button class="sin-boton" type="text" title="Sin ningún filtro"><i class="fas fa-times-circle"></i></button>
+      <button class="sin-boton" type="reset" title="Filtros por defecto"><i class="fas fa-check-circle"></i></button>
+      <button class="sin-boton" type="text"><i class="fas fa-save" title="Guardar los filtros"></i></button>
+      <button class="sin-boton" type="submit"><i class="fas fa-arrow-alt-circle-right" title="Aplicar los filtros"></i></button>
     </div>
   </form>
 </section>

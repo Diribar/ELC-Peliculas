@@ -4,8 +4,8 @@ header p {background-color: var(--azul);color: var(--amarillo-claro);}
 header p {display: flex;justify-content: center;align-items:center;}
 header p {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
 
-header .rubro, .user-id {position: absolute;top:35%; transform:scale(1.6);}
-header .rubro, .user-id {z-index: 1;color: var(--celeste-claro);}
+header .rubro, header .user-id {position: absolute;top:35%; transform:scale(1.6);}
+header .rubro, header .user-id {z-index: 1;color: var(--celeste-claro);}
 header .rubro {left:30px;}
 header .user-id {right:30px;}
 

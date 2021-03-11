@@ -22,16 +22,18 @@ app.set('view engine', 'ejs');
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set('views', [
-    path.resolve(__dirname, './views/0-1Partials'), 
-    path.resolve(__dirname, './views/0-2Home'), 
-    path.resolve(__dirname, './views/1-Peliculas')
+    path.resolve(__dirname, './views/0-Partials'), 
+    path.resolve(__dirname, './views/1-Home'),
+    path.resolve(__dirname, './views/2-Usuarios'),
+    path.resolve(__dirname, './views/3-1PEL-Opciones'),
+    path.resolve(__dirname, './views/3-2PEL-CRUD'),
 ]);
 
 // ************************* Rutas ********************************
 const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaLogin = require('./controladores y rutas/rutas/login.js');
 const rutaPelis = require('./controladores y rutas/rutas/peliculas');
-const rutaECC = require('./controladores y rutas/rutas/ecc');
+const rutaECC = require('./controladores y rutas/rutas/home');
 app.use('/registro', rutaUsuarios)  // Registro
 app.use('/login', rutaLogin)        // Login
 app.use('/peliculas', rutaPelis)    // Películas

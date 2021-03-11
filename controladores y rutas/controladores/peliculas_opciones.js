@@ -24,7 +24,7 @@ module.exports = {
 		let grupo = "Opciones-1 (Rubro elegido)".slice(0,10)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
-		res.render('10-Plantilla-PEL-Opciones', {
+		res.render('10-PEL-Opciones', {
 			titulo,
 			grupo,
 			rubro_url,
@@ -46,7 +46,7 @@ module.exports = {
 		let grupo = "Opciones-2 (Opción elegida)".slice(0,10)
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
-		res.render('10-Plantilla-PEL-Opciones', {
+		res.render('10-PEL-Opciones', {
 			titulo,
 			grupo,
 			rubro_url,
@@ -72,7 +72,7 @@ module.exports = {
 		// Definir variables a enviar a la vista
 		let grupo = "Opciones-3 (Tipo elegido)".slice(0,10)
 		// Ir a la vista
-		res.render('10-Plantilla-PEL-Opciones', {
+		res.render('10-PEL-Opciones', {
 			titulo,
 			grupo,
 			rubro_url,

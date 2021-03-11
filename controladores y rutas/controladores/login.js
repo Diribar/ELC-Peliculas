@@ -6,7 +6,7 @@ const usuarios = require('../../modelos/usuarios');
 module.exports = {
 	loginForm: (req,res) => {
 		let titulo = "Login"
-		return res.render("0-Plantilla-Usuarios", {titulo});
+		return res.render("10-Login-y-Usuarios", {titulo});
 	},
 	loginGuardar: (req,res) => {
 		// Verifica si el mail es correcto

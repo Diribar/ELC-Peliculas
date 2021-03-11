@@ -1,7 +1,7 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const login = require('../controladores/usuarios_login')
+const login = require('../controladores/login')
 
 //************************ Middlewares ******************************
 const login_rutaSI = require('../../middlewares/login_rutaSI');    // Para prevenir ciertos accesos cuando SI está logueado

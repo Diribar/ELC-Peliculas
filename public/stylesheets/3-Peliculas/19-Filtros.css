@@ -1,6 +1,6 @@
 /* GENERAL */
-#filtros {margin: auto 40px; width: 200px;}
-#filtros {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#filtros {margin: 10px 10px; width: 200px;}
+#filtros form {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);font-size: 14px;}
 #filtros * {font-size: 14px;}
 
@@ -25,6 +25,7 @@
 /* FINAL */
 #filtros #final {justify-content: space-around; align-items: center;}
 #filtros #final button {border: none;}
-#filtros #final .fa-save {transform: scale(1.5); color:green; border-style: none;}
-#filtros #final .fa-times-circle {transform: scale(1.5); color:red;}
-#filtros #final .fa-arrow-alt-circle-right {transform: scale(1.5);}
+#filtros #final .fas {transform: scale(1.5);}
+#filtros #final .fa-times-circle, #filtros #final .fa-check-circle {color:red;}
+#filtros #final .fa-save {color:blue; border-style: none;}
+#filtros #final .fa-arrow-alt-circle-right {color:green;}
