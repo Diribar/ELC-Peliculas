@@ -1,14 +1,14 @@
 [
     {
         "url": "",
-        "título": "Home"
+        "titulo": "Home"
     },
     {
         "url": "quienes-somos",
-        "título": "Quiénes Somos"
+        "titulo": "Quiénes Somos"
     },
     {
         "url": "contactanos",
-        "título": "Contactanos"
+        "titulo": "Contactanos"
     }
 ]

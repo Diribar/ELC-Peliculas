@@ -19,13 +19,13 @@ module.exports = {
 		// Obtener el título
 		let rubros_BD = leer(ruta_nombre_rubros);
 		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
-		let título = rubro_objeto.título;
+		let titulo = rubro_objeto.titulo;
 		// Definir variables a enviar a la vista
 		let grupo = "Opciones-1 (Rubro elegido)".slice(0,10)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
-		res.render('10-Opciones', {
-			título,
+		res.render('10-Plantilla-PEL-Opciones', {
+			titulo,
 			grupo,
 			rubro_url,
 			opciones_BD,
@@ -41,13 +41,13 @@ module.exports = {
 		// Obtener el título (rubro + opción)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
-		let título = "Películas-" + opcion_objeto.título;
+		let titulo = "Películas-" + opcion_objeto.titulo;
 		// Definir variables a enviar a la vista
 		let grupo = "Opciones-2 (Opción elegida)".slice(0,10)
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
-		res.render('10-Opciones', {
-			título,
+		res.render('10-Plantilla-PEL-Opciones', {
+			titulo,
 			grupo,
 			rubro_url,
 			opcion_objeto,
@@ -65,15 +65,15 @@ module.exports = {
 		// Obtener el título (rubro + opción)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
-		let título = "Películas-" + opcion_objeto.título;
+		let titulo = "Películas-" + opcion_objeto.titulo;
 		// Obtener el tipo_objeto
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		let tipo_objeto = tipos_BD.find(n => n.codigo == tipo_url);
 		// Definir variables a enviar a la vista
 		let grupo = "Opciones-3 (Tipo elegido)".slice(0,10)
 		// Ir a la vista
-		res.render('10-Opciones', {
-			título,
+		res.render('10-Plantilla-PEL-Opciones', {
+			titulo,
 			grupo,
 			rubro_url,
 			opcion_url,
@@ -94,7 +94,7 @@ module.exports = {
 		//		}
 		//	};
 		//	res.send(results);
-		//	res.render('página-de-resultados', results);
+		//	res.render('pagina-de-resultados', results);
 	},
 };
 

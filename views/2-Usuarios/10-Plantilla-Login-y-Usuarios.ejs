@@ -6,11 +6,8 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
 <!--**************************** CUERPO ******************************-->
-      <%- título == "Home"          ? include('1-Home')          : "" %>
-      <%- título == "Login"         ? include('2-Login')         : "" %>
-      <%- título == "Registro"      ? include('3-Registro')      : "" %>
-      <%- título == "Quiénes Somos" ? include('4-Quienes-Somos') : "" %>
-      <%- título == "Contactanos"   ? include('5-Contactanos')   : "" %>
+      <%- titulo == "Login"         ? include('2-Login-form')         : "" %>
+      <%- titulo == "Registro"      ? include('3-ABM-usuarios')      : "" %>
 <!--****************************** FIN *******************************-->
     </section>
   </main>

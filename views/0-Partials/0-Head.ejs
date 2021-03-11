@@ -21,12 +21,12 @@
     <!---<link rel="stylesheet" href="/stylesheets/0-Base/imprimir.css" media="print">-->
 
     <!--ESTILOS PERSONALIZADOS POR PÁGINA-->
-    <% if (título == "Login") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/login.css"> <% } %> 
-    <% if (título == "Registro") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/registro.css"> <% } %>
-    <% if (título == "Home") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/home.css"> <% } %>
-    <% if (título == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/quienes-somos.css"> <% } %>
-    <% if (título == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/contactanos.css"> <% } %>
-    <% if (título.slice(0,9) == "Películas" && grupo.slice(0,8) == "Opciones") { %>
+    <% if (titulo == "Home") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/1-Home.css"> <% } %>
+    <% if (titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/2-Login-form.css"> <% } %> 
+    <% if (titulo == "Registro") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/3-ABM-usuarios.css"> <% } %>
+    <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/4-Quienes-Somos.css"> <% } %>
+    <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/0-2Home/5-Contactanos.css"> <% } %>
+    <% if (titulo.slice(0,9) == "Películas" && grupo.slice(0,8) == "Opciones") { %>
         <link rel="stylesheet" href="/stylesheets/1-Peliculas/01-Main.css">
         <% if (grupo == "Opciones-3") { %><link rel="stylesheet" href="/stylesheets/1-Peliculas/02-Filtros.css"><% } %>
     <% } %> 

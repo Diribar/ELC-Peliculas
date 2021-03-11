@@ -5,7 +5,8 @@ const usuarios = require('../../modelos/usuarios');
 // *********** Controlador ***********
 module.exports = {
 	loginForm: (req,res) => {
-		return res.render("form_Login");
+		let titulo = "Login"
+		return res.render("0-Plantilla-Usuarios", {titulo});
 	},
 	loginGuardar: (req,res) => {
 		// Verifica si el mail es correcto
@@ -24,12 +25,12 @@ module.exports = {
 				return res.redirect("/usuario/perfil")
 			}
 			// Ejecuta acciones si la contraseña es incorrecta
-			return res.render("form_Login", {
+			return res.render("2-Login_form", {
 				Errores: {email: {msg: "Credenciales inválidas"}}
 			})
 		}
 		// Ejecuta acciones si el mail es correcto
-		res.render("form_Login", {
+		res.render("2-Login_form", {
 			Errores: {email: {msg: "Credenciales inválidas."}}
 		})
 	},

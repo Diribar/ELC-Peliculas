@@ -1,0 +1,16 @@
+<%- include('0-Head') %>
+<body>
+  <%- include('1-Header') %>
+  <main class="flex-row">
+    <%- include('4-ImagenDerecha') %>
+    <section id="main-y-footer" class="flex-col grow">
+      <%- include('3-Footer') %>
+<!--**************************** CUERPO ******************************-->
+      <%- titulo == "Home"          ? include('11-Home')          : "" %>
+      <%- titulo == "Quiénes Somos" ? include('12-Quienes-Somos') : "" %>
+      <%- titulo == "Contactanos"   ? include('13-Contactanos')   : "" %>
+<!--****************************** FIN *******************************-->
+    </section>
+  </main>
+</body>
+</html>

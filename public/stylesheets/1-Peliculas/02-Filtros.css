@@ -19,8 +19,8 @@
 #filtros select {margin-bottom: 15px;border-radius: 5px;}
 #filtros .radio {margin: 2px auto 15px; justify-content: space-between;}
 #filtros .radio input {margin-right: 2px;margin-top: 2px;}
-#filtros #búsqueda {padding-bottom:15px;}
-#filtros #búsqueda input {padding:0px 4px 0px 4px;}
+#filtros #busqueda {padding-bottom:15px;}
+#filtros #busqueda input {padding:0px 4px 0px 4px;}
 
 /* FINAL */
 #filtros #final {justify-content: space-around; align-items: center;}
