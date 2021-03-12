@@ -23,29 +23,28 @@
       <h1>Aptas Todo Público</h1>
       <div class="radio flex-row">
         <label><input type="radio" name="ATP" value="SF" checked>Sin Filtro</label>
-        <label><input type="radio" name="ATP" value="SI">Sólo ATP</label>
+        <label><input type="radio" name="ATP" value="SI" class="margen-izq">Sólo ATP</label>
       </div>
   
     </div>
     <div>  <!--Centradas en la Fe Católica-->
       <h1>CFC / VPC</h1>
-      <div class="radio flex-row">
-        <label><input type="radio" name="CFC-VPC" value="SF" checked>Sin Filtro</label>
-        <label><input type="radio" name="CFC-VPC" value="CFC">CFC</label>
-        <label><input type="radio" name="CFC-VPC" value="VPC">VPC</label>
+      <div class="radio flex-row between">
+        <label><input type="radio" name="CFC_VPC" value="SF" checked>Sin Filtro</label>
+        <label><input type="radio" name="CFC_VPC" value="CFC">CFC</label>
+        <label><input type="radio" name="CFC_VPC" value="VPC">VPC</label>
       </div>
     </div>
-    <div class="flex-col">  <!--Mostrar Películas Vistas-->
-      <h1>Mostrar Películas Vistas</h1>
-      <select name="Vistas">
-        <option value="NO" selected>NO</option>
-        <option value="SI">SI</option>
-        <option value="SV" >SI, y sólo éstas</option>
-      </select>
+    <div>  <!--Mostrar Películas Vistas-->
+      <h1>Sólo Favoritas</h1>
+      <div class="radio flex-row">
+        <label><input type="radio" name="CFC-VPC" value="SF" checked>Sin Filtro</label>
+        <label><input type="radio" name="CFC-VPC" value="SI" class="margen-izq">SI</label>
+      </div>
     </div>
     <div class="flex-col">  <!--Vistas / Interés-->
       <h1>¿Cuáles mostrar?</h1>
-      <select name="Vistas">
+      <select name="cuales">
         <option value="NO" selected>NO</option>
         <option value="SI">SI</option>
         <option value="SV" >SI, y sólo éstas</option>

@@ -22,6 +22,8 @@ main, main #sagrada-familia {height:91vh;}
 .flex-col {display: flex;flex-direction: column;}
 .flex-row {display: flex;flex-direction: row;}
 .grow {flex-grow: 1;}
+.between {justify-content: space-between;}
+.around {justify-content: space-around;}
 .cursiva {font-style: italic;}
 .not-cursiva {font-style: normal;}
 .cursor_pointer {cursor: pointer;}
