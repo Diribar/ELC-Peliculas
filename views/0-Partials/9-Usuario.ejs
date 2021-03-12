@@ -1,0 +1,24 @@
+<i onclick="Login()" class="boton-desplegable fas fa-user-circle user-id"></i>
+<div id="myDropdown" class="dropdown-content">
+  <a href="/login">Login</a>
+  <a href="/logout">Logout</a>
+  <a href="/registro">Registrarse</a>
+</div>
+
+<script>
+/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+function Login() {document.getElementById("myDropdown").classList.toggle("mostrar");}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.boton-desplegable')) {
+    let dropdowns = document.getElementsByClassName("dropdown-content");
+    for (let i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('mostrar')) {
+        openDropdown.classList.remove('mostrar');
+      }
+    }
+  }
+}
+</script>

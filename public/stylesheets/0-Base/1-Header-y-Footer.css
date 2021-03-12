@@ -1,13 +1,19 @@
 /* HEADER */
-header {position: relative;}
-header p {background-color: var(--azul);color: var(--amarillo-claro);}
+header {position: relative;background-color: var(--azul);}
 header p {display: flex;justify-content: center;align-items:center;}
-header p {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
+header p a {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
+header p a {color: var(--amarillo-claro);text-decoration: none;}
 
 header .rubro, header .user-id {position: absolute;top:35%; transform:scale(1.6);}
 header .rubro, header .user-id {z-index: 1;color: var(--celeste-claro);}
 header .rubro {left:30px;}
 header .user-id {right:30px;}
+
+/* Menú de Login */
+.dropdown-content {display: none;position: absolute;right: 20px;top: 45px;}
+header .dropdown-content {border-radius: 10px;background-color: #f1f1f1;z-index: 2;}
+header .dropdown-content a {padding: 8px 16px;text-decoration: none;display: block;}
+.mostrar {display: block;}
 
 /* FOOTER */
 footer {justify-content: space-around;}
