@@ -1,15 +1,2 @@
-/* CONFIGURACIÓN GENERAL */
-#cuerpo {align-items:flex-start;margin-left: 40px;}
-#cuerpo button {padding: 3px 5px;border-style: none;border-radius: 5px;}
-
-/* CONFIGURAR BOTONES */
-#cuerpo #titulo {margin-top: 40px;padding: 7px;}
-#cuerpo #titulo {background-color:var(--amarillo-claro);}
-#cuerpo #titulo {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
-
 /* BOTONES DE RUBRO */
-#cuerpo #rubro {margin-left: 40px;margin-top: 30px;}
-#cuerpo #rubro button {font-family: var(--Calibri);color:var(--gris-claro)}
-#cuerpo #rubro button {font-size: 16px;font-weight: bold;padding: 10px 20px;}
-#cuerpo button.activo {background-color: var(--verde);}
-#cuerpo button.pasivo {display:none;}
+.cuerpo button.pasivo {display:none;}

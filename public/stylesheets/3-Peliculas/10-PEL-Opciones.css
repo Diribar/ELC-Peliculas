@@ -1,11 +1,13 @@
-/* CONTADOR DE PELÍCULAS */
-#cuerpo {position: relative;}
-#cuerpo #contador-de-peliculas {padding: 3px 5px;border-style: none;border-radius: 5px;}
-#cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}
-#cuerpo #contador-de-peliculas {border: solid 2px gray;}
-#cuerpo #contador-de-peliculas {font-size: 20px;font-weight: bold;}
+/* Contador de Películas */
+.cuerpo #contador-de-peliculas {padding: 3px 5px;border-style: none;border-radius: 5px;}
+.cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}
+.cuerpo #contador-de-peliculas {border: solid 2px gray;}
+.cuerpo #contador-de-peliculas {font-size: 20px;font-weight: bold;}
 
 /* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
-#cuerpo #zona-de-pelis {align-items:flex-start;margin: 50px 0 0 30px;}
-#cuerpo #zona-de-pelis #opciones button {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
-#cuerpo #zona-de-pelis #opciones button {padding: 7px; border-radius: 5px; background-color:var(--amarillo-claro);border: none;}
+.cuerpo #zona-de-pelis {align-items:flex-start;border: red 2px solid;}
+
+/* Menú de Login */
+.cuerpo #menu-opciones {margin-left: 40px;}
+.cuerpo #menu-opciones {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
+.cuerpo #menu-opciones a {padding: 8px 16px;text-decoration: none; display: block;}

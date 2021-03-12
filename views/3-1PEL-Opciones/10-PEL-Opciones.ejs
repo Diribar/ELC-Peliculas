@@ -6,7 +6,7 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
       <!--**************************** CUERPO ************************-->
-      <section class="flex-row grow" id="cuerpo">
+      <section class="flex-row grow cuerpo">
         <!--********************** CONTADOR ****************************-->
         <button type="text" id="contador-de-peliculas">Contador</button>
         <!--*********************** FILTROS ****************************-->
@@ -14,31 +14,43 @@
         <!--******************* ZONA DE PELÍCULAS **********************-->
         <section id="zona-de-pelis" class="flex-col grow">
           
-          <!--////////////////////// OPCIONES 1 ////////////////////////-->
+          <!--////////////////////// OPCIONES 1 y 2 ////////////////////-->
           <div>
-            <% if (grupo == "Opciones-1") { %>
+            <% if (grupo <= "Opciones-2") { %>
               <!---------- TÍTULO PRINCIPAL: ELEGÍ UNA OPCIÓN ------------>
-              <div id="opciones">
-                <button>Elegí una opción</button>
-                <i onclick="Login()" class="boton-desplegable fas fa-user-circle user-id"></i>
-              </div>
+              <button onclick="desplegable('menu-opciones')" class="titulo boton-desplegable">
+                <% if (grupo == "Opciones-1") { %>
+                  Elegí una opción
+                <% } %>
+                <% if (grupo == "Opciones-2") { %>
+                  <%= opcion_objeto.nombre %>
+                <% } %>
+              </button>
               <!--------------------- OPCIONES --------------------------->
-              <div class="flex-col">
+              <div id="menu-opciones" class="dropdown-content">
                 <% for (let n of opciones_BD) { %>
-                  <a href="/<%= rubro_url %>/<%= n.codigo %>"><button><%= n.nombre %></button></a>
+                  <a href="/<%= rubro_url %>/<%= n.codigo %>"><%= n.nombre %></a>
                 <% }%>    
               </div>
               <!------------------------ FIN ----------------------------->
-            <% } %>  
+            <% } %>
           </div>
       
           <!--////////////////////// OPCIONES 2 ////////////////////////-->
           <div>
             <% if (grupo == "Opciones-2") { %>
               <!--------- TÍTULO PRINCIPAL: OPCIÓN YA ELEGIDA ------------>
+              
               <div id="opciones">
                 <a href="/<%= rubro_url %>"><button><%= opcion_objeto.nombre %></button></a>
               </div>
+
+              <div id="menu-opciones" class="flex-col dropdown-content">
+                <% for (let n of opciones_BD) { %>
+                  <a href="/<%= rubro_url %>/<%= n.codigo %>"><%= n.nombre %></a>
+                <% }%>    
+              </div>              
+
               <!---------- TÍTULO SECUNDARIO: ELEGÍ UNA OPCIÓN ----------->
               <div id="opciones">
                 <button>Elegí una opción</button>

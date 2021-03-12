@@ -10,12 +10,11 @@ header .rubro {left:30px;}
 header .user-id {right:30px;}
 
 /* Menú de Login */
-.dropdown-content {display: none;position: absolute;right: 20px;top: 45px;}
-header .dropdown-content {border-radius: 10px;background-color: #f1f1f1;z-index: 2;}
-header .dropdown-content a {padding: 8px 16px;text-decoration: none;display: block;}
-.mostrar {display: block;}
+header #menu-login {position: absolute;right: 20px;top: 45px;}
+header #menu-login {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
+header #menu-login a {padding: 8px 16px;text-decoration: none; display: block;}
 
-/* FOOTER */
+/* Footer */
 footer {justify-content: space-around;}
 footer {padding: .25em 5px; border-top: 2px solid rgb(31, 73, 125);}
 footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
