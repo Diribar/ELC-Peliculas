@@ -16,6 +16,6 @@ header #menu-login a {padding: 8px 16px;text-decoration: none; display: block;}
 
 /* Footer */
 footer {justify-content: space-around;}
-footer {padding: .25em 5px; border-top: 2px solid rgb(31, 73, 125);}
+footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
 footer a {text-decoration: none}
