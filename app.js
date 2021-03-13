@@ -22,7 +22,8 @@ app.set('view engine', 'ejs');
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set('views', [
-    path.resolve(__dirname, './views/0-Partials'), 
+    path.resolve(__dirname, './views'),
+    path.resolve(__dirname, './views/0-Partials'),
     path.resolve(__dirname, './views/1-Home'),
     path.resolve(__dirname, './views/2-Usuarios'),
     path.resolve(__dirname, './views/3-1PEL-Opciones'),

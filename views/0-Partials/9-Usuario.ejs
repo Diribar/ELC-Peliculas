@@ -14,9 +14,8 @@ window.onclick = function(event) {
   if (!event.target.matches('.boton-desplegable')) {
     let dropdowns = document.getElementsByClassName("dropdown-content");
     for (let i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('mostrar')) {
-        openDropdown.classList.remove('mostrar');
+      if (dropdowns[i].classList.contains('mostrar')) {
+        dropdowns[i].classList.remove('mostrar');
       }
     }
   }
