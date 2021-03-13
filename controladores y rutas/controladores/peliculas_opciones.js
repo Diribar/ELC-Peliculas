@@ -16,18 +16,22 @@ module.exports = {
 	rubro: (req,res) => {
 		// Obtener el código del rubro elegido (peliculas, etc.)
 		let rubro_url = req.originalUrl.slice(1)
+		let opcion_url=null
+		let tipo_url=null
 		// Obtener el título
 		let rubros_BD = leer(ruta_nombre_rubros);
 		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
+		let opcion_objeto= {"grupo": "Opciones"};
 		let titulo = rubro_objeto.titulo;
 		// Definir variables a enviar a la vista
-		let grupo = "Opciones-1 (Rubro elegido)".slice(0,10)
 		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
 		res.render('10-PEL-Opciones', {
 			titulo,
-			grupo,
 			rubro_url,
+			opcion_url,
+			tipo_url,
+			opcion_objeto,
 			opciones_BD,
 		});
 	},
@@ -35,6 +39,7 @@ module.exports = {
 	opcion: (req, res) => {
 		// Obtener el código de la opción elegida (listado, cfc, vpc, etc.)
 		let opcion_url = req.url.slice(1) 
+		let tipo_url=null
 		// Obtener el código del rubro elegido (en esta caso: peliculas)
 		let rubro_url = req.originalUrl				
 		rubro_url = rubro_url.slice(1,rubro_url.lastIndexOf("/"))
@@ -43,13 +48,13 @@ module.exports = {
 		let opcion_objeto = opciones_BD.find(n => n.codigo == opcion_url);
 		let titulo = "Películas-" + opcion_objeto.titulo;
 		// Definir variables a enviar a la vista
-		let grupo = "Opciones-2 (Opción elegida)".slice(0,10)
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
 		res.render('10-PEL-Opciones', {
 			titulo,
-			grupo,
 			rubro_url,
+			opcion_url,
+			tipo_url,
 			opcion_objeto,
 			opciones_BD,
 			tipos_BD,
@@ -70,13 +75,12 @@ module.exports = {
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		let tipo_objeto = tipos_BD.find(n => n.codigo == tipo_url);
 		// Definir variables a enviar a la vista
-		let grupo = "Opciones-3 (Tipo elegido)".slice(0,10)
 		// Ir a la vista
 		res.render('10-PEL-Opciones', {
 			titulo,
-			grupo,
 			rubro_url,
 			opcion_url,
+			tipo_url,
 			opcion_objeto,
 			tipo_objeto,
 			opciones_BD,

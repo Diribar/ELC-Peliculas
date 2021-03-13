@@ -1,73 +1,77 @@
 <section id="filtros" class="flex-col">
-  <form id="filtro-sup" class="flex-col" action="" method="GET">
-    <div id="personalizado" class="flex-col"> <!--Filtro Personalizado-->
-      <h1 >Filtro Personalizado</h1>
-      <select name="filtro-personalizado">
-        <option value="SF" selected>Sin Filtro</option>
-        <option value="DI">Diego e Inés</option>
-        <option value="FM">Para ver en familia</option>
-      </select>  
-    </div>
-  </form>
-  <form id="filtro-inf" class="flex-col" action="/peliculas/filtros" method="GET">
-    <div class="flex-col">  <!--Público Recomendado-->
-      <h1>Público Recomendado</h1>
-      <select name="publico" >
-        <option value="SF" selected>Sin Filtro</option>
-        <option value="FM">Familia</option>
-        <option value="MY">Mayores</option>
-        <option value="MN">Menores</option>
-      </select>
-    </div>
-    <div>  <!--ATP-->
-      <h1>Aptas Todo Público</h1>
-      <div class="radio flex-row">
-        <label><input type="radio" name="ATP" value="SF" checked>Sin Filtro</label>
-        <label><input type="radio" name="ATP" value="SI" class="margen-izq">Sólo ATP</label>
+  <% if (tipo_url) { %>
+    <form id="filtro-sup" class="flex-col" action="" method="GET">
+      <div id="personalizado" class="flex-col"> <!--Filtro Personalizado-->
+        <h1 >Filtro Personalizado</h1>
+        <select name="filtro-personalizado">
+          <option value="SF" selected>Sin Filtro</option>
+          <option value="DI">Diego e Inés</option>
+          <option value="FM">Para ver en familia</option>
+        </select>  
       </div>
-  
-    </div>
-    <div>  <!--Centradas en la Fe Católica-->
-      <h1>CFC / VPC</h1>
-      <div class="radio flex-row between">
-        <label><input type="radio" name="CFC_VPC" value="SF" checked>Sin Filtro</label>
-        <label><input type="radio" name="CFC_VPC" value="CFC">CFC</label>
-        <label><input type="radio" name="CFC_VPC" value="VPC">VPC</label>
+    </form>
+    <form id="filtro-inf" class="flex-col" action="/peliculas/filtros" method="GET">
+      <div class="flex-col">  <!--Público Recomendado-->
+        <h1>Público Recomendado</h1>
+        <select name="publico" >
+          <option value="SF" selected>Sin Filtro</option>
+          <option value="FM">Familia</option>
+          <option value="MY">Mayores</option>
+          <option value="MN">Menores</option>
+        </select>
       </div>
-    </div>
-    <div>  <!--Mostrar Películas Vistas-->
-      <h1>Sólo Favoritas</h1>
-      <div class="radio flex-row">
-        <label><input type="radio" name="CFC-VPC" value="SF" checked>Sin Filtro</label>
-        <label><input type="radio" name="CFC-VPC" value="SI" class="margen-izq">SI</label>
+      <div>  <!--ATP-->
+        <h1>Aptas Todo Público</h1>
+        <div class="radio flex-row">
+          <label><input type="radio" name="ATP" value="SF" checked>Sin Filtro</label>
+          <label><input type="radio" name="ATP" value="SI" class="margen-izq">Sólo ATP</label>
+        </div>
+    
       </div>
-    </div>
-    <div class="flex-col">  <!--Vistas / Interés-->
-      <h1>¿Cuáles mostrar?</h1>
-      <select name="cuales">
-        <option value="NO" selected>NO</option>
-        <option value="SI">SI</option>
-        <option value="SV" >SI, y sólo éstas</option>
-      </select>
-    </div>
-    <div class="flex-col">    <!--Época de Estreno-->
-      <h1>Época de Estreno</h1>
-      <select name="Epoca" >
-        <option value="SF" selected>Sin Filtro</option>
-        <option value="1969">Antes de 1970</option>
-        <option value="1999">1970 - 1999</option>
-        <option value="2014">2000 - 2014</option>
-        <option value="2015">2015 - Presente</option>
-      </select>
-    </div>
-    <div id="busqueda" class="flex-col"> <!--BÚSQUEDA-->
-      <input type="text" name="palabras_clave" placeholder="Palabras clave">
-    </div>
-    <div id="final" class="flex-row"><!--Íconos y botones-->
-      <button class="sin-boton" type="text" title="Sin ningún filtro"><i class="fas fa-times-circle"></i></button>
-      <button class="sin-boton" type="reset" title="Filtros por defecto"><i class="fas fa-check-circle"></i></button>
-      <button class="sin-boton" type="text"><i class="fas fa-save" title="Guardar los filtros"></i></button>
-      <button class="sin-boton" type="submit"><i class="fas fa-arrow-alt-circle-right" title="Aplicar los filtros"></i></button>
-    </div>
-  </form>
+      <div>  <!--Centradas en la Fe Católica-->
+        <h1>CFC / VPC</h1>
+        <div class="radio flex-row between">
+          <label><input type="radio" name="CFC_VPC" value="SF" checked>Sin Filtro</label>
+          <label><input type="radio" name="CFC_VPC" value="CFC">CFC</label>
+          <label><input type="radio" name="CFC_VPC" value="VPC">VPC</label>
+        </div>
+      </div>
+      <div>  <!--Mostrar Películas Vistas-->
+        <h1>Sólo Favoritas</h1>
+        <div class="radio flex-row">
+          <label><input type="radio" name="CFC-VPC" value="SF" checked>Sin Filtro</label>
+          <label><input type="radio" name="CFC-VPC" value="SI" class="margen-izq">SI</label>
+        </div>
+      </div>
+      <div class="flex-col">  <!--Vistas / Interés-->
+        <h1>¿Cuáles mostrar?</h1>
+        <select name="cuales">
+          <option value="NO" selected>NO</option>
+          <option value="SI">SI</option>
+          <option value="SV" >SI, y sólo éstas</option>
+        </select>
+      </div>
+      <div class="flex-col">    <!--Época de Estreno-->
+        <h1>Época de Estreno</h1>
+        <select name="Epoca" >
+          <option value="SF" selected>Sin Filtro</option>
+          <option value="1969">Antes de 1970</option>
+          <option value="1999">1970 - 1999</option>
+          <option value="2014">2000 - 2014</option>
+          <option value="2015">2015 - Presente</option>
+        </select>
+      </div>
+      <div id="busqueda" class="flex-col"> <!--BÚSQUEDA-->
+        <input type="text" name="palabras_clave" placeholder="Palabras clave">
+      </div>
+      <div id="final" class="flex-row"><!--Íconos y botones-->
+        <button class="sin-boton" type="text" title="Sin ningún filtro"><i class="fas fa-times-circle"></i></button>
+        <button class="sin-boton" type="reset" title="Filtros por defecto"><i class="fas fa-check-circle"></i></button>
+        <button class="sin-boton" type="text"><i class="fas fa-save" title="Guardar los filtros"></i></button>
+        <button class="sin-boton" type="submit"><i class="fas fa-arrow-alt-circle-right" title="Aplicar los filtros"></i></button>
+      </div>
+    </form>
+  <% }  else { %>
+    <img alt="Vitreaux" src="/images/1-Peliculas/1-Partials/Vitraux.jpg" title="Vitreaux">
+  <% } %>
 </section>

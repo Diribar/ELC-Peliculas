@@ -9,54 +9,40 @@
       <section class="flex-row grow cuerpo">
         <!--********************** CONTADOR ****************************-->
         <button type="text" id="contador-de-peliculas">Contador</button>
+        
         <!--*********************** FILTROS ****************************-->
-        <%- grupo == "Opciones-3" ? include('19-Filtros') : "" %>
+        <%- include('19-Filtros') %>
         <!--******************* ZONA DE PELÍCULAS **********************-->
         <section id="zona-de-pelis" class="flex-col grow">
-          
           <!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
-          <div>
-            <button onclick="desplegable('menu-opciones')" class="titulo boton-desplegable cursor_pointer">
-              <% if (grupo == "Opciones-1") { %>
-                Elegí una opción
-              <% } %>
-              <% if (grupo >= "Opciones-2") { %>
-                <%= opcion_objeto.nombre %>
-              <% } %>
-            </button>
-            <!--------------------- OPCIONES --------------------------->
-            <div id="menu-opciones" class="dropdown-content">
-              <% for (let n of opciones_BD) { %>
-                <a href="/<%= rubro_url %>/<%= n.codigo %>"><%= n.nombre %></a>
-              <% } %>
-            </div>
-          </div>
-      
-          <!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
-          <div>
-            <% if (grupo >= "Opciones-2") { %>
-              <button onclick="desplegable('menu-tipos')" class="subtitulo boton-desplegable cursor_pointer">
-                <% if (grupo == "Opciones-2") { %>
-                  Elegí una opción
-                <% } %>
-                <% if (grupo == "Opciones-3") { %>
-                  <%= tipo_objeto.nombre %>
-                <% } %>
-              </button>
-              <!----------------------- OPCIONES ------------------------->
-              <div id="menu-tipos" class="dropdown-content">
-                  <% for (let n of tipos_BD) { %>
-                    <a href="/<%= rubro_url %>/<%= opcion_objeto.codigo %>/<%= n.codigo %>"><%= n.nombre %></a>
-                  <% } %>
-              </div>
+          <select name="" onchange="location = this.value;" class="titulo">
+            <% if (!opcion_url) { %><option>Elegí una opción</option><% } %> 
+            <% for (let n of opciones_BD) { %>
+              <option 
+                value="/<%= rubro_url %>/<%= n.codigo %>"
+                <% if (n.codigo == opcion_url) { %>selected<% } %>>
+                <%= n.nombre %>
+              </option>
             <% } %>
-          </div>
+          </select> 
+
+          <!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
+          <% if (opcion_url) { %>
+            <select name="" onchange="location = this.value;" class="subtitulo">
+              <% if (!tipo_url) { %><option>Elegí una opción</option><% } %>
+              <% for (let n of tipos_BD) { %>
+                <option 
+                  value="/<%= rubro_url %>/<%= opcion_url %>/<%= n.codigo %>"
+                  <% if (n.codigo == tipo_url) { %>selected<% } %>>
+                  <%= n.nombre %>
+                </option>
+              <% } %>
+            </select>          
+          <% } %> 
 
           <!--///////////////////// Redireccionar ///////////////////-->
           <div>
-            <% if (grupo == "Opciones-3") { %>
-              <%- include(opcion_objeto.vista) %>
-            <% } %>
+            <%- tipo_url ? include(opcion_objeto.vista) : "" %>
           </div>
         </section>
         <!--*************************** FIN ****************************-->

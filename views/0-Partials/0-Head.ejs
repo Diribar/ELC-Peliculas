@@ -27,9 +27,11 @@
     <% if (titulo == "Registro") { %> <link rel="stylesheet" href="/stylesheets/1-Home/3-ABM-usuarios.css"> <% } %>
     <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/4-Quienes-Somos.css"> <% } %>
     <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/5-Contactanos.css"> <% } %>
-    <% if (titulo.slice(0,9) == "Películas" && grupo.slice(0,8) == "Opciones") { %>
-        <link rel="stylesheet" href="/stylesheets/3-Peliculas/10-PEL-Opciones.css">
-        <% if (grupo == "Opciones-3") { %><link rel="stylesheet" href="/stylesheets/3-Peliculas/19-Filtros.css"><% } %>
+    <% if (titulo.slice(0,9) == "Películas") { %>
+        <% if (opcion_objeto.grupo == "Opciones") { %>
+            <link rel="stylesheet" href="/stylesheets/3-Peliculas/10-PEL-Opciones.css">
+            <link rel="stylesheet" href="/stylesheets/3-Peliculas/19-Filtros.css">
+        <% } %>
     <% } %> 
 
     <!--LOGO EN LA PESTAÑA DE INTERNET-->

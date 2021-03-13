@@ -1,6 +1,7 @@
 /* GENERAL */
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
 *, body, optgroup, button, select, option {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
+select, option {cursor: pointer;}
 
 /* BACKGROUND IMAGE */
 body {background-image: url("/images/0-Base/Color de fondo.png");background-size: cover;background-attachment: fixed;}

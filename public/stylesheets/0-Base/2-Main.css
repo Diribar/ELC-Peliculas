@@ -9,7 +9,7 @@ main #main-y-footer {flex-direction: column-reverse;justify-content:space-betwee
 main h1 {font-size: 16px;margin: 0px;}
 
 /* Configuración del cuerpo */
-main .cuerpo {align-items:flex-start;border: red 2px solid;}
+main .cuerpo {align-items:flex-start;}
 main .cuerpo {position: relative;}
 
 main .cuerpo .titulo {margin-top: 40px;margin-left:40px; padding: 8px 10px;}
