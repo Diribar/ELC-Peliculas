@@ -7,17 +7,23 @@ const bcryptjs = require('bcryptjs')
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function GuardarArchivo(RutaNombre, Contenido) {fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
+function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/usuarios.json');
 
 // *********** Controlador ***********
 module.exports = {
+
 	altaForm: (req, res) => {
-		return res.render('formAlta');
-	},	
+		return res.render('10-Login-y-Usuarios', {
+			link: "/usuarios/registro",
+			titulo: "Registro"
+		});
+	},
+	
 	altaGuardar: (req, res) => {
+		return res.send("estoy acá!")
 		// Verificar si hay errores en el data entry
 		let resultado = validationResult(req);
 		if (resultado.errors.length > 0) {
@@ -45,22 +51,27 @@ module.exports = {
 		
 		res.redirect("/home", {registro_creado});
 	},
-	baja: (req, res) => {
-		let BD = leer(ruta_nombre);
-		let nuevaBD = BD.filter(n => n.id != req.params.id)
-		GuardarArchivo(ruta_nombre, nuevaBD)
-		res.redirect("/");
+
+	altaForm2: (req,res) => {
+
 	},
+
+	altaGuardar2: (req,res) => {
+
+	},
+
 	detalle: (req, res) => {
 		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
 		res.render('detalle', {registro});
 	},
+
 	editarForm: (req, res) => {
 		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
 		res.render('editar', {registro});
 	},
+
 	editarGuardar: (req, res) => {
 		// Obtener el contenido actualizado del registro
 		let BD = leer(ruta_nombre);		
@@ -78,8 +89,15 @@ module.exports = {
 		let indice = BD.indexOf(registro)
 		BD[indice] = reg_actual
 		// Guardar los cambios
-		GuardarArchivo(ruta_nombre, BD);
+		guardar(ruta_nombre, BD);
 		res.redirect("/usuario/" + req.params.id);
 	},	
+
+	baja: (req, res) => {
+		let BD = leer(ruta_nombre);
+		let nuevaBD = BD.filter(n => n.id != req.params.id)
+		guardar(ruta_nombre, nuevaBD)
+		res.redirect("/");
+	},
 
 };

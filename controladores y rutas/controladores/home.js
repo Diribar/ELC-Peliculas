@@ -10,9 +10,11 @@ const ruta_nombre = path.join(__dirname, '../../bases_de_datos/titulosELC.json')
 
 // *********** Controlador ***********
 module.exports = {
+
 	home: (req,res) => {
 		res.redirect("home")
 	},
+
 	main: (req,res) => { //* HOME - QUIÉNES SOMOS - CONTÁCTANOS
 		url = req.params.id
 		let BD = leer(ruta_nombre);

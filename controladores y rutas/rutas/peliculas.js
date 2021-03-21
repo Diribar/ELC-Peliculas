@@ -5,13 +5,13 @@ const CRUD = require('../controladores/peliculas_CRUD')
 const opciones = require('../controladores/peliculas_opciones')
 
 //************************ Middlewares ******************************
-const login_rutaSI = require('../../middlewares/login_rutaSI'); // Para prevenir ciertos accesos cuando SI está logueado
+const login_ruta_SI = require('../../middlewares/login_ruta_SI'); // Para prevenir ciertos accesos cuando SI está logueado
 
 // *************************** CRUD *********************************
-router.get('/nueva', login_rutaSI, CRUD.altaForm);              // Alta
+router.get('/nueva', login_ruta_SI, CRUD.altaForm);              // Alta
 router.post('/nueva', CRUD.altaGuardar);                        // Alta
-router.delete('/eliminar/:id', login_rutaSI, CRUD.baja);        // Baja
-router.get('/editar/:id', login_rutaSI, CRUD.editarForm);       // Modificar
+router.delete('/eliminar/:id', login_ruta_SI, CRUD.baja);        // Baja
+router.get('/editar/:id', login_ruta_SI, CRUD.editarForm);       // Modificar
 router.put('/editar/:id', CRUD.editarGuardar);                  // Modificar
 router.get('/detalle/:id', CRUD.detalle);                       // Detalle
 

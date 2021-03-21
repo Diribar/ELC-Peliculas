@@ -23,10 +23,9 @@
 
     <!--ESTILOS PERSONALIZADOS POR PÁGINA-->
     <% if (titulo == "Home") { %> <link rel="stylesheet" href="/stylesheets/1-Home/1-Home.css"> <% } %>
-    <% if (titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/1-Home/2-Login-form.css"> <% } %> 
-    <% if (titulo == "Registro") { %> <link rel="stylesheet" href="/stylesheets/1-Home/3-ABM-usuarios.css"> <% } %>
     <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/4-Quienes-Somos.css"> <% } %>
     <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/5-Contactanos.css"> <% } %>
+    <% if (titulo == "Login" || titulo == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/2-Login-form.css"> <% } %> 
     <% if (titulo.slice(0,9) == "Películas") { %>
         <% if (opcion_objeto.grupo == "Opciones") { %>
             <link rel="stylesheet" href="/stylesheets/3-Peliculas/10-PEL-Opciones.css">

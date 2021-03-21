@@ -31,12 +31,12 @@ app.set('views', [
 ]);
 
 // ************************* Rutas ********************************
-const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaLogin = require('./controladores y rutas/rutas/login.js');
+const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaPelis = require('./controladores y rutas/rutas/peliculas');
 const rutaECC = require('./controladores y rutas/rutas/home');
-app.use('/registro', rutaUsuarios)  // Registro
 app.use('/login', rutaLogin)        // Login
+app.use('/usuarios', rutaUsuarios)  // Usuarios
 app.use('/peliculas', rutaPelis)    // Películas
 app.use('/', rutaECC)               // Home, Acerca de Nosotros, Contáctanos
 
