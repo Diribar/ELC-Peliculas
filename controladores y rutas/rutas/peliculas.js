@@ -1,24 +1,26 @@
-//************************* Requires *******************************
+// Requires *********************************************************
 const express = require('express');
 const router = express.Router();
-const CRUD = require('../controladores/peliculas_CRUD')
+const peliculas = require('../controladores/peliculas')
 const opciones = require('../controladores/peliculas_opciones')
 
-//************************ Middlewares ******************************
-const login_ruta_SI = require('../../middlewares/login_ruta_SI'); // Para prevenir ciertos accesos cuando SI está logueado
+// Middlewares ******************************************************
+const logoutMiddleware = require('../../middlewares/si_esta_logueado_LOGOUT');  // Para prevenir ciertos accesos cuando SI está logueado
+const loginMiddleware = require('../../middlewares/si_no_esta_logueado_LOGIN'); // Para prevenir ciertos accesos cuando NO está logueado
 
-// *************************** CRUD *********************************
-router.get('/nueva', login_ruta_SI, CRUD.altaForm);              // Alta
-router.post('/nueva', CRUD.altaGuardar);                        // Alta
-router.delete('/eliminar/:id', login_ruta_SI, CRUD.baja);        // Baja
-router.get('/editar/:id', login_ruta_SI, CRUD.editarForm);       // Modificar
-router.put('/editar/:id', CRUD.editarGuardar);                  // Modificar
-router.get('/detalle/:id', CRUD.detalle);                       // Detalle
+// Controladores CRUD ***********************************************
+router.get('/nueva', loginMiddleware, peliculas.altaForm);                      // Alta
+router.post('/nueva', loginMiddleware, peliculas.altaGuardar);                  // Alta
+router.get('/detalle/:id', peliculas.detalle);                                  // Detalle
+router.get('/editar/:id', loginMiddleware, peliculas.editarForm);               // Modificar
+router.put('/editar/:id', loginMiddleware, peliculas.editarGuardar);                       // Modificar
+router.delete('/eliminar/:id', loginMiddleware, peliculas.baja);                // Baja
 
-// ************************* Opciones ********************************
+// Controladores Opciones *******************************************
 router.get('/', opciones.rubro);                                // Home
 router.get('/:id', opciones.opcion);                            // Opciones
 router.get('/:id/:id', opciones.tipo);                          // Opción: Listado
 router.post('/filtros', opciones.filtros);                      // Filtros
 
+// Exportarlo *******************************************************
 module.exports = router;

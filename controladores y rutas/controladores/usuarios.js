@@ -19,7 +19,7 @@ module.exports = {
 
 	altaForm: (req, res) => {
 		return res.render('1-US-Alta-Form', {
-			link: "/usuarios/registro",
+			proximoLink: "/usuarios/registro",
 			usuarioEnBD: null,
 			titulo: "Registro"
 		});
@@ -35,7 +35,7 @@ module.exports = {
 		if (validaciones.errors.length > 0 || usuarioEnBD) {
 			// Regresar al formulario de crear
 			return res.render('1-US-Alta-Form', {
-				link: "/usuarios/registro",
+				proximoLink: "/usuarios/registro",
 				usuarioEnBD,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
@@ -51,10 +51,11 @@ module.exports = {
 			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
 			activo: false,
 		};
-		usuarios.push(nuevoUsuario);
 		// Guardar el registro
+		usuarios.push(nuevoUsuario);
 		guardar(ruta_nombre, usuarios);
-		res.redirect("/usuario/detalle");
+		// Redireccionar
+		res.redirect("/usuario/datos");
 	},
 
 	altaForm2: (req,res) => {

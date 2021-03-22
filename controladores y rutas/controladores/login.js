@@ -6,8 +6,9 @@ const usuarios = require('../../modelos/usuarios');
 module.exports = {
 
 	loginForm: (req,res) => {
-		let titulo = "Login"
-		return res.render("8-Login-Form", {titulo});
+		return res.render("8-Login-Form", {
+			titulo: "Login"
+		});
 	},
 
 	loginGuardar: (req,res) => {
@@ -19,7 +20,7 @@ module.exports = {
 			if (loginOK) {
 				// Ejecuta acciones si el login es correcto
 				delete usuarioLogin.contrasena
-				req.session.usuarioLogueado = usuarioLogin
+				req.session.usuario = usuarioLogin
 				// Graba una cookie si está tildado 'recordame'
 				if (req.body.remember) {
 					res.cookie("email", req.body.email, {maxAge: 1000*60*2})
