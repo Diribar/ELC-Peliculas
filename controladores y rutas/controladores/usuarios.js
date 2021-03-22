@@ -1,55 +1,60 @@
 // ************ Requires ************
 const fs = require('fs');
 const path = require('path')
+const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
 const Registro = require('../../modelos/usuarios');
-const bcryptjs = require('bcryptjs')
+
+// ************ Variables ************
+const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
+const imagesPath = path.join(__dirname, "../public/images/users/");
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
-
-// ************ Variables ************
-const ruta_nombre = path.join(__dirname, '../../bases_de_datos/usuarios.json');
+function mailEnBD(texto, usuarios) {let usuario = usuarios.find(n => n.email === texto);return usuario;}
 
 // *********** Controlador ***********
 module.exports = {
 
 	altaForm: (req, res) => {
-		return res.render('10-Login-y-Usuarios', {
+		return res.render('1-US-Alta-Form', {
 			link: "/usuarios/registro",
+			usuarioEnBD: null,
 			titulo: "Registro"
 		});
 	},
 	
 	altaGuardar: (req, res) => {
-		return res.send("estoy acá!")
 		// Verificar si hay errores en el data entry
-		let resultado = validationResult(req);
-		if (resultado.errors.length > 0) {
-			return res.render('formAlta', {
-				Errores: resultado.mapped(),
-				Data_Entry: req.body
+		let validaciones = validationResult(req);
+		// Validar email con la BD
+		let usuarios = leer(ruta_nombre);
+		let usuarioEnBD = mailEnBD(req.body.email,usuarios);
+		// Verificar si existe algún error de validación
+		if (validaciones.errors.length > 0 || usuarioEnBD) {
+			// Regresar al formulario de crear
+			return res.render('1-US-Alta-Form', {
+				link: "/usuarios/registro",
+				usuarioEnBD,
+				errores: validaciones.mapped(),
+				data_entry: req.body,
+				titulo: "Registro"
 			});
 		};
-		// Verificar si el mail ya está registrado
-		let registro_en_BD = Registro.encontrar_por_campo("email", req.body.email);
-		if (registro_en_BD) {
-			return res.render('formAlta', {
-				Errores:{email:{msg: "Este mail ya está registrado"}},
-				Data_Entry: req.body
-			});
+		// Preparar el registro para almacenar
+		usuarios = leer(ruta_nombre);
+		const nuevoId = usuarios.length > 0 ? usuarios[usuarios.length - 1].id + 1 : 1;
+		const nuevoUsuario = {
+			id: nuevoId,
+			...req.body,
+			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
+			activo: false,
 		};
-		// Datos del nuevo registro
-		const registro = {
-			...req.body, 
-			contrasena: bcryptjs.hashSync(req.body.password,10),
-			imagen: req.file.filename,
-		};
-		// crear el nuevo usuario
-		let registro_creado = Registro.alta_guardar(registro);
-		
-		res.redirect("/home", {registro_creado});
+		usuarios.push(nuevoUsuario);
+		// Guardar el registro
+		guardar(ruta_nombre, usuarios);
+		res.redirect("/usuario/detalle");
 	},
 
 	altaForm2: (req,res) => {

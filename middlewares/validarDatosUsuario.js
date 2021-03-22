@@ -1,12 +1,8 @@
 const path = require('path');
-const { body } = require('express-validator');
+const {body} = require('express-validator');
 
 module.exports = [
 	body('nombre').notEmpty().withMessage('Tienes que completar este campo'),
-	body('email')
-		.notEmpty().withMessage('Tienes que completar este campo').bail()
-		.isEmail().withMessage('Debes escribir un formato de correo válido'),
-	body('contrasena').notEmpty().withMessage('Tienes que completar este campo'),
 	body('pais').notEmpty().withMessage('Tienes que elegir un país'),
 	body('imagen').custom((value, {req}) => {
 		let archivo = req.file;

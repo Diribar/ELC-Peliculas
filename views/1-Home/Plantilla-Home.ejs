@@ -6,7 +6,9 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
 <!--**************************** CUERPO ******************************-->
-      <%- include('20-Login-Form') %>
+      <%- titulo == "Home"          ? include("1-Home")          : "" %>
+      <%- titulo == "Quiénes Somos" ? include('2-Quienes-Somos') : "" %>
+      <%- titulo == "Contactanos"   ? include('3-Contactanos')   : "" %>
 <!--****************************** FIN *******************************-->
     </section>
   </main>

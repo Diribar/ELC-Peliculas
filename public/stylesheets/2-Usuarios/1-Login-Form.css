@@ -14,15 +14,20 @@
 #login form h1 {color: var(--amarillo-claro);margin-bottom: 15px;}
 #login form h1 {font-weight: bold; font-size: 1.1em; text-align: center;}
 #login form .formulario-grupo {position: relative;}
-#login form .formulario-grupo input {text-align: center;}
 
-#login form #buttons {margin-top: 15px;}
-#login form #buttons div {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
+/* Input del formulario */
+#login form .formulario-grupo input {text-align: center;}
+#login form .formulario-grupo input {padding: 3px 10px;margin: 10px 0;}
+#login form .formulario-grupo input {border: none;border-radius: 15px;}
+#login form .formulario-grupo .fas {position: absolute;right: 3px;top: 12px;font-size: 1.2em;}
+#login form .formulario-grupo .fa-times-circle {color: red;}
+#login form .formulario-grupo .fa-check-circle {color: green;}
+#login form .formulario-grupo #eye {right: 25px}
 #login form .criterio {color:var(--celeste-claro); text-align: center;}
 
 /* BOTONES */
-#login form input {padding: 3px 10px;margin: 10px 0;}
-#login form input {border: none;border-radius: 15px;}
+#login form #buttons {margin-top: 15px;}
+#login form #buttons div {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
 #login form #buttons button {padding: 2px 5px; margin: 3px 5px;border-radius: 7px;}
 #login form #buttons button {font-size: 14px;font-weight: bold;color:white;}
 #login form #buttons button {border: solid 2px var(--amarillo-claro); background-color: var(--rojo);}
