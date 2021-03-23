@@ -1,68 +1,53 @@
-<section id="usuariosForm" class="flex-col">
-    <p id="tapar-el-fondo"></p>
-    <form action="<%= link %>" method="POST">
-        <h1><%= titulo %></h1>
-        <!--Mail y Contraseña-->
-        <section class="flex-row">  <!--Mail-->
-            <label for="email">E-Mail</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="email" placeholder="Correo Electrónico"
-                    value="<%= locals.data_entry ? data_entry.email : null %>">
-                <% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
-            </div>
-        </section>
-        <div class="criterio flex-col">  <!--Error en el mail-->
-            <% if (locals.errores && errores.email) { %>
-                <p class="error"><%= errores.email.msg %></p>
-            <% } %>    
+<form action="<%= link %>" method="POST">
+    <h1><%= titulo %></h1>
+    <!--Mail y Contraseña-->
+    <section class="flex-row">  <!--Mail-->
+        <label for="email">E-Mail</label>
+        <div class="formulario-grupo">
+            <input type="text" class="input" name="email" placeholder="Correo Electrónico"
+                value="<%= locals.data_entry ? data_entry.email : null %>">
+            <% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"></i><% } %>
+            <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
-        <section class="flex-row">  <!--Contraseña-->
-            <label for="contrasena">Contraseña</label>
-            <div class="formulario-grupo">
-                <input type="password" class="input" name="contrasena" id="contrasena"
-                    value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
-                <i onclick="mostrar('contrasena')" class="fas fa-eye-slash" id="eye"></i>
-                <% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
-            </div>
-        </section>
-        <div class="criterio flex-col">  <!--Error en la contraseña-->
-            <% if (locals.errores && errores.contrasena) { %>
-                <p class="error"><%= errores.contrasena.msg %></p>
-            <% } else { %>
-                <% if (!locals.errores) { %>
-                    <p>Debe tener de 6 a 12 caracteres</p>
-                <% } %>
-            <% } %>
+    </section>
+    <div class="criterio flex-col">  <!--Error en el mail-->
+        <% if (locals.errores && errores.email) { %>
+            <p class="error"><%= errores.email.msg %></p>
+        <% } %>    
+    </div>
+    <section class="flex-row">  <!--Contraseña-->
+        <label for="contrasena">Contraseña</label>
+        <div class="formulario-grupo">
+            <input type="password" class="input" name="contrasena" id="contrasena"
+                value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
+            <i onclick="mostrar('contrasena')" class="fas fa-eye-slash" id="eye"></i>
+            <% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"></i><% } %>
+            <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
-        <section class="criterio flex-col">   <!--Credenciales Inválidas-->
-            <% if (!errorEnDataEntry && credencialesInvalidas) { %>
-                <p class=" error">El e-mail y/o la contraseña </p>
-                <p class=" error">no figuran en nuestra base de datos</p>
+    </section>
+    <div class="criterio flex-col">  <!--Error en la contraseña-->
+        <% if (locals.errores && errores.contrasena) { %>
+            <p class="error"><%= errores.contrasena.msg %></p>
+        <% } else { %>
+            <% if (!locals.errores) { %>
+                <p>Debe tener de 6 a 12 caracteres</p>
             <% } %>
-        </section>
-        <section id="buttons"><!--Botones-->
-            <div class="flex-row">
-                <button type="submit">Aceptar</button>
-                <a href="/registro" ><button type="button" id="registrarse">No estoy registrado</button></a>
-            </div>
-            <div class="flex-row">
-                <button type="button">Cancelar</button>
-                <a href="#"><button type="button">Olvidé mi contraseña</button></a>
-            </div>
-        </section>
-    </form>   
-</section>
-
-<script>
-    function mostrar(n) {
-        var cambio = document.getElementById(n);
-        if(cambio.type == "password"){
-            cambio.type = "text";$('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
-        }else{
-            cambio.type = "password";$('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
-        }
-    }
-</script>
-
+        <% } %>
+    </div>
+    <section class="criterio flex-col">   <!--Credenciales Inválidas-->
+        <% if (!errorEnDataEntry && credencialesInvalidas) { %>
+            <p class=" error">El e-mail y/o la contraseña </p>
+            <p class=" error">no figuran en nuestra base de datos</p>
+        <% } %>
+    </section>
+    <section id="buttons"><!--Botones-->
+        <div class="flex-row">
+            <button type="submit">Aceptar</button>
+            <a href="/registro" ><button type="button" id="registrarse">No estoy registrado</button></a>
+        </div>
+        <div class="flex-row">
+            <button onclick="retroceder()" type="button">Cancelar</button>
+            <a href="#"><button type="button">Olvidé mi contraseña</button></a>
+        </div>
+    </section>
+</form>   

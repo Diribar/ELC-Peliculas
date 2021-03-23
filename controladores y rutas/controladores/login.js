@@ -41,12 +41,6 @@ module.exports = {
 		};
 		// Verificar si mail y/o usuario no existen en BD
 		let credencialesInvalidas = !usuarioEnBD || !contrasenaOK
-		//return res.send([
-		//	"errorEnDataEntry:" + errorEnDataEntry,
-		//	"usuarioEnBD:" + !!usuarioEnBD, 
-		//	"contrasenaOK:" + contrasenaOK, 
-		//	"credencialesInvalidas:" + credencialesInvalidas
-		//])
 		// Redireccionar si existe algún error de validación
 		if (errorEnDataEntry || credencialesInvalidas) {
 			return res.render('0-Usuarios', {
@@ -59,11 +53,16 @@ module.exports = {
 			});
 		};
 		// Iniciar la sesión
+		req.session.usuarioLogueado = true;
 		req.session.usuario = usuarioEnBD
 		// Graba una cookie si está tildado 'recordame'
 		if (req.body.remember) {
 			res.cookie("email", req.body.email, {maxAge: 1000*60*2})
 		};
+		// Redireccionar
+		//if !usuarioEnBD.activo {}
+		if (!usuarioEnBD.formNombre) {return res.redirect("/usuarios/registro-nombre")};
+		if (!usuarioEnBD.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")}
 		return res.redirect("/")
 	},
 

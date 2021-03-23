@@ -1,49 +1,17 @@
-<section id="usuariosForm" class="flex-col">
-    <p id="tapar-el-fondo"></p>
-    <form action="/registro" method="POST" class="flex-col">
-        <h1><%= titulo %></h1>
-        <section id="completar" class="flex-row"><!--Formulario a completar-->
-            <div class="flex-col"><!--Labels-->
-                <label for="nombre">Nombre</label>
-                <label for="pais">País donde vive</label>
-            </div>
-            <div class="flex-col"><!--Inputs-->
-                <input type="text" name="nombre" placeholder="Nombre">
-                <select name="pais" >
-                  <option value="AR" selected>Argentina</option>
-                  <option value="HIS-SI">Otro país de habla hispana</option>
-                  <option value="HIS-NO">Otro país de habla no hispana</option>
-                </select>
-            </div>
-        </section>
-        <section id="portal" class="flex-col"><!--Portales de películas-->
-            <label id="titulo" for="nombre">Portales de películas a los que está abonado:</label>
-            <section id="portales" class="flex-row">
-                <div class = "flex-col">
-                    <label><input type="checkbox" name="portales" value="CB">Cura Brochero (Arg)</label>
-                    <label><input type="checkbox" name="portales" value="FF">Famflix (Méx)</label>
-                    <label><input type="checkbox" name="portales" value="FP">Famiplay (Esp)</label>
-                </div>
-                <div class = "flex-col">
-                    <label><input type="checkbox" name="portales" value="FR">Formed (US)</label>
-                    <label><input type="checkbox" name="portales" value="NT">Netflix (US)</label>
-                    <label><input type="checkbox" name="portales" value="QB">Qubit (Arg)</label>
-                </div>
-                <div class = "flex-col">
-                    <label><input type="checkbox" name="portales" value="PF">Pureflix</label>
-                    <label><input type="checkbox" name="portales" value="None">Ninguno</label>
-                    <label><input type="checkbox" name="portales" value="NN">Otro</label>
-                </div>
-    
-            </section>
-        </section>
-        <div><!--Capcha-->
+<form action="/registro" method="POST" class="flex-col">
+    <h1><%= titulo %></h1>
+    <section id="completar" class="flex-row"><!--Formulario a completar-->
+        <div class="flex-col"><!--Labels-->
+            <label for="nombre">Nombre</label>
         </div>
-        <section id="buttons"><!--Buttons-->
-            <div class="flex-row">
-                <button type="submit">Enviar</button>
-                <button type="reset">Borrar</button>    
-            </div>
-        </section>
-    </form>
-</section>
+        <div class="flex-col"><!--Inputs-->
+            <input type="text" name="nombre" placeholder="Nombre">
+        </div>
+    </section>
+    <section id="buttons"><!--Buttons-->
+        <div class="flex-row">
+            <button type="submit">Enviar</button>
+            <button onclick="retroceder()" type="button">Cancelar</button>
+        </div>
+    </section>
+</form>

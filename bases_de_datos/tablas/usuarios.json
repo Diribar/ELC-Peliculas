@@ -2,7 +2,39 @@
   {
     "id": 1,
     "email": "diegoiribarren2015@gmail.com",
-    "contrasena": "$2a$10$eN6EQzF5prn0HuR2zo/adOrXVNkVQnpyXK2ag459EIG4QxNcejVKq",
+    "contrasena": "$2a$10$.cYuWoTzu4eE0Au2ubSshO32l.z.VpCw1maQmXKpg9tAiJ/x/hqh2",
+    "fechaDeAlta": "23/3/2021",
+    "activo": false,
+    "formNombre": false,
+    "formSobrenombre": false
+  },
+  {
+    "id": 2,
+    "email": "q@gmail.com",
+    "contrasena": "$2a$10$6lcjbTmsdy.QVPVE9obS1eXfy31WqP7bJigiuFRsFTLO8fcR.Ngeq",
+    "fechaDeAlta": "23/3/2021 12:54:36",
+    "activo": false,
+    "formNombre": false,
+    "formSobrenombre": false
+  },
+  {
+    "id": 3,
+    "email": "w@gmail.com",
+    "contrasena": "$2a$10$puQA/njrvUlo8Bfl6NTcfuawbSuDyPXSGhE8qCZX0EqLvcPN3FXMi",
+    "fechaDeAlta": "23/3/2021",
+    "horaDeAlta": [
+      "12:56:44"
+    ],
+    "activo": false,
+    "formNombre": false,
+    "formSobrenombre": false
+  },
+  {
+    "id": 4,
+    "email": "t@gmail.com",
+    "contrasena": "$2a$10$jVFXSwQvSwihmwwWGsaX1OVgo.QsfSy4rcaixiePZxlTFoPBtzA8m",
+    "fechaDeAlta": "23/3/2021",
+    "horaDeAlta": "12:57",
     "activo": false,
     "formNombre": false,
     "formSobrenombre": false

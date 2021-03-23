@@ -48,6 +48,8 @@ module.exports = {
 			id: nuevoId,
 			...req.body,
 			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
+			altaFecha: new Date().toLocaleDateString('es-ES'),
+			altaHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			activo: false,
 			formNombre: false,
 			formSobrenombre: false,

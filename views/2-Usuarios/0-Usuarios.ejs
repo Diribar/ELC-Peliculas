@@ -6,11 +6,31 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
 <!--**************************** CUERPO ******************************-->
-      <%- titulo == "Login"              ? include('1-5LoginForm') : "" %>
-      <%- titulo == "Registro de Mail"   ? include('1-1RegistroMailForm') : "" %>
-      <%- titulo == "Registro de Nombre" ? include('1-2RegistroNombreForm') : "" %>
-<!--****************************** FIN *******************************-->
+      <section id="usuariosForm" class="flex-col">
+        <p id="tapar-el-fondo"></p>
+        <%- titulo == "Login"              ? include('1-5LoginForm') : "" %>
+        <%- titulo == "Registro de Mail"   ? include('1-1RegistroMailForm') : "" %>
+        <%- titulo == "Registro de Nombre" ? include('1-2RegistroNombreForm') : "" %>
+      </section>
+      <!--****************************** FIN *******************************-->
     </section>
   </main>
 </body>
 </html>
+
+<script>
+
+  function mostrar(n) {
+      var cambio = document.getElementById(n);
+      if(cambio.type == "password"){
+          cambio.type = "text";$('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
+      }else{
+          cambio.type = "password";$('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
+      }
+  }
+
+  function retroceder() {
+      window.history.back();
+  }
+
+</script>
