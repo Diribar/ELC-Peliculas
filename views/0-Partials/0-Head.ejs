@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="/stylesheets/0-Base/0-Body.css">
     <link rel="stylesheet" href="/stylesheets/0-Base/1-Header-y-Footer.css">
     <link rel="stylesheet" href="/stylesheets/0-Base/2-Main.css">
-    <link rel="stylesheet" href="/stylesheets/0-Base/login.css">
     <link rel="stylesheet" href="/stylesheets/0-Base/3-MEDIA-QUERIES.css">
     <!---<link rel="stylesheet" href="/stylesheets/0-Base/imprimir.css" media="print">-->
 
@@ -25,7 +24,9 @@
     <% if (titulo == "Home") { %> <link rel="stylesheet" href="/stylesheets/1-Home/1-Home.css"> <% } %>
     <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/4-Quienes-Somos.css"> <% } %>
     <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/5-Contactanos.css"> <% } %>
-    <% if (titulo == "Login" || titulo == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-Login-form.css"> <% } %> 
+    <% if (titulo == "Login" || titulo.slice(0, 8) == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosForm.css"> <% } %>
+    <% if (titulo == "Login" || titulo == "Registro de Mail") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-1RegistroMailForm.css"> <% } %>
+    
     <% if (titulo.slice(0,9) == "Películas") { %>
         <% if (opcion_objeto.grupo == "Opciones") { %>
             <link rel="stylesheet" href="/stylesheets/3-Peliculas/10-PEL-Opciones.css">

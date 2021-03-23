@@ -11,14 +11,13 @@ const logoutMiddleware = require('../../middlewares/si_esta_logueado_LOGOUT');  
 const loginMiddleware = require('../../middlewares/si_no_esta_logueado_LOGIN');  // Para prevenir ciertos accesos cuando NO está logueado
 
 //************************ Controladores ****************************
-router.get('/registro', logoutMiddleware, usuarios.altaForm)                         // Alta
-// verificar que no esté logueado
-router.post('/registro', logoutMiddleware, validarMailContrasena, usuarios.altaGuardar)       // Alta
-// verificar que no esté logueado
+router.get('/registro-mail', logoutMiddleware, usuarios.altaFormMail)
+router.post('/registro-mail', logoutMiddleware, validarMailContrasena, usuarios.altaGuardarMail)
+
+router.get('/registro-nombre', loginMiddleware, usuarios.altaFormNombre)
+router.post('/registro-nombre', loginMiddleware, uploadFile.single('imagen'), validarDatosUsuario, usuarios.altaGuardarNombre)
 
 router.get('/detalle', loginMiddleware, usuarios.detalle)          // Detalle
-//router.get('/datos', loginMiddleware, usuarios.altaFormDatos)               // Alta
-//router.post('/datos', loginMiddleware, uploadFile.single('imagen'), validarDatosUsuario, usuarios.altaGuardarDatos)
 router.get('/editar', loginMiddleware, usuarios.editarForm)        // Modificar
 router.put('/editar', loginMiddleware, uploadFile.single('imagen'), validarMailContrasena, validarDatosUsuario, usuarios.editarGuardar)
 router.delete('/eliminar', loginMiddleware, usuarios.baja)         // Baja

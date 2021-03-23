@@ -15,7 +15,7 @@ module.exports = {
 
 	leer_archivo: leer(ruta_nombre),
 
-	encontrar_todos: function () {return this.leer_archivo()},
+	encontrar_todos: function () {return this.leer_archivo},
 
 	generar_id: function () {
 		let todos_los_usuarios = this.encontrar_todos();

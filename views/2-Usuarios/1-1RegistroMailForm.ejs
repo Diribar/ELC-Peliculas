@@ -1,49 +1,48 @@
-<section id="login" class="flex-col">
+<section id="usuariosForm" class="flex-col">
     <p id="tapar-el-fondo"></p>
-    <form action="<%= proximolink %>" method="POST" class="flex-col">
+    <form action="<%= link %>" method="POST">
         <h1><%= titulo %></h1>
-         <!--Mail y Contraseña-->
-        <section class="flex-col">  <!--Mail-->
-            <div class="formulario-grupo flex-col">
+        <!--Mail y Contraseña-->
+        <section class="flex-row">  <!--Mail-->
+            <label for="email">E-Mail</label>
+            <div class="formulario-grupo">
                 <input type="text" class="input" name="email" placeholder="Correo Electrónico"
                     value="<%= locals.data_entry ? data_entry.email : null %>">
                 <% if (locals.errores && errores.email || usuarioEnBD) { %><i class="fas fa-times-circle"></i><% } %>
                 <% if (locals.errores && !errores.email && !usuarioEnBD) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
+        </section>
+        <div class="flex-row criterio">  <!--Error en el mail-->
             <% if (locals.errores && errores.email) { %>
-                <p class="criterio input-error"><%= errores.email.msg %></p>
+                <p class="error"><%= errores.email.msg %></p>
             <% } else { %>
                 <% if (usuarioEnBD) { %>
-                    <p class="criterio input-error">Este mail ya figura en nuestra base de datos</p>
-                <% } else { %>
-                    <br>
+                    <p class="error">Este mail ya figura en nuestra base de datos</p>
                 <% } %>
-            <% } %>
-        </section>
-        <section class="flex-col">  <!--Contraseña-->
-            <div class="formulario-grupo flex-col">
+            <% } %>    
+        </div>
+        <section class="flex-row">  <!--Contraseña-->
+            <label for="contrasena">Contraseña</label>
+            <div class="formulario-grupo">
                 <input type="password" class="input" name="contrasena" id="contrasena"
                     value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
                 <i onclick="mostrar('contrasena')" class="fas fa-eye-slash" id="eye"></i>
                 <% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"></i><% } %>
                 <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
+        </section>
+        <div class="flex-row criterio">  <!--Error en la contraseña-->
             <% if (locals.errores && errores.contrasena) { %>
-                <p class="criterio input-error"><%= errores.contrasena.msg %></p>
+                <p class="error"><%= errores.contrasena.msg %></p>
             <% } else { %>
                 <% if (!locals.errores) { %>
-                    <p class="criterio">La contraseña debe tener de 6 a 12 caracteres</p>
-                <% } else { %>
-                    <br>
+                    <p>Debe tener de 6 a 12 caracteres</p>
                 <% } %>
             <% } %>
-            </div>
-        </section>
-        <section id="buttons"><!--Botones-->
-            <div class="flex-row">
-                <button type="submit">Aceptar</button>
-                <button type="button">Cancelar</button>
-            </div>
+        </div>
+        <section id="buttons" class="flex-row"><!--Botones-->
+            <button type="submit">Aceptar</button>
+            <button type="button">Cancelar</button>
         </section>
     </form>   
 </section>

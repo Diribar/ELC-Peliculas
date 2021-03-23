@@ -6,7 +6,8 @@ const usuarios = require('../../modelos/usuarios');
 module.exports = {
 
 	loginForm: (req,res) => {
-		return res.render("8-Login-Form", {
+		return res.render("0-Usuarios", {
+			link: req.originalUrl,
 			titulo: "Login"
 		});
 	},

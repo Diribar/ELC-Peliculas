@@ -20,6 +20,6 @@ module.exports = {
 		let BD = leer(ruta_nombre);
 		let pagina = BD.find((n) => {return n.url == url})
 		let titulo = pagina.titulo
-		res.render("Plantilla-Home", {titulo})
+		res.render("0-Home", {titulo})
 	},
 };

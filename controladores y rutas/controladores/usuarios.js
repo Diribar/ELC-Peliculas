@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path')
 const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
-const Registro = require('../../modelos/usuarios');
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
@@ -17,15 +16,15 @@ function mailEnBD(texto, usuarios) {let usuario = usuarios.find(n => n.email ===
 // *********** Controlador ***********
 module.exports = {
 
-	altaForm: (req, res) => {
-		return res.render('1-US-Alta-Form', {
-			proximoLink: "/usuarios/registro",
+	altaFormMail: (req, res) => {
+		return res.render('0-Usuarios', {
+			link: req.originalUrl,
 			usuarioEnBD: null,
-			titulo: "Registro"
+			titulo: "Registro de Mail"
 		});
 	},
 	
-	altaGuardar: (req, res) => {
+	altaGuardarMail: (req, res) => {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Validar email con la BD
@@ -34,12 +33,12 @@ module.exports = {
 		// Verificar si existe algún error de validación
 		if (validaciones.errors.length > 0 || usuarioEnBD) {
 			// Regresar al formulario de crear
-			return res.render('1-US-Alta-Form', {
-				proximoLink: "/usuarios/registro",
+			return res.render('0-Usuarios', {
+				link: req.originalUrl,
 				usuarioEnBD,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
-				titulo: "Registro"
+				titulo: "Registro de Mail"
 			});
 		};
 		// Preparar el registro para almacenar
@@ -54,15 +53,24 @@ module.exports = {
 		// Guardar el registro
 		usuarios.push(nuevoUsuario);
 		guardar(ruta_nombre, usuarios);
+		// Login
+		req.session.usuarioLogueado = true;
+		req.session.usuario = nuevoUsuario;
+		req.session.usuarioActivo = false;
+		req.session.usuarioNombre = false;
+		req.session.usuarioSobrenombre = false;
 		// Redireccionar
-		res.redirect("/usuario/datos");
+		res.redirect("/usuarios/registro-nombre");
 	},
 
-	altaForm2: (req,res) => {
-
+	altaFormNombre: (req,res) => {
+		return res.render('0-Usuarios', {
+			link: req.originalUrl,
+			titulo: "Registro de Nombre"
+		});
 	},
 
-	altaGuardar2: (req,res) => {
+	altaGuardarNombre: (req,res) => {
 
 	},
 

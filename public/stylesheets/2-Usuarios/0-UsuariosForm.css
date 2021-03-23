@@ -1,0 +1,40 @@
+/* GENERAL */
+#usuariosForm {position:absolute; margin:0; height:100%; width:100%;z-index: 1;}
+#usuariosForm {justify-content:center; align-items: center;}
+
+/* TAPAR EL FONDO */
+#usuariosForm #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%;height:100%; width:100%;}
+#usuariosForm #tapar-el-fondo {position: absolute;left:0px;top:0px}
+
+/* GENERAL DEL FORMULARIO */
+#usuariosForm form {background-color:var(--gris-oscuro); border-radius: 10px;}
+#usuariosForm form {padding: 20px;z-index: 2;min-width: 300px;}
+
+/* PARTES DEL FORMULARIO */
+#usuariosForm form h1 {color: var(--amarillo-claro);margin-bottom: 15px;}
+#usuariosForm form h1 {font-weight: bold; font-size: 1.1em; text-align: center;}
+#usuariosForm form section {justify-content: space-between;}
+
+#usuariosForm form .formulario-grupo {position: relative;}
+#usuariosForm form #buttons {margin-top: 15px;}
+
+/* Input del formulario */
+#usuariosForm form label {color: white; margin-right: 15px; padding-top: 3px;}
+#usuariosForm form label, #usuariosForm form .formulario-grupo input {text-align: left; margin-top: 10px;}
+#usuariosForm form .formulario-grupo input {border: none;border-radius: 15px;}
+#usuariosForm form .formulario-grupo input {padding: 3px 10px;width: 250px;}
+#usuariosForm form .formulario-grupo .fas {position: absolute;right: 3px;top: 12px;font-size: 1.2em;}
+#usuariosForm form .formulario-grupo .fa-times-circle {color: red;}
+#usuariosForm form .formulario-grupo .fa-check-circle {color: green;}
+#usuariosForm form .formulario-grupo #eye {right: 25px}
+#usuariosForm form .criterio {text-align: center;margin-top: 10px;margin-bottom: 15px;font-style: italic; display: inline-flexbox;justify-content: center;}
+#usuariosForm form .criterio p {color:var(--celeste-claro);}
+#usuariosForm form .error {background-color: tomato; color: white;padding: 2px 7px; border-radius: 7px;}
+
+/* BOTONES */
+#usuariosForm form #buttons div {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
+#usuariosForm form #buttons button {padding: 2px 5px; margin: 3px 5px;border-radius: 7px;}
+#usuariosForm form #buttons button {font-size: 14px;font-weight: bold;color:white;}
+#usuariosForm form #buttons button {border: solid 2px var(--amarillo-claro); background-color: var(--rojo);}
+#usuariosForm form #buttons button[type="submit"] {background-color: var(--verde);}
+#usuariosForm form #buttons button#registrarse {background-color: var(--azul);}
