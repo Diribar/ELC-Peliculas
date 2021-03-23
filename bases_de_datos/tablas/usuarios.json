@@ -2,7 +2,9 @@
   {
     "id": 1,
     "email": "diegoiribarren2015@gmail.com",
-    "contrasena": "$2a$10$oTz3TPreQanZxXedVEgzneHf/q7RpsvqALMMXELXZJQ16M7pZrqDK",
-    "activo": false
+    "contrasena": "$2a$10$eN6EQzF5prn0HuR2zo/adOrXVNkVQnpyXK2ag459EIG4QxNcejVKq",
+    "activo": false,
+    "formNombre": false,
+    "formSobrenombre": false
   }
 ]

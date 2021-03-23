@@ -12,7 +12,7 @@
                 <% if (locals.errores && !errores.email && !usuarioEnBD) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
-        <div class="flex-row criterio">  <!--Error en el mail-->
+        <div class="criterio flex-col">  <!--Error en el mail-->
             <% if (locals.errores && errores.email) { %>
                 <p class="error"><%= errores.email.msg %></p>
             <% } else { %>
@@ -31,7 +31,7 @@
                 <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
-        <div class="flex-row criterio">  <!--Error en la contraseña-->
+        <div class="criterio flex-col">  <!--Error en la contraseña-->
             <% if (locals.errores && errores.contrasena) { %>
                 <p class="error"><%= errores.contrasena.msg %></p>
             <% } else { %>

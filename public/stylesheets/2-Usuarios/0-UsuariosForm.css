@@ -27,9 +27,10 @@
 #usuariosForm form .formulario-grupo .fa-times-circle {color: red;}
 #usuariosForm form .formulario-grupo .fa-check-circle {color: green;}
 #usuariosForm form .formulario-grupo #eye {right: 25px}
-#usuariosForm form .criterio {text-align: center;margin-top: 10px;margin-bottom: 15px;font-style: italic; display: inline-flexbox;justify-content: center;}
-#usuariosForm form .criterio p {color:var(--celeste-claro);}
-#usuariosForm form .error {background-color: tomato; color: white;padding: 2px 7px; border-radius: 7px;}
+#usuariosForm form .criterio {margin: 10px auto 15px;font-style: italic;}
+#usuariosForm form .criterio {align-items: center;}
+#usuariosForm form .criterio p {color:var(--celeste-claro);border-radius: 7px;}
+#usuariosForm form .error {background-color: tomato; color: white;padding: 2px 7px;}
 
 /* BOTONES */
 #usuariosForm form #buttons div {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}

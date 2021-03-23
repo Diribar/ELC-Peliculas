@@ -12,7 +12,7 @@
                 <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
-        <div class="flex-row criterio">  <!--Error en el mail-->
+        <div class="criterio flex-col">  <!--Error en el mail-->
             <% if (locals.errores && errores.email) { %>
                 <p class="error"><%= errores.email.msg %></p>
             <% } %>    
@@ -27,7 +27,7 @@
                 <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
-        <div class="flex-row criterio">  <!--Error en la contraseña-->
+        <div class="criterio flex-col">  <!--Error en la contraseña-->
             <% if (locals.errores && errores.contrasena) { %>
                 <p class="error"><%= errores.contrasena.msg %></p>
             <% } else { %>
@@ -36,9 +36,10 @@
                 <% } %>
             <% } %>
         </div>
-        <section>   <!--Credenciales Inválidas-->
-            <% if (true) { %>
-                <p class="criterio error">El e-mail y/o la contraseña no figuran en nuestra base de datos</p>
+        <section class="criterio flex-col">   <!--Credenciales Inválidas-->
+            <% if (!errorEnDataEntry && credencialesInvalidas) { %>
+                <p class=" error">El e-mail y/o la contraseña </p>
+                <p class=" error">no figuran en nuestra base de datos</p>
             <% } %>
         </section>
         <section id="buttons"><!--Botones-->
