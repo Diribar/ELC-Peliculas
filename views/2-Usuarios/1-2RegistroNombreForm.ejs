@@ -37,9 +37,12 @@
     <div class="flex-col">  <!--Error en la Fecha-->
         <% if (locals.errores && errores.fecha) { %>
             <p class="criterio error"><%= errores.fecha.msg %></p>
-        <% } else {
-            if (errorDeAno.length>0) { %><p class="criterio error"><%= errorDeAno.msg %></p><% } %>
+        <% } else { %>
+            <% if (errorDeAno.length>0) { %>
+                <p class="criterio error"><%= errorDeAno.msg %></p>
+            <% } %>
         <% } %>
+    </div>
     <section id="buttons" class="flex-row"><!--Buttons-->
         <button type="submit">Aceptar</button>
         <button onclick="retroceder()" type="button">Cancelar</button>

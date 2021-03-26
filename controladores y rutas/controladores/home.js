@@ -15,11 +15,12 @@ module.exports = {
 		res.redirect("home")
 	},
 
-	main: (req,res) => { //* HOME - QUIÉNES SOMOS - CONTÁCTANOS
+	main: (req,res) => { // HOME - QUIÉNES SOMOS - CONTÁCTANOS
 		url = req.params.id;
 		let BD = leer(ruta_nombre);
 		let pagina = BD.find(n => n.url == url)
-		let titulo = pagina.titulo;
-		res.render("0-Home", {titulo})
+		res.render("0-Home", {
+			titulo: pagina.titulo,
+		})
 	},
 };

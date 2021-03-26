@@ -72,10 +72,7 @@ module.exports = {
 	},
 
 	altaGuardarNombre: (req,res) => {
-		res.send([
-			req.session,
-			"estoy acá",
-		])
+		usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Varificar que la fecha sea razonable
@@ -87,14 +84,16 @@ module.exports = {
 			errorDeAno.test=true;
 			errorDeAno.msg = "¿Estás seguro de que introdujiste la fecha correcta?";
 		}
+		// Recuperar datos de la session
+		req.session.usuarioLogueado = true;
+		req.session.usuario = usuario;
 		// Verificar si existe algún error de validación
-		res.send(req.session.usuario)
 		if (validaciones.length>0 || !!errorDeAno.length>0) {
 			// Regresar al formulario
 			return res.render('0-Usuarios', {
 				errorDeAno,
 				link: req.originalUrl,
-				usuario: req.session.usuario,
+				usuario,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
 				titulo: "Registro de Nombre"
