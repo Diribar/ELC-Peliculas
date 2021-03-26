@@ -61,7 +61,7 @@ module.exports = {
 		// Redireccionar
 		//if !usuarioEnBD.activo {}
 		if (!usuarioEnBD.formNombre) {return res.redirect("/usuarios/registro-nombre")};
-		if (!usuarioEnBD.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")}
+		if (!usuarioEnBD.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
 		return res.redirect("/")
 	},
 

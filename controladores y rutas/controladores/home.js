@@ -12,7 +12,7 @@ const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/titulosELC
 module.exports = {
 
 	home: (req,res) => {
-		res.redirect("home")
+		return res.redirect("home")
 	},
 
 	main: (req,res) => { // HOME - QUIÉNES SOMOS - CONTÁCTANOS

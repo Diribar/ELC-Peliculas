@@ -55,14 +55,16 @@ module.exports = {
 		// Guardar el registro
 		BD.push(nuevoUsuario);
 		guardar(ruta_nombre, BD);
+		delete nuevoUsuario.contrasena;
 		// Login
 		req.session.usuarioLogueado = true;
 		req.session.usuario = nuevoUsuario;
 		// Redireccionar
-		res.redirect("/usuarios/registro-nombre");
+		return res.redirect("/usuarios/registro-nombre");
 	},
 
 	altaFormNombre: (req,res) => {
+		//return res.send([req.session.usuario,"linea 68"]);
 		return res.render('0-Usuarios', {
 			errorDeAno: [],
 			link: req.originalUrl,
@@ -72,6 +74,7 @@ module.exports = {
 	},
 
 	altaGuardarNombre: (req,res) => {
+		return res.send([req.session.usuario,"linea 77"]);
 		usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
@@ -88,7 +91,7 @@ module.exports = {
 		req.session.usuarioLogueado = true;
 		req.session.usuario = usuario;
 		// Verificar si existe algún error de validación
-		if (validaciones.length>0 || !!errorDeAno.length>0) {
+		if (validaciones.errors.length>0 || !!errorDeAno.length>0) {
 			// Regresar al formulario
 			return res.render('0-Usuarios', {
 				errorDeAno,
@@ -101,7 +104,9 @@ module.exports = {
 		};
 		// Preparar el registro para almacenar
 		let BD = leer(ruta_nombre);
-		let usuarioEnBD = BD.find(n => n.email == req.body.email);
+		res.send(usuario)
+		let usuarioEnBD = BD.find(n => n.id == usuario.id);
+		let indice = BD.findIndex(n => n.id == usuario.id)
 		const actualizado = {
 			...usuarioEnBD,
 			...req.body,
@@ -109,9 +114,20 @@ module.exports = {
 			NombreHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			formNombre: true,
 		};
-		let indice = BD.findIndex(n => n.id == actualizado.id)
+		// Guardar el registro
 		BD[indice] = actualizado
 		guardar(ruta_nombre, BD);
+		// Actualizar los datos en la sesión
+		req.session.usuario = actualizado;
+		res.redirect("/usuarios/registro-sobrenombre");
+	},
+
+	altaFormSobrenombre: (req,res) => {
+		res.send("estoy en Form Sobrenombre")
+	},
+
+	altaGuardarSobrenombre: (req,res) => {
+		res.send("estoy en Guardar Sobrenombre")
 	},
 
 	detalle: (req, res) => {

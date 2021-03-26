@@ -17,8 +17,8 @@ router.post('/registro-mail', logoutMiddleware, validarMail, usuarios.altaGuarda
 router.get('/registro-nombre', loginMiddleware, usuarios.altaFormNombre)
 router.post('/registro-nombre', loginMiddleware, validarNombre, usuarios.altaGuardarNombre)
 
-router.get('/registro-nombre', loginMiddleware, usuarios.altaFormNombre)
-router.post('/registro-nombre', loginMiddleware, uploadFile.single('imagen'), validarNombre, usuarios.altaGuardarNombre)
+router.get('/registro-sobrenombre', loginMiddleware, usuarios.altaFormSobrenombre)
+router.post('/registro-sobrenombre', loginMiddleware, uploadFile.single('imagen'), validarNombre, usuarios.altaGuardarSobrenombre)
 
 router.get('/detalle', loginMiddleware, usuarios.detalle)          // Detalle
 router.get('/editar', loginMiddleware, usuarios.editarForm)        // Modificar
