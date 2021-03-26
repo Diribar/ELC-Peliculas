@@ -25,24 +25,25 @@
         <label for="genero">Género</label>
         <% let genero=""; if (locals.data_entry) {genero = data_entry.genero} else {if (usuario.formNombre) {genero = usuario.genero}}%>
         <select name="genero" class="input">
-            <option value="fem" <% if (genero=="fem") {%> selected <%}%>>Femenino</option>
-            <option value="mas" <% if (genero=="mas") {%> selected <%}%>>Masculino</option>
+            <option value="femenino" <% if (genero=="fem") {%> selected <%}%>>Femenino</option>
+            <option value="masculino" <% if (genero=="mas") {%> selected <%}%>>Masculino</option>
         </select>        
     </div>
     <div class="label-input flex-row"><!--Fecha de Nacimiento-->
-        <label for="fecha">Fecha de Nacimiento</label>
-        <% let fecha=""; if (locals.data_entry) {fecha = data_entry.fecha} else {if (usuario.formNombre) {fecha = usuario.fecha}}%>
-        <input type="date" name="fecha" class="input" value="<%= fecha %>">
+        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <% let fecha=""; if (locals.data_entry) {fecha = data_entry.fechaNacimiento} else {if (usuario.formNombre) {fecha = usuario.fechaNacimiento}}%>
+        <input type="date" name="fechaNacimiento" class="input" value="<%= fecha %>">
     </div>
     <div class="flex-col">  <!--Error en la Fecha-->
         <% if (locals.errores && errores.fecha) { %>
             <p class="criterio error"><%= errores.fecha.msg %></p>
         <% } else { %>
-            <% if (errorDeAno.length>0) { %>
-                <p class="criterio error"><%= errorDeAno.msg %></p>
-            <% } %>
+            <% if (!!errorDeAno) { %>
+                <p class="criterio error"><%= errorDeAno %></p>
+                <% } %>
         <% } %>
     </div>
+    <p><%= !!usuario ? usuario.email : usuario %> </p>
     <section id="buttons" class="flex-row"><!--Buttons-->
         <button type="submit">Aceptar</button>
         <button onclick="retroceder()" type="button">Cancelar</button>

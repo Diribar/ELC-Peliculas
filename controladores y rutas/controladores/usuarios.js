@@ -11,6 +11,7 @@ const imagesPath = path.join(__dirname, "../public/images/users/");
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
+//function sanitizarFecha(n) {n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
 
 // *********** Controlador ***********
 module.exports = {
@@ -66,32 +67,25 @@ module.exports = {
 	altaFormNombre: (req,res) => {
 		//return res.send([req.session.usuario,"linea 68"]);
 		return res.render('0-Usuarios', {
-			errorDeAno: [],
 			link: req.originalUrl,
+			errorDeAno: null,
 			usuario: req.session.usuario,
 			titulo: "Registro de Nombre"
 		});
 	},
 
 	altaGuardarNombre: (req,res) => {
-		return res.send([req.session.usuario,"linea 77"]);
+		//return res.send([req.session.usuario,"linea 77"]);
 		usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
-		// Varificar que la fecha sea razonable
-		let ano = req.body.fecha.slice(0,4);
+		// Verificar que la fecha sea razonable
+		let ano = parseInt(req.body.fechaNacimiento.slice(0,4));
 		let max = new Date().getFullYear()-10;
 		let min = new Date().getFullYear()-100;
-		let errorDeAno = [];
-		if (ano>max || ano<min) {
-			errorDeAno.test=true;
-			errorDeAno.msg = "¿Estás seguro de que introdujiste la fecha correcta?";
-		}
-		// Recuperar datos de la session
-		req.session.usuarioLogueado = true;
-		req.session.usuario = usuario;
+		ano>max || ano<min ? errorDeAno = "¿Estás seguro de que introdujiste la fecha correcta?" : errorDeAno = null;
 		// Verificar si existe algún error de validación
-		if (validaciones.errors.length>0 || !!errorDeAno.length>0) {
+		if (validaciones.errors.length>0 || !!errorDeAno) {
 			// Regresar al formulario
 			return res.render('0-Usuarios', {
 				errorDeAno,
@@ -104,12 +98,16 @@ module.exports = {
 		};
 		// Preparar el registro para almacenar
 		let BD = leer(ruta_nombre);
-		res.send(usuario)
+		//res.send(usuario)
 		let usuarioEnBD = BD.find(n => n.id == usuario.id);
 		let indice = BD.findIndex(n => n.id == usuario.id)
+		//let fecha = req.body.fechaNacimiento;
+		//let funcion = sanitizarFecha("1966-05-11");
+		//return res.send(funcion)
 		const actualizado = {
 			...usuarioEnBD,
 			...req.body,
+			//fechaNacimiento: sanitizarFecha(fecha),
 			NombreFecha: new Date().toLocaleDateString('es-ES'),
 			NombreHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			formNombre: true,

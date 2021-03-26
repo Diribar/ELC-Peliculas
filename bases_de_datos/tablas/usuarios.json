@@ -2,11 +2,17 @@
   {
     "id": 1,
     "email": "diegoiribarren2015@gmail.com",
-    "contrasena": "$2a$10$y5xvCgZf22O3OSRMG5S7/eSOWTQwzXmJLrN886GGvzHAejdT4eLTi",
+    "contrasena": "$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm",
     "MailFecha": "26/3/2021",
-    "MailHora": "2:32",
+    "MailHora": "14:07",
     "activo": false,
-    "formNombre": false,
-    "formSobrenombre": false
+    "formNombre": true,
+    "formSobrenombre": false,
+    "nombre": "Diego",
+    "apellido": "Iribarren",
+    "genero": "masculino",
+    "fechaNacimiento": "1969-08-16",
+    "NombreFecha": "26/3/2021",
+    "NombreHora": "14:17"
   }
 ]

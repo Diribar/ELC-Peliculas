@@ -17,8 +17,8 @@ module.exports = {
 
 	main: (req,res) => { // HOME - QUIÉNES SOMOS - CONTÁCTANOS
 		url = req.params.id;
-		let BD = leer(ruta_nombre);
-		let pagina = BD.find(n => n.url == url)
+		const BD = leer(ruta_nombre);
+		const pagina = BD.find(n => n.url == url)
 		res.render("0-Home", {
 			titulo: pagina.titulo,
 		})
