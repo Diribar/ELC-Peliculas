@@ -1,0 +1,9 @@
+/* Símbolos en el input */
+#usuariosForm form .formulario-grupo {position: relative;}
+#usuariosForm form .formulario-grupo .fas {position: absolute;right: 3px;top: 12px;font-size: 1.2em;}
+#usuariosForm form .formulario-grupo .fa-times-circle {color: red;}
+#usuariosForm form .formulario-grupo .fa-check-circle {color: green;}
+#usuariosForm form .formulario-grupo #eye {right: 25px}
+
+/* Partes del formulario */
+#usuariosForm form .input {width: 250px;}

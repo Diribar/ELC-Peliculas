@@ -6,11 +6,9 @@ const {validationResult} = require('express-validator');
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
-let BD = leer(ruta_nombre);
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function mailEnBD(texto) {let usuario = BD.find(n => n.email == texto);return usuario;}
 
 // *********** Controlador ***********
 module.exports = {
@@ -30,10 +28,11 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0
-		// Averiguar si existe el mail en la BD		
-		let usuarioEnBD = mailEnBD(req.body.email);
+		// Averiguar si existe el mail en la BD
+		let BD = leer(ruta_nombre);
+		let usuarioEnBD = BD.find(n => n.email == req.body.email);
 		// Verificar si la contraseña es correcta
-		let contrasenaOK = null
+		let contrasenaOK = false
 		if (!!usuarioEnBD) {
 			let contrasenaBD = usuarioEnBD.contrasena
 			delete usuarioEnBD.contrasena;
@@ -56,9 +55,9 @@ module.exports = {
 		req.session.usuarioLogueado = true;
 		req.session.usuario = usuarioEnBD
 		// Graba una cookie si está tildado 'recordame'
-		if (req.body.remember) {
-			res.cookie("email", req.body.email, {maxAge: 1000*60*2})
-		};
+		//if (req.body.remember) {
+		//	res.cookie("email", req.body.email, {maxAge: 1000*60*2})
+		//};
 		// Redireccionar
 		//if !usuarioEnBD.activo {}
 		if (!usuarioEnBD.formNombre) {return res.redirect("/usuarios/registro-nombre")};

@@ -1,7 +1,7 @@
 <form action="<%= link %>" method="POST">
     <h1><%= titulo %></h1>
     <!--Mail y Contraseña-->
-    <section class="flex-row">  <!--Mail-->
+    <section class="label-input flex-row">  <!--Mail-->
         <label for="email">E-Mail</label>
         <div class="formulario-grupo">
             <input type="text" class="input" name="email" placeholder="Correo Electrónico"
@@ -10,12 +10,12 @@
             <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
     </section>
-    <div class="criterio flex-col">  <!--Error en el mail-->
+    <div class="flex-col">  <!--Error en el mail-->
         <% if (locals.errores && errores.email) { %>
-            <p class="error"><%= errores.email.msg %></p>
+            <p class="criterio error"><%= errores.email.msg %></p>
         <% } %>    
     </div>
-    <section class="flex-row">  <!--Contraseña-->
+    <section class="label-input flex-row">  <!--Contraseña-->
         <label for="contrasena">Contraseña</label>
         <div class="formulario-grupo">
             <input type="password" class="input" name="contrasena" id="contrasena"
@@ -25,29 +25,29 @@
             <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
     </section>
-    <div class="criterio flex-col">  <!--Error en la contraseña-->
+    <div class="flex-col">  <!--Error en la contraseña-->
         <% if (locals.errores && errores.contrasena) { %>
-            <p class="error"><%= errores.contrasena.msg %></p>
+            <p class="criterio error"><%= errores.contrasena.msg %></p>
         <% } else { %>
             <% if (!locals.errores) { %>
-                <p>Debe tener de 6 a 12 caracteres</p>
+                <p class="criterio">Debe tener de 6 a 12 caracteres</p>
             <% } %>
         <% } %>
     </div>
-    <section class="criterio flex-col">   <!--Credenciales Inválidas-->
+    <br>
+    <section class="flex-col">   <!--Credenciales Inválidas-->
         <% if (!errorEnDataEntry && credencialesInvalidas) { %>
-            <p class=" error">El e-mail y/o la contraseña </p>
-            <p class=" error">no figuran en nuestra base de datos</p>
+            <p class="criterio error">El e-mail y/o la contraseña </p>
+            <p class="criterio error">no figuran en nuestra base de datos</p>
         <% } %>
     </section>
-    <section id="buttons"><!--Botones-->
-        <div class="flex-row">
-            <button type="submit">Aceptar</button>
-            <a href="/registro" ><button type="button" id="registrarse">No estoy registrado</button></a>
-        </div>
-        <div class="flex-row">
-            <button onclick="retroceder()" type="button">Cancelar</button>
-            <a href="#"><button type="button">Olvidé mi contraseña</button></a>
+    <section id="buttons" class="flex-row"><!--Botones-->
+        <button type="submit">Aceptar</button>
+        <a href="/registro" ><button type="button" id="registrarse">No estoy registrado</button></a>
+    </section>
+    <section id="buttons" class="flex-row"><!--Botones-->
+        <button onclick="retroceder()" type="button">Cancelar</button>
+        <a href="#"><button type="button">Olvidé mi contraseña</button></a>
         </div>
     </section>
 </form>   

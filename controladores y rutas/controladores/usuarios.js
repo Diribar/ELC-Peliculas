@@ -7,13 +7,10 @@ const {validationResult} = require('express-validator');
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
 const imagesPath = path.join(__dirname, "../public/images/users/");
-let BD = leer(ruta_nombre);
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
-function mailEnBD(texto) {let usuario = BD.find(n => n.email == texto);return usuario;}
-function encontrarID(ID) {BD.find(n => n.id == ID)};
 
 // *********** Controlador ***********
 module.exports = {
@@ -30,10 +27,11 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		let usuarioEnBD = mailEnBD(req.body.email);
+		let BD = leer(ruta_nombre);
+		let usuarioEnBD = BD.find(n => n.email == req.body.email)
 		// Verificar si existe algún error de validación
 		if (validaciones.errors.length > 0 || usuarioEnBD) {
-			// Regresar al formulario de crear
+			// Regresar al formulario
 			return res.render('0-Usuarios', {
 				link: req.originalUrl,
 				usuarioEnBD,
@@ -48,8 +46,8 @@ module.exports = {
 			id: nuevoId,
 			...req.body,
 			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
-			altaFecha: new Date().toLocaleDateString('es-ES'),
-			altaHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
+			MailFecha: new Date().toLocaleDateString('es-ES'),
+			MailHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			activo: false,
 			formNombre: false,
 			formSobrenombre: false,
@@ -66,13 +64,55 @@ module.exports = {
 
 	altaFormNombre: (req,res) => {
 		return res.render('0-Usuarios', {
+			errorDeAno: [],
 			link: req.originalUrl,
+			usuario: req.session.usuario,
 			titulo: "Registro de Nombre"
 		});
 	},
 
 	altaGuardarNombre: (req,res) => {
-
+		res.send([
+			req.session,
+			"estoy acá",
+		])
+		// Verificar si hay errores en el data entry
+		let validaciones = validationResult(req);
+		// Varificar que la fecha sea razonable
+		let ano = req.body.fecha.slice(0,4);
+		let max = new Date().getFullYear()-10;
+		let min = new Date().getFullYear()-100;
+		let errorDeAno = [];
+		if (ano>max || ano<min) {
+			errorDeAno.test=true;
+			errorDeAno.msg = "¿Estás seguro de que introdujiste la fecha correcta?";
+		}
+		// Verificar si existe algún error de validación
+		res.send(req.session.usuario)
+		if (validaciones.length>0 || !!errorDeAno.length>0) {
+			// Regresar al formulario
+			return res.render('0-Usuarios', {
+				errorDeAno,
+				link: req.originalUrl,
+				usuario: req.session.usuario,
+				errores: validaciones.mapped(),
+				data_entry: req.body,
+				titulo: "Registro de Nombre"
+			});
+		};
+		// Preparar el registro para almacenar
+		let BD = leer(ruta_nombre);
+		let usuarioEnBD = BD.find(n => n.email == req.body.email);
+		const actualizado = {
+			...usuarioEnBD,
+			...req.body,
+			NombreFecha: new Date().toLocaleDateString('es-ES'),
+			NombreHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
+			formNombre: true,
+		};
+		let indice = BD.findIndex(n => n.id == actualizado.id)
+		BD[indice] = actualizado
+		guardar(ruta_nombre, BD);
 	},
 
 	detalle: (req, res) => {
@@ -93,6 +133,7 @@ module.exports = {
 			...req.body,
 		};
 		// Eliminar imagen anterior
+		let BD = leer(ruta_nombre);
 		if (req.file) {
 			reg_actual.image = req.file.filename;
 			if (BD.image) {fs.unlinkSync(path.join(__dirname, RutaDeImagenes, BD.image));}
@@ -106,6 +147,7 @@ module.exports = {
 	},	
 
 	baja: (req, res) => {
+		let BD = leer(ruta_nombre);
 		let nuevaBD = BD.filter(n => n.id != req.params.id)
 		guardar(ruta_nombre, nuevaBD)
 		res.redirect("/");

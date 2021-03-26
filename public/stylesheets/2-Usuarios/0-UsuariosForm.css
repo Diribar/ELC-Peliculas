@@ -13,29 +13,24 @@
 /* PARTES DEL FORMULARIO */
 #usuariosForm form h1 {color: var(--amarillo-claro);margin-bottom: 15px;}
 #usuariosForm form h1 {font-weight: bold; font-size: 1.1em; text-align: center;}
-#usuariosForm form section {justify-content: space-between;}
-
-#usuariosForm form .formulario-grupo {position: relative;}
-#usuariosForm form #buttons {margin-top: 15px;}
+#usuariosForm form .label-input {justify-content: space-between;margin-top: 10px;}
 
 /* Input del formulario */
-#usuariosForm form label {color: white; margin-right: 15px; padding-top: 3px;}
-#usuariosForm form label, #usuariosForm form .formulario-grupo input {text-align: left; margin-top: 10px;}
-#usuariosForm form .formulario-grupo input {border: none;border-radius: 15px;}
-#usuariosForm form .formulario-grupo input {padding: 3px 10px;width: 250px;}
-#usuariosForm form .formulario-grupo .fas {position: absolute;right: 3px;top: 12px;font-size: 1.2em;}
-#usuariosForm form .formulario-grupo .fa-times-circle {color: red;}
-#usuariosForm form .formulario-grupo .fa-check-circle {color: green;}
-#usuariosForm form .formulario-grupo #eye {right: 25px}
-#usuariosForm form .criterio {margin: 10px auto 15px;font-style: italic;}
+#usuariosForm form .input {border: none;border-radius: 15px;}
+#usuariosForm form .input {padding: 3px 10px}
+#usuariosForm form label {color: white; margin-right: 15px; padding-top: 5px;}
+#usuariosForm form label, #usuariosForm form .input {text-align: left; margin-top: 10px;}
+#usuariosForm form .criterio {margin: 5px auto 0px;font-style: italic;}
 #usuariosForm form .criterio {align-items: center;}
-#usuariosForm form .criterio p {color:var(--celeste-claro);border-radius: 7px;}
+#usuariosForm form .criterio {color:var(--celeste-claro);border-radius: 7px;}
 #usuariosForm form .error {background-color: tomato; color: white;padding: 2px 7px;}
 
 /* BOTONES */
-#usuariosForm form #buttons div {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
-#usuariosForm form #buttons button {padding: 2px 5px; margin: 3px 5px;border-radius: 7px;}
-#usuariosForm form #buttons button {font-size: 14px;font-weight: bold;color:white;}
-#usuariosForm form #buttons button {border: solid 2px var(--amarillo-claro); background-color: var(--rojo);}
+#usuariosForm form #buttons {margin: 15px auto 5px;}
+#usuariosForm form #buttons {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
+#usuariosForm form #buttons button {padding: 2px 5px;}
+#usuariosForm form #buttons button {font-size: 1.1rem;font-weight: bold;color:white;}
+#usuariosForm form #buttons button {border: solid 2px var(--amarillo-claro);border-radius: 7px;}
 #usuariosForm form #buttons button[type="submit"] {background-color: var(--verde);}
+#usuariosForm form #buttons button[type="button"] {background-color: var(--rojo);}
 #usuariosForm form #buttons button#registrarse {background-color: var(--azul);}

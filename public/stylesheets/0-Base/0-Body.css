@@ -1,6 +1,6 @@
 /* GENERAL */
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
-*, body, optgroup, button, select, option {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
+*, body, optgroup, button, select, option, input {font-family: var(--Calibri); font-size: 16px;color:var(--azul);}
 select, option {cursor: pointer;}
 
 /* BACKGROUND IMAGE */

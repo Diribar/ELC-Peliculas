@@ -4,7 +4,7 @@ const router = express.Router();
 const login = require('../controladores/login')
 
 //************************ Middlewares ******************************
-const validarMail = require('../../middlewares/validarMailContrasena');    // Validar mail y contraseña
+const validarMail = require('../../middlewares/validarMail');    // Validar mail y contraseña
 const logoutMiddleware = require('../../middlewares/si_esta_logueado_LOGOUT');  // Para prevenir ciertos accesos cuando SI está logueado
 const loginMiddleware = require('../../middlewares/si_no_esta_logueado_LOGIN');  // Para prevenir ciertos accesos cuando NO está logueado
 

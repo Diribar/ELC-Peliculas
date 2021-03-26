@@ -25,7 +25,8 @@
     <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/4-Quienes-Somos.css"> <% } %>
     <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/5-Contactanos.css"> <% } %>
     <% if (titulo == "Login" || titulo.slice(0, 8) == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosForm.css"> <% } %>
-    <% if (titulo == "Login" || titulo == "Registro de Mail") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-1RegistroMailForm.css"> <% } %>
+    <% if (titulo == "Registro de Mail" || titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-1RegistroMailForm.css"> <% } %>
+    <% if (titulo == "Registro de Nombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-2RegistroNombreForm.css"> <% } %>
     
     <% if (titulo.slice(0,9) == "Películas") { %>
         <% if (opcion_objeto.grupo == "Opciones") { %>

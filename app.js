@@ -2,7 +2,7 @@
 const express = require('express'); const app = express();
 const path = require('path')
 const methodOverride = require('method-override'); // Para usar PUT y DELETE
-const session = require('express-session'); // Para usar la propiedad "sesión"
+const session = require('express-session'); // Para usar la propiedad "session"
 const cookies = require('cookie-parser'); // Para usar cookies
 
 // ************** Middlewares de Aplicación ***********************
@@ -10,7 +10,7 @@ app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a 
 app.use(express.urlencoded({ extended: false })); // Para usar archivos en los formularios
 app.use(methodOverride('_method')); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
-app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true})); // Para usar la propiedad "sesión"
+app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
 const logueado = require('./middlewares/login_global'); app.use(logueado); // Para ocultar íconos según login (después de "session")
 app.use(cookies());
 
