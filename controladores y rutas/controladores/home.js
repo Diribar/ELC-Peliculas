@@ -19,7 +19,7 @@ module.exports = {
 		url = req.params.id;
 		const BD = leer(ruta_nombre);
 		const pagina = BD.find(n => n.url == url)
-		res.render("0-Home", {
+		return res.render("0-Home", {
 			titulo: pagina.titulo,
 		})
 	},

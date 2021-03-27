@@ -35,15 +35,15 @@
         <input type="date" name="fechaNacimiento" class="input" value="<%= fecha %>">
     </div>
     <div class="flex-col">  <!--Error en la Fecha-->
-        <% if (locals.errores && errores.fecha) { %>
-            <p class="criterio error"><%= errores.fecha.msg %></p>
+        <% if (locals.errores && errores.fechaNacimiento) { %>
+            <p class="criterio error"><%= errores.fechaNacimiento.msg %></p>
         <% } else { %>
             <% if (!!errorDeAno) { %>
                 <p class="criterio error"><%= errorDeAno %></p>
                 <% } %>
         <% } %>
     </div>
-    <p><%= !!usuario ? usuario.email : usuario %> </p>
+    <p><%= errorDeAno %> </p>
     <section id="buttons" class="flex-row"><!--Buttons-->
         <button type="submit">Aceptar</button>
         <button onclick="retroceder()" type="button">Cancelar</button>
