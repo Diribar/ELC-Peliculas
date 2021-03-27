@@ -11,7 +11,7 @@ const imagesPath = path.join(__dirname, "../public/images/users/");
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
-//function sanitizarFecha(n) {n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
+function sanitizarFecha(n) {return n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
 
 // *********** Controlador ***********
 module.exports = {
@@ -76,7 +76,7 @@ module.exports = {
 
 	altaGuardarNombre: (req,res) => {
 		//return res.send([req.session.usuario,"linea 77"]);
-		usuario = req.session.usuario;
+		let usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Verificar que la fecha sea razonable
@@ -98,16 +98,13 @@ module.exports = {
 		};
 		// Preparar el registro para almacenar
 		let BD = leer(ruta_nombre);
-		//res.send(usuario)
 		let usuarioEnBD = BD.find(n => n.id == usuario.id);
 		let indice = BD.findIndex(n => n.id == usuario.id)
-		//let fecha = req.body.fechaNacimiento;
-		//let funcion = sanitizarFecha("1966-05-11");
-		//return res.send(funcion)
+		let fecha = sanitizarFecha(req.body.fechaNacimiento);
 		const actualizado = {
 			...usuarioEnBD,
 			...req.body,
-			//fechaNacimiento: sanitizarFecha(fecha),
+			fechaNacimiento: fecha,
 			NombreFecha: new Date().toLocaleDateString('es-ES'),
 			NombreHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			formNombre: true,
