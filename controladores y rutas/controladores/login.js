@@ -20,7 +20,6 @@ module.exports = {
 			errorEnDataEntry: false,
 			credencialesInvalidas: false,
 			titulo: "Login",
-
 		});
 	},
 

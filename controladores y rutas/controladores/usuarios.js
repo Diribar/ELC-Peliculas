@@ -6,6 +6,7 @@ const {validationResult} = require('express-validator');
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
+const BDpaises = path.join(__dirname, '../../bases_de_datos/tablas/paises.json');
 const imagesPath = path.join(__dirname, "../public/images/users/");
 
 // ************ Funciones ************
@@ -64,6 +65,16 @@ module.exports = {
 		return res.redirect("/usuarios/registro-nombre");
 	},
 
+	derivar: (req,res) => {
+		let BD = leer(ruta_nombre);
+		// Redireccionar
+		// if !usuarioEnBD.activo {}
+		if (!req.session.usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
+		if (!req.session.usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
+		location.reload();
+		return res.redirect(cookie);
+	},
+
 	altaFormNombre: (req,res) => {
 		//return res.send([req.session.usuario,"linea 68"]);
 		return res.render('0-Usuarios', {
@@ -118,7 +129,14 @@ module.exports = {
 	},
 
 	altaFormSobrenombre: (req,res) => {
-		res.send("estoy en Form Sobrenombre")
+		//return res.send([req.session.usuario,"linea 68"]);
+		let paises = leer(BDpaises);
+		return res.render('0-Usuarios', {
+			link: req.originalUrl,
+			usuario: req.session.usuario,
+			paises,
+			titulo: "Registro de Sobrenombre"
+		});
 	},
 
 	altaGuardarSobrenombre: (req,res) => {

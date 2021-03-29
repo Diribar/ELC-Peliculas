@@ -1,0 +1,54 @@
+[
+    {
+        "nombre": "Argentina",
+        "sigla": "AR"
+    },
+    {
+        "nombre": "Chile",
+        "sigla": "CH"
+    },
+    {
+        "nombre": "Brasil",
+        "sigla": "BR"
+    },
+    {
+        "nombre": "Sudamérica (otro)",
+        "sigla": "AM-SR"
+    },
+    {
+        "nombre": "Centroamérica",
+        "sigla": "AM-CT"
+    },
+    {
+        "nombre": "México",
+        "sigla": "MX"
+    },
+    {
+        "nombre": "Norteamérica (otro)",
+        "sigla": "AM-NT"
+    },
+    {
+        "nombre": "España",
+        "sigla": "ES"
+    },
+    {
+        "nombre": "Europa (otro)",
+        "sigla": "Europa"
+    },
+    {
+        "nombre": "Asia",
+        "sigla": "AS"
+    },
+    {
+        "nombre": "África",
+        "sigla": "AF"
+    },
+    {
+        "nombre": "Oceanía",
+        "sigla": "OC"
+    },
+    {
+        "nombre": "Otro país",
+        "sigla": "OT"
+    }
+]

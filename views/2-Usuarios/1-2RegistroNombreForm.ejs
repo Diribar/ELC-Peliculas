@@ -25,8 +25,8 @@
         <label for="genero">Género</label>
         <% let genero=""; if (locals.data_entry) {genero = data_entry.genero} else {if (usuario.formNombre) {genero = usuario.genero}}%>
         <select name="genero" class="input">
-            <option value="femenino" <% if (genero=="fem") {%> selected <%}%>>Femenino</option>
-            <option value="masculino" <% if (genero=="mas") {%> selected <%}%>>Masculino</option>
+            <option value="femenino" <% if (genero=="femenino") {%> selected <%}%>>Femenino</option>
+            <option value="masculino" <% if (genero=="masculino") {%> selected <%}%>>Masculino</option>
         </select>        
     </div>
     <div class="label-input flex-row"><!--Fecha de Nacimiento-->
