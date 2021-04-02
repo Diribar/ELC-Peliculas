@@ -51,17 +51,13 @@ module.exports = {
 			});
 		};
 		// Iniciar la sesión
-		req.session.usuarioLogueado = true;
 		req.session.usuario = usuarioEnBD
 		// Graba una cookie si está tildado 'recordame'
 		//if (req.body.remember) {
 		//	res.cookie("email", req.body.email, {maxAge: 1000*60*2})
 		//};
 		// Redireccionar
-		//if !usuarioEnBD.activo {}
-		if (!usuarioEnBD.formNombre) {return res.redirect("/usuarios/registro-nombre")};
-		if (!usuarioEnBD.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
-		return res.redirect("/")
+		return res.redirect("/usuarios/redireccionar")
 	},
 
 	recupContrForm: (req,res) => {

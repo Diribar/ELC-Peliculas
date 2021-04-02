@@ -7,12 +7,14 @@ const {validationResult} = require('express-validator');
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
 const BDpaises = path.join(__dirname, '../../bases_de_datos/tablas/paises.json');
+const BDestados = path.join(__dirname, '../../bases_de_datos/tablas/estado_eclesial.json');
 const imagesPath = path.join(__dirname, "../public/images/users/");
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
 function sanitizarFecha(n) {return n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
+function borrarArchivoDeImagen(n) {let imageFile = path.join(imagesPath, n);if (n && fs.existsSync(imageFile)) {fs.unlinkSync(imageFile);}}
 
 // *********** Controlador ***********
 module.exports = {
@@ -48,8 +50,6 @@ module.exports = {
 			id: nuevoId,
 			...req.body,
 			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
-			MailFecha: new Date().toLocaleDateString('es-ES'),
-			MailHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			activo: false,
 			formNombre: false,
 			formSobrenombre: false,
@@ -59,20 +59,19 @@ module.exports = {
 		guardar(ruta_nombre, BD);
 		delete nuevoUsuario.contrasena;
 		// Login
-		req.session.usuarioLogueado = true;
 		req.session.usuario = nuevoUsuario;
 		// Redireccionar
-		return res.redirect("/usuarios/registro-nombre");
+		return res.redirect("/usuarios/redireccionar");
 	},
 
-	derivar: (req,res) => {
-		let BD = leer(ruta_nombre);
+	redireccionar: (req,res) => {
+		let usuario = req.session.usuario;		
 		// Redireccionar
 		// if !usuarioEnBD.activo {}
-		if (!req.session.usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
-		if (!req.session.usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
-		location.reload();
-		return res.redirect(cookie);
+		if (!usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
+		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
+		req.session.registroCompleto = true
+		return res.send("Usuario registrado en forma completa");
 	},
 
 	altaFormNombre: (req,res) => {
@@ -86,7 +85,7 @@ module.exports = {
 	},
 
 	altaGuardarNombre: (req,res) => {
-		//return res.send([req.session.usuario,"linea 77"]);
+		// Datos del usuario
 		let usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
@@ -116,8 +115,6 @@ module.exports = {
 			...usuarioEnBD,
 			...req.body,
 			fechaNacimiento: fecha,
-			NombreFecha: new Date().toLocaleDateString('es-ES'),
-			NombreHora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
 			formNombre: true,
 		};
 		// Guardar el registro
@@ -125,22 +122,61 @@ module.exports = {
 		guardar(ruta_nombre, BD);
 		// Actualizar los datos en la sesión
 		req.session.usuario = actualizado;
-		res.redirect("/usuarios/registro-sobrenombre");
+		res.redirect("/usuarios/redireccionar");
 	},
 
 	altaFormSobrenombre: (req,res) => {
 		//return res.send([req.session.usuario,"linea 68"]);
-		let paises = leer(BDpaises);
 		return res.render('0-Usuarios', {
 			link: req.originalUrl,
 			usuario: req.session.usuario,
-			paises,
+			paises: leer(BDpaises),
+			estados: leer(BDestados),
 			titulo: "Registro de Sobrenombre"
 		});
 	},
 
 	altaGuardarSobrenombre: (req,res) => {
-		res.send("estoy en Guardar Sobrenombre")
+		//res.send("estoy en Guardar Sobrenombre")
+		// Datos del usuario
+		let usuario = req.session.usuario;
+		// Verificar si hay errores en el data entry
+		let validaciones = validationResult(req);
+		// Verificar si existe algún error de validación
+		if (validaciones.errors.length>0) {
+			// Borrar el archivo de imagen guardado
+			if (req.file) {BorrarArchivoDeImagen(req.file.filename)}
+			// Regresar al formulario
+			return res.render('0-Usuarios', {
+				link: req.originalUrl,
+				usuario,
+				errores: validaciones.mapped(),
+				data_entry: req.body,
+				paises: leer(BDpaises),
+				estados: leer(BDestados),
+				Fecha: new Date().toLocaleDateString('es-ES'),
+				Hora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
+				titulo: "Registro de Sobrenombre"
+			});
+		};
+		// Preparar el registro para almacenar
+		let BD = leer(ruta_nombre);
+		let usuarioEnBD = BD.find(n => n.id == usuario.id);
+		let indice = BD.findIndex(n => n.id == usuario.id)
+		const actualizado = {
+			...usuarioEnBD,
+			...req.body,
+			imagen: req.file.filename,
+			Fecha: new Date().toLocaleDateString('es-ES'),
+			Hora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
+			formSobrenombre: true,
+		};
+		// Guardar el registro
+		BD[indice] = actualizado
+		guardar(ruta_nombre, BD);
+		// Actualizar los datos en la sesión
+		req.session.usuario = actualizado;
+		res.redirect("/usuarios/redireccionar");
 	},
 
 	detalle: (req, res) => {
@@ -177,6 +213,7 @@ module.exports = {
 	baja: (req, res) => {
 		let BD = leer(ruta_nombre);
 		let nuevaBD = BD.filter(n => n.id != req.params.id)
+		req.session.destroy();
 		guardar(ruta_nombre, nuevaBD)
 		res.redirect("/");
 	},

@@ -34,4 +34,10 @@
       window.history.back();
   }
 
+  function fileName() {
+    let n = document.getElementById("imagen").value;
+    n = n.slice(n.lastIndexOf('\\')+1);
+    document.getElementById("filename").innerHTML = n;
+  }
+
 </script>

@@ -1,4 +1,4 @@
-<form action="<%= link %>" method="POST">
+<form action="<%= link %>" method="POST" enctype="multipart/form-data">
     <h1><%= titulo %></h1>
     <!--Formulario a completar-->
     <div class="label-input flex-row"><!--Sobrenombre-->
@@ -11,11 +11,11 @@
             <p class="criterio error"><%= errores.sobrenombre.msg %></p>
         <% } %>
     </div>
-    <div class="label-input flex-row"><!--Pais-->
-        <label for="pais">País</label>
+    <div class="label-input flex-row"><!--Pais de residencia-->
+        <label for="pais">País de residencia</label>
         <% let pais=""; if (locals.data_entry) {pais = data_entry.pais} else {if (usuario.formNombre) {pais = usuario.pais}}%>
         <select name="pais" class="input">
-            <option value="" <% if (pais=="") {%> selected <%}%>>Elejí un país</option>
+            <option value="" <% if (pais=="") {%> selected <%}%> style="font-style: italic">Elejí un país</option>
             <% for (n of paises) { %>
                 <option value="<%= n.sigla %>" <% if (pais==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
             <% } %> 
@@ -30,15 +30,10 @@
         <label for="estado">Estado eclesial</label>
         <% let estado=""; if (locals.data_entry) {estado = data_entry.estado} else {if (usuario.formNombre) {estado = usuario.estado}}%>
         <select name="estado" class="input">
-            <option value="" <% if (estado=="") {%> selected <%}%>>Elejí un estado</option>
-            <option value="LA" <% if (pais=="LA") {%> selected <%}%>>Laico</option>
-            <option value="LC" <% if (pais=="LC") {%> selected <%}%>>Laico consagrado</option>
-            <option value="RC" <% if (pais=="AF") {%> selected <%}%>>Religioso consagrado</option>
-            <option value="DP" <% if (pais=="DP") {%> selected <%}%>>Diácono permanente</option>
-            <option value="DI" <% if (pais=="DI") {%> selected <%}%>>Diácono</option>
-            <option value="SC" <% if (pais=="SC") {%> selected <%}%>>Sacerdote</option>
-            <option value="OB" <% if (pais=="OB") {%> selected <%}%>>Obispo</option>
-            <option value="CD" <% if (pais=="CD") {%> selected <%}%>>Cardenal</option>
+            <option value="" <% if (estado=="") {%> selected <%}%> style="font-style: italic">Elejí un estado</option>
+            <% for (n of estados) { %>
+                <option value="<%= n.sigla %>" <% if (estado==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
+            <% } %> 
         </select>
     </div>
     <div class="flex-col">  <!--Error en el Estado eclesial-->
@@ -46,11 +41,22 @@
             <p class="criterio error"><%= errores.estado.msg %></p>
         <% } %>
     </div>
-    <div class="label-input flex-row"><!--Avatar-->
-        <label for="avatar">Imagen personal <br>(opcional)</label>
-
+    <div class="label-input flex-row"><!--Imagen de perfil-->
+        <label>Imagen personal <br>(opcional)</label>
+        <label for="imagen" class="imagen input">
+            <i class="fa fa-cloud-upload"></i>Subí una imagen
+            <p id="filename"></p>
+        </label>
+        <input id="imagen" type="file" name="imagen" onchange="fileName()">
     </div>
-    <div class="flex-col">  <!--Error en el Avatar-->
+    <div class="flex-col">  <!-- Error en la imagen de perfil -->
+        <% if (locals.errores) { %>
+            <% if (errores.imagen) { %>
+                <p class="criterio error"><%= errores.imagen.msg %></p>
+            <% } else { %>
+                <p class="criterio error">Tenés que volver a subir una imagen</p>
+            <% } %>
+        <% } %>
     </div>
     <section id="buttons" class="flex-row"><!--Buttons-->
         <button type="submit">Aceptar</button>

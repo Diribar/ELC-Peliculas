@@ -7,7 +7,7 @@ const cookies = require('cookie-parser'); // Para usar cookies
 
 // ************** Middlewares de Aplicación ***********************
 app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a los archivos de la carpeta public
-app.use(express.urlencoded({ extended: false })); // Para usar archivos en los formularios
+app.use(express.urlencoded({ extended: false })); // Para usar archivos en los formularios (Multer)
 app.use(methodOverride('_method')); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
