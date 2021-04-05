@@ -67,7 +67,7 @@ module.exports = {
 		res.send("Recuperar contraseña")
 	},
 	logout: (req,res) => {
-		res.cleanCookie("email");
+		// res.cleanCookie("email");
 		req.session.destroy();
 		return res.redirect("/");
 	},

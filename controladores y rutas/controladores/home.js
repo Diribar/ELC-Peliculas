@@ -22,7 +22,7 @@ module.exports = {
 		let titulo = pagina.titulo
 		return res.render("0-Home", {
 			pagina,
-			titulo
+			titulo: "Home"
 		})
 	},
 };

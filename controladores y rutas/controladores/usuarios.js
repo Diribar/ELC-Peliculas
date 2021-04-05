@@ -22,7 +22,7 @@ module.exports = {
 	altaFormMail: (req, res) => {
 		return res.render('0-Usuarios', {
 			link: req.originalUrl,
-			usuarioEnBD: null,
+			mailEnBD: null,
 			titulo: "Registro de Mail"
 		});
 	},
@@ -32,13 +32,13 @@ module.exports = {
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
 		let BD = leer(ruta_nombre);
-		let usuarioEnBD = BD.find(n => n.email == req.body.email)
+		let mailEnBD = BD.find(n => n.email == req.body.email)
 		// Verificar si existe algún error de validación
-		if (validaciones.errors.length > 0 || usuarioEnBD) {
+		if (validaciones.errors.length > 0 || mailEnBD) {
 			// Regresar al formulario
 			return res.render('0-Usuarios', {
 				link: req.originalUrl,
-				usuarioEnBD,
+				mailEnBD,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
 				titulo: "Registro de Mail"
@@ -71,7 +71,8 @@ module.exports = {
 		if (!usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
 		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
 		req.session.registroCompleto = true
-		return res.send("Usuario registrado en forma completa");
+		// return res.send("Usuario registrado en forma completa");
+		res.redirect("/")
 	},
 
 	altaFormNombre: (req,res) => {

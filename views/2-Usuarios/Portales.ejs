@@ -1,19 +1,5 @@
 <form action="/registro" method="POST" class="flex-col">
     <h1><%= titulo %></h1>
-    <section id="completar" class="flex-row"><!--Formulario a completar-->
-        <div class="flex-col"><!--Labels-->
-            <label for="nombre">Sobrenombre (opcional)</label>
-            <label for="pais">País donde vive</label>
-        </div>
-        <div class="flex-col"><!--Inputs-->
-            <input type="text" name="nombre" placeholder="Nombre">
-            <select name="pais" >
-                <option value="AR" selected>Argentina</option>
-                <option value="HIS-SI">Otro país de habla hispana</option>
-                <option value="HIS-NO">Otro país de habla no hispana</option>
-            </select>
-        </div>
-    </section>
     <section id="portal" class="flex-col"><!--Portales de películas-->
         <label id="titulo" for="nombre">Portales de películas a los que está abonado:</label>
         <section id="portales" class="flex-row">

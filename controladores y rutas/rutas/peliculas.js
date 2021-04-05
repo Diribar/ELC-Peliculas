@@ -5,22 +5,21 @@ const peliculas = require('../controladores/peliculas')
 const opciones = require('../controladores/peliculas_opciones')
 
 // Middlewares ******************************************************
-const logoutMiddleware = require('../../middlewares/si_esta_logueado_LOGOUT');  // Para prevenir ciertos accesos cuando SI está logueado
-const loginMiddleware = require('../../middlewares/si_no_esta_logueado_LOGIN'); // Para prevenir ciertos accesos cuando NO está logueado
+const soloUsuarios = require('../../middlewares/soloUsuarios'); // Para prevenir ciertos accesos cuando NO está logueado
 
 // Controladores CRUD ***********************************************
-router.get('/nueva', loginMiddleware, peliculas.altaForm);                      // Alta
-router.post('/nueva', loginMiddleware, peliculas.altaGuardar);                  // Alta
+router.get('/nueva', soloUsuarios, peliculas.altaForm);                      // Alta
+router.post('/nueva', soloUsuarios, peliculas.altaGuardar);                  // Alta
 router.get('/detalle/:id', peliculas.detalle);                                  // Detalle
-router.get('/editar/:id', loginMiddleware, peliculas.editarForm);               // Modificar
-router.put('/editar/:id', loginMiddleware, peliculas.editarGuardar);                       // Modificar
-router.delete('/eliminar/:id', loginMiddleware, peliculas.baja);                // Baja
+router.get('/editar/:id', soloUsuarios, peliculas.editarForm);               // Modificar
+router.put('/editar/:id', soloUsuarios, peliculas.editarGuardar);            // Modificar
+router.delete('/eliminar/:id', soloUsuarios, peliculas.baja);                // Baja
 
 // Controladores Opciones *******************************************
 router.get('/', opciones.rubro);                                // Home
 router.get('/:id', opciones.opcion);                            // Opciones
 router.get('/:id/:id', opciones.tipo);                          // Opción: Listado
-router.post('/filtros', opciones.filtros);                      // Filtros
+router.put('/:id/:id', opciones.filtros);                       // Filtros
 
 // Exportarlo *******************************************************
 module.exports = router;

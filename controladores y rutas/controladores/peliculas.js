@@ -6,9 +6,8 @@ const peliculas = require('../../modelos/peliculas');
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function GuardarArchivo(RutaNombre, Contenido) {
-    fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
-function LimpiarNumero(n) {{n.replace(".", "").replace(",", ".").replace("$", "").replace(" ", "")}}
+function guardar(rutaNombre, Contenido) {fs.writeFileSync(rutaNombre, JSON.stringify(Contenido, null, 2))};
+function limpiarNumero(n) {{n.replace(".", "").replace(",", ".").replace("$", "").replace(" ", "")}}
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_BD.json');
@@ -53,7 +52,7 @@ module.exports = {
 	baja: (req, res) => {
 		let BD = leer(ruta_nombre);
 		let nuevaBD = BD.filter(n => n.id != req.params.id)
-		GuardarArchivo(ruta_nombre, nuevaBD)
+		guardar(ruta_nombre, nuevaBD)
 		res.redirect("/");
 	},
 	detalle: (req, res) => {
@@ -70,7 +69,7 @@ module.exports = {
 		// Obtener el contenido actualizado del registro
 		let BD = leer(ruta_nombre);		
 		let registro = BD.find(n => n.id == req.params.id);
-		let ano = LimpiarNumero(req.body.ano);
+		let ano = limpiarNumero(req.body.ano);
 		const reg_actual = {
 			...registro,
 			...req.body,
@@ -85,7 +84,7 @@ module.exports = {
 		let indice = BD.indexOf(registro)
 		BD[indice] = reg_actual
 		// Guardar los cambios
-		GuardarArchivo(ruta_nombre, BD);
+		guardar(ruta_nombre, BD);
 		res.redirect("/peliculas/" + req.params.id);
 	},	
 

@@ -5,14 +5,14 @@ const login = require('../controladores/login')
 
 //************************ Middlewares ******************************
 const validarMail = require('../../middlewares/validarMail');    // Validar mail y contraseña
-const logoutMiddleware = require('../../middlewares/si_esta_logueado_LOGOUT');  // Para prevenir ciertos accesos cuando SI está logueado
-const loginMiddleware = require('../../middlewares/si_no_esta_logueado_LOGIN');  // Para prevenir ciertos accesos cuando NO está logueado
+const soloVisitas = require('../../middlewares/soloVisitas');  // Para prevenir ciertos accesos cuando SI está logueado
+const soloUsuarios = require('../../middlewares/soloUsuarios');  // Para prevenir ciertos accesos cuando NO está logueado
 
 //**************************** Login ********************************
-router.get('/', logoutMiddleware, login.loginForm)
-router.post('/', logoutMiddleware, validarMail, login.loginGuardar)
-router.get('/recuperar-contrasena', logoutMiddleware, login.recupContrForm)
-router.put('/recuperar-contrasena', logoutMiddleware, login.recupContrGuardar)
-router.put('/logout', loginMiddleware, login.logout)
+router.get('/', soloVisitas, login.loginForm)
+router.post('/', soloVisitas, validarMail, login.loginGuardar)
+router.get('/recuperar-contrasena', soloVisitas, login.recupContrForm)
+router.put('/recuperar-contrasena', soloVisitas, login.recupContrGuardar)
+router.get('/logout', soloUsuarios, login.logout)
 
 module.exports = router;
