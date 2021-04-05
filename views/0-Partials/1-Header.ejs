@@ -1,54 +1,62 @@
 <header>
-  <!-- TÍTULO DE LA PESTAÑA -->
-  <title><%= titulo %></title>
+    <!-- Título de la pestaña -->
+    <title><%= titulo %></title>
 
-  <!-- Logo de Home -->
-  <i
-    onclick="desplegable('menu-rubro')"
-    class="boton-desplegable rubro fas fa-home"
-  >
-  </i>
-  <%- include("9-HeaderRubro") %>
+    <!-- Logo de Home -->
+    <i
+        onclick="desplegable('menu-rubro')"
+        class="boton-desplegable fas fa-home icono" id="home"
+    >
+    </i>
+    <%- include("9-HeaderRubro") %>
 
-  <!-- TÍTULO DE LA PÁGINA -->
-  <p><a href="/">Evangelicemos la Cultura</a></p>
+    <!-- Logo de Crear Película -->
+    <% if (titulo.slice(0,9) == "Películas") { %> 
+        <a href="/peliculas/crear">
+            <i class="fas fa-video icono crearProducto"></i>
+            <i class="icono crearProducto" id="plus">+</i>
+        </a>
+    <% } %> 
 
-  <!-- Logo de usuario -->
-  <% if(locals.usuario) { %>
-  <img
-    src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
-    onclick="desplegable('menu-usuario')"
-    class="boton-desplegable"
-    id="imagenUsuario"
-  />
-  <% } else { %>
-  <i
-    onclick="desplegable('menu-usuario')"
-    class="boton-desplegable user-id fas fa-user-circle"
-  >
-  </i>
-  <% } %> <%- include("9-HeaderUsuario") %>
+    <!-- Título del Encabezado -->
+    <p><a href="/">Evangelicemos la Cultura</a></p>
 
-  <!-- MÚSICA DE FONDO PARA ECC -->
-  <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
-  <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
+    <!-- Logo de usuario -->
+    <% if(locals.usuario) { %>
+    <img
+        src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
+        onclick="desplegable('menu-usuario')"
+        class="boton-desplegable"
+        id="imagenUsuario"
+    />
+    <% } else { %>
+    <i
+        onclick="desplegable('menu-usuario')"
+        class="boton-desplegable fas fa-user-circle icono" id="usuario"
+    >
+    </i>
+    <% } %> <%- include("9-HeaderUsuario") %>
+
+    <!-- MÚSICA DE FONDO PARA ECC -->
+    <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+    <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
 </header>
 
 <script>
-  /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-  function desplegable(n) {
-    document.getElementById(n).classList.toggle("mostrar");
-  }
-
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function (event) {
-    if (!event.target.matches(".boton-desplegable")) {
-      let dropdowns = document.getElementsByClassName("dropdown-content");
-      for (let i = 0; i < dropdowns.length; i++) {
-        if (dropdowns[i].classList.contains("mostrar")) {
-          dropdowns[i].classList.remove("mostrar");
-        }
-      }
+    /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+    function desplegable(n) {
+        document.getElementById(n).classList.toggle("mostrar");
     }
-  };
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches(".boton-desplegable")) {
+            let dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                if (dropdowns[i].classList.contains("mostrar")) {
+                dropdowns[i].classList.remove("mostrar");
+                }
+            }
+        }
+    };
 </script>

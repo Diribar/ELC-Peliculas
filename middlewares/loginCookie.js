@@ -7,11 +7,11 @@ let BD = leer(ruta_nombre);
 module.exports = (req,res,next) => {
     // Uso de cookies para identificar al usuario
     if (!req.session.usuario) {
-        if (req.cookies && req.cookies.email) {
-            let usuario = BD.find(n => n.email == req.cookies.email)
-            if (usuario) {req.session.usuario = usuario}
-        }
+        let usuario = BD.find(n => n.email == req.cookies.email)
+        if (usuario) {req.session.usuario = usuario}
     }
+
+    //    return res.send(usuario)
     // Graba a Locals los datos del usuario
     if (req.session.usuario && !res.locals.usuario) {
         res.locals.usuario = req.session.usuario;

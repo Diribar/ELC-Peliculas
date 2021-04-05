@@ -15,6 +15,7 @@ const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_
 // *********** Controlador ***********
 module.exports = {
 	altaForm: (req, res) => {
+		return res.send("Estoy en altaForm")
 		return res.render('formAlta');
 	},
 	altaGuardar: (req, res) => {

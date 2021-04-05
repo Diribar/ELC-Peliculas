@@ -9,8 +9,8 @@ const soloUsuarios = require('../../middlewares/soloUsuarios');  // Para preveni
 const soloAdmin = require('../../middlewares/soloAdmin');        // Para prevenir ciertos accesos cuando NO está logueado
 
 // Controladores CRUD ***********************************************
-router.get('/nueva', soloAdmin, peliculas.altaForm);            // Alta
-router.post('/nueva', peliculas.altaGuardar);                   // Alta
+router.get('/crear', soloAdmin, peliculas.altaForm);            // Alta
+router.post('/crear', peliculas.altaGuardar);                   // Alta
 router.get('/editar/:id', soloAdmin, peliculas.editarForm);     // Modificar
 router.put('/editar/:id', peliculas.editarGuardar);             // Modificar
 router.delete('/eliminar/:id', soloAdmin, peliculas.baja);      // Baja

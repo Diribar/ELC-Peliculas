@@ -62,6 +62,7 @@ module.exports = {
 	},
 
 	tipo: (req, res) => {
+		return res.send("Estoy en Tipo")
 		// Obtener el código de Rubro, Opción, Tipo
 		let url = req.originalUrl.slice(1)
 		let rubro_url = url.slice(0,url.indexOf("/"))

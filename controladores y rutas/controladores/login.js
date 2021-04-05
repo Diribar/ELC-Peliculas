@@ -52,7 +52,7 @@ module.exports = {
 		};
 		// Iniciar la sesión
 		req.session.usuario = usuarioEnBD
-		res.cookie("email", usuarioEnBD.email, {maxAge: 1000*60})
+		res.cookie("email", usuarioEnBD.email, {maxAge: 1000*60*60})
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar")
 	},
@@ -64,7 +64,6 @@ module.exports = {
 		res.send("Recuperar contraseña")
 	},
 	logout: (req,res) => {
-		// res.cleanCookie("email");
 		req.session.usuario = null;
 		res.clearCookie('email');
 		return res.redirect("/");
