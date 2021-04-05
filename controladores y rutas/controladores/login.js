@@ -52,10 +52,7 @@ module.exports = {
 		};
 		// Iniciar la sesión
 		req.session.usuario = usuarioEnBD
-		// Graba una cookie si está tildado 'recordame'
-		//if (req.body.remember) {
-		//	res.cookie("email", req.body.email, {maxAge: 1000*60*2})
-		//};
+		res.cookie("email", usuarioEnBD.email, {maxAge: 1000*60})
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar")
 	},
@@ -68,7 +65,8 @@ module.exports = {
 	},
 	logout: (req,res) => {
 		// res.cleanCookie("email");
-		req.session.destroy();
+		req.session.usuario = null;
+		res.clearCookie('email');
 		return res.redirect("/");
 	},
 };

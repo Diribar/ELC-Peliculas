@@ -1,6 +1,5 @@
-<i onclick="desplegable('menu-login')" class="boton-desplegable fas fa-user-circle user-id"></i>
-<div id="menu-login" class="dropdown-content">
-  <% if (locals.logueado) { %>
+<div id="menu-usuario" class="dropdown-content">
+  <% if (locals.usuario) { %>
     <a href="/usuario/detalle">Ver mi Perfil</a>
     <a href="/login/logout">Logout</a>
   <% } else { %>
@@ -8,20 +7,3 @@
     <a href="/usuario/crear">Registrarse</a>
   <% } %>
 </div>
-
-<script>
-/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-function desplegable(n) {document.getElementById(n).classList.toggle("mostrar");}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.boton-desplegable')) {
-    let dropdowns = document.getElementsByClassName("dropdown-content");
-    for (let i = 0; i < dropdowns.length; i++) {
-      if (dropdowns[i].classList.contains('mostrar')) {
-        dropdowns[i].classList.remove('mostrar');
-      }
-    }
-  }
-}
-</script>

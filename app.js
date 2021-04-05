@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false })); // Para usar archivos en los f
 app.use(methodOverride('_method')); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
-const logueado = require('./middlewares/login_global'); app.use(logueado); // Para ocultar íconos según login (después de "session")
+const usuario = require('./middlewares/loginCookie'); app.use(usuario); // Para ocultar íconos según login (después de "session")
 app.use(cookies());
 
 // *********** Para conectarse con el servidor ********************

@@ -4,15 +4,19 @@ header p {display: flex;justify-content: center;align-items:center;}
 header p a {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
 header p a {color: var(--amarillo-claro);text-decoration: none;}
 
-header .rubro, header .user-id {position: absolute;top:35%; transform:scale(1.6);}
-header .rubro, header .user-id {z-index: 1;color: var(--celeste-claro);}
-header .rubro {left:30px;}
-header .user-id {right:30px;}
+header .rubro, header .user-id, header #imagenUsuario {position: absolute; }
+header .rubro, header .user-id {color: var(--celeste-claro); transform:scale(1.8); top:40%;}
+header .rubro {left:40px;}
+header .user-id {right:40px;}
+header #imagenUsuario {right:30px;}
+header #imagenUsuario {height: 80%;border-radius: 100%; top: 10%; border: 1.5px solid white;}
 
-/* Menú de Login */
-header #menu-login {position: absolute;right: 20px;top: 45px;}
-header #menu-login {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
-header #menu-login a {padding: 8px 16px;text-decoration: none; display: block;}
+/* Menús de Usuario y Rubro */
+header .dropdown-content {position: absolute;top: 55px;}
+header .dropdown-content {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
+header .dropdown-content a {padding: 8px 16px;text-decoration: none; display: block;}
+header #menu-usuario {right: 20px;}
+header #menu-rubro {left: 20px;}
 
 /* Footer */
 footer {justify-content: space-around;}
