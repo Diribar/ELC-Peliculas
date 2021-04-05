@@ -72,7 +72,11 @@ module.exports = {
 		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
 		req.session.registroCompleto = true
 		// return res.send("Usuario registrado en forma completa");
-		res.redirect("/")
+		return res.redirect("/")
+		//return res.send([
+		//	res.locals.urlAnterior,
+		//	res.locals
+		//])
 	},
 
 	altaFormNombre: (req,res) => {
