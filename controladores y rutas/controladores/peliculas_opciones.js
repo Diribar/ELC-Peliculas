@@ -27,7 +27,7 @@ module.exports = {
 		// Definir variables a enviar a la vista
 		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
-		res.render('10-PEL-Opciones', {
+		res.render('0-PEL-Opciones', {
 			titulo,
 			rubro_url,
 			opcion_url,
@@ -51,7 +51,7 @@ module.exports = {
 		// Definir variables a enviar a la vista
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		// Ir a la vista
-		res.render('10-PEL-Opciones', {
+		res.render('0-PEL-Opciones', {
 			titulo,
 			rubro_url,
 			opcion_url,
@@ -76,7 +76,7 @@ module.exports = {
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		let tipo_objeto = tipos_BD.find(n => n.codigo == tipo_url);
 		// Ir a la vista
-		res.render('10-PEL-Opciones', {
+		res.render('0-PEL-Opciones', {
 			titulo,
 			rubro_url,
 			opcion_url,

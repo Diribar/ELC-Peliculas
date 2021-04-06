@@ -4,16 +4,22 @@
 
     <div>  <!-- Logo de Home -->
         <i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono" id="home"></i>
-        <%- include("9-HeaderRubro") %>    
+        <%- include("HeaderRubro") %>    
     </div>
 
     <div>  <!-- Logo de Crear Película -->
-        <% if (titulo.slice(0,9) == "Películas") { %> 
+        <% if (titulo.slice(0,9) == "Películas") { %>
             <a href="/peliculas/crear">
-                <i class="fas fa-video icono crearProducto"></i>
-                <i class="icono crearProducto" id="plus">+</i>
+                <i class="fas fa-video icono"></i>
+                <i class="icono" id="plus">+</i>
             </a>
-        <% } %> 
+        <% } %>
+    </div>
+
+    <div>  <!-- Menú de Película -->
+        <% if (titulo.slice(0,4) == "PEL-") { %>
+            <i onclick="desplegable('menu-pelis')" class="fas fa-video icono"></i>
+        <% } %>
     </div>
 
     <div>  <!-- Título del Encabezado -->
@@ -35,7 +41,7 @@
             >
             </i>
         <% } %>
-        <%- include("9-HeaderUsuario") %>
+        <%- include("HeaderUsuario") %>
     </div>    
 
     <!-- MÚSICA DE FONDO PARA ECC -->

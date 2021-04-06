@@ -27,8 +27,8 @@ app.set('views', [
     path.resolve(__dirname, './views/0-Partials'),
     path.resolve(__dirname, './views/1-Home'),
     path.resolve(__dirname, './views/2-Usuarios'),
-    path.resolve(__dirname, './views/3-1PEL-Opciones'),
-    path.resolve(__dirname, './views/3-2PEL-CRUD'),
+    path.resolve(__dirname, './views/3-PEL-Opciones'),
+    path.resolve(__dirname, './views/3-PEL-CRUD'),
 ]);
 
 // ************************* Rutas ********************************

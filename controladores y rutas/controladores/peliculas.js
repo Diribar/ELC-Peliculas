@@ -35,7 +35,7 @@ module.exports = {
 		let BD = leer(ruta_nombre_pelis);
 		let producto = BD.find(n => n.id == IDpeli);
 		// Ir a la vista
-		return res.render('10-PEL-CRUD', {
+		return res.render('0-PEL-CRUD', {
 			detalle,
 			producto,
 			BDdetalle,
