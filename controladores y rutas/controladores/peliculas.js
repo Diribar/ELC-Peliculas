@@ -1,21 +1,18 @@
 // ************ Requires ************
 const fs = require('fs');
 const path = require('path')
-const {validationResult} = require('express-validator');
-const peliculas = require('../../modelos/peliculas');
-
-// ************ Funciones ************
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function guardar(rutaNombre, Contenido) {fs.writeFileSync(rutaNombre, JSON.stringify(Contenido, null, 2))};
-function limpiarNumero(n) {{n.replace(".", "").replace(",", ".").replace("$", "").replace(" ", "")}}
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_BD.json');
 
+// ************ Funciones ************
+function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
+
 // *********** Controlador ***********
 module.exports = {
 	altaForm: (req, res) => {
-		return res.redirect("/peliculas/editar/1")
+		return res.redirect("/peliculas/detalle/1")
 		return res.render('formAlta');
 	},
 
@@ -24,7 +21,13 @@ module.exports = {
 	},
 
 	detalle: (req, res) => {
-		return res.send("Estoy en detalle")
+		let BD = leer(ruta_nombre);
+		let producto = BD.find(n => n.id == req.params.id);
+		return res.render('10-PEL-CRUD', {
+			producto,
+			opcion_objeto: {"grupo": "CRUD"},
+			titulo: "Películas - Detalle"
+		});
 	},
 	editarForm: (req, res) => {
 		return res.send("Estoy en editarForm")

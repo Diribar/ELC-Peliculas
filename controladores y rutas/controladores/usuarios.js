@@ -19,6 +19,21 @@ function borrarArchivoDeImagen(n) {let imageFile = path.join(imagesPath, n);if (
 // *********** Controlador ***********
 module.exports = {
 
+	redireccionar: (req,res) => {
+		let usuario = req.session.usuario;		
+		// Redireccionar
+		// if !usuarioEnBD.activo {}
+		if (!usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
+		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
+		req.session.registroCompleto = true
+		// return res.send("Usuario registrado en forma completa");
+		return res.redirect("/")
+		//return res.send([
+		//	res.locals.urlAnterior,
+		//	res.locals
+		//])
+	},
+
 	altaFormMail: (req, res) => {
 		return res.render('0-Usuarios', {
 			link: req.originalUrl,
@@ -62,21 +77,6 @@ module.exports = {
 		req.session.usuario = nuevoUsuario;
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
-	},
-
-	redireccionar: (req,res) => {
-		let usuario = req.session.usuario;		
-		// Redireccionar
-		// if !usuarioEnBD.activo {}
-		if (!usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
-		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
-		req.session.registroCompleto = true
-		// return res.send("Usuario registrado en forma completa");
-		return res.redirect("/")
-		//return res.send([
-		//	res.locals.urlAnterior,
-		//	res.locals
-		//])
 	},
 
 	altaFormNombre: (req,res) => {

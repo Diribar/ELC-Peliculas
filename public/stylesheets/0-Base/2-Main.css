@@ -3,7 +3,7 @@ main.flex-row {flex-direction: row-reverse;}
 main #main-y-footer {flex-direction: column-reverse;justify-content:space-between;}
 
 /* CONFIGURAR IMAGEN */
-#sagrada-familia img {height: 100%;}
+#imagen-derecha img {height: 100%;}
 
 /* ESTILOS Y CLASES */
 main h1 {font-size: 16px;margin: 0px;}

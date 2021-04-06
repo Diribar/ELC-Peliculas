@@ -17,7 +17,7 @@ body {--Arial: Arial, Helvetica, sans-serif}
 
 /* ALTURAS DE HEADER Y MAIN */
 header p {height: 10vh;}
-main, main #sagrada-familia {height:90vh;}
+main, main #imagen-derecha {height:90vh;}
 
 /* ESTILOS Y CLASES */
 .flex-col {display: flex;flex-direction: column;}

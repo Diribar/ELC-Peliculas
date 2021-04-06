@@ -21,7 +21,7 @@ module.exports = {
 		// Obtener el título
 		let rubros_BD = leer(ruta_nombre_rubros);
 		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
-		let opcion_objeto= {"grupo": "Opciones"};
+		let opcion_objeto = {"grupo": "Opciones"};
 		let titulo = rubro_objeto.titulo;
 		// Definir variables a enviar a la vista
 		let opciones_BD = leer(ruta_nombre_opciones);
@@ -62,7 +62,6 @@ module.exports = {
 	},
 
 	tipo: (req, res) => {
-		return res.send("Estoy en Tipo")
 		// Obtener el código de Rubro, Opción, Tipo
 		let url = req.originalUrl.slice(1)
 		let rubro_url = url.slice(0,url.indexOf("/"))

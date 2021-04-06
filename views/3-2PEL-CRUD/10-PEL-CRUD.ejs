@@ -2,10 +2,18 @@
 <body>
   <%- include('1-Header') %>
   <main class="flex-row">
-    <%- include('9-ImagenDerecha') %>
+    <section id="imagen-derecha">
+      <img alt="<%= producto.titulo_ES %>" src="/images/3-Peliculas/<%= producto.imagen %>" title="<%= producto.titulo_ES %>">
+    </section>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
       <!--**************************** CUERPO ************************-->
+      <section class="cuerpo">
+        <p><button class="titulo"><%= producto.titulo_ES %> </button></p>
+        <div>
+          <a href="/peliculas"><p><button class="subtitulo activo">Películas</button></p></a>
+        </div>
+      </section>
       <!--****************************** FIN *************************-->
     </section>
   </main>
