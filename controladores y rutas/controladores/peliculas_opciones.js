@@ -75,7 +75,6 @@ module.exports = {
 		// Obtener el tipo_objeto
 		let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
 		let tipo_objeto = tipos_BD.find(n => n.codigo == tipo_url);
-		// Definir variables a enviar a la vista
 		// Ir a la vista
 		res.render('10-PEL-Opciones', {
 			titulo,

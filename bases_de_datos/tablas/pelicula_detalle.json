@@ -14,24 +14,24 @@
         "grupo": "Detalle"
     },
     {
-        "titulo": "PEL-Verla",
-        "nombre": "Ver la Película",
-        "codigo": "detalle/verla",
-        "vista": "informacion",
+        "titulo": "PEL-Mirarla",
+        "nombre": "Mirar la Película",
+        "codigo": "detalle/mirar",
+        "vista": "mirar",
         "grupo": "Detalle"
     },
     {
-        "titulo": "PEL-Calificala",
-        "nombre": "Calificala",
+        "titulo": "PEL-Calificar",
+        "nombre": "Calificar",
         "codigo": "detalle/calificar",
-        "vista": "informacion",
+        "vista": "calificar",
         "grupo": "Detalle"
     },
     {
         "titulo": "PEL-Editar",
         "nombre": "Editar",
         "codigo": "editar",
-        "vista": "informacion",
+        "vista": "editar",
         "grupo": ""
     },
     {

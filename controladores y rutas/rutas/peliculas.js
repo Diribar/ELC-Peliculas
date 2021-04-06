@@ -13,8 +13,8 @@ router.get('/crear', soloAdmin, peliculas.altaForm);            // Alta
 router.post('/crear', peliculas.altaGuardar);                   // Alta
 router.get('/editar/:id', soloAdmin, peliculas.editarForm);     // Modificar
 router.put('/editar/:id', peliculas.editarGuardar);             // Modificar
-router.delete('/eliminar/:id', soloAdmin, peliculas.baja);      // Baja
-router.get('/detalle/:id', peliculas.detalle);                  // Detalle
+router.get('/eliminar/:id', soloAdmin, peliculas.baja);         // Baja
+router.get('/detalle/:id/:id', peliculas.detalle);              // Detalle
 
 // Controladores Opciones *******************************************
 router.get('/', opciones.rubro);                                // Home

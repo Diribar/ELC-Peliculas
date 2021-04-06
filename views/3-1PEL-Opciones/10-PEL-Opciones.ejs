@@ -16,7 +16,7 @@
         <section id="zona-de-pelis" class="flex-col grow">
           <!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
           <select name="" onchange="location = this.value;" class="titulo">
-            <% if (!opcion_url) { %><option>Elegí una opción</option><% } %> 
+            <% if (!opcion_url) { %><option style="font-style: italic">Elegí una opción</option><% } %> 
             <% for (let n of opciones_BD) { %>
               <option 
                 value="/<%= rubro_url %>/<%= n.codigo %>"
@@ -29,7 +29,7 @@
           <!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
           <% if (opcion_url) { %>
             <select name="" onchange="location = this.value;" class="subtitulo">
-              <% if (!tipo_url) { %><option>Elegí una opción</option><% } %>
+              <% if (!tipo_url) { %><option style="font-style: italic">Elegí una opción</option><% } %>
               <% for (let n of tipos_BD) { %>
                 <option 
                   value="/<%= rubro_url %>/<%= opcion_url %>/<%= n.codigo %>"
