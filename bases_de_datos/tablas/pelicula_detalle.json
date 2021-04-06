@@ -1,0 +1,44 @@
+[
+    {
+        "titulo": "PEL-Detalle",
+        "nombre": "Información General",
+        "codigo": "detalle/informacion",
+        "vista": "informacion",
+        "grupo": "Detalle"
+    },
+    {
+        "titulo": "PEL-Trailer",
+        "nombre": "Ver el Trailer",
+        "codigo": "detalle/trailer",
+        "vista": "trailer",
+        "grupo": "Detalle"
+    },
+    {
+        "titulo": "PEL-Verla",
+        "nombre": "Ver la Película",
+        "codigo": "detalle/verla",
+        "vista": "informacion",
+        "grupo": "Detalle"
+    },
+    {
+        "titulo": "PEL-Calificala",
+        "nombre": "Calificala",
+        "codigo": "detalle/calificar",
+        "vista": "informacion",
+        "grupo": "Detalle"
+    },
+    {
+        "titulo": "PEL-Editar",
+        "nombre": "Editar",
+        "codigo": "editar",
+        "vista": "informacion",
+        "grupo": ""
+    },
+    {
+        "titulo": "PEL-Eliminar",
+        "nombre": "Eliminar",
+        "codigo": "eliminar",
+        "vista": "eliminar",
+        "grupo": ""
+    }
+]

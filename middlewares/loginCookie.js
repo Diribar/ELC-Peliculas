@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-const ruta_nombre = path.join(__dirname, '../bases_de_datos/tablas/usuarios.json');
+const ruta_nombre = path.join(__dirname, '../bases_de_datos/tablas/BDusuarios.json');
 let BD = leer(ruta_nombre);
 
 module.exports = (req,res,next) => {

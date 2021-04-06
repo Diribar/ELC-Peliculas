@@ -6,13 +6,14 @@ const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // ************ Variables ************
-const ruta_nombre_rubros = path.join(__dirname, '../../bases_de_datos/tablas/ECC_rubros.json');
+const ruta_nombre_rubros = path.join(__dirname, '../../bases_de_datos/tablas/BDrubros.json');
 const ruta_nombre_opciones = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_opciones.json');
 const ruta_nombre_tipos = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_tipos.json');
-const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/peliculas_BD.json');
+const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
 
 // *********** Controlador ***********
 module.exports = {
+
 	rubro: (req,res) => {
 		// Obtener el código del rubro elegido (peliculas, etc.)
 		let rubro_url = req.originalUrl.slice(1)

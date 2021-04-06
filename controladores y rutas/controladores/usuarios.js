@@ -5,9 +5,9 @@ const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
 
 // ************ Variables ************
-const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/usuarios.json');
-const BDpaises = path.join(__dirname, '../../bases_de_datos/tablas/paises.json');
-const BDestados = path.join(__dirname, '../../bases_de_datos/tablas/estado_eclesial.json');
+const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/BDusuarios.json');
+const BDpaises = path.join(__dirname, '../../bases_de_datos/tablas/BDpaises.json');
+const BDestados = path.join(__dirname, '../../bases_de_datos/tablas/BDestado_eclesial.json');
 const imagesPath = path.join(__dirname, "../public/images/users/");
 
 // ************ Funciones ************

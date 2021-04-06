@@ -3,15 +3,18 @@
   <%- include('1-Header') %>
   <main class="flex-row">
     <section id="imagen-derecha">
-      <img alt="<%= producto.titulo_ES %>" src="/images/3-Peliculas/<%= producto.imagen %>" title="<%= producto.titulo_ES %>">
+      <img alt="<%= producto.titulo_traducido %>" src="/images/3-Peliculas/<%= producto.imagen %>" title="<%= producto.titulo_traducido %>">
     </section>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
       <!--**************************** CUERPO ************************-->
       <section class="cuerpo">
-        <p><button class="titulo"><%= producto.titulo_ES %> </button></p>
-        <div>
-          <a href="/peliculas"><p><button class="subtitulo activo">Películas</button></p></a>
+        <p><button class="titulo"><%= producto.titulo_traducido %> </button></p>
+        <div class="flex-row">
+          <a href="/peliculas"><button class="subtitulo activo">Información General</button></a>
+          <a href="/peliculas"><button class="subtitulo activo">Ver el Trailer</button></a>
+          <a href="/peliculas"><button class="subtitulo activo">Ver la Pelicula</button></a>
+          <a href="/peliculas"><button class="subtitulo activo">Calificala</button></a>
         </div>
       </section>
       <!--****************************** FIN *************************-->
