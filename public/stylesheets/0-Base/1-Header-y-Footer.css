@@ -7,6 +7,7 @@ header p a {color: var(--amarillo-claro);text-decoration: none;}
 /* Íconos de Usuario, Rubro y Servicio */
 header .icono, header #imagenUsuario {position: absolute;}
 header .icono {color: var(--celeste-claro); transform:scale(1.8); top:40%;}
+
 /* Íconos a la izquierda */
 header #home {left:40px;}
 header .fa-video {left: 102px}
@@ -23,8 +24,6 @@ header .dropdown-content {border-radius: 10px; background-color: var(--gris-clar
 header .dropdown-content a {padding: 8px 16px;text-decoration: none; display: block;}
 header #menu-usuario {right: 20px;}
 header #menu-rubro {left: 20px;}
-
-
 
 /* Footer */
 footer {justify-content: space-around;}

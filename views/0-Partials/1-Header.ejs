@@ -1,41 +1,42 @@
 <header>
-    <!-- Título de la pestaña -->
-    <title><%= titulo %></title>
 
-    <!-- Logo de Home -->
-    <i
-        onclick="desplegable('menu-rubro')"
-        class="boton-desplegable fas fa-home icono" id="home"
-    >
-    </i>
-    <%- include("9-HeaderRubro") %>
+    <title><%= titulo %></title>  <!-- Título de la pestaña -->
 
-    <!-- Logo de Crear Película -->
-    <% if (titulo.slice(0,9) == "Películas") { %> 
-        <a href="/peliculas/crear">
-            <i class="fas fa-video icono crearProducto"></i>
-            <i class="icono crearProducto" id="plus">+</i>
-        </a>
-    <% } %> 
+    <div>  <!-- Logo de Home -->
+        <i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono" id="home"></i>
+        <%- include("9-HeaderRubro") %>    
+    </div>
 
-    <!-- Título del Encabezado -->
-    <p><a href="/">Evangelicemos la Cultura</a></p>
+    <div>  <!-- Logo de Crear Película -->
+        <% if (titulo.slice(0,9) == "Películas") { %> 
+            <a href="/peliculas/crear">
+                <i class="fas fa-video icono crearProducto"></i>
+                <i class="icono crearProducto" id="plus">+</i>
+            </a>
+        <% } %> 
+    </div>
 
-    <!-- Logo de usuario -->
-    <% if(locals.usuario) { %>
-    <img
-        src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
-        onclick="desplegable('menu-usuario')"
-        class="boton-desplegable"
-        id="imagenUsuario"
-    />
-    <% } else { %>
-    <i
-        onclick="desplegable('menu-usuario')"
-        class="boton-desplegable fas fa-user-circle icono" id="usuario"
-    >
-    </i>
-    <% } %> <%- include("9-HeaderUsuario") %>
+    <div>  <!-- Título del Encabezado -->
+        <p><a href="/">Evangelicemos la Cultura</a></p>
+    </div>
+
+    <div>  <!-- Logo de usuario o avatar -->
+        <% if(locals.usuario) { %>
+            <img
+                src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
+                onclick="desplegable('menu-usuario')"
+                class="boton-desplegable"
+                id="imagenUsuario"
+            >
+        <% } else { %>
+            <i
+                onclick="desplegable('menu-usuario')"
+                class="boton-desplegable fas fa-user-circle icono" id="usuario"
+            >
+            </i>
+        <% } %>
+        <%- include("9-HeaderUsuario") %>
+    </div>    
 
     <!-- MÚSICA DE FONDO PARA ECC -->
     <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
