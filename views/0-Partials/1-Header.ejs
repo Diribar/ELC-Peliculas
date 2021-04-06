@@ -19,8 +19,8 @@
     <div>  <!-- Logo de Menú de Película -->
         <% if (titulo.slice(0,4) == "PEL-") { %>
             <i onclick="desplegable('menu-pelis')" class="boton-desplegable fas fa-video icono"></i>
+            <%- include("HeaderPelis") %>
         <% } %>
-        <%- include("HeaderPelis") %>
     </div>
 
     <div>  <!-- Título del Encabezado -->

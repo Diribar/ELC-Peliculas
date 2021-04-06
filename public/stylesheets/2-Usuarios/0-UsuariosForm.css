@@ -21,7 +21,7 @@
 #usuariosForm form label {color: white; margin-right: 20px; }
 #usuariosForm form label, #usuariosForm form .input {text-align: left;}
 #usuariosForm form .criterio {margin: 5px auto 0px;font-style: italic;}
-#usuariosForm form .criterio {align-items: center;}
+#usuariosForm form .criterio {align-items: center; text-align: center;}
 #usuariosForm form .criterio {color:var(--celeste-claro);border-radius: 7px;}
 #usuariosForm form .error {background-color: tomato; color: white;padding: 2px 7px;}
 
@@ -32,5 +32,5 @@
 #usuariosForm form #buttons button {font-size: 1.1rem;font-weight: bold;color:white;}
 #usuariosForm form #buttons button {border: solid 2px var(--amarillo-claro);border-radius: 7px;}
 #usuariosForm form #buttons button[type="submit"] {background-color: var(--verde);}
-#usuariosForm form #buttons button[type="button"] {background-color: var(--rojo);}
-#usuariosForm form #buttons button#registrarse {background-color: var(--azul);}
+#usuariosForm form #buttons button[type="button"] {background-color: var(--azul);}
+#usuariosForm form #buttons button#cancelar {background-color: var(--rojo);}

@@ -37,16 +37,15 @@
     <br>
     <section class="flex-col">   <!--Credenciales Inválidas-->
         <% if (!errorEnDataEntry && credencialesInvalidas) { %>
-            <p class="criterio error">El e-mail y/o la contraseña </p>
-            <p class="criterio error">no figuran en nuestra base de datos</p>
+            <p class="criterio error">El e-mail y/o la contraseña<br>no figuran en nuestra base de datos</p>
         <% } %>
     </section>
     <section id="buttons" class="flex-row"><!--Botones-->
         <button type="submit">Aceptar</button>
-        <a href="/usuarios/registro-mail" ><button type="button" id="registrarse">No estoy registrado</button></a>
+        <a href="/usuarios/registro-mail" ><button type="button">No estoy registrado</button></a>
     </section>
     <section id="buttons" class="flex-row"><!--Botones-->
-        <button onclick="retroceder()" type="button">Cancelar</button>
+        <button onclick="retroceder()" type="button" id="cancelar">Cancelar</button>
         <a href="#"><button type="button">Olvidé mi contraseña</button></a>
         </div>
     </section>
