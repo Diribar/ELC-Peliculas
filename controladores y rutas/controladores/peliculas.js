@@ -38,20 +38,18 @@ module.exports = {
 		return res.render('0-PEL-CRUD', {
 			detalle,
 			producto,
-			BDdetalle,
+			IDpeli,
 			opcion_objeto: {"grupo": "CRUD"},
 			titulo
 		});
-	},
-	editarForm: (req, res) => {
-		return res.send("Estoy en editarForm")
 	},
 
 	editarGuardar: (req, res) => {
 		return res.send("Estoy en editarGuardar")
 	},
 	
-	baja: (req, res) => {
-		return res.send("Estoy en baja")
+	bajaGuardar: (req, res) => {
+		return res.send("Estoy en bajaGuardar")
 	},
+
 };

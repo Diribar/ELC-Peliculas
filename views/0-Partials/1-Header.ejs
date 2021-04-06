@@ -3,8 +3,8 @@
     <title><%= titulo %></title>  <!-- Título de la pestaña -->
 
     <div>  <!-- Logo de Home -->
-        <i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono" id="home"></i>
-        <%- include("HeaderRubro") %>    
+        <i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono"></i>
+        <%- include("HeaderRubro") %>
     </div>
 
     <div>  <!-- Logo de Crear Película -->
@@ -16,10 +16,11 @@
         <% } %>
     </div>
 
-    <div>  <!-- Menú de Película -->
+    <div>  <!-- Logo de Menú de Película -->
         <% if (titulo.slice(0,4) == "PEL-") { %>
-            <i onclick="desplegable('menu-pelis')" class="fas fa-video icono"></i>
+            <i onclick="desplegable('menu-pelis')" class="boton-desplegable fas fa-video icono"></i>
         <% } %>
+        <%- include("HeaderPelis") %>
     </div>
 
     <div>  <!-- Título del Encabezado -->
@@ -37,7 +38,7 @@
         <% } else { %>
             <i
                 onclick="desplegable('menu-usuario')"
-                class="boton-desplegable fas fa-user-circle icono" id="usuario"
+                class="boton-desplegable fas fa-user-circle icono"
             >
             </i>
         <% } %>

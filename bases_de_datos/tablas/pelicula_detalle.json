@@ -30,14 +30,14 @@
     {
         "titulo": "PEL-Editar",
         "nombre": "Editar",
-        "codigo": "editar",
+        "codigo": "detalle/editar",
         "vista": "editar",
         "grupo": ""
     },
     {
         "titulo": "PEL-Eliminar",
         "nombre": "Eliminar",
-        "codigo": "eliminar",
+        "codigo": "detalle/eliminar",
         "vista": "eliminar",
         "grupo": ""
     }
