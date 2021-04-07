@@ -89,7 +89,7 @@ module.exports = {
 	},
 
 	filtros: (req,res) => {
-		return res.send("Filtros")
+		return res.send("PEL-Filtros")
 		//	let user_entry = req.query;
 		//	let results = [];
 		//	for (let i=0; i < pelis.length; i++) {

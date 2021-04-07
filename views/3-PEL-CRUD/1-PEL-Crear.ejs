@@ -1,1 +1,21 @@
-<p>CREAR</p>
+<%- include('0-Head') %>
+<body>
+  <%- include('1-Header') %>
+  <main class="flex-row">
+    <section id="imagen-derecha">
+      <img alt="Introduzca aquí la imagen" src="/images/0-Base/Sin película.jpg" title="Introduzca aquí la imagen">
+    </section>
+    <section id="main-y-footer" class="flex-col grow">
+      <%- include('3-Footer') %>
+      <!--**************************** CUERPO ************************-->
+      <section class="cuerpo flex-col">
+        <button class="titulo">Dar de alta una película</button>
+        <form action="/peliculas/crear" method="POST">
+            <%- include('1-PEL-CrearForm') %>
+        </form>
+    </section>
+      <!--****************************** FIN *************************-->
+    </section>
+  </main>
+</body>
+</html>

@@ -3,21 +3,21 @@
         "titulo": "Listado",
         "nombre": "Listado de Películas",
         "codigo": "listado",
-        "vista": "1-Listado",
+        "vista": "1-PEL-Listado",
         "grupo": "Opciones"
     },
     {
         "titulo": "CFC",
-        "nombre": "Películas Centradas en la Fe Católica",
+        "nombre": "Un paseo por CFC",
         "codigo": "cfc",
-        "vista": "2-CFC",
+        "vista": "2-PEL-CFC",
         "grupo": "Opciones"
     },
     {
         "titulo": "VPC",
-        "nombre": "Películas con Valores Presentes en la Cultura",
+        "nombre": "Un paseo por VPC",
         "codigo": "vpc",
-        "vista": "3-VPC",
+        "vista": "3-PEL-VPC",
         "grupo": "Opciones"
     }
 ]

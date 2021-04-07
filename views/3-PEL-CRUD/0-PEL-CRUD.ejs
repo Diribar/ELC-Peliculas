@@ -11,12 +11,12 @@
       <section class="cuerpo flex-col">
         <button class="titulo"><%= producto.titulo_traducido %></button>
         <button class="subtitulo activo"><%= detalle.nombre %> </button>
-        <%- detalle.nombre.includes("Información") ? include('2-Informacion') : "" %>
-        <%- detalle.nombre.includes("Trailer") ?     include('3-Trailer') : "" %>
-        <%- detalle.nombre.includes("Película") ?    include('4-Pelicula') : "" %>
-        <%- detalle.nombre.includes("Calific") ?     include('5-Calificala') : "" %>
-        <%- detalle.nombre.includes("Editar") ?      include('6-Editar') : "" %>
-        <%- detalle.nombre.includes("Eliminar") ?    include('7-Eliminar') : "" %>
+        <%- detalle.nombre.includes("Información") ? include('2-PEL-Informacion') : "" %>
+        <%- detalle.nombre.includes("Trailer") ?     include('3-PEL-Trailer') : "" %>
+        <%- detalle.nombre.includes("Película") ?    include('4-PEL-Pelicula') : "" %>
+        <%- detalle.nombre.includes("Calific") ?     include('5-PEL-Calificala') : "" %>
+        <%- detalle.nombre.includes("Editar") ?      include('7-PEL-Editar') : "" %>
+        <%- detalle.nombre.includes("Eliminar") ?    include('8-PEL-Eliminar') : "" %>
       </section>
       <!--****************************** FIN *************************-->
     </section>

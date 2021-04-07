@@ -8,10 +8,10 @@
 <!--**************************** CUERPO ******************************-->
       <section id="usuariosForm" class="flex-col">
         <p id="tapar-el-fondo"></p>
-        <%- titulo == "Login"              ? include('1-5LoginForm') : "" %>
-        <%- titulo == "Registro de Mail"   ? include('1-1RegistroMailForm') : "" %>
-        <%- titulo == "Registro de Nombre" ? include('1-2RegistroNombreForm') : "" %>
-        <%- titulo == "Registro de Sobrenombre" ? include('1-3RegistroSobrenombreForm') : "" %>
+        <%- titulo == "Login"              ? include('LoginForm') : "" %>
+        <%- titulo == "Registro de Mail"   ? include('1-RegistroMailForm') : "" %>
+        <%- titulo == "Registro de Nombre" ? include('2-RegistroNombreForm') : "" %>
+        <%- titulo == "Registro de Sobrenombre" ? include('3-RegistroSobrenombreForm') : "" %>
       </section>
       <!--****************************** FIN *******************************-->
     </section>

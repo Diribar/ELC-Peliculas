@@ -1,6 +1,6 @@
 /* FORMATO PARA MOBILE */
 @media (max-width: 450px) {header p {font-size: xx-large;}}
-@media (max-width: 768px) {main #imagen-derecha {display:none}}
+@media (max-width: 1199px) {main #imagen-derecha {display:none}}
 
 /* FORMATO PARA TABLET */
 @media (min-width: 768px) {}

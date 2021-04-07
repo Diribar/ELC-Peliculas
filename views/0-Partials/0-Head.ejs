@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/stylesheets/0-Base/0-Body.css">
     <link rel="stylesheet" href="/stylesheets/0-Base/1-Header-y-Footer.css">
     <link rel="stylesheet" href="/stylesheets/0-Base/2-Main.css">
-    <link rel="stylesheet" href="/stylesheets/0-Base/3-MEDIA-QUERIES.css">
+    <link rel="stylesheet" href="/stylesheets/0-Base/3-Media-Queries.css">
     <!---<link rel="stylesheet" href="/stylesheets/0-Base/imprimir.css" media="print">-->
 
     <!--ESTILOS PERSONALIZADOS POR PÁGINA-->
@@ -25,13 +25,13 @@
     <% if (titulo == "Quiénes Somos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/4-Quienes-Somos.css"> <% } %>
     <% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Home/5-Contactanos.css"> <% } %>
     <% if (titulo == "Login" || titulo.slice(0, 8) == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosForm.css"> <% } %>
-    <% if (titulo == "Registro de Mail" || titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-1RegistroMailForm.css"> <% } %>
-    <% if (titulo == "Registro de Nombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-2RegistroNombreForm.css"> <% } %>
-    <% if (titulo == "Registro de Sobrenombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-2RegistroSobrenombreForm.css"> <% } %>
+    <% if (titulo == "Registro de Mail" || titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-RegistroMailForm.css"> <% } %>
+    <% if (titulo == "Registro de Nombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/2-RegistroNombreForm.css"> <% } %>
+    <% if (titulo == "Registro de Sobrenombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/3-RegistroSobrenombreForm.css"> <% } %>
     <% if (titulo.slice(0,9) == "Películas") { %>
-        <% if (opcion_objeto.grupo == "Opciones") { %>
+        <% if (opcion_objeto && opcion_objeto.grupo == "Opciones") { %>
             <link rel="stylesheet" href="/stylesheets/3-Peliculas/0-PEL-Opciones.css">
-            <link rel="stylesheet" href="/stylesheets/3-Peliculas/Filtros.css">
+            <link rel="stylesheet" href="/stylesheets/3-Peliculas/PEL-Filtros.css">
         <% } %>
     <% } %> 
 

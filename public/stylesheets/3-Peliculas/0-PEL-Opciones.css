@@ -5,7 +5,8 @@
 .cuerpo #contador-de-peliculas {font-size: 20px;font-weight: bold;}
 
 /* CRITERIO PARA MOSTRAR (LISTADO-ECC-VPC) */
-.cuerpo #zona-de-pelis {align-items:flex-start;border: red 2px solid;}
+.cuerpo #zona-de-pelis {align-items:flex-start;}
+/*.cuerpo #zona-de-pelis{border: red 2px solid;}
 
 /* Menú de Opciones */
 .cuerpo #menu-opciones {margin-left: 40px;}
