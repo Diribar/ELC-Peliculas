@@ -13,5 +13,5 @@ main .cuerpo {align-items:flex-start; position: relative;}
 main .margen-izquierdo {margin-left: 40px;}
 
 main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; font-weight: bold;}
-main .cuerpo .titulo {font-family: var(--Arial);font-size: 18px; background-color:var(--amarillo-claro); margin-top: 40px;}
-main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color:var(--azul); margin-top: 30px;}
+main .cuerpo .titulo {font-family: var(--Arial);font-size: 18px; background-color: var(--amarillo-claro); margin-top: 30px;}
+main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul); margin-top: 30px;}
