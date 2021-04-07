@@ -12,12 +12,6 @@ main h1 {font-size: 16px;margin: 0px;}
 main .cuerpo {align-items:flex-start;}
 main .cuerpo {position: relative;}
 
-main .cuerpo .titulo {margin-top: 40px;margin-left:40px; padding: 8px 10px;}
-main .cuerpo .titulo {border-style: none;border-radius: 5px;}
-main .cuerpo .titulo {font-family: var(--Arial);font-size: 18px;font-weight: bold;}
-main .cuerpo .titulo {background-color:var(--amarillo-claro);}
-
-main .cuerpo .subtitulo {margin-top: 30px; margin-left: 40px; padding: 8px 10px;}
-main .cuerpo .subtitulo {border-style: none;border-radius: 5px;}
-main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;font-weight: bold;}
-main .cuerpo .subtitulo {color:var(--azul)}
+main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; font-weight: bold;}
+main .cuerpo .titulo {font-family: var(--Arial);font-size: 18px; background-color:var(--amarillo-claro); margin-top: 40px;}
+main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color:var(--azul); margin-top: 30px;}
