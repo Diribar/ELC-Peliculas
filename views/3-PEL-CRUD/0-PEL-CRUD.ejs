@@ -8,7 +8,7 @@
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
       <!--**************************** CUERPO ************************-->
-      <section class="cuerpo flex-col">
+      <section class="cuerpo margen-izquierdo flex-col">
         <button class="titulo"><%= producto.titulo_traducido %></button>
         <button class="subtitulo activo"><%= detalle.nombre %> </button>
         <%- detalle.nombre.includes("Información") ? include('2-PEL-Informacion') : "" %>

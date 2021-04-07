@@ -13,8 +13,8 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 // *********** Controlador ***********
 module.exports = {
 	altaForm: (req, res) => {
-		return res.render('1-PEL-Crear', {
-			titulo: "Película - Crear"
+		return res.render('1-PEL-Agregar', {
+			titulo: "Película - Agregar"
 		});
 	},
 

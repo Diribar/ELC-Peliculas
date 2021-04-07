@@ -25,7 +25,7 @@
               </option>
             <% } %>
           </select> 
-          <p id="explicacion"><%= !!opcion_objeto.explicacion ? opcion_objeto.explicacion : "" %></p>
+          <% if (opcion_objeto.explicacion) { %><p id="explicacion"><%= opcion_objeto.explicacion %></p><% } %>
 
           <!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
           <% if (opcion_url) { %>

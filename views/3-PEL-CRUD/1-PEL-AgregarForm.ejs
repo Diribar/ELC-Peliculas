@@ -1,0 +1,216 @@
+<section class="label-input flex-col">  <!--Título en castellano -->
+    <label>Título en castellano:</label>
+    <div class="formulario-grupo">
+        <input type="text" class="input" name="titulo_traducido" placeholder="Título en castellano"
+            value="<%= locals.data_entry ? data_entry.titulo_traducido : null %>">
+        <% if (locals.errores && errores.titulo_traducido) { %><i class="fas fa-times-circle"></i><% } %>
+        <% if (locals.errores && !errores.titulo_traducido) { %><i class="fas fa-check-circle"></i><% } %>
+    </div>
+</section>
+<section class="label-input flex-col">  <!--Título original-->
+  <label>Título original:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="titulo_OR" placeholder="Título original"
+          value="<%= locals.data_entry ? data_entry.titulo_OR : null %>">
+      <% if (locals.errores && errores.titulo_OR) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.titulo_OR) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Año de estreno-->
+  <label>Año de estreno:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="ano_estreno" placeholder="sólo números"
+          value="<%= locals.data_entry ? data_entry.ano_estreno : null %>">
+      <% if (locals.errores && errores.ano_estreno) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.ano_estreno) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Duración-->
+  <label>Duración:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="duracion" placeholder="en minutos"
+          value="<%= locals.data_entry ? data_entry.duracion : null %>">
+      <% if (locals.errores && errores.duracion) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.duracion) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--País de origen-->
+  <label>País de origen:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="pais_origen" placeholder=""
+          value="<%= locals.data_entry ? data_entry.pais_origen : null %>">
+      <% if (locals.errores && errores.pais_origen) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.pais_origen) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Director-->
+  <label>Director:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="director" placeholder=""
+          value="<%= locals.data_entry ? data_entry.director : null %>">
+      <% if (locals.errores && errores.director) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.director) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Guión-->
+  <label>Guión:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="guion" placeholder=""
+          value="<%= locals.data_entry ? data_entry.guion : null %>">
+      <% if (locals.errores && errores.guion) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.guion) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Música-->
+  <label>Música:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="musica" placeholder=""
+          value="<%= locals.data_entry ? data_entry.musica : null %>">
+      <% if (locals.errores && errores.musica) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.musica) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Actor Principal 1-->
+  <label>Actor Principal 1:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="actor1" placeholder=""
+          value="<%= locals.data_entry ? data_entry.actor1 : null %>">
+      <% if (locals.errores && errores.actor1) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.actor1) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Actor Principal 2-->
+  <label>Actor Principal 2:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="actor2" placeholder=""
+          value="<%= locals.data_entry ? data_entry.actor2 : null %>">
+      <% if (locals.errores && errores.actor2) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.actor2) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Actor Principal 3-->
+  <label>Actor Principal 3:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="actor3" placeholder=""
+          value="<%= locals.data_entry ? data_entry.actor3 : null %>">
+      <% if (locals.errores && errores.actor3) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.actor3) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Actores Secundarios-->
+  <label>Actores Secundarios:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="actores_secundarios" placeholder=""
+          value="<%= locals.data_entry ? data_entry.actores_secundarios : null %>">
+      <% if (locals.errores && errores.actores_secundarios) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.actores_secundarios) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Productora-->
+  <label>Productora:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="productora" placeholder=""
+          value="<%= locals.data_entry ? data_entry.productora : null %>">
+      <% if (locals.errores && errores.productora) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.productora) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Idioma Castellano-->
+  <label>Idioma Castellano:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="idioma_castellano" placeholder=""
+          value="<%= locals.data_entry ? data_entry.idioma_castellano : null %>">
+      <% if (locals.errores && errores.idioma_castellano) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.idioma_castellano) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Color-->
+  <label>Color:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="color" placeholder=""
+          value="<%= locals.data_entry ? data_entry.color : null %>">
+      <% if (locals.errores && errores.color) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.color) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Sugerida para mayores-->
+  <label>Sugerida para mayores:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="mayores" placeholder=""
+          value="<%= locals.data_entry ? data_entry.mayores : null %>">
+      <% if (locals.errores && errores.mayores) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.mayores) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Sugerida para menores-->
+  <label>Sugerida para menores:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="menores" placeholder=""
+          value="<%= locals.data_entry ? data_entry.menores : null %>">
+      <% if (locals.errores && errores.menores) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.menores) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Apta para menores-->
+  <label>Apta para menores:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="ATP" placeholder=""
+          value="<%= locals.data_entry ? data_entry.ATP : null %>">
+      <% if (locals.errores && errores.ATP) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.ATP) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Categoría-->
+  <label>Categoría:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="categoría" placeholder=""
+          value="<%= locals.data_entry ? data_entry.categoría : null %>">
+      <% if (locals.errores && errores.categoría) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.categoría) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Sub-categoría-->
+  <label>Sub-categoría:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="sub_categoria" placeholder=""
+          value="<%= locals.data_entry ? data_entry.sub_categoria : null %>">
+      <% if (locals.errores && errores.sub_categoria) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.sub_categoria) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Sinopsis-->
+  <label>Sinopsis:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="resumen" placeholder=""
+          value="<%= locals.data_entry ? data_entry.sinopsis : null %>">
+      <% if (locals.errores && errores.resumen) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.resumen) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Link del trailer-->
+  <label>Link del trailer:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="trailer" placeholder=""
+          value="<%= locals.data_entry ? data_entry.trailer : null %>">
+      <% if (locals.errores && errores.trailer) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.trailer) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Link de You Tube-->
+  <label>Link de You Tube:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="youtube" placeholder=""
+          value="<%= locals.data_entry ? data_entry.youtube : null %>">
+      <% if (locals.errores && errores.youtube) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.youtube) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>
+<section class="label-input flex-row">  <!--Link de Film Affinity-->
+  <label>Link de Film Affinity:</label>
+  <div class="formulario-grupo">
+      <input type="text" class="input" name="filmAffinity" placeholder=""
+          value="<%= locals.data_entry ? data_entry.filmAffinity : null %>">
+      <% if (locals.errores && errores.filmAffinity) { %><i class="fas fa-times-circle"></i><% } %>
+      <% if (locals.errores && !errores.filmAffinity) { %><i class="fas fa-check-circle"></i><% } %>
+  </div>
+</section>

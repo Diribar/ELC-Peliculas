@@ -10,8 +10,8 @@ const soloAdmin = require('../../middlewares/soloAdmin');        // Para preveni
 
 // Controladores de CRUD ********************************************
 // -- CREATE -------------------------
-router.get('/crear', soloAdmin, peliculas.altaForm);
-router.post('/crear', peliculas.altaGuardar);
+router.get('/agregar', soloAdmin, peliculas.altaForm);
+router.post('/agregar', peliculas.altaGuardar);
 // -- RUD (GET) --------------------------
 router.get('/detalle/editar/:id', soloAdmin, peliculas.detalle);
 router.get('/detalle/eliminar/:id', soloAdmin, peliculas.detalle);
