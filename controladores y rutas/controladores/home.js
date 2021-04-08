@@ -20,9 +20,10 @@ module.exports = {
 		let BD = leer(ruta_nombre);
 		let pagina = BD.find(n => n.url == url)
 		let titulo = pagina.titulo
-		return res.render("0-Home", {
+		return res.render("0-Institucional", {
 			pagina,
-			titulo: "Home"
+			//titulo: "Home",
+			titulo,
 		})
 	},
 };

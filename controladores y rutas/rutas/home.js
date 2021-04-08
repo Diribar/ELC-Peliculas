@@ -5,7 +5,7 @@ const controlador = require('../controladores/home');
 
 // Controladores *******************************************
 router.get('/', controlador.home) // Home
-router.get('/:id', controlador.main) // Quiénes Somos, Contáctanos
+router.get('/:id', controlador.main) // Home, Acerca de nosotros, Contáctanos
 
 // Exportarlo **********************************************
 module.exports = router;
