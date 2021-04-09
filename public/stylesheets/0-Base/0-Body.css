@@ -30,3 +30,5 @@ main, main #imagen-derecha {height:90vh;}
 .cursor_pointer {cursor: pointer;}
 .dropdown-content {display: none;}
 .mostrar {display: block;}
+.border {border: red 1px solid}
+.grid {display: grid;}

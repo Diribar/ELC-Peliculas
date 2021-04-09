@@ -2,20 +2,21 @@ const path = require('path');
 const {body} = require('express-validator');
 
 module.exports = [
-	body('titulo_original').notEmpty().withMessage('Tenés que completar este campo'),
-	body('pais').notEmpty().withMessage('Tenés que elegir un país'),
-	body('estado').notEmpty().withMessage('Tenés que elegir un estado'),
-	body('imagen').custom((value, {req}) => {
-		let archivo = req.file;
-		let Tipos = ['.jpg', '.png', '.gif'];		
-		if (!archivo) {
-			throw new Error('Tenés que subir un archivo de imagen');
-		} else {
-			let Tipo_de_Archivo = path.extname(archivo.originalname);
-			if (!Tipos.includes(Tipo_de_Archivo)) {
-				throw new Error("Las extensiones de archivo permitidas son ${Tipos.join(', ')}");
-			}
-		}
-		return true;
-	})
+	body('titulo_castellano')
+		.notEmpty().withMessage('Tenés que completar este campo').bail()
+		.isLength({min:2}).withMessage("El nombre debe ser más largo").bail()
+		.isLength({max:50}).withMessage("El nombre debe ser más corto").bail()
+		.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
+		,
+	body('titulo_original')
+		.notEmpty().withMessage('Tenés que completar este campo').bail()
+		.isAlpha("es-ES").withMessage('Sólo se admiten letras del abecedario castellano').bail()
+		.isLength({min:2}).withMessage("El nombre debe ser más largo").bail()
+		.isLength({max:50}).withMessage("El nombre debe ser más corto").bail()
+		,
+	body('ano_estreno')
+		.isNumeric().withMessage('Debe ser un número de cuatro dígitos').bail()
+		.isInt({min: 1900}).withMessage('No existía el cine en esa época').bail()
+		.isInt({max: 2021}).withMessage('Necesitamos un año ya ocurrido').bail()
+		,
 ]

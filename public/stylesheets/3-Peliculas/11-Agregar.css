@@ -1,13 +1,14 @@
 /* Formato del cuerpo */
 #cuerpo-form {align-items: stretch;}
 #cuerpo-form .titulo {align-self: flex-start;}
-#cuerpo-form form {margin: 20px 20px; padding: 15px 20px 20px 20px;background-color: var(--amarillo-claro);}
+#cuerpo-form form {margin: 20px 20px; padding: 20px 30px;background-color: var(--amarillo-claro);}
 #cuerpo-form form #columnas {justify-content: space-between;}
 
 /* Cuerpo del formulario */
-#cuerpo-form .label-input label, form i, form option, form input, form select, form p {font-size: 14px;}
+#cuerpo-form .label-input label, form i, form option, form input, form select, form p, form textarea {font-size: 14px;}
 #cuerpo-form .label-input.flex-row .formulario-grupo, 
 #cuerpo-form .label-input.flex-row .formulario-grupo select {align-self: flex-end;}
+#cuerpo-form .label-input, .formulario-grupo {justify-content: space-between;}
 
 /* Partes específicas del formulario */
 #cuerpo-form .label-input label {margin-top: 7px; margin-right: 5px; font-weight: bold;}
@@ -19,9 +20,9 @@
 #cuerpo-form form .input-numero {width: 90px;}
 
 /* Símbolos en el input */
-#cuerpo-form form .formulario-grupo .fas {position: absolute;right: 3px;top: 2px;font-size: 1.2em;}
+#cuerpo-form form .formulario-grupo .fas {position: absolute;right: -20px;top: 5px;font-size: .8em;}
 #cuerpo-form form .formulario-grupo .fa-times-circle {color: red;}
-#cuerpo-form form .formulario-grupo .fa-check-circle {color: green;}
+/*#cuerpo-form form .formulario-grupo .fa-check {color: green;}*/
 #cuerpo-form form .formulario-grupo #eye {right: 25px}
 
-#comentario {padding: 5px;}
+.textArea {padding: 5px;line-height: 1;}
