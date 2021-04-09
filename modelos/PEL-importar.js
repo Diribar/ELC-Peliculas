@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-const ruta_nombre_importar = path.join(__dirname, '../bases_de_datos/tablas/importarPeliculas.json');
+const ruta_nombre_importar = path.join(__dirname, '../bases_de_datos/tablas/PEL-importar.json');
 
 module.exports = (alfa) => {
 		// Convertir texto en array

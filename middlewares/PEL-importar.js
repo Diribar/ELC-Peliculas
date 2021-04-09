@@ -1,13 +1,15 @@
 const path = require('path');
-const {body} = require('express-validator');
+const funcionImportarPeliculas = require(path.join(__dirname, '../modelos/PEL-importar.js'));
 
-const funcionImportarPeliculas = require(path.join(__dirname, '../modelos/importarPeliculas.js'));
-return console.log(body)
-let aux = body.comentario;
-if (aux != "") {
-	aux = funcionImportarPeliculas(aux)
-	body = {
-		...body,
-		...aux,
-	}
+module.exports =  (req,res,next) => {
+    let aux = req.body.comentario;
+    if (aux != "") {
+        aux = funcionImportarPeliculas(aux)
+        req.body = {
+            ...req.body,
+            ...aux,
+        };
+        req.body.comentario = "";
+    };
+    next();
 }

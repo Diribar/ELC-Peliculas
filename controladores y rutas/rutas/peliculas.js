@@ -8,11 +8,12 @@ const opciones = require('../controladores/peliculas_opciones')
 const soloUsuarios = require('../../middlewares/soloUsuarios');
 const soloAdmin = require('../../middlewares/soloAdmin');
 const validarPeliculas = require('../../middlewares/PEL-validar');
+const importarPeliculas = require('../../middlewares/PEL-importar');
 
 //******************* Controladores de CRUD *************************
 // -- CREATE -------------------------
-router.get('/agregar', soloAdmin, validarPeliculas, peliculas.altaForm);
-router.post('/agregar', peliculas.altaGuardar);
+router.get('/agregar', soloAdmin, peliculas.altaForm);
+router.post('/agregar', importarPeliculas, validarPeliculas, peliculas.altaGuardar);
 // -- RUD (GET) --------------------------
 router.get('/detalle/editar/:id', soloAdmin, peliculas.detalle);
 router.get('/detalle/eliminar/:id', soloAdmin, peliculas.detalle);
