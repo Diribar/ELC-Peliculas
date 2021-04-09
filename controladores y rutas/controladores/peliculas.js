@@ -15,17 +15,18 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 // *********** Controlador ***********
 module.exports = {
 	altaForm: (req, res) => {
-		return res.render('1-PEL-Agregar', {
+		return res.render('0-PEL-Agregar', {
 			titulo: "Película - Agregar"
 		});
 	},
 
 	altaGuardar: (req, res) => {
-		return res.send(req.body)
-		let alfa = req.body.comentario;
-		if (alfa != "") {
-			alfa = funcionImportarPeliculas(alfa)
-			return res.send(alfa)
+		if (req.body.comentario != "") {
+			req.body.comentario = ""
+			return res.render("0-PEL-Agregar", {
+				data_entry: req.body,
+				titulo: "Película - Agregar"
+			})
 		}
 		return res.send("sin comentario")
 	},

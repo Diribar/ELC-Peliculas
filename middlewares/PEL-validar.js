@@ -1,9 +1,8 @@
 const path = require('path');
 const {body} = require('express-validator');
-console.log(body)
 
 module.exports = [
-	body('sobrenombre').notEmpty().withMessage('Tenés que completar este campo'),
+	body('titulo_original').notEmpty().withMessage('Tenés que completar este campo'),
 	body('pais').notEmpty().withMessage('Tenés que elegir un país'),
 	body('estado').notEmpty().withMessage('Tenés que elegir un estado'),
 	body('imagen').custom((value, {req}) => {

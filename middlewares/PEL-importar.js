@@ -12,7 +12,6 @@ module.exports =  (req,res,next) => {
             ...aux,
         };
         //console.log(req.body)
-        req.body.comentario = "";
     };
     next();
 }
