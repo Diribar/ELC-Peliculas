@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "titulo_OR": "Karol, un uomo diventato Papa",
-        "titulo_traducido": "Karol, el hombre que se convirtió en Papa",
+        "titulo_original": "Karol, un uomo diventato Papa",
+        "titulo_castellano": "Karol, el hombre que se convirtió en Papa",
         "ano_estreno": 2005,
         "duracion": 185,
         "pais_origen": "Italia",
@@ -12,7 +12,7 @@
         "actor1": "Piotr Adamczyk",
         "actor2": "",
         "actor3": "",
-        "actores_secundarios": "Malgorzata Bela, Ken Duken, Hristo Shopov, Ennio Fantastichini, Violante Plácido, Matt Craven, Olgierd Lukaszewicz, Lech Mackiewicz, Kenneth Welsh, Raoul Bova",
+        "reparto": "Malgorzata Bela, Ken Duken, Hristo Shopov, Ennio Fantastichini, Violante Plácido, Matt Craven, Olgierd Lukaszewicz, Lech Mackiewicz, Kenneth Welsh, Raoul Bova",
         "productora": "Taodue Film",
         "idioma_castellano": "SI",
         "color": "SI",

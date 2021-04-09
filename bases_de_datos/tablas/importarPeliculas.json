@@ -1,13 +1,12 @@
 [
     "Título en castellano","titulo_castellano",
     "Título original","titulo_original",
-    "Año","ano",
+    "Año","ano_estreno",
     "Duración","duracion",
-    "País","pais",
-    "Dirección","direccion",
+    "País","pais_origen",
+    "Dirección","director",
     "Guion","guion",
     "Música","musica",
-    "Fotografía","fotografia",
     "Reparto","reparto",
     "Productora","productora"
 ]

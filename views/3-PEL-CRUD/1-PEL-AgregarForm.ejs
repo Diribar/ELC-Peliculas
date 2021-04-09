@@ -3,10 +3,10 @@
         <section class="label-input flex-row">  <!--Título en castellano -->
             <label>Título en castellano:</label>
             <div class="formulario-grupo">
-                <input type="text" class="input-titulo" name="titulo_traducido" placeholder="Título en castellano"
-                    value="<%= locals.data_entry ? data_entry.titulo_traducido : null %>">
-                <% if (locals.errores && errores.titulo_traducido) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && !errores.titulo_traducido) { %><i class="fas fa-check-circle"></i><% } %>
+                <input type="text" class="input-titulo" name="titulo_castellano" placeholder="Título en castellano"
+                    value="<%= locals.data_entry ? data_entry.titulo_castellano : null %>">
+                <% if (locals.errores && errores.titulo_castellano) { %><i class="fas fa-times-circle"></i><% } %>
+                <% if (locals.errores && !errores.titulo_castellano) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
         <section class="label-input flex-row">  <!--Título original-->
@@ -231,10 +231,10 @@
 <section class="label-input flex-col">  <!--Sinopsis-->
     <label>Sinopsis:</label>
     <div class="formulario-grupo">
-        <input type="text" class="input" name="resumen" placeholder=""
+        <input type="text" class="input" name="sinopsis" placeholder=""
             value="<%= locals.data_entry ? data_entry.sinopsis : null %>">
-        <% if (locals.errores && errores.resumen) { %><i class="fas fa-times-circle"></i><% } %>
-        <% if (locals.errores && !errores.resumen) { %><i class="fas fa-check-circle"></i><% } %>
+        <% if (locals.errores && errores.sinopsis) { %><i class="fas fa-times-circle"></i><% } %>
+        <% if (locals.errores && !errores.sinopsis) { %><i class="fas fa-check-circle"></i><% } %>
     </div>
 </section>
 <button type="submit">Enviar</button>

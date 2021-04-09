@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-const ruta_nombre_importar = path.join(__dirname, '../bases_de_datos/tablas/PEL-importar.json');
+const ruta_nombre_importar = path.join(__dirname, '../bases_de_datos/tablas/importarPeliculas.json');
 
 module.exports = (alfa) => {
 		// Convertir texto en array
 		alfa = alfa.split("\r\n");
 		alfa.unshift("Título en castellano")
-		//return res.send(alfa)
+		// console.log(alfa)
 		// Limpiar espacios innecesarios
 		for (let i=0; i<alfa.length; i++) {alfa[i]=alfa[i].trim()}
 		// Convertir "Títulos de vista" en "Títulos de tabla" y eliminar los que no coincidan
@@ -32,5 +32,6 @@ module.exports = (alfa) => {
 		beta = beta + "}"
 		// Convertir JSON en objeto
 		beta = JSON.parse(beta)
+		//console.log(beta)
 		return beta
 }

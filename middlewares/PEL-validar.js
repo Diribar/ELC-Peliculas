@@ -1,5 +1,6 @@
 const path = require('path');
 const {body} = require('express-validator');
+console.log(body)
 
 module.exports = [
 	body('sobrenombre').notEmpty().withMessage('Tenés que completar este campo'),

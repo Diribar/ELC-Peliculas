@@ -5,7 +5,7 @@ const path = require('path')
 // ************ Variables ************
 const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
 const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/pelicula_detalle.json');
-const ruta_nombre_importar = path.join(__dirname, '../../bases_de_datos/tablas/PEL-importar.json');
+//const ruta_nombre_importar = path.join(__dirname, '../../bases_de_datos/tablas/importarPeliculas.json');
 const funcionImportarPeliculas = require(path.join(__dirname, '../../modelos/PEL-importar.js'));
 
 // ************ Funciones ************
