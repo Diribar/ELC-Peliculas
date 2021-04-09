@@ -21,6 +21,7 @@ module.exports = {
 	},
 
 	altaGuardar: (req, res) => {
+		return res.send(req.body)
 		let alfa = req.body.comentario;
 		if (alfa != "") {
 			alfa = funcionImportarPeliculas(alfa)

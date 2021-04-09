@@ -1,16 +1,17 @@
-// Requires *********************************************************
+//************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
 const peliculas = require('../controladores/peliculas')
 const opciones = require('../controladores/peliculas_opciones')
 
-// Middlewares ******************************************************
-const soloUsuarios = require('../../middlewares/soloUsuarios');  // Para prevenir ciertos accesos cuando NO está logueado
-const soloAdmin = require('../../middlewares/soloAdmin');        // Para prevenir ciertos accesos cuando NO está logueado
+//************************ Middlewares ******************************
+const soloUsuarios = require('../../middlewares/soloUsuarios');
+const soloAdmin = require('../../middlewares/soloAdmin');
+const validarPeliculas = require('../../middlewares/PEL-validar');
 
-// Controladores de CRUD ********************************************
+//******************* Controladores de CRUD *************************
 // -- CREATE -------------------------
-router.get('/agregar', soloAdmin, peliculas.altaForm);
+router.get('/agregar', soloAdmin, validarPeliculas, peliculas.altaForm);
 router.post('/agregar', peliculas.altaGuardar);
 // -- RUD (GET) --------------------------
 router.get('/detalle/editar/:id', soloAdmin, peliculas.detalle);

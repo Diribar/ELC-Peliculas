@@ -4,12 +4,12 @@ const router = express.Router();
 const usuarios = require('../controladores/usuarios')
 
 //************************ Middlewares ******************************
-const validarMail = require('../../middlewares/validar-US-Mail');     // Validar mail y contraseña
-const validarNombre = require('../../middlewares/validar-US-Nombre'); // Validar mail y contraseña
-const validarSobrenombre = require('../../middlewares/validar-US-Sobrenombre'); // Validar mail y contraseña
-const soloVisitas = require('../../middlewares/soloVisitas');     // Para reservar accesos sólo a visitas
-const soloUsuarios = require('../../middlewares/soloUsuarios');   // Para reservar accesos sólo a usuarios
-const uploadFile = require('../../middlewares/multer');           // Para usar archivos en formularios 
+const validarMail = require('../../middlewares/US-validarMail');
+const validarNombre = require('../../middlewares/US-validarNombre');
+const validarSobrenombre = require('../../middlewares/US-validarSobrenombre');
+const soloVisitas = require('../../middlewares/soloVisitas');
+const soloUsuarios = require('../../middlewares/soloUsuarios');
+const uploadFile = require('../../middlewares/multer');
 
 //************************ Controladores ****************************
 router.get('/registro-mail', soloVisitas, usuarios.altaFormMail)
