@@ -10,5 +10,13 @@
     {
         "url": "contactanos",
         "titulo": "Contactanos"
+    },
+    {
+        "url": "copyright",
+        "titulo": "Derechos de Autor de Terceros"
+    },
+    {
+        "url": "historia",
+        "titulo": "Nuestra Historia"
     }
 ]

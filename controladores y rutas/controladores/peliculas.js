@@ -19,6 +19,21 @@ module.exports = {
 	},
 
 	altaGuardar: (req, res) => {
+		let aux = req.body.comentario;
+		aux = aux.split("\r\n");
+		//aux = aux.replace("[", "{")
+		let beta="{"
+		for (let i=0; i < aux.length-1; i=i+2) {
+			beta = beta + '"' + aux[i] +'": "' + aux[i+1] + '", ';
+		}
+		beta=beta+"}"
+		let gama= JSON.stringify(aux)
+		return res.send([
+			aux,
+			//beta,
+			//gama
+			//JSON.stringify(aux),
+		])
 		return res.send("Estoy en altaGuardar")
 	},
 
