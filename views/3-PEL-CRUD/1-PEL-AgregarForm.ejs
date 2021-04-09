@@ -12,10 +12,10 @@
         <section class="label-input flex-row">  <!--Título original-->
             <label>Título original:</label>
             <div class="formulario-grupo">
-                <input type="text" class="input-titulo" name="titulo_OR" placeholder="Título original"
-                    value="<%= locals.data_entry ? data_entry.titulo_OR : null %>">
-                <% if (locals.errores && errores.titulo_OR) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && !errores.titulo_OR) { %><i class="fas fa-check-circle"></i><% } %>
+                <input type="text" class="input-titulo" name="titulo_original" placeholder="Título original"
+                    value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
+                <% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle"></i><% } %>
+                <% if (locals.errores && !errores.titulo_original) { %><i class="fas fa-check-circle"></i><% } %>
             </div>
         </section>
         <section class="label-input flex-row">  <!--Año de estreno-->

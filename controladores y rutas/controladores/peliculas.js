@@ -5,6 +5,8 @@ const path = require('path')
 // ************ Variables ************
 const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
 const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/pelicula_detalle.json');
+const ruta_nombre_importar = path.join(__dirname, '../../bases_de_datos/tablas/importarPeliculas.json');
+const importarPeliculas = require(path.join(__dirname, '../../modelos/importarPeliculas.js'));
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
@@ -19,22 +21,37 @@ module.exports = {
 	},
 
 	altaGuardar: (req, res) => {
-		let aux = req.body.comentario;
-		aux = aux.split("\r\n");
-		//aux = aux.replace("[", "{")
-		let beta="{"
-		for (let i=0; i < aux.length-1; i=i+2) {
-			beta = beta + '"' + aux[i] +'": "' + aux[i+1] + '", ';
+		let alfa = req.body.comentario;
+		// Convertir texto en array
+		alfa = alfa.split("\r\n");
+		alfa.unshift("Título en castellano")
+		//return res.send(alfa)
+		// Limpiar espacios innecesarios
+		for (let i=0; i<alfa.length; i++) {alfa[i]=alfa[i].trim()}
+		// Convertir "Títulos de vista" en "Títulos de tabla" y eliminar los que no coincidan
+		let BDtitulos = leer(ruta_nombre_importar);
+		for (let i=0; i<alfa.length; i=i+2) {
+			let indice = BDtitulos.indexOf(alfa[i]);
+			if (indice != -1) {
+				alfa[i] = BDtitulos[indice+1]
+			} else {
+				alfa[i]=""
+				alfa[i+1]=""
+			}
 		}
-		beta=beta+"}"
-		let gama= JSON.stringify(aux)
-		return res.send([
-			aux,
-			//beta,
-			//gama
-			//JSON.stringify(aux),
-		])
-		return res.send("Estoy en altaGuardar")
+		// Limpiar campos vacíos
+		alfa = alfa.filter(n => {return n != ""})
+		// Convertir array en JSON
+		let beta="{"
+		for (let i=0; i < alfa.length; i=i+2) {
+			if (i>0) {beta=beta + ', '}
+			beta = beta + '"'+ alfa[i] + '": "' + alfa[i+1] + '"';
+		}
+		beta = beta + "}"
+		// Convertir JSON en objeto
+		beta = JSON.parse(beta)
+		return res.send(beta)
+		//let beta = importarPeliculas(alfa)
 	},
 
 	detalle: (req, res) => {
