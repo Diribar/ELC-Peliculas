@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const ruta_nombre_importar = path.join(__dirname, '../bases_de_datos/tablas/importarPeliculas.json');
+const ruta_FilmAffinity = path.join(__dirname, '../bases_de_datos/tablas/IMP_FilmAffinity.json');
+const ruta_Wikipedia = path.join(__dirname, '../bases_de_datos/tablas/IMP_Wikipedia.json');
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 module.exports =  (req,res,next) => {
@@ -15,7 +16,7 @@ module.exports =  (req,res,next) => {
 		// Limpiar espacios innecesarios
 		for (let i=0; i<alfa.length; i++) {alfa[i]=alfa[i].trim()}
 		// Convertir "Títulos de vista" en "Títulos de tabla" y eliminar los que no coincidan
-		let BDtitulos = leer(ruta_nombre_importar);
+		let BDtitulos = leer(ruta_FilmAffinity);
 		for (let i=0; i<alfa.length; i=i+2) {
 			let indice = BDtitulos.indexOf(alfa[i]);
 			if (indice != -1) {

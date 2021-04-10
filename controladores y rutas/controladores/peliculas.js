@@ -5,7 +5,7 @@ const {validationResult} = require('express-validator');
 
 // ************ Variables ************
 const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
-const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/pelicula_detalle.json');
+const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};

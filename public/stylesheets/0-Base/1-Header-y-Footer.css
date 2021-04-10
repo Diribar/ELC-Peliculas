@@ -20,9 +20,9 @@ header #imagenUsuario {height: 80%;border-radius: 100%; top: 10%; border: 1.5px 
 
 /* Menús varios */
 header .dropdown-content {position: absolute;top: 55px;}
-header .dropdown-content {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
-header .dropdown-content a {padding: 8px 16px;text-decoration: none; display: block;}
-header .dropdown-divider {height:0;margin:.5rem 0;overflow:hidden;border-top:1px solid rgba(0,0,0,.15)}
+header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
+header .dropdown-content a {padding: 4px 16px;text-decoration: none; display: block;}
+header .dropdown-divider {height:0;margin: 2px 0;overflow:hidden;border-top:1px solid rgba(0,0,0,.15)}
 header #menu-rubro {left: 20px;}
 header #menu-pelis {left: 80px;}
 header #menu-usuario {right: 20px;}
