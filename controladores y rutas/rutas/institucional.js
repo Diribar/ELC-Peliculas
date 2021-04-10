@@ -1,11 +1,11 @@
 // Requires ************************************************
 const express= require('express');
 const router = express.Router();
-const controlador = require('../controladores/home');
+const controlador = require('../controladores/institucional');
 
 // Controladores *******************************************
-router.get('/', controlador.home) // Home
-router.get('/:id', controlador.main) // Home, Acerca de nosotros, Contáctanos
+router.get('/', controlador.home) // Redirecciona a Películas
+router.get('/:id', controlador.main) // Acerca de nosotros, Contáctanos
 
 // Exportarlo **********************************************
 module.exports = router;

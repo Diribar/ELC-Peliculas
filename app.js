@@ -35,11 +35,11 @@ app.set('views', [
 const rutaLogin = require('./controladores y rutas/rutas/login.js');
 const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaPelis = require('./controladores y rutas/rutas/peliculas');
-const rutaECC = require('./controladores y rutas/rutas/home');
+const rutaECC = require('./controladores y rutas/rutas/institucional');
 app.use('/login', rutaLogin)        // Login
 app.use('/usuarios', rutaUsuarios)  // Usuarios
 app.use('/peliculas', rutaPelis)    // Películas
-app.use('/', rutaECC)               // Home, Acerca de Nosotros, Contáctanos
+app.use('/', rutaECC)               // Acerca de Nosotros, Contáctanos
 
 // ************************ Errores *******************************
 //app.use((req,res) => {res.status(404).render('not found')})

@@ -1,15 +1,13 @@
 [
     {
-        "url": "home",
-        "titulo": "Home"
-    },
-    {
         "url": "nosotros",
-        "titulo": "Acerca de Nosotros"
+        "titulo": "Acerca de Nosotros",
+        "nombre": "'1-Acerca-de-Nosotros'"
     },
     {
         "url": "contactanos",
-        "titulo": "Contactanos"
+        "titulo": "Contactanos",
+        "nombre": "2-Contactanos"
     },
     {
         "url": "copyright",
