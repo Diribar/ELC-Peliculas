@@ -14,7 +14,7 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 // *********** Controlador ***********
 module.exports = {
 	altaForm: (req, res) => {
-		return res.render('0-PEL-Agregar', {
+		return res.render('0-Agregar', {
 			titulo: "Película - Agregar"
 		});
 	},
@@ -23,7 +23,7 @@ module.exports = {
 		const resultValidation = validationResult(req);
 		if (resultValidation.errors.length > 0) {
 			req.body.comentario = ""
-			return res.render("0-PEL-Agregar", {
+			return res.render("0-Agregar", {
 				data_entry: req.body,
 				errores: resultValidation.mapped(),
 				titulo: "Película - Agregar"
@@ -46,7 +46,7 @@ module.exports = {
 		let BD = leer(ruta_nombre_pelis);
 		let producto = BD.find(n => n.id == IDpeli);
 		// Ir a la vista
-		return res.render('0-PEL-CRUD', {
+		return res.render('0-CRUD', {
 			detalle,
 			producto,
 			IDpeli,

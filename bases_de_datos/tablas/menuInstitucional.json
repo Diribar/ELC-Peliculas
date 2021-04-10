@@ -2,19 +2,21 @@
     {
         "url": "nosotros",
         "titulo": "Acerca de Nosotros",
-        "nombre": "1-Acerca-de-Nosotros"
+        "nombre": "Nosotros"
     },
     {
         "url": "contactanos",
         "titulo": "Contactanos",
-        "nombre": "2-Contactanos"
+        "nombre": "Contactanos"
     },
     {
         "url": "copyright",
-        "titulo": "Derechos de Autor de Terceros"
+        "titulo": "Derechos de Autor de Terceros",
+        "nombre": "Copyright"
     },
     {
         "url": "historia",
-        "titulo": "Nuestra Historia"
+        "titulo": "Nuestra Historia",
+        "nombre": "Historia"
     }
 ]
