@@ -7,19 +7,17 @@
         <%- include("HeaderRubro") %>
     </div>
 
-    <div>  <!-- Logo de Crear Película -->
-        <% if (titulo.slice(0,4) != "PEL-") { %>
-            <a href="/peliculas/agregar">
-                <i class="fas fa-video icono"></i>
-                <i class="icono" id="plus">+</i>
-            </a>
-        <% } %>
-    </div>
-
-    <div>  <!-- Logo de Menú de Película -->
-        <% if (titulo.slice(0,4) == "PEL-") { %>
+    <div>  <!-- Logo de Crear/Menú de Película -->
+        <% if (titulo.includes("Detalle")) { %>
             <i onclick="desplegable('menu-pelis')" class="boton-desplegable fas fa-video icono"></i>
             <%- include("HeaderPelis") %>
+        <% } else { %>
+            <% if (!titulo.includes("Agregar")) { %>
+                <a href="/peliculas/agregar">
+                    <i class="fas fa-video icono"></i>
+                    <i class="icono" id="plus">+</i>
+                </a>
+            <% } %>
         <% } %>
     </div>
 

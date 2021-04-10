@@ -15,7 +15,7 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 module.exports = {
 	altaForm: (req, res) => {
 		return res.render('0-Agregar', {
-			titulo: "Película - Agregar"
+			titulo: "PEL-Agregar"
 		});
 	},
 
@@ -26,7 +26,7 @@ module.exports = {
 			return res.render("0-Agregar", {
 				data_entry: req.body,
 				errores: resultValidation.mapped(),
-				titulo: "Película - Agregar"
+				titulo: "PEL-Agregar"
 			})
 		}
 		return res.send("sin errores")
