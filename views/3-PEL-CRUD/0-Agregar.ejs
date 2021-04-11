@@ -1,21 +1,21 @@
 <%- include('0-Head') %>
 <body>
-  <%- include('1-Header') %>
-  <main class="flex-row">
-    <section id="imagen-derecha">
-      <img alt="Introduzca aquí la imagen" src="/images/0-Base/Sin película.jpg" title="Introduzca aquí la imagen">
-    </section>
-    <section id="main-y-footer" class="flex-col grow">
-      <%- include('3-Footer') %>
-      <!--**************************** CUERPO ************************-->
-      <section class="cuerpo margen-izquierdo flex-col" id="cuerpo-form">
-        <button class="titulo">Agregar una película a nuestra Base de Datos</button>
-        <form action="/peliculas/agregar" method="POST" class="flex-col grow">
-            <%- include('1-AgregarForm') %>
-        </form>
-    </section>
-      <!--****************************** FIN *************************-->
-    </section>
-  </main>
+	<%- include('1-Header') %>
+	<main class="flex-row">
+		<section id="imagen-derecha">
+		<img alt="Introduzca aquí la imagen" src="/images/0-Base/Sin película.jpg" title="Introduzca aquí la imagen">
+		</section>
+		<section id="main-y-footer" class="flex-col grow">
+			<%- include('3-Footer') %>
+			<!--**************************** CUERPO ************************-->
+			<form action="/peliculas/agregar1" method="POST" class="flex-col cuerpo">
+				<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
+				<section id="cuerpo-form">
+				<%- include('1-AgregarForm') %>
+			</section>
+			</form>
+		<!--****************************** FIN *************************-->
+		</section>
+	</main>
 </body>
 </html>

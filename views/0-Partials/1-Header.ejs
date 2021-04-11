@@ -1,68 +1,66 @@
 <header>
 
-    <title><%= titulo %></title>  <!-- Título de la pestaña -->
+	<title><%= titulo %></title>  <!-- Título de la pestaña -->
 
-    <div>  <!-- Logo de Home -->
-        <i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono"></i>
-        <%- include("HeaderRubro") %>
-    </div>
+	<div>  <!-- Logo de Home -->
+		<i onclick="desplegable('menu-rubro')" class="boton-desplegable fas fa-home icono"></i>
+		<%- include("HeaderRubro") %>
+	</div>
 
-    <div>  <!-- Logo de Crear/Menú de Película -->
-        <% if (titulo.includes("Detalle")) { %>
-            <i onclick="desplegable('menu-pelis')" class="boton-desplegable fas fa-video icono"></i>
-            <%- include("HeaderPelis") %>
-        <% } else { %>
-            <% if (!titulo.includes("Agregar")) { %>
-                <a href="/peliculas/agregar">
-                    <i class="fas fa-video icono"></i>
-                    <i class="icono" id="plus">+</i>
-                </a>
-            <% } %>
-        <% } %>
-    </div>
+	<div>  <!-- Logo de Crear/Menú de Película -->
+		<% if (titulo.includes("Detalle")) { %>
+			<i onclick="desplegable('menu-pelis')" class="boton-desplegable fas fa-video icono"></i>
+			<%- include("HeaderPelis") %>
+		<% } else { %>
+			<a href="/peliculas/agregar">
+				<i class="fas fa-video icono"></i>
+				<i class="icono" id="plus">+</i>
+			</a>
+		<% } %>
+	</div>
 
-    <div>  <!-- Título del Encabezado -->
-        <p><a href="/">Evangelicemos la Cultura</a></p>
-    </div>
+	<div>  <!-- Título del Encabezado -->
+		<p><a>Evangelicemos la Cultura</a></p>
+	</div>
 
-    <div>  <!-- Logo de usuario o avatar -->
-        <% if(locals.usuario) { %>
-            <img
-                src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
-                onclick="desplegable('menu-usuario')"
-                class="boton-desplegable"
-                id="imagenUsuario"
-            >
-        <% } else { %>
-            <i
-                onclick="desplegable('menu-usuario')"
-                class="boton-desplegable fas fa-user-circle icono"
-            >
-            </i>
-        <% } %>
-        <%- include("HeaderUsuario") %>
-    </div>    
+	<div>  <!-- Logo de usuario o avatar -->
+		<% if(locals.usuario) { %>
+			<img
+				src="/images/2-Usuarios/<%= locals.usuario.imagen %>"
+				onclick="desplegable('menu-usuario')"
+				class="boton-desplegable"
+				id="imagenUsuario"
+			>
+		<% } else { %>
+			<i
+				onclick="desplegable('menu-usuario')"
+				class="boton-desplegable fas fa-user-circle icono"
+			>
+			</i>
+		<% } %>
+		<%- include("HeaderUsuario") %>
+	</div>    
 
-    <!-- MÚSICA DE FONDO PARA ECC -->
-    <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
-    <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
+	<!-- MÚSICA DE FONDO PARA ECC -->
+	<!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+	<!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
 </header>
 
 <script>
-    /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-    function desplegable(n) {
-        document.getElementById(n).classList.toggle("mostrar");
-    }
+	/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+	function desplegable(n) {
+		document.getElementById(n).classList.toggle("mostrar");
+	}
 
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (event) {
-        if (!event.target.matches(".boton-desplegable")) {
-            let dropdowns = document.getElementsByClassName("dropdown-content");
-            for (let i = 0; i < dropdowns.length; i++) {
-                if (dropdowns[i].classList.contains("mostrar")) {
-                dropdowns[i].classList.remove("mostrar");
-                }
-            }
-        }
-    };
+	// Close the dropdown if the user clicks outside of it
+	window.onclick = function (event) {
+		if (!event.target.matches(".boton-desplegable")) {
+			let dropdowns = document.getElementsByClassName("dropdown-content");
+			for (let i = 0; i < dropdowns.length; i++) {
+				if (dropdowns[i].classList.contains("mostrar")) {
+				dropdowns[i].classList.remove("mostrar");
+				}
+			}
+		}
+	};
 </script>

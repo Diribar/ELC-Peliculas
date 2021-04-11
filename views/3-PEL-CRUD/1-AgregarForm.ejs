@@ -1,170 +1,31 @@
 <section class="flex-row" id="data_entry">
-    <div class="flex-col">  <!--Primera columna-->
-        <section class="label-input flex-row">  <!--Título original-->
-            <label>Título original:</label>
-            <div class="formulario-grupo">
-                <input type="text" name="titulo_original" placeholder="Título original"
-                    value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
-                <% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && errores.titulo_original) { %><p><%= errores.titulo_original.msg %> </p><% } %>
-            </div>
+	<div class="flex-col">  <!--Primera columna-->
+		<section class="label-input flex-row">  <!--Pegar la información importada-->
+			<div class="formulario-grupo">
+				<textarea name="imports" cols="18" rows="1" placeholder="Pega acá la info"></textarea>
+				<label>Pegar la información importada</label>
+			</div>
+		</section>
+        <section class="label-input flex-row divisor">  <!--Link de la página que provee los datos-->
+			<div class="formulario-grupo">
+				<input type="text" name="link" placeholder=""
+					value="<%= locals.data_entry ? data_entry.link : null %>">
+				<% if (locals.errores && errores.link) { %><i class="fas fa-times-circle"></i><% } %>
+				<label>Link de la página que provee los datos</label>
+			</div>
         </section>
-        <section class="label-input flex-row">  <!--Título en castellano -->
-            <label>Título en castellano:</label>
-            <div class="formulario-grupo">
-                <input type="text" name="titulo_castellano" placeholder="Título en castellano"
-                    value="<%= locals.data_entry ? data_entry.titulo_castellano : null %>">
-                <% if (locals.errores && errores.titulo_castellano) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Año de estreno-->
-            <label>Año de estreno:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input-numero" name="ano_estreno" placeholder="sólo números"
-                    value="<%= locals.data_entry ? data_entry.ano_estreno : null %>">
-                <% if (locals.errores && errores.ano_estreno) { %><i class="fas fa-times-circle"></i><% } %>
-                <%// if (locals.errores && errores.ano_estreno) { %><!--p><%//= errores.ano_estreno.msg %> </p--><%// } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Duración-->
-            <label>Duración (minutos):</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input-numero" name="duracion" placeholder="en minutos"
-                    value="<%= locals.data_entry ? data_entry.duracion : null %>">
-                <% if (locals.errores && errores.duracion) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--País de origen-->
-            <label>País de origen:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="pais_origen" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.pais_origen : null %>">
-                <% if (locals.errores && errores.pais_origen) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Director-->
-            <label>Director:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="director" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.director : null %>">
-                <% if (locals.errores && errores.director) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Guión-->
-            <label>Guión:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="guion" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.guion : null %>">
-                <% if (locals.errores && errores.guion) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Música-->
-            <label>Música:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="musica" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.musica : null %>">
-                <% if (locals.errores && errores.musica) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Protagonista/s-->
-            <label>Protagonista/s:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="protagonista" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.protagonista : null %>">
-                <% if (locals.errores && errores.protagonista) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Resto del Reparto-->
-            <label>Resto del Reparto:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="reparto" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.reparto : null %>">
-                <% if (locals.errores && errores.reparto) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Productora-->
-            <label>Productora:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="productora" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.productora : null %>">
-                <% if (locals.errores && errores.productora) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Sinopsis-->
-            <label>Sinopsis:</label>
-            <div class="formulario-grupo">
-                <textarea name="sinopsis" cols="18" rows="1" placeholder="Ingresa aquí la sinopsis" 
-                    value="<%= locals.data_entry ? data_entry.sinopsis : null %>"
-                ></textarea>
-                <% if (locals.errores && errores.sinopsis) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Pegar la información importada-->
-            <label>Pegar la info importada:</label>
-            <div class="formulario-grupo">
-                <textarea name="comentario" cols="18" rows="1" placeholder="Pega acá la info"></textarea>
-            </div>
-        </section>
-    </div>
-    <div id="columnaMedio"></div> <!--Columna del medio-->
-    <div class="flex-col">  <!--Segunda columna-->
-        <section class="label-input flex-row">  <!--Color-->
-            <label>Color o B/N:</label>
-            <div class="formulario-grupo">
-                <% let color=""; if (locals.data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
-                <select name="color">
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
-                    <option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
-                </select>
-                <% if (locals.errores && errores.color) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Idioma Castellano-->
-            <label>Idioma Castellano:</label>
-            <div class="formulario-grupo">
-                <% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
-                <select name="idioma_castellano" <% if (!idioma_castellano) { %>style="font-style: italic;"<% } %>>
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
-                    <option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
-                </select>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Categoría-->
-            <label>Categoría:</label>
-            <div class="formulario-grupo">
-                <% let categoria=""; if (locals.data_entry) {categoria = data_entry.categoria} else {if (usuario.formNombre) {categoria = usuario.categoria}}%>
-                <select name="categoria">
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="CFC"  <% if (categoria=="CFC")  {%> selected <%}%>>CFC</option>
-                    <option value="VPC" <% if (categoria=="VPC") {%> selected <%}%>>VPC</option>
-                </select>
-                <% if (locals.errores && errores.categoria) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Sub-categoría-->
-            <label>Sub-categoría:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="sub_categoria" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.sub_categoria : null %>">
-                <% if (locals.errores && errores.sub_categoria) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Público sugerido-->
-            <label>Público sugerido:</label>
-            <div class="formulario-grupo">
-                <% let publico=""; if (locals.data_entry) {publico = data_entry.publico} else {if (usuario.formNombre) {publico = usuario.publico}}%>
-                <select name="publico" <% if (!publico) { %>style="font-style: italic;"<% } %>>
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="MY"  <% if (publico=="MY")  {%> selected <%}%>>Mayores (no ATP)</option>
-                    <option value="MYATP" <% if (publico=="MYATP") {%> selected <%}%>>Mayores (ATP)</option>
-                    <option value="MN" <% if (publico=="MN") {%> selected <%}%>>Menores</option>
-                    <option value="AM" <% if (publico=="AM") {%> selected <%}%>>Mayores y Menores</option>
-                </select>
-                <% if (locals.errores && errores.publico) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-    </div>
+		<section>
+			<label for="">Ingresaré los datos a mano</label>
+		</section>
+		<section class="label-input flex-row">  <!--Título original-->
+			<div class="formulario-grupo">
+				<input type="text" name="titulo_original" placeholder="Título original"
+					value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
+				<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle"></i><% } %>
+				<% if (locals.errores && errores.titulo_original) { %><p><%= errores.titulo_original.msg %> </p><% } %>
+				<label>Título original</label>
+			</div>
+		</section>
+	</div>
 </section>
 <button type="submit">Enviar</button>

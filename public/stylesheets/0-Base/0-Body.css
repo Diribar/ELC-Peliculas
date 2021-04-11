@@ -32,3 +32,4 @@ main, main #imagen-derecha {height:90vh;}
 .mostrar {display: block;}
 .border {border: red 1px solid}
 .grid {display: grid;}
+.relative {position: relative;}

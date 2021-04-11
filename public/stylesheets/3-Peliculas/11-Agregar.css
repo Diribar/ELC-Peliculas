@@ -1,9 +1,9 @@
 /* Formato del cuerpo */
+form {align-items: center;}
 #cuerpo-form {align-items: center;}
-#cuerpo-form .titulo {align-self: flex-start;}
-#cuerpo-form form {margin: 20px 20px; padding: 20px 30px; border-radius: 20px;}
-#cuerpo-form form {background-color: var(--amarillo-claro);}
-#cuerpo-form form #columnaMedio {width: 60px}
+#cuerpo-form {margin: 20px 20px; padding: 20px 30px; border-radius: 20px;}
+#cuerpo-form {background-color: var(--amarillo-claro);}
+#cuerpo-form #columnaMedio {width: 60px}
 
 /* Cuerpo del formulario */
 #cuerpo-form .label-input label, form i, form option, form input, form select, form p, form textarea {font-size: 14px;}
