@@ -35,7 +35,7 @@ router.post('/detalle/eliminar/:id', peliculas.bajaGuardar);
 router.get('/', opciones.rubro);                                // Home
 router.get('/:id', opciones.opcion);                            // Opciones
 router.get('/:id/:id', opciones.tipo);                          // Opción: Listado
-router.post('/:id/:id', soloUsuarios, opciones.filtros);         // Filtros
+router.post('/:id/:id', soloUsuarios, opciones.filtros);        // Filtros
 
 // Exportarlo *******************************************************
 module.exports = router;

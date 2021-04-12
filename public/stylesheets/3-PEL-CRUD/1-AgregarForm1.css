@@ -1,27 +1,5 @@
-/* Formato del cuerpo */
-form {align-items: center;}
-#data_entry {margin: 20px 20px; padding: 20px 30px; border-radius: 20px;}
-#data_entry {background-color: var(--amarillo-claro);}
-#data_entry #columnaMedio {width: 60px}
-
-/* Cuerpo del formulario */
-#data_entry .label-input label, form i, form option, form input, form select, form p, form textarea {font-size: 14px;}
-#data_entry .label-input.flex-row .formulario-grupo, 
-#data_entry .label-input.flex-row .formulario-grupo select {align-self: flex-end;}
-#data_entry .formulario-grupo select {align-self: flex-end;}
-#data_entry .formulario-grupo input {align-self: flex-end;}
-#data_entry .label-input, .formulario-grupo {justify-content: space-between;}
-
 /* Partes específicas del formulario */
-#data_entry .label-input label {margin-top: 10px; margin-right: 5px; font-weight: bold;}
-#data_entry .formulario-grupo {position: relative; display: flex;}
-#data_entry .formulario-grupo p {margin: 7px 5px 0px 10px;}
-#data_entry input, #data_entry textArea {padding: 0 2px; margin-right: 5px; margin-top: 4px;}
-#data_entry .formulario-grupo .input-numero {width: 50px;}
-#data_entry .formulario-grupo .fa-times-circle {position: absolute;right: -17px;top: 5px;font-size: .8em; color: red;}
-#data_entry h1 {margin: 10px auto 10px; padding-top: 15px; align-self: flex-start;}
+#data_entry h1 {margin-bottom: 10px; padding-top: 15px; align-self: flex-start;}
 #data_entry h1 {border-top: 1px solid var(--gris-oscuro);}
-#data_entry #ingresar_los_datos_a_mano {margin-top: 30px;}
-
-/* Submit button */
-#data_entry button {margin-top: 20px; padding: 3px 10px; justify-content: center; align-self: center; border-radius: 10px;font-weight: bold;}
+#data_entry label {align-self: flex-end;}
+#data_entry #ingresar_los_datos_a_mano {margin-top: 20px;}
