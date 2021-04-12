@@ -4,11 +4,11 @@ const path = require('path');
 const {validationResult} = require('express-validator');
 
 // ************ Variables ************
-const ruta_Wikipedia = path.join(__dirname, '../bases_de_datos/tablas/IMP_Wikipedia.json');
+const ruta_Wikipedia = path.join(__dirname, '../../bases_de_datos/tablas/IMP_Wikipedia.json');
 
 // ************ Funciones ************
-const importarFilmAffinity = require(path.join(__dirname, '../modelos/importarFilmAffinity'));
-const importarWikipedia = require(path.join(__dirname, '../modelos/importarWikipedia'));
+const importarFilmAffinity = require(path.join(__dirname, '../../modelos/importarFilmAffinity'));
+const importarWikipedia = require(path.join(__dirname, '../../modelos/importarWikipedia'));
 
 // ************ Exportar ************
 module.exports =  (req,res,next) => {

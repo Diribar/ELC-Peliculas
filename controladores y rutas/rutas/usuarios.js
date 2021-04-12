@@ -9,7 +9,7 @@ const validarNombre = require('../../middlewares/usuarios/validarNombre');
 const validarSobrenombre = require('../../middlewares/usuarios/validarSobrenombre');
 const soloVisitas = require('../../middlewares/usuarios/soloVisitas');
 const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
-const uploadFile = require('../../middlewares/multer');
+const uploadFile = require('../../middlewares/varios/multer');
 
 //************************ Controladores ****************************
 router.get('/registro-mail', soloVisitas, usuarios.altaFormMail)
