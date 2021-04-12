@@ -7,13 +7,21 @@ const opciones = require('../controladores/peliculas_opciones')
 //************************ Middlewares ******************************
 const soloUsuarios = require('../../middlewares/soloUsuarios');
 const soloAdmin = require('../../middlewares/soloAdmin');
-const validarPeliculas = require('../../middlewares/PEL-validar');
 const importarPeliculas = require('../../middlewares/PEL-importar');
+const validarPeliculas1 = require('../../middlewares/PEL-validar1');
+const validarPeliculas2 = require('../../middlewares/PEL-validar2');
+const validarPeliculas3 = require('../../middlewares/PEL-validar3');
+const uploadFile = require('../../middlewares/multer');
 
 //******************* Controladores de CRUD *************************
 // -- CREATE -------------------------
-router.get('/agregar', soloAdmin, peliculas.altaForm);
-router.post('/agregar', importarPeliculas, validarPeliculas, peliculas.altaGuardar);
+router.get('/agregar1', soloAdmin, peliculas.altaForm1);
+router.post('/agregar1', importarPeliculas, validarPeliculas1, peliculas.altaGuardar1);
+router.get('/agregar2', soloAdmin, peliculas.altaForm2);
+router.post('/agregar2', validarPeliculas2, peliculas.altaGuardar2);
+router.get('/agregar3', soloAdmin, peliculas.altaForm3);
+router.post('/agregar3', uploadFile.single('imagen'), validarPeliculas3, peliculas.altaGuardar3);
+
 // -- RUD (GET) --------------------------
 router.get('/detalle/editar/:id', soloAdmin, peliculas.detalle);
 router.get('/detalle/eliminar/:id', soloAdmin, peliculas.detalle);

@@ -8,13 +8,8 @@
 		<section id="main-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ************************-->
-			<form action="/peliculas/agregar1" method="POST" class="flex-col cuerpo">
-				<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
-				<section id="cuerpo-form">
-				<%- include('1-AgregarForm') %>
-			</section>
-			</form>
-		<!--****************************** FIN *************************-->
+            <%- include(form) %>
+    		<!--****************************** FIN *************************-->
 		</section>
 	</main>
 </body>

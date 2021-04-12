@@ -6,7 +6,7 @@ const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 function GuardarArchivo(RutaNombre, Contenido) {fs.writeFileSync(RutaNombre, JSON.stringify(Contenido, null, 2))};
 
-
+//const ruta_nombre = path.join(__dirname, '../bases_de_datos/tablas/BDusuarios.json');
 const ruta_nombre = path.join(__dirname, '../bases_de_datos/tablas/BDpeliculas.json');
 
 // ***** Soporte del Controlador *****

@@ -29,11 +29,14 @@
     <% if (titulo == "Registro de Sobrenombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/3-RegistroSobrenombreForm.css"> <% } %>
     <% if (titulo.slice(0,9) == "Películas") { %>
         <% if (opcion_objeto && opcion_objeto.grupo == "Opciones") { %>
-            <link rel="stylesheet" href="/stylesheets/3-Peliculas/0-Opciones.css">
-            <link rel="stylesheet" href="/stylesheets/3-Peliculas/Filtros.css">
+            <link rel="stylesheet" href="/stylesheets/3-PEL-Opciones/0-Opciones.css">
+            <link rel="stylesheet" href="/stylesheets/3-PEL-Opciones/Filtros.css">
         <% } %>
     <% } %>
-    <% if (titulo == "PEL-Agregar") { %><link rel="stylesheet" href="/stylesheets/3-Peliculas/11-Agregar.css"><% } %>
+    <% if (titulo == "PEL-Agregar") { %>
+        <link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/1-Agregar.css">
+        <link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/<%= form %> .css">
+    <% } %>
 
     <!--LOGO EN LA PESTAÑA DE INTERNET-->
     <link rel="icon" href="/images/Sagrada Familia.jpg">

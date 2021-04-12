@@ -13,17 +13,24 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm: (req, res) => {
-		return res.render('0-Agregar', {
-			titulo: "PEL-Agregar"
-		});
+	altaForm1: (req, res) => {
+		return res.render('1-Agregar', {form: "1-AgregarForm1",titulo: "PEL-Agregar"});
 	},
 
-	altaGuardar: (req, res) => {
+    altaGuardar1: (req,res) => {
+        return res.send("Estoy en guardar1")
+    },
+
+	altaForm2: (req, res) => {
+		return res.render('1-Agregar', {form: "1-AgregarForm2",titulo: "PEL-Agregar"});
+	},
+
+	altaGuardar2: (req, res) => {
 		const resultValidation = validationResult(req);
 		if (resultValidation.errors.length > 0) {
 			req.body.comentario = ""
-			return res.render("0-Agregar", {
+			return res.render("1-Agregar", {
+                form: "1-AgregarForm1",
 				data_entry: req.body,
 				errores: resultValidation.mapped(),
 				titulo: "PEL-Agregar"
@@ -31,6 +38,14 @@ module.exports = {
 		}
 		return res.send("sin errores")
 	},
+
+    altaForm3: (req, res) => {
+		return res.render('1-Agregar', {form: "1-AgregarForm3",titulo: "PEL-Agregar"});
+	},
+
+    altaGuardar3: (req,res) => {
+        return res.send("Estoy en guardar3")
+    },
 
 	detalle: (req, res) => {
 		// Obtener el código de Método y Película
