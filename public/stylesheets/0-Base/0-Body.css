@@ -33,3 +33,4 @@ main, main #imagen-derecha {height:90vh;}
 .border {border: red 1px solid}
 .grid {display: grid;}
 .relative {position: relative;}
+.linea_divisoria {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}

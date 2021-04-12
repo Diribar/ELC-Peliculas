@@ -1,5 +1,6 @@
 /* Partes específicas del formulario */
-#data_entry h1 {margin-bottom: 10px; padding-top: 15px; align-self: flex-start;}
-#data_entry h1 {border-top: 1px solid var(--gris-oscuro);}
+#data_entry h1 {margin-bottom: 10px;  align-self: flex-start;}
+#data_entry h1#ingresar_los_datos_a_mano {margin-top: 20px;}
 #data_entry label {align-self: flex-end;}
-#data_entry #ingresar_los_datos_a_mano {margin-top: 20px;}
+#data_entry .fa-times-circle {left: -15px; top: 7px;}
+#data_entry .linea_divisoria {margin-top: 20px;}

@@ -14,3 +14,4 @@
 #data_entry .formulario-grupo {position: relative; display: flex;}
 #data_entry .formulario-grupo p {margin: 7px 5px 0px 10px;}
 #data_entry .formulario-grupo .input-numero {width: 50px;}
+#data_entry .fa-times-circle {right: -17px; top: 5px;}

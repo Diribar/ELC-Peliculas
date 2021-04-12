@@ -5,7 +5,7 @@
 
 /* Partes específicas del formulario */
 #data_entry input, #data_entry textArea {padding: 0 2px; margin-right: 5px; margin-top: 4px;}
-#data_entry .formulario-grupo .fa-times-circle {position: absolute;right: -17px;top: 5px;font-size: .8em; color: red;}
+#data_entry .fa-times-circle {position: absolute;font-size: .8em; color: red;}
 
 /* Submit button */
 #data_entry button {margin-top: 20px; padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}

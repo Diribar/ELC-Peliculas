@@ -18,19 +18,36 @@ module.exports = {
 	},
 
     altaGuardar1: (req,res) => {
-        return res.send("Estoy en guardar1")
+		//Detectar errores de Data Entry
+        const erroresValidacion = validationResult(req);
+        let existenErrores = erroresValidacion.errors.length > 0;
+		//return res.send(erroresValidacion)
+        if (existenErrores) {
+			return res.render("1-Agregar", {
+                form: "1-AgregarForm1",
+				data_entry: req.body,
+				errores: erroresValidacion.mapped(),
+				titulo: "PEL-Agregar"
+			})
+		}
+        req.session.agregarPelicula = req.body
+		return res.redirect("/peliculas/agregar2")
     },
 
 	altaForm2: (req, res) => {
-		return res.render('1-Agregar', {form: "1-AgregarForm2",titulo: "PEL-Agregar"});
+        //return res.send(req.session.agregarPelicula)
+		return res.render('1-Agregar', {
+            form: "1-AgregarForm2",
+            data_entry: req.session.agregarPelicula,
+            titulo: "PEL-Agregar"
+        });
 	},
 
 	altaGuardar2: (req, res) => {
 		const resultValidation = validationResult(req);
 		if (resultValidation.errors.length > 0) {
-			req.body.comentario = ""
 			return res.render("1-Agregar", {
-                form: "1-AgregarForm1",
+                form: "1-AgregarForm2",
 				data_entry: req.body,
 				errores: resultValidation.mapped(),
 				titulo: "PEL-Agregar"

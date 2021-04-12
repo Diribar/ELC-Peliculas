@@ -1,11 +1,13 @@
 <button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
 <section class="flex-col" id="data_entry">
-    <form action="/peliculas/agregar1" method="POST" class="flex-col">
+    <form action="/peliculas/agregar1A" method="POST" class="flex-col">
         <section>
             <h1>Opción de importar datos</h1>
             <div class="relative flex-row">  <!--Pegar la información importada-->
-                <textarea name="imports" cols="18" rows="1" placeholder="Pegá acá la info"></textarea>
+                <textarea name="imports" cols="18" rows="1" placeholder="Pegá acá la info"
+                    value="<%= locals.data_entry ? data_entry.imports : null %>"></textarea>
                 <label for="imports">Pegar la información importada</label>
+                <% if (locals.errores && errores.imports) { %><i class="fas fa-times-circle"></i><% } %>
             </div>
             <div class="relative flex-row">  <!--Link de la página que provee los datos-->
                 <input type="text" name="link" placeholder="Pegá acá el link"
@@ -16,14 +18,14 @@
         </section>
         <button type="submit">Enviar</button>
     </form>
-    <form action="/peliculas/agregar1" method="POST" class="flex-col">
+    <hr class="linea_divisoria">
+    <form action="/peliculas/agregar1B" method="POST" class="flex-col">
         <section>
             <h1 id="ingresar_los_datos_a_mano">Opción de ingresar los datos a mano</h1>
             <div class="relative flex-row">  <!--Título original-->
                 <input type="text" name="titulo_original" placeholder="Título original"
                     value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
                 <% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && errores.titulo_original) { %><p><%= errores.titulo_original.msg %> </p><% } %>
                 <label for="titulo_original">Título original de la película</label>
             </div>
         </section>
