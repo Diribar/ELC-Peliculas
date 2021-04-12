@@ -4,11 +4,11 @@ const router = express.Router();
 const usuarios = require('../controladores/usuarios')
 
 //************************ Middlewares ******************************
-const validarMail = require('../../middlewares/US-validarMail');
-const validarNombre = require('../../middlewares/US-validarNombre');
-const validarSobrenombre = require('../../middlewares/US-validarSobrenombre');
-const soloVisitas = require('../../middlewares/soloVisitas');
-const soloUsuarios = require('../../middlewares/soloUsuarios');
+const validarMail = require('../../middlewares/usuarios/validarMail');
+const validarNombre = require('../../middlewares/usuarios/validarNombre');
+const validarSobrenombre = require('../../middlewares/usuarios/validarSobrenombre');
+const soloVisitas = require('../../middlewares/usuarios/soloVisitas');
+const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
 const uploadFile = require('../../middlewares/multer');
 
 //************************ Controladores ****************************

@@ -5,14 +5,14 @@ const peliculas = require('../controladores/peliculas')
 const opciones = require('../controladores/peliculas_opciones')
 
 //************************ Middlewares ******************************
-const soloUsuarios = require('../../middlewares/soloUsuarios');
-const soloAdmin = require('../../middlewares/soloAdmin');
-const importarPeliculas = require('../../middlewares/PEL-importar');
-const validarPeliculas1A = require('../../middlewares/PEL-validar1A');
-const validarPeliculas1B = require('../../middlewares/PEL-validar1B');
-const validarPeliculas2 = require('../../middlewares/PEL-validar2');
-const validarPeliculas3 = require('../../middlewares/PEL-validar3');
-const uploadFile = require('../../middlewares/multer');
+const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
+const soloAdmin = require('../../middlewares/usuarios/soloAdmin');
+const importarPeliculas = require('../../middlewares/peliculas/importar');
+const validarPeliculas1A = require('../../middlewares/peliculas/validar1A');
+const validarPeliculas1B = require('../../middlewares/peliculas/validar1B');
+const validarPeliculas2 = require('../../middlewares/peliculas/validar2');
+const validarPeliculas3 = require('../../middlewares/peliculas/validar3');
+const uploadFile = require('../../middlewares/varios/multer');
 
 //******************* Controladores de CRUD *************************
 // -- CREATE -------------------------

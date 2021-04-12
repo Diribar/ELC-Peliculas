@@ -12,8 +12,8 @@ app.use(methodOverride('_method')); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
 app.use(cookies());
-const usuario = require('./middlewares/US-loginCookie'); app.use(usuario); // Para ocultar íconos según login (después de "session")
-const userLogs = require("./middlewares/userLogs"); app.use(userLogs); // Para registrar los URL de las páginas navegadas
+const usuario = require('./middlewares/usuarios/loginCookie'); app.use(usuario); // Para ocultar íconos según login (después de "session")
+const userLogs = require("./middlewares/varios/userLogs"); app.use(userLogs); // Para registrar los URL de las páginas navegadas
 
 // *********** Para conectarse con el servidor ********************
 app.listen(3001, () => console.log('Servidor funcionando en puerto 3001...'))

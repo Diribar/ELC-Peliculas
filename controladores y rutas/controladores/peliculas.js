@@ -14,7 +14,7 @@ function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, nu
 // *********** Controlador ***********
 module.exports = {
 	altaForm1: (req, res) => {
-		return res.render('1-Agregar', {form: "1-AgregarForm1",titulo: "PEL-Agregar"});
+		return res.render('Agregar', {form: "AgregarForm1",titulo: "PEL-Agregar"});
 	},
 
     altaGuardar1: (req,res) => {
@@ -23,8 +23,8 @@ module.exports = {
         let existenErrores = erroresValidacion.errors.length > 0;
 		//return res.send(erroresValidacion)
         if (existenErrores) {
-			return res.render("1-Agregar", {
-                form: "1-AgregarForm1",
+			return res.render("Agregar", {
+                form: "AgregarForm1",
 				data_entry: req.body,
 				errores: erroresValidacion.mapped(),
 				titulo: "PEL-Agregar"
@@ -36,8 +36,8 @@ module.exports = {
 
 	altaForm2: (req, res) => {
         //return res.send(req.session.agregarPelicula)
-		return res.render('1-Agregar', {
-            form: "1-AgregarForm2",
+		return res.render('Agregar', {
+            form: "AgregarForm2",
             data_entry: req.session.agregarPelicula,
             titulo: "PEL-Agregar"
         });
@@ -46,8 +46,8 @@ module.exports = {
 	altaGuardar2: (req, res) => {
 		const resultValidation = validationResult(req);
 		if (resultValidation.errors.length > 0) {
-			return res.render("1-Agregar", {
-                form: "1-AgregarForm2",
+			return res.render("Agregar", {
+                form: "AgregarForm2",
 				data_entry: req.body,
 				errores: resultValidation.mapped(),
 				titulo: "PEL-Agregar"
@@ -57,7 +57,7 @@ module.exports = {
 	},
 
     altaForm3: (req, res) => {
-		return res.render('1-Agregar', {form: "1-AgregarForm3",titulo: "PEL-Agregar"});
+		return res.render('Agregar', {form: "AgregarForm3",titulo: "PEL-Agregar"});
 	},
 
     altaGuardar3: (req,res) => {
