@@ -66,7 +66,7 @@
                 <% if (locals.errores && errores.musica) { %><i class="fas fa-times-circle"></i><% } %>
             </div>
         </section>
-        <section class="label-input flex-row">  <!--Protagonista/s-->
+        <section class="label-input flex-row">  <!--Protagonista-->
             <label>Protagonista/s</label>
             <div class="formulario-grupo">
                 <input type="text" class="input" name="protagonista" placeholder=""
@@ -140,34 +140,6 @@
                     <option value="1" <% if (entretiene=="1") {%> selected <%}%>>Poco</option>
                 </select>
                 <% if (locals.errores && errores.entretiene) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-col divisor">  <!--Links gratuitos para ver la película-->
-            <label>Links gratuitos para ver la película</label>
-            <div class="formulario-grupo flex row">  <!--Primer Link-->
-                <p>Primer Link</p>
-                <div class="formulario-grupo">
-                    <input type="text" name="pelicula1" placeholder=""
-                        value="<%= locals.data_entry ? data_entry.pelicula1 : null %>">
-                    <% if (locals.errores && errores.pelicula1) { %><i class="fas fa-times-circle"></i><% } %>
-                </div>
-            </div>
-            <div class="formulario-grupo flex row">  <!--Primer Link-->
-                <p>Segundo Link</p>
-                <div class="formulario-grupo">
-                    <input type="text" name="pelicula2" placeholder=""
-                        value="<%= locals.data_entry ? data_entry.pelicula2 : null %>">
-                    <% if (locals.errores && errores.pelicula2) { %><i class="fas fa-times-circle"></i><% } %>
-                </div>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Sinopsis-->
-            <label>Sinopsis</label>
-            <div class="formulario-grupo">
-                <textarea name="sinopsis" cols="18" rows="1" placeholder="Ingresa aquí la sinopsis" 
-                    value="<%= locals.data_entry ? data_entry.sinopsis : null %>"
-                ></textarea>
-                <% if (locals.errores && errores.sinopsis) { %><i class="fas fa-times-circle"></i><% } %>
             </div>
         </section>
     </div>
