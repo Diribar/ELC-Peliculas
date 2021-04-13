@@ -1,11 +1,25 @@
 /* Formato del cuerpo */
 .cuerpo {align-items: center;}
-#data_entry {margin: 20px 20px; padding: 30px 30px; border-radius: 20px;}
+#data_entry {margin: 20px 20px; padding: 20px 40px; border-radius: 20px;}
 #data_entry {background-color: var(--amarillo-claro);}
 
 /* Partes específicas del formulario */
+#data_entry h1 {align-self: center; margin-bottom: 5px; color: white;background-color: var(--verde); padding: 5px 10px;border-radius: 10px;}
 #data_entry input, #data_entry textArea {padding: 0 2px; margin-right: 5px; margin-top: 4px;}
 #data_entry .fa-times-circle {position: absolute;font-size: .8em; color: red;}
+
+/*  Mensajes de error*/
+.mensajeError {
+	display: none;
+	font-weight: normal;
+	background-color: var(--verde);
+	color: #fff;
+	border-radius: 6px;
+	padding: 0px 5px;
+	text-align: left;
+  }
+  
+#data_entry .fa-times-circle:hover .mensajeError {display: flex;}
 
 /* Submit button */
 #data_entry button {margin-top: 20px; padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}
