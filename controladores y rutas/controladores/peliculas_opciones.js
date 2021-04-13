@@ -6,34 +6,22 @@ const path = require('path')
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // ************ Variables ************
-const ruta_nombre_rubros = path.join(__dirname, '../../bases_de_datos/tablas/BDrubros.json');
 const ruta_nombre_opciones = path.join(__dirname, '../../bases_de_datos/tablas/menuOpciones.json');
 const ruta_nombre_tipos = path.join(__dirname, '../../bases_de_datos/tablas/menuTipos.json');
-const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
+//const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
 
 // *********** Controlador ***********
 module.exports = {
 
 	rubro: (req,res) => {
-		// Obtener el código del rubro elegido (peliculas, etc.)
-		let rubro_url = req.originalUrl.slice(1)
-		let opcion_url=null
-		let tipo_url=null
-		// Obtener el título
-		let rubros_BD = leer(ruta_nombre_rubros);
-		let rubro_objeto = rubros_BD.find(n => n.codigo == rubro_url);
-		let opcion_objeto = {"grupo": "Opciones"};
-		let titulo = rubro_objeto.titulo;
-		// Definir variables a enviar a la vista
-		let opciones_BD = leer(ruta_nombre_opciones);
 		// Ir a la vista
 		res.render('0-Opciones', {
-			titulo,
-			rubro_url,
-			opcion_url,
-			tipo_url,
-			opcion_objeto,
-			opciones_BD,
+			titulo: "Películas",
+			rubro_url: "peliculas",
+			opcion_url: null,
+			tipo_url: null,
+			opcion_objeto: {"grupo": "Opciones"},
+			opciones_BD: leer(ruta_nombre_opciones),
 		});
 	},
 
