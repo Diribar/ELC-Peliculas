@@ -5,7 +5,7 @@
         <label for="email">E-Mail</label>
         <div class="formulario-grupo">
             <input type="text" class="input" name="email" placeholder="Correo Electrónico"
-                value="<%= locals.data_entry ? data_entry.email : null %>">
+                value="<%= locals.data_entry ? data_entry.email : "Correo Electrónico" %>">
             <% if (locals.errores && errores.email || mailEnBD) { %><i class="fas fa-times-circle"></i><% } %>
             <% if (locals.errores && !errores.email && !mailEnBD) { %><i class="fas fa-check-circle"></i><% } %>
         </div>

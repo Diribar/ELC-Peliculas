@@ -212,7 +212,7 @@ module.exports = {
 		BD[indice] = reg_actual
 		// Guardar los cambios
 		guardar(ruta_nombre, BD);
-		res.redirect("/usuario/" + req.params.id);
+		res.redirect("/usuarios/detalle");
 	},	
 
 	baja: (req, res) => {
