@@ -14,3 +14,4 @@
 .relative {position: relative;}
 .linea_divisoria {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 i {font-style: normal;}
+.display-none {display: none}

@@ -44,12 +44,13 @@ module.exports = {
 	},
 
 	altaGuardar2: (req, res) => {
-		const resultValidation = validationResult(req);
-		if (resultValidation.errors.length > 0) {
+		const erroresValidacion = validationResult(req);
+        //return res.send(erroresValidacion)
+		if (erroresValidacion.errors.length > 0) {
 			return res.render("Agregar", {
                 form: "AgregarForm2",
 				data_entry: req.body,
-				errores: resultValidation.mapped(),
+				errores: erroresValidacion.mapped(),
 				titulo: "PEL-Agregar"
 			})
 		}
