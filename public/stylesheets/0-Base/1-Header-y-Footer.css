@@ -9,9 +9,9 @@ header .icono, header #imagenUsuario {position: absolute;}
 header .icono {color: var(--celeste-claro); transform:scale(1.8); top:40%;}
 
 /* Íconos a la izquierda */
-header .fa-home {left:40px;}
+header .fa-home {left: 40px;}
 header .fa-video {left: 100px}
-header #plus {left: 99px; top:38%; z-index: 3; color: var(--azul); line-height: normal;}
+header #plus {left: 99px; top:37%; z-index: 3; color: var(--azul); line-height: normal;}
 
 /* Íconos a la derecha */
 header .fa-user-circle {right:40px;}

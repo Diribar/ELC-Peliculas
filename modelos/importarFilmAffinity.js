@@ -10,6 +10,7 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 module.exports = (alfa) => {
     // Convertir texto en array
+    //console.log(alfa)
     alfa = alfa.split("\r\n");
     //console.log(alfa)
     // Limpiar espacios innecesarios
@@ -26,7 +27,11 @@ module.exports = (alfa) => {
             alfa[i]=""
         }
         if (alfa[i-1] == "pais_origen") {
-            //console.log(alfa[i])
+            alfa[i] = alfa[i].slice((alfa[i].length+1)/2)
+        }
+        if (alfa[i-1] == "duracion") {
+            alfa[i] = alfa[i].slice(0, alfa[i].indexOf(" "))
+            console.log(alfa[i])
         }
     }
     // Limpiar campos vacíos

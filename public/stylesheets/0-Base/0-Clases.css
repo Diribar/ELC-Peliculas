@@ -1,0 +1,16 @@
+/* ESTILOS Y CLASES */
+.flex-col {display: flex;flex-direction: column;}
+.flex-row {display: flex;flex-direction: row;}
+.grow {flex-grow: 1;}
+.between {justify-content: space-between;}
+.around {justify-content: space-around;}
+.cursiva {font-style: italic;}
+.not-cursiva {font-style: normal;}
+.cursor_pointer {cursor: pointer;}
+.dropdown-content {display: none;}
+.mostrar {display: block;}
+.border {border: red 1px solid}
+.grid {display: grid;}
+.relative {position: relative;}
+.linea_divisoria {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
+i {font-style: normal;}

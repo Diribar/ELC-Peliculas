@@ -11,7 +11,7 @@ module.exports = [
 		.custom((value, { req }) => {
 			//Verificar si se importó información de un link inválido
 			let link = req.body.link;
-			if (!link.includes("filmaffinity.com/es/film") && !link.includes("es.wikipedia.org/wiki/")) {
+			if (!link.includes("filmaffinity.com/") && !link.includes("es.wikipedia.org/wiki/")) {
 				throw new Error('Debe ser un link de Film Affinity o Wikipedia (en español)')
 			};
 			return true;

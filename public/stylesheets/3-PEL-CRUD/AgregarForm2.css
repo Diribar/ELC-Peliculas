@@ -2,7 +2,6 @@
 #data_entry #columnaMedio {width: 60px}
 
 /* Cuerpo del formulario */
-#data_entry .label-input label, form i, form option, form input, form select, form p, form textarea {font-size: 14px;}
 #data_entry .label-input.flex-row .formulario-grupo, 
 #data_entry .label-input.flex-row .formulario-grupo select {align-self: flex-end;}
 #data_entry .formulario-grupo select {align-self: flex-end;}
@@ -13,5 +12,5 @@
 #data_entry .label-input label {margin-top: 10px; margin-right: 5px; font-weight: bold;}
 #data_entry .formulario-grupo {position: relative; display: flex;}
 #data_entry .formulario-grupo p {margin: 7px 5px 0px 10px;}
-#data_entry .formulario-grupo .input-numero {width: 50px;}
+#data_entry .formulario-grupo .input-numero {width: 50px; text-align: right;}
 #data_entry .fa-times-circle {right: -17px; top: 5px;}

@@ -3,9 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const {validationResult} = require('express-validator');
 
-// ************ Variables ************
-const ruta_Wikipedia = path.join(__dirname, '../../bases_de_datos/tablas/IMP_Wikipedia.json');
-
 // ************ Funciones ************
 const importarFilmAffinity = require(path.join(__dirname, '../../modelos/importarFilmAffinity'));
 const importarWikipedia = require(path.join(__dirname, '../../modelos/importarWikipedia'));
@@ -15,10 +12,10 @@ module.exports =  (req,res,next) => {
     const erroresValidacion = validationResult(req);
     let existenErrores = erroresValidacion.errors.length > 0;
     if (!existenErrores) {
-        //console.log(req.body)
+        //return res.send(req.body)
         let imports = req.body.imports;
         let link = req.body.link;
-        if (link.includes("filmaffinity.com/es/film")) {
+        if (link.includes("filmaffinity.com/")) {
             data = importarFilmAffinity(imports)
             //return res.send(data)
         };
@@ -27,7 +24,7 @@ module.exports =  (req,res,next) => {
         };
         // Limpiar la info importada
         req.body.imports = ""
-        //return res.send(req.body)
+        //return res.send(data)
         // Obtener el protagonista
         let reparto = data.reparto
         let protagonista = data.protagonista

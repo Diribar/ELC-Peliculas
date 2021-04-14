@@ -9,14 +9,21 @@
 				<a href="https://es.wikipedia.org/wiki/Wikipedia:Portada">Wikipedia</a>
 			</p>
 			<div class="relative flex-row">  <!--Pegar la información importada-->
-				<input type="text" name="imports" placeholder="Pegá acá la info"
-					value="<%= locals.data_entry ? data_entry.imports : null %>">
+				<textarea name="imports" id="" rows="1" placeholder="Pegá acá la info" 
+				value="<%= locals.data_entry ? data_entry.imports : null %>"></textarea>
 				<% if (locals.errores && errores.imports) { %>
 					<i class="fas fa-times-circle">
 						<span class="mensajeError"><%= errores.imports.msg %></span>
 					</i>
 				<% } %>
-				<label for="imports">Pegar la información importada <i class="fas fa-question-circle"></i></label>
+				<label for="imports">Pegar la información importada 
+					<i class="fas fa-question-circle">
+						<span class="mensajeAyuda">
+							<span style="font-weight: bold;">FilmAffinity</span>: desde "Título original", hasta el final de "Productora"<br>
+							<span style="font-weight: bold;">Wikipedia</span>, en la ficha a la derecha: desde el titulo en su idioma original, hasta el final de "Distribución"
+						</span>
+					</i>
+				</label>
 			</div>
 			<div class="relative flex-row">  <!--Link de la página que provee los datos-->
 				<input type="text" name="link" placeholder="Pegá acá el link"
@@ -24,7 +31,13 @@
 				<% if (locals.errores && errores.link) { %><i class="fas fa-times-circle">
 					<span class="mensajeError"><%= errores.link.msg %> </span>
 				</i><% } %>
-				<label for="link">Link de la página que provee los datos <i class="fas fa-question-circle"></i></label>
+				<label for="link">Link de la página que provee los datos 
+					<i class="fas fa-question-circle">
+						<span class="mensajeAyuda">
+							El link es importante para nosotros, porque se lo queremos ofrecer a nuestros usuarios
+						</span>
+					</i>
+				</label>
 			</div>
 		</section>
 		<button type="submit">Enviar</button>
@@ -39,7 +52,13 @@
 				<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle">
 					<span class="mensajeError"><%= errores.titulo_original.msg %> </span>
 				</i><% } %>
-				<label for="titulo_original">Título original de la película <i class="fas fa-question-circle"></i></label>
+				<label for="titulo_original">Título original de la película 
+					<i class="fas fa-question-circle">
+						<span class="mensajeAyuda">
+							El "Título Original" es el dato por el que identificamos que una película no esté repetida en nuestra base de datos
+						</span>
+					</i>
+				</label>
 			</div>
 		</section>
 		<button type="submit">Enviar</button>
