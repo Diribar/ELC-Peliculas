@@ -1,12 +1,12 @@
 /* CUADRO DE TEXTO - CUADRO */
 #cuerpo-listado {justify-content:center;align-items: center;}
 #cuerpo-listado #cuadro-de-texto {
-    padding: 30px;
-    border: 2px solid var(--azul-frances);
-    background-color: var(--gris-claro);
-    border-radius: 20px;
-    width: 70%;
-    box-shadow: 0px 0px 20px var(--azul);
+	padding: 30px;
+	border: 2px solid var(--azul-frances);
+	background-color: var(--gris-claro);
+	border-radius: 20px;
+	width: 70%;
+	box-shadow: 0px 0px 20px var(--azul);
 }
 
 /* CUADRO DE TEXTO - TEXTO */

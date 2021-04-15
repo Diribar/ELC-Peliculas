@@ -1,9 +1,9 @@
 <div id="menu-usuario" class="dropdown-content">
-  <% if (locals.usuario) { %>
-    <a href="/usuarios/detalle">Ver mi Perfil</a>
-    <a href="/login/logout">Logout</a>
-  <% } else { %>
-    <a href="/login">Login</a>
-    <a href="/usuarios/registro-mail">Registrarse</a>
-  <% } %>
+<% if (locals.usuario) { %>
+	<a href="/usuarios/detalle">Ver mi Perfil</a>
+	<a href="/login/logout">Logout</a>
+<% } else { %>
+	<a href="/login">Login</a>
+	<a href="/usuarios/registro-mail">Registrarse</a>
+<% } %>
 </div>

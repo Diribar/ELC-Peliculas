@@ -1,34 +1,34 @@
 [
-    {
-        "nombre": "Laico",
-        "sigla": "AR"
-    },
-    {
-        "nombre": "Laico consagrado",
-        "sigla": "LC"
-    },
-    {
-        "nombre": "Religioso consagrado",
-        "sigla": "RC"
-    },
-    {
-        "nombre": "Diácono permanente",
-        "sigla": "DP"
-    },
-    {
-        "nombre": "Diácono",
-        "sigla": "DI"
-    },
-    {
-        "nombre": "Sacerdote",
-        "sigla": "SC"
-    },
-    {
-        "nombre": "Obispo",
-        "sigla": "OB"
-    },
-    {
-        "nombre": "Cardenal",
-        "sigla": "CD"
-    }
+	{
+		"nombre": "Laico",
+		"sigla": "AR"
+	},
+	{
+		"nombre": "Laico consagrado",
+		"sigla": "LC"
+	},
+	{
+		"nombre": "Religioso consagrado",
+		"sigla": "RC"
+	},
+	{
+		"nombre": "Diácono permanente",
+		"sigla": "DP"
+	},
+	{
+		"nombre": "Diácono",
+		"sigla": "DI"
+	},
+	{
+		"nombre": "Sacerdote",
+		"sigla": "SC"
+	},
+	{
+		"nombre": "Obispo",
+		"sigla": "OB"
+	},
+	{
+		"nombre": "Cardenal",
+		"sigla": "CD"
+	}
 ]

@@ -6,11 +6,11 @@
 input[type="file"] {display:none}
 
 #usuariosForm form .imagen {
-    margin-right: 0px;
-    color: var(--azul);
-    background-color: rgb(255, 255, 255);
-    line-height: normal;
-    cursor: pointer;
+	margin-right: 0px;
+	color: var(--azul);
+	background-color: rgb(255, 255, 255);
+	line-height: normal;
+	cursor: pointer;
 }
 
 #filename {color: white; font-size: 12px;margin-top: 5px; font-style: italic}

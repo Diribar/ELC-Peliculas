@@ -4,9 +4,9 @@ select, option {cursor: pointer;}
 
 /* BACKGROUND IMAGE */
 body {
-    background-image: url("/images/0-Base/Color de fondo.png");
-    background-size: cover;
-    background-attachment: fixed;
+	background-image: url("/images/0-Base/Color de fondo.png");
+	background-size: cover;
+	background-attachment: fixed;
 }
 
 /* ALTURAS DE HEADER Y MAIN */

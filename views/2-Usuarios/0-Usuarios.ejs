@@ -1,43 +1,43 @@
 <%- include('0-Head') %>
 <body>
-  <%- include('1-Header') %>
-  <main class="flex-row">
-    <%- include('ImagenDerecha') %>
-    <section id="main-y-footer" class="flex-col grow">
-      <%- include('3-Footer') %>
+<%- include('1-Header') %>
+<main class="flex-row">
+	<%- include('ImagenDerecha') %>
+	<section id="main-y-footer" class="flex-col grow">
+	<%- include('3-Footer') %>
 <!--**************************** CUERPO ******************************-->
-      <section id="usuariosForm" class="flex-col">
-        <p id="tapar-el-fondo"></p>
-        <%- titulo == "Login"              ? include('LoginForm') : "" %>
-        <%- titulo == "Registro de Mail"   ? include('1-RegistroMailForm') : "" %>
-        <%- titulo == "Registro de Nombre" ? include('2-RegistroNombreForm') : "" %>
-        <%- titulo == "Registro de Sobrenombre" ? include('3-RegistroSobrenombreForm') : "" %>
-      </section>
-      <!--****************************** FIN *******************************-->
-    </section>
-  </main>
+	<section id="usuariosForm" class="flex-col">
+		<p id="tapar-el-fondo"></p>
+		<%- titulo == "Login"              ? include('LoginForm') : "" %>
+		<%- titulo == "Registro de Mail"   ? include('1-RegistroMailForm') : "" %>
+		<%- titulo == "Registro de Nombre" ? include('2-RegistroNombreForm') : "" %>
+		<%- titulo == "Registro de Sobrenombre" ? include('3-RegistroSobrenombreForm') : "" %>
+	</section>
+	<!--****************************** FIN *******************************-->
+	</section>
+</main>
 </body>
 </html>
 
 <script>
 
-  function mostrar(n) {
-      var cambio = document.getElementById(n);
-      if(cambio.type == "password"){
-          cambio.type = "text";$('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
-      }else{
-          cambio.type = "password";$('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
-      }
-  }
+function mostrar(n) {
+	var cambio = document.getElementById(n);
+	if(cambio.type == "password"){
+		cambio.type = "text";$('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
+	}else{
+		cambio.type = "password";$('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
+	}
+}
 
-  function retroceder() {
-      window.history.back();
-  }
+function retroceder() {
+	window.history.back();
+}
 
-  function fileName() {
-    let n = document.getElementById("imagen").value;
-    n = n.slice(n.lastIndexOf('\\')+1);
-    document.getElementById("filename").innerHTML = n;
-  }
+function fileName() {
+	let n = document.getElementById("imagen").value;
+	n = n.slice(n.lastIndexOf('\\')+1);
+	document.getElementById("filename").innerHTML = n;
+}
 
 </script>
