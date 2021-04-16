@@ -132,8 +132,8 @@
 						</i><% } %>
 				</div>
 				</section>
-				<section class="label-input flex-row">  <!--Idioma Castellano-->
-					<label>Idioma Castellano</label>
+				<section class="label-input flex-row">  <!--Existe una versión en castellano-->
+					<label>Existe una versión en castellano</label>
 					<div class="formulario-grupo">
 						<% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
 						<select name="idioma_castellano">

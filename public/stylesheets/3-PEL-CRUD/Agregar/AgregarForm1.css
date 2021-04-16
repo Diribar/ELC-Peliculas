@@ -8,4 +8,4 @@
 #data_entry .linea_divisoria {margin-top: 20px;}
 #data_entry .mensajeAyuda {position: absolute; width: 250px; margin-left: 2px;}
 #data_entry .fa-question-circle:hover .mensajeAyuda {display: inline;}
-#data_entry input {margin-right: 5px;}
+#data_entry input, #data_entry textarea {margin-right: 5px;}
