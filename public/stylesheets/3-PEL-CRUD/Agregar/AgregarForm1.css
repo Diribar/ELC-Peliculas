@@ -1,3 +1,5 @@
+.cuerpo {position: relative;}
+
 /* Partes específicas del formulario */
 #data_entry h1 {margin-bottom: 5px;}
 #data_entry p {margin-bottom: 5px; font-style: italic;}
