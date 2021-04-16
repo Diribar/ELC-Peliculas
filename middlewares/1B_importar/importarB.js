@@ -4,8 +4,8 @@ const path = require('path');
 const {validationResult} = require('express-validator');
 
 // ************ Funciones ************
-const importarFilmAffinity = require(path.join(__dirname, '../../modelos/importarFilmAffinity'));
-const importarWikipedia = require(path.join(__dirname, '../../modelos/importarWikipedia'));
+const importarFilmAffinity = require(path.join(__dirname, '/webFilmAffinity'));
+const importarWikipedia = require(path.join(__dirname, '/webWikipedia'));
 
 // ************ Exportar ************
 module.exports =  (req,res,next) => {

@@ -4,24 +4,30 @@ const path = require('path');
 const {validationResult} = require('express-validator');
 
 // ************ Funciones ************
-const importarFilmAffinity = require(path.join(__dirname, '../../modelos/importarFilmAffinity'));
-const importarWikipedia = require(path.join(__dirname, '../../modelos/importarWikipedia'));
+const API_search = require(path.join(__dirname, '/webAPI_search'));
 
 // ************ Exportar ************
 module.exports =  (req,res,next) => {
 	const erroresValidacion = validationResult(req);
 	let existenErrores = erroresValidacion.errors.length > 0;
+	//return res.send(erroresValidacion)
 	if (!existenErrores) {
-		return res.send(req.body)
-		let imports = req.body.imports;
-		let link = req.body.link;
-		if (link.includes("filmaffinity.com/")) {
-			data = importarFilmAffinity(imports)
-			//return res.send(data)
-		};
-		if (link.includes("es.wikipedia.org/wiki/")) {
-			data = importarWikipedia(imports)
-		};
+		//return res.send(req.body.palabras_clave)
+		let palabras_clave = req.body.palabras_clave;
+		data = API_search(palabras_clave);
+		return res.send(data);
+		if (data = "") {
+			validationResult(req).errors = {
+				"value": "",
+				"msg": "No se encontró ninguna película con estas palabras clave",
+				"param": "palabras_clave",
+				"location": "body"
+			};
+			return res.send(validationResult(req));
+		}
+
+
+
 		// Limpiar la info importada
 		req.body.imports = ""
 		//return res.send(data)
