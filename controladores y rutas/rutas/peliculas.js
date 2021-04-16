@@ -9,11 +9,11 @@ const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
 const soloAdmin = require('../../middlewares/usuarios/soloAdmin');
 const importarPeliculasA = require('../../middlewares/1A_palabras_clave/importarA');
 const importarPeliculasB = require('../../middlewares/1B_importar/importarB');
-const validar1A = require('../../middlewares/validar/validar1A');
-const validar1B = require('../../middlewares/validar/validar1B');
-const validar1C = require('../../middlewares/validar/validar1C');
-const validar2 = require('../../middlewares/validar/validar2');
-const validar3 = require('../../middlewares/validar/validar3');
+const validar1A = require('../../middlewares/0_validarForms/validar1A');
+const validar1B = require('../../middlewares/0_validarForms/validar1B');
+const validar1C = require('../../middlewares/0_validarForms/validar1C');
+const validar2 = require('../../middlewares/0_validarForms/validar2');
+const validar3 = require('../../middlewares/0_validarForms/validar3');
 const uploadFile = require('../../middlewares/varios/multer');
 
 //******************* Controladores de CRUD *************************
