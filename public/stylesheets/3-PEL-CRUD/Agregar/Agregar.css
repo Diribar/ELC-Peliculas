@@ -18,10 +18,11 @@
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle, #data_entry .mensajeAyuda {font-size: 1em;}
+#data_entry .fa-question-circle {margin-left: 2px;}
 #data_entry .mensajeAyuda {display: none; font-weight: normal; z-index: 1;}
 #data_entry .mensajeAyuda {border-radius: 6px;padding: 5px;line-height: 1.1rem;}
 #data_entry .mensajeAyuda {color: var(--azul); background-color: var(--amarillo-claro);border: var(--naranja-oscuro) solid 2px;}
 
 /* Submit button */
-#data_entry button {margin-top: 25px; padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}
+#data_entry button {padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}
 #data_entry button {color: white; background-color: var(--gris-oscuro);}

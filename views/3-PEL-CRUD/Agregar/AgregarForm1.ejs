@@ -1,70 +1,97 @@
 <%- include('AgregarAntes', {titulo: "PEL-Agregar", form: "AgregarForm1"}) %>
-<div class="cuerpo flex-col">
+<div class="cuerpo flex-col"> <!--CUERPO-->
 	<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
-	<section class="flex-col" id="data_entry">
+	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
 		<h1>Paso 1 de 4: Importar Datos</h1>
-		<form action="/peliculas/agregar1B" method="POST" class="flex-col">  <!--Título original-->
-			<section>
-				<h2 id="ingresar_los_datos_a_mano">Opción de ingresar los datos a mano</h2>
-				<div class="relative flex-row">
-					<input type="text" name="titulo_original" placeholder="Título original"
-						value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
-					<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.titulo_original.msg %> </span>
-					</i><% } %>
-					<label for="titulo_original">Título original de la película 
-						<i class="fas fa-question-circle">
-							<span class="mensajeAyuda">
-								El "Título Original" es el dato por el que identificamos que una película no esté repetida en nuestra base de datos
-							</span>
-						</i>
-					</label>
-				</div>
-			</section>
-			<button type="submit">Enviar</button>
-		</form>    
+		<form action="/peliculas/agregar1A" method="POST" class="flex-col">  <!--Palabras clave-->
+			<h2 id="ingresar_los_datos_a_mano">Opción a partir de palabras clave</h2>
+			<div class="flex-row space-between">
+				<section> <!--Sector de inputs y labels-->
+					<div class="relative flex-row">
+						<input type="text" name="palabra_clave" placeholder="Escribilas acá"
+							value="<%= locals.data_entry ? data_entry.palabra_clave : null %>">
+						<% if (locals.errores && errores.palabra_clave) { %><i class="fas fa-times-circle">
+							<span class="mensajeError"><%= errores.palabra_clave.msg %> </span>
+						</i><% } %>
+						<label for="palabra_clave">Palabras clave
+							<i class="fas fa-question-circle">
+								<span class="mensajeAyuda">
+									Las palabras clave deben ser del <span style="font-weight: bold;">Título Original</span> o del <span style="font-weight: bold;">Titulo en Castellano</span>
+								</span>
+							</i>
+						</label>
+					</div>
+				</section>
+				<button type="submit">Enviar</button>
+			</div>
+		</form>
 		<hr class="linea_divisoria">
-		<form action="/peliculas/agregar1A" method="POST" class="flex-col">  <!--Opción de importar datos-->
-			<section>
-				<h2>Opción de importar datos</h2>
-				<p>Debe ser desde las páginas de 
-					<a href="https://www.filmaffinity.com/es/main.html">FilmAffinity</a> o 
-					<a href="https://es.wikipedia.org/wiki/Wikipedia:Portada">Wikipedia</a>
-				</p>
-				<div class="relative flex-row">  <!--Pegar la información importada-->
-					<textarea name="imports" id="" rows="1" placeholder="Pegá acá la info" 
-					value="<%= locals.data_entry ? data_entry.imports : null %>"></textarea>
-					<% if (locals.errores && errores.imports) { %>
-						<i class="fas fa-times-circle">
-							<span class="mensajeError"><%= errores.imports.msg %></span>
-						</i>
-					<% } %>
-					<label for="imports">Pegar la información importada 
-						<i class="fas fa-question-circle">
-							<span class="mensajeAyuda">
-								<span style="font-weight: bold;">FilmAffinity</span>: desde "Título original", hasta el final de "Productora"<br>
-								<span style="font-weight: bold;">Wikipedia</span>, en la ficha a la derecha: desde el titulo en su idioma original, hasta el final de "Distribución"
-							</span>
-						</i>
-					</label>
-				</div>
-				<div class="relative flex-row">  <!--Link de la página que provee los datos-->
-					<input type="text" name="link" placeholder="Pegá acá el link"
-						value="<%= locals.data_entry ? data_entry.link : null %>">
-					<% if (locals.errores && errores.link) { %><i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.link.msg %> </span>
-					</i><% } %>
-					<label for="link">Link de la página que provee los datos 
-						<i class="fas fa-question-circle">
-							<span class="mensajeAyuda">
-								El link es importante para nosotros, para conocer la <span style="font-weight: bold
-								;">fuente de la información</span>
-							</span>
-						</i>
-					</label>
-				</div>
-			</section>
-			<button type="submit">Enviar</button>
+		<form action="/peliculas/agregar1B" method="POST" class="flex-col">  <!--Importar datos-->
+			<h2>Opción importando datos</h2>
+			<p>Debe ser desde las páginas de 
+				<a href="https://www.filmaffinity.com/es/main.html">FilmAffinity</a> o 
+				<a href="https://es.wikipedia.org/wiki/Wikipedia:Portada">Wikipedia</a>
+			</p>
+			<div class="flex-row space-between">
+				<section> <!--Sector de inputs y labels-->
+					<div class="relative flex-row">  <!--Pegar la información importada-->
+						<textarea name="imports" id="" rows="1" placeholder="Pegá acá la info" 
+						value="<%= locals.data_entry ? data_entry.imports : null %>"></textarea>
+						<% if (locals.errores && errores.imports) { %>
+							<i class="fas fa-times-circle">
+								<span class="mensajeError"><%= errores.imports.msg %></span>
+							</i>
+						<% } %>
+						<label for="imports">Información importada 
+							<i class="fas fa-question-circle">
+								<span class="mensajeAyuda">
+									<span style="font-weight: bold;">FilmAffinity</span>: desde "Título original", hasta el final de "Productora"<br>
+									<span style="font-weight: bold;">Wikipedia</span>, en la ficha a la derecha: desde el titulo en su idioma original, hasta el final de "Distribución"
+								</span>
+							</i>
+						</label>
+					</div>
+					<div class="relative flex-row">  <!--Link de la página que provee los datos-->
+						<input type="text" name="link" placeholder="Pegá acá el link"
+							value="<%= locals.data_entry ? data_entry.link : null %>">
+						<% if (locals.errores && errores.link) { %><i class="fas fa-times-circle">
+							<span class="mensajeError"><%= errores.link.msg %> </span>
+						</i><% } %>
+						<label for="link">Link de la página que provee los datos 
+							<i class="fas fa-question-circle">
+								<span class="mensajeAyuda">
+									El link es importante para nosotros, para conocer la <span style="font-weight: bold
+									;">fuente de la información</span>
+								</span>
+							</i>
+						</label>
+					</div>
+				</section>
+				<button type="submit">Enviar</button>	
+			</div>
+		</form>
+		<hr class="linea_divisoria">
+		<form action="/peliculas/agregar1C" method="POST" class="flex-col">  <!--Título original-->
+			<h2 id="ingresar_los_datos_a_mano">Opción ingresando los datos a mano</h2>
+			<div class="flex-row space-between">
+				<section>
+					<div class="relative flex-row">
+						<input type="text" name="titulo_original" placeholder="Escribilo acá"
+							value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
+						<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle">
+							<span class="mensajeError"><%= errores.titulo_original.msg %> </span>
+						</i><% } %>
+						<label for="titulo_original">Título original de la película 
+							<i class="fas fa-question-circle">
+								<span class="mensajeAyuda">
+									El <span style="font-weight: bold;">Título Original</span> es el dato por el que identificamos que una película no está repetida en nuestra base de datos
+								</span>
+							</i>
+						</label>
+					</div>
+				</section>
+				<button type="submit">Enviar</button>
+			</div>
 		</form>
 	</section>
 	<%- include('AgregarDespués') %>
