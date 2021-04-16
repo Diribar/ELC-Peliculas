@@ -3,17 +3,18 @@
 	<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
 	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
 		<h1>Paso 1 de 4: Importar Datos</h1>
+
 		<form action="/peliculas/agregar1A" method="POST" class="flex-col">  <!--Palabras clave-->
 			<h2 id="ingresar_los_datos_a_mano">Opción a partir de palabras clave</h2>
 			<div class="flex-row space-between">
 				<section> <!--Sector de inputs y labels-->
 					<div class="relative flex-row">
-						<input type="text" name="palabra_clave" placeholder="Escribilas acá"
-							value="<%= locals.data_entry ? data_entry.palabra_clave : null %>">
-						<% if (locals.errores && errores.palabra_clave) { %><i class="fas fa-times-circle">
-							<span class="mensajeError"><%= errores.palabra_clave.msg %> </span>
+						<input type="text" name="palabras_clave" placeholder="Escribilas acá"
+							value="<%= locals.data_entry ? data_entry.palabras_clave : null %>">
+						<% if (locals.errores && errores.palabras_clave) { %><i class="fas fa-times-circle">
+							<span class="mensajeError"><%= errores.palabras_clave.msg %> </span>
 						</i><% } %>
-						<label for="palabra_clave">Palabras clave
+						<label for="palabras_clave">Palabras clave
 							<i class="fas fa-question-circle">
 								<span class="mensajeAyuda">
 									Las palabras clave deben ser del <span style="font-weight: bold;">Título Original</span> o del <span style="font-weight: bold;">Titulo en Castellano</span>
@@ -26,6 +27,7 @@
 			</div>
 		</form>
 		<hr class="linea_divisoria">
+
 		<form action="/peliculas/agregar1B" method="POST" class="flex-col">  <!--Importar datos-->
 			<h2>Opción importando datos</h2>
 			<p>Debe ser desde las páginas de 
@@ -71,6 +73,7 @@
 			</div>
 		</form>
 		<hr class="linea_divisoria">
+
 		<form action="/peliculas/agregar1C" method="POST" class="flex-col">  <!--Título original-->
 			<h2 id="ingresar_los_datos_a_mano">Opción ingresando los datos a mano</h2>
 			<div class="flex-row space-between">
