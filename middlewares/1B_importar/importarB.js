@@ -8,7 +8,7 @@ const importarFilmAffinity = require(path.join(__dirname, '/webFilmAffinity'));
 const importarWikipedia = require(path.join(__dirname, '/webWikipedia'));
 
 // ************ Exportar ************
-module.exports =  (req,res,next) => {
+module.exports =  (req, res, next) => {
 	const erroresValidacion = validationResult(req);
 	let existenErrores = erroresValidacion.errors.length > 0;
 	if (!existenErrores) {

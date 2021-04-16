@@ -12,11 +12,12 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 module.exports = {
 
 	main: (req,res) => { // HOME - QUIÉNES SOMOS - CONTÁCTANOS
-		url = req.params.id;
-		let BD = leer(ruta_nombre);
-		let vista = BD.find(n => n.url == url)
-		let titulo = vista.titulo
-		let nombre = vista.nombre
+		//url = req.params.id;
+		//let BD = leer(ruta_nombre);
+		//let vista = BD.find(n => n.url == url)
+		//let titulo = vista.titulo
+		//let nombre = vista.nombre
+		return
 		return res.render("0-Institucional", {
 			nombre,
 			titulo,
