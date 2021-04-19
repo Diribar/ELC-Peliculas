@@ -159,32 +159,56 @@
                 <% if (locals.errores && errores.publico) { %><i class="fas fa-times-circle"></i><% } %>
             </div>
         </section>
-        <section class="label-input flex-col divisor">  <!--Calificación-->
-            <label>Tu calificación:</label>
-            <div class="formulario-grupo flex row">  <!--Inspira fe y/o valores-->
-                <p>Inspira fe y/o valores</p>
-                <% let fe_valores=""; if (locals.data_entry) {fe_valores = data_entry.fe_valores} else {if (usuario.formNombre) {fe_valores = usuario.fe_valores}}%>
-                <select name="fe_valores" <% if (!fe_valores) { %>style="font-style: italic;"<% } %>>
-                    <option value="" style="font-style: italic;">Elegí</option>
-                    <option value="3" <% if (fe_valores=="3") {%> selected <%}%>>Mucho</option>
-                    <option value="2" <% if (fe_valores=="2") {%> selected <%}%>>Sí</option>
-                    <option value="1" <% if (fe_valores=="1") {%> selected <%}%>>Poco</option>
-                </select>
-                <% if (locals.errores && errores.fe_valores) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-            <div class="formulario-grupo flex row">  <!--Entretiene-->
-                <p>Entretiene</p>
-                <% let entretiene=""; if (locals.data_entry) {entretiene = data_entry.entretiene} else {if (usuario.formNombre) {entretiene = usuario.entretiene}}%>
-                <select name="entretiene" <% if (!entretiene) { %>style="font-style: italic;"<% } %>>
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="3" <% if (entretiene=="3") {%> selected <%}%>>Mucho</option>
-                    <option value="2" <% if (entretiene=="2") {%> selected <%}%>>Sí</option>
-                    <option value="1" <% if (entretiene=="1") {%> selected <%}%>>Poco</option>
-                </select>
-                <% if (locals.errores && errores.entretiene) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-col divisor">  <!--Links del trailer-->
+		<section class="label-input flex-col divisor">  <!--Calificación-->
+			<label>Tu calificación</label>
+			<div class="formulario-grupo flex row">  <!--Inspira fe y/o valores-->
+				<p>Inspira fe y/o valores</p>
+				<% let fe_valores=""; if (locals.data_entry) {fe_valores = data_entry.fe_valores} else {if (usuario.formNombre) {fe_valores = usuario.fe_valores}}%>
+				<select name="fe_valores">
+					<option value="" class="display-none">Elegí</option>
+					<option value="4" <% if (fe_valores=="4") {%> selected <%}%>>Mucho</option>
+					<option value="3" <% if (fe_valores=="3") {%> selected <%}%>>Bastante</option>
+					<option value="2" <% if (fe_valores=="2") {%> selected <%}%>>Sí</option>
+					<option value="1" <% if (fe_valores=="1") {%> selected <%}%>>Poco</option>
+					<option value="0" <% if (fe_valores=="0") {%> selected <%}%>>NO</option>
+				</select>
+				<% if (locals.errores && errores.fe_valores) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.fe_valores.msg %> </span>
+				</i><% } %>
+			</div>
+			<div class="formulario-grupo flex row">  <!--Entretiene-->
+				<p>Entretiene</p>
+				<% let entretiene=""; if (locals.data_entry) {entretiene = data_entry.entretiene} else {if (usuario.formNombre) {entretiene = usuario.entretiene}}%>
+				<select name="entretiene">
+					<option value="" class="display-none">Elegí</option>
+					<option value="4" <% if (entretiene=="4") {%> selected <%}%>>Mucho</option>
+					<option value="3" <% if (entretiene=="3") {%> selected <%}%>>Bastante</option>
+					<option value="2" <% if (entretiene=="2") {%> selected <%}%>>Sí</option>
+					<option value="1" <% if (entretiene=="1") {%> selected <%}%>>Poco</option>
+					<option value="0" <% if (entretiene=="0") {%> selected <%}%>>NO</option>
+				</select>
+				<% if (locals.errores && errores.entretiene) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.entretiene.msg %> </span>
+				</i><% } %>
+			</div>
+			<div class="formulario-grupo flex row">  <!--Calidad Técnica-->
+				<p>Calidad Técnica 
+					<i class="fas fa-question-circle"><span class="mensajeAyuda">Calidad de la imagen y el sonido</span></i>
+				</p>    
+				<% let calidadTecnica =""; if (locals.data_entry) {calidadTecnica = data_entry.calidadTecnica} else {if (usuario.formNombre) {calidadTecnica = usuario.calidadTecnica}}%>
+				<select name="calidadTecnica">
+					<option value="" class="display-none">Elegí</option>
+					<option value="3" <% if (calidadTecnica=="3") {%> selected <%}%>>Muy buena</option>
+					<option value="2" <% if (calidadTecnica=="2") {%> selected <%}%>>Buena</option>
+					<option value="1" <% if (calidadTecnica=="1") {%> selected <%}%>>Regular</option>
+					<option value="0" <% if (calidadTecnica=="0") {%> selected <%}%>>Mala</option>
+				</select>
+				<% if (locals.errores && errores.calidadTecnica) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.calidadTecnica.msg %> </span>
+				</i><% } %>
+			</div>
+		</section>
+<section class="label-input flex-col divisor">  <!--Links del trailer-->
             <label>Links del trailer:</label>
             <div class="formulario-grupo flex row">  <!--Primer Link-->
                 <p>Primer Link:</p>
