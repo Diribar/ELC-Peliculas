@@ -86,16 +86,6 @@
 							</i><% } %>
 					</div>
 					</section>
-					<section class="label-input flex-row">  <!--Protagonista-->
-						<label>Protagonista/s</label>
-						<div class="formulario-grupo">
-							<input type="text" class="input" name="protagonista" placeholder=""
-							value="<%= locals.data_entry ? data_entry.protagonista : null %>">
-							<% if (locals.errores && errores.protagonista) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.protagonista.msg %> </span>
-							</i><% } %>
-					</div>
-					</section>
 					<section class="label-input flex-row">  <!--Resto del Reparto-->
 						<label>Resto del Reparto</label>
 						<div class="formulario-grupo">

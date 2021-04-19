@@ -9,7 +9,7 @@ const API_key = path.join(__dirname, '../../backup/API_key.json');
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
-module.exports = async (palabras_clave) => {
+module.exports = async (ID) => {
 	// PARTES DEL URL
 	//let url = "https://api.themoviedb.org/3/search/movie?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es-ES&query=karol%20uomo%20papa&page=1&include_adult=false"
 	//let query = "karol%20uomo%20papa"
@@ -31,9 +31,10 @@ module.exports = async (palabras_clave) => {
 		let url = A_izquierda + B_clave + C_medio + D_query + E_derecha
 		//return url
 	// BUSCAR LA INFO
-	console.log(url)
-	let candidatas = await fetch(url)
-	console.log(candidatas)
-	//let candidatas = fetch(url).then(n => n.json())
-	return "123"
+	//console.log(url)
+	//fetch(url).then(response => response.json()).then(data => console.log(data))
+	let resp = await fetch(url)
+	let candidatas = await resp.json()
+	//console.log("candidatas: " + candidatas)
+	return candidatas
 }

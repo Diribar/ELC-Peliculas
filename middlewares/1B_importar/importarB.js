@@ -25,15 +25,6 @@ module.exports =  (req, res, next) => {
 		// Limpiar la info importada
 		req.body.imports = ""
 		//return res.send(data)
-		// Obtener el protagonista
-		let reparto = data.reparto
-		let protagonista = data.protagonista
-		if (reparto && reparto.includes(",") && !protagonista) {
-			data.protagonista = reparto.slice(0, reparto.indexOf(","))
-			data.reparto = reparto.slice(reparto.indexOf(",")+2)
-			//return res.send(data.protagonista)
-		}
-
 		// Transferir los datos importados
 		req.body = {
 			...req.body,
