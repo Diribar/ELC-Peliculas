@@ -91,6 +91,9 @@ module.exports = [
 	body('entretiene')
 		.notEmpty().withMessage('Tenés que elegir una opción').bail()
 		,
+    body('calidadTecnica')
+		.notEmpty().withMessage('Tenés que elegir una opción').bail()
+		,
 	body('trailer1')
 		.isURL().withMessage("Debe ser una URL válida").bail()
 		,

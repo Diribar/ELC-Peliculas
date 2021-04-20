@@ -1,0 +1,7 @@
+[
+	"id", "TMDB_ID",
+	[
+		"iso_3166_1", "pais_ID",
+		"name", "nombreDelPais"	
+	]
+]

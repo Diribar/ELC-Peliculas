@@ -32,7 +32,7 @@ module.exports = [
 		.isLength({max:30}).withMessage("El nombre debe ser más corto").bail()
 		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
 		,
-	body('director')
+	body('direccion')
 		.notEmpty().withMessage('Tenés que completar este campo').bail()
 		.isLength({min:2}).withMessage("El nombre debe ser más largo").bail()
 		.isLength({max:30}).withMessage("El nombre debe ser más corto").bail()
@@ -50,16 +50,10 @@ module.exports = [
 		.isLength({max:30}).withMessage("El nombre debe ser más corto").bail()
 		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
 		,
-	body('protagonista')
-		.notEmpty().withMessage('Tenés que completar este campo').bail()
-		.isLength({min:2}).withMessage("El nombre debe ser más largo").bail()
-		.isLength({max:30}).withMessage("El nombre debe ser más corto").bail()
-		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
-		,
 	body('reparto')
 		.notEmpty().withMessage('Tenés que completar este campo').bail()
 		.isLength({min:2}).withMessage("El nombre debe ser más largo").bail()
-		.isLength({max:150}).withMessage("El nombre debe ser más corto").bail()
+		.isLength({max:500}).withMessage("El nombre debe ser más corto").bail()
 		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
 		,
 	body('productora')
@@ -69,18 +63,6 @@ module.exports = [
 		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
 		,
 	body('color')
-		.notEmpty().withMessage('Tenés que elegir una opción').bail()
-		,
-	body('idioma_castellano')
-		.notEmpty().withMessage('Tenés que elegir una opción').bail()
-		,
-	body('fe_valores')
-		.notEmpty().withMessage('Tenés que elegir una opción').bail()
-		,
-    body('entretiene')
-		.notEmpty().withMessage('Tenés que elegir una opción').bail()
-		,
-    body('calidadTecnica')
 		.notEmpty().withMessage('Tenés que elegir una opción').bail()
 		,
 ]

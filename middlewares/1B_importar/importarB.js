@@ -22,13 +22,10 @@ module.exports =  (req, res, next) => {
 		if (link.includes("es.wikipedia.org/wiki/")) {
 			data = importarWikipedia(imports)
 		};
-		// Limpiar la info importada
-		req.body.imports = ""
-		//return res.send(data)
 		// Transferir los datos importados
 		req.body = {
-			...req.body,
 			...data,
+			link: link,
 		};
 	}
 	next();

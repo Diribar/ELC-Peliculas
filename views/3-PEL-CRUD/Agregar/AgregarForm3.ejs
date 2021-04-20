@@ -1,95 +1,5 @@
 <section class="flex-row" id="data_entry">
     <div class="flex-col">  <!--Primera columna-->
-        <section class="label-input flex-row">  <!--Título original-->
-            <label>Título original:</label>
-            <div class="formulario-grupo">
-                <input type="text" name="titulo_original" placeholder="Título original"
-                    value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
-                <% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle"></i><% } %>
-                <% if (locals.errores && errores.titulo_original) { %><p><%= errores.titulo_original.msg %> </p><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Título en castellano -->
-            <label>Título en castellano:</label>
-            <div class="formulario-grupo">
-                <input type="text" name="titulo_castellano" placeholder="Título en castellano"
-                    value="<%= locals.data_entry ? data_entry.titulo_castellano : null %>">
-                <% if (locals.errores && errores.titulo_castellano) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Año de estreno-->
-            <label>Año de estreno:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input-numero" name="ano_estreno" placeholder="sólo números"
-                    value="<%= locals.data_entry ? data_entry.ano_estreno : null %>">
-                <% if (locals.errores && errores.ano_estreno) { %><i class="fas fa-times-circle"></i><% } %>
-                <%// if (locals.errores && errores.ano_estreno) { %><!--p><%//= errores.ano_estreno.msg %> </p--><%// } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Duración-->
-            <label>Duración (minutos):</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input-numero" name="duracion" placeholder="en minutos"
-                    value="<%= locals.data_entry ? data_entry.duracion : null %>">
-                <% if (locals.errores && errores.duracion) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--País de origen-->
-            <label>País de origen:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="pais_origen" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.pais_origen : null %>">
-                <% if (locals.errores && errores.pais_origen) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Director-->
-            <label>Director:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="director" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.director : null %>">
-                <% if (locals.errores && errores.director) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Guión-->
-            <label>Guión:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="guion" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.guion : null %>">
-                <% if (locals.errores && errores.guion) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Música-->
-            <label>Música:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="musica" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.musica : null %>">
-                <% if (locals.errores && errores.musica) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Protagonista-->
-            <label>Protagonista/s:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="protagonista" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.protagonista : null %>">
-                <% if (locals.errores && errores.protagonista) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Resto del Reparto-->
-            <label>Resto del Reparto:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="reparto" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.reparto : null %>">
-                <% if (locals.errores && errores.reparto) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Productora-->
-            <label>Productora:</label>
-            <div class="formulario-grupo">
-                <input type="text" class="input" name="productora" placeholder=""
-                    value="<%= locals.data_entry ? data_entry.productora : null %>">
-                <% if (locals.errores && errores.productora) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
         <section class="label-input flex-row">  <!--Sinopsis-->
             <label>Sinopsis:</label>
             <div class="formulario-grupo">
@@ -99,32 +9,23 @@
                 <% if (locals.errores && errores.sinopsis) { %><i class="fas fa-times-circle"></i><% } %>
             </div>
         </section>
+		<section class="label-input flex-row">  <!--Existe una versión en castellano-->
+			<label>Existe una versión en castellano</label>
+			<div class="formulario-grupo">
+				<% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
+				<select name="idioma_castellano">
+					<option value="" class="display-none">Elegí</option>
+					<option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
+					<option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
+				</select>
+				<% if (locals.errores && errores.idioma_castellano) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.idioma_castellano.msg %> </span>
+				</i><% } %>
+			</div>
+		</section>
     </div>
     <div id="columnaMedio"></div> <!--Columna del medio-->
     <div class="flex-col">  <!--Segunda columna-->
-        <section class="label-input flex-row">  <!--Color-->
-            <label>Color o B/N:</label>
-            <div class="formulario-grupo">
-                <% let color=""; if (locals.data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
-                <select name="color">
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
-                    <option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
-                </select>
-                <% if (locals.errores && errores.color) { %><i class="fas fa-times-circle"></i><% } %>
-            </div>
-        </section>
-        <section class="label-input flex-row">  <!--Idioma Castellano-->
-            <label>Idioma Castellano:</label>
-            <div class="formulario-grupo">
-                <% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
-                <select name="idioma_castellano" <% if (!idioma_castellano) { %>style="font-style: italic;"<% } %>>
-                    <option value="" style="font-style: italic; ">Elegí</option>
-                    <option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
-                    <option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
-                </select>
-            </div>
-        </section>
         <section class="label-input flex-row">  <!--Categoría-->
             <label>Categoría:</label>
             <div class="formulario-grupo">
@@ -208,7 +109,7 @@
 				</i><% } %>
 			</div>
 		</section>
-<section class="label-input flex-col divisor">  <!--Links del trailer-->
+		<section class="label-input flex-col divisor">  <!--Links del trailer-->
             <label>Links del trailer:</label>
             <div class="formulario-grupo flex row">  <!--Primer Link-->
                 <p>Primer Link:</p>
@@ -246,6 +147,27 @@
                 </div>
             </div>
         </section>
+		<section class="label-input flex-col">  <!--Precuela o Secuela-->
+			<label>Si tienen otra película asociada:</label>
+			<div class="formulario-grupo flex row">  <!--Precuela-->
+				<p>Precuela</p>
+				<% let precuela=""; if (locals.data_entry) {precuela = data_entry.precuela} else {if (usuario.formNombre) {precuela = usuario.precuela}}%>
+				<input type="text" name="precuela" placeholder="Título Original"
+				value="<%= locals.data_entry ? data_entry.precuela : null %>">
+				<% if (locals.errores && errores.precuela) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.precuela.msg %> </span>
+				</i><% } %>
+			</div>
+			<div class="formulario-grupo flex row">  <!--Secuela-->
+				<p>Secuela</p>
+				<% let secuela=""; if (locals.data_entry) {secuela = data_entry.secuela} else {if (usuario.formNombre) {secuela = usuario.secuela}}%>
+				<input type="text" name="secuela" placeholder="Título Original"
+				value="<%= locals.data_entry ? data_entry.secuela : null %>">
+				<% if (locals.errores && errores.secuela) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.secuela.msg %> </span>
+				</i><% } %>
+			</div>
+		</section>
     </div>
 </section>
 <button type="submit">Enviar</button>

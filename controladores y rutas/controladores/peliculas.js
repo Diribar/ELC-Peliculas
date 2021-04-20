@@ -19,7 +19,10 @@ module.exports = {
 
     altaGuardar1: (req,res) => {
 		//Detectar errores de Data Entry
-        const erroresValidacion = validationResult(req);
+		const erroresValidacion = validationResult(req);
+		if (req.body.demasiadosResultados) {erroresValidacion.errors.push({"msg": "Se encontraron demasiados resultados. Por favor refiná la búsqueda, incluyendo alguna palabra clave más","param": "palabras_clave","location": "body"})}
+		if (req.body.noSeEncuentraLaPeli) {erroresValidacion.errors.push({"msg": "No se encontró ninguna película con estas palabras clave","param": "palabras_clave","location": "body"})}
+        //return res.send(erroresValidacion)
         let existenErrores = erroresValidacion.errors.length > 0;
 		//return res.send(erroresValidacion)
         if (existenErrores) {

@@ -56,13 +56,13 @@
 							</i><% } %>
 					</div>
 					</section>
-					<section class="label-input flex-row">  <!--Director-->
-						<label>Director</label>
+					<section class="label-input flex-row">  <!--Dirección-->
+						<label>Dirección</label>
 						<div class="formulario-grupo">
-							<input type="text" class="input" name="director" placeholder=""
-							value="<%= locals.data_entry ? data_entry.director : null %>">
-							<% if (locals.errores && errores.director) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.director.msg %> </span>
+							<input type="text" class="input" name="direccion" placeholder=""
+							value="<%= locals.data_entry ? data_entry.direccion : null %>">
+							<% if (locals.errores && errores.direccion) { %><i class="fas fa-times-circle">
+								<span class="mensajeError"><%= errores.direccion.msg %> </span>
 							</i><% } %>
 					</div>
 					</section>
@@ -122,42 +122,7 @@
 							<% if (locals.errores && errores.color) { %><i class="fas fa-times-circle">
 								<span class="mensajeError"><%= errores.color.msg %> </span>
 							</i><% } %>
-					</div>
-					</section>
-					<section class="label-input flex-row">  <!--Existe una versión en castellano-->
-						<label>Existe una versión en castellano</label>
-						<div class="formulario-grupo">
-							<% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
-							<select name="idioma_castellano">
-								<option value="" class="display-none">Elegí</option>
-								<option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
-								<option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
-							</select>
-							<% if (locals.errores && errores.idioma_castellano) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.idioma_castellano.msg %> </span>
-							</i><% } %>
-					</div>
-					</section>
-					<section class="label-input flex-col">  <!--Precuela o Secuela-->
-						<label>Si tienen otra película asociada:</label>
-						<div class="formulario-grupo flex row">  <!--Precuela-->
-							<p>Precuela</p>
-							<% let precuela=""; if (locals.data_entry) {precuela = data_entry.precuela} else {if (usuario.formNombre) {precuela = usuario.precuela}}%>
-							<input type="text" name="precuela" placeholder="Título Original"
-							value="<%= locals.data_entry ? data_entry.precuela : null %>">
-							<% if (locals.errores && errores.precuela) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.precuela.msg %> </span>
-							</i><% } %>
 						</div>
-						<div class="formulario-grupo flex row">  <!--Secuela-->
-							<p>Secuela</p>
-							<% let secuela=""; if (locals.data_entry) {secuela = data_entry.secuela} else {if (usuario.formNombre) {secuela = usuario.secuela}}%>
-							<input type="text" name="secuela" placeholder="Título Original"
-							value="<%= locals.data_entry ? data_entry.secuela : null %>">
-							<% if (locals.errores && errores.secuela) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.secuela.msg %> </span>
-							</i><% } %>
-					</div>
 					</section>
 				</div>	
 			</section>
