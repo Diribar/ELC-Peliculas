@@ -29,9 +29,7 @@ module.exports = async (palabras_clave) => {
 			}
 		}
 		let url = A_izquierda + B_clave + C_medio + D_query + E_derecha
-		//return url
 	// BUSCAR LA INFO
-	//console.log(url)
 	let candidatas = await fetch(url).then(n => n.json())
 	return candidatas
 }

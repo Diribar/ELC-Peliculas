@@ -17,3 +17,5 @@
 #data_entry .fa-times-circle {right: -20px; top: 5px;}
 #data_entry .mensajeError {position: absolute; right: 0px; top: 15px; width: 200px}
 #data_entry button {margin-top: 20px;}
+#data_entry #imagenPeli {margin-top: 10px;}
+#data_entry #imagenPeli img {max-width: 170px;max-height: 250px;}

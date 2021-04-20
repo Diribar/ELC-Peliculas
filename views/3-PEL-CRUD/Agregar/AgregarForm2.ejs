@@ -3,7 +3,7 @@
 	<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
 	<section class="flex-col" id="data_entry">
 		<h1>Paso 2 de 4: Completá los Datos Necesarios</h1>
-		<form action="/peliculas/agregar2" method="POST" class="flex-col">
+		<form action="/peliculas/agregar2" method="POST" class="flex-col" >
 			<section class="flex-row">
 				<div class="flex-col">  <!--Primera columna-->
 					<section class="label-input flex-row">  <!--Título original-->
@@ -110,19 +110,9 @@
 				<div id="columnaMedio"> <!--Columna intermedia-->
 				</div>
 				<div class="flex-col">  <!--Segunda columna-->
-					<section class="label-input flex-row">  <!--Es a Color-->
-						<label>Es a Color</label>
-						<div class="formulario-grupo">
-							<% let color=""; if (locals.data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
-							<select name="color">
-								<option value="" class="display-none">Elegí</option>
-								<option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
-								<option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
-							</select>
-							<% if (locals.errores && errores.color) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.color.msg %> </span>
-							</i><% } %>
-						</div>
+					<section class="border" id="imagenPeli">
+						<input type="text" name="imagen" value="<%= data_entry.imagen %>" class="ocultar">
+						<img src="<%= locals.data_entry ? data_entry.imagen : null %>" alt="">
 					</section>
 				</div>	
 			</section>

@@ -23,6 +23,21 @@
 				</i><% } %>
 			</div>
 		</section>
+		<section class="label-input flex-row">  <!--Es a Color-->
+			<label>Es a Color</label>
+			<div class="formulario-grupo">
+				<% let color=""; if (locals.data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
+				<select name="color">
+					<option value="" class="display-none">Elegí</option>
+					<option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
+					<option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
+				</select>
+				<% if (locals.errores && errores.color) { %><i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.color.msg %> </span>
+				</i><% } %>
+			</div>
+		</section>
+
     </div>
     <div id="columnaMedio"></div> <!--Columna del medio-->
     <div class="flex-col">  <!--Segunda columna-->

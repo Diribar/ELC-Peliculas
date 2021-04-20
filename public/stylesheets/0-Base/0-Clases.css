@@ -9,6 +9,7 @@
 .cursor_pointer {cursor: pointer;}
 .dropdown-content {display: none;}
 .mostrar {display: block;}
+.ocultar {display: none;}
 .border {border: red 1px solid}
 .grid {display: grid;}
 .relative {position: relative;}

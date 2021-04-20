@@ -62,7 +62,4 @@ module.exports = [
 		.isLength({max:30}).withMessage("El nombre debe ser más corto").bail()
 		//.matches("[a-zA-Z;., ]").withMessage('Sólo se admiten letras del abecedario castellano').bail()
 		,
-	body('color')
-		.notEmpty().withMessage('Tenés que elegir una opción').bail()
-		,
 ]

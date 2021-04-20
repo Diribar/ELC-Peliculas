@@ -7,7 +7,7 @@ const opciones = require('../controladores/peliculas_opciones')
 //************************ Middlewares ******************************
 const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
 const soloAdmin = require('../../middlewares/usuarios/soloAdmin');
-const importarA = require('../../middlewares/1A_palabras_clave/importarA');
+const importarA = require('../../middlewares/1A_palabras_clave/1importarA');
 const importarB = require('../../middlewares/1B_importar/importarB');
 const validar1A = require('../../middlewares/0_validarForms/validar1A');
 const validar1B = require('../../middlewares/0_validarForms/validar1B');
