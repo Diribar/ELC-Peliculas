@@ -15,23 +15,5 @@
 		"pais": "AR",
 		"estado": "AR",
 		"imagen": "1617370359746.jpg"
-	},
-	{
-		"id": 2,
-		"email": "franciscoiribarren2017@gmail.com",
-		"contrasena": "$2a$10$0YPItFToB/rF8e.grOBHbuTx6neWQ86EiOrH9QrESRLkI3cnC1if6",
-		"nombre": "paco",
-		"apellido": "Iribarren",
-		"mailValidado": false,
-		"formNombre": true,
-		"formSobrenombre": true,
-		"genero": "masculino",
-		"fechaNacimiento": "18/08/2001",
-		"sobrenombre": "paco123",
-		"pais": "AR",
-		"estado": "AR",
-		"imagen": "1617754794803.jpg",
-		"Fecha": "6/4/2021",
-		"Hora": "21:19"
 	}
 ]

@@ -4,11 +4,7 @@
 		"sigla": "AR"
 	},
 	{
-		"nombre": "Laico consagrado",
-		"sigla": "LC"
-	},
-	{
-		"nombre": "Religioso consagrado",
+		"nombre": "Consagrado",
 		"sigla": "RC"
 	},
 	{
