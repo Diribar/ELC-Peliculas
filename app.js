@@ -33,10 +33,12 @@ app.set('views', [
 ]);
 
 // ************************* Rutas ********************************
+const rutaListado = require('./controladores y rutas/rutas/listado.js');
 const rutaLogin = require('./controladores y rutas/rutas/login.js');
 const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaPelis = require('./controladores y rutas/rutas/peliculas');
 const rutaECC = require('./controladores y rutas/rutas/institucional');
+app.use('/listado', rutaListado)        // Listado
 app.use('/login', rutaLogin)        // Login
 app.use('/usuarios', rutaUsuarios)  // Usuarios
 app.use('/peliculas', rutaPelis)    // Películas

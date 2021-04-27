@@ -1,23 +1,22 @@
-const Sequelize = require("sequelize");
+module.exports = (sequelize, dt) => {
+	const alias = "estado_eclesial";
+	const columns = {
+		id: {type: dt.STRING(2), primaryKey: true},
+		nombre: {type: dt.STRING(100)}
+	};
+	const config = {
+		tableName: "estados_eclesiales",
+		timestamps: false
+	};
 
-module.exports = (sequelize) => {
-    const alias = "Categoria";
-    const columns = {
-        nombre: Sequelize.STRING(500)
-    };
-    const config = {
-        tableName: "categorias",
-        timestamps: false
-    };
+	const estado_eclesial = sequelize.define(alias,columns,config);
 
-    const Categoria = sequelize.define(alias,columns,config);
+	estado_eclesial.associate = n => {
+		estado_eclesial.hasMany(n.usuario, {
+			as: "usuarios",
+			foreignKey: "estado_eclesial_id"
+		});
+	};
 
-    Categoria.associate = function(models) {
-        Categoria.hasMany(models.Producto, {
-            as: "productos",
-            foreignKey: "categoria_id"
-        });
-    };
-
-    return Categoria;
+	return estado_eclesial;
 };

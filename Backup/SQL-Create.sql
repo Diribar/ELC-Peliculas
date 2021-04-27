@@ -15,31 +15,31 @@ CREATE TABLE roles_usuario (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE estados_eclesiales (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id VARCHAR(2) NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE pais (
+CREATE TABLE paises (
 	iso_id VARCHAR(2) NOT NULL UNIQUE,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (iso_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE usuarios (
+CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	email VARCHAR(500) NOT NULL UNIQUE,
+	email VARCHAR(50) NOT NULL UNIQUE,
 	status_usuario_id INT UNSIGNED NOT NULL DEFAULT 0,
 	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
-	nombre VARCHAR(500) NULL,
-	apellido VARCHAR(500) NULL,
-	apodo VARCHAR(500) NULL,
-	avatar VARCHAR(500) NULL,
+	nombre VARCHAR(50) NULL,
+	apellido VARCHAR(50) NULL,
+	apodo VARCHAR(50) NULL,
+	avatar VARCHAR(50) NULL,
 	fecha_nacimiento DATE NULL,
-	sexo VARCHAR(500) NULL,
+	sexo VARCHAR(50) NULL,
 	pais_id VARCHAR(2) NULL,
-	estado_eclesial_id INT UNSIGNED NULL,
-	contrasena VARCHAR(500) NULL,
+	estado_eclesial_id VARCHAR(2) NULL,
+	contrasena VARCHAR(100) NULL,
 	validacion_enviada_en DATE NULL,
 	creado_en DATE NULL,
 	editado_en DATE NULL,
@@ -57,26 +57,32 @@ CREATE TABLE usuarios (
 	PRIMARY KEY (id),
 	FOREIGN KEY (status_usuario_id) REFERENCES status_usuario(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
-	FOREIGN KEY (pais_id) REFERENCES pais(iso_id),
+	FOREIGN KEY (pais_id) REFERENCES paises(iso_id),
 	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id),
 	FOREIGN KEY (ultima_penalizacion_en_rol) REFERENCES roles_usuario(id),
 	FOREIGN KEY (penalizado_por) REFERENCES usuarios(id),
 	FOREIGN KEY (borrado_por) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE interes_en_la_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE filtros_personales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	usuario_id INT UNSIGNED NOT NULL,
-	campo1 VARCHAR(500),
+	campo1 VARCHAR(100),
 	valor1_id INT UNSIGNED,
-	campo2 VARCHAR(500),
+	campo2 VARCHAR(100),
 	valor2_id INT UNSIGNED,
-	campo3 VARCHAR(500),
+	campo3 VARCHAR(100),
 	valor3_id INT UNSIGNED,
-	campo4 VARCHAR(500),
+	campo4 VARCHAR(100),
 	valor4_id INT UNSIGNED,
-	palabras_clave VARCHAR(500),
+	palabras_clave VARCHAR(100),
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -138,7 +144,7 @@ CREATE TABLE productores (
 
 CREATE TABLE colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
+	tmdb_id INT UNSIGNED NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
@@ -161,32 +167,33 @@ CREATE TABLE coleccion_pelicula (
 	tmdb_coleccion_id INT UNSIGNED NULL,
 	pelicula_id INT UNSIGNED NULL,
 	tmdb_pelicula_id INT UNSIGNED NULL,
-	titulo_original VARCHAR(500) NOT NULL,
-	titulo_castellano VARCHAR(500) NOT NULL,
+	titulo_original VARCHAR(100) NOT NULL UNIQUE,
+	titulo_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE peliculas (
+CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NULL,
-	fa_id INT UNSIGNED NULL,
-	imdb_id INT UNSIGNED NULL,
-	titulo_original VARCHAR(500) NOT NULL UNIQUE,
-	titulo_castellano VARCHAR(500) NOT NULL,
+	tmdb_id VARCHAR(20) NULL,
+	fa_id VARCHAR(20) NULL,
+	imdb_id VARCHAR(20) NULL,
+	titulo_original VARCHAR(100) NOT NULL UNIQUE,
+	titulo_castellano VARCHAR(100) NOT NULL,
 	coleccion_id INT UNSIGNED NULL,
-	duracion INT UNSIGNED NOT NULL,
-	ano_estreno INT UNSIGNED NOT NULL,
+	duracion INT UNSIGNED NULL,
+	ano_estreno INT UNSIGNED NULL,
+	epoca_estreno INT UNSIGNED NULL,
 	pais_origen_id VARCHAR(2) NULL,
-	avatar VARCHAR(500) NOT NULL,
+	avatar VARCHAR(100) NOT NULL,
 	idioma_castellano BOOLEAN NOT NULL,
 	color BOOLEAN NOT NULL,
 	publico_recomendado_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
+	precuela_de VARCHAR(100) NULL,
+	secuela_de VARCHAR(100) NULL,
 	sinopsis VARCHAR(500) NOT NULL,
-	precuela_de INT UNSIGNED NULL DEFAULT 0,
-	secuela_de INT UNSIGNED NULL DEFAULT 0,
 	creada_por INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
 	analizada_por INT UNSIGNED NULL,
@@ -204,12 +211,12 @@ CREATE TABLE peliculas (
 	borrado_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones(id),
-	FOREIGN KEY (pais_origen_id) REFERENCES pais(iso_id),
+	FOREIGN KEY (pais_origen_id) REFERENCES paises(iso_id),
 	FOREIGN KEY (publico_recomendado_id) REFERENCES publico_recomendado(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES subcategorias(id),
-	FOREIGN KEY (precuela_de) REFERENCES coleccion_pelicula(id),
-	FOREIGN KEY (secuela_de) REFERENCES coleccion_pelicula(id),
+	FOREIGN KEY (precuela_de) REFERENCES coleccion_pelicula(titulo_original),
+	FOREIGN KEY (secuela_de) REFERENCES coleccion_pelicula(titulo_original),
 	FOREIGN KEY (creada_por) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por) REFERENCES usuarios(id),
@@ -221,13 +228,14 @@ CREATE TABLE usuario_pelicula (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	pelicula_id INT UNSIGNED NOT NULL,
-	favorita_descartada_nulo VARCHAR(2),
+	interes_en_la_pelicula_id INT UNSIGNED DEFAULT 3,
 	vistas BOOLEAN NOT NULL DEFAULT 0,
 	fe_valores INT UNSIGNED NOT NULL,
 	entretiene INT UNSIGNED NOT NULL,
 	calidad_filmica INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+	FOREIGN KEY (interes_en_la_pelicula_id) REFERENCES interes_en_la_pelicula(id),
 	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

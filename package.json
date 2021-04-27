@@ -1,5 +1,5 @@
 {
-  "name": "Express",
+  "name": "elc-peliculas",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -19,9 +19,11 @@
     "method-override": "^3.0.0",
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0"
   }
 }
