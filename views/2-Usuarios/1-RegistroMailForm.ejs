@@ -2,10 +2,9 @@
     <h1><%= titulo %></h1>
     <!--Mail y Contraseña-->
     <section class="label-input flex-row">  <!--Mail-->
-        <label for="email">E-Mail</label>
         <div class="formulario-grupo">
-            <input type="text" class="input" name="email" placeholder="Correo Electrónico"
-                value="<%= locals.data_entry ? data_entry.email : "Correo Electrónico" %>">
+            <input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
+                value="<%= locals.data_entry ? data_entry.email : "" %>">
             <% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"></i><% } %>
             <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
@@ -14,25 +13,6 @@
         <% if (locals.errores && errores.email) { %>
             <p class="criterio error"><%= errores.email.msg %></p>
         <% } %>    
-    </div>
-    <section class="label-input flex-row">  <!--Contraseña-->
-        <label for="contrasena">Contraseña</label>
-        <div class="formulario-grupo">
-            <input type="password" class="input" name="contrasena" id="contrasena"
-                value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
-            <i onclick="mostrar('contrasena')" class="fas fa-eye-slash" id="eye"></i>
-            <% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"></i><% } %>
-            <% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
-        </div>
-    </section>
-    <div class="flex-col">  <!--Error en la contraseña-->
-        <% if (locals.errores && errores.contrasena) { %>
-            <p class="criterio error"><%= errores.contrasena.msg %></p>
-        <% } else { %>
-            <% if (!locals.errores) { %>
-                <p class="criterio">Debe tener de 6 a 12 caracteres</p>
-            <% } %>
-        <% } %>
     </div>
     <section id="buttons" class="flex-row"><!--Botones-->
         <button type="submit">Aceptar</button>

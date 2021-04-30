@@ -4,7 +4,7 @@ const path = require('path');
 
 // Funciones y Variables ************
 const API_details = require(path.join(__dirname, '/webAPI2_details'));
-const BDpaisesPelis = require(path.join(__dirname, '../../bases_de_datos/tablas/BDpaisesPelis'));
+//const BDpaisesPelis = require(path.join(__dirname, '../../bases_de_datos/tablas/BDpaisesPelis'));
 
 module.exports = async (res, ID) => {
 	// Conseguir los datos

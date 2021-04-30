@@ -14,9 +14,19 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 module.exports = {
 
 	loginForm: (req,res) => {
+		//if (req.session.usuario && req.session.usuario.email) {
+		//	data_entry = {"email": req.session.usuario.email}
+		//} else {
+		//	data_entry = null;
+		//}
+		return res.send([
+			"login",
+			req.session.usuario
+		])
+		let data_entry = null
 		return res.render("0-Usuarios", {
 			link: req.originalUrl,
-			data_entry: null,
+			data_entry,
 			errorEnDataEntry: false,
 			credencialesInvalidas: false,
 			titulo: "Login",

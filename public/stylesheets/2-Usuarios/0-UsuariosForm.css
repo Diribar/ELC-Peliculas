@@ -17,9 +17,9 @@
 
 /* Input del formulario */
 #usuariosForm form .input {border: none;border-radius: 15px;}
-#usuariosForm form .input {padding: 3px 10px}
+#usuariosForm form .input {padding: 3px 10px; text-align: center;}
 #usuariosForm form label {color: white; margin-right: 20px; }
-#usuariosForm form label, #usuariosForm form .input {text-align: left;}
+#usuariosForm form label {text-align: left;}
 #usuariosForm form .criterio {margin: 5px auto 0px;font-style: italic;}
 #usuariosForm form .criterio {align-items: center; text-align: center;}
 #usuariosForm form .criterio {color:var(--celeste-claro);border-radius: 7px;}

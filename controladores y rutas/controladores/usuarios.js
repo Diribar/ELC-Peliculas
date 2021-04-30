@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path')
 const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
-const metodosUsuario = require("../modelos/BD_usuarios");
+const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/BDusuarios.json');
@@ -21,18 +21,16 @@ function borrarArchivoDeImagen(n) {let imageFile = path.join(imagesPath, n);if (
 module.exports = {
 
 	redireccionar: (req,res) => {
-		let usuario = req.session.usuario;		
+		let usuario = req.session.usuario;
+		// return res.send(usuario)
 		// Redireccionar
-		// if !usuarioEnBD.activo {}
-		if (!usuario.formNombre) {return res.redirect("/usuarios/registro-nombre")};
-		if (!usuario.formSobrenombre) {return res.redirect("/usuarios/registro-sobrenombre")};
-		req.session.registroCompleto = true
-		// return res.send("Usuario registrado en forma completa");
+		//if (usuario.status_usuario_id = 1) {
+			//return res.send("estoy en controlador redireccionar")
+			return res.redirect("/login")
+		//};
+		if (usuario.status_usuario_id = 2) {return res.redirect("/usuarios/registro-nombre")};
+		if (usuario.status_usuario_id = 3) {return res.redirect("/usuarios/registro-sobrenombre")};
 		return res.redirect("/")
-		//return res.send([
-		//	res.locals.urlAnterior,
-		//	res.locals
-		//])
 	},
 
 	altaFormMail: (req, res) => {
@@ -42,7 +40,7 @@ module.exports = {
 		});
 	},
 	
-	altaGuardarMail: (req, res) => {
+	altaGuardarMail: async (req, res) => {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
@@ -63,13 +61,11 @@ module.exports = {
 		};
         // Si no hubieron errores de validación...
 		// Guardar el registro
-		let datosDeUsuario = {
-			mail: req.body.mail,
-			contrasena: "12345678",
-		}
-        await metodosUsuario.altaMail(datosDeUsuario);
-		req.session.mail = req.body.mail;
+        await metodosUsuario.altaMail(req.body.email);
+		// Obtener los datos del usuario
+		req.session.usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email);
 		// Redireccionar
+		//return res.send(req.session.usuario)
 		return res.redirect("/usuarios/redireccionar");
 	},
 

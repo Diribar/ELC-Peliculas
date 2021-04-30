@@ -18,26 +18,3 @@
 </main>
 </body>
 </html>
-
-<script>
-
-function mostrar(n) {
-	var cambio = document.getElementById(n);
-	if(cambio.type == "password"){
-		cambio.type = "text";$('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
-	}else{
-		cambio.type = "password";$('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
-	}
-}
-
-function retroceder() {
-	window.history.back();
-}
-
-function fileName() {
-	let n = document.getElementById("imagen").value;
-	n = n.slice(n.lastIndexOf('\\')+1);
-	document.getElementById("filename").innerHTML = n;
-}
-
-</script>
