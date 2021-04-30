@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path')
 const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
+const metodosUsuario = require("../modelos/BD_usuarios");
 
 // ************ Variables ************
 const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/BDusuarios.json');
@@ -37,7 +38,6 @@ module.exports = {
 	altaFormMail: (req, res) => {
 		return res.render('0-Usuarios', {
 			link: req.originalUrl,
-			mailEnBD: null,
 			titulo: "Registro de Mail"
 		});
 	},
@@ -46,35 +46,29 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		let BD = leer(ruta_nombre);
-		let mailEnBD = BD.find(n => n.email == req.body.email)
-		// Verificar si existe algún error de validación
-		if (validaciones.errors.length > 0 || mailEnBD) {
-			// Regresar al formulario
+		if (await metodosUsuario.emailExistente(req.body.email)) {
+            validaciones.errors.push({
+                msg: "Este mail ya figura en nuestra base de datos",
+                param: "email",
+            });
+        }
+		// Si existe algún error de validación --> regresar al formulario
+		if (validaciones.errors.length > 0) {
 			return res.render('0-Usuarios', {
 				link: req.originalUrl,
-				mailEnBD,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
 				titulo: "Registro de Mail"
 			});
 		};
-		// Preparar el registro para almacenar
-		const nuevoId = BD.length > 0 ? BD[BD.length - 1].id + 1 : 1;
-		const nuevoUsuario = {
-			id: nuevoId,
-			...req.body,
-			contrasena: bcryptjs.hashSync(req.body.contrasena, 10),
-			activo: false,
-			formNombre: false,
-			formSobrenombre: false,
-		};
+        // Si no hubieron errores de validación...
 		// Guardar el registro
-		BD.push(nuevoUsuario);
-		guardar(ruta_nombre, BD);
-		delete nuevoUsuario.contrasena;
-		// Login
-		req.session.usuario = nuevoUsuario;
+		let datosDeUsuario = {
+			mail: req.body.mail,
+			contrasena: "12345678",
+		}
+        await metodosUsuario.altaMail(datosDeUsuario);
+		req.session.mail = req.body.mail;
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},

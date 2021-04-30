@@ -1,44 +1,44 @@
-const { Op } = require("sequelize");
+const db = require("../bases_de_datos/modelos");
+const entidad = db.usuario;
 const bcryptjs = require("bcryptjs");
-const db = require("../database/models");
-const entidad = db.Usuario;
 
 module.exports = {
-    ObtenerPorId: (id) => {
+    emailExistente: async (email) => {
+        let cantidad = await entidad.count({
+            where: {email: email}
+        });
+        return cantidad > 0;
+    },
+	altaMail: (datosDeUsuario) => {
+		return entidad.create({
+            email: datosDeUsuario.email,
+            contrasena: bcryptjs.hashSync(datosDeUsuario.contrasena, 10),
+        });
+	},
+
+	obtenerPorId: (id) => {
         return entidad.findByPk(id, {
             include: [ "roles" ]
         });
     },
-    ObtenerPorEmail: async (email) => {
-        const usuarios = await entidad.findAll({
-            where: {
-                email: email,
-                borrado: false
-            }
+    obtenerPorEmail: async (email) => {
+        const usuarios = await entidad.findOne({
+            where: {email: email}
         });
 
         return usuarios[0];
     },
-    EmailYaExistente: async (email, id) => {
-        let cantidad = await entidad.count({
-            where: {
-                email: email,
-            }
-        });
-
-        return cantidad > 0;
-    },
-    Crear: (infoUsuario, fileName) => {
+    crear: (infoUsuario, fileName) => {
         return entidad.create({
             nombre: infoUsuario.nombre,
             apellido: infoUsuario.apellido,
             email: infoUsuario.email,
             contrasena: bcryptjs.hashSync(infoUsuario.contrasena, 10),
             avatar: fileName,
-            rol_id: 2
+            rol_id: 1
         });
     },
-    Actualizar: (id, infoUsuario, fileName) => {
+    editar: (id, infoUsuario, fileName) => {
         return entidad.update({
             nombre: infoUsuario.nombre,
             apellido: infoUsuario.apellido,
@@ -46,22 +46,17 @@ module.exports = {
             contrasena: bcryptjs.hashSync(infoUsuario.contrasena, 10),
             avatar: fileName
         },
-        {
-            where: { id: id },
-        });
+        {where: { id: id }});
     },
-    Eliminar: (id, usuario) => {
+    eliminar: (id, usuario) => {
         return entidad.update({
             borrado: true,
             actualizado_por: usuario
         },
-        {
-            where: { id: id },
-        });
+        {where: { id: id }});
     },
-    ObtenerAvatar: async (id) => {
+    obtenerAvatar: async (id) => {
         let usuario = await entidad.findByPk(id);
-
         return usuario.avatar;
     }
 };
