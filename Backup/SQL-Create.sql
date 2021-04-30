@@ -17,6 +17,7 @@ CREATE TABLE roles_usuario (
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
+	orden INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

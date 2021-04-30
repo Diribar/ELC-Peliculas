@@ -5,9 +5,10 @@ const db = require(path.join(__dirname, '../../bases_de_datos/modelos'));
 // *********** Controlador ***********
 module.exports = {
 
-	listado: (req,res) => {
+	listado: async (req,res) => {
 		//return res.send("estoy acá")
-		db.usuario.findAll()
-		.then(n => res.render("listado", {listado: n}))
+		let listado = await db.usuario.findAll({include:["pais","rol_usuario","status_usuario"]})
+
+		return res.render("listado", {listado})
 		}
 };
