@@ -1,9 +1,10 @@
+<%- include('0-AgregarAntes', {titulo: "Registro de Datos Perennes"}) %>
 <form action="<%= link %>" method="POST">
-    <h1><%= titulo %></h1>
-    <!--Formulario a completar-->
+    <h1>Registro de Datos Perennes</h1>
+    
     <div class="label-input flex-row"><!--Nombre-->
         <label for="nombre">Nombre</label>
-        <% let nombre=""; if (locals.data_entry) {nombre = data_entry.nombre} else {if (usuario.formNombre) {nombre = usuario.nombre}}%>
+        <% let nombre=""; if (locals.data_entry) {nombre = data_entry.nombre} %>
         <input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
     </div>
     <div class="flex-col">  <!--Error en el Nombre-->
@@ -11,9 +12,10 @@
             <p class="criterio error"><%= errores.nombre.msg %></p>
         <% } %>
     </div>
+
     <div class="label-input flex-row"><!--Apellido-->
         <label for="apellido">Apellido</label>
-        <% let apellido=""; if (locals.data_entry) {apellido = data_entry.apellido} else {if (usuario.formNombre) {apellido = usuario.apellido}}%>
+        <% let apellido=""; if (locals.data_entry) {apellido = data_entry.apellido} %>
         <input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
     </div>
     <div class="flex-col">  <!--Error en el Apellido-->
@@ -21,32 +23,35 @@
             <p class="criterio error"><%= errores.apellido.msg %></p>
         <% } %>
     </div>
-    <div class="label-input flex-row"><!--Genero-->
-        <label for="genero">Género</label>
-        <% let genero=""; if (locals.data_entry) {genero = data_entry.genero} else {if (usuario.formNombre) {genero = usuario.genero}}%>
-        <select name="genero" class="input">
-            <option value="" <% if (genero=="") {%> selected <%}%> style="font-style: italic;">Elegí una opción</option>
-            <option value="femenino" <% if (genero=="femenino") {%> selected <%}%>>Femenino</option>
-            <option value="masculino" <% if (genero=="masculino") {%> selected <%}%>>Masculino</option>
+
+    <div class="label-input flex-row"><!--Sexo-->
+        <label for="sexo">Sexo</label>
+        <% let sexo=""; if (locals.data_entry) {sexo = data_entry.sexo} %>
+        <select name="sexo" class="input">
+            <option value="" <% if (sexo=="") {%> selected <%}%> style="display: none;">Elegí una opción</option>
+            <option value="F" <% if (sexo=="F") {%> selected <%}%>>Femenino</option>
+            <option value="M" <% if (sexo=="M") {%> selected <%}%>>Masculino</option>
         </select>        
     </div>
-    <div class="label-input flex-row"><!--Fecha de Nacimiento-->
+    <div class="flex-col">  <!--Error en el Sexo-->
+        <% if (locals.errores && errores.sexo) { %>
+            <p class="criterio error"><%= errores.sexo.msg %></p>
+        <% } %>
+    </div>
+
+	<div class="label-input flex-row"><!--Fecha de Nacimiento-->
         <label for="fechaNacimiento">Fecha de Nacimiento</label>
-        <% let fecha=""; if (locals.data_entry) {fecha = data_entry.fechaNacimiento} else {if (usuario.formNombre) {fecha = usuario.fechaNacimiento}}%>
+        <% let fecha=""; if (locals.data_entry) {fecha = data_entry.fechaNacimiento} %>
         <input type="date" name="fechaNacimiento" class="input" value="<%= fecha %>">
     </div>
     <div class="flex-col">  <!--Error en la Fecha-->
         <% if (locals.errores && errores.fechaNacimiento) { %>
             <p class="criterio error"><%= errores.fechaNacimiento.msg %></p>
-        <% } else { %>
-            <% if (!!errorDeAno) { %>
-                <p class="criterio error"><%= errorDeAno %></p>
-                <% } %>
         <% } %>
     </div>
-    <p><%= errorDeAno %> </p>
     <section id="buttons" class="flex-row"><!--Buttons-->
         <button type="submit">Aceptar</button>
         <button onclick="retroceder()" type="button">Cancelar</button>
     </section>
 </form>
+<%- include('0-AgregarDespués') %>

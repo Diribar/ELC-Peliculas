@@ -1,7 +1,7 @@
+<%- include('0-AgregarAntes', {titulo: "Registro de Mail"}) %>
 <form action="<%= link %>" method="POST">
-    <h1><%= titulo %></h1>
-    <!--Mail y Contraseña-->
-    <section class="label-input flex-row">  <!--Mail-->
+    <h1>Registro de Mail</h1>
+    <section class="label-input flex-row">  <!--Input-->
         <div class="formulario-grupo">
             <input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
                 value="<%= locals.data_entry ? data_entry.email : "" %>">
@@ -9,7 +9,7 @@
             <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
         </div>
     </section>
-    <div class="flex-col">  <!--Error en el mail-->
+    <div class="flex-col">  <!--Error-->
         <% if (locals.errores && errores.email) { %>
             <p class="criterio error"><%= errores.email.msg %></p>
         <% } %>    
@@ -19,3 +19,4 @@
         <button onclick="retroceder()" type="button">Cancelar</button>
     </section>
 </form>   
+<%- include('0-AgregarDespués') %>

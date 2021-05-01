@@ -1,13 +1,10 @@
-const fs = require('fs');
 const path = require('path');
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-const ruta_nombre = path.join(__dirname, '../../bases_de_datos/tablas/BDusuarios.json');
-let BD = leer(ruta_nombre);
+const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
 
-module.exports = (req,res,next) => {
+module.exports = async (req,res,next) => {
 	// Uso de cookies para identificar al usuario
 	if (!req.session.usuario) {
-		let usuario = BD.find(n => n.email == req.cookies.email)
+		let usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.cookies.email)
 		if (usuario) {req.session.usuario = usuario}
 	}
 	// Graba a Locals los datos del usuario

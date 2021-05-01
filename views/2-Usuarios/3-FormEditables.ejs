@@ -1,0 +1,66 @@
+<form action="<%= link %>" method="POST" enctype="multipart/form-data">
+	<h1><%= titulo %></h1>
+	<!--Formulario a completar-->
+	<div class="label-input flex-row"><!--Sobrenombre-->
+		<label for="sobrenombre">¿Cómo querés <br>que te llamemos?</label>
+		<% let sobrenombre=""; if (locals.data_entry) {sobrenombre = data_entry.sobrenombre} else {if (usuario.formSobrenombre) {sobrenombre = usuario.sobrenombre}}%>
+		<input type="text" class="input" name="sobrenombre" placeholder="Sobrenombre" value="<%= sobrenombre %>">
+	</div>
+	<div class="flex-col">  <!--Error en el Sobrenombre-->
+		<% if (locals.errores && errores.sobrenombre) { %>
+			<p class="criterio error"><%= errores.sobrenombre.msg %></p>
+		<% } %>
+	</div>
+	<div class="label-input flex-row"><!--Pais de residencia-->
+		<label for="pais">País de residencia</label>
+		<% let pais=""; if (locals.data_entry) {pais = data_entry.pais} else {if (usuario.formNombre) {pais = usuario.pais}}%>
+		<select name="pais" class="input">
+			<option value="" <% if (pais=="") {%> selected <%}%> style="font-style: italic">Elejí un país</option>
+			<% for (n of paises) { %>
+				<option value="<%= n.sigla %>" <% if (pais==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
+			<% } %> 
+		</select>
+	</div>
+	<div class="flex-col">  <!--Error en el Pais-->
+		<% if (locals.errores && errores.pais) { %>
+			<p class="criterio error"><%= errores.pais.msg %></p>
+		<% } %>
+	</div>
+	<div class="label-input flex-row"><!--Estado eclesial-->
+		<label for="estado">Estado eclesial</label>
+		<% let estado=""; if (locals.data_entry) {estado = data_entry.estado} else {if (usuario.formNombre) {estado = usuario.estado}}%>
+		<select name="estado" class="input">
+			<option value="" <% if (estado=="") {%> selected <%}%> style="font-style: italic">Elejí un estado</option>
+			<% for (n of estados) { %>
+				<option value="<%= n.sigla %>" <% if (estado==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
+			<% } %> 
+		</select>
+	</div>
+	<div class="flex-col">  <!--Error en el Estado eclesial-->
+		<% if (locals.errores && errores.estado) { %>
+			<p class="criterio error"><%= errores.estado.msg %></p>
+		<% } %>
+	</div>
+	<div class="label-input flex-row"><!--Imagen de perfil-->
+		<label>Imagen personal <br>(opcional)</label>
+		<label for="imagen" class="imagen input">
+			<i class="fa fa-cloud-upload"></i>Subí una imagen
+			<p id="filename"></p>
+		</label>
+		<input id="imagen" type="file" name="imagen" onchange="fileName()">
+	</div>
+	<div class="flex-col">  <!-- Error en la imagen de perfil -->
+		<% if (locals.errores) { %>
+			<% if (errores.imagen) { %>
+				<p class="criterio error"><%= errores.imagen.msg %></p>
+			<% } else { %>
+				<p class="criterio error">Tenés que volver a subir una imagen</p>
+			<% } %>
+		<% } %>
+	</div>
+	<section id="buttons" class="flex-row"><!--Buttons-->
+		<button type="submit">Aceptar</button>
+		<button onclick="retroceder()" type="button">Cancelar</button>
+	</section>
+</form>
+<%- include('0-AgregarDespués') %>

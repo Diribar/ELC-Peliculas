@@ -26,10 +26,10 @@
 	<!--ESTILOS PERSONALIZADOS POR PÁGINA-->
 	<% if (titulo == "Acerca de Nosotros") { %> <link rel="stylesheet" href="/stylesheets/1-Institucional/1-Acerca-de-Nosotros.css"> <% } %>
 	<% if (titulo == "Contactanos") { %> <link rel="stylesheet" href="/stylesheets/1-Institucional/2-Contactanos.css"> <% } %>
-	<% if (titulo == "Login" || titulo.slice(0, 8) == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosForm.css"> <% } %>
-	<% if (titulo == "Registro de Mail" || titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-RegistroMailForm.css"> <% } %>
-	<% if (titulo == "Registro de Nombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/2-RegistroNombreForm.css"> <% } %>
-	<% if (titulo == "Registro de Sobrenombre") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/3-RegistroSobrenombreForm.css"> <% } %>
+	<% if (titulo == "Login" || titulo.slice(0, 8) == "Registro") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css"> <% } %>
+	<% if (titulo == "Registro de Mail" || titulo == "Login") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/1-FormMail.css"> <% } %>
+	<% if (titulo == "Registro de Datos Perennes") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/2-FormPerennes.css"> <% } %>
+	<% if (titulo == "Registro de Datos Editables") { %> <link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css"> <% } %>
 	<% if (titulo.slice(0,9) == "Películas") { %>
 		<% if (opcion_objeto && opcion_objeto.grupo == "Opciones") { %>
 			<link rel="stylesheet" href="/stylesheets/3-PEL-Opciones/0-Opciones.css">

@@ -1,7 +1,6 @@
 // ************ Requires ************
 const fs = require('fs');
 const path = require('path')
-const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
 const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
 
@@ -23,28 +22,23 @@ module.exports = {
 	redireccionar: (req,res) => {
 		let usuario = req.session.usuario;
 		// return res.send(usuario)
+		let status_usuario = usuario.status_usuario_id.toString()
 		// Redireccionar
-		//if (usuario.status_usuario_id = 1) {
-			//return res.send("estoy en controlador redireccionar")
-			return res.redirect("/login")
-		//};
-		if (usuario.status_usuario_id = 2) {return res.redirect("/usuarios/registro-nombre")};
-		if (usuario.status_usuario_id = 3) {return res.redirect("/usuarios/registro-sobrenombre")};
+		if (status_usuario == 1) {return res.redirect("/login")};
+		if (status_usuario == 2) {return res.redirect("/usuarios/registro-datos-perennes")};
+		if (status_usuario == 3) {return res.redirect("/usuarios/registro-datos-editables")};
 		return res.redirect("/")
 	},
 
-	altaFormMail: (req, res) => {
-		return res.render('0-Usuarios', {
-			link: req.originalUrl,
-			titulo: "Registro de Mail"
-		});
+	altaMailForm: (req, res) => {
+		return res.render('1-FormMail', {link: req.originalUrl});
 	},
 	
-	altaGuardarMail: async (req, res) => {
+	altaMailGuardar: async (req, res) => {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		if (await metodosUsuario.emailExistente(req.body.email)) {
+		if (await metodosUsuario.email_existente_en_BD(req.body.email)) {
             validaciones.errors.push({
                 msg: "Este mail ya figura en nuestra base de datos",
                 param: "email",
@@ -52,11 +46,10 @@ module.exports = {
         }
 		// Si existe algún error de validación --> regresar al formulario
 		if (validaciones.errors.length > 0) {
-			return res.render('0-Usuarios', {
+			return res.render('1-FormMail', {
 				link: req.originalUrl,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
-				titulo: "Registro de Mail"
 			});
 		};
         // Si no hubieron errores de validación...
@@ -69,42 +62,41 @@ module.exports = {
 		return res.redirect("/usuarios/redireccionar");
 	},
 
-	altaFormNombre: (req,res) => {
-		//return res.send([req.session.usuario,"linea 68"]);
-		return res.render('0-Usuarios', {
-			link: req.originalUrl,
-			errorDeAno: null,
-			usuario: req.session.usuario,
-			titulo: "Registro de Nombre"
-		});
+	altaPerennesForm: (req,res) => {
+		return res.render('2-FormPerennes', {link: req.originalUrl});
 	},
 
-	altaGuardarNombre: (req,res) => {
-		// Datos del usuario
-		let usuario = req.session.usuario;
+	altaPerennesGuardar: async (req,res) => {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Verificar que la fecha sea razonable
 		let ano = parseInt(req.body.fechaNacimiento.slice(0,4));
 		let max = new Date().getFullYear()-10;
 		let min = new Date().getFullYear()-100;
-		ano>max || ano<min ? errorDeAno = "¿Estás seguro de que introdujiste la fecha correcta?" : errorDeAno = null;
+		if (ano>max || ano<min) {
+			validaciones.errors.push({
+				msg: "¿Estás seguro de que introdujiste la fecha correcta?",
+				param: "fechaNacimiento",
+			});	
+		}
 		// Verificar si existe algún error de validación
-		if (validaciones.errors.length>0 || !!errorDeAno) {
+		if (validaciones.errors.length > 0) {
 			// Regresar al formulario
-			return res.render('0-Usuarios', {
-				errorDeAno,
+			return res.render('2-FormPerennes', {
 				link: req.originalUrl,
-				usuario,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
-				titulo: "Registro de Nombre"
 			});
 		};
-		// Preparar el registro para almacenar
-		let BD = leer(ruta_nombre);
-		let usuarioEnBD = BD.find(n => n.id == usuario.id);
-		let indice = BD.findIndex(n => n.id == usuario.id)
+        // Si no hubieron errores de validación...
+		// Guardar el registro
+        await metodosUsuario.datosPerennes(req.session.usuario.id, req.body);
+		//return res.send([req.session.usuario.id, req.body])
+		// Obtener los datos del usuario
+		req.session.usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email);
+		// Redireccionar
+		return res.redirect("/usuarios/redireccionar");
+
 		let fecha = sanitizarFecha(req.body.fechaNacimiento);
 		const actualizado = {
 			...usuarioEnBD,
@@ -112,12 +104,7 @@ module.exports = {
 			fechaNacimiento: fecha,
 			formNombre: true,
 		};
-		// Guardar el registro
-		BD[indice] = actualizado
-		guardar(ruta_nombre, BD);
 		// Actualizar los datos en la sesión
-		req.session.usuario = actualizado;
-		res.redirect("/usuarios/redireccionar");
 	},
 
 	altaFormSobrenombre: (req,res) => {
