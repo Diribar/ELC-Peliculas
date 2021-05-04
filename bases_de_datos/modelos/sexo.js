@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(100)}
 	};
 	const config = {
-		tableName: "sexo",
+		tableName: "sexos",
 		timestamps: false
 	};
 

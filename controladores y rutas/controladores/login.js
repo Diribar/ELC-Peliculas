@@ -22,7 +22,7 @@ module.exports = {
 	},
 
 	loginGuardar: async (req,res) => {
-		var usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
+		var usuario = await metodosUsuario.obtenerUsuarioPorMail(req.body.email)
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0
@@ -43,8 +43,8 @@ module.exports = {
 		};
 		// Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_usuario_id.toString() == 1) {
-			await metodosUsuario.upgradeStatusUsuario(usuario.id, 1)
-			usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
+			await metodosUsuario.upgradeStatusUsuario(usuario.id, 2)
+			usuario = await metodosUsuario.obtenerUsuarioPorMail(req.body.email)
 		}
 		// Grabar el mail del usuario en la cookie
 		res.cookie("email", req.body.email, {maxAge: 1000*60*60*1})

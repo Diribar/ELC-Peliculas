@@ -1,5 +1,5 @@
 const path = require('path');
-const pathFile = path.resolve(__dirname, '../../public/images/2-Usuarios');
+const pathFile = path.resolve(__dirname, '../../public/imagenes/2-Usuarios');
 const multer = require('multer');
 
 const storage = multer.diskStorage({

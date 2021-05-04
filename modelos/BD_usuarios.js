@@ -3,11 +3,10 @@ const entidad = db.usuario;
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
-	obtener_el_usuario_a_partir_del_email: async (email) => {
-        const usuario = await entidad.findOne({
+	obtenerUsuarioPorMail: (email) => {
+        return entidad.findOne({
             where: {email: email}
         });
-        return usuario;
     },
 	altaMail: (emailDeUsuario) => {
 		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""
@@ -18,23 +17,23 @@ module.exports = {
         });
 	},
 	upgradeStatusUsuario: (id, st) => {
-        return entidad.update(
-			{status_usuario_id: st+1},
-    	    {where: { id: id }}
+		return entidad.update(
+			{status_usuario_id: st},
+			{where: { id: id }}
 		);
     },
 	datosPerennes: (id, datos) => {
         return entidad.update(
-			{nombre: datos.nombre, apellido: datos.apellido, sexo: datos.sexo, fecha_nacimiento: datos.fechaNacimiento, status_usuario_id: 3},
+			{nombre: datos.nombre, apellido: datos.apellido, sexo_id: datos.sexo, fecha_nacimiento: datos.fechaNacimiento},
 			{where: { id: id }}
 		);
     },
-///////////////////////////////////////////////////////////////////////
-	obtenerPorId: (id) => {
+	obtenerUsuarioPorId: (id) => {
         return entidad.findByPk(id, {
-            include: [ "roles" ]
+            include: [ "rol_usuario", "sexo", "status_usuario", "pais", "estado_eclesial" ]
         });
     },
+///////////////////////////////////////////////////////////////////////
     editar: (id, infoUsuario, fileName) => {
         return entidad.update({
             nombre: infoUsuario.nombre,
