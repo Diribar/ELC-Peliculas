@@ -4,7 +4,7 @@ const path = require('path')
 const {validationResult} = require('express-validator');
 
 // ************ Variables ************
-const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
+// const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
 const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
 
 // ************ Funciones ************
