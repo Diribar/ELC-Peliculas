@@ -1,4 +1,4 @@
-const db = require("../database/models");
+const db = require("../bases_de_datos/modelos");
 const entidad = db.Producto;
 
 module.exports = {

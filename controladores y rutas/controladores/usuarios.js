@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
 const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
+const metodosOtros = require(path.join(__dirname, "../../modelos/BD_otros"));
 
 // ************ Variables ************
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
@@ -97,9 +98,10 @@ module.exports = {
 		return res.redirect("/usuarios/redireccionar");
 	},
 
-	altaFormSobrenombre: (req,res) => {
-		//return res.send([req.session.usuario,"linea 68"]);
-		return res.render('0-Usuarios', {
+	altaFormSobrenombre: async (req,res) => {
+		//return res.send([req.session.usuario,"linea 101"]);
+		paises = await metodosOtros.listadoCompleto("pais")
+		return res.render('3-FormEditables', {
 			link: req.originalUrl,
 			usuario: req.session.usuario,
 			paises: leer(BDpaises),

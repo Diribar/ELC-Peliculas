@@ -20,8 +20,8 @@ router.get('/redireccionar', usuarios.redireccionar)
 router.get('/registro-datos-perennes', soloUsuarios, usuarios.altaPerennesForm)
 router.post('/registro-datos-perennes', validarPerennes, usuarios.altaPerennesGuardar)
 
-router.get('/registro-sobrenombre', soloUsuarios, usuarios.altaFormSobrenombre)
-router.post('/registro-sobrenombre', uploadFile.single('imagen'), validarEditables, usuarios.altaGuardarSobrenombre)
+router.get('/registro-datos-editables', soloUsuarios, usuarios.altaFormSobrenombre)
+router.post('/registro-datos-editables', uploadFile.single('imagen'), validarEditables, usuarios.altaGuardarSobrenombre)
 
 router.get('/detalle', soloUsuarios, usuarios.detalle)          // Detalle
 router.get('/editar', soloUsuarios, usuarios.editarForm)        // Modificar
