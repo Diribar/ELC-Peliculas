@@ -1,2 +1,8 @@
 /* Partes del formulario */
-#Form form .input {width: 250px;}
+#Form form .input {width: 200px;}
+
+/* Credenciales inválidas*/
+#Form form .criterio {margin: 5px auto 0px;font-style: italic;}
+#Form form .criterio {align-items: center; text-align: center;}
+#Form form .criterio {color:var(--celeste-claro);border-radius: 7px;}
+#Form form .error {background-color: tomato; color: white;padding: 2px 7px;}
