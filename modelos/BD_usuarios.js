@@ -3,18 +3,12 @@ const entidad = db.usuario;
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
-    email_existente_en_BD: (email) => {
-        return entidad.count({
-			where: {email: email}
-		}).then(n => n > 0);
-    },
 	obtener_el_usuario_a_partir_del_email: async (email) => {
         const usuario = await entidad.findOne({
             where: {email: email}
         });
         return usuario;
     },
-///////////////////////////////////////////////////////////////////////
 	altaMail: (emailDeUsuario) => {
 		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""
 		let contrasena = "1234567890"
@@ -23,9 +17,9 @@ module.exports = {
             contrasena: bcryptjs.hashSync(contrasena, 10),
         });
 	},
-	mailValidado: (id) => {
+	upgradeStatusUsuario: (id, st) => {
         return entidad.update(
-			{status_usuario_id: 2},
+			{status_usuario_id: st+1},
     	    {where: { id: id }}
 		);
     },
@@ -36,7 +30,6 @@ module.exports = {
 		);
     },
 ///////////////////////////////////////////////////////////////////////
-
 	obtenerPorId: (id) => {
         return entidad.findByPk(id, {
             include: [ "roles" ]

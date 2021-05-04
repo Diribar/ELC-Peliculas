@@ -21,7 +21,7 @@ module.exports = {
 
 	redireccionar: (req,res) => {
 		let usuario = req.session.usuario;
-		// return res.send(usuario)
+		return res.send(usuario)
 		let status_usuario = usuario.status_usuario_id.toString()
 		// Redireccionar
 		if (status_usuario == 1) {return res.redirect("/login")};
@@ -38,7 +38,7 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		if (await metodosUsuario.email_existente_en_BD(req.body.email)) {
+		if (await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)) {
             validaciones.errors.push({
                 msg: "Este mail ya figura en nuestra base de datos",
                 param: "email",

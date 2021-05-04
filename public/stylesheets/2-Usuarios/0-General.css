@@ -44,7 +44,7 @@
 #Form form #buttons {margin: 15px auto 5px;}
 #Form form #buttons {padding: 5px 0px 0px 0px; margin-bottom: 5px; justify-content: space-evenly;}
 #Form form #buttons button {padding: 2px 5px;}
-#Form form #buttons button {font-size: 1.1rem;font-weight: bold;color:white;}
+#Form form #buttons button {font-size: 1rem;font-weight: bold;color:white;}
 #Form form #buttons button {border: solid 2px var(--amarillo-claro);border-radius: 7px;}
 #Form form #buttons button[type="submit"] {background-color: var(--verde);}
 #Form form #buttons button[type="button"] {background-color: var(--azul);}

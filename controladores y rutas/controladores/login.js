@@ -22,20 +22,15 @@ module.exports = {
 	},
 
 	loginGuardar: async (req,res) => {
+		var usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0
 		if (!errorEnDataEntry) {
-			// Averiguar si existe el mail en la BD
-			var email_existe_en_BD = await metodosUsuario.email_existente_en_BD(req.body.email)
-			if (email_existe_en_BD) {
-				// Verificar si la contraseña es correcta
-				var usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
-				var contrasenaBD =  usuario.contrasena
-				var contrasenaOK = bcryptjs.compareSync(req.body.contrasena, contrasenaBD)
-			}
+			// Averiguar mail y contraseña en la BD
+			usuario ? contrasenaOK = bcryptjs.compareSync(req.body.contrasena, usuario.contrasena) : null
 			// Verificar si mail y/o usuario no existen en BD
-			var credencialesInvalidas = !email_existe_en_BD || !contrasenaOK
+			var credencialesInvalidas = !usuario || !contrasenaOK
 		}
 		// Redireccionar si existe algún error de validación
 		if (errorEnDataEntry || credencialesInvalidas) {
@@ -48,10 +43,10 @@ module.exports = {
 		};
 		// Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_usuario_id.toString() == 1) {
-			//return res.send("linea 53")
-			await metodosUsuario.mailValidado(usuario.id)
+			await metodosUsuario.upgradeStatusUsuario(usuario.id, 1)
+			usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
 		}
-		usuario = await metodosUsuario.obtener_el_usuario_a_partir_del_email(req.body.email)
+		// Grabar el mail del usuario en la cookie
 		res.cookie("email", req.body.email, {maxAge: 1000*60*60*1})
 		// return res.send(usuario)
 		// Iniciar la sesión
