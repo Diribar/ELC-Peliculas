@@ -1,5 +1,10 @@
-<%- include('AgregarAntes', {titulo: "PEL-Agregar", form: "AgregarForm1"}) %>
-<div class="cuerpo flex-col"> <!--CUERPO-->
+<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
+<link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/Agregar.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/AgregarForm1.css">
+<%- include('0-AntesPC', {titulo: "PEL-Agregar"}) %>
+
+<!--***********************************************************-->
+<div class="cuerpo flex-col">
 	<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
 	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
 		<h1>Paso 1 de 4: Importar Datos</h1>
@@ -98,4 +103,4 @@
 		</form>
 	</section>
 </div>
-<%- include('AgregarDespués') %>
+<%- include('DespuesPC') %>

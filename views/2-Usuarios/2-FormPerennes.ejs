@@ -1,4 +1,9 @@
-<%- include('0-AgregarAntes', {titulo: "Registro de Datos Perennes"}) %>
+<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/2-FormPerennes.css">
+<%- include('0-AntesUS', {titulo: "Registro de Datos Perennes"}) %>
+
+<!--***********************************************************-->
 <form action="<%= link %>" method="POST">
     <h1>Registro de Datos Perennes</h1>
     
@@ -54,4 +59,4 @@
         <button onclick="retroceder()" type="button">Cancelar</button>
     </section>
 </form>
-<%- include('0-AgregarDespués') %>
+<%- include('0-DespuesUS') %>

@@ -1,3 +1,9 @@
+<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css">
+<%- include('0-AntesUS', {titulo: "Registro de Datos Editables"}) %>
+
+<!--***********************************************************-->
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<h1><%= titulo %></h1>
 	<!--Formulario a completar-->
@@ -63,4 +69,4 @@
 		<button onclick="retroceder()" type="button">Cancelar</button>
 	</section>
 </form>
-<%- include('0-AgregarDespués') %>
+<%- include('0-DespuesUS') %>

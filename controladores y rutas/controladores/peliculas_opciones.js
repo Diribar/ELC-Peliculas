@@ -28,7 +28,7 @@ module.exports = {
 	opcion: (req, res) => {
 		// Obtener el código de la opción elegida (listado, cfc, vpc, etc.)
 		let opcion_url = req.url.slice(1) 
-		let tipo_url=null
+		let tipo_url = null
 		// Obtener el código del rubro elegido (en esta caso: peliculas)
 		let rubro_url = req.originalUrl				
 		rubro_url = rubro_url.slice(1,rubro_url.lastIndexOf("/"))

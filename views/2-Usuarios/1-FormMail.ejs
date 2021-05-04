@@ -1,22 +1,24 @@
-<%- include('0-AgregarAntes', {titulo: "Registro de Mail"}) %>
+<%- include('0-Head', {titulo: "Registro de Mail"}) %>
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/1-FormMail.css">
+<script src="/javascript/ojitoContrasena.js"></script>
+<%- include('0-AntesUS', {titulo: "Registro de Mail"}) %>
+
+<!--***********************************************************-->
 <form action="<%= link %>" method="POST">
     <h1>Registro de Mail</h1>
     <section class="label-input flex-row">  <!--Input-->
-        <div class="formulario-grupo">
+        <div class="form-grupo">
             <input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
                 value="<%= locals.data_entry ? data_entry.email : "" %>">
-            <% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"></i><% } %>
-            <% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
+			<% if (locals.errores && errores.email) { %>
+				<i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i>
+			<% } %>
         </div>
     </section>
-    <div class="flex-col">  <!--Error-->
-        <% if (locals.errores && errores.email) { %>
-            <p class="criterio error"><%= errores.email.msg %></p>
-        <% } %>    
-    </div>
     <section id="buttons" class="flex-row"><!--Botones-->
         <button type="submit">Aceptar</button>
         <button onclick="retroceder()" type="button">Cancelar</button>
     </section>
 </form>   
-<%- include('0-AgregarDespués') %>
+<%- include('0-DespuesUS') %>
