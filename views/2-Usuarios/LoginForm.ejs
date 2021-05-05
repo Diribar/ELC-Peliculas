@@ -1,6 +1,6 @@
 <%- include('0-Head', {titulo: "Login"}) %>
 <link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
-<link rel="stylesheet" href="/stylesheets/2-Usuarios/1-FormMail.css">
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
 <script src="/javascript/ojitoContrasena.js"></script>
 <%- include('0-AntesUS', {titulo: "Login"}) %>
 
@@ -37,7 +37,7 @@
 		</section>
 		<section id="buttons" class="flex-row"><!--Botones-->
 			<button type="submit">Aceptar</button>
-			<button onclick="retroceder()" type="button" id="cancelar">Cancelar</button>
+			<a href="#"><button type="button" onclick="window.history.back()" id="cancelar">Cancelar</button></a>
 			<a href="#"><button type="button">Olvidé mi contraseña</button></a>
 			</div>
 		</section>
