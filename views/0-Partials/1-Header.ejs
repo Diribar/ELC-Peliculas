@@ -20,7 +20,7 @@
 			<p><a>Evangelicemos la Cultura</a></p>
 		</div>
 		<div>  <!-- Logo de usuario o avatar -->
-			<% if(locals.usuario) { %>
+			<% if(locals.usuario && locals.usuario.avatar) { %>
 				<img
 					src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>"
 					onclick="desplegable('menu-usuario')"

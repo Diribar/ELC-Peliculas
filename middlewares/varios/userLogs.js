@@ -1,14 +1,10 @@
 module.exports = (req,res,next) => {
 	let URL = req.originalUrl
-	URL = URL.slice(1)
-	URL = URL.slice(0, URL.indexOf("/"))
-	if (URL != "usuarios" && URL != "login") {
-		if (res.locals && res.locals.urlActual) {
-			res.locals.urlAnterior = res.locals.urlActual
-		} else {
-			res.locals.urlAnterior = req.originalUrl;
-		}
-		res.locals.urlActual = req.originalUrl;
+	let hasta = URL.slice(1).indexOf("/") > 0 ? URL.slice(1).indexOf("/")+1 : URL.length
+	let tema = URL.slice(1, hasta)
+	if (tema != "login" && tema != "usuarios") {
+		req.session.urlReferencia = URL
 	}
+	console.log(req.session.urlReferencia)
 	next()
 }
