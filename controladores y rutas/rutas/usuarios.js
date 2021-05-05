@@ -21,7 +21,7 @@ router.get('/registro-datos-perennes', soloUsuarios, usuariosController.altaPere
 router.post('/registro-datos-perennes', validarPerennes, usuariosController.altaPerennesGuardar)
 
 router.get('/registro-datos-editables', soloUsuarios, usuariosController.altaEditablesForm)
-router.post('/registro-datos-editables', uploadFile.single('imagen'), validarEditables, usuariosController.altaEditablesGuardar)
+router.post('/registro-datos-editables', uploadFile.single('avatar'), validarEditables, usuariosController.altaEditablesGuardar)
 
 router.get('/detalle', soloUsuarios, usuariosController.detalle)          // Detalle
 router.get('/editar', soloUsuarios, usuariosController.editarForm)        // Modificar
