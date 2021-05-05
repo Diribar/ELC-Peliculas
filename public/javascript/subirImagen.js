@@ -15,4 +15,5 @@ document.getElementById("inputImagen").onchange = function(e) {
 		preview.innerHTML = '';
 		preview.append(image);
 	};
+	console.log("sí")
 }

@@ -14,6 +14,12 @@ CREATE TABLE roles_usuario (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE sexos (
+	id VARCHAR(1) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
@@ -29,7 +35,7 @@ CREATE TABLE paises (
 
 CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	email VARCHAR(50) NOT NULL UNIQUE,
+	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
 	status_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
 	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
@@ -38,11 +44,11 @@ CREATE TABLE USUARIOS (
 	apodo VARCHAR(50) NULL,
 	avatar VARCHAR(50) NULL,
 	fecha_nacimiento DATE NULL,
-	sexo VARCHAR(50) NULL,
+	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
 	estado_eclesial_id VARCHAR(2) NULL,
-	validacion_enviada_en DATE NULL,
 	creado_en DATE NULL,
+	completado_en DATE NULL,
 	editado_en DATE NULL,
 	ultima_penalizacion_en DATE NULL,
 	borrado_en DATE NULL,
@@ -56,6 +62,7 @@ CREATE TABLE USUARIOS (
 	PRIMARY KEY (id),
 	FOREIGN KEY (status_usuario_id) REFERENCES status_usuario(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
+	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(iso_id),
 	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id),
 	FOREIGN KEY (ultima_penalizacion_en_rol) REFERENCES roles_usuario(id),

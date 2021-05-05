@@ -16,10 +16,12 @@
 #Form form .label-input {justify-content: space-between;margin: 20px 10px 0px 10px;align-items:center}
 
 /* Input del formulario */
-#Form form .input {border: none;border-radius: 15px; padding: 3px 10px;}
-#Form form .input, #Form form select {width: 200px; height: 27px; text-align: center;}
 #Form form label {color: white; margin-right: 20px; }
 #Form form label {text-align: left;}
+#Form form .input {border: none;border-radius: 15px; padding: 3px 10px; text-align: center;}
+#Form form .input, #Form form select {width: 200px; height: 27px;}
+#Form form select {text-align-last: center;}
+#Form form .input[type = "date"] {text-align: right}
 
 /* Íconos de error */
 #Form .form-grupo .fas {background-color: white; border-radius: 50%; font-size: 1em;}

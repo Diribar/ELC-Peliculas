@@ -1,24 +1,8 @@
 /* Botón de imagen*/
 input#inputImagen {display:none}
+#Form form #labelImagen {color: var(--azul); background-color: rgb(255, 255, 255);}
+#Form form #divImagen label {cursor: pointer; margin-right: 0px; line-height: normal;}
 
-#Form form #divImagen {
-	width: 200px;
-	align-items: center;
-}
-
-#Form form #labelImagen {
-	color: var(--azul);
-	background-color: rgb(255, 255, 255);
-}
-
-#Form form #divImagen label {
-	cursor: pointer;
-	margin-right: 0px;
-	line-height: normal;
-}
-
-#preview img {
-	border-radius: 15px;
-	max-width: 200px;
-	max-height: 150px;
-}
+/* Imagen */
+#Form form #divImagen {width: 200px;align-items: center;}
+#preview img {border-radius: 15px; max-width: 200px; max-height: 150px;}
