@@ -17,7 +17,7 @@ function borrarArchivoDeImagen(n) {let imageFile = path.join(rutaImagenes, n);if
 // *********** Controlador ***********
 module.exports = {
 
-	redireccionar: (req,res) => {
+	altaRedireccionar: (req,res) => {
 		let usuario = req.session.usuario;
 		//return res.send(usuario)
 		let status_usuario = usuario.status_usuario_id.toString()
