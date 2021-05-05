@@ -4,19 +4,23 @@
 <script src="/javascript/ojitoContrasena.js"></script>
 <%- include('0-AntesUS', {titulo: "Registro de Mail"}) %>
 
-<!--***********************************************************-->
-<form action="<%= link %>" method="POST">
-    <h1>Registro de Mail</h1>
-    <section class="label-input flex-row">  <!--Input-->
-        <div class="form-grupo">
-            <input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
-                value="<%= locals.data_entry ? data_entry.email : "" %>">
-			<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
-        </div>
-    </section>
-    <section id="buttons" class="flex-row"><!--Botones-->
-        <button type="submit">Aceptar</button>
-        <button onclick="retroceder()" type="button">Cancelar</button>
-    </section>
-</form>   
+<!--**************************** CUERPO ******************************-->
+<section id="Form" class="flex-col">
+	<p id="tapar-el-fondo"></p>
+	<form action="<%= link %>" method="POST">
+		<h1>Registro de Mail</h1>
+		<section class="label-input flex-row">  <!--Input-->
+			<div class="form-grupo">
+				<input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
+					value="<%= locals.data_entry ? data_entry.email : "" %>">
+				<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
+			</div>
+		</section>
+		<section id="buttons" class="flex-row"><!--Botones-->
+			<button type="submit">Aceptar</button>
+			<button onclick="retroceder()" type="button">Cancelar</button>
+		</section>
+	</form>
+</section>
+<!--****************************** FIN *******************************-->
 <%- include('0-DespuesUS') %>
