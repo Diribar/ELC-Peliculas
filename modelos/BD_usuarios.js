@@ -8,6 +8,17 @@ module.exports = {
             where: {email: email}
         });
     },
+	obtenerUsuarioPorId: (id) => {
+        return entidad.findByPk(id, {
+            include: [ "rol_usuario", "sexo", "status_usuario", "pais", "estado_eclesial" ]
+        });
+    },
+	upgradeStatusUsuario: (id, st) => {
+		return entidad.update(
+			{status_usuario_id: st},
+			{where: { id: id }}
+		);
+    },
 	altaMail: (emailDeUsuario) => {
 		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""
 		let contrasena = "1234567890"
@@ -16,22 +27,17 @@ module.exports = {
             contrasena: bcryptjs.hashSync(contrasena, 10),
         });
 	},
-	upgradeStatusUsuario: (id, st) => {
-		return entidad.update(
-			{status_usuario_id: st},
-			{where: { id: id }}
-		);
-    },
 	datosPerennes: (id, datos) => {
         return entidad.update(
 			{nombre: datos.nombre, apellido: datos.apellido, sexo_id: datos.sexo, fecha_nacimiento: datos.fechaNacimiento},
 			{where: { id: id }}
 		);
     },
-	obtenerUsuarioPorId: (id) => {
-        return entidad.findByPk(id, {
-            include: [ "rol_usuario", "sexo", "status_usuario", "pais", "estado_eclesial" ]
-        });
+	datosEditables: (id, datos) => {
+        return entidad.update(
+			{apodo: datos.apodo, pais_id: datos.pais, estado_eclesial_id: datos.estado_eclesial, avatar: datos.avatar},
+			{where: { id: id }}
+		);
     },
 ///////////////////////////////////////////////////////////////////////
     editar: (id, infoUsuario, fileName) => {

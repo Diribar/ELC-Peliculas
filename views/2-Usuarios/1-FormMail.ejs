@@ -11,9 +11,7 @@
         <div class="form-grupo">
             <input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico"
                 value="<%= locals.data_entry ? data_entry.email : "" %>">
-			<% if (locals.errores && errores.email) { %>
-				<i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i>
-			<% } %>
+			<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
         </div>
     </section>
     <section id="buttons" class="flex-row"><!--Botones-->

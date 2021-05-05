@@ -1,16 +1,15 @@
-/* Partes del formulario */
-#usuariosForm form .input, #usuariosForm form select
-{width: 180px;height: 27px;}
-
 /* Botón de imagen*/
-input[type="file"] {display:none}
+input#inputImagen {display:none}
 
-#usuariosForm form .imagen {
-	margin-right: 0px;
+#Form form #divImagen {width: 200px; }
+
+#Form form #labelImagen {
 	color: var(--azul);
 	background-color: rgb(255, 255, 255);
 	line-height: normal;
-	cursor: pointer;
+	margin-right: 0px;
 }
 
-#filename {color: white; font-size: 12px;margin-top: 5px; font-style: italic}
+#Form form #divImagen label {cursor: pointer;}
+
+#preview img {border-radius: 15px;}

@@ -93,64 +93,52 @@ module.exports = {
 		await metodosUsuario.upgradeStatusUsuario(req.session.usuario.id, 3)
 		// Actualizar los datos del usuario en la sesión
 		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(req.session.usuario.id);
-		return res.send(req.session.usuario)
+		// return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
 
-	altaFormSobrenombre: async (req,res) => {
+	altaEditablesForm: async (req,res) => {
 		//return res.send([req.session.usuario,"linea 101"]);
-		paises = await metodosOtros.listadoCompleto("pais")
 		return res.render('3-FormEditables', {
 			link: req.originalUrl,
 			usuario: req.session.usuario,
-			paises: leer(BDpaises),
-			estados: leer(BDestados),
-			titulo: "Registro de Sobrenombre"
+			paises: await metodosOtros.listadoCompleto("pais"),
+			estados_eclesiales: await metodosOtros.listadoCompleto("estado_eclesial"),
 		});
 	},
 
-	altaGuardarSobrenombre: (req,res) => {
-		//res.send("estoy en Guardar Sobrenombre")
-		// Datos del usuario
+	altaEditablesGuardar: async (req,res) => {
 		let usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Verificar si existe algún error de validación
 		if (validaciones.errors.length>0) {
+			//return res.send(validaciones)
 			// Borrar el archivo de imagen guardado
-			if (req.file) {BorrarArchivoDeImagen(req.file.filename)}
+			req.file ? borrarArchivoDeImagen(req.file.filename) : null
 			// Regresar al formulario
-			return res.render('0-Usuarios', {
+			return res.render('3-FormEditables', {
 				link: req.originalUrl,
 				usuario,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
-				paises: leer(BDpaises),
-				estados: leer(BDestados),
-				Fecha: new Date().toLocaleDateString('es-ES'),
-				Hora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
-				titulo: "Registro de Sobrenombre"
+				paises: await metodosOtros.listadoCompleto("pais"),
+				estados_eclesiales: await metodosOtros.listadoCompleto("estado_eclesial"),
 			});
 		};
-		// Preparar el registro para almacenar
-		let BD = leer(ruta_nombre);
-		let usuarioEnBD = BD.find(n => n.id == usuario.id);
-		let indice = BD.findIndex(n => n.id == usuario.id)
-		const actualizado = {
-			...usuarioEnBD,
-			...req.body,
-			imagen: req.file.filename,
-			Fecha: new Date().toLocaleDateString('es-ES'),
-			Hora: new Date().toLocaleTimeString('es-ES').slice(0,-3),
-			formSobrenombre: true,
-		};
-		// Guardar el registro
-		BD[indice] = actualizado
-		guardar(ruta_nombre, BD);
-		// Actualizar los datos en la sesión
-		req.session.usuario = actualizado;
-		res.redirect("/usuarios/redireccionar");
+		// Si no hubieron errores de validación...
+		// Actualizar el registro
+		req.body.avatar = req.file ? req.file.filename : "-"
+		// return res.send(req.body)
+		await metodosUsuario.datosEditables(req.session.usuario.id, req.body);
+		// Actualizar el status de usuario
+		await metodosUsuario.upgradeStatusUsuario(req.session.usuario.id, 4)
+		// Actualizar los datos del usuario en la sesión
+		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(req.session.usuario.id);
+		// return res.send(req.session.usuario)
+		// Redireccionar
+		return res.redirect("/usuarios/redireccionar");
 	},
 
 	detalle: (req, res) => {

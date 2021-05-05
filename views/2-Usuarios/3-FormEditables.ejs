@@ -5,68 +5,81 @@
 
 <!--***********************************************************-->
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
-	<h1><%= titulo %></h1>
+	<h1>Registro de Datos Editables</h1>
 	<!--Formulario a completar-->
-	<div class="label-input flex-row"><!--Sobrenombre-->
-		<label for="sobrenombre">¿Cómo querés <br>que te llamemos?</label>
-		<% let sobrenombre=""; if (locals.data_entry) {sobrenombre = data_entry.sobrenombre} else {if (usuario.formSobrenombre) {sobrenombre = usuario.sobrenombre}}%>
-		<input type="text" class="input" name="sobrenombre" placeholder="Sobrenombre" value="<%= sobrenombre %>">
-	</div>
-	<div class="flex-col">  <!--Error en el Sobrenombre-->
-		<% if (locals.errores && errores.sobrenombre) { %>
-			<p class="criterio error"><%= errores.sobrenombre.msg %></p>
-		<% } %>
-	</div>
-	<div class="label-input flex-row"><!--Pais de residencia-->
+	<section class="label-input flex-row"><!--Apodo-->
+		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
+		<div class="form-grupo">
+			<% let apodo=""; if (locals.data_entry) {apodo = data_entry.apodo} else {if (usuario.formSobrenombre) {apodo = usuario.apodo}}%>
+			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
+			<% if (locals.errores && errores.apodo) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.apodo.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.apodo) { %><i class="fas fa-check-circle"></i><% } %>	
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Pais de residencia-->
 		<label for="pais">País de residencia</label>
-		<% let pais=""; if (locals.data_entry) {pais = data_entry.pais} else {if (usuario.formNombre) {pais = usuario.pais}}%>
-		<select name="pais" class="input">
-			<option value="" <% if (pais=="") {%> selected <%}%> style="font-style: italic">Elejí un país</option>
-			<% for (n of paises) { %>
-				<option value="<%= n.sigla %>" <% if (pais==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
-			<% } %> 
-		</select>
-	</div>
-	<div class="flex-col">  <!--Error en el Pais-->
-		<% if (locals.errores && errores.pais) { %>
-			<p class="criterio error"><%= errores.pais.msg %></p>
-		<% } %>
-	</div>
-	<div class="label-input flex-row"><!--Estado eclesial-->
-		<label for="estado">Estado eclesial</label>
-		<% let estado=""; if (locals.data_entry) {estado = data_entry.estado} else {if (usuario.formNombre) {estado = usuario.estado}}%>
-		<select name="estado" class="input">
-			<option value="" <% if (estado=="") {%> selected <%}%> style="font-style: italic">Elejí un estado</option>
-			<% for (n of estados) { %>
-				<option value="<%= n.sigla %>" <% if (estado==n.sigla) { %> selected <% } %>><%= n.nombre %></option>
-			<% } %> 
-		</select>
-	</div>
-	<div class="flex-col">  <!--Error en el Estado eclesial-->
-		<% if (locals.errores && errores.estado) { %>
-			<p class="criterio error"><%= errores.estado.msg %></p>
-		<% } %>
-	</div>
-	<div class="label-input flex-row"><!--Imagen de perfil-->
+		<div class="form-grupo">
+			<% let pais=""; if (locals.data_entry) {pais = data_entry.pais} else {if (usuario.formNombre) {pais = usuario.pais}}%>
+			<select name="pais" class="input">
+				<option value="" <% if (pais=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+				<% for (n of paises) { %>
+					<option value="<%= n.iso_id %>" <% if (pais==n.iso_id) { %> selected <% } %>><%= n.nombre %></option>
+				<% } %> 
+			</select>
+			<% if (locals.errores && errores.pais) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.pais) { %><i class="fas fa-check-circle"></i><% } %>
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
+		<label for="estado_eclesial">Estado de vida <br>en la iglesia</label>
+		<div class="form-grupo">
+			<% let estado_eclesial=""; if (locals.data_entry) {estado_eclesial = data_entry.estado_eclesial} else {if (usuario.formNombre) {estado_eclesial = usuario.estado_eclesial}}%>
+			<select name="estado_eclesial" class="input">
+				<option value="" <% if (estado_eclesial=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
+				<% for (n of estados_eclesiales) { %>
+					<option value="<%= n.id %>" <% if (estado_eclesial==n.id) { %> selected <% } %>><%= n.nombre %></option>
+				<% } %> 
+			</select>
+			<% if (locals.errores && errores.estado_eclesial) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.estado_eclesial.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.estado_eclesial) { %><i class="fas fa-check-circle"></i><% } %>
+				
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Imagen de perfil-->
 		<label>Imagen personal <br>(opcional)</label>
-		<label for="imagen" class="imagen input">
-			<i class="fa fa-cloud-upload"></i>Subí una imagen
-			<p id="filename"></p>
-		</label>
-		<input id="imagen" type="file" name="imagen" onchange="fileName()">
-	</div>
-	<div class="flex-col">  <!-- Error en la imagen de perfil -->
-		<% if (locals.errores) { %>
-			<% if (errores.imagen) { %>
-				<p class="criterio error"><%= errores.imagen.msg %></p>
-			<% } else { %>
-				<p class="criterio error">Tenés que volver a subir una imagen</p>
-			<% } %>
-		<% } %>
-	</div>
+		<div class="form-grupo flex-col" id="divImagen">
+			<label for="inputImagen" id="preview"></label>
+			<label for="inputImagen" class="input" id="labelImagen">Subí una imagen</label>
+			<input name="avatar" type="file" id="inputImagen" accept="image/*">
+			<div id="iconoImagenRojo"><% if (locals.errores && errores.avatar) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.avatar.msg %> </span></i><% } %></div>
+			<div id="iconoImagenVerde" class="ocultar"><i class="fas fa-check-circle"></i></div>
+		</div>
+	</section>
 	<section id="buttons" class="flex-row"><!--Buttons-->
 		<button type="submit">Aceptar</button>
 		<button onclick="retroceder()" type="button">Cancelar</button>
 	</section>
 </form>
 <%- include('0-DespuesUS') %>
+<script>
+	document.getElementById("inputImagen").onchange = function(e) {
+		// Ocultar y mostrar elementos
+		document.getElementById("labelImagen").classList.add("ocultar")
+		document.getElementById("iconoImagenRojo").classList.add("ocultar")
+		document.getElementById("iconoImagenVerde").classList.remove("ocultar")
+		// Creamos el objeto de la clase FileReader
+		let reader = new FileReader();
+		// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+		reader.readAsDataURL(e.target.files[0]);
+		// Le decimos que cuando este listo ejecute el código interno
+		reader.onload = function(){
+			let preview = document.getElementById('preview'),
+			image = document.createElement('img');
+			console.log("image");
+			image.width = "200"
+			image.src = reader.result;
+			preview.innerHTML = '';
+			preview.append(image);
+		};
+	}
+</script>
