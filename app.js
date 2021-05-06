@@ -33,7 +33,7 @@ app.set('views', [
 ]);
 
 // ************************* Rutas ********************************
-const rutaPaises = require('./controladores y rutas/rutas/paises.js');
+const rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
 const rutaLogin = require('./controladores y rutas/rutas/login.js');
 const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
 const rutaPelis = require('./controladores y rutas/rutas/peliculas');

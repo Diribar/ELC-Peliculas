@@ -9,7 +9,7 @@
 <body>
 	<div>
 		<% for (let n of paises) { %>
-			<p><%= n.alpha2Code %>/<%= n.alpha3Code %>/<%= n.name %>/<%= n.region %>/<%= n.subregion %>/<%= n.languages[0].name %>/<%= n.timezones[0] %></p>
+			<p><%= n.alpha2Code %>#<%= n.alpha3Code %>#<%= n.name %>#<%= n.nativeName %>#<%= n.region %>#<%= n.subregion %>#<%= n.languages[0].name %>#<%= n.timezones[0] %>#<%= n.population %>#<%= n.flag %></p>
 		<% } %>
 	</div>
 </body>

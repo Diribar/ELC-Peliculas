@@ -28,9 +28,15 @@ CREATE TABLE estados_eclesiales (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE paises (
-	iso_id VARCHAR(2) NOT NULL UNIQUE,
+	id VARCHAR(2) NOT NULL UNIQUE,
+	alpha3code VARCHAR(3) NOT NULL UNIQUE,
 	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (iso_id)
+	continente VARCHAR(20) NOT NULL,
+	idioma VARCHAR(50) NOT NULL,
+	zona_horaria VARCHAR(10) NOT NULL,
+	bandera VARCHAR(100) NOT NULL,
+	orden INT NOT NULL,
+	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE USUARIOS (
@@ -63,7 +69,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (status_usuario_id) REFERENCES status_usuario(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
-	FOREIGN KEY (pais_id) REFERENCES paises(iso_id),
+	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id),
 	FOREIGN KEY (ultima_penalizacion_en_rol) REFERENCES roles_usuario(id),
 	FOREIGN KEY (penalizado_por) REFERENCES usuarios(id),
@@ -217,7 +223,7 @@ CREATE TABLE PELICULAS (
 	borrado_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones(id),
-	FOREIGN KEY (pais_origen_id) REFERENCES paises(iso_id),
+	FOREIGN KEY (pais_origen_id) REFERENCES paises(id),
 	FOREIGN KEY (publico_recomendado_id) REFERENCES publico_recomendado(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES subcategorias(id),
