@@ -1,9 +1,8 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const listado = require('../controladores/listado')
-const importarPaises = require('../../middlewares/importarPaises');
+const paises = require('../controladores/paises')
 
-router.get('/', importarPaises, listado.listado)
+router.get('/', paises.listado)
 
 module.exports = router;

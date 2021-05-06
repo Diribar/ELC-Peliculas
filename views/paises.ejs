@@ -4,12 +4,12 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Listado</title>
+	<title>Listado de Países</title>
 </head>
 <body>
 	<div>
-		<% for (let n of listado) { %>
-			<p><%= n.id %>, <%= n.nombre %>, <%= n.pais.nombre %>, <%= n.rol_usuario.nombre %>, <%= n.estado_eclesial.nombre %>, <%= n.sexo.nombre %></p>
+		<% for (let n of paises) { %>
+			<p><%= n.alpha2Code %>/<%= n.alpha3Code %>/<%= n.name %>/<%= n.region %>/<%= n.subregion %>/<%= n.languages[0].name %>/<%= n.timezones[0] %></p>
 		<% } %>
 	</div>
 </body>

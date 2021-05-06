@@ -9,7 +9,6 @@ const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/me
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
 
 // *********** Controlador ***********
 module.exports = {
