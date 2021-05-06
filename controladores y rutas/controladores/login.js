@@ -8,7 +8,6 @@ const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios")
 module.exports = {
 
 	loginForm: (req,res) => {
-		console.log("loginForm: " + req.session.urlReferencia)
 		if (req.session.usuario && req.session.usuario.email) {
 			data_entry = {"email": req.session.usuario.email}
 		} else {

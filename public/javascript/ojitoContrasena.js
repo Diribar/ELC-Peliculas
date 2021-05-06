@@ -1,4 +1,4 @@
-function mostrar(id, ojo) {
+window.addEventListener("load", function mostrar(id, ojo) {
 	var bloque = document.getElementById(id);
 	var ojito = document.getElementById(ojo);
 	if(bloque.type == "password"){
@@ -10,4 +10,4 @@ function mostrar(id, ojo) {
 		ojito.classList.remove('fa-eye');
 		ojito.classList.add('fa-eye-slash')
 	}
-}
+})

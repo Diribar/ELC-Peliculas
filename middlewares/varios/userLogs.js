@@ -5,6 +5,6 @@ module.exports = (req,res,next) => {
 	if (tema != "login" && tema != "usuarios") {
 		req.session.urlReferencia = URL
 	}
-	console.log(req.session.urlReferencia)
+	res.locals.urlReferencia = req.session.urlReferencia
 	next()
 }
