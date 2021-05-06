@@ -1,9 +1,16 @@
 module.exports = (sequelize, dt) => {
 	const alias = "pais";
 	const columns = {
-		iso_id: {type: dt.STRING(2), primaryKey: true},
-		nombre: {type: dt.STRING(100)}
+		id: {type: dt.STRING(2), primaryKey: true},
+		alpha3code: {type: dt.STRING(3)},
+		nombre: {type: dt.STRING(100)},
+		continente: {type: dt.STRING(20)},
+		idioma: {type: dt.STRING(50)},
+		zona_horaria: {type: dt.STRING(10)},
+		bandera: {type: dt.STRING(10)},
+		orden: {type: dt.INTEGER},
 	};
+
 	const config = {
 		tableName: "paises",
 		timestamps: false
@@ -14,7 +21,7 @@ module.exports = (sequelize, dt) => {
 	pais.associate = n => {
 		pais.hasMany(n.usuario, {
 			as: "usuarios",
-			foreignKey: "pais_id"
+			foreignKey: "id"
 		});
 	};
 

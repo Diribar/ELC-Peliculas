@@ -12,7 +12,7 @@
 		<section class="label-input flex-row"><!--Apodo-->
 			<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
 			<div class="form-grupo">
-				<% let apodo=""; if (locals.data_entry) {apodo = data_entry.apodo} else {if (usuario.formSobrenombre) {apodo = usuario.apodo}}%>
+				<% apodo = locals.data_entry ? data_entry.apodo : "" %>
 				<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
 				<% if (locals.errores && errores.apodo) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.apodo.msg %> </span></i><% } %>
 				<% if (locals.errores && !errores.apodo) { %><i class="fas fa-check-circle"></i><% } %>	
@@ -21,12 +21,33 @@
 		<section class="label-input flex-row"><!--Pais de residencia-->
 			<label for="pais">País de residencia</label>
 			<div class="form-grupo">
-				<% let pais=""; if (locals.data_entry) {pais = data_entry.pais} else {if (usuario.formNombre) {pais = usuario.pais}}%>
+				<% pais = locals.data_entry ? data_entry.pais : "" %>
 				<select name="pais" class="input">
 					<option value="" <% if (pais=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
-					<% for (n of paises) { %>
-						<option value="<%= n.iso_id %>" <% if (pais==n.iso_id) { %> selected <% } %>><%= n.nombre %></option>
-					<% } %> 
+					<optgroup label="Países de habla hispana (América)">
+						<% for (n of habla_hispana.filter(n => n.continente == "América")) { %>
+							<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
+								<%= n.nombre %>
+							</option>
+							<img src="<%= n.bandera %>">
+						<% } %>	
+					</optgroup>
+					<optgroup label="Países de habla hispana (Europa/África)">
+						<% for (n of habla_hispana.filter(n => n.continente != "América")) { %>
+							<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
+								<%= n.nombre %>
+							</option>
+							<img src="<%= n.bandera %>">
+						<% } %>	
+					</optgroup>
+					<optgroup label="Otras opciones">
+						<option value="AC" <% if (pais=="AC") {%> selected <%}%>>América (otro país)</option>
+						<option value="EU" <% if (pais=="EU") {%> selected <%}%>>Europa (otro país)</option>
+						<option value="AA" <% if (pais=="AA") {%> selected <%}%>>Africa (otro país)</option>
+						<option value="AB" <% if (pais=="AB") {%> selected <%}%>>Asia</option>
+						<option value="OC" <% if (pais=="OC") {%> selected <%}%>>Oceanía</option>
+						<option value="OT" <% if (pais=="OT") {%> selected <%}%>>Otro lugar</option>	
+					</optgroup>
 				</select>
 				<% if (locals.errores && errores.pais) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais.msg %> </span></i><% } %>
 				<% if (locals.errores && !errores.pais) { %><i class="fas fa-check-circle"></i><% } %>
@@ -35,7 +56,7 @@
 		<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
 			<label for="estado_eclesial">Estado de vida <br>en la iglesia</label>
 			<div class="form-grupo">
-				<% let estado_eclesial=""; if (locals.data_entry) {estado_eclesial = data_entry.estado_eclesial} else {if (usuario.formNombre) {estado_eclesial = usuario.estado_eclesial}}%>
+				<% estado_eclesial = locals.data_entry ? data_entry.estado_eclesial : "" %>
 				<select name="estado_eclesial" class="input">
 					<option value="" <% if (estado_eclesial=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
 					<% for (n of estados_eclesiales) { %>

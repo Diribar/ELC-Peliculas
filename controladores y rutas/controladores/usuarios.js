@@ -100,16 +100,16 @@ module.exports = {
 
 	altaEditablesForm: async (req,res) => {
 		//return res.send([req.session.usuario,"linea 101"]);
+		let habla_hispana = await metodosOtros.listadoCompleto("pais").then(n => n.filter(n => n.idioma == "Spanish"))
 		return res.render('3-FormEditables', {
 			link: req.originalUrl,
-			usuario: req.session.usuario,
-			paises: await metodosOtros.listadoCompleto("pais"),
+			habla_hispana,
 			estados_eclesiales: await metodosOtros.listadoCompleto("estado_eclesial"),
 		});
 	},
 
 	altaEditablesGuardar: async (req,res) => {
-		let usuario = req.session.usuario;
+		var usuario = req.session.usuario;
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Verificar si existe algún error de validación
@@ -117,13 +117,14 @@ module.exports = {
 			//return res.send(validaciones)
 			// Borrar el archivo de imagen guardado
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null
+			// Variables de países
+			let habla_hispana = await metodosOtros.listadoCompleto("pais").then(n => n.filter(n => n.idioma == "Spanish"))
 			// Regresar al formulario
 			return res.render('3-FormEditables', {
 				link: req.originalUrl,
-				usuario,
 				errores: validaciones.mapped(),
 				data_entry: req.body,
-				paises: await metodosOtros.listadoCompleto("pais"),
+				habla_hispana,
 				estados_eclesiales: await metodosOtros.listadoCompleto("estado_eclesial"),
 			});
 		};
@@ -131,11 +132,11 @@ module.exports = {
 		// Actualizar el registro
 		req.body.avatar = req.file ? req.file.filename : "-"
 		// return res.send(req.body)
-		await metodosUsuario.datosEditables(req.session.usuario.id, req.body);
+		await metodosUsuario.datosEditables(usuario.id, req.body);
 		// Actualizar el status de usuario
-		await metodosUsuario.upgradeStatusUsuario(req.session.usuario.id, 4)
+		await metodosUsuario.upgradeStatusUsuario(usuario.id, 4)
 		// Actualizar los datos del usuario en la sesión
-		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(req.session.usuario.id);
+		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(usuario.id);
 		// return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
