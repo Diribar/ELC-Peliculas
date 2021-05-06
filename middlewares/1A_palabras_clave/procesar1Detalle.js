@@ -1,5 +1,4 @@
 // Requires *************************
-const fs = require('fs');
 const path = require('path');
 
 // Funciones y Variables ************

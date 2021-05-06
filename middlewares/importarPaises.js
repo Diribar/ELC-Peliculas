@@ -1,10 +1,8 @@
 // ************ Requires ************
 const path = require('path');
-const {validationResult} = require('express-validator');
 
 // ************ Funciones ************
-const API_search  = require(path.join(__dirname, '/webAPI1_search'));
-const generarReqBody  = require(path.join(__dirname, '/2generarReqBody'));
+const API_search  = require(path.join(__dirname, '/webAPI_search'));
 
 // ************ Exportar ************
 module.exports = async (req, res, next) => {
@@ -38,6 +36,7 @@ module.exports = async (req, res, next) => {
 		// SI HAY MÁS DE 1 CANDIDATA
 		if (data.total_results.toString() > 1) {
 			return res.send("IR A UN FORM DE DESAMBIGUAR");
+			next();
 		}
 	}
 }
