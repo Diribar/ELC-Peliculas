@@ -34,7 +34,7 @@ app.set('views', [
 
 // ************************* Rutas ********************************
 //let rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
-//let rutaPrueba = require('./controladores y rutas/rutas/prueba');
+//let rutaPrueba = require('./controladores y rutas/rutas/usuarioPaisRuta');
 let rutaLogin = require('./controladores y rutas/rutas/login');
 let rutaUsuarios = require('./controladores y rutas/rutas/usuarios');
 let rutaPelis = require('./controladores y rutas/rutas/peliculas');

@@ -7,6 +7,6 @@ module.exports = {
 
 	listado: async (req,res) => {
 		let prueba = await metodosUsuario.obtenerUsuarioPorId(1)
-		return res.render("prueba", {prueba})
+		return res.render("usuarioPaisVista", {prueba})
 	},
 };

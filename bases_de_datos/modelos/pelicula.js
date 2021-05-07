@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		imdb_id: {type: dt.STRING(20)},
 		titulo_original: {type: dt.STRING(100)},
 		titulo_castellano: {type: dt.STRING(100)},
-		coleccion_id: {type: dt.INTEGER},
+		coleccion_pelicula_id: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 		ano_estreno: {type: dt.INTEGER},
 		epoca_estreno_id: {type: dt.INTEGER},
@@ -45,7 +45,7 @@ module.exports = (sequelize, dt) => {
     const entidad = sequelize.define(alias,columns,config);
 
     entidad.associate = n => {
-        entidad.belongsTo(n.coleccion__pelicula, {as: "coleccion__pelicula", foreignKey: "coleccion_id"});
+        entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
     };
 
     return entidad;
