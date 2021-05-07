@@ -38,7 +38,7 @@ module.exports = (sequelize, dt) => {
         entidad.belongsTo(n.sexo, {as: "sexo", foreignKey: "sexo_id"});
         entidad.belongsTo(n.pais, {as: "pais", foreignKey: "pais_id"});
         entidad.belongsTo(n.rol_usuario, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
-		//entidad.belongsTo(n.ultima_penalizacion_en_rol, {as: "rol_usuario", foreignKey: "ultima_penalizacion_en_rol_id"});
+		entidad.belongsTo(n.rol_usuario, {as: "ultima_penalizacion_en_rol", foreignKey: "ultima_penalizacion_en_rol_id"});
         entidad.belongsTo(n.status_usuario, {as: "status_usuario", foreignKey: "status_usuario_id"});
         entidad.belongsTo(n.estado_eclesial, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
     };

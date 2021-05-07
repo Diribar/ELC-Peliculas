@@ -23,6 +23,10 @@ module.exports = (sequelize, dt) => {
 			as: "usuarios",
 			foreignKey: "pais_id"
 		});
+		//entidad.hasMany(n.pelicula, {
+		//	as: "peliculas",
+		//	foreignKey: "pais_id"
+		//});
 	};
 
 	return entidad;
