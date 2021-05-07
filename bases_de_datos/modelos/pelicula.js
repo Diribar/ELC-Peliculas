@@ -18,8 +18,6 @@ module.exports = (sequelize, dt) => {
 		publico_recomendado_id: {type: dt.INTEGER},
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
-		precuela_de: {type: dt.STRING(100)},
-		secuela_de: {type: dt.STRING(100)},
 		sinopsis: {type: dt.STRING(500)},
 		creada_por: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
@@ -46,6 +44,13 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categoria, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategoria, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
+		entidad.belongsTo(n.epoca_estreno, {as: "epoca_estreno", foreignKey: "epoca_estreno_id"});
+		entidad.belongsTo(n.publico_recomendado, {as: "publico_recomendado", foreignKey: "publico_recomendado_id"});
+		entidad.belongsTo(n.usuario, {as: "creada_por", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.usuario, {as: "analizada_por", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.usuario, {as: "editada_por", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.usuario, {as: "revisada_por", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.usuario, {as: "borrada_por", foreignKey: "usuario_id"});
 	};
 	return entidad;
 }; 

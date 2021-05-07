@@ -2,31 +2,6 @@ DROP DATABASE IF EXISTS ELC_Peliculas;
 CREATE DATABASE ELC_Peliculas;
 USE ELC_Peliculas;
 
-CREATE TABLE status_usuario (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(50) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE roles_usuario (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(20) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE sexos (
-	id VARCHAR(1) NOT NULL,
-	nombre VARCHAR(20) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE estados_eclesiales (
-	id VARCHAR(2) NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	orden INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE paises (
 	id VARCHAR(2) NOT NULL UNIQUE,
 	alpha3code VARCHAR(3) NOT NULL,
@@ -38,7 +13,27 @@ CREATE TABLE paises (
 	orden INT NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+CREATE TABLE estados_eclesiales (
+	id VARCHAR(2) NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	orden INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE roles_usuario (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE sexos (
+	id VARCHAR(1) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE status_usuario (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
@@ -74,29 +69,11 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (ultima_penalizacion_en_rol_id) REFERENCES roles_usuario(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE filtros_personales (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	usuario_id INT UNSIGNED NOT NULL,
-	campo1 VARCHAR(100),
-	valor1_id INT UNSIGNED,
-	campo2 VARCHAR(100),
-	valor2_id INT UNSIGNED,
-	campo3 VARCHAR(100),
-	valor3_id INT UNSIGNED,
-	campo4 VARCHAR(100),
-	valor4_id INT UNSIGNED,
-	palabras_clave VARCHAR(100),
-	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE categorias (
 	id VARCHAR(3) NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE subcategorias (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	categoria_id VARCHAR(3) NOT NULL,
@@ -104,60 +81,6 @@ CREATE TABLE subcategorias (
 	PRIMARY KEY (id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE publicos_recomendados (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE directores(
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE guion(
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE musica (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE actores (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE productores (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE personajes (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE hechos_historicos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE colecciones_titulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	tmdb_coleccion_id INT UNSIGNED NULL,
@@ -165,50 +88,29 @@ CREATE TABLE colecciones_titulos (
 	titulo_castellano_coleccion VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE colecciones_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	coleccion_id INT UNSIGNED NULL,
+	coleccion_titulo_id INT UNSIGNED NULL,
 	tmdb_coleccion_id INT UNSIGNED NULL,
 	pelicula_id INT UNSIGNED NULL,
 	tmdb_pelicula_id INT UNSIGNED NULL,
 	titulo_original_pelicula VARCHAR(100) NOT NULL UNIQUE,
 	titulo_castellano_pelicula VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
+	orden_secuencia INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (coleccion_id) REFERENCES colecciones_titulos(id)
+	FOREIGN KEY (coleccion_titulo_id) REFERENCES colecciones_titulos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE fe_valores (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE entretiene (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE calidad_filmica (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE interes_en_la_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(50) NOT NULL UNIQUE,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+CREATE TABLE publicos_recomendados (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	tmdb_id VARCHAR(20) NULL,
@@ -227,8 +129,6 @@ CREATE TABLE PELICULAS (
 	publico_recomendado_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
-	precuela_de VARCHAR(100) NULL,
-	secuela_de VARCHAR(100) NULL,
 	sinopsis VARCHAR(500) NOT NULL,
 	creada_por INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
@@ -251,8 +151,6 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (publico_recomendado_id) REFERENCES publicos_recomendados(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES subcategorias(id),
-	FOREIGN KEY (precuela_de) REFERENCES colecciones_peliculas(titulo_original_pelicula),
-	FOREIGN KEY (secuela_de) REFERENCES colecciones_peliculas(titulo_original_pelicula),
 	FOREIGN KEY (creada_por) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por) REFERENCES usuarios(id),
@@ -260,6 +158,142 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (borrado_por) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE usuario_pelicula_favoritas (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	usuario_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE usuario_pelicula_comentarios (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	usuario_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	comentario VARCHAR(500) NOT NULL,
+	creado_en DATE NOT NULL,
+	editado_en DATE,
+	baja_en DATE,
+	baja_por_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE actores (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tmdb_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE actor_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	actor_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	personaje VARCHAR(100) NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (actor_id) REFERENCES actores(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE directores(
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tmdb_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE director_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	director_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (director_id) REFERENCES directores(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE guion(
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tmdb_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE guion_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	guion_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (guion_id) REFERENCES guion(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE musica (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tmdb_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE musica_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	musica_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (musica_id) REFERENCES musica(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE productores (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tmdb_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE productor_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	productor_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (productor_id) REFERENCES productores(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE personajes (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE personaje_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	personaje_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (personaje_id) REFERENCES personajes(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE hechos_historicos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE hecho_historico_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	hecho_historico_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
+	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE fe_valores (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE entretiene (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE calidad_filmica (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE usuario_pelicula_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
@@ -275,6 +309,11 @@ CREATE TABLE usuario_pelicula_calificaciones (
 	FOREIGN KEY (calidad_filmica_id) REFERENCES calidad_filmica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE interes_en_la_pelicula (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE usuario_pelicula_interes_en_la_pelicula (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
@@ -286,89 +325,19 @@ CREATE TABLE usuario_pelicula_interes_en_la_pelicula (
 	FOREIGN KEY (interes_en_la_pelicula_id) REFERENCES interes_en_la_pelicula(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE usuario_pelicula_favoritas (
+CREATE TABLE filtros_personales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
 	usuario_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
+	campo1 VARCHAR(100),
+	valor1_id INT UNSIGNED,
+	campo2 VARCHAR(100),
+	valor2_id INT UNSIGNED,
+	campo3 VARCHAR(100),
+	valor3_id INT UNSIGNED,
+	campo4 VARCHAR(100),
+	valor4_id INT UNSIGNED,
+	palabras_clave VARCHAR(100),
 	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE usuario_pelicula_comentarios (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	usuario_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	comentario VARCHAR(500) NOT NULL,
-	creado_en DATE NOT NULL,
-	editado_en DATE,
-	baja_en DATE,
-	baja_por_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE director_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	director_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (director_id) REFERENCES directores(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE musica_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	musica_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (musica_id) REFERENCES musica(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE guion_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	guion_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (guion_id) REFERENCES guion(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE actor_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	actor_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	personaje VARCHAR(100) NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (actor_id) REFERENCES actores(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE productor_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	productor_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (productor_id) REFERENCES productores(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE personaje_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	personaje_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (personaje_id) REFERENCES personajes(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE hecho_historico_pelicula (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	hecho_historico_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id)
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

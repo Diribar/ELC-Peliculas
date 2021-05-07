@@ -51,11 +51,11 @@ VALUES (1, 'Juan Pablo II (papa)')
 INSERT INTO hechos_historicos (id, nombre)
 VALUES (1, '2a Guerra Mundial y Comunismo')
 ;
-INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_pelicula_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno)
-VALUES (1, 1, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005)
+INSERT INTO colecciones_peliculas (id, coleccion_titulo_id, pelicula_id, tmdb_pelicula_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno, orden_secuencia)
+VALUES (1, 1, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
 ;
-INSERT INTO colecciones_peliculas (id, coleccion_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno)
-VALUES (2, 1, 'Karol, un Papa rimasto uomo', 'Karol II. El Papa, el hombre', 2006)
+INSERT INTO colecciones_peliculas (id, coleccion_titulo_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno, orden_secuencia)
+VALUES (2, 1, 'Karol, un Papa rimasto uomo', 'Karol II. El Papa, el hombre', 2006, 2)
 ;
 INSERT INTO fe_valores (id, nombre)
 VALUES (1, 'No'), (2, 'Poco'), (3, 'Sí'), (4, 'Mucho'), (5, 'Deja una huella en mí')
@@ -72,8 +72,8 @@ VALUES (1, 'Recordame que quiero verla'), (2, 'Ya la vi'), (3, 'Prefiero que no 
 INSERT INTO epocas_estreno (id, nombre)
 VALUES (1, 'Antes de 1970'), (2, '1970 - 1999'), (3, '2000 - 2014'), (4, '2015 - Presente')
 ;
-INSERT INTO peliculas (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, precuela_de, publico_recomendado_id, categoria_id, subcategoria_id, sinopsis, creada_por, creada_en, analizada_por, analizada_en, aprobada)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 'Karol - Un uomo diventato Papa', 5, 'CFC', 4, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, sinopsis, creada_por, creada_en, analizada_por, analizada_en, aprobada)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 5, 'CFC', 4, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 INSERT INTO usuario_pelicula_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_filmica_id)
 VALUES (1, 1, 1, 5, 4, 3)

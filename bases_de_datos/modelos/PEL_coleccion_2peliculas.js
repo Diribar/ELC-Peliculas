@@ -9,6 +9,7 @@ module.exports = (sequelize, dt) => {
 		titulo_original_pelicula: {type: dt.STRING(100)},
 		titulo_castellano_pelicula: {type: dt.STRING(100)},
 		ano_estreno: {type: dt.INTEGER},
+		orden_secuencia: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "colecciones_peliculas",

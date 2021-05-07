@@ -1,17 +1,16 @@
 module.exports = (sequelize, dt) => {
-	const alias = "categoria";
+	const alias = "publico_recomendado";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		nombre: {type: dt.STRING(20)}
 	};
 	const config = {
-		tableName: "categorias",
+		tableName: "publicos_recomendados",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.hasMany(n.pelicula, {as: "peliculas",foreignKey: "categoria_id"});
-		entidad.hasMany(n.subcategoria, {as: "subcategorias",foreignKey: "categoria_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas",foreignKey: "publico_recomendado_id"});
 	};
 	return entidad;
 };
