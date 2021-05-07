@@ -40,7 +40,15 @@ module.exports = {
 		);
     },
 ///////////////////////////////////////////////////////////////////////
-    editar: (id, infoUsuario, fileName) => {
+	EmailYaExistente: async (email, id) => {
+		return entidad.count({
+			where: {
+				id: {[Op.ne]: id},
+				email: email,
+			}
+		});
+	},
+	editar: (id, infoUsuario, fileName) => {
         return entidad.update({
             nombre: infoUsuario.nombre,
             apellido: infoUsuario.apellido,

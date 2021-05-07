@@ -9,14 +9,14 @@ module.exports = (sequelize, dt) => {
 		timestamps: false
 	};
 
-	const estado_eclesial = sequelize.define(alias,columns,config);
+	const entidad = sequelize.define(alias,columns,config);
 
-	estado_eclesial.associate = n => {
-		estado_eclesial.hasMany(n.usuario, {
+	entidad.associate = n => {
+		entidad.hasMany(n.usuario, {
 			as: "usuarios",
 			foreignKey: "estado_eclesial_id"
 		});
 	};
 
-	return estado_eclesial;
+	return entidad;
 };

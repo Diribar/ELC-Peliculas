@@ -33,12 +33,14 @@ app.set('views', [
 ]);
 
 // ************************* Rutas ********************************
-const rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
-const rutaLogin = require('./controladores y rutas/rutas/login.js');
-const rutaUsuarios = require('./controladores y rutas/rutas/usuarios.js');
-const rutaPelis = require('./controladores y rutas/rutas/peliculas');
-const rutaECC = require('./controladores y rutas/rutas/institucional');
-app.use('/paises', rutaPaises)        // Paises
+//let rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
+//let rutaPrueba = require('./controladores y rutas/rutas/prueba');
+let rutaLogin = require('./controladores y rutas/rutas/login');
+let rutaUsuarios = require('./controladores y rutas/rutas/usuarios');
+let rutaPelis = require('./controladores y rutas/rutas/peliculas');
+let rutaECC = require('./controladores y rutas/rutas/institucional');
+//app.use('/paises', rutaPaises)        // Paises
+//app.use('/prueba', rutaPrueba)        // Login
 app.use('/login', rutaLogin)        // Login
 app.use('/usuarios', rutaUsuarios)  // Usuarios
 app.use('/peliculas', rutaPelis)    // Películas

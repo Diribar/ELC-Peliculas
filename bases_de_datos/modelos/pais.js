@@ -16,14 +16,14 @@ module.exports = (sequelize, dt) => {
 		timestamps: false
 	};
 
-	const pais = sequelize.define(alias,columns,config);
+	const entidad = sequelize.define(alias,columns,config);
 
-	pais.associate = n => {
-		pais.hasMany(n.usuario, {
+	entidad.associate = n => {
+		entidad.hasMany(n.usuario, {
 			as: "usuarios",
-			foreignKey: "id"
+			foreignKey: "pais_id"
 		});
 	};
 
-	return pais;
+	return entidad;
 };

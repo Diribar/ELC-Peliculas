@@ -18,7 +18,7 @@ module.exports = (sequelize, dt) => {
 		ultima_penalizacion_en: {type: dt.DATE},
 		borrado_en: {type: dt.DATE},
 		penalizaciones: {type: dt.INTEGER},
-		ultima_penalizacion_en_rol: {type: dt.INTEGER},
+		ultima_penalizacion_en_rol_id: {type: dt.INTEGER},
 		ultima_penalizacion_motivo: {type: dt.STRING(500)},
 		penalizado_por: {type: dt.INTEGER},
 		borrado: {type: dt.BOOLEAN},
@@ -32,15 +32,16 @@ module.exports = (sequelize, dt) => {
         updatedAt: 'editado_en'
     };
 
-    const usuario = sequelize.define(alias,columns,config);
+    const entidad = sequelize.define(alias,columns,config);
 
-    usuario.associate = n => {
-        usuario.belongsTo(n.sexo, {as: "sexo", foreignKey: "sexo_id"});
-        usuario.belongsTo(n.pais, {as: "pais", foreignKey: "pais_id"});
-        usuario.belongsTo(n.rol_usuario, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
-        usuario.belongsTo(n.status_usuario, {as: "status_usuario", foreignKey: "status_usuario_id"});
-        usuario.belongsTo(n.estado_eclesial, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
+    entidad.associate = n => {
+        entidad.belongsTo(n.sexo, {as: "sexo", foreignKey: "sexo_id"});
+        entidad.belongsTo(n.pais, {as: "pais", foreignKey: "pais_id"});
+        entidad.belongsTo(n.rol_usuario, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
+		//entidad.belongsTo(n.ultima_penalizacion_en_rol, {as: "rol_usuario", foreignKey: "ultima_penalizacion_en_rol_id"});
+        entidad.belongsTo(n.status_usuario, {as: "status_usuario", foreignKey: "status_usuario_id"});
+        entidad.belongsTo(n.estado_eclesial, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
     };
 
-    return usuario;
+    return entidad;
 }; 

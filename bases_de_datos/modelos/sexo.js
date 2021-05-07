@@ -9,14 +9,14 @@ module.exports = (sequelize, dt) => {
 		timestamps: false
 	};
 
-	const sexo = sequelize.define(alias,columns,config);
+	const entidad = sequelize.define(alias,columns,config);
 
-	sexo.associate = n => {
-		sexo.hasMany(n.usuario, {
+	entidad.associate = n => {
+		entidad.hasMany(n.usuario, {
 			as: "usuarios",
 			foreignKey: "sexo_id"
 		});
 	};
 
-	return sexo;
+	return entidad;
 };
