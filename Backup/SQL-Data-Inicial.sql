@@ -24,7 +24,7 @@ VALUES ('CFC', 'Centradas en la Fe Católica'), ('VPC', 'Valores Presentes en la
 INSERT INTO subcategorias (id, categoria_id, nombre)
 VALUES (1, 'CFC', 'Jesús'), (2, 'CFC', 'Contemporáneos de Jesús'), (3, 'CFC', 'Apariciones Marianas'), (4, 'CFC', 'Hagiografías'), (5, 'CFC', 'Historias de la Iglesia'), (6, 'CFC', 'Novelas centradas en la fe'), (7, 'CFC', 'Colecciones'), (11, 'VPC', 'Biografías e Historias'), (12, 'VPC', 'Matrimonio y Familia'), (13, 'VPC', 'Novelas'), (14, 'VPC', 'Musicales'), (15, 'VPC', 'Colecciones')
 ;
-INSERT INTO publico_recomendado (id, nombre)
+INSERT INTO publicos_recomendados (id, nombre)
 VALUES (1, 'Está dirigido a un público infantil, no se recomienda para mayores'), (2, 'Es apto para mayores, pero se recomienda para menores (se puede ver en familia)'), (3, 'Es ideal para ver en familia'), (4, 'Es apto para menores, pero se recomienda para mayores (se puede ver en familia)'), (5, 'No es apto para menores, sólo para mayores')
 ;
 INSERT INTO directores (id, tmdb_id, nombre)
@@ -42,7 +42,7 @@ VALUES (1, 118762, 'Piotr Adamczyk'), (2, 138047, 'Ma?gorzata Bela'), (3, 44651,
 INSERT INTO productores (id, tmdb_id, nombre)
 VALUES (1, 473, 'Taodue Film')
 ;
-INSERT INTO colecciones (id, nombre_original, nombre_castellano)
+INSERT INTO colecciones_titulos (id, titulo_original_coleccion, titulo_castellano_coleccion)
 VALUES (1, 'Karol', 'Karol')
 ;
 INSERT INTO personajes (id, nombre)
@@ -51,8 +51,11 @@ VALUES (1, 'Juan Pablo II (papa)')
 INSERT INTO hechos_historicos (id, nombre)
 VALUES (1, '2a Guerra Mundial y Comunismo')
 ;
-INSERT INTO coleccion_pelicula (id, tmdb_coleccion_id, pelicula_id, tmdb_pelicula_id, titulo_original, titulo_castellano, ano_estreno)
-VALUES (1, 0, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005), (2, 0, 0, 75470, 'Karol, un Papa rimasto uomo', 'Karol II. El Papa, el hombre', 2006)
+INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_pelicula_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno)
+VALUES (1, 1, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005)
+;
+INSERT INTO colecciones_peliculas (id, coleccion_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno)
+VALUES (2, 1, 'Karol, un Papa rimasto uomo', 'Karol II. El Papa, el hombre', 2006)
 ;
 INSERT INTO fe_valores (id, nombre)
 VALUES (1, 'No'), (2, 'Poco'), (3, 'Sí'), (4, 'Mucho'), (5, 'Deja una huella en mí')
@@ -66,7 +69,10 @@ VALUES (1, 'Es precaria'), (2, 'No perjudica el disfrute'), (3, 'Acompaña el di
 INSERT INTO interes_en_la_pelicula (id, nombre)
 VALUES (1, 'Recordame que quiero verla'), (2, 'Ya la vi'), (3, 'Prefiero que no me la recomienden')
 ;
-INSERT INTO peliculas (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_id, duracion, ano_estreno, pais_origen_id, avatar, idioma_castellano, color, precuela_de, publico_recomendado_id, categoria_id, subcategoria_id, sinopsis, creada_por, creada_en, analizada_por, analizada_en, aprobadaCR)
+INSERT INTO epocas_estreno (id, nombre)
+VALUES (1, 'Antes de 1970'), (2, '1970 - 1999'), (3, '2000 - 2014'), (4, '2015 - Presente')
+;
+INSERT INTO peliculas (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, precuela_de, publico_recomendado_id, categoria_id, subcategoria_id, sinopsis, creada_por, creada_en, analizada_por, analizada_en, aprobada)
 VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 'Karol - Un uomo diventato Papa', 5, 'CFC', 4, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 INSERT INTO usuario_pelicula_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_filmica_id)
