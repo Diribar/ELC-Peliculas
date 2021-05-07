@@ -46,6 +46,7 @@ module.exports = (sequelize, dt) => {
 
     entidad.associate = n => {
         entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
+        entidad.belongsTo(n.categoria, {as: "categoria", foreignKey: "categoria_id"});
     };
 
     return entidad;

@@ -5,7 +5,7 @@ module.exports = {
 ///////////////////////////////////////////////////////////////////////
 	obtenerPorId: (id) => {
         return entidad.findByPk(id, {
-            include: [ "coleccion_pelicula" ]
+            include: [ "coleccion_pelicula", "categoria" ]
         });
     },
 	obtenerPorTituloOriginal: (n) => {

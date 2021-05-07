@@ -41,8 +41,10 @@ let rutaECC = require('./controladores y rutas/rutas/institucional');
 //app.use('/paises', rutaPaises)
 //let rutaUsuarioPais = require('./controladores y rutas/rutas/usuarioPaisRuta');
 //app.use('/UsuarioPais', rutaUsuarioPais)
-let rutaColeccionPelicula = require('./backup/pruebasColecciónPelículas/coleccionPelicula1Ruta');
-app.use('/coleccionPelicula', rutaColeccionPelicula)
+//let rutaColeccionPelicula = require('./backup/pruebasColecciónPelículas/coleccionPelicula1Ruta');
+//app.use('/coleccionPelicula', rutaColeccionPelicula)
+//let rutaCategoriaPelicula = require('./backup/pruebasCategoriaPelículas/categoriaPelicula1Ruta');
+//app.use('/categoriaPelicula', rutaCategoriaPelicula)
 app.use('/login', rutaLogin)        // Login
 app.use('/usuarios', rutaUsuarios)  // Usuarios
 app.use('/peliculas', rutaPelis)    // Películas

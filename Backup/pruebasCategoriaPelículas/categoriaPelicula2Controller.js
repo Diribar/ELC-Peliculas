@@ -7,9 +7,10 @@ const metodosOtros = require(path.join(__dirname, "../../modelos/BD_otros"));
 module.exports = {
 
 	listado: async (req,res) => {
-		let peli = await metodosPelicula.obtenerPorId(1)
-		let coleccion_peli = await metodosOtros.obtenerPorId(1, "coleccion_pelicula", "coleccion_titulo")
-		// return res.send(coleccion_peli)
-		return res.render("./coleccionPelicula3Vista", {peli, coleccion_peli})
+		//let categoria = await metodosOtros.obtenerPorId("CFC", "categoria", "peliculas")
+		//return res.send(categoria.peliculas[0].titulo_castellano)
+
+		let peli = await metodosPelicula.obtenerPorId(1);
+		return res.send(peli.categoria.nombre)
 	},
 };
