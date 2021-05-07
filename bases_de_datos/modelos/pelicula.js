@@ -1,6 +1,6 @@
 module.exports = (sequelize, dt) => {
-    const alias = "pelicula";
-    const columns = {
+	const alias = "pelicula";
+	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		tmdb_id: {type: dt.STRING(20)},
 		fa_id: {type: dt.STRING(20)},
@@ -36,18 +36,16 @@ module.exports = (sequelize, dt) => {
 		borrado_en: {type: dt.DATE},
 		borrado_motivo: {type: dt.STRING(500)},
 	};
-
 	const config = {
-        tableName: "peliculas",
+		tableName: "peliculas",
 		timestamps: false
 	};
-
-    const entidad = sequelize.define(alias,columns,config);
-
-    entidad.associate = n => {
-        entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
-        entidad.belongsTo(n.categoria, {as: "categoria", foreignKey: "categoria_id"});
-    };
-
-    return entidad;
+	const entidad = sequelize.define(alias,columns,config);
+	entidad.associate = n => {
+		entidad.belongsTo(n.pais, {as: "pais", foreignKey: "pais_id"});
+		entidad.belongsTo(n.categoria, {as: "categoria", foreignKey: "categoria_id"});
+		entidad.belongsTo(n.subcategoria, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
+	};
+	return entidad;
 }; 

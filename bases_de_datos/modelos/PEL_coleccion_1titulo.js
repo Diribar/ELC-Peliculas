@@ -10,12 +10,9 @@ module.exports = (sequelize, dt) => {
 		tableName: "colecciones_titulos",
 		timestamps: false
 	};
-
 	const entidad = sequelize.define(alias,columns,config);
-
 	entidad.associate = n => {
-		entidad.hasMany(n.coleccion_pelicula, {as: "coleccion_pelicula",foreignKey: "coleccion_id"});
+		entidad.hasMany(n.coleccion_pelicula, {as: "coleccion_pelicula",foreignKey: "coleccion_titulo_id"});
 	};
-
 	return entidad;
 };

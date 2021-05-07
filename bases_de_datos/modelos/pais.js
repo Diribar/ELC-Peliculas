@@ -10,24 +10,14 @@ module.exports = (sequelize, dt) => {
 		bandera: {type: dt.STRING(10)},
 		orden: {type: dt.INTEGER},
 	};
-
 	const config = {
 		tableName: "paises",
 		timestamps: false
 	};
-
 	const entidad = sequelize.define(alias,columns,config);
-
 	entidad.associate = n => {
-		entidad.hasMany(n.usuario, {
-			as: "usuarios",
-			foreignKey: "pais_id"
-		});
-		//entidad.hasMany(n.pelicula, {
-		//	as: "peliculas",
-		//	foreignKey: "pais_id"
-		//});
+		entidad.hasMany(n.usuario, {as: "usuarios",foreignKey: "pais_id"});
+		entidad.hasMany(n.pelicula, {as: "peliculas",foreignKey: "pais_id"});
 	};
-
 	return entidad;
 };
