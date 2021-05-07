@@ -36,7 +36,7 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		if (await metodosUsuario.obtenerUsuarioPorMail(req.body.email)) {
+		if (await metodosUsuario.obtenerPorMail(req.body.email)) {
             validaciones.errors.push({
                 msg: "Este mail ya figura en nuestra base de datos",
                 param: "email",
@@ -54,7 +54,7 @@ module.exports = {
 		// Guardar el registro
         await metodosUsuario.altaMail(req.body.email);
 		// Obtener los datos del usuario
-		req.session.usuario = await metodosUsuario.obtenerUsuarioPorMail(req.body.email);
+		req.session.usuario = await metodosUsuario.obtenerPorMail(req.body.email);
 		// Redireccionar
 		//return res.send(req.session.usuario)
 		return res.redirect("/usuarios/redireccionar");
@@ -92,7 +92,7 @@ module.exports = {
 		// Actualizar el status de usuario
 		await metodosUsuario.upgradeStatusUsuario(req.session.usuario.id, 3)
 		// Actualizar los datos del usuario en la sesión
-		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(req.session.usuario.id);
+		req.session.usuario = await metodosUsuario.obtenerPorId(req.session.usuario.id);
 		// return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
@@ -136,7 +136,7 @@ module.exports = {
 		// Actualizar el status de usuario
 		await metodosUsuario.upgradeStatusUsuario(usuario.id, 4)
 		// Actualizar los datos del usuario en la sesión
-		req.session.usuario = await metodosUsuario.obtenerUsuarioPorId(usuario.id);
+		req.session.usuario = await metodosUsuario.obtenerPorId(usuario.id);
 		// return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");

@@ -1,70 +1,51 @@
 const db = require("../bases_de_datos/modelos");
-const entidad = db.Producto;
+const entidad = db.pelicula;
 
 module.exports = {
-    ObtenerPorId: (id) => {
+///////////////////////////////////////////////////////////////////////
+	obtenerPorId: (id) => {
         return entidad.findByPk(id, {
-            include: [ "imagenes", "categoria" ]
+            include: [ "coleccion_pelicula" ]
         });
     },
-    ObtenerNovedades: () => {
-        return entidad.findAll({
-            where: {
-                novedades: true,
-                borrado: false
-            },
-            include: [ "imagenes" ]
+	obtenerPorTituloOriginal: (n) => {
+        return entidad.findOne({
+            where: {titulo_original: n}
         });
     },
-    ObtenerMasVendidos: () => {
-        return entidad.findAll({
-            where: {
-                mas_vendido: true,
-                borrado: false
-            },
-            include: [ "imagenes" ]
-        });
+	upgradeStatus: (id, st) => {
+		return entidad.update(
+			{status_usuario_id: st},
+			{where: { id: id }}
+		);
     },
-    ObtenerImagenes: async (id) => {
-        const producto = await entidad.findByPk(id, {
-            include: [ "imagenes" ]
-        });
-
-        return producto.imagenes;
+	TituloOriginalYaExistente: async (email, id) => {
+		return entidad.count({
+			where: {
+				id: {[Op.ne]: id},
+				email: email,
+			}
+		});
+	},
+	editar: (id, infoUsuario, fileName) => {
+        return entidad.update({
+            nombre: infoUsuario.nombre,
+            apellido: infoUsuario.apellido,
+            email: infoUsuario.email,
+            contrasena: bcryptjs.hashSync(infoUsuario.contrasena, 10),
+            avatar: fileName
+        },
+        {where: { id: id }});
     },
-    Eliminar: (id, usuario) => {
+    eliminar: (id, usuario) => {
         return entidad.update({
             borrado: true,
             actualizado_por: usuario
         },
-        {
-            where: { id: id },
-        });
+        {where: { id: id }});
     },
-    Crear: (infoProducto, precio, usuarioId) => {
-        return entidad.create({
-            nombre: infoProducto.nombre,
-            descripcion: infoProducto.descripcion,
-            categoria_id: infoProducto.categoria,
-            marca_id: 1,
-            modelo_id: 1,
-            precio: precio,
-            stock_disponible: 100,
-            mas_vendido: false,
-            novedades: true,
-            creado_por: usuarioId
-        });
-    },
-    Actualizar: (id, infoProducto, precio, usuarioId) => {
-        return entidad.update({
-            nombre: infoProducto.nombre,
-            categoria_id: infoProducto.categoria,
-            descripcion: infoProducto.descripcion,
-            precio: precio,
-            actualizado_por: usuarioId
-        },
-        {
-            where: { id: id },
-        });
+    obtenerAvatar: async (id) => {
+        let usuario = await entidad.findByPk(id);
+        return usuario.avatar;
     }
 };

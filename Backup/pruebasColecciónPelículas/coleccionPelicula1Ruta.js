@@ -1,7 +1,7 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const prueba = require('../controladores/usuarioPaisController')
+const prueba = require('./coleccionPelicula2Controller')
 
 //**************************** Login ********************************
 router.get('/', prueba.listado)

@@ -3,14 +3,14 @@ const entidad = db.usuario;
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
-	obtenerUsuarioPorMail: (email) => {
-        return entidad.findOne({
-            where: {email: email}
-        });
-    },
-	obtenerUsuarioPorId: (id) => {
+	obtenerPorId: (id) => {
         return entidad.findByPk(id, {
             include: [ "rol_usuario", "sexo", "status_usuario", "pais", "estado_eclesial" ]
+        });
+    },
+	obtenerPorMail: (email) => {
+        return entidad.findOne({
+            where: {email: email}
         });
     },
 	upgradeStatusUsuario: (id, st) => {
@@ -39,7 +39,6 @@ module.exports = {
 			{where: { id: id }}
 		);
     },
-///////////////////////////////////////////////////////////////////////
 	EmailYaExistente: async (email, id) => {
 		return entidad.count({
 			where: {
@@ -48,6 +47,7 @@ module.exports = {
 			}
 		});
 	},
+///////////////////////////////////////////////////////////////////////
 	editar: (id, infoUsuario, fileName) => {
         return entidad.update({
             nombre: infoUsuario.nombre,
