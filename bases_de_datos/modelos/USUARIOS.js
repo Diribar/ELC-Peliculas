@@ -41,6 +41,10 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.rol_usuario, {as: "ultima_penalizacion_en_rol", foreignKey: "ultima_penalizacion_en_rol_id"});
         entidad.belongsTo(n.status_usuario, {as: "status_usuario", foreignKey: "status_usuario_id"});
         entidad.belongsTo(n.estado_eclesial, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
+
+		entidad.hasMany(n.us_pel_calificacion, {as: "us_pel_calificaciones",foreignKey: "usuario_id"});
+		entidad.hasMany(n.us_pel_calificacion, {as: "us_pel_interes",foreignKey: "usuario_id"});
+
     };
 
     return entidad;

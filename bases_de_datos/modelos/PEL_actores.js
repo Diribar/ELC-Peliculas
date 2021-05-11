@@ -20,6 +20,5 @@ module.exports = (sequelize, dt) => {
 		})
 		entidad.hasMany(n.personaje, {as: "personajes",foreignKey: "actor_id"});
     }
-
     return entidad;
 }

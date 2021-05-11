@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		continente: {type: dt.STRING(20)},
 		idioma: {type: dt.STRING(50)},
 		zona_horaria: {type: dt.STRING(10)},
-		bandera: {type: dt.STRING(10)},
+		bandera: {type: dt.STRING(100)},
 		orden: {type: dt.INTEGER},
 	};
 	const config = {
