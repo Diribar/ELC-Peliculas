@@ -16,6 +16,5 @@ window.addEventListener("load", () => {
 			preview.innerHTML = '';
 			preview.append(image);
 		};
-		console.log("sí")
 	}
 })

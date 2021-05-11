@@ -25,7 +25,7 @@ module.exports = {
 		if (status_usuario == 1) {return res.redirect("/login")};
 		if (status_usuario == 2) {return res.redirect("/usuarios/registro-datos-perennes")};
 		if (status_usuario == 3) {return res.redirect("/usuarios/registro-datos-editables")};
-		return res.redirect("/")
+		return res.redirect(req.session.urlReferencia)
 	},
 
 	altaMailForm: (req, res) => {

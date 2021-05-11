@@ -19,18 +19,18 @@ module.exports = (sequelize, dt) => {
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
 		sinopsis: {type: dt.STRING(500)},
-		creada_por: {type: dt.INTEGER},
+		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
-		analizada_por: {type: dt.INTEGER},
+		analizada_por_id: {type: dt.INTEGER},
 		analizada_en: {type: dt.DATE},
 		aprobada: {type: dt.BOOLEAN},
 		fechaFIFO: {type: dt.DATE},
-		editada_por: {type: dt.INTEGER},
+		editada_por_id: {type: dt.INTEGER},
 		editada_en: {type: dt.DATE},
-		revisada_por: {type: dt.INTEGER},
+		revisada_por_id: {type: dt.INTEGER},
 		revisada_en: {type: dt.DATE},
 		borrado: {type: dt.BOOLEAN},
-		borrado_por: {type: dt.INTEGER},
+		borrado_por_id: {type: dt.INTEGER},
 		borrado_en: {type: dt.DATE},
 		borrado_motivo: {type: dt.STRING(500)},
 	};
@@ -46,11 +46,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
 		entidad.belongsTo(n.epoca_estreno, {as: "epoca_estreno", foreignKey: "epoca_estreno_id"});
 		entidad.belongsTo(n.publico_recomendado, {as: "publico_recomendado", foreignKey: "publico_recomendado_id"});
-		entidad.belongsTo(n.usuario, {as: "creada_por", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.usuario, {as: "analizada_por", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.usuario, {as: "editada_por", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.usuario, {as: "revisada_por", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.usuario, {as: "borrada_por", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.usuario, {as: "creada_por", foreignKey: "creada_por_id"});
+		entidad.belongsTo(n.usuario, {as: "analizada_por", foreignKey: "analizada_por_id"});
+		entidad.belongsTo(n.usuario, {as: "editada_por", foreignKey: "editada_por_id"});
+		entidad.belongsTo(n.usuario, {as: "revisada_por", foreignKey: "revisada_por_id"});
+		entidad.belongsTo(n.usuario, {as: "borrada_por", foreignKey: "borrada_por_id"});
 	};
 	return entidad;
 }; 
