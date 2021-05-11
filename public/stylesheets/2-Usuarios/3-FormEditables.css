@@ -1,4 +1,4 @@
-/* Botón de imagen*/
+/* Botón de imagen */
 input#inputImagen {display:none}
 #Form form #labelImagen {color: var(--azul); background-color: rgb(255, 255, 255);}
 #Form form #divImagen label {cursor: pointer; margin-right: 0px; line-height: normal;}

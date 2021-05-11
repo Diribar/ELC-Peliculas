@@ -1,5 +1,5 @@
 window.addEventListener("load", () => {
-	document.getElementById("inputImagen").onchange = function(e) {
+	document.getElementById("inputImagen").onchange = (e) => {
 		// Ocultar y mostrar elementos
 		document.getElementById("labelImagen").classList.add("ocultar")
 		document.getElementById("iconoImagenRojo").classList.add("ocultar")
