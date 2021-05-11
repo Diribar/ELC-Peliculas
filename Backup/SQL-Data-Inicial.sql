@@ -30,10 +30,10 @@ VALUES (1, 'Está dirigido a un público infantil, no se recomienda para mayores
 INSERT INTO directores (id, tmdb_id, nombre)
 VALUES (1, 234495, 'Giacomo Battiato')
 ;
-INSERT INTO guion (id, tmdb_id, nombre)
+INSERT INTO guionistas (id, tmdb_id, nombre)
 VALUES (1, 2565414, 'Giacomo Battiato')
 ;
-INSERT INTO musica (id, tmdb_id, nombre)
+INSERT INTO musicos (id, tmdb_id, nombre)
 VALUES (1, 1259, 'Ennio Morricone')
 ;
 INSERT INTO actores (id, tmdb_id, nombre)
@@ -45,11 +45,11 @@ VALUES (1, 473, 'Taodue Film')
 INSERT INTO colecciones_titulos (id, titulo_original_coleccion, titulo_castellano_coleccion)
 VALUES (1, 'Karol', 'Karol')
 ;
-INSERT INTO personajes (id, nombre)
+INSERT INTO personajes_historicos (id, nombre)
 VALUES (1, 'Juan Pablo II (papa)')
 ;
 INSERT INTO hechos_historicos (id, nombre)
-VALUES (1, '2a Guerra Mundial y Comunismo')
+VALUES (1, '2a Guerra Mundial')
 ;
 INSERT INTO colecciones_peliculas (id, coleccion_titulo_id, pelicula_id, tmdb_pelicula_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno, orden_secuencia)
 VALUES (1, 1, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
@@ -72,8 +72,11 @@ VALUES (1, 'Recordame que quiero verla'), (2, 'Ya la vi'), (3, 'Prefiero que no 
 INSERT INTO epocas_estreno (id, nombre)
 VALUES (1, 'Antes de 1970'), (2, '1970 - 1999'), (3, '2000 - 2014'), (4, '2015 - Presente')
 ;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, sinopsis, creada_por, creada_en, analizada_por, analizada_en, aprobada)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 5, 'CFC', 4, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO eventos (id, nombre, fecha)
+VALUES (1, 'San Juan Pablo II', '22/oct')
+;
+INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, epoca_estreno_id, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 3, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 5, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 INSERT INTO usuario_pelicula_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_filmica_id)
 VALUES (1, 1, 1, 5, 4, 3)
@@ -81,27 +84,18 @@ VALUES (1, 1, 1, 5, 4, 3)
 INSERT INTO usuario_pelicula_interes_en_la_pelicula (id, usuario_id, pelicula_id, interes_en_la_pelicula_id)
 VALUES (1, 1, 1, 2)
 ;
-INSERT INTO usuario_pelicula_favoritas (id, usuario_id, pelicula_id)
-VALUES (1, 1, 1)
-;
 INSERT INTO director_pelicula (id, director_id, pelicula_id)
 VALUES (1, 1, 1)
 ;
-INSERT INTO musica_pelicula (id, musica_id, pelicula_id)
+INSERT INTO musico_pelicula (id, musico_id, pelicula_id)
 VALUES (1, 1, 1)
 ;
-INSERT INTO guion_pelicula (id, guion_id, pelicula_id)
+INSERT INTO guionista_pelicula (id, guionista_id, pelicula_id)
 VALUES (1, 1, 1)
 ;
 INSERT INTO actor_pelicula (id, actor_id, pelicula_id, personaje)
 VALUES (1, 1, 1, 'Karol Wojtyla'), (2, 2, 1, 'Hanna Tuszynska'), (3, 3, 1, 'Adam Zielinski'), (4, 4, 1, 'Julian Kordek'), (5, 5, 1, 'Maciej Nowak'), (6, 6, 1, 'Maria Pomorska'), (7, 7, 1, 'Hans Frank'), (8, 8, 1, 'padre Tomasz Zaleski'), (9, 9, 1, 'card. Stefan Wyszy?ski'), (10, 10, 1, 'Wislawa')
 ;
 INSERT INTO productor_pelicula (id, productor_id, pelicula_id)
-VALUES (1, 1, 1)
-;
-INSERT INTO personaje_pelicula (id, personaje_id, pelicula_id)
-VALUES (1, 1, 1)
-;
-INSERT INTO hecho_historico_pelicula (id, hecho_historico_id, pelicula_id)
 VALUES (1, 1, 1)
 ;
