@@ -3,9 +3,9 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		coleccion_titulo_id: {type: dt.INTEGER},
-		tmdb_coleccion_id: {type: dt.STRING(20)},
+		tmdb_coleccion_id: {type: dt.INTEGER},
 		pelicula_id: {type: dt.INTEGER},
-		tmdb_pelicula_id: {type: dt.STRING(20)},
+		tmdb_pelicula_id: {type: dt.INTEGER},
 		titulo_original_pelicula: {type: dt.STRING(100)},
 		titulo_castellano_pelicula: {type: dt.STRING(100)},
 		ano_estreno: {type: dt.INTEGER},

@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "pelicula";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
-		tmdb_id: {type: dt.STRING(20)},
+		tmdb_id: {type: dt.INTEGER},
 		fa_id: {type: dt.STRING(20)},
 		imdb_id: {type: dt.STRING(20)},
 		titulo_original: {type: dt.STRING(100)},
@@ -46,11 +46,19 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.coleccion_pelicula, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
 		entidad.belongsTo(n.epoca_estreno, {as: "epoca_estreno", foreignKey: "epoca_estreno_id"});
 		entidad.belongsTo(n.publico_recomendado, {as: "publico_recomendado", foreignKey: "publico_recomendado_id"});
+		entidad.belongsTo(n.personaje_historico, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
+		entidad.belongsTo(n.hecho_historico, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
+		entidad.belongsTo(n.evento, {as: "sugerida_para_evento", foreignKey: "sugerida_para_evento_id"});
 		entidad.belongsTo(n.usuario, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuario, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.usuario, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuario, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuario, {as: "borrada_por", foreignKey: "borrada_por_id"});
+
+		entidad.belongsToMany(n.actor, {as: "actores", through: "actor_pelicula", foreignKey: "pelicula_id", otherKey: "actor_id", timestamps: false})
+
+		entidad.hasMany(n.personaje, {as: "personajes",foreignKey: "pelicula_id"});
+
 	};
 	return entidad;
 }; 
