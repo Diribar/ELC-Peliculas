@@ -12,3 +12,8 @@ body {
 /* ALTURAS DE HEADER Y MAIN */
 header p {height: 10vh;}
 main, main #imagen-derecha {height:90vh;}
+
+/* Clases particulares para todo el site */
+.boton-desplegable {cursor: pointer;}
+hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
+i {font-style: normal;}

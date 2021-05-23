@@ -4,11 +4,18 @@
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <!--***********************************************************-->
-<div class="cuerpo flex-col">
-	<button type="button" class="titulo">Agregar una película a nuestra Base de Datos</button>
-	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
-		<h1>Paso 1 de 4: Importar Datos</h1>
 
+<div class="cuerpo flex-col">
+	<button type="button" class="titulo">Agregar una Película a nuestra Base de Datos</button>
+	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
+		<div class="flex-row space-between">
+			<h1>Paso 1 de 4: Importar Datos</h1>
+			<select name="" id="" onchange="location = this.value">
+				<option value="" class="ocultar"></option>
+				<option value="/peliculas/agregar1">Pelicula</option>
+				<option value="/colecciones/agregar1">Colección</option>
+			</select>
+		</div>
 		<form action="/peliculas/agregar1A" method="POST" class="flex-col">  <!--Palabras clave-->
 			<h2 id="ingresar_los_datos_a_mano">Opción a partir de palabras clave</h2>
 			<div class="flex-row space-between">

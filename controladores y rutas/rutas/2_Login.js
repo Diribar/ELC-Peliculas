@@ -1,7 +1,7 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const login = require('../controladores/login')
+const login = require('../controladores/2_Login')
 
 //************************ Middlewares ******************************
 const validarLogin = require('../../middlewares/usuarios/validar0-Login');

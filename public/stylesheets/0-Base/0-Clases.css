@@ -6,14 +6,13 @@
 .around {justify-content: space-around;}
 .cursiva {font-style: italic;}
 .not-cursiva {font-style: normal;}
-.cursor_pointer {cursor: pointer;}
 .dropdown-content {display: none;}
 .mostrar {display: block;}
 .ocultar {display: none;}
 .border {border: red 1px solid}
 .grid {display: grid;}
 .relative {position: relative;}
-.linea_divisoria {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
-i {font-style: normal;}
 .display-none {display: none}
 .space-between {justify-content: space-between;}
+.absolute {position: absolute; top:0px; left: 0px}
+.boton-desplegable {cursor: pointer;}

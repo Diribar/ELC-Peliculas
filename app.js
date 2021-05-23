@@ -23,32 +23,30 @@ app.set('view engine', 'ejs');
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set('views', [
-    path.resolve(__dirname, './views'),
-    path.resolve(__dirname, './views/0-Partials'),
-    path.resolve(__dirname, './views/1-Institucional'),
-    path.resolve(__dirname, './views/2-Usuarios'),
-    path.resolve(__dirname, './views/3-PEL-Opciones'),
-    path.resolve(__dirname, './views/3-PEL-CRUD'),
-    path.resolve(__dirname, './views/3-PEL-CRUD/Agregar'),
+	path.resolve(__dirname, './views'),
+	path.resolve(__dirname, './views/0-Partials'),
+	path.resolve(__dirname, './views/1-Institucional'),
+	path.resolve(__dirname, './views/2-Usuarios'),
+	path.resolve(__dirname, './views/3-PEL-Opciones'),
+	path.resolve(__dirname, './views/3-PEL-CRUD'),
+	path.resolve(__dirname, './views/3-PEL-CRUD/Agregar'),
 ]);
 
 // ************************* Rutas ********************************
-let rutaLogin = require('./controladores y rutas/rutas/login');
-let rutaUsuarios = require('./controladores y rutas/rutas/usuarios');
-let rutaPelis = require('./controladores y rutas/rutas/peliculas');
-let rutaECC = require('./controladores y rutas/rutas/institucional');
+let rutaECC = require("./controladores y rutas/rutas/0_Institucional");
+let rutaUsuarios = require("./controladores y rutas/rutas/1_Usuarios");
+let rutaLogin = require('./controladores y rutas/rutas/2_Login');
+//let rutaColeccion = require("./controladores y rutas/rutas/3colecciones");
+let rutaPelis = require('./controladores y rutas/rutas/4_Peliculas');
 //let rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
 //app.use('/paises', rutaPaises)
 //let rutaUsuarioPais = require('./controladores y rutas/rutas/usuarioPaisRuta');
 //app.use('/UsuarioPais', rutaUsuarioPais)
-//let rutaColeccionPelicula = require('./backup/pruebasColecciónPelículas/coleccionPelicula1Ruta');
-//app.use('/coleccionPelicula', rutaColeccionPelicula)
-//let rutaCategoriaPelicula = require('./backup/pruebasCategoriaPelículas/categoriaPelicula1Ruta');
-//app.use('/categoriaPelicula', rutaCategoriaPelicula)
-app.use('/login', rutaLogin)        // Login
-app.use('/usuarios', rutaUsuarios)  // Usuarios
-app.use('/peliculas', rutaPelis)    // Películas
-app.use('/', rutaECC)               // Acerca de Nosotros, Contáctanos
+app.use('/', rutaECC)					// Acerca de Nosotros, Contáctanos
+app.use('/usuarios', rutaUsuarios)		// Usuarios
+app.use('/login', rutaLogin)			// Login
+app.use('/colecciones', rutaPelis)	// Colecciones
+app.use('/peliculas', rutaPelis)		// Películas
 
 // ************************ Errores *******************************
 //app.use((req,res) => {res.status(404).render('not found')})
