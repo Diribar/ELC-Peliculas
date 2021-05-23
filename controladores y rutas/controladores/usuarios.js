@@ -114,7 +114,6 @@ module.exports = {
 		let validaciones = validationResult(req);
 		// Verificar si existe algún error de validación
 		if (validaciones.errors.length>0) {
-			//return res.send(validaciones)
 			// Borrar el archivo de imagen guardado
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null
 			// Variables de países

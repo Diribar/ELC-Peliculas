@@ -60,11 +60,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuario, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuario, {as: "borrada_por", foreignKey: "borrada_por_id"});
 
-		entidad.belongsToMany(n.actor, {as: "actores", through: "actor_pelicula", foreignKey: "pelicula_id", otherKey: "actor_id", timestamps: false})
-		entidad.belongsToMany(n.director, {as: "directores", through: "director_pelicula", foreignKey: "pelicula_id", otherKey: "director_id", timestamps: false})
-		entidad.belongsToMany(n.guionista, {as: "guionistas", through: "guionista_pelicula", foreignKey: "pelicula_id", otherKey: "guionista_id", timestamps: false})
-		entidad.belongsToMany(n.musico, {as: "musicos", through: "musico_pelicula", foreignKey: "pelicula_id", otherKey: "musico_id", timestamps: false})
-		entidad.belongsToMany(n.productor, {as: "productores", through: "productor_pelicula", foreignKey: "pelicula_id", otherKey: "productor_id", timestamps: false})
+		//entidad.belongsToMany(n.actor, {as: "actores", through: "actor_pelicula", foreignKey: "pelicula_id", otherKey: "actor_id", timestamps: false})
+		//entidad.belongsToMany(n.director, {as: "directores", through: "director_pelicula", foreignKey: "pelicula_id", otherKey: "director_id", timestamps: false})
+		//entidad.belongsToMany(n.guionista, {as: "guionistas", through: "guionista_pelicula", foreignKey: "pelicula_id", otherKey: "guionista_id", timestamps: false})
+		//entidad.belongsToMany(n.musico, {as: "musicos", through: "musico_pelicula", foreignKey: "pelicula_id", otherKey: "musico_id", timestamps: false})
+		//entidad.belongsToMany(n.productor, {as: "productores", through: "productor_pelicula", foreignKey: "pelicula_id", otherKey: "productor_id", timestamps: false})
 
 		entidad.hasMany(n.personaje, {as: "personajes",foreignKey: "pelicula_id"});
 		entidad.hasMany(n.us_pel_calificacion, {as: "us_pel_calificaciones",foreignKey: "pelicula_id"});

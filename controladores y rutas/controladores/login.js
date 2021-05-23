@@ -8,16 +8,10 @@ const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios")
 module.exports = {
 
 	loginForm: (req,res) => {
-		if (req.session.usuario && req.session.usuario.email) {
-			data_entry = {"email": req.session.usuario.email}
-		} else {
-			data_entry = null;
-		}
-		//return res.send(data_entry)
 		return res.render("LoginForm", {
 			link: req.originalUrl,
 			credencialesInvalidas: null,
-			data_entry,
+			data_entry: null,
 		});
 	},
 
@@ -42,7 +36,7 @@ module.exports = {
 			});
 		};
 		// Si corresponde, actualizar el Status del Usuario
-		if (usuario.status_usuario_id.toString() == 1) {
+		if (usuario.status_usuario_id == 1) {
 			await metodosUsuario.upgradeStatusUsuario(usuario.id, 2)
 			usuario = await metodosUsuario.obtenerPorMail(req.body.email)
 		}

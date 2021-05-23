@@ -6,5 +6,6 @@ module.exports = (req,res,next) => {
 		req.session.urlReferencia = URL
 	}
 	res.locals.urlReferencia = req.session.urlReferencia
+	//console.log(req.session.urlReferencia);
 	next()
 }
