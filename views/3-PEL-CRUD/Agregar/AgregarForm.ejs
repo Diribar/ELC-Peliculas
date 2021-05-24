@@ -1,0 +1,34 @@
+<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
+<link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/Agregar.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/AgregarForm.css">
+<%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
+
+<!--***********************************************************-->
+
+<div class="cuerpo flex-col grow">
+	<button type="button" class="titulo" id="titulo">
+		Agregar una Película o Colección a nuestra Base de Datos
+	</button>
+	<section id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
+		<h2 style="font-weight: bold">Estimad<%= usuario.sexo.letra_final %> <%= usuario.nombre %>:</h2>
+		<p>
+			Estamos dándote la posibilidad de ingresar los datos de una <em>Película</em>
+			o <em>Colección de Películas</em> a nuestra base de datos. 
+			El contenido de nuestra base de datos es algo <u>diferencial</u> de nuestro sitio. 
+			Por favor tené en cuenta que:
+		</p>
+		<p>1. Cumpla con alguna de estas características, o ambas:</p>
+		<span>- Que esté relacionada con la Fe Católica</span><br>
+		<span>- Que tenga valores que contribuyan con una sociedad mejor.</span><br>		
+		<p>
+			2. Se espera de vos que conozcas la película, y puedas opinar sobre ella.
+			Por favor sé lo más preciso que puedas con la información  que introduzcas.
+		</p>
+		<p style="text-align: center;">¡Gracias!</p>
+		<div id="final" class="flex-row">
+			<button onclick="history.back()" id="salir">Salir</button>
+			<button onclick="window.location.href='/peliculas/agregar1'" id="continuar">Continuar</button>
+		</div>
+	</section>
+</div>
+<%- include('0-DespuesPA') %>

@@ -1,0 +1,19 @@
+#data_entry {max-width: 600px; background-color: var(--azul); border-color: var(--amarillo-claro)}
+
+#data_entry h2 {color: var(--amarillo-claro); font-size: 1.4rem;margin-top: 0px;}
+
+#data_entry p, 
+#data_entry p strong, 
+#data_entry p strong em, 
+#data_entry p em, 
+#data_entry p u,
+#data_entry span
+	{font-size: 1.15rem; line-height: 1.3; margin-top: 10px; text-align: justify; color: var(--amarillo-claro);}
+
+#data_entry span {margin-left: 20px;}
+
+#data_entry #final {justify-content: space-evenly; margin-top: 20px;}
+#data_entry #final button {font-size: 1.2rem; border-color: var(--amarillo-claro);}
+
+button#continuar {background-color: var(--verde);}
+button#salir {background-color: var(--rojo);}

@@ -1,8 +1,11 @@
 /* Partes específicas del formulario */
+#data_entry {min-height: 250px;}
+#data_entry #coleccion_pelicula select {border-radius: 5px; height: min-content;}
+
 #data_entry h1 {margin-bottom: 5px;}
+#data_entry select {line-height: normal;}
 #data_entry p {margin-bottom: 5px; font-style: italic;}
 #data_entry p, #data_entry a {color: var(--verde);}
-#data_entry h1#ingresar_los_datos_a_mano {margin-top: 20px;}
 #data_entry label {align-self: flex-end;}
 #data_entry .fa-times-circle {left: -20px; top: 7px;}
 #data_entry .linea_divisoria {margin-top: 20px;}

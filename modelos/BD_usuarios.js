@@ -10,7 +10,8 @@ module.exports = {
     },
 	obtenerPorMail: (email) => {
         return entidad.findOne({
-            where: {email: email}
+            where: { email: email },
+            include: [ "rol_usuario", "sexo", "status_usuario", "pais", "estado_eclesial" ],
         });
     },
 	upgradeStatusUsuario: (id, st) => {

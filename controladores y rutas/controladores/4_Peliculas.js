@@ -12,9 +12,20 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm1: (req, res) => {
-		return res.render('AgregarForm1');
+	altaForm: (req,res) => {
+		return res.render("AgregarForm")
 	},
+
+	altaForm1: (req, res) => {
+        // Obtener el código de Película o Colección
+        let url = req.originalUrl.slice(1);
+        let rubro = url.slice(0, url.indexOf("/"));
+		rubro == "peliculas" ? titulo = "Película" : titulo = "Colección"
+        return res.render("AgregarForm1", {
+			rubro,
+			titulo,
+		});
+    },
 
     altaGuardar1: (req,res) => {
 		//Detectar errores de Data Entry

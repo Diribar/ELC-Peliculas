@@ -5,22 +5,22 @@
 
 <!--***********************************************************-->
 
-<div class="cuerpo flex-col">
-	<button type="button" class="titulo">Agregar una Película a nuestra Base de Datos</button>
-	<section class="flex-col" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
-		<div class="flex-row space-between">
+<div class="cuerpo flex-col grow">
+	<button type="button" class="titulo" id="titulo">Agregar una <%= titulo %> a nuestra Base de Datos</button>
+	<section class="flex-col space-between" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
+		<div class="flex-row space-between align-center">
 			<h1>Paso 1 de 4: Importar Datos</h1>
-			<select name="" id="" onchange="location = this.value">
+			<select onchange="location = this.value">
 				<option value="" class="ocultar"></option>
-				<option value="/peliculas/agregar1">Pelicula</option>
-				<option value="/colecciones/agregar1">Colección</option>
+				<option value="/peliculas/agregar1"   <% if (titulo == "Película") { %> selected <% } %>>Pelicula</option>
+				<option value="/colecciones/agregar1" <% if (titulo == "Colección") { %> selected <% } %>>Colección</option>
 			</select>
 		</div>
-		<form action="/peliculas/agregar1A" method="POST" class="flex-col">  <!--Palabras clave-->
-			<h2 id="ingresar_los_datos_a_mano">Opción a partir de palabras clave</h2>
+		<form action="/<%= rubro %>/agregar1A" method="POST" class="flex-col">  <!--Palabras clave-->
+			<h2>Opción a partir de palabras clave</h2>
 			<div class="flex-row space-between">
 				<section> <!--Sector de inputs y labels-->
-					<div class="relative flex-row">
+					<div class="relative flex-row align-center">
 						<input type="text" name="palabras_clave" placeholder="Escribilas acá"
 							value="<%= locals.data_entry ? data_entry.palabras_clave : null %>">
 						<% if (locals.errores && errores.palabras_clave) { %><i class="fas fa-times-circle">
@@ -29,7 +29,8 @@
 						<label for="palabras_clave">Palabras clave
 							<i class="fas fa-question-circle">
 								<span class="mensajeAyuda">
-									Las palabras clave deben ser del <span style="font-weight: bold;">Título Original</span> o del <span style="font-weight: bold;">Titulo en Castellano</span>
+									Las palabras deben ser del <strong>Título Original</strong> o del <strong>Titulo en Castellano</strong>. 
+									Sólo busca por palabras exactas, no aproximadas. Escriba todas las palabras que sepa.
 								</span>
 							</i>
 						</label>
@@ -37,10 +38,9 @@
 				</section>
 				<button type="submit">Enviar</button>
 			</div>
+			<hr class="linea_divisoria">
 		</form>
-		<hr class="linea_divisoria">
-
-		<form action="/peliculas/agregar1B" method="POST" class="flex-col">  <!--Importar datos-->
+		<form action="/<%= rubro %>/agregar1B" method="POST" class="flex-col <%= rubro != "peliculas" ? "ocultar" : "" %> ">  <!--Importar datos-->
 			<h2>Opción importando datos</h2>
 			<p>Debe ser desde las páginas de 
 				<a href="https://www.filmaffinity.com/es/main.html">FilmAffinity</a> o 
@@ -48,7 +48,7 @@
 			</p>
 			<div class="flex-row space-between">
 				<section> <!--Sector de inputs y labels-->
-					<div class="relative flex-row">  <!--Pegar la información importada-->
+					<div class="relative flex-row align-center">  <!--Pegar la información importada-->
 						<textarea name="imports" id="" rows="1" placeholder="Pegá acá la info" 
 						value="<%= locals.data_entry ? data_entry.imports : null %>"></textarea>
 						<% if (locals.errores && errores.imports) { %>
@@ -59,8 +59,8 @@
 						<label for="imports">Información importada 
 							<i class="fas fa-question-circle">
 								<span class="mensajeAyuda">
-									<span style="font-weight: bold;">FilmAffinity</span>: desde "Título original", hasta el final de "Productora"<br>
-									<span style="font-weight: bold;">Wikipedia</span>, en la ficha a la derecha: desde el titulo en su idioma original, hasta el final de "Distribución"
+									<strong>FilmAffinity</strong>: desde "Título original", hasta el final de "Productora"<br>
+									<strong>Wikipedia</strong>, en la ficha a la derecha: desde el titulo en su idioma original, hasta el final de "Distribución"
 								</span>
 							</i>
 						</label>
@@ -74,8 +74,7 @@
 						<label for="link">Link de la página que provee los datos 
 							<i class="fas fa-question-circle">
 								<span class="mensajeAyuda">
-									El link es importante para nosotros, para conocer la <span style="font-weight: bold
-									;">fuente de la información</span>
+									El link es importante para nosotros, para conocer la <strong>fuente de la información</strong>
 								</span>
 							</i>
 						</label>
@@ -83,14 +82,13 @@
 				</section>
 				<button type="submit">Enviar</button>	
 			</div>
+			<hr class="linea_divisoria">
 		</form>
-		<hr class="linea_divisoria">
-
-		<form action="/peliculas/agregar1C" method="POST" class="flex-col">  <!--Título original-->
-			<h2 id="ingresar_los_datos_a_mano">Opción ingresando los datos a mano</h2>
+		<form action="/<%= rubro %>/agregar1C" method="POST" class="flex-col">  <!--Datos a mano-->
+			<h2>Opción ingresando los datos a mano</h2>
 			<div class="flex-row space-between">
-				<section>
-					<div class="relative flex-row">
+				<section> <!--Sector de inputs y labels-->
+					<div class="relative flex-row align-center">
 						<input type="text" name="titulo_original" placeholder="Escribilo acá"
 							value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
 						<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle">
@@ -99,7 +97,7 @@
 						<label for="titulo_original">Título original de la película 
 							<i class="fas fa-question-circle">
 								<span class="mensajeAyuda">
-									El <span style="font-weight: bold;">Título Original</span> es el dato por el que identificamos que una película no está repetida en nuestra base de datos
+									El <strong>Título Original</strong> es el dato por el que identificamos que una película no está repetida en nuestra base de datos
 								</span>
 							</i>
 						</label>

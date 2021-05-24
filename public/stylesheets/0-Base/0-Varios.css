@@ -1,6 +1,6 @@
 /* GENERAL */
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
-select, option {cursor: pointer;}
+select, option, a, button {cursor: pointer;}
 
 /* BACKGROUND IMAGE */
 body {

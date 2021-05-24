@@ -1,6 +1,6 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/AgregarForm3.css">
+<!-- <link rel="stylesheet" href="/stylesheets/3-PEL-CRUD/Agregar/AgregarForm3.css"> -->
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <!--***********************************************************-->
@@ -20,7 +20,7 @@
 			<div class="formulario-grupo">
 				<% let idioma_castellano=""; if (locals.data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
 				<select name="idioma_castellano">
-					<option value="" class="display-none">Elegí</option>
+					<option value="" class="ocultar">Elegí</option>
 					<option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
 					<option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
 				</select>
@@ -34,7 +34,7 @@
 			<div class="formulario-grupo">
 				<% let color=""; if (locals.data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
 				<select name="color">
-					<option value="" class="display-none">Elegí</option>
+					<option value="" class="ocultar">Elegí</option>
 					<option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
 					<option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
 				</select>
@@ -87,7 +87,7 @@
 				<p>Inspira fe y/o valores</p>
 				<% let fe_valores=""; if (locals.data_entry) {fe_valores = data_entry.fe_valores} else {if (usuario.formNombre) {fe_valores = usuario.fe_valores}}%>
 				<select name="fe_valores">
-					<option value="" class="display-none">Elegí</option>
+					<option value="" class="ocultar">Elegí</option>
 					<option value="4" <% if (fe_valores=="4") {%> selected <%}%>>Mucho</option>
 					<option value="3" <% if (fe_valores=="3") {%> selected <%}%>>Bastante</option>
 					<option value="2" <% if (fe_valores=="2") {%> selected <%}%>>Sí</option>
@@ -102,7 +102,7 @@
 				<p>Entretiene</p>
 				<% let entretiene=""; if (locals.data_entry) {entretiene = data_entry.entretiene} else {if (usuario.formNombre) {entretiene = usuario.entretiene}}%>
 				<select name="entretiene">
-					<option value="" class="display-none">Elegí</option>
+					<option value="" class="ocultar">Elegí</option>
 					<option value="4" <% if (entretiene=="4") {%> selected <%}%>>Mucho</option>
 					<option value="3" <% if (entretiene=="3") {%> selected <%}%>>Bastante</option>
 					<option value="2" <% if (entretiene=="2") {%> selected <%}%>>Sí</option>
@@ -119,7 +119,7 @@
 				</p>    
 				<% let calidadTecnica =""; if (locals.data_entry) {calidadTecnica = data_entry.calidadTecnica} else {if (usuario.formNombre) {calidadTecnica = usuario.calidadTecnica}}%>
 				<select name="calidadTecnica">
-					<option value="" class="display-none">Elegí</option>
+					<option value="" class="ocultar">Elegí</option>
 					<option value="3" <% if (calidadTecnica=="3") {%> selected <%}%>>Muy buena</option>
 					<option value="2" <% if (calidadTecnica=="2") {%> selected <%}%>>Buena</option>
 					<option value="1" <% if (calidadTecnica=="1") {%> selected <%}%>>Regular</option>

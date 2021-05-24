@@ -1,18 +1,13 @@
-/* ESTILOS Y CLASES */
+.absolute {position: absolute; top:0px; left: 0px}
+.align-center {align-items: center;}
+.boton-desplegable {cursor: pointer;}
+.border {border: red 1px solid}
+.cursiva {font-style: italic;}
+.dropdown-content {display: none;}
 .flex-col {display: flex;flex-direction: column;}
 .flex-row {display: flex;flex-direction: row;}
 .grow {flex-grow: 1;}
-.between {justify-content: space-between;}
-.around {justify-content: space-around;}
-.cursiva {font-style: italic;}
-.not-cursiva {font-style: normal;}
-.dropdown-content {display: none;}
 .mostrar {display: block;}
 .ocultar {display: none;}
-.border {border: red 1px solid}
-.grid {display: grid;}
 .relative {position: relative;}
-.display-none {display: none}
 .space-between {justify-content: space-between;}
-.absolute {position: absolute; top:0px; left: 0px}
-.boton-desplegable {cursor: pointer;}

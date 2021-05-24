@@ -1,7 +1,7 @@
 /* Header */
 header {position: relative;background-color: var(--azul);}
 header p {display: flex;justify-content: center;align-items:center;}
-header p a {font-family: Monotype Corsiva;font-size: xxx-large;font-weight: bold;}
+header p a {font-family: Monotype Corsiva;font-size: 3rem;font-weight: bold;}
 header p a {color: var(--amarillo-claro);text-decoration: none;}
 
 /* Íconos de Usuario, Rubro y Servicio */
