@@ -1,6 +1,6 @@
 .absolute {position: absolute; top:0px; left: 0px}
 .align-center {align-items: center;}
-.boton-desplegable {cursor: pointer;}
+.pointer {cursor: pointer;}
 .border {border: red 1px solid}
 .cursiva {font-style: italic;}
 .dropdown-content {display: none;}

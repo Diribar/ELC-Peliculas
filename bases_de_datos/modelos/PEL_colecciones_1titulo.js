@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "coleccion_titulo";
+	const alias = "colecciones_titulos";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		tmdb_coleccion_id: {type: dt.INTEGER},
@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.hasMany(n.coleccion_pelicula, {as: "coleccion_pelicula",foreignKey: "coleccion_titulo_id"});
+		entidad.hasMany(n.colecciones_peliculas, {as: "colecciones_peliculas",foreignKey: "coleccion_titulo_id"});
 	};
 	return entidad;
 };

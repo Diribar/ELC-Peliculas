@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "subcategoria";
+	const alias = "subcategorias";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		categoria_id: {type: dt.INTEGER},
@@ -11,8 +11,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.belongsTo(n.categoria, {as: "categoria", foreignKey: "categoria_id"});
-		entidad.hasMany(n.pelicula, {as: "peliculas",foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas",foreignKey: "subcategoria_id"});
 	};
 	return entidad;
 };

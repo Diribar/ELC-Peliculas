@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "coleccion_pelicula";
+	const alias = "colecciones_peliculas";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		coleccion_titulo_id: {type: dt.INTEGER},
@@ -17,8 +17,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.belongsTo(n.coleccion_titulo, {as: "coleccion_titulo", foreignKey: "coleccion_titulo_id"});
-		entidad.belongsTo(n.pelicula, {as: "pelicula", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.colecciones_titulos, {as: "coleccion_titulo", foreignKey: "coleccion_titulo_id"});
+		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 	};
 	return entidad;
 };

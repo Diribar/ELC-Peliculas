@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "pais";
+	const alias = "paises";
 	const columns = {
 		id: {type: dt.STRING(2), primaryKey: true},
 		alpha3code: {type: dt.STRING(3)},
@@ -16,8 +16,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.hasMany(n.usuario, {as: "usuarios",foreignKey: "pais_id"});
-		entidad.hasMany(n.pelicula, {as: "peliculas",foreignKey: "pais_id"});
+		entidad.hasMany(n.usuarios, {as: "usuarios",foreignKey: "pais_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas",foreignKey: "pais_id"});
 	};
 	return entidad;
 };

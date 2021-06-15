@@ -13,8 +13,8 @@ module.exports = (sequelize, dt) => {
     const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = n => {
 		entidad.belongsTo(n.interes_en_la_pelicula, {as: "interes_en_la_pelicula", foreignKey: "interes_id"});
-		entidad.belongsTo(n.usuario, {as: "usuario", foreignKey: "usuario_id"});
-		entidad.belongsTo(n.pelicula, {as: "pelicula", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.usuarios, {as: "usuario", foreignKey: "usuario_id"});
+		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 	};
     return entidad;
 }

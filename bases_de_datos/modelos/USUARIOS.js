@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-    const alias = "usuario";
+    const alias = "usuarios";
     const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		email: {type: dt.STRING(100)},
@@ -35,15 +35,15 @@ module.exports = (sequelize, dt) => {
     const entidad = sequelize.define(alias,columns,config);
 
     entidad.associate = n => {
-        entidad.belongsTo(n.sexo, {as: "sexo", foreignKey: "sexo_id"});
-        entidad.belongsTo(n.pais, {as: "pais", foreignKey: "pais_id"});
-        entidad.belongsTo(n.rol_usuario, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
-		entidad.belongsTo(n.rol_usuario, {as: "ultima_penalizacion_en_rol", foreignKey: "ultima_penalizacion_en_rol_id"});
-        entidad.belongsTo(n.status_usuario, {as: "status_usuario", foreignKey: "status_usuario_id"});
-        entidad.belongsTo(n.estado_eclesial, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
+        entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
+        entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
+        entidad.belongsTo(n.roles_usuarios, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
+		entidad.belongsTo(n.roles_usuarios, {as: "ultima_penalizacion_en_rol", foreignKey: "ultima_penalizacion_en_rol_id"});
+        entidad.belongsTo(n.status_usuarios, {as: "status_usuario", foreignKey: "status_usuario_id"});
+        entidad.belongsTo(n.estados_eclesiales, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
 
-		entidad.hasMany(n.us_pel_calificacion, {as: "us_pel_calificaciones",foreignKey: "usuario_id"});
-		entidad.hasMany(n.us_pel_calificacion, {as: "us_pel_interes",foreignKey: "usuario_id"});
+		entidad.hasMany(n.us_pel_calificaciones, {as: "us_pel_calificaciones",foreignKey: "usuario_id"});
+		entidad.hasMany(n.us_pel_interes, {as: "us_pel_interes",foreignKey: "usuario_id"});
 
     };
 

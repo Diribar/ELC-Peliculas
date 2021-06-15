@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "status_usuario";
+	const alias = "status_usuarios";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		nombre: {type: dt.STRING(50)}
@@ -8,15 +8,9 @@ module.exports = (sequelize, dt) => {
 		tableName: "status_usuario",
 		timestamps: false
 	};
-
 	const entidad = sequelize.define(alias,columns,config);
-
 	entidad.associate = n => {
-		entidad.hasMany(n.usuario, {
-			as: "usuarios",
-			foreignKey: "status_usuario_id"
-		});
+		entidad.hasMany(n.usuarios, {as: "usuarios", foreignKey: "status_usuario_id"});
 	};
-
 	return entidad;
 };
