@@ -36,17 +36,13 @@ app.set('views', [
 let rutaECC = require("./controladores y rutas/1-Institucional/Institucional-Ruta");
 let rutaUsuarios = require("./controladores y rutas/2-Usuarios/Usuarios-Ruta");
 let rutaLogin = require("./controladores y rutas/2-Usuarios/Login-Ruta");
-//let rutaColeccion = require("./controladores y rutas//3colecciones");
-let rutaPelis = require("./controladores y rutas/3-Peliculas/Peliculas-Ruta");
-//let rutaPaises = require('./controladores y rutas/paisesRuta.js');
-//app.use('/paises', rutaPaises)
-//let rutaUsuarioPais = require('./controladores y rutas/usuarioPaisRuta');
-//app.use('/UsuarioPais', rutaUsuarioPais)
-app.use('/', rutaECC)					// Acerca de Nosotros, Contáctanos
-app.use('/usuarios', rutaUsuarios)		// Usuarios
-app.use('/login', rutaLogin)			// Login
-app.use('/colecciones', rutaPelis)	// Colecciones
-app.use('/peliculas', rutaPelis)		// Películas
+let rutaColeccion = require("./controladores y rutas/3-Peliculas/Colecciones-Ruta");
+let rutaPelicula = require("./controladores y rutas/3-Peliculas/Peliculas-Ruta");
+app.use('/usuarios', rutaUsuarios)
+app.use('/login', rutaLogin)
+app.use("/colecciones", rutaColeccion);
+app.use("/peliculas", rutaPelicula);
+app.use('/', rutaECC)
 
 // ************************ Errores *******************************
 //app.use((req,res) => {res.status(404).render('not found')})
