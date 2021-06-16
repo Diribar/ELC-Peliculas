@@ -4,7 +4,7 @@ const path = require('path');
 const fetch = require('node-fetch');
 
 // ************ Variables ************
-const API_key = path.join(__dirname, '../../backup/API_key.json');
+const API_key = path.join(__dirname, '../../backup/varios/API_key.json');
 
 // ************ Funciones ************
 function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
