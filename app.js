@@ -33,14 +33,14 @@ app.set('views', [
 ]);
 
 // ************************* Rutas ********************************
-let rutaECC = require("./controladores y rutas/rutas/0_Institucional");
-let rutaUsuarios = require("./controladores y rutas/rutas/1_Usuarios");
-let rutaLogin = require('./controladores y rutas/rutas/2_Login');
-//let rutaColeccion = require("./controladores y rutas/rutas/3colecciones");
-let rutaPelis = require('./controladores y rutas/rutas/4_Peliculas');
-//let rutaPaises = require('./controladores y rutas/rutas/paisesRuta.js');
+let rutaECC = require("./controladores y rutas/0-Institucional-Ruta");
+let rutaUsuarios = require("./controladores y rutas/1-Usuarios-Ruta");
+let rutaLogin = require("./controladores y rutas/2-Login-Ruta");
+//let rutaColeccion = require("./controladores y rutas//3colecciones");
+let rutaPelis = require("./controladores y rutas/4-Peliculas-Ruta");
+//let rutaPaises = require('./controladores y rutas/paisesRuta.js');
 //app.use('/paises', rutaPaises)
-//let rutaUsuarioPais = require('./controladores y rutas/rutas/usuarioPaisRuta');
+//let rutaUsuarioPais = require('./controladores y rutas/usuarioPaisRuta');
 //app.use('/UsuarioPais', rutaUsuarioPais)
 app.use('/', rutaECC)					// Acerca de Nosotros, Contáctanos
 app.use('/usuarios', rutaUsuarios)		// Usuarios

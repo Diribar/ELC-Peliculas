@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
-const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
-const metodosOtros = require(path.join(__dirname, "../../modelos/BD_otros"));
+const metodosUsuario = require(path.join(__dirname, "../modelos/BD_usuarios"));
+const metodosOtros = require(path.join(__dirname, "../modelos/BD_otros"));
 
 // ************ Variables ************
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");

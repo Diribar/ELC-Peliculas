@@ -1,7 +1,7 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const colecciones = require('../controladores/3_Colecciones')
+const colecciones = require("./3-Colecciones-Contr");
 
 //************************ Middlewares ******************************
 const soloUsuarios = require('../../middlewares/usuarios/soloUsuarios');
