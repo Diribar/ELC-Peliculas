@@ -15,9 +15,6 @@ const importarB = require("../../middlewares/PEL-1B-importar_x_copy/importarB");
 const uploadFile = require("../../middlewares/varios/multer");
 
 //******************* Controladores de CRUD *************************
-
-
-
 // -- Importar Datos --------------------------
 router.get("/agregar1", soloUsuarios, colecciones.altaForm1);
 router.post('/agregar1A', soloUsuarios, validar1A, importarA, colecciones.altaGuardar1);

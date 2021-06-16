@@ -3,10 +3,10 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		categoria_id: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(20)}
+		nombre: {type: dt.STRING(50)}
 	};
 	const config = {
-		tableName: "subcategorias",
+		tableName: "categorias_sub",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);
