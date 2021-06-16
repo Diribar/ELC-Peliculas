@@ -1,12 +1,12 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const login = require("./2-Login-Contr");
+const login = require("./Login-Contr");
 
 //************************ Middlewares ******************************
-const validarLogin = require('../middlewares/usuarios/validar0-Login');
-const soloVisitas = require('../middlewares/usuarios/soloVisitas');
-const soloUsuarios = require('../middlewares/usuarios/soloUsuarios');
+const validarLogin = require("../../middlewares/usuarios/validar0-Login");
+const soloVisitas = require("../../middlewares/usuarios/soloVisitas");
+const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 //**************************** Login ********************************
 router.get('/', soloVisitas, login.loginForm)

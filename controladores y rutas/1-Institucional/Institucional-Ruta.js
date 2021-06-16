@@ -1,7 +1,7 @@
 // Requires ************************************************
 const express= require('express');
 const router = express.Router();
-const controlador = require('./0-Institucional-Contr');
+const controlador = require('./Institucional-Contr');
 
 // Controladores *******************************************
 router.get('/', controlador.home) 				// Redirecciona a Películas
