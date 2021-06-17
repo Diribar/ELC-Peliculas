@@ -16,18 +16,18 @@ const uploadFile = require("../../middlewares/varios/multer");
 // -- Responsabilidad -------------------------
 router.get("/agregar", soloUsuarios, colecc_pelic.responsabilidad);
 // -- Importar Datos --------------------------
-router.get("/agregar1", soloUsuarios, colecc_pelic.alta1_IN);
-router.post('/agregar1', soloUsuarios, validar1, colecc_pelic.alta1_OUT);
+router.get("/agregar1", soloUsuarios, colecc_pelic.agregar1Form);
+router.post('/agregar1', soloUsuarios, validar1, colecc_pelic.agregar1Guardar);
 
 // -- Desambiguar --------------------------
 
 // -- Datos Duros -----------------------------
-router.get("/agregar2", soloUsuarios, peliculas.altaForm2);
-router.post("/agregar2", soloUsuarios, validar2, peliculas.altaGuardar2);
+router.get("/agregar2", soloUsuarios, peliculas.agregar2Form);
+router.post("/agregar2", soloUsuarios, validar2, peliculas.agregar2Guardar);
 
 // -- Datos Adicionales -----------------------
-router.get("/agregar3", soloUsuarios, peliculas.altaForm3);
-router.post('/agregar3', soloUsuarios, uploadFile.single('imagen'), validar3, peliculas.altaGuardar3);
+router.get("/agregar3", soloUsuarios, peliculas.agregar3Form);
+router.post('/agregar3', soloUsuarios, uploadFile.single('imagen'), validar3, peliculas.agregar3Guardar);
 
 // -- RUD (GET) --------------------------
 router.get("/detalle/editar/:id", soloUsuarios, peliculas.detalle);

@@ -8,20 +8,19 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 
-	alta1_IN: (req, res) => {
-		// Obtener el código de Película o Colección
-		let [rubro, titulo] = datos(req);
+	agregar1Form: (req, res) => {
 		return res.render("1-ImportarDatos", {
-			rubro,
-			titulo,
+			rubro: "peliculas",
+			titulo: "Película",
 		});
 	},
 
-	alta1_OUT: (req, res) => {
+	agregar1Guardar: (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
-		let [rubro, titulo] = datos(req);
+		let rubro = req.body.rubro;
+		rubro == "peliculas" ? titulo = "Película" : titulo = "Colección";
 		if (existenErrores) {
 			return res.render("1-ImportarDatos", {
 				rubro,
@@ -49,9 +48,7 @@ module.exports = {
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
 		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
-		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await datos(
-			opcion
-		);
+		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await vistas(opcion);
 		// Ir a la vista
 		res.render("0-Opciones", {
 			titulo,
@@ -67,9 +64,7 @@ module.exports = {
 		let url = req.url.slice(1);
 		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
 		let opcion = url.slice(0, url.indexOf("/"));
-		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await datos(
-			opcion
-		);
+		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await vistas(opcion);
 		// Obtener el Tipo elegido
 		let tipoElegido = tipos_BD.filter((n) => n.url == url)[0];
 		// Ir a la vista
@@ -119,12 +114,4 @@ const vistas = async (opcion) => {
 			.then((n) => n[0].titulo));
 	// Exportar los datos
 	return [opciones_BD, opcionElegida, tipos_BD, titulo];
-};
-
-const codigo = (req) => {
-	// Obtener el código de Película o Colección
-	let url = req.originalUrl.slice(1);
-	let rubro = url.slice(0, url.indexOf("/"));
-	rubro == "peliculas" ? (titulo = "Película") : (titulo = "Colección");
-	return [rubro, titulo];
 };

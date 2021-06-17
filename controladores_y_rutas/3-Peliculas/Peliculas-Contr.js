@@ -11,18 +11,18 @@ const {validationResult} = require('express-validator');
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm2: (req, res) => {
+	agregar2Form: (req, res) => {
 		// return res.send(req.session.agregarPelicula.imagen)
-		return res.render("AgregarForm2", {
+		return res.render("Agregar2Form", {
 			data_entry: req.session.agregarPelicula,
 		});
 	},
 
-	altaGuardar2: (req, res) => {
+	agregar2Guardar: (req, res) => {
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
-			return res.render("AgregarForm2", {
+			return res.render("Agregar2Form", {
 				data_entry: req.body,
 				errores: erroresValidacion.mapped(),
 			});
@@ -30,11 +30,11 @@ module.exports = {
 		return res.send("sin errores");
 	},
 
-	altaForm3: (req, res) => {
-		return res.render("AgregarForm3", {});
+	agregar3Form: (req, res) => {
+		return res.render("Agregar3Form", {});
 	},
 
-	altaGuardar3: (req, res) => {
+	agregar3Guardar: (req, res) => {
 		return res.send("Estoy en guardar3");
 	},
 

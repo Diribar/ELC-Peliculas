@@ -16,12 +16,12 @@ const uploadFile = require("../../middlewares/varios/multer");
 
 
 // -- Datos Duros -----------------------------
-router.get("/agregar2", soloUsuarios, colecciones.altaForm2);
-router.post("/agregar2", soloUsuarios, validar2, colecciones.altaGuardar2);
+router.get("/agregar2", soloUsuarios, colecciones.agregar2Form);
+router.post("/agregar2", soloUsuarios, validar2, colecciones.agregar2Guardar);
 
 // -- Datos Adicionales -----------------------
-router.get("/agregar3", soloUsuarios, colecciones.altaForm3);
-router.post('/agregar3', soloUsuarios, uploadFile.single('imagen'), validar3, colecciones.altaGuardar3);
+router.get("/agregar3", soloUsuarios, colecciones.agregar3Form);
+router.post('/agregar3', soloUsuarios, uploadFile.single('imagen'), validar3, colecciones.agregar3Guardar);
 
 // -- RUD (GET) --------------------------
 router.get("/detalle/editar/:id", soloUsuarios, colecciones.detalle);
