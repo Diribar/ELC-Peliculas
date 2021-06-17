@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Películas</title>
+  <!--NORMALIZE--><link rel="stylesheet" href="/css/normalize.css">
+  <!--SÍMBOLOS--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <!--FONTS--> <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+  <!--ESTILOS PERSONALIZADOS-->
+    <link rel="stylesheet" href="/css/0-HOME-0-BODY.css">
+    <link rel="stylesheet" href="/css/0-HOME-1-HEADER.css">
+    <link rel="stylesheet" href="/css/1-PELICULAS-MAIN.css">
+    <link rel="stylesheet" href="/css/0-HOME-3-FOOTER.css">
+    <link rel="stylesheet" href="/css/0-HOME-4-MEDIA-QUERIES.css">
+    <link rel="stylesheet" href="/css/imprimir.css" media="print">
+</head>
+<body>
+  <header>
+    <!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+    <!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
+    <p>El Consejero Católico</p>
+    <i class="fas fa-user-circle user-id"></i>
+    <i class="fas fa-video rubro"></i>
+  </header>
+  <main>
+    <section id="Main-y-Footer">
+      <section id="Main">
+        <div id="Filtros">
+          <form class="flex" action="" method="GET"><!--Público Recomendado-->
+            <label>Público Recomendado</label>
+            <select name="público">
+              <option value="SF" selected>Sin Filtro</option>
+              <option value="FM">Familia</option>
+              <option value="MY">Mayores</option>
+              <option value="MN">Menores</option>
+            </select>
+          </form>
+          <!--Agregar ATP (SF/SI)-->
+          <form class="flex" action="" method="GET"><!--Centradas en la Fe Católica-->
+            <label>Centradas en la Fe Católica</label>
+            <select name="ELC-VPC">
+              <option value="SF" selected>Sin Filtro</option>
+              <option value="ELC">SI</option>
+              <option value="VPC">NO</option>
+            </select>
+          </form>
+          <form class="flex" action="" method="GET"><!--Incluir Películas Descartadas-->
+            <label>Incluir Películas Descartadas</label>
+            <select name="Descartadas">
+              <option value="NO" selected>NO</option>
+              <option value="SI">Sin Filtro</option>
+              <option value="SD" >Sólo descartadas</option>
+            </select>
+          </form>
+          <form class="flex" action="" method="GET"><!--Década de Estreno-->
+            <label>Década de Estreno</label>
+            <select name="década">
+              <option value="SF" selected>Sin Filtro</option>
+              <option value="1970">< 1970</option>
+              <option value="1999">1970-1999</option>
+              <option value="2019">2000-2014</option>
+              <option value="2019">2015 en adelante</option>
+            </select>
+          </form>
+          <div id="búsqueda"> <!--BÚSQUEDA-->
+            <input type="text" placeholder="Texto de búsqueda">
+            <button><i class="fas fa-search"></i></button>
+          </div>
+          <div><!--Íconos y botones-->
+            <!--Agregar ícono de grabar-->
+            <!--Contador de cantidad de películas con este filtro-->
+            <button type="reset">Limpiar Filtros</button>
+            <button type="submit">Aplicar Filtros</button>
+          </div>
+        </div>
+        <div id="Cuerpo"><!--MENÚ DE OPCIONES-->
+          <p><button id="Título">Menú de Opciones</button></p>
+          <select name="opción">
+            <a href=""><option value="MA" selected>Sugeridas para el momento del año</option></a>
+            <a href=""><option value="CFC">Centradas en la Fe Católica</option></a>
+            <a href=""><option value="VPC">Valores Presentes en la Cultura</option></a>
+            <a href=""><option value="CAL">TODAS - Por orden de calificación en nuestra página</option></a>
+            <a href=""><option value="AÑO">TODAS - Por año de estreno</option></a>
+            <a href=""><option value="INC">TODAS - Por orden de incorporación a nuestra base de datos</option></a>
+            <a href=""><option value="AÑO">VISITADAS - Por orden de visita</option></a>
+          </select>
+        </div>
+      </section>
+      <footer>
+        <i class="fas fa-home"></i>
+        <p>Quiénes Somos</p>
+        <p>Contactanos</p>
+      </footer>    
+    </section>
+    <section id="Sagrada-Familia">
+      <img src="/img/Sagrada Familia.jpg" alt="Sagrada Familia">
+    </section>
+  </main>
+</body>
+</html>

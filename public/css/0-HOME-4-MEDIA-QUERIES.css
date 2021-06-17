@@ -1,0 +1,11 @@
+/* FORMATO PARA MOBILE */
+@media (max-width: 450px) {header p {font-size: xx-large;}}
+@media (max-width: 768px) {main #Sagrada-Familia {display:none}}
+
+/* FORMATO PARA TABLET */
+@media (min-width: 768px) {}
+
+/* FORMATO PARA DESKTOP */
+@media (min-width: 1200px) {main section article {width:22%}}
+
+/* FORMATO PARA IMPRIMIR EN HOJA A4 */
