@@ -1,0 +1,110 @@
+[
+	{
+		"opcion": "listado",
+		"nombre": "Sugeridas para el momento del año",
+		"codigo": "sugeridas",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "listado",
+		"nombre": "Por orden de calificación en nuestra página",
+		"codigo": "calificacion",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "listado",
+		"nombre": "Por año de estreno",
+		"codigo": "estreno",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "listado",
+		"nombre": "Por orden de incorporación a nuestra base de datos",
+		"codigo": "incorporacion",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "listado",
+		"nombre": "Por orden de visita",
+		"codigo": "visita",
+		"campo": "Usuario"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Jesús",
+		"codigo": "jesus",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Contemporáneos de Jesús",
+		"codigo": "contemporaneos",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Apariciones Marianas",
+		"codigo": "marianas",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Hagiografías",
+		"codigo": "hagiografias",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Historias de la Iglesia",
+		"codigo": "historias",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Novelas centradas en la fe",
+		"codigo": "novelas",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Colecciones",
+		"codigo": "colecciones",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "cfc",
+		"nombre": "Documentales",
+		"codigo": "documentales",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "vpc",
+		"nombre": "Biografías e Historias",
+		"codigo": "bios-e-historias",
+		"campo": "Pelis"
+	}, 
+	{
+		"opcion": "vpc",
+		"nombre": "Matrimonio y Familia",
+		"codigo": "matrimonio-y-familia",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "vpc",
+		"nombre": "Novelas",
+		"codigo": "novelas",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "vpc",
+		"nombre": "Musicales",
+		"codigo": "musicales",
+		"campo": "Pelis"
+	},
+	{
+		"opcion": "vpc",
+		"nombre": "Colecciones",
+		"codigo": "colecciones",
+		"campo": "Pelis"
+	}
+]

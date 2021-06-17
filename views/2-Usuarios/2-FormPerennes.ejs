@@ -1,0 +1,57 @@
+<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
+<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
+<%- include('0-AntesUS', {titulo: "Registro de Datos Perennes"}) %>
+
+<!--**************************** CUERPO ******************************-->
+<section id="Form" class="flex-col">
+	<p id="tapar-el-fondo"></p>
+	<form action="<%= link %>" method="POST">
+		<h1>Registro de Datos Perennes</h1>
+		<section class="label-input flex-row"><!--Nombre-->
+			<label for="nombre">Nombre</label>
+			<div class="form-grupo">
+				<% let nombre=""; if (locals.data_entry) {nombre = data_entry.nombre} %>
+				<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
+				<% if (locals.errores && errores.nombre) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.nombre.msg %> </span></i><% } %>
+				<% if (locals.errores && !errores.nombre) { %><i class="fas fa-check-circle"></i><% } %>	
+			</div>
+		</section>
+		<section class="label-input flex-row"><!--Apellido-->
+			<label for="apellido">Apellido</label>
+			<div class="form-grupo">
+				<% let apellido=""; if (locals.data_entry) {apellido = data_entry.apellido} %>
+				<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
+				<% if (locals.errores && errores.apellido) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.apellido.msg %> </span></i><% } %>
+				<% if (locals.errores && !errores.apellido) { %><i class="fas fa-check-circle"></i><% } %>
+			</div>
+		</section>
+		<section class="label-input flex-row"><!--Sexo-->
+			<label for="sexo">Sexo</label>
+			<div class="form-grupo">
+				<% let sexo=""; if (locals.data_entry) {sexo = data_entry.sexo} %>
+				<select name="sexo" class="input">
+					<option value="" <% if (sexo=="") {%> selected <%}%> style="display: none;">Elegí una opción</option>
+					<option value="F" <% if (sexo=="F") {%> selected <%}%>>Femenino</option>
+					<option value="M" <% if (sexo=="M") {%> selected <%}%>>Masculino</option>
+				</select>
+				<% if (locals.errores && errores.sexo) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.sexo.msg %> </span></i><% } %>
+				<% if (locals.errores && !errores.sexo) { %><i class="fas fa-check-circle"></i><% } %>
+			</div>
+		</section>
+		<section class="label-input flex-row"><!--Fecha de Nacimiento-->
+			<label for="fechaNacimiento">Fecha de Nacimiento</label>
+			<div class="form-grupo">
+				<% let fecha=""; if (locals.data_entry) {fecha = data_entry.fechaNacimiento} %>
+				<input type="date" name="fechaNacimiento" class="input" value="<%= fecha %>">
+				<% if (locals.errores && errores.fechaNacimiento) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.fechaNacimiento.msg %> </span></i><% } %>
+				<% if (locals.errores && !errores.fechaNacimiento) { %><i class="fas fa-check-circle"></i><% } %>
+			</div>
+		</section>
+		<section id="buttons" class="flex-row"><!--Buttons-->
+			<button type="submit">Aceptar</button>
+			<a href="<%= locals.urlReferencia %>"><button type="button">Cancelar</button></a>
+		</section>
+	</form>
+</section>
+<!--****************************** FIN *******************************-->
+<%- include('0-DespuesUS') %>

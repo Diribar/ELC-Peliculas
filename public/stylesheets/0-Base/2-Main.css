@@ -1,0 +1,16 @@
+/* CONFIGURAR SECCIONES */
+main.flex-row {flex-direction: row-reverse;}
+main #main-y-footer {flex-direction: column-reverse;justify-content:space-between;}
+
+/* CONFIGURAR IMAGEN */
+#imagen-derecha img {height: 100%;}
+
+/* ESTILOS Y CLASES */
+main h1 {font-size: 1.2rem;}
+main h2 {font-size: 1.15rem;}
+
+/* Configuración del cuerpo */
+main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; font-weight: bold;}
+main .cuerpo .titulo {font-family: var(--Arial);font-size: 1.2rem; background-color: var(--amarillo-claro); margin-top: 30px;}
+main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul); margin-top: 30px;}
+main .margen-izquierdo {margin-left: 40px;}

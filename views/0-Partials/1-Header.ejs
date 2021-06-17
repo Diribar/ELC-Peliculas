@@ -1,0 +1,66 @@
+<body>
+	<header>
+		<!-- Logo de Home -->
+		<section id="rubro-contenedor" class="pointer">
+			<i class="fas fa-home icono" id="rubro-button"></i>
+			<div id="menu-rubro" class="dropdown-content">
+				<a href="/peliculas">Inicio</a>
+				<hr>
+				<a href="/nosotros">Acerca de Nosotros</a>
+				<a href="#">Nuestra Historia</a>
+				<a href="#">Nuestra política sobre <i class="far fa-copyright"></i></a>
+				<hr>
+				<a href="#">Contactanos</a>
+				<hr>
+				<a href="#">Grupo ELC</a>
+			</div>
+		</section>
+		<!-- Logo de Crear/Menú de Película -->
+		<section>
+			<% if (titulo.includes("Detalle")) { %>
+			<i
+				onclick="desplegable('menu-pelis')"
+				class="boton-desplegable fas fa-video icono"
+			></i>
+			<%- include("HeaderPelis") %> <% } else { %>
+			<a href="/peliculas/agregar">
+				<i class="fas fa-video icono"></i
+				><i class="icono" id="plus">+</i>
+			</a>
+			<% } %>
+		</section>
+		<!-- Título del Encabezado -->
+		<section>
+			<p><a>Evangelicemos la Cultura</a></p>
+		</section>
+		<!-- Logo de usuario o Avatar -->
+		<section>
+			<div id="usuario-contenedor" class="pointer">
+				<% if(locals.usuario && locals.usuario.avatar) { %>
+				<img
+					src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>"
+					class="desplegableUsuario"
+					id="imagenUsuario"
+				/>
+				<% } else { %>
+				<i class="desplegableUsuario fas fa-user-circle icono"></i>
+				<% } %>
+			</div>
+			<div id="menu-usuario" class="dropdown-content">
+				<% if (locals.usuario) { %>
+					<a href="/usuarios/detalle">Mi usuario</a>
+					<a href="#">Mis estadísticas</a>
+					<hr />
+					<a href="/login/logout">Logout</a>
+				<% } else { %>
+					<a href="/login">Login</a>
+					<a href="/usuarios/registro-mail">Registrarse</a>
+				<% } %>
+			</div>
+		</section>
+
+		<!-- MÚSICA DE FONDO PARA ECC -->
+		<!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+		<!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
+	</header>
+</body>

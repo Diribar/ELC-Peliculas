@@ -1,0 +1,13 @@
+.absolute {position: absolute; top:0px; left: 0px}
+.align-center {align-items: center;}
+.pointer {cursor: pointer;}
+.border {border: red 1px solid}
+.cursiva {font-style: italic;}
+.dropdown-content {display: none;}
+.flex-col {display: flex;flex-direction: column;}
+.flex-row {display: flex;flex-direction: row;}
+.grow {flex-grow: 1;}
+.mostrar {display: block;}
+.ocultar {display: none;}
+.relative {position: relative;}
+.space-between {justify-content: space-between;}
