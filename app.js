@@ -39,12 +39,11 @@ app.set("views", [
 let rutaECC = require("./controladores_y_rutas/1-Institucional/Institucional-Ruta");
 let rutaUsuarios = require("./controladores_y_rutas/2-Usuarios/Usuarios-Ruta");
 let rutaLogin = require("./controladores_y_rutas/2-Usuarios/Login-Ruta");
-let rutaColeccion = require("./controladores_y_rutas/3-Peliculas/COL-CRUD-Ruta");
-let rutaPelicula = require("./controladores_y_rutas/3-Peliculas/Peliculas-Ruta");
+let rutaAmbas = require("./controladores_y_rutas/3-Peliculas/Ambas-Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
-app.use("/colecciones", rutaColeccion);
-app.use("/peliculas", rutaPelicula);
+app.use("/colecciones", rutaAmbas);
+app.use("/peliculas", rutaAmbas);
 app.use("/", rutaECC);
 
 // ************************ Errores *******************************
