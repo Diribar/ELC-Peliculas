@@ -4,7 +4,7 @@ const router = express.Router();
 const login = require("./Login-Contr");
 
 //************************ Middlewares ******************************
-const validarLogin = require("../../middlewares/usuarios/validar0-Login");
+const validarLogin = require("../../middlewares/validarUserForms/validar0-Login");
 const soloVisitas = require("../../middlewares/usuarios/soloVisitas");
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 

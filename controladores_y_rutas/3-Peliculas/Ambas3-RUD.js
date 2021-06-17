@@ -1,5 +1,4 @@
 // ************ Requires ************
-const {validationResult} = require('express-validator');
 
 // ************ Variables ************
 // const fs = require('fs');

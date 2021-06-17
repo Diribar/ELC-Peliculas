@@ -4,9 +4,9 @@ const router = express.Router();
 const usuariosController = require("./Usuarios-Contr");
 
 //************************ Middlewares ******************************
-const validarMail = require("../../middlewares/usuarios/validar1-Mail");
-const validarPerennes = require("../../middlewares/usuarios/validar2-Perennes");
-const validarEditables = require("../../middlewares/usuarios/validar3-Editables");
+const validarMail = require("../../middlewares/validarUserForms/validar1-Mail");
+const validarPerennes = require("../../middlewares/validarUserForms/validar2-Perennes");
+const validarEditables = require("../../middlewares/validarUserForms/validar3-Editables");
 const soloVisitas = require("../../middlewares/usuarios/soloVisitas");
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 const uploadFile = require("../../middlewares/varios/multer");
