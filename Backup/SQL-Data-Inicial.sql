@@ -21,17 +21,18 @@ VALUES (1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.C
 INSERT INTO categorias (id, nombre)
 VALUES ('CFC', 'Centradas en la Fe Católica'), ('VPC', 'Valores Presentes en la Cultura')
 ;
-INSERT INTO categorias_sub (id, categoria_id, nombre)
-VALUES (1, 'CFC', 'Jesús'), (2, 'CFC', 'Contemporáneos de Jesús'), (3, 'CFC', 'Apariciones Marianas'), (4, 'CFC', 'Hagiografías'), (5, 'CFC', 'Historias de la Iglesia'), (6, 'CFC', 'Novelas centradas en la fe'), (7, 'CFC', 'Colecciones'), (11, 'VPC', 'Biografías e Historias'), (12, 'VPC', 'Matrimonio y Familia'), (13, 'VPC', 'Novelas'), (14, 'VPC', 'Musicales'), (15, 'VPC', 'Colecciones')
+INSERT INTO categorias_sub (id, categoria_id, nombre, url)
+VALUES (1, 'CFC', 'Jesús', 'jesus'), (2, 'CFC', 'Contemporáneos de Jesús', 'contemporaneos'), (3, 'CFC', 'Apariciones Marianas', 'marianas'), (4, 'CFC', 'Hagiografías', 'hagiografias'), (5, 'CFC', 'Historias de la Iglesia', 'historias'), (6, 'CFC', 'Novelas centradas en la fe', 'novelas'), (7, 'CFC', 'Colecciones', 'colecciones'), (8, 'CFC', 'Documentales', 'documentales'), (11, 'VPC', 'Biografías e Historias', 'bios-e-historias'), (12, 'VPC', 'Matrimonio y Familia', 'matrimonio-y-familia'), (13, 'VPC', 'Novelas', 'novelas'), (14, 'VPC', 'Musicales', 'musicales'), (15, 'VPC', 'Colecciones', 'colecciones')
+;
+INSERT INTO listado_peliculas (id, nombre, url)
+VALUES (1, 'Sugeridas para el momento del año', 'listado/sugeridas'), (2, 'Por orden de calificación en nuestra página', 'listado/calificacion'), (3, 'Por año de estreno', 'listado/estreno'), (4, 'Por orden de incorporación a nuestra base de datos', 'listado/incorporacion'), (5, 'Por orden de visita', 'listado/visita')
 ;
 
-INSERT INTO listados (id, nombre)
+INSERT INTO menu_opciones (id, nombre, url, titulo, comentario)
 VALUES 
-(1, 'Sugeridas para el momento del año'), 
-(2, 'Por orden de calificación en nuestra página'), 
-(3, 'Por año de estreno'), 
-(4, 'Por orden de incorporación a nuestra base de datos'), 
-(5, 'Por orden de visita')
+(1, 'Listado de Películas', 'listado', 'Listado', 'Todas las películas de nuestra Base de Datos'),
+(2, 'Un paseo por CFC', 'cfc', 'CFC', 'Películas Centradas en la Fe Católica (CFC)'),
+(3, 'Un paseo por VPC', 'vpc', 'VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
 ;
 
 INSERT INTO publicos_recomendados (id, nombre)

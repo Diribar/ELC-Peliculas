@@ -1,77 +1,55 @@
 // ************ Requires ************
-const fs = require("fs");
-const path = require("path");
-
-// ************ Funciones ************
-leer = (n) => {return JSON.parse(fs.readFileSync(n, "utf-8"))}
+const tablasVarias = require("../../modelos/BD_varios");
 
 // ************ Variables ************
-const ruta_nombre_opciones = path.join(__dirname, "../../bases_de_datos/tablas/menuOpciones.json");
+//const ruta_nombre_opciones = path.join(__dirname, "../../bases_de_datos/tablas/menuOpciones.json");
 //const ruta_nombre_tipos = path.join(__dirname, '../../bases_de_datos/tablas/menuTipos.json');
 
 // *********** Controlador ***********
 module.exports = {
-	rubro: (req, res) => {
-		// Ir a la vista
+	rubro: async (req, res) => {
+		// Obtener las opciones
+		let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
+		//res.send(opciones_BD);
 		res.render("0-Opciones", {
 			titulo: "Películas",
-			rubro_url: "peliculas",
-			opcion_url: null,
-			tipo_url: null,
-			opcion_objeto: { grupo: "Opciones" },
-			opciones_BD: leer(ruta_nombre_opciones),
+			opciones_BD,
+			opcionElegida: null,
 		});
 	},
 
-	opcion: (req, res) => {
-		// Obtener el código de la opción elegida (listado, cfc, vpc)
-		let opcion_url = req.url.slice(1);
-		let tipo_url = null;
-		// Obtener el código del rubro elegido (en esta caso: peliculas)
-		let rubro_url = req.originalUrl;
-		rubro_url = rubro_url.slice(1, rubro_url.lastIndexOf("/"));
-		// Obtener el título (rubro + opción)
-		let opciones_BD = leer(ruta_nombre_opciones);
-		let opcion_objeto = opciones_BD.find((n) => n.codigo == opcion_url);
-		let titulo = "Películas-" + opcion_objeto.titulo;
-		// Definir variables a enviar a la vista
-
-		//let tipos_BD = leer(ruta_nombre_tipos).filter(n => n.opcion == opcion_url);
+	opcion: async (req, res) => {
+		// Averiguar la opción elegida
+		let opcion = req.url.slice(1);
+		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await datos(opcion);
 		// Ir a la vista
 		res.render("0-Opciones", {
 			titulo,
-			rubro_url,
-			opcion_url,
-			tipo_url,
-			opcion_objeto,
 			opciones_BD,
 			tipos_BD,
+			opcionElegida,
+			tipoElegido: null,
 		});
 	},
 
-	tipo: (req, res) => {
-		// Obtener el código de Rubro, Opción, Tipo
-		let url = req.originalUrl.slice(1);
-		let rubro_url = url.slice(0, url.indexOf("/"));
-		let opcion_url = url.slice(url.indexOf("/") + 1, url.lastIndexOf("/"));
-		let tipo_url = url.slice(url.lastIndexOf("/") + 1);
-		// Obtener el título (rubro + opción)
-		let opciones_BD = leer(ruta_nombre_opciones);
-		let opcion_objeto = opciones_BD.find((n) => n.codigo == opcion_url);
-		let titulo = "Películas-" + opcion_objeto.titulo;
-		// Obtener el tipo_objeto
-		let tipos_BD = leer(ruta_nombre_tipos).filter((n) => n.opcion == opcion_url);
-		let tipo_objeto = tipos_BD.find((n) => n.codigo == tipo_url);
+	tipo: async (req, res) => {
+		// Obtener el código de Opción y Tipo
+		let url = req.url.slice(1);
+		// Averiguar la opción elegida
+		let opcion = url.slice(0, url.indexOf("/"));
+		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await datos(opcion);
+		// Obtener el Tipo elegido
+		let tipoElegido = tipos_BD.filter((n) => n.url == url)[0];
+		//return res.send(tipoElegido);
 		// Ir a la vista
 		res.render("0-Opciones", {
 			titulo,
-			rubro_url,
-			opcion_url,
-			tipo_url,
-			opcion_objeto,
-			tipo_objeto,
 			opciones_BD,
 			tipos_BD,
+			opcionElegida,
+			tipoElegido,
 		});
 	},
 
@@ -88,3 +66,26 @@ module.exports = {
 		//	res.render('pagina-de-resultados', results);
 	},
 };
+
+
+const datos = async (opcion) => {
+	// Obtener las Opciones
+	let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
+	let opcionElegida = opciones_BD.filter((n) => n.url == opcion)[0];
+	// Obtener los Tipos de la opción elegida
+	if (opcion == "listado") {
+		tipos_BD = await tablasVarias.ObtenerTodos("listado_peliculas");
+	} else {
+		tipos_BD = await tablasVarias.ObtenerFiltrandoPorCampo(
+			"subcategorias",
+			"categoria_id",
+			opcion.toUpperCase()
+		);
+	}
+	// Obtener el Título de la opción elegida
+	let titulo = "Películas - " + await tablasVarias
+		.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
+		.then((n) => n[0].titulo);
+	// Exportar los datos
+	return ([opciones_BD, opcionElegida, tipos_BD, titulo]);
+}

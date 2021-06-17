@@ -1,9 +1,10 @@
 module.exports = (sequelize, dt) => {
 	const alias = "subcategorias";
 	const columns = {
-		id: {type: dt.INTEGER, primaryKey: true},
-		categoria_id: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(50)}
+		id: { type: dt.INTEGER, primaryKey: true },
+		categoria_id: { type: dt.INTEGER },
+		nombre: { type: dt.STRING(50) },
+		url: { type: dt.STRING(20) },
 	};
 	const config = {
 		tableName: "categorias_sub",
