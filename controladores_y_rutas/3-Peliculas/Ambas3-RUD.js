@@ -1,5 +1,4 @@
 // ************ Requires ************
-const tablasVarias = require("../../modelos/BD_varios");
 const {validationResult} = require('express-validator');
 
 // ************ Variables ************
@@ -11,33 +10,6 @@ const {validationResult} = require('express-validator');
 
 // *********** Controlador ***********
 module.exports = {
-	agregar2Form: (req, res) => {
-		// return res.send(req.session.agregarPelicula.imagen)
-		return res.render("Agregar2Form", {
-			data_entry: req.session.agregarPelicula,
-		});
-	},
-
-	agregar2Guardar: (req, res) => {
-		const erroresValidacion = validationResult(req);
-		//return res.send(erroresValidacion)
-		if (erroresValidacion.errors.length > 0) {
-			return res.render("Agregar2Form", {
-				data_entry: req.body,
-				errores: erroresValidacion.mapped(),
-			});
-		}
-		return res.send("sin errores");
-	},
-
-	agregar3Form: (req, res) => {
-		return res.render("Agregar3Form", {});
-	},
-
-	agregar3Guardar: (req, res) => {
-		return res.send("Estoy en guardar3");
-	},
-
 	detalle: (req, res) => {
 		// Obtener el código de Método y Película
 		let url = req.originalUrl.slice(1);

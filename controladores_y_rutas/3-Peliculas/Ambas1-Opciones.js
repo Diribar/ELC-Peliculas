@@ -1,38 +1,8 @@
 // ************ Requires ************
 const tablasVarias = require("../../modelos/BD_varios");
-const { validationResult } = require("express-validator");
 
 // *********** Controlador ***********
 module.exports = {
-	responsabilidad: (req, res) => {
-		return res.render("0-Responsabilidad");
-	},
-
-	agregar1Form: (req, res) => {
-		return res.render("1-ImportarDatos", {
-			rubro: "peliculas",
-			titulo: "Película",
-		});
-	},
-
-	agregar1Guardar: (req, res) => {
-		//Detectar errores de Data Entry
-		let erroresValidacion = validationResult(req);
-		let existenErrores = erroresValidacion.errors.length > 0;
-		let rubro = req.body.rubro;
-		rubro == "peliculas" ? titulo = "Película" : titulo = "Colección";
-		if (existenErrores) {
-			return res.render("1-ImportarDatos", {
-				rubro,
-				titulo,
-				data_entry: req.body.data_entry,
-				errores: erroresValidacion.mapped(),
-			});
-		}
-		req.session.importarDatos = req.body.data_entry;
-		return res.redirect("/" + rubro + "/desambiguar");
-	},
-
 	home: async (req, res) => {
 		// Obtener las opciones
 		let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
