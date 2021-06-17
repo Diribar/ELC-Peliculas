@@ -12,20 +12,9 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm: (req,res) => {
-		return res.render("AgregarForm")
-	},
-
 	altaForm1: (req, res) => {
-        // Obtener el código de Película o Colección
-        let url = req.originalUrl.slice(1);
-        let rubro = url.slice(0, url.indexOf("/"));
-		rubro == "peliculas" ? titulo = "Película" : titulo = "Colección"
-        return res.render("AgregarForm1", {
-			rubro,
-			titulo,
-		});
-    },
+		return res.render('1-ImportarDatos');
+	},
 
     altaGuardar1: (req,res) => {
 		//Detectar errores de Data Entry
@@ -34,7 +23,7 @@ module.exports = {
 		if (req.body.noSeEncuentraLaPeli) {erroresValidacion.errors.push({"msg": "No se encontró ninguna película con estas palabras clave","param": "palabras_clave","location": "body"})}
         let existenErrores = erroresValidacion.errors.length > 0;
         if (existenErrores) {
-			return res.render("AgregarForm1", {
+			return res.render("1-ImportarDatos", {
 				data_entry: req.body,
 				errores: erroresValidacion.mapped(),
 			})

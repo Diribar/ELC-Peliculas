@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "categorias";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
-		nombre: {type: dt.STRING(20)}
+		nombre: {type: dt.STRING(50)}
 	};
 	const config = {
 		tableName: "categorias",

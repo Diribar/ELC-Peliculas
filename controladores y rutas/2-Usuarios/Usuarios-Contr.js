@@ -3,16 +3,8 @@ const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
 const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
-const metodosOtros = require(path.join(__dirname, "../../modelos/BD_otros"));
-
-// ************ Variables ************
+const metodosOtros = require(path.join(__dirname, "../../modelos/BD_varios"));
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
-
-// ************ Funciones ************
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-function guardar(n, contenido) {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
-function sanitizarFecha(n) {return n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
-function borrarArchivoDeImagen(n) {let imageFile = path.join(rutaImagenes, n);if (n && fs.existsSync(imageFile)) {fs.unlinkSync(imageFile);}}
 
 // *********** Controlador ***********
 module.exports = {
@@ -181,3 +173,12 @@ module.exports = {
 	},
 
 };
+
+// ************ Funciones ************
+leer = (n) => {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+guardar = (n, contenido) => {fs.writeFileSync(n, JSON.stringify(contenido, null, 2))};
+//function sanitizarFecha(n) {return n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
+function borrarArchivoDeImagen(n) {
+	let archivoImagen = path.join(rutaImagenes, n)
+	n && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : ""
+}

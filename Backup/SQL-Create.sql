@@ -27,6 +27,7 @@ CREATE TABLE roles_usuario (
 CREATE TABLE sexos (
 	id VARCHAR(1) NOT NULL,
 	nombre VARCHAR(20) NOT NULL,
+	letra_final VARCHAR(1) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE status_usuario (
@@ -43,7 +44,7 @@ CREATE TABLE USUARIOS (
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
 	apodo VARCHAR(50) NULL,
-	avatar VARCHAR(50) NULL,
+	avatar VARCHAR(100) NULL,
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
@@ -74,18 +75,37 @@ CREATE TABLE categorias (
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE subcategorias (
+CREATE TABLE categorias_sub (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	categoria_id VARCHAR(3) NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	url VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE listado_peliculas (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	url VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE menu_opciones (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	url VARCHAR(50) NOT NULL,
+	titulo VARCHAR(50) NOT NULL,
+	vista VARCHAR(20) NOT NULL,
+	comentario VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE colecciones_titulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	tmdb_coleccion_id INT UNSIGNED NULL,
 	titulo_original_coleccion VARCHAR(100) NOT NULL UNIQUE,
 	titulo_castellano_coleccion VARCHAR(100) NOT NULL,
+	avatar VARCHAR(100) NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE colecciones_peliculas (
@@ -175,7 +195,7 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (publico_recomendado_id) REFERENCES publicos_recomendados(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
-	FOREIGN KEY (subcategoria_id) REFERENCES subcategorias(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
 	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
 	FOREIGN KEY (sugerida_para_evento_id) REFERENCES eventos(id),

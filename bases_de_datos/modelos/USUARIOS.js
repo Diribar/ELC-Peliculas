@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(50)},
 		apellido: {type: dt.STRING(50)},
 		apodo: {type: dt.STRING(50)},
-		avatar: {type: dt.STRING(50)},
+		avatar: {type: dt.STRING(100)},
 		fecha_nacimiento: {type: dt.DATE},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
@@ -25,15 +25,12 @@ module.exports = (sequelize, dt) => {
 		borrado_motivo: {type: dt.STRING(500)},
 		borrado_por: {type: dt.INTEGER},
 	};
-
 	const config = {
         tableName: "usuarios",
         createdAt: 'creado_en',
         updatedAt: 'editado_en'
     };
-
     const entidad = sequelize.define(alias,columns,config);
-
     entidad.associate = n => {
         entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
         entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
@@ -46,6 +43,5 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.us_pel_interes, {as: "us_pel_interes",foreignKey: "usuario_id"});
 
     };
-
     return entidad;
 }; 

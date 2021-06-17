@@ -11,7 +11,7 @@
 		<!--**************************** CUERPO ************************-->
 		<section class="flex-row grow cuerpo relative">
 			<!--********************** CONTADOR ****************************-->
-			<% if (tipo_url) { %>
+			<% if (opcionElegida && tipoElegido) { %>
 				<button type="text" id="contador-de-peliculas">Contador</button>
 			<% } %>
 			<!--*********************** FILTROS ****************************-->
@@ -20,32 +20,40 @@
 			<section id="zona-de-pelis" class="flex-col grow">
 				<!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
 				<select name="" onchange="location = this.value;" class="titulo">
-					<% if (!opcion_url) { %><option style="font-style: italic">Elegí una opción</option><% } %> 
+					<% if (!opcionElegida) { %>
+						<option style="font-style: italic" class="ocultar" selected>
+							Elegí una opción
+						</option>
+					<% } %> 
 					<% for (let n of opciones_BD) { %>
-					<option 
-						value="/<%= rubro_url %>/<%= n.codigo %>"
-						<% if (n.codigo == opcion_url) { %>selected<% } %>>
-						<%= n.nombre %>
-					</option>
+						<option 
+							value="/peliculas/<%= n.url %>"
+							<% if (opcionElegida && opcionElegida.id == n.id) { %>selected<% } %>>
+							<%= n.nombre %>
+						</option>
 					<% } %>
 				</select> 
-				<% if (opcion_objeto.explicacion) { %><p id="explicacion"><%= opcion_objeto.explicacion %></p><% } %>
+				<% if (opcionElegida) { %><p id="explicacion"><%= opcionElegida.comentario %></p><% } %>
 				<!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
-				<% if (opcion_url) { %>
+				<% if (opcionElegida) { %>
 					<select name="" onchange="location = this.value;" class="subtitulo">
-					<% if (!tipo_url) { %><option style="font-style: italic">Elegí una opción</option><% } %>
+					<% if (!tipoElegido) { %>
+						<option style="font-style: italic" class="ocultar" selected>
+							Elegí una opción
+						</option>
+					<% } %>
 					<% for (let n of tipos_BD) { %>
 						<option 
-						value="/<%= rubro_url %>/<%= opcion_url %>/<%= n.codigo %>"
-						<% if (n.codigo == tipo_url) { %>selected<% } %>>
-						<%= n.nombre %>
+							value="/peliculas/<%= n.url %>"
+							<% if (tipoElegido && tipoElegido.id == n.id) { %>selected<% } %>>
+							<%= n.nombre %>
 						</option>
 					<% } %>
 					</select>          
 				<% } %> 
 
 				<!--///////////////////// Redireccionar ///////////////////-->
-				<%- tipo_url ? include(opcion_objeto.vista) : "" %>
+				<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
 			</section>
 			<!--*************************** FIN ****************************-->
 		</section>      
