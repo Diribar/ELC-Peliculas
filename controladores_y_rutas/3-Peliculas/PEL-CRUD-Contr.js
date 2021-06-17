@@ -17,18 +17,18 @@ module.exports = {
 	alta1Form: (req, res) => {
 		// Obtener el código de Película o Colección
 		let [rubro, titulo] = datos(req);
-        return res.render("1-ImportarDatos", {
+		return res.render("1-ImportarDatos", {
 			rubro,
 			titulo,
 		});
-    },
+	},
 
-    alta1Guardar: (req,res) => {
+	alta1Guardar: (req,res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
-        let existenErrores = erroresValidacion.errors.length > 0;
+		let existenErrores = erroresValidacion.errors.length > 0;
 		let [rubro, titulo] = datos(req);
-        if (existenErrores) {
+		if (existenErrores) {
 			return res.render("1-ImportarDatos", {
 				rubro,
 				titulo,
@@ -38,18 +38,18 @@ module.exports = {
 		}
 		req.session.importarDatos = req.body.data_entry;
 		return res.redirect("/" + rubro + "/desambiguar")
-    },
+	},
 
 	altaForm2: (req, res) => {
-        // return res.send(req.session.agregarPelicula.imagen)
+		// return res.send(req.session.agregarPelicula.imagen)
 		return res.render('AgregarForm2', {
-            data_entry: req.session.agregarPelicula,
-        });
+			data_entry: req.session.agregarPelicula,
+		});
 	},
 
 	altaGuardar2: (req, res) => {
 		const erroresValidacion = validationResult(req);
-        //return res.send(erroresValidacion)
+		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
 			return res.render("AgregarForm2", {
 				data_entry: req.body,
@@ -59,14 +59,14 @@ module.exports = {
 		return res.send("sin errores")
 	},
 
-    altaForm3: (req, res) => {
+	altaForm3: (req, res) => {
 		return res.render('AgregarForm3', {
 		});
 	},
 
-    altaGuardar3: (req,res) => {
-        return res.send("Estoy en guardar3")
-    },
+	altaGuardar3: (req,res) => {
+		return res.send("Estoy en guardar3")
+	},
 
 	detalle: (req, res) => {
 		// Obtener el código de Método y Película

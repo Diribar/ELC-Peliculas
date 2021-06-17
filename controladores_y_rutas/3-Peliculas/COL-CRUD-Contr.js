@@ -8,15 +8,15 @@ const {validationResult} = require('express-validator');
 // *********** Controlador ***********
 module.exports = {
 	altaForm2: (req, res) => {
-        // return res.send(req.session.agregarPelicula.imagen)
+		// return res.send(req.session.agregarPelicula.imagen)
 		return res.render('AgregarForm2', {
-            data_entry: req.session.agregarPelicula,
-        });
+			data_entry: req.session.agregarPelicula,
+		});
 	},
 
 	altaGuardar2: (req, res) => {
 		const erroresValidacion = validationResult(req);
-        //return res.send(erroresValidacion)
+		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
 			return res.render("AgregarForm2", {
 				data_entry: req.body,
@@ -26,14 +26,14 @@ module.exports = {
 		return res.send("sin errores")
 	},
 
-    altaForm3: (req, res) => {
+	altaForm3: (req, res) => {
 		return res.render('AgregarForm3', {
 		});
 	},
 
-    altaGuardar3: (req,res) => {
-        return res.send("Estoy en guardar3")
-    },
+	altaGuardar3: (req,res) => {
+		return res.send("Estoy en guardar3")
+	},
 
 	detalle: (req, res) => {
 		// Obtener el código de Método y Película
