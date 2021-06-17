@@ -1,33 +1,12 @@
 // ************ Requires ************
-const fs = require('fs');
-const path = require('path')
 const {validationResult} = require('express-validator');
 
-// ************ Variables ************
-// const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
-const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
-
-// ************ Funciones ************
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+// ************ Obsoleto ************
+//const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
+//function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
-    altaGuardar1: (req,res) => {
-		//Detectar errores de Data Entry
-		const erroresValidacion = validationResult(req);
-		if (req.body.demasiadosResultados) {erroresValidacion.errors.push({"msg": "Se encontraron demasiados resultados. Por favor refiná la búsqueda, incluyendo alguna palabra clave más","param": "palabras_clave","location": "body"})}
-		if (req.body.noSeEncuentraLaPeli) {erroresValidacion.errors.push({"msg": "No se encontró ninguna película con estas palabras clave","param": "palabras_clave","location": "body"})}
-        let existenErrores = erroresValidacion.errors.length > 0;
-        if (existenErrores) {
-			return res.render("1-ImportarDatos", {
-				data_entry: req.body,
-				errores: erroresValidacion.mapped(),
-			})
-		}
-		req.session.agregarPelicula = req.body
-		return res.redirect("/peliculas/agregar2")
-    },
-
 	altaForm2: (req, res) => {
         // return res.send(req.session.agregarPelicula.imagen)
 		return res.render('AgregarForm2', {

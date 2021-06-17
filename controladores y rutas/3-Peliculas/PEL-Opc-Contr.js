@@ -81,5 +81,5 @@ const datos = async (opcion) => {
 		.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
 		.then((n) => n[0].titulo);
 	// Exportar los datos
-	return ([opciones_BD, opcionElegida, tipos_BD, titulo]);
+	return [opciones_BD, opcionElegida, tipos_BD, titulo];
 }

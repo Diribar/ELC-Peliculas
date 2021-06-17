@@ -13,3 +13,4 @@
 #data_entry .fa-question-circle:hover .mensajeAyuda {display: inline;}
 #data_entry input {margin-right: 5px; width: 250px}
 #data_entry button {margin-left: 30px;}
+#data_entry .mensajeError {margin-top: 10px; max-width: 300px;}

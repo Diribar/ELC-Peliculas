@@ -5,10 +5,8 @@ const {validationResult} = require('express-validator');
 
 // ************ Variables ************
 // const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
-const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
-
-// ************ Funciones ************
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+// const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
+// function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
@@ -16,31 +14,30 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 
-	altaForm1: (req, res) => {
-        // Obtener el código de Película o Colección
-        let url = req.originalUrl.slice(1);
-        let rubro = url.slice(0, url.indexOf("/"));
-		rubro == "peliculas" ? titulo = "Película" : titulo = "Colección"
+	alta1Form: (req, res) => {
+		// Obtener el código de Película o Colección
+		let [rubro, titulo] = datos(req);
         return res.render("1-ImportarDatos", {
 			rubro,
 			titulo,
 		});
     },
 
-    altaGuardar1: (req,res) => {
+    alta1Guardar: (req,res) => {
 		//Detectar errores de Data Entry
-		const erroresValidacion = validationResult(req);
-		if (req.body.demasiadosResultados) {erroresValidacion.errors.push({"msg": "Se encontraron demasiados resultados. Por favor refiná la búsqueda, incluyendo alguna palabra clave más","param": "palabras_clave","location": "body"})}
-		if (req.body.noSeEncuentraLaPeli) {erroresValidacion.errors.push({"msg": "No se encontró ninguna película con estas palabras clave","param": "palabras_clave","location": "body"})}
+		let erroresValidacion = validationResult(req);
         let existenErrores = erroresValidacion.errors.length > 0;
+		let [rubro, titulo] = datos(req);
         if (existenErrores) {
 			return res.render("1-ImportarDatos", {
-				data_entry: req.body,
+				rubro,
+				titulo,
+				data_entry: req.body.data_entry,
 				errores: erroresValidacion.mapped(),
-			})
+			});
 		}
-		req.session.agregarPelicula = req.body
-		return res.redirect("/peliculas/agregar2")
+		req.session.importarDatos = req.body.data_entry;
+		return res.redirect("/" + rubro + "/desambiguar")
     },
 
 	altaForm2: (req, res) => {
@@ -103,3 +100,12 @@ module.exports = {
 	},
 
 };
+
+
+const datos = (req) => {
+	// Obtener el código de Película o Colección
+	let url = req.originalUrl.slice(1);
+	let rubro = url.slice(0, url.indexOf("/"));
+	rubro == "peliculas" ? (titulo = "Película") : (titulo = "Colección");
+	return [rubro, titulo]
+}
