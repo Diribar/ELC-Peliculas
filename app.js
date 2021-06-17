@@ -14,7 +14,7 @@ app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archiv
 app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false })); // Para usar la propiedad "sesión"
 app.use(cookies());
 const usuario = require("./middlewares/usuarios/loginCookie");
-app.use(usuario); // Para ocultar íconos según login (después de "session")
+app.use(usuario); // Para recuperar usuario a partir de cookie
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs); // Para registrar los URL de las páginas navegadas
 
@@ -36,11 +36,11 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaECC = require("./controladores y rutas/1-Institucional/Institucional-Ruta");
-let rutaUsuarios = require("./controladores y rutas/2-Usuarios/Usuarios-Ruta");
-let rutaLogin = require("./controladores y rutas/2-Usuarios/Login-Ruta");
-let rutaColeccion = require("./controladores y rutas/3-Peliculas/Colecciones-Ruta");
-let rutaPelicula = require("./controladores y rutas/3-Peliculas/Peliculas-Ruta");
+let rutaECC = require("./controladores_y_rutas/1-Institucional/Institucional-Ruta");
+let rutaUsuarios = require("./controladores_y_rutas/2-Usuarios/Usuarios-Ruta");
+let rutaLogin = require("./controladores_y_rutas/2-Usuarios/Login-Ruta");
+let rutaColeccion = require("./controladores_y_rutas/3-Peliculas/COL-CRUD-Ruta");
+let rutaPelicula = require("./controladores_y_rutas/3-Peliculas/Peliculas-Ruta");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
 app.use("/colecciones", rutaColeccion);

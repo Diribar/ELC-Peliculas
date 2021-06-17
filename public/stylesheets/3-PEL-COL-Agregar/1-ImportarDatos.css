@@ -1,5 +1,5 @@
 /* Partes específicas del formulario */
-#data_entry {min-height: 250px;}
+#data_entry {min-height: 180px;}
 #data_entry #coleccion_pelicula select {border-radius: 5px; height: min-content;}
 
 #data_entry h1 {margin-bottom: 5px;}
@@ -11,5 +11,6 @@
 #data_entry .linea_divisoria {margin-top: 20px;}
 #data_entry .mensajeAyuda {position: absolute; width: 250px; margin-left: 2px;}
 #data_entry .fa-question-circle:hover .mensajeAyuda {display: inline;}
-#data_entry input, #data_entry textarea {margin-right: 5px;}
+#data_entry input {margin-right: 5px; width: 250px}
 #data_entry button {margin-left: 30px;}
+#data_entry .mensajeError {margin-top: 10px; max-width: 300px;}
