@@ -1,8 +1,8 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const peliculas = require("./PEL-CRUD-Contr");
-const opciones = require("./PEL-Opc-Contr");
+const peliculas = require("./Peliculas-Contr");
+const colecc_pelic = require("./Colecc-Pelic-Contr");
 
 //************************ Middlewares ******************************
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
@@ -14,10 +14,10 @@ const uploadFile = require("../../middlewares/varios/multer");
 
 //******************* Controladores de CRUD *************************
 // -- Responsabilidad -------------------------
-router.get("/agregar", soloUsuarios, peliculas.responsabilidad);
+router.get("/agregar", soloUsuarios, colecc_pelic.responsabilidad);
 // -- Importar Datos --------------------------
-router.get("/agregar1", soloUsuarios, peliculas.alta1Form);
-router.post('/agregar1', soloUsuarios, validar1, peliculas.alta1Guardar);
+router.get("/agregar1", soloUsuarios, colecc_pelic.alta1_IN);
+router.post('/agregar1', soloUsuarios, validar1, colecc_pelic.alta1_OUT);
 
 // -- Desambiguar --------------------------
 
@@ -39,10 +39,10 @@ router.post("/detalle/editar/:id", soloUsuarios, peliculas.editarGuardar);
 router.post("/detalle/eliminar/:id", soloUsuarios, peliculas.bajaGuardar);
 
 // Controladores de Opciones ****************************************
-router.get('/', opciones.rubro);                                // Home
-router.get('/:id', opciones.opcion);                            // Opciones
-router.get('/:id/:id', opciones.tipo);                          // Opción: Listado
-router.post('/:id/:id', soloUsuarios, opciones.filtros);        // Filtros
+router.get('/', colecc_pelic.home);                                // Home
+router.get('/:id', colecc_pelic.opcion);                            // Opciones
+router.get('/:id/:id', colecc_pelic.tipo);                          // Opción: Listado
+router.post('/:id/:id', soloUsuarios, colecc_pelic.filtros);        // Filtros
 
 // Exportarlo *******************************************************
 module.exports = router;

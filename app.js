@@ -39,7 +39,7 @@ app.set("views", [
 let rutaECC = require("./controladores_y_rutas/1-Institucional/Institucional-Ruta");
 let rutaUsuarios = require("./controladores_y_rutas/2-Usuarios/Usuarios-Ruta");
 let rutaLogin = require("./controladores_y_rutas/2-Usuarios/Login-Ruta");
-let rutaColeccion = require("./controladores_y_rutas/3-Peliculas/COL-CRUD-Ruta");
+let rutaColeccion = require("./controladores_y_rutas/3-Peliculas/Colecciones-Ruta");
 let rutaPelicula = require("./controladores_y_rutas/3-Peliculas/Peliculas-Ruta");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);

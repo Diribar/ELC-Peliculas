@@ -10,10 +10,9 @@
 	<section class="flex-col space-between" id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
 		<div class="flex-row space-between align-center">
 			<h1>Paso 1 de 4: Importar Datos</h1>
-			<select onchange="location = this.value">
-				<option value="" class="ocultar"></option>
-				<option value="/peliculas/agregar1"   <% if (rubro == "peliculas") { %> selected <% } %>>Pelicula</option>
-				<option value="/colecciones/agregar1" <% if (rubro == "colecciones") { %> selected <% } %>>Colección</option>
+			<select>
+				<option value="peliculas"   <% if (rubro != "colecciones") { %> selected <% } %>>Pelicula</option>
+				<option value="colecciones" <% if (rubro == "colecciones") { %> selected <% } %>>Colección</option>
 			</select>
 		</div>
 		<form action="/<%= rubro %>/agregar1" method="POST" class="flex-col">  <!--Palabras clave-->
