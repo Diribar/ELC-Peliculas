@@ -27,14 +27,12 @@ VALUES (1, 'CFC', 'Jesús', 'cfc/jesus'), (2, 'CFC', 'Contemporáneos de Jesús'
 INSERT INTO listado_peliculas (id, nombre, url)
 VALUES (1, 'Sugeridas para el momento del año', 'listado/sugeridas'), (2, 'Por orden de calificación en nuestra página', 'listado/calificacion'), (3, 'Por año de estreno', 'listado/estreno'), (4, 'Por orden de incorporación a nuestra base de datos', 'listado/incorporacion'), (5, 'Por orden de visita', 'listado/visita')
 ;
-
 INSERT INTO menu_opciones (id, nombre, url, titulo, vista, comentario)
 VALUES 
 (1, 'Listado de Películas', 'listado', 'Listado', '1-Listado', 'Todas las películas de nuestra Base de Datos'),
 (2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
 (3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
 ;
-
 INSERT INTO publicos_recomendados (id, nombre)
 VALUES (1, 'Está dirigido a un público infantil, no se recomienda para mayores'), (2, 'Es apto para mayores, pero se recomienda para menores (se puede ver en familia)'), (3, 'Es ideal para ver en familia'), (4, 'Es apto para menores, pero se recomienda para mayores (se puede ver en familia)'), (5, 'No es apto para menores, sólo para mayores')
 ;
