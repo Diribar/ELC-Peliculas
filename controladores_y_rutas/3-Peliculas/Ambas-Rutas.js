@@ -8,8 +8,8 @@ const RUD = require("./Ambas3-RUD");
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 const validar1 = require("../../middlewares/validarFilmForms/1-ImportarDatos");
-const validar2 = require("../../middlewares/validarFilmForms/2_DatosDuros");
-const validar3 = require("../../middlewares/validarFilmForms/3_DatosElaborados");
+const validar2 = require("../../middlewares/validarFilmForms/2-DatosDuros");
+const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
 
 // Middlewares de Tareas
 const importar = require("../../modelos/importar_films_API/1importarA");
