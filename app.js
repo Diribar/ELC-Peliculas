@@ -14,7 +14,7 @@ app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archiv
 app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false })); // Para usar la propiedad "sesión"
 app.use(cookies());
 const usuario = require("./middlewares/usuarios/loginCookie");
-app.use(usuario); // Para ocultar íconos según login (después de "session")
+app.use(usuario); // Para recuperar usuario a partir de cookie
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs); // Para registrar los URL de las páginas navegadas
 
