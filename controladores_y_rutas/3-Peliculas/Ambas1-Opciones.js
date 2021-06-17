@@ -61,8 +61,8 @@ module.exports = {
 	},
 };
 
+// Obtener info para las vistas
 const vistas = async (opcion) => {
-	// Obtener info para las vistas
 	// Obtener las Opciones
 	let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
 	let opcionElegida = opciones_BD.filter((n) => n.url == opcion)[0];
@@ -77,11 +77,9 @@ const vistas = async (opcion) => {
 		);
 	}
 	// Obtener el Título de la opción elegida
-	let titulo =
-		"Películas - " +
-		(await tablasVarias
-			.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
-			.then((n) => n[0].titulo));
+	let titulo = "Películas - " + await tablasVarias
+		.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
+		.then((n) => n[0].titulo);
 	// Exportar los datos
 	return [opciones_BD, opcionElegida, tipos_BD, titulo];
 };
