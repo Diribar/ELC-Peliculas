@@ -4,7 +4,7 @@
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
-	<p class="titulo" id="titulo">Agregá una <%= titulo %> a nuestra Base de Datos</p>
+	<h1 class="titulo" id="titulo">Agregá una <%= titulo %> a nuestra Base de Datos</h1>
 	<form action="/peliculas/agregar1" method="POST" class="flex-col" id="data_entry">
 		<section class="flex-row space-between align-center"> 
 			<h1>Paso 1 de 4: Importar Datos</h1>
@@ -23,19 +23,26 @@
 						<i class="fas fa-question-circle">
 							<span class="mensajeAyuda">
 								Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
-								Escribí todas las palabras que sepas, de manera precisa.
+								Escribí de manera precisa todas las palabras que sepas.
 							</span>
 						</i>
 					</div>
 					<% if (locals.errores) { %>
-						<i class="fas fa-times-circle"></i>
-						<span class="mensajeError"><%= errores.data_entry.msg %> </span>
+						<i class="fas fa-times-circle">
+							<span class="mensajeError"><%= errores.data_entry.msg %> </span>
+						</i>
 					<% } %>
 					</i>
 				</div>
 			</div>
 			<button type="submit">Enviar</button>
 		</section>
+		<p>
+			Aprovechamos información provista por 
+			<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a> y 
+			<a target="_blank" href="https://www.filmaffinity.com/es/main.html">Film Affinity</a> 
+			<br> para agilizar esta tarea
+		</p>
 	</form>
 </div>
 <%- include('0-DespuesPA') %>
