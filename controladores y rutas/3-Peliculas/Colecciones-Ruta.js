@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const colecciones = require("./COL-CRUD-Contr");
+const peliculas = require("./PEL-CRUD-Contr");
 
 //************************ Middlewares ******************************
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
@@ -16,10 +17,8 @@ const uploadFile = require("../../middlewares/varios/multer");
 
 //******************* Controladores de CRUD *************************
 // -- Importar Datos --------------------------
-router.get("/agregar1", soloUsuarios, colecciones.altaForm1);
-router.post('/agregar1A', soloUsuarios, validar1A, importarA, colecciones.altaGuardar1);
-router.post('/agregar1B', soloUsuarios, validar1B, importarB, colecciones.altaGuardar1);
-router.post("/agregar1C", soloUsuarios, validar1C, colecciones.altaGuardar1);
+router.get("/agregar1", soloUsuarios, peliculas.altaForm1);
+router.post('/agregar1', soloUsuarios, validar1A, importarA, colecciones.altaGuardar1);
 
 // -- Datos Duros -----------------------------
 router.get("/agregar2", soloUsuarios, colecciones.altaForm2);

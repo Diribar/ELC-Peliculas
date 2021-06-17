@@ -12,10 +12,6 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm1: (req, res) => {
-		return res.render('1-ImportarDatos');
-	},
-
     altaGuardar1: (req,res) => {
 		//Detectar errores de Data Entry
 		const erroresValidacion = validationResult(req);

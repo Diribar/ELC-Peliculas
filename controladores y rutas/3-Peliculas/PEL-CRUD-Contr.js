@@ -12,8 +12,8 @@ function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
 
 // *********** Controlador ***********
 module.exports = {
-	altaForm: (req,res) => {
-		return res.render("AgregarForm")
+	responsabilidad: (req,res) => {
+		return res.render("0-Responsabilidad");
 	},
 
 	altaForm1: (req, res) => {

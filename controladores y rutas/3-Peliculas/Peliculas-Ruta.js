@@ -17,13 +17,11 @@ const uploadFile = require("../../middlewares/varios/multer");
 
 //******************* Controladores de CRUD *************************
 // -- Responsabilidad -------------------------
-router.get("/agregar", soloUsuarios, peliculas.altaForm);
+router.get("/agregar", soloUsuarios, peliculas.responsabilidad);
 
 // -- Importar Datos --------------------------
 router.get("/agregar1", soloUsuarios, peliculas.altaForm1);
-router.post('/agregar1A', soloUsuarios, validar1A, importarA, peliculas.altaGuardar1);
-router.post('/agregar1B', soloUsuarios, validar1B, importarB, peliculas.altaGuardar1);
-router.post("/agregar1C", soloUsuarios, validar1C, peliculas.altaGuardar1);
+router.post('/agregar1', soloUsuarios, validar1A, importarA, peliculas.altaGuardar1);
 
 // -- Datos Duros -----------------------------
 router.get("/agregar2", soloUsuarios, peliculas.altaForm2);
