@@ -1,4 +1,4 @@
-const funciones = require("../../modelos/funciones");
+const funciones = require("../../modelos/funciones/funciones");
 
 module.exports = (req, res, next) => {
 	if (!req.session.usuario) {

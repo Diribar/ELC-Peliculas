@@ -1,5 +1,8 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
+const funcionesAPI = require("../../modelos/funciones/funcionesAPI");
+const uploadFile = require("../../middlewares/varios/multer");
+// uploadFile.single('imagen')
 
 // *********** Controlador ***********
 module.exports = {
@@ -7,14 +10,14 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 
-	agregar1Form: (req, res) => {
+	ImportarDatosForm: (req, res) => {
 		return res.render("1-ImportarDatos", {
 			rubro: "peliculas",
 			titulo: "Película",
 		});
 	},
 
-	agregar1Guardar: (req, res) => {
+	ImportarDatosGuardar: (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
@@ -30,6 +33,18 @@ module.exports = {
 		}
 		req.session.importarDatos = req.body.data_entry;
 		return res.redirect("/" + rubro + "/desambiguar");
+	},
+
+	desambiguarForm: async (req, res) => {
+		// Identificar si es una colección o Película
+		let url = req.originalUrl.slice(1);
+		let rubro = url.slice(0, url.indexOf("/"));
+		let palabras_clave = req.session.importarDatos;
+		if (rubro = "colecciones") {
+			let colecciones = await funcionesAPI.colecciones(palabras_clave, "collection");
+			return res.send(colecciones)
+			res.send(resultados)
+		}
 	},
 
 	agregar2Form: (req, res) => {

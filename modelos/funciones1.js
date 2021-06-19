@@ -1,20 +1,15 @@
 // ************ Requires ************
 const path = require('path');
-const {validationResult} = require('express-validator');
 
 // ************ Funciones ************
-const API_search  = require(path.join(__dirname, '/webAPI1_search'));
 const generarReqBody  = require(path.join(__dirname, '/2generarReqBody'));
 
 // ************ Exportar ************
 module.exports = async (req, res, next) => {
-	// Verificar si hay errores
-	const erroresValidacion = validationResult(req);
-	let existenErrores = erroresValidacion.errors.length > 0;
-	if (existenErrores) {next()}
-	// Obtener la película
-	let palabras_clave = req.body.palabras_clave;
-	let data = await API_search(palabras_clave);
+	// Obtener las colecciones
+	let coleccion = await API_search(palabras_clave);
+	let TVshows = await API_search(palabras_clave);
+
 
 	// SI HAY DEMASIADAS PELÍCULAS CANDIDATAS --> Avisar del error y salir
 	if (data.errors) {
