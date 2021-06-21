@@ -14,6 +14,7 @@ const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizad
 // Controladores de Crear
 router.get("/agregar", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar1", soloUsuarios, agregar.ImportarDatosForm);
+router.get("/api/contador/", agregar.contador);
 router.post('/agregar1', soloUsuarios, validar1, agregar.ImportarDatosGuardar);
 router.get("/desambiguar", soloUsuarios, agregar.desambiguarForm);
 
@@ -36,10 +37,10 @@ router.post("/detalle/editar/:id", soloUsuarios, RUD.editarGuardar);
 router.post("/detalle/eliminar/:id", soloUsuarios, RUD.bajaGuardar);
 
 // Controladores de Opciones
-router.get('/', opciones.home);
-router.get('/:id', opciones.opcion);
-router.get('/:id/:id', opciones.tipo);
-router.post('/:id/:id', soloUsuarios, opciones.filtros);
+// router.get('/:id/:id', opciones.tipo);
+// router.post('/:id/:id', soloUsuarios, opciones.filtros);
+// router.get('/:id', opciones.opcion);
+// router.get('/', opciones.home);
 
 // Fin
 module.exports = router;

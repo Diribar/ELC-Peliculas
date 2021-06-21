@@ -41,10 +41,20 @@ module.exports = {
 		let rubro = url.slice(0, url.indexOf("/"));
 		let palabras_clave = req.session.importarDatos;
 		if (rubro = "colecciones") {
-			let colecciones = await funcionesAPI.colecciones(palabras_clave, "collection");
+			let colecciones = await funcionesAPI.buscarTitulos(
+				palabras_clave,
+				"collection"
+			);
 			return res.send(colecciones)
 			res.send(resultados)
-		}
+		};
+	},
+
+	contador: async (req, res) => {
+		let { palabras_clave, rubro } = req.query;
+		let palabras = palabras_clave.replace(/-/g, " ");
+		let contador = await funcionesAPI.contador(palabras, rubro)
+		return res.json(contador);
 	},
 
 	agregar2Form: (req, res) => {

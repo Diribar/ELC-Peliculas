@@ -10,7 +10,7 @@
 		<section class="flex-row space-between align-center"> 
 			<h1>Paso 1 de 4: Importar Datos</h1>
 			<select name="rubro">
-				<option value="peliculas"   <% if (rubro != "colecciones") { %> selected <% } %>>Pelicula</option>
+				<option value="peliculas"   <% if (rubro != "colecciones") { %> selected <% } %>>Película</option>
 				<option value="colecciones" <% if (rubro == "colecciones") { %> selected <% } %>>Colección</option>
 			</select>
 		</section>
@@ -20,7 +20,7 @@
 				<div class="relative flex-col ">
 					<div>
 						<input type="text" name="data_entry" placeholder="Escribilo acá"
-							value="<%= locals.data_entry ? data_entry : null %>">
+							value="<%= locals.data_entry ? data_entry : null %>" autofocus autocomplete="off">
 						<i class="fas fa-question-circle">
 							<span class="mensajeAyuda">
 								Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
@@ -39,7 +39,7 @@
 			<button type="submit">Enviar</button>
 		</section>
 		<section>
-			<p id="contadorPalabrasClave"></p>
+			<p id="resultadoDeBusqueda"></p>
 			<p>
 				Aprovechamos información provista por 
 				<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a> y 
