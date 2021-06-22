@@ -21,7 +21,7 @@ module.exports = async (palabras_clave) => {
 	}
 	let url = A_prefijo + B_query + C_sufijo;
 	// BUSCAR LA INFO
-	let resultados = await fetch(url, {
+	let lectura = await fetch(url, {
 		"method": "GET",
 		"headers": {
 			"x-rapidapi-key": "38160617ffmsh5c000753ddfbdacp171ef4jsne7960856af04",
@@ -29,7 +29,11 @@ module.exports = async (palabras_clave) => {
 		}
 	})
 	.then((n) => n.json())
-	.catch(err => {console.error(err)});
+	.catch(err => err);
 
-	return resultados;
+	let resultados = []
+	lectura == {"movies": []} || lectura == {type: 'invalid-json'} ? resultados = lectura.movies : ""
+
+	return lectura
+	//return resultados;
 }

@@ -4,10 +4,10 @@ const fetch = require('node-fetch');
 
 module.exports = async (palabras_clave, rubro) => {
 	// PARTES DEL URL
-	// "https://api.themoviedb.org/3/search/movie      ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
-	// "https://api.themoviedb.org/3/search/collection ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1
-	// "https://api.themoviedb.org/3/search/tv         ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
-	let A_prefijoRubro = "https://api.themoviedb.org/3/search/";
+	// "https://api.themoviedb.org/4/search/movie      ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+	// "https://api.themoviedb.org/4/search/collection ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1
+	// "https://api.themoviedb.org/4/search/tv         ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+	let A_prefijoRubro = "https://api.themoviedb.org/4/search/";
 	let B_rubro = rubro
 	let C_prefijoClave = "?api_key=";
 	let D_clave = API_key;
