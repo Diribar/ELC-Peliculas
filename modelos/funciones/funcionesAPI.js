@@ -1,17 +1,18 @@
 const search_TMDB = require("../API/1-search-TMDB");
 const search_FA = require("../API/1-search-FA");
+const details_FA = require("../API/2-details-FA");
 
 module.exports = {
 	searchCollection: async (palabras_clave) => {
 		var datos = [];
-		for (let i = 1; i <= 2; i++) {
-			i == 1 ? (rubro = "collection") : (rubro = "tv");
-			let lectura = await search_TMDB(palabras_clave, rubro);
+		var rubro=["collection", "tv"]
+		for (let i = 0; i < 2; i++) {
+			let lectura = await search_TMDB(palabras_clave, rubro[i]);
 			if (lectura.total_results) {
 				lectura.results.map((m) => {
 					datos.push({
 						fuente: "TMDB",
-						rubro: rubro,
+						rubro: rubro[i],
 						id: m.id,
 						nombre: m.name,
 						nombre_original: m.original_name,
@@ -27,11 +28,9 @@ module.exports = {
 
 	searchMovie: async (palabras_clave) => {
 		var datos = [];
-		let lectura = []
-		// TMDB
-		lectura = await search_TMDB(palabras_clave, "movie");
-		if (lectura.total_results) {
-			lectura.results.map((m) => {
+		let lecturaTMDB = await search_TMDB(palabras_clave, "movie");
+		if (lecturaTMDB.total_results && lecturaTMDB.total_results <= 20) {
+			lecturaTMDB.results.map((m) => {
 				datos.push({
 					fuente: "TMDB",
 					rubro: "movie",
@@ -41,35 +40,22 @@ module.exports = {
 					imagen1: m.backdrop_path,
 					imagen2: m.poster_path,
 					idioma: m.original_language,
-					lanzamiento: m.release_date,
+					lanzamiento: parseInt(m.release_date.substring(0, 4)),
 				});
+				//console.log(m.original_title.toLowerCase() + "/")
 			});
 		}
-		// FA
-		lectura = await search_FA(palabras_clave);
-		//return palabras_clave;
-		if (lectura.length > 0 && lectura.length <= 20 ) {
-			// let ID = 
-		}
-		return lectura
-
-		//return datos;
-	},
-
-	contadorBackup: (palabras_clave, rubro) => {
-		return TMDB_search(palabras_clave, rubro).then((n) => n.total_results);
-	},
-
-	buscarTitulos: async (palabras_clave, rubro) => {
-		let entidades = await TMDB_search(palabras_clave, rubro);
-		let colecciones = [];
-		if (entidades.total_results > 0) {
-			entidadesID = entidades.results.map((n) => n.id);
-			for (n of entidadesID) {
-				coleccion = await TMDB_details(n, rubro);
-				colecciones.push(coleccion);
+		datos.sort(function (a, b) {
+			if (a.lanzamiento > b.lanzamiento) {
+				return 1;
 			}
-		}
-		return colecciones;
+			if (a.lanzamiento < b.lanzamiento) {
+				return -1;
+			}
+			// a must be equal to b
+			return 0;
+			});
+		return datos;
 	},
+
 };
