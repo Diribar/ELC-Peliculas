@@ -10,14 +10,14 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 
-	ImportarDatosForm: (req, res) => {
+	importarDatosForm: (req, res) => {
 		return res.render("1-ImportarDatos", {
 			rubro: "peliculas",
 			titulo: "Película",
 		});
 	},
 
-	ImportarDatosGuardar: (req, res) => {
+	importarDatosGuardar: (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
@@ -27,34 +27,31 @@ module.exports = {
 			return res.render("1-ImportarDatos", {
 				rubro,
 				titulo,
-				data_entry: req.body.data_entry,
+				palabras_clave: req.body.palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		req.session.importarDatos = req.body.data_entry;
+		req.session.importarDatos = req.body;
 		return res.redirect("/" + rubro + "/desambiguar");
 	},
 
 	desambiguarForm: async (req, res) => {
 		// Identificar si es una colección o Película
-		let url = req.originalUrl.slice(1);
-		let rubro = url.slice(0, url.indexOf("/"));
-		let palabras_clave = req.session.importarDatos;
-		if (rubro = "colecciones") {
-			let colecciones = await funcionesAPI.buscarTitulos(
-				palabras_clave,
-				"collection"
-			);
-			return res.send(colecciones)
-			res.send(resultados)
-		};
+		//return res.send(req.session.importarDatos);
+		let rubro = req.session.importarDatos.rubro;
+		let palabras_clave = req.session.importarDatos.palabras_clave;
+		rubro = "colecciones" ? resultados = await funcionesAPI.searchCollection(palabras_clave) : ""
+		rubro = "peliculas" ? resultados = await funcionesAPI.searchMovie(palabras_clave) : ""
+		return res.send(resultados);
 	},
 
 	contador: async (req, res) => {
 		let { palabras_clave, rubro } = req.query;
 		let palabras = palabras_clave.replace(/-/g, " ");
-		let contador = await funcionesAPI.contador(palabras, rubro)
-		return res.json(contador);
+		//let { nuevas, yaEnBD } = await funcionesAPI.search(palabras, rubro);
+		//return res.json(nuevas, yaEnBD);
+		let { resultado } = await funcionesAPI.search(palabras, rubro);
+		return resultado
 	},
 
 	agregar2Form: (req, res) => {

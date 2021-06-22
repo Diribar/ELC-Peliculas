@@ -13,9 +13,9 @@ const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizad
 
 // Controladores de Crear
 router.get("/agregar", soloUsuarios, agregar.responsabilidad);
-router.get("/agregar1", soloUsuarios, agregar.ImportarDatosForm);
+router.get("/agregar1", soloUsuarios, agregar.importarDatosForm);
 router.get("/api/contador/", agregar.contador);
-router.post('/agregar1', soloUsuarios, validar1, agregar.ImportarDatosGuardar);
+router.post('/agregar1', soloUsuarios, validar1, agregar.importarDatosGuardar);
 router.get("/desambiguar", soloUsuarios, agregar.desambiguarForm);
 
 // 3. Datos Duros
@@ -40,7 +40,7 @@ router.post("/detalle/eliminar/:id", soloUsuarios, RUD.bajaGuardar);
 // router.get('/:id/:id', opciones.tipo);
 // router.post('/:id/:id', soloUsuarios, opciones.filtros);
 // router.get('/:id', opciones.opcion);
-// router.get('/', opciones.home);
+router.get('/', opciones.home);
 
 // Fin
 module.exports = router;

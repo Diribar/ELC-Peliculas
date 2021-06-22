@@ -19,8 +19,8 @@
 			<div> <!--Sector de inputs y labels-->
 				<div class="relative flex-col ">
 					<div>
-						<input type="text" name="data_entry" placeholder="Escribilo acá"
-							value="<%= locals.data_entry ? data_entry : null %>" autofocus autocomplete="off">
+						<input type="text" name="palabras_clave" placeholder="Escribilo acá"
+							value="<%= locals.palabras_clave ? palabras_clave : null %>" autofocus autocomplete="off">
 						<i class="fas fa-question-circle">
 							<span class="mensajeAyuda">
 								Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
@@ -30,7 +30,7 @@
 					</div>
 					<% if (locals.errores) { %>
 						<i class="fas fa-times-circle">
-							<span class="mensajeError"><%= errores.data_entry.msg %> </span>
+							<span class="mensajeError"><%= errores.palabras_clave.msg %> </span>
 						</i>
 					<% } %>
 					</i>

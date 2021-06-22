@@ -14,7 +14,7 @@ module.exports = async (palabras_clave, rubro) => {
 	let E_prefijoQuery = "&language=es&query=";
 	let F_query = "";
 	let G_pagina = "&page=1"
-	let H_adult = (rubro != "collection") ? "&include_adult=false" : "";
+	let H_adult = "&include_adult=false";
 	// Convertir "palabras_clave" en el query
 	let palabras = palabras_clave.includes(" ")
 		? palabras_clave.split(" ").filter((n) => n != "")
