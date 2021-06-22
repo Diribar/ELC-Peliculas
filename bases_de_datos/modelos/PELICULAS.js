@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
-		tmdb_id: {type: dt.INTEGER},
+		tmdb_id: {type: dt.STRING(20)},
 		fa_id: {type: dt.STRING(20)},
 		imdb_id: {type: dt.STRING(20)},
 		titulo_original: {type: dt.STRING(100)},

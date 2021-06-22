@@ -102,7 +102,7 @@ CREATE TABLE menu_opciones (
 
 CREATE TABLE colecciones_titulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_coleccion_id INT UNSIGNED NULL,
+	tmdb_coleccion_id VARCHAR(20) NULL,
 	titulo_original_coleccion VARCHAR(100) NOT NULL UNIQUE,
 	titulo_castellano_coleccion VARCHAR(100) NOT NULL,
 	avatar VARCHAR(100) NULL,
@@ -111,9 +111,9 @@ CREATE TABLE colecciones_titulos (
 CREATE TABLE colecciones_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_titulo_id INT UNSIGNED NULL,
-	tmdb_coleccion_id INT UNSIGNED NULL,
+	tmdb_coleccion_id VARCHAR(20) NULL,
 	pelicula_id INT UNSIGNED NULL,
-	tmdb_pelicula_id INT UNSIGNED NULL,
+	tmdb_pelicula_id VARCHAR(20) NULL,
 	titulo_original_pelicula VARCHAR(100) NOT NULL UNIQUE,
 	titulo_castellano_pelicula VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE hechos_historicos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id INT UNSIGNED NULL,
+	tmdb_id VARCHAR(20) NULL,
 	fa_id VARCHAR(20) NULL,
 	imdb_id VARCHAR(20) NULL,
 	titulo_original VARCHAR(100) NOT NULL UNIQUE,

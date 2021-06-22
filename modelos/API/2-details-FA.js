@@ -13,3 +13,17 @@ module.exports = async (ID) => {
 	let resultado = await fetch(url).then((n) => n.json());
 	return resultado;
 };
+
+// fetch("https://filmaffinity-unofficial.p.rapidapi.com/movie/detail/?lang=es&id=596059", {
+// 	"method": "GET",
+// 	"headers": {
+// 		"x-rapidapi-key": "38160617ffmsh5c000753ddfbdacp171ef4jsne7960856af04",
+// 		"x-rapidapi-host": "filmaffinity-unofficial.p.rapidapi.com"
+// 	}
+// })
+// .then(response => {
+// 	console.log(response);
+// })
+// .catch(err => {
+// 	console.error(err);
+// });

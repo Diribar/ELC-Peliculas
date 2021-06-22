@@ -3,10 +3,10 @@ const fetch = require('node-fetch');
 
 module.exports = async (palabras_clave) => {
 	// PARTES DEL URL
-	// "https://filmaffinity-unofficial.herokuapp.com/api/search?q=preferisco%20paradiso&lang=ES"
-	let A_prefijo = "https://filmaffinity-unofficial.herokuapp.com/api/search?q=";
+	// "https://filmaffinity-unofficial.p.rapidapi.com/movie/search/?query=padre%20pio&lang=es"
+	let A_prefijo = "https://filmaffinity-unofficial.p.rapidapi.com/movie/search/?query=";
 	let B_query = "";
-	let C_sufijo = "&lang=ES";
+	let C_sufijo = "&lang=es";
 	// Convertir "palabras_clave" en el query
 	let palabras = palabras_clave.includes(" ")
 		? palabras_clave.split(" ").filter((n) => n != "")
@@ -21,6 +21,15 @@ module.exports = async (palabras_clave) => {
 	}
 	let url = A_prefijo + B_query + C_sufijo;
 	// BUSCAR LA INFO
-	let resultados = await fetch(url).then((n) => n.json());
+	let resultados = await fetch(url, {
+		"method": "GET",
+		"headers": {
+			"x-rapidapi-key": "38160617ffmsh5c000753ddfbdacp171ef4jsne7960856af04",
+			"x-rapidapi-host": "filmaffinity-unofficial.p.rapidapi.com"
+		}
+	})
+	.then((n) => n.json())
+	.catch(err => {console.error(err)});
+
 	return resultados;
 }
