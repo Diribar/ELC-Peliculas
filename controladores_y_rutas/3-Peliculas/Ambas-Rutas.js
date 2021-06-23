@@ -16,7 +16,7 @@ router.get("/agregar", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar1", soloUsuarios, agregar.importarDatosForm);
 router.get("/api/contador/", agregar.contador);
 router.post('/agregar1', soloUsuarios, validar1, agregar.importarDatosGuardar);
-router.get("/desambiguar", soloUsuarios, agregar.desambiguarForm);
+router.get("/desambiguar1", soloUsuarios, agregar.desambiguar1);
 
 // 3. Datos Duros
 router.get("/agregar2", soloUsuarios, agregar.agregar2Form);

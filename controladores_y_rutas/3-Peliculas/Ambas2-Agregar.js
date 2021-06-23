@@ -32,7 +32,7 @@ module.exports = {
 			});
 		}
 		req.session.importarDatos = req.body;
-		return res.redirect("/" + rubro + "/desambiguar");
+		return res.redirect("/" + rubro + "/desambiguar1");
 	},
 
 	desambiguar1: async (req, res) => {
@@ -40,9 +40,9 @@ module.exports = {
 		// return res.send(req.session.importarDatos);
 		let rubro = req.session.importarDatos.rubro;
 		let palabras_clave = req.session.importarDatos.palabras_clave;
-		rubro = "colecciones"
+		rubro == "colecciones"
 			? (resultados = await funcionesAPI.searchCollection(palabras_clave))
-			: rubro = "peliculas"
+			: rubro == "peliculas"
 				? (resultados = await funcionesAPI.searchMovie(palabras_clave))
 				: "";
 		return res.send(resultados);
