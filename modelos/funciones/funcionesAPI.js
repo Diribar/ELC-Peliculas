@@ -11,14 +11,12 @@ module.exports = {
 			if (lectura.total_results) {
 				lectura.results.map((m) => {
 					datos.push({
-						fuente: "TMDB",
+						tmdb_coleccion_id: m.id,
 						rubro: rubro[i],
-						id: m.id,
-						nombre: m.name,
 						nombre_original: m.original_name,
+						nombre_castellano: m.name,
 						imagen1: m.backdrop_path,
 						imagen2: m.poster_path,
-						idioma: m.original_language,
 					});
 				});
 			}
@@ -36,8 +34,8 @@ module.exports = {
 		// 			fuente: "TMDB",
 		// 			rubro: "movie",
 		// 			id: m.id,
-		// 			nombre: m.title,
 		// 			nombre_original: m.original_title,
+		// 			nombre_castellano: m.title,
 		// 			imagen1: m.backdrop_path,
 		// 			imagen2: m.poster_path,
 		// 			idioma: m.original_language,

@@ -35,13 +35,30 @@ module.exports = {
 		return res.redirect("/" + rubro + "/desambiguar");
 	},
 
+	desambiguar1: async (req, res) => {
+		// OBTENER LOS LISTADOS *****************
+		// return res.send(req.session.importarDatos);
+		let rubro = req.session.importarDatos.rubro;
+		let palabras_clave = req.session.importarDatos.palabras_clave;
+		rubro = "colecciones"
+			? (resultados = await funcionesAPI.searchCollection(palabras_clave))
+			: rubro = "peliculas"
+				? (resultados = await funcionesAPI.searchMovie(palabras_clave))
+				: "";
+		return res.send(resultados);
+	},
+
 	desambiguarForm: async (req, res) => {
 		// Identificar si es una colección o Película
 		//return res.send(req.session.importarDatos);
 		let rubro = req.session.importarDatos.rubro;
 		let palabras_clave = req.session.importarDatos.palabras_clave;
-		rubro = "colecciones" ? resultados = await funcionesAPI.searchCollection(palabras_clave) : ""
-		rubro = "peliculas" ? resultados = await funcionesAPI.searchMovie(palabras_clave) : ""
+		rubro = "colecciones"
+			? (resultados = await funcionesAPI.searchCollection(palabras_clave))
+			: "";
+		rubro = "peliculas"
+			? (resultados = await funcionesAPI.searchMovie(palabras_clave))
+			: "";
 		return res.send(resultados);
 	},
 
@@ -51,7 +68,7 @@ module.exports = {
 		//let { nuevas, yaEnBD } = await funcionesAPI.search(palabras, rubro);
 		//return res.json(nuevas, yaEnBD);
 		let { resultado } = await funcionesAPI.search(palabras, rubro);
-		return resultado
+		return resultado;
 	},
 
 	agregar2Form: (req, res) => {
