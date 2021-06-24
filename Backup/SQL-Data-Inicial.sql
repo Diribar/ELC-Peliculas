@@ -36,19 +36,19 @@ VALUES
 INSERT INTO publicos_recomendados (id, nombre)
 VALUES (1, 'Está dirigido a un público infantil, no se recomienda para mayores'), (2, 'Es apto para mayores, pero se recomienda para menores (se puede ver en familia)'), (3, 'Es ideal para ver en familia'), (4, 'Es apto para menores, pero se recomienda para mayores (se puede ver en familia)'), (5, 'No es apto para menores, sólo para mayores')
 ;
-INSERT INTO colecciones_titulos (id, titulo_original_coleccion, titulo_castellano_coleccion)
-VALUES (1, 'Karol', 'Karol')
-;
 INSERT INTO personajes_historicos (id, nombre)
 VALUES (1, 'Juan Pablo II (papa)')
 ;
 INSERT INTO hechos_historicos (id, nombre)
 VALUES (1, '2a Guerra Mundial')
 ;
-INSERT INTO colecciones_peliculas (id, coleccion_titulo_id, pelicula_id, tmdb_pelicula_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno, orden_secuencia)
-VALUES (1, 1, 1, 38516, 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
+INSERT INTO colecciones_cabecera (id, rubro, nombre_original, nombre_castellano)
+VALUES (1, 'manual', 'Karol', 'Karol')
 ;
-INSERT INTO colecciones_peliculas (id, coleccion_titulo_id, titulo_original_pelicula, titulo_castellano_pelicula, ano_estreno, orden_secuencia)
+INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
+VALUES (1, 1, 1, '38516', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
+;
+INSERT INTO colecciones_peliculas (id, coleccion_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
 VALUES (2, 1, 'Karol, un Papa rimasto uomo', 'Karol II. El Papa, el hombre', 2006, 2)
 ;
 INSERT INTO fe_valores (id, nombre)
