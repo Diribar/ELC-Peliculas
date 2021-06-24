@@ -36,16 +36,34 @@ module.exports = {
 	},
 
 	desambiguar1: async (req, res) => {
-		// OBTENER LOS LISTADOS *****************
-		// return res.send(req.session.importarDatos);
-		let rubro = req.session.importarDatos.rubro;
+		// Obtener 'palabras_clave' y 'rubro'
 		let palabras_clave = req.session.importarDatos.palabras_clave;
+		let rubro = req.session.importarDatos.rubro;
+		// Función clave
 		rubro == "colecciones"
 			? (resultados = await funcionesAPI.searchCollection(palabras_clave))
 			: rubro == "peliculas"
-				? (resultados = await funcionesAPI.searchMovie(palabras_clave))
-				: "";
+			? (resultados = await funcionesAPI.searchMovie(palabras_clave))
+			: "";
+		// Redireccionar
 		return res.send(resultados);
+	},
+
+	contador1: async (req, res) => {
+		// Obtener 'palabras_clave' y 'rubro'
+		let { palabras_clave, rubro } = req.query;
+		palabras_clave.includes("-")
+			? (palabras = palabras_clave.replace(/-/g, " "))
+			: (palabras = palabras_clave);
+		// Función clave
+		let resultados = []
+		rubro == "colecciones"
+			? (resultados = await funcionesAPI.searchCollection(palabras))
+			: rubro == "peliculas"
+			? (resultados = await funcionesAPI.searchMovie(palabras))
+			: "";
+		// Devolver el resultado
+		return res.json(resultados);
 	},
 
 	desambiguarForm: async (req, res) => {
@@ -60,15 +78,6 @@ module.exports = {
 			? (resultados = await funcionesAPI.searchMovie(palabras_clave))
 			: "";
 		return res.send(resultados);
-	},
-
-	contador: async (req, res) => {
-		let { palabras_clave, rubro } = req.query;
-		let palabras = palabras_clave.replace(/-/g, " ");
-		//let { nuevas, yaEnBD } = await funcionesAPI.search(palabras, rubro);
-		//return res.json(nuevas, yaEnBD);
-		let { resultado } = await funcionesAPI.search(palabras, rubro);
-		return resultado;
 	},
 
 	agregar2Form: (req, res) => {

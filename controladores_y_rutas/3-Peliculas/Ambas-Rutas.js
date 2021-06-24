@@ -14,7 +14,7 @@ const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizad
 // Controladores de Crear
 router.get("/agregar", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar1", soloUsuarios, agregar.importarDatosForm);
-router.get("/api/contador/", agregar.contador);
+router.get("/api/contador1/", agregar.contador1);
 router.post('/agregar1', soloUsuarios, validar1, agregar.importarDatosGuardar);
 router.get("/desambiguar1", soloUsuarios, agregar.desambiguar1);
 

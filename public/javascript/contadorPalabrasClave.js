@@ -5,8 +5,15 @@ window.addEventListener("load", () => {
 	var resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
 
 	// Actualizar ante cambios en el input
-	palabras_clave.addEventListener("input", () => {
-		contador(palabras_clave, rubro, resultadoDeBusqueda);
+	palabras_clave.addEventListener("input", async () => {
+		start_position: while (true) {
+			let antes = palabras_clave.value
+			console.log(antes)
+			await contador(palabras_clave, rubro, resultadoDeBusqueda);
+			let despues = palabras_clave.value;
+			if (antes != despues) continue start_position;
+			break;
+		}
 	});
 
 	// Actualizar ante cambios en el rubro
@@ -16,40 +23,44 @@ window.addEventListener("load", () => {
 })
 
 const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
-	// Averiguar cantidad de coincidencias
 	let palabras = palabras_clave.value.trim();
 	if (palabras.length > 1) {
-		let rubroTMDB = "";
-		rubro.value == "peliculas"
-			? (rubroTMDB = "movie")
-			: (rubroTMDB = "collection");
+		// Obtener el 'rubro'
+		let rubroTMDB = rubro.value
+		// Obtener el link
 		palabras_clave = palabras.replace(/ /g, "-");
 		let link =
-			"/peliculas/api/contador/?palabras_clave=" +
+			"/peliculas/api/contador1/?palabras_clave=" +
 			palabras_clave +
 			"&rubro=" +
 			rubroTMDB;
-		cantidad = await fetch(link).then((n) => n.json());
-		// Determinar frase y formato
-		let frase = "";
+		// Averiguar cantidad de coincidencias
+		let cantidad = await fetch(link)
+			.then((n) => n.json());
+		//console.log(cantidad);
+		// Determinar oracion y formato
+		let oracion = "";
 		let formatoVigente = "";
 		// Resultado exitoso
-		if (cantidad > 0 && cantidad <= 20) {
-			cantidad > 1 ? (s = "s") : (s = "");
-			frase = "Encontramos " + cantidad + " coincidencia" + s;
+		if (cantidad.menor > 0 && cantidad.menor <= 20) {
+			cantidad.menor < cantidad.mayor
+				? frase = "entre " + cantidad.menor + " y " + cantidad.mayor
+				: frase = cantidad.mayor
+			cantidad.mayor > 1 ? (s = "s") : (s = "");			
+			oracion = "Encontramos " + frase + " coincidencia" + s;
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
 		} else {
 			// Resultados inválidos
 			formatoVigente = "resultadoInvalido";
 			formatoAnterior = "resultadoExitoso";
-			if (cantidad == 0) {
-				frase = "No encontramos coincidencias con estas palabras";
-			} else if (cantidad > 20) {
-				frase = "Hay más de 20 coincidencias, intentá ser más específico";
+			if (cantidad.menor == 0) {
+				oracion = "No encontramos coincidencias con estas palabras";
+			} else if (cantidad.menor > 20) {
+				oracion = "Hay más de " + (cantidad.menor-1)  + " coincidencias, intentá ser más específico";
 			}
 		}
-		resultadoDeBusqueda.innerHTML = frase;
+		resultadoDeBusqueda.innerHTML = oracion;
 		resultadoDeBusqueda.classList.add(formatoVigente);
 		resultadoDeBusqueda.classList.remove(formatoAnterior);
 	}

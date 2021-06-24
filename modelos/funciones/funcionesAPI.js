@@ -4,6 +4,45 @@ const details_FA = require("../API/2-details-FA");
 
 module.exports = {
 	searchCollection: async (palabras_clave) => {
+		let lecturaCollection = search_TMDB(palabras_clave, "collection")
+			.then((n) => n.results)
+			.then((n) => n.map((m) => m.id));
+		let lecturaTV = search_TMDB(palabras_clave, "tv")
+			.then((n) => n.results)
+			.then((n) => n.map((m) => m.id));
+		let datos = await Promise.all([lecturaCollection, lecturaTV]).then(
+			(n) => {
+				return {
+					rubro: "colecciones",
+					menor: Math.max(n[0].length, n[1].length),
+					mayor: n[0].length + n[1].length,
+					coleccion: n[0],
+					tv: n[1],
+				};
+			}
+		);
+		return datos;
+	},
+
+	searchMovie: async (palabras_clave) => {
+		let lecturaTMDB = search_TMDB(palabras_clave, "movie")
+			.then((n) => n.results)
+			.then((n) => n.map((m) => m.id));
+		let lecturaFA = search_FA(palabras_clave).then((n) =>
+			n.map((m) => m.id));
+		let datos = await Promise.all([lecturaTMDB, lecturaFA]).then((n) => {
+			return {
+				rubro: "peliculas",
+				menor: Math.max(n[0].length, n[1].length),
+				mayor: n[0].length + n[1].length,
+				tmdb: n[0],
+				fa: n[1],
+			};
+		});
+		return datos;
+	},
+
+	searchCollectionBackup: async (palabras_clave) => {
 		var datos = [];
 		var rubro = ["collection", "tv"];
 		for (let i = 0; i < 2; i++) {
@@ -22,25 +61,6 @@ module.exports = {
 			}
 		}
 		return datos;
-	},
-
-	searchMovie: async (palabras_clave) => {
-		let lecturaTMDB = search_TMDB(palabras_clave, "movie")
-			.then(n => n.results)
-			.then(n => n.map(m => m.id))
-			//.then(n => {return {TMDB: n}})
-		let lecturaFA = search_FA(palabras_clave)
-			.then(n => n.map(m => m.id))
-			//.then(n => {return {FA: n}})
-		let datos = await Promise.all([lecturaTMDB, lecturaFA])
-			.then(values => {
-				return {
-					rubro: "peliculas",
-					TMDB: values[0],
-					FA: values[1],
-				};
-			});
-		return datos
 	},
 
 	searchMovieBackup: async (palabras_clave) => {
