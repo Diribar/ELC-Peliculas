@@ -10,7 +10,6 @@ module.exports = (sequelize, dt) => {
 		coleccion_pelicula_id: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 		ano_estreno: {type: dt.INTEGER},
-		epoca_estreno_id: {type: dt.INTEGER},
 		pais_id: {type: dt.STRING(2)},
 		director: {type: dt.STRING(50)},
 		guion: {type: dt.STRING(50)},
@@ -49,7 +48,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.colecciones_peliculas, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
-		entidad.belongsTo(n.epocas_estreno, {as: "epoca_estreno", foreignKey: "epoca_estreno_id"});
 		entidad.belongsTo(n.publicos_recomendados, {as: "publico_recomendado", foreignKey: "publico_recomendado_id"});
 		entidad.belongsTo(n.personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
