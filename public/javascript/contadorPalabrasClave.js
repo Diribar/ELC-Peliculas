@@ -3,27 +3,32 @@ window.addEventListener("load", () => {
 	let palabras_clave = document.querySelector("input");
 	let rubro = document.querySelector("select");
 	var resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
+	var antes = "";
+	var despues=""
 
 	// Actualizar ante cambios en el input
-	palabras_clave.addEventListener("input", async () => {
-		start_position: while (true) {
-			let antes = palabras_clave.value
-			console.log(antes)
-			await contador(palabras_clave, rubro, resultadoDeBusqueda);
-			let despues = palabras_clave.value;
-			if (antes != despues) continue start_position;
-			break;
+	palabras_clave.addEventListener("keyup", () => {
+		while (true) {
+			antes = palabras_clave.value
+			if (antes == despues) {break};
+			contador(antes, rubro, resultadoDeBusqueda);
+			despues = palabras_clave.value;
 		}
 	});
 
 	// Actualizar ante cambios en el rubro
 	rubro.addEventListener("input", () => {
-		contador(palabras_clave, rubro, resultadoDeBusqueda);
+		while (true) {
+			antes = palabras_clave.value
+			if (antes == despues) {break};
+			contador(antes, rubro, resultadoDeBusqueda);
+			despues = palabras_clave.value;
+		}
 	});
 })
 
 const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
-	let palabras = palabras_clave.value.trim();
+	let palabras = palabras_clave.trim();
 	if (palabras.length > 1) {
 		// Obtener el 'rubro'
 		let rubroTMDB = rubro.value
