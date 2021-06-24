@@ -42,8 +42,8 @@ VALUES (1, 'Juan Pablo II (papa)')
 INSERT INTO hechos_historicos (id, nombre)
 VALUES (1, '2a Guerra Mundial')
 ;
-INSERT INTO colecciones_cabecera (id, rubro, nombre_original, nombre_castellano)
-VALUES (1, 'manual', 'Karol', 'Karol')
+INSERT INTO colecciones_cabecera (id, rubro, nombre_original, nombre_castellano, sinopsis)
+VALUES (1, 'manual', 'Karol', 'Karol', 'Narra la historia del Papa Juan Pablo II. La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el encuentro con sus seres queridos.')
 ;
 INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
 VALUES (1, 1, 1, '38516', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
@@ -63,14 +63,14 @@ VALUES (1, 'Es precaria'), (2, 'No perjudica el disfrute'), (3, 'Acompaña el di
 INSERT INTO interes_en_la_pelicula (id, nombre)
 VALUES (1, 'Recordame que quiero verla'), (2, 'Ya la vi'), (3, 'Prefiero que no me la recomienden')
 ;
-INSERT INTO epocas_estreno (id, nombre)
-VALUES (1, 'Antes de 1970'), (2, '1970 - 1999'), (3, '2000 - 2014'), (4, '2015 - Presente')
+INSERT INTO epocas_estreno (id, nombre, ano_comienzo, ano_fin)
+VALUES (1, 'Antes de 1970', 1900, 1969), (2, '1970 - 1999', 1970, 1999), (3, '2000 - 2014', 2000, 2014), (4, '2015 - Presente', 2015, 2025)
 ;
 INSERT INTO eventos (id, nombre, fecha)
 VALUES (1, 'San Juan Pablo II', '22/oct')
 ;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, epoca_estreno_id, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 3, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 5, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Małgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszy?ski), Patrycja Soliman (Wislawa)', 'Taodue Film')
+INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, titulo_original, titulo_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT', 'https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg', true, true, 5, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Małgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszy?ski), Patrycja Soliman (Wislawa)', 'Taodue Film')
 ;
 INSERT INTO us_pel_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_filmica_id)
 VALUES (1, 1, 1, 5, 4, 3)

@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },
-		sinopsis: { type: dt.STRING(500) },
+		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
 		coleccion_id: { type: dt.INTEGER },
 		orden_secuencia: { type: dt.INTEGER },

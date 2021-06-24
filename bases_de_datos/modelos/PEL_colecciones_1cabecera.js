@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		director: { type: dt.STRING(50) },
 		productor: { type: dt.STRING(50) },
 		en_produccion: { type: dt.BOOLEAN },
-		sinopsis: { type: dt.STRING(500) },
+		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
 	};
 	const config = {

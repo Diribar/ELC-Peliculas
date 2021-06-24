@@ -103,6 +103,12 @@ CREATE TABLE colecciones_cabecera (
 	rubro VARCHAR(20) NOT NULL,
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
+	ano_estreno INT UNSIGNED NULL,
+	ano_fin INT UNSIGNED NULL,
+	pais_id VARCHAR(2) NULL,
+	director VARCHAR(50) NULL,
+	productor VARCHAR(50) NULL,
+	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -113,7 +119,9 @@ CREATE TABLE colecciones_peliculas (
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
-	coleccion_id INT UNSIGNED NULL,
+	sinopsis VARCHAR(800) NULL,
+	avatar VARCHAR(100) NULL,
+	coleccion_id INT UNSIGNED NOT NULL,
 	orden_secuencia INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones_cabecera(id)
@@ -121,6 +129,8 @@ CREATE TABLE colecciones_peliculas (
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,
+	ano_comienzo INT UNSIGNED NOT NULL,
+	ano_fin INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE publicos_recomendados (
@@ -155,12 +165,11 @@ CREATE TABLE PELICULAS (
 	coleccion_pelicula_id INT UNSIGNED NULL,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
-	epoca_estreno_id INT UNSIGNED NOT NULL,
 	pais_id VARCHAR(2) NOT NULL,
 	director VARCHAR(50) NOT NULL,
 	guion VARCHAR(50) NOT NULL,
 	musica VARCHAR(50) NOT NULL,
-	actores VARCHAR(500) NOT NULL, 
+	actores VARCHAR(500) NOT NULL,
 	productor VARCHAR(50) NOT NULL,
 	avatar VARCHAR(100) NOT NULL,
 	idioma_castellano BOOLEAN NOT NULL,
@@ -171,7 +180,7 @@ CREATE TABLE PELICULAS (
 	personaje_historico_id INT UNSIGNED NULL,
 	hecho_historico_id INT UNSIGNED NULL,
 	sugerida_para_evento_id INT UNSIGNED NULL,
-	sinopsis VARCHAR(500) NOT NULL,
+	sinopsis VARCHAR(800) NOT NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
 	analizada_por_id INT UNSIGNED NULL,
@@ -188,7 +197,6 @@ CREATE TABLE PELICULAS (
 	borrado_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_pelicula_id) REFERENCES colecciones_peliculas(id),
-	FOREIGN KEY (epoca_estreno_id) REFERENCES epocas_estreno(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (publico_recomendado_id) REFERENCES publicos_recomendados(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
