@@ -31,14 +31,14 @@ const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
 	let palabras = palabras_clave.trim();
 	if (palabras.length > 1) {
 		// Obtener el 'rubro'
-		let rubroTMDB = rubro.value
+		let rubroValor = rubro.value
 		// Obtener el link
 		palabras_clave = palabras.replace(/ /g, "-");
 		let link =
 			"/peliculas/api/contador1/?palabras_clave=" +
 			palabras_clave +
 			"&rubro=" +
-			rubroTMDB;
+			rubroValor;
 		// Averiguar cantidad de coincidencias
 		let cantidad = await fetch(link)
 			.then((n) => n.json());
@@ -47,11 +47,11 @@ const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
 		let oracion = "";
 		let formatoVigente = "";
 		// Resultado exitoso
-		if (cantidad.menor > 0 && cantidad.menor <= 20) {
+		if (cantidad.menor > 0 && !cantidad.masDe20) {
 			cantidad.menor < cantidad.mayor
-				? frase = "entre " + cantidad.menor + " y " + cantidad.mayor
-				: frase = cantidad.mayor
-			cantidad.mayor > 1 ? (s = "s") : (s = "");			
+				? (frase = "entre " + cantidad.menor + " y " + cantidad.mayor)
+				: (frase = cantidad.mayor);
+			cantidad.mayor > 1 ? (s = "s") : (s = "");
 			oracion = "Encontramos " + frase + " coincidencia" + s;
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
@@ -61,8 +61,8 @@ const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
 			formatoAnterior = "resultadoExitoso";
 			if (cantidad.menor == 0) {
 				oracion = "No encontramos coincidencias con estas palabras";
-			} else if (cantidad.menor > 20) {
-				oracion = "Hay más de " + (cantidad.menor-1)  + " coincidencias, intentá ser más específico";
+			} else if (cantidad.masDe20) {
+				oracion = "Hay demasiadas coincidencias, intentá ser más específico";
 			}
 		}
 		resultadoDeBusqueda.innerHTML = oracion;

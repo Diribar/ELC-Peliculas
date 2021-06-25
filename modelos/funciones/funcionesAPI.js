@@ -26,19 +26,60 @@ module.exports = {
 
 	searchMovie: async (palabras_clave) => {
 		let lecturaTMDB = search_TMDB(palabras_clave, "movie")
-			.then((n) => n.results)
-			.then((n) => n.map((m) => m.id));
-		let lecturaFA = search_FA(palabras_clave).then((n) =>
-			n.map((m) => m.id));
-		let datos = await Promise.all([lecturaTMDB, lecturaFA]).then((n) => {
-			return {
-				rubro: "peliculas",
-				menor: Math.max(n[0].length, n[1].length),
-				mayor: n[0].length + n[1].length,
-				tmdb: n[0],
-				fa: n[1],
-			};
-		});
+			.then((n) => {
+				return {
+					resultados: n.results,
+					total: n.total_results,
+				}
+			})
+			.then((n) => {
+				n.total > 20 ? masDe20 = true : masDe20 = false
+				return {
+					resultados: n.resultados.map((m) => {
+						ano = parseInt(m.release_date.slice(0, 4));
+						if (isNaN(ano)) return;
+						avatar = m.poster_path;
+						avatar == null ? avatar = m.backdrop_path : "";
+						return {
+							tmdb_id: m.id,
+							nombre_original: m.original_title,
+							nombre_castellano: m.title,
+							lanzamiento: ano,
+							avatar: avatar
+						};
+					}),
+					masDe20: masDe20,
+				};
+			})
+			.then(n => {
+				while (true) {
+					indice = n.resultados.findIndex((m) => m == null);
+					if (indice == -1) break
+					n.resultados.splice(indice,1)
+				}
+				return n
+			})
+
+		// let lecturaFA = search_FA(palabras_clave).then((n) =>
+		// 	n.map((m) => m.id));
+		let lecturaFA = {
+			resultados: [],
+			masDe20: false,
+		}
+		let datos = await Promise.all([lecturaTMDB, lecturaFA])
+			.then((n) => {
+				return {
+					rubro: "peliculas",
+					tmdb: n[0].resultados,
+					fa: n[1].resultados,
+					masDe20: n[0].masDe20 || n[1].masDe20,
+					menor: Math.max(
+						n[0].resultados.length,
+						n[1].resultados.length
+					),
+					mayor: n[0].resultados.length + n[1].resultados.length,
+				};
+			})
 		return datos;
 	},
 
@@ -78,7 +119,7 @@ module.exports = {
 					imagen1: m.backdrop_path,
 					imagen2: m.poster_path,
 					idioma: m.original_language,
-					lanzamiento: parseInt(m.release_date.substring(0, 4)),
+					lanzamiento: parseInt(m.release_date.slice(0, 4)),
 				});
 				//console.log(m.original_title.toLowerCase() + "/")
 			});
