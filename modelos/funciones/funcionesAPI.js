@@ -7,9 +7,6 @@ module.exports = {
 		let buscarTMDB = searchTMDB(palabras_clave);
 		// .then((n) => {
 		// 	return {
-		// 		rubro: "colecciones",
-		// 		coleccion: n[0].resultados,
-		// 		tv: n[1].resultados,
 		// 		masDe20: n[0].masDe20 || n[1].masDe20,
 		// 		menor: Math.max(n[0].resultados.length, n[1].resultados.length),
 		// 		mayor: n[0].resultados.length + n[1].resultados.length,
@@ -19,16 +16,14 @@ module.exports = {
 		let datos = buscarTMDB;
 		return datos;
 	},
-
 };
-
 
 searchTMDB = async (palabras_clave) => {
 	let rubros = ["collection", "tv", "movie"];
-	let lectura = [{}, {}, {}]
+	let lectura = [{}, {}, {}];
 	for (let i = 0; i < rubros.length; i++) {
 		let rubro = rubros[i];
-		lectura[i] = search_TMDB(palabras_clave, rubro)
+		lectura[i] = await search_TMDB(palabras_clave, rubro)
 			.then((n) => {
 				return {
 					resultados: n.results,
@@ -59,7 +54,8 @@ searchTMDB = async (palabras_clave) => {
 						avatar = m.poster_path;
 						avatar == null ? (avatar = m.backdrop_path) : "";
 						return {
-							fuente: rubro,
+							fuente: "TMDB",
+							rubro: rubro,
 							tmdb_id: m.id,
 							nombre_original: nombre_original,
 							nombre_castellano: nombre_castellano,
@@ -80,21 +76,19 @@ searchTMDB = async (palabras_clave) => {
 			});
 	}
 
-	let lecturas = Promise.all([
-		lectura[0],
-		lectura[1],
-		lectura[2],
-	]).then(n => {return n})
-	return lecturas[2]
+	// await Promise.all([
+	// 	lectura[0],
+	// 	lectura[1],
+	// 	lectura[2],
+	// ]).then(n => {return n})
 	let datos = {
-		resultados: 
-			lecturas[2].resultados,
-			//.concat(lecturas[1].resultados)
-			//.concat(lecturas[2].resultados),
-		//masDe20: lecturas[0].masDe20 || lecturas[1].masDe20 || lecturas[2].masDe20,
+		resultados: lectura[0].resultados
+			.concat(lectura[1].resultados)
+			.concat(lectura[2].resultados),
+		masDe20: lectura[0].masDe20 || lectura[1].masDe20 || lectura[2].masDe20,
 	};
-	datos.resultados.sort((a, b) => {
-		return (b.lanzamiento - a.lanzamiento)
-	})
-	return lectura;
-}
+	datos.resultados.length > 0
+		? datos.resultados.sort((a, b) => {return b.lanzamiento - a.lanzamiento;})
+		: "";
+	return datos;
+};
