@@ -36,15 +36,9 @@ module.exports = {
 	},
 
 	desambiguar1: async (req, res) => {
-		// Obtener 'palabras_clave' y 'rubro'
+		// Obtener 'palabras_clave' y ejecutar la rutina
 		let palabras_clave = req.session.importarDatos.palabras_clave;
-		let rubro = req.session.importarDatos.rubro;
-		// Función clave
-		rubro == "colecciones"
-			? (resultados = await funcionesAPI.searchCollection(palabras_clave))
-			: rubro == "peliculas"
-			? (resultados = await funcionesAPI.searchMovie(palabras_clave))
-			: "";
+		resultados = await funcionesAPI.search(palabras_clave)
 		// Redireccionar
 		return res.send(resultados);
 	},
@@ -56,12 +50,7 @@ module.exports = {
 			? (palabras = palabras_clave.replace(/-/g, " "))
 			: (palabras = palabras_clave);
 		// Función clave
-		let resultados = []
-		rubro == "colecciones"
-			? (resultados = await funcionesAPI.searchCollection(palabras))
-			: rubro == "peliculas"
-			? (resultados = await funcionesAPI.searchMovie(palabras))
-			: "";
+		let resultados = await funcionesAPI.search(palabras)
 		// Devolver el resultado
 		return res.json(resultados);
 	},

@@ -3,33 +3,32 @@ const search_FA = require("../API/1-search-FA");
 const details_FA = require("../API/2-details-FA");
 
 module.exports = {
-	searchCollection: async (palabras_clave) => {
-		let lecturaCollection = search_TMDB(palabras_clave, "collection")
-			.then((n) => {
-				return {
-					resultados: n.results,
-					total: n.total_results,
-				};
-			})
-			.then((n) => {
-				n.total > 20 ? (masDe20 = true) : (masDe20 = false);
-				return {
-					resultados: n.resultados.map((m) => {
-						avatar = m.poster_path;
-						avatar == null ? (avatar = m.backdrop_path) : "";
-						return {
-							tmdb_id: m.id,
-							nombre_original: m.original_name,
-							nombre_castellano: m.name,
-							lanzamiento: "-",
-							avatar: avatar,
-						};
-					}),
-					masDe20: masDe20,
-				};
-			})
+	search: async (palabras_clave) => {
+		let buscarTMDB = searchTMDB(palabras_clave);
+		// .then((n) => {
+		// 	return {
+		// 		rubro: "colecciones",
+		// 		coleccion: n[0].resultados,
+		// 		tv: n[1].resultados,
+		// 		masDe20: n[0].masDe20 || n[1].masDe20,
+		// 		menor: Math.max(n[0].resultados.length, n[1].resultados.length),
+		// 		mayor: n[0].resultados.length + n[1].resultados.length,
+		// 	};
+		// });
 
-		let lecturaTV = search_TMDB(palabras_clave, "tv")
+		let datos = buscarTMDB;
+		return datos;
+	},
+
+};
+
+
+searchTMDB = async (palabras_clave) => {
+	let rubros = ["collection", "tv", "movie"];
+	let lectura = [{}, {}, {}]
+	for (let i = 0; i < rubros.length; i++) {
+		let rubro = rubros[i];
+		lectura[i] = search_TMDB(palabras_clave, rubro)
 			.then((n) => {
 				return {
 					resultados: n.results,
@@ -40,14 +39,30 @@ module.exports = {
 				n.total > 20 ? (masDe20 = true) : (masDe20 = false);
 				return {
 					resultados: n.resultados.map((m) => {
-						if (m.first_air_date == "") return
-						ano = parseInt(m.first_air_date.slice(0, 4));
+						if (rubro == "collection") {
+							ano = "-";
+							nombre_original = m.original_title;
+							nombre_castellano = m.title;
+						}
+						if (rubro == "movie") {
+							if (m.release_date == "") return;
+							ano = parseInt(m.release_date.slice(0, 4));
+							nombre_original = m.original_title;
+							nombre_castellano = m.title;
+						}
+						if (rubro == "tv") {
+							if (m.first_air_date == "") return;
+							ano = parseInt(m.first_air_date.slice(0, 4));
+							nombre_original = m.original_name;
+							nombre_castellano = m.name;
+						}
 						avatar = m.poster_path;
 						avatar == null ? (avatar = m.backdrop_path) : "";
 						return {
+							fuente: rubro,
 							tmdb_id: m.id,
-							nombre_original: m.original_name,
-							nombre_castellano: m.name,
+							nombre_original: nombre_original,
+							nombre_castellano: nombre_castellano,
 							lanzamiento: ano,
 							avatar: avatar,
 						};
@@ -63,174 +78,23 @@ module.exports = {
 				}
 				return n;
 			});
+	}
 
-		let datos = await Promise.all([lecturaCollection, lecturaTV]).then(
-			(n) => {
-				return {
-					rubro: "colecciones",
-					coleccion: n[0].resultados,
-					tv: n[1].resultados,
-					masDe20: n[0].masDe20 || n[1].masDe20,
-					menor: Math.max(
-						n[0].resultados.length,
-						n[1].resultados.length
-					),
-					mayor: n[0].resultados.length + n[1].resultados.length,
-				};
-			}
-		);
-		return datos;
-	},
-
-	searchMovie: async (palabras_clave) => {
-		let lecturaTMDB = search_TMDB(palabras_clave, "movie")
-			.then((n) => {
-				return {
-					resultados: n.results,
-					total: n.total_results,
-				}
-			})
-			.then((n) => {
-				n.total > 20 ? masDe20 = true : masDe20 = false
-				return {
-					resultados: n.resultados.map((m) => {
-						if (m.release_date == "") return;
-						ano = parseInt(m.release_date.slice(0, 4));
-						avatar = m.poster_path;
-						avatar == null ? avatar = m.backdrop_path : "";
-						return {
-							tmdb_id: m.id,
-							nombre_original: m.original_title,
-							nombre_castellano: m.title,
-							lanzamiento: ano,
-							avatar: avatar
-						};
-					}),
-					masDe20: masDe20,
-				};
-			})
-			.then(n => {
-				while (true) {
-					indice = n.resultados.findIndex((m) => m == null);
-					if (indice == -1) break
-					n.resultados.splice(indice,1)
-				}
-				return n
-			})
-
-		// let lecturaFA = search_FA(palabras_clave).then((n) =>
-		// 	n.map((m) => m.id));
-		let lecturaFA = {
-			resultados: [],
-			masDe20: false,
-		}
-		let datos = await Promise.all([lecturaTMDB, lecturaFA])
-			.then((n) => {
-				return {
-					rubro: "peliculas",
-					tmdb: n[0].resultados,
-					fa: n[1].resultados,
-					masDe20: n[0].masDe20 || n[1].masDe20,
-					menor: Math.max(
-						n[0].resultados.length,
-						n[1].resultados.length
-					),
-					mayor: n[0].resultados.length + n[1].resultados.length,
-				};
-			})
-		return datos;
-	},
-
-	searchCollectionBackup: async (palabras_clave) => {
-		var datos = [];
-		var rubro = ["collection", "tv"];
-		for (let i = 0; i < 2; i++) {
-			lectura = await search_TMDB(palabras_clave, rubro[i]);
-			if (lectura.total_results) {
-				lectura.results.map((m) => {
-					datos.push({
-						tmdb_id: m.id,
-						rubro: rubro[i],
-						nombre_original: m.original_name,
-						nombre_castellano: m.name,
-						imagen1: m.backdrop_path,
-						imagen2: m.poster_path,
-					});
-				});
-			}
-		}
-		return datos;
-	},
-
-	searchMovieBackup: async (palabras_clave) => {
-		var datos = [];
-		let lecturaTMDB = { total_results: 0 };
-		lecturaTMDB = await search_TMDB(palabras_clave, "movie");
-		if (lecturaTMDB.total_results && lecturaTMDB.total_results <= 20) {
-			lecturaTMDB.results.map((m) => {
-				datos.push({
-					fuente: "TMDB",
-					rubro: "movie",
-					id: m.id,
-					nombre_original: m.original_title,
-					nombre_castellano: m.title,
-					imagen1: m.backdrop_path,
-					imagen2: m.poster_path,
-					idioma: m.original_language,
-					lanzamiento: parseInt(m.release_date.slice(0, 4)),
-				});
-				//console.log(m.original_title.toLowerCase() + "/")
-			});
-		}
-
-		console.log(lecturaTMDB.total_results);
-		if (lecturaTMDB.total_results <= 20) {
-			var lecturaFA = await search_FA(palabras_clave);
-			// if (lecturaFA.length > 0 && lecturaFA.length <= 20) {
-			// 	for (n of lecturaFA) {
-			// 		detalleFA = await details_FA(n.id).then((m) => {
-			// 			parentesis = m.title.indexOf(" (");
-			// 			parentesis > 0
-			// 				? (m.title = m.title.slice(0, parentesis))
-			// 				: "";
-			// 			return {
-			// 				fuente: "FA",
-			// 				rubro: "movie",
-			// 				id: n.id,
-			// 				nombre: m.title,
-			// 				imagen1: m.poster_big,
-			// 				lanzamiento: m.year,
-			// 			};
-			// 		});
-			// 		if (
-			// 			datos.length == 0 ||
-			// 			!datos.find((p) => (
-			// 				p.lanzamiento == detalleFA.lanzamiento &&
-			// 				p.nombre.toLowerCase() == detalleFA.nombre.toLowerCase()
-			// 			)) &&
-			// 			!datos.find((p) => (
-			// 				p.lanzamiento == detalleFA.lanzamiento &&
-			// 				p.nombre_original.toLowerCase() == detalleFA.nombre.toLowerCase()
-			// 			))
-			// 		) {
-			// 			datos.push(detalleFA);
-			// 			console.log(detalleFA.nombre.toLowerCase() + "/")
-			// 		}
-			// 	}
-			// } else lecturaFA.length > 20 ? datos.push(lecturaFA) : "";
-		}
-
-		// datos.sort(function (a, b) {
-		// 	if (a.lanzamiento > b.lanzamiento) {
-		// 		return 1;
-		// 	}
-		// 	if (a.lanzamiento < b.lanzamiento) {
-		// 		return -1;
-		// 	}
-		// 	// a must be equal to b
-		// 	return 0;
-		// });
-		// return datos;
-		return lecturaFA;
-	},
-};
+	let lecturas = Promise.all([
+		lectura[0],
+		lectura[1],
+		lectura[2],
+	]).then(n => {return n})
+	return lecturas[2]
+	let datos = {
+		resultados: 
+			lecturas[2].resultados,
+			//.concat(lecturas[1].resultados)
+			//.concat(lecturas[2].resultados),
+		//masDe20: lecturas[0].masDe20 || lecturas[1].masDe20 || lecturas[2].masDe20,
+	};
+	datos.resultados.sort((a, b) => {
+		return (b.lanzamiento - a.lanzamiento)
+	})
+	return lectura;
+}
