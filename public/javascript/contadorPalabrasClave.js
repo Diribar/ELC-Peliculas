@@ -1,47 +1,31 @@
 window.addEventListener("load", () => {
 	// Declarar las variables
 	let palabras_clave = document.querySelector("input");
-	let rubro = document.querySelector("select");
 	var resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
 	var antes = "";
-	var despues=""
+	var despues = "";
 
 	// Actualizar ante cambios en el input
 	palabras_clave.addEventListener("keyup", () => {
 		while (true) {
-			antes = palabras_clave.value
-			if (antes == despues) {break};
-			contador(antes, rubro, resultadoDeBusqueda);
+			antes = palabras_clave.value;
+			if (antes == despues) {
+				break;
+			}
+			contador(antes, resultadoDeBusqueda);
 			despues = palabras_clave.value;
 		}
 	});
+});
 
-	// Actualizar ante cambios en el rubro
-	rubro.addEventListener("input", () => {
-		while (true) {
-			antes = palabras_clave.value
-			if (antes == despues) {break};
-			contador(antes, rubro, resultadoDeBusqueda);
-			despues = palabras_clave.value;
-		}
-	});
-})
-
-const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
+const contador = async (palabras_clave, resultadoDeBusqueda) => {
 	let palabras = palabras_clave.trim();
 	if (palabras.length > 1) {
-		// Obtener el 'rubro'
-		let rubroValor = rubro.value
 		// Obtener el link
 		palabras_clave = palabras.replace(/ /g, "-");
-		let link =
-			"/peliculas/api/contador1/?palabras_clave=" +
-			palabras_clave +
-			"&rubro=" +
-			rubroValor;
+		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
-		let cantidad = await fetch(link)
-			.then((n) => n.json());
+		let cantidad = await fetch(link).then((n) => n.json());
 		//console.log(cantidad);
 		// Determinar oracion y formato
 		let oracion = "";
@@ -59,10 +43,13 @@ const contador = async (palabras_clave, rubro, resultadoDeBusqueda) => {
 			// Resultados inválidos
 			formatoVigente = "resultadoInvalido";
 			formatoAnterior = "resultadoExitoso";
-			if (cantidad.menor == 0) {
-				oracion = "No encontramos coincidencias con estas palabras";
-			} else if (cantidad.masDe20) {
-				oracion = "Hay demasiadas coincidencias, intentá ser más específico";
+			if (cantidad.masDe20) {
+				oracion =
+				"Hay demasiadas coincidencias, intentá ser más específico";
+			} else {
+				if (cantidad.menor == 0) {
+					oracion = "No encontramos coincidencias con estas palabras";
+				}
 			}
 		}
 		resultadoDeBusqueda.innerHTML = oracion;

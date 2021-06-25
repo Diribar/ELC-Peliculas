@@ -42,7 +42,6 @@ let rutaLogin = require("./controladores_y_rutas/2-Usuarios/Login-Ruta");
 let rutaAmbas = require("./controladores_y_rutas/3-Peliculas/Ambas-Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
-app.use("/colecciones", rutaAmbas);
 app.use("/peliculas", rutaAmbas);
 app.use("/", rutaECC);
 

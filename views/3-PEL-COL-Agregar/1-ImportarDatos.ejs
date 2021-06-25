@@ -1,26 +1,24 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-ImportarDatos.css">
-<!-- <script src="/javascript/contadorPalabrasClave.js"></script> -->
+<script src="/javascript/contadorPalabrasClave.js"></script>
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
-	<h1 class="titulo" id="titulo">Agregá una <%= titulo %> a nuestra Base de Datos</h1>
+	<h1 class="titulo" id="titulo">Agregá una Película a nuestra Base de Datos</h1>
 	<form action="/peliculas/agregar1" method="POST" class="flex-col" id="data_entry">
 		<section class="flex-row space-between align-center"> 
 			<h1>Paso 1 de 4: Importar Datos</h1>
-			<select name="rubro">
-				<option value="peliculas"   <% if (rubro != "colecciones") { %> selected <% } %>>Película</option>
-				<option value="colecciones" <% if (rubro == "colecciones") { %> selected <% } %>>Colección</option>
-			</select>
 		</section>
-		<h2>Ingresá el Título de la <%= titulo %> </h2>
+		<h2>Ingresá el Título de la Película</h2>
 		<section class="flex-row space-between">
 			<div> <!--Sector de inputs y labels-->
 				<div class="relative flex-col ">
 					<div>
 						<input type="text" name="palabras_clave" placeholder="Escribilo acá"
-							value="<%= locals.palabras_clave ? palabras_clave : null %>" autofocus autocomplete="off">
+							value="<%= locals.palabras_clave ? palabras_clave : null %>"
+							autofocus autocomplete="off"
+						>
 						<i class="fas fa-question-circle">
 							<span class="mensajeAyuda">
 								Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 

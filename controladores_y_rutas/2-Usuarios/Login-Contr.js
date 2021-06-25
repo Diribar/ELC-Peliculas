@@ -40,8 +40,8 @@ module.exports = {
 			await metodosUsuario.upgradeStatusUsuario(usuario.id, 2)
 			usuario = await metodosUsuario.obtenerPorMail(req.body.email)
 		}
-		// Grabar el mail del usuario en la cookie
-		res.cookie("email", req.body.email, {maxAge: 1000*60*60*1})
+		// Grabar el mail del usuario en la cookie (configurado en 1 día)
+		res.cookie("email", req.body.email, {maxAge: 1000*60*60*24})
 		// return res.send(usuario)
 		// Iniciar la sesión
 		req.session.usuario = usuario
