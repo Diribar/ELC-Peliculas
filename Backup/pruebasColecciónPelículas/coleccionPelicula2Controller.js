@@ -1,7 +1,7 @@
 // ************ Requires ************
 const path = require('path');
-const metodosPelicula = require(path.join(__dirname, "../../modelos/BD_peliculas"));
-const metodosOtros = require(path.join(__dirname, "../../modelos/BD_varios"));
+const metodosPelicula = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_peliculas"));
+const metodosOtros = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_varios"));
 
 // *********** Controlador ***********
 module.exports = {

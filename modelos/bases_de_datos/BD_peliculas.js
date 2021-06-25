@@ -1,6 +1,6 @@
-const { Op } = require("sequelize");
-const db = require("../bases_de_datos/modelos");
+const db = require("../../bases_de_datos/modelos");
 const entidad = db.peliculas;
+const { Op } = require("sequelize");
 
 module.exports = {
 	ObtenerTodos: () => {

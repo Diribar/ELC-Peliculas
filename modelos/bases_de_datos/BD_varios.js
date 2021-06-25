@@ -1,4 +1,4 @@
-const db = require("../bases_de_datos/modelos");
+const db = require("../../bases_de_datos/modelos");
 
 module.exports = {
 	ObtenerTodos: (entidad) => {
@@ -20,8 +20,8 @@ module.exports = {
 		return db[entidad].findAll({
 			include: [camposInclude],
 			order: [[campoOrder, valorOrder]],
-		});	
-	},	
+		});
+	},
 
 	// obtenerPorId: (id, entidad, include) => {
 	// 	return db[entidad].findByPk(id, {

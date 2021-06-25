@@ -1,5 +1,4 @@
 // ************ Requires ************
-const tablasVarias = require("../../modelos/BD_varios");
 const { validationResult } = require("express-validator");
 
 // *********** Controlador ***********

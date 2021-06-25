@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path')
 const {validationResult} = require('express-validator');
-const metodosUsuario = require(path.join(__dirname, "../../modelos/BD_usuarios"));
-const metodosOtros = require(path.join(__dirname, "../../modelos/BD_varios"));
+const metodosUsuario = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_usuarios"));
+const metodosOtros = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_varios"));
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 
 // *********** Controlador ***********
