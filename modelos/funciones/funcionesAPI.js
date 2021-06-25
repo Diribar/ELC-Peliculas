@@ -5,19 +5,77 @@ const details_FA = require("../API/2-details-FA");
 module.exports = {
 	searchCollection: async (palabras_clave) => {
 		let lecturaCollection = search_TMDB(palabras_clave, "collection")
-			.then((n) => n.results)
-			.then((n) => n.map((m) => m.id));
+			.then((n) => {
+				return {
+					resultados: n.results,
+					total: n.total_results,
+				};
+			})
+			.then((n) => {
+				n.total > 20 ? (masDe20 = true) : (masDe20 = false);
+				return {
+					resultados: n.resultados.map((m) => {
+						avatar = m.poster_path;
+						avatar == null ? (avatar = m.backdrop_path) : "";
+						return {
+							tmdb_id: m.id,
+							nombre_original: m.original_name,
+							nombre_castellano: m.name,
+							lanzamiento: "-",
+							avatar: avatar,
+						};
+					}),
+					masDe20: masDe20,
+				};
+			})
+
 		let lecturaTV = search_TMDB(palabras_clave, "tv")
-			.then((n) => n.results)
-			.then((n) => n.map((m) => m.id));
+			.then((n) => {
+				return {
+					resultados: n.results,
+					total: n.total_results,
+				};
+			})
+			.then((n) => {
+				n.total > 20 ? (masDe20 = true) : (masDe20 = false);
+				return {
+					resultados: n.resultados.map((m) => {
+						if (m.first_air_date == "") return
+						ano = parseInt(m.first_air_date.slice(0, 4));
+						avatar = m.poster_path;
+						avatar == null ? (avatar = m.backdrop_path) : "";
+						return {
+							tmdb_id: m.id,
+							nombre_original: m.original_name,
+							nombre_castellano: m.name,
+							lanzamiento: ano,
+							avatar: avatar,
+						};
+					}),
+					masDe20: masDe20,
+				};
+			})
+			.then((n) => {
+				while (true) {
+					indice = n.resultados.findIndex((m) => m == null);
+					if (indice == -1) break;
+					n.resultados.splice(indice, 1);
+				}
+				return n;
+			});
+
 		let datos = await Promise.all([lecturaCollection, lecturaTV]).then(
 			(n) => {
 				return {
 					rubro: "colecciones",
-					menor: Math.max(n[0].length, n[1].length),
-					mayor: n[0].length + n[1].length,
-					coleccion: n[0],
-					tv: n[1],
+					coleccion: n[0].resultados,
+					tv: n[1].resultados,
+					masDe20: n[0].masDe20 || n[1].masDe20,
+					menor: Math.max(
+						n[0].resultados.length,
+						n[1].resultados.length
+					),
+					mayor: n[0].resultados.length + n[1].resultados.length,
 				};
 			}
 		);
@@ -36,8 +94,8 @@ module.exports = {
 				n.total > 20 ? masDe20 = true : masDe20 = false
 				return {
 					resultados: n.resultados.map((m) => {
+						if (m.release_date == "") return;
 						ano = parseInt(m.release_date.slice(0, 4));
-						if (isNaN(ano)) return;
 						avatar = m.poster_path;
 						avatar == null ? avatar = m.backdrop_path : "";
 						return {
