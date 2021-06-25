@@ -105,7 +105,6 @@ CREATE TABLE colecciones_cabecera (
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
-	pais_id VARCHAR(2) NULL,
 	director VARCHAR(50) NULL,
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,

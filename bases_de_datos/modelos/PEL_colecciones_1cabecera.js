@@ -8,7 +8,6 @@ module.exports = (sequelize, dt) => {
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },
 		ano_fin: { type: dt.INTEGER },
-		pais_id: { type: dt.STRING(2) },
 		director: { type: dt.STRING(50) },
 		productor: { type: dt.STRING(50) },
 		en_produccion: { type: dt.BOOLEAN },
