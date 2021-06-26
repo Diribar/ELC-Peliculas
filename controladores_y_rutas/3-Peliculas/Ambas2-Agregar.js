@@ -1,6 +1,6 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
-const funcionesAPI = require("../../modelos/funciones/funcionesAPI");
+const funciones = require("../../modelos/funciones/funciones");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
@@ -34,7 +34,7 @@ module.exports = {
 	desambiguar1: async (req, res) => {
 		// Obtener 'palabras_clave' y ejecutar la rutina
 		let palabras_clave = req.session.importarDatos.palabras_clave;
-		resultados = await funcionesAPI.search(palabras_clave)
+		let resultados = await funciones.search(palabras_clave)
 		// Redireccionar
 		return res.send(resultados);
 	},
@@ -46,7 +46,7 @@ module.exports = {
 			? (palabras = palabras_clave.replace(/-/g, " "))
 			: (palabras = palabras_clave);
 		// Función clave
-		let resultados = await funcionesAPI.search(palabras)
+		let resultados = await funciones.search(palabras)
 		// Devolver el resultado
 		return res.json(resultados);
 	},

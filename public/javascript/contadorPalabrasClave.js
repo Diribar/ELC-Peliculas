@@ -26,7 +26,6 @@ const contador = async (palabras_clave, resultadoDeBusqueda) => {
 		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
 		let cantidad = await fetch(link).then((n) => n.json());
-		//console.log(cantidad);
 		// Determinar oracion y formato
 		let oracion = "";
 		let formatoVigente = "";
