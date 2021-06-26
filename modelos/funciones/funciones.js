@@ -19,7 +19,7 @@ module.exports = {
 		buscar[0] = await funcionesAPI.searchTMDB(palabras_clave);
 		let datos = {
 			palabras_clave: palabras_clave,
-			tmdb: buscar[0].resultados,
+			resultados: buscar[0].resultados,
 			masDe20: buscar[0].masDe20,
 			menor: Math.max(buscar[0].resultados.length, 0),
 			mayor: buscar[0].resultados.length + 0,

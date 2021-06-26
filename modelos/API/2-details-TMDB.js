@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 
 module.exports = async (ID, rubro) => {
 	// PARTES DEL URL
-	// "https://api.themoviedb.org/4/movie/     399049?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
-	// "https://api.themoviedb.org/4/collection/97919?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
-	// "https://api.themoviedb.org/4/tv/        61865?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
-	let A_prefijoRubro = "https://api.themoviedb.org/4/";
+	// "https://api.themoviedb.org/3/movie/     99049?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
+	// "https://api.themoviedb.org/3/collection/97919?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
+	// "https://api.themoviedb.org/3/tv/        61865?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es"
+	let A_prefijoRubro = "https://api.themoviedb.org/3/";
 	let B_rubro = rubro;
 	let C_prefijoID = "/";
 	let D_ID = ID;

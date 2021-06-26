@@ -12,7 +12,7 @@
 .relative {position: relative;}
 .space-between {justify-content: space-between;}
 
-.resultadoErroneo {background-color: red;}
-.resultadoNeutro {background-color: blue;}
-.resultadoExitoso {background-color: green;}
-.resultadoErroneo, .resultadoNeutro, .resultadoExitoso {padding: 7px; color: white;}
+.resultadoInvalido {background-color: #FB0404;}
+.resultadoExitoso {background-color: #0A620F;}
+.resultadoInvalido, .resultadoExitoso {padding: 7px; color: white; font-weight: bold;}
+.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul); border: var(--azul) solid 2px;}

@@ -1,9 +1,10 @@
 const search_TMDB = require("../API/1-search-TMDB");
+const details_TMDB = require("../API/2-details-TMDB");
 
 module.exports = {
 	searchTMDB: async (palabras_clave) => {
 		let rubros = ["movie", "tv", "collection"];
-		let lectura = [{}, {}, {}];
+		let lectura = [];
 		let i = 0;
 		while (true) {
 			let rubro = rubros[i];
@@ -31,7 +32,9 @@ module.exports = {
 								}
 								if (rubro == "tv") {
 									if (m.first_air_date == null) return;
-									ano = parseInt(m.first_air_date.slice(0, 4));
+									ano = parseInt(
+										m.first_air_date.slice(0, 4)
+									);
 									nombre_original = m.original_name;
 									nombre_castellano = m.name;
 									desempate2 = m.first_air_date;
@@ -45,7 +48,9 @@ module.exports = {
 								}
 								// Elegir un avatar
 								avatar = m.poster_path;
-								avatar == null ? (avatar = m.backdrop_path) : "";
+								avatar == null
+									? (avatar = m.backdrop_path)
+									: "";
 								// Definir el título sin "distractores", para encontrar repeticiones
 								if (nombre_original) {
 									desempate1 = nombre_original
@@ -82,9 +87,35 @@ module.exports = {
 							if (indice == -1) break;
 							n.resultados.splice(indice, 1);
 						}
-					};
+					}
 					return n;
 				});
+			if (
+				!lectura[i].masDe20 &&
+				rubro == "collection" &&
+				lectura[i].resultados.length > 0
+			) {
+				let detalles = []
+				for (j = 0; j < lectura[2].resultados.length; j++) {
+					id = lectura[i].resultados[j].tmdb_id
+					detalles[i] = await details_TMDB(id, "collection")
+						.then((n) => n.parts)
+						.then((n) => n.map(m => m.release_date));
+					detalles[i].length > 1
+						? detalles[i].sort((a, b) => {
+								return a < b
+									? -1
+									: a > b
+										? 1
+										: 0;
+						})
+						: "";
+					lectura[i].resultados[j].lanzamiento = parseInt(
+						detalles[i][0].slice(0, 4)
+					);
+					lectura[i].resultados[j].desempate2 = detalles[i][0];
+				}
+			}
 			if (lectura[i].masDe20 || i == 2) break;
 			i = i + 1;
 		}
@@ -102,7 +133,9 @@ module.exports = {
 			// Detectar si se repite algún registro y eliminar el de la TV
 			datos.resultados.map((n) => {
 				contar = datos.resultados.filter(
-					(m) => m.desempate1 == n.desempate1 && m.desempate2 == n.desempate2
+					(m) =>
+						m.desempate1 == n.desempate1 &&
+						m.desempate2 == n.desempate2
 				);
 				if (contar.length > 1) {
 					indice = datos.resultados.findIndex(
@@ -123,9 +156,11 @@ module.exports = {
 							: b.desempate2 > a.desempate2
 							? 1
 							: 0;
-					})
+				  })
 				: "";
-		} else {datos.resultados = []};
+		} else {
+			datos.resultados = [];
+		}
 		return datos;
-	}
+	},
 };
