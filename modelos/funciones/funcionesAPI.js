@@ -7,7 +7,7 @@ module.exports = {
 		let lectura = [];
 		let i = 0;
 		while (true) {
-			let rubro = rubros[i];
+			rubro = rubros[i];
 			lectura[i] = await search_TMDB(palabras_clave, rubro)
 				// Dejar sólo resultados y total
 				.then((n) => {
@@ -40,7 +40,14 @@ module.exports = {
 									desempate2 = m.first_air_date;
 								}
 								if (rubro == "movie") {
-									if (m.release_date == null) return;
+									if (
+										typeof m.release_date == "undefined" ||
+										typeof m.poster_path == "undefined" ||
+										m.release_date == "" ||
+										m.release_date <"1900" ||
+										m.poster_path == null
+									)
+										return;
 									ano = parseInt(m.release_date.slice(0, 4));
 									nombre_original = m.original_title;
 									nombre_castellano = m.title;
@@ -96,7 +103,7 @@ module.exports = {
 				lectura[i].resultados.length > 0
 			) {
 				let detalles = []
-				for (j = 0; j < lectura[2].resultados.length; j++) {
+				for (j = 0; j < lectura[i].resultados.length; j++) {
 					id = lectura[i].resultados[j].tmdb_id
 					detalles[i] = await details_TMDB(id, "collection")
 						.then((n) => n.parts)

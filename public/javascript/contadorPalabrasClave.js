@@ -19,10 +19,13 @@ window.addEventListener("load", () => {
 });
 
 const contador = async (palabras_clave, resultadoDeBusqueda) => {
-	let palabras = palabras_clave.trim();
-	if (palabras.length > 1) {
+	let palabras_clave_original = palabras_clave;
+	palabras_clave = palabras_clave
+		.trim()
+		.replace(/ /g, "-");
+	espera();
+	if (palabras_clave.length > 1) {
 		// Obtener el link
-		palabras_clave = palabras.replace(/ /g, "-");
 		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
 		let cantidad = await fetch(link).then((n) => n.json());
@@ -44,7 +47,7 @@ const contador = async (palabras_clave, resultadoDeBusqueda) => {
 			formatoAnterior = "resultadoExitoso";
 			if (cantidad.masDe20) {
 				oracion =
-				"Hay demasiadas coincidencias, intentá ser más específico";
+					"Hay demasiadas coincidencias, intentá ser más específico";
 			} else {
 				if (cantidad.menor == 0) {
 					oracion = "No encontramos coincidencias con estas palabras";
@@ -55,4 +58,17 @@ const contador = async (palabras_clave, resultadoDeBusqueda) => {
 		resultadoDeBusqueda.classList.add(formatoVigente);
 		resultadoDeBusqueda.classList.remove(formatoAnterior);
 	}
+	let ahora = document.querySelector("input").value;
+	ahora == palabras_clave_original ? check() : espera();
+	console.log([palabras_clave_original, ahora]);
+};
+
+const espera = () => {
+	document.querySelector(".wait").classList.remove("ocultar");
+	document.querySelector(".OK").classList.add("ocultar");
+}
+
+const check = () => {
+	document.querySelector(".wait").classList.add("ocultar");
+	document.querySelector(".OK").classList.remove("ocultar");
 };

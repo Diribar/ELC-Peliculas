@@ -16,7 +16,7 @@
 				<div class="relative flex-col ">
 					<div>
 						<input type="text" name="palabras_clave" placeholder="Escribilo acá"
-							value="love comes softly"
+							value="<%= locals.palabras_clave ? palabras_clave : null %>"
 							autofocus autocomplete="off"
 						>
 						<i class="fas fa-question-circle">
@@ -37,7 +37,10 @@
 			<button type="submit">Enviar</button>
 		</section>
 		<section>
-			<p id="resultadoDeBusqueda"></p>
+			<span id="resultadoDeBusqueda">
+			</span>
+				<i class="fas fa-hourglass wait ocultar"></i>
+				<i class="fas fa-check OK ocultar"></i>
 			<p id="fuentesDeInfo">
 				Aprovechamos información provista por 
 				<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a> APIs
