@@ -24,7 +24,7 @@ const contador = async (palabras_clave, resultadoDeBusqueda) => {
 		.trim()
 		.replace(/ /g, "-");
 	espera();
-	if (palabras_clave.length > 1) {
+	if (palabras_clave.length > 3) {
 		// Obtener el link
 		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
@@ -60,7 +60,7 @@ const contador = async (palabras_clave, resultadoDeBusqueda) => {
 	}
 	let ahora = document.querySelector("input").value;
 	ahora == palabras_clave_original ? check() : espera();
-	console.log([palabras_clave_original, ahora]);
+	//console.log([palabras_clave_original, ahora]);
 };
 
 const espera = () => {
