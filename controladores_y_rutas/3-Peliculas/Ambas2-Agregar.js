@@ -88,6 +88,9 @@ let letrasIngles = (palabras_clave) => {
 		.replace(/ó/g, "o")
 		.replace(/ú/g, "u")
 		.replace(/ü/g, "u")
-		.replace(/ñ/g, "n");
+		.replace(/ñ/g, "n")
+		.replace(/:/g, "")
+		.replace(/!/g, "");
+
 	return palabras;
 };
