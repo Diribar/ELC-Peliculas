@@ -45,28 +45,26 @@ const contador = async (palabras_clave) => {
 		// Obtener el link
 		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
-		let cantidad = await fetch(link).then((n) => n.json());
+		let lectura = await fetch(link).then((n) => n.json());
 		// Determinar oracion y formato
 		let oracion = "";
 		let formatoVigente = "";
 		// Resultado exitoso
-		if (cantidad.menor > 0 && !cantidad.masDe20) {
-			cantidad.menor < cantidad.mayor
-				? (frase = "entre " + cantidad.menor + " y " + cantidad.mayor)
-				: (frase = cantidad.mayor);
-			cantidad.mayor > 1 ? (s = "s") : (s = "");
-			oracion = "Encontramos " + frase + " coincidencia" + s;
+		if (lectura.cantResultados > 0 && !lectura.hayMas) {
+			lectura.cantResultados > 1 ? (s = "s") : (s = "");
+			oracion =
+				"Encontramos " + lectura.cantResultados + " coincidencia" + s;
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
 		} else {
 			// Resultados inválidos
 			formatoVigente = "resultadoInvalido";
 			formatoAnterior = "resultadoExitoso";
-			if (cantidad.masDe20) {
+			if (lectura.hayMas) {
 				oracion =
 					"Hay demasiadas coincidencias, intentá ser más específico";
 			} else {
-				if (cantidad.menor == 0) {
+				if (lectura.cantResultados == 0) {
 					oracion = "No encontramos coincidencias con estas palabras";
 				}
 			}

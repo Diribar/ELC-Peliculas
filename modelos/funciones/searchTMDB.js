@@ -3,43 +3,49 @@ const details_TMDB = require("../API/2-details-TMDB");
 
 module.exports = {
 	searchTMDB: async (palabras_clave) => {
-		let rubros = ["movie", "tv", "collection"];
 		let lectura = [];
-		let i = 0;
-		while (true) {
-			rubro = rubros[i];
-			lectura[i] = await search_TMDB(palabras_clave, rubro)
-				// Dejar sólo resultados y total
-				.then((n) => {
-					return {
-						resultados: n.results,
-						total: n.total_results,
-					};
-				})
-				// Dejar sólo algunos campos y estandarizar los nombres
-				.then((n) => {
-					return estandarizarNombres(n, rubro);
-				})
-				// Marcar los registros que no tienen coincidencias con la palabra_clave
-				.then((n) => {
-					return coincideConPalabraClave(n, palabras_clave);
-				})
-				// Eliminar los registros incompletos
-				.then((n) => {
-					return eliminarIncompletos(n);
-				});
-			// Agregarle lanzamiento a las colecciones
-			rubro == "collection" 
-				? lectura[i].resultados = await agregarLanzamiento(lectura[i].resultados)
-				: ""
-			// Terminar la rutina
-			if (i == 2) break;
-			i = i + 1;
-		}
-		// Terminacion
 		let datos = {};
-		datos = unificarLaInfo(lectura);
-		datos = eliminarDuplicados(datos);
+		let rubros = ["movie", "tv", "collection"];
+		let i = 0;
+		let page = 1
+		while (true) {
+			for (let i = 0; i<3; i++) {
+				rubro = rubros[i];
+				lectura[i] = await search_TMDB(palabras_clave, rubro, page)
+					// Dejar sólo resultados y total
+					.then((n) => {
+						return {
+							resultados: n.results,
+							cantPaginasAPI: n.total_pages,
+						};
+					})
+					// Dejar sólo algunos campos y estandarizar los nombres
+					.then((n) => {
+						return estandarizarNombres(n, rubro);
+					})
+					// Marcar los registros que no tienen coincidencias con la palabra_clave
+					.then((n) => {
+						return coincideConPalabraClave(
+							n,
+							palabras_clave
+						);
+					})
+					// Eliminar los registros incompletos
+					.then((n) => {
+						return eliminarIncompletos(n);
+					});
+				// Agregarle lanzamiento a las colecciones
+				rubro == "collection"
+					? (lectura[i].resultados = await agregarLanzamiento(
+							lectura[i].resultados
+						))
+					: "";
+			}
+			// Terminacion
+			datos = unificarLaInfo(lectura, rubros);
+			datos = eliminarDuplicados(datos);
+			break
+		}
 		datos = ordenarCronologicamente(datos);
 		return datos;
 	},
@@ -109,10 +115,9 @@ let estandarizarNombres = (dato, rubro) => {
 			desempate2: desempate2,
 		};
 	});
-	let masDe20 = dato.total > 20 ? true : false;
 	return {
 		resultados: resultados,
-		masDe20: masDe20,
+		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
 
@@ -136,10 +141,9 @@ let coincideConPalabraClave = (dato, palabras_clave) => {
 		}
 		return;
 	});
-	let masDe20 = dato.masDe20;
 	return {
 		resultados: resultados,
-		masDe20: masDe20,
+		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
 
@@ -202,16 +206,24 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarLaInfo = (lectura) => {
+let unificarLaInfo = (lectura, rubros) => {
 	let datos = {};
-	// Consolidar masDe20
-	lectura[0].masDe20 || lectura[1].masDe20 || lectura[2].masDe20
-		? (datos.masDe20 = true)
-		: (datos.masDe20 = false);
+	// Consolidar cantPaginasAPI
+	datos.cantPaginasAPI = {
+		[rubros[0]]: lectura[0].cantPaginasAPI,
+		[rubros[1]]: lectura[1].cantPaginasAPI,
+		[rubros[2]]: lectura[2].cantPaginasAPI,
+	};
 	// Consolidar resultados
 	datos.resultados = lectura[0].resultados
 		.concat(lectura[1].resultados)
 		.concat(lectura[2].resultados);
+	datos.hayMas =
+		lectura[0].cantPaginasAPI > 1 ||
+		lectura[1].cantPaginasAPI > 1 ||
+		lectura[2].cantPaginasAPI > 1
+			? true
+			: false;
 	return datos;
 };
 

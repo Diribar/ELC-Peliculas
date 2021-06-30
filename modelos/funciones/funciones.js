@@ -1,4 +1,4 @@
-const funcionesAPI = require("./funcionesAPI");
+const searchTMDB = require("./searchTMDB");
 
 module.exports = {
 	userLogs: (req, res) => {
@@ -16,13 +16,13 @@ module.exports = {
 
 	search: async (palabras_clave) => {
 		let buscar = [{}];
-		buscar[0] = await funcionesAPI.searchTMDB(palabras_clave);
+		buscar[0] = await searchTMDB.searchTMDB(palabras_clave);
 		let datos = {
 			palabras_clave: palabras_clave,
+			hayMas: buscar[0].hayMas,
+			cantResultados: buscar[0].resultados.length,
 			resultados: buscar[0].resultados,
-			masDe20: buscar[0].masDe20,
-			menor: Math.max(buscar[0].resultados.length, 0),
-			mayor: buscar[0].resultados.length + 0,
+			cantPaginasAPI: buscar[0].cantPaginasAPI,
 		};
 		return datos;
 	},
