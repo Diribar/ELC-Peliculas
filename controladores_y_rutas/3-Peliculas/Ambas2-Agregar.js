@@ -31,24 +31,23 @@ module.exports = {
 		return res.redirect("/peliculas/desambiguar1");
 	},
 
-	desambiguar1: async (req, res) => {
-		// Obtener 'palabras_clave' y ejecutar la rutina
-		let palabras_clave = req.session.importarDatos.palabras_clave;
-		let resultados = await funciones.search(palabras_clave)
-		// Redireccionar
-		return res.send(resultados);
-	},
-
 	contador1: async (req, res) => {
 		// Obtener 'palabras_clave'
 		let { palabras_clave } = req.query;
-		palabras_clave.includes("-")
-			? (palabras = palabras_clave.replace(/-/g, " "))
-			: (palabras = palabras_clave);
+		let palabras = letrasIngles(palabras_clave);
 		// Función clave
-		let resultados = await funciones.search(palabras)
+		let resultados = await funciones.search(palabras);
 		// Devolver el resultado
 		return res.json(resultados);
+	},
+
+	desambiguar1: async (req, res) => {
+		// Obtener 'palabras_clave' y ejecutar la rutina
+		let palabras_clave = req.session.importarDatos.palabras_clave;
+		let palabras = letrasIngles(palabras_clave);
+		let resultados = await funciones.search(palabras);
+		// Redireccionar
+		return res.send(resultados);
 	},
 
 	agregar2Form: (req, res) => {
@@ -77,4 +76,18 @@ module.exports = {
 	agregar3Guardar: (req, res) => {
 		return res.send("Estoy en guardar3");
 	},
+};
+
+let letrasIngles = (palabras_clave) => {
+	let palabras = palabras_clave
+		.toLowerCase()
+		.replace(/-/g, " ")
+		.replace(/á/g, "a")
+		.replace(/é/g, "e")
+		.replace(/í/g, "i")
+		.replace(/ó/g, "o")
+		.replace(/ú/g, "u")
+		.replace(/ü/g, "u")
+		.replace(/ñ/g, "n");
+	return palabras;
 };
