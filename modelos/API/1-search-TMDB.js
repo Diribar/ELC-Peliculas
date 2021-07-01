@@ -19,7 +19,7 @@ module.exports = async (palabras_clave, rubro, page) => {
 		"&include_adult=false";
 	// BUSCAR LA INFO
 	let resultado = await fetch(url).then((n) => n.json());
-	if (rubro == "collection" && resultado.hasOwnProperty('success') && resultado.success == false) {
+	if (resultado.hasOwnProperty('success') && resultado.success == false) {
 		console.log(url);
 		console.log(resultado);
 		resultado = {
@@ -28,7 +28,6 @@ module.exports = async (palabras_clave, rubro, page) => {
 			total_pages: 1,
 			total_results: 0,
 		};
-		console.log(resultado);
 	}
 	return resultado;
 };
