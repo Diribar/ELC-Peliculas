@@ -15,14 +15,14 @@ module.exports = {
 	},
 
 	search: async (palabras_clave) => {
-		let buscar = [{}];
-		buscar[0] = await searchTMDB.searchTMDB(palabras_clave);
+		let buscar = await searchTMDB.searchTMDB(palabras_clave);
 		let datos = {
 			palabras_clave: palabras_clave,
-			hayMas: buscar[0].hayMas,
-			cantResultados: buscar[0].resultados.length,
-			resultados: buscar[0].resultados,
-			cantPaginasAPI: buscar[0].cantPaginasAPI,
+			hayMas: buscar.hayMas,
+			cantResultados: buscar.resultados.length,
+			cantPaginasAPI: buscar.cantPaginasAPI,
+			cantPaginasUsadas: buscar.cantPaginasUsadas,
+			resultados: buscar.resultados,
 		};
 		return datos;
 	},

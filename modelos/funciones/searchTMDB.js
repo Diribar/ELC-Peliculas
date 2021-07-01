@@ -4,51 +4,75 @@ const details_TMDB = require("../API/2-details-TMDB");
 module.exports = {
 	searchTMDB: async (palabras_clave) => {
 		let lectura = [];
-		let datos = {};
+		let datos = { resultados: [] };
 		let rubros = ["movie", "tv", "collection"];
-		let i = 0;
-		let page = 1
+		let page = 1;
 		while (true) {
-			for (let i = 0; i<3; i++) {
-				rubro = rubros[i];
-				lectura[i] = await search_TMDB(palabras_clave, rubro, page)
-					// Dejar sólo resultados y total
-					.then((n) => {
-						return {
-							resultados: n.results,
-							cantPaginasAPI: n.total_pages,
+			for (rubro of rubros) {
+				if (page == 1 || page <= datos.cantPaginasAPI[rubro]) {
+					lectura = await search_TMDB(palabras_clave, rubro, page)
+						.then((n) => {
+							return soloResultadosTotal(n);
+						})
+						.then((n) => {
+							return estandarizarNombres(n, rubro);
+						})
+						.then((n) => {
+							return coincideConPalabraClave(n, palabras_clave);
+						})
+						.then((n) => {
+							return eliminarIncompletos(n);
+						});
+					lectura.resultados = await agregarLanzamiento(
+						lectura.resultados,
+						rubro
+					);
+					// Consolidar cantPaginasAPI
+					if (page == 1) {
+						datos.cantPaginasAPI = {
+							...datos.cantPaginasAPI,
+							[rubro]: lectura.cantPaginasAPI,
 						};
-					})
-					// Dejar sólo algunos campos y estandarizar los nombres
-					.then((n) => {
-						return estandarizarNombres(n, rubro);
-					})
-					// Marcar los registros que no tienen coincidencias con la palabra_clave
-					.then((n) => {
-						return coincideConPalabraClave(
-							n,
-							palabras_clave
-						);
-					})
-					// Eliminar los registros incompletos
-					.then((n) => {
-						return eliminarIncompletos(n);
-					});
-				// Agregarle lanzamiento a las colecciones
-				rubro == "collection"
-					? (lectura[i].resultados = await agregarLanzamiento(
-							lectura[i].resultados
-						))
-					: "";
+					}
+					// Unificar resultados
+					datos.resultados = datos.resultados.concat(
+						lectura.resultados
+					);
+					datos.cantPaginasUsadas = {
+						...datos.cantPaginasUsadas,
+						[rubro]: page,
+					};
+
+				}
 			}
 			// Terminacion
-			datos = unificarLaInfo(lectura, rubros);
 			datos = eliminarDuplicados(datos);
-			break
+			if (
+				datos.resultados.length >= 20 ||
+				(page >= datos.cantPaginasAPI[rubros[0]] &&
+					page >= datos.cantPaginasAPI[rubros[1]] &&
+					page >= datos.cantPaginasAPI[rubros[2]])
+			) {
+				if (
+					page < datos.cantPaginasAPI[rubros[0]] ||
+					page < datos.cantPaginasAPI[rubros[1]] ||
+					page < datos.cantPaginasAPI[rubros[2]]
+				) {
+					datos.hayMas = true;
+				} else datos.hayMas = false;
+				break;
+			} else page = page + 1;
 		}
 		datos = ordenarCronologicamente(datos);
 		return datos;
 	},
+};
+
+let soloResultadosTotal = (n) => {
+	return {
+		resultados: n.results,
+		cantPaginasAPI: n.total_pages,
+	};
 };
 
 let estandarizarNombres = (dato, rubro) => {
@@ -92,12 +116,7 @@ let estandarizarNombres = (dato, rubro) => {
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
 		if (nombre_original) {
-			desempate1 = nombre_original
-				.replace(/ /g, "")
-				.replace(/-/g, "")
-				.replace(/:/g, "")
-				.replace(/!/g, "")
-				.toLowerCase();
+			desempate1 = letrasIngles(nombre_original).replace(/ /g, "");
 		} else {
 			desempate1 = "";
 		}
@@ -122,19 +141,17 @@ let estandarizarNombres = (dato, rubro) => {
 };
 
 let coincideConPalabraClave = (dato, palabras_clave) => {
+	palabras_clave = letrasIngles(palabras_clave)
 	let palabras = palabras_clave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		for (palabra of palabras) {
 			if (m == null) {
 				return;
 			}
-			compNO = letrasIngles(m.nombre_original);
-			compNC = letrasIngles(m.nombre_castellano);
-			compCom = letrasIngles(m.comentario);
 			if (
-				compNO.includes(palabra) ||
-				compNC.includes(palabra) ||
-				compCom.includes(palabra)
+				letrasIngles(m.nombre_original).includes(palabra) ||
+				letrasIngles(m.nombre_castellano).includes(palabra) ||
+				letrasIngles(m.comentario).includes(palabra)
 			) {
 				return m;
 			}
@@ -159,7 +176,6 @@ let eliminarIncompletos = (dato) => {
 let letrasIngles = (palabra) => {
 	word = palabra
 		.toLowerCase()
-		.replace(/-/g, " ")
 		.replace(/á/g, "a")
 		.replace(/é/g, "e")
 		.replace(/í/g, "i")
@@ -168,13 +184,15 @@ let letrasIngles = (palabra) => {
 		.replace(/ü/g, "u")
 		.replace(/ñ/g, "n")
 		.replace(/:/g, "")
-		.replace(/!/g, "");
+		.replace(/!/g, "")
+		.replace(/'/g, "")
+		.replace(/-/g, "")
 
 	return word;
 };
 
-let agregarLanzamiento = async (dato) => {
-	if (dato.length > 0) {
+let agregarLanzamiento = async (dato, rubro) => {
+	if (rubro == "collection" && dato.length > 0) {
 		let detalles = [];
 		for (let j = 0; j < dato.length; j++) {
 			id = dato[j].tmdb_id;
@@ -200,31 +218,10 @@ let agregarLanzamiento = async (dato) => {
 				: "";
 			let ano = detalles[0];
 			dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : ano;
-			dato[j].desempate2 = ano
+			dato[j].desempate2 = ano;
 		}
 	}
 	return dato;
-};
-
-let unificarLaInfo = (lectura, rubros) => {
-	let datos = {};
-	// Consolidar cantPaginasAPI
-	datos.cantPaginasAPI = {
-		[rubros[0]]: lectura[0].cantPaginasAPI,
-		[rubros[1]]: lectura[1].cantPaginasAPI,
-		[rubros[2]]: lectura[2].cantPaginasAPI,
-	};
-	// Consolidar resultados
-	datos.resultados = lectura[0].resultados
-		.concat(lectura[1].resultados)
-		.concat(lectura[2].resultados);
-	datos.hayMas =
-		lectura[0].cantPaginasAPI > 1 ||
-		lectura[1].cantPaginasAPI > 1 ||
-		lectura[2].cantPaginasAPI > 1
-			? true
-			: false;
-	return datos;
 };
 
 let eliminarDuplicados = (datos) => {
