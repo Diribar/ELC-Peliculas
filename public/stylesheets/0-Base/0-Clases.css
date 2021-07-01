@@ -11,3 +11,8 @@
 .ocultar {display: none;}
 .relative {position: relative;}
 .space-between {justify-content: space-between;}
+
+.resultadoErroneo {background-color: red;}
+.resultadoNeutro {background-color: blue;}
+.resultadoExitoso {background-color: green;}
+.resultadoErroneo, .resultadoNeutro, .resultadoExitoso {padding: 7px; color: white;}

@@ -2,7 +2,7 @@
 const path = require('path');
 
 // Funciones ************************
-const API_credits = require(path.join(__dirname, '/webAPI3_credits'));
+//const API_credits = require(path.join(__dirname, '/webAPI3_credits'));
 
 module.exports = async (ID) => {
 	// Conseguir los datos

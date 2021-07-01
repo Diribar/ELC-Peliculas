@@ -1,5 +1,8 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
+const funcionesAPI = require("../../modelos/funciones/funcionesAPI");
+const uploadFile = require("../../middlewares/varios/multer");
+// uploadFile.single('imagen')
 
 // *********** Controlador ***********
 module.exports = {
@@ -7,29 +10,45 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 
-	agregar1Form: (req, res) => {
+	importarDatosForm: (req, res) => {
 		return res.render("1-ImportarDatos", {
-			rubro: "peliculas",
 			titulo: "Película",
 		});
 	},
 
-	agregar1Guardar: (req, res) => {
+	importarDatosGuardar: (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
-		let rubro = req.body.rubro;
-		rubro == "peliculas" ? (titulo = "Película") : (titulo = "Colección");
 		if (existenErrores) {
 			return res.render("1-ImportarDatos", {
-				rubro,
-				titulo,
-				data_entry: req.body.data_entry,
+				titulo: "Película",
+				palabras_clave: req.body.palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		req.session.importarDatos = req.body.data_entry;
-		return res.redirect("/" + rubro + "/desambiguar");
+		req.session.importarDatos = req.body;
+		return res.redirect("/peliculas/desambiguar1");
+	},
+
+	desambiguar1: async (req, res) => {
+		// Obtener 'palabras_clave' y ejecutar la rutina
+		let palabras_clave = req.session.importarDatos.palabras_clave;
+		resultados = await funcionesAPI.search(palabras_clave)
+		// Redireccionar
+		return res.send(resultados);
+	},
+
+	contador1: async (req, res) => {
+		// Obtener 'palabras_clave'
+		let { palabras_clave } = req.query;
+		palabras_clave.includes("-")
+			? (palabras = palabras_clave.replace(/-/g, " "))
+			: (palabras = palabras_clave);
+		// Función clave
+		let resultados = await funcionesAPI.search(palabras)
+		// Devolver el resultado
+		return res.json(resultados);
 	},
 
 	agregar2Form: (req, res) => {
