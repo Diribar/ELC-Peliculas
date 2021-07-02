@@ -1,22 +1,24 @@
 // Requires
 const express = require('express');
 const router = express.Router();
-const opciones = require("./Ambas1-Opciones");
 const agregar = require("./Ambas2-Agregar");
 const RUD = require("./Ambas3-RUD");
+const opciones = require("./Ambas1-Opciones");
 
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const validar1 = require("../../middlewares/validarFilmForms/1-ImportarDatos");
+const validar1 = require("../../middlewares/validarFilmForms/1-IngresarPalabrasClave");
 const validar2 = require("../../middlewares/validarFilmForms/2-DatosDuros");
 const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
 
 // Controladores de Crear
-router.get("/agregar", soloUsuarios, agregar.responsabilidad);
-router.get("/agregar1", soloUsuarios, agregar.importarDatosForm);
-router.get("/api/contador1/", agregar.contador1);
-router.post('/agregar1', soloUsuarios, validar1, agregar.importarDatosGuardar);
-router.get("/desambiguar1", soloUsuarios, agregar.desambiguar1);
+router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
+router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
+router.get("/agregar/api/contador/", agregar.contador);
+router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
+
+router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
+router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
 
 // 3. Datos Duros
 router.get("/agregar2", soloUsuarios, agregar.agregar2Form);

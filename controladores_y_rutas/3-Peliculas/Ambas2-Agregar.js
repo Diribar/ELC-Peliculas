@@ -9,38 +9,32 @@ module.exports = {
 	responsabilidad: (req, res) => {
 		return res.render("0-Responsabilidad");
 	},
-
-	importarDatosForm: (req, res) => {
-		return res.render("1-ImportarDatos", {
-			titulo: "Película",
-		});
+	palabrasClaveForm: (req, res) => {
+		return res.render("1-IngresarPalabrasClave");
 	},
-
-	importarDatosGuardar: (req, res) => {
+	contador: async (req, res) => {
+		// Obtener 'palabras_clave' y obtener la API
+		let { palabras_clave } = req.query;
+		let resultados = await searchTMDB.search(palabras_clave);
+		// Enviar la API
+		return res.json(resultados);
+	},
+	palabrasClaveGuardar: (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
 		if (existenErrores) {
-			return res.render("1-ImportarDatos", {
-				titulo: "Película",
+			return res.render("1-IngresarPalabrasClave", {
 				palabras_clave: req.body.palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		req.session.importarDatos = req.body;
+		req.session.ingresarPalabrasClave = req.body;
 		return res.redirect("/peliculas/desambiguar1");
 	},
-
-	contador1: async (req, res) => {
-		// Obtener 'palabras_clave'
-		let { palabras_clave } = req.query;
-		let resultados = await searchTMDB.search(palabras_clave);
-		return res.json(resultados);
-	},
-
-	desambiguar1: async (req, res) => {
-		// Obtener 'palabras_clave' y ejecutar la rutina
-		let palabras_clave = req.session.importarDatos.palabras_clave;
+	desambiguarTMDB_Form: async (req, res) => {
+		// Obtener 'palabras_clave' y obtener la API
+		let palabras_clave = req.session.ingresarPalabrasClave.palabras_clave;
 		let resultados = await searchTMDB.search(palabras_clave);
 		// Redireccionar
 		return res.send(resultados);
