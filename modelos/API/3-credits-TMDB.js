@@ -1,25 +1,27 @@
 // ************ Requires ************
-const fs = require('fs');
-const path = require('path');
-const fetch = require('node-fetch');
-
-// ************ Variables ************
-const API_key = path.join(__dirname, '../../backup/API_key.json');
-
-// ************ Funciones ************
-function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
+const API_key = "e90d1beb11c74cdf9852d97a354a6d45";
+const fetch = require("node-fetch");
 
 module.exports = async (ID) => {
 	// PARTES DEL URL
 	//let url = "https://api.themoviedb.org/4/movie/38516/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es-ES"
-	let A_izquierda = "https://api.themoviedb.org/4/movie/";
-	let B_ID = ID
-	let C_medio = "/credits?api_key=";
-	let D_clave = leer(API_key);
-	let E_derecha  = "&language=es-ES"
-	let url = A_izquierda + B_ID + C_medio + D_clave + E_derecha
-	// return url
+	let url =
+		"https://api.themoviedb.org/4/movie/" +
+		ID +
+		"/credits?api_key=" +
+		API_key +
+		"&language=es-ES";
 	// BUSCAR LA INFO
-	let resultado = await fetch(url).then(n => n.json())
-	return resultado
-}
+	let resultado = await fetch(url).then((n) => n.json());
+	if (resultado.hasOwnProperty("success") && resultado.success == false) {
+		console.log(url);
+		console.log(resultado);
+		resultado = {
+			page: 1,
+			results: [],
+			total_pages: 1,
+			total_results: 0,
+		};
+	}
+	return resultado;
+};
