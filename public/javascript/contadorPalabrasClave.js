@@ -35,8 +35,7 @@ window.addEventListener("load", () => {
 
 const contador = async (palabras_clave) => {
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
-	let palabras_clave_original = palabras_clave;
-	palabras_clave = palabras_clave.trim().replace(/ /g, "-");
+	palabras_clave = palabras_clave.trim()
 	if (palabras_clave.length > 1) {
 		// Procesando la información
 		resultadoDeBusqueda.innerHTML = "Procesando la información...";

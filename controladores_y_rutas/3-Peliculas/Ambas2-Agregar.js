@@ -1,6 +1,6 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
-const funciones = require("../../modelos/funciones/funciones");
+const searchTMDB = require("../../modelos/funciones/searchTMDB");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
@@ -34,18 +34,14 @@ module.exports = {
 	contador1: async (req, res) => {
 		// Obtener 'palabras_clave'
 		let { palabras_clave } = req.query;
-		let palabras = letrasIngles(palabras_clave);
-		// Función clave
-		let resultados = await funciones.search(palabras);
-		// Devolver el resultado
+		let resultados = await searchTMDB.search(palabras_clave);
 		return res.json(resultados);
 	},
 
 	desambiguar1: async (req, res) => {
 		// Obtener 'palabras_clave' y ejecutar la rutina
 		let palabras_clave = req.session.importarDatos.palabras_clave;
-		let palabras = letrasIngles(palabras_clave);
-		let resultados = await funciones.search(palabras);
+		let resultados = await searchTMDB.search(palabras_clave);
 		// Redireccionar
 		return res.send(resultados);
 	},
@@ -76,21 +72,4 @@ module.exports = {
 	agregar3Guardar: (req, res) => {
 		return res.send("Estoy en guardar3");
 	},
-};
-
-let letrasIngles = (palabras_clave) => {
-	let palabras = palabras_clave
-		.toLowerCase()
-		.replace(/-/g, " ")
-		.replace(/á/g, "a")
-		.replace(/é/g, "e")
-		.replace(/í/g, "i")
-		.replace(/ó/g, "o")
-		.replace(/ú/g, "u")
-		.replace(/ü/g, "u")
-		.replace(/ñ/g, "n")
-		.replace(/:/g, "")
-		.replace(/!/g, "");
-
-	return palabras;
 };
