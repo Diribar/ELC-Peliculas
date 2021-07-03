@@ -18,7 +18,7 @@ router.get("/agregar/api/contador/", agregar.contador);
 router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
 
 router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
-router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
+//router.post("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 
 // 3. Datos Duros
 router.get("/agregar2", soloUsuarios, agregar.agregar2Form);

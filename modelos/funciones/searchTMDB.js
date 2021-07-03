@@ -94,7 +94,6 @@ let estandarizarNombres = (dato, rubro) => {
 		}
 		// Dejar sólo algunos campos
 		return {
-			fuente: "TMDB",
 			rubro: rubro,
 			tmdb_id: m.id,
 			nombre_original: nombre_original,

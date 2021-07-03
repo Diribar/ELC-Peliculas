@@ -1,0 +1,14 @@
+<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-ImportarDatos.css">
+<%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
+
+<div class="cuerpo flex-col grow">
+	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
+		<section class="flex-row space-between align-center"> 
+			<h1>Paso 2 de 4: Hacé click sobre tu opción</h1>
+		</section>
+	</form>
+</div>
+<%- include('0-DespuesPA') %>

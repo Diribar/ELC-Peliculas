@@ -10,7 +10,7 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 	palabrasClaveForm: (req, res) => {
-		return res.render("1-IngresarPalabrasClave");
+		return res.render("1-PalabrasClave");
 	},
 	contador: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
@@ -24,20 +24,20 @@ module.exports = {
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
 		if (existenErrores) {
-			return res.render("1-IngresarPalabrasClave", {
+			return res.render("1-PalabrasClave", {
 				palabras_clave: req.body.palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
 		req.session.ingresarPalabrasClave = req.body;
-		return res.redirect("/peliculas/desambiguar1");
+		return res.redirect("/peliculas/agregar/desambiguar1");
 	},
 	desambiguarTMDB_Form: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
 		let palabras_clave = req.session.ingresarPalabrasClave.palabras_clave;
 		let resultados = await searchTMDB.search(palabras_clave);
 		// Redireccionar
-		return res.send(resultados);
+		return res.render("2-Desambiguar1", {resultados});
 	},
 
 	agregar2Form: (req, res) => {
