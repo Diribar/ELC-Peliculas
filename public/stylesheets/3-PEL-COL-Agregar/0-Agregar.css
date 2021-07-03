@@ -11,7 +11,6 @@
 #data_entry input, #data_entry textArea
 	{margin-top: 4px; border-width: .7px; border-radius: 5px;}
 
-
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .mensajeError {position: absolute; font-size: 1rem;}
 #data_entry .fa-times-circle {color: red;}

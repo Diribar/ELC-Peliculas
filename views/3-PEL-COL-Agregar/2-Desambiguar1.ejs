@@ -1,6 +1,6 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-ImportarDatos.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desambiguar1.css">
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
@@ -8,6 +8,17 @@
 	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
 		<section class="flex-row space-between align-center"> 
 			<h1>Paso 2 de 4: Hacé click sobre tu opción</h1>
+		</section>
+		<section class="flex-row space-between">
+			<% for (let i=0; i<Math.min(resultados.length,3); i++) { %>
+				<div class="flex-row">
+					<img class="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
+					<div class="flex-col">
+						<p><%= resultados[i].nombre_castellano %> </p>
+						<p><%= resultados[i].lanzamiento %></p>
+					</div>
+				</div>
+			<% } %> 
 		</section>
 	</form>
 </div>

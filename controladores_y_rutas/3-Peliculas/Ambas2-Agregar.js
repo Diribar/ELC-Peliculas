@@ -19,25 +19,28 @@ module.exports = {
 		// Enviar la API
 		return res.json(resultados);
 	},
-	palabrasClaveGuardar: (req, res) => {
+	palabrasClaveGuardar: async (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
+		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
 			return res.render("1-PalabrasClave", {
-				palabras_clave: req.body.palabras_clave,
+				palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		req.session.ingresarPalabrasClave = req.body;
+		// Obtener la API
+		let lectura = await searchTMDB.search(palabras_clave);
+		req.session.peliculasTMDB = lectura.resultados;
+		res.cookie("peliculasTMDB", lectura.resultados, {maxAge: 1000 * 60 * 60});
 		return res.redirect("/peliculas/agregar/desambiguar1");
 	},
-	desambiguarTMDB_Form: async (req, res) => {
-		// Obtener 'palabras_clave' y obtener la API
-		let palabras_clave = req.session.ingresarPalabrasClave.palabras_clave;
-		let resultados = await searchTMDB.search(palabras_clave);
-		// Redireccionar
-		return res.render("2-Desambiguar1", {resultados});
+	desambiguarTMDB_Form: (req, res) => {
+		let resultados = req.session.peliculasTMDB;
+		resultados == "" ? resultados = req.cookies.peliculasTMDB : ""
+		return res.send(resultados);
+		return res.render("2-Desambiguar1", { resultados });
 	},
 
 	agregar2Form: (req, res) => {
