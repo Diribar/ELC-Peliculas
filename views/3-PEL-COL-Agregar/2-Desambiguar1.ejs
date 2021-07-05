@@ -5,29 +5,32 @@
 
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
-	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
-		<section class="flex-row space-between align-center"> 
+	<section class="flex-col" id="data_entry">
+		<section class="flex-row"> 
 			<h1>Paso 2 de 4: Hacé click sobre tu opción</h1>
 		</section>
-		<section class="flex-row space-between"  id="resultados">
+		<section class="flex-row space-between"  id="resultadoGeneral">
 			<% for (let i=0; i<Math.min(resultados.length); i++) { %>
-				<div class="flex-row">
-					<p class="ocultar"><%= resultados[i].rubro %> </p>
-					<p class="ocultar"><%= resultados[i].tmdb_id %> </p>
-					<p class="ocultar"><%= resultados[i].nombre_original %> </p>
-					<img class="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
-					<div class="flex-col">
-						<p><strong><%= resultados[i].nombre_castellano %></strong></p>
-						<p>
-							<%= resultados[i].lanzamiento %> - 
-							<% if (resultados[i].rubro=="movie") { %>Película<% } %>
-							<% if (resultados[i].rubro=="TV") { %>Programa de TV<% } %>
-							<% if (resultados[i].rubro=="collection") { %>Colección<% } %>
-						</p>
-					</div>
-				</div>
+				<form action="/peliculas/agregar/desambiguar2" method="POST">
+					<input type="text" name="rubro" value="<%= resultados[i].rubro %>" class="ocultar">
+					<input type="text" name="tmdb_id" value="<%= resultados[i].tmdb_id %>" class="ocultar">
+					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_original %>" class="ocultar">
+					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
+					<button type="submit" class="flex-row" id="resultadoIndividual">
+						<img class="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
+						<div class="flex-col" id="infoPeli">
+							<p><strong><%= resultados[i].nombre_castellano %></strong></p>
+							<p>
+								<%= resultados[i].lanzamiento %> - 
+								<% if (resultados[i].rubro=="movie") { %>Película<% } %>
+								<% if (resultados[i].rubro=="tv") { %>Programa de TV<% } %>
+								<% if (resultados[i].rubro=="collection") { %>Colección<% } %>
+							</p>
+						</div>
+					</button>
+				</form>
 			<% } %> 
 		</section>
-	</form>
+	</section>
 </div>
 <%- include('0-DespuesPA') %>

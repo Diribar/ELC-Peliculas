@@ -1,6 +1,10 @@
- /* Imágenes */
- .imagenChica {max-width: 200px; max-height: 250px;}
+#resultadoGeneral {width: 700px;  white-space: nowrap; overflow-x: auto}
 
- #resultados {margin-top: 20px; width: 700px; height: auto; padding: 10px; white-space: nowrap;
-	overflow-y: hidden; overflow-x: auto;
-}
+#resultadoIndividual {margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left}
+#resultadoIndividual #infoPeli {color: inherit}
+#resultadoIndividual #infoPeli p {color: inherit}
+#resultadoIndividual #infoPeli p strong {color: inherit}
+#resultadoIndividual:hover {background-color: var(--verde); border-radius: 15px; color: white;}
+
+.imagenChica {max-height: 200px; border-radius: 15px; }
+#infoPeli {margin: 10px 15px}

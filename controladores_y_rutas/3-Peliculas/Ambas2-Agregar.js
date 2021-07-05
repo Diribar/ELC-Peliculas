@@ -32,16 +32,19 @@ module.exports = {
 		}
 		// Obtener la API
 		let lectura = await searchTMDB.search(palabras_clave);
-		return res.send(lectura);
-		req.session.peliculasTMDB = lectura.resultados;
-		res.cookie("peliculasTMDB", lectura.resultados, {maxAge: 1000 * 60 * 60});
+		// return res.send(lectura);
+		req.session.peliculasTMDB = lectura;
+		res.cookie("peliculasTMDB", lectura, {maxAge: 1000 * 60 * 60});
 		return res.redirect("/peliculas/agregar/desambiguar1");
 	},
 	desambiguarTMDB_Form: (req, res) => {
-		let resultados = req.session.peliculasTMDB;
-		resultados == "" ? resultados = req.cookies.peliculasTMDB : ""
-		//return res.send(resultados);
-		return res.render("2-Desambiguar1", { resultados });
+		let lectura = req.session.peliculasTMDB;
+		lectura == "" ? lectura = req.cookies.peliculasTMDB : ""
+		//return res.send(lectura);
+		return res.render("2-Desambiguar1", {
+			resultados: lectura.resultados,
+			palabras_clave: lectura.palabras_clave,
+		});
 	},
 
 	agregar2Form: (req, res) => {
