@@ -2,11 +2,12 @@ h1#paso2 {margin-bottom: 5px;}
 #resultadoGeneral {width: 700px; overflow-x: auto;}
 
 #resultadoIndividual, #resultadoInvalido {margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:280px; border-radius: 15px;}
-#resultadoIndividual:hover {background-color: var(--gris-oscuro); color: var(--amarillo-claro);}
+#resultadoIndividual, #resultadoInvalido {background-color: var(--celeste-oscuro);}
+#resultadoIndividual:hover {background-color: var(--azul); color: var(--amarillo-claro);}
 #resultadoInvalido:hover {background-color: var(--rojo); color: var(--amarillo-claro);}
 
 #imagenChica {max-height: 200px; border-radius: 15px; }
 #infoPeli {color: inherit; margin: 10px 15px;}
-#infoPeli p, #infoPeli p strong {color: inherit; }
+#infoPeli p, #infoPeli p strong {color: inherit;}
 
-
+.interlineadoChico {margin-top: 5px;}

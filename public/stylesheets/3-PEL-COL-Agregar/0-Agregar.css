@@ -12,15 +12,12 @@
 	{margin-top: 4px; border-width: .7px; border-radius: 5px;}
 
 /*  Mensajes de error*/
-#data_entry .fa-times-circle, #data_entry .mensajeError {position: absolute; font-size: 1rem;}
-#data_entry .fa-times-circle {color: red;}
-#data_entry .mensajeError {display: none; z-index: 1; width: max-content;}
-#data_entry .mensajeError {border-radius: 6px; padding: 3px 7px; font-weight: normal;}
-#data_entry .mensajeError {color: var(--azul); background-color: var(--amarillo-claro); border: red solid 2px;}
+#data_entry .fa-times-circle {position: absolute; font-size: 1rem; color: red;}
+#data_entry .mensajeError, #data_entry .mensajeAyuda {position: absolute; font-size: 1rem; display: none; z-index: 1; font-weight: normal; border-radius: 6px;}
+#data_entry .mensajeError {width: max-content; padding: 3px 7px; color: var(--azul); background-color: var(--amarillo-claro); border: red solid 2px;}
 #data_entry .fa-times-circle:hover .mensajeError {display: inline;}
+#data_entry .fa-question-circle:hover .mensajeAyuda {display: inline;}
 
 /* Mensajes de ayuda */
-#data_entry .fa-question-circle, #data_entry .mensajeAyuda {font-size: 1em;}
-#data_entry .fa-question-circle {margin-left: 2px;}
-#data_entry .mensajeAyuda {position: absolute; display: none; font-weight: normal; z-index: 1;}
-#data_entry .mensajeAyuda {border-radius: 6px;padding: 7px 10px;line-height: 1.25rem;}
+#data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px;}
+#data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}

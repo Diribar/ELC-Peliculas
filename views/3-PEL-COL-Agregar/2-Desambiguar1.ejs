@@ -1,6 +1,6 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desambiguar1.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desambiguar.css">
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
@@ -9,7 +9,11 @@
 		<section class="flex-col"> 
 			<h1 id="paso2">Paso 2 de 5: Hacé click sobre tu opción</h1>
 			<% if (!hayMas) { %>
-				<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
+				<% if resultados.length == 1 { %>
+					<p>Encontramos una sola coincidencia.</p>
+				<% } else { %>
+					<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
+				<% } %>
 			<% } else {%>
 				<p>Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.</p>
 			<% } %>
@@ -20,12 +24,16 @@
 					<input type="text" name="rubro" value="<%= resultados[i].rubro %>" class="ocultar">
 					<input type="text" name="tmdb_id" value="<%= resultados[i].tmdb_id %>" class="ocultar">
 					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_original %>" class="ocultar">
+					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_castellano %>" class="ocultar">
 					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
 					<button type="submit" class="flex-row" id="resultadoIndividual">
 						<img id="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
 						<div id="infoPeli" class="flex-col">
-							<p><strong><%= resultados[i].nombre_castellano %></strong></p>
+							<p><strong><%= resultados[i].nombre_original %></strong></p>
+							<p class="interlineadoChico"></p>
 							<p><%= resultados[i].lanzamiento %> - <%= resultados[i].rubro %></p>
+							<p class="interlineadoChico"></p>
+							<p><em><%= resultados[i].nombre_castellano %></em></p>
 						</div>
 					</button>
 				</form>

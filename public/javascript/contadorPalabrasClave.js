@@ -8,7 +8,10 @@ window.addEventListener("load", () => {
 	// Verificar o Avanzar
 	form.addEventListener("submit", (e) => {
 		e.preventDefault();
-		if (button.innerHTML == "Verificar") {
+		if (
+			button.innerHTML == "Verificar" &&
+			palabras_clave.value.length > 1
+		) {
 			if (despues != palabras_clave.value) {
 				despues = palabras_clave.value;
 				contador(palabras_clave.value);

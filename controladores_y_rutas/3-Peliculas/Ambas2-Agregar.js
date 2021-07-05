@@ -61,12 +61,21 @@ module.exports = {
 	desambiguarTMDB_Guardar: async (req, res) => {
 		req.session.peliculaTMDB = req.body;
 		res.cookie("peliculaTMDB", req.body, { maxAge: 1000 * 60 * 60 });
-		return res.redirect("/peliculas/agregar/desambiguar2");
+		if (req.body.rubro == "Película") {
+			return res.redirect("/peliculas/agregar/desambiguar2");
+		}
 	},
-	desambiguarFA_Form: (req, res) => {
-		let lectura = req.session.peliculaTMDB;
-		lectura == "" ? (lectura = req.cookies.peliculaTMDB) : "";
-		return res.send(lectura);
+	desambiguarFA_Form: async (req, res) => {
+		let datos = req.session.peliculaTMDB;
+		datos == "" ? (datos = req.cookies.peliculaTMDB) : "";
+		//return res.send(datos);
+		// Obtener la API
+		let lectura = await searchFA.search(
+			datos.nombre_original, 
+			datos.nombre_castellano, 
+			datos.palabras_clave,
+		);
+		// Continuará...
 	},
 
 	agregar2Form: (req, res) => {

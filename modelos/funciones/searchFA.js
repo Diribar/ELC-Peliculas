@@ -1,8 +1,10 @@
-const search_TMDB = require("../API/1-search-TMDB");
+const search_FA_Heroku = require("../API/1-search-FA-Heroku");
+const search_FA_Rapid = require("../API/1-search-FA-Rapid");
 const details_TMDB = require("../API/2-details-TMDB");
 
+// Continuará...
 module.exports = {
-	search: async (palabras_clave) => {
+	search: async (nombre_original, nombre_castellano, palabras_clave) => {
 		palabras_clave = letrasIngles(palabras_clave);
 		let lectura = [];
 		let datos = { resultados: [] };
@@ -12,18 +14,29 @@ module.exports = {
 			for (rubro of rubros) {
 				if (page == 1 || page <= datos.cantPaginasAPI[rubro]) {
 					lectura = await search_TMDB(palabras_clave, rubro, page)
-						.then((n) => {return infoQueQueda(n);})
-						.then((n) => {return estandarizarNombres(n, rubro);})
-						.then((n) => {return coincideConPalabraClave(n, palabras_clave);})
-						.then((n) => {return eliminarIncompletos(n);});
-					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubro);
+						.then((n) => {
+							return infoQueQueda(n);
+						})
+						.then((n) => {
+							return estandarizarNombres(n, rubro);
+						})
+						.then((n) => {
+							return coincideConPalabraClave(n, palabras_clave);
+						})
+						.then((n) => {
+							return eliminarIncompletos(n);
+						});
+					lectura.resultados = await agregarLanzamiento(
+						lectura.resultados,
+						rubro
+					);
 					datos = unificarResultados(lectura, rubro, datos, page);
 				}
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
 			datos = renombrarRubros(datos);
-			datos.hayMas = hayMas(datos, page, rubros)
+			datos.hayMas = hayMas(datos, page, rubros);
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;
