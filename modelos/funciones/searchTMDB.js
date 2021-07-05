@@ -2,7 +2,8 @@ const search_TMDB = require("../API/1-search-TMDB");
 const details_TMDB = require("../API/2-details-TMDB");
 
 module.exports = {
-	searchTMDB: async (palabras_clave) => {
+	search: async (palabras_clave) => {
+		palabras_clave = letrasIngles(palabras_clave);
 		let lectura = [];
 		let datos = { resultados: [] };
 		let rubros = ["movie", "tv", "collection"];
@@ -11,67 +12,36 @@ module.exports = {
 			for (rubro of rubros) {
 				if (page == 1 || page <= datos.cantPaginasAPI[rubro]) {
 					lectura = await search_TMDB(palabras_clave, rubro, page)
-						.then((n) => {
-							return soloResultadosTotal(n);
-						})
-						.then((n) => {
-							return estandarizarNombres(n, rubro);
-						})
-						.then((n) => {
-							return coincideConPalabraClave(n, palabras_clave);
-						})
-						.then((n) => {
-							return eliminarIncompletos(n);
-						});
-					lectura.resultados = await agregarLanzamiento(
-						lectura.resultados,
-						rubro
-					);
-					// Consolidar cantPaginasAPI
-					if (page == 1) {
-						datos.cantPaginasAPI = {
-							...datos.cantPaginasAPI,
-							[rubro]: lectura.cantPaginasAPI,
-						};
-					}
-					// Unificar resultados
-					datos.resultados = datos.resultados.concat(
-						lectura.resultados
-					);
-					datos.cantPaginasUsadas = {
-						...datos.cantPaginasUsadas,
-						[rubro]: page,
-					};
-
+						.then((n) => {return infoQueQueda(n);})
+						.then((n) => {return estandarizarNombres(n, rubro);})
+						.then((n) => {return coincideConPalabraClave(n, palabras_clave);})
+						.then((n) => {return eliminarIncompletos(n);});
+					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubro);
+					datos = unificarResultados(lectura, rubro, datos, page);
 				}
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
-			if (
-				datos.resultados.length >= 20 ||
-				(page >= datos.cantPaginasAPI[rubros[0]] &&
-					page >= datos.cantPaginasAPI[rubros[1]] &&
-					page >= datos.cantPaginasAPI[rubros[2]])
-			) {
-				if (
-					page < datos.cantPaginasAPI[rubros[0]] ||
-					page < datos.cantPaginasAPI[rubros[1]] ||
-					page < datos.cantPaginasAPI[rubros[2]]
-				) {
-					datos.hayMas = true;
-				} else datos.hayMas = false;
+			datos.hayMas = hayMas(datos, page, rubros)
+			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;
 		}
-		datos = ordenarCronologicamente(datos);
+		datos = ordenarDatos(datos, palabras_clave);
 		return datos;
 	},
 };
 
-let soloResultadosTotal = (n) => {
+let hayMas = (datos, page, rubros) => {
+	return page < datos.cantPaginasAPI[rubros[0]] ||
+		page < datos.cantPaginasAPI[rubros[1]] ||
+		page < datos.cantPaginasAPI[rubros[2]]
+}
+
+let infoQueQueda = (n) => {
 	return {
 		resultados: n.results,
-		cantPaginasAPI: n.total_pages,
+		cantPaginasAPI: Math.min(n.total_pages, n.total_results),
 	};
 };
 
@@ -116,7 +86,9 @@ let estandarizarNombres = (dato, rubro) => {
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
 		if (nombre_original) {
-			desempate1 = letrasIngles(nombre_original).replace(/ /g, "");
+			desempate1 = letrasIngles(nombre_original)
+				.replace(/ /g, "")
+				.replace(/'/g, "");
 		} else {
 			desempate1 = "";
 		}
@@ -141,7 +113,6 @@ let estandarizarNombres = (dato, rubro) => {
 };
 
 let coincideConPalabraClave = (dato, palabras_clave) => {
-	palabras_clave = letrasIngles(palabras_clave)
 	let palabras = palabras_clave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		for (palabra of palabras) {
@@ -176,6 +147,7 @@ let eliminarIncompletos = (dato) => {
 let letrasIngles = (palabra) => {
 	word = palabra
 		.toLowerCase()
+		.replace(/-/g, " ")
 		.replace(/á/g, "a")
 		.replace(/é/g, "e")
 		.replace(/í/g, "i")
@@ -185,8 +157,6 @@ let letrasIngles = (palabra) => {
 		.replace(/ñ/g, "n")
 		.replace(/:/g, "")
 		.replace(/!/g, "")
-		.replace(/'/g, "")
-		.replace(/-/g, "")
 
 	return word;
 };
@@ -242,7 +212,24 @@ let eliminarDuplicados = (datos) => {
 	return datos;
 };
 
-let ordenarCronologicamente = (datos) => {
+let unificarResultados = (lectura, rubro, datos, page) => {
+	// Consolidar cantPaginasAPI
+	if (page == 1) {
+		datos.cantPaginasAPI = {
+			...datos.cantPaginasAPI,
+			[rubro]: lectura.cantPaginasAPI,
+		};
+	}
+	// Unificar resultados
+	datos.resultados = datos.resultados.concat(lectura.resultados);
+	datos.cantPaginasUsadas = {
+		...datos.cantPaginasUsadas,
+		[rubro]: Math.min(page, datos.cantPaginasAPI[rubro]),
+	};
+	return datos
+}
+
+let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
 				return b.desempate2 < a.desempate2
@@ -252,5 +239,13 @@ let ordenarCronologicamente = (datos) => {
 					: 0;
 		  })
 		: "";
-	return datos;
+	let datosEnOrden = {
+		palabras_clave: palabras_clave,
+		hayMas: datos.hayMas,
+		cantResultados: datos.resultados.length,
+		cantPaginasAPI: datos.cantPaginasAPI,
+		cantPaginasUsadas: datos.cantPaginasUsadas,
+		resultados: datos.resultados,
+	};
+	return datosEnOrden;
 };
