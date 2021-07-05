@@ -11,14 +11,17 @@ const validar1 = require("../../middlewares/validarFilmForms/1-IngresarPalabrasC
 const validar2 = require("../../middlewares/validarFilmForms/2-DatosDuros");
 const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
 
-// Controladores de Crear
+// Controladores de Crear - Responsabilidad y Palabras Clave
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
 router.get("/agregar/api/contador/", agregar.contador);
 router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
 
+// Controladores de Crear - Desambiguar
 router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
-//router.post("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Guardar);
+router.post("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Guardar);
+router.get("/agregar/desambiguar2", soloUsuarios, agregar.desambiguarFA_Form);
+//router.post("/agregar/desambiguar2", soloUsuarios, agregar.desambiguarFA_Guardar);
 
 // 3. Datos Duros
 router.get("/agregar2", soloUsuarios, agregar.agregar2Form);

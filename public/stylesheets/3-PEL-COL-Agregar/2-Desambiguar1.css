@@ -1,10 +1,12 @@
-#resultadoGeneral {width: 700px;  white-space: nowrap; overflow-x: auto}
+h1#paso2 {margin-bottom: 5px;}
+#resultadoGeneral {width: 700px; overflow-x: auto;}
 
-#resultadoIndividual {margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left}
-#resultadoIndividual #infoPeli {color: inherit}
-#resultadoIndividual #infoPeli p {color: inherit}
-#resultadoIndividual #infoPeli p strong {color: inherit}
-#resultadoIndividual:hover {background-color: var(--verde); border-radius: 15px; color: white;}
+#resultadoIndividual, #resultadoInvalido {margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:280px; border-radius: 15px;}
+#resultadoIndividual:hover {background-color: var(--gris-oscuro); color: var(--amarillo-claro);}
+#resultadoInvalido:hover {background-color: var(--rojo); color: var(--amarillo-claro);}
 
-.imagenChica {max-height: 200px; border-radius: 15px; }
-#infoPeli {margin: 10px 15px}
+#imagenChica {max-height: 200px; border-radius: 15px; }
+#infoPeli {color: inherit; margin: 10px 15px;}
+#infoPeli p, #infoPeli p strong {color: inherit; }
+
+

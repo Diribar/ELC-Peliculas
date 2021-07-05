@@ -34,17 +34,39 @@ module.exports = {
 		let lectura = await searchTMDB.search(palabras_clave);
 		// return res.send(lectura);
 		req.session.peliculasTMDB = lectura;
-		res.cookie("peliculasTMDB", lectura, {maxAge: 1000 * 60 * 60});
+		res.cookie("peliculasTMDB", lectura, { maxAge: 1000 * 60 * 60 });
 		return res.redirect("/peliculas/agregar/desambiguar1");
 	},
 	desambiguarTMDB_Form: (req, res) => {
 		let lectura = req.session.peliculasTMDB;
-		lectura == "" ? lectura = req.cookies.peliculasTMDB : ""
+		lectura == "" ? (lectura = req.cookies.peliculasTMDB) : "";
 		//return res.send(lectura);
+		if (lectura.resultados.length == 0) {
+			datos = {
+				rubro: "Películas",
+				tmdb_id: "-",
+				nombre_original: "",
+				palabras_clave: lectura.palabras_clave,
+			}
+			req.session.peliculaTMDB = datos;
+			res.cookie("peliculaTMDB", datos, { maxAge: 1000 * 60 * 60 });
+			return res.redirect("/peliculas/agregar/desambiguar2");
+		}
 		return res.render("2-Desambiguar1", {
+			hayMas: lectura.hayMas,
 			resultados: lectura.resultados,
 			palabras_clave: lectura.palabras_clave,
 		});
+	},
+	desambiguarTMDB_Guardar: async (req, res) => {
+		req.session.peliculaTMDB = req.body;
+		res.cookie("peliculaTMDB", req.body, { maxAge: 1000 * 60 * 60 });
+		return res.redirect("/peliculas/agregar/desambiguar2");
+	},
+	desambiguarFA_Form: (req, res) => {
+		let lectura = req.session.peliculaTMDB;
+		lectura == "" ? (lectura = req.cookies.peliculaTMDB) : "";
+		return res.send(lectura);
 	},
 
 	agregar2Form: (req, res) => {

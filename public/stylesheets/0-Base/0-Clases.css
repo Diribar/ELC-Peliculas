@@ -11,6 +11,7 @@
 .ocultar {display: none;}
 .relative {position: relative;}
 .space-between {justify-content: space-between;}
+.wrap {flex-wrap: wrap;}
 
 .resultadoInvalido {background-color: #FB0404;}
 .resultadoExitoso {background-color: #0A620F;}
