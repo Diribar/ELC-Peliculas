@@ -143,23 +143,6 @@ let eliminarIncompletos = (dato) => {
 	return dato;
 };
 
-let letrasIngles = (palabra) => {
-	word = palabra
-		.toLowerCase()
-		.replace(/-/g, " ")
-		.replace(/á/g, "a")
-		.replace(/é/g, "e")
-		.replace(/í/g, "i")
-		.replace(/ó/g, "o")
-		.replace(/ú/g, "u")
-		.replace(/ü/g, "u")
-		.replace(/ñ/g, "n")
-		.replace(/:/g, "")
-		.replace(/!/g, "")
-
-	return word;
-};
-
 let agregarLanzamiento = async (dato, rubro) => {
 	if (rubro == "collection" && dato.length > 0) {
 		let detalles = [];
@@ -247,4 +230,23 @@ let ordenarDatos = (datos, palabras_clave) => {
 		resultados: datos.resultados,
 	};
 	return datosEnOrden;
+};
+
+let letrasIngles = (palabra) => {
+	word = palabra
+		.toLowerCase()
+		.replace(/-/g, " ")
+		.replace(/á/g, "a")
+		.replace(/é/g, "e")
+		.replace(/í/g, "i")
+		.replace(/ó/g, "o")
+		.replace(/ú/g, "u")
+		.replace(/ü/g, "u")
+		.replace(/ñ/g, "n")
+		.replace(/:/g, "")
+		.replace(/¿/g, "")
+		.replace(/[?]/g, "")
+		.replace(/!/g, "");
+
+	return word;
 };

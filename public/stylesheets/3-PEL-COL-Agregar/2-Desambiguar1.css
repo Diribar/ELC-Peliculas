@@ -1,2 +1,6 @@
  /* Imágenes */
  .imagenChica {max-width: 200px; max-height: 250px;}
+
+ #resultados {margin-top: 20px; width: 700px; height: auto; padding: 10px; white-space: nowrap;
+	overflow-y: hidden; overflow-x: auto;
+}

@@ -18,6 +18,9 @@ VALUES ('ALA','AX','Åland','Europa','Swedish','UTC+02:00','https://restcountrie
 INSERT INTO USUARIOS (id, email, contrasena, status_usuario_id, rol_usuario_id, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
 VALUES (1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 3, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),(2, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
 ;
+INSERT INTO penalizaciones_motivos (id, nombre, duracion, comentario)
+VALUES (1, 'Malicia', 365, 'Pornografía, mofarse de la religión católica, grosería, etc.')
+;
 INSERT INTO categorias (id, nombre)
 VALUES ('CFC', 'Centradas en la Fe Católica'), ('VPC', 'Valores Presentes en la Cultura')
 ;
@@ -42,8 +45,8 @@ VALUES (1, 'Juan Pablo II (papa)')
 INSERT INTO hechos_historicos (id, nombre)
 VALUES (1, '2a Guerra Mundial')
 ;
-INSERT INTO colecciones_cabecera (id, rubro, nombre_original, nombre_castellano, sinopsis)
-VALUES (1, 'manual', 'Karol', 'Karol', 'Narra la historia del Papa Juan Pablo II. La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el encuentro con sus seres queridos.')
+INSERT INTO colecciones_cabecera (id, rubro, nombre_original, nombre_castellano, pais_id, sinopsis)
+VALUES (1, 'manual', 'Karol', 'Karol', 'IT', 'Narra la historia del Papa Juan Pablo II. La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el encuentro con sus seres queridos.')
 ;
 INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
 VALUES (1, 1, 1, '38516', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)

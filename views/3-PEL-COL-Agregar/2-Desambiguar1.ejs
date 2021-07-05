@@ -9,13 +9,21 @@
 		<section class="flex-row space-between align-center"> 
 			<h1>Paso 2 de 4: Hacé click sobre tu opción</h1>
 		</section>
-		<section class="flex-row space-between">
-			<% for (let i=0; i<Math.min(resultados.length,3); i++) { %>
+		<section class="flex-row space-between"  id="resultados">
+			<% for (let i=0; i<Math.min(resultados.length); i++) { %>
 				<div class="flex-row">
+					<p class="ocultar"><%= resultados[i].rubro %> </p>
+					<p class="ocultar"><%= resultados[i].tmdb_id %> </p>
+					<p class="ocultar"><%= resultados[i].nombre_original %> </p>
 					<img class="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
 					<div class="flex-col">
-						<p><%= resultados[i].nombre_castellano %> </p>
-						<p><%= resultados[i].lanzamiento %></p>
+						<p><strong><%= resultados[i].nombre_castellano %></strong></p>
+						<p>
+							<%= resultados[i].lanzamiento %> - 
+							<% if (resultados[i].rubro=="movie") { %>Película<% } %>
+							<% if (resultados[i].rubro=="TV") { %>Programa de TV<% } %>
+							<% if (resultados[i].rubro=="collection") { %>Colección<% } %>
+						</p>
 					</div>
 				</div>
 			<% } %> 
