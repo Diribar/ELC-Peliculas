@@ -18,14 +18,14 @@ router.get("/agregar/api/contador/", agregar.contador);
 router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
 
 // Controladores de Crear - Desambiguar
-router.get("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Form);
-router.post("/agregar/desambiguar1", soloUsuarios, agregar.desambiguarTMDB_Guardar);
-router.get("/agregar/desambiguar2", soloUsuarios, agregar.desambiguarFA_Form);
-//router.post("/agregar/desambiguar2", soloUsuarios, agregar.desambiguarFA_Guardar);
+router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
+router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
+router.get("/agregar/link_fa", soloUsuarios, agregar.linkFA_Form);
+router.post("/agregar/link_fa", soloUsuarios, agregar.linkFA_Guardar);
 
 // 3. Datos Duros
-router.get("/agregar2", soloUsuarios, agregar.agregar2Form);
-router.post("/agregar2", soloUsuarios, validar2, agregar.agregar2Guardar);
+router.get("/agregar/datos_duros", soloUsuarios, agregar.agregarDurosForm);
+router.post("/agregar/datos_duros", soloUsuarios, validar2, agregar.agregarDurosGuardar);
 
 // 4. Datos Personalizados
 router.get("/agregar3", soloUsuarios, agregar.agregar3Form);

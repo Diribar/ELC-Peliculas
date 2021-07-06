@@ -7,7 +7,7 @@
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
 		<section class="flex-col">
-			<h1 id="paso2">Paso 2 de 5: Hacé click sobre tu opción</h1>
+			<h1 id="paso2">Paso 2 de 4: Hacé click sobre tu opción</h1>
 			<% if (!hayMas) { %>
 				<% if (resultados.length == 1) { %>
 					<p>Encontramos una sola coincidencia.</p>
@@ -20,11 +20,11 @@
 		</section>
 		<section class="flex-row space-between"  id="resultadoGeneral">
 			<% for (let i=0; i<Math.min(resultados.length); i++) { %>
-				<form action="/peliculas/agregar/desambiguar1" method="POST">
+				<form action="/peliculas/agregar/desambiguar" method="POST">
 					<input type="text" name="rubro" value="<%= resultados[i].rubro %>" class="ocultar">
 					<input type="text" name="tmdb_id" value="<%= resultados[i].tmdb_id %>" class="ocultar">
 					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_original %>" class="ocultar">
-					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_castellano %>" class="ocultar">
+					<input type="text" name="nombre_castellano" value="<%= resultados[i].nombre_castellano %>" class="ocultar">
 					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
 					<button type="submit" class="flex-row" id="resultadoIndividual">
 						<img id="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
@@ -38,18 +38,14 @@
 					</button>
 				</form>
 			<% } %>
-			<form action="/peliculas/agregar/desambiguar1" method="POST">
-				<input type="text" name="rubro" value="Películas" class="ocultar">
-				<input type="text" name="tmdb_id" value="-" class="ocultar">
-				<input type="text" name="nombre_original" value="" class="ocultar">
-				<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
-				<button type="submit" class="flex-row" id="resultadoInvalido">
+			<a href="/peliculas/agregar/link_fa">
+				<button type="button" class="flex-row" id="resultadoInvalido">
 					<img id="imagenChica" src="/imagenes/0-Base/Sagrada Familia.jpg" title="Busco otra película o colección">
 					<div id="infoPeli" class="flex-col">
 						<p><strong>Busco otra película o colección</strong></p>
 					</div>
 				</button>
-			</form>
+			</a>
 		</section>
 	</section>
 </div>
