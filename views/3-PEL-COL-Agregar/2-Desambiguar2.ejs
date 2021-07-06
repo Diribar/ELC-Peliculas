@@ -1,0 +1,48 @@
+<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desambiguar1.css">
+<%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
+
+<div class="cuerpo flex-col grow">
+	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+	<section class="flex-col" id="data_entry">
+		<section class="flex-col"> 
+			<h1 id="paso2">Paso 3 de 5: Hacé click sobre tu opción</h1>
+			<% if (!hayMas) { %>
+				<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
+			<% } else {%>
+				<p>Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.</p>
+			<% } %>
+		</section>
+		<section class="flex-row space-between"  id="resultadoGeneral">
+			<% for (let i=0; i<Math.min(resultados.length); i++) { %>
+				<form action="/peliculas/agregar/desambiguar1" method="POST">
+					<input type="text" name="rubro" value="<%= resultados[i].rubro %>" class="ocultar">
+					<input type="text" name="tmdb_id" value="<%= resultados[i].tmdb_id %>" class="ocultar">
+					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_original %>" class="ocultar">
+					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
+					<button type="submit" class="flex-row" id="resultadoIndividual">
+						<img id="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
+						<div id="infoPeli" class="flex-col">
+							<p><strong><%= resultados[i].nombre_castellano %></strong></p>
+							<p><%= resultados[i].lanzamiento %> - <%= resultados[i].rubro %></p>
+						</div>
+					</button>
+				</form>
+			<% } %>
+			<form action="/peliculas/agregar/desambiguar1" method="POST">
+				<input type="text" name="rubro" value="Películas" class="ocultar">
+				<input type="text" name="tmdb_id" value="-" class="ocultar">
+				<input type="text" name="nombre_original" value="" class="ocultar">
+				<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
+				<button type="submit" class="flex-row" id="resultadoInvalido">
+					<img id="imagenChica" src="/imagenes/0-Base/Sagrada Familia.jpg" title="Busco otra película o colección">
+					<div id="infoPeli" class="flex-col">
+						<p><strong>Busco otra película o colección</strong></p>
+					</div>
+				</button>
+			</form>
+		</section>
+	</section>
+</div>
+<%- include('0-DespuesPA') %>

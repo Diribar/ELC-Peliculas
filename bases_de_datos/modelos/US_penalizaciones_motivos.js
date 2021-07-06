@@ -1,18 +1,18 @@
 module.exports = (sequelize, dt) => {
-	const alias = "eventos";
+	const alias = "penalizaciones_motivos";
 	const columns = {
 		id: {type: dt.INTEGER, primaryKey: true},
 		nombre: {type: dt.STRING(50)},
-		fecha: {type: dt.STRING(20)},
-		distancia: {type: dt.INTEGER}
+		duracion: { type: dt.INTEGER },
+		comentario: { type: dt.STRING(100) },
 	};
 	const config = {
-		tableName: "eventos",
+		tableName: "penalizaciones_motivos",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.hasMany(n.peliculas, {as: "peliculas",foreignKey: "sugerida_para_evento_id"});
+		entidad.hasMany(n.penalizaciones_usuarios, {as: "penalizaciones_usuarios", foreignKey: "penalizacion_id"});
 	};
 	return entidad;
 };

@@ -11,8 +11,9 @@
 .ocultar {display: none;}
 .relative {position: relative;}
 .space-between {justify-content: space-between;}
+.wrap {flex-wrap: wrap;}
 
 .resultadoInvalido {background-color: #FB0404;}
 .resultadoExitoso {background-color: #0A620F;}
-.resultadoInvalido, .resultadoExitoso {padding: 5px 10px; color: white; font-weight: bold;}
+.resultadoInvalido, .resultadoExitoso {padding: 3px 10px; color: white; font-weight: bold;}
 .mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul); border: var(--azul) solid 2px;}

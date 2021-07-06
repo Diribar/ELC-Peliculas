@@ -9,41 +9,64 @@ module.exports = {
 	responsabilidad: (req, res) => {
 		return res.render("0-Responsabilidad");
 	},
-
-	importarDatosForm: (req, res) => {
-		return res.render("1-ImportarDatos", {
-			titulo: "Película",
-		});
+	palabrasClaveForm: (req, res) => {
+		return res.render("1-PalabrasClave");
 	},
-
-	importarDatosGuardar: (req, res) => {
+	contador: async (req, res) => {
+		// Obtener 'palabras_clave' y obtener la API
+		let { palabras_clave } = req.query;
+		let resultados = await searchTMDB.search(palabras_clave);
+		// Enviar la API
+		return res.json(resultados);
+	},
+	palabrasClaveGuardar: async (req, res) => {
 		//Detectar errores de Data Entry
 		let erroresValidacion = validationResult(req);
 		let existenErrores = erroresValidacion.errors.length > 0;
+		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
-			return res.render("1-ImportarDatos", {
-				titulo: "Película",
-				palabras_clave: req.body.palabras_clave,
+			return res.render("1-PalabrasClave", {
+				palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		req.session.importarDatos = req.body;
-		return res.redirect("/peliculas/desambiguar1");
+		// Obtener la API
+		let lectura = await searchTMDB.search(palabras_clave);
+		// return res.send(lectura);
+		req.session.peliculasTMDB = lectura;
+		res.cookie("peliculasTMDB", lectura, { maxAge: 1000 * 60 * 60 });
+		return res.redirect("/peliculas/agregar/desambiguar1");
 	},
-
-	contador1: async (req, res) => {
-		// Obtener 'palabras_clave'
-		let { palabras_clave } = req.query;
-		let resultados = await searchTMDB.search(palabras_clave);
-		return res.json(resultados);
+	desambiguarTMDB_Form: (req, res) => {
+		let lectura = req.session.peliculasTMDB;
+		lectura == "" ? (lectura = req.cookies.peliculasTMDB) : "";
+		//return res.send(lectura);
+		if (lectura.resultados.length == 0) {
+			datos = {
+				rubro: "Películas",
+				tmdb_id: "-",
+				nombre_original: "",
+				palabras_clave: lectura.palabras_clave,
+			}
+			req.session.peliculaTMDB = datos;
+			res.cookie("peliculaTMDB", datos, { maxAge: 1000 * 60 * 60 });
+			return res.redirect("/peliculas/agregar/desambiguar2");
+		}
+		return res.render("2-Desambiguar1", {
+			hayMas: lectura.hayMas,
+			resultados: lectura.resultados,
+			palabras_clave: lectura.palabras_clave,
+		});
 	},
-
-	desambiguar1: async (req, res) => {
-		// Obtener 'palabras_clave' y ejecutar la rutina
-		let palabras_clave = req.session.importarDatos.palabras_clave;
-		let resultados = await searchTMDB.search(palabras_clave);
-		// Redireccionar
-		return res.send(resultados);
+	desambiguarTMDB_Guardar: async (req, res) => {
+		req.session.peliculaTMDB = req.body;
+		res.cookie("peliculaTMDB", req.body, { maxAge: 1000 * 60 * 60 });
+		return res.redirect("/peliculas/agregar/desambiguar2");
+	},
+	desambiguarFA_Form: (req, res) => {
+		let lectura = req.session.peliculaTMDB;
+		lectura == "" ? (lectura = req.cookies.peliculaTMDB) : "";
+		return res.send(lectura);
 	},
 
 	agregar2Form: (req, res) => {

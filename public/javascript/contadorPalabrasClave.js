@@ -42,7 +42,7 @@ const contador = async (palabras_clave) => {
 		resultadoDeBusqueda.classList.remove("resultadoExitoso");
 		resultadoDeBusqueda.classList.add("resultadoInvalido");
 		// Obtener el link
-		let link = "/peliculas/api/contador1/?palabras_clave=" + palabras_clave;
+		let link = "/peliculas/agregar/api/contador/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
 		let lectura = await fetch(link).then((n) => n.json());
 		// Determinar oracion y formato

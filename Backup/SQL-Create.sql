@@ -52,13 +52,9 @@ CREATE TABLE USUARIOS (
 	creado_en DATE NULL,
 	completado_en DATE NULL,
 	editado_en DATE NULL,
-	ultima_penalizacion_en DATE NULL,
-	borrado_en DATE NULL,
-	penalizaciones INT UNSIGNED NULL,
-	ultima_penalizacion_en_rol_id INT UNSIGNED NULL,
-	ultima_penalizacion_motivo VARCHAR(500) NULL,
-	penalizado_por INT UNSIGNED NULL,
+	autorizado_data_entry BOOLEAN NOT NULL DEFAULT 0,
 	borrado BOOLEAN NULL DEFAULT 0,
+	borrado_en DATE NULL,
 	borrado_motivo VARCHAR(500) NULL,
 	borrado_por INT UNSIGNED NULL,
 	PRIMARY KEY (id),
@@ -66,8 +62,28 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id),
-	FOREIGN KEY (ultima_penalizacion_en_rol_id) REFERENCES roles_usuario(id)
+	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE penalizaciones_motivos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	duracion INT UNSIGNED NOT NULL,
+	comentario VARCHAR(500) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE penalizaciones_usuario (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	fecha DATE NOT NULL,
+	usuario_id INT UNSIGNED NOT NULL,
+	rol_usuario_id INT UNSIGNED NOT NULL,
+	penalizado_por_id INT UNSIGNED NULL,
+	penalizacion_id INT UNSIGNED NOT NULL,
+	comentario VARCHAR(500) NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
+	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (penalizacion_id) REFERENCES penalizaciones_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE categorias (
 	id VARCHAR(3) NOT NULL,
@@ -105,7 +121,7 @@ CREATE TABLE colecciones_cabecera (
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
-	pais_id VARCHAR(2) NULL,
+	pais_id VARCHAR(2) NOT NULL,
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,

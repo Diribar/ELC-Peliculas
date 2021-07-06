@@ -12,6 +12,10 @@
 #data_entry .mensajeAyuda {width: 250px; margin-left: 2px;}
 #data_entry .fa-question-circle:hover .mensajeAyuda {display: inline;}
 #data_entry input {margin-right: 5px; width: 250px; padding: 5px 5px; }
-#data_entry button {margin-left: 30px;}
 #data_entry #resultadoDeBusqueda {margin-top: 5px; width: fit-content;}
 #data_entry #resultadoDeBusqueda {font-style: normal; border-radius: 10px;}
+
+/* Submit button */
+#data_entry button {padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}
+#data_entry button {color: white; background-color: var(--gris-oscuro);}
+#data_entry button {margin-left: 30px;}

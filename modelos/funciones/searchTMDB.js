@@ -22,6 +22,7 @@ module.exports = {
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
+			datos = renombrarRubros(datos);
 			datos.hayMas = hayMas(datos, page, rubros)
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
@@ -54,7 +55,7 @@ let estandarizarNombres = (dato, rubro) => {
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
-			desempate2 = "-";
+			desempate3 = "-";
 		}
 		if (rubro == "tv") {
 			if (
@@ -68,7 +69,7 @@ let estandarizarNombres = (dato, rubro) => {
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
-			desempate2 = m.first_air_date;
+			desempate3 = m.first_air_date;
 		}
 		if (rubro == "movie") {
 			if (
@@ -82,19 +83,13 @@ let estandarizarNombres = (dato, rubro) => {
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
-			desempate2 = m.release_date;
+			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		if (nombre_original) {
-			desempate1 = letrasIngles(nombre_original)
-				.replace(/ /g, "")
-				.replace(/'/g, "");
-		} else {
-			desempate1 = "";
-		}
+		desempate1 = letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			fuente: "TMDB",
 			rubro: rubro,
 			tmdb_id: m.id,
 			nombre_original: nombre_original,
@@ -104,6 +99,7 @@ let estandarizarNombres = (dato, rubro) => {
 			comentario: m.overview,
 			desempate1: desempate1,
 			desempate2: desempate2,
+			desempate3: desempate3,
 		};
 	});
 	return {
@@ -144,23 +140,6 @@ let eliminarIncompletos = (dato) => {
 	return dato;
 };
 
-let letrasIngles = (palabra) => {
-	word = palabra
-		.toLowerCase()
-		.replace(/-/g, " ")
-		.replace(/á/g, "a")
-		.replace(/é/g, "e")
-		.replace(/í/g, "i")
-		.replace(/ó/g, "o")
-		.replace(/ú/g, "u")
-		.replace(/ü/g, "u")
-		.replace(/ñ/g, "n")
-		.replace(/:/g, "")
-		.replace(/!/g, "")
-
-	return word;
-};
-
 let agregarLanzamiento = async (dato, rubro) => {
 	if (rubro == "collection" && dato.length > 0) {
 		let detalles = [];
@@ -188,7 +167,7 @@ let agregarLanzamiento = async (dato, rubro) => {
 				: "";
 			let ano = detalles[0];
 			dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : ano;
-			dato[j].desempate2 = ano;
+			dato[j].desempate3 = ano;
 		}
 	}
 	return dato;
@@ -197,13 +176,17 @@ let agregarLanzamiento = async (dato, rubro) => {
 let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
 		contar = datos.resultados.filter(
-			(m) => m.desempate1 == n.desempate1 && m.desempate2 == n.desempate2
+			(m) =>
+				(m.desempate1 == n.desempate1 ||
+					m.desempate2 == n.desempate2) &&
+				m.desempate3 == n.desempate3
 		);
 		if (contar.length > 1) {
 			indice = datos.resultados.findIndex(
 				(m) =>
-					m.desempate1 == n.desempate1 &&
-					m.desempate2 == n.desempate2 &&
+					(m.desempate1 == n.desempate1 ||
+						m.desempate2 == n.desempate2) &&
+					m.desempate3 == n.desempate3 &&
 					m.rubro == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
@@ -229,12 +212,22 @@ let unificarResultados = (lectura, rubro, datos, page) => {
 	return datos
 }
 
+let renombrarRubros = (datos) => {
+	datos.resultados.map(n => {
+		n.rubro == "movie" ? n.rubro = "Películas" : "";
+		n.rubro == "tv" ? (n.rubro = "Colecciones") : "";
+		n.rubro == "collections" ? (n.rubro = "Colecciones") : "";
+	})
+	return datos;
+};
+
+
 let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
-				return b.desempate2 < a.desempate2
+				return b.desempate3 < a.desempate3
 					? -1
-					: b.desempate2 > a.desempate2
+					: b.desempate3 > a.desempate3
 					? 1
 					: 0;
 		  })
@@ -248,4 +241,23 @@ let ordenarDatos = (datos, palabras_clave) => {
 		resultados: datos.resultados,
 	};
 	return datosEnOrden;
+};
+
+let letrasIngles = (palabra) => {
+	word = palabra
+		.toLowerCase()
+		.replace(/-/g, " ")
+		.replace(/á/g, "a")
+		.replace(/é/g, "e")
+		.replace(/í/g, "i")
+		.replace(/ó/g, "o")
+		.replace(/ú/g, "u")
+		.replace(/ü/g, "u")
+		.replace(/ñ/g, "n")
+		.replace(/:/g, "")
+		.replace(/¿/g, "")
+		.replace(/[?]/g, "")
+		.replace(/!/g, "");
+
+	return word;
 };
