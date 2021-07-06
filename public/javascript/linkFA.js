@@ -14,7 +14,8 @@ window.addEventListener("load", () => {
 		if (button.innerHTML == "Verificar" && ID) {
 			if (despues != url.value) {
 				despues = url.value;
-				buscar(ID);
+				// buscar(ID);
+				// Función buscar...
 			}
 			button.innerHTML = "Avanzar";
 		} else {
