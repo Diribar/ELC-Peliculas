@@ -1,16 +1,18 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-PalabrasClave.css">
-<script src="/javascript/palabrasClave.js"></script>
+<script src="/javascript/linkFA.js"></script>
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
-	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
-		<section class="flex-col"> 
-			<h1>Paso 1 de 4: Ingresá Palabras Clave</h1>
+	<section class="flex-col" id="data_entry">
+		<section class="flex-col">
+			<h1 id="paso2">Paso 2 de 4: Alternativa a las Palabras Clave</h1>
+			<p>Si no encontraste tu película a partir de <em>palabras clave</em>, vamos a</p>
+			<p>intentar con otro método</p>
 		</section>
-		<h2>Ingresá palabras del Título de la Película</h2>
+		<h2>Ingresá el link de Film Affinity</h2>
 		<section class="flex-row space-between">
 			<div class="relative flex-col ">
 				<div>
@@ -19,7 +21,7 @@
 						autofocus autocomplete="off"
 					>
 					<i class="fas fa-question-circle">
-						<span class="mensajeAyuda ocultar">
+						<span class="mensajeAyuda">
 							Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
 							Escribí de manera precisa todas las palabras que sepas.
 						</span>
@@ -37,9 +39,7 @@
 		<section>
 			<div id="resultadoDeBusqueda"></div>
 			<p id="fuentesDeInfo">
-				Aprovechamos información provista por 
-				<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a> APIs
-				<br>para agilizar esta tarea
+				Sólo usaremos esta opción si conseguimos el permiso escrito de FA
 			</p>
 		</section>
 	</form>

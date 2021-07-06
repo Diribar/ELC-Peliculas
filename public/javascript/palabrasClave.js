@@ -4,6 +4,8 @@ window.addEventListener("load", () => {
 	let despues = palabras_clave.value;
 	let form = document.getElementById("data_entry");
 	let button = document.querySelector("button");
+	let iconoAyuda = document.querySelector(".fa-question-circle");
+	let mensajeAyuda = document.querySelector(".mensajeAyuda");
 
 	// Verificar o Avanzar
 	form.addEventListener("submit", (e) => {
@@ -24,7 +26,7 @@ window.addEventListener("load", () => {
 		}
 	});
 
-	// Actualizar ante cambios en el input
+	// "Verificar" ante cambios en el input
 	palabras_clave.addEventListener("keyup", () => {
 		if (
 			palabras_clave.value.length == 0 ||
@@ -34,6 +36,19 @@ window.addEventListener("load", () => {
 			borrarComentario();
 		}
 	});
+
+	// Detectar si se hace "click" en Ayuda
+	iconoAyuda.addEventListener("click", () => {
+		mensajeAyuda.classList.toggle("ocultar");
+	});
+
+	// Cerrar los dropdowns en desuso
+	window.onclick = (e) => {
+		!e.target.matches(".fa-question-circle")
+			? mensajeAyuda.classList.add("ocultar")
+			: "";
+	};
+
 });
 
 const contador = async (palabras_clave) => {
@@ -81,4 +96,4 @@ const borrarComentario = () => {
 	document.querySelector("#resultadoDeBusqueda").innerHTML = "";
 	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoInvalido");
 	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoExitoso");
-}
+};

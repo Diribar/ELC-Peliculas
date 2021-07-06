@@ -6,15 +6,9 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<section class="flex-col"> 
-			<h1 id="paso2">Paso 3 de 5: Hacé click sobre tu opción</h1>
-			<p>Usamos información de más de un proveedor, para contar con más información y así disminuir la carga manual de datos</p>
-			<p>Por favor hacé click sobre la película que elegiste</p>
-			<% if (!hayMas) { %>
-				<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
-			<% } else {%>
-				<p>Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.</p>
-			<% } %>
+		<section class="flex-col">
+			<h1 id="paso2">Paso 2 de 4: Ingresá el link de Film Affinity</h1>
+			<p>Si no encontraste tu película a partir de <em>palabras clave</em>, vamos a consultar en otra base de datos</p>
 		</section>
 		<section class="flex-row space-between"  id="resultadoGeneral">
 			<% for (let i=0; i<Math.min(resultados.length); i++) { %>

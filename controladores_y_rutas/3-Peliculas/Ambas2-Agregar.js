@@ -54,7 +54,7 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	linkFA_Form: async (req, res) => {
-		return res.send("linkFA_Form");
+		return res.render("2-link_FA");
 		// Continuará...
 	},
 
