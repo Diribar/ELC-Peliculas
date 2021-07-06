@@ -75,6 +75,7 @@ module.exports = {
 			datos.nombre_castellano, 
 			datos.palabras_clave,
 		);
+		return res.send(lectura)
 		// Continuará...
 	},
 

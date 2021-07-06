@@ -6,10 +6,10 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<section class="flex-col"> 
+		<section class="flex-col">
 			<h1 id="paso2">Paso 2 de 5: Hacé click sobre tu opción</h1>
 			<% if (!hayMas) { %>
-				<% if resultados.length == 1 { %>
+				<% if (resultados.length == 1) { %>
 					<p>Encontramos una sola coincidencia.</p>
 				<% } else { %>
 					<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
