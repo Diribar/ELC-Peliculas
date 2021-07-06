@@ -1,9 +1,9 @@
 // Requires
 const express = require('express');
 const router = express.Router();
-const agregar = require("./Ambas2-Agregar");
-const RUD = require("./Ambas3-RUD");
-const opciones = require("./Ambas1-Opciones");
+const agregar = require("./1-Agregar");
+const RUD = require("./2-RUD");
+const opciones = require("./3-Opciones");
 
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
