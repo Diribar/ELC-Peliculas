@@ -1,6 +1,6 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-PalabrasClave.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-LinkFA.css">
 <script src="/javascript/linkFA.js"></script>
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
@@ -8,39 +8,55 @@
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
 		<section class="flex-col">
-			<h1 id="paso2">Paso 2 de 4: Alternativa a las Palabras Clave</h1>
-			<p>Si no encontraste tu película a partir de <em>palabras clave</em>, vamos a</p>
-			<p>intentar con otro método</p>
+			<h1 id="paso2">Paso 2 de 4: Alternativa con una URL</h1>
+			<p id="fuentesDeInfo">
+				Sólo usaremos esta opción si conseguimos el permiso escrito<br>
+				de Film Affinity
+			</p>
+			<p>Si no encontraste tu película a partir de las <em>palabras clave</em>,</p>
+			<p>vamos a intentar otro método</p>
 		</section>
-		<h2>Ingresá el link de Film Affinity</h2>
-		<section class="flex-row space-between">
-			<div class="relative flex-col ">
+		<h2>
+			Ingresá la dirección de la Película en Film Affinity 
+			<i class="fas fa-question-circle" id="pasos">
+				<span class="mensajeAyuda ocultar">
+					<strong><u>Pasos</u></strong>:<br>
+					1. Buscá la película en Film Affinity<br>
+					2. Una vez encontrada, hacé <em>click</em> sobre ella<br>
+					3. Copiá la dirección (url)<br>
+					4. Pegá la url en este formulario<br>
+				</span>
+			</i>
+		</h2>
+		<p>Te podemos ayudar a buscarla, haciendo <em>click</em> en este ícono:
+			<a href="https://www.filmaffinity.com/es/search.php?stext=<%= palabras_clave %> " target="_blank">
+				<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" width="10px">
+			</a>			
+		</p>
+		<form action="" id="input" class="flex-row space-between">
+			<div class="relative flex-col">
 				<div>
-					<input type="text" name="palabras_clave" placeholder="Escribilo acá"
-						value="<%= locals.palabras_clave ? palabras_clave : null %>"
+					<input type="text" name="link" placeholder="Pegala acá la url"
+						value="<%= locals.link ? link : null %>"
 						autofocus autocomplete="off"
 					>
-					<i class="fas fa-question-circle">
-						<span class="mensajeAyuda">
-							Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
-							Escribí de manera precisa todas las palabras que sepas.
+					<i class="fas fa-question-circle" id="ejemplo">
+						<span class="mensajeAyuda ocultar">
+							Ejemplo: https://www.filmaffinity.com/es/film515226.html
 						</span>
 					</i>
 				</div>
 				<% if (locals.errores) { %>
 					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.palabras_clave.msg %> </span>
+						<span class="mensajeError"><%= errores.link.msg %> </span>
 					</i>
 				<% } %>
 				</i>
 			</div>
 			<button type="submit">Verificar</button>
-		</section>
-		<section>
+		</form>
+		<section class="flex-row">
 			<div id="resultadoDeBusqueda"></div>
-			<p id="fuentesDeInfo">
-				Sólo usaremos esta opción si conseguimos el permiso escrito de FA
-			</p>
 		</section>
 	</form>
 </div>

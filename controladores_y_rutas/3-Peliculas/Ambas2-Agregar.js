@@ -34,6 +34,9 @@ module.exports = {
 		// Obtener la API
 		let lectura = await searchTMDB.search(palabras_clave);
 		//return res.send(lectura);
+		res.cookie("palabras_clave", lectura.palabras_clave, {
+			maxAge: 60 * 60 * 1000,
+		});
 		req.session.peliculasTMDB = lectura;
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
@@ -54,8 +57,13 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	linkFA_Form: async (req, res) => {
-		return res.render("2-link_FA");
-		// Continuará...
+		let lectura = req.session.peliculasTMDB;
+		lectura != undefined
+			? (palabras_clave = lectura.palabras_clave)
+			: (palabras_clave = req.cookies.palabras_clave);
+		return res.render("2-link_FA", {
+			palabras_clave: palabras_clave,
+		});
 	},
 
 	linkFA_Guardar: async (req, res) => {
