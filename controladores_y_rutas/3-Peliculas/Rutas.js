@@ -7,21 +7,25 @@ const opciones = require("./3-Opciones");
 
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+const soloPropietario = require("../../middlewares/usuarios/soloPropietario");
 const validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
 const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
 const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
+
+// Controladores de Crear - APIs
+router.get("/agregar/api/contador/", agregar.contador);
+router.get("/agregar/api/procesarcopiado/", agregar.procesarcopiado);
 
 // Controladores de Crear - Responsabilidad y Palabras Clave
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
 router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agregar.palabrasClaveGuardar);
-router.get("/agregar/api/contador/", agregar.contador);
 
 // Controladores de Crear - Desambiguar
 router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
-router.get("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Form);
-router.post("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Guardar);
+router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
+router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
 
 // 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, agregar.datosDuros_Form);
