@@ -40,8 +40,11 @@ module.exports = {
 		req.session.peliculasTMDB = lectura;
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
-	desambiguarTMDB_Form: (req, res) => {
+	desambiguarTMDB_Form: async (req, res) => {
 		let lectura = req.session.peliculasTMDB;
+		lectura == undefined
+			? (lectura = await searchTMDB.search(req.cookies.palabras_clave))
+			: "";
 		// return res.send(lectura);
 		if (lectura.resultados.length == 0) {
 			return res.redirect("/peliculas/agregar/linkFA_Form");
@@ -54,6 +57,12 @@ module.exports = {
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		req.session.peliculaTMDB = req.body;
+		res.cookie("fuente", "TMDB", { maxAge: 60 * 60 * 1000 });
+		res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
+		res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
+		res.cookie("nombre_original", req.body.nombre_original, {
+			maxAge: 60 * 60 * 1000,
+		});
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	linkFA_Form: async (req, res) => {
@@ -66,8 +75,23 @@ module.exports = {
 		});
 	},
 
+	buscarPorID: async (req, res) => {
+		let {ID} = req.query;
+		let resultado = await searchFA.detail(ID);
+		// Enviar la API
+		return res.json(resultado);
+	},
+
 	linkFA_Guardar: async (req, res) => {
 		// Continuará...
+		req.session.peliculaFA = req.body;
+		res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
+		res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
+		res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
+		res.cookie("nombre_original", req.body.nombre_original, {
+			maxAge: 60 * 60 * 1000,
+		});
+		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
 	agregarDurosForm: (req, res) => {

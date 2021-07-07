@@ -14,8 +14,7 @@ window.addEventListener("load", () => {
 		if (button.innerHTML == "Verificar" && ID) {
 			if (despues != url.value) {
 				despues = url.value;
-				// buscar(ID);
-				// Función buscar...
+				buscarPorID(ID);
 			}
 			button.innerHTML = "Avanzar";
 		} else {
@@ -55,45 +54,17 @@ window.addEventListener("load", () => {
 
 });
 
-const contador = async (url) => {
+const buscarPorID = async (ID) => {
+	// Procesando la información
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
-	url = url.trim()
-	if (url.length > 1) {
-		// Procesando la información
-		resultadoDeBusqueda.innerHTML = "Procesando la información...";
-		resultadoDeBusqueda.classList.remove("resultadoExitoso");
-		resultadoDeBusqueda.classList.add("resultadoInvalido");
-		// Obtener el url
-		let url = "/peliculas/agregar/api/contador/?url=" + url;
-		// Averiguar cantidad de coincidencias
-		let lectura = await fetch(url).then((n) => n.json());
-		// Determinar oracion y formato
-		let oracion = "";
-		let formatoVigente = "";
-		// Resultado exitoso
-		if (lectura.cantResultados > 0 && !lectura.hayMas) {
-			lectura.cantResultados > 1 ? (s = "s") : (s = "");
-			oracion =
-				"Encontramos " + lectura.cantResultados + " coincidencia" + s;
-			formatoVigente = "resultadoExitoso";
-			formatoAnterior = "resultadoInvalido";
-		} else {
-			// Resultados inválidos
-			formatoVigente = "resultadoInvalido";
-			formatoAnterior = "resultadoExitoso";
-			if (lectura.hayMas) {
-				oracion =
-					"Hay demasiadas coincidencias, intentá ser más específico";
-			} else {
-				if (lectura.cantResultados == 0) {
-					oracion = "No encontramos coincidencias con estas palabras";
-				}
-			}
-		}
-		resultadoDeBusqueda.innerHTML = oracion;
-		resultadoDeBusqueda.classList.add(formatoVigente);
-		resultadoDeBusqueda.classList.remove(formatoAnterior);
-	}
+	resultadoDeBusqueda.innerHTML = "Procesando la información...";
+	// Obtener los datos de la película
+	let url = "/peliculas/agregar/api/buscarPorID/?ID=" + ID;
+	let lectura = await fetch(url).then((n) => n.json());
+	// Información procesada
+	resultadoDeBusqueda.innerHTML = "";
+	resultadoDeBusqueda.classList.replace("mostrar", "ocultar");
+	return lectura
 };
 
 const borrarComentario = () => {

@@ -1,8 +1,8 @@
-const search_FA_Heroku = require("../API/1-search-FA-Heroku");
+const details_Heroku = require("../API/2-details-FA (Heroku)");
 //const search_FA_Rapid = require("../API/1-search-FA-Rapid");
 
 module.exports = {
-	search: async (nombre_original, nombre_castellano, palabras_clave) => {
+	detail: async (nombre_original, nombre_castellano, palabras_clave) => {
 		let datos = [nombre_original, nombre_castellano, palabras_clave];
 		let lectura = []
 		for (let i = 0; i < datos.length; i++) {
