@@ -8,17 +8,18 @@ window.addEventListener("load", () => {
 	let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
 
 	// Verificar o Avanzar
-	form.addEventListener("submit", (e) => {
+	form.addEventListener("submit", async (e) => {
 		e.preventDefault();
-		let ID = ID(url.value);
+		let ID = obtenerID(url.value);
 		if (button.innerHTML == "Verificar" && ID) {
 			if (despues != url.value) {
 				despues = url.value;
-				buscarPorID(ID);
+				lectura = await buscarPorID(ID);
+				console.log(lectura)
 			}
 			button.innerHTML = "Avanzar";
 		} else {
-			if (button.innerHTML == "Avanzar") {
+			if (button.innerHTML == "Avanzar" && ID) {
 				e.currentTarget.submit();
 			}
 		}
@@ -54,6 +55,26 @@ window.addEventListener("load", () => {
 
 });
 
+const obtenerID = (url) => {
+	//https://www.filmaffinity.com/ar/film515226.html
+	if (url.length < 29) return false, 0;
+	// Quitar el prefijo "www.filmaffinity.com/xx/film"
+	let comienzo = url.indexOf("www.filmaffinity.com/");
+	if (comienzo < 0) return false, 0;
+	url = url.slice(comienzo + 21);
+	comienzo = url.indexOf("/film");
+	if (comienzo < 0) return false, 0;
+	url = url.slice(comienzo + 5);
+	// Quitar el sufijo ".html"
+	comienzo = url.indexOf(".html");
+	comienzo > 0 ? (url = url.slice(0, comienzo)) : "";
+	// Terminación
+	//console.log(!isNaN(url));
+	if (isNaN(url)) return false;
+	let ID = parseInt(url);
+	return ID;
+};
+
 const buscarPorID = async (ID) => {
 	// Procesando la información
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
@@ -72,24 +93,3 @@ const borrarComentario = () => {
 	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoInvalido");
 	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoExitoso");
 };
-
-const ID = (url) => {
-	//https://www.filmaffinity.com/ar/film515226.html
-	if (url.length < 29) return false, 0;
-	// Quitar el prefijo "www.filmaffinity.com/xx/film"
-	let comienzo = url.indexOf("www.filmaffinity.com/");
-	if (comienzo < 0) return false, 0;
-	url = url.slice(comienzo + 21);
-	comienzo = url.indexOf("/film");
-	if (comienzo < 0) return false, 0;
-	url = url.slice(comienzo + 5);
-	// Quitar el sufijo ".html"
-	comienzo = url.indexOf(".html");
-	comienzo > 0 ? (url = url.slice(0, comienzo)) : "";
-	// Terminación
-	//console.log(!isNaN(url));
-	if (isNaN(url)) return false;
-	let ID = parseInt(url);
-	console.log(ID);
-	return ID;
-}
