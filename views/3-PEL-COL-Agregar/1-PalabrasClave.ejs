@@ -1,13 +1,13 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-PalabrasClave.css">
-<script src="/javascript/contadorPalabrasClave.js"></script>
+<script src="/javascript/palabrasClave.js"></script>
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
-		<section class="flex-row space-between align-center"> 
+		<section class="flex-col"> 
 			<h1>Paso 1 de 4: Ingresá Palabras Clave</h1>
 		</section>
 		<h2>Ingresá palabras del Título de la Película</h2>
@@ -19,7 +19,7 @@
 						autofocus autocomplete="off"
 					>
 					<i class="fas fa-question-circle">
-						<span class="mensajeAyuda">
+						<span class="mensajeAyuda ocultar">
 							Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
 							Escribí de manera precisa todas las palabras que sepas.
 						</span>

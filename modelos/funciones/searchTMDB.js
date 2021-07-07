@@ -214,9 +214,9 @@ let unificarResultados = (lectura, rubro, datos, page) => {
 
 let renombrarRubros = (datos) => {
 	datos.resultados.map(n => {
-		n.rubro == "movie" ? n.rubro = "Películas" : "";
-		n.rubro == "tv" ? (n.rubro = "Colecciones") : "";
-		n.rubro == "collections" ? (n.rubro = "Colecciones") : "";
+		n.rubro == "movie" ? n.rubro = "Película" : "";
+		n.rubro == "tv" ? (n.rubro = "Colección") : "";
+		n.rubro == "collections" ? (n.rubro = "Colección") : "";
 	})
 	return datos;
 };
