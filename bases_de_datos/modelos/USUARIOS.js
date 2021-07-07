@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		id: { type: dt.INTEGER, primaryKey: true },
 		email: { type: dt.STRING(100) },
 		contrasena: { type: dt.STRING(50) },
-		status_usuario_id: { type: dt.INTEGER },
+		status_registro_usuario_id: { type: dt.INTEGER },
 		rol_usuario_id: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(50) },
 		apellido: { type: dt.STRING(50) },
@@ -31,7 +31,7 @@ module.exports = (sequelize, dt) => {
         entidad.belongsTo(n.sexos, {as: "sexo", foreignKey: "sexo_id"});
         entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
         entidad.belongsTo(n.roles_usuarios, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
-        entidad.belongsTo(n.status_usuarios, {as: "status_usuario", foreignKey: "status_usuario_id"});
+        entidad.belongsTo(n.status_registro_usuarios, {as: "status_registro_usuario", foreignKey: "status_registro_usuario_id"});
         entidad.belongsTo(n.estados_eclesiales, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
 
 		entidad.hasMany(n.us_pel_calificaciones, {as: "us_pel_calificaciones",foreignKey: "usuario_id"});

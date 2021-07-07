@@ -36,7 +36,7 @@ module.exports = {
 			});
 		};
 		// Si corresponde, actualizar el Status del Usuario
-		if (usuario.status_usuario_id == 1) {
+		if (usuario.status_registro_usuario_id == 1) {
 			await metodosUsuario.upgradeStatusUsuario(usuario.id, 2)
 			usuario = await metodosUsuario.obtenerPorMail(req.body.email)
 		}

@@ -12,11 +12,11 @@ module.exports = {
 	altaRedireccionar: (req,res) => {
 		let usuario = req.session.usuario;
 		//return res.send(usuario)
-		let status_usuario = usuario.status_usuario_id.toString()
+		let status_registro_usuario = usuario.status_registro_usuario_id.toString()
 		// Redireccionar
-		if (status_usuario == 1) {return res.redirect("/login")};
-		if (status_usuario == 2) {return res.redirect("/usuarios/registro-datos-perennes")};
-		if (status_usuario == 3) {return res.redirect("/usuarios/registro-datos-editables")};
+		if (status_registro_usuario == 1) {return res.redirect("/login")};
+		if (status_registro_usuario == 2) {return res.redirect("/usuarios/registro-datos-perennes")};
+		if (status_registro_usuario == 3) {return res.redirect("/usuarios/registro-datos-editables")};
 		return res.redirect(req.session.urlReferencia)
 	},
 
