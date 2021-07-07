@@ -7,32 +7,29 @@ const opciones = require("./3-Opciones");
 
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const validar1 = require("../../middlewares/validarFilmForms/1-IngresarPalabrasClave");
-const validar2 = require("../../middlewares/validarFilmForms/2-DatosDuros");
-const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
+const validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
+const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
+const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
 
 // Controladores de Crear - Responsabilidad y Palabras Clave
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
-router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
+router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agregar.palabrasClaveGuardar);
+router.get("/agregar/api/contador/", agregar.contador);
 
 // Controladores de Crear - Desambiguar
 router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
-router.get("/agregar/link_fa", soloUsuarios, agregar.linkFA_Form);
-router.post("/agregar/link_fa", soloUsuarios, agregar.linkFA_Guardar);
-
-// APIs
-router.get("/agregar/api/contador/", agregar.contador);
-router.get("/agregar/api/buscarPorID/", agregar.buscarPorID);
+router.get("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Form);
+router.post("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Guardar);
 
 // 3. Datos Duros
-router.get("/agregar/datos_duros", soloUsuarios, agregar.agregarDurosForm);
-router.post("/agregar/datos_duros", soloUsuarios, validar2, agregar.agregarDurosGuardar);
+router.get("/agregar/datos_duros", soloUsuarios, agregar.datosDuros_Form);
+router.post("/agregar/datos_duros", soloUsuarios, validarDatosDuros, agregar.datosDuros_Guardar);
 
 // 4. Datos Personalizados
-router.get("/agregar3", soloUsuarios, agregar.agregar3Form);
-router.post('/agregar3', soloUsuarios, validar3, agregar.agregar3Guardar);
+router.get("/agregar/datos_personalizados", soloUsuarios, agregar.DatosPersForm);
+router.post("/agregar/datos_personalizados", soloUsuarios, validarDatosPers, agregar.DatosPersGuardar);
 
 // Controladores RUD (método GET)
 router.get('/detalle/:id/:id', RUD.detalle);

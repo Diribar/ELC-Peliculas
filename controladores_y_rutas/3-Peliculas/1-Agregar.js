@@ -49,7 +49,7 @@ module.exports = {
 		if (lectura.resultados.length == 0) {
 			return res.redirect("/peliculas/agregar/linkFA_Form");
 		}
-		return res.render("2-Desambiguar", {
+		return res.render("2-Desamb_TMDB", {
 			hayMas: lectura.hayMas,
 			resultados: lectura.resultados,
 			palabras_clave: lectura.palabras_clave,
@@ -65,24 +65,18 @@ module.exports = {
 		});
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
-	linkFA_Form: async (req, res) => {
-		let lectura = req.session.peliculasTMDB;
-		lectura != undefined
-			? (palabras_clave = lectura.palabras_clave)
-			: (palabras_clave = req.cookies.palabras_clave);
-		return res.render("2-link_FA", {
-			palabras_clave: palabras_clave,
-		});
+	copiarFA_Form: async (req, res) => {
+		return res.render("2-Copiar_FA");
 	},
 
 	buscarPorID: async (req, res) => {
-		let {ID} = req.query;
+		let { ID } = req.query;
 		let resultado = await searchFA.detail(ID);
 		// Enviar la API
 		return res.json(resultado);
 	},
 
-	linkFA_Guardar: async (req, res) => {
+	copiarFA_Guardar: async (req, res) => {
 		// Continuará...
 		req.session.peliculaFA = req.body;
 		res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
@@ -94,14 +88,14 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
-	agregarDurosForm: (req, res) => {
+	datosDuros_Form: (req, res) => {
 		// return res.send(req.session.agregarPelicula.imagen)
 		return res.render("Agregar2Form", {
 			data_entry: req.session.agregarPelicula,
 		});
 	},
 
-	agregarDurosGuardar: (req, res) => {
+	datosDuros_Guardar: (req, res) => {
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
@@ -113,11 +107,11 @@ module.exports = {
 		return res.send("sin errores");
 	},
 
-	agregar3Form: (req, res) => {
+	DatosPersForm: (req, res) => {
 		return res.render("Agregar3Form", {});
 	},
 
-	agregar3Guardar: (req, res) => {
+	DatosPersGuardar: (req, res) => {
 		return res.send("Estoy en guardar3");
 	},
 };
