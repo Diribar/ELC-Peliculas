@@ -7,8 +7,13 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
-		<section class="flex-col"> 
+		<section class="flex-row space-between"> 
 			<h1>Paso 1 de 4: Ingresá Palabras Clave</h1>
+			<% if (rol_usuario_id == 4) { %>
+				<a href="/peliculas/agregar/copiarfa">
+					<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" height="30px" title="FA">
+				</a>			
+			<% } %> 
 		</section>
 		<h2>Ingresá palabras del Título de la Película</h2>
 		<section class="flex-row space-between">

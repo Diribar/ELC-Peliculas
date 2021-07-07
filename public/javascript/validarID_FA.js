@@ -55,26 +55,6 @@ window.addEventListener("load", () => {
 
 });
 
-const obtenerID = (url) => {
-	//https://www.filmaffinity.com/ar/film515226.html
-	if (url.length < 29) return false, 0;
-	// Quitar el prefijo "www.filmaffinity.com/xx/film"
-	let comienzo = url.indexOf("www.filmaffinity.com/");
-	if (comienzo < 0) return false, 0;
-	url = url.slice(comienzo + 21);
-	comienzo = url.indexOf("/film");
-	if (comienzo < 0) return false, 0;
-	url = url.slice(comienzo + 5);
-	// Quitar el sufijo ".html"
-	comienzo = url.indexOf(".html");
-	comienzo > 0 ? (url = url.slice(0, comienzo)) : "";
-	// Terminación
-	//console.log(!isNaN(url));
-	if (isNaN(url)) return false;
-	let ID = parseInt(url);
-	return ID;
-};
-
 const buscarPorID = async (ID) => {
 	// Procesando la información
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");

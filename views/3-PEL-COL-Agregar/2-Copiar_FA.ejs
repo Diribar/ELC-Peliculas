@@ -1,18 +1,14 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-LinkFA.css">
-<script src="/javascript/validarID_FA.js"></script>
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Copiar_FA.css">
+<script src="/javascript/copiar_FA.js"></script>
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
 		<section class="flex-col">
-			<h1 id="paso2">Paso 2 de 4: Alternativa con una URL</h1>
-			<p id="fuentesDeInfo">
-				Sólo usaremos esta opción si conseguimos el permiso escrito<br>
-				de Film Affinity
-			</p>
+			<h1 id="paso2">Alternativa al ingreso de Palabras Clave</h1>
 			<p>Si no encontraste tu película a partir de las <em>palabras clave</em>,</p>
 			<p>vamos a intentar otro método</p>
 		</section>
@@ -28,36 +24,20 @@
 				</span>
 			</i>
 		</h2>
-		<p>Te podemos ayudar a buscarla, haciendo <em>click</em> en este ícono:
-			<a href="https://www.filmaffinity.com/es/search.php?stext=<%= palabras_clave %> " target="_blank">
-				<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" width="10px">
-			</a>			
-		</p>
-		<form action="" id="input" class="flex-row space-between">
+		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-row space-between">
 			<div class="relative flex-col">
-				<div>
-					<input type="text" name="link" placeholder="Pegá acá la url"
-						value="<%= locals.link ? link : null %>"
-						autofocus autocomplete="off"
-					>
-					<i class="fas fa-question-circle" id="ejemplo">
-						<span class="mensajeAyuda ocultar">
-							Ejemplo: https://www.filmaffinity.com/es/film515226.html
-						</span>
-					</i>
-				</div>
+				<textarea name="contenido" placeholder="Pegá acá el contenido"
+					value="<%= locals.link ? link : null %>" autofocus
+				></textarea>
 				<% if (locals.errores) { %>
 					<i class="fas fa-times-circle">
 						<span class="mensajeError"><%= errores.link.msg %> </span>
 					</i>
 				<% } %>
-				</i>
 			</div>
 			<button type="submit">Verificar</button>
 		</form>
-		<section class="flex-row">
-			<div id="resultadoDeBusqueda"></div>
-		</section>
-	</form>
+		<div id="resultadoDeBusqueda"></div>
+	</section>
 </div>
 <%- include('0-DespuesPA') %>

@@ -1,7 +1,7 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
 const searchTMDB = require("../../modelos/funciones/searchTMDB");
-const searchFA = require("../../modelos/funciones/searchFA");
+const procesarFA = require("../../modelos/funciones/procesarFA");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
@@ -11,7 +11,8 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 	palabrasClaveForm: (req, res) => {
-		return res.render("1-PalabrasClave");
+		let rol_usuario_id = req.session.usuario.rol_usuario_id;
+		return res.render("1-PalabrasClave", {rol_usuario_id});
 	},
 	contador: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
@@ -69,23 +70,30 @@ module.exports = {
 		return res.render("2-Copiar_FA");
 	},
 
-	buscarPorID: async (req, res) => {
-		let { ID } = req.query;
-		let resultado = await searchFA.detail(ID);
+	procesarcopiado: (req, res) => {
+		let { contenido } = req.query;
+		console.log("línea 75");
+		console.log(contenido);
+		//let resultado = funciones.procesarFA(input);
 		// Enviar la API
-		return res.json(resultado);
+		//return res.json(resultado);
+		return
 	},
 
 	copiarFA_Guardar: async (req, res) => {
+		let { contenido } = req.body;
+		console.log("línea 85");
+		console.log(contenido);
 		// Continuará...
-		req.session.peliculaFA = req.body;
-		res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
-		res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
-		res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
-		res.cookie("nombre_original", req.body.nombre_original, {
-			maxAge: 60 * 60 * 1000,
-		});
-		return res.redirect("/peliculas/agregar/datos_duros");
+		// req.session.peliculaFA = req.body;
+		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
+		// res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
+		// res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
+		// res.cookie("nombre_original", req.body.nombre_original, {
+		// 	maxAge: 60 * 60 * 1000,
+		// });
+		//return res.redirect("/peliculas/agregar/datos_duros");
+		return res.redirect("/peliculas/agregar/copiarfa");
 	},
 
 	datosDuros_Form: (req, res) => {
