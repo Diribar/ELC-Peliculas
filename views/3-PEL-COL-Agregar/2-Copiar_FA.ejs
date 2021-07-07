@@ -24,7 +24,7 @@
 				</span>
 			</i>
 		</h2>
-		<form action="/peliculas/agregar/copiarfa" class="flex-row space-between">
+		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-row space-between">
 			<div class="relative flex-col">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
 					value="<%= locals.link ? link : null %>" autofocus

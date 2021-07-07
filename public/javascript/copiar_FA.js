@@ -49,16 +49,15 @@ window.addEventListener("load", () => {
 
 });
 
-const procesarContenido = async (input) => {
+const procesarContenido = async (contenido) => {
 	// Procesando la información
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
 	resultadoDeBusqueda.innerHTML = "Procesando la información...";
-	// Obtener los datos de la película
-	console.log("línea 60");
-	console.log(input)
-	console.log("")
-	let url = "/peliculas/agregar/api/procesarcopiado/?input=" + input;
-	//await fetch(url);
+	// Procesar los datos de la película
+	let encodedValue = encodeURIComponent(contenido);
+	let url =
+		"/peliculas/agregar/api/procesarcopiado/?contenido=" + encodedValue;
+	fetch(url);
 	//let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	resultadoDeBusqueda.innerHTML = "";

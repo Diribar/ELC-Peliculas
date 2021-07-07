@@ -71,17 +71,19 @@ module.exports = {
 	},
 
 	procesarcopiado: (req, res) => {
-		let { input } = req.query;
-		console.log(input)
+		let { contenido } = req.query;
+		console.log("línea 75");
+		console.log(contenido);
 		//let resultado = funciones.procesarFA(input);
 		// Enviar la API
 		//return res.json(resultado);
+		return
 	},
 
 	copiarFA_Guardar: async (req, res) => {
-		let { input } = req.body;
-		console.log(input);
-		console.log("input");
+		let { contenido } = req.body;
+		console.log("línea 85");
+		console.log(contenido);
 		// Continuará...
 		// req.session.peliculaFA = req.body;
 		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
@@ -91,6 +93,7 @@ module.exports = {
 		// 	maxAge: 60 * 60 * 1000,
 		// });
 		//return res.redirect("/peliculas/agregar/datos_duros");
+		return res.redirect("/peliculas/agregar/copiarfa");
 	},
 
 	datosDuros_Form: (req, res) => {
