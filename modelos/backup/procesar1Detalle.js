@@ -10,8 +10,8 @@ module.exports = async (res, ID) => {
 	let detalle1 = await API_details(ID);
 	// Procesar los datos
 	let detalle2 = {}
-	detalle2.titulo_original = detalle1.original_title
-	detalle2.titulo_castellano = detalle1.title
+	detalle2.nombre_original = detalle1.original_title
+	detalle2.nombre_castellano = detalle1.title
 	detalle2.ano_estreno = detalle1.release_date.slice(0,4)
 	detalle2.duracion = detalle1.runtime
 	detalle2.TMDB_ID = ID

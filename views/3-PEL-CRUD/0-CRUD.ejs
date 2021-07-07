@@ -3,13 +3,13 @@
   <%- include('1-Header') %>
   <main class="flex-row">
     <section id="imagen-derecha">
-      <img alt="<%= producto.titulo_castellano %>" src="/imagenes/3-Peliculas/<%= producto.imagen %>" title="<%= producto.titulo_castellano %>">
+      <img alt="<%= producto.nombre_castellano %>" src="/imagenes/3-Peliculas/<%= producto.imagen %>" title="<%= producto.nombre_castellano %>">
     </section>
     <section id="main-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
       <!--**************************** CUERPO ************************-->
       <section class="cuerpo margen-izquierdo flex-col">
-        <button class="titulo"><%= producto.titulo_castellano %></button>
+        <button class="titulo"><%= producto.nombre_castellano %></button>
         <button class="subtitulo activo"><%= detalle.nombre %> </button>
         <%- detalle.nombre.includes("Información") ? include('2-Informacion') : "" %>
         <%- detalle.nombre.includes("Trailer") ?     include('3-Trailer') : "" %>
