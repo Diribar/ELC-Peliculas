@@ -221,7 +221,6 @@ let renombrarRubros = (datos) => {
 	return datos;
 };
 
-
 let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {

@@ -8,6 +8,6 @@ h1#paso2 {margin-bottom: 5px;}
 
 #imagenChica {max-height: 200px; border-radius: 15px; }
 #infoPeli {color: inherit; margin: 10px 15px;}
-#infoPeli p, #infoPeli p strong {color: inherit;}
+#infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
 
 .interlineadoChico {margin-top: 5px;}

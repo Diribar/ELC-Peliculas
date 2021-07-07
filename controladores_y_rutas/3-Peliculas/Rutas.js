@@ -14,7 +14,6 @@ const validar3 = require("../../middlewares/validarFilmForms/3-DatosPersonalizad
 // Controladores de Crear - Responsabilidad y Palabras Clave
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
 router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
-router.get("/agregar/api/contador/", agregar.contador);
 router.post('/agregar/palabras_clave', soloUsuarios, validar1, agregar.palabrasClaveGuardar);
 
 // Controladores de Crear - Desambiguar
@@ -22,6 +21,10 @@ router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 router.get("/agregar/link_fa", soloUsuarios, agregar.linkFA_Form);
 router.post("/agregar/link_fa", soloUsuarios, agregar.linkFA_Guardar);
+
+// APIs
+router.get("/agregar/api/contador/", agregar.contador);
+router.get("/agregar/api/buscarPorID/", agregar.buscarPorID);
 
 // 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, agregar.agregarDurosForm);
