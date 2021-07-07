@@ -8,7 +8,7 @@ module.exports = {
 			include: [
 				"rol_usuario",
 				"sexo",
-				"status_usuario",
+				"status_registro_usuario",
 				"pais",
 				"estado_eclesial",
 			],
@@ -20,14 +20,14 @@ module.exports = {
 			include: [
 				"rol_usuario",
 				"sexo",
-				"status_usuario",
+				"status_registro_usuario",
 				"pais",
 				"estado_eclesial",
 			],
 		});
 	},
 	upgradeStatusUsuario: (id, st) => {
-		return entidad.update({ status_usuario_id: st }, { where: { id: id } });
+		return entidad.update({ status_registro_usuario_id: st }, { where: { id: id } });
 	},
 	altaMail: (emailDeUsuario) => {
 		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""

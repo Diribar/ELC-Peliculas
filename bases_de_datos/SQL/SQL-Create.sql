@@ -30,7 +30,7 @@ CREATE TABLE sexos (
 	letra_final VARCHAR(1) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE status_usuario (
+CREATE TABLE status_registro_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
@@ -39,7 +39,7 @@ CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
-	status_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
+	status_registro_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
 	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
@@ -58,7 +58,7 @@ CREATE TABLE USUARIOS (
 	borrado_motivo VARCHAR(500) NULL,
 	borrado_por INT UNSIGNED NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (status_usuario_id) REFERENCES status_usuario(id),
+	FOREIGN KEY (status_registro_usuario_id) REFERENCES status_registro_usuario(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
@@ -71,7 +71,7 @@ CREATE TABLE penalizaciones_motivos (
 	comentario VARCHAR(500) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE penalizaciones_usuario (
+CREATE TABLE penalizaciones_usuarios (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	fecha DATE NOT NULL,
 	usuario_id INT UNSIGNED NOT NULL,
