@@ -14,20 +14,20 @@
 					<section class="label-input flex-row">  <!--Título original-->
 						<label>Título original</label>
 						<div class="formulario-grupo">
-							<input type="text" name="titulo_original" placeholder="Título original"
-								value="<%= locals.data_entry ? data_entry.titulo_original : null %>">
-							<% if (locals.errores && errores.titulo_original) { %><i class="fas fa-times-circle">
-								<span class="mensajeError"><%= errores.titulo_original.msg %> </span>
+							<input type="text" name="nombre_original" placeholder="Título original"
+								value="<%= locals.data_entry ? data_entry.nombre_original : null %>">
+							<% if (locals.errores && errores.nombre_original) { %><i class="fas fa-times-circle">
+								<span class="mensajeError"><%= errores.nombre_original.msg %> </span>
 							</i><% } %>
 						</div>
 					</section>
 					<section class="label-input flex-row">  <!--Título en castellano -->
 						<label>Título en castellano</label>
 						<div class="formulario-grupo">
-							<input type="text" name="titulo_castellano" placeholder="Título en castellano"
-								value="<%= locals.data_entry ? data_entry.titulo_castellano : null %>">
-								<% if (locals.errores && errores.titulo_castellano) { %><i class="fas fa-times-circle">
-									<span class="mensajeError"><%= errores.titulo_castellano.msg %> </span>
+							<input type="text" name="nombre_castellano" placeholder="Título en castellano"
+								value="<%= locals.data_entry ? data_entry.nombre_castellano : null %>">
+								<% if (locals.errores && errores.nombre_castellano) { %><i class="fas fa-times-circle">
+									<span class="mensajeError"><%= errores.nombre_castellano.msg %> </span>
 								</i><% } %>
 						</div>
 					</section>

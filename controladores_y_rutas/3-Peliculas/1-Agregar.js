@@ -1,7 +1,7 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
 const searchTMDB = require("../../modelos/funciones/searchTMDB");
-const procesarFA = require("../../modelos/funciones/procesarFA");
+const funciones = require("../../modelos/funciones/funciones");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
@@ -72,18 +72,20 @@ module.exports = {
 
 	procesarcopiado: (req, res) => {
 		let { contenido } = req.query;
-		console.log("línea 75");
-		console.log(contenido);
-		//let resultado = funciones.procesarFA(input);
+		let matriz = contenido.split("\n");
+		let resultado = funciones.textarea(matriz);
+		//console.log("línea 77");
+		//console.log(resultado);
 		// Enviar la API
-		//return res.json(resultado);
-		return
+		return res.json(resultado);
 	},
 
 	copiarFA_Guardar: async (req, res) => {
 		let { contenido } = req.body;
-		console.log("línea 85");
-		console.log(contenido);
+		let matriz = contenido.split("\r\n");
+		let resultado = funciones.textarea(matriz);
+		console.log("línea 88");
+		console.log(resultado);
 		// Continuará...
 		// req.session.peliculaFA = req.body;
 		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });

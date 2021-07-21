@@ -17,11 +17,11 @@ module.exports = {
 		});
 	},
 
-	TituloOriginalYaExistente: (titulo_original, peliculaID) => {
+	TituloOriginalYaExistente: (nombre_original, peliculaID) => {
 		return entidad.count({
 			where: {
 				id: { [Op.ne]: peliculaID },
-				titulo_original: titulo_original,
+				nombre_original: nombre_original,
 			},
 		});
 	},

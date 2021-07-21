@@ -14,7 +14,8 @@ window.addEventListener("load", () => {
 		if (button.innerHTML == "Verificar" && valor) {
 			if (despues != contenido.value) {
 				despues = contenido.value;
-				await procesarContenido(contenido.value);
+				lectura = await procesarContenido(contenido.value);
+				console.log(lectura)
 			}
 			button.innerHTML = "Avanzar";
 		} else {
@@ -57,12 +58,11 @@ const procesarContenido = async (contenido) => {
 	let encodedValue = encodeURIComponent(contenido);
 	let url =
 		"/peliculas/agregar/api/procesarcopiado/?contenido=" + encodedValue;
-	fetch(url);
-	//let lectura = await fetch(url).then((n) => n.json());
+	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	resultadoDeBusqueda.innerHTML = "";
 	resultadoDeBusqueda.classList.replace("mostrar", "ocultar");
-	return
+	return lectura;
 }
 
 const borrarComentario = () => {
