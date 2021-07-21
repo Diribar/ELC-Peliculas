@@ -17,37 +17,55 @@
 			<% } else {%>
 				<p>Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.</p>
 			<% } %>
+			<p><u>Palabra/s clave</u>: <strong><%= palabras_clave %></strong></p>
 		</section>
 		<section class="flex-row space-between"  id="resultadoGeneral">
-			<% for (let i=0; i<Math.min(resultados.length); i++) { %>
+			<% for (let i=0; i < resultados.length + 2; i++) { %>
 				<form action="/peliculas/agregar/desambiguar" method="POST">
-					<input type="text" name="rubro" value="<%= resultados[i].rubro %>" class="ocultar">
-					<input type="text" name="tmdb_id" value="<%= resultados[i].tmdb_id %>" class="ocultar">
-					<input type="text" name="nombre_original" value="<%= resultados[i].nombre_original %>" class="ocultar">
-					<input type="text" name="nombre_castellano" value="<%= resultados[i].nombre_castellano %>" class="ocultar">
 					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
-					<button type="submit" class="flex-row" id="resultadoIndividual">
-						<img id="imagenChica" src="<%= "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>" alt="<%= resultados[i].nombre_original %>" title="<%= resultados[i].nombre_original %>">
+					<% if (i < resultados.length) { %>
+						<% fuente = "TMDB" %>
+						<% tmdb_id = resultados[i].tmdb_id %>
+						<% lanzamiento = resultados[i].lanzamiento + " - " + resultados[i].rubro %>
+						<% resultado = "resultadoIndividual" %>
+						<% rubro = resultados[i].rubro %>
+						<% imagen_src = "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>
+						<% nombre_original = resultados[i].nombre_original %>
+					<% } else { %>
+						<% fuente = "-" %>
+						<% tmdb_id = "-" %>
+						<% lanzamiento = "Ingresaré los datos manualmente" %>
+						<% resultado = "resultadoInvalido" %>
+						<% if (i == resultados.length) { %>
+							<% rubro = "Película" %>
+							<% imagen_src = "/imagenes/0-Base/Sagrada Familia.jpg" %>
+							<% nombre_original = "Busco otra película" %>
+						<% } else { %>
+							<% rubro = "Colección" %>
+							<% imagen_src = "/imagenes/0-Base/Sagrada Familia.jpg" %>
+							<% nombre_original = "Busco otra colección" %>
+						<% } %>
+					<% } %>
+					<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
+					<input type="text" name="fuente" class="ocultar" value="<%= fuente %>">
+					<input type="text" name="rubro" class="ocultar" value="<%= rubro %>">
+					<input type="text" name="tmdb_id" value="<%= tmdb_id %>" class="ocultar">
+					<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
+					<!-- Info a mostrar -->
+					<button type="submit" class="flex-row" id= "<%= resultado %>">
+						<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">
 						<div id="infoPeli" class="flex-col">
-							<p><strong><%= resultados[i].nombre_original %></strong></p>
+							<p><strong><%= nombre_original %></strong></p>
 							<p class="interlineadoChico"></p>
-							<p><%= resultados[i].lanzamiento %> - <%= resultados[i].rubro %></p>
-							<p class="interlineadoChico"></p>
-							<p><em><%= resultados[i].nombre_castellano %></em></p>
+							<p><%= lanzamiento %></p>
+							<% if (i < resultados.length) { %>
+								<p class="interlineadoChico"></p>
+								<p><em><%= resultados[i].nombre_castellano %></em></p>
+							<% } %> 
 						</div>
 					</button>
 				</form>
 			<% } %>
-			<a href="/peliculas/agregar/datos_duros">
-				<button type="button" class="flex-row" id="resultadoInvalido">
-					<img id="imagenChica" src="/imagenes/0-Base/Sagrada Familia.jpg" title="Busco otra película o colección">
-					<div id="infoPeli" class="flex-col">
-						<p><strong>Busco otra película o colección.</strong></p>
-						<p class="interlineadoChico"></p>
-						<p>Ingresaré los datos manualmente</p>
-					</div>
-				</button>
-			</a>
 		</section>
 	</section>
 </div>
