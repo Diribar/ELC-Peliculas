@@ -1,7 +1,7 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
-const searchTMDB = require("../../modelos/funciones/searchTMDB");
-const funciones = require("../../modelos/funciones/funciones");
+const searchTMDB = require("../../modelos/API/search_TMDB_funcion");
+const funciones = require("../../modelos/funciones");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 

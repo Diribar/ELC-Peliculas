@@ -1,5 +1,5 @@
-const search_TMDB = require("../API/1-search-TMDB");
-const details_TMDB = require("../API/2-details-TMDB");
+const search_TMDB = require("./search_TMDB_fetch");
+const details_TMDB = require("./details_TMDB_fetch");
 
 module.exports = {
 	search: async (palabras_clave) => {
