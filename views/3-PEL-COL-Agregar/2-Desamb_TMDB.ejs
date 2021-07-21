@@ -26,9 +26,10 @@
 					<% if (i < resultados.length) { %>
 						<% fuente = "TMDB" %>
 						<% tmdb_id = resultados[i].tmdb_id %>
-						<% lanzamiento = resultados[i].lanzamiento + " - " + resultados[i].rubro %>
+						<% lanzamiento = resultados[i].lanzamiento + " - " + resultados[i].rubroVista %>
 						<% resultado = "resultadoIndividual" %>
-						<% rubro = resultados[i].rubro %>
+						<% rubroAPI = resultados[i].rubroAPI %>
+						<% rubroVista = resultados[i].rubroVista %>
 						<% imagen_src = "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>
 						<% nombre_original = resultados[i].nombre_original %>
 					<% } else { %>
@@ -36,19 +37,21 @@
 						<% tmdb_id = "-" %>
 						<% lanzamiento = "Ingresaré los datos manualmente" %>
 						<% resultado = "resultadoInvalido" %>
+						<% rubroAPI = "-" %>
 						<% if (i == resultados.length) { %>
-							<% rubro = "Película" %>
+							<% rubroVista = "Película" %>
 							<% imagen_src = "/imagenes/0-Base/Sagrada Familia.jpg" %>
 							<% nombre_original = "Busco otra película" %>
 						<% } else { %>
-							<% rubro = "Colección" %>
+							<% rubroVista = "Colección" %>
 							<% imagen_src = "/imagenes/0-Base/Sagrada Familia.jpg" %>
 							<% nombre_original = "Busco otra colección" %>
 						<% } %>
 					<% } %>
 					<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
 					<input type="text" name="fuente" class="ocultar" value="<%= fuente %>">
-					<input type="text" name="rubro" class="ocultar" value="<%= rubro %>">
+					<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
+					<input type="text" name="rubroVista" class="ocultar" value="<%= rubroVista %>">
 					<input type="text" name="tmdb_id" value="<%= tmdb_id %>" class="ocultar">
 					<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
 					<!-- Info a mostrar -->

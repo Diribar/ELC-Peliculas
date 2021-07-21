@@ -1,29 +1,29 @@
-const search_TMDB = require("../API/1-search-TMDB");
-const details_TMDB = require("../API/2-details-TMDB");
+const search_TMDB = require("./search_TMDB_fetch");
+const details_TMDB = require("./details_TMDB_fetch");
 
 module.exports = {
 	search: async (palabras_clave) => {
 		palabras_clave = letrasIngles(palabras_clave);
 		let lectura = [];
 		let datos = { resultados: [] };
-		let rubros = ["movie", "tv", "collection"];
+		let rubrosAPI = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (rubro of rubros) {
-				if (page == 1 || page <= datos.cantPaginasAPI[rubro]) {
-					lectura = await search_TMDB(palabras_clave, rubro, page)
+			for (rubroAPI of rubrosAPI) {
+				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
+					lectura = await search_TMDB(palabras_clave, rubroAPI, page)
 						.then((n) => {return infoQueQueda(n);})
-						.then((n) => {return estandarizarNombres(n, rubro);})
+						.then((n) => {return estandarizarNombres(n, rubroAPI);})
 						.then((n) => {return coincideConPalabraClave(n, palabras_clave);})
 						.then((n) => {return eliminarIncompletos(n);});
-					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubro);
-					datos = unificarResultados(lectura, rubro, datos, page);
+					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubroAPI);
+					datos = unificarResultados(lectura, rubroAPI, datos, page);
 				}
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
 			datos = renombrarRubros(datos);
-			datos.hayMas = hayMas(datos, page, rubros)
+			datos.hayMas = hayMas(datos, page, rubrosAPI)
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;
@@ -33,10 +33,10 @@ module.exports = {
 	},
 };
 
-let hayMas = (datos, page, rubros) => {
-	return page < datos.cantPaginasAPI[rubros[0]] ||
-		page < datos.cantPaginasAPI[rubros[1]] ||
-		page < datos.cantPaginasAPI[rubros[2]]
+let hayMas = (datos, page, rubrosAPI) => {
+	return page < datos.cantPaginasAPI[rubrosAPI[0]] ||
+		page < datos.cantPaginasAPI[rubrosAPI[1]] ||
+		page < datos.cantPaginasAPI[rubrosAPI[2]]
 }
 
 let infoQueQueda = (n) => {
@@ -46,17 +46,17 @@ let infoQueQueda = (n) => {
 	};
 };
 
-let estandarizarNombres = (dato, rubro) => {
+let estandarizarNombres = (dato, rubroAPI) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (rubro == "collection") {
+		if (rubroAPI == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
 			desempate3 = "-";
 		}
-		if (rubro == "tv") {
+		if (rubroAPI == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -69,7 +69,7 @@ let estandarizarNombres = (dato, rubro) => {
 			nombre_castellano = m.name;
 			desempate3 = m.first_air_date;
 		}
-		if (rubro == "movie") {
+		if (rubroAPI == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -87,7 +87,7 @@ let estandarizarNombres = (dato, rubro) => {
 		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			rubro: rubro,
+			rubroAPI: rubroAPI,
 			tmdb_id: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
@@ -137,8 +137,8 @@ let eliminarIncompletos = (dato) => {
 	return dato;
 };
 
-let agregarLanzamiento = async (dato, rubro) => {
-	if (rubro == "collection" && dato.length > 0) {
+let agregarLanzamiento = async (dato, rubroAPI) => {
+	if (rubroAPI == "collection" && dato.length > 0) {
 		let detalles = [];
 		for (let j = 0; j < dato.length; j++) {
 			id = dato[j].tmdb_id;
@@ -184,7 +184,7 @@ let eliminarDuplicados = (datos) => {
 					(m.desempate1 == n.desempate1 ||
 						m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.rubro == "tv"
+					m.rubroAPI == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -192,28 +192,28 @@ let eliminarDuplicados = (datos) => {
 	return datos;
 };
 
-let unificarResultados = (lectura, rubro, datos, page) => {
+let unificarResultados = (lectura, rubroAPI, datos, page) => {
 	// Consolidar cantPaginasAPI
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[rubro]: lectura.cantPaginasAPI,
+			[rubroAPI]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados = datos.resultados.concat(lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[rubro]: Math.min(page, datos.cantPaginasAPI[rubro]),
+		[rubroAPI]: Math.min(page, datos.cantPaginasAPI[rubroAPI]),
 	};
 	return datos
 }
 
 let renombrarRubros = (datos) => {
 	datos.resultados.map(n => {
-		n.rubro == "movie" ? n.rubro = "Película" : "";
-		n.rubro == "tv" ? (n.rubro = "Colección") : "";
-		n.rubro == "collections" ? (n.rubro = "Colección") : "";
+		n.rubroAPI == "movie" ? n.rubroVista = "Película" : "";
+		n.rubroAPI == "tv" ? (n.rubroVista = "Colección") : "";
+		n.rubroAPI == "collections" ? (n.rubroVista = "Colección") : "";
 	})
 	return datos;
 };
