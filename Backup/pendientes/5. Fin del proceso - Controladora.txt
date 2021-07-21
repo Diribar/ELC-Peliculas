@@ -1,0 +1,9 @@
+Guardar Data Entry más:
+    - ELC_ID:
+    - CreadoPor:
+    - CreadoEn:
+    - AprobadoPor: (vacío)
+    - AprobadoEn: (vacío)
+
+Mover la imagen a la carpeta definitiva
+Cambiarle el nombre

@@ -1,0 +1,50 @@
+TITULO --> Paso 3 de 4: Datos Personalizados
+
+PRIMERA COLUMNA --> Datos necesarios
+
+CATEGORÍA --> ¿Está centrada en la fe católica?
+    - SI --> ¿Con qué grupo tiene más afinidad esta película?
+    - NO --> ¿Tiene buenos valores?
+		- SI --> ¿Con qué grupo tiene más afinidad esta película?
+		- NO --> Entonces preferimos no agregar esta película a nuestra BD
+    - Para biografías: ingresar el personaje histórico
+    - Para historias: ingresar el acontecimiento histórico
+
+CALIFICACIÓN
+Fe/Valores 50% --> Deja una huella en mí / Mucho / Sí / Poco / No
+Entretiene 30% --> Mucho / Sí / Poco / No
+Calidad filmica (imagen y sonido) 20% --> Contribuye / No perjudica / Perjudica
+--> el disfrute de la película
+
+PÚBLICO RECOMENDADO
+- Está dirigido a un público infantil, no se recomienda para mayores
+- Es apto para mayores, pero se recomienda para menores (se puede ver en familia)
+- Es ideal para ver en familia
+- Es apto para menores, se recomienda para mayores (se puede ver en familia)
+- No es apto para menores, sólo para mayores
+ATP
+- Tiene sensualidad explícita con erotismo --> SI/NO
+- Tiene crueldad excesiva --> SI/NO
+Nos referimos a estos aspectos que puedan dañar la sensibilidad de un menor de 12 años. 
+En ese caso, puede estar en nuestra BD, pero no es apta para menores
+
+SEGUNDA COLUMNA
+Completá todos los datos que puedas
+
+Existe una versión en castellano
+Es a Color
+Colección, como dato
+    - Precuela (sólo películas de la colección)
+    - Secuela (sólo películas de la colección)
+
+SINOPSIS
+
+LINKS
+Trailer x 2
+
+Película x 2
+El link debe: 
+- Ser de un sitio que permita denunciar la violación de copyright
+- Tener por lo menos 6 meses, para prevenir una violación de copyright
+
+BOTON DE RETROCESO

@@ -1,0 +1,31 @@
+GENERAL
+- Vista inicial con los avisos de validación
+
+TODO EL CUERPO
+- Centrado a lo ancho de toda la pantalla
+- "Links por si necesita consultar algún dato": FA, TMDB, IMDB, Wiki
+	FA: con el link, sino con título original
+	TMDB: con el título original
+	IMDB: con el ID, sino con el título original
+	Wiki: con el link, sino con título original (película)
+- Los datos recibidos de APIs deben ser no editables
+
+PRIMERA COLUMNA
+    - id_TMDB
+    - id_FA (validar con API)
+    - id_IMDB
+
+SEGUNDA COLUMNA
+Imagen: prever que no venga informada de Form1
+    - Label e Input de insertar link
+    - Informar cómo se obtiene el link de una imagen
+Guardar la imagen
+Nombre: Nombre_castellano + número aleatorio
+Carpeta provisoria
+
+BOTON DE RETROCEDER
+- A Desambiguación
+- En la ruta/controlador, quitar donde se limpia el req.body
+
+IMAGEN
+Guardarla en carpeta y nombre provisorios

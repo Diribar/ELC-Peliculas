@@ -1,0 +1,7 @@
+Todas
+Sugeridas (sin submenú, ordenadas por mejor rating)
+Visitadas por vos (sin submenú, ordenadas por fecha de visita)
+CFC
+VPC
+
+Mis estadísticas de películas vistas (por rubro y subrubro, descartando las que no me interesan)

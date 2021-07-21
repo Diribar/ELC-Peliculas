@@ -1,0 +1,19 @@
+Importar datos
+
+- Camino crítico
+OK	- IngresarPalabraClave:
+	    - Link a FA para "copy-paste"
+OK	- Desambiguar-TMDB:
+OK	    - RR exitosos
+OK		- POST
+		- Completar con Details + Credits
+		- Envío a "Agregar2"
+OK	    - Ninguno --> ingreso manual ("Agregar2")
+	- Link FA: "copy-paste"
+OK	    - Crear el API
+	    - POST
+	    - Procesar
+	    - Envío a "Agregar2"
+	- Agregar2:
+	    - Bloquear datos de API
+	    - Completar saldo a mano
