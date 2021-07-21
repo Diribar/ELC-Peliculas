@@ -36,10 +36,10 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaECC = require("./controladores_y_rutas/1-Institucional/Ruta");
-let rutaUsuarios = require("./controladores_y_rutas/2-Usuarios/Usuarios-Ruta");
-let rutaLogin = require("./controladores_y_rutas/2-Usuarios/Login-Ruta");
-let rutaPeliculas = require("./controladores_y_rutas/3-Peliculas/Rutas");
+let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
+let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Usuarios-Ruta");
+let rutaLogin = require("./rutas_y_controladores/2-Usuarios/Login-Ruta");
+let rutaPeliculas = require("./rutas_y_controladores/3-Peliculas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
 app.use("/peliculas", rutaPeliculas);

@@ -1,0 +1,3 @@
+PALABRAS CLAVE
+- Para TMDB, sin discriminar entre Colecciones, TV y Películas
+- Consulta de API, sólo con botón verificar
