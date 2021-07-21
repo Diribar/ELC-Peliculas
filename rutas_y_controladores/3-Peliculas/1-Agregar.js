@@ -58,8 +58,11 @@ module.exports = {
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		// API Details
-		let lectura = await searchTMDB.search(palabras_clave);
+		if (req.body.fuente == "TMDB") {
+			lectura = await searchTMDB.details(req.body.id, req.body.rubroAPI);
+		}
 		// req.body
+
 		// Función revisar/completar Datos Duros + Cookies
 
 		// req.session.peliculaTMDB = req.body;
