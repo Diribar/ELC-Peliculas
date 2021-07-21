@@ -58,12 +58,14 @@ module.exports = {
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		req.session.peliculaTMDB = req.body;
-		res.cookie("fuente", "TMDB", { maxAge: 60 * 60 * 1000 });
+		res.cookie("fuente", req.body.fuente, { maxAge: 60 * 60 * 1000 });
 		res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
-		res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
-		res.cookie("nombre_original", req.body.nombre_original, {
-			maxAge: 60 * 60 * 1000,
-		});
+		if (req.body.fuente != "-") {
+			res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
+			res.cookie("nombre_original", req.body.nombre_original, {
+				maxAge: 60 * 60 * 1000,
+			});
+		}
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	copiarFA_Form: async (req, res) => {

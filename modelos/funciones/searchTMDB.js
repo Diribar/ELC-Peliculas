@@ -50,8 +50,7 @@ let estandarizarNombres = (dato, rubro) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
 		if (rubro == "collection") {
-			if (typeof m.poster_path == "undefined" || m.poster_path == null)
-				return;
+			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -64,8 +63,7 @@ let estandarizarNombres = (dato, rubro) => {
 				m.first_air_date == "" ||
 				m.first_air_date < "1900" ||
 				m.poster_path == null
-			)
-				return;
+			) return;
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -78,8 +76,7 @@ let estandarizarNombres = (dato, rubro) => {
 				m.release_date == "" ||
 				m.release_date < "1900" ||
 				m.poster_path == null
-			)
-				return;
+			) return;
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
