@@ -56,13 +56,13 @@ module.exports = {
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		// API Details
-		let lectura = req.body.fuente == "TMDB" ? await details_TMDB_funcion.API(req.body.id, req.body.rubroAPI) : {}
+		let lectura = req.body.fuente == "TMDB" ? await details_TMDB_funcion.API(req.body.tmdb_id, req.body.rubroAPI) : {};
 		// Función revisar/completar Datos Duros + Cookies
-		req.body.rubroAPI =="movie" ? req.session.datosDuros = await details_TMDB_funcion.procesarPelicula(req.body, lectura) : "";
-		req.body.rubroAPI == "tv" ? req.session.datosDuros = await details_TMDB_funcion.procesarTV(req.body, lectura) : "";
-		req.body.rubroAPI == "collection" ? req.session.datosDuros = await details_TMDB_funcion.procesarColeccion(req.body, lectura) : "";
+		req.body.rubroAPI =="movie" ? req.session.datosDuros = await details_TMDB_funcion.procesarPelicula_TMDB(req.body, lectura) : "";
+		req.body.rubroAPI == "tv" ? req.session.datosDuros = await details_TMDB_funcion.procesarTV_TMDB(req.body, lectura) : "";
+		req.body.rubroAPI == "collection" ? req.session.datosDuros = await details_TMDB_funcion.procesarColeccion_TMDB(req.body, lectura) : "";
 		// Redireccionar a Datos Duros
-		return res.redirect("/peliculas/agregar/datos_duros");
+		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
 	copiarFA_Form: async (req, res) => {
