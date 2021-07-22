@@ -19,6 +19,7 @@ module.exports = {
 			rubroVista: "Película",
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
+			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
 			nombre_original: form.nombre_original,
 		};
@@ -65,6 +66,7 @@ module.exports = {
 			rubroVista: "Colección",
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
+			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
 			nombre_original: form.nombre_original,
 		};
@@ -108,6 +110,7 @@ module.exports = {
 			rubroVista: "Colección",
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
+			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
 			nombre_original: form.nombre_original,
 		};

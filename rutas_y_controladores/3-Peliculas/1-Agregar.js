@@ -95,13 +95,8 @@ module.exports = {
 		// Continuará...
 		// req.session.peliculaFA = req.body;
 		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
-		// res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
-		// res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
-		// res.cookie("nombre_original", req.body.nombre_original, {
-		// 	maxAge: 60 * 60 * 1000,
-		// });
+		res.send(resultado)
 		//return res.redirect("/peliculas/agregar/datos_duros");
-		return res.redirect("/peliculas/agregar/copiarfa");
 	},
 
 	datosDuros_Form: (req, res) => {
