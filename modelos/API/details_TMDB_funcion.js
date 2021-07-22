@@ -89,6 +89,7 @@ module.exports = {
 						tmdb_id: n.id,
 						nombre_castellano: n.name,
 						ano_estreno: parseInt(n.air_date.slice(0, 4)),
+						cant_capitulos: n.episode_count,
 						sinopsis: n.overview,
 						avatar:
 							"https://image.tmdb.org/t/p/original" +
@@ -119,9 +120,15 @@ module.exports = {
 				avatar:
 					"https://image.tmdb.org/t/p/original" + lectura.poster_path,
 				ano_estreno: Math.min(
-					...lectura.parts.map((n) => n.release_date)
+					...lectura.parts.map((n) =>
+						parseInt(n.release_date.slice(0, 4))
+					)
 				),
-				ano_fin: Math.max(...lectura.parts.map((n) => n.release_date)),
+				ano_fin: Math.max(
+					...lectura.parts.map((n) =>
+						parseInt(n.release_date.slice(0, 4))
+					)
+				),
 				partes: lectura.parts.map((n) => {
 					return {
 						tmdb_id: n.id,
@@ -142,7 +149,6 @@ module.exports = {
 };
 
 const fuenteSinopsis = (sinopsis) => {
-	(sinopsis != "" && !sinopsis.includes("FILMAFFINITY")) ? sinopsis = sinopsis + " (TMDB)" : ""
+	(sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)")) ? sinopsis = sinopsis + " (TMDB)" : ""
 	return sinopsis
 }
-// res.cookie("fuente", req.body.fuente, { maxAge: 60 * 60 * 1000 });

@@ -61,6 +61,12 @@ module.exports = {
 		req.body.rubroAPI =="movie" ? req.session.datosDuros = await details_TMDB_funcion.procesarPelicula_TMDB(req.body, lectura) : "";
 		req.body.rubroAPI == "tv" ? req.session.datosDuros = await details_TMDB_funcion.procesarTV_TMDB(req.body, lectura) : "";
 		req.body.rubroAPI == "collection" ? req.session.datosDuros = await details_TMDB_funcion.procesarColeccion_TMDB(req.body, lectura) : "";
+		// Grabar cookies
+		let campos = Object.keys(req.session.datosDuros);
+		let valores = Object.values(req.session.datosDuros);
+		for (let i = 0; i < campos.length; i++) {
+			res.cookie(campos[i], valores[i], { maxAge: 60 * 60 * 1000 });
+		}
 		// Redireccionar a Datos Duros
 		return res.send(req.session.datosDuros);
 		//return res.redirect("/peliculas/agregar/datos_duros");

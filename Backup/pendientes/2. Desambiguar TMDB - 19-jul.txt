@@ -3,8 +3,5 @@ VISTA
 - Conseguirle una imagen para "película no encontrada"
 - Conseguirle una imagen para "colección no encontrada"
 
-COINCIDENCIA ELEGIDA (POST)
-
 FINAL
--> Cookie para los datos duros
 - Enviarle la API a Datos Duros
