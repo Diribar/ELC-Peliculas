@@ -29,7 +29,7 @@ module.exports = {
 				coleccion_tmdb_id: lectura.belongs_to_collection,
 				imdb_id: lectura.imdb_id,
 				idioma_original: lectura.original_language,
-				sinopsis: lectura.overview,
+				sinopsis: fuenteSinopsis(lectura.overview),
 				avatar:
 					"https://image.tmdb.org/t/p/original" + lectura.poster_path,
 				pais_id: lectura.production_countries.map((n) => n.iso_3166_1),
@@ -57,9 +57,10 @@ module.exports = {
 			};
 		}
 		//console.log(resultado);
+		return resultado;
 	},
 
-	procesarTV_TMDB: async (id, rubroAPI) => {
+	procesarTV_TMDB: async (form, lectura) => {
 		resultado = {
 			rubroVista: "Colección",
 			// Datos obtenidos del formulario
@@ -75,7 +76,7 @@ module.exports = {
 				nombre_castellano: lectura.name,
 				pais_id: lectura.production_countries.map((n) => n.iso_3166_1),
 				idioma_original: lectura.original_language,
-				sinopsis: lectura.overview,
+				sinopsis: fuenteSinopsis(lectura.overview),
 				avatar:
 					"https://image.tmdb.org/t/p/original" + lectura.poster_path,
 				ano_estreno: parseInt(lectura.first_air_date.slice(0, 4)),
@@ -97,7 +98,8 @@ module.exports = {
 				}),
 			};
 		}
-		console.log(resultado);
+		//console.log(resultado);
+		return resultado;
 	},
 
 	procesarColeccion_TMDB: async (form, lectura) => {
@@ -113,17 +115,19 @@ module.exports = {
 			resultado = {
 				...resultado,
 				nombre_castellano: lectura.name,
-				sinopsis: lectura.overview,
+				sinopsis: fuenteSinopsis(lectura.overview),
 				avatar:
 					"https://image.tmdb.org/t/p/original" + lectura.poster_path,
-				ano_estreno: Math.min(...parts.map((n) => n.release_date)),
-				ano_fin: Math.max(...parts.map((n) => n.release_date)),
+				ano_estreno: Math.min(
+					...lectura.parts.map((n) => n.release_date)
+				),
+				ano_fin: Math.max(...lectura.parts.map((n) => n.release_date)),
 				partes: lectura.parts.map((n) => {
 					return {
 						tmdb_id: n.id,
 						nombre_castellano: n.title,
 						nombre_original: n.original_title,
-						sinopsis: n.overview,
+						sinopsis: fuenteSinopsis(n.overview),
 						avatar:
 							"https://image.tmdb.org/t/p/original" +
 							n.poster_path,
@@ -132,11 +136,13 @@ module.exports = {
 				}),
 			};
 		}
-		console.log(resultado);
+		//console.log(resultado);
+		return resultado;
 	},
 };
 
-// let resultado = {
-// tmdb_id: id,
-// };
+const fuenteSinopsis = (sinopsis) => {
+	(sinopsis != "" && !sinopsis.includes("FILMAFFINITY")) ? sinopsis = sinopsis + " (TMDB)" : ""
+	return sinopsis
+}
 // res.cookie("fuente", req.body.fuente, { maxAge: 60 * 60 * 1000 });

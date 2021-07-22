@@ -62,6 +62,7 @@ module.exports = {
 		req.body.rubroAPI == "tv" ? req.session.datosDuros = await details_TMDB_funcion.procesarTV_TMDB(req.body, lectura) : "";
 		req.body.rubroAPI == "collection" ? req.session.datosDuros = await details_TMDB_funcion.procesarColeccion_TMDB(req.body, lectura) : "";
 		// Redireccionar a Datos Duros
+		return res.send(req.session.datosDuros);
 		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
 

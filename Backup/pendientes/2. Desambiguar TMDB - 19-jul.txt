@@ -1,13 +1,10 @@
+VISTA
 - Opción de retroceder a Palabras Clave
-- "película no encontrada", "colección no encontrada"
-	- Conseguirle una imagen para película
-	- Conseguirle una imagen para colección
+- Conseguirle una imagen para "película no encontrada"
+- Conseguirle una imagen para "colección no encontrada"
 
 COINCIDENCIA ELEGIDA (POST)
--> Conseguir los datos de Details
-- Agregarle la fuente a la sinopsis
 
 FINAL
-- Armar una API con todos los campos para Datos Duros
-- Cookie para los datos duros
+-> Cookie para los datos duros
 - Enviarle la API a Datos Duros
