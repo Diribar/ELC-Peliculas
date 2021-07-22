@@ -57,7 +57,10 @@ const contador = async (palabras_clave) => {
 	if (palabras_clave.length > 1) {
 		// Procesando la información
 		resultadoDeBusqueda.innerHTML = "Procesando la información...";
-		resultadoDeBusqueda.classList.replace("resultadoExitoso", "resultadoInvalido");
+		resultadoDeBusqueda.classList.remove("resultadoExitoso");
+		resultadoDeBusqueda.classList.remove("resultadoInvalido");
+		resultadoDeBusqueda.classList.remove("sinResultado");
+		resultadoDeBusqueda.classList.add("resultadoEnEspera");
 		// Obtener el link
 		let link = "/peliculas/agregar/api/contador/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
@@ -86,12 +89,16 @@ const contador = async (palabras_clave) => {
 			}
 		}
 		resultadoDeBusqueda.innerHTML = oracion;
-		resultadoDeBusqueda.classList.replace(formatoAnterior, formatoVigente);
+		resultadoDeBusqueda.classList.remove("resultadoEnEspera");
+		resultadoDeBusqueda.classList.remove(formatoAnterior);
+		resultadoDeBusqueda.classList.add(formatoVigente);
 	}
 };
 
 const borrarComentario = () => {
-	document.querySelector("#resultadoDeBusqueda").innerHTML = "";
-	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoInvalido");
-	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoExitoso");
+	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
+	resultadoDeBusqueda.innerHTML = "<br>";
+	resultadoDeBusqueda.classList.remove("resultadoInvalido");
+	resultadoDeBusqueda.classList.remove("resultadoExitoso");
+	resultadoDeBusqueda.classList.add("sinResultado");
 };

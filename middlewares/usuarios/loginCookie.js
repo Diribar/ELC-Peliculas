@@ -1,7 +1,7 @@
 const path = require('path');
 const metodosUsuario = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_usuarios"));
 
-module.exports = async (req,res,next) => {
+module.exports = async (req, res, next) => {
 	// Uso de cookies para identificar al usuario
 	if (!req.session.usuario && req.cookies && req.cookies.email) {
 		let usuario = await metodosUsuario.obtenerPorMail(req.cookies.email)

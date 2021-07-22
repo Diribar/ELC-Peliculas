@@ -1,9 +1,8 @@
-- Leyendas: 
-"Contamos con el soporte de TMDB para conseguir información de las películas"
-"Los acentos y las mayúsculas de las palabras clave no hacen al resultado"
+VISTA
+- Campo "autorizado FA" en vez de rol usuario
+- Inactivar "verificar" mientras el textarea esté vacío
 
 COINCIDENCIAS ENCONTRADAS
 - Mostrar el resultado de nuevas y viejas (año y nombre_cast)
 - Las nuevas, con link
 - Enviar a API solamente las nuevas
-- Inactivar "verificar" mientras el textarea esté vacío

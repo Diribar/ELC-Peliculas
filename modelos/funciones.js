@@ -1,3 +1,6 @@
+const BD_peliculas = require("./bases_de_datos/BD_peliculas");
+const BD_colecciones = require("./bases_de_datos/BD_colecciones");
+
 module.exports = {
 	userLogs: (req, res) => {
 		let URL = req.originalUrl;
@@ -12,7 +15,7 @@ module.exports = {
 		res.locals.urlReferencia = req.session.urlReferencia;
 	},
 
-	textarea: (contenido) => {
+	textareaFA: (contenido) => {
 		// Limpiar espacios innecesarios
 		for (let i = 0; i < contenido.length; i++) {
 			contenido[i] = contenido[i].trim();
@@ -37,4 +40,26 @@ module.exports = {
 		return resultado;
 	},
 
+	productoRepetido: async (datos) => {
+		// Definir variables
+		rubroAPI = datos.rubroAPI;
+		tmdb_id = datos.tmdb_id;
+		fa_id = datos.fa_id;
+		// Verificar repetidos
+		TMDB_repetido = !!tmdb_id ? await verificarRepetidos(rubroAPI, "TMDB", tmdb_id) : "";
+		FA_repetido = !!fa_id ? await verificarRepetidos(rubroAPI, "FA", fa_id) : "";
+		//console.log([TMDB_repetido, FA_repetido]);
+		// Enviar el resultado
+		return [TMDB_repetido, FA_repetido];
+	},
+};
+
+const verificarRepetidos = async (rubroAPI, fuente, id) => {
+	// La respuesta se espera que sea 'true' or 'false'
+	if (!rubroAPI || !id) return false;
+	let parametro = (fuente == "TMDB") ? "tmdb_id" : "fa_id"
+	let resultado = (rubroAPI == "movie")
+		? await BD_peliculas.ObtenerPorParametro(parametro, id)
+		: await BD_colecciones.ObtenerPorParametro(parametro, id);
+	return !!resultado
 };

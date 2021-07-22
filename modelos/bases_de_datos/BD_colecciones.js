@@ -1,11 +1,11 @@
 const db = require("../../bases_de_datos/modelos");
-const entidad = db.peliculas;
+const entidad = db.colecciones_cabecera;
 //const { Op } = require("sequelize");
 
 module.exports = {
 	ObtenerTodos: () => {
 		return entidad.findAll({
-			include: ["coleccion_pelicula", "categoria", "subcategoria"],
+			include: ["coleccion_peliculas"],
 			where: { borrado: false },
 		});
 	},
@@ -18,7 +18,7 @@ module.exports = {
 
 	ObtenerPorID: (ID) => {
 		return entidad.findByPk(ID, {
-			include: ["coleccion_pelicula", "categoria", "subcategoria"]
+			include: ["coleccion_peliculas"],
 		});
 	},
 

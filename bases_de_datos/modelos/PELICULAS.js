@@ -2,9 +2,9 @@ module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
-		tmdb_id: { type: dt.STRING(20) },
-		fa_id: { type: dt.STRING(20) },
-		imdb_id: { type: dt.STRING(20) },
+		tmdb_id: { type: dt.STRING(10) },
+		fa_id: { type: dt.STRING(10) },
+		imdb_id: { type: dt.STRING(10) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		coleccion_pelicula_id: { type: dt.INTEGER },
@@ -33,10 +33,10 @@ module.exports = (sequelize, dt) => {
 		editada_en: { type: dt.DATE },
 		revisada_por_id: { type: dt.INTEGER },
 		revisada_en: { type: dt.DATE },
-		borrado: { type: dt.BOOLEAN },
-		borrado_por_id: { type: dt.INTEGER },
-		borrado_en: { type: dt.DATE },
-		borrado_motivo: { type: dt.STRING(500) },
+		borrada: { type: dt.BOOLEAN },
+		borrada_por_id: { type: dt.INTEGER },
+		borrada_en: { type: dt.DATE },
+		borrada_motivo: { type: dt.STRING(500) },
 	};
 	const config = {
 		tableName: "peliculas",

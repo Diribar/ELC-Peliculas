@@ -1,5 +1,2 @@
 VISTA
 - Opción de retroceder a Palabras Clave con el data entry
-
-FINAL
-- Enviarle la API a Datos Duros

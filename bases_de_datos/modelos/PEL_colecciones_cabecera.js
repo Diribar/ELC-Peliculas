@@ -2,8 +2,9 @@ module.exports = (sequelize, dt) => {
 	const alias = "colecciones_cabecera";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
-		tmdb_id: { type: dt.STRING(20) },
-		fuente: { type: dt.STRING(20) },
+		tmdb_id: { type: dt.STRING(10) },
+		fa_id: { type: dt.STRING(10) },
+		fuente: { type: dt.STRING(10) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },

@@ -1,0 +1,15 @@
+VISTA
+- Cambiar los pasos de "ayuda"
+- Eliminar "verificar" y disparar el feedback del input cuando cambia
+- Agregar campo "Rubro" (colección/película) con mensaje de error si está vacío
+- Agregar campo FA_id con mensaje de error si está vacío
+- Inactivar "avanzar" mientras el textarea/FA_id/Rubro tengan errores
+
+BACK-END
+- Validaciones back-end
+- Verificar que no esté repetida (FA_id)
+- Agregarle la fuente a la sinopsis
+
+API
+- Armar una API con todos los campos para Datos Duros
+- Enviarle la API a Datos Duros
