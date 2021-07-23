@@ -11,27 +11,25 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", async (e) => {
 		e.preventDefault();
 		let valor = contenido.value;
-		if (button.innerHTML == "Verificar" && valor) {
+		if (valor) {
 			if (despues != contenido.value) {
 				despues = contenido.value;
 				lectura = await procesarContenido(contenido.value);
 				console.log(lectura)
 			}
-			button.innerHTML = "Avanzar";
 		} else {
-			if (button.innerHTML == "Avanzar" && valor) {
+			if (valor) {
 				e.currentTarget.submit();
 			}
 		}
 	});
 
-	// "Verificar" ante cambios en el input
+	// Validar ante cambios en los inputs
 	contenido.addEventListener("keyup", () => {
 		if (
 			contenido.value.length == 0 ||
 			contenido.value != despues
 		) {
-			button.innerHTML = "Verificar";
 			borrarComentario();
 		}
 	});
@@ -45,7 +43,6 @@ window.addEventListener("load", () => {
 
 	// Cerrar los dropdowns en desuso
 	window.onclick = (e) => {
-		console.log(!e.target.matches("#direccion"));
 		!e.target.matches("#direccion")
 			? mensajeAyuda[0].classList.add("ocultar")
 			: "";

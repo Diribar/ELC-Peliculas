@@ -1,2 +1,0 @@
-VISTA
-- Opción de retroceder a Palabras Clave con el data entry

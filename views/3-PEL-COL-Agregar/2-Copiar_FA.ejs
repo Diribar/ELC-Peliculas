@@ -7,30 +7,55 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<h1 id="paso2">Copiado de información desde Film Affinity</h1>
+		<h1 id="paso2">Importala desde Film Affinity</h1>
 		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
+			<h2>Elegí el Rubro</h2>
+			<div class="relative">
+				<select name="rubroAPI">
+					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
+					<option value="movie" 
+						<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+						Película
+					</option>
+					<option value="collection"
+						<% if (locals.data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+						Colección
+					</option>
+				</select>
+				<% if (locals.errores && errores.rubroAPI) { %>
+					<i class="fas fa-times-circle">
+						<span class="mensajeError"><%= errores.rubroAPI.msg %> </span>
+					</i>
+				<% } %>
+			</div>
 			<h2>Ingresá la dirección de la página</h2>
 			<div class="relative flex-row">
-				<input type="text" placeholder="Pegá acá la dirección">
+				<input type="text" class="input"
+					value="<%= locals.data_entry ? data_entry.direccion : null %>"
+					placeholder="Pegá acá la dirección"
+				>
 				<i class="fas fa-question-circle" id="direccion">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
-						<li>Buscá la película en Film Affinity</li>
+						<li>
+							Buscá la película o colección en 
+							<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>
+						</li>
 						<li>Seleccioná la dirección (url)</li>
 						<li>Copiala</li>
 						<li>Pegala en el casillero de la izquierda</li>
 					</ul>
 				</i>
-				<% if (locals.errores) { %>
+				<% if (locals.errores && errores.direccion) { %>
 					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.link.msg %> </span>
+						<span class="mensajeError"><%= errores.direccion.msg %> </span>
 					</i>
 				<% } %>
 			</div>
-			<h2>Ingresá la información del cuerpo de la página</h2>
+			<h2>Ingresá el contenido del cuerpo de la página</h2>
 			<div class="relative flex-row">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
-					value="<%= locals.link ? link : null %>" autofocus
+					value="<%= locals.data_entry ? data_entry.contenido : null %>" autofocus class="input"
 				></textarea>
 				<i class="fas fa-question-circle" id="contenido">
 					<ul class="mensajeAyuda ocultar" type="dots">
@@ -44,20 +69,13 @@
 						<li>Pegalo en el casillero de la izquierda</li>
 					</ul>
 				</i>
-				<% if (locals.errores) { %>
+				<% if (locals.errores && errores.contenido) { %>
 					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.link.msg %> </span>
+						<span class="mensajeError"><%= errores.contenido.msg %> </span>
 					</i>
 				<% } %>
 			</div>
-			<div class="flex-row space-evenly" id="button">
-				<select name="rubroAPI">
-					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
-					<option value="movie" >Película</option>
-					<option value="collection">Colección</option>
-				</select>
-				<button type="submit">Avanzar</button>
-			</div>
+			<button type="submit">Avanzar</button>
 		</form>
 	</section>
 </div>

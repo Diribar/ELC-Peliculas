@@ -7,9 +7,9 @@
 
 /* Partes específicas del formulario */
 #data_entry h1 {margin: 0; align-self: flex-start; color: white;background-color: var(--verde); padding: 5px 10px;border-radius: 10px;}
-#data_entry h2 {margin: 10px 0 5px;  align-self: flex-start;}
-#data_entry input, #data_entry textArea
-	{margin-top: 4px; border-width: .7px; border-radius: 5px;}
+#data_entry h2 {margin: 15px 0 3px;  align-self: flex-start;}
+#data_entry input, #data_entry textArea, #data_entry select
+	{border-width: .7px; border-radius: 5px;}
 
 /*  Mensajes de error*/
 #data_entry .fa-times-circle {position: absolute; font-size: 1rem; color: red;}

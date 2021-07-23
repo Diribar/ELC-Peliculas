@@ -1,0 +1,20 @@
+VISTA / JS
+- Los campos se completan desde arriba hacia abajo
+- Validar con verde y rojo
+- Los campos se pueden completar si las validaciones de los campos anteriores están OK
+- Validaciones on-line, al hacer data_entrys:
+	- rubro:	 -> valor != ""
+	- url:		 -> FA_id no repetido
+	- contenido: -> que se pueda importar algún campo
+- Al clickear "avanzar", verificar:
+	- Campos vacíos
+	- Campos con errores
+- Avanzar sólo si las 3 validaciones están OK
+
+BACK-END
+- Validaciones back-end
+- Agregarle la fuente a la sinopsis, si no la tiene
+
+API
+- Armar una API con todos los campos para Datos Duros
+- Enviarle la API a Datos Duros

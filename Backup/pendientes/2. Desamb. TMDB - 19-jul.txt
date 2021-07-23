@@ -1,0 +1,5 @@
+- Mostrar los productos en el siguiente orden:
+	- Nuevos (azul)
+	- Ingreso Manual (rojo)
+	- YaEnBD (verde)
+- Opción de retroceder a Palabras Clave con el data entry

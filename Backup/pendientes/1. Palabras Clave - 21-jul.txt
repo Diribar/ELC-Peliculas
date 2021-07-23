@@ -1,7 +1,0 @@
-VISTA
-- Campo "autorizado FA" en vez de rol usuario
-- Inactivar "verificar" mientras el textarea esté vacío
-- Con las coincidencias encontradas:
-	- Mostrar el resultado de nuevas y viejas (año y nombre_cast)
-	- Las nuevas, con link
-	- Enviar a API solamente las nuevas
