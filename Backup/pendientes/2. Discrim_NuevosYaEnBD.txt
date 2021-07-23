@@ -1,7 +1,10 @@
+PALABRAS CLAVE
 - En encontrados, decir cuántos son nuevos
 - En la API, discriminar las películas/colecciones nuevas y las ya agregadas
 	- Resultados nuevas
 	- Resultados yaEnBD
+
+DESAMBIGUAR TMDB
 - Mostrar los productos en el siguiente orden:
 	- Nuevos (verde)
 	- Ingreso Manual (rojo)
