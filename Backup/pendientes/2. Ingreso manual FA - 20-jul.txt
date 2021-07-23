@@ -1,11 +1,16 @@
+VISTA
 - Cambiar los pasos de "ayuda"
 - Eliminar "verificar"
-- Campo "Rubro" (colección/película)
-- Campo FA_id
+- Agregar campo "Rubro" (colección/película)
+- Agregar campo FA_id
 - Inactivar "avanzar" mientras el textarea/FA_id/Rubro estén vacíos
 - Validaciones on-line
-- Verificar que no esté repetida (FA_id)
 
+BACK-END
+- Validaciones back-end
+- Verificar que no esté repetida (FA_id)
 - Agregarle la fuente a la sinopsis
+
+API
 - Armar una API con todos los campos para Datos Duros
 - Enviarle la API a Datos Duros

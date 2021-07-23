@@ -22,7 +22,6 @@ module.exports = {
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
-			datos = renombrarRubros(datos);
 			datos.hayMas = hayMas(datos, page, rubrosAPI)
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
@@ -209,15 +208,6 @@ let unificarResultados = (lectura, rubroAPI, datos, page) => {
 	return datos
 }
 
-let renombrarRubros = (datos) => {
-	datos.resultados.map(n => {
-		n.rubroAPI == "movie" ? n.rubroVista = "Película" : "";
-		n.rubroAPI == "tv" ? (n.rubroVista = "Colección") : "";
-		n.rubroAPI == "collections" ? (n.rubroVista = "Colección") : "";
-	})
-	return datos;
-};
-
 let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
@@ -240,6 +230,7 @@ let ordenarDatos = (datos, palabras_clave) => {
 };
 
 let letrasIngles = (palabra) => {
+	//console.log(palabra)
 	word = palabra
 		.toLowerCase()
 		.replace(/-/g, " ")
