@@ -7,6 +7,6 @@ PALABRAS CLAVE
 
 DESAMBIGUAR
 - Se muestran en este orden:
-	- Los nuevos (verde)
-	- La opción de IM (rojo)
-	- Los ya en BD (azul)
+	- Nuevos (verde)
+	- Ingreso Manual (rojo)
+	- YaEnBD (gris)
