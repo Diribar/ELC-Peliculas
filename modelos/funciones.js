@@ -15,7 +15,7 @@ module.exports = {
 		res.locals.urlReferencia = req.session.urlReferencia;
 	},
 
-	textareaFA: (contenido) => {
+	procesarTextareaFA: (contenido) => {
 		// Limpiar espacios innecesarios
 		for (let i = 0; i < contenido.length; i++) {
 			contenido[i] = contenido[i].trim();

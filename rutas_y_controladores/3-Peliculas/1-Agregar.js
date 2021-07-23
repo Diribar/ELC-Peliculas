@@ -74,7 +74,7 @@ module.exports = {
 	procesarcopiado: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
-		let resultado = funciones.textareaFA(matriz);
+		let resultado = funciones.procesarTextareaFA(matriz);
 		//console.log("línea 77");
 		//console.log(resultado);
 		// Enviar la API
@@ -84,7 +84,7 @@ module.exports = {
 	copiarFA_Guardar: async (req, res) => {
 		let { contenido } = req.body;
 		let matriz = contenido.split("\r\n");
-		let resultado = funciones.textareaFA(matriz);
+		let resultado = funciones.procesarTextareaFA(matriz);
 		console.log("línea 88");
 		console.log(resultado);
 		// Continuará...
