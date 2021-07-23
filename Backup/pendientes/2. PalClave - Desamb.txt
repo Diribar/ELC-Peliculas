@@ -1,0 +1,10 @@
+- Opción de retroceder a Palabras Clave con el data entry
+- "data_entry" en el formulario
+
+- En la API, discriminar las películas/colecciones nuevas y las ya agregadas
+	- Resultados nuevas
+	- Resultados yaEnBD
+- Mostrar los productos en el siguiente orden:
+	- Nuevos (azul)
+	- Ingreso Manual (rojo)
+	- YaEnBD (verde)
