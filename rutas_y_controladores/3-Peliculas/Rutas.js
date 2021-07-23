@@ -47,9 +47,9 @@ router.post("/detalle/editar/:id", soloUsuarios, RUD.editarGuardar);
 router.post("/detalle/eliminar/:id", soloUsuarios, RUD.bajaGuardar);
 
 // Controladores de Opciones
-// router.get('/:id/:id', opciones.tipo);
-// router.post('/:id/:id', soloUsuarios, opciones.filtros);
-// router.get('/:id', opciones.opcion);
+router.get('/:id/:id', opciones.tipo);
+router.post('/:id/:id', soloUsuarios, opciones.filtros);
+router.get('/:id', opciones.opcion);
 router.get('/', opciones.home);
 
 // Fin

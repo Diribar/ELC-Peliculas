@@ -1,1 +1,2 @@
 - Campo "autorizado FA" en vez de rol usuario
+- Encontrados, decir cuántos son nuevos
