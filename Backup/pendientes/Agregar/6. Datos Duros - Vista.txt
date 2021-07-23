@@ -2,6 +2,8 @@ GENERAL
 - Recibir la API de Ingreso Manual FA
 - Si la session decae, recuperar la info mediante req.cookie
 - Vista inicial con los avisos de validación
+- Bloquear datos de API
+- Completar saldo a mano
 
 TODO EL CUERPO
 - Centrado a lo ancho de toda la pantalla
