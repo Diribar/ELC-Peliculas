@@ -12,8 +12,8 @@ module.exports = {
 		return res.render("0-Responsabilidad");
 	},
 	palabrasClaveForm: (req, res) => {
-		let rol_usuario_id = req.session.usuario.rol_usuario_id;
-		return res.render("1-PalabrasClave", {rol_usuario_id});
+		let autorizado_fa = req.session.usuario.autorizado_fa;
+		return res.render("1-PalabrasClave", {autorizado_fa});
 	},
 	contador: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
