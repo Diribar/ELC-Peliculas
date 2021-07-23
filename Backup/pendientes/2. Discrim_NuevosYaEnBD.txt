@@ -1,8 +1,11 @@
-PALABRAS CLAVE
+PALABRAS CLAVE - BACK-END
+- API, agregar el campo 'yaEnBD'
+- En controladora, abrir en 2 variables:
+	- Nuevas
+	- Ya en BD
+
+PALABRAS CLAVE - FRONT-END
 - En encontrados, decir cuántos son nuevos
-- En la API, discriminar las películas/colecciones nuevas y las ya agregadas
-	- Resultados nuevas
-	- Resultados yaEnBD
 
 DESAMBIGUAR TMDB
 - Mostrar los productos en el siguiente orden:
