@@ -9,7 +9,7 @@
 	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
 		<section class="flex-row space-between"> 
 			<h1>Paso 1 de 4: Ingresá Palabras Clave</h1>
-			<% if (rol_usuario_id == 4) { %>
+			<% if (autorizado_fa) { %>
 				<a href="/peliculas/agregar/copiarfa">
 					<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" height="30px" title="FA">
 				</a>			
