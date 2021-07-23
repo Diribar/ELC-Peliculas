@@ -11,11 +11,10 @@
 		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
 			<h2>Ingresá la dirección de la página</h2>
 			<div class="relative flex-row">
-				<input type="text">
-				<i class="fas fa-question-circle" class="pasos">
+				<input type="text" placeholder="Pegá acá la dirección">
+				<i class="fas fa-question-circle" id="direccion">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
-
 						<li>Buscá la película en Film Affinity</li>
 						<li>Seleccioná la dirección (url)</li>
 						<li>Copiala</li>
@@ -33,16 +32,16 @@
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
 					value="<%= locals.link ? link : null %>" autofocus
 				></textarea>
-				<i class="fas fa-question-circle" class="pasos">
+				<i class="fas fa-question-circle" id="contenido">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
 						<li>
-							En la página de FA, seleccioná la información desde<br>
+							En la página de FA, seleccioná desde
 							el <strong><em><u>título en castellano</u></em></strong> 
 							hasta el final de la <strong><em><u>sinopsis</u></em></strong>
 						</li>
-						<li>Copiala</li>
-						<li>Pegala en el casillero de la izquierda</li>
+						<li>Copialo</li>
+						<li>Pegalo en el casillero de la izquierda</li>
 					</ul>
 				</i>
 				<% if (locals.errores) { %>
@@ -51,9 +50,15 @@
 					</i>
 				<% } %>
 			</div>
-			<button type="submit">Verificar</button>
+			<div class="flex-row space-evenly" id="button">
+				<select name="rubroAPI">
+					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
+					<option value="movie" >Película</option>
+					<option value="collection">Colección</option>
+				</select>
+				<button type="submit">Avanzar</button>
+			</div>
 		</form>
-		<div id="resultadoDeBusqueda"></div>
 	</section>
 </div>
 <%- include('0-DespuesPA') %>
