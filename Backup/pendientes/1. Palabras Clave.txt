@@ -1,5 +1,1 @@
 - Campo "autorizado FA" en vez de rol usuario
-- "data_entry" en el formulario
-- En la API, discriminar las películas/colecciones nuevas y las ya agregadas
-	- Resultados nuevas
-	- Resultados yaEnBD

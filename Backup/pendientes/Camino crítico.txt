@@ -1,0 +1,13 @@
+Desambiguar-TMDB:
+OK	- RR exitosos
+OK	- POST
+OK	- Completar con Details + Credits
+OK	- Envío a "Agregar2"
+OK	- Ninguno --> ingreso manual ("Agregar2")
+
+Link FA: "copy-paste"
+OK	- POST
+OK	- Crear el API
+OK	- Procesar
+	- Envío a "Agregar2"
+
