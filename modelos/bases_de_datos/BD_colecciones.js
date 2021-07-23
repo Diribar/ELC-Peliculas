@@ -1,30 +1,30 @@
 const db = require("../../bases_de_datos/modelos");
-const entidad = db.peliculas;
+const entidad = db.colecciones_cabecera;
 //const { Op } = require("sequelize");
 
 module.exports = {
 	ObtenerTodos: () => {
 		return entidad.findAll({
-			include: ["coleccion_pelicula", "categoria", "subcategoria"],
+			include: ["coleccion_peliculas"],
 			where: { borrado: false },
 		});
 	},
 
 	ObtenerPorParametro: (parametro, valor) => {
-		return entidad.findOne({
+		return entidad.findAll({
 			where: { [parametro]: valor },
 		});
 	},
 
 	AveriguarSiYaExiste: (parametro, valor) => {
 		return entidad
-			.count({where: { [parametro]: valor }})
+			.count({ where: { [parametro]: valor } })
 			.then((n) => n > 0);
 	},
 
 	ObtenerPorID: (ID) => {
 		return entidad.findByPk(ID, {
-			include: ["coleccion_pelicula", "categoria", "subcategoria"],
+			include: ["coleccion_peliculas"],
 		});
 	},
 

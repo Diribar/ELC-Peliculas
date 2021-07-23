@@ -4,50 +4,52 @@ window.addEventListener("load", () => {
 	let despues = contenido.value;
 	let form = document.querySelector("form");
 	let button = document.querySelector("button");
-	let iconoAyuda = document.querySelector(".fa-question-circle");
-	let mensajeAyuda = document.querySelector(".mensajeAyuda");
+	let iconoAyuda = document.querySelectorAll(".fa-question-circle");
+	let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
 
 	// Verificar o Avanzar
 	form.addEventListener("submit", async (e) => {
 		e.preventDefault();
 		let valor = contenido.value;
-		if (button.innerHTML == "Verificar" && valor) {
+		if (valor) {
 			if (despues != contenido.value) {
 				despues = contenido.value;
 				lectura = await procesarContenido(contenido.value);
 				console.log(lectura)
 			}
-			button.innerHTML = "Avanzar";
 		} else {
-			if (button.innerHTML == "Avanzar" && valor) {
+			if (valor) {
 				e.currentTarget.submit();
 			}
 		}
 	});
 
-	// "Verificar" ante cambios en el input
+	// Validar ante cambios en los inputs
 	contenido.addEventListener("keyup", () => {
 		if (
 			contenido.value.length == 0 ||
 			contenido.value != despues
 		) {
-			button.innerHTML = "Verificar";
 			borrarComentario();
 		}
 	});
 
 	// Detectar si se hace "click" en Ayuda
-	iconoAyuda.addEventListener("click", () => {
-		mensajeAyuda.classList.toggle("ocultar");
-	});
+	for (let i=0; i<iconoAyuda.length; i++) {
+		iconoAyuda[i].addEventListener("click", () => {
+			mensajeAyuda[i].classList.toggle("ocultar");
+		});
+	}
 
 	// Cerrar los dropdowns en desuso
 	window.onclick = (e) => {
-		!e.target.matches("#pasos")
-			? mensajeAyuda.classList.add("ocultar")
+		!e.target.matches("#direccion")
+			? mensajeAyuda[0].classList.add("ocultar")
+			: "";
+		!e.target.matches("#contenido")
+			? mensajeAyuda[1].classList.add("ocultar")
 			: "";
 	};
-
 });
 
 const procesarContenido = async (contenido) => {

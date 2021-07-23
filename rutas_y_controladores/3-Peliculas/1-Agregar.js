@@ -55,21 +55,16 @@ module.exports = {
 		});
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
-		// API Details
-		let lectura = req.body.fuente == "TMDB" ? await details_TMDB_funcion.API(req.body.tmdb_id, req.body.rubroAPI) : {};
-		// Función revisar/completar Datos Duros + Cookies
-		req.body.rubroAPI =="movie" ? req.session.datosDuros = await details_TMDB_funcion.procesarPelicula_TMDB(req.body, lectura) : "";
-		req.body.rubroAPI == "tv" ? req.session.datosDuros = await details_TMDB_funcion.procesarTV_TMDB(req.body, lectura) : "";
-		req.body.rubroAPI == "collection" ? req.session.datosDuros = await details_TMDB_funcion.procesarColeccion_TMDB(req.body, lectura) : "";
-		// Grabar cookies
-		let campos = Object.keys(req.session.datosDuros);
-		let valores = Object.values(req.session.datosDuros);
+		// Grabar cookies con la info del formulario
+		let campos = Object.keys(req.body);
+		let valores = Object.values(req.body);
 		for (let i = 0; i < campos.length; i++) {
 			res.cookie(campos[i], valores[i], { maxAge: 60 * 60 * 1000 });
 		}
+		// Obtener la info para exportar a la vista 'Datos Duros'
+		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
 		// Redireccionar a Datos Duros
-		return res.send(req.session.datosDuros);
-		//return res.redirect("/peliculas/agregar/datos_duros");
+		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -79,7 +74,7 @@ module.exports = {
 	procesarcopiado: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
-		let resultado = funciones.textarea(matriz);
+		let resultado = funciones.procesarTextareaFA(matriz);
 		//console.log("línea 77");
 		//console.log(resultado);
 		// Enviar la API
@@ -89,23 +84,18 @@ module.exports = {
 	copiarFA_Guardar: async (req, res) => {
 		let { contenido } = req.body;
 		let matriz = contenido.split("\r\n");
-		let resultado = funciones.textarea(matriz);
+		let resultado = funciones.procesarTextareaFA(matriz);
 		console.log("línea 88");
 		console.log(resultado);
 		// Continuará...
 		// req.session.peliculaFA = req.body;
 		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
-		// res.cookie("rubro", req.body.rubro, { maxAge: 60 * 60 * 1000 });
-		// res.cookie("id", req.body.id, { maxAge: 60 * 60 * 1000 });
-		// res.cookie("nombre_original", req.body.nombre_original, {
-		// 	maxAge: 60 * 60 * 1000,
-		// });
+		res.send(resultado)
 		//return res.redirect("/peliculas/agregar/datos_duros");
-		return res.redirect("/peliculas/agregar/copiarfa");
 	},
 
 	datosDuros_Form: (req, res) => {
-		// return res.send(req.session.agregarPelicula.imagen)
+		return res.send(req.session.datosDuros);
 		return res.render("Agregar2Form", {
 			data_entry: req.session.agregarPelicula,
 		});
@@ -131,3 +121,18 @@ module.exports = {
 		return res.send("Estoy en guardar3");
 	},
 };
+
+const obtenerDatosDelProducto = async (form) => {
+	// API Details
+	let lectura =
+		(form.fuente == "TMDB")
+			? await details_TMDB_funcion.API(form.tmdb_id, form.rubroAPI)
+			: {};
+	// Obtener la info para la vista 'Datos Duros'
+	form.rubroAPI == "movie" ? (rubro = "procesarPelicula_TMDB") : "";
+	form.rubroAPI == "tv" ? (rubro = "procesarTV_TMDB") : "";
+	form.rubroAPI == "collection" ? (rubro = "procesarColeccion_TMDB") : "";
+
+	let resultado = await details_TMDB_funcion[rubro](form, lectura);
+	return resultado;
+}

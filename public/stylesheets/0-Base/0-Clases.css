@@ -1,19 +1,25 @@
-.absolute {position: absolute; top:0px; left: 0px}
+/* Flexbox */
 .align-center {align-items: center;}
-.pointer {cursor: pointer;}
-.border {border: red 1px solid}
-.cursiva {font-style: italic;}
-.dropdown-content {display: none;}
 .flex-col {display: flex;flex-direction: column;}
 .flex-row {display: flex;flex-direction: row;}
 .grow {flex-grow: 1;}
-.mostrar {display: block;}
-.ocultar {display: none;}
-.relative {position: relative;}
 .space-between {justify-content: space-between;}
+.space-evenly {justify-content: space-evenly;}
 .wrap {flex-wrap: wrap;}
 
-.resultadoInvalido {background-color: #FB0404;}
-.resultadoExitoso {background-color: #0A620F;}
-.resultadoInvalido, .resultadoExitoso {padding: 3px 10px; color: white; font-weight: bold;}
+/* Resultados */
+.resultadoExitoso {background-color: var(--verde);}
+.resultadoEnEspera {background-color: var(--gris-oscuro);}
+.resultadoInvalido {background-color: var(--rojo);}
+.resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
+	{padding: 3px 10px; color: white; font-weight: bold;}
+
+/* Otras */
+.absolute {position: absolute; top:0px; left: 0px}
+.relative {position: relative;}
+.pointer {cursor: pointer;}
+.border {border: red 1px solid}
+.dropdown-content {display: none;}
+.mostrar {display: block;}
+.ocultar {display: none;}
 .mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul); border: var(--azul) solid 2px;}

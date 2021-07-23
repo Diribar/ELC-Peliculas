@@ -1,7 +1,0 @@
-VISTA
-- Opción de retroceder a Palabras Clave
-- Conseguirle una imagen para "película no encontrada"
-- Conseguirle una imagen para "colección no encontrada"
-
-FINAL
-- Enviarle la API a Datos Duros

@@ -230,7 +230,6 @@ let ordenarDatos = (datos, palabras_clave) => {
 };
 
 let letrasIngles = (palabra) => {
-	//console.log(palabra)
 	word = palabra
 		.toLowerCase()
 		.replace(/-/g, " ")
@@ -242,6 +241,7 @@ let letrasIngles = (palabra) => {
 		.replace(/ü/g, "u")
 		.replace(/ñ/g, "n")
 		.replace(/:/g, "")
+		.replace(/[.]/g, "")
 		.replace(/¿/g, "")
 		.replace(/[?]/g, "")
 		.replace(/!/g, "");

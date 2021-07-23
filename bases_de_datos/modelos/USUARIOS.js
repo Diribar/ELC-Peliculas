@@ -6,6 +6,7 @@ module.exports = (sequelize, dt) => {
 		contrasena: { type: dt.STRING(50) },
 		status_registro_usuario_id: { type: dt.INTEGER },
 		rol_usuario_id: { type: dt.INTEGER },
+		autorizado_fa: { type: dt.BOOLEAN },
 		nombre: { type: dt.STRING(50) },
 		apellido: { type: dt.STRING(50) },
 		apodo: { type: dt.STRING(50) },
