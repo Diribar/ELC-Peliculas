@@ -61,5 +61,5 @@ const verificarRepetidos = async (rubroAPI, fuente, id) => {
 	let resultado = (rubroAPI == "movie")
 		? await BD_peliculas.AveriguarSiYaExiste(parametro, id)
 		: await BD_colecciones.AveriguarSiYaExiste(parametro, id);
-	return !!resultado
+	return resultado
 };
