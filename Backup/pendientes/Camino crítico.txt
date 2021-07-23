@@ -11,6 +11,3 @@ OK	- Crear el API
 OK	- Procesar
 	- Envío a "Agregar2"
 
-Datos Duros:
-	- Bloquear datos de API
-	- Completar saldo a mano

@@ -10,3 +10,7 @@ DESAMBIGUAR
 	- Nuevos (verde)
 	- Ingreso Manual (rojo)
 	- YaEnBD (gris)
+
+DATOS DUROS:
+- Bloquear datos de API
+- Completar saldo a mano
