@@ -1,7 +1,6 @@
 /* Partes específicas del formulario */
 #data_entry {min-height: 180px;}
 
-#data_entry h1 {margin-bottom: 5px;}
 #data_entry select {line-height: normal;border-radius: 5px;}
 #data_entry #fuentesDeInfo {margin-top: 10px; font-style: italic;}
 #data_entry a {color: var(--verde);}

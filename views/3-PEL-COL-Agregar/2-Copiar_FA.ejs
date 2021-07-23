@@ -7,9 +7,9 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<h1 id="paso2">Importala desde Film Affinity</h1>
+		<h2 id="paso2">Importala desde Film Affinity</h2>
 		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
-			<h2>Elegí el Rubro</h2>
+			<h3>Elegí el Rubro</h3>
 			<div class="relative">
 				<select name="rubroAPI">
 					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
@@ -28,7 +28,7 @@
 					</i>
 				<% } %>
 			</div>
-			<h2>Ingresá la dirección de la página</h2>
+			<h3>Ingresá la dirección de la página</h3>
 			<div class="relative flex-row">
 				<input type="text" class="input"
 					value="<%= locals.data_entry ? data_entry.direccion : null %>"
@@ -52,7 +52,7 @@
 					</i>
 				<% } %>
 			</div>
-			<h2>Ingresá el contenido del cuerpo de la página</h2>
+			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="relative flex-row">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
 					value="<%= locals.data_entry ? data_entry.contenido : null %>" autofocus class="input"

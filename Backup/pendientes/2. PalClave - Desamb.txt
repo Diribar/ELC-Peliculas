@@ -1,6 +1,3 @@
-- Opción de retroceder a Palabras Clave con el data entry
-- "data_entry" en el formulario
-
 - En encontrados, decir cuántos son nuevos
 - En la API, discriminar las películas/colecciones nuevas y las ya agregadas
 	- Resultados nuevas

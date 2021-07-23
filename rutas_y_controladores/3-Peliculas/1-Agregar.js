@@ -13,7 +13,12 @@ module.exports = {
 	},
 	palabrasClaveForm: (req, res) => {
 		let autorizado_fa = req.session.usuario.autorizado_fa;
-		return res.render("1-PalabrasClave", {autorizado_fa});
+		let palabras_clave = req.session.palabras_clave;
+		(!palabras_clave) ? palabras_clave = req.cookies.palabras_clave : "";
+		return res.render("1-PalabrasClave", {
+			autorizado_fa,
+			palabras_clave,
+		});
 	},
 	contador: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
@@ -33,25 +38,30 @@ module.exports = {
 				errores: erroresValidacion.mapped(),
 			});
 		}
-		// Obtener la API
-		let lectura = await search_TMDB_funcion.search(palabras_clave);
-		//return res.send(lectura);
-		res.cookie("palabras_clave", lectura.palabras_clave, {
+		// Eliminar el campo 'fuente' de 'datos de cabecera' de desambiguarTMDB anteriores
+		res.clearCookie("fuente");
+		// Guardar las palabras clave en session y cookie
+		req.session.palabras_clave = palabras_clave;
+		res.cookie("palabras_clave", palabras_clave, {
 			maxAge: 60 * 60 * 1000,
 		});
-		req.session.peliculasTMDB = lectura;
+		// Obtener la API
+		req.session.peliculasTMDB = await search_TMDB_funcion.search(palabras_clave);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 	desambiguarTMDB_Form: async (req, res) => {
+		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
 			? (lectura = await search_TMDB_funcion.search(req.cookies.palabras_clave))
 			: "";
 		// return res.send(lectura);
+		// console.log(!!req.cookies.fuente);
 		return res.render("2-Desamb_TMDB", {
 			hayMas: lectura.hayMas,
 			resultados: lectura.resultados,
 			palabras_clave: lectura.palabras_clave,
+			habilitarFlechaDerechaConLink: !!req.cookies.fuente,
 		});
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
