@@ -81,7 +81,9 @@ const contador = async (palabras_clave) => {
 			formatoAnterior = "resultadoExitoso";
 			if (lectura.hayMas) {
 				oracion =
-					"Hay demasiadas coincidencias, intentá ser más específico";
+					"Hay demasiadas coincidencias (+" +
+					lectura.cantResultados +
+					"), intentá ser más específico";
 			} else {
 				if (lectura.cantResultados == 0) {
 					oracion = "No encontramos coincidencias con estas palabras";

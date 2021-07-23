@@ -7,28 +7,44 @@
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<section class="flex-col">
-			<h1 id="paso2">Alternativa al ingreso de Palabras Clave</h1>
-			<p>Si no encontraste tu película a partir de las <em>palabras clave</em>,</p>
-			<p>vamos a intentar otro método</p>
-		</section>
-		<h2>
-			Ingresá la dirección de la Película en Film Affinity 
-			<i class="fas fa-question-circle" id="pasos">
-				<span class="mensajeAyuda ocultar">
-					<strong><u>Pasos</u></strong>:<br>
-					1. Buscá la película en Film Affinity<br>
-					2. Una vez encontrada, hacé <em>click</em> sobre ella<br>
-					3. Copiá la dirección (url)<br>
-					4. Pegá la url en este formulario<br>
-				</span>
-			</i>
-		</h2>
-		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-row space-between">
-			<div class="relative flex-col">
+		<h1 id="paso2">Copiado de información desde Film Affinity</h1>
+		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
+			<h2>Ingresá la dirección de la página</h2>
+			<div class="relative flex-row">
+				<input type="text">
+				<i class="fas fa-question-circle" class="pasos">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<strong><u>Pasos</u></strong>:<br>
+
+						<li>Buscá la película en Film Affinity</li>
+						<li>Seleccioná la dirección (url)</li>
+						<li>Copiala</li>
+						<li>Pegala en el casillero de la izquierda</li>
+					</ul>
+				</i>
+				<% if (locals.errores) { %>
+					<i class="fas fa-times-circle">
+						<span class="mensajeError"><%= errores.link.msg %> </span>
+					</i>
+				<% } %>
+			</div>
+			<h2>Ingresá la información del cuerpo de la página</h2>
+			<div class="relative flex-row">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
 					value="<%= locals.link ? link : null %>" autofocus
 				></textarea>
+				<i class="fas fa-question-circle" class="pasos">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<strong><u>Pasos</u></strong>:<br>
+						<li>
+							En la página de FA, seleccioná la información desde<br>
+							el <strong><em><u>título en castellano</u></em></strong> 
+							hasta el final de la <strong><em><u>sinopsis</u></em></strong>
+						</li>
+						<li>Copiala</li>
+						<li>Pegala en el casillero de la izquierda</li>
+					</ul>
+				</i>
 				<% if (locals.errores) { %>
 					<i class="fas fa-times-circle">
 						<span class="mensajeError"><%= errores.link.msg %> </span>

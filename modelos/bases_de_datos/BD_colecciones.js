@@ -11,9 +11,15 @@ module.exports = {
 	},
 
 	ObtenerPorParametro: (parametro, valor) => {
-		return entidad.findOne({
+		return entidad.findAll({
 			where: { [parametro]: valor },
 		});
+	},
+
+	AveriguarSiYaExiste: (parametro, valor) => {
+		return entidad
+			.count({ where: { [parametro]: valor } })
+			.then((n) => n > 0);
 	},
 
 	ObtenerPorID: (ID) => {

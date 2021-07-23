@@ -16,9 +16,15 @@ module.exports = {
 		});
 	},
 
+	AveriguarSiYaExiste: (parametro, valor) => {
+		return entidad
+			.count({where: { [parametro]: valor }})
+			.then((n) => n > 0);
+	},
+
 	ObtenerPorID: (ID) => {
 		return entidad.findByPk(ID, {
-			include: ["coleccion_pelicula", "categoria", "subcategoria"]
+			include: ["coleccion_pelicula", "categoria", "subcategoria"],
 		});
 	},
 

@@ -59,7 +59,7 @@ const verificarRepetidos = async (rubroAPI, fuente, id) => {
 	if (!rubroAPI || !id) return false;
 	let parametro = (fuente == "TMDB") ? "tmdb_id" : "fa_id"
 	let resultado = (rubroAPI == "movie")
-		? await BD_peliculas.ObtenerPorParametro(parametro, id)
-		: await BD_colecciones.ObtenerPorParametro(parametro, id);
+		? await BD_peliculas.AveriguarSiYaExiste(parametro, id)
+		: await BD_colecciones.AveriguarSiYaExiste(parametro, id);
 	return !!resultado
 };

@@ -1,9 +1,10 @@
 VISTA
-- Cambiar los pasos de "ayuda"
-- Eliminar "verificar" y disparar el feedback del input cuando cambia
-- Agregar campo "Rubro" (colección/película) con mensaje de error si está vacío
-- Agregar campo FA_id con mensaje de error si está vacío
-- Inactivar "avanzar" mientras el textarea/FA_id/Rubro tengan errores
+- Agregar campo "Rubro" (colección/película)
+- Errores on-line:
+	- Campo vacío
+	- Input erróneo
+- Eliminar "verificar"
+- Inactivar "avanzar" mientras hayan errores
 
 BACK-END
 - Validaciones back-end
