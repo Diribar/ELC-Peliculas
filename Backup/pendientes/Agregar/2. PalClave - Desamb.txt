@@ -6,6 +6,6 @@
 	- Resultados nuevas
 	- Resultados yaEnBD
 - Mostrar los productos en el siguiente orden:
-	- Nuevos (azul)
+	- Nuevos (verde)
 	- Ingreso Manual (rojo)
-	- YaEnBD (verde)
+	- YaEnBD (gris)
