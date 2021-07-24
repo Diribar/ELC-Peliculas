@@ -40,26 +40,31 @@ module.exports = {
 		return resultado;
 	},
 
-	productoRepetido: async (datos) => {
+	productoYaEnBD: async (datos) => {
 		// Definir variables
 		rubroAPI = datos.rubroAPI;
 		tmdb_id = datos.tmdb_id;
 		fa_id = datos.fa_id;
-		// Verificar repetidos
-		TMDB_repetido = !!tmdb_id ? await verificarRepetidos(rubroAPI, "TMDB", tmdb_id) : "";
-		FA_repetido = !!fa_id ? await verificarRepetidos(rubroAPI, "FA", fa_id) : "";
-		//console.log([TMDB_repetido, FA_repetido]);
+		// Verificar YaEnBD
+		TMDB_yaEnBD = !!tmdb_id
+			? await AveriguarSiYaEnBD(rubroAPI, "TMDB", tmdb_id)
+			: "";
+		FA_yaEnBD = !!fa_id
+			? await AveriguarSiYaEnBD(rubroAPI, "FA", fa_id)
+			: "";
+		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
 		// Enviar el resultado
-		return [TMDB_repetido, FA_repetido];
+		return [TMDB_yaEnBD, FA_yaEnBD];
 	},
 };
 
-const verificarRepetidos = async (rubroAPI, fuente, id) => {
+const AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || !id) return false;
 	let parametro = (fuente == "TMDB") ? "tmdb_id" : "fa_id"
-	let resultado = (rubroAPI == "movie")
-		? await BD_peliculas.AveriguarSiYaExiste(parametro, id)
-		: await BD_colecciones.AveriguarSiYaExiste(parametro, id);
+	let resultado =
+		rubroAPI == "movie"
+			? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
+			: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
 	return resultado
 };

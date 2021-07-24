@@ -11,7 +11,7 @@ const soloPropietario = require("../../middlewares/usuarios/soloPropietario");
 const validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
 const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
 const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
-const validarProdRepet = require("../../middlewares/varios/productoRepetido");
+const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // Controladores de Crear - APIs
 router.get("/agregar/api/contador/", agregar.contador);
@@ -29,11 +29,11 @@ router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
 router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
 
 // 3. Datos Duros
-router.get("/agregar/datos_duros", soloUsuarios, validarProdRepet, agregar.datosDuros_Form);
+router.get("/agregar/datos_duros", soloUsuarios, validarProdEnBD, agregar.datosDuros_Form);
 router.post("/agregar/datos_duros", soloUsuarios, validarDatosDuros, agregar.datosDuros_Guardar);
 
 // 4. Datos Personalizados
-router.get("/agregar/datos_personalizados", soloUsuarios, validarProdRepet, agregar.DatosPersForm);
+router.get("/agregar/datos_personalizados", soloUsuarios, validarProdEnBD, agregar.DatosPersForm);
 router.post("/agregar/datos_personalizados", soloUsuarios, validarDatosPers, agregar.DatosPersGuardar);
 
 // Controladores RUD (método GET)
@@ -47,10 +47,10 @@ router.post("/detalle/editar/:id", soloUsuarios, RUD.editarGuardar);
 router.post("/detalle/eliminar/:id", soloUsuarios, RUD.bajaGuardar);
 
 // Controladores de Opciones
-router.get('/:id/:id', opciones.tipo);
-router.post('/:id/:id', soloUsuarios, opciones.filtros);
-router.get('/:id', opciones.opcion);
-router.get('/', opciones.home);
+//router.get('/:id/:id', opciones.tipo);
+//router.post('/:id/:id', soloUsuarios, opciones.filtros);
+//router.get('/:id', opciones.opcion);
+//router.get('/', opciones.home);
 
 // Fin
 module.exports = router;

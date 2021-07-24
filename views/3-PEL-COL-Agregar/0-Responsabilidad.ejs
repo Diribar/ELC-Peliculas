@@ -10,20 +10,22 @@
 		Agregar una Película o Colección a nuestra Base de Datos
 	</button>
 	<section id="data_entry"> <!--RECUADRO DEL FORMULARIO -->
-		<h2 style="font-weight: bold">Estimad<%= usuario.sexo.letra_final %> <%= usuario.nombre %>:</h2>
+		<p id="subtitulo">Estimad<%= usuario.sexo.letra_final %> <%= usuario.nombre %>:</p>
 		<p>
 			Estamos dándote la posibilidad de ingresar los datos de una <em>Película</em>
 			o <em>Colección de Películas</em> a nuestra base de datos. 
 			El contenido de nuestra base de datos es algo <u>diferencial</u> de nuestro sitio. 
 			Por favor tené en cuenta que:
 		</p>
-		<p>1. Cumpla con alguna de estas características, o ambas:</p>
-		<span>- Que esté relacionada con la Fe Católica</span><br>
-		<span>- Que tenga valores que contribuyan con una sociedad mejor.</span><br>		
-		<p>
-			2. Se espera de vos que conozcas la película, y puedas opinar sobre ella.
-			Por favor sé lo más preciso que puedas con la información  que introduzcas.
-		</p>
+		<ol>
+			<li>Cumpla con alguna de estas características, o ambas:</li>
+			<span>- Que esté relacionada con la Fe Católica</span><br>
+			<span>- Que tenga valores que contribuyan con una sociedad mejor.</span><br>
+			<li>
+				Se espera de vos que conozcas la película, y puedas opinar sobre ella.
+				Por favor sé lo más preciso que puedas con la información  que introduzcas.
+			</li>
+		</ol>
 		<p style="text-align: center;">¡Gracias!</p>
 		<div id="final" class="flex-row">
 			<button onclick="history.back()" id="salir">Salir</button>

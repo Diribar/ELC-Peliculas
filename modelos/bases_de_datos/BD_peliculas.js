@@ -16,7 +16,7 @@ module.exports = {
 		});
 	},
 
-	AveriguarSiYaExiste: (parametro, valor) => {
+	AveriguarSiYaEnBD: (parametro, valor) => {
 		return entidad
 			.count({where: { [parametro]: valor }})
 			.then((n) => n > 0);

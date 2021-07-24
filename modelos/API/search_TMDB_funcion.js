@@ -1,6 +1,9 @@
+// Require
 const search_TMDB = require("./search_TMDB_fetch");
 const details_TMDB = require("./details_TMDB_fetch");
+const funciones = require("../funciones");
 
+// Función a exportar
 module.exports = {
 	search: async (palabras_clave) => {
 		palabras_clave = letrasIngles(palabras_clave);
@@ -14,7 +17,7 @@ module.exports = {
 					lectura = await search_TMDB(palabras_clave, rubroAPI, page)
 						.then((n) => {return infoQueQueda(n);})
 						.then((n) => {return estandarizarNombres(n, rubroAPI);})
-						.then((n) => {return coincideConPalabraClave(n, palabras_clave);})
+						.then((n) => {return eliminarSiNoCoincideConPalabraClave(n, palabras_clave);})
 						.then((n) => {return eliminarIncompletos(n);});
 					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubroAPI);
 					datos = unificarResultados(lectura, rubroAPI, datos, page);
@@ -22,6 +25,7 @@ module.exports = {
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
+			datos = await averiguarSiYaEnBD(datos);
 			datos.hayMas = hayMas(datos, page, rubrosAPI)
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
@@ -104,7 +108,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 	};
 };
 
-let coincideConPalabraClave = (dato, palabras_clave) => {
+let eliminarSiNoCoincideConPalabraClave = (dato, palabras_clave) => {
 	let palabras = palabras_clave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		for (palabra of palabras) {
@@ -188,6 +192,21 @@ let eliminarDuplicados = (datos) => {
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
 	});
+	return datos;
+};
+
+let averiguarSiYaEnBD = async (datos) => {
+	for (let i=0; i<datos.resultados.length; i++) {
+		let dato = {
+			rubroAPI: datos.resultados[i].rubroAPI,
+			tmdb_id: datos.resultados[i].tmdb_id,
+		};
+		let [YaEnBD] = await funciones.productoYaEnBD(dato);
+		datos.resultados[i] = {
+			...datos.resultados[i],
+			YaEnBD: YaEnBD,
+		};
+	}
 	return datos;
 };
 
