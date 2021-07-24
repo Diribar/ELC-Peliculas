@@ -18,8 +18,11 @@ module.exports = {
 
 	AveriguarSiYaEnBD: (parametro, valor) => {
 		return entidad
-			.count({where: { [parametro]: valor }})
-			.then((n) => n > 0);
+			.findOne({where: { [parametro]: valor }})
+			.then((n) => {
+				!!n ? aux = n.id : aux = false
+				return aux
+			});
 	},
 
 	ObtenerPorID: (ID) => {

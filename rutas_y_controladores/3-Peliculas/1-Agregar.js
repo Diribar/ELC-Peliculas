@@ -14,7 +14,7 @@ module.exports = {
 	palabrasClaveForm: (req, res) => {
 		let autorizado_fa = req.session.usuario.autorizado_fa;
 		let palabras_clave = req.session.palabras_clave;
-		(!palabras_clave) ? palabras_clave = req.cookies.palabras_clave : "";
+		!palabras_clave ? (palabras_clave = req.cookies.palabras_clave) : "";
 		return res.render("1-PalabrasClave", {
 			autorizado_fa,
 			palabras_clave,
@@ -46,7 +46,9 @@ module.exports = {
 			maxAge: 60 * 60 * 1000,
 		});
 		// Obtener la API
-		req.session.peliculasTMDB = await search_TMDB_funcion.search(palabras_clave);
+		req.session.peliculasTMDB = await search_TMDB_funcion.search(
+			palabras_clave
+		);
 		return res.send(req.session.peliculasTMDB);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
@@ -54,7 +56,9 @@ module.exports = {
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
-			? (lectura = await search_TMDB_funcion.search(req.cookies.palabras_clave))
+			? (lectura = await search_TMDB_funcion.search(
+					req.cookies.palabras_clave
+			  ))
 			: "";
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
@@ -101,8 +105,12 @@ module.exports = {
 		// Continuará...
 		// req.session.peliculaFA = req.body;
 		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
-		res.send(resultado)
+		res.send(resultado);
 		//return res.redirect("/peliculas/agregar/datos_duros");
+	},
+
+	yaEnBD_Form: (req, res) => {
+		return res.send("La Película / Colección ya está en nuestra BD");
 	},
 
 	datosDuros_Form: (req, res) => {

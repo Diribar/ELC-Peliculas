@@ -11,3 +11,6 @@ DESAMBIGUAR TMDB
 	- Nuevos (verde)
 	- Ingreso Manual (rojo)
 	- YaEnBD (gris)
+- YaEnBD
+	- Agregarles el campo con el ID
+	- Redireccionar a YaEnBD con el ID y el rubro
