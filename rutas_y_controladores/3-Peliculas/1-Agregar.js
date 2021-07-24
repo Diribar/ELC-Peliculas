@@ -47,6 +47,7 @@ module.exports = {
 		});
 		// Obtener la API
 		req.session.peliculasTMDB = await search_TMDB_funcion.search(palabras_clave);
+		return res.send(req.session.peliculasTMDB);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 	desambiguarTMDB_Form: async (req, res) => {

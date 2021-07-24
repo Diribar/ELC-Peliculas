@@ -1,5 +1,4 @@
 PALABRAS CLAVE - BACK-END
-- API, agregar el campo 'yaEnBD'
 - En controladora, abrir en 2 variables:
 	- Nuevas
 	- Ya en BD
