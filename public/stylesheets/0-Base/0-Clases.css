@@ -5,6 +5,7 @@
 .grow {flex-grow: 1;}
 .space-between {justify-content: space-between;}
 .space-evenly {justify-content: space-evenly;}
+.space-around {justify-content: space-around;}
 .wrap {flex-wrap: wrap;}
 
 /* Resultados */

@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	// Declarar las variables
 	let palabras_clave = document.querySelector("input");
-	let despues = palabras_clave.value;
+	let despues = "";
 	let form = document.getElementById("data_entry");
 	let button = document.querySelector("button");
 	let iconoAyuda = document.querySelector(".fa-question-circle");

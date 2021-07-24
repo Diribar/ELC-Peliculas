@@ -1,25 +1,27 @@
 <%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 <link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desambiguar.css">
+<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Desamb_TMDB.css">
 <%- include('0-AntesPA', {titulo: "PEL-Agregar"}) %>
 
 <div class="cuerpo flex-col grow">
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<section class="flex-col" id="data_entry">
-		<section class="flex-col">
-			<h1 id="paso2">Paso 2 de 4: Hacé click sobre tu opción</h1>
-			<% if (!hayMas) { %>
-				<% if (resultados.length == 1) { %>
-					<p>Encontramos una sola coincidencia.</p>
-				<% } else { %>
-					<p>Estas son las <%= resultados.length %> coincidencias que encontramos.</p>
+		<div class="flex-col">
+			<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
+			<p>
+				<% if (!hayMas) { %>
+					<% if (resultados.length == 1) { %>
+						Encontramos una sola coincidencia.
+					<% } else { %>
+						Estas son las <%= resultados.length %> coincidencias que encontramos.
+					<% } %>
+				<% } else {%>
+					Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.
 				<% } %>
-			<% } else {%>
-				<p>Encontramos muchos casos. Te mostramos <%= resultados.length %> coincidencias.</p>
-			<% } %>
+			</p>
 			<p><u>Palabra/s clave</u>: <strong><%= palabras_clave %></strong></p>
-		</section>
-		<section class="flex-row space-between"  id="resultadoGeneral">
+		</div>
+		<div class="flex-row space-between"  id="resultadoGeneral">
 			<% for (let i=0; i < resultados.length + 2; i++) { %>
 				<form action="/peliculas/agregar/desambiguar" method="POST">
 					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
@@ -66,7 +68,15 @@
 					</button>
 				</form>
 			<% } %>
-		</section>
+		</div>
+		<div id="flechas" class="flex-row space-between">
+			<a href="/peliculas/agregar/palabras_clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
+			<% if (habilitarFlechaDerechaConLink) { %>
+				<a href="/peliculas/agregar/datos_duros" id="conLink"><i class="fas fa-arrow-alt-circle-right"></i></a>
+			<% } else { %>
+				<i class="fas fa-arrow-alt-circle-right" id="sinLink"></i>
+			<% } %>
+		</div>
 	</section>
 </div>
 <%- include('0-DespuesPA') %>

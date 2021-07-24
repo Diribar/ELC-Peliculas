@@ -8,19 +8,19 @@
 	<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 	<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
 		<section class="flex-row space-between"> 
-			<h1>Paso 1 de 4: Ingresá Palabras Clave</h1>
+			<h2>Paso 1 de 4: Ingresá Palabras Clave</h2>
 			<% if (autorizado_fa) { %>
 				<a href="/peliculas/agregar/copiarfa">
 					<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" height="30px" title="FA">
 				</a>			
 			<% } %> 
 		</section>
-		<h2>Ingresá palabras del Título de la Película</h2>
+		<h3>Ingresá palabras del Título de la Película</h3>
 		<section class="flex-row space-between">
 			<div class="relative flex-col ">
 				<div>
 					<input type="text" name="palabras_clave" placeholder="Escribilo acá"
-						value="<%= locals.palabras_clave ? palabras_clave : null %>"
+						value="<%= palabras_clave ? palabras_clave : null %>"
 						autofocus autocomplete="off"
 					>
 					<i class="fas fa-question-circle">

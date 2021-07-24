@@ -7,3 +7,6 @@ Guardar Data Entry más:
 
 Mover la imagen a la carpeta definitiva
 Cambiarle el nombre
+Borrar los campos de cookies y session
+	- Palabras Clave
+	- "Cabecera" de desambiguar
