@@ -13,7 +13,7 @@
 #resultadoIndividual {background-color: var(--celeste-oscuro);}
 #resultadoInvalido {background-color: var(--rojo-claro);}
 #resultadoIndividual:hover {background-color: var(--azul); color: var(--amarillo-claro);}
-#resultadoInvalido:hover {background-color: var(--rojo); color: var(--amarillo-claro);}
+#resultadoInvalido:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
 
 /* Partes del resultado */
 #imagenChica {max-height: 200px; border-radius: 15px; }

@@ -9,9 +9,9 @@
 .wrap {flex-wrap: wrap;}
 
 /* Resultados */
-.resultadoExitoso {background-color: var(--verde);}
+.resultadoExitoso {background-color: var(--verde-oscuro);}
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.resultadoInvalido {background-color: var(--rojo);}
+.resultadoInvalido {background-color: var(--rojo-oscuro);}
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
 

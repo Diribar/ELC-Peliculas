@@ -2,7 +2,7 @@
 #data_entry {min-height: 180px;}
 
 #data_entry #fuentesDeInfo {margin: 10px 0 0 15px; font-style: italic;}
-#data_entry a {color: var(--verde);}
+#data_entry a {color: var(--verde-oscuro);}
 #data_entry label {align-self: flex-end;}
 
 #data_entry .fa-times-circle {left: -20px; top: 10px;}

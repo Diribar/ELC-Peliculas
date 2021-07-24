@@ -8,8 +8,8 @@ body {
 	--gris-claro: RGB(242,242,242);
 	--gris-oscuro: #757575;
 	--naranja-oscuro: #F57C00;
-	--rojo: RGB(192,80,77);
 	--rojo-claro: RGB(255,189,189);
-	--verde:RGB(79,98,40);
-	--verde-claro: RGB(226,240,217)
+	--rojo-oscuro: RGB(192,80,77);
+	--verde-claro: RGB(226,240,217);
+	--verde-oscuro:RGB(79,98,40);
 }
