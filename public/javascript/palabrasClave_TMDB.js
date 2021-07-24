@@ -65,14 +65,26 @@ const contador = async (palabras_clave) => {
 		let link = "/peliculas/agregar/api/contador/?palabras_clave=" + palabras_clave;
 		// Averiguar cantidad de coincidencias
 		let lectura = await fetch(link).then((n) => n.json());
+		let prod_Nuevos = lectura.resultados.filter((n) => n.YaEnBD != false).length;
 		// Determinar oracion y formato
-		let oracion = "";
 		let formatoVigente = "";
 		// Resultado exitoso
 		if (lectura.cantResultados > 0 && !lectura.hayMas) {
-			lectura.cantResultados > 1 ? (s = "s") : (s = "");
-			oracion =
-				"Encontramos " + lectura.cantResultados + " coincidencia" + s;
+			lectura.cantResultados > 1 ? (s1 = "s") : (s1 = "");
+			oracion1 = "Encontramos " + lectura.cantResultados + " coincidencia" + s1 +", ";
+			prod_Nuevos > 1 ? (s2 = "s") : (s2 = "");
+			prod_Nuevos == lectura.cantResultados
+				? s2 == ""
+					? (oracion2 = "que ya está en nuestra BD")
+					: (oracion2 = "todas ya están en nuestra BD")
+				: prod_Nuevos
+				? s2 == ""
+					? (oracion2 = "sólo 1 no está en nuestra BD")
+					: (oracion2 = prod_Nuevos + " no están en nuestra BD")
+				: s1 == ""
+				? (oracion2 = "que no está en nuestra BD")
+				: (oracion2 = "ninguna está en nuestra BD");
+			oracion = oracion1 + oracion2
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
 		} else {

@@ -1,11 +1,3 @@
-PALABRAS CLAVE - BACK-END
-- En controladora, abrir en 2 variables:
-	- Nuevas
-	- Ya en BD
-
-PALABRAS CLAVE - FRONT-END
-- En encontrados, decir cuántos son nuevos
-
 DESAMBIGUAR TMDB
 - Mostrar los productos en el siguiente orden:
 	- Nuevos (verde)
