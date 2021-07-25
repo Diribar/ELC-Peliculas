@@ -22,52 +22,9 @@
 			<p><u>Palabra/s clave</u>: <strong><%= palabras_clave %></strong></p>
 		</div>
 		<div class="flex-row space-between"  id="resultadoGeneral">
-			<% for (let i=0; i < resultados.length + 2; i++) { %>
-				<form action="/peliculas/agregar/desambiguar" method="POST">
-					<input type="text" name="palabras_clave" value="<%= palabras_clave %>" class="ocultar">
-					<% if (i < resultados.length) { %>
-						<% fuente = "TMDB" %>
-						<% tmdb_id = resultados[i].tmdb_id %>
-						<% rubroAPI = resultados[i].rubroAPI %>
-						<% lanzamiento = resultados[i].lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
-						<% resultado = "resultadoIndividual" %>
-						<% imagen_src = "https://image.tmdb.org/t/p/original" + resultados[i].avatar %>
-						<% nombre_original = resultados[i].nombre_original %>
-					<% } else { %>
-						<% fuente = "Manual" %>
-						<% tmdb_id = "" %>
-						<% lanzamiento = "Ingresaré los datos manualmente" %>
-						<% resultado = "resultadoInvalido" %>
-						<% if (i == resultados.length) { %>
-							<% imagen_src = "/imagenes/0-Base/Pelicula.jpg" %>
-							<% nombre_original = "Busco otra película" %>
-							<% rubroAPI = "movie" %>
-						<% } else { %>
-							<% imagen_src = "/imagenes/0-Base/Coleccion.jpg" %>
-							<% nombre_original = "Busco otra colección" %>
-							<% rubroAPI = "collection" %>
-						<% } %>
-					<% } %>
-					<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
-					<input type="text" name="fuente" class="ocultar" value="<%= fuente %>">
-					<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
-					<input type="text" name="tmdb_id" value="<%= tmdb_id %>" class="ocultar">
-					<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
-					<!-- Info a mostrar -->
-					<button type="submit" class="flex-row" id= "<%= resultado %>">
-						<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">
-						<div id="infoPeli" class="flex-col">
-							<p><strong><%= nombre_original %></strong></p>
-							<p class="interlineadoChico"></p>
-							<p><%= lanzamiento %></p>
-							<% if (i < resultados.length) { %>
-								<p class="interlineadoChico"></p>
-								<p><em><%= resultados[i].nombre_castellano %></em></p>
-							<% } %> 
-						</div>
-					</button>
-				</form>
-			<% } %>
+			<%- include('0-Desamb_form1', { prod_nuevos }) %>
+			<%- include('0-Desamb_form2') %>
+			<%- include('0-Desamb_form3', { prod_yaEnBD }) %>
 		</div>
 		<div id="flechas" class="flex-row space-between">
 			<a href="/peliculas/agregar/palabras_clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
