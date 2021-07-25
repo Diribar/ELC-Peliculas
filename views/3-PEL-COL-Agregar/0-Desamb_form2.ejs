@@ -1,11 +1,6 @@
 <% for (let i=0; i < 2; i++) { %>
-	<% if (i == 0) { %>
-		<% rubroAPI = "movie"; %>
-		<% rubro = "pelicula"; %>
-	<% } else { %>
-		<% rubroAPI = "collection"; %>
-		<% rubro = "colección"; %>
-	<% } %>
+	<% i == 0 ? rubroAPI = "movie" : rubroAPI = "collection" %>
+	<% i == 0 ? rubro = "pelicula" : rubro = "colección" %>
 
 	<form action="/peliculas/agregar/desambiguar" method="POST">
 		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
