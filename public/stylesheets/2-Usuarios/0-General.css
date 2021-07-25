@@ -25,15 +25,16 @@
 
 /* Íconos de error */
 #Form .form-grupo .fas {background-color: white; border-radius: 50%; font-size: 1em;}
-#Form .form-grupo .fa-times-circle {color: var(--rojo);}
-#Form .form-grupo .fa-check-circle {color: var(--verde);}
+#Form .form-grupo .fa-times-circle {color: var(--rojo-oscuro);}
+#Form .form-grupo .fa-check-circle {color: var(--verde-oscuro);}
 #Form .form-grupo #eye {right: 5px}
 
 /* Mensajes de error */
 #Form .form-grupo .mensajeError {display: none; z-index: 12;}
 #Form .form-grupo .mensajeError {font-size: 1rem; font-weight: normal; width:200px;}
 #Form .form-grupo .mensajeError {border-radius: 6px;padding: 1px 5px; margin-top: 3px;}
-#Form .form-grupo .mensajeError {color: var(--azul); background-color: var(--amarillo-claro); border: red solid 2px;}
+#Form .form-grupo .mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); 
+	border: red solid 2px;}
 #Form .form-grupo .mensajeError {right: -200px; top: 2px;}
 #Form .form-grupo .fa-times-circle:hover .mensajeError {display: inline;}
 
@@ -48,6 +49,6 @@
 #Form form #buttons button {padding: 2px 5px;}
 #Form form #buttons button {font-size: 1rem;font-weight: bold;color:white;}
 #Form form #buttons button {border: solid 2px var(--amarillo-claro);border-radius: 7px;}
-#Form form #buttons button[type="submit"] {background-color: var(--verde);}
-#Form form #buttons button[type="button"] {background-color: var(--azul);}
-#Form form #buttons button#cancelar {background-color: var(--rojo);}
+#Form form #buttons button[type="submit"] {background-color: var(--verde-oscuro);}
+#Form form #buttons button[type="button"] {background-color: var(--azul-oscuro);}
+#Form form #buttons button#cancelar {background-color: var(--rojo-oscuro);}

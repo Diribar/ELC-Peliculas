@@ -13,7 +13,8 @@
 .cuerpo #menu-opciones {margin-left: 40px;}
 .cuerpo #menu-opciones {border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
 .cuerpo #menu-opciones a {padding: 8px 16px;text-decoration: none; display: block;}
-.cuerpo #explicacion {background-color: var(--azul); color: var(--amarillo-claro); padding: 2px 7px; border-radius: 10px;}
+.cuerpo #explicacion {background-color: var(--azul-oscuro); color: var(--amarillo-claro); 
+	padding: 2px 7px; border-radius: 10px;}
 
 /* Menú de Tipos */
 .cuerpo #menu-tipos {margin-left: 40px;}

@@ -1,15 +1,15 @@
 /* COLORES */
 body {
-	--amarillo-claro:RGB(255,242,204);
-	--azul: RGB(37,64,97);
-	--azul-frances: RGB(31,73,125);
-	--celeste-claro: RGB(220,230,242);
+	--amarillo-claro:rgb(255,242,204);
+	--azul-oscuro: rgb(37,64,97);
+	--azul-frances: rgb(31,73,125);
+	--celeste-claro: rgb(220,230,242);
 	--celeste-oscuro: #C7D7EA;
-	--gris-claro: RGB(242,242,242);
-	--gris-oscuro: #757575;
+	--gris-claro: rgb(242,242,242);
+	--gris-oscuro: rgb(100, 100, 100);
 	--naranja-oscuro: #F57C00;
-	--rojo: RGB(192,80,77);
-	--rojo-claro: RGB(255,189,189);
-	--verde:RGB(79,98,40);
-	--verde-claro: RGB(226,240,217)
+	--rojo-claro: rgb(255,189,189);
+	--rojo-oscuro: rgb(192,80,77);
+	--verde-claro: rgb(188, 199, 167);
+	--verde-oscuro:rgb(79,98,40);
 }

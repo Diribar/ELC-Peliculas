@@ -9,9 +9,9 @@
 .wrap {flex-wrap: wrap;}
 
 /* Resultados */
-.resultadoExitoso {background-color: var(--verde);}
+.resultadoExitoso {background-color: var(--verde-oscuro);}
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.resultadoInvalido {background-color: var(--rojo);}
+.resultadoInvalido {background-color: var(--rojo-oscuro);}
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
 
@@ -23,4 +23,5 @@
 .dropdown-content {display: none;}
 .mostrar {display: block;}
 .ocultar {display: none;}
-.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul); border: var(--azul) solid 2px;}
+.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul-oscuro); 
+	border: var(--azul-oscuro) solid 2px;}

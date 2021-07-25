@@ -3,17 +3,21 @@
 .cuerpo #titulo {margin: 0px;}
 
 #data_entry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
-#data_entry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100)}
+#data_entry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
+	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
-#data_entry h2 {align-self: flex-start; color: white;background-color: var(--verde); padding: 5px 10px;border-radius: 10px;}
+#data_entry h2 {align-self: flex-start; color: white; background-color: var(--verde-oscuro); 
+	padding: 5px 10px; border-radius: 10px;}
 #data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
 
 /*  Mensajes de error*/
 #data_entry .fa-times-circle {position: absolute; font-size: 1rem; color: red;}
-#data_entry .mensajeError, #data_entry .mensajeAyuda {position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
-#data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; color: var(--azul); background-color: var(--amarillo-claro); border: red solid 2px;}
+#data_entry .mensajeError, #data_entry .mensajeAyuda 
+	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
+#data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; 
+	color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: red solid 2px;}
 #data_entry .fa-times-circle:hover .mensajeError {display: inline;}
 
 /* Mensajes de ayuda */
