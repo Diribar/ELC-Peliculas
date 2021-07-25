@@ -1,0 +1,27 @@
+<% for (prod_nuevo of prod_nuevos) { %>
+	<% rubroAPI = prod_nuevo.rubroAPI %>
+	<% tmdb_id = prod_nuevo.tmdb_id %>
+	<% lanzamiento = prod_nuevo.lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
+	<% imagen_src = "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>
+	<% nombre_original = prod_nuevo.nombre_original %>
+	<% nombre_castellano = prod_nuevo.nombre_castellano %>
+
+	<form action="/peliculas/agregar/desambiguar" method="POST">
+		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
+		<input type="text" name="fuente" class="ocultar" value="TMDB">
+		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
+		<input type="text" name="tmdb_id" value="<%= tmdb_id %>" class="ocultar">
+		<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
+		<!-- Info a mostrar -->
+		<button type="submit" class="flex-row" id= "prod_nuevo">
+			<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">
+			<div id="infoPeli" class="flex-col">
+				<p><strong><%= nombre_original %></strong></p>
+				<p class="interlineadoChico"></p>
+				<p><%= lanzamiento %></p>
+				<p class="interlineadoChico"></p>
+				<p><em><%= nombre_castellano %></em></p>
+			</div>
+		</button>
+	</form>
+<% } %>

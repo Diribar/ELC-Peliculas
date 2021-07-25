@@ -27,11 +27,11 @@ router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
 router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
+router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
 // 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, validarProdEnBD, agregar.datosDuros_Form);
 router.post("/agregar/datos_duros", soloUsuarios, validarDatosDuros, agregar.datosDuros_Guardar);
-router.get("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
 // 4. Datos Personalizados
 router.get("/agregar/datos_personalizados", soloUsuarios, validarProdEnBD, agregar.DatosPersForm);

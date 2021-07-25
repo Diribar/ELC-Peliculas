@@ -1,8 +1,2 @@
 DESAMBIGUAR TMDB
-- Mostrar los productos en el siguiente orden:
-	- Nuevos (verde)
-	- Ingreso Manual (rojo)
-	- YaEnBD (gris)
-- YaEnBD
-	- Agregarles el campo con el ID
-	- Redireccionar a YaEnBD con el ID y el rubro
+- De las coincidencias, mencionar cuántas no están en BD

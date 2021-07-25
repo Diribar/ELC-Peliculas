@@ -16,9 +16,7 @@ module.exports = {
 
 	procesarPelicula_TMDB: async (form, lectura) => {
 		resultado = {
-			rubroVista: "Película",
 			// Datos obtenidos del formulario
-			palabras_clave: form.palabras_clave,
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
@@ -64,9 +62,7 @@ module.exports = {
 
 	procesarTV_TMDB: async (form, lectura) => {
 		resultado = {
-			rubroVista: "Colección",
 			// Datos obtenidos del formulario
-			palabras_clave: form.palabras_clave,
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
@@ -109,9 +105,7 @@ module.exports = {
 
 	procesarColeccion_TMDB: async (form, lectura) => {
 		resultado = {
-			rubroVista: "Colección",
 			// Datos obtenidos del formulario
-			palabras_clave: form.palabras_clave,
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
 			tmdb_id: form.tmdb_id,
