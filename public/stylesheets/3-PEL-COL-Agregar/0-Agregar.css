@@ -7,7 +7,7 @@
 	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
-#data_entry h2 {align-self: flex-start; color: white; background-color: var(--verde-oscuro); 
+#data_entry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
 	padding: 5px 10px; border-radius: 10px;}
 #data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
