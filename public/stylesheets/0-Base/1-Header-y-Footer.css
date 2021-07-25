@@ -1,5 +1,5 @@
 /* Header */
-header {position: relative;background-color: var(--azul);}
+header {position: relative;background-color: var(--azul-oscuro);}
 header p {display: flex;justify-content: center;align-items:center;}
 header p a {font-family: Monotype Corsiva;font-size: 3rem;font-weight: bold;}
 header p a {color: var(--amarillo-claro);text-decoration: none;}
@@ -11,7 +11,7 @@ header .icono {color: var(--celeste-claro); transform:scale(1.8); top:40%;}
 /* Íconos a la izquierda */
 header .fa-home {left: 40px;}
 header .fa-video {left: 100px}
-header #plus {left: 99px; top:33%; z-index: 3; color: var(--azul); line-height: normal;}
+header #plus {left: 99px; top:33%; z-index: 3; color: var(--azul-oscuro); line-height: normal;}
 
 /* Íconos a la derecha */
 header .fa-user-circle {right:40px;}

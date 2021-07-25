@@ -9,10 +9,11 @@
 #data_entry #flechas i#sinLink {color: var(--celeste-oscuro);}
 
 /* Resultados */
-#resultadoIndividual, #resultadoInvalido {margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:280px; border-radius: 15px;}
-#resultadoIndividual {background-color: var(--celeste-oscuro);}
+#resultadoIndividual, #resultadoInvalido 
+	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:280px; border-radius: 15px;}
+#resultadoIndividual {background-color: var(--verde-claro);}
 #resultadoInvalido {background-color: var(--rojo-claro);}
-#resultadoIndividual:hover {background-color: var(--azul); color: var(--amarillo-claro);}
+#resultadoIndividual:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
 #resultadoInvalido:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
 
 /* Partes del resultado */

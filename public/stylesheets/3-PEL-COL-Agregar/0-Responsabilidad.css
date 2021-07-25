@@ -1,5 +1,5 @@
 /* Formato General */
-#data_entry {max-width: 650px; background-color: var(--azul); border-color: var(--amarillo-claro)}
+#data_entry {max-width: 650px; background-color: var(--azul-oscuro); border-color: var(--amarillo-claro)}
 #data_entry #subtitulo {color: var(--amarillo-claro); font-size: 1.4rem; font-weight: bold;}
 
 /* Formato del contenido */

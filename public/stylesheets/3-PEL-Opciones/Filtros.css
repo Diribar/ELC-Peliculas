@@ -5,11 +5,12 @@
 #filtros * {font-size: 1rem; margin: 0;}
 
 /* Filtros personales guardados */
-#filtro-sup {background-color: var(--azul);padding: 20px; border-bottom: solid 1px;}
+#filtro-sup {background-color: var(--azul-oscuro);padding: 20px; border-bottom: solid 1px;}
 #filtro-sup {border-top-left-radius: 10px; border-top-right-radius: 10px;}
 #filtros #personalizado h1 {color: var(--celeste-claro);font-weight: bold;}
 #filtros #personalizado select {font-weight: bold; margin-bottom: 0px;}
-#filtros #personalizado select, #filtros #personalizado option {color: var(--azul);  background-color: var(--amarillo-claro);}
+#filtros #personalizado select, #filtros #personalizado option 
+	{color: var(--azul-oscuro);  background-color: var(--amarillo-claro);}
 
 /* Filtros actuales */
 #filtro-inf {background-color: var(--gris-claro); padding: 20px;}

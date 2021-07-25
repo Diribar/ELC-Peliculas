@@ -6,12 +6,13 @@
 	background-color: var(--gris-claro);
 	border-radius: 20px;
 	width: 70%;
-	box-shadow: 0px 0px 20px var(--azul);
+	box-shadow: 0px 0px 20px var(--azul-oscuro);
 }
 
 /* CUADRO DE TEXTO - TEXTO */
 #cuerpo-listado #cuadro-de-texto * {color:rgb(102,51,0);}
-#cuerpo-listado #cuadro-de-texto h1, #cuerpo-listado #cuadro-de-texto h2 {font-size: 1.2rem;color:var(--azul);margin-bottom: 5px;}
+#cuerpo-listado #cuadro-de-texto h1, #cuerpo-listado #cuadro-de-texto h2 
+	{font-size: 1.2rem;color:var(--azul-oscuro);margin-bottom: 5px;}
 #cuerpo-listado #cuadro-de-texto h2 {margin-top: 15px;}
 #cuerpo-listado #cuadro-de-texto ul {margin-left: 20px;}
 #cuerpo-listado #cuadro-de-texto ul li {margin-bottom: 5px;font-size: 1.1rem;}

@@ -23,4 +23,5 @@
 .dropdown-content {display: none;}
 .mostrar {display: block;}
 .ocultar {display: none;}
-.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul); border: var(--azul) solid 2px;}
+.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul-oscuro); 
+	border: var(--azul-oscuro) solid 2px;}
