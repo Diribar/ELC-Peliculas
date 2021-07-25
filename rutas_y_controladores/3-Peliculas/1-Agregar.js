@@ -59,13 +59,14 @@ module.exports = {
 			? (lectura = await search_TMDB_funcion.search(req.cookies.palabras_clave))
 			: "";
 		resultados = lectura.resultados;
+		coincidencias = resultados.length;
 		let prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
 		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
 		return res.render("2-Desamb_TMDB", {
 			hayMas: lectura.hayMas,
-			resultados,
+			coincidencias,
 			prod_nuevos,
 			prod_yaEnBD,
 			palabras_clave: lectura.palabras_clave,
