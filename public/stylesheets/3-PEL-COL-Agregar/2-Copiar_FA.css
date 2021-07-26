@@ -2,8 +2,8 @@
 #data_entry {min-height: 180px;}
 
 /* Mensajes de error */
-#data_entry .fa-times-circle {left: -20px; top: 10px;}
-#data_entry .mensajeError {left: 0px; top: 20px; max-width: 300px}
+#data_entry .fa-times-circle {left: -20px; top: 5px;}
+#data_entry .mensajeError {left: 0px; top: 15px; max-width: 300px}
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {align-self: center;}
