@@ -145,7 +145,7 @@ window.addEventListener("load", () => {
 		link = link.slice(0, aux);
 		// FA_id no repetido en la BD
 		rubro = rubroAPI.value;
-
+		
 		console.log(rubro);
 		if (direccion.value != "") {
 			// Reemplazar por "no hay error"

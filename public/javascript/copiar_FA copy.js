@@ -48,7 +48,7 @@ const procesarContenido = async (contenido) => {
 	// Procesar los datos de la película
 	let encodedValue = encodeURIComponent(contenido);
 	let url =
-		"/peliculas/agregar/api/procesarcopiado/?contenido=" + encodedValue;
+		"/peliculas/agregar/api/procesarcontenido/?contenido=" + encodedValue;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	resultadoDeBusqueda.innerHTML = "";

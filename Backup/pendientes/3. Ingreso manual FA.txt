@@ -1,6 +1,6 @@
 ERRORES - Revisarlos y mencionarlos
 	- Dirección
-		- FA_id no repetido en la BD
+		- FA_id no repetido en la BD (true/false)
 	- Contenido
 		- Que se pueda importar algún campo
 
