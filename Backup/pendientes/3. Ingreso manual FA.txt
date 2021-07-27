@@ -1,6 +1,6 @@
 ERRORES - Revisarlos y mencionarlos
 	- Dirección
-		- Que exista el FA_id en la url
+		- Que el FA_id exista en la url
 		- FA_id no repetido
 	- Contenido
 		- Que se pueda importar algún campo
