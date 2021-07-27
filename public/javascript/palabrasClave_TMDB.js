@@ -66,38 +66,36 @@ const contador = async (palabras_clave) => {
 		// Averiguar cantidad de coincidencias
 		let lectura = await fetch(link).then((n) => n.json());
 		let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD != false).length;
+		let cantResultados = lectura.cantResultados;
+		let hayMas = lectura.hayMas;
 		// Determinar oracion y formato
 		let formatoVigente = "";
 		// Resultado exitoso
-		if (lectura.cantResultados > 0 && !lectura.hayMas) {
-			lectura.cantResultados > 1 ? (s1 = "s") : (s1 = "");
-			oracion1 = "Encontramos " + lectura.cantResultados + " coincidencia" + s1 +", ";
-			prod_nuevos > 1 ? (s2 = "s") : (s2 = "");
-			prod_nuevos == lectura.cantResultados
-				? s2 == ""
-					? (oracion2 = "que ya está en nuestra BD")
-					: (oracion2 = "todas ya están en nuestra BD")
-				: prod_nuevos
-				? s2 == ""
-					? (oracion2 = "sólo 1 no está en nuestra BD")
-					: (oracion2 = prod_nuevos + " no están en nuestra BD")
-				: s1 == ""
-				? (oracion2 = "que no está en nuestra BD")
-				: (oracion2 = "ninguna está en nuestra BD");
-			oracion = oracion1 + oracion2
+		if (cantResultados > 0 && !hayMas) {
+			oracion = (cantResultados == 1)
+				? ("Encontramos 1 sola coincidencia, " +
+					((prod_nuevos)
+						? "que no está en nuestra BD"
+						: "que ya está en nuestra BD"))
+				: ("Encontramos " + cantResultados + " coincidencias, " +
+					((prod_nuevos == cantResultados)
+						? "ninguna está en nuestra BD"
+						: ((prod_nuevos)
+							? prod_nuevos + " no están en nuestra BD"
+							: "que ya están todas en nuestra BD")))
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
 		} else {
 			// Resultados inválidos
 			formatoVigente = "resultadoInvalido";
 			formatoAnterior = "resultadoExitoso";
-			if (lectura.hayMas) {
+			if (hayMas) {
 				oracion =
 					"Hay demasiadas coincidencias (+" +
-					lectura.cantResultados +
+					cantResultados +
 					"), intentá ser más específico";
 			} else {
-				if (lectura.cantResultados == 0) {
+				if (cantResultados == 0) {
 					oracion = "No encontramos coincidencias con estas palabras";
 				}
 			}
