@@ -8,14 +8,10 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
 
-	// Comportamiento inicial
-	bloquearDireccion(e);
-	bloquearComentario(e);
-
-	window.onload = () => {
-		dataRubroApi();
-		dataDireccion();
-		dataContenido();
+	// Comportamientos cuando se oprimen teclas
+	window.onkeydown = (e) => {
+		bloquearDireccion(e);
+		bloquearComentario(e);
 	};
 
 	// Comportamientos cuando se hace click
@@ -101,23 +97,40 @@ window.addEventListener("load", () => {
 				"Necesitamos que completes esta información";
 		}
 	};
-	let bloquearDireccion = () => {
+	let bloquearDireccion = (e) => {
 		if (
 			// RubroApi tiene algún error o está vacío
-			!iconoError[0].classList.value.includes("ocultar")
+			!iconoError[0].classList.value.includes("ocultar") ||
+			rubroAPI.value == ""
 		) {
-			e.preventDefault();
+			// console.log("direccion bloqueado");
+			// console.log(!iconoError[0].classList.value.includes("ocultar"));
+			// console.log(rubroAPI.value == "");
+			!!e && e.target.matches("input[name='direccion']")
+				? e.preventDefault()
+				: "";
+			direccion.value = "";
+		} else {
+			// console.log("direccion permitido");
+			direccion.classList.remove("bloqueado");
 		}
 	};
 	let bloquearComentario = (e) => {
 		if (
-			// Se intenta escribir en Comentario
-			// rubroApi o Dirección tienen algún error
-			e.target.matches("textarea[name='contenido']") &&
-			(!iconoError[0].classList.value.includes("ocultar") ||
-				!iconoError[1].classList.value.includes("ocultar"))
+			// RubroApi o Dirección tienen algún error o están vacíos
+			!iconoError[0].classList.value.includes("ocultar") ||
+			!iconoError[1].classList.value.includes("ocultar") ||
+			rubroAPI.value == "" ||
+			direccion.value == ""
 		) {
-			e.preventDefault();
+			// console.log("contenido bloqueado");
+			!!e && e.target.matches("textarea[name='contenido']")
+				? e.preventDefault()
+				: "";
+			contenido.value = "";
+		} else {
+			// console.log("contenido permitido");
+			contenido.classList.remove("bloqueado");
 		}
 	};
 	let dataRubroApi = () => {
@@ -127,7 +140,11 @@ window.addEventListener("load", () => {
 		}
 	};
 	let dataDireccion = async () => {
-		if (!iconoError[0].classList.value.includes("ocultar")) {
+		if (
+			// RubroApi tiene algún error o está vacío
+			!iconoError[0].classList.value.includes("ocultar") ||
+			rubroAPI.value == ""
+		) {
 			direccion.value = "";
 			return;
 		}
@@ -177,9 +194,25 @@ window.addEventListener("load", () => {
 		}
 	};
 	let dataContenido = () => {
+		if (
+			// RubroApi o Dirección tienen algún error o están vacíos
+			!iconoError[0].classList.value.includes("ocultar") ||
+			!iconoError[1].classList.value.includes("ocultar") ||
+			rubroAPI.value == "" ||
+			direccion.value == ""
+		) {
+			contenido.value = "";
+			return;
+		}
+
 		if (contenido.value != "") {
 			// Reemplazar por "no hay error"
 			iconoError[2].classList.add("ocultar");
 		}
 	};
+
+	// Comportamiento inicial
+	bloquearDireccion();
+	bloquearComentario();
+
 });

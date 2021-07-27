@@ -1,11 +1,7 @@
 ERRORES - Revisarlos y mencionarlos
-	- Dirección
-		- Comunicar FA_id repetido en la BD
-	- Contenido
-		- Que se pueda importar algún campo
+- Contenido: que se pueda importar algún campo
 
-VISTA / JS
-- Validar con verde
+SUBMIT
 - Avanzar sólo si las 3 validaciones están OK
 
 BACK-END
