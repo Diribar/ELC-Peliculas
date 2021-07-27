@@ -16,7 +16,7 @@
 #prod_yaEnBD {background-color: var(--celeste-oscuro);}
 #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
 #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--amarillo-claro);}
+#prod_yaEnBD:hover {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 
 /* Partes del resultado */
 #imagenChica {max-height: 200px; border-radius: 15px; }

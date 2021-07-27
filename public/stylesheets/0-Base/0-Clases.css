@@ -25,3 +25,4 @@
 .ocultar {display: none;}
 .mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul-oscuro); 
 	border: var(--azul-oscuro) solid 2px;}
+.bloqueado {background-color: var(--celeste-oscuro);}

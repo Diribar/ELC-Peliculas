@@ -11,7 +11,7 @@
 		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
 			<h3>Elegí el Rubro</h3>
 			<div class="relative">
-				<select name="rubroAPI">
+				<select name="rubroAPI" autofocus>
 					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
 					<option value="movie" 
 						<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
@@ -22,19 +22,18 @@
 						Colección
 					</option>
 				</select>
-				<% if (locals.errores && errores.rubroAPI) { %>
-					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.rubroAPI.msg %> </span>
-					</i>
-				<% } %>
+				<p class="ocultar"><% if (locals.errores && errores.rubroAPI) {errores.rubroAPI.msg}%></p>
+				<i class="fas fa-times-circle ocultar">
+					<span class="mensajeError"></span>
+				</i>
 			</div>
 			<h3>Ingresá la dirección de la página</h3>
 			<div class="relative flex-row">
-				<input type="text" class="input"
+				<input name="direccion" type="text" class="input"
 					value="<%= locals.data_entry ? data_entry.direccion : null %>"
 					placeholder="Pegá acá la dirección"
 				>
-				<i class="fas fa-question-circle" id="direccion">
+				<i id="ayuda_direccion" class="fas fa-question-circle">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
 						<li>
@@ -46,18 +45,17 @@
 						<li>Pegala en el casillero de la izquierda</li>
 					</ul>
 				</i>
-				<% if (locals.errores && errores.direccion) { %>
-					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.direccion.msg %> </span>
-					</i>
-				<% } %>
+				<p class="ocultar"><% if (locals.errores && errores.direccion) {errores.direccion.msg}%></p>
+				<i class="fas fa-times-circle ocultar">
+					<span class="mensajeError"></span>
+				</i>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="relative flex-row">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
-					value="<%= locals.data_entry ? data_entry.contenido : null %>" autofocus class="input"
+					value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input"
 				></textarea>
-				<i class="fas fa-question-circle" id="contenido">
+				<i class="fas fa-question-circle" id="ayuda_contenido">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
 						<li>
@@ -69,11 +67,10 @@
 						<li>Pegalo en el casillero de la izquierda</li>
 					</ul>
 				</i>
-				<% if (locals.errores && errores.contenido) { %>
-					<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.contenido.msg %> </span>
-					</i>
-				<% } %>
+				<p class="ocultar"><% if (locals.errores && errores.contenido) {errores.contenido.msg}%></p>
+				<i class="fas fa-times-circle ocultar">
+					<span class="mensajeError"></span>
+				</i>
 			</div>
 			<button type="submit">Avanzar</button>
 		</form>
