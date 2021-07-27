@@ -30,6 +30,16 @@ window.addEventListener("load", () => {
 		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
 	};
 
+	// Submit
+	document.querySelector("form").onsubmit =  async (e) => {
+		for (let i=0; i<iconoOK.length; i++) {
+			if (iconoOK[i].classList.value.includes("ocultar")) {
+				e.preventDefault();
+				return;
+			}
+		}
+	}
+	
 	// Mensajes de Back-End
 	let mensajesBE = document.querySelectorAll("p.ocultar");
 	for (let i = 0; i < mensajesBE.length; i++) {
@@ -189,7 +199,6 @@ window.addEventListener("load", () => {
 			iconoOK[1].classList.value.includes("ocultar")
 		) {
 			contenido.value = "";
-			return;
 		}
 		// Código de validación
 		let campos = await procesarContenidoFA(contenido.value);
@@ -201,9 +210,13 @@ window.addEventListener("load", () => {
 		// Resultado inválido
 		} else {
 			iconoError[2].classList.remove("ocultar");
-			mensajeError[1].innerHTML = "No se puede importar ningún dato";
-			return;
+			contenido.value == ""
+				? (mensajeError[2].innerHTML =
+						"Necesitamos que completes esta información")
+				: (mensajeError[2].innerHTML =
+						"No se puede importar ningún dato");
 		}
+		return
 	};
 
 });
@@ -230,8 +243,12 @@ const procesarContenidoFA = async (contenido) => {
 		resultadoDeBusqueda.classList.add("resultadoExitoso");
 
 	} else {
-		mensaje = "No se obtuvo ningún dato"
-		resultadoDeBusqueda.classList.add("resultadoInvalido");
+		if (contenido != "") {
+			mensaje = "No se obtuvo ningún dato"
+			resultadoDeBusqueda.classList.add("resultadoInvalido")
+		} else {
+			mensaje = "<br>"
+		}
 	}
 	resultadoDeBusqueda.innerHTML = mensaje;
 	return campos;

@@ -85,21 +85,18 @@ module.exports = {
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
-
 	copiarFA_Form: async (req, res) => {
 		return res.render("2-Copiar_FA");
 	},
-
 	procesarLinkFA: async (req, res) => {
 		let datos = req.query;
 		let [, resultadoFA] = await funciones.productoYaEnBD(datos);
 		return res.json(resultadoFA);
 	},
-
 	procesarContenidoFA: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
-		let resultado = funciones.procesarTextareaFA(matriz);
+		let resultado = funciones.procesarContenidoFA(matriz);
 		//console.log("línea 77");
 		//console.log(resultado);
 		// Enviar la API
@@ -109,7 +106,7 @@ module.exports = {
 	copiarFA_Guardar: async (req, res) => {
 		let { contenido } = req.body;
 		let matriz = contenido.split("\r\n");
-		let resultado = funciones.procesarTextareaFA(matriz);
+		let resultado = funciones.procesarContenidoFA(matriz);
 		console.log("línea 88");
 		console.log(resultado);
 		// Continuará...

@@ -15,28 +15,60 @@ module.exports = {
 		res.locals.urlReferencia = req.session.urlReferencia;
 	},
 
-	procesarTextareaFA: (contenido) => {
+	procesarContenidoFA: (contenido) => {
 		// Limpiar espacios innecesarios
 		for (let i = 0; i < contenido.length; i++) {
 			contenido[i] = contenido[i].trim();
 		}
 		// Armar el objeto literal
 		let resultado = {};
-		resultado.nombre_castellano = contenido[contenido.indexOf("Ficha") - 1];
-		resultado.nombre_original =
-			contenido[contenido.indexOf("Título original") + 1];
-		resultado.ano_estreno = parseInt(
-			contenido[contenido.indexOf("Año") + 1]
-		);
-		let duracion = contenido[contenido.indexOf("Duración") + 1];
-		resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));
-		let pais_nombre = contenido[contenido.indexOf("País") + 1];
-		resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
-		resultado.director = contenido[contenido.indexOf("Dirección") + 1];
-		resultado.musica = contenido[contenido.indexOf("Música") + 1];
-		resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
-		resultado.productor = contenido[contenido.indexOf("Productora") + 1];
-		resultado.sinopsis = contenido[contenido.indexOf("Sinopsis") + 1];
+		contenido.indexOf("Ficha") > 0
+			? resultado.nombre_castellano = contenido[contenido.indexOf("Ficha") - 1] 
+			: "";
+		contenido.indexOf("Título original") > 0
+			? (resultado.nombre_original =
+					contenido[contenido.indexOf("Título original") + 1])
+			: "";
+		contenido.indexOf("Año") > 0
+			? (resultado.ano_estreno = parseInt(
+					contenido[contenido.indexOf("Año") + 1]
+			  ))
+			: "";
+		if (contenido.indexOf("Duración") > 0) {
+			let duracion = contenido[contenido.indexOf("Duración") + 1];
+			resultado.duracion = parseInt(
+				duracion.slice(0, duracion.indexOf(" "))
+			);
+		}
+		if (contenido.indexOf("País") > 0) {
+			let pais_nombre = contenido[contenido.indexOf("País") + 1];
+			resultado.pais_nombre = pais_nombre.slice(
+				(pais_nombre.length + 1) / 2
+			);
+		}
+		contenido.indexOf("Dirección") > 0
+			? (resultado.director =
+					contenido[contenido.indexOf("Dirección") + 1])
+			: "";
+		contenido.indexOf("Música") > 0
+			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
+			: "";
+		contenido.indexOf("Reparto") > 0
+			? (resultado.actores = contenido[contenido.indexOf("Reparto") + 1])
+			: "";
+		contenido.indexOf("Productora") > 0
+			? (resultado.productor =
+					contenido[contenido.indexOf("Productora") + 1])
+			: "";
+		if (contenido.indexOf("Sinopsis") > 0) {
+			aux = contenido[contenido.indexOf("Sinopsis") + 1]
+			!aux.includes("(FILMAFFINITY)")
+				? (aux = aux + " (FILMAFFINITY)")
+				: "";
+			resultado.sinopsis = aux.replace(/"/g, "'");
+		}
+		
+		// Enviar la información
 		return resultado;
 	},
 
