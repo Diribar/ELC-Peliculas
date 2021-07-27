@@ -194,7 +194,7 @@ window.addEventListener("load", () => {
 			return;
 		}
 	};
-	let dataContenido = () => {
+	let dataContenido = async () => {
 		if (
 			// RubroApi o Dirección tienen algún error o están vacíos
 			!iconoError[0].classList.value.includes("ocultar") ||
@@ -206,9 +206,9 @@ window.addEventListener("load", () => {
 			return;
 		}
 		// Código de validación
-
+		let campos = await procesarContenidoFA(contenido.value);
 		// Respuesta
-		if ("no error") {
+		if (campos > 0) {
 			// Reemplazar por "no hay error"
 			iconoError[2].classList.add("ocultar");
 		} else {
@@ -218,8 +218,33 @@ window.addEventListener("load", () => {
 		}
 	};
 
-	// Comportamiento inicial
-	bloquearDireccion();
-	bloquearComentario();
-
 });
+
+const procesarContenidoFA = async (contenido) => {
+	// Procesando la información
+	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
+	resultadoDeBusqueda.classList.remove("resultadoExitoso");
+	resultadoDeBusqueda.classList.remove("resultadoInvalido");
+	resultadoDeBusqueda.classList.add("resultadoEnEspera");
+	resultadoDeBusqueda.innerHTML = "Procesando la información...";
+	// Procesar los datos de la película
+	let encodedValue = encodeURIComponent(contenido);
+	let url =
+		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" +
+		encodedValue;
+	let lectura = await fetch(url).then((n) => n.json());
+	// Información procesada
+	let campos = Object.keys(lectura).length;
+	resultadoDeBusqueda.classList.remove("resultadoEnEspera");
+	if (campos) {
+		campos == 1 ? mensaje = "Se obtuvo 1 solo dato" : "";
+		campos > 1 ? (mensaje = "Se obtuvieron " + campos + " datos") : "";
+		resultadoDeBusqueda.classList.add("resultadoExitoso");
+
+	} else {
+		mensaje = "No se obtuvo ningún dato"
+		resultadoDeBusqueda.classList.add("resultadoInvalido");
+	}
+	resultadoDeBusqueda.innerHTML = mensaje;
+	return campos;
+};

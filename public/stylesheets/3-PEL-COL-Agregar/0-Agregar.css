@@ -23,3 +23,7 @@
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px;}
 #data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
+
+/* Procesando información */
+#data_entry #resultadoDeBusqueda {margin-top: 5px; width: fit-content;}
+#data_entry #resultadoDeBusqueda {font-style: normal; border-radius: 10px;}

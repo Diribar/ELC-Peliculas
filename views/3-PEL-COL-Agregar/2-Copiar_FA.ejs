@@ -53,7 +53,7 @@
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="relative flex-row">
-				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off"
+				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1"
 					value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input bloqueado"
 				></textarea>
 				<i class="fas fa-question-circle" id="ayuda_contenido">
@@ -73,6 +73,7 @@
 					<span class="mensajeError"></span>
 				</i>
 			</div>
+			<div id="resultadoDeBusqueda"><br></div>
 			<button type="submit">Avanzar</button>
 		</form>
 	</section>
