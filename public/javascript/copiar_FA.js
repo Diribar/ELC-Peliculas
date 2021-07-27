@@ -20,7 +20,6 @@ window.addEventListener("load", () => {
 	window.onkeydown = (e) => {
 		bloquearDireccion(e);
 		bloquearComentario(e);
-		//rubroAPI.value != "" ? direccion.classList.remove("bloqueado") : "";
 	};
 
 	// Revisar el data-entry y comunicar los errores

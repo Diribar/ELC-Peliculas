@@ -6,13 +6,13 @@ window.addEventListener("load", () => {
 	let mensajeAyuda = document.querySelector(".mensajeAyuda");
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
 
-	// "Verificar" ante cambios en el input
+	// 'Verificar' ante cambios en el input
 	palabras_clave.addEventListener("input", () => {
 		button.innerHTML = "Verificar";
 		borrarComentario();
 	});
 
-	// Verificar o Avanzar
+	// 'Verificar' o 'Avanzar'
 	form.addEventListener("submit", (e) => {
 		if (button.innerHTML == "Verificar") {
 			e.preventDefault();
