@@ -30,14 +30,13 @@ window.addEventListener("load", () => {
 		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
 	};
 
-	// FUNCIONES ******************************
 	// Mensajes de Back-End
-	let mostrarMensajesBE = () => {
-		let mensajesBE = document.querySelectorAll("p.ocultar");
-		for (let i = 0; i < mensajesBE.length; i++) {
-			mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
-		}
-	};
+	let mensajesBE = document.querySelectorAll("p.ocultar");
+	for (let i = 0; i < mensajesBE.length; i++) {
+		mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
+	}
+
+	// FUNCIONES ******************************
 	// Mensajes de ayuda
 	let ayuda = (e) => {
 		let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
@@ -140,8 +139,4 @@ window.addEventListener("load", () => {
 		}
 	};
 
-	// Tareas iniciales
-	mostrarMensajesBE();
-	direccion.classList.add("bloqueado");
-	contenido.classList.add("bloqueado");
 });
