@@ -1,5 +1,7 @@
+FRONT-END
+- Agregarle la imagen
+
 BACK-END
 - Validaciones back-end
-- Agregarle la fuente a la sinopsis, si no la tiene
 - Armar una API con todos los campos para Datos Duros
 - Enviarle la API a Datos Duros
