@@ -146,13 +146,21 @@ window.addEventListener("load", () => {
 		// FA_id no repetido en la BD
 		let url = 
 			"/peliculas/agregar/api/procesarlinkfa/?" + 
-			"rubroAPI=" + rubroAPI +
+			"rubroAPI=" + rubroAPI.value +
 			"&fa_id=" + link;
-		let FA_rep = await fetch(url).then((n) => n.json());
-		console.log(FA_rep);
-		if (direccion.value != "") { // Reemplazar por "no hay error"
+		let id = await fetch(url).then((n) => n.json());
+		if (!id) {
 			iconoError[1].classList.add("ocultar");
 			contenido.classList.remove("bloqueado");
+		} else {
+			iconoError[1].classList.remove("ocultar");
+			rubro = (rubroAPI.value == "movie") ? "película" : "colección"
+			mensajeError[1].innerHTML =
+				"La " + rubro + " ya está en nuestra BD. " +
+				"<a href='/peliculas/agregar/ya-en-bd?rubroAPI=" +
+				rubroAPI.value + "&id=" + id +
+				"'>Ver el detalle</a>";
+			return;
 		}
 	};
 	let dataContenido = () => {

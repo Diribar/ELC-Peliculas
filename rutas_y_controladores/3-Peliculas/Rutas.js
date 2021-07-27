@@ -28,6 +28,9 @@ router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
 router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
+
+// Controladores de Crear - Ya en nuestra BD
+router.get("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
 // 3. Datos Duros
