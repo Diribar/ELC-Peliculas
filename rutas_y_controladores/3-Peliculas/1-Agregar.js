@@ -90,7 +90,11 @@ module.exports = {
 		return res.render("2-Copiar_FA");
 	},
 
-	procesarContenido: (req, res) => {
+	procesarLinkFA: (req, res) => {
+
+	},
+
+	procesarContenidoFA: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
 		let resultado = funciones.procesarTextareaFA(matriz);

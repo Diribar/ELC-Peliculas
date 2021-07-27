@@ -124,7 +124,7 @@ window.addEventListener("load", () => {
 			direccion.classList.remove("bloqueado");
 		}
 	};
-	let dataDireccion = () => {
+	let dataDireccion = async () => {
 		// https://www.filmaffinity.com/es/film596059.html
 		// Verificar que sea una dirección de FA
 		let link = direccion.value;
@@ -144,11 +144,13 @@ window.addEventListener("load", () => {
 		aux = link.indexOf(".html");
 		link = link.slice(0, aux);
 		// FA_id no repetido en la BD
-		rubro = rubroAPI.value;
-		
-		console.log(rubro);
-		if (direccion.value != "") {
-			// Reemplazar por "no hay error"
+		let url = 
+			"/peliculas/agregar/api/procesarlinkfa/?" + 
+			"rubroAPI=" + rubroAPI +
+			"&fa_id=" + link;
+		let FA_rep = await fetch(url).then((n) => n.json());
+		console.log(FA_rep);
+		if (direccion.value != "") { // Reemplazar por "no hay error"
 			iconoError[1].classList.add("ocultar");
 			contenido.classList.remove("bloqueado");
 		}
@@ -159,5 +161,4 @@ window.addEventListener("load", () => {
 			iconoError[2].classList.add("ocultar");
 		}
 	};
-
 });

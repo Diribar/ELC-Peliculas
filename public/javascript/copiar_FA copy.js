@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 		if (valor) {
 			if (despues != contenido.value) {
 				despues = contenido.value;
-				lectura = await procesarContenido(contenido.value);
+				lectura = await procesarContenidoFA(contenido.value);
 				console.log(lectura)
 			}
 		} else {
@@ -41,14 +41,14 @@ window.addEventListener("load", () => {
 
 });
 
-const procesarContenido = async (contenido) => {
+const procesarContenidoFA = async (contenido) => {
 	// Procesando la información
 	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
 	resultadoDeBusqueda.innerHTML = "Procesando la información...";
 	// Procesar los datos de la película
 	let encodedValue = encodeURIComponent(contenido);
 	let url =
-		"/peliculas/agregar/api/procesarcontenido/?contenido=" + encodedValue;
+		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" + encodedValue;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	resultadoDeBusqueda.innerHTML = "";
