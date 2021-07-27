@@ -8,19 +8,18 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
 
+	// Comportamientos cuando se oprimen teclas
+	window.onkeydown = (e) => {
+		bloquearDireccion(e);
+		bloquearComentario(e);
+	};
+
 	// Comportamientos cuando se hace click
 	window.onclick = (e) => {
 		ayuda(e);
 		clickFueraDeRubroApi(e);
 		clickFueraDeDireccion(e);
 		clickFueraDeContenido(e);
-	};
-
-	// Comportamientos cuando se oprimen teclas
-	window.onkeydown = (e) => {
-		bloquearDireccion(e);
-		bloquearComentario(e);
-		//rubroAPI.value != "" ? direccion.classList.remove("bloqueado") : "";
 	};
 
 	// Revisar el data-entry y comunicar los errores
@@ -30,14 +29,13 @@ window.addEventListener("load", () => {
 		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
 	};
 
-	// FUNCIONES ******************************
 	// Mensajes de Back-End
-	let mostrarMensajesBE = () => {
-		let mensajesBE = document.querySelectorAll("p.ocultar");
-		for (let i = 0; i < mensajesBE.length; i++) {
-			mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
-		}
-	};
+	let mensajesBE = document.querySelectorAll("p.ocultar");
+	for (let i = 0; i < mensajesBE.length; i++) {
+		mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
+	}
+
+	// FUNCIONES ******************************
 	// Mensajes de ayuda
 	let ayuda = (e) => {
 		let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
@@ -101,23 +99,38 @@ window.addEventListener("load", () => {
 	};
 	let bloquearDireccion = (e) => {
 		if (
-			// Se intenta escribir en Dirección
-			// rubroApi tiene algún error
-			e.target.matches("input[name='direccion']") &&
-			!iconoError[0].classList.value.includes("ocultar")
+			// RubroApi tiene algún error o está vacío
+			!iconoError[0].classList.value.includes("ocultar") ||
+			rubroAPI.value == ""
 		) {
-			e.preventDefault();
+			// console.log("direccion bloqueado");
+			// console.log(!iconoError[0].classList.value.includes("ocultar"));
+			// console.log(rubroAPI.value == "");
+			!!e && e.target.matches("input[name='direccion']")
+				? e.preventDefault()
+				: "";
+			direccion.value = "";
+		} else {
+			// console.log("direccion permitido");
+			direccion.classList.remove("bloqueado");
 		}
 	};
 	let bloquearComentario = (e) => {
 		if (
-			// Se intenta escribir en Comentario
-			// rubroApi o Dirección tienen algún error
-			e.target.matches("textarea[name='contenido']") &&
-			(!iconoError[0].classList.value.includes("ocultar") ||
-				!iconoError[1].classList.value.includes("ocultar"))
+			// RubroApi o Dirección tienen algún error o están vacíos
+			!iconoError[0].classList.value.includes("ocultar") ||
+			!iconoError[1].classList.value.includes("ocultar") ||
+			rubroAPI.value == "" ||
+			direccion.value == ""
 		) {
-			e.preventDefault();
+			// console.log("contenido bloqueado");
+			!!e && e.target.matches("textarea[name='contenido']")
+				? e.preventDefault()
+				: "";
+			contenido.value = "";
+		} else {
+			// console.log("contenido permitido");
+			contenido.classList.remove("bloqueado");
 		}
 	};
 	let dataRubroApi = () => {
@@ -126,22 +139,112 @@ window.addEventListener("load", () => {
 			direccion.classList.remove("bloqueado");
 		}
 	};
-	let dataDireccion = () => {
-		if (direccion.value != "") {
-			// Reemplazar por "no hay error"
+	let dataDireccion = async () => {
+		if (
+			// RubroApi tiene algún error o está vacío
+			!iconoError[0].classList.value.includes("ocultar") ||
+			rubroAPI.value == ""
+		) {
+			direccion.value = "";
+			return;
+		}
+		// https://www.filmaffinity.com/es/film596059.html
+		// Verificar que sea una dirección de FA
+		let link = direccion.value;
+		if (!link.includes("www.filmaffinity.com/")) {
+			iconoError[1].classList.remove("ocultar");
+			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
+			return;
+		}
+		// Código de validación
+		// Quitar el dominio
+		aux = link.indexOf("www.filmaffinity.com/");
+		link = link.slice(aux + 21);
+		// Quitar el pais
+		aux = link.indexOf("/");
+		link = link.slice(aux + 5);
+		// Quitar el 'html'
+		aux = link.indexOf(".html");
+		link = link.slice(0, aux);
+		// FA_id no repetido en la BD
+		let url =
+			"/peliculas/agregar/api/procesarlinkfa/?" +
+			"rubroAPI=" +
+			rubroAPI.value +
+			"&fa_id=" +
+			link;
+		let id = await fetch(url).then((n) => n.json());
+		// Respuesta
+		if (!id) {
 			iconoError[1].classList.add("ocultar");
 			contenido.classList.remove("bloqueado");
+		} else {
+			iconoError[1].classList.remove("ocultar");
+			rubro = rubroAPI.value == "movie" ? "película" : "colección";
+			mensajeError[1].innerHTML =
+				"La " +
+				rubro +
+				" ya está en nuestra BD. Hacé click " +
+				"<a href='/peliculas/agregar/ya-en-bd?rubroAPI=" +
+				rubroAPI.value +
+				"&id=" +
+				id +
+				"'><u><strong>acá</strong></u></a>" +
+				" para ver el detalle";
+			return;
 		}
 	};
-	let dataContenido = () => {
-		if (contenido.value != "") {
+	let dataContenido = async () => {
+		if (
+			// RubroApi o Dirección tienen algún error o están vacíos
+			!iconoError[0].classList.value.includes("ocultar") ||
+			!iconoError[1].classList.value.includes("ocultar") ||
+			rubroAPI.value == "" ||
+			direccion.value == ""
+		) {
+			contenido.value = "";
+			return;
+		}
+		// Código de validación
+		let campos = await procesarContenidoFA(contenido.value);
+		// Respuesta
+		if (campos > 0) {
 			// Reemplazar por "no hay error"
 			iconoError[2].classList.add("ocultar");
+		} else {
+			iconoError[2].classList.remove("ocultar");
+			mensajeError[1].innerHTML = "No se puede importar ningún dato";
+			return;
 		}
 	};
 
-	// Tareas iniciales
-	mostrarMensajesBE();
-	direccion.classList.add("bloqueado");
-	contenido.classList.add("bloqueado");
 });
+
+const procesarContenidoFA = async (contenido) => {
+	// Procesando la información
+	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
+	resultadoDeBusqueda.classList.remove("resultadoExitoso");
+	resultadoDeBusqueda.classList.remove("resultadoInvalido");
+	resultadoDeBusqueda.classList.add("resultadoEnEspera");
+	resultadoDeBusqueda.innerHTML = "Procesando la información...";
+	// Procesar los datos de la película
+	let encodedValue = encodeURIComponent(contenido);
+	let url =
+		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" +
+		encodedValue;
+	let lectura = await fetch(url).then((n) => n.json());
+	// Información procesada
+	let campos = Object.keys(lectura).length;
+	resultadoDeBusqueda.classList.remove("resultadoEnEspera");
+	if (campos) {
+		campos == 1 ? mensaje = "Se obtuvo 1 solo dato" : "";
+		campos > 1 ? (mensaje = "Se obtuvieron " + campos + " datos") : "";
+		resultadoDeBusqueda.classList.add("resultadoExitoso");
+
+	} else {
+		mensaje = "No se obtuvo ningún dato"
+		resultadoDeBusqueda.classList.add("resultadoInvalido");
+	}
+	resultadoDeBusqueda.innerHTML = mensaje;
+	return campos;
+};

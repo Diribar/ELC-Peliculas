@@ -90,7 +90,13 @@ module.exports = {
 		return res.render("2-Copiar_FA");
 	},
 
-	procesarcopiado: (req, res) => {
+	procesarLinkFA: async (req, res) => {
+		let datos = req.query;
+		let [, resultadoFA] = await funciones.productoYaEnBD(datos);
+		return res.json(resultadoFA);
+	},
+
+	procesarContenidoFA: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
 		let resultado = funciones.procesarTextareaFA(matriz);

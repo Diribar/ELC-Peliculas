@@ -15,7 +15,8 @@ const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // Controladores de Crear - APIs
 router.get("/agregar/api/contador/", agregar.contador);
-router.get("/agregar/api/procesarcopiado/", agregar.procesarcopiado);
+router.get("/agregar/api/procesarlinkfa/", agregar.procesarLinkFA);
+router.get("/agregar/api/procesarcontenidofa/", agregar.procesarContenidoFA);
 
 // Controladores de Crear - Responsabilidad y Palabras Clave
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
@@ -27,6 +28,9 @@ router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
 router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
+
+// Controladores de Crear - Ya en nuestra BD
+router.get("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
 // 3. Datos Duros

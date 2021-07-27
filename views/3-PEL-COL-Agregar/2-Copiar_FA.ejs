@@ -29,9 +29,10 @@
 			</div>
 			<h3>Ingresá la dirección de la página</h3>
 			<div class="relative flex-row">
-				<input name="direccion" type="text" class="input"
+				<input name="direccion" type="text" class="input bloqueado"
 					value="<%= locals.data_entry ? data_entry.direccion : null %>"
 					placeholder="Pegá acá la dirección"
+					autocomplete="off"
 				>
 				<i class="fas fa-question-circle" id="ayuda_direccion">
 					<ul class="mensajeAyuda ocultar" type="dots">
@@ -52,8 +53,8 @@
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="relative flex-row">
-				<textarea name="contenido" placeholder="Pegá acá el contenido"
-					value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input"
+				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1"
+					value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input bloqueado"
 				></textarea>
 				<i class="fas fa-question-circle" id="ayuda_contenido">
 					<ul class="mensajeAyuda ocultar" type="dots">
@@ -72,6 +73,7 @@
 					<span class="mensajeError"></span>
 				</i>
 			</div>
+			<div id="resultadoDeBusqueda"><br></div>
 			<button type="submit">Avanzar</button>
 		</form>
 	</section>

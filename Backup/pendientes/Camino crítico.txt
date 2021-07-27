@@ -1,13 +1,16 @@
 Desambiguar-TMDB:
-OK	- RR exitosos
+OK	- Nuevas / IM / EnBD
 OK	- POST
+OK	- Validaciones BE
 OK	- Completar con Details + Credits
-OK	- Envío a "Agregar2"
-OK	- Ninguno --> ingreso manual ("Agregar2")
+OK	- Ingreso manual
+OK	- Crear el API
+OK	- Envío a "Datos Duros"
 
 Link FA: "copy-paste"
-OK	- POST
-OK	- Crear el API
-OK	- Procesar
-	- Envío a "Agregar2"
-
+	- Validaciones FE
+	- Procesar el data-entry
+	- POST
+	- Validaciones BE
+	- Crear el API
+	- Envío a "Datos Duros"
