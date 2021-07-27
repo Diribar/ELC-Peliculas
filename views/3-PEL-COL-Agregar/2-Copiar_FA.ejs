@@ -11,7 +11,7 @@
 		<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
 			<h3>Elegí el Rubro</h3>
 			<div class="relative">
-				<select name="rubroAPI">
+				<select name="rubroAPI" autofocus>
 					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
 					<option value="movie" 
 						<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
@@ -53,7 +53,7 @@
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="relative flex-row">
 				<textarea name="contenido" placeholder="Pegá acá el contenido"
-					value="<%= locals.data_entry ? data_entry.contenido : null %>" autofocus class="input"
+					value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input"
 				></textarea>
 				<i class="fas fa-question-circle" id="ayuda_contenido">
 					<ul class="mensajeAyuda ocultar" type="dots">

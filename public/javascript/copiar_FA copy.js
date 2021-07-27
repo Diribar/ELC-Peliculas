@@ -39,22 +39,6 @@ window.addEventListener("load", () => {
 		}
 	});
 
-	// Detectar si se hace "click" en Ayuda
-	for (let i=0; i<iconoAyuda.length; i++) {
-		iconoAyuda[i].addEventListener("click", () => {
-			mensajeAyuda[i].classList.toggle("ocultar");
-		});
-	}
-
-	// Cerrar los dropdowns en desuso
-	window.onclick = (e) => {
-		!e.target.matches("#ayuda_direccion")
-			? mensajeAyuda[0].classList.add("ocultar")
-			: "";
-		!e.target.matches("#ayuda_contenido")
-			? mensajeAyuda[1].classList.add("ocultar")
-			: "";
-	};
 });
 
 const procesarContenido = async (contenido) => {
