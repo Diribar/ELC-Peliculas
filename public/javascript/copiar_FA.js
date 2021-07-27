@@ -126,6 +126,28 @@ window.addEventListener("load", () => {
 		}
 	};
 	let dataDireccion = () => {
+		// https://www.filmaffinity.com/es/film596059.html
+		// Verificar que sea una dirección de FA
+		let link = direccion.value;
+		if (!link.includes("www.filmaffinity.com/")) {
+			iconoError[1].classList.remove("ocultar");
+			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
+			return;
+		}
+		// Quitar todo lo que no sea FA_id
+		// Quitar el dominio
+		aux = link.indexOf("www.filmaffinity.com/");
+		link = link.slice(aux + 21);
+		// Quitar el pais
+		aux = link.indexOf("/");
+		link = link.slice(aux + 5);
+		// Quitar el 'html'
+		aux = link.indexOf(".html");
+		link = link.slice(0, aux);
+		// FA_id no repetido en la BD
+		rubro = rubroAPI.value;
+
+		console.log(rubro);
 		if (direccion.value != "") {
 			// Reemplazar por "no hay error"
 			iconoError[1].classList.add("ocultar");
