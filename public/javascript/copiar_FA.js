@@ -28,7 +28,6 @@ window.addEventListener("load", () => {
 	window.onkeydown = (e) => {
 		//bloquearDireccion(e);
 		//rubroAPI.value != "" ? direccion.classList.remove("bloqueado") : "";
-
 	};
 
 	// FUNCIONES ******************************
@@ -42,76 +41,59 @@ window.addEventListener("load", () => {
 			: mensajeAyuda[1].classList.add("ocultar");
 	};
 
-	// Error en el input Rubro API
+	// Click fuera del input Rubro API
 	let errorRubroApi = (e) => {
 		if (
-			// Si se hace click fuera de RubroAPI y esta está vacía
+			// Si se hace click fuera de RubroAPI
+			// Si RubroAPI está vacía
 			(!e.target.matches("select[name='rubroAPI']") &&
 				rubroAPI.value == "") ||
 			// Si hay un error de Back-End
 			mensajeBE[0].innerHTML != ""
 		) {
 			iconoError[0].classList.remove("ocultar");
-			mensajeError[0].innerHTML =
-				mensajeBE[0].innerHTML != ""
-					? mensajeBE[0].innerHTML // Si hay un error de Back-End
-					: "Elegí una opción"; // Si no hay un error de Back-End
-		} else {
-			// Si rubroApi no tiene errores
-			iconoError[0].classList.add("ocultar");
+			mensajeError[0].innerHTML = "Elegí una opción";
 		}
 	};
 
-	// Error en el input Dirección
+	// Click fuera del input Dirección
 	let errorDireccion = (e) => {
 		if (
+			// Si se hace click fuera de RubroApi y de Dirección
 			// Si rubroApi no tiene errores
-			// Si se hace click fuera de Dirección y esta está vacía
-			(!e.target.matches("select[name='rubroAPI']") &&
-				iconoError[0].classList.value.includes("ocultar") &&
-				rubroAPI.value != "" &&
-				!e.target.matches("input[name='direccion']") &&
-				direccion.value == "") ||
-			// Si hay un error de Back-End
-			mensajeBE[1].innerHTML != ""
+			// Si rubroApi tiene info
+			// Si Dirección está vacía
+			!e.target.matches("select[name='rubroAPI']") &&
+			!e.target.matches("input[name='direccion']") &&
+			iconoError[0].classList.value.includes("ocultar") &&
+			rubroAPI.value != "" &&
+			direccion.value == ""
 		) {
 			iconoError[1].classList.remove("ocultar");
 			mensajeError[1].innerHTML =
-				mensajeBE[1].innerHTML != ""
-					? mensajeBE[1].innerHTML // Si hay un error de Back-End
-					: "Necesitamos que completes esta información"; // Si no hay un error de Back-End
-		} else {
-			// Si dirección no tiene errores
-			iconoError[1].classList.add("ocultar");
+				"Necesitamos que completes esta información";
 		}
-		//iconoError[1].classList.remove("ocultar");
-		console.log(iconoError[1].classList);
 	};
 
-	// Error en el input Contenido
+	// Click fuera del input Contenido
 	let errorContenido = (e) => {
 		if (
-			// Si rubroApi no tiene errores
-			// Si Contenido no tiene errores
-			// Si se hace click fuera de Contenido y esta está vacía
-			(!e.target.matches("select[name='rubroAPI']") &&
-				iconoError[0].classList.value.includes("ocultar") &&
-				rubroAPI.value != "" &&
-				iconoError[1].classList.value.includes("ocultar") &&
-				direccion.value != "" &&
-				!e.target.matches("textarea[name='contenido']") &&
-				contenido.value == "") ||
-			// Si hay un error de Back-End
-			mensajeBE[1].innerHTML != ""
+			// Si se hace click fuera de RubroApi y de Dirección y de Contenido
+			// Si rubroApi y Dirección no tienen errores
+			// Si rubroApi y Dirección tienen info
+			// Si Contenido está vacía
+			!e.target.matches("select[name='rubroAPI']") &&
+			!e.target.matches("input[name='direccion']") &&
+			!e.target.matches("textarea[name='contenido']") &&
+			iconoError[0].classList.value.includes("ocultar") &&
+			iconoError[1].classList.value.includes("ocultar") &&
+			rubroAPI.value != "" &&
+			direccion.value != "" &&
+			contenido.value == ""
 		) {
-			iconoError[1].classList.remove("ocultar");
-			mensajeError[1].innerHTML =
-				mensajeBE[1].innerHTML != ""
-					? mensajeBE[1].innerHTML // Si hay un error de Back-End
-					: "Necesitamos que completes esta información"; // Si no hay un error de Back-End
-		} else {
-			// Si dirección no tiene errores
-			iconoError[1].classList.add("ocultar");
+			iconoError[2].classList.remove("ocultar");
+			mensajeError[2].innerHTML =
+				"Necesitamos que completes esta información";
 		}
 	};
 
