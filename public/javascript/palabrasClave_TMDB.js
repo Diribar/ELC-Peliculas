@@ -12,13 +12,6 @@ window.addEventListener("load", () => {
 		borrarComentario();
 	});
 
-	// Cerrar los dropdowns en desuso
-	window.onclick = (e) => {
-		e.target.matches(".fa-question-circle")
-			? mensajeAyuda.classList.toggle("ocultar")
-			: mensajeAyuda.classList.add("ocultar");
-	};
-
 	// Verificar o Avanzar
 	form.addEventListener("submit", (e) => {
 		if (button.innerHTML == "Verificar") {
@@ -29,6 +22,13 @@ window.addEventListener("load", () => {
 			}
 		}
 	});
+
+	// Mensajes de ayuda
+	window.onclick = (e) => {
+		e.target.matches(".fa-question-circle")
+			? mensajeAyuda.classList.toggle("ocultar")
+			: mensajeAyuda.classList.add("ocultar");
+	};
 
 	const contador = async (palabras_clave) => {
 		palabras_clave = palabras_clave.trim();
