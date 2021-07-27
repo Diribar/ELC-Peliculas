@@ -4,35 +4,43 @@ window.addEventListener("load", () => {
 	let direccion = document.querySelector("input[name='direccion']");
 	let contenido = document.querySelector("textarea[name='contenido']");
 
-	// Oscurecer los inputs posteriores
-	direccion.classList.add("bloqueado");
-	contenido.classList.add("bloqueado");
-
 	// Declarar las variables de Error
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
-	let mensajeBE = document.querySelectorAll("p.ocultar");
-
-	// Declarar otras variables
-	let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
+	
+	// Tareas iniciales
+	mensajesBE();
+	direccion.classList.add("bloqueado");
+	contenido.classList.add("bloqueado");
 
 	// Comportamientos cuando se hace click
 	window.onclick = (e) => {
 		ayuda(e);
-		errorRubroApi(e);
-		errorDireccion(e);
-		errorContenido(e);
+		clickFueraDeRubroApi(e);
+		clickFueraDeDireccion(e);
+		clickFueraDeContenido(e);
 	};
 
-	// Validar ante cambios en los inputs
+	// Comportamientos cuando se oprimen teclas
 	window.onkeydown = (e) => {
-		//bloquearDireccion(e);
+		bloquearDireccion(e);
+		bloquearComentario(e);
 		//rubroAPI.value != "" ? direccion.classList.remove("bloqueado") : "";
 	};
 
+
+
 	// FUNCIONES ******************************
+	// Mensajes de Back-End
+	mensajesBE = () => {
+		let mensajes = document.querySelectorAll("p.ocultar");
+		for (let i=0; i<mensajes.length; i++) {
+			mensajeError[i].innerHTML = mensajes[i].innerHTML
+		}
+	}
 	// Mensajes de ayuda
 	let ayuda = (e) => {
+		let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
 		e.target.matches("#ayuda_direccion")
 			? mensajeAyuda[0].classList.toggle("ocultar")
 			: mensajeAyuda[0].classList.add("ocultar");
@@ -40,9 +48,8 @@ window.addEventListener("load", () => {
 			? mensajeAyuda[1].classList.toggle("ocultar")
 			: mensajeAyuda[1].classList.add("ocultar");
 	};
-
 	// Click fuera del input Rubro API
-	let errorRubroApi = (e) => {
+	let clickFueraDeRubroApi = (e) => {
 		if (
 			// Si se hace click fuera de RubroAPI
 			// Si RubroAPI está vacía
@@ -55,9 +62,8 @@ window.addEventListener("load", () => {
 			mensajeError[0].innerHTML = "Elegí una opción";
 		}
 	};
-
 	// Click fuera del input Dirección
-	let errorDireccion = (e) => {
+	let clickFueraDeDireccion = (e) => {
 		if (
 			// Si se hace click fuera de RubroApi y de Dirección
 			// Si rubroApi no tiene errores
@@ -74,9 +80,8 @@ window.addEventListener("load", () => {
 				"Necesitamos que completes esta información";
 		}
 	};
-
 	// Click fuera del input Contenido
-	let errorContenido = (e) => {
+	let clickFueraDeContenido = (e) => {
 		if (
 			// Si se hace click fuera de RubroApi y de Dirección y de Contenido
 			// Si rubroApi y Dirección no tienen errores
@@ -99,9 +104,22 @@ window.addEventListener("load", () => {
 
 	let bloquearDireccion = (e) => {
 		if (
-			(e.target.matches("input[name='direccion']") &&
-				rubroAPI.value == "") ||
-			mensajeBE[1].innerHTML != ""
+			// Se intenta escribir en Dirección
+			// rubroApi tiene algún error
+			e.target.matches("input[name='direccion']") &&
+			!iconoError[0].classList.value.includes("ocultar")
+		) {
+			e.preventDefault();
+		}
+	};
+
+	let bloquearComentario = (e) => {
+		if (
+			// Se intenta escribir en Comentario
+			// rubroApi o Dirección tienen algún error
+			e.target.matches("textarea[name='contenido']") &&
+			(!iconoError[0].classList.value.includes("ocultar") ||
+				!iconoError[1].classList.value.includes("ocultar"))
 		) {
 			e.preventDefault();
 		}

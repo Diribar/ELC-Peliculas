@@ -20,13 +20,16 @@ API
 - Enviarle la API a Datos Duros
 
 RUBRO_API
-- Si se hace click fuera y está vacío --> error
+- Si cambia su valor:
+	- Revisar errores
+	- Si los tiene -> mencionarlos
+	- Si no los tiene:
+		- Quitar 'x'
+		- Quitar clase bloqueado a DIRECCION
 
 DIRECCION
-- Fondo gris si RUBRO_API está vacío
-- Error si:
-	- Se hace click afuera
-	- Está vacío
-	- RUBRO_API no tiene error
-- Si se intenta modificar y RUBRO_API tiene error --> preventDefault
-- Si se modifica el valor, correr la API y mencionar errores
+- Si cambia su valor:
+	- Revisar errores (API) y mencionarlos
+	- Si no los tiene:
+		- Quitar 'x'
+		- Quitar clase bloqueado a DIRECCION
