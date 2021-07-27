@@ -1,7 +1,7 @@
 Desambiguar-TMDB:
 OK	- Nuevas / IM / EnBD
 OK	- POST
-OK	- Validaciones
+OK	- Validaciones BE
 OK	- Completar con Details + Credits
 OK	- Ingreso manual
 OK	- Crear el API
