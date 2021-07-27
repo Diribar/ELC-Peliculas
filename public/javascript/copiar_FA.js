@@ -156,7 +156,7 @@ window.addEventListener("load", () => {
 			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
 			return;
 		}
-		// Quitar todo lo que no sea FA_id
+		// Código de validación
 		// Quitar el dominio
 		aux = link.indexOf("www.filmaffinity.com/");
 		link = link.slice(aux + 21);
@@ -174,6 +174,7 @@ window.addEventListener("load", () => {
 			"&fa_id=" +
 			link;
 		let id = await fetch(url).then((n) => n.json());
+		// Respuesta
 		if (!id) {
 			iconoError[1].classList.add("ocultar");
 			contenido.classList.remove("bloqueado");
@@ -204,10 +205,16 @@ window.addEventListener("load", () => {
 			contenido.value = "";
 			return;
 		}
+		// Código de validación
 
-		if (contenido.value != "") {
+		// Respuesta
+		if ("no error") {
 			// Reemplazar por "no hay error"
 			iconoError[2].classList.add("ocultar");
+		} else {
+			iconoError[2].classList.remove("ocultar");
+			mensajeError[1].innerHTML = "No se puede importar ningún dato";
+			return;
 		}
 	};
 
