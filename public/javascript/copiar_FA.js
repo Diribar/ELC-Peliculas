@@ -8,18 +8,22 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
 
+	// Comportamiento inicial
+	bloquearDireccion(e);
+	bloquearComentario(e);
+
+	window.onload = () => {
+		dataRubroApi();
+		dataDireccion();
+		dataContenido();
+	};
+
 	// Comportamientos cuando se hace click
 	window.onclick = (e) => {
 		ayuda(e);
 		clickFueraDeRubroApi(e);
 		clickFueraDeDireccion(e);
 		clickFueraDeContenido(e);
-	};
-
-	// Comportamientos cuando se oprimen teclas
-	window.onkeydown = (e) => {
-		bloquearDireccion(e);
-		bloquearComentario(e);
 	};
 
 	// Revisar el data-entry y comunicar los errores
@@ -97,11 +101,9 @@ window.addEventListener("load", () => {
 				"Necesitamos que completes esta información";
 		}
 	};
-	let bloquearDireccion = (e) => {
+	let bloquearDireccion = () => {
 		if (
-			// Se intenta escribir en Dirección
-			// rubroApi tiene algún error
-			e.target.matches("input[name='direccion']") &&
+			// RubroApi tiene algún error o está vacío
 			!iconoError[0].classList.value.includes("ocultar")
 		) {
 			e.preventDefault();
@@ -125,6 +127,10 @@ window.addEventListener("load", () => {
 		}
 	};
 	let dataDireccion = async () => {
+		if (!iconoError[0].classList.value.includes("ocultar")) {
+			direccion.value = "";
+			return;
+		}
 		// https://www.filmaffinity.com/es/film596059.html
 		// Verificar que sea una dirección de FA
 		let link = direccion.value;
@@ -144,22 +150,29 @@ window.addEventListener("load", () => {
 		aux = link.indexOf(".html");
 		link = link.slice(0, aux);
 		// FA_id no repetido en la BD
-		let url = 
-			"/peliculas/agregar/api/procesarlinkfa/?" + 
-			"rubroAPI=" + rubroAPI.value +
-			"&fa_id=" + link;
+		let url =
+			"/peliculas/agregar/api/procesarlinkfa/?" +
+			"rubroAPI=" +
+			rubroAPI.value +
+			"&fa_id=" +
+			link;
 		let id = await fetch(url).then((n) => n.json());
 		if (!id) {
 			iconoError[1].classList.add("ocultar");
 			contenido.classList.remove("bloqueado");
 		} else {
 			iconoError[1].classList.remove("ocultar");
-			rubro = (rubroAPI.value == "movie") ? "película" : "colección"
+			rubro = rubroAPI.value == "movie" ? "película" : "colección";
 			mensajeError[1].innerHTML =
-				"La " + rubro + " ya está en nuestra BD. " +
+				"La " +
+				rubro +
+				" ya está en nuestra BD. Hacé click " +
 				"<a href='/peliculas/agregar/ya-en-bd?rubroAPI=" +
-				rubroAPI.value + "&id=" + id +
-				"'>Ver el detalle</a>";
+				rubroAPI.value +
+				"&id=" +
+				id +
+				"'><u><strong>acá</strong></u></a>" +
+				" para ver el detalle";
 			return;
 		}
 	};
