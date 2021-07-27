@@ -8,8 +8,9 @@ OK	- Crear el API
 OK	- Envío a "Datos Duros"
 
 Link FA: "copy-paste"
+	- Validaciones FE
 	- Procesar el data-entry
 	- POST
-	- Validaciones
+	- Validaciones BE
 	- Crear el API
 	- Envío a "Datos Duros"
