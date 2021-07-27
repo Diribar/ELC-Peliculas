@@ -1,6 +1,4 @@
-
 SUBMIT
-- Validaciones OK en  verde
 - Avanzar sólo si las 3 validaciones están OK
 
 BACK-END
