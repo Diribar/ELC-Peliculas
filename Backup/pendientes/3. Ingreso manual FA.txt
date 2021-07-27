@@ -1,7 +1,7 @@
 ERRORES - Revisarlos y mencionarlos
 	- Dirección
 		- Que el FA_id exista en la url
-		- FA_id no repetido
+		- FA_id no repetido en la BD
 	- Contenido
 		- Que se pueda importar algún campo
 
