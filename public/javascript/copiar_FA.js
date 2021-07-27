@@ -7,11 +7,6 @@ window.addEventListener("load", () => {
 	// Declarar las variables de Error
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
-	
-	// Tareas iniciales
-	mensajesBE();
-	direccion.classList.add("bloqueado");
-	contenido.classList.add("bloqueado");
 
 	// Comportamientos cuando se hace click
 	window.onclick = (e) => {
@@ -28,16 +23,21 @@ window.addEventListener("load", () => {
 		//rubroAPI.value != "" ? direccion.classList.remove("bloqueado") : "";
 	};
 
-
+	// Revisar el data-entry y comunicar los errores
+	document.querySelector("form").oninput = (e) => {
+		e.target.matches("select[name='rubroAPI']") ? dataRubroApi() : "";
+		e.target.matches("input[name='direccion']") ? dataDireccion() : "";
+		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
+	};
 
 	// FUNCIONES ******************************
 	// Mensajes de Back-End
-	mensajesBE = () => {
-		let mensajes = document.querySelectorAll("p.ocultar");
-		for (let i=0; i<mensajes.length; i++) {
-			mensajeError[i].innerHTML = mensajes[i].innerHTML
+	let mostrarMensajesBE = () => {
+		let mensajesBE = document.querySelectorAll("p.ocultar");
+		for (let i = 0; i < mensajesBE.length; i++) {
+			mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
 		}
-	}
+	};
 	// Mensajes de ayuda
 	let ayuda = (e) => {
 		let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
@@ -53,10 +53,8 @@ window.addEventListener("load", () => {
 		if (
 			// Si se hace click fuera de RubroAPI
 			// Si RubroAPI está vacía
-			(!e.target.matches("select[name='rubroAPI']") &&
-				rubroAPI.value == "") ||
-			// Si hay un error de Back-End
-			mensajeBE[0].innerHTML != ""
+			!e.target.matches("select[name='rubroAPI']") &&
+			rubroAPI.value == ""
 		) {
 			iconoError[0].classList.remove("ocultar");
 			mensajeError[0].innerHTML = "Elegí una opción";
@@ -101,7 +99,6 @@ window.addEventListener("load", () => {
 				"Necesitamos que completes esta información";
 		}
 	};
-
 	let bloquearDireccion = (e) => {
 		if (
 			// Se intenta escribir en Dirección
@@ -112,7 +109,6 @@ window.addEventListener("load", () => {
 			e.preventDefault();
 		}
 	};
-
 	let bloquearComentario = (e) => {
 		if (
 			// Se intenta escribir en Comentario
@@ -124,5 +120,28 @@ window.addEventListener("load", () => {
 			e.preventDefault();
 		}
 	};
-});
+	let dataRubroApi = () => {
+		if (rubroAPI.value != "") {
+			iconoError[0].classList.add("ocultar");
+			direccion.classList.remove("bloqueado");
+		}
+	};
+	let dataDireccion = () => {
+		if (direccion.value != "") {
+			// Reemplazar por "no hay error"
+			iconoError[1].classList.add("ocultar");
+			contenido.classList.remove("bloqueado");
+		}
+	};
+	let dataContenido = () => {
+		if (contenido.value != "") {
+			// Reemplazar por "no hay error"
+			iconoError[2].classList.add("ocultar");
+		}
+	};
 
+	// Tareas iniciales
+	mostrarMensajesBE();
+	direccion.classList.add("bloqueado");
+	contenido.classList.add("bloqueado");
+});

@@ -1,35 +1,16 @@
+ERRORES - Revisarlos y mencionarlos
+	- Dirección
+		- Que exista el FA_id
+		- FA_id no repetido
+	- Contenido
+		- Que se pueda importar algún campo
+
 VISTA / JS
-- Los campos se completan desde arriba hacia abajo
-- Los campos se pueden completar si las validaciones de los campos anteriores están OK
-- Validaciones on-line, al hacer data_entrys:
-	- rubro:	 -> valor != ""
-	- url:		 -> FA_id no repetido
-	- contenido: -> que se pueda importar algún campo
-- Validar con verde y rojo
-- Al clickear "avanzar", verificar:
-	- Campos vacíos
-	- Campos con errores
+- Validar con verde
 - Avanzar sólo si las 3 validaciones están OK
 
 BACK-END
 - Validaciones back-end
 - Agregarle la fuente a la sinopsis, si no la tiene
-
-API
 - Armar una API con todos los campos para Datos Duros
 - Enviarle la API a Datos Duros
-
-RUBRO_API
-- Si cambia su valor:
-	- Revisar errores
-	- Si los tiene -> mencionarlos
-	- Si no los tiene:
-		- Quitar 'x'
-		- Quitar clase bloqueado a DIRECCION
-
-DIRECCION
-- Si cambia su valor:
-	- Revisar errores (API) y mencionarlos
-	- Si no los tiene:
-		- Quitar 'x'
-		- Quitar clase bloqueado a DIRECCION
