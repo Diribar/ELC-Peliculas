@@ -6,6 +6,7 @@ window.addEventListener("load", () => {
 
 	// Declarar las variables de Error
 	let iconoError = document.querySelectorAll(".fa-times-circle");
+	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
 
 	// Comportamientos cuando se oprimen teclas
@@ -29,6 +30,16 @@ window.addEventListener("load", () => {
 		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
 	};
 
+	// Submit
+	document.querySelector("form").onsubmit =  async (e) => {
+		for (let i=0; i<iconoOK.length; i++) {
+			if (iconoOK[i].classList.value.includes("ocultar")) {
+				e.preventDefault();
+				return;
+			}
+		}
+	}
+	
 	// Mensajes de Back-End
 	let mensajesBE = document.querySelectorAll("p.ocultar");
 	for (let i = 0; i < mensajesBE.length; i++) {
@@ -62,13 +73,11 @@ window.addEventListener("load", () => {
 	let clickFueraDeDireccion = (e) => {
 		if (
 			// Si se hace click fuera de RubroApi y de Dirección
-			// Si rubroApi no tiene errores
-			// Si rubroApi tiene info
+			// Si rubroApi está OK
 			// Si Dirección está vacía
 			!e.target.matches("select[name='rubroAPI']") &&
 			!e.target.matches("input[name='direccion']") &&
-			iconoError[0].classList.value.includes("ocultar") &&
-			rubroAPI.value != "" &&
+			!iconoOK[0].classList.value.includes("ocultar") &&
 			direccion.value == ""
 		) {
 			iconoError[1].classList.remove("ocultar");
@@ -80,16 +89,13 @@ window.addEventListener("load", () => {
 	let clickFueraDeContenido = (e) => {
 		if (
 			// Si se hace click fuera de RubroApi y de Dirección y de Contenido
-			// Si rubroApi y Dirección no tienen errores
-			// Si rubroApi y Dirección tienen info
+			// Si rubroApi y Dirección están OK
 			// Si Contenido está vacía
 			!e.target.matches("select[name='rubroAPI']") &&
 			!e.target.matches("input[name='direccion']") &&
 			!e.target.matches("textarea[name='contenido']") &&
-			iconoError[0].classList.value.includes("ocultar") &&
-			iconoError[1].classList.value.includes("ocultar") &&
-			rubroAPI.value != "" &&
-			direccion.value != "" &&
+			!iconoOK[0].classList.value.includes("ocultar") &&
+			!iconoOK[1].classList.value.includes("ocultar") &&
 			contenido.value == ""
 		) {
 			iconoError[2].classList.remove("ocultar");
@@ -98,30 +104,21 @@ window.addEventListener("load", () => {
 		}
 	};
 	let bloquearDireccion = (e) => {
-		if (
-			// RubroApi tiene algún error o está vacío
-			!iconoError[0].classList.value.includes("ocultar") ||
-			rubroAPI.value == ""
-		) {
-			// console.log("direccion bloqueado");
-			// console.log(!iconoError[0].classList.value.includes("ocultar"));
-			// console.log(rubroAPI.value == "");
+		// RubroApi no está OK
+		if (iconoOK[0].classList.value.includes("ocultar")) {
 			!!e && e.target.matches("input[name='direccion']")
 				? e.preventDefault()
 				: "";
 			direccion.value = "";
 		} else {
-			// console.log("direccion permitido");
 			direccion.classList.remove("bloqueado");
 		}
 	};
 	let bloquearComentario = (e) => {
 		if (
-			// RubroApi o Dirección tienen algún error o están vacíos
-			!iconoError[0].classList.value.includes("ocultar") ||
-			!iconoError[1].classList.value.includes("ocultar") ||
-			rubroAPI.value == "" ||
-			direccion.value == ""
+			// RubroApi o Dirección no están OK
+			iconoOK[0].classList.value.includes("ocultar") ||
+			iconoOK[1].classList.value.includes("ocultar")
 		) {
 			// console.log("contenido bloqueado");
 			!!e && e.target.matches("textarea[name='contenido']")
@@ -136,15 +133,13 @@ window.addEventListener("load", () => {
 	let dataRubroApi = () => {
 		if (rubroAPI.value != "") {
 			iconoError[0].classList.add("ocultar");
+			iconoOK[0].classList.remove("ocultar");
 			direccion.classList.remove("bloqueado");
 		}
 	};
 	let dataDireccion = async () => {
-		if (
-			// RubroApi tiene algún error o está vacío
-			!iconoError[0].classList.value.includes("ocultar") ||
-			rubroAPI.value == ""
-		) {
+		// RubroApi no está OK
+		if (iconoOK[0].classList.value.includes("ocultar")) {
 			direccion.value = "";
 			return;
 		}
@@ -175,9 +170,12 @@ window.addEventListener("load", () => {
 			link;
 		let id = await fetch(url).then((n) => n.json());
 		// Respuesta
+		// Resultado exitoso
 		if (!id) {
 			iconoError[1].classList.add("ocultar");
+			iconoOK[1].classList.remove("ocultar");
 			contenido.classList.remove("bloqueado");
+		// Resultado inválido
 		} else {
 			iconoError[1].classList.remove("ocultar");
 			rubro = rubroAPI.value == "movie" ? "película" : "colección";
@@ -196,26 +194,29 @@ window.addEventListener("load", () => {
 	};
 	let dataContenido = async () => {
 		if (
-			// RubroApi o Dirección tienen algún error o están vacíos
-			!iconoError[0].classList.value.includes("ocultar") ||
-			!iconoError[1].classList.value.includes("ocultar") ||
-			rubroAPI.value == "" ||
-			direccion.value == ""
+			// RubroApi o Dirección no están OK
+			iconoOK[0].classList.value.includes("ocultar") ||
+			iconoOK[1].classList.value.includes("ocultar")
 		) {
 			contenido.value = "";
-			return;
 		}
 		// Código de validación
 		let campos = await procesarContenidoFA(contenido.value);
 		// Respuesta
+		// Resultado exitoso
 		if (campos > 0) {
-			// Reemplazar por "no hay error"
 			iconoError[2].classList.add("ocultar");
+			iconoOK[2].classList.remove("ocultar");
+		// Resultado inválido
 		} else {
 			iconoError[2].classList.remove("ocultar");
-			mensajeError[1].innerHTML = "No se puede importar ningún dato";
-			return;
+			contenido.value == ""
+				? (mensajeError[2].innerHTML =
+						"Necesitamos que completes esta información")
+				: (mensajeError[2].innerHTML =
+						"No se puede importar ningún dato");
 		}
+		return
 	};
 
 });
@@ -242,8 +243,12 @@ const procesarContenidoFA = async (contenido) => {
 		resultadoDeBusqueda.classList.add("resultadoExitoso");
 
 	} else {
-		mensaje = "No se obtuvo ningún dato"
-		resultadoDeBusqueda.classList.add("resultadoInvalido");
+		if (contenido != "") {
+			mensaje = "No se obtuvo ningún dato"
+			resultadoDeBusqueda.classList.add("resultadoInvalido")
+		} else {
+			mensaje = "<br>"
+		}
 	}
 	resultadoDeBusqueda.innerHTML = mensaje;
 	return campos;

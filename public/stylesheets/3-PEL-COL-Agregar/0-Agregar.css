@@ -13,7 +13,9 @@
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
 
 /*  Mensajes de error*/
-#data_entry .fa-times-circle {position: absolute; font-size: 1rem; color: red;}
+#data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; font-size: 1rem;}
+#data_entry .fa-times-circle {color: var(--rojo-oscuro);}
+#data_entry .fa-check-circle {color: var(--verde-oscuro);}
 #data_entry .mensajeError, #data_entry .mensajeAyuda 
 	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
 #data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; 
@@ -25,5 +27,5 @@
 #data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
 
 /* Procesando información */
-#data_entry #resultadoDeBusqueda {margin-top: 5px; width: fit-content;}
+#data_entry #resultadoDeBusqueda {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
 #data_entry #resultadoDeBusqueda {font-style: normal; border-radius: 10px;}
