@@ -1,7 +1,7 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
 const search_TMDB_funcion = require("../../modelos/API/search_TMDB_funcion");
-const details_TMDB_funcion = require("../../modelos/procesarDetalles");
+const procesarDetalles = require("../../modelos/procesarDetalles");
 const funciones = require("../../modelos/funcionesVarias");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
@@ -105,29 +105,11 @@ module.exports = {
 		return res.json(resultado);
 	},
 
-	copiarFA_Guardar: async (req, res) => {
-		//return res.send(req.body)
-		let { rubroAPI, direccion, contenido } = req.body;
-		// Quitar el dominio
-		aux = direccion.indexOf("www.filmaffinity.com/");
-		direccion = direccion.slice(aux + 21);
-		// Quitar el pais
-		aux = direccion.indexOf("/");
-		direccion = direccion.slice(aux + 5);
-		// Quitar el 'html'
-		aux = direccion.indexOf(".html");
-		direccion = direccion.slice(0, aux);
-		fa_id = direccion;
-		contenido = contenido.split("\r\n");
-		contenido = funciones.procesarContenidoFA(contenido);
-		let resultado = {
-			fuente: "FA",
-			rubroAPI,
-			fa_id,
-			...contenido,
-		};
+	copiarFA_Guardar: (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
-		req.session.datosDuros = resultado;
+		//return res.send(req.body)
+		req.session.datosDuros = procesarDetalles.procesarProducto_FA(req.body);
+		return res.send(req.session.datosDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 
@@ -170,13 +152,13 @@ const obtenerDatosDelProducto = async (form) => {
 	// API Details
 	let lectura =
 		form.fuente == "TMDB"
-			? await details_TMDB_funcion.API(form.tmdb_id, form.rubroAPI)
+			? await procesarDetalles.API(form.tmdb_id, form.rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie" ? (rubro = "procesarPelicula_TMDB") : "";
 	form.rubroAPI == "tv" ? (rubro = "procesarTV_TMDB") : "";
 	form.rubroAPI == "collection" ? (rubro = "procesarColeccion_TMDB") : "";
 
-	let resultado = await details_TMDB_funcion[rubro](form, lectura);
+	let resultado = await procesarDetalles[rubro](form, lectura);
 	return resultado;
 };
