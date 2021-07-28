@@ -1,8 +1,8 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
 const search_TMDB_funcion = require("../../modelos/API/search_TMDB_funcion");
-const details_TMDB_funcion = require("../../modelos/API/details_TMDB_funcion");
-const funciones = require("../../modelos/funciones");
+const procesarDetalles = require("../../modelos/procesarDetalles");
+const funciones = require("../../modelos/funcionesVarias");
 const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
@@ -43,7 +43,7 @@ module.exports = {
 		// Guardar las palabras clave en session y cookie
 		req.session.palabras_clave = palabras_clave;
 		res.cookie("palabras_clave", palabras_clave, {
-			maxAge: 60 * 60 * 1000,
+			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// Obtener la API
 		req.session.peliculasTMDB = await search_TMDB_funcion.search(
@@ -56,7 +56,9 @@ module.exports = {
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
-			? (lectura = await search_TMDB_funcion.search(req.cookies.palabras_clave))
+			? (lectura = await search_TMDB_funcion.search(
+					req.cookies.palabras_clave
+			  ))
 			: "";
 		resultados = lectura.resultados;
 		coincidencias = resultados.length;
@@ -88,7 +90,7 @@ module.exports = {
 	copiarFA_Form: async (req, res) => {
 		return res.render("2-Copiar_FA");
 	},
-	procesarLinkFA: async (req, res) => {
+	averiguarProductoYaEnBD_FA: async (req, res) => {
 		let datos = req.query;
 		let [, resultadoFA] = await funciones.productoYaEnBD(datos);
 		return res.json(resultadoFA);
@@ -103,16 +105,13 @@ module.exports = {
 		return res.json(resultado);
 	},
 
-	copiarFA_Guardar: async (req, res) => {
-		let { contenido } = req.body;
-		let matriz = contenido.split("\r\n");
-		let resultado = funciones.procesarContenidoFA(matriz);
-		console.log("línea 88");
-		console.log(resultado);
-		// Continuará...
-		// req.session.peliculaFA = req.body;
-		// res.cookie("fuente", "FA", { maxAge: 60 * 60 * 1000 });
-		res.send(resultado);
+	copiarFA_Guardar: (req, res) => {
+		// Obtener la info para exportar a la vista 'Datos Duros'
+		//return res.send(req.body)
+		req.session.datosDuros = procesarDetalles.procesarProducto_FA(req.body);
+		return res.send(req.session.datosDuros);
+		// Redireccionar a Datos Duros
+		return res.redirect("/peliculas/agregar/datos_duros");
 		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
@@ -152,13 +151,12 @@ const obtenerDatosDelProducto = async (form) => {
 	// API Details
 	let lectura =
 		form.fuente == "TMDB"
-			? await details_TMDB_funcion.API(form.tmdb_id, form.rubroAPI)
+			? await procesarDetalles.API(form.tmdb_id, form.rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie" ? (rubro = "procesarPelicula_TMDB") : "";
 	form.rubroAPI == "tv" ? (rubro = "procesarTV_TMDB") : "";
 	form.rubroAPI == "collection" ? (rubro = "procesarColeccion_TMDB") : "";
-
-	let resultado = await details_TMDB_funcion[rubro](form, lectura);
+	let resultado = await procesarDetalles[rubro](form, lectura);
 	return resultado;
 };

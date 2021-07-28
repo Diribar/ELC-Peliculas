@@ -23,11 +23,14 @@ module.exports = {
 		// Armar el objeto literal
 		let resultado = {};
 		contenido.indexOf("Ficha") > 0
-			? resultado.nombre_castellano = contenido[contenido.indexOf("Ficha") - 1] 
+			? (resultado.nombre_castellano = funcionParentesis(
+					contenido[contenido.indexOf("Ficha") - 1]
+			  ))
 			: "";
 		contenido.indexOf("Título original") > 0
-			? (resultado.nombre_original =
-					contenido[contenido.indexOf("Título original") + 1])
+			? (resultado.nombre_original = funcionParentesis(
+					contenido[contenido.indexOf("Título original") + 1]
+			  ))
 			: "";
 		contenido.indexOf("Año") > 0
 			? (resultado.ano_estreno = parseInt(
@@ -61,13 +64,12 @@ module.exports = {
 					contenido[contenido.indexOf("Productora") + 1])
 			: "";
 		if (contenido.indexOf("Sinopsis") > 0) {
-			aux = contenido[contenido.indexOf("Sinopsis") + 1]
+			aux = contenido[contenido.indexOf("Sinopsis") + 1];
 			!aux.includes("(FILMAFFINITY)")
 				? (aux = aux + " (FILMAFFINITY)")
 				: "";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
-		
 		// Enviar la información
 		return resultado;
 	},
@@ -93,10 +95,17 @@ module.exports = {
 const AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || !id) return false;
-	let parametro = (fuente == "TMDB") ? "tmdb_id" : "fa_id"
+	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
 	let resultado =
 		rubroAPI == "movie"
 			? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
 			: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
-	return resultado
+	return resultado;
+};
+
+const funcionParentesis = (dato) => {
+	desde = dato.indexOf(" (");
+	hasta = dato.indexOf(")");
+	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
+	return dato;
 };

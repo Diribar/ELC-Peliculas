@@ -7,7 +7,6 @@ const opciones = require("./3-Opciones");
 
 // Middlewares de Validaciones
 const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const soloPropietario = require("../../middlewares/usuarios/soloPropietario");
 const validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
 const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
 const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
@@ -15,7 +14,7 @@ const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // Controladores de Crear - APIs
 router.get("/agregar/api/contador/", agregar.contador);
-router.get("/agregar/api/procesarlinkfa/", agregar.procesarLinkFA);
+router.get("/agregar/api/averiguar-producto-ya-en-bd-fa/", agregar.averiguarProductoYaEnBD_FA);
 router.get("/agregar/api/procesarcontenidofa/", agregar.procesarContenidoFA);
 
 // Controladores de Crear - Responsabilidad y Palabras Clave
@@ -26,12 +25,13 @@ router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agreg
 // Controladores de Crear - Desambiguar y Copiar FA
 router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
-router.get("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Form);
-router.post("/agregar/copiarfa", soloPropietario, agregar.copiarFA_Guardar);
+// *** verificar que el usuario esté habilitado
+router.get("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Form);
+router.post("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Guardar);
 
 // Controladores de Crear - Ya en nuestra BD
 router.get("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
-router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
+//router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
 // 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, validarProdEnBD, agregar.datosDuros_Form);

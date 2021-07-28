@@ -151,7 +151,7 @@ window.addEventListener("load", () => {
 			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
 			return;
 		}
-		// Código de validación
+		// Obtener el FA_id
 		// Quitar el dominio
 		aux = link.indexOf("www.filmaffinity.com/");
 		link = link.slice(aux + 21);
@@ -161,13 +161,14 @@ window.addEventListener("load", () => {
 		// Quitar el 'html'
 		aux = link.indexOf(".html");
 		link = link.slice(0, aux);
+		fa_id = link
 		// FA_id no repetido en la BD
 		let url =
-			"/peliculas/agregar/api/procesarlinkfa/?" +
+			"/peliculas/agregar/api/averiguar-producto-ya-en-bd-fa/?" +
 			"rubroAPI=" +
 			rubroAPI.value +
 			"&fa_id=" +
-			link;
+			fa_id;
 		let id = await fetch(url).then((n) => n.json());
 		// Respuesta
 		// Resultado exitoso

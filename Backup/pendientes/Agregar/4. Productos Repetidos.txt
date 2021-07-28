@@ -7,3 +7,5 @@ Leyenda:
 	- Nombre en castellano:
 	- Status de la película:
 	- ¿Quiere acceder a los detalles?
+
+enviar url get y luego redirigir
