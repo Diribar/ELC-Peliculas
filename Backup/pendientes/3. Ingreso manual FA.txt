@@ -1,6 +1,3 @@
-FRONT-END
-- Agregarle la imagen (opcional)
-
 BACK-END
 - Validaciones back-end
 - Armar una API con todos los campos para Datos Duros

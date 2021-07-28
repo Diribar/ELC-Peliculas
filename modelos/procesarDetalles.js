@@ -1,5 +1,5 @@
-const details_TMDB = require("./details_TMDB_fetch");
-const credits_TMDB = require("./credits_TMDB_fetch");
+const details_TMDB = require("./API/details_TMDB_fetch");
+const credits_TMDB = require("./API/credits_TMDB_fetch");
 
 module.exports = {
 	API: async (id, rubroAPI) => {
@@ -15,7 +15,7 @@ module.exports = {
 	},
 
 	procesarPelicula_TMDB: async (form, lectura) => {
-		resultado = {
+		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
@@ -23,40 +23,85 @@ module.exports = {
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
+		let datosLectura = {};
 		if (form.fuente == "TMDB") {
-			resultado = {
-				...resultado,
-				coleccion_tmdb_id: lectura.belongs_to_collection,
-				imdb_id: lectura.imdb_id,
-				idioma_original: lectura.original_language,
-				sinopsis: fuenteSinopsis(lectura.overview),
-				avatar:
-					"https://image.tmdb.org/t/p/original" + lectura.poster_path,
-				pais_id: lectura.production_countries.map((n) => n.iso_3166_1),
-				ano_estreno: parseInt(lectura.release_date.slice(0, 4)),
-				duracion: lectura.runtime,
-				nombre_castellano: lectura.title,
-				director: lectura.crew
-					.filter((n) => n.department == "Directing")
-					.map((n) => n.name)
-					.join(", "),
-				guion: lectura.crew
-					.filter((n) => n.department == "Writing")
-					.map((n) => n.name)
-					.join(", "),
-				musica: lectura.crew
-					.filter((n) => n.department == "Sound")
-					.map((n) => n.name)
-					.join(", "),
-				actores: lectura.cast
-					.map((n) => n.name + " (" + n.character + ")")
-					.join(", "),
-				productor: lectura.production_companies
-					.map((n) => n.name)
-					.join(", "),
+			// Función para 'Crew'
+			let funcionCrew = (campo_ELC, campo_TMDB) => {
+				if (
+					lectura.crew.filter((n) => n.department == campo_TMDB)
+						.length > 0
+				) {
+					valor = lectura.crew
+						.filter((n) => n.department == campo_TMDB)
+						.map((m) => m.name)
+						.join(", ");
+					return { [campo_ELC]: valor };
+				}
+				return;
 			};
+			let funcionPersonaje = (personaje) => {
+				desde = personaje.indexOf(" (");
+				hasta = personaje.indexOf(")");
+				desde > 0 ? personaje = personaje.slice(0, desde) + personaje.slice(hasta+1): ""
+				return personaje
+			}
+
+			// Datos obtenidos de la API
+			lectura.belongs_to_collection != null
+				? (datosLectura.coleccion_tmdb_id =
+						lectura.belongs_to_collection)
+				: "";
+			lectura.imdb_id != ""
+				? (datosLectura.imdb_id = lectura.imdb_id)
+				: "";
+			lectura.overview != ""
+				? (datosLectura.sinopsis = fuenteSinopsis(lectura.overview))
+				: "";
+			lectura.poster_path != ""
+				? (datosLectura.avatar =
+						"https://image.tmdb.org/t/p/original" +
+						lectura.poster_path)
+				: "";
+			lectura.release_date != ""
+				? (datosLectura.ano_estreno = parseInt(
+						lectura.release_date.slice(0, 4)
+				  ))
+				: "";
+			lectura.runtime != null
+				? (datosLectura.duracion = lectura.runtime)
+				: "";
+			lectura.title != ""
+				? (datosLectura.nombre_castellano = lectura.title)
+				: "";
+			lectura.production_companies.length > 0
+				? (datosLectura.productor = lectura.production_companies
+						.map((n) => n.name)
+						.join(", "))
+				: "";
+			lectura.crew.length > 0
+				? (datosLectura = {
+						...datosLectura,
+						...funcionCrew("director", "Directing"),
+						...funcionCrew("guion", "Writing"),
+						...funcionCrew("musica", "Sound"),
+				  })
+				: "";
+			lectura.production_countries.length > 0
+				? (datosLectura.pais_id = lectura.production_countries.map(
+						(n) => n.iso_3166_1
+				  ))
+				: "";
+			lectura.cast.length > 0
+				? (datosLectura.actores = lectura.cast
+						.map((n) => n.name + " (" + funcionPersonaje(n.character) + ")")
+						.join(", "))
+				: "";
 		}
 		//console.log(resultado);
+		let resultado = {
+			...datosForm,
+			...datosLectura,
+		};
 		return resultado;
 	},
 
@@ -149,6 +194,8 @@ module.exports = {
 };
 
 const fuenteSinopsis = (sinopsis) => {
-	(sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)")) ? sinopsis = sinopsis + " (TMDB)" : ""
-	return sinopsis
-}
+	sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)")
+		? (sinopsis = sinopsis + " (TMDB)")
+		: "";
+	return sinopsis;
+};

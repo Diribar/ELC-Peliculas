@@ -1,7 +1,7 @@
 // Require
 const search_TMDB = require("./search_TMDB_fetch");
 const details_TMDB = require("./details_TMDB_fetch");
-const funciones = require("../funciones");
+const funciones = require("../funcionesVarias");
 
 // Función a exportar
 module.exports = {

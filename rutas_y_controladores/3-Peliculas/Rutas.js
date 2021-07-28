@@ -14,7 +14,8 @@ const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // Controladores de Crear - APIs
 router.get("/agregar/api/contador/", agregar.contador);
-router.get("/agregar/api/procesarlinkfa/", agregar.procesarLinkFA);
+//router.get("/agregar/api/procesarlinkfa/", agregar.procesarLinkFA);
+router.get("/agregar/api/averiguar-producto-ya-en-bd-fa/", agregar.averiguarProductoYaEnBD_FA);
 router.get("/agregar/api/procesarcontenidofa/", agregar.procesarContenidoFA);
 
 // Controladores de Crear - Responsabilidad y Palabras Clave
