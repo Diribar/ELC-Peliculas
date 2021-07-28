@@ -1,5 +1,5 @@
 FRONT-END
-- Agregarle la imagen
+- Agregarle la imagen (opcional)
 
 BACK-END
 - Validaciones back-end
