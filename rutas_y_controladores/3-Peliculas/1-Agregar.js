@@ -112,7 +112,6 @@ module.exports = {
 		return res.send(req.session.datosDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
-
 		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
 
