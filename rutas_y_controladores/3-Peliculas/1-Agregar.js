@@ -157,7 +157,6 @@ const obtenerDatosDelProducto = async (form) => {
 	form.rubroAPI == "movie" ? (rubro = "procesarPelicula_TMDB") : "";
 	form.rubroAPI == "tv" ? (rubro = "procesarTV_TMDB") : "";
 	form.rubroAPI == "collection" ? (rubro = "procesarColeccion_TMDB") : "";
-
 	let resultado = await procesarDetalles[rubro](form, lectura);
 	return resultado;
 };
