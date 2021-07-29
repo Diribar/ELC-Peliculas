@@ -10,7 +10,6 @@ CREATE TABLE paises (
 	idioma VARCHAR(50) NOT NULL,
 	zona_horaria VARCHAR(10) NOT NULL,
 	bandera VARCHAR(100) NOT NULL,
-	orden INT NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE estados_eclesiales (
@@ -41,6 +40,7 @@ CREATE TABLE USUARIOS (
 	contrasena VARCHAR(100) NOT NULL,
 	status_registro_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
 	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
+	autorizado_fa BOOLEAN NULL DEFAULT 0,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
 	apodo VARCHAR(50) NULL,
@@ -115,8 +115,10 @@ CREATE TABLE menu_opciones (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE colecciones_cabecera (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(20) NULL,
-	rubro VARCHAR(20) NOT NULL,
+	tmdb_id VARCHAR(10) NULL,
+	tmdb_rubro VARCHAR(10) NULL,
+	fa_id VARCHAR(10) NULL,
+	fuente VARCHAR(10) NOT NULL,
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
@@ -134,6 +136,7 @@ CREATE TABLE colecciones_peliculas (
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
+	cant_capitulos INT UNSIGNED NOT NULL DEFAULT 1,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
 	coleccion_id INT UNSIGNED NOT NULL,
@@ -172,9 +175,9 @@ CREATE TABLE hechos_historicos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(20) NULL,
-	fa_id VARCHAR(20) NULL,
-	imdb_id VARCHAR(20) NULL,
+	tmdb_id VARCHAR(10) NULL,
+	fa_id VARCHAR(10) NULL,
+	imdb_id VARCHAR(10) NULL,
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	coleccion_pelicula_id INT UNSIGNED NULL,
@@ -206,10 +209,10 @@ CREATE TABLE PELICULAS (
 	editada_en DATE NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATE NULL,
-	borrado BOOLEAN NOT NULL DEFAULT 0,
-	borrado_por_id INT UNSIGNED NULL,
-	borrado_en DATE NULL,
-	borrado_motivo VARCHAR(500) NULL,
+	borrada BOOLEAN NOT NULL DEFAULT 0,
+	borrada_por_id INT UNSIGNED NULL,
+	borrada_en DATE NULL,
+	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_pelicula_id) REFERENCES colecciones_peliculas(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
@@ -223,7 +226,7 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

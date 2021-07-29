@@ -3,6 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
 		tmdb_id: { type: dt.STRING(10) },
+		tmdb_rubro: { type: dt.STRING(10) },
 		fa_id: { type: dt.STRING(10) },
 		fuente: { type: dt.STRING(10) },
 		nombre_original: { type: dt.STRING(100) },
