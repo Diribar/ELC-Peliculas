@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		coleccion_pelicula_id: { type: dt.INTEGER },
 		duracion: { type: dt.INTEGER },
 		ano_estreno: { type: dt.INTEGER },
-		pais_id: { type: dt.STRING(2) },
+		pais_id: { type: dt.STRING(20) },
 		director: { type: dt.STRING(50) },
 		guion: { type: dt.STRING(50) },
 		musica: { type: dt.STRING(50) },
@@ -44,7 +44,6 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.colecciones_peliculas, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
