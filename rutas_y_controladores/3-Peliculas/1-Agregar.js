@@ -105,10 +105,10 @@ module.exports = {
 		return res.json(resultado);
 	},
 
-	copiarFA_Guardar: (req, res) => {
+	copiarFA_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		//return res.send(req.body)
-		req.session.datosDuros = procesarDetalles.procesarProducto_FA(req.body);
+		req.session.datosDuros = await procesarDetalles.procesarProducto_FA(req.body);
 		return res.send(req.session.datosDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
