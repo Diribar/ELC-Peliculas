@@ -24,7 +24,7 @@ window.addEventListener("load", () => {
 		if (menuPelis) {
 			!e.target.matches("#pelis-button")
 				? document.getElementById("menu-pelis").classList.add("ocultar")
-			: "";
+				: "";
 		}
 	};
 });
