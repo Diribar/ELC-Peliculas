@@ -1,6 +1,8 @@
+// ************ Requires ************
 const details_TMDB = require("./API/details_TMDB_fetch");
 const credits_TMDB = require("./API/credits_TMDB_fetch");
 const funciones = require("./funcionesVarias");
+const BD_varios = require("./bases_de_datos/BD_varios");
 
 module.exports = {
 	API: async (id, rubroAPI) => {
@@ -25,7 +27,7 @@ module.exports = {
 		};
 		// Datos obtenidos de la API
 		let datosLectura = {};
-		if (form.fuente == "TMDB" && lectura.length > 0) {
+		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API
 			lectura.belongs_to_collection != null
 				? (datosLectura.coleccion_tmdb_id =
@@ -100,7 +102,7 @@ module.exports = {
 		};
 		// Datos obtenidos de la API
 		let datosLectura = {};
-		if (form.fuente == "TMDB" && lectura.length > 0) {
+		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			lectura.created_by.length > 0
 				? (datosLectura.guion = lectura.created_by
 						.map((n) => n.name)
@@ -176,7 +178,7 @@ module.exports = {
 		};
 		// Datos obtenidos de la API
 		let datosLectura = {};
-		if (form.fuente == "TMDB" && lectura.length>0) {
+		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			lectura.name != ""
 				? (datosLectura.nombre_castellano = lectura.name)
 				: "";
@@ -223,7 +225,7 @@ module.exports = {
 		return resultado;
 	},
 
-	procesarProducto_FA: (dato) => {
+	procesarProducto_FA: async (dato) => {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, contenido } = dato;
 		// Obtener el FA_id a partir de la dirección
@@ -243,6 +245,15 @@ module.exports = {
 			fa_id,
 			...contenido,
 		};
+		if (resultado.pais_nombre) {
+			pais_id = await BD_varios.ObtenerFiltrandoPorCampo(
+				"paises",
+				"nombre",
+				resultado.pais_nombre
+			)
+			pais_id.length > 0 ? resultado.pais_id = pais_id.map((n) => n.id): "";
+			delete resultado.pais_nombre;
+		}
 		return resultado;
 	},
 };
