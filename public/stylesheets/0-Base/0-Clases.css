@@ -20,8 +20,6 @@
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
-.dropdown-content {display: none;}
-.mostrar {display: block;}
 .ocultar {display: none;}
 .mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul-oscuro); 
 	border: var(--azul-oscuro) solid 2px;}

@@ -12,6 +12,11 @@ CREATE TABLE paises (
 	bandera VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE idiomas (
+	id VARCHAR(2) NOT NULL UNIQUE,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
@@ -123,7 +128,7 @@ CREATE TABLE colecciones_cabecera (
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
-	pais_id VARCHAR(2) NOT NULL,
+	pais_id VARCHAR(20) NOT NULL,
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,
@@ -183,7 +188,7 @@ CREATE TABLE PELICULAS (
 	coleccion_pelicula_id INT UNSIGNED NULL,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
-	pais_id VARCHAR(2) NOT NULL,
+	pais_id VARCHAR(20) NOT NULL,
 	director VARCHAR(50) NOT NULL,
 	guion VARCHAR(50) NOT NULL,
 	musica VARCHAR(50) NOT NULL,

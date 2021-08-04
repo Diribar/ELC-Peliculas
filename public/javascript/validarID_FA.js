@@ -64,7 +64,7 @@ const buscarPorID = async (ID) => {
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	resultadoDeBusqueda.innerHTML = "";
-	resultadoDeBusqueda.classList.replace("mostrar", "ocultar");
+	resultadoDeBusqueda.classList.add("ocultar");
 	return lectura
 };
 

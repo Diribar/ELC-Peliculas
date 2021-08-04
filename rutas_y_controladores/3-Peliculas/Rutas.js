@@ -17,35 +17,36 @@ router.get("/agregar/api/contador/", agregar.contador);
 router.get("/agregar/api/averiguar-producto-ya-en-bd-fa/", agregar.averiguarProductoYaEnBD_FA);
 router.get("/agregar/api/procesarcontenidofa/", agregar.procesarContenidoFA);
 
-// Controladores de Crear - Responsabilidad y Palabras Clave
+// Controladores de Crear - 0. Responsabilidad
 router.get("/agregar/responsabilidad", soloUsuarios, agregar.responsabilidad);
+
+// Controladores de Crear - 1. Palabras Clave
 router.get("/agregar/palabras_clave", soloUsuarios, agregar.palabrasClaveForm);
 router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agregar.palabrasClaveGuardar);
 
-// Controladores de Crear - Desambiguar y Copiar FA
+// Controladores de Crear - 2. Desambiguar, Copiar FA, Ya en nuestra BD
 router.get("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregar.desambiguarTMDB_Guardar);
 // *** verificar que el usuario esté habilitado
 router.get("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Form);
 router.post("/agregar/copiarfa", soloUsuarios, agregar.copiarFA_Guardar);
-
-// Controladores de Crear - Ya en nuestra BD
 router.get("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 //router.post("/agregar/ya-en-bd", soloUsuarios, agregar.yaEnBD_Form);
 
-// 3. Datos Duros
+// Controladores de Crear - 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, validarProdEnBD, agregar.datosDuros_Form);
 router.post("/agregar/datos_duros", soloUsuarios, validarDatosDuros, agregar.datosDuros_Guardar);
 
-// 4. Datos Personalizados
+// Controladores de Crear - 4. Datos Personalizados
 router.get("/agregar/datos_personalizados", soloUsuarios, validarProdEnBD, agregar.DatosPersForm);
 router.post("/agregar/datos_personalizados", soloUsuarios, validarDatosPers, agregar.DatosPersGuardar);
 
 // Controladores RUD (método GET)
-router.get('/detalle/:id/:id', RUD.detalle);
+router.get("/detalle/informacion/:id", soloUsuarios, RUD.detalle);
 router.get("/detalle/editar/:id", soloUsuarios, RUD.detalle);
 router.get("/detalle/eliminar/:id", soloUsuarios, RUD.detalle);
 router.get('/detalle/calificala/:id', soloUsuarios, RUD.detalle);
+router.get('/detalle/:id/:id', RUD.detalle);
 
 // Controladores UD (método POST)
 router.post("/detalle/editar/:id", soloUsuarios, RUD.editarGuardar);
