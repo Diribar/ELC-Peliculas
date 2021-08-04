@@ -21,11 +21,9 @@ window.addEventListener("load", () => {
 		!e.target.matches(".desplegableUsuario")
 			? document.getElementById("menu-usuario").classList.add("ocultar")
 			: "";
-		if (menuPelis) {
-			!e.target.matches("#pelis-button")
-				? document.getElementById("menu-pelis").classList.add("ocultar")
-				: "";
-		}
+		(menuPelis && !e.target.matches("#pelis-button"))
+			? document.getElementById("menu-pelis").classList.add("ocultar")
+			: "";
 	};
 });
 
