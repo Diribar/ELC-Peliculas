@@ -1,5 +1,5 @@
 const path = require('path');
-const metodosUsuario = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_usuarios"));
+const metodosUsuario = require(path.join(__dirname, "../../modelos/base_de_datos/BD_usuarios"));
 
 module.exports = async (req, res, next) => {
 	// Uso de cookies para identificar al usuario
