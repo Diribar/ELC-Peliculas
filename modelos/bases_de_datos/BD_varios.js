@@ -1,4 +1,4 @@
-const db = require("../../bases_de_datos/modelos");
+const db = require("../../base_de_datos/modelos");
 
 module.exports = {
 	ObtenerTodos: (entidad) => {
