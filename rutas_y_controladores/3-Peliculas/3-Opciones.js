@@ -1,5 +1,5 @@
 // ************ Requires ************
-const tablasVarias = require("../../modelos/bases_de_datos/BD_varios");
+const tablasVarias = require("../../modelos/base_de_datos/BD_varios");
 
 // *********** Controlador ***********
 module.exports = {

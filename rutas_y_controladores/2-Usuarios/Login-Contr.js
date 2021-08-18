@@ -2,7 +2,7 @@
 const path = require('path');
 const bcryptjs = require('bcryptjs')
 const {validationResult} = require('express-validator');
-const metodosUsuario = require(path.join(__dirname, "../../modelos/bases_de_datos/BD_usuarios"));
+const metodosUsuario = require(path.join(__dirname, "../../modelos/base_de_datos/BD_usuarios"));
 
 // *********** Controlador ***********
 module.exports = {

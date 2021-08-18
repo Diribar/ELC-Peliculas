@@ -1,5 +1,5 @@
-const BD_peliculas = require("./bases_de_datos/BD_peliculas");
-const BD_colecciones = require("./bases_de_datos/BD_colecciones");
+const BD_peliculas = require("./base_de_datos/BD_peliculas");
+const BD_colecciones = require("./base_de_datos/BD_colecciones");
 
 module.exports = {
 	userLogs: (req, res) => {
