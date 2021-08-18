@@ -1,13 +1,6 @@
 // ************ Requires *************
 const BD_peliculas = require("../../modelos/bases_de_datos/BD_peliculas");
 
-// ************ Variables ************
-// const fs = require('fs');
-// const path = require('path')
-// const ruta_nombre_pelis = path.join(__dirname, '../../bases_de_datos/tablas/BDpeliculas.json');
-// const ruta_nombre_detalle = path.join(__dirname, '../../bases_de_datos/tablas/menuDetalle.json');
-// function leer(n) {return JSON.parse(fs.readFileSync(n, 'utf-8'))};
-
 // *********** Controlador ***********
 module.exports = {
 	detalle: async (req, res) => {
