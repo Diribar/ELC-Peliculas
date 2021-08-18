@@ -1,30 +1,16 @@
 <div id="info">
-    <p style="font-weight: bold">Título original: <%= producto.nombre_OR %></p>
-    <p>País de origen: <%= producto.pais_origen %></p>
+    <p style="font-weight: bold">Título original: <%= producto.nombre_original %></p>
+    <p>País de origen: <%= producto.pais_id %></p>
     <p>Año de estreno: <%= producto.ano_estreno %></p>
     <p>Duración: <%= producto.duracion %> minutos</p>
-    <p>Dirección: <%= producto.direccion %></p>
+    <p>Dirección: <%= producto.director %></p>
     <p>Guión: <%= producto.guion %></p>
     <p>Música: <%= producto.musica %></p>
-    <p>Actor/es principal/es: <%= producto.actor1 %>
-      <% if (producto.actor2) { %>, <%= producto.actor2 %><% } %>
-      <% if (producto.actor3) { %>, <%= producto.actor3 %><% } %>
-    </p>
-    <p>Productora: <%= producto.productora %></p>
+    <p>Actores: <%= producto.actores %></p>
+    <p>Productor: <%= producto.productor %></p>
     <p>Idioma castellano: <%= producto.idioma_castellano %></p>
     <p>Color: <%= producto.color %></p>
-    <p>Público recomendado: 
-        <%
-            let publico="";
-            if (producto.mayores && producto.menores) {
-              publico = "Familia"
-            } else {
-              if (producto.mayores) {publico = "Mayores (ATP: "+ producto.ATP +")" }
-              if (producto.menores) {publico = "Menores"}
-            }
-        %>
-        <%= publico %> 
-    </p>
-    <p>Categoría: <%= producto.categoría %></p>
-    <p>Sub-categoría: <%= producto.sub_categoria %></p>
+    <p>Público recomendado: <%= producto.publico_recomendado_id %></p>
+    <p>Categoría: <%= producto.categoria_id %></p>
+    <p>Sub-categoría: <%= producto.subcategoria_id %></p>
   </div>
