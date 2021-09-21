@@ -7,7 +7,7 @@
 	<!--*********************** FILTROS ****************************-->
 	<%- include('Filtros') %>
 	<!--******************* ZONA DE PELÍCULAS **********************-->
-	<section id="zona-de-pelis" class="flex-col grow">
+	<div id="zona-de-pelis" class="flex-col grow">
 		<!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
 		<select name="" onchange="location = this.value;" class="titulo">
 			<% if (!opcionElegida) { %>
@@ -46,7 +46,6 @@
 
 		<!--///////////////////// Redireccionar ///////////////////-->
 		<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
-	</section>
-	<!--*************************** FIN ****************************-->
+	</div>
 </section>
 <!--****************************** FIN *************************-->
