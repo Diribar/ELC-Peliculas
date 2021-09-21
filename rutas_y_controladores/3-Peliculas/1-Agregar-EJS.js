@@ -31,8 +31,10 @@ module.exports = {
 		let existenErrores = erroresValidacion.errors.length > 0;
 		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
+			tema = "agregar";
 			codigo = "palabrasClave";
 			return res.render("Home", {
+				tema,
 				codigo,
 				palabras_clave,
 				errores: erroresValidacion.mapped(),
