@@ -69,7 +69,7 @@ const buscarPorID = async (ID) => {
 };
 
 const borrarComentario = () => {
-	document.querySelector("#resultado").innerHTML = "";
-	document.querySelector("#resultado").classList.remove("resultadoInvalido");
-	document.querySelector("#resultado").classList.remove("resultadoExitoso");
+	let resultado = document.querySelector("#resultado");
+	resultado.innerHTML = "";
+	resultado.classList.remove(...resultado.classList);
 };
