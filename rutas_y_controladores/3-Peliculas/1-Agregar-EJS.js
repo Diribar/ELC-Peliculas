@@ -64,7 +64,7 @@ module.exports = {
 		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
-		return res.render("2-Desamb_TMDB", {
+		return res.render("0-AgregarProductos", {
 			codigo,
 			hayMas: lectura.hayMas,
 			coincidencias,
@@ -88,7 +88,7 @@ module.exports = {
 	},
 	copiarFA_Form: async (req, res) => {
 		codigo = "copiarFA";
-		return res.render("2-Copiar_FA", { codigo });
+		return res.render("0-AgregarProductos", { codigo });
 	},
 
 	copiarFA_Guardar: async (req, res) => {
@@ -106,8 +106,10 @@ module.exports = {
 	},
 
 	datosDuros_Form: (req, res) => {
+		codigo = "datosDuros";
 		return res.send(req.session.datosDuros);
-		return res.render("Agregar2Form", {
+		return res.render("0-AgregarProductos", {
+			codigo,
 			data_entry: req.session.agregarPelicula,
 		});
 	},
@@ -125,7 +127,8 @@ module.exports = {
 	},
 
 	DatosPersForm: (req, res) => {
-		return res.render("Agregar3Form", {});
+		codigo = "datosPersonalizados";
+		return res.render("0-AgregarProductos", {codigo});
 	},
 
 	DatosPersGuardar: (req, res) => {

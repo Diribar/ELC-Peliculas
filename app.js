@@ -33,6 +33,7 @@ app.set("views", [
 	path.resolve(__dirname, "./views/1-Institucional"),
 	path.resolve(__dirname, "./views/2-Usuarios"),
 	path.resolve(__dirname, "./views/3-AgregarProductos"),
+	path.resolve(__dirname, "./views/3-AgregarProductos/Desamb_form"),
 	path.resolve(__dirname, "./views/4-Productos-RUD"),
 	path.resolve(__dirname, "./views/5-ElegirOpciones"),
 ]);
