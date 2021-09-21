@@ -20,7 +20,7 @@ const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs); // Para registrar los URL de las páginas navegadas
 
 // *********** Para conectarse con el servidor ********************
-app.listen(3001, () => console.log("Servidor funcionando en puerto 3001..."));
+app.listen(80, () => console.log("Servidor funcionando..."));
 
 // ******** Terminación de los archivos de vista ******************
 app.set("view engine", "ejs");
