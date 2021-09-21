@@ -64,7 +64,7 @@ module.exports = {
 		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
-		return res.render("2-Desamb_TMDB", {
+		return res.render("0-AgregarProductos", {
 			codigo,
 			hayMas: lectura.hayMas,
 			coincidencias,
@@ -88,7 +88,7 @@ module.exports = {
 	},
 	copiarFA_Form: async (req, res) => {
 		codigo = "copiarFA";
-		return res.render("2-Copiar_FA", { codigo });
+		return res.render("0-AgregarProductos", { codigo });
 	},
 
 	copiarFA_Guardar: async (req, res) => {
