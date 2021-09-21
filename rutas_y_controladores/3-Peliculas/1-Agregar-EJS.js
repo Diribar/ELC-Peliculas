@@ -8,16 +8,19 @@ const funciones = require("../../modelos/funcionesVarias");
 // *********** Controlador ***********
 module.exports = {
 	responsabilidad: (req, res) => {
-		codigo = "responsabilidad"
-		return res.render("0-AgregarProductos", { codigo });
+		codigo = "responsabilidad";
+		tema = "agregar";
+		return res.render("Home", { tema, codigo });
 	},
 	palabrasClaveForm: (req, res) => {
 		codigo = "palabrasClave";
+		tema = "agregar";
 		let autorizado_fa = req.session.usuario.autorizado_fa;
 		let palabras_clave = req.session.palabras_clave;
 		!palabras_clave ? (palabras_clave = req.cookies.palabras_clave) : "";
-		return res.render("0-AgregarProductos", {
+		return res.render("Home", {
 			codigo,
+			tema,
 			autorizado_fa,
 			palabras_clave,
 		});
@@ -29,7 +32,7 @@ module.exports = {
 		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
 			codigo = "palabrasClave";
-			return res.render("0-AgregarProductos", {
+			return res.render("Home", {
 				codigo,
 				palabras_clave,
 				errores: erroresValidacion.mapped(),
@@ -43,20 +46,17 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// Obtener la API
-		req.session.peliculasTMDB = await searchTMDB.search(
-			palabras_clave
-		);
+		req.session.peliculasTMDB = await searchTMDB.search(palabras_clave);
 		// return res.send(req.session.peliculasTMDB);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 	desambiguarTMDB_Form: async (req, res) => {
 		codigo = "desambiguar";
+		tema = "agregar";
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
-			? (lectura = await searchTMDB.search(
-					req.cookies.palabras_clave
-			  ))
+			? (lectura = await searchTMDB.search(req.cookies.palabras_clave))
 			: "";
 		resultados = lectura.resultados;
 		coincidencias = resultados.length;
@@ -64,8 +64,9 @@ module.exports = {
 		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
-		return res.render("0-AgregarProductos", {
+		return res.render("Home", {
 			codigo,
+			tema,
 			hayMas: lectura.hayMas,
 			coincidencias,
 			prod_nuevos,
@@ -88,13 +89,16 @@ module.exports = {
 	},
 	copiarFA_Form: async (req, res) => {
 		codigo = "copiarFA";
-		return res.render("0-AgregarProductos", { codigo });
+		tema = "agregar";
+		return res.render("Home", { tema, codigo });
 	},
 
 	copiarFA_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		//return res.send(req.body)
-		req.session.datosDuros = await procesarDetalles.procesarProducto_FA(req.body);
+		req.session.datosDuros = await procesarDetalles.procesarProducto_FA(
+			req.body
+		);
 		return res.send(req.session.datosDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
@@ -107,9 +111,11 @@ module.exports = {
 
 	datosDuros_Form: (req, res) => {
 		codigo = "datosDuros";
+		tema = "agregar";
 		return res.send(req.session.datosDuros);
-		return res.render("0-AgregarProductos", {
+		return res.render("Home", {
 			codigo,
+			tema,
 			data_entry: req.session.agregarPelicula,
 		});
 	},
@@ -128,7 +134,8 @@ module.exports = {
 
 	DatosPersForm: (req, res) => {
 		codigo = "datosPersonalizados";
-		return res.render("0-AgregarProductos", {codigo});
+		tema = "agregar";
+		return res.render("Home", { tema, codigo });
 	},
 
 	DatosPersGuardar: (req, res) => {
