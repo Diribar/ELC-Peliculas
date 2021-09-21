@@ -1,6 +1,6 @@
 // Require
 const searchTMDB = require("./API/searchTMDB_fetch");
-const details_TMDB = require("./API/detailsTMDB_fetch");
+const detailsTMDB = require("./API/detailsTMDB_fetch");
 const funciones = require("./funcionesVarias");
 
 // Función a exportar
@@ -140,7 +140,7 @@ let agregarLanzamiento = async (dato, rubroAPI) => {
 		for (let j = 0; j < dato.length; j++) {
 			id = dato[j].tmdb_id;
 			// Obtener todas las fechas de lanzamiento
-			detalles = await details_TMDB(id, "collection")
+			detalles = await detailsTMDB(id, "collection")
 				.then((n) => {
 					!n.hasOwnProperty("parts") ? console.log(n) : "";
 					return n.parts;
