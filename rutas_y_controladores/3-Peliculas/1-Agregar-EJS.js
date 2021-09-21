@@ -106,8 +106,10 @@ module.exports = {
 	},
 
 	datosDuros_Form: (req, res) => {
+		codigo = "datosDuros";
 		return res.send(req.session.datosDuros);
-		return res.render("Agregar2Form", {
+		return res.render("0-AgregarProductos", {
+			codigo,
 			data_entry: req.session.agregarPelicula,
 		});
 	},
@@ -125,7 +127,8 @@ module.exports = {
 	},
 
 	DatosPersForm: (req, res) => {
-		return res.render("Agregar3Form", {});
+		codigo = "datosPersonalizados";
+		return res.render("0-AgregarProductos", {codigo});
 	},
 
 	DatosPersGuardar: (req, res) => {
