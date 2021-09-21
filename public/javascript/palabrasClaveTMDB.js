@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
 			// Averiguar cantidad de coincidencias
 			let lectura = await fetch(link).then((n) => n.json());
 			let prod_nuevos = lectura.resultados.filter(
-				(n) => n.YaEnBD != false
+				(n) => n.YaEnBD == false
 			).length;
 			let cantResultados = lectura.cantResultados;
 			let hayMas = lectura.hayMas;
@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
 								? "ninguna está en nuestra BD"
 								: prod_nuevos
 								? prod_nuevos + " no están en nuestra BD"
-								: "que ya están todas en nuestra BD");
+								: "y todas están en nuestra BD");
 				formatoVigente = "resultadoExitoso";
 				formatoAnterior = "resultadoInvalido";
 			} else {
