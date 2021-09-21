@@ -29,11 +29,12 @@ app.set("view engine", "ejs");
 app.set("views", [
 	path.resolve(__dirname, "./views"),
 	path.resolve(__dirname, "./views/0-Partials"),
+	path.resolve(__dirname, "./views/0-Partials/menusHeader"),
 	path.resolve(__dirname, "./views/1-Institucional"),
 	path.resolve(__dirname, "./views/2-Usuarios"),
-	path.resolve(__dirname, "./views/3-PEL-COL-Agregar"),
-	path.resolve(__dirname, "./views/3-PEL-Opciones"),
-	path.resolve(__dirname, "./views/3-PEL-CRUD"),
+	path.resolve(__dirname, "./views/3-AgregarProductos"),
+	path.resolve(__dirname, "./views/4-Productos-RUD"),
+	path.resolve(__dirname, "./views/5-ElegirOpciones"),
 ]);
 
 // ************************* Rutas ********************************

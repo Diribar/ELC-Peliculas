@@ -1,0 +1,31 @@
+<%- include('Head', {titulo: "PEL-Agregar"}) %>
+	<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
+	<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Responsabilidad.css"><% } %>
+	<% if (codigo == "palabrasClave") { %>
+		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-PalabrasClave.css">
+		<script src="/javascript/palabrasClave_TMDB.js"></script>
+	<% } %>
+	<% if (codigo == "copiarFA") { %>
+		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Copiar_FA.css">
+		<script src="/javascript/copiar_FA.js"></script>
+	<% } %>
+</head>
+<body>
+	<header>
+		<%- include('Main-1Header', {detalle: false}) %>
+	</header>
+	<main class="flex-row">
+		<%- include('Main-2ImagenDerecha') %>
+		<div id="cuerpo-y-footer" class="flex-col grow">
+		<%- include('Main-3Footer') %>
+			<!--**************************** CUERPO ******************************-->
+			<section class="cuerpo flex-col grow">
+				<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
+				<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
+				<%- codigo == "palabrasClave" ? include("2-CopiarFA") : "" %>
+			</section>
+			<!--****************************** FIN *******************************-->
+		</div>
+	</main>
+</body>
+</html>

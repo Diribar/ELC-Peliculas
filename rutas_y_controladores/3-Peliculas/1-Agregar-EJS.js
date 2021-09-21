@@ -8,23 +8,19 @@ const funciones = require("../../modelos/funcionesVarias");
 // *********** Controlador ***********
 module.exports = {
 	responsabilidad: (req, res) => {
-		return res.render("0-Responsabilidad");
+		codigo = "responsabilidad"
+		return res.render("0-AgregarProductos", { codigo });
 	},
 	palabrasClaveForm: (req, res) => {
+		codigo = "palabrasClave";
 		let autorizado_fa = req.session.usuario.autorizado_fa;
 		let palabras_clave = req.session.palabras_clave;
 		!palabras_clave ? (palabras_clave = req.cookies.palabras_clave) : "";
-		return res.render("1-PalabrasClave", {
+		return res.render("0-AgregarProductos", {
+			codigo,
 			autorizado_fa,
 			palabras_clave,
 		});
-	},
-	contador: async (req, res) => {
-		// Obtener 'palabras_clave' y obtener la API
-		let { palabras_clave } = req.query;
-		let lectura = await search_TMDB_funcion.search(palabras_clave);
-		// Enviar la API
-		return res.json(lectura);
 	},
 	palabrasClaveGuardar: async (req, res) => {
 		//Detectar errores de Data Entry
@@ -32,7 +28,9 @@ module.exports = {
 		let existenErrores = erroresValidacion.errors.length > 0;
 		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
-			return res.render("1-PalabrasClave", {
+			codigo = "palabrasClave";
+			return res.render("0-AgregarProductos", {
+				codigo,
 				palabras_clave,
 				errores: erroresValidacion.mapped(),
 			});
@@ -52,6 +50,7 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 	desambiguarTMDB_Form: async (req, res) => {
+		codigo = "desambiguar";
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
@@ -66,6 +65,7 @@ module.exports = {
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
 		return res.render("2-Desamb_TMDB", {
+			codigo,
 			hayMas: lectura.hayMas,
 			coincidencias,
 			prod_nuevos,
@@ -87,21 +87,8 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	copiarFA_Form: async (req, res) => {
-		return res.render("2-Copiar_FA");
-	},
-	averiguarProductoYaEnBD_FA: async (req, res) => {
-		let datos = req.query;
-		let [, resultadoFA] = await funciones.productoYaEnBD(datos);
-		return res.json(resultadoFA);
-	},
-	procesarContenidoFA: (req, res) => {
-		let { contenido } = req.query;
-		let matriz = contenido.split("\n");
-		let resultado = funciones.procesarContenidoFA(matriz);
-		//console.log("línea 77");
-		//console.log(resultado);
-		// Enviar la API
-		return res.json(resultado);
+		codigo = "copiarFA";
+		return res.render("2-Copiar_FA", { codigo });
 	},
 
 	copiarFA_Guardar: async (req, res) => {
