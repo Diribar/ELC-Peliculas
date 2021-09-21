@@ -1,11 +1,11 @@
 <!-- Logo de Home -->
 <section>
-	<%- include("HeaderHome") %>
+	<%- include("menuHome") %>
 </section>
 <!-- Logo de Crear/Menú de Película -->
 <section>
-	<% if (titulo.includes("Detalle")) { %>
-		<%- include("HeaderPelis") %> 
+	<% if (detalle) { %>
+		<%- include("menuPelis") %> 
 	<% } else { %>
 		<a href="/peliculas/agregar/responsabilidad">
 			<i class="fas fa-video icono"></i
@@ -19,7 +19,7 @@
 </section>
 <!-- Logo de usuario o Avatar -->
 <section>
-	<%- include("HeaderUsuario") %>
+	<%- include("menuUsuario") %>
 </section>
 
 <!-- MÚSICA DE FONDO PARA ECC -->

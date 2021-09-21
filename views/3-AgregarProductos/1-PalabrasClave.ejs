@@ -1,0 +1,49 @@
+<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<form action="/peliculas/agregar/palabras_clave" method="POST" class="flex-col" id="data_entry">
+	<section class="flex-row space-between"> 
+		<h2>Paso 1 de 4: Ingresá Palabras Clave</h2>
+		<% if (autorizado_fa) { %>
+			<a href="/peliculas/agregar/copiarfa">
+				<img src="/imagenes/0-Base/LogoFilmAffinity.png" alt="FA" height="30px" title="FA">
+			</a>			
+		<% } %> 
+	</section>
+	<h3>Ingresá palabras del Título de la Película</h3>
+	<section class="flex-row space-between">
+		<div class="relative flex-col ">
+			<div>
+				<input type="text" name="palabras_clave" placeholder="Escribilo acá"
+					value="<%= palabras_clave ? palabras_clave : null %>"
+					autofocus autocomplete="off"
+				>
+				<i class="fas fa-question-circle">
+					<span class="mensajeAyuda ocultar">
+						Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
+						Escribí de manera precisa todas las palabras que sepas.
+					</span>
+				</i>
+			</div>
+			<% if (locals.errores) { %>
+				<i class="fas fa-times-circle">
+					<span class="mensajeError"><%= errores.palabras_clave.msg %> </span>
+				</i>
+			<% } %>
+			</i>
+		</div>
+		<button type="submit">Verificar</button>
+	</section>
+	<section>
+		<div id="resultadoDeBusqueda" class="sinResultado"><br></div>
+		<ul id="fuentesDeInfo" type="circle">
+			<li>
+				Contamos con el soporte de 
+				<a target="_blank" href="https://www.themoviedb.org/?language=es">TMDB</a>
+				para conseguir información de las películas
+			</li>
+			<li>
+				Los acentos y las mayúsculas de las palabras clave no hacen al resultado
+			</li>
+		</ul>
+		
+	</section>
+</form>
