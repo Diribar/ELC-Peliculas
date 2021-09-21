@@ -4,7 +4,7 @@
 </section>
 <!-- Logo de Crear/Menú de Película -->
 <section>
-	<% if (detalle) { %>
+	<% if (typeof detalle != "undefined") { %>
 		<%- include("menuPelis") %> 
 	<% } else { %>
 		<a href="/peliculas/agregar/responsabilidad">

@@ -59,13 +59,16 @@ module.exports = {
 			{ where: { id: id } }
 		);
 	},
-	EmailYaExistente: async (email, id) => {
+	EmailYaExistente: (email, id) => {
 		return entidad.count({
 			where: {
 				id: { [Op.ne]: id },
 				email: email,
 			},
 		});
+	},
+	AutorizadoFA: (id) => {
+		return entidad.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	///////////////////////////////////////////////////////////////////////
 	editar: (id, infoUsuario, fileName) => {
