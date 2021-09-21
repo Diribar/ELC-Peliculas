@@ -224,11 +224,10 @@ window.addEventListener("load", () => {
 
 const procesarContenidoFA = async (contenido) => {
 	// Procesando la información
-	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
-	resultadoDeBusqueda.classList.remove("resultadoExitoso");
-	resultadoDeBusqueda.classList.remove("resultadoInvalido");
-	resultadoDeBusqueda.classList.add("resultadoEnEspera");
-	resultadoDeBusqueda.innerHTML = "Procesando la información...";
+	let resultado = document.querySelector("#resultado");
+	resultado.classList.remove(...resultado.classList);
+	resultado.classList.add("resultadoEnEspera");
+	resultado.innerHTML = "Procesando la información...";
 	// Procesar los datos de la película
 	let encodedValue = encodeURIComponent(contenido);
 	let url =
@@ -237,20 +236,20 @@ const procesarContenidoFA = async (contenido) => {
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	let campos = Object.keys(lectura).length;
-	resultadoDeBusqueda.classList.remove("resultadoEnEspera");
+	resultado.classList.remove("resultadoEnEspera");
 	if (campos) {
 		campos == 1 ? mensaje = "Se obtuvo 1 solo dato" : "";
 		campos > 1 ? (mensaje = "Se obtuvieron " + campos + " datos") : "";
-		resultadoDeBusqueda.classList.add("resultadoExitoso");
+		resultado.classList.add("resultadoExitoso");
 
 	} else {
 		if (contenido != "") {
 			mensaje = "No se obtuvo ningún dato"
-			resultadoDeBusqueda.classList.add("resultadoInvalido")
+			resultado.classList.add("resultadoInvalido")
 		} else {
 			mensaje = "<br>"
 		}
 	}
-	resultadoDeBusqueda.innerHTML = mensaje;
+	resultado.innerHTML = mensaje;
 	return campos;
 };

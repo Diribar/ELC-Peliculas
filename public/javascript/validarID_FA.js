@@ -57,19 +57,19 @@ window.addEventListener("load", () => {
 
 const buscarPorID = async (ID) => {
 	// Procesando la información
-	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
-	resultadoDeBusqueda.innerHTML = "Procesando la información...";
+	let resultado = document.querySelector("#resultado");
+	resultado.innerHTML = "Procesando la información...";
 	// Obtener los datos de la película
 	let url = "/peliculas/agregar/api/buscarPorID/?ID=" + ID;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
-	resultadoDeBusqueda.innerHTML = "";
-	resultadoDeBusqueda.classList.add("ocultar");
+	resultado.innerHTML = "";
+	resultado.classList.add("ocultar");
 	return lectura
 };
 
 const borrarComentario = () => {
-	document.querySelector("#resultadoDeBusqueda").innerHTML = "";
-	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoInvalido");
-	document.querySelector("#resultadoDeBusqueda").classList.remove("resultadoExitoso");
+	let resultado = document.querySelector("#resultado");
+	resultado.innerHTML = "";
+	resultado.classList.remove(...resultado.classList);
 };

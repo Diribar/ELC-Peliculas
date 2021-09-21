@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 	let form = document.getElementById("data_entry");
 	let button = document.querySelector("button");
 	let mensajeAyuda = document.querySelector(".mensajeAyuda");
-	let resultadoDeBusqueda = document.querySelector("#resultadoDeBusqueda");
+	let resultado = document.querySelector("#resultado");
 
 	// 'Verificar' ante cambios en el input
 	palabras_clave.addEventListener("input", () => {
@@ -30,15 +30,13 @@ window.addEventListener("load", () => {
 			: mensajeAyuda.classList.add("ocultar");
 	};
 
-	const contador = async (palabras_clave) => {
+	let contador = async (palabras_clave) => {
 		palabras_clave = palabras_clave.trim();
 		if (palabras_clave.length > 1) {
 			// Procesando la información
-			resultadoDeBusqueda.innerHTML = "Procesando la información...";
-			resultadoDeBusqueda.classList.remove("resultadoExitoso");
-			resultadoDeBusqueda.classList.remove("resultadoInvalido");
-			resultadoDeBusqueda.classList.remove("sinResultado");
-			resultadoDeBusqueda.classList.add("resultadoEnEspera");
+			resultado.innerHTML = "Procesando la información...";
+			resultado.classList.remove(...resultado.classList);
+			resultado.classList.add("resultadoEnEspera");
 			// Obtener el link
 			let link =
 				"/peliculas/agregar/api/contador/?palabras_clave=" +
@@ -46,7 +44,7 @@ window.addEventListener("load", () => {
 			// Averiguar cantidad de coincidencias
 			let lectura = await fetch(link).then((n) => n.json());
 			let prod_nuevos = lectura.resultados.filter(
-				(n) => n.YaEnBD != false
+				(n) => n.YaEnBD == false
 			).length;
 			let cantResultados = lectura.cantResultados;
 			let hayMas = lectura.hayMas;
@@ -67,7 +65,7 @@ window.addEventListener("load", () => {
 								? "ninguna está en nuestra BD"
 								: prod_nuevos
 								? prod_nuevos + " no están en nuestra BD"
-								: "que ya están todas en nuestra BD");
+								: "y todas están en nuestra BD");
 				formatoVigente = "resultadoExitoso";
 				formatoAnterior = "resultadoInvalido";
 			} else {
@@ -86,17 +84,15 @@ window.addEventListener("load", () => {
 					}
 				}
 			}
-			resultadoDeBusqueda.innerHTML = oracion;
-			resultadoDeBusqueda.classList.remove("resultadoEnEspera");
-			resultadoDeBusqueda.classList.remove(formatoAnterior);
-			resultadoDeBusqueda.classList.add(formatoVigente);
+			resultado.innerHTML = oracion;
+			resultado.classList.remove(...resultado.classList);
+			resultado.classList.add(formatoVigente);
 		}
 	};
 
-	const borrarComentario = () => {
-		resultadoDeBusqueda.innerHTML = "<br>";
-		resultadoDeBusqueda.classList.remove("resultadoInvalido");
-		resultadoDeBusqueda.classList.remove("resultadoExitoso");
-		resultadoDeBusqueda.classList.add("sinResultado");
+	let borrarComentario = () => {
+		resultado.innerHTML = "<br>";
+		resultado.classList.remove(...resultado.classList);
+		resultado.classList.add("sinResultado");
 	};
 });
