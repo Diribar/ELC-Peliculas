@@ -225,8 +225,7 @@ window.addEventListener("load", () => {
 const procesarContenidoFA = async (contenido) => {
 	// Procesando la información
 	let resultado = document.querySelector("#resultado");
-	resultado.classList.remove("resultadoExitoso");
-	resultado.classList.remove("resultadoInvalido");
+	resultado.classList.remove(...resultado.classList);
 	resultado.classList.add("resultadoEnEspera");
 	resultado.innerHTML = "Procesando la información...";
 	// Procesar los datos de la película
