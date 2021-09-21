@@ -1,67 +1,70 @@
-<%- include('Head') %>
-	<link rel="stylesheet" href="/stylesheets/3-PEL-Opciones/0-Opciones.css">
-	<link rel="stylesheet" href="/stylesheets/3-PEL-Opciones/Filtros.css">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('Head') %>
+	<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
+	<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
+
 </head>
 <body>
 	<header>
 		<%- include('Main-1Header') %>
 	</header>
-<!--***********************************************************-->
-<main class="flex-row">
-	<%- include('Main-2ImagenDerecha') %>
-	<section id="cuerpo-y-footer" class="flex-col grow">
-		<%- include('Main-3Footer') %>
-		<!--**************************** CUERPO ************************-->
-		<section class="flex-row grow cuerpo relative">
-			<!--********************** CONTADOR ****************************-->
-			<% if (opcionElegida && tipoElegido) { %>
-				<button type="text" id="contador-de-peliculas">Contador</button>
-			<% } %>
-			<!--*********************** FILTROS ****************************-->
-			<%- include('Filtros') %>
-			<!--******************* ZONA DE PELÍCULAS **********************-->
-			<section id="zona-de-pelis" class="flex-col grow">
-				<!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
-				<select name="" onchange="location = this.value;" class="titulo">
-					<% if (!opcionElegida) { %>
-						<option class="ocultar" selected>
-							Elegí una opción
-						</option>
+	<main class="flex-row">
+		<%- include('Main-2ImagenDerecha') %>
+		<section id="cuerpo-y-footer" class="flex-col grow">
+			<%- include('Main-3Footer') %>
+			<!--**************************** CUERPO ************************-->
+			<section class="flex-row grow cuerpo relative">
+				<!--********************** CONTADOR ****************************-->
+				<% if (opcionElegida && tipoElegido) { %>
+					<button type="text" id="contador-de-peliculas">Contador</button>
+				<% } %>
+				<!--*********************** FILTROS ****************************-->
+				<%- include('Filtros') %>
+				<!--******************* ZONA DE PELÍCULAS **********************-->
+				<section id="zona-de-pelis" class="flex-col grow">
+					<!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
+					<select name="" onchange="location = this.value;" class="titulo">
+						<% if (!opcionElegida) { %>
+							<option class="ocultar" selected>
+								Elegí una opción
+							</option>
+						<% } %> 
+						<% for (let n of opciones_BD) { %>
+							<option 
+								value="/peliculas/<%= n.url %>"
+								<% if (opcionElegida && opcionElegida.id == n.id) { %>selected<% } %>>
+								<%= n.nombre %>
+							</option>
+						<% } %>
+					</select> 
+					<% if (opcionElegida) { %><p id="explicacion"><%= opcionElegida.comentario %></p><% } %>
+					<!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
+					<% if (opcionElegida) { %>
+						<select name="" onchange="location = this.value;" class="subtitulo">
+						<% if (!tipoElegido) { %>
+							<option style="font-style: italic" class="ocultar" selected>
+								Elegí una opción
+							</option>
+						<% } %>
+						<% for (let n of tipos_BD) { %>
+							<option 
+								value="/peliculas/<%= n.url %>"
+								<% if (tipoElegido && tipoElegido.id == n.id) { %>selected<% } %>>
+								<%= n.nombre %>
+							</option>
+						<% } %>
+						</select>          
 					<% } %> 
-					<% for (let n of opciones_BD) { %>
-						<option 
-							value="/peliculas/<%= n.url %>"
-							<% if (opcionElegida && opcionElegida.id == n.id) { %>selected<% } %>>
-							<%= n.nombre %>
-						</option>
-					<% } %>
-				</select> 
-				<% if (opcionElegida) { %><p id="explicacion"><%= opcionElegida.comentario %></p><% } %>
-				<!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
-				<% if (opcionElegida) { %>
-					<select name="" onchange="location = this.value;" class="subtitulo">
-					<% if (!tipoElegido) { %>
-						<option style="font-style: italic" class="ocultar" selected>
-							Elegí una opción
-						</option>
-					<% } %>
-					<% for (let n of tipos_BD) { %>
-						<option 
-							value="/peliculas/<%= n.url %>"
-							<% if (tipoElegido && tipoElegido.id == n.id) { %>selected<% } %>>
-							<%= n.nombre %>
-						</option>
-					<% } %>
-					</select>          
-				<% } %> 
 
-				<!--///////////////////// Redireccionar ///////////////////-->
-				<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
-			</section>
-			<!--*************************** FIN ****************************-->
-		</section>      
-		<!--****************************** FIN *************************-->
-	</section>
-</main>
+					<!--///////////////////// Redireccionar ///////////////////-->
+					<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
+				</section>
+				<!--*************************** FIN ****************************-->
+			</section>      
+			<!--****************************** FIN *************************-->
+		</section>
+	</main>
 </body>
 </html>

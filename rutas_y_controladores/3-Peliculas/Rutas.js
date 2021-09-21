@@ -8,6 +8,7 @@ let opciones = require("./3-Opciones");
 
 // Middlewares de Validaciones
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 let validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
 let validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
 let validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
@@ -24,16 +25,14 @@ router.get("/agregar/api/procesarcontenidofa/", agregarAPI.procesarContenidoFA);
 
 // Controladores de EJS - 0. Responsabilidad
 router.get("/agregar/responsabilidad", soloUsuarios, agregarEJS.responsabilidad);
-
 // Controladores de EJS - 1. Palabras Clave
 router.get("/agregar/palabras_clave", soloUsuarios, agregarEJS.palabrasClaveForm);
 router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agregarEJS.palabrasClaveGuardar);
-
 // Controladores de EJS - 2. Desambiguar, Copiar FA, Ya en nuestra BD
 router.get("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Guardar);
 // *** verificar que el usuario esté habilitado
-router.get("/agregar/copiarfa", soloUsuarios, agregarEJS.copiarFA_Form);
+router.get("/agregar/copiarfa", soloUsuarios, autorizadoFA, agregarEJS.copiarFA_Form);
 router.post("/agregar/copiarfa", soloUsuarios, agregarEJS.copiarFA_Guardar);
 router.get("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
 //router.post("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
