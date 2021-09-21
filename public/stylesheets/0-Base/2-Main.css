@@ -1,6 +1,6 @@
 /* CONFIGURAR SECCIONES */
 main.flex-row {flex-direction: row-reverse;}
-main #main-y-footer {flex-direction: column-reverse;justify-content:space-between;}
+main #cuerpo-y-footer {flex-direction: column-reverse;justify-content:space-between;}
 
 /* CONFIGURAR IMAGEN */
 #imagen-derecha img {height: 100%;}

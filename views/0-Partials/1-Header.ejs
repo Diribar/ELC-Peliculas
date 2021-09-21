@@ -1,31 +1,27 @@
-<body>
-	<header>
-		<!-- Logo de Home -->
-		<section>
-			<%- include("HeaderHome") %>
-		</section>
-		<!-- Logo de Crear/Menú de Película -->
-		<section>
-			<% if (titulo.includes("Detalle")) { %>
-				<%- include("HeaderPelis") %> 
-			<% } else { %>
-				<a href="/peliculas/agregar/responsabilidad">
-					<i class="fas fa-video icono"></i
-					><i class="icono" id="plus">+</i>
-				</a>
-			<% } %>
-		</section>
-		<!-- Título del Encabezado -->
-		<section>
-			<p><a>Evangelicemos la Cultura</a></p>
-		</section>
-		<!-- Logo de usuario o Avatar -->
-		<section>
-			<%- include("HeaderUsuario") %>
-		</section>
+<!-- Logo de Home -->
+<section>
+	<%- include("HeaderHome") %>
+</section>
+<!-- Logo de Crear/Menú de Película -->
+<section>
+	<% if (titulo.includes("Detalle")) { %>
+		<%- include("HeaderPelis") %> 
+	<% } else { %>
+		<a href="/peliculas/agregar/responsabilidad">
+			<i class="fas fa-video icono"></i
+			><i class="icono" id="plus">+</i>
+		</a>
+	<% } %>
+</section>
+<!-- Título del Encabezado -->
+<section>
+	<p><a>Evangelicemos la Cultura</a></p>
+</section>
+<!-- Logo de usuario o Avatar -->
+<section>
+	<%- include("HeaderUsuario") %>
+</section>
 
-		<!-- MÚSICA DE FONDO PARA ECC -->
-		<!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
-		<!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->
-	</header>
-</body>
+<!-- MÚSICA DE FONDO PARA ECC -->
+<!--<a href="/audio/Música-de-fondo.mp3" target="framename"><i class="fas fa-music"></i></a>-->
+<!--<audio autoplay src="/audio/Música-de-fondo.mp3"></audio>-->

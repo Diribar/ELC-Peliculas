@@ -1,16 +1,17 @@
 // Requires
-const express = require('express');
-const router = express.Router();
-const agregar = require("./1-Agregar");
-const RUD = require("./2-RUD");
-const opciones = require("./3-Opciones");
+let express = require('express');
+let router = express.Router();
+let agregar = require("./1-Agregar");
+let RUD = require("./2-RUD");
+let opciones = require("./3-Opciones");
+let uploadFile = require("../../middlewares/varios/multer");
 
 // Middlewares de Validaciones
-const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
-const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
-const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
-const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
+let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+let validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
+let validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
+let validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
+let validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // ** Rutas ************************************
 // Controladores de Crear - APIs

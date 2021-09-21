@@ -3,7 +3,6 @@ const { validationResult } = require("express-validator");
 const search_TMDB_funcion = require("../../modelos/API/search_TMDB_funcion");
 const procesarDetalles = require("../../modelos/procesarDetalles");
 const funciones = require("../../modelos/funcionesVarias");
-const uploadFile = require("../../middlewares/varios/multer");
 // uploadFile.single('imagen')
 
 // *********** Controlador ***********
