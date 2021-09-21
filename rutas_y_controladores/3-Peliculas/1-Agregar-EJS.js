@@ -8,19 +8,19 @@ const funciones = require("../../modelos/funcionesVarias");
 // *********** Controlador ***********
 module.exports = {
 	responsabilidad: (req, res) => {
-		codigo = "responsabilidad";
 		tema = "agregar";
+		codigo = "responsabilidad";
 		return res.render("Home", { tema, codigo });
 	},
 	palabrasClaveForm: (req, res) => {
-		codigo = "palabrasClave";
 		tema = "agregar";
+		codigo = "palabrasClave";
 		let autorizado_fa = req.session.usuario.autorizado_fa;
 		let palabras_clave = req.session.palabras_clave;
 		!palabras_clave ? (palabras_clave = req.cookies.palabras_clave) : "";
 		return res.render("Home", {
-			codigo,
 			tema,
+			codigo,
 			autorizado_fa,
 			palabras_clave,
 		});
@@ -51,8 +51,8 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 	desambiguarTMDB_Form: async (req, res) => {
-		codigo = "desambiguar";
 		tema = "agregar";
+		codigo = "desambiguar";
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
@@ -65,8 +65,8 @@ module.exports = {
 		// return res.send(lectura);
 		// console.log(!!req.cookies.fuente);
 		return res.render("Home", {
-			codigo,
 			tema,
+			codigo,
 			hayMas: lectura.hayMas,
 			coincidencias,
 			prod_nuevos,
@@ -88,8 +88,8 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	copiarFA_Form: async (req, res) => {
-		codigo = "copiarFA";
 		tema = "agregar";
+		codigo = "copiarFA";
 		return res.render("Home", { tema, codigo });
 	},
 
@@ -110,12 +110,12 @@ module.exports = {
 	},
 
 	datosDuros_Form: (req, res) => {
-		codigo = "datosDuros";
 		tema = "agregar";
+		codigo = "datosDuros";
 		return res.send(req.session.datosDuros);
 		return res.render("Home", {
-			codigo,
 			tema,
+			codigo,
 			data_entry: req.session.agregarPelicula,
 		});
 	},
@@ -133,8 +133,8 @@ module.exports = {
 	},
 
 	DatosPersForm: (req, res) => {
-		codigo = "datosPersonalizados";
 		tema = "agregar";
+		codigo = "datosPersonalizados";
 		return res.render("Home", { tema, codigo });
 	},
 
