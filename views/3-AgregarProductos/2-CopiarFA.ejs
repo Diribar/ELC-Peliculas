@@ -1,96 +1,75 @@
-<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
-	<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-	<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Copiar_FA.css">
-	<script src="/javascript/copiar_FA.js"></script>
-</head>
-<body>
-	<header>
-		<%- include('1-Header') %>
-	</header>
-	<main class="flex-row">
-		<%- include('ImagenDerecha') %>
-		<div id="cuerpo-y-footer" class="flex-col grow">
-			<%- include('3-Footer') %>
-			<!--**************************** CUERPO ******************************-->
-			<section class="cuerpo flex-col grow">
-				<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
-				<div class="flex-col" id="data_entry">
-					<h2 id="paso2">Importala desde Film Affinity</h2>
-					<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
-						<h3>Elegí el Rubro</h3>
-						<div class="relative">
-							<select name="rubroAPI" autofocus>
-								<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
-								<option value="movie" 
-									<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
-									Película
-								</option>
-								<option value="collection"
-									<% if (locals.data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
-									Colección
-								</option>
-							</select>
-							<p class="ocultar"><% if (locals.errores && errores.rubroAPI) {errores.rubroAPI.msg}%></p>
-							<i class="fas fa-times-circle ocultar">
-								<span class="mensajeError"></span>
-							</i>
-							<i class="fas fa-check-circle ocultar"></i>
-						</div>
-						<h3>Ingresá la dirección de la página</h3>
-						<div class="relative flex-row">
-							<input name="direccion" type="text" class="input bloqueado"
-								value="<%= locals.data_entry ? data_entry.direccion : null %>"
-								placeholder="Pegá acá la dirección"
-								autocomplete="off"
-							>
-							<i class="fas fa-question-circle" id="ayuda_direccion">
-								<ul class="mensajeAyuda ocultar" type="dots">
-									<strong><u>Pasos</u></strong>:<br>
-									<li>
-										Buscá la película o colección en 
-										<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>
-									</li>
-									<li>Seleccioná la dirección (url)</li>
-									<li>Copiala</li>
-									<li>Pegala en el casillero de la izquierda</li>
-								</ul>
-							</i>
-							<p class="ocultar"><% if (locals.errores && errores.direccion) {errores.direccion.msg}%></p>
-							<i class="fas fa-times-circle ocultar">
-								<span class="mensajeError"></span>
-							</i>
-							<i class="fas fa-check-circle ocultar"></i>
-						</div>
-						<h3>Ingresá el contenido del cuerpo de la página</h3>
-						<div class="relative flex-row">
-							<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1"
-								value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input bloqueado"
-							></textarea>
-							<i class="fas fa-question-circle" id="ayuda_contenido">
-								<ul class="mensajeAyuda ocultar" type="dots">
-									<strong><u>Pasos</u></strong>:<br>
-									<li>
-										En la página de FA, seleccioná desde
-										el <strong><em><u>título en castellano</u></em></strong> 
-										hasta el final de la <strong><em><u>sinopsis</u></em></strong>
-									</li>
-									<li>Copialo</li>
-									<li>Pegalo en el casillero de la izquierda</li>
-								</ul>
-							</i>
-							<p class="ocultar"><% if (locals.errores && errores.contenido) {errores.contenido.msg}%></p>
-							<i class="fas fa-times-circle ocultar">
-								<span class="mensajeError"></span>
-							</i>
-							<i class="fas fa-check-circle ocultar"></i>
-						</div>
-						<div id="resultadoDeBusqueda"><br></div>
-						<button type="submit">Avanzar</button>
-					</form>
-				</div>
-			</section>
-			<!--****************************** FIN *******************************-->
+<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<div class="flex-col" id="data_entry">
+	<h2 id="paso2">Importala desde Film Affinity</h2>
+	<form action="/peliculas/agregar/copiarfa" method="POST" class="flex-col">
+		<h3>Elegí el Rubro</h3>
+		<div class="relative">
+			<select name="rubroAPI" autofocus>
+				<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
+				<option value="movie" 
+					<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+					Película
+				</option>
+				<option value="collection"
+					<% if (locals.data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+					Colección
+				</option>
+			</select>
+			<p class="ocultar"><% if (locals.errores && errores.rubroAPI) {errores.rubroAPI.msg}%></p>
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
 		</div>
-	</main>
-</body>
-</html>
+		<h3>Ingresá la dirección de la página</h3>
+		<div class="relative flex-row">
+			<input name="direccion" type="text" class="input bloqueado"
+				value="<%= locals.data_entry ? data_entry.direccion : null %>"
+				placeholder="Pegá acá la dirección"
+				autocomplete="off"
+			>
+			<i class="fas fa-question-circle" id="ayuda_direccion">
+				<ul class="mensajeAyuda ocultar" type="dots">
+					<strong><u>Pasos</u></strong>:<br>
+					<li>
+						Buscá la película o colección en 
+						<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>
+					</li>
+					<li>Seleccioná la dirección (url)</li>
+					<li>Copiala</li>
+					<li>Pegala en el casillero de la izquierda</li>
+				</ul>
+			</i>
+			<p class="ocultar"><% if (locals.errores && errores.direccion) {errores.direccion.msg}%></p>
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
+		</div>
+		<h3>Ingresá el contenido del cuerpo de la página</h3>
+		<div class="relative flex-row">
+			<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1"
+				value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input bloqueado"
+			></textarea>
+			<i class="fas fa-question-circle" id="ayuda_contenido">
+				<ul class="mensajeAyuda ocultar" type="dots">
+					<strong><u>Pasos</u></strong>:<br>
+					<li>
+						En la página de FA, seleccioná desde
+						el <strong><em><u>título en castellano</u></em></strong> 
+						hasta el final de la <strong><em><u>sinopsis</u></em></strong>
+					</li>
+					<li>Copialo</li>
+					<li>Pegalo en el casillero de la izquierda</li>
+				</ul>
+			</i>
+			<p class="ocultar"><% if (locals.errores && errores.contenido) {errores.contenido.msg}%></p>
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
+		</div>
+		<div id="resultadoDeBusqueda"><br></div>
+		<button type="submit">Avanzar</button>
+	</form>
+</div>

@@ -1,14 +1,26 @@
 <%- include('Head', {titulo: "PEL-Agregar"}) %>
 	<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Agregar.css">
-	<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-Responsabilidad.css"><% } %>
+
+	<!-- Estilos y scripts personalizados -->
+	<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/0-responsabilidad.css"><% } %>
+
 	<% if (codigo == "palabrasClave") { %>
-		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-PalabrasClave.css">
+		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/1-palabrasClave.css">
 		<script src="/javascript/palabrasClave_TMDB.js"></script>
 	<% } %>
+
 	<% if (codigo == "copiarFA") { %>
-		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-Copiar_FA.css">
+		<link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-copiarFA.css">
 		<script src="/javascript/copiar_FA.js"></script>
 	<% } %>
+
+	<% if (codigo == "desambiguar") { %><link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/2-desamb_TMDB.css"><% } %>
+
+	<% if (codigo == "datosDuros") { %><link rel="stylesheet" href="/stylesheets/3-PEL-COL-Agregar/3-datosDuros.css"><% } %>
+	
+
+	<!-------------------------------------->
+
 </head>
 <body>
 	<header>
