@@ -27,5 +27,5 @@
 #data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
 
 /* Procesando información */
-#data_entry #resultadoDeBusqueda {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
-#data_entry #resultadoDeBusqueda {font-style: normal; border-radius: 10px;}
+#data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
+#data_entry #resultado {font-style: normal; border-radius: 10px;}

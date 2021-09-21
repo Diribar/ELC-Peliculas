@@ -1,5 +1,5 @@
 // ************ Requires ************
-const search_TMDB_funcion = require("../../modelos/API/search_TMDB_funcion");
+const searchTMDB = require("../../modelos/searchTMDB");
 const funciones = require("../../modelos/funcionesVarias");
 
 // *********** Controlador ***********
@@ -7,7 +7,7 @@ module.exports = {
 	contador: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
 		let { palabras_clave } = req.query;
-		let lectura = await search_TMDB_funcion.search(palabras_clave);
+		let lectura = await searchTMDB.search(palabras_clave);
 		// Enviar la API
 		return res.json(lectura);
 	},

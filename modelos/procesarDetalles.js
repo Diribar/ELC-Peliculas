@@ -1,6 +1,6 @@
 // ************ Requires ************
-const details_TMDB = require("./API/details_TMDB_fetch");
-const credits_TMDB = require("./API/credits_TMDB_fetch");
+const details_TMDB = require("./API/detailsTMDB_fetch");
+const credits_TMDB = require("./API/creditsTMDB_fetch");
 const funciones = require("./funcionesVarias");
 const BD_varios = require("./base_de_datos/BD_varios");
 
