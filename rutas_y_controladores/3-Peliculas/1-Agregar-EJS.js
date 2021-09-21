@@ -1,6 +1,6 @@
 // ************ Requires ************
 const { validationResult } = require("express-validator");
-const searchTMDB_funcion = require("../../modelos/searchTMDB");
+const searchTMDB = require("../../modelos/searchTMDB");
 const procesarDetalles = require("../../modelos/procesarDetalles");
 const funciones = require("../../modelos/funcionesVarias");
 // uploadFile.single('imagen')
@@ -43,7 +43,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// Obtener la API
-		req.session.peliculasTMDB = await searchTMDB_funcion.search(
+		req.session.peliculasTMDB = await searchTMDB.search(
 			palabras_clave
 		);
 		// return res.send(req.session.peliculasTMDB);
@@ -54,7 +54,7 @@ module.exports = {
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
-			? (lectura = await searchTMDB_funcion.search(
+			? (lectura = await searchTMDB.search(
 					req.cookies.palabras_clave
 			  ))
 			: "";
