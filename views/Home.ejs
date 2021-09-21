@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<!-- Estilos y scripts -->
-	<section><!-- OPCIONES -->
+	<!-- ESTILOS Y SCRIPTS -->
+	<section><!-- Login -->
+		<% if (tema == "login") { %>
+			<%- include('Head', {titulo: "Login"}) %>
+			<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
+			<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
+			<script defer src="/javascript/ojitoContrasena.js"></script>
+		<% } %>
+	</section>
+	<section><!-- Opciones -->
 		<% if (tema == "opciones") { %>
 			<%- include('Head', {titulo}) %>
 			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
 			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
 		<% } %>
 	</section>
-	<section><!-- AGREGAR PRODUCTOS -->
+	<section><!-- Agregar productos -->
 		<% if (tema == "agregar") { %>
 			<%- include('Head', {titulo: "PEL-Agregar"}) %>
 			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/0-Agregar.css">
@@ -36,10 +44,8 @@
 		<div id="cuerpo-y-footer" class="flex-col grow">
 		<%- include('Main-3Footer') %>
 			<!--**************************** CUERPO ******************************-->
-			<% if (tema=="opciones") { %>
-				<%-  include("0-HomeOpciones") %>
-
-			<% } %>
+			<% if (tema=="login") { %><%- include("LoginForm") %><% } %>
+			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
 			<% if (tema=="agregar") { %>
 				<section class="cuerpo flex-col grow">
 					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
