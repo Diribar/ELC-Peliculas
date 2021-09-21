@@ -1,6 +1,6 @@
 // ************ Requires ************
 const detailsTMDB = require("./API/detailsTMDB_fetch");
-const credits_TMDB = require("./API/creditsTMDB_fetch");
+const creditsTMDB = require("./API/creditsTMDB_fetch");
 const funciones = require("./funcionesVarias");
 const BD_varios = require("./base_de_datos/BD_varios");
 
@@ -8,7 +8,7 @@ module.exports = {
 	API: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
-			credits = await credits_TMDB(id);
+			credits = await creditsTMDB(id);
 			lectura = {
 				...lectura,
 				...credits,
