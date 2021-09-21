@@ -12,6 +12,7 @@ const validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDur
 const validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
 const validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
 
+// ** Rutas ************************************
 // Controladores de Crear - APIs
 router.get("/agregar/api/contador/", agregar.contador);
 router.get("/agregar/api/averiguar-producto-ya-en-bd-fa/", agregar.averiguarProductoYaEnBD_FA);
