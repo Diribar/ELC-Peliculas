@@ -237,26 +237,7 @@ module.exports = {
 	},
 
 	editarGuardar: (req, res) => {
-		// Obtener el contenido actualizado del registro
-		let registro = encontrarID(req.params.id);
-		const reg_actual = {
-			...registro,
-			...req.body,
-		};
-		// Eliminar imagen anterior
-		let BD = leer(ruta_nombre);
-		if (req.file) {
-			reg_actual.image = req.file.filename;
-			if (BD.image) {
-				fs.unlinkSync(path.join(__dirname, RutaDeImagenes, BD.image));
-			}
-		}
-		// Reemplazar el registro con el contenido actual
-		let indice = BD.indexOf(registro);
-		BD[indice] = reg_actual;
-		// Guardar los cambios
-		guardar(ruta_nombre, BD);
-		res.redirect("/usuarios/detalle");
+		res.send("/editar/guardar");
 	},
 
 	baja: (req, res) => {
@@ -267,14 +248,7 @@ module.exports = {
 };
 
 // ************ Funciones ************
-leer = (n) => {
-	return JSON.parse(fs.readFileSync(n, "utf-8"));
-};
-guardar = (n, contenido) => {
-	fs.writeFileSync(n, JSON.stringify(contenido, null, 2));
-};
-//function sanitizarFecha(n) {return n.slice(-2)+"/"+n.slice(5,7)+"/"+n.slice(0,4)}
-function borrarArchivoDeImagen(n) {
+let borrarArchivoDeImagen = (n) => {
 	let archivoImagen = path.join(rutaImagenes, n);
 	n && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
-}
+};
