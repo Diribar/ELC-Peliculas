@@ -1,6 +1,6 @@
 const db = require("../../base_de_datos/modelos");
 const entidad = db.usuarios;
-const bcryptjs = require("bcryptjs");
+const bcryptjs = require("bcryptjs")
 
 module.exports = {
 	mailExistente: (email) => {
