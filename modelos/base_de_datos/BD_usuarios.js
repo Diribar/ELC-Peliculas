@@ -12,7 +12,6 @@ module.exports = {
 				return n != null ? true : false;
 			});
 	},
-
 	obtenerPorId: (id) => {
 		return entidad.findByPk(id, {
 			include: [
@@ -71,15 +70,7 @@ module.exports = {
 			{ where: { id: id } }
 		);
 	},
-	EmailYaExistente: (email, id) => {
-		return entidad.count({
-			where: {
-				id: { [Op.ne]: id },
-				email: email,
-			},
-		});
-	},
-	AutorizadoFA: (id) => {
+	autorizadoFA: (id) => {
 		return entidad.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	///////////////////////////////////////////////////////////////////////

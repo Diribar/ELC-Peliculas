@@ -29,3 +29,7 @@
 /* Procesando información */
 #data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
 #data_entry #resultado {font-style: normal; border-radius: 10px;}
+
+/* Botones */
+#data_entry button {color: white; background-color: var(--gris-oscuro);}
+#data_entry button {padding: 3px 10px; border-radius: 10px; font-weight: bold;}

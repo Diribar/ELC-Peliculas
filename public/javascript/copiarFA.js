@@ -105,30 +105,30 @@ window.addEventListener("load", () => {
 	};
 	let bloquearDireccion = (e) => {
 		// RubroApi no está OK
-		if (iconoOK[0].classList.value.includes("ocultar")) {
-			!!e && e.target.matches("input[name='direccion']")
-				? e.preventDefault()
-				: "";
-			direccion.value = "";
-		} else {
-			direccion.classList.remove("bloqueado");
-		}
+		// if (iconoOK[0].classList.value.includes("ocultar")) {
+		// 	!!e && e.target.matches("input[name='direccion']")
+		// 		? e.preventDefault()
+		// 		: "";
+		// 	direccion.value = "";
+		// } else {
+		// 	direccion.classList.remove("bloqueado");
+		// }
 	};
 	let bloquearComentario = (e) => {
-		if (
-			// RubroApi o Dirección no están OK
-			iconoOK[0].classList.value.includes("ocultar") ||
-			iconoOK[1].classList.value.includes("ocultar")
-		) {
-			// console.log("contenido bloqueado");
-			!!e && e.target.matches("textarea[name='contenido']")
-				? e.preventDefault()
-				: "";
-			contenido.value = "";
-		} else {
-			// console.log("contenido permitido");
-			contenido.classList.remove("bloqueado");
-		}
+		// if (
+		// 	// RubroApi o Dirección no están OK
+		// 	iconoOK[0].classList.value.includes("ocultar") ||
+		// 	iconoOK[1].classList.value.includes("ocultar")
+		// ) {
+		// 	// console.log("contenido bloqueado");
+		// 	!!e && e.target.matches("textarea[name='contenido']")
+		// 		? e.preventDefault()
+		// 		: "";
+		// 	contenido.value = "";
+		// } else {
+		// 	// console.log("contenido permitido");
+		// 	contenido.classList.remove("bloqueado");
+		// }
 	};
 	let dataRubroApi = () => {
 		if (rubroAPI.value != "") {
@@ -139,10 +139,10 @@ window.addEventListener("load", () => {
 	};
 	let dataDireccion = async () => {
 		// RubroApi no está OK
-		if (iconoOK[0].classList.value.includes("ocultar")) {
-			direccion.value = "";
-			return;
-		}
+		// if (iconoOK[0].classList.value.includes("ocultar")) {
+		// 	direccion.value = "";
+		// 	return;
+		// }
 		// https://www.filmaffinity.com/es/film596059.html
 		// Verificar que sea una dirección de FA
 		let link = direccion.value;
@@ -194,13 +194,13 @@ window.addEventListener("load", () => {
 		}
 	};
 	let dataContenido = async () => {
-		if (
-			// RubroApi o Dirección no están OK
-			iconoOK[0].classList.value.includes("ocultar") ||
-			iconoOK[1].classList.value.includes("ocultar")
-		) {
-			contenido.value = "";
-		}
+		// if (
+		// 	// RubroApi o Dirección no están OK
+		// 	iconoOK[0].classList.value.includes("ocultar") ||
+		// 	iconoOK[1].classList.value.includes("ocultar")
+		// ) {
+		// 	contenido.value = "";
+		// }
 		// Código de validación
 		let campos = await procesarContenidoFA(contenido.value);
 		// Respuesta
