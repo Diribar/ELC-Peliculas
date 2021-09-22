@@ -1,7 +1,7 @@
 //************************* Requires *******************************
 const express = require('express');
 const router = express.Router();
-const usuariosController = require("./Usuarios-Contr");
+const usuariosController = require("./Usuarios-Controller");
 
 //************************ Middlewares ******************************
 const validarMail = require("../../middlewares/validarUserForms/validar1-Mail");

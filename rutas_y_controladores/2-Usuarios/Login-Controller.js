@@ -8,7 +8,9 @@ const metodosUsuario = require(path.join(__dirname, "../../modelos/base_de_datos
 module.exports = {
 
 	loginForm: (req,res) => {
-		return res.render("LoginForm", {
+		tema="login"
+		return res.render("Home", {
+			tema,
 			link: req.originalUrl,
 			credencialesInvalidas: null,
 			data_entry: null,
