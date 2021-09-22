@@ -67,12 +67,6 @@ module.exports = {
 		return res.redirect("/usuarios/altaredireccionar");
 	},
 
-	recupContrForm: (req, res) => {
-		res.send("Recuperar contraseña");
-	},
-	recupContrGuardar: (req, res) => {
-		res.send("Recuperar contraseña");
-	},
 	logout: (req, res) => {
 		url = req.session.urlReferencia
 			? req.session.urlReferencia
