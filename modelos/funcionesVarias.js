@@ -1,3 +1,5 @@
+// **** Requires ***********
+const nodemailer = require("nodemailer");
 const BD_peliculas = require("./base_de_datos/BD_peliculas");
 const BD_colecciones = require("./base_de_datos/BD_colecciones");
 
@@ -12,7 +14,9 @@ module.exports = {
 		tema != "login" && tema != "usuarios"
 			? (req.session.urlReferencia = URL)
 			: "";
-		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
+		res.locals.urlReferencia = req.session.urlReferencia
+			? req.session.urlReferencia
+			: "/";
 		console.log(res.locals.urlReferencia);
 	},
 
@@ -91,9 +95,31 @@ module.exports = {
 		// Enviar el resultado
 		return [TMDB_yaEnBD, FA_yaEnBD];
 	},
+
+	enviarMail: async (asunto, mail, comentario) => {
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport({
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true, // true for 465, false for other ports
+			auth: {
+				user: "mensaje.web.01@gmail.com", // generated mail address
+				pass: "rudhfurovpjsjjzp", // generated  password
+			},
+		});
+		datos = {
+			from: '"Mensaje de la página web" <mensaje.web.01@gmail.com>', // sender address
+			//to: mail,
+			to: "diegoiribarren2015@gmail.com",
+			subject: asunto, // Subject line
+			text: comentario, // plain text body
+			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+		};
+		await transporter.sendMail(datos);
+	},
 };
 
-const AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
+let AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || !id) return false;
 	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
@@ -104,7 +130,7 @@ const AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 	return resultado;
 };
 
-const funcionParentesis = (dato) => {
+let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
 	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";

@@ -42,9 +42,8 @@ module.exports = {
 			{ where: { id: id } }
 		);
 	},
-	altaMail: (emailDeUsuario) => {
-		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""
-		let contrasena = "1234567890";
+	altaMail: (emailDeUsuario, contrasena) => {
+		//let contrasena = "1234567890";
 		return entidad.create({
 			email: emailDeUsuario,
 			contrasena: bcryptjs.hashSync(contrasena, 10),

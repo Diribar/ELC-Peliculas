@@ -4,7 +4,7 @@
 		<h1>Registro de Mail</h1>
 		<section class="label-input flex-row">  <!--E-Mail-->
 			<div class="form-grupo">
-				<input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico" value="">
+				<input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico" value="" autofocus>
 				<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
 			</div>
 		</section>
