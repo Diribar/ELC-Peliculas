@@ -155,6 +155,7 @@ module.exports = {
 			// Regresar al formulario
 			tema = "usuario";
 			codigo = "editables";
+			let estados_eclesiales = await BD_varios.ObtenerEstadosEclesiales();
 			return res.render("Home", {
 				tema,
 				codigo,
@@ -162,9 +163,7 @@ module.exports = {
 				errores: validaciones.mapped(),
 				data_entry: req.body,
 				habla_hispana,
-				estados_eclesiales: await BD_varios.listadoCompleto(
-					"estado_eclesial"
-				),
+				estados_eclesiales,
 			});
 		}
 		// Si no hubieron errores de validación...
