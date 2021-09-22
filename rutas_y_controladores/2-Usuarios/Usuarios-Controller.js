@@ -11,6 +11,7 @@ const BD_varios = require(path.join(
 	"../../modelos/base_de_datos/BD_varios"
 ));
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
+const funciones = require("../../modelos/funcionesVarias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -65,8 +66,16 @@ module.exports = {
 			});
 		}
 		// Si no hubieron errores de validación...
+		// Enviar la contraseña por mail
+		asunto = "Contraseña para ELC";
+		mail = req.body.email;
+		codigo = Math.round(Math.random() * Math.pow(10, 10)) + "";
+		comentario = "El código a ingresar para el Login es: " + codigo;
+		funciones
+			.enviarMail(asunto, mail, comentario)
+			.catch(console.error);
 		// Guardar el registro
-		await BD_usuarios.altaMail(req.body.email);
+		await BD_usuarios.altaMail(req.body.email, codigo);
 		// Obtener los datos del usuario
 		req.session.usuario = await BD_usuarios.obtenerPorMail(req.body.email);
 		// Redireccionar
@@ -149,8 +158,8 @@ module.exports = {
 			// Borrar el archivo de imagen guardado
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			// Variables de países
-			let habla_hispana = await BD_varios.ObtenerTodos("paises").then((n) =>
-				n.filter((n) => n.idioma == "Spanish")
+			let habla_hispana = await BD_varios.ObtenerTodos("paises").then(
+				(n) => n.filter((n) => n.idioma == "Spanish")
 			);
 			// Regresar al formulario
 			tema = "usuario";

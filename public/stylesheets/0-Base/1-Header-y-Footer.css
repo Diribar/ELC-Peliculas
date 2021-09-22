@@ -5,9 +5,8 @@ header p a {font-family: Monotype Corsiva;font-size: 3rem;font-weight: bold;}
 header p a {color: var(--amarillo-claro);text-decoration: none;}
 
 /* Posición vertical */
-header .absolute {top: 35%;}
-header #plus {top: 28%;}
-header #usuario-button #imagenUsuario {top: 10%;}
+header .absolute, header #plus, header #usuario-button #imagenUsuario 
+	{top: 50%; transform: translateY(-50%);}
 
 /* Íconos a la izquierda */
 header .fa-home {left: 40px;}
