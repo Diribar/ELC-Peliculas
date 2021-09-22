@@ -14,7 +14,6 @@
 		<label for="pais">País de residencia</label>
 		<div class="form-grupo">
 			<% pais_id = locals.data_entry ? data_entry.pais_id[0] : "" %>
-			<%- console.log(pais_id) %> 
 			<select name="pais_id" class="input">
 				<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
@@ -71,6 +70,6 @@
 	</section>
 	<section id="buttons" class="flex-row"><!--Buttons-->
 		<button type="submit">Aceptar</button>
-		<a href="<%= locals.urlReferencia %>"><button type="button">Cancelar</button></a>
+		<a href="/"><button type="button">Cancelar</button></a>
 	</section>
 </form>

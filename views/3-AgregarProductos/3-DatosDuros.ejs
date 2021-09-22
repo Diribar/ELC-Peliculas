@@ -1,12 +1,12 @@
-<button type="menu" class="titulo">Agregar una película a nuestra Base de Datos</button>
-<form action="/peliculas/agregar2" method="POST" id="data_entry" class="flex-col" >
+<button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
+<form action="<%= link %> " method="POST" id="data_entry" class="flex-col" >
 	<h1>Paso 2 de 4: Completá los Datos Necesarios</h1>
 	<section class="flex-row">
 		<div class="flex-col">  <!--Primera columna-->
 			<section class="label-input flex-row">  <!--Título original-->
 				<label>Título original</label>
 				<div class="formulario-grupo">
-					<input type="text" name="nombre_original" placeholder="Título original"
+					<input type="text" name="nombre_original"
 						value="<%= data_entry.nombre_original %>">
 					<% if (locals.errores && errores.nombre_original) { %><i class="fas fa-times-circle">
 						<span class="mensajeError"><%= errores.nombre_original.msg %> </span>
@@ -16,7 +16,7 @@
 			<section class="label-input flex-row">  <!--Título en castellano -->
 				<label>Título en castellano</label>
 				<div class="formulario-grupo">
-					<input type="text" name="nombre_castellano" placeholder="Título en castellano"
+					<input type="text" name="nombre_castellano"
 						value="<%= data_entry.nombre_castellano %>">
 						<% if (locals.errores && errores.nombre_castellano) { %><i class="fas fa-times-circle">
 							<span class="mensajeError"><%= errores.nombre_castellano.msg %> </span>
@@ -36,7 +36,7 @@
 			<section class="label-input flex-row">  <!--Duración-->
 				<label>Duración (minutos)</label>
 				<div class="formulario-grupo">
-					<input type="text" class="input-numero" name="duracion" placeholder="en minutos"
+					<input type="text" class="input-numero" name="duracion" placeholder="sólo números"
 					value="<%= data_entry.duracion %>">
 					<% if (locals.errores && errores.duracion) { %><i class="fas fa-times-circle">
 						<span class="mensajeError"><%= errores.duracion.msg %> </span>
@@ -46,8 +46,7 @@
 			<section class="label-input flex-row">  <!--País de origen-->
 				<label>País de origen</label>
 				<div class="formulario-grupo">
-					<% pais_id = locals.data_entry ? data_entry.pais_id[0] : "" %>
-					<%- console.log(pais_id) %> 
+					<% pais_id = data_entry.pais_id && data_entry.pais_id.length ? data_entry.pais_id[0] : "" %>
 					<select name="pais_id" class="input">
 						<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
 						<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
@@ -67,13 +66,13 @@
 					</i><% } %>
 			</div>
 			</section>
-			<section class="label-input flex-row">  <!--Dirección-->
-				<label>Dirección</label>
+			<section class="label-input flex-row">  <!--Direcctor-->
+				<label>Direcctor</label>
 				<div class="formulario-grupo">
-					<input type="text" class="input" name="direccion" placeholder=""
-					value="<%= locals.data_entry ? data_entry.direccion : null %>">
-					<% if (locals.errores && errores.direccion) { %><i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.direccion.msg %> </span>
+					<input type="text" class="input" name="director" placeholder=""
+					value="<%= locals.data_entry ? data_entry.director : null %>">
+					<% if (locals.errores && errores.director) { %><i class="fas fa-times-circle">
+						<span class="mensajeError"><%= errores.director.msg %> </span>
 					</i><% } %>
 			</div>
 			</section>
@@ -97,23 +96,23 @@
 					</i><% } %>
 			</div>
 			</section>
-			<section class="label-input flex-row">  <!--Reparto-->
-				<label>Resto del Reparto</label>
+			<section class="label-input flex-row">  <!--Actores-->
+				<label>Actores</label>
 				<div class="formulario-grupo">
-					<input type="text" class="input" name="reparto" placeholder=""
-					value="<%= locals.data_entry ? data_entry.reparto : null %>">
-					<% if (locals.errores && errores.reparto) { %><i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.reparto.msg %> </span>
+					<input type="text" class="input" name="actores" placeholder=""
+					value="<%= locals.data_entry ? data_entry.actores : null %>">
+					<% if (locals.errores && errores.actores) { %><i class="fas fa-times-circle">
+						<span class="mensajeError"><%= errores.actores.msg %> </span>
 					</i><% } %>
 			</div>
 			</section>
-			<section class="label-input flex-row">  <!--Productora-->
-				<label>Productora</label>
+			<section class="label-input flex-row">  <!--Productor-->
+				<label>Productor</label>
 				<div class="formulario-grupo">
-					<input type="text" class="input" name="productora" placeholder=""
-					value="<%= locals.data_entry ? data_entry.productora : null %>">
-					<% if (locals.errores && errores.productora) { %><i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.productora.msg %> </span>
+					<input type="text" class="input" name="productor" placeholder=""
+					value="<%= locals.data_entry ? data_entry.productor : null %>">
+					<% if (locals.errores && errores.productor) { %><i class="fas fa-times-circle">
+						<span class="mensajeError"><%= errores.productor.msg %> </span>
 					</i><% } %>
 			</div>
 			</section>
