@@ -2,19 +2,32 @@
 <html lang="es">
 <head>
 	<!-- ESTILOS Y SCRIPTS -->
-	<section><!-- Login -->
-		<% if (tema == "login") { %>
-			<%- include('Head', {titulo: "Login"}) %>
+	<section><!-- Agregar usuarios -->
+		<% if (tema == "usuario") { %>
 			<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
-			<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
-			<script defer src="/javascript/ojitoContrasena.js"></script>
-		<% } %>
-	</section>
-	<section><!-- Opciones -->
-		<% if (tema == "opciones") { %>
-			<%- include('Head', {titulo}) %>
-			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
-			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
+			<% if (codigo == "login") { %>
+				<%- include('Head', {titulo: "Login"}) %>
+				<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
+				<script defer src="/javascript/ojitoContrasena.js"></script>
+			<% } else %>
+			<% if (codigo == "mail") { %>
+				<%- include('Head', {titulo: "Registro de Mail"}) %>
+				<link rel="stylesheet" href="/stylesheets/2-Usuarios/1-FormMail.css">
+			<% } else %>
+			<% if (codigo == "perennes") { %>
+				<%- include('Head', {titulo: "Registro de Datos Perennes"}) %>
+			<% } else %>
+			<% if (codigo == "editables") { %>
+				<%- include('Head', {titulo: "Registro de Datos Editables"}) %>
+				<link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css">
+				<script src="/javascript/subirImagen.js"></script>
+			<% } else %>
+			<% if (codigo == "detalle") { %>
+				<%- include('Head', {titulo: "Detalle de Usuario"}) %>
+			<% } else %>
+			<% if (codigo == "editar") { %>
+				<!-- <link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css"> -->
+			<% } %>
 		<% } %>
 	</section>
 	<section><!-- Agregar productos -->
@@ -25,13 +38,20 @@
 			<% if (codigo == "palabrasClave") { %>
 				<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/1-PalabrasClave.css">
 				<script src="/javascript/palabrasClaveTMDB.js"></script>
-			<% } %>
+			<% } else %>
 			<% if (codigo == "copiarFA") { %>
 				<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/2-CopiarFA.css">
 				<script src="/javascript/copiarFA.js"></script>
-			<% } %>
+			<% } else %>
 			<% if (codigo == "desambiguar") { %><link rel="stylesheet" href="/stylesheets/3-AgregarProductos/2-DesambTMDB.css"><% } %>
 			<% if (codigo == "datosDuros") { %><link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css"><% } %>
+		<% } %>
+	</section>
+	<section><!-- Opciones de layout -->
+		<% if (tema == "opciones") { %>
+			<%- include('Head', {titulo}) %>
+			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
+			<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
 		<% } %>
 	</section>
 </head>
@@ -44,8 +64,16 @@
 		<div id="cuerpo-y-footer" class="flex-col grow">
 		<%- include('Main-3Footer') %>
 			<!--**************************** CUERPO ******************************-->
-			<% if (tema=="login") { %><%- include("LoginForm") %><% } %>
-			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
+			<% if (tema=="usuario") { %>
+				<section id="Form" class="flex-col">
+					<%- codigo == "login" ? include("LoginForm") : "" %>
+					<%- codigo == "mail" ? include("1-FormMail") : "" %>
+					<%- codigo == "perennes" ? include("2-FormPerennes") : "" %>
+					<%- codigo == "editables" ? include("3-FormEditables") : "" %>
+					<%- codigo == "detalle" ? include("detalle") : "" %>
+					<%- codigo == "editar" ? include("editar") : "" %>
+				</section>
+			<% } else %>
 			<% if (tema=="agregar") { %>
 				<section class="cuerpo flex-col grow">
 					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
@@ -55,7 +83,8 @@
 					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 					<%- codigo == "datosPersonalizados" ? include("3-DatosPersonalizados") : "" %>
 				</section>
-			<% } %>
+			<% } else %>
+			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
 			<!--****************************** FIN *******************************-->
 		</div>
 	</main>

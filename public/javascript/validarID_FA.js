@@ -15,7 +15,6 @@ window.addEventListener("load", () => {
 			if (despues != url.value) {
 				despues = url.value;
 				lectura = await buscarPorID(ID);
-				console.log(lectura)
 			}
 			button.innerHTML = "Avanzar";
 		} else {
