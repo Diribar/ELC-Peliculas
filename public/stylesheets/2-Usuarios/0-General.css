@@ -3,8 +3,8 @@
 #Form {justify-content:center; align-items: center;}
 
 /* Tapar el fondo */
-#Form #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%; height:100%; width:100%;}
-#Form #tapar-el-fondo {position: absolute; left:0px; top:0px}
+#Form #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%;height:100%; width:100%;}
+#Form #tapar-el-fondo {position: absolute;left:0px;top:0px}
 
 /* General del formulario */
 #Form form {background-color:var(--gris-oscuro); border-radius: 10px;}
@@ -18,9 +18,10 @@
 /* Input del formulario */
 #Form form label {color: white; margin-right: 20px; }
 #Form form label {text-align: left;}
-#Form form .input {border: none;border-radius: 15px; padding: 3px 10px; text-align: left;}
+#Form form .input {border: none;border-radius: 15px; padding: 3px 10px; text-align: center;}
 #Form form .input, #Form form select {width: 200px; height: 27px;}
-#Form form select {text-align: left;}
+#Form form select {text-align-last: center;}
+#Form form .input[type = "date"] {text-align: right}
 
 /* Íconos de error */
 #Form .form-grupo .fas {background-color: white; border-radius: 50%; font-size: 1em;}

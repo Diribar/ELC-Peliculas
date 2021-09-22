@@ -12,8 +12,7 @@ module.exports = {
 		tema != "login" && tema != "usuarios"
 			? (req.session.urlReferencia = URL)
 			: "";
-		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
-		console.log(res.locals.urlReferencia);
+		res.locals.urlReferencia = req.session.urlReferencia;
 	},
 
 	procesarContenidoFA: (contenido) => {

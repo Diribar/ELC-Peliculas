@@ -3,16 +3,6 @@ const entidad = db.usuarios;
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
-	mailExistente: (email) => {
-		return entidad
-			.findOne({
-				where: { email: email },
-			})
-			.then((n) => {
-				return n != null ? true : false;
-			});
-	},
-
 	obtenerPorId: (id) => {
 		return entidad.findByPk(id, {
 			include: [
@@ -37,10 +27,7 @@ module.exports = {
 		});
 	},
 	upgradeStatusUsuario: (id, st) => {
-		return entidad.update(
-			{ status_registro_usuario_id: st },
-			{ where: { id: id } }
-		);
+		return entidad.update({ status_registro_usuario_id: st }, { where: { id: id } });
 	},
 	altaMail: (emailDeUsuario) => {
 		//let contrasena = Math.round(Math.random()*Math.pow(10,10))+""

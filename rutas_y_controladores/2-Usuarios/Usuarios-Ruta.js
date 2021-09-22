@@ -12,16 +12,16 @@ const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 const uploadFile = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
-router.get('/altaredireccionar', usuariosController.altaRedireccionar)
+router.get('/redireccionar', usuariosController.altaRedireccionar)
 
-router.get('/mail', soloVisitas, usuariosController.altaMailForm)
-router.post('/mail', validarMail, usuariosController.altaMailGuardar)
+router.get('/registro-mail', soloVisitas, usuariosController.altaMailForm)
+router.post('/registro-mail', validarMail, usuariosController.altaMailGuardar)
 
-router.get('/datos-perennes', soloUsuarios, usuariosController.altaPerennesForm)
-router.post('/datos-perennes', validarPerennes, usuariosController.altaPerennesGuardar)
+router.get('/registro-datos-perennes', soloUsuarios, usuariosController.altaPerennesForm)
+router.post('/registro-datos-perennes', validarPerennes, usuariosController.altaPerennesGuardar)
 
-router.get('/datos-editables', soloUsuarios, usuariosController.altaEditablesForm)
-router.post('/datos-editables', uploadFile.single('avatar'), validarEditables, usuariosController.altaEditablesGuardar)
+router.get('/registro-datos-editables', soloUsuarios, usuariosController.altaEditablesForm)
+router.post('/registro-datos-editables', uploadFile.single('avatar'), validarEditables, usuariosController.altaEditablesGuardar)
 
 router.get('/detalle', soloUsuarios, usuariosController.detalle)          // Detalle
 router.get('/editar', soloUsuarios, usuariosController.editarForm)        // Modificar

@@ -5,12 +5,6 @@ module.exports = {
 		return db[entidad].findAll({});
 	},
 
-	ObtenerEstadosEclesiales: () => {
-		return db.estados_eclesiales.findAll({
-			order: [["orden", "ASC"]],
-		});
-	},
-
 	ObtenerFiltrandoPorCampo: (entidad, campoWhere, valorWhere) => {
 		return db[entidad].findAll({
 			where: { [campoWhere]: valorWhere },
@@ -29,9 +23,9 @@ module.exports = {
 		});
 	},
 
-	obtenerPorId: (id, entidad, include) => {
-		return db[entidad].findByPk(id, {
-			include: [include],
-		});
-	},
+	// obtenerPorId: (id, entidad, include) => {
+	// 	return db[entidad].findByPk(id, {
+	// 		include: [include],
+	// 	});
+	// },
 };
