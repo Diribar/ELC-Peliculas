@@ -15,21 +15,27 @@ const funciones = require("../../modelos/funcionesVarias");
 
 // *********** Controlador ***********
 module.exports = {
-	altaRedireccionar: (req, res) => {
-		let usuario = req.session.usuario;
-		//console.log("usuario: " + usuario);
+	altaRedireccionar: async (req, res) => {
+		let usuario = req.session.usuario
+			? req.session.usuario
+			: req.session.email
+			? await BD_usuarios.obtenerPorMail(req.session.email)
+			: req.cookies.email
+			? await BD_usuarios.obtenerPorMail(req.cookies.email)
+			: res.redirect("/");
 		//return res.send(usuario)
-		let status_registro_usuario =
-			usuario.status_registro_usuario_id.toString();
+		let status_registro = usuario.status_registro_id + "";
 		// Redireccionar
-		//console.log("status_registro_usuario: " + status_registro_usuario);
-		status_registro_usuario == 1
+		//console.log("status_registro: " + status_registro);
+		status_registro == 1
 			? res.redirect("/login")
-			: status_registro_usuario == 2
+			: status_registro == 2
 			? res.redirect("/usuarios/datos-perennes")
-			: status_registro_usuario == 3
+			: status_registro == 3
 			? res.redirect("/usuarios/datos-editables")
-			: res.redirect(req.session.urlReferencia);
+			: req.session.urlReferencia
+			? res.redirect(req.session.urlReferencia)
+			: res.redirect("/");
 	},
 
 	altaMailForm: (req, res) => {
@@ -68,22 +74,25 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Enviar la contraseña por mail
 		asunto = "Contraseña para ELC";
-		mail = req.body.email;
+		email = req.body.email;
 		codigo = Math.round(Math.random() * Math.pow(10, 10)) + "";
-		comentario = "El código a ingresar para el Login es: " + codigo;
-		funciones
-			.enviarMail(asunto, mail, comentario)
-			.catch(console.error);
+		comentario = "La contraseña del mail " + email + " es: " + codigo;
+		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		await BD_usuarios.altaMail(req.body.email, codigo);
 		// Obtener los datos del usuario
-		req.session.usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+		//req.session.usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+		req.session.email = req.body.email;
 		// Redireccionar
 		//return res.send(req.session.usuario)
 		return res.redirect("/usuarios/altaredireccionar");
 	},
 
-	altaPerennesForm: (req, res) => {
+	altaPerennesForm: async (req, res) => {
+		!req.session.usuario
+			? req.session.usuario = await BD_usuarios.obtenerPorMail(req.cookies.email)
+			: ""
+		delete req.session["email"]
 		tema = "usuario";
 		codigo = "perennes";
 		return res.render("Home", {
@@ -123,12 +132,12 @@ module.exports = {
 		// Actualizar el registro
 		await BD_usuarios.datosPerennes(req.session.usuario.id, req.body);
 		// Actualizar el status de usuario
-		await BD_usuarios.upgradeStatusUsuario(req.session.usuario.id, 3);
+		await BD_usuarios.actualizarStatusUsuario(req.session.usuario.id, 3);
 		// Actualizar los datos del usuario en la sesión
 		req.session.usuario = await BD_usuarios.obtenerPorId(
 			req.session.usuario.id
 		);
-		// return res.send(req.session.usuario)
+		//return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -181,7 +190,7 @@ module.exports = {
 		// return res.send(req.body)
 		await BD_usuarios.datosEditables(usuario.id, req.body);
 		// Actualizar el status de usuario
-		await BD_usuarios.upgradeStatusUsuario(usuario.id, 4);
+		await BD_usuarios.actualizarStatusUsuario(usuario.id, 4);
 		// Actualizar los datos del usuario en la sesión
 		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
 		// return res.send(req.session.usuario)
