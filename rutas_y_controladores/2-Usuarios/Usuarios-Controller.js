@@ -23,7 +23,7 @@ module.exports = {
 			: req.cookies.email
 			? await BD_usuarios.obtenerPorMail(req.cookies.email)
 			: null;
-		!usuario ? res.redirect("/") : ""
+		!usuario ? res.redirect("/") : "";
 		//return res.send(usuario)
 		let status_registro = usuario.status_registro_id + "";
 		// Redireccionar
@@ -91,9 +91,11 @@ module.exports = {
 
 	altaPerennesForm: async (req, res) => {
 		!req.session.usuario
-			? req.session.usuario = await BD_usuarios.obtenerPorMail(req.cookies.email)
-			: ""
-		delete req.session["email"]
+			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
+					req.cookies.email
+			  ))
+			: "";
+		delete req.session["email"];
 		tema = "usuario";
 		codigo = "perennes";
 		return res.render("Home", {
@@ -204,14 +206,14 @@ module.exports = {
 		return res.redirect("/usuarios/altaredireccionar");
 	},
 
-	detalle: (req, res) => {
+	detalle: async (req, res) => {
 		tema = "usuario";
 		codigo = "detalle";
-		!req.session.usuario
-			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
-					req.cookies.email
-			  ))
-			: "";
+		if (!req.session.usuario) {
+			req.session.usuario = await BD_usuarios.obtenerPorMail(
+				req.cookies.email
+			);
+		}
 		res.render("Home", {
 			tema,
 			codigo,
@@ -219,14 +221,14 @@ module.exports = {
 		});
 	},
 
-	editarForm: (req, res) => {
+	editarForm: async (req, res) => {
 		tema = "usuario";
 		codigo = "editar";
-		!req.session.usuario
-			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
-					req.cookies.email
-			  ))
-			: "";
+		if (!req.session.usuario) {
+			req.session.usuario = await BD_usuarios.obtenerPorMail(
+				req.cookies.email
+			);
+		}
 		res.render("Home", {
 			tema,
 			codigo,

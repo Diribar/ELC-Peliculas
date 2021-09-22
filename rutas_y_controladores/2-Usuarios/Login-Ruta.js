@@ -11,8 +11,6 @@ const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 //**************************** Login ********************************
 router.get("/", soloVisitas, login.loginForm);
 router.post("/", soloVisitas, validarLogin, login.loginGuardar);
-router.get("/recuperar-contrasena", soloVisitas, login.recupContrForm);
-router.put("/recuperar-contrasena", soloVisitas, login.recupContrGuardar);
 router.get("/logout", soloUsuarios, login.logout);
 
 module.exports = router;
