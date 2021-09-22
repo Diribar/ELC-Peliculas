@@ -1,12 +1,10 @@
 GENERAL
 - Recibir las 3 APIs:
 	- TMDB
-	- Ingreso Manual FA
 	- FA
+	- Ingreso Manual
 - Si la session decae, recuperar la info mediante req.cookie
 - Bloquear los datos de API
-readonly HTML5
-Este atributo indica que el usuario no puede modificar el valor del control. El valor del atributo es irrelevante. De ser necesario el acceso lectura-escritura al valor, no se debe agregar el atributo "readonly". Es ignorado si el atributo type es hidden, range, color, checkbox, radio, file, o de tipo botón (como button o submit).
 
 - Vista inicial con los avisos de validación
 - Completar saldo a mano

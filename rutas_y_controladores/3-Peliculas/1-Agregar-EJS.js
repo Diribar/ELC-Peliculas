@@ -7,7 +7,6 @@ const BD_varios = require(path.join(
 	__dirname,
 	"../../modelos/base_de_datos/BD_varios"
 ));
-// uploadFile.single('imagen')
 
 // *********** Controlador ***********
 module.exports = {
@@ -68,8 +67,6 @@ module.exports = {
 		coincidencias = resultados.length;
 		let prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
 		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
-		// return res.send(lectura);
-		// console.log(!!req.cookies.fuente);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -85,11 +82,7 @@ module.exports = {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
 		// Grabar cookies con la info del producto
-		grabarCookiesProductos(
-			req,
-			res,
-			req.session.datosDuros
-		);
+		grabarCookiesProductos(res, req.session.datosDuros, camposDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
@@ -106,11 +99,7 @@ module.exports = {
 		);
 		//return res.send(req.session.datosDuros);
 		// Grabar cookies con la info del producto
-		grabarCookiesProductos(
-			req,
-			res,
-			req.session.datosDuros
-		);
+		grabarCookiesProductos(res, req.session.datosDuros, datosDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 		//return res.redirect("/peliculas/agregar/datos_duros");
@@ -121,7 +110,8 @@ module.exports = {
 	datosDuros_Form: async (req, res) => {
 		tema = "agregar";
 		codigo = "datosDuros";
-		let paises =  await BD_varios.ObtenerTodos("paises", "nombre")
+		//return res.send(req.session.datosDuros);
+		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
 		if (!req.session.datosDuros) {
 			req.session.datosDuros = req.cookies;
@@ -132,6 +122,7 @@ module.exports = {
 			codigo,
 			data_entry: req.session.datosDuros,
 			paises,
+			link: req.originalUrl,
 		});
 	},
 
@@ -172,21 +163,34 @@ const obtenerDatosDelProducto = async (form) => {
 	return resultado;
 };
 
-let grabarCookiesProductos = (req, res, producto) => {
-	console.log("Cookie:")
-	// for (n of campos) {
-	// 	res.clearCookie(Object.keys(n));
-	// }
-	// let valores = Object.values(producto);
-	// for (let i = 0; i < campos.length; i++) {
-	// 	res.cookie(campos[i], valores[i], { maxAge: 1000 * 60 * 60 });
-	// }
+let grabarCookiesProductos = (res, producto, campos) => {
+	// Borrar cookies de producto viejo
+	for (campo of campos) {
+		res.clearCookie(campo);
+	}
+	// Agregar cookies de producto nuevo
+	campos = Object.keys(producto);
+	valores = Object.values(producto);
+	for (let i = 0; i < campos.length; i++) {
+		res.cookie(campos[i], valores[i], { maxAge: 1000 * 60 * 60 });
+	}
 };
 
-let campos = [
+let camposDuros = [
+	"fuente",
+	"rubroAPI",
+	"tmdb_id",
+	"imdb_id",
 	"nombre_original",
 	"nombre_castellano",
 	"ano_estreno",
 	"duracion",
-	""
+	"pais_id",
+	"director",
+	"guion",
+	"musica",
+	"productor",
+	"actores",
+	"avatar",
+	"sinopsis",
 ];
