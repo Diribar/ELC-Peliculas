@@ -26,6 +26,7 @@ module.exports = {
 			codigo,
 			autorizado_fa,
 			palabras_clave,
+			link: req.originalUrl,
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {
@@ -41,6 +42,7 @@ module.exports = {
 				codigo,
 				palabras_clave,
 				errores: erroresValidacion.mapped(),
+				link: req.originalUrl,
 			});
 		}
 		// Eliminar el campo 'fuente' de 'datos de cabecera' de desambiguarTMDB anteriores
@@ -76,20 +78,25 @@ module.exports = {
 			prod_yaEnBD,
 			palabras_clave: lectura.palabras_clave,
 			habilitarFlechaDerechaConLink: !!req.cookies.fuente,
+			link: req.originalUrl,
 		});
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
 		// Grabar cookies con la info del producto
-		grabarCookiesProductos(res, req.session.datosDuros, camposDuros);
+		actualizarCookiesProductos(res, req.session.datosDuros, camposDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
-	copiarFA_Form: async (req, res) => {
+	copiarFA_Form: (req, res) => {
 		tema = "agregar";
 		codigo = "copiarFA";
-		return res.render("Home", { tema, codigo });
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+		});
 	},
 	copiarFA_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
@@ -99,10 +106,9 @@ module.exports = {
 		);
 		//return res.send(req.session.datosDuros);
 		// Grabar cookies con la info del producto
-		grabarCookiesProductos(res, req.session.datosDuros, datosDuros);
+		actualizarCookiesProductos(res, req.session.datosDuros, camposDuros);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
-		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
@@ -141,7 +147,11 @@ module.exports = {
 	DatosPersForm: (req, res) => {
 		tema = "agregar";
 		codigo = "datosPersonalizados";
-		return res.render("Home", { tema, codigo });
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+		});
 	},
 
 	DatosPersGuardar: (req, res) => {
@@ -149,7 +159,7 @@ module.exports = {
 	},
 };
 
-const obtenerDatosDelProducto = async (form) => {
+let obtenerDatosDelProducto = async (form) => {
 	// API Details
 	let lectura =
 		form.fuente == "TMDB"
@@ -163,7 +173,7 @@ const obtenerDatosDelProducto = async (form) => {
 	return resultado;
 };
 
-let grabarCookiesProductos = (res, producto, campos) => {
+let actualizarCookiesProductos = (res, producto, campos) => {
 	// Borrar cookies de producto viejo
 	for (campo of campos) {
 		res.clearCookie(campo);

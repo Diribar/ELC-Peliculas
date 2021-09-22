@@ -58,6 +58,10 @@ module.exports = {
 			? (resultado.director =
 					contenido[contenido.indexOf("Dirección") + 1])
 			: "";
+		contenido.indexOf("Guion") > 0
+			? (resultado.guion =
+					contenido[contenido.indexOf("Guion") + 1])
+			: "";
 		contenido.indexOf("Música") > 0
 			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
 			: "";

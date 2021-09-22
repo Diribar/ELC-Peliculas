@@ -6,7 +6,7 @@
 	<% nombre_original = prod_nuevo.nombre_original %>
 	<% nombre_castellano = prod_nuevo.nombre_castellano %>
 
-	<form action="/peliculas/agregar/desambiguar" method="POST">
+	<form action="<%= link %>" method="POST">
 		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
 		<input type="text" name="fuente" class="ocultar" value="TMDB">
 		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">

@@ -17,7 +17,6 @@
 /* Submit button */
 #data_entry #final {justify-content: space-evenly; margin-top: 20px;}
 #data_entry #final button {font-size: 1.2rem; border-color: var(--amarillo-claro);}
-#data_entry button {padding: 3px 10px; align-self: center; border-radius: 10px;font-weight: bold;}
-#data_entry button {color: white;}
+#data_entry button {align-self: center;}
 #data_entry button#continuar {background-color: var(--verde-oscuro);}
 #data_entry button#salir {background-color: var(--rojo-oscuro);}
