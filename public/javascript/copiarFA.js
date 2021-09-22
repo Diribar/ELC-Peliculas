@@ -8,38 +8,53 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
+	let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
 
-	// Comportamientos cuando se oprimen teclas
-	window.onkeydown = (e) => {
-		bloquearDireccion(e);
-		bloquearComentario(e);
-	};
-
-	// Comportamientos cuando se hace click
+	// Comportamientos cuando se hace click -------------------------------
+	// Detectar si se hizo click en la ventana
 	window.onclick = (e) => {
-		ayuda(e);
-		clickFueraDeRubroApi(e);
-		clickFueraDeDireccion(e);
-		clickFueraDeContenido(e);
+		iconoError[0].classList.contains("ocultar") &&
+		iconoOK[0].classList.contains("ocultar")
+			? verificarRubro(false)
+			: "";
+		iconoError[1].classList.contains("ocultar") &&
+		iconoOK[1].classList.contains("ocultar")
+			? verificarDireccion(false)
+			: "";
+		iconoError[2].classList.contains("ocultar") &&
+		iconoOK[2].classList.contains("ocultar")
+			? verificarContenido(false)
+			: "";
+		// Click en ayuda dirección
+		if (e.target.matches("#ayuda_direccion")) {
+			mensajeAyuda[0].classList.toggle("ocultar");
+			return;
+		} else mensajeAyuda[0].classList.add("ocultar");
+		// Click en ayuda contenido
+		if (e.target.matches("#ayuda_contenido")) {
+			mensajeAyuda[1].classList.toggle("ocultar");
+			return;
+		} else mensajeAyuda[1].classList.add("ocultar");
 	};
 
-	// Revisar el data-entry y comunicar los errores
+	// Revisar el data-entry y comunicar los aciertos y errores
 	document.querySelector("form").oninput = (e) => {
-		e.target.matches("select[name='rubroAPI']") ? dataRubroApi() : "";
-		e.target.matches("input[name='direccion']") ? dataDireccion() : "";
-		e.target.matches("textarea[name='contenido']") ? dataContenido() : "";
+		e.target.matches("select[name='rubroAPI']")
+			? verificarRubro(true)
+			: e.target.matches("input[name='direccion']")
+			? verificarDireccion(true)
+			: verificarContenido(true);
 	};
 
 	// Submit
-	document.querySelector("form").onsubmit =  async (e) => {
-		for (let i=0; i<iconoOK.length; i++) {
-			if (iconoOK[i].classList.value.includes("ocultar")) {
-				e.preventDefault();
-				return;
-			}
-		}
-	}
-	
+	document.querySelector("form").addEventListener("submit", async (e) => {
+		resultado =
+			verificarRubro(true) &&
+			(await verificarDireccion(true)) &&
+			(await verificarContenido(true));
+		!resultado ? e.preventDefault() : "";
+	});
+
 	// Mensajes de Back-End
 	let mensajesBE = document.querySelectorAll("p.ocultar");
 	for (let i = 0; i < mensajesBE.length; i++) {
@@ -47,111 +62,31 @@ window.addEventListener("load", () => {
 	}
 
 	// FUNCIONES ******************************
-	// Mensajes de ayuda
-	let ayuda = (e) => {
-		let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
-		e.target.matches("#ayuda_direccion")
-			? mensajeAyuda[0].classList.toggle("ocultar")
-			: mensajeAyuda[0].classList.add("ocultar");
-		e.target.matches("#ayuda_contenido")
-			? mensajeAyuda[1].classList.toggle("ocultar")
-			: mensajeAyuda[1].classList.add("ocultar");
-	};
-	// Click fuera del input Rubro API
-	let clickFueraDeRubroApi = (e) => {
-		if (
-			// Si se hace click fuera de RubroAPI
-			// Si RubroAPI está vacía
-			!e.target.matches("select[name='rubroAPI']") &&
-			rubroAPI.value == ""
-		) {
-			iconoError[0].classList.remove("ocultar");
-			mensajeError[0].innerHTML = "Elegí una opción";
-		}
-	};
-	// Click fuera del input Dirección
-	let clickFueraDeDireccion = (e) => {
-		if (
-			// Si se hace click fuera de RubroApi y de Dirección
-			// Si rubroApi está OK
-			// Si Dirección está vacía
-			!e.target.matches("select[name='rubroAPI']") &&
-			!e.target.matches("input[name='direccion']") &&
-			!iconoOK[0].classList.value.includes("ocultar") &&
-			direccion.value == ""
-		) {
-			iconoError[1].classList.remove("ocultar");
-			mensajeError[1].innerHTML =
-				"Necesitamos que completes esta información";
-		}
-	};
-	// Click fuera del input Contenido
-	let clickFueraDeContenido = (e) => {
-		if (
-			// Si se hace click fuera de RubroApi y de Dirección y de Contenido
-			// Si rubroApi y Dirección están OK
-			// Si Contenido está vacía
-			!e.target.matches("select[name='rubroAPI']") &&
-			!e.target.matches("input[name='direccion']") &&
-			!e.target.matches("textarea[name='contenido']") &&
-			!iconoOK[0].classList.value.includes("ocultar") &&
-			!iconoOK[1].classList.value.includes("ocultar") &&
-			contenido.value == ""
-		) {
-			iconoError[2].classList.remove("ocultar");
-			mensajeError[2].innerHTML =
-				"Necesitamos que completes esta información";
-		}
-	};
-	let bloquearDireccion = (e) => {
-		// RubroApi no está OK
-		// if (iconoOK[0].classList.value.includes("ocultar")) {
-		// 	!!e && e.target.matches("input[name='direccion']")
-		// 		? e.preventDefault()
-		// 		: "";
-		// 	direccion.value = "";
-		// } else {
-		// 	direccion.classList.remove("bloqueado");
-		// }
-	};
-	let bloquearComentario = (e) => {
-		// if (
-		// 	// RubroApi o Dirección no están OK
-		// 	iconoOK[0].classList.value.includes("ocultar") ||
-		// 	iconoOK[1].classList.value.includes("ocultar")
-		// ) {
-		// 	// console.log("contenido bloqueado");
-		// 	!!e && e.target.matches("textarea[name='contenido']")
-		// 		? e.preventDefault()
-		// 		: "";
-		// 	contenido.value = "";
-		// } else {
-		// 	// console.log("contenido permitido");
-		// 	contenido.classList.remove("bloqueado");
-		// }
-	};
-	let dataRubroApi = () => {
+	let verificarRubro = (verificarErrores) => {
 		if (rubroAPI.value != "") {
 			iconoError[0].classList.add("ocultar");
 			iconoOK[0].classList.remove("ocultar");
-			direccion.classList.remove("bloqueado");
+			return true;
+		} else if (verificarErrores) {
+			iconoError[0].classList.remove("ocultar");
+			mensajeError[0].innerHTML = "Elegí una opción";
+			return false;
 		}
 	};
-	let dataDireccion = async () => {
-		// RubroApi no está OK
-		// if (iconoOK[0].classList.value.includes("ocultar")) {
-		// 	direccion.value = "";
-		// 	return;
-		// }
+
+	let verificarDireccion = async (verificarErrores) => {
 		// https://www.filmaffinity.com/es/film596059.html
-		// Verificar que sea una dirección de FA
+		// Verificar que sea una dirección de FA *********
 		let link = direccion.value;
 		if (!link.includes("www.filmaffinity.com/")) {
-			iconoError[1].classList.remove("ocultar");
-			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
-			return;
+			if (verificarErrores) {
+				iconoError[1].classList.remove("ocultar");
+				mensajeError[1].innerHTML =
+					"No es una dirección de Film Affinity";
+			}
+			return false;
 		}
-		// Obtener el FA_id
+		// Obtener el FA_id ******************************
 		// Quitar el dominio
 		aux = link.indexOf("www.filmaffinity.com/");
 		link = link.slice(aux + 21);
@@ -161,8 +96,8 @@ window.addEventListener("load", () => {
 		// Quitar el 'html'
 		aux = link.indexOf(".html");
 		link = link.slice(0, aux);
-		fa_id = link
-		// FA_id no repetido en la BD
+		fa_id = link;
+		// FA_id no repetido en la BD ********************
 		let url =
 			"/peliculas/agregar/api/averiguar-producto-ya-en-bd-fa/?" +
 			"rubroAPI=" +
@@ -175,9 +110,9 @@ window.addEventListener("load", () => {
 		if (!id) {
 			iconoError[1].classList.add("ocultar");
 			iconoOK[1].classList.remove("ocultar");
-			contenido.classList.remove("bloqueado");
-		// Resultado inválido
-		} else {
+			return true;
+		} else if (verificarErrores) {
+			// Resultado inválido
 			iconoError[1].classList.remove("ocultar");
 			rubro = rubroAPI.value == "movie" ? "película" : "colección";
 			mensajeError[1].innerHTML =
@@ -190,26 +125,23 @@ window.addEventListener("load", () => {
 				id +
 				"'><u><strong>acá</strong></u></a>" +
 				" para ver el detalle";
-			return;
 		}
+		return false;
 	};
-	let dataContenido = async () => {
-		// if (
-		// 	// RubroApi o Dirección no están OK
-		// 	iconoOK[0].classList.value.includes("ocultar") ||
-		// 	iconoOK[1].classList.value.includes("ocultar")
-		// ) {
-		// 	contenido.value = "";
-		// }
-		// Código de validación
-		let campos = await procesarContenidoFA(contenido.value);
-		// Respuesta
-		// Resultado exitoso
+
+	let verificarContenido = async (verificarErrores) => {
+		// Código de validación **************************
+		let campos = contenido.value
+			? await procesarContenidoFA(contenido.value)
+			: 0;
+		// Resultado exitoso *****************************
 		if (campos > 0) {
 			iconoError[2].classList.add("ocultar");
 			iconoOK[2].classList.remove("ocultar");
-		// Resultado inválido
-		} else {
+			return true;
+		}
+		// Resultado inválido ****************************
+		else if (verificarErrores) {
 			iconoError[2].classList.remove("ocultar");
 			contenido.value == ""
 				? (mensajeError[2].innerHTML =
@@ -217,9 +149,8 @@ window.addEventListener("load", () => {
 				: (mensajeError[2].innerHTML =
 						"No se puede importar ningún dato");
 		}
-		return
+		return false;
 	};
-
 });
 
 const procesarContenidoFA = async (contenido) => {
@@ -231,23 +162,21 @@ const procesarContenidoFA = async (contenido) => {
 	// Procesar los datos de la película
 	let encodedValue = encodeURIComponent(contenido);
 	let url =
-		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" +
-		encodedValue;
+		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" + encodedValue;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	let campos = Object.keys(lectura).length;
 	resultado.classList.remove("resultadoEnEspera");
 	if (campos) {
-		campos == 1 ? mensaje = "Se obtuvo 1 solo dato" : "";
+		campos == 1 ? (mensaje = "Se obtuvo 1 solo dato") : "";
 		campos > 1 ? (mensaje = "Se obtuvieron " + campos + " datos") : "";
 		resultado.classList.add("resultadoExitoso");
-
 	} else {
 		if (contenido != "") {
-			mensaje = "No se obtuvo ningún dato"
-			resultado.classList.add("resultadoInvalido")
+			mensaje = "No se obtuvo ningún dato";
+			resultado.classList.add("resultadoInvalido");
 		} else {
-			mensaje = "<br>"
+			mensaje = "<br>";
 		}
 	}
 	resultado.innerHTML = mensaje;

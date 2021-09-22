@@ -17,8 +17,9 @@
 #data_entry .fa-times-circle {right: -20px; top: 5px;}
 #data_entry .mensajeError {right: 0px; top: 15px; width: 200px}
 #data_entry button {margin-top: 20px; align-self: center;}
-#data_entry #imagenPeli {margin-top: 10px;}
-#data_entry #imagenPeli img {max-width: 170px;max-height: 250px;}
+#data_entry #imagenPeli {margin-top: 10px; width: 180px; height: 100%; position: relative;}
+#data_entry #imagenPeli label {height: 100%; width: 100%; position: absolute;}
+#data_entry #imagenPeli label img {height: 100%; width: 100%; object-fit: cover;}
 #data_entry .fa-times-circle {display: flex; flex-direction: column;}
 #data_entry input, #data_entry textArea {width: 200px; padding: 0 5px; }
 #data_entry select[name="pais_id"] {width: 200px; padding: 0; }

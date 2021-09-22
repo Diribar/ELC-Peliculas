@@ -1,5 +1,5 @@
 <button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
-<form action="<%= link %>" method="POST" id="data_entry" class="flex-col" >
+<form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="data_entry" class="flex-col" >
 	<h1>Paso 2 de 4: Completá los Datos Necesarios</h1>
 	<section class="flex-row">
 		<div class="flex-col">  <!--Primera columna-->
@@ -148,8 +148,10 @@
 		</div>
 		<div class="flex-col">  <!--Segunda columna-->
 			<section class="border" id="imagenPeli">
-				<input type="text" name="imagen" value="<%= data_entry.imagen %>" class="ocultar">
-				<img src="<%= locals.data_entry ? data_entry.avatar : null %>" alt="">
+				<label for="imagen">
+					<img src="<%= data_entry.avatar %>" alt="">
+				</label>
+				<input name="imagen" type="file" accept="image/*" value="<%= data_entry.imagen %>" id="imagen" class="ocultar">
 			</section>
 		</div>	
 	</section>
