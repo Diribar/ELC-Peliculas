@@ -144,6 +144,11 @@ module.exports = {
 	},
 
 	altaEditablesForm: async (req, res) => {
+		!req.session.usuario
+			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
+					req.cookies.email
+			  ))
+			: "";
 		tema = "usuario";
 		codigo = "editables";
 		let habla_hispana = await BD_varios.ObtenerTodos("paises").then((n) =>
@@ -202,22 +207,30 @@ module.exports = {
 	detalle: (req, res) => {
 		tema = "usuario";
 		codigo = "detalle";
-		let registro = encontrarID(req.params.id);
+		!req.session.usuario
+			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
+					req.cookies.email
+			  ))
+			: "";
 		res.render("Home", {
 			tema,
 			codigo,
-			registro,
+			usuario: req.session.usuario,
 		});
 	},
 
 	editarForm: (req, res) => {
 		tema = "usuario";
 		codigo = "editar";
-		let registro = encontrarID(req.params.id);
+		!req.session.usuario
+			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
+					req.cookies.email
+			  ))
+			: "";
 		res.render("Home", {
 			tema,
 			codigo,
-			registro,
+			usuario: req.session.usuario,
 		});
 	},
 
@@ -245,8 +258,6 @@ module.exports = {
 	},
 
 	baja: (req, res) => {
-		let BD = leer(ruta_nombre);
-		let nuevaBD = BD.filter((n) => n.id != req.params.id);
 		req.session.destroy();
 		guardar(ruta_nombre, nuevaBD);
 		res.redirect("/");
