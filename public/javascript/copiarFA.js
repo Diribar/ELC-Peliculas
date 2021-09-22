@@ -168,8 +168,9 @@ const procesarContenidoFA = async (contenido) => {
 	let campos = Object.keys(lectura).length;
 	resultado.classList.remove("resultadoEnEspera");
 	if (campos) {
-		campos == 1 ? (mensaje = "Se obtuvo 1 solo dato") : "";
-		campos > 1 ? (mensaje = "Se obtuvieron " + campos + " datos") : "";
+		campos == 1
+			? (mensaje = "Se obtuvo 1 solo dato")
+			: (mensaje = "Se obtuvieron " + campos + " datos");
 		resultado.classList.add("resultadoExitoso");
 	} else {
 		if (contenido != "") {
