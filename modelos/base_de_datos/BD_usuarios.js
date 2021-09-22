@@ -18,7 +18,7 @@ module.exports = {
 			include: [
 				"rol_usuario",
 				"sexo",
-				"status_registro_usuario",
+				"status_registro",
 				"pais",
 				"estado_eclesial",
 			],
@@ -30,15 +30,15 @@ module.exports = {
 			include: [
 				"rol_usuario",
 				"sexo",
-				"status_registro_usuario",
+				"status_registro",
 				"pais",
 				"estado_eclesial",
 			],
 		});
 	},
-	upgradeStatusUsuario: (id, st) => {
+	actualizarStatusUsuario: (id, st) => {
 		return entidad.update(
-			{ status_registro_usuario_id: st },
+			{ status_registro_id: st },
 			{ where: { id: id } }
 		);
 	},

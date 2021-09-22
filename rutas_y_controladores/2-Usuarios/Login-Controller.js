@@ -2,7 +2,7 @@
 const path = require("path");
 const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
-const metodosUsuario = require(path.join(
+const BD_usuarios = require(path.join(
 	__dirname,
 	"../../modelos/base_de_datos/BD_usuarios"
 ));
@@ -10,7 +10,11 @@ const metodosUsuario = require(path.join(
 // *********** Controlador ***********
 module.exports = {
 	loginForm: (req, res) => {
-		data_entry = req.session.usuario ? {email: req.session.usuario.email} : null;
+		data_entry = req.session.usuario
+			? { email: req.session.usuario.email }
+			: req.session.email
+			? { email: req.session.email }
+			: null
 		tema = "usuario";
 		codigo = "login";
 		return res.render("Home", {
@@ -23,7 +27,8 @@ module.exports = {
 	},
 
 	loginGuardar: async (req, res) => {
-		var usuario = await metodosUsuario.obtenerPorMail(req.body.email);
+		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+		//return res.send(usuario)
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0;
@@ -49,9 +54,9 @@ module.exports = {
 			});
 		}
 		// Si corresponde, actualizar el Status del Usuario
-		if (usuario.status_registro_usuario_id == 1) {
-			await metodosUsuario.upgradeStatusUsuario(usuario.id, 2);
-			usuario = await metodosUsuario.obtenerPorMail(req.body.email);
+		if (usuario.status_registro_id == 1) {
+			await BD_usuarios.actualizarStatusUsuario(usuario.id, 2);
+			usuario = await BD_usuarios.obtenerPorMail(req.body.email);
 		}
 		// Grabar el mail del usuario en la cookie (configurado en 1 día)
 		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
@@ -62,16 +67,12 @@ module.exports = {
 		return res.redirect("/usuarios/altaredireccionar");
 	},
 
-	recupContrForm: (req, res) => {
-		res.send("Recuperar contraseña");
-	},
-	recupContrGuardar: (req, res) => {
-		res.send("Recuperar contraseña");
-	},
 	logout: (req, res) => {
+		url = req.session.urlReferencia
+			? req.session.urlReferencia
+			: "/"
 		res.clearCookie("email");
-		req.session.usuario = null;
-		//return res.send("linea 72")
-		return res.redirect("/");
+		req.session.destroy();
+		return res.redirect(url);
 	},
 };
