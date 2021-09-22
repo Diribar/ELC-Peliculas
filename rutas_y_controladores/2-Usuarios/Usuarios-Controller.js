@@ -22,7 +22,8 @@ module.exports = {
 			? await BD_usuarios.obtenerPorMail(req.session.email)
 			: req.cookies.email
 			? await BD_usuarios.obtenerPorMail(req.cookies.email)
-			: res.redirect("/");
+			: null;
+		!usuario ? res.redirect("/") : ""
 		//return res.send(usuario)
 		let status_registro = usuario.status_registro_id + "";
 		// Redireccionar
