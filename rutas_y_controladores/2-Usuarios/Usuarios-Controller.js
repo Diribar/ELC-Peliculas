@@ -1,7 +1,6 @@
 // ************ Requires ************
 const fs = require("fs");
 const path = require("path");
-const { validationResult } = require("express-validator");
 const BD_usuarios = require(path.join(
 	__dirname,
 	"../../modelos/base_de_datos/BD_usuarios"
@@ -12,6 +11,7 @@ const BD_varios = require(path.join(
 ));
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 const funciones = require("../../modelos/funcionesVarias");
+const { validationResult } = require("express-validator");
 
 // *********** Controlador ***********
 module.exports = {
@@ -146,17 +146,21 @@ module.exports = {
 	},
 
 	altaEditablesForm: async (req, res) => {
+		tema = "usuario";
+		codigo = "editables";
 		!req.session.usuario
 			? (req.session.usuario = await BD_usuarios.obtenerPorMail(
 					req.cookies.email
 			  ))
 			: "";
-		tema = "usuario";
-		codigo = "editables";
-		let habla_hispana = await BD_varios.ObtenerTodos("paises").then((n) =>
-			n.filter((n) => n.idioma == "Spanish")
+		let habla_hispana = await BD_varios.ObtenerTodos(
+			"paises",
+			"nombre"
+		).then((n) => n.filter((n) => n.idioma == "Spanish"));
+		let estados_eclesiales = await BD_varios.ObtenerTodos(
+			"estados_eclesiales",
+			"orden"
 		);
-		let estados_eclesiales = await BD_varios.ObtenerEstadosEclesiales();
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -175,13 +179,16 @@ module.exports = {
 			// Borrar el archivo de imagen guardado
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			// Variables de países
-			let habla_hispana = await BD_varios.ObtenerTodos("paises").then(
+			let habla_hispana = await BD_varios.ObtenerTodos("paises", "nombre").then(
 				(n) => n.filter((n) => n.idioma == "Spanish")
 			);
 			// Regresar al formulario
 			tema = "usuario";
 			codigo = "editables";
-			let estados_eclesiales = await BD_varios.ObtenerEstadosEclesiales();
+			let estados_eclesiales = await BD_varios.ObtenerTodos(
+				"estados_eclesiales",
+				"orden"
+			);
 			return res.render("Home", {
 				tema,
 				codigo,

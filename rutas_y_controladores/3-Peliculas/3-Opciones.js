@@ -1,12 +1,12 @@
 // ************ Requires ************
-const tablasVarias = require("../../modelos/base_de_datos/BD_varios");
+const BD_varios = require("../../modelos/base_de_datos/BD_varios");
 
 // *********** Controlador ***********
 module.exports = {
 	home: async (req, res) => {
 		tema = "opciones";
 		// Obtener las opciones
-		let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
+		let opciones_BD = await BD_varios.ObtenerTodos("menu_opciones", "id");
 		//res.send(opciones_BD);
 		res.render("Home", {
 			tema,
@@ -71,20 +71,20 @@ module.exports = {
 // Obtener info para las vistas
 let vistas = async (opcion) => {
 	// Obtener las Opciones
-	let opciones_BD = await tablasVarias.ObtenerTodos("menu_opciones");
+	let opciones_BD = await BD_varios.ObtenerTodos("menu_opciones", "id");
 	let opcionElegida = opciones_BD.filter((n) => n.url == opcion)[0];
 	// Obtener los Tipos de la opción elegida
 	if (opcion == "listado") {
-		tipos_BD = await tablasVarias.ObtenerTodos("listado_peliculas");
+		tipos_BD = await BD_varios.ObtenerTodos("listado_peliculas", "id");
 	} else {
-		tipos_BD = await tablasVarias.ObtenerFiltrandoPorCampo(
+		tipos_BD = await BD_varios.ObtenerFiltrandoPorCampo(
 			"subcategorias",
 			"categoria_id",
 			opcion.toUpperCase()
 		);
 	}
 	// Obtener el Título de la opción elegida
-	let titulo = "Películas - " + await tablasVarias
+	let titulo = "Películas - " + await BD_varios
 		.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
 		.then((n) => n[0].titulo);
 	// Exportar los datos

@@ -1,8 +1,12 @@
 // ************ Requires ************
+const path = require("path");
 const { validationResult } = require("express-validator");
 const searchTMDB = require("../../modelos/searchTMDB");
 const procesarDetalles = require("../../modelos/procesarDetalles");
-const funciones = require("../../modelos/funcionesVarias");
+const BD_varios = require(path.join(
+	__dirname,
+	"../../modelos/base_de_datos/BD_varios"
+));
 // uploadFile.single('imagen')
 
 // *********** Controlador ***********
@@ -78,14 +82,14 @@ module.exports = {
 		});
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
-		// Grabar cookies con la info del formulario
-		let campos = Object.keys(req.body);
-		let valores = Object.values(req.body);
-		for (let i = 0; i < campos.length; i++) {
-			res.cookie(campos[i], valores[i], { maxAge: 60 * 60 * 1000 });
-		}
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
+		// Grabar cookies con la info del producto
+		grabarCookiesProductos(
+			req,
+			res,
+			req.session.datosDuros
+		);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
@@ -94,31 +98,40 @@ module.exports = {
 		codigo = "copiarFA";
 		return res.render("Home", { tema, codigo });
 	},
-
 	copiarFA_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		//return res.send(req.body)
 		req.session.datosDuros = await procesarDetalles.procesarProducto_FA(
 			req.body
 		);
-		return res.send(req.session.datosDuros);
+		//return res.send(req.session.datosDuros);
+		// Grabar cookies con la info del producto
+		grabarCookiesProductos(
+			req,
+			res,
+			req.session.datosDuros
+		);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 		//return res.redirect("/peliculas/agregar/datos_duros");
 	},
-
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
-
-	datosDuros_Form: (req, res) => {
+	datosDuros_Form: async (req, res) => {
 		tema = "agregar";
 		codigo = "datosDuros";
-		return res.send(req.session.datosDuros);
+		let paises =  await BD_varios.ObtenerTodos("paises", "nombre")
+		//return res.send(req.cookies);
+		if (!req.session.datosDuros) {
+			req.session.datosDuros = req.cookies;
+			return res.send(req.session.datosDuros);
+		}
 		return res.render("Home", {
 			tema,
 			codigo,
-			data_entry: req.session.agregarPelicula,
+			data_entry: req.session.datosDuros,
+			paises,
 		});
 	},
 
@@ -158,3 +171,22 @@ const obtenerDatosDelProducto = async (form) => {
 	let resultado = await procesarDetalles[rubro](form, lectura);
 	return resultado;
 };
+
+let grabarCookiesProductos = (req, res, producto) => {
+	console.log("Cookie:")
+	// for (n of campos) {
+	// 	res.clearCookie(Object.keys(n));
+	// }
+	// let valores = Object.values(producto);
+	// for (let i = 0; i < campos.length; i++) {
+	// 	res.cookie(campos[i], valores[i], { maxAge: 1000 * 60 * 60 });
+	// }
+};
+
+let campos = [
+	"nombre_original",
+	"nombre_castellano",
+	"ano_estreno",
+	"duracion",
+	""
+];

@@ -64,8 +64,8 @@ module.exports = {
 		return entidad.update(
 			{
 				apodo: datos.apodo,
-				pais_id: datos.pais,
-				estado_eclesial_id: datos.estado_eclesial,
+				pais_id: datos.pais_id,
+				estado_eclesial_id: datos.estado_eclesial_id,
 				avatar: datos.avatar,
 			},
 			{ where: { id: id } }
