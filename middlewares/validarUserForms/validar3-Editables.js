@@ -3,8 +3,8 @@ const {body} = require('express-validator');
 
 module.exports = [
 	body('apodo').notEmpty().withMessage('Tenés que completar este campo'),
-	body('pais').notEmpty().withMessage('Tenés que elegir un país'),
-	body('estado_eclesial').notEmpty().withMessage('Tenés que elegir un estado'),
+	body('pais_id').notEmpty().withMessage('Tenés que elegir un país'),
+	body('estado_eclesial_id').notEmpty().withMessage('Tenés que elegir un estado'),
 	body('avatar').custom((value, {req}) => {
 		let archivo = req.file;
 		let Tipos = ['.jpg', '.png'];		

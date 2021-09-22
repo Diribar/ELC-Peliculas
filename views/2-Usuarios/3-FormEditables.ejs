@@ -13,12 +13,13 @@
 	<section class="label-input flex-row"><!--Pais de residencia-->
 		<label for="pais">País de residencia</label>
 		<div class="form-grupo">
-			<% pais = locals.data_entry ? data_entry.pais : "" %>
-			<select name="pais" class="input">
-				<option value="" <% if (pais=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+			<% pais_id = locals.data_entry ? data_entry.pais_id[0] : "" %>
+			<%- console.log(pais_id) %> 
+			<select name="pais_id" class="input">
+				<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (n of habla_hispana.filter(n => n.continente == "América")) { %>
-						<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
 							<%= n.nombre %>
 						</option>
 						<img src="<%= n.bandera %>">
@@ -26,37 +27,36 @@
 				</optgroup>
 				<optgroup label="Europa/África (habla hispana)">
 					<% for (n of habla_hispana.filter(n => n.continente != "América")) { %>
-						<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
 							<%= n.nombre %>
 						</option>
 						<img src="<%= n.bandera %>">
-					<% } %>	
+					<% } %>
 				</optgroup>
 				<optgroup label="Otras opciones">
-					<option value="AC" <% if (pais=="AC") {%> selected <%}%>>Otro país de América</option>
-					<option value="EU" <% if (pais=="EU") {%> selected <%}%>>Otro país de Europa</option>
-					<option value="AA" <% if (pais=="AA") {%> selected <%}%>>Otro país de Africa</option>
-					<option value="AB" <% if (pais=="AB") {%> selected <%}%>>Asia</option>
-					<option value="OC" <% if (pais=="OC") {%> selected <%}%>>Oceanía</option>
+					<option value="AC" <% if (pais_id=="AC") {%> selected <%}%>>Otro país de América</option>
+					<option value="EU" <% if (pais_id=="EU") {%> selected <%}%>>Otro país de Europa</option>
+					<option value="AA" <% if (pais_id=="AA") {%> selected <%}%>>Otro país de Africa</option>
+					<option value="AB" <% if (pais_id=="AB") {%> selected <%}%>>Asia</option>
+					<option value="OC" <% if (pais_id=="OC") {%> selected <%}%>>Oceanía</option>
 				</optgroup>
 			</select>
-			<% if (locals.errores && errores.pais) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais.msg %> </span></i><% } %>
-			<% if (locals.errores && !errores.pais) { %><i class="fas fa-check-circle"></i><% } %>
+			<% if (locals.errores && errores.pais_id) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais_id.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.pais_id) { %><i class="fas fa-check-circle"></i><% } %>
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
 		<label for="estado_eclesial">Estado de vida <br>en la iglesia</label>
 		<div class="form-grupo">
-			<% estado_eclesial = locals.data_entry ? data_entry.estado_eclesial : "" %>
-			<select name="estado_eclesial" class="input">
-				<option value="" <% if (estado_eclesial=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
+			<% estado_eclesial_id = locals.data_entry ? data_entry.estado_eclesial_id : "" %>
+			<select name="estado_eclesial_id" class="input">
+				<option value="" <% if (estado_eclesial_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
 				<% for (n of estados_eclesiales) { %>
-					<option value="<%= n.id %>" <% if (estado_eclesial==n.id) { %> selected <% } %>><%= n.nombre %></option>
+					<option value="<%= n.id %>" <% if (estado_eclesial_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
 				<% } %> 
 			</select>
-			<% if (locals.errores && errores.estado_eclesial) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.estado_eclesial.msg %> </span></i><% } %>
-			<% if (locals.errores && !errores.estado_eclesial) { %><i class="fas fa-check-circle"></i><% } %>
-				
+			<% if (locals.errores && errores.estado_eclesial_id) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.estado_eclesial_id.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.estado_eclesial_id) { %><i class="fas fa-check-circle"></i><% } %>
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Imagen de perfil-->
