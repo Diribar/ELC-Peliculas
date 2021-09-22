@@ -4,22 +4,31 @@ header p {display: flex;justify-content: center;align-items:center;}
 header p a {font-family: Monotype Corsiva;font-size: 3rem;font-weight: bold;}
 header p a {color: var(--amarillo-claro);text-decoration: none;}
 
-/* Íconos de Usuario, Rubro y Servicio */
-header .icono, header #imagenUsuario {position: absolute;}
-header .icono {color: var(--celeste-claro); transform:scale(1.8); top:40%;}
+/* Posición vertical */
+header .absolute {top: 35%;}
+header #plus {top: 28%;}
+header #usuario-button #imagenUsuario {top: 10%;}
 
 /* Íconos a la izquierda */
 header .fa-home {left: 40px;}
 header .fa-video {left: 100px}
-header #plus {left: 99px; top:33%; z-index: 3; color: var(--azul-oscuro); line-height: normal;}
+header #plus {left: 103px;}
 
 /* Íconos a la derecha */
-header .fa-user-circle {right:40px;}
-header #imagenUsuario {right:30px;}
-header #imagenUsuario {height: 80%;border-radius: 100%; top: 10%; border: 1.5px solid white;}
+header #usuario-button .absolute {right: 40px}
+header #usuario-button #imagenUsuario {right: 30px;}
+
+/* Íconos */
+header .icono {color: var(--celeste-claro); font-size: 1.8rem;}
+header #usuario-button #imagenUsuario {height: 80%;border-radius: 100%; border: 1.5px solid white;}
+header #usuario-button div.absolute {border-radius: 50%; background-color: var(--celeste-claro); padding: 0 8px;}
+header #usuario-button div.absolute .icono, header #plus 
+	{color: var(--azul-oscuro); line-height: normal; font-weight: bold;}
+header #plus {z-index: 3;}
+header #usuario-button div.absolute .icono {font-size: 1.6rem;}
 
 /* Menús varios */
-header .dropdown-content {position: absolute;top: 55px;}
+header .dropdown-content {position: absolute; top: 55px;}
 header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
 header .dropdown-content a {padding: 4px 16px;text-decoration: none; display: block;}
 header #menu-rubro {left: 20px;}

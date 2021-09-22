@@ -16,7 +16,7 @@
 	{padding: 3px 10px; color: white; font-weight: bold;}
 
 /* Otras */
-.absolute {position: absolute; top:0px; left: 0px}
+.absolute {position: absolute}
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
