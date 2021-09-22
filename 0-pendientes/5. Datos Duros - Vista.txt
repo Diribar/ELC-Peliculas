@@ -1,11 +1,4 @@
 GENERAL
-- Recibir las 3 APIs:
-	- TMDB
-	- FA
-	- Ingreso Manual
-- Si la session decae, recuperar la info mediante req.cookie
-- Bloquear los datos de API
-
 - Vista inicial con los avisos de validación
 - Completar saldo a mano
 

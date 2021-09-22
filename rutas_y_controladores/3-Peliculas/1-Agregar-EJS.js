@@ -132,12 +132,19 @@ module.exports = {
 		});
 	},
 
-	datosDuros_Guardar: (req, res) => {
+	datosDuros_Guardar: async (req, res) => {
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
-			return res.render("Agregar2Form", {
+			tema = "agregar";
+			codigo = "datosDuros";
+			let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+			return res.render("Home", {
+				tema,
+				codigo,
 				data_entry: req.body,
+				paises,
+				link: req.originalUrl,
 				errores: erroresValidacion.mapped(),
 			});
 		}
