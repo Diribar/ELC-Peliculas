@@ -1,5 +1,4 @@
 GENERAL
-- Centrado a lo ancho de toda la pantalla
 - Vista inicial con los avisos de validación
 
 BOTON DE RETROCEDER
@@ -7,8 +6,7 @@ BOTON DE RETROCEDER
 - En la ruta/controlador, quitar donde se limpia el req.body
 
 PRIMERA COLUMNA
-- Revisar si no quedan campos por agregar
-	- Collection
+- Revisar si no quedan campos por agregar (Collection)
 
 SEGUNDA COLUMNA (Imagen)
 - Si no existe una imagen, pedir que insertar una
@@ -17,3 +15,6 @@ ON SUBMIT
 - Guardar la imagen
 	- Nombre: nombre_castellano + número aleatorio
 	- Carpeta: provisoria
+
+GENERAL
+- Centrado a lo ancho de toda la pantalla

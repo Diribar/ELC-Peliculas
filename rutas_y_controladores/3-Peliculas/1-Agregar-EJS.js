@@ -7,6 +7,7 @@ const BD_varios = require(path.join(
 	__dirname,
 	"../../modelos/base_de_datos/BD_varios"
 ));
+const funciones = require("../../modelos/funcionesVarias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -85,7 +86,7 @@ module.exports = {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
 		// Grabar cookies con la info del producto
-		actualizarCookiesProductos(res, req.session.datosDuros, camposDuros);
+		actualizarCookiesProductos(res, req.session.datosDuros, camposProducto);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
@@ -106,7 +107,7 @@ module.exports = {
 		);
 		//return res.send(req.session.datosDuros);
 		// Grabar cookies con la info del producto
-		actualizarCookiesProductos(res, req.session.datosDuros, camposDuros);
+		actualizarCookiesProductos(res, req.session.datosDuros, camposProducto);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos_duros");
 	},
@@ -119,13 +120,15 @@ module.exports = {
 		//return res.send(req.session.datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
-		!req.session.datosDuros ? req.session.datosDuros = req.cookies : ""
+		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
+		errores = funciones.validarDatosDuros(req.session.datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
 			data_entry: req.session.datosDuros,
 			paises,
 			link: req.originalUrl,
+			errores,
 		});
 	},
 
@@ -190,12 +193,13 @@ let actualizarCookiesProductos = (res, producto, campos) => {
 	}
 };
 
-let camposDuros = [
+let camposProducto = [
 	"fuente",
 	"rubroAPI",
 	"tmdb_id",
 	"fa_id",
 	"imdb_id",
+	"coleccion_tmdb_id",
 	"nombre_original",
 	"nombre_castellano",
 	"idioma_original",

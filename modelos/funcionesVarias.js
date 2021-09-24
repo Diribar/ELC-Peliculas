@@ -59,8 +59,7 @@ module.exports = {
 					contenido[contenido.indexOf("Dirección") + 1])
 			: "";
 		contenido.indexOf("Guion") > 0
-			? (resultado.guion =
-					contenido[contenido.indexOf("Guion") + 1])
+			? (resultado.guion = contenido[contenido.indexOf("Guion") + 1])
 			: "";
 		contenido.indexOf("Música") > 0
 			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
@@ -89,12 +88,14 @@ module.exports = {
 		tmdb_id = datos.tmdb_id;
 		fa_id = datos.fa_id;
 		// Verificar YaEnBD
-		TMDB_yaEnBD = !!tmdb_id
-			? await AveriguarSiYaEnBD(rubroAPI, "TMDB", tmdb_id)
-			: "";
-		FA_yaEnBD = !!fa_id
-			? await AveriguarSiYaEnBD(rubroAPI, "FA", fa_id)
-			: "";
+		yaEnBD = await AveriguarSiYaEnBD(rubroAPI, tmdb_id, fa_id);
+		if (!!tmdb_id) {
+			TMDB_yaEnBD = yaEnBD;
+			FA_yaEnBD = "";
+		} else {
+			TMDB_yaEnBD = "";
+			FA_yaEnBD = yaEnBD;
+		}
 		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
 		// Enviar el resultado
 		return [TMDB_yaEnBD, FA_yaEnBD];
@@ -121,22 +122,62 @@ module.exports = {
 		};
 		await transporter.sendMail(datos);
 	},
+	validarDatosDuros: (datos) => {
+		cartelCampoVacio = "Tenés que completar este campo"
+		cartelCastellano = "Sólo se admiten letras del abecedario castellano";
+		let errores = {};
+		errores.nombre_original = campoVacio(datos.nombre_original)
+			? cartelCampoVacio
+			: longitud(datos.nombre_original, 2, 50)
+			? longitud(datos.nombre_original, 2, 50)
+			: castellano(datos.nombre_original)
+			? cartelCastellano
+			: AveriguarSiYaEnBD(castellano(datos.nombre_original))
+			? "El título original ya está en nuestra base de datos"
+			: "";
+		errores.nombre_castellano = ""
+		errores.ano_estreno = ""
+		errores.duracion = ""
+		errores.pais_id = ""
+		errores.director =""
+		errores.guion = ""
+		errores.musica = ""
+		errores.actores=""
+		errores.productor=""
+		errores.avatar=""
+		return errores
+	},
 };
 
-let AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
+let AveriguarSiYaEnBD = async (rubroAPI, tmdb_id, fa_id) => {
 	// La respuesta se espera que sea 'true' or 'false'
-	if (!rubroAPI || !id) return false;
-	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
-	let resultado =
-		rubroAPI == "movie"
-			? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
-			: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
-	return resultado;
+	if (!rubroAPI || (!tmdb_id && !fa_id)) return false;
+	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";
+	let id = tmdb_id != null ? tmdb_id : fa_id;
+	return rubroAPI == "movie"
+		? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
+		: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
 };
 
 let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
-	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
-	return dato;
+	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : "";
+};
+
+let campoVacio = (dato) => {
+	return dato == "" || dato == null || dato == undefined
+};
+
+let longitud = (dato, corto, largo) => {
+	return dato.length < corto
+		? "El nombre debe ser más largo"
+		: dato.length > largo
+		? "El nombre debe ser más corto"
+		: "";
+};
+
+let castellano = (dato) => {
+	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.áéíóúüñ/()\d+-]+$/;
+	return !formato.test(dato)
 };
