@@ -7,7 +7,7 @@ const BD_varios = require(path.join(
 	__dirname,
 	"../../modelos/base_de_datos/BD_varios"
 ));
-const funciones = require("../../modelos/funcionesVarias");
+const validarProductos = require("../../modelos/validarProductos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -121,7 +121,7 @@ module.exports = {
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
 		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
-		errores = funciones.validarDatosDuros(req.session.datosDuros);
+		errores = validarProductos.validarDatosDuros(req.session.datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
