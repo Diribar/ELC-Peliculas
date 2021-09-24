@@ -1,32 +1,24 @@
 GENERAL
-- Recibir las 3 APIs:
-	- TMDB
-	- FA
-	- Ingreso Manual
-- Si la session decae, recuperar la info mediante req.cookie
-- Bloquear los datos de API
-
+- Centrado a lo ancho de toda la pantalla
 - Vista inicial con los avisos de validación
-- Completar saldo a mano
 
-TODO EL CUERPO -> Centrado a lo ancho de toda la pantalla
-
-ENCABEZADO -> Links por si necesita consultar algún dato: TMDB, FA, IMDB, Wiki
+ENCABEZADO 
+- Links por si necesita consultar algún dato: TMDB, FA, IMDB, Wiki
 	- FA: con el FA_ID, sino con título original
 	- TMDB: con el Rubro + TMDB_ID, sino con el título original
 	- IMDB: con el IMDB_ID, sino con el título original
 	- Wiki: con el título original (película)
 
-PRIMERA COLUMNA -> Agregar campos id_TMDB y id_FA
-
-SEGUNDA COLUMNA (Imagen)
-- ¿Existe el link de TMDB?
-	- SI: mostrar la imagen
-	- NO: pedir insertar una imagen nueva
-- Guardar la imagen
-	- Nombre: nombre_castellano + número aleatorio
-	- Carpeta: provisoria
-
 BOTON DE RETROCEDER
 - A Desamb_TMDB / FA
 - En la ruta/controlador, quitar donde se limpia el req.body
+
+PRIMERA COLUMNA -> Agregar campos id_TMDB y id_FA
+
+SEGUNDA COLUMNA (Imagen)
+- Si no existe una imagen, pedir que insertar una
+
+ON SUBMIT
+- Guardar la imagen
+	- Nombre: nombre_castellano + número aleatorio
+	- Carpeta: provisoria
