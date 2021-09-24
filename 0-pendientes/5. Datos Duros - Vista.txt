@@ -2,18 +2,13 @@ GENERAL
 - Centrado a lo ancho de toda la pantalla
 - Vista inicial con los avisos de validación
 
-ENCABEZADO 
-- Links por si necesita consultar algún dato: TMDB, FA, IMDB, Wiki
-	- FA: con el FA_ID, sino con título original
-	- TMDB: con el Rubro + TMDB_ID, sino con el título original
-	- IMDB: con el IMDB_ID, sino con el título original
-	- Wiki: con el título original (película)
-
 BOTON DE RETROCEDER
 - A Desamb_TMDB / FA
 - En la ruta/controlador, quitar donde se limpia el req.body
 
-PRIMERA COLUMNA -> Agregar campos id_TMDB y id_FA
+PRIMERA COLUMNA
+- Revisar si no quedan campos por agregar
+	- Collection
 
 SEGUNDA COLUMNA (Imagen)
 - Si no existe una imagen, pedir que insertar una

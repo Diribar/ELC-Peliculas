@@ -119,10 +119,7 @@ module.exports = {
 		//return res.send(req.session.datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
-		if (!req.session.datosDuros) {
-			req.session.datosDuros = req.cookies;
-			return res.send(req.session.datosDuros);
-		}
+		!req.session.datosDuros ? req.session.datosDuros = req.cookies : ""
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -197,10 +194,14 @@ let camposDuros = [
 	"fuente",
 	"rubroAPI",
 	"tmdb_id",
+	"fa_id",
 	"imdb_id",
 	"nombre_original",
 	"nombre_castellano",
+	"idioma_original",
 	"ano_estreno",
+	"ano_fin",
+	"partes",
 	"duracion",
 	"pais_id",
 	"director",

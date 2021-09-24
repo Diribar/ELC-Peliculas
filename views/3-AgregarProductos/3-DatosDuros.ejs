@@ -1,6 +1,19 @@
 <button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="data_entry" class="flex-col" >
-	<h1>Paso 2 de 4: Completá los Datos Necesarios</h1>
+	<div id="titulos">
+		<h1>Paso 2 de 4: Completá los Datos Pendientes</h1>
+		<div class="flex-col" id="links">
+			<p>Si necesitás consultar algún dato</p>
+			<nav class="flex-row">
+				<% tmdb = (data_entry.rubroAPI && data_entry.tmdb_id) ? (data_entry.rubroAPI+"/"+data_entry.tmdb_id) : "search?language=es&query="+data_entry.nombre_original %>
+				<% fa = (data_entry.fa_id) ? ("film"+data_entry.fa_id+".html") : "search.php?stext="+data_entry.nombre_original %>
+				<% imdb = (data_entry.imdb_id) ? ("title/"+data_entry.imdb_id) : "find?q="+data_entry.nombre_original %>
+				<a class="logos" href="https://www.themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Base/LogoTMDB.jpg" alt="TMDB"></a>
+				<a class="logos" href="https://www.filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Base/LogoFA.jpg" alt="FA"></a>
+				<a class="logos" href="https://www.imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Base/LogoIMDB.jpg" alt="IMDB"></a>
+			</nav>
+		</div>
+	</div>
 	<section class="flex-row">
 		<div class="flex-col">  <!--Primera columna-->
 			<section class="label-input flex-row">  <!--Título original-->
