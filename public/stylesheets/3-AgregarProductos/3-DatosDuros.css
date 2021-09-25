@@ -1,6 +1,14 @@
 /* Formato del cuerpo */
 #data_entry #columnaMedio {width: 60px}
 
+/* Encabezadodel formulario */
+#data_entry #titulos {display: flex; justify-content: space-between;}
+#data_entry #titulos h1 {margin-top: 0;}
+#data_entry #titulos #links {display: flex; flex-direction: column; align-items: center;}
+#data_entry #titulos #links nav {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
+#data_entry #titulos #links nav a.logos {width: 30px; height: 30px; position: relative; }
+#data_entry #titulos #links nav a.logos img {width: 100%; height: 100%; position: absolute; object-fit: cover; border-radius: 8px;}
+
 /* Cuerpo del formulario */
 #data_entry .label-input.flex-row .formulario-grupo, 
 #data_entry .formulario-grupo select,
