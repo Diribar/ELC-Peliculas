@@ -10,7 +10,7 @@
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 
-	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:280px; border-radius: 15px;}
+	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:290px; border-radius: 15px;}
 #data_entry #prod_nuevo {background-color: var(--verde-claro);}
 #data_entry #ingr_manual {background-color: var(--rojo-claro);}
 #data_entry #prod_yaEnBD {background-color: var(--celeste-oscuro);}

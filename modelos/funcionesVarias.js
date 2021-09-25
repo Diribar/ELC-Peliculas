@@ -59,8 +59,7 @@ module.exports = {
 					contenido[contenido.indexOf("Dirección") + 1])
 			: "";
 		contenido.indexOf("Guion") > 0
-			? (resultado.guion =
-					contenido[contenido.indexOf("Guion") + 1])
+			? (resultado.guion = contenido[contenido.indexOf("Guion") + 1])
 			: "";
 		contenido.indexOf("Música") > 0
 			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
@@ -89,6 +88,7 @@ module.exports = {
 		tmdb_id = datos.tmdb_id;
 		fa_id = datos.fa_id;
 		// Verificar YaEnBD
+		yaEnBD = await AveriguarSiYaEnBD(rubroAPI, tmdb_id, fa_id);
 		TMDB_yaEnBD = !!tmdb_id
 			? await AveriguarSiYaEnBD(rubroAPI, "TMDB", tmdb_id)
 			: "";
@@ -137,6 +137,5 @@ let AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
-	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
-	return dato;
+	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : "";
 };

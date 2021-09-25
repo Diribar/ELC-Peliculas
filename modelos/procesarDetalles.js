@@ -75,12 +75,13 @@ module.exports = {
 				: "";
 			lectura.cast.length > 0
 				? (datosLectura.actores = lectura.cast
-						.map(
-							(n) =>
-								n.name +
-								" (" +
-								funcionParentesis(n.character) +
-								")"
+						.map((n) =>
+							n.character != ""
+								? n.name +
+								  " (" +
+								  funcionParentesis(n.character) +
+								  ")"
+								: n.name
 						)
 						.join(", "))
 				: "";
@@ -250,8 +251,10 @@ module.exports = {
 				"paises",
 				"nombre",
 				resultado.pais_nombre
-			)
-			pais_id.length > 0 ? resultado.pais_id = pais_id.map((n) => n.id): "";
+			);
+			pais_id.length > 0
+				? (resultado.pais_id = pais_id.map((n) => n.id))
+				: "";
 			delete resultado.pais_nombre;
 		}
 		return resultado;

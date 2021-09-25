@@ -22,9 +22,9 @@
 					<input type="text" name="nombre_original"
 						value="<%= data_entry.nombre_original %>"
 					>
-					<% if (locals.errores && errores.nombre_original) { %>
+					<% if (errores.nombre_original) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.nombre_original.msg %></span>
+						<span class="mensajeError"><%= errores.nombre_original %></span>
 						</i>
 					<% } %>
 				</div>
@@ -35,9 +35,9 @@
 					<input type="text" name="nombre_castellano"
 						value="<%= data_entry.nombre_castellano %>"
 					>
-					<% if (locals.errores && errores.nombre_castellano) { %>
+					<% if (errores.nombre_castellano) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.nombre_castellano.msg %> </span>
+						<span class="mensajeError"><%= errores.nombre_castellano %> </span>
 						</i>
 					<% } %>
 				</div>
@@ -48,9 +48,9 @@
 					<input type="text" class="input-numero" name="ano_estreno" placeholder="sólo números"
 						value="<%= data_entry.ano_estreno %>"
 					>
-					<% if (locals.errores && errores.ano_estreno) { %>
+					<% if (errores.ano_estreno) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.ano_estreno.msg %> </span>
+						<span class="mensajeError"><%= errores.ano_estreno %> </span>
 						</i>
 					<% } %>
 				</div>
@@ -60,9 +60,9 @@
 				<div class="formulario-grupo">
 					<input type="text" class="input-numero" name="duracion" placeholder="sólo números"
 					value="<%= data_entry.duracion %>">
-					<% if (locals.errores && errores.duracion) { %>
+					<% if (errores.duracion) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.duracion.msg %></span>
+						<span class="mensajeError"><%= errores.duracion %></span>
 						</i>
 					<% } %>
 				</div>
@@ -84,9 +84,9 @@
 							</optgroup>
 						<% } %> 
 					</select>
-					<% if (locals.errores && errores.pais_id) { %>
+					<% if (errores.pais_id) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.pais_id.msg %></span>
+						<span class="mensajeError"><%= errores.pais_id %></span>
 						</i>
 					<% } %>
 				</div>
@@ -97,9 +97,9 @@
 					<input type="text" class="input" name="director" placeholder=""
 						value="<%= locals.data_entry ? data_entry.director : null %>"
 					>
-					<% if (locals.errores && errores.director) { %>
+					<% if (errores.director) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.director.msg %></span>
+						<span class="mensajeError"><%= errores.director %></span>
 						</i>
 					<% } %>
 				</div>
@@ -110,9 +110,9 @@
 					<input type="text" class="input" name="guion" placeholder=""
 						value="<%= locals.data_entry ? data_entry.guion : null %>"
 					>
-					<% if (locals.errores && errores.guion) { %>
+					<% if (errores.guion) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.guion.msg %></span>
+						<span class="mensajeError"><%= errores.guion %></span>
 						</i>
 					<% } %>
 				</div>
@@ -123,9 +123,9 @@
 					<input type="text" class="input" name="musica" placeholder=""
 						value="<%= locals.data_entry ? data_entry.musica : null %>"
 					>
-					<% if (locals.errores && errores.musica) { %>
+					<% if (errores.musica) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.musica.msg %></span>
+						<span class="mensajeError"><%= errores.musica %></span>
 						</i>
 					<% } %>
 				</div>
@@ -136,9 +136,9 @@
 					<input type="text" class="input" name="actores" placeholder=""
 						value="<%= locals.data_entry ? data_entry.actores : null %>"
 					>
-					<% if (locals.errores && errores.actores) { %>
+					<% if (errores.actores) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.actores.msg %></span>
+						<span class="mensajeError"><%= errores.actores %></span>
 						</i>
 					<% } %>
 				</div>
@@ -149,9 +149,9 @@
 					<input type="text" class="input" name="productor" placeholder=""
 						value="<%= locals.data_entry ? data_entry.productor : null %>"
 					>
-					<% if (locals.errores && errores.productor) { %>
+					<% if (errores.productor) { %>
 						<i class="fas fa-times-circle">
-						<span class="mensajeError"><%= errores.productor.msg %></span>
+						<span class="mensajeError"><%= errores.productor %></span>
 						</i>
 					<% } %>
 				</div>
@@ -164,7 +164,7 @@
 				<label for="imagen">
 					<img src="<%= data_entry.avatar %>" alt="">
 				</label>
-				<input name="imagen" type="file" accept="image/*" value="<%= data_entry.imagen %>" id="imagen" class="ocultar">
+				<input name="imagen" type="file" accept="image/*" value="<%= data_entry.avatar %>" id="imagen" class="ocultar">
 			</section>
 		</div>	
 	</section>
