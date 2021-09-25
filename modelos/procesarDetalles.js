@@ -75,13 +75,12 @@ module.exports = {
 				: "";
 			lectura.cast.length > 0
 				? (datosLectura.actores = lectura.cast
-						.map((n) =>
-							n.character != ""
-								? n.name +
-								  " (" +
-								  funcionParentesis(n.character) +
-								  ")"
-								: n.name
+						.map(
+							(n) =>
+								n.name +
+								(n.character != ""
+									? " (" + n.character + ")"
+									: "")
 						)
 						.join(", "))
 				: "";

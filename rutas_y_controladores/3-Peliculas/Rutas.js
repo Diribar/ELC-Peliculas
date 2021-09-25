@@ -9,10 +9,7 @@ let opciones = require("./3-Opciones");
 // Middlewares de Validaciones
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-let validarPalabrasClave = require("../../middlewares/validarFilmForms/1-PalabrasClave");
-let validarDatosDuros = require("../../middlewares/validarFilmForms/2-DatosDuros");
-let validarDatosPers = require("../../middlewares/validarFilmForms/3-DatosPersonalizados");
-let validarProdEnBD = require("../../middlewares/varios/productoYaEnBD");
+let validarProdYaEnBD = require("../../middlewares/varios/productoYaEnBD");
 
 // Otros middlewares
 let uploadFile = require("../../middlewares/varios/multer");
@@ -27,7 +24,7 @@ router.get("/agregar/api/procesarcontenidofa/", agregarAPI.procesarContenidoFA);
 router.get("/agregar/responsabilidad", soloUsuarios, agregarEJS.responsabilidad);
 // Controladores de EJS - 1. Palabras Clave
 router.get("/agregar/palabras_clave", soloUsuarios, agregarEJS.palabrasClaveForm);
-router.post('/agregar/palabras_clave', soloUsuarios, validarPalabrasClave, agregarEJS.palabrasClaveGuardar);
+router.post('/agregar/palabras_clave', soloUsuarios, agregarEJS.palabrasClaveGuardar);
 // Controladores de EJS - 2. Desambiguar, Copiar FA, Ya en nuestra BD
 router.get("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Guardar);
@@ -38,12 +35,12 @@ router.get("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
 //router.post("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
 
 // Controladores de EJS - 3. Datos Duros
-router.get("/agregar/datos_duros", soloUsuarios, validarProdEnBD, agregarEJS.datosDuros_Form);
-router.post("/agregar/datos_duros", soloUsuarios, validarDatosDuros, agregarEJS.datosDuros_Guardar);
+router.get("/agregar/datos_duros", soloUsuarios, validarProdYaEnBD, agregarEJS.datosDuros_Form);
+router.post("/agregar/datos_duros", soloUsuarios, agregarEJS.datosDuros_Guardar);
 
 // Controladores de EJS - 4. Datos Personalizados
-router.get("/agregar/datos_personalizados", soloUsuarios, validarProdEnBD, agregarEJS.DatosPersForm);
-router.post("/agregar/datos_personalizados", soloUsuarios, validarDatosPers, agregarEJS.DatosPersGuardar);
+router.get("/agregar/datos_personalizados", soloUsuarios, validarProdYaEnBD, agregarEJS.DatosPersForm);
+router.post("/agregar/datos_personalizados", soloUsuarios, agregarEJS.DatosPersGuardar);
 
 // Controladores RUD (método GET)
 router.get("/detalle/informacion/:id", soloUsuarios, RUD.detalle);

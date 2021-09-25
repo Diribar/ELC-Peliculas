@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		guion: { type: dt.STRING(50) },
 		musica: { type: dt.STRING(50) },
 		actores: { type: dt.STRING(500) },
-		productor: { type: dt.STRING(50) },
+		productor: { type: dt.STRING(100) },
 		avatar: { type: dt.STRING(100) },
 		idioma_castellano: { type: dt.BOOLEAN },
 		color: { type: dt.BOOLEAN },

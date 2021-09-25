@@ -4,9 +4,6 @@
 
 /* Flechas */
 #data_entry #flechas {margin: 10px 50px 0;}
-#data_entry #flechas i {font-size: 2rem;}
-#data_entry #flechas a i {color: var(--gris-oscuro);}
-#data_entry #flechas i#sinLink {color: var(--celeste-oscuro);}
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 
