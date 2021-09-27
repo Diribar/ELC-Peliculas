@@ -91,8 +91,8 @@
 					<% } %>
 				</div>
 			</section>
-			<section class="label-input flex-row">  <!--Direcctor-->
-				<label>Direcctor</label>
+			<section class="label-input flex-row">  <!--Director-->
+				<label>Director</label>
 				<div class="formulario-grupo">
 					<input type="text" class="input" name="director" placeholder=""
 						value="<%= locals.data_entry ? data_entry.director : null %>"
@@ -168,5 +168,14 @@
 			</section>
 		</div>	
 	</section>
-	<button type="submit">Enviar</button>
+	<div id="flechas" class="flex-row space-between">
+		<% retroceso = data_entry.fuente = "TMDB" ? "desambiguar" : "copiarfa" %>
+		<a href="/peliculas/agregar/<%= retroceso %>"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<button type="submit">Enviar</button>
+		<% if (false) { %>
+			<a href="#" id="conLink"><i class="fas fa-arrow-alt-circle-right"></i></a>
+		<% } else { %>
+			<i class="fas fa-arrow-alt-circle-right" id="sinLink"></i>
+		<% } %>
+	</div>
 </form>

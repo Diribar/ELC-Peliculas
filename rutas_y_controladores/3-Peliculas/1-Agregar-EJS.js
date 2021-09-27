@@ -121,7 +121,8 @@ module.exports = {
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
 		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
-		errores = validarProductos.validarDatosDuros(req.session.datosDuros);
+		errores = await validarProductos.validarDatosDuros(req.session.datosDuros);
+		//return res.send(errores)
 		return res.render("Home", {
 			tema,
 			codigo,

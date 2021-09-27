@@ -49,25 +49,25 @@ CREATE TABLE sexos (
 INSERT INTO sexos (id, nombre, letra_final)
 VALUES ('M','Masculino', 'o'), ('F','Femenino', 'a')
 ;
-CREATE TABLE status_registro_usuario (
+CREATE TABLE status_registro (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro_usuario (id, nombre)
-VALUES (1, 'Mail a validar'), (2, 'Mail validado'), (3, 'Datos perennes OK'), (4, 'Registro completo')
+INSERT INTO status_registro (id, nombre)
+VALUES (1, 'Mail a validar'), (2, 'Mail validado'), (3, 'Datos perennes OK'), (4, 'Datos editables OK')
 ;
 CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
-	status_registro_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
+	status_registro_id INT UNSIGNED NOT NULL DEFAULT 1,
 	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
 	autorizado_fa BOOLEAN NULL DEFAULT 0,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
 	apodo VARCHAR(50) NULL,
-	avatar VARCHAR(100) NULL,
+	avatar VARCHAR(100) NOT NULL DEFAULT '-',
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
@@ -81,13 +81,13 @@ CREATE TABLE USUARIOS (
 	borrado_motivo VARCHAR(500) NULL,
 	borrado_por INT UNSIGNED NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (status_registro_usuario_id) REFERENCES status_registro_usuario(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, status_registro_usuario_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
 VALUES (1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),(2, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
@@ -246,8 +246,8 @@ CREATE TABLE PELICULAS (
 	tmdb_id VARCHAR(10) NULL,
 	fa_id VARCHAR(10) NULL,
 	imdb_id VARCHAR(10) NULL,
-	nombre_original VARCHAR(100) NOT NULL UNIQUE,
-	nombre_castellano VARCHAR(100) NOT NULL,
+	nombre_original VARCHAR(50) NOT NULL UNIQUE,
+	nombre_castellano VARCHAR(50) NOT NULL,
 	coleccion_pelicula_id INT UNSIGNED NOT NULL DEFAULT 0,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
@@ -255,8 +255,8 @@ CREATE TABLE PELICULAS (
 	director VARCHAR(50) NOT NULL,
 	guion VARCHAR(50) NOT NULL,
 	musica VARCHAR(50) NOT NULL,
-	actores VARCHAR(500) NOT NULL,
-	productor VARCHAR(50) NOT NULL,
+	actores VARCHAR(400) NOT NULL,
+	productor VARCHAR(100) NOT NULL,
 	avatar VARCHAR(100) NOT NULL,
 	idioma_castellano BOOLEAN NOT NULL,
 	color BOOLEAN NOT NULL,
