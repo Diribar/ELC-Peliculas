@@ -173,6 +173,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
+		resultado = convertirACastellano(resultado);
 		return resultado;
 	},
 
@@ -230,6 +231,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
+		resultado = convertirACastellano(resultado);
 		return resultado;
 	},
 
@@ -264,6 +266,7 @@ module.exports = {
 				: "";
 			delete resultado.pais_nombre;
 		}
+		resultado = convertirACastellano(resultado);
 		return resultado;
 	},
 };
