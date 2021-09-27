@@ -1,6 +1,6 @@
 // ************ Requires ************
-const searchTMDB = require("../../modelos/searchTMDB");
-const funciones = require("../../modelos/funcionesVarias");
+const searchTMDB = require("../../funciones/searchTMDB");
+const funciones = require("../../funciones/funcionesVarias");
 
 // *********** Controlador ***********
 module.exports = {

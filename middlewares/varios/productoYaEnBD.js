@@ -1,4 +1,4 @@
-const funciones = require("../../modelos/funcionesVarias");
+const funciones = require("../../funciones/funcionesVarias");
 
 module.exports = async (req, res, next) => {
 	let [TMDB_rep, FA_rep] = await funciones.productoYaEnBD(req.cookies);
