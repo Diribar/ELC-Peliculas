@@ -96,7 +96,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
-		resultado = convertirACastellano(resultado);
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -173,7 +173,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
-		resultado = convertirACastellano(resultado);
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -231,7 +231,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
-		resultado = convertirACastellano(resultado);
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -266,7 +266,7 @@ module.exports = {
 				: "";
 			delete resultado.pais_nombre;
 		}
-		resultado = convertirACastellano(resultado);
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 };
@@ -296,7 +296,7 @@ const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	return;
 };
 
-let convertirACastellano = (resultado) => {
+let convertirLetrasAlCastellano = (resultado) => {
 	campos = Object.keys(resultado);
 	valores = Object.values(resultado);
 	for (let i = 0; i < campos.length; i++) {
@@ -305,6 +305,7 @@ let convertirACastellano = (resultado) => {
 			? (resultado[campos[i]] = valores[i]
 					.replace(/ö/g, "o")
 					.replace(/ë/g, "e")
+					.replace(/ê/g, "e")
 					.replace(/ç/g, "c"))
 			: "";
 	}
