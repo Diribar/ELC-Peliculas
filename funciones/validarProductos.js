@@ -77,8 +77,8 @@ module.exports = {
 			: "";
 		errores.actores = campoVacio(datos.actores)
 			? cartelCampoVacio
-			: longitud(datos.actores, 2, 400)
-			? longitud(datos.actores, 2, 400)
+			: longitud(datos.actores, 2, 500)
+			? longitud(datos.actores, 2, 500)
 			: castellano(datos.actores)
 			? cartelCastellano
 			: "";
@@ -114,7 +114,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ/()\d+-]+$/;
+	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
 };
 let formatoAno = (dato) => {

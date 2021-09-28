@@ -1,5 +1,5 @@
 // ************ Requires *************
-const BD_peliculas = require("../../modelos/base_de_datos/BD_peliculas");
+const BD_peliculas = require("../../funciones/base_de_datos/BD_peliculas");
 
 // *********** Controlador ***********
 module.exports = {

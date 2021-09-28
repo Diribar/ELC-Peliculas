@@ -3,14 +3,14 @@ const fs = require("fs");
 const path = require("path");
 const BD_usuarios = require(path.join(
 	__dirname,
-	"../../modelos/base_de_datos/BD_usuarios"
+	"../../funciones/base_de_datos/BD_usuarios"
 ));
 const BD_varios = require(path.join(
 	__dirname,
-	"../../modelos/base_de_datos/BD_varios"
+	"../../funciones/base_de_datos/BD_varios"
 ));
 const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
-const funciones = require("../../modelos/funcionesVarias");
+const funciones = require("../../funciones/funcionesVarias");
 const { validationResult } = require("express-validator");
 
 // *********** Controlador ***********

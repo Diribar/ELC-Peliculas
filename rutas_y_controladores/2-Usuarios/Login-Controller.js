@@ -4,7 +4,7 @@ const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const BD_usuarios = require(path.join(
 	__dirname,
-	"../../modelos/base_de_datos/BD_usuarios"
+	"../../funciones/base_de_datos/BD_usuarios"
 ));
 
 // *********** Controlador ***********

@@ -84,11 +84,19 @@ module.exports = {
 						)
 						.join(", "))
 				: "";
+			while (
+				lectura.cast.length > 0 &&
+				datosLectura.actores.length > 500
+			) {
+				aux = datosLectura.actores;
+				datosLectura.actores = aux.slice(0, aux.lastIndexOf(","));
+			}
 		}
 		let resultado = {
 			...datosForm,
 			...datosLectura,
 		};
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -165,6 +173,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -222,6 +231,7 @@ module.exports = {
 			...datosForm,
 			...datosLectura,
 		};
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 
@@ -256,6 +266,7 @@ module.exports = {
 				: "";
 			delete resultado.pais_nombre;
 		}
+		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 };
@@ -267,12 +278,12 @@ const fuenteSinopsis = (sinopsis) => {
 	return sinopsis;
 };
 
-const funcionParentesis = (dato) => {
-	desde = dato.indexOf(" (");
-	hasta = dato.indexOf(")");
-	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
-	return dato;
-};
+// const funcionParentesis = (dato) => {
+// 	desde = dato.indexOf(" (");
+// 	hasta = dato.indexOf(")");
+// 	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
+// 	return dato;
+// };
 
 const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
@@ -283,4 +294,20 @@ const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 		return { [campo_ELC]: valor };
 	}
 	return;
+};
+
+let convertirLetrasAlCastellano = (resultado) => {
+	campos = Object.keys(resultado);
+	valores = Object.values(resultado);
+	for (let i = 0; i < campos.length; i++) {
+		console.log(valores[i]);
+		typeof valores[i] == "string"
+			? (resultado[campos[i]] = valores[i]
+					.replace(/ö/g, "o")
+					.replace(/ë/g, "e")
+					.replace(/ê/g, "e")
+					.replace(/ç/g, "c"))
+			: "";
+	}
+	return resultado;
 };

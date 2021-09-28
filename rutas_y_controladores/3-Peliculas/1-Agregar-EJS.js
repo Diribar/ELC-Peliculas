@@ -1,13 +1,13 @@
 // ************ Requires ************
 const path = require("path");
 const { validationResult } = require("express-validator");
-const searchTMDB = require("../../modelos/searchTMDB");
-const procesarDetalles = require("../../modelos/procesarDetalles");
+const searchTMDB = require("../../funciones/searchTMDB");
+const procesarDetalles = require("../../funciones/procesarDetalles");
 const BD_varios = require(path.join(
 	__dirname,
-	"../../modelos/base_de_datos/BD_varios"
+	"../../funciones/base_de_datos/BD_varios"
 ));
-const validarProductos = require("../../modelos/validarProductos");
+const validarProductos = require("../../funciones/validarProductos");
 
 // *********** Controlador ***********
 module.exports = {
