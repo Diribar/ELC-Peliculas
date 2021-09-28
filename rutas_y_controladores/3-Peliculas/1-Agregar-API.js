@@ -1,6 +1,7 @@
 // ************ Requires ************
 const searchTMDB = require("../../funciones/searchTMDB");
-const funciones = require("../../funciones/funcionesVarias");
+const funcionesVarias = require("../../funciones/funcionesVarias");
+const validarProductos = require("../../funciones/validarProductos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -14,18 +15,19 @@ module.exports = {
 
 	averiguarProductoYaEnBD_FA: async (req, res) => {
 		let datos = req.query;
-		let [, resultadoFA] = await funciones.productoYaEnBD(datos);
+		let [, resultadoFA] = await funcionesVarias.productoYaEnBD(datos);
 		return res.json(resultadoFA);
 	},
 
 	procesarContenidoFA: (req, res) => {
 		let { contenido } = req.query;
 		let matriz = contenido.split("\n");
-		let resultado = funciones.procesarContenidoFA(matriz);
-		//console.log("línea 77");
-		//console.log(resultado);
+		let resultado = funcionesVarias.procesarContenidoFA(matriz);
 		// Enviar la API
 		return res.json(resultado);
 	},
-
+	validarDatosDuros: async (req, res) => {
+		errores = await validarProductos.validarDatosDuros(req.query)
+		return res.json(errores);
+	},
 };

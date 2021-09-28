@@ -16,6 +16,7 @@
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; font-size: 1rem;}
 #data_entry .fa-times-circle {color: var(--rojo-oscuro);}
 #data_entry .fa-check-circle {color: var(--verde-oscuro);}
+.fas {z-index: 1;}
 #data_entry .mensajeError, #data_entry .mensajeAyuda 
 	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
 #data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; 
@@ -38,4 +39,4 @@
 /* Flechas */
 #data_entry #flechas i {font-size: 2rem;}
 #data_entry #flechas a i {color: var(--gris-oscuro);}
-#data_entry #flechas i#sinLink {color: var(--celeste-oscuro);}
+#data_entry #flechas i#sinLink {color: var(--celeste-oscuro); cursor: default;}

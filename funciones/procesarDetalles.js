@@ -300,13 +300,14 @@ let convertirLetrasAlCastellano = (resultado) => {
 	campos = Object.keys(resultado);
 	valores = Object.values(resultado);
 	for (let i = 0; i < campos.length; i++) {
-		console.log(valores[i]);
 		typeof valores[i] == "string"
 			? (resultado[campos[i]] = valores[i]
-					.replace(/ö/g, "o")
+					.replace(/ç/g, "c")
 					.replace(/ë/g, "e")
 					.replace(/ê/g, "e")
-					.replace(/ç/g, "c"))
+					.replace(/ľ/g, "l")
+					.replace(/ö/g, "o")
+					.replace(/ò/g, "o"))
 			: "";
 	}
 	return resultado;

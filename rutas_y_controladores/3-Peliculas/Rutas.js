@@ -19,6 +19,7 @@ let uploadFile = require("../../middlewares/varios/multer");
 router.get("/agregar/api/contador/", agregarAPI.contador);
 router.get("/agregar/api/averiguar-producto-ya-en-bd-fa/", agregarAPI.averiguarProductoYaEnBD_FA);
 router.get("/agregar/api/procesarcontenidofa/", agregarAPI.procesarContenidoFA);
+router.get("/agregar/api/validarDatosDuros/", agregarAPI.validarDatosDuros);
 
 // Controladores de EJS - 0. Responsabilidad
 router.get("/agregar/responsabilidad", soloUsuarios, agregarEJS.responsabilidad);
