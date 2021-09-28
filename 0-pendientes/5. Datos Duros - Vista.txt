@@ -1,5 +1,4 @@
 ON SUBMIT
-- Prevent default si hay errores
 - Guardar la imagen
 	- Nombre: nombre_castellano + número aleatorio
 	- Carpeta: provisoria

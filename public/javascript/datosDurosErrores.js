@@ -1,14 +1,18 @@
 window.addEventListener("load", () => {
 	// Variables generales
+	let form = document.querySelector("#data_entry");
+	let button = document.querySelector("#data_entry button[type='submit']");
 	let inputs = document.querySelectorAll(".formulario-grupo .input");
 	let marcas = document.querySelectorAll(
 		".formulario-grupo .fa-times-circle"
 	);
-	console.log(marcas[0])
 	let mensajes = document.querySelectorAll(".formulario-grupo .mensajeError");
-	//console.log(inputs)
 
 	for (let i = 0; i < inputs.length; i++) {
+		// Anular 'submit' si hay algún error
+		!marcas[i].classList.contains("ocultar")
+			? button.classList.add("botonSinLink")
+			: "";
 		// Acciones si se realizan cambios
 		inputs[i].addEventListener("change", async () => {
 			campo = inputs[i].name;
@@ -19,13 +23,23 @@ window.addEventListener("load", () => {
 					"=" +
 					valor
 			).then((n) => n.json());
-			error = errores[campo];
-			console.log(error);
-			mensajes[i].innerHTML = error;
-			error
-				? marcas[i].classList.remove("ocultar")
-				: marcas[i].classList.add("ocultar");
-			console.log(marcas[i]);
+			mensaje = errores[campo];
+			mensajes[i].innerHTML = mensaje;
+			if (mensaje) {
+				marcas[i].classList.remove("ocultar");
+				button.classList.add("botonSinLink");
+			} else {
+				marcas[i].classList.add("ocultar");
+				button.classList.remove("botonSinLink");
+				for (let j = 0; j < inputs.length; j++) {
+					mensajes[j].innerHTML
+						? button.classList.add("botonSinLink")
+						: "";
+				}
+			}
 		});
 	}
+	form.addEventListener("submit", (e) => {
+		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+	});
 });
