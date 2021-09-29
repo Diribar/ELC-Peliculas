@@ -13,7 +13,6 @@ module.exports = {
 			: (await averiguarSiYaEnBD(email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
-
 		errores.hay = hayErrores(errores)
 		return errores;
 	},
