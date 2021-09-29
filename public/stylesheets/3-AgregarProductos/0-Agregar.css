@@ -40,4 +40,4 @@
 #data_entry #flechas i {font-size: 2rem;}
 #data_entry #flechas a i {color: var(--gris-oscuro);}
 #data_entry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
-#data_entry .botonSinLink {background-color: var(--celeste-oscuro); border-color: transparent; cursor: default;}
+#data_entry .botonSinLink {opacity: .2; border-color: transparent; cursor: default;}

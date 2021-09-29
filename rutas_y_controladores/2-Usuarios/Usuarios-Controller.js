@@ -1,17 +1,18 @@
 // ************ Requires ************
-const fs = require("fs");
-const path = require("path");
-const BD_usuarios = require(path.join(
+let fs = require("fs");
+let path = require("path");
+let BD_usuarios = require(path.join(
 	__dirname,
 	"../../funciones/base_de_datos/BD_usuarios"
 ));
-const BD_varios = require(path.join(
+let BD_varios = require(path.join(
 	__dirname,
 	"../../funciones/base_de_datos/BD_varios"
 ));
-const rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
-const funciones = require("../../funciones/funcionesVarias");
-const { validationResult } = require("express-validator");
+let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
+let funciones = require("../../funciones/funcionesVarias");
+let validarUsuarios = require("../../funciones/validarUsuarios");
+let { validationResult } = require("express-validator");
 
 // *********** Controlador ***********
 module.exports = {
@@ -42,35 +43,28 @@ module.exports = {
 	altaMailForm: (req, res) => {
 		tema = "usuario";
 		codigo = "mail";
+		let data_entry = req.session.data_entry
+			? req.session.data_entry
+			: false;
+		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry,
+			errores,
 		});
 	},
 
 	altaMailGuardar: async (req, res) => {
-		// Verificar si hay errores en el data entry
-		let validaciones = validationResult(req);
-		// Averiguar si existe el mail en la BD
-		mailExistente = await BD_usuarios.AveriguarSiYaEnBD(req.body.email);
-		if (mailExistente) {
-			validaciones.errors.push({
-				msg: "Este mail ya figura en nuestra base de datos",
-				param: "email",
-			});
-		}
-		// Si existe algún error de validación --> regresar al formulario
-		if (validaciones.errors.length > 0) {
-			tema = "usuario";
-			codigo = "mail";
-			return res.render("Home", {
-				tema,
-				codigo,
-				link: req.originalUrl,
-				errores: validaciones.mapped(),
-				data_entry: req.body,
-			});
+		// Averiguar si hay errores de validación
+		let datos = req.body;
+		let errores = await validarUsuarios.validarMail(datos.email);
+		// Redireccionar si hubo algún error de validación
+		if (errores.hay) {
+			req.session.data_entry = req.body;
+			req.session.errores = errores;
+			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Enviar la contraseña por mail
@@ -80,12 +74,10 @@ module.exports = {
 		comentario = "La contraseña del mail " + email + " es: " + codigo;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
-		await BD_usuarios.altaMail(req.body.email, codigo);
+		await BD_usuarios.altaMail(email, codigo);
 		// Obtener los datos del usuario
-		//req.session.usuario = await BD_usuarios.obtenerPorMail(req.body.email);
-		req.session.email = req.body.email;
+		req.session.email = email;
 		// Redireccionar
-		//return res.send(req.session.usuario)
 		return res.redirect("/usuarios/altaredireccionar");
 	},
 
@@ -98,10 +90,16 @@ module.exports = {
 		delete req.session["email"];
 		tema = "usuario";
 		codigo = "perennes";
+		let data_entry = req.session.data_entry
+			? req.session.data_entry
+			: false;
+		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry,
+			errores,
 		});
 	},
 
@@ -166,11 +164,11 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry,
+			errores,
 			hablaHispana,
 			hablaNoHispana,
 			estados_eclesiales,
-			data_entry,
-			errores,
 		});
 	},
 

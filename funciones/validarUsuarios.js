@@ -13,6 +13,7 @@ module.exports = {
 			: (await averiguarSiYaEnBD(email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
+		errores.hay = hayErrores(errores)
 		return errores;
 	},
 
@@ -39,6 +40,8 @@ module.exports = {
 		errores.fechaNacimiento = campoVacio(datos.fechaNacimiento)
 			? cartelCampoVacio
 			: "";
+		errores.hay = hayErrores(errores);
+		return errores;
 	},
 
 	validarEditables: (datos) => {
@@ -68,6 +71,7 @@ module.exports = {
 			  parseInt(datos.tamano / 10000) / 100 +
 			  " MB. Necesitamos que no supere los 5 MB"
 			: "";
+		errores.hay = hayErrores(errores);
 		return errores;
 	},
 };
@@ -78,15 +82,8 @@ let averiguarSiYaEnBD = async (email) => {
 	return await BD_usuarios.AveriguarSiYaEnBD(email);
 };
 let formatoMail = (email) => {
-	try {
-		address = new MailAddress(email);
-		isValid = address.Address == emailAddress;
-		console.log(address);
-		// or
-		// isValid = string.IsNullOrEmpty(address.DisplayName);
-	} catch (error) {
-		console.log(error);
-	}
+	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	return !formato.test(email);
 };
 let campoVacio = (dato) => {
 	return dato == "" || dato == null || dato == undefined || dato == 0;
@@ -105,6 +102,13 @@ let castellano = (dato) => {
 let extension = (nombre) => {
 	if (!nombre) return false;
 	ext = path.extname(nombre);
-	console.log(ext);
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext) ? ext : false;
 };
+let hayErrores = (errores) => {
+	resultado = false
+	valores = Object.values(errores);
+	for (valor of valores) {
+		valor ? resultado = true : ""
+	}
+	return resultado
+}

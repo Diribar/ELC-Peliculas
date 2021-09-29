@@ -1,16 +1,17 @@
 //************************* Requires *******************************
-const express = require('express');
-const router = express.Router();
-const usuariosController = require("./Usuarios-Controller");
+let express = require('express');
+let router = express.Router();
+let usuariosAPI = require("./Usuarios-API");
+let usuariosController = require("./Usuarios-Controller");
 
 //************************ Middlewares ******************************
-const soloVisitas = require("../../middlewares/usuarios/soloVisitas");
-const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const uploadFile = require("../../middlewares/varios/multer");
+let soloVisitas = require("../../middlewares/usuarios/soloVisitas");
+let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+let uploadFile = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
-router.get("/api/altaredireccionar", usuariosController.altaRedireccionar);
+router.get("/api/validarmail", usuariosAPI.validarMail);
 
 // Controladores de Altas
 router.get('/altaredireccionar', usuariosController.altaRedireccionar)
@@ -22,9 +23,9 @@ router.get('/datos-editables', soloUsuarios, usuariosController.altaEditablesFor
 router.post('/datos-editables', uploadFile.single('avatar'), usuariosController.altaEditablesGuardar)
 
 // Controladores de Consultas
-router.get('/detalle', soloUsuarios, usuariosController.detalle)          // Detalle
-router.get('/editar', soloUsuarios, usuariosController.editarForm)        // Modificar
-router.put('/editar', uploadFile.single('avatar'), usuariosController.editarGuardar)
-router.delete('/eliminar', soloUsuarios, usuariosController.baja)         // Baja
+router.get('/detalle', soloUsuarios, usuariosController.detalle)
+router.get('/editar', soloUsuarios, usuariosController.editarForm)
+router.put('/editar', uploadFile.single('avatar'), usuariosController.editarGuardar) //Validar mail y editables
+router.delete('/eliminar', soloUsuarios, usuariosController.baja)
 
 module.exports = router;
