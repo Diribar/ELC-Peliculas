@@ -40,6 +40,8 @@ module.exports = {
 		errores.fechaNacimiento = campoVacio(datos.fechaNacimiento)
 			? cartelCampoVacio
 			: "";
+		errores.hay = hayErrores(errores);
+		return errores;
 	},
 
 	validarEditables: (datos) => {
@@ -69,6 +71,7 @@ module.exports = {
 			  parseInt(datos.tamano / 10000) / 100 +
 			  " MB. Necesitamos que no supere los 5 MB"
 			: "";
+		errores.hay = hayErrores(errores);
 		return errores;
 	},
 };
