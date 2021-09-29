@@ -2,3 +2,6 @@ ON SUBMIT
 - Guardar la imagen
 	- Nombre: nombre_castellano + número aleatorio
 	- Carpeta: provisoria
+	- Validar tamaño
+- Validaciones back-end
+- Actualizar cookies y session

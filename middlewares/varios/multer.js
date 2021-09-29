@@ -1,10 +1,17 @@
-const path = require('path');
-const pathFile = path.resolve(__dirname, '../../public/imagenes/2-Usuarios');
-const multer = require('multer');
+const path = require("path");
+const multer = require("multer");
 
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => {cb(null, pathFile);},
-	filename: (req, file, cb) => {cb(null, Date.now() + path.extname(file.originalname))}
-})
+	destination: (req, file, cb) => {
+		console.log("middleware:")
+		console.log(file)
+		cb(null, req.body.ruta);
+	},
+	filename: (req, file, cb) => {
+		ext = path.extname(file.originalname);
+		nombre = path.basename(file.originalname, ext);
+		cb(null, nombre + " - " + Date.now() + ext);
+	},
+});
 
 module.exports = multer({ storage });

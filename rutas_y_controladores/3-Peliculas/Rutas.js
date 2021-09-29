@@ -29,15 +29,13 @@ router.post('/agregar/palabras_clave', soloUsuarios, agregarEJS.palabrasClaveGua
 // Controladores de EJS - 2. Desambiguar, Copiar FA, Ya en nuestra BD
 router.get("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Form);
 router.post("/agregar/desambiguar", soloUsuarios, agregarEJS.desambiguarTMDB_Guardar);
-// *** verificar que el usuario esté habilitado
 router.get("/agregar/copiarfa", soloUsuarios, autorizadoFA, agregarEJS.copiarFA_Form);
 router.post("/agregar/copiarfa", soloUsuarios, agregarEJS.copiarFA_Guardar);
 router.get("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
 //router.post("/agregar/ya-en-bd", soloUsuarios, agregarEJS.yaEnBD_Form);
-
 // Controladores de EJS - 3. Datos Duros
 router.get("/agregar/datos_duros", soloUsuarios, validarProdYaEnBD, agregarEJS.datosDuros_Form);
-router.post("/agregar/datos_duros", soloUsuarios, agregarEJS.datosDuros_Guardar);
+router.post("/agregar/datos_duros",  soloUsuarios, uploadFile.single("avatar"), agregarEJS.datosDuros_Guardar);
 
 // Controladores de EJS - 4. Datos Personalizados
 router.get("/agregar/datos_personalizados", soloUsuarios, validarProdYaEnBD, agregarEJS.DatosPersForm);

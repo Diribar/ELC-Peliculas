@@ -25,7 +25,7 @@ router.post('/datos-editables', uploadFile.single('avatar'), validarEditables, u
 
 router.get('/detalle', soloUsuarios, usuariosController.detalle)          // Detalle
 router.get('/editar', soloUsuarios, usuariosController.editarForm)        // Modificar
-router.put('/editar', uploadFile.single('imagen'), validarMail, validarEditables, usuariosController.editarGuardar)
+router.put('/editar', uploadFile.single('avatar'), validarMail, validarEditables, usuariosController.editarGuardar)
 router.delete('/eliminar', soloUsuarios, usuariosController.baja)         // Baja
 
 module.exports = router;
