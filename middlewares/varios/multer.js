@@ -3,8 +3,6 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		console.log("middleware:")
-		console.log(file)
 		cb(null, req.body.ruta);
 	},
 	filename: (req, file, cb) => {
