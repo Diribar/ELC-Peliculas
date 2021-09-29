@@ -1,0 +1,44 @@
+[
+	{
+		"titulo": "Detalle",
+		"nombre": "Información General",
+		"codigo": "detalle/informacion",
+		"vista": "informacion",
+		"grupo": "Detalle"
+	},
+	{
+		"titulo": "Trailer",
+		"nombre": "Ver el Trailer",
+		"codigo": "detalle/trailer",
+		"vista": "trailer",
+		"grupo": "Detalle"
+	},
+	{
+		"titulo": "Mirarla",
+		"nombre": "Mirar la Película",
+		"codigo": "detalle/mirar",
+		"vista": "mirar",
+		"grupo": "Detalle"
+	},
+	{
+		"titulo": "Calificar",
+		"nombre": "Calificar",
+		"codigo": "detalle/calificar",
+		"vista": "calificar",
+		"grupo": "Detalle"
+	},
+	{
+		"titulo": "Editar",
+		"nombre": "Editar",
+		"codigo": "detalle/editar",
+		"vista": "editar",
+		"grupo": ""
+	},
+	{
+		"titulo": "Eliminar",
+		"nombre": "Eliminar",
+		"codigo": "detalle/eliminar",
+		"vista": "eliminar",
+		"grupo": ""
+	}
+]

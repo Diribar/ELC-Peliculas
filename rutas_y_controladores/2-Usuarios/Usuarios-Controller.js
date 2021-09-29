@@ -53,7 +53,7 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		mailExistente = await BD_usuarios.mailExistente(req.body.email);
+		mailExistente = await BD_usuarios.AveriguarSiYaEnBD(req.body.email);
 		if (mailExistente) {
 			validaciones.errors.push({
 				msg: "Este mail ya figura en nuestra base de datos",
@@ -153,51 +153,42 @@ module.exports = {
 					req.cookies.email
 			  ))
 			: "";
-		let habla_hispana = await BD_varios.ObtenerTodos(
-			"paises",
-			"nombre"
-		).then((n) => n.filter((n) => n.idioma == "Spanish"));
+		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let estados_eclesiales = await BD_varios.ObtenerTodos(
 			"estados_eclesiales",
 			"orden"
 		);
+		let data_entry = req.session.data_entry ? req.session.data_entry : false;
+		let errores = req.session.errores ? req.session.errores : false
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			habla_hispana,
+			hablaHispana,
+			hablaNoHispana,
 			estados_eclesiales,
+			data_entry,
+			errores,
 		});
 	},
 
 	altaEditablesGuardar: async (req, res) => {
-		var usuario = req.session.usuario;
-		// Verificar si hay errores en el data entry
+		let usuario = req.session.usuario;
+		// Redireccionar si hubo algún error de validación
 		let validaciones = validationResult(req);
-		// Verificar si existe algún error de validación
 		if (validaciones.errors.length > 0) {
-			// Borrar el archivo de imagen guardado
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
-			// Variables de países
-			let habla_hispana = await BD_varios.ObtenerTodos("paises", "nombre").then(
-				(n) => n.filter((n) => n.idioma == "Spanish")
-			);
-			// Regresar al formulario
-			tema = "usuario";
-			codigo = "editables";
-			let estados_eclesiales = await BD_varios.ObtenerTodos(
-				"estados_eclesiales",
-				"orden"
-			);
-			return res.render("Home", {
-				tema,
-				codigo,
-				link: req.originalUrl,
-				errores: validaciones.mapped(),
-				data_entry: req.body,
-				habla_hispana,
-				estados_eclesiales,
-			});
+			req.session.errores = validaciones.mapped();
+			req.file ? req.body = {
+				...req.body,
+				avatar: req.file.filename,
+			} : ""
+			req.session.data_entry = {
+				...req.body,
+			};
+			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Actualizar el registro

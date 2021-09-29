@@ -3,7 +3,7 @@ const entidad = db.usuarios;
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
-	mailExistente: (email) => {
+	AveriguarSiYaEnBD: (email) => {
 		return entidad
 			.findOne({
 				where: { email: email },

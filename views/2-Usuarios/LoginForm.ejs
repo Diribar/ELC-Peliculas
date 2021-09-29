@@ -15,8 +15,9 @@
 		<label for="contrasena">Contraseña</label>
 		<div class="form-grupo">
 			<input type="password" class="input" name="contrasena" id="contrasena"
-				value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
-			<i onclick="mostrar('contrasena', 'eye')" class="fas fa-eye-slash" id="eye"></i>
+				value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña"
+			>
+			<i class="fas fa-eye-slash" id="eye"></i>
 			<% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena.msg %> </span></i><% } %>
 			<% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
 		</div>

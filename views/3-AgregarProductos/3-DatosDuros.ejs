@@ -144,10 +144,10 @@
 		<div id="columnaMedio"> <!--Columna intermedia-->
 		</div>
 		<div id="imagenPeli" class="flex-col">  <!--Segunda columna-->
-			<label for="avatar" id="preview">
-				<img src="<%- data_entry.avatar %>" alt="">
+			<label for="imagen" id="preview">
+				<img src="<%= data_entry.avatar %>" alt="">
 			</label>
-			<input name="avatar" type="file" accept="image/*" value="<%= data_entry.avatar %>" id="avatar" class="ocultar">
+			<input name="avatar" type="file" accept="image/*" value="<%= data_entry.avatar %>" id="imagen" class="ocultar">
 			<i class="fas fa-times-circle<%- !errores.avatar ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
 			</i>
@@ -158,7 +158,7 @@
 		<a href="/peliculas/agregar/<%= retroceso %>"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit">Enviar</button>
 		<% if (false) { %>
-			<a href="#" id="conLink"><i class="fas fa-arrow-alt-circle-right"></i></a>
+			<a href="#"><i class="fas fa-arrow-alt-circle-right"></i></a>
 		<% } else { %>
 			<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
 		<% } %>

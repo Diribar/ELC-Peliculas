@@ -11,6 +11,7 @@ module.exports = {
 			: longitud(datos.nombre_original, 2, 50)
 			? longitud(datos.nombre_original, 2, 50)
 			: "";
+		return errores;
 	},
 
 	validarDatosDuros: async (datos) => {
