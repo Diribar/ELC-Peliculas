@@ -1,5 +1,5 @@
 // ************ Requires ************
-const BD_varios = require("../../funciones/base_de_datos/BD_varios");
+const BD_varios = require("../../funciones/BD/varios");
 
 // *********** Controlador ***********
 module.exports = {

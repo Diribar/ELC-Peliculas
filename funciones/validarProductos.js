@@ -1,6 +1,6 @@
 // **** Requires ***********
-const BD_peliculas = require("./base_de_datos/BD_peliculas");
-const BD_colecciones = require("./base_de_datos/BD_colecciones");
+const BD_peliculas = require("./BD/peliculas");
+const BD_colecciones = require("./BD/colecciones");
 
 module.exports = {
 	validarPalabrasClave: (datos) => {

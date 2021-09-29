@@ -1,14 +1,8 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let BD_usuarios = require(path.join(
-	__dirname,
-	"../../funciones/base_de_datos/BD_usuarios"
-));
-let BD_varios = require(path.join(
-	__dirname,
-	"../../funciones/base_de_datos/BD_varios"
-));
+let BD_usuarios = require(path.join(__dirname, "../../funciones/BD/usuarios"));
+let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 let funciones = require("../../funciones/funcionesVarias");
 let validarUsuarios = require("../../funciones/validarUsuarios");
@@ -104,30 +98,15 @@ module.exports = {
 	},
 
 	altaPerennesGuardar: async (req, res) => {
-		// Verificar si hay errores en el data entry
-		let validaciones = validationResult(req);
-		// Verificar que la fecha sea razonable
-		let ano = parseInt(req.body.fechaNacimiento.slice(0, 4));
-		let max = new Date().getFullYear() - 10;
-		let min = new Date().getFullYear() - 130;
-		if (ano > max || ano < min) {
-			validaciones.errors.push({
-				msg: "¿Estás seguro de que introdujiste la fecha correcta?",
-				param: "fechaNacimiento",
-			});
-		}
-		// Verificar si existe algún error de validación
-		if (validaciones.errors.length > 0) {
-			// Regresar al formulario
-			tema = "usuario";
-			codigo = "perennes";
-			return res.render("Home", {
-				tema,
-				codigo,
-				link: req.originalUrl,
-				errores: validaciones.mapped(),
-				data_entry: req.body,
-			});
+		// Averiguar si hay errores de validación
+		let datos = req.body;
+		let errores = await validarUsuarios.validarPerennes(datos);
+		//return res.send(errores)
+		// Redireccionar si hubo algún error de validación
+		if (errores.hay) {
+			req.session.data_entry = req.body;
+			req.session.errores = errores;
+			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
@@ -158,8 +137,10 @@ module.exports = {
 			"estados_eclesiales",
 			"orden"
 		);
-		let data_entry = req.session.data_entry ? req.session.data_entry : false;
-		let errores = req.session.errores ? req.session.errores : false
+		let data_entry = req.session.data_entry
+			? req.session.data_entry
+			: false;
+		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -179,10 +160,12 @@ module.exports = {
 		if (validaciones.errors.length > 0) {
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			req.session.errores = validaciones.mapped();
-			req.file ? req.body = {
-				...req.body,
-				avatar: req.file.filename,
-			} : ""
+			if (req.file) {
+				req.body = {
+					...req.body,
+					avatar: req.file.filename,
+				};
+			}
 			req.session.data_entry = {
 				...req.body,
 			};

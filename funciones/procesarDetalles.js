@@ -2,7 +2,7 @@
 const detailsTMDB = require("./API/detailsTMDB_fetch");
 const creditsTMDB = require("./API/creditsTMDB_fetch");
 const funciones = require("./funcionesVarias");
-const BD_varios = require("./base_de_datos/BD_varios");
+const BD_varios = require("./BD/varios");
 
 module.exports = {
 	API: async (id, rubroAPI) => {
