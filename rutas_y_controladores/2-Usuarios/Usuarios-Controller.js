@@ -160,12 +160,12 @@ module.exports = {
 		if (validaciones.errors.length > 0) {
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			req.session.errores = validaciones.mapped();
-			req.file
-				? (req.body = {
-						...req.body,
-						avatar: req.file.filename,
-				  })
-				: "";
+			if (req.file) {
+				req.body = {
+					...req.body,
+					avatar: req.file.filename,
+				};
+			}
 			req.session.data_entry = {
 				...req.body,
 			};
