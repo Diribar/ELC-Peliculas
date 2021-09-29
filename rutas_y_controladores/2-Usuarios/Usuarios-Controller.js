@@ -53,7 +53,7 @@ module.exports = {
 		// Verificar si hay errores en el data entry
 		let validaciones = validationResult(req);
 		// Averiguar si existe el mail en la BD
-		mailExistente = await BD_usuarios.mailExistente(req.body.email);
+		mailExistente = await BD_usuarios.AveriguarSiYaEnBD(req.body.email);
 		if (mailExistente) {
 			validaciones.errors.push({
 				msg: "Este mail ya figura en nuestra base de datos",
@@ -175,17 +175,21 @@ module.exports = {
 	},
 
 	altaEditablesGuardar: async (req, res) => {
-		var usuario = req.session.usuario;
-		console.log("Controller 179:");
-		return console.log(req.file);
-
+		let usuario = req.session.usuario;
 		// Redireccionar si hubo algún error de validación
 		let validaciones = validationResult(req);
 		if (validaciones.errors.length > 0) {
-			console.log("Controller 183: " + req.file.filename);
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			req.session.errores = validaciones.mapped();
-			req.session.data_entry = { ...req.body };
+			req.file ? req.body = {
+				...req.body,
+				avatar: req.file.filename,
+			} : ""
+			console.log(req.body)
+			console.log(validaciones);
+			req.session.data_entry = {
+				...req.body,
+			};
 			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...

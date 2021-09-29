@@ -6,8 +6,9 @@
 		<div class="form-grupo">
 			<% apodo = data_entry ? data_entry.apodo : "" %>
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
-			<% if (errores && errores.apodo) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.apodo.msg %> </span></i><% } %>
-			<% if (errores && !errores.apodo) { %><i class="fas fa-check-circle"></i><% } %>	
+			<i class="fas fa-times-circle <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.apodo) ? errores.apodo : "" %></span>
+			</i>
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Pais de residencia-->
@@ -38,8 +39,9 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<% if (errores && errores.pais_id) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais_id.msg %> </span></i><% } %>
-			<% if (errores && !errores.pais_id) { %><i class="fas fa-check-circle"></i><% } %>
+			<i class="fas fa-times-circle <%- !(errores && errores.pais_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.pais_id) ? errores.pais_id : "" %></span>
+			</i>
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
@@ -52,22 +54,24 @@
 					<option value="<%= n.id %>" <% if (estado_eclesial_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
 				<% } %> 
 			</select>
-			<% if (errores && errores.estado_eclesial_id) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.estado_eclesial_id.msg %> </span></i><% } %>
-			<% if (errores && !errores.estado_eclesial_id) { %><i class="fas fa-check-circle"></i><% } %>
+			<i class="fas fa-times-circle <%- !(errores && errores.estado_eclesial_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.estado_eclesial_id) ? errores.estado_eclesial_id : "" %></span>
+			</i>
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Imagen de perfil-->
 		<label>Imagen personal <br>(opcional)</label>
 		<div class="form-grupo flex-col" id="divImagen">
 			<% avatar = data_entry ? data_entry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
-			<%- console.log("EJS 63: " + avatar) %>
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>" alt="">
 			</label>
 			<input name="ruta" type="text" value="./public/imagenes/2-Usuarios" class="ocultar">
-			<input name="avatar" type="file" id="inputImagen" value="<%= avatar %>" accept="image/*" class="ocultar">
-			<div id="iconoImagenRojo"><% if (errores && errores.avatar) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.avatar.msg %> </span></i><% } %></div>
-			<div id="iconoImagenVerde" class="ocultar"><i class="fas fa-check-circle"></i></div>
+			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="ocultar">
+			<i class="fas fa-times-circle <%- !(errores && errores.avatar) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.avatar) ? errores.avatar : "" %></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
 		</div>
 	</section>
 	<section id="buttons" class="flex-row"><!--Buttons-->

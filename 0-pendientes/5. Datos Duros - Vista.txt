@@ -5,3 +5,9 @@ ON SUBMIT
 	- Validar tamaño
 - Validaciones back-end
 - Actualizar cookies y session
+
+USUARIO
+- Que el archivo se necesite subir una sola vez
+- Validación on-line
+- Misma validación BE que FE
+- Una validación por formulario
