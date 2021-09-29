@@ -83,7 +83,6 @@ let averiguarSiYaEnBD = async (email) => {
 };
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	console.log(formato.test(email));
 	return !formato.test(email);
 };
 let campoVacio = (dato) => {
@@ -103,7 +102,6 @@ let castellano = (dato) => {
 let extension = (nombre) => {
 	if (!nombre) return false;
 	ext = path.extname(nombre);
-	console.log(ext);
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext) ? ext : false;
 };
 let hayErrores = (errores) => {
