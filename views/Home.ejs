@@ -42,7 +42,11 @@
 			<script src="/javascript/copiarFA.js"></script>
 		<% } else %>
 		<% if (codigo == "desambiguar") { %><link rel="stylesheet" href="/stylesheets/3-AgregarProductos/2-DesambTMDB.css"><% } %>
-		<% if (codigo == "datosDuros") { %><link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css"><% } %>
+		<% if (codigo == "datosDuros") { %>
+			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css">
+			<script src="/javascript/datosDurosImagen.js"></script>
+			<script src="/javascript/datosDurosErrores.js"></script>
+		<% } %>
 	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>

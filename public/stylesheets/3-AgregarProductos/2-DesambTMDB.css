@@ -21,3 +21,9 @@
 #infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
 
 .interlineadoChico {margin-top: 5px;}
+
+/* Barra de desplazamiento */
+::-webkit-scrollbar {outline: transparent;}
+::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
+::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+/* ::-webkit-scrollbar-button {background: red;} */

@@ -15,7 +15,8 @@ module.exports = {
 
 	validarDatosDuros: async (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
-		cartelCastellano = "Sólo se admiten letras del abecedario castellano";
+		cartelCastellano =
+			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
 		errores.nombre_original = campoVacio(datos.nombre_original)
 			? cartelCampoVacio
@@ -89,7 +90,12 @@ module.exports = {
 			: castellano(datos.productor)
 			? cartelCastellano
 			: "";
-		errores.avatar = "";
+		errores.avatar =
+			datos.avatar == "/imagenes/0-Base/Agregá una imagen.jpg"
+				? "Necesitamos que agregues una imagen"
+				: extensiones(datos.avatar)
+				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
+				: "";
 		return errores;
 	},
 };
@@ -104,7 +110,7 @@ let AveriguarSiYaEnBD = async (rubroAPI, tmdb_id, fa_id) => {
 		: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
 };
 let campoVacio = (dato) => {
-	return dato == "" || dato == null || dato == undefined;
+	return dato == "" || dato == null || dato == undefined || dato == 0;
 };
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
@@ -128,4 +134,10 @@ let formatoNumero = (dato, minimo) => {
 		: dato < minimo
 		? "Debe ser un número mayor a " + minimo
 		: "";
+};
+
+let extensiones = (nombre) => {
+	if (!nombre) return false;
+	ext = nombre.slice(nombre.length - 4);
+	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext);
 };

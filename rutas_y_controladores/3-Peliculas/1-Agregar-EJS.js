@@ -84,7 +84,11 @@ module.exports = {
 	},
 	desambiguarTMDB_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
-		req.session.datosDuros = await obtenerDatosDelProducto(req.body);
+		req.session.datosDuros =
+			req.body.fuente == "TMDB"
+				? await obtenerDatosDelProductoTMDB(req.body)
+				: req.body;
+		//return res.send(req.session.datosDuros);
 		// Grabar cookies con la info del producto
 		actualizarCookiesProductos(res, req.session.datosDuros, camposProducto);
 		// Redireccionar a Datos Duros
@@ -121,7 +125,9 @@ module.exports = {
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
 		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
-		errores = await validarProductos.validarDatosDuros(req.session.datosDuros);
+		errores = await validarProductos.validarDatosDuros(
+			req.session.datosDuros
+		);
 		//return res.send(errores)
 		return res.render("Home", {
 			tema,
@@ -167,16 +173,20 @@ module.exports = {
 	},
 };
 
-let obtenerDatosDelProducto = async (form) => {
+let obtenerDatosDelProductoTMDB = async (form) => {
 	// API Details
 	let lectura =
 		form.fuente == "TMDB"
 			? await procesarDetalles.API(form.tmdb_id, form.rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
-	form.rubroAPI == "movie" ? (rubro = "procesarPelicula_TMDB") : "";
-	form.rubroAPI == "tv" ? (rubro = "procesarTV_TMDB") : "";
-	form.rubroAPI == "collection" ? (rubro = "procesarColeccion_TMDB") : "";
+	form.rubroAPI == "movie"
+		? (rubro = "procesarPelicula_TMDB")
+		: form.rubroAPI == "tv"
+		? (rubro = "procesarTV_TMDB")
+		: form.rubroAPI == "collection"
+		? (rubro = "procesarColeccion_TMDB")
+		: "";
 	let resultado = await procesarDetalles[rubro](form, lectura);
 	return resultado;
 };

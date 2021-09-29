@@ -1,15 +1,4 @@
-COLUMNA IMAGEN
-- Si no existe una imagen, pedir que insertar una
-- Drag & drop
-- Agregar los mensajes de error
-
 ON SUBMIT
 - Guardar la imagen
 	- Nombre: nombre_castellano + número aleatorio
 	- Carpeta: provisoria
-______________________________________________
-GENERAL
-- Centrado a lo ancho de toda la pantalla
-
-RETROCEDER
-- En la ruta/controlador, quitar donde se limpia el req.body
