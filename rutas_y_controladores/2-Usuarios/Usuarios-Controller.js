@@ -160,22 +160,20 @@ module.exports = {
 		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
+			console.log(req.file);
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
-			req.file ? (req.body.avatar = req.file.filename) : null;
+			req.body.avatar = req.file
+				? req.file.filename
+				: "/imagenes/0-Base/Avatar genérico.png";
 			req.session.data_entry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
-		// Actualizar el registro
 		req.body.avatar = req.file ? req.file.filename : "-";
-		// return res.send(req.body)
 		await BD_usuarios.datosEditables(usuario.id, req.body);
-		// Actualizar el status de usuario
 		await BD_usuarios.actualizarStatusUsuario(usuario.id, 4);
-		// Actualizar los datos del usuario en la sesión
 		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
-		// return res.send(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

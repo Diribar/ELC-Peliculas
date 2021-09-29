@@ -61,16 +61,19 @@ module.exports = {
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
-		errores.pais_id = campoVacio(datos.pais_id) ? cartelCampoVacio : "";
-		errores.estado_eclesial = campoVacio(datos.estado_eclesial)
-			? cartelCampoVacio
+		errores.pais_id = campoVacio(datos.pais_id)
+			? "Necesitamos que elijas un valor"
+			: "";
+			
+		errores.estado_eclesial_id = campoVacio(datos.estado_eclesial_id)
+			? "Necesitamos que elijas un valor"
 			: "";
 		errores.avatar = campoVacio(datos.avatar)
 			? ""
 			: extension(datos.avatar)
 			? "Usaste un archivo con la extensión " +
-			  extension(datos.avatar) +
-			  ". Las extensiones de archivo válidas son jpg, png, gif, bmp"
+			  extension(datos.avatar).slice(1).toUpperCase() +
+			  ". Las extensiones de archivo válidas son JPG, PNG, GIF y BMP."
 			: datos.tamano > 5000000
 			? "El archivo es de " +
 			  parseInt(datos.tamano / 10000) / 100 +

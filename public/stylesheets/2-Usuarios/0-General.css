@@ -22,25 +22,23 @@
 #Form form .input, #Form form select {width: 200px; height: 27px;}
 #Form form select {text-align: left;}
 
+/* Íconos y Mensajes de error */
+#Form .form-grupo {position: relative;}
+#Form .form-grupo .fas, #Form .form-grupo .mensajeError {position: absolute;}
+#Form .form-grupo .fas {right: -20px; top: 50%; transform: translateY(-50%);}
+
 /* Íconos de error */
 #Form .form-grupo .fas {background-color: white; border-radius: 50%; font-size: 1em;}
 #Form .form-grupo .fa-times-circle {color: var(--rojo-oscuro);}
-#Form .form-grupo .fa-check-circle {color: var(--verde-oscuro);}
-#Form .form-grupo #eye {right: 5px}
 
 /* Mensajes de error */
 #Form .form-grupo .mensajeError {display: none; z-index: 12;}
 #Form .form-grupo .mensajeError {font-size: 1rem; font-weight: normal; width:200px;}
-#Form .form-grupo .mensajeError {border-radius: 6px;padding: 1px 5px; margin-top: 3px;}
+#Form .form-grupo .mensajeError {border-radius: 6px; padding: 1px 5px; margin-top: 3px;}
 #Form .form-grupo .mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); 
 	border: red solid 2px;}
 #Form .form-grupo .mensajeError {right: -200px; top: 2px;}
 #Form .form-grupo .fa-times-circle:hover .mensajeError {display: inline;}
-
-/* Íconos y Mensajes de error */
-#Form .form-grupo {position: relative;}
-#Form .form-grupo .fas, #Form .form-grupo .mensajeError {position: absolute;}
-#Form .form-grupo .fas {right: -20px; top: 5px;}
 
 /* Botones */
 #Form form #buttons {margin: 15px auto 5px;}

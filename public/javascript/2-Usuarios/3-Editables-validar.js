@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	// Variables generales
-	let form = document.querySelector("#data_entry");
-	let button = document.querySelector("#data_entry button[type='submit']");
+	let form = document.querySelector("form");
+	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll(".form-grupo .input");
 	let asteriscos = document.querySelectorAll(
 		".form-grupo .fa-times-circle"
@@ -17,8 +17,9 @@ window.addEventListener("load", () => {
 		inputs[i].addEventListener("change", async () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
+			console.log(campo,valor)
 			errores = await fetch(
-				"/peliculas/agregar/api/validarDatosDuros/?" +
+				"/usuarios/api/validareditables/?" +
 					campo +
 					"=" +
 					valor

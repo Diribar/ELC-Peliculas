@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/peliculas/agregar/api/validarDatosDuros/?" +
+				"/peliculas/agregar/api/validardatosduros/?" +
 					campo +
 					"=" +
 					valor
