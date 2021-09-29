@@ -50,12 +50,7 @@ module.exports = {
 	},
 	datosPerennes: (id, datos) => {
 		return entidad.update(
-			{
-				nombre: datos.nombre,
-				apellido: datos.apellido,
-				sexo_id: datos.sexo,
-				fecha_nacimiento: datos.fechaNacimiento,
-			},
+			{...datos},
 			{ where: { id: id } }
 		);
 	},

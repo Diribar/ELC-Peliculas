@@ -5,7 +5,7 @@ const searchTMDB = require("../../funciones/searchTMDB");
 const procesarDetalles = require("../../funciones/procesarDetalles");
 const BD_varios = require(path.join(
 	__dirname,
-	"../../funciones/base_de_datos/BD_varios"
+	"../../funciones/BD/varios"
 ));
 const validarProductos = require("../../funciones/validarProductos");
 

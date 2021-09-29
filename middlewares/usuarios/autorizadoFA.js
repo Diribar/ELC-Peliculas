@@ -1,5 +1,5 @@
 const path = require("path");
-const BD = require(path.join(__dirname,"../../funciones/base_de_datos/BD_usuarios"));
+const BD = require(path.join(__dirname,"../../funciones/BD/usuarios"));
 
 module.exports = (req, res, next) => {
 	if (!BD.autorizadoFA(req.session.usuario.id)) {

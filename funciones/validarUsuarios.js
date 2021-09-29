@@ -1,5 +1,5 @@
 // **** Requires ***********
-const BD_usuarios = require("./base_de_datos/BD_usuarios");
+const BD_usuarios = require("./BD/usuarios");
 const path = require("path");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 			: (await averiguarSiYaEnBD(email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
-		errores.hay = hayErrores(errores)
+		errores.hay = hayErrores(errores);
 		return errores;
 	},
 
@@ -36,9 +36,13 @@ module.exports = {
 			: castellano(datos.apellido)
 			? cartelCastellano
 			: "";
-		errores.sexo = campoVacio(datos.sexo) ? cartelCampoVacio : "";
-		errores.fechaNacimiento = campoVacio(datos.fechaNacimiento)
-			? cartelCampoVacio
+		errores.sexo_id = campoVacio(datos.sexo_id)
+			? "Necesitamos que elijas un valor"
+			: "";
+		errores.fecha_nacimiento = campoVacio(datos.fecha_nacimiento)
+			? "Necesitamos que ingreses la fecha"
+			: fechaRazonable(datos.fecha_nacimiento)
+			? "¿Estás seguro de que introdujiste la fecha correcta?"
 			: "";
 		errores.hay = hayErrores(errores);
 		return errores;
@@ -105,10 +109,17 @@ let extension = (nombre) => {
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext) ? ext : false;
 };
 let hayErrores = (errores) => {
-	resultado = false
+	resultado = false;
 	valores = Object.values(errores);
 	for (valor of valores) {
-		valor ? resultado = true : ""
+		valor ? (resultado = true) : "";
 	}
-	return resultado
-}
+	return resultado;
+};
+let fechaRazonable = (dato) => {
+	// Verificar que la fecha sea razonable
+	let ano = parseInt(dato.slice(0, 4));
+	let max = new Date().getFullYear() - 5;
+	let min = new Date().getFullYear() - 130;
+	return ano > max || ano < min ? true : false;
+};
