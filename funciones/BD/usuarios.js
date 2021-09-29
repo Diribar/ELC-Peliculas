@@ -49,23 +49,12 @@ module.exports = {
 		});
 	},
 	datosPerennes: (id, datos) => {
-		return entidad.update(
-			{...datos},
-			{ where: { id: id } }
-		);
+		return entidad.update({ ...datos }, { where: { id: id } });
 	},
 	datosEditables: (id, datos) => {
-		return entidad.update(
-			{
-				apodo: datos.apodo,
-				pais_id: datos.pais_id,
-				estado_eclesial_id: datos.estado_eclesial_id,
-				avatar: datos.avatar,
-			},
-			{ where: { id: id } }
-		);
+		return entidad.update({ ...datos }, { where: { id: id } });
 	},
-	autorizadoFA: (id) => {
+	obtenerAutorizadoFA: (id) => {
 		return entidad.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	///////////////////////////////////////////////////////////////////////

@@ -53,7 +53,7 @@ module.exports = {
 	altaMailGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let datos = req.body;
-		let errores = await validarUsuarios.validarMail(datos.email);
+		let errores = await validarUsuarios.mail(datos.email);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.data_entry = req.body;
@@ -100,7 +100,7 @@ module.exports = {
 	altaPerennesGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let datos = req.body;
-		let errores = await validarUsuarios.validarPerennes(datos);
+		let errores = await validarUsuarios.perennes(datos);
 		//return res.send(errores)
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
@@ -155,20 +155,15 @@ module.exports = {
 
 	altaEditablesGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
+		// Averiguar si hay errores de validación
+		let datos = req.body;
+		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
-		let validaciones = validationResult(req);
-		if (validaciones.errors.length > 0) {
+		if (errores.hay) {
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
-			req.session.errores = validaciones.mapped();
-			if (req.file) {
-				req.body = {
-					...req.body,
-					avatar: req.file.filename,
-				};
-			}
-			req.session.data_entry = {
-				...req.body,
-			};
+			req.file ? (req.body.avatar = req.file.filename) : null;
+			req.session.data_entry = req.body;
+			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...

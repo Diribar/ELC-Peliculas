@@ -22,7 +22,7 @@
 		<div class="flex-col">  <!--Primera columna-->
 			<section class="label-input flex-row">  <!--Título original-->
 				<label>Título original</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="nombre_original"
 						value="<%= data_entry.nombre_original %>"
 					>
@@ -33,7 +33,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Título en castellano -->
 				<label>Título en castellano</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input class="input" type="text" name="nombre_castellano"
 						value="<%= data_entry.nombre_castellano %>"
 					>
@@ -44,7 +44,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Año de estreno-->
 				<label>Año de estreno</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" id="numero" class="input" name="ano_estreno" placeholder="sólo números"
 						value="<%= data_entry.ano_estreno %>"
 					>
@@ -55,7 +55,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Duración-->
 				<label>Duración (minutos)</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" id="numero" class="input" name="duracion" placeholder="sólo números"
 					value="<%= data_entry.duracion %>">
 					<i class="fas fa-times-circle<%- !errores.duracion ? ' ocultar' : '' %>">
@@ -65,7 +65,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--País de origen-->
 				<label>País de origen</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<% pais_id = data_entry.pais_id && data_entry.pais_id.length ? data_entry.pais_id[0] : "" %>
 					<select name="pais_id" class="input">
 						<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
@@ -87,7 +87,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Director-->
 				<label>Director</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="director" placeholder=""
 						value="<%= locals.data_entry ? data_entry.director : null %>"
 					>
@@ -98,7 +98,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Guión-->
 				<label>Guión</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="guion" placeholder=""
 						value="<%= locals.data_entry ? data_entry.guion : null %>"
 					>
@@ -109,7 +109,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Música-->
 				<label>Música</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="musica" placeholder=""
 						value="<%= locals.data_entry ? data_entry.musica : null %>"
 					>
@@ -120,7 +120,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Actores-->
 				<label>Actores</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="actores" placeholder=""
 						value="<%= locals.data_entry ? data_entry.actores : null %>"
 					>
@@ -131,7 +131,7 @@
 			</section>
 			<section class="label-input flex-row">  <!--Productor-->
 				<label>Productor</label>
-				<div class="formulario-grupo">
+				<div class="form-grupo">
 					<input type="text" class="input" name="productor" placeholder=""
 						value="<%= locals.data_entry ? data_entry.productor : null %>"
 					>

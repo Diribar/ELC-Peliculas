@@ -1,11 +1,9 @@
 window.addEventListener("load", () => {
 	// Variables generales
-	let form = document.querySelector("#data_entry");
-	let button = document.querySelector("#data_entry button[type='submit']");
+	let form = document.querySelector("form");
+	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll(".form-grupo .input");
-	let asteriscos = document.querySelectorAll(
-		".form-grupo .fa-times-circle"
-	);
+	let asteriscos = document.querySelectorAll(".form-grupo .fa-times-circle");
 	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
 
 	for (let i = 0; i < inputs.length; i++) {
@@ -18,7 +16,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/peliculas/agregar/api/validarDatosDuros/?" +
+				"/usuarios/api/validarperennes/?" +
 					campo +
 					"=" +
 					valor
