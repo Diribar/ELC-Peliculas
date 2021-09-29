@@ -185,8 +185,6 @@ module.exports = {
 				...req.body,
 				avatar: req.file.filename,
 			} : ""
-			console.log(req.body)
-			console.log(validaciones);
 			req.session.data_entry = {
 				...req.body,
 			};
