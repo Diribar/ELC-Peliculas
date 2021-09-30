@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
-	iconoPlay = document.querySelector("#musicaDeFondo i");
-	musica = document.querySelector("#musicaDeFondo audio");
+	iconoPlay = document.querySelector("header #musica-icono");
+	musica = document.querySelector("header audio");
 	iconoPlay.addEventListener("click", () => {
 		musica.paused ? musica.play() : musica.pause()
 	})

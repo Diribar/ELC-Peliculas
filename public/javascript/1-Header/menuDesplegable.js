@@ -1,28 +1,35 @@
 window.addEventListener("load", () => {
-	menuPelis = (window.location.href.includes("/peliculas/detalle/"))
+	// Menú HOME
+	document
+		.getElementById("home-icono")
+		.addEventListener("click", () => desplegable("home-menu"));
 
-	document
-		.getElementById("home-button")
-		.addEventListener("click", () => desplegable("menu-home"));
-	document
-		.getElementById("usuario-button")
-		.addEventListener("click", () => desplegable("menu-usuario"));
+	// Menú PRODUCTOS
+	menuPelis = window.location.href.includes("/peliculas/detalle/");
 	if (menuPelis) {
 		document
-			.getElementById("pelis-button")
-			.addEventListener("click", () => desplegable("menu-pelis"))
+			.getElementById("pelis-icono")
+			.addEventListener("click", () => desplegable("pelis-menu"));
+	}
+
+	// Menú USUARIO
+	let iconosUsuario = document.getElementsByClassName("usuario-iconos");
+	for (iconoUsuario of iconosUsuario) {
+		iconoUsuario.addEventListener("click", () => {
+			desplegable("usuario-menu");
+		});
 	}
 
 	// Cerrar los dropdowns en desuso
-	window.onclick = function (e) {
-		!e.target.matches("#home-button")
-			? document.getElementById("menu-home").classList.add("ocultar")
+	window.onclick = (e) => {
+		!e.target.matches("#home-icono")
+			? document.getElementById("home-menu").classList.add("ocultar")
 			: "";
-		!e.target.matches(".desplegableUsuario")
-			? document.getElementById("menu-usuario").classList.add("ocultar")
+		!e.target.matches(".usuario-iconos")
+			? document.getElementById("usuario-menu").classList.add("ocultar")
 			: "";
-		(menuPelis && !e.target.matches("#pelis-button"))
-			? document.getElementById("menu-pelis").classList.add("ocultar")
+		menuPelis && !e.target.matches("#pelis-icono")
+			? document.getElementById("pelis-menu").classList.add("ocultar")
 			: "";
 	};
 });
@@ -30,4 +37,4 @@ window.addEventListener("load", () => {
 // Alternar la visibilidad de los Menús Desplegables
 const desplegable = (n) => {
 	document.getElementById(n).classList.toggle("ocultar");
-}
+};

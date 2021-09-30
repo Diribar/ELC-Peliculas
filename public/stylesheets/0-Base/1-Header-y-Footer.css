@@ -4,36 +4,37 @@ header p {display: flex; justify-content: center; align-items:center;}
 header p a {font-family: Monotype Corsiva; font-size: 3rem; font-weight: bold;}
 header p a {color: var(--amarillo-claro); text-decoration: none;}
 
-/* Posición vertical */
-header .icono, header #imagenUsuario, header #musicaDeFondo, header #letraInicial
-	{position: absolute; top: 50%; transform: translateY(-50%);}
+/* Formato de Íconos */
+header i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
+header #usuario-icono #letraInicial i, header #plus {color: var(--azul-oscuro); font-weight: bold;}
+header #usuario-icono #letraInicial i {font-size: 1.6rem;}
+
+/* Ubicación vertical de los íconos */
+header .centradoVertical {position: absolute; top: 50%; cursor: pointer;}
+header .centradoVertical {transform: translateY(-50%); transition: 500ms;}
+header .centradoVertical:hover {transform: translateY(-50%) scale(1.2);}
 
 /* Íconos a la izquierda */
-header .fa-home {left: 40px;}
-header .fa-video {left: 100px}
-header #plus {left: 103px;}
+header #home-icono {left: 40px;}
+header #home-menu {left: 30px;}
+header #pelis-icono {left: 100px}
+header #pelis-icono a {position: relative;}
+header #pelis-icono a i {position: absolute; transform: translateY(-50%);}
+header #pelis-icono a #plus {z-index: 3; left: 3px}
+header #pelis-menu {left: 90px;}
 
 /* Íconos a la derecha */
-header #usuario-button #imagenUsuario {right: 30px;}
-header #usuario-button .icono, header #usuario-button #letraInicial {right: 40px}
-header #musicaDeFondo {right: 120px;}
-
-/* Íconos */
-header .icono {color: var(--celeste-claro); font-size: 1.8rem;}
-header #usuario-button #imagenUsuario {height: 80%; border-radius: 100%; border: 1.5px solid white;}
-header #usuario-button #letraInicial {border-radius: 50%; background-color: var(--celeste-claro); padding: 0 8px;}
-header #usuario-button #letraInicial i, header #plus 
-	{color: var(--azul-oscuro); line-height: normal; font-weight: bold;}
-header #plus {z-index: 3;}
-header #usuario-button #letraInicial i {font-size: 1.6rem;}
+header #musica-icono {right: 130px;}
+header #usuario-icono {right: 40px; border-radius: 50%; overflow: hidden; }
+header #usuario-icono #imagenUsuario {display: flex; justify-content: center; align-items: center; height: 3rem; width: 3rem;}
+header #usuario-icono #imagenUsuario img {height: 120%; width: 120%; object-fit: cover;}
+header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px;}
+header #usuario-menu {right: 20px;}
 
 /* Menús varios */
 header .dropdown-content {position: absolute; top: 55px;}
 header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
 header .dropdown-content a {padding: 4px 16px; text-decoration: none; display: block;}
-header #menu-rubro {left: 20px;}
-header #menu-pelis {left: 80px;}
-header #menu-usuario {right: 20px;}
 
 /* Footer */
 footer {justify-content: space-around;}
