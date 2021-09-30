@@ -18,7 +18,7 @@
 			</nav>
 		</div>
 	</section>
-	<section class="flex-row">
+	<section id="cuerpo">
 		<div class="flex-col">  <!--Primera columna-->
 			<section class="label-input flex-row">  <!--Título original-->
 				<label>Título original</label>
@@ -143,12 +143,14 @@
 		</div>
 		<div id="columnaMedio"> <!--Columna intermedia-->
 		</div>
-		<div id="imagenPeli" class="flex-col">  <!--Segunda columna-->
+		<div id="imagenPeli">  <!--Segunda columna-->
+			<button type="button">Copiá y pegá el URL<br>de la imagen</button>
 			<label for="imagen" id="preview">
-				<img src="<%= data_entry.avatar %>" alt="">
+				<img src="<%= data_entry.avatar %>" alt="" class="ocultar">
 			</label>
-			<input name="avatar" type="file" accept="image/*" value="<%= data_entry.avatar %>" id="imagen" class="ocultar">
-			<i class="fas fa-times-circle<%- !errores.avatar ? ' ocultar' : '' %>">
+			<input name="ruta" type="text" value="./public/imagenes/3-Productos" class="ocultar">
+			<input name="avatar" type="file" accept="image/*" id="imagen" class="ocultar">
+			<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
 			</i>
 		</div>	
