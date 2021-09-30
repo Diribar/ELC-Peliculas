@@ -160,7 +160,6 @@ module.exports = {
 		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			console.log(req.file);
 			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
 			req.body.avatar = req.file
 				? req.file.filename
