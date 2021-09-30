@@ -144,7 +144,11 @@
 		<div id="columnaMedio"> <!--Columna intermedia-->
 		</div>
 		<div id="imagenPeli">  <!--Segunda columna-->
-			<button type="button">Copiá y pegá el URL<br>de la imagen</button>
+			<% if (data_entry.avatar) { %>
+				<button type="button">Copiá y pegá el URL<br>de la imagen</button>
+			<% } else { %>
+				<button type="button">Elegí una imagen de <br> tu PC o internet (URL)</button>
+			<% } %> 
 			<label for="imagen" id="preview">
 				<img src="<%= data_entry.avatar %>" alt="" class="ocultar">
 			</label>
