@@ -13,7 +13,7 @@ module.exports = {
 		return res.json(lectura);
 	},
 
-	averiguarProductoYaEnBD_FA: async (req, res) => {
+	prodFaEnBD: async (req, res) => {
 		let datos = req.query;
 		let [, resultadoFA] = await funcionesVarias.productoYaEnBD(datos);
 		return res.json(resultadoFA);
@@ -27,7 +27,7 @@ module.exports = {
 		return res.json(resultado);
 	},
 	validarDatosDuros: async (req, res) => {
-		errores = await validarProductos.validarDatosDuros(req.query)
+		errores = await validarProductos.validarDatosDuros(req.query);
 		return res.json(errores);
 	},
 };

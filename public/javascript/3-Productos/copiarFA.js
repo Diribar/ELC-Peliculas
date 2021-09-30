@@ -99,7 +99,7 @@ window.addEventListener("load", () => {
 		fa_id = link;
 		// FA_id no repetido en la BD ********************
 		let url =
-			"/peliculas/agregar/api/averiguar-producto-ya-en-bd-fa/?" +
+			"/peliculas/agregar/api/prod-fa-en-bd/?" +
 			"rubroAPI=" +
 			rubroAPI.value +
 			"&fa_id=" +

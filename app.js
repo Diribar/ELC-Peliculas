@@ -33,7 +33,7 @@ app.set("views", [
 	path.resolve(__dirname, "./views/1-Institucional"),
 	path.resolve(__dirname, "./views/2-Usuarios"),
 	path.resolve(__dirname, "./views/3-AgregarProductos"),
-	path.resolve(__dirname, "./views/3-AgregarProductos/Desamb_form"),
+	path.resolve(__dirname, "./views/3-AgregarProductos/DesambForm"),
 	path.resolve(__dirname, "./views/4-Productos-RUD"),
 	path.resolve(__dirname, "./views/5-ElegirOpciones"),
 ]);
@@ -42,10 +42,12 @@ app.set("views", [
 let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
 let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Usuarios-Ruta");
 let rutaLogin = require("./rutas_y_controladores/2-Usuarios/Login-Ruta");
-let rutaPeliculas = require("./rutas_y_controladores/3-Peliculas/Rutas");
+let rutaAgregar = require("./rutas_y_controladores/3-Productos/RutasAgregar");
+let rutaRudOpciones = require("./rutas_y_controladores/3-Productos/RutasRudOpciones");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
-app.use("/peliculas", rutaPeliculas);
+app.use("/peliculas/agregar", rutaAgregar);
+app.use("/peliculas", rutaRudOpciones);
 app.use("/", rutaECC);
 
 // ************************ Errores *******************************

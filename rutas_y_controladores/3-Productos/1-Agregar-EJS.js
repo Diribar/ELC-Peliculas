@@ -118,7 +118,7 @@ module.exports = {
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
-	datosDuros_Form: async (req, res) => {
+	datosDurosForm: async (req, res) => {
 		tema = "agregar";
 		codigo = "datosDuros";
 		//return res.send(req.session.datosDuros);
@@ -139,7 +139,7 @@ module.exports = {
 		});
 	},
 
-	datosDuros_Guardar: async (req, res) => {
+	ddGuardar: async (req, res) => {
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
