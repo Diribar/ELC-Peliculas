@@ -1,6 +1,12 @@
 window.addEventListener("load", () => {
-	// Acciones si cambió alguna imagen
+	// Cambiar el valor del input
 	let inputImagen = document.querySelector("form input[name='avatar']");
+	let img = document.querySelector("form #imagenPeli label img").src;
+	console.log(inputImagen.filename);
+	inputImagen.filename = img
+	console.log(inputImagen.filename);
+
+	// Acciones si cambió alguna imagen
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
 		ext = texto.slice(texto.length - 4);

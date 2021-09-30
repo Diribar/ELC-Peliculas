@@ -6,7 +6,6 @@ let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 let funciones = require("../../funciones/funcionesVarias");
 let validarUsuarios = require("../../funciones/validarUsuarios");
-let { validationResult } = require("express-validator");
 
 // *********** Controlador ***********
 module.exports = {
