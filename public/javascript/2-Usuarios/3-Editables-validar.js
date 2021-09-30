@@ -17,7 +17,6 @@ window.addEventListener("load", () => {
 		inputs[i].addEventListener("change", async () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
-			console.log(campo,valor)
 			errores = await fetch(
 				"/usuarios/api/validareditables/?" +
 					campo +

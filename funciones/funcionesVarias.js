@@ -137,5 +137,5 @@ let AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
 let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
-	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : "";
+	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };

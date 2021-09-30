@@ -1,13 +1,7 @@
 ON SUBMIT
 - Guardar la imagen
-	- Nombre: nombre_castellano + número aleatorio
-	- Carpeta: provisoria
+	- Nombre: nombre_castellano (10 letras) + número aleatorio
 	- Validar tamaño
+	- Carpeta: provisoria
 - Validaciones back-end
 - Actualizar cookies y session
-
-USUARIO
-- Que el archivo se necesite subir una sola vez
-- Validación on-line
-- Misma validación BE que FE
-- Una validación por formulario

@@ -278,13 +278,6 @@ const fuenteSinopsis = (sinopsis) => {
 	return sinopsis;
 };
 
-// const funcionParentesis = (dato) => {
-// 	desde = dato.indexOf(" (");
-// 	hasta = dato.indexOf(")");
-// 	desde > 0 ? (dato = dato.slice(0, desde) + dato.slice(hasta + 1)) : "";
-// 	return dato;
-// };
-
 const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
 		valor = crew

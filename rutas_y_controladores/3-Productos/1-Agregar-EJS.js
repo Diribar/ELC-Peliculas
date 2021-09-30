@@ -140,7 +140,6 @@ module.exports = {
 	},
 
 	ddGuardar: async (req, res) => {
-		console.log(req.file)
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
