@@ -6,8 +6,8 @@ header p a {color: var(--amarillo-claro); text-decoration: none;}
 
 /* Formato de Íconos */
 header i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
-header #usuario-icono #letraInicial i, header #plus {color: var(--azul-oscuro); font-weight: bold;}
-header #usuario-icono #letraInicial i {font-size: 1.6rem;}
+header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
+header #usuario-icono #letraInicial {font-size: 1.6rem;}
 
 /* Ubicación vertical de los íconos */
 header .centradoVertical {position: absolute; top: 50%; cursor: pointer;}

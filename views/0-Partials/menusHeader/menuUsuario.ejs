@@ -5,12 +5,14 @@
 				<img src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>" class="usuario-iconos"/>
 			</div>
 		<% } else if (locals.usuario.nombre != null) { %>
-			<div id="letraInicial"><i><%= locals.usuario.nombre.slice(0,1).toUpperCase() %></i></div>
+			<i id="letraInicial" class="usuario-iconos">
+				<%= locals.usuario.nombre.slice(0,1).toUpperCase() %>
+			</i>
 		<% } else { %>
-			<i class="fas fa-user-circle"></i>
+			<i class="fas fa-user-circle usuario-iconos"></i>
 		<% } %>
 	<% } else { %>
-		<i class="fas fa-question-circle"></i>
+		<i class="fas fa-question-circle usuario-iconos"></i>
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
