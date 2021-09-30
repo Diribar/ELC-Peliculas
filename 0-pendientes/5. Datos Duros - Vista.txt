@@ -1,3 +1,6 @@
+DATOS DUROS
+- Copiar dirección de la imagen
+
 ON SUBMIT
 - Guardar la imagen
 	- Nombre: nombre_castellano (10 letras) + número aleatorio
