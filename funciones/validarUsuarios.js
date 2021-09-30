@@ -3,7 +3,7 @@ const BD_usuarios = require("./BD/usuarios");
 const path = require("path");
 
 module.exports = {
-	validarMail: async (email) => {
+	mail: async (email) => {
 		cartelCampoVacio = "Necesitamos que escribas un correo electrónico";
 		let errores = {};
 		errores.email = campoVacio(email)
@@ -17,11 +17,12 @@ module.exports = {
 		return errores;
 	},
 
-	validarPerennes: (datos) => {
+	perennes: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
+		console.log(datos)
 		errores.nombre = campoVacio(datos.nombre)
 			? cartelCampoVacio
 			: longitud(datos.nombre, 2, 30)
@@ -48,7 +49,7 @@ module.exports = {
 		return errores;
 	},
 
-	validarEditables: (datos) => {
+	editables: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";

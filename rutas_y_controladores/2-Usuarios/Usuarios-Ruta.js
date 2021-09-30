@@ -12,6 +12,8 @@ let uploadFile = require("../../middlewares/varios/multer");
 //************************ Controladores ****************************
 // Controladores de APIs
 router.get("/api/validarmail", usuariosAPI.validarMail);
+router.get("/api/validarperennes", usuariosAPI.validarPerennes);
+router.get("/api/validareditables", usuariosAPI.validarEditables);
 
 // Controladores de Altas
 router.get('/altaredireccionar', usuariosController.altaRedireccionar)

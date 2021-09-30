@@ -17,12 +17,13 @@
 		<% } else %>
 		<% if (codigo == "perennes") { %>
 			<%- include('Head', {titulo: "Registro de Datos Perennes"}) %>
+			<script src="/javascript/2-Usuarios/2-Perennes-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "editables") { %>
 			<%- include('Head', {titulo: "Registro de Datos Editables"}) %>
 			<link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css">
-			<script src="/javascript/2-Usuarios/Imagen.js"></script>
-			<script src="/javascript/2-Usuarios/Errores.js"></script>
+			<script src="/javascript/2-Usuarios/3-Editables-imagen.js"></script>
+			<script src="/javascript/2-Usuarios/3-Editables-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "detalle") { %>
 			<%- include('Head', {titulo: "Detalle de Usuario"}) %>
