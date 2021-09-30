@@ -1,36 +1,42 @@
 window.addEventListener("load", () => {
-	// Declarar las variables
-	// Variables de Input
+	// Declarar las variables de Input
 	let rubroAPI = document.querySelector("select[name='rubroAPI']");
 	let direccion = document.querySelector("input[name='direccion']");
 	let contenido = document.querySelector("textarea[name='contenido']");
 	let avatar = document.querySelector("input[name='avatar']");
-	// Variables de Error
+
+	// Declarar las variables de Error
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajeError = document.querySelectorAll(".mensajeError");
-	// Variables de Ayuda
-	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
-	console.log(iconosAyuda)
-	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	let mensajeAyuda = document.querySelectorAll(".mensajeAyuda");
 
-	// Click en ícono de ayuda
+	// Comportamientos cuando se hace click -------------------------------
+	// Detectar si se hizo click en la ventana
 	window.onclick = (e) => {
-		for (let i = 0; i < iconoError.length; i++) {
-			console.log(iconosAyuda[i].id);
-			e.target.matches(iconosAyuda[i].id)
-				? mensajesAyuda[i].classList.toggle("ocultar")
-				: mensajesAyuda[i].classList.add("ocultar");
-
-		}
-		// !e.target.matches("#home-icono")
-		// 	? document.getElementById("home-menu").classList.add("ocultar")
-		// 	: document.getElementById("home-menu").classList.toggle("ocultar");
+		iconoError[0].classList.contains("ocultar") &&
+		iconoOK[0].classList.contains("ocultar")
+			? verificarRubro(false)
+			: "";
+		iconoError[1].classList.contains("ocultar") &&
+		iconoOK[1].classList.contains("ocultar")
+			? verificarDireccion(false)
+			: "";
+		iconoError[2].classList.contains("ocultar") &&
+		iconoOK[2].classList.contains("ocultar")
+			? verificarContenido(false)
+			: "";
+		// Click en ayuda dirección
+		if (e.target.matches("#ayuda_direccion")) {
+			mensajeAyuda[0].classList.toggle("ocultar");
+			return;
+		} else mensajeAyuda[0].classList.add("ocultar");
+		// Click en ayuda contenido
+		if (e.target.matches("#ayuda_contenido")) {
+			mensajeAyuda[1].classList.toggle("ocultar");
+			return;
+		} else mensajeAyuda[1].classList.add("ocultar");
 	};
-	// window.onclick = (e) => {
-	// 	for (let i = 0; i < iconoError.length; i++) {
-	// 	}
-	// };
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	document.querySelector("form").oninput = (e) => {
@@ -146,12 +152,6 @@ window.addEventListener("load", () => {
 		}
 		return false;
 	};
-
-	// Status inicial
-	verificarRubro(true);
-	verificarDireccion(true);
-	verificarContenido(true);
-	//verificarAvatar(true);
 });
 
 const procesarContenidoFA = async (contenido) => {

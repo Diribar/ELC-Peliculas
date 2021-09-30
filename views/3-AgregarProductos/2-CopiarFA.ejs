@@ -69,6 +69,28 @@
 			</i>
 			<i class="fas fa-check-circle ocultar"></i>
 		</div>
+		<h3>Ingresá la URL de la imagen grande</h3>
+		<div class="relative flex-row">
+			<input name="avatar" type="text" class="input"
+				value="<%= locals.data_entry ? data_entry.avatar : null %>"
+				placeholder="Pegá acá la dirección"
+				autocomplete="off"
+			>
+			<i class="fas fa-question-circle" id="ayuda_avatar">
+				<ul class="mensajeAyuda ocultar" type="dots">
+					<p><strong><u>Pasos</u></strong>:</p>
+					<p>En la página de FA:</p>
+					<li>Hacé <strong><em>click izquierdo</em></strong>en la imagen.</li>
+					<li>Una vez que la imagen se agrandó, hacé <strong><em>click derecho</em></strong>sobre ella.</li>
+					<li>Hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>Copiar dirección de la imagen</em></li>
+				</ul>
+			</i>
+			<p class="ocultar"><% if (locals.errores && errores.avatar) {errores.avatar.msg}%></p>
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
+		</div>
 		<div id="resultado"><br></div>
 		<button type="submit">Avanzar</button>
 	</form>
