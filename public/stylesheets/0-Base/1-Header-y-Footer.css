@@ -1,12 +1,12 @@
 /* Header */
-header {position: relative;background-color: var(--azul-oscuro);}
-header p {display: flex;justify-content: center;align-items:center;}
-header p a {font-family: Monotype Corsiva;font-size: 3rem;font-weight: bold;}
-header p a {color: var(--amarillo-claro);text-decoration: none;}
+header {position: relative; background-color: var(--azul-oscuro);}
+header p {display: flex; justify-content: center; align-items:center;}
+header p a {font-family: Monotype Corsiva; font-size: 3rem; font-weight: bold;}
+header p a {color: var(--amarillo-claro); text-decoration: none;}
 
 /* Posición vertical */
-header .absolute, header #plus, header #usuario-button #imagenUsuario 
-	{top: 50%; transform: translateY(-50%);}
+header .icono, header #imagenUsuario, header #musicaDeFondo, header #letraInicial
+	{position: absolute; top: 50%; transform: translateY(-50%);}
 
 /* Íconos a la izquierda */
 header .fa-home {left: 40px;}
@@ -14,22 +14,23 @@ header .fa-video {left: 100px}
 header #plus {left: 103px;}
 
 /* Íconos a la derecha */
-header #usuario-button .absolute {right: 40px}
 header #usuario-button #imagenUsuario {right: 30px;}
+header #usuario-button .icono, header #usuario-button #letraInicial {right: 40px}
+header #musicaDeFondo {right: 120px;}
 
 /* Íconos */
 header .icono {color: var(--celeste-claro); font-size: 1.8rem;}
-header #usuario-button #imagenUsuario {height: 80%;border-radius: 100%; border: 1.5px solid white;}
-header #usuario-button div.absolute {border-radius: 50%; background-color: var(--celeste-claro); padding: 0 8px;}
-header #usuario-button div.absolute .icono, header #plus 
+header #usuario-button #imagenUsuario {height: 80%; border-radius: 100%; border: 1.5px solid white;}
+header #usuario-button #letraInicial {border-radius: 50%; background-color: var(--celeste-claro); padding: 0 8px;}
+header #usuario-button #letraInicial i, header #plus 
 	{color: var(--azul-oscuro); line-height: normal; font-weight: bold;}
 header #plus {z-index: 3;}
-header #usuario-button div.absolute .icono {font-size: 1.6rem;}
+header #usuario-button #letraInicial i {font-size: 1.6rem;}
 
 /* Menús varios */
 header .dropdown-content {position: absolute; top: 55px;}
 header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
-header .dropdown-content a {padding: 4px 16px;text-decoration: none; display: block;}
+header .dropdown-content a {padding: 4px 16px; text-decoration: none; display: block;}
 header #menu-rubro {left: 20px;}
 header #menu-pelis {left: 80px;}
 header #menu-usuario {right: 20px;}
