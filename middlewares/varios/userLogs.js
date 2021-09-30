@@ -1,4 +1,4 @@
-const funciones = require("../../modelos/funcionesVarias");
+const funciones = require("../../funciones/funcionesVarias");
 
 module.exports = (req, res, next) => {
 	funciones.userLogs(req, res)

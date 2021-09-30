@@ -1,88 +1,81 @@
-<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
-<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
-<link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css">
-<script src="/javascript/subirImagen.js"></script>
-<%- include('0-AntesUS', {titulo: "Registro de Datos Editables"}) %>
-
-<!--**************************** CUERPO ******************************-->
-<section id="Form" class="flex-col">
-	<p id="tapar-el-fondo"></p>
-	<form action="<%= link %>" method="POST" enctype="multipart/form-data">
-		<h1>Registro de Datos Editables</h1>
-		<section class="label-input flex-row"><!--Apodo-->
-			<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
-			<div class="form-grupo">
-				<% apodo = locals.data_entry ? data_entry.apodo : "" %>
-				<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
-				<% if (locals.errores && errores.apodo) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.apodo.msg %> </span></i><% } %>
-				<% if (locals.errores && !errores.apodo) { %><i class="fas fa-check-circle"></i><% } %>	
-			</div>
-		</section>
-		<section class="label-input flex-row"><!--Pais de residencia-->
-			<label for="pais">País de residencia</label>
-			<div class="form-grupo">
-				<% pais = locals.data_entry ? data_entry.pais : "" %>
-				<select name="pais" class="input">
-					<option value="" <% if (pais=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
-					<optgroup label="Países de habla hispana (América)">
-						<% for (n of habla_hispana.filter(n => n.continente == "América")) { %>
-							<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
-								<%= n.nombre %>
-							</option>
-							<img src="<%= n.bandera %>">
-						<% } %>	
-					</optgroup>
-					<optgroup label="Países de habla hispana (Europa/África)">
-						<% for (n of habla_hispana.filter(n => n.continente != "América")) { %>
-							<option  value="<%= n.id %>" <% if (pais==n.id) { %> selected <% } %>>
-								<%= n.nombre %>
-							</option>
-							<img src="<%= n.bandera %>">
-						<% } %>	
-					</optgroup>
-					<optgroup label="Otras opciones">
-						<option value="AC" <% if (pais=="AC") {%> selected <%}%>>América (otro país)</option>
-						<option value="EU" <% if (pais=="EU") {%> selected <%}%>>Europa (otro país)</option>
-						<option value="AA" <% if (pais=="AA") {%> selected <%}%>>Africa (otro país)</option>
-						<option value="AB" <% if (pais=="AB") {%> selected <%}%>>Asia</option>
-						<option value="OC" <% if (pais=="OC") {%> selected <%}%>>Oceanía</option>
-						<option value="OT" <% if (pais=="OT") {%> selected <%}%>>Otro lugar</option>	
-					</optgroup>
-				</select>
-				<% if (locals.errores && errores.pais) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.pais.msg %> </span></i><% } %>
-				<% if (locals.errores && !errores.pais) { %><i class="fas fa-check-circle"></i><% } %>
-			</div>
-		</section>
-		<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
-			<label for="estado_eclesial">Estado de vida <br>en la iglesia</label>
-			<div class="form-grupo">
-				<% estado_eclesial = locals.data_entry ? data_entry.estado_eclesial : "" %>
-				<select name="estado_eclesial" class="input">
-					<option value="" <% if (estado_eclesial=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
-					<% for (n of estados_eclesiales) { %>
-						<option value="<%= n.id %>" <% if (estado_eclesial==n.id) { %> selected <% } %>><%= n.nombre %></option>
-					<% } %> 
-				</select>
-				<% if (locals.errores && errores.estado_eclesial) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.estado_eclesial.msg %> </span></i><% } %>
-				<% if (locals.errores && !errores.estado_eclesial) { %><i class="fas fa-check-circle"></i><% } %>
-					
-			</div>
-		</section>
-		<section class="label-input flex-row"><!--Imagen de perfil-->
-			<label>Imagen personal <br>(opcional)</label>
-			<div class="form-grupo flex-col" id="divImagen">
-				<label for="inputImagen" id="preview"></label>
-				<label for="inputImagen" class="input" id="labelImagen">Subí una imagen</label>
-				<input name="avatar" type="file" id="inputImagen" accept="image/*">
-				<div id="iconoImagenRojo"><% if (locals.errores && errores.avatar) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.avatar.msg %> </span></i><% } %></div>
-				<div id="iconoImagenVerde" class="ocultar"><i class="fas fa-check-circle"></i></div>
-			</div>
-		</section>
-		<section id="buttons" class="flex-row"><!--Buttons-->
-			<button type="submit">Aceptar</button>
-			<a href="<%= locals.urlReferencia %>"><button type="button">Cancelar</button></a>
-		</section>
-	</form>
-</section>
-<!--****************************** FIN *******************************-->
-<%- include('0-DespuesUS') %>
+<p id="tapar-el-fondo"></p>
+<form action="<%= link %>" method="POST" enctype="multipart/form-data">
+	<h1>Registro de Datos Editables</h1>
+	<section class="label-input flex-row"><!--Apodo-->
+		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
+		<div class="form-grupo">
+			<% apodo = data_entry ? data_entry.apodo : "" %>
+			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
+			<i class="fas fa-times-circle <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.apodo) ? errores.apodo : "" %></span>
+			</i>
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Pais de residencia-->
+		<label for="pais">País de residencia</label>
+		<div class="form-grupo">
+			<% pais_id = data_entry ? data_entry.pais_id : "" %>
+			<select name="pais_id" class="input">
+				<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+				<optgroup label="América (habla hispana)">
+					<% for (n of hablaHispana.filter(n => n.continente == "América")) { %>
+						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+							<%= n.nombre %>
+						</option>
+					<% } %>	
+				</optgroup>
+				<optgroup label="Europa/África (habla hispana)">
+					<% for (n of hablaHispana.filter(n => n.continente != "América")) { %>
+						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+							<%= n.nombre %>
+						</option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Países de habla no hispana">
+					<% for (n of hablaNoHispana) { %>
+						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+							<%= n.nombre %>
+						</option>
+					<% } %>
+				</optgroup>
+			</select>
+			<i class="fas fa-times-circle <%- !(errores && errores.pais_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.pais_id) ? errores.pais_id : "" %></span>
+			</i>
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
+		<label for="estado_eclesial_id">Estado de vida <br>en la iglesia</label>
+		<div class="form-grupo">
+			<% estado_eclesial_id = data_entry ? data_entry.estado_eclesial_id : "" %>
+			<select name="estado_eclesial_id" class="input">
+				<option value="" <% if (estado_eclesial_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
+				<% for (n of estados_eclesiales) { %>
+					<option value="<%= n.id %>" <% if (estado_eclesial_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
+				<% } %> 
+			</select>
+			<i class="fas fa-times-circle <%- !(errores && errores.estado_eclesial_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.estado_eclesial_id) ? errores.estado_eclesial_id : "" %></span>
+			</i>
+		</div>
+	</section>
+	<section class="label-input flex-row"><!--Imagen de perfil-->
+		<label>Imagen personal <br>(opcional)</label>
+		<div class="form-grupo flex-col" id="divImagen">
+			<% avatar = data_entry ? data_entry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
+			<label for="inputImagen" id="preview">
+				<img src="<%= avatar %>" alt="">
+			</label>
+			<input name="ruta" type="text" value="./public/imagenes/2-Usuarios" class="ocultar">
+			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="ocultar input">
+			<i class="fas fa-times-circle <%- !(errores && errores.avatar) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.avatar) ? errores.avatar : "" %></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
+		</div>
+	</section>
+	<section id="buttons" class="flex-row"><!--Buttons-->
+		<button type="submit">Aceptar</button>
+		<a href="/"><button type="button">Cancelar</button></a>
+	</section>
+</form>

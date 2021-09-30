@@ -1,47 +1,36 @@
-<%- include('0-Head', {titulo: "Login"}) %>
-<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-General.css">
-<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
-<script defer src="/javascript/ojitoContrasena.js"></script>
-<%- include('0-AntesUS', {titulo: "Login"}) %>
-
-<!--**************************** CUERPO ******************************-->
-<section id="Form" class="flex-col">
-	<p id="tapar-el-fondo"></p>
-	<form action="<%= link %>" method="POST">
-		<h1>Login</h1>
-		<!--Mail y Contraseña-->
-		<section class="label-input flex-row">  <!--Mail-->
-			<label for="email">E-Mail</label>
-			<div class="form-grupo">
-				<input type="text" class="input" name="email" placeholder="Correo Electrónico"
-					value="<%= locals.data_entry ? data_entry.email : null %>">
-				<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
-				<% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
-			</div>
-		</section>
-		<section class="label-input flex-row">  <!--Contraseña-->
-			<label for="contrasena">Contraseña</label>
-			<div class="form-grupo">
-				<input type="password" class="input" name="contrasena" id="contrasena"
-					value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña">
-				<i onclick="mostrar('contrasena', 'eye')" class="fas fa-eye-slash" id="eye"></i>
-				<% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena.msg %> </span></i><% } %>
-				<% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
-			</div>
-		</section>
-		<br>
-		<section class="flex-col">   <!--Credenciales Inválidas-->
-			<% if (credencialesInvalidas) { %>
-				<p class="criterio error">Credenciales inválidas</p>
-			<% } %>
-		</section>
-		<section id="buttons" class="flex-row"><!--Botones-->
-			<button type="submit" autofocus>Aceptar</button>
-			<a href="<%= locals.urlReferencia %>"><button type="button" id="cancelar">Cancelar</button></a>
-			<a href="#"><button type="button">Olvidé mi contraseña</button></a>
-			</div>
-		</section>
-	</form>
-</section>
-<!--****************************** FIN *******************************-->
-<%- include('0-DespuesUS') %>
+<p id="tapar-el-fondo"></p>
+<form action="<%= link %>" method="POST">
+	<h1>Login</h1>
+	<!--Mail y Contraseña-->
+	<div class="label-input flex-row">  <!--Mail-->
+		<label for="email">E-Mail</label>
+		<div class="form-grupo">
+			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
+				value="<%= locals.data_entry ? data_entry.email : null %>">
+			<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
+		</div>
+	</div>
+	<div class="label-input flex-row">  <!--Contraseña-->
+		<label for="contrasena">Contraseña</label>
+		<div class="form-grupo">
+			<input type="password" class="input" name="contrasena" id="contrasena"
+				value="<%= locals.data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña"
+			>
+			<i class="fas fa-eye-slash" id="eye"></i>
+			<% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena.msg %> </span></i><% } %>
+			<% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
+		</div>
+	</div>
+	<br>
+	<div class="flex-col">   <!--Credenciales Inválidas-->
+		<% if (credencialesInvalidas) { %>
+			<p class="criterio error">Credenciales inválidas</p>
+		<% } %>
+	</div>
+	<div id="buttons" class="flex-row"><!--Botones-->
+		<button type="submit" autofocus>Aceptar</button>
+		<a href="/"><button type="button" id="cancelar">Cancelar</button></a>
+		<a href="#"><button type="button">Olvidé mi contraseña</button></a>
+	</div>
+</form>

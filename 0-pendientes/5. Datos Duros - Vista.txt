@@ -1,34 +1,13 @@
-GENERAL
-- Recibir las 3 APIs:
-	- TMDB
-	- Ingreso Manual FA
-	- FA
-- Si la session decae, recuperar la info mediante req.cookie
-- Bloquear los datos de API
-readonly HTML5
-Este atributo indica que el usuario no puede modificar el valor del control. El valor del atributo es irrelevante. De ser necesario el acceso lectura-escritura al valor, no se debe agregar el atributo "readonly". Es ignorado si el atributo type es hidden, range, color, checkbox, radio, file, o de tipo botón (como button o submit).
-
-- Vista inicial con los avisos de validación
-- Completar saldo a mano
-
-TODO EL CUERPO -> Centrado a lo ancho de toda la pantalla
-
-ENCABEZADO -> Links por si necesita consultar algún dato: TMDB, FA, IMDB, Wiki
-	- FA: con el FA_ID, sino con título original
-	- TMDB: con el Rubro + TMDB_ID, sino con el título original
-	- IMDB: con el IMDB_ID, sino con el título original
-	- Wiki: con el título original (película)
-
-PRIMERA COLUMNA -> Agregar campos id_TMDB y id_FA
-
-SEGUNDA COLUMNA (Imagen)
-- ¿Existe el link de TMDB?
-	- SI: mostrar la imagen
-	- NO: pedir insertar una imagen nueva
+ON SUBMIT
 - Guardar la imagen
 	- Nombre: nombre_castellano + número aleatorio
 	- Carpeta: provisoria
+	- Validar tamaño
+- Validaciones back-end
+- Actualizar cookies y session
 
-BOTON DE RETROCEDER
-- A Desamb_TMDB / FA
-- En la ruta/controlador, quitar donde se limpia el req.body
+USUARIO
+- Que el archivo se necesite subir una sola vez
+- Validación on-line
+- Misma validación BE que FE
+- Una validación por formulario

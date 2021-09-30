@@ -1,0 +1,44 @@
+<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<div class="flex-col" id="data_entry">
+	<div class="flex-col">
+		<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
+		<div class="flex-row"><!-- Una sola coincidencia -->
+			<% if (!hayMas && coincidencias == 1) { %>
+				<p>Encontramos una sola coincidencia, qu</p>
+				<p><% if (prod_nuevos.length == 1) { %>e no<% } else { %>e ya<% } %> está en nuestra BD</p>
+			<% } %>
+		</div>
+		<div class="flex-row"><!-- Varias coincidencias -->
+			<% if (coincidencias > 1) { %>
+				<% if (!hayMas) { %>
+					<p>Encontramos <%= coincidencias %> coincidencias</p>
+				<% } else { %>
+					<p>Encontramos muchas coincidencias. Te mostramos <%= coincidencias %></p>
+				<% } %>
+				<% if (prod_nuevos.length == coincidencias) { %>
+					<p>, ninguna está en nuestra BD</p>
+				<% } else { %>
+					<% if (prod_nuevos.length) { %>
+						<p>, <%= prod_nuevos.length %> no están en nuestra BD</p>
+					<% } else { %>
+						<p>, que ya están todas en nuestra BD</p>
+					<% } %>
+				<% } %>
+			<% } %>
+		</div>
+		<p><u>Palabra/s clave</u>: <strong><%= palabras_clave %></strong></p>
+	</div>
+	<div class="flex-row space-between"  id="resultadoGeneral">
+		<%- include('21-Desamb_form', { prod_nuevos }) %>
+		<%- include('22-Desamb_form') %>
+		<%- include('23-Desamb_form', { prod_yaEnBD }) %>
+	</div>
+	<div id="flechas" class="flex-row space-between">
+		<a href="/peliculas/agregar/palabras_clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<% if (habilitarFlechaDerechaConLink) { %>
+			<a href="/peliculas/agregar/datos_duros"><i class="fas fa-arrow-alt-circle-right"></i></a>
+		<% } else { %>
+			<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
+		<% } %>
+	</div>
+</div>

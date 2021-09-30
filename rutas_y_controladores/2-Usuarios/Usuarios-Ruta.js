@@ -1,31 +1,33 @@
 //************************* Requires *******************************
-const express = require('express');
-const router = express.Router();
-const usuariosController = require("./Usuarios-Contr");
+let express = require('express');
+let router = express.Router();
+let usuariosAPI = require("./Usuarios-API");
+let usuariosController = require("./Usuarios-Controller");
 
 //************************ Middlewares ******************************
-const validarMail = require("../../middlewares/validarUserForms/validar1-Mail");
-const validarPerennes = require("../../middlewares/validarUserForms/validar2-Perennes");
-const validarEditables = require("../../middlewares/validarUserForms/validar3-Editables");
-const soloVisitas = require("../../middlewares/usuarios/soloVisitas");
-const soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-const uploadFile = require("../../middlewares/varios/multer");
+let soloVisitas = require("../../middlewares/usuarios/soloVisitas");
+let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+let uploadFile = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
-router.get('/redireccionar', usuariosController.altaRedireccionar)
+// Controladores de APIs
+router.get("/api/validarmail", usuariosAPI.validarMail);
+router.get("/api/validarperennes", usuariosAPI.validarPerennes);
+router.get("/api/validareditables", usuariosAPI.validarEditables);
 
-router.get('/registro-mail', soloVisitas, usuariosController.altaMailForm)
-router.post('/registro-mail', validarMail, usuariosController.altaMailGuardar)
+// Controladores de Altas
+router.get('/altaredireccionar', usuariosController.altaRedireccionar)
+router.get('/mail', soloVisitas, usuariosController.altaMailForm)
+router.post('/mail', usuariosController.altaMailGuardar)
+router.get('/datos-perennes', soloUsuarios, usuariosController.altaPerennesForm)
+router.post('/datos-perennes', usuariosController.altaPerennesGuardar)
+router.get('/datos-editables', soloUsuarios, usuariosController.altaEditablesForm)
+router.post('/datos-editables', uploadFile.single('avatar'), usuariosController.altaEditablesGuardar)
 
-router.get('/registro-datos-perennes', soloUsuarios, usuariosController.altaPerennesForm)
-router.post('/registro-datos-perennes', validarPerennes, usuariosController.altaPerennesGuardar)
-
-router.get('/registro-datos-editables', soloUsuarios, usuariosController.altaEditablesForm)
-router.post('/registro-datos-editables', uploadFile.single('avatar'), validarEditables, usuariosController.altaEditablesGuardar)
-
-router.get('/detalle', soloUsuarios, usuariosController.detalle)          // Detalle
-router.get('/editar', soloUsuarios, usuariosController.editarForm)        // Modificar
-router.put('/editar', uploadFile.single('imagen'), validarMail, validarEditables, usuariosController.editarGuardar)
-router.delete('/eliminar', soloUsuarios, usuariosController.baja)         // Baja
+// Controladores de Consultas
+router.get('/detalle', soloUsuarios, usuariosController.detalle)
+router.get('/editar', soloUsuarios, usuariosController.editarForm)
+router.put('/editar', uploadFile.single('avatar'), usuariosController.editarGuardar) //Validar mail y editables
+router.delete('/eliminar', soloUsuarios, usuariosController.baja)
 
 module.exports = router;

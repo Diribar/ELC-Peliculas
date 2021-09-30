@@ -1,0 +1,29 @@
+/* Partes particulares */
+#data_entry h2 {margin-bottom: 5px;}
+#data_entry #resultadoGeneral {width: 700px; overflow-x: auto;}
+
+/* Flechas */
+#data_entry #flechas {margin: 10px 50px 0;}
+
+/* Resultados */
+#prod_nuevo, #ingr_manual, #prod_yaEnBD 
+	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:290px; border-radius: 15px;}
+#data_entry #prod_nuevo {background-color: var(--verde-claro);}
+#data_entry #ingr_manual {background-color: var(--rojo-claro);}
+#data_entry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
+#data_entry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#data_entry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#data_entry #prod_yaEnBD:hover {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+
+/* Partes del resultado */
+#imagenChica {max-height: 200px; border-radius: 15px; }
+#infoPeli {color: inherit; margin: 10px 15px;}
+#infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
+
+.interlineadoChico {margin-top: 5px;}
+
+/* Barra de desplazamiento */
+::-webkit-scrollbar {outline: transparent;}
+::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
+::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
+/* ::-webkit-scrollbar-button {background: red;} */
