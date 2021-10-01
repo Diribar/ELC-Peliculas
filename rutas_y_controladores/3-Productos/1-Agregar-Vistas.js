@@ -34,7 +34,7 @@ module.exports = {
 	palabrasClaveGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let dato = req.body.palabras_clave;
-		let errores = await validarProductos.validarPalabrasClave(dato);
+		let errores = await validarProductos.palabrasClave(dato);
 		return res.send(errores)
 
 		// Si hay errores
