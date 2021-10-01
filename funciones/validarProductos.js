@@ -14,7 +14,7 @@ module.exports = {
 		return errores;
 	},
 
-	datosDuros: async (datos) => {
+	datosDuros: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
@@ -25,12 +25,6 @@ module.exports = {
 			? longitud(datos.nombre_original, 2, 50)
 			: castellano(datos.nombre_original)
 			? cartelCastellano
-			: (await AveriguarSiYaEnBD(
-					datos.rubroAPI,
-					datos.tmdb_id,
-					datos.fa_id
-			  ))
-			? "El título original ya está en nuestra base de datos"
 			: "";
 		errores.nombre_castellano = campoVacio(datos.nombre_castellano)
 			? cartelCampoVacio
@@ -101,7 +95,7 @@ module.exports = {
 	},
 };
 
-let AveriguarSiYaEnBD = async (rubroAPI, tmdb_id, fa_id) => {
+let ObtenerELC_id = async (rubroAPI, tmdb_id, fa_id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || (!tmdb_id && !fa_id)) return false;
 	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";

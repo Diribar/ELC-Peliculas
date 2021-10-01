@@ -2,7 +2,16 @@ PALABRA CLAVE, completar:
 - Validaciones FE
 - Validaciones BE + redirect a Form
 
+Datos duros, rutina aparte
+	: (await AveriguarSiYaEnBD(
+			datos.rubroAPI,
+			datos.tmdb_id,
+			datos.fa_id
+		))
+	? "El título original ya está en nuestra base de datos"
+
 ON SUBMIT
 - Validaciones BE
 - Imagen: validar tamaño
 - Actualizar cookies y session
+
