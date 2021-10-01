@@ -7,7 +7,7 @@
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {align-self: center;}
-#data_entry .mensajeAyuda {width: fit-content; margin-left: 5px;}
+#data_entry .mensajeAyuda {width: fit-content; margin-left: 20px; top: 0;}
 #data_entry .mensajeAyuda li {margin-left: 18px;}
 
 /* Sectores de Input */

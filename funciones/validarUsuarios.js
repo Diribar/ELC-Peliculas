@@ -74,10 +74,10 @@ module.exports = {
 			? "Usaste un archivo con la extensión " +
 			  extension(datos.avatar).slice(1).toUpperCase() +
 			  ". Las extensiones de archivo válidas son JPG, PNG, GIF y BMP."
-			: datos.tamano > 5000000
+			: datos.tamano > 1100000
 			? "El archivo es de " +
 			  parseInt(datos.tamano / 10000) / 100 +
-			  " MB. Necesitamos que no supere los 5 MB"
+			  " MB. Necesitamos que no supere 1 MB"
 			: "";
 		errores.hay = hayErrores(errores);
 		return errores;

@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
 			resultado.classList.add("resultadoEnEspera");
 			// Obtener el link
 			let link =
-				"/peliculas/agregar/api/contador/?palabras_clave=" +
+				"/peliculas/agregar/api/cant-prod/?palabras_clave=" +
 				palabras_clave;
 			// Averiguar cantidad de coincidencias
 			let lectura = await fetch(link).then((n) => n.json());

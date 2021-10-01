@@ -107,8 +107,8 @@ let AveriguarSiYaEnBD = async (rubroAPI, tmdb_id, fa_id) => {
 	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";
 	let id = tmdb_id != null ? tmdb_id : fa_id;
 	return rubroAPI == "movie"
-		? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
-		: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
+		? await BD_peliculas.ObtenerELC_id(parametro, id)
+		: await BD_colecciones.ObtenerELC_id(parametro, id);
 };
 let campoVacio = (dato) => {
 	return dato == "" || dato == null || dato == undefined || dato == 0;

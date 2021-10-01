@@ -16,10 +16,10 @@ module.exports = {
 		});
 	},
 
-	AveriguarSiYaEnBD: (parametro, valor) => {
-		return entidad
-			.count({ where: { [parametro]: valor } })
-			.then((n) => n > 0);
+	ObtenerELC_id: (parametro, valor) => {
+		return entidad.findOne({ where: { [parametro]: valor } }).then((n) => {
+			return !!n ? n.id : false;
+		});
 	},
 
 	ObtenerPorID: (ID) => {

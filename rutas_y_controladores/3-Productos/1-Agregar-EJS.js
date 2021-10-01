@@ -97,10 +97,16 @@ module.exports = {
 	copiarFA_Form: (req, res) => {
 		tema = "agregar";
 		codigo = "copiarFA";
+		let data_entry = req.session.data_entry
+			? req.session.data_entry
+			: false;
+		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry,
+			errores,
 		});
 	},
 	copiarFA_Guardar: async (req, res) => {
@@ -138,7 +144,6 @@ module.exports = {
 			errores,
 		});
 	},
-
 	ddGuardar: async (req, res) => {
 		const erroresValidacion = validationResult(req);
 		//return res.send(erroresValidacion)
@@ -157,7 +162,6 @@ module.exports = {
 		}
 		return res.send("sin errores");
 	},
-
 	DatosPersForm: (req, res) => {
 		tema = "agregar";
 		codigo = "datosPersonalizados";
@@ -177,7 +181,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	// API Details
 	let lectura =
 		form.fuente == "TMDB"
-			? await procesarDetalles.API(form.tmdb_id, form.rubroAPI)
+			? await procesarDetalles.obtenerAPI(form.tmdb_id, form.rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie"
