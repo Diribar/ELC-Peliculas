@@ -124,6 +124,6 @@ let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let ano = parseInt(dato.slice(0, 4));
 	let max = new Date().getFullYear() - 5;
-	let min = new Date().getFullYear() - 130;
+	let min = new Date().getFullYear() - 100;
 	return ano > max || ano < min ? true : false;
 };

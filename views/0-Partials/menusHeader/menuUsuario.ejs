@@ -1,23 +1,21 @@
-<div id="usuario-button" class="pointer">
+<div id="usuario-icono" class="centradoVertical">
 	<% if (locals.usuario) { %>
-		<% if (locals.usuario.avatar!="-") { %> 
-			<img
-				src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>"
-				class="desplegableUsuario absolute"
-				id="imagenUsuario"
-			/>
-		<% } else if (locals.usuario.nombre != null) { %>
-			<div class="absolute">
-				<i class="desplegableUsuario icono"><%= locals.usuario.nombre.slice(0,1).toUpperCase() %></i>
+		<% if (locals.usuario.avatar!="-") { %>
+			<div id="imagenUsuario">
+				<img src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>" class="usuario-iconos"/>
 			</div>
+		<% } else if (locals.usuario.nombre != null) { %>
+			<i id="letraInicial" class="usuario-iconos">
+				<%= locals.usuario.nombre.slice(0,1).toUpperCase() %>
+			</i>
 		<% } else { %>
-			<i class="desplegableUsuario fas fa-user-circle icono absolute"></i>
+			<i class="fas fa-user-circle usuario-iconos"></i>
 		<% } %>
 	<% } else { %>
-		<i class="desplegableUsuario fas fa-question-circle icono absolute"></i>
+		<i class="fas fa-question-circle usuario-iconos"></i>
 	<% } %>
 </div>
-<div id="menu-usuario" class="dropdown-content ocultar">
+<div id="usuario-menu" class="dropdown-content ocultar">
 	<% if (locals.usuario) { %>
 		<a href="/usuarios/detalle">Mi usuario</a>
 		<a href="#">Mis estadísticas</a>
