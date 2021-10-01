@@ -32,7 +32,7 @@
 /* Errores */
 #data_entry .fa-times-circle {right: -20px; top: 50%; transform: translateY(-50%);}
 #data_entry .mensajeError {right: 0px; top: 15px; width: 200px}
-
+#data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
 
 /* Imagen de la película */
 #data_entry #imagenPeli {width: 180px; height: 100%; position: relative;}

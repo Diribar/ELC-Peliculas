@@ -7,6 +7,11 @@ window.addEventListener("load", () => {
 		".form-grupo .fa-times-circle"
 	);
 	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
+	
+	// Hacer visible el mensaje de error del Avatar
+	grupoAvatar = mensajes.length-1;
+	mensajes[grupoAvatar].innerHTML = "Necesitamos que agregues la imagen";
+	asteriscos[grupoAvatar].classList.remove("ocultar")
 
 	for (let i = 0; i < inputs.length; i++) {
 		// Anular 'submit' si hay algún error
@@ -14,7 +19,7 @@ window.addEventListener("load", () => {
 			? button.classList.add("botonSinLink")
 			: "";
 		// Acciones si se realizan cambios
-		inputs[i].addEventListener("change", async () => {
+		inputs[i].addEventListener("input", async () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
