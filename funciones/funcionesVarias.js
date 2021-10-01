@@ -1,23 +1,47 @@
 // **** Requires ***********
-const nodemailer = require("nodemailer");
-const BD_peliculas = require("./BD/peliculas");
-const BD_colecciones = require("./BD/colecciones");
+let nodemailer = require("nodemailer");
+let BD_peliculas = require("./BD/peliculas");
+let BD_colecciones = require("./BD/colecciones");
 
 module.exports = {
-	userLogs: (req, res) => {
-		let URL = req.originalUrl;
-		let hasta =
-			URL.slice(1).indexOf("/") > 0
-				? URL.slice(1).indexOf("/") + 1
-				: URL.length;
-		let tema = URL.slice(1, hasta);
-		tema != "login" && tema != "usuarios"
-			? (req.session.urlReferencia = URL)
+	obtenerFA_id: (url) => {
+		// Obtener el FA_id a partir de la dirección
+		aux = url.indexOf("www.filmaffinity.com/");
+		if (aux < 0) return false;
+		url = url.slice(aux + 21);
+		aux = url.indexOf("/");
+		if (aux < 0) return false;
+		url = url.slice(aux + 5);
+		aux = url.indexOf(".html");
+		if (aux < 0) return false;
+		url = url.slice(0, aux);
+		fa_id = url;
+		return fa_id;
+	},
+
+	obtenerELC_id: async (datos) => {
+		// Definir variables
+		rubroAPI = datos.rubroAPI;
+		tmdb_id = datos.tmdb_id;
+		fa_id = datos.fa_id;
+		// Verificar YaEnBD
+		TMDB_yaEnBD = !!tmdb_id
+			? await RutinaELC_id(rubroAPI, "TMDB", tmdb_id)
 			: "";
-		res.locals.urlReferencia = req.session.urlReferencia
-			? req.session.urlReferencia
-			: "/";
-		//console.log(res.locals.urlReferencia);
+		FA_yaEnBD = !!fa_id ? await RutinaELC_id(rubroAPI, "FA", fa_id) : "";
+		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
+		// Enviar el resultado
+		return [TMDB_yaEnBD, FA_yaEnBD];
+	},
+
+	validarImagenFA: (url) => {
+		//renacidos_el_padre_pio_cambio_sus_vidas-850279707-large.jpg
+		aux = url.indexOf("pics.filmaffinity.com/");
+		if (aux < 0) return "No parece ser una imagen de FilmAffinity";
+		url = url.slice(aux + 22);
+		aux = url.indexOf("large.jpg");
+		if (aux < 0) return "Necesitamos que consigas el link de la imagen grande"
+		return "";
 	},
 
 	procesarContenidoFA: (contenido) => {
@@ -82,22 +106,20 @@ module.exports = {
 		return resultado;
 	},
 
-	productoYaEnBD: async (datos) => {
-		// Definir variables
-		rubroAPI = datos.rubroAPI;
-		tmdb_id = datos.tmdb_id;
-		fa_id = datos.fa_id;
-		// Verificar YaEnBD
-		yaEnBD = await AveriguarSiYaEnBD(rubroAPI, tmdb_id, fa_id);
-		TMDB_yaEnBD = !!tmdb_id
-			? await AveriguarSiYaEnBD(rubroAPI, "TMDB", tmdb_id)
+	userLogs: (req, res) => {
+		let URL = req.originalUrl;
+		let hasta =
+			URL.slice(1).indexOf("/") > 0
+				? URL.slice(1).indexOf("/") + 1
+				: URL.length;
+		let tema = URL.slice(1, hasta);
+		tema != "login" && tema != "usuarios"
+			? (req.session.urlReferencia = URL)
 			: "";
-		FA_yaEnBD = !!fa_id
-			? await AveriguarSiYaEnBD(rubroAPI, "FA", fa_id)
-			: "";
-		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
-		// Enviar el resultado
-		return [TMDB_yaEnBD, FA_yaEnBD];
+		res.locals.urlReferencia = req.session.urlReferencia
+			? req.session.urlReferencia
+			: "/";
+		//console.log(res.locals.urlReferencia);
 	},
 
 	enviarMail: async (asunto, mail, comentario) => {
@@ -123,17 +145,16 @@ module.exports = {
 	},
 };
 
-let AveriguarSiYaEnBD = async (rubroAPI, fuente, id) => {
+let RutinaELC_id = async (rubroAPI, fuente, id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || !id) return false;
 	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
 	let resultado =
 		rubroAPI == "movie"
-			? await BD_peliculas.AveriguarSiYaEnBD(parametro, id)
-			: await BD_colecciones.AveriguarSiYaEnBD(parametro, id);
+			? await BD_peliculas.ObtenerELC_id(parametro, id)
+			: await BD_colecciones.ObtenerELC_id(parametro, id);
 	return resultado;
 };
-
 let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");

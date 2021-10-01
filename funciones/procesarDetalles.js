@@ -5,7 +5,7 @@ const funciones = require("./funcionesVarias");
 const BD_varios = require("./BD/varios");
 
 module.exports = {
-	API: async (id, rubroAPI) => {
+	obtenerAPI: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
 			credits = await creditsTMDB(id);
@@ -237,15 +237,8 @@ module.exports = {
 
 	procesarProducto_FA: async (dato) => {
 		// Obtener los campos del formulario
-		let { rubroAPI, direccion, contenido } = dato;
-		// Obtener el FA_id a partir de la dirección
-		aux = direccion.indexOf("www.filmaffinity.com/");
-		direccion = direccion.slice(aux + 21);
-		aux = direccion.indexOf("/");
-		direccion = direccion.slice(aux + 5);
-		aux = direccion.indexOf(".html");
-		direccion = direccion.slice(0, aux);
-		fa_id = direccion;
+		let { rubroAPI, direccion, avatar, contenido } = dato;
+		fa_id = funciones.obtenerFA_id(direccion);
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
 		contenido = funciones.procesarContenidoFA(contenido);
@@ -253,6 +246,7 @@ module.exports = {
 			fuente: "FA",
 			rubroAPI,
 			fa_id,
+			avatar,
 			...contenido,
 		};
 		if (resultado.pais_nombre) {

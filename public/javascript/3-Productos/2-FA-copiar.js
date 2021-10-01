@@ -1,169 +1,174 @@
 window.addEventListener("load", () => {
-	// Declarar las variables
-	// Variables de Input
-	let rubroAPI = document.querySelector("select[name='rubroAPI']");
-	let direccion = document.querySelector("input[name='direccion']");
-	let contenido = document.querySelector("textarea[name='contenido']");
-	let avatar = document.querySelector("input[name='avatar']");
-	// Variables de Error
+	// Acciones cuando se hace click
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
-	let mensajeError = document.querySelectorAll(".mensajeError");
-	// Variables de Ayuda
-	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
-	console.log(iconosAyuda)
-	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	let inputs = document.querySelectorAll("#data_entry .input");
+	let button = document.querySelector("form button[type='submit']");
 
-	// Click en ícono de ayuda
 	window.onclick = (e) => {
+		// Status inicial
 		for (let i = 0; i < iconoError.length; i++) {
-			console.log(iconosAyuda[i].id);
-			e.target.matches(iconosAyuda[i].id)
+			iconoError[i].classList.contains("ocultar") &&
+			iconoOK[i].classList.contains("ocultar") &&
+			inputs[i].value != "" &&
+			!e.target.matches("#submit")
+				? verificar(false, i)
+				: "";
+		}
+
+		// Click en ícono de ayuda
+		let iconosAyuda = document.querySelectorAll(".fa-question-circle");
+		let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+		for (let i = 0; i < iconosAyuda.length; i++) {
+			e.target.matches("#" + iconosAyuda[i].id)
 				? mensajesAyuda[i].classList.toggle("ocultar")
 				: mensajesAyuda[i].classList.add("ocultar");
-
 		}
-		// !e.target.matches("#home-icono")
-		// 	? document.getElementById("home-menu").classList.add("ocultar")
-		// 	: document.getElementById("home-menu").classList.toggle("ocultar");
 	};
-	// window.onclick = (e) => {
-	// 	for (let i = 0; i < iconoError.length; i++) {
-	// 	}
-	// };
 
 	// Revisar el data-entry y comunicar los aciertos y errores
-	document.querySelector("form").oninput = (e) => {
-		e.target.matches("select[name='rubroAPI']")
-			? verificarRubro(true)
-			: e.target.matches("input[name='direccion']")
-			? verificarDireccion(true)
-			: verificarContenido(true);
-	};
-
-	// Submit
-	document.querySelector("form").addEventListener("submit", async (e) => {
-		resultado =
-			verificarRubro(true) &&
-			(await verificarDireccion(true)) &&
-			(await verificarContenido(true));
-		!resultado ? e.preventDefault() : "";
-	});
-
-	// Mensajes de Back-End
-	let mensajesBE = document.querySelectorAll("p.ocultar");
-	for (let i = 0; i < mensajesBE.length; i++) {
-		mensajeError[i].innerHTML = mensajesBE[i].innerHTML;
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("input",async () => {
+			console.log(await !verificar(true, i));
+			if (!await verificar(true, i)) {
+				button.classList.add("botonSinLink");
+			} else {
+				button.classList.remove("botonSinLink");
+				for (let j = 0; j < inputs.length; j++) {
+					iconoOK[j].classList.contains("ocultar") || !inputs[j].value
+						? button.classList.add("botonSinLink")
+						: "";
+					console.log(iconoOK[j].classList.contains("ocultar"));
+					console.log(!inputs[j].value);
+				}
+			}
+		});
 	}
 
+	// Submit
+	document.querySelector("form").addEventListener("submit", (e) => {
+		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+		verificarRubro(true);
+		verificarDireccion(true);
+		verificarAvatar(true);
+		verificarContenido(true);
+	});
+
 	// FUNCIONES ******************************
+	let mensajeError = document.querySelectorAll(".mensajeError");
 	let verificarRubro = (verificarErrores) => {
-		if (rubroAPI.value != "") {
+		if (inputs[0].value != "") {
 			iconoError[0].classList.add("ocultar");
 			iconoOK[0].classList.remove("ocultar");
 			return true;
 		} else if (verificarErrores) {
 			iconoError[0].classList.remove("ocultar");
 			mensajeError[0].innerHTML = "Elegí una opción";
-			return false;
 		}
+		return false;
 	};
-
 	let verificarDireccion = async (verificarErrores) => {
-		// https://www.filmaffinity.com/es/film596059.html
-		// Verificar que sea una dirección de FA *********
-		let link = direccion.value;
-		if (!link.includes("www.filmaffinity.com/")) {
-			if (verificarErrores) {
-				iconoError[1].classList.remove("ocultar");
-				mensajeError[1].innerHTML =
-					"No es una dirección de Film Affinity";
-			}
+		// TRUE --> la URL es correcta, el producto no está repetido
+		// Obtener el fa_id ****************
+		url = encodeURIComponent(inputs[1].value);
+		url = "/peliculas/agregar/api/obtener-fa-id/?url=" + url;
+		let fa_id = await fetch(url).then((n) => n.json());
+		if (!fa_id) {
+			mensajeError[1].innerHTML = "No es una dirección de Film Affinity";
+			verificarErrores ? iconoError[1].classList.remove("ocultar") : "";
 			return false;
 		}
-		// Obtener el FA_id ******************************
-		// Quitar el dominio
-		aux = link.indexOf("www.filmaffinity.com/");
-		link = link.slice(aux + 21);
-		// Quitar el pais
-		aux = link.indexOf("/");
-		link = link.slice(aux + 5);
-		// Quitar el 'html'
-		aux = link.indexOf(".html");
-		link = link.slice(0, aux);
-		fa_id = link;
-		// FA_id no repetido en la BD ********************
-		let url =
-			"/peliculas/agregar/api/prod-fa-en-bd/?" +
+		// Obtener el ELC_id ***************
+		url =
+			"/peliculas/agregar/api/obtener-elc-id/?" +
 			"rubroAPI=" +
-			rubroAPI.value +
+			inputs[0].value +
 			"&fa_id=" +
 			fa_id;
-		let id = await fetch(url).then((n) => n.json());
+		let ELC_id = await fetch(url).then((n) => n.json());
 		// Respuesta
 		// Resultado exitoso
-		if (!id) {
+		if (!ELC_id) {
 			iconoError[1].classList.add("ocultar");
 			iconoOK[1].classList.remove("ocultar");
 			return true;
 		} else if (verificarErrores) {
 			// Resultado inválido
 			iconoError[1].classList.remove("ocultar");
-			rubro = rubroAPI.value == "movie" ? "película" : "colección";
+			rubro = inputs[0].value == "movie" ? "película" : "colección";
 			mensajeError[1].innerHTML =
 				"La " +
 				rubro +
 				" ya está en nuestra BD. Hacé click " +
 				"<a href='/peliculas/agregar/ya-en-bd?rubroAPI=" +
-				rubroAPI.value +
+				inputs[0] +
 				"&id=" +
-				id +
+				ELC_id +
 				"'><u><strong>acá</strong></u></a>" +
 				" para ver el detalle";
 		}
 		return false;
 	};
-
+	let verificarAvatar = async (verificarErrores) => {
+		// TRUE --> la URL es correcta
+		url = encodeURIComponent(inputs[2].value);
+		url = "/peliculas/agregar/api/imagen_fa/?url=" + url;
+		let resultado = await fetch(url).then((n) => n.json());
+		console.log(resultado);
+		if (resultado) {
+			mensajeError[2].innerHTML = resultado;
+			verificarErrores ? iconoError[2].classList.remove("ocultar") : "";
+			iconoOK[2].classList.add("ocultar");
+			return false;
+		}
+		iconoError[2].classList.add("ocultar");
+		iconoOK[2].classList.remove("ocultar");
+		return true;
+	};
 	let verificarContenido = async (verificarErrores) => {
 		// Código de validación **************************
-		let campos = contenido.value
-			? await procesarContenidoFA(contenido.value)
+		let campos = inputs[3].value
+			? await procesarContenidoFA(inputs[3].value)
 			: 0;
 		// Resultado exitoso *****************************
 		if (campos > 0) {
-			iconoError[2].classList.add("ocultar");
-			iconoOK[2].classList.remove("ocultar");
+			iconoError[3].classList.add("ocultar");
+			iconoOK[3].classList.remove("ocultar");
 			return true;
 		}
 		// Resultado inválido ****************************
 		else if (verificarErrores) {
-			iconoError[2].classList.remove("ocultar");
-			contenido.value == ""
-				? (mensajeError[2].innerHTML =
+			iconoError[3].classList.remove("ocultar");
+			inputs[3].value == ""
+				? (mensajeError[3].innerHTML =
 						"Necesitamos que completes esta información")
-				: (mensajeError[2].innerHTML =
+				: (mensajeError[3].innerHTML =
 						"No se puede importar ningún dato");
 		}
 		return false;
 	};
-
-	// Status inicial
-	verificarRubro(true);
-	verificarDireccion(true);
-	verificarContenido(true);
-	//verificarAvatar(true);
+	let verificar =async (verificarErrores, i) => {
+		i == 0
+			? (aux = verificarRubro(verificarErrores))
+			: i == 1
+			? (aux = await verificarDireccion(verificarErrores))
+			: i == 2
+			? (aux = await verificarAvatar(verificarErrores))
+			: (aux = await verificarContenido(verificarErrores));
+		return aux
+	};
 });
 
-const procesarContenidoFA = async (contenido) => {
+let procesarContenidoFA = async (contenido) => {
 	// Procesando la información
 	let resultado = document.querySelector("#resultado");
 	resultado.classList.remove(...resultado.classList);
 	resultado.classList.add("resultadoEnEspera");
 	resultado.innerHTML = "Procesando la información...";
 	// Procesar los datos de la película
-	let encodedValue = encodeURIComponent(contenido);
+	contenido = encodeURIComponent(contenido);
 	let url =
-		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" + encodedValue;
+		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" + contenido;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	let campos = Object.keys(lectura).length;

@@ -211,7 +211,7 @@ let averiguarSiYaEnBD = async (datos) => {
 			rubroAPI: datos.resultados[i].rubroAPI,
 			tmdb_id: datos.resultados[i].tmdb_id,
 		};
-		let [YaEnBD] = await funciones.productoYaEnBD(dato);
+		let [YaEnBD] = await funciones.obtenerELC_id(dato);
 		datos.resultados[i] = {
 			...datos.resultados[i],
 			YaEnBD: YaEnBD,

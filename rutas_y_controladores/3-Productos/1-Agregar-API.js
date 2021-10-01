@@ -5,7 +5,7 @@ const validarProductos = require("../../funciones/validarProductos");
 
 // *********** Controlador ***********
 module.exports = {
-	contador: async (req, res) => {
+	cantProductos: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
 		let { palabras_clave } = req.query;
 		let lectura = await searchTMDB.search(palabras_clave);
@@ -13,10 +13,22 @@ module.exports = {
 		return res.json(lectura);
 	},
 
-	prodFaEnBD: async (req, res) => {
+	obtenerFA_id: async (req, res) => {
+		let url = req.query.url;
+		let fa_id = await funcionesVarias.obtenerFA_id(url);
+		return res.json(fa_id);
+	},
+
+	obtenerELC_id: async (req, res) => {
 		let datos = req.query;
-		let [, resultadoFA] = await funcionesVarias.productoYaEnBD(datos);
-		return res.json(resultadoFA);
+		let [, ELC_id] = await funcionesVarias.obtenerELC_id(datos);
+		return res.json(ELC_id);
+	},
+
+	validarImagenFA: async (req, res) => {
+		let url = req.query.url;
+		let fa_id = await funcionesVarias.validarImagenFA(url);
+		return res.json(fa_id);
 	},
 
 	procesarContenidoFA: (req, res) => {
@@ -26,6 +38,7 @@ module.exports = {
 		// Enviar la API
 		return res.json(resultado);
 	},
+
 	validarDatosDuros: async (req, res) => {
 		errores = await validarProductos.validarDatosDuros(req.query);
 		return res.json(errores);

@@ -12,7 +12,6 @@ module.exports = (sequelize, dt) => {
 		ano_fin: { type: dt.INTEGER },
 		pais_id: { type: dt.STRING(20) },
 		productor: { type: dt.STRING(50) },
-		en_produccion: { type: dt.BOOLEAN },
 		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
 	};
