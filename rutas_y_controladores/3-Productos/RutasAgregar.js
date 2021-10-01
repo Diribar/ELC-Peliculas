@@ -14,26 +14,27 @@ let upload = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
+router.get("/api/palabras-clave/", API.palabrasClave);
 router.get("/api/cant-prod/", API.cantProductos);
 router.get("/api/obtener-fa-id/", API.obtenerFA_id);
 router.get("/api/obtener-elc-id/", API.obtenerELC_id);
-router.get("/api/imagen_fa/", API.validarImagenFA);
-router.get("/api/procesarcontenidofa/", API.procesarContenidoFA);
-router.get("/api/validarDatosDuros/", API.validarDatosDuros);
+router.get("/api/imagen-fa/", API.validarImagenFA);
+router.get("/api/procesar-contenido-fa/", API.procesarContenidoFA);
+router.get("/api/validar-datos-duros/", API.validarDatosDuros);
 
 // Controladores de EJS
 router.get("/responsabilidad", usuarios, EJS.responsabilidad);
-router.get("/palabras_clave", usuarios, EJS.palabrasClaveForm);
-router.post("/palabras_clave", usuarios, EJS.palabrasClaveGuardar);
+router.get("/palabras-clave", usuarios, EJS.palabrasClaveForm);
+router.post("/palabras-clave", usuarios, EJS.palabrasClaveGuardar);
 router.get("/desambiguar", usuarios, EJS.desambiguarTMDB_Form);
 router.post("/desambiguar", usuarios, EJS.desambiguarTMDB_Guardar);
-router.get("/copiarfa", usuarios, autorizadoFA, EJS.copiarFA_Form);
-router.post("/copiarfa", usuarios, EJS.copiarFA_Guardar);
+router.get("/copiar-fa", usuarios, autorizadoFA, EJS.copiarFA_Form);
+router.post("/copiar-fa", usuarios, EJS.copiarFA_Guardar);
 router.get("/ya-en-bd", usuarios, EJS.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, EJS.yaEnBD_Form);
-router.get("/datos_duros", usuarios, prodEnBD, EJS.datosDurosForm);
-router.post("/datos_duros", usuarios, upload.single("avatar"), EJS.ddGuardar);
-router.get("/datos_personalizados", usuarios, prodEnBD, EJS.DatosPersForm);
-router.post("/datos_personalizados", usuarios, EJS.DatosPersGuardar);
+router.get("/datos-duros", usuarios, prodEnBD, EJS.datosDurosForm);
+router.post("/datos-duros", usuarios, upload.single("avatar"), EJS.ddGuardar);
+router.get("/datos-personalizados", usuarios, prodEnBD, EJS.DatosPersForm);
+router.post("/datos-personalizados", usuarios, EJS.DatosPersGuardar);
 
 // Fin
 module.exports = router;

@@ -3,7 +3,7 @@
 	<section class="flex-row space-between"> 
 		<h2>Paso 1 de 4: Ingresá Palabras Clave</h2>
 		<% if (autorizado_fa) { %>
-			<a href="/peliculas/agregar/copiarfa">
+			<a href="/peliculas/agregar/copiar-fa">
 				<img src="/imagenes/0-Base/LogoFA.jpg" alt="FA" height="30px" title="FA">
 			</a>			
 		<% } %> 
@@ -23,11 +23,9 @@
 					</span>
 				</i>
 			</div>
-			<% if (locals.errores) { %>
-				<i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.palabras_clave.msg %> </span>
-				</i>
-			<% } %>
+			<i class="fas fa-times-circle<%- !errores.palabras_clave ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores.palabras_clave %></span>
+			</i>
 			</i>
 		</div>
 		<button type="submit">Verificar</button>

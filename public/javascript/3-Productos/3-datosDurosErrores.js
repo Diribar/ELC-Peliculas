@@ -3,15 +3,13 @@ window.addEventListener("load", () => {
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("#data_entry button[type='submit']");
 	let inputs = document.querySelectorAll(".form-grupo .input");
-	let asteriscos = document.querySelectorAll(
-		".form-grupo .fa-times-circle"
-	);
+	let asteriscos = document.querySelectorAll(".form-grupo .fa-times-circle");
 	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
-	
-	// Hacer visible el mensaje de error del Avatar
-	grupoAvatar = mensajes.length-1;
+
+	// Hacer visible el mensaje de error del Avatar al iniciar
+	grupoAvatar = mensajes.length - 1;
 	mensajes[grupoAvatar].innerHTML = "Necesitamos que agregues la imagen";
-	asteriscos[grupoAvatar].classList.remove("ocultar")
+	asteriscos[grupoAvatar].classList.remove("ocultar");
 
 	for (let i = 0; i < inputs.length; i++) {
 		// Anular 'submit' si hay algún error
@@ -23,7 +21,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/peliculas/agregar/api/validardatosduros/?" +
+				"/peliculas/agregar/api/validar-datos-duros/?" +
 					campo +
 					"=" +
 					valor

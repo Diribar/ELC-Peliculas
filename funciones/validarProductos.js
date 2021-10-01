@@ -3,18 +3,18 @@ const BD_peliculas = require("./BD/peliculas");
 const BD_colecciones = require("./BD/colecciones");
 
 module.exports = {
-	validarPalabrasClave: (datos) => {
+	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.nombre_original = campoVacio(datos.nombre_original)
+		errores.palabras_clave = campoVacio(dato)
 			? cartelCampoVacio
-			: longitud(datos.nombre_original, 2, 50)
-			? longitud(datos.nombre_original, 2, 50)
+			: longitud(dato, 2, 20)
+			? longitud(dato, 2, 20)
 			: "";
 		return errores;
 	},
 
-	validarDatosDuros: async (datos) => {
+	datosDuros: async (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
