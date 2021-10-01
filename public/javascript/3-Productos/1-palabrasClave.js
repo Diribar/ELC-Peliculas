@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
 	});
 
 	// 'Verificar' o 'Avanzar'
-	form.addEventListener("submit", async (e) => {
+	form.addEventListener("submit", (e) => {
 		if (button.innerHTML == "Verificar") {
 			e.preventDefault();
 		} else if (!button.classList.includes("botonSinLink")) {
