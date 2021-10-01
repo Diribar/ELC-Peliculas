@@ -3,7 +3,6 @@ PALABRA CLAVE, completar:
 - Validaciones BE + redirect a Form
 
 ON SUBMIT
-- Validaciones back-end
-- Imagen:
-	- Validar tamaño
+- Validaciones BE
+- Imagen: validar tamaño
 - Actualizar cookies y session
