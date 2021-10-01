@@ -40,9 +40,10 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", (e) => {
 		if (button.innerHTML == "Verificar") {
 			e.preventDefault();
-		} else if (!button.classList.includes("botonSinLink")) {
-			contador(palabras_clave.value);
-			button.innerHTML = "Avanzar";
+			if (!button.classList.includes("botonSinLink")) {
+				contador(palabras_clave.value);
+				button.innerHTML = "Avanzar";
+			}
 		}
 	});
 	let contador = async (palabras_clave) => {
