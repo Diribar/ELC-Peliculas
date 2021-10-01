@@ -7,7 +7,6 @@ window.addEventListener("load", () => {
 	let mensajeError = document.querySelector(".mensajeError");
 	let asterisco = document.querySelector(".fa-times-circle");
 	let resultado = document.querySelector("#resultado");
-	console.log(resultado)
 
 	// Mensajes de ayuda
 	window.onclick = (e) => {
