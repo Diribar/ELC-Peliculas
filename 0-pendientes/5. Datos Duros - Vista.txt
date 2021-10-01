@@ -3,7 +3,7 @@ PALABRA CLAVE, completar:
 - Validaciones BE + redirect a Form
 
 Datos duros, rutina aparte
-	: (await AveriguarSiYaEnBD(
+	: (await ObtenerELC_id(
 			datos.rubroAPI,
 			datos.tmdb_id,
 			datos.fa_id
