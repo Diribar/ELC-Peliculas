@@ -5,6 +5,12 @@ const validarProductos = require("../../funciones/validarProductos");
 
 // *********** Controlador ***********
 module.exports = {
+	palabrasClave: async (req, res) => {
+		let palabras_clave = req.query.palabras_clave;
+		let resultado = await validarProductos.palabrasClave(palabras_clave);
+		return res.json(resultado.palabras_clave);
+	},
+
 	cantProductos: async (req, res) => {
 		// Obtener 'palabras_clave' y obtener la API
 		let { palabras_clave } = req.query;
@@ -40,7 +46,7 @@ module.exports = {
 	},
 
 	validarDatosDuros: async (req, res) => {
-		errores = await validarProductos.validarDatosDuros(req.query);
+		errores = await validarProductos.datosDuros(req.query);
 		return res.json(errores);
 	},
 };

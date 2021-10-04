@@ -4,24 +4,9 @@ window.addEventListener("load", () => {
 	let form = document.getElementById("data_entry");
 	let button = document.querySelector("button");
 	let mensajeAyuda = document.querySelector(".mensajeAyuda");
+	let mensajeError = document.querySelector(".mensajeError");
+	let asterisco = document.querySelector(".fa-times-circle");
 	let resultado = document.querySelector("#resultado");
-
-	// 'Verificar' ante cambios en el input
-	palabras_clave.addEventListener("input", () => {
-		button.innerHTML = "Verificar";
-		borrarComentario();
-	});
-
-	// 'Verificar' o 'Avanzar'
-	form.addEventListener("submit", (e) => {
-		if (button.innerHTML == "Verificar") {
-			e.preventDefault();
-			if (palabras_clave.value.length > 1) {
-				contador(palabras_clave.value);
-				button.innerHTML = "Avanzar";
-			}
-		}
-	});
 
 	// Mensajes de ayuda
 	window.onclick = (e) => {
@@ -29,7 +14,38 @@ window.addEventListener("load", () => {
 			? mensajeAyuda.classList.toggle("ocultar")
 			: mensajeAyuda.classList.add("ocultar");
 	};
+	// Acciones ante cambios en el input
+	palabras_clave.addEventListener("input", async () => {
+		button.innerHTML = "Verificar";
+		resultado.innerHTML = "<br>";
+		resultado.classList.remove(...resultado.classList);
+		resultado.classList.add("sinResultado");
+		let link =
+			"/peliculas/agregar/api/palabras-clave/?palabras_clave=" +
+			palabras_clave.value;
+		respuesta = await fetch(link).then((n) => n.json());
+		// Acciones en función de la respuesta
+		if (respuesta) {
+			asterisco.classList.remove("ocultar");
+			button.classList.add("botonSinLink");
+			mensajeError.innerHTML = respuesta;
+		} else {
+			asterisco.classList.add("ocultar");
+			button.classList.remove("botonSinLink");
+			mensajeError.innerHTML = "";
+		}
+	});
 
+	// 'Verificar' o 'Avanzar'
+	form.addEventListener("submit", (e) => {
+		if (button.innerHTML == "Verificar") {
+			e.preventDefault();
+			if (!button.classList.includes("botonSinLink")) {
+				contador(palabras_clave.value);
+				button.innerHTML = "Avanzar";
+			}
+		}
+	});
 	let contador = async (palabras_clave) => {
 		palabras_clave = palabras_clave.trim();
 		if (palabras_clave.length > 1) {
@@ -88,11 +104,5 @@ window.addEventListener("load", () => {
 			resultado.classList.remove(...resultado.classList);
 			resultado.classList.add(formatoVigente);
 		}
-	};
-
-	let borrarComentario = () => {
-		resultado.innerHTML = "<br>";
-		resultado.classList.remove(...resultado.classList);
-		resultado.classList.add("sinResultado");
 	};
 });

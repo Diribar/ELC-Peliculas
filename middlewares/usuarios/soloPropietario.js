@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 		return res.redirect("/login");
 	}
 	else if (req.session.usuario.rol_usuario_id < 4) {
-		return res.redirect("/peliculas/agregar/palabras_clave");
+		return res.redirect("/peliculas/agregar/palabras-clave");
 	}
 	next();
 };

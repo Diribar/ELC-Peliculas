@@ -1,7 +1,17 @@
+PALABRA CLAVE, completar:
+- Validaciones FE
+- Validaciones BE + redirect a Form
+
+Datos duros, rutina aparte
+	: (await ObtenerELC_id(
+			datos.rubroAPI,
+			datos.tmdb_id,
+			datos.fa_id
+		))
+	? "El título original ya está en nuestra base de datos"
+
 ON SUBMIT
-- Guardar la imagen
-	- Nombre: nombre_castellano (10 letras) + número aleatorio
-	- Validar tamaño
-	- Carpeta: provisoria
-- Validaciones back-end
+- Validaciones BE
+- Imagen: validar tamaño
 - Actualizar cookies y session
+

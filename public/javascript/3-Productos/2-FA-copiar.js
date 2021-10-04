@@ -112,7 +112,7 @@ window.addEventListener("load", () => {
 	let verificarAvatar = async (verificarErrores) => {
 		// TRUE --> la URL es correcta
 		url = encodeURIComponent(inputs[2].value);
-		url = "/peliculas/agregar/api/imagen_fa/?url=" + url;
+		url = "/peliculas/agregar/api/imagen-fa/?url=" + url;
 		let resultado = await fetch(url).then((n) => n.json());
 		console.log(resultado);
 		if (resultado) {
@@ -168,7 +168,7 @@ let procesarContenidoFA = async (contenido) => {
 	// Procesar los datos de la película
 	contenido = encodeURIComponent(contenido);
 	let url =
-		"/peliculas/agregar/api/procesarcontenidofa/?contenido=" + contenido;
+		"/peliculas/agregar/api/procesar-contenido-fa/?contenido=" + contenido;
 	let lectura = await fetch(url).then((n) => n.json());
 	// Información procesada
 	let campos = Object.keys(lectura).length;

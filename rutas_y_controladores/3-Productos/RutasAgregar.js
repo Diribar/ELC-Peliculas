@@ -2,7 +2,7 @@
 let express = require("express");
 let router = express.Router();
 let API = require("./1-Agregar-API");
-let EJS = require("./1-Agregar-EJS");
+let vistas = require("./1-Agregar-Vistas");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");
@@ -14,26 +14,27 @@ let upload = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
+router.get("/api/palabras-clave/", API.palabrasClave);
 router.get("/api/cant-prod/", API.cantProductos);
 router.get("/api/obtener-fa-id/", API.obtenerFA_id);
 router.get("/api/obtener-elc-id/", API.obtenerELC_id);
-router.get("/api/imagen_fa/", API.validarImagenFA);
-router.get("/api/procesarcontenidofa/", API.procesarContenidoFA);
-router.get("/api/validarDatosDuros/", API.validarDatosDuros);
+router.get("/api/imagen-fa/", API.validarImagenFA);
+router.get("/api/procesar-contenido-fa/", API.procesarContenidoFA);
+router.get("/api/validar-datos-duros/", API.validarDatosDuros);
 
-// Controladores de EJS
-router.get("/responsabilidad", usuarios, EJS.responsabilidad);
-router.get("/palabras_clave", usuarios, EJS.palabrasClaveForm);
-router.post("/palabras_clave", usuarios, EJS.palabrasClaveGuardar);
-router.get("/desambiguar", usuarios, EJS.desambiguarTMDB_Form);
-router.post("/desambiguar", usuarios, EJS.desambiguarTMDB_Guardar);
-router.get("/copiarfa", usuarios, autorizadoFA, EJS.copiarFA_Form);
-router.post("/copiarfa", usuarios, EJS.copiarFA_Guardar);
-router.get("/ya-en-bd", usuarios, EJS.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, EJS.yaEnBD_Form);
-router.get("/datos_duros", usuarios, prodEnBD, EJS.datosDurosForm);
-router.post("/datos_duros", usuarios, upload.single("avatar"), EJS.ddGuardar);
-router.get("/datos_personalizados", usuarios, prodEnBD, EJS.DatosPersForm);
-router.post("/datos_personalizados", usuarios, EJS.DatosPersGuardar);
+// Controladores de vistas
+router.get("/responsabilidad", usuarios, vistas.responsabilidad);
+router.get("/palabras-clave", usuarios, vistas.palabrasClaveForm);
+router.post("/palabras-clave", usuarios, vistas.palabrasClaveGuardar);
+router.get("/desambiguar", usuarios, vistas.desambiguarTMDB_Form);
+router.post("/desambiguar", usuarios, vistas.desambiguarTMDB_Guardar);
+router.get("/copiar-fa", usuarios, autorizadoFA, vistas.copiarFA_Form);
+router.post("/copiar-fa", usuarios, vistas.copiarFA_Guardar);
+router.get("/ya-en-bd", usuarios, vistas.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, vistas.yaEnBD_Form);
+router.get("/datos-duros", usuarios, prodEnBD, vistas.datosDurosForm);
+router.post("/datos-duros", usuarios, upload.single("avatar"), vistas.ddGuardar);
+router.get("/datos-personalizados", usuarios, prodEnBD, vistas.DatosPersForm);
+router.post("/datos-personalizados", usuarios, vistas.DatosPersGuardar);
 
 // Fin
 module.exports = router;

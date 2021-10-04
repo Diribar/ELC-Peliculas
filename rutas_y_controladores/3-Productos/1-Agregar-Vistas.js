@@ -1,12 +1,8 @@
 // ************ Requires ************
 const path = require("path");
-const { validationResult } = require("express-validator");
 const searchTMDB = require("../../funciones/searchTMDB");
 const procesarDetalles = require("../../funciones/procesarDetalles");
-const BD_varios = require(path.join(
-	__dirname,
-	"../../funciones/BD/varios"
-));
+const BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 const validarProductos = require("../../funciones/validarProductos");
 
 // *********** Controlador ***********
@@ -20,31 +16,33 @@ module.exports = {
 		tema = "agregar";
 		codigo = "palabrasClave";
 		let autorizado_fa = req.session.usuario.autorizado_fa;
-		let palabras_clave = req.session.palabras_clave;
-		!palabras_clave ? (palabras_clave = req.cookies.palabras_clave) : "";
+		let palabras_clave = req.session.palabras_clave
+			? req.session.palabras_clave
+			: req.cookies.palabras_clave
+			? req.cookies.palabras_clave
+			: "";
+		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			autorizado_fa,
-			palabras_clave,
 			link: req.originalUrl,
+			palabras_clave,
+			errores,
 		});
 	},
 	palabrasClaveGuardar: async (req, res) => {
-		//Detectar errores de Data Entry
-		let erroresValidacion = validationResult(req);
-		let existenErrores = erroresValidacion.errors.length > 0;
+		// Averiguar si hay errores de validación
+		let dato = req.body.palabras_clave;
+		let errores = await validarProductos.palabrasClave(dato);
+		return res.send(errores)
+
+		// Si hay errores
 		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
 			tema = "agregar";
 			codigo = "palabrasClave";
-			return res.render("Home", {
-				tema,
-				codigo,
-				palabras_clave,
-				errores: erroresValidacion.mapped(),
-				link: req.originalUrl,
-			});
+			return res.redirect("/peliculas/agregar/palabras-clave");
 		}
 		// Eliminar el campo 'fuente' de 'datos de cabecera' de desambiguarTMDB anteriores
 		res.clearCookie("fuente");
@@ -92,7 +90,7 @@ module.exports = {
 		// Grabar cookies con la info del producto
 		actualizarCookiesProductos(res, req.session.datosDuros, camposProducto);
 		// Redireccionar a Datos Duros
-		return res.redirect("/peliculas/agregar/datos_duros");
+		return res.redirect("/peliculas/agregar/datos-duros");
 	},
 	copiarFA_Form: (req, res) => {
 		tema = "agregar";
@@ -119,7 +117,7 @@ module.exports = {
 		// Grabar cookies con la info del producto
 		actualizarCookiesProductos(res, req.session.datosDuros, camposProducto);
 		// Redireccionar a Datos Duros
-		return res.redirect("/peliculas/agregar/datos_duros");
+		return res.redirect("/peliculas/agregar/datos-duros");
 	},
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
@@ -131,9 +129,12 @@ module.exports = {
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
 		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
-		errores = await validarProductos.validarDatosDuros(
-			req.session.datosDuros
-		);
+		let errores = req.session.errores
+			? req.session.errores
+			: await validarProductos.datosDuros(req.session.datosDuros);
+		let data_entry = req.session.data_entry
+			? req.session.data_entry
+			: false;
 		//return res.send(errores)
 		return res.render("Home", {
 			tema,
@@ -145,8 +146,6 @@ module.exports = {
 		});
 	},
 	ddGuardar: async (req, res) => {
-		const erroresValidacion = validationResult(req);
-		//return res.send(erroresValidacion)
 		if (erroresValidacion.errors.length > 0) {
 			tema = "agregar";
 			codigo = "datosDuros";

@@ -143,17 +143,17 @@
 		</div>
 		<div id="columnaMedio"> <!--Columna intermedia-->
 		</div>
-		<div id="imagenPeli">  <!--Segunda columna-->
+		<div id="imagenPeli" class="form-grupo">  <!--Segunda columna-->
 			<% if (data_entry.avatar) { %>
-				<button type="button">Copiá y pegá el URL<br>de la imagen</button>
+				<button type="button">Hacé <em>click</em> acá para pegar <br>el URL de la imagen</button>
 			<% } else { %>
 				<button type="button">Elegí una imagen de<br>tu PC o internet (URL)</button>
 			<% } %> 
 			<label for="imagen" id="preview">
 				<img src="<%= data_entry.avatar %>" alt="" class="ocultar">
 			</label>
-			<input name="ruta" type="text" value="./public/imagenes/3-Productos" class="ocultar">
-			<input name="avatar" type="file" accept="image/*" id="imagen" class="ocultar">
+			<input name="ruta" type="text" value="./public/imagenes/4-Provisorio" class="ocultar">
+			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
 			<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
 			</i>
