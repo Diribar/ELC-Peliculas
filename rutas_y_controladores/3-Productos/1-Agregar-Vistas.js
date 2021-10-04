@@ -36,7 +36,6 @@ module.exports = {
 		let dato = req.body.palabras_clave;
 		let errores = await validarProductos.palabrasClave(dato);
 		return res.send(errores)
-
 		// Si hay errores
 		let palabras_clave = req.body.palabras_clave;
 		if (existenErrores) {
