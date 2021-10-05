@@ -39,7 +39,7 @@ module.exports = {
 				? (datosLectura.imdb_id = lectura.imdb_id)
 				: "";
 			lectura.overview != ""
-				? (datosLectura.sinopsis = fuenteSinopsis(lectura.overview))
+				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
 				: "";
 			lectura.poster_path != ""
 				? (datosLectura.avatar =
@@ -130,7 +130,7 @@ module.exports = {
 				? (datosLectura.idioma_original = lectura.original_language)
 				: "";
 			lectura.overview != ""
-				? (datosLectura.sinopsis = fuenteSinopsis(lectura.overview))
+				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
 				: "";
 			lectura.poster_path != ""
 				? (datosLectura.avatar =
@@ -194,7 +194,7 @@ module.exports = {
 				? (datosLectura.nombre_castellano = lectura.name)
 				: "";
 			lectura.overview != ""
-				? (datosLectura.sinopsis = fuenteSinopsis(lectura.overview))
+				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
 				: "";
 			lectura.poster_path != ""
 				? (datosLectura.avatar =
@@ -217,7 +217,7 @@ module.exports = {
 						tmdb_id: n.id,
 						nombre_castellano: n.title,
 						nombre_original: n.original_title,
-						sinopsis: fuenteSinopsis(n.overview),
+						sinopsis: fuenteSinopsisTMDB(n.overview),
 						ano_estreno: parseInt(n.release_date.slice(0, 4)),
 					};
 					n.poster_path != ""
@@ -289,7 +289,7 @@ module.exports = {
 };
 
 // Funciones *********************
-let fuenteSinopsis = (sinopsis) => {
+let fuenteSinopsisTMDB = (sinopsis) => {
 	sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)")
 		? (sinopsis = sinopsis + " (TMDB)")
 		: "";
