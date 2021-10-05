@@ -64,11 +64,9 @@ module.exports = {
 		codigo = "desambiguar";
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
-		lectura
-			? (lectura = await buscar_x_PalClave.search(
-					req.cookies.palabras_clave
-			  ))
-			: "";
+		lectura = lectura
+			? await buscar_x_PalClave.search(req.cookies.palabras_clave)
+			: lectura;
 		resultados = lectura.resultados;
 		coincidencias = resultados.length;
 		let prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
