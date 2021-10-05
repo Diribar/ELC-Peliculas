@@ -54,21 +54,21 @@ module.exports = {
 
 	datosDuros: (datos) => {
 		let errores = {};
-		errores.nombre_original = datos.nombre_original
+		errores.nombre_original = !datos.nombre_original
 			? cartelCampoVacio
 			: longitud(datos.nombre_original, 2, 50)
 			? longitud(datos.nombre_original, 2, 50)
 			: castellano(datos.nombre_original)
 			? cartelCastellano
 			: "";
-		errores.nombre_castellano = datos.nombre_castellano
+		errores.nombre_castellano = !datos.nombre_castellano
 			? cartelCampoVacio
 			: longitud(datos.nombre_castellano, 2, 50)
 			? longitud(datos.nombre_castellano, 2, 50)
 			: castellano(datos.nombre_castellano)
 			? cartelCastellano
 			: "";
-		errores.ano_estreno = datos.ano_estreno
+		errores.ano_estreno = !datos.ano_estreno
 			? cartelCampoVacio
 			: formatoAno(datos.ano_estreno)
 			? "Debe ser un número de 4 dígitos"
@@ -77,43 +77,43 @@ module.exports = {
 			: datos.ano_estreno > new Date().getFullYear()
 			? "El número no puede superar al año actual"
 			: "";
-		errores.duracion = datos.duracion
+		errores.duracion = !datos.duracion
 			? cartelCampoVacio
 			: formatoNumero(datos.duracion, 20)
 			? formatoNumero(datos.duracion, 20)
 			: datos.duracion > 300
 			? "Debe ser un número menor"
 			: "";
-		errores.pais_id = datos.pais_id ? cartelCampoVacio : "";
-		errores.director = datos.director
+		errores.pais_id = !datos.pais_id ? cartelCampoVacio : "";
+		errores.director = !datos.director
 			? cartelCampoVacio
 			: longitud(datos.director, 2, 50)
 			? longitud(datos.director, 2, 50)
 			: castellano(datos.director)
 			? cartelCastellano
 			: "";
-		errores.guion = datos.guion
+		errores.guion = !datos.guion
 			? cartelCampoVacio
 			: longitud(datos.guion, 2, 50)
 			? longitud(datos.guion, 2, 50)
 			: castellano(datos.guion)
 			? cartelCastellano
 			: "";
-		errores.musica = datos.musica
+		errores.musica = !datos.musica
 			? cartelCampoVacio
 			: longitud(datos.musica, 2, 50)
 			? longitud(datos.musica, 2, 50)
 			: castellano(datos.musica)
 			? cartelCastellano
 			: "";
-		errores.actores = datos.actores
+		errores.actores = !datos.actores
 			? cartelCampoVacio
 			: longitud(datos.actores, 2, 500)
 			? longitud(datos.actores, 2, 500)
 			: castellano(datos.actores)
 			? cartelCastellano
 			: "";
-		errores.productor = datos.productor
+		errores.productor = !datos.productor
 			? cartelCampoVacio
 			: longitud(datos.productor, 2, 100)
 			? longitud(datos.productor, 2, 100)

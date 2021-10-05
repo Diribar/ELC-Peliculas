@@ -14,6 +14,7 @@ module.exports = {
 		codigo = "responsabilidad";
 		return res.render("Home", { tema, codigo });
 	},
+
 	palabrasClaveForm: (req, res) => {
 		tema = "agregar";
 		codigo = "palabrasClave";
@@ -32,6 +33,7 @@ module.exports = {
 			errores,
 		});
 	},
+
 	palabrasClaveGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let palabras_clave = req.body.palabras_clave;
@@ -50,17 +52,22 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// Obtener la API
-		req.session.peliculasTMDB = await buscar_x_PalClave.search(palabras_clave);
+		req.session.peliculasTMDB = await buscar_x_PalClave.search(
+			palabras_clave
+		);
 		// return res.send(req.session.peliculasTMDB);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
+
 	desambiguarTMDB_Form: async (req, res) => {
 		tema = "agregar";
 		codigo = "desambiguar";
 		// Obtener la API de 'search'
 		let lectura = req.session.peliculasTMDB;
 		lectura == undefined
-			? (lectura = await buscar_x_PalClave.search(req.cookies.palabras_clave))
+			? (lectura = await buscar_x_PalClave.search(
+					req.cookies.palabras_clave
+			  ))
 			: "";
 		resultados = lectura.resultados;
 		coincidencias = resultados.length;
@@ -78,6 +85,7 @@ module.exports = {
 			link: req.originalUrl,
 		});
 	},
+
 	desambiguarTMDB_Guardar: async (req, res) => {
 		// Obtener la info para exportar a la vista 'Datos Duros'
 		req.session.datosDuros =
@@ -86,10 +94,11 @@ module.exports = {
 				: req.body;
 		// return res.send(req.session.datosDuros);
 		// Borrar cookies y grabar los nuevos con la info del producto
-		actualizarCookiesProductos(res, req.session.datosDuros);
+		actualizarCookiesProductos(req.session.datosDuros, res);
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos-duros");
 	},
+
 	copiarFA_Form: (req, res) => {
 		tema = "agregar";
 		codigo = "copiarFA";
@@ -105,6 +114,7 @@ module.exports = {
 			errores,
 		});
 	},
+
 	copiarFA_Guardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let errores = await validarProductos.copiarFA(req.body);
@@ -116,20 +126,14 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/peliculas/agregar/copiar-fa");
 		}
-
-		//return res.send(req.body)
-		req.session.datosDuros = await procesarProductos.producto_FA(
-			req.body
-		);
-		//return res.send(req.session.datosDuros);
+		req.session.datosDuros = await procesarProductos.producto_FA(req.body);
 		// Grabar cookies con la info del producto
-		actualizarCookiesProductos(res, req.session.datosDuros);
+		actualizarCookiesProductos(req.session.datosDuros, res);
+		//return res.send(req.cookies)
 		// Redireccionar a Datos Duros
 		return res.redirect("/peliculas/agregar/datos-duros");
 	},
-	yaEnBD_Form: (req, res) => {
-		return res.send("La Película / Colección ya está en nuestra BD");
-	},
+
 	datosDurosForm: async (req, res) => {
 		tema = "agregar";
 		codigo = "datosDuros";
@@ -140,9 +144,6 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(req.session.datosDuros);
-		let data_entry = req.session.data_entry
-			? req.session.data_entry
-			: false;
 		//return res.send(errores)
 		return res.render("Home", {
 			tema,
@@ -153,9 +154,10 @@ module.exports = {
 			errores,
 		});
 	},
+
 	ddGuardar: async (req, res) => {
 		errores = await validarProductos.datosDuros(req.query);
-		return res.send("linea 147")
+		return res.send("linea 147");
 		if (erroresValidacion.errors.length > 0) {
 			tema = "agregar";
 			codigo = "datosDuros";
@@ -184,6 +186,9 @@ module.exports = {
 	DatosPersGuardar: (req, res) => {
 		return res.send("Estoy en guardar3");
 	},
+	yaEnBD_Form: (req, res) => {
+		return res.send("La Película / Colección ya está en nuestra BD");
+	},
 };
 
 let obtenerDatosDelProductoTMDB = async (form) => {
@@ -204,22 +209,41 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	return resultado;
 };
 
-let actualizarCookiesProductos = async (res, producto) => {
+let actualizarCookiesProductos = async (producto, res) => {
+	let camposTotales = [
+		"fuente",
+		"rubroAPI",
+		"tmdb_id",
+		"fa_id",
+		"imdb_id",
+		"coleccion_tmdb_id",
+		"nombre_original",
+		"nombre_castellano",
+		"idioma_original",
+		"ano_estreno",
+		"ano_fin",
+		"partes",
+		"duracion",
+		"pais_id",
+		"director",
+		"guion",
+		"musica",
+		"productor",
+		"actores",
+		"avatar",
+		"sinopsis",
+	];
 	// Obtener los campos
-	modelo =
-		rubroAPI == "movie"
-			? await BD_peliculas.ObtenerPorID(0)
-			: await BD_colecciones.ObtenerPorID(0);
-	campos = Object.keys(modelo);
-	console.log(campos)
+	// modelo =
+	// 	producto.rubroAPI == "movie"
+	// 		? await BD_peliculas.ObtenerPorID(1)
+	// 		: await BD_colecciones.ObtenerPorID(1);
+	// camposTotales = modelo._options.attributes;
+	camposProducto = Object.keys(producto);
 	// Borrar cookies de producto viejo
-	for (campo of campos) {
-		res.clearCookie(campo);
-	}
-	// Agregar cookies de producto nuevo
-	campos = Object.keys(producto);
-	valores = Object.values(producto);
-	for (let i = 0; i < campos.length; i++) {
-		res.cookie(campos[i], valores[i], { maxAge: 1000 * 60 * 60 });
+	for (campo of camposTotales) {
+		camposProducto.includes(campo)
+			? res.cookie(campo, producto[campo], { maxAge: 1000 * 60 * 60 })
+			: res.clearCookie(campo);
 	}
 };

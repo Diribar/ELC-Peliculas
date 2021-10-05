@@ -160,8 +160,7 @@
 		</div>	
 	</section>
 	<section id="flechas" class="flex-row space-between">
-		<% console.log(data_entry.fuente) %> 
-		<% retroceso = data_entry.fuente == "TMDB" ? "desambiguar" : "copiarfa" %>
+		<% retroceso = data_entry.fuente == "TMDB" ? "desambiguar" : "copiar-fa" %>
 		<a href="/peliculas/agregar/<%= retroceso %>"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit">Enviar</button>
 		<% if (false) { %>

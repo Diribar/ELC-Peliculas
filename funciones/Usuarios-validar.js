@@ -22,7 +22,6 @@ module.exports = {
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
-		console.log(datos);
 		errores.nombre = campoVacio(datos.nombre)
 			? cartelCampoVacio
 			: longitud(datos.nombre, 2, 30)
