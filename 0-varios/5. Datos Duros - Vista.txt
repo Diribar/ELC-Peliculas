@@ -3,6 +3,7 @@ PALABRA CLAVE, completar:
 - Validaciones BE + redirect a Form
 
 COPIAR FA
+agregar flecha a la izquierda
 // Validar si ya en BD
 let ObtenerELC_id = async (rubroAPI, tmdb_id, fa_id) => {
 	// La respuesta se espera que sea 'true' or 'false'

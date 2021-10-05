@@ -150,7 +150,7 @@
 				<button type="button">Elegí una imagen de<br>tu PC o internet (URL)</button>
 			<% } %> 
 			<label for="imagen" id="preview">
-				<img src="<%= data_entry.avatar %>" alt="" class="ocultar">
+				<p id="url" class="ocultar"><%= data_entry.avatar %></p>
 			</label>
 			<input name="ruta" type="text" value="./public/imagenes/4-Provisorio" class="ocultar">
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">

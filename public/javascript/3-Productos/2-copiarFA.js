@@ -10,37 +10,6 @@ window.addEventListener("load", () => {
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
 	let resultado = document.querySelector("#resultado");
 
-	// Status inicial
-	for (let i = 0; i < iconoError.length; i++) {
-		iconoError[i].classList.contains("ocultar") &&
-		iconoOK[i].classList.contains("ocultar") &&
-		inputs[i].value != ""
-			? revisarInput(i)
-			: "";
-	}
-
-	// Mensajes de ayuda y status inicial
-	window.onclick = (e) => {
-		// Mensajes de ayuda
-		for (let i = 0; i < iconosAyuda.length; i++) {
-			e.target.matches("#" + iconosAyuda[i].id)
-				? mensajesAyuda[i].classList.toggle("ocultar")
-				: mensajesAyuda[i].classList.add("ocultar");
-		}
-	};
-
-	// Revisar el data-entry y comunicar los aciertos y errores
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async () => {
-			await revisarInput(i);
-		});
-	}
-
-	// Submit
-	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
-	});
-
 	// Fórmulas
 	let revisarInput = async (i) => {
 		// Averiguar si hay un error
@@ -87,4 +56,35 @@ window.addEventListener("load", () => {
 			? "No se obtuvo ningún dato"
 			: "<br>";
 	};
+
+	// Status inicial
+	for (let i = 0; i < iconoError.length; i++) {
+		iconoError[i].classList.contains("ocultar") &&
+		iconoOK[i].classList.contains("ocultar") &&
+		inputs[i].value != ""
+			? revisarInput(i)
+			: "";
+	}
+
+	// Mensajes de ayuda y status inicial
+	window.onclick = (e) => {
+		// Mensajes de ayuda
+		for (let i = 0; i < iconosAyuda.length; i++) {
+			e.target.matches("#" + iconosAyuda[i].id)
+				? mensajesAyuda[i].classList.toggle("ocultar")
+				: mensajesAyuda[i].classList.add("ocultar");
+		}
+	};
+
+	// Revisar el data-entry y comunicar los aciertos y errores
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("input", async () => {
+			await revisarInput(i);
+		});
+	}
+
+	// Submit
+	form.addEventListener("submit", (e) => {
+		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+	});
 });
