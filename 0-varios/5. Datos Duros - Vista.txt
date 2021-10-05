@@ -2,6 +2,20 @@ PALABRA CLAVE, completar:
 - Validaciones FE
 - Validaciones BE + redirect a Form
 
+COPIAR FA
+agregar flecha a la izquierda
+// Validar si ya en BD
+let ObtenerELC_id = async (rubroAPI, tmdb_id, fa_id) => {
+	// La respuesta se espera que sea 'true' or 'false'
+	if (!rubroAPI || (!tmdb_id && !fa_id)) return false;
+	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";
+	let id = tmdb_id != null ? tmdb_id : fa_id;
+	return rubroAPI == "movie"
+		? await BD_peliculas.ObtenerELC_id(parametro, id)
+		: await BD_colecciones.ObtenerELC_id(parametro, id);
+};
+
+
 Datos duros, rutina aparte
 	: (await ObtenerELC_id(
 			datos.rubroAPI,

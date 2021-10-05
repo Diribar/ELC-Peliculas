@@ -15,7 +15,7 @@
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; font-size: 1rem;}
 #data_entry .fa-times-circle {color: var(--rojo-oscuro);}
-#data_entry .fa-check-circle {color: var(--verde-oscuro);}
+#data_entry .fa-check-circle {color: var(--verde-oscuro); cursor: default;}
 .fas {z-index: 1;}
 #data_entry .mensajeError, #data_entry .mensajeAyuda 
 	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}

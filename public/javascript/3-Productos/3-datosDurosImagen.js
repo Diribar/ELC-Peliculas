@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	// Copiar al portapapeles
-	let img = document.querySelector("form #imagenPeli label img");
-	navigator.clipboard.writeText(img.src);
+	let url = document.querySelector("form #imagenPeli #url");
+	navigator.clipboard.writeText(url.innerHTML);
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");
 	inputImagen.addEventListener("change", (e) => {

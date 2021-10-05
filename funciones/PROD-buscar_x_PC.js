@@ -1,7 +1,7 @@
 // Require
-const searchTMDB = require("./API/searchTMDB_fetch");
-const detailsTMDB = require("./API/detailsTMDB_fetch");
-const funciones = require("./funcionesVarias");
+let searchTMDB = require("./API/searchTMDB_fetch");
+let detailsTMDB = require("./API/detailsTMDB_fetch");
+let procesarProd = require("./PROD-procesar")
 
 // Función a exportar
 module.exports = {
@@ -211,7 +211,7 @@ let averiguarSiYaEnBD = async (datos) => {
 			rubroAPI: datos.resultados[i].rubroAPI,
 			tmdb_id: datos.resultados[i].tmdb_id,
 		};
-		let [YaEnBD] = await funciones.obtenerELC_id(dato);
+		let [YaEnBD] = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {
 			...datos.resultados[i],
 			YaEnBD: YaEnBD,
