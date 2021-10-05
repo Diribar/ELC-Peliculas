@@ -204,6 +204,7 @@ let eliminarDuplicados = (datos) => {
 	});
 	return datos;
 };
+
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i=0; i<datos.resultados.length; i++) {
 		let dato = {
@@ -218,6 +219,7 @@ let averiguarSiYaEnBD = async (datos) => {
 	}
 	return datos;
 };
+
 let hayMas = (datos, page, rubrosAPI) => {
 	return (
 		page < datos.cantPaginasAPI[rubrosAPI[0]] ||
@@ -225,6 +227,7 @@ let hayMas = (datos, page, rubrosAPI) => {
 		page < datos.cantPaginasAPI[rubrosAPI[2]]
 	);
 };
+
 let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
@@ -245,6 +248,7 @@ let ordenarDatos = (datos, palabras_clave) => {
 	};
 	return datosEnOrden;
 };
+
 let letrasIngles = (palabra) => {
 	word = palabra
 		.toLowerCase()
