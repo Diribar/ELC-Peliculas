@@ -47,7 +47,7 @@ module.exports = {
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
-	
+
 	editables: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
