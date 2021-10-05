@@ -20,7 +20,7 @@ router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 router.get("/api/validar-datos-duros/", API.validarDatosDuros);
 // Validar campos vs. API/BD
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
-router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
+//router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
 
 // Controladores de vistas
 router.get("/responsabilidad", usuarios, vistas.responsabilidad);
