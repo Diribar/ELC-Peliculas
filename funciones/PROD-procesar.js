@@ -345,8 +345,8 @@ module.exports = {
 		tmdb_id = datos.tmdb_id;
 		fa_id = datos.fa_id;
 		// Verificar YaEnBD
-		TMDB_enBD = !!tmdb_id ? await rutinaELC_id(rubro, "TMDB", tmdb_id) : "";
-		FA_enBD = !!fa_id ? await rutinaELC_id(rubro, "FA", fa_id) : "";
+		TMDB_enBD = tmdb_id ? await rutinaELC_id(rubro, "TMDB", tmdb_id) : "";
+		FA_enBD = fa_id ? await rutinaELC_id(rubro, "FA", fa_id) : "";
 		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
 		// Enviar el resultado
 		return [TMDB_enBD, FA_enBD];
