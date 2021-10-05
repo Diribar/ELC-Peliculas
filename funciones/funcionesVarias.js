@@ -17,6 +17,7 @@ module.exports = {
 			: "/";
 		//console.log(res.locals.urlReferencia);
 	},
+
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
