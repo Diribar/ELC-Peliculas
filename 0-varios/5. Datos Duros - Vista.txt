@@ -2,6 +2,9 @@ PALABRA CLAVE, completar:
 - Validaciones FE
 - Validaciones BE + redirect a Form
 
+COPIAR FA
+// Validar si ya en BD
+
 Datos duros, rutina aparte
 	: (await ObtenerELC_id(
 			datos.rubroAPI,

@@ -28,10 +28,4 @@ module.exports = {
 		// Enviar la API
 		return res.json(lectura);
 	},
-
-	averiguarYaEnBD_FA: async (req, res) => {
-		let datos = req.query;
-		let [, ELC_id] = await procesarProductos.obtenerELC_id(datos);
-		return res.json(ELC_id);
-	},
 };

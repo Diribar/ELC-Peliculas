@@ -13,6 +13,7 @@ module.exports = {
 		return errores;
 	},
 
+	// Validar si ya en BD
 	copiarFA: (datos) => {
 		let errores = {};
 		// Rubro
@@ -29,6 +30,7 @@ module.exports = {
 			  )
 			? "No parece ser una dirección de Film Affinity"
 			: "";
+		// Validar si ya en BD
 		// Avatar
 		errores.avatar = !datos.avatar
 			? "Necesitamos que agregues una imagen"
