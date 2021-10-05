@@ -1,8 +1,9 @@
 // ************ Requires ************
-const detailsTMDB = require("./API/detailsTMDB_fetch");
-const creditsTMDB = require("./API/creditsTMDB_fetch");
-const funciones = require("./funcionesVarias");
-const BD_varios = require("./BD/varios");
+let detailsTMDB = require("./API/detailsTMDB_fetch");
+let creditsTMDB = require("./API/creditsTMDB_fetch");
+let BD_varios = require("./BD/varios");
+let BD_peliculas = require("./BD/peliculas");
+let BD_colecciones = require("./BD/colecciones");
 
 module.exports = {
 	obtenerAPI: async (id, rubroAPI) => {
@@ -17,7 +18,7 @@ module.exports = {
 		return lectura;
 	},
 
-	procesarPelicula_TMDB: async (form, lectura) => {
+	pelicula_TMDB: async (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
@@ -100,7 +101,7 @@ module.exports = {
 		return resultado;
 	},
 
-	procesarTV_TMDB: async (form, lectura) => {
+	TV_TMDB: async (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
@@ -177,7 +178,7 @@ module.exports = {
 		return resultado;
 	},
 
-	procesarColeccion_TMDB: async (form, lectura) => {
+	coleccion_TMDB: async (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
@@ -235,13 +236,13 @@ module.exports = {
 		return resultado;
 	},
 
-	procesarProducto_FA: async (dato) => {
+	producto_FA: async (dato) => {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, avatar, contenido } = dato;
-		fa_id = funciones.obtenerFA_id(direccion);
+		fa_id = this.obtenerFA_id(direccion);
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
-		contenido = funciones.procesarContenidoFA(contenido);
+		contenido = this.procesarContenidoFA(contenido);
 		let resultado = {
 			fuente: "FA",
 			rubroAPI,
@@ -263,16 +264,103 @@ module.exports = {
 		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
+
+	contenidoFA: (contenido) => {
+		// Output para FE y BE
+		// Limpiar espacios innecesarios
+		for (let i = 0; i < contenido.length; i++) {
+			contenido[i] = contenido[i].trim();
+		}
+		// Armar el objeto literal
+		let resultado = {};
+		contenido.indexOf("Ficha") > 0
+			? (resultado.nombre_castellano = funcionParentesis(
+					contenido[contenido.indexOf("Ficha") - 1]
+			  ))
+			: "";
+		contenido.indexOf("Título original") > 0
+			? (resultado.nombre_original = funcionParentesis(
+					contenido[contenido.indexOf("Título original") + 1]
+			  ))
+			: "";
+		contenido.indexOf("Año") > 0
+			? (resultado.ano_estreno = parseInt(
+					contenido[contenido.indexOf("Año") + 1]
+			  ))
+			: "";
+		if (contenido.indexOf("Duración") > 0) {
+			let duracion = contenido[contenido.indexOf("Duración") + 1];
+			resultado.duracion = parseInt(
+				duracion.slice(0, duracion.indexOf(" "))
+			);
+		}
+		if (contenido.indexOf("País") > 0) {
+			let pais_nombre = contenido[contenido.indexOf("País") + 1];
+			resultado.pais_nombre = pais_nombre.slice(
+				(pais_nombre.length + 1) / 2
+			);
+		}
+		contenido.indexOf("Dirección") > 0
+			? (resultado.director =
+					contenido[contenido.indexOf("Dirección") + 1])
+			: "";
+		contenido.indexOf("Guion") > 0
+			? (resultado.guion = contenido[contenido.indexOf("Guion") + 1])
+			: "";
+		contenido.indexOf("Música") > 0
+			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
+			: "";
+		contenido.indexOf("Reparto") > 0
+			? (resultado.actores = contenido[contenido.indexOf("Reparto") + 1])
+			: "";
+		contenido.indexOf("Productora") > 0
+			? (resultado.productor =
+					contenido[contenido.indexOf("Productora") + 1])
+			: "";
+		if (contenido.indexOf("Sinopsis") > 0) {
+			aux = contenido[contenido.indexOf("Sinopsis") + 1];
+			!aux.includes("(FILMAFFINITY)")
+				? (aux = aux + " (FILMAFFINITY)")
+				: "";
+			resultado.sinopsis = aux.replace(/"/g, "'");
+		}
+		return resultado;
+	},
+
+	obtenerFA_id: (url) => {
+		// Output para FE y BE
+		// Obtener el FA_id a partir de la dirección
+		aux = url.indexOf("www.filmaffinity.com/");
+		url = url.slice(aux + 21);
+		aux = url.indexOf("/film");
+		url = url.slice(aux + 5);
+		aux = url.indexOf(".html");
+		fa_id = url.slice(0, aux);
+		return fa_id;
+	},
+
+	obtenerELC_id: async (datos) => {
+		// Definir variables
+		rubro = datos.rubroAPI;
+		tmdb_id = datos.tmdb_id;
+		fa_id = datos.fa_id;
+		// Verificar YaEnBD
+		TMDB_enBD = !!tmdb_id ? await rutinaELC_id(rubro, "TMDB", tmdb_id) : "";
+		FA_enBD = !!fa_id ? await rutinaELC_id(rubro, "FA", fa_id) : "";
+		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
+		// Enviar el resultado
+		return [TMDB_enBD, FA_enBD];
+	},
 };
 
-const fuenteSinopsis = (sinopsis) => {
+// Funciones *********************
+let fuenteSinopsis = (sinopsis) => {
 	sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)")
 		? (sinopsis = sinopsis + " (TMDB)")
 		: "";
 	return sinopsis;
 };
-
-const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
+let funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
 		valor = crew
 			.filter((n) => n.department == campo_TMDB)
@@ -282,7 +370,6 @@ const funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	}
 	return;
 };
-
 let convertirLetrasAlCastellano = (resultado) => {
 	campos = Object.keys(resultado);
 	valores = Object.values(resultado);
@@ -297,5 +384,20 @@ let convertirLetrasAlCastellano = (resultado) => {
 					.replace(/ò/g, "o"))
 			: "";
 	}
+	return resultado;
+};
+let funcionParentesis = (dato) => {
+	desde = dato.indexOf(" (");
+	hasta = dato.indexOf(")");
+	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
+};
+let rutinaELC_id = async (rubroAPI, fuente, id) => {
+	// La respuesta se espera que sea 'true' or 'false'
+	if (!rubroAPI || !id) return false;
+	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
+	let resultado =
+		rubroAPI == "movie"
+			? await BD_peliculas.ObtenerELC_id(parametro, id)
+			: await BD_colecciones.ObtenerELC_id(parametro, id);
 	return resultado;
 };

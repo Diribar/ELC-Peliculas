@@ -1,7 +1,7 @@
 // Require
-const searchTMDB = require("./API/searchTMDB_fetch");
-const detailsTMDB = require("./API/detailsTMDB_fetch");
-const funciones = require("./funcionesVarias");
+let searchTMDB = require("./API/searchTMDB_fetch");
+let detailsTMDB = require("./API/detailsTMDB_fetch");
+let procesarProd = require("./PROD-procesar")
 
 // Función a exportar
 module.exports = {
@@ -204,14 +204,13 @@ let eliminarDuplicados = (datos) => {
 	});
 	return datos;
 };
-
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i=0; i<datos.resultados.length; i++) {
 		let dato = {
 			rubroAPI: datos.resultados[i].rubroAPI,
 			tmdb_id: datos.resultados[i].tmdb_id,
 		};
-		let [YaEnBD] = await funciones.obtenerELC_id(dato);
+		let [YaEnBD] = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {
 			...datos.resultados[i],
 			YaEnBD: YaEnBD,
@@ -219,7 +218,6 @@ let averiguarSiYaEnBD = async (datos) => {
 	}
 	return datos;
 };
-
 let hayMas = (datos, page, rubrosAPI) => {
 	return (
 		page < datos.cantPaginasAPI[rubrosAPI[0]] ||
@@ -227,7 +225,6 @@ let hayMas = (datos, page, rubrosAPI) => {
 		page < datos.cantPaginasAPI[rubrosAPI[2]]
 	);
 };
-
 let ordenarDatos = (datos, palabras_clave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
@@ -248,7 +245,6 @@ let ordenarDatos = (datos, palabras_clave) => {
 	};
 	return datosEnOrden;
 };
-
 let letrasIngles = (palabra) => {
 	word = palabra
 		.toLowerCase()

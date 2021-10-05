@@ -14,13 +14,13 @@ let upload = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
-router.get("/api/palabras-clave/", API.palabrasClave);
-router.get("/api/cant-prod/", API.cantProductos);
-router.get("/api/obtener-fa-id/", API.obtenerFA_id);
-router.get("/api/obtener-elc-id/", API.obtenerELC_id);
-router.get("/api/imagen-fa/", API.validarImagenFA);
-router.get("/api/procesar-contenido-fa/", API.procesarContenidoFA);
+// Validar campos vs. sintaxis
+router.get("/api/palabras-clave/", API.validarPalabrasClave);
+router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 router.get("/api/validar-datos-duros/", API.validarDatosDuros);
+// Validar campos vs. API/BD
+router.get("/api/averiguar-cant-prod/", API.cantProductos);
+router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
 
 // Controladores de vistas
 router.get("/responsabilidad", usuarios, vistas.responsabilidad);

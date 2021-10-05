@@ -22,7 +22,7 @@ module.exports = {
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
-		console.log(datos)
+		console.log(datos);
 		errores.nombre = campoVacio(datos.nombre)
 			? cartelCampoVacio
 			: longitud(datos.nombre, 2, 30)
@@ -48,7 +48,7 @@ module.exports = {
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
-
+	
 	editables: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
@@ -64,7 +64,7 @@ module.exports = {
 		errores.pais_id = campoVacio(datos.pais_id)
 			? "Necesitamos que elijas un valor"
 			: "";
-			
+
 		errores.estado_eclesial_id = campoVacio(datos.estado_eclesial_id)
 			? "Necesitamos que elijas un valor"
 			: "";

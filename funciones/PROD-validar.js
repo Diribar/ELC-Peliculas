@@ -1,12 +1,11 @@
-// **** Requires ***********
-const BD_peliculas = require("./BD/peliculas");
-const BD_colecciones = require("./BD/colecciones");
+// ************ Requires ************
+let procesarProductos = require("./PROD-procesar");
 
 module.exports = {
 	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.palabras_clave = campoVacio(dato)
+		errores.palabras_clave = !dato
 			? cartelCampoVacio
 			: longitud(dato, 2, 20)
 			? longitud(dato, 2, 20)
@@ -14,26 +13,62 @@ module.exports = {
 		return errores;
 	},
 
-	datosDuros: (datos) => {
-		cartelCampoVacio = "Necesitamos que completes este campo";
-		cartelCastellano =
-			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+	copiarFA: (datos) => {
 		let errores = {};
-		errores.nombre_original = campoVacio(datos.nombre_original)
+		// Rubro
+		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
+		// Dirección
+		aux = datos.direccion;
+		errores.direccion = !aux
+			? cartelCampoVacio
+			: !aux.includes("www.filmaffinity.com/") ||
+			  !(
+					aux.indexOf("www.filmaffinity.com/") + 21 <
+						aux.indexOf("/film") &&
+					aux.indexOf("/film") + 5 < aux.indexOf(".html")
+			  )
+			? "No parece ser una dirección de Film Affinity"
+			: "";
+		// Avatar
+		errores.avatar = !datos.avatar
+			? "Necesitamos que agregues una imagen"
+			: !datos.avatar.includes("pics.filmaffinity.com/")
+			? "No parece ser una imagen de FilmAffinity"
+			: !datos.avatar.includes("large.jpg")
+			? "Necesitamos que consigas el link de la imagen grande"
+			: "";
+		// Contenido
+		aux = datos.contenido
+			? procesarProductos.contenidoFA(datos.contenido)
+			: {};
+		errores.contenido = !datos.contenido
+			? cartelCampoVacio
+			: !Object.keys(aux).length
+			? "No se obtuvo ningún dato"
+			: "";
+		// Final
+		errores.hay = hayErrores(errores);
+		errores.campos = Object.keys(aux).length;
+		return errores;
+	},
+
+	datosDuros: (datos) => {
+		let errores = {};
+		errores.nombre_original = datos.nombre_original
 			? cartelCampoVacio
 			: longitud(datos.nombre_original, 2, 50)
 			? longitud(datos.nombre_original, 2, 50)
 			: castellano(datos.nombre_original)
 			? cartelCastellano
 			: "";
-		errores.nombre_castellano = campoVacio(datos.nombre_castellano)
+		errores.nombre_castellano = datos.nombre_castellano
 			? cartelCampoVacio
 			: longitud(datos.nombre_castellano, 2, 50)
 			? longitud(datos.nombre_castellano, 2, 50)
 			: castellano(datos.nombre_castellano)
 			? cartelCastellano
 			: "";
-		errores.ano_estreno = campoVacio(datos.ano_estreno)
+		errores.ano_estreno = datos.ano_estreno
 			? cartelCampoVacio
 			: formatoAno(datos.ano_estreno)
 			? "Debe ser un número de 4 dígitos"
@@ -42,43 +77,43 @@ module.exports = {
 			: datos.ano_estreno > new Date().getFullYear()
 			? "El número no puede superar al año actual"
 			: "";
-		errores.duracion = campoVacio(datos.duracion, 20)
+		errores.duracion = datos.duracion
 			? cartelCampoVacio
 			: formatoNumero(datos.duracion, 20)
 			? formatoNumero(datos.duracion, 20)
 			: datos.duracion > 300
 			? "Debe ser un número menor"
 			: "";
-		errores.pais_id = campoVacio(datos.pais_id) ? cartelCampoVacio : "";
-		errores.director = campoVacio(datos.director)
+		errores.pais_id = datos.pais_id ? cartelCampoVacio : "";
+		errores.director = datos.director
 			? cartelCampoVacio
 			: longitud(datos.director, 2, 50)
 			? longitud(datos.director, 2, 50)
 			: castellano(datos.director)
 			? cartelCastellano
 			: "";
-		errores.guion = campoVacio(datos.guion)
+		errores.guion = datos.guion
 			? cartelCampoVacio
 			: longitud(datos.guion, 2, 50)
 			? longitud(datos.guion, 2, 50)
 			: castellano(datos.guion)
 			? cartelCastellano
 			: "";
-		errores.musica = campoVacio(datos.musica)
+		errores.musica = datos.musica
 			? cartelCampoVacio
 			: longitud(datos.musica, 2, 50)
 			? longitud(datos.musica, 2, 50)
 			: castellano(datos.musica)
 			? cartelCastellano
 			: "";
-		errores.actores = campoVacio(datos.actores)
+		errores.actores = datos.actores
 			? cartelCampoVacio
 			: longitud(datos.actores, 2, 500)
 			? longitud(datos.actores, 2, 500)
 			: castellano(datos.actores)
 			? cartelCastellano
 			: "";
-		errores.productor = campoVacio(datos.productor)
+		errores.productor = datos.productor
 			? cartelCampoVacio
 			: longitud(datos.productor, 2, 100)
 			? longitud(datos.productor, 2, 100)
@@ -91,22 +126,15 @@ module.exports = {
 				: extensiones(datos.avatar)
 				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
 				: "";
+		errores.hay = hayErrores(errores);
 		return errores;
 	},
 };
 
-let ObtenerELC_id = async (rubroAPI, tmdb_id, fa_id) => {
-	// La respuesta se espera que sea 'true' or 'false'
-	if (!rubroAPI || (!tmdb_id && !fa_id)) return false;
-	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";
-	let id = tmdb_id != null ? tmdb_id : fa_id;
-	return rubroAPI == "movie"
-		? await BD_peliculas.ObtenerELC_id(parametro, id)
-		: await BD_colecciones.ObtenerELC_id(parametro, id);
-};
-let campoVacio = (dato) => {
-	return dato == "" || dato == null || dato == undefined || dato == 0;
-};
+let cartelCampoVacio = "Necesitamos que completes esta información";
+let cartelCastellano =
+	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El nombre debe ser más largo"
@@ -130,9 +158,16 @@ let formatoNumero = (dato, minimo) => {
 		? "Debe ser un número mayor a " + minimo
 		: "";
 };
-
 let extensiones = (nombre) => {
 	if (!nombre) return false;
 	ext = nombre.slice(nombre.length - 4);
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext);
+};
+let hayErrores = (errores) => {
+	resultado = false;
+	valores = Object.values(errores);
+	for (valor of valores) {
+		valor ? (resultado = true) : "";
+	}
+	return resultado;
 };

@@ -1,7 +1,7 @@
 <button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="data_entry" class="flex-col" >
 	<section id="titulos">
-		<h1>Paso 2 de 4: Completá los Datos Pendientes</h1>
+		<h1>Paso 3 de 4: Completá los Datos Pendientes</h1>
 		<div class="flex-col" id="links">
 			<p>Si necesitás consultar algún dato</p>
 			<nav class="flex-row">
@@ -145,7 +145,7 @@
 		</div>
 		<div id="imagenPeli" class="form-grupo">  <!--Segunda columna-->
 			<% if (data_entry.avatar) { %>
-				<button type="button">Hacé <em>click</em> acá para pegar <br>el URL de la imagen</button>
+				<button type="button">Hacé <em>click</em> acá y pegá <br>el URL de la imagen</button>
 			<% } else { %>
 				<button type="button">Elegí una imagen de<br>tu PC o internet (URL)</button>
 			<% } %> 
@@ -160,7 +160,8 @@
 		</div>	
 	</section>
 	<section id="flechas" class="flex-row space-between">
-		<% retroceso = data_entry.fuente = "TMDB" ? "desambiguar" : "copiarfa" %>
+		<% console.log(data_entry.fuente) %> 
+		<% retroceso = data_entry.fuente == "TMDB" ? "desambiguar" : "copiarfa" %>
 		<a href="/peliculas/agregar/<%= retroceso %>"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit">Enviar</button>
 		<% if (false) { %>
