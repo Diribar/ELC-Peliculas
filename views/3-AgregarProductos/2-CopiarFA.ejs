@@ -87,6 +87,14 @@
 			<i class="fas fa-check-circle ocultar"></i>
 		</div>
 		<div id="resultado"><br></div>
-		<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
+		<div id="flechas" class="flex-row space-between">
+			<a href="/peliculas/agregar/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
+			<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
+			<% if (false) { %>
+				<a href="/peliculas/agregar/datos-duros"><i class="fas fa-arrow-alt-circle-right"></i></a>
+			<% } else { %>
+				<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
+			<% } %>
+		</div>
 	</form>
 </div>

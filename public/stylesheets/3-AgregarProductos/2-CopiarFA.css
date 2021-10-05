@@ -2,7 +2,7 @@
 #data_entry {min-height: 180px;}
 
 /* Mensajes de error */
-#data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px; top: 5px;}
+#data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
 #data_entry .mensajeError {left: 0px; top: 15px; max-width: 300px}
 
 /* Mensajes de ayuda */
@@ -15,4 +15,5 @@
 #data_entry select {padding: 2px 0px}
 
 /* Submit button */
-#data_entry button {margin-top: 20px; align-self: center;}
+#data_entry #flechas {margin: 20px 50px 0;}
+#data_entry #flechas button {align-self: center;}

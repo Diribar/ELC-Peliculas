@@ -13,7 +13,7 @@
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
 
 /*  Mensajes de error*/
-#data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; font-size: 1rem;}
+#data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; top:50%; transform: translateY(-50%); font-size: 1rem;}
 #data_entry .fa-times-circle {color: var(--rojo-oscuro);}
 #data_entry .fa-check-circle {color: var(--verde-oscuro); cursor: default;}
 .fas {z-index: 1;}
