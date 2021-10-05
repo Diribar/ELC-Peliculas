@@ -138,7 +138,9 @@ module.exports = {
 		//return res.send(req.session.datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
-		!req.session.datosDuros ? (req.session.datosDuros = req.cookies) : "";
+		req.session.datosDuros = req.session.datosDuros 
+			? req.session.datosDuros
+			: req.cookies
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(req.session.datosDuros);
