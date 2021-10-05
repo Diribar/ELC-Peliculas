@@ -3,7 +3,6 @@ window.addEventListener("load", () => {
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#data_entry .input");
-	console.log(inputs)
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
