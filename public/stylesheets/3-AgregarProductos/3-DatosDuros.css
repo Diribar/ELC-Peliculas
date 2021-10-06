@@ -36,8 +36,8 @@
 
 /* Imagen de la película */
 #data_entry #imagenPeli {width: 180px; height: 100%; position: relative;}
-#data_entry #imagenPeli {display: flex; flex-direction: column; justify-content: center; align-items: center;}
 #data_entry #imagenPeli label {height: 100%; width: 100%; position: absolute;}
+#data_entry #imagenPeli label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
 #data_entry #imagenPeli label img {height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
