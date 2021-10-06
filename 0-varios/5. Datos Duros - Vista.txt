@@ -1,7 +1,4 @@
 VALIDAR todos los pasos
-1- Palabras Clave
-2.1- Desambiguar
-2.2- Copiar FA
 3- Datos duros
 4- Datos Pers
 5- Resumen
