@@ -1,4 +1,4 @@
-window.addEventListener("load", async () => {
+window.addEventListener("load", () => {
 	// Acciones cuando se hace click
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
@@ -12,11 +12,15 @@ window.addEventListener("load", async () => {
 	let statusInicial = true;
 
 	// Fórmulas
-	let revisarInput = (i, errores) => {
+	let revisarInput = async (i) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
+		errores = await fetch(
+			"/peliculas/agregar/api/validar-copiar-fa/?" + campo + "=" + valor
+		).then((n) => n.json());
 		mensaje = errores[campo];
+		i < 3 ? console.log(i, campo, mensaje) : "";
 		mensajesError[i].innerHTML = mensaje;
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
@@ -54,24 +58,12 @@ window.addEventListener("load", async () => {
 			? "No se obtuvo ningún dato"
 			: "<br>";
 	};
-	let buscar = () => {
-		url = "?";
-		for (let i = 0; i < inputs.length; i++) {
-			i > 0 ? (url += "&") : "";
-			url += inputs[i].name;
-			url += "=";
-			url += encodeURIComponent(inputs[i].value);
-		}
-		return fetch("/peliculas/agregar/api/validar-copiar-fa/" + url).then(
-			(n) => n.json()
-		);
-	};
 
 	// Status inicial
 	if (statusInicial) {
-		errores = await buscar();
 		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? revisarInput(i, errores) : "";
+			//i < 3 ? console.log(i, inputs[i].value) : "";
+			inputs[i].value != "" ? revisarInput(i) : "";
 		}
 		statusInicial = false;
 	}
@@ -89,8 +81,7 @@ window.addEventListener("load", async () => {
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			errores = await buscar();
-			revisarInput(i, errores);
+			await revisarInput(i);
 		});
 	}
 

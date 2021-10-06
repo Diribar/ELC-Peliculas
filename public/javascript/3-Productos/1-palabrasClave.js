@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	// Fórmula de revisar input
 	let revisarInput = async (dato) => {
 			let link =
-			"/peliculas/agregar/api/palabras-clave/?palabras_clave=" + dato;
+			"/peliculas/agregar/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {
@@ -63,15 +63,15 @@ window.addEventListener("load", () => {
 	});
 
 	let api_pre = (input) => {
-		palabras_clave = input.trim();
+		palabrasClave = input.trim();
 		// Procesando la información
 		resultado.innerHTML = "Procesando la información...";
 		resultado.classList.remove(...resultado.classList);
 		resultado.classList.add("resultadoEnEspera");
 		// Obtener el link
 		return (
-			"/peliculas/agregar/api/averiguar-cant-prod/?palabras_clave=" +
-			palabras_clave
+			"/peliculas/agregar/api/averiguar-cant-prod/?palabrasClave=" +
+			palabrasClave
 		);
 	};
 

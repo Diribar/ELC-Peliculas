@@ -12,8 +12,8 @@
 	<section class="flex-row space-between">
 		<div class="relative flex-col ">
 			<div>
-				<input type="text" name="palabras_clave" placeholder="Escribilo acá"
-					value="<%= palabras_clave %>"
+				<input type="text" name="palabrasClave" placeholder="Escribilo acá"
+					value="<%= palabrasClave %>"
 					autofocus autocomplete="off"
 				>
 				<i class="fas fa-question-circle">
@@ -23,8 +23,8 @@
 					</span>
 				</i>
 			</div>
-			<i class="fas fa-times-circle<%- !errores.palabras_clave ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores.palabras_clave %></span>
+			<i class="fas fa-times-circle<%- !errores.palabrasClave ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores.palabrasClave %></span>
 			</i>
 		</div>
 		<button type="submit" class="botonSinLink">Verificar</button>

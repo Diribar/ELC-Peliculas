@@ -7,11 +7,11 @@
 			<select name="rubroAPI" autofocus class="input">
 				<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
 				<option value="movie" 
-					<% if (locals.data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+					<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
 					Película
 				</option>
 				<option value="collection"
-					<% if (locals.data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+					<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
 					Colección
 				</option>
 			</select>
@@ -23,7 +23,7 @@
 		<h3>Ingresá la dirección de la página</h3>
 		<div class="relative flex-row">
 			<input name="direccion" type="text" class="input"
-				value="<%= locals.data_entry ? data_entry.direccion : null %>"
+				value="<%= data_entry ? data_entry.direccion : null %>"
 				placeholder="Pegá acá la dirección"
 				autocomplete="off"
 			>
@@ -47,7 +47,7 @@
 		<h3>Ingresá la dirección de la imagen grande</h3>
 		<div class="relative flex-row">
 			<input name="avatar" type="text" class="input"
-				value="<%= locals.data_entry ? data_entry.avatar : null %>"
+				value="<%= data_entry ? data_entry.avatar : null %>"
 				placeholder="Pegá acá la dirección"
 				autocomplete="off"
 			>
@@ -66,9 +66,7 @@
 		</div>
 		<h3>Ingresá el contenido del cuerpo de la página</h3>
 		<div class="relative flex-row">
-			<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1"
-				value="<%= locals.data_entry ? data_entry.contenido : null %>" class="input"
-			></textarea>
+			<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
 			<i class="fas fa-question-circle" id="ayuda_contenido">
 				<ul class="mensajeAyuda ocultar" type="dots">
 					<strong><u>Pasos</u></strong>:<br>

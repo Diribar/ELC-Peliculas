@@ -59,7 +59,7 @@ module.exports = {
 		//	let user_entry = req.query;
 		//	let results = [];
 		//	for (let i=0; i < pelis.length; i++) {
-		//		if (BD[i].nombre.toLowerCase().includes(user_entry.palabras_clave.toLowerCase())) {
+		//		if (BD[i].nombre.toLowerCase().includes(user_entry.palabrasClave.toLowerCase())) {
 		//			results.push(BD[i])
 		//		}
 		//	};

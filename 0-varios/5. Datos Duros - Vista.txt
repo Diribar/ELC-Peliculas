@@ -6,8 +6,8 @@ VALIDAR todos los pasos
 4- Datos Pers
 5- Resumen
 
-COPIAR FA
-Errores de validación al regresar desde el siguiente form
+DATOS DUROS
+- Validar tamaño de imagen
 
 IMAGEN de URL, pegar al final
 
