@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Acciones cuando se hace click
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
@@ -12,15 +12,11 @@ window.addEventListener("load", () => {
 	let statusInicial = true;
 
 	// Fórmulas
-	let revisarInput = async (i) => {
+	let revisarInput = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
-		let errores = await fetch(
-			"/peliculas/agregar/api/validar-copiar-fa/?" + campo + "=" + valor
-		).then((n) => n.json());
 		mensaje = errores[campo];
-		console.log(i, campo, valor, mensaje);
 		mensajesError[i].innerHTML = mensaje;
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
@@ -58,8 +54,29 @@ window.addEventListener("load", () => {
 			? "No se obtuvo ningún dato"
 			: "<br>";
 	};
+	let buscar = () => {
+		url = "?";
+		for (let i = 0; i < inputs.length; i++) {
+			i > 0 ? (url += "&") : "";
+			url += inputs[i].name;
+			url += "=";
+			url += encodeURIComponent(inputs[i].value);
+		}
+		return fetch("/peliculas/agregar/api/validar-copiar-fa/" + url).then(
+			(n) => n.json()
+		);
+	};
 
-	// Mensajes de ayuda y status inicial
+	// Status inicial
+	if (statusInicial) {
+		errores = await buscar();
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].value != "" ? revisarInput(i, errores) : "";
+		}
+		statusInicial = false;
+	}
+
+	// Mensajes de ayuda
 	window.onclick = (e) => {
 		// Mensajes de ayuda
 		for (let i = 0; i < iconosAyuda.length; i++) {
@@ -67,20 +84,13 @@ window.addEventListener("load", () => {
 				? mensajesAyuda[i].classList.toggle("ocultar")
 				: mensajesAyuda[i].classList.add("ocultar");
 		}
-		// Status inicial
-		if (statusInicial) {
-			for (let i = 0; i < inputs.length; i++) {
-				console.log(i, inputs[i].value)
-				inputs[i].value != "" ? revisarInput(i) : "";
-			}
-			statusInicial = false;
-		}
 	};
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			await revisarInput(i);
+			errores = await buscar();
+			revisarInput(i, errores);
 		});
 	}
 

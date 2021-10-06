@@ -6,9 +6,9 @@ let validarProductos = require("../../funciones/PROD-validar");
 // *********** Controlador ***********
 module.exports = {
 	validarPalabrasClave: async (req, res) => {
-		let palabras_clave = req.query.palabras_clave;
-		let errores = await validarProductos.palabrasClave(palabras_clave);
-		return res.json(errores.palabras_clave);
+		let palabrasClave = req.query.palabrasClave;
+		let errores = await validarProductos.palabrasClave(palabrasClave);
+		return res.json(errores.palabrasClave);
 	},
 
 	validarCopiarFA: async (req, res) => {
@@ -22,9 +22,9 @@ module.exports = {
 	},
 
 	cantProductos: async (req, res) => {
-		// Obtener 'palabras_clave' y obtener la API
-		let { palabras_clave } = req.query;
-		let lectura = await buscar_x_PalClave.search(palabras_clave);
+		// Obtener 'palabrasClave' y obtener la API
+		let { palabrasClave } = req.query;
+		let lectura = await buscar_x_PalClave.search(palabrasClave);
 		// Enviar la API
 		return res.json(lectura);
 	},

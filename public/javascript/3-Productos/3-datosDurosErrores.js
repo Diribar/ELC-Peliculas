@@ -13,6 +13,11 @@ window.addEventListener("load", () => {
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
+		// Status inicial
+		!iconoError[i].classList.contains("ocultar")
+			? button.classList.add("botonSinLink")
+			: "";
+		// Acciones ante cambios en el input
 		inputs[i].addEventListener("input", async () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
@@ -24,7 +29,9 @@ window.addEventListener("load", () => {
 			).then((n) => n.json());
 			mensaje = errores[campo];
 			mensajeError[i].innerHTML = mensaje;
+			console.log("mensaje");
 			if (mensaje) {
+				console.log("errores");
 				iconoError[i].classList.remove("ocultar");
 				button.classList.add("botonSinLink");
 			} else {

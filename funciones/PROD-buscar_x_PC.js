@@ -5,8 +5,8 @@ let procesarProd = require("./PROD-procesar")
 
 // Función a exportar
 module.exports = {
-	search: async (palabras_clave) => {
-		palabras_clave = letrasIngles(palabras_clave);
+	search: async (palabrasClave) => {
+		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
 		let datos = { resultados: [] };
 		let rubrosAPI = ["movie", "tv", "collection"];
@@ -14,10 +14,10 @@ module.exports = {
 		while (true) {
 			for (rubroAPI of rubrosAPI) {
 				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
-					lectura = await searchTMDB(palabras_clave, rubroAPI, page)
+					lectura = await searchTMDB(palabrasClave, rubroAPI, page)
 						.then((n) => {return infoQueQueda(n);})
 						.then((n) => {return estandarizarNombres(n, rubroAPI);})
-						.then((n) => {return eliminarSiNoCoincideConPalabraClave(n, palabras_clave);})
+						.then((n) => {return eliminarSiNoCoincideConPalabraClave(n, palabrasClave);})
 						.then((n) => {return eliminarIncompletos(n);});
 					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubroAPI);
 					datos = unificarResultados(lectura, rubroAPI, datos, page);
@@ -31,7 +31,7 @@ module.exports = {
 				break;
 			} else page = page + 1;
 		}
-		datos = ordenarDatos(datos, palabras_clave);
+		datos = ordenarDatos(datos, palabrasClave);
 		return datos;
 	},
 };
@@ -102,8 +102,8 @@ let estandarizarNombres = (dato, rubroAPI) => {
 	};
 };
 
-let eliminarSiNoCoincideConPalabraClave = (dato, palabras_clave) => {
-	let palabras = palabras_clave.split(" ");
+let eliminarSiNoCoincideConPalabraClave = (dato, palabrasClave) => {
+	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		if (typeof m == "undefined" || m == null) {
 			return;
@@ -228,7 +228,7 @@ let hayMas = (datos, page, rubrosAPI) => {
 	);
 };
 
-let ordenarDatos = (datos, palabras_clave) => {
+let ordenarDatos = (datos, palabrasClave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
 			return b.desempate3 < a.desempate3
@@ -239,7 +239,7 @@ let ordenarDatos = (datos, palabras_clave) => {
 		})
 		: "";
 	let datosEnOrden = {
-		palabras_clave: palabras_clave,
+		palabrasClave: palabrasClave,
 		hayMas: datos.hayMas,
 		cantResultados: datos.resultados.length,
 		cantPaginasAPI: datos.cantPaginasAPI,

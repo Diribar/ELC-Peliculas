@@ -1,12 +1,12 @@
 <div id="usuario-icono" class="centradoVertical">
-	<% if (locals.usuario) { %>
-		<% if (locals.usuario.avatar!="-") { %>
+	<% if (usuario) { %>
+		<% if (usuario.avatar!="-") { %>
 			<div id="imagenUsuario">
-				<img src="/imagenes/2-Usuarios/<%= locals.usuario.avatar %>" class="usuario-iconos"/>
+				<img src="/imagenes/2-Usuarios/<%= usuario.avatar %>" class="usuario-iconos"/>
 			</div>
-		<% } else if (locals.usuario.nombre != null) { %>
+		<% } else if (usuario.nombre != null) { %>
 			<i id="letraInicial" class="usuario-iconos">
-				<%= locals.usuario.nombre.slice(0,1).toUpperCase() %>
+				<%= usuario.nombre.slice(0,1).toUpperCase() %>
 			</i>
 		<% } else { %>
 			<i class="fas fa-user-circle usuario-iconos"></i>
@@ -16,7 +16,7 @@
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
-	<% if (locals.usuario) { %>
+	<% if (usuario) { %>
 		<a href="/usuarios/detalle">Mi usuario</a>
 		<a href="#">Mis estadísticas</a>
 		<hr />

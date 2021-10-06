@@ -5,7 +5,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.palabras_clave = !dato
+		errores.palabrasClave = !dato
 			? cartelCampoVacio
 			: longitud(dato, 2, 20)
 			? longitud(dato, 2, 20)

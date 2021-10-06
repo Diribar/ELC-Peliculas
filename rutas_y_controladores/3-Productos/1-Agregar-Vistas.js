@@ -9,12 +9,6 @@ let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 
 // *********** Controlador ***********
 module.exports = {
-	responsabilidad: (req, res) => {
-		tema = "agregar";
-		codigo = "responsabilidad";
-		return res.render("Home", { tema, codigo });
-	},
-
 	palabrasClaveForm: (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
@@ -278,8 +272,8 @@ module.exports = {
 		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
-			//: await validarProductos.datosPers(datosPers);
-			: ""
+			: //: await validarProductos.datosPers(datosPers);
+			  "";
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -322,6 +316,12 @@ module.exports = {
 
 	ResumenGuardar: (req, res) => {
 		return res.send("Estoy en ResumenGuardar");
+	},
+
+	responsabilidad: (req, res) => {
+		tema = "agregar";
+		codigo = "responsabilidad";
+		return res.render("Home", { tema, codigo });
 	},
 
 	yaEnBD_Form: (req, res) => {

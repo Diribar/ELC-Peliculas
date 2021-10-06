@@ -1,13 +1,10 @@
 VALIDAR todos los pasos
-1- Palabras Clave
-2.1- Desambiguar
-2.2- Copiar FA
 3- Datos duros
 4- Datos Pers
 5- Resumen
 
-COPIAR FA
-Errores de validación al regresar desde el siguiente form
+DATOS DUROS
+- Validar tamaño de imagen
 
 IMAGEN de URL, pegar al final
 
