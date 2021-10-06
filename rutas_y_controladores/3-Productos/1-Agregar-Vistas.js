@@ -1,4 +1,6 @@
 // ************ Requires ************
+let fs = require("fs");
+let request = require("request");
 let path = require("path");
 let buscar_x_PalClave = require("../../funciones/PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/PROD-procesar");
@@ -239,9 +241,28 @@ module.exports = {
 				errores.hay = true;
 			}
 		}
-		//return res.send(errores);
+		// 2.4. Si aún no hay errores de imagen, revisar el archivo de imagen
+		if (!errores.avatar) {
+			if (req.file) {
+				// En caso de archivo por multer
+				tipo = req.file.mimetype;
+				tamano = req.file.size;
+				nombre = req.file.filename;
+				rutaYnombre = req.file.path;
+			} else {
+				// En caso de archivo sin multer
+				tipo = "image/jpeg";
+				tamano = 94261;
+				nombre = Date.now() + path.extname(datosDuros.avatar);
+				rutaYnombre = "public/imagenes/4-Provisorio/" + nombre;
+			}
+			// Revisar errores
+			errores.avatar = revisarImagen(tipo, tamano);
+			errores.avatar ? (errores.hay = true) : ""; // Marcar que sí hay errores
+		}
 		// 2.4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
+			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el arhivo de multer
 			tema = "agregar";
 			codigo = "datosDuros";
 			req.session.errores = errores;
@@ -385,4 +406,25 @@ let actualizarCookiesProductos = async (producto, res) => {
 			? res.cookie(campo, producto[campo], { maxAge: 1000 * 60 * 60 })
 			: res.clearCookie(campo);
 	}
+};
+
+let download = (uri, filename, callback) => {
+	request.head(uri, (err, res, body) => {
+		tipo = res.headers["content-type"];
+		tamano = res.headers["content-length"];
+		request(uri)
+			.pipe(fs.createWriteStream(filename))
+			.on("close", () => console.log("done"));
+	});
+};
+
+let revisarImagen = (tipo, tamano) => {
+	tamanoMaximo = 1;
+	return tipo.slice(0, 6) != "image/"
+		? "Necesitamos un archivo de imagen"
+		: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
+		? "El tamaño del archivo es superior a " +
+		  tamanoMaximo +
+		  " MB, necesitamos uno más pequeño"
+		: "";
 };

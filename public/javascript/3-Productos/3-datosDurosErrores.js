@@ -6,11 +6,6 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".form-grupo .fa-times-circle");
 	let mensajeError = document.querySelectorAll(".form-grupo .mensajeError");
 
-	// Hacer visible el mensaje de error del Avatar al iniciar
-	grupoAvatar = mensajeError.length - 1;
-	mensajeError[grupoAvatar].innerHTML = "Necesitamos que agregues la imagen";
-	iconoError[grupoAvatar].classList.remove("ocultar");
-
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
 		// Status inicial
@@ -28,10 +23,9 @@ window.addEventListener("load", () => {
 					valor
 			).then((n) => n.json());
 			mensaje = errores[campo];
+			console.log(campo, mensaje)
 			mensajeError[i].innerHTML = mensaje;
-			console.log("mensaje");
 			if (mensaje) {
-				console.log("errores");
 				iconoError[i].classList.remove("ocultar");
 				button.classList.add("botonSinLink");
 			} else {
