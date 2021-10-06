@@ -278,7 +278,7 @@ module.exports = {
 		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
-			//: await validarProductos.datosDuros(datosDuros);
+			//: await validarProductos.datosPers(datosPers);
 			: ""
 		return res.render("Home", {
 			tema,
