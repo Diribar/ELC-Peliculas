@@ -16,173 +16,314 @@ module.exports = {
 	},
 
 	palabrasClaveForm: (req, res) => {
+		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "palabrasClave";
-		let palabras_clave = req.session.palabras_clave
-			? req.session.palabras_clave
-			: req.cookies.palabras_clave
-			? req.cookies.palabras_clave
+		// 2. Data Entry propio y errores
+		let palabrasClave = req.session.palabrasClave
+			? req.session.palabrasClave
+			: req.cookies.palabrasClave
+			? req.cookies.palabrasClave
 			: "";
 		let errores = req.session.errores ? req.session.errores : false;
+		// 3. Render del formulario
+		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
 			tema,
 			codigo,
-			autorizado_fa: req.session.usuario.autorizado_fa,
+			autorizado_fa,
 			link: req.originalUrl,
-			palabras_clave,
+			palabrasClave,
 			errores,
 		});
 	},
 
 	palabrasClaveGuardar: async (req, res) => {
-		// Averiguar si hay errores de validación
-		let palabras_clave = req.body.palabras_clave;
-		let errores = await validarProductos.palabrasClave(palabras_clave);
-		// Si hay errores
-		if (errores.palabras_clave) {
-			tema = "agregar";
-			codigo = "palabrasClave";
-			return res.redirect("/peliculas/agregar/palabras-clave");
-		}
-		// Guardar las palabras clave en session y cookie
-		req.session.palabras_clave = palabras_clave;
-		res.cookie("palabras_clave", palabras_clave, {
+		// 1. Guardar el data entry en session y cookie
+		let palabrasClave = req.body.palabrasClave;
+		req.session.palabrasClave = palabrasClave;
+		res.cookie("palabrasClave", palabrasClave, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// Obtener la API
-		req.session.productosTMDB = await buscar_x_PalClave.search(
-			palabras_clave
-		);
-		// return res.send(req.session.productosTMDB);
+		// 2. Si hay errores de validación, redireccionar
+		let errores = await validarProductos.palabrasClave(palabrasClave);
+		if (errores.palabrasClave) {
+			tema = "agregar";
+			codigo = "palabrasClave";
+			req.session.errores = errores;
+			return res.redirect("/peliculas/agregar/palabras-clave");
+		}
+		// 3. Generar la session para la siguiente instancia
+		req.session.desambiguar = await buscar_x_PalClave.search(palabrasClave);
+		res.cookie("desambiguar", req.session.desambiguar, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 4. Redireccionar a la siguiente instancia
+		req.session.errores = false;
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 
-	desambiguarTMDB_Form: async (req, res) => {
+	desambiguarForm: (req, res) => {
+		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "desambiguar";
-		// Obtener la API de 'search'
-		lectura = req.session.productosTMDB
-			? req.session.productosTMDB
-			: await buscar_x_PalClave.search(req.cookies.palabras_clave);
-		resultados = lectura.resultados;
+		// 2. Feedback de la instancia anterior
+		desambiguar = req.session.desambiguar
+			? req.session.desambiguar
+			: req.cookies.desambiguar
+			? req.cookies.desambiguar
+			: "";
+		if (!desambiguar)
+			return res.redirect("/peliculas/agregar/palabras-clave");
+		// 3. Render del formulario
+		resultados = desambiguar.resultados;
 		coincidencias = resultados.length;
-		let prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
-		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
+		prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
+		prod_yaEnBD = resultados.filter((n) => n.YaEnBD != false);
 		return res.render("Home", {
 			tema,
 			codigo,
-			hayMas: lectura.hayMas,
+			hayMas: desambiguar.hayMas,
 			coincidencias,
 			prod_nuevos,
 			prod_yaEnBD,
-			palabras_clave: lectura.palabras_clave,
-			fuente: req.cookies.fuente,
+			palabrasClave: desambiguar.palabrasClave,
+			fuente: desambiguar.fuente,
 			link: req.originalUrl,
 		});
 	},
 
-	desambiguarTMDB_Guardar: async (req, res) => {
-		// Obtener la info para exportar a la vista 'Datos Duros'
+	desambiguarGuardar: async (req, res) => {
+		// 1. Generar la session para la siguiente instancia
 		req.session.datosDuros =
 			req.body.fuente == "TMDB"
 				? await obtenerDatosDelProductoTMDB(req.body)
 				: req.body;
-		// return res.send(req.session.datosDuros);
-		// Borrar cookies y grabar los nuevos con la info del producto
-		actualizarCookiesProductos(req.session.datosDuros, res);
-		// Redireccionar a Datos Duros
+		res.cookie("datosDuros", req.session.datosDuros, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//return res.send(req.cookies.datosDuros)
+		// 2. Redireccionar a la siguiente instancia
 		return res.redirect("/peliculas/agregar/datos-duros");
 	},
 
-	copiarFA_Form: (req, res) => {
+	copiarFA_Form: async (req, res) => {
+		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "copiarFA";
-		let data_entry = req.session.data_entry
-			? req.session.data_entry
-			: false;
-		let errores = req.session.errores ? req.session.errores : false;
+		// 2. Data Entry propio y errores
+		let copiarFA = req.session.copiarFA
+			? req.session.copiarFA
+			: req.cookies.copiarFA
+			? req.cookies.copiarFA
+			: "";
+		let errores = req.session.errores
+			? req.session.errores
+			: copiarFA
+			? await validarProductos.copiarFA(copiarFA)
+			: "";
+		// 3. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			data_entry: copiarFA,
 			errores,
 		});
 	},
 
 	copiarFA_Guardar: async (req, res) => {
-		// Averiguar si hay errores de validación
-		let errores = await validarProductos.copiarFA(req.body);
-		// Si hay errores
+		// 1. Guardar el data entry en session y cookie
+		let copiarFA = req.body;
+		req.session.copiarFA = copiarFA;
+		res.cookie("copiarFA", copiarFA, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 2.1. Averiguar si hay errores de validación
+		let errores = await validarProductos.copiarFA(copiarFA);
+		// 2.2. Averiguar si el FA_id ya está en la BD
+		if (!errores.direccion) {
+			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
+			[, elc_id] = await procesarProductos.obtenerELC_id({
+				rubroAPI: req.body.rubroAPI,
+				fa_id,
+			});
+			if (elc_id) {
+				errores.contenido = "Ya se encuentra en nuestra base de datos";
+				errores.elc_id = elc_id;
+				errores.hay = true;
+			}
+		}
+		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			tema = "agregar";
-			codigo = "palabrasClave";
-			req.session.data_entry = req.body;
+			codigo = "copiarFA";
+			// return res.send(errores);
 			req.session.errores = errores;
 			return res.redirect("/peliculas/agregar/copiar-fa");
 		}
-		req.session.datosDuros = await procesarProductos.producto_FA(req.body);
-		// Grabar cookies con la info del producto
-		actualizarCookiesProductos(req.session.datosDuros, res);
+		// 3. Generar la session para la siguiente instancia
+		req.session.datosDuros = await procesarProductos.producto_FA(copiarFA);
+		res.cookie("datosDuros", req.session.datosDuros, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
 		//return res.send(req.cookies)
-		// Redireccionar a Datos Duros
+		// 4. Redireccionar a la siguiente instancia
+		req.session.errores = false;
 		return res.redirect("/peliculas/agregar/datos-duros");
 	},
 
 	datosDurosForm: async (req, res) => {
+		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosDuros";
-		//return res.send(req.session.datosDuros);
-		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
-		//return res.send(req.cookies);
-		req.session.datosDuros = req.session.datosDuros
+		// 2. Feedback de la instancia anterior o Data Entry propio
+		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
-			: req.cookies;
+			: req.cookies.datosDuros
+			? req.cookies.datosDuros
+			: "";
+		if (!datosDuros)
+			return res.redirect("/peliculas/agregar/palabras-clave");
+		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProductos.datosDuros(req.session.datosDuros);
-		//return res.send(errores)
+			: await validarProductos.datosDuros(datosDuros);
+		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		return res.render("Home", {
 			tema,
 			codigo,
-			data_entry: req.session.datosDuros,
-			paises,
 			link: req.originalUrl,
+			data_entry: datosDuros,
+			paises,
 			errores,
 		});
 	},
 
-	ddGuardar: async (req, res) => {
-		errores = await validarProductos.datosDuros(req.query);
-		return res.send("linea 147");
-		if (erroresValidacion.errors.length > 0) {
+	datosDurosGuardar: async (req, res) => {
+		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		aux = req.session.datosDuros
+			? req.session.datosDuros
+			: req.cookies.datosDuros;
+		if (!aux) return res.redirect("/peliculas/agregar/palabras-clave");
+		// 1.2. Guardar el data entry en session y cookie
+		let datosDuros = { ...req.cookies.datosDuros, ...req.body };
+		req.session.datosDuros = datosDuros;
+		res.cookie("datosDuros", datosDuros, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 2.1. Averiguar si hay errores de validación
+		let errores = await validarProductos.datosDuros(datosDuros);
+		// 2.2. Averiguar si el TMDB_id o el FA_id ya está en la BD
+		elc_id = await procesarProductos.obtenerELC_id({
+			rubroAPI: req.body.rubroAPI,
+			tmdb_id: req.body.tmdb_id,
+			fa_id: req.body.fa_id,
+		});
+		if (elc_id[0] || elc_id[1]) {
+			errores.nombre_original =
+				"El código interno ya se encuentra en nuestra base de datos";
+			errores.elc_id = elc_id;
+			errores.hay = true;
+		}
+		// 2.3. Si el anterior OK, averiguar si el nombre_original ya está en la BD
+		if (!errores.nombre_original) {
+			registro =
+				datosDuros.rubroAPI == "movie"
+					? BD_peliculas.ObtenerPorParametro(
+							"nombre_original",
+							datosDuros.nombre_original
+					  )
+					: BD_colecciones.ObtenerPorParametro(
+							"nombre_original",
+							datosDuros.nombre_original
+					  );
+			if (registro) {
+				errores.nombre_original =
+					"El título original ya se encuentra en nuestra base de datos";
+				errores.elc_id = elc_id;
+				errores.hay = true;
+			}
+		}
+		// 2.4. Si hay errores de validación, redireccionar
+		if (errores.hay) {
 			tema = "agregar";
 			codigo = "datosDuros";
-			let paises = await BD_varios.ObtenerTodos("paises", "nombre");
-			return res.render("Home", {
-				tema,
-				codigo,
-				data_entry: req.body,
-				paises,
-				link: req.originalUrl,
-				errores: erroresValidacion.mapped(),
-			});
+			req.session.errores = errores;
+			return res.redirect("/peliculas/agregar/datos-duros");
 		}
-		return res.send("sin errores");
+		// 3. Generar la session para la siguiente instancia
+		req.session.datosPers = req.session.datosDuros;
+		res.cookie("datosPers", req.session.datosPers, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//return res.send(req.cookies)
+		// 4. Redireccionar a la siguiente instancia
+		req.session.errores = false;
+		return res.redirect("/peliculas/agregar/datos-personalizados");
 	},
+
 	DatosPersForm: (req, res) => {
+		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosPersonalizados";
+		// 2. Feedback de la instancia anterior o Data Entry propio
+		datosPers = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers
+			? req.cookies.datosPers
+			: "";
+		if (!datosPers)
+			return res.redirect("/peliculas/agregar/palabras-clave");
+		// 3. Render del formulario
+		let errores = req.session.errores
+			? req.session.errores
+			//: await validarProductos.datosPers(datosPers);
+			: ""
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry: datosPers,
+			errores,
 		});
 	},
 
 	DatosPersGuardar: (req, res) => {
-		return res.send("Estoy en guardar3");
+		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		aux = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers;
+		if (!aux) return res.redirect("/peliculas/agregar/palabras-clave");
+		// 1.2. Guardar el data entry en session y cookie
+		let datosPers = { ...req.cookies.datosPers, ...req.body };
+		req.session.datosPers = datosPers;
+		res.cookie("datosPers", datosPers, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 2.1. Averiguar si hay errores de validación
+		let errores = false;
+		//let errores = await validarProductos.datosPers(datosPers);
+		// 2.2. Si hay errores de validación, redireccionar
+		if (errores.hay) {
+			tema = "agregar";
+			codigo = "datosPers";
+			req.session.errores = errores;
+			return res.redirect("/peliculas/agregar/datos-personalizados");
+		}
+		// 3. Redireccionar a la siguiente instancia
+		req.session.errores = false;
+		return res.redirect("/peliculas/agregar/resumen");
 	},
+
+	ResumenForm: (req, res) => {
+		return res.send("Estoy en ResumenForm");
+	},
+
+	ResumenGuardar: (req, res) => {
+		return res.send("Estoy en ResumenGuardar");
+	},
+
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},

@@ -1,28 +1,15 @@
-PALABRA CLAVE, completar:
-- Validaciones FE
-- Validaciones BE + redirect a Form
+VALIDAR todos los pasos
+1- Palabras Clave
+2.1- Desambiguar
+2.2- Copiar FA
+3- Datos duros
+4- Datos Pers
+5- Resumen
 
 COPIAR FA
-agregar flecha a la izquierda
-// Validar si ya en BD
-let ObtenerELC_id = async (rubroAPI, tmdb_id, fa_id) => {
-	// La respuesta se espera que sea 'true' or 'false'
-	if (!rubroAPI || (!tmdb_id && !fa_id)) return false;
-	let parametro = tmdb_id != null ? "tmdb_id" : "fa_id";
-	let id = tmdb_id != null ? tmdb_id : fa_id;
-	return rubroAPI == "movie"
-		? await BD_peliculas.ObtenerELC_id(parametro, id)
-		: await BD_colecciones.ObtenerELC_id(parametro, id);
-};
+Errores de validación al regresar desde el siguiente form
 
-
-Datos duros, rutina aparte
-	: (await ObtenerELC_id(
-			datos.rubroAPI,
-			datos.tmdb_id,
-			datos.fa_id
-		))
-	? "El título original ya está en nuestra base de datos"
+IMAGEN de URL, pegar al final
 
 ON SUBMIT
 - Validaciones BE
