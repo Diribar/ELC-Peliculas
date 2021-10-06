@@ -83,12 +83,12 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
-			hayMas: lectura.hayMas,
+			hayMas: desambiguar.hayMas,
 			coincidencias,
 			prod_nuevos,
 			prod_yaEnBD,
-			palabrasClave: lectura.palabrasClave,
-			fuente: lectura.fuente,
+			palabrasClave: desambiguar.palabrasClave,
+			fuente: desambiguar.fuente,
 			link: req.originalUrl,
 		});
 	},
