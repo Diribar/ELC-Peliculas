@@ -148,8 +148,8 @@
 			<% if (data_entry.avatar && data_entry.fuente=="FA") { %><button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button><% } else %>
 			<!-- Si viene desde Ingreso Manual -->
 			<% if (!data_entry.avatar || data_entry.fuente=="Manual") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
-				<label for="imagen" id="preview">
-					<p id="url" class="ocultar"><%= data_entry.avatar %></p>
+			<label for="imagen" id="preview">
+				<p id="url" class="ocultar"><%= data_entry.avatar %></p>
 				<!-- Si viene desde TMDB -->
 				<% if (data_entry.avatar && data_entry.fuente=="TMDB") { %><img src="<%= data_entry.avatar %>" alt="afiche"><% } %>
 			</label>
