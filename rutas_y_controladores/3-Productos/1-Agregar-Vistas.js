@@ -44,18 +44,16 @@ module.exports = {
 			codigo = "palabrasClave";
 			return res.redirect("/peliculas/agregar/palabras-clave");
 		}
-		// Eliminar el campo 'fuente' de 'datos de cabecera' de desambiguarTMDB anteriores
-		res.clearCookie("fuente");
 		// Guardar las palabras clave en session y cookie
 		req.session.palabras_clave = palabras_clave;
 		res.cookie("palabras_clave", palabras_clave, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// Obtener la API
-		req.session.peliculasTMDB = await buscar_x_PalClave.search(
+		req.session.productosTMDB = await buscar_x_PalClave.search(
 			palabras_clave
 		);
-		// return res.send(req.session.peliculasTMDB);
+		// return res.send(req.session.productosTMDB);
 		return res.redirect("/peliculas/agregar/desambiguar");
 	},
 
@@ -63,10 +61,9 @@ module.exports = {
 		tema = "agregar";
 		codigo = "desambiguar";
 		// Obtener la API de 'search'
-		let lectura = req.session.peliculasTMDB;
-		lectura = lectura
-			? await buscar_x_PalClave.search(req.cookies.palabras_clave)
-			: lectura;
+		lectura = req.session.productosTMDB
+			? req.session.productosTMDB
+			: await buscar_x_PalClave.search(req.cookies.palabras_clave);
 		resultados = lectura.resultados;
 		coincidencias = resultados.length;
 		let prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
@@ -79,7 +76,7 @@ module.exports = {
 			prod_nuevos,
 			prod_yaEnBD,
 			palabras_clave: lectura.palabras_clave,
-			habilitarFlechaDerechaConLink: !!req.cookies.fuente,
+			fuente: req.cookies.fuente,
 			link: req.originalUrl,
 		});
 	},
@@ -138,9 +135,9 @@ module.exports = {
 		//return res.send(req.session.datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		//return res.send(req.cookies);
-		req.session.datosDuros = req.session.datosDuros 
+		req.session.datosDuros = req.session.datosDuros
 			? req.session.datosDuros
-			: req.cookies
+			: req.cookies;
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(req.session.datosDuros);

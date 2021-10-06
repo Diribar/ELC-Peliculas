@@ -1,14 +1,17 @@
 window.addEventListener("load", () => {
 	// Copiar al portapapeles
-	let url = document.querySelector("form #imagenPeli #url");
-	navigator.clipboard.writeText(url.innerHTML);
+	let preview = document.querySelector("form #imagenPeli #preview");
+	let url = document.querySelector("form #imagenPeli #preview #url");
+	preview.addEventListener("click", () => {
+		navigator.clipboard.writeText(url.innerHTML);
+	});
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
 		ext = texto.slice(texto.length - 4);
-		[".jpg", ".png", ".gif", ".bmp"].includes(ext) ? mostrarImagen(e) : ""
-	});	
+		[".jpg", ".png", ".gif", ".bmp"].includes(ext) ? mostrarImagen(e) : "";
+	});
 });
 
 let mostrarImagen = (e) => {

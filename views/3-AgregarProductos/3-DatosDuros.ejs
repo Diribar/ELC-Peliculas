@@ -145,13 +145,13 @@
 		</div>
 		<div id="imagenPeli" class="form-grupo">  <!--Segunda columna-->
 			<% if (data_entry.avatar) { %>
+				<!-- Si viene desde TMDB o FA -->
 				<button type="button">Hacé <em>click</em> acá y pegá <br>el URL de la imagen</button>
 			<% } else { %>
+				<!-- Si viene desde Ingreso Manual -->
 				<button type="button">Elegí una imagen de<br>tu PC o internet (URL)</button>
 			<% } %> 
-			<label for="imagen" id="preview">
-				<p id="url" class="ocultar"><%= data_entry.avatar %></p>
-			</label>
+			<label for="imagen" id="preview"><p id="url" class="ocultar"><%= data_entry.avatar %></p></label>
 			<input name="ruta" type="text" value="./public/imagenes/4-Provisorio" class="ocultar">
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
 			<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
