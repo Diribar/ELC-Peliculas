@@ -258,11 +258,16 @@ module.exports = {
 			}
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
-			errores.avatar ? (errores.hay = true) : ""; // Marcar que sí hay errores
+			errores.avatar
+				? (errores.hay = true) // Marcar que sí hay errores
+				: !req.file
+				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
+				: ""
+
 		}
 		// 2.4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
-			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el arhivo de multer
+			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			tema = "agregar";
 			codigo = "datosDuros";
 			req.session.errores = errores;
@@ -408,7 +413,7 @@ let actualizarCookiesProductos = async (producto, res) => {
 	}
 };
 
-let download = (uri, filename, callback) => {
+let download = (uri, filename) => {
 	request.head(uri, (err, res, body) => {
 		tipo = res.headers["content-type"];
 		tamano = res.headers["content-length"];
