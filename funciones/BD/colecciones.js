@@ -11,7 +11,7 @@ module.exports = {
 	},
 
 	ObtenerPorParametro: (parametro, valor) => {
-		return entidad.findAll({
+		return entidad.findOne({
 			where: { [parametro]: valor },
 		});
 	},

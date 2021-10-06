@@ -224,11 +224,11 @@ module.exports = {
 		if (!errores.nombre_original) {
 			registro =
 				datosDuros.rubroAPI == "movie"
-					? BD_peliculas.ObtenerPorParametro(
+					? await BD_peliculas.ObtenerPorParametro(
 							"nombre_original",
 							datosDuros.nombre_original
 					  )
-					: BD_colecciones.ObtenerPorParametro(
+					: await BD_colecciones.ObtenerPorParametro(
 							"nombre_original",
 							datosDuros.nombre_original
 					  );
@@ -239,6 +239,7 @@ module.exports = {
 				errores.hay = true;
 			}
 		}
+		//return res.send(errores);
 		// 2.4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			tema = "agregar";
@@ -260,7 +261,7 @@ module.exports = {
 	DatosPersForm: (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
-		codigo = "datosPersonalizados";
+		codigo = "datosPers";
 		// 2. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
