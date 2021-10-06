@@ -1,5 +1,5 @@
 <div id="usuario-icono" class="centradoVertical">
-	<% if (usuario) { %>
+	<% if (locals.usuario) { %>
 		<% if (usuario.avatar!="-") { %>
 			<div id="imagenUsuario">
 				<img src="/imagenes/2-Usuarios/<%= usuario.avatar %>" class="usuario-iconos"/>
@@ -16,7 +16,7 @@
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
-	<% if (usuario) { %>
+	<% if (locals.usuario) { %>
 		<a href="/usuarios/detalle">Mi usuario</a>
 		<a href="#">Mis estadísticas</a>
 		<hr />
