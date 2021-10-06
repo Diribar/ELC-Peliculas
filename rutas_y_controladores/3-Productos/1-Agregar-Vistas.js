@@ -316,9 +316,13 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/resumen");
 	},
 
-	ResumenForm: (req, res) => {},
+	ResumenForm: (req, res) => {
+		return res.send("Estoy en ResumenForm");
+	},
 
-	ResumenGuardar: (req, res) => {},
+	ResumenGuardar: (req, res) => {
+		return res.send("Estoy en ResumenGuardar");
+	},
 
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
