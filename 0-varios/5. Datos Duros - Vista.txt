@@ -1,12 +1,10 @@
 VALIDAR todos los pasos
-3- Datos duros
 4- Datos Pers
 5- Resumen
 
 DATOS DUROS
+- Simplificar url de imagen
 - Validar tamaño de imagen
-
-IMAGEN de URL, pegar al final
 
 ON SUBMIT
 - Validaciones BE
