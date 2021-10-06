@@ -89,7 +89,7 @@
 				<label>Director</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="director" placeholder=""
-						value="<%= locals.data_entry ? data_entry.director : null %>"
+						value="<%= data_entry ? data_entry.director : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.director ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.director %></span>
@@ -100,7 +100,7 @@
 				<label>Guión</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="guion" placeholder=""
-						value="<%= locals.data_entry ? data_entry.guion : null %>"
+						value="<%= data_entry ? data_entry.guion : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.guion ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.guion %></span>
@@ -111,7 +111,7 @@
 				<label>Música</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="musica" placeholder=""
-						value="<%= locals.data_entry ? data_entry.musica : null %>"
+						value="<%= data_entry ? data_entry.musica : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.musica ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.musica %></span>
@@ -122,7 +122,7 @@
 				<label>Actores</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="actores" placeholder=""
-						value="<%= locals.data_entry ? data_entry.actores : null %>"
+						value="<%= data_entry ? data_entry.actores : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.actores ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.actores %></span>
@@ -133,7 +133,7 @@
 				<label>Productor</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="productor" placeholder=""
-						value="<%= locals.data_entry ? data_entry.productor : null %>"
+						value="<%= data_entry ? data_entry.productor : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.productor ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.productor %></span>
