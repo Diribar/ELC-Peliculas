@@ -13,7 +13,6 @@ module.exports = {
 		return errores;
 	},
 
-	// Validar si ya en BD
 	copiarFA: (datos) => {
 		let errores = {};
 		// Rubro

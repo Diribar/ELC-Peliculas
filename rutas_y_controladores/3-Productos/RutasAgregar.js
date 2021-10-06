@@ -26,15 +26,17 @@ router.get("/api/averiguar-cant-prod/", API.cantProductos);
 router.get("/responsabilidad", usuarios, vistas.responsabilidad);
 router.get("/palabras-clave", usuarios, vistas.palabrasClaveForm);
 router.post("/palabras-clave", usuarios, vistas.palabrasClaveGuardar);
-router.get("/desambiguar", usuarios, vistas.desambiguarTMDB_Form);
-router.post("/desambiguar", usuarios, vistas.desambiguarTMDB_Guardar);
+router.get("/desambiguar", usuarios, vistas.desambiguarForm);
+router.post("/desambiguar", usuarios, vistas.desambiguarGuardar);
 router.get("/copiar-fa", usuarios, autorizadoFA, vistas.copiarFA_Form);
 router.post("/copiar-fa", usuarios, vistas.copiarFA_Guardar);
-router.get("/ya-en-bd", usuarios, vistas.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, vistas.yaEnBD_Form);
 router.get("/datos-duros", usuarios, prodEnBD, vistas.datosDurosForm);
-router.post("/datos-duros", usuarios, upload.single("avatar"), vistas.ddGuardar);
+router.post("/datos-duros", usuarios, upload.single("avatar"), vistas.datosDurosGuardar);
 router.get("/datos-personalizados", usuarios, prodEnBD, vistas.DatosPersForm);
 router.post("/datos-personalizados", usuarios, vistas.DatosPersGuardar);
+router.get("/resumen", usuarios, prodEnBD, vistas.ResumenForm);
+router.post("/resumen", usuarios, vistas.ResumenGuardar);
+router.get("/ya-en-bd", usuarios, vistas.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, vistas.yaEnBD_Form);
 
 // Fin
 module.exports = router;

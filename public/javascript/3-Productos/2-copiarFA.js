@@ -9,6 +9,7 @@ window.addEventListener("load", () => {
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
 	let resultado = document.querySelector("#resultado");
+	let statusInicial = true;
 
 	// Fórmulas
 	let revisarInput = async (i) => {
@@ -19,6 +20,7 @@ window.addEventListener("load", () => {
 			"/peliculas/agregar/api/validar-copiar-fa/?" + campo + "=" + valor
 		).then((n) => n.json());
 		mensaje = errores[campo];
+		console.log(i, campo, valor, mensaje);
 		mensajesError[i].innerHTML = mensaje;
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
@@ -33,7 +35,7 @@ window.addEventListener("load", () => {
 			iconoOK[i].classList.remove("ocultar");
 			button.classList.remove("botonSinLink");
 			for (let j = 0; j < inputs.length; j++) {
-				mensajesError[j].innerHTML
+				iconoOK[j].classList.contains("ocultar")
 					? button.classList.add("botonSinLink")
 					: "";
 			}
@@ -57,15 +59,6 @@ window.addEventListener("load", () => {
 			: "<br>";
 	};
 
-	// Status inicial
-	for (let i = 0; i < iconoError.length; i++) {
-		iconoError[i].classList.contains("ocultar") &&
-		iconoOK[i].classList.contains("ocultar") &&
-		inputs[i].value != ""
-			? revisarInput(i)
-			: "";
-	}
-
 	// Mensajes de ayuda y status inicial
 	window.onclick = (e) => {
 		// Mensajes de ayuda
@@ -73,6 +66,14 @@ window.addEventListener("load", () => {
 			e.target.matches("#" + iconosAyuda[i].id)
 				? mensajesAyuda[i].classList.toggle("ocultar")
 				: mensajesAyuda[i].classList.add("ocultar");
+		}
+		// Status inicial
+		if (statusInicial) {
+			for (let i = 0; i < inputs.length; i++) {
+				console.log(i, inputs[i].value)
+				inputs[i].value != "" ? revisarInput(i) : "";
+			}
+			statusInicial = false;
 		}
 	};
 
