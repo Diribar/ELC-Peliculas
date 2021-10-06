@@ -201,7 +201,8 @@ module.exports = {
 			: req.cookies.datosDuros;
 		if (!aux) return res.redirect("/peliculas/agregar/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
-		let datosDuros = { ...req.cookies.datosDuros, ...req.body };
+		let datosDuros = { ...aux, ...req.body };
+		return res.send(req.file)
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
