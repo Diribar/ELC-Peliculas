@@ -3,8 +3,7 @@ VALIDAR todos los pasos
 5- Resumen
 
 DATOS DUROS
-- Simplificar url de imagen
-- Validar tamaño de imagen
+- Validar tamaño de imagen p/TMDB
 
 Validaciones generales
 1- Flechas para atrás y adelante
