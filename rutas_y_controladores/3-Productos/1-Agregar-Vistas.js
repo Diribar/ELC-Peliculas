@@ -252,7 +252,6 @@ module.exports = {
 				rutaYnombre = req.file.path;
 			} else {
 				// En caso de archivo sin multer
-				console.log("linea 255")
 				let datos = await requestPromise
 					.head(datosDuros.avatar)
 					.then((n) => [n["content-type"], n["content-length"]]);
