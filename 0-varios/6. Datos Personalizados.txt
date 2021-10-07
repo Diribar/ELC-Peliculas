@@ -1,5 +1,3 @@
-TITULO --> Paso 3 de 4: Datos Personalizados
-
 PRIMERA COLUMNA --> Datos necesarios
 
 CATEGORÍA --> ¿Está centrada en la fe católica?

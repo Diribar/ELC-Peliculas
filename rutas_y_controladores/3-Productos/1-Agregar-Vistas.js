@@ -1,6 +1,7 @@
 // ************ Requires ************
 let fs = require("fs");
 let request = require("request");
+let requestPromise = require("request-promise");
 let path = require("path");
 let buscar_x_PalClave = require("../../funciones/PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/PROD-procesar");
@@ -251,8 +252,12 @@ module.exports = {
 				rutaYnombre = req.file.path;
 			} else {
 				// En caso de archivo sin multer
-				tipo = "image/jpeg";
-				tamano = 94261;
+				console.log("linea 255")
+				let datos = await requestPromise
+					.head(datosDuros.avatar)
+					.then((n) => [n["content-type"], n["content-length"]]);
+				tipo = datos[0];
+				tamano = datos[1];
 				nombre = Date.now() + path.extname(datosDuros.avatar);
 				rutaYnombre = "public/imagenes/4-Provisorio/" + nombre;
 			}
@@ -262,8 +267,7 @@ module.exports = {
 				? (errores.hay = true) // Marcar que sí hay errores
 				: !req.file
 				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
-				: ""
-
+				: "";
 		}
 		// 2.4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -414,9 +418,7 @@ let actualizarCookiesProductos = async (producto, res) => {
 };
 
 let download = (uri, filename) => {
-	request.head(uri, (err, res, body) => {
-		tipo = res.headers["content-type"];
-		tamano = res.headers["content-length"];
+	request.head(uri, () => {
 		request(uri)
 			.pipe(fs.createWriteStream(filename))
 			.on("close", () => console.log("done"));

@@ -10,3 +10,7 @@ Cambiarle el nombre
 Borrar los campos de cookies y session
 	- Palabras Clave
 	- "Cabecera" de desambiguar
+
+Validaciones generales
+1- Flechas para atrás y adelante
+2- Que los cookies se pisen y borren todos los campos del anterior
