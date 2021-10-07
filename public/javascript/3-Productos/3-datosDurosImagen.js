@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	// Copiar al portapapeles
 	let preview = document.querySelector("form #imagenPeli #preview");
-	let url = document.querySelector("form #imagenPeli #preview #url");
+	let url = document.querySelector("form #imagenPeli #url");
 	preview.addEventListener("click", () => {
 		navigator.clipboard.writeText(url.innerHTML);
 	});
