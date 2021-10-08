@@ -1,0 +1,21 @@
+/* GENERAL */
+main, * {color:var(--azul);}
+button {border: none;border-radius: 5px;}
+
+/* CONFIGURAR SECCIONES */
+main {display: flex;}
+#Main {display: flex;}
+#Main-y-Footer {display: flex;flex-grow: 1;flex-direction: column;justify-content:space-between;}
+
+/* CONFIGURAR SUB-SECCIONES */
+#Sagrada-Familia img {height: 100%; }
+#Saludo {text-align: right;}
+#Cuerpo {margin-left: 40px;margin-top: 10px;}
+#Cuerpo div {margin-left: 40px;margin-top: 10px;}
+
+/* CONFIGURAR BOTONES */
+#Cuerpo #Título {font-family: var(--Arial);background-color:var(--amarillo-claro);}
+#Cuerpo #Título {font-size: 16px;font-weight: bold;padding: 7px;margin-bottom: 20px;}
+
+/* FILTROS */
+.flex {display: flex;flex-direction: column;}
