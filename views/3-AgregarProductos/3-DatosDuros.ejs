@@ -145,14 +145,13 @@
 		</div>
 		<div id="imagenPeli" class="form-grupo">  <!--Segunda columna-->
 			<!-- Si viene desde TMDB -->
-			<label for="imagen" id="preview">
-				<% if (data_entry.avatar && data_entry.fuente=="TMDB") { %><img src="<%= data_entry.avatar %>" alt="afiche"><% } %>
-			</label>
+			<% if (data_entry && data_entry.fuente!="TMDB") { %><label for="imagen" id="preview"></label><% } %>
+			<% if (data_entry.avatar && data_entry.fuente=="TMDB") { %><img id="imgTMDB" src="<%= data_entry.avatar %>" alt="afiche"><% } %>
 			<!-- Si viene desde FA -->
 			<% if (data_entry.avatar && data_entry.fuente=="FA") { %>
 				<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
 				<p id="url" class="ocultar"><%= data_entry.avatar %></p>
-			<% } else %>
+			<% } %>
 			<!-- Si viene desde Ingreso Manual -->
 			<% if (!data_entry.avatar || data_entry.fuente=="Manual") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<!-- Rutina para todos los casos -->

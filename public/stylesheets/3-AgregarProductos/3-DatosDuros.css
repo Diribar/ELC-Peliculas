@@ -38,7 +38,7 @@
 #data_entry #imagenPeli {width: 180px; height: 100%; position: relative;}
 #data_entry #imagenPeli, #data_entry #imagenPeli label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
 #data_entry #imagenPeli label {height: 100%; width: 100%; position: absolute;}
-#data_entry #imagenPeli label img {height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
+#data_entry #imagenPeli img {height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
 #data_entry #flechas {margin: 20px 50px 0;}
