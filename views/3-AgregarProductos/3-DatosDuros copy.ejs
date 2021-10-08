@@ -19,10 +19,9 @@
 		</div>
 	</section>
 	<section id="cuerpo">
-		<!--Primera columna-->
-		<div class="flex-col">
+		<div class="flex-col">  <!--Primera columna-->
 			<section class="label-input flex-row">  <!--Título original-->
-				<label style="margin-top: 0;">Título original</label>
+				<label id="tituloOriginal">Título original</label>
 				<div class="form-grupo">
 					<input type="text" class="input" name="nombre_original"
 						value="<%= data_entry.nombre_original %>"
@@ -89,7 +88,7 @@
 			<section class="label-input flex-row">  <!--Director-->
 				<label>Director</label>
 				<div class="form-grupo">
-					<input type="text" class="input" name="director"
+					<input type="text" class="input" name="director" placeholder=""
 						value="<%= data_entry ? data_entry.director : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.director ? ' ocultar' : '' %>">
@@ -100,7 +99,7 @@
 			<section class="label-input flex-row">  <!--Guión-->
 				<label>Guión</label>
 				<div class="form-grupo">
-					<input type="text" class="input" name="guion"
+					<input type="text" class="input" name="guion" placeholder=""
 						value="<%= data_entry ? data_entry.guion : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.guion ? ' ocultar' : '' %>">
@@ -111,7 +110,7 @@
 			<section class="label-input flex-row">  <!--Música-->
 				<label>Música</label>
 				<div class="form-grupo">
-					<input type="text" class="input" name="musica"
+					<input type="text" class="input" name="musica" placeholder=""
 						value="<%= data_entry ? data_entry.musica : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.musica ? ' ocultar' : '' %>">
@@ -122,7 +121,7 @@
 			<section class="label-input flex-row">  <!--Actores-->
 				<label>Actores</label>
 				<div class="form-grupo">
-					<input type="text" class="input" name="actores"
+					<input type="text" class="input" name="actores" placeholder=""
 						value="<%= data_entry ? data_entry.actores : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.actores ? ' ocultar' : '' %>">
@@ -133,7 +132,7 @@
 			<section class="label-input flex-row">  <!--Productor-->
 				<label>Productor</label>
 				<div class="form-grupo">
-					<input type="text" class="input" name="productor"
+					<input type="text" class="input" name="productor" placeholder=""
 						value="<%= data_entry ? data_entry.productor : null %>"
 					>
 					<i class="fas fa-times-circle<%- !errores.productor ? ' ocultar' : '' %>">
@@ -142,11 +141,9 @@
 				</div>
 			</section>
 		</div>
-		<!--Columna intermedia-->
-		<div id="columnaMedio">
+		<div id="columnaMedio"> <!--Columna intermedia-->
 		</div>
-		<!--Segunda columna-->
-		<div id="imagenPeli" class="form-grupo">
+		<div id="imagenPeli" class="form-grupo">  <!--Segunda columna-->
 			<!-- Si viene desde TMDB -->
 			<% if (data_entry && data_entry.fuente!="TMDB") { %><label for="imagen" id="preview"></label><% } %>
 			<% if (data_entry.avatar && data_entry.fuente=="TMDB") { %><img id="imgTMDB" src="<%= data_entry.avatar %>" alt="afiche"><% } %>
