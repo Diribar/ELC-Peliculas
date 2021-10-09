@@ -16,7 +16,7 @@ module.exports = (sequelize, dt) => {
 		pais_id: { type: dt.STRING(2) },
 		estado_eclesial_id: { type: dt.STRING(2) },
 		completado_en: { type: dt.DATE },
-		autorizado_data_entry: { type: dt.BOOLEAN },
+		aut_data_entry: { type: dt.BOOLEAN },
 		borrado: { type: dt.BOOLEAN },
 		borrado_en: { type: dt.DATE },
 		borrado_motivo: { type: dt.STRING(500) },
