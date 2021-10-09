@@ -7,8 +7,8 @@ module.exports = {
 		let errores = {};
 		errores.palabrasClave = !dato
 			? cartelCampoVacio
-			: longitud(dato, 2, 20)
-			? longitud(dato, 2, 20)
+			: longitud(dato, 2, 50)
+			? longitud(dato, 2, 50)
 			: "";
 		return errores;
 	},
@@ -144,7 +144,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ'/()\d+-]+$/;
+	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ'¿?¡!/()\d+-]+$/;
 	return !formato.test(dato);
 };
 let formatoAno = (dato) => {

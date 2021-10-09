@@ -48,8 +48,8 @@
 		<% } else %>
 		<% if (codigo == "datosDuros") { %>
 			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css">
-			<script src="/javascript/3-Productos/3-datosDurosImagen.js"></script>
 			<script src="/javascript/3-Productos/3-datosDurosErrores.js"></script>
+			<% if (data_entry && data_entry.fuente!="TMDB") { %><script src="/javascript/3-Productos/3-datosDurosImagen.js"></script><% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
 			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/4-DatosPers.css">
