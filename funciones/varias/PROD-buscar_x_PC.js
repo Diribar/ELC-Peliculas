@@ -1,6 +1,6 @@
 // Require
-let searchTMDB = require("./API/searchTMDB_fetch");
-let detailsTMDB = require("./API/detailsTMDB_fetch");
+let searchTMDB = require("../API/searchTMDB_fetch");
+let detailsTMDB = require("../API/detailsTMDB_fetch");
 let procesarProd = require("./PROD-procesar")
 
 // Función a exportar

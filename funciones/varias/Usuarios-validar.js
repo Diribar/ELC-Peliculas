@@ -1,5 +1,5 @@
 // **** Requires ***********
-const BD_usuarios = require("./BD/usuarios");
+const BD_usuarios = require("../BD/usuarios");
 const path = require("path");
 
 module.exports = {

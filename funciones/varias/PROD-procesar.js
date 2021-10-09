@@ -1,10 +1,9 @@
 // ************ Requires ************
-let detailsTMDB = require("./API/detailsTMDB_fetch");
-let creditsTMDB = require("./API/creditsTMDB_fetch");
-let procesarProductos = require("./PROD-procesar");
-let BD_varios = require("./BD/varios");
-let BD_peliculas = require("./BD/peliculas");
-let BD_colecciones = require("./BD/colecciones");
+let detailsTMDB = require("../API/detailsTMDB_fetch");
+let creditsTMDB = require("../API/creditsTMDB_fetch");
+let BD_varios = require("../BD/varios");
+let BD_peliculas = require("../BD/peliculas");
+let BD_colecciones = require("../BD/colecciones");
 
 module.exports = {
 	// Agregar-Vistas.desambiguarGuardar (Controller)
@@ -276,10 +275,6 @@ module.exports = {
 		return resultado;
 	},
 
-	// PROD-buscar_x_PC (función)
-	// productoYaEnBD (middleware)
-	// Agregar-Vistas.copiarFA_Guardar (Controller)
-	// Agregar-Vistas.datosDuros_Guardar (Controller)
 	obtenerELC_id: async (datos) => {
 		// Definir variables
 		rubro = datos.rubroAPI;
@@ -321,12 +316,50 @@ let convertirLetrasAlCastellano = (resultado) => {
 	for (let i = 0; i < campos.length; i++) {
 		typeof valores[i] == "string"
 			? (resultado[campos[i]] = valores[i]
-					.replace(/ç/g, "c")
-					.replace(/ë/g, "e")
-					.replace(/ê/g, "e")
-					.replace(/ľ/g, "l")
-					.replace(/ö/g, "o")
-					.replace(/ò/g, "o"))
+					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+					.replace(/[àâãäåāăą]/g, "a")
+					.replace(/Æ/g, "Ae")
+					.replace(/æ/g, "ae")
+					.replace(/[ÇĆĈĊČ]/g, "C")
+					.replace(/[çćĉċč]/g, "c")
+					.replace(/[ÐĎ]/g, "D")
+					.replace(/[đď]/g, "d")
+					.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+					.replace(/[èêëēĕėęě]/g, "e")
+					.replace(/[ĜĞĠĢ]/g, "G")
+					.replace(/[ĝğġģ]/g, "g")
+					.replace(/[ĦĤ]/g, "H")
+					.replace(/[ħĥ]/g, "h")
+					.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+					.replace(/[ìîïĩīĭįı]/g, "i")
+					.replace(/Ĳ/g, "Ij")
+					.replace(/ĳ/g, "ij")
+					.replace(/Ĵ/g, "J")
+					.replace(/ĵ/g, "j")
+					.replace(/Ķ/g, "K")
+					.replace(/[ķĸ]/g, "k")
+					.replace(/[ĹĻĽĿŁ]/g, "L")
+					.replace(/[ĺļľŀł]/g, "l")
+					.replace(/[ŃŅŇ]/g, "N")
+					.replace(/[ńņňŉ]/g, "n")
+					.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+					.replace(/[òôõōðōŏő]/g, "o")
+					.replace(/[ÖŒ]/g, "Oe")
+					.replace(/[öœ]/g, "oe")
+					.replace(/[ŔŖŘ]/g, "R")
+					.replace(/[ŕŗř]/g, "r")
+					.replace(/[ŚŜŞŠ]/g, "S")
+					.replace(/[śŝşš]/g, "s")
+					.replace(/[ŢŤŦ]/g, "T")
+					.replace(/[ţťŧ]/g, "t")
+					.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+					.replace(/[ùûũūŭůűų]/g, "u")
+					.replace(/Ŵ/g, "W")
+					.replace(/ŵ/g, "w")
+					.replace(/[ÝŶŸ]/g, "Y")
+					.replace(/[ýŷÿ]/g, "y")
+					.replace(/[ŽŹŻŽ]/g, "Z")
+					.replace(/[žźżž]/g, "z"))
 			: "";
 	}
 	return resultado;

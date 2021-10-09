@@ -4,8 +4,8 @@ let path = require("path");
 let BD_usuarios = require(path.join(__dirname, "../../funciones/BD/usuarios"));
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
-let funciones = require("../../funciones/funcionesVarias");
-let validarUsuarios = require("../../funciones/Usuarios-validar");
+let funciones = require("../../funciones/varias/funcionesVarias");
+let validarUsuarios = require("../../funciones/varias/Usuarios-validar");
 
 // *********** Controlador ***********
 module.exports = {

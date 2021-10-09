@@ -3,9 +3,9 @@ let fs = require("fs");
 let request = require("request");
 let requestPromise = require("request-promise");
 let path = require("path");
-let buscar_x_PalClave = require("../../funciones/PROD-buscar_x_PC");
-let procesarProductos = require("../../funciones/PROD-procesar");
-let validarProductos = require("../../funciones/PROD-validar");
+let buscar_x_PalClave = require("../../funciones/varias/PROD-buscar_x_PC");
+let procesarProductos = require("../../funciones/varias/PROD-procesar");
+let validarProductos = require("../../funciones/varias/PROD-validar");
 let BD_peliculas = require("../../funciones/BD/peliculas");
 let BD_colecciones = require("../../funciones/BD/colecciones");
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
@@ -187,6 +187,17 @@ module.exports = {
 			? req.session.errores
 			: await validarProductos.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let datos = [
+			{ titulo: "Título original", campo: "nombre_original" },
+			{ titulo: "Título en castellano", campo: "nombre_castellano" },
+			{ titulo: "Año de estreno", campo: "ano_estreno", id: true },
+			{ titulo: "Duración (minutos)", campo: "duracion", id: true },
+			{ titulo: "Director", campo: "director" },
+			{ titulo: "Guión", campo: "guion" },
+			{ titulo: "Música", campo: "musica" },
+			{ titulo: "Actores", campo: "actores" },
+			{ titulo: "Productor", campo: "productor" },
+		];
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -194,6 +205,7 @@ module.exports = {
 			data_entry: datosDuros,
 			paises,
 			errores,
+			datos,
 		});
 	},
 

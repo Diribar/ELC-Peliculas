@@ -1,6 +1,6 @@
 // ************ Requires ************
-let funcionesVarias = require("../../funciones/funcionesVarias");
-let validarUsuarios = require("../../funciones/Usuarios-validar");
+let funcionesVarias = require("../../funciones/varias/funcionesVarias");
+let validarUsuarios = require("../../funciones/varias/Usuarios-validar");
 
 // *********** Controlador ***********
 module.exports = {
