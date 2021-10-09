@@ -14,3 +14,7 @@ DESAMBIGUAR
 DATOS DUROS:
 - Bloquear datos de API
 - Completar saldo a mano
+
+DATOS PERSONALIZADOS
+- IDs: de menor a mayor <-- fijo
+- Orden: de más interesante a menos interesante
