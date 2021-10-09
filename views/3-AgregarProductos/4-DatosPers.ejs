@@ -1,187 +1,50 @@
 <div class="flex-row" id="data_entry">
-	<section class="flex-col">  <!--Primera columna-->
-		<div class="label-input flex-row">  <!--Sinopsis-->
-			<label>Sinopsis:</label>
-			<div class="form-grupo">
-				<textarea name="sinopsis" cols="18" rows="1" placeholder="Ingresa aquí la sinopsis" 
-					value="<%= data_entry ? data_entry.sinopsis : null %>"
-				></textarea>
-				<% if (errores && errores.sinopsis) { %><i class="fas fa-times-circle"></i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-row">  <!--Existe una versión en castellano-->
-			<label>Existe una versión en castellano</label>
-			<div class="form-grupo">
-				<% let idioma_castellano=""; if (data_entry) {idioma_castellano = data_entry.idioma_castellano} else {if (usuario.formNombre) {idioma_castellano = usuario.idioma_castellano}}%>
-				<select name="idioma_castellano">
-					<option value="" class="ocultar">Elegí</option>
-					<option value="SI" <% if (idioma_castellano=="SI") {%> selected <%}%>>SI</option>
-					<option value="NO" <% if (idioma_castellano=="NO") {%> selected <%}%>>NO</option>
-				</select>
-				<% if (errores && errores.idioma_castellano) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.idioma_castellano.msg %> </span>
-				</i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-row">  <!--Es a Color-->
-			<label>Es a Color</label>
-			<div class="form-grupo">
-				<% let color=""; if (data_entry) {color = data_entry.color} else {if (usuario.formNombre) {color = usuario.color}}%>
-				<select name="color">
-					<option value="" class="ocultar">Elegí</option>
-					<option value="SI"  <% if (color=="SI")  {%> selected <%}%>>Color</option>
-					<option value="NO" <% if (color=="NO") {%> selected <%}%>>Blanco y Negro</option>
-				</select>
-				<% if (errores && errores.color) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.color.msg %> </span>
-				</i><% } %>
-			</div>
-		</div>
-
+	<!--Primera columna-->
+	<section class="flex-col">
+		<!--Existe una versión en castellano-->
+		<%- include("41-Select", {campo: "en_castellano"}) %>
+		<!--Es a Color-->
+		<%- include("41-Select", {campo: "color"}) %>
+		<!--Categoría-->
+		<%- include("41-Select", {campo: "categoria_id"}) %>
+		<!--Sub-categoría-->
+		<%- include("41-Select", {campo: "subcategoria_id"}) %>
+		<!--Público sugerido-->
+		<%- include("41-Select", {campo: "publico_sugerido_id"}) %>
+		<!--Calificación-->
+		<h3 style="order: 6;">Tu calificación</h3>
+		<!--Inspira fe y/o valores-->
+		<%- include("41-Select", {campo: "fe_valores_id"}) %>
+		<!--Entretiene-->
+		<%- include("41-Select", {campo: "entretiene_id"}) %>
+		<!--Calidad Técnica-->
+		<%- include("41-Select", {campo: "calidad_sonora_visual_id"}) %>
+		<!--Links del trailer-->
+		<h3 style="order: 9;">Links del trailer:</h3>
+			<!--Primer Link-->
+			<%- include("42-Input", {campo: "trailer1"}) %>
+			<!--Segundo Link-->
+			<%- include("42-Input", {campo: "trailer2"}) %>
+		<!--Links gratuitos para ver la película-->
+		<h3 style="order: 11;">Links gratuitos para ver la película:</h3>
+			<!--Primer Link-->
+			<%- include("42-Input", {campo: "pelicula1"}) %>
+			<!--Segundo Link-->
+			<%- include("42-Input", {campo: "pelicula2"}) %>
 	</section>
+	<!--Columna del medio-->
 	<section id="columnaMedio">
-	</section> <!--Columna del medio-->
-	<section class="flex-col">  <!--Segunda columna-->
-		<div class="label-input flex-row">  <!--Categoría-->
-			<label>Categoría:</label>
-			<div class="form-grupo">
-				<% let categoria=""; if (data_entry) {categoria = data_entry.categoria} else {if (usuario.formNombre) {categoria = usuario.categoria}}%>
-				<select name="categoria">
-					<option value="" style="font-style: italic; ">Elegí</option>
-					<option value="CFC"  <% if (categoria=="CFC")  {%> selected <%}%>>CFC</option>
-					<option value="VPC" <% if (categoria=="VPC") {%> selected <%}%>>VPC</option>
-				</select>
-				<% if (errores && errores.categoria) { %><i class="fas fa-times-circle"></i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-row">  <!--Sub-categoría-->
-			<label>Sub-categoría:</label>
-			<div class="form-grupo">
-				<input type="text" class="input" name="sub_categoria" placeholder=""
-					value="<%= data_entry ? data_entry.sub_categoria : null %>">
-				<% if (errores && errores.sub_categoria) { %><i class="fas fa-times-circle"></i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-row">  <!--Público sugerido-->
-			<label>Público sugerido:</label>
-			<div class="form-grupo">
-				<% let publico=""; if (data_entry) {publico = data_entry.publico} else {if (usuario.formNombre) {publico = usuario.publico}}%>
-				<select name="publico" <% if (!publico) { %>style="font-style: italic;"<% } %>>
-					<option value="" style="font-style: italic; ">Elegí</option>
-					<option value="MY"  <% if (publico=="MY")  {%> selected <%}%>>Mayores (no ATP)</option>
-					<option value="MYATP" <% if (publico=="MYATP") {%> selected <%}%>>Mayores (ATP)</option>
-					<option value="MN" <% if (publico=="MN") {%> selected <%}%>>Menores</option>
-					<option value="AM" <% if (publico=="AM") {%> selected <%}%>>Mayores y Menores</option>
-				</select>
-				<% if (errores && errores.publico) { %><i class="fas fa-times-circle"></i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-col divisor">  <!--Calificación-->
-			<label>Tu calificación</label>
-			<div class="form-grupo flex row">  <!--Inspira fe y/o valores-->
-				<p>Inspira fe y/o valores</p>
-				<% let fe_valores=""; if (data_entry) {fe_valores = data_entry.fe_valores} else {if (usuario.formNombre) {fe_valores = usuario.fe_valores}}%>
-				<select name="fe_valores">
-					<option value="" class="ocultar">Elegí</option>
-					<option value="4" <% if (fe_valores=="4") {%> selected <%}%>>Mucho</option>
-					<option value="3" <% if (fe_valores=="3") {%> selected <%}%>>Bastante</option>
-					<option value="2" <% if (fe_valores=="2") {%> selected <%}%>>Sí</option>
-					<option value="1" <% if (fe_valores=="1") {%> selected <%}%>>Poco</option>
-					<option value="0" <% if (fe_valores=="0") {%> selected <%}%>>NO</option>
-				</select>
-				<% if (errores && errores.fe_valores) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.fe_valores.msg %> </span>
-				</i><% } %>
-			</div>
-			<div class="form-grupo flex row">  <!--Entretiene-->
-				<p>Entretiene</p>
-				<% let entretiene=""; if (data_entry) {entretiene = data_entry.entretiene} else {if (usuario.formNombre) {entretiene = usuario.entretiene}}%>
-				<select name="entretiene">
-					<option value="" class="ocultar">Elegí</option>
-					<option value="4" <% if (entretiene=="4") {%> selected <%}%>>Mucho</option>
-					<option value="3" <% if (entretiene=="3") {%> selected <%}%>>Bastante</option>
-					<option value="2" <% if (entretiene=="2") {%> selected <%}%>>Sí</option>
-					<option value="1" <% if (entretiene=="1") {%> selected <%}%>>Poco</option>
-					<option value="0" <% if (entretiene=="0") {%> selected <%}%>>NO</option>
-				</select>
-				<% if (errores && errores.entretiene) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.entretiene.msg %> </span>
-				</i><% } %>
-			</div>
-			<div class="form-grupo flex row">  <!--Calidad Técnica-->
-				<p>Calidad Técnica 
-					<i class="fas fa-question-circle"><span class="mensajeAyuda">Calidad de la imagen y el sonido</span></i>
-				</p>    
-				<% let calidadTecnica =""; if (data_entry) {calidadTecnica = data_entry.calidadTecnica} else {if (usuario.formNombre) {calidadTecnica = usuario.calidadTecnica}}%>
-				<select name="calidadTecnica">
-					<option value="" class="ocultar">Elegí</option>
-					<option value="3" <% if (calidadTecnica=="3") {%> selected <%}%>>Muy buena</option>
-					<option value="2" <% if (calidadTecnica=="2") {%> selected <%}%>>Buena</option>
-					<option value="1" <% if (calidadTecnica=="1") {%> selected <%}%>>Regular</option>
-					<option value="0" <% if (calidadTecnica=="0") {%> selected <%}%>>Mala</option>
-				</select>
-				<% if (errores && errores.calidadTecnica) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.calidadTecnica.msg %> </span>
-				</i><% } %>
-			</div>
-		</div>
-		<div class="label-input flex-col divisor">  <!--Links del trailer-->
-			<label>Links del trailer:</label>
-			<div class="form-grupo flex row">  <!--Primer Link-->
-				<p>Primer Link:</p>
-				<div class="form-grupo">
-					<input type="text" name="trailer1" placeholder=""
-						value="<%= data_entry ? data_entry.trailer1 : null %>">
-					<% if (errores && errores.trailer1) { %><i class="fas fa-times-circle"></i><% } %>
-				</div>
-			</div>
-			<div class="form-grupo flex row">  <!--Segundo Link-->
-				<p>Segundo Link:</p>
-				<div class="form-grupo">
-					<input type="text" name="trailer2" placeholder=""
-						value="<%= data_entry ? data_entry.trailer2 : null %>">
-					<% if (errores && errores.trailer2) { %><i class="fas fa-times-circle"></i><% } %>
-				</div>
-			</div>
-		</div>
-		<div class="label-input flex-col divisor">  <!--Links gratuitos para ver la película-->
-			<label>Links gratuitos para ver la película:</label>
-			<div class="form-grupo flex row">  <!--Primer Link-->
-				<p>Primer Link:</p>
-				<div class="form-grupo">
-					<input type="text" name="pelicula1" placeholder=""
-						value="<%= data_entry ? data_entry.pelicula1 : null %>">
-					<% if (errores && errores.pelicula1) { %><i class="fas fa-times-circle"></i><% } %>
-				</div>
-			</div>
-			<div class="form-grupo flex row">  <!--Primer Link-->
-				<p>Segundo Link:</p>
-				<div class="form-grupo">
-					<input type="text" name="pelicula2" placeholder=""
-						value="<%= data_entry ? data_entry.pelicula2 : null %>">
-					<% if (errores && errores.pelicula2) { %><i class="fas fa-times-circle"></i><% } %>
-				</div>
-			</div>
-		</div>
-		<div class="label-input flex-col">  <!--Precuela o Secuela-->
-			<label>Si tienen otra película asociada:</label>
-			<div class="form-grupo flex row">  <!--Precuela-->
-				<p>Precuela</p>
-				<% let precuela=""; if (data_entry) {precuela = data_entry.precuela} else {if (usuario.formNombre) {precuela = usuario.precuela}}%>
-				<input type="text" name="precuela" placeholder="Título Original"
-				value="<%= data_entry ? data_entry.precuela : null %>">
-				<% if (errores && errores.precuela) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.precuela.msg %> </span>
-				</i><% } %>
-			</div>
-			<div class="form-grupo flex row">  <!--Secuela-->
-				<p>Secuela</p>
-				<% let secuela=""; if (data_entry) {secuela = data_entry.secuela} else {if (usuario.formNombre) {secuela = usuario.secuela}}%>
-				<input type="text" name="secuela" placeholder="Título Original"
-				value="<%= data_entry ? data_entry.secuela : null %>">
-				<% if (errores && errores.secuela) { %><i class="fas fa-times-circle">
-					<span class="mensajeError"><%= errores.secuela.msg %> </span>
-				</i><% } %>
+	</section>
+	<!--Segunda columna-->
+	<section class="flex-col">
+		<!--Sinopsis-->
+		<div class="label-input flex-col">
+			<label>Sinopsis:</label>
+			<div class="input-error">
+				<textarea name="sinopsis" cols="18" rows="1" placeholder="Ingresa aquí la sinopsis" ><%= data_entry.sinopsis %></textarea>
+				<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
+					<span class="mensajeError"><%= errores[dato.campo] %></span>
+				</i>
 			</div>
 		</div>
 	</section>

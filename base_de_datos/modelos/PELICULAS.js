@@ -17,11 +17,13 @@ module.exports = (sequelize, dt) => {
 		actores: { type: dt.STRING(500) },
 		productor: { type: dt.STRING(100) },
 		avatar: { type: dt.STRING(100) },
-		idioma_castellano: { type: dt.BOOLEAN },
+
+		en_castellano: { type: dt.BOOLEAN },
 		color: { type: dt.BOOLEAN },
-		publico_recomendado_id: { type: dt.INTEGER },
 		categoria_id: { type: dt.STRING(3) },
 		subcategoria_id: { type: dt.INTEGER },
+		publico_sugerido_id: { type: dt.INTEGER },
+
 		sinopsis: { type: dt.STRING(800) },
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
@@ -48,7 +50,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.colecciones_peliculas, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
-		entidad.belongsTo(n.publicos_recomendados, {as: "publico_recomendado", foreignKey: "publico_recomendado_id"});
+		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
 		entidad.belongsTo(n.eventos, {as: "sugerida_para_evento", foreignKey: "sugerida_para_evento_id"});

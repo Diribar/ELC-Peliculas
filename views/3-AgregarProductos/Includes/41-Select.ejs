@@ -1,0 +1,15 @@
+<% dato = datosPers_select.find(n => n.campo == campo) %>
+<div style="order: <%= dato.orden %>" class="label-input flex-row">
+	<label><%= dato.titulo %></label>
+	<div class="input-error">
+		<select name="<%= dato.campo %>">
+			<option value="" class="ocultar" <% if (!data_entry[dato.campo]) { %> selected <% } %>>Elegí una opción</option>
+			<% for (valor of dato.valores) { %>
+				<option value="<%= valor.id %>" <% if (data_entry[dato.campo] == valor.id) { %> selected <% } %>><%= valor.nombre %></option>
+			<% } %>
+		</select>
+		<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores[dato.campo] %></span>
+		</i>
+	</div>
+</div>
