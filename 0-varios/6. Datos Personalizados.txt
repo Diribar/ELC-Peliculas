@@ -1,3 +1,7 @@
+BD
+Ordenadosde menor a mayor los valores
+Función ObtenerTodos, que recibacomo parámetro el ASC / DESC
+
 PRIMERA COLUMNA --> Datos necesarios
 
 CATEGORÍA --> ¿Está centrada en la fe católica?
