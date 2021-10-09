@@ -39,5 +39,4 @@ module.exports = {
 		};
 		await transporter.sendMail(datos);
 	},
-
 };

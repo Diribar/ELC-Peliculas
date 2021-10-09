@@ -1,10 +1,9 @@
 // ************ Requires ************
-let detailsTMDB = require("./API/detailsTMDB_fetch");
-let creditsTMDB = require("./API/creditsTMDB_fetch");
-let procesarProductos = require("./PROD-procesar");
-let BD_varios = require("./BD/varios");
-let BD_peliculas = require("./BD/peliculas");
-let BD_colecciones = require("./BD/colecciones");
+let detailsTMDB = require("../API/detailsTMDB_fetch");
+let creditsTMDB = require("../API/creditsTMDB_fetch");
+let BD_varios = require("../BD/varios");
+let BD_peliculas = require("../BD/peliculas");
+let BD_colecciones = require("../BD/colecciones");
 
 module.exports = {
 	// Agregar-Vistas.desambiguarGuardar (Controller)
@@ -276,10 +275,6 @@ module.exports = {
 		return resultado;
 	},
 
-	// PROD-buscar_x_PC (función)
-	// productoYaEnBD (middleware)
-	// Agregar-Vistas.copiarFA_Guardar (Controller)
-	// Agregar-Vistas.datosDuros_Guardar (Controller)
 	obtenerELC_id: async (datos) => {
 		// Definir variables
 		rubro = datos.rubroAPI;
