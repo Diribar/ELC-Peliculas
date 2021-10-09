@@ -1,0 +1,12 @@
+<section style="order: <%=i%>" class="label-input flex-row">  <!--Título original-->
+	<label <% if (i == 0) { %>style="margin-top: 0;"<% } %>><%= datos[i].titulo %> </label>
+	<div class="form-grupo">
+		<input type="text" class="input" name="nombre_original"
+			value="<%= data_entry[datos[i].campo] %>"
+			<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
+		>
+		<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores[datos[i].campo] %></span>
+		</i>
+	</div>
+</section>

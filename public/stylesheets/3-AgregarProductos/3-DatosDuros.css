@@ -24,6 +24,7 @@
 #data_entry .label-input .form-grupo input {align-self: flex-end; width: 200px;}
 #data_entry .label-input .form-grupo input {padding: 0px 5px;}
 #data_entry .label-input .form-grupo select {padding: 0}
+#data_entry .label-input#pais {order: 5}
 
 /* Errores */
 #data_entry .fa-times-circle {right: -20px; top: 50%; transform: translateY(-50%);}

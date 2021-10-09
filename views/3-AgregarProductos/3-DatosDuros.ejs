@@ -21,50 +21,10 @@
 	<section id="cuerpo">
 		<!--Primera columna-->
 		<div class="flex-col">
-			<section class="label-input flex-row">  <!--Título original-->
-				<label style="margin-top: 0;">Título original</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="nombre_original"
-						value="<%= data_entry.nombre_original %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.nombre_original ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.nombre_original %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Título en castellano -->
-				<label>Título en castellano</label>
-				<div class="form-grupo">
-					<input class="input" type="text" name="nombre_castellano"
-						value="<%= data_entry.nombre_castellano %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.nombre_castellano ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.nombre_castellano %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Año de estreno-->
-				<label>Año de estreno</label>
-				<div class="form-grupo">
-					<input type="text" id="numero" class="input" name="ano_estreno" placeholder="sólo números"
-						value="<%= data_entry.ano_estreno %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.ano_estreno ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.ano_estreno %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Duración-->
-				<label>Duración (minutos)</label>
-				<div class="form-grupo">
-					<input type="text" id="numero" class="input" name="duracion" placeholder="sólo números"
-					value="<%= data_entry.duracion %>">
-					<i class="fas fa-times-circle<%- !errores.duracion ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.duracion %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--País de origen-->
+			<% for (let i=0; i < datos.length; i++) { %>
+				<%- include("dataEntry", {i}) %> 
+			<% } %> 
+			<section style="order: 3;" class="label-input flex-row">
 				<label>País de origen</label>
 				<div class="form-grupo">
 					<% pais_id = data_entry.pais_id && data_entry.pais_id.length ? data_entry.pais_id[0] : "" %>
@@ -83,61 +43,6 @@
 					</select>
 					<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.pais_id %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Director-->
-				<label>Director</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="director"
-						value="<%= data_entry ? data_entry.director : null %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.director ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.director %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Guión-->
-				<label>Guión</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="guion"
-						value="<%= data_entry ? data_entry.guion : null %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.guion ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.guion %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Música-->
-				<label>Música</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="musica"
-						value="<%= data_entry ? data_entry.musica : null %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.musica ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.musica %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Actores-->
-				<label>Actores</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="actores"
-						value="<%= data_entry ? data_entry.actores : null %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.actores ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.actores %></span>
-					</i>
-				</div>
-			</section>
-			<section class="label-input flex-row">  <!--Productor-->
-				<label>Productor</label>
-				<div class="form-grupo">
-					<input type="text" class="input" name="productor"
-						value="<%= data_entry ? data_entry.productor : null %>"
-					>
-					<i class="fas fa-times-circle<%- !errores.productor ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.productor %></span>
 					</i>
 				</div>
 			</section>
