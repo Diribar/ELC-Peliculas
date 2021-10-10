@@ -35,11 +35,18 @@ VALUES ('LA', 'Laico/a', 1), ('RC', 'Religioso/a', 2), ('DP', 'Diácono', 3), ('
 ;
 CREATE TABLE roles_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(20) NOT NULL,
+	nombre VARCHAR(30) NOT NULL,
+	aut_altas_productos BOOLEAN NOT NULL,
+	aut_aprobar_altas_prod BOOLEAN NOT NULL,
+	aut_cambiar_perfil_usuarios BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_usuario (id, nombre)
-VALUES (1, 'Usuario'), (2, 'Admin'), (3, 'Gerente'), (4, 'Dueño')
+INSERT INTO roles_usuario (nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
+VALUES 
+('Usuario', 1, 0, 0),
+('Revisor de Altas de Productos', 1, 1, 0),
+('Gestor de Usuarios', 1, 0, 1),
+('Todos los permisos', 1, 1, 1)
 ;
 CREATE TABLE sexos (
 	id VARCHAR(1) NOT NULL,
@@ -76,7 +83,7 @@ CREATE TABLE USUARIOS (
 	creado_en DATE NULL,
 	completado_en DATE NULL,
 	editado_en DATE NULL,
-	autorizado_data_entry BOOLEAN NOT NULL DEFAULT 0,
+	aut_data_entry BOOLEAN NOT NULL DEFAULT 0,
 	borrado BOOLEAN NULL DEFAULT 0,
 	borrado_en DATE NULL,
 	borrado_motivo VARCHAR(500) NULL,
@@ -208,13 +215,18 @@ CREATE TABLE epocas_estreno (
 INSERT INTO epocas_estreno (id, nombre, ano_comienzo, ano_fin)
 VALUES (1, 'Antes de 1970', 1900, 1969), (2, '1970 - 1999', 1970, 1999), (3, '2000 - 2014', 2000, 2014), (4, '2015 - Presente', 2015, 2025)
 ;
-CREATE TABLE publicos_recomendados (
+CREATE TABLE publicos_sugeridos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO publicos_recomendados (id, nombre)
-VALUES (1, 'Está dirigido a un público infantil, no se recomienda para mayores'), (2, 'Es apto para mayores, pero se recomienda para menores (se puede ver en familia)'), (3, 'Es ideal para ver en familia'), (4, 'Es apto para menores, pero se recomienda para mayores (se puede ver en familia)'), (5, 'No es apto para menores, sólo para mayores')
+INSERT INTO publicos_sugeridos (nombre)
+VALUES 
+('Mayores solamente'),
+('Mayores (apto familia)'),
+('Familia'),
+('Menores (apto familia)'),
+('Menores solamente')
 ;
 CREATE TABLE eventos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -259,14 +271,18 @@ CREATE TABLE PELICULAS (
 	actores VARCHAR(500) NOT NULL,
 	productor VARCHAR(100) NOT NULL,
 	avatar VARCHAR(100) NOT NULL,
-	idioma_castellano BOOLEAN NOT NULL,
+	en_castellano BOOLEAN NOT NULL,
 	color BOOLEAN NOT NULL,
-	publico_recomendado_id INT UNSIGNED NOT NULL,
+	publico_sugerido_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
 	personaje_historico_id INT UNSIGNED NULL,
 	hecho_historico_id INT UNSIGNED NULL,
 	sugerida_para_evento_id INT UNSIGNED NULL,
+	trailer1 VARCHAR(200) NULL,
+	trailer2 VARCHAR(200) NULL,
+	pelicula1 VARCHAR(200) NULL,
+	pelicula2 VARCHAR(200) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
@@ -284,7 +300,7 @@ CREATE TABLE PELICULAS (
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_pelicula_id) REFERENCES colecciones_peliculas(id),
-	FOREIGN KEY (publico_recomendado_id) REFERENCES publicos_recomendados(id),
+	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
@@ -296,32 +312,42 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_recomendado_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 5, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film')
+INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film')
 ;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO fe_valores (id, nombre)
-VALUES (1, 'No'), (2, 'Poco'), (3, 'Sí'), (4, 'Mucho'), (5, 'Deja una huella en mí')
+INSERT INTO fe_valores (nombre)
+VALUES 
+('Mucho'),
+('Sí'),
+('Poco'),
+('No')
 ;
 CREATE TABLE entretiene (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO entretiene (id, nombre)
-VALUES (1, 'No'), (2, 'Poco'), (3, 'Sí'), (4, 'Mucho')
+INSERT INTO entretiene (nombre)
+VALUES 
+('Mucho'),
+('Sí'),
+('Poco'), 
+('No')
 ;
-CREATE TABLE calidad_filmica (
+CREATE TABLE calidad_sonora_visual (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calidad_filmica (id, nombre)
-VALUES (1, 'Es precaria'), (2, 'No perjudica el disfrute'), (3, 'Acompaña el disfrute')
+INSERT INTO calidad_sonora_visual (nombre)
+VALUES 
+('Acompaña el disfrute'),
+('Perjudica el disfrute')
 ;
 CREATE TABLE us_pel_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -329,17 +355,17 @@ CREATE TABLE us_pel_calificaciones (
 	pelicula_id INT UNSIGNED NOT NULL,
 	fe_valores_id INT UNSIGNED NOT NULL,
 	entretiene_id INT UNSIGNED NOT NULL,
-	calidad_filmica_id INT UNSIGNED NOT NULL,
+	calidad_sonora_visual_id INT UNSIGNED NOT NULL,
 	resultado DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id),
 	FOREIGN KEY (fe_valores_id) REFERENCES fe_valores(id),
 	FOREIGN KEY (entretiene_id) REFERENCES entretiene(id),
-	FOREIGN KEY (calidad_filmica_id) REFERENCES calidad_filmica(id)
+	FOREIGN KEY (calidad_sonora_visual_id) REFERENCES calidad_sonora_visual(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_pel_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_filmica_id)
-VALUES (1, 1, 1, 5, 4, 3)
+INSERT INTO us_pel_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_sonora_visual_id)
+VALUES (1, 1, 1, 1, 1, 1)
 ;
 CREATE TABLE interes_en_la_pelicula (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

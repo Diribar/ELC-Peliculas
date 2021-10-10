@@ -11,7 +11,7 @@ module.exports = [
 	body('color')
 		.notEmpty().withMessage('Tenés que elegir una opción').bail()
 		,
-	body('idioma_castellano')
+	body('en_castellano')
 		.notEmpty().withMessage('Tenés que elegir una opción').bail()
 		,
 	body('categoria')

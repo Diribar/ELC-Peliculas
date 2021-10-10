@@ -299,7 +299,7 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/datos-personalizados");
 	},
 
-	DatosPersForm: (req, res) => {
+	DatosPersForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosPers";
@@ -322,6 +322,8 @@ module.exports = {
 			link: req.originalUrl,
 			data_entry: datosPers,
 			errores,
+			datosPers_select: await datosPersSelect(),
+			datosPers_input: datosPersInput(),
 		});
 	},
 
@@ -446,3 +448,103 @@ let revisarImagen = (tipo, tamano) => {
 		  " MB, necesitamos uno más pequeño"
 		: "";
 };
+
+let datosPersSelect = async () => {
+	return [
+		{
+			orden: 1,
+			titulo: "Existe una versión en castellano",
+			campo: "en_castellano",
+			tabla: "peliculas",
+			valores: [
+				{ id: 1, nombre: "SI" },
+				{ id: 0, nombre: "NO" },
+			],
+		},
+		{
+			orden: 2,
+			titulo: "Es a Color",
+			campo: "color",
+			tabla: "peliculas",
+			valores: [
+				{ id: 1, nombre: "Color" },
+				{ id: 0, nombre: "Blanco y Negro" },
+			],
+		},
+		{
+			orden: 3,
+			titulo: "Categoría",
+			campo: "categoria_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("categorias", "id"),
+		},
+		{
+			orden: 4,
+			titulo: "Sub-categoría",
+			campo: "subcategoria_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("subcategorias", "id"),
+		},
+		{
+			orden: 5,
+			titulo: "Público sugerido",
+			campo: "publico_sugerido_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("publicos_sugeridos", "id"),
+		},
+		{
+			orden: 6,
+			titulo: "Inspira fe y/o valores",
+			campo: "fe_valores_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos("fe_valores", "id"),
+		},
+		{
+			orden: 7,
+			titulo: "Entretiene",
+			campo: "entretiene_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos("entretiene", "id"),
+		},
+		{
+			orden: 8,
+			titulo: "Calidad sonora y visual",
+			campo: "calidad_sonora_visual_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos(
+				"calidad_sonora_visual",
+				"id"
+			),
+		},
+	];
+
+} 
+
+let datosPersInput = () => {
+	return [
+		{
+			orden: 9,
+			titulo: "Primer Link",
+			campo: "trailer1",
+			tabla: "peliculas",
+		},
+		{
+			orden: 10,
+			titulo: "Segundo Link",
+			campo: "trailer2",
+			tabla: "peliculas",
+		},
+		{
+			orden: 11,
+			titulo: "Primer Link",
+			campo: "pelicula1",
+			tabla: "peliculas",
+		},
+		{
+			orden: 12,
+			titulo: "Segundo Link",
+			campo: "pelicula2",
+			tabla: "peliculas",
+		},
+	];
+}; 
