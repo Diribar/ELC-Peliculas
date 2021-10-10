@@ -26,7 +26,7 @@
 			<% } %> 
 			<section style="order: 3;" class="label-input flex-row">
 				<label>País de origen</label>
-				<div class="form-grupo">
+				<div class="input-error">
 					<% pais_id = data_entry.pais_id && data_entry.pais_id.length ? data_entry.pais_id[0] : "" %>
 					<select name="pais_id" class="input">
 						<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
@@ -43,6 +43,16 @@
 					</select>
 					<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.pais_id %></span>
+					</i>
+				</div>
+			</section>
+			<!--Sinopsis-->
+			<section style="order: 9;" class="label-input flex-row">
+				<label>Sinopsis</label>
+				<div class="input-error">
+					<textarea name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis" ><%= data_entry.sinopsis %></textarea>
+					<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores[dato.campo] %></span>
 					</i>
 				</div>
 			</section>

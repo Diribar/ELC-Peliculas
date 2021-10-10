@@ -316,6 +316,7 @@ module.exports = {
 			? req.session.errores
 			: //: await validarProductos.datosPers(datosPers);
 			  "";
+		//return res.send(await datosPersSelect());
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -452,7 +453,6 @@ let revisarImagen = (tipo, tamano) => {
 let datosPersSelect = async () => {
 	return [
 		{
-			orden: 1,
 			titulo: "Existe una versión en castellano",
 			campo: "en_castellano",
 			tabla: "peliculas",
@@ -462,59 +462,79 @@ let datosPersSelect = async () => {
 			],
 		},
 		{
-			orden: 2,
 			titulo: "Es a Color",
 			campo: "color",
 			tabla: "peliculas",
 			valores: [
-				{ id: 1, nombre: "Color" },
-				{ id: 0, nombre: "Blanco y Negro" },
+				{ id: 1, nombre: "SI" },
+				{ id: 0, nombre: "NO" },
 			],
 		},
 		{
-			orden: 3,
 			titulo: "Categoría",
 			campo: "categoria_id",
 			tabla: "peliculas",
-			valores: await BD_varios.ObtenerTodos("categorias", "id"),
+			valores: await BD_varios.ObtenerTodos("categorias", "orden"),
 		},
 		{
-			orden: 4,
 			titulo: "Sub-categoría",
 			campo: "subcategoria_id",
 			tabla: "peliculas",
-			valores: await BD_varios.ObtenerTodos("subcategorias", "id"),
+			valores: await BD_varios.ObtenerTodos("subcategorias", "orden"),
 		},
 		{
-			orden: 5,
 			titulo: "Público sugerido",
 			campo: "publico_sugerido_id",
 			tabla: "peliculas",
-			valores: await BD_varios.ObtenerTodos("publicos_sugeridos", "id"),
+			valores: await BD_varios.ObtenerTodos(
+				"publicos_sugeridos",
+				"orden"
+			),
 		},
 		{
-			orden: 6,
 			titulo: "Inspira fe y/o valores",
 			campo: "fe_valores_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.ObtenerTodos("fe_valores", "id"),
+			valores: await BD_varios.ObtenerTodos("fe_valores", "orden"),
 		},
 		{
-			orden: 7,
 			titulo: "Entretiene",
 			campo: "entretiene_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.ObtenerTodos("entretiene", "id"),
+			valores: await BD_varios.ObtenerTodos("entretiene", "orden"),
 		},
 		{
-			orden: 8,
 			titulo: "Calidad sonora y visual",
 			campo: "calidad_sonora_visual_id",
 			tabla: "us_pel_calificaciones",
 			valores: await BD_varios.ObtenerTodos(
 				"calidad_sonora_visual",
-				"id"
+				"orden"
 			),
+		},
+		{
+			titulo: "Personaje histórico",
+			campo: "personaje_historico_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos(
+				"personajes_historicos",
+				"nombre"
+			),
+		},
+		{
+			titulo: "Hecho histórico",
+			campo: "hecho_historico_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos(
+				"hechos_historicos",
+				"nombre"
+			),
+		},
+		{
+			titulo: "Sugerida para fecha",
+			campo: "sugerida_para_evento_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("eventos", "orden"),
 		},
 	];
 
@@ -523,27 +543,13 @@ let datosPersSelect = async () => {
 let datosPersInput = () => {
 	return [
 		{
-			orden: 9,
-			titulo: "Primer Link",
-			campo: "trailer1",
+			titulo: "Link del trailer",
+			campo: "trailer",
 			tabla: "peliculas",
 		},
 		{
-			orden: 10,
-			titulo: "Segundo Link",
-			campo: "trailer2",
-			tabla: "peliculas",
-		},
-		{
-			orden: 11,
-			titulo: "Primer Link",
-			campo: "pelicula1",
-			tabla: "peliculas",
-		},
-		{
-			orden: 12,
-			titulo: "Segundo Link",
-			campo: "pelicula2",
+			titulo: "Link de la película",
+			campo: "pelicula",
 			tabla: "peliculas",
 		},
 	];

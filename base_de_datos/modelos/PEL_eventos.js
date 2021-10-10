@@ -2,9 +2,11 @@ module.exports = (sequelize, dt) => {
 	const alias = "eventos";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
+		orden: { type: dt.INTEGER },
 		dia: { type: dt.INTEGER },
 		mes: { type: dt.INTEGER },
-		nombre: { type: dt.STRING(50) },
+		evento: { type: dt.STRING(50) },
+		nombre: { type: dt.STRING(70) },
 	};
 	const config = {
 		tableName: "eventos",
