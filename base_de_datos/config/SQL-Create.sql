@@ -259,10 +259,10 @@ CREATE TABLE epocas_estreno (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
 VALUES 
-(1, 1, '2015 - Presente', 2015, 2025),
-(2, 2, '2000 - 2014', 2000, 2014), 
-(3, 3, '1970 - 1999', 1970, 1999), 
-(4, 4, 'Antes de 1970', 1900, 1969)
+(4, 1, '2015 - Presente', 2015, 2025),
+(3, 2, '2000 - 2014', 2000, 2014), 
+(2, 3, '1970 - 1999', 1970, 1999), 
+(1, 4, 'Antes de 1970', 1900, 1969)
 ;
 CREATE TABLE publicos_sugeridos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
