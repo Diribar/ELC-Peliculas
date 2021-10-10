@@ -2,6 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "roles_usuarios";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
+		orden: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(20) },
 		aut_altas_productos: { type: dt.BOOLEAN },
 		aut_aprobar_altas_prod: { type: dt.BOOLEAN },

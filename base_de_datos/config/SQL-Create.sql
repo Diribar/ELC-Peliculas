@@ -26,27 +26,33 @@ VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('a
 ;
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
 	orden INT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO estados_eclesiales (id, nombre, orden)
-VALUES ('LA', 'Laico/a', 1), ('RC', 'Religioso/a', 2), ('DP', 'Diácono', 3), ('SC', 'Sacerdote', 4), ('OB', 'Obispo', 5)
+INSERT INTO estados_eclesiales (id, orden, nombre)
+VALUES 
+('LA', 1, 'Laico/a'),
+('RC', 2, 'Religioso/a'), 
+('DP', 3, 'Diácono Perm.'),
+('SC', 4, 'Sacerdote'), 
+('OB', 5, 'Obispo')
 ;
 CREATE TABLE roles_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
 	aut_altas_productos BOOLEAN NOT NULL,
 	aut_aprobar_altas_prod BOOLEAN NOT NULL,
 	aut_cambiar_perfil_usuarios BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_usuario (nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
+INSERT INTO roles_usuario (id, orden, nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
 VALUES 
-('Usuario', 1, 0, 0),
-('Revisor de Altas de Productos', 1, 1, 0),
-('Gestor de Usuarios', 1, 0, 1),
-('Todos los permisos', 1, 1, 1)
+(1, 1, 'Usuario', 1, 0, 0),
+(2, 2, 'Revisor de Altas de Productos', 1, 1, 0),
+(3, 3, 'Gestor de Usuarios', 1, 0, 1),
+(4, 4, 'Todos los permisos', 1, 1, 1)
 ;
 CREATE TABLE sexos (
 	id VARCHAR(1) NOT NULL,
@@ -55,15 +61,20 @@ CREATE TABLE sexos (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO sexos (id, nombre, letra_final)
-VALUES ('M','Masculino', 'o'), ('F','Femenino', 'a')
+VALUES ('F','Femenino', 'a'), ('M','Masculino', 'o')
 ;
 CREATE TABLE status_registro (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro (id, nombre)
-VALUES (1, 'Mail a validar'), (2, 'Mail validado'), (3, 'Datos perennes OK'), (4, 'Datos editables OK')
+INSERT INTO status_registro (id, orden, nombre)
+VALUES 
+(1, 1, 'Mail a validar'), 
+(2, 2, 'Mail validado'), 
+(3, 3, 'Datos perennes OK'), 
+(4, 4, 'Datos editables OK')
 ;
 CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -96,17 +107,26 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
-VALUES (1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),(2, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
+VALUES 
+(1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),
+(2, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	duracion INT UNSIGNED NOT NULL,
 	comentario VARCHAR(500) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO penalizaciones_motivos (id, nombre, duracion, comentario)
-VALUES (1, 'Ofensivo', 365, 'Pornografía, mofarse de la religión católica, grosería, etc.'), (2, 'Spam', 365, 'Material ajeno a nuestro perfil')
+INSERT INTO penalizaciones_motivos (id, orden, duracion, nombre, comentario)
+VALUES 
+(1, 1, 30, 'Spam primera vez', 'Material no agresivo, pero ajeno a nuestro perfil, primera vez'),
+(2, 2, 200, 'Spam reincidente', 'Material no agresivo, pero ajeno a nuestro perfil, reincidente'),
+(3, 3, 200, 'Anti-católico primera vez', 'Mofarse de la religión católica, primera vez'),
+(4, 4, 400, 'Anti-católico reincidente', 'Mofarse de la religión católica, reincidente'),
+(5, 5, 400, 'Pornografía primera vez', 'Pornografía, primera vez'),
+(6, 6, 1000, 'Pornografía reincidente', 'Pornografía, reincidente')
 ;
 CREATE TABLE penalizaciones_usuarios (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -124,34 +144,58 @@ CREATE TABLE penalizaciones_usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE categorias (
 	id VARCHAR(3) NOT NULL,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO categorias (id, nombre)
-VALUES ('CFC', 'Centradas en la Fe Católica'), ('VPC', 'Valores Presentes en la Cultura')
+INSERT INTO categorias (id, orden, nombre)
+VALUES 
+('CFC', 1, 'Centradas en la Fe Católica'), 
+('VPC', 2, 'Valores Presentes en la Cultura')
 ;
 CREATE TABLE categorias_sub (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	url VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO categorias_sub (id, categoria_id, nombre, url)
-VALUES (1, 'CFC', 'Jesús', 'cfc/jesus'), (2, 'CFC', 'Contemporáneos de Jesús', 'cfc/contemporaneos'), (3, 'CFC', 'Apariciones Marianas', 'cfc/marianas'), (4, 'CFC', 'Hagiografías', 'cfc/hagiografias'), (5, 'CFC', 'Historias de la Iglesia', 'cfc/historias'), (6, 'CFC', 'Novelas centradas en la fe', 'cfc/novelas'), (7, 'CFC', 'Colecciones', 'cfc/colecciones'), (8, 'CFC', 'Documentales', 'cfc/documentales'), (11, 'VPC', 'Biografías e Historias', 'vpc/bios_historias'), (12, 'VPC', 'Matrimonio y Familia', 'vpc/matrimonio'), (13, 'VPC', 'Novelas', 'vpc/novelas'), (14, 'VPC', 'Musicales', 'vpc/musicales'), (15, 'VPC', 'Colecciones', 'vpc/colecciones')
+INSERT INTO categorias_sub (id, orden, categoria_id, nombre, url)
+VALUES 
+(1, 1, 'CFC', 'Jesús', 'cfc/jesus'), 
+(2, 2, 'CFC', 'Contemporáneos de Jesús', 'cfc/contemporaneos'), 
+(3, 3, 'CFC', 'Apariciones Marianas', 'cfc/marianas'), 
+(4, 4, 'CFC', 'Hagiografías', 'cfc/hagiografias'), 
+(5, 5, 'CFC', 'Historias de la Iglesia', 'cfc/historias'), 
+(6, 6, 'CFC', 'Novelas centradas en la fe', 'cfc/novelas'), 
+(7, 7, 'CFC', 'Colecciones', 'cfc/colecciones'), 
+(8, 8, 'CFC', 'Documentales', 'cfc/documentales'), 
+(9, 9, 'VPC', 'Biografías e Historias', 'vpc/bios_historias'), 
+(10, 10, 'VPC', 'Matrimonio y Familia', 'vpc/matrimonio'), 
+(11, 11, 'VPC', 'Novelas', 'vpc/novelas'), 
+(12, 12, 'VPC', 'Musicales', 'vpc/musicales'), 
+(13, 13, 'VPC', 'Colecciones', 'vpc/colecciones')
 ;
 CREATE TABLE listado_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	url VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO listado_peliculas (id, nombre, url)
-VALUES (1, 'Sugeridas para el momento del año', 'listado/sugeridas'), (2, 'Por orden de calificación en nuestra página', 'listado/calificacion'), (3, 'Por año de estreno', 'listado/estreno'), (4, 'Por orden de incorporación a nuestra base de datos', 'listado/incorporacion'), (5, 'Por orden de visita', 'listado/visita')
+INSERT INTO listado_peliculas (id, orden, nombre, url)
+VALUES 
+(1, 1, 'Sugeridas para el momento del año', 'listado/sugeridas'), 
+(2, 2, 'Por orden de calificación en nuestra página', 'listado/calificacion'), 
+(3, 3, 'Por año de estreno', 'listado/estreno'), 
+(4, 4, 'Por orden de incorporación a nuestra base de datos', 'listado/incorporacion'), 
+(5, 5, 'Por orden de visita', 'listado/visita')
 ;
 CREATE TABLE menu_opciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	url VARCHAR(50) NOT NULL,
 	titulo VARCHAR(50) NOT NULL,
@@ -159,11 +203,11 @@ CREATE TABLE menu_opciones (
 	comentario VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO menu_opciones (id, nombre, url, titulo, vista, comentario)
+INSERT INTO menu_opciones (id, orden, nombre, url, titulo, vista, comentario)
 VALUES 
-(1, 'Listado de Películas', 'listado', 'Listado', '1-Listado', 'Todas las películas de nuestra Base de Datos'),
-(2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
-(3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
+(1, 1, 'Listado de Películas', 'listado', 'Listado', '1-Listado', 'Todas las películas de nuestra Base de Datos'),
+(2, 2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
+(3, 3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
 ;
 CREATE TABLE colecciones_cabecera (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -199,44 +243,50 @@ CREATE TABLE colecciones_peliculas (
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones_cabecera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_peliculas (id, coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
-VALUES (1, 1, 1, '38516', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
+INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
+VALUES (1, 1, '38516', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
 ;
-INSERT INTO colecciones_peliculas (id, coleccion_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
-VALUES (2, 1, '75470', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2)
+INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
+VALUES (1, '75470', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(20) NOT NULL,
 	ano_comienzo INT UNSIGNED NOT NULL,
 	ano_fin INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO epocas_estreno (id, nombre, ano_comienzo, ano_fin)
-VALUES (1, 'Antes de 1970', 1900, 1969), (2, '1970 - 1999', 1970, 1999), (3, '2000 - 2014', 2000, 2014), (4, '2015 - Presente', 2015, 2025)
+INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
+VALUES 
+(4, 1, '2015 - Presente', 2015, 2025),
+(3, 2, '2000 - 2014', 2000, 2014), 
+(2, 3, '1970 - 1999', 1970, 1999), 
+(1, 4, 'Antes de 1970', 1900, 1969)
 ;
 CREATE TABLE publicos_sugeridos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO publicos_sugeridos (nombre)
+INSERT INTO publicos_sugeridos (id, orden, nombre)
 VALUES 
-('Mayores solamente'),
-('Mayores (apto familia)'),
-('Familia'),
-('Menores (apto familia)'),
-('Menores solamente')
+(5, 1, 'Mayores solamente'),
+(4, 2, 'Mayores (apto familia)'),
+(3, 3, 'Familia'),
+(2, 4, 'Menores (apto familia)'),
+(1, 5, 'Menores solamente')
 ;
 CREATE TABLE eventos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia INT UNSIGNED NULL,
+	mes INT UNSIGNED NULL,
 	nombre VARCHAR(50) NOT NULL,
-	fecha VARCHAR(20) NOT NULL,
-	distancia INT UNSIGNED NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO eventos (id, nombre, fecha)
-VALUES (1, 'San Juan Pablo II', '22/oct')
+INSERT INTO eventos (id, dia, mes, nombre)
+VALUES (1, 22, 10, 'San Juan Pablo II')
 ;
 CREATE TABLE personajes_historicos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -244,7 +294,7 @@ CREATE TABLE personajes_historicos (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO personajes_historicos (id, nombre)
-VALUES (1, 'Juan Pablo II (papa)')
+VALUES (1, 'Papa Juan Pablo II')
 ;
 CREATE TABLE hechos_historicos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -252,7 +302,7 @@ CREATE TABLE hechos_historicos (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO hechos_historicos (id, nombre)
-VALUES (1, '2a Guerra Mundial')
+VALUES (1, 'Guerra Mundial - II')
 ;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -312,42 +362,48 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, idioma_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
+INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor)
 VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film')
 ;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO fe_valores (nombre)
+INSERT INTO fe_valores (id, orden, valor, nombre)
 VALUES 
-('Mucho'),
-('Sí'),
-('Poco'),
-('No')
+(4, 1, 3, 'Mucho'),
+(3, 2, 2, 'Sí'),
+(2, 3, 1, 'Poco'),
+(1, 4, 0, 'No')
 ;
 CREATE TABLE entretiene (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO entretiene (nombre)
+INSERT INTO entretiene (id, orden, valor, nombre)
 VALUES 
-('Mucho'),
-('Sí'),
-('Poco'), 
-('No')
+(4, 1, 3, 'Mucho'),
+(3, 2, 2, 'Sí'),
+(2, 3, 1, 'Poco'),
+(1, 4, 0, 'No')
 ;
 CREATE TABLE calidad_sonora_visual (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calidad_sonora_visual (nombre)
+INSERT INTO calidad_sonora_visual (id, orden, valor, nombre)
 VALUES 
-('Acompaña el disfrute'),
-('Perjudica el disfrute')
+(2, 1, 3, 'No afecta al disfrute'),
+(1, 2, 0, 'Perjudica el disfrute')
 ;
 CREATE TABLE us_pel_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -365,15 +421,19 @@ CREATE TABLE us_pel_calificaciones (
 	FOREIGN KEY (calidad_sonora_visual_id) REFERENCES calidad_sonora_visual(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_pel_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_sonora_visual_id)
-VALUES (1, 1, 1, 1, 1, 1)
+VALUES (1, 1, 1, 4, 4, 2)
 ;
 CREATE TABLE interes_en_la_pelicula (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO interes_en_la_pelicula (id, nombre)
-VALUES (1, 'Recordame que quiero verla'), (2, 'Ya la vi'), (3, 'Prefiero que no me la recomienden')
+INSERT INTO interes_en_la_pelicula (id, orden, nombre)
+VALUES 
+(3, 1, 'Recordame que quiero verla'),
+(2, 2, 'Ya la vi'),
+(1, 3, 'Prefiero que no me la recomienden')
 ;
 CREATE TABLE us_pel_interes_en_la_pelicula (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -385,8 +445,8 @@ CREATE TABLE us_pel_interes_en_la_pelicula (
 	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id),
 	FOREIGN KEY (interes_en_la_pelicula_id) REFERENCES interes_en_la_pelicula(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_pel_interes_en_la_pelicula (id, usuario_id, pelicula_id, interes_en_la_pelicula_id)
-VALUES (1, 1, 1, 2)
+INSERT INTO us_pel_interes_en_la_pelicula (usuario_id, pelicula_id, interes_en_la_pelicula_id)
+VALUES (1, 1, 2)
 ;
 CREATE TABLE filtros_personales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

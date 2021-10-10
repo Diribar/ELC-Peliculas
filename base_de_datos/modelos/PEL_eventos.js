@@ -1,10 +1,10 @@
 module.exports = (sequelize, dt) => {
 	const alias = "eventos";
 	const columns = {
-		id: {type: dt.INTEGER, primaryKey: true},
-		nombre: {type: dt.STRING(50)},
-		fecha: {type: dt.STRING(20)},
-		distancia: {type: dt.INTEGER}
+		id: { type: dt.INTEGER, primaryKey: true },
+		dia: { type: dt.INTEGER },
+		mes: { type: dt.INTEGER },
+		nombre: { type: dt.STRING(50) },
 	};
 	const config = {
 		tableName: "eventos",

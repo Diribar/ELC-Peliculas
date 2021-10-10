@@ -1,8 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "penalizaciones_motivos";
 	const columns = {
-		id: {type: dt.INTEGER, primaryKey: true},
-		nombre: {type: dt.STRING(50)},
+		id: { type: dt.INTEGER, primaryKey: true },
+		orden: { type: dt.INTEGER },
+		nombre: { type: dt.STRING(50) },
 		duracion: { type: dt.INTEGER },
 		comentario: { type: dt.STRING(100) },
 	};
