@@ -316,7 +316,6 @@ module.exports = {
 			? req.session.errores
 			: //: await validarProductos.datosPers(datosPers);
 			  "";
-		//return res.send(await datosPersSelect());
 		return res.render("Home", {
 			tema,
 			codigo,
