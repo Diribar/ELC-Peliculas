@@ -121,12 +121,61 @@ module.exports = {
 			: castellano(datos.productor)
 			? cartelCastellano
 			: "";
-		errores.avatar =
-			datos.avatar == "/imagenes/0-Base/Agregá una imagen.jpg"
-				? "Necesitamos que agregues una imagen"
-				: extensiones(datos.avatar)
-				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
-				: "";
+		errores.sinopsis = !datos.sinopsis
+			? cartelCampoVacio
+			: longitud(datos.sinopsis, 15, 500)
+			? longitud(datos.sinopsis, 15, 500)
+			: castellano(datos.sinopsis)
+			? cartelCastellano
+			: "";
+		errores.avatar = !datos.avatar
+			? "Necesitamos que agregues una imagen"
+			: extensiones(datos.avatar)
+			? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
+			: "";
+		errores.hay = hayErrores(errores);
+		return errores;
+	},
+
+	datosPers: (datos) => {
+		let errores = {};
+		errores.en_castellano = !datos.en_castellano ? cartelSelectVacio : "";
+		errores.color = !datos.color ? cartelSelectVacio : "";
+		errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
+		errores.subcategoria_id = !datos.subcategoria_id
+			? cartelSelectVacio
+			: "";
+		errores.publico_sugerido_id = !datos.publico_sugerido_id
+			? cartelSelectVacio
+			: "";
+		errores.personaje_historico_id = !datos.personaje_historico_id
+			? cartelSelectVacio
+			: "";
+		errores.hecho_historico_id = !datos.hecho_historico_id
+			? cartelSelectVacio
+			: "";
+		errores.sugerida_para_evento_id = !datos.sugerida_para_evento_id
+			? cartelSelectVacio
+			: "";
+		errores.trailer = !datos.trailer
+			? cartelCampoVacio
+			: !validarFuente(datos.trailer)
+			? "Debe ser de una fuente confiable"
+			: "";
+		errores.pelicula = !datos.pelicula
+			? cartelCampoVacio
+			: !validarFuente(datos.pelicula)
+			? "Debe ser de una fuente confiable"
+			: "";
+		errores.fe_valores_id = !datos.fe_valores_id
+			? cartelSelectVacio
+			: "";
+		errores.entretiene_id = !datos.entretiene_id
+			? cartelSelectVacio
+			: "";
+		errores.calidad_sonora_visual_id = !datos.calidad_sonora_visual_id
+			? cartelSelectVacio
+			: "";
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
@@ -135,6 +184,7 @@ module.exports = {
 let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+let cartelSelectVacio = "Necesitamos que elijas una opción";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
@@ -171,4 +221,8 @@ let hayErrores = (errores) => {
 		valor ? (resultado = true) : "";
 	}
 	return resultado;
+};
+let validarFuente = (link) => {
+	aux = link.indexOf("youtube.com/watch");
+	return aux >= 0 && aux <= 12;
 };

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<!-- ESTILOS Y SCRIPTS -->
 	<!-- Agregar usuarios -->
 	<% if (tema == "usuario") { %>
 		<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosGral.css">
@@ -53,6 +52,8 @@
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
 			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/4-DatosPers.css">
+			<script src="/javascript/3-Productos/4-datosPersSubcat.js"></script>
+			<script src="/javascript/3-Productos/4-datosPersErrores.js"></script>
 		<% } else %>
 		<% if (codigo == "responsabilidad") { %>
 			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/0-Responsabilidad.css">
