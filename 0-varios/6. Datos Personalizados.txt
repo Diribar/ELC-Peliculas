@@ -1,30 +1,19 @@
-BD
-Ordenados de menor a mayor los valores
-Función ObtenerTodos, que recibacomo parámetro el ASC / DESC
+Ayudas
+	- Público sugerido: 
+		- Mayores solamente: presencia de sensualidad explícita o crueldad excesiva, que puedan dañar la sensibilidad de un/a niño/a menor a 12 años.
+		- Mayores apto familia: sugerida para mayores, pero no daña la sensibilidad de un/a niño/ambas
+		- Menores apto familia: sugerida para menores, pero que también la puede disfrutar un adulto
+		- Menores solamente: apuntado a un público solamente infantil
+	- Links
+		- El link debe ser de un sitio que permita denunciar la violación de copyright. Ej: You Tube
+		- El link debe tener por lo menos 3 meses de antigüedad, para prevenir una violación de copyright
 
-PRIMERA COLUMNA --> Agregar:
-    - Para biografías: 
-		- personaje_historico_id (oblig.)
-		- hecho_historico_id (opc.)
-    - Para historias: 
-		- personaje_historico_id (opc.)
-		- hecho_historico_id (oblig.)
-	- Para ambas: sugerida_para_fecha (dia / mes)
+Front-End:
+	- Sub-categorías: 
+		- Input oculto hasta que se responda la categoría
+		- Respondida la categoría, mostrar solamente las sub-categorías correspondientes
+	- onchange: verificar las validaciones
 
-CALIFICACIÓN Promedio:
-- Fe/Valores 50% 
-- Entretiene 30% 
-- Calidad filmica (imagen y sonido) 20% 
-
-ATP
-- Tiene sensualidad explícita con erotismo --> SI/NO
-- Tiene crueldad excesiva --> SI/NO
-Nos referimos a estos aspectos que puedan dañar la sensibilidad de un menor de 12 años. 
-En ese caso, puede estar en nuestra BD, pero no es apta para menores
-
-SEGUNDA COLUMNA
-Completá todos los datos que puedas
-
-El link debe: 
-- Ser de un sitio que permita denunciar la violación de copyright
-- Tener por lo menos 6 meses, para prevenir una violación de copyright
+Validaciones
+	- Que el campo no esté vacío
+	- Links: que pertenezcan a You Tube

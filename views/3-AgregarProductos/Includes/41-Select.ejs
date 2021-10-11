@@ -1,8 +1,8 @@
 <% dato = datosPers_select.find(n => n.campo == campo) %>
-<div style="order: <%= dato.orden %>" class="label-input flex-row">
-	<label><%= dato.titulo %></label>
+<section class="label-input flex-row">
+	<label id="<%= campo %>"><%= dato.titulo %></label>
 	<div class="input-error">
-		<select name="<%= dato.campo %>">
+		<select name="<%= dato.campo %>" class="input">
 			<option value="" class="ocultar" <% if (!data_entry[dato.campo]) { %> selected <% } %>>Elegí una opción</option>
 			<% for (valor of dato.valores) { %>
 				<option value="<%= valor.id %>" <% if (data_entry[dato.campo] == valor.id) { %> selected <% } %>><%= valor.nombre %></option>
@@ -12,4 +12,4 @@
 			<span class="mensajeError"><%= errores[dato.campo] %></span>
 		</i>
 	</div>
-</div>
+</section>

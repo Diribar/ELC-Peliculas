@@ -16,6 +16,7 @@ module.exports = (sequelize, dt) => {
 		musica: { type: dt.STRING(50) },
 		actores: { type: dt.STRING(500) },
 		productor: { type: dt.STRING(100) },
+		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
 
 		en_castellano: { type: dt.BOOLEAN },
@@ -24,7 +25,12 @@ module.exports = (sequelize, dt) => {
 		subcategoria_id: { type: dt.INTEGER },
 		publico_sugerido_id: { type: dt.INTEGER },
 
-		sinopsis: { type: dt.STRING(800) },
+		personaje_historico_id: { type: dt.INTEGER },
+		hecho_historico_id: { type: dt.INTEGER },
+		sugerida_para_evento_id: { type: dt.INTEGER },
+		trailer: { type: dt.STRING(800) },
+		pelicula: { type: dt.STRING(800) },
+
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },

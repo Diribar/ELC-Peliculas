@@ -18,3 +18,7 @@ DATOS DUROS:
 DATOS PERSONALIZADOS
 - IDs: de menor a mayor <-- fijo
 - Orden: de más interesante a menos interesante
+- Calificación Promedio:
+	- Fe/Valores 50% 
+	- Entretiene 30% 
+	- Calidad filmica (imagen y sonido) 20% 

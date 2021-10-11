@@ -1,52 +1,72 @@
-<div class="flex-row" id="data_entry">
-	<!--Primera columna-->
-	<section class="flex-col">
-		<!--Existe una versión en castellano-->
-		<%- include("41-Select", {campo: "en_castellano"}) %>
-		<!--Es a Color-->
-		<%- include("41-Select", {campo: "color"}) %>
-		<!--Categoría-->
-		<%- include("41-Select", {campo: "categoria_id"}) %>
-		<!--Sub-categoría-->
-		<%- include("41-Select", {campo: "subcategoria_id"}) %>
-		<!--Público sugerido-->
-		<%- include("41-Select", {campo: "publico_sugerido_id"}) %>
-		<!--Calificación-->
-		<h3 style="order: 6;">Tu calificación</h3>
-		<!--Inspira fe y/o valores-->
-		<%- include("41-Select", {campo: "fe_valores_id"}) %>
-		<!--Entretiene-->
-		<%- include("41-Select", {campo: "entretiene_id"}) %>
-		<!--Calidad Técnica-->
-		<%- include("41-Select", {campo: "calidad_sonora_visual_id"}) %>
-		<!--Links del trailer-->
-		<h3 style="order: 9;">Links del trailer:</h3>
-			<!--Primer Link-->
-			<%- include("42-Input", {campo: "trailer1"}) %>
-			<!--Segundo Link-->
-			<%- include("42-Input", {campo: "trailer2"}) %>
-		<!--Links gratuitos para ver la película-->
-		<h3 style="order: 11;">Links gratuitos para ver la película:</h3>
-			<!--Primer Link-->
-			<%- include("42-Input", {campo: "pelicula1"}) %>
-			<!--Segundo Link-->
-			<%- include("42-Input", {campo: "pelicula2"}) %>
+<button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
+<form action="<%= link %>" method="POST" id="data_entry" class="flex-col" >
+	<section id="titulos">
+		<h2>Paso 4 de 4: Datos Personalizados</h2>
 	</section>
-	<!--Columna del medio-->
-	<section id="columnaMedio">
-	</section>
-	<!--Segunda columna-->
-	<section class="flex-col">
-		<!--Sinopsis-->
-		<div class="label-input flex-col">
-			<label>Sinopsis:</label>
-			<div class="input-error">
-				<textarea name="sinopsis" cols="18" rows="1" placeholder="Ingresa aquí la sinopsis" ><%= data_entry.sinopsis %></textarea>
-				<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
-					<span class="mensajeError"><%= errores[dato.campo] %></span>
-				</i>
+	<section id="cuerpo">
+		<!--Primera columna-->
+		<div class="flex-col">
+			<!-- Datos generales -->
+			<div class="flex-col">
+				<h3 style="margin-top: 0;">Datos generales</h3>
+				<!--Existe una versión en castellano-->
+				<%- include("41-Select", {campo: "en_castellano"}) %>
+				<!--Es a Color-->
+				<%- include("41-Select", {campo: "color"}) %>
+				<!--Categoría-->
+				<%- include("41-Select", {campo: "categoria_id"}) %>
+				<!--Sub-categoría-->
+				<%- include("41-Select", {campo: "subcategoria_id"}) %>
+				<!--Público sugerido-->
+				<%- include("41-Select", {campo: "publico_sugerido_id"}) %>
+			</div>
+			<!-- Links -->
+			<div class="flex-col">
+				<h3>Links gratuitos</h3>
+				<!--Link del trailer-->
+				<%- include("42-Input", {campo: "trailer"}) %>
+				<!--Links gratuitos para ver la película-->
+				<%- include("42-Input", {campo: "pelicula"}) %>
+			</div>
+			<!-- Relación con la vida -->
+			<div class="flex-col">
+				<h3>Relación con la vida</h3>
+				<!--Inspira fe y/o valores-->
+				<%- include("41-Select", {campo: "personaje_historico_id"}) %>
+				<!--Entretiene-->
+				<%- include("41-Select", {campo: "hecho_historico_id"}) %>
+				<!--Calidad Técnica-->
+				<%- include("41-Select", {campo: "sugerida_para_evento_id"}) %>
+			</div>
+		</div>
+		<!--Columna del medio-->
+		<div id="columnaMedio">
+		</div>
+		<!--Segunda columna-->
+		<div class="flex-col" style="align-items: center;">
+			<!-- Avatar -->
+			<div id="imagenPeli" class="form-grupo">
+				<img id="imgTMDB" src="<%= data_entry.avatar %>" alt="afiche">
+			</div>	
+			<!-- Tu calificación -->
+			<div class="flex-col">
+				<h3>Tu calificación</h3>
+				<!--Inspira fe y/o valores-->
+				<%- include("41-Select", {campo: "fe_valores_id"}) %>
+				<!--Entretiene-->
+				<%- include("41-Select", {campo: "entretiene_id"}) %>
+				<!--Calidad Técnica-->
+				<%- include("41-Select", {campo: "calidad_sonora_visual_id"}) %>
 			</div>
 		</div>
 	</section>
-</div>
-<button type="submit">Enviar</button>
+	<section id="flechas" class="flex-row space-between">
+		<a href="/peliculas/agregar/datos-duros"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<button type="submit">Enviar</button>
+		<% if (false) { %>
+			<a href="#"><i class="fas fa-arrow-alt-circle-right"></i></a>
+		<% } else { %>
+			<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
+		<% } %>
+	</section>
+</form>
