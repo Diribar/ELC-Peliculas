@@ -23,8 +23,7 @@ router.get("/api/validar-datos-pers/", API.validarDatosPers);
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
 //router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
 
-// Controladores de vistas
-router.get("/responsabilidad", usuarios, vistas.responsabilidad);
+// Controladores de vistas de "Agregar Productos"
 router.get("/palabras-clave", usuarios, vistas.palabrasClaveForm);
 router.post("/palabras-clave", usuarios, vistas.palabrasClaveGuardar);
 router.get("/desambiguar", usuarios, vistas.desambiguarForm);
@@ -37,6 +36,9 @@ router.get("/datos-personalizados", usuarios, prodEnBD, vistas.DatosPersForm);
 router.post("/datos-personalizados", usuarios, vistas.DatosPersGuardar);
 router.get("/resumen", usuarios, prodEnBD, vistas.ResumenForm);
 router.post("/resumen", usuarios, vistas.ResumenGuardar);
+
+// Controladores de vistas auxiliares
+router.get("/responsabilidad", usuarios, vistas.responsabilidad);
 router.get("/ya-en-bd", usuarios, vistas.yaEnBD_Form);//router.post("/ya-en-bd", usuarios, vistas.yaEnBD_Form);
 
 // Fin
