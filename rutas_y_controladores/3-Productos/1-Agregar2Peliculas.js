@@ -127,7 +127,7 @@ module.exports = {
 			tema = "agregar";
 			codigo = "datosDuros";
 			req.session.errores = errores;
-			return res.redirect("/productos/agregar/datos-duros");
+			return res.redirect("/peliculas/agregar/datos-duros");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
