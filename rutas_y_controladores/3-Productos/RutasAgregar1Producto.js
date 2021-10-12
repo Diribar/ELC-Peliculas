@@ -24,6 +24,7 @@ router.get("/desambiguar", usuarios, vistas.desambiguarForm);
 router.post("/desambiguar", usuarios, vistas.desambiguarGuardar);
 router.get("/copiar-fa", usuarios, autorizadoFA, vistas.copiarFA_Form);
 router.post("/copiar-fa", usuarios, vistas.copiarFA_Guardar);
+router.post("/datosDuros", usuarios, vistas.datosDuros);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", usuarios, vistas.responsabilidad);

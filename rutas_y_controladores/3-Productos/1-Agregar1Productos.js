@@ -166,6 +166,14 @@ module.exports = {
 			: res.redirect("/colecciones/agregar/datos-duros");
 	},
 
+	datosDuros: async (req, res) => {
+		return req.session.datosDuros
+			? req.session.datosDuros.rubroAPI == "movie"
+				? res.redirect("/peliculas/agregar/datos-duros")
+				: res.redirect("/colecciones/agregar/datos-duros")
+			: res.redirect("/productos/agregar/palabras-clave");
+	},
+	
 	responsabilidad: (req, res) => {
 		tema = "agregar";
 		codigo = "responsabilidad";
