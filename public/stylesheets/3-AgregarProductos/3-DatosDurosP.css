@@ -1,0 +1,37 @@
+/* Encabezado del formulario */
+#data_entry #titulos {display: flex; justify-content: space-between;}
+#data_entry #titulos h1 {margin-top: 0;}
+#data_entry #titulos #links {display: flex; flex-direction: column; align-items: center;}
+#data_entry #titulos #links nav {display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;}
+#data_entry #titulos #links nav a.logos {width: 30px; height: 30px; position: relative; }
+#data_entry #titulos #links nav a.logos img {width: 100%; height: 100%; position: absolute; object-fit: cover; border-radius: 8px;}
+
+/* Cuerpo del formulario */
+#data_entry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
+#data_entry #cuerpo #columnaMedio {width: 50px}
+#data_entry .label-input {justify-content: space-between; margin-top: 4px;}
+
+/* Partes específicas del formulario */
+#data_entry h1 {margin-bottom: 15px;}
+#data_entry .label-input label {margin-top: 3px; margin-right: 15px; font-weight: bold;}
+#data_entry .label-input .input-error {position: relative; display: flex;}
+#data_entry .label-input .input-error p {margin: 7px 5px 0px 10px;}
+#data_entry .label-input .input-error #numero {width: 90px; text-align: right;}
+#data_entry .label-input .input-error .input {align-self: flex-end; width: 200px;}
+#data_entry .label-input .input-error input {padding: 0px 5px;}
+#data_entry .label-input .input-error select {padding: 0}
+#data_entry .label-input .input-error textarea {padding: 0px 5px; resize:vertical; max-height: 100px; min-height: 18px;}
+
+/* Errores */
+#data_entry .fa-times-circle {right: -20px; top: 50%; transform: translateY(-50%);}
+#data_entry .mensajeError {right: 0px; top: 15px; width: 200px}
+#data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
+
+/* Imagen de la película */
+#data_entry #imagenPeli {width: 200px; height: 100%; position: relative;}
+#data_entry #imagenPeli, #data_entry #imagenPeli label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#data_entry #imagenPeli label {height: 100%; width: 100%; position: absolute;}
+#data_entry #imagenPeli img {position: absolute; height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
+
+/* Flechas */
+#data_entry #flechas {margin: 20px 50px 0;}

@@ -93,6 +93,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Redireccionar a la siguiente instancia
+		//return res.send(req.session.datosDuros);
 		return req.session.datosDuros.rubroAPI == "movie"
 			? res.redirect("/peliculas/agregar/datos-duros")
 			: res.redirect("/colecciones/agregar/datos-duros");
