@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/peliculas/agregar/api/validar-copiar-fa/" + url).then(
+		return fetch("/productos/agregar/api/validar-copiar-fa/" + url).then(
 			(n) => n.json()
 		);
 	};

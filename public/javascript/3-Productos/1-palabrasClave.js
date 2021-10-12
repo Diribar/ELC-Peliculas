@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	// Fórmula de revisar input
 	let revisarInput = async (dato) => {
 			let link =
-			"/peliculas/agregar/api/palabras-clave/?palabrasClave=" + dato;
+			"/productos/agregar/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {
@@ -70,7 +70,7 @@ window.addEventListener("load", () => {
 		resultado.classList.add("resultadoEnEspera");
 		// Obtener el link
 		return (
-			"/peliculas/agregar/api/averiguar-cant-prod/?palabrasClave=" +
+			"/productos/agregar/api/averiguar-cant-prod/?palabrasClave=" +
 			palabrasClave
 		);
 	};
