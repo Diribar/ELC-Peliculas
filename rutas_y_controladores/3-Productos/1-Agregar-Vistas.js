@@ -312,10 +312,8 @@ module.exports = {
 		if (!datosPers)
 			return res.redirect("/peliculas/agregar/palabras-clave");
 		// 3. Render del formulario
-		let errores = req.session.errores
-			? req.session.errores
-			: //: await validarProductos.datosPers(datosPers);
-			  "";
+		let errores = req.session.errores ? req.session.errores : "";
+		//return res.send([datosPers.color, req.session.datosPers.color]);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -327,26 +325,26 @@ module.exports = {
 		});
 	},
 
-	DatosPersGuardar: (req, res) => {
+	DatosPersGuardar: async (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers;
 		if (!aux) return res.redirect("/peliculas/agregar/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
-		let datosPers = { ...req.cookies.datosPers, ...req.body };
+		let datosPers = { ...aux, ...req.body };
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = false;
-		//let errores = await validarProductos.datosPers(datosPers);
+		let errores = await validarProductos.datosPers(datosPers);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			tema = "agregar";
 			codigo = "datosPers";
 			req.session.errores = errores;
+			//return res.send([datosPers.color, req.session.datosPers.color]);
 			return res.redirect("/peliculas/agregar/datos-personalizados");
 		}
 		// 3. Redireccionar a la siguiente instancia
@@ -391,50 +389,11 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	return resultado;
 };
 
-let actualizarCookiesProductos = async (producto, res) => {
-	let camposTotales = [
-		"fuente",
-		"rubroAPI",
-		"tmdb_id",
-		"fa_id",
-		"imdb_id",
-		"coleccion_tmdb_id",
-		"nombre_original",
-		"nombre_castellano",
-		"idioma_original",
-		"ano_estreno",
-		"ano_fin",
-		"partes",
-		"duracion",
-		"pais_id",
-		"director",
-		"guion",
-		"musica",
-		"productor",
-		"actores",
-		"avatar",
-		"sinopsis",
-	];
-	// Obtener los campos
-	// modelo =
-	// 	producto.rubroAPI == "movie"
-	// 		? await BD_peliculas.ObtenerPorID(1)
-	// 		: await BD_colecciones.ObtenerPorID(1);
-	// camposTotales = modelo._options.attributes;
-	camposProducto = Object.keys(producto);
-	// Borrar cookies de producto viejo
-	for (campo of camposTotales) {
-		camposProducto.includes(campo)
-			? res.cookie(campo, producto[campo], { maxAge: 1000 * 60 * 60 })
-			: res.clearCookie(campo);
-	}
-};
-
 let download = (uri, filename) => {
 	request.head(uri, () => {
 		request(uri)
 			.pipe(fs.createWriteStream(filename))
-			.on("close", () => console.log("done"));
+			.on("close", () => console.log("imagen guardada"));
 	});
 };
 
@@ -536,8 +495,7 @@ let datosPersSelect = async () => {
 			valores: await BD_varios.ObtenerTodos("eventos", "orden"),
 		},
 	];
-
-} 
+};
 
 let datosPersInput = () => {
 	return [
@@ -552,4 +510,4 @@ let datosPersInput = () => {
 			tabla: "peliculas",
 		},
 	];
-}; 
+};

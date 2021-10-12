@@ -18,6 +18,7 @@ let upload = require("../../middlewares/varios/multer");
 router.get("/api/palabras-clave/", API.validarPalabrasClave);
 router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 router.get("/api/validar-datos-duros/", API.validarDatosDuros);
+router.get("/api/validar-datos-pers/", API.validarDatosPers);
 // Validar campos vs. API/BD
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
 //router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);

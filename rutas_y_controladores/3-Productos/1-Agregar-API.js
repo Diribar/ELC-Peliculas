@@ -21,6 +21,11 @@ module.exports = {
 		return res.json(errores);
 	},
 
+	validarDatosPers: async (req, res) => {
+		errores = await validarProductos.datosPers(req.query);
+		return res.json(errores);
+	},
+
 	cantProductos: async (req, res) => {
 		// Obtener 'palabrasClave' y obtener la API
 		let { palabrasClave } = req.query;

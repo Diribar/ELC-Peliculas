@@ -4,16 +4,11 @@ Ayudas
 		- Mayores apto familia: sugerida para mayores, pero no daña la sensibilidad de un/a niño/ambas
 		- Menores apto familia: sugerida para menores, pero que también la puede disfrutar un adulto
 		- Menores solamente: apuntado a un público solamente infantil
-	- Links
+	- Links Trailer / Película
 		- El link debe ser de un sitio que permita denunciar la violación de copyright. Ej: You Tube
 		- El link debe tener por lo menos 3 meses de antigüedad, para prevenir una violación de copyright
 
-Front-End:
-	- Sub-categorías: 
-		- Input oculto hasta que se responda la categoría
-		- Respondida la categoría, mostrar solamente las sub-categorías correspondientes
-	- onchange: verificar las validaciones
-
-Validaciones
-	- Que el campo no esté vacío
-	- Links: que pertenezcan a You Tube
+Links a Agregar Registros
+	- Personaje histórico
+	- Hecho histórico
+	- Fecha sugerida para ver
