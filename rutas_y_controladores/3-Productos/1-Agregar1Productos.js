@@ -161,7 +161,9 @@ module.exports = {
 		//return res.send(req.cookies)
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/productos/agregar/datos-duros");
+		return req.session.datosDuros.rubroAPI == "movie"
+			? res.redirect("/peliculas/agregar/datos-duros")
+			: res.redirect("/colecciones/agregar/datos-duros");
 	},
 
 	responsabilidad: (req, res) => {
