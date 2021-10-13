@@ -31,4 +31,18 @@ module.exports = {
 			include: [include],
 		});
 	},
+	paises: async (countries) => {
+		let resultado = "";
+		if (countries.length) {
+			valores = countries.split(", ");
+			console.log(valores);
+			BD_paises = await this.ObtenerTodos("paises", "nombre");
+			for (valor of valores) {
+				valor != valores[0] ? (resultado += ", ") : "";
+				resultado += BD_paises.find((n) => n.id == valor).nombre;
+			}
+			console.log(resultado);
+		}
+		return resultado;
+	},
 };

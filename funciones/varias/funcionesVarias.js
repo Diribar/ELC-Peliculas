@@ -39,19 +39,4 @@ module.exports = {
 		};
 		await transporter.sendMail(datos);
 	},
-
-	paises: async (countries) => {
-		let resultado = "";
-		if (countries.length) {
-			valores = countries.split(", ");
-			console.log(valores);
-			BD_paises = await BD_varios.ObtenerTodos("paises", "nombre");
-			for (valor of valores) {
-				valor != valores[0] ? (resultado += ", ") : "";
-				resultado += BD_paises.find((n) => n.id == valor).nombre;
-			}
-			console.log(resultado);
-		}
-		return resultado
-	},
 };
