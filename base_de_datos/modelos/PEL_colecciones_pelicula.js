@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		id: { type: dt.INTEGER, primaryKey: true },
 		pelicula_id: { type: dt.INTEGER },
 		tmdb_id: { type: dt.STRING(20) },
+		fa_id: { type: dt.STRING(20) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },
@@ -12,6 +13,23 @@ module.exports = (sequelize, dt) => {
 		avatar: { type: dt.STRING(100) },
 		coleccion_id: { type: dt.INTEGER },
 		orden_secuencia: { type: dt.INTEGER },
+
+		calificacion: { type: dt.INTEGER },
+
+		creada_por_id: { type: dt.INTEGER },
+		creada_en: { type: dt.DATE },
+		analizada_por_id: { type: dt.INTEGER },
+		analizada_en: { type: dt.DATE },
+		aprobada: { type: dt.BOOLEAN },
+		fechaFIFO: { type: dt.DATE },
+		editada_por_id: { type: dt.INTEGER },
+		editada_en: { type: dt.DATE },
+		revisada_por_id: { type: dt.INTEGER },
+		revisada_en: { type: dt.DATE },
+		borrada: { type: dt.BOOLEAN },
+		borrada_por_id: { type: dt.INTEGER },
+		borrada_en: { type: dt.DATE },
+		borrada_motivo: { type: dt.STRING(500) },
 	};
 	const config = {
 		tableName: "colecciones_peliculas",
@@ -20,7 +38,11 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
 		entidad.belongsTo(n.colecciones_cabecera, {as: "coleccion_cabecera", foreignKey: "coleccion_id"});
-		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
 	};
 	return entidad;
 };

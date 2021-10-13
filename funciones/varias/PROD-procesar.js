@@ -72,9 +72,9 @@ module.exports = {
 				  })
 				: "";
 			lectura.production_countries.length > 0
-				? (datosLectura.pais_id = lectura.production_countries.map(
-						(n) => n.iso_3166_1
-				  ))
+				? (datosLectura.pais_id = lectura.production_countries
+						.map((n) => n.iso_3166_1)
+						.join(", "))
 				: "";
 			lectura.cast.length > 0
 				? (datosLectura.actores = lectura.cast
@@ -124,9 +124,9 @@ module.exports = {
 				? (datosLectura.nombre_castellano = lectura.name)
 				: "";
 			lectura.production_countries.length > 0
-				? (datosLectura.pais_id = lectura.production_countries.map(
-						(n) => n.iso_3166_1
-				  ))
+				? (datosLectura.pais_id = lectura.production_countries
+						.map((n) => n.iso_3166_1)
+						.join(", "))
 				: "";
 			lectura.original_language != ""
 				? (datosLectura.idioma_original = lectura.original_language)
@@ -267,7 +267,7 @@ module.exports = {
 				resultado.pais_nombre
 			);
 			pais_id.length > 0
-				? (resultado.pais_id = pais_id.map((n) => n.id))
+				? (resultado.pais_id = pais_id.map((n) => n.id).join(", "))
 				: "";
 			delete resultado.pais_nombre;
 		}

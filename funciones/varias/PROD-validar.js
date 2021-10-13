@@ -157,14 +157,14 @@ module.exports = {
 		errores.sugerida_para_evento_id = !datos.sugerida_para_evento_id
 			? cartelSelectVacio
 			: "";
-		errores.trailer = !datos.trailer
+		errores.link_trailer = !datos.link_trailer
 			? cartelCampoVacio
-			: !validarFuente(datos.trailer)
+			: !validarFuente(datos.link_trailer)
 			? "Debe ser de una fuente confiable"
 			: "";
-		errores.pelicula = !datos.pelicula
+		errores.link_pelicula = !datos.link_pelicula
 			? cartelCampoVacio
-			: !validarFuente(datos.pelicula)
+			: !validarFuente(datos.link_pelicula)
 			? "Debe ser de una fuente confiable"
 			: "";
 		errores.fe_valores_id = !datos.fe_valores_id

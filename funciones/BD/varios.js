@@ -31,17 +31,15 @@ module.exports = {
 			include: [include],
 		});
 	},
-	paises: async (countries) => {
+	paises: async function (pais_id) {
 		let resultado = "";
-		if (countries.length) {
-			valores = countries.split(", ");
-			console.log(valores);
+		if (pais_id.length) {
 			BD_paises = await this.ObtenerTodos("paises", "nombre");
-			for (valor of valores) {
-				valor != valores[0] ? (resultado += ", ") : "";
-				resultado += BD_paises.find((n) => n.id == valor).nombre;
+			aux = pais_id.split(", ")
+			for (pais of aux) {
+				pais != aux[0] ? (resultado += ", ") : "";
+				resultado += BD_paises.find((n) => n.id == pais).nombre;
 			}
-			console.log(resultado);
 		}
 		return resultado;
 	},
