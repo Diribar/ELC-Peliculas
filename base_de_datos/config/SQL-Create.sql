@@ -233,6 +233,7 @@ CREATE TABLE colecciones_peliculas (
 	coleccion_id INT UNSIGNED NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
 	tmdb_id VARCHAR(20) NULL,
+	fa_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
@@ -243,8 +244,8 @@ CREATE TABLE colecciones_peliculas (
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones_cabecera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
-VALUES (1, 1, '38516', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
+INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
+VALUES (1, 1, '38516', '436804', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1)
 ;
 INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia)
 VALUES (1, '75470', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2)
