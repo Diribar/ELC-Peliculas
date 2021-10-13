@@ -14,9 +14,7 @@ module.exports = (sequelize, dt) => {
 		productor: { type: dt.STRING(50) },
 		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
-
 		calificacion: { type: dt.INTEGER },
-
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },

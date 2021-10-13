@@ -13,9 +13,7 @@ module.exports = (sequelize, dt) => {
 		avatar: { type: dt.STRING(100) },
 		coleccion_id: { type: dt.INTEGER },
 		orden_secuencia: { type: dt.INTEGER },
-
 		calificacion: { type: dt.INTEGER },
-
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },
