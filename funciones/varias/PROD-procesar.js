@@ -20,7 +20,7 @@ module.exports = {
 	},
 
 	// Agregar-Vistas.desambiguarGuardar (Controller)
-	pelicula_TMDB: async (form, lectura) => {
+	pelicula_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
@@ -104,7 +104,7 @@ module.exports = {
 	},
 
 	// Agregar-Vistas.desambiguarGuardar (Controller)
-	TV_TMDB: async (form, lectura) => {
+	TV_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
@@ -182,7 +182,7 @@ module.exports = {
 	},
 
 	// Agregar-Vistas.desambiguarGuardar (Controller)
-	coleccion_TMDB: async (form, lectura) => {
+	coleccion_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,

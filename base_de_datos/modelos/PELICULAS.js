@@ -55,7 +55,6 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.colecciones_peliculas, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});

@@ -3,8 +3,8 @@ let fs = require("fs");
 let request = require("request");
 let requestPromise = require("request-promise");
 let path = require("path");
-let procesarProductos = require("../../funciones/varias/PROD-procesar");
-let validarProductos = require("../../funciones/varias/PROD-validar");
+//let procesarColecciones = require("../../funciones/varias/PROD-procesarC");
+//let validarColecciones = require("../../funciones/varias/PROD-validarC");
 let BD_peliculas = require("../../funciones/BD/peliculas");
 let BD_colecciones = require("../../funciones/BD/colecciones");
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
@@ -28,7 +28,7 @@ module.exports = {
 		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProductos.datosDuros(datosDuros);
+			: await validarColecciones.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		let datos = [
 			{ titulo: "Título original", campo: "nombre_original" },
@@ -65,7 +65,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = await validarProductos.datosDuros(datosDuros);
+		let errores = await validarColecciones.datosDuros(datosDuros);
 		// 2.2. Averiguar si el TMDB_id o el FA_id ya está en la BD
 		elc_id = await procesarProductos.obtenerELC_id({
 			rubroAPI: req.body.rubroAPI,
@@ -181,7 +181,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = await validarProductos.datosPers(datosPers);
+		let errores = await validarColecciones.datosPers(datosPers);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			tema = "agregar";

@@ -45,13 +45,13 @@ let rutaLogin = require("./rutas_y_controladores/2-Usuarios/Login-Ruta");
 let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar1Producto");
 let rutaAgregarColeccion = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar2Coleccion");
 let rutaAgregarPelicula = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar2Pelicula");
-//let rutaRudOpciones = require("./rutas_y_controladores/3-Productos/RutasRudOpciones");
+let rutaRudOpciones = require("./rutas_y_controladores/4-Productos/RutasRudOpciones");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
 app.use("/productos/agregar", rutaAgregarProducto);
 app.use("/colecciones/agregar", rutaAgregarColeccion);
 app.use("/peliculas/agregar", rutaAgregarPelicula);
-//app.use("/productos", rutaRudOpciones);
+app.use("/productos", rutaRudOpciones);
 app.use("/", rutaECC);
 
 // ************************ Errores *******************************

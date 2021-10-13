@@ -230,6 +230,7 @@ VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una c
 ;
 CREATE TABLE colecciones_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	coleccion_id INT UNSIGNED NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
 	tmdb_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL UNIQUE,
@@ -238,7 +239,6 @@ CREATE TABLE colecciones_peliculas (
 	cant_capitulos INT UNSIGNED NOT NULL DEFAULT 1,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
-	coleccion_id INT UNSIGNED NOT NULL,
 	orden_secuencia INT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES colecciones_cabecera(id)
@@ -280,13 +280,15 @@ VALUES
 ;
 CREATE TABLE eventos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
 	dia INT UNSIGNED NULL,
 	mes INT UNSIGNED NULL,
-	nombre VARCHAR(50) NOT NULL,
+	evento VARCHAR(50) NOT NULL,
+	nombre VARCHAR(70) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO eventos (id, dia, mes, nombre)
-VALUES (1, 22, 10, 'San Juan Pablo II')
+INSERT INTO eventos (id, orden, dia, mes, evento, nombre)
+VALUES (1, 301, 22, 10, 'San Juan Pablo II', '22/oct - San Juan Pablo II')
 ;
 CREATE TABLE personajes_historicos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -324,14 +326,15 @@ CREATE TABLE PELICULAS (
 	avatar VARCHAR(100) NOT NULL,
 	en_castellano BOOLEAN NOT NULL,
 	color BOOLEAN NOT NULL,
-	publico_sugerido_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
+	publico_sugerido_id INT UNSIGNED NOT NULL,
 	personaje_historico_id INT UNSIGNED NULL,
 	hecho_historico_id INT UNSIGNED NULL,
 	sugerida_para_evento_id INT UNSIGNED NULL,
 	trailer VARCHAR(200) NULL,
 	pelicula VARCHAR(200) NULL,
+	calificacion INT UNSIGNED NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
 	analizada_por_id INT UNSIGNED NULL,
