@@ -243,12 +243,12 @@ let hayMas = (datos, page, rubrosAPI) => {
 let ordenarDatos = (datos, palabrasClave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
-				return b.desempate3 < a.desempate3
-					? -1
-					: b.desempate3 > a.desempate3
-					? 1
-					: 0;
-		  })
+			return b.desempate3 < a.desempate3
+				? -1
+				: b.desempate3 > a.desempate3
+				? 1
+				: 0;
+		})
 		: "";
 	let datosEnOrden = {
 		palabrasClave: palabrasClave,
