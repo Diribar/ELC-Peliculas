@@ -357,8 +357,10 @@ module.exports = {
 
 	// Función buscar_x_PC (buscar_x_PC -> averiguarSiYaEnBD)
 	// Middleware (productoYaEnBD)
-	// ControllerVista (copiarFA_Guardar, datosDurosGuardar)
+	// ControllerVista (copiarFA_Guardar)
+	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
+		// Busca ELC_id de Películas o Colecciones-cabecera
 		// Definir variables
 		rubro = datos.rubroAPI;
 		tmdb_id = datos.tmdb_id;
@@ -366,7 +368,6 @@ module.exports = {
 		// Verificar YaEnBD
 		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
 		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
-		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
 		// Enviar el resultado
 		return [TMDB_enBD, FA_enBD];
 	},
