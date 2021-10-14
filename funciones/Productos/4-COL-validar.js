@@ -2,57 +2,6 @@
 let procesarProductos = require("./PROD-procesar");
 
 module.exports = {
-	palabrasClave: (dato) => {
-		cartelCampoVacio = "Necesitamos que completes este campo";
-		let errores = {};
-		errores.palabrasClave = !dato
-			? cartelCampoVacio
-			: longitud(dato, 2, 50)
-			? longitud(dato, 2, 50)
-			: "";
-		return errores;
-	},
-
-	copiarFA: (datos) => {
-		let errores = {};
-		// Rubro
-		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
-		// Dirección
-		aux = datos.direccion;
-		errores.direccion = !aux
-			? cartelCampoVacio
-			: !aux.includes("www.filmaffinity.com/") ||
-			  !(
-					aux.indexOf("www.filmaffinity.com/") + 21 <
-						aux.indexOf("/film") &&
-					aux.indexOf("/film") + 5 < aux.indexOf(".html")
-			  )
-			? "No parece ser una dirección de Film Affinity"
-			: "";
-		// Validar si ya en BD
-		// Avatar
-		errores.avatar = !datos.avatar
-			? "Necesitamos que agregues una imagen"
-			: !datos.avatar.includes("pics.filmaffinity.com/")
-			? "No parece ser una imagen de FilmAffinity"
-			: !datos.avatar.includes("large.jpg")
-			? "Necesitamos que consigas el link de la imagen grande"
-			: "";
-		// Contenido
-		aux = datos.contenido
-			? procesarProductos.contenidoFA(datos.contenido)
-			: {};
-		errores.contenido = !datos.contenido
-			? cartelCampoVacio
-			: !Object.keys(aux).length
-			? "No se obtuvo ningún dato"
-			: "";
-		// Final
-		errores.hay = hayErrores(errores);
-		errores.campos = Object.keys(aux).length;
-		return errores;
-	},
-
 	datosDuros: (datos) => {
 		let errores = {};
 		errores.nombre_original = !datos.nombre_original

@@ -6,7 +6,7 @@ let BD_peliculas = require("../BD/peliculas");
 let BD_colecciones = require("../BD/colecciones");
 
 module.exports = {
-	// Agregar-Vistas.desambiguarGuardar (Controller)
+	// Agregar-Vistas.desambiguarGuardar
 	obtenerAPI: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
@@ -19,7 +19,7 @@ module.exports = {
 		return lectura;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar (Controller)
+	// Agregar-Vistas.desambiguarGuardar
 	pelicula_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -103,7 +103,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar (Controller)
+	// Agregar-Vistas.desambiguarGuardar
 	TV_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -181,7 +181,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar (Controller)
+	// Agregar-Vistas.desambiguarGuardar
 	coleccion_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -240,19 +240,26 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.copiarFA_Guardar (Controller)
+	// Agregar-Vistas.copiarFA_Guardar
 	obtenerFA_id: (url) => {
-		return obtenerFA_id(url);
+		// Output para FE y BE
+		aux = url.indexOf("www.filmaffinity.com/");
+		url = url.slice(aux + 21);
+		aux = url.indexOf("/film");
+		url = url.slice(aux + 5);
+		aux = url.indexOf(".html");
+		fa_id = url.slice(0, aux);
+		return fa_id;
 	},
 
-	// Agregar-Vistas.copiarFA_Guardar (Controller)
-	producto_FA: async (dato) => {
+	// Agregar-Vistas.copiarFA_Guardar
+	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, avatar, contenido } = dato;
-		fa_id = obtenerFA_id(direccion);
+		fa_id = this.obtenerFA_id(direccion);
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
-		contenido = contenidoFA(contenido);
+		contenido = this.contenidoFA(contenido);
 		let resultado = {
 			fuente: "FA",
 			rubroAPI,
@@ -274,7 +281,8 @@ module.exports = {
 		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
-
+	
+	// API y producto_FA
 	obtenerELC_id: async (datos) => {
 		// Definir variables
 		rubro = datos.rubroAPI;
@@ -288,8 +296,67 @@ module.exports = {
 		return [TMDB_enBD, FA_enBD];
 	},
 
+	// API y producto_FA
 	contenidoFA: (contenido) => {
-		return contenidoFA(contenido);
+		// Output para FE y BE
+		// Limpiar espacios innecesarios
+		for (let i = 0; i < contenido.length; i++) {
+			contenido[i] = contenido[i].trim();
+		}
+		// Armar el objeto literal
+		let resultado = {};
+		contenido.indexOf("Ficha") > 0
+			? (resultado.nombre_castellano = funcionParentesis(
+					contenido[contenido.indexOf("Ficha") - 1]
+			  ))
+			: "";
+		contenido.indexOf("Título original") > 0
+			? (resultado.nombre_original = funcionParentesis(
+					contenido[contenido.indexOf("Título original") + 1]
+			  ))
+			: "";
+		contenido.indexOf("Año") > 0
+			? (resultado.ano_estreno = parseInt(
+					contenido[contenido.indexOf("Año") + 1]
+			  ))
+			: "";
+		if (contenido.indexOf("Duración") > 0) {
+			let duracion = contenido[contenido.indexOf("Duración") + 1];
+			resultado.duracion = parseInt(
+				duracion.slice(0, duracion.indexOf(" "))
+			);
+		}
+		if (contenido.indexOf("País") > 0) {
+			let pais_nombre = contenido[contenido.indexOf("País") + 1];
+			resultado.pais_nombre = pais_nombre.slice(
+				(pais_nombre.length + 1) / 2
+			);
+		}
+		contenido.indexOf("Dirección") > 0
+			? (resultado.director =
+					contenido[contenido.indexOf("Dirección") + 1])
+			: "";
+		contenido.indexOf("Guion") > 0
+			? (resultado.guion = contenido[contenido.indexOf("Guion") + 1])
+			: "";
+		contenido.indexOf("Música") > 0
+			? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
+			: "";
+		contenido.indexOf("Reparto") > 0
+			? (resultado.actores = contenido[contenido.indexOf("Reparto") + 1])
+			: "";
+		contenido.indexOf("Productora") > 0
+			? (resultado.productor =
+					contenido[contenido.indexOf("Productora") + 1])
+			: "";
+		if (contenido.indexOf("Sinopsis") > 0) {
+			aux = contenido[contenido.indexOf("Sinopsis") + 1];
+			!aux.includes("(FILMAFFINITY)")
+				? (aux = aux + " (FILMAFFINITY)")
+				: "";
+			resultado.sinopsis = aux.replace(/"/g, "'");
+		}
+		return resultado;
 	},
 };
 
@@ -369,16 +436,6 @@ let funcionParentesis = (dato) => {
 	hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
-let obtenerFA_id = (url) => {
-	// Output para FE y BE
-	aux = url.indexOf("www.filmaffinity.com/");
-	url = url.slice(aux + 21);
-	aux = url.indexOf("/film");
-	url = url.slice(aux + 5);
-	aux = url.indexOf(".html");
-	fa_id = url.slice(0, aux);
-	return fa_id;
-};
 let obtenerELC_id = async (rubroAPI, fuente, id) => {
 	// La respuesta se espera que sea 'true' or 'false'
 	if (!rubroAPI || !id) return false;
@@ -387,58 +444,5 @@ let obtenerELC_id = async (rubroAPI, fuente, id) => {
 		rubroAPI == "movie"
 			? await BD_peliculas.ObtenerELC_id(parametro, id)
 			: await BD_colecciones.ObtenerELC_id(parametro, id);
-	return resultado;
-};
-let contenidoFA = (contenido) => {
-	// Output para FE y BE
-	// Limpiar espacios innecesarios
-	for (let i = 0; i < contenido.length; i++) {
-		contenido[i] = contenido[i].trim();
-	}
-	// Armar el objeto literal
-	let resultado = {};
-	contenido.indexOf("Ficha") > 0
-		? (resultado.nombre_castellano = funcionParentesis(
-				contenido[contenido.indexOf("Ficha") - 1]
-		  ))
-		: "";
-	contenido.indexOf("Título original") > 0
-		? (resultado.nombre_original = funcionParentesis(
-				contenido[contenido.indexOf("Título original") + 1]
-		  ))
-		: "";
-	contenido.indexOf("Año") > 0
-		? (resultado.ano_estreno = parseInt(
-				contenido[contenido.indexOf("Año") + 1]
-		  ))
-		: "";
-	if (contenido.indexOf("Duración") > 0) {
-		let duracion = contenido[contenido.indexOf("Duración") + 1];
-		resultado.duracion = parseInt(duracion.slice(0, duracion.indexOf(" ")));
-	}
-	if (contenido.indexOf("País") > 0) {
-		let pais_nombre = contenido[contenido.indexOf("País") + 1];
-		resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
-	}
-	contenido.indexOf("Dirección") > 0
-		? (resultado.director = contenido[contenido.indexOf("Dirección") + 1])
-		: "";
-	contenido.indexOf("Guion") > 0
-		? (resultado.guion = contenido[contenido.indexOf("Guion") + 1])
-		: "";
-	contenido.indexOf("Música") > 0
-		? (resultado.musica = contenido[contenido.indexOf("Música") + 1])
-		: "";
-	contenido.indexOf("Reparto") > 0
-		? (resultado.actores = contenido[contenido.indexOf("Reparto") + 1])
-		: "";
-	contenido.indexOf("Productora") > 0
-		? (resultado.productor = contenido[contenido.indexOf("Productora") + 1])
-		: "";
-	if (contenido.indexOf("Sinopsis") > 0) {
-		aux = contenido[contenido.indexOf("Sinopsis") + 1];
-		!aux.includes("(FILMAFFINITY)") ? (aux = aux + " (FILMAFFINITY)") : "";
-		resultado.sinopsis = aux.replace(/"/g, "'");
-	}
 	return resultado;
 };
