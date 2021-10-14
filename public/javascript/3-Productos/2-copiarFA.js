@@ -41,7 +41,6 @@ window.addEventListener("load", async () => {
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
-		// Particularidades de cada campo
 		// Mostrar secciones
 		mostrarSecciones(campo, valor);
 		// Agregar comentario en 'contenido'
