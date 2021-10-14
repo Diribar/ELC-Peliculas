@@ -14,7 +14,6 @@ let upload = require("../../middlewares/varios/multer");
 //************************ Controladores ****************************
 // Controladores de APIs
 // Validar campos vs. sintaxis
-router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 router.get("/api/validar-datos-duros/", API.validarDatosDuros);
 router.get("/api/validar-datos-pers/", API.validarDatosPers);
 //router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);

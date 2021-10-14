@@ -18,5 +18,9 @@ module.exports = {
 		return res.json(errores.palabrasClave);
 	},
 
+	validarCopiarFA: async (req, res) => {
+		errores = await validarProductos.copiarFA(req.query);
+		return res.json(errores);
+	},
 
 };

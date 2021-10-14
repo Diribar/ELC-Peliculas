@@ -12,6 +12,7 @@ let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 // Controladores de APIs
 // Validar campos vs. sintaxis
 router.get("/api/palabras-clave/", API.validarPalabrasClave);
+router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 // Validar campos vs. API/BD
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
 //router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);

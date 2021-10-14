@@ -6,7 +6,7 @@ let BD_peliculas = require("../BD/peliculas");
 let BD_colecciones = require("../BD/colecciones");
 
 module.exports = {
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	obtenerAPI: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
@@ -19,7 +19,7 @@ module.exports = {
 		return lectura;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	pelicula_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -103,7 +103,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	TV_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -181,7 +181,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	coleccion_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -240,7 +240,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.copiarFA_Guardar
+	// ControllerVista (copiarFA_Guardar)
 	obtenerFA_id: (url) => {
 		// Output para FE y BE
 		aux = url.indexOf("www.filmaffinity.com/");
@@ -252,7 +252,7 @@ module.exports = {
 		return fa_id;
 	},
 
-	// Agregar-Vistas.copiarFA_Guardar
+	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, avatar, contenido } = dato;
@@ -281,22 +281,8 @@ module.exports = {
 		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
-	
-	// API, producto_FA y Middleware
-	obtenerELC_id: async (datos) => {
-		// Definir variables
-		rubro = datos.rubroAPI;
-		tmdb_id = datos.tmdb_id;
-		fa_id = datos.fa_id;
-		// Verificar YaEnBD
-		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
-		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
-		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
-		// Enviar el resultado
-		return [TMDB_enBD, FA_enBD];
-	},
 
-	// API y producto_FA
+	// ControllerAPI y This (producto_FA)
 	contenidoFA: (contenido) => {
 		// Output para FE y BE
 		// Limpiar espacios innecesarios
@@ -357,6 +343,20 @@ module.exports = {
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
 		return resultado;
+	},
+
+	// API, producto_FA y Middleware
+	obtenerELC_id: async (datos) => {
+		// Definir variables
+		rubro = datos.rubroAPI;
+		tmdb_id = datos.tmdb_id;
+		fa_id = datos.fa_id;
+		// Verificar YaEnBD
+		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
+		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
+		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
+		// Enviar el resultado
+		return [TMDB_enBD, FA_enBD];
 	},
 };
 
