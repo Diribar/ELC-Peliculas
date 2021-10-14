@@ -1,5 +1,5 @@
 window.addEventListener("load", async () => {
-	// Variables
+	// Variables de uso general
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#data_entry .input");
@@ -10,47 +10,84 @@ window.addEventListener("load", async () => {
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
 	let resultado = document.querySelector("#resultado");
 	let statusInicial = true;
+	let rubroAPI = document.querySelector("select[name='rubroAPI']").value;
+	let sectDirec = document.querySelector("#data_entry section#direccion");
+	let sectEnColeccion = document.querySelector("section#enColeccion");
+	let select_c_id = document.querySelector("input[name='coleccion_id']");
+	let enColeccion = document.querySelector("select[name='enColeccion']");
+	let sectImagenMasCuerpo = document.querySelector("section#imagenMasCuerpo");
 
 	// Fórmulas
-	let mostrarSecciones = (campo, valor, mensaje) => {
-		if (campo != "rubroAPI" && campo != "direccion") return;
-		// Declarar funciones
-		let rubroAPI = document.querySelector("select[name='rubroAPI']").value;
-		let sectDireccion = document.querySelector("#data_entry section#id");
-		let sectEnColeccion = document.querySelector("section#enColeccion");
-		let sectImagenMasCuerpo = document.querySelector("#imagenMasCuerpo");
+	let mostrarSecciones = async (campo, valor, mensaje) => {
 		// Campo 'rubroAPI'
 		if (campo == "rubroAPI") {
-			// Acciones
-			sectDireccion.classList.remove("ocultar");
-			if (valor == "collection") {
+			// Acciones si hay un error
+			if (mensaje) {
+				sectDirec.classList.add("ocultar");
 				sectEnColeccion.classList.add("ocultar");
-				sectImagenMasCuerpo.classList.remove("ocultar");
-			} else if (valor == "movie") {
-				sectEnColeccion.classList.remove("ocultar");
 				sectImagenMasCuerpo.classList.add("ocultar");
+				return;
 			}
+			// Acciones si no hay un error
+			sectDirec.classList.remove("ocultar");
+			sectEnColeccion.classList.add("ocultar");
+			valor == "collection"
+				? sectImagenMasCuerpo.classList.remove("ocultar")
+				: sectImagenMasCuerpo.classList.add("ocultar");
+			return;
 		}
 		// Campo 'direccion web'
-		if (campo == "direccion" && rubroAPI == "movie" && mensaje == "") {
+		if (campo == "direccion" && rubroAPI == "movie") {
+			// Acciones si hay un error
+			if (mensaje) {
+				sectEnColeccion.classList.add("ocultar");
+				sectImagenMasCuerpo.classList.add("ocultar");
+				return;
+			}
+			// Averiguar si el ID está en Colecciones
 			pre = "/productos/agregar/api/";
-			FA_id = fetch(pre + "obtener-fa-id/" + valor).then((n) => n.json());
-			enColeccion = FA_id
-				? fetch(pre + "coleccion-fa-id/" + FA_id).then((n) => n.json())
+			FA_id = await fetch(pre + "obtener-fa-id/?direccion=" + valor).then(
+				(n) => n.json()
+			);
+			coleccion_id = FA_id
+				? await fetch(
+						pre + "coleccion-id/?parametro=fa_id&id=" + FA_id
+				  ).then((n) => n.json())
 				: "";
-			// enColeccion
-			// 	?
-			// 	:
+			// Acciones dependiendo de si está en Colecciones
+			if (coleccion_id) {
+				sectEnColeccion.classList.add("ocultar");
+				sectImagenMasCuerpo.classList.remove("ocultar");
+				select_c_id.value = coleccion_id;
+			} else {
+				sectEnColeccion.classList.remove("ocultar");
+				sectImagenMasCuerpo.classList.add("ocultar");
+				select_c_id.value = "";
+			}
+			console.log(select_c_id.value);
+			return;
+		}
+		// Campo 'enColeccion
+		if (campo == "enColeccion") {
+			// Acciones si hay un error
+			if (mensaje) {
+				sectImagenMasCuerpo.classList.add("ocultar");
+				return;
+			}
+			// Acciones si el valor es 'NO'
+			valor == "NO"
+				? sectImagenMasCuerpo.classList.remove("ocultar")
+				: button.classList.add("botonSinLink");
 		}
 	};
-	let revisarInput = (i, errores) => {
+	let revisarInput = async (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
-		mostrarSecciones(campo, valor, mensaje);
+		await mostrarSecciones(campo, valor, mensaje);
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
 		// En caso de error
@@ -62,7 +99,10 @@ window.addEventListener("load", async () => {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
 			iconoOK[i].classList.remove("ocultar");
-			button.classList.remove("botonSinLink");
+			console.log(enColeccion.value == "NO" || select_c_id.value != "");
+			enColeccion.value == "NO" || select_c_id.value != ""
+				? button.classList.remove("botonSinLink")
+				: "";
 			for (let j = 0; j < inputs.length; j++) {
 				iconoOK[j].classList.contains("ocultar")
 					? button.classList.add("botonSinLink")

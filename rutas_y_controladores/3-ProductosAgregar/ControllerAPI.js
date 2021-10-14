@@ -34,7 +34,7 @@ module.exports = {
 
 	// Vista (copiarFA)
 	obtenerColeccion_id: async (req, res) => {
-		[parametro, id] = req.query;
+		let {parametro, id} = req.query;
 		coleccion_id = await procesarProductos.obtenerColeccion_id(
 			"colecciones_peliculas",
 			parametro,

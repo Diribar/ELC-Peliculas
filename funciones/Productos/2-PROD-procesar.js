@@ -256,14 +256,9 @@ module.exports = {
 			...contenido,
 		};
 		if (resultado.pais_nombre) {
-			pais_id = await BD_varios.ObtenerFiltrandoPorCampo(
-				"paises",
-				"nombre",
+			resultado.pais_id = await BD_varios.paisNombreToId(
 				resultado.pais_nombre
 			);
-			pais_id.length > 0
-				? (resultado.pais_id = pais_id.map((n) => n.id).join(", "))
-				: "";
 			delete resultado.pais_nombre;
 		}
 		resultado = convertirLetrasAlCastellano(resultado);
@@ -284,10 +279,9 @@ module.exports = {
 	},
 
 	// ControllerAPI (obtenerColeccion_id)
-	obtenerColeccion_id: async (parametro, id) => {
+	obtenerColeccion_id: async (entidad, parametro, id) => {
 		resultado = await BD_varios.ObtenerPorParametro(entidad, parametro, id);
 		resultado = resultado ? resultado.id : false;
-		console.log(resultado);
 		return resultado;
 	},
 
