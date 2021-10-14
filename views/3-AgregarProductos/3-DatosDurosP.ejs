@@ -27,20 +27,21 @@
 			<section style="order: 3;" class="label-input flex-row">
 				<label>País de origen</label>
 				<div class="input-error">
-					<% pais_id = data_entry.pais_id && data_entry.pais_id.length ? data_entry.pais_id[0] : "" %>
-					<select name="pais_id" class="input">
-						<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
-						<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
-						<% for (continente of continentes) { %>
-							<optgroup label="<%= continente %> ">
-								<% for (n of paises.filter(m => m.continente == continente)) { %>
-									<option value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
-										<%= n.nombre %>
-									</option>
-								<% } %>	
-							</optgroup>
-						<% } %> 
-					</select>
+					<% if (pais) { %>
+						<input type="text" class="input" value="<%= pais %>" disabled>
+					<% } else { %>
+						<select name="pais_id" class="input">
+							<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+							<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
+							<% for (continente of continentes) { %>
+								<optgroup label="<%= continente %> ">
+									<% for (n of paises.filter(m => m.continente == continente)) { %>
+										<option value="<%= n.id %>"><%= n.nombre %></option>
+									<% } %>	
+								</optgroup>
+							<% } %> 
+						</select>
+					<% } %>
 					<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.pais_id %></span>
 					</i>
@@ -50,7 +51,10 @@
 			<section style="order: 9;" class="label-input flex-row">
 				<label>Sinopsis</label>
 				<div class="input-error">
-					<textarea name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis" ><%= data_entry.sinopsis %></textarea>
+					<textarea 
+						name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
+						<% if (data_entry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
+					><%= data_entry.sinopsis %></textarea>
 					<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.sinopsis %></span>
 					</i>

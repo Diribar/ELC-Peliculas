@@ -29,8 +29,8 @@ module.exports = (sequelize, dt) => {
 		hecho_historico_id: { type: dt.INTEGER },
 		sugerida_para_evento_id: { type: dt.INTEGER },
 
-		trailer: { type: dt.STRING(800) },
-		pelicula: { type: dt.STRING(800) },
+		link_trailer: { type: dt.STRING(800) },
+		link_pelicula: { type: dt.STRING(800) },
 
 		calificacion: { type: dt.INTEGER },
 
@@ -67,13 +67,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
-
-		//entidad.belongsToMany(n.actor, {as: "actores", through: "actor_pelicula", foreignKey: "pelicula_id", otherKey: "actor_id", timestamps: false})
-		//entidad.belongsToMany(n.director, {as: "directores", through: "director_pelicula", foreignKey: "pelicula_id", otherKey: "director_id", timestamps: false})
-		//entidad.belongsToMany(n.guionista, {as: "guionistas", through: "guionista_pelicula", foreignKey: "pelicula_id", otherKey: "guionista_id", timestamps: false})
-		//entidad.belongsToMany(n.musico, {as: "musicos", through: "musico_pelicula", foreignKey: "pelicula_id", otherKey: "musico_id", timestamps: false})
-		//entidad.belongsToMany(n.productor, {as: "productores", through: "productor_pelicula", foreignKey: "pelicula_id", otherKey: "productor_id", timestamps: false})
-
 		entidad.hasMany(n.us_pel_calificaciones, {as: "us_pel_calificaciones",foreignKey: "pelicula_id"});
 
 	};

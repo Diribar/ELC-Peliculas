@@ -11,6 +11,7 @@
 	padding: 5px 10px; border-radius: 10px;}
 #data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
+#data_entry input:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
 
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; top:50%; transform: translateY(-50%); font-size: 1rem;}

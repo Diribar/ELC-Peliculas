@@ -28,6 +28,10 @@ module.exports = {
 			? req.session.errores
 			: await validarProductos.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let pais = datosDuros.pais_id
+			? await BD_varios.paises(datosDuros.pais_id)
+			: "";
+		//return res.send(pais)
 		let datos = [
 			{ titulo: "Título original", campo: "nombre_original" },
 			{ titulo: "Título en castellano", campo: "nombre_castellano" },
@@ -44,6 +48,7 @@ module.exports = {
 			codigo,
 			link: req.originalUrl,
 			data_entry: datosDuros,
+			pais,
 			paises,
 			errores,
 			datos,
@@ -51,6 +56,7 @@ module.exports = {
 	},
 
 	datosDurosGuardar: async (req, res) => {
+		return res.send(req.body);
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosDuros
 			? req.session.datosDuros
