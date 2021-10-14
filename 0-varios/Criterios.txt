@@ -22,3 +22,15 @@ DATOS PERSONALIZADOS
 	- Fe/Valores 50% 
 	- Entretiene 30% 
 	- Calidad filmica (imagen y sonido) 20% 
+
+APERTURA ENTRE PRODUCTOS, COLECCIONES y PELICULAS
+- FA y DESAMBIGUAR --> Todo en PRODUCTO
+	- Controllers Vista y API
+	- Función Validaciones
+	- Función Procesar
+	- Vistas	
+- DATOS DUROS en adelante --> Todo por separado
+	- Controllers Vista y API
+	- Función Validaciones
+	- Función Procesar
+	- Vistas	

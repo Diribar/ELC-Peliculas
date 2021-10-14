@@ -1,5 +1,5 @@
 // ************ Requires ************
-let validarProductos = require("../../funciones/varias/PROD-validar");
+let validarProductos = require("../../funciones/Productos/3-PROD-validar");
 
 // *********** Controlador ***********
 module.exports = {

@@ -1,7 +1,7 @@
 // ************ Requires ************
-let buscar_x_PalClave = require("../../funciones/varias/PROD-buscar_x_PC");
-let procesarProductos = require("../../funciones/varias/PROD-procesar");
-let validarProductos = require("../../funciones/varias/PROD-validar");
+let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
+let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
+let validarProductos = require("../../funciones/Productos/3-PROD-validar");
 
 // *********** Controlador ***********
 module.exports = {

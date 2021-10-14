@@ -2,7 +2,7 @@
 let express = require("express");
 let router = express.Router();
 let API = require("./ControllerAPI");
-let vistas = require("./ControllerColecciones");
+let vistas = require("./ControllerVista");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");
