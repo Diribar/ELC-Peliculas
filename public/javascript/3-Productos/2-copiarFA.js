@@ -180,7 +180,6 @@ window.addEventListener("load", async () => {
 			// Acciones si el pedido está repetido o no
 			if (ELC_id) {
 				// Si el pedido está repetido, avisar del error
-				e.preventDefault();
 				!errores ? (errores = {}) : "";
 				errores.direccion =
 					"El código interno de esta " +
