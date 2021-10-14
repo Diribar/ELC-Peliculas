@@ -5,6 +5,8 @@ let procesarProd = require("./2-PROD-procesar")
 
 // Función a exportar
 module.exports = {
+	// ControllerAPI (cantProductos)
+	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave) => {
 		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
@@ -15,18 +17,32 @@ module.exports = {
 			for (rubroAPI of rubrosAPI) {
 				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
 					lectura = await searchTMDB(palabrasClave, rubroAPI, page)
-						.then((n) => {return infoQueQueda(n);})
-						.then((n) => {return estandarizarNombres(n, rubroAPI);})
-						.then((n) => {return eliminarSiNoCoincideConPalabraClave(n, palabrasClave);})
-						.then((n) => {return eliminarIncompletos(n);});
-					lectura.resultados = await agregarLanzamiento(lectura.resultados, rubroAPI);
+						.then((n) => {
+							return infoQueQueda(n);
+						})
+						.then((n) => {
+							return estandarizarNombres(n, rubroAPI);
+						})
+						.then((n) => {
+							return eliminarSiNoCoincideConPalabraClave(
+								n,
+								palabrasClave
+							);
+						})
+						.then((n) => {
+							return eliminarIncompletos(n);
+						});
+					lectura.resultados = await agregarLanzamiento(
+						lectura.resultados,
+						rubroAPI
+					);
 					datos = unificarResultados(lectura, rubroAPI, datos, page);
 				}
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
 			datos = await averiguarSiYaEnBD(datos);
-			datos.hayMas = hayMas(datos, page, rubrosAPI)
+			datos.hayMas = hayMas(datos, page, rubrosAPI);
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;

@@ -6,11 +6,13 @@ module.exports = {
 			order: [[orden, "ASC"]],
 		});
 	},
-	ObtenerFiltrandoPorCampo: (entidad, campoWhere, valorWhere) => {
-		return db[entidad].findAll({
-			where: { [campoWhere]: valorWhere },
+
+	ObtenerPorParametro: (entidad, parametro, valor) => {
+		return db[entidad].findOne({
+			where: { [parametro]: valor },
 		});
 	},
+
 	ObtenerTodosIncludeOrder: (
 		entidad,
 		camposInclude,
@@ -22,9 +24,11 @@ module.exports = {
 			order: [[campoOrder, valorOrder]],
 		});
 	},
+
 	ObtenerPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
 	},
+
 	// Sin uso aún
 	ObtenerPorIdConInclude: (entidad, id, include) => {
 		return db[entidad].findByPk(id, {
@@ -35,7 +39,7 @@ module.exports = {
 		let resultado = "";
 		if (pais_id.length) {
 			BD_paises = await this.ObtenerTodos("paises", "nombre");
-			aux = pais_id.split(", ")
+			aux = pais_id.split(", ");
 			for (pais of aux) {
 				pais != aux[0] ? (resultado += ", ") : "";
 				resultado += BD_paises.find((n) => n.id == pais).nombre;

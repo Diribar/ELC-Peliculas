@@ -3,7 +3,7 @@ let detailsTMDB = require("../API/detailsTMDB_fetch");
 let creditsTMDB = require("../API/creditsTMDB_fetch");
 let BD_varios = require("../BD/varios");
 let BD_peliculas = require("../BD/peliculas");
-let BD_colecciones = require("../BD/colecciones");
+let BD_colecciones = require("../BD/coleccionesCabecera");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
@@ -241,18 +241,6 @@ module.exports = {
 	},
 
 	// ControllerVista (copiarFA_Guardar)
-	obtenerFA_id: (url) => {
-		// Output para FE y BE
-		aux = url.indexOf("www.filmaffinity.com/");
-		url = url.slice(aux + 21);
-		aux = url.indexOf("/film");
-		url = url.slice(aux + 5);
-		aux = url.indexOf(".html");
-		fa_id = url.slice(0, aux);
-		return fa_id;
-	},
-
-	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, avatar, contenido } = dato;
@@ -282,7 +270,29 @@ module.exports = {
 		return resultado;
 	},
 
-	// ControllerAPI y This (producto_FA)
+	// ControllerVista (copiarFA_Guardar)
+	// ControllerAPI (obtenerFA_id)
+	obtenerFA_id: (url) => {
+		// Output para FE y BE
+		aux = url.indexOf("www.filmaffinity.com/");
+		url = url.slice(aux + 21);
+		aux = url.indexOf("/film");
+		url = url.slice(aux + 5);
+		aux = url.indexOf(".html");
+		fa_id = url.slice(0, aux);
+		return fa_id;
+	},
+
+	// ControllerAPI (obtenerColeccion_id)
+	obtenerColeccion_id: async (parametro, id) => {
+		resultado = await BD_varios.ObtenerPorParametro(entidad, parametro, id);
+		resultado = resultado ? resultado.id : false;
+		console.log(resultado);
+		return resultado;
+	},
+
+	// Función validar (copiarFA)
+	// This (producto_FA)
 	contenidoFA: (contenido) => {
 		// Output para FE y BE
 		// Limpiar espacios innecesarios
@@ -345,7 +355,9 @@ module.exports = {
 		return resultado;
 	},
 
-	// API, producto_FA y Middleware
+	// Función buscar_x_PC (buscar_x_PC -> averiguarSiYaEnBD)
+	// Middleware (productoYaEnBD)
+	// ControllerVista (copiarFA_Guardar, datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
 		// Definir variables
 		rubro = datos.rubroAPI;

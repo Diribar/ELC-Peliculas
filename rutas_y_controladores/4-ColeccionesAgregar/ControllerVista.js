@@ -6,7 +6,7 @@ let path = require("path");
 //let procesarColecciones = require("../../funciones/varias/PROD-procesarC");
 //let validarColecciones = require("../../funciones/varias/PROD-validarC");
 let BD_peliculas = require("../../funciones/BD/peliculas");
-let BD_colecciones = require("../../funciones/BD/colecciones");
+let BD_colecciones = require("../../funciones/BD/coleccionesCabecera");
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 
 // *********** Controlador ***********
