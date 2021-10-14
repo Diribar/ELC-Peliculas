@@ -1,91 +1,100 @@
 <h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 <div class="flex-col" id="data_entry">
 	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
-	<form action="<%= link %>" method="POST" class="flex-col">
-		<h3>Elegí el Rubro</h3>
-		<div class="relative">
-			<select name="rubroAPI" autofocus class="input">
-				<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
-				<option value="movie" 
-					<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
-					Película
-				</option>
-				<option value="collection"
-					<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
-					Colección
-				</option>
-			</select>
-			<i class="fas fa-times-circle ocultar">
-				<span class="mensajeError"><%- errores && errores.rubroAPI ? errores.rubroAPI : "" %></span>
-			</i>
-			<i class="fas fa-check-circle ocultar"></i>
-		</div>
-		<h3>Ingresá la dirección de la página</h3>
-		<div class="relative flex-row">
-			<input name="direccion" type="text" class="input"
-				value="<%= data_entry ? data_entry.direccion : null %>"
-				placeholder="Pegá acá la dirección"
-				autocomplete="off"
-			>
-			<i class="fas fa-question-circle" id="ayuda_direccion">
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<strong><u>Pasos</u></strong>:<br>
-					<li>
-						Buscá la película o colección en 
-						<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>
-					</li>
-					<li>Seleccioná la dirección (url)</li>
-					<li>Copiala</li>
-					<li>Pegala en el casillero de la izquierda</li>
-				</ul>
-			</i>
-			<i class="fas fa-times-circle ocultar">
-				<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
-			</i>
-			<i class="fas fa-check-circle ocultar"></i>
-		</div>
-		<h3>Ingresá la dirección de la imagen grande</h3>
-		<div class="relative flex-row">
-			<input name="avatar" type="text" class="input"
-				value="<%= data_entry ? data_entry.avatar : null %>"
-				placeholder="Pegá acá la dirección"
-				autocomplete="off"
-			>
-			<i class="fas fa-question-circle" id="ayuda_avatar">
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<p><strong><u>Pasos</u></strong>:</p>
-					<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
-					<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
-					<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
-				</ul>
-			</i>
-			<i class="fas fa-times-circle ocultar">
-				<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
-			</i>
-			<i class="fas fa-check-circle ocultar"></i>
-		</div>
-		<h3>Ingresá el contenido del cuerpo de la página</h3>
-		<div class="relative flex-row">
-			<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
-			<i class="fas fa-question-circle" id="ayuda_contenido">
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<strong><u>Pasos</u></strong>:<br>
-					<li>
-						En la página de FA, seleccioná desde
-						el <strong><em><u>título en castellano</u></em></strong> 
-						hasta el final de la <strong><em><u>sinopsis</u></em></strong>
-					</li>
-					<li>Copialo</li>
-					<li>Pegalo en el casillero de la izquierda</li>
-				</ul>
-			</i>
-			<i class="fas fa-times-circle ocultar">
-				<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
-			</i>
-			<i class="fas fa-check-circle ocultar"></i>
-		</div>
-		<div id="resultado"><br></div>
-		<div id="flechas" class="flex-row space-between">
+	<form action="<%= link %>" method="POST">
+		<section>
+			<h3>Elegí el Rubro</h3>
+			<div class="relative">
+				<select name="rubroAPI" autofocus class="input">
+					<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
+					<option value="movie" 
+						<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+						Película
+					</option>
+					<option value="collection"
+						<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+						Colección
+					</option>
+				</select>
+				<i class="fas fa-times-circle ocultar">
+					<span class="mensajeError"><%- errores && errores.rubroAPI ? errores.rubroAPI : "" %></span>
+				</i>
+				<i class="fas fa-check-circle ocultar"></i>
+			</div>
+			<section id="id" class="ocultar">
+				<h3>Ingresá la dirección de la página</h3>
+				<div class="relative flex-row">
+					<input name="direccion" type="text" class="input"
+						value="<%= data_entry ? data_entry.direccion : null %>"
+						placeholder="Pegá acá la dirección"
+						autocomplete="off"
+					>
+					<i class="fas fa-question-circle" id="ayuda_direccion">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<strong><u>Pasos</u></strong>:<br>
+							<li>
+								Buscá la película o colección en 
+								<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>
+							</li>
+							<li>Seleccioná la dirección (url)</li>
+							<li>Copiala</li>
+							<li>Pegala en el casillero de la izquierda</li>
+						</ul>
+					</i>
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+			</section>
+			<section id="enColeccion" class="ocultar">
+
+			</section>
+			<section id="imagenMasCuerpo" class="ocultar">
+				<h3>Ingresá la dirección de la imagen grande</h3>
+				<div class="relative flex-row">
+					<input name="avatar" type="text" class="input"
+						value="<%= data_entry ? data_entry.avatar : null %>"
+						placeholder="Pegá acá la dirección"
+						autocomplete="off"
+					>
+					<i class="fas fa-question-circle" id="ayuda_avatar">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<p><strong><u>Pasos</u></strong>:</p>
+							<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
+							<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
+							<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
+						</ul>
+					</i>
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+				<h3>Ingresá el contenido del cuerpo de la página</h3>
+				<div class="relative flex-row">
+					<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
+					<i class="fas fa-question-circle" id="ayuda_contenido">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<strong><u>Pasos</u></strong>:<br>
+							<li>
+								En la página de FA, seleccioná desde
+								el <strong><em><u>título en castellano</u></em></strong> 
+								hasta el final de la <strong><em><u>sinopsis</u></em></strong>
+							</li>
+							<li>Copialo</li>
+							<li>Pegalo en el casillero de la izquierda</li>
+						</ul>
+					</i>
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+				<div id="resultado"><br></div>
+			</section>
+		</section>
+		<section id="flechas" class="flex-row space-between">
 			<a href="/productos/agregar/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
 			<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
 			<% if (false) { %>
@@ -93,6 +102,6 @@
 			<% } else { %>
 				<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
 			<% } %>
-		</div>
+		</section>
 	</form>
 </div>
