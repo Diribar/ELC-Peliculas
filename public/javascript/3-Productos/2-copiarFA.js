@@ -106,8 +106,7 @@ window.addEventListener("load", async () => {
 				? button.classList.remove("botonSinLink")
 				: "";
 			for (let j = 0; j < inputs.length; j++) {
-				(iconoOK[j].classList.contains("ocultar") && j != 2) ||
-				sectImagenMasCuerpo.classList.contains("ocultar")
+				iconoOK[j].classList.contains("ocultar") && j != 2
 					? button.classList.add("botonSinLink")
 					: "";
 			}
