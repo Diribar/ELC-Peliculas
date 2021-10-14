@@ -282,7 +282,7 @@ module.exports = {
 		return resultado;
 	},
 	
-	// API y producto_FA
+	// API, producto_FA y Middleware
 	obtenerELC_id: async (datos) => {
 		// Definir variables
 		rubro = datos.rubroAPI;
