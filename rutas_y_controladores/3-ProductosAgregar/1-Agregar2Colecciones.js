@@ -14,13 +14,15 @@ module.exports = {
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
-		codigo = "datosDuros";
+		codigo = "datosDurosC";
 		// 2. Feedback de la instancia anterior o Data Entry propio
-		datosDuros = req.session.datosDuros
+		//console.log(!!req.session.datosDuros);
+		let datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
+		//console.log(datosDuros);
 		if (!datosDuros)
 			return res.redirect("/productos/agregar/palabras-clave");
 		// 3. Render del formulario

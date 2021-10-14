@@ -12,7 +12,3 @@ Links a Agregar Registros
 	- Personaje histórico
 	- Hecho histórico
 	- Fecha sugerida para ver
-
-Productos: Películas y Colecciones
-	- Abrir los circuitos de rutas
-	- Abrir los circuitos de controladores
