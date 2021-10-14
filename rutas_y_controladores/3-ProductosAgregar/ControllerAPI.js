@@ -34,12 +34,18 @@ module.exports = {
 
 	// Vista (copiarFA)
 	obtenerColeccion_id: async (req, res) => {
-		let {parametro, id} = req.query;
+		let { parametro, id } = req.query;
 		coleccion_id = await procesarProductos.obtenerColeccion_id(
 			"colecciones_peliculas",
 			parametro,
 			id
 		);
 		return res.json(coleccion_id);
+	},
+
+	obtenerELC_id: async (req, res) => {
+		let { rubroAPI, campo, id } = req.query;
+		ELC_id = await procesarProductos.obtenerELC_id({rubroAPI, campo, id});
+		return res.json(ELC_id);
 	},
 };

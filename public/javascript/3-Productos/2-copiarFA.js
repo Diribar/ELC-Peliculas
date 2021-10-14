@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#data_entry .input");
+	let direccion = document.querySelector(".input[name='direccion']");
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
@@ -10,12 +11,13 @@ window.addEventListener("load", async () => {
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
 	let resultado = document.querySelector("#resultado");
 	let statusInicial = true;
-	let rubroAPI = document.querySelector("select[name='rubroAPI']").value;
+	let rubroAPI = document.querySelector("select[name='rubroAPI']");
 	let sectDirec = document.querySelector("#data_entry section#direccion");
 	let sectEnColeccion = document.querySelector("section#enColeccion");
 	let select_c_id = document.querySelector("input[name='coleccion_id']");
 	let enColeccion = document.querySelector("select[name='enColeccion']");
 	let sectImagenMasCuerpo = document.querySelector("section#imagenMasCuerpo");
+	let pre = "/productos/agregar/api/";
 
 	// Fórmulas
 	let mostrarSecciones = async (campo, valor, mensaje) => {
@@ -37,7 +39,7 @@ window.addEventListener("load", async () => {
 			return;
 		}
 		// Campo 'direccion web'
-		if (campo == "direccion" && rubroAPI == "movie") {
+		if (campo == "direccion" && rubroAPI.value == "movie") {
 			// Acciones si hay un error
 			if (mensaje) {
 				sectEnColeccion.classList.add("ocultar");
@@ -45,7 +47,6 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			// Averiguar si el ID está en Colecciones
-			pre = "/productos/agregar/api/";
 			FA_id = await fetch(pre + "obtener-fa-id/?direccion=" + valor).then(
 				(n) => n.json()
 			);
@@ -64,7 +65,6 @@ window.addEventListener("load", async () => {
 				sectImagenMasCuerpo.classList.add("ocultar");
 				select_c_id.value = "";
 			}
-			console.log(select_c_id.value);
 			return;
 		}
 		// Campo 'enColeccion
@@ -80,6 +80,7 @@ window.addEventListener("load", async () => {
 				: button.classList.add("botonSinLink");
 		}
 	};
+
 	let revisarInput = async (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
@@ -88,6 +89,8 @@ window.addEventListener("load", async () => {
 		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
 		await mostrarSecciones(campo, valor, mensaje);
+		// Acciones en submit si se cambia la Dirección
+		campo == "direccion" ? (button.innerHTML = "Verificar") : "";
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
 		// En caso de error
@@ -99,17 +102,17 @@ window.addEventListener("load", async () => {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
 			iconoOK[i].classList.remove("ocultar");
-			console.log(enColeccion.value == "NO" || select_c_id.value != "");
 			enColeccion.value == "NO" || select_c_id.value != ""
 				? button.classList.remove("botonSinLink")
 				: "";
 			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar")
+				iconoOK[j].classList.contains("ocultar") && j != 2
 					? button.classList.add("botonSinLink")
 					: "";
 			}
 		}
 	};
+
 	let comentarioContenido = (campos, valor) => {
 		resultado.classList.remove(...resultado.classList);
 		// Formatos
@@ -127,6 +130,7 @@ window.addEventListener("load", async () => {
 			? "No se obtuvo ningún dato"
 			: "<br>";
 	};
+
 	let validarDataEntry = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
@@ -158,8 +162,35 @@ window.addEventListener("load", async () => {
 	}
 
 	// Submit
-	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+	form.addEventListener("submit", async (e) => {
+		if (button.classList.contains("botonSinLink")) {
+			e.preventDefault();
+		} else if (button.innerHTML == "Verificar") {
+			e.preventDefault();
+			// Averiguar si el ID está repetido
+			FA_id = await fetch(
+				pre + "obtener-fa-id/?direccion=" + direccion.value
+			).then((n) => n.json());
+			url = "rubroAPI=" + rubroAPI.value;
+			url += "&campo=fa_id";
+			url += "&id=" + FA_id;
+			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
+				n.json()
+			);
+			// Acciones si el pedido está repetido o no
+			if (ELC_id) {
+				// Si el pedido está repetido, avisar del error
+				e.preventDefault();
+				!errores ? (errores = {}) : "";
+				errores.direccion =
+					"El código interno de esta " +
+					rubroAPI.selectedOptions[0].label +
+					" ya se encuentra en nuestra base de datos";
+				revisarInput(1, errores);
+			} else {
+				button.innerHTML = "Avanzar";
+			}
+		}
 	});
 
 	// Mensajes de ayuda

@@ -20,18 +20,17 @@ module.exports = {
 		// Rubro
 		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
 		// Dirección
-		aux = datos.direccion;
-		errores.direccion = !aux
+		url = datos.direccion;
+		errores.direccion = !url
 			? cartelCampoVacio
-			: !aux.includes("www.filmaffinity.com/") ||
+			: !url.includes("www.filmaffinity.com/") ||
 			  !(
-					aux.indexOf("www.filmaffinity.com/") + 21 <
-						aux.indexOf("/film") &&
-					aux.indexOf("/film") + 5 < aux.indexOf(".html")
+					url.indexOf("www.filmaffinity.com/") + 21 <
+						url.indexOf("/film") &&
+					url.indexOf("/film") + 5 < url.indexOf(".html")
 			  )
 			? "No parece ser una dirección de Film Affinity"
 			: "";
-		// Validar si ya en BD
 		// Avatar
 		errores.avatar = !datos.avatar
 			? "Necesitamos que agregues una imagen"
