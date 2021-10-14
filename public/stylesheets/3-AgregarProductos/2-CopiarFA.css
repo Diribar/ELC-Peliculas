@@ -1,5 +1,6 @@
 /* Partes específicas del formulario */
-#data_entry {min-height: 180px;}
+#data_entry {min-height: 436px;}
+#data_entry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;}
 
 /* Mensajes de error */
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
@@ -11,8 +12,9 @@
 #data_entry .mensajeAyuda li {margin-left: 18px;}
 
 /* Sectores de Input */
-#data_entry textarea, #data_entry input {margin-right: 5px; width: 250px; padding: 5px 5px; }
-#data_entry select {padding: 2px 0px}
+#data_entry textarea, #data_entry input {margin-right: 5px; width: 250px; padding: 2px 5px; }
+#data_entry select {padding: 0px 0px}
+#data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Submit button */
 #data_entry #flechas {margin: 20px 50px 0;}

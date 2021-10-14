@@ -1,5 +1,5 @@
 window.addEventListener("load", async () => {
-	// Acciones cuando se hace click
+	// Variables
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#data_entry .input");
@@ -12,12 +12,37 @@ window.addEventListener("load", async () => {
 	let statusInicial = true;
 
 	// Fórmulas
+	let mostrarSecciones = (campo, valor) => {
+		if (campo != "rubroAPI" && campo != "direccion") return;
+		// Declarar sectores
+		let rubroAPI = document.querySelector("select[name='rubroAPI']").value;
+		let sectDireccion = document.querySelector("#data_entry section#id");
+		let sectEnColeccion = document.querySelector("section#enColeccion");
+		let sectImagenMasCuerpo = document.querySelector("#imagenMasCuerpo");
+		if (campo == "rubroAPI") {
+			// Acciones
+			sectDireccion.classList.remove("ocultar");
+			if (valor == "collection") {
+				sectEnColeccion.classList.add("ocultar");
+				sectImagenMasCuerpo.classList.remove("ocultar");
+			} else if (valor == "movie") {
+				sectEnColeccion.classList.remove("ocultar");
+				sectImagenMasCuerpo.classList.add("ocultar");
+			}
+		} else if (campo == "direccion" && rubroAPI == "movie") {
+			enColeccion = fetch(
+				"/productos/agregar/api/validar-copiar-fa/" + url
+			).then((n) => n.json());
+		}
+	};
 	let revisarInput = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
+		// Mostrar secciones
+		mostrarSecciones(campo, valor);
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
 		// En caso de error
@@ -54,7 +79,7 @@ window.addEventListener("load", async () => {
 			? "No se obtuvo ningún dato"
 			: "<br>";
 	};
-	let buscar = () => {
+	let validarDataEntry = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
@@ -69,12 +94,25 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (statusInicial) {
-		errores = await buscar();
+		errores = await validarDataEntry();
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value != "" ? revisarInput(i, errores) : "";
 		}
 		statusInicial = false;
 	}
+
+	// Revisar el data-entry y comunicar los aciertos y errores
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("input", async () => {
+			errores = await validarDataEntry();
+			revisarInput(i, errores);
+		});
+	}
+
+	// Submit
+	form.addEventListener("submit", (e) => {
+		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+	});
 
 	// Mensajes de ayuda
 	window.onclick = (e) => {
@@ -85,17 +123,4 @@ window.addEventListener("load", async () => {
 				: mensajesAyuda[i].classList.add("ocultar");
 		}
 	};
-
-	// Revisar el data-entry y comunicar los aciertos y errores
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async () => {
-			errores = await buscar();
-			revisarInput(i, errores);
-		});
-	}
-
-	// Submit
-	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
-	});
 });
