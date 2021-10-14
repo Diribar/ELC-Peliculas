@@ -1,8 +1,8 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let API = require("./1-Agregar-API");
-let agregar = require("./1-Agregar1Productos");
+let API = require("./ControllerAPI");
+let agregar = require("./ControllerProductos");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");

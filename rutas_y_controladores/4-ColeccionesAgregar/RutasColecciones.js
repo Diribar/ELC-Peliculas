@@ -1,8 +1,8 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let API = require("./1-Agregar-API");
-let vistas = require("./1-Agregar2Peliculas");
+let API = require("./ControllerAPI");
+let vistas = require("./ControllerColecciones");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");
@@ -16,8 +16,6 @@ let upload = require("../../middlewares/varios/multer");
 // Validar campos vs. sintaxis
 router.get("/api/validar-datos-duros/", API.validarDatosDuros);
 router.get("/api/validar-datos-pers/", API.validarDatosPers);
-// Validar campos vs. API/BD
-router.get("/api/averiguar-cant-prod/", API.cantProductos);
 //router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
 
 // Controladores de vistas de "Agregar Productos"

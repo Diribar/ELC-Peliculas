@@ -42,10 +42,10 @@ app.set("views", [
 let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
 let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Usuarios-Ruta");
 let rutaLogin = require("./rutas_y_controladores/2-Usuarios/Login-Ruta");
-let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar1Producto");
-let rutaAgregarColeccion = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar2Coleccion");
-let rutaAgregarPelicula = require("./rutas_y_controladores/3-ProductosAgregar/RutasAgregar2Pelicula");
-let rutaRudOpciones = require("./rutas_y_controladores/4-Productos/RutasRudOpciones");
+let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/RutasProductos");
+let rutaAgregarColeccion = require("./rutas_y_controladores/4-ColeccionesAgregar/RutasColecciones");
+let rutaAgregarPelicula = require("./rutas_y_controladores/4-PeliculasAgregar/RutasPeliculas");
+let rutaRudOpciones = require("./rutas_y_controladores/9-Productos/RutasRudOpciones");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
 app.use("/productos/agregar", rutaAgregarProducto);

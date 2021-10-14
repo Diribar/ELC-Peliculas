@@ -5,12 +5,6 @@ let validarProductos = require("../../funciones/varias/PROD-validar");
 
 // *********** Controlador ***********
 module.exports = {
-	validarPalabrasClave: async (req, res) => {
-		let palabrasClave = req.query.palabrasClave;
-		let errores = await validarProductos.palabrasClave(palabrasClave);
-		return res.json(errores.palabrasClave);
-	},
-
 	validarCopiarFA: async (req, res) => {
 		errores = await validarProductos.copiarFA(req.query);
 		return res.json(errores);
