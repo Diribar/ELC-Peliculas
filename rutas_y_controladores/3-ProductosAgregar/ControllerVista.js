@@ -92,6 +92,7 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
+		//return res.send(req.session.datosDuros);
 		// 2. Redireccionar a la siguiente instancia
 		return req.session.datosDuros.rubroAPI == "movie"
 			? res.redirect("/peliculas/agregar/datos-duros")
@@ -158,7 +159,8 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		return res.send(req.session.datosDuros);
+		//return res.send(copiarFA);
+		//return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return req.session.datosDuros.rubroAPI == "movie"
@@ -166,7 +168,7 @@ module.exports = {
 			: res.redirect("/colecciones/agregar/datos-duros");
 	},
 
-	datosDuros: async (req, res) => {
+	datosDurosRedirect: async (req, res) => {
 		return req.session.datosDuros
 			? req.session.datosDuros.rubroAPI == "movie"
 				? res.redirect("/peliculas/agregar/datos-duros")

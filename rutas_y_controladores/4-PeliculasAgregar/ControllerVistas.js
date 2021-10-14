@@ -29,7 +29,7 @@ module.exports = {
 			: await validarProductos.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
-			? await BD_varios.pais_idToString(datosDuros.pais_id)
+			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
 			: "";
 		//return res.send(pais)
 		let datos = [
