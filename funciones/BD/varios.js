@@ -35,7 +35,7 @@ module.exports = {
 			include: [include],
 		});
 	},
-	paises: async function (pais_id) {
+	pais_idToString: async function (pais_id) {
 		let resultado = "";
 		if (pais_id.length) {
 			BD_paises = await this.ObtenerTodos("paises", "nombre");
