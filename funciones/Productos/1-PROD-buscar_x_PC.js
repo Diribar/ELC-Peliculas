@@ -1,7 +1,7 @@
 // Require
 let searchTMDB = require("../API/searchTMDB_fetch");
 let detailsTMDB = require("../API/detailsTMDB_fetch");
-let procesarProd = require("./2-PROD-procesar")
+let procesarProd = require("./2-PROD-procesar");
 
 // Función a exportar
 module.exports = {
@@ -17,21 +17,10 @@ module.exports = {
 			for (rubroAPI of rubrosAPI) {
 				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
 					lectura = await searchTMDB(palabrasClave, rubroAPI, page)
-						.then((n) => {
-							return infoQueQueda(n);
-						})
-						.then((n) => {
-							return estandarizarNombres(n, rubroAPI);
-						})
-						.then((n) => {
-							return eliminarSiNoCoincideConPalabraClave(
-								n,
-								palabrasClave
-							);
-						})
-						.then((n) => {
-							return eliminarIncompletos(n);
-						});
+						.then((n) => infoQueQueda(n))
+						.then((n) => estandarizarNombres(n, rubroAPI))
+						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
+						.then((n) => eliminarIncompletos(n));
 					lectura.resultados = await agregarLanzamiento(
 						lectura.resultados,
 						rubroAPI
@@ -63,7 +52,8 @@ let estandarizarNombres = (dato, rubroAPI) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
 		if (rubroAPI == "collection") {
-			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
+			if (typeof m.poster_path == "undefined" || m.poster_path == null)
+				return;
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -76,7 +66,8 @@ let estandarizarNombres = (dato, rubroAPI) => {
 				m.first_air_date == "" ||
 				m.first_air_date < "1900" ||
 				m.poster_path == null
-			) return;
+			)
+				return;
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -89,15 +80,20 @@ let estandarizarNombres = (dato, rubroAPI) => {
 				m.release_date == "" ||
 				m.release_date < "1900" ||
 				m.poster_path == null
-			) return;
+			)
+				return;
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+		desempate1 = letrasIngles(nombre_original)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
+		desempate2 = letrasIngles(nombre_castellano)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			rubroAPI: rubroAPI,
@@ -118,7 +114,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 	};
 };
 
-let eliminarSiNoCoincideConPalabraClave = (dato, palabrasClave) => {
+let eliminarSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		if (typeof m == "undefined" || m == null) {
@@ -222,7 +218,7 @@ let eliminarDuplicados = (datos) => {
 };
 
 let averiguarSiYaEnBD = async (datos) => {
-	for (let i=0; i<datos.resultados.length; i++) {
+	for (let i = 0; i < datos.resultados.length; i++) {
 		let dato = {
 			rubroAPI: datos.resultados[i].rubroAPI,
 			tmdb_id: datos.resultados[i].tmdb_id,
@@ -247,12 +243,12 @@ let hayMas = (datos, page, rubrosAPI) => {
 let ordenarDatos = (datos, palabrasClave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
-			return b.desempate3 < a.desempate3
-				? -1
-				: b.desempate3 > a.desempate3
+				return b.desempate3 < a.desempate3
+					? -1
+					: b.desempate3 > a.desempate3
 					? 1
 					: 0;
-		})
+		  })
 		: "";
 	let datosEnOrden = {
 		palabrasClave: palabrasClave,
