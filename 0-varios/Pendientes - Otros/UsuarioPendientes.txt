@@ -1,5 +1,3 @@
-Form 1 c/mail enviado
-Avatar circular
+Cartel de mail enviado
 Cartel de confirmación de usuario completado
-Middleware solo usuarios --> cartel con Login/Cancelar
-BD: campo para autorizado FA
+Avatar circular

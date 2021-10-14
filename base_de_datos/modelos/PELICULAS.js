@@ -28,8 +28,11 @@ module.exports = (sequelize, dt) => {
 		personaje_historico_id: { type: dt.INTEGER },
 		hecho_historico_id: { type: dt.INTEGER },
 		sugerida_para_evento_id: { type: dt.INTEGER },
+
 		trailer: { type: dt.STRING(800) },
 		pelicula: { type: dt.STRING(800) },
+
+		calificacion: { type: dt.INTEGER },
 
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },

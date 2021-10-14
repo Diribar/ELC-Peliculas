@@ -16,7 +16,7 @@
 			<% } %> 
 			<% for (let n of opciones_BD) { %>
 				<option
-					value="/peliculas/<%= n.url %>"
+					value="/productos/<%= n.url %>"
 					<% if (opcionElegida && opcionElegida.id == n.id) { %>selected<% } %>
 				>
 					<%= n.nombre %>
@@ -34,7 +34,7 @@
 			<% } %>
 			<% for (let n of tipos_BD) { %>
 				<option
-					value="/peliculas/<%= n.url %>"
+					value="/productos/<%= n.url %>"
 					<% if (tipoElegido && tipoElegido.id == n.id) { %>selected<% } %>
 				>
 					<%= n.nombre %>
