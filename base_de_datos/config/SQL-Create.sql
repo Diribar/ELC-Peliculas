@@ -287,8 +287,8 @@ CREATE TABLE COLECCIONES_PELICULAS (
 INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
 VALUES (1, 1, '38516', '436804', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, '75470', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, '75470', '340091', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
