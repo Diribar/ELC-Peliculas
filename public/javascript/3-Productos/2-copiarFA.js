@@ -12,13 +12,14 @@ window.addEventListener("load", async () => {
 	let statusInicial = true;
 
 	// Fórmulas
-	let mostrarSecciones = (campo, valor) => {
+	let mostrarSecciones = (campo, valor, mensaje) => {
 		if (campo != "rubroAPI" && campo != "direccion") return;
-		// Declarar sectores
+		// Declarar funciones
 		let rubroAPI = document.querySelector("select[name='rubroAPI']").value;
 		let sectDireccion = document.querySelector("#data_entry section#id");
 		let sectEnColeccion = document.querySelector("section#enColeccion");
 		let sectImagenMasCuerpo = document.querySelector("#imagenMasCuerpo");
+		// Campo 'rubroAPI'
 		if (campo == "rubroAPI") {
 			// Acciones
 			sectDireccion.classList.remove("ocultar");
@@ -29,10 +30,17 @@ window.addEventListener("load", async () => {
 				sectEnColeccion.classList.remove("ocultar");
 				sectImagenMasCuerpo.classList.add("ocultar");
 			}
-		} else if (campo == "direccion" && rubroAPI == "movie") {
-			enColeccion = fetch(
-				"/productos/agregar/api/validar-copiar-fa/" + url
-			).then((n) => n.json());
+		}
+		// Campo 'direccion web'
+		if (campo == "direccion" && rubroAPI == "movie" && mensaje == "") {
+			pre = "/productos/agregar/api/";
+			FA_id = fetch(pre + "obtener-fa-id/" + valor).then((n) => n.json());
+			enColeccion = FA_id
+				? fetch(pre + "coleccion-fa-id/" + FA_id).then((n) => n.json())
+				: "";
+			// enColeccion
+			// 	?
+			// 	:
 		}
 	};
 	let revisarInput = (i, errores) => {
@@ -42,7 +50,7 @@ window.addEventListener("load", async () => {
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
-		mostrarSecciones(campo, valor);
+		mostrarSecciones(campo, valor, mensaje);
 		// Agregar comentario en 'contenido'
 		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
 		// En caso de error

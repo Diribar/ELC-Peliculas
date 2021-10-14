@@ -4,9 +4,9 @@ let request = require("request");
 let requestPromise = require("request-promise");
 let path = require("path");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
-let validarProductos = require("../../funciones/Productos/3-PROD-validar");
+let validarProductos = require("../../funciones/Productos/3-PROD-errores");
 let BD_peliculas = require("../../funciones/BD/peliculas");
-let BD_colecciones = require("../../funciones/BD/colecciones");
+let BD_colecciones = require("../../funciones/BD/coleccionesCabecera");
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 
 // *********** Controlador ***********
@@ -29,7 +29,7 @@ module.exports = {
 			: await validarProductos.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
-			? await BD_varios.paises(datosDuros.pais_id)
+			? await BD_varios.pais_idToString(datosDuros.pais_id)
 			: "";
 		//return res.send(pais)
 		let datos = [

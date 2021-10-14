@@ -2,6 +2,7 @@
 let procesarProductos = require("./2-PROD-procesar");
 
 module.exports = {
+	// ControllerAPI (validarPalabrasClave)
 	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
@@ -13,6 +14,7 @@ module.exports = {
 		return errores;
 	},
 
+	// ControllerAPI (validarCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};
 		// Rubro
@@ -53,6 +55,7 @@ module.exports = {
 		return errores;
 	},
 
+	// ControllerAPI (validarDatosDuros)
 	datosDuros: (datos) => {
 		let errores = {};
 		errores.nombre_original = !datos.nombre_original
@@ -137,6 +140,7 @@ module.exports = {
 		return errores;
 	},
 
+	// ControllerAPI (validarDatosPers)
 	datosPers: (datos) => {
 		let errores = {};
 		errores.en_castellano = !datos.en_castellano ? cartelSelectVacio : "";
@@ -167,12 +171,8 @@ module.exports = {
 			: !validarFuente(datos.link_pelicula)
 			? "Debe ser de una fuente confiable"
 			: "";
-		errores.fe_valores_id = !datos.fe_valores_id
-			? cartelSelectVacio
-			: "";
-		errores.entretiene_id = !datos.entretiene_id
-			? cartelSelectVacio
-			: "";
+		errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
+		errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		errores.calidad_sonora_visual_id = !datos.calidad_sonora_visual_id
 			? cartelSelectVacio
 			: "";
@@ -181,6 +181,7 @@ module.exports = {
 	},
 };
 
+// Variables **************************
 let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";

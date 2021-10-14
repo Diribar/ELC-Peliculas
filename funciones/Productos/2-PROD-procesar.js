@@ -3,10 +3,10 @@ let detailsTMDB = require("../API/detailsTMDB_fetch");
 let creditsTMDB = require("../API/creditsTMDB_fetch");
 let BD_varios = require("../BD/varios");
 let BD_peliculas = require("../BD/peliculas");
-let BD_colecciones = require("../BD/colecciones");
+let BD_colecciones = require("../BD/coleccionesCabecera");
 
 module.exports = {
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	obtenerAPI: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
@@ -19,7 +19,7 @@ module.exports = {
 		return lectura;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	pelicula_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -103,7 +103,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	TV_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -181,7 +181,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.desambiguarGuardar
+	// ControllerVista (desambiguarGuardar)
 	coleccion_TMDB: (form, lectura) => {
 		datosForm = {
 			// Datos obtenidos del formulario
@@ -240,19 +240,7 @@ module.exports = {
 		return resultado;
 	},
 
-	// Agregar-Vistas.copiarFA_Guardar
-	obtenerFA_id: (url) => {
-		// Output para FE y BE
-		aux = url.indexOf("www.filmaffinity.com/");
-		url = url.slice(aux + 21);
-		aux = url.indexOf("/film");
-		url = url.slice(aux + 5);
-		aux = url.indexOf(".html");
-		fa_id = url.slice(0, aux);
-		return fa_id;
-	},
-
-	// Agregar-Vistas.copiarFA_Guardar
+	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
 		let { rubroAPI, direccion, avatar, contenido } = dato;
@@ -281,22 +269,30 @@ module.exports = {
 		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
-	
-	// API, producto_FA y Middleware
-	obtenerELC_id: async (datos) => {
-		// Definir variables
-		rubro = datos.rubroAPI;
-		tmdb_id = datos.tmdb_id;
-		fa_id = datos.fa_id;
-		// Verificar YaEnBD
-		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
-		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
-		//console.log([TMDB_YaEnBD, FA_YaEnBD]);
-		// Enviar el resultado
-		return [TMDB_enBD, FA_enBD];
+
+	// ControllerVista (copiarFA_Guardar)
+	// ControllerAPI (obtenerFA_id)
+	obtenerFA_id: (url) => {
+		// Output para FE y BE
+		aux = url.indexOf("www.filmaffinity.com/");
+		url = url.slice(aux + 21);
+		aux = url.indexOf("/film");
+		url = url.slice(aux + 5);
+		aux = url.indexOf(".html");
+		fa_id = url.slice(0, aux);
+		return fa_id;
 	},
 
-	// API y producto_FA
+	// ControllerAPI (obtenerColeccion_id)
+	obtenerColeccion_id: async (parametro, id) => {
+		resultado = await BD_varios.ObtenerPorParametro(entidad, parametro, id);
+		resultado = resultado ? resultado.id : false;
+		console.log(resultado);
+		return resultado;
+	},
+
+	// Función validar (copiarFA)
+	// This (producto_FA)
 	contenidoFA: (contenido) => {
 		// Output para FE y BE
 		// Limpiar espacios innecesarios
@@ -357,6 +353,23 @@ module.exports = {
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
 		return resultado;
+	},
+
+	// Función buscar_x_PC (buscar_x_PC -> averiguarSiYaEnBD)
+	// Middleware (productoYaEnBD)
+	// ControllerVista (copiarFA_Guardar)
+	// ControllerVista (datosDurosGuardar)
+	obtenerELC_id: async (datos) => {
+		// Busca ELC_id de Películas o Colecciones-cabecera
+		// Definir variables
+		rubro = datos.rubroAPI;
+		tmdb_id = datos.tmdb_id;
+		fa_id = datos.fa_id;
+		// Verificar YaEnBD
+		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
+		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
+		// Enviar el resultado
+		return [TMDB_enBD, FA_enBD];
 	},
 };
 
