@@ -123,8 +123,8 @@ module.exports = {
 			: "";
 		errores.sinopsis = !datos.sinopsis
 			? cartelCampoVacio
-			: longitud(datos.sinopsis, 15, 500)
-			? longitud(datos.sinopsis, 15, 500)
+			: longitud(datos.sinopsis, 15, 1000)
+			? longitud(datos.sinopsis, 15, 1000)
 			: castellano(datos.sinopsis)
 			? cartelCastellano
 			: "";
@@ -188,9 +188,9 @@ let cartelSelectVacio = "Necesitamos que elijas una opción";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
-		? "El nombre debe ser más largo"
+		? "El contenido debe ser más largo"
 		: dato.length > largo
-		? "El nombre debe ser más corto"
+		? "El contenido debe ser más corto"
 		: "";
 };
 let castellano = (dato) => {
