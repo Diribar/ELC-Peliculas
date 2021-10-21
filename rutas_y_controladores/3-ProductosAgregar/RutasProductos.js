@@ -15,10 +15,10 @@ router.get("/api/palabras-clave/", API.validarPalabrasClave);
 router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
 router.get("/api/obtener-fa-id/", API.obtenerFA_id);
 router.get("/api/coleccion-id/", API.obtenerColeccion_id);
+router.get("/api/obtener-elc-id/", API.obtenerELC_id);
 
 // Validar campos vs. API/BD
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
-//router.get("/api/averiguar-fa-ya-en-bd/", API.averiguarYaEnBD_FA);
 
 // Controladores de vistas de "Agregar Productos"
 router.get("/palabras-clave", usuarios, agregar.palabrasClaveForm);

@@ -221,7 +221,8 @@ let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let dato = {
 			rubroAPI: datos.resultados[i].rubroAPI,
-			tmdb_id: datos.resultados[i].tmdb_id,
+			campo: "tmdb_id",
+			id: datos.resultados[i].tmdb_id,
 		};
 		let [YaEnBD] = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {

@@ -67,12 +67,20 @@ module.exports = {
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarColecciones.datosDuros(datosDuros);
 		// 2.2. Averiguar si el TMDB_id o el FA_id ya está en la BD
+		if (req.body.tmdb_id) {
+			campo = "tmdb_id";
+			id = req.body.tmdb_id;
+		}
+		if (req.body.fa_id) {
+			campo = "fa_id";
+			id = req.body.fa_id;
+		}
 		elc_id = await procesarProductos.obtenerELC_id({
 			rubroAPI: req.body.rubroAPI,
-			tmdb_id: req.body.tmdb_id,
-			fa_id: req.body.fa_id,
+			campo,
+			id,
 		});
-		if (elc_id[0] || elc_id[1]) {
+		if (elc_id) {
 			errores.nombre_original =
 				"El código interno ya se encuentra en nuestra base de datos";
 			errores.elc_id = elc_id;

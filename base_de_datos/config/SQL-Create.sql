@@ -215,7 +215,7 @@ CREATE TABLE COLECCIONES_CABECERA (
 	fa_id VARCHAR(10) NULL UNIQUE,
 	tmdb_rubro VARCHAR(10) NULL,
 	fuente VARCHAR(10) NOT NULL,
-	nombre_original VARCHAR(100) NOT NULL UNIQUE,
+	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
@@ -254,7 +254,7 @@ CREATE TABLE COLECCIONES_PELICULAS (
 	pelicula_id INT UNSIGNED NULL UNIQUE,
 	tmdb_id VARCHAR(20) NULL UNIQUE,
 	fa_id VARCHAR(20) NULL UNIQUE,
-	nombre_original VARCHAR(100) NOT NULL UNIQUE,
+	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
 	cant_capitulos INT UNSIGNED NOT NULL DEFAULT 1,
@@ -287,8 +287,8 @@ CREATE TABLE COLECCIONES_PELICULAS (
 INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
 VALUES (1, 1, '38516', '436804', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, '75470', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, '75470', '340091', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -352,7 +352,7 @@ CREATE TABLE PELICULAS (
 	tmdb_id VARCHAR(10) NULL,
 	fa_id VARCHAR(10) NULL,
 	imdb_id VARCHAR(10) NULL,
-	nombre_original VARCHAR(50) NOT NULL UNIQUE,
+	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
 	coleccion_pelicula_id INT UNSIGNED NOT NULL DEFAULT 0,
 	duracion INT UNSIGNED NOT NULL,

@@ -351,19 +351,23 @@ module.exports = {
 
 	// Función buscar_x_PC (buscar_x_PC -> averiguarSiYaEnBD)
 	// Middleware (productoYaEnBD)
+	// ControllerAPI (obtenerELC_id)
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
 		// Busca ELC_id de Películas o Colecciones-cabecera
 		// Definir variables
-		rubro = datos.rubroAPI;
-		tmdb_id = datos.tmdb_id;
-		fa_id = datos.fa_id;
+		rubroAPI = datos.rubroAPI;
+		campo = datos.campo;
+		id = datos.id;
+		if (!rubroAPI || !campo || !id) return false;
 		// Verificar YaEnBD
-		TMDB_enBD = tmdb_id ? await obtenerELC_id(rubro, "TMDB", tmdb_id) : "";
-		FA_enBD = fa_id ? await obtenerELC_id(rubro, "FA", fa_id) : "";
+		let ELC_id =
+			rubroAPI == "movie"
+				? await BD_peliculas.ObtenerELC_id(campo, id)
+				: await BD_colecciones.ObtenerELC_id(campo, id);
 		// Enviar el resultado
-		return [TMDB_enBD, FA_enBD];
+		return ELC_id;
 	},
 };
 
@@ -442,14 +446,4 @@ let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
-};
-let obtenerELC_id = async (rubroAPI, fuente, id) => {
-	// La respuesta se espera que sea 'true' or 'false'
-	if (!rubroAPI || !id) return false;
-	let parametro = fuente == "TMDB" ? "tmdb_id" : "fa_id";
-	let resultado =
-		rubroAPI == "movie"
-			? await BD_peliculas.ObtenerELC_id(parametro, id)
-			: await BD_colecciones.ObtenerELC_id(parametro, id);
-	return resultado;
 };

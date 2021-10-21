@@ -136,17 +136,20 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		if (!errores.direccion) {
 			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
-			[, elc_id] = await procesarProductos.obtenerELC_id({
+			elc_id = await procesarProductos.obtenerELC_id({
 				rubroAPI: req.body.rubroAPI,
-				fa_id,
+				campo: "fa_id",
+				id: fa_id,
 			});
 			if (elc_id) {
-				errores.contenido = "Ya se encuentra en nuestra base de datos";
+				errores.direccion =
+					"El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
 				errores.hay = true;
 			}
 		}
 		// 2.3. Si hay errores de validación, redireccionar
+		//return res.send(errores);
 		if (errores.hay) {
 			tema = "agregar";
 			codigo = "copiarFA";
@@ -159,7 +162,7 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(copiarFA);
+		return res.send(copiarFA);
 		//return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
@@ -175,7 +178,7 @@ module.exports = {
 				: res.redirect("/colecciones/agregar/datos-duros")
 			: res.redirect("/productos/agregar/palabras-clave");
 	},
-	
+
 	responsabilidad: (req, res) => {
 		tema = "agregar";
 		codigo = "responsabilidad";
