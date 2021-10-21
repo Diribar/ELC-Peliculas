@@ -4,7 +4,7 @@ Guardar Data Entry más:
     - CreadoEn:
     - AprobadoPor: (vacío)
     - AprobadoEn: (vacío)
-	- Para pelis de colecciones, agregar el id en colecciones_peliculas
+	- Para pelis de colecciones, agregar el id en colecciones_partes
 
 Mover la imagen a la carpeta definitiva
 Borrar los campos de cookies y session

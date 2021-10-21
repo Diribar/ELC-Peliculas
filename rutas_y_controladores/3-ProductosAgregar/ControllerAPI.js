@@ -36,7 +36,7 @@ module.exports = {
 	obtenerColeccion_id: async (req, res) => {
 		let { parametro, id } = req.query;
 		coleccion_id = await procesarProductos.obtenerColeccion_id(
-			"colecciones_peliculas",
+			"colecciones_partes",
 			parametro,
 			id
 		);

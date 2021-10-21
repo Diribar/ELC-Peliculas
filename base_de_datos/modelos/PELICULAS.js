@@ -2,12 +2,15 @@ module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
-		tmdb_id: { type: dt.STRING(10) },
-		fa_id: { type: dt.STRING(10) },
-		imdb_id: { type: dt.STRING(10) },
+		peli_tmdb_id: { type: dt.STRING(10) },
+		peli_fa_id: { type: dt.STRING(10) },
+		peli_imdb_id: { type: dt.STRING(10) },
+		colec_id: { type: dt.INTEGER },
+		colec_TMDB_id: { type: dt.STRING(10) },
+		enColeccion: { type: dt.BOOLEAN },
+		fuente: { type: dt.STRING(5) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
-		coleccion_pelicula_id: { type: dt.INTEGER },
 		duracion: { type: dt.INTEGER },
 		ano_estreno: { type: dt.INTEGER },
 		pais_id: { type: dt.STRING(20) },
@@ -57,7 +60,7 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = n => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
-		entidad.belongsTo(n.colecciones_peliculas, {as: "coleccion_pelicula", foreignKey: "coleccion_pelicula_id"});
+		entidad.belongsTo(n.colecciones_cabecera, {as: "coleccion", foreignKey: "colec_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});

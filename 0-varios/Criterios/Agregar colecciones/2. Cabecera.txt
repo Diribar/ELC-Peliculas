@@ -1,8 +1,7 @@
 1. Desambiguar
 - El resultado es: Cabecera:
-    - Colec_TMDB_ID: valor
-
-    - Coleccion_ID: valor
+	- colec_ID: valor
+    - colec_TMDB_ID: valor
     - Partes_en_BD: false => faltan las partes
 
 - Al terminar de cargar, carga automáticamente las partes
@@ -10,15 +9,13 @@
 2. Copiar FA
 - Pregunta si es una colección
 - El resultado es: Cabecera:
-    - Colec_FA_ID: valor
-
-    - Coleccion_ID: valor
-    - Partes_en_BD: false => faltan las partes
-
+    - colec_ID: valor
+    - colec_FA_ID: valor
+    - partes_en_BD: false => faltan las partes
 - Al terminar de cargar, pregunta si se anima a agregar los títulos de las partes
 
 3. IM
 - El resultado es: Cabecera:
-    - Coleccion_ID: valor
-    - Partes_en_BD: false => faltan las partes
+    - colec_ID: valor
+    - partes_en_BD: false => faltan las partes
 - Al terminar de cargar, pregunta si se anima a agregar los títulos de las partes

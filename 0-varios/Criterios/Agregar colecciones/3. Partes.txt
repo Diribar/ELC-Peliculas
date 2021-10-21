@@ -1,13 +1,12 @@
 DESDE DESAMBIGUAR
 - El resultado (generado automáticamente) es:
     - Cabecera:
-	- Partes_en_BD: true => las partes ya están cargadas
+		- Partes_en_BD: true => las partes ya están cargadas
     - Partes:
-	- Parte_ID: valor
-	- Coleccion_ID: valor
-	- Coleccion_TMDB: valor
-	- Película_ID: valor/vacío <-- depende de si la película está o no cargada
-	- Película_TMDB: valor
+		- ID: valor
+		- colec_ID: valor
+		- peli_ID: valor/vacío <-- depende de si la película está o no cargada
+		- peli_TMDB: valor
 
 DESDE PALABRA-CLAVE O GUARDADO CABECERA --> ÚNICA PANTALLA
 - Criterio: se agrega una sola parte (capítulo) por vez
@@ -29,3 +28,10 @@ DESDE PALABRA-CLAVE O GUARDADO CABECERA --> ÚNICA PANTALLA
 - Íconos al final del Data Entry:
     - Guardar y Agregar otra: graba y reload vacío
     - Guardar y Terminar: graba y mensaje de partes guardadas
+- El resultado es:
+    - Cabecera:
+		- partes_en_BD: true => las partes ya están cargadas
+    - Partes:
+		- ID: valor
+		- colec_ID: valor
+		- peli_ID: valor/vacío <-- depende de si la película está o no cargada
