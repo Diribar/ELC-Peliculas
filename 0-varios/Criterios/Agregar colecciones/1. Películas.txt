@@ -14,7 +14,7 @@ OK	- enColeccion: true
 	- peli_ID: valor
 	- colec_id: vacío
 OK	- enColeccion: true
-	    => está pendiente agregarle la colección
+		=> está pendiente agregarle la colección
 
 3. Copiar FA
 - Pregunta si pertenece a una colección
@@ -22,7 +22,7 @@ OK	- enColeccion: true
 	- peli_ID: valor
 	- colec_id: vacío
 OK	- enColeccion: true
-	    => está pendiente agregarle la colección
+		=> está pendiente agregarle la colección
 
 ________________________________________________
 
