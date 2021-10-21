@@ -1,94 +1,45 @@
 window.addEventListener("load", async () => {
-	// Variables de uso general
+	// Variables
 	let form = document.querySelector("#data_entry");
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#data_entry .input");
-	let direccion = document.querySelector(".input[name='direccion']");
-	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
-	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
-	let resultado = document.querySelector("#resultado");
-	let statusInicial = true;
+	let iconoOK = document.querySelectorAll(".fa-check-circle");
+	let iconoError = document.querySelectorAll(".fa-times-circle");
+	let resultadoComentario = document.querySelector("#resultado");
 	let rubroAPI = document.querySelector("select[name='rubroAPI']");
-	let sectDirec = document.querySelector("#data_entry section#direccion");
-	let sectEnColeccion = document.querySelector("section#enColeccion");
-	let select_c_id = document.querySelector("input[name='coleccion_id']");
-	let enColeccion = document.querySelector("select[name='enColeccion']");
-	let sectImagenMasCuerpo = document.querySelector("section#imagenMasCuerpo");
+	let resto = document.querySelector("#data_entry #resto");
+	let sectEnColeccion = document.querySelector("#enColeccion");
+	let statusInicial = true;
 	let pre = "/productos/agregar/api/";
 
-	// Fórmulas
-	let mostrarSecciones = async (campo, valor, mensaje) => {
-		// Campo 'rubroAPI'
-		if (campo == "rubroAPI") {
-			// Acciones si hay un error
-			if (mensaje) {
-				sectDirec.classList.add("ocultar");
-				sectEnColeccion.classList.add("ocultar");
-				sectImagenMasCuerpo.classList.add("ocultar");
-				return;
-			}
-			// Acciones si no hay un error
-			sectDirec.classList.remove("ocultar");
+	// Muestra en la vista, los campos posteriores a 'rubroAPI'
+	let mostrarCampos = (valor, mensaje) => {
+		// Acciones si hay un error
+		if (mensaje) {
 			sectEnColeccion.classList.add("ocultar");
-			valor == "collection"
-				? sectImagenMasCuerpo.classList.remove("ocultar")
-				: sectImagenMasCuerpo.classList.add("ocultar");
+			resto.classList.add("ocultar");
 			return;
 		}
-		// Campo 'direccion web'
-		if (campo == "direccion" && rubroAPI.value == "movie") {
-			// Acciones si hay un error
-			if (mensaje) {
-				sectEnColeccion.classList.add("ocultar");
-				sectImagenMasCuerpo.classList.add("ocultar");
-				return;
-			}
-			// Averiguar si el ID está en Colecciones
-			FA_id = await fetch(pre + "obtener-fa-id/?direccion=" + valor).then(
-				(n) => n.json()
-			);
-			coleccion_id = FA_id
-				? await fetch(
-						pre + "coleccion-id/?parametro=fa_id&id=" + FA_id
-				  ).then((n) => n.json())
-				: "";
-			// Acciones dependiendo de si está en Colecciones
-			if (coleccion_id) {
-				sectEnColeccion.classList.add("ocultar");
-				sectImagenMasCuerpo.classList.remove("ocultar");
-				select_c_id.value = coleccion_id;
-			} else {
-				sectEnColeccion.classList.remove("ocultar");
-				sectImagenMasCuerpo.classList.add("ocultar");
-				select_c_id.value = "";
-			}
-			return;
-		}
-		// Campo 'enColeccion
-		if (campo == "enColeccion") {
-			// Acciones si hay un error
-			if (mensaje) {
-				sectImagenMasCuerpo.classList.add("ocultar");
-				return;
-			}
-			// Acciones si el valor es 'NO'
-			valor == "NO"
-				? sectImagenMasCuerpo.classList.remove("ocultar")
-				: button.classList.add("botonSinLink");
-		}
+		// Acciones si no hay un error
+		valor == "collection"
+			? sectEnColeccion.classList.add("ocultar")
+			: sectEnColeccion.classList.remove("ocultar");
+		resto.classList.remove("ocultar");
+		return;
 	};
 
-	let revisarInput = async (i, errores) => {
+	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
+	let revisarInput = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
-		await mostrarSecciones(campo, valor, mensaje);
+		campo == "rubroAPI" ? mostrarCampos(valor, mensaje) : "";
 		// Acciones en submit si se cambia la Dirección
 		campo == "direccion" ? (button.innerHTML = "Verificar") : "";
 		// Agregar comentario en 'contenido'
@@ -102,27 +53,33 @@ window.addEventListener("load", async () => {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
 			iconoOK[i].classList.remove("ocultar");
-			enColeccion.value == "NO" || select_c_id.value != ""
-				? button.classList.remove("botonSinLink")
-				: "";
+			sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar") && j != 2
-					? button.classList.add("botonSinLink")
+				iconoOK[j].classList.contains("ocultar")
+					? inputs[j].name != "enColeccion"
+						? (sinErrores = false)
+						: inputs[0].value == "movie"
+						? (sinErrores = false)
+						: ""
 					: "";
 			}
+			sinErrores
+				? button.classList.remove("botonSinLink")
+				: button.classList.add("botonSinLink");
 		}
 	};
 
+	// Procesa el input del contenido
 	let comentarioContenido = (campos, valor) => {
-		resultado.classList.remove(...resultado.classList);
+		resultadoComentario.classList.remove(...resultadoComentario.classList);
 		// Formatos
 		campos
-			? resultado.classList.add("resultadoExitoso")
+			? resultadoComentario.classList.add("resultadoExitoso")
 			: valor != ""
-			? resultado.classList.add("resultadoInvalido")
+			? resultadoComentario.classList.add("resultadoInvalido")
 			: "";
 		// Mensaje
-		resultado.innerHTML = campos
+		resultadoComentario.innerHTML = campos
 			? campos == 1
 				? "Se obtuvo 1 solo dato"
 				: "Se obtuvieron " + campos + " datos"
@@ -131,6 +88,7 @@ window.addEventListener("load", async () => {
 			: "<br>";
 	};
 
+	// Revisa todos los inputs y devuelve los errores
 	let validarDataEntry = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
@@ -153,7 +111,7 @@ window.addEventListener("load", async () => {
 		statusInicial = false;
 	}
 
-	// Revisar el data-entry y comunicar los aciertos y errores
+	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
 			errores = await validarDataEntry();
@@ -165,11 +123,18 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("botonSinLink")) {
 			e.preventDefault();
+			errores = await validarDataEntry();
+			for (let i = 0; i < inputs.length; i++) {
+				revisarInput(i, errores);
+			}
 		} else if (button.innerHTML == "Verificar") {
 			e.preventDefault();
 			// Averiguar si el ID está repetido
+			direccion = document.querySelector(
+				".input[name='direccion']"
+			).value;
 			FA_id = await fetch(
-				pre + "obtener-fa-id/?direccion=" + direccion.value
+				pre + "obtener-fa-id/?direccion=" + direccion
 			).then((n) => n.json());
 			url = "rubroAPI=" + rubroAPI.value;
 			url += "&campo=fa_id";

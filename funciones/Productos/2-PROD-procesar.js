@@ -32,10 +32,10 @@ module.exports = {
 		let datosLectura = {};
 		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API
-			lectura.belongs_to_collection != null
-				? (datosLectura.coleccion_tmdb_id =
-						lectura.belongs_to_collection)
-				: "";
+			if (lectura.belongs_to_collection != null) {
+				datosLectura.enColeccion = true;
+				datosLectura.coleccion_tmdb_id = lectura.belongs_to_collection;
+			} else datosLectura.enColeccion = false;
 			lectura.imdb_id != ""
 				? (datosLectura.imdb_id = lectura.imdb_id)
 				: "";
@@ -243,7 +243,7 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
-		let { rubroAPI, direccion, avatar, contenido } = dato;
+		let { rubroAPI, enColeccion, direccion, avatar, contenido } = dato;
 		fa_id = this.obtenerFA_id(direccion);
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
@@ -251,6 +251,7 @@ module.exports = {
 		let resultado = {
 			fuente: "FA",
 			rubroAPI,
+			enColeccion,
 			fa_id,
 			avatar,
 			...contenido,
