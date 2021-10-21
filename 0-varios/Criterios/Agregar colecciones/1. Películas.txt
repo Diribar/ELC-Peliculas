@@ -1,0 +1,29 @@
+- Al terminar de cargar, pregunta si se anima a agregar la colección (cabecera)
+
+1. Desambiguar
+- El resultado es:
+    - Película
+	- Colecc_TMDB_id: valor
+	- Es colección: true
+	- Coleccion_id: vacío
+	    => está pendiente agregarle la colección
+    - Partes (si existe el Película_TMDB_id)
+	- Película_ID: valor
+
+2. Copiar FA
+- Pregunta si pertenece a una colección
+- El resultado es:
+    - Es colección: true => está pendiente agregarle la colección
+    - Coleccion_id: vacío
+	    => está pendiente agregarle la colección
+
+3. IM
+- El resultado es:
+    - Es colección: true => está pendiente agregarle la colección
+    - Coleccion_id: vacío
+	    => está pendiente agregarle la colección
+
+________________________________________________
+
+4. Datos Duros y Personalizados
+- Ídem a película que no pertenece a una coleción
