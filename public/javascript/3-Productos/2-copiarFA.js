@@ -24,7 +24,6 @@ window.addEventListener("load", async () => {
 			return;
 		}
 		// Acciones si no hay un error
-		console.log(valor);
 		valor == "collection"
 			? sectEnColeccion.classList.add("ocultar")
 			: sectEnColeccion.classList.remove("ocultar");
