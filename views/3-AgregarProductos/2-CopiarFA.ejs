@@ -3,30 +3,45 @@
 	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
 	<form action="<%= link %>" method="POST">
 		<!-- Datos a completar -->
-		<section>
-			<!-- Elegí el Rubro -->
-			<section>
-				<h3>Elegí el Rubro</h3>
-				<div class="relative">
-					<select name="rubroAPI" autofocus class="input">
-						<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
-						<option value="movie" 
-							<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
-							Película
-						</option>
-						<option value="collection"
-							<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
-							Colección
-						</option>
-					</select>
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.rubroAPI ? errores.rubroAPI : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+		<section class="flex-col">
+			<div class="flex-row" style="justify-content: space-between;">
+				<!-- Elegí el Rubro -->
+				<div>
+					<h3>Elegí el Rubro</h3>
+					<div class="relative">
+						<select name="rubroAPI" autofocus class="input">
+							<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
+							<option value="movie" 
+								<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+								Película
+							</option>
+							<option value="collection"
+								<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+								Colección
+							</option>
+						</select>
+						<i class="fas fa-times-circle ocultar">
+							<span class="mensajeError"><%- errores && errores.rubroAPI ? errores.rubroAPI : "" %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
 				</div>
-			</section>
-			<!-- Ingresá la dirección de la página -->
-			<section id="direccion" class="ocultar">
+				<!-- ¿Pertenece a una colección? -->
+				<div id="enColeccion" class="ocultar">
+					<h3>¿Pertenece a una colección?</h3>
+					<div class="flex-row" style="flex-direction: row-reverse;">
+						<select name="enColeccion" class="input">
+							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
+							<option value="NO">NO</option>
+							<option value="SI">SI</option>
+						</select>
+						<i class="fas fa-times-circle ocultar"><span class="mensajeError"><%- errores && errores.enColeccion ? errores.enColeccion : "" %></span></i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
+				</div>
+			</div>
+			<!-- Dirección de la página, dirección de la imagen grande / Contenido del cuerpo de la página -->
+			<div id="resto" class="ocultar">
 				<h3>Ingresá la dirección de la página</h3>
 				<div class="relative flex-row">
 					<input name="direccion" type="text" class="input"
@@ -51,25 +66,6 @@
 					</i>
 					<i class="fas fa-check-circle ocultar"></i>
 				</div>
-			</section>
-			<!-- ¿Pertenece a una colección? -->
-			<section id="enColeccion" class="ocultar">
-				<h3>¿Pertenece a una colección?</h3>
-				<div class="relative">
-					<input type="text" class="ocultar" name="coleccion_id">
-					<select name="enColeccion" class="input">
-						<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
-						<option value="SI">SI</option>
-						<option value="NO">NO</option>
-					</select>
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.enColeccion ? errores.enColeccion : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
-				</div>
-			</section>
-			<!-- Dirección de la imagen grande / Contenido del cuerpo de la página -->
-			<section id="imagenMasCuerpo" class="ocultar">
 				<h3>Ingresá la dirección de la imagen grande</h3>
 				<div class="relative flex-row">
 					<input name="avatar" type="text" class="input"
@@ -111,8 +107,9 @@
 					<i class="fas fa-check-circle ocultar"></i>
 				</div>
 				<div id="resultado"><br></div>
-			</section>
+			</div>
 		</section>
+		<!-- Flechas -->
 		<section id="flechas" class="flex-row space-between">
 			<a href="/productos/agregar/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
 			<button id="submit" class="botonSinLink" type="submit">Verificar</button>

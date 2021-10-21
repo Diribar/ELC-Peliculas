@@ -19,6 +19,8 @@ module.exports = {
 		let errores = {};
 		// Rubro
 		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
+		// En colección
+		errores.enColeccion = !datos.enColeccion ? "Elegí una opción" : "";
 		// Dirección
 		url = datos.direccion;
 		errores.direccion = !url
