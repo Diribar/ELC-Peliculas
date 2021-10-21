@@ -36,10 +36,6 @@ module.exports = {
 				datosLectura.enColeccion = true;
 				datosLectura.coleccion_tmdb_id = lectura.belongs_to_collection;
 			} else datosLectura.enColeccion = false;
-			lectura.belongs_to_collection != null
-				? (datosLectura.coleccion_tmdb_id =
-						lectura.belongs_to_collection)
-				: "";
 			lectura.imdb_id != ""
 				? (datosLectura.imdb_id = lectura.imdb_id)
 				: "";
