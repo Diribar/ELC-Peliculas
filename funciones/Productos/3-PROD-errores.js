@@ -113,6 +113,10 @@ module.exports = {
 				? "El año debe ser mayor a 1900"
 				: datos.ano_fin > new Date().getFullYear()
 				? "El número no puede superar al año actual"
+				: !errores.ano_estreno &&
+				  datos.ano_estreno &&
+				  datos.ano_estreno > datos.ano_fin
+				? "El año de finalización debe ser igual o mayor que el año de estreno"
 				: "";
 		errores.duracion =
 			camposAVerificar.indexOf("duracion") == -1
