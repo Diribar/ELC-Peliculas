@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "colecciones_cabecera";
+	const alias = "colecciones";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
 		colec_tmdb_id: { type: dt.STRING(10) },
@@ -32,7 +32,7 @@ module.exports = (sequelize, dt) => {
 		borrada_motivo: { type: dt.STRING(500) },
 	};
 	const config = {
-		tableName: "colecciones_cabecera",
+		tableName: "colecciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias,columns,config);
@@ -43,6 +43,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
 		entidad.hasMany(n.colecciones_partes, {as: "coleccion_partes",foreignKey: "colec_id"});
+		entidad.hasMany(n.calificaciones_us, {as: "calificaciones_us",foreignKey: "colec_id"});
 	};
 	return entidad;
 };

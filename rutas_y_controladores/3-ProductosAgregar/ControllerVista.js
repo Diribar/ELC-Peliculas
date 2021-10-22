@@ -210,6 +210,7 @@ module.exports = {
 		if (!aux) return res.redirect("/productos/agregar/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
+		// return res.send(datosDuros);
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -270,10 +271,11 @@ module.exports = {
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
+		req.session.datosPers.avatar = nombre;
+		//return res.send(req.session.datosPers);
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(req.cookies)
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/productos/agregar/datos-personalizados");

@@ -7,12 +7,7 @@ module.exports = (sequelize, dt) => {
 		peli_tmdb_id: { type: dt.STRING(20) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
-		ano_estreno: { type: dt.INTEGER },
-		cant_capitulos: { type: dt.INTEGER },
-		sinopsis: { type: dt.STRING(800) },
-		avatar: { type: dt.STRING(100) },
-		coleccion_id: { type: dt.INTEGER },
-		orden_secuencia: { type: dt.INTEGER },
+		orden: { type: dt.INTEGER },
 		calificacion: { type: dt.INTEGER },
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
@@ -35,7 +30,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
-		entidad.belongsTo(n.colecciones_cabecera, {as: "coleccion_cabecera", foreignKey: "colec_id"});
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "colec_id"});
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
