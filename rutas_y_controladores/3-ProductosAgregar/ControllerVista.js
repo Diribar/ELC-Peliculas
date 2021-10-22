@@ -153,7 +153,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		//return res.send(errores);
 		if (errores.hay) {
-			return res.send(errores);
+			// return res.send(errores);
 			req.session.errores = errores;
 			return res.redirect("/productos/agregar/copiar-fa");
 		}
