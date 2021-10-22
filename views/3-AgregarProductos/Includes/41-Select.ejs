@@ -1,20 +1,22 @@
 <% dato = datosPers_select.find(n => n.campo == campo) %>
-<section class="label-input flex-row">
-	<label id="<%= campo %>"><%= dato.titulo %></label>
-	<div class="input-error">
-		<select name="<%= campo %>" class="input<% if (campo == "subcategoria_id") { %> ocultar<% } %>">
-			<option value="" class="ocultar" <% if (!data_entry[campo]) { %>selected<% } %>>Elegí una opción</option>
-			<% for (valor of dato.valores) { %>
-				<option value="<%= valor.id %>" 
-					<% if (data_entry[campo] === valor.id) { %>selected<% } %>
-					<% if (campo=="subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
-				>
-					<%= valor.nombre %>
-				</option>
-			<% } %>
-		</select>
-		<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
-			<span class="mensajeError"><%= errores[campo] %></span>
-		</i>
-	</div>
-</section>
+<% if ((data_entry.rubroAPI=="movie" && dato.peli) || (data_entry.rubroAPI!="movie" && dato.colec)) { %>
+	<section class="label-input flex-row">
+		<label id="<%= campo %>"><%= dato.titulo %></label>
+		<div class="input-error">
+			<select name="<%= campo %>" class="input<% if (campo == "subcategoria_id") { %> ocultar<% } %>">
+				<option value="" class="ocultar" <% if (!data_entry[campo]) { %>selected<% } %>>Elegí una opción</option>
+				<% for (valor of dato.valores) { %>
+					<option value="<%= valor.id %>" 
+						<% if (data_entry[campo] === valor.id) { %>selected<% } %>
+						<% if (campo=="subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
+					>
+						<%= valor.nombre %>
+					</option>
+				<% } %>
+			</select>
+			<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores[campo] %></span>
+			</i>
+		</div>
+	</section>
+<% } %>

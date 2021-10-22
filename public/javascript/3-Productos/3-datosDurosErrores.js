@@ -14,15 +14,26 @@ window.addEventListener("load", () => {
 			: "";
 		// Acciones ante cambios en el input
 		inputs[i].addEventListener("input", async () => {
+			// Averiguar si hay algún error
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/peliculas/agregar/api/validar-datos-duros/?" +
+				"/productos/agregar/api/validar-datos-duros/?" +
 					campo +
 					"=" +
 					valor
 			).then((n) => n.json());
 			mensaje = errores[campo];
+			if (!mensaje && campo == "ano_fin") {
+				inputs.forEach((input, index) => {
+					if (input.name == "ano_estreno") indice = index;
+				});
+				ano_estreno = inputs[indice].value;
+				valor < ano_estreno
+					? (mensaje =
+							"El año de finalización debe ser igual o mayor que el año de estreno")
+					: "";
+			}
 			mensajeError[i].innerHTML = mensaje;
 			if (mensaje) {
 				iconoError[i].classList.remove("ocultar");

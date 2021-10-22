@@ -1,5 +1,8 @@
 // ************ Requires ************
+let fs = require("fs");
 let path = require("path");
+let request = require("request");
+let requestPromise = require("request-promise");
 let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
 let validarProductos = require("../../funciones/Productos/3-PROD-errores");
@@ -94,7 +97,7 @@ module.exports = {
 		});
 		//return res.send(req.session.datosDuros);
 		// 2. Redireccionar a la siguiente instancia
-		res.redirect("/productos/agregar/datos-duros")
+		res.redirect("/productos/agregar/datos-duros");
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -134,9 +137,10 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		if (!errores.direccion) {
 			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
+			campo = copiarFA.rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
 			elc_id = await procesarProductos.obtenerELC_id({
-				rubroAPI: req.body.rubroAPI,
-				campo: "fa_id",
+				rubroAPI: copiarFA.rubroAPI,
+				campo: campo,
 				id: fa_id,
 			});
 			if (elc_id) {
@@ -149,7 +153,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		//return res.send(errores);
 		if (errores.hay) {
-			// return res.send(errores);
+			return res.send(errores);
 			req.session.errores = errores;
 			return res.redirect("/productos/agregar/copiar-fa");
 		}
@@ -158,7 +162,7 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		return res.send(req.session.datosDuros);
+		//return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/productos/agregar/datos-duros");
@@ -179,56 +183,11 @@ module.exports = {
 		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProductos.datosDuros(datosDuros);
+			: await validarProductos.datosDuros(datosDuros, camposDD());
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
 			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
 			: "";
-		let datos = [
-			{
-				titulo: "Título original",
-				campo: "nombre_original",
-				peli: true,
-				colec: true,
-			},
-			{
-				titulo: "Título en castellano",
-				campo: "nombre_castellano",
-				peli: true,
-				colec: true,
-			},
-			{
-				titulo: "Año de estreno",
-				campo: "ano_estreno",
-				id: true,
-				peli: true,
-				colec: true,
-			},
-			{
-				titulo: "Año de finalización",
-				campo: "ano_fin",
-				id: true,
-				peli: false,
-				colec: true,
-			},
-			{
-				titulo: "Duración (minutos)",
-				campo: "duracion",
-				id: true,
-				peli: true,
-				colec: false,
-			},
-			{ titulo: "Director", campo: "director", peli: true, colec: true },
-			{ titulo: "Guión", campo: "guion", peli: true, colec: true },
-			{ titulo: "Música", campo: "musica", peli: true, colec: true },
-			{ titulo: "Actores", campo: "actores", peli: true, colec: true },
-			{
-				titulo: "Productor",
-				campo: "productor",
-				peli: true,
-				colec: true,
-			},
-		];
 		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
@@ -238,8 +197,139 @@ module.exports = {
 			pais,
 			paises,
 			errores,
-			datos,
+			datos: camposDD(),
 		});
+	},
+
+	DDG: async (req, res) => {
+		//return res.send(req.body);
+		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		aux = req.session.datosDuros
+			? req.session.datosDuros
+			: req.cookies.datosDuros;
+		if (!aux) return res.redirect("/productos/agregar/palabras-clave");
+		// 1.2. Guardar el data entry en session y cookie
+		let datosDuros = { ...aux, ...req.body };
+		req.session.datosDuros = datosDuros;
+		res.cookie("datosDuros", datosDuros, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//return res.send(datosDuros);
+		// 2.1. Averiguar si hay errores de validación
+		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
+		// 2.2. Averiguar si el TMDB_id o el FA_id ya están en la BD
+		// Averiguar si el nombre_original ya tiene un error
+
+		// Obtener los parámetros
+		fuente = datosDuros.fuente.toLowerCase();
+		campo = datosDuros.rubroAPI == "movie" ? "peli" : "colec";
+		campo += "_" + fuente + "_id";
+		id = datosDuros[campo];
+		// Averiguar si hubieron errores
+		elc_id = await procesarProductos.obtenerELC_id({
+			rubroAPI: datosDuros.rubroAPI,
+			campo,
+			id,
+		});
+		// Acciones si hubieron errores
+		if (elc_id) {
+			errores.nombre_original =
+				"El código interno ya se encuentra en nuestra base de datos";
+			errores.elc_id = elc_id;
+			errores.hay = true;
+		}
+		// 2.3. Si aún no hay errores de imagen, revisar el archivo de imagen
+		if (!errores.avatar) {
+			if (req.file) {
+				// En caso de archivo por multer
+				tipo = req.file.mimetype;
+				tamano = req.file.size;
+				nombre = req.file.filename;
+				rutaYnombre = req.file.path;
+			} else {
+				// En caso de archivo sin multer
+				let datos = await requestPromise
+					.head(datosDuros.avatar)
+					.then((n) => [n["content-type"], n["content-length"]]);
+				tipo = datos[0];
+				tamano = datos[1];
+				nombre = Date.now() + path.extname(datosDuros.avatar);
+				rutaYnombre = "public/imagenes/4-Provisorio/" + nombre;
+			}
+			// Revisar errores
+			errores.avatar = revisarImagen(tipo, tamano);
+			errores.avatar
+				? (errores.hay = true) // Marcar que sí hay errores
+				: !req.file
+				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
+				: "";
+		}
+		// 2.4. Si hay errores de validación, redireccionar
+		if (errores.hay) {
+			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
+			req.session.errores = errores;
+			return res.redirect("/productos/agregar/datos-duros");
+		}
+		// 3. Generar la session para la siguiente instancia
+		req.session.datosPers = req.session.datosDuros;
+		res.cookie("datosPers", req.session.datosPers, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//return res.send(req.cookies)
+		// 4. Redireccionar a la siguiente instancia
+		req.session.errores = false;
+		return res.redirect("/productos/agregar/datos-personalizados");
+	},
+
+	datosPersForm: async (req, res) => {
+		// 1. Tema y Código
+		tema = "agregar";
+		codigo = "datosPers";
+		// 2. Feedback de la instancia anterior o Data Entry propio
+		datosPers = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers
+			? req.cookies.datosPers
+			: "";
+		if (!datosPers)
+			return res.redirect("/productos/agregar/palabras-clave");
+		// 3. Render del formulario
+		let errores = req.session.errores ? req.session.errores : "";
+		//return res.send([datosPers.color, req.session.datosPers.color]);
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+			data_entry: datosPers,
+			errores,
+			datosPers_select: await datosPersSelect(),
+			datosPers_input: datosPersInput(),
+		});
+	},
+
+	datosPersGuardar: async (req, res) => {
+		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		aux = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers;
+		if (!aux) return res.redirect("/productos/agregar/palabras-clave");
+		// 1.2. Guardar el data entry en session y cookie
+		let datosPers = { ...aux, ...req.body };
+		req.session.datosPers = datosPers;
+		res.cookie("datosPers", datosPers, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 2.1. Averiguar si hay errores de validación
+		let errores = await validarProductos.datosPers(datosPers);
+		// 2.2. Si hay errores de validación, redireccionar
+		if (errores.hay) {
+			req.session.errores = errores;
+			//return res.send([datosPers.color, req.session.datosPers.color]);
+			return res.redirect("/productos/agregar/datos-personalizados");
+		}
+		// 3. Redireccionar a la siguiente instancia
+		req.session.errores = false;
+		return res.redirect("/productos/agregar/resumen");
 	},
 
 	resumenForm: (req, res) => {
@@ -279,4 +369,201 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 		: "";
 	let resultado = await procesarProductos[rubro](form, lectura);
 	return resultado;
+};
+
+let revisarImagen = (tipo, tamano) => {
+	tamanoMaximo = 1;
+	return tipo.slice(0, 6) != "image/"
+		? "Necesitamos un archivo de imagen"
+		: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
+		? "El tamaño del archivo es superior a " +
+		  tamanoMaximo +
+		  " MB, necesitamos uno más pequeño"
+		: "";
+};
+
+let download = (uri, filename) => {
+	request.head(uri, () => {
+		request(uri)
+			.pipe(fs.createWriteStream(filename))
+			.on("close", () => console.log("imagen guardada"));
+	});
+};
+
+let camposDD = () => {
+	return [
+		{
+			titulo: "Título original",
+			campo: "nombre_original",
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Título en castellano",
+			campo: "nombre_castellano",
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Año de estreno",
+			campo: "ano_estreno",
+			id: true,
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Año de finalización",
+			campo: "ano_fin",
+			id: true,
+			peli: false,
+			colec: true,
+		},
+		{
+			titulo: "Duración (minutos)",
+			campo: "duracion",
+			id: true,
+			peli: true,
+			colec: false,
+		},
+		{ titulo: "Director", campo: "director", peli: true, colec: true },
+		{ titulo: "Guión", campo: "guion", peli: true, colec: true },
+		{ titulo: "Música", campo: "musica", peli: true, colec: true },
+		{ titulo: "Actores", campo: "actores", peli: true, colec: true },
+		{
+			titulo: "Productor",
+			campo: "productor",
+			peli: true,
+			colec: true,
+		},
+	];
+};
+
+let datosPersSelect = async () => {
+	return [
+		{
+			titulo: "Existe una versión en castellano",
+			campo: "en_castellano",
+			tabla: "peliculas",
+			valores: [
+				{ id: 1, nombre: "SI" },
+				{ id: 0, nombre: "NO" },
+			],
+			peli: true,
+			colec: false,
+		},
+		{
+			titulo: "Es a Color",
+			campo: "color",
+			tabla: "peliculas",
+			valores: [
+				{ id: 1, nombre: "SI" },
+				{ id: 0, nombre: "NO" },
+			],
+			peli: true,
+			colec: false,
+		},
+		{
+			titulo: "Categoría",
+			campo: "categoria_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("categorias", "orden"),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Sub-categoría",
+			campo: "subcategoria_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("subcategorias", "orden"),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Público sugerido",
+			campo: "publico_sugerido_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos(
+				"publicos_sugeridos",
+				"orden"
+			),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Inspira fe y/o valores",
+			campo: "fe_valores_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos("fe_valores", "orden"),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Entretiene",
+			campo: "entretiene_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos("entretiene", "orden"),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Calidad sonora y visual",
+			campo: "calidad_sonora_visual_id",
+			tabla: "us_pel_calificaciones",
+			valores: await BD_varios.ObtenerTodos(
+				"calidad_sonora_visual",
+				"orden"
+			),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Personaje histórico",
+			campo: "personaje_historico_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos(
+				"personajes_historicos",
+				"nombre"
+			),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Hecho histórico",
+			campo: "hecho_historico_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos(
+				"hechos_historicos",
+				"nombre"
+			),
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Sugerida para fecha",
+			campo: "sugerida_para_evento_id",
+			tabla: "peliculas",
+			valores: await BD_varios.ObtenerTodos("eventos", "orden"),
+			peli: true,
+			colec: true,
+		},
+	];
+};
+
+let datosPersInput = () => {
+	return [
+		{
+			titulo: "Link del trailer",
+			campo: "trailer",
+			tabla: "peliculas",
+			peli: true,
+			colec: true,
+		},
+		{
+			titulo: "Link de la película",
+			campo: "pelicula",
+			tabla: "peliculas",
+			peli: true,
+			colec: true,
+		},
+	];
 };

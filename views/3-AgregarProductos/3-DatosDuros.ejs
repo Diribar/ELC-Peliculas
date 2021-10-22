@@ -67,7 +67,7 @@
 		<div id="columnaMedio">
 		</div>
 		<!--Segunda columna-->
-		<div id="imagenPeli" class="form-grupo">
+		<div id="imagenPeli" class="form-grupo input-error">
 			<!-- Si viene desde TMDB -->
 			<% if (data_entry && data_entry.fuente!="TMDB") { %><label for="imagen" id="preview"></label><% } %>
 			<% if (data_entry.avatar && data_entry.fuente=="TMDB") { %><img id="imgTMDB" src="<%= data_entry.avatar %>" alt="afiche"><% } %>

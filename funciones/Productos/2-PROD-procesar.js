@@ -280,13 +280,6 @@ module.exports = {
 		return fa_id;
 	},
 
-	// ControllerAPI (obtenerColeccion_id)
-	obtenerColeccion_id: async (entidad, parametro, id) => {
-		resultado = await BD_varios.ObtenerPorParametro(entidad, parametro, id);
-		resultado = resultado ? resultado.id : false;
-		return resultado;
-	},
-
 	// Función validar (copiarFA)
 	// This (producto_FA)
 	contenidoFA: (contenido) => {

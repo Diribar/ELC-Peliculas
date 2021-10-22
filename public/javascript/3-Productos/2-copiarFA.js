@@ -133,12 +133,13 @@ window.addEventListener("load", async () => {
 			direccion = document.querySelector(
 				".input[name='direccion']"
 			).value;
-			FA_id = await fetch(
+			fa_id = await fetch(
 				pre + "obtener-fa-id/?direccion=" + direccion
 			).then((n) => n.json());
+			campo = rubroAPI.value == "movie" ? "peli_fa_id" : "colec_fa_id";
 			url = "rubroAPI=" + rubroAPI.value;
-			url += "&campo=fa_id";
-			url += "&id=" + FA_id;
+			url += "&campo=" + campo;
+			url += "&id=" + fa_id;
 			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
 				n.json()
 			);

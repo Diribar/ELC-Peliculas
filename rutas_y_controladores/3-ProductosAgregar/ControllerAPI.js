@@ -26,26 +26,30 @@ module.exports = {
 		return res.json(errores);
 	},
 
+	// Vista (datosDuros)
+	validarDatosDuros: async (req, res) => {
+		errores = await validarProductos.datosDuros(
+			req.query,
+			Object.keys(req.query)
+		);
+		return res.json(errores);
+	},
+
+	// Vista (datosPers)
+	validarDatosPers: async (req, res) => {
+		errores = await validarProductos.datosPers(req.query);
+		return res.json(errores);
+	},
+
 	// Vista (copiarFA)
 	obtenerFA_id: (req, res) => {
 		FA_id = procesarProductos.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 
-	// Vista (copiarFA)
-	obtenerColeccion_id: async (req, res) => {
-		let { parametro, id } = req.query;
-		coleccion_id = await procesarProductos.obtenerColeccion_id(
-			"colecciones_partes",
-			parametro,
-			id
-		);
-		return res.json(coleccion_id);
-	},
-
 	obtenerELC_id: async (req, res) => {
 		let { rubroAPI, campo, id } = req.query;
-		ELC_id = await procesarProductos.obtenerELC_id({rubroAPI, campo, id});
+		ELC_id = await procesarProductos.obtenerELC_id({ rubroAPI, campo, id });
 		return res.json(ELC_id);
 	},
 };
