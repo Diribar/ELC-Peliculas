@@ -7,7 +7,7 @@ let BD_colecciones = require("../BD/coleccionesCabecera");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerAPI: async (id, rubroAPI) => {
+	obtenerAPI_TMDB: async (id, rubroAPI) => {
 		let lectura = await detailsTMDB(id, rubroAPI);
 		if (rubroAPI == "movie") {
 			credits = await creditsTMDB(id);
@@ -248,11 +248,12 @@ module.exports = {
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
 		contenido = this.contenidoFA(contenido);
+		campo = rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
 		let resultado = {
 			fuente: "FA",
 			rubroAPI,
 			enColeccion,
-			fa_id,
+			[campo]: fa_id,
 			avatar,
 			...contenido,
 		};

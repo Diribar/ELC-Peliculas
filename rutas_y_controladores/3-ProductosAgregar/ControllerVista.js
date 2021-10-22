@@ -1,7 +1,9 @@
 // ************ Requires ************
+let path = require("path");
 let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
 let validarProductos = require("../../funciones/Productos/3-PROD-errores");
+let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 
 // *********** Controlador ***********
 module.exports = {
@@ -38,8 +40,6 @@ module.exports = {
 		// 2. Si hay errores de validación, redireccionar
 		let errores = await validarProductos.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
-			tema = "agregar";
-			codigo = "palabrasClave";
 			req.session.errores = errores;
 			return res.redirect("/productos/agregar/palabras-clave");
 		}
@@ -94,9 +94,7 @@ module.exports = {
 		});
 		//return res.send(req.session.datosDuros);
 		// 2. Redireccionar a la siguiente instancia
-		return req.session.datosDuros.rubroAPI == "movie"
-			? res.redirect("/peliculas/agregar/datos-duros")
-			: res.redirect("/colecciones/agregar/datos-duros");
+		res.redirect("/productos/agregar/datos-duros")
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -151,8 +149,6 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		//return res.send(errores);
 		if (errores.hay) {
-			tema = "agregar";
-			codigo = "copiarFA";
 			// return res.send(errores);
 			req.session.errores = errores;
 			return res.redirect("/productos/agregar/copiar-fa");
@@ -165,9 +161,7 @@ module.exports = {
 		return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return req.session.datosDuros.rubroAPI == "movie"
-			? res.redirect("/peliculas/agregar/datos-duros")
-			: res.redirect("/colecciones/agregar/datos-duros");
+		return res.redirect("/productos/agregar/datos-duros");
 	},
 
 	datosDurosForm: async (req, res) => {
@@ -191,16 +185,51 @@ module.exports = {
 			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
 			: "";
 		let datos = [
-			{ titulo: "Título original", campo: "nombre_original" },
-			{ titulo: "Título en castellano", campo: "nombre_castellano" },
-			{ titulo: "Año de estreno", campo: "ano_estreno", id: true },
-			{ titulo: "Duración (minutos)", campo: "duracion", id: true },
-			{ titulo: "Director", campo: "director" },
-			{ titulo: "Guión", campo: "guion" },
-			{ titulo: "Música", campo: "musica" },
-			{ titulo: "Actores", campo: "actores" },
-			{ titulo: "Productor", campo: "productor" },
+			{
+				titulo: "Título original",
+				campo: "nombre_original",
+				peli: true,
+				colec: true,
+			},
+			{
+				titulo: "Título en castellano",
+				campo: "nombre_castellano",
+				peli: true,
+				colec: true,
+			},
+			{
+				titulo: "Año de estreno",
+				campo: "ano_estreno",
+				id: true,
+				peli: true,
+				colec: true,
+			},
+			{
+				titulo: "Año de finalización",
+				campo: "ano_fin",
+				id: true,
+				peli: false,
+				colec: true,
+			},
+			{
+				titulo: "Duración (minutos)",
+				campo: "duracion",
+				id: true,
+				peli: true,
+				colec: false,
+			},
+			{ titulo: "Director", campo: "director", peli: true, colec: true },
+			{ titulo: "Guión", campo: "guion", peli: true, colec: true },
+			{ titulo: "Música", campo: "musica", peli: true, colec: true },
+			{ titulo: "Actores", campo: "actores", peli: true, colec: true },
+			{
+				titulo: "Productor",
+				campo: "productor",
+				peli: true,
+				colec: true,
+			},
 		];
+		return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -211,6 +240,14 @@ module.exports = {
 			errores,
 			datos,
 		});
+	},
+
+	resumenForm: (req, res) => {
+		return res.send("Estoy en ResumenForm");
+	},
+
+	resumenGuardar: (req, res) => {
+		return res.send("Estoy en ResumenGuardar");
 	},
 
 	responsabilidad: (req, res) => {
@@ -230,7 +267,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 	let lectura =
 		form.fuente == "TMDB"
-			? await procesarProductos.obtenerAPI(form[campo], rubroAPI)
+			? await procesarProductos.obtenerAPI_TMDB(form[campo], rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie"

@@ -77,16 +77,20 @@ let vistas = async (opcion) => {
 	if (opcion == "listado") {
 		tipos_BD = await BD_varios.ObtenerTodos("listado_peliculas", "id");
 	} else {
-		tipos_BD = await BD_varios.ObtenerFiltrandoPorCampo(
+		tipos_BD = await BD_varios.ObtenerPorParametro(
 			"subcategorias",
 			"categoria_id",
 			opcion.toUpperCase()
 		);
 	}
 	// Obtener el Título de la opción elegida
-	let titulo = "Películas - " + await BD_varios
-		.ObtenerFiltrandoPorCampo("menu_opciones", "url", opcion)
-		.then((n) => n[0].titulo);
+	let titulo =
+		"Películas - " +
+		(await BD_varios.ObtenerPorParametro(
+			"menu_opciones",
+			"url",
+			opcion
+		).then((n) => n[0].titulo));
 	// Exportar los datos
 	return [opciones_BD, opcionElegida, tipos_BD, titulo];
 };
