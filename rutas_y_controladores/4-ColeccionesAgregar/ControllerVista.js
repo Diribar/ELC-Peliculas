@@ -66,14 +66,14 @@ module.exports = {
 		});
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarColecciones.datosDuros(datosDuros);
-		// 2.2. Averiguar si el TMDB_id o el FA_id ya está en la BD
-		if (req.body.tmdb_id) {
-			campo = "tmdb_id";
-			id = req.body.tmdb_id;
+		// 2.2. Averiguar si el colec_TMDB_id o el colec_FA_id ya están en la BD
+		if (req.body.colec_tmdb_id) {
+			campo = "colec_tmdb_id";
+			id = req.body.colec_tmdb_id;
 		}
-		if (req.body.fa_id) {
-			campo = "fa_id";
-			id = req.body.fa_id;
+		if (req.body.colec_fa_id) {
+			campo = "colec_fa_id";
+			id = req.body.colec_fa_id;
 		}
 		elc_id = await procesarProductos.obtenerELC_id({
 			rubroAPI: req.body.rubroAPI,
@@ -220,24 +220,6 @@ module.exports = {
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
-};
-
-let obtenerDatosDelProductoTMDB = async (form) => {
-	// API Details
-	let lectura =
-		form.fuente == "TMDB"
-			? await procesarProductos.obtenerAPI(form.tmdb_id, form.rubroAPI)
-			: {};
-	// Obtener la info para la vista 'Datos Duros'
-	form.rubroAPI == "movie"
-		? (rubro = "pelicula_TMDB")
-		: form.rubroAPI == "tv"
-		? (rubro = "TV_TMDB")
-		: form.rubroAPI == "collection"
-		? (rubro = "coleccion_TMDB")
-		: "";
-	let resultado = await procesarProductos[rubro](form, lectura);
-	return resultado;
 };
 
 let download = (uri, filename) => {

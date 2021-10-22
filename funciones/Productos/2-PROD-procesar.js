@@ -25,7 +25,7 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			tmdb_id: form.tmdb_id,
+			peli_tmdb_id: form.peli_tmdb_id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -34,10 +34,10 @@ module.exports = {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
 				datosLectura.enColeccion = true;
-				datosLectura.coleccion_tmdb_id = lectura.belongs_to_collection;
+				datosLectura.colec_tmdb_id = lectura.belongs_to_collection;
 			} else datosLectura.enColeccion = false;
-			lectura.imdb_id != ""
-				? (datosLectura.imdb_id = lectura.imdb_id)
+			lectura.peli_imdb_id != ""
+				? (datosLectura.peli_imdb_id = lectura.peli_imdb_id)
 				: "";
 			lectura.overview != ""
 				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
@@ -109,7 +109,7 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			tmdb_id: form.tmdb_id,
+			colec_tmdb_id: form.colec_tmdb_id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -157,7 +157,7 @@ module.exports = {
 			if (lectura.seasons.length > 0) {
 				datosLectura.partes = lectura.seasons.map((n) => {
 					partes = {
-						tmdb_id: n.id,
+						peli_tmdb_id: n.id,
 						nombre_castellano: n.name,
 						ano_estreno: parseInt(n.air_date.slice(0, 4)),
 						cant_capitulos: n.episode_count,
@@ -187,7 +187,7 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			tmdb_id: form.tmdb_id,
+			colec_tmdb_id: form.colec_tmdb_id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -217,7 +217,7 @@ module.exports = {
 				);
 				datosLectura.partes = lectura.parts.map((n) => {
 					partes = {
-						tmdb_id: n.id,
+						peli_tmdb_id: n.id,
 						nombre_castellano: n.title,
 						nombre_original: n.original_title,
 						sinopsis: fuenteSinopsisTMDB(n.overview),
