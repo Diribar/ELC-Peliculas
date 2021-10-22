@@ -1,4 +1,5 @@
-<button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
+<% rubro = data_entry.rubroAPI=="movie" ? "Película" : "Colección" %>
+<button type="menu" class="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</button>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="data_entry" class="flex-col" >
 	<section id="titulos">
 		<h2>Paso 3 de 4: Completá los Datos Pendientes</h2>
@@ -24,7 +25,8 @@
 			<% for (let i=0; i < datos.length; i++) { %>
 				<%- include("31-Input", {i}) %> 
 			<% } %> 
-			<section style="order: 3;" class="label-input flex-row">
+			<!-- País -->
+			<section style="order: 4;" class="label-input flex-row">
 				<label>País de origen</label>
 				<div class="input-error">
 					<% if (pais) { %>

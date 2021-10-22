@@ -229,7 +229,7 @@ module.exports = {
 				colec: true,
 			},
 		];
-		return res.send(datosDuros);
+		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
