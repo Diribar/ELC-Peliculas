@@ -205,23 +205,6 @@ module.exports = {
 		return res.redirect("/peliculas/agregar/resumen");
 	},
 
-	ResumenForm: (req, res) => {
-		return res.send("Estoy en ResumenForm");
-	},
-
-	ResumenGuardar: (req, res) => {
-		return res.send("Estoy en ResumenGuardar");
-	},
-
-	responsabilidad: (req, res) => {
-		tema = "agregar";
-		codigo = "responsabilidad";
-		return res.render("Home", { tema, codigo });
-	},
-
-	yaEnBD_Form: (req, res) => {
-		return res.send("La Película / Colección ya está en nuestra BD");
-	},
 };
 
 let download = (uri, filename) => {

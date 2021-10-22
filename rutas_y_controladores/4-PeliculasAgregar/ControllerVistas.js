@@ -137,8 +137,6 @@ module.exports = {
 		// 2.4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
-			tema = "agregar";
-			codigo = "datosDuros";
 			req.session.errores = errores;
 			return res.redirect("/peliculas/agregar/datos-duros");
 		}
@@ -195,8 +193,6 @@ module.exports = {
 		let errores = await validarProductos.datosPers(datosPers);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
-			tema = "agregar";
-			codigo = "datosPers";
 			req.session.errores = errores;
 			//return res.send([datosPers.color, req.session.datosPers.color]);
 			return res.redirect("/peliculas/agregar/datos-personalizados");

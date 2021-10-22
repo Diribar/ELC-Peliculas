@@ -1,6 +1,7 @@
 <% for (prod_nuevo of prod_nuevos) { %>
 	<% rubroAPI = prod_nuevo.rubroAPI %>
-	<% tmdb_id = prod_nuevo.tmdb_id %>
+	<% campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id" %> 
+	<% tmdb_id = prod_nuevo[campo] %>
 	<% lanzamiento = prod_nuevo.lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
 	<% imagen_src = "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>
 	<% nombre_original = prod_nuevo.nombre_original %>
@@ -10,7 +11,7 @@
 		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
 		<input type="text" name="fuente" class="ocultar" value="TMDB">
 		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
-		<input type="text" name="tmdb_id" value="<%= tmdb_id %>" class="ocultar">
+		<input type="text" name="<%= campo %>" value="<%= tmdb_id %>" class="ocultar">
 		<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "prod_nuevo">
