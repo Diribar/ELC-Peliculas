@@ -18,7 +18,7 @@ let camposTotales = [
 		"rubroAPI",
 		"peli_imdb_id",
 		"fa_id",
-		"peli_imdb_id",
+		"peli_tmdb_id",
 		"coleccion_tmdb_id",
 		"nombre_original",
 		"nombre_castellano",
