@@ -21,10 +21,11 @@ module.exports = {
 						.then((n) => estandarizarNombres(n, rubroAPI))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					lectura.resultados = await agregarLanzamiento(
-						lectura.resultados,
-						rubroAPI
-					);
+					(rubroAPI == "collection" && lectura.resultados.length > 0)
+						? (lectura.resultados = await agregarLanzamiento(
+								lectura.resultados
+						  ))
+						: "";
 					datos = unificarResultados(lectura, rubroAPI, datos, page);
 				}
 			}
@@ -58,6 +59,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
 			desempate3 = "-";
+			prefijo = "colec";
 		}
 		if (rubroAPI == "tv") {
 			if (
@@ -72,6 +74,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
 			desempate3 = m.first_air_date;
+			prefijo = "colec";
 		}
 		if (rubroAPI == "movie") {
 			if (
@@ -86,6 +89,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
 			desempate3 = m.release_date;
+			prefijo = "peli";
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
 		desempate1 = letrasIngles(nombre_original)
@@ -97,7 +101,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 		// Dejar sólo algunos campos
 		return {
 			rubroAPI: rubroAPI,
-			tmdb_id: m.id,
+			[prefijo + "_tmdb_id"]: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
 			lanzamiento: ano,
@@ -146,35 +150,32 @@ let eliminarIncompletos = (dato) => {
 	return dato;
 };
 
-let agregarLanzamiento = async (dato, rubroAPI) => {
-	if (rubroAPI == "collection" && dato.length > 0) {
-		let detalles = [];
-		for (let j = 0; j < dato.length; j++) {
-			id = dato[j].tmdb_id;
-			// Obtener todas las fechas de lanzamiento
-			detalles = await detailsTMDB(id, "collection")
-				.then((n) => {
-					!n.hasOwnProperty("parts") ? console.log(n) : "";
-					return n.parts;
+let agregarLanzamiento = async (dato) => {
+	let detalles = [];
+	for (let j = 0; j < dato.length; j++) {
+		id = dato[j].colec_tmdb_id;
+		// Obtener todas las fechas de lanzamiento
+		detalles = await detailsTMDB(id, "collection")
+			.then((n) => {
+				!n.hasOwnProperty("parts") ? console.log(n) : "";
+				return n.parts;
+			})
+			.then((n) =>
+				n.map((m) => {
+					return typeof m.release_date != "undefined"
+						? m.release_date
+						: "-";
 				})
-				.then((n) =>
-					n.map((m) => {
-						typeof m.release_date != "undefined"
-							? (aux = m.release_date)
-							: (aux = "-");
-						return aux;
-					})
-				);
-			// Ordenar de menor a mayor
-			detalles.length > 1
-				? detalles.sort((a, b) => {
-						return a < b ? -1 : a > b ? 1 : 0;
-				  })
-				: "";
-			let ano = detalles[0];
-			dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : ano;
-			dato[j].desempate3 = ano;
-		}
+			);
+		// Ordenar de menor a mayor
+		detalles.length > 1
+			? detalles.sort((a, b) => {
+					return a < b ? -1 : a > b ? 1 : 0;
+			  })
+			: "";
+		let ano = detalles[0];
+		dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : ano;
+		dato[j].desempate3 = ano;
 	}
 	return dato;
 };
@@ -219,10 +220,12 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
+		rubroAPI = datos.resultados[i].rubroAPI;
+		campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		let dato = {
-			rubroAPI: datos.resultados[i].rubroAPI,
-			campo: "tmdb_id",
-			id: datos.resultados[i].tmdb_id,
+			rubroAPI: rubroAPI,
+			campo: campo,
+			id: datos.resultados[i][campo],
 		};
 		let [YaEnBD] = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {

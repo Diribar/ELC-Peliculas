@@ -191,9 +191,11 @@ module.exports = {
 
 let obtenerDatosDelProductoTMDB = async (form) => {
 	// API Details
+	rubroAPI = form.rubroAPI;
+	campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 	let lectura =
 		form.fuente == "TMDB"
-			? await procesarProductos.obtenerAPI(form.tmdb_id, form.rubroAPI)
+			? await procesarProductos.obtenerAPI(form[campo], rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie"
