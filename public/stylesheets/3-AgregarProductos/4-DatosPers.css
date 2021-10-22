@@ -27,7 +27,8 @@
 	{width: 70px}	
 
 /* Errores */
-#data_entry .fa-times-circle {right: -20px; top: 50%; transform: translateY(-50%); font-size: 12px;}
+#data_entry .fa-times-circle, #data_entry .fa-check-circle
+	{right: -20px; top: 50%; transform: translateY(-50%); font-size: 12px;}
 #data_entry .mensajeError {right: 0px; top: 15px; width: 200px}
 #data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
 

@@ -37,7 +37,10 @@ module.exports = {
 
 	// Vista (datosPers)
 	validarDatosPers: async (req, res) => {
-		errores = await validarProductos.datosPers(req.query);
+		errores = await validarProductos.datosPers(
+			req.query,
+			Object.keys(req.query)
+		);
 		return res.json(errores);
 	},
 
