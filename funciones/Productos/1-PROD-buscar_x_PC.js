@@ -21,7 +21,7 @@ module.exports = {
 						.then((n) => estandarizarNombres(n, rubroAPI))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					(rubroAPI == "collection" && lectura.resultados.length > 0)
+					rubroAPI == "collection" && lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
