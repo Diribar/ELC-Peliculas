@@ -31,7 +31,6 @@ module.exports = {
 		let pais = datosDuros.pais_id
 			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
 			: "";
-		//return res.send(pais)
 		let datos = [
 			{ titulo: "Título original", campo: "nombre_original" },
 			{ titulo: "Título en castellano", campo: "nombre_castellano" },

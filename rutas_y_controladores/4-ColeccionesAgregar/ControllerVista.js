@@ -16,13 +16,11 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosDurosC";
 		// 2. Feedback de la instancia anterior o Data Entry propio
-		//console.log(!!req.session.datosDuros);
 		let datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
-		//console.log(datosDuros);
 		if (!datosDuros)
 			return res.redirect("/productos/agregar/palabras-clave");
 		// 3. Render del formulario
@@ -30,6 +28,9 @@ module.exports = {
 			? req.session.errores
 			: await validarColecciones.datosDuros(datosDuros);
 		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let pais = datosDuros.pais_id
+			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
+			: "";
 		let datos = [
 			{ titulo: "Título original", campo: "nombre_original" },
 			{ titulo: "Título en castellano", campo: "nombre_castellano" },
@@ -46,6 +47,7 @@ module.exports = {
 			codigo,
 			link: req.originalUrl,
 			data_entry: datosDuros,
+			pais,
 			paises,
 			errores,
 			datos,
