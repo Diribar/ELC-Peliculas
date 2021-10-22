@@ -325,7 +325,7 @@ module.exports = {
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.send(errores);
+			//return res.send(errores);
 			return res.redirect("/productos/agregar/datos-personalizados");
 		}
 		// 3. Redireccionar a la siguiente instancia
