@@ -1,5 +1,5 @@
 const db = require("../../base_de_datos/modelos");
-const entidad = db.colecciones_cabecera;
+const entidad = db.colecciones;
 //const { Op } = require("sequelize");
 
 module.exports = {

@@ -209,7 +209,7 @@ VALUES
 (2, 2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
 (3, 3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
 ;
-CREATE TABLE COLECCIONES_CABECERA (
+CREATE TABLE COLECCIONES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	colec_tmdb_id VARCHAR(10) NULL UNIQUE,
 	colec_fa_id VARCHAR(10) NULL UNIQUE,
@@ -246,21 +246,17 @@ CREATE TABLE COLECCIONES_CABECERA (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_cabecera (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+INSERT INTO colecciones (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
 VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 CREATE TABLE COLECCIONES_PARTES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	colec_id INT UNSIGNED NOT NULL,
-	peli_id INT UNSIGNED NULL UNIQUE,
-	peli_tmdb_id VARCHAR(20) NULL UNIQUE,
+	peli_id INT UNSIGNED NULL,
+	peli_tmdb_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
-	ano_estreno INT UNSIGNED NOT NULL,
-	cant_capitulos INT UNSIGNED NOT NULL DEFAULT 1,
-	sinopsis VARCHAR(800) NULL,
-	avatar VARCHAR(100) NULL,
-	orden_secuencia INT UNSIGNED NOT NULL,
+	orden INT UNSIGNED NOT NULL,
 	calificacion INT UNSIGNED NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
@@ -277,18 +273,18 @@ CREATE TABLE COLECCIONES_PARTES (
 	borrada_en DATE NULL,
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones_cabecera(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, orden, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-INSERT INTO colecciones_partes (colec_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_partes (colec_id, nombre_original, nombre_castellano, orden, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -394,7 +390,7 @@ CREATE TABLE PELICULAS (
 	borrada_en DATE NULL,
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones_cabecera(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
@@ -447,50 +443,54 @@ CREATE TABLE calidad_sonora_visual (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO calidad_sonora_visual (id, orden, valor, nombre)
 VALUES 
-(2, 1, 3, 'No afecta al disfrute'),
+(2, 1, 3, 'No afecta el disfrute'),
 (1, 2, 0, 'Perjudica el disfrute')
 ;
-CREATE TABLE us_pel_calificaciones (
+CREATE TABLE calificaciones_us (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
+	peli_id INT UNSIGNED NULL,
+	colec_id INT UNSIGNED NULL,
 	fe_valores_id INT UNSIGNED NOT NULL,
 	entretiene_id INT UNSIGNED NOT NULL,
 	calidad_sonora_visual_id INT UNSIGNED NOT NULL,
 	resultado DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id),
+	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
 	FOREIGN KEY (fe_valores_id) REFERENCES fe_valores(id),
 	FOREIGN KEY (entretiene_id) REFERENCES entretiene(id),
 	FOREIGN KEY (calidad_sonora_visual_id) REFERENCES calidad_sonora_visual(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_pel_calificaciones (id, usuario_id, pelicula_id, fe_valores_id, entretiene_id, calidad_sonora_visual_id)
+INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores_id, entretiene_id, calidad_sonora_visual_id)
 VALUES (1, 1, 1, 4, 4, 2)
 ;
-CREATE TABLE interes_en_la_pelicula (
+CREATE TABLE interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO interes_en_la_pelicula (id, orden, nombre)
+INSERT INTO interes_en_prod (id, orden, nombre)
 VALUES 
 (3, 1, 'Recordame que quiero verla'),
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
 ;
-CREATE TABLE us_pel_interes_en_la_pelicula (
+CREATE TABLE interes_en_prod_us (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NOT NULL,
-	interes_en_la_pelicula_id INT UNSIGNED NULL,
+	peli_id INT UNSIGNED NULL,
+	colec_id INT UNSIGNED NULL,
+	interes_en_prod_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (pelicula_id) REFERENCES peliculas(id),
-	FOREIGN KEY (interes_en_la_pelicula_id) REFERENCES interes_en_la_pelicula(id)
+	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_pel_interes_en_la_pelicula (usuario_id, pelicula_id, interes_en_la_pelicula_id)
+INSERT INTO interes_en_prod_us (usuario_id, peli_id, interes_en_prod_id)
 VALUES (1, 1, 2)
 ;
 CREATE TABLE filtros_personales (

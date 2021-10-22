@@ -60,7 +60,7 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = n => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
-		entidad.belongsTo(n.colecciones_cabecera, {as: "coleccion", foreignKey: "colec_id"});
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "colec_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
@@ -70,7 +70,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
-		entidad.hasMany(n.us_pel_calificaciones, {as: "us_pel_calificaciones",foreignKey: "peli_id"});
+		entidad.hasMany(n.calificaciones_us, {as: "calificaciones_us",foreignKey: "peli_id"});
 
 	};
 	return entidad;
