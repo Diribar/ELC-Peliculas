@@ -36,7 +36,7 @@ module.exports = (sequelize, dt) => {
         entidad.belongsTo(n.estados_eclesiales, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
 
 		entidad.hasMany(n.calificaciones_us, {as: "calificaciones",foreignKey: "usuario_id"});
-		entidad.hasMany(n.interes_en_prod_us, {as: "interes_en_prod_us",foreignKey: "usuario_id"});
+		entidad.hasMany(n.interes_en_prod_us, {as: "interes_en_prod",foreignKey: "usuario_id"});
     };
     return entidad;
 }; 
