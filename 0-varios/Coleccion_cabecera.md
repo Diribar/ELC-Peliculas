@@ -1,7 +1,7 @@
 Datos Duros, campos:
 - Visibles
-	nombre_original
-	nombre_castellano
+OK	nombre_original
+OK	nombre_castellano
 	pais
 	ano_estreno
 	ano_fin

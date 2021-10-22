@@ -170,12 +170,47 @@ module.exports = {
 			: res.redirect("/colecciones/agregar/datos-duros");
 	},
 
-	datosDurosRedirect: async (req, res) => {
-		return req.session.datosDuros
-			? req.session.datosDuros.rubroAPI == "movie"
-				? res.redirect("/peliculas/agregar/datos-duros")
-				: res.redirect("/colecciones/agregar/datos-duros")
-			: res.redirect("/productos/agregar/palabras-clave");
+	datosDurosForm: async (req, res) => {
+		// 1. Tema y Código
+		tema = "agregar";
+		codigo = "datosDuros";
+		// 2. Feedback de la instancia anterior o Data Entry propio
+		datosDuros = req.session.datosDuros
+			? req.session.datosDuros
+			: req.cookies.datosDuros
+			? req.cookies.datosDuros
+			: "";
+		if (!datosDuros)
+			return res.redirect("/productos/agregar/palabras-clave");
+		// 3. Render del formulario
+		let errores = req.session.errores
+			? req.session.errores
+			: await validarProductos.datosDuros(datosDuros);
+		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let pais = datosDuros.pais_id
+			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
+			: "";
+		let datos = [
+			{ titulo: "Título original", campo: "nombre_original" },
+			{ titulo: "Título en castellano", campo: "nombre_castellano" },
+			{ titulo: "Año de estreno", campo: "ano_estreno", id: true },
+			{ titulo: "Duración (minutos)", campo: "duracion", id: true },
+			{ titulo: "Director", campo: "director" },
+			{ titulo: "Guión", campo: "guion" },
+			{ titulo: "Música", campo: "musica" },
+			{ titulo: "Actores", campo: "actores" },
+			{ titulo: "Productor", campo: "productor" },
+		];
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+			data_entry: datosDuros,
+			pais,
+			paises,
+			errores,
+			datos,
+		});
 	},
 
 	responsabilidad: (req, res) => {
