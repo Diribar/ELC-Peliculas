@@ -2,10 +2,11 @@ module.exports = (sequelize, dt) => {
 	const alias = "colecciones_cabecera";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
-		tmdb_id: { type: dt.STRING(10) },
-		tmdb_rubro: { type: dt.STRING(10) },
-		fa_id: { type: dt.STRING(10) },
-		fuente: { type: dt.STRING(10) },
+		colec_tmdb_id: { type: dt.STRING(10) },
+		colec_fa_id: { type: dt.STRING(10) },
+		colec_tmdb_rubro: { type: dt.STRING(10) },
+		fuente: { type: dt.STRING(5) },
+		partes_en_BD: { type: dt.BOOLEAN },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },
@@ -41,7 +42,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
-		entidad.hasMany(n.colecciones_peliculas, {as: "coleccion_peliculas",foreignKey: "coleccion_id"});
+		entidad.hasMany(n.colecciones_partes, {as: "coleccion_partes",foreignKey: "colec_id"});
 	};
 	return entidad;
 };

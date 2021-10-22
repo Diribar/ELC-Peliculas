@@ -1,31 +1,37 @@
 DESDE DESAMBIGUAR
 - El resultado (generado automáticamente) es:
-    - Cabecera:
-	- Partes_en_BD: true => las partes ya están cargadas
-    - Partes:
-	- Parte_ID: valor
-	- Coleccion_ID: valor
-	- Coleccion_TMDB: valor
-	- Película_ID: valor/vacío <-- depende de si la película está o no cargada
-	- Película_TMDB: valor
+	- Cabecera:
+		- Partes_en_BD: true => las partes ya están cargadas
+	- Partes:
+		- ID: valor
+		- colec_ID: valor
+		- peli_ID: valor/vacío <-- depende de si la película está o no cargada
+		- peli_TMDB: valor
 
 DESDE PALABRA-CLAVE O GUARDADO CABECERA --> ÚNICA PANTALLA
 - Criterio: se agrega una sola parte (capítulo) por vez
 - El primer dato que se pide es el de Colección_ID
-    - Sólo números
-    - Si viene desde "guardado de cabecera", es automático
-    - Si viene desde "palabra clave", lo provee el usuario
+	- Sólo números
+	- Si viene desde "guardado de cabecera", es automático
+	- Si viene desde "palabra clave", lo provee el usuario
 	- El ícono de ayuda le dice al usuario que busque el ID con el buscador de colecciones
 	- En el ayuda figura el link al buscador
 - Datos adicionales:
-    - Estos datos, que son excluyentes entre sí:
+	- Estos datos, que son excluyentes entre sí:
 	- Película_ID (UNIQUE) <-- avisa si ya está en otra parte
 	- Película_Nombre_Castellano
-	    - Puede repetirse, pero avisa si ya está en otra parte
-	    - Se completa automáticamente si el usuario ingresó el ID
-    - Orden (automático)
+		- Puede repetirse, pero avisa si ya está en otra parte
+		- Se completa automáticamente si el usuario ingresó el ID
+	- Orden (automático)
 	- El ícono de ayuda avisa que sólo se podrá cambiar el orden desde la edición, una vez que esté completado el agregada
 	- En el ayuda figura el link a la edición
 - Íconos al final del Data Entry:
-    - Guardar y Agregar otra: graba y reload vacío
-    - Guardar y Terminar: graba y mensaje de partes guardadas
+	- Guardar y Agregar otra: graba y reload vacío
+	- Guardar y Terminar: graba y mensaje de partes guardadas
+- El resultado es:
+	- Cabecera:
+		- partes_en_BD: true => las partes ya están cargadas
+	- Partes:
+		- ID: valor
+		- colec_ID: valor
+		- peli_ID: valor/vacío <-- depende de si la película está o no cargada

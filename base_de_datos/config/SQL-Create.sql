@@ -211,10 +211,11 @@ VALUES
 ;
 CREATE TABLE COLECCIONES_CABECERA (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(10) NULL UNIQUE,
-	fa_id VARCHAR(10) NULL UNIQUE,
-	tmdb_rubro VARCHAR(10) NULL,
-	fuente VARCHAR(10) NOT NULL,
+	colec_tmdb_id VARCHAR(10) NULL UNIQUE,
+	colec_fa_id VARCHAR(10) NULL UNIQUE,
+	colec_tmdb_rubro VARCHAR(10) NULL,
+	fuente VARCHAR(5) NOT NULL,
+	partes_en_BD BOOLEAN NOT NULL DEFAULT 0,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
@@ -245,15 +246,14 @@ CREATE TABLE COLECCIONES_CABECERA (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_cabecera (id, tmdb_id, tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+INSERT INTO colecciones_cabecera (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
 VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-CREATE TABLE COLECCIONES_PELICULAS (
+CREATE TABLE COLECCIONES_PARTES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	coleccion_id INT UNSIGNED NOT NULL,
-	pelicula_id INT UNSIGNED NULL UNIQUE,
-	tmdb_id VARCHAR(20) NULL UNIQUE,
-	fa_id VARCHAR(20) NULL UNIQUE,
+	colec_id INT UNSIGNED NOT NULL,
+	peli_id INT UNSIGNED NULL UNIQUE,
+	peli_tmdb_id VARCHAR(20) NULL UNIQUE,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
@@ -277,18 +277,18 @@ CREATE TABLE COLECCIONES_PELICULAS (
 	borrada_en DATE NULL,
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (coleccion_id) REFERENCES colecciones_cabecera(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones_cabecera(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_peliculas (coleccion_id, pelicula_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, 1, '38516', '436804', 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 2005, 1, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-INSERT INTO colecciones_peliculas (coleccion_id, tmdb_id, fa_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, '75470', '340091', 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones_partes (colec_id, nombre_original, nombre_castellano, ano_estreno, orden_secuencia, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
+VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2006, 2, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -349,12 +349,15 @@ VALUES (1, 'Guerra Mundial - II')
 ;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(10) NULL,
-	fa_id VARCHAR(10) NULL,
-	imdb_id VARCHAR(10) NULL,
+	peli_tmdb_id VARCHAR(10) NULL,
+	peli_fa_id VARCHAR(10) NULL,
+	peli_imdb_id VARCHAR(10) NULL,
+	colec_id INT UNSIGNED NULL,
+	colec_TMDB_id VARCHAR(10) NULL,
+	enColeccion BOOLEAN NOT NULL DEFAULT 0,
+	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
-	coleccion_pelicula_id INT UNSIGNED NOT NULL DEFAULT 0,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
 	pais_id VARCHAR(20) NOT NULL,
@@ -391,7 +394,7 @@ CREATE TABLE PELICULAS (
 	borrada_en DATE NULL,
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (coleccion_pelicula_id) REFERENCES colecciones_peliculas(id),
+	FOREIGN KEY (colec_id) REFERENCES colecciones_cabecera(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
@@ -404,8 +407,8 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, coleccion_pelicula_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor, calificacion)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 100)
+INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor, calificacion, fuente)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 100, 'IM')
 ;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
