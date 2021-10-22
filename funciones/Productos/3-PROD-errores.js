@@ -20,7 +20,10 @@ module.exports = {
 		// Rubro
 		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
 		// En colección
-		errores.enColeccion = !datos.enColeccion ? "Elegí una opción" : "";
+		errores.enColeccion =
+			!datos.enColeccion && datos.rubroAPI == "movie"
+				? "Elegí una opción"
+				: "";
 		// Dirección
 		url = datos.direccion;
 		errores.direccion = !url
@@ -57,74 +60,125 @@ module.exports = {
 	},
 
 	// ControllerAPI (validarDatosDuros)
-	datosDuros: (datos) => {
+	datosDuros: (datos, camposDD) => {
+		// Averiguar cuáles son los campos a verificar
+		if (datos.rubroAPI) {
+			parametro = datos.rubroAPI == "movie" ? "peli" : "colec";
+			camposAVerificar = camposDD
+				.filter((n) => n[parametro])
+				.map((n) => n.campo);
+		} else camposAVerificar = camposDD;
+		// Comenzar con las revisiones
 		let errores = {};
-		errores.nombre_original = !datos.nombre_original
-			? cartelCampoVacio
-			: longitud(datos.nombre_original, 2, 50)
-			? longitud(datos.nombre_original, 2, 50)
-			: castellano(datos.nombre_original)
-			? cartelCastellano
-			: "";
-		errores.nombre_castellano = !datos.nombre_castellano
-			? cartelCampoVacio
-			: longitud(datos.nombre_castellano, 2, 50)
-			? longitud(datos.nombre_castellano, 2, 50)
-			: castellano(datos.nombre_castellano)
-			? cartelCastellano
-			: "";
-		errores.ano_estreno = !datos.ano_estreno
-			? cartelCampoVacio
-			: formatoAno(datos.ano_estreno)
-			? "Debe ser un número de 4 dígitos"
-			: datos.ano_estreno < 1900
-			? "El año debe ser mayor a 1900"
-			: datos.ano_estreno > new Date().getFullYear()
-			? "El número no puede superar al año actual"
-			: "";
-		errores.duracion = !datos.duracion
-			? cartelCampoVacio
-			: formatoNumero(datos.duracion, 20)
-			? formatoNumero(datos.duracion, 20)
-			: datos.duracion > 300
-			? "Debe ser un número menor"
-			: "";
+		errores.nombre_original =
+			camposAVerificar.indexOf("nombre_original") == -1
+				? ""
+				: !datos.nombre_original
+				? cartelCampoVacio
+				: longitud(datos.nombre_original, 2, 50)
+				? longitud(datos.nombre_original, 2, 50)
+				: castellano(datos.nombre_original)
+				? cartelCastellano
+				: "";
+		errores.nombre_castellano =
+			camposAVerificar.indexOf("nombre_castellano") == -1
+				? ""
+				: !datos.nombre_castellano
+				? cartelCampoVacio
+				: longitud(datos.nombre_castellano, 2, 50)
+				? longitud(datos.nombre_castellano, 2, 50)
+				: castellano(datos.nombre_castellano)
+				? cartelCastellano
+				: "";
+		errores.ano_estreno =
+			camposAVerificar.indexOf("ano_estreno") == -1
+				? ""
+				: !datos.ano_estreno
+				? cartelCampoVacio
+				: formatoAno(datos.ano_estreno)
+				? "Debe ser un número de 4 dígitos"
+				: datos.ano_estreno < 1900
+				? "El año debe ser mayor a 1900"
+				: datos.ano_estreno > new Date().getFullYear()
+				? "El número no puede superar al año actual"
+				: "";
+		errores.ano_fin =
+			camposAVerificar.indexOf("ano_fin") == -1
+				? ""
+				: !datos.ano_fin
+				? cartelCampoVacio
+				: formatoAno(datos.ano_fin)
+				? "Debe ser un número de 4 dígitos"
+				: datos.ano_fin < 1900
+				? "El año debe ser mayor a 1900"
+				: datos.ano_fin > new Date().getFullYear()
+				? "El número no puede superar al año actual"
+				: !errores.ano_estreno &&
+				  datos.ano_estreno &&
+				  datos.ano_estreno > datos.ano_fin
+				? "El año de finalización debe ser igual o mayor que el año de estreno"
+				: "";
+		errores.duracion =
+			camposAVerificar.indexOf("duracion") == -1
+				? ""
+				: !datos.duracion
+				? cartelCampoVacio
+				: formatoNumero(datos.duracion, 20)
+				? formatoNumero(datos.duracion, 20)
+				: datos.duracion > 300
+				? "Debe ser un número menor"
+				: "";
 		errores.pais_id = !datos.pais_id ? cartelCampoVacio : "";
-		errores.director = !datos.director
-			? cartelCampoVacio
-			: longitud(datos.director, 2, 50)
-			? longitud(datos.director, 2, 50)
-			: castellano(datos.director)
-			? cartelCastellano
-			: "";
-		errores.guion = !datos.guion
-			? cartelCampoVacio
-			: longitud(datos.guion, 2, 50)
-			? longitud(datos.guion, 2, 50)
-			: castellano(datos.guion)
-			? cartelCastellano
-			: "";
-		errores.musica = !datos.musica
-			? cartelCampoVacio
-			: longitud(datos.musica, 2, 50)
-			? longitud(datos.musica, 2, 50)
-			: castellano(datos.musica)
-			? cartelCastellano
-			: "";
-		errores.actores = !datos.actores
-			? cartelCampoVacio
-			: longitud(datos.actores, 2, 500)
-			? longitud(datos.actores, 2, 500)
-			: castellano(datos.actores)
-			? cartelCastellano
-			: "";
-		errores.productor = !datos.productor
-			? cartelCampoVacio
-			: longitud(datos.productor, 2, 100)
-			? longitud(datos.productor, 2, 100)
-			: castellano(datos.productor)
-			? cartelCastellano
-			: "";
+		errores.director =
+			camposAVerificar.indexOf("director") == -1
+				? ""
+				: !datos.director
+				? cartelCampoVacio
+				: longitud(datos.director, 2, 50)
+				? longitud(datos.director, 2, 50)
+				: castellano(datos.director)
+				? cartelCastellano
+				: "";
+		errores.guion =
+			camposAVerificar.indexOf("guion") == -1
+				? ""
+				: !datos.guion
+				? cartelCampoVacio
+				: longitud(datos.guion, 2, 50)
+				? longitud(datos.guion, 2, 50)
+				: castellano(datos.guion)
+				? cartelCastellano
+				: "";
+		errores.musica =
+			camposAVerificar.indexOf("musica") == -1
+				? ""
+				: !datos.musica
+				? cartelCampoVacio
+				: longitud(datos.musica, 2, 50)
+				? longitud(datos.musica, 2, 50)
+				: castellano(datos.musica)
+				? cartelCastellano
+				: "";
+		errores.actores =
+			camposAVerificar.indexOf("actores") == -1
+				? ""
+				: !datos.actores
+				? cartelCampoVacio
+				: longitud(datos.actores, 2, 500)
+				? longitud(datos.actores, 2, 500)
+				: castellano(datos.actores)
+				? cartelCastellano
+				: "";
+		errores.productor =
+			camposAVerificar.indexOf("productor") == -1
+				? ""
+				: !datos.productor
+				? cartelCampoVacio
+				: longitud(datos.productor, 2, 100)
+				? longitud(datos.productor, 2, 100)
+				: castellano(datos.productor)
+				? cartelCastellano
+				: "";
 		errores.sinopsis = !datos.sinopsis
 			? cartelCampoVacio
 			: longitud(datos.sinopsis, 15, 1000)

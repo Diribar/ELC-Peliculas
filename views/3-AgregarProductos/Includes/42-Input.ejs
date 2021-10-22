@@ -1,11 +1,13 @@
 <% dato = datosPers_input.find(n => n.campo == campo) %>
-<div style="order: <%= dato.orden %>" class="label-input flex-row">
-	<label id="<%= campo %>"><%= dato.titulo %></label>
-	<div class="input-error">
-		<input type="text" name="<%= dato.campo %>" autocomplete="off"
-			value="<%= data_entry[dato.campo] %>" class="input">
-		<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
-			<span class="mensajeError"><%= errores[dato.campo] %></span>
-		</i>
-	</div>
-</div>
+<% if ((data_entry.rubroAPI=="movie" && dato.peli) || (data_entry.rubroAPI!="movie" && dato.colec)) { %>
+	<section style="order: <%= dato.orden %>" class="label-input flex-row">
+		<label id="<%= campo %>"><%= dato.titulo %></label>
+		<div class="input-error">
+			<input type="text" name="<%= dato.campo %>" autocomplete="off"
+				value="<%= data_entry[dato.campo] %>" class="input">
+			<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores[dato.campo] %></span>
+			</i>
+		</div>
+	</section>
+<% } %>

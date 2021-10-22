@@ -1,4 +1,5 @@
-<button type="menu" class="titulo">Agregá una película a nuestra Base de Datos</button>
+<% rubro = data_entry.rubroAPI=="movie" ? "Película" : "Colección" %>
+<button type="menu" class="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</button>
 <form action="<%= link %>" method="POST" id="data_entry" class="flex-col" >
 	<section id="titulos">
 		<h2>Paso 4 de 4: Datos Personalizados</h2>
