@@ -218,8 +218,6 @@ module.exports = {
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
 		// 2.2. Averiguar si el TMDB_id o el FA_id ya están en la BD
-		// Averiguar si el nombre_original ya tiene un error
-
 		// Obtener los parámetros
 		fuente = datosDuros.fuente.toLowerCase();
 		campo = datosDuros.rubroAPI == "movie" ? "peli" : "colec";
