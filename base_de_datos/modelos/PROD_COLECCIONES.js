@@ -40,7 +40,8 @@ module.exports = (sequelize, dt) => {
 		borrada: { type: dt.BOOLEAN },
 		borrada_por_id: { type: dt.INTEGER },
 		borrada_en: { type: dt.DATE },
-		borrada_motivo: { type: dt.STRING(500) },
+		borrada_motivo_id: { type: dt.INTEGER },
+		borrada_motivo_comentario: { type: dt.STRING(500) },
 	};
 	const config = {
 		tableName: "colecciones",
@@ -58,6 +59,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
+		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 		entidad.hasMany(n.colecciones_partes, {as: "coleccion_partes",foreignKey: "colec_id"});
 	};
 	return entidad;
