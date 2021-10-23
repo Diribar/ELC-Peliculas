@@ -320,11 +320,12 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = await validarProductos.datosPers(datosPers);
+		camposDP = [...(await datosPersSelect()), ...datosPersInput()];
+		let errores = await validarProductos.datosPers(datosPers, camposDP);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			//return res.send([datosPers.color, req.session.datosPers.color]);
+			//return res.send(errores);
 			return res.redirect("/productos/agregar/datos-personalizados");
 		}
 		// 3. Redireccionar a la siguiente instancia
@@ -553,14 +554,14 @@ let datosPersInput = () => {
 	return [
 		{
 			titulo: "Link del trailer",
-			campo: "trailer",
+			campo: "link_trailer",
 			tabla: "peliculas",
 			peli: true,
 			colec: true,
 		},
 		{
 			titulo: "Link de la película",
-			campo: "pelicula",
+			campo: "link_pelicula",
 			tabla: "peliculas",
 			peli: true,
 			colec: true,

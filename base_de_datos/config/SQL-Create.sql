@@ -209,21 +209,82 @@ VALUES
 (2, 2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
 (3, 3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
 ;
+CREATE TABLE publicos_sugeridos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,	
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO publicos_sugeridos (id, orden, nombre)
+VALUES 
+(5, 1, 'Mayores solamente'),
+(4, 2, 'Mayores (apto familia)'),
+(3, 3, 'Familia'),
+(2, 4, 'Menores (apto familia)'),
+(1, 5, 'Menores solamente')
+;
+CREATE TABLE personajes_historicos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia_del_ano INT UNSIGNED NOT NULL,
+	dia INT UNSIGNED NULL,
+	mes INT UNSIGNED NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO personajes_historicos (id, dia_del_ano, dia, mes, nombre)
+VALUES (1, 301, 22, 10, 'San Juan Pablo II')
+;
+CREATE TABLE hechos_historicos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia_del_ano INT UNSIGNED NOT NULL,
+	dia INT UNSIGNED NULL,
+	mes INT UNSIGNED NULL,
+	nombre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO hechos_historicos (id, dia_del_ano, dia, mes, nombre)
+VALUES (1, 249, 1, 9, 'Guerra Mundial - 2a (segunda)')
+;
+CREATE TABLE epocas_estreno (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,	
+	nombre VARCHAR(20) NOT NULL,
+	ano_comienzo INT UNSIGNED NOT NULL,
+	ano_fin INT UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
+VALUES 
+(4, 1, '2015 - Presente', 2015, 2025),
+(3, 2, '2000 - 2014', 2000, 2014), 
+(2, 3, '1970 - 1999', 1970, 1999), 
+(1, 4, 'Antes de 1970', 1900, 1969)
+;
 CREATE TABLE COLECCIONES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	colec_tmdb_id VARCHAR(10) NULL UNIQUE,
 	colec_fa_id VARCHAR(10) NULL UNIQUE,
 	colec_tmdb_rubro VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
-	partes_en_BD BOOLEAN NOT NULL DEFAULT 0,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
 	pais_id VARCHAR(20) NOT NULL,
+	director VARCHAR(50) NOT NULL,
+	guion VARCHAR(50) NOT NULL,
+	musica VARCHAR(50) NOT NULL,
+	actores VARCHAR(500) NOT NULL,
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,
+	categoria_id VARCHAR(3) NOT NULL,
+	subcategoria_id INT UNSIGNED NOT NULL,
+	publico_sugerido_id INT UNSIGNED NOT NULL,
+	personaje_historico_id INT UNSIGNED NULL,
+	hecho_historico_id INT UNSIGNED NULL,
+	link_trailer VARCHAR(200) NULL,
+	link_pelicula VARCHAR(200) NULL,
 	calificacion INT UNSIGNED NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,
@@ -240,14 +301,19 @@ CREATE TABLE COLECCIONES (
 	borrada_en DATE NULL,
 	borrada_motivo VARCHAR(500) NULL,
 	PRIMARY KEY (id),
+	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
+	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
-VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, '2021-04-23', 2, '2021-04-23', 1)
+INSERT INTO colecciones (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id)
+VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla)', 1, 'CFC', 4)
 ;
 CREATE TABLE COLECCIONES_PARTES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -286,63 +352,6 @@ VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a se
 INSERT INTO colecciones_partes (colec_id, nombre_original, nombre_castellano, orden, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada)
 VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2, 1, '2021-04-23', 2, '2021-04-23', 1)
 ;
-CREATE TABLE epocas_estreno (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,	
-	nombre VARCHAR(20) NOT NULL,
-	ano_comienzo INT UNSIGNED NOT NULL,
-	ano_fin INT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
-VALUES 
-(4, 1, '2015 - Presente', 2015, 2025),
-(3, 2, '2000 - 2014', 2000, 2014), 
-(2, 3, '1970 - 1999', 1970, 1999), 
-(1, 4, 'Antes de 1970', 1900, 1969)
-;
-CREATE TABLE publicos_sugeridos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,	
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO publicos_sugeridos (id, orden, nombre)
-VALUES 
-(5, 1, 'Mayores solamente'),
-(4, 2, 'Mayores (apto familia)'),
-(3, 3, 'Familia'),
-(2, 4, 'Menores (apto familia)'),
-(1, 5, 'Menores solamente')
-;
-CREATE TABLE eventos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	dia INT UNSIGNED NULL,
-	mes INT UNSIGNED NULL,
-	evento VARCHAR(50) NOT NULL,
-	nombre VARCHAR(70) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO eventos (id, orden, dia, mes, evento, nombre)
-VALUES (1, 301, 22, 10, 'San Juan Pablo II', '22/oct - San Juan Pablo II')
-;
-CREATE TABLE personajes_historicos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO personajes_historicos (id, nombre)
-VALUES (1, 'Papa Juan Pablo II')
-;
-CREATE TABLE hechos_historicos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO hechos_historicos (id, nombre)
-VALUES (1, 'Guerra Mundial - II')
-;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	peli_tmdb_id VARCHAR(10) NULL,
@@ -371,7 +380,6 @@ CREATE TABLE PELICULAS (
 	publico_sugerido_id INT UNSIGNED NOT NULL,
 	personaje_historico_id INT UNSIGNED NULL,
 	hecho_historico_id INT UNSIGNED NULL,
-	sugerida_para_evento_id INT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	calificacion INT UNSIGNED NOT NULL,
@@ -396,15 +404,14 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
 	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
-	FOREIGN KEY (sugerida_para_evento_id) REFERENCES eventos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sugerida_para_evento_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor, calificacion, fuente)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 100, 'IM')
+INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, creada_en, analizada_por_id, analizada_en, aprobada, director, guion, musica, actores, productor, calificacion, fuente)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, '2021-04-23', 2, '2021-04-23', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 100, 'IM')
 ;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

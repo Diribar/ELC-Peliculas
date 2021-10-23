@@ -196,41 +196,98 @@ module.exports = {
 	},
 
 	// ControllerAPI (validarDatosPers)
-	datosPers: (datos) => {
+	datosPers: (datos, camposDP) => {
+		// Averiguar cuáles son los campos a verificar
+		if (datos.rubroAPI) {
+			parametro = datos.rubroAPI == "movie" ? "peli" : "colec";
+			camposAVerificar = camposDP
+				.filter((n) => n[parametro])
+				.map((n) => n.campo);
+		} else camposAVerificar = camposDP;
+		// Comenzar con las revisiones
 		let errores = {};
-		errores.en_castellano = !datos.en_castellano ? cartelSelectVacio : "";
-		errores.color = !datos.color ? cartelSelectVacio : "";
-		errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
-		errores.subcategoria_id = !datos.subcategoria_id
-			? cartelSelectVacio
-			: "";
-		errores.publico_sugerido_id = !datos.publico_sugerido_id
-			? cartelSelectVacio
-			: "";
-		errores.personaje_historico_id = !datos.personaje_historico_id
-			? cartelSelectVacio
-			: "";
-		errores.hecho_historico_id = !datos.hecho_historico_id
-			? cartelSelectVacio
-			: "";
-		errores.sugerida_para_evento_id = !datos.sugerida_para_evento_id
-			? cartelSelectVacio
-			: "";
-		errores.link_trailer = !datos.link_trailer
-			? cartelCampoVacio
-			: !validarFuente(datos.link_trailer)
-			? "Debe ser de una fuente confiable"
-			: "";
-		errores.link_pelicula = !datos.link_pelicula
-			? cartelCampoVacio
-			: !validarFuente(datos.link_pelicula)
-			? "Debe ser de una fuente confiable"
-			: "";
-		errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
-		errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
-		errores.calidad_sonora_visual_id = !datos.calidad_sonora_visual_id
-			? cartelSelectVacio
-			: "";
+		errores.en_castellano =
+			camposAVerificar.indexOf("en_castellano") == -1
+				? ""
+				: !datos.en_castellano
+				? cartelSelectVacio
+				: "";
+		errores.color =
+			camposAVerificar.indexOf("color") == -1
+				? ""
+				: !datos.color
+				? cartelSelectVacio
+				: "";
+		errores.categoria_id =
+			camposAVerificar.indexOf("categoria_id") == -1
+				? ""
+				: !datos.categoria_id
+				? cartelSelectVacio
+				: "";
+		errores.subcategoria_id =
+			camposAVerificar.indexOf("subcategoria_id") == -1
+				? ""
+				: !datos.subcategoria_id
+				? cartelSelectVacio
+				: "";
+		errores.publico_sugerido_id =
+			camposAVerificar.indexOf("publico_sugerido_id") == -1
+				? ""
+				: !datos.publico_sugerido_id
+				? cartelSelectVacio
+				: "";
+		errores.personaje_historico_id =
+			camposAVerificar.indexOf("personaje_historico_id") == -1
+				? ""
+				: !datos.personaje_historico_id
+				? cartelSelectVacio
+				: "";
+		errores.hecho_historico_id =
+			camposAVerificar.indexOf("hecho_historico_id") == -1
+				? ""
+				: !datos.hecho_historico_id
+				? cartelSelectVacio
+				: "";
+		errores.sugerida_para_evento_id =
+			camposAVerificar.indexOf("sugerida_para_evento_id") == -1
+				? ""
+				: !datos.sugerida_para_evento_id
+				? cartelSelectVacio
+				: "";
+		errores.link_trailer =
+			camposAVerificar.indexOf("link_trailer") == -1
+				? ""
+				: !datos.link_trailer
+				? cartelCampoVacio
+				: !validarFuente(datos.link_trailer)
+				? "Debe ser de una fuente confiable"
+				: "";
+		errores.link_pelicula =
+			camposAVerificar.indexOf("link_pelicula") == -1
+				? ""
+				: !datos.link_pelicula
+				? cartelCampoVacio
+				: !validarFuente(datos.link_pelicula)
+				? "Debe ser de una fuente confiable"
+				: "";
+		errores.fe_valores_id =
+			camposAVerificar.indexOf("fe_valores_id") == -1
+				? ""
+				: !datos.fe_valores_id
+				? cartelSelectVacio
+				: "";
+		errores.entretiene_id =
+			camposAVerificar.indexOf("entretiene_id") == -1
+				? ""
+				: !datos.entretiene_id
+				? cartelSelectVacio
+				: "";
+		errores.calidad_sonora_visual_id =
+			camposAVerificar.indexOf("calidad_sonora_visual_id") == -1
+				? ""
+				: !datos.calidad_sonora_visual_id
+				? cartelSelectVacio
+				: "";
 		errores.hay = hayErrores(errores);
 		return errores;
 	},

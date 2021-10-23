@@ -21,22 +21,17 @@ module.exports = (sequelize, dt) => {
 		productor: { type: dt.STRING(100) },
 		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
-
 		en_castellano: { type: dt.BOOLEAN },
 		color: { type: dt.BOOLEAN },
 		categoria_id: { type: dt.STRING(3) },
 		subcategoria_id: { type: dt.INTEGER },
 		publico_sugerido_id: { type: dt.INTEGER },
-
 		personaje_historico_id: { type: dt.INTEGER },
 		hecho_historico_id: { type: dt.INTEGER },
-		sugerida_para_evento_id: { type: dt.INTEGER },
-
 		link_trailer: { type: dt.STRING(800) },
 		link_pelicula: { type: dt.STRING(800) },
 
 		calificacion: { type: dt.INTEGER },
-
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },
@@ -64,14 +59,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
-		entidad.belongsTo(n.eventos, {as: "sugerida_para_evento", foreignKey: "sugerida_para_evento_id"});
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
-		entidad.hasMany(n.calificaciones_us, {as: "calificaciones_us",foreignKey: "peli_id"});
-
 	};
 	return entidad;
 }; 

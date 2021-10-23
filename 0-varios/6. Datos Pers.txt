@@ -8,7 +8,12 @@ Ayudas
 		- El link debe ser de un sitio que permita denunciar la violación de copyright. Ej: You Tube
 		- El link debe tener por lo menos 3 meses de antigüedad, para prevenir una violación de copyright
 
-Links a Agregar Registros
-	- Personaje histórico
-	- Hecho histórico
-	- Fecha sugerida para ver
+Relación con la vida (Personaje histórico, Hecho histórico)
+	- Sólo para biografías e historias
+		- Personaje histórico y/o Hecho histórico
+		- Fecha sugerida para ver
+	- Links a agregar registros
+
+Comentarios para links
+OK	- Pelis
+	- Colec

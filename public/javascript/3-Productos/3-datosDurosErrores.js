@@ -24,6 +24,7 @@ window.addEventListener("load", () => {
 					valor
 			).then((n) => n.json());
 			mensaje = errores[campo];
+			// Verificar que el año de fin sea mayor o igual que el de estreno
 			if (!mensaje && campo == "ano_fin") {
 				inputs.forEach((input, index) => {
 					if (input.name == "ano_estreno") indice = index;
@@ -35,6 +36,7 @@ window.addEventListener("load", () => {
 					: "";
 			}
 			mensajeError[i].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
 			if (mensaje) {
 				iconoError[i].classList.remove("ocultar");
 				button.classList.add("botonSinLink");
