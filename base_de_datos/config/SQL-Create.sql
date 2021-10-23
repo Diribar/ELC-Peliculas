@@ -244,15 +244,15 @@ CREATE TABLE personajes_historicos (
 	dia INT UNSIGNED NOT NULL,
 	mes INT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
-	activo BOOLEAN DEFAULT 0,
-	fecha_creacion DATE NOT NULL,
+	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED NOT NULL,
-	aprobada BOOLEAN DEFAULT 0,
-	ultima_novedad_por_id INT UNSIGNED NOT NULL,
-	ultima_novedad_en DATE NOT NULL,
-	analizada_por_id INT UNSIGNED NULL,
-	analizada_en DATE NULL,
+	creada_en DATE NOT NULL,
+	editada_por_id INT UNSIGNED NULL,
+	editada_en DATE NULL,
+	revisada_por_id INT UNSIGNED NULL,
+	revisada_en DATE NULL,
 	cant_ediciones INT UNSIGNED NULL,
+	aprobada BOOLEAN DEFAULT 0,
 	borrada BOOLEAN DEFAULT 0,
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATE NULL,
@@ -260,29 +260,29 @@ CREATE TABLE personajes_historicos (
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (ultima_novedad_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO personajes_historicos (id, dia_del_ano, dia, mes, nombre, fecha_creacion, creada_por_id, ultima_novedad_por_id, ultima_novedad_en)
-VALUES (1, 301, 22, 10, 'San Juan Pablo II', '2021-04-23', 1, 1, '2021-04-23')
+INSERT INTO personajes_historicos (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
+VALUES (1, 301, 22, 10, 'San Juan Pablo II', '2021-04-23', 1)
 ;
 CREATE TABLE hechos_historicos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano INT UNSIGNED NOT NULL,
-	dia INT UNSIGNED NULL,
-	mes INT UNSIGNED NULL,
+	dia INT UNSIGNED NOT NULL,
+	mes INT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
-	activo BOOLEAN DEFAULT 0,
-	fecha_creacion DATE NOT NULL,
+	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED NOT NULL,
-	aprobada BOOLEAN DEFAULT 0,
-	ultima_novedad_por_id INT UNSIGNED NOT NULL,
-	ultima_novedad_en DATE NOT NULL,
-	analizada_por_id INT UNSIGNED NULL,
-	analizada_en DATE NULL,
+	creada_en DATE NOT NULL,
+	editada_por_id INT UNSIGNED NULL,
+	editada_en DATE NULL,
+	revisada_por_id INT UNSIGNED NULL,
+	revisada_en DATE NULL,
 	cant_ediciones INT UNSIGNED NULL,
+	aprobada BOOLEAN DEFAULT 0,
 	borrada BOOLEAN DEFAULT 0,
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATE NULL,
@@ -290,13 +290,13 @@ CREATE TABLE hechos_historicos (
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (ultima_novedad_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO hechos_historicos (id, dia_del_ano, dia, mes, nombre, fecha_creacion, creada_por_id, ultima_novedad_por_id, ultima_novedad_en)
-VALUES (1, 249, 1, 9, 'Guerra Mundial - 2a (segunda)', '2021-04-23', 1, 1, '2021-04-23')
+INSERT INTO hechos_historicos (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
+VALUES (1, 249, 1, 9, 'Guerra Mundial - 2a (segunda)', '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
