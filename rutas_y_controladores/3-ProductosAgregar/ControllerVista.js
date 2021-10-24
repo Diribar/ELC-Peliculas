@@ -261,7 +261,7 @@ module.exports = {
 			errores.avatar
 				? (errores.hay = true) // Marcar que sí hay errores
 				: !req.file
-				? await download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
+				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
 		}
 		// 2.4. Si hay errores de validación, redireccionar
