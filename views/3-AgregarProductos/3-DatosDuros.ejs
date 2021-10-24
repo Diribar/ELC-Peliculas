@@ -32,7 +32,7 @@
 				<div class="input-error">
 					<% if (pais) { %>
 						<input type="text" class="input" value="<%= pais %>" disabled>
-						<div class="ocultar aviso"></div>
+						<%- include("32-DD-Avisos") %>
 					<% } else { %>
 						<select name="pais_id" class="input">
 							<option value="" selected class="ocultar">Elejí un país</option>
@@ -59,7 +59,7 @@
 						name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
 						<% if (data_entry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
 					><%= data_entry.sinopsis %></textarea>
-					<% if (data_entry.sinopsis && !errores.sinopsis) { %><div class="ocultar aviso"></div><% } %>
+					<%- (data_entry.sinopsis && !errores.sinopsis) ? include("32-DD-Avisos") : "" %>
 					<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.sinopsis %></span>
 					</i>

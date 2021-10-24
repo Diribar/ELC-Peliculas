@@ -1,13 +1,14 @@
 <% if ((data_entry.rubroAPI=="movie" && datos[i].peli) || (data_entry.rubroAPI!="movie" && datos[i].colec)) { %>
 	<section style="order: <%=i%><%- (i == 0) ? '; margin-top: 0' : '' %>" class="label-input flex-row">
 		<label><%= datos[i].titulo %> </label>
+		<!-- Data-entry y Errores -->
 		<div class="input-error">
 			<input type="text" class="input" name="<%= datos[i].campo %>"
 				value="<%= data_entry[datos[i].campo] %>"
 				<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
 				<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
 			>
-			<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %><div class="ocultar aviso"></div><% } %>
+			<%- (data_entry[datos[i].campo] && !errores[datos[i].campo]) ? include("32-DD-Avisos") : "" %>
 			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[datos[i].campo] %></span>
 			</i>
