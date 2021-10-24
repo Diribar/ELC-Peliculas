@@ -172,6 +172,7 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosDuros";
+		//return res.send(req.cookies.datosDuros);
 		// 2. Feedback de la instancia anterior o Data Entry propio
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
@@ -253,14 +254,14 @@ module.exports = {
 				tipo = datos[0];
 				tamano = datos[1];
 				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "public/imagenes/4-Provisorio/" + nombre;
+				rutaYnombre = "./public/imagenes/4-Provisorio/" + nombre;
 			}
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
 			errores.avatar
 				? (errores.hay = true) // Marcar que sí hay errores
 				: !req.file
-				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
+				? await download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
 		}
 		// 2.4. Si hay errores de validación, redireccionar
@@ -271,7 +272,7 @@ module.exports = {
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
-		req.session.datosPers.avatar = nombre;
+		req.session.datosPers.avatarDP = nombre;
 		//return res.send(req.session.datosPers);
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -291,6 +292,7 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
+		//return res.send(datosPers)
 		if (!datosPers)
 			return res.redirect("/productos/agregar/palabras-clave");
 		// 3. Render del formulario
