@@ -539,14 +539,6 @@ let datosPersSelect = async () => {
 			peli: true,
 			colec: true,
 		},
-		{
-			titulo: "Sugerida para fecha",
-			campo: "sugerida_para_evento_id",
-			tabla: "peliculas",
-			valores: await BD_varios.ObtenerTodos("eventos", "orden"),
-			peli: true,
-			colec: true,
-		},
 	];
 };
 

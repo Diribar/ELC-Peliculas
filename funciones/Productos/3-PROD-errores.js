@@ -258,7 +258,7 @@ module.exports = {
 			camposAVerificar.indexOf("link_trailer") == -1
 				? ""
 				: !datos.link_trailer
-				? cartelCampoVacio
+				? ""
 				: !validarFuente(datos.link_trailer)
 				? "Debe ser de una fuente confiable"
 				: "";
@@ -266,7 +266,7 @@ module.exports = {
 			camposAVerificar.indexOf("link_pelicula") == -1
 				? ""
 				: !datos.link_pelicula
-				? cartelCampoVacio
+				? ""
 				: !validarFuente(datos.link_pelicula)
 				? "Debe ser de una fuente confiable"
 				: "";

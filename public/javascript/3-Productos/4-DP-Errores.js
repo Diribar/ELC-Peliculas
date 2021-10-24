@@ -6,39 +6,32 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajesError = document.querySelectorAll(".mensajeError");
-	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	//let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
 	let statusInicial = true;
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
-	let revisarInput = (i, errores) => {
+	let accionesSiHayErrores = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// En caso de error
-		if (mensaje) {
-			iconoError[i].classList.remove("ocultar");
-			iconoOK[i].classList.add("ocultar");
-			button.classList.add("botonSinLink");
-		} else {
-			// En caso de que no haya error
-			iconoError[i].classList.add("ocultar");
-			iconoOK[i].classList.remove("ocultar");
-			sinErrores = true;
-			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar")
-					? (sinErrores = false)
-					: "";
-			}
-			sinErrores
-				? button.classList.remove("botonSinLink")
-				: button.classList.add("botonSinLink");
-		}
+		mensaje
+			? iconoError[i].classList.remove("ocultar")
+			: iconoError[i].classList.add("ocultar");
+		mensaje
+			? iconoOK[i].classList.add("ocultar")
+			: valor
+			? iconoOK[i].classList.remove("ocultar")
+			: "";
+		errores.hay
+			? button.classList.add("botonSinLink")
+			: button.classList.remove("botonSinLink");
 	};
 
 	// Funciones para revisar todos los inputs, devuelve los errores
-	let validarDataEntry = () => {
+	let buscarErroresEnTodoElForm = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
@@ -53,9 +46,9 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (statusInicial) {
-		errores = await validarDataEntry();
+		errores = await buscarErroresEnTodoElForm();
 		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? revisarInput(i, errores) : "";
+			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
 		statusInicial = false;
 	}
@@ -63,8 +56,8 @@ window.addEventListener("load", async () => {
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			errores = await validarDataEntry();
-			revisarInput(i, errores);
+			errores = await buscarErroresEnTodoElForm();
+			accionesSiHayErrores(i, errores);
 		});
 	}
 
@@ -72,20 +65,21 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("botonSinLink")) {
 			e.preventDefault();
-			errores = await validarDataEntry();
+			errores = await buscarErroresEnTodoElForm();
+			console.log(errores);
 			for (let i = 0; i < inputs.length; i++) {
-				revisarInput(i, errores);
+				accionesSiHayErrores(i, errores);
 			}
 		}
 	});
 
 	// Mensajes de ayuda
-	window.onclick = (e) => {
-		// Mensajes de ayuda
-		for (let i = 0; i < iconosAyuda.length; i++) {
-			e.target.matches("#" + iconosAyuda[i].id)
-				? mensajesAyuda[i].classList.toggle("ocultar")
-				: mensajesAyuda[i].classList.add("ocultar");
-		}
-	};
+	// window.onclick = (e) => {
+	// 	// Mensajes de ayuda
+	// 	for (let i = 0; i < iconosAyuda.length; i++) {
+	// 		e.target.matches("#" + iconosAyuda[i].id)
+	// 			? mensajesAyuda[i].classList.toggle("ocultar")
+	// 			: mensajesAyuda[i].classList.add("ocultar");
+	// 	}
+	// };
 });

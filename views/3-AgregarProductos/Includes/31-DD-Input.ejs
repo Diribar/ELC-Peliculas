@@ -7,6 +7,12 @@
 				<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
 				<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
 			>
+			<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %>
+				<div class="ocultar aviso">
+					<p>Podrás editar este campo más adelante.</p>
+					<p> Al terminar, se te explicará cómo.</p>
+				</div>
+			<% } %>
 			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[datos[i].campo] %></span>
 			</i>
