@@ -5,5 +5,9 @@ body {--Arial: Arial, Helvetica, sans-serif}
 /* GENERAL */
 *, body, optgroup, button, select, option, input, i {
 	font-family: var(--Calibri);
-	font-size: 14px;color:var(--azul-oscuro);
+	font-size: 14px;
+}
+
+body, optgroup, button, select, option, input, i {
+	color:var(--azul-oscuro);
 }

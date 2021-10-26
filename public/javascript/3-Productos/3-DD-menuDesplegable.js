@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
 	let inputs = document.querySelectorAll(".input[disabled]");
-	let avisos = document.querySelectorAll(".aviso");
+	let avisos = document.querySelectorAll(".mensajeAyuda");
 
 	// Acciones si se detecta un click en un input
 	window.addEventListener("click", (e) => {

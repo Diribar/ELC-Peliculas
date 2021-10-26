@@ -21,6 +21,5 @@
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
 .ocultar {display: none;}
-.mensajeAyuda {background-color: var(--amarillo-claro); color: var(--azul-oscuro); 
-	border: var(--azul-oscuro) solid 2px;}
+.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .bloqueado {background-color: var(--celeste-oscuro);}

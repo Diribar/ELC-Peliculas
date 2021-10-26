@@ -8,7 +8,7 @@
 				<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
 				<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
 			>
-			<%- (data_entry[datos[i].campo] && !errores[datos[i].campo]) ? include("32-DD-Avisos") : "" %>
+			<%- (data_entry[datos[i].campo] && !errores[datos[i].campo]) ? include("32-DD-Mensajes") : "" %>
 			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[datos[i].campo] %></span>
 			</i>
