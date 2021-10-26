@@ -160,7 +160,6 @@ window.addEventListener("load", async () => {
 
 	// Mensajes de ayuda
 	window.onclick = (e) => {
-		// Mensajes de ayuda
 		for (let i = 0; i < iconosAyuda.length; i++) {
 			e.target.matches("#" + iconosAyuda[i].id)
 				? mensajesAyuda[i].classList.toggle("ocultar")

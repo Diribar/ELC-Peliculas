@@ -12,7 +12,6 @@
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {align-self: center;}
 #data_entry .mensajeAyuda {width: fit-content; margin-left: 20px; top: -2px;}
-#data_entry .mensajeAyuda li {margin-left: 18px;}
 #data_entry .mensajeAyuda::before {
   content: "";
   position: absolute;

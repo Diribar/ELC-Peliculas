@@ -454,6 +454,9 @@ let datosPersSelect = async () => {
 			],
 			peli: true,
 			colec: false,
+			mensajes: [
+				"Para poner SI, estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.",
+			],
 		},
 		{
 			titulo: "Es a Color",
@@ -465,6 +468,7 @@ let datosPersSelect = async () => {
 			],
 			peli: true,
 			colec: false,
+			mensajes: ["SI: es a color.", "NO: es en blanco y negro."],
 		},
 		{
 			titulo: "Categoría",
@@ -473,6 +477,11 @@ let datosPersSelect = async () => {
 			valores: await BD_varios.ObtenerTodos("categorias", "orden"),
 			peli: true,
 			colec: true,
+			mensajes: [
+				'"Centradas en la Fe Católica", significa que el rol de la Fe Católica es protagónico.',
+				'Si es cristiana pero no católica, se pone como Valores "Presentes en la Cultura".',
+				'Para ponerla como "Valores Presentes en la Cultura", los buenos valores deben ser evidentes.',
+			],
 		},
 		{
 			titulo: "Sub-categoría",
@@ -481,6 +490,7 @@ let datosPersSelect = async () => {
 			valores: await BD_varios.ObtenerTodos("subcategorias", "orden"),
 			peli: true,
 			colec: true,
+			mensajes: ["Elegí la subcategoría que mejor represente el tema."],
 		},
 		{
 			titulo: "Público sugerido",
@@ -492,6 +502,13 @@ let datosPersSelect = async () => {
 			),
 			peli: true,
 			colec: true,
+			mensajes: [
+				"Mayores solamente: sensualidad o crueldad explícitos, pueden dañar la sensibilidad de un niño de 12 años.",
+				"Mayores apto familia: para mayores, sin dañar la sensibilidad de un niño.",
+				"Familia: ideal para compartir en familia y que todos disfruten",
+				"Menores apto familia: para menores, también la puede disfrutar un adulto.",
+				"Menores solamente: apuntado a un público solamente infantil.",
+			],
 		},
 		{
 			titulo: "Inspira fe y/o valores",
@@ -500,6 +517,7 @@ let datosPersSelect = async () => {
 			valores: await BD_varios.ObtenerTodos("fe_valores", "orden"),
 			peli: true,
 			colec: true,
+			mensajes: ["¿Considerás que deja algo positivo en el corazón?"],
 		},
 		{
 			titulo: "Entretiene",
@@ -508,6 +526,7 @@ let datosPersSelect = async () => {
 			valores: await BD_varios.ObtenerTodos("entretiene", "orden"),
 			peli: true,
 			colec: true,
+			mensajes: ["Se disfruta el rato viéndola"],
 		},
 		{
 			titulo: "Calidad sonora y visual",
@@ -519,6 +538,7 @@ let datosPersSelect = async () => {
 			),
 			peli: true,
 			colec: true,
+			mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 		},
 		{
 			titulo: "Personaje histórico",
@@ -530,6 +550,10 @@ let datosPersSelect = async () => {
 			),
 			peli: true,
 			colec: true,
+			mensajes: [
+				"Podés ingresar un registro nuevo, haciendo click acá.",
+				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
+			],
 		},
 		{
 			titulo: "Hecho histórico",
@@ -541,6 +565,10 @@ let datosPersSelect = async () => {
 			),
 			peli: true,
 			colec: true,
+			mensajes: [
+				"Podés ingresar un registro nuevo, haciendo click acá.",
+				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
+			],
 		},
 	];
 };
@@ -549,17 +577,31 @@ let datosPersInput = () => {
 	return [
 		{
 			titulo: "Link del trailer",
+			titulo2: "Link del 1er trailer",
 			campo: "link_trailer",
 			tabla: "peliculas",
 			peli: true,
 			colec: true,
+			mensajes: [
+				"Nos interesa el trailer del primer capítulo.",
+				"Debe ser de un sitio seguro, libre de virus.",
+				"Es ideal si vincula a un link de You Tube.",
+			],
 		},
 		{
 			titulo: "Link de la película",
+			titulo2: "Link de la 1a película",
 			campo: "link_pelicula",
 			tabla: "peliculas",
 			peli: true,
 			colec: true,
+			mensajes: [
+				"Nos interesa el link del primer capítulo.",
+				"Debe ser de un sitio seguro, libre de virus.",
+				"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
+				"Para mayor seguridad, pedimos un link con una antigüedad mayor a 3 meses.",
+				"En lo posible, elegí un link en castellano y de buena calidad.",
+			],
 		},
 	];
 };

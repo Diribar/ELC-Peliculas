@@ -1,19 +1,6 @@
-Ayudas
-	- Público sugerido: 
-		- Mayores solamente: presencia de sensualidad explícita o crueldad excesiva, que puedan dañar la sensibilidad de un/a niño/a menor a 12 años.
-		- Mayores apto familia: sugerida para mayores, pero no daña la sensibilidad de un/a niño/ambas
-		- Menores apto familia: sugerida para menores, pero que también la puede disfrutar un adulto
-		- Menores solamente: apuntado a un público solamente infantil
-	- Links Trailer / Película
-		- El link debe ser de un sitio que permita denunciar la violación de copyright. Ej: You Tube
-		- El link debe tener por lo menos 3 meses de antigüedad, para prevenir una violación de copyright
-
 Relación con la vida (Personaje histórico, Hecho histórico)
-	- Sólo para biografías e historias, alguno de éstos:
+	- Obligatorio para biografías e historias, alguno de éstos:
 		- Personaje histórico 
 		- Hecho histórico
 	- Links a "agregar registros"
-
-Comentarios para links
-OK	- Pelis
-	- Colec
+Resolver el solapamiento entre 'ayuda' y error

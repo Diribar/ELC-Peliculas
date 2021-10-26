@@ -27,6 +27,7 @@
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px;}
 #data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
+#data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding-top: 3px; padding-bottom: 3px;}
 
 /* Procesando información */
 #data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
