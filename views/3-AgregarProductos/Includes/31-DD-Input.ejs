@@ -1,6 +1,6 @@
 <% if ((data_entry.rubroAPI=="movie" && datos[i].peli) || (data_entry.rubroAPI!="movie" && datos[i].colec)) { %>
 	<section style="order: <%=i%><%- (i == 0) ? '; margin-top: 0' : '' %>" class="label-input flex-row">
-		<label><%= datos[i].titulo %> </label>
+		<label><%= datos[i].titulo %></label>
 		<!-- Data-entry y Errores -->
 		<div class="input-error">
 			<input type="text" class="input" name="<%= datos[i].campo %>"

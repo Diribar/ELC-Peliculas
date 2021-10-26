@@ -11,8 +11,17 @@
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {align-self: center;}
-#data_entry .mensajeAyuda {width: fit-content; margin-left: 20px; top: 0;}
+#data_entry .mensajeAyuda {width: fit-content; margin-left: 20px; top: -2px;}
 #data_entry .mensajeAyuda li {margin-left: 18px;}
+#data_entry .mensajeAyuda::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: -10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--gris-oscuro) transparent transparent ;
+}
 
 /* Sectores de Input */
 #data_entry #enColeccion {text-align: right;}
