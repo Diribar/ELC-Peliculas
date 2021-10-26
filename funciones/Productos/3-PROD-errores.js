@@ -72,7 +72,7 @@ module.exports = {
 		let errores = {};
 		// En colección
 		errores.enColeccion =
-			!datos.enColeccion && datos.rubroAPI == "movie"
+			!datos.enColeccion && datos.rubroAPI == "movie" && datos.fuente == "IM"
 				? "Elegí una opción"
 				: "";
 		errores.nombre_original =

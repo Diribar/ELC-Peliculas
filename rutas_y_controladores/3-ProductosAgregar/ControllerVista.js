@@ -268,6 +268,7 @@ module.exports = {
 		if (errores.hay) {
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
+			return res.send(errores)
 			return res.redirect("/productos/agregar/datos-duros");
 		}
 		// 3. Generar la session para la siguiente instancia
