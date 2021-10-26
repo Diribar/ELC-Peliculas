@@ -23,7 +23,6 @@
 
 /* Mensaje de Ayuda */
 #data_entry .label-input .input-error .mensajeAyuda {top: -52px; left:50%; transform: translateX(-50%); width: 260px; color: var(--gris-claro);}
-
 #data_entry .label-input .input-error .mensajeAyuda::after {
   content: "";
   position: absolute;
