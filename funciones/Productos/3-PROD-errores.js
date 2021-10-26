@@ -70,6 +70,11 @@ module.exports = {
 		} else camposAVerificar = camposDD;
 		// Comenzar con las revisiones
 		let errores = {};
+		// En colección
+		errores.enColeccion =
+			!datos.enColeccion && datos.rubroAPI == "movie" && datos.fuente == "IM"
+				? "Elegí una opción"
+				: "";
 		errores.nombre_original =
 			camposAVerificar.indexOf("nombre_original") == -1
 				? ""

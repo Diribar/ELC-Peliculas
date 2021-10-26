@@ -23,6 +23,24 @@
 	<section id="cuerpo">
 		<!--Primera columna-->
 		<div class="flex-col">
+			<!-- Película IM: ¿Pertenece a una colección? -->
+			<% if (data_entry.rubroAPI=="movie" && data_entry.fuente=="IM") { %>
+				<section style="order: 0; margin-top: 0; margin-bottom: 3px;" class="label-input flex-row ">
+					<label>¿Pertenece a una colección?</label>
+					<!-- Data-entry y Errores -->
+					<div class="input-error">
+						<select name="enColeccion" class="input angosto">
+							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
+							<option value="NO">NO</option>
+							<option value="SI">SI</option>
+						</select>
+						<i class="fas fa-times-circle<%- !errores.enColeccion ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.enColeccion %></span>
+						</i>
+					</div>
+				</section>
+			<% } %> 
+			<!-- Campos varios -->
 			<% for (let i=0; i < datos.length; i++) { %>
 				<%- include("31-DD-Input", {i}) %> 
 			<% } %> 
@@ -32,7 +50,7 @@
 				<div class="input-error">
 					<% if (pais) { %>
 						<input type="text" class="input" value="<%= pais %>" disabled>
-						<%- include("32-DD-Avisos") %>
+						<%- include("32-DD-Mensajes") %>
 					<% } else { %>
 						<select name="pais_id" class="input">
 							<option value="" selected class="ocultar">Elejí un país</option>
@@ -59,7 +77,7 @@
 						name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
 						<% if (data_entry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
 					><%= data_entry.sinopsis %></textarea>
-					<%- (data_entry.sinopsis && !errores.sinopsis) ? include("32-DD-Avisos") : "" %>
+					<%- (data_entry.sinopsis && !errores.sinopsis) ? include("32-DD-Mensajes") : "" %>
 					<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.sinopsis %></span>
 					</i>
@@ -80,7 +98,7 @@
 				<p id="url" class="ocultar"><%= data_entry.avatar %></p>
 			<% } %>
 			<!-- Si viene desde Ingreso Manual -->
-			<% if (!data_entry.avatar || data_entry.fuente=="Manual") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
+			<% if (!data_entry.avatar || data_entry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<!-- Rutina para todos los casos -->
 			<input name="ruta" type="text" value="./public/imagenes/4-Provisorio" class="ocultar">
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
