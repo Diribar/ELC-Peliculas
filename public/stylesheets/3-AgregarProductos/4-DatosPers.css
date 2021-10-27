@@ -16,6 +16,7 @@
 #data_entry .label-input .input-error .input {align-self: flex-end; width: 150px;}
 #data_entry .label-input .input-error input {padding: 0px 5px; font-size: 13px;}
 #data_entry .label-input .input-error select {padding: 0; font-size: 13px;}
+#data_entry .label-input .input-error .link {right: -38px; font-size: .9rem; width: 15px;}
 
 /* Mensajes */
 #data_entry .mensajeAyuda {max-width: 270px;}

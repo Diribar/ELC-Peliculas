@@ -1,8 +1,8 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let API = require("./ControllerAPI");
-let agregar = require("./ControllerVista");
+let API = require("./ControladorAPI");
+let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");
@@ -24,22 +24,22 @@ router.get("/api/obtener-elc-id/", API.obtenerELC_id);
 router.get("/api/averiguar-cant-prod/", API.cantProductos);
 
 // Controladores de vistas de "Agregar Productos"
-router.get("/palabras-clave", usuarios, agregar.palabrasClaveForm);
-router.post("/palabras-clave", usuarios, agregar.palabrasClaveGuardar);
-router.get("/desambiguar", usuarios, agregar.desambiguarForm);
-router.post("/desambiguar", usuarios, agregar.desambiguarGuardar);
-router.get("/copiar-fa", usuarios, autorizadoFA, agregar.copiarFA_Form);
-router.post("/copiar-fa", usuarios, agregar.copiarFA_Guardar);
-router.get("/datos-duros", usuarios, prodEnBD, agregar.datosDurosForm);
-router.post("/datos-duros", usuarios, upload.single("avatar"), agregar.DDG);
-router.get("/datos-personalizados", usuarios, prodEnBD, agregar.datosPersForm);
-router.post("/datos-personalizados", usuarios, agregar.datosPersGuardar);
-router.get("/resumen", usuarios, prodEnBD, agregar.resumenForm);
-router.post("/resumen", usuarios, agregar.resumenGuardar);
+router.get("/palabras-clave", usuarios, vista.palabrasClaveForm);
+router.post("/palabras-clave", usuarios, vista.palabrasClaveGuardar);
+router.get("/desambiguar", usuarios, vista.desambiguarForm);
+router.post("/desambiguar", usuarios, vista.desambiguarGuardar);
+router.get("/copiar-fa", usuarios, autorizadoFA, vista.copiarFA_Form);
+router.post("/copiar-fa", usuarios, vista.copiarFA_Guardar);
+router.get("/datos-duros", usuarios, prodEnBD, vista.datosDurosForm);
+router.post("/datos-duros", usuarios, upload.single("avatar"), vista.DDG);
+router.get("/datos-personalizados", usuarios, prodEnBD, vista.datosPersForm);
+router.post("/datos-personalizados", usuarios, vista.datosPersGuardar);
+router.get("/resumen", usuarios, prodEnBD, vista.resumenForm);
+router.post("/resumen", usuarios, vista.resumenGuardar);
 
 // Controladores de vistas auxiliares
-router.get("/responsabilidad", usuarios, agregar.responsabilidad);
-router.get("/ya-en-bd", usuarios, agregar.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, agregar.yaEnBD_Form);
+router.get("/responsabilidad", usuarios, vista.responsabilidad);
+router.get("/ya-en-bd", usuarios, vista.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, vista.yaEnBD_Form);
 
 // Fin
 module.exports = router;

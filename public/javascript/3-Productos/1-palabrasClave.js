@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
 			let link =
-			"/productos/agregar/api/palabras-clave/?palabrasClave=" + dato;
+			"/agregar/productos/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {
@@ -72,7 +72,7 @@ window.addEventListener("load", () => {
 		resultado.classList.add("resultadoEnEspera");
 		// Obtener el link
 		return (
-			"/productos/agregar/api/averiguar-cant-prod/?palabrasClave=" +
+			"/agregar/productos/api/averiguar-cant-prod/?palabrasClave=" +
 			palabrasClave
 		);
 	};

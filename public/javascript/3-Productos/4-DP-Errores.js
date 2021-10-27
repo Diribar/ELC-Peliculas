@@ -39,7 +39,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/productos/agregar/api/validar-datos-pers/" + url).then(
+		return fetch("/agregar/productos/api/validar-datos-pers/" + url).then(
 			(n) => n.json()
 		);
 	};
