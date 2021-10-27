@@ -9,6 +9,7 @@
 				<% if (data_entry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
 			>
 			<%- (data_entry[datos[i].campo] && !errores[datos[i].campo]) ? include("32-DD-Mensajes") : "" %>
+			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[datos[i].campo] %></span>
 			</i>

@@ -6,27 +6,12 @@
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
 #data_entry #enColeccion .fa-times-circle, #data_entry #enColeccion .fa-check-circle 
 	{position: static; transform: none; margin-right: 5px; align-self: center;}
-
 #data_entry .mensajeError {left: 0px; top: 15px; max-width: 300px}
-
-/* Mensajes de ayuda */
-#data_entry .fa-question-circle {align-self: center;}
-#data_entry .mensajeAyuda {width: fit-content; margin-left: 20px; top: -2px;}
-#data_entry .mensajeAyuda::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: -10px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent var(--gris-oscuro) transparent transparent ;
-}
 
 /* Sectores de Input */
 #data_entry #enColeccion {text-align: right;}
-#data_entry textarea, #data_entry input {margin-right: 5px; width: 250px; padding: 2px 5px; }
+#data_entry textarea, #data_entry input {width: 250px; padding: 2px 5px; }
 #data_entry select {padding: 0px; padding-right: 2px;}
-#data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Submit button */
 #data_entry #flechas {margin: 20px 50px 0;}
