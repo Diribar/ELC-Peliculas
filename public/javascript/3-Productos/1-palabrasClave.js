@@ -9,7 +9,7 @@ window.addEventListener("load", () => {
 	let resultado = document.querySelector("#resultado");
 
 	// Fórmula de revisar input
-	let revisarInput = async (dato) => {
+	let accionesSiHayErrores = async (dato) => {
 			let link =
 			"/productos/agregar/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
 	// Status inicial
 	iconoError.classList.contains("ocultar") &&
 	input.value != ""
-		? revisarInput(input.value)
+		? accionesSiHayErrores(input.value)
 		: "";
 
 	// Mensaje de ayuda
@@ -46,7 +46,7 @@ window.addEventListener("load", () => {
 		resultado.innerHTML = "<br>";
 		resultado.classList.remove(...resultado.classList);
 		resultado.classList.add("sinResultado");
-		revisarInput(input.value);
+		accionesSiHayErrores(input.value);
 	});
 
 	// Submit
@@ -54,10 +54,12 @@ window.addEventListener("load", () => {
 		if (button.innerHTML == "Verificar") {
 			e.preventDefault();
 			if (!button.classList.contains("botonSinLink")) {
-				button.innerHTML = "Avanzar";
+				button.classList.add("botonSinLink");
 				let link = api_pre(input.value);
 				let lectura = await fetch(link).then((n) => n.json());
 				api_post(lectura);
+				button.classList.remove("botonSinLink");
+				button.innerHTML = "Avanzar";
 			}
 		}
 	});

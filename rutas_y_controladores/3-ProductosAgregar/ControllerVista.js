@@ -584,7 +584,7 @@ let datosPersInput = () => {
 			colec: true,
 			mensajes: [
 				"Nos interesa el trailer del primer capítulo.",
-				"Debe ser de un sitio seguro, libre de virus.",
+				"Debe ser de un sitio seguro, sin virus.",
 				"Es ideal si vincula a un link de You Tube.",
 			],
 		},
@@ -597,7 +597,7 @@ let datosPersInput = () => {
 			colec: true,
 			mensajes: [
 				"Nos interesa el link del primer capítulo.",
-				"Debe ser de un sitio seguro, libre de virus.",
+				"Debe ser de un sitio seguro, sin virus.",
 				"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
 				"Para mayor seguridad, pedimos un link con una antigüedad mayor a 3 meses.",
 				"En lo posible, elegí un link en castellano y de buena calidad.",

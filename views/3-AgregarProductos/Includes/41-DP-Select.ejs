@@ -1,10 +1,10 @@
 <% dato = datosPers_select.find(n => n.campo == campo) %>
 <% if ((data_entry.rubroAPI=="movie" && dato.peli) || (data_entry.rubroAPI!="movie" && dato.colec)) { %>
 	<section class="label-input flex-row">
-		<label id="<%= campo %>"><%= dato.titulo %></label>
-		<div class="input-error">
+		<label><%= dato.titulo %></label>
+		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 			<!-- Input -->
-			<select name="<%= campo %>" class="input<% if (campo == "subcategoria_id") { %> ocultar<% } %>">
+			<select name="<%= campo %>" class="input">
 				<option value="" class="ocultar" <% if (!data_entry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of dato.valores) { %>
 					<option value="<%= valor.id %>" 
