@@ -1,8 +1,8 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let API = require("./ControllerAPI");
-let vista = require("./ControllerVista");
+let API = require("./ControladorAPI");
+let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 let usuarios = require("../../middlewares/usuarios/soloUsuarios");

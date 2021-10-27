@@ -43,7 +43,7 @@ let rutaECC = require("./rutas_y_controladores/1-Institucional/Rutas");
 let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Rutas");
 let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Rutas");
 let rutaRudOpciones = require("./rutas_y_controladores/8-Productos/RutasRudOpciones");
-//let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
+let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/agregar/productos", rutaAgregarProducto);
 app.use("/productos", rutaRudOpciones);
