@@ -42,7 +42,7 @@ app.set("views", [
 let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
 let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Ruta");
 let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Rutas");
-let rutaRudOpciones = require("./rutas_y_controladores/9-Productos/RutasRudOpciones");
+let rutaRudOpciones = require("./rutas_y_controladores/8-Productos/RutasRudOpciones");
 //let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/agregar/productos", rutaAgregarProducto);
