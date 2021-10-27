@@ -41,7 +41,6 @@
 #data_entry button {color: white; background-color: var(--gris-oscuro);}
 #data_entry button {padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #data_entry i {cursor: pointer;}
-#data_entry .fa-times-circle {z-index: 2;}
 
 /* Flechas */
 #data_entry #flechas i {font-size: 2rem;}
