@@ -39,7 +39,7 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
+let rutaECC = require("./rutas_y_controladores/1-Institucional/Rutas");
 let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Rutas");
 let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Rutas");
 let rutaRudOpciones = require("./rutas_y_controladores/8-Productos/RutasRudOpciones");
