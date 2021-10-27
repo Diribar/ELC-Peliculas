@@ -3,6 +3,7 @@
 	<section class="label-input flex-row">
 		<label id="<%= campo %>"><%= dato.titulo %></label>
 		<div class="input-error">
+			<!-- Input -->
 			<select name="<%= campo %>" class="input<% if (campo == "subcategoria_id") { %> ocultar<% } %>">
 				<option value="" class="ocultar" <% if (!data_entry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of dato.valores) { %>
@@ -14,6 +15,12 @@
 					</option>
 				<% } %>
 			</select>
+			<!-- Ayuda -->
+			<i class="fas fa-question-circle"></i>
+			<ul type="dots" class="mensajeAyuda ocultar">
+				<% for (mensaje of dato.mensajes) { %><li><%= mensaje %></li><% } %> 
+			</ul>
+			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[campo] %></span>
 			</i>

@@ -49,6 +49,7 @@
 						placeholder="Pegá acá la dirección"
 						autocomplete="off"
 					>
+					<!-- Ayuda -->
 					<i class="fas fa-question-circle" id="ayuda_direccion">
 						<ul class="mensajeAyuda ocultar" type="dots">
 							<strong><u>Pasos</u></strong>:<br>
@@ -61,6 +62,7 @@
 							<li>Pegala en el casillero de la izquierda</li>
 						</ul>
 					</i>
+					<!-- Errores -->
 					<i class="fas fa-times-circle ocultar">
 						<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
 					</i>

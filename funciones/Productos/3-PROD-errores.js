@@ -72,7 +72,9 @@ module.exports = {
 		let errores = {};
 		// En colección
 		errores.enColeccion =
-			!datos.enColeccion && datos.rubroAPI == "movie" && datos.fuente == "IM"
+			!datos.enColeccion &&
+			datos.rubroAPI == "movie" &&
+			datos.fuente == "IM"
 				? "Elegí una opción"
 				: "";
 		errores.nombre_original =
@@ -211,6 +213,7 @@ module.exports = {
 		} else camposAVerificar = camposDP;
 		// Comenzar con las revisiones
 		let errores = {};
+		// Datos generales
 		errores.en_castellano =
 			camposAVerificar.indexOf("en_castellano") == -1
 				? ""
@@ -241,24 +244,18 @@ module.exports = {
 				: !datos.publico_sugerido_id
 				? cartelSelectVacio
 				: "";
-		errores.personaje_historico_id =
-			camposAVerificar.indexOf("personaje_historico_id") == -1
-				? ""
-				: !datos.personaje_historico_id
-				? cartelSelectVacio
-				: "";
-		errores.hecho_historico_id =
-			camposAVerificar.indexOf("hecho_historico_id") == -1
-				? ""
-				: !datos.hecho_historico_id
-				? cartelSelectVacio
-				: "";
-		errores.sugerida_para_evento_id =
-			camposAVerificar.indexOf("sugerida_para_evento_id") == -1
-				? ""
-				: !datos.sugerida_para_evento_id
-				? cartelSelectVacio
-				: "";
+		// Relación con la vida
+		if (
+			!datos.personaje_historico_id &&
+				!datos.hecho_historico_id &&
+				(datos.subcategoria_id == 4 ||
+					datos.subcategoria_id == 5 ||
+					datos.subcategoria_id == 9)
+		) {
+			errores.personaje_historico_id = relacionConLaVidaVacio
+			errores.hecho_historico_id = relacionConLaVidaVacio
+		}
+		// Links gratuitos
 		errores.link_trailer =
 			camposAVerificar.indexOf("link_trailer") == -1
 				? ""
@@ -275,6 +272,7 @@ module.exports = {
 				: !validarFuente(datos.link_pelicula)
 				? "Debe ser de una fuente confiable"
 				: "";
+		// Tu calificación
 		errores.fe_valores_id =
 			camposAVerificar.indexOf("fe_valores_id") == -1
 				? ""
@@ -303,6 +301,7 @@ let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
+let relacionConLaVidaVacio = "Necesitamos que elijas una opción en alguno de estos dos campos o en ambos";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
