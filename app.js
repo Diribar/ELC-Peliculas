@@ -40,14 +40,13 @@ app.set("views", [
 
 // ************************* Rutas ********************************
 let rutaECC = require("./rutas_y_controladores/1-Institucional/Ruta");
-let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Usuarios-Ruta");
-let rutaLogin = require("./rutas_y_controladores/2-Usuarios/Login-Ruta");
-let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/RutasProductos");
+let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Ruta");
+let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Rutas");
+//let rutaAgregarVarios = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 let rutaRudOpciones = require("./rutas_y_controladores/9-Productos/RutasRudOpciones");
 app.use("/usuarios", rutaUsuarios);
-app.use("/login", rutaLogin);
 app.use("/agregar/productos", rutaAgregarProducto);
-app.use("/agregar", rutaAgregarProducto);
+//app.use("/agregar", rutaAgregarVarios);
 app.use("/productos", rutaRudOpciones);
 app.use("/", rutaECC);
 
