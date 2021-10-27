@@ -4,7 +4,7 @@
 
 /* Cuerpo del formulario */
 #data_entry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
-#data_entry #cuerpo #columnaMedio {width: 50px}
+#data_entry #cuerpo #columnaMedio {width: 70px}
 #data_entry .label-input {justify-content: space-between; margin-top: 3px;}
 
 /* Partes específicas del formulario */
@@ -17,6 +17,11 @@
 #data_entry .label-input .input-error input {padding: 0px 5px; font-size: 13px;}
 #data_entry .label-input .input-error select {padding: 0; font-size: 13px;}
 
+/* Mensajes */
+#data_entry .mensajeAyuda {max-width: 270px;}
+#data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#data_entry .mensajeError {max-width: 200px;}
+
 /* Anchos específicos de inputs */
 #data_entry .label-input .input-error select[name="en_castellano"],
 #data_entry .label-input .input-error select[name="color"],
@@ -24,12 +29,6 @@
 #data_entry .label-input .input-error select[name="entretiene_id"],
 #data_entry .label-input .input-error select[name="calidad_sonora_visual_id"]
 	{width: 70px}	
-
-/* Errores */
-#data_entry .fa-times-circle, #data_entry .fa-check-circle
-	{left: -15px; top: 50%; transform: translateY(-50%); font-size: 12px;}
-#data_entry .mensajeError {left: 15px; top: -5px; max-width: 200px; width: max-content;}
-#data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
 
 /* Imagen de la película */
 #data_entry #imagenPeli {width: 150px; height: 100%; position: relative;}

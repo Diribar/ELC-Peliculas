@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
-	let mensajesError = document.querySelectorAll(".mensajeError");
+	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	//let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
 	let statusInicial = true;
 

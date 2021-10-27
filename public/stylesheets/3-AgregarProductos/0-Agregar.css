@@ -14,24 +14,21 @@
 #data_entry input:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
 #data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
-/*  Mensajes de error*/
-#data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; top:50%; transform: translateY(-50%); font-size: 1rem;}
-#data_entry .fa-times-circle {color: var(--rojo-oscuro);}
-#data_entry .fa-check-circle {color: var(--verde-oscuro); cursor: default;}
-#data_entry .mensajeError, #data_entry .mensajeAyuda 
-	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
-#data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; 
-	color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: red solid 2px;}
-#data_entry .fa-times-circle:hover .mensajeError {display: inline;}
+/* Todos los mensajes */
+#data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; border-radius: 6px; line-height: 1.2rem;}
+#data_entry .fa-question-circle, #data_entry .mensajeAyuda, #data_entry .mensajeAyuda::before,
+#data_entry .fa-times-circle, #data_entry .mensajeError, #data_entry .mensajeError::before,
+#data_entry .fa-check-circle
+{position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Mensajes de ayuda */
-#data_entry .fa-question-circle, #data_entry .mensajeAyuda, #data_entry .mensajeAyuda::before 
-{position: absolute; transform: translateY(-50%); top: 50%;}
-#data_entry .fa-question-circle {font-size: 1rem; right: -20px;}
-#data_entry .mensajeAyuda {transform: translate(100%, -50%); right: -25px; max-width: 270px; width: max-content;}
-#data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.2rem; z-index: 1;}
-#data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding-top: 3px; padding-bottom: 3px;}
-#data_entry .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
+#data_entry .fa-question-circle {right: -20px;}
+#data_entry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
+
+/*  Mensajes de error*/
+#data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
+#data_entry .fa-times-circle {z-index: 1;}
+#data_entry .mensajeError {left: 20px; padding: 3px 7px;}
 
 /* Procesando información */
 #data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
@@ -46,4 +43,7 @@
 #data_entry #flechas i {font-size: 2rem;}
 #data_entry #flechas a i {color: var(--gris-oscuro);}
 #data_entry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
+
+/* Submit button */
 #data_entry .botonSinLink {opacity: .2; border-color: transparent; cursor: default;}
+#data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
