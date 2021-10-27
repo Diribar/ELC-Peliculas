@@ -1,6 +1,2 @@
-Relación con la vida (Personaje histórico, Hecho histórico)
-	- Obligatorio para biografías e historias, alguno de éstos:
-		- Personaje histórico 
-		- Hecho histórico
-	- Links a "agregar registros"
-Resolver el solapamiento entre 'ayuda' y error
+Relación con la vida (Personaje histórico, Hecho histórico) --> Links a "agregar registros"
+Estandarizar en las vistas, los mensajes de error

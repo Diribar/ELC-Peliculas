@@ -43,14 +43,15 @@
 			<!-- Dirección de la página, dirección de la imagen grande / Contenido del cuerpo de la página -->
 			<div id="resto" class="ocultar">
 				<h3>Ingresá la dirección de la página</h3>
-				<div class="relative flex-row">
-					<input name="direccion" type="text" class="input"
-						value="<%= data_entry ? data_entry.direccion : null %>"
-						placeholder="Pegá acá la dirección"
-						autocomplete="off"
-					>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle" id="ayuda_direccion">
+				<div class="flex-row">
+					<div class="relative">
+						<input name="direccion" type="text" class="input"
+							value="<%= data_entry ? data_entry.direccion : null %>"
+							placeholder="Pegá acá la dirección"
+							autocomplete="off"
+						>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle" id="ayuda_direccion"></i>
 						<ul class="mensajeAyuda ocultar" type="dots">
 							<strong><u>Pasos</u></strong>:<br>
 							<li>
@@ -61,37 +62,44 @@
 							<li>Copiala</li>
 							<li>Pegala en el casillero de la izquierda</li>
 						</ul>
-					</i>
-					<!-- Errores -->
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+						<!-- Errores -->
+						<i class="fas fa-times-circle ocultar">
+							<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
+					<div class="grow"></div>
 				</div>
 				<h3>Ingresá la dirección de la imagen grande</h3>
-				<div class="relative flex-row">
-					<input name="avatar" type="text" class="input"
-						value="<%= data_entry ? data_entry.avatar : null %>"
-						placeholder="Pegá acá la dirección"
-						autocomplete="off"
-					>
-					<i class="fas fa-question-circle" id="ayuda_avatar">
+				<div class="flex-row">
+					<div class="relative">
+						<input name="avatar" type="text" class="input"
+							value="<%= data_entry ? data_entry.avatar : null %>"
+							placeholder="Pegá acá la dirección"
+							autocomplete="off"
+						>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle" id="ayuda_avatar"></i>
 						<ul class="mensajeAyuda ocultar" type="dots">
 							<p><strong><u>Pasos</u></strong>:</p>
 							<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
 							<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
 							<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
 						</ul>
-					</i>
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+						<!-- Errores -->
+						<i class="fas fa-times-circle ocultar">
+							<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
+					<div class="grow"></div>
 				</div>
 				<h3>Ingresá el contenido del cuerpo de la página</h3>
-				<div class="relative flex-row">
-					<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
-					<i class="fas fa-question-circle" id="ayuda_contenido">
+				<div class="flex-row">
+					<div class="relative">
+						<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle" id="ayuda_contenido"></i>
 						<ul class="mensajeAyuda ocultar" type="dots">
 							<strong><u>Pasos</u></strong>:<br>
 							<li>
@@ -102,11 +110,13 @@
 							<li>Copialo</li>
 							<li>Pegalo en el casillero de la izquierda</li>
 						</ul>
-					</i>
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+						<!-- Errores -->
+						<i class="fas fa-times-circle ocultar">
+							<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
+					<div class="grow"></div>
 				</div>
 				<div id="resultado"><br></div>
 			</div>

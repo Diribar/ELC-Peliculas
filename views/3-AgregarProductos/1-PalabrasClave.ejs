@@ -16,13 +16,14 @@
 					value="<%= palabrasClave %>"
 					autofocus autocomplete="off"
 				>
-				<i class="fas fa-question-circle">
-					<span class="mensajeAyuda ocultar">
-						Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
-						Escribí de manera precisa todas las palabras que sepas.
-					</span>
-				</i>
+				<!-- Ayuda -->
+				<i class="fas fa-question-circle"></i>
+				<p class="mensajeAyuda ocultar">
+					Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
+					Escribí de manera precisa todas las palabras que sepas.
+				</p>
 			</div>
+			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores.palabrasClave ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.palabrasClave %></span>
 			</i>

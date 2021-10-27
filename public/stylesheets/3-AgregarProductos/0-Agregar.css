@@ -12,6 +12,7 @@
 #data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
 #data_entry input:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
+#data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; top:50%; transform: translateY(-50%); font-size: 1rem;}
@@ -24,9 +25,13 @@
 #data_entry .fa-times-circle:hover .mensajeError {display: inline;}
 
 /* Mensajes de ayuda */
-#data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px; z-index: 1;}
-#data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
+#data_entry .fa-question-circle, #data_entry .mensajeAyuda, #data_entry .mensajeAyuda::before 
+{position: absolute; transform: translateY(-50%); top: 50%;}
+#data_entry .fa-question-circle {font-size: 1rem; right: -20px;}
+#data_entry .mensajeAyuda {transform: translate(100%, -50%); right: -25px; max-width: 270px; width: max-content;}
+#data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.2rem; z-index: 1;}
 #data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding-top: 3px; padding-bottom: 3px;}
+#data_entry .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 
 /* Procesando información */
 #data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
