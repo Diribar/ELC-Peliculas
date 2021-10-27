@@ -46,7 +46,8 @@ let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Ru
 let rutaRudOpciones = require("./rutas_y_controladores/9-Productos/RutasRudOpciones");
 app.use("/usuarios", rutaUsuarios);
 app.use("/login", rutaLogin);
-app.use("/productos/agregar", rutaAgregarProducto);
+app.use("/agregar/productos", rutaAgregarProducto);
+app.use("/agregar", rutaAgregarProducto);
 app.use("/productos", rutaRudOpciones);
 app.use("/", rutaECC);
 

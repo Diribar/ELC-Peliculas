@@ -44,7 +44,7 @@ module.exports = {
 		let errores = await validarProductos.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.errores = errores;
-			return res.redirect("/productos/agregar/palabras-clave");
+			return res.redirect("/agregar/productos/palabras-clave");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.desambiguar = await buscar_x_PalClave.search(palabrasClave);
@@ -53,7 +53,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/productos/agregar/desambiguar");
+		return res.redirect("/agregar/productos/desambiguar");
 	},
 
 	desambiguarForm: (req, res) => {
@@ -67,7 +67,7 @@ module.exports = {
 			? req.cookies.desambiguar
 			: "";
 		if (!desambiguar)
-			return res.redirect("/productos/agregar/palabras-clave");
+			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Render del formulario
 		resultados = desambiguar.resultados;
 		coincidencias = resultados.length;
@@ -97,7 +97,7 @@ module.exports = {
 		});
 		//return res.send(req.session.datosDuros);
 		// 2. Redireccionar a la siguiente instancia
-		res.redirect("/productos/agregar/datos-duros");
+		res.redirect("/agregar/productos/datos-duros");
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -155,7 +155,7 @@ module.exports = {
 		if (errores.hay) {
 			// return res.send(errores);
 			req.session.errores = errores;
-			return res.redirect("/productos/agregar/copiar-fa");
+			return res.redirect("/agregar/productos/copiar-fa");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosDuros = await procesarProductos.producto_FA(copiarFA);
@@ -165,7 +165,7 @@ module.exports = {
 		//return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/productos/agregar/datos-duros");
+		return res.redirect("/agregar/productos/datos-duros");
 	},
 
 	datosDurosForm: async (req, res) => {
@@ -180,7 +180,7 @@ module.exports = {
 			? req.cookies.datosDuros
 			: "";
 		if (!datosDuros)
-			return res.redirect("/productos/agregar/palabras-clave");
+			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
@@ -208,7 +208,7 @@ module.exports = {
 		aux = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros;
-		if (!aux) return res.redirect("/productos/agregar/palabras-clave");
+		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
 		// return res.send(datosDuros);
@@ -269,7 +269,7 @@ module.exports = {
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
 			return res.send(errores)
-			return res.redirect("/productos/agregar/datos-duros");
+			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
@@ -280,7 +280,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/productos/agregar/datos-personalizados");
+		return res.redirect("/agregar/productos/datos-personalizados");
 	},
 
 	datosPersForm: async (req, res) => {
@@ -295,7 +295,7 @@ module.exports = {
 			: "";
 		//return res.send(datosPers)
 		if (!datosPers)
-			return res.redirect("/productos/agregar/palabras-clave");
+			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Render del formulario
 		let errores = req.session.errores ? req.session.errores : "";
 		//return res.send([datosPers.color, req.session.datosPers.color]);
@@ -315,7 +315,7 @@ module.exports = {
 		aux = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers;
-		if (!aux) return res.redirect("/productos/agregar/palabras-clave");
+		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.body };
 		req.session.datosPers = datosPers;
@@ -329,11 +329,11 @@ module.exports = {
 		if (errores.hay) {
 			req.session.errores = errores;
 			//return res.send(errores);
-			return res.redirect("/productos/agregar/datos-personalizados");
+			return res.redirect("/agregar/productos/datos-personalizados");
 		}
 		// 3. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/productos/agregar/resumen");
+		return res.redirect("/agregar/productos/resumen");
 	},
 
 	resumenForm: (req, res) => {
