@@ -9,11 +9,24 @@
 .wrap {flex-wrap: wrap;}
 
 /* Resultados */
-.resultadoExitoso {background-color: var(--verde-oscuro);}
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
+/* Todos */
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
+#data_entry .mensajeError, #data_entry .mensajeAyuda {font-weight: normal; width: max-content}
+/* Exito */
+.resultadoExitoso {background-color: var(--verde-oscuro);}
+.fa-check-circle {color: var(--verde-oscuro); cursor: default;}
+/* Neutro */
+.resultadoEnEspera {background-color: var(--gris-oscuro);}
+.fa-question-circle {color: var(--gris-oscuro);}
+.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+.mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
+/* Error */
+.resultadoInvalido {background-color: red;}
+.fa-times-circle {color: red;}
+.fa-times-circle:hover .mensajeError {display: inline;}
+.mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: red solid 2px;}
+.mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent red transparent transparent;}
 
 /* Otras */
 .absolute {position: absolute}
@@ -21,5 +34,4 @@
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
 .ocultar {display: none;}
-.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .bloqueado {background-color: var(--celeste-oscuro);}

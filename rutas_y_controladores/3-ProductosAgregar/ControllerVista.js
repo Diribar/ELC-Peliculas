@@ -479,7 +479,7 @@ let datosPersSelect = async () => {
 			colec: true,
 			mensajes: [
 				'"Centradas en la Fe Católica", significa que el rol de la Fe Católica es protagónico.',
-				'Si es cristiana pero no católica, se pone como Valores "Presentes en la Cultura".',
+				'Si es cristiana pero no católica, se pone como "Valores Presentes en la Cultura".',
 				'Para ponerla como "Valores Presentes en la Cultura", los buenos valores deben ser evidentes.',
 			],
 		},

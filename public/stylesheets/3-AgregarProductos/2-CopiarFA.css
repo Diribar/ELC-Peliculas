@@ -1,12 +1,13 @@
 /* Partes específicas del formulario */
 #data_entry {min-height: 410px;}
 #data_entry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;}
+#data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de error */
-#data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
 #data_entry #enColeccion .fa-times-circle, #data_entry #enColeccion .fa-check-circle 
 	{position: static; transform: none; margin-right: 5px; align-self: center;}
-#data_entry .mensajeError {left: 0px; top: 15px; max-width: 300px}
+#data_entry .mensajeAyuda {max-width: 300px;}
+#data_entry .mensajeError {max-width: 300px;}
 
 /* Sectores de Input */
 #data_entry #enColeccion {text-align: right;}

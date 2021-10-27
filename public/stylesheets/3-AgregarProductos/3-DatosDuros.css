@@ -21,23 +21,9 @@
 #data_entry .label-input .input-error select {padding: 0}
 #data_entry .label-input .input-error textarea {padding: 0px 5px; resize:vertical; max-height: 100px; min-height: 18px;}
 
-/* Mensaje de Ayuda */
-#data_entry .label-input .input-error .mensajeAyuda {top: -52px; left:50%; transform: translateX(-50%); width: 260px; color: var(--gris-claro);}
-#data_entry .label-input .input-error .mensajeAyuda::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%); 
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--gris-oscuro) transparent transparent transparent;
-}
-
-/* Errores */
-#data_entry .fa-times-circle {right: -20px; top: 50%; transform: translateY(-50%);}
-#data_entry .mensajeError {right: 0px; top: 15px; width: 200px}
-#data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}
+/* Mensajes */
+#data_entry .mensajeAyuda {max-width: 270px; right: -5px}
+#data_entry .mensajeError {max-width: 200px;}
 
 /* Imagen de la película */
 #data_entry #imagenPeli {width: 200px; height: 100%; position: relative;}
