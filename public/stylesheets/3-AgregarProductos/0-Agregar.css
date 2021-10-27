@@ -17,7 +17,6 @@
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {position: absolute; top:50%; transform: translateY(-50%); font-size: 1rem;}
 #data_entry .fa-times-circle {color: var(--rojo-oscuro);}
 #data_entry .fa-check-circle {color: var(--verde-oscuro); cursor: default;}
-.fas {z-index: 1;}
 #data_entry .mensajeError, #data_entry .mensajeAyuda 
 	{position: absolute; font-size: 1rem; z-index: 1; font-weight: normal; border-radius: 6px;}
 #data_entry .mensajeError {display: none; width: max-content; padding: 3px 7px; 
@@ -25,7 +24,7 @@
 #data_entry .fa-times-circle:hover .mensajeError {display: inline;}
 
 /* Mensajes de ayuda */
-#data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px;}
+#data_entry .fa-question-circle {font-size: 1em; margin-left: 2px; margin-right: 5px; z-index: 1;}
 #data_entry .mensajeAyuda {padding: 7px 10px; line-height: 1.25rem;}
 #data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding-top: 3px; padding-bottom: 3px;}
 
@@ -37,7 +36,7 @@
 #data_entry button {color: white; background-color: var(--gris-oscuro);}
 #data_entry button {padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #data_entry i {cursor: pointer;}
-#data_entry .fa-times-circle {z-index: 9;}
+#data_entry .fa-times-circle {z-index: 2;}
 
 /* Flechas */
 #data_entry #flechas i {font-size: 2rem;}

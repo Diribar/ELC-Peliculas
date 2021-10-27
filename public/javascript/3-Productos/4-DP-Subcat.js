@@ -1,10 +1,6 @@
 window.addEventListener("load", () => {
-	let categoria = document.querySelector(
-		"form #cuerpo select[name='categoria_id']"
-	);
-	let subcategorias = document.querySelector(
-		"form #cuerpo select[name='subcategoria_id']"
-	);
+	let categoria = document.querySelector("form select[name='categoria_id']");
+	let subcategorias = document.querySelector("form div#subcategoria_id");
 	let subcategoriasOption = document.querySelectorAll(
 		"form #cuerpo select[name='subcategoria_id'] option"
 	);
