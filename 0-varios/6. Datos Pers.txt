@@ -1,2 +1,1 @@
 Relación con la vida (Personaje histórico, Hecho histórico) --> Links a "agregar registros"
-Estandarizar en las vistas, los mensajes de error

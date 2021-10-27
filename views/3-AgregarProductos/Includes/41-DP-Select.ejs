@@ -24,6 +24,10 @@
 			<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[campo] %></span>
 			</i>
+			<!-- Relación con la vida -->
+			<% if (campo.includes("historico")) { %>
+				<a href="">L</a>
+			<% } %>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 		</div>
 	</section>
