@@ -47,7 +47,7 @@ let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/agregar/productos", rutaAgregarProducto);
 app.use("/productos", rutaRudOpciones);
-//app.use("/:id", rutaMiscelaneas);
+app.use("/", rutaMiscelaneas);
 app.use("/", rutaECC);
 
 // ************************ Errores *******************************

@@ -18,7 +18,8 @@
 #data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; border-radius: 6px; line-height: 1.2rem;}
 #data_entry .fa-question-circle, #data_entry .mensajeAyuda, #data_entry .mensajeAyuda::before,
 #data_entry .fa-times-circle, #data_entry .mensajeError, #data_entry .mensajeError::before,
-#data_entry .fa-check-circle
+#data_entry .fa-check-circle,
+#data_entry .link
 {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Mensajes de ayuda */

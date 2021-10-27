@@ -1,5 +1,4 @@
 // ************ Requires ************
-let funcionesVarias = require("../../funciones/varias/funcionesVarias");
 let validarUsuarios = require("../../funciones/varias/Usuarios-validar");
 
 // *********** Controlador ***********

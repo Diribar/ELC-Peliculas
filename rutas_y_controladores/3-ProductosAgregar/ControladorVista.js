@@ -554,6 +554,7 @@ let datosPersSelect = async () => {
 				"Podés ingresar un registro nuevo, haciendo click acá.",
 				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
 			],
+			link: "personaje-historico",
 		},
 		{
 			titulo: "Hecho histórico",
@@ -566,9 +567,10 @@ let datosPersSelect = async () => {
 			peli: true,
 			colec: true,
 			mensajes: [
-				"Podés ingresar un registro nuevo, haciendo click acá.",
+				"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
 			],
+			link: "hecho-historico",
 		},
 	];
 };
