@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
-	let revisarInput = (i, errores) => {
+	let accionesSiHayErrores = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
@@ -106,7 +106,7 @@ window.addEventListener("load", async () => {
 	if (statusInicial) {
 		errores = await validarDataEntry();
 		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? revisarInput(i, errores) : "";
+			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
 		statusInicial = false;
 	}
@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
 			errores = await validarDataEntry();
-			revisarInput(i, errores);
+			accionesSiHayErrores(i, errores);
 		});
 	}
 
@@ -125,7 +125,7 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			errores = await validarDataEntry();
 			for (let i = 0; i < inputs.length; i++) {
-				revisarInput(i, errores);
+				accionesSiHayErrores(i, errores);
 			}
 		} else if (button.innerHTML == "Verificar") {
 			e.preventDefault();
@@ -151,7 +151,7 @@ window.addEventListener("load", async () => {
 					"El código interno de esta " +
 					rubroAPI.selectedOptions[0].label +
 					" ya se encuentra en nuestra base de datos";
-				revisarInput(1, errores);
+				accionesSiHayErrores(1, errores);
 			} else {
 				button.innerHTML = "Avanzar";
 			}
