@@ -26,8 +26,6 @@
 		<% } else %>
 		<% if (codigo == "detalle") { %>
 			<%- include('Head', {titulo: "Detalle de Usuario"}) %>
-		<% } else %>
-		<% if (codigo == "editar") { %>
 		<% } %>
 	<% } %>
 	<!-- Agregar productos -->
@@ -66,6 +64,15 @@
 		<%- include('Head', {titulo}) %>
 		<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
 		<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
+	<% } %>
+	<!-- Miscelaneas -->
+	<% if (tema == "relacionConLaVida") { %>
+		<% if (codigo == "personaje") { %>
+			<%- include('Head', {titulo: "Agregar un Personaje Histórico"}) %>
+		<% } else %>
+		<% if (codigo == "hecho") { %>
+			<%- include('Head', {titulo: "Agregar un Hecho Histórico"}) %>
+		<% } %>
 	<% } %>
 </head>
 <body>
