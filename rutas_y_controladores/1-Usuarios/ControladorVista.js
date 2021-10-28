@@ -17,12 +17,8 @@ module.exports = {
 		tema = "usuario";
 		codigo = "login";
 		// 2. Data Entry propio y errores
-		data_entry = req.session.usuario
-			? { email: req.session.usuario.email }
-			: req.session.email
-			? { email: req.session.email }
-			: null;
-		let errores = req.session.errores ? req.session.errores : false;
+		data_entry = req.session.email ? { email: req.session.email } : null;
+		errores = req.session.errores ? req.session.errores : false;
 		// 3. Render del formulario
 		return res.render("Home", {
 			tema,
@@ -41,9 +37,9 @@ module.exports = {
 		let errores = await validarUsuarios.login(usuario);
 		if (errores.hay) {
 			req.session.errores = errores;
+			req.session.email = usuario.email;
 			return res.redirect("/usuarios/login");
 		}
-
 
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0;
