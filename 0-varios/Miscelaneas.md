@@ -1,5 +1,5 @@
 Aggiornar el circuito de Login
-	- Prescindir del Middleware de validaciones y reemplazarlo por una función
+	- Controles FE
 
 Aggiornar la vista Institucional - Nosotros
 	- Estándar con productos
