@@ -75,6 +75,12 @@
 			<%- include('Head', {titulo: "Agregar un Hecho Histórico"}) %>
 		<% } %>
 	<% } %>
+	<% if (tema == "institucional") { %>
+		<% if (codigo == "nosotros") { %>
+			<%- include('Head', {titulo: "Quiénes somos"}) %>
+			<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/Nosotros.css">
+		<% } %>
+	<% } %>
 </head>
 <body>
 	<header>
@@ -106,6 +112,9 @@
 				</section>
 			<% } else %>
 			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
+			<% if (tema=="institucional") { %>
+				<%- codigo == "nosotros" ? include("Nosotros") : "" %>
+			<% } %>
 			<!--****************************** FIN *******************************-->
 		</div>
 	</main>

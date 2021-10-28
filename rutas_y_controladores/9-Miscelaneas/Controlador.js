@@ -3,7 +3,12 @@ module.exports = {
 		return res.redirect("/productos");
 	},
 	nosotros: (req, res) => {
-		return res.render("1-Nosotros");
+		tema = "institucional";
+		codigo = "nosotros";
+		return res.render("Home", {
+			tema,
+			codigo,
+		});
 	},
 	personajeHistorico: (req, res) => {
 		tema = "relacionConLaVida";
