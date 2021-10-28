@@ -100,7 +100,6 @@
 			<!-- Si viene desde Ingreso Manual -->
 			<% if (!data_entry.avatar || data_entry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<!-- Rutina para todos los casos -->
-			<input name="ruta" type="text" value="./public/imagenes/4-Provisorio" class="ocultar">
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
 			<i class="fas fa-times-circle <%- data_entry.avatar && data_entry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>

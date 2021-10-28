@@ -1,9 +1,9 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let BD_usuarios = require(path.join(__dirname, "../../funciones/BD/usuarios"));
-let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
-let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
+let BD_usuarios = require("../../funciones/BD/usuarios");
+let BD_varios = require("../../funciones/BD/varios");
+let rutaImagenes = "../public/imagenes/2-Usuarios/";
 let funciones = require("../../funciones/varias/funcionesVarias");
 let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
 
@@ -118,7 +118,7 @@ module.exports = {
 		comentario = "La contraseña del mail " + email + " es: " + codigo;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
-		await BD_usuarios.altaMail(email, codigo);
+		await BD_usuarios.altaMailContrasena(email, codigo);
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
@@ -160,7 +160,7 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
-		await BD_usuarios.datosPerennes(req.session.usuario.id, req.body);
+		await BD_usuarios.agregarDatosPerennes(req.session.usuario.id, req.body);
 		// Actualizar el status de usuario
 		await BD_usuarios.actualizarStatusUsuario(req.session.usuario.id, 3);
 		// Actualizar los datos del usuario en la sesión
@@ -210,7 +210,9 @@ module.exports = {
 		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.file ? borrarArchivoDeImagen(req.file.filename) : null;
+			req.file
+				? borrarArchivoDeImagen(req.file.filename, req.file.path)
+				: null;
 			req.body.avatar = req.file
 				? req.file.filename
 				: "/imagenes/0-Base/Avatar genérico.png";
@@ -219,10 +221,14 @@ module.exports = {
 			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
-		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_usuarios.datosEditables(usuario.id, req.body);
+		// Grabar cambios en el registro
 		await BD_usuarios.actualizarStatusUsuario(usuario.id, 4);
-		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
+		req.body.avatar = req.file ? req.file.filename : "-";
+		req.session.usuario = await BD_usuarios.agregarDatosEditables(
+			usuario.id,
+			req.body
+		);
+		// Pendiente mover el archivo a la carpeta definitiva
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -269,7 +275,8 @@ module.exports = {
 };
 
 // ************ Funciones ************
-let borrarArchivoDeImagen = (n) => {
-	let archivoImagen = path.join(rutaImagenes, n);
-	n && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
+let borrarArchivoDeImagen = (archivo, ruta) => {
+	let archivoImagen = path.join(ruta, archivo);
+	console.log(archivoImagen)
+	archivo && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
 };

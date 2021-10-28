@@ -1,4 +1,6 @@
-Multer poner la ruta "provisorio" dentro del multer
+Usuario:
+	- Mover el archivo avatar a la carpeta definitiva (línea 231)
+	- Revisar que funcione bien el req.session
 
 Relación con la vida
 	- Hacer la vista
