@@ -6,6 +6,7 @@ let BD_varios = require("../../funciones/BD/varios");
 let rutaImagenes = "../public/imagenes/2-Usuarios/";
 let funciones = require("../../funciones/varias/funcionesVarias");
 let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
+let bcryptjs = require("bcryptjs");
 
 // *********** Controlador ***********
 module.exports = {
@@ -32,21 +33,27 @@ module.exports = {
 		// 1. Obtener los datos del usuario
 		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
 		//return res.send(usuario)
-		// 2. Si hay errores de validación, redireccionar
+		// 2. Averiguar si hay errores de validación
+		let errores = await validarUsuarios.login(req.body);
 		contrasena = usuario ? usuario.contrasena : "";
-		let errores = await validarUsuarios.login(req.body, contrasena);
+		errores.credencialesInvalidas =
+			!errores.email && !errores.contrasena
+				? !contrasena ||
+				  !bcryptjs.compareSync(req.body.contrasena, contrasena)
+				: false;
+		errores.credencialesInvalidas ? (errores.hay = true) : "";
+		// 3. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
 			req.session.email = req.body.email;
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// Si corresponde, actualizar el Status del Usuario
+		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_usuarios.actualizarStatusUsuario(usuario.id, 2);
-			usuario.status_registro_id =2;
+			usuario = await BD_usuarios.actualizarStatusUsuario(usuario.id, 2);
 		}
-		// Iniciar la sesión
+		// 5. Iniciar la sesión
 		req.session.usuario = usuario;
 		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
 		// Redireccionar
@@ -160,14 +167,12 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
-		await BD_usuarios.agregarDatosPerennes(req.session.usuario.id, req.body);
-		// Actualizar el status de usuario
-		await BD_usuarios.actualizarStatusUsuario(req.session.usuario.id, 3);
-		// Actualizar los datos del usuario en la sesión
-		req.session.usuario = await BD_usuarios.obtenerPorId(
-			req.session.usuario.id
+		req.body.status_registro_id = 3;
+		req.session.usuario = await BD_usuarios.agregarDatosPerennes(
+			req.session.usuario.id,
+			req.body
 		);
-		//return res.send(req.session.usuario)
+		return res.send(req.session.usuario);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -213,16 +218,13 @@ module.exports = {
 			req.file
 				? borrarArchivoDeImagen(req.file.filename, req.file.path)
 				: null;
-			req.body.avatar = req.file
-				? req.file.filename
-				: "/imagenes/0-Base/Avatar genérico.png";
 			req.session.data_entry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}
 		// Si no hubieron errores de validación...
-		// Grabar cambios en el registro
-		await BD_usuarios.actualizarStatusUsuario(usuario.id, 4);
+		// Grabar novedades en el usuario
+		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
 		req.session.usuario = await BD_usuarios.agregarDatosEditables(
 			usuario.id,
@@ -277,6 +279,6 @@ module.exports = {
 // ************ Funciones ************
 let borrarArchivoDeImagen = (archivo, ruta) => {
 	let archivoImagen = path.join(ruta, archivo);
-	console.log(archivoImagen)
+	console.log(archivoImagen);
 	archivo && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
 };
