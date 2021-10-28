@@ -1,4 +1,10 @@
 module.exports = {
+	home: (req, res) => {
+		return res.redirect("/productos");
+	},
+	nosotros: (req, res) => {
+		return res.render("1-Nosotros");
+	},
 	personajeHistorico: (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "personaje";
@@ -12,7 +18,7 @@ module.exports = {
 			data_entry,
 		});
 	},
-	
+
 	hechoHistorico: (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "hecho";

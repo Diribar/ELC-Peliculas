@@ -30,25 +30,23 @@ app.set("views", [
 	path.resolve(__dirname, "./views"),
 	path.resolve(__dirname, "./views/0-Partials"),
 	path.resolve(__dirname, "./views/0-Partials/menusHeader"),
-	path.resolve(__dirname, "./views/1-Institucional"),
-	path.resolve(__dirname, "./views/2-Usuarios"),
-	path.resolve(__dirname, "./views/3-AgregarProductos"),
-	path.resolve(__dirname, "./views/3-AgregarProductos/Includes"),
+	path.resolve(__dirname, "./views/1-Usuarios"),
+	path.resolve(__dirname, "./views/2-AgregarProductos"),
+	path.resolve(__dirname, "./views/2-AgregarProductos/Includes"),
+	path.resolve(__dirname, "./views/3-ElegirOpciones"),
 	path.resolve(__dirname, "./views/4-ProductosRUD"),
-	path.resolve(__dirname, "./views/5-ElegirOpciones"),
+	path.resolve(__dirname, "./views/9-Miscelaneas"),
 ]);
 
 // ************************* Rutas ********************************
-let rutaECC = require("./rutas_y_controladores/1-Institucional/Rutas");
-let rutaUsuarios = require("./rutas_y_controladores/2-Usuarios/Rutas");
-let rutaAgregarProducto = require("./rutas_y_controladores/3-ProductosAgregar/Rutas");
+let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
+let rutaAgregarProducto = require("./rutas_y_controladores/2-ProductosAgregar/Rutas");
 let rutaRudOpciones = require("./rutas_y_controladores/8-Productos/RutasRudOpciones");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/agregar/productos", rutaAgregarProducto);
 app.use("/productos", rutaRudOpciones);
 app.use("/", rutaMiscelaneas);
-app.use("/", rutaECC);
 
 // ************************ Errores *******************************
 //app.use((req,res) => {res.status(404).render('not found')})
