@@ -5,7 +5,7 @@ let BD_usuarios = require(path.join(__dirname, "../../funciones/BD/usuarios"));
 let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
 let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 let funciones = require("../../funciones/varias/funcionesVarias");
-let validarUsuarios = require("../../funciones/varias/Usuarios-validar");
+let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
 
 const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
@@ -13,26 +13,34 @@ const { validationResult } = require("express-validator");
 // *********** Controlador ***********
 module.exports = {
 	loginForm: (req, res) => {
-		data_entry = req.session.usuario
-			? { email: req.session.usuario.email }
-			: req.session.email
-			? { email: req.session.email }
-			: null;
+		// 1. Tema y Código
 		tema = "usuario";
 		codigo = "login";
+		// 2. Data Entry propio y errores
+		data_entry = req.session.email ? { email: req.session.email } : null;
+		errores = req.session.errores ? req.session.errores : false;
+		// 3. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			credencialesInvalidas: null,
 			data_entry,
+			errores,
 		});
 	},
 
 	loginGuardar: async (req, res) => {
-		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+		// 1. Obtener los datos del usuario
+		let usuario = req.body;
 		//return res.send(usuario)
-		// Verificar si hay errores en el data entry
+		// 2. Si hay errores de validación, redireccionar
+		let errores = await validarUsuarios.login(usuario);
+		if (errores.hay) {
+			req.session.errores = errores;
+			req.session.email = usuario.email;
+			return res.redirect("/usuarios/login");
+		}
+
 		let validaciones = validationResult(req);
 		let errorEnDataEntry = validaciones.errors.length > 0;
 		if (!errorEnDataEntry) {

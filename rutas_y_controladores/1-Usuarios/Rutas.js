@@ -7,13 +7,12 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloVisitas = require("../../middlewares/usuarios/soloVisitas");
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
-let validarLogin = require("../../middlewares/validarUserForms/validar0-Login");
 let uploadFile = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
-router.post("/login", soloVisitas, validarLogin, vista.loginGuardar);
+router.post("/login", soloVisitas, vista.loginGuardar);
 router.get("/logout", soloUsuarios, vista.logout);
 
 // Controladores de APIs
