@@ -15,7 +15,7 @@
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
 .fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-check-circle, .fa-question-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
+.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
 
 /* Exito */
 .resultadoExitoso {background-color: var(--verde-oscuro);}
