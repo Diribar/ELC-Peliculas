@@ -82,7 +82,7 @@ module.exports = {
 		return errores;
 	},
 
-	login: (login, datos) => {
+	login: (login, contrasena) => {
 		let errores = {};
 		errores.email = !login.email
 			? mailVacio
@@ -95,7 +95,7 @@ module.exports = {
 			? largoContrasena(login.contrasena)
 			: "";
 		errores.credencialesInvalidas = !errores.email && !errores.contrasena
-			? !datos || !bcryptjs.compareSync(login.contrasena, datos.contrasena)
+			? !contrasena || !bcryptjs.compareSync(login.contrasena, contrasena)
 			: false
 		errores.hay = hayErrores(errores);
 		return errores;

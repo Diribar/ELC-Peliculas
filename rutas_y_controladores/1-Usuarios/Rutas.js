@@ -10,15 +10,16 @@ let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 let uploadFile = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
+// Controladores de APIs
+router.get("/api/validarlogin", API.validarLogin);
+router.get("/api/validarmail", API.validarMail);
+router.get("/api/validarperennes", API.validarPerennes);
+router.get("/api/validareditables", API.validarEditables);
+
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
 router.post("/login", soloVisitas, vista.loginGuardar);
 router.get("/logout", soloUsuarios, vista.logout);
-
-// Controladores de APIs
-router.get("/api/validarmail", API.validarMail);
-router.get("/api/validarperennes", API.validarPerennes);
-router.get("/api/validareditables", API.validarEditables);
 
 // Controladores de Altas
 router.get('/altaredireccionar', vista.altaRedireccionar)

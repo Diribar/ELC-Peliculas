@@ -33,7 +33,8 @@ module.exports = {
 		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
 		//return res.send(usuario)
 		// 2. Si hay errores de validación, redireccionar
-		let errores = await validarUsuarios.login(req.body, usuario);
+		contrasena = usuario ? usuario.contrasena : "";
+		let errores = await validarUsuarios.login(req.body, contrasena);
 		if (errores.hay) {
 			req.session.errores = errores;
 			req.session.email = req.body.email;

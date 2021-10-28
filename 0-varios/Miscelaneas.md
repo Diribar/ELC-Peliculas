@@ -1,5 +1,4 @@
-Aggiornar el circuito de Login
-	- Controles FE
+Multer poner la ruta "provisorio" dentro del multer
 
 Relación con la vida
 	- Hacer la vista

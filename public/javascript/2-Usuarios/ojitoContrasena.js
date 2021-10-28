@@ -1,5 +1,5 @@
 window.addEventListener("load", () => {
-	let contrasena = document.getElementById('contrasena');
+	let contrasena = document.querySelector("input[name='contrasena']");
 	let ojito = document.getElementById('eye');
 	ojito.addEventListener("click", () => {
 		if (contrasena.type == "password") {

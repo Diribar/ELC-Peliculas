@@ -1,5 +1,83 @@
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Variables generales
-	let mail = document.querySelector("data_entry input[name='email']");
-	let contrasena = document.querySelector("data_entry input[name='contrasena']");
-})
+	let form = document.querySelector("#data_entry");
+	let inputs = document.querySelectorAll("#data_entry input");
+	let iconoError = document.querySelectorAll(".fa-times-circle");
+	let iconoOK = document.querySelectorAll(".fa-check-circle");
+	let mensajesError = document.querySelectorAll(".mensajeError");
+	let button = document.querySelector("form button[type='submit']");
+	let statusInicial = true;
+	let resultadoInvalido = document.querySelector(".resultadoInvalido");
+
+	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
+	let accionesSiHayErrores = (i, errores) => {
+		// Averiguar si hay un error
+		campo = inputs[i].name;
+		valor = encodeURIComponent(inputs[i].value);
+		mensaje = errores[campo];
+		mensajesError[i].innerHTML = mensaje;
+		// En caso de error
+		if (mensaje) {
+			iconoError[i].classList.remove("ocultar");
+			iconoOK[i].classList.add("ocultar");
+			button.classList.add("botonSinLink");
+		} else {
+			// En caso de que no haya error
+			iconoError[i].classList.add("ocultar");
+			iconoOK[i].classList.remove("ocultar");
+			sinErrores = true;
+			for (let j = 0; j < inputs.length; j++) {
+				iconoOK[j].classList.contains("ocultar") || !resultadoInvalido.classList.contains("ocultar")
+					? (sinErrores = false)
+					: "";
+			}
+			sinErrores
+				? button.classList.remove("botonSinLink")
+				: button.classList.add("botonSinLink");
+		}
+	};
+
+	// Revisa todos los inputs y devuelve todos los errores
+	let validarDataEntry = () => {
+		url = "?";
+		for (let i = 0; i < inputs.length; i++) {
+			i > 0 ? (url += "&") : "";
+			url += inputs[i].name;
+			url += "=";
+			url += encodeURIComponent(inputs[i].value);
+		}
+		return fetch("/usuarios/api/validarlogin/" + url).then((n) => n.json());
+	};
+
+	// Status inicial
+	if (statusInicial) {
+		errores = await validarDataEntry();
+		// Revisa los errores en los inputs
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
+		}
+		// Revisa si las credenciales son inválidas
+		errores.credencialesInvalidas
+			? resultadoInvalido.classList.remove("ocultar")
+			: resultadoInvalido.classList.add("ocultar");
+		statusInicial = false;
+	}
+
+	// Revisa el data-entry modificado y comunica si está OK o no
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("change", async () => {
+			errores = await validarDataEntry();
+			// Revisa si las credenciales son inválidas
+			errores.credencialesInvalidas
+				? resultadoInvalido.classList.remove("ocultar")
+				: resultadoInvalido.classList.add("ocultar");
+			// Realiza acciones sobre el input cambiado
+			accionesSiHayErrores(i, errores);
+		});
+	}
+
+	// Submit
+	form.addEventListener("submit", (e) => {
+		if (button.classList.contains("botonSinLink")) e.preventDefault();
+	});
+});
