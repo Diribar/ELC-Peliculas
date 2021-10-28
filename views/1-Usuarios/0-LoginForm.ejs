@@ -7,8 +7,8 @@
 		<div class="form-grupo">
 			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
 				value="<%= data_entry ? data_entry.email : null %>">
-			<% if (locals.errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
-			<% if (locals.errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
+			<% if (errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email.msg %> </span></i><% } %>
+			<% if (errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
 		</div>
 	</div>
 	<div class="label-input flex-row">  <!--Contraseña-->
@@ -18,15 +18,13 @@
 				value="<%= data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña"
 			>
 			<i class="fas fa-eye-slash" id="eye"></i>
-			<% if (locals.errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena.msg %> </span></i><% } %>
-			<% if (locals.errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
+			<% if (errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena.msg %> </span></i><% } %>
+			<% if (errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
 		</div>
 	</div>
 	<br>
 	<div class="flex-col">   <!--Credenciales Inválidas-->
-		<% if (credencialesInvalidas) { %>
-			<p class="criterio error">Credenciales inválidas</p>
-		<% } %>
+		<% if (errores && errores.credencialesInvalidas) { %><p class="criterio error">Credenciales inválidas</p><% } %>
 	</div>
 	<div id="buttons" class="flex-row"><!--Botones-->
 		<button type="submit" autofocus>Aceptar</button>

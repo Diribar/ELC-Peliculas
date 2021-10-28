@@ -7,9 +7,6 @@ let rutaImagenes = path.join(__dirname, "../public/imagenes/2-Usuarios/");
 let funciones = require("../../funciones/varias/funcionesVarias");
 let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
 
-const bcryptjs = require("bcryptjs");
-const { validationResult } = require("express-validator");
-
 // *********** Controlador ***********
 module.exports = {
 	loginForm: (req, res) => {
@@ -31,49 +28,23 @@ module.exports = {
 
 	loginGuardar: async (req, res) => {
 		// 1. Obtener los datos del usuario
-		let usuario = req.body;
+		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
 		//return res.send(usuario)
 		// 2. Si hay errores de validación, redireccionar
-		let errores = await validarUsuarios.login(usuario);
+		let errores = await validarUsuarios.login(usuario, req.body);
 		if (errores.hay) {
 			req.session.errores = errores;
 			req.session.email = usuario.email;
 			return res.redirect("/usuarios/login");
 		}
-
-		let validaciones = validationResult(req);
-		let errorEnDataEntry = validaciones.errors.length > 0;
-		if (!errorEnDataEntry) {
-			// Averiguar mail y contraseña en la BD
-			contrasenaOK = usuario
-				? bcryptjs.compareSync(req.body.contrasena, usuario.contrasena)
-				: false;
-			// Verificar si mail y/o usuario no existen en BD
-			var credencialesInvalidas = !usuario || !contrasenaOK;
-		}
-		// Redireccionar si existe algún error de validación
-		if (errorEnDataEntry || credencialesInvalidas) {
-			tema = "usuario";
-			codigo = "login";
-			return res.render("Home", {
-				tema,
-				codigo,
-				link: req.originalUrl,
-				errores: validaciones.mapped(),
-				credencialesInvalidas,
-				data_entry: req.body,
-			});
-		}
 		// Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
 			await BD_usuarios.actualizarStatusUsuario(usuario.id, 2);
-			usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+			usuario.status_registro_id =2;
 		}
-		// Grabar el mail del usuario en la cookie (configurado en 1 día)
-		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
-		// return res.send(usuario)
 		// Iniciar la sesión
 		req.session.usuario = usuario;
+		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

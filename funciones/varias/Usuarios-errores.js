@@ -1,16 +1,16 @@
 // **** Requires ***********
-const BD_usuarios = require("../BD/usuarios");
-const path = require("path");
+let BD_usuarios = require("../BD/usuarios");
+let path = require("path");
+let bcryptjs = require("bcryptjs");
 
 module.exports = {
 	registroMail: async (email) => {
-		cartelCampoVacio = "Necesitamos que escribas un correo electrónico";
 		let errores = {};
 		errores.email = !email
-			? cartelCampoVacio
+			? mailVacio
 			: formatoMail(email)
-			? "Debes escribir un formato de correo válido"
-			: (await averiguarSiYaEnBD(email))
+			? mailFormato
+			: (await BD_usuarios.AveriguarSiYaEnBD(email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 		errores.hay = hayErrores(errores);
@@ -81,17 +81,44 @@ module.exports = {
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
+
+	login: (datos, login) => {
+		let errores = {};
+		errores.email = !datos.email
+			? mailVacio
+			: formatoMail(datos.email)
+			? mailFormato
+			: "";
+		errores.contrasena = !datos.contrasena
+			? contrasenaVacia
+			: largoContrasena(datos.contrasena)
+			? largoContrasena(datos.contrasena)
+			: "";
+		errores.credencialesInvalidas =
+			!errores.email &&
+			!errores.contrasena &&
+			!bcryptjs.compareSync(login.contrasena, datos.contrasena);
+		errores.hay = hayErrores(errores);
+		return errores;
+	},
 };
 
-let averiguarSiYaEnBD = async (email) => {
-	// La respuesta se espera que sea 'true' or 'false'
-	if (!email) return false;
-	return await BD_usuarios.AveriguarSiYaEnBD(email);
-};
+let mailVacio = "Necesitamos que escribas un correo electrónico";
+let mailFormato = "Debes escribir un formato de correo válido";
+let contrasenaVacia = "Necesitamos que escribas una contraseña";
+
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
 };
+
+let largoContrasena = (dato, corto, largo) => {
+	return dato.length < corto || dato.length > largo
+		? "La contraseña debe tener de 6 a 12 caracteres"
+		: "";
+};
+
+
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El nombre debe ser más largo"
@@ -99,15 +126,18 @@ let longitud = (dato, corto, largo) => {
 		? "El nombre debe ser más corto"
 		: "";
 };
+
 let castellano = (dato) => {
 	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
 };
+
 let extension = (nombre) => {
 	if (!nombre) return false;
 	ext = path.extname(nombre);
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext) ? ext : false;
 };
+
 let hayErrores = (errores) => {
 	resultado = false;
 	valores = Object.values(errores);
@@ -116,6 +146,7 @@ let hayErrores = (errores) => {
 	}
 	return resultado;
 };
+
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
 	let ano = parseInt(dato.slice(0, 4));
