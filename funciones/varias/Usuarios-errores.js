@@ -3,10 +3,10 @@ const BD_usuarios = require("../BD/usuarios");
 const path = require("path");
 
 module.exports = {
-	mail: async (email) => {
+	registroMail: async (email) => {
 		cartelCampoVacio = "Necesitamos que escribas un correo electrónico";
 		let errores = {};
-		errores.email = campoVacio(email)
+		errores.email = !email
 			? cartelCampoVacio
 			: formatoMail(email)
 			? "Debes escribir un formato de correo válido"
@@ -91,9 +91,6 @@ let averiguarSiYaEnBD = async (email) => {
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
-};
-let campoVacio = (dato) => {
-	return dato == "" || dato == null || dato == undefined || dato == 0;
 };
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto

@@ -86,7 +86,7 @@
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema=="usuario") { %>
 				<section id="Form" class="flex-col">
-					<%- codigo == "login" ? include("LoginForm") : "" %>
+					<%- codigo == "login" ? include("0-LoginForm") : "" %>
 					<%- codigo == "mail" ? include("1-FormMail") : "" %>
 					<%- codigo == "perennes" ? include("2-FormPerennes") : "" %>
 					<%- codigo == "editables" ? include("3-FormEditables") : "" %>
