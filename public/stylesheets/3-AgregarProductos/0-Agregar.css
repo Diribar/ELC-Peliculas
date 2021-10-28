@@ -15,12 +15,8 @@
 #data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Todos los mensajes */
-#data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; border-radius: 6px; line-height: 1.2rem;}
-#data_entry .fa-question-circle, #data_entry .mensajeAyuda, #data_entry .mensajeAyuda::before,
-#data_entry .fa-times-circle, #data_entry .mensajeError, #data_entry .mensajeError::before,
-#data_entry .fa-check-circle,
-#data_entry .link
-{position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
+#data_entry .link {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {right: -20px;}
@@ -29,7 +25,6 @@
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
 #data_entry .fa-times-circle {z-index: 1;}
-#data_entry .mensajeError {left: 20px; padding: 3px 7px;}
 
 /* Procesando información */
 #data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
@@ -46,5 +41,4 @@
 #data_entry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 
 /* Submit button */
-#data_entry .botonSinLink {opacity: .2; border-color: transparent; cursor: default;}
 #data_entry button em {color: var(--amarillo-claro); background-color: var(--gris-oscuro);}

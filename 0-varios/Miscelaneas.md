@@ -1,8 +1,5 @@
 Aggiornar el circuito de Login
-	- Prescindir del Middleware de validaciones y reemplazarlo por una función
-
-Aggiornar la vista Institucional - Nosotros
-	- Estándar con productos
+	- Controles FE
 
 Relación con la vida
 	- Hacer la vista
