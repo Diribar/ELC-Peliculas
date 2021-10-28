@@ -41,17 +41,17 @@ module.exports = {
 			{ where: { id: id } }
 		);
 	},
-	altaMail: (emailDeUsuario, contrasena) => {
+	altaMailContrasena: (emailDeUsuario, contrasena) => {
 		//let contrasena = "1234567890";
 		return entidad.create({
 			email: emailDeUsuario,
 			contrasena: bcryptjs.hashSync(contrasena, 10),
 		});
 	},
-	datosPerennes: (id, datos) => {
+	agregarDatosPerennes: (id, datos) => {
 		return entidad.update({ ...datos }, { where: { id: id } });
 	},
-	datosEditables: (id, datos) => {
+	agregarDatosEditables: (id, datos) => {
 		return entidad.update({ ...datos }, { where: { id: id } });
 	},
 	obtenerAutorizadoFA: (id) => {

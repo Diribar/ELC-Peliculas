@@ -3,8 +3,7 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		//console.log(req.body.ruta);
-		cb(null, req.body.ruta);
+		cb(null, "./public/imagenes/4-Provisorio");
 	},
 	filename: (req, file, cb) => {
 		ext = path.extname(file.originalname);
