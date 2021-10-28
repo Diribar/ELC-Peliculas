@@ -1,5 +1,6 @@
 // ************ Requires ************
 let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
+let BD_usuarios = require("../../funciones/BD/usuarios");
 
 // *********** Controlador ***********
 module.exports = {
@@ -8,8 +9,13 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	validarLogin: (req, res) => {
-		let errores = validarUsuarios.login(req.query, null);
+	validarLogin: async (req, res) => {
+		usuario =
+			req.query.email && req.query.contrasena
+				? await BD_usuarios.obtenerPorMail(req.query.email)
+				: "";
+		contrasena = usuario ? usuario.contrasena : ""
+		let errores = validarUsuarios.login(req.query, contrasena);
 		return res.json(errores);
 	},
 

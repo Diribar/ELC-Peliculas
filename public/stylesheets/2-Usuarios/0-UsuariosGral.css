@@ -18,8 +18,7 @@
 /* Input del formulario */
 #Form form label {color: white; margin-right: 20px; }
 #Form form label {text-align: left;}
-#Form form .input {border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
-#Form form .input, #Form form select {width: 200px; height: 27px;}
+#Form form .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
 #Form form select {text-align: left;}
 #Form #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 

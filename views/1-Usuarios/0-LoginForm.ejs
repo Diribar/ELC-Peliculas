@@ -7,8 +7,11 @@
 		<div class="form-grupo">
 			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
 				value="<%= data_entry ? data_entry.email : null %>">
-			<% if (errores && errores.email) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.email %> </span></i><% } %>
-			<% if (errores && !errores.email) { %><i class="fas fa-check-circle"></i><% } %>
+			<!-- Errores -->
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
 		</div>
 	</div>
 	<div class="label-input flex-row">  <!--Contraseña-->
@@ -18,16 +21,19 @@
 				value="<%= data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña"
 			>
 			<i class="fas fa-eye-slash" id="eye"></i>
-			<% if (errores && errores.contrasena) { %><i class="fas fa-times-circle"><span class="mensajeError"><%= errores.contrasena %> </span></i><% } %>
-			<% if (errores && !errores.contrasena) { %><i class="fas fa-check-circle"></i><% } %>
+			<!-- Errores -->
+			<i class="fas fa-times-circle ocultar">
+				<span class="mensajeError"></span>
+			</i>
+			<i class="fas fa-check-circle ocultar"></i>
 		</div>
 	</div>
 	<br>
 	<div class="flex-col">   <!--Credenciales Inválidas-->
-		<% if (errores && errores.credencialesInvalidas) { %><p class="resultadoInvalido">Credenciales inválidas</p><% } %>
+		<p class="resultadoInvalido ocultar">Credenciales inválidas</p>
 	</div>
 	<div id="buttons" class="flex-row"><!--Botones-->
-		<button type="submit" autofocus>Aceptar</button>
+		<button class="botonSinLink" type="submit" autofocus>Aceptar</button>
 		<a href="/"><button type="button" id="cancelar">Cancelar</button></a>
 		<a href="#"><button type="button">Olvidé mi contraseña</button></a>
 	</div>
