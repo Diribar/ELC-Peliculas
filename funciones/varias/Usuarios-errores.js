@@ -82,22 +82,21 @@ module.exports = {
 		return errores;
 	},
 
-	login: (datos, login) => {
+	login: (login, datos) => {
 		let errores = {};
-		errores.email = !datos.email
+		errores.email = !login.email
 			? mailVacio
-			: formatoMail(datos.email)
+			: formatoMail(login.email)
 			? mailFormato
 			: "";
-		errores.contrasena = !datos.contrasena
+		errores.contrasena = !login.contrasena
 			? contrasenaVacia
-			: largoContrasena(datos.contrasena)
-			? largoContrasena(datos.contrasena)
+			: largoContrasena(login.contrasena)
+			? largoContrasena(login.contrasena)
 			: "";
-		errores.credencialesInvalidas =
-			!errores.email &&
-			!errores.contrasena &&
-			!bcryptjs.compareSync(login.contrasena, datos.contrasena);
+		errores.credencialesInvalidas = !errores.email && !errores.contrasena
+			? !datos || !bcryptjs.compareSync(login.contrasena, datos.contrasena)
+			: false
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
@@ -117,7 +116,6 @@ let largoContrasena = (dato, corto, largo) => {
 		? "La contraseña debe tener de 6 a 12 caracteres"
 		: "";
 };
-
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto

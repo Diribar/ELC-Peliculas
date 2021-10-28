@@ -5,7 +5,7 @@ header p a {font-family: Monotype Corsiva; font-size: 3rem; font-weight: bold;}
 header p a {color: var(--amarillo-claro); text-decoration: none;}
 
 /* Formato de Íconos */
-header i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
+header i, header .fa-question-circle {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
 header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
 header #usuario-icono #letraInicial {font-size: 1.6rem;}
 
