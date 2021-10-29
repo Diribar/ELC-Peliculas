@@ -1,8 +1,8 @@
 // **** Requires ***********
 let BD_usuarios = require("../BD/usuarios");
 let path = require("path");
-let bcryptjs = require("bcryptjs");
 
+// Objeto literal
 module.exports = {
 	registroMail: async (email) => {
 		let errores = {};
@@ -82,7 +82,7 @@ module.exports = {
 		return errores;
 	},
 
-	login: (login, contrasena) => {
+	login: (login) => {
 		let errores = {};
 		errores.email = !login.email
 			? mailVacio
@@ -94,9 +94,6 @@ module.exports = {
 			: largoContrasena(login.contrasena)
 			? largoContrasena(login.contrasena)
 			: "";
-		errores.credencialesInvalidas = !errores.email && !errores.contrasena
-			? !contrasena || !bcryptjs.compareSync(login.contrasena, contrasena)
-			: false
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
@@ -111,8 +108,8 @@ let formatoMail = (email) => {
 	return !formato.test(email);
 };
 
-let largoContrasena = (dato, corto, largo) => {
-	return dato.length < corto || dato.length > largo
+let largoContrasena = (dato) => {
+	return dato.length < 6 || dato.length > 12
 		? "La contraseña debe tener de 6 a 12 caracteres"
 		: "";
 };

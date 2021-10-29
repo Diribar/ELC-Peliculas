@@ -27,7 +27,8 @@ window.addEventListener("load", async () => {
 			iconoOK[i].classList.remove("ocultar");
 			sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar") || !resultadoInvalido.classList.contains("ocultar")
+				iconoOK[j].classList.contains("ocultar") ||
+				!resultadoInvalido.classList.contains("ocultar")
 					? (sinErrores = false)
 					: "";
 			}
@@ -56,21 +57,14 @@ window.addEventListener("load", async () => {
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
-		// Revisa si las credenciales son inválidas
-		errores.credencialesInvalidas
-			? resultadoInvalido.classList.remove("ocultar")
-			: resultadoInvalido.classList.add("ocultar");
 		statusInicial = false;
 	}
 
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("change", async () => {
+			resultadoInvalido.classList.add("ocultar");
 			errores = await validarDataEntry();
-			// Revisa si las credenciales son inválidas
-			errores.credencialesInvalidas
-				? resultadoInvalido.classList.remove("ocultar")
-				: resultadoInvalido.classList.add("ocultar");
 			// Realiza acciones sobre el input cambiado
 			accionesSiHayErrores(i, errores);
 		});
