@@ -7,6 +7,3 @@ Usuario:
 Relación con la vida
 	- Hacer la vista
 	- Hacer el controlador IN / OUT
-	- Actualizar las Bases de Datos
-		- SQL: día, mes, día del año
-		- VSC: novedades en SQL
