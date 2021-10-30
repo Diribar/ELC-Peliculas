@@ -17,29 +17,45 @@ module.exports = {
 		return errores;
 	},
 
+	login: (login) => {
+		let errores = {};
+		errores.email = !login.email
+			? mailVacio
+			: formatoMail(login.email)
+			? mailFormato
+			: "";
+		errores.contrasena = !login.contrasena
+			? contrasenaVacia
+			: largoContrasena(login.contrasena)
+			? largoContrasena(login.contrasena)
+			: "";
+		errores.hay = hayErrores(errores);
+		return errores;
+	},
+
 	perennes: (datos) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
-		errores.nombre = campoVacio(datos.nombre)
+		errores.nombre = !datos.nombre
 			? cartelCampoVacio
 			: longitud(datos.nombre, 2, 30)
 			? longitud(datos.nombre, 2, 30)
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: "";
-		errores.apellido = campoVacio(datos.apellido)
+		errores.apellido = !datos.apellido
 			? cartelCampoVacio
 			: longitud(datos.apellido, 2, 30)
 			? longitud(datos.apellido, 2, 30)
 			: castellano(datos.apellido)
 			? cartelCastellano
 			: "";
-		errores.sexo_id = campoVacio(datos.sexo_id)
+		errores.sexo_id = !datos.sexo_id
 			? "Necesitamos que elijas un valor"
 			: "";
-		errores.fecha_nacimiento = campoVacio(datos.fecha_nacimiento)
+		errores.fecha_nacimiento = !datos.fecha_nacimiento
 			? "Necesitamos que ingreses la fecha"
 			: fechaRazonable(datos.fecha_nacimiento)
 			? "¿Estás seguro de que introdujiste la fecha correcta?"
@@ -53,21 +69,21 @@ module.exports = {
 		cartelCastellano =
 			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
-		errores.apodo = campoVacio(datos.apodo)
+		errores.apodo = !datos.apodo
 			? cartelCampoVacio
 			: longitud(datos.apodo, 2, 30)
 			? longitud(datos.apodo, 2, 30)
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
-		errores.pais_id = campoVacio(datos.pais_id)
+		errores.pais_id = !datos.pais_id
 			? "Necesitamos que elijas un valor"
 			: "";
 
-		errores.estado_eclesial_id = campoVacio(datos.estado_eclesial_id)
+		errores.estado_eclesial_id = !datos.estado_eclesial_id
 			? "Necesitamos que elijas un valor"
 			: "";
-		errores.avatar = campoVacio(datos.avatar)
+		errores.avatar = !datos.avatar
 			? ""
 			: extension(datos.avatar)
 			? "Usaste un archivo con la extensión " +
@@ -77,22 +93,6 @@ module.exports = {
 			? "El archivo es de " +
 			  parseInt(datos.tamano / 10000) / 100 +
 			  " MB. Necesitamos que no supere 1 MB"
-			: "";
-		errores.hay = hayErrores(errores);
-		return errores;
-	},
-
-	login: (login) => {
-		let errores = {};
-		errores.email = !login.email
-			? mailVacio
-			: formatoMail(login.email)
-			? mailFormato
-			: "";
-		errores.contrasena = !login.contrasena
-			? contrasenaVacia
-			: largoContrasena(login.contrasena)
-			? largoContrasena(login.contrasena)
 			: "";
 		errores.hay = hayErrores(errores);
 		return errores;

@@ -48,9 +48,11 @@ module.exports = {
 			contrasena: bcryptjs.hashSync(contrasena, 10),
 		});
 	},
+
 	agregarDatosPerennes: (id, datos) => {
 		return entidad.update({ ...datos }, { where: { id: id } });
 	},
+
 	agregarDatosEditables: (id, datos) => {
 		return entidad.update({ ...datos }, { where: { id: id } });
 	},
