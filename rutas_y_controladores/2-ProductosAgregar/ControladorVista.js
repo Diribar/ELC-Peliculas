@@ -6,11 +6,11 @@ let requestPromise = require("request-promise");
 let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
 let validarProductos = require("../../funciones/Productos/3-PROD-errores");
-let BD_varios = require(path.join(__dirname, "../../funciones/BD/varios"));
+let BD_varios = require("../../funciones/BD/varios");
 
 // *********** Controlador ***********
 module.exports = {
-	palabrasClaveForm: (req, res) => {
+	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "palabrasClave";
@@ -20,7 +20,11 @@ module.exports = {
 			: req.cookies.palabrasClave
 			? req.cookies.palabrasClave
 			: "";
-		let errores = req.session.errores ? req.session.errores : false;
+		let errores = req.session.errores
+			? req.session.errores
+			: palabrasClave
+			? await validarProductos.palabrasClave(palabrasClave)
+			: "";
 		// 3. Render del formulario
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
@@ -545,7 +549,7 @@ let datosPersSelect = async () => {
 			campo: "personaje_historico_id",
 			tabla: "peliculas",
 			valores: await BD_varios.ObtenerTodos(
-				"personajes_historicos",
+				"historicos_personajes",
 				"nombre"
 			),
 			peli: true,
@@ -561,7 +565,7 @@ let datosPersSelect = async () => {
 			campo: "hecho_historico_id",
 			tabla: "peliculas",
 			valores: await BD_varios.ObtenerTodos(
-				"hechos_historicos",
+				"historicos_hechos",
 				"nombre"
 			),
 			peli: true,
@@ -601,7 +605,7 @@ let datosPersInput = () => {
 				"Nos interesa el link del primer capítulo.",
 				"Debe ser de un sitio seguro, sin virus.",
 				"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
-				"Para mayor seguridad, pedimos un link con una antigüedad mayor a 3 meses.",
+				"Pedimos un link con una antigüedad mayor a 3 meses.",
 				"En lo posible, elegí un link en castellano y de buena calidad.",
 			],
 		},

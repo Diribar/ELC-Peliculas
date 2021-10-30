@@ -227,18 +227,18 @@ CREATE TABLE motivos_para_borrar (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	productos BOOLEAN DEFAULT 0,
-	personajes_historicos BOOLEAN DEFAULT 0,
-	hechos_historicos BOOLEAN DEFAULT 0,
+	historicos_personajes BOOLEAN DEFAULT 0,
+	historicos_hechos BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO motivos_para_borrar (nombre, productos, personajes_historicos, hechos_historicos)
+INSERT INTO motivos_para_borrar (nombre, productos, historicos_personajes, historicos_hechos)
 VALUES
 ('Registro duplicado', 1, 1, 1),
 ('Sin relación con ninguna Película o Colección', 0, 1, 1),
 ('Spam dañino, no alineado con nuestro perfil', 1, 1, 1),
 ('Spam inocuo, no alineado con nuestro perfil', 1, 1, 1)
 ;
-CREATE TABLE personajes_historicos (
+CREATE TABLE historicos_personajes (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano INT UNSIGNED NOT NULL,
 	dia INT UNSIGNED NOT NULL,
@@ -265,10 +265,10 @@ CREATE TABLE personajes_historicos (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO personajes_historicos (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
+INSERT INTO historicos_personajes (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
 VALUES (1, 301, 22, 10, 'San Juan Pablo II', '2021-04-23', 1)
 ;
-CREATE TABLE hechos_historicos (
+CREATE TABLE historicos_hechos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano INT UNSIGNED NOT NULL,
 	dia INT UNSIGNED NOT NULL,
@@ -295,7 +295,7 @@ CREATE TABLE hechos_historicos (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO hechos_historicos (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
+INSERT INTO historicos_hechos (id, dia_del_ano, dia, mes, nombre, creada_en, creada_por_id)
 VALUES (1, 249, 1, 9, 'Guerra Mundial - 2a (segunda)', '2021-04-23', 1)
 ;
 CREATE TABLE epocas_estreno (
@@ -358,8 +358,8 @@ CREATE TABLE COLECCIONES (
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
@@ -460,8 +460,8 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES hechos_historicos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),

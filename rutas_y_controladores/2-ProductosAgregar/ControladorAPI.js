@@ -50,6 +50,7 @@ module.exports = {
 		return res.json(FA_id);
 	},
 
+	// Vista (copiarFA)
 	obtenerELC_id: async (req, res) => {
 		let { rubroAPI, campo, id } = req.query;
 		ELC_id = await procesarProductos.obtenerELC_id({ rubroAPI, campo, id });
