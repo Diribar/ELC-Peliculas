@@ -260,7 +260,8 @@ CREATE TABLE funcion_social_grupo (
 	nombre VARCHAR(100) NOT NULL,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATE DEFAULT '2021-04-23',
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO funcion_social_grupo (orden, nombre)
 VALUES (1, 'laico'), (2, 'orden sagrado');
@@ -293,10 +294,10 @@ VALUES
 ;
 CREATE TABLE mes (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	mes VARCHAR(20) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO mes (mes)
+INSERT INTO mes (nombre)
 VALUES ('Enero'), ('Febrero'), ('Marzo'), ('Abril'), ('Mayo'), ('Junio'), ('Julio'), ('Agosto'), ('Septiembre'), ('Octubre'), ('Noviembre'), ('Diciembre');
 CREATE TABLE dia_del_ano (
 	id INT UNSIGNED NOT NULL,
@@ -313,6 +314,7 @@ CREATE TABLE historicos_personajes (
 	status_canonizacion_id INT UNSIGNED NOT NULL,
 	funcion_social_id INT UNSIGNED NOT NULL,
 	dia_del_ano_id INT UNSIGNED NOT NULL,
+	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATE DEFAULT '2021-04-23',
 	editada_por_id INT UNSIGNED NULL,
