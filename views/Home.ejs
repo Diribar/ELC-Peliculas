@@ -68,13 +68,11 @@
 	<% } %>
 	<!-- Miscelaneas -->
 	<% if (tema == "relacionConLaVida") { %>
-		<% if (codigo == "personaje") { %>
-			<%- include('Head', {titulo: "Agregar un Personaje Histórico"}) %>
-		<% } else %>
-		<% if (codigo == "hecho") { %>
-			<%- include('Head', {titulo: "Agregar un Hecho Histórico"}) %>
+		<%- include('Head', {titulo: "PEL-Agregar"}) %>
+		<%- include('Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
+		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RelacionConLaVida.css">
+
 		<% } %>
-	<% } %>
 	<% if (tema == "institucional") { %>
 		<% if (codigo == "nosotros") { %>
 			<%- include('Head', {titulo: "Quiénes somos"}) %>
@@ -111,6 +109,11 @@
 					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
 				</section>
 			<% } else %>
+			<% if (tema=="relacionConLaVida") { %>
+				<section class="cuerpo flex-col grow">
+					<%- include("RelacionConLaVida") %>
+				</section>
+			<% } %>
 			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
 			<% if (tema=="institucional") { %>
 				<%- codigo == "nosotros" ? include("Nosotros") : "" %>

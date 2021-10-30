@@ -1,7 +1,12 @@
+// ************ Requires ************
+let validarRV = require("../../funciones/varias/RelacVida-errores");
+
+// *********** Controlador ***********
 module.exports = {
 	home: (req, res) => {
 		return res.redirect("/productos");
 	},
+
 	nosotros: (req, res) => {
 		tema = "institucional";
 		codigo = "nosotros";
@@ -10,31 +15,43 @@ module.exports = {
 			codigo,
 		});
 	},
-	personajeHistorico: (req, res) => {
+
+	personajeHistoricoForm: async (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "personaje";
 		data_entry = req.session.personajeHistorico
 			? req.session.personajeHistorico
-			: null;
+			: "";
+		let errores = req.session.errores
+			? req.session.errores
+			: data_entry
+			? await validarRV.personaje(data_entry)
+			: "";
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			data_entry,
+			errores,
 		});
 	},
 
-	hechoHistorico: (req, res) => {
+	personajeHistoricoGrabar: (req, res) => {},
+
+	hechoHistoricoForm: (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "hecho";
 		data_entry = req.session.hechoHistorico
 			? req.session.hechoHistorico
-			: null;
+			: "";
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			data_entry,
+			errores,
 		});
 	},
+
+	hechoHistoricoGrabar: (req, res) => {},
 };

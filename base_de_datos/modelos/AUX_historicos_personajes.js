@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "personajes_historicos";
+	const alias = "historicos_personajes";
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
 		dia_del_ano: { type: dt.INTEGER },
@@ -22,7 +22,7 @@ module.exports = (sequelize, dt) => {
 		borrada_motivo_comentario: { type: dt.STRING(500) },
 	};
 	const config = {
-		tableName: "personajes_historicos",
+		tableName: "historicos_personajes",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);

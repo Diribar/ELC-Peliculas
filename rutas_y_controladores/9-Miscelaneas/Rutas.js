@@ -1,13 +1,23 @@
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
-const controlador = require("./Controlador");
+let API = require("./ControladorAPI");
+let vista = require("./ControladorVista");
 
 // Controladores *******************************************
-router.get("/", controlador.home);
-router.get("/nosotros", controlador.nosotros);
-router.get("/agregar/personaje-historico", controlador.personajeHistorico);
-router.get("/agregar/hecho-historico", controlador.hechoHistorico);
+// Controladores de APIs
+router.get("/agregar/api/personaje/", API.validarPersonaje);
+router.get("/agregar/api/hecho/", API.validarHecho);
+
+// Controladores de vistas
+// Institucional
+router.get("/", vista.home);
+router.get("/nosotros", vista.nosotros);
+// Personajes y Hechos históricos
+router.get("/agregar/personaje-historico", vista.personajeHistoricoForm);
+router.put("/agregar/personaje-historico", vista.personajeHistoricoGrabar);
+router.get("/agregar/hecho-historico", vista.hechoHistoricoForm);
+router.put("/agregar/hecho-historico", vista.hechoHistoricoGrabar);
 
 // Exportarlo **********************************************
 module.exports = router;

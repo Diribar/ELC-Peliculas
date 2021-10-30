@@ -1,0 +1,118 @@
+<% rubro = codigo == "personaje" ? "Personaje Histórico" : "Hecho Histórico" %>
+<h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
+<form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
+	<!-- Datos -->
+	<section id="cuerpo">
+		<!--Primera columna-->
+		<div class="flex-col">
+			<!-- Breve descripción -->
+			<div class="flex-col campo">
+				<!-- Título del campo -->
+				<div class="flex-row">
+					<div class="tituloCampo" style="position: relative;">
+						<h3>Breve descripción</h3>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle"></i>
+						<ul type="dots" class="mensajeAyuda ocultar">
+							<li>La actividad, el cargo o el reconocimiento por el que la persona es más conocida</li>
+						</ul>
+					</div>
+					<div></div>
+				</div>
+				<!-- Valores del campo -->
+				<div>
+					<select name="descripcion"></select>
+						<option value="" class="ocultar" <% if (!data_entry.mes) { %>selected<% } %>>Elegí</option>
+
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.nombre %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+			</div>
+
+			<!-- Nombre -->
+			<div class="flex-col campo">
+				<!-- Título del campo -->
+				<div class="flex-row">
+					<div class="tituloCampo" style="position: relative;">
+						<h3>Nombre</h3>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle"></i>
+						<ul type="dots" class="mensajeAyuda ocultar">
+							<li>El nombre sin prefijo (San, Santa, Madre, Don)</li>
+							<li>Si la persona cambió su nombre, se usa el más conocido</li>
+						</ul>
+					</div>
+					<div></div>
+				</div>
+				<!-- Valores del campo -->
+				<div>
+					<input type="text" name="nombre" class="input" autofocus autocomplete="off">
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.nombre %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+			</div>
+			<!-- Fecha más representativa -->
+			<div class="flex-col campo">
+				<!-- Título del campo -->
+				<div class="flex-row">
+					<div class="tituloCampo" style="position: relative;">
+						<h3>Fecha más representativa</h3>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle"></i>
+						<ul type="dots" class="mensajeAyuda ocultar">
+							<li>Generalmente, se usa la fecha en que se lo recuerda.</li>
+							<li>Para los santos o beatos, es la fecha en el santoral.</li>
+							<li>Para los demás, suele ser la fecha de su muerte.</li>
+						</ul>
+					</div>
+				</div>
+				<!-- Valores del campo -->
+				<div class="flex-col" id="valores">
+					<!-- Mes -->
+					<div class="flex-row" style="align-items: center;">
+						<label style="width: 40px;">Mes:</label>
+						<select name="mes" class="input">
+							<option value="" class="ocultar" <% if (!data_entry.mes) { %>selected<% } %>>Elegí</option>
+		
+						</select>
+					</div>
+					<!-- Día -->
+					<div class="flex-row" style="align-items: center;">
+						<label style="width: 40px;">Día:</label>
+						<select name="dia" class="input">
+							<option value="" class="ocultar" <% if (!data_entry.dia) { %>selected<% } %>>Elegí</option>
+		
+						</select>
+					</div>
+					<!-- Fecha desconocida -->
+					<div class="flex-row">
+						<input type="checkbox" name="fechaDesconocida" style="margin-right: 5px;">
+						<p>Fecha desconocida</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Columna del medio-->
+		<div id="columnaMedio">
+		</div>
+		<!--Segunda columna-->
+		<div class="flex-col" style="width: 180px;">
+			<h3>Nombres con esa fecha</h3>
+			<p>Destildalos para estar seguro de no repetirlos</p>
+			<div id="posiblesDuplicados">
+
+			</div>
+		</div>
+	</section>
+	<!-- Flechas y Botón -->
+	<section id="flechas" class="flex-row space-evenly">
+		<button type="button">Cancelar</button>
+		<button type="submit" class="botonSinLink">Confirmar</button>
+	</section>
+</form>
