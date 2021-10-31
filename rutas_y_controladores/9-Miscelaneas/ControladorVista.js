@@ -36,10 +36,6 @@ module.exports = {
 			"breve_descripcion",
 			"nombre"
 		);
-		laico = breve_descripcion.filter((m) => m.grupo_id == 1);
-		os = breve_descripcion.filter((m) => m.grupo_id == 2);
-		// Canonización
-		sc = await BD_varios.ObtenerTodos("status_canonizacion", "orden");
 		// Render
 		return res.render("Home", {
 			tema,
@@ -49,9 +45,6 @@ module.exports = {
 			errores,
 			meses,
 			dias_del_ano,
-			laico,
-			os,
-			sc,
 		});
 	},
 
