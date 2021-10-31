@@ -7,4 +7,3 @@ Usuario:
 Relación con la vida
 	- Hacer la vista
 	- Hacer el controlador IN / OUT
-	- Hacer las Bases de Datos
