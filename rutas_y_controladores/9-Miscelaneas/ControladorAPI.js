@@ -6,4 +6,6 @@ module.exports = {
 	validarPersonaje: (req, res) => {},
 
 	validarHecho: (req, res) => {},
+
+	
 };
