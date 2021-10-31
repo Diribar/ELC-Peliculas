@@ -238,6 +238,7 @@ VALUES
 ('Spam dañino, no alineado con nuestro perfil', 1, 1, 1),
 ('Spam inocuo, no alineado con nuestro perfil', 1, 1, 1)
 ;
+
 CREATE TABLE status_canonizacion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
@@ -254,7 +255,7 @@ VALUES
 (3, 'venerable'), 
 (4, 'beato/a'), (5, 'santo/a'), 
 (6, 'santo/a y doctor/a de la Iglesia');
-CREATE TABLE funcion_social_grupo (
+CREATE TABLE breve_descripcion_grupo (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
@@ -263,34 +264,34 @@ CREATE TABLE funcion_social_grupo (
 	PRIMARY KEY (id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO funcion_social_grupo (orden, nombre)
+INSERT INTO breve_descripcion_grupo (orden, nombre)
 VALUES (1, 'laico'), (2, 'orden sagrado');
-CREATE TABLE funcion_social (
+CREATE TABLE breve_descripcion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
 	grupo_id INT UNSIGNED NOT NULL, 
-	orden INT UNSIGNED NOT NULL, 
+	orden INT UNSIGNED NULL, 
 	nombre VARCHAR(100) NOT NULL,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATE DEFAULT '2021-04-23',
 	PRIMARY KEY (id),
-	FOREIGN KEY (grupo_id) REFERENCES funcion_social_grupo(id),
+	FOREIGN KEY (grupo_id) REFERENCES breve_descripcion_grupo(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO funcion_social (grupo_id, orden, id, nombre)
+INSERT INTO breve_descripcion (grupo_id, id, nombre)
 VALUES 
-(1, 1, 1, 'padre/madre de familia'), 
-(1, 2, 2, 'empresario/a'), 
-(1, 3, 3, 'político/a'), 
-(1, 4, 4, 'médico'),
-(1, 5, 5, 'laico en el mundo'),
-(1, 6, 6, 'líder civil'),
-(1, 7, 7, 'líder civil y mártir'),
-(2, 1, 8, 'mártir por fidelidad a Cristo en la fe Católica'),
-(2, 2, 9, 'religioso/a'), 
-(2, 3, 10, 'sacerdote'), 
-(2, 4, 11, 'obispo/cardenal'),
-(2, 5, 12, 'papa'),
-(2, 6, 13, 'religioso/a de otras creencias (no católicas)')
+(1, 1, 'Docente'), 
+(1, 2, 'Accion social'), 
+(1, 3, 'Político/a'), 
+(1, 4, 'Profesional'),
+(1, 13, 'Religioso/a de otra fe (no católica)'),
+(1, 6, 'Líder civil'),
+(1, 7, 'Deportista'),
+(2, 8, 'Mártir por fidelidad a su fe católica'),
+(2, 5, 'Laico santo en el mundo'),
+(2, 9, 'Religioso/a, fraile/monja'), 
+(2, 10, 'Sacerdote'), 
+(2, 11, 'Obispo/cardenal'),
+(2, 12, 'Papa')
 ;
 CREATE TABLE meses (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -313,7 +314,7 @@ CREATE TABLE historicos_personajes (
 	dia_del_ano_id INT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	status_canonizacion_id INT UNSIGNED NOT NULL,
-	funcion_social_id INT UNSIGNED NOT NULL,
+	breve_descripcion_id INT UNSIGNED NOT NULL,
 	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATE DEFAULT '2021-04-23',
@@ -330,7 +331,7 @@ CREATE TABLE historicos_personajes (
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (status_canonizacion_id) REFERENCES status_canonizacion(id),
-	FOREIGN KEY (funcion_social_id) REFERENCES funcion_social(id),
+	FOREIGN KEY (breve_descripcion_id) REFERENCES breve_descripcion(id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
@@ -338,7 +339,7 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO historicos_personajes (id, status_canonizacion_id, funcion_social_id, nombre, dia_del_ano_id)
+INSERT INTO historicos_personajes (id, status_canonizacion_id, breve_descripcion_id, nombre, dia_del_ano_id)
 VALUES (1, 5, 12, 'San Juan Pablo II', 296)
 ;
 CREATE TABLE historicos_hechos (
@@ -370,6 +371,7 @@ CREATE TABLE historicos_hechos (
 INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre, creada_en, creada_por_id)
 VALUES (1, 249, 'Guerra Mundial - 2a (segunda)', '2021-04-23', 1)
 ;
+
 CREATE TABLE epocas_estreno (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
