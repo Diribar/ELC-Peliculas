@@ -1,5 +1,6 @@
 // ************ Requires ************
 let validarRV = require("../../funciones/varias/RelacVida-errores");
+let BD_varios = require("../../funciones/BD/varios");
 
 // *********** Controlador ***********
 module.exports = {
@@ -27,12 +28,30 @@ module.exports = {
 			: data_entry
 			? await validarRV.personaje(data_entry)
 			: "";
+		// Meses y Días del año
+		meses = await BD_varios.ObtenerTodos("meses", "id");
+		dias_del_ano = await BD_varios.ObtenerTodos("dias_del_ano", "id");
+		// Breve Descripción
+		breve_descripcion = await BD_varios.ObtenerTodos(
+			"breve_descripcion",
+			"nombre"
+		);
+		laico = breve_descripcion.filter((m) => m.grupo_id == 1);
+		os = breve_descripcion.filter((m) => m.grupo_id == 2);
+		// Canonización
+		sc = await BD_varios.ObtenerTodos("status_canonizacion", "orden");
+		// Render
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			data_entry,
 			errores,
+			meses,
+			dias_del_ano,
+			laico,
+			os,
+			sc,
 		});
 	},
 

@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		creada_en: { type: dt.DATE },
 	};
 	const config = {
-		tableName: "status_canonizacion ",
+		tableName: "status_canonizacion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

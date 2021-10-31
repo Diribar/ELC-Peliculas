@@ -56,7 +56,7 @@
 							<option value="" selected class="ocultar">Elejí un país</option>
 							<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 							<% for (continente of continentes) { %>
-								<optgroup label="<%= continente %> ">
+								<optgroup label="<%= continente %>">
 									<% for (n of paises.filter(m => m.continente == continente)) { %>
 										<option value="<%= n.id %>"><%= n.nombre %></option>
 									<% } %>	
