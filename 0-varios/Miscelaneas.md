@@ -1,11 +1,6 @@
-Datos Personalizados
-	- El link a "Agregar Personaje/Hecho" es con req.query para perservar el data entry de DP
-
 Relación con la vida
-	- Cuando se recibe un req.query,
-		- Grabar los datos de DP en req.session.datosPers/cookies
-		- Redirigir a ese mismo link, sin el req.query, para limpiar el URL
 	- Validar si el nombre ya existe en la BD
+	- Al guardar y redirigir a DP, agregar a session.DP el id del registro de RV
 
 Usuario:
 	- Mover el archivo avatar a la carpeta definitiva (línea 231)
