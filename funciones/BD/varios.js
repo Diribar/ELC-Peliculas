@@ -61,6 +61,14 @@ module.exports = {
 		return resultado;
 	},
 
+	agregarPersonajeHistórico: (datos) => {
+		return entidad.create({
+			nombre: ,
+			dia_del_ano_id: ,
+			creada_por_id:,	
+		});
+	},
+
 	// Sin uso aún
 	ObtenerPorIdConInclude: (entidad, id, include) => {
 		return db[entidad].findByPk(id, {

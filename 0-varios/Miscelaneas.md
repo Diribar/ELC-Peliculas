@@ -1,11 +1,5 @@
 Relación con la vida
-	- Hacer el controlador IN / OUT
-	- Función errores:
-		- Nombre: vacío, castellano, largo
-		- Desconocida
-			- Mes: vacío
-			- Día: vacío y comp. vs máximo
-		- Duplicados
+	- Hacer el controlador OUT
 
 Productos
 	- Productora: 

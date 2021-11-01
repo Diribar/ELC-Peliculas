@@ -17,6 +17,14 @@ module.exports = {
 		if (datos.desconocida == "false") {
 			errores.mes_id = !datos.mes_id ? cartelVacioSelect : "";
 			errores.dia = !datos.dia ? cartelVacioSelect : "";
+			if (!errores.dia && !errores.mes_id) {
+				mes = datos.mes_id;
+				dia = datos.dia;
+				(mes == 2 && dia > 29) ||
+				((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
+					? (errores.dia = cartelSupera)
+					: "";
+			}
 			casosCampo = Object.keys(datos);
 			casosValores = Object.values(datos);
 			for (i = 4; i < casosCampo.length; i++) {
@@ -35,6 +43,7 @@ module.exports = {
 
 cartelCampoVacio = "Necesitamos que completes este campo";
 cartelVacioSelect = "Necesitamos que elijas un valor";
+cartelSupera = "El número de día y el mes elegidos son incompatibles";
 cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 

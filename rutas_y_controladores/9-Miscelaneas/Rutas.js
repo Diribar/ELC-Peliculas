@@ -16,9 +16,9 @@ router.get("/", vista.home);
 router.get("/nosotros", vista.nosotros);
 // Personajes y Hechos históricos
 router.get("/agregar/personaje-historico", vista.personajeHistoricoForm);
-router.put("/agregar/personaje-historico", vista.personajeHistoricoGrabar);
+router.post("/agregar/personaje-historico", vista.personajeHistoricoGrabar);
 router.get("/agregar/hecho-historico", vista.hechoHistoricoForm);
-router.put("/agregar/hecho-historico", vista.hechoHistoricoGrabar);
+router.post("/agregar/hecho-historico", vista.hechoHistoricoGrabar);
 
 // Exportarlo **********************************************
 module.exports = router;

@@ -43,7 +43,9 @@ module.exports = {
 		});
 	},
 
-	personajeHistoricoGrabar: (req, res) => {},
+	personajeHistoricoGrabar: (req, res) => {
+		return res.send("personajeHistoricoGrabar");
+	},
 
 	hechoHistoricoForm: (req, res) => {
 		tema = "relacionConLaVida";
@@ -60,5 +62,7 @@ module.exports = {
 		});
 	},
 
-	hechoHistoricoGrabar: (req, res) => {},
+	hechoHistoricoGrabar: (req, res) => {
+		return res.send("hechoHistoricoGrabar");
+	},
 };
