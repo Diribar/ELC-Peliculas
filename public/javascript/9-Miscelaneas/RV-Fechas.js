@@ -34,13 +34,26 @@ window.addEventListener("load", () => {
 		}
 	};
 	// Posibles duplicados
-	enBD_conEsaFecha = async (mes_id, dia) => {
+	personajesConEsaFecha = async (mes_id, dia) => {
 		// Obtener los casos
-		url = "/agregar/personaje/api/enBD/?mes_id=" + mes_id + "&dia=" + dia;
+		url = "/agregar/api/personajesFecha/?mes_id=" + mes_id + "&dia=" + dia;
 		casos = await fetch(url).then((n) => n.json());
-		console.log(casos)
-		// Si hay, mostrarlos
 		// Si no hay, "no hay casos"
+		if (!casos.length) {
+			posiblesDuplicados.innerHTML = "¡No hay otros casos!";
+			posiblesDuplicados.classList.add("sinCasos");
+		} else {
+			// Si hay, mostrarlos
+			posiblesDuplicados.innerHTML = "";
+			posiblesDuplicados.classList.remove("sinCasos");
+			for (let i = 0; i < casos.length; i++) {
+				posiblesDuplicados.innerHTML +=
+					'<li type="none">' +
+					'<input type="checkbox" name="caso'+i+'" id="caso'+i+'" checked>' +
+					'<label for="caso'+i+'">'+casos[i]+'</label>' +
+					'</li>'
+			}
+		}
 	};
 
 	// ADD EVENT *******************************
@@ -48,7 +61,10 @@ window.addEventListener("load", () => {
 	if (mes.value != "") cambio();
 	mes.addEventListener("change", () => {
 		cambio();
-		if (mes.value && dia.value) enBD_conEsaFecha(mes.value, dia.value);
+		if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
+	});
+	dia.addEventListener("change", () => {
+		if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
 	});
 
 	// Detectar cambios en Fecha desconocida
