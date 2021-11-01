@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		id: { type: dt.INTEGER, primaryKey: true },
 		dia_del_ano_id: { type: dt.INTEGER },
-		nombre: { type: dt.STRING(20) },
+		nombre: { type: dt.STRING(30) },
 		dia_del_ano_id: { type: dt.INTEGER },
 		cant_productos: { type: dt.INTEGER },
 		creada_por_id: { type: dt.INTEGER },
