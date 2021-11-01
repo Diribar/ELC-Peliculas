@@ -258,7 +258,7 @@ VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 
 CREATE TABLE historicos_personajes (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(30) NOT NULL,
 	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATE DEFAULT '2021-04-23',
@@ -282,12 +282,14 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id)
-VALUES (1, 'San Juan Pablo II', 296)
+VALUES 
+(1, 'Juan Pablo II', 296),
+(2, 'Otro', 296)
 ;
 CREATE TABLE historicos_hechos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
+	nombre VARCHAR(30) NOT NULL,
 	cant_productos INT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATE NOT NULL,

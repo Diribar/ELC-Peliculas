@@ -21,7 +21,7 @@
 					<div></div>
 				</div>
 				<!-- Valores del campo -->
-				<div>
+				<div class="input-error">
 					<input type="text" name="nombre" class="input" autofocus autocomplete="off">
 					<!-- Errores -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
@@ -48,7 +48,7 @@
 				<!-- Valores del campo -->
 				<div class="flex-col" id="valoresFecha">
 					<!-- Meses -->
-					<div class="mesDia">
+					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Mes:</label>
 						<select name="mes_id" class="input">
 							<option value="" class="ocultar" <% if (!data_entry.mes_id) { %>selected<% } %>>Elegí</option>
@@ -56,9 +56,14 @@
 								<option value="<%= mes.id %>"><%= mes.nombre %></option>
 							<% } %>
 						</select>
+						<!-- Errores -->			
+						<i class="fas fa-times-circle<%- !errores.mes_id ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.mes_id %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
 					</div>
-					<!-- Día del año -->
-					<div class="mesDia">
+					<!-- Días -->
+					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Día:</label>
 						<select name="dia" class="input">
 							<option value="" class="ocultar" <% if (!data_entry.dia) { %>selected<% } %>>Elegí</option>
@@ -66,10 +71,15 @@
 								<option value="<%= dia %>" <% if (dia>29) { %>class="ocultar"<% } %>><%= dia %></option>
 							<% } %>
 						</select>
+						<!-- Errores -->			
+						<i class="fas fa-times-circle<%- !errores.dia ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.dia %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
 					</div>
 					<!-- Fecha desconocida -->
-					<div class="flex-row">
-						<input type="checkbox" name="desconocida" style="margin-right: 5px;">
+					<div class="input-error flex-row align-center">
+						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;">
 						<p>Fecha desconocida</p>
 					</div>
 				</div>
@@ -81,16 +91,21 @@
 		<!--Segunda columna-->
 		<div id="segundaCol">
 			<!-- REPETIDOS -->
-			<div>
+			<div class="input-error">
 				<h3>Nombres con esa fecha</h3>
 				<p>Destildalos para estar seguro/a de no repetirlos</p>
 				<ul type="none" id="posiblesDuplicados"></ul>
+				<!-- Errores -->			
+				<i class="fas fa-times-circle<%- !errores.repetidos ? ' ocultar' : '' %>">
+					<span class="mensajeError"><%= errores.repetidos %></span>
+				</i>
+				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 		</div>
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-evenly">
 		<button type="button">Cancelar</button>
-		<button type="submit" class="botonSinLink">Confirmar</button>
+		<button type="submit">Verificar</button>
 	</section>
 </form>

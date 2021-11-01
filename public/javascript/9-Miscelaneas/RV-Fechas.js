@@ -49,12 +49,14 @@ window.addEventListener("load", () => {
 			for (let i = 0; i < casos.length; i++) {
 				posiblesDuplicados.innerHTML +=
 					'<li type="none">' +
-					'<input type="checkbox" name="caso'+i+'" id="caso'+i+'" checked>' +
+					'<input class="input" type="checkbox" name="caso'+i+'" id="caso'+i+'" checked>' +
 					'<label for="caso'+i+'">'+casos[i]+'</label>' +
 					'</li>'
 			}
 		}
 	};
+	// Status inicial
+	if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
 
 	// ADD EVENT *******************************
 	// Detectar cambios en mes

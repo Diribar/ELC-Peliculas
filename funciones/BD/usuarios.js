@@ -42,7 +42,6 @@ module.exports = {
 		);
 	},
 	altaMailContrasena: (emailDeUsuario, contrasena) => {
-		//let contrasena = "1234567890";
 		return entidad.create({
 			email: emailDeUsuario,
 			contrasena: bcryptjs.hashSync(contrasena, 10),

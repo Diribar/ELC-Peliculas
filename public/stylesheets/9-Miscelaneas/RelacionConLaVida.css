@@ -8,15 +8,15 @@
 #data_entry #cuerpo {display: flex; flex-direction: row}
 	
 /* Partes específicas del formulario */
+#data_entry #cuerpo #columnaMedio {width: 70px}
 #data_entry #segundaCol {display: flex; flex-direction: column; width: 180px;}
 #data_entry #valoresFecha {min-height: 80px; justify-content: space-around;}
 #data_entry .campo {margin-top: 15px;}
 #data_entry .campo:first-child {margin-top: 0;}
 #data_entry .tituloCampo {margin-bottom: 3px}
-#data_entry #cuerpo #columnaMedio {width: 50px}
+#data_entry .input-error {position: relative;}
 #data_entry input, #data_entry select {border-width: .7px; border-radius: 5px;}
 #data_entry input[name="nombre"] {width: 100%; padding-left: 5px;}
-#data_entry .mesDia {display: flex; flex-direction: row; align-items: center;}
 
 /* Posibles Duplicados */
 #data_entry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
@@ -26,7 +26,7 @@
 
 /* Todos los mensajes */
 #data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
-#data_entry .link {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#data_entry .mensajeError {max-width: 200px;}
 
 /* Mensajes de ayuda */
 #data_entry .fa-question-circle {right: -20px;}
