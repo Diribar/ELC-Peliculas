@@ -4,8 +4,6 @@ module.exports = (sequelize, dt) => {
 		id: { type: dt.INTEGER, primaryKey: true },
 		dia_del_ano_id: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(20) },
-		status_canonizacion_id: { type: dt.INTEGER },
-		breve_descripcion_id: { type: dt.INTEGER },
 		cant_productos: { type: dt.INTEGER },
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
@@ -28,8 +26,6 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
 		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
-		entidad.belongsTo(n.status_canonizacion, {as: "status_canonizacion", foreignKey: "status_canonizacion_id"});
-		entidad.belongsTo(n.breve_descripcion, {as: "breve_descripcion", foreignKey: "breve_descripcion_id"});
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
