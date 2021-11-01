@@ -26,6 +26,7 @@ window.addEventListener("load", async () => {
 	let buscarErroresEnTodoElForm = () => {
 		inputs = document.querySelectorAll(".input-error .input");
 		url = "?";
+		console.log(inputs[3].value)
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
 			valor =

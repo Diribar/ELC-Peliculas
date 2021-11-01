@@ -62,11 +62,8 @@ module.exports = {
 	},
 
 	agregarPersonajeHistórico: (datos) => {
-		return entidad.create({
-			nombre: ,
-			dia_del_ano_id: ,
-			creada_por_id:,	
-		});
+		entidad = "historicos_personajes";
+		return db[entidad].create({ ...datos });
 	},
 
 	// Sin uso aún

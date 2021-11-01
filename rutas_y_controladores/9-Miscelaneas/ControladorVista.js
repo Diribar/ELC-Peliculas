@@ -43,8 +43,43 @@ module.exports = {
 		});
 	},
 
-	personajeHistoricoGrabar: (req, res) => {
-		return res.send("personajeHistoricoGrabar");
+	personajeHistoricoGrabar: async (req, res) => {
+		// 1. Guardar el data entry en session y cookie
+		let personaje = req.body;
+		//return res.send(req.body)
+		req.session.personaje = personaje;
+		res.cookie("personaje", personaje, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 2. Averiguar si hay errores de validación
+		let errores = validarRV.personaje(personaje);
+		// 3. Acciones si hay errores
+		if (errores.hay) {
+			// return res.send(errores);
+			req.session.errores = errores;
+			return res.redirect("/agregar/personaje-historico");
+		}
+		// 3. Preparar la info a guardar
+		datos = {
+			nombre: personaje.nombre,
+			creada_por_id: req.session.usuario.id,
+		};
+		if (
+			personaje.mes_id &&
+			personaje.dia &&
+			personaje.desconocida == undefined
+		) {
+			dia_del_ano_id = await BD_varios.ObtenerTodos("dias_del_ano", "id")
+				.then((n) => n.filter((m) => m.mes_id == personaje.mes_id))
+				.then((n) => n.filter((m) => m.dia == personaje.dia))
+				.then((n) => n[0].id);
+			datos.dia_del_ano_id = dia_del_ano_id;
+		}
+		// 4. Crear el registro en la BD
+		await BD_varios.agregarPersonajeHistórico(datos);
+		// 5. Redireccionar a la siguiente instancia
+		req.session.errores = false;
+		return res.redirect("/agregar/productos/datos-personalizados");
 	},
 
 	hechoHistoricoForm: (req, res) => {
