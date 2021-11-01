@@ -31,11 +31,6 @@ module.exports = {
 		// Meses y Días del año
 		meses = await BD_varios.ObtenerTodos("meses", "id");
 		dias_del_ano = await BD_varios.ObtenerTodos("dias_del_ano", "id");
-		// Breve Descripción
-		breve_descripcion = await BD_varios.ObtenerTodos(
-			"breve_descripcion",
-			"nombre"
-		);
 		// Render
 		return res.render("Home", {
 			tema,

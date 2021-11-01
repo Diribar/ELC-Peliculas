@@ -8,8 +8,7 @@ let vista = require("./ControladorVista");
 // Controladores de APIs
 router.get("/agregar/api/personaje/", API.validarPersonaje);
 router.get("/agregar/api/hecho/", API.validarHecho);
-//router.get("/agregar/api/hecho/", API.validarHecho);
-//agregar/personaje/api/enBD/
+router.get("/agregar/api/personajesFecha/", API.personajesFecha);
 
 // Controladores de vistas
 // Institucional
