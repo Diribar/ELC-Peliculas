@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let buscarTodosLosValores = () => {
-		url = "?";
+		url = "/?";
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
 			url += inputs[i].name;
@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 	// Funciones para revisar todos los inputs, devuelve los errores
 	let buscarErroresEnTodoElForm = () => {
 		let url = buscarTodosLosValores();
-		return fetch("/agregar/productos/api/validar-datos-pers/" + url).then(
+		return fetch("/agregar/productos/api/validar-datos-pers" + url).then(
 			(n) => n.json()
 		);
 	};
@@ -78,11 +78,14 @@ window.addEventListener("load", async () => {
 	});
 
 	// Links a Relación con la vida
-	for (link of links) {
-		link.addEventListener("click", (e) => {
+	for (let i = 0; i < links.length; i++) {
+		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
+			rv = links[i].className.includes("personaje")
+				? "personaje"
+				: "hecho";
 			let url = buscarTodosLosValores();
-			window.location.href = "/agregar/personaje-historico/" + url;
+			window.location.href = "/agregar/relacion-vida" + url + "&rv=" + rv;
 		});
 	}
 });

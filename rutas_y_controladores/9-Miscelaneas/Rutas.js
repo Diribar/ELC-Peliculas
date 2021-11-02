@@ -18,6 +18,7 @@ router.get("/agregar/api/validarHecho/", API.validarHecho);
 router.get("/", vista.home);
 router.get("/nosotros", vista.nosotros);
 // Personajes y Hechos históricos
+router.get("/agregar/relacion-vida", usuarios, vista.relacionConLaVida1);
 router.get("/agregar/personaje-historico", usuarios, vista.personajeHistoricoForm);
 router.post("/agregar/personaje-historico", usuarios, vista.personajeHistoricoGrabar);
 router.get("/agregar/hecho-historico", usuarios, vista.hechoHistoricoForm);

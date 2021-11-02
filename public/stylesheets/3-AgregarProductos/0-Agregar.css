@@ -11,7 +11,9 @@
 	padding: 5px 10px; border-radius: 10px;}
 #data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
-#data_entry input:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
+#data_entry input:disabled, #data_entry select:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
+#data_entry input, #data_entry select, #data_entry textarea {background-color: white;}
+
 #data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Todos los mensajes */
