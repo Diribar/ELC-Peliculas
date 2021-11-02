@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 			url += valor;
 		}
 		url += "&rubro=" + rubro;
-		return fetch("/agregar/api/validar-rv/" + url).then((n) => n.json());
+		return fetch("/agregar/api/validar-relacion-con-la-vida/" + url).then((n) => n.json());
 	};
 
 	// Detecta si hubo alguna novedad de data-entry

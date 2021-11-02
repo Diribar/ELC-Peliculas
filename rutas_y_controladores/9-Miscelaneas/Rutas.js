@@ -10,7 +10,7 @@ let usuarios = require("../../middlewares/usuarios/soloUsuarios");
 // Controladores *******************************************
 // Controladores de APIs
 router.get("/agregar/api/buscar-otros-casos-en-esa-fecha/", API.buscarOtrosCasos);
-router.get("/agregar/api/validar-rv/", API.validarRV);
+router.get("/agregar/api/validar-relacion-con-la-vida/", API.validarRV);
 
 // Controladores de vistas - Institucional
 router.get("/", vista.home);
