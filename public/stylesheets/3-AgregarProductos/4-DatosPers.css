@@ -32,8 +32,8 @@
 	{width: 70px}	
 
 /* Imagen de la película */
-#data_entry #imagenPeli {width: 150px; height: 100%; position: relative;}
-#data_entry #imagenPeli img {position: absolute; height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
+#data_entry #imagenPeli {width: 100%; height: 100%; position: relative;}
+#data_entry #imagenPeli img {position: absolute; left: 50%; transform: translateX(-50%); height: 100%; width: auto; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
 #data_entry #flechas {margin: 20px 50px 0;}

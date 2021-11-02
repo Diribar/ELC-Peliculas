@@ -15,12 +15,12 @@
 #data_entry .campo:first-child {margin-top: 0;}
 #data_entry .tituloCampo {margin-bottom: 3px}
 #data_entry .input-error {position: relative;}
-#data_entry input, #data_entry select {border-width: .7px; border-radius: 5px;}
+#data_entry input, #data_entry select, #data_entry #posiblesDuplicados {border-width: .7px; border-radius: 5px; background-color: white;}
 #data_entry input[name="nombre"] {width: 100%; padding-left: 5px;}
 
 /* Posibles Duplicados */
 #data_entry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
-#data_entry #posiblesDuplicados {min-height: 100px; border: 1px red solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px;}
+#data_entry #posiblesDuplicados {min-height: 100px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px;}
 #data_entry #posiblesDuplicados li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
 #data_entry #posiblesDuplicados li input {margin-right: 5px;}
 
@@ -35,7 +35,7 @@
 
 /*  Mensajes de error*/
 #data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
-#data_entry .fa-times-circle {z-index: 1;}
+#data_entry .fa-times-circle {z-index: 1; cursor: pointer;}
 
 /* Flechas */
 #data_entry #flechas {margin-top: 20px;}
@@ -44,4 +44,4 @@
 /* Submit button */
 #data_entry button {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #data_entry button em {color: var(--amarillo-claro); background-color: inherit;}
-#data_entry i {cursor: pointer;}
+/* #data_entry i {cursor: pointer;} */

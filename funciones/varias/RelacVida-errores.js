@@ -1,10 +1,9 @@
-// **** Requires ***********
-let BD_peliculas = require("../BD/peliculas");
-let path = require("path");
+// Requires *******************
+let BD_varias = require("../BD/varios");
 
-// Objeto literal
+// Objeto literal *************
 module.exports = {
-	personaje: (datos) => {
+	personaje: async (datos) => {
 		let errores = { nombre: "", mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores
 		errores.nombre = !datos.nombre
@@ -13,6 +12,12 @@ module.exports = {
 			? longitud(datos.nombre, 2, 30)
 			: castellano(datos.nombre)
 			? cartelCastellano
+			: (await BD_varias.ObtenerPorParametro(
+					"historicos_personajes",
+					"nombre",
+					datos.nombre
+			  ))
+			? cartelRepetido
 			: "";
 		if (datos.desconocida == "false" || datos.desconocida == undefined) {
 			errores.mes_id = !datos.mes_id ? cartelVacioSelect : "";
@@ -44,6 +49,7 @@ module.exports = {
 cartelCampoVacio = "Necesitamos que completes este campo";
 cartelVacioSelect = "Necesitamos que elijas un valor";
 cartelSupera = "El número de día y el mes elegidos son incompatibles";
+cartelRepetido = "Ya tenemos un registro con ese nombre";
 cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 
