@@ -68,7 +68,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Averiguar si hay errores de validación
-		let errores = validarRV.personaje(personaje);
+		let errores = await validarRV.personaje(personaje);
 		// 3. Acciones si hay errores
 		if (errores.hay) {
 			// return res.send(errores);
@@ -92,8 +92,18 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano_id;
 		}
 		// 4. Crear el registro en la BD
-		id = await BD_varios.agregarPersonajeHistórico(datos);
-		console.log(id)
+		producto = await BD_varios.agregarPersonajeHistorico(datos);
+		let { id } = await BD_varios.ObtenerPorParametro(
+			"historicos_personajes",
+			"nombre",
+			datos.nombre
+		);
+		//return res.send(id+"");
+		// 5. Guardar el id en 'Datos Personalizados'
+		req.session.datosPers.personaje_historico_id = id;
+		res.cookie("datosPers.personaje_historico_id", id, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
 		// 5. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/productos/datos-personalizados");
