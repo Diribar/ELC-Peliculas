@@ -1,8 +1,8 @@
 window.addEventListener("load", () => {
 	// Variables
 	let mesDia = document.querySelectorAll("form .mesDia");
-	mes = document.querySelector("form select[name='mes_id']");
-	dia = document.querySelector("form select[name='dia']");
+	let mes = document.querySelector("form select[name='mes_id']");
+	let dia = document.querySelector("form select[name='dia']");
 	let dia30 = document.querySelector(
 		"form select[name='dia'] option[value='30']"
 	);

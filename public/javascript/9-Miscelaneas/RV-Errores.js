@@ -10,8 +10,6 @@ window.addEventListener("load", async () => {
 	let accionesSiHayErrores = (i, mensajes) => {
 		// Averiguar si hay un error
 		mensaje = mensajes[i];
-		console.log(i)
-		console.log(mensaje)
 		mensajesError[i].innerHTML = mensaje;
 		// En caso de error
 		mensaje
@@ -52,7 +50,6 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			// Actualizar los errores
 			errores = await buscarErroresEnTodoElForm();
-			console.log(errores);
 			mensajes = Object.values(errores);
 			for (i = 0; i < iconoError.length; i++) {
 				accionesSiHayErrores(i, mensajes);

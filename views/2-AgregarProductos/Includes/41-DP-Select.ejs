@@ -8,7 +8,7 @@
 				<option value="" class="ocultar" <% if (!data_entry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of dato.valores) { %>
 					<option value="<%= valor.id %>" 
-						<% if (data_entry[campo] === valor.id) { %>selected<% } %>
+						<% if (data_entry[campo] == valor.id) { %>selected<% } %>
 						<% if (campo=="subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
 					>
 						<%= valor.nombre %>
@@ -26,7 +26,7 @@
 			</i>
 			<!-- Relación con la vida -->
 			<% if (campo.includes("historico")) { %>
-				<a class="link" href="/agregar/<%= dato.link %>" target="_self" title="Link a <%= dato.titulo %> " tabindex="-1">L</a>
+				<a class="link" href="/agregar/<%= dato.link %>" target="_self" title="Link a agregar <%= dato.titulo.toLowerCase() %> " tabindex="-1">L</a>
 			<% } %>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 		</div>

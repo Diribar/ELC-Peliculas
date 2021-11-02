@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	//let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	let links = document.querySelectorAll(".input-error a.link");
 	let statusInicial = true;
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
@@ -30,8 +30,7 @@ window.addEventListener("load", async () => {
 			: button.classList.remove("botonSinLink");
 	};
 
-	// Funciones para revisar todos los inputs, devuelve los errores
-	let buscarErroresEnTodoElForm = () => {
+	let buscarTodosLosValores = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
@@ -39,6 +38,12 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
+		return url;
+	};
+
+	// Funciones para revisar todos los inputs, devuelve los errores
+	let buscarErroresEnTodoElForm = () => {
+		let url = buscarTodosLosValores();
 		return fetch("/agregar/productos/api/validar-datos-pers/" + url).then(
 			(n) => n.json()
 		);
@@ -66,10 +71,18 @@ window.addEventListener("load", async () => {
 		if (button.classList.contains("botonSinLink")) {
 			e.preventDefault();
 			errores = await buscarErroresEnTodoElForm();
-			console.log(errores);
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}
 		}
 	});
+
+	// Links a Relación con la vida
+	for (link of links) {
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			let url = buscarTodosLosValores();
+			window.location.href = "/agregar/personaje-historico/" + url;
+		});
+	}
 });

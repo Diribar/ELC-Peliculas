@@ -18,6 +18,22 @@ module.exports = {
 	},
 
 	personajeHistoricoForm: async (req, res) => {
+		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		aux = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers;
+		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
+		// 1.2. Guardar el data entry en session y cookie
+		let datosPers = { ...aux, ...req.query };
+		req.session.datosPers = datosPers;
+		res.cookie("datosPers", datosPers, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 1.3 Si existe 'req.query', recargar la página
+		if (Object.keys(req.query).length) {
+			return res.redirect("/agregar/personaje-historico");
+		}
+		// Temas propios de 'Personaje Histórico'
 		tema = "relacionConLaVida";
 		codigo = "personaje";
 		data_entry = req.session.personajeHistorico
@@ -76,7 +92,8 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano_id;
 		}
 		// 4. Crear el registro en la BD
-		await BD_varios.agregarPersonajeHistórico(datos);
+		id = await BD_varios.agregarPersonajeHistórico(datos);
+		console.log(id)
 		// 5. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/productos/datos-personalizados");
