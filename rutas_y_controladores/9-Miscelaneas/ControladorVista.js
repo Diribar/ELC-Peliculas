@@ -44,6 +44,7 @@ module.exports = {
 			: "";
 		if (!datosPers)
 			return res.redirect("/agregar/productos/palabras-clave");
+		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		//return res.send(req.session.datosPers);
 		tema = "relacionConLaVida";
 		codigo = datosPers.rubro;
