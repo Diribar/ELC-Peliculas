@@ -26,7 +26,7 @@
 			</i>
 			<!-- Relación con la vida -->
 			<% if (campo.includes("historico")) { %>
-				<a class="link" href="/agregar/<%= dato.link %>" target="_self" title="Link a agregar <%= dato.titulo.toLowerCase() %> " tabindex="-1">L</a>
+				<a class="link <%= campo %> " href="/agregar/<%= dato.link %>" target="_self" title="Link a agregar <%= dato.titulo.toLowerCase() %> " tabindex="-1">L</a>
 			<% } %>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 		</div>

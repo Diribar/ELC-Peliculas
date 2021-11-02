@@ -17,7 +17,7 @@ module.exports = {
 		});
 	},
 
-	personajeHistoricoForm: async (req, res) => {
+	relacionConLaVida1: (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosPers
 			? req.session.datosPers
@@ -30,23 +30,26 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 1.3 Si existe 'req.query', recargar la página
-		if (Object.keys(req.query).length) {
-			return res.redirect("/agregar/personaje-historico");
-		}
-		// Temas propios de 'Personaje Histórico'
+		return rv == "personaje"
+			? res.redirect("/agregar/personaje-historico")
+			: res.redirect("/agregar/hecho-historico");
+	},
+
+	personajeHistoricoForm: async (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "personaje";
+		// Data-entry
 		data_entry = req.session.personajeHistorico
 			? req.session.personajeHistorico
 			: "";
+		// Errores
 		let errores = req.session.errores
 			? req.session.errores
 			: data_entry
 			? await validarRV.personaje(data_entry)
 			: "";
-		// Meses y Días del año
+		// Meses del año
 		meses = await BD_varios.ObtenerTodos("meses", "id");
-		dias_del_ano = await BD_varios.ObtenerTodos("dias_del_ano", "id");
 		// Render
 		return res.render("Home", {
 			tema,
@@ -55,7 +58,6 @@ module.exports = {
 			data_entry,
 			errores,
 			meses,
-			dias_del_ano,
 		});
 	},
 
@@ -109,18 +111,29 @@ module.exports = {
 		return res.redirect("/agregar/productos/datos-personalizados");
 	},
 
-	hechoHistoricoForm: (req, res) => {
+	hechoHistoricoForm: async (req, res) => {
 		tema = "relacionConLaVida";
 		codigo = "hecho";
+		// Data-entry
 		data_entry = req.session.hechoHistorico
 			? req.session.hechoHistorico
 			: "";
+		// Errores
+		let errores = req.session.errores
+			? req.session.errores
+			: data_entry
+			? await validarRV.personaje(data_entry)
+			: "";
+		// Meses del año
+		meses = await BD_varios.ObtenerTodos("meses", "id");
+		// Render
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			data_entry,
 			errores,
+			meses,
 		});
 	},
 
