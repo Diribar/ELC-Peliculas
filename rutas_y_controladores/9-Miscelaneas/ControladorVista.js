@@ -92,8 +92,6 @@ module.exports = {
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarRV.relacionConLaVida(data_entry);
 		// 3. Acciones si hay errores
-		//return res.send(req.url);
-		//return res.send(errores);
 		if (errores.hay) {
 			req.session.errores = errores;
 			return res.redirect(req.url);
