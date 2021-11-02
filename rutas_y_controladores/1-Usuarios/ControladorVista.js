@@ -260,6 +260,6 @@ module.exports = {
 // ************ Funciones ************
 let borrarArchivoDeImagen = (archivo, ruta) => {
 	let archivoImagen = path.join(ruta, archivo);
-	console.log(archivoImagen);
+	console.log("Archivo " + archivoImagen + " borrado");
 	archivo && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
 };

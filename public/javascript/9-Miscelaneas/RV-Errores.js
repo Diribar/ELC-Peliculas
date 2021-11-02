@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 
-	// Muestra el ícono de error/acierto y agrega el mensaje de error
+	// Función para mostrar el ícono de error/acierto y agregar el mensaje de error
 	let accionesSiHayErrores = (i, mensajes) => {
 		// Averiguar si hay un error
 		mensaje = mensajes[i];
@@ -22,21 +22,21 @@ window.addEventListener("load", async () => {
 
 	// Funcion para revisar todos los errores
 	let buscarErroresEnTodoElForm = () => {
+		rubro = document.querySelector("#rubro").innerHTML;
 		inputs = document.querySelectorAll(".input-error .input");
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			i > 0 ? (url += "&") : "";
 			valor =
-				inputs[i].name == "desconocida" || i>3
+				inputs[i].name == "desconocida" || i > 3
 					? inputs[i].checked
 					: encodeURIComponent(inputs[i].value);
 			url += inputs[i].name;
 			url += "=";
 			url += valor;
 		}
-		return fetch("/agregar/api/validarPersonaje/" + url).then((n) =>
-			n.json()
-		);
+		url += "&rubro=" + rubro;
+		return fetch("/agregar/api/validar-rv/" + url).then((n) => n.json());
 	};
 
 	// Detecta si hubo alguna novedad de data-entry

@@ -61,8 +61,7 @@ module.exports = {
 		return resultado;
 	},
 
-	agregarPersonajeHistorico: (datos) => {
-		entidad = "historicos_personajes";
+	agregarPorParametro: (datos, entidad) => {
 		return db[entidad].create({ ...datos })
 	},
 

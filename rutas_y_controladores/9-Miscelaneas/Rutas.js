@@ -9,20 +9,19 @@ let usuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 // Controladores *******************************************
 // Controladores de APIs
-router.get("/agregar/api/personajesFecha/", API.personajesFecha);
-router.get("/agregar/api/validarPersonaje/", API.validarPersonaje);
-router.get("/agregar/api/validarHecho/", API.validarHecho);
+router.get("/agregar/api/buscar-otros-casos-en-esa-fecha/", API.buscarOtrosCasos);
+router.get("/agregar/api/validar-rv/", API.validarRV);
 
-// Controladores de vistas
-// Institucional
+// Controladores de vistas - Institucional
 router.get("/", vista.home);
 router.get("/nosotros", vista.nosotros);
-// Personajes y Hechos históricos
-router.get("/agregar/relacion-vida", usuarios, vista.relacionConLaVida1);
-router.get("/agregar/personaje-historico", usuarios, vista.personajeHistoricoForm);
-router.post("/agregar/personaje-historico", usuarios, vista.personajeHistoricoGrabar);
-router.get("/agregar/hecho-historico", usuarios, vista.hechoHistoricoForm);
-router.post("/agregar/hecho-historico", usuarios, vista.hechoHistoricoGrabar);
+
+// Controladores de vistas - Relación con la vida
+router.get("/agregar/relacion-vida", usuarios, vista.relacionConLaVida);
+router.get("/agregar/personaje-historico", usuarios, vista.RV2Form);
+router.post("/agregar/personaje-historico", usuarios, vista.RV2Grabar);
+router.get("/agregar/hecho-historico", usuarios, vista.RV2Form);
+router.post("/agregar/hecho-historico", usuarios, vista.RV2Grabar);
 
 // Exportarlo **********************************************
 module.exports = router;

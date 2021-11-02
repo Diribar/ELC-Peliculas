@@ -3,7 +3,8 @@ let BD_varias = require("../BD/varios");
 
 // Objeto literal *************
 module.exports = {
-	personaje: async (datos) => {
+	relacionConLaVida: async (datos) => {
+		let { rubro } = datos;
 		let errores = { nombre: "", mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores
 		errores.nombre = !datos.nombre
@@ -13,7 +14,7 @@ module.exports = {
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: (await BD_varias.ObtenerPorParametro(
-					"historicos_personajes",
+					"historicos_"+rubro+"s",
 					"nombre",
 					datos.nombre
 			  ))
@@ -35,15 +36,13 @@ module.exports = {
 			for (i = 4; i < casosCampo.length; i++) {
 				casosValores[i] == "true"
 					? (errores.repetidos =
-							"Por favor asegurate de que no coincida con ninguna otra persona, y destildalas.")
+							"Por favor asegurate de que no coincida con ninguna otro registro, y destildalos.")
 					: "";
 			}
 		}
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
-
-	hecho: () => {},
 };
 
 cartelCampoVacio = "Necesitamos que completes este campo";

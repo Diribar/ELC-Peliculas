@@ -1,4 +1,5 @@
 <% rubro = codigo == "personaje" ? "Personaje Histórico" : "Hecho Histórico" %>
+<div id="rubro" class="ocultar"><%= codigo %></div>
 <h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
 	<!-- Datos -->
