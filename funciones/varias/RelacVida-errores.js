@@ -14,7 +14,7 @@ module.exports = {
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: "";
-		if (datos.desconocida == "false") {
+		if (datos.desconocida == "false" || datos.desconocida == undefined) {
 			errores.mes_id = !datos.mes_id ? cartelVacioSelect : "";
 			errores.dia = !datos.dia ? cartelVacioSelect : "";
 			if (!errores.dia && !errores.mes_id) {

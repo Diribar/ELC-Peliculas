@@ -5,7 +5,7 @@ let BD_varios = require("../../funciones/BD/varios");
 // *********** Controlador ***********
 module.exports = {
 	validarPersonaje: (req, res) => {
-		errores = validarRV.personaje(req.query);
+		let errores = validarRV.personaje(req.query);
 		return res.json(errores);
 	},
 
