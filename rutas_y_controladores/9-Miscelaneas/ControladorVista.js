@@ -35,7 +35,7 @@ module.exports = {
 			: res.redirect("/agregar/hecho-historico");
 	},
 
-	RV2Form: async (req, res) => {
+	RV_Form: async (req, res) => {
 		// Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
@@ -70,7 +70,7 @@ module.exports = {
 		});
 	},
 
-	RV2Grabar: async (req, res) => {
+	RV_Grabar: async (req, res) => {
 		// Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
