@@ -1,23 +1,24 @@
+<% rubro = data_entry.rubroAPI == "movie" ? "Película" : "Colección" %>
 <h1 class="titulo" id="titulo">Confirmá el agregado a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
 	<section class="flex-col">
-		<h2>¡Gracias por la información aportada!</h2>
+		<h2>Estamos listos para agregar el registro a nuestra Base de Datos</h2>
 		<ul>
-			<li>Estamos listos para agregar la PELÍCULA/COLECCIÓN (el registro) a nuestra Base de Datos (BD)</li>
+			<li style="font-size: 1.2rem;"><strong style="font-size: inherit;"><u style="font-size: inherit;"><%= rubro %></u></strong>: <em style="font-size: inherit;"><%= data_entry.nombre_castellano %></em></li>
 			<li>
 				Una vez que confirmes la operación en este paso,
 				<ol>
-					<li>No hay vuelta atrás: el registro quedará para siempre en nuestra BD y tu usuario quedará asociado a él como su creador.</li>
+					<li>No hay vuelta atrás: el registro quedará para siempre en nuestra BD y tu usuario asociado a él.</li>
 					<li>Sólo vos podrás ver el registro hasta que un administrador de nuestra BD lo apruebe.</li>
 				</ol>
 			</li>
 			<li>
-				Damos una puntuación por la calidad y responsabilidad de la información aportada. Lo que más valoramos es:
+				Damos una puntuación por la calidad y responsabilidad de la información aportada:
 				<ol>
-					<li>Que la película/colección esté alineada con nuestro perfil (2 puntos) (link) </li>
-					<li>La precisión de la información "manual" aportada (2 puntos)</li>
-					<li>El aporte de los links de trailer (1 punto) y película/colección (2 puntos), y que respeten los derechos de autor (link)</li>
-					<li>El puntaje nos permite evaluar al usuario como potencial "Revisor de Altas" de otros usuarios</li>
+					<li>Que la película/colección esté alineada con nuestro perfil (2 puntos).</li>
+					<li>La precisión de la información "manual" aportada (2 puntos).</li>
+					<li>Los links de trailer (1 punto) y de película/colección (2 puntos), y que respeten los derechos de autor.</li>
+					<li>El puntaje nos permite evaluar al usuario como potencial "Revisor de Altas" de otros usuarios.</li>
 				</ol>
 			</li>
 		</ul>
@@ -25,7 +26,7 @@
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-between">
 		<a href="/agregar/productos/datos-duros" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
-		<button type="submit">Avanzar</button>
+		<button type="submit">Confirmar</button>
 		<% if (false) { %>
 			<a href="#" tabindex="-1"><i class="fas fa-arrow-alt-circle-right"></i></a>
 		<% } else { %>
