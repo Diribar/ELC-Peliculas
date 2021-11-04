@@ -3,27 +3,27 @@
 <head>
 	<!-- Agregar usuarios -->
 	<% if (tema == "usuario") { %>
-		<link rel="stylesheet" href="/stylesheets/2-Usuarios/0-UsuariosGral.css">
+		<link rel="stylesheet" href="/stylesheets/1-Usuarios/0-UsuariosGral.css">
 		<% if (codigo == "login") { %>
 			<%- include('Head', {titulo: "Login"}) %>
-			<link rel="stylesheet" href="/stylesheets/2-Usuarios/Login.css">
-			<script src="/javascript/2-Usuarios/ojitoContrasena.js"></script>
-			<script src="/javascript/2-Usuarios/0-Login-validar.js"></script>
+			<link rel="stylesheet" href="/stylesheets/1-Usuarios/Login.css">
+			<script src="/javascript/1-Usuarios/ojitoContrasena.js"></script>
+			<script src="/javascript/1-Usuarios/0-Login-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "mail") { %>
 			<%- include('Head', {titulo: "Registro de Mail"}) %>
-			<link rel="stylesheet" href="/stylesheets/2-Usuarios/1-FormMail.css">
-			<script src="/javascript/2-Usuarios/1-Mail-validar.js"></script>
+			<link rel="stylesheet" href="/stylesheets/1-Usuarios/1-FormMail.css">
+			<script src="/javascript/1-Usuarios/1-Mail-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "perennes") { %>
 			<%- include('Head', {titulo: "Registro de Datos Perennes"}) %>
-			<script src="/javascript/2-Usuarios/2-Perennes-validar.js"></script>
+			<script src="/javascript/1-Usuarios/2-Perennes-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "editables") { %>
 			<%- include('Head', {titulo: "Registro de Datos Editables"}) %>
-			<link rel="stylesheet" href="/stylesheets/2-Usuarios/3-FormEditables.css">
-			<script src="/javascript/2-Usuarios/3-Editables-imagen.js"></script>
-			<script src="/javascript/2-Usuarios/3-Editables-validar.js"></script>
+			<link rel="stylesheet" href="/stylesheets/1-Usuarios/3-FormEditables.css">
+			<script src="/javascript/1-Usuarios/3-Editables-imagen.js"></script>
+			<script src="/javascript/1-Usuarios/3-Editables-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "detalle") { %>
 			<%- include('Head', {titulo: "Detalle de Usuario"}) %>
@@ -32,39 +32,43 @@
 	<!-- Agregar productos -->
 	<% if (tema == "agregar") { %>
 		<%- include('Head', {titulo: "PEL-Agregar"}) %>
-		<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/0-Agregar.css">
+		<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Agregar.css">
 		<% if (codigo == "palabrasClave") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/1-PalabrasClave.css">
-			<script src="/javascript/3-Productos/1-palabrasClave.js"></script>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/1-PalabrasClave.css">
+			<script src="/javascript/2-Productos/1-palabrasClave.js"></script>
 		<% } else %>
 		<% if (codigo == "copiarFA") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/2-CopiarFA.css">
-			<script src="/javascript/3-Productos/2-copiarFA.js"></script>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2-CopiarFA.css">
+			<script src="/javascript/2-Productos/2-copiarFA.js"></script>
 		<% } else %>
 		<% if (codigo == "desambiguar") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/2-DesambTMDB.css">
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2-DesambTMDB.css">
 		<% } else %>
 		<% if (codigo == "datosDuros") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/3-DatosDuros.css">
-			<script src="/javascript/3-Productos/3-DD-Ayuda.js"></script>
-			<script src="/javascript/3-Productos/3-DD-Errores.js"></script>
-			<% if (data_entry && data_entry.fuente!="TMDB") { %><script src="/javascript/3-Productos/3-DD-Imagen.js"></script><% } %>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/3-DatosDuros.css">
+			<script src="/javascript/2-Productos/3-DD-Ayuda.js"></script>
+			<script src="/javascript/2-Productos/3-DD-Errores.js"></script>
+			<% if (data_entry && data_entry.fuente!="TMDB") { %><script src="/javascript/2-Productos/3-DD-Imagen.js"></script><% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/4-DatosPers.css">
-			<script src="/javascript/3-Productos/4-DP-Ayuda.js"></script>
-			<script src="/javascript/3-Productos/4-DP-Errores.js"></script>
-			<script src="/javascript/3-Productos/4-DP-Subcat.js"></script>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/4-DatosPers.css">
+			<script src="/javascript/2-Productos/4-DP-Ayuda.js"></script>
+			<script src="/javascript/2-Productos/4-DP-Errores.js"></script>
+			<script src="/javascript/2-Productos/4-DP-Subcat.js"></script>
+		<% } else %>
+		<% if (codigo == "confirmar") { %>
+			<!-- <link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css"> -->
+			<!-- <script src="/javascript/2-Productos/5-Confirmar.js"></script> -->
 		<% } else %>
 		<% if (codigo == "responsabilidad") { %>
-			<link rel="stylesheet" href="/stylesheets/3-AgregarProductos/0-Responsabilidad.css">
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Responsabilidad.css">
 		<% } %>
 	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>
 		<%- include('Head', {titulo}) %>
-		<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/0-Opciones.css">
-		<link rel="stylesheet" href="/stylesheets/5-ElegirOpciones/Filtros.css">
+		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/0-Opciones.css">
+		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/Filtros.css">
 	<% } %>
 	<!-- Miscelaneas -->
 	<% if (tema == "relacionConLaVida") { %>
@@ -109,6 +113,7 @@
 					<%- codigo == "desambiguar" ? include("2-DesambTMDB") : "" %>
 					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
+					<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>
 				</section>
 			<% } else %>
 			<% if (tema=="relacionConLaVida") { %>

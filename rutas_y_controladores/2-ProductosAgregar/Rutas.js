@@ -34,8 +34,8 @@ router.get("/datos-duros", usuarios, prodEnBD, vista.datosDurosForm);
 router.post("/datos-duros", usuarios, upload.single("avatar"), vista.DDG);
 router.get("/datos-personalizados", usuarios, prodEnBD, vista.datosPersForm);
 router.post("/datos-personalizados", usuarios, vista.datosPersGuardar);
-router.get("/resumen", usuarios, prodEnBD, vista.resumenForm);
-router.post("/resumen", usuarios, vista.resumenGuardar);
+router.get("/confirmar", usuarios, prodEnBD, vista.confirmarForm);
+router.post("/confirmar", usuarios, vista.confirmarGuardar);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", usuarios, vista.responsabilidad);

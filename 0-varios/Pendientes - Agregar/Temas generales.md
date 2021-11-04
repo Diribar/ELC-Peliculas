@@ -7,8 +7,8 @@
 - Revisar el tema del avatar en Datos Personalizados, que funcione desde CopiarFa y DD
 
 Usuario: mover el archivo avatar a la carpeta definitiva (línea 231)
-	./public/imagenes/2-Usuarios
-	./public/imagenes/4-Provisorio
+	./public/imagenes/1-Usuarios
+	./public/imagenes/9-Provisorio
 
 Estandarización de títulos y formatos en Agregar
 

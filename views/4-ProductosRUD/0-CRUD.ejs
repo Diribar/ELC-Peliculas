@@ -1,9 +1,9 @@
 <%- include('0-Head') %>
 <body>
-  <%- include('1-Header') %>
+  <%- include('0-Header') %>
   <main class="flex-row">
     <section id="imagen-derecha">
-      <img alt="<%= producto.nombre_castellano %>" src="/imagenes/3-Productos/<%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
+      <img alt="<%= producto.nombre_castellano %>" src="/imagenes/2-Productos/<%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
     </section>
     <section id="cuerpo-y-footer" class="flex-col grow">
       <%- include('3-Footer') %>
