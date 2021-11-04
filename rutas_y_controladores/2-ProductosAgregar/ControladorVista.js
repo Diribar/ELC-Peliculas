@@ -258,7 +258,7 @@ module.exports = {
 				tipo = datos[0];
 				tamano = datos[1];
 				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "./public/imagenes/4-Provisorio/" + nombre;
+				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 			}
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
@@ -272,7 +272,7 @@ module.exports = {
 		if (errores.hay) {
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
-			return res.send(errores)
+			return res.send(errores);
 			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 3. Generar la session para la siguiente instancia
@@ -340,13 +340,28 @@ module.exports = {
 		return res.redirect("/agregar/productos/resumen");
 	},
 
-	resumenForm: (req, res) => {
-		return res.send("Estoy en ResumenForm");
-		return res.send(req.session.datosPers);
+	confirmarForm: (req, res) => {
+		// 1. Tema y Código
+		tema = "agregar";
+		codigo = "confirmar";
+		// 2. Feedback de la instancia anterior o Data Entry propio
+		datosPers = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers
+			? req.cookies.datosPers
+			: "";
+		if (!datosPers)
+			return res.redirect("/agregar/productos/palabras-clave");
+		// 3. Render del formulario
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+		});
 	},
 
-	resumenGuardar: (req, res) => {
-		return res.send("Estoy en ResumenGuardar");
+	confirmarGuardar: (req, res) => {
+		return res.send("Estoy en confirmarGuardar");
 	},
 
 	responsabilidad: (req, res) => {
