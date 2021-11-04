@@ -81,11 +81,11 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
-			rv = links[i].className.includes("personaje")
+			rubro = links[i].className.includes("personaje")
 				? "personaje"
 				: "hecho";
 			let url = buscarTodosLosValores();
-			window.location.href = "/agregar/relacion-vida" + url + "&rv=" + rv;
+			window.location.href = "/agregar/relacion-vida" + url + "&rubro=" + rubro;
 		});
 	}
 });

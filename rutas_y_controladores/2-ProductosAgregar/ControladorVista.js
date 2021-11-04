@@ -342,6 +342,7 @@ module.exports = {
 
 	resumenForm: (req, res) => {
 		return res.send("Estoy en ResumenForm");
+		return res.send(req.session.datosPers);
 	},
 
 	resumenGuardar: (req, res) => {

@@ -33,10 +33,17 @@ window.addEventListener("load", () => {
 			} else dia31.classList.remove("ocultar");
 		}
 	};
-	// Posibles duplicados
-	personajesConEsaFecha = async (mes_id, dia) => {
+	// Buscar otros casos en esa fecha
+	registrosConEsaFecha = async (mes_id, dia) => {
+		rubro = document.querySelector("#rubro").innerHTML;
 		// Obtener los casos
-		url = "/agregar/api/personajesFecha/?mes_id=" + mes_id + "&dia=" + dia;
+		url =
+			"/agregar/api/buscar-otros-casos-en-esa-fecha/?mes_id=" +
+			mes_id +
+			"&dia=" +
+			dia +
+			"&rubro=" +
+			rubro;
 		casos = await fetch(url).then((n) => n.json());
 		// Si no hay, "no hay casos"
 		if (!casos.length) {
@@ -49,24 +56,33 @@ window.addEventListener("load", () => {
 			for (let i = 0; i < casos.length; i++) {
 				posiblesDuplicados.innerHTML +=
 					'<li type="none">' +
-					'<input class="input" type="checkbox" name="caso'+i+'" id="caso'+i+'" checked>' +
-					'<label for="caso'+i+'">'+casos[i]+'</label>' +
-					'</li>'
+					'<input class="input" type="checkbox" name="caso' +
+					i +
+					'" id="caso' +
+					i +
+					'" checked>' +
+					'<label for="caso' +
+					i +
+					'">' +
+					casos[i] +
+					"</label>" +
+					"</li>";
 			}
 		}
 	};
+
 	// Status inicial
-	if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
+	if (mes.value && dia.value) registrosConEsaFecha(mes.value, dia.value);
 
 	// ADD EVENT *******************************
 	// Detectar cambios en mes
 	if (mes.value != "") cambio();
 	mes.addEventListener("change", () => {
 		cambio();
-		if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
+		if (mes.value && dia.value) registrosConEsaFecha(mes.value, dia.value);
 	});
 	dia.addEventListener("change", () => {
-		if (mes.value && dia.value) personajesConEsaFecha(mes.value, dia.value);
+		if (mes.value && dia.value) registrosConEsaFecha(mes.value, dia.value);
 	});
 
 	// Detectar cambios en Fecha desconocida
