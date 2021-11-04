@@ -370,7 +370,7 @@ module.exports = {
 			: "";
 		if (!datosPers)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// Guardar el registro
+		// 2. Guardar el registro
 
 		// Actualizar "cantProductos" en "Relación con la vida"
 
@@ -384,7 +384,7 @@ module.exports = {
 		// Borrar session y cookies del producto
 
 		// Redireccionar
-		
+
 	},
 
 	finDelProcesoForm: (req, res) => {
