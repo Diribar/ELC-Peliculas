@@ -36,6 +36,6 @@ module.exports = {
 
 	agregarPelicula: (datos) => {
 		//return datos
-		return entidad.create({ ...datos });
+		return entidad.create(datos);
 	},
 };
