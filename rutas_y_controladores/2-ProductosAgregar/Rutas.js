@@ -31,11 +31,13 @@ router.post("/desambiguar", usuarios, vista.desambiguarGuardar);
 router.get("/copiar-fa", usuarios, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", usuarios, vista.copiarFA_Guardar);
 router.get("/datos-duros", usuarios, prodEnBD, vista.datosDurosForm);
-router.post("/datos-duros", usuarios, upload.single("avatar"), vista.DDG);
+router.post("/datos-duros", usuarios, prodEnBD, upload.single("avatar"), vista.DDG);
 router.get("/datos-personalizados", usuarios, prodEnBD, vista.datosPersForm);
-router.post("/datos-personalizados", usuarios, vista.datosPersGuardar);
+router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar);
 router.get("/confirmar", usuarios, prodEnBD, vista.confirmarForm);
-router.post("/confirmar", usuarios, vista.confirmarGuardar);
+router.post("/confirmar", usuarios, prodEnBD, vista.confirmarGuardar);
+router.get("/fin-del-proceso", usuarios, vista.confirmarForm);
+router.post("/fin-del-proceso", usuarios, vista.confirmarGuardar);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", usuarios, vista.responsabilidad);

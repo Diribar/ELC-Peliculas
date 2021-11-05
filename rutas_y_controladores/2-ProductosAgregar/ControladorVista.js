@@ -357,11 +357,42 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
+			data_entry: datosPers,
 		});
 	},
 
 	confirmarGuardar: (req, res) => {
-		return res.send("Estoy en confirmarGuardar");
+		// 1. Feedback de la instancia anterior o Data Entry propio
+		datosPers = req.session.datosPers
+			? req.session.datosPers
+			: req.cookies.datosPers
+			? req.cookies.datosPers
+			: "";
+		if (!datosPers)
+			return res.redirect("/agregar/productos/palabras-clave");
+		// 2. Guardar el registro
+
+		// Actualizar "cantProductos" en "Relación con la vida"
+
+		// Mover el archivo de imagen a la carpeta definitiva
+
+		// Si se agregó una COLECCIÓN TMDB:
+			// SI: Agregar las partes de la colección en forma automática.
+			// NO, pero es colección: req.session y cookie con el dato de la colección
+			// NO, y no tiene ninguna relación con una colección: do nothing
+
+		// Borrar session y cookies del producto
+
+		// Redireccionar
+
+	},
+
+	finDelProcesoForm: (req, res) => {
+		return res.send("finDelProcesoForm");
+	},
+
+	finDelProcesoGuardar: (req, res) => {
+		return res.send("finDelProcesoGuardar");
 	},
 
 	responsabilidad: (req, res) => {
