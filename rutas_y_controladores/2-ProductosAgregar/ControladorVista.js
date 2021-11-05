@@ -138,7 +138,7 @@ module.exports = {
 			? await validarProductos.copiarFA(copiarFA)
 			: "";
 		// 5. Render del formulario
-		return res.send(req.cookies);
+		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -245,9 +245,9 @@ module.exports = {
 			: req.cookies.datosDuros;
 		// Detectar el origen
 		origen =
-			req.session.desambiguar || req.cookie.desambiguar
+			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
-				: req.session.copiarFA || req.cookie.copiarFA
+				: req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!aux) return res.redirect("/agregar/productos/" + origen);
