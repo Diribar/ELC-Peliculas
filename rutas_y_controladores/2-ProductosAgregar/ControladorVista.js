@@ -7,7 +7,6 @@ let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
 let validarProductos = require("../../funciones/Productos/3-PROD-errores");
 let BD_varios = require("../../funciones/BD/varios");
-let BD_peliculas = require("../../funciones/BD/peliculas");
 
 // *********** Controlador ***********
 module.exports = {
@@ -100,6 +99,7 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
+		return res.send();
 		// 2. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/productos/datos-duros");
 	},
@@ -141,10 +141,12 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		if (!errores.direccion) {
 			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
+			entidad =
+				copiarFA.rubroAPI == "movie" ? "peliculas" : "colecciones";
 			campo = copiarFA.rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
 			elc_id = await procesarProductos.obtenerELC_id({
-				rubroAPI: copiarFA.rubroAPI,
-				campo: campo,
+				entidad,
+				campo,
 				id: fa_id,
 			});
 			if (elc_id) {
@@ -181,7 +183,13 @@ module.exports = {
 			: "";
 		if (!datosDuros)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Render del formulario
+		// 3. GuardarIDdelProducto
+		IDdelProducto = guardarIDdelProducto(datosDuros);
+		req.session.IDdelProducto = IDdelProducto;
+		res.cookie("IDdelProducto", IDdelProducto, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 4. Render del formulario
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(datosDuros, camposDD());
@@ -222,8 +230,9 @@ module.exports = {
 		campo += "_" + fuente + "_id";
 		id = datosDuros[campo];
 		// Averiguar si hubieron errores
+		entidad = datosDuros.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		elc_id = await procesarProductos.obtenerELC_id({
-			rubroAPI: datosDuros.rubroAPI,
+			entidad,
 			campo,
 			id,
 		});
@@ -289,7 +298,13 @@ module.exports = {
 			: "";
 		if (!datosPers)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Render del formulario
+		// 3. GuardarIDdelProducto
+		IDdelProducto = guardarIDdelProducto(datosPers);
+		req.session.IDdelProducto = IDdelProducto;
+		res.cookie("IDdelProducto", IDdelProducto, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 4. Render del formulario
 		let errores = req.session.errores ? req.session.errores : "";
 		return res.render("Home", {
 			tema,
@@ -379,7 +394,13 @@ module.exports = {
 			: "";
 		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Render del formulario
+		// 3. GuardarIDdelProducto
+		IDdelProducto= guardarIDdelProducto(confirmar);
+		req.session.IDdelProducto = IDdelProducto;
+		res.cookie("IDdelProducto", IDdelProducto, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		// 4. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -399,6 +420,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 2. Guardar el registro
 		rubro = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
+		return res.send(req.session);
 		registro = await BD_varios.agregarPorEntidad(rubro, confirmar);
 		return res.send(registro);
 		// Actualizar "cantProductos" en "Relación con la vida"
@@ -413,7 +435,14 @@ module.exports = {
 		// NO, y no tiene ninguna relación con una colección: do nothing
 
 		// Borrar session y cookies del producto
-
+		let borrar = {
+			datosDuros: {},
+			errores: false,
+			palabrasClave: "quien sabe cuanto cuesta ojal",
+			desambiguar: {},
+			datosPers: {},
+			confirmar: {},
+		};
 		// Redireccionar
 	},
 
@@ -687,4 +716,28 @@ let datosPersInput = () => {
 			],
 		},
 	];
+};
+
+let guardarIDdelProducto = (datos) => {
+	// Enfoque en los datos clave
+	let IDdelProducto = {};
+	if (datos.rubroAPI == "movie") {
+		IDdelProducto.entidad = "peliculas";
+		IDdelProducto.campo =
+			datos.fuente == "TMDB"
+				? "peli_tmdb_id"
+				: datos.fuente == "FA"
+				? "peli_fa_id"
+				: "";
+	} else {
+		IDdelProducto.entidad = "colecciones";
+		IDdelProducto.campo =
+			datos.fuente == "TMDB"
+				? "colec_tmdb_id"
+				: datos.fuente == "FA"
+				? "colec_fa_id"
+				: "";
+	}
+	IDdelProducto.id = datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
+	return IDdelProducto;
 };
