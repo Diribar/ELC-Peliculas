@@ -16,12 +16,6 @@ module.exports = {
 		});
 	},
 
-	ObtenerELC_id: (parametro, valor) => {
-		return entidad.findOne({ where: { [parametro]: valor } }).then((n) => {
-			return n ? n.id : false;
-		});
-	},
-
 	ObtenerPorID: (ID) => {
 		return entidad.findByPk(ID, {
 			include: ["coleccion_pelicula", "categoria", "subcategoria"],

@@ -29,6 +29,14 @@ module.exports = {
 		return db[entidad].findByPk(id);
 	},
 
+	ObtenerELC_id: (datos) => {
+		return db[datos.entidad]
+			.findOne({ where: { [datos.campo]: datos.id } })
+			.then((n) => {
+				return n ? n.id : false;
+			});
+	},
+
 	pais_idToNombre: async function (pais_id) {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];

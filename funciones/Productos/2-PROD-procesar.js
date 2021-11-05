@@ -350,18 +350,8 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
-		// Busca ELC_id de Películas o Colecciones-cabecera
-		// Definir variables
-		rubroAPI = datos.rubroAPI;
-		campo = datos.campo;
-		id = datos.id;
-		if (!rubroAPI || !campo || !id) return false;
-		// Verificar YaEnBD
-		let ELC_id =
-			rubroAPI == "movie"
-				? await BD_peliculas.ObtenerELC_id(campo, id)
-				: await BD_colecciones.ObtenerELC_id(campo, id);
-		// Enviar el resultado
+		if (!datos.id) return false;
+		let ELC_id = await BD_varios.ObtenerELC_id(datos);
 		return ELC_id;
 	},
 };

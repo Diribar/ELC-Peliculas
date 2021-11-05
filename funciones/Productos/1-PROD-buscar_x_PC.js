@@ -221,10 +221,11 @@ let eliminarDuplicados = (datos) => {
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		rubroAPI = datos.resultados[i].rubroAPI;
+		entidad = rubroAPI == "movie" ? "peliculas" : "colecciones";
 		campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		let dato = {
-			rubroAPI: rubroAPI,
-			campo: campo,
+			entidad,
+			campo,
 			id: datos.resultados[i][campo],
 		};
 		let YaEnBD = await procesarProd.obtenerELC_id(dato);
