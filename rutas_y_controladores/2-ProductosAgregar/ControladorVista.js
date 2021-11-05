@@ -27,7 +27,9 @@ module.exports = {
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
 		if (req.session.desambiguar) delete req.session.desambiguar;
+		if (req.session.copiarFA) delete req.session.copiarFA;
 		// 4. Render del formulario
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
@@ -79,7 +81,10 @@ module.exports = {
 		// 3. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
 		if (req.session.datosDuros) delete req.session.datosDuros;
-		// 4. Render del formulario
+		// 4. Eliminar session y cookie de copiarFA, si existen
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
+		if (req.session.copiarFA) delete req.session.copiarFA;
+		// 5. Render del formulario
 		resultados = desambiguar.resultados;
 		coincidencias = resultados.length;
 		prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
@@ -128,7 +133,10 @@ module.exports = {
 		// 3. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
 		if (req.session.datosDuros) delete req.session.datosDuros;
-		// 4. Render del formulario
+		// 4. Eliminar session y cookie de desambiguar, si existen
+		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.session.desambiguar) delete req.session.desambiguar;
+		// 5. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
