@@ -183,7 +183,7 @@ module.exports = {
 		if (!datosDuros)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. GuardarIDdelProducto
-		IDdelProducto = guardarIDdelProducto(datosDuros);
+		IDdelProducto = datosClaveDelProducto(datosDuros);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -298,7 +298,7 @@ module.exports = {
 		if (!datosPers)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. GuardarIDdelProducto
-		IDdelProducto = guardarIDdelProducto(datosPers);
+		IDdelProducto = datosClaveDelProducto(datosPers);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -394,7 +394,7 @@ module.exports = {
 		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. GuardarIDdelProducto
-		IDdelProducto= guardarIDdelProducto(confirmar);
+		IDdelProducto= datosClaveDelProducto(confirmar);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -717,7 +717,7 @@ let datosPersInput = () => {
 	];
 };
 
-let guardarIDdelProducto = (datos) => {
+let datosClaveDelProducto = (datos) => {
 	// Enfoque en los datos clave
 	let IDdelProducto = {};
 	if (datos.rubroAPI == "movie") {
