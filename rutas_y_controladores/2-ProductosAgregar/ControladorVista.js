@@ -495,7 +495,7 @@ module.exports = {
 		if (req.cookies.IDdelProducto) res.clearCookie("IDdelProducto");
 		if (req.cookies.errores) res.clearCookie("errores");
 		// Redireccionar
-		return res.send(registro);
+		return res.redirect("/agregar/productos/fin-del-proceso");
 	},
 
 	finDelProcesoForm: (req, res) => {
