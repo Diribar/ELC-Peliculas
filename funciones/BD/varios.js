@@ -61,8 +61,8 @@ module.exports = {
 		return resultado;
 	},
 
-	agregarPorParametro: (datos, entidad) => {
-		return db[entidad].create({ ...datos })
+	agregarPorEntidad: (entidad, datos) => {
+		return db[entidad].create(datos);
 	},
 
 	// Sin uso aún

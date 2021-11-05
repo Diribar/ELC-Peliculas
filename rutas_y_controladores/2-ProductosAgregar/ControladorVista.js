@@ -344,8 +344,11 @@ module.exports = {
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		calificacion =
-			(fe_valores * 0.5 + entretiene * 0.3 + calidad_sonora_visual * 0.2).toFixed(2);
+		calificacion = (
+			fe_valores * 0.5 +
+			entretiene * 0.3 +
+			calidad_sonora_visual * 0.2
+		).toFixed(2);
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
@@ -395,8 +398,9 @@ module.exports = {
 		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 2. Guardar el registro
-		registro = await BD_peliculas.agregarPelicula(confirmar);
-		return res.send(registro)
+		rubro = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
+		registro = await BD_varios.agregarPorEntidad(rubro, confirmar);
+		return res.send(registro);
 		// Actualizar "cantProductos" en "Relación con la vida"
 
 		// Guardar calificaciones_us
