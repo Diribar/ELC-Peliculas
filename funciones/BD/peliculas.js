@@ -34,8 +34,8 @@ module.exports = {
 		});
 	},
 
-	agregarPelicula: async (datos) => {
+	agregarPelicula: (datos) => {
 		//return datos
-		return await entidad.create({ ...datos });
+		return entidad.create({ ...datos });
 	},
 };
