@@ -419,7 +419,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 2. Guardar el registro
 		rubro = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
-		return res.send(req.session);
+		//return res.send(req.session);
 		registro = await BD_varios.agregarPorEntidad(rubro, confirmar);
 		return res.send(registro);
 		// Actualizar "cantProductos" en "Relación con la vida"
@@ -441,6 +441,7 @@ module.exports = {
 			desambiguar: {},
 			datosPers: {},
 			confirmar: {},
+			IDdelProducto,
 		};
 		// Redireccionar
 	},
