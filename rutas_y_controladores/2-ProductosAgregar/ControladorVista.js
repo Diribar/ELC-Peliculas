@@ -99,7 +99,6 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		return res.send();
 		// 2. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/productos/datos-duros");
 	},
