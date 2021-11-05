@@ -25,7 +25,13 @@ module.exports = {
 			: palabrasClave
 			? await validarProductos.palabrasClave(palabrasClave)
 			: "";
-		// 3. Render del formulario
+		// 3. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
+		if (req.session.desambiguar) delete req.session.desambiguar;
+		if (req.session.copiarFA) delete req.session.copiarFA;
+		// 4. Render del formulario
+		//return res.send(req.cookies);
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
 			tema,
@@ -64,7 +70,13 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "desambiguar";
-		// 2. Feedback de la instancia anterior
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.session.datosDuros) delete req.session.datosDuros;
+		// 3. Eliminar session y cookie de copiarFA, si existen
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
+		if (req.session.copiarFA) delete req.session.copiarFA;
+		// 4. Feedback de la instancia anterior
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: req.cookies.desambiguar
@@ -72,7 +84,8 @@ module.exports = {
 			: "";
 		if (!desambiguar)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Render del formulario
+		// 5. Render del formulario
+		//return res.send(req.cookies);
 		resultados = desambiguar.resultados;
 		coincidencias = resultados.length;
 		prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
@@ -107,7 +120,13 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "copiarFA";
-		// 2. Data Entry propio y errores
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.session.datosDuros) delete req.session.datosDuros;
+		// 3. Eliminar session y cookie de desambiguar, si existen
+		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.session.desambiguar) delete req.session.desambiguar;
+		// 4. Data Entry propio y errores
 		let copiarFA = req.session.copiarFA
 			? req.session.copiarFA
 			: req.cookies.copiarFA
@@ -118,7 +137,8 @@ module.exports = {
 			: copiarFA
 			? await validarProductos.copiarFA(copiarFA)
 			: "";
-		// 3. Render del formulario
+		// 5. Render del formulario
+		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -174,21 +194,31 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosDuros";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosPers) res.clearCookie("datosPers");
+		if (req.session.datosPers) delete req.session.datosPers;
+		// 3. Feedback de la instancia anterior
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
-		if (!datosDuros)
-			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. GuardarIDdelProducto
+		// 4. Detectar el origen
+		origen =
+			!!req.session.desambiguar || req.cookies.desambiguar
+				? "desambiguar"
+				: !!req.session.copiarFA || req.cookies.copiarFA
+				? "copiar-fa"
+				: "palabras-clave";
+		if (!datosDuros) return res.redirect("/agregar/productos/" + origen);
+		// 5. GuardarIDdelProducto
 		IDdelProducto = datosClaveDelProducto(datosDuros);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Render del formulario
+		// 6. Render del formulario
+		//return res.send(req.cookies);
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(datosDuros, camposDD());
@@ -209,40 +239,50 @@ module.exports = {
 	},
 
 	DDG: async (req, res) => {
-		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		// 1. Feedback de la instancia anterior
 		aux = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros;
-		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
-		// 1.2. Guardar el data entry en session y cookie
+		// 2. Detectar el origen
+		origen =
+			req.session.desambiguar || req.cookies.desambiguar
+				? "desambiguar"
+				: req.session.copiarFA || req.cookies.copiarFA
+				? "copiar-fa"
+				: "palabras-clave";
+		if (!aux) return res.redirect("/agregar/productos/" + origen);
+		// 3. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 2.1. Averiguar si hay errores de validación
+		// 4. Averiguar si hay errores de validación
 		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
-		// 2.2. Averiguar si el TMDB_id o el FA_id ya están en la BD
-		// Obtener los parámetros
-		fuente = datosDuros.fuente.toLowerCase();
-		campo = datosDuros.rubroAPI == "movie" ? "peli" : "colec";
-		campo += "_" + fuente + "_id";
-		id = datosDuros[campo];
-		// Averiguar si hubieron errores
-		entidad = datosDuros.rubroAPI == "movie" ? "peliculas" : "colecciones";
-		elc_id = await procesarProductos.obtenerELC_id({
-			entidad,
-			campo,
-			id,
-		});
-		// Acciones si hubieron errores
-		if (elc_id) {
-			errores.nombre_original =
-				"El código interno ya se encuentra en nuestra base de datos";
-			errores.elc_id = elc_id;
-			errores.hay = true;
+		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
+		if (!errores.nombre_original) {
+			// Obtener los parámetros
+			fuente = datosDuros.fuente.toLowerCase();
+			entidad =
+				datosDuros.rubroAPI == "movie" ? "peliculas" : "colecciones";
+			campo = datosDuros.rubroAPI == "movie" ? "peli" : "colec";
+			campo += "_" + fuente + "_id";
+			id = datosDuros[campo];
+			// Averiguar si hubieron errores
+			elc_id = await procesarProductos.obtenerELC_id({
+				entidad,
+				campo,
+				id,
+			});
+			// Acciones si hubieron errores
+			if (elc_id) {
+				errores.nombre_original =
+					"El código interno ya se encuentra en nuestra base de datos";
+				errores.elc_id = elc_id;
+				errores.hay = true;
+			}
 		}
-		// 2.3. Si aún no hay errores de imagen, revisar el archivo de imagen
+		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
 		if (!errores.avatar) {
 			if (req.file) {
 				// En caso de archivo por multer
@@ -268,19 +308,20 @@ module.exports = {
 				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
 		}
-		// 2.4. Si hay errores de validación, redireccionar
+		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
+			//return res.send(errores)
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/datos-duros");
 		}
-		// 3. Generar la session para la siguiente instancia
+		// 8. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
 		req.session.datosPers.avatarDP = nombre;
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Redireccionar a la siguiente instancia
+		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/productos/datos-personalizados");
 	},
@@ -289,21 +330,24 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosPers";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.confirmar) res.clearCookie("confirmar");
+		if (req.session.confirmar) delete req.session.confirmar;
+		// 3. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers)
-			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. GuardarIDdelProducto
+		if (!datosPers) return res.redirect("/agregar/productos/datos-duros");
+		// 4. GuardarIDdelProducto
 		IDdelProducto = datosClaveDelProducto(datosPers);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Render del formulario
+		// 5. Render del formulario
+		//return res.send(req.cookies);
 		let errores = req.session.errores ? req.session.errores : "";
 		return res.render("Home", {
 			tema,
@@ -321,7 +365,7 @@ module.exports = {
 		aux = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers;
-		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
+		if (!aux) return res.redirect("/agregar/productos/datos-duros");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.body };
 		req.session.datosPers = datosPers;
@@ -366,6 +410,7 @@ module.exports = {
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
+			colec_tmdb_rubro: req.session.datosPers.rubroAPI,
 			fe_valores,
 			entretiene,
 			calidad_sonora_visual,
@@ -392,9 +437,9 @@ module.exports = {
 			? req.cookies.confirmar
 			: "";
 		if (!confirmar)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/productos/datos-personalizados");
 		// 3. GuardarIDdelProducto
-		IDdelProducto= datosClaveDelProducto(confirmar);
+		IDdelProducto = datosClaveDelProducto(confirmar);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -416,12 +461,11 @@ module.exports = {
 			? req.cookies.confirmar
 			: "";
 		if (!confirmar)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/productos/datos-personalizados");
 		// 2. Guardar el registro
-		rubro = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
+		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		//return res.send(req.session);
-		registro = await BD_varios.agregarPorEntidad(rubro, confirmar);
-		return res.send(registro);
+		registro = await BD_varios.agregarPorEntidad(entidad, confirmar);
 		// Actualizar "cantProductos" en "Relación con la vida"
 
 		// Guardar calificaciones_us
@@ -434,16 +478,24 @@ module.exports = {
 		// NO, y no tiene ninguna relación con una colección: do nothing
 
 		// Borrar session y cookies del producto
-		let borrar = {
-			datosDuros: {},
-			errores: false,
-			palabrasClave: "quien sabe cuanto cuesta ojal",
-			desambiguar: {},
-			datosPers: {},
-			confirmar: {},
-			IDdelProducto,
-		};
+		if (req.session.palabrasClave) delete req.session.palabrasClave;
+		if (req.session.desambiguar) delete req.session.desambiguar;
+		if (req.session.copiarFA) delete req.session.copiarFA;
+		if (req.session.datosDuros) delete req.session.datosDuros;
+		if (req.session.datosPers) delete req.session.datosPers;
+		if (req.session.confirmar) delete req.session.confirmar;
+		if (req.session.IDdelProducto) delete req.session.IDdelProducto;
+		if (req.session.errores) delete req.session.errores;
+		if (req.cookies.palabrasClave) res.clearCookie("palabrasClave");
+		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
+		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.cookies.datosPers) res.clearCookie("datosPers");
+		if (req.cookies.confirmar) res.clearCookie("confirmar");
+		if (req.cookies.IDdelProducto) res.clearCookie("IDdelProducto");
+		if (req.cookies.errores) res.clearCookie("errores");
 		// Redireccionar
+		return res.redirect("/agregar/productos/fin-del-proceso");
 	},
 
 	finDelProcesoForm: (req, res) => {
@@ -486,7 +538,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 };
 
 let revisarImagen = (tipo, tamano) => {
-	tamanoMaximo = 1;
+	tamanoMaximo = 2;
 	return tipo.slice(0, 6) != "image/"
 		? "Necesitamos un archivo de imagen"
 		: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
