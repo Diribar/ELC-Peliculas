@@ -31,6 +31,7 @@ module.exports = {
 		if (req.session.desambiguar) delete req.session.desambiguar;
 		if (req.session.copiarFA) delete req.session.copiarFA;
 		// 4. Render del formulario
+		return res.send(req.cookies);
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
 			tema,
@@ -70,7 +71,13 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "desambiguar";
-		// 2. Feedback de la instancia anterior
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.session.datosDuros) delete req.session.datosDuros;
+		// 3. Eliminar session y cookie de copiarFA, si existen
+		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
+		if (req.session.copiarFA) delete req.session.copiarFA;
+		// 4. Feedback de la instancia anterior
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: req.cookies.desambiguar
@@ -78,13 +85,8 @@ module.exports = {
 			: "";
 		if (!desambiguar)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
-		if (req.session.datosDuros) delete req.session.datosDuros;
-		// 4. Eliminar session y cookie de copiarFA, si existen
-		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
-		if (req.session.copiarFA) delete req.session.copiarFA;
 		// 5. Render del formulario
+		//return res.send(req.cookies);
 		resultados = desambiguar.resultados;
 		coincidencias = resultados.length;
 		prod_nuevos = resultados.filter((n) => n.YaEnBD == false);
@@ -119,7 +121,13 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "copiarFA";
-		// 2. Data Entry propio y errores
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.session.datosDuros) delete req.session.datosDuros;
+		// 3. Eliminar session y cookie de desambiguar, si existen
+		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
+		if (req.session.desambiguar) delete req.session.desambiguar;
+		// 4. Data Entry propio y errores
 		let copiarFA = req.session.copiarFA
 			? req.session.copiarFA
 			: req.cookies.copiarFA
@@ -130,13 +138,8 @@ module.exports = {
 			: copiarFA
 			? await validarProductos.copiarFA(copiarFA)
 			: "";
-		// 3. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
-		if (req.session.datosDuros) delete req.session.datosDuros;
-		// 4. Eliminar session y cookie de desambiguar, si existen
-		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
-		if (req.session.desambiguar) delete req.session.desambiguar;
 		// 5. Render del formulario
+		return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -189,34 +192,34 @@ module.exports = {
 	},
 
 	datosDurosForm: async (req, res) => {
-		//return res.send(req.cookies)
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosDuros";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.datosPers) res.clearCookie("datosPers");
+		if (req.session.datosPers) delete req.session.datosPers;
+		// 3. Feedback de la instancia anterior o Data Entry propio
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
-		// Detectar el origen
+		// 4. Detectar el origen
 		origen =
-			req.session.desambiguar || req.cookie.desambiguar
+			!!req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
-				: req.session.copiarFA || req.cookie.copiarFA
+				: !!req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect("/agregar/productos/" + origen);
-		// 3. GuardarIDdelProducto
+		// 5. GuardarIDdelProducto
 		IDdelProducto = datosClaveDelProducto(datosDuros);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosPers) res.clearCookie("datosPers");
-		if (req.session.datosPers) delete req.session.datosPers;
-		// 5. Render del formulario
+		// 6. Render del formulario
+		//return res.send(req.cookies);
 		let errores = req.session.errores
 			? req.session.errores
 			: await validarProductos.datosDuros(datosDuros, camposDD());
@@ -328,23 +331,24 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosPers";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Eliminar session y cookie posteriores, si existen
+		if (req.cookies.confirmar) res.clearCookie("confirmar");
+		if (req.session.confirmar) delete req.session.confirmar;
+		// 3. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers) return res.redirect("/agregar/productos/datos-duros");
-		// 3. GuardarIDdelProducto
+		// 4. GuardarIDdelProducto
 		IDdelProducto = datosClaveDelProducto(datosPers);
 		req.session.IDdelProducto = IDdelProducto;
 		res.cookie("IDdelProducto", IDdelProducto, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.confirmar) res.clearCookie("confirmar");
-		if (req.session.confirmar) delete req.session.confirmar;
 		// 5. Render del formulario
+		//return res.send(req.cookies);
 		let errores = req.session.errores ? req.session.errores : "";
 		return res.render("Home", {
 			tema,
