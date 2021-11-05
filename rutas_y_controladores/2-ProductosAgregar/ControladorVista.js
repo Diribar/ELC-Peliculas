@@ -31,7 +31,7 @@ module.exports = {
 		if (req.session.desambiguar) delete req.session.desambiguar;
 		if (req.session.copiarFA) delete req.session.copiarFA;
 		// 4. Render del formulario
-		return res.send(req.cookies);
+		//return res.send(req.cookies);
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
 			tema,
