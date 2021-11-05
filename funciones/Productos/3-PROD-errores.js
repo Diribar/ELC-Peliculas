@@ -141,8 +141,8 @@ module.exports = {
 				? ""
 				: !datos.director
 				? cartelCampoVacio
-				: longitud(datos.director, 2, 50)
-				? longitud(datos.director, 2, 50)
+				: longitud(datos.director, 2, 100)
+				? longitud(datos.director, 2, 100)
 				: castellano(datos.director)
 				? cartelCastellano
 				: "";
@@ -151,8 +151,8 @@ module.exports = {
 				? ""
 				: !datos.guion
 				? cartelCampoVacio
-				: longitud(datos.guion, 2, 50)
-				? longitud(datos.guion, 2, 50)
+				: longitud(datos.guion, 2, 100)
+				? longitud(datos.guion, 2, 100)
 				: castellano(datos.guion)
 				? cartelCastellano
 				: "";
@@ -161,8 +161,8 @@ module.exports = {
 				? ""
 				: !datos.musica
 				? cartelCampoVacio
-				: longitud(datos.musica, 2, 50)
-				? longitud(datos.musica, 2, 50)
+				: longitud(datos.musica, 2, 100)
+				? longitud(datos.musica, 2, 100)
 				: castellano(datos.musica)
 				? cartelCastellano
 				: "";

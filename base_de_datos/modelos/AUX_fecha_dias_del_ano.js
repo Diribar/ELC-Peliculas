@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "dias_del_ano";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		dia: { type: dt.INTEGER },
 		mes_id: { type: dt.INTEGER },
 	};

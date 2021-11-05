@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "colecciones_partes";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		colec_id: { type: dt.INTEGER },
 		peli_id: { type: dt.INTEGER },
 		peli_tmdb_id: { type: dt.STRING(20) },

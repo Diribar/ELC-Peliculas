@@ -33,4 +33,8 @@ module.exports = {
 			where: { nombre_original: nombre_original },
 		});
 	},
+
+	agregarPelicula: (datos) => {
+		return entidad.create(datos);
+	},
 };

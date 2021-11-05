@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "publicos_sugeridos";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		orden: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(20) },
 	};

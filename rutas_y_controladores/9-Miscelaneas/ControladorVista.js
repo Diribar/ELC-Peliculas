@@ -114,12 +114,7 @@ module.exports = {
 		}
 		// 4. Crear el registro en la BD
 		let entidad = "historicos_" + rubro + "s";
-		producto = await BD_varios.agregarPorParametro(datos, entidad);
-		let { id } = await BD_varios.ObtenerPorParametro(
-			entidad,
-			"nombre",
-			datos.nombre
-		);
+		let { id } = await BD_varios.agregarPorEntidad(entidad, datos);
 		//return res.send(id+"");
 		// 5. Guardar el id en 'Datos Personalizados'
 		req.session.datosPers[rubro + "_historico_id"] = id;
