@@ -197,7 +197,7 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers) res.clearCookie("datosPers");
 		if (req.session.datosPers) delete req.session.datosPers;
-		// 3. Feedback de la instancia anterior o Data Entry propio
+		// 3. Feedback de la instancia anterior
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
@@ -239,11 +239,11 @@ module.exports = {
 	},
 
 	DDG: async (req, res) => {
-		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		// 1. Feedback de la instancia anterior
 		aux = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros;
-		// Detectar el origen
+		// 2. Detectar el origen
 		origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -251,15 +251,15 @@ module.exports = {
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!aux) return res.redirect("/agregar/productos/" + origen);
-		// 1.2. Guardar el data entry en session y cookie
+		// 3. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 2.1. Averiguar si hay errores de validación
+		// 4. Averiguar si hay errores de validación
 		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
-		// 2.2. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
+		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
 		if (!errores.nombre_original) {
 			// Obtener los parámetros
 			fuente = datosDuros.fuente.toLowerCase();
@@ -282,7 +282,7 @@ module.exports = {
 				errores.hay = true;
 			}
 		}
-		// 2.3. Si aún no hay errores de imagen, revisar el archivo de imagen
+		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
 		if (!errores.avatar) {
 			if (req.file) {
 				// En caso de archivo por multer
@@ -308,20 +308,20 @@ module.exports = {
 				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
 		}
-		// 2.4. Si hay errores de validación, redireccionar
+		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/datos-duros");
 		}
-		// 3. Generar la session para la siguiente instancia
+		// 8. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
 		req.session.datosPers.avatarDP = nombre;
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Redireccionar a la siguiente instancia
+		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/productos/datos-personalizados");
 	},
