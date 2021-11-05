@@ -33,4 +33,9 @@ module.exports = {
 			where: { nombre_original: nombre_original },
 		});
 	},
+
+	agregarPelicula: async (datos) => {
+		//return datos
+		return await entidad.create({ ...datos });
+	},
 };

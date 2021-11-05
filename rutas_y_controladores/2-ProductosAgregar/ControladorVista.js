@@ -7,6 +7,7 @@ let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
 let validarProductos = require("../../funciones/Productos/3-PROD-errores");
 let BD_varios = require("../../funciones/BD/varios");
+let BD_peliculas = require("../../funciones/BD/peliculas");
 
 // *********** Controlador ***********
 module.exports = {
@@ -292,6 +293,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosPers";
 		// 2. Feedback de la instancia anterior o Data Entry propio
+		//return res.send({...req.session.datosPers});
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
@@ -335,9 +337,49 @@ module.exports = {
 			//return res.send(errores);
 			return res.redirect("/agregar/productos/datos-personalizados");
 		}
-		// 3. Redireccionar a la siguiente instancia
+		// 3. Si no hay errores, obtener la calificación
+		fe_valores = await BD_varios.ObtenerPorParametro(
+			"fe_valores",
+			"id",
+			req.body.fe_valores_id
+		)
+			.then((n) => n.valor / 3)
+			.then((n) => n.toFixed(2));
+		entretiene = await BD_varios.ObtenerPorParametro(
+			"entretiene",
+			"id",
+			req.body.entretiene_id
+		)
+			.then((n) => n.valor / 3)
+			.then((n) => n.toFixed(2));
+		calidad_sonora_visual = await BD_varios.ObtenerPorParametro(
+			"calidad_sonora_visual",
+			"id",
+			req.body.calidad_sonora_visual_id
+		)
+			.then((n) => n.valor / 3)
+			.then((n) => n.toFixed(2));
+		//return res.send(fe_valores + " " + entretiene + " " + calidad_sonora_visual);
+		calificacion =
+			(fe_valores * 0.5 + entretiene * 0.3 + calidad_sonora_visual * 0.2).toFixed(2);
+		//return res.send(calificacion + "");
+		// Preparar la info para el siguiente paso
+		req.session.confirmar = {
+			...req.session.datosPers,
+			fe_valores,
+			entretiene,
+			calidad_sonora_visual,
+			calificacion,
+			avatar: req.session.datosPers.avatarDP,
+			creada_por_id: req.session.usuario.id,
+		};
+		//return res.send(req.session.confirmar);
+		res.cookie("confirmar", req.session.confirmar, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/resumen");
+		return res.redirect("/agregar/productos/confirmar");
 	},
 
 	confirmarForm: (req, res) => {
@@ -345,46 +387,49 @@ module.exports = {
 		tema = "agregar";
 		codigo = "confirmar";
 		// 2. Feedback de la instancia anterior o Data Entry propio
-		datosPers = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers
-			? req.cookies.datosPers
+		confirmar = req.session.confirmar
+			? req.session.confirmar
+			: req.cookies.confirmar
+			? req.cookies.confirmar
 			: "";
-		if (!datosPers)
+		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: datosPers,
+			data_entry: confirmar,
 		});
 	},
 
-	confirmarGuardar: (req, res) => {
+	confirmarGuardar: async (req, res) => {
 		// 1. Feedback de la instancia anterior o Data Entry propio
-		datosPers = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers
-			? req.cookies.datosPers
+		confirmar = req.session.confirmar
+			? req.session.confirmar
+			: req.cookies.confirmar
+			? req.cookies.confirmar
 			: "";
-		if (!datosPers)
+		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 2. Guardar el registro
-
+		//return res.send(confirmar);
+		registro = await BD_peliculas.agregarPelicula(confirmar);
+		return res.send(registro)
 		// Actualizar "cantProductos" en "Relación con la vida"
+
+		// Guardar calificaciones_us
 
 		// Mover el archivo de imagen a la carpeta definitiva
 
 		// Si se agregó una COLECCIÓN TMDB:
-			// SI: Agregar las partes de la colección en forma automática.
-			// NO, pero es colección: req.session y cookie con el dato de la colección
-			// NO, y no tiene ninguna relación con una colección: do nothing
+		// SI: Agregar las partes de la colección en forma automática.
+		// NO, pero es colección: req.session y cookie con el dato de la colección
+		// NO, y no tiene ninguna relación con una colección: do nothing
 
 		// Borrar session y cookies del producto
 
 		// Redireccionar
-
 	},
 
 	finDelProcesoForm: (req, res) => {

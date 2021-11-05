@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "historicos_personajes";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		dia_del_ano_id: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(30) },
 		cant_productos: { type: dt.INTEGER },

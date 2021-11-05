@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		peli_tmdb_id: { type: dt.STRING(10) },
 		peli_fa_id: { type: dt.STRING(10) },
 		peli_imdb_id: { type: dt.STRING(10) },
@@ -30,8 +29,7 @@ module.exports = (sequelize, dt) => {
 		hecho_historico_id: { type: dt.INTEGER },
 		link_trailer: { type: dt.STRING(800) },
 		link_pelicula: { type: dt.STRING(800) },
-
-		calificacion: { type: dt.INTEGER },
+		calificacion: { type: dt.DECIMAL },
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },

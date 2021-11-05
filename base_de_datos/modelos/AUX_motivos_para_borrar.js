@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "motivos_para_borrar";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		nombre: { type: dt.STRING(20) },
 		productos: { type: dt.BOOLEAN },
 		historicos_personajes: { type: dt.BOOLEAN },

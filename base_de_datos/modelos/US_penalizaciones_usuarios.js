@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "penalizaciones_usuarios";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		creada_en: { type: dt.DATE },
 		usuario_id: { type: dt.INTEGER },
 		rol_usuario_id: { type: dt.INTEGER },

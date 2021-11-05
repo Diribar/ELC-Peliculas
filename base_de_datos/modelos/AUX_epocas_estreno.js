@@ -1,7 +1,6 @@
 module.exports = (sequelize, dt) => {
 	const alias = "epocas_estreno";
 	const columns = {
-		id: { type: dt.INTEGER, primaryKey: true },
 		orden: { type: dt.INTEGER },
 		nombre: { type: dt.STRING(20) },
 		ano_comienzo: { type: dt.INTEGER },
