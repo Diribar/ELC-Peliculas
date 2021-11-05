@@ -100,7 +100,6 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(req.session.datosDuros);
 		// 2. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/productos/datos-duros");
 	},
@@ -156,9 +155,7 @@ module.exports = {
 			}
 		}
 		// 2.3. Si hay errores de validación, redireccionar
-		//return res.send(errores);
 		if (errores.hay) {
-			// return res.send(errores);
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/copiar-fa");
 		}
@@ -167,7 +164,6 @@ module.exports = {
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(req.session.datosDuros);
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/productos/datos-duros");
@@ -177,7 +173,6 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "datosDuros";
-		//return res.send(req.cookies.datosDuros);
 		// 2. Feedback de la instancia anterior o Data Entry propio
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
@@ -194,7 +189,6 @@ module.exports = {
 		let pais = datosDuros.pais_id
 			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
 			: "";
-		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -208,7 +202,6 @@ module.exports = {
 	},
 
 	DDG: async (req, res) => {
-		//return res.send(req.body);
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosDuros
 			? req.session.datosDuros
@@ -216,12 +209,10 @@ module.exports = {
 		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
-		// return res.send(datosDuros);
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(datosDuros);
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
 		// 2.2. Averiguar si el TMDB_id o el FA_id ya están en la BD
@@ -273,13 +264,11 @@ module.exports = {
 		if (errores.hay) {
 			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
 			req.session.errores = errores;
-			return res.send(errores);
 			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosPers = req.session.datosDuros;
 		req.session.datosPers.avatarDP = nombre;
-		//return res.send(req.session.datosPers);
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -293,18 +282,15 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosPers";
 		// 2. Feedback de la instancia anterior o Data Entry propio
-		//return res.send({...req.session.datosPers});
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		//return res.send(datosPers)
 		if (!datosPers)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Render del formulario
 		let errores = req.session.errores ? req.session.errores : "";
-		//return res.send([datosPers.color, req.session.datosPers.color]);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -334,7 +320,6 @@ module.exports = {
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			//return res.send(errores);
 			return res.redirect("/agregar/productos/datos-personalizados");
 		}
 		// 3. Si no hay errores, obtener la calificación
@@ -359,10 +344,8 @@ module.exports = {
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		//return res.send(fe_valores + " " + entretiene + " " + calidad_sonora_visual);
 		calificacion =
 			(fe_valores * 0.5 + entretiene * 0.3 + calidad_sonora_visual * 0.2).toFixed(2);
-		//return res.send(calificacion + "");
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
@@ -373,7 +356,6 @@ module.exports = {
 			avatar: req.session.datosPers.avatarDP,
 			creada_por_id: req.session.usuario.id,
 		};
-		//return res.send(req.session.confirmar);
 		res.cookie("confirmar", req.session.confirmar, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -413,7 +395,6 @@ module.exports = {
 		if (!confirmar)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 2. Guardar el registro
-		//return res.send(confirmar);
 		registro = await BD_peliculas.agregarPelicula(confirmar);
 		return res.send(registro)
 		// Actualizar "cantProductos" en "Relación con la vida"
