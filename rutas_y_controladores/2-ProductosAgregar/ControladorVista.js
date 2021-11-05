@@ -445,6 +445,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Render del formulario
+		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -472,10 +473,15 @@ module.exports = {
 
 		// Mover el archivo de imagen a la carpeta definitiva
 
-		// Si se agregó una COLECCIÓN TMDB:
-		// SI: Agregar las partes de la colección en forma automática.
-		// NO, pero es colección: req.session y cookie con el dato de la colección
-		// NO, y no tiene ninguna relación con una colección: do nothing
+		// Es una PELÍCULA que pertenece a una colección
+		if (confirmar.colec_tmdb_id) {
+			req.session.coleccion_id = confirmar.colec_TMDB_id;
+			res.cookie("palabrasClave", confirmar.colec_TMDB_id, {
+				maxAge: 24 * 60 * 60 * 1000,
+			});
+		}
+		// Es una COLECCIÓN, faltan las partes
+		// agregarlas partes en forma automática
 
 		// Borrar session y cookies del producto
 		if (req.session.palabrasClave) delete req.session.palabrasClave;
