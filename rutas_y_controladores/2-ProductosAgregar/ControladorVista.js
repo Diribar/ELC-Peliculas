@@ -50,7 +50,6 @@ module.exports = {
 		res.cookie("palabrasClave", palabrasClave, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(req.cookies);
 		// 2. Si hay errores de validación, redireccionar
 		let errores = await validarProductos.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
