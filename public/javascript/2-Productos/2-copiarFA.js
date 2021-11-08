@@ -151,7 +151,7 @@ window.addEventListener("load", async () => {
 					"El código interno de esta " +
 					rubroAPI.selectedOptions[0].label +
 					" ya se encuentra en nuestra base de datos";
-				accionesSiHayErrores(1, errores);
+				accionesSiHayErrores(2, errores);
 			} else {
 				button.innerHTML = "Avanzar";
 			}
