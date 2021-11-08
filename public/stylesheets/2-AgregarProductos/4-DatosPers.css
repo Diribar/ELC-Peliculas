@@ -28,7 +28,7 @@
 #data_entry .label-input .input-error select[name="color"],
 #data_entry .label-input .input-error select[name="fe_valores_id"],
 #data_entry .label-input .input-error select[name="entretiene_id"],
-#data_entry .label-input .input-error select[name="calidad_sonora_visual_id"]
+#data_entry .label-input .input-error select[name="calidad_tecnica_id"]
 	{width: 70px}	
 
 /* Imagen de la película */

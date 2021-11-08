@@ -166,7 +166,7 @@ module.exports = {
 			elc_id = await procesarProductos.obtenerELC_id({
 				entidad,
 				campo,
-				id: fa_id,
+				valor: fa_id,
 			});
 			if (elc_id) {
 				errores.direccion =
@@ -277,7 +277,7 @@ module.exports = {
 			elc_id = await procesarProductos.obtenerELC_id({
 				entidad,
 				campo,
-				id,
+				valor,
 			});
 			// Acciones si hubieron errores
 			if (elc_id) {
@@ -380,6 +380,9 @@ module.exports = {
 		if (!aux) return res.redirect("/agregar/productos/datos-duros");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.body };
+		if (!datosPers.personaje_historico_id)
+			delete datosPers.personaje_historico_id;
+		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -407,17 +410,17 @@ module.exports = {
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		calidad_sonora_visual = await BD_varios.obtenerPorParametro(
-			"calidad_sonora_visual",
+		calidad_tecnica = await BD_varios.obtenerPorParametro(
+			"calidad_tecnica",
 			"id",
-			req.body.calidad_sonora_visual_id
+			req.body.calidad_tecnica_id
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
 		calificacion = (
 			fe_valores * 0.5 +
 			entretiene * 0.3 +
-			calidad_sonora_visual * 0.2
+			calidad_tecnica * 0.2
 		).toFixed(2);
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
@@ -425,7 +428,7 @@ module.exports = {
 			colec_tmdb_rubro: req.session.datosPers.rubroAPI,
 			fe_valores,
 			entretiene,
-			calidad_sonora_visual,
+			calidad_tecnica,
 			calificacion,
 			creada_por_id: req.session.usuario.id,
 		};
@@ -476,7 +479,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/datos-personalizados");
 		// 2. Guardar el registro
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
-		registro = await BD_varios.agregarPorEntidad(entidad, confirmar);
+		registro = await BD_varios.agregarEntidad(entidad, confirmar);
 		// 3. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRelacionConLaVida(
 			"historicos_personajes",
@@ -486,12 +489,13 @@ module.exports = {
 			"historicos_hechos",
 			registro.hecho_historico_id
 		);
-		// Guardar calificaciones_us
-
-		// Mover el archivo de imagen a la carpeta definitiva
-
+		// Miscelaneas
+		guardarCalificaciones_us(confirmar, registro);
+		moverImagenCarpetaDefinitiva(confirmar.avatar);
 		// Si es una COLECCIÓN TMDB, agregar las partes en forma automática
-
+		if (confirmar.rubroAPI != "movie" && confirmar.fuente == "TMDB")
+			agregarLasPartesDeLaColeccion(confirmar, registro);
+		//return res.send(confirmar);
 		// Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
 		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
@@ -703,12 +707,9 @@ let datosPersSelect = async () => {
 		},
 		{
 			titulo: "Calidad sonora y visual",
-			campo: "calidad_sonora_visual_id",
+			campo: "calidad_tecnica_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.obtenerTodos(
-				"calidad_sonora_visual",
-				"orden"
-			),
+			valores: await BD_varios.obtenerTodos("calidad_tecnica", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
@@ -813,10 +814,71 @@ let actualizarRelacionConLaVida = async (entidad, ID) => {
 	if (ID) {
 		aux = await BD_varios.obtenerPorParametro(entidad, "id", ID);
 		aux.cant_productos++;
-		await BD_varios.actualizarPorEntidad(
+		BD_varios.actualizarPorParametro(
 			entidad,
-			{cant_productos: aux.cant_productos},
+			{ cant_productos: aux.cant_productos },
 			ID
 		);
+	}
+};
+
+let guardarCalificaciones_us = (confirmar, productoEnBD) => {
+	entidad_id = confirmar.rubroAPI == "movie" ? "peli_id" : "colec_id";
+	let datos = {
+		usuario_id: confirmar.creada_por_id,
+		[entidad_id]: productoEnBD.id,
+		fe_valores_id: confirmar.fe_valores_id,
+		entretiene_id: confirmar.entretiene_id,
+		calidad_tecnica_id: confirmar.calidad_tecnica_id,
+		fe_valores_valor: confirmar.fe_valores,
+		entretiene_valor: confirmar.entretiene,
+		calidad_tecnica_valor: confirmar.calidad_tecnica,
+		resultado: confirmar.calificacion,
+	};
+	BD_varios.agregarEntidad("calificaciones_us", datos);
+};
+
+let moverImagenCarpetaDefinitiva = (nombre) => {
+	let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
+	let rutaDefinitiva = "./public/imagenes/2-Productos/" + nombre;
+	fs.rename(rutaProvisoria, rutaDefinitiva, function (err) {
+		if (err) {
+			throw err;
+		} else {
+			console.log("Archivo de imagen movido a su carpeta definitiva");
+		}
+	});
+};
+
+let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
+	partes = confirmar.partes;
+	if (partes.length) {
+		let orden = 0;
+		for (parte of partes) {
+			orden++;
+			datos = {
+				colec_id: registro.id,
+				peli_tmdb_id: parte.peli_tmdb_id,
+				orden: orden,
+				creada_por_id: 2,
+			};
+			if (parte.nombre_original)
+				datos.nombre_original = parte.nombre_original;
+			if (parte.nombre_castellano)
+				datos.nombre_castellano = parte.nombre_castellano;
+			if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
+			if (parte.cant_capitulos)
+				datos.cant_capitulos = parte.cant_capitulos;
+			;
+			if (parte.avatar) datos.avatar = parte.avatar;
+			buscarPeliID = {
+				entidad: "peliculas",
+				campo: "peli_tmdb_id",
+				valor: parte.peli_tmdb_id,
+			};
+			peli_id = await BD_varios.obtenerELC_id(buscarPeliID);
+			if (peli_id) datos.peli_id = peli_id;
+			BD_varios.agregarEntidad("colecciones_partes", datos);
+		}
 	}
 };

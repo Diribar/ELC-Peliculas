@@ -226,7 +226,7 @@ let averiguarSiYaEnBD = async (datos) => {
 		let dato = {
 			entidad,
 			campo,
-			id: datos.resultados[i][campo],
+			valor: datos.resultados[i][campo],
 		};
 		let YaEnBD = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {
