@@ -307,6 +307,7 @@ module.exports = {
 				: !req.file
 				? await download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
+			console.log("linea 310", fs.existsSync(rutaYnombre));
 		}
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -548,8 +549,8 @@ let download = async (url, rutaYnombre) => {
 	});
 	response.data.pipe(writer);
 	return new Promise((resolve, reject) => {
-		writer.on("finish", resolve);
-		writer.on("error", reject);
+		writer.on("finish", () => resolve());
+		writer.on("error", (err) => reject(err));
 	});
 };
 
