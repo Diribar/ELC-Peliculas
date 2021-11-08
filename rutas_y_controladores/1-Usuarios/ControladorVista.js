@@ -167,10 +167,10 @@ module.exports = {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "editables";
-		let paises = await BD_varios.ObtenerTodos("paises", "nombre");
+		let paises = await BD_varios.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let estados_eclesiales = await BD_varios.ObtenerTodos(
+		let estados_eclesiales = await BD_varios.obtenerTodos(
 			"estados_eclesiales",
 			"orden"
 		);

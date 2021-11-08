@@ -351,7 +351,7 @@ module.exports = {
 	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
 		if (!datos.id) return false;
-		let ELC_id = await BD_varios.ObtenerELC_id(datos);
+		let ELC_id = await BD_varios.obtenerELC_id(datos);
 		return ELC_id;
 	},
 };

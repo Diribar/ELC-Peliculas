@@ -6,7 +6,7 @@ module.exports = {
 	home: async (req, res) => {
 		tema = "opciones";
 		// Obtener las opciones
-		let opciones_BD = await BD_varios.ObtenerTodos("menu_opciones", "id");
+		let opciones_BD = await BD_varios.obtenerTodos("menu_opciones", "id");
 		//res.send(opciones_BD);
 		res.render("Home", {
 			tema,
@@ -71,22 +71,22 @@ module.exports = {
 // Obtener info para las vistas
 let vistas = async (opcion) => {
 	// Obtener las Opciones
-	let opciones_BD = await BD_varios.ObtenerTodos("menu_opciones", "id");
+	let opciones_BD = await BD_varios.obtenerTodos("menu_opciones", "id");
 	let opcionElegida = opciones_BD.filter((n) => n.url == opcion)[0];
 	// Obtener los Tipos de la opción elegida
 	if (opcion == "listado") {
-		tipos_BD = await BD_varios.ObtenerTodos("listado_peliculas", "id");
+		tipos_BD = await BD_varios.obtenerTodos("listado_peliculas", "id");
 	} else {
-		tipos_BD = await BD_varios.ObtenerPorParametro(
+		tipos_BD = await BD_varios.obtenerPorParametro(
 			"subcategorias",
 			"categoria_id",
 			opcion.toUpperCase()
 		);
 	}
-	// Obtener el Título de la opción elegida
+	// obtener el Título de la opción elegida
 	let titulo =
 		"Películas - " +
-		(await BD_varios.ObtenerPorParametro(
+		(await BD_varios.obtenerPorParametro(
 			"menu_opciones",
 			"url",
 			opcion

@@ -3,20 +3,20 @@ const entidad = db.peliculas;
 //const { Op } = require("sequelize");
 
 module.exports = {
-	ObtenerTodos: () => {
+	obtenerTodos: () => {
 		return entidad.findAll({
 			include: ["coleccion_pelicula", "categoria", "subcategoria"],
 			where: { borrado: false },
 		});
 	},
 
-	ObtenerPorParametro: (parametro, valor) => {
+	obtenerPorParametro: (parametro, valor) => {
 		return entidad.findOne({
 			where: { [parametro]: valor },
 		});
 	},
 
-	ObtenerPorID: (ID) => {
+	obtenerPorID: (ID) => {
 		return entidad.findByPk(ID, {
 			include: ["coleccion_pelicula", "categoria", "subcategoria"],
 		});

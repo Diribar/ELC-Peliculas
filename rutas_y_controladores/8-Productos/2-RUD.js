@@ -6,7 +6,7 @@ module.exports = {
 	detalle: async (req, res) => {
 		// Obtener los datos de la película
 		let ID = req.params.id
-		let producto = await BD_peliculas.ObtenerPorID(ID);
+		let producto = await BD_peliculas.obtenerPorID(ID);
 		// Ir a la vista
 		return res.render("0-CRUD", {
 			titulo: "Detalle",

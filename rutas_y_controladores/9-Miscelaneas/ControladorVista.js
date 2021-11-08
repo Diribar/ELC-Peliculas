@@ -59,7 +59,7 @@ module.exports = {
 			? await validarRV[codigo](data_entry)
 			: "";
 		// Meses del año
-		meses = await BD_varios.ObtenerTodos("meses", "id");
+		meses = await BD_varios.obtenerTodos("meses", "id");
 		// Render
 		return res.render("Home", {
 			tema,
@@ -106,7 +106,7 @@ module.exports = {
 			data_entry.dia &&
 			data_entry.desconocida == undefined
 		) {
-			dia_del_ano_id = await BD_varios.ObtenerTodos("dias_del_ano", "id")
+			dia_del_ano_id = await BD_varios.obtenerTodos("dias_del_ano", "id")
 				.then((n) => n.filter((m) => m.mes_id == data_entry.mes_id))
 				.then((n) => n.filter((m) => m.dia == data_entry.dia))
 				.then((n) => n[0].id);
