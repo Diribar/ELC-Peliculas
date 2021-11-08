@@ -309,8 +309,9 @@ module.exports = {
 			errores.avatar = revisarImagen(tipo, tamano);
 			// Si la imagen venía de TMDB, entonces grabarla
 			if (!errores.avatar && !errores.hay && datosDuros.fuente == "TMDB")
-				await download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
-			if (errores.avatar) errores.hay = true; // Marcar que sí hay errores
+				download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
+			// Si hay errores en el avatar, marcar que sí hay errores
+			if (errores.avatar) errores.hay = true;
 		}
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -320,7 +321,10 @@ module.exports = {
 			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 8. Generar la session para la siguiente instancia
-		req.session.datosPers = { ...req.session.datosDuros, avatar: nombre };
+		avatarDP =
+			datosDuros.fuente == "TMDB" ? datosDuros.avatar : rutaYnombre;
+		console.log(avatarDP)
+		req.session.datosPers = { ...req.session.datosDuros, avatarDP: avatarDP, avatar: nombre };
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
