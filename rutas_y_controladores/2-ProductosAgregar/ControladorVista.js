@@ -308,7 +308,7 @@ module.exports = {
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
 			// Si la imagen venía de TMDB, entonces grabarla
-			if (!errores.hay && datosDuros.fuente == "TMDB")
+			if (!errores.avatar && !errores.hay && datosDuros.fuente == "TMDB")
 				await download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
 			if (errores.avatar) errores.hay = true; // Marcar que sí hay errores
 		}
