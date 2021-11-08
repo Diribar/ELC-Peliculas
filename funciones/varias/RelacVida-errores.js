@@ -13,7 +13,7 @@ module.exports = {
 			? longitud(datos.nombre, 2, 30)
 			: castellano(datos.nombre)
 			? cartelCastellano
-			: (await BD_varias.ObtenerPorParametro(
+			: (await BD_varias.obtenerPorParametro(
 					"historicos_"+rubro+"s",
 					"nombre",
 					datos.nombre

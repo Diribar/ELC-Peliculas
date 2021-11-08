@@ -1,19 +1,19 @@
 const db = require("../../base_de_datos/modelos");
 
 module.exports = {
-	ObtenerTodos: (entidad, orden) => {
+	obtenerTodos: (entidad, orden) => {
 		return db[entidad].findAll({
 			order: [[orden, "ASC"]],
 		});
 	},
 
-	ObtenerPorParametro: (entidad, parametro, valor) => {
+	obtenerPorParametro: (entidad, parametro, valor) => {
 		return db[entidad].findOne({
 			where: { [parametro]: valor },
 		});
 	},
 
-	ObtenerTodosIncludeOrder: (
+	obtenerTodosIncludeOrder: (
 		entidad,
 		camposInclude,
 		campoOrder,
@@ -25,11 +25,11 @@ module.exports = {
 		});
 	},
 
-	ObtenerPorId: (entidad, id) => {
+	obtenerPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
 	},
 
-	ObtenerELC_id: (datos) => {
+	obtenerELC_id: (datos) => {
 		return db[datos.entidad]
 			.findOne({ where: { [datos.campo]: datos.id } })
 			.then((n) => {
@@ -41,7 +41,7 @@ module.exports = {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
 		if (pais_id.length) {
-			BD_paises = await this.ObtenerTodos("paises", "nombre");
+			BD_paises = await this.obtenerTodos("paises", "nombre");
 			pais_idArray = pais_id.split(", ");
 			// Convertir 'array de ID' en 'string de nombres"
 			for (pais_id of pais_idArray) {
@@ -57,7 +57,7 @@ module.exports = {
 		// Función para convertir 'string de nombre' en  'string de ID'
 		let resultado = [];
 		if (pais_nombre.length) {
-			BD_paises = await this.ObtenerTodos("paises", "nombre");
+			BD_paises = await this.obtenerTodos("paises", "nombre");
 			pais_nombreArray = pais_nombre.split(", ");
 			// Convertir 'array de nombres' en 'string de ID"
 			for (pais_nombre of pais_nombreArray) {
@@ -73,8 +73,12 @@ module.exports = {
 		return db[entidad].create(datos);
 	},
 
+	actualizarPorEntidad: (entidad, datos, ID) => {
+		return db[entidad].update(datos, { where: { id: ID } });
+	},
+
 	// Sin uso aún
-	ObtenerPorIdConInclude: (entidad, id, include) => {
+	obtenerPorIdConInclude: (entidad, id, include) => {
 		return db[entidad].findByPk(id, {
 			include: [include],
 		});

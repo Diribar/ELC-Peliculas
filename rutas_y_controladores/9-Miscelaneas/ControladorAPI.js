@@ -6,11 +6,11 @@ let BD_varios = require("../../funciones/BD/varios");
 module.exports = {
 	buscarOtrosCasos: async (req, res) => {
 		let { mes_id, dia, rubro } = req.query;
-		dia_del_ano_id = await BD_varios.ObtenerTodos("dias_del_ano", "id")
+		dia_del_ano_id = await BD_varios.obtenerTodos("dias_del_ano", "id")
 			.then((n) => n.filter((m) => m.mes_id == mes_id))
 			.then((n) => n.filter((m) => m.dia == dia))
 			.then((n) => n[0].id);
-		casos = await BD_varios.ObtenerTodos(
+		casos = await BD_varios.obtenerTodos(
 			"historicos_" + rubro + "s",
 			"nombre"
 		)
