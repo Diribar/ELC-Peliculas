@@ -445,6 +445,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Render del formulario
+		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -466,34 +467,24 @@ module.exports = {
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		//return res.send(req.session);
 		registro = await BD_varios.agregarPorEntidad(entidad, confirmar);
+		
+		// Resolver imagen desde copiarFA en DP
+
 		// Actualizar "cantProductos" en "Relación con la vida"
 
 		// Guardar calificaciones_us
 
 		// Mover el archivo de imagen a la carpeta definitiva
 
-		// Si se agregó una COLECCIÓN TMDB:
-		// SI: Agregar las partes de la colección en forma automática.
-		// NO, pero es colección: req.session y cookie con el dato de la colección
-		// NO, y no tiene ninguna relación con una colección: do nothing
+		// Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 
 		// Borrar session y cookies del producto
-		if (req.session.palabrasClave) delete req.session.palabrasClave;
-		if (req.session.desambiguar) delete req.session.desambiguar;
-		if (req.session.copiarFA) delete req.session.copiarFA;
-		if (req.session.datosDuros) delete req.session.datosDuros;
-		if (req.session.datosPers) delete req.session.datosPers;
-		if (req.session.confirmar) delete req.session.confirmar;
-		if (req.session.IDdelProducto) delete req.session.IDdelProducto;
-		if (req.session.errores) delete req.session.errores;
-		if (req.cookies.palabrasClave) res.clearCookie("palabrasClave");
-		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
-		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
-		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
-		if (req.cookies.datosPers) res.clearCookie("datosPers");
-		if (req.cookies.confirmar) res.clearCookie("confirmar");
-		if (req.cookies.IDdelProducto) res.clearCookie("IDdelProducto");
-		if (req.cookies.errores) res.clearCookie("errores");
+		let metodos = ["palabrasClave","desambiguar","copiarFA",]
+		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
+		for (metodo of metodos) {
+			if (req.session[metodo]) delete req.session[metodo];
+			if (req.cookies[metodo]) res.clearCookie(metodo);
+		}
 		// Redireccionar
 		return res.redirect("/agregar/productos/fin-del-proceso");
 	},
@@ -781,6 +772,10 @@ let datosClaveDelProducto = (datos) => {
 				: datos.fuente == "FA"
 				? "peli_fa_id"
 				: "";
+		IDdelProducto.en_coleccion = datos.en_coleccion;
+		datos.colec_tmdb_id
+			? (IDdelProducto.colec_tmdb_id = datos.colec_tmdb_id)
+			: "";
 	} else {
 		IDdelProducto.entidad = "colecciones";
 		IDdelProducto.campo =

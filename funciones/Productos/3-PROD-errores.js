@@ -20,8 +20,8 @@ module.exports = {
 		// Rubro
 		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
 		// En colección
-		errores.enColeccion =
-			!datos.enColeccion && datos.rubroAPI == "movie"
+		errores.en_coleccion =
+			!datos.en_coleccion && datos.rubroAPI == "movie"
 				? "Elegí una opción"
 				: "";
 		// Dirección
@@ -71,8 +71,8 @@ module.exports = {
 		// Comenzar con las revisiones
 		let errores = {};
 		// En colección
-		errores.enColeccion =
-			!datos.enColeccion &&
+		errores.en_coleccion =
+			!datos.en_coleccion &&
 			datos.rubroAPI == "movie" &&
 			datos.fuente == "IM"
 				? "Elegí una opción"

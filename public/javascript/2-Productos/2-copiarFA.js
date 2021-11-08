@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	let resultadoComentario = document.querySelector("#resultado");
 	let rubroAPI = document.querySelector("select[name='rubroAPI']");
 	let resto = document.querySelector("#data_entry #resto");
-	let sectEnColeccion = document.querySelector("#enColeccion");
+	let sectEnColeccion = document.querySelector("#en_coleccion");
 	let statusInicial = true;
 	let pre = "/agregar/productos/api/";
 
@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 			sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
 				iconoOK[j].classList.contains("ocultar")
-					? inputs[j].name != "enColeccion"
+					? inputs[j].name != "en_coleccion"
 						? (sinErrores = false)
 						: inputs[0].value == "movie"
 						? (sinErrores = false)

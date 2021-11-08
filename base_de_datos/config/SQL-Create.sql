@@ -91,14 +91,14 @@ CREATE TABLE USUARIOS (
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
 	estado_eclesial_id VARCHAR(2) NULL,
-	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
 	aut_data_entry BOOLEAN NOT NULL DEFAULT 0,
 	borrado BOOLEAN NULL DEFAULT 0,
 	borrado_en DATETIME NULL,
 	borrado_motivo VARCHAR(500) NULL,
-	borrado_por INT UNSIGNED NULL,
+	borrado_por_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
@@ -347,9 +347,9 @@ CREATE TABLE COLECCIONES (
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
 	pais_id VARCHAR(20) NOT NULL,
-	director VARCHAR(50) NOT NULL,
-	guion VARCHAR(50) NOT NULL,
-	musica VARCHAR(50) NOT NULL,
+	director VARCHAR(100) NOT NULL,
+	guion VARCHAR(100) NOT NULL,
+	musica VARCHAR(100) NOT NULL,
 	actores VARCHAR(500) NOT NULL,
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
@@ -434,21 +434,21 @@ VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hom
 ;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	peli_tmdb_id VARCHAR(10) NULL,
-	peli_fa_id VARCHAR(10) NULL,
-	peli_imdb_id VARCHAR(10) NULL,
+	peli_tmdb_id VARCHAR(10) NULL UNIQUE,
+	peli_fa_id VARCHAR(10) NULL UNIQUE,
+	peli_imdb_id VARCHAR(10) NULL UNIQUE,
 	colec_id INT UNSIGNED NULL,
-	colec_TMDB_id VARCHAR(10) NULL,
-	enColeccion BOOLEAN NOT NULL DEFAULT 0,
+	colec_tmdb_id VARCHAR(10) NULL,
+	en_coleccion BOOLEAN DEFAULT 0,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
 	pais_id VARCHAR(20) NOT NULL,
-	director VARCHAR(50) NOT NULL,
-	guion VARCHAR(50) NOT NULL,
-	musica VARCHAR(50) NOT NULL,
+	director VARCHAR(100) NOT NULL,
+	guion VARCHAR(100) NOT NULL,
+	musica VARCHAR(100) NOT NULL,
 	actores VARCHAR(500) NOT NULL,
 	productor VARCHAR(100) NOT NULL,
 	sinopsis VARCHAR(800) NOT NULL,
@@ -492,8 +492,8 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 100, 'IM')
+INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
+VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 1, 'IM', 1)
 ;
 CREATE TABLE fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -540,20 +540,17 @@ CREATE TABLE calificaciones_us (
 	usuario_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
 	colec_id INT UNSIGNED NULL,
-	fe_valores_id INT UNSIGNED NOT NULL,
-	entretiene_id INT UNSIGNED NOT NULL,
-	calidad_sonora_visual_id INT UNSIGNED NOT NULL,
+	fe_valores DECIMAL(3,2) UNSIGNED NOT NULL,
+	entretiene DECIMAL(3,2) UNSIGNED NOT NULL,
+	calidad_sonora_visual DECIMAL(3,2) UNSIGNED NOT NULL,
 	resultado DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
-	FOREIGN KEY (fe_valores_id) REFERENCES fe_valores(id),
-	FOREIGN KEY (entretiene_id) REFERENCES entretiene(id),
-	FOREIGN KEY (calidad_sonora_visual_id) REFERENCES calidad_sonora_visual(id)
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores_id, entretiene_id, calidad_sonora_visual_id)
-VALUES (1, 1, 1, 4, 4, 2)
+INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores, entretiene, calidad_sonora_visual)
+VALUES (1, 1, 1, 1, 1, 1)
 ;
 CREATE TABLE interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
