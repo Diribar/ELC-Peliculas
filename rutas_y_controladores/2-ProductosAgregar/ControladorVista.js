@@ -1,7 +1,7 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let request = require("request");
+let axios = require("axios");
 let requestPromise = require("request-promise");
 let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
@@ -305,7 +305,7 @@ module.exports = {
 			errores.avatar
 				? (errores.hay = true) // Marcar que sí hay errores
 				: !req.file
-				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
+				? await download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
 				: "";
 		}
 		// 7. Si hay errores de validación, redireccionar
@@ -539,12 +539,18 @@ let revisarImagen = (tipo, tamano) => {
 		: "";
 };
 
-let download = (uri, filename) => {
-	request.head(uri, () => {
-		request(uri)
-			.pipe(fs.createWriteStream(filename))
-			.on("close", () => console.log("imagen guardada"));
+let download = async (url, rutaYnombre) => {
+	let writer = fs.createWriteStream(rutaYnombre);
+	let response = await axios({
+		method: "GET",
+		url: url,
+		responseType: "stream",
 	});
+	response.data.pipe(writer);
+	return new Promise((resolve,reject)=> {
+		writer.on("finish", resolve)
+		writer.on("error", reject)
+	})
 };
 
 let camposDD = () => {
