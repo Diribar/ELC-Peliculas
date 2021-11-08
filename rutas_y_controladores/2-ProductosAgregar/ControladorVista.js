@@ -325,7 +325,6 @@ module.exports = {
 			datosDuros.fuente == "TMDB"
 				? datosDuros.avatar
 				: "/imagenes/9-Provisorio/" + nombre;
-		console.log(avatarDP);
 		req.session.datosPers = {
 			...req.session.datosDuros,
 			avatarDP: avatarDP,
