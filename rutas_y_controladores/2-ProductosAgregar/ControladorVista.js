@@ -195,7 +195,12 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosPers) res.clearCookie("datosPers");
+		if (req.cookies.datosPers) {
+			ruta = "./public/imagenes/9-Provisorio/";
+			if (req.cookies.datosPers.avatar)
+				fs.unlinkSync(ruta + req.cookies.datosPers.avatar);
+			res.clearCookie("datosPers");
+		}
 		if (req.session.datosPers) delete req.session.datosPers;
 		// 3. Feedback de la instancia anterior
 		datosDuros = req.session.datosDuros
@@ -317,8 +322,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 8. Generar la session para la siguiente instancia
-		req.session.datosPers = req.session.datosDuros;
-		req.session.datosPers.avatarDP = nombre;
+		req.session.datosPers = { ...req.session.datosDuros, avatar: nombre };
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -416,7 +420,6 @@ module.exports = {
 			entretiene,
 			calidad_sonora_visual,
 			calificacion,
-			avatar: req.session.datosPers.avatarDP,
 			creada_por_id: req.session.usuario.id,
 		};
 		res.cookie("confirmar", req.session.confirmar, {
