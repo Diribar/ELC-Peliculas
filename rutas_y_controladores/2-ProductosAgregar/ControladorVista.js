@@ -467,7 +467,7 @@ module.exports = {
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		//return res.send(req.session);
 		registro = await BD_varios.agregarPorEntidad(entidad, confirmar);
-		
+
 		// Resolver imagen desde copiarFA en DP
 
 		// Actualizar "cantProductos" en "Relación con la vida"
@@ -479,7 +479,7 @@ module.exports = {
 		// Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 
 		// Borrar session y cookies del producto
-		let metodos = ["palabrasClave","desambiguar","copiarFA",]
+		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
 		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
@@ -547,10 +547,10 @@ let download = async (url, rutaYnombre) => {
 		responseType: "stream",
 	});
 	response.data.pipe(writer);
-	return new Promise((resolve,reject)=> {
-		writer.on("finish", resolve)
-		writer.on("error", reject)
-	})
+	return new Promise((resolve, reject) => {
+		writer.on("finish", resolve);
+		writer.on("error", reject);
+	});
 };
 
 let camposDD = () => {
