@@ -295,7 +295,7 @@ module.exports = {
 				tamano = req.file.size;
 				nombre = req.file.filename;
 				rutaYnombre = req.file.path;
-			} else {
+			} else if (datosDuros.avatar) {
 				// En caso de archivo sin multer
 				let datos = await requestPromise
 					.head(datosDuros.avatar)
@@ -307,17 +307,15 @@ module.exports = {
 			}
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
-			errores.avatar
-				? (errores.hay = true) // Marcar que sí hay errores
-				: !req.file
-				? await download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
-				: "";
-			console.log("linea 310", fs.existsSync(rutaYnombre));
+			// Si la imagen venía de TMDB, entonces grabarla
+			if (!errores.hay && datosDuros.fuente == "TMDB")
+				await download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
+			if (errores.avatar) errores.hay = true; // Marcar que sí hay errores
 		}
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
-			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
+			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/datos-duros");
 		}
@@ -552,7 +550,7 @@ let download = async (url, rutaYnombre) => {
 	});
 	response.data.pipe(writer);
 	return new Promise((resolve, reject) => {
-		writer.on("finish", () => resolve());
+		writer.on("finish", () => resolve(console.log("Imagen guardada")));
 		writer.on("error", (err) => reject(err));
 	});
 };

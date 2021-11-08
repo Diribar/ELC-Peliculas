@@ -55,5 +55,6 @@ window.addEventListener("load", () => {
 	// Submit
 	form.addEventListener("submit", (e) => {
 		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
+		button.classList.add("botonSinLink");
 	});
 });
