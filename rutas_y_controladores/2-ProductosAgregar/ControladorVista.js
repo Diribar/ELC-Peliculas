@@ -322,9 +322,15 @@ module.exports = {
 		}
 		// 8. Generar la session para la siguiente instancia
 		avatarDP =
-			datosDuros.fuente == "TMDB" ? datosDuros.avatar : rutaYnombre;
-		console.log(avatarDP)
-		req.session.datosPers = { ...req.session.datosDuros, avatarDP: avatarDP, avatar: nombre };
+			datosDuros.fuente == "TMDB"
+				? datosDuros.avatar
+				: "/imagenes/9-Provisorio/" + nombre;
+		console.log(avatarDP);
+		req.session.datosPers = {
+			...req.session.datosDuros,
+			avatarDP: avatarDP,
+			avatar: nombre,
+		};
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
