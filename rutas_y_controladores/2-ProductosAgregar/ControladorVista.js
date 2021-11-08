@@ -1,7 +1,7 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let request = require("request");
+let axios = require("axios");
 let requestPromise = require("request-promise");
 let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
 let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
@@ -195,7 +195,12 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosPers) res.clearCookie("datosPers");
+		if (req.cookies.datosPers) {
+			ruta = "./public/imagenes/9-Provisorio/";
+			if (req.cookies.datosPers.avatar)
+				fs.unlinkSync(ruta + req.cookies.datosPers.avatar);
+			res.clearCookie("datosPers");
+		}
 		if (req.session.datosPers) delete req.session.datosPers;
 		// 3. Feedback de la instancia anterior
 		datosDuros = req.session.datosDuros
@@ -290,7 +295,7 @@ module.exports = {
 				tamano = req.file.size;
 				nombre = req.file.filename;
 				rutaYnombre = req.file.path;
-			} else {
+			} else if (datosDuros.avatar) {
 				// En caso de archivo sin multer
 				let datos = await requestPromise
 					.head(datosDuros.avatar)
@@ -302,22 +307,20 @@ module.exports = {
 			}
 			// Revisar errores
 			errores.avatar = revisarImagen(tipo, tamano);
-			errores.avatar
-				? (errores.hay = true) // Marcar que sí hay errores
-				: !req.file
-				? download(datosDuros.avatar, rutaYnombre) // Grabar el archivo de url
-				: "";
+			// Si la imagen venía de TMDB, entonces grabarla
+			if (!errores.avatar && !errores.hay && datosDuros.fuente == "TMDB")
+				await download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
+			if (errores.avatar) errores.hay = true; // Marcar que sí hay errores
 		}
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
-			if (req.file) fs.unlinkSync(rutaYnombre); // Borrar el archivo de multer
+			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/datos-duros");
 		}
 		// 8. Generar la session para la siguiente instancia
-		req.session.datosPers = req.session.datosDuros;
-		req.session.datosPers.avatarDP = nombre;
+		req.session.datosPers = { ...req.session.datosDuros, avatar: nombre };
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -415,7 +418,6 @@ module.exports = {
 			entretiene,
 			calidad_sonora_visual,
 			calificacion,
-			avatar: req.session.datosPers.avatarDP,
 			creada_por_id: req.session.usuario.id,
 		};
 		res.cookie("confirmar", req.session.confirmar, {
@@ -467,7 +469,7 @@ module.exports = {
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		//return res.send(req.session);
 		registro = await BD_varios.agregarPorEntidad(entidad, confirmar);
-		
+
 		// Resolver imagen desde copiarFA en DP
 
 		// Actualizar "cantProductos" en "Relación con la vida"
@@ -479,7 +481,7 @@ module.exports = {
 		// Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 
 		// Borrar session y cookies del producto
-		let metodos = ["palabrasClave","desambiguar","copiarFA",]
+		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
 		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
@@ -539,11 +541,17 @@ let revisarImagen = (tipo, tamano) => {
 		: "";
 };
 
-let download = (uri, filename) => {
-	request.head(uri, () => {
-		request(uri)
-			.pipe(fs.createWriteStream(filename))
-			.on("close", () => console.log("imagen guardada"));
+let download = async (url, rutaYnombre) => {
+	let writer = fs.createWriteStream(rutaYnombre);
+	let response = await axios({
+		method: "GET",
+		url: url,
+		responseType: "stream",
+	});
+	response.data.pipe(writer);
+	return new Promise((resolve, reject) => {
+		writer.on("finish", () => resolve(console.log("Imagen guardada")));
+		writer.on("error", (err) => reject(err));
 	});
 };
 

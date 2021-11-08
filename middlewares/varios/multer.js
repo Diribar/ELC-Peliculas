@@ -6,10 +6,10 @@ const storage = multer.diskStorage({
 		cb(null, "./public/imagenes/9-Provisorio");
 	},
 	filename: (req, file, cb) => {
-		ext = path.extname(file.originalname);
+		//ext = path.extname(file.originalname);
 		//nombre = path.basename(file.originalname, ext);
 		//console.log(file.originalname, ext);
-		cb(null, Date.now() + ext);
+		cb(null, Date.now() + path.extname(file.originalname));
 	},
 });
 
