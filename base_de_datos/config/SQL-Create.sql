@@ -108,8 +108,10 @@ CREATE TABLE USUARIOS (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
 VALUES 
-(1, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),
-(2, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
+(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'LA', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'LA', '2000-01-01', '2000-01-01'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),
+(11, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -400,8 +402,10 @@ CREATE TABLE COLECCIONES_PARTES (
 	peli_tmdb_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
+	ano_estreno INT UNSIGNED NULL,
+	cant_capitulos INT UNSIGNED NULL,
 	orden INT UNSIGNED NOT NULL,
-	calificacion INT UNSIGNED NULL,
+	avatar VARCHAR(100) NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
@@ -495,42 +499,42 @@ CREATE TABLE PELICULAS (
 INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
 VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', true, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 1, 'IM', 1)
 ;
-CREATE TABLE fe_valores (
+CREATE TABLE cal_fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO fe_valores (id, orden, valor, nombre)
+INSERT INTO cal_fe_valores (id, orden, valor, nombre)
 VALUES 
 (4, 1, 3, 'Mucho'),
 (3, 2, 2, 'Sí'),
 (2, 3, 1, 'Poco'),
 (1, 4, 0, 'No')
 ;
-CREATE TABLE entretiene (
+CREATE TABLE cal_entretiene (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO entretiene (id, orden, valor, nombre)
+INSERT INTO cal_entretiene (id, orden, valor, nombre)
 VALUES 
 (4, 1, 3, 'Mucho'),
 (3, 2, 2, 'Sí'),
 (2, 3, 1, 'Poco'),
 (1, 4, 0, 'No')
 ;
-CREATE TABLE calidad_sonora_visual (
+CREATE TABLE cal_calidad_tecnica (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	valor INT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calidad_sonora_visual (id, orden, valor, nombre)
+INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
 VALUES 
 (2, 1, 3, 'No afecta el disfrute'),
 (1, 2, 0, 'Perjudica el disfrute')
@@ -540,17 +544,23 @@ CREATE TABLE calificaciones_us (
 	usuario_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
 	colec_id INT UNSIGNED NULL,
-	fe_valores DECIMAL(3,2) UNSIGNED NOT NULL,
-	entretiene DECIMAL(3,2) UNSIGNED NOT NULL,
-	calidad_sonora_visual DECIMAL(3,2) UNSIGNED NOT NULL,
-	resultado DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT 1,
+	fe_valores_id INT UNSIGNED NOT NULL,
+	entretiene_id INT UNSIGNED NOT NULL,
+	calidad_tecnica_id INT UNSIGNED NOT NULL,
+	fe_valores_valor DECIMAL(3,2) UNSIGNED NOT NULL,
+	entretiene_valor DECIMAL(3,2) UNSIGNED NOT NULL,
+	calidad_tecnica_valor DECIMAL(3,2) UNSIGNED NOT NULL,
+	resultado DECIMAL(3,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones(id)
+	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (fe_valores_id) REFERENCES cal_fe_valores(id),
+	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
+	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores, entretiene, calidad_sonora_visual)
-VALUES (1, 1, 1, 1, 1, 1)
+INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado, fe_valores_id, entretiene_id, calidad_tecnica_id)
+VALUES (1, 1, 1, 1, 1, 1, 1, 4, 4, 2)
 ;
 CREATE TABLE interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

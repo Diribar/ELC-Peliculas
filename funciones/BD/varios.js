@@ -31,7 +31,7 @@ module.exports = {
 
 	obtenerELC_id: (datos) => {
 		return db[datos.entidad]
-			.findOne({ where: { [datos.campo]: datos.id } })
+			.findOne({ where: { [datos.campo]: datos.valor } })
 			.then((n) => {
 				return n ? n.id : false;
 			});
@@ -69,11 +69,11 @@ module.exports = {
 		return resultado;
 	},
 
-	agregarPorEntidad: (entidad, datos) => {
+	agregarEntidad: (entidad, datos) => {
 		return db[entidad].create(datos);
 	},
 
-	actualizarPorEntidad: (entidad, datos, ID) => {
+	actualizarPorParametro: (entidad, datos, ID) => {
 		return db[entidad].update(datos, { where: { id: ID } });
 	},
 

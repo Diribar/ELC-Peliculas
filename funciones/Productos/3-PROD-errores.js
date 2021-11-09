@@ -285,10 +285,10 @@ module.exports = {
 				: !datos.entretiene_id
 				? cartelSelectVacio
 				: "";
-		errores.calidad_sonora_visual_id =
-			camposAVerificar.indexOf("calidad_sonora_visual_id") == -1
+		errores.calidad_tecnica_id =
+			camposAVerificar.indexOf("calidad_tecnica_id") == -1
 				? ""
-				: !datos.calidad_sonora_visual_id
+				: !datos.calidad_tecnica_id
 				? cartelSelectVacio
 				: "";
 		errores.hay = hayErrores(errores);
@@ -311,7 +311,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:"”“áéíóúüñ'¿?¡!/()\d+-]+$/;
+	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:;"”“áéíóúüñ'¿?¡!/()\d+-]+$/;
 	return !formato.test(dato);
 };
 let formatoAno = (dato) => {

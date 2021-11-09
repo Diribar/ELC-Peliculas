@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
 
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
-			let link =
+		let link =
 			"/agregar/productos/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
@@ -28,8 +28,7 @@ window.addEventListener("load", () => {
 	};
 
 	// Status inicial
-	iconoError.classList.contains("ocultar") &&
-	input.value != ""
+	iconoError.classList.contains("ocultar") && input.value != ""
 		? accionesSiHayErrores(input.value)
 		: "";
 
@@ -100,7 +99,10 @@ window.addEventListener("load", () => {
 					  (prod_nuevos == cantResultados
 							? "ninguna está en nuestra BD"
 							: prod_nuevos
-							? prod_nuevos + " no están en nuestra BD"
+							? prod_nuevos +
+							  " no está" +
+							  (prod_nuevos == 1 ? "" : "n") +
+							  " en nuestra BD"
 							: "y todas están en nuestra BD");
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";

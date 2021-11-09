@@ -164,6 +164,9 @@ module.exports = {
 						sinopsis: n.overview,
 						orden_secuencia: n.season_number,
 					};
+					partes.nombre_original = n.season_number
+						? "Season " + n.season_number
+						: "Specials"
 					n.poster_path != ""
 						? (partes.avatar =
 								"https://image.tmdb.org/t/p/original" +
@@ -350,7 +353,7 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
-		if (!datos.id) return false;
+		if (!datos.valor) return false;
 		let ELC_id = await BD_varios.obtenerELC_id(datos);
 		return ELC_id;
 	},
