@@ -156,15 +156,10 @@ let agregarLanzamiento = async (dato) => {
 		id = dato[j].colec_tmdb_id;
 		// Obtener todas las fechas de lanzamiento
 		detalles = await detailsTMDB(id, "collection")
-			.then((n) => {
-				!n.hasOwnProperty("parts") ? console.log(n) : "";
-				return n.parts;
-			})
+			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {
-					return typeof m.release_date != "undefined"
-						? m.release_date
-						: "-";
+					if (m.release_date) return m.release_date;
 				})
 			);
 		// Ordenar de menor a mayor

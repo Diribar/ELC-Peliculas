@@ -36,8 +36,8 @@ router.get("/datos-personalizados", usuarios, vista.datosPersForm);
 router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar);
 router.get("/confirmar", usuarios, vista.confirmarForm);
 router.post("/confirmar", usuarios, prodEnBD, vista.confirmarGuardar);
-router.get("/fin-del-proceso", usuarios, vista.finDelProcesoForm);
-router.post("/fin-del-proceso", usuarios, vista.finDelProcesoGuardar);
+router.get("/conclusion", usuarios, vista.conclusionForm);
+router.post("/conclusion", usuarios, vista.conclusionGuardar);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", usuarios, vista.responsabilidad);

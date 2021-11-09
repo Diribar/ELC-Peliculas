@@ -1,0 +1,15 @@
+#data_entry {
+    background-color: var(--verde-claro);
+    border: var(--verde-oscuro) 7px solid;
+}
+#data_entry {max-width: 80%;}
+
+#data_entry h2 {
+    align-self: center;
+    background-color: var(--verde-oscuro);
+}
+#data_entry li {color: var(--verde-oscuro);}
+#data_entry ul {margin: 10px 0 30px; padding-left: 20px;}
+#data_entry ul li {margin-top: 10px; font-size: 1.1rem;}
+#data_entry ul li ol {padding-left: 30px;}
+#data_entry ul li ol li {margin-top: 2.5px; font-size: 1rem;}

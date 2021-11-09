@@ -4,9 +4,9 @@ module.exports = (sequelize, dt) => {
 		peli_tmdb_id: { type: dt.STRING(10) },
 		peli_fa_id: { type: dt.STRING(10) },
 		peli_imdb_id: { type: dt.STRING(10) },
-		colec_id: { type: dt.INTEGER },
-		colec_tmdb_id: { type: dt.STRING(10) },
 		en_coleccion: { type: dt.BOOLEAN },
+		en_colec_id: { type: dt.INTEGER },
+		en_colec_tmdb_id: { type: dt.STRING(10) },
 		fuente: { type: dt.STRING(5) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
@@ -54,7 +54,7 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = n => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
-		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "colec_id"});
+		entidad.belongsTo(n.colecciones, {as: "en_colec", foreignKey: "en_colec_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.historicos_personajes, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.historicos_hechos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
