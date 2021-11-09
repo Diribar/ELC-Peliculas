@@ -815,7 +815,7 @@ let datosClaveDelProducto = (datos) => {
 				: "";
 		// 3. Está en colección 'SI' o 'NO'
 		IDdelProducto.en_coleccion = datos.en_coleccion;
-		// 4. ID externo de la colección a la que pertenece, si corresponde
+		// 4. Datos externos de la colección a la que pertenece, si corresponde
 		if (datos.en_colec_tmdb_id) {
 			IDdelProducto.en_colec_tmdb_id = datos.en_colec_tmdb_id;
 			IDdelProducto.en_colec_nombre = datos.en_colec_nombre;
