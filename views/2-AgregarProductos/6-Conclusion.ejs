@@ -15,18 +15,22 @@
 			<li>Si el registro queda aprobado, quedará accesible para todo el público.</li>
 			<li>El plazo promedio de revisión viene siendo de XX días/horas.</li>
 			<li>Mientras tanto, podés ver los datos agregados y editarlos si corresponde.</li>
+			<!-- Variable inicial -->
+			<% botonColeccion = "" %>
 			<!-- Película en colección -->
 			<% if (dataEntry.entidad == "peliculas") { %>
-				<% if (dataEntry.en_coleccion == true) { %>
-					<% botonColeccion = "Agregar la Colección" %>
-					<% linkColeccion = "/agregar/coleccion" %>
-					<% if (dataEntry.en_colec_tmdb_id) { %>
-						<!-- En TMDB -->
-						<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
-					<% } else { %>
-						<!-- Fuera de TMDB -->
-						<li>Nos informaste que la película corresponde a una colección. ¿Podés ayudarnos agregándola a nuestra BD?</li>
-					<% } %>
+				<% if (dataEntry.en_coleccion) { %>
+					<% if (!dataEntry.coleccionYaEnBD) { %>
+						<% botonColeccion = "Agregar la Colección" %>
+						<% linkColeccion = "/agregar/coleccion" %>
+						<% if (dataEntry.en_colec_tmdb_id) { %>
+							<!-- En TMDB -->
+							<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
+						<% } else { %>
+							<!-- Fuera de TMDB -->
+							<li>Nos informaste que la película corresponde a una colección. ¿Podés ayudarnos agregándola a nuestra BD?</li>
+						<% } %>
+					<% } else { %><li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>, que ya tenemos en nuestra BD</li><% } %>
 				<% } %>
 			<% } %>
 			<!-- Colección -->
