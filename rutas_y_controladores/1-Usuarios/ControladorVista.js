@@ -1,11 +1,11 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let BD_usuarios = require("../../funciones/BD/usuarios");
-let BD_varios = require("../../funciones/BD/varios");
+let BD_especificas = require("../../funciones/BD/especificas");
+let BD_varias = require("../../funciones/BD/varias");
 let rutaImagenes = "../public/imagenes/1-Usuarios/";
-let funciones = require("../../funciones/varias/funcionesVarias");
-let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
+let funciones = require("../../funciones/Varias/varias");
+let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
 let bcryptjs = require("bcryptjs");
 
 // *********** Controlador ***********
@@ -40,12 +40,13 @@ module.exports = {
 		// Enviar la contraseña por mail
 		asunto = "Contraseña para ELC";
 		email = req.body.email;
-		codigo = Math.round(Math.random() * Math.pow(10, 10)) + "";
-		console.log(codigo);
-		comentario = "La contraseña del mail " + email + " es: " + codigo;
+		contrasena = Math.round(Math.random() * Math.pow(10, 10)) + "";
+		//console.log(contrasena);
+		comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
-		await BD_usuarios.altaMailContrasena(email, codigo);
+		contrasena = bcryptjs.hashSync(contrasena, 10);
+		await BD_varias.agregarRegistro("usuarios", { email, contrasena });
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
@@ -89,7 +90,7 @@ module.exports = {
 
 	loginGuardar: async (req, res) => {
 		// 1. Obtener los datos del usuario
-		let usuario = await BD_usuarios.obtenerPorMail(req.body.email);
+		let usuario = await BD_especificas.obtenerPorMail(req.body.email);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarUsuarios.login(req.body);
 		contrasena = usuario ? usuario.contrasena : "";
@@ -108,10 +109,16 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_usuarios.actualizarStatusUsuario(usuario.id, 2);
+			await BD_varias.actualizarRegistro(
+				"usuario",
+				{ status_registro_id: 2 },
+				usuario.id
+			);
 		}
 		// 5. Iniciar la sesión
-		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
+		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(
+			usuario.id
+		);
 		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
 		delete req.session["email"];
 		// Redireccionar
@@ -157,8 +164,10 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
 		req.body.status_registro_id = 3;
-		await BD_usuarios.agregarDatosPerennes(usuario.id, req.body);
-		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
+		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
+		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(
+			usuario.id
+		);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -167,10 +176,10 @@ module.exports = {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "editables";
-		let paises = await BD_varios.obtenerTodos("paises", "nombre");
+		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let estados_eclesiales = await BD_varios.obtenerTodos(
+		let estados_eclesiales = await BD_varias.obtenerTodos(
 			"estados_eclesiales",
 			"orden"
 		);
@@ -209,8 +218,8 @@ module.exports = {
 		// Grabar novedades en el usuario
 		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_usuarios.agregarDatosEditables(usuario.id, req.body);
-		req.session.usuario = await BD_usuarios.obtenerPorId(usuario.id);
+		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
+		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(usuario.id);
 		// Pendiente mover el archivo a la carpeta definitiva
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
@@ -220,7 +229,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "detalle";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_usuarios.obtenerPorMail(
+			req.session.usuario = await BD_especificas.obtenerPorMail(
 				req.cookies.email
 			);
 		}
@@ -235,7 +244,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "editar";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_usuarios.obtenerPorMail(
+			req.session.usuario = await BD_especificas.obtenerPorMail(
 				req.cookies.email
 			);
 		}

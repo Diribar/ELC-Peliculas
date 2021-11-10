@@ -1,8 +1,7 @@
-const path = require("path");
-const BD = require(path.join(__dirname,"../../funciones/BD/usuarios"));
+let BD_especificas = require("../../funciones/BD/especificas");
 
 module.exports = (req, res, next) => {
-	if (!BD.obtenerAutorizadoFA(req.session.usuario.id)) {
+	if (!BD_especificas.obtenerAutorizadoFA(req.session.usuario.id)) {
 		return res.redirect("/agregar/productos/palabras-clave");
 	}
 	next();

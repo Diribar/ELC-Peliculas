@@ -3,10 +3,10 @@ let fs = require("fs");
 let path = require("path");
 let axios = require("axios");
 let requestPromise = require("request-promise");
-let buscar_x_PalClave = require("../../funciones/Productos/1-PROD-buscar_x_PC");
-let procesarProductos = require("../../funciones/Productos/2-PROD-procesar");
-let validarProductos = require("../../funciones/Productos/3-PROD-errores");
-let BD_varios = require("../../funciones/BD/varios");
+let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
+let procesarProd = require("../../funciones/Productos/2-Procesar");
+let validarProd = require("../../funciones/Productos/3-Errores");
+let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: palabrasClave
-			? await validarProductos.palabrasClave(palabrasClave)
+			? await validarProd.palabrasClave(palabrasClave)
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
@@ -51,13 +51,13 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Si hay errores de validación, redireccionar
-		let errores = await validarProductos.palabrasClave(palabrasClave);
+		let errores = await validarProd.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/palabras-clave");
 		}
 		// 3. Generar la session para la siguiente instancia
-		req.session.desambiguar = await buscar_x_PalClave.search(palabrasClave);
+		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
 		res.cookie("desambiguar", req.session.desambiguar, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -135,7 +135,7 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: copiarFA
-			? await validarProductos.copiarFA(copiarFA)
+			? await validarProd.copiarFA(copiarFA)
 			: "";
 		// 5. Render del formulario
 		//return res.send(req.cookies);
@@ -156,14 +156,14 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = await validarProductos.copiarFA(copiarFA);
+		let errores = await validarProd.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		if (!errores.direccion) {
-			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
+			fa_id = await procesarProd.obtenerFA_id(req.body.direccion);
 			entidad =
 				copiarFA.rubroAPI == "movie" ? "peliculas" : "colecciones";
 			campo = copiarFA.rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
-			elc_id = await procesarProductos.obtenerELC_id({
+			elc_id = await procesarProd.obtenerELC_id({
 				entidad,
 				campo,
 				valor: fa_id,
@@ -181,7 +181,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/copiar-fa");
 		}
 		// 3. Generar la session para la siguiente instancia
-		req.session.datosDuros = await procesarProductos.producto_FA(copiarFA);
+		req.session.datosDuros = await procesarProd.producto_FA(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -226,10 +226,10 @@ module.exports = {
 		//return res.send(req.cookies);
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProductos.datosDuros(datosDuros, camposDD());
-		let paises = await BD_varios.obtenerTodos("paises", "nombre");
+			: await validarProd.datosDuros(datosDuros, camposDD());
+		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
-			? await BD_varios.pais_idToNombre(datosDuros.pais_id)
+			? await varias.pais_idToNombre(datosDuros.pais_id)
 			: "";
 		return res.render("Home", {
 			tema,
@@ -263,7 +263,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Averiguar si hay errores de validación
-		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
+		let errores = await validarProd.datosDuros(datosDuros, camposDD());
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
 		if (!errores.nombre_original) {
 			// Obtener los parámetros
@@ -274,7 +274,7 @@ module.exports = {
 			campo += "_" + fuente + "_id";
 			id = datosDuros[campo];
 			// Averiguar si hubieron errores
-			elc_id = await procesarProductos.obtenerELC_id({
+			elc_id = await procesarProd.obtenerELC_id({
 				entidad,
 				campo,
 				valor,
@@ -389,28 +389,28 @@ module.exports = {
 		});
 		// 2.1. Averiguar si hay errores de validación
 		camposDP = [...(await datosPersSelect()), ...datosPersInput()];
-		let errores = await validarProductos.datosPers(datosPers, camposDP);
+		let errores = await validarProd.datosPers(datosPers, camposDP);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/datos-personalizados");
 		}
 		// 3. Si no hay errores, obtener la calificación
-		fe_valores = await BD_varios.obtenerPorParametro(
+		fe_valores = await BD_varias.obtenerPorParametro(
 			"fe_valores",
 			"id",
 			req.body.fe_valores_id
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		entretiene = await BD_varios.obtenerPorParametro(
+		entretiene = await BD_varias.obtenerPorParametro(
 			"entretiene",
 			"id",
 			req.body.entretiene_id
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		calidad_tecnica = await BD_varios.obtenerPorParametro(
+		calidad_tecnica = await BD_varias.obtenerPorParametro(
 			"calidad_tecnica",
 			"id",
 			req.body.calidad_tecnica_id
@@ -479,13 +479,13 @@ module.exports = {
 			return res.redirect("/agregar/productos/datos-personalizados");
 		// 2. Guardar el registro
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
-		registro = await BD_varios.agregarEntidad(entidad, confirmar);
+		registro = await BD_varias.agregarRegistro(entidad, confirmar);
 		// 3. Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRelacionConLaVida(
+		actualizarRCLV(
 			"historicos_personajes",
 			registro.personaje_historico_id
 		);
-		actualizarRelacionConLaVida(
+		actualizarRCLV(
 			"historicos_hechos",
 			registro.hecho_historico_id
 		);
@@ -507,7 +507,7 @@ module.exports = {
 		return res.redirect("/agregar/productos/conclusion");
 	},
 
-	conclusionForm: (req, res) => {
+	conclusion: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "conclusion";
@@ -519,7 +519,10 @@ module.exports = {
 			: "";
 		if (!IDdelProducto)
 			return res.redirect("/agregar/productos/palabras-clave");
-		// 3. Render del formulario
+		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
+		if (IDdelProducto.en_coleccion) {
+		}
+		// 4. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
@@ -527,10 +530,6 @@ module.exports = {
 			link: req.originalUrl,
 			data_entry: IDdelProducto,
 		});
-	},
-
-	conclusionGuardar: (req, res) => {
-		return res.send("conclusionGuardar");
 	},
 
 	responsabilidad: (req, res) => {
@@ -550,7 +549,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 	let lectura =
 		form.fuente == "TMDB"
-			? await procesarProductos.obtenerAPI_TMDB(form[campo], rubroAPI)
+			? await procesarProd.obtenerAPI_TMDB(form[campo], rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie"
@@ -560,7 +559,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 		: form.rubroAPI == "collection"
 		? (rubro = "coleccion_TMDB")
 		: "";
-	return await procesarProductos[rubro](form, lectura);
+	return await procesarProd[rubro](form, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
@@ -668,7 +667,7 @@ let datosPersSelect = async () => {
 			titulo: "Categoría",
 			campo: "categoria_id",
 			tabla: "peliculas",
-			valores: await BD_varios.obtenerTodos("categorias", "orden"),
+			valores: await BD_varias.obtenerTodos("categorias", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: [
@@ -681,7 +680,7 @@ let datosPersSelect = async () => {
 			titulo: "Sub-categoría",
 			campo: "subcategoria_id",
 			tabla: "peliculas",
-			valores: await BD_varios.obtenerTodos("subcategorias", "orden"),
+			valores: await BD_varias.obtenerTodos("subcategorias", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: ["Elegí la subcategoría que mejor represente el tema."],
@@ -690,7 +689,7 @@ let datosPersSelect = async () => {
 			titulo: "Público sugerido",
 			campo: "publico_sugerido_id",
 			tabla: "peliculas",
-			valores: await BD_varios.obtenerTodos(
+			valores: await BD_varias.obtenerTodos(
 				"publicos_sugeridos",
 				"orden"
 			),
@@ -708,7 +707,7 @@ let datosPersSelect = async () => {
 			titulo: "Inspira fe y/o valores",
 			campo: "fe_valores_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.obtenerTodos("fe_valores", "orden"),
+			valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: ["¿Considerás que deja algo positivo en el corazón?"],
@@ -717,7 +716,7 @@ let datosPersSelect = async () => {
 			titulo: "Entretiene",
 			campo: "entretiene_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.obtenerTodos("entretiene", "orden"),
+			valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: ["Se disfruta el rato viéndola"],
@@ -726,7 +725,7 @@ let datosPersSelect = async () => {
 			titulo: "Calidad sonora y visual",
 			campo: "calidad_tecnica_id",
 			tabla: "us_pel_calificaciones",
-			valores: await BD_varios.obtenerTodos("calidad_tecnica", "orden"),
+			valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 			peli: true,
 			colec: true,
 			mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
@@ -735,7 +734,7 @@ let datosPersSelect = async () => {
 			titulo: "Personaje histórico",
 			campo: "personaje_historico_id",
 			tabla: "peliculas",
-			valores: await BD_varios.obtenerTodos(
+			valores: await BD_varias.obtenerTodos(
 				"historicos_personajes",
 				"nombre"
 			),
@@ -751,7 +750,7 @@ let datosPersSelect = async () => {
 			titulo: "Hecho histórico",
 			campo: "hecho_historico_id",
 			tabla: "peliculas",
-			valores: await BD_varios.obtenerTodos(
+			valores: await BD_varias.obtenerTodos(
 				"historicos_hechos",
 				"nombre"
 			),
@@ -806,7 +805,7 @@ let datosClaveDelProducto = (datos) => {
 		// 1. Entidad
 		IDdelProducto.entidad = "peliculas";
 		IDdelProducto.producto = "Película";
-		// 2. Campo 'ID' externo
+		// 2. Campo 'id' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "peli_tmdb_id"
@@ -824,7 +823,7 @@ let datosClaveDelProducto = (datos) => {
 		// 1. Entidad
 		IDdelProducto.entidad = "colecciones";
 		IDdelProducto.producto = "Colección";
-		// 2. Campo 'ID' externo
+		// 2. Campo 'id' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "colec_tmdb_id"
@@ -832,20 +831,20 @@ let datosClaveDelProducto = (datos) => {
 				? "colec_fa_id"
 				: "";
 	}
-	// Valor ID externo
+	// Valor id externo
 	IDdelProducto.valor =
 		datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
 	return IDdelProducto;
 };
 
-let actualizarRelacionConLaVida = async (entidad, ID) => {
-	if (ID) {
-		aux = await BD_varios.obtenerPorParametro(entidad, "id", ID);
+let actualizarRCLV = async (entidad, id) => {
+	if (id) {
+		aux = await BD_varias.obtenerPorId(entidad, id);
 		aux.cant_productos++;
-		BD_varios.actualizarPorParametro(
+		BD_varias.actualizarRegistro(
 			entidad,
 			{ cant_productos: aux.cant_productos },
-			ID
+			id
 		);
 	}
 };
@@ -863,7 +862,7 @@ let guardarCalificaciones_us = (confirmar, productoEnBD) => {
 		calidad_tecnica_valor: confirmar.calidad_tecnica,
 		resultado: confirmar.calificacion,
 	};
-	BD_varios.agregarEntidad("calificaciones_us", datos);
+	BD_varias.agregarRegistro("calificaciones_us", datos);
 };
 
 let moverImagenCarpetaDefinitiva = (nombre) => {
@@ -903,9 +902,9 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 				campo: "peli_tmdb_id",
 				valor: parte.peli_tmdb_id,
 			};
-			peli_id = await BD_varios.obtenerELC_id(buscarPeliID);
+			peli_id = await BD_varias.obtenerELC_id(buscarPeliID);
 			if (peli_id) datos.peli_id = peli_id;
-			BD_varios.agregarEntidad("colecciones_partes", datos);
+			BD_varias.agregarRegistro("colecciones_partes", datos);
 		}
 	}
 };

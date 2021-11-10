@@ -1,9 +1,8 @@
 // ************ Requires ************
 let detailsTMDB = require("../API/detailsTMDB_fetch");
 let creditsTMDB = require("../API/creditsTMDB_fetch");
-let BD_varios = require("../BD/varios");
-let BD_peliculas = require("../BD/peliculas");
-let BD_colecciones = require("../BD/coleccionesCabecera");
+let BD_varias = require("../BD/varias");
+let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
@@ -265,7 +264,7 @@ module.exports = {
 			...contenido,
 		};
 		if (resultado.pais_nombre) {
-			resultado.pais_id = await BD_varios.paisNombreToId(
+			resultado.pais_id = await varias.paisNombreToId(
 				resultado.pais_nombre
 			);
 			delete resultado.pais_nombre;
@@ -358,7 +357,7 @@ module.exports = {
 	// ControllerVista (datosDurosGuardar)
 	obtenerELC_id: async (datos) => {
 		if (!datos.valor) return false;
-		let ELC_id = await BD_varios.obtenerELC_id(datos);
+		let ELC_id = await BD_varias.obtenerELC_id(datos);
 		return ELC_id;
 	},
 };

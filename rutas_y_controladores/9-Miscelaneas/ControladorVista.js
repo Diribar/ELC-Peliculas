@@ -1,6 +1,6 @@
 // ************ Requires ************
-let validarRV = require("../../funciones/varias/RelacVida-errores");
-let BD_varios = require("../../funciones/BD/varios");
+let validarRCLV = require("../../funciones/Varias/RCLV-Errores");
+let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
 		});
 	},
 
-	relacionConLaVida: (req, res) => {
+	RCLV: (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosPers
 			? req.session.datosPers
@@ -46,7 +46,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/palabras-clave");
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		//return res.send(req.session.datosPers);
-		tema = "relacionConLaVida";
+		tema = "RCLV";
 		codigo = datosPers.rubro;
 		// Data-entry
 		data_entry = req.session[codigo + "Historico"]
@@ -56,10 +56,10 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: data_entry
-			? await validarRV[codigo](data_entry)
+			? await validarRCLV[codigo](data_entry)
 			: "";
 		// Meses del año
-		meses = await BD_varios.obtenerTodos("meses", "id");
+		meses = await BD_varias.obtenerTodos("meses", "id");
 		// Render
 		return res.render("Home", {
 			tema,
@@ -90,7 +90,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarRV.relacionConLaVida(data_entry);
+		let errores = await validarRCLV.RCLV(data_entry);
 		// 3. Acciones si hay errores
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -106,7 +106,7 @@ module.exports = {
 			data_entry.dia &&
 			data_entry.desconocida == undefined
 		) {
-			dia_del_ano_id = await BD_varios.obtenerTodos("dias_del_ano", "id")
+			dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
 				.then((n) => n.filter((m) => m.mes_id == data_entry.mes_id))
 				.then((n) => n.filter((m) => m.dia == data_entry.dia))
 				.then((n) => n[0].id);
@@ -114,7 +114,7 @@ module.exports = {
 		}
 		// 4. Crear el registro en la BD
 		let entidad = "historicos_" + rubro + "s";
-		let { id } = await BD_varios.agregarEntidad(entidad, datos);
+		let { id } = await BD_varias.agregarRegistro(entidad, datos);
 		//return res.send(id+"");
 		// 5. Guardar el id en 'Datos Personalizados'
 		req.session.datosPers[rubro + "_historico_id"] = id;

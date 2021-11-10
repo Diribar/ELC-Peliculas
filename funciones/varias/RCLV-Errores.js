@@ -1,11 +1,11 @@
 // Requires *******************
-let BD_varias = require("../BD/varios");
+let BD_varias = require("../BD/varias");
 
 // Objeto literal *************
 module.exports = {
-	relacionConLaVida: async (datos) => {
+	RCLV: async (datos) => {
 		let { rubro } = datos;
-		let errores = { nombre: "", mes_id: "", dia: "", repetidos: "" };
+		let errores = { mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
@@ -36,7 +36,7 @@ module.exports = {
 			for (i = 4; i < casosCampo.length; i++) {
 				casosValores[i] == "true"
 					? (errores.repetidos =
-							"Por favor asegurate de que no coincida con ninguna otro registro, y destildalos.")
+							"Por favor asegurate de que no coincida con ningún otro registro, y destildalos.")
 					: "";
 			}
 		}

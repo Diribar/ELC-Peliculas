@@ -1,5 +1,6 @@
 // **** Requires ***********
 let nodemailer = require("nodemailer");
+let BD_varias = require("../BD/varias");
 
 module.exports = {
 	userLogs: (req, res) => {
@@ -38,5 +39,37 @@ module.exports = {
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		await transporter.sendMail(datos);
+	},
+
+	pais_idToNombre: async (pais_id) => {
+		// Función para convertir 'string de ID' en  'string de nombres'
+		let resultado = [];
+		if (pais_id.length) {
+			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			pais_idArray = pais_id.split(", ");
+			// Convertir 'array de ID' en 'string de nombres"
+			for (pais_id of pais_idArray) {
+				aux = BD_paises.find((n) => n.id == pais_id);
+				aux ? resultado.push(aux.nombre) : "";
+			}
+		}
+		resultado = resultado.length ? resultado.join(", ") : "";
+		return resultado;
+	},
+
+	paisNombreToId: async function (pais_nombre) {
+		// Función para convertir 'string de nombre' en  'string de ID'
+		let resultado = [];
+		if (pais_nombre.length) {
+			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			pais_nombreArray = pais_nombre.split(", ");
+			// Convertir 'array de nombres' en 'string de ID"
+			for (pais_nombre of pais_nombreArray) {
+				aux = BD_paises.find((n) => n.nombre == pais_nombre);
+				aux ? resultado.push(aux.id) : "";
+			}
+		}
+		resultado = resultado.length ? resultado.join(", ") : "";
+		return resultado;
 	},
 };

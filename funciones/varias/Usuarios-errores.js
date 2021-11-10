@@ -1,5 +1,5 @@
 // **** Requires ***********
-let BD_usuarios = require("../BD/usuarios");
+let BD_varias = require("../BD/varias");
 let path = require("path");
 
 // Objeto literal
@@ -10,7 +10,7 @@ module.exports = {
 			? mailVacio
 			: formatoMail(email)
 			? mailFormato
-			: (await BD_usuarios.AveriguarSiYaEnBD(email))
+			: (await BD_varias.obtenerELC_id("usuarios", "email", email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 		errores.hay = hayErrores(errores);

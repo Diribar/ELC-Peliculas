@@ -1,4 +1,4 @@
-let procesarProd = require("../../funciones/Productos/2-PROD-procesar");
+let procesarProd = require("../../funciones/Productos/2-Procesar");
 
 module.exports = async (req, res, next) => {
 	IDdelProducto = req.cookies.IDdelProducto;
