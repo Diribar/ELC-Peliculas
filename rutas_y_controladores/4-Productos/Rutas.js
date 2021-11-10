@@ -8,9 +8,9 @@ let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 //************************ Controladores ****************************
 // Controladores de Opciones
-router.get("/:id/:id", opciones.tipo);
-router.post("/:id/:id", soloUsuarios, opciones.filtros);
-router.get("/:id", opciones.opcion);
+// router.get("/:id/:id", opciones.tipo);
+// router.post("/:id/:id", soloUsuarios, opciones.filtros);
+// router.get("/:id", opciones.opcion);
 router.get("/", opciones.home);
 
 // Fin

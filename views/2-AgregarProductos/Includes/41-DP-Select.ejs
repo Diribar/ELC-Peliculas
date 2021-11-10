@@ -4,7 +4,7 @@
 		<label><%= dato.titulo %></label>
 		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 			<!-- Input -->
-			<select name="<%= campo %>" class="input">
+			<select name="<%= campo %>" class="input" <% if (autofocus) { %>autofocus<% } %>>
 				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of dato.valores) { %>
 					<option value="<%= valor.id %>" 

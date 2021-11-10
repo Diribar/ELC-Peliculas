@@ -217,10 +217,10 @@ module.exports = {
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect("/agregar/productos/" + origen);
-		// 5. GuardarIDdelProducto
-		IDdelProducto = datosClaveDelProducto(datosDuros);
-		req.session.IDdelProducto = IDdelProducto;
-		res.cookie("IDdelProducto", IDdelProducto, {
+		// 5. Guardar datosClaveProd
+		datosClaveProd = funcDatosClaveProd(datosDuros);
+		req.session.datosClaveProd = datosClaveProd;
+		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 6. Render del formulario
@@ -353,10 +353,10 @@ module.exports = {
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers) return res.redirect("/agregar/productos/datos-duros");
-		// 4. GuardarIDdelProducto
-		IDdelProducto = datosClaveDelProducto(datosPers);
-		req.session.IDdelProducto = IDdelProducto;
-		res.cookie("IDdelProducto", IDdelProducto, {
+		// 4. Guardar datosClaveProd
+		datosClaveProd = funcDatosClaveProd(datosPers);
+		req.session.datosClaveProd = datosClaveProd;
+		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 5. Render del formulario
@@ -453,10 +453,10 @@ module.exports = {
 			: "";
 		if (!confirmar)
 			return res.redirect("/agregar/productos/datos-personalizados");
-		// 3. GuardarIDdelProducto
-		IDdelProducto = datosClaveDelProducto(confirmar);
-		req.session.IDdelProducto = IDdelProducto;
-		res.cookie("IDdelProducto", IDdelProducto, {
+		// 3. Guardar datosClaveProd
+		datosClaveProd = funcDatosClaveProd(confirmar);
+		req.session.datosClaveProd = datosClaveProd;
+		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Render del formulario
@@ -481,27 +481,34 @@ module.exports = {
 		// 2. Guardar el registro
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		registro = await BD_varias.agregarRegistro(entidad, confirmar);
-		// 3. Actualizar "cantProductos" en "Relación con la vida"
+		// 3. Guardar datosClaveProd
+		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
+		req.session.datosClaveProd = datosClaveProd;
+		res.cookie("datosClaveProd", datosClaveProd, {
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		//return res.send(datosClaveProd)
+		// 4. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV(
 			"historicos_personajes",
 			registro.personaje_historico_id
 		);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		// Miscelaneas
+		// 5. Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
-		// Si es una COLECCIÓN TMDB, agregar las partes en forma automática
+		// 6. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 		if (confirmar.rubroAPI != "movie" && confirmar.fuente == "TMDB")
 			agregarLasPartesDeLaColeccion(confirmar, registro);
 		//return res.send(confirmar);
-		// Borrar session y cookies del producto
+		// 7. Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
 		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
 			if (req.cookies[metodo]) res.clearCookie(metodo);
 		}
-		// Redireccionar
+		// 8. Redireccionar
 		return res.redirect("/agregar/productos/conclusion");
 	},
 
@@ -510,21 +517,21 @@ module.exports = {
 		tema = "agregar";
 		codigo = "conclusion";
 		// 2. Obtener los datos clave del producto
-		IDdelProducto = req.session.IDdelProducto
-			? req.session.IDdelProducto
-			: req.cookies.IDdelProducto
-			? req.cookies.IDdelProducto
+		datosClaveProd = req.session.datosClaveProd
+			? req.session.datosClaveProd
+			: req.cookies.datosClaveProd
+			? req.cookies.datosClaveProd
 			: "";
-		if (!IDdelProducto)
+		if (!datosClaveProd)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
-		if (IDdelProducto.en_coleccion && IDdelProducto.en_colec_tmdb_id) {
+		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_tmdb_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
 				entidad: "colecciones",
 				campo: "colec_tmdb_id",
-				valor: IDdelProducto.en_colec_tmdb_id,
+				valor: datosClaveProd.en_colec_tmdb_id,
 			});
-			if (coleccionYaEnBD) IDdelProducto.coleccionYaEnBD = true;
+			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
 		}
 		// 4. Render del formulario
 		//return res.send(req.cookies);
@@ -532,7 +539,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			dataEntry: IDdelProducto,
+			dataEntry: datosClaveProd,
 		});
 	},
 
@@ -802,45 +809,48 @@ let datosPersInput = () => {
 	];
 };
 
-let datosClaveDelProducto = (datos) => {
+let funcDatosClaveProd = (datos) => {
 	// Enfoque en los datos clave
-	let IDdelProducto = {};
+	let datosClaveProd = {};
 	if (datos.rubroAPI == "movie") {
 		// 1. Entidad
-		IDdelProducto.entidad = "peliculas";
-		IDdelProducto.producto = "Película";
+		datosClaveProd.entidad = "peliculas";
+		datosClaveProd.producto = "Película";
 		// 2. Campo 'id' externo
-		IDdelProducto.campo =
+		datosClaveProd.campo =
 			datos.fuente == "TMDB"
 				? "peli_tmdb_id"
 				: datos.fuente == "FA"
 				? "peli_fa_id"
 				: "";
 		// 3. Está en colección 'SI' o 'NO'
-		IDdelProducto.en_coleccion = datos.en_coleccion;
+		datosClaveProd.en_coleccion = datos.en_coleccion;
 		// 4. Datos externos de la colección a la que pertenece, si corresponde
 		if (datos.en_colec_tmdb_id) {
-			IDdelProducto.en_colec_tmdb_id = datos.en_colec_tmdb_id;
-			IDdelProducto.en_colec_nombre = datos.en_colec_nombre;
+			datosClaveProd.en_colec_tmdb_id = datos.en_colec_tmdb_id;
+			datosClaveProd.en_colec_nombre = datos.en_colec_nombre;
 		}
 	} else {
 		// 1. Entidad
-		IDdelProducto.entidad = "colecciones";
-		IDdelProducto.producto = "Colección";
+		datosClaveProd.entidad = "colecciones";
+		datosClaveProd.producto = "Colección";
 		// 2. Campo 'id' externo
-		IDdelProducto.campo =
+		datosClaveProd.campo =
 			datos.fuente == "TMDB"
 				? "colec_tmdb_id"
 				: datos.fuente == "FA"
 				? "colec_fa_id"
 				: "";
 	}
-	// Valor id externo
-	IDdelProducto.valor =
-		datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
-	// Campo y valor
-	IDdelProducto[IDdelProducto.campo] = datos[IDdelProducto.campo];
-	return IDdelProducto;
+	// Campos comunes
+	// 1. Valor id externo
+	datosClaveProd.valor =
+		datos.fuente != "IM" ? datos[datosClaveProd.campo] : "";
+	// 2. Campo y valor
+	datosClaveProd[datosClaveProd.campo] = datos[datosClaveProd.campo];
+	// 3. ID del producto
+	if (datos.id) datosClaveProd.id = datos.id
+	return datosClaveProd;
 };
 
 let actualizarRCLV = async (entidad, id) => {

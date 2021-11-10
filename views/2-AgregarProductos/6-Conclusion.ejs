@@ -1,5 +1,5 @@
 <h1 class="titulo" id="titulo">Conclusión</h1>
-<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
+<form action="/detalle/producto/informacion" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
 		<ul>
@@ -46,7 +46,13 @@
 			<% } %>
 		</ul>
 	</section>
-	<!-- Flechas y Botón -->
+	<!-- Datos -->
+	<section class="ocultar">
+		<% for (campo in dataEntry) { %>
+			<input type="text" name="<%= campo %>" value="<%= dataEntry[campo] %>">
+		<% } %> 
+	</section>
+	<!-- Botones -->
 	<section id="flechas" class="flex-row space-evenly">
 		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %>" formaction="<%= linkColeccion %>" formmethod="post"><% } %>
 		<button type="submit" autofocus>Ver el Detalle de la <%= dataEntry.producto %> agregada</button>

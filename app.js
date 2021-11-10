@@ -41,13 +41,13 @@ app.set("views", [
 // ************************* Rutas ********************************
 let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 let rutaProdAgregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
-let rutaProdRUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
-//let rutaProdOpciones = require("./rutas_y_controladores/3-ProductosRUD/Rutas");
+let rutaProdDetalle = require("./rutas_y_controladores/3-Prod-Detalle/Rutas");
+let rutaProductos = require("./rutas_y_controladores/4-Productos/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/agregar/productos", rutaProdAgregar);
-app.use("rud/productos", rutaProdRUD);
-//app.use("/opciones/productos", rutaProdOpciones);
+app.use("/detalle/producto", rutaProdDetalle);
+app.use("/productos", rutaProductos);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************

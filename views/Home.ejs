@@ -88,8 +88,8 @@
 	</header>
 	<main class="flex-row">
 		<%- include('Main-2ImagenDerecha') %>
-		<div id="cuerpo-y-footer" class="flex-col grow">
-		<%- include('Main-3Footer') %>
+		<section id="cuerpo-y-footer" class="flex-col grow">
+			<%- include('Main-3Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema=="usuario") { %>
 				<section id="Form" class="flex-col">
@@ -123,7 +123,7 @@
 				<%- codigo == "nosotros" ? include("Nosotros") : "" %>
 			<% } %>
 			<!--****************************** FIN *******************************-->
-		</div>
+		</section>
 	</main>
 </body>
 </html>
