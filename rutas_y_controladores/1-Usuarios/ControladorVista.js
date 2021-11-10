@@ -219,7 +219,7 @@ module.exports = {
 		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
-		req.session.usuario = await BD_especificas.obtenerPorId(usuario.id);
+		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(usuario.id);
 		// Pendiente mover el archivo a la carpeta definitiva
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");

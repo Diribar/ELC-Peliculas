@@ -13,18 +13,6 @@ module.exports = {
 		});
 	},
 
-	obtenerTodosIncludeOrder: (
-		entidad,
-		camposInclude,
-		campoOrder,
-		valorOrder
-	) => {
-		return db[entidad].findAll({
-			include: [camposInclude],
-			order: [[campoOrder, valorOrder]],
-		});
-	},
-
 	obtenerPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
 	},
@@ -44,5 +32,4 @@ module.exports = {
 	actualizarRegistro: (entidad, datos, id) => {
 		return db[entidad].update(datos, { where: { id: id } });
 	},
-
 };
