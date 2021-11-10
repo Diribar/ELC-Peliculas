@@ -1,5 +1,5 @@
 // ************ Requires ************
-let procesarProductos = require("./2-Procesar");
+let procesarProd = require("./2-Procesar");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -46,7 +46,7 @@ module.exports = {
 			: "";
 		// Contenido
 		aux = datos.contenido
-			? procesarProductos.contenidoFA(datos.contenido)
+			? procesarProd.contenidoFA(datos.contenido)
 			: {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
