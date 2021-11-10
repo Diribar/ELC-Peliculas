@@ -3,9 +3,9 @@ let fs = require("fs");
 let path = require("path");
 let axios = require("axios");
 let requestPromise = require("request-promise");
-let buscar_x_PalClave = require("../../funciones/Productos/1-Buscar_x_PC");
-let procesarProductos = require("../../funciones/Productos/2-Procesar");
-let validarProductos = require("../../funciones/Productos/3-Errores");
+let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
+let procesarProd = require("../../funciones/Productos/2-Procesar");
+let validarProd = require("../../funciones/Productos/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
@@ -23,7 +23,7 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: palabrasClave
-			? await validarProductos.palabrasClave(palabrasClave)
+			? await validarProd.palabrasClave(palabrasClave)
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
@@ -51,13 +51,13 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Si hay errores de validación, redireccionar
-		let errores = await validarProductos.palabrasClave(palabrasClave);
+		let errores = await validarProd.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.errores = errores;
 			return res.redirect("/agregar/productos/palabras-clave");
 		}
 		// 3. Generar la session para la siguiente instancia
-		req.session.desambiguar = await buscar_x_PalClave.search(palabrasClave);
+		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
 		res.cookie("desambiguar", req.session.desambiguar, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -135,7 +135,7 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: copiarFA
-			? await validarProductos.copiarFA(copiarFA)
+			? await validarProd.copiarFA(copiarFA)
 			: "";
 		// 5. Render del formulario
 		//return res.send(req.cookies);
@@ -156,14 +156,14 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		let errores = await validarProductos.copiarFA(copiarFA);
+		let errores = await validarProd.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		if (!errores.direccion) {
-			fa_id = await procesarProductos.obtenerFA_id(req.body.direccion);
+			fa_id = await procesarProd.obtenerFA_id(req.body.direccion);
 			entidad =
 				copiarFA.rubroAPI == "movie" ? "peliculas" : "colecciones";
 			campo = copiarFA.rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
-			elc_id = await procesarProductos.obtenerELC_id({
+			elc_id = await procesarProd.obtenerELC_id({
 				entidad,
 				campo,
 				valor: fa_id,
@@ -181,7 +181,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/copiar-fa");
 		}
 		// 3. Generar la session para la siguiente instancia
-		req.session.datosDuros = await procesarProductos.producto_FA(copiarFA);
+		req.session.datosDuros = await procesarProd.producto_FA(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -226,7 +226,7 @@ module.exports = {
 		//return res.send(req.cookies);
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProductos.datosDuros(datosDuros, camposDD());
+			: await validarProd.datosDuros(datosDuros, camposDD());
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
 			? await varias.pais_idToNombre(datosDuros.pais_id)
@@ -263,7 +263,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Averiguar si hay errores de validación
-		let errores = await validarProductos.datosDuros(datosDuros, camposDD());
+		let errores = await validarProd.datosDuros(datosDuros, camposDD());
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
 		if (!errores.nombre_original) {
 			// Obtener los parámetros
@@ -274,7 +274,7 @@ module.exports = {
 			campo += "_" + fuente + "_id";
 			id = datosDuros[campo];
 			// Averiguar si hubieron errores
-			elc_id = await procesarProductos.obtenerELC_id({
+			elc_id = await procesarProd.obtenerELC_id({
 				entidad,
 				campo,
 				valor,
@@ -389,7 +389,7 @@ module.exports = {
 		});
 		// 2.1. Averiguar si hay errores de validación
 		camposDP = [...(await datosPersSelect()), ...datosPersInput()];
-		let errores = await validarProductos.datosPers(datosPers, camposDP);
+		let errores = await validarProd.datosPers(datosPers, camposDP);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -521,16 +521,15 @@ module.exports = {
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
 		if (IDdelProducto.en_coleccion) {
-
 		}
-			// 4. Render del formulario
-			//return res.send(req.cookies);
-			return res.render("Home", {
-				tema,
-				codigo,
-				link: req.originalUrl,
-				data_entry: IDdelProducto,
-			});
+		// 4. Render del formulario
+		//return res.send(req.cookies);
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+			data_entry: IDdelProducto,
+		});
 	},
 
 	responsabilidad: (req, res) => {
@@ -550,7 +549,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 	campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 	let lectura =
 		form.fuente == "TMDB"
-			? await procesarProductos.obtenerAPI_TMDB(form[campo], rubroAPI)
+			? await procesarProd.obtenerAPI_TMDB(form[campo], rubroAPI)
 			: {};
 	// Obtener la info para la vista 'Datos Duros'
 	form.rubroAPI == "movie"
@@ -560,7 +559,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 		: form.rubroAPI == "collection"
 		? (rubro = "coleccion_TMDB")
 		: "";
-	return await procesarProductos[rubro](form, lectura);
+	return await procesarProd[rubro](form, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
