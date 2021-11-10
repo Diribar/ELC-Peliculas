@@ -1,7 +1,7 @@
 // ************ Requires ************
 let buscar_x_PalClave = require("../../funciones/Productos/1-Buscar_x_PC");
-let procesarProductos = require("../../funciones/Productos/2-Procesar");
-let validarProductos = require("../../funciones/Productos/3-Errores");
+let procesarProd = require("../../funciones/Productos/2-Procesar");
+let validarProd = require("../../funciones/Productos/3-Errores");
 
 // *********** Controlador ***********
 module.exports = {
@@ -16,19 +16,19 @@ module.exports = {
 	// Vista (palabrasClave)
 	validarPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
-		let errores = validarProductos.palabrasClave(palabrasClave);
+		let errores = validarProd.palabrasClave(palabrasClave);
 		return res.json(errores.palabrasClave);
 	},
 
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
-		errores = validarProductos.copiarFA(req.query);
+		errores = validarProd.copiarFA(req.query);
 		return res.json(errores);
 	},
 
 	// Vista (datosDuros)
 	validarDatosDuros: async (req, res) => {
-		errores = await validarProductos.datosDuros(
+		errores = await validarProd.datosDuros(
 			req.query,
 			Object.keys(req.query)
 		);
@@ -37,7 +37,7 @@ module.exports = {
 
 	// Vista (datosPers)
 	validarDatosPers: async (req, res) => {
-		errores = await validarProductos.datosPers(
+		errores = await validarProd.datosPers(
 			req.query,
 			Object.keys(req.query)
 		);
@@ -46,7 +46,7 @@ module.exports = {
 
 	// Vista (copiarFA)
 	obtenerFA_id: (req, res) => {
-		FA_id = procesarProductos.obtenerFA_id(req.query.direccion);
+		FA_id = procesarProd.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 
@@ -54,7 +54,7 @@ module.exports = {
 	obtenerELC_id: async (req, res) => {
 		let { rubroAPI, campo, valor } = req.query;
 		entidad = rubroAPI == "movie" ? "peliculas" : "colecciones";
-		ELC_id = await procesarProductos.obtenerELC_id({ entidad, campo, valor });
+		ELC_id = await procesarProd.obtenerELC_id({ entidad, campo, valor });
 		return res.json(ELC_id);
 	},
 };
