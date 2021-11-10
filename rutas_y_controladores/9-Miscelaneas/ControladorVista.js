@@ -22,7 +22,7 @@ module.exports = {
 		aux = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers;
-		if (!aux) return res.redirect("/agregar/productos/palabras-clave");
+		if (!aux) return res.redirect("/agregar/producto/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.query };
 		req.session.datosPers = datosPers;
@@ -43,7 +43,7 @@ module.exports = {
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/producto/palabras-clave");
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		//return res.send(req.session.datosPers);
 		tema = "RCLV";
@@ -79,7 +79,7 @@ module.exports = {
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/producto/palabras-clave");
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		rubro = datosPers.rubro;
 		// 1. Guardar el data entry en session y cookie
@@ -123,6 +123,6 @@ module.exports = {
 		});
 		// 5. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/datos-personalizados");
+		return res.redirect("/agregar/producto/datos-personalizados");
 	},
 };

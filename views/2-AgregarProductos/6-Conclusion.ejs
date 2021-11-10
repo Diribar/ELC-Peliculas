@@ -3,6 +3,7 @@
 	<section class="flex-col">
 		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
 		<ul>
+			<li style="font-size: 1.2rem;"><u style="font-size: inherit;"><%= rubro %></u>: <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong></li>
 			<li>Nuestro equipo de Administradores revisará los datos ingresados.</li>
 			<li>
 				El resultado puede ser:
@@ -22,7 +23,7 @@
 				<% if (dataEntry.en_coleccion) { %>
 					<% if (!dataEntry.coleccionYaEnBD) { %>
 						<% botonColeccion = "Agregar la Colección" %>
-						<% linkColeccion = "/agregar/coleccion" %>
+						<% linkColeccion = "/agregar/producto/coleccion" %>
 						<% if (dataEntry.en_colec_tmdb_id) { %>
 							<!-- En TMDB -->
 							<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
@@ -41,7 +42,7 @@
 				<% } else { %>
 					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
 					<% botonColeccion = "Agregar las Partes" %>
-					<% linkColeccion = "/agregar/partes-de-coleccion" %>
+					<% linkColeccion = "/agregar/producto/partes-de-coleccion" %>
 				<% } %>
 			<% } %>
 		</ul>

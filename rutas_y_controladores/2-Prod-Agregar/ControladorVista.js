@@ -55,7 +55,7 @@ module.exports = {
 		let errores = await validarProd.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/producto/palabras-clave");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
@@ -64,7 +64,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/desambiguar");
+		return res.redirect("/agregar/producto/desambiguar");
 	},
 
 	desambiguarForm: (req, res) => {
@@ -84,7 +84,7 @@ module.exports = {
 			? req.cookies.desambiguar
 			: "";
 		if (!desambiguar)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/producto/palabras-clave");
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		resultados = desambiguar.resultados;
@@ -114,7 +114,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Redireccionar a la siguiente instancia
-		res.redirect("/agregar/productos/datos-duros");
+		res.redirect("/agregar/producto/datos-duros");
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -179,7 +179,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/productos/copiar-fa");
+			return res.redirect("/agregar/producto/copiar-fa");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.datosDuros = await procesarProd.producto_FA(copiarFA);
@@ -188,7 +188,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/datos-duros");
+		return res.redirect("/agregar/producto/datos-duros");
 	},
 
 	datosDurosForm: async (req, res) => {
@@ -216,7 +216,7 @@ module.exports = {
 				: !!req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
-		if (!datosDuros) return res.redirect("/agregar/productos/" + origen);
+		if (!datosDuros) return res.redirect("/agregar/producto/" + origen);
 		// 5. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(datosDuros);
 		req.session.datosClaveProd = datosClaveProd;
@@ -256,7 +256,7 @@ module.exports = {
 				: req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
-		if (!aux) return res.redirect("/agregar/productos/" + origen);
+		if (!aux) return res.redirect("/agregar/producto/" + origen);
 		// 3. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
 		req.session.datosDuros = datosDuros;
@@ -319,7 +319,7 @@ module.exports = {
 			//return res.send(errores)
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
 			req.session.errores = errores;
-			return res.redirect("/agregar/productos/datos-duros");
+			return res.redirect("/agregar/producto/datos-duros");
 		}
 		// 8. Generar la session para la siguiente instancia
 		avatarDP =
@@ -336,7 +336,7 @@ module.exports = {
 		});
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/datos-personalizados");
+		return res.redirect("/agregar/producto/datos-personalizados");
 	},
 
 	datosPersForm: async (req, res) => {
@@ -352,7 +352,7 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers) return res.redirect("/agregar/productos/datos-duros");
+		if (!datosPers) return res.redirect("/agregar/producto/datos-duros");
 		// 4. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(datosPers);
 		req.session.datosClaveProd = datosClaveProd;
@@ -378,7 +378,7 @@ module.exports = {
 		aux = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers;
-		if (!aux) return res.redirect("/agregar/productos/datos-duros");
+		if (!aux) return res.redirect("/agregar/producto/datos-duros");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.body };
 		if (!datosPers.personaje_historico_id)
@@ -394,7 +394,7 @@ module.exports = {
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/productos/datos-personalizados");
+			return res.redirect("/agregar/producto/datos-personalizados");
 		}
 		// 3. Si no hay errores, obtener la calificación
 		fe_valores = await BD_varias.obtenerPorParametro(
@@ -438,7 +438,7 @@ module.exports = {
 		});
 		//Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/productos/confirmar");
+		return res.redirect("/agregar/producto/confirmar");
 	},
 
 	confirmarForm: (req, res) => {
@@ -452,7 +452,7 @@ module.exports = {
 			? req.cookies.confirmar
 			: "";
 		if (!confirmar)
-			return res.redirect("/agregar/productos/datos-personalizados");
+			return res.redirect("/agregar/producto/datos-personalizados");
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(confirmar);
 		req.session.datosClaveProd = datosClaveProd;
@@ -477,7 +477,7 @@ module.exports = {
 			? req.cookies.confirmar
 			: "";
 		if (!confirmar)
-			return res.redirect("/agregar/productos/datos-personalizados");
+			return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		registro = await BD_varias.agregarRegistro(entidad, confirmar);
@@ -509,10 +509,10 @@ module.exports = {
 			if (req.cookies[metodo]) res.clearCookie(metodo);
 		}
 		// 8. Redireccionar
-		return res.redirect("/agregar/productos/conclusion");
+		return res.redirect("/agregar/producto/conclusion");
 	},
 
-	conclusion: async (req, res) => {
+	conclusionForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "conclusion";
@@ -523,7 +523,7 @@ module.exports = {
 			? req.cookies.datosClaveProd
 			: "";
 		if (!datosClaveProd)
-			return res.redirect("/agregar/productos/palabras-clave");
+			return res.redirect("/agregar/producto/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
 		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_tmdb_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
@@ -541,6 +541,15 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: datosClaveProd,
 		});
+	},
+
+	conclusionGuardar: async (req, res) => {
+		let proximo = req.url.slice(1)
+		return res.send({proximo, ...req.body});
+		// Colecciones -> agregar/producto/datosDuros
+
+		// Partes de coleccion -> agregar/producto/partes
+		
 	},
 
 	responsabilidad: (req, res) => {
@@ -848,7 +857,9 @@ let funcDatosClaveProd = (datos) => {
 		datos.fuente != "IM" ? datos[datosClaveProd.campo] : "";
 	// 2. Campo y valor
 	datosClaveProd[datosClaveProd.campo] = datos[datosClaveProd.campo];
-	// 3. ID del producto
+	// 3. Nombre del producto
+	datosClaveProd.nombre_castellano = datos.nombre_castellano
+	// 4. ID del producto
 	if (datos.id) datosClaveProd.id = datos.id
 	return datosClaveProd;
 };

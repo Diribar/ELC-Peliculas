@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 	// Funciones para revisar todos los inputs, devuelve los errores
 	let buscarErroresEnTodoElForm = () => {
 		let url = buscarTodosLosValores();
-		return fetch("/agregar/productos/api/validar-datos-pers" + url).then(
+		return fetch("/agregar/producto/api/validar-datos-pers" + url).then(
 			(n) => n.json()
 		);
 	};
