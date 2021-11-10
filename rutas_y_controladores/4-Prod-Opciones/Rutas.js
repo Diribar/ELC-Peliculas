@@ -1,7 +1,6 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let RUD = require("./2-RUD");
 let opciones = require("./3-Opciones");
 
 //************************ Middlewares ******************************
