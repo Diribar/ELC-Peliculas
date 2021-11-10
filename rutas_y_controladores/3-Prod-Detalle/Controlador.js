@@ -3,7 +3,8 @@
 
 // *********** Controlador ***********
 module.exports = {
-	detalle: async (req, res) => {
+	informacion: async (req, res) => {
+		return res.send(req.body)
 		// Obtener los datos de la película
 		let ID = req.params.id
 		let producto = await BD_peliculas.obtenerPorID_Peli(ID);
