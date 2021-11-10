@@ -805,7 +805,7 @@ let datosClaveDelProducto = (datos) => {
 		// 1. Entidad
 		IDdelProducto.entidad = "peliculas";
 		IDdelProducto.producto = "Película";
-		// 2. Campo 'ID' externo
+		// 2. Campo 'id' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "peli_tmdb_id"
@@ -823,7 +823,7 @@ let datosClaveDelProducto = (datos) => {
 		// 1. Entidad
 		IDdelProducto.entidad = "colecciones";
 		IDdelProducto.producto = "Colección";
-		// 2. Campo 'ID' externo
+		// 2. Campo 'id' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "colec_tmdb_id"
@@ -831,20 +831,20 @@ let datosClaveDelProducto = (datos) => {
 				? "colec_fa_id"
 				: "";
 	}
-	// Valor ID externo
+	// Valor id externo
 	IDdelProducto.valor =
 		datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
 	return IDdelProducto;
 };
 
-let actualizarRelacionConLaVida = async (entidad, ID) => {
-	if (ID) {
-		aux = await BD_varias.obtenerPorId(entidad, ID);
+let actualizarRelacionConLaVida = async (entidad, id) => {
+	if (id) {
+		aux = await BD_varias.obtenerPorId(entidad, id);
 		aux.cant_productos++;
 		BD_varias.actualizarRegistro(
 			entidad,
 			{ cant_productos: aux.cant_productos },
-			ID
+			id
 		);
 	}
 };
