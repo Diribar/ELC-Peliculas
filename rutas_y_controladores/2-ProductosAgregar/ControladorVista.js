@@ -143,7 +143,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: copiarFA,
+			dataEntry: copiarFA,
 			errores,
 		});
 	},
@@ -235,7 +235,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: datosDuros,
+			dataEntry: datosDuros,
 			pais,
 			paises,
 			errores,
@@ -365,7 +365,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: datosPers,
+			dataEntry: datosPers,
 			errores,
 			datosPers_select: await datosPersSelect(),
 			datosPers_input: datosPersInput(),
@@ -464,7 +464,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: confirmar,
+			dataEntry: confirmar,
 		});
 	},
 
@@ -485,10 +485,7 @@ module.exports = {
 			"historicos_personajes",
 			registro.personaje_historico_id
 		);
-		actualizarRCLV(
-			"historicos_hechos",
-			registro.hecho_historico_id
-		);
+		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
@@ -520,7 +517,13 @@ module.exports = {
 		if (!IDdelProducto)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
-		if (IDdelProducto.en_coleccion) {
+		if (IDdelProducto.en_coleccion && IDdelProducto.en_colec_tmdb_id) {
+			coleccionYaEnBD = await BD_varias.obtenerELC_id({
+				entidad: "coleccion",
+				campo: "en_colec_tmdb_id",
+				valor: en_colec_tmdb_id,
+			});
+			if (coleccionYaEnBD) IDdelProducto.coleccionYaEnBD = true;
 		}
 		// 4. Render del formulario
 		//return res.send(req.cookies);
@@ -528,7 +531,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: IDdelProducto,
+			dataEntry: IDdelProducto,
 		});
 	},
 

@@ -35,7 +35,7 @@ module.exports = {
 			: res.redirect("/agregar/hecho-historico");
 	},
 
-	RV_Form: async (req, res) => {
+	RCLV_Form: async (req, res) => {
 		// Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
@@ -49,14 +49,14 @@ module.exports = {
 		tema = "RCLV";
 		codigo = datosPers.rubro;
 		// Data-entry
-		data_entry = req.session[codigo + "Historico"]
+		dataEntry = req.session[codigo + "Historico"]
 			? req.session[codigo + "Historico"]
 			: "";
 		// Errores
 		let errores = req.session.errores
 			? req.session.errores
-			: data_entry
-			? await validarRCLV[codigo](data_entry)
+			: dataEntry
+			? await validarRCLV[codigo](dataEntry)
 			: "";
 		// Meses del año
 		meses = await BD_varias.obtenerTodos("meses", "id");
@@ -65,13 +65,13 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			dataEntry,
 			errores,
 			meses,
 		});
 	},
 
-	RV_Grabar: async (req, res) => {
+	RCLV_Grabar: async (req, res) => {
 		// Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
@@ -83,14 +83,14 @@ module.exports = {
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		rubro = datosPers.rubro;
 		// 1. Guardar el data entry en session y cookie
-		let data_entry = req.body;
-		data_entry.rubro = rubro;
-		req.session[rubro] = data_entry;
-		res.cookie(rubro, data_entry, {
+		let dataEntry = req.body;
+		dataEntry.rubro = rubro;
+		req.session[rubro] = dataEntry;
+		res.cookie(rubro, dataEntry, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV(data_entry);
+		let errores = await validarRCLV.RCLV(dataEntry);
 		// 3. Acciones si hay errores
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -98,17 +98,17 @@ module.exports = {
 		}
 		// 3. Preparar la info a guardar
 		datos = {
-			nombre: data_entry.nombre,
+			nombre: dataEntry.nombre,
 			creada_por_id: req.session.usuario.id,
 		};
 		if (
-			data_entry.mes_id &&
-			data_entry.dia &&
-			data_entry.desconocida == undefined
+			dataEntry.mes_id &&
+			dataEntry.dia &&
+			dataEntry.desconocida == undefined
 		) {
 			dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.filter((m) => m.mes_id == data_entry.mes_id))
-				.then((n) => n.filter((m) => m.dia == data_entry.dia))
+				.then((n) => n.filter((m) => m.mes_id == dataEntry.mes_id))
+				.then((n) => n.filter((m) => m.dia == dataEntry.dia))
 				.then((n) => n[0].id);
 			datos.dia_del_ano_id = dia_del_ano_id;
 		}

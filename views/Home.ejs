@@ -48,7 +48,7 @@
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/3-DatosDuros.css">
 			<script src="/javascript/2-Productos/3-DD-Ayuda.js"></script>
 			<script src="/javascript/2-Productos/3-DD-Errores.js"></script>
-			<% if (data_entry && data_entry.fuente!="TMDB") { %><script src="/javascript/2-Productos/3-DD-Imagen.js"></script><% } %>
+			<% if (dataEntry && dataEntry.fuente!="TMDB") { %><script src="/javascript/2-Productos/3-DD-Imagen.js"></script><% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/4-DatosPers.css">
@@ -71,9 +71,9 @@
 		<%- include('Head', {titulo: "PEL-Agregar"}) %>
 		<%- include('Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
 		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RelacionConLaVida.css">
-		<script src="/javascript/9-Miscelaneas/RV-Ayuda.js"></script>
-		<script src="/javascript/9-Miscelaneas/RV-Fechas.js"></script>
-		<script src="/javascript/9-Miscelaneas/RV-Errores.js"></script>
+		<script src="/javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
+		<script src="/javascript/9-Miscelaneas/RCLV-Fechas.js"></script>
+		<script src="/javascript/9-Miscelaneas/RCLV-Errores.js"></script>
 	<% } %>
 	<% if (tema == "institucional") { %>
 		<% if (codigo == "nosotros") { %>

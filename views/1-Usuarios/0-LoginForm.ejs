@@ -1,12 +1,12 @@
 <p id="tapar-el-fondo"></p>
-<form action="<%= link %>" method="POST" id="data_entry">
+<form action="<%= link %>" method="POST" id="dataEntry">
 	<h1>Login</h1>
 	<!--Mail y Contraseña-->
 	<div class="label-input flex-row">  <!--Mail-->
 		<label for="email">E-Mail</label>
 		<div class="form-grupo">
 			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
-				value="<%= data_entry ? data_entry.email : null %>">
+				value="<%= dataEntry ? dataEntry.email : null %>">
 			<!-- Errores -->
 			<i class="fas fa-times-circle ocultar"><span class="mensajeError"></span></i>
 			<i class="fas fa-check-circle ocultar"></i>
@@ -16,7 +16,7 @@
 		<label for="contrasena">Contraseña</label>
 		<div class="form-grupo">
 			<input type="password" class="input" name="contrasena"
-				value="<%= data_entry ? data_entry.contrasena : null %>" placeholder="Contraseña"
+				value="<%= dataEntry ? dataEntry.contrasena : null %>" placeholder="Contraseña"
 			>
 			<i class="fas fa-eye-slash" id="eye"></i>
 			<!-- Errores -->

@@ -4,7 +4,7 @@
 	<section class="label-input flex-row"><!--Apodo-->
 		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
 		<div class="form-grupo">
-			<% apodo = data_entry ? data_entry.apodo : "" %>
+			<% apodo = dataEntry ? dataEntry.apodo : "" %>
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
 			<i class="fas fa-times-circle <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.apodo) ? errores.apodo : "" %></span>
@@ -14,7 +14,7 @@
 	<section class="label-input flex-row"><!--Pais de residencia-->
 		<label for="pais">País de residencia</label>
 		<div class="form-grupo">
-			<% pais_id = data_entry ? data_entry.pais_id : "" %>
+			<% pais_id = dataEntry ? dataEntry.pais_id : "" %>
 			<select name="pais_id" class="input">
 				<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
@@ -47,7 +47,7 @@
 	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
 		<label for="estado_eclesial_id">Estado de vida <br>en la iglesia</label>
 		<div class="form-grupo">
-			<% estado_eclesial_id = data_entry ? data_entry.estado_eclesial_id : "" %>
+			<% estado_eclesial_id = dataEntry ? dataEntry.estado_eclesial_id : "" %>
 			<select name="estado_eclesial_id" class="input">
 				<option value="" <% if (estado_eclesial_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
 				<% for (n of estados_eclesiales) { %>
@@ -62,7 +62,7 @@
 	<section class="label-input flex-row"><!--Imagen de perfil-->
 		<label>Imagen personal <br>(opcional)</label>
 		<div class="form-grupo flex-col" id="divImagen">
-			<% avatar = data_entry ? data_entry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
+			<% avatar = dataEntry ? dataEntry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>" alt="">
 			</label>

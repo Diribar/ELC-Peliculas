@@ -13,15 +13,15 @@ module.exports = {
 	altaMailForm: (req, res) => {
 		tema = "usuario";
 		codigo = "mail";
-		let data_entry = req.session.data_entry
-			? req.session.data_entry
+		let dataEntry = req.session.dataEntry
+			? req.session.dataEntry
 			: false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			dataEntry,
 			errores,
 		});
 	},
@@ -32,7 +32,7 @@ module.exports = {
 		let errores = await validarUsuarios.registroMail(datos.email);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.data_entry = req.body;
+			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}
@@ -74,7 +74,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "login";
 		// 2. Data Entry propio y errores
-		data_entry = req.session.email
+		dataEntry = req.session.email
 			? { email: req.session.email, contrasena: req.session.contrasena }
 			: null;
 		errores = req.session.errores ? req.session.errores : false;
@@ -83,7 +83,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			dataEntry,
 			errores,
 		});
 	},
@@ -136,15 +136,15 @@ module.exports = {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "perennes";
-		let data_entry = req.session.data_entry
-			? req.session.data_entry
+		let dataEntry = req.session.dataEntry
+			? req.session.dataEntry
 			: false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			dataEntry,
 			errores,
 		});
 	},
@@ -157,7 +157,7 @@ module.exports = {
 		let errores = await validarUsuarios.perennes(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.data_entry = req.body;
+			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}
@@ -183,15 +183,15 @@ module.exports = {
 			"estados_eclesiales",
 			"orden"
 		);
-		let data_entry = req.session.data_entry
-			? req.session.data_entry
+		let dataEntry = req.session.dataEntry
+			? req.session.dataEntry
 			: false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry,
+			dataEntry,
 			errores,
 			hablaHispana,
 			hablaNoHispana,
@@ -210,7 +210,7 @@ module.exports = {
 			req.file
 				? borrarArchivoDeImagen(req.file.filename, req.file.path)
 				: null;
-			req.session.data_entry = req.body;
+			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
 		}

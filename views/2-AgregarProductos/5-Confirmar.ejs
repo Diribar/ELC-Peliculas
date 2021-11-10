@@ -1,10 +1,10 @@
-<% rubro = data_entry.rubroAPI == "movie" ? "Película" : "Colección" %>
+<% rubro = dataEntry.rubroAPI == "movie" ? "Película" : "Colección" %>
 <h1 class="titulo" id="titulo">Confirmá el agregado a nuestra Base de Datos</h1>
-<form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
+<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>Estamos listos para agregar el registro a nuestra Base de Datos</h2>
 		<ul>
-			<li style="font-size: 1.2rem;"><strong style="font-size: inherit;"><u style="font-size: inherit;"><%= rubro %></u></strong>: <em style="font-size: inherit;"><%= data_entry.nombre_castellano %></em></li>
+			<li style="font-size: 1.2rem;"><strong style="font-size: inherit;"><u style="font-size: inherit;"><%= rubro %></u></strong>: <em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></li>
 			<li>
 				Una vez que confirmes la operación en este paso,
 				<ol>

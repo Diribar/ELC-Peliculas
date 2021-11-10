@@ -1,6 +1,6 @@
-<% rubro = data_entry.rubroAPI == "movie" ? "Película" : "Colección" %>
+<% rubro = dataEntry.rubroAPI == "movie" ? "Película" : "Colección" %>
 <h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
-<form action="<%= link %>" method="POST" id="data_entry" class="flex-col" >
+<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col" >
 	<section id="titulos">
 		<h2>Paso 4 de 4: Datos Personalizados</h2>
 	</section>
@@ -48,7 +48,7 @@
 		<div class="flex-col" style="align-items: center;">
 			<!-- Avatar -->
 			<div id="imagenPeli" class="form-grupo">
-				<img id="imgTMDB" src="<%= data_entry.avatarDP %>" alt="afiche">
+				<img id="imgTMDB" src="<%= dataEntry.avatarDP %>" alt="afiche">
 			</div>	
 			<!-- Links -->
 			<div class="flex-col">

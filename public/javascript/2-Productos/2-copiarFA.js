@@ -1,8 +1,8 @@
 window.addEventListener("load", async () => {
 	// Variables
-	let form = document.querySelector("#data_entry");
+	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll("#data_entry .input");
+	let inputs = document.querySelectorAll("#dataEntry .input");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
 	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let resultadoComentario = document.querySelector("#resultado");
 	let rubroAPI = document.querySelector("select[name='rubroAPI']");
-	let resto = document.querySelector("#data_entry #resto");
+	let resto = document.querySelector("#dataEntry #resto");
 	let sectEnColeccion = document.querySelector("#en_coleccion");
 	let statusInicial = true;
 	let pre = "/agregar/productos/api/";
