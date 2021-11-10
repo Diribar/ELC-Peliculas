@@ -7,6 +7,7 @@ let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Productos/2-Procesar");
 let validarProd = require("../../funciones/Productos/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
+let varias = require("../../funciones/Varias/varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -517,14 +518,20 @@ module.exports = {
 		if (!IDdelProducto)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
+		//return res.send(req.cookies);
 		if (IDdelProducto.en_coleccion && IDdelProducto.en_colec_tmdb_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
-				entidad: "coleccion",
-				campo: "en_colec_tmdb_id",
-				valor: en_colec_tmdb_id,
+				entidad: "colecciones",
+				campo: "colec_tmdb_id",
+				valor: IDdelProducto.en_colec_tmdb_id,
 			});
 			if (coleccionYaEnBD) IDdelProducto.coleccionYaEnBD = true;
 		}
+		// return res.send({
+		// 	entidad: "colecciones",
+		// 	campo: "colec_tmdb_id",
+		// 	valor: IDdelProducto.en_colec_tmdb_id,
+		// });
 		// 4. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -837,6 +844,8 @@ let datosClaveDelProducto = (datos) => {
 	// Valor id externo
 	IDdelProducto.valor =
 		datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
+	// Campo y valor
+	IDdelProducto[IDdelProducto.campo] = datos[IDdelProducto.campo];
 	return IDdelProducto;
 };
 
