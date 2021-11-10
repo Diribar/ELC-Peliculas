@@ -504,15 +504,33 @@ module.exports = {
 			if (req.cookies[metodo]) res.clearCookie(metodo);
 		}
 		// Redireccionar
-		return res.redirect("/agregar/productos/fin-del-proceso");
+		return res.redirect("/agregar/productos/conclusion");
 	},
 
-	finDelProcesoForm: (req, res) => {
-		return res.send("finDelProcesoForm");
+	conclusionForm: (req, res) => {
+		// 1. Tema y Código
+		tema = "agregar";
+		codigo = "conclusion";
+		// 2. Obtener los datos clave del producto
+		IDdelProducto = req.session.IDdelProducto
+			? req.session.IDdelProducto
+			: req.cookies.IDdelProducto
+			? req.cookies.IDdelProducto
+			: "";
+		if (!IDdelProducto)
+			return res.redirect("/agregar/productos/palabras-clave");
+		// 3. Render del formulario
+		//return res.send(req.cookies);
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+			data_entry: IDdelProducto,
+		});
 	},
 
-	finDelProcesoGuardar: (req, res) => {
-		return res.send("finDelProcesoGuardar");
+	conclusionGuardar: (req, res) => {
+		return res.send("conclusionGuardar");
 	},
 
 	responsabilidad: (req, res) => {
@@ -542,8 +560,7 @@ let obtenerDatosDelProductoTMDB = async (form) => {
 		: form.rubroAPI == "collection"
 		? (rubro = "coleccion_TMDB")
 		: "";
-	let resultado = await procesarProductos[rubro](form, lectura);
-	return resultado;
+	return await procesarProductos[rubro](form, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
@@ -786,19 +803,28 @@ let datosClaveDelProducto = (datos) => {
 	// Enfoque en los datos clave
 	let IDdelProducto = {};
 	if (datos.rubroAPI == "movie") {
+		// 1. Entidad
 		IDdelProducto.entidad = "peliculas";
+		IDdelProducto.producto = "Película";
+		// 2. Campo 'ID' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "peli_tmdb_id"
 				: datos.fuente == "FA"
 				? "peli_fa_id"
 				: "";
+		// 3. Está en colección 'SI' o 'NO'
 		IDdelProducto.en_coleccion = datos.en_coleccion;
-		datos.colec_tmdb_id
-			? (IDdelProducto.colec_tmdb_id = datos.colec_tmdb_id)
-			: "";
+		// 4. Datos externos de la colección a la que pertenece, si corresponde
+		if (datos.en_colec_tmdb_id) {
+			IDdelProducto.en_colec_tmdb_id = datos.en_colec_tmdb_id;
+			IDdelProducto.en_colec_nombre = datos.en_colec_nombre;
+		}
 	} else {
+		// 1. Entidad
 		IDdelProducto.entidad = "colecciones";
+		IDdelProducto.producto = "Colección";
+		// 2. Campo 'ID' externo
 		IDdelProducto.campo =
 			datos.fuente == "TMDB"
 				? "colec_tmdb_id"
@@ -806,7 +832,9 @@ let datosClaveDelProducto = (datos) => {
 				? "colec_fa_id"
 				: "";
 	}
-	IDdelProducto.id = datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
+	// Valor ID externo
+	IDdelProducto.valor =
+		datos.fuente != "IM" ? datos[IDdelProducto.campo] : "";
 	return IDdelProducto;
 };
 
@@ -869,7 +897,6 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 			if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
 			if (parte.cant_capitulos)
 				datos.cant_capitulos = parte.cant_capitulos;
-			;
 			if (parte.avatar) datos.avatar = parte.avatar;
 			buscarPeliID = {
 				entidad: "peliculas",

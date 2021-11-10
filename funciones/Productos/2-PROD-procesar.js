@@ -34,7 +34,10 @@ module.exports = {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
 				datosLectura.en_coleccion = true;
-				datosLectura.colec_tmdb_id = lectura.belongs_to_collection.id;
+				datosLectura.en_colec_tmdb_id =
+					lectura.belongs_to_collection.id;
+				datosLectura.en_colec_nombre =
+					lectura.belongs_to_collection.name;
 			} else datosLectura.en_coleccion = false;
 			lectura.peli_imdb_id != ""
 				? (datosLectura.peli_imdb_id = lectura.peli_imdb_id)
@@ -159,14 +162,15 @@ module.exports = {
 					partes = {
 						peli_tmdb_id: n.id,
 						nombre_castellano: n.name,
-						ano_estreno: parseInt(n.air_date.slice(0, 4)),
 						cant_capitulos: n.episode_count,
 						sinopsis: n.overview,
 						orden_secuencia: n.season_number,
 					};
+					if (n.air_date)
+						partes.ano_estreno = parseInt(n.air_date.slice(0, 4));
 					partes.nombre_original = n.season_number
 						? "Season " + n.season_number
-						: "Specials"
+						: "Specials";
 					n.poster_path != ""
 						? (partes.avatar =
 								"https://image.tmdb.org/t/p/original" +
@@ -370,8 +374,16 @@ let funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
 		valor = crew
 			.filter((n) => n.department == campo_TMDB)
-			.map((m) => m.name)
-			.join(", ");
+			.map((m) => m.name);
+		let i = 1;
+		let j = 1;
+		while (j < valor.length) {
+			if (valor[i] == valor[i - 1]) {
+				valor.splice(i, 1);
+			} else i++;
+			j++;
+		}
+		valor = valor.join(", ");
 		return { [campo_ELC]: valor };
 	}
 	return;

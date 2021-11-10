@@ -1,4 +1,3 @@
-/* COLORES */
 body {
 	--amarillo-claro:rgb(255,242,204);
 	--azul-oscuro: rgb(37,64,97);
@@ -10,6 +9,6 @@ body {
 	--naranja-oscuro: #F57C00;
 	--rojo-claro: rgb(255,189,189);
 	--rojo-oscuro: rgb(209, 65, 40);
-	--verde-claro: rgb(188, 199, 167);
+	--verde-claro: rgb(217, 223, 205);
 	--verde-oscuro:rgb(79,98,40);
 }

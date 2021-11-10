@@ -1,0 +1,48 @@
+<h1 class="titulo" id="titulo">Conclusión</h1>
+<form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
+	<section class="flex-col">
+		<h2>¡Tu <%= data_entry.producto %> ha sido agregada con éxito!</h2>
+		<ul>
+			<li>Nuestro equipo de Administradores revisará los datos ingresados.</li>
+			<li>
+				El resultado puede ser:
+				<ol>
+					<li><strong style="font-size: inherit;">Aprobado</strong>, con o sin edición a cargo del administrador.</li>
+					<li><strong style="font-size: inherit;">Desaprobado</strong>, en caso de que la <%= data_entry.producto.toLowerCase() %> no esté alineada con <a href="" style="color: inherit;"><u>nuestro perfil</u></a>.</li>
+				</ol>
+			</li>
+			<li>Enviamos un único mail diario con el resultado de todos los registros revisados el día anterior.</li>
+			<li>Si el registro queda aprobado, quedará accesible para todo el público.</li>
+			<li>El plazo promedio de revisión viene siendo de XX días/horas.</li>
+			<li>Mientras tanto, podés ver los datos agregados y editarlos si corresponde.</li>
+			<!-- Película en colección -->
+			<% if (data_entry.entidad == "peliculas") { %>
+				<% if (data_entry.en_coleccion == true) { %>
+					<% botonColeccion = "Agregar la Colección" %>
+					<% if (data_entry.en_colec_tmdb_id) { %>
+						<!-- En TMDB -->
+						<li>Detectamos que la película corresponde a <%- data_entry.en_colec_nombre ? "la colección <em><strong>" + data_entry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
+					<% } else { %>
+						<!-- Fuera de TMDB -->
+						<li>Nos informaste que la película corresponde a una colección. ¿Podés ayudarnos agregándola a nuestra BD?</li>
+					<% } %>
+				<% } %>
+			<% } %>
+			<!-- Colección -->
+			<% if (data_entry.entidad == "colecciones") { %>
+				<% if (data_entry.colec_tmdb_id) { %>
+					<!-- En TMDB -->
+					<li>Las partes de la colección se agregaron a nuestra BD en forma automática.</li>
+				<% } else { %>
+					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
+					<% botonColeccion = "Agregar las Partes de la Colección" %>
+				<% } %>
+			<% } %>
+		</ul>
+	</section>
+	<!-- Flechas y Botón -->
+	<section id="flechas" class="flex-row space-evenly">
+		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %> "><% } %> 
+		<button type="submit" >Ir al Detalle de la <%= data_entry.producto %> agregada</button>
+	</section>	
+</form>

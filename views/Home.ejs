@@ -56,13 +56,9 @@
 			<script src="/javascript/2-Productos/4-DP-Errores.js"></script>
 			<script src="/javascript/2-Productos/4-DP-Subcat.js"></script>
 		<% } else %>
-		<% if (codigo == "confirmar") { %>
-			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css">
-			<!-- <script src="/javascript/2-Productos/5-Confirmar.js"></script> -->
-		<% } else %>
-		<% if (codigo == "responsabilidad") { %>
-			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Responsabilidad.css">
-		<% } %>
+		<% if (codigo == "confirmar") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css"><% } else %>
+		<% if (codigo == "conclusion") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/6-Conclusion.css"><% } else %>
+		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Responsabilidad.css"><% } %>
 	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>
@@ -114,6 +110,7 @@
 					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
 					<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>
+					<%- codigo == "conclusion" ? include("6-Conclusion") : "" %>
 				</section>
 			<% } else %>
 			<% if (tema=="relacionConLaVida") { %>
