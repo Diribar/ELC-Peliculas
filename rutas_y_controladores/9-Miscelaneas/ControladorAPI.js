@@ -1,5 +1,5 @@
 // ************ Requires ************
-let validarRV = require("../../funciones/Varias/RCLV-Errores");
+let validarRCLV = require("../../funciones/Varias/RCLV-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
@@ -19,8 +19,8 @@ module.exports = {
 		return res.json(casos);
 	},
 
-	validarRV: async (req, res) => {
-		let errores = await validarRV.relacionConLaVida(req.query);
+	validarRCLV: async (req, res) => {
+		let errores = await validarRCLV.RCLV(req.query);
 		return res.json(errores);
 	},
 };

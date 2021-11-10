@@ -3,7 +3,7 @@ let BD_varias = require("../BD/varias");
 
 // Objeto literal *************
 module.exports = {
-	relacionConLaVida: async (datos) => {
+	RCLV: async (datos) => {
 		let { rubro } = datos;
 		let errores = { mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores

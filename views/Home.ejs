@@ -67,7 +67,7 @@
 		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/Filtros.css">
 	<% } %>
 	<!-- Miscelaneas -->
-	<% if (tema == "relacionConLaVida") { %>
+	<% if (tema == "RCLV") { %>
 		<%- include('Head', {titulo: "PEL-Agregar"}) %>
 		<%- include('Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
 		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RelacionConLaVida.css">
@@ -113,9 +113,9 @@
 					<%- codigo == "conclusion" ? include("6-Conclusion") : "" %>
 				</section>
 			<% } else %>
-			<% if (tema=="relacionConLaVida") { %>
+			<% if (tema=="RCLV") { %>
 				<section class="cuerpo flex-col grow">
-					<%- include("RelacionConLaVida") %>
+					<%- include("RCLV") %>
 				</section>
 			<% } %>
 			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>

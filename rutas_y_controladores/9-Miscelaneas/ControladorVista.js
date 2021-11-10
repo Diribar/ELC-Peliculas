@@ -1,5 +1,5 @@
 // ************ Requires ************
-let validarRV = require("../../funciones/Varias/RCLV-Errores");
+let validarRCLV = require("../../funciones/Varias/RCLV-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
@@ -17,7 +17,7 @@ module.exports = {
 		});
 	},
 
-	relacionConLaVida: (req, res) => {
+	RCLV: (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosPers
 			? req.session.datosPers
@@ -46,7 +46,7 @@ module.exports = {
 			return res.redirect("/agregar/productos/palabras-clave");
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		//return res.send(req.session.datosPers);
-		tema = "relacionConLaVida";
+		tema = "RCLV";
 		codigo = datosPers.rubro;
 		// Data-entry
 		data_entry = req.session[codigo + "Historico"]
@@ -56,7 +56,7 @@ module.exports = {
 		let errores = req.session.errores
 			? req.session.errores
 			: data_entry
-			? await validarRV[codigo](data_entry)
+			? await validarRCLV[codigo](data_entry)
 			: "";
 		// Meses del año
 		meses = await BD_varias.obtenerTodos("meses", "id");
@@ -90,7 +90,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarRV.relacionConLaVida(data_entry);
+		let errores = await validarRCLV.RCLV(data_entry);
 		// 3. Acciones si hay errores
 		if (errores.hay) {
 			req.session.errores = errores;
