@@ -485,10 +485,7 @@ module.exports = {
 			"historicos_personajes",
 			registro.personaje_historico_id
 		);
-		actualizarRCLV(
-			"historicos_hechos",
-			registro.hecho_historico_id
-		);
+		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
@@ -520,7 +517,13 @@ module.exports = {
 		if (!IDdelProducto)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
-		if (IDdelProducto.en_coleccion) {
+		if (IDdelProducto.en_coleccion && IDdelProducto.en_colec_tmdb_id) {
+			coleccionYaEnBD = await BD_varias.obtenerELC_id({
+				entidad: "coleccion",
+				campo: "en_colec_tmdb_id",
+				valor: en_colec_tmdb_id,
+			});
+			if (coleccionYaEnBD) IDdelProducto.coleccionYaEnBD = true;
 		}
 		// 4. Render del formulario
 		//return res.send(req.cookies);
