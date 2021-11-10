@@ -2,7 +2,6 @@
 let express = require("express");
 let router = express.Router();
 let RUD = require("./2-RUD");
-let opciones = require("../4-Prod-Opciones/3-Opciones");
 
 //************************ Middlewares ******************************
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
