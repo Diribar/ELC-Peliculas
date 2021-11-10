@@ -481,11 +481,11 @@ module.exports = {
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		registro = await BD_varias.agregarRegistro(entidad, confirmar);
 		// 3. Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRelacionConLaVida(
+		actualizarRCLV(
 			"historicos_personajes",
 			registro.personaje_historico_id
 		);
-		actualizarRelacionConLaVida(
+		actualizarRCLV(
 			"historicos_hechos",
 			registro.hecho_historico_id
 		);
@@ -837,7 +837,7 @@ let datosClaveDelProducto = (datos) => {
 	return IDdelProducto;
 };
 
-let actualizarRelacionConLaVida = async (entidad, id) => {
+let actualizarRCLV = async (entidad, id) => {
 	if (id) {
 		aux = await BD_varias.obtenerPorId(entidad, id);
 		aux.cant_productos++;
