@@ -1,5 +1,5 @@
 // ************ Requires ************
-let validarUsuarios = require("../../funciones/varias/Usuarios-errores");
+let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
 
 // *********** Controlador ***********
 module.exports = {

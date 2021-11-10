@@ -1,4 +1,4 @@
-const funciones = require("../../funciones/varias/funcionesVarias");
+const funciones = require("../../funciones/Varias/varias");
 
 module.exports = (req, res, next) => {
 	if (!req.session.usuario) {

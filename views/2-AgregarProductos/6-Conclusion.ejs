@@ -19,6 +19,7 @@
 			<% if (data_entry.entidad == "peliculas") { %>
 				<% if (data_entry.en_coleccion == true) { %>
 					<% botonColeccion = "Agregar la Colección" %>
+					<% linkColeccion = "/agregar/coleccion" %>
 					<% if (data_entry.en_colec_tmdb_id) { %>
 						<!-- En TMDB -->
 						<li>Detectamos que la película corresponde a <%- data_entry.en_colec_nombre ? "la colección <em><strong>" + data_entry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
@@ -35,14 +36,15 @@
 					<li>Las partes de la colección se agregaron a nuestra BD en forma automática.</li>
 				<% } else { %>
 					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
-					<% botonColeccion = "Agregar las Partes de la Colección" %>
+					<% botonColeccion = "Agregar las Partes" %>
+					<% linkColeccion = "/agregar/partes-de-coleccion" %>
 				<% } %>
 			<% } %>
 		</ul>
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-evenly">
-		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %> "><% } %> 
-		<button type="submit" >Ir al Detalle de la <%= data_entry.producto %> agregada</button>
+		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %>" formaction="<%= linkColeccion %>" formmethod="post"><% } %>
+		<button type="submit" autofocus>Ver el Detalle de la <%= data_entry.producto %> agregada</button>
 	</section>	
 </form>

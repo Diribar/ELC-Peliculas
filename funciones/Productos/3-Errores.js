@@ -1,5 +1,5 @@
 // ************ Requires ************
-let procesarProductos = require("./2-PROD-procesar");
+let procesarProductos = require("./2-Procesar");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)

@@ -1,6 +1,6 @@
 // ************ Requires ************
-let validarRV = require("../../funciones/varias/RelacVida-errores");
-let BD_varios = require("../../funciones/BD/varios");
+let validarRV = require("../../funciones/Varias/RCLV-Errores");
+let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -59,7 +59,7 @@ module.exports = {
 			? await validarRV[codigo](data_entry)
 			: "";
 		// Meses del año
-		meses = await BD_varios.obtenerTodos("meses", "id");
+		meses = await BD_varias.obtenerTodos("meses", "id");
 		// Render
 		return res.render("Home", {
 			tema,
@@ -106,7 +106,7 @@ module.exports = {
 			data_entry.dia &&
 			data_entry.desconocida == undefined
 		) {
-			dia_del_ano_id = await BD_varios.obtenerTodos("dias_del_ano", "id")
+			dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
 				.then((n) => n.filter((m) => m.mes_id == data_entry.mes_id))
 				.then((n) => n.filter((m) => m.dia == data_entry.dia))
 				.then((n) => n[0].id);
@@ -114,7 +114,7 @@ module.exports = {
 		}
 		// 4. Crear el registro en la BD
 		let entidad = "historicos_" + rubro + "s";
-		let { id } = await BD_varios.agregarEntidad(entidad, datos);
+		let { id } = await BD_varias.agregarRegistro(entidad, datos);
 		//return res.send(id+"");
 		// 5. Guardar el id en 'Datos Personalizados'
 		req.session.datosPers[rubro + "_historico_id"] = id;
