@@ -518,7 +518,6 @@ module.exports = {
 		if (!IDdelProducto)
 			return res.redirect("/agregar/productos/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
-		//return res.send(req.cookies);
 		if (IDdelProducto.en_coleccion && IDdelProducto.en_colec_tmdb_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
 				entidad: "colecciones",
@@ -527,11 +526,6 @@ module.exports = {
 			});
 			if (coleccionYaEnBD) IDdelProducto.coleccionYaEnBD = true;
 		}
-		// return res.send({
-		// 	entidad: "colecciones",
-		// 	campo: "colec_tmdb_id",
-		// 	valor: IDdelProducto.en_colec_tmdb_id,
-		// });
 		// 4. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
