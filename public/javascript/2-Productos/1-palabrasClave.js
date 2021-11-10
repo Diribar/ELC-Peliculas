@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
 	// Declarar las variables
-	let form = document.getElementById("data_entry");
+	let form = document.getElementById("dataEntry");
 	let button = document.querySelector("button");
 	let input = document.querySelector("input");
 	let iconoError = document.querySelector(".fa-times-circle");

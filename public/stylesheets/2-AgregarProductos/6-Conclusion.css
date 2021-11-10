@@ -1,14 +1,14 @@
-#data_entry {
+#dataEntry {
     background-color: var(--verde-claro);
     border: var(--verde-oscuro) 7px solid;
 }
-#data_entry {max-width: 80%;}
+#dataEntry {max-width: 80%;}
 
-#data_entry h2 {align-self: center; background-color: var(--verde-oscuro);}
-#data_entry li {color: var(--verde-oscuro);}
-#data_entry ul {margin: 10px 0 30px; padding-left: 20px;}
-#data_entry ul li {margin-top: 10px; font-size: 1.1rem;}
-#data_entry ul li ol {padding-left: 30px;}
-#data_entry ul li ol li {margin-top: 2.5px; font-size: 1rem;}
+#dataEntry h2 {align-self: center; background-color: var(--verde-oscuro);}
+#dataEntry li {color: var(--verde-oscuro);}
+#dataEntry ul {margin: 10px 0 30px; padding-left: 20px;}
+#dataEntry ul li {margin-top: 10px; font-size: 1.1rem;}
+#dataEntry ul li ol {padding-left: 30px;}
+#dataEntry ul li ol li {margin-top: 2.5px; font-size: 1rem;}
 
-#data_entry button, #data_entry input[type="submit"] {max-width: 140px;}
+#dataEntry button, #dataEntry input[type="submit"] {max-width: 140px;}

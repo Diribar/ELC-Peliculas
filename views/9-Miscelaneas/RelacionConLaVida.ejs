@@ -1,7 +1,7 @@
 <% rubro = codigo == "personaje" ? "Personaje Histórico" : "Hecho Histórico" %>
 <div id="rubro" class="ocultar"><%= codigo %></div>
 <h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
-<form action="<%= link %>" method="POST" id="data_entry" class="flex-col">
+<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
 	<section id="cuerpo">
 		<!--Primera columna-->
@@ -52,7 +52,7 @@
 					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Mes:</label>
 						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!data_entry.mes_id) { %>selected<% } %>>Elegí</option>
+							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
 							<% for (mes of meses) { %>
 								<option value="<%= mes.id %>"><%= mes.nombre %></option>
 							<% } %>
@@ -67,7 +67,7 @@
 					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Día:</label>
 						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!data_entry.dia) { %>selected<% } %>>Elegí</option>
+							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
 							<% for (dia=1; dia<32; dia++) { %>
 								<option value="<%= dia %>" <% if (dia>29) { %>class="ocultar"<% } %>><%= dia %></option>
 							<% } %>

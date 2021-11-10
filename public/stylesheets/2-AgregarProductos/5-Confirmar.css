@@ -1,5 +1,5 @@
-#data_entry {max-width: 80%;}
-#data_entry ul {margin: 10px 0 30px; padding-left: 20px;}
-#data_entry ul li {margin-top: 10px; font-size: 1.1rem;}
-#data_entry ul li ol {padding-left: 30px;}
-#data_entry ul li ol li {margin-top: 2.5px; font-size: 1rem;}
+#dataEntry {max-width: 80%;}
+#dataEntry ul {margin: 10px 0 30px; padding-left: 20px;}
+#dataEntry ul li {margin-top: 10px; font-size: 1.1rem;}
+#dataEntry ul li ol {padding-left: 30px;}
+#dataEntry ul li ol li {margin-top: 2.5px; font-size: 1rem;}

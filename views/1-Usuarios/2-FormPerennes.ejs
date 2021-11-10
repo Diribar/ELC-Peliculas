@@ -4,7 +4,7 @@
 	<section class="label-input flex-row"><!--Nombre-->
 		<label for="nombre">Nombre</label>
 		<div class="form-grupo">
-			<% nombre = data_entry ? data_entry.nombre : "" %>
+			<% nombre = dataEntry ? dataEntry.nombre : "" %>
 			<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
 			<i class="fas fa-times-circle <%- !(errores && errores.nombre) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.nombre) ? errores.nombre : "" %></span>
@@ -14,7 +14,7 @@
 	<section class="label-input flex-row"><!--Apellido-->
 		<label for="apellido">Apellido</label>
 		<div class="form-grupo">
-			<% apellido = data_entry ? data_entry.apellido : "" %>
+			<% apellido = dataEntry ? dataEntry.apellido : "" %>
 			<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
 			<i class="fas fa-times-circle <%- !(errores && errores.apellido) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.apellido) ? errores.apellido : "" %></span>
@@ -24,7 +24,7 @@
 	<section class="label-input flex-row"><!--Sexo-->
 		<label for="sexo_id">Sexo</label>
 		<div class="form-grupo">
-			<% sexo_id = data_entry ? data_entry.sexo_id : "" %>
+			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 			<select name="sexo_id" class="input">
 				<option value="" <% if (sexo_id=="") {%>selected<%}%> style="display: none;">Elegí una opción</option>
 				<option value="F" <% if (sexo_id=="F") {%>selected<%}%>>Femenino</option>
@@ -38,7 +38,7 @@
 	<section class="label-input flex-row"><!--Fecha de Nacimiento-->
 		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
 		<div class="form-grupo">
-			<% fecha_nacimiento = data_entry ? data_entry.fecha_nacimiento : "" %>
+			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 			<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
 			<i class="fas fa-times-circle <%- !(errores && errores.fecha_nacimiento) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.fecha_nacimiento) ? errores.fecha_nacimiento : "" %></span>

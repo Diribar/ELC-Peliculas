@@ -1,21 +1,21 @@
 /* Partes particulares */
-#data_entry h2 {margin-bottom: 5px;}
-#data_entry #resultadoGeneral {width: 700px; overflow-x: auto;}
-#data_entry button {padding: 0;}
-#data_entry button, #imagenChica {border-radius: 15px;}
+#dataEntry h2 {margin-bottom: 5px;}
+#dataEntry #resultadoGeneral {width: 700px; overflow-x: auto;}
+#dataEntry button {padding: 0;}
+#dataEntry button, #imagenChica {border-radius: 15px;}
 
 /* Flechas */
-#data_entry #flechas {margin: 10px 50px 0;}
+#dataEntry #flechas {margin: 10px 50px 0;}
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 
 	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:290px;}
-#data_entry #prod_nuevo {background-color: var(--verde-claro);}
-#data_entry #ingr_manual {background-color: var(--rojo-claro);}
-#data_entry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
-#data_entry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
-#data_entry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#data_entry #prod_yaEnBD:hover {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+#dataEntry #prod_nuevo {background-color: var(--verde-claro);}
+#dataEntry #ingr_manual {background-color: var(--rojo-claro);}
+#dataEntry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
+#dataEntry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#dataEntry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#dataEntry #prod_yaEnBD:hover {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 
 /* Partes del resultado */
 #imagenChica {max-height: 200px;}

@@ -1,7 +1,7 @@
 window.addEventListener("load", async () => {
 	// Variables generales
-	let form = document.querySelector("#data_entry");
-	let button = document.querySelector("#data_entry button[type='submit']");
+	let form = document.querySelector("#dataEntry");
+	let button = document.querySelector("#dataEntry button[type='submit']");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");

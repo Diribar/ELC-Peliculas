@@ -1,5 +1,5 @@
 <h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
-<div class="flex-col" id="data_entry">
+<div class="flex-col" id="dataEntry">
 	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
 	<form action="<%= link %>" method="POST">
 		<!-- Datos a completar -->
@@ -12,11 +12,11 @@
 						<select name="rubroAPI" autofocus class="input">
 							<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
 							<option value="movie" 
-								<% if (data_entry && data_entry.rubroAPI == "movie") { %>selected<% } %>>
+								<% if (dataEntry && dataEntry.rubroAPI == "movie") { %>selected<% } %>>
 								Película
 							</option>
 							<option value="collection"
-								<% if (data_entry && data_entry.rubroAPI == "collection") { %>selected<% } %>>
+								<% if (dataEntry && dataEntry.rubroAPI == "collection") { %>selected<% } %>>
 								Colección
 							</option>
 						</select>
@@ -46,7 +46,7 @@
 				<div class="flex-row">
 					<div class="relative">
 						<input name="direccion" type="text" class="input"
-							value="<%= data_entry ? data_entry.direccion : null %>"
+							value="<%= dataEntry ? dataEntry.direccion : null %>"
 							placeholder="Pegá acá la dirección"
 							autocomplete="off"
 						>
@@ -74,7 +74,7 @@
 				<div class="flex-row">
 					<div class="relative">
 						<input name="avatar" type="text" class="input"
-							value="<%= data_entry ? data_entry.avatar : null %>"
+							value="<%= dataEntry ? dataEntry.avatar : null %>"
 							placeholder="Pegá acá la dirección"
 							autocomplete="off"
 						>
@@ -97,7 +97,7 @@
 				<h3>Ingresá el contenido del cuerpo de la página</h3>
 				<div class="flex-row">
 					<div class="relative">
-						<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- data_entry ? data_entry.contenido : "" %></textarea>
+						<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 						<!-- Ayuda -->
 						<i class="fas fa-question-circle" id="ayuda_contenido"></i>
 						<ul class="mensajeAyuda ocultar" type="dots">

@@ -2,44 +2,44 @@
 .cuerpo {align-items: center;justify-content: center;}
 .cuerpo #titulo {margin: 0px;}
 
-#data_entry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
-#data_entry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
+#dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
+#dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
 	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
-#data_entry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
+#dataEntry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
 	padding: 5px 10px; border-radius: 10px;}
-#data_entry h3 {margin: 15px 0 3px;  align-self: flex-start;}
-#data_entry input, #data_entry textArea, #data_entry select {border-width: .7px; border-radius: 5px;}
-#data_entry input:disabled, #data_entry select:disabled, #data_entry textarea:disabled {background-color: var(--amarillo-claro);}
-#data_entry input, #data_entry select, #data_entry textarea {background-color: white;}
+#dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
+#dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
+#dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro);}
+#dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}
 
-#data_entry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
+#dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Todos los mensajes */
-#data_entry .mensajeError, #data_entry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
-#data_entry .link {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
+#dataEntry .link {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Mensajes de ayuda */
-#data_entry .fa-question-circle {right: -20px;}
-#data_entry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
+#dataEntry .fa-question-circle {right: -20px;}
+#dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
-#data_entry .fa-times-circle, #data_entry .fa-check-circle {left: -20px;}
-#data_entry .fa-times-circle {z-index: 1;}
+#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {left: -20px;}
+#dataEntry .fa-times-circle {z-index: 1;}
 
 /* Procesando información */
-#data_entry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
-#data_entry #resultado {font-style: normal; border-radius: 10px;}
+#dataEntry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
+#dataEntry #resultado {font-style: normal; border-radius: 10px;}
 
 /* Botones */
-#data_entry button, #data_entry input[type="submit"] {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
-#data_entry i {cursor: pointer;}
+#dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
+#dataEntry i {cursor: pointer;}
 
 /* Flechas */
-#data_entry #flechas i {font-size: 2rem;}
-#data_entry #flechas a i {color: var(--gris-oscuro);}
-#data_entry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
+#dataEntry #flechas i {font-size: 2rem;}
+#dataEntry #flechas a i {color: var(--gris-oscuro);}
+#dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 
 /* Submit button */
-#data_entry button em {color: var(--amarillo-claro); background-color: inherit;}
+#dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}

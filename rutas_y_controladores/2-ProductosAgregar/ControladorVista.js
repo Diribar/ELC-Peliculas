@@ -143,7 +143,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: copiarFA,
+			dataEntry: copiarFA,
 			errores,
 		});
 	},
@@ -235,7 +235,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: datosDuros,
+			dataEntry: datosDuros,
 			pais,
 			paises,
 			errores,
@@ -365,7 +365,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: datosPers,
+			dataEntry: datosPers,
 			errores,
 			datosPers_select: await datosPersSelect(),
 			datosPers_input: datosPersInput(),
@@ -464,7 +464,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: confirmar,
+			dataEntry: confirmar,
 		});
 	},
 
@@ -531,7 +531,7 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			data_entry: IDdelProducto,
+			dataEntry: IDdelProducto,
 		});
 	},
 

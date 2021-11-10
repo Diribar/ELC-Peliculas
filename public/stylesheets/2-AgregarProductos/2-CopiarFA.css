@@ -1,19 +1,19 @@
 /* Partes específicas del formulario */
-#data_entry {min-height: 410px;}
-#data_entry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;}
-#data_entry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#dataEntry {min-height: 410px;}
+#dataEntry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;}
+#dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de error */
-#data_entry #en_coleccion .fa-times-circle, #data_entry #en_coleccion .fa-check-circle 
+#dataEntry #en_coleccion .fa-times-circle, #dataEntry #en_coleccion .fa-check-circle 
 	{position: static; transform: none; margin-right: 5px; align-self: center;}
-#data_entry .mensajeAyuda {max-width: 300px;}
-#data_entry .mensajeError {max-width: 300px;}
+#dataEntry .mensajeAyuda {max-width: 300px;}
+#dataEntry .mensajeError {max-width: 300px;}
 
 /* Sectores de Input */
-#data_entry #en_coleccion {text-align: right;}
-#data_entry textarea, #data_entry input {width: 250px; padding: 2px 5px; }
-#data_entry select {padding: 0px; padding-right: 2px;}
+#dataEntry #en_coleccion {text-align: right;}
+#dataEntry textarea, #dataEntry input {width: 250px; padding: 2px 5px; }
+#dataEntry select {padding: 0px; padding-right: 2px;}
 
 /* Submit button */
-#data_entry #flechas {margin: 20px 50px 0;}
-#data_entry #flechas button {align-self: center;}
+#dataEntry #flechas {margin: 20px 50px 0;}
+#dataEntry #flechas button {align-self: center;}
