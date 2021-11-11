@@ -1,9 +1,4 @@
-#dataEntry {
-	background-color: var(--verde-claro);
-	border: var(--verde-oscuro) 7px solid;
-	max-width: 80%;
-	position: relative;
-}
+#dataEntry {background-color: var(--verde-claro); border: var(--verde-oscuro) 7px solid; max-width: 80%; position: relative;}
 
 #dataEntry h2 {background-color: var(--verde-oscuro);}
 #dataEntry #gracias {position: absolute; right: 20px; width: 150px}

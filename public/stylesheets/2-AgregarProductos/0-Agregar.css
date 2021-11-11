@@ -33,7 +33,7 @@
 #dataEntry #resultado {font-style: normal; border-radius: 10px;}
 
 /* Botones */
-#dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
+#dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--verde-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #dataEntry i {cursor: pointer;}
 
 /* Flechas */

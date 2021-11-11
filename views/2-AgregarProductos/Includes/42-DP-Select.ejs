@@ -9,7 +9,7 @@
 				<% for (valor of dato.valores) { %>
 					<option value="<%= valor.id %>" 
 						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
-						<% if (dataEntry.rubroAPI=="movie" && valor.id==2) { %>class="ocultar"<% } %>
+						<% if (campo=="subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
 					>
 						<%= valor.nombre %>
 					</option>
@@ -18,13 +18,17 @@
 			<!-- Ayuda -->
 			<i class="fas fa-question-circle"></i>
 			<ul type="dots" class="mensajeAyuda ocultar">
-				<% mensajes = (dataEntry.rubroAPI == "movie") ? dato.mensajePeli : dato.mensajeColec %>
-				<% for (mensaje of mensajes) { %><li><%= mensaje %></li><% } %>
+				<% for (mensaje of dato.mensajes) { %><li><%= mensaje %></li><% } %> 
 			</ul>
 			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[campo] %></span>
 			</i>
+			<!-- Link a Relación con la vida -->
+			<% if (campo.includes("historico")) { %>
+				<a class="link <%= campo %> " href="/agregar/<%= dato.link %>" target="_self" title="Link a agregar <%= dato.titulo.toLowerCase() %> " tabindex="-1">L</a>
+			<% } %>
+			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 		</div>
 	</section>
 <% } %>

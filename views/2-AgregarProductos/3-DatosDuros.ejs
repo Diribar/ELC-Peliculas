@@ -24,65 +24,15 @@
 		<!--Primera columna-->
 		<div class="flex-col">
 			<!-- Película IM: ¿Pertenece a una colección? -->
-			<% if (dataEntry.rubroAPI=="movie" && dataEntry.fuente=="IM") { %>
-				<section style="order: 0; margin-top: 0; margin-bottom: 3px;" class="label-input flex-row ">
-					<label>¿Pertenece a una colección?</label>
-					<!-- Data-entry y Errores -->
-					<div class="input-error">
-						<select name="en_coleccion" class="input angosto">
-							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
-							<option value="NO">NO</option>
-							<option value="SI">SI</option>
-						</select>
-						<i class="fas fa-times-circle<%- !errores.en_coleccion ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.en_coleccion %></span>
-						</i>
-					</div>
-				</section>
-			<% } %> 
-			<!-- Campos varios -->
-			<% for (let i=0; i < datos.length; i++) { %>
-				<%- include("31-DD-Input", {i}) %> 
-			<% } %> 
+			<%- include("31-DD-IM") %>
+			<!-- Primeros campos -->
+			<% for (let i=0; i < camposDD1.length; i++) { %><%- include("32-DD-Input", {i, datos: camposDD1}) %><% } %>
 			<!-- País -->
-			<section style="order: 4;" class="label-input flex-row">
-				<label>País de origen</label>
-				<div class="input-error">
-					<% if (pais) { %>
-						<input type="text" class="input" value="<%= pais %>" disabled>
-						<%- include("32-DD-Mensajes") %>
-					<% } else { %>
-						<select name="pais_id" class="input">
-							<option value="" selected class="ocultar">Elejí un país</option>
-							<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
-							<% for (continente of continentes) { %>
-								<optgroup label="<%= continente %>">
-									<% for (n of paises.filter(m => m.continente == continente)) { %>
-										<option value="<%= n.id %>"><%= n.nombre %></option>
-									<% } %>	
-								</optgroup>
-							<% } %> 
-						</select>
-					<% } %>
-					<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.pais_id %></span>
-					</i>
-				</div>
-			</section>
+			<%- include("33-DD-Pais") %>
+			<!-- Siguientes campos -->
+			<% for (let i=0; i < camposDD2.length; i++) { %><%- include("32-DD-Input", {i, datos: camposDD2}) %><% } %>
 			<!--Sinopsis-->
-			<section style="order: 9;" class="label-input flex-row">
-				<label>Sinopsis</label>
-				<div class="input-error">
-					<textarea 
-						name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
-						<% if (dataEntry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
-					><%= dataEntry.sinopsis %></textarea>
-					<%- (dataEntry.sinopsis && !errores.sinopsis) ? include("32-DD-Mensajes") : "" %>
-					<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.sinopsis %></span>
-					</i>
-				</div>
-			</section>
+			<%- include("34-DD-Sinopsis") %>
 		</div>
 		<!--Columna intermedia-->
 		<div id="columnaMedio">

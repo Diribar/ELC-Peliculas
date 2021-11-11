@@ -1,0 +1,24 @@
+<section class="label-input flex-row">
+	<label>País de origen</label>
+	<div class="input-error">
+		<% if (pais) { %>
+			<input type="text" class="input" value="<%= pais %>" disabled>
+			<%- include("39-DD-Mensajes") %>
+		<% } else { %>
+			<select name="pais_id" class="input">
+				<option value="" selected class="ocultar">Elejí un país</option>
+				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
+				<% for (continente of continentes) { %>
+					<optgroup label="<%= continente %>">
+						<% for (n of paises.filter(m => m.continente == continente)) { %>
+							<option value="<%= n.id %>"><%= n.nombre %></option>
+						<% } %>	
+					</optgroup>
+				<% } %> 
+			</select>
+		<% } %>
+		<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores.pais_id %></span>
+		</i>
+	</div>
+</section>

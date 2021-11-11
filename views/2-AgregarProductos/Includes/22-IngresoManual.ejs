@@ -1,6 +1,6 @@
 <% for (let i=0; i < 2; i++) { %>
-	<% i == 0 ? rubroAPI = "movie" : rubroAPI = "collection" %>
-	<% i == 0 ? rubro = "película" : rubro = "colección" %>
+	<% rubroAPI = (i == 0) ? "movie" : "collection" %>
+	<% rubro = (i == 0) ? "película" : "colección" %>
 	<form action="<%= link %>" method="POST">
 		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
 		<input type="text" name="fuente" class="ocultar" value="IM">
@@ -8,7 +8,7 @@
 		<input type="text" name="avatar" class="ocultar" value="">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "ingr_manual">
-			<img id="imagenChica" src="/imagenes/0-Base/<%= rubro %>.jpg" alt="Busco otra <%= rubro %>" title="Busco otra <%= rubro %>">
+			<img id="imagenChica" src="/imagenes/0-Agregar/<%= rubro %>.jpg" alt="Busco otra <%= rubro %>" title="Busco otra <%= rubro %>">
 			<div id="infoPeli" class="flex-col">
 				<p><strong>Busco otra <%= rubro %></strong></p>
 				<p class="interlineadoChico"></p>

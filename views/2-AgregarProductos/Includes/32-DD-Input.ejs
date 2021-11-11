@@ -1,5 +1,5 @@
 <% if ((dataEntry.rubroAPI=="movie" && datos[i].peli) || (dataEntry.rubroAPI!="movie" && datos[i].colec)) { %>
-	<section style="order: <%=i%><%- (i == 0) ? '; margin-top: 0' : '' %>" class="label-input flex-row">
+	<section class="label-input flex-row">
 		<label><%= datos[i].titulo %></label>
 		<!-- Data-entry y Errores -->
 		<div class="input-error">
@@ -8,7 +8,7 @@
 				<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
 				<% if (dataEntry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
 			>
-			<%- (dataEntry[datos[i].campo] && !errores[datos[i].campo]) ? include("32-DD-Mensajes") : "" %>
+			<%- (dataEntry[datos[i].campo] && !errores[datos[i].campo]) ? include("39-DD-Mensajes") : "" %>
 			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[datos[i].campo] %></span>

@@ -223,15 +223,19 @@ module.exports = {
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 6. Render del formulario
-		//return res.send(req.cookies);
+		// 6. Detectar errores
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProd.datosDuros(datosDuros, camposDD());
+			: await validarProd.datosDuros(datosDuros, [
+					...camposDD1,
+					...camposDD2,
+			  ]);
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id
 			? await varias.pais_idToNombre(datosDuros.pais_id)
 			: "";
+		// 7. Render del formulario
+		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -240,7 +244,8 @@ module.exports = {
 			pais,
 			paises,
 			errores,
-			datos: camposDD(),
+			camposDD1,
+			camposDD2,
 		});
 	},
 
@@ -264,7 +269,10 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Averiguar si hay errores de validación
-		let errores = await validarProd.datosDuros(datosDuros, camposDD());
+		let errores = await validarProd.datosDuros(datosDuros, [
+			...camposDD1,
+			...camposDD2,
+		]);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
 		if (!errores.nombre_original) {
 			// Obtener los parámetros
@@ -540,7 +548,7 @@ module.exports = {
 		);
 		indice = 1 + parseInt(Math.random() * muchasGracias.length);
 		//console.log(indice)
-		imagen = "/imagenes/0-Base/Muchas gracias " + indice + ".jpg";
+		imagen = "/imagenes/0-Agregar/Muchas gracias " + indice + ".jpg";
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -633,68 +641,64 @@ let download = async (url, rutaYnombre) => {
 	});
 };
 
-let camposDD = () => {
-	return [
-		{
-			titulo: "Título original",
-			campo: "nombre_original",
-			peli: true,
-			colec: true,
-		},
-		{
-			titulo: "Título en castellano",
-			campo: "nombre_castellano",
-			peli: true,
-			colec: true,
-		},
-		{
-			titulo: "Año de estreno",
-			campo: "ano_estreno",
-			id: true,
-			peli: true,
-			colec: true,
-		},
-		{
-			titulo: "Año de finalización",
-			campo: "ano_fin",
-			id: true,
-			peli: false,
-			colec: true,
-		},
-		{
-			titulo: "Duración (minutos)",
-			campo: "duracion",
-			id: true,
-			peli: true,
-			colec: false,
-		},
-		{ titulo: "Director", campo: "director", peli: true, colec: true },
-		{ titulo: "Guión", campo: "guion", peli: true, colec: true },
-		{ titulo: "Música", campo: "musica", peli: true, colec: true },
-		{ titulo: "Actores", campo: "actores", peli: true, colec: true },
-		{
-			titulo: "Productor",
-			campo: "productor",
-			peli: true,
-			colec: true,
-		},
-	];
-};
+let camposDD1 = [
+	{
+		titulo: "Título original",
+		campo: "nombre_original",
+		peli: true,
+		colec: true,
+	},
+	{
+		titulo: "Título en castellano",
+		campo: "nombre_castellano",
+		peli: true,
+		colec: true,
+	},
+	{
+		titulo: "Año de estreno",
+		campo: "ano_estreno",
+		id: true,
+		peli: true,
+		colec: true,
+	},
+	{
+		titulo: "Año de finalización",
+		campo: "ano_fin",
+		id: true,
+		peli: false,
+		colec: true,
+	},
+	{
+		titulo: "Duración (minutos)",
+		campo: "duracion",
+		id: true,
+		peli: true,
+		colec: false,
+	},
+];
+
+let camposDD2 = [
+	{ titulo: "Director", campo: "director", peli: true, colec: true },
+	{ titulo: "Guión", campo: "guion", peli: true, colec: true },
+	{ titulo: "Música", campo: "musica", peli: true, colec: true },
+	{ titulo: "Actores", campo: "actores", peli: true, colec: true },
+	{ titulo: "Productor", campo: "productor", peli: true, colec: true },
+];
 
 let datosPersSelect = async () => {
 	return [
 		{
 			titulo: "Existe una versión en castellano",
-			campo: "en_castellano",
+			campo: "en_castellano_id",
 			tabla: "peliculas",
-			valores: [
-				{ id: 1, nombre: "SI" },
-				{ id: 0, nombre: "NO" },
-			],
+			valores: await BD_varias.obtenerTodos("en_castellano", "id"),
 			peli: true,
-			colec: false,
-			mensajes: [
-				"Para poner SI, estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.",
+			colec: true,
+			mensajePeli: [
+				'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
+			],
+			mensajeColec: [
+				'En caso de que algunos capítulos no estén en castellano, elegí "SI-Parcial"',
 			],
 		},
 		{
@@ -706,8 +710,11 @@ let datosPersSelect = async () => {
 				{ id: 0, nombre: "NO" },
 			],
 			peli: true,
-			colec: false,
-			mensajes: ["SI: es a color.", "NO: es en blanco y negro."],
+			colec: true,
+			mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
+			mensajeColec: [
+				"Si algunos capítulos no son a color, elegí lo que represente a la mayoría",
+			],
 		},
 		{
 			titulo: "Categoría",
@@ -742,7 +749,7 @@ let datosPersSelect = async () => {
 			peli: true,
 			colec: true,
 			mensajes: [
-				"Mayores solamente: sensualidad o crueldad explícitos, pueden dañar la sensibilidad de un niño de 12 años.",
+				"Mayores solamente: sensualidad o crueldad explícita, puede dañar la sensibilidad de un niño de 12 años.",
 				"Mayores apto familia: para mayores, sin dañar la sensibilidad de un niño.",
 				"Familia: ideal para compartir en familia y que todos disfruten",
 				"Menores apto familia: para menores, también la puede disfrutar un adulto.",
