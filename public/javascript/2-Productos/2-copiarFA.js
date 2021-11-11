@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 	let resto = document.querySelector("#dataEntry #resto");
 	let sectEnColeccion = document.querySelector("#en_coleccion");
 	let statusInicial = true;
-	let pre = "/agregar/productos/api/";
+	let pre = "/agregar/producto/api/";
 
 	// Muestra en la vista, los campos posteriores a 'rubroAPI'
 	let mostrarCampos = (valor, mensaje) => {
@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/agregar/productos/api/validar-copiar-fa/" + url).then(
+		return fetch("/agregar/producto/api/validar-copiar-fa/" + url).then(
 			(n) => n.json()
 		);
 	};

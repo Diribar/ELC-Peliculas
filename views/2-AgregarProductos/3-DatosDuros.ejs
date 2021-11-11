@@ -109,8 +109,8 @@
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-between">
 		<% retroceso = dataEntry.fuente != "FA" ? "desambiguar" : "copiar-fa" %>
-		<a href="/agregar/productos/<%= retroceso %>"><i class="fas fa-arrow-alt-circle-left"></i></a>
-		<button type="submit">Avanzar</button>
+		<a href="/agregar/producto/<%= retroceso %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<button type="submit" autofocus>Avanzar</button>
 		<% if (false) { %>
 			<a href="#"><i class="fas fa-arrow-alt-circle-right"></i></a>
 		<% } else { %>
