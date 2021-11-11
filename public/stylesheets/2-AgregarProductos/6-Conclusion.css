@@ -1,6 +1,6 @@
 #dataEntry {
-    background-color: var(--verde-claro);
-    border: var(--verde-oscuro) 7px solid;
+	background-color: var(--verde-claro);
+	border: var(--verde-oscuro) 7px solid;
 	max-width: 80%;
 	position: relative;
 }
