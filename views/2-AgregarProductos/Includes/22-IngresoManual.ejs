@@ -1,6 +1,6 @@
 <% for (let i=0; i < 2; i++) { %>
 	<% i == 0 ? rubroAPI = "movie" : rubroAPI = "collection" %>
-	<% i == 0 ? rubro = "pelicula" : rubro = "colección" %>
+	<% i == 0 ? rubro = "película" : rubro = "colección" %>
 	<form action="<%= link %>" method="POST">
 		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
 		<input type="text" name="fuente" class="ocultar" value="IM">

@@ -1,10 +1,13 @@
 #dataEntry {
     background-color: var(--verde-claro);
     border: var(--verde-oscuro) 7px solid;
+	max-width: 80%;
+	position: relative;
 }
-#dataEntry {max-width: 80%;}
 
-#dataEntry h2 {align-self: center; background-color: var(--verde-oscuro);}
+#dataEntry h2 {background-color: var(--verde-oscuro);}
+#dataEntry #gracias {position: absolute; right: 20px; width: 150px}
+
 #dataEntry li {color: var(--verde-oscuro);}
 #dataEntry ul {margin: 10px 0 30px; padding-left: 20px;}
 #dataEntry ul li {margin-top: 10px; font-size: 1.1rem;}

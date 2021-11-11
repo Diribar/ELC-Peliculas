@@ -482,7 +482,7 @@ module.exports = {
 		entidad = confirmar.rubroAPI == "movie" ? "peliculas" : "colecciones";
 		registro = await BD_varias.agregarRegistro(entidad, confirmar);
 		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
+		datosClaveProd = funcDatosClaveProd({ ...confirmar, id: registro.id });
 		req.session.datosClaveProd = datosClaveProd;
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -533,23 +533,49 @@ module.exports = {
 			});
 			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
 		}
-		// 4. Render del formulario
+		// 4. Preparar la información sobre las imágenes
+		archivos = fs.readdirSync("./public/imagenes/0-Base/");
+		muchasGracias = archivos.filter(
+			(n) => n > "Muchas gracias" && n < "Muchas graciat"
+		);
+		indice = 1 + parseInt(Math.random() * muchasGracias.length);
+		//console.log(indice)
+		imagen = "/imagenes/0-Base/Muchas gracias " + indice + ".jpg";
+		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosClaveProd,
+			imagen,
 		});
 	},
 
 	conclusionGuardar: async (req, res) => {
-		let proximo = req.url.slice(1)
-		return res.send({proximo, ...req.body});
+		let proximo = req.url.slice(1);
+		return res.send({ proximo, ...req.body });
 		// Colecciones -> agregar/producto/datosDuros
 
 		// Partes de coleccion -> agregar/producto/partes
-		
+
+		// - datosClaveProd.entidad = "peliculas" / "colecciones"
+		// - datosClaveProd.producto = "Película" / "Colección"
+		// - datosClaveProd.campo = "peli_tmdb_id" / "peli_fa_id" / "colec_tmdb_id" / "colec_fa_id"
+		// - datosClaveProd.en_coleccion = true / false
+		// - datosClaveProd.en_colec_tmdb_id = valor / null
+		// - datosClaveProd.en_colec_nombre = "xxx"
+		// - datosClaveProd.valor = peli_tmdb_id / peli_fa_id / colec_tmdb_id / colec_fa_id
+
+		// - Si se va a dar de alta la colección de una peli:
+		// 	- crear req.session.datosDuros como se hace en Desambiguar
+		// 	- crear req.session palabras_clave
+		// 	- borrar datosClaveProd
+		// 	- redireccionar a DatosDuros
+		// - Si se van a dar de alta las partes de una colección FA/IM
+		// - Else
+		// 	- borrar datosClaveProd
+		// 	- redireccionar a palabrasClave
 	},
 
 	responsabilidad: (req, res) => {
@@ -858,9 +884,9 @@ let funcDatosClaveProd = (datos) => {
 	// 2. Campo y valor
 	datosClaveProd[datosClaveProd.campo] = datos[datosClaveProd.campo];
 	// 3. Nombre del producto
-	datosClaveProd.nombre_castellano = datos.nombre_castellano
+	datosClaveProd.nombre_castellano = datos.nombre_castellano;
 	// 4. ID del producto
-	if (datos.id) datosClaveProd.id = datos.id
+	if (datos.id) datosClaveProd.id = datos.id;
 	return datosClaveProd;
 };
 
