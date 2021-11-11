@@ -2,8 +2,9 @@
 <form action="/detalle/producto/informacion" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
+		<img id="gracias" src="<%= imagen %>" alt="">
 		<ul>
-			<li style="font-size: 1.2rem;"><u style="font-size: inherit;"><%= rubro %></u>: <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong></li>
+			<li style="font-size: 1.2rem;"><u style="font-size: inherit;"><%= dataEntry.producto %></u>: <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong></li>
 			<li>Nuestro equipo de Administradores revisará los datos ingresados.</li>
 			<li>
 				El resultado puede ser:
