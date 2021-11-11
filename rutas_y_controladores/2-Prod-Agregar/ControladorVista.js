@@ -377,7 +377,7 @@ module.exports = {
 			dataEntry: datosPers,
 			errores,
 			datosPers_select: await datosPersSelect(),
-			datosPers_input: datosPersInput(),
+			datosPers_input: datosPersInput,
 		});
 	},
 
@@ -397,7 +397,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2.1. Averiguar si hay errores de validación
-		camposDP = [...(await datosPersSelect()), ...datosPersInput()];
+		camposDP = [...(await datosPersSelect()), ...datosPersInput];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -692,8 +692,6 @@ let datosPersSelect = async () => {
 			campo: "en_castellano_id",
 			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos("en_castellano", "id"),
-			peli: true,
-			colec: true,
 			mensajePeli: [
 				'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
 			],
@@ -709,8 +707,6 @@ let datosPersSelect = async () => {
 				{ id: 1, nombre: "SI" },
 				{ id: 0, nombre: "NO" },
 			],
-			peli: true,
-			colec: true,
 			mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 			mensajeColec: [
 				"Si algunos capítulos no son a color, elegí lo que represente a la mayoría",
@@ -818,38 +814,36 @@ let datosPersSelect = async () => {
 	];
 };
 
-let datosPersInput = () => {
-	return [
-		{
-			titulo: "Link del trailer",
-			titulo2: "Link del 1er trailer",
-			campo: "link_trailer",
-			tabla: "peliculas",
-			peli: true,
-			colec: true,
-			mensajes: [
-				"Nos interesa el trailer del primer capítulo.",
-				"Debe ser de un sitio seguro, sin virus.",
-				"Es ideal si vincula a un link de You Tube.",
-			],
-		},
-		{
-			titulo: "Link de la película",
-			titulo2: "Link de la 1a película",
-			campo: "link_pelicula",
-			tabla: "peliculas",
-			peli: true,
-			colec: true,
-			mensajes: [
-				"Nos interesa el link del primer capítulo.",
-				"Debe ser de un sitio seguro, sin virus.",
-				"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
-				"Pedimos un link con una antigüedad mayor a 3 meses.",
-				"En lo posible, elegí un link en castellano y de buena calidad.",
-			],
-		},
-	];
-};
+let datosPersInput = [
+	{
+		titulo: "Link del trailer",
+		titulo2: "Link del 1er trailer",
+		campo: "link_trailer",
+		tabla: "peliculas",
+		peli: true,
+		colec: true,
+		mensajes: [
+			"Nos interesa el trailer del primer capítulo.",
+			"Debe ser de un sitio seguro, sin virus.",
+			"Es ideal si vincula a un link de You Tube.",
+		],
+	},
+	{
+		titulo: "Link de la película",
+		titulo2: "Link de la 1a película",
+		campo: "link_pelicula",
+		tabla: "peliculas",
+		peli: true,
+		colec: true,
+		mensajes: [
+			"Nos interesa el link del primer capítulo.",
+			"Debe ser de un sitio seguro, sin virus.",
+			"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
+			"Pedimos un link con una antigüedad mayor a 3 meses.",
+			"En lo posible, elegí un link en castellano y de buena calidad.",
+		],
+	},
+];
 
 let funcDatosClaveProd = (datos) => {
 	// Enfoque en los datos clave
