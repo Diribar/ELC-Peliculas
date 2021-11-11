@@ -20,7 +20,7 @@ module.exports = (sequelize, dt) => {
 		productor: { type: dt.STRING(100) },
 		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
-		en_castellano: { type: dt.BOOLEAN },
+		en_castellano_id: { type: dt.INTEGER },
 		color: { type: dt.BOOLEAN },
 		categoria_id: { type: dt.STRING(3) },
 		subcategoria_id: { type: dt.INTEGER },
@@ -52,6 +52,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
+		entidad.belongsTo(n.en_castellano, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.colecciones, {as: "en_colec", foreignKey: "en_colec_id"});

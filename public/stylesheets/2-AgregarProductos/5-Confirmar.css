@@ -1,4 +1,7 @@
-#dataEntry {max-width: 80%;}
+#dataEntry {max-width: 80%; position: relative}
+
+#dataEntry #confirmar {position: absolute; right: 30px; max-width: 150px; max-height: 110px}
+
 #dataEntry ul {margin: 10px 0 30px; padding-left: 20px;}
 #dataEntry ul li {margin-top: 10px; font-size: 1.1rem;}
 #dataEntry ul li ol {padding-left: 30px;}

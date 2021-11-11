@@ -1,0 +1,13 @@
+<section style="margin-bottom: 0px;" class="label-input flex-row">
+	<label>Sinopsis</label>
+	<div class="input-error">
+		<textarea 
+			name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
+			<% if (dataEntry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
+		><%= dataEntry.sinopsis %></textarea>
+		<%- (dataEntry.sinopsis && !errores.sinopsis) ? include("39-DD-Mensajes") : "" %>
+		<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores.sinopsis %></span>
+		</i>
+	</div>
+</section>

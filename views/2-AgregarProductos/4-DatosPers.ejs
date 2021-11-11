@@ -12,33 +12,33 @@
 			<div class="flex-col">
 				<h3 style="margin-top: 0;">Datos generales</h3>
 				<!--Existe una versión en castellano-->
-				<%- include("41-DP-Select", {campo: "en_castellano", autofocus: true}) %>
+				<%- include("41-DP-Select", {campo: "en_castellano_id", autofocus: true}) %>
 				<!--Es a Color-->
 				<%- include("41-DP-Select", {campo: "color", autofocus: false}) %>
 				<!--Categoría-->
-				<%- include("41-DP-Select", {campo: "categoria_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "categoria_id", autofocus: false}) %>
 				<!--Sub-categoría-->
-				<%- include("41-DP-Select", {campo: "subcategoria_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "subcategoria_id", autofocus: false}) %>
 				<!--Público sugerido-->
-				<%- include("41-DP-Select", {campo: "publico_sugerido_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "publico_sugerido_id", autofocus: false}) %>
 			</div>
 			<!-- Tu calificación -->
 			<div class="flex-col">
 				<h3>Tu calificación</h3>
 				<!--Inspira fe y/o valores-->
-				<%- include("41-DP-Select", {campo: "fe_valores_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "fe_valores_id", autofocus: false}) %>
 				<!--Entretiene-->
-				<%- include("41-DP-Select", {campo: "entretiene_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "entretiene_id", autofocus: false}) %>
 				<!--Calidad Técnica-->
-				<%- include("41-DP-Select", {campo: "calidad_tecnica_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "calidad_tecnica_id", autofocus: false}) %>
 			</div>
 			<!-- Relación con la vida -->
 			<div class="flex-col">
 				<h3>Relación con la vida</h3>
 				<!--Personaje histórico-->
-				<%- include("41-DP-Select", {campo: "personaje_historico_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "personaje_historico_id", autofocus: false}) %>
 				<!--Hecho histórico-->
-				<%- include("41-DP-Select", {campo: "hecho_historico_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "hecho_historico_id", autofocus: false}) %>
 			</div>
 		</div>
 		<!--Columna del medio-->
@@ -54,9 +54,9 @@
 			<div class="flex-col">
 				<h3>Links gratuitos</h3>
 				<!--Link del trailer-->
-				<%- include("42-DP-Input", {campo: "link_trailer"}) %>
+				<%- include("43-DP-Input", {campo: "link_trailer"}) %>
 				<!--Links gratuitos para ver la película-->
-				<%- include("42-DP-Input", {campo: "link_pelicula"}) %>
+				<%- include("43-DP-Input", {campo: "link_pelicula"}) %>
 			</div>
 		</div>
 	</section>

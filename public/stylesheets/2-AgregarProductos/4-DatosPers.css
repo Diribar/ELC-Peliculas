@@ -24,7 +24,7 @@
 #dataEntry .mensajeError {max-width: 200px;}
 
 /* Anchos específicos de inputs */
-#dataEntry .label-input .input-error select[name="en_castellano"],
+#dataEntry .label-input .input-error select[name="en_castellano_id"],
 #dataEntry .label-input .input-error select[name="color"],
 #dataEntry .label-input .input-error select[name="fe_valores_id"],
 #dataEntry .label-input .input-error select[name="entretiene_id"],
