@@ -4,8 +4,6 @@
 // *********** Controlador ***********
 module.exports = {
 	informacion: async (req, res) => {
-
-		// 3. Feedback de la instancia anterior
 		informacion = req.query
 		return res.send(informacion);
 		// Obtener los datos de la película
