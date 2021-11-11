@@ -24,7 +24,7 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			peli_tmdb_id: form.peli_tmdb_id,
+			peli_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -102,7 +102,7 @@ module.exports = {
 			...datosLectura,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		return resultado;
+		return [resultado, ""];
 	},
 
 	// ControllerVista (desambiguarGuardar)
@@ -111,53 +111,57 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			colec_tmdb_id: form.colec_tmdb_id,
+			colec_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
-		// Datos obtenidos de la API
-		let datosLectura = {};
+		let datosCabecera = {};
+		let datosPartes = {};
 		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
+			// Datos obtenidos de la API - Cabecera
 			lectura.created_by.length > 0
-				? (datosLectura.guion = lectura.created_by
+				? (datosCabecera.guion = lectura.created_by
 						.map((n) => n.name)
 						.join(", "))
 				: "";
 			lectura.name != ""
-				? (datosLectura.nombre_castellano = lectura.name)
+				? (datosCabecera.nombre_castellano = lectura.name)
 				: "";
 			lectura.production_countries.length > 0
-				? (datosLectura.pais_id = lectura.production_countries
+				? (datosCabecera.pais_id = lectura.production_countries
 						.map((n) => n.iso_3166_1)
 						.join(", "))
 				: "";
 			lectura.original_language != ""
-				? (datosLectura.idioma_original = lectura.original_language)
+				? (datosCabecera.idioma_original = lectura.original_language)
 				: "";
 			lectura.overview != ""
-				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
+				? (datosCabecera.sinopsis = fuenteSinopsisTMDB(
+						lectura.overview
+				  ))
 				: "";
 			lectura.poster_path != ""
-				? (datosLectura.avatar =
+				? (datosCabecera.avatar =
 						"https://image.tmdb.org/t/p/original" +
 						lectura.poster_path)
 				: "";
 			lectura.first_air_date != ""
-				? (datosLectura.ano_estreno = parseInt(
+				? (datosCabecera.ano_estreno = parseInt(
 						lectura.first_air_date.slice(0, 4)
 				  ))
 				: "";
 			lectura.last_air_date != ""
-				? (datosLectura.ano_fin = parseInt(
+				? (datosCabecera.ano_fin = parseInt(
 						lectura.last_air_date.slice(0, 4)
 				  ))
 				: "";
 			lectura.production_companies.length > 0
-				? (datosLectura.productor = lectura.production_companies
+				? (datosCabecera.productor = lectura.production_companies
 						.map((n) => n.name)
 						.join(", "))
 				: "";
+			// Datos obtenidos de la API - Partes
 			if (lectura.seasons.length > 0) {
-				datosLectura.partes = lectura.seasons.map((n) => {
+				datosPartes = lectura.seasons.map((n) => {
 					partes = {
 						peli_tmdb_id: n.id,
 						nombre_castellano: n.name,
@@ -181,10 +185,11 @@ module.exports = {
 		}
 		let resultado = {
 			...datosForm,
-			...datosLectura,
+			...datosCabecera,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		return resultado;
+		datosPartes = convertirLetrasAlCastellano(datosPartes);
+		return [resultado, datosPartes];
 	},
 
 	// ControllerVista (desambiguarGuardar)
@@ -193,35 +198,39 @@ module.exports = {
 			// Datos obtenidos del formulario
 			fuente: form.fuente,
 			rubroAPI: form.rubroAPI,
-			colec_tmdb_id: form.colec_tmdb_id,
+			colec_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
-		// Datos obtenidos de la API
-		let datosLectura = {};
+		let datosCabecera = {};
+		let datosPartes = {};
 		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
+			// Datos obtenidos de la API - Cabecera
 			lectura.name != ""
-				? (datosLectura.nombre_castellano = lectura.name)
+				? (datosCabecera.nombre_castellano = lectura.name)
 				: "";
 			lectura.overview != ""
-				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
+				? (datosCabecera.sinopsis = fuenteSinopsisTMDB(
+						lectura.overview
+				  ))
 				: "";
 			lectura.poster_path != ""
-				? (datosLectura.avatar =
+				? (datosCabecera.avatar =
 						"https://image.tmdb.org/t/p/original" +
 						lectura.poster_path)
 				: "";
 			if (lectura.parts.length > 0) {
-				datosLectura.ano_estreno = Math.min(
+				datosCabecera.ano_estreno = Math.min(
 					...lectura.parts.map((n) =>
 						parseInt(n.release_date.slice(0, 4))
 					)
 				);
-				datosLectura.ano_fin = Math.max(
+				datosCabecera.ano_fin = Math.max(
 					...lectura.parts.map((n) =>
 						parseInt(n.release_date.slice(0, 4))
 					)
 				);
-				datosLectura.partes = lectura.parts.map((n) => {
+				// Datos obtenidos de la API - Partes
+				datosPartes = lectura.parts.map((n) => {
 					partes = {
 						peli_tmdb_id: n.id,
 						nombre_castellano: n.title,
@@ -240,10 +249,11 @@ module.exports = {
 		}
 		let resultado = {
 			...datosForm,
-			...datosLectura,
+			...datosCabecera,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		return resultado;
+		datosPartes = convertirLetrasAlCastellano(datosPartes);
+		return [resultado, datosPartes];
 	},
 
 	// ControllerVista (copiarFA_Guardar)
