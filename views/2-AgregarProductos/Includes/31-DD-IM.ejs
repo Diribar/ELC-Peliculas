@@ -5,8 +5,8 @@
 		<div class="input-error">
 			<select name="en_coleccion" class="input angosto">
 				<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
-				<option [ngValue]="false">NO</option>
-				<option [ngValue]="true">SI</option>
+				<option value="0">NO</option>
+				<option value="1">SI</option>
 			</select>
 			<i class="fas fa-times-circle<%- !errores.en_coleccion ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.en_coleccion %></span>
