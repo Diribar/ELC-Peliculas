@@ -11,10 +11,10 @@ module.exports = {
 		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
 		let datos = { resultados: [] };
-		let rubrosAPI = ["movie", "tv", "collection"];
+		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (entidadTMDB of rubrosAPI) {
+			for (entidadTMDB of entidadesTMDB) {
 				if (page == 1 || page <= datos.cantPaginasAPI[entidadTMDB]) {
 					lectura = await searchTMDB(palabrasClave, entidadTMDB, page)
 						.then((n) => infoQueQueda(n))
@@ -32,7 +32,7 @@ module.exports = {
 			// Terminacion
 			datos = eliminarDuplicados(datos);
 			datos = await averiguarSiYaEnBD(datos);
-			datos.hayMas = hayMas(datos, page, rubrosAPI);
+			datos.hayMas = hayMas(datos, page, entidadesTMDB);
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;
@@ -232,11 +232,11 @@ let averiguarSiYaEnBD = async (datos) => {
 	return datos;
 };
 
-let hayMas = (datos, page, rubrosAPI) => {
+let hayMas = (datos, page, entidadesTMDB) => {
 	return (
-		page < datos.cantPaginasAPI[rubrosAPI[0]] ||
-		page < datos.cantPaginasAPI[rubrosAPI[1]] ||
-		page < datos.cantPaginasAPI[rubrosAPI[2]]
+		page < datos.cantPaginasAPI[entidadesTMDB[0]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[1]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[2]]
 	);
 };
 
