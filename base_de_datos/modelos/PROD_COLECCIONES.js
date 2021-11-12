@@ -1,9 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "colecciones";
 	const columns = {
-		colec_tmdb_id: { type: dt.STRING(10) },
-		colec_fa_id: { type: dt.STRING(10) },
-		colec_tmdb_rubro: { type: dt.STRING(10) },
+		tmdb_id: { type: dt.STRING(10) },
+		fa_id: { type: dt.STRING(10) },
+		entidad_tmdb: { type: dt.STRING(10) },
 		fuente: { type: dt.STRING(5) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },

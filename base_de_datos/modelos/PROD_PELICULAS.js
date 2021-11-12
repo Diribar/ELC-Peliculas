@@ -1,9 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "peliculas";
 	const columns = {
-		peli_tmdb_id: { type: dt.STRING(10) },
-		peli_fa_id: { type: dt.STRING(10) },
-		peli_imdb_id: { type: dt.STRING(10) },
+		tmdb_id: { type: dt.STRING(10) },
+		fa_id: { type: dt.STRING(10) },
+		imdb_id: { type: dt.STRING(10) },
 		en_coleccion: { type: dt.BOOLEAN },
 		en_colec_id: { type: dt.INTEGER },
 		en_colec_tmdb_id: { type: dt.STRING(10) },

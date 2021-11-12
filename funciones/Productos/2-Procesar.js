@@ -6,9 +6,9 @@ let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerAPI_TMDB: async ({ tmdb_id, entidad_TMDB }) => {
-		let lectura = await detailsTMDB(tmdb_id, entidad_TMDB);
-		if (entidad_TMDB == "movie") {
+	obtenerAPI_TMDB: async ({ tmdb_id, entidad_tmdb }) => {
+		let lectura = await detailsTMDB(tmdb_id, entidad_tmdb);
+		if (entidad_tmdb == "movie") {
 			credits = await creditsTMDB(tmdb_id);
 			lectura = {
 				...lectura,
@@ -25,7 +25,7 @@ module.exports = {
 			producto: form.producto,
 			entidad: form.entidad,
 			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
+			entidad_tmdb: form.entidad_tmdb,
 			campo_id: form.campo_id,
 			tmdb_id: form.tmdb_id,
 			nombre_original: form.nombre_original,
@@ -115,7 +115,7 @@ module.exports = {
 			producto: form.producto,
 			entidad: form.entidad,
 			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
+			entidad_tmdb: form.entidad_tmdb,
 			campo_id: form.campo_id,
 			[form.campo_id]: form[form.campo_id],
 			nombre_original: form.nombre_original,
@@ -203,7 +203,7 @@ module.exports = {
 		// Datos obtenidos del formulario
 		datosForm = {
 			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
+			entidad_tmdb: form.entidad_tmdb,
 			producto: form.producto,
 			entidad: form.entidad,
 			campo_id: form.campo_id,

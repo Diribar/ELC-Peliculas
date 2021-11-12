@@ -105,10 +105,10 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// Completar la información del producto elegido
-		req.body.entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		req.body.producto = entidad_TMDB == "movie" ? "Película" : "Colección";
+		req.body.entidad = entidad_tmdb == "movie" ? "peliculas" : "colecciones";
+		req.body.producto = entidad_tmdb == "movie" ? "Película" : "Colección";
 		req.body.campo_id =
-			entidad_TMDB == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+			entidad_tmdb == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		// 1. Generar la session para la siguiente instancia
 		req.body.fuente == "TMDB"
 			? ([aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body))
@@ -431,7 +431,7 @@ module.exports = {
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
-			entidad_TMDB: req.session.datosPers.entidad_TMDB,
+			entidad_tmdb: req.session.datosPers.entidad_tmdb,
 			fe_valores,
 			entretiene,
 			calidad_tecnica,
@@ -641,11 +641,11 @@ let obtenerDatosDelProductoTMDB = async (datos) => {
 	// API Details
 	let lectura = await procesarProd.obtenerAPI_TMDB(datos);
 	// Obtener la info para la vista 'Datos Duros'
-	datos.entidad_TMDB == "movie"
+	datos.entidad_tmdb == "movie"
 		? (metodo = "pelicula_TMDB")
-		: datos.entidad_TMDB == "tv"
+		: datos.entidad_tmdb == "tv"
 		? (metodo = "TV_TMDB")
-		: datos.entidad_TMDB == "collection"
+		: datos.entidad_tmdb == "collection"
 		? (metodo = "coleccion_TMDB")
 		: "";
 	return await procesarProd[metodo](datos, lectura);

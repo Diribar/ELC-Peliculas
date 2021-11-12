@@ -14,19 +14,19 @@ module.exports = {
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (entidad_TMDB of entidadesTMDB) {
-				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
-					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
+			for (entidad_tmdb of entidadesTMDB) {
+				if (page == 1 || page <= datos.cantPaginasAPI[entidad_tmdb]) {
+					lectura = await searchTMDB(palabrasClave, entidad_tmdb, page)
 						.then((n) => infoQueQueda(n))
-						.then((n) => estandarizarNombres(n, entidad_TMDB))
+						.then((n) => estandarizarNombres(n, entidad_tmdb))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					entidad_TMDB == "collection" && lectura.resultados.length > 0
+					entidad_tmdb == "collection" && lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
 						: "";
-					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
+					datos = unificarResultados(lectura, entidad_tmdb, datos, page);
 				}
 			}
 			// Terminacion
@@ -49,10 +49,10 @@ let infoQueQueda = (n) => {
 	};
 };
 
-let estandarizarNombres = (dato, entidad_TMDB) => {
+let estandarizarNombres = (dato, entidad_tmdb) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (entidad_TMDB == "collection") {
+		if (entidad_tmdb == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
 			ano = "-";
@@ -61,7 +61,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = "-";
 			prefijo = "colec";
 		}
-		if (entidad_TMDB == "tv") {
+		if (entidad_tmdb == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -76,7 +76,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = m.first_air_date;
 			prefijo = "colec";
 		}
-		if (entidad_TMDB == "movie") {
+		if (entidad_tmdb == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -100,7 +100,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			entidad_TMDB: entidad_TMDB,
+			entidad_tmdb: entidad_tmdb,
 			[prefijo + "_tmdb_id"]: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
@@ -175,18 +175,18 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
+let unificarResultados = (lectura, entidad_tmdb, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[entidad_TMDB]: lectura.cantPaginasAPI,
+			[entidad_tmdb]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados = datos.resultados.concat(lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
+		[entidad_tmdb]: Math.min(page, datos.cantPaginasAPI[entidad_tmdb]),
 	};
 	return datos;
 };
@@ -205,7 +205,7 @@ let eliminarDuplicados = (datos) => {
 					(m.desempate1 == n.desempate1 ||
 						m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.entidad_TMDB == "tv"
+					m.entidad_tmdb == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -215,9 +215,9 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		entidad_TMDB = datos.resultados[i].entidad_TMDB;
-		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		campo_id = entidad_TMDB == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+		entidad_tmdb = datos.resultados[i].entidad_tmdb;
+		entidad = entidad_tmdb == "movie" ? "peliculas" : "colecciones";
+		campo_id = entidad_tmdb == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		let dato = {
 			entidad,
 			campo_id,
