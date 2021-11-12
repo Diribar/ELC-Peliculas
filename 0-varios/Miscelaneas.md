@@ -6,4 +6,6 @@ En los casilleros con errores, poner ayuda en esta situaciones
 	- Campo vacío 		-> si no se sabe qué contestar, poné "Desconocido"
 	- Letras castellano	-> buscá qué letra puede ser extraña al idioma castellano
 
-Palabras clave: agregar unícono para IM
+Palabras clave: agregar un ícono para IM
+
+Revisión general, eliminar 'rubroAPI' donde no se necesite

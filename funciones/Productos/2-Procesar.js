@@ -6,9 +6,9 @@ let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerAPI_TMDB: async (id, rubroAPI) => {
-		let lectura = await detailsTMDB(id, rubroAPI);
-		if (rubroAPI == "movie") {
+	obtenerAPI_TMDB: async (datos) => {
+		let lectura = await detailsTMDB(datos.id, datos.entidadTMDB);
+		if (entidadTMDB == "movie") {
 			credits = await creditsTMDB(id);
 			lectura = {
 				...lectura,
@@ -20,10 +20,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	pelicula_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
+			entidadTMDB: form.entidadTMDB,
+			rubro: form.rubro,
+			entidad: form.entidad,
+			campo_id: form.campo_id,
 			peli_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
@@ -107,10 +110,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	TV_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
+			entidadTMDB: form.entidadTMDB,
+			rubro: form.rubro,
+			entidad: form.entidad,
+			campo_id: form.campo_id,
 			colec_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
@@ -194,10 +200,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	coleccion_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
+			entidadTMDB: form.entidadTMDB,
+			rubro: form.rubro,
+			entidad: form.entidad,
+			campo_id: form.campo_id,
 			colec_tmdb_id: form.id,
 			nombre_original: form.nombre_original,
 		};
@@ -259,17 +268,28 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
-		let { rubroAPI, en_coleccion, direccion, avatar, contenido } = dato;
+		let { entidad, en_coleccion, direccion, avatar, contenido } = dato;
+
+		// Datos obtenidos del formulario
+		datosForm = {
+			fuente: form.fuente,
+			rubro: form.rubro,
+			entidad: form.entidad,
+			campo_id: form.campo_id,
+			colec_tmdb_id: form.id,
+			nombre_original: form.nombre_original,
+		};
+
 		fa_id = this.obtenerFA_id(direccion);
 		// Procesar el contenido
 		contenido = contenido.split("\r\n");
 		contenido = this.contenidoFA(contenido);
-		campo = rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
+		campo_id = entidad == "peliculas" ? "peli_fa_id" : "colec_fa_id";
 		let resultado = {
 			fuente: "FA",
-			rubroAPI,
+			entidad,
 			en_coleccion,
-			[campo]: fa_id,
+			[campo_id]: fa_id,
 			avatar,
 			...contenido,
 		};

@@ -9,13 +9,13 @@ window.addEventListener("load", async () => {
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let resultadoComentario = document.querySelector("#resultado");
-	let rubroAPI = document.querySelector("select[name='rubroAPI']");
+	let entidad = document.querySelector("select[name='entidad']");
 	let resto = document.querySelector("#dataEntry #resto");
 	let sectEnColeccion = document.querySelector("#en_coleccion");
 	let statusInicial = true;
 	let pre = "/agregar/producto/api/";
 
-	// Muestra en la vista, los campos posteriores a 'rubroAPI'
+	// Muestra en la vista, los campos posteriores a 'entidad'
 	let mostrarCampos = (valor, mensaje) => {
 		// Acciones si hay un error
 		if (mensaje) {
@@ -39,7 +39,7 @@ window.addEventListener("load", async () => {
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
-		campo == "rubroAPI" ? mostrarCampos(valor, mensaje) : "";
+		campo == "entidad" ? mostrarCampos(valor, mensaje) : "";
 		// Acciones en submit si se cambia la Dirección
 		campo == "direccion" ? (button.innerHTML = "Verificar") : "";
 		// Agregar comentario en 'contenido'
@@ -136,8 +136,8 @@ window.addEventListener("load", async () => {
 			fa_id = await fetch(
 				pre + "obtener-fa-id/?direccion=" + direccion
 			).then((n) => n.json());
-			campo = rubroAPI.value == "movie" ? "peli_fa_id" : "colec_fa_id";
-			url = "rubroAPI=" + rubroAPI.value;
+			campo = entidad.value == "movie" ? "peli_fa_id" : "colec_fa_id";
+			url = "entidad=" + entidad.value;
 			url += "&campo=" + campo;
 			url += "&id=" + fa_id;
 			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
@@ -149,7 +149,7 @@ window.addEventListener("load", async () => {
 				!errores ? (errores = {}) : "";
 				errores.direccion =
 					"El código interno de esta " +
-					rubroAPI.selectedOptions[0].label +
+					entidad.selectedOptions[0].label +
 					" ya se encuentra en nuestra base de datos";
 				accionesSiHayErrores(2, errores);
 			} else {

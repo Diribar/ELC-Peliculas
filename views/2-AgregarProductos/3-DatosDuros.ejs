@@ -26,7 +26,7 @@
 			<!-- Película IM: ¿Pertenece a una colección? -->
 			<%- include("31-DD-IM") %>
 			<!-- Primeros campos -->
-			<% for (let i=0; i < camposDD1.length; i++) { %><%- include("32-DD-Input", {i, datos: camposDD1}) %><% } %>
+			<% for (registro of camposDD1) { %><%- include("32-DD-Input", {registro}) %><% } %>
 			<!-- País -->
 			<%- include("33-DD-Pais") %>
 			<!-- Siguientes campos -->

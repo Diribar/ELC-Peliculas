@@ -1,5 +1,5 @@
 <% for (prod_enBD of prod_yaEnBD) { %>
-	<% rubroAPI = prod_enBD.rubroAPI %>
+	<% entidad = prod_enBD.rubroAPI == "movie" ? "peliculas" : "colecciones" %>
 	<% id = prod_enBD.YaEnBD %>
 	<% lanzamiento = prod_enBD.lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
 	<% imagen_src = "https://image.tmdb.org/t/p/original" + prod_enBD.avatar %>
@@ -7,9 +7,9 @@
 	<% nombre_castellano = prod_enBD.nombre_castellano %>
 
 	<form action="/agregar/producto/ya-en-bd" method="GET">
-		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
-		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
-		<input type="text" name="id" value="<%= id %>" class="ocultar">
+		<!-- Campos para luego buscar los detalles -->
+		<input class="ocultar" type="text" name="entidad" value="<%= entidad %>">
+		<input class="ocultar" type="text" name="id" value="<%= id %>">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "prod_yaEnBD">
 			<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">

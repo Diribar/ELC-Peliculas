@@ -1,16 +1,15 @@
 <% for (let i=0; i < 2; i++) { %>
-	<% rubroAPI = (i == 0) ? "movie" : "collection" %>
-	<% rubro = (i == 0) ? "película" : "colección" %>
+	<% entidad = (i == 0) ? "peliculas" : "colecciones" %>
+	<% producto = (i == 0) ? "Película" : "Colección" %>
 	<form action="<%= link %>" method="POST">
-		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
-		<input type="text" name="fuente" class="ocultar" value="IM">
-		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
-		<input type="text" name="avatar" class="ocultar" value="">
+		<!-- Campos para luego enviar a Datos Duros -->
+		<input class="ocultar" type="text" name="fuente" value="IM">
+		<input class="ocultar" type="text" name="entidad" value="<%= entidad %>">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "ingr_manual">
-			<img id="imagenChica" src="/imagenes/0-Agregar/<%= rubro %>.jpg" alt="Busco otra <%= rubro %>" title="Busco otra <%= rubro %>">
+			<img id="imagenChica" src="/imagenes/0-Agregar/DESAMB-<%= entidad %>.jpg" alt="Busco otra <%= producto %>" title="Busco otra <%= producto %>">
 			<div id="infoPeli" class="flex-col">
-				<p><strong>Busco otra <%= rubro %></strong></p>
+				<p><strong>Busco otra <%= producto %></strong></p>
 				<p class="interlineadoChico"></p>
 				<p>Ingresaré los datos manualmente</p>
 			</div>

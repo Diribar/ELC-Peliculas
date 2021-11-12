@@ -1,28 +1,24 @@
 <% for (prod_nuevo of prod_nuevos) { %>
-	<% rubroAPI = prod_nuevo.rubroAPI %>
-	<% campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id" %> 
-	<% tmdb_id = prod_nuevo[campo] %>
-	<% lanzamiento = prod_nuevo.lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
-	<% imagen_src = "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>
-	<% nombre_original = prod_nuevo.nombre_original %>
-	<% nombre_castellano = prod_nuevo.nombre_castellano %>
-
 	<form action="<%= link %>" method="POST">
-		<!-- Campos para luego buscar los detalles o enviar a Datos Duros -->
-		<input type="text" name="fuente" class="ocultar" value="TMDB">
-		<input type="text" name="rubroAPI" class="ocultar" value="<%= rubroAPI %>">
-		<input type="text" name="campo" value="<%= campo %>" class="ocultar">
-		<input type="text" name="id" value="<%= tmdb_id %>" class="ocultar">
-		<input type="text" name="nombre_original" value="<%= nombre_original %>" class="ocultar">
+		<!-- Campos para luego enviar a Datos Duros -->
+		<input class="ocultar" type="text" name="fuente" value="TMDB">
+		<input class="ocultar" type="text" name="entidad" value="<%= prod_nuevo.entidad %>">
+		<input class="ocultar" type="text" name="entidadTMDB" value="<%= prod_nuevo.entidadTMDB %>">
+		<input class="ocultar" type="text" name="TMDB_id" value="<%= prod_nuevo.TMDB_id %>">
+		<input class="ocultar" type="text" name="nombre_original" value="<%= nombre_original %>">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "prod_nuevo">
-			<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">
+			<img id="imagenChica" 
+				src="<%= "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>"
+				alt="<%= nombre_original %>" 
+				title="<%= nombre_original %>"
+			>
 			<div id="infoPeli" class="flex-col">
-				<p><strong><%= nombre_original %></strong></p>
+				<p><strong><%= prod_nuevo.nombre_original %></strong></p>
 				<p class="interlineadoChico"></p>
-				<p><%= lanzamiento %></p>
+				<p><%= prod_nuevo.lanzamiento + " - " + prod_nuevo.producto %></p>
 				<p class="interlineadoChico"></p>
-				<p><em><%= nombre_castellano %></em></p>
+				<p><em><%= prod_nuevo.nombre_castellano %></em></p>
 			</div>
 		</button>
 	</form>

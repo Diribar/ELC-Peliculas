@@ -14,19 +14,19 @@ module.exports = {
 		let rubrosAPI = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (rubroAPI of rubrosAPI) {
-				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
-					lectura = await searchTMDB(palabrasClave, rubroAPI, page)
+			for (entidadTMDB of rubrosAPI) {
+				if (page == 1 || page <= datos.cantPaginasAPI[entidadTMDB]) {
+					lectura = await searchTMDB(palabrasClave, entidadTMDB, page)
 						.then((n) => infoQueQueda(n))
-						.then((n) => estandarizarNombres(n, rubroAPI))
+						.then((n) => estandarizarNombres(n, entidadTMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					rubroAPI == "collection" && lectura.resultados.length > 0
+					entidadTMDB == "collection" && lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
 						: "";
-					datos = unificarResultados(lectura, rubroAPI, datos, page);
+					datos = unificarResultados(lectura, entidadTMDB, datos, page);
 				}
 			}
 			// Terminacion
@@ -49,10 +49,10 @@ let infoQueQueda = (n) => {
 	};
 };
 
-let estandarizarNombres = (dato, rubroAPI) => {
+let estandarizarNombres = (dato, entidadTMDB) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (rubroAPI == "collection") {
+		if (entidadTMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
 			ano = "-";
@@ -61,7 +61,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			desempate3 = "-";
 			prefijo = "colec";
 		}
-		if (rubroAPI == "tv") {
+		if (entidadTMDB == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -76,7 +76,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			desempate3 = m.first_air_date;
 			prefijo = "colec";
 		}
-		if (rubroAPI == "movie") {
+		if (entidadTMDB == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -100,7 +100,7 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			rubroAPI: rubroAPI,
+			entidadTMDB: entidadTMDB,
 			[prefijo + "_tmdb_id"]: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
@@ -175,18 +175,18 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarResultados = (lectura, rubroAPI, datos, page) => {
+let unificarResultados = (lectura, entidadTMDB, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[rubroAPI]: lectura.cantPaginasAPI,
+			[entidadTMDB]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados = datos.resultados.concat(lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[rubroAPI]: Math.min(page, datos.cantPaginasAPI[rubroAPI]),
+		[entidadTMDB]: Math.min(page, datos.cantPaginasAPI[entidadTMDB]),
 	};
 	return datos;
 };
@@ -205,7 +205,7 @@ let eliminarDuplicados = (datos) => {
 					(m.desempate1 == n.desempate1 ||
 						m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.rubroAPI == "tv"
+					m.entidadTMDB == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -215,9 +215,9 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		rubroAPI = datos.resultados[i].rubroAPI;
-		entidad = rubroAPI == "movie" ? "peliculas" : "colecciones";
-		campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+		entidadTMDB = datos.resultados[i].entidadTMDB;
+		entidad = entidadTMDB == "movie" ? "peliculas" : "colecciones";
+		campo = entidadTMDB == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		let dato = {
 			entidad,
 			campo,

@@ -18,10 +18,10 @@ module.exports = {
 	copiarFA: (datos) => {
 		let errores = {};
 		// Rubro
-		errores.rubroAPI = !datos.rubroAPI ? "Elegí una opción" : "";
+		errores.entidad = !datos.entidad ? "Elegí una opción" : "";
 		// En colección
 		errores.en_coleccion =
-			!datos.en_coleccion && datos.rubroAPI == "movie"
+			!datos.en_coleccion && datos.entidad == "peliculas"
 				? "Elegí una opción"
 				: "";
 		// Dirección
@@ -62,8 +62,8 @@ module.exports = {
 	// ControllerAPI (validarDatosDuros)
 	datosDuros: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
-		if (datos.rubroAPI) {
-			parametro = datos.rubroAPI == "movie" ? "peli" : "colec";
+		if (datos.entidad) {
+			parametro = datos.entidad == "peliculas" ? "peli" : "colec";
 			camposAVerificar = camposDD
 				.filter((n) => n[parametro])
 				.map((n) => n.campo);
@@ -73,7 +73,7 @@ module.exports = {
 		// En colección
 		errores.en_coleccion =
 			!datos.en_coleccion &&
-			datos.rubroAPI == "movie" &&
+			datos.entidad == "peliculas" &&
 			datos.fuente == "IM"
 				? "Elegí una opción"
 				: "";
@@ -205,12 +205,9 @@ module.exports = {
 	// ControllerAPI (validarDatosPers)
 	datosPers: (datos, camposDP) => {
 		// Averiguar cuáles son los campos a verificar
-		if (datos.rubroAPI) {
-			parametro = datos.rubroAPI == "movie" ? "peli" : "colec";
-			camposAVerificar = camposDP
-				.filter((n) => n[parametro])
-				.map((n) => n.campo);
-		} else camposAVerificar = camposDP;
+		camposAVerificar = datos.entidad
+			? camposDP.filter((n) => n[datos.entidad]).map((n) => n.campo)
+			: camposDP;
 		// Comenzar con las revisiones
 		let errores = {};
 		// Datos generales
