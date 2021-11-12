@@ -14,19 +14,19 @@ module.exports = {
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (entidadTMDB of entidadesTMDB) {
-				if (page == 1 || page <= datos.cantPaginasAPI[entidadTMDB]) {
-					lectura = await searchTMDB(palabrasClave, entidadTMDB, page)
+			for (entidad_TMDB of entidadesTMDB) {
+				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
+					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
 						.then((n) => infoQueQueda(n))
-						.then((n) => estandarizarNombres(n, entidadTMDB))
+						.then((n) => estandarizarNombres(n, entidad_TMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					entidadTMDB == "collection" && lectura.resultados.length > 0
+					entidad_TMDB == "collection" && lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
 						: "";
-					datos = unificarResultados(lectura, entidadTMDB, datos, page);
+					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
 				}
 			}
 			// Terminacion
@@ -49,10 +49,10 @@ let infoQueQueda = (n) => {
 	};
 };
 
-let estandarizarNombres = (dato, entidadTMDB) => {
+let estandarizarNombres = (dato, entidad_TMDB) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (entidadTMDB == "collection") {
+		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
 			ano = "-";
@@ -61,7 +61,7 @@ let estandarizarNombres = (dato, entidadTMDB) => {
 			desempate3 = "-";
 			prefijo = "colec";
 		}
-		if (entidadTMDB == "tv") {
+		if (entidad_TMDB == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -76,7 +76,7 @@ let estandarizarNombres = (dato, entidadTMDB) => {
 			desempate3 = m.first_air_date;
 			prefijo = "colec";
 		}
-		if (entidadTMDB == "movie") {
+		if (entidad_TMDB == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -100,7 +100,7 @@ let estandarizarNombres = (dato, entidadTMDB) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			entidadTMDB: entidadTMDB,
+			entidad_TMDB: entidad_TMDB,
 			[prefijo + "_tmdb_id"]: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
@@ -175,18 +175,18 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarResultados = (lectura, entidadTMDB, datos, page) => {
+let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[entidadTMDB]: lectura.cantPaginasAPI,
+			[entidad_TMDB]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados = datos.resultados.concat(lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[entidadTMDB]: Math.min(page, datos.cantPaginasAPI[entidadTMDB]),
+		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
 	};
 	return datos;
 };
@@ -205,7 +205,7 @@ let eliminarDuplicados = (datos) => {
 					(m.desempate1 == n.desempate1 ||
 						m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.entidadTMDB == "tv"
+					m.entidad_TMDB == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -215,13 +215,13 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		entidadTMDB = datos.resultados[i].entidadTMDB;
-		entidad = entidadTMDB == "movie" ? "peliculas" : "colecciones";
-		campo = entidadTMDB == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+		entidad_TMDB = datos.resultados[i].entidad_TMDB;
+		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+		campo_id = entidad_TMDB == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
 		let dato = {
 			entidad,
-			campo,
-			valor: datos.resultados[i][campo],
+			campo_id,
+			valor: datos.resultados[i][campo_id],
 		};
 		let YaEnBD = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {

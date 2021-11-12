@@ -6,10 +6,10 @@ let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerAPI_TMDB: async (datos) => {
-		let lectura = await detailsTMDB(datos.id, datos.entidadTMDB);
-		if (entidadTMDB == "movie") {
-			credits = await creditsTMDB(id);
+	obtenerAPI_TMDB: async ({ tmdb_id, entidad_TMDB }) => {
+		let lectura = await detailsTMDB(tmdb_id, entidad_TMDB);
+		if (entidad_TMDB == "movie") {
+			credits = await creditsTMDB(tmdb_id);
 			lectura = {
 				...lectura,
 				...credits,
@@ -22,12 +22,12 @@ module.exports = {
 	pelicula_TMDB: (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			fuente: form.fuente,
-			entidadTMDB: form.entidadTMDB,
-			rubro: form.rubro,
+			producto: form.producto,
 			entidad: form.entidad,
+			fuente: form.fuente,
+			entidad_TMDB: form.entidad_TMDB,
 			campo_id: form.campo_id,
-			peli_tmdb_id: form.id,
+			tmdb_id: form.tmdb_id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -112,12 +112,12 @@ module.exports = {
 	TV_TMDB: (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			fuente: form.fuente,
-			entidadTMDB: form.entidadTMDB,
-			rubro: form.rubro,
+			producto: form.producto,
 			entidad: form.entidad,
+			fuente: form.fuente,
+			entidad_TMDB: form.entidad_TMDB,
 			campo_id: form.campo_id,
-			colec_tmdb_id: form.id,
+			[form.campo_id]: form[form.campo_id],
 			nombre_original: form.nombre_original,
 		};
 		let datosCabecera = {};
@@ -203,8 +203,8 @@ module.exports = {
 		// Datos obtenidos del formulario
 		datosForm = {
 			fuente: form.fuente,
-			entidadTMDB: form.entidadTMDB,
-			rubro: form.rubro,
+			entidad_TMDB: form.entidad_TMDB,
+			producto: form.producto,
 			entidad: form.entidad,
 			campo_id: form.campo_id,
 			colec_tmdb_id: form.id,
@@ -273,7 +273,7 @@ module.exports = {
 		// Datos obtenidos del formulario
 		datosForm = {
 			fuente: form.fuente,
-			rubro: form.rubro,
+			producto: form.producto,
 			entidad: form.entidad,
 			campo_id: form.campo_id,
 			colec_tmdb_id: form.id,
