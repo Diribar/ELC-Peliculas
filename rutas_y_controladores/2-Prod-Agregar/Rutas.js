@@ -37,6 +37,7 @@ router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar)
 router.get("/confirmar", usuarios, vista.confirmarForm);
 router.post("/confirmar", usuarios, prodEnBD, vista.confirmarGuardar);
 router.get("/conclusion", usuarios, vista.conclusionForm);
+router.post("/detalle", usuarios, vista.conclusionGuardar);
 router.post("/coleccion", usuarios, vista.conclusionGuardar);
 router.post("/partes-de-coleccion", usuarios, vista.conclusionGuardar);
 

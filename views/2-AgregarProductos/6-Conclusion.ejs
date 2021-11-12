@@ -1,5 +1,5 @@
 <h1 class="titulo" id="titulo">Conclusión</h1>
-<form action="/detalle/producto/informacion" method="POST" id="dataEntry" class="flex-col">
+<form action="/agregar/producto/detalle" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
 		<img id="gracias" src="<%= imagen %>" alt="Muchas gracias">
@@ -15,7 +15,7 @@
 			</li>
 			<li>Enviamos un único mail diario con el resultado de todos los registros revisados el día anterior.</li>
 			<li>Si el registro queda aprobado, quedará accesible para todo el público.</li>
-			<li>El plazo promedio de revisión viene siendo de XX días/horas.</li>
+			<!-- <li>El plazo promedio de revisión viene siendo de XX días/horas.</li> -->
 			<li>Mientras tanto, podés ver los datos agregados y editarlos si corresponde.</li>
 			<!-- Variable inicial -->
 			<% botonColeccion = "" %>

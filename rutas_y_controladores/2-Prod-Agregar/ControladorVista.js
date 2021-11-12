@@ -73,7 +73,9 @@ module.exports = {
 		codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.cookies.datosDurosPartes) res.clearCookie("datosDurosPartes");
 		if (req.session.datosDuros) delete req.session.datosDuros;
+		if (req.session.datosDurosPartes) delete req.session.datosDurosPartes;
 		// 3. Eliminar session y cookie de copiarFA, si existen
 		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
 		if (req.session.copiarFA) delete req.session.copiarFA;
@@ -106,14 +108,22 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Generar la session para la siguiente instancia
-		req.session.datosDuros =
+		let [aux1, aux2] =
 			req.body.fuente == "TMDB"
 				? await obtenerDatosDelProductoTMDB(req.body)
 				: req.body;
+		req.session.datosDuros = aux1;
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
+		if (aux2) {
+			req.session.datosDurosPartes = aux2;
+			res.cookie("datosDurosPartes", req.session.datosDurosPartes, {
+				maxAge: 24 * 60 * 60 * 1000,
+			});
+		}
 		// 2. Redireccionar a la siguiente instancia
+		//return res.send(req.cookies);
 		res.redirect("/agregar/producto/datos-duros");
 	},
 
@@ -123,7 +133,9 @@ module.exports = {
 		codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
+		if (req.cookies.datosDurosPartes) res.clearCookie("datosDurosPartes");
 		if (req.session.datosDuros) delete req.session.datosDuros;
+		if (req.session.datosDurosPartes) delete req.session.datosDurosPartes;
 		// 3. Eliminar session y cookie de desambiguar, si existen
 		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
 		if (req.session.desambiguar) delete req.session.desambiguar;
@@ -153,9 +165,7 @@ module.exports = {
 		// 1. Guardar el data entry en session y cookie
 		let copiarFA = req.body;
 		req.session.copiarFA = copiarFA;
-		res.cookie("copiarFA", copiarFA, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("copiarFA", copiarFA, { maxAge: 24 * 60 * 60 * 1000 });
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarProd.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
@@ -265,9 +275,7 @@ module.exports = {
 		// 3. Guardar el data entry en session y cookie
 		let datosDuros = { ...aux, ...req.body };
 		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("datosDuros", datosDuros, { maxAge: 24 * 60 * 60 * 1000 });
 		// 4. Averiguar si hay errores de validación
 		let errores = await validarProd.datosDuros(datosDuros, [
 			...camposDD1,
@@ -393,9 +401,7 @@ module.exports = {
 			delete datosPers.personaje_historico_id;
 		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
 		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("datosPers", datosPers, { maxAge: 24 * 60 * 60 * 1000 });
 		// 2.1. Averiguar si hay errores de validación
 		camposDP = [...(await datosPersSelect()), ...datosPersInput];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
@@ -561,12 +567,70 @@ module.exports = {
 	},
 
 	conclusionGuardar: async (req, res) => {
-		let proximo = req.url.slice(1);
-		return res.send({ proximo, ...req.body });
-		// Colecciones -> agregar/producto/datosDuros
-
-		// Partes de coleccion -> agregar/producto/partes
-
+		datos = { rubro: req.url.slice(1), ...req.body };
+		//return res.send(datos)
+		// Eliminar session y cookie de datosClaveProd
+		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
+		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
+		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
+		// 1. DETALLE DE PRODUCTO *********************************************
+		if ((datos.rubro == "detalle")) {
+			// Generar la info: ruta, entidad, id
+			ruta = "/detalle/producto/informacion/?entidad=";
+			entidad = datos.entidad;
+			id = datos.id;
+			// Redirigir a Detalles
+			return res.redirect(ruta + entidad + "&id=" + id);
+		} else if ((datos.rubro == "coleccion")) {
+			// 2. Agregar la Colección
+			if (datos.peli_tmdb_id) {
+				// 2.1. Colección TMDB ***************************************
+				// Generar la info
+				datosDuros = {
+					fuente: "TMDB",
+					rubroAPI: "collection",
+					campo: "colec_tmdb_id",
+					id: datos.en_colec_tmdb_id,
+					nombre_original: datos.en_colec_nombre,
+				};
+				// Crear session y cookie para datosDuros (simil Desambiguar), a partir del ID de la colección
+				let [aux1, aux2] = await obtenerDatosDelProductoTMDB(
+					datosDuros
+				);
+				req.session.datosDuros = aux1;
+				res.cookie("datosDuros", req.session.datosDuros, {
+					maxAge: 24 * 60 * 60 * 1000,
+				});
+				if (aux2) {
+					req.session.datosDurosPartes = aux2;
+					res.cookie(
+						"datosDurosPartes",
+						req.session.datosDurosPartes,
+						{
+							maxAge: 24 * 60 * 60 * 1000,
+						}
+					);
+				}
+				// Redirigir a DatosDuros
+				//return res.send(req.cookies);
+				return res.redirect("/agregar/producto/datos-duros");
+			} else if (datos.peli_fa_id) {
+				// 2.2. Colección FA
+				// Generar la info, y crear session y cookie para copiarFA, con rubro="colección"
+				req.session.copiarFA = { rubroAPI: "collection" };
+				res.cookie("copiarFA", req.session.copiarFA, {
+					maxAge: 24 * 60 * 60 * 1000,
+				});
+				// Redirigir a copiarFA
+				return res.redirect("/agregar/producto/copiar-fa");
+			} else {
+				// 2.3. Ingreso Manual
+				// Redirigir a palabras clave
+				return res.redirect("/agregar/producto/palabras-clave");
+			}
+		} else if ((datos.rubro == "partes-de-coleccion")) {
+			// 3. Agregar las Partes de una Colección
+		}
 		// - datosClaveProd.entidad = "peliculas" / "colecciones"
 		// - datosClaveProd.producto = "Película" / "Colección"
 		// - datosClaveProd.campo = "peli_tmdb_id" / "peli_fa_id" / "colec_tmdb_id" / "colec_fa_id"
@@ -574,16 +638,6 @@ module.exports = {
 		// - datosClaveProd.en_colec_tmdb_id = valor / null
 		// - datosClaveProd.en_colec_nombre = "xxx"
 		// - datosClaveProd.valor = peli_tmdb_id / peli_fa_id / colec_tmdb_id / colec_fa_id
-
-		// - Si se va a dar de alta la colección de una peli:
-		// 	- crear req.session.datosDuros como se hace en Desambiguar
-		// 	- crear req.session palabras_clave
-		// 	- borrar datosClaveProd
-		// 	- redireccionar a DatosDuros
-		// - Si se van a dar de alta las partes de una colección FA/IM
-		// - Else
-		// 	- borrar datosClaveProd
-		// 	- redireccionar a palabrasClave
 	},
 
 	responsabilidad: (req, res) => {
@@ -597,23 +651,18 @@ module.exports = {
 	},
 };
 
-let obtenerDatosDelProductoTMDB = async (form) => {
+let obtenerDatosDelProductoTMDB = async (datos) => {
 	// API Details
-	rubroAPI = form.rubroAPI;
-	campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
-	let lectura =
-		form.fuente == "TMDB"
-			? await procesarProd.obtenerAPI_TMDB(form[campo], rubroAPI)
-			: {};
+	let lectura = await procesarProd.obtenerAPI_TMDB(datos.id, datos.rubroAPI);
 	// Obtener la info para la vista 'Datos Duros'
-	form.rubroAPI == "movie"
+	datos.rubroAPI == "movie"
 		? (rubro = "pelicula_TMDB")
-		: form.rubroAPI == "tv"
+		: datos.rubroAPI == "tv"
 		? (rubro = "TV_TMDB")
-		: form.rubroAPI == "collection"
+		: datos.rubroAPI == "collection"
 		? (rubro = "coleccion_TMDB")
 		: "";
-	return await procesarProd[rubro](form, lectura);
+	return await procesarProd[rubro](datos, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
