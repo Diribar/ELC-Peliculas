@@ -1,11 +1,11 @@
-<% dato = datosPers_select.find(n => n.campo == campo) %>
+<% registro = datosPersSelect.find(n => n.campo == campo) %>
 <section class="label-input flex-row">
-	<label><%= dato.titulo %></label>
+	<label><%= registro.titulo %></label>
 	<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input" <% if (autofocus) { %>autofocus<% } %>>
+		<select name="<%= campo %>" class="input" <% if (campo=="en_castellano_id") { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
-			<% for (valor of dato.valores) { %>
+			<% for (valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 					<% if (dataEntry.rubroAPI=="movie" && valor.id==2) { %>class="ocultar"<% } %>
@@ -17,7 +17,7 @@
 		<!-- Ayuda -->
 		<i class="fas fa-question-circle"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
-			<% mensajes = (dataEntry.rubroAPI == "movie") ? dato.mensajePeli : dato.mensajeColec %>
+			<% mensajes = (dataEntry.rubroAPI == "movie") ? registro.mensajePeli : registro.mensajeColec %>
 			<% for (mensaje of mensajes) { %><li><%= mensaje %></li><% } %>
 		</ul>
 		<!-- Errores -->

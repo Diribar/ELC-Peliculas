@@ -375,7 +375,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: datosPers,
 			errores,
-			datosPers_select: await datosPersSelect(),
+			datosPersSelect: await datosPersSelect(),
 			datosPers_input: datosPersInput,
 		});
 	},
