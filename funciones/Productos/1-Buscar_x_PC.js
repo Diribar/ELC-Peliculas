@@ -216,6 +216,7 @@ let averiguarSiYaEnBD = async (datos) => {
 		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
 		let dato = {
 			entidad,
+			campo: "TMDB_id",
 			valor: datos.resultados[i].tmdb_id,
 		};
 		let YaEnBD = await procesarProd.obtenerELC_id(dato);
