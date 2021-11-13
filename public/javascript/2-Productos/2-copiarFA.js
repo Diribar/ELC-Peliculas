@@ -133,13 +133,13 @@ window.addEventListener("load", async () => {
 			direccion = document.querySelector(
 				".input[name='direccion']"
 			).value;
-			fa_id = await fetch(
+			FA_id = await fetch(
 				pre + "obtener-fa-id/?direccion=" + direccion
 			).then((n) => n.json());
-			campo = entidad.value == "movie" ? "peli_fa_id" : "colec_fa_id";
+			campo = entidad.value == "movie" ? "peli_FA_id" : "colec_FA_id";
 			url = "entidad=" + entidad.value;
 			url += "&campo=" + campo;
-			url += "&id=" + fa_id;
+			url += "&id=" + FA_id;
 			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
 				n.json()
 			);

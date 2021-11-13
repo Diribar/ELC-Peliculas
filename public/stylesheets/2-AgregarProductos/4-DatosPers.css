@@ -36,4 +36,4 @@
 #dataEntry #imagenPeli img {position: absolute; left: 50%; transform: translateX(-50%); height: 100%; max-width: 220px; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
-#dataEntry #flechas {margin: 20px 50px 0;}
+#dataEntry #flechas {margin-top: 20px;}

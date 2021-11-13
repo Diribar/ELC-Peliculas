@@ -4,7 +4,7 @@ let BD_varias = require("../BD/varias");
 // Objeto literal *************
 module.exports = {
 	RCLV: async (datos) => {
-		let { rubro } = datos;
+		let { entidad } = datos;
 		let errores = { mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores
 		errores.nombre = !datos.nombre
@@ -14,7 +14,7 @@ module.exports = {
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: (await BD_varias.obtenerPorParametro(
-					"historicos_"+rubro+"s",
+					"historicos_"+entidad+"s",
 					"nombre",
 					datos.nombre
 			  ))

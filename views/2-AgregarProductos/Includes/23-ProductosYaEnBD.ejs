@@ -1,24 +1,17 @@
 <% for (prod_enBD of prod_yaEnBD) { %>
-	<% entidad = prod_enBD.rubroAPI == "movie" ? "peliculas" : "colecciones" %>
-	<% id = prod_enBD.YaEnBD %>
-	<% lanzamiento = prod_enBD.lanzamiento + " - " + (rubroAPI == "movie" ? "Película" : "Colección") %>
-	<% imagen_src = "https://image.tmdb.org/t/p/original" + prod_enBD.avatar %>
-	<% nombre_original = prod_enBD.nombre_original %>
-	<% nombre_castellano = prod_enBD.nombre_castellano %>
-
 	<form action="/agregar/producto/ya-en-bd" method="GET">
 		<!-- Campos para luego buscar los detalles -->
-		<input class="ocultar" type="text" name="entidad" value="<%= entidad %>">
-		<input class="ocultar" type="text" name="id" value="<%= id %>">
+		<input class="ocultar" type="text" name="entidad" value="<%= prod_enBD.entidad %>">
+		<input class="ocultar" type="text" name="id" value="<%= prod_enBD.YaEnBD %>">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "prod_yaEnBD">
-			<img id="imagenChica" src="<%= imagen_src %>" alt="<%= nombre_original %>" title="<%= nombre_original %>">
+			<img id="imagenChica" src="https://image.tmdb.org/t/p/original<%= prod_enBD.avatar %>" alt="<%= prod_enBD.nombre_original %>" title="<%= prod_enBD.nombre_original %>">
 			<div id="infoPeli" class="flex-col">
-				<p><strong><%= nombre_original %></strong></p>
+				<p><strong><%= prod_enBD.nombre_original %></strong></p>
 				<p class="interlineadoChico"></p>
-				<p><%= lanzamiento %></p>
+				<p><%= prod_enBD.lanzamiento + " - " + prod_enBD.producto %></p>
 				<p class="interlineadoChico"></p>
-				<p><em><%= nombre_castellano %></em></p>
+				<p><em><%= prod_enBD.nombre_castellano %></em></p>
 			</div>
 		</button>
 	</form>

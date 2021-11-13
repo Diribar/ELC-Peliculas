@@ -14,9 +14,7 @@ module.exports = async (TMDB_id) => {
 	// BUSCAR LA INFO
 	let resultado = await fetch(url).then((n) => n.json());
 	if (resultado.hasOwnProperty("success") && resultado.success == false) {
-		console.log("creditsTMDB_fetch")
-		console.log(url);
-		console.log(resultado);
+		console.log("creditsTMDB_fetch", url, resultado);
 		resultado = {
 			page: 1,
 			results: [],

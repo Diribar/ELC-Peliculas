@@ -25,7 +25,7 @@
 					<% if (!dataEntry.coleccionYaEnBD) { %>
 						<% botonColeccion = "Agregar la Colección" %>
 						<% linkColeccion = "/agregar/producto/coleccion" %>
-						<% if (dataEntry.en_colec_tmdb_id) { %>
+						<% if (dataEntry.en_colec_TMDB_id) { %>
 							<!-- En TMDB -->
 							<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
 						<% } else { %>
@@ -37,7 +37,7 @@
 			<% } %>
 			<!-- Colección -->
 			<% if (dataEntry.entidad == "colecciones") { %>
-				<% if (dataEntry.colec_tmdb_id) { %>
+				<% if (dataEntry.TMDB_id) { %>
 					<!-- En TMDB -->
 					<li>Las partes de la colección se agregaron a nuestra BD en forma automática.</li>
 				<% } else { %>
@@ -55,7 +55,7 @@
 		<% } %> 
 	</section>
 	<!-- Botones -->
-	<section id="flechas" class="flex-row space-evenly">
+	<section id="flechas" class="flex-row">
 		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %>" formaction="<%= linkColeccion %>" formmethod="post"><% } %>
 		<button type="submit" autofocus>Ver el Detalle de la <%= dataEntry.producto %> agregada</button>
 	</section>	

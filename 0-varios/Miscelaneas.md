@@ -8,4 +8,4 @@ En los casilleros con errores, poner ayuda en esta situaciones
 
 Palabras clave: agregar un ícono para IM
 
-Revisión general, eliminar 'rubroAPI' donde no se necesite
+Revisión general, eliminar 'entidad_TMDB' donde no se necesite

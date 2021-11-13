@@ -7,7 +7,7 @@
 			<nav class="flex-row">
 				<% tmdb = dataEntry.fuente!="TMDB" && dataEntry.nombre_original ? "search?language=es&query="+dataEntry.nombre_original : "" %>
 				<% fa = dataEntry.fuente!="FA" && dataEntry.nombre_original ? "search.php?stext="+dataEntry.nombre_original : "" %>
-				<% imdb = (dataEntry.peli_imdb_id) ? ("title/"+dataEntry.peli_imdb_id+"/technical") : dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "" %>
+				<% imdb = (dataEntry.IMDB_id) ? ("title/"+dataEntry.IMDB_id+"/technical") : dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "" %>
 				<% if (tmdb != "") { %>
 					<a class="logos" href="https://www.themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Base/LogoTMDB.jpg" alt="TMDB"></a>
 				<% } %>
@@ -58,7 +58,7 @@
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->
-	<section id="flechas" class="flex-row space-between">
+	<section id="flechas" class="flex-row">
 		<% retroceso = dataEntry.fuente != "FA" ? "desambiguar" : "copiar-fa" %>
 		<a href="/agregar/producto/<%= retroceso %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" autofocus>Avanzar</button>

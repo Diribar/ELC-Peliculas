@@ -345,9 +345,9 @@ INSERT INTO en_castellano (id, nombre)
 VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
 CREATE TABLE COLECCIONES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(10) NULL UNIQUE,
-	fa_id VARCHAR(10) NULL UNIQUE,
-	entidad_tmdb VARCHAR(10) NULL,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	entidad_TMDB VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
@@ -400,14 +400,14 @@ CREATE TABLE COLECCIONES (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones (id, tmdb_id, entidad_tmdb, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id, en_castellano_id, color)
+INSERT INTO colecciones (id, TMDB_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id, en_castellano_id, color)
 VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla)', 1, 'CFC', 4, 1, 1)
 ;
 CREATE TABLE COLECCIONES_PARTES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	colec_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
-	peli_tmdb_id VARCHAR(20) NULL,
+	peli_TMDB_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
@@ -446,12 +446,12 @@ VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hom
 ;
 CREATE TABLE PELICULAS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	tmdb_id VARCHAR(10) NULL UNIQUE,
-	fa_id VARCHAR(10) NULL UNIQUE,
-	imdb_id VARCHAR(10) NULL UNIQUE,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	IMDB_id VARCHAR(10) NULL UNIQUE,
 	en_coleccion BOOLEAN DEFAULT 0,
 	en_colec_id INT UNSIGNED NULL,
-	en_colec_tmdb_id VARCHAR(10) NULL,
+	en_colec_TMDB_id VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
@@ -505,7 +505,7 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, tmdb_id, fa_id, imdb_id, nombre_original, nombre_castellano, en_colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano_id, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
+INSERT INTO PELICULAS (id, TMDB_id, FA_id, IMDB_id, nombre_original, nombre_castellano, en_colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano_id, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
 VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', 1, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 1, 'IM', 1)
 ;
 CREATE TABLE cal_fe_valores (

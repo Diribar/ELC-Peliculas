@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 
 	// Funcion para revisar todos los errores
 	let buscarErroresEnTodoElForm = () => {
-		rubro = document.querySelector("#rubro").innerHTML;
+		entidad = document.querySelector("#entidad").innerHTML;
 		inputs = document.querySelectorAll(".input-error .input");
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += valor;
 		}
-		url += "&rubro=" + rubro;
+		url += "&entidad=" + entidad;
 		return fetch("/agregar/api/validar-relacion-con-la-vida/" + url).then((n) => n.json());
 	};
 

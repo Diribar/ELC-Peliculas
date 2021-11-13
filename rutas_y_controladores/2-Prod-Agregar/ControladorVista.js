@@ -105,10 +105,10 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// Completar la información del producto elegido
-		req.body.entidad = entidad_tmdb == "movie" ? "peliculas" : "colecciones";
-		req.body.producto = entidad_tmdb == "movie" ? "Película" : "Colección";
-		req.body.campo_id =
-			entidad_tmdb == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+		req.body.entidad =
+			req.body.entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+		req.body.producto =
+			req.body.entidad_TMDB == "movie" ? "Película" : "Colección";
 		// 1. Generar la session para la siguiente instancia
 		req.body.fuente == "TMDB"
 			? ([aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body))
@@ -162,20 +162,17 @@ module.exports = {
 	copiarFA_Guardar: async (req, res) => {
 		// 1. Guardar el data entry en session y cookie
 		let copiarFA = req.body;
-		producto = entidad == "peliculas" ? "Película" : "Colección";
-		campo_id = entidad == "peliculas" ? "peli_fa_id" : "colec_fa_id";
-		id = await procesarProd.obtenerFA_id(req.body.direccion);
-
 		req.session.copiarFA = copiarFA;
 		res.cookie("copiarFA", copiarFA, { maxAge: 24 * 60 * 60 * 1000 });
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarProd.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
+		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
 			elc_id = await procesarProd.obtenerELC_id({
-				entidad,
-				campo,
-				valor: fa_id,
+				entidad: copiarFA.entidad,
+				campo: "FA_id",
+				valor: FA_id,
 			});
 			if (elc_id) {
 				errores.direccion =
@@ -284,8 +281,8 @@ module.exports = {
 			// Averiguar si hubieron errores
 			elc_id = await procesarProd.obtenerELC_id({
 				entidad: datosDuros.entidad,
-				campo: datosDuros.campo_id,
-				valor: datosDuros.id,
+				campo: datosDuros.fuente + "_id",
+				valor: datosDuros[this.campo],
 			});
 			// Acciones si hubieron errores
 			if (elc_id) {
@@ -368,6 +365,7 @@ module.exports = {
 		});
 		// 5. Render del formulario
 		//return res.send(req.cookies);
+		//return res.send(datosPers);
 		let errores = req.session.errores ? req.session.errores : "";
 		return res.render("Home", {
 			tema,
@@ -431,7 +429,7 @@ module.exports = {
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
-			entidad_tmdb: req.session.datosPers.entidad_tmdb,
+			entidad_TMDB: req.session.datosPers.entidad_TMDB,
 			fe_valores,
 			entretiene,
 			calidad_tecnica,
@@ -484,6 +482,7 @@ module.exports = {
 		if (!confirmar)
 			return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
+		return res.send(confirmar);
 		registro = await BD_varias.agregarRegistro(confirmar);
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({ ...confirmar, id: registro.id });
@@ -529,11 +528,11 @@ module.exports = {
 		if (!datosClaveProd)
 			return res.redirect("/agregar/producto/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
-		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_tmdb_id) {
+		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_TMDB_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
 				entidad: "colecciones",
-				campo: "colec_tmdb_id",
-				valor: datosClaveProd.en_colec_tmdb_id,
+				campo: "TMDB_id",
+				valor: datosClaveProd.en_colec_TMDB_id,
 			});
 			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
 		}
@@ -557,35 +556,30 @@ module.exports = {
 	},
 
 	conclusionGuardar: async (req, res) => {
-		datos = { rubro: req.url.slice(1), ...req.body };
+		datos = { entidad: req.url.slice(1), ...req.body };
 		//return res.send(datos)
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
 		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
 		// 1. DETALLE DE PRODUCTO *********************************************
-		if (datos.rubro == "detalle") {
-			// Generar la info: ruta, entidad, id
+		if (datos.entidad == "detalle") {
 			ruta = "/detalle/producto/informacion/?entidad=";
-			entidad = datos.entidad;
-			id = datos.id;
-			// Redirigir a Detalles
-			return res.redirect(ruta + entidad + "&id=" + id);
-		} else if (datos.rubro == "coleccion") {
+			return res.redirect(ruta + datos.entidad + "&id=" + datos.id);
+		} else if (datos.entidad == "coleccion") {
 			// 2. Agregar la Colección
-			if (datos.peli_tmdb_id) {
+			if (datos.TMDB_id) {
 				// 2.1. Colección TMDB ***************************************
 				// Generar la info
 				datosDuros = {
 					fuente: "TMDB",
-					rubroAPI: "collection",
-					entidad: "colecciones",
 					producto: "Colección",
-					campo_id: "colec_tmdb_id",
-					tmdb_id: datos.en_colec_tmdb_id,
+					entidad: "colecciones",
+					entidad_TMDB: "collection",
+					TMDB_id: datos.en_colec_TMDB_id,
 					nombre_original: datos.en_colec_nombre,
 				};
-				// Crear session y cookie para datosDuros (simil Desambiguar), a partir del ID de la colección
+				// Crear session y cookie para datosDuros (simil Desambiguar)
 				let [aux1, aux2] = await obtenerDatosDelProductoTMDB(
 					datosDuros
 				);
@@ -600,9 +594,8 @@ module.exports = {
 				// Redirigir a DatosDuros
 				//return res.send(req.cookies);
 				return res.redirect("/agregar/producto/datos-duros");
-			} else if (datos.peli_fa_id) {
+			} else if (datos.FA_id) {
 				// 2.2. Colección FA
-				// Generar la info, y crear session y cookie para copiarFA, con rubro="colección"
 				req.session.copiarFA = { entidad: "colecciones" };
 				res.cookie("copiarFA", req.session.copiarFA, {
 					maxAge: 24 * 60 * 60 * 1000,
@@ -611,19 +604,26 @@ module.exports = {
 				return res.redirect("/agregar/producto/copiar-fa");
 			} else {
 				// 2.3. Ingreso Manual
+				req.session.datosDuros = {
+					fuente: "IM",
+					entidad: "colecciones",
+				};
+				res.cookie("datosDuros", req.session.datosDuros, {
+					maxAge: 24 * 60 * 60 * 1000,
+				});
 				// Redirigir a palabras clave
 				return res.redirect("/agregar/producto/palabras-clave");
 			}
-		} else if (datos.rubro == "partes-de-coleccion") {
+		} else if (datos.entidad == "partes-de-coleccion") {
 			// 3. Agregar las Partes de una Colección
 		}
 		// - datosClaveProd.entidad = "peliculas" / "colecciones"
 		// - datosClaveProd.producto = "Película" / "Colección"
-		// - datosClaveProd.campo = "peli_tmdb_id" / "peli_fa_id" / "colec_tmdb_id" / "colec_fa_id"
+		// - datosClaveProd.campo = "peli_TMDB_id" / "peli_FA_id" / "colec_TMDB_id" / "colec_FA_id"
 		// - datosClaveProd.en_coleccion = true / false
-		// - datosClaveProd.en_colec_tmdb_id = valor / null
+		// - datosClaveProd.en_colec_TMDB_id = valor / null
 		// - datosClaveProd.en_colec_nombre = "xxx"
-		// - datosClaveProd.valor = peli_tmdb_id / peli_fa_id / colec_tmdb_id / colec_fa_id
+		// - datosClaveProd.valor = peli_TMDB_id / peli_FA_id / colec_TMDB_id / colec_FA_id
 	},
 
 	responsabilidad: (req, res) => {
@@ -641,11 +641,11 @@ let obtenerDatosDelProductoTMDB = async (datos) => {
 	// API Details
 	let lectura = await procesarProd.obtenerAPI_TMDB(datos);
 	// Obtener la info para la vista 'Datos Duros'
-	datos.entidad_tmdb == "movie"
+	datos.entidad_TMDB == "movie"
 		? (metodo = "pelicula_TMDB")
-		: datos.entidad_tmdb == "tv"
+		: datos.entidad_TMDB == "tv"
 		? (metodo = "TV_TMDB")
-		: datos.entidad_tmdb == "collection"
+		: datos.entidad_TMDB == "collection"
 		? (metodo = "coleccion_TMDB")
 		: "";
 	return await procesarProd[metodo](datos, lectura);
@@ -735,7 +735,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Existe una versión en castellano",
 			campo: "en_castellano_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos("en_castellano", "id"),
 			mensajePeli: [
 				'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
@@ -747,7 +746,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Es a Color",
 			campo: "color",
-			tabla: "peliculas",
 			valores: [
 				{ id: 1, nombre: "SI" },
 				{ id: 0, nombre: "NO" },
@@ -760,7 +758,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Categoría",
 			campo: "categoria_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos("categorias", "orden"),
 			peliculas: true,
 			colecciones: true,
@@ -773,7 +770,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Sub-categoría",
 			campo: "subcategoria_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos("subcategorias", "orden"),
 			peliculas: true,
 			colecciones: true,
@@ -782,7 +778,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Público sugerido",
 			campo: "publico_sugerido_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos(
 				"publicos_sugeridos",
 				"orden"
@@ -800,7 +795,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Inspira fe y/o valores",
 			campo: "fe_valores_id",
-			tabla: "us_pel_calificaciones",
 			valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 			peliculas: true,
 			colecciones: true,
@@ -809,7 +803,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Entretiene",
 			campo: "entretiene_id",
-			tabla: "us_pel_calificaciones",
 			valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 			peliculas: true,
 			colecciones: true,
@@ -818,7 +811,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Calidad sonora y visual",
 			campo: "calidad_tecnica_id",
-			tabla: "us_pel_calificaciones",
 			valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 			peliculas: true,
 			colecciones: true,
@@ -827,7 +819,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Personaje histórico",
 			campo: "personaje_historico_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos(
 				"historicos_personajes",
 				"nombre"
@@ -843,7 +834,6 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Hecho histórico",
 			campo: "hecho_historico_id",
-			tabla: "peliculas",
 			valores: await BD_varias.obtenerTodos(
 				"historicos_hechos",
 				"nombre"
@@ -861,10 +851,9 @@ let datosPersSelect = async () => {
 
 let datosPersInput = [
 	{
-		titulo: "Link del trailer",
-		titulo2: "Link del 1er trailer",
+		tituloPeli: "Link del trailer",
+		tituloColec: "Link del 1er trailer",
 		campo: "link_trailer",
-		tabla: "peliculas",
 		peliculas: true,
 		colecciones: true,
 		mensajes: [
@@ -874,10 +863,9 @@ let datosPersInput = [
 		],
 	},
 	{
-		titulo: "Link de la película",
-		titulo2: "Link de la 1a película",
+		tituloPeli: "Link de la película",
+		tituloColec: "Link de la 1a película",
 		campo: "link_pelicula",
-		tabla: "peliculas",
 		peliculas: true,
 		colecciones: true,
 		mensajes: [
@@ -891,24 +879,23 @@ let datosPersInput = [
 ];
 
 let funcDatosClaveProd = (datos) => {
-	// Enfoque en los datos clave
-	let datosClaveProd = {
-		fuente: datos.fuente,
-		entidad: datos.entidad,
+	let datosClave = {
 		producto: datos.producto,
-		campo_id: datos.campo_id,
-		[datos.campo_id]: datos[datos.campo_id],
-		valor: datos[datosClaveProd.campo],
+		entidad: datos.entidad,
+		fuente: datos.fuente,
+		[datos.fuente + "_id"]: datos[datos.fuente + "_id"],
 		nombre_castellano: datos.nombre_castellano,
-		en_coleccion: datos.en_coleccion,
-		en_colec_tmdb_id: datos.en_colec_tmdb_id,
-		en_colec_nombre: datos.en_colec_nombre,
-		ELC_id: datos.ELC_id,
 	};
-	// 2. Campo y valor
-	// 3. Nombre del producto
-	// 4. ID del producto
-	return datosClaveProd;
+	if (datos.fuente == "TMDB") datosClave.entidad_TMDB = datos.entidad_TMDB;
+	if (datosClave.entidad == "peliculas") {
+		datosClave.en_coleccion = datos.en_coleccion;
+		if (datos.en_coleccion && datos.fuente == "TMDB") {
+			datosClave.en_colec_TMDB_id = datos.en_colec_TMDB_id;
+			datosClave.en_colec_nombre = datos.en_colec_nombre;
+		}
+	}
+	if (datos.ELC_id) datosClave.ELC_id = datos.ELC_id;
+	return datosClave;
 };
 
 let actualizarRCLV = async (entidad, id) => {
@@ -924,7 +911,7 @@ let actualizarRCLV = async (entidad, id) => {
 };
 
 let guardarCalificaciones_us = (confirmar, productoEnBD) => {
-	entidad_id = confirmar.rubroAPI == "movie" ? "peli_id" : "colec_id";
+	entidad_id = confirmar.entidad == "peliculas" ? "peli_id" : "colec_id";
 	let datos = {
 		usuario_id: confirmar.creada_por_id,
 		[entidad_id]: productoEnBD.id,
@@ -959,7 +946,7 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 			orden++;
 			datos = {
 				colec_id: registro.id,
-				peli_tmdb_id: parte.peli_tmdb_id,
+				peli_TMDB_id: parte.TMDB_id,
 				orden: orden,
 				creada_por_id: 2,
 			};
@@ -971,12 +958,11 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 			if (parte.cant_capitulos)
 				datos.cant_capitulos = parte.cant_capitulos;
 			if (parte.avatar) datos.avatar = parte.avatar;
-			buscarPeliID = {
+			peli_id = await BD_varias.obtenerELC_id({
 				entidad: "peliculas",
-				campo: "peli_tmdb_id",
-				valor: parte.peli_tmdb_id,
-			};
-			peli_id = await BD_varias.obtenerELC_id(buscarPeliID);
+				campo: "TMDB_id",
+				valor: parte.TMDB_id,
+			});
 			if (peli_id) datos.peli_id = peli_id;
 			BD_varias.agregarRegistro("colecciones_partes", datos);
 		}

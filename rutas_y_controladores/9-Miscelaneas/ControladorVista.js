@@ -30,7 +30,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 1.3 Si existe 'req.query', recargar la página
-		return datosPers.rubro == "personaje"
+		return datosPers.entidad == "personaje"
 			? res.redirect("/agregar/personaje-historico")
 			: res.redirect("/agregar/hecho-historico");
 	},
@@ -47,7 +47,7 @@ module.exports = {
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
 		//return res.send(req.session.datosPers);
 		tema = "RCLV";
-		codigo = datosPers.rubro;
+		codigo = datosPers.entidad;
 		// Data-entry
 		dataEntry = req.session[codigo + "Historico"]
 			? req.session[codigo + "Historico"]
@@ -81,12 +81,12 @@ module.exports = {
 		if (!datosPers)
 			return res.redirect("/agregar/producto/palabras-clave");
 		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
-		rubro = datosPers.rubro;
+		entidad = datosPers.entidad;
 		// 1. Guardar el data entry en session y cookie
 		let dataEntry = req.body;
-		dataEntry.rubro = rubro;
-		req.session[rubro] = dataEntry;
-		res.cookie(rubro, dataEntry, {
+		dataEntry.entidad = entidad;
+		req.session[entidad] = dataEntry;
+		res.cookie(entidad, dataEntry, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 2. Averiguar si hay errores de validación
@@ -113,12 +113,12 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano_id;
 		}
 		// 4. Crear el registro en la BD
-		let entidad = "historicos_" + rubro + "s";
+		let entidad = "historicos_" + entidad + "s";
 		let { id } = await BD_varias.agregarRegistro(entidad, datos);
 		//return res.send(id+"");
 		// 5. Guardar el id en 'Datos Personalizados'
-		req.session.datosPers[rubro + "_historico_id"] = id;
-		res.cookie("datosPers." + rubro + "_historico_id", id, {
+		req.session.datosPers[entidad + "_historico_id"] = id;
+		res.cookie("datosPers." + entidad + "_historico_id", id, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 5. Redireccionar a la siguiente instancia

@@ -1,8 +1,8 @@
 <% dato = datosPers_input.find(n => n.campo == campo) %>
-<% if ((dataEntry.rubroAPI=="movie" && dato.peli) || (dataEntry.rubroAPI!="movie" && dato.colec)) { %>
+<% if (registro[dataEntry.entidad]) { %>
 	<section style="order: <%= dato.orden %>" class="label-input flex-row">
 		<label id="<%= campo %>">
-			<%- dataEntry.rubroAPI=="movie" ? dato.titulo : dato.titulo2 %>
+			<%- dataEntry.entidad=="peliculas" ? dato.tituloPeli : dato.tituloColec %>
 		</label>
 		<div class="input-error">
 			<input type="text" name="<%= dato.campo %>" autocomplete="off"
@@ -11,7 +11,7 @@
 			<i class="fas fa-question-circle"></i>
 			<ul type="dots" class="mensajeAyuda ocultar">
 				<% for (mensaje of dato.mensajes) { %>
-					<% if (dataEntry.rubroAPI!="movie" || mensaje != dato.mensajes[0]) { %>
+					<% if (dataEntry.entidad == "coleccion" || mensaje != dato.mensajes[0]) { %>
 						<li><%= mensaje %></li>
 					<% } %> 
 				<% } %> 

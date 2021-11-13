@@ -2,16 +2,15 @@
 	<form action="<%= link %>" method="POST">
 		<!-- Campos para luego enviar a Datos Duros -->
 		<input class="ocultar" type="text" name="fuente" value="TMDB">
-		<input class="ocultar" type="text" name="entidad" value="<%= prod_nuevo.entidad %>">
-		<input class="ocultar" type="text" name="entidad_tmdb" value="<%= prod_nuevo.entidad_tmdb %>">
+		<input class="ocultar" type="text" name="entidad_TMDB" value="<%= prod_nuevo.entidad_TMDB %>">
 		<input class="ocultar" type="text" name="TMDB_id" value="<%= prod_nuevo.TMDB_id %>">
-		<input class="ocultar" type="text" name="nombre_original" value="<%= nombre_original %>">
+		<input class="ocultar" type="text" name="nombre_original" value="<%= prod_nuevo.nombre_original %>">
 		<!-- Info a mostrar -->
 		<button type="submit" class="flex-row" id= "prod_nuevo">
 			<img id="imagenChica" 
 				src="<%= "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>"
-				alt="<%= nombre_original %>" 
-				title="<%= nombre_original %>"
+				alt="<%= prod_nuevo.nombre_original %>" 
+				title="<%= prod_nuevo.nombre_original %>"
 			>
 			<div id="infoPeli" class="flex-col">
 				<p><strong><%= prod_nuevo.nombre_original %></strong></p>
