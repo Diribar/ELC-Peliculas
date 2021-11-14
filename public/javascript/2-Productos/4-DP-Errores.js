@@ -71,7 +71,6 @@ window.addEventListener("load", async () => {
 		if (button.classList.contains("botonSinLink")) {
 			e.preventDefault();
 			errores = await buscarErroresEnTodoElForm();
-			console.log(errores)
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}
