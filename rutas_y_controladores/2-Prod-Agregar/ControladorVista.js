@@ -486,6 +486,7 @@ module.exports = {
 			return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
 		registro = await BD_varias.agregarRegistro(confirmar);
+		//return res.send(registro)
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({ ...confirmar, id: registro.id });
 		req.session.datosClaveProd = datosClaveProd;
@@ -499,7 +500,6 @@ module.exports = {
 			registro.personaje_historico_id
 		);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		console.log("linea 501 - OK");
 		// 5. Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
@@ -510,7 +510,6 @@ module.exports = {
 		// 7. Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
 		metodos.push("datosDuros", "datosPers", "confirmar");
-		console.log(metodos);
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
 			if (req.cookies[metodo]) res.clearCookie(metodo);
@@ -557,17 +556,17 @@ module.exports = {
 	},
 
 	conclusionGuardar: async (req, res) => {
-		datos = { entidad: req.url.slice(1), ...req.body };
-		//return res.send(datos)
+		datos = { ...req.body, url: req.url.slice(1) };
+		return res.send(datos)
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
 		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
 		// 1. DETALLE DE PRODUCTO *********************************************
-		if (datos.entidad == "detalle") {
-			ruta = "/detalle/producto/informacion/?entidad=";
-			return res.redirect(ruta + datos.entidad + "&id=" + datos.id);
-		} else if (datos.entidad == "coleccion") {
+		if (datos.url == "detalle") {
+			ruta = "/detalle/producto/informacion/?url=";
+			return res.redirect(ruta + datos.url + "&id=" + datos.id);
+		} else if (datos.url == "coleccion") {
 			// 2. Agregar la Colección
 			if (datos.TMDB_id) {
 				// 2.1. Colección TMDB ***************************************
@@ -613,7 +612,7 @@ module.exports = {
 					maxAge: 24 * 60 * 60 * 1000,
 				});
 				// Redirigir a palabras clave
-				return res.redirect("/agregar/producto/palabras-clave");
+				return res.redirect("/agregar/producto/datos-duros");
 			}
 		} else if (datos.entidad == "partes-de-coleccion") {
 			// 3. Agregar las Partes de una Colección
@@ -895,7 +894,7 @@ let funcDatosClaveProd = (datos) => {
 			datosClave.en_colec_nombre = datos.en_colec_nombre;
 		}
 	}
-	if (datos.ELC_id) datosClave.ELC_id = datos.ELC_id;
+	if (datos.id) datosClave.id = datos.id;
 	return datosClave;
 };
 

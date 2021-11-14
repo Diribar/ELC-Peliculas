@@ -34,12 +34,12 @@ module.exports = {
 		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
-				datosLectura.en_coleccion = 1;
+				datosLectura.en_coleccion = true;
 				datosLectura.en_colec_TMDB_id =
 					lectura.belongs_to_collection.id;
 				datosLectura.en_colec_nombre =
 					lectura.belongs_to_collection.name;
-			} else datosLectura.en_coleccion = 0;
+			} else datosLectura.en_coleccion = false;
 			lectura.IMDB_id != ""
 				? (datosLectura.IMDB_id = lectura.imdb_id)
 				: "";
