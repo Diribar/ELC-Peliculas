@@ -569,7 +569,7 @@ module.exports = {
 		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
 		// 1. DETALLE DE PRODUCTO *********************************************
 		if (datos.url == "detalle") {
-			ruta = "/detalle/producto/informacion/?entidad=";;
+			ruta = "/detalle/producto/informacion/?entidad=";
 			entidad = datos.entidad;
 			id = datos.id;
 			return res.redirect(ruta + entidad + "&id=" + id);
