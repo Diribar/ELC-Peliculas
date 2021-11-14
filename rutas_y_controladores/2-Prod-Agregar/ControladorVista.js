@@ -282,7 +282,7 @@ module.exports = {
 		if (!errores.nombre_original) {
 			elc_id = await procesarProd.obtenerELC_id({
 				entidad: datosDuros.entidad,
-				campo: datosDuros[fuente + "_id"],
+				campo: [fuente + "_id"],
 				valor: datosDuros[this.campo],
 			});
 			if (elc_id) {
