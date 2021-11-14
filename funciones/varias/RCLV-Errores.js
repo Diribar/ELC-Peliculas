@@ -14,7 +14,7 @@ module.exports = {
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: (await BD_varias.obtenerPorParametro(
-					"historicos_"+entidad+"s",
+					entidad,
 					"nombre",
 					datos.nombre
 			  ))

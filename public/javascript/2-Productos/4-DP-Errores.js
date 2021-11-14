@@ -81,11 +81,11 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
-			entidad = links[i].className.includes("personaje")
-				? "personaje"
-				: "hecho";
+			entidad_RCLV = links[i].className.includes("personaje")
+				? "historicos_personajes"
+				: "historicos_hechos";
 			let url = buscarTodosLosValores();
-			window.location.href = "/agregar/relacion-vida" + url + "&entidad=" + entidad;
+			window.location.href = "/agregar/relacion-vida" + url + "&entidad_RCLV=" + entidad_RCLV;
 		});
 	}
 });

@@ -46,7 +46,7 @@ module.exports = {
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
-		await BD_varias.agregarRegistro("usuarios", { email, contrasena });
+		await BD_varias.agregarRegistro({entidad: "usuarios", email, contrasena });
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar

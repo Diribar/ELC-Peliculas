@@ -11,7 +11,7 @@ module.exports = {
 			.then((n) => n.filter((m) => m.dia == dia))
 			.then((n) => n[0].id);
 		casos = await BD_varias.obtenerTodos(
-			"historicos_" + entidad + "s",
+			entidad,
 			"nombre"
 		)
 			.then((n) => n.filter((m) => m.dia_del_ano_id == dia_del_ano_id))

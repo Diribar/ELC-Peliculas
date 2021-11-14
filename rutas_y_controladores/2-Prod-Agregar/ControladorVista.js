@@ -202,9 +202,12 @@ module.exports = {
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers) {
-			ruta = "./public/imagenes/9-Provisorio/";
-			if (req.cookies.datosPers.avatar)
-				fs.unlinkSync(ruta + req.cookies.datosPers.avatar);
+			if (req.cookies.datosPers.avatar) {
+				rutaYnombre =
+					"./public/imagenes/9-Provisorio/" +
+					req.cookies.datosPers.avatar;
+				if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
+			}
 			res.clearCookie("datosPers");
 		}
 		if (req.session.datosPers) delete req.session.datosPers;
@@ -482,7 +485,6 @@ module.exports = {
 		if (!confirmar)
 			return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
-		return res.send(confirmar);
 		registro = await BD_varias.agregarRegistro(confirmar);
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({ ...confirmar, id: registro.id });
@@ -497,6 +499,7 @@ module.exports = {
 			registro.personaje_historico_id
 		);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
+		console.log("linea 501 - OK");
 		// 5. Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
@@ -506,7 +509,8 @@ module.exports = {
 		//return res.send(confirmar);
 		// 7. Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
-		metodos.push(...["datosDuros", "datosPers", "confirmar"]);
+		metodos.push("datosDuros", "datosPers", "confirmar");
+		console.log(metodos);
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
 			if (req.cookies[metodo]) res.clearCookie(metodo);
@@ -527,7 +531,7 @@ module.exports = {
 			: "";
 		if (!datosClaveProd)
 			return res.redirect("/agregar/producto/palabras-clave");
-		// 3. Averiguar si el producto está en una colección y la colección ya está en nuestra BD
+		// 3. Averiguar si el producto está en una colección y si la colección ya está en nuestra BD
 		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_TMDB_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
 				entidad: "colecciones",
@@ -536,14 +540,11 @@ module.exports = {
 			});
 			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
 		}
-		// 4. Preparar la información sobre las imágenes
-		archivos = fs.readdirSync("./public/imagenes/0-Base/");
-		muchasGracias = archivos.filter(
-			(n) => n > "Muchas gracias" && n < "Muchas graciat"
-		);
-		indice = 1 + parseInt(Math.random() * muchasGracias.length);
-		//console.log(indice)
-		imagen = "/imagenes/0-Agregar/Muchas gracias " + indice + ".jpg";
+		// 4. Preparar la información sobre las imágenes de MUCHAS GRACIAS
+		archivos = fs.readdirSync("./public/imagenes/0-Agregar/");
+		muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
+		indice = parseInt(Math.random() * muchasGracias.length);
+		imagen = "/imagenes/0-Agregar/" + muchasGracias[indice];
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -910,11 +911,12 @@ let actualizarRCLV = async (entidad, id) => {
 	}
 };
 
-let guardarCalificaciones_us = (confirmar, productoEnBD) => {
+let guardarCalificaciones_us = (confirmar, registro) => {
 	entidad_id = confirmar.entidad == "peliculas" ? "peli_id" : "colec_id";
 	let datos = {
 		usuario_id: confirmar.creada_por_id,
-		[entidad_id]: productoEnBD.id,
+		entidad: "calificaciones_us",
+		[entidad_id]: registro.id,
 		fe_valores_id: confirmar.fe_valores_id,
 		entretiene_id: confirmar.entretiene_id,
 		calidad_tecnica_id: confirmar.calidad_tecnica_id,
@@ -923,7 +925,7 @@ let guardarCalificaciones_us = (confirmar, productoEnBD) => {
 		calidad_tecnica_valor: confirmar.calidad_tecnica,
 		resultado: confirmar.calificacion,
 	};
-	BD_varias.agregarRegistro("calificaciones_us", datos);
+	BD_varias.agregarRegistro(datos);
 };
 
 let moverImagenCarpetaDefinitiva = (nombre) => {
@@ -945,6 +947,7 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 		for (parte of partes) {
 			orden++;
 			datos = {
+				entidad: "colecciones_partes",
 				colec_id: registro.id,
 				peli_TMDB_id: parte.TMDB_id,
 				orden: orden,
@@ -964,7 +967,7 @@ let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
 				valor: parte.TMDB_id,
 			});
 			if (peli_id) datos.peli_id = peli_id;
-			BD_varias.agregarRegistro("colecciones_partes", datos);
+			BD_varias.agregarRegistro(datos);
 		}
 	}
 };
