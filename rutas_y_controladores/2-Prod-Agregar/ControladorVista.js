@@ -569,8 +569,10 @@ module.exports = {
 		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
 		// 1. DETALLE DE PRODUCTO *********************************************
 		if (datos.url == "detalle") {
-			ruta = "/detalle/producto/informacion/?url=";
-			return res.redirect(ruta + datos.url + "&id=" + datos.id);
+			ruta = "/detalle/producto/informacion/?entidad=";;
+			entidad = datos.entidad;
+			id = datos.id;
+			return res.redirect(ruta + entidad + "&id=" + id);
 		} else if (datos.url == "coleccion") {
 			// 2. Agregar la Colección
 			if (datos.TMDB_id) {
