@@ -48,7 +48,7 @@ module.exports = {
 		codigo = datosPers.entidad_RCLV;
 		// 3. Data-entry
 		datosRCLV = req.session[codigo] ? req.session[codigo] : "";
-		producto=datosPers.producto_RCLV
+		producto = datosPers.producto_RCLV;
 		// Errores
 		let errores = req.session.errores
 			? req.session.errores
