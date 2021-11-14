@@ -200,10 +200,10 @@ module.exports = {
 	coleccion_TMDB: (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
 			producto: form.producto,
 			entidad: form.entidad,
+			fuente: form.fuente,
+			entidad_TMDB: form.entidad_TMDB,
 			TMDB_id: form.TMDB_id,
 			nombre_original: form.nombre_original,
 		};
