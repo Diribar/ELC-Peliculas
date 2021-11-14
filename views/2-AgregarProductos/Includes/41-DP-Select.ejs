@@ -1,7 +1,7 @@
 <% registro = datosPersSelect.find(n => n.campo == campo) %>
 <section class="label-input flex-row">
 	<label><%= registro.titulo %></label>
-	<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
+	<div id="<%= campo %>" class="input-error">
 		<!-- Input -->
 		<select name="<%= campo %>" class="input" <% if (campo=="en_castellano_id") { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>

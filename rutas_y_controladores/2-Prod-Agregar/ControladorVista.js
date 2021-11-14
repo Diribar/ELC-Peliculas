@@ -374,7 +374,7 @@ module.exports = {
 			dataEntry: datosPers,
 			errores,
 			datosPersSelect: await datosPersSelect(),
-			datosPers_input: datosPersInput,
+			datosPersInput: datosPersInput,
 		});
 	},
 
