@@ -63,9 +63,8 @@ module.exports = {
 	datosDuros: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
 		if (datos.entidad) {
-			parametro = datos.entidad == "peliculas" ? "peli" : "colec";
 			camposAVerificar = camposDD
-				.filter((n) => n[parametro])
+				.filter((n) => n[datos.entidad])
 				.map((n) => n.campo);
 		} else camposAVerificar = camposDD;
 		// Comenzar con las revisiones
