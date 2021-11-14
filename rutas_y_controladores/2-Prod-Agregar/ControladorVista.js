@@ -119,12 +119,11 @@ module.exports = {
 		});
 		if (aux2) {
 			req.session.datosDurosPartes = aux2;
-			res.cookie("datosDurosPartes", req.session.datosDurosPartes, {
+			res.cookie("datosDurosPartes", aux2, {
 				maxAge: 24 * 60 * 60 * 1000,
 			});
 		}
 		// 2. Redireccionar a la siguiente instancia
-		//return res.send(req.cookies);
 		res.redirect("/agregar/producto/datos-duros");
 	},
 
@@ -504,12 +503,21 @@ module.exports = {
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
 		// 6. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
-		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB")
-			agregarLasPartesDeLaColeccion(confirmar, registro);
+		datosDurosPartes = req.session.datosDurosPartes;
+		if (
+			confirmar.entidad == "colecciones" &&
+			confirmar.fuente == "TMDB" &&
+			datosDurosPartes
+		)
+			agregarLasPartesDeLaColeccion(
+				datosDurosPartes,
+				registro.id,
+			);
 		//return res.send(confirmar);
 		// 7. Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
-		metodos.push("datosDuros", "datosPers", "confirmar");
+		metodos.push("datosDuros", "datosDurosPartes");
+		metodos.push("datosPers", "confirmar");
 		for (metodo of metodos) {
 			if (req.session[metodo]) delete req.session[metodo];
 			if (req.cookies[metodo]) res.clearCookie(metodo);
@@ -557,7 +565,7 @@ module.exports = {
 
 	conclusionGuardar: async (req, res) => {
 		datos = { ...req.body, url: req.url.slice(1) };
-		return res.send(datos)
+		return res.send(datos);
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
@@ -939,34 +947,34 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 	});
 };
 
-let agregarLasPartesDeLaColeccion = async (confirmar, registro) => {
-	partes = confirmar.partes;
-	if (partes.length) {
-		let orden = 0;
-		for (parte of partes) {
-			orden++;
-			datos = {
-				entidad: "colecciones_partes",
-				colec_id: registro.id,
-				peli_TMDB_id: parte.TMDB_id,
-				orden: orden,
-				creada_por_id: 2,
-			};
-			if (parte.nombre_original)
-				datos.nombre_original = parte.nombre_original;
-			if (parte.nombre_castellano)
-				datos.nombre_castellano = parte.nombre_castellano;
-			if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
-			if (parte.cant_capitulos)
-				datos.cant_capitulos = parte.cant_capitulos;
-			if (parte.avatar) datos.avatar = parte.avatar;
-			peli_id = await BD_varias.obtenerELC_id({
-				entidad: "peliculas",
-				campo: "TMDB_id",
-				valor: parte.TMDB_id,
-			});
-			if (peli_id) datos.peli_id = peli_id;
-			BD_varias.agregarRegistro(datos);
-		}
+let agregarLasPartesDeLaColeccion = async (
+	datosDurosPartes,
+	id
+) => {
+	partes = datosDurosPartes;
+	let orden = 0;
+	for (parte of partes) {
+		orden++;
+		datos = {
+			entidad: "colecciones_partes",
+			colec_id: id,
+			peli_TMDB_id: parte.peli_TMDB_id,
+			orden: orden,
+			creada_por_id: 2,
+		};
+		if (parte.nombre_original)
+			datos.nombre_original = parte.nombre_original;
+		if (parte.nombre_castellano)
+			datos.nombre_castellano = parte.nombre_castellano;
+		if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
+		if (parte.cant_capitulos) datos.cant_capitulos = parte.cant_capitulos;
+		if (parte.avatar) datos.avatar = parte.avatar;
+		peli_id = await BD_varias.obtenerELC_id({
+			entidad: "peliculas",
+			campo: "TMDB_id",
+			valor: parte.peli_TMDB_id,
+		});
+		if (peli_id) datos.peli_id = peli_id;
+		BD_varias.agregarRegistro(datos);
 	}
 };

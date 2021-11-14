@@ -47,7 +47,7 @@ module.exports = (sequelize, dt) => {
 		borrada_motivo_comentario: { type: dt.STRING(500) },
 	};
 	const config = {
-		tableName: "peliculas",
+		tableName: "PROD_peliculas",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);

@@ -56,6 +56,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
+			producto = "Colección";
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -70,6 +71,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
+			producto="Colección"
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -84,6 +86,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
+			producto = "Película";
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
@@ -98,6 +101,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
+			producto: producto,
 			entidad_TMDB: entidad_TMDB,
 			TMDB_id: m.id,
 			nombre_original: nombre_original,
@@ -152,7 +156,7 @@ let agregarLanzamiento = async (dato) => {
 	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
 		// Obtener todas las fechas de lanzamiento
-		detalles = await detailsTMDB(dato[j].tmdb_id, "collection")
+		detalles = await detailsTMDB(dato[j].TMDB_id, "collection")
 			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {
