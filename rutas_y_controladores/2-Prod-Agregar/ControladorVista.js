@@ -506,10 +506,7 @@ module.exports = {
 			confirmar.fuente == "TMDB" &&
 			datosDurosPartes
 		)
-			agregarLasPartesDeLaColeccion(
-				datosDurosPartes,
-				registro.id,
-			);
+			agregarPartesDeColeccion(datosDurosPartes, registro.id);
 		//return res.send(confirmar);
 		// 7. Borrar session y cookies del producto
 		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
@@ -597,7 +594,7 @@ module.exports = {
 					maxAge: 24 * 60 * 60 * 1000,
 				});
 				req.session.datosDurosPartes = aux2;
-				res.cookie("datosDurosPartes", req.session.datosDurosPartes, {
+				res.cookie("datosDurosPartes", aux2, {
 					maxAge: 24 * 60 * 60 * 1000,
 				});
 				// Redirigir a DatosDuros
@@ -922,8 +919,8 @@ let actualizarRCLV = async (entidad, id) => {
 let guardarCalificaciones_us = (confirmar, registro) => {
 	entidad_id = confirmar.entidad == "peliculas" ? "peli_id" : "colec_id";
 	let datos = {
-		usuario_id: confirmar.creada_por_id,
 		entidad: "calificaciones_us",
+		usuario_id: confirmar.creada_por_id,
 		[entidad_id]: registro.id,
 		fe_valores_id: confirmar.fe_valores_id,
 		entretiene_id: confirmar.entretiene_id,
@@ -948,10 +945,7 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 	});
 };
 
-let agregarLasPartesDeLaColeccion = async (
-	datosDurosPartes,
-	id
-) => {
+let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 	partes = datosDurosPartes;
 	let orden = 0;
 	for (parte of partes) {
