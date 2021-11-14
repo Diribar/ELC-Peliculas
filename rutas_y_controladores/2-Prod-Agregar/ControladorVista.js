@@ -278,15 +278,13 @@ module.exports = {
 			...camposDD1,
 			...camposDD2,
 		]);
-		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id o el FA_id ya están en la BD
+		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			// Averiguar si hubieron errores
 			elc_id = await procesarProd.obtenerELC_id({
 				entidad: datosDuros.entidad,
-				campo: datosDuros.fuente + "_id",
+				campo: datosDuros[fuente + "_id"],
 				valor: datosDuros[this.campo],
 			});
-			// Acciones si hubieron errores
 			if (elc_id) {
 				errores.nombre_original =
 					"El código interno ya se encuentra en nuestra base de datos";
