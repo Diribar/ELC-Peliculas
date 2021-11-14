@@ -270,7 +270,8 @@ module.exports = {
 		producto =
 			entidad == "peliculas"
 				? "Película"
-				: "Colección"((FA_id = this.obtenerFA_id(direccion)));
+				: "Colección"
+		FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
 			contenido.pais_id = await varias.paisNombreToId(
