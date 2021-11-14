@@ -37,7 +37,7 @@
 #dataEntry i {cursor: pointer;}
 
 /* Flechas */
-#dataEntry #flechas {justify-content: space-around; margin-left:auto; margin-right:auto; width: 500px}
+#dataEntry #flechas {justify-content: space-around; margin-left:auto; margin-right:auto; width:100%; max-width: 500px}
 #dataEntry #flechas i {font-size: 2rem;}
 #dataEntry #flechas a i {color: var(--gris-oscuro);}
 #dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}

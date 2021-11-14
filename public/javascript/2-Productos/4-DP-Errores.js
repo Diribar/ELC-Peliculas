@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button[type='submit']");
 	let inputs = document.querySelectorAll(".input-error .input");
+	console.log(inputs);
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
@@ -71,6 +72,7 @@ window.addEventListener("load", async () => {
 		if (button.classList.contains("botonSinLink")) {
 			e.preventDefault();
 			errores = await buscarErroresEnTodoElForm();
+			console.log(errores)
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}
