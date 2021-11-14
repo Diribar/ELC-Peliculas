@@ -50,7 +50,7 @@
 				<!-- Si viene desde Ingreso Manual -->
 				<% if (!dataEntry.avatar || dataEntry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<% } %>
-				<!-- Rutina para todos los casos -->
+			<!-- Rutina para todos los casos -->
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
 			<i class="fas fa-times-circle <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
