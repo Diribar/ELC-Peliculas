@@ -565,7 +565,7 @@ module.exports = {
 
 	conclusionGuardar: async (req, res) => {
 		datos = { ...req.body, url: req.url.slice(1) };
-		return res.send(datos);
+		//return res.send(datos);
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;

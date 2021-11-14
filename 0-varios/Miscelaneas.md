@@ -1,3 +1,16 @@
+Revisión general, probar:
+	- Película sin colección
+		- TMDB
+		- FA
+		- IM
+	- Película con  colección
+		- TMDB
+		- FA
+		- IM
+	- Colección
+		- collection
+		- tv
+
 DP: 
 - Si la película o serie de TV informa que el producto existe en castellano, llevar ese dato a DP
 
@@ -7,5 +20,3 @@ En los casilleros con errores, poner ayuda en esta situaciones
 	- Letras castellano	-> buscá qué letra puede ser extraña al idioma castellano
 
 Palabras clave: agregar un ícono para IM
-
-Revisión general, eliminar 'entidad_TMDB' donde no se necesite
