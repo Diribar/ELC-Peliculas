@@ -429,7 +429,6 @@ module.exports = {
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
-			entidad_TMDB: req.session.datosPers.entidad_TMDB,
 			fe_valores,
 			entretiene,
 			calidad_tecnica,
