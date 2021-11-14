@@ -569,9 +569,11 @@ module.exports = {
 		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
 		// 1. DETALLE DE PRODUCTO *********************************************
 		if (datos.url == "detalle") {
+			// Generar la info: ruta, entidad, id
 			ruta = "/detalle/producto/informacion/?entidad=";
 			entidad = datos.entidad;
 			id = datos.id;
+			// Redirigir a Detalles
 			return res.redirect(ruta + entidad + "&id=" + id);
 		} else if (datos.url == "coleccion") {
 			// 2. Agregar la Colección
