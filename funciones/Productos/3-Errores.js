@@ -71,7 +71,7 @@ module.exports = {
 		let errores = {};
 		// En colección
 		errores.en_coleccion =
-			!datos.en_coleccion &&
+			datos.en_coleccion == "" &&
 			datos.entidad == "peliculas" &&
 			datos.fuente == "IM"
 				? "Elegí una opción"
