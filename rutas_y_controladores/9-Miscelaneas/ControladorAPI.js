@@ -8,8 +8,8 @@ module.exports = {
 		let { mes_id, dia, entidad } = req.query;
 		dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
 			.then((n) => n.filter((m) => m.mes_id == mes_id))
-			.then((n) => n.filter((m) => m.dia == dia))
-			.then((n) => n[0].id);
+			.then((n) => n.find((m) => m.dia == dia))
+			.then((n) => n.id);
 		casos = await BD_varias.obtenerTodos(
 			entidad,
 			"nombre"
