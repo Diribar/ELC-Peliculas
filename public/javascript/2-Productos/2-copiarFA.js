@@ -136,10 +136,9 @@ window.addEventListener("load", async () => {
 			FA_id = await fetch(
 				pre + "obtener-fa-id/?direccion=" + direccion
 			).then((n) => n.json());
-			campo = entidad.value == "movie" ? "peli_FA_id" : "colec_FA_id";
 			url = "entidad=" + entidad.value;
-			url += "&campo=" + campo;
-			url += "&id=" + FA_id;
+			url += "&campo=FA_id";
+			url += "&valor=" + FA_id;
 			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
 				n.json()
 			);
