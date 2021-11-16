@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajeError = document.querySelectorAll(".input-error .mensajeError");
-
+	
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
 		// Status inicial

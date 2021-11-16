@@ -8,6 +8,7 @@ let procesarProd = require("../../funciones/Productos/2-Procesar");
 let validarProd = require("../../funciones/Productos/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/varias");
+const {datosDuros} = require("../../funciones/Productos/3-Errores");
 
 // *********** Controlador ***********
 module.exports = {
@@ -127,7 +128,7 @@ module.exports = {
 				res.cookie("datosDurosPartes", aux2, {maxAge: 24 * 60 * 60 * 1000});
 			}
 		} else if (req.body.fuente == "IM") {
-			req.body.producto = req.body.entidad == "peliculas" ? "Película" : "Colección";
+			req.body.entidad == "peliculas" ? "Película" : "Colección";
 			req.session.datosDuros = req.body;
 			res.cookie("datosDuros", req.body, {maxAge: 24 * 60 * 60 * 1000});
 		}
@@ -211,7 +212,7 @@ module.exports = {
 		//return res.send(req.cookies);
 		borrarSessionCookies(req, res, "datosDurosPartes");
 		// 3. Feedback de la instancia anterior
-		datosDuros = req.session.datosDuros
+		let datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
@@ -231,9 +232,11 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 6. Detectar errores
+		let IM = datosDuros.fuente == "IM" ? {campo: "en_coleccion", peliculas: true} : {};
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProd.datosDuros(datosDuros, [...camposDD1, ...camposDD2]);
+			: await validarProd.datosDuros(datosDuros, [IM, ...camposDD1, ...camposDD2]);
+		//return res.send(errores)
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id ? await varias.pais_idToNombre(datosDuros.pais_id) : "";
 		// 7. Render del formulario
@@ -263,11 +266,13 @@ module.exports = {
 				: "palabras-clave";
 		if (!aux) return res.redirect("/agregar/producto/" + origen);
 		// 3. Guardar el data entry en session y cookie
+		if (req.file && !req.body.avatar) req.body.avatar = req.file.filename;
 		let datosDuros = {...aux, ...req.body};
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Averiguar si hay errores de validación
 		let errores = await validarProd.datosDuros(datosDuros, [...camposDD1, ...camposDD2]);
+		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
 			elc_id = await procesarProd.obtenerELC_id({
@@ -283,31 +288,25 @@ module.exports = {
 			}
 		}
 		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
-		if (!errores.avatar) {
-			if (req.file) {
-				// En caso de archivo por multer
-				tipo = req.file.mimetype;
-				tamano = req.file.size;
-				nombre = req.file.filename;
-				rutaYnombre = req.file.path;
-			} else if (datosDuros.avatar) {
-				// En caso de archivo sin multer
-				let datos = await requestPromise
-					.head(datosDuros.avatar)
-					.then((n) => [n["content-type"], n["content-length"]]);
-				tipo = datos[0];
-				tamano = datos[1];
-				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
-			}
-			// Revisar errores
-			errores.avatar = revisarImagen(tipo, tamano);
-			// Si la imagen venía de TMDB, entonces grabarla
-			if (!errores.avatar && !errores.hay && datosDuros.fuente == "TMDB")
-				download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
-			// Si hay errores en el avatar, marcar que sí hay errores
-			if (errores.avatar) errores.hay = true;
+		if (req.file) {
+			// En caso de archivo por multer
+			tipo = req.file.mimetype;
+			tamano = req.file.size;
+			nombre = req.file.filename;
+			rutaYnombre = req.file.path;
+		} else if (datosDuros.avatar) {
+			// En caso de archivo sin multer
+			let datos = await requestPromise
+				.head(datosDuros.avatar)
+				.then((n) => [n["content-type"], n["content-length"]]);
+			tipo = datos[0];
+			tamano = datos[1];
+			nombre = Date.now() + path.extname(datosDuros.avatar);
+			rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 		}
+		// Revisar errores
+		if (!errores.avatar) errores.avatar = revisarImagen(tipo, tamano);
+		if (errores.avatar) errores.hay = true;
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
@@ -315,6 +314,8 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/agregar/producto/datos-duros");
 		}
+		// Si la imagen venía de TMDB, entonces grabarla
+		if (datosDuros.fuente == "TMDB") download(datosDuros.avatar, rutaYnombre);
 		// 8. Generar la session para la siguiente instancia
 		avatarDP =
 			datosDuros.fuente == "TMDB" ? datosDuros.avatar : "/imagenes/9-Provisorio/" + nombre;
