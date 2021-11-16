@@ -2,30 +2,7 @@
 <div class="flex-col" id="dataEntry">
 	<div class="flex-col">
 		<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
-		<div class="flex-row"><!-- Una sola coincidencia -->
-			<% if (!hayMas && coincidencias == 1) { %>
-				<p>Encontramos una sola coincidencia, qu</p>
-				<p><% if (prod_nuevos.length == 1) { %>e no<% } else { %>e ya<% } %> está en nuestra BD</p>
-			<% } %>
-		</div>
-		<div class="flex-row"><!-- Varias coincidencias -->
-			<% if (coincidencias > 1) { %>
-				<% if (!hayMas) { %>
-					<p>Encontramos <%= coincidencias %> coincidencias</p>
-				<% } else { %>
-					<p>Encontramos muchas coincidencias. Te mostramos <%= coincidencias %></p>
-				<% } %>
-				<% if (prod_nuevos.length == coincidencias) { %>
-					<p>, ninguna está en nuestra BD</p>
-				<% } else { %>
-					<% if (prod_nuevos.length) { %>
-						<p>, <%= prod_nuevos.length %> no están en nuestra BD</p>
-					<% } else { %>
-						<p>, que ya están todas en nuestra BD</p>
-					<% } %>
-				<% } %>
-			<% } %>
-		</div>
+		<p class="flex-row"><%= mensaje %></p>
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
 	</div>
 	<ul class="flex-row space-between"  id="resultadoGeneral">
@@ -35,10 +12,5 @@
 	</ul>
 	<div id="flechas" class="flex-row">
 		<a href="/agregar/producto/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
-		<% if (fuente) { %>
-			<a href="/agregar/producto/datos-duros"><i class="fas fa-arrow-alt-circle-right"></i></a>
-		<% } else { %>
-			<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
-		<% } %>
 	</div>
 </div>

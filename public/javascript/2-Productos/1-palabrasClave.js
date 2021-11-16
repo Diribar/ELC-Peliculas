@@ -78,9 +78,8 @@ window.addEventListener("load", () => {
 
 	let api_post = async (lectura) => {
 		// Averiguar cantidad de coincidencias
-		let prod_nuevos = lectura.resultados.filter(
-			(n) => n.YaEnBD == false
-		).length;
+		let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD == false)
+			.length;
 		let cantResultados = lectura.cantResultados;
 		let hayMas = lectura.hayMas;
 		// Determinar oracion y formato
@@ -88,22 +87,19 @@ window.addEventListener("load", () => {
 		// Resultado exitoso
 		if (cantResultados > 0 && !hayMas) {
 			oracion =
-				cantResultados == 1
-					? "Encontramos 1 sola coincidencia, que " +
-					  (prod_nuevos
-							? "no está en nuestra BD"
-							: "ya está en nuestra BD")
-					: "Encontramos " +
-					  cantResultados +
+				"Encontramos " +
+				(cantResultados == 1
+					? "1 sola coincidencia, que " + (prod_nuevos ? "no" : "ya")
+					: cantResultados +
 					  " coincidencias, " +
 					  (prod_nuevos == cantResultados
-							? "ninguna está en nuestra BD"
+							? "ninguna"
 							: prod_nuevos
-							? prod_nuevos +
-							  " no está" +
-							  (prod_nuevos == 1 ? "" : "n") +
-							  " en nuestra BD"
-							: "y todas están en nuestra BD");
+							? prod_nuevos + " no"
+							: "y todas")) +
+				" está" +
+				(prod_nuevos > 1 ? "n" : "") +
+				" en nuestra BD";
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";
 		} else {

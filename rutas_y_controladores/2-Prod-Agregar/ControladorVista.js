@@ -27,10 +27,7 @@ module.exports = {
 			? await validarProd.palabrasClave(palabrasClave)
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.desambiguar) res.clearCookie("desambiguar");
-		if (req.cookies.copiarFA) res.clearCookie("copiarFA");
-		if (req.session.desambiguar) delete req.session.desambiguar;
-		if (req.session.copiarFA) delete req.session.copiarFA;
+		borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
 		//return res.send(req.cookies);
 		autorizado_fa = req.session.usuario.autorizado_fa;
@@ -72,10 +69,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
-		if (req.cookies.datosDurosPartes) res.clearCookie("datosDurosPartes");
-		if (req.session.datosDuros) delete req.session.datosDuros;
-		if (req.session.datosDurosPartes) delete req.session.datosDurosPartes;
+		borrarSessionCookies(req, res, "desambiguar");
 		// 3. Feedback de la instancia anterior
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
@@ -84,21 +78,38 @@ module.exports = {
 			: "";
 		if (!desambiguar)
 			return res.redirect("/agregar/producto/palabras-clave");
-		// 4. Render del formulario
+		// 4. Prepara datos
+		let resultados = desambiguar.resultados;
+		let prod_nuevos = resultados.filter((n) => !n.YaEnBD);
+		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD);
+		// 5. Preparar el mensaje
+		let coincidencias = resultados.length;
+		nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+		let hayMas = desambiguar.hayMas;
+		mensaje =
+			"Encontramos " +
+			(coincidencias == 1
+				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+				: (hayMas ? "muchas" : coincidencias) +
+				  " coincidencias" +
+				  (hayMas ? ". Te mostramos " + coincidencias : "") +
+				  (nuevos == coincidencias
+						? ", ninguna"
+						: nuevos
+						? ", " + nuevos + " no"
+						: ", todas ya")) +
+			" está" +
+			(nuevos > 1 ? "n" : "") +
+			" en nuestra BD.";
+		// 6. Render del formulario
 		//return res.send(req.cookies);
-		resultados = desambiguar.resultados;
-		coincidencias = resultados.length;
-		prod_nuevos = resultados.filter((n) => !n.YaEnBD);
-		prod_yaEnBD = resultados.filter((n) => n.YaEnBD);
 		return res.render("Home", {
 			tema,
 			codigo,
-			hayMas: desambiguar.hayMas,
-			coincidencias,
+			mensaje,
 			prod_nuevos,
 			prod_yaEnBD,
 			palabrasClave: desambiguar.palabrasClave,
-			fuente: desambiguar.fuente,
 			link: req.originalUrl,
 		});
 	},
@@ -132,10 +143,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosDuros) res.clearCookie("datosDuros");
-		if (req.cookies.datosDurosPartes) res.clearCookie("datosDurosPartes");
-		if (req.session.datosDuros) delete req.session.datosDuros;
-		if (req.session.datosDurosPartes) delete req.session.datosDurosPartes;
+		borrarSessionCookies(req, res, "copiarFA");
 		// 3. Data Entry propio y errores
 		let copiarFA = req.session.copiarFA
 			? req.session.copiarFA
@@ -200,16 +208,13 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosPers) {
-			if (req.cookies.datosPers.avatar) {
-				rutaYnombre =
-					"./public/imagenes/9-Provisorio/" +
-					req.cookies.datosPers.avatar;
-				if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
-			}
-			res.clearCookie("datosPers");
+		if (req.cookies.datosPers && req.cookies.datosPers.avatar) {
+			rutaYnombre =
+				"./public/imagenes/9-Provisorio/" +
+				req.cookies.datosPers.avatar;
+			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 		}
-		if (req.session.datosPers) delete req.session.datosPers;
+		borrarSessionCookies(req, res, "datosDurosPartes");
 		// 3. Feedback de la instancia anterior
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
@@ -348,8 +353,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.confirmar) res.clearCookie("confirmar");
-		if (req.session.confirmar) delete req.session.confirmar;
+		borrarSessionCookies(req, res, "datosPers");
 		// 3. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
@@ -508,14 +512,8 @@ module.exports = {
 		)
 			agregarPartesDeColeccion(datosDurosPartes, registro.id);
 		//return res.send(confirmar);
-		// 7. Borrar session y cookies del producto
-		let metodos = ["palabrasClave", "desambiguar", "copiarFA"];
-		metodos.push("datosDuros", "datosDurosPartes");
-		metodos.push("datosPers", "confirmar");
-		for (metodo of metodos) {
-			if (req.session[metodo]) delete req.session[metodo];
-			if (req.cookies[metodo]) res.clearCookie(metodo);
-		}
+		// 7. Borrar todas las session y cookies de 'Agregar producto'
+		borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
 		return res.redirect("/agregar/producto/conclusion");
 	},
@@ -601,7 +599,7 @@ module.exports = {
 				//return res.send(req.cookies);
 				return res.redirect("/agregar/producto/datos-duros");
 			} else if (datos.FA_id) {
-				// 2.2. Colección FA
+				// 2.2. Colección FA ****************************************
 				req.session.copiarFA = { entidad: "colecciones" };
 				res.cookie("copiarFA", req.session.copiarFA, {
 					maxAge: 24 * 60 * 60 * 1000,
@@ -971,5 +969,25 @@ let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 		});
 		if (peli_id) datos.peli_id = peli_id;
 		BD_varias.agregarRegistro(datos);
+	}
+};
+
+let borrarSessionCookies = (req, res, paso) => {
+	let pasos = [
+		"borrarTodo",
+		"palabrasClave",
+		"desambiguar",
+		"copiarFA",
+		"datosDuros",
+		"datosDurosPartes",
+		"datosPers",
+		"confirmar",
+	];
+	let indice = pasos.findIndex((n) => n == paso) + 1;
+	for (indice; indice < pasos.length; indice++) {
+		if (req.session && req.session.pasos && req.session.pasos[indice])
+			delete req.session.pasos[indice];
+		if (req.cookies && req.cookies.pasos && req.cookies.pasos[indice])
+			res.clearCookie(pasos[indice]);
 	}
 };
