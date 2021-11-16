@@ -11,28 +11,29 @@ module.exports = {
 		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
 		let datos = { resultados: [] };
-		let rubrosAPI = ["movie", "tv", "collection"];
+		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (rubroAPI of rubrosAPI) {
-				if (page == 1 || page <= datos.cantPaginasAPI[rubroAPI]) {
-					lectura = await searchTMDB(palabrasClave, rubroAPI, page)
+			for (entidad_TMDB of entidadesTMDB) {
+				lectura.entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
+					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
 						.then((n) => infoQueQueda(n))
-						.then((n) => estandarizarNombres(n, rubroAPI))
+						.then((n) => estandarizarNombres(n, entidad_TMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					rubroAPI == "collection" && lectura.resultados.length > 0
+					entidad_TMDB == "collection" && lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
 						: "";
-					datos = unificarResultados(lectura, rubroAPI, datos, page);
+					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
 				}
 			}
 			// Terminacion
 			datos = eliminarDuplicados(datos);
 			datos = await averiguarSiYaEnBD(datos);
-			datos.hayMas = hayMas(datos, page, rubrosAPI);
+			datos.hayMas = hayMas(datos, page, entidadesTMDB);
 			if (datos.resultados.length >= 20 || !datos.hayMas) {
 				break;
 			} else page = page + 1;
@@ -42,26 +43,26 @@ module.exports = {
 	},
 };
 
-let infoQueQueda = (n) => {
+let infoQueQueda = (datos) => {
 	return {
-		resultados: n.results,
-		cantPaginasAPI: Math.min(n.total_pages, n.total_results),
+		resultados: datos.results,
+		cantPaginasAPI: Math.min(datos.total_pages, datos.total_results),
 	};
 };
 
-let estandarizarNombres = (dato, rubroAPI) => {
+let estandarizarNombres = (dato, entidad_TMDB) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (rubroAPI == "collection") {
+		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
+			producto = "Colección";
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
 			desempate3 = "-";
-			prefijo = "colec";
 		}
-		if (rubroAPI == "tv") {
+		if (entidad_TMDB == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -70,13 +71,13 @@ let estandarizarNombres = (dato, rubroAPI) => {
 				m.poster_path == null
 			)
 				return;
+			producto="Colección"
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
 			desempate3 = m.first_air_date;
-			prefijo = "colec";
 		}
-		if (rubroAPI == "movie") {
+		if (entidad_TMDB == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -85,11 +86,11 @@ let estandarizarNombres = (dato, rubroAPI) => {
 				m.poster_path == null
 			)
 				return;
+			producto = "Película";
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
 			desempate3 = m.release_date;
-			prefijo = "peli";
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
 		desempate1 = letrasIngles(nombre_original)
@@ -100,8 +101,9 @@ let estandarizarNombres = (dato, rubroAPI) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			rubroAPI: rubroAPI,
-			[prefijo + "_tmdb_id"]: m.id,
+			producto: producto,
+			entidad_TMDB: entidad_TMDB,
+			TMDB_id: m.id,
 			nombre_original: nombre_original,
 			nombre_castellano: nombre_castellano,
 			lanzamiento: ano,
@@ -153,9 +155,8 @@ let eliminarIncompletos = (dato) => {
 let agregarLanzamiento = async (dato) => {
 	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
-		id = dato[j].colec_tmdb_id;
 		// Obtener todas las fechas de lanzamiento
-		detalles = await detailsTMDB(id, "collection")
+		detalles = await detailsTMDB(dato[j].TMDB_id, "collection")
 			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {
@@ -175,18 +176,18 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarResultados = (lectura, rubroAPI, datos, page) => {
+let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[rubroAPI]: lectura.cantPaginasAPI,
+			[entidad_TMDB]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados = datos.resultados.concat(lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[rubroAPI]: Math.min(page, datos.cantPaginasAPI[rubroAPI]),
+		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
 	};
 	return datos;
 };
@@ -205,7 +206,7 @@ let eliminarDuplicados = (datos) => {
 					(m.desempate1 == n.desempate1 ||
 						m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.rubroAPI == "tv"
+					m.entidad_TMDB == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -215,13 +216,12 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		rubroAPI = datos.resultados[i].rubroAPI;
-		entidad = rubroAPI == "movie" ? "peliculas" : "colecciones";
-		campo = rubroAPI == "movie" ? "peli_tmdb_id" : "colec_tmdb_id";
+		entidad_TMDB = datos.resultados[i].entidad_TMDB;
+		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
 		let dato = {
 			entidad,
-			campo,
-			valor: datos.resultados[i][campo],
+			campo: "TMDB_id",
+			valor: datos.resultados[i].TMDB_id,
 		};
 		let YaEnBD = await procesarProd.obtenerELC_id(dato);
 		datos.resultados[i] = {
@@ -232,11 +232,11 @@ let averiguarSiYaEnBD = async (datos) => {
 	return datos;
 };
 
-let hayMas = (datos, page, rubrosAPI) => {
+let hayMas = (datos, page, entidadesTMDB) => {
 	return (
-		page < datos.cantPaginasAPI[rubrosAPI[0]] ||
-		page < datos.cantPaginasAPI[rubrosAPI[1]] ||
-		page < datos.cantPaginasAPI[rubrosAPI[2]]
+		page < datos.cantPaginasAPI[entidadesTMDB[0]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[1]] ||
+		page < datos.cantPaginasAPI[entidadesTMDB[2]]
 	);
 };
 

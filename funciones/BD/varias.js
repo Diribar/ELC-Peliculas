@@ -25,8 +25,8 @@ module.exports = {
 			});
 	},
 
-	agregarRegistro: (entidad, datos) => {
-		return db[entidad].create(datos);
+	agregarRegistro: (datos) => {
+		return db[datos.entidad].create(datos);
 	},
 
 	actualizarRegistro: (entidad, datos, id) => {

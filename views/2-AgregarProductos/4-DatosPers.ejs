@@ -1,5 +1,4 @@
-<% rubro = dataEntry.rubroAPI == "movie" ? "Película" : "Colección" %>
-<h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">Agregá una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col" >
 	<section id="titulos">
 		<h2>Paso 4 de 4: Datos Personalizados</h2>
@@ -12,33 +11,33 @@
 			<div class="flex-col">
 				<h3 style="margin-top: 0;">Datos generales</h3>
 				<!--Existe una versión en castellano-->
-				<%- include("41-DP-Select", {campo: "en_castellano_id", autofocus: true}) %>
+				<%- include("41-DP-Select", {campo: "en_castellano_id"}) %>
 				<!--Es a Color-->
-				<%- include("41-DP-Select", {campo: "color", autofocus: false}) %>
+				<%- include("41-DP-Select", {campo: "color"}) %>
 				<!--Categoría-->
-				<%- include("42-DP-Select", {campo: "categoria_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "categoria_id"}) %>
 				<!--Sub-categoría-->
-				<%- include("42-DP-Select", {campo: "subcategoria_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "subcategoria_id"}) %>
 				<!--Público sugerido-->
-				<%- include("42-DP-Select", {campo: "publico_sugerido_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "publico_sugerido_id"}) %>
 			</div>
 			<!-- Tu calificación -->
 			<div class="flex-col">
 				<h3>Tu calificación</h3>
 				<!--Inspira fe y/o valores-->
-				<%- include("42-DP-Select", {campo: "fe_valores_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "fe_valores_id"}) %>
 				<!--Entretiene-->
-				<%- include("42-DP-Select", {campo: "entretiene_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "entretiene_id"}) %>
 				<!--Calidad Técnica-->
-				<%- include("42-DP-Select", {campo: "calidad_tecnica_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "calidad_tecnica_id"}) %>
 			</div>
 			<!-- Relación con la vida -->
 			<div class="flex-col">
 				<h3>Relación con la vida</h3>
 				<!--Personaje histórico-->
-				<%- include("42-DP-Select", {campo: "personaje_historico_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "personaje_historico_id"}) %>
 				<!--Hecho histórico-->
-				<%- include("42-DP-Select", {campo: "hecho_historico_id", autofocus: false}) %>
+				<%- include("42-DP-Select", {campo: "hecho_historico_id"}) %>
 			</div>
 		</div>
 		<!--Columna del medio-->
@@ -61,7 +60,7 @@
 		</div>
 	</section>
 	<!-- Flechas y Botón -->
-	<section id="flechas" class="flex-row space-between">
+	<section id="flechas" class="flex-row">
 		<a href="/agregar/producto/datos-duros" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" class="botonSinLink">Avanzar</button>
 		<% if (false) { %>

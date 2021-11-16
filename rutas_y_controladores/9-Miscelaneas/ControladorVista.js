@@ -26,37 +26,34 @@ module.exports = {
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = { ...aux, ...req.query };
 		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("datosPers", datosPers, { maxAge: 24 * 60 * 60 * 1000 });
 		// 1.3 Si existe 'req.query', recargar la página
-		return datosPers.rubro == "personaje"
+		return datosPers.entidad_RCLV == "historicos_personajes"
 			? res.redirect("/agregar/personaje-historico")
 			: res.redirect("/agregar/hecho-historico");
 	},
 
 	RCLV_Form: async (req, res) => {
-		// Feedback de la instancia anterior o Data Entry propio
+		// 1. Feedback de la instancia anterior
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers)
-			return res.redirect("/agregar/producto/palabras-clave");
-		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
+		if (!datosPers) return res.redirect("/agregar/producto/palabras-clave");
+		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		//return res.send(req.session.datosPers);
+		// 2. Tema y Código
 		tema = "RCLV";
-		codigo = datosPers.rubro;
-		// Data-entry
-		dataEntry = req.session[codigo + "Historico"]
-			? req.session[codigo + "Historico"]
-			: "";
+		codigo = datosPers.entidad_RCLV;
+		// 3. Data-entry
+		datosRCLV = req.session[codigo] ? req.session[codigo] : "";
+		producto = datosPers.producto_RCLV;
 		// Errores
 		let errores = req.session.errores
 			? req.session.errores
-			: dataEntry
-			? await validarRCLV[codigo](dataEntry)
+			: datosRCLV
+			? await validarRCLV.RCLV(datosRCLV)
 			: "";
 		// Meses del año
 		meses = await BD_varias.obtenerTodos("meses", "id");
@@ -65,7 +62,8 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			dataEntry,
+			producto,
+			datosRCLV,
 			errores,
 			meses,
 		});
@@ -78,19 +76,15 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers)
-			return res.redirect("/agregar/producto/palabras-clave");
-		!req.session.datosPers ? (req.session.datosPers = datosPers) : "";
-		rubro = datosPers.rubro;
+		if (!datosPers) return res.redirect("/agregar/producto/palabras-clave");
+		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		// 1. Guardar el data entry en session y cookie
-		let dataEntry = req.body;
-		dataEntry.rubro = rubro;
-		req.session[rubro] = dataEntry;
-		res.cookie(rubro, dataEntry, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		let datosRCLV = { ...req.body, entidad: datosPers.entidad_RCLV };
+		entidad = datosRCLV.entidad;
+		req.session[entidad] = datosRCLV;
+		res.cookie(entidad, datosRCLV, { maxAge: 24 * 60 * 60 * 1000 });
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV(dataEntry);
+		let errores = await validarRCLV.RCLV(datosRCLV);
 		// 3. Acciones si hay errores
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -98,29 +92,31 @@ module.exports = {
 		}
 		// 3. Preparar la info a guardar
 		datos = {
-			nombre: dataEntry.nombre,
+			entidad: datosRCLV.entidad,
+			nombre: datosRCLV.nombre,
 			creada_por_id: req.session.usuario.id,
 		};
 		if (
-			dataEntry.mes_id &&
-			dataEntry.dia &&
-			dataEntry.desconocida == undefined
+			datosRCLV.mes_id &&
+			datosRCLV.dia &&
+			datosRCLV.desconocida == undefined
 		) {
 			dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.filter((m) => m.mes_id == dataEntry.mes_id))
-				.then((n) => n.filter((m) => m.dia == dataEntry.dia))
-				.then((n) => n[0].id);
+				.then((n) => n.filter((m) => m.mes_id == datosRCLV.mes_id))
+				.then((n) => n.find((m) => m.dia == datosRCLV.dia))
+				.then((n) => n.id);
 			datos.dia_del_ano_id = dia_del_ano_id;
 		}
 		// 4. Crear el registro en la BD
-		let entidad = "historicos_" + rubro + "s";
-		let { id } = await BD_varias.agregarRegistro(entidad, datos);
+		let { id } = await BD_varias.agregarRegistro(datos);
 		//return res.send(id+"");
 		// 5. Guardar el id en 'Datos Personalizados'
-		req.session.datosPers[rubro + "_historico_id"] = id;
-		res.cookie("datosPers." + rubro + "_historico_id", id, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		campo =
+			entidad == "historicos_personajes"
+				? "personaje_historico_id"
+				: "hecho_historico_id";
+		req.session.datosPers[campo] = id;
+		res.cookie("datosPers." + campo, id, { maxAge: 24 * 60 * 60 * 1000 });
 		// 5. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/agregar/producto/datos-personalizados");

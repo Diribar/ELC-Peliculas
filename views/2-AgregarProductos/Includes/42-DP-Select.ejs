@@ -1,12 +1,12 @@
-<% dato = datosPers_select.find(n => n.campo == campo) %>
-<% if ((dataEntry.rubroAPI=="movie" && dato.peli) || (dataEntry.rubroAPI!="movie" && dato.colec)) { %>
+<% registro = datosPersSelect.find(n => n.campo == campo) %>
+<% if (registro[dataEntry.entidad]) { %>
 	<section class="label-input flex-row">
-		<label><%= dato.titulo %></label>
+		<label><%= registro.titulo %></label>
 		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 			<!-- Input -->
-			<select name="<%= campo %>" class="input" <% if (autofocus) { %>autofocus<% } %>>
+			<select name="<%= campo %>" class="input">
 				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
-				<% for (valor of dato.valores) { %>
+				<% for (valor of registro.valores) { %>
 					<option value="<%= valor.id %>" 
 						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 						<% if (campo=="subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
@@ -18,7 +18,7 @@
 			<!-- Ayuda -->
 			<i class="fas fa-question-circle"></i>
 			<ul type="dots" class="mensajeAyuda ocultar">
-				<% for (mensaje of dato.mensajes) { %><li><%= mensaje %></li><% } %> 
+				<% for (mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 			</ul>
 			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
@@ -26,7 +26,7 @@
 			</i>
 			<!-- Link a Relación con la vida -->
 			<% if (campo.includes("historico")) { %>
-				<a class="link <%= campo %> " href="/agregar/<%= dato.link %>" target="_self" title="Link a agregar <%= dato.titulo.toLowerCase() %> " tabindex="-1">L</a>
+				<a class="link <%= campo %> " href="/agregar/<%= registro.link %>" target="_self" title="Link a agregar <%= registro.titulo.toLowerCase() %> " tabindex="-1">L</a>
 			<% } %>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 		</div>

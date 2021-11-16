@@ -1,14 +1,13 @@
-<% rubro = dataEntry.rubroAPI=="movie" ? "Película" : "Colección" %>
-<h1 class="titulo" id="titulo">Agregá una <%= rubro %> a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">Agregá una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
 	<section id="titulos">
-		<h2>Paso 3 de 4: Completá los Datos Pendientes</h2>
+		<h2>Paso 3 de 4: Completá los Datos Duros</h2>
 		<div class="flex-col" id="links">
 			<p>Si necesitás consultar algún dato</p>
 			<nav class="flex-row">
 				<% tmdb = dataEntry.fuente!="TMDB" && dataEntry.nombre_original ? "search?language=es&query="+dataEntry.nombre_original : "" %>
 				<% fa = dataEntry.fuente!="FA" && dataEntry.nombre_original ? "search.php?stext="+dataEntry.nombre_original : "" %>
-				<% imdb = (dataEntry.peli_imdb_id) ? ("title/"+dataEntry.peli_imdb_id+"/technical") : dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "" %>
+				<% imdb = (dataEntry.IMDB_id) ? ("title/"+dataEntry.IMDB_id+"/technical") : dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "" %>
 				<% if (tmdb != "") { %>
 					<a class="logos" href="https://www.themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Base/LogoTMDB.jpg" alt="TMDB"></a>
 				<% } %>
@@ -26,11 +25,11 @@
 			<!-- Película IM: ¿Pertenece a una colección? -->
 			<%- include("31-DD-IM") %>
 			<!-- Primeros campos -->
-			<% for (let i=0; i < camposDD1.length; i++) { %><%- include("32-DD-Input", {i, datos: camposDD1}) %><% } %>
+			<% for (registro of camposDD1) { %><%- include("32-DD-Input", {registro}) %><% } %>
 			<!-- País -->
 			<%- include("33-DD-Pais") %>
 			<!-- Siguientes campos -->
-			<% for (let i=0; i < camposDD2.length; i++) { %><%- include("32-DD-Input", {i, datos: camposDD2}) %><% } %>
+			<% for (registro of camposDD2) { %><%- include("32-DD-Input", {registro}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("34-DD-Sinopsis") %>
 		</div>
@@ -40,15 +39,17 @@
 		<!--Segunda columna-->
 		<div id="imagenPeli" class="form-grupo input-error">
 			<!-- Si viene desde TMDB -->
-			<% if (dataEntry && dataEntry.fuente!="TMDB") { %><label for="imagen" id="preview"></label><% } %>
 			<% if (dataEntry.avatar && dataEntry.fuente=="TMDB") { %><img id="imgTMDB" src="<%= dataEntry.avatar %>" alt="afiche"><% } %>
-			<!-- Si viene desde FA -->
-			<% if (dataEntry.avatar && dataEntry.fuente=="FA") { %>
-				<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
-				<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
+			<!-- Si viene desde otra fuente -->
+			<% if (dataEntry && dataEntry.fuente!="TMDB") { %><label for="imagen" id="preview"></label>
+				<!-- Si viene desde FA -->
+				<% if (dataEntry.avatar && dataEntry.fuente=="FA") { %>
+					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
+					<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
+				<% } %>
+				<!-- Si viene desde Ingreso Manual -->
+				<% if (!dataEntry.avatar || dataEntry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<% } %>
-			<!-- Si viene desde Ingreso Manual -->
-			<% if (!dataEntry.avatar || dataEntry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
 			<!-- Rutina para todos los casos -->
 			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
 			<i class="fas fa-times-circle <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
@@ -57,7 +58,7 @@
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->
-	<section id="flechas" class="flex-row space-between">
+	<section id="flechas" class="flex-row">
 		<% retroceso = dataEntry.fuente != "FA" ? "desambiguar" : "copiar-fa" %>
 		<a href="/agregar/producto/<%= retroceso %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" autofocus>Avanzar</button>

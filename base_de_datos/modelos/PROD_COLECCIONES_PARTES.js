@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		colec_id: { type: dt.INTEGER },
 		peli_id: { type: dt.INTEGER },
-		peli_tmdb_id: { type: dt.STRING(20) },
+		peli_TMDB_id: { type: dt.STRING(20) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
 		ano_estreno: { type: dt.INTEGER },
@@ -27,7 +27,7 @@ module.exports = (sequelize, dt) => {
 		borrada_motivo_comentario: { type: dt.STRING(500) },
 	};
 	const config = {
-		tableName: "colecciones_partes",
+		tableName: "prod_colecciones_partes",
 		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);

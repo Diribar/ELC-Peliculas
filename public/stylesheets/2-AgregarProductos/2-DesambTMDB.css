@@ -5,7 +5,7 @@
 #dataEntry button, #imagenChica {border-radius: 15px;}
 
 /* Flechas */
-#dataEntry #flechas {margin: 10px 50px 0;}
+#dataEntry #flechas {margin-top: 20px;}
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 

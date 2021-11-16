@@ -1,17 +1,17 @@
-<% if ((dataEntry.rubroAPI=="movie" && datos[i].peli) || (dataEntry.rubroAPI!="movie" && datos[i].colec)) { %>
+<% if (registro[dataEntry.entidad]) { %>
 	<section class="label-input flex-row">
-		<label><%= datos[i].titulo %></label>
+		<label><%= registro.titulo %></label>
 		<!-- Data-entry y Errores -->
 		<div class="input-error">
-			<input type="text" class="input" name="<%= datos[i].campo %>"
-				value="<%= dataEntry[datos[i].campo] %>"
-				<% if (datos[i].id) { %>id="numero" placeholder="sólo números"<% } %>
-				<% if (dataEntry[datos[i].campo] && !errores[datos[i].campo]) { %>disabled<% } %> 
+			<input type="text" class="input" name="<%= registro.campo %>"
+				value="<%= dataEntry[registro.campo] %>"
+				<% if (registro.id) { %>id="numero" placeholder="sólo números"<% } %>
+				<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } %> 
 			>
-			<%- (dataEntry[datos[i].campo] && !errores[datos[i].campo]) ? include("39-DD-Mensajes") : "" %>
+			<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
 			<!-- Errores -->
-			<i class="fas fa-times-circle<%- !errores[datos[i].campo] ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores[datos[i].campo] %></span>
+			<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores[registro.campo] %></span>
 			</i>
 		</div>
 	</section>

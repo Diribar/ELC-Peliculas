@@ -81,11 +81,21 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
-			rubro = links[i].className.includes("personaje")
-				? "personaje"
-				: "hecho";
+			if (links[i].className.includes("personaje")) {
+				entidad_RCLV = "historicos_personajes";
+				producto_RCLV = "Personaje Histórico";
+			} else {
+				entidad_RCLV = "historicos_hechos";
+				producto_RCLV = "Hecho Histórico";
+			}
 			let url = buscarTodosLosValores();
-			window.location.href = "/agregar/relacion-vida" + url + "&rubro=" + rubro;
+			window.location.href =
+				"/agregar/relacion-vida" +
+				url +
+				"&entidad_RCLV=" +
+				entidad_RCLV +
+				"&producto_RCLV=" +
+				producto_RCLV;
 		});
 	}
 });

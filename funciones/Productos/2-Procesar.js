@@ -6,10 +6,10 @@ let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerAPI_TMDB: async (id, rubroAPI) => {
-		let lectura = await detailsTMDB(id, rubroAPI);
-		if (rubroAPI == "movie") {
-			credits = await creditsTMDB(id);
+	obtenerAPI_TMDB: async ({ TMDB_id, entidad_TMDB }) => {
+		let lectura = await detailsTMDB(TMDB_id, entidad_TMDB);
+		if (entidad_TMDB == "movie") {
+			credits = await creditsTMDB(TMDB_id);
 			lectura = {
 				...lectura,
 				...credits,
@@ -20,11 +20,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	pelicula_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
+			producto: form.producto,
+			entidad: form.entidad,
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
-			peli_tmdb_id: form.id,
+			entidad_TMDB: form.entidad_TMDB,
+			TMDB_id: form.TMDB_id,
 			nombre_original: form.nombre_original,
 		};
 		// Datos obtenidos de la API
@@ -33,13 +35,13 @@ module.exports = {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
 				datosLectura.en_coleccion = true;
-				datosLectura.en_colec_tmdb_id =
+				datosLectura.en_colec_TMDB_id =
 					lectura.belongs_to_collection.id;
 				datosLectura.en_colec_nombre =
 					lectura.belongs_to_collection.name;
 			} else datosLectura.en_coleccion = false;
-			lectura.peli_imdb_id != ""
-				? (datosLectura.peli_imdb_id = lectura.peli_imdb_id)
+			lectura.IMDB_id != ""
+				? (datosLectura.IMDB_id = lectura.imdb_id)
 				: "";
 			lectura.overview != ""
 				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
@@ -107,11 +109,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	TV_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
+			producto: form.producto,
+			entidad: form.entidad,
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
-			colec_tmdb_id: form.id,
+			entidad_TMDB: form.entidad_TMDB,
+			TMDB_id: form.TMDB_id,
 			nombre_original: form.nombre_original,
 		};
 		let datosCabecera = {};
@@ -163,7 +167,7 @@ module.exports = {
 			if (lectura.seasons.length > 0) {
 				datosPartes = lectura.seasons.map((n) => {
 					partes = {
-						peli_tmdb_id: n.id,
+						peli_TMDB_id: n.id,
 						nombre_castellano: n.name,
 						cant_capitulos: n.episode_count,
 						sinopsis: n.overview,
@@ -194,11 +198,13 @@ module.exports = {
 
 	// ControllerVista (desambiguarGuardar)
 	coleccion_TMDB: (form, lectura) => {
+		// Datos obtenidos del formulario
 		datosForm = {
-			// Datos obtenidos del formulario
+			producto: form.producto,
+			entidad: form.entidad,
 			fuente: form.fuente,
-			rubroAPI: form.rubroAPI,
-			colec_tmdb_id: form.id,
+			entidad_TMDB: form.entidad_TMDB,
+			TMDB_id: form.TMDB_id,
 			nombre_original: form.nombre_original,
 		};
 		let datosCabecera = {};
@@ -232,7 +238,7 @@ module.exports = {
 				// Datos obtenidos de la API - Partes
 				datosPartes = lectura.parts.map((n) => {
 					partes = {
-						peli_tmdb_id: n.id,
+						peli_TMDB_id: n.id,
 						nombre_castellano: n.title,
 						nombre_original: n.original_title,
 						sinopsis: fuenteSinopsisTMDB(n.overview),
@@ -259,26 +265,30 @@ module.exports = {
 	// ControllerVista (copiarFA_Guardar)
 	producto_FA: async function (dato) {
 		// Obtener los campos del formulario
-		let { rubroAPI, en_coleccion, direccion, avatar, contenido } = dato;
-		fa_id = this.obtenerFA_id(direccion);
-		// Procesar el contenido
-		contenido = contenido.split("\r\n");
-		contenido = this.contenidoFA(contenido);
-		campo = rubroAPI == "movie" ? "peli_fa_id" : "colec_fa_id";
+		let { entidad, en_coleccion, direccion, avatar, contenido } = dato;
+		// Generar la información
+		producto =
+			entidad == "peliculas"
+				? "Película"
+				: "Colección"
+		FA_id = this.obtenerFA_id(direccion);
+		contenido = this.contenidoFA(contenido.split("\r\n"));
+		if (contenido.pais_nombre) {
+			contenido.pais_id = await varias.paisNombreToId(
+				contenido.pais_nombre
+			);
+			delete contenido.pais_nombre;
+		}
+		// Generar el resultado
 		let resultado = {
+			producto,
+			entidad,
 			fuente: "FA",
-			rubroAPI,
+			FA_id,
 			en_coleccion,
-			[campo]: fa_id,
 			avatar,
 			...contenido,
 		};
-		if (resultado.pais_nombre) {
-			resultado.pais_id = await varias.paisNombreToId(
-				resultado.pais_nombre
-			);
-			delete resultado.pais_nombre;
-		}
 		resultado = convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
@@ -292,8 +302,8 @@ module.exports = {
 		aux = url.indexOf("/film");
 		url = url.slice(aux + 5);
 		aux = url.indexOf(".html");
-		fa_id = url.slice(0, aux);
-		return fa_id;
+		FA_id = url.slice(0, aux);
+		return FA_id;
 	},
 
 	// Función validar (copiarFA)

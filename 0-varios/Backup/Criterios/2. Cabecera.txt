@@ -1,7 +1,7 @@
 1. Desambiguar
 - El resultado es: Cabecera:
 	- colec_ID: valor
-	- colec_TMDB_ID: valor
+	- TMDB_id: valor
 	- Partes_en_BD: false => faltan las partes
 
 - Al terminar de cargar, carga automáticamente las partes

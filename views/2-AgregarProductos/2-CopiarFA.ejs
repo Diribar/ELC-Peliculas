@@ -9,19 +9,19 @@
 				<div>
 					<h3>Elegí el Rubro</h3>
 					<div class="relative">
-						<select name="rubroAPI" autofocus class="input">
-							<option style="font-style: italic" value="" selected class="ocultar">Elegí el rubro</option>
-							<option value="movie" 
-								<% if (dataEntry && dataEntry.rubroAPI == "movie") { %>selected<% } %>>
+						<select name="entidad" class="input" autofocus>
+							<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+							<option value="peliculas" 
+								<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
 								Película
 							</option>
-							<option value="collection"
-								<% if (dataEntry && dataEntry.rubroAPI == "collection") { %>selected<% } %>>
+							<option value="colecciones"
+								<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
 								Colección
 							</option>
 						</select>
 						<i class="fas fa-times-circle ocultar">
-							<span class="mensajeError"><%- errores && errores.rubroAPI ? errores.rubroAPI : "" %></span>
+							<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
 						</i>
 						<i class="fas fa-check-circle ocultar"></i>
 					</div>
@@ -32,8 +32,8 @@
 					<div class="flex-row" style="flex-direction: row-reverse;">
 						<select name="en_coleccion" class="input">
 							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
-							<option value="NO">NO</option>
-							<option value="SI">SI</option>
+							<option value="0">NO</option>
+							<option value="1">SI</option>
 						</select>
 						<i class="fas fa-times-circle ocultar"><span class="mensajeError"><%- errores && errores.en_coleccion ? errores.en_coleccion : "" %></span></i>
 						<i class="fas fa-check-circle ocultar"></i>

@@ -35,15 +35,15 @@ window.addEventListener("load", () => {
 	};
 	// Buscar otros casos en esa fecha
 	registrosConEsaFecha = async (mes_id, dia) => {
-		rubro = document.querySelector("#rubro").innerHTML;
+		entidad = document.querySelector("#entidad").innerHTML;
 		// Obtener los casos
 		url =
 			"/agregar/api/buscar-otros-casos-en-esa-fecha/?mes_id=" +
 			mes_id +
 			"&dia=" +
 			dia +
-			"&rubro=" +
-			rubro;
+			"&entidad=" +
+			entidad;
 		casos = await fetch(url).then((n) => n.json());
 		// Si no hay, "no hay casos"
 		if (!casos.length) {

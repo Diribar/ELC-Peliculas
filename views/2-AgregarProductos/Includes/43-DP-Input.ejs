@@ -1,24 +1,22 @@
-<% dato = datosPers_input.find(n => n.campo == campo) %>
-<% if ((dataEntry.rubroAPI=="movie" && dato.peli) || (dataEntry.rubroAPI!="movie" && dato.colec)) { %>
-	<section style="order: <%= dato.orden %>" class="label-input flex-row">
-		<label id="<%= campo %>">
-			<%- dataEntry.rubroAPI=="movie" ? dato.titulo : dato.titulo2 %>
-		</label>
+<% registro = datosPersInput.find(n => n.campo == campo) %>
+<% if (registro[dataEntry.entidad]) { %>
+	<section class="label-input flex-row">
+		<label><%- dataEntry.entidad=="peliculas" ? registro.tituloPeli : registro.tituloColec %></label>
 		<div class="input-error">
-			<input type="text" name="<%= dato.campo %>" autocomplete="off"
-				value="<%= dataEntry[dato.campo] %>" class="input">
+			<input type="text" name="<%= registro.campo %>" autocomplete="off"
+				value="<%= dataEntry[registro.campo] %>" class="input">
 			<!-- Ayuda -->
 			<i class="fas fa-question-circle"></i>
 			<ul type="dots" class="mensajeAyuda ocultar">
-				<% for (mensaje of dato.mensajes) { %>
-					<% if (dataEntry.rubroAPI!="movie" || mensaje != dato.mensajes[0]) { %>
+				<% for (mensaje of registro.mensajes) { %>
+					<% if (dataEntry.entidad == "coleccion" || mensaje != registro.mensajes[0]) { %>
 						<li><%= mensaje %></li>
 					<% } %> 
 				<% } %> 
 			</ul>
 			<!-- Errores -->			
-			<i class="fas fa-times-circle<%- !errores[dato.campo] ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores[dato.campo] %></span>
+			<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores[registro.campo] %></span>
 			</i>
 			<i class="fas fa-check-circle ocultar"></i>
 		</div>

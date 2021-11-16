@@ -343,11 +343,11 @@ CREATE TABLE en_castellano (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO en_castellano (id, nombre)
 VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
-CREATE TABLE COLECCIONES (
+CREATE TABLE PROD_colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	colec_tmdb_id VARCHAR(10) NULL UNIQUE,
-	colec_fa_id VARCHAR(10) NULL UNIQUE,
-	colec_tmdb_rubro VARCHAR(10) NULL,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	entidad_TMDB VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
@@ -400,14 +400,14 @@ CREATE TABLE COLECCIONES (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones (id, colec_tmdb_id, colec_tmdb_rubro, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id, en_castellano_id, color)
+INSERT INTO PROD_colecciones (id, TMDB_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id, en_castellano_id, color)
 VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla)', 1, 'CFC', 4, 1, 1)
 ;
-CREATE TABLE COLECCIONES_PARTES (
+CREATE TABLE prod_colecciones_partes (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	colec_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
-	peli_tmdb_id VARCHAR(20) NULL,
+	peli_TMDB_id VARCHAR(20) NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
@@ -430,7 +430,7 @@ CREATE TABLE COLECCIONES_PARTES (
 	borrada_motivo_id INT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
@@ -438,20 +438,20 @@ CREATE TABLE COLECCIONES_PARTES (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, orden, creada_por_id)
+INSERT INTO prod_colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, orden, creada_por_id)
 VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 1)
 ;
-INSERT INTO colecciones_partes (colec_id, nombre_original, nombre_castellano, orden, creada_por_id)
+INSERT INTO prod_colecciones_partes (colec_id, nombre_original, nombre_castellano, orden, creada_por_id)
 VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2, 1)
 ;
-CREATE TABLE PELICULAS (
+CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	peli_tmdb_id VARCHAR(10) NULL UNIQUE,
-	peli_fa_id VARCHAR(10) NULL UNIQUE,
-	peli_imdb_id VARCHAR(10) NULL UNIQUE,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	IMDB_id VARCHAR(10) NULL UNIQUE,
 	en_coleccion BOOLEAN DEFAULT 0,
 	en_colec_id INT UNSIGNED NULL,
-	en_colec_tmdb_id VARCHAR(10) NULL,
+	en_colec_TMDB_id VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
@@ -491,7 +491,7 @@ CREATE TABLE PELICULAS (
 	borrada_motivo_id INT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (en_colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (en_colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
@@ -505,7 +505,7 @@ CREATE TABLE PELICULAS (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PELICULAS (id, peli_tmdb_id, peli_fa_id, peli_imdb_id, nombre_original, nombre_castellano, en_colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano_id, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
+INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, nombre_original, nombre_castellano, en_colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano_id, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
 VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', 1, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 1, 'IM', 1)
 ;
 CREATE TABLE cal_fe_valores (
@@ -562,8 +562,8 @@ CREATE TABLE calificaciones_us (
 	resultado DECIMAL(3,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (peli_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (fe_valores_id) REFERENCES cal_fe_valores(id),
 	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
 	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
@@ -591,8 +591,8 @@ CREATE TABLE interes_en_prod_us (
 	interes_en_prod_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (peli_id) REFERENCES peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES colecciones(id),
+	FOREIGN KEY (peli_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO interes_en_prod_us (usuario_id, peli_id, interes_en_prod_id)
