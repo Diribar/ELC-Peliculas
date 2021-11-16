@@ -8,7 +8,6 @@ module.exports = {
 		// Se debe respetar este orden
 		let errores = { nombre:"", mes_id: "", dia: "", repetidos: "" };
 		// Empezamos a generar los errores
-		if (!datos.nombre) errores.raro="raro"
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
 			: longitud(datos.nombre, 2, 30)
