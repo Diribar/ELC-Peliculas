@@ -8,7 +8,6 @@ let procesarProd = require("../../funciones/Productos/2-Procesar");
 let validarProd = require("../../funciones/Productos/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/varias");
-const {datosDuros} = require("../../funciones/Productos/3-Errores");
 
 // *********** Controlador ***********
 module.exports = {
@@ -212,7 +211,7 @@ module.exports = {
 		//return res.send(req.cookies);
 		borrarSessionCookies(req, res, "datosDurosPartes");
 		// 3. Feedback de la instancia anterior
-		let datosDuros = req.session.datosDuros
+		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
