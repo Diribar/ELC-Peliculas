@@ -1,4 +1,4 @@
-<div id="producto" class="ocultar"><%= entidad %></div>
+<div id="entidad" class="ocultar"><%= codigo %></div>
 <h1 class="titulo" id="titulo">Agregá un <%= producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
@@ -39,7 +39,7 @@
 						<!-- Ayuda -->
 						<i class="fas fa-question-circle"></i>
 						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Generalmente, se usa la fecha en que se lo recuerda.</li>
+							<li>Usamos la fecha en que se lo recuerda.</li>
 							<li>Para los santos o beatos, es la fecha en el santoral.</li>
 							<li>Para los demás, suele ser la fecha de su muerte.</li>
 						</ul>
@@ -51,7 +51,7 @@
 					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Mes:</label>
 						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
+							<option value="" class="ocultar" <% if (!datosRCLV.mes_id) { %>selected<% } %>>Elegí</option>
 							<% for (mes of meses) { %>
 								<option value="<%= mes.id %>"><%= mes.nombre %></option>
 							<% } %>
@@ -66,7 +66,7 @@
 					<div class="input-error mesDia flex-row align-center">
 						<label style="width: 40px;">Día:</label>
 						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
+							<option value="" class="ocultar" <% if (!datosRCLV.dia) { %>selected<% } %>>Elegí</option>
 							<% for (dia=1; dia<32; dia++) { %>
 								<option value="<%= dia %>" <% if (dia>29) { %>class="ocultar"<% } %>><%= dia %></option>
 							<% } %>

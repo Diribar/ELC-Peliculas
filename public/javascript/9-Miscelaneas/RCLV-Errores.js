@@ -50,11 +50,12 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			// Actualizar los errores
 			errores = await buscarErroresEnTodoElForm();
+			console.log(errores);
 			mensajes = Object.values(errores);
 			for (i = 0; i < iconoError.length; i++) {
 				accionesSiHayErrores(i, mensajes);
 			}
-			if (!errores.hay) button.innerHTML = "Avanzar";
+			if (!errores.hay) button.innerHTML = "Agregar";
 		}
 	});
 });

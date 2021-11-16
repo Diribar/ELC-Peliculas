@@ -5,7 +5,7 @@
 		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 			<!-- Input -->
 			<select name="<%= campo %>" class="input">
-				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+				<option value="" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of registro.valores) { %>
 					<option value="<%= valor.id %>" 
 						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>

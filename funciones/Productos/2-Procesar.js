@@ -406,8 +406,8 @@ let convertirLetrasAlCastellano = (resultado) => {
 	campos = Object.keys(resultado);
 	valores = Object.values(resultado);
 	for (let i = 0; i < campos.length; i++) {
-		typeof valores[i] == "string"
-			? (resultado[campos[i]] = valores[i]
+		if (typeof valores[i] == "string") {
+			resultado[campos[i]] = valores[i]
 					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 					.replace(/[àâãäåāăą]/g, "a")
 					.replace(/Æ/g, "Ae")
@@ -452,8 +452,10 @@ let convertirLetrasAlCastellano = (resultado) => {
 					.replace(/[ÝŶŸ]/g, "Y")
 					.replace(/[ýŷÿ]/g, "y")
 					.replace(/[ŽŹŻŽ]/g, "Z")
-					.replace(/[žźżž]/g, "z"))
-			: "";
+					.replace(/[žźżž]/g, "z")
+					.replace(/[”“]/g, '"')
+					.replace(/[º]/g, "°")
+		}
 	}
 	return resultado;
 };

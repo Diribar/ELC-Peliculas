@@ -15,19 +15,28 @@ module.exports = {
 		let page = 1;
 		while (true) {
 			for (entidad_TMDB of entidadesTMDB) {
-				lectura.entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
 				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
-					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
+					lectura = await searchTMDB(
+						palabrasClave,
+						entidad_TMDB,
+						page
+					)
 						.then((n) => infoQueQueda(n))
 						.then((n) => estandarizarNombres(n, entidad_TMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					entidad_TMDB == "collection" && lectura.resultados.length > 0
+					entidad_TMDB == "collection" &&
+					lectura.resultados.length > 0
 						? (lectura.resultados = await agregarLanzamiento(
 								lectura.resultados
 						  ))
 						: "";
-					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
+					datos = unificarResultados(
+						lectura,
+						entidad_TMDB,
+						datos,
+						page
+					);
 				}
 			}
 			// Terminacion
@@ -57,6 +66,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null)
 				return;
 			producto = "Colección";
+			entidad = "colecciones";
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -71,7 +81,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			producto="Colección"
+			producto = "Colección";
+			entidad = "colecciones";
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -87,6 +98,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			)
 				return;
 			producto = "Película";
+			entidad = "peliculas";
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
@@ -101,17 +113,18 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			producto: producto,
-			entidad_TMDB: entidad_TMDB,
+			producto,
+			entidad,
+			entidad_TMDB,
 			TMDB_id: m.id,
-			nombre_original: nombre_original,
-			nombre_castellano: nombre_castellano,
+			nombre_original,
+			nombre_castellano,
 			lanzamiento: ano,
 			avatar: m.poster_path,
 			comentario: m.overview,
-			desempate1: desempate1,
-			desempate2: desempate2,
-			desempate3: desempate3,
+			desempate1,
+			desempate2,
+			desempate3,
 		};
 	});
 	return {
