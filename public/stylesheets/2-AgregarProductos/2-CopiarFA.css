@@ -1,6 +1,5 @@
 /* Partes específicas del formulario */
-#dataEntry {min-height: 410px;}
-#dataEntry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;}
+#dataEntry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; min-height: 310px;}
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de error */

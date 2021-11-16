@@ -391,19 +391,17 @@ let fuenteSinopsisTMDB = (sinopsis) => {
 };
 let funcionCrew = (crew, campo_ELC, campo_TMDB) => {
 	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
-		valor = crew
+		valores = crew
 			.filter((n) => n.department == campo_TMDB)
 			.map((m) => m.name);
 		let i = 1;
-		let j = 1;
-		while (j < valor.length) {
-			if (valor[i] == valor[i - 1]) {
-				valor.splice(i, 1);
+		while (i < valores.length) {
+			if (valores[i] == valores[i - 1]) {
+				valores.splice(i, 1);
 			} else i++;
-			j++;
 		}
-		valor = valor.join(", ");
-		return { [campo_ELC]: valor };
+		valores = valores.join(", ");
+		return { [campo_ELC]: valores };
 	}
 	return;
 };

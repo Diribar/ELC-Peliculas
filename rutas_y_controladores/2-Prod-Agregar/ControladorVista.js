@@ -104,12 +104,12 @@ module.exports = {
 	},
 
 	desambiguarGuardar: async (req, res) => {
-		// Completar la información del producto elegido
+		// 1. Completar la información del producto elegido
 		req.body.entidad =
 			req.body.entidad_TMDB == "movie" ? "peliculas" : "colecciones";
 		req.body.producto =
 			req.body.entidad_TMDB == "movie" ? "Película" : "Colección";
-		// 1. Generar la session para la siguiente instancia
+		// 2. Generar la session para la siguiente instancia
 		req.body.fuente == "TMDB"
 			? ([aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body))
 			: (aux1 = req.body);
@@ -123,7 +123,7 @@ module.exports = {
 				maxAge: 24 * 60 * 60 * 1000,
 			});
 		}
-		// 2. Redireccionar a la siguiente instancia
+		// 3. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/producto/datos-duros");
 	},
 
@@ -282,7 +282,7 @@ module.exports = {
 		if (!errores.nombre_original) {
 			elc_id = await procesarProd.obtenerELC_id({
 				entidad: datosDuros.entidad,
-				campo: [fuente + "_id"],
+				campo: [datosDuros.fuente + "_id"],
 				valor: datosDuros[this.campo],
 			});
 			if (elc_id) {

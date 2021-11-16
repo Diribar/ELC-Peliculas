@@ -210,10 +210,10 @@ module.exports = {
 		// Comenzar con las revisiones
 		let errores = {};
 		// Datos generales
-		errores.en_castellano =
-			camposAVerificar.indexOf("en_castellano") == -1
+		errores.en_castellano_id =
+			camposAVerificar.indexOf("en_castellano_id") == -1
 				? ""
-				: !datos.en_castellano
+				: !datos.en_castellano_id
 				? cartelSelectVacio
 				: "";
 		errores.color =
