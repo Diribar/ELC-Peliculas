@@ -70,7 +70,7 @@ module.exports = {
 		codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
-		// 3. Feedback de la instancia anterior
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: req.cookies.desambiguar
@@ -210,13 +210,12 @@ module.exports = {
 		}
 		//return res.send(req.cookies);
 		borrarSessionCookies(req, res, "datosDurosPartes");
-		// 3. Feedback de la instancia anterior
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
-		// 4. Detectar el origen
 		origen =
 			!!req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -254,9 +253,8 @@ module.exports = {
 	},
 
 	DDG: async (req, res) => {
-		// 1. Feedback de la instancia anterior
+		// 1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		// 2. Detectar el origen
 		origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -337,7 +335,7 @@ module.exports = {
 		codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "datosPers");
-		// 3. Feedback de la instancia anterior o Data Entry propio
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
@@ -366,7 +364,7 @@ module.exports = {
 	},
 
 	datosPersGuardar: async (req, res) => {
-		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
+		// 1.1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("/agregar/producto/datos-duros");
 		// 1.2. Guardar el data entry en session y cookie
@@ -419,7 +417,7 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "confirmar";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Si se perdió la info anterior, volver a esa instancia
 		confirmar = req.session.confirmar
 			? req.session.confirmar
 			: req.cookies.confirmar
@@ -443,7 +441,7 @@ module.exports = {
 	},
 
 	confirmarGuardar: async (req, res) => {
-		// 1. Feedback de la instancia anterior o Data Entry propio
+		// 1. Si se perdió la info anterior, volver a esa instancia
 		confirmar = req.session.confirmar
 			? req.session.confirmar
 			: req.cookies.confirmar
