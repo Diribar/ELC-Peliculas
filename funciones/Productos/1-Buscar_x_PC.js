@@ -10,33 +10,21 @@ module.exports = {
 	search: async (palabrasClave) => {
 		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
-		let datos = { resultados: [] };
+		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
 			for (entidad_TMDB of entidadesTMDB) {
 				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
-					lectura = await searchTMDB(
-						palabrasClave,
-						entidad_TMDB,
-						page
-					)
+					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
 						.then((n) => infoQueQueda(n))
 						.then((n) => estandarizarNombres(n, entidad_TMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					entidad_TMDB == "collection" &&
-					lectura.resultados.length > 0
-						? (lectura.resultados = await agregarLanzamiento(
-								lectura.resultados
-						  ))
+					entidad_TMDB == "collection" && lectura.resultados.length > 0
+						? (lectura.resultados = await agregarLanzamiento(lectura.resultados))
 						: "";
-					datos = unificarResultados(
-						lectura,
-						entidad_TMDB,
-						datos,
-						page
-					);
+					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
 				}
 			}
 			// Terminacion
@@ -63,8 +51,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
-			if (typeof m.poster_path == "undefined" || m.poster_path == null)
-				return;
+			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
 			producto = "Colección";
 			entidad = "colecciones";
 			ano = "-";
@@ -105,12 +92,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = letrasIngles(nombre_original)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
-		desempate2 = letrasIngles(nombre_castellano)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
+		desempate1 = letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -209,15 +192,13 @@ let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
 		contar = datos.resultados.filter(
 			(m) =>
-				(m.desempate1 == n.desempate1 ||
-					m.desempate2 == n.desempate2) &&
+				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 				m.desempate3 == n.desempate3
 		);
 		if (contar.length > 1) {
 			indice = datos.resultados.findIndex(
 				(m) =>
-					(m.desempate1 == n.desempate1 ||
-						m.desempate2 == n.desempate2) &&
+					(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
 					m.entidad_TMDB == "tv"
 			);
@@ -256,11 +237,7 @@ let hayMas = (datos, page, entidadesTMDB) => {
 let ordenarDatos = (datos, palabrasClave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
-				return b.desempate3 < a.desempate3
-					? -1
-					: b.desempate3 > a.desempate3
-					? 1
-					: 0;
+				return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
 		  })
 		: "";
 	let datosEnOrden = {
