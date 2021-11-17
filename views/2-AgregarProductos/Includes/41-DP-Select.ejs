@@ -5,7 +5,7 @@
 		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
 			<!-- Input -->
 			<select name="<%= campo %>" class="input" <% if (campo=="en_castellano_id") { %>autofocus<% } %>>
-				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+				<option value="" class="<% if (!campo.includes("historico")) { %>ocultar<% } %>" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 				<% for (valor of registro.valores) { %>
 					<option value="<%= valor.id %>" 
 						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
