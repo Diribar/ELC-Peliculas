@@ -3,20 +3,21 @@ Revisión general, probar:
 		- TMDB	OK
 		- FA	OK
 		- IM	OK
+	- Película con colección - OK
+		- TMDB	OK
+		- FA	OK
+		- IM	OK
+	- Colección Cabecera - OK
+		- TMDB
+			- collection	OK
+			- tv			OK
+		- FA				OK
+		- IM				OK
 ___________________________________________
-	- Película con  colección
-		- TMDB
-		- FA
-		- IM
-	- Colección Cabecera
-		- TMDB
-			- collection
-			- tv
-		- FA
-		- IM
 	- Colección Partes
 		- TMDB
-			- collection
-			- tv
+			- collection	OK
+			- tv			OK
 		- FA
 		- IM
+		- General:

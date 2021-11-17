@@ -127,7 +127,7 @@ module.exports = {
 				res.cookie("datosDurosPartes", aux2, {maxAge: 24 * 60 * 60 * 1000});
 			}
 		} else if (req.body.fuente == "IM") {
-			req.body.entidad == "peliculas" ? "Película" : "Colección";
+			req.body.producto = req.body.entidad == "peliculas" ? "Película" : "Colección";
 			req.session.datosDuros = req.body;
 			res.cookie("datosDuros", req.body, {maxAge: 24 * 60 * 60 * 1000});
 		}
@@ -562,17 +562,13 @@ module.exports = {
 				return res.redirect("/agregar/producto/copiar-fa");
 			} else {
 				// 2.3. Ingreso Manual
-				req.session.datosDuros = {
-					fuente: "IM",
-					entidad: "colecciones",
-				};
-				res.cookie("datosDuros", req.session.datosDuros, {
-					maxAge: 24 * 60 * 60 * 1000,
-				});
+				req.session.datosDuros = {fuente: "IM", entidad: "colecciones"};
+				res.cookie("datosDuros", req.session.datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 				// Redirigir a palabras clave
 				return res.redirect("/agregar/producto/datos-duros");
 			}
-		} else if (datos.entidad == "partes-de-coleccion") {
+		} else if (datos.url == "partes-de-coleccion") {
+			entidad = "colecciones_partes";
 			// 3. Agregar las Partes de una Colección
 		}
 		// - datosClaveProd.entidad = "peliculas" / "colecciones"

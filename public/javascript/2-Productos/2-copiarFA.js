@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 			return;
 		}
 		// Acciones si no hay un error
-		valor == "collection"
+		valor == "colecciones"
 			? sectEnColeccion.classList.add("ocultar")
 			: sectEnColeccion.classList.remove("ocultar");
 		resto.classList.remove("ocultar");
