@@ -14,8 +14,8 @@
 #dataEntry #prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--azul-claro);}
 
 /* Partes del resultado */
-#dataEntry #imagenChica {height: 100%;}
-#dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between; height: 100%;}
+#dataEntry #imagenChica, #dataEntry #texto {height: 100%;}
+#dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between;}
 
 #dataEntry #infoPeli {margin: 10px 15px;}
 #dataEntry #infoPeli, #infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
