@@ -1,0 +1,22 @@
+Revisión general, probar:
+	- Película sin colección - OK
+		- TMDB	OK
+		- FA	OK
+		- IM	OK
+___________________________________________
+	- Película con  colección
+		- TMDB
+		- FA
+		- IM
+	- Colección Cabecera
+		- TMDB
+			- collection
+			- tv
+		- FA
+		- IM
+	- Colección Partes
+		- TMDB
+			- collection
+			- tv
+		- FA
+		- IM
