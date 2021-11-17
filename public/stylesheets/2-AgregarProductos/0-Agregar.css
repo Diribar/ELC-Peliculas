@@ -35,6 +35,7 @@
 /* Botones */
 #dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--verde-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #dataEntry i {cursor: pointer;}
+#dataEntry i span {cursor: default;}
 
 /* Flechas */
 #dataEntry #flechas {justify-content: space-around; margin-left:auto; margin-right:auto; width:100%; max-width: 500px}
