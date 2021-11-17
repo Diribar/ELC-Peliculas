@@ -358,10 +358,12 @@ module.exports = {
 		// 1.1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("/agregar/producto/datos-duros");
-		// 1.2. Guardar el data entry en session y cookie
+		// 1.2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
+		// 1.3. Si no se guardaron datos de RCLV, se quitan del dataEntry para evitar conflicto con la BD
 		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
 		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
+		// 1.4. Guardar el data entry en session y cookie
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 2.1. Averiguar si hay errores de validación
@@ -372,7 +374,8 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/agregar/producto/datos-personalizados");
 		}
-		// 3. Si no hay errores, obtener la calificación
+		// 3. Si no hay errores, continuar
+		// Obtener la calificación
 		fe_valores = await BD_varias.obtenerPorParametro("fe_valores", "id", req.body.fe_valores_id)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
@@ -447,19 +450,30 @@ module.exports = {
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
-		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		// 5. Miscelaneas
-		guardar_us_calificaciones(confirmar, registro);
-		moverImagenCarpetaDefinitiva(confirmar.avatar);
-		// 6. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
+		// 4. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 		datosDurosPartes = req.session.datosDurosPartes;
 		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB" && datosDurosPartes)
 			agregarPartesDeColeccion(datosDurosPartes, registro.id);
-		// 7. Borrar todas las session y cookies de 'Agregar producto'
+		// 5. Si es una PELÍCULA TMDB y pertenece a una colección, agregar el 'peli_id' en la parte de la colección
+		if (
+			confirmar.entidad == "peliculas" &&
+			confirmar.fuente == "TMDB" &&
+			confirmar.en_coleccion
+		)
+			BD_varias.obtenerPorParametro("colecciones_partes", "peli_TMDB_id", confirmar.TMDB_id)
+				.then((n) => n.id)
+				.then((n) =>
+					BD_varias.actualizarRegistro("colecciones_partes", {peli_id: registro.id}, n)
+				);
+		// 6. Actualizar "cantProductos" en "Relación con la vida"
+		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
+		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
+		// 7. Miscelaneas
+		guardar_us_calificaciones(confirmar, registro);
+		moverImagenCarpetaDefinitiva(confirmar.avatar);
+		// 8. Borrar todas las session y cookies de 'Agregar producto'
 		borrarSessionCookies(req, res, "borrarTodo");
-		// 8. Redireccionar
+		// 9. Redireccionar
 		//return res.send(confirmar);
 		return res.redirect("/agregar/producto/conclusion");
 	},
