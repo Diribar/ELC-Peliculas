@@ -78,12 +78,10 @@ module.exports = {
 			: "";
 		if (!desambiguar) return res.redirect("/agregar/producto/palabras-clave");
 		// 3. Errores
-		let errores = req.session.errores
-			? req.session.errores
-			: "";
+		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
 		let resultados = desambiguar.resultados;
-		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados)
+		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados);
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -107,8 +105,8 @@ module.exports = {
 			let errores = await validarProd.desambiguar(aux1);
 			// 4. Si no supera el filtro anterior, redireccionar
 			if (errores.hay) {
-			 	req.session.errores = errores;
-			 	return res.redirect("/agregar/producto/desambiguar");
+				req.session.errores = errores;
+				return res.redirect("/agregar/producto/desambiguar");
 			}
 			// 5. Si la colección está creada, pero su parte NO, actualizar las partes
 			// 6. Generar la session para la siguiente instancia
@@ -944,5 +942,5 @@ let prepararMensaje = (datos) => {
 		" está" +
 		(nuevos > 1 ? "n" : "") +
 		" en nuestra BD.";
-	return {prod_nuevos, prod_yaEnBD, mensaje}
-}
+	return {prod_nuevos, prod_yaEnBD, mensaje};
+};
