@@ -1,8 +1,8 @@
 Revisión general, probar:
 	- Película sin colección
-		- TMDB
-		- FA
-		- IM
+		- TMDB	OK
+		- FA	
+		- IM	OK
 	- Película con  colección
 		- TMDB
 		- FA

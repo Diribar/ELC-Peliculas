@@ -32,19 +32,19 @@ window.addEventListener("load", async () => {
 	};
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
-	let accionesSiHayErrores = (i, errores) => {
+	let accionesSiHayErrores = async (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
-		mensajesError[i].innerHTML = mensaje;
 		// Mostrar secciones
-		campo == "entidad" ? mostrarCampos(valor, mensaje) : "";
-		// Acciones en submit si se cambia la Dirección
-		campo == "direccion" ? (button.innerHTML = "Verificar") : "";
+		if (campo == "entidad") mostrarCampos(valor, mensaje);
+		// Verificar si el FA_id ya está en nuestra BD
+		if (campo == "direccion" && !mensaje) mensaje = await verificarRepetido();
 		// Agregar comentario en 'contenido'
-		campo == "contenido" ? comentarioContenido(errores.campos, valor) : "";
+		if (campo == "contenido") comentarioContenido(errores.campos, valor);
 		// En caso de error
+		mensajesError[i].innerHTML = mensaje;
 		if (mensaje) {
 			iconoError[i].classList.remove("ocultar");
 			iconoOK[i].classList.add("ocultar");
@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
 				iconoOK[j].classList.contains("ocultar")
 					? inputs[j].name != "en_coleccion"
 						? (sinErrores = false)
-						: inputs[0].value == "movie"
+						: inputs[0].value == "peliculas"
 						? (sinErrores = false)
 						: ""
 					: "";
@@ -67,6 +67,28 @@ window.addEventListener("load", async () => {
 				? button.classList.remove("botonSinLink")
 				: button.classList.add("botonSinLink");
 		}
+	};
+
+	// Revisar si el FA_id ya está en la BD
+	let verificarRepetido = async () => {
+		direccion = document.querySelector(".input[name='direccion']").value;
+		FA_id = await fetch(pre + "obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
+		url = "entidad=" + entidad.value;
+		url += "&campo=FA_id";
+		url += "&valor=" + FA_id;
+		ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) => n.json());
+		// Definir el mensaje
+		return ELC_id
+			? "Esta " +
+					"<a href='/detalle/producto/informacion/?entidad=" +
+					entidad.value +
+					"&id=" +
+					ELC_id +
+					"' target='_blank'><u><strong>" +
+					entidad.selectedOptions[0].label +
+					"</strong></u></a>" +
+					" ya se encuentra en nuestra base de datos"
+			: "";
 	};
 
 	// Procesa el input del contenido
@@ -97,9 +119,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/agregar/producto/api/validar-copiar-fa/" + url).then(
-			(n) => n.json()
-		);
+		return fetch("/agregar/producto/api/validar-copiar-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial
@@ -126,33 +146,6 @@ window.addEventListener("load", async () => {
 			errores = await validarDataEntry();
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
-			}
-		} else if (button.innerHTML == "Verificar") {
-			e.preventDefault();
-			// Averiguar si el ID está repetido
-			direccion = document.querySelector(
-				".input[name='direccion']"
-			).value;
-			FA_id = await fetch(
-				pre + "obtener-fa-id/?direccion=" + direccion
-			).then((n) => n.json());
-			url = "entidad=" + entidad.value;
-			url += "&campo=FA_id";
-			url += "&valor=" + FA_id;
-			ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) =>
-				n.json()
-			);
-			// Acciones si el pedido está repetido o no
-			if (ELC_id) {
-				// Si el pedido está repetido, avisar del error
-				!errores ? (errores = {}) : "";
-				errores.direccion =
-					"El código interno de esta " +
-					entidad.selectedOptions[0].label +
-					" ya se encuentra en nuestra base de datos";
-				accionesSiHayErrores(2, errores);
-			} else {
-				button.innerHTML = "Avanzar";
 			}
 		}
 	});

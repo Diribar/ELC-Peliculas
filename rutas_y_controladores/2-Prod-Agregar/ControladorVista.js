@@ -692,6 +692,8 @@ let datosPersSelect = async () => {
 			titulo: "Existe una versión en castellano",
 			campo: "en_castellano_id",
 			valores: await BD_varias.obtenerTodos("en_castellano", "id"),
+			peliculas: true,
+			colecciones: true,
 			mensajePeli: [
 				'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
 			],
@@ -706,6 +708,8 @@ let datosPersSelect = async () => {
 				{id: 1, nombre: "SI"},
 				{id: 0, nombre: "NO"},
 			],
+			peliculas: true,
+			colecciones: true,
 			mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 			mensajeColec: [
 				"Si algunos capítulos no son a color, elegí lo que represente a la mayoría",
