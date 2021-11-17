@@ -1,9 +1,6 @@
 Al ingresar a la página por primera vez, avisar:
 - Usamos cookies para estar seguros de darte la mejor experiencia en nuestro sitio web. 
 
-Que se pueda filtrar por:
-- Santos laicos, matrimonios, consagrados, papas, reyes
-
 Agregar prod
 	DP: Si la película o serie de TV informa que el producto existe en castellano, llevar ese dato a DP
 

@@ -552,7 +552,7 @@ VALUES
 (2, 1, 3, 'No afecta el disfrute'),
 (1, 2, 0, 'Perjudica el disfrute')
 ;
-CREATE TABLE calificaciones_us (
+CREATE TABLE us_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
@@ -572,7 +572,7 @@ CREATE TABLE calificaciones_us (
 	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
 	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO calificaciones_us (id, usuario_id, peli_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado, fe_valores_id, entretiene_id, calidad_tecnica_id)
+INSERT INTO us_calificaciones (id, usuario_id, peli_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado, fe_valores_id, entretiene_id, calidad_tecnica_id)
 VALUES (1, 1, 1, 1, 1, 1, 1, 4, 4, 2)
 ;
 CREATE TABLE interes_en_prod (
@@ -587,7 +587,7 @@ VALUES
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
 ;
-CREATE TABLE interes_en_prod_us (
+CREATE TABLE us_interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
@@ -599,7 +599,7 @@ CREATE TABLE interes_en_prod_us (
 	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO interes_en_prod_us (usuario_id, peli_id, interes_en_prod_id)
+INSERT INTO us_interes_en_prod (usuario_id, peli_id, interes_en_prod_id)
 VALUES (1, 1, 2)
 ;
 CREATE TABLE filtros_personales (

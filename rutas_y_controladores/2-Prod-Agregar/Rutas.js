@@ -31,7 +31,7 @@ router.post("/desambiguar", usuarios, vista.desambiguarGuardar);
 router.get("/copiar-fa", usuarios, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", usuarios, vista.copiarFA_Guardar);
 router.get("/datos-duros", usuarios, vista.datosDurosForm);
-router.post("/datos-duros", usuarios, prodEnBD, upload.single("avatar"), vista.DDG);
+router.post("/datos-duros", usuarios, prodEnBD, upload.single("avatar"), vista.datosDurosGuardar);
 router.get("/datos-personalizados", usuarios, vista.datosPersForm);
 router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar);
 router.get("/confirmar", usuarios, vista.confirmarForm);

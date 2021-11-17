@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "interes_en_prod_us";
+	const alias = "us_interes_en_prod";
 	const columns = {
 		usuario_id: { type: dt.INTEGER },
 		peli_id: { type: dt.INTEGER },
@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		interes_en_prod_id: { type: dt.INTEGER },
 	};
 	const config = {
-		tableName: "interes_en_prod_us",
+		tableName: "us_interes_en_prod",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = n => {
-		entidad.hasMany(n.interes_en_prod_us, {as: "interes_en_prod_us",foreignKey: "interes_en_prod_id"});
+		entidad.hasMany(n.us_interes_en_prod, {as: "us_interes_en_prod",foreignKey: "interes_en_prod_id"});
 	};
 	return entidad;
 }
