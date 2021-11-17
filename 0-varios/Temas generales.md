@@ -1,13 +1,6 @@
-DESAMBIGUAR: 
-- FE: 
-	- No puede informar en la primera vista que la película pertenece a una colección, porque con SEARCH no se consigue ese dato
-	- No permite elegir una pelicula cuya colección no está en la BD
-	- Informa en la vista el nombre de la colección
-- BE: 
-	- Informa el error si se eligió una película cuya colección no está en la BD
-	- Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD:
-		- Primero se actualizan las partes mediante API
-		- Luego se sigue con la película
+DESAMBIGUAR, BE: Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD:
+- Primero se actualizan las partes mediante API
+- Luego se sigue con la película
 
 COPIAR FA: si la película pertenece a una colección, se elije en el momento
 
