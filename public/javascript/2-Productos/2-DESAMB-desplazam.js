@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 
 	// Desplazamiento por teclado
 	window.addEventListener("keydown", (e) => {
-		console.log(e.key);
+		//console.log(e.key);
 		if (e.key == "Home") resultado.scrollTo(0, 0);
 		if (e.key == "End") resultado.scrollTo(anchoTotal, 0);
 		if (e.key == "PageDown")
