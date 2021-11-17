@@ -18,11 +18,11 @@ module.exports = {
 	desambiguar: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
 		if (dato.entidad_TMDB == "movie" && dato.en_coleccion && !dato.en_colec_id) {
-			console.log("SI");
 			errores = {
 				// Datos originales
 				peli_entidad_TMDB: "movie",
 				peli_TMDB_id: dato.TMDB_id,
+				peli_nombre: dato.nombre_castellano,
 				// Datos nuevos
 				colec_entidad_TMDB: "collection",
 				colec_TMDB_id: dato.en_colec_TMDB_id,

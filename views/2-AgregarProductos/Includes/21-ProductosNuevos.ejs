@@ -24,8 +24,9 @@
 				<!-- Coleccion -->
 				<% if (errores && prod_nuevo.entidad_TMDB == "movie" && prod_nuevo.TMDB_id == errores.peli_TMDB_id) { %>
 					<div id="mensaje">
+						<p id="colec_TMDB_id" class="ocultar"><%= errores.colec_TMDB_id %></p>
 						<p>Si la elejís, serás redirigido para cargar primero su colección:</p>
-						<p><strong><em><%= errores.colec_nombre %></em></strong></p>
+						<p id="colec_nombre"><%= errores.colec_nombre %></p>
 					</div>
 				<% } %>
 			</section>

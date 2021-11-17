@@ -2,6 +2,9 @@
 #dataEntry h2 {margin-bottom: 5px;}
 #dataEntry #resultadoGeneral {width: 700px; overflow-x: auto;}
 #dataEntry button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
+#dataEntry #encabezado {display: flex; flex-direction: column; position: relative;}
+#dataEntry #encabezado .fa-times-circle {top: auto; bottom: -18px; left: 0px; transform: none;}
+#dataEntry #encabezado .fa-times-circle span {max-width: 400px;}
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 
@@ -16,11 +19,11 @@
 /* Partes del resultado */
 #dataEntry #imagenChica, #dataEntry #texto {height: 100%;}
 #dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between;}
-
 #dataEntry #infoPeli {margin: 10px 15px;}
 #dataEntry #infoPeli, #infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
 #dataEntry #mensaje {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
 #dataEntry #prod_nuevo:hover #mensaje {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#dataEntry #mensaje #colec_nombre {font-weight: bold; font-style: italic}
 #dataEntry .interlineadoChico {margin-top: 5px;}
 
 /* Barra de desplazamiento */
