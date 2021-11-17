@@ -252,7 +252,7 @@ module.exports = {
 		});
 	},
 
-	DDG: async (req, res) => {
+	datosDurosGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		origen =
@@ -450,28 +450,26 @@ module.exports = {
 		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
 		registro = await BD_varias.agregarRegistro(confirmar);
-		//return res.send(registro)
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
 		req.session.datosClaveProd = datosClaveProd;
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//return res.send(datosClaveProd)
 		// 4. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// 5. Miscelaneas
-		guardarCalificaciones_us(confirmar, registro);
+		guardar_us_calificaciones(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
 		// 6. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 		datosDurosPartes = req.session.datosDurosPartes;
 		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB" && datosDurosPartes)
 			agregarPartesDeColeccion(datosDurosPartes, registro.id);
-		//return res.send(confirmar);
 		// 7. Borrar todas las session y cookies de 'Agregar producto'
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
+		//return res.send(confirmar);
 		return res.redirect("/agregar/producto/conclusion");
 	},
 
@@ -853,10 +851,10 @@ let actualizarRCLV = async (entidad, id) => {
 	}
 };
 
-let guardarCalificaciones_us = (confirmar, registro) => {
+let guardar_us_calificaciones = (confirmar, registro) => {
 	entidad_id = confirmar.entidad == "peliculas" ? "peli_id" : "colec_id";
 	let datos = {
-		entidad: "calificaciones_us",
+		entidad: "us_calificaciones",
 		usuario_id: confirmar.creada_por_id,
 		[entidad_id]: registro.id,
 		fe_valores_id: confirmar.fe_valores_id,
@@ -902,9 +900,14 @@ let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 		peli_id = await BD_varias.obtenerELC_id({
 			entidad: "peliculas",
 			campo: "TMDB_id",
-			valor: parte.peli_TMDB_id,
+			valor: datos.peli_TMDB_id,
 		});
-		if (peli_id) datos.peli_id = peli_id;
+		if (peli_id) {
+			// Agregarle el peli_id a la coleccion_parte
+			datos.peli_id = peli_id;
+			// Agregarle la colección a la película
+			BD_varias.actualizarRegistro("peliculas", {en_colec_id: datos.colec_id}, peli_id);
+		}
 		BD_varias.agregarRegistro(datos);
 	}
 };

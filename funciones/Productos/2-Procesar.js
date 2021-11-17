@@ -19,7 +19,7 @@ module.exports = {
 	},
 
 	// ControllerVista (desambiguarGuardar)
-	pelicula_TMDB: (form, lectura) => {
+	pelicula_TMDB: async (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
 			producto: form.producto,
@@ -34,9 +34,17 @@ module.exports = {
 		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
+				// Datos provenientes del API
 				datosLectura.en_coleccion = true;
 				datosLectura.en_colec_TMDB_id = lectura.belongs_to_collection.id;
 				datosLectura.en_colec_nombre = lectura.belongs_to_collection.name;
+				// ELC_id de la colección
+				ELC_id = await BD_varias.obtenerELC_id({
+					entidad: "colecciones",
+					campo: "TMDB_id",
+					valor: datosLectura.en_colec_TMDB_id,
+				});
+				if (ELC_id) datosLectura.en_colec_id = ELC_id;
 			} else datosLectura.en_coleccion = false;
 			lectura.IMDB_id != "" ? (datosLectura.IMDB_id = lectura.imdb_id) : "";
 			lectura.overview != ""
