@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 			for (i = 0; i < iconoError.length; i++) {
 				accionesSiHayErrores(i, mensajes);
 			}
-			if (!errores.hay) button.innerHTML = "Avanzar";
+			if (!errores.hay) button.innerHTML = "Agregar";
 		}
 	});
 });

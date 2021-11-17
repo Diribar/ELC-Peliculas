@@ -10,12 +10,11 @@ module.exports = {
 	search: async (palabrasClave) => {
 		palabrasClave = letrasIngles(palabrasClave);
 		let lectura = [];
-		let datos = { resultados: [] };
+		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
 			for (entidad_TMDB of entidadesTMDB) {
-				lectura.entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
 				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
 					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
 						.then((n) => infoQueQueda(n))
@@ -23,9 +22,7 @@ module.exports = {
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
 					entidad_TMDB == "collection" && lectura.resultados.length > 0
-						? (lectura.resultados = await agregarLanzamiento(
-								lectura.resultados
-						  ))
+						? (lectura.resultados = await agregarLanzamiento(lectura.resultados))
 						: "";
 					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
 				}
@@ -54,9 +51,9 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
-			if (typeof m.poster_path == "undefined" || m.poster_path == null)
-				return;
+			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
 			producto = "Colección";
+			entidad = "colecciones";
 			ano = "-";
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -71,7 +68,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			producto="Colección"
+			producto = "Colección";
+			entidad = "colecciones";
 			ano = parseInt(m.first_air_date.slice(0, 4));
 			nombre_original = m.original_name;
 			nombre_castellano = m.name;
@@ -87,31 +85,29 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			)
 				return;
 			producto = "Película";
+			entidad = "peliculas";
 			ano = parseInt(m.release_date.slice(0, 4));
 			nombre_original = m.original_title;
 			nombre_castellano = m.title;
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = letrasIngles(nombre_original)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
-		desempate2 = letrasIngles(nombre_castellano)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
+		desempate1 = letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			producto: producto,
-			entidad_TMDB: entidad_TMDB,
+			producto,
+			entidad,
+			entidad_TMDB,
 			TMDB_id: m.id,
-			nombre_original: nombre_original,
-			nombre_castellano: nombre_castellano,
+			nombre_original,
+			nombre_castellano,
 			lanzamiento: ano,
 			avatar: m.poster_path,
 			comentario: m.overview,
-			desempate1: desempate1,
-			desempate2: desempate2,
-			desempate3: desempate3,
+			desempate1,
+			desempate2,
+			desempate3,
 		};
 	});
 	return {
@@ -196,15 +192,13 @@ let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
 		contar = datos.resultados.filter(
 			(m) =>
-				(m.desempate1 == n.desempate1 ||
-					m.desempate2 == n.desempate2) &&
+				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 				m.desempate3 == n.desempate3
 		);
 		if (contar.length > 1) {
 			indice = datos.resultados.findIndex(
 				(m) =>
-					(m.desempate1 == n.desempate1 ||
-						m.desempate2 == n.desempate2) &&
+					(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
 					m.entidad_TMDB == "tv"
 			);
@@ -243,11 +237,7 @@ let hayMas = (datos, page, entidadesTMDB) => {
 let ordenarDatos = (datos, palabrasClave) => {
 	datos.resultados.length > 1
 		? datos.resultados.sort((a, b) => {
-				return b.desempate3 < a.desempate3
-					? -1
-					: b.desempate3 > a.desempate3
-					? 1
-					: 0;
+				return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
 		  })
 		: "";
 	let datosEnOrden = {

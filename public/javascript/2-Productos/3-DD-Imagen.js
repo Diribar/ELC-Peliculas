@@ -1,10 +1,14 @@
 window.addEventListener("load", () => {
-	// Copiar al portapapeles
+	// Declaración de variables
 	let preview = document.querySelector("form #imagenPeli #preview");
 	let url = document.querySelector("form #imagenPeli #url");
-	preview.addEventListener("click", () => {
-		navigator.clipboard.writeText(url.innerHTML);
-	});
+	let IM = document.querySelector("form .input-error select");
+
+	// Copiar al portapapeles
+	if (!(IM && IM.name == "en_coleccion"))
+		preview.addEventListener("click", () => {
+			navigator.clipboard.writeText(url.innerHTML);
+		});
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");
 	inputImagen.addEventListener("change", (e) => {

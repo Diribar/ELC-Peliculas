@@ -4,8 +4,9 @@ let BD_varias = require("../BD/varias");
 // Objeto literal *************
 module.exports = {
 	RCLV: async (datos) => {
-		let { entidad } = datos;
-		let errores = { mes_id: "", dia: "", repetidos: "" };
+		let {entidad} = datos;
+		// Se debe respetar este orden
+		let errores = {nombre: "", mes_id: "", dia: "", repetidos: ""};
 		// Empezamos a generar los errores
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
@@ -13,11 +14,7 @@ module.exports = {
 			? longitud(datos.nombre, 2, 30)
 			: castellano(datos.nombre)
 			? cartelCastellano
-			: (await BD_varias.obtenerPorParametro(
-					entidad,
-					"nombre",
-					datos.nombre
-			  ))
+			: (await BD_varias.obtenerPorParametro(entidad, "nombre", datos.nombre))
 			? cartelRepetido
 			: "";
 		if (datos.desconocida == "false" || datos.desconocida == undefined) {

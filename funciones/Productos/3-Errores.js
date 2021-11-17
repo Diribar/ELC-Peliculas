@@ -71,7 +71,7 @@ module.exports = {
 		let errores = {};
 		// En colección
 		errores.en_coleccion =
-			datos.en_coleccion == "" &&
+			!datos.en_coleccion &&
 			datos.entidad == "peliculas" &&
 			datos.fuente == "IM"
 				? "Elegí una opción"
@@ -307,7 +307,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:;…"”“ºáéíóúüñ'¿?¡!/()\d+-]+$/;
+	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!/()\d+-]+$/;
 	return !formato.test(dato);
 };
 let formatoAno = (dato) => {

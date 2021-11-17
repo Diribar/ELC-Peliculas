@@ -8,6 +8,7 @@
 				<% if (registro.id) { %>id="numero" placeholder="sólo números"<% } %>
 				<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } %> 
 			>
+			<!-- Ayuda -->
 			<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
 			<!-- Errores -->
 			<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">

@@ -70,14 +70,13 @@ module.exports = {
 		codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
-		// 3. Feedback de la instancia anterior
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: req.cookies.desambiguar
 			? req.cookies.desambiguar
 			: "";
-		if (!desambiguar)
-			return res.redirect("/agregar/producto/palabras-clave");
+		if (!desambiguar) return res.redirect("/agregar/producto/palabras-clave");
 		// 4. Prepara datos
 		let resultados = desambiguar.resultados;
 		let prod_nuevos = resultados.filter((n) => !n.YaEnBD);
@@ -116,23 +115,21 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Completar la información del producto elegido
-		req.body.entidad =
-			req.body.entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		req.body.producto =
-			req.body.entidad_TMDB == "movie" ? "Película" : "Colección";
-		// 2. Generar la session para la siguiente instancia
-		req.body.fuente == "TMDB"
-			? ([aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body))
-			: (aux1 = req.body);
-		req.session.datosDuros = aux1;
-		res.cookie("datosDuros", req.session.datosDuros, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		if (aux2) {
-			req.session.datosDurosPartes = aux2;
-			res.cookie("datosDurosPartes", aux2, {
-				maxAge: 24 * 60 * 60 * 1000,
-			});
+		if (req.body.fuente == "TMDB") {
+			req.body.entidad = req.body.entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+			req.body.producto = req.body.entidad_TMDB == "movie" ? "Película" : "Colección";
+			// 2. Generar la session para la siguiente instancia
+			[aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body);
+			req.session.datosDuros = aux1;
+			res.cookie("datosDuros", aux1, {maxAge: 24 * 60 * 60 * 1000});
+			if (aux2) {
+				req.session.datosDurosPartes = aux2;
+				res.cookie("datosDurosPartes", aux2, {maxAge: 24 * 60 * 60 * 1000});
+			}
+		} else if (req.body.fuente == "IM") {
+			req.body.entidad == "peliculas" ? "Película" : "Colección";
+			req.session.datosDuros = req.body;
+			res.cookie("datosDuros", req.body, {maxAge: 24 * 60 * 60 * 1000});
 		}
 		// 3. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/producto/datos-duros");
@@ -170,7 +167,7 @@ module.exports = {
 		// 1. Guardar el data entry en session y cookie
 		let copiarFA = req.body;
 		req.session.copiarFA = copiarFA;
-		res.cookie("copiarFA", copiarFA, { maxAge: 24 * 60 * 60 * 1000 });
+		res.cookie("copiarFA", copiarFA, {maxAge: 24 * 60 * 60 * 1000});
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validarProd.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
@@ -182,8 +179,7 @@ module.exports = {
 				valor: FA_id,
 			});
 			if (elc_id) {
-				errores.direccion =
-					"El código interno ya se encuentra en nuestra base de datos";
+				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
 				errores.hay = true;
 			}
@@ -209,19 +205,17 @@ module.exports = {
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatar) {
-			rutaYnombre =
-				"./public/imagenes/9-Provisorio/" +
-				req.cookies.datosPers.avatar;
+			rutaYnombre = "./public/imagenes/9-Provisorio/" + req.cookies.datosPers.avatar;
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 		}
+		//return res.send(req.cookies);
 		borrarSessionCookies(req, res, "datosDurosPartes");
-		// 3. Feedback de la instancia anterior
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
 			: req.cookies.datosDuros
 			? req.cookies.datosDuros
 			: "";
-		// 4. Detectar el origen
 		origen =
 			!!req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -236,16 +230,13 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 6. Detectar errores
+		let IM = datosDuros.fuente == "IM" ? {campo: "en_coleccion", peliculas: true} : {};
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProd.datosDuros(datosDuros, [
-					...camposDD1,
-					...camposDD2,
-			  ]);
+			: await validarProd.datosDuros(datosDuros, [IM, ...camposDD1, ...camposDD2]);
+		//return res.send(errores)
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
-		let pais = datosDuros.pais_id
-			? await varias.pais_idToNombre(datosDuros.pais_id)
-			: "";
+		let pais = datosDuros.pais_id ? await varias.pais_idToNombre(datosDuros.pais_id) : "";
 		// 7. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -262,11 +253,8 @@ module.exports = {
 	},
 
 	DDG: async (req, res) => {
-		// 1. Feedback de la instancia anterior
-		aux = req.session.datosDuros
-			? req.session.datosDuros
-			: req.cookies.datosDuros;
-		// 2. Detectar el origen
+		// 1. Si se perdió la info anterior, volver a esa instancia
+		aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -275,14 +263,13 @@ module.exports = {
 				: "palabras-clave";
 		if (!aux) return res.redirect("/agregar/producto/" + origen);
 		// 3. Guardar el data entry en session y cookie
-		let datosDuros = { ...aux, ...req.body };
+		if (req.file && !req.body.avatar) req.body.avatar = req.file.filename;
+		let datosDuros = {...aux, ...req.body};
 		req.session.datosDuros = datosDuros;
-		res.cookie("datosDuros", datosDuros, { maxAge: 24 * 60 * 60 * 1000 });
+		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Averiguar si hay errores de validación
-		let errores = await validarProd.datosDuros(datosDuros, [
-			...camposDD1,
-			...camposDD2,
-		]);
+		let errores = await validarProd.datosDuros(datosDuros, [...camposDD1, ...camposDD2]);
+		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
 			elc_id = await procesarProd.obtenerELC_id({
@@ -298,31 +285,25 @@ module.exports = {
 			}
 		}
 		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
-		if (!errores.avatar) {
-			if (req.file) {
-				// En caso de archivo por multer
-				tipo = req.file.mimetype;
-				tamano = req.file.size;
-				nombre = req.file.filename;
-				rutaYnombre = req.file.path;
-			} else if (datosDuros.avatar) {
-				// En caso de archivo sin multer
-				let datos = await requestPromise
-					.head(datosDuros.avatar)
-					.then((n) => [n["content-type"], n["content-length"]]);
-				tipo = datos[0];
-				tamano = datos[1];
-				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
-			}
-			// Revisar errores
-			errores.avatar = revisarImagen(tipo, tamano);
-			// Si la imagen venía de TMDB, entonces grabarla
-			if (!errores.avatar && !errores.hay && datosDuros.fuente == "TMDB")
-				download(datosDuros.avatar, rutaYnombre); // Grabar el archivo de url
-			// Si hay errores en el avatar, marcar que sí hay errores
-			if (errores.avatar) errores.hay = true;
+		if (req.file) {
+			// En caso de archivo por multer
+			tipo = req.file.mimetype;
+			tamano = req.file.size;
+			nombre = req.file.filename;
+			rutaYnombre = req.file.path;
+		} else if (datosDuros.avatar) {
+			// En caso de archivo sin multer
+			let datos = await requestPromise
+				.head(datosDuros.avatar)
+				.then((n) => [n["content-type"], n["content-length"]]);
+			tipo = datos[0];
+			tamano = datos[1];
+			nombre = Date.now() + path.extname(datosDuros.avatar);
+			rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 		}
+		// Revisar errores
+		if (!errores.avatar) errores.avatar = revisarImagen(tipo, tamano);
+		if (errores.avatar) errores.hay = true;
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
@@ -330,11 +311,11 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/agregar/producto/datos-duros");
 		}
+		// Si la imagen venía de TMDB, entonces grabarla
+		if (datosDuros.fuente == "TMDB") download(datosDuros.avatar, rutaYnombre);
 		// 8. Generar la session para la siguiente instancia
 		avatarDP =
-			datosDuros.fuente == "TMDB"
-				? datosDuros.avatar
-				: "/imagenes/9-Provisorio/" + nombre;
+			datosDuros.fuente == "TMDB" ? datosDuros.avatar : "/imagenes/9-Provisorio/" + nombre;
 		req.session.datosPers = {
 			...req.session.datosDuros,
 			avatarDP: avatarDP,
@@ -354,7 +335,7 @@ module.exports = {
 		codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "datosPers");
-		// 3. Feedback de la instancia anterior o Data Entry propio
+		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosPers = req.session.datosPers
 			? req.session.datosPers
 			: req.cookies.datosPers
@@ -383,18 +364,15 @@ module.exports = {
 	},
 
 	datosPersGuardar: async (req, res) => {
-		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
-		aux = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers;
+		// 1.1. Si se perdió la info anterior, volver a esa instancia
+		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("/agregar/producto/datos-duros");
 		// 1.2. Guardar el data entry en session y cookie
-		let datosPers = { ...aux, ...req.body };
-		if (!datosPers.personaje_historico_id)
-			delete datosPers.personaje_historico_id;
+		let datosPers = {...aux, ...req.body};
+		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
 		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
 		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, { maxAge: 24 * 60 * 60 * 1000 });
+		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 2.1. Averiguar si hay errores de validación
 		camposDP = [...(await datosPersSelect()), ...datosPersInput];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
@@ -404,18 +382,10 @@ module.exports = {
 			return res.redirect("/agregar/producto/datos-personalizados");
 		}
 		// 3. Si no hay errores, obtener la calificación
-		fe_valores = await BD_varias.obtenerPorParametro(
-			"fe_valores",
-			"id",
-			req.body.fe_valores_id
-		)
+		fe_valores = await BD_varias.obtenerPorParametro("fe_valores", "id", req.body.fe_valores_id)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		entretiene = await BD_varias.obtenerPorParametro(
-			"entretiene",
-			"id",
-			req.body.entretiene_id
-		)
+		entretiene = await BD_varias.obtenerPorParametro("entretiene", "id", req.body.entretiene_id)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
 		calidad_tecnica = await BD_varias.obtenerPorParametro(
@@ -425,11 +395,7 @@ module.exports = {
 		)
 			.then((n) => n.valor / 3)
 			.then((n) => n.toFixed(2));
-		calificacion = (
-			fe_valores * 0.5 +
-			entretiene * 0.3 +
-			calidad_tecnica * 0.2
-		).toFixed(2);
+		calificacion = (fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2).toFixed(2);
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,
@@ -451,14 +417,13 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "confirmar";
-		// 2. Feedback de la instancia anterior o Data Entry propio
+		// 2. Si se perdió la info anterior, volver a esa instancia
 		confirmar = req.session.confirmar
 			? req.session.confirmar
 			: req.cookies.confirmar
 			? req.cookies.confirmar
 			: "";
-		if (!confirmar)
-			return res.redirect("/agregar/producto/datos-personalizados");
+		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(confirmar);
 		req.session.datosClaveProd = datosClaveProd;
@@ -476,40 +441,32 @@ module.exports = {
 	},
 
 	confirmarGuardar: async (req, res) => {
-		// 1. Feedback de la instancia anterior o Data Entry propio
+		// 1. Si se perdió la info anterior, volver a esa instancia
 		confirmar = req.session.confirmar
 			? req.session.confirmar
 			: req.cookies.confirmar
 			? req.cookies.confirmar
 			: "";
-		if (!confirmar)
-			return res.redirect("/agregar/producto/datos-personalizados");
+		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
 		// 2. Guardar el registro
 		registro = await BD_varias.agregarRegistro(confirmar);
 		//return res.send(registro)
 		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd({ ...confirmar, id: registro.id });
+		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
 		req.session.datosClaveProd = datosClaveProd;
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		//return res.send(datosClaveProd)
 		// 4. Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRCLV(
-			"historicos_personajes",
-			registro.personaje_historico_id
-		);
+		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// 5. Miscelaneas
 		guardarCalificaciones_us(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
 		// 6. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
 		datosDurosPartes = req.session.datosDurosPartes;
-		if (
-			confirmar.entidad == "colecciones" &&
-			confirmar.fuente == "TMDB" &&
-			datosDurosPartes
-		)
+		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB" && datosDurosPartes)
 			agregarPartesDeColeccion(datosDurosPartes, registro.id);
 		//return res.send(confirmar);
 		// 7. Borrar todas las session y cookies de 'Agregar producto'
@@ -528,8 +485,7 @@ module.exports = {
 			: req.cookies.datosClaveProd
 			? req.cookies.datosClaveProd
 			: "";
-		if (!datosClaveProd)
-			return res.redirect("/agregar/producto/palabras-clave");
+		if (!datosClaveProd) return res.redirect("/agregar/producto/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y si la colección ya está en nuestra BD
 		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_TMDB_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
@@ -556,7 +512,7 @@ module.exports = {
 	},
 
 	conclusionGuardar: async (req, res) => {
-		datos = { ...req.body, url: req.url.slice(1) };
+		datos = {...req.body, url: req.url.slice(1)};
 		//return res.send(datos);
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
@@ -584,9 +540,7 @@ module.exports = {
 					nombre_original: datos.en_colec_nombre,
 				};
 				// Crear session y cookie para datosDuros (simil Desambiguar)
-				let [aux1, aux2] = await obtenerDatosDelProductoTMDB(
-					datosDuros
-				);
+				let [aux1, aux2] = await obtenerDatosDelProductoTMDB(datosDuros);
 				req.session.datosDuros = aux1;
 				res.cookie("datosDuros", req.session.datosDuros, {
 					maxAge: 24 * 60 * 60 * 1000,
@@ -600,7 +554,7 @@ module.exports = {
 				return res.redirect("/agregar/producto/datos-duros");
 			} else if (datos.FA_id) {
 				// 2.2. Colección FA ****************************************
-				req.session.copiarFA = { entidad: "colecciones" };
+				req.session.copiarFA = {entidad: "colecciones"};
 				res.cookie("copiarFA", req.session.copiarFA, {
 					maxAge: 24 * 60 * 60 * 1000,
 				});
@@ -633,7 +587,7 @@ module.exports = {
 	responsabilidad: (req, res) => {
 		tema = "agregar";
 		codigo = "responsabilidad";
-		return res.render("Home", { tema, codigo });
+		return res.render("Home", {tema, codigo});
 	},
 
 	yaEnBD_Form: (req, res) => {
@@ -660,9 +614,7 @@ let revisarImagen = (tipo, tamano) => {
 	return tipo.slice(0, 6) != "image/"
 		? "Necesitamos un archivo de imagen"
 		: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-		? "El tamaño del archivo es superior a " +
-		  tamanoMaximo +
-		  " MB, necesitamos uno más pequeño"
+		? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
 		: "";
 };
 
@@ -723,9 +675,9 @@ let camposDD2 = [
 		peliculas: true,
 		colecciones: true,
 	},
-	{ titulo: "Guión", campo: "guion", peliculas: true, colecciones: true },
-	{ titulo: "Música", campo: "musica", peliculas: true, colecciones: true },
-	{ titulo: "Actores", campo: "actores", peliculas: true, colecciones: true },
+	{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
+	{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
+	{titulo: "Actores", campo: "actores", peliculas: true, colecciones: true},
 	{
 		titulo: "Productor",
 		campo: "productor",
@@ -751,8 +703,8 @@ let datosPersSelect = async () => {
 			titulo: "Es a Color",
 			campo: "color",
 			valores: [
-				{ id: 1, nombre: "SI" },
-				{ id: 0, nombre: "NO" },
+				{id: 1, nombre: "SI"},
+				{id: 0, nombre: "NO"},
 			],
 			mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 			mensajeColec: [
@@ -782,10 +734,7 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Público sugerido",
 			campo: "publico_sugerido_id",
-			valores: await BD_varias.obtenerTodos(
-				"publicos_sugeridos",
-				"orden"
-			),
+			valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden"),
 			peliculas: true,
 			colecciones: true,
 			mensajes: [
@@ -823,10 +772,7 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Personaje histórico",
 			campo: "personaje_historico_id",
-			valores: await BD_varias.obtenerTodos(
-				"historicos_personajes",
-				"nombre"
-			),
+			valores: await BD_varias.obtenerTodos("historicos_personajes", "nombre"),
 			peliculas: true,
 			colecciones: true,
 			mensajes: [
@@ -838,10 +784,7 @@ let datosPersSelect = async () => {
 		{
 			titulo: "Hecho histórico",
 			campo: "hecho_historico_id",
-			valores: await BD_varias.obtenerTodos(
-				"historicos_hechos",
-				"nombre"
-			),
+			valores: await BD_varias.obtenerTodos("historicos_hechos", "nombre"),
 			peliculas: true,
 			colecciones: true,
 			mensajes: [
@@ -906,11 +849,7 @@ let actualizarRCLV = async (entidad, id) => {
 	if (id) {
 		aux = await BD_varias.obtenerPorId(entidad, id);
 		aux.cant_productos++;
-		BD_varias.actualizarRegistro(
-			entidad,
-			{ cant_productos: aux.cant_productos },
-			id
-		);
+		BD_varias.actualizarRegistro(entidad, {cant_productos: aux.cant_productos}, id);
 	}
 };
 
@@ -955,10 +894,8 @@ let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 			orden: orden,
 			creada_por_id: 2,
 		};
-		if (parte.nombre_original)
-			datos.nombre_original = parte.nombre_original;
-		if (parte.nombre_castellano)
-			datos.nombre_castellano = parte.nombre_castellano;
+		if (parte.nombre_original) datos.nombre_original = parte.nombre_original;
+		if (parte.nombre_castellano) datos.nombre_castellano = parte.nombre_castellano;
 		if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
 		if (parte.cant_capitulos) datos.cant_capitulos = parte.cant_capitulos;
 		if (parte.avatar) datos.avatar = parte.avatar;
@@ -985,9 +922,7 @@ let borrarSessionCookies = (req, res, paso) => {
 	];
 	let indice = pasos.findIndex((n) => n == paso) + 1;
 	for (indice; indice < pasos.length; indice++) {
-		if (req.session && req.session.pasos && req.session.pasos[indice])
-			delete req.session.pasos[indice];
-		if (req.cookies && req.cookies.pasos && req.cookies.pasos[indice])
-			res.clearCookie(pasos[indice]);
+		if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
+		if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 	}
 };

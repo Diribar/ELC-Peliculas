@@ -11,7 +11,7 @@
 	padding: 5px 10px; border-radius: 10px;}
 #dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
-#dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro);}
+#dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}
 
 #dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}

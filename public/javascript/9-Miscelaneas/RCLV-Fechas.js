@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 
 	// FUNCIONES *******************************
 	// Aplicar cambios en los días 30 y 31
-	cambio = () => {
+	diasDelMes = () => {
 		if (mes.value == 2 || mes.value == "") {
 			dia30.classList.add("ocultar");
 			dia31.classList.add("ocultar");
@@ -73,12 +73,11 @@ window.addEventListener("load", () => {
 
 	// Status inicial
 	if (mes.value && dia.value) registrosConEsaFecha(mes.value, dia.value);
+	if (mes.value != "") diasDelMes();
 
 	// ADD EVENT *******************************
-	// Detectar cambios en mes
-	if (mes.value != "") cambio();
 	mes.addEventListener("change", () => {
-		cambio();
+		diasDelMes();
 		if (mes.value && dia.value) registrosConEsaFecha(mes.value, dia.value);
 	});
 	dia.addEventListener("change", () => {
