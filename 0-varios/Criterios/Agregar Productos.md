@@ -14,13 +14,13 @@ COLECCIONES
 	- Luego, se debe elegir la colección. Opciones:
 		- Primero: colecciones del usuario, ordenadas por las más recientes
 		- Segundo: demás colecciones, ordenadas alfabéticamente
-- Nueva película TMDB, en colección, pero cuya parte no figura en BD
+- Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD
 	- Se detecta en Desambiguar
 	- Primero se actualizan las partes mediante API, luego se sigue con la película
 
 PALABRAS CLAVE
-- Sin discriminar entre Colecciones, TV y Películas
-- Consulta de API, sólo con botón verificar
+- OK: Sin discriminar entre Colecciones, TV y Películas
+- OK: Consulta de API, sólo con botón verificar
 
 DESAMBIGUAR
 - Avisa en el momento si se eligió una película cuya colección no está en la BD

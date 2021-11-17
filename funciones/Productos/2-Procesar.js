@@ -22,16 +22,13 @@ module.exports = {
 	pelicula_TMDB: async (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			producto: form.producto,
-			entidad: form.entidad,
-			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
-			TMDB_id: form.TMDB_id,
-			nombre_original: form.nombre_original,
+			producto: "Película",
+			entidad: "peliculas",
+			...form
 		};
 		// Datos obtenidos de la API
 		let datosLectura = {};
-		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
+		if (Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API
 			if (lectura.belongs_to_collection != null) {
 				// Datos provenientes del API
@@ -39,12 +36,11 @@ module.exports = {
 				datosLectura.en_colec_TMDB_id = lectura.belongs_to_collection.id;
 				datosLectura.en_colec_nombre = lectura.belongs_to_collection.name;
 				// ELC_id de la colección
-				ELC_id = await BD_varias.obtenerELC_id({
+				datosLectura.en_colec_id = await BD_varias.obtenerELC_id({
 					entidad: "colecciones",
 					campo: "TMDB_id",
 					valor: datosLectura.en_colec_TMDB_id,
 				});
-				if (ELC_id) datosLectura.en_colec_id = ELC_id;
 			} else datosLectura.en_coleccion = false;
 			lectura.IMDB_id != "" ? (datosLectura.IMDB_id = lectura.imdb_id) : "";
 			lectura.overview != ""
@@ -99,16 +95,13 @@ module.exports = {
 	TV_TMDB: (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			producto: form.producto,
-			entidad: form.entidad,
-			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
-			TMDB_id: form.TMDB_id,
-			nombre_original: form.nombre_original,
+			producto: "Colección",
+			entidad: "colecciones",
+			...form
 		};
 		let datosCabecera = {};
 		let datosPartes = {};
-		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
+		if (Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API - Cabecera
 			lectura.created_by.length > 0
 				? (datosCabecera.guion = lectura.created_by.map((n) => n.name).join(", "))
@@ -174,16 +167,13 @@ module.exports = {
 	coleccion_TMDB: (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
-			producto: form.producto,
-			entidad: form.entidad,
-			fuente: form.fuente,
-			entidad_TMDB: form.entidad_TMDB,
-			TMDB_id: form.TMDB_id,
-			nombre_original: form.nombre_original,
+			producto: "Colección",
+			entidad: "colecciones",
+			...form
 		};
 		let datosCabecera = {};
 		let datosPartes = {};
-		if (form.fuente == "TMDB" && Object.keys(lectura).length > 0) {
+		if (Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API - Cabecera
 			lectura.name != "" ? (datosCabecera.nombre_castellano = lectura.name) : "";
 			lectura.overview != ""

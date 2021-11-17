@@ -9,21 +9,28 @@ window.addEventListener("load", async () => {
 
 	// Desplazamiento por teclado
 	window.addEventListener("keydown", (e) => {
-		//console.log(e.key);
+		console.log(e.key);
 		if (e.key == "Home") resultado.scrollTo(0, 0);
 		if (e.key == "End") resultado.scrollTo(anchoTotal, 0);
 		if (e.key == "PageDown")
 			resultado.scrollTo(
-				parseInt(resultado.scrollLeft / desplazamiento) *
-					desplazamiento +
-					desplazamiento,
+				parseInt(resultado.scrollLeft / desplazamiento) * desplazamiento + desplazamiento,
 				0
 			);
 		if (e.key == "PageUp")
 			resultado.scrollTo(
-				parseInt(resultado.scrollLeft / desplazamiento + 0.99) *
-					desplazamiento -
+				parseInt(resultado.scrollLeft / desplazamiento + 0.99) * desplazamiento -
 					desplazamiento,
+				0
+			);
+		if (e.key == "ArrowDown" || e.key == "ArrowRight")
+			resultado.scrollTo(
+				parseInt(resultado.scrollLeft / anchoForm) * anchoForm + anchoForm,
+				0
+			);
+		if (e.key == "ArrowUp" || e.key == "ArrowLeft")
+			resultado.scrollTo(
+				parseInt(resultado.scrollLeft / anchoForm + 0.99) * anchoForm - anchoForm,
 				0
 			);
 	});

@@ -4,6 +4,11 @@
 		<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
 		<p class="flex-row"><%= mensaje %></p>
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
+		<!-- Errores -->
+		<i class="fas fa-times-circle ocultar">
+			<span class="mensajeError"><%- errores ? errores.mensaje : "" %></span>
+		</i>
+		<i class="fas fa-check-circle ocultar"></i>
 	</div>
 	<ul class="flex-row space-between"  id="resultadoGeneral">
 		<%- include('21-ProductosNuevos', { prod_nuevos }) %>

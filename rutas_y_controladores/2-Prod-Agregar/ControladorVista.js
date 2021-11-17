@@ -77,49 +77,41 @@ module.exports = {
 			? req.cookies.desambiguar
 			: "";
 		if (!desambiguar) return res.redirect("/agregar/producto/palabras-clave");
-		// 4. Prepara datos
+		// 3. Errores
+		let errores = req.session.errores
+			? req.session.errores
+			: "";
+		// 4. Preparar los datos
 		let resultados = desambiguar.resultados;
-		let prod_nuevos = resultados.filter((n) => !n.YaEnBD);
-		let prod_yaEnBD = resultados.filter((n) => n.YaEnBD);
-		// 5. Preparar el mensaje
-		let coincidencias = resultados.length;
-		nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
-		let hayMas = desambiguar.hayMas;
-		mensaje =
-			"Encontramos " +
-			(coincidencias == 1
-				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
-				: (hayMas ? "muchas" : coincidencias) +
-				  " coincidencias" +
-				  (hayMas ? ". Te mostramos " + coincidencias : "") +
-				  (nuevos == coincidencias
-						? ", ninguna"
-						: nuevos
-						? ", " + nuevos + " no"
-						: ", todas ya")) +
-			" está" +
-			(nuevos > 1 ? "n" : "") +
-			" en nuestra BD.";
-		// 6. Render del formulario
+		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados)
+		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
-			mensaje,
+			link: req.originalUrl,
 			prod_nuevos,
 			prod_yaEnBD,
+			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
-			link: req.originalUrl,
+			errores,
 		});
 	},
 
 	desambiguarGuardar: async (req, res) => {
-		// 1. Completar la información del producto elegido
 		if (req.body.fuente == "TMDB") {
-			req.body.entidad = req.body.entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-			req.body.producto = req.body.entidad_TMDB == "movie" ? "Película" : "Colección";
-			// 2. Generar la session para la siguiente instancia
+			// Fuente: TMDB
+			// 2. Obtener más información del producto
 			[aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body);
+			// 3. Averiguar si hay errores de validación
+			let errores = await validarProd.desambiguar(aux1);
+			// 4. Si no supera el filtro anterior, redireccionar
+			if (errores.hay) {
+			 	req.session.errores = errores;
+			 	return res.redirect("/agregar/producto/desambiguar");
+			}
+			// 5. Si la colección está creada, pero su parte NO, actualizar las partes
+			// 6. Generar la session para la siguiente instancia
 			req.session.datosDuros = aux1;
 			res.cookie("datosDuros", aux1, {maxAge: 24 * 60 * 60 * 1000});
 			if (aux2) {
@@ -127,6 +119,7 @@ module.exports = {
 				res.cookie("datosDurosPartes", aux2, {maxAge: 24 * 60 * 60 * 1000});
 			}
 		} else if (req.body.fuente == "IM") {
+			// Fuente: IM
 			req.body.producto = req.body.entidad == "peliculas" ? "Película" : "Colección";
 			req.session.datosDuros = req.body;
 			res.cookie("datosDuros", req.body, {maxAge: 24 * 60 * 60 * 1000});
@@ -929,3 +922,27 @@ let borrarSessionCookies = (req, res, paso) => {
 		if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 	}
 };
+
+let prepararMensaje = (datos) => {
+	let prod_nuevos = datos.filter((n) => !n.YaEnBD);
+	let prod_yaEnBD = datos.filter((n) => n.YaEnBD);
+	let coincidencias = datos.length;
+	nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+	let hayMas = desambiguar.hayMas;
+	mensaje =
+		"Encontramos " +
+		(coincidencias == 1
+			? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+			: (hayMas ? "muchas" : coincidencias) +
+			  " coincidencias" +
+			  (hayMas ? ". Te mostramos " + coincidencias : "") +
+			  (nuevos == coincidencias
+					? ", ninguna"
+					: nuevos
+					? ", " + nuevos + " no"
+					: ", todas ya")) +
+		" está" +
+		(nuevos > 1 ? "n" : "") +
+		" en nuestra BD.";
+	return {prod_nuevos, prod_yaEnBD, mensaje}
+}
