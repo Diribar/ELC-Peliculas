@@ -9,6 +9,7 @@
 				<div>
 					<h3>Elegí el Rubro</h3>
 					<div class="relative">
+						<!-- Data Entry -->
 						<select name="entidad" class="input" autofocus>
 							<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
 							<option value="peliculas" 
@@ -20,6 +21,7 @@
 								Colección
 							</option>
 						</select>
+						<!-- Errores -->
 						<i class="fas fa-times-circle ocultar">
 							<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
 						</i>

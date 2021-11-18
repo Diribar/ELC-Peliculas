@@ -14,6 +14,26 @@ module.exports = {
 		return errores;
 	},
 
+	// ControllerAPI (validarPalabrasClave)
+	desambiguar: (dato) => {
+		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
+		if (dato.entidad_TMDB == "movie" && dato.en_coleccion && !dato.en_colec_id) {
+			errores = {
+				// Datos originales
+				peli_entidad_TMDB: "movie",
+				peli_TMDB_id: dato.TMDB_id,
+				peli_nombre: dato.nombre_castellano,
+				// Datos nuevos
+				colec_entidad_TMDB: "collection",
+				colec_TMDB_id: dato.en_colec_TMDB_id,
+				colec_nombre: dato.en_colec_nombre,
+				hay: true,
+			};
+		} else errores = {hay: false};
+		// Enviar el feedback
+		return errores;
+	},
+
 	// ControllerAPI (validarCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};
@@ -21,17 +41,14 @@ module.exports = {
 		errores.entidad = !datos.entidad ? "Elegí una opción" : "";
 		// En colección
 		errores.en_coleccion =
-			!datos.en_coleccion && datos.entidad == "peliculas"
-				? "Elegí una opción"
-				: "";
+			!datos.en_coleccion && datos.entidad == "peliculas" ? "Elegí una opción" : "";
 		// Dirección
 		url = datos.direccion;
 		errores.direccion = !url
 			? cartelCampoVacio
 			: !url.includes("www.filmaffinity.com/") ||
 			  !(
-					url.indexOf("www.filmaffinity.com/") + 21 <
-						url.indexOf("/film") &&
+					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
 					url.indexOf("/film") + 5 < url.indexOf(".html")
 			  )
 			? "No parece ser una dirección de Film Affinity"
@@ -45,9 +62,7 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		aux = datos.contenido
-			? procesarProd.contenidoFA(datos.contenido)
-			: {};
+		aux = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
 			: !Object.keys(aux).length
@@ -63,17 +78,13 @@ module.exports = {
 	datosDuros: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
 		if (datos.entidad) {
-			camposAVerificar = camposDD
-				.filter((n) => n[datos.entidad])
-				.map((n) => n.campo);
+			camposAVerificar = camposDD.filter((n) => n[datos.entidad]).map((n) => n.campo);
 		} else camposAVerificar = camposDD;
 		// Comenzar con las revisiones
 		let errores = {};
 		// En colección
 		errores.en_coleccion =
-			!datos.en_coleccion &&
-			datos.entidad == "peliculas" &&
-			datos.fuente == "IM"
+			!datos.en_coleccion && datos.entidad == "peliculas" && datos.fuente == "IM"
 				? "Elegí una opción"
 				: "";
 		errores.nombre_original =
@@ -119,9 +130,7 @@ module.exports = {
 				? "El año debe ser mayor a 1900"
 				: datos.ano_fin > new Date().getFullYear()
 				? "El número no puede superar al año actual"
-				: !errores.ano_estreno &&
-				  datos.ano_estreno &&
-				  datos.ano_estreno > datos.ano_fin
+				: !errores.ano_estreno && datos.ano_estreno && datos.ano_estreno > datos.ano_fin
 				? "El año de finalización debe ser igual o mayor que el año de estreno"
 				: "";
 		errores.duracion =
@@ -217,11 +226,7 @@ module.exports = {
 				? cartelSelectVacio
 				: "";
 		errores.color =
-			camposAVerificar.indexOf("color") == -1
-				? ""
-				: !datos.color
-				? cartelSelectVacio
-				: "";
+			camposAVerificar.indexOf("color") == -1 ? "" : !datos.color ? cartelSelectVacio : "";
 		errores.categoria_id =
 			camposAVerificar.indexOf("categoria_id") == -1
 				? ""
@@ -243,13 +248,11 @@ module.exports = {
 		// Relación con la vida
 		if (
 			!datos.personaje_historico_id &&
-				!datos.hecho_historico_id &&
-				(datos.subcategoria_id == 4 ||
-					datos.subcategoria_id == 5 ||
-					datos.subcategoria_id == 9)
+			!datos.hecho_historico_id &&
+			(datos.subcategoria_id == 4 || datos.subcategoria_id == 5 || datos.subcategoria_id == 9)
 		) {
-			errores.personaje_historico_id = relacionConLaVidaVacio
-			errores.hecho_historico_id = relacionConLaVidaVacio
+			errores.personaje_historico_id = relacionConLaVidaVacio;
+			errores.hecho_historico_id = relacionConLaVidaVacio;
 		}
 		// Links gratuitos
 		errores.link_trailer =
@@ -297,7 +300,8 @@ let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
-let relacionConLaVidaVacio = "Necesitamos que elijas una opción en alguno de estos dos campos o en ambos";
+let relacionConLaVidaVacio =
+	"Necesitamos que elijas una opción en alguno de estos dos campos o en ambos";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto

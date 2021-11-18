@@ -1,4 +1,6 @@
-DESAMBIGUAR: avisa en el momento si se eligió una película cuya colección no está en la BD
+DESAMBIGUAR, BE: Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD:
+- Primero se actualizan las partes mediante API
+- Luego se sigue con la película
 
 COPIAR FA: si la película pertenece a una colección, se elije en el momento
 

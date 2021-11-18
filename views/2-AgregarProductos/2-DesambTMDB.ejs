@@ -1,9 +1,18 @@
 <h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 <div class="flex-col" id="dataEntry">
-	<div class="flex-col">
+	<div id="encabezado">
 		<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
 		<p class="flex-row"><%= mensaje %></p>
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
+		<!-- Errores -->
+		<% if (errores) { %>
+			<i class="fas fa-times-circle">
+				<span class="mensajeError">
+					La película <%= errores.peli_nombre %> que elejiste, pertenece a la colección <em><strong><%= errores.colec_nombre %></strong></em>, que no figura en nuestra BD.<br>
+					Tenés que cargar primero esa colección.
+				</span>
+			</i>
+		<% } %>
 	</div>
 	<ul class="flex-row space-between"  id="resultadoGeneral">
 		<%- include('21-ProductosNuevos', { prod_nuevos }) %>

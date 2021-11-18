@@ -1,31 +1,36 @@
 /* Partes particulares */
 #dataEntry h2 {margin-bottom: 5px;}
 #dataEntry #resultadoGeneral {width: 700px; overflow-x: auto;}
-#dataEntry button {padding: 0;}
-#dataEntry button, #imagenChica {border-radius: 15px;}
-
-/* Flechas */
-#dataEntry #flechas {margin-top: 20px;}
+#dataEntry button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
+#dataEntry #encabezado {display: flex; flex-direction: column; position: relative;}
+#dataEntry #encabezado .fa-times-circle {top: auto; bottom: -18px; left: 0px; transform: none;}
+#dataEntry #encabezado .fa-times-circle span {max-width: 400px;}
 
 /* Resultados */
 #prod_nuevo, #ingr_manual, #prod_yaEnBD 
-	{margin: 30px 10px 20px 10px; padding: 0; border: none; text-align: left; width:290px;}
+	{margin: 30px 10px 20px; padding: 0; border: none; text-align: left; width:290px;}
 #dataEntry #prod_nuevo {background-color: var(--verde-intermedio);}
 #dataEntry #ingr_manual {background-color: var(--rojo-claro);}
 #dataEntry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
 #dataEntry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
 #dataEntry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#dataEntry #prod_yaEnBD:hover {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+#dataEntry #prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--azul-claro);}
 
 /* Partes del resultado */
-#imagenChica {max-height: 200px;}
-#infoPeli {color: inherit; margin: 10px 15px;}
-#infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
-
-.interlineadoChico {margin-top: 5px;}
+#dataEntry #imagenChica, #dataEntry #texto {height: 100%;}
+#dataEntry #texto {display: flex; flex-direction: column; justify-content: space-between;}
+#dataEntry #infoPeli {margin: 10px 15px;}
+#dataEntry #infoPeli, #infoPeli p, #infoPeli p strong, #infoPeli p em {color: inherit;}
+#dataEntry #mensaje {font-weight: normal; margin-top: 0; background-color: var(--rojo-claro); padding: 2px 15px;}
+#dataEntry #prod_nuevo:hover #mensaje {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
+#dataEntry #mensaje #colec_nombre {font-weight: bold; font-style: italic}
+#dataEntry .interlineadoChico {margin-top: 5px;}
 
 /* Barra de desplazamiento */
 ::-webkit-scrollbar {outline: transparent;}
 ::-webkit-scrollbar-track {background: var(--celeste-oscuro); border-radius: 10px;}
 ::-webkit-scrollbar-thumb {background: var(--gris-oscuro); border-radius: 10px;}
 /* ::-webkit-scrollbar-button {background: red;} */
+
+/* Flechas */
+#dataEntry #flechas {margin-top: 20px;}
