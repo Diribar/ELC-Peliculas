@@ -36,7 +36,7 @@ module.exports = (sequelize, dt) => {
 		analizada_por_id: { type: dt.INTEGER },
 		analizada_en: { type: dt.DATE },
 		aprobada: { type: dt.BOOLEAN },
-		fechaFIFO: { type: dt.DATE },
+		ultima_fecha: { type: dt.DATE },
 		editada_por_id: { type: dt.INTEGER },
 		editada_en: { type: dt.DATE },
 		revisada_por_id: { type: dt.INTEGER },

@@ -1,14 +1,17 @@
-DESAMBIGUAR, BE: Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD:
-- Primero se actualizan las partes mediante API
-- Luego se sigue con la película
-
-COPIAR FA: si la película pertenece a una colección, se elije en el momento
+COPIAR FA: 
+- Si la película pertenece a una colección, se elije en el momento
+	- Primero: colecciones del usuario, ordenadas por las más recientes
+	- Segundo: demás colecciones, ordenadas alfabéticamente
 
 DATOS DUROS: campos adicionales para películas: enColeccion, coleccion
 - TMDB/FA: "congelados"
 - IM: si la película pertenece a una colección, se elije en el momento
 
-CONFIRMAR: mismos datos que en Desambiguar, más Director
+CONFIRMAR:
+- Vista: mismos datos que en Desambiguar, más Director
+- BE: Nueva película TMDB, en colección en BD, pero cuya parte no figura en BD:
+	- Primero se actualizan las partes mediante API
+	- Luego se sigue con la película
 
 AGREGAR PRODUCTOS
 - Estandarización de títulos y formatos en Agregar
