@@ -164,21 +164,19 @@ CREATE TABLE categorias_sub (
 	PRIMARY KEY (id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO categorias_sub (id, orden, categoria_id, nombre, url)
+INSERT INTO categorias_sub (orden, categoria_id, nombre, url)
 VALUES 
-(1, 1, 'CFC', 'Jesús', 'cfc/jesus'), 
-(2, 2, 'CFC', 'Contemporáneos de Jesús', 'cfc/contemporaneos'), 
-(3, 3, 'CFC', 'Apariciones Marianas', 'cfc/marianas'), 
-(4, 4, 'CFC', 'Hagiografías', 'cfc/hagiografias'), 
-(5, 5, 'CFC', 'Historias de la Iglesia', 'cfc/historias'), 
-(6, 6, 'CFC', 'Novelas centradas en la fe', 'cfc/novelas'), 
-(7, 7, 'CFC', 'Colecciones', 'cfc/colecciones'), 
-(8, 8, 'CFC', 'Documentales', 'cfc/documentales'), 
-(9, 9, 'VPC', 'Biografías e Historias', 'vpc/bios_historias'), 
-(10, 10, 'VPC', 'Matrimonio y Familia', 'vpc/matrimonio'), 
-(11, 11, 'VPC', 'Novelas', 'vpc/novelas'), 
-(12, 12, 'VPC', 'Musicales', 'vpc/musicales'), 
-(13, 13, 'VPC', 'Colecciones', 'vpc/colecciones')
+(1, 'CFC', 'Jesús', 'cfc/jesus'), 
+(2, 'CFC', 'Contemporáneos de Jesús', 'cfc/contemporaneos'), 
+(3, 'CFC', 'Apariciones Marianas', 'cfc/marianas'), 
+(4, 'CFC', 'Hagiografías', 'cfc/hagiografias'), 
+(5, 'CFC', 'Historias de la Iglesia', 'cfc/historias'), 
+(6, 'CFC', 'Novelas centradas en la fe', 'cfc/novelas'), 
+(7, 'CFC', 'Documentales', 'cfc/documentales'), 
+(8, 'VPC', 'Biografías e Historias', 'vpc/bios_historias'), 
+(9, 'VPC', 'Matrimonio y Familia', 'vpc/matrimonio'), 
+(10, 'VPC', 'Novelas', 'vpc/novelas'), 
+(11, 'VPC', 'Musicales', 'vpc/musicales')
 ;
 CREATE TABLE listado_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -343,15 +341,64 @@ CREATE TABLE en_castellano (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO en_castellano (id, nombre)
 VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
+CREATE TABLE cal_fe_valores (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_fe_valores (id, orden, valor, nombre)
+VALUES 
+(4, 1, 3, 'Mucho'),
+(3, 2, 2, 'Sí'),
+(2, 3, 1, 'Poco'),
+(1, 4, 0, 'No')
+;
+CREATE TABLE cal_entretiene (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_entretiene (id, orden, valor, nombre)
+VALUES 
+(4, 1, 3, 'Mucho'),
+(3, 2, 2, 'Sí'),
+(2, 3, 1, 'Poco'),
+(1, 4, 0, 'No')
+;
+CREATE TABLE cal_calidad_tecnica (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	valor INT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
+VALUES 
+(2, 1, 3, 'No afecta el disfrute'),
+(1, 2, 0, 'Perjudica el disfrute')
+;
+CREATE TABLE interes_en_prod (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden INT UNSIGNED NOT NULL,
+	nombre VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO interes_en_prod (id, orden, nombre)
+VALUES 
+(3, 1, 'Recordame que quiero verla'),
+(2, 2, 'Ya la vi'),
+(1, 3, 'Prefiero que no me la recomienden')
+;
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
 	FA_id VARCHAR(10) NULL UNIQUE,
 	IMDB_id VARCHAR(10) NULL UNIQUE,
-	en_coleccion BOOLEAN DEFAULT 0,
-	en_colec_id INT UNSIGNED NULL,
-	en_colec_TMDB_id VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
@@ -393,7 +440,6 @@ CREATE TABLE PROD_peliculas (
 	borrada_motivo_id INT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (en_colec_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
@@ -407,10 +453,6 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, nombre_original, nombre_castellano, en_colec_id, duracion, ano_estreno, pais_id, avatar, en_castellano_id, color, publico_sugerido_id, categoria_id, subcategoria_id, personaje_historico_id, hecho_historico_id, sinopsis, creada_por_id, director, guion, musica, actores, productor, calificacion, fuente, en_coleccion)
-VALUES (1, '38516', '436804', 'tt0435100', 'Karol - Un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 195, 2005, 'IT, PL', 'Karol.png', 1, true, 1, 'CFC', 4, 1, 1, 'Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa)', 'Taodue Film', 1, 'IM', 1)
-;
-
 CREATE TABLE PROD_colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
@@ -470,37 +512,62 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_colecciones (id, TMDB_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, pais_id, sinopsis, creada_por_id, director, guion, musica, actores, publico_sugerido_id, categoria_id, subcategoria_id, en_castellano_id, color)
-VALUES (1, '855456', 'collection', 'TMDB', 'Karol', 'Karol', 'IT, PL', 'Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos.', 1, 'Giacomo Battiato', 'Giacomo Battiato', 'Ennio Morricone', 'Piotr Adamczyk (Karol Wojtyla)', 1, 'CFC', 4, 1, 1)
-;
-
-CREATE TABLE prod_colecciones_partes (
+CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	colec_id INT UNSIGNED NOT NULL,
-	peli_id INT UNSIGNED NULL,
-	peli_TMDB_id VARCHAR(20) NULL,
-	nombre_castellano VARCHAR(100) NOT NULL,
+	coleccion_id INT UNSIGNED NOT NULL,
+	temporada INT UNSIGNED NOT NULL,
+	capitulo INT UNSIGNED NOT NULL,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	IMDB_id VARCHAR(10) NULL UNIQUE,
+	fuente VARCHAR(10) NOT NULL,
+	nombre_original VARCHAR(50) NULL,
+	nombre_castellano VARCHAR(50) NULL,
+	duracion INT UNSIGNED NULL,
 	ano_estreno INT UNSIGNED NULL,
-	cant_capitulos INT UNSIGNED NULL,
-	orden INT UNSIGNED NOT NULL,
+	pais_id VARCHAR(20) NULL,
+	director VARCHAR(100) NULL,
+	guion VARCHAR(100) NULL,
+	musica VARCHAR(100) NULL,
+	actores VARCHAR(500) NULL,
+	productor VARCHAR(100) NULL,
+	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
+	en_castellano_id INT UNSIGNED NULL,
+	color BOOLEAN NULL,
+	categoria_id VARCHAR(3) NULL,
+	subcategoria_id INT UNSIGNED NULL,
+	publico_sugerido_id INT UNSIGNED NULL,
+	personaje_historico_id INT UNSIGNED NULL,
+	hecho_historico_id INT UNSIGNED NULL,
+	link_trailer VARCHAR(200) NULL,
+	link_pelicula VARCHAR(200) NULL,
+	calificacion INT UNSIGNED NULL,
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
+	lead_time_creacion INT UNSIGNED NULL,
 	aprobada BOOLEAN DEFAULT 0,
 	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
+	lead_time_edicion INT UNSIGNED NULL,
 	borrada BOOLEAN NOT NULL DEFAULT 0,
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
 	borrada_motivo_id INT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
+	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
@@ -508,58 +575,13 @@ CREATE TABLE prod_colecciones_partes (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_colecciones_partes (colec_id, peli_id, nombre_castellano, orden, creada_por_id)
-VALUES (1, 1, 'Karol, el hombre que llegó a ser Papa', 1, 1)
-;
-INSERT INTO prod_colecciones_partes (colec_id, nombre_castellano, orden, creada_por_id)
-VALUES (1, 'Karol, el Papa que siguió siendo hombre', 2, 1)
-;
 
-CREATE TABLE cal_fe_valores (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_fe_valores (id, orden, valor, nombre)
-VALUES 
-(4, 1, 3, 'Mucho'),
-(3, 2, 2, 'Sí'),
-(2, 3, 1, 'Poco'),
-(1, 4, 0, 'No')
-;
-CREATE TABLE cal_entretiene (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_entretiene (id, orden, valor, nombre)
-VALUES 
-(4, 1, 3, 'Mucho'),
-(3, 2, 2, 'Sí'),
-(2, 3, 1, 'Poco'),
-(1, 4, 0, 'No')
-;
-CREATE TABLE cal_calidad_tecnica (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
-VALUES 
-(2, 1, 3, 'No afecta el disfrute'),
-(1, 2, 0, 'Perjudica el disfrute')
-;
 CREATE TABLE us_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
-	peli_id INT UNSIGNED NULL,
-	colec_id INT UNSIGNED NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 	fe_valores_id INT UNSIGNED NOT NULL,
 	entretiene_id INT UNSIGNED NOT NULL,
 	calidad_tecnica_id INT UNSIGNED NOT NULL,
@@ -569,42 +591,27 @@ CREATE TABLE us_calificaciones (
 	resultado DECIMAL(3,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (peli_id) REFERENCES PROD_peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (fe_valores_id) REFERENCES cal_fe_valores(id),
 	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
 	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_calificaciones (id, usuario_id, peli_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado, fe_valores_id, entretiene_id, calidad_tecnica_id)
-VALUES (1, 1, 1, 1, 1, 1, 1, 4, 4, 2)
-;
-CREATE TABLE interes_en_prod (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL UNIQUE,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO interes_en_prod (id, orden, nombre)
-VALUES 
-(3, 1, 'Recordame que quiero verla'),
-(2, 2, 'Ya la vi'),
-(1, 3, 'Prefiero que no me la recomienden')
-;
 CREATE TABLE us_interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
 	colec_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 	interes_en_prod_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (peli_id) REFERENCES PROD_peliculas(id),
 	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_interes_en_prod (usuario_id, peli_id, interes_en_prod_id)
-VALUES (1, 1, 2)
-;
 CREATE TABLE filtros_personales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
