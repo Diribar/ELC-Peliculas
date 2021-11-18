@@ -316,7 +316,6 @@ let castellano = (dato) => {
 	// \r: carriage return
 	// \n: new line
 	aux= !formato.test(dato);
-	console.log(dato, aux)
 	return aux
 };
 let formatoAno = (dato) => {

@@ -1,20 +1,23 @@
 module.exports = (sequelize, dt) => {
-	const alias = "colecciones";
+	const alias = "capitulos";
 	const columns = {
+		coleccion_id: { type: dt.INTEGER },
+		temporada: { type: dt.INTEGER },
+		capitulo: { type: dt.INTEGER },
 		TMDB_id: { type: dt.STRING(10) },
 		FA_id: { type: dt.STRING(10) },
-		entidad_TMDB: { type: dt.STRING(10) },
+		IMDB_id: { type: dt.STRING(10) },
 		fuente: { type: dt.STRING(5) },
 		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
+		duracion: { type: dt.INTEGER },
 		ano_estreno: { type: dt.INTEGER },
-		ano_fin: { type: dt.INTEGER },
 		pais_id: { type: dt.STRING(20) },
 		director: { type: dt.STRING(100) },
 		guion: { type: dt.STRING(100) },
 		musica: { type: dt.STRING(100) },
 		actores: { type: dt.STRING(500) },
-		productor: { type: dt.STRING(50) },
+		productor: { type: dt.STRING(100) },
 		sinopsis: { type: dt.STRING(800) },
 		avatar: { type: dt.STRING(100) },
 		en_castellano_id: { type: dt.INTEGER },
@@ -46,11 +49,12 @@ module.exports = (sequelize, dt) => {
 		borrada_motivo_comentario: { type: dt.STRING(500) },
 	};
 	const config = {
-		tableName: "PROD_colecciones",
-		timestamps: false,
+		tableName: "PROD_peliculas",
+		timestamps: false
 	};
 	const entidad = sequelize.define(alias,columns,config);
 	entidad.associate = n => {
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.en_castellano, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
@@ -63,7 +67,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
 	};
 	return entidad;
-};
+}; 

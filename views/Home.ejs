@@ -37,16 +37,22 @@
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/1-PalabrasClave.css">
 			<script src="/javascript/2-Productos/1-palabrasClave.js"></script>
 		<% } else %>
-		<% if (codigo == "copiarFA") { %>
-			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2-CopiarFA.css">
-			<script src="/javascript/2-Productos/2-copiarFA-Errores.js"></script>
-			<script src="/javascript/2-Productos/2-copiarFA-Mostrar.js"></script>
-			<script src="/javascript/2-Productos/2-copiarFA-Ayuda.js"></script>
-		<% } else %>
 		<% if (codigo == "desambiguar") { %>
-			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2-DesambTMDB.css">
-			<script src="/javascript/2-Productos/2-DESAMB-Desplazam.js"></script>
-			<script src="/javascript/2-Productos/2-DESAMB-Errores.js"></script>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2A-DesambTMDB.css">
+			<script src="/javascript/2-Productos/2A-DESAMB-Desplazam.js"></script>
+			<script src="/javascript/2-Productos/2A-DESAMB-Errores.js"></script>
+		<% } else %>
+		<% if (codigo == "tipoProducto") { %>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2B-TipoProducto.css">
+			<script src="/javascript/2-Productos/2B-tipoProd-Errores.js"></script>
+			<script src="/javascript/2-Productos/2B-tipoProd-Mostrar.js"></script>
+			<script src="/javascript/2-Productos/2B-tipoProd-Ayuda.js"></script>
+		<% } else %>
+		<% if (codigo == "copiarFA") { %>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2C-CopiarFA.css">
+			<script src="/javascript/2-Productos/2C-copiarFA-Errores.js"></script>
+			<script src="/javascript/2-Productos/2C-copiarFA-Mostrar.js"></script>
+			<script src="/javascript/2-Productos/2C-copiarFA-Ayuda.js"></script>
 		<% } else %>
 		<% if (codigo == "datosDuros") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/3-DatosDuros.css">
@@ -109,8 +115,8 @@
 				<section class="cuerpo flex-col grow">
 					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
 					<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
-					<%- codigo == "copiarFA" ? include("2-CopiarFA") : "" %>
-					<%- codigo == "desambiguar" ? include("2-DesambTMDB") : "" %>
+					<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
+					<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
 					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
 					<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>

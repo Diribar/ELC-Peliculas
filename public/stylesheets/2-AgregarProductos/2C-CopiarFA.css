@@ -1,5 +1,5 @@
 /* Partes específicas del formulario */
-#dataEntry form {display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; height: 370px;}
+#dataEntry form {display: flex; flex-direction: column; justify-content: space-between;}
 
 /* Sector de Data Entry */
 #dataEntry #datos {display: flex; flex-direction: column; align-items: flex-start;}
