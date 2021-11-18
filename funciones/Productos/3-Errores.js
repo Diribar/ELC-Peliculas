@@ -311,8 +311,13 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!/()\d+-]+$/;
-	return !formato.test(dato);
+	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n]+$/;
+	// \d: any decimal
+	// \r: carriage return
+	// \n: new line
+	aux= !formato.test(dato);
+	console.log(dato, aux)
+	return aux
 };
 let formatoAno = (dato) => {
 	formato = /^\d{4}$/;

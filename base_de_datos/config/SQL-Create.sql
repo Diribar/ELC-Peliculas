@@ -377,7 +377,7 @@ CREATE TABLE PROD_colecciones (
 	analizada_en DATETIME NULL,
 	lead_time_creacion INT UNSIGNED NULL,
 	aprobada BOOLEAN DEFAULT 0,
-	fechaFIFO DATETIME NULL,
+	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
@@ -410,7 +410,6 @@ CREATE TABLE prod_colecciones_partes (
 	colec_id INT UNSIGNED NOT NULL,
 	peli_id INT UNSIGNED NULL,
 	peli_TMDB_id VARCHAR(20) NULL,
-	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	cant_capitulos INT UNSIGNED NULL,
@@ -421,7 +420,7 @@ CREATE TABLE prod_colecciones_partes (
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
 	aprobada BOOLEAN DEFAULT 0,
-	fechaFIFO DATETIME NULL,
+	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
@@ -440,11 +439,11 @@ CREATE TABLE prod_colecciones_partes (
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_colecciones_partes (colec_id, peli_id, nombre_original, nombre_castellano, orden, creada_por_id)
-VALUES (1, 1, 'Karol, un uomo diventato Papa', 'Karol, el hombre que llegó a ser Papa', 1, 1)
+INSERT INTO prod_colecciones_partes (colec_id, peli_id, nombre_castellano, orden, creada_por_id)
+VALUES (1, 1, 'Karol, el hombre que llegó a ser Papa', 1, 1)
 ;
-INSERT INTO prod_colecciones_partes (colec_id, nombre_original, nombre_castellano, orden, creada_por_id)
-VALUES (1, 'Karol, un Papa rimasto uomo', 'Karol, el Papa que siguió siendo hombre', 2, 1)
+INSERT INTO prod_colecciones_partes (colec_id, nombre_castellano, orden, creada_por_id)
+VALUES (1, 'Karol, el Papa que siguió siendo hombre', 2, 1)
 ;
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -483,7 +482,7 @@ CREATE TABLE PROD_peliculas (
 	analizada_en DATETIME NULL,
 	lead_time_creacion INT UNSIGNED NULL,
 	aprobada BOOLEAN DEFAULT 0,
-	fechaFIFO DATETIME NULL,
+	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,

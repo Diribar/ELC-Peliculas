@@ -3,11 +3,12 @@
 	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
 	<form action="<%= link %>" method="POST">
 		<!-- Datos a completar -->
-		<section class="flex-col">
-			<div class="flex-row" style="justify-content: space-between;">
-				<!-- Elegí el Rubro -->
+		<section id="datos">
+			<!-- Entidad + En Colección -->
+			<div id="entidad_y_enColeccion">
+				<!-- Elegí la Entidad -->
 				<div>
-					<h3>Elegí el Rubro</h3>
+					<h3>Tipo de Producto</h3>
 					<div class="relative">
 						<!-- Data Entry -->
 						<select name="entidad" class="input" autofocus>
@@ -30,7 +31,7 @@
 				</div>
 				<!-- ¿Pertenece a una colección? -->
 				<div id="en_coleccion" class="ocultar">
-					<h3>¿Pertenece a una colección?</h3>
+					<h3>¿En una colección?</h3>
 					<div class="flex-row" style="flex-direction: row-reverse;">
 						<select name="en_coleccion" class="input">
 							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
@@ -42,11 +43,50 @@
 					</div>
 				</div>
 			</div>
+			<!-- Colección -->
+			<div id="coleccion_id" class="ocultar">
+				<h3>Colección a la que pertenece</h3>
+				<div class="flex-row"></div>
+				<div class="relative">
+					<!-- Data Entry -->
+					<select name="coleccion_id" class="input">
+						<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+						<optgroup label="Colecciones cargadas por vos">
+							<% for (coleccion of colecPropias) { %>
+								<option value="<%= coleccion.id %>"
+									<% if (dataEntry && dataEntry.coleccion_id == coleccion.id) { %>selected<% } %>>
+									<%= coleccion.nombre_castellano %>
+								</option>
+							<% } %> 	
+						</optgroup>
+						<optgroup label="Colecciones cargadas por otros">
+							<% for (coleccion of colecAjenas) { %>
+								<option value="<%= coleccion.id %>"
+									<% if (dataEntry && dataEntry.coleccion_id == coleccion.id) { %>selected<% } %>>
+									<%= coleccion.nombre_castellano %>
+								</option>
+							<% } %> 	
+						</optgroup>
+					</select>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle" id="ayuda_coleccion"></i>
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+						<li>Si no la encontrás, vamos a necesitar que la agregues antes que la película</li>
+					</ul>
+					<!-- Errores -->
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+		</div>
 			<!-- Dirección de la página, dirección de la imagen grande / Contenido del cuerpo de la página -->
 			<div id="resto" class="ocultar">
 				<h3>Ingresá la dirección de la página</h3>
 				<div class="flex-row">
 					<div class="relative">
+						<!-- Data Entry -->
 						<input name="direccion" type="text" class="input"
 							value="<%= dataEntry ? dataEntry.direccion : null %>"
 							placeholder="Pegá acá la dirección"
@@ -70,7 +110,6 @@
 						</i>
 						<i class="fas fa-check-circle ocultar"></i>
 					</div>
-					<div class="grow"></div>
 				</div>
 				<h3>Ingresá la dirección de la imagen grande</h3>
 				<div class="flex-row">
@@ -94,7 +133,6 @@
 						</i>
 						<i class="fas fa-check-circle ocultar"></i>
 					</div>
-					<div class="grow"></div>
 				</div>
 				<h3>Ingresá el contenido del cuerpo de la página</h3>
 				<div class="flex-row">
@@ -118,7 +156,6 @@
 						</i>
 						<i class="fas fa-check-circle ocultar"></i>
 					</div>
-					<div class="grow"></div>
 				</div>
 				<div id="resultado"><br></div>
 			</div>

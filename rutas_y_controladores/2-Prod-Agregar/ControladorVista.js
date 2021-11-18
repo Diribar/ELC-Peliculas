@@ -143,7 +143,20 @@ module.exports = {
 			: copiarFA
 			? await validarProd.copiarFA(copiarFA)
 			: "";
-		// 4. Render del formulario
+		// 4. Obtener las colecciones
+		colecciones = await BD_varias.obtenerTodos("colecciones", "nombre_castellano")
+		colecPropias = colecciones
+			.filter((n) => n.creada_por_id == req.session.usuario.id)
+			.sort((a, b) => {
+				let A = a.ultima_fecha;
+				let B = b.ultima_fecha;
+				if (A > B) return -1;
+				if (A < B) return 1;
+				return 0;
+			});
+		//return res.send(colecPropias)
+		colecAjenas = colecciones.filter((n) => n.creada_por_id != req.session.usuario.id);
+		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
@@ -151,6 +164,8 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: copiarFA,
 			errores,
+			colecPropias,
+			colecAjenas,
 		});
 	},
 
@@ -200,7 +215,7 @@ module.exports = {
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 		}
 		//return res.send(req.cookies);
-		borrarSessionCookies(req, res, "datosDurosPartes");
+		borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
@@ -923,8 +938,8 @@ let borrarSessionCookies = (req, res, paso) => {
 		"palabrasClave",
 		"desambiguar",
 		"copiarFA",
-		"datosDuros",
 		"datosDurosPartes",
+		"datosDuros",
 		"datosPers",
 		"confirmar",
 	];
