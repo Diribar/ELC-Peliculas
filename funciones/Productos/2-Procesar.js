@@ -7,7 +7,7 @@ let varias = require("../Varias/varias");
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	obtenerAPI_TMDB: async ({TMDB_id, entidad_TMDB}) => {
-		let lectura = await detailsTMDB(TMDB_id, entidad_TMDB);
+		let lectura = await detailsTMDB({TMDB_id, entidad_TMDB});
 		if (entidad_TMDB == "movie") {
 			credits = await creditsTMDB(TMDB_id);
 			lectura = {
@@ -18,13 +18,17 @@ module.exports = {
 		return lectura;
 	},
 
+	obtenerAPI_TMDB_season: async (datos) => {
+		return await detailsTMDB(datos);
+	},
+
 	// ControllerVista (desambiguarGuardar)
 	pelicula_TMDB: async (form, lectura) => {
 		// Datos obtenidos del formulario
 		datosForm = {
 			producto: "Película",
 			entidad: "peliculas",
-			...form
+			...form,
 		};
 		// Datos obtenidos de la API
 		let datosLectura = {};
@@ -88,7 +92,7 @@ module.exports = {
 			...datosLectura,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		return [resultado, ""];
+		return resultado;
 	},
 
 	// ControllerVista (desambiguarGuardar)
@@ -97,70 +101,50 @@ module.exports = {
 		datosForm = {
 			producto: "Colección",
 			entidad: "colecciones",
-			...form
+			...form,
 		};
-		let datosCabecera = {};
-		let datosPartes = {};
+		let datosLectura = {};
 		if (Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API - Cabecera
 			lectura.created_by.length > 0
-				? (datosCabecera.guion = lectura.created_by.map((n) => n.name).join(", "))
+				? (datosLectura.guion = lectura.created_by.map((n) => n.name).join(", "))
 				: "";
-			lectura.name != "" ? (datosCabecera.nombre_castellano = lectura.name) : "";
+			lectura.name != "" ? (datosLectura.nombre_castellano = lectura.name) : "";
 			lectura.production_countries.length > 0
-				? (datosCabecera.pais_id = lectura.production_countries
+				? (datosLectura.pais_id = lectura.production_countries
 						.map((n) => n.iso_3166_1)
 						.join(", "))
 				: "";
 			lectura.original_language != ""
-				? (datosCabecera.idioma_original = lectura.original_language)
+				? (datosLectura.idioma_original = lectura.original_language)
 				: "";
 			lectura.overview != ""
-				? (datosCabecera.sinopsis = fuenteSinopsisTMDB(lectura.overview))
+				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
 				: "";
 			lectura.poster_path != ""
-				? (datosCabecera.avatar =
+				? (datosLectura.avatar =
 						"https://image.tmdb.org/t/p/original" + lectura.poster_path)
 				: "";
 			lectura.first_air_date != ""
-				? (datosCabecera.ano_estreno = parseInt(lectura.first_air_date.slice(0, 4)))
+				? (datosLectura.ano_estreno = parseInt(lectura.first_air_date.slice(0, 4)))
 				: "";
 			lectura.last_air_date != ""
-				? (datosCabecera.ano_fin = parseInt(lectura.last_air_date.slice(0, 4)))
+				? (datosLectura.ano_fin = parseInt(lectura.last_air_date.slice(0, 4)))
 				: "";
 			lectura.production_companies.length > 0
-				? (datosCabecera.productor = lectura.production_companies
+				? (datosLectura.productor = lectura.production_companies
 						.map((n) => n.name)
 						.join(", "))
 				: "";
 			// Datos obtenidos de la API - Partes
-			if (lectura.seasons.length > 0) {
-				datosPartes = lectura.seasons.map((n) => {
-					partes = {
-						peli_TMDB_id: n.id,
-						nombre_castellano: n.name,
-						cant_capitulos: n.episode_count,
-						sinopsis: n.overview,
-						orden_secuencia: n.season_number,
-					};
-					if (n.air_date) partes.ano_estreno = parseInt(n.air_date.slice(0, 4));
-					partes.nombre_original = n.season_number
-						? "Season " + n.season_number
-						: "Specials";
-					n.poster_path != ""
-						? (partes.avatar = "https://image.tmdb.org/t/p/original" + n.poster_path)
-						: "";
-					return partes;
-				});
-			}
+			datosLectura.capitulosCant = lectura.seasons.length
 		}
 		let resultado = {
 			...datosForm,
-			...datosCabecera,
+			...datosLectura,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		datosPartes = convertirLetrasAlCastellano(datosPartes);
-		return [resultado, datosPartes];
+		return resultado;
 	},
 
 	// ControllerVista (desambiguarGuardar)
@@ -169,50 +153,36 @@ module.exports = {
 		datosForm = {
 			producto: "Colección",
 			entidad: "colecciones",
-			...form
+			...form,
 		};
-		let datosCabecera = {};
-		let datosPartes = {};
+		let datosLectura = {};
 		if (Object.keys(lectura).length > 0) {
 			// Datos obtenidos de la API - Cabecera
-			lectura.name != "" ? (datosCabecera.nombre_castellano = lectura.name) : "";
+			lectura.name != "" ? (datosLectura.nombre_castellano = lectura.name) : "";
 			lectura.overview != ""
-				? (datosCabecera.sinopsis = fuenteSinopsisTMDB(lectura.overview))
+				? (datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview))
 				: "";
 			lectura.poster_path != ""
-				? (datosCabecera.avatar =
+				? (datosLectura.avatar =
 						"https://image.tmdb.org/t/p/original" + lectura.poster_path)
 				: "";
 			if (lectura.parts.length > 0) {
-				datosCabecera.ano_estreno = Math.min(
+				datosLectura.ano_estreno = Math.min(
 					...lectura.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
 				);
-				datosCabecera.ano_fin = Math.max(
+				datosLectura.ano_fin = Math.max(
 					...lectura.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
 				);
 				// Datos obtenidos de la API - Partes
-				datosPartes = lectura.parts.map((n) => {
-					partes = {
-						peli_TMDB_id: n.id,
-						nombre_castellano: n.title,
-						nombre_original: n.original_title,
-						sinopsis: fuenteSinopsisTMDB(n.overview),
-						ano_estreno: parseInt(n.release_date.slice(0, 4)),
-					};
-					n.poster_path != ""
-						? (partes.avatar = "https://image.tmdb.org/t/p/original" + n.poster_path)
-						: "";
-					return partes;
-				});
+				datosLectura.capitulosId = lectura.parts.map((n) => n.id);
 			}
 		}
 		let resultado = {
 			...datosForm,
-			...datosCabecera,
+			...datosLectura,
 		};
 		resultado = convertirLetrasAlCastellano(resultado);
-		datosPartes = convertirLetrasAlCastellano(datosPartes);
-		return [resultado, datosPartes];
+		return resultado;
 	},
 
 	// ControllerVista (copiarFA_Guardar)
