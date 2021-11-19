@@ -601,14 +601,14 @@ CREATE TABLE us_calificaciones (
 CREATE TABLE us_interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
-	peli_id INT UNSIGNED NULL,
-	colec_id INT UNSIGNED NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
 	interes_en_prod_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (peli_id) REFERENCES PROD_peliculas(id),
-	FOREIGN KEY (colec_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

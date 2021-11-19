@@ -44,9 +44,9 @@
 		<% } else %>
 		<% if (codigo == "tipoProducto") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2B-TipoProducto.css">
-			<script src="/javascript/2-Productos/2B-tipoProd-Errores.js"></script>
+			<!-- <script src="/javascript/2-Productos/2B-tipoProd-Errores.js"></script> -->
 			<script src="/javascript/2-Productos/2B-tipoProd-Mostrar.js"></script>
-			<script src="/javascript/2-Productos/2B-tipoProd-Ayuda.js"></script>
+			<!-- <script src="/javascript/2-Productos/2B-tipoProd-Ayuda.js"></script> -->
 		<% } else %>
 		<% if (codigo == "copiarFA") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/2C-CopiarFA.css">
@@ -115,8 +115,9 @@
 				<section class="cuerpo flex-col grow">
 					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
 					<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
-					<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
 					<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
+					<%- codigo == "tipoProducto" ? include("2B-TipoProducto") : "" %>
+					<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
 					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
 					<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>

@@ -1,18 +1,8 @@
-<% for (let i=0; i < 2; i++) { %>
-	<% entidad = (i == 0) ? "peliculas" : "colecciones" %>
-	<% producto = (i == 0) ? "Película" : "Colección" %>
-	<form action="<%= link %>" method="POST">
-		<!-- Campos para luego enviar a Datos Duros -->
-		<input class="ocultar" type="text" name="fuente" value="IM">
-		<input class="ocultar" type="text" name="entidad" value="<%= entidad %>">
-		<!-- Info a mostrar -->
-		<button type="submit" class="flex-row" id= "ingr_manual">
-			<img id="imagenChica" src="/imagenes/0-Agregar/DESAMB-<%= entidad %>.jpg" alt="Busco otra <%= producto %>" title="Busco otra <%= producto %>">
-			<div id="infoPeli" class="flex-col">
-				<p><strong>Busco otra <%= producto %></strong></p>
-				<p class="interlineadoChico"></p>
-				<p>Ingresaré los datos manualmente</p>
-			</div>
-		</button>
-	</form>
-<% } %>
+<a href="/agregar/producto/tipo-producto">
+	<button type="submit" class="flex-row" id= "ingr_manual">
+		<img id="imagenChica" src="/imagenes/0-Agregar/Desamb-IM.jpg" alt="Ingresaré los datos a mano" title="Ingresaré los datos a mano">
+		<div id="infoPeli" class="flex-col">
+			<p>Ingresaré los datos manualmente</p>
+		</div>
+	</button>			
+</a>
