@@ -1,5 +1,6 @@
 DESAMBIGUAR
 - Para las películas, buscar también en "capítulos" si ya están en BD
+- Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 
 TIPO PRODUCTO
 var min = 12,

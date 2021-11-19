@@ -104,7 +104,7 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/agregar/producto/desambiguar");
 		}
-		// 4. Si la colección está creada, pero su capítulo NO, actualizar las partes
+		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = desambiguar;
 		res.cookie("datosDuros", desambiguar, {maxAge: 24 * 60 * 60 * 1000});
@@ -473,17 +473,16 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 4. Funciones anexas
-		// 4.1 Si es una "collection" (TMDB), agregar las partes en forma automática
-		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB == "collection")
-			await agregarPeliculasCollection(confirmar.capitulosId, registro.id);
-		//return res.send(aux)
-		// 4.2 Si es una "tv" (TMDB), agregar las partes en forma automática
-		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB == "tv")
-			await agregarCapitulosTV(confirmar.TMDB_id, confirmar.capitulosCant, registro.id);
-		// 4.3. Actualizar "cantProductos" en "Relación con la vida"
+		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
+			? confirmar.entidad_TMDB == "collection"
+				? await agregarPeliculasCollection(confirmar.capitulosId, registro.id)
+				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.capitulosCant, registro.id)
+			: ""
+		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		// 4.4. Miscelaneas
+		// 4.3. Miscelaneas
 		guardar_us_calificaciones(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
 		borrarSessionCookies(req, res, "borrarTodo");
