@@ -166,7 +166,6 @@ module.exports = {
 			TMDB_id: capitulo.id,
 			temporada: datos.season_number,
 			capitulo: capitulo.episode_number,
-
 		};
 		if (capitulo.name) datosAPI_renamed.nombre_castellano = capitulo.name;
 		if (capitulo.air_date) datosAPI_renamed.ano_estreno = capitulo.air_date;
