@@ -1,187 +1,259 @@
 // ************ Requires ************
-let detailsTMDB = require("../API/detailsTMDB_fetch");
-let creditsTMDB = require("../API/creditsTMDB_fetch");
+let detailsTMDB = require("../APIs_TMDB/2-Details");
+let creditsTMDB = require("../APIs_TMDB/3-Credits");
 let BD_varias = require("../BD/varias");
 let varias = require("../Varias/varias");
 
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
-	obtenerDatosDelProducto_TMDB: async function ({TMDB_id, entidad_TMDB}) {
-		// Obtener el "método" a partir de la entidad_TMDB
-		entidad_TMDB == "movie"
-			? (metodo = "pelicula_TMDB")
-			: entidad_TMDB == "tv"
-			? (metodo = "TV_TMDB")
-			: (metodo = "coleccion_TMDB");
-		// Obtener la lectura de la API
-		lectura = await detailsTMDB({TMDB_id, entidad_TMDB});
-		if (entidad_TMDB == "movie") lectura = {...lectura, ...(await creditsTMDB(TMDB_id))};
-		// Procesar la info para la vista 'Datos Duros'
-		return await this[metodo]({TMDB_id, entidad_TMDB}, lectura);
-	},
-
-	obtenerCapitulosTV_TMDB: async function ({TMDB_id, season}) {
-		// Obtener la lectura de la API
-		let lectura = await detailsTMDB({TMDB_id, entidad_TMDB: season});
-		// Procesar la info para la vista 'Datos Duros'
-		return await this.capitulosTV_TMDB({TMDB_id, season}, lectura);
-	},
-
-	// ControllerVista (desambiguarGuardar)
-	pelicula_TMDB: async (form, lectura) => {
-		// Datos obtenidos del formulario
-		datosForm = {
+	infoParaDD_movie: async (datos) => {
+		// Datos obtenidos sin la API
+		datosIniciales = {
 			producto: "Película",
 			entidad: "peliculas",
-			fuente: "TMDB",
-			...form,
+			...datos,
 		};
-		let datosLectura = {};
-		if (Object.keys(lectura).length > 0) {
-			// Datos obtenidos de la API
-			if (lectura.belongs_to_collection != null) {
-				// Datos de la colección a la que pertenece, si corresponde
-				datosLectura.en_coleccion = true;
-				datosLectura.en_colec_TMDB_id = lectura.belongs_to_collection.id;
-				datosLectura.en_colec_nombre = lectura.belongs_to_collection.name;
+		// Obtener las API
+		let general = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
+		let credits = await creditsTMDB(datos.TMDB_id);
+		let datosAPI = await Promise.all([general, credits]).then(([a, b]) => {
+			return {...a, ...b};
+		});
+		// Cambiarle el nombre a los campos y procesar la información
+		let datosAPI_renamed = {};
+		if (Object.keys(datosAPI).length > 0) {
+			// Datos de la colección a la que pertenece, si corresponde
+			if (datosAPI.belongs_to_collection != null) {
+				datosAPI_renamed.en_coleccion = true;
+				datosAPI_renamed.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
+				datosAPI_renamed.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// ELC_id de la colección
-				datosLectura.en_colec_id = await BD_varias.obtenerELC_id({
+				datosAPI_renamed.en_colec_id = await BD_varias.obtenerELC_id({
 					entidad: "colecciones",
 					campo: "TMDB_id",
-					valor: datosLectura.en_colec_TMDB_id,
+					valor: datosAPI_renamed.en_colec_TMDB_id,
 				});
-			} else datosLectura.en_coleccion = false;
+			} else datosAPI_renamed.en_coleccion = false;
 			// IMDB_id, nombre_original, nombre_castellano
-			if (lectura.IMDB_id != "") datosLectura.IMDB_id = lectura.imdb_id;
-			if (lectura.original_title != "") datosLectura.nombre_original = lectura.original_title;
-			if (lectura.title != "") datosLectura.nombre_castellano = lectura.title;
+			if (datosAPI.IMDB_id != "") datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
+			if (datosAPI.original_title != "")
+				datosAPI_renamed.nombre_original = datosAPI.original_title;
+			if (datosAPI.title != "") datosAPI_renamed.nombre_castellano = datosAPI.title;
 			// año de estreno, duración, país de origen
-			if (lectura.release_date != "")
-				datosLectura.ano_estreno = parseInt(lectura.release_date.slice(0, 4));
-			if (lectura.runtime != null) datosLectura.duracion = lectura.runtime;
-			if (lectura.production_countries.length > 0)
-				datosLectura.pais_id = lectura.production_countries
+			if (datosAPI.release_date != "")
+				datosAPI_renamed.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
+			if (datosAPI.runtime != null) datosAPI_renamed.duracion = datosAPI.runtime;
+			if (datosAPI.production_countries.length > 0)
+				datosAPI_renamed.pais_id = datosAPI.production_countries
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (lectura.overview != "")
-				datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview);
-			if (lectura.poster_path != "")
-				datosLectura.avatar = "https://image.tmdb.org/t/p/original" + lectura.poster_path;
+			if (datosAPI.overview != "")
+				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.poster_path != "")
+				datosAPI_renamed.avatar =
+					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Credits
-			if (lectura.production_companies.length > 0)
-				datosLectura.productor = lectura.production_companies.map((n) => n.name).join(", ");
-			if (lectura.crew.length > 0)
-				datosLectura = {
-					...datosLectura,
-					...funcionCrew(lectura.crew, "director", "Directing"),
-					...funcionCrew(lectura.crew, "guion", "Writing"),
-					...funcionCrew(lectura.crew, "musica", "Sound"),
+			if (datosAPI.production_companies.length > 0)
+				datosAPI_renamed.productor = datosAPI.production_companies
+					.map((n) => n.name)
+					.join(", ");
+			if (datosAPI.crew.length > 0)
+				datosAPI_renamed = {
+					...datosAPI_renamed,
+					...funcionCrew(datosAPI.crew, "director", "Directing"),
+					...funcionCrew(datosAPI.crew, "guion", "Writing"),
+					...funcionCrew(datosAPI.crew, "musica", "Sound"),
 				};
-			if (lectura.cast.length > 0)
-				datosLectura.actores = lectura.cast
+			if (datosAPI.cast.length > 0)
+				datosAPI_renamed.actores = datosAPI.cast
 					.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
 					.join(", ");
-			while (lectura.cast.length > 0 && datosLectura.actores.length > 500) {
-				aux = datosLectura.actores;
-				datosLectura.actores = aux.slice(0, aux.lastIndexOf(","));
+			while (datosAPI.cast.length > 0 && datosAPI_renamed.actores.length > 500) {
+				aux = datosAPI_renamed.actores;
+				datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
 			}
 		}
 		let resultado = {
-			...datosForm,
-			...datosLectura,
+			...datosIniciales,
+			...datosAPI_renamed,
 		};
-		resultado = varias.convertirLetrasAlCastellano(resultado);
-		return resultado;
+		return varias.convertirLetrasAlCastellano(resultado);
+	},
+
+	// ControllerVista (confirmar)
+	agregarCapitulosDeCollection: async function (coleccion_id, capitulos_TMDB_id) {
+		// Replicar para todos los capítulos de la colección
+		for (let i = 0; i < capitulos_TMDB_id.length; i++) {
+			// Obtener la API de un capítulo y agregar el registro
+			await this.infoParaDD_movie({
+				entidad_TMDB: "movie",
+				TMDB_id: capitulos_TMDB_id[i],
+			})
+				.then((n) => {
+					return {
+						...n,
+						coleccion_id,
+						temporada: 0,
+						capitulo: i + 1,
+						creada_por_id: 2,
+						entidad: "capitulos",
+					};
+				})
+				.then((n) => BD_varias.agregarRegistro(n));
+		}
+		return;
 	},
 
 	// ControllerVista (desambiguarGuardar)
-	TV_TMDB: (form, lectura) => {
-		// Datos obtenidos del formulario
-		datosForm = {
+	infoParaDD_tv: async (datos) => {
+		// Datos obtenidos sin la API
+		datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
-			fuente: "TMDB",
-			...form,
+			...datos,
 		};
-		let datosLectura = {};
-		if (Object.keys(lectura).length > 0) {
-			// Datos obtenidos de la API
+		// Obtener las API
+		let datosAPI = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
+		// Cambiarle el nombre a los campos y procesar la información
+		let datosAPI_renamed = {};
+		if (Object.keys(datosAPI).length > 0) {
 			// nombre_original, nombre_castellano
-			if (lectura.original_name != "") datosLectura.nombre_original = lectura.original_name;
-			if (lectura.name != "") datosLectura.nombre_castellano = lectura.name;
+			if (datosAPI.original_name != "")
+				datosAPI_renamed.nombre_original = datosAPI.original_name;
+			if (datosAPI.name != "") datosAPI_renamed.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin, país de origen
-			if (lectura.first_air_date != "")
-				datosLectura.ano_estreno = parseInt(lectura.first_air_date.slice(0, 4));
-			if (lectura.last_air_date != "")
-				datosLectura.ano_fin = parseInt(lectura.last_air_date.slice(0, 4));
-			if (lectura.production_countries.length > 0)
-				datosLectura.pais_id = lectura.production_countries
+			if (datosAPI.first_air_date != "")
+				datosAPI_renamed.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
+			if (datosAPI.last_air_date != "")
+				datosAPI_renamed.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
+			if (datosAPI.production_countries.length > 0)
+				datosAPI_renamed.pais_id = datosAPI.production_countries
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (lectura.overview != "")
-				datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview);
-			if (lectura.poster_path != "")
-				datosLectura.avatar = "https://image.tmdb.org/t/p/original" + lectura.poster_path;
+			if (datosAPI.overview != "")
+				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.poster_path != "")
+				datosAPI_renamed.avatar =
+					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Credits
-			if (lectura.created_by.length > 0)
-				datosLectura.guion = lectura.created_by.map((n) => n.name).join(", ");
-			if (lectura.production_companies.length > 0)
-				datosLectura.productor = lectura.production_companies.map((n) => n.name).join(", ");
+			if (datosAPI.created_by.length > 0)
+				datosAPI_renamed.guion = datosAPI.created_by.map((n) => n.name).join(", ");
+			if (datosAPI.production_companies.length > 0)
+				datosAPI_renamed.productor = datosAPI.production_companies
+					.map((n) => n.name)
+					.join(", ");
 			// Temporadas
-			datosLectura.cantTemporadas = lectura.seasons.length;
+			datosAPI_renamed.cantTemporadas = datosAPI.seasons.length;
+			datosAPI_renamed.numeroPrimeraTemp = Math.min(
+				...datosAPI.seasons.map((n) => n.season_number)
+			);
 		}
 		let resultado = {
-			...datosForm,
-			...datosLectura,
+			...datosIniciales,
+			...datosAPI_renamed,
 		};
-		resultado = varias.convertirLetrasAlCastellano(resultado);
-		return resultado;
+		return varias.convertirLetrasAlCastellano(resultado);
+	},
+
+	// ControllerVista (confirmar)
+	agregarCapitulosDeTV: async function (
+		coleccion_id,
+		coleccion_TMDB_id,
+		cantTemporadas,
+		numeroPrimeraTemp
+	) {
+		// Rutina "for" para cubrir todas las temporadas [0...]
+		for (temporada = 0; temporada < cantTemporadas; temporada++) {
+			// Buscar los datos de la temporada mediante la API
+			entidad_TMDB = temporada + numeroPrimeraTemp;
+			datosAPI = await detailsTMDB(entidad_TMDB, coleccion_TMDB_id);
+			//console.log(datosAPI);
+			// Crea la rutina para cada capítulo
+			for (i = 0; i < datosAPI.episodes.length; i++) {
+				numeroTemporada = datosAPI.season_number;
+				capitulo = datosAPI.episodes[i];
+				console.log(numeroTemporada, capitulo.episode_number, capitulo.name);
+			}
+		}
+
+		// Procesar para que para cada capítulo quede:
+		// let datosAPI_renamed={
+		// coleccion_id,
+		// temporada: datosAPI.season_number
+		// capitulo: capitulo.episode_number
+		// TMDB_id: capitulo.id
+		// nombre_castellano: capitulo.name
+		// ano_estreno: capitulo.air_date
+		//}
+		// if (capitulo.crew.length > 0) {
+		// datosAPI_renamed = {
+		// 	...datosAPI_renamed,
+		// 	...funcionCrew(capitulo.crew, "director", "Directing"),
+		// 	...funcionCrew(capitulo.crew, "guion", "Writing"),
+		// 	...funcionCrew(capitulo.crew, "musica", "Sound"),
+		// };
+		// }
+		// if (datosAPI.guest_stars.length > 0)
+		// datosAPI_renamed.actores = datosAPI.guest_stars
+		// 	.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
+		// 	.join(", ");
+		// while (datosAPI.guest_stars.length > 0 && datosAPI_renamed.actores.length > 500) {
+		// 	aux = datosAPI_renamed.actores;
+		// 	datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
+		// }
+		// datosAPI_renamed.sinopsis= capitulo.overview,
+		// datosAPI_renamed.avatar= capitulo.overview,
+		// "still_path": "/ikeyWXexyZH6AR2EIdPnPHq6Ezc.jpg",
+		// "poster_path": "/geo2aaKq40hr6EuDXIBTn1vHAZD.jpg"
+
+		// return;
 	},
 
 	// ControllerVista (desambiguarGuardar)
-	coleccion_TMDB: (form, lectura) => {
-		// Datos obtenidos del formulario
-		datosForm = {
+	infoParaDD_collection: async (datos) => {
+		// Datos obtenidos sin la API
+		datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
-			fuente: "TMDB",
-			...form,
+			...datos,
 		};
-		let datosLectura = {};
-		if (Object.keys(lectura).length > 0) {
+		// Obtener las API
+		let datosAPI = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
+		// Cambiarle el nombre a los campos y procesar la información
+		let datosAPI_renamed = {};
+		if (Object.keys(datosAPI).length > 0) {
 			// Datos obtenidos de la API
-			// nombre_original, nombre_castellano
-			if (lectura.name != "") datosLectura.nombre_castellano = lectura.name;
-
+			// nombre_castellano
+			if (datosAPI.name != "") datosAPI_renamed.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
-			if (lectura.parts.length > 0) {
-				datosLectura.ano_estreno = Math.min(
-					...lectura.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
+			if (datosAPI.parts.length > 0) {
+				datosAPI_renamed.ano_estreno = Math.min(
+					...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
 				);
-				datosLectura.ano_fin = Math.max(
-					...lectura.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
+				datosAPI_renamed.ano_fin = Math.max(
+					...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
 				);
 			}
 			// sinopsis, avatar
-			if (lectura.overview != "")
-				datosLectura.sinopsis = fuenteSinopsisTMDB(lectura.overview);
-			if (lectura.poster_path != "")
-				datosLectura.avatar = "https://image.tmdb.org/t/p/original" + lectura.poster_path;
+			if (datosAPI.overview != "")
+				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.poster_path != "")
+				datosAPI_renamed.avatar =
+					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
-			datosLectura.capitulosId = lectura.parts.map((n) => n.id);
+			datosAPI_renamed.capitulosId = datosAPI.parts.map((n) => n.id);
 		}
 		let resultado = {
-			...datosForm,
-			...datosLectura,
+			...datosIniciales,
+			...datosAPI_renamed,
 		};
-		resultado = varias.convertirLetrasAlCastellano(resultado);
-		return resultado;
+		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
 	// ControllerVista (copiarFA_Guardar)
-	producto_FA: async function (dato) {
+	infoParaDD_prodFA: async function (dato) {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
@@ -220,7 +292,7 @@ module.exports = {
 	},
 
 	// Función validar (copiarFA)
-	// This (producto_FA)
+	// This (infoParaDD_prodFA)
 	contenidoFA: (contenido) => {
 		// Output para FE y BE
 		// Limpiar espacios innecesarios
@@ -284,8 +356,9 @@ let fuenteSinopsisTMDB = (sinopsis) => {
 };
 
 let funcionCrew = (crew, campo_ELC, campo_TMDB) => {
-	if (crew.filter((n) => n.department == campo_TMDB).length > 0) {
-		valores = crew.filter((n) => n.department == campo_TMDB).map((m) => m.name);
+	datos = valores = crew.filter((n) => n.department == campo_TMDB);
+	if (datos.length > 0) {
+		valores = datos.map((m) => m.name);
 		let i = 1;
 		while (i < valores.length) {
 			if (valores[i] == valores[i - 1]) {

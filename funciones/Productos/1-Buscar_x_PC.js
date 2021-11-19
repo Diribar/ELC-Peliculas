@@ -1,6 +1,6 @@
 // Require
-let searchTMDB = require("../API/searchTMDB_fetch");
-let detailsTMDB = require("../API/detailsTMDB_fetch");
+let searchTMDB = require("../APIs_TMDB/1-Search");
+let detailsTMDB = require("../APIs_TMDB/2-Details");
 let procesarProd = require("./2-Procesar");
 
 // Función a exportar
@@ -152,7 +152,8 @@ let agregarLanzamiento = async (dato) => {
 	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
 		// Obtener todas las fechas de lanzamiento
-		detalles = await detailsTMDB({TMDB_id: dato[j].TMDB_id, entidad_TMDB: "collection"})
+		TMDB_id = dato[j].TMDB_id;
+		detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {

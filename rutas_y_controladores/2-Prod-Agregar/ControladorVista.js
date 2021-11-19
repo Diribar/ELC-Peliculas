@@ -8,6 +8,7 @@ let procesarProd = require("../../funciones/Productos/2-Procesar");
 let validarProd = require("../../funciones/Productos/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/varias");
+let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -69,6 +70,7 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
+		//return res.send(req.cookies.desambiguar)
 		desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: req.cookies.desambiguar
@@ -96,9 +98,11 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		desambiguar = await procesarProd.obtenerDatosDelProducto_TMDB(req.body);
+		req.body.fuente="TMDB"
+		entidad_TMDB = req.body.entidad_TMDB;
+		infoParaDD = await procesarProd["infoParaDD_" + entidad_TMDB](req.body);
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarProd.desambiguar(desambiguar);
+		let errores = await validarProd.desambiguar(infoParaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -106,8 +110,8 @@ module.exports = {
 		}
 		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 		// 5. Generar la session para la siguiente instancia
-		req.session.datosDuros = desambiguar;
-		res.cookie("datosDuros", desambiguar, {maxAge: 24 * 60 * 60 * 1000});
+		req.session.datosDuros = infoParaDD;
+		res.cookie("datosDuros", infoParaDD, {maxAge: 24 * 60 * 60 * 1000});
 		// 6. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/producto/datos-duros");
 	},
@@ -203,7 +207,7 @@ module.exports = {
 			return res.redirect("/agregar/producto/copiar-fa");
 		}
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
-		req.session.datosDuros = await procesarProd.producto_FA(copiarFA);
+		req.session.datosDuros = await procesarProd.infoParaDD_prodFA(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -246,7 +250,11 @@ module.exports = {
 		let IM = datosDuros.fuente == "IM" ? {campo: "en_coleccion", peliculas: true} : {};
 		let errores = req.session.errores
 			? req.session.errores
-			: await validarProd.datosDuros(datosDuros, [IM, ...camposDD1, ...camposDD2]);
+			: await validarProd.datosDuros(datosDuros, [
+					IM,
+					...variables.camposDD1(),
+					...variables.camposDD2(),
+			  ]);
 		//return res.send(errores)
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let pais = datosDuros.pais_id ? await varias.pais_idToNombre(datosDuros.pais_id) : "";
@@ -260,8 +268,8 @@ module.exports = {
 			pais,
 			paises,
 			errores,
-			camposDD1,
-			camposDD2,
+			camposDD1: variables.camposDD1(),
+			camposDD2: variables.camposDD2(),
 		});
 	},
 
@@ -281,7 +289,10 @@ module.exports = {
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Averiguar si hay errores de validación
-		let errores = await validarProd.datosDuros(datosDuros, [...camposDD1, ...camposDD2]);
+		let errores = await validarProd.datosDuros(datosDuros, [
+			...variables.camposDD1(),
+			...variables.camposDD2(),
+		]);
 		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
@@ -371,8 +382,8 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: datosPers,
 			errores,
-			datosPersSelect: await datosPersSelect(),
-			datosPersInput: datosPersInput,
+			datosPersSelect: await variables.datosPersSelect(),
+			datosPersInput: variables.datosPersInput(),
 		});
 	},
 
@@ -389,7 +400,7 @@ module.exports = {
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 2.1. Averiguar si hay errores de validación
-		camposDP = [...(await datosPersSelect()), ...datosPersInput];
+		camposDP = [...(await variables.datosPersSelect()), ...variables.datosPersInput()];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -476,8 +487,16 @@ module.exports = {
 		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
 			? confirmar.entidad_TMDB == "collection"
-				? await agregarCapitulosCollection(confirmar.capitulosId, registro.id)
-				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.cantTemporadas, registro.id)
+				? procesarProd.agregarCapitulosDeCollection(
+					registro.id,
+					confirmar.capitulosId,
+				  )
+				: procesarProd.agregarCapitulosDeTV(
+					registro.id,
+					confirmar.TMDB_id,
+					confirmar.cantTemporadas,
+					confirmar.numeroPrimeraTemp,
+				  )
 			: "";
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
@@ -574,203 +593,6 @@ let download = async (url, rutaYnombre) => {
 	});
 };
 
-let camposDD1 = [
-	{
-		titulo: "Título original",
-		campo: "nombre_original",
-		peliculas: true,
-		colecciones: true,
-	},
-	{
-		titulo: "Título en castellano",
-		campo: "nombre_castellano",
-		peliculas: true,
-		colecciones: true,
-	},
-	{
-		titulo: "Año de estreno",
-		campo: "ano_estreno",
-		id: true,
-		peliculas: true,
-		colecciones: true,
-	},
-	{
-		titulo: "Año de finalización",
-		campo: "ano_fin",
-		id: true,
-		peliculas: false,
-		colecciones: true,
-	},
-	{
-		titulo: "Duración (minutos)",
-		campo: "duracion",
-		id: true,
-		peliculas: true,
-		colecciones: false,
-	},
-];
-
-let camposDD2 = [
-	{
-		titulo: "Director",
-		campo: "director",
-		peliculas: true,
-		colecciones: true,
-	},
-	{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
-	{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
-	{titulo: "Actores", campo: "actores", peliculas: true, colecciones: true},
-	{
-		titulo: "Productor",
-		campo: "productor",
-		peliculas: true,
-		colecciones: true,
-	},
-];
-
-let datosPersSelect = async () => {
-	return [
-		{
-			titulo: "Existe una versión en castellano",
-			campo: "en_castellano_id",
-			valores: await BD_varias.obtenerTodos("en_castellano", "id"),
-			peliculas: true,
-			colecciones: true,
-			mensajePeli: [
-				'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
-			],
-			mensajeColec: [
-				'En caso de que algunos capítulos no estén en castellano, elegí "SI-Parcial"',
-			],
-		},
-		{
-			titulo: "Es a Color",
-			campo: "color",
-			valores: [
-				{id: 1, nombre: "SI"},
-				{id: 0, nombre: "NO"},
-			],
-			peliculas: true,
-			colecciones: true,
-			mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
-			mensajeColec: [
-				"Si algunos capítulos no son a color, elegí lo que represente a la mayoría",
-			],
-		},
-		{
-			titulo: "Categoría",
-			campo: "categoria_id",
-			valores: await BD_varias.obtenerTodos("categorias", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: [
-				'"Centradas en la Fe Católica", significa que el rol de la Fe Católica es protagónico.',
-				'Si es cristiana pero no católica, se pone como "Valores Presentes en la Cultura".',
-				'Para ponerla como "Valores Presentes en la Cultura", los buenos valores deben ser evidentes.',
-			],
-		},
-		{
-			titulo: "Sub-categoría",
-			campo: "subcategoria_id",
-			valores: await BD_varias.obtenerTodos("subcategorias", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: ["Elegí la subcategoría que mejor represente el tema."],
-		},
-		{
-			titulo: "Público sugerido",
-			campo: "publico_sugerido_id",
-			valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: [
-				"Mayores solamente: sensualidad o crueldad explícita, puede dañar la sensibilidad de un niño de 12 años.",
-				"Mayores apto familia: para mayores, sin dañar la sensibilidad de un niño.",
-				"Familia: ideal para compartir en familia y que todos disfruten",
-				"Menores apto familia: para menores, también la puede disfrutar un adulto.",
-				"Menores solamente: apuntado a un público solamente infantil.",
-			],
-		},
-		{
-			titulo: "Inspira fe y/o valores",
-			campo: "fe_valores_id",
-			valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: ["¿Considerás que deja algo positivo en el corazón?"],
-		},
-		{
-			titulo: "Entretiene",
-			campo: "entretiene_id",
-			valores: await BD_varias.obtenerTodos("entretiene", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: ["Se disfruta el rato viéndola"],
-		},
-		{
-			titulo: "Calidad sonora y visual",
-			campo: "calidad_tecnica_id",
-			valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-		},
-		{
-			titulo: "Personaje histórico",
-			campo: "personaje_historico_id",
-			valores: await BD_varias.obtenerTodos("historicos_personajes", "nombre"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: [
-				"Podés ingresar un registro nuevo, haciendo click acá.",
-				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
-			],
-			link: "personaje-historico",
-		},
-		{
-			titulo: "Hecho histórico",
-			campo: "hecho_historico_id",
-			valores: await BD_varias.obtenerTodos("historicos_hechos", "nombre"),
-			peliculas: true,
-			colecciones: true,
-			mensajes: [
-				"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
-				"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
-			],
-			link: "hecho-historico",
-		},
-	];
-};
-
-let datosPersInput = [
-	{
-		tituloPeli: "Link del trailer",
-		tituloColec: "Link del 1er trailer",
-		campo: "link_trailer",
-		peliculas: true,
-		colecciones: true,
-		mensajes: [
-			"Nos interesa el trailer del primer capítulo.",
-			"Debe ser de un sitio seguro, sin virus.",
-			"Es ideal si vincula a un link de You Tube.",
-		],
-	},
-	{
-		tituloPeli: "Link de la película",
-		tituloColec: "Link de la 1a película",
-		campo: "link_pelicula",
-		peliculas: true,
-		colecciones: true,
-		mensajes: [
-			"Nos interesa el link del primer capítulo.",
-			"Debe ser de un sitio seguro, sin virus.",
-			"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
-			"Pedimos un link con una antigüedad mayor a 3 meses.",
-			"En lo posible, elegí un link en castellano y de buena calidad.",
-		],
-	},
-];
-
 let funcDatosClaveProd = (datos) => {
 	let datosClave = {
 		producto: datos.producto,
@@ -800,7 +622,12 @@ let actualizarRCLV = async (entidad, id) => {
 };
 
 let guardar_us_calificaciones = (confirmar, registro) => {
-	entidad_id = confirmar.entidad == "peliculas" ? "pelicula_id" : "coleccion_id";
+	entidad_id =
+		confirmar.entidad == "peliculas"
+			? "pelicula_id"
+			: confirmar.entidad == "colecciones"
+			? "coleccion_id"
+			: "capitulo_id";
 	let datos = {
 		entidad: "us_calificaciones",
 		usuario_id: confirmar.creada_por_id,
@@ -826,46 +653,6 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 			console.log("Archivo de imagen movido a su carpeta definitiva");
 		}
 	});
-};
-
-let agregarCapitulosCollection = async (capitulosId, coleccion_id) => {
-	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
-	for (let i = 0; i < capitulosId.length; i++) {
-		await procesarProd.obtenerDatosDelProducto_TMDB({TMDB_id: capitulosId[i], entidad_TMDB: "movie"})
-			.then((n) => {
-				return {
-					...n,
-					coleccion_id,
-					temporada: 0,
-					capitulo: i + 1,
-					creada_por_id: 2,
-					entidad: "capitulos",
-				};
-			})
-			.then((n) => BD_varias.agregarRegistro(n));
-	}
-	return;
-};
-
-let agregarCapitulosTV = async (TMDB_id, cantTemporadas, coleccion_id) => {
-	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
-	//for (let temporada = 0; temporada < cantTemporadas; temporada++) {
-	temporada = 0;
-	await obtenerCapitulosTV({TMDB_id, season: temporada})
-		.then((n) => {
-			return {
-				...n,
-				coleccion_id,
-				temporada: temporada,
-				capitulo: 1,
-				creada_por_id: 2,
-				entidad: "capitulos",
-			};
-		})
-		.then((n) => BD_varias.agregarRegistro(n))
-		.then((n) => console.log(n));
-	//}
-	return;
 };
 
 let borrarSessionCookies = (req, res, paso) => {
