@@ -20,6 +20,7 @@ COPIAR FA:
 DATOS DUROS: campos adicionales para películas: enColeccion, coleccion
 - TMDB/FA: "congelados"
 - IM: si la película pertenece a una colección, se elije en el momento
+- Autofocus en la primera celda "no selected"
 
 CONFIRMAR:
 - Vista: mismos datos que en Desambiguar, más Director
