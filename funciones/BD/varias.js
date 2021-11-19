@@ -26,7 +26,6 @@ module.exports = {
 	},
 
 	agregarRegistro: (datos) => {
-		console.log("acáaaaaa...", datos.entidad)
 		return db[datos.entidad].create(datos);
 	},
 
