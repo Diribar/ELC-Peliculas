@@ -39,3 +39,6 @@ GENERAL
 - Usuario: mover el archivo avatar a la carpeta definitiva (línea 231)
 	./public/imagenes/1-Usuarios
 	./public/imagenes/9-Provisorio
+
+calificaciones e interés_en_peli
+- Agregar capitulo_id

@@ -10,6 +10,7 @@ module.exports = (sequelize, dt) => {
 		ano_estreno: { type: dt.INTEGER },
 		ano_fin: { type: dt.INTEGER },
 		pais_id: { type: dt.STRING(20) },
+		cantTemporadas : { type: dt.INTEGER },
 		director: { type: dt.STRING(100) },
 		guion: { type: dt.STRING(100) },
 		musica: { type: dt.STRING(100) },
