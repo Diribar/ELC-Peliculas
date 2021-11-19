@@ -96,7 +96,7 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		desambiguar = await obtenerDatosDelProductoTMDB(req.body);
+		desambiguar = await procesarProd.obtenerDatosDelProducto_TMDB(req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(desambiguar);
 		// 3. Si no supera el filtro anterior, redireccionar
@@ -477,8 +477,8 @@ module.exports = {
 		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
 			? confirmar.entidad_TMDB == "collection"
 				? await agregarCapitulosCollection(confirmar.capitulosId, registro.id)
-				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.capitulosCant, registro.id)
-			: ""
+				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.cantTemporadas, registro.id)
+			: "";
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
@@ -532,67 +532,12 @@ module.exports = {
 		// Eliminar session y cookie de datosClaveProd
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
-		// Derivar a "detalle", "coleccion" o "partes-de-coleccion"
-		// 1. DETALLE DE PRODUCTO *********************************************
-		if (datos.url == "detalle") {
-			// Generar la info: ruta, entidad, id
-			ruta = "/detalle/producto/informacion/?entidad=";
-			entidad = datos.entidad;
-			id = datos.id;
-			// Redirigir a Detalles
-			return res.redirect(ruta + entidad + "&id=" + id);
-		} else if (datos.url == "coleccion") {
-			// 2. Agregar la Colección
-			if (datos.TMDB_id) {
-				// 2.1. Colección TMDB ***************************************
-				// Generar la info
-				datosDuros = {
-					fuente: "TMDB",
-					producto: "Colección",
-					entidad: "colecciones",
-					entidad_TMDB: "collection",
-					TMDB_id: datos.en_colec_TMDB_id,
-					nombre_original: datos.en_colec_nombre,
-				};
-				// Crear session y cookie para datosDuros (simil Desambiguar)
-				let [aux1, aux2] = await obtenerDatosDelProductoTMDB(datosDuros);
-				req.session.datosDuros = aux1;
-				res.cookie("datosDuros", req.session.datosDuros, {
-					maxAge: 24 * 60 * 60 * 1000,
-				});
-				req.session.datosDurosPartes = aux2;
-				res.cookie("datosDurosPartes", aux2, {
-					maxAge: 24 * 60 * 60 * 1000,
-				});
-				// Redirigir a DatosDuros
-				//return res.send(req.cookies);
-				return res.redirect("/agregar/producto/datos-duros");
-			} else if (datos.FA_id) {
-				// 2.2. Colección FA ****************************************
-				req.session.copiarFA = {entidad: "colecciones"};
-				res.cookie("copiarFA", req.session.copiarFA, {
-					maxAge: 24 * 60 * 60 * 1000,
-				});
-				// Redirigir a copiarFA
-				return res.redirect("/agregar/producto/copiar-fa");
-			} else {
-				// 2.3. Ingreso Manual
-				req.session.datosDuros = {fuente: "IM", entidad: "colecciones"};
-				res.cookie("datosDuros", req.session.datosDuros, {maxAge: 24 * 60 * 60 * 1000});
-				// Redirigir a palabras clave
-				return res.redirect("/agregar/producto/datos-duros");
-			}
-		} else if (datos.url == "partes-de-coleccion") {
-			entidad = "colecciones_partes";
-			// 3. Agregar las Partes de una Colección
-		}
-		// - datosClaveProd.entidad = "peliculas" / "colecciones"
-		// - datosClaveProd.producto = "Película" / "Colección"
-		// - datosClaveProd.campo = "peli_TMDB_id" / "peli_FA_id" / "colec_TMDB_id" / "colec_FA_id"
-		// - datosClaveProd.en_coleccion = true / false
-		// - datosClaveProd.en_colec_TMDB_id = valor / null
-		// - datosClaveProd.en_colec_nombre = "xxx"
-		// - datosClaveProd.valor = peli_TMDB_id / peli_FA_id / colec_TMDB_id / colec_FA_id
+		// Generar la info para redirigir a Detalle
+		ruta = "/detalle/producto/informacion/?entidad=";
+		entidad = datos.entidad;
+		id = datos.id;
+		// Redirigir a Detalles
+		return res.redirect(ruta + entidad + "&id=" + id);
 	},
 
 	responsabilidad: (req, res) => {
@@ -604,28 +549,6 @@ module.exports = {
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
-};
-
-let obtenerDatosDelProductoTMDB = async (datos) => {
-	// API Details
-	let lectura = await procesarProd.obtenerAPI_TMDB(datos);
-	// Procesar la info para la vista 'Datos Duros'
-	datos.entidad_TMDB == "movie"
-		? (metodo = "pelicula_TMDB")
-		: datos.entidad_TMDB == "tv"
-		? (metodo = "TV_TMDB")
-		: datos.entidad_TMDB == "collection"
-		? (metodo = "coleccion_TMDB")
-		: "";
-	return await procesarProd[metodo](datos, lectura);
-};
-
-let obtenerCapitulosTV = async ({TMDB_id, season}) => {
-	// API Details
-	let lectura = await procesarProd.obtenerAPI_TMDB_season({TMDB_id, entidad_TMDB: season});
-	return lectura
-	// Procesar la info para la vista 'Datos Duros'
-	return await procesarProd.capituloTV(TMDB_id, season, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
@@ -908,7 +831,7 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 let agregarCapitulosCollection = async (capitulosId, coleccion_id) => {
 	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
 	for (let i = 0; i < capitulosId.length; i++) {
-		await obtenerDatosDelProductoTMDB({TMDB_id: capitulosId[i], entidad_TMDB: "movie"})
+		await procesarProd.obtenerDatosDelProducto_TMDB({TMDB_id: capitulosId[i], entidad_TMDB: "movie"})
 			.then((n) => {
 				return {
 					...n,
@@ -924,22 +847,24 @@ let agregarCapitulosCollection = async (capitulosId, coleccion_id) => {
 	return;
 };
 
-let agregarCapitulosTV = async (TMDB_id, capitulosCant, coleccion_id) => {
+let agregarCapitulosTV = async (TMDB_id, cantTemporadas, coleccion_id) => {
 	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
-	for (let i = 0; i < capitulosCant; i++) {
-		await obtenerCapitulosTV({TMDB_id, season: i})
-			// .then((n) => {
-			// 	return {
-			// 		...n,
-			// 		coleccion_id,
-			// 		temporada: 0,
-			// 		capitulo: i + 1,
-			// 		creada_por_id: 2,
-			// 		entidad: "capitulos",
-			// 	};
-			// })
-			// .then((n) => BD_varias.agregarRegistro(n));
-	}
+	//for (let temporada = 0; temporada < cantTemporadas; temporada++) {
+	temporada = 0;
+	await obtenerCapitulosTV({TMDB_id, season: temporada})
+		.then((n) => {
+			return {
+				...n,
+				coleccion_id,
+				temporada: temporada,
+				capitulo: 1,
+				creada_por_id: 2,
+				entidad: "capitulos",
+			};
+		})
+		.then((n) => BD_varias.agregarRegistro(n))
+		.then((n) => console.log(n));
+	//}
 	return;
 };
 
