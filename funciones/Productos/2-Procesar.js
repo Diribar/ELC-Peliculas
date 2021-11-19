@@ -146,9 +146,9 @@ module.exports = {
 					.join(", ");
 			// Temporadas
 			datosAPI_renamed.cantTemporadas = datosAPI.seasons.length;
-			datosAPI_renamed.numeroPrimeraTemp = Math.min(
-				...datosAPI.seasons.map((n) => n.season_number)
-			);
+			// datosAPI_renamed.numeroPrimeraTemp = Math.min(
+			// 	...datosAPI.seasons.map((n) => n.season_number)
+			// );
 		}
 		let resultado = {
 			...datosIniciales,
@@ -157,58 +157,65 @@ module.exports = {
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
+	infoParaAgregarCapitulosDeTV: (datos, indice) => {
+		capitulo = datos.episodes[indice];
+		let datosAPI_renamed = {
+			entidad:"capitulos",
+			creada_por_id: 2,
+			coleccion_id: datos.coleccion_id,
+			TMDB_id: capitulo.id,
+			temporada: datos.season_number,
+			capitulo: capitulo.episode_number,
+
+		};
+		if (capitulo.name) datosAPI_renamed.nombre_castellano = capitulo.name;
+		if (capitulo.air_date) datosAPI_renamed.ano_estreno = capitulo.air_date;
+		if (capitulo.crew.length > 0) {
+			datosAPI_renamed = {
+				...datosAPI_renamed,
+				...funcionCrew(capitulo.crew, "director", "Directing"),
+				...funcionCrew(capitulo.crew, "guion", "Writing"),
+				...funcionCrew(capitulo.crew, "musica", "Sound"),
+			};
+		}
+		if (capitulo.guest_stars.length > 0) {
+			datosAPI_renamed.actores = capitulo.guest_stars
+				.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
+				.join(", ");
+		}
+		while (capitulo.guest_stars.length > 0 && datosAPI_renamed.actores.length > 500) {
+			aux = datosAPI_renamed.actores;
+			datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
+		}
+		if (capitulo.overview) datosAPI_renamed.sinopsis = capitulo.overview;
+		avatar =
+			"https://image.tmdb.org/t/p/original" +
+			(capitulo.still_path
+				? capitulo.still_path
+				: capitulo.poster_path
+				? capitulo.poster_path
+				: "");
+		if (avatar) datosAPI_renamed.avatar = avatar;
+		return datosAPI_renamed;
+	},
+
 	// ControllerVista (confirmar)
-	agregarCapitulosDeTV: async function (
-		coleccion_id,
-		coleccion_TMDB_id,
-		cantTemporadas,
-		numeroPrimeraTemp
-	) {
-		// Rutina "for" para cubrir todas las temporadas [0...]
-		for (temporada = 0; temporada < cantTemporadas; temporada++) {
-			// Buscar los datos de la temporada mediante la API
-			entidad_TMDB = temporada + numeroPrimeraTemp;
+	agregarCapitulosDeTV: async function (registro, coleccion_TMDB_id, cantTemporadas) {
+		// Loop de TEMPORADAS ***********************************************
+		// Descarta las temporadas 0 (generalmente son "Especiales")
+
+		for (temporada = 1; temporada < cantTemporadas; temporada++) {
+			// Datos de UNA TEMPORADA
+			entidad_TMDB = temporada;
 			datosAPI = await detailsTMDB(entidad_TMDB, coleccion_TMDB_id);
-			//console.log(datosAPI);
-			// Crea la rutina para cada capítulo
-			for (i = 0; i < datosAPI.episodes.length; i++) {
-				numeroTemporada = datosAPI.season_number;
-				capitulo = datosAPI.episodes[i];
-				console.log(numeroTemporada, capitulo.episode_number, capitulo.name);
+			datosAPI.coleccion_id = registro.id;
+			// Loop de CAPITULOS ********************************************
+			for (indice = 0; indice < datosAPI.episodes.length; indice++) {
+				datosAPI_renamed = this.infoParaAgregarCapitulosDeTV(datosAPI, indice);
+				await BD_varias.agregarRegistro(datosAPI_renamed)
 			}
 		}
-
-		// Procesar para que para cada capítulo quede:
-		// let datosAPI_renamed={
-		// coleccion_id,
-		// temporada: datosAPI.season_number
-		// capitulo: capitulo.episode_number
-		// TMDB_id: capitulo.id
-		// nombre_castellano: capitulo.name
-		// ano_estreno: capitulo.air_date
-		//}
-		// if (capitulo.crew.length > 0) {
-		// datosAPI_renamed = {
-		// 	...datosAPI_renamed,
-		// 	...funcionCrew(capitulo.crew, "director", "Directing"),
-		// 	...funcionCrew(capitulo.crew, "guion", "Writing"),
-		// 	...funcionCrew(capitulo.crew, "musica", "Sound"),
-		// };
-		// }
-		// if (datosAPI.guest_stars.length > 0)
-		// datosAPI_renamed.actores = datosAPI.guest_stars
-		// 	.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
-		// 	.join(", ");
-		// while (datosAPI.guest_stars.length > 0 && datosAPI_renamed.actores.length > 500) {
-		// 	aux = datosAPI_renamed.actores;
-		// 	datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
-		// }
-		// datosAPI_renamed.sinopsis= capitulo.overview,
-		// datosAPI_renamed.avatar= capitulo.overview,
-		// "still_path": "/ikeyWXexyZH6AR2EIdPnPHq6Ezc.jpg",
-		// "poster_path": "/geo2aaKq40hr6EuDXIBTn1vHAZD.jpg"
-
-		// return;
+		return;
 	},
 
 	// ControllerVista (desambiguarGuardar)
