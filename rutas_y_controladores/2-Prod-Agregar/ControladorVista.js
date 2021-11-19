@@ -30,11 +30,9 @@ module.exports = {
 		borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
 		//return res.send(req.cookies);
-		autorizado_fa = req.session.usuario.autorizado_fa;
 		return res.render("Home", {
 			tema,
 			codigo,
-			autorizado_fa,
 			link: req.originalUrl,
 			palabrasClave,
 			errores,
@@ -126,6 +124,40 @@ module.exports = {
 		res.redirect("/agregar/producto/datos-duros");
 	},
 
+	tipoProducto_Form: async (req, res) => {
+		// 1. Tema y Código
+		tema = "agregar";
+		codigo = "tipoProducto";
+		// 2. Eliminar session y cookie posteriores, si existen
+		borrarSessionCookies(req, res, "tipoProducto");
+		// 3. Data Entry propio y errores
+		let tipoProducto = req.session.tipoProducto
+			? req.session.tipoProducto
+			: req.cookies.tipoProducto
+			? req.cookies.tipoProducto
+			: "";
+		let errores = req.session.errores
+			? req.session.errores
+			// : tipoProducto
+			// ? await validarProd.tipoProducto(tipoProducto)
+			: "";
+		autorizado_fa = req.session.usuario.autorizado_fa;
+		// 4. Render del formulario
+		//return res.send(req.cookies);
+		return res.render("Home", {
+			tema,
+			codigo,
+			link: req.originalUrl,
+			dataEntry: tipoProducto,
+			errores,
+			autorizado_fa,
+		});
+	},
+
+	tipoProducto_Guardar: async (req, res) => {
+		return res.send("Estoy en tipoProducto_Guardar")
+	},
+
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
@@ -143,20 +175,7 @@ module.exports = {
 			: copiarFA
 			? await validarProd.copiarFA(copiarFA)
 			: "";
-		// 4. Obtener las colecciones
-		colecciones = await BD_varias.obtenerTodos("colecciones", "nombre_castellano")
-		colecPropias = colecciones
-			.filter((n) => n.creada_por_id == req.session.usuario.id)
-			.sort((a, b) => {
-				let A = a.ultima_fecha;
-				let B = b.ultima_fecha;
-				if (A > B) return -1;
-				if (A < B) return 1;
-				return 0;
-			});
-		//return res.send(colecPropias)
-		colecAjenas = colecciones.filter((n) => n.creada_por_id != req.session.usuario.id);
-		// 5. Render del formulario
+		// 4. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
@@ -469,7 +488,7 @@ module.exports = {
 		datosDurosPartes = req.session.datosDurosPartes;
 		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB" && datosDurosPartes)
 			agregarPartesDeColeccion(datosDurosPartes, registro.id);
-		// 5. Si es una PELÍCULA TMDB y pertenece a una colección, agregar el 'peli_id' en la parte de la colección
+		// 5. Si es una PELÍCULA TMDB y pertenece a una colección, agregar el 'pelicula_id' en la parte de la colección
 		if (
 			confirmar.entidad == "peliculas" &&
 			confirmar.fuente == "TMDB" &&
@@ -478,7 +497,7 @@ module.exports = {
 			BD_varias.obtenerPorParametro("colecciones_partes", "peli_TMDB_id", confirmar.TMDB_id)
 				.then((n) => n.id)
 				.then((n) =>
-					BD_varias.actualizarRegistro("colecciones_partes", {peli_id: registro.id}, n)
+					BD_varias.actualizarRegistro("colecciones_partes", {pelicula_id: registro.id}, n)
 				);
 		// 6. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
@@ -872,7 +891,7 @@ let actualizarRCLV = async (entidad, id) => {
 };
 
 let guardar_us_calificaciones = (confirmar, registro) => {
-	entidad_id = confirmar.entidad == "peliculas" ? "peli_id" : "colec_id";
+	entidad_id = confirmar.entidad == "peliculas" ? "pelicula_id" : "coleccion_id";
 	let datos = {
 		entidad: "us_calificaciones",
 		usuario_id: confirmar.creada_por_id,
@@ -907,7 +926,7 @@ let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 		orden++;
 		datos = {
 			entidad: "colecciones_partes",
-			colec_id: id,
+			coleccion_id: id,
 			peli_TMDB_id: parte.peli_TMDB_id,
 			orden: orden,
 			creada_por_id: 2,
@@ -917,16 +936,16 @@ let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
 		if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
 		if (parte.cant_capitulos) datos.cant_capitulos = parte.cant_capitulos;
 		if (parte.avatar) datos.avatar = parte.avatar;
-		peli_id = await BD_varias.obtenerELC_id({
+		pelicula_id = await BD_varias.obtenerELC_id({
 			entidad: "peliculas",
 			campo: "TMDB_id",
 			valor: datos.peli_TMDB_id,
 		});
-		if (peli_id) {
-			// Agregarle el peli_id a la coleccion_parte
-			datos.peli_id = peli_id;
+		if (pelicula_id) {
+			// Agregarle el pelicula_id a la coleccion_parte
+			datos.pelicula_id = pelicula_id;
 			// Agregarle la colección a la película
-			BD_varias.actualizarRegistro("peliculas", {en_colec_id: datos.colec_id}, peli_id);
+			BD_varias.actualizarRegistro("peliculas", {en_colec_id: datos.coleccion_id}, pelicula_id);
 		}
 		BD_varias.agregarRegistro(datos);
 	}
@@ -936,14 +955,16 @@ let borrarSessionCookies = (req, res, paso) => {
 	let pasos = [
 		"borrarTodo",
 		"palabrasClave",
+		"tipoProducto",
 		"desambiguar",
+		"tipoProducto",
 		"copiarFA",
 		"datosDurosPartes",
 		"datosDuros",
 		"datosPers",
 		"confirmar",
 	];
-	let indice = pasos.findIndex((n) => n == paso) + 1;
+	let indice = pasos.indexOf(paso) + 1;
 	for (indice; indice < pasos.length; indice++) {
 		if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
 		if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);

@@ -1,55 +1,76 @@
 window.addEventListener("load", async () => {
-	// Variables de sectores
-	let sectEnColeccion = document.querySelector("#dataEntry #en_coleccion");
-	let sectColeccion_id = document.querySelector("#dataEntry #coleccion_id");
-	let sectResto = document.querySelector("#dataEntry #resto");
-	// Variables de inputs
-	let form = document.querySelector("#dataEntry form");
+	// Variables
 	let entidad = document.querySelector("select[name='entidad']");
-	let enColeccion = document.querySelector("select[name='en_coleccion']");
-	let coleccion_id = document.querySelector("select[name='coleccion_id']");
+	let coleccion_id = document.querySelector("input[name='coleccion_id']");
+	let temporada = document.querySelector("select[name='temporada']");
+	let capitulo = document.querySelector("input[name='capitulo']");
+	let submit = document.querySelectorAll(".submit");
 
-	form.addEventListener("change", () => {
-		// Entidad = ""
-		if (!entidad.value) {
-			sectEnColeccion.classList.add("ocultar");
-			sectColeccion_id.classList.add("ocultar");
-			sectResto.classList.add("ocultar");
-		} else if (entidad.value == "peliculas") {
-			// Entidad = "peliculas"
-			enColeccion.removeAttribute("disabled")
-			sectEnColeccion.style.opacity="100%";
-			sectEnColeccion.classList.remove("ocultar");
-			// enColeccion = ""
-			if (!enColeccion.value) {
-				sectColeccion_id.classList.add("ocultar");
-				sectResto.classList.add("ocultar");
-			} else sectColeccion_id.classList.remove("ocultar");
-			if (enColeccion.value == "0") {
-				// enColeccion = "NO"
-				sectColeccion_id.style.opacity="30%";
-				coleccion_id.value=""
-				coleccion_id.setAttribute("disabled", "disabled");
-				sectResto.classList.remove("ocultar");
-			} else if (enColeccion.value == "1") {
-				// enColeccion = "SI"
-				sectColeccion_id.style.opacity="100%";
-				coleccion_id.removeAttribute("disabled")
-				sectResto.classList.add("ocultar");
-				// coleccion_id != ""
-				if (coleccion_id.value != "") sectResto.classList.remove("ocultar");
+	// Interacción con los DataEntry
+	entidad.addEventListener("change", () => {
+		console.log(entidad.value);
+		if (entidad.value != "capitulos") {
+			inutilizar(entidad);
+			if (entidad.value == "colecciones" || entidad.value == "peliculas") {
+				for (i = 0; i < submit.length; i++) {
+					submit[i].classList.remove("botonSinLink");
+				}
+			} else
+				for (i = 0; i < submit.length; i++) {
+					submit[i].classList.add("botonSinLink");
+				}
+		} else {
+			inutilizar(entidad);
+			utilizar(entidad);
+			console.log("off");
+			for (i = 0; i < submit.length; i++) {
+				submit[i].classList.add("botonSinLink");
 			}
-		} else if (entidad.value == "colecciones") {
-			// Entidad = "colecciones"
-			enColeccion.value=""
-			enColeccion.setAttribute("disabled", "disabled");
-			sectEnColeccion.style.opacity="30%";
-			sectEnColeccion.classList.remove("ocultar");
-			coleccion_id.value=""
-			coleccion_id.setAttribute("disabled", "disabled");
-			sectColeccion_id.style.opacity="30%";
-			sectColeccion_id.classList.remove("ocultar");
-			sectResto.classList.remove("ocultar");
+		}
+	});
+	coleccion_id.addEventListener("change", () => {
+		if ("sin errores") {
+			inutilizar(coleccion_id);
+			utilizar(coleccion_id);
+		}
+	});
+	temporada.addEventListener("change", () => {
+		if ("sin errores") {
+			utilizar(temporada);
+		}
+	});
+	capitulo.addEventListener("change", () => {
+		if ("sin errores") {
+			for (i = 0; i < submit.length; i++) {
+				submit[i].classList.remove("botonSinLink");
+			}
 		}
 	});
 });
+
+let inutilizar = (campo) => {
+	let inputs = document.querySelectorAll(".input");
+	for (i = 0; i < inputs.length; i++) {
+		if (inputs[i] == campo) break;
+	}
+	for (j = i + 1; j < inputs.length; j++) {
+		inputs[j].setAttribute("disabled", "disabled");
+		inputs[j].value = "";
+		inputs[j].style.opacity = "30%";
+	}
+	return;
+};
+
+let utilizar = (campo) => {
+	let inputs = document.querySelectorAll(".input");
+	console.log(campo);
+	for (i = 0; i < inputs.length - 1; i++) {
+		console.log(inputs[i]);
+		if (inputs[i] == campo) {
+			inputs[i + 1].removeAttribute("disabled");
+			inputs[i + 1].style.opacity = "100%";
+			break;
+		}
+	}
+	return;
+};

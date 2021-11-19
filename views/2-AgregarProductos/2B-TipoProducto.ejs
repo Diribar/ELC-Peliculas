@@ -1,174 +1,102 @@
-<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">Elegí el Tipo de Producto a agregar</h1>
 <div class="flex-col" id="dataEntry">
-	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
-	<form action="<%= link %>" method="POST">
+	<h2 id="paso2">Paso 2 de 4: Datos clave</h2>
+	<form action="<%= link %>-dd" method="POST">
 		<!-- Datos a completar -->
 		<section id="datos">
-			<!-- Entidad + En Colección -->
-			<div id="entidad_y_enColeccion">
-				<!-- Elegí la Entidad -->
-				<div>
-					<h3>Tipo de Producto</h3>
-					<div class="relative">
-						<!-- Data Entry -->
-						<select name="entidad" class="input" autofocus>
-							<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
-							<option value="peliculas" 
-								<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
-								Película
-							</option>
-							<option value="colecciones"
-								<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
-								Colección
-							</option>
-						</select>
-						<!-- Errores -->
-						<i class="fas fa-times-circle ocultar">
-							<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
-				</div>
-				<!-- ¿Pertenece a una colección? -->
-				<div id="en_coleccion" class="ocultar">
-					<h3>¿En una colección?</h3>
-					<div class="flex-row" style="flex-direction: row-reverse;">
-						<select name="en_coleccion" class="input">
-							<option style="font-style: italic" value="" selected class="ocultar">Elegí</option>
-							<option value="0">NO</option>
-							<option value="1">SI</option>
-						</select>
-						<i class="fas fa-times-circle ocultar"><span class="mensajeError"><%- errores && errores.en_coleccion ? errores.en_coleccion : "" %></span></i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
-				</div>
-			</div>
-			<!-- Colección -->
-			<div id="coleccion_id" class="ocultar">
-				<h3>Colección a la que pertenece</h3>
-				<div class="flex-row"></div>
-				<div class="relative">
-					<!-- Data Entry -->
-					<select name="coleccion_id" class="input">
-						<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
-						<optgroup label="Colecciones cargadas por vos">
-							<% for (coleccion of colecPropias) { %>
-								<option value="<%= coleccion.id %>"
-									<% if (dataEntry && dataEntry.coleccion_id == coleccion.id) { %>selected<% } %>>
-									<%= coleccion.nombre_castellano %>
-								</option>
-							<% } %> 	
-						</optgroup>
-						<optgroup label="Colecciones cargadas por otros">
-							<% for (coleccion of colecAjenas) { %>
-								<option value="<%= coleccion.id %>"
-									<% if (dataEntry && dataEntry.coleccion_id == coleccion.id) { %>selected<% } %>>
-									<%= coleccion.nombre_castellano %>
-								</option>
-							<% } %> 	
-						</optgroup>
-					</select>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle" id="ayuda_coleccion"></i>
+			<!-- Tipo de Producto -->
+			<h3>Tipo de Producto</h3>
+			<div class="flex-row">
+				<select name="entidad" class="input" autofocus>
+					<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+					<option value="peliculas"
+						<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
+						Película
+					</option>
+					<option value="colecciones"
+						<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
+						Colección
+					</option>
+					<option value="capitulos"
+						<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
+						Capítulo de una colección
+					</option>
+				</select>
+				<i class="fas fa-question-circle relative">
 					<ul class="mensajeAyuda ocultar" type="dots">
-						<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-						<li>Si no la encontrás, vamos a necesitar que la agregues antes que la película</li>
-					</ul>
+						<li>
+						</li>
+					</ul>	
+				</i>
+				<i class="fas fa-times-circle ocultar">
+					<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
+				</i>
+				<i class="fas fa-check-circle ocultar"></i>
+			</div>
+			<!-- Datos del capítulo -->
+			<div id="resto ocultar">
+				<h3>ID de la colección</h3>
+				<div class="flex-row">
+					<!-- Data Entry -->
+					<input type="text" name="coleccion_id" class="input" disabled>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+							<li>Si no la encontrás, vamos a necesitar que la agregues antes que la película</li>
+						</ul>	
+					</i>
 					<!-- Errores -->
 					<i class="fas fa-times-circle ocultar">
 						<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
 					</i>
 					<i class="fas fa-check-circle ocultar"></i>
 				</div>
-		</div>
-			<!-- Dirección de la página, dirección de la imagen grande / Contenido del cuerpo de la página -->
-			<div id="resto" class="ocultar">
-				<h3>Ingresá la dirección de la página</h3>
+				<h3>Número de Temporada</h3>
 				<div class="flex-row">
-					<div class="relative">
-						<!-- Data Entry -->
-						<input name="direccion" type="text" class="input"
-							value="<%= dataEntry ? dataEntry.direccion : null %>"
-							placeholder="Pegá acá la dirección"
-							autocomplete="off"
-						>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle" id="ayuda_direccion"></i>
+					<!-- Data Entry -->
+					<select name="temporada" class="input" disabled>
+						<option value="">Elejí una opción</option>
+						<option value="">Única temporada</option>
+					</select>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
 						<ul class="mensajeAyuda ocultar" type="dots">
-							<strong><u>Pasos</u></strong>:<br>
 							<li>
-								Buscá la película o colección en 
-								<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
 							</li>
-							<li>Seleccioná la dirección (url)</li>
-							<li>Copiala</li>
-							<li>Pegala en el casillero de la izquierda</li>
-						</ul>
-						<!-- Errores -->
-						<i class="fas fa-times-circle ocultar">
-							<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
+						</ul>	
+					</i>
+					<!-- Errores -->
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.temporada ? errores.temporada : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
 				</div>
-				<h3>Ingresá la dirección de la imagen grande</h3>
+				<h3>N° de Capítulo</h3>
 				<div class="flex-row">
-					<div class="relative">
-						<input name="avatar" type="text" class="input"
-							value="<%= dataEntry ? dataEntry.avatar : null %>"
-							placeholder="Pegá acá la dirección"
-							autocomplete="off"
-						>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle" id="ayuda_avatar"></i>
+					<input name="capitulo" type="text" class="input" readonly disabled>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
 						<ul class="mensajeAyuda ocultar" type="dots">
-							<p><strong><u>Pasos</u></strong>:</p>
-							<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
-							<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
-							<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
+							<li></li>
 						</ul>
-						<!-- Errores -->
-						<i class="fas fa-times-circle ocultar">
-							<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
+					</i>
+					<!-- Errores -->
+					<i class="fas fa-times-circle ocultar">
+						<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
 				</div>
-				<h3>Ingresá el contenido del cuerpo de la página</h3>
-				<div class="flex-row">
-					<div class="relative">
-						<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle" id="ayuda_contenido"></i>
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<strong><u>Pasos</u></strong>:<br>
-							<li>
-								En la página de FA, seleccioná desde
-								el <strong><em><u>título en castellano</u></em></strong> 
-								hasta el final de la <strong><em><u>sinopsis</u></em></strong>.
-							</li>
-							<li>Copialo.</li>
-							<li>Pegalo en el casillero de la izquierda.</li>
-						</ul>
-						<!-- Errores -->
-						<i class="fas fa-times-circle ocultar">
-							<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
-				</div>
-				<div id="resultado"><br></div>
 			</div>
 		</section>
 		<!-- Flechas -->
-		<section id="flechas" class="flex-row space-between">
+		<section id="flechas">
 			<a href="/agregar/producto/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
-			<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
-			<% if (false) { %>
-				<a href="/agregar/producto/datos-duros"><i class="fas fa-arrow-alt-circle-right"></i></a>
-			<% } else { %>
-				<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
-			<% } %>
+			<button class="botonSinLink submit" type="submit">Avanzar</button>
+			<% if (autorizado_fa) { %>
+				<label class="botonSinLink submit" for="inputSubmit"><img src="/imagenes/0-Base/LogoFA.jpg" alt="FA" height="30px" title="FA"></label>
+				<input id="inputSubmit" value="" type="submit" class="submit ocultar" formaction="/agregar/producto/tipo-producto-fa" formmethod="post">
+			<% } %> 
 		</section>
 	</form>
 </div>

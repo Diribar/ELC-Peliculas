@@ -5,7 +5,7 @@
 		<!-- Datos a completar -->
 		<section id="datos">
 			<h3>Ingresá la dirección de la página</h3>
-			<div class="relative">
+			<div class="flex-row">
 				<!-- Data Entry -->
 				<input name="direccion" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.direccion : null %>"
@@ -13,17 +13,18 @@
 					autocomplete="off"
 				>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle" id="ayuda_direccion"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<strong><u>Pasos</u></strong>:<br>
-					<li>
-						Buscá la película o colección en 
-						<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
-					</li>
-					<li>Seleccioná la dirección (url)</li>
-					<li>Copiala</li>
-					<li>Pegala en el casillero de la izquierda</li>
-				</ul>
+				<i class="fas fa-question-circle relative">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<strong><u>Pasos</u></strong>:<br>
+						<li>
+							Buscá la película o colección en 
+							<a target="_blank" href="https://www.filmaffinity.com/es"><u>Film Affinity</u></a>.
+						</li>
+						<li>Seleccioná la dirección (url)</li>
+						<li>Copiala</li>
+						<li>Pegala en el casillero de la izquierda</li>
+					</ul>
+				</i>
 				<!-- Errores -->
 				<i class="fas fa-times-circle ocultar">
 					<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
@@ -31,20 +32,21 @@
 				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
-			<div class="relative">
+			<div class="flex-row">
 				<input name="avatar" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.avatar : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
 				>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle" id="ayuda_avatar"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<p><strong><u>Pasos</u></strong>:</p>
-					<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
-					<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
-					<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
-				</ul>
+				<i class="fas fa-question-circle relative" id="ayuda_avatar">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<p><strong><u>Pasos</u></strong>:</p>
+						<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
+						<li>Una vez que la imagen se agranda, hacé <strong><em>click derecho</em></strong> sobre ella.</li>
+						<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
+					</ul>
+				</i>
 				<!-- Errores -->
 				<i class="fas fa-times-circle ocultar">
 					<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
@@ -52,20 +54,21 @@
 				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
-			<div class="relative">
+			<div class="flex-row relative">
 				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle" id="ayuda_contenido"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<strong><u>Pasos</u></strong>:<br>
-					<li>
-						En la página de FA, seleccioná desde
-						el <strong><em><u>título en castellano</u></em></strong> 
-						hasta el final de la <strong><em><u>sinopsis</u></em></strong>.
-					</li>
-					<li>Copialo.</li>
-					<li>Pegalo en el casillero de la izquierda.</li>
-				</ul>
+				<i class="fas fa-question-circle relative">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<strong><u>Pasos</u></strong>:<br>
+						<li>
+							En la página de FA, seleccioná desde
+							el <strong><em><u>título en castellano</u></em></strong> 
+							hasta el final de la <strong><em><u>sinopsis</u></em></strong>.
+						</li>
+						<li>Copialo.</li>
+						<li>Pegalo en el casillero de la izquierda.</li>
+					</ul>
+				</i>
 				<!-- Errores -->
 				<i class="fas fa-times-circle ocultar">
 					<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
@@ -78,11 +81,6 @@
 		<section id="flechas" class="flex-row space-between">
 			<a href="/agregar/producto/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
 			<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
-			<% if (false) { %>
-				<a href="/agregar/producto/datos-duros"><i class="fas fa-arrow-alt-circle-right"></i></a>
-			<% } else { %>
-				<i class="fas fa-arrow-alt-circle-right flechaSinLink"></i>
-			<% } %>
 		</section>
 	</form>
 </div>

@@ -1,0 +1,24 @@
+/* Partes específicas del formulario */
+#dataEntry form {display: flex; flex-direction: column;}
+
+/* Sector de Data Entry */
+#dataEntry #datos {display: flex; flex-direction: column; align-items: flex-start;}
+#dataEntry #datos #en_coleccion {text-align: right;}
+#dataEntry #resto .input {width: 80px;}
+#dataEntry #datos textarea, #dataEntry input {padding: 2px 5px; }
+#dataEntry #datos select {padding: 0px 2px;}
+
+/* Mensajes de error */
+#dataEntry #en_coleccion .fa-times-circle, #dataEntry #en_coleccion .fa-check-circle 
+	{position: static; transform: none; margin-right: 5px; align-self: center;}
+#dataEntry .mensajeAyuda {max-width: 300px;}
+#dataEntry .mensajeError {max-width: 300px;}
+#dataEntry .mensajeError a {color: inherit;}
+
+/* Mensajes de ayuda */
+#dataEntry .fa-question-circle {align-self: center; transform: translateY(0); right: auto; top: 0; margin-left: 10px;}
+#dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+
+/* Submit button */
+#dataEntry #flechas {margin: 20px 0px 0; display: flex; justify-content: space-evenly; align-items: center;}
+#dataEntry #flechas button {align-self: center;}
