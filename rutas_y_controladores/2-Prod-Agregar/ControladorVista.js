@@ -95,32 +95,20 @@ module.exports = {
 	},
 
 	desambiguarGuardar: async (req, res) => {
-		if (req.body.fuente == "TMDB") {
-			// Fuente: TMDB
-			// 2. Obtener más información del producto
-			[aux1, aux2] = await obtenerDatosDelProductoTMDB(req.body);
-			// 3. Averiguar si hay errores de validación
-			let errores = await validarProd.desambiguar(aux1);
-			// 4. Si no supera el filtro anterior, redireccionar
-			if (errores.hay) {
-				req.session.errores = errores;
-				return res.redirect("/agregar/producto/desambiguar");
-			}
-			// 5. Si la colección está creada, pero su parte NO, actualizar las partes
-			// 6. Generar la session para la siguiente instancia
-			req.session.datosDuros = aux1;
-			res.cookie("datosDuros", aux1, {maxAge: 24 * 60 * 60 * 1000});
-			if (aux2) {
-				req.session.datosDurosPartes = aux2;
-				res.cookie("datosDurosPartes", aux2, {maxAge: 24 * 60 * 60 * 1000});
-			}
-		} else if (req.body.fuente == "IM") {
-			// Fuente: IM
-			req.body.producto = req.body.entidad == "peliculas" ? "Película" : "Colección";
-			req.session.datosDuros = req.body;
-			res.cookie("datosDuros", req.body, {maxAge: 24 * 60 * 60 * 1000});
+		// 1. Obtener más información del producto
+		desambiguar = await obtenerDatosDelProductoTMDB(req.body);
+		// 2. Averiguar si hay errores de validación
+		let errores = await validarProd.desambiguar(desambiguar);
+		// 3. Si no supera el filtro anterior, redireccionar
+		if (errores.hay) {
+			req.session.errores = errores;
+			return res.redirect("/agregar/producto/desambiguar");
 		}
-		// 3. Redireccionar a la siguiente instancia
+		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
+		// 5. Generar la session para la siguiente instancia
+		req.session.datosDuros = desambiguar;
+		res.cookie("datosDuros", desambiguar, {maxAge: 24 * 60 * 60 * 1000});
+		// 6. Redireccionar a la siguiente instancia
 		res.redirect("/agregar/producto/datos-duros");
 	},
 
@@ -138,9 +126,9 @@ module.exports = {
 			: "";
 		let errores = req.session.errores
 			? req.session.errores
-			// : tipoProducto
-			// ? await validarProd.tipoProducto(tipoProducto)
-			: "";
+			: // : tipoProducto
+			  // ? await validarProd.tipoProducto(tipoProducto)
+			  "";
 		autorizado_fa = req.session.usuario.autorizado_fa;
 		// 4. Render del formulario
 		//return res.send(req.cookies);
@@ -155,7 +143,7 @@ module.exports = {
 	},
 
 	tipoProducto_Guardar: async (req, res) => {
-		return res.send("Estoy en tipoProducto_Guardar")
+		return res.send("Estoy en tipoProducto_Guardar");
 	},
 
 	copiarFA_Form: async (req, res) => {
@@ -476,7 +464,7 @@ module.exports = {
 			? req.cookies.confirmar
 			: "";
 		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
-		// 2. Guardar el registro
+		// 2. Guardar el registro del producto
 		registro = await BD_varias.agregarRegistro(confirmar);
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
@@ -484,31 +472,21 @@ module.exports = {
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Si es una COLECCIÓN TMDB, agregar las partes en forma automática
-		datosDurosPartes = req.session.datosDurosPartes;
-		if (confirmar.entidad == "colecciones" && confirmar.fuente == "TMDB" && datosDurosPartes)
-			agregarPartesDeColeccion(datosDurosPartes, registro.id);
-		// 5. Si es una PELÍCULA TMDB y pertenece a una colección, agregar el 'pelicula_id' en la parte de la colección
-		if (
-			confirmar.entidad == "peliculas" &&
-			confirmar.fuente == "TMDB" &&
-			confirmar.en_coleccion
-		)
-			BD_varias.obtenerPorParametro("colecciones_partes", "peli_TMDB_id", confirmar.TMDB_id)
-				.then((n) => n.id)
-				.then((n) =>
-					BD_varias.actualizarRegistro("colecciones_partes", {pelicula_id: registro.id}, n)
-				);
-		// 6. Actualizar "cantProductos" en "Relación con la vida"
+		// 4. Funciones anexas
+		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
+			? confirmar.entidad_TMDB == "collection"
+				? await agregarCapitulosCollection(confirmar.capitulosId, registro.id)
+				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.capitulosCant, registro.id)
+			: ""
+		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		// 7. Miscelaneas
+		// 4.3. Miscelaneas
 		guardar_us_calificaciones(confirmar, registro);
 		moverImagenCarpetaDefinitiva(confirmar.avatar);
-		// 8. Borrar todas las session y cookies de 'Agregar producto'
 		borrarSessionCookies(req, res, "borrarTodo");
-		// 9. Redireccionar
-		//return res.send(confirmar);
+		// 5. Redireccionar
 		return res.redirect("/agregar/producto/conclusion");
 	},
 
@@ -631,7 +609,7 @@ module.exports = {
 let obtenerDatosDelProductoTMDB = async (datos) => {
 	// API Details
 	let lectura = await procesarProd.obtenerAPI_TMDB(datos);
-	// Obtener la info para la vista 'Datos Duros'
+	// Procesar la info para la vista 'Datos Duros'
 	datos.entidad_TMDB == "movie"
 		? (metodo = "pelicula_TMDB")
 		: datos.entidad_TMDB == "tv"
@@ -640,6 +618,14 @@ let obtenerDatosDelProductoTMDB = async (datos) => {
 		? (metodo = "coleccion_TMDB")
 		: "";
 	return await procesarProd[metodo](datos, lectura);
+};
+
+let obtenerCapitulosTV = async ({TMDB_id, season}) => {
+	// API Details
+	let lectura = await procesarProd.obtenerAPI_TMDB_season({TMDB_id, entidad_TMDB: season});
+	return lectura
+	// Procesar la info para la vista 'Datos Duros'
+	return await procesarProd.capituloTV(TMDB_id, season, lectura);
 };
 
 let revisarImagen = (tipo, tamano) => {
@@ -919,36 +905,42 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 	});
 };
 
-let agregarPartesDeColeccion = async (datosDurosPartes, id) => {
-	partes = datosDurosPartes;
-	let orden = 0;
-	for (parte of partes) {
-		orden++;
-		datos = {
-			entidad: "colecciones_partes",
-			coleccion_id: id,
-			peli_TMDB_id: parte.peli_TMDB_id,
-			orden: orden,
-			creada_por_id: 2,
-		};
-		if (parte.nombre_original) datos.nombre_original = parte.nombre_original;
-		if (parte.nombre_castellano) datos.nombre_castellano = parte.nombre_castellano;
-		if (parte.ano_estreno) datos.ano_estreno = parte.ano_estreno;
-		if (parte.cant_capitulos) datos.cant_capitulos = parte.cant_capitulos;
-		if (parte.avatar) datos.avatar = parte.avatar;
-		pelicula_id = await BD_varias.obtenerELC_id({
-			entidad: "peliculas",
-			campo: "TMDB_id",
-			valor: datos.peli_TMDB_id,
-		});
-		if (pelicula_id) {
-			// Agregarle el pelicula_id a la coleccion_parte
-			datos.pelicula_id = pelicula_id;
-			// Agregarle la colección a la película
-			BD_varias.actualizarRegistro("peliculas", {en_colec_id: datos.coleccion_id}, pelicula_id);
-		}
-		BD_varias.agregarRegistro(datos);
+let agregarCapitulosCollection = async (capitulosId, coleccion_id) => {
+	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
+	for (let i = 0; i < capitulosId.length; i++) {
+		await obtenerDatosDelProductoTMDB({TMDB_id: capitulosId[i], entidad_TMDB: "movie"})
+			.then((n) => {
+				return {
+					...n,
+					coleccion_id,
+					temporada: 0,
+					capitulo: i + 1,
+					creada_por_id: 2,
+					entidad: "capitulos",
+				};
+			})
+			.then((n) => BD_varias.agregarRegistro(n));
 	}
+	return;
+};
+
+let agregarCapitulosTV = async (TMDB_id, capitulosCant, coleccion_id) => {
+	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
+	for (let i = 0; i < capitulosCant; i++) {
+		await obtenerCapitulosTV({TMDB_id, season: i})
+			// .then((n) => {
+			// 	return {
+			// 		...n,
+			// 		coleccion_id,
+			// 		temporada: 0,
+			// 		capitulo: i + 1,
+			// 		creada_por_id: 2,
+			// 		entidad: "capitulos",
+			// 	};
+			// })
+			// .then((n) => BD_varias.agregarRegistro(n));
+	}
+	return;
 };
 
 let borrarSessionCookies = (req, res, paso) => {

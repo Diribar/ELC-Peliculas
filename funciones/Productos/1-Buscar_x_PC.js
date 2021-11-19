@@ -152,7 +152,7 @@ let agregarLanzamiento = async (dato) => {
 	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
 		// Obtener todas las fechas de lanzamiento
-		detalles = await detailsTMDB(dato[j].TMDB_id, "collection")
+		detalles = await detailsTMDB({TMDB_id: dato[j].TMDB_id, entidad_TMDB: "collection"})
 			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {
