@@ -476,7 +476,7 @@ module.exports = {
 		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
 			? confirmar.entidad_TMDB == "collection"
-				? await agregarPeliculasCollection(confirmar.capitulosId, registro.id)
+				? await agregarCapitulosCollection(confirmar.capitulosId, registro.id)
 				: await agregarCapitulosTV(confirmar.TMDB_id, confirmar.capitulosCant, registro.id)
 			: ""
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
@@ -905,7 +905,7 @@ let moverImagenCarpetaDefinitiva = (nombre) => {
 	});
 };
 
-let agregarPeliculasCollection = async (capitulosId, coleccion_id) => {
+let agregarCapitulosCollection = async (capitulosId, coleccion_id) => {
 	// Obtener las API de cada capítulo, y luego crear el registro de cada capítulo
 	for (let i = 0; i < capitulosId.length; i++) {
 		await obtenerDatosDelProductoTMDB({TMDB_id: capitulosId[i], entidad_TMDB: "movie"})
