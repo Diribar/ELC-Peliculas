@@ -51,7 +51,7 @@ module.exports = {
 		let errores = await validarProd.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/producto/palabras-clave");
+			return res.redirect("/producto/agregar/palabras-clave");
 		}
 		// 3. Generar la session para la siguiente instancia
 		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
@@ -60,7 +60,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/producto/desambiguar");
+		return res.redirect("/producto/agregar/desambiguar");
 	},
 
 	desambiguarForm: (req, res) => {
@@ -76,7 +76,7 @@ module.exports = {
 			: req.cookies.desambiguar
 			? req.cookies.desambiguar
 			: "";
-		if (!desambiguar) return res.redirect("/agregar/producto/palabras-clave");
+		if (!desambiguar) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
@@ -106,14 +106,14 @@ module.exports = {
 		// 3. Si no supera el filtro anterior, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/producto/desambiguar");
+			return res.redirect("/producto/agregar/desambiguar");
 		}
 		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoParaDD;
 		res.cookie("datosDuros", infoParaDD, {maxAge: 24 * 60 * 60 * 1000});
 		// 6. Redireccionar a la siguiente instancia
-		res.redirect("/agregar/producto/datos-duros");
+		res.redirect("/producto/agregar/datos-duros");
 	},
 
 	tipoProducto_Form: async (req, res) => {
@@ -204,7 +204,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/producto/copiar-fa");
+			return res.redirect("/producto/agregar/copiar-fa");
 		}
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
 		req.session.datosDuros = await procesarProd.infoParaDD_prodFA(copiarFA);
@@ -213,7 +213,7 @@ module.exports = {
 		});
 		// 4. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/producto/datos-duros");
+		return res.redirect("/producto/agregar/datos-duros");
 	},
 
 	datosDurosForm: async (req, res) => {
@@ -239,7 +239,7 @@ module.exports = {
 				: !!req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
-		if (!datosDuros) return res.redirect("/agregar/producto/" + origen);
+		if (!datosDuros) return res.redirect("/producto/agregar/" + origen);
 		// 5. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(datosDuros);
 		req.session.datosClaveProd = datosClaveProd;
@@ -282,7 +282,7 @@ module.exports = {
 				: req.session.copiarFA || req.cookies.copiarFA
 				? "copiar-fa"
 				: "palabras-clave";
-		if (!aux) return res.redirect("/agregar/producto/" + origen);
+		if (!aux) return res.redirect("/producto/agregar/" + origen);
 		// 3. Guardar el data entry en session y cookie
 		if (req.file && !req.body.avatar) req.body.avatar = req.file.filename;
 		let datosDuros = {...aux, ...req.body};
@@ -326,17 +326,17 @@ module.exports = {
 			rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 		}
 		// Revisar errores
-		if (!errores.avatar) errores.avatar = revisarImagen(tipo, tamano);
+		if (!errores.avatar) errores.avatar = varias.revisarImagen(tipo, tamano);
 		if (errores.avatar) errores.hay = true;
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
 			req.session.errores = errores;
-			return res.redirect("/agregar/producto/datos-duros");
+			return res.redirect("/producto/agregar/datos-duros");
 		}
 		// Si la imagen venía de TMDB, entonces grabarla
-		if (datosDuros.fuente == "TMDB") download(datosDuros.avatar, rutaYnombre);
+		if (datosDuros.fuente == "TMDB") varias.download(datosDuros.avatar, rutaYnombre);
 		// 8. Generar la session para la siguiente instancia
 		avatarDP =
 			datosDuros.fuente == "TMDB" ? datosDuros.avatar : "/imagenes/9-Provisorio/" + nombre;
@@ -350,7 +350,7 @@ module.exports = {
 		});
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/producto/datos-personalizados");
+		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 
 	datosPersForm: async (req, res) => {
@@ -365,7 +365,7 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers) return res.redirect("/agregar/producto/datos-duros");
+		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 4. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(datosPers);
 		req.session.datosClaveProd = datosClaveProd;
@@ -390,7 +390,7 @@ module.exports = {
 	datosPersGuardar: async (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-		if (!aux) return res.redirect("/agregar/producto/datos-duros");
+		if (!aux) return res.redirect("/producto/agregar/datos-duros");
 		// 1.2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
 		// 1.3. Si no se guardaron datos de RCLV, se quitan del dataEntry para evitar conflicto con la BD
@@ -405,7 +405,7 @@ module.exports = {
 		// 2.2. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/agregar/producto/datos-personalizados");
+			return res.redirect("/producto/agregar/datos-personalizados");
 		}
 		// 3. Si no hay errores, continuar
 		// Obtener la calificación
@@ -437,7 +437,7 @@ module.exports = {
 		});
 		//Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/producto/confirmar");
+		return res.redirect("/producto/agregar/confirmar");
 	},
 
 	confirmarForm: (req, res) => {
@@ -450,7 +450,7 @@ module.exports = {
 			: req.cookies.confirmar
 			? req.cookies.confirmar
 			: "";
-		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
+		if (!confirmar) return res.redirect("/producto/agregar/datos-personalizados");
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd(confirmar);
 		req.session.datosClaveProd = datosClaveProd;
@@ -474,7 +474,7 @@ module.exports = {
 			: req.cookies.confirmar
 			? req.cookies.confirmar
 			: "";
-		if (!confirmar) return res.redirect("/agregar/producto/datos-personalizados");
+		if (!confirmar) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Guardar el registro del producto
 		registro = await BD_varias.agregarRegistro(confirmar);
 		// 3. Guardar datosClaveProd
@@ -491,7 +491,8 @@ module.exports = {
 				: procesarProd.agregarCapitulosDeTV(
 						registro,
 						confirmar.TMDB_id,
-						confirmar.cantTemporadas
+						confirmar.cantTemporadas,
+						confirmar.numeroPrimeraTemp,
 				  )
 			: "";
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
@@ -499,10 +500,10 @@ module.exports = {
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// 4.3. Miscelaneas
 		guardar_us_calificaciones(confirmar, registro);
-		moverImagenCarpetaDefinitiva(confirmar.avatar);
+		varias.moverImagenCarpetaDefinitiva(confirmar.avatar, "2-Productos");
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 5. Redireccionar
-		return res.redirect("/agregar/producto/conclusion");
+		return res.redirect("/producto/agregar/conclusion");
 	},
 
 	conclusionForm: async (req, res) => {
@@ -515,7 +516,7 @@ module.exports = {
 			: req.cookies.datosClaveProd
 			? req.cookies.datosClaveProd
 			: "";
-		if (!datosClaveProd) return res.redirect("/agregar/producto/palabras-clave");
+		if (!datosClaveProd) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Averiguar si el producto está en una colección y si la colección ya está en nuestra BD
 		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_TMDB_id) {
 			coleccionYaEnBD = await BD_varias.obtenerELC_id({
@@ -548,7 +549,7 @@ module.exports = {
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
 		// Generar la info para redirigir a Detalle
-		ruta = "/detalle/producto/informacion/?entidad=";
+		ruta = "/producto/detalle/informacion/?entidad=";
 		entidad = datos.entidad;
 		id = datos.id;
 		// Redirigir a Detalles
@@ -564,29 +565,6 @@ module.exports = {
 	yaEnBD_Form: (req, res) => {
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
-};
-
-let revisarImagen = (tipo, tamano) => {
-	tamanoMaximo = 2;
-	return tipo.slice(0, 6) != "image/"
-		? "Necesitamos un archivo de imagen"
-		: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-		? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
-		: "";
-};
-
-let download = async (url, rutaYnombre) => {
-	let writer = fs.createWriteStream(rutaYnombre);
-	let response = await axios({
-		method: "GET",
-		url: url,
-		responseType: "stream",
-	});
-	response.data.pipe(writer);
-	return new Promise((resolve, reject) => {
-		writer.on("finish", () => resolve(console.log("Imagen guardada")));
-		writer.on("error", (err) => reject(err));
-	});
 };
 
 let funcDatosClaveProd = (datos) => {
@@ -637,18 +615,6 @@ let guardar_us_calificaciones = (confirmar, registro) => {
 		resultado: confirmar.calificacion,
 	};
 	BD_varias.agregarRegistro(datos);
-};
-
-let moverImagenCarpetaDefinitiva = (nombre) => {
-	let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
-	let rutaDefinitiva = "./public/imagenes/2-Productos/" + nombre;
-	fs.rename(rutaProvisoria, rutaDefinitiva, function (err) {
-		if (err) {
-			throw err;
-		} else {
-			console.log("Archivo de imagen movido a su carpeta definitiva");
-		}
-	});
 };
 
 let borrarSessionCookies = (req, res, paso) => {

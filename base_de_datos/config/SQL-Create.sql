@@ -464,6 +464,7 @@ CREATE TABLE PROD_colecciones (
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
 	pais_id VARCHAR(20) NOT NULL,
+	cantTemporadas INT UNSIGNED NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
 	musica VARCHAR(100) NOT NULL,

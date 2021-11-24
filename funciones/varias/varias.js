@@ -5,17 +5,10 @@ let BD_varias = require("../BD/varias");
 module.exports = {
 	userLogs: (req, res) => {
 		let URL = req.originalUrl;
-		let hasta =
-			URL.slice(1).indexOf("/") > 0
-				? URL.slice(1).indexOf("/") + 1
-				: URL.length;
+		let hasta = URL.slice(1).indexOf("/") > 0 ? URL.slice(1).indexOf("/") + 1 : URL.length;
 		let tema = URL.slice(1, hasta);
-		tema != "login" && tema != "usuarios"
-			? (req.session.urlReferencia = URL)
-			: "";
-		res.locals.urlReferencia = req.session.urlReferencia
-			? req.session.urlReferencia
-			: "/";
+		tema != "login" && tema != "usuarios" ? (req.session.urlReferencia = URL) : "";
+		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
 		//console.log(res.locals.urlReferencia);
 	},
 
@@ -130,5 +123,39 @@ module.exports = {
 		}
 		return resultado;
 	},
-	
+
+	moverImagenCarpetaDefinitiva: (nombre, destino) => {
+		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
+		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;
+		fs.rename(rutaProvisoria, rutaDefinitiva, (err) => {
+			if (err) throw err;
+			else console.log("Archivo de imagen movido a su carpeta definitiva");
+		});
+	},
+
+	revisarImagen: (tipo, tamano) => {
+		tamanoMaximo = 2;
+		return tipo.slice(0, 6) != "image/"
+			? "Necesitamos un archivo de imagen"
+			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
+			? "El tamaño del archivo es superior a " +
+			  tamanoMaximo +
+			  " MB, necesitamos uno más pequeño"
+			: "";
+	},
+
+	download: async (url, rutaYnombre) => {
+		let writer = fs.createWriteStream(rutaYnombre);
+		let response = await axios({
+			method: "GET",
+			url: url,
+			responseType: "stream",
+		});
+		response.data.pipe(writer);
+		return new Promise((resolve, reject) => {
+			writer.on("finish", () => resolve(console.log("Imagen guardada")));
+			writer.on("error", (err) => reject(err));
+		});
+	},
+		
 };

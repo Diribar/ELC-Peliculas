@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	let resultadoComentario = document.querySelector("#resultado");
 	let entidad = document.querySelector("select[name='entidad']");
 	let statusInicial = true;
-	let pre = "/agregar/producto/api/";
+	let pre = "/producto/agregar/api/";
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
@@ -58,7 +58,7 @@ window.addEventListener("load", async () => {
 		// Definir el mensaje
 		return ELC_id
 			? "Esta " +
-					"<a href='/detalle/producto/informacion/?entidad=" +
+					"<a href='/producto/detalle/informacion/?entidad=" +
 					entidad.value +
 					"&id=" +
 					ELC_id +
@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/agregar/producto/api/validar-copiar-fa/" + url).then((n) => n.json());
+		return fetch("/producto/agregar/api/validar-copiar-fa/" + url).then((n) => n.json());
 	};
 
 	// Status inicial

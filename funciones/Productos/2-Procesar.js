@@ -146,9 +146,9 @@ module.exports = {
 					.join(", ");
 			// Temporadas
 			datosAPI_renamed.cantTemporadas = datosAPI.seasons.length;
-			// datosAPI_renamed.numeroPrimeraTemp = Math.min(
-			// 	...datosAPI.seasons.map((n) => n.season_number)
-			// );
+			datosAPI_renamed.numeroPrimeraTemp = Math.min(
+				...datosAPI.seasons.map((n) => n.season_number)
+			);
 		}
 		let resultado = {
 			...datosIniciales,
@@ -157,16 +157,16 @@ module.exports = {
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
-	infoParaAgregarCapitulosDeTV: (datos, indice) => {
+	infoParaAgregarCapitulosDeTV: (datos, indice, tempUnica) => {
 		capitulo = datos.episodes[indice];
 		let datosAPI_renamed = {
-			entidad:"capitulos",
+			entidad: "capitulos",
 			creada_por_id: 2,
 			coleccion_id: datos.coleccion_id,
 			TMDB_id: capitulo.id,
-			temporada: datos.season_number,
 			capitulo: capitulo.episode_number,
 		};
+		if (!tempUnica) datosAPI_renamed.temporada = datos.season_number;
 		if (capitulo.name) datosAPI_renamed.nombre_castellano = capitulo.name;
 		if (capitulo.air_date) datosAPI_renamed.ano_estreno = capitulo.air_date;
 		if (capitulo.crew.length > 0) {
@@ -199,19 +199,29 @@ module.exports = {
 	},
 
 	// ControllerVista (confirmar)
-	agregarCapitulosDeTV: async function (registro, coleccion_TMDB_id, cantTemporadas) {
+	agregarCapitulosDeTV: async function (
+		registro,
+		coleccion_TMDB_id,
+		cantTemporadas,
+		numeroPrimeraTemp
+	) {
+		// Variables iniciales
+		tempUnica = false;
 		// Loop de TEMPORADAS ***********************************************
 		// Descarta las temporadas 0 (generalmente son "Especiales")
-
-		for (temporada = 1; temporada < cantTemporadas; temporada++) {
+		for (temporada = 0; temporada < cantTemporadas; temporada++) {
 			// Datos de UNA TEMPORADA
-			entidad_TMDB = temporada;
+			entidad_TMDB = temporada + numeroPrimeraTemp;
 			datosAPI = await detailsTMDB(entidad_TMDB, coleccion_TMDB_id);
+			// Detectar si es una única temporada
+			if (!datosAPI.season_number && cantTemporadas == 2) tempUnica = true;
+			if (datosAPI.season_number == 1 && cantTemporadas == 1) tempUnica = true;
+			if (!datosAPI.season_number) continue;
 			datosAPI.coleccion_id = registro.id;
 			// Loop de CAPITULOS ********************************************
 			for (indice = 0; indice < datosAPI.episodes.length; indice++) {
-				datosAPI_renamed = this.infoParaAgregarCapitulosDeTV(datosAPI, indice);
-				await BD_varias.agregarRegistro(datosAPI_renamed)
+				datosAPI_renamed = this.infoParaAgregarCapitulosDeTV(datosAPI, indice, tempUnica);
+				await BD_varias.agregarRegistro(datosAPI_renamed);
 			}
 		}
 		return;
