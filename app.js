@@ -46,7 +46,7 @@ let rutaProductos = require("./rutas_y_controladores/4-Productos/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProdAgregar);
-app.use("/producto/detalle", rutaProdDetalle);
+app.use("/producto", rutaProdDetalle);
 app.use("/productos", rutaProductos);
 app.use("/", rutaMiscelaneas);
 

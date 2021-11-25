@@ -7,14 +7,10 @@ let controlador = require("./Controlador");
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 //************************ Controladores ****************************
-router.get("/informacion", controlador.informacion);
-// router.get("/editar/:id", soloUsuarios, controlador.detalle);
-// router.get("/eliminar/:id", soloUsuarios, controlador.detalle);
-// router.get("/calificala/:id", soloUsuarios, controlador.detalle);
-// router.get("/:id/:id", controlador.detalle);
-
-router.post("/editar/:id", soloUsuarios, controlador.editarGuardar);
-router.post("/eliminar/:id", soloUsuarios, controlador.bajaGuardar);
+router.get("/detalle", controlador.detalle);
+router.get("/editar", soloUsuarios, controlador.editar);
+router.get("/calificala", soloUsuarios, controlador.calificala);
+router.get("/eliminar", soloUsuarios, controlador.eliminar);
 
 // Fin
 module.exports = router;
