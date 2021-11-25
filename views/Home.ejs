@@ -5,33 +5,33 @@
 	<% if (tema == "usuario") { %>
 		<link rel="stylesheet" href="/stylesheets/1-Usuarios/0-UsuariosGral.css">
 		<% if (codigo == "login") { %>
-			<%- include('Head', {titulo: "Login"}) %>
+			<%- include('0-Head', {titulo: "Login"}) %>
 			<link rel="stylesheet" href="/stylesheets/1-Usuarios/Login.css">
 			<script src="/javascript/1-Usuarios/ojitoContrasena.js"></script>
 			<script src="/javascript/1-Usuarios/0-Login-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "mail") { %>
-			<%- include('Head', {titulo: "Registro de Mail"}) %>
+			<%- include('0-Head', {titulo: "Registro de Mail"}) %>
 			<link rel="stylesheet" href="/stylesheets/1-Usuarios/1-FormMail.css">
 			<script src="/javascript/1-Usuarios/1-Mail-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "perennes") { %>
-			<%- include('Head', {titulo: "Registro de Datos Perennes"}) %>
+			<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
 			<script src="/javascript/1-Usuarios/2-Perennes-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "editables") { %>
-			<%- include('Head', {titulo: "Registro de Datos Editables"}) %>
+			<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
 			<link rel="stylesheet" href="/stylesheets/1-Usuarios/3-FormEditables.css">
 			<script src="/javascript/1-Usuarios/3-Editables-imagen.js"></script>
 			<script src="/javascript/1-Usuarios/3-Editables-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "detalle") { %>
-			<%- include('Head', {titulo: "Detalle de Usuario"}) %>
+			<%- include('0-Head', {titulo: "Detalle de Usuario"}) %>
 		<% } %>
 	<% } %>
 	<!-- Agregar productos -->
 	<% if (tema == "agregar") { %>
-		<%- include('Head', {titulo: "PEL-Agregar"}) %>
+		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 		<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Agregar.css">
 		<% if (codigo == "palabrasClave") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/1-PalabrasClave.css">
@@ -72,14 +72,14 @@
 	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>
-		<%- include('Head', {titulo}) %>
+		<%- include('0-Head', {titulo}) %>
 		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/0-Opciones.css">
 		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/Filtros.css">
 	<% } %>
 	<!-- Miscelaneas -->
 	<% if (tema == "RCLV") { %>
-		<%- include('Head', {titulo: "PEL-Agregar"}) %>
-		<%- include('Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
+		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
+		<%- include('0-Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
 		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RelacionConLaVida.css">
 		<script src="/javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
 		<script src="/javascript/9-Miscelaneas/RCLV-Fechas.js"></script>
@@ -87,19 +87,19 @@
 	<% } %>
 	<% if (tema == "institucional") { %>
 		<% if (codigo == "nosotros") { %>
-			<%- include('Head', {titulo: "Quiénes somos"}) %>
+			<%- include('0-Head', {titulo: "Quiénes somos"}) %>
 			<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/Nosotros.css">
 		<% } %>
 	<% } %>
 </head>
 <body>
 	<header>
-		<%- include('Main-1Header') %>
+		<%- include('1-Header') %>
 	</header>
 	<main class="flex-row">
-		<%- include('Main-2ImagenDerecha') %>
+		<%- include('2-ImagenDerecha') %>
 		<section id="cuerpo-y-footer" class="flex-col grow">
-			<%- include('Main-3Footer') %>
+			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema=="usuario") { %>
 				<section id="Form" class="flex-col">
