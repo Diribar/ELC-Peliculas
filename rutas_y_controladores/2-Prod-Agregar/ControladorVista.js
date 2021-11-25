@@ -549,7 +549,7 @@ module.exports = {
 		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
 		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
 		// Generar la info para redirigir a Detalle
-		ruta = "/producto/detalle/informacion/?entidad=";
+		ruta = "/producto/detalle/?entidad=";
 		entidad = datos.entidad;
 		id = datos.id;
 		// Redirigir a Detalles

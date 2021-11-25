@@ -3,26 +3,31 @@
 
 // *********** Controlador ***********
 module.exports = {
-	informacion: async (req, res) => {
-		informacion = req.query
-		return res.send(informacion);
+	detalle: async (req, res) => {
+		titulo = "Detalle";
+		nombre = "Información General";
+		informacion = req.query;
 		// Obtener los datos de la película
 		let ID = req.params.id;
 		let producto = await BD_peliculas.obtenerPorID_Peli(ID);
 		// Ir a la vista
 		return res.render("0-CRUD", {
-			titulo: "Detalle",
-			nombre: "Información General",
+			titulo,
+			nombre,
 			ID,
 			producto,
 		});
 	},
 
-	editarGuardar: (req, res) => {
-		return res.send("Estoy en editarGuardar");
+	editar: (req, res) => {
+		return res.send("Estoy en editar");
 	},
 
-	bajaGuardar: (req, res) => {
-		return res.send("Estoy en bajaGuardar");
+	calificala: (req, res) => {
+		return res.send("Estoy en calificala");
+	},
+
+	eliminar: (req, res) => {
+		return res.send("Estoy en eliminar");
 	},
 };

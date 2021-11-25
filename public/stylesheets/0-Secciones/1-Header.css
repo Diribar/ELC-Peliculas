@@ -42,8 +42,3 @@ header #usuario-menu .fa-sign-out-alt {transform: rotate(180deg);}
 header .dropdown-content {position: absolute; top: 55px;}
 header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
 header .dropdown-content a {padding: 4px 16px; display: block;}
-
-/* Footer */
-footer {justify-content: space-around;}
-footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
-footer {font-family: var(--Calibri); font-size: 16px; font-weight: bold;}
