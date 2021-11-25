@@ -20,7 +20,7 @@ module.exports = {
 	RCLV: (req, res) => {
 		// 1.1. Si se perdió la info anterior, volver a 'Palabra Clave'
 		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-		if (!aux) return res.redirect("/agregar/producto/palabras-clave");
+		if (!aux) return res.redirect("/producto/agregar/palabras-clave");
 		// 1.2. Guardar el data entry en session y cookie
 		let datosPers = {...aux, ...req.query};
 		req.session.datosPers = datosPers;
@@ -38,7 +38,7 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers) return res.redirect("/agregar/producto/palabras-clave");
+		if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
 		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		//return res.send(req.session.datosPers);
 		// 2. Tema y Código
@@ -78,7 +78,7 @@ module.exports = {
 			: req.cookies.datosPers
 			? req.cookies.datosPers
 			: "";
-		if (!datosPers) return res.redirect("/agregar/producto/palabras-clave");
+		if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
 		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		// 2. Generar información
 		let entidad = datosPers.entidad_RCLV;
@@ -117,6 +117,6 @@ module.exports = {
 		res.cookie(datosPers[campo], id, {maxAge: 24 * 60 * 60 * 1000});
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/agregar/producto/datos-personalizados");
+		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 };

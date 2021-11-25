@@ -18,12 +18,12 @@
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
 	<% if (locals.usuario) { %>
-		<a href="/usuarios/detalle">Mi usuario</a>
-		<a href="#">Mis estadísticas</a>
+		<a href="/usuarios/detalle"><i class="fas fa-user"></i>Mi usuario</a>
+		<a href="#"><i class="far fa-chart-bar"></i>Mis estadísticas</a>
 		<hr />
-		<a href="/usuarios/logout">Logout</a>
+		<a href="/usuarios/logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
 	<% } else { %>
-		<a href="/usuarios/login">Login</a>
-		<a href="/usuarios/mail">Registrarse</a>
+		<a href="/usuarios/login"><i class="fas fa-sign-in-alt"></i>Login</a>
+		<a href="/usuarios/mail"><i class="fas fa-registered"></i>Registrarse</a>
 	<% } %>
 </div>

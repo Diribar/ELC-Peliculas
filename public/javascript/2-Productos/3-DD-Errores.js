@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/agregar/producto/api/validar-datos-duros/?" +
+				"/producto/agregar/api/validar-datos-duros/?" +
 					campo +
 					"=" +
 					valor

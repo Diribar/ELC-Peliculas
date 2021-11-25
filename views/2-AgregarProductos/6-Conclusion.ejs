@@ -1,5 +1,5 @@
 <h1 class="titulo" id="titulo">Conclusión</h1>
-<form action="/agregar/producto/detalle" method="POST" id="dataEntry" class="flex-col">
+<form action="/producto/agregar/detalle" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
 		<img id="gracias" src="<%= imagen %>" alt="Muchas gracias">
@@ -24,7 +24,7 @@
 				<% if (dataEntry.en_coleccion) { %>
 					<% if (!dataEntry.coleccionYaEnBD) { %>
 						<% botonColeccion = "Agregar la Colección" %>
-						<% linkColeccion = "/agregar/producto/coleccion" %>
+						<% linkColeccion = "/producto/agregar/coleccion" %>
 						<% if (dataEntry.en_colec_TMDB_id) { %>
 							<!-- En TMDB -->
 							<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
@@ -43,7 +43,7 @@
 				<% } else { %>
 					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
 					<% botonColeccion = "Agregar las Partes" %>
-					<% linkColeccion = "/agregar/producto/partes-de-coleccion" %>
+					<% linkColeccion = "/producto/agregar/partes-de-coleccion" %>
 				<% } %>
 			<% } %>
 		</ul>

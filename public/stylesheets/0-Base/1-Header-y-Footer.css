@@ -30,11 +30,18 @@ header #usuario-icono #imagenUsuario {display: flex; justify-content: center; al
 header #usuario-icono #imagenUsuario img {height: 120%; width: 120%; object-fit: cover;}
 header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px;}
 header #usuario-menu {right: 20px;}
+header #usuario-menu .fa-sign-in-alt, 
+	header #usuario-menu .fa-registered, 
+	header #usuario-menu .fa-sign-out-alt,
+	header #usuario-menu .fa-user,
+	header #usuario-menu .fa-chart-bar
+		{font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
+header #usuario-menu .fa-sign-out-alt {transform: rotate(180deg);}
 
 /* Menús varios */
 header .dropdown-content {position: absolute; top: 55px;}
 header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
-header .dropdown-content a {padding: 4px 16px; text-decoration: none; display: block;}
+header .dropdown-content a {padding: 4px 16px; display: block;}
 
 /* Footer */
 footer {justify-content: space-around;}
