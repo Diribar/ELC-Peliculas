@@ -1,5 +1,5 @@
 // ************ Requires *************
-//const BD_peliculas = require("../../funciones/BD/peliculas");
+//let BD_peliculas = require("../../funciones/BD/peliculas");
 
 // *********** Controlador ***********
 module.exports = {
@@ -7,15 +7,14 @@ module.exports = {
 		titulo = "Detalle";
 		nombre = "Información General";
 		informacion = req.query;
+		console.log(req.query)
 		// Obtener los datos de la película
-		let ID = req.params.id;
+		let ID = req.query.id;
 		let producto = await BD_peliculas.obtenerPorID_Peli(ID);
 		// Ir a la vista
 		return res.render("0-CRUD", {
 			titulo,
 			nombre,
-			ID,
-			producto,
 		});
 	},
 

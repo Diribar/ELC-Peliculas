@@ -1,6 +1,7 @@
 // **** Requires ***********
 let nodemailer = require("nodemailer");
 let BD_varias = require("../BD/varias");
+let fs = require("fs");
 
 module.exports = {
 	userLogs: (req, res) => {

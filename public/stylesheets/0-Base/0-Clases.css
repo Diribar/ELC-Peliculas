@@ -8,31 +8,6 @@
 .space-around {justify-content: space-around;}
 .wrap {flex-wrap: wrap;}
 
-/* Resultados */
-/* Todos */
-.resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
-	{padding: 3px 10px; color: white; font-weight: bold;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
-
-/* Exito */
-.resultadoExitoso {background-color: var(--verde-oscuro);}
-.fa-check-circle {color: var(--verde-oscuro); cursor: default;}
-/* Neutro */
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
-.link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
-.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
-.mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
-/* Error */
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
-.fa-times-circle {color: var(--rojo-oscuro);}
-.fa-times-circle:hover .mensajeError {display: inline;}
-.mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; left: 20px; padding: 3px 7px;}
-.mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
-
 /* Otras */
 .absolute {position: absolute}
 .relative {position: relative;}

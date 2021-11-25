@@ -1,32 +1,34 @@
-<!-- Logo de Home -->
-<section>
-	<i id="home-icono" class="fas fa-home centradoVertical"></i>
-	<%- include("menuHome") %>
-</section>
-<!-- Logo de Crear/Menú de Película -->
-<section>
-	<% if (typeof detalle != "undefined") { %>
-		<i id="pelis-icono" class="fas fa-video centradoVertical"></i>
-		<%- include("menuPelis") %> 
-	<% } else { %>
-		<div  id="pelis-icono" class="centradoVertical">
-			<a href="/producto/agregar/palabras-clave">
-				<i class="fas fa-video"></i>
-				<i id="plus">+</i>
-			</a>
+<header>
+	<!-- Home y Agregar -->
+	<section>
+		<!-- Logo de Home -->
+		<div class="grupos">
+			<i id="home-icono" class="fas fa-home"></i>
+			<%- include("menuHome") %>
 		</div>
-	<% } %>
-</section>
-<!-- Título del Encabezado -->
-<section>
-	<p><a>Evangelicemos la Cultura</a></p>
-</section>
-<!-- Música de fondo -->
-<section>
-	<i id="musica-icono" class="fas fa-music centradoVertical"></i>
-	<audio src="/audio/Música-de-fondo.mp3"></audio>
-</section>
-<!-- Logo de usuario o Avatar -->
-<section>
-	<%- include("menuUsuario") %>
-</section>
+		<!-- Logo de Crear/Menú de Película -->
+		<div class="grupos">
+			<% if (typeof detalle != "undefined") { %>
+			<i id="pelis-icono" class="fas fa-video"></i>
+			<%- include("menuPelis") %> <% } else { %>
+			<div id="pelis-icono">
+				<a href="/producto/agregar/palabras-clave">
+					<i class="fas fa-video"></i>
+					<i id="plus">+</i>
+				</a>
+			</div>
+			<% } %>
+		</div>
+	</section>
+	<!-- Título del Encabezado -->
+	<a><p>Evangelicemos la Cultura</p></a>
+	<section>
+		<!-- Música de fondo -->
+		<div class="grupos">
+			<i id="musica-icono" class="fas fa-music"></i>
+			<audio src="/audio/Música-de-fondo.mp3"></audio>
+		</div>
+		<!-- Logo de usuario o Avatar -->
+		<div class="grupos"><%- include("menuUsuario") %></div>
+	</section>
+</header>

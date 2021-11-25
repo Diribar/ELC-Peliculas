@@ -1,44 +1,34 @@
-/* Header */
-header {position: relative; background-color: var(--azul-oscuro);}
-header p {display: flex; justify-content: center; align-items:center;}
-header p a {font-family: Monotype Corsiva; font-size: 3rem; font-weight: bold;}
-header p a {color: var(--amarillo-claro); text-decoration: none;}
+/* Configuración general */
+header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between;}
+header, header section, header section .grupos {display: flex; flex-direction: row; align-items: center;}
+header section {margin: 0 15px;}
 
-/* Formato de Íconos */
-header i, header .fa-question-circle {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal;}
+/* Formato del Título */
+header p {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem;}
+
+/* Formato de íconos */
+header section .grupos {margin: 0 15px;}
+header section .grupos i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
-header #usuario-icono #letraInicial {font-size: 1.6rem;}
+
+/* Ícono de agregar producto */
+header section .grupos #pelis-icono {position: relative;}
+header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
+
+/* Íconos de usuario */
+header #usuario-icono {border-radius: 50%; overflow: hidden; }
+header #usuario-icono #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+header #usuario-icono #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
+header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
+header #usuario-menu {right: 30px;}
+header #usuario-menu .fas {font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
+header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}
 
 /* Ubicación vertical de los íconos */
-header .centradoVertical {position: absolute; top: 50%; cursor: pointer;}
-header .centradoVertical {transform: translateY(-50%); transition: 500ms;}
-header .centradoVertical:hover {transform: translateY(-50%) scale(1.2);}
-
-/* Íconos a la izquierda */
-header #home-icono {left: 40px;}
-header #home-menu {left: 30px;}
-header #pelis-icono {left: 100px}
-header #pelis-icono a {position: relative;}
-header #pelis-icono a i {position: absolute; transform: translateY(-50%);}
-header #pelis-icono a #plus {z-index: 3; left: 3px}
-header #pelis-menu {left: 90px;}
-
-/* Íconos a la derecha */
-header #musica-icono {right: 130px;}
-header #usuario-icono {right: 40px; border-radius: 50%; overflow: hidden; }
-header #usuario-icono #imagenUsuario {display: flex; justify-content: center; align-items: center; height: 3rem; width: 3rem;}
-header #usuario-icono #imagenUsuario img {height: 120%; width: 120%; object-fit: cover;}
-header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px;}
-header #usuario-menu {right: 20px;}
-header #usuario-menu .fa-sign-in-alt, 
-	header #usuario-menu .fa-registered, 
-	header #usuario-menu .fa-sign-out-alt,
-	header #usuario-menu .fa-user,
-	header #usuario-menu .fa-chart-bar
-		{font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
-header #usuario-menu .fa-sign-out-alt {transform: rotate(180deg);}
+/* header .centradoVertical {transition: 500ms;}
+header .centradoVertical:hover {scale(1.2);} */
 
 /* Menús varios */
 header .dropdown-content {position: absolute; top: 55px;}
-header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 2;}
+header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
 header .dropdown-content a {padding: 4px 16px; display: block;}

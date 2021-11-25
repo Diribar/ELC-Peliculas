@@ -1,4 +1,4 @@
-<div id="usuario-icono" class="centradoVertical">
+<div id="usuario-icono">
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar!="-") { %>
 			<div id="imagenUsuario">
@@ -13,13 +13,12 @@
 		<% } %>
 	<% } else { %>
 		<i class="fas fa-question-circle usuario-iconos"></i>
-		<p>www</p>
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
 	<% if (locals.usuario) { %>
 		<a href="/usuarios/detalle"><i class="fas fa-user"></i>Mi usuario</a>
-		<a href="#"><i class="far fa-chart-bar"></i>Mis estadísticas</a>
+		<a href="#"><i class="fas fa-chart-bar"></i>Mis estadísticas</a>
 		<hr />
 		<a href="/usuarios/logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
 	<% } else { %>
