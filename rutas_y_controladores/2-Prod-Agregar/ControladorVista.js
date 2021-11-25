@@ -98,7 +98,7 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		req.body.fuente="TMDB"
+		req.body.fuente = "TMDB";
 		entidad_TMDB = req.body.entidad_TMDB;
 		infoParaDD = await procesarProd["infoParaDD_" + entidad_TMDB](req.body);
 		// 2. Averiguar si hay errores de validación
@@ -487,15 +487,11 @@ module.exports = {
 		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
 			? confirmar.entidad_TMDB == "collection"
-				? procesarProd.agregarCapitulosDeCollection(
-					registro.id,
-					confirmar.capitulosId,
-				  )
+				? procesarProd.agregarCapitulosDeCollection(registro.id, confirmar.capitulosId)
 				: procesarProd.agregarCapitulosDeTV(
-					registro.id,
-					confirmar.TMDB_id,
-					confirmar.cantTemporadas,
-					confirmar.numeroPrimeraTemp,
+						registro,
+						confirmar.TMDB_id,
+						confirmar.cantTemporadas
 				  )
 			: "";
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
