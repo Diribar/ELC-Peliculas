@@ -14,7 +14,7 @@
 #dataEntry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
 #dataEntry #prod_nuevo:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
 #dataEntry #ingr_manual:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
-#dataEntry #prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--azul-claro);}
+#dataEntry #prod_yaEnBD:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
 
 /* Partes del resultado */
 #dataEntry #imagenChica, #dataEntry #texto {height: 100%;}

@@ -2,6 +2,7 @@
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
 let procesarProd = require("./2-Procesar");
+let BD_varias = require("../../funciones/BD/varias");
 
 // Función a exportar
 module.exports = {
@@ -213,12 +214,22 @@ let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		entidad_TMDB = datos.resultados[i].entidad_TMDB;
 		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		let dato = {
+		dato = {
 			entidad,
 			campo: "TMDB_id",
 			valor: datos.resultados[i].TMDB_id,
 		};
-		let YaEnBD = await procesarProd.obtenerELC_id(dato);
+		YaEnBD = await procesarProd.obtenerELC_id(dato);
+		if (entidad == "peliculas" && !YaEnBD) {
+			dato.entidad = "capitulos";
+			YaEnBD = await procesarProd.obtenerELC_id(dato);
+			if (YaEnBD) {
+				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD)
+				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id)
+				datos.resultados[i].entidad = "capitulos";
+				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano +'"';
+			}
+		}
 		datos.resultados[i] = {
 			...datos.resultados[i],
 			YaEnBD: YaEnBD,

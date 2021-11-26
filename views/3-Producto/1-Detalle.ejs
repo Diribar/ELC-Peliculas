@@ -4,6 +4,8 @@
 	<p>Título original: <%= producto.nombre_original %></p>
 	<p>Duración: <%= producto.duracion %> minutos</p>
 	<p>Año de estreno: <%= producto.ano_estreno %></p>
+	<% if (entidad=="capitulos" && producto.temporada) { %><p>Temporada: <%= producto.temporada %></p><% } %>
+	<% if (entidad=="capitulos") { %><p>Capítulo: <%= producto.capitulo %></p><% } %>
 	<p>País de origen: <%= producto.pais_id %></p>
 	<p>Dirección: <%= producto.director %></p>
 	<p>Guión: <%= producto.guion %></p>
@@ -11,16 +13,16 @@
 	<p>Actores: <%= producto.actores %></p>
 	<p>Productor: <%= producto.productor %></p>
 	<p>Sinopsis: <%= producto.sinopsis %></p>
-	<p>En idioma castellano: <%= producto.en_castellano.nombre %></p>
-	<p>Color: <%- producto.color ? "SI" : "NO" %></p>
-	<p>Público sugerido: <%= producto.publico_sugerido.nombre %></p>
-	<p>Categoría: <%= producto.categoria.nombre %></p>
-	<p>Sub-categoría: <%= producto.subcategoria.nombre %></p>
-	<p>Creada por: <%= producto.creada_por.apodo %></p>
+	<% if (producto.en_castellano_id) { %><p>En idioma castellano: <%= producto.en_castellano.nombre %></p><% } %>
+	<% if (producto.color !=null) { %><p>Color: <%- producto.color ? "SI" : "NO" %></p><% } %>
+	<% if (producto.publico_sugerido_id) { %><p>Público sugerido: <%= producto.publico_sugerido.nombre %></p><% } %>
+	<% if (producto.categoria_id) { %><p>Categoría: <%= producto.categoria.nombre %></p><% } %>
+	<% if (producto.subcategoria_id) { %><p>Sub-categoría: <%= producto.subcategoria.nombre %></p><% } %>
+	<% if (producto.creada_por_id) { %><p>Creada por: <%= producto.creada_por.nombre %></p><% } %>
 	<% if (producto.editada_por_id) { %><p>Editada por: <%= producto.editada_por.apodo %></p><% } %>
 	<% if (producto.personaje_historico_id) { %><p>Personaje histórico: <%= producto.personaje_historico.nombre %></p><% } %>
 	<% if (producto.hecho_historico_id) { %><p>Personaje histórico: <%= producto.hecho_historico.nombre %></p><% } %>
-	<p>Calificación general: <%= producto.calificacion %></p>
-	<p>Tu calificación: <%= producto.calificacion %></p>
+	<p>Calificación general: <%= producto.calificacion ? producto.calificacion : "Sin calificar todavía, ¿querés ser el primero?" %></p>
+	<p>Tu calificación: </p>
 	<!-- interés_en_peli -->
 </div>

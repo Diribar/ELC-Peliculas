@@ -23,7 +23,9 @@ module.exports = async (entidad_TMDB, TMDB_id) => {
 		season +
 		"?api_key=" +
 		API_key +
-		"&language=es";
+		"&language=es" +
+		(entidad_TMDB == "movie" ? "&append_to_response=credits" : "");
+		// Se usa "credits", porque mejora el resultado de la API
 	// BUSCAR LA INFO
 	let resultado = await fetch(url).then((n) => n.json());
 	if (resultado.hasOwnProperty("success") && resultado.success == false) {
@@ -35,5 +37,6 @@ module.exports = async (entidad_TMDB, TMDB_id) => {
 			total_results: 0,
 		};
 	}
+	if (resultado.credits) delete resultado.credits
 	return resultado;
 };

@@ -17,7 +17,7 @@ module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	desambiguar: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
-		if (dato.entidad_TMDB == "movie" && dato.en_coleccion && !dato.en_colec_id) {
+		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
 			errores = {
 				// Datos originales
 				peli_entidad_TMDB: "movie",
@@ -311,7 +311,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n]+$/;
+	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n\#]+$/;
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line
