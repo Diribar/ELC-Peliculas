@@ -74,9 +74,9 @@ module.exports = {
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
-		desambiguar = await buscar_x_PC.search(palabrasClave).then(n=>n.resultados)
-		let resultados = desambiguar.resultados;
-		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados);
+		let desambiguar = await buscar_x_PC.search(palabrasClave)
+		//return res.send(desambiguar)
+		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -301,11 +301,12 @@ module.exports = {
 		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			elc_id = await BD_varias.obtenerELC_id({
+			datos={
 				entidad: datosDuros.entidad,
-				campo: [datosDuros.fuente + "_id"],
-				valor: datosDuros[this.campo],
-			});
+				campo: datosDuros.fuente + "_id",
+				valor: datosDuros[datosDuros.fuente + "_id"],
+			}
+			elc_id = await BD_varias.obtenerELC_id(datos);
 			if (elc_id) {
 				errores.nombre_original =
 					"El código interno ya se encuentra en nuestra base de datos";
@@ -642,10 +643,10 @@ let borrarSessionCookies = (req, res, paso) => {
 	}
 };
 
-let prepararMensaje = (datos) => {
-	let prod_nuevos = datos.filter((n) => !n.YaEnBD);
-	let prod_yaEnBD = datos.filter((n) => n.YaEnBD);
-	let coincidencias = datos.length;
+let prepararMensaje = (desambiguar) => {
+	let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
+	let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+	let coincidencias = desambiguar.resultados.length;
 	nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
 	let hayMas = desambiguar.hayMas;
 	mensaje =

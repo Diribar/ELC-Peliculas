@@ -9,7 +9,7 @@ module.exports = {
 
 	obtenerPorParametro: (entidad, parametro, valor) => {
 		return db[entidad].findOne({
-			where: { [parametro]: valor },
+			where: {[parametro]: valor},
 		});
 	},
 
@@ -18,11 +18,9 @@ module.exports = {
 	},
 
 	obtenerELC_id: (datos) => {
-		return db[datos.entidad]
-			.findOne({ where: { [datos.campo]: datos.valor } })
-			.then((n) => {
-				return n ? n.id : false;
-			});
+		return db[datos.entidad].findOne({where: {[datos.campo]: datos.valor}}).then((n) => {
+			return n ? n.id : false;
+		});
 	},
 
 	agregarRegistro: (datos) => {
@@ -30,6 +28,6 @@ module.exports = {
 	},
 
 	actualizarRegistro: (entidad, datos, id) => {
-		return db[entidad].update(datos, { where: { id: id } });
+		return db[entidad].update(datos, {where: {id: id}});
 	},
 };
