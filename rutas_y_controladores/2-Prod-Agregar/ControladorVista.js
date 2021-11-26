@@ -655,7 +655,7 @@ let prepararMensaje = (datos) => {
 					? ", " + nuevos + " no"
 					: ", todas ya")) +
 		" está" +
-		(nuevos > 1 ? "n" : "") +
+		(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 		" en nuestra BD.";
 	return {prod_nuevos, prod_yaEnBD, mensaje};
 };

@@ -90,7 +90,7 @@ module.exports = {
 
 	loginGuardar: async (req, res) => {
 		// 1. Obtener los datos del usuario
-		let usuario = await BD_especificas.obtenerPorMail(req.body.email);
+		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarUsuarios.login(req.body);
 		contrasena = usuario ? usuario.contrasena : "";
@@ -116,7 +116,7 @@ module.exports = {
 			);
 		}
 		// 5. Iniciar la sesión
-		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(
 			usuario.id
 		);
 		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
@@ -165,7 +165,7 @@ module.exports = {
 		// Actualizar el registro
 		req.body.status_registro_id = 3;
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
-		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(
 			usuario.id
 		);
 		// Redireccionar
@@ -219,7 +219,7 @@ module.exports = {
 		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
-		req.session.usuario = await BD_especificas.obtenerPorId_Usuario(usuario.id);
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Pendiente mover el archivo a la carpeta definitiva
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
@@ -229,7 +229,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "detalle";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerPorMail(
+			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(
 				req.cookies.email
 			);
 		}
@@ -244,7 +244,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "editar";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerPorMail(
+			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(
 				req.cookies.email
 			);
 		}
