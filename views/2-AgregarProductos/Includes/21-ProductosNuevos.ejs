@@ -5,7 +5,7 @@
 		<input class="ocultar" type="text" name="TMDB_id" value="<%= prod_nuevo.TMDB_id %>">
 		<input class="ocultar" type="text" name="nombre_original" value="<%= prod_nuevo.nombre_original %>">
 		<!-- Info a mostrar -->
-		<button type="submit" class="flex-row" id= "prod_nuevo">
+		<button type="submit" class="flex-row" id= "prod_nuevo" <% if (prod_nuevo==prod_nuevos[0]) { %>autofocus<% } %>>
 			<img id="imagenChica" 
 				src="<%= "https://image.tmdb.org/t/p/original" + prod_nuevo.avatar %>"
 				alt="<%= prod_nuevo.nombre_original %>" 

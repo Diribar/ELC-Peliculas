@@ -1,22 +1,28 @@
 // ************ Requires *************
-//let BD_peliculas = require("../../funciones/BD/peliculas");
+let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
 module.exports = {
 	detalle: async (req, res) => {
-		titulo = "Detalle";
-		nombre = "Información General";
+		// 1. Tema y Código
+		tema = "producto";
+		codigo = "detalle";
 		// Obtener los datos de la película
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
-		let producto = await BD_peliculas.obtenerPorID_Peli(ID);
+		let producto = await BD_varias.obtenerPorId(entidad, ID);
+		let avatar =
+			producto.avatar.substring(0, 5) != "https"
+				? "/imagenes/2-Productos/" + producto.avatar
+				: producto.avatar;
 		// Ir a la vista
-		return res.render("0-CRUD", {
-			titulo,
-			nombre,
+		return res.render("Home", {
+			tema,
+			codigo,
 			entidad,
 			ID,
 			producto,
+			avatar,
 		});
 	},
 

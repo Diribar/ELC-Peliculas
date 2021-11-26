@@ -2,6 +2,7 @@
 let nodemailer = require("nodemailer");
 let BD_varias = require("../BD/varias");
 let fs = require("fs");
+let axios = require("axios");
 
 module.exports = {
 	userLogs: (req, res) => {

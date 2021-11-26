@@ -1,7 +1,6 @@
 // ************ Requires ************
 let fs = require("fs");
 let path = require("path");
-let axios = require("axios");
 let requestPromise = require("request-promise");
 let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Productos/2-Procesar");
