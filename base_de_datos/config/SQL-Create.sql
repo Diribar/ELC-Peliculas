@@ -32,11 +32,10 @@ CREATE TABLE estados_eclesiales (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO estados_eclesiales (id, orden, nombre)
 VALUES 
-('LA', 1, 'Laico/a'),
-('RC', 2, 'Religioso/a'), 
-('DP', 3, 'Diácono Perm.'),
-('SC', 4, 'Sacerdote'), 
-('OB', 5, 'Obispo')
+('LS', 1, 'Laico/a soltero'),
+('LC', 2, 'Laico/a casado'),
+('RC', 3, 'Religioso/a consagrado'),
+('SC', 4, 'Sacerdote'),
 ;
 CREATE TABLE roles_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

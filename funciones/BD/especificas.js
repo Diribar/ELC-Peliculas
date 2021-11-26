@@ -1,37 +1,31 @@
 let db = require("../../base_de_datos/modelos");
-let peliculas = db.peliculas;
-let colecciones = db.colecciones;
 let usuarios = db.usuarios;
 //const { Op } = require("sequelize");
 
 module.exports = {
-	obtenerTodos_Peli: () => {
-		return peliculas.findAll({
-			include: ["coleccion_pelicula", "categoria", "subcategoria"],
+	obtenerProductos: (entidad, orden) => {
+		return db[entidad].findAll({
 			where: { borrado: false },
+			order: [[orden, "ASC"]],
 		});
 	},
 
-	obtenerTodos_Colec: () => {
-		return colecciones.findAll({
-			include: ["colecciones_partes"],
+	obtenerProductosConInclude: (entidad, orden, includes) => {
+		return db[entidad].findAll({
 			where: { borrado: false },
+			include: includes,
+			order: [[orden, "ASC"]],
 		});
 	},
 
-	obtenerPorId_Peli: (id) => {
-		return peliculas.findByPk(id, {
-			include: ["coleccion_pelicula", "categoria", "subcategoria"],
+	obtenerProductoPorIdConInclude: (entidad, id, includes) => {
+		return db[entidad].findByPk(id, {
+			include: includes,
 		});
 	},
 
-	obtenerPorId_Colec: (id) => {
-		return colecciones.findByPk(id, {
-			include: ["colecciones_partes"],
-		});
-	},
 
-	obtenerPorId_Usuario: (id) => {
+	obtenerUsuarioPorID: (id) => {
 		return usuarios.findByPk(id, {
 			include: [
 				"rol_usuario",
@@ -43,7 +37,7 @@ module.exports = {
 		});
 	},
 
-	obtenerPorMail: (email) => {
+	obtenerUsuarioPorMail: (email) => {
 		return usuarios.findOne({
 			where: { email: email },
 			include: [

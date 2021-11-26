@@ -1,16 +1,26 @@
 <div id="info">
-    <p style="font-weight: bold">Título original: <%= producto.nombre_original %></p>
-    <p>País de origen: <%= producto.pais_id %></p>
-    <p>Año de estreno: <%= producto.ano_estreno %></p>
-    <p>Duración: <%= producto.duracion %> minutos</p>
-    <p>Dirección: <%= producto.director %></p>
-    <p>Guión: <%= producto.guion %></p>
-    <p>Música: <%= producto.musica %></p>
-    <p>Actores: <%= producto.actores %></p>
-    <p>Productor: <%= producto.productor %></p>
-    <p>Idioma castellano: <%= producto.en_castellano %></p>
-    <p>Color: <%= producto.color %></p>
-    <p>Público sugerido: <%= producto.publico_sugerido_id %></p>
-    <p>Categoría: <%= producto.categoria_id %></p>
-    <p>Sub-categoría: <%= producto.subcategoria_id %></p>
-  </div>
+	<p style="font-weight: bold">Título en castellano: <%= producto.nombre_castellano %></p>
+	<% if (entidad=="coleccion") { %><p>ID: <%= producto.id %></p><% } %>	
+	<p>Título original: <%= producto.nombre_original %></p>
+	<p>Duración: <%= producto.duracion %> minutos</p>
+	<p>Año de estreno: <%= producto.ano_estreno %></p>
+	<p>País de origen: <%= producto.pais_id %></p>
+	<p>Dirección: <%= producto.director %></p>
+	<p>Guión: <%= producto.guion %></p>
+	<p>Música: <%= producto.musica %></p>
+	<p>Actores: <%= producto.actores %></p>
+	<p>Productor: <%= producto.productor %></p>
+	<p>Sinopsis: <%= producto.sinopsis %></p>
+	<p>En idioma castellano: <%= producto.en_castellano.nombre %></p>
+	<p>Color: <%- producto.color ? "SI" : "NO" %></p>
+	<p>Público sugerido: <%= producto.publico_sugerido.nombre %></p>
+	<p>Categoría: <%= producto.categoria.nombre %></p>
+	<p>Sub-categoría: <%= producto.subcategoria.nombre %></p>
+	<p>Creada por: <%= producto.creada_por.apodo %></p>
+	<% if (producto.editada_por_id) { %><p>Editada por: <%= producto.editada_por.apodo %></p><% } %>
+	<% if (producto.personaje_historico_id) { %><p>Personaje histórico: <%= producto.personaje_historico.nombre %></p><% } %>
+	<% if (producto.hecho_historico_id) { %><p>Personaje histórico: <%= producto.hecho_historico.nombre %></p><% } %>
+	<p>Calificación general: <%= producto.calificacion %></p>
+	<p>Tu calificación: <%= producto.calificacion %></p>
+	<!-- interés_en_peli -->
+</div>
