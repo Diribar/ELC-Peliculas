@@ -38,10 +38,12 @@ AGREGAR PRODUCTOS
 - Estandarización de títulos y formatos en Agregar
 
 PERSONAJE HISTÓRICO
-- En proceso de canonización en la Iglesia Católica (comenzado o terminado)
+- Miembro de la Iglesia Católica al fallecer
     SI/NO
-- Estado eclesial
-    laico, laico casado, religioso consagrado, sacerdote, ajeno a la Iglesia Católica
+- En proceso de canonización (comenzado o terminado)
+    SI/NO
+- Estado eclesial en la Iglesia Católica
+    laico, laico casado, religioso consagrado
 
 RCLV
 - Simplificar: quitar el "verificar", y reemplazar por botonSinLink
