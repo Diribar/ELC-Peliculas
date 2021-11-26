@@ -226,8 +226,8 @@ let averiguarSiYaEnBD = async (datos) => {
 			if (YaEnBD) {
 				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD)
 				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id)
-				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano +'"';
 				datos.resultados[i].entidad = "capitulos";
+				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano +'"';
 			}
 		}
 		datos.resultados[i] = {
