@@ -75,7 +75,6 @@ module.exports = {
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
 		let desambiguar = await buscar_x_PC.search(palabrasClave)
-		//return res.send(desambiguar)
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
 		//return res.send(req.cookies);
