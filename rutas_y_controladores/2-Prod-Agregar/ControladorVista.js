@@ -52,17 +52,12 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/producto/agregar/palabras-clave");
 		}
-		// 3. Generar la session para la siguiente instancia
-		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
-		res.cookie("desambiguar", req.session.desambiguar, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 4. Redireccionar a la siguiente instancia
+		// 3. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/producto/agregar/desambiguar");
 	},
 
-	desambiguarForm: (req, res) => {
+	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "desambiguar";
@@ -70,11 +65,12 @@ module.exports = {
 		borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		//return res.send(req.cookies.desambiguar)
-		desambiguar = req.session.desambiguar
-			? req.session.desambiguar
-			: req.cookies.desambiguar
-			? req.cookies.desambiguar
-			: "";
+		let palabrasClave = req.session.palabrasClave
+			? req.session.palabrasClave
+			: req.cookies.palabrasClave
+			? req.cookies.palabrasClave
+			: "";		
+		desambiguar = await buscar_x_PC.search(palabrasClave);
 		if (!desambiguar) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
@@ -98,14 +94,26 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
 		infoParaDD = await procesarProd["infoParaDD_" + req.body.entidad_TMDB](req.body);
+		//return res.send(infoParaDD)
+		//if (infoParaDD.)
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoParaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
+		//return res.send(errores);
 		if (errores.hay) {
 			req.session.errores = errores;
-			return res.redirect("/producto/agregar/desambiguar");
+			if (errores.mensaje == "agregarColeccion") {
+				return res.redirect("/producto/agregar/desambiguar");
+			} else if (errores.mensaje == "agregarCapitulos") {
+				// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
+				//return res.send(errores)
+				await procesarProd.agregarCapitulosFaltantes(
+					errores.en_colec_id,
+					errores.colec_TMDB_id
+				);
+				return res.redirect("/producto/agregar/desambiguar");
+			} else return res.send("línea 113 - error de proceso");
 		}
-		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoParaDD;
 		res.cookie("datosDuros", infoParaDD, {maxAge: 24 * 60 * 60 * 1000});
@@ -187,7 +195,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			elc_id = await procesarProd.obtenerELC_id({
+			elc_id = await BD_varias.obtenerELC_id({
 				entidad: copiarFA.entidad,
 				campo: "FA_id",
 				valor: FA_id,
@@ -293,7 +301,7 @@ module.exports = {
 		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			elc_id = await procesarProd.obtenerELC_id({
+			elc_id = await BD_varias.obtenerELC_id({
 				entidad: datosDuros.entidad,
 				campo: [datosDuros.fuente + "_id"],
 				valor: datosDuros[this.campo],

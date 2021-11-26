@@ -17,19 +17,35 @@ module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	desambiguar: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
+		errores = {hay: false};
+		// Si es una película y está en una colección
 		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
 			errores = {
-				// Datos originales
-				peli_entidad_TMDB: "movie",
-				peli_TMDB_id: dato.TMDB_id,
-				peli_nombre: dato.nombre_castellano,
-				// Datos nuevos
-				colec_entidad_TMDB: "collection",
 				colec_TMDB_id: dato.en_colec_TMDB_id,
-				colec_nombre: dato.en_colec_nombre,
-				hay: true,
+				hay: true
 			};
-		} else errores = {hay: false};
+			// Si la colección no está en nuestra BD
+			if (!dato.en_colec_id) {
+				errores = {
+					mensaje: "agregarColeccion",
+					...errores,
+					// Datos originales
+					peli_entidad_TMDB: "movie",
+					peli_TMDB_id: dato.TMDB_id,
+					peli_nombre: dato.nombre_castellano,
+					// Datos nuevos
+					colec_entidad_TMDB: "collection",
+					colec_TMDB_id: dato.en_colec_TMDB_id,
+					colec_nombre: dato.en_colec_nombre,
+				};
+			} else {
+				errores = {
+					mensaje: "agregarCapitulos",
+					...errores,
+					en_colec_id: dato.en_colec_id,
+				}
+			}
+		}
 		// Enviar el feedback
 		return errores;
 	},
@@ -315,8 +331,8 @@ let castellano = (dato) => {
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line
-	aux= !formato.test(dato);
-	return aux
+	aux = !formato.test(dato);
+	return aux;
 };
 let formatoAno = (dato) => {
 	formato = /^\d{4}$/;

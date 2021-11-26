@@ -219,10 +219,10 @@ let averiguarSiYaEnBD = async (datos) => {
 			campo: "TMDB_id",
 			valor: datos.resultados[i].TMDB_id,
 		};
-		YaEnBD = await procesarProd.obtenerELC_id(dato);
+		YaEnBD = await BD_varias.obtenerELC_id(dato);
 		if (entidad == "peliculas" && !YaEnBD) {
 			dato.entidad = "capitulos";
-			YaEnBD = await procesarProd.obtenerELC_id(dato);
+			YaEnBD = await BD_varias.obtenerELC_id(dato);
 			if (YaEnBD) {
 				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD)
 				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id)

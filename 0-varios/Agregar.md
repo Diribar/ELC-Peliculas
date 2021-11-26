@@ -1,8 +1,5 @@
 DESAMBIGUAR
-- FE: 
-    - Detectar si una película pertenece a una colección
-    - Para un producto ya enBD, derivar a Detalle
-- Guardar: para una película, si la colección ya está creada pero su capítulo NO, actualizar los capítulos
+- FE: detectar si una película pertenece a una colección
 
 TIPO PRODUCTO
 var min = 12,
