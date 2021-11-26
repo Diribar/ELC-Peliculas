@@ -69,12 +69,12 @@ module.exports = {
 			? req.session.palabrasClave
 			: req.cookies.palabrasClave
 			? req.cookies.palabrasClave
-			: "";		
-		desambiguar = await buscar_x_PC.search(palabrasClave);
-		if (!desambiguar) return res.redirect("/producto/agregar/palabras-clave");
+			: "";
+		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
+		desambiguar = await buscar_x_PC.search(palabrasClave).then(n=>n.resultados)
 		let resultados = desambiguar.resultados;
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados);
 		// 5. Render del formulario
