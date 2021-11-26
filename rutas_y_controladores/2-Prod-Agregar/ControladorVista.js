@@ -100,7 +100,7 @@ module.exports = {
 		// 3. Si no supera el filtro anterior, redireccionar
 		//return res.send(errores);
 		// 4. Detectar errores
-			if (errores.hay) {
+		if (errores.hay) {
 			req.session.errores = errores;
 			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 			if (errores.mensaje == "agregarCapitulos")
