@@ -1,8 +1,7 @@
-CALIFICACIONES
-- Agregar 'moderado' entre Mucho y Poco
-
 DESAMBIGUAR
-- Form: para las películas, buscar también en "capítulos" si ya están en BD
+- FE: 
+    - Detectar si una película pertenece a una colección
+    - Para un producto ya enBD, derivar a Detalle
 - Guardar: para una película, si la colección ya está creada pero su capítulo NO, actualizar los capítulos
 
 TIPO PRODUCTO
@@ -23,7 +22,9 @@ COPIAR FA:
 DATOS DUROS: 
 - Autofocus en la primera celda "no selected"
 - En los errores, poner ayudas:
-    - Campo vacío 		-> si no se sabe qué contestar, poné "Desconocido"
+    - Campo vacío
+        - si no se sabe qué contestar, poné "Desconocido"
+        - "Documental" para actores
     - Letras castellano	-> buscá qué letra puede ser extraña al idioma castellano
 
 DATOS PERSONALIZADOS
@@ -38,8 +39,9 @@ AGREGAR PRODUCTOS
 
 PERSONAJE HISTÓRICO
 - En proceso de canonización en la Iglesia Católica (comenzado o terminado)
+    SI/NO
 - Estado eclesial
-    laico, laico casado, religioso consagrado, sacerdote
+    laico, laico casado, religioso consagrado, sacerdote, ajeno a la Iglesia Católica
 
 RCLV
 - Simplificar: quitar el "verificar", y reemplazar por botonSinLink

@@ -97,9 +97,7 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		req.body.fuente = "TMDB";
-		entidad_TMDB = req.body.entidad_TMDB;
-		infoParaDD = await procesarProd["infoParaDD_" + entidad_TMDB](req.body);
+		infoParaDD = await procesarProd["infoParaDD_" + req.body.entidad_TMDB](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoParaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
@@ -409,17 +407,17 @@ module.exports = {
 		// 3. Si no hay errores, continuar
 		// Obtener la calificación
 		fe_valores = await BD_varias.obtenerPorParametro("fe_valores", "id", req.body.fe_valores_id)
-			.then((n) => n.valor / 3)
+			.then((n) => n.valor / 4)
 			.then((n) => n.toFixed(2));
 		entretiene = await BD_varias.obtenerPorParametro("entretiene", "id", req.body.entretiene_id)
-			.then((n) => n.valor / 3)
+			.then((n) => n.valor / 4)
 			.then((n) => n.toFixed(2));
 		calidad_tecnica = await BD_varias.obtenerPorParametro(
 			"calidad_tecnica",
 			"id",
 			req.body.calidad_tecnica_id
 		)
-			.then((n) => n.valor / 3)
+			.then((n) => n.valor / 4)
 			.then((n) => n.toFixed(2));
 		calificacion = (fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2).toFixed(2);
 		// Preparar la info para el siguiente paso
@@ -491,7 +489,7 @@ module.exports = {
 						registro,
 						confirmar.TMDB_id,
 						confirmar.cantTemporadas,
-						confirmar.numeroPrimeraTemp,
+						confirmar.numeroPrimeraTemp
 				  )
 			: "";
 		// 4.2. Actualizar "cantProductos" en "Relación con la vida"

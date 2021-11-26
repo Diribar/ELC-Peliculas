@@ -7,15 +7,10 @@ let varias = require("../Varias/varias");
 module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoParaDD_movie: async (datos) => {
-		// Datos obtenidos sin la API
-		datosIniciales = {
-			producto: "Película",
-			entidad: "peliculas",
-			...datos,
-		};
+		let datosIniciales = {fuente: "TMDB", ...datos};
 		// Obtener las API
-		let general = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
-		let credits = await creditsTMDB(datos.TMDB_id);
+		let general = detailsTMDB("movie", datos.TMDB_id);
+		let credits = creditsTMDB(datos.TMDB_id);
 		let datosAPI = await Promise.all([general, credits]).then(([a, b]) => {
 			return {...a, ...b};
 		});
@@ -33,7 +28,13 @@ module.exports = {
 					campo: "TMDB_id",
 					valor: datosAPI_renamed.en_colec_TMDB_id,
 				});
-			} else datosAPI_renamed.en_coleccion = false;
+				datosIniciales.producto = "Capítulo";
+				datosIniciales.entidad = "capitulos";
+			} else {
+				datosAPI_renamed.en_coleccion = false;
+				datosIniciales.producto = "Película";
+				datosIniciales.entidad = "peliculas";
+			}
 			// IMDB_id, nombre_original, nombre_castellano
 			if (datosAPI.IMDB_id != "") datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
 			if (datosAPI.original_title != "")
@@ -74,10 +75,13 @@ module.exports = {
 				datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
 			}
 		}
+		// Consolidar los resultados
 		let resultado = {
 			...datosIniciales,
 			...datosAPI_renamed,
 		};
+		//if (resultado.TMDB_id==1366) console.log(general, credits)
+
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
@@ -87,14 +91,13 @@ module.exports = {
 		for (let i = 0; i < capitulos_TMDB_id.length; i++) {
 			// Obtener la API de un capítulo y agregar el registro
 			await this.infoParaDD_movie({
-				entidad_TMDB: "movie",
 				TMDB_id: capitulos_TMDB_id[i],
 			})
 				.then((n) => {
+					//console.log(n.TMDB_id, n.avatar)
 					return {
 						...n,
 						coleccion_id,
-						temporada: 0,
 						capitulo: i + 1,
 						creada_por_id: 2,
 						entidad: "capitulos",
@@ -111,10 +114,11 @@ module.exports = {
 		datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
+			fuente: "TMDB",
 			...datos,
 		};
 		// Obtener las API
-		let datosAPI = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
+		let datosAPI = await detailsTMDB("tv", datos.TMDB_id);
 		// Cambiarle el nombre a los campos y procesar la información
 		let datosAPI_renamed = {};
 		if (Object.keys(datosAPI).length > 0) {
@@ -233,10 +237,11 @@ module.exports = {
 		datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
+			fuente: "TMDB",
 			...datos,
 		};
 		// Obtener las API
-		let datosAPI = await detailsTMDB(datos.entidad_TMDB, datos.TMDB_id);
+		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
 		// Cambiarle el nombre a los campos y procesar la información
 		let datosAPI_renamed = {};
 		if (Object.keys(datosAPI).length > 0) {
