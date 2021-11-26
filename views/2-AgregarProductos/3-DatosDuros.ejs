@@ -23,16 +23,14 @@
 	<section id="cuerpo">
 		<!--Primera columna-->
 		<div class="flex-col">
-			<!-- Película IM: ¿Pertenece a una colección? -->
-			<%- include("31-DD-IM") %>
 			<!-- Primeros campos -->
-			<% for (registro of camposDD1) { %><%- include("32-DD-Input", {registro}) %><% } %>
+			<% for (registro of camposDD1) { %><%- include("31-DD-Input", {registro}) %><% } %>
 			<!-- País -->
-			<%- include("33-DD-Pais") %>
+			<%- include("32-DD-Pais") %>
 			<!-- Siguientes campos -->
-			<% for (registro of camposDD2) { %><%- include("32-DD-Input", {registro}) %><% } %>
+			<% for (registro of camposDD2) { %><%- include("31-DD-Input", {registro}) %><% } %>
 			<!--Sinopsis-->
-			<%- include("34-DD-Sinopsis") %>
+			<%- include("33-DD-Sinopsis") %>
 		</div>
 		<!--Columna intermedia-->
 		<div id="columnaMedio">

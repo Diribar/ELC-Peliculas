@@ -1,11 +1,3 @@
-DATOS DUROS: 
-- Autofocus en la primera celda "no selected"
-- En los errores, poner ayudas:
-    - Campo vacío
-        - si no se sabe qué contestar, poné "Desconocido"
-        - "Documental" para actores
-    - Letras castellano	-> buscá qué letra puede ser extraña al idioma castellano
-
 DATOS PERSONALIZADOS
 - Si la película o serie de TV informa que el producto existe en castellano, llevar ese dato a DP
 
