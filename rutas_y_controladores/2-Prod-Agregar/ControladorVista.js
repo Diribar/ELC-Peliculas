@@ -74,7 +74,7 @@ module.exports = {
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
-		let desambiguar = await buscar_x_PC.search(palabrasClave)
+		let desambiguar = await buscar_x_PC.search(palabrasClave);
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
 		//return res.send(req.cookies);
@@ -99,19 +99,16 @@ module.exports = {
 		let errores = await validarProd.desambiguar(infoParaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
 		//return res.send(errores);
-		if (errores.hay) {
+		// 4. Detectar errores
+			if (errores.hay) {
 			req.session.errores = errores;
-			if (errores.mensaje == "agregarColeccion") {
-				return res.redirect("/producto/agregar/desambiguar");
-			} else if (errores.mensaje == "agregarCapitulos") {
-				// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
-				//return res.send(errores)
+			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos
+			if (errores.mensaje == "agregarCapitulos")
 				await procesarProd.agregarCapitulosFaltantes(
 					errores.en_colec_id,
 					errores.colec_TMDB_id
 				);
-				return res.redirect("/producto/agregar/desambiguar");
-			} else return res.send("línea 113 - error de proceso");
+			return res.redirect("/producto/agregar/desambiguar");
 		}
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoParaDD;
@@ -300,11 +297,11 @@ module.exports = {
 		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			datos={
+			datos = {
 				entidad: datosDuros.entidad,
 				campo: datosDuros.fuente + "_id",
 				valor: datosDuros[datosDuros.fuente + "_id"],
-			}
+			};
 			elc_id = await BD_varias.obtenerELC_id(datos);
 			if (elc_id) {
 				errores.nombre_original =
