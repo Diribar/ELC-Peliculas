@@ -80,7 +80,6 @@ module.exports = {
 			...datosIniciales,
 			...datosAPI_renamed,
 		};
-		//if (resultado.TMDB_id==1366) console.log(general, credits)
 
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
