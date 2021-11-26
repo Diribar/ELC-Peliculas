@@ -365,15 +365,10 @@ module.exports = {
 	agregarCapitulosFaltantes: async function (coleccion_id, TMDB_id) {
 		// Obtener el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
-		let datosAPI_renamed = {};
-		if (datosAPI.parts && datosAPI.parts.length > 0) {
-			// ID de los capitulos
-			capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
-		} else {
-			console.log("Error en el proceso, línea 374");
-			return;
-		}
-		this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
+		// Obtener el ID de los capitulos
+		capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
+		// Agregar los capítulos que correspondan
+		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
 		return;
 	},
 };
