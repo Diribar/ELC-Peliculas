@@ -6,9 +6,9 @@ let requestPromise = require("request-promise");
 let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Productos/2-Procesar");
 let validarProd = require("../../funciones/Productos/3-Errores");
+let variables = require("../../funciones/Productos/4-Variables");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/varias");
-let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
