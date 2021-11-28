@@ -30,19 +30,20 @@ module.exports = (sequelize, dt) => {
 		link_trailer: { type: dt.STRING(200) },
 		link_pelicula: { type: dt.STRING(200) },
 		calificacion: { type: dt.DECIMAL },
+
 		creada_por_id: { type: dt.INTEGER },
 		creada_en: { type: dt.DATE },
-		lead_time_creacion : { type: dt.INTEGER },
 		analizada_por_id: { type: dt.INTEGER },
 		analizada_en: { type: dt.DATE },
-		aprobada: { type: dt.BOOLEAN },
-		ultima_fecha: { type: dt.DATE },
+		lead_time_creacion : { type: dt.INTEGER },
+		status_aprobacion_id : { type: dt.INTEGER },
+
 		editada_por_id: { type: dt.INTEGER },
 		editada_en: { type: dt.DATE },
 		revisada_por_id: { type: dt.INTEGER },
 		revisada_en: { type: dt.DATE },
 		lead_time_edicion: { type: dt.INTEGER },
-		borrada: { type: dt.BOOLEAN },
+
 		borrada_por_id: { type: dt.INTEGER },
 		borrada_en: { type: dt.DATE },
 		borrada_motivo_id: { type: dt.INTEGER },
@@ -61,6 +62,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.historicos_personajes, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.historicos_hechos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
+		entidad.belongsTo(n.status_aprobacion, {as: "status_aprobacion", foreignKey: "status_aprobacion_id"});
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});

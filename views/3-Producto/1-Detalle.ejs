@@ -1,4 +1,5 @@
 <div id="info">
+	<!-- Datos Duros -->
 	<p style="font-weight: bold">Título en castellano: <%= producto.nombre_castellano %></p>
 	<% if (entidad=="coleccion") { %><p>ID: <%= producto.id %></p><% } %>	
 	<p>Título original: <%= producto.nombre_original %></p>
@@ -13,16 +14,29 @@
 	<p>Actores: <%= producto.actores %></p>
 	<p>Productor: <%= producto.productor %></p>
 	<p>Sinopsis: <%= producto.sinopsis %></p>
+
+	<!-- Datos Personalizados -->
 	<% if (producto.en_castellano_id) { %><p>En idioma castellano: <%= producto.en_castellano.nombre %></p><% } %>
 	<% if (producto.color !=null) { %><p>Color: <%- producto.color ? "SI" : "NO" %></p><% } %>
 	<% if (producto.publico_sugerido_id) { %><p>Público sugerido: <%= producto.publico_sugerido.nombre %></p><% } %>
 	<% if (producto.categoria_id) { %><p>Categoría: <%= producto.categoria.nombre %></p><% } %>
 	<% if (producto.subcategoria_id) { %><p>Sub-categoría: <%= producto.subcategoria.nombre %></p><% } %>
-	<% if (producto.creada_por_id) { %><p>Creada por: <%= producto.creada_por.nombre %></p><% } %>
+	<% 	convertirFormatoFecha = (fecha) => {
+			dia=fecha.getDate()
+			mes=fecha.toLocaleDateString("es", {month:'short'}).slice(0,3)
+			ano=fecha.getFullYear()
+			hora=("00"+fecha.getHours()).slice(-2)
+			minutos=("00"+fecha.getMinutes()).slice(-2)
+			return dia + "/" + mes + "/" + ano + ", " + hora + ":" + minutos + "hs."
+		}
+	%> 
+	<p>Creada en: <%= convertirFormatoFecha(producto.creada_en) %></p>
+	<p>Status de Aprobación: <%= producto.status_aprobacion.nombre %> </p>
+	<!-- Aprobada -->
 	<% if (producto.editada_por_id) { %><p>Editada por: <%= producto.editada_por.apodo %></p><% } %>
 	<% if (producto.personaje_historico_id) { %><p>Personaje histórico: <%= producto.personaje_historico.nombre %></p><% } %>
 	<% if (producto.hecho_historico_id) { %><p>Personaje histórico: <%= producto.hecho_historico.nombre %></p><% } %>
-	<p>Calificación general: <%= producto.calificacion ? producto.calificacion : "Sin calificar todavía, ¿querés ser el primero?" %></p>
+	<p>Calificación general: <%= producto.calificacion ? producto.calificacion*100 + "%" : "Sin calificar todavía, ¿querés ser el primero?" %></p>
 	<p>Tu calificación: </p>
 	<!-- interés_en_peli -->
 </div>

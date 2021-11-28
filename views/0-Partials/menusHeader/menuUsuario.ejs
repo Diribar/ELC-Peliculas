@@ -1,18 +1,18 @@
-<div id="usuario-icono">
+<div id="usuario-icono" class="scale">
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar!="-") { %>
 			<div id="imagenUsuario">
-				<img src="/imagenes/1-Usuarios/<%= usuario.avatar %>" class="usuario-iconos"/>
+				<img src="/imagenes/1-Usuarios/<%= usuario.avatar %>"/>
 			</div>
 		<% } else if (usuario.nombre != null) { %>
-			<i id="letraInicial" class="usuario-iconos">
+			<i id="letraInicial">
 				<%= usuario.nombre.slice(0,1).toUpperCase() %>
 			</i>
 		<% } else { %>
-			<i class="fas fa-user-circle usuario-iconos"></i>
+			<i class="fas fa-user-circle"></i>
 		<% } %>
 	<% } else { %>
-		<i class="fas fa-question-circle usuario-iconos"></i>
+		<i class="fas fa-question-circle"></i>
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
