@@ -22,7 +22,7 @@ module.exports = {
 		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
 			errores = {
 				colec_TMDB_id: dato.en_colec_TMDB_id,
-				hay: true
+				hay: true,
 			};
 			// Si la colección no está en nuestra BD
 			if (!dato.en_colec_id) {
@@ -43,7 +43,7 @@ module.exports = {
 					mensaje: "agregarCapitulos",
 					...errores,
 					en_colec_id: dato.en_colec_id,
-				}
+				};
 			}
 		}
 		// Enviar el feedback
@@ -99,10 +99,6 @@ module.exports = {
 		// Comenzar con las revisiones
 		let errores = {};
 		// En colección
-		errores.en_coleccion =
-			!datos.en_coleccion && datos.entidad == "peliculas" && datos.fuente == "IM"
-				? "Elegí una opción"
-				: "";
 		errores.nombre_original =
 			camposAVerificar.indexOf("nombre_original") == -1
 				? ""
@@ -184,7 +180,7 @@ module.exports = {
 			camposAVerificar.indexOf("musica") == -1
 				? ""
 				: !datos.musica
-				? cartelCampoVacio
+				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 2, 100)
 				? longitud(datos.musica, 2, 100)
 				: castellano(datos.musica)
@@ -194,7 +190,7 @@ module.exports = {
 			camposAVerificar.indexOf("actores") == -1
 				? ""
 				: !datos.actores
-				? cartelCampoVacio
+				? cartelCampoVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"'
 				: longitud(datos.actores, 2, 500)
 				? longitud(datos.actores, 2, 500)
 				: castellano(datos.actores)
@@ -314,7 +310,7 @@ module.exports = {
 // Variables **************************
 let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
-	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula. Buscá qué letra o símbolo puede ser extraña al idioma castellano, y corregila";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
 let relacionConLaVidaVacio =
 	"Necesitamos que elijas una opción en alguno de estos dos campos o en ambos";

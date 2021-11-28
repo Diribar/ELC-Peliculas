@@ -16,3 +16,5 @@ for (var i = min; i<=max; i++){
 COPIAR FA: 
 - Para las películas, buscar también en "capítulos" si ya están en BD
 
+DATOS DUROS: 
+- Cuando está vacío, permitir elegir más de 1 país

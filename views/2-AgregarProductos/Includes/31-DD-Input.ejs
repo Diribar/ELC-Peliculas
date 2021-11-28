@@ -6,7 +6,7 @@
 			<input type="text" class="input" name="<%= registro.campo %>"
 				value="<%= dataEntry[registro.campo] %>"
 				<% if (registro.id) { %>id="numero" placeholder="sólo números"<% } %>
-				<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } %> 
+				<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>
 			>
 			<!-- Ayuda -->
 			<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
