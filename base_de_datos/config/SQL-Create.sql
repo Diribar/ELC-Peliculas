@@ -32,10 +32,11 @@ CREATE TABLE estados_eclesiales (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO estados_eclesiales (id, orden, nombre)
 VALUES 
+('PC', 0, 'Computadora'),
 ('LS', 1, 'Laico/a soltero'),
 ('LC', 2, 'Laico/a casado'),
 ('RC', 3, 'Religioso/a consagrado'),
-('SC', 4, 'Sacerdote'),
+('SC', 4, 'Sacerdote')
 ;
 CREATE TABLE roles_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -79,13 +80,13 @@ CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
-	status_registro_id INT UNSIGNED NOT NULL DEFAULT 1,
-	rol_usuario_id INT UNSIGNED NOT NULL DEFAULT 1,
+	status_registro_id INT UNSIGNED DEFAULT 1,
+	rol_usuario_id INT UNSIGNED DEFAULT 1,
 	autorizado_fa BOOLEAN NULL DEFAULT 0,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
 	apodo VARCHAR(50) NULL,
-	avatar VARCHAR(100) NOT NULL DEFAULT '-',
+	avatar VARCHAR(100) DEFAULT '-',
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
@@ -93,7 +94,7 @@ CREATE TABLE USUARIOS (
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
-	aut_data_entry BOOLEAN NOT NULL DEFAULT 0,
+	aut_data_entry BOOLEAN DEFAULT 0,
 	borrado BOOLEAN NULL DEFAULT 0,
 	borrado_en DATETIME NULL,
 	borrado_motivo VARCHAR(500) NULL,
@@ -107,10 +108,10 @@ CREATE TABLE USUARIOS (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'LA', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'LA', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26'),
-(11, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LA', '2021-03-26', '2021-03-26')
+(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
+(11, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -349,10 +350,11 @@ CREATE TABLE cal_fe_valores (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_fe_valores (id, orden, valor, nombre)
 VALUES 
-(4, 1, 3, 'Mucho'),
-(3, 2, 2, 'Sí'),
-(2, 3, 1, 'Poco'),
-(1, 4, 0, 'No')
+(5, 1, 4, 'Mucho'),
+(4, 2, 3, 'Sí'),
+(3, 3, 2, 'Moderado'),
+(2, 4, 1, 'Poco'),
+(1, 5, 0, 'No')
 ;
 CREATE TABLE cal_entretiene (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -363,10 +365,11 @@ CREATE TABLE cal_entretiene (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_entretiene (id, orden, valor, nombre)
 VALUES 
-(4, 1, 3, 'Mucho'),
-(3, 2, 2, 'Sí'),
-(2, 3, 1, 'Poco'),
-(1, 4, 0, 'No')
+(5, 1, 4, 'Mucho'),
+(4, 2, 3, 'Sí'),
+(3, 3, 2, 'Moderado'),
+(2, 4, 1, 'Poco'),
+(1, 5, 0, 'No')
 ;
 CREATE TABLE cal_calidad_tecnica (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -377,7 +380,7 @@ CREATE TABLE cal_calidad_tecnica (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
 VALUES 
-(2, 1, 3, 'No afecta el disfrute'),
+(2, 1, 4, 'No afecta el disfrute'),
 (1, 2, 0, 'Perjudica el disfrute')
 ;
 CREATE TABLE interes_en_prod (
@@ -392,6 +395,13 @@ VALUES
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
 ;
+CREATE TABLE status_aprobacion (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(10) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO status_aprobacion (id, nombre)
+VALUES (1, 'Pendiente'), (2, 'Aprobada'), (3, 'Rechazada');
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -421,19 +431,20 @@ CREATE TABLE PROD_peliculas (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	calificacion INT UNSIGNED NOT NULL,
+
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	aprobada BOOLEAN DEFAULT 0,
-	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
-	borrada BOOLEAN NOT NULL DEFAULT 0,
+	
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
 	borrada_motivo_id INT UNSIGNED NULL,
@@ -447,6 +458,7 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
@@ -481,19 +493,20 @@ CREATE TABLE PROD_colecciones (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	calificacion INT UNSIGNED NULL,
+
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	aprobada BOOLEAN DEFAULT 0,
-	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
-	borrada BOOLEAN NOT NULL DEFAULT 0,
+
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
 	borrada_motivo_id INT UNSIGNED NULL,
@@ -507,6 +520,7 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
@@ -515,7 +529,7 @@ CREATE TABLE PROD_colecciones (
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
-	temporada INT UNSIGNED NOT NULL,
+	temporada INT UNSIGNED DEFAULT NULL,
 	capitulo INT UNSIGNED NOT NULL,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
 	FA_id VARCHAR(10) NULL UNIQUE,
@@ -543,19 +557,20 @@ CREATE TABLE PROD_capitulos (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	calificacion INT UNSIGNED NULL,
+
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	aprobada BOOLEAN DEFAULT 0,
-	ultima_fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
-	borrada BOOLEAN NOT NULL DEFAULT 0,
+
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
 	borrada_motivo_id INT UNSIGNED NULL,
@@ -570,6 +585,7 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),

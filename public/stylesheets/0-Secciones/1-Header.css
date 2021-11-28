@@ -1,15 +1,22 @@
 /* Configuración general */
-header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between;}
+header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between; position: relative;}
 header, header section, header section .grupos {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
 /* Formato del Título */
-header p {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem;}
+header p {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
 
 /* Formato de íconos */
 header section .grupos {margin: 0 15px;}
 header section .grupos i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
+header section .grupos .scale {transition: 500ms;}
+header section .grupos .scale:hover {transform: scale(1.3);}
+
+/* Menú de Home */
+header section .grupos a {color: var(--azul-oscuro);}
+header section .grupos .dropdown-content .fas,
+header section .grupos .dropdown-content .far {color: inherit; font-size: inherit;}
 
 /* Ícono de agregar producto */
 header section .grupos #pelis-icono {position: relative;}
@@ -23,10 +30,6 @@ header #usuario-icono #letraInicial {background-color: var(--celeste-claro); pad
 header #usuario-menu {right: 30px;}
 header #usuario-menu .fas {font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
 header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}
-
-/* Ubicación vertical de los íconos */
-/* header .centradoVertical {transition: 500ms;}
-header .centradoVertical:hover {scale(1.2);} */
 
 /* Menús varios */
 header .dropdown-content {position: absolute; top: 55px;}

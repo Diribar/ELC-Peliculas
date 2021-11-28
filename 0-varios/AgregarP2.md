@@ -18,3 +18,6 @@ COPIAR FA:
 
 DATOS DUROS: 
 - Cuando está vacío, permitir elegir más de 1 país
+
+DATOS PERSONALIZADOS
+- Si la película o serie de TV informa que el producto existe en castellano, llevar ese dato a DP
