@@ -16,4 +16,12 @@ window.addEventListener("load", () => {
 			? document.getElementById("usuario-menu").classList.remove("ocultar")
 			: document.getElementById("usuario-menu").classList.add("ocultar");
 	});
+	window.addEventListener("click", (e) => {
+		input = document.querySelector("#busquedaRapida input");
+		e.target.matches("#busquedaRapida .fa-search")
+			? input.classList.toggle("ocultar")
+			: !e.target.matches("#busquedaRapida input")
+			? input.classList.add("ocultar")
+			: "";
+	});
 });

@@ -13,14 +13,22 @@ header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); fo
 header section .grupos .scale {transition: 500ms;}
 header section .grupos .scale:hover {transform: scale(1.3);}
 
-/* Menú de Home */
+/* Formato de Menús */
 header section .grupos a {color: var(--azul-oscuro);}
+header section .grupos .dropdown-content {position: absolute; top: 50px;}
+header section .grupos .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
+header section .grupos .dropdown-content a {padding: 4px 16px; display: block;}
 header section .grupos .dropdown-content .fas,
 header section .grupos .dropdown-content .far {color: inherit; font-size: inherit;}
 
 /* Ícono de agregar producto */
 header section .grupos #pelis-icono {position: relative;}
 header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
+
+/* Íconos de búsqueda rápida */
+header section .grupos#busquedaRapida {position: relative;}
+header section .grupos#busquedaRapida input {border-radius: 5px; padding: 3px; width: 150px;}
+header section .grupos#busquedaRapida input {position: absolute; bottom: -25px;}
 
 /* Íconos de usuario */
 header #usuario-icono {border-radius: 50%; overflow: hidden; }
@@ -30,8 +38,3 @@ header #usuario-icono #letraInicial {background-color: var(--celeste-claro); pad
 header #usuario-menu {right: 30px;}
 header #usuario-menu .fas {font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
 header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}
-
-/* Menús varios */
-header .dropdown-content {position: absolute; top: 55px;}
-header .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
-header .dropdown-content a {padding: 4px 16px; display: block;}
