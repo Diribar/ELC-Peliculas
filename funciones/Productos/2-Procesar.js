@@ -88,21 +88,26 @@ module.exports = {
 	agregarCapitulosDeCollection: async function (coleccion_id, capitulos_TMDB_id) {
 		// Replicar para todos los capítulos de la colección
 		for (let i = 0; i < capitulos_TMDB_id.length; i++) {
-			// Obtener la API de un capítulo y agregar el registro
-			await this.infoParaDD_movie({
-				TMDB_id: capitulos_TMDB_id[i],
-			})
-				.then((n) => {
-					//console.log(n.TMDB_id, n.avatar)
-					return {
-						...n,
-						coleccion_id,
-						capitulo: i + 1,
-						creada_por_id: 2,
-						entidad: "capitulos",
-					};
+			// Si el capítulo no existe, agregarlo
+			existe = await BD_varias.obtenerELC_id({
+				entidad: "capitulos",
+				campo: "TMDB_id",
+				valor: capitulos_TMDB_id[i],
+			});
+			if (!existe)
+				await this.infoParaDD_movie({
+					TMDB_id: capitulos_TMDB_id[i],
 				})
-				.then((n) => BD_varias.agregarRegistro(n));
+					.then((n) => {
+						return {
+							...n,
+							coleccion_id,
+							capitulo: i + 1,
+							creada_por_id: 2,
+							entidad: "capitulos",
+						};
+					})
+					.then((n) => BD_varias.agregarRegistro(n));
 		}
 		return;
 	},
@@ -357,15 +362,14 @@ module.exports = {
 		return resultado;
 	},
 
-	// Función buscar_x_PC (buscar_x_PC -> averiguarSiYaEnBD)
-	// Middleware (productoYaEnBD)
-	// ControllerAPI (obtenerELC_id)
-	// ControllerVista (copiarFA_Guardar)
-	// ControllerVista (datosDurosGuardar)
-	obtenerELC_id: async (datos) => {
-		if (!datos.valor) return false;
-		let ELC_id = await BD_varias.obtenerELC_id(datos);
-		return ELC_id;
+	agregarCapitulosFaltantes: async function (coleccion_id, TMDB_id) {
+		// Obtener el API actualizada de la colección
+		let datosAPI = await detailsTMDB("collection", TMDB_id);
+		// Obtener el ID de los capitulos
+		capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
+		// Agregar los capítulos que correspondan
+		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
+		return;
 	},
 };
 

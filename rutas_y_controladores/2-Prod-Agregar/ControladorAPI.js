@@ -1,13 +1,14 @@
 // ************ Requires ************
 let buscar_x_PalClave = require("../../funciones/Productos/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Productos/2-Procesar");
+let BD_varias = require("../../funciones/BD/varias");
 let validarProd = require("../../funciones/Productos/3-Errores");
 
 // *********** Controlador ***********
 module.exports = {
 	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {
-		let { palabrasClave } = req.query;
+		let {palabrasClave} = req.query;
 		// Obtener la cantidad de productos encontrados que coinciden con las palabras clave
 		let lectura = await buscar_x_PalClave.search(palabrasClave);
 		return res.json(lectura);
@@ -28,19 +29,13 @@ module.exports = {
 
 	// Vista (datosDuros)
 	validarDatosDuros: async (req, res) => {
-		errores = await validarProd.datosDuros(
-			req.query,
-			Object.keys(req.query)
-		);
+		errores = await validarProd.datosDuros(req.query, Object.keys(req.query));
 		return res.json(errores);
 	},
 
 	// Vista (datosPers)
 	validarDatosPers: async (req, res) => {
-		errores = await validarProd.datosPers(
-			req.query,
-			Object.keys(req.query)
-		);
+		errores = await validarProd.datosPers(req.query, Object.keys(req.query));
 		return res.json(errores);
 	},
 
@@ -52,8 +47,8 @@ module.exports = {
 
 	// Vista (copiarFA)
 	obtenerELC_id: async (req, res) => {
-		let { entidad, campo, valor } = req.query;
-		ELC_id = await procesarProd.obtenerELC_id({ entidad, campo, valor });
+		let {entidad, campo, valor} = req.query;
+		ELC_id = await BD_varias.obtenerELC_id({entidad, campo, valor});
 		return res.json(ELC_id);
 	},
 };

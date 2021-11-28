@@ -52,17 +52,12 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/producto/agregar/palabras-clave");
 		}
-		// 3. Generar la session para la siguiente instancia
-		req.session.desambiguar = await buscar_x_PC.search(palabrasClave);
-		res.cookie("desambiguar", req.session.desambiguar, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 4. Redireccionar a la siguiente instancia
+		// 3. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/producto/agregar/desambiguar");
 	},
 
-	desambiguarForm: (req, res) => {
+	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "desambiguar";
@@ -70,17 +65,17 @@ module.exports = {
 		borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		//return res.send(req.cookies.desambiguar)
-		desambiguar = req.session.desambiguar
-			? req.session.desambiguar
-			: req.cookies.desambiguar
-			? req.cookies.desambiguar
+		let palabrasClave = req.session.palabrasClave
+			? req.session.palabrasClave
+			: req.cookies.palabrasClave
+			? req.cookies.palabrasClave
 			: "";
-		if (!desambiguar) return res.redirect("/producto/agregar/palabras-clave");
+		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.errores ? req.session.errores : "";
 		// 4. Preparar los datos
-		let resultados = desambiguar.resultados;
-		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(resultados);
+		let desambiguar = await buscar_x_PC.search(palabrasClave);
+		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -98,14 +93,23 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
 		infoParaDD = await procesarProd["infoParaDD_" + req.body.entidad_TMDB](req.body);
+		//return res.send(infoParaDD)
+		//if (infoParaDD.)
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoParaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
+		//return res.send(errores);
+		// 4. Detectar errores
 		if (errores.hay) {
 			req.session.errores = errores;
+			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos
+			if (errores.mensaje == "agregarCapitulos")
+				await procesarProd.agregarCapitulosFaltantes(
+					errores.en_colec_id,
+					errores.colec_TMDB_id
+				);
 			return res.redirect("/producto/agregar/desambiguar");
 		}
-		// 4. Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoParaDD;
 		res.cookie("datosDuros", infoParaDD, {maxAge: 24 * 60 * 60 * 1000});
@@ -187,7 +191,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			elc_id = await procesarProd.obtenerELC_id({
+			elc_id = await BD_varias.obtenerELC_id({
 				entidad: copiarFA.entidad,
 				campo: "FA_id",
 				valor: FA_id,
@@ -293,11 +297,12 @@ module.exports = {
 		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			elc_id = await procesarProd.obtenerELC_id({
+			datos = {
 				entidad: datosDuros.entidad,
-				campo: [datosDuros.fuente + "_id"],
-				valor: datosDuros[this.campo],
-			});
+				campo: datosDuros.fuente + "_id",
+				valor: datosDuros[datosDuros.fuente + "_id"],
+			};
+			elc_id = await BD_varias.obtenerELC_id(datos);
 			if (elc_id) {
 				errores.nombre_original =
 					"El código interno ya se encuentra en nuestra base de datos";
@@ -634,10 +639,10 @@ let borrarSessionCookies = (req, res, paso) => {
 	}
 };
 
-let prepararMensaje = (datos) => {
-	let prod_nuevos = datos.filter((n) => !n.YaEnBD);
-	let prod_yaEnBD = datos.filter((n) => n.YaEnBD);
-	let coincidencias = datos.length;
+let prepararMensaje = (desambiguar) => {
+	let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
+	let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+	let coincidencias = desambiguar.resultados.length;
 	nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
 	let hayMas = desambiguar.hayMas;
 	mensaje =
