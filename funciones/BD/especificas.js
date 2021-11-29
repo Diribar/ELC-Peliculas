@@ -25,28 +25,27 @@ module.exports = {
 	},
 
 	quickSearch: async (condiciones) => {
-		let peliculas = await db.peliculas.findAll({where: condiciones}).then((n) =>
+		let peliculas = db.peliculas.findAll({where: condiciones}).then((n) =>
 			n.map((m) => {
 				m.dataValues.entidad= "peliculas"
 				return m;
 			})
 		);
-		let colecciones =await db.colecciones.findAll({where: condiciones}).then((n) =>
+		let colecciones =db.colecciones.findAll({where: condiciones}).then((n) =>
 			n.map((m) => {
 				m.dataValues.entidad= "colecciones"
 				return m;
 			})
 		);
-		let capitulos = await db.capitulos.findAll({where: condiciones}).then((n) =>
+		let capitulos = db.capitulos.findAll({where: condiciones}).then((n) =>
 			n.map((m) => {
 				m.dataValues.entidad= "capitulos"
 				return m;
 			})
 		);
-		let resultado = [...peliculas, ...colecciones, ...capitulos]
-		// let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
-		// 	return {...a, ...b, ...c};
-		// });
+		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
+			return [...a, ...b, ...c];
+		});
 		return resultado;
 	},
 
