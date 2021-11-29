@@ -213,7 +213,6 @@ module.exports = {
 			: castellano(datos.sinopsis)
 			? cartelCastellano
 			: "";
-		console.log("linea 216", datos.avatar);
 		errores.avatar = !datos.avatar
 			? "Necesitamos que agregues una imagen"
 			: extensiones(datos.avatar)
