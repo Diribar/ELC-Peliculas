@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
 	// Copiar al portapapeles
 	if (!(IM && IM.name == "en_coleccion"))
 		preview.addEventListener("click", () => {
-			navigator.clipboard.writeText(url.innerHTML);
+			if (url && url.innerHTML) navigator.clipboard.writeText(url.innerHTML);
 		});
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");

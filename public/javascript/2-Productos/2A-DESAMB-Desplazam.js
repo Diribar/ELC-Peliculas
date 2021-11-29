@@ -1,7 +1,7 @@
 window.addEventListener("load", async () => {
 	// Definir variables
-	let resultado = document.querySelector("#resultadoGeneral");
-	let form = document.querySelectorAll("#resultadoGeneral form");
+	let resultado = document.querySelector("#resultadoDesamb");
+	let form = document.querySelectorAll("#resultadoDesamb form");
 	let anchoTotal = resultado.scrollWidth;
 	let anchoVisible = resultado.offsetWidth;
 	let anchoForm = form[0].clientWidth;

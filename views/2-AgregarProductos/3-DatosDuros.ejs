@@ -37,20 +37,23 @@
 		</div>
 		<!--Segunda columna-->
 		<div id="imagenPeli" class="form-grupo input-error">
-			<!-- Si viene desde TMDB -->
-			<% if (dataEntry.avatar && dataEntry.fuente=="TMDB") { %><img id="imgTMDB" src="<%= dataEntry.avatar %>" alt="afiche"><% } %>
-			<!-- Si viene desde otra fuente -->
-			<% if (dataEntry && dataEntry.fuente!="TMDB") { %><label for="imagen" id="preview"></label>
-				<!-- Si viene desde FA -->
-				<% if (dataEntry.avatar && dataEntry.fuente=="FA") { %>
-					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
-					<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
-				<% } %>
-				<!-- Si viene desde Ingreso Manual -->
-				<% if (!dataEntry.avatar || dataEntry.fuente=="IM") { %><button type="button">Elegí una imagen de<br>la web y pegá el URL</button><% } %>
+			<!-- Si existe una imagen y viene desde TMDB -->
+			<% if (dataEntry.avatar && dataEntry.fuente=="TMDB") { %>
+				<img id="imgTMDB" src="<%= dataEntry.avatar %>" alt="afiche">
+			<% } else { %>
+				<label for="imagen" id="preview"></label>
+			<% } %>
+			<!-- Si existe una imagen que no viene de TMDB -->
+			<% if (dataEntry.avatar && dataEntry.fuente!="TMDB") { %>
+				<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
+				<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
+			<% } %>
+			<!-- Si no existe una imagen -->
+			<% if (!dataEntry.avatar) { %>
+				<button type="button">Elegí una imagen de<br>la web y pegá el URL</button>
 			<% } %>
 			<!-- Rutina para todos los casos -->
-			<input name="avatar" type="file" accept="image/*" id="imagen" class="input ocultar">
+			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
 			<i class="fas fa-times-circle <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
 			</i>

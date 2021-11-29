@@ -36,12 +36,11 @@ module.exports = {
 				datosIniciales.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
-			if (datosAPI.IMDB_id != "") datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
-			if (datosAPI.original_title != "")
-				datosAPI_renamed.nombre_original = datosAPI.original_title;
-			if (datosAPI.title != "") datosAPI_renamed.nombre_castellano = datosAPI.title;
+			if (datosAPI.IMDB_id) datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
+			if (datosAPI.original_title) datosAPI_renamed.nombre_original = datosAPI.original_title;
+			if (datosAPI.title) datosAPI_renamed.nombre_castellano = datosAPI.title;
 			// año de estreno, duración, país de origen
-			if (datosAPI.release_date != "")
+			if (datosAPI.release_date)
 				datosAPI_renamed.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
 			if (datosAPI.runtime != null) datosAPI_renamed.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
@@ -49,9 +48,9 @@ module.exports = {
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview != "")
+			if (datosAPI.overview)
 				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path != "")
+			if (datosAPI.poster_path)
 				datosAPI_renamed.avatar =
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Credits
@@ -68,7 +67,7 @@ module.exports = {
 				};
 			if (datosAPI.cast.length > 0)
 				datosAPI_renamed.actores = datosAPI.cast
-					.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
+					.map((n) => n.name + (n.character ? " (" + n.character + ")" : ""))
 					.join(", ");
 			while (datosAPI.cast.length > 0 && datosAPI_renamed.actores.length > 500) {
 				aux = datosAPI_renamed.actores;
@@ -127,22 +126,21 @@ module.exports = {
 		let datosAPI_renamed = {};
 		if (Object.keys(datosAPI).length > 0) {
 			// nombre_original, nombre_castellano
-			if (datosAPI.original_name != "")
-				datosAPI_renamed.nombre_original = datosAPI.original_name;
-			if (datosAPI.name != "") datosAPI_renamed.nombre_castellano = datosAPI.name;
+			if (datosAPI.original_name) datosAPI_renamed.nombre_original = datosAPI.original_name;
+			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin, país de origen
-			if (datosAPI.first_air_date != "")
+			if (datosAPI.first_air_date)
 				datosAPI_renamed.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
-			if (datosAPI.last_air_date != "")
+			if (datosAPI.last_air_date)
 				datosAPI_renamed.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.production_countries.length > 0)
 				datosAPI_renamed.pais_id = datosAPI.production_countries
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview != "")
+			if (datosAPI.overview)
 				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path != "")
+			if (datosAPI.poster_path)
 				datosAPI_renamed.avatar =
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Credits
@@ -187,7 +185,7 @@ module.exports = {
 		}
 		if (capitulo.guest_stars.length > 0) {
 			datosAPI_renamed.actores = capitulo.guest_stars
-				.map((n) => n.name + (n.character != "" ? " (" + n.character + ")" : ""))
+				.map((n) => n.name + (n.character ? " (" + n.character + ")" : ""))
 				.join(", ");
 		}
 		while (capitulo.guest_stars.length > 0 && datosAPI_renamed.actores.length > 500) {
@@ -251,7 +249,7 @@ module.exports = {
 		if (Object.keys(datosAPI).length > 0) {
 			// Datos obtenidos de la API
 			// nombre_castellano
-			if (datosAPI.name != "") datosAPI_renamed.nombre_castellano = datosAPI.name;
+			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
 			if (datosAPI.parts.length > 0) {
 				datosAPI_renamed.ano_estreno = Math.min(
@@ -262,9 +260,9 @@ module.exports = {
 				);
 			}
 			// sinopsis, avatar
-			if (datosAPI.overview != "")
+			if (datosAPI.overview)
 				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
-			if (datosAPI.poster_path != "")
+			if (datosAPI.poster_path)
 				datosAPI_renamed.avatar =
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
@@ -356,7 +354,7 @@ module.exports = {
 			resultado.productor = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
 			aux = contenido[contenido.indexOf("Sinopsis") + 1];
-			!aux.includes("(FILMAFFINITY)") ? (aux = aux + " (FILMAFFINITY)") : "";
+			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
 		return resultado;
@@ -375,7 +373,7 @@ module.exports = {
 
 // Funciones *********************
 let fuenteSinopsisTMDB = (sinopsis) => {
-	sinopsis != "" && !sinopsis.includes("(FILMAFFINITY)") ? (sinopsis = sinopsis + " (TMDB)") : "";
+	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis = sinopsis + " (TMDB)";
 	return sinopsis;
 };
 

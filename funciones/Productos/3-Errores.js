@@ -323,12 +323,12 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n\#]+$/;
+	//formato = /^[A-ZÁÉÍÓÚÜÑ"][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n\#]+$/;
+	formato = /^[A-ZÁÉÍÓÚÜÑ"][a-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/i;
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line
-	aux = !formato.test(dato);
-	return aux;
+	return !formato.test(dato);
 };
 let formatoAno = (dato) => {
 	formato = /^\d{4}$/;

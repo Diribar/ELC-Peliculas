@@ -10,7 +10,7 @@ header p {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size
 header section .grupos {margin: 0 15px;}
 header section .grupos i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer;}
 header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
-header section .grupos .scale {transition: 500ms;}
+header section .grupos .scale {transition: 300ms;}
 header section .grupos .scale:hover {transform: scale(1.3);}
 
 /* Formato de Menús */

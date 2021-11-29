@@ -1,4 +1,5 @@
 <% for (prod_enBD of prod_yaEnBD) { %>
+<li>
 	<form action="/producto/detalle" method="GET">
 		<!-- Campos para luego buscar los detalles -->
 		<input class="ocultar" type="text" name="entidad" value="<%= prod_enBD.entidad %>">
@@ -15,4 +16,5 @@
 			</div>
 		</button>
 	</form>
+</li>
 <% } %>
