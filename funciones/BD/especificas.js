@@ -25,49 +25,29 @@ module.exports = {
 	},
 
 	quickSearch: async (condiciones) => {
-		let peliculas = await db.peliculas
-			.findAll({
-				where: condiciones,
+		let peliculas = await db.peliculas.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "peliculas"
+				return m;
 			})
-			.then((n) =>
-				n.map((m) => {
-					return {
-						...m,
-						entidad: "peliculas",
-					};
-				})
-			);
-		// let colecciones = db.colecciones
-		// 	.findAll({
-		// 		where: condiciones,
-		// 	})
-		// 	.then((n) =>
-		// 		n.map((m) => {
-		// 			return {
-		// 				...m,
-		// 				entidad: "colecciones",
-		// 			};
-		// 		})
-		// 	);
-		// let capitulos = db.capitulos
-		// 	.findAll({
-		// 		where: condiciones,
-		// 	})
-		// 	.then((n) =>
-		// 		n.map((m) => {
-		// 			return {
-		// 				...m,
-		// 				entidad: "capitulos",
-		// 			};
-		// 		})
-		// 	);
+		);
+		let colecciones =await db.colecciones.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "colecciones"
+				return m;
+			})
+		);
+		let capitulos = await db.capitulos.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "capitulos"
+				return m;
+			})
+		);
+		let resultado = [...peliculas, ...colecciones, ...capitulos]
 		// let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
 		// 	return {...a, ...b, ...c};
 		// });
-		console.log("linea 96", peliculas.length);
-		console.log("linea 97", peliculas[0].dataValues.nombre_original);
-		if (peliculas.length > 1) console.log("linea 98", peliculas[1].dataValues.nombre_original);
-		return peliculas;
+		return resultado;
 	},
 
 	// Usuarios *************************************************

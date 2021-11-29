@@ -27,9 +27,15 @@ window.addEventListener("load", () => {
 		}
 		palabras = palabras.join(" ");
 
-		console.log(palabras);
 		// Busca los productos
-		aux = await fetch("/quick-search/?palabras=" + palabras).then((n) => n.json());
-		//console.log(aux)
+		let resultados = await fetch("/quick-search/?palabras=" + palabras).then((n) => n.json());
+		resultados = resultados.map((n) => {
+			return {
+				nombre_castellano: n.nombre_castellano,
+				ano_estreno: n.ano_estreno,
+				entidad: n.entidad,
+			};
+		});
+		console.log(resultados);
 	});
 });

@@ -41,13 +41,9 @@ module.exports = {
 			valoresOR.push(ResumenDeCampo);
 		}
 		condiciones = {[Op.or]: valoresOR};
-		let productos = "";
-		await BD_especificas.quickSearch(condiciones);
+
 		// Enviar la info al FE
-		//console.log(productos);
-		// if (productos.length>0) productos.map(n=> {
-		// 	console.log(n.nombre_original)
-		// })
+		let productos = await BD_especificas.quickSearch(condiciones);
 		return res.json(productos);
 	},
 };
