@@ -41,7 +41,6 @@ module.exports = {
 			valoresOR.push(ResumenDeCampo);
 		}
 		condiciones = {[Op.or]: valoresOR};
-
 		// Enviar la info al FE
 		let productos = await BD_especificas.quickSearch(condiciones);
 		return res.json(productos);
