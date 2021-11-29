@@ -1,6 +1,7 @@
 let db = require("../../base_de_datos/modelos");
 let usuarios = db.usuarios;
-let {Op} = require("sequelize");
+//let {Op} = require("sequelize");
+let Op = db.Sequelize.Op;
 
 module.exports = {
 	// Productos *****************************************
@@ -25,34 +26,67 @@ module.exports = {
 		});
 	},
 
-	quickSearch: async (condicion) => {
-		let peliculas = db.peliculas.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"peliculas"
-			}
-		}))
-		let colecciones = db.colecciones.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"colecciones"
-			}
-		}))
-		let capitulos = db.capitulos.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"capitulos"
-			}
-		}))
-		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
-			return {...a, ...b, ...c};
-		});
+	quickSearch: async (condiciones) => {
+		// condiciones = {
+		// 	[Op.or]: [
+		// 		{
+		// 			[Op.and]: [
+		// 				{nombre_original: {[Op.like]: "%man%"}},
+		// 				{nombre_original: {[Op.like]: "%for%"}},
+		// 			],
+		// 		},
+		// 		{
+		// 			[Op.and]: [
+		// 				{nombre_castellano: {[Op.like]: "%carros%"}},
+		// 				{nombre_castellano: {[Op.like]: "%fuego%"}},
+		// 			],
+		// 		},
+		// 	],
+		// };
+
+		let peliculas = await db.peliculas
+			.findAll({
+				where: condiciones,
+			})
+			.then((n) =>
+				n.map((m) => {
+					return {
+						...m,
+						entidad: "peliculas",
+					};
+				})
+			);
+		// let colecciones = db.colecciones
+		// 	.findAll({
+		// 		where: condiciones,
+		// 	})
+		// 	.then((n) =>
+		// 		n.map((m) => {
+		// 			return {
+		// 				...m,
+		// 				entidad: "colecciones",
+		// 			};
+		// 		})
+		// 	);
+		// let capitulos = db.capitulos
+		// 	.findAll({
+		// 		where: condiciones,
+		// 	})
+		// 	.then((n) =>
+		// 		n.map((m) => {
+		// 			return {
+		// 				...m,
+		// 				entidad: "capitulos",
+		// 			};
+		// 		})
+		// 	);
+		// let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
+		// 	return {...a, ...b, ...c};
+		// });
+		console.log("linea 96", peliculas.length);
+		console.log("linea 97", peliculas[0].dataValues.nombre_original);
+		if (peliculas.length > 1) console.log("linea 98", peliculas[1].dataValues.nombre_original);
+		return peliculas;
 	},
 
 	// Usuarios *************************************************

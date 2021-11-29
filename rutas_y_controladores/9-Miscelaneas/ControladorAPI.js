@@ -1,6 +1,7 @@
 // ************ Requires ************
 let validarRCLV = require("../../funciones/Varias/RCLV-Errores");
 let BD_varias = require("../../funciones/BD/varias");
+let BD_especificas = require("../../funciones/BD/especificas");
 let {Op} = require("sequelize");
 
 // *********** Controlador ***********
@@ -30,21 +31,49 @@ module.exports = {
 		// Definir los campos en los cuales buscar
 		let campos = ["nombre_original", "nombre_castellano"];
 		// Crear el objeto literal con los valores a buscar
-		// where: {
-		// 	[Op.and]: [{ a: 5 }, { b: 6 }],            // (a = 5) AND (b = 6)
-		// 	[Op.or]: [{ a: 5 }, { b: 6 }],             // (a = 5) OR (b = 6)
-
+		condicion = {
+			[Op.or]: [
+				// valoresOR
+				{
+					// ResumenDeCampo
+					[Op.and]: [
+						// CondicionesDeCampo
+						{nombre_original: {[Op.like]: "%palabra1%"}}, // condicionPorPalabra
+						{nombre_original: {[Op.like]: "%palabra2%"}}, // condicionPorPalabra
+					],
+				},
+				{
+					// ResumenDeCampo
+					[Op.and]: [
+						// CondicionesDeCampo
+						{nombre_castellano: {[Op.like]: "%palabra1%"}}, // condicionPorPalabra
+						{nombre_castellano: {[Op.like]: "%palabra2%"}}, // condicionPorPalabra
+					],
+				},
+			],
+		};
+		// Crear lascondiciones
+		let valoresOR = [];
 		for (campo of campos) {
-			valores = [];
+			let CondicionesDeCampo = [];
 			for (palabra of palabras) {
-				valores.push({[campo]: {[Op.like]: "%"+ palabra + "%"}});
-				//console.log(valores)
+				CondicionesDeCampo.push({[campo]: {[Op.like]: "%" + palabra + "%"}});
+				//console.log(CondicionesDeCampo);
 			}
-			string = {[Op.and]: valores};
-			//console.log(string);
+			ResumenDeCampo = {[Op.and]: CondicionesDeCampo};
+			//console.log(ResumenDeCampo);
+			valoresOR.push(ResumenDeCampo);
+			console.log(valoresOR);
 		}
-		let productos = await BD_varias.quickSearch(condicion)
+		condiciones = {[Op.or]: valoresOR};
+		console.log(condiciones);
+		let productos = "";
+		await BD_especificas.quickSearch(condiciones);
 		// Enviar la info al FE
-		return res.json("palabras");
+		//console.log(productos);
+		// if (productos.length>0) productos.map(n=> {
+		// 	console.log(n.nombre_original)
+		// })
+		return res.json(productos);
 	},
 };
