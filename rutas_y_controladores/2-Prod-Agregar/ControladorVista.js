@@ -333,7 +333,7 @@ module.exports = {
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			if (rutaYnombre && fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
+			if (rutaYnombre && fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 			// Guardar los errores en session
 			req.session.erroresDD = errores;
 			// Redireccionar
