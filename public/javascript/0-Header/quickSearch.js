@@ -29,6 +29,6 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		aux=await fetch("/quick-search/?palabras=" + palabras).then((n) => n.json());
-		console.log(aux)
+		//console.log(aux)
 	});
 });

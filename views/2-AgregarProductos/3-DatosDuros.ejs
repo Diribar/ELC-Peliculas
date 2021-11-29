@@ -38,7 +38,7 @@
 		<!--Segunda columna-->
 		<div id="imagenPeli" class="form-grupo input-error">
 			<!-- Si existe una imagen y viene desde TMDB -->
-			<% if (dataEntry.avatar && dataEntry.avatar.slice(-13) != "/originalnull" && dataEntry.fuente=="TMDB") { %>
+			<% if (dataEntry.avatar && dataEntry.fuente=="TMDB") { %>
 				<img id="imgTMDB" src="<%= dataEntry.avatar %>" alt="afiche">
 			<% } else { %>
 				<label for="imagen" id="preview"></label>

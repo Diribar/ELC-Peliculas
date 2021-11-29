@@ -58,7 +58,11 @@
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/3-DatosDuros.css">
 			<script src="/javascript/2-Productos/3-DD-Ayuda.js"></script>
 			<script src="/javascript/2-Productos/3-DD-Errores.js"></script>
-			<% if (dataEntry && (!dataEntry.avatar || dataEntry.avatar.slice(-13)=="/originalnull" || dataEntry.fuente!="TMDB")) { %><script src="/javascript/2-Productos/3-DD-Imagen.js"></script><% } %>
+			<% if (dataEntry) { %>
+				<% if (!dataEntry.avatar || dataEntry.avatar.slice(-13)=="/originalnull" || dataEntry.fuente!="TMDB") { %>
+					<script src="/javascript/2-Productos/3-DD-Imagen.js"></script>
+				<% } %>
+			<% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/4-DatosPers.css">
