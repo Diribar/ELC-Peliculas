@@ -294,7 +294,6 @@ module.exports = {
 			...variables.camposDD1(),
 			...variables.camposDD2(),
 		]);
-		// return res.send(errores);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
 			datos = {
@@ -311,29 +310,32 @@ module.exports = {
 			}
 		}
 		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
-		if (req.file) {
-			// En caso de archivo por multer
-			tipo = req.file.mimetype;
-			tamano = req.file.size;
-			nombre = req.file.filename;
-			rutaYnombre = req.file.path;
-		} else if (datosDuros.avatar) {
-			// En caso de archivo sin multer
-			let datos = await requestPromise
-				.head(datosDuros.avatar)
-				.then((n) => [n["content-type"], n["content-length"]]);
-			tipo = datos[0];
-			tamano = datos[1];
-			nombre = Date.now() + path.extname(datosDuros.avatar);
-			rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
+		rutaYnombre = req.file ? req.file.path : "";
+		if (!errores.avatar) {
+			if (req.file) {
+				console.log("linea 318");
+				// En caso de archivo por multer
+				tipo = req.file.mimetype;
+				tamano = req.file.size;
+				nombre = req.file.filename;
+			} else if (datosDuros.avatar) {
+				// En caso de archivo sin multer
+				let datos = await requestPromise
+					.head(datosDuros.avatar)
+					.then((n) => [n["content-type"], n["content-length"]]);
+				tipo = datos[0];
+				tamano = datos[1];
+				nombre = Date.now() + path.extname(datosDuros.avatar);
+				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
+			}
+			// Revisar errores nuevamente
+			errores.avatar = varias.revisarImagen(tipo, tamano);
+			if (errores.avatar) errores.hay = true;
 		}
-		// Revisar errores
-		if (!errores.avatar) errores.avatar = varias.revisarImagen(tipo, tamano);
-		if (errores.avatar) errores.hay = true;
 		// 7. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			//return res.send(errores)
-			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
+			if (rutaYnombre && fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre); // Borrar el archivo de imagen
 			req.session.errores = errores;
 			return res.redirect("/producto/agregar/datos-duros");
 		}

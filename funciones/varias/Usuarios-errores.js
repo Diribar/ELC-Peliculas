@@ -123,7 +123,7 @@ let longitud = (dato, corto, largo) => {
 };
 
 let castellano = (dato) => {
-	formato = /^[A-Z][A-ZÁÉÍÓÚÜÑa-z ,.:áéíóúüñ'/()\d+-]+$/;
+	formato = /^[A-Z][a-z ,.:áéíóúüñ'/()\d+-]+$/i;
 	return !formato.test(dato);
 };
 

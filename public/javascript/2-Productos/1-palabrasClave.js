@@ -1,12 +1,12 @@
 window.addEventListener("load", () => {
 	// Declarar las variables
-	let form = document.getElementById("dataEntry");
-	let button = document.querySelector("button");
-	let input = document.querySelector("input");
-	let iconoError = document.querySelector(".fa-times-circle");
-	let mensajeError = document.querySelector(".mensajeError");
-	let mensajeAyuda = document.querySelector(".mensajeAyuda");
-	let resultado = document.querySelector("#resultado");
+	let form = document.querySelector("#dataEntry");
+	let button = document.querySelector("#dataEntry button");
+	let input = document.querySelector("#dataEntry input");
+	let iconoError = document.querySelector("#dataEntry .fa-times-circle");
+	let mensajeError = document.querySelector("#dataEntry .mensajeError");
+	let mensajeAyuda = document.querySelector("#dataEntry .mensajeAyuda");
+	let resultado = document.querySelector("#dataEntry #resultado");
 
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
