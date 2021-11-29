@@ -340,7 +340,7 @@ module.exports = {
 			return res.redirect("/producto/agregar/datos-duros");
 		}
 		// Si la imagen venía de TMDB, entonces grabarla
-		if (datosDuros.fuente == "TMDB" && !req.file)
+		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file)
 			await varias.download(datosDuros.avatar, rutaYnombre);
 		// 8. Generar la session para la siguiente instancia
 		req.session.datosPers = {
