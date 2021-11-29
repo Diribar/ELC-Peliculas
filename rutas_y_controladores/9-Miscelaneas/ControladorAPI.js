@@ -31,42 +31,16 @@ module.exports = {
 		// Definir los campos en los cuales buscar
 		let campos = ["nombre_original", "nombre_castellano"];
 		// Crear el objeto literal con los valores a buscar
-		condicion = {
-			[Op.or]: [
-				// valoresOR
-				{
-					// ResumenDeCampo
-					[Op.and]: [
-						// CondicionesDeCampo
-						{nombre_original: {[Op.like]: "%palabra1%"}}, // condicionPorPalabra
-						{nombre_original: {[Op.like]: "%palabra2%"}}, // condicionPorPalabra
-					],
-				},
-				{
-					// ResumenDeCampo
-					[Op.and]: [
-						// CondicionesDeCampo
-						{nombre_castellano: {[Op.like]: "%palabra1%"}}, // condicionPorPalabra
-						{nombre_castellano: {[Op.like]: "%palabra2%"}}, // condicionPorPalabra
-					],
-				},
-			],
-		};
-		// Crear lascondiciones
 		let valoresOR = [];
 		for (campo of campos) {
 			let CondicionesDeCampo = [];
 			for (palabra of palabras) {
 				CondicionesDeCampo.push({[campo]: {[Op.like]: "%" + palabra + "%"}});
-				//console.log(CondicionesDeCampo);
 			}
 			ResumenDeCampo = {[Op.and]: CondicionesDeCampo};
-			//console.log(ResumenDeCampo);
 			valoresOR.push(ResumenDeCampo);
-			console.log(valoresOR);
 		}
 		condiciones = {[Op.or]: valoresOR};
-		console.log(condiciones);
 		let productos = "";
 		await BD_especificas.quickSearch(condiciones);
 		// Enviar la info al FE

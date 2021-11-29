@@ -1,7 +1,5 @@
 let db = require("../../base_de_datos/modelos");
 let usuarios = db.usuarios;
-//let {Op} = require("sequelize");
-let Op = db.Sequelize.Op;
 
 module.exports = {
 	// Productos *****************************************
