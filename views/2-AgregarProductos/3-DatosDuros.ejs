@@ -49,7 +49,7 @@
 				<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
 			<% } %>
 			<!-- Si no existe una imagen -->
-			<% if (!dataEntry.avatar || dataEntry.avatar.slice(-13) == "/originalnull") { %>
+			<% if (!dataEntry.avatar) { %>
 				<button type="button">Elegí una imagen de<br>la web y pegá el URL</button>
 			<% } %>
 			<!-- Rutina para todos los casos -->
