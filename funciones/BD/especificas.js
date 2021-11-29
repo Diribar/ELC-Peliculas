@@ -25,23 +25,6 @@ module.exports = {
 	},
 
 	quickSearch: async (condiciones) => {
-		// condiciones = {
-		// 	[Op.or]: [
-		// 		{
-		// 			[Op.and]: [
-		// 				{nombre_original: {[Op.like]: "%man%"}},
-		// 				{nombre_original: {[Op.like]: "%for%"}},
-		// 			],
-		// 		},
-		// 		{
-		// 			[Op.and]: [
-		// 				{nombre_castellano: {[Op.like]: "%carros%"}},
-		// 				{nombre_castellano: {[Op.like]: "%fuego%"}},
-		// 			],
-		// 		},
-		// 	],
-		// };
-
 		let peliculas = await db.peliculas
 			.findAll({
 				where: condiciones,
