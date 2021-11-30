@@ -1,5 +1,5 @@
 /* Configuración general */
-header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between; position: relative;}
+header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between; position: relative; z-index: 1;}
 header, header section, header section .grupos {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 
@@ -27,8 +27,13 @@ header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:5
 
 /* Íconos de búsqueda rápida */
 header section .grupos#busquedaRapida {position: relative;}
-header section .grupos#busquedaRapida input {border-radius: 5px; padding: 3px; width: 150px;}
-header section .grupos#busquedaRapida input {position: absolute; bottom: -25px;}
+header section .grupos#busquedaRapida #hallazgos {position: absolute; top: 35px;}
+header section .grupos#busquedaRapida #hallazgos input,
+header section .grupos#busquedaRapida #hallazgos table
+	{padding: 2px 5px; width: 200px; border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+header section .grupos#busquedaRapida #hallazgos table {border-top: none; border-top-left-radius: 0; border-top-right-radius: 0; background-color: whitesmoke;}
+header section .grupos#busquedaRapida #hallazgos ul li 
+	{list-style-position: inside; list-style-type: none;}
 
 /* Íconos de usuario */
 header #usuario-icono {border-radius: 50%; overflow: hidden; }

@@ -25,21 +25,21 @@ module.exports = {
 	},
 
 	quickSearch: async (condiciones) => {
-		let peliculas = db.peliculas.findAll({where: condiciones}).then((n) =>
+		let peliculas = db.peliculas.findAll({where: condiciones, limit: 10}).then((n) =>
 			n.map((m) => {
-				m.dataValues.entidad= "peliculas"
+				m.dataValues.entidad = "peliculas";
 				return m;
 			})
 		);
-		let colecciones =db.colecciones.findAll({where: condiciones}).then((n) =>
+		let colecciones = db.colecciones.findAll({where: condiciones, limit: 5}).then((n) =>
 			n.map((m) => {
-				m.dataValues.entidad= "colecciones"
+				m.dataValues.entidad = "colecciones";
 				return m;
 			})
 		);
-		let capitulos = db.capitulos.findAll({where: condiciones}).then((n) =>
+		let capitulos = db.capitulos.findAll({where: condiciones, limit: 10}).then((n) =>
 			n.map((m) => {
-				m.dataValues.entidad= "capitulos"
+				m.dataValues.entidad = "capitulos";
 				return m;
 			})
 		);
