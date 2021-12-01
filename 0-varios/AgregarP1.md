@@ -1,10 +1,3 @@
-QUICK SEARCH
-- Listado de hallazgos
-- Hipervínculo a Detalle
-- Agregar en el filtro:
-    - "No borradas"
-    - "Sólo aprobadas o agregadas por el usuario"
-
 DETALLE
 - Vista de Películas y Colecciones
 - Posiblidad de editarla
