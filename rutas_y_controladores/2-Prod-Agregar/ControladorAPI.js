@@ -28,6 +28,12 @@ module.exports = {
 	},
 
 	// Vista (datosDuros)
+	obtenerPaises: async (req,res)=> {
+		paises = await BD_varias.obtenerTodos("paises", "nombre")
+		return res.json(paises);
+	},
+
+	// Vista (datosDuros)
 	validarDatosDuros: async (req, res) => {
 		errores = await validarProd.datosDuros(req.query, Object.keys(req.query));
 		return res.json(errores);

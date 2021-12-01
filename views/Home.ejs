@@ -59,9 +59,8 @@
 			<script src="/javascript/2-Productos/3-DD-Ayuda.js"></script>
 			<script src="/javascript/2-Productos/3-DD-Errores.js"></script>
 			<% if (dataEntry) { %>
-				<% if (!dataEntry.avatar || dataEntry.fuente!="TMDB") { %>
-					<script src="/javascript/2-Productos/3-DD-Imagen.js"></script>
-				<% } %>
+				<% if (!dataEntry.avatar || dataEntry.fuente!="TMDB") { %><script src="/javascript/2-Productos/3-DD-Imagen.js"></script><% } %>
+				<% if (!dataEntry.paises_id) { %><script src="/javascript/2-Productos/3-DD-Paises.js"></script><% } %>
 			<% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>

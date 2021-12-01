@@ -9,19 +9,14 @@ window.addEventListener("load", () => {
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
 		// Status inicial
-		!iconoError[i].classList.contains("ocultar")
-			? button.classList.add("botonSinLink")
-			: "";
+		!iconoError[i].classList.contains("ocultar") ? button.classList.add("botonSinLink") : "";
 		// Acciones ante cambios en el input
-		inputs[i].addEventListener("input", async () => {
+		inputs[i].addEventListener("change", async () => {
 			// Averiguar si hay algún error
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/producto/agregar/api/validar-datos-duros/?" +
-					campo +
-					"=" +
-					valor
+				"/producto/agregar/api/validar-datos-duros/?" + campo + "=" + valor
 			).then((n) => n.json());
 			mensaje = errores[campo];
 			// Verificar que el año de fin sea mayor o igual que el de estreno
@@ -44,9 +39,7 @@ window.addEventListener("load", () => {
 				iconoError[i].classList.add("ocultar");
 				button.classList.remove("botonSinLink");
 				for (let j = 0; j < inputs.length; j++) {
-					mensajeError[j].innerHTML
-						? button.classList.add("botonSinLink")
-						: "";
+					if (mensajeError[j].innerHTML) button.classList.add("botonSinLink");
 				}
 			}
 		});
@@ -54,7 +47,6 @@ window.addEventListener("load", () => {
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonSinLink") ? e.preventDefault() : "";
-		button.classList.add("botonSinLink");
+		if (button.classList.contains("botonSinLink")) e.preventDefault();
 	});
 });

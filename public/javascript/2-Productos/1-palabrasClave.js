@@ -71,7 +71,7 @@ window.addEventListener("load", () => {
 		resultado.classList.add("resultadoEnEspera");
 		// Obtener el link
 		return (
-			"/producto/agregar/api/averiguar-cant-prod/?palabrasClave=" +
+			"/producto/agregar/api/PC-cant-prod/?palabrasClave=" +
 			palabrasClave
 		);
 	};
