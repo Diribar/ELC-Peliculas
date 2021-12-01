@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'array de ID' en  'string de nombres'
+		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
 		if (paises_id.length) {
 			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
