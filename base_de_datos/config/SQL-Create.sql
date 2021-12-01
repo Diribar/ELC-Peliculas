@@ -22,7 +22,7 @@ CREATE TABLE idiomas (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO idiomas (id, nombre)
-VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('ak','Akano'),('am','Amhárico'),('an','Aragonés'),('ar','Árabe'),('as','Asamés'),('av','Ávaro'),('ay','Aimara'),('az','Azerí'),('ba','Baskir'),('be','Bielorruso'),('bg','Búlgaro'),('bh','Bhoyapurí'),('bi','Bislama'),('bm','Bambara'),('bn','Bengalí'),('bo','Tibetano'),('br','Bretón'),('bs','Bosnio'),('ca','Catalán'),('ce','Checheno'),('ch','Chamorro'),('co','Corso'),('cr','Cree'),('cs','Checo'),('cu','Eslavo eclesiástico antiguo'),('cv','Chuvasio'),('cy','Galés'),('da','Danés'),('de','Alemán'),('dv','Maldivo'),('dz','Dzongkha'),('ee','Ewé'),('el','Griego'),('en','Inglés'),('eo','Esperanto'),('es','Castellano'),('et','Estonio'),('eu','Euskera'),('fa','Persa'),('ff','Fula'),('fi','Finés'),('fj','Fiyiano'),('fo','Feroés'),('fr','Francés'),('fy','Frisón'),('ga','Gaélico'),('gd','Gaélico escocés'),('gl','Gallego'),('gn','Guaraní'),('gu','Guyaratí'),('gv','Gaélico manés'),('ha','Hausa'),('he','Hebreo'),('hi','Hindi'),('ho','Hiri motu'),('hr','Croata'),('ht','Haitiano'),('hu','Húngaro'),('hy','Armenio'),('hz','Herero'),('ia','Interlingua'),('id','Indonesio'),('ie','Occidental'),('ig','Igbo'),('ii','Yi de Sichuán'),('ik','Iñupiaq'),('io','Ido'),('is','Islandés'),('it','Italiano'),('iu','Inuktitut'),('ja','Japonés'),('jv','Javanés'),('ka','Georgiano'),('kg','Kongo'),('ki','Kikuyu'),('kj','Kuanyama'),('kk','Kazajo'),('kl','Kalaallisut'),('km','Camboyano'),('kn','Canarés'),('ko','Coreano'),('kr','Kanuri'),('ks','Cachemiro'),('ku','Kurdo'),('kv','Komi'),('kw','Córnico'),('ky','Kirguís'),('la','Latín'),('lb','Luxemburgués'),('lg','Luganda'),('li','Limburgués'),('ln','Lingala'),('lo','Lao'),('lt','Lituano'),('lu','Luba-katanga'),('lv','Letón'),('mg','Malgache'),('mh','Marshalés'),('mi','Maorí'),('mk','Macedonio'),('ml','Malayalam'),('mn','Mongol'),('mr','Maratí'),('ms','Malayo'),('mt','Maltés'),('my','Birmano'),('na','Nauruano'),('nb','Noruego bokmål'),('nd','Ndebele del norte'),('ne','Nepalí'),('ng','Ndonga'),('nl','Neerlandés'),('nn','Nynorsk'),('no','Noruego'),('nr','Ndebele del sur'),('nv','Navajo'),('ny','Chichewa'),('oc','Occitano'),('oj','Ojibwa'),('om','Oromo'),('or','Oriya'),('os','Osético'),('pa','Panyabí'),('pi','Pali'),('pl','Polaco'),('ps','Pastú'),('pt','Portugués'),('qu','Quechua'),('rm','Romanche'),('rn','Kirundi'),('ro','Rumano'),('ru','Ruso'),('rw','Ruandés'),('sa','Sánscrito'),('sc','Sardo'),('sd','Sindhi'),('se','Sami septentrional'),('sg','Sango'),('si','Cingalés'),('sk','Eslovaco'),('sl','Esloveno'),('sm','Samoano'),('sn','Shona'),('so','Somalí'),('sq','Albanés'),('sr','Serbio'),('ss','Suazi'),('st','Sesotho'),('su','Sundanés'),('sv','Sueco'),('sw','Suajili'),('ta','Tamil'),('te','Télugu'),('tg','Tayiko'),('th','Tailandés'),('ti','Tigriña'),('tk','Turcomano'),('tl','Tagalo'),('tn','Setsuana'),('to','Tongano'),('tr','Turco'),('ts','Tsonga'),('tt','Tártaro'),('tw','Twi'),('ty','Tahitiano'),('ug','Uigur'),('uk','Ucraniano'),('ur','Urdu'),('uz','Uzbeko'),('ve','Venda'),('vi','Vietnamita'),('vo','Volapük'),('wa','Valón'),('wo','Wolof'),('xh','Xhosa'),('yi','Yídish'),('yo','Yoruba'),('za','Zhuang'),('zh','Chino'),('zu','Zulú')
+VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('ak','Akano'),('am','Amhárico'),('an','Aragonés'),('ar','Árabe'),('as','Asamés'),('av','Ávaro'),('ay','Aimara'),('az','Azerí'),('ba','Baskir'),('be','Bielorruso'),('bg','Búlgaro'),('bh','Bhoyapurí'),('bi','Bislama'),('bm','Bambara'),('bn','Bengalí'),('bo','Tibetano'),('br','Bretón'),('bs','Bosnio'),('ca','Catalán'),('ce','Checheno'),('ch','Chamorro'),('co','Corso'),('cr','Cree'),('cs','Checo'),('cu','Eslavo eclesiástico'),('cv','Chuvasio'),('cy','Galés'),('da','Danés'),('de','Alemán'),('dv','Maldivo'),('dz','Dzongkha'),('ee','Ewé'),('el','Griego'),('en','Inglés'),('eo','Esperanto'),('es','Castellano'),('et','Estonio'),('eu','Euskera'),('fa','Persa'),('ff','Fula'),('fi','Finés'),('fj','Fiyiano'),('fo','Feroés'),('fr','Francés'),('fy','Frisón'),('ga','Gaélico'),('gd','Gaélico escocés'),('gl','Gallego'),('gn','Guaraní'),('gu','Guyaratí'),('gv','Gaélico manés'),('ha','Hausa'),('he','Hebreo'),('hi','Hindi'),('ho','Hiri motu'),('hr','Croata'),('ht','Haitiano'),('hu','Húngaro'),('hy','Armenio'),('hz','Herero'),('ia','Interlingua'),('id','Indonesio'),('ie','Occidental'),('ig','Igbo'),('ii','Yi de Sichuán'),('ik','Iñupiaq'),('io','Ido'),('is','Islandés'),('it','Italiano'),('iu','Inuktitut'),('ja','Japonés'),('jv','Javanés'),('ka','Georgiano'),('kg','Kongo'),('ki','Kikuyu'),('kj','Kuanyama'),('kk','Kazajo'),('kl','Kalaallisut'),('km','Camboyano'),('kn','Canarés'),('ko','Coreano'),('kr','Kanuri'),('ks','Cachemiro'),('ku','Kurdo'),('kv','Komi'),('kw','Córnico'),('ky','Kirguís'),('la','Latín'),('lb','Luxemburgués'),('lg','Luganda'),('li','Limburgués'),('ln','Lingala'),('lo','Lao'),('lt','Lituano'),('lu','Luba-katanga'),('lv','Letón'),('mg','Malgache'),('mh','Marshalés'),('mi','Maorí'),('mk','Macedonio'),('ml','Malayalam'),('mn','Mongol'),('mr','Maratí'),('ms','Malayo'),('mt','Maltés'),('my','Birmano'),('na','Nauruano'),('nb','Noruego bokmål'),('nd','Ndebele del norte'),('ne','Nepalí'),('ng','Ndonga'),('nl','Neerlandés'),('nn','Nynorsk'),('no','Noruego'),('nr','Ndebele del sur'),('nv','Navajo'),('ny','Chichewa'),('oc','Occitano'),('oj','Ojibwa'),('om','Oromo'),('or','Oriya'),('os','Osético'),('pa','Panyabí'),('pi','Pali'),('pl','Polaco'),('ps','Pastú'),('pt','Portugués'),('qu','Quechua'),('rm','Romanche'),('rn','Kirundi'),('ro','Rumano'),('ru','Ruso'),('rw','Ruandés'),('sa','Sánscrito'),('sc','Sardo'),('sd','Sindhi'),('se','Sami septentrional'),('sg','Sango'),('si','Cingalés'),('sk','Eslovaco'),('sl','Esloveno'),('sm','Samoano'),('sn','Shona'),('so','Somalí'),('sq','Albanés'),('sr','Serbio'),('ss','Suazi'),('st','Sesotho'),('su','Sundanés'),('sv','Sueco'),('sw','Suajili'),('ta','Tamil'),('te','Télugu'),('tg','Tayiko'),('th','Tailandés'),('ti','Tigriña'),('tk','Turcomano'),('tl','Tagalo'),('tn','Setsuana'),('to','Tongano'),('tr','Turco'),('ts','Tsonga'),('tt','Tártaro'),('tw','Twi'),('ty','Tahitiano'),('ug','Uigur'),('uk','Ucraniano'),('ur','Urdu'),('uz','Uzbeko'),('ve','Venda'),('vi','Vietnamita'),('vo','Volapük'),('wa','Valón'),('wo','Wolof'),('xh','Xhosa'),('yi','Yídish'),('yo','Yoruba'),('za','Zhuang'),('zh','Chino'),('zu','Zulú')
 ;
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
@@ -63,13 +63,13 @@ CREATE TABLE sexos (
 INSERT INTO sexos (id, nombre, letra_final)
 VALUES ('F','Femenino', 'a'), ('M','Masculino', 'o')
 ;
-CREATE TABLE status_registro (
+CREATE TABLE status_registro_usuario (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden INT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro (id, orden, nombre)
+INSERT INTO status_registro_usuario (id, orden, nombre)
 VALUES 
 (1, 1, 'Mail a validar'), 
 (2, 2, 'Mail validado'), 
@@ -100,7 +100,7 @@ CREATE TABLE USUARIOS (
 	borrado_motivo VARCHAR(500) NULL,
 	borrado_por_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
@@ -395,13 +395,13 @@ VALUES
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
 ;
-CREATE TABLE status_aprobacion (
+CREATE TABLE status_registro_producto (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_aprobacion (id, nombre)
-VALUES (1, 'Pendiente'), (2, 'Aprobada'), (3, 'Rechazada');
+INSERT INTO status_registro_producto (id, nombre)
+VALUES (1, 'Pendiente'), (2, 'Aprobada'), (3, 'Borrada');
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -413,7 +413,7 @@ CREATE TABLE PROD_peliculas (
 	nombre_castellano VARCHAR(50) NOT NULL,
 	duracion INT UNSIGNED NOT NULL,
 	ano_estreno INT UNSIGNED NOT NULL,
-	pais_id VARCHAR(20) NOT NULL,
+	idioma_original VARCHAR(20) NOT NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
 	musica VARCHAR(100) NOT NULL,
@@ -436,8 +436,10 @@ CREATE TABLE PROD_peliculas (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
+	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+	status_registro_id INT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
@@ -445,10 +447,9 @@ CREATE TABLE PROD_peliculas (
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
 	
-	borrada_por_id INT UNSIGNED NULL,
-	borrada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
+	capturada_por_id INT UNSIGNED NULL,
+	capturada_en DATETIME NULL,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
@@ -458,11 +459,11 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
+	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_producto(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PROD_colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -474,7 +475,7 @@ CREATE TABLE PROD_colecciones (
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno INT UNSIGNED NULL,
 	ano_fin INT UNSIGNED NULL,
-	pais_id VARCHAR(20) NOT NULL,
+	idioma_original VARCHAR(20) NOT NULL,
 	cantTemporadas INT UNSIGNED NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
@@ -498,19 +499,20 @@ CREATE TABLE PROD_colecciones (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
+	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+	status_registro_id INT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
+	
+	capturada_por_id INT UNSIGNED NULL,
+	capturada_en DATETIME NULL,
 
-	borrada_por_id INT UNSIGNED NULL,
-	borrada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
@@ -520,11 +522,11 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
+	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_producto(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -539,7 +541,7 @@ CREATE TABLE PROD_capitulos (
 	nombre_castellano VARCHAR(50) NULL,
 	duracion INT UNSIGNED NULL,
 	ano_estreno INT UNSIGNED NULL,
-	pais_id VARCHAR(20) NULL,
+	idioma_original VARCHAR(20) NOT NULL,
 	director VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
 	musica VARCHAR(100) NULL,
@@ -562,19 +564,20 @@ CREATE TABLE PROD_capitulos (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
+	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion INT UNSIGNED NULL,
-	status_aprobacion_id INT UNSIGNED DEFAULT 1,
+	status_registro_id INT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
 	lead_time_edicion INT UNSIGNED NULL,
-
-	borrada_por_id INT UNSIGNED NULL,
-	borrada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
+	
+	capturada_por_id INT UNSIGNED NULL,
+	capturada_en DATETIME NULL,
+	
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
@@ -585,11 +588,11 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_aprobacion_id) REFERENCES status_aprobacion(id),	
+	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_producto(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE us_calificaciones (
@@ -628,6 +631,19 @@ CREATE TABLE us_interes_en_prod (
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE relacion_pais_prod (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	pais_id VARCHAR(2) NOT NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (pais_id) REFERENCES paises(id),
+	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE filtros_personales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,

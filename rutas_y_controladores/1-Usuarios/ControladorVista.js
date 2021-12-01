@@ -55,14 +55,14 @@ module.exports = {
 
 	altaRedireccionar: async (req, res) => {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
-		let status_registro = req.session.usuario.status_registro_id + "";
+		let status_registro_usuario = req.session.usuario.status_registro_id + "";
 		// Redireccionar
-		//console.log("status_registro: " + status_registro);
-		status_registro == 1
+		//console.log("status_registro_usuario: " + status_registro_usuario);
+		status_registro_usuario == 1
 			? res.redirect("/usuarios/login")
-			: status_registro == 2
+			: status_registro_usuario == 2
 			? res.redirect("/usuarios/datos-perennes")
-			: status_registro == 3
+			: status_registro_usuario == 3
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlReferencia
 			? res.redirect(req.session.urlReferencia)
