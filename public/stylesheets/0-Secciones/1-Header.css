@@ -1,10 +1,7 @@
 /* Configuración general */
-header {height: 10vh; background-color: var(--azul-oscuro); justify-content: space-between; position: relative; z-index: 1;}
+header {background-color: var(--azul-oscuro); justify-content: space-between; position: relative; z-index: 1;}
 header, header section, header section .grupos {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
-
-/* Formato del Título */
-header p {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
 
 /* Formato de íconos */
 header section .grupos {margin: 0 15px;}
@@ -25,15 +22,26 @@ header section .grupos .dropdown-content .far {color: inherit; font-size: inheri
 header section .grupos #pelis-icono {position: relative;}
 header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
 
-/* Íconos de búsqueda rápida */
+/* Íconos de búsqueda rápida e inputMasResultados */
 header section .grupos#busquedaRapida {position: relative;}
-header section .grupos#busquedaRapida #hallazgos {position: absolute; top: 35px;}
-header section .grupos#busquedaRapida #hallazgos input,
-header section .grupos#busquedaRapida #hallazgos table
-	{padding: 2px 5px; width: 200px; border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-header section .grupos#busquedaRapida #hallazgos table {border-top: none; border-top-left-radius: 0; border-top-right-radius: 0; background-color: whitesmoke;}
-header section .grupos#busquedaRapida #hallazgos ul li 
-	{list-style-position: inside; list-style-type: none;}
+header section .grupos#busquedaRapida #inputMasResultados {position: absolute; top: 35px;}
+header section .grupos#busquedaRapida #inputMasResultados input,
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados
+	{border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+header section .grupos#busquedaRapida #inputMasResultados input {padding: 2px 5px;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table,
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table thead,
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table thead th,
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados p {width: max-content;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table {border-collapse: collapse;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados p,
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody td {padding: 2px 5px;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody td:nth-of-type(2) {text-align: center;}
+header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
+
+/* Formato del Título */
+header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
 
 /* Íconos de usuario */
 header #usuario-icono {border-radius: 50%; overflow: hidden; }

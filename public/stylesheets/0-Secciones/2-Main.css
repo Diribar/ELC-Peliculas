@@ -1,5 +1,4 @@
 /* CONFIGURAR SECCIONES */
-main {height:90vh;}
 main.flex-row {flex-direction: row-reverse;}
 main #cuerpo-y-footer {flex-direction: column-reverse; justify-content: space-between;}
 

@@ -22,13 +22,16 @@
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
 			<i class="fas fa-search scale"></i>
-			<div id="hallazgos">
-				<%- include("3-QuickSearch") %>
+			<!-- Se crea el sector donde están el input y los resultados -->
+			<div id="inputMasResultados" class="ocultar">
+				<input type="text" placeholder="Escribí más de 3 letras">
+				<div id="displayResultados" class="ocultar">
+				</div>
 			</div>
 		</div>
 	</section>
 	<!-- Título del Encabezado -->
-	<p>Evangelicemos la Cultura</p>
+	<p id="titulo">Evangelicemos la Cultura</p>
 	<section>
 		<!-- Música de fondo -->
 		<div class="grupos">

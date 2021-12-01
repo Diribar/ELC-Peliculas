@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
 
 		// Menú de Quick Search
 		if (e.target.matches("#busquedaRapida .fa-search"))
-			document.querySelector("#busquedaRapida input").classList.remove("ocultar");
+			document.querySelector("#busquedaRapida #inputMasResultados").classList.remove("ocultar");
 
 		// Menú de usuario
 		e.target.matches("#usuario-icono *") ||
@@ -27,10 +27,7 @@ window.addEventListener("load", () => {
 	});
 
 	window.addEventListener("click", (e) => {
-		if (
-			!e.target.matches("#busquedaRapida .fa-search") &&
-			!e.target.matches("#busquedaRapida input")
-		)
-			document.querySelector("#busquedaRapida input").classList.add("ocultar");
+		if (!e.target.matches("#busquedaRapida *"))
+			document.querySelector("#busquedaRapida #inputMasResultados").classList.add("ocultar");
 	});
 });

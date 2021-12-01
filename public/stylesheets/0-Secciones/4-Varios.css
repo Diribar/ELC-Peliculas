@@ -1,4 +1,6 @@
 /* GENERAL */
+header {height: 9vh;}
+main {height:91vh;}
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
 select, option, a, button {cursor: pointer;}
 
