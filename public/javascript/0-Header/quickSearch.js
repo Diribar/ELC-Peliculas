@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
 		// Termina el proceso si la palabra tiene menos de 4 caracteres
 		if (dataEntry.length < 4) {
 			display.classList.add("ocultar");
+			input.style.borderRadius = "5px";
 			return;
 		}
 
