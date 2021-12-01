@@ -110,8 +110,8 @@ INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id,
 VALUES 
 (1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
 (2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
-(11, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -636,12 +636,10 @@ CREATE TABLE relacion_pais_prod (
 	pais_id VARCHAR(2) NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
-	capitulo_id INT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
-	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id)
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE filtros_personales (

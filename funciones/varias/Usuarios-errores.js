@@ -76,7 +76,7 @@ module.exports = {
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
-		errores.pais_id = !datos.pais_id
+		errores.paises_id = !datos.paises_id
 			? "Necesitamos que elijas un valor"
 			: "";
 

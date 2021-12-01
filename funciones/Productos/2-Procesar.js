@@ -44,7 +44,7 @@ module.exports = {
 				datosAPI_renamed.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
 			if (datosAPI.runtime != null) datosAPI_renamed.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
-				datosAPI_renamed.pais_id = datosAPI.production_countries
+				datosAPI_renamed.paises_id = datosAPI.production_countries
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
@@ -134,7 +134,7 @@ module.exports = {
 			if (datosAPI.last_air_date)
 				datosAPI_renamed.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
 			if (datosAPI.production_countries.length > 0)
-				datosAPI_renamed.pais_id = datosAPI.production_countries
+				datosAPI_renamed.paises_id = datosAPI.production_countries
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
@@ -284,7 +284,7 @@ module.exports = {
 		FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			contenido.pais_id = await varias.paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = await varias.paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
