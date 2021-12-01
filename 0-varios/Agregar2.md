@@ -1,3 +1,23 @@
+PERSONAJE HISTÓRICO
+- Miembro de la Iglesia Católica al fallecer
+    SI/NO
+- En proceso de canonización (comenzado o terminado)
+    SI/NO
+- Estado eclesial en la Iglesia Católica
+    laico, laico casado, religioso consagrado
+
+RCLV
+- Simplificar: quitar el "verificar", y reemplazar por botonSinLink
+- Agregar link a wikipedia en función del nombre
+    https://es.wikipedia.org/wiki/Rosa de Lima
+
+AGREGAR PRODUCTOS
+- Bloquear las flechas de retroceso y avance del navegador
+- Estandarización de títulos y formatos en Agregar
+
+PALABRA CLAVE
+- Quitar el logo de IM
+
 DESAMBIGUAR
 - FE: detectar si una película pertenece a una colección y mostrar el resultado
 
@@ -44,8 +64,3 @@ CONCLUSION
         Si el registro queda aprobado, quedará accesible para todo el público.
     - Mientras tanto, podés ver los datos agregados y editarlos si corresponde.
     - Ícono: --> Lupa
-
-QUICK SEARCH
-- Agregar en el filtro:
-    - "No borradas"
-    - "Sólo aprobadas o agregadas por el usuario"

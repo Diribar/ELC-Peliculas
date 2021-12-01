@@ -8,11 +8,11 @@ module.exports = (sequelize, dt) => {
 		FA_id: { type: dt.STRING(10) },
 		IMDB_id: { type: dt.STRING(10) },
 		fuente: { type: dt.STRING(5) },
-		nombre_original: { type: dt.STRING(100) },
 		nombre_castellano: { type: dt.STRING(100) },
+		nombre_original: { type: dt.STRING(100) },
+		idioma_original: { type: dt.STRING(20) },
 		duracion: { type: dt.INTEGER },
 		ano_estreno: { type: dt.INTEGER },
-		pais_id: { type: dt.STRING(20) },
 		director: { type: dt.STRING(100) },
 		guion: { type: dt.STRING(100) },
 		musica: { type: dt.STRING(100) },
@@ -35,8 +35,10 @@ module.exports = (sequelize, dt) => {
 		creada_en: { type: dt.DATE },
 		analizada_por_id: { type: dt.INTEGER },
 		analizada_en: { type: dt.DATE },
+		borrada_motivo_id: { type: dt.INTEGER },
+		borrada_motivo_comentario: { type: dt.STRING(500) },
 		lead_time_creacion : { type: dt.INTEGER },
-		status_aprobacion_id : { type: dt.INTEGER },
+		status_registro_id : { type: dt.INTEGER },
 
 		editada_por_id: { type: dt.INTEGER },
 		editada_en: { type: dt.DATE },
@@ -44,10 +46,8 @@ module.exports = (sequelize, dt) => {
 		revisada_en: { type: dt.DATE },
 		lead_time_edicion: { type: dt.INTEGER },
 
-		borrada_por_id: { type: dt.INTEGER },
-		borrada_en: { type: dt.DATE },
-		borrada_motivo_id: { type: dt.INTEGER },
-		borrada_motivo_comentario: { type: dt.STRING(500) },
+		capturada_por_id: { type: dt.INTEGER },
+		capturada_en: { type: dt.DATE },
 	};
 	const config = {
 		tableName: "PROD_capitulos",
@@ -62,12 +62,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.historicos_personajes, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.historicos_hechos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
-		entidad.belongsTo(n.status_aprobacion, {as: "status_aprobacion", foreignKey: "status_aprobacion_id"});
+		entidad.belongsTo(n.status_registro_producto, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "borrada_por", foreignKey: "borrada_por_id"});
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 	};
 	return entidad;

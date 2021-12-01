@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		usuario_id: { type: dt.INTEGER },
 		pelicula_id: { type: dt.INTEGER },
 		coleccion_id: { type: dt.INTEGER },
+		capitulo_id: { type: dt.INTEGER },
 		fe_valores_id: { type: dt.INTEGER },
 		entretiene_id: { type: dt.INTEGER },
 		calidad_tecnica_id: { type: dt.INTEGER },
@@ -21,6 +22,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "usuario", foreignKey: "usuario_id"});
 		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 		entidad.belongsTo(n.fe_valores, {as: "fe_valores", foreignKey: "fe_valores_id"});
 		entidad.belongsTo(n.entretiene, {as: "entretiene", foreignKey: "entretiene_id"});
 		entidad.belongsTo(n.calidad_tecnica, {as: "calidad_tecnica", foreignKey: "calidad_tecnica_id"});
