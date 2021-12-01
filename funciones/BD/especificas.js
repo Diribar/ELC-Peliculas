@@ -1,6 +1,5 @@
 let db = require("../../base_de_datos/modelos");
 let usuarios = db.usuarios;
-let {Op} = require("sequelize");
 
 module.exports = {
 	// Productos *****************************************
@@ -25,34 +24,29 @@ module.exports = {
 		});
 	},
 
-	quickSearch: async (condicion) => {
-		let peliculas = db.peliculas.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"peliculas"
-			}
-		}))
-		let colecciones = db.colecciones.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"colecciones"
-			}
-		}))
-		let capitulos = db.capitulos.findAll({
-			where: condicion,
-		}).then(n=> n.map((m)=> {
-			return {
-				...m,
-				entidad:"capitulos"
-			}
-		}))
+	quickSearch: async (condiciones) => {
+		let peliculas = db.peliculas.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "peliculas"
+				return m;
+			})
+		);
+		let colecciones =db.colecciones.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "colecciones"
+				return m;
+			})
+		);
+		let capitulos = db.capitulos.findAll({where: condiciones}).then((n) =>
+			n.map((m) => {
+				m.dataValues.entidad= "capitulos"
+				return m;
+			})
+		);
 		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
-			return {...a, ...b, ...c};
+			return [...a, ...b, ...c];
 		});
+		return resultado;
 	},
 
 	// Usuarios *************************************************
