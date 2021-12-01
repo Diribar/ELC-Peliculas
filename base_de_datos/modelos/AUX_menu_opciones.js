@@ -13,6 +13,5 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
-	entidad.associate = (n) => {};
 	return entidad;
 };
