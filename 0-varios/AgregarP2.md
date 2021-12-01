@@ -44,3 +44,8 @@ CONCLUSION
         Si el registro queda aprobado, quedará accesible para todo el público.
     - Mientras tanto, podés ver los datos agregados y editarlos si corresponde.
     - Ícono: --> Lupa
+
+QUICK SEARCH
+- Agregar en el filtro:
+    - "No borradas"
+    - "Sólo aprobadas o agregadas por el usuario"

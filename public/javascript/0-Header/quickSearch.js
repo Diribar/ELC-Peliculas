@@ -1,22 +1,20 @@
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida input");
-	let ul = document.querySelector("#busquedaRapida ul");
+	let input = document.querySelector("#busquedaRapida #inputMasResultados input");
+	let display = document.querySelector("#busquedaRapida #inputMasResultados #displayResultados");
 
 	// Variables
 	teclasValidas = /^[a-z áéíóúüñ\d]+$/;
 
-
 	input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
-		input.value = input.value
-			.replace(/[^a-záéíóúüñ\d\s]/gi, "")
-			.replace(/ +/g, " ");
+		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
 		dataEntry = input.value;
 
 		// Termina el proceso si la palabra tiene menos de 4 caracteres
 		if (dataEntry.length < 4) {
-			ul.classList.add("ocultar")
+			display.classList.add("ocultar");
+			input.style.borderRadius = "5px";
 			return;
 		}
 
@@ -47,30 +45,61 @@ window.addEventListener("load", () => {
 		agregarHallazgos(datos);
 	});
 
-	agregarHallazgos = (datos) => {
-		input.style.borderBottomLeftRadius = 0
-		input.style.borderBottomRightRadius = 0
-		ul.innerHTML = "";
-		ul.classList.remove("ocultar")
-		if (typeof(datos) == "object") {
-			for (dato of datos) {
-				let li = document.createElement("li");
-				li.appendChild(
-					document.createTextNode(
-						dato.nombre_castellano + " - " + dato.ano_estreno
-					)
-				);
-				ul.appendChild(li);
-				console.log(dato)
+	agregarHallazgos = (registros) => {
+		// Generar las condiciones para que se pueda mostrar el 'display'
+		input.style.borderBottomLeftRadius = 0;
+		input.style.borderBottomRightRadius = 0;
+		display.innerHTML = "";
+		display.classList.remove("ocultar");
+
+		// Rutinas en función del tipo de variable que sea 'registros'
+		if (typeof registros == "object") {
+			// Crea la tabla y el cuerpo
+			let tabla = document.createElement("table");
+			let tblBody = document.createElement("tbody");
+
+			// Crea las filas y celdas
+			for (registro of registros) {
+				// Crea una fila y el anchor del registro
+				let fila = document.createElement("tr");
+				let anchor = document.createElement("a");
+				id = registro.id;
+				anchor.href =
+					"/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
+
+				// Prepara las variables de la fila
+				anchoMax = 30;
+				nombre =
+					registro.nombre_castellano.length > anchoMax
+						? registro.nombre_castellano.slice(0, anchoMax) + "…"
+						: registro.nombre_castellano;
+				nombre += " (" + registro.ano_estreno + ")";
+				entidad = registro.entidad.slice(0, 3).toUpperCase();
+				let datos = [nombre, entidad];
+				// Crea las celdas
+				for (i = 0; i < 2; i++) {
+					let celda = document.createElement("td");
+					let textoCelda = document.createTextNode(datos[i]);
+					// Agrega el texto a la celda
+					if (i == 0) {
+						anchor.appendChild(textoCelda);
+						celda.appendChild(anchor);
+					} else celda.appendChild(textoCelda);
+					// Agrega la celda a la fila
+					fila.appendChild(celda);
+				}
+
+				// Agrega la fila al cuerpo de la tabla (tblbody)
+				tblBody.appendChild(fila);
+				tabla.appendChild(tblBody);
+				display.appendChild(tabla);
 			}
 		} else {
-			let li = document.createElement("li");
-			li.style.fontStyle = "italic";
-			li.style.textAlign = "center";
-			li.appendChild(document.createTextNode(datos));
-			ul.appendChild(li);
+			let parrafo = document.createElement("p");
+			parrafo.style.fontStyle = "italic";
+			parrafo.style.textAlign = "center";
+			parrafo.appendChild(document.createTextNode(datos));
+			display.appendChild(parrafo);
 		}
 	};
-	
 });
-
