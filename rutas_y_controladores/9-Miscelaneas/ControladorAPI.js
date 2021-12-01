@@ -43,6 +43,9 @@ module.exports = {
 		condiciones = {[Op.or]: valoresOR};
 		// Enviar la info al FE
 		let productos = await BD_especificas.quickSearch(condiciones);
+		productos.sort((a, b) => {
+			return a.nombre_castellano < b.nombre_castellano ? -1 : a.nombre_castellano > b.nombre_castellano ? 1 : 0;
+		});
 		return res.json(productos);
 	},
 };
