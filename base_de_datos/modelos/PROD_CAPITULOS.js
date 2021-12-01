@@ -1,60 +1,60 @@
 module.exports = (sequelize, dt) => {
 	const alias = "capitulos";
 	const columns = {
-		coleccion_id: { type: dt.INTEGER },
-		temporada: { type: dt.INTEGER },
-		capitulo: { type: dt.INTEGER },
-		TMDB_id: { type: dt.STRING(10) },
-		FA_id: { type: dt.STRING(10) },
-		IMDB_id: { type: dt.STRING(10) },
-		fuente: { type: dt.STRING(5) },
-		nombre_castellano: { type: dt.STRING(100) },
-		nombre_original: { type: dt.STRING(100) },
-		idioma_original: { type: dt.STRING(20) },
-		duracion: { type: dt.INTEGER },
-		ano_estreno: { type: dt.INTEGER },
-		director: { type: dt.STRING(100) },
-		guion: { type: dt.STRING(100) },
-		musica: { type: dt.STRING(100) },
-		actores: { type: dt.STRING(500) },
-		productor: { type: dt.STRING(100) },
-		sinopsis: { type: dt.STRING(800) },
-		avatar: { type: dt.STRING(100) },
-		en_castellano_id: { type: dt.INTEGER },
-		color: { type: dt.BOOLEAN },
-		categoria_id: { type: dt.STRING(3) },
-		subcategoria_id: { type: dt.INTEGER },
-		publico_sugerido_id: { type: dt.INTEGER },
-		personaje_historico_id: { type: dt.INTEGER },
-		hecho_historico_id: { type: dt.INTEGER },
-		link_trailer: { type: dt.STRING(200) },
-		link_pelicula: { type: dt.STRING(200) },
-		calificacion: { type: dt.DECIMAL },
+		coleccion_id: {type: dt.INTEGER},
+		temporada: {type: dt.INTEGER},
+		capitulo: {type: dt.INTEGER},
+		TMDB_id: {type: dt.STRING(10)},
+		FA_id: {type: dt.STRING(10)},
+		IMDB_id: {type: dt.STRING(10)},
+		fuente: {type: dt.STRING(5)},
+		nombre_castellano: {type: dt.STRING(100)},
+		nombre_original: {type: dt.STRING(100)},
+		idioma_original: {type: dt.STRING(20)},
+		duracion: {type: dt.INTEGER},
+		ano_estreno: {type: dt.INTEGER},
+		director: {type: dt.STRING(100)},
+		guion: {type: dt.STRING(100)},
+		musica: {type: dt.STRING(100)},
+		actores: {type: dt.STRING(500)},
+		productor: {type: dt.STRING(100)},
+		sinopsis: {type: dt.STRING(800)},
+		avatar: {type: dt.STRING(100)},
+		en_castellano_id: {type: dt.INTEGER},
+		color: {type: dt.BOOLEAN},
+		categoria_id: {type: dt.STRING(3)},
+		subcategoria_id: {type: dt.INTEGER},
+		publico_sugerido_id: {type: dt.INTEGER},
+		personaje_historico_id: {type: dt.INTEGER},
+		hecho_historico_id: {type: dt.INTEGER},
+		link_trailer: {type: dt.STRING(200)},
+		link_pelicula: {type: dt.STRING(200)},
+		calificacion: {type: dt.DECIMAL},
 
-		creada_por_id: { type: dt.INTEGER },
-		creada_en: { type: dt.DATE },
-		analizada_por_id: { type: dt.INTEGER },
-		analizada_en: { type: dt.DATE },
-		borrada_motivo_id: { type: dt.INTEGER },
-		borrada_motivo_comentario: { type: dt.STRING(500) },
-		lead_time_creacion : { type: dt.INTEGER },
-		status_registro_id : { type: dt.INTEGER },
+		creada_por_id: {type: dt.INTEGER},
+		creada_en: {type: dt.DATE},
+		analizada_por_id: {type: dt.INTEGER},
+		analizada_en: {type: dt.DATE},
+		borrada_motivo_id: {type: dt.INTEGER},
+		borrada_motivo_comentario: {type: dt.STRING(500)},
+		lead_time_creacion: {type: dt.INTEGER},
+		status_registro_id: {type: dt.INTEGER},
 
-		editada_por_id: { type: dt.INTEGER },
-		editada_en: { type: dt.DATE },
-		revisada_por_id: { type: dt.INTEGER },
-		revisada_en: { type: dt.DATE },
-		lead_time_edicion: { type: dt.INTEGER },
+		editada_por_id: {type: dt.INTEGER},
+		editada_en: {type: dt.DATE},
+		revisada_por_id: {type: dt.INTEGER},
+		revisada_en: {type: dt.DATE},
+		lead_time_edicion: {type: dt.INTEGER},
 
-		capturada_por_id: { type: dt.INTEGER },
-		capturada_en: { type: dt.DATE },
+		capturada_por_id: {type: dt.INTEGER},
+		capturada_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "PROD_capitulos",
-		timestamps: false
+		timestamps: false,
 	};
-	const entidad = sequelize.define(alias,columns,config);
-	entidad.associate = n => {
+	const entidad = sequelize.define(alias, columns, config);
+	entidad.associate = (n) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.en_castellano, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
@@ -72,4 +72,4 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 	};
 	return entidad;
-}; 
+};
