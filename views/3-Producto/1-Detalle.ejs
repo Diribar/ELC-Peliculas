@@ -31,7 +31,7 @@
 		}
 	%> 
 	<p>Creada en: <%= convertirFormatoFecha(producto.creada_en) %></p>
-	<p>Status de Aprobación: <%= producto.status_registro_producto.nombre %> </p>
+	<p>Status de Aprobación: <%= producto.status_registro.nombre %> </p>
 	<!-- Aprobada -->
 	<% if (producto.editada_por_id) { %><p>Editada por: <%= producto.editada_por.apodo %></p><% } %>
 	<% if (producto.personaje_historico_id) { %><p>Personaje histórico: <%= producto.personaje_historico.nombre %></p><% } %>

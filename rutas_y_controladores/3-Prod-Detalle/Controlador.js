@@ -18,7 +18,7 @@ module.exports = {
 			"personaje_historico",
 			"hecho_historico",
 			"creada_por",
-			"status_registro_producto",
+			"status_registro",
 			"editada_por",
 			"borrada_motivo",
 		];
