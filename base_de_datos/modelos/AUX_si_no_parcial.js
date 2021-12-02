@@ -1,10 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "en_castellano";
+	const alias = "si_no_parcial";
 	const columns = {
 		nombre: {type: dt.STRING(10)},
 	};
 	const config = {
-		tableName: "en_castellano",
+		tableName: "si_no_parcial",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

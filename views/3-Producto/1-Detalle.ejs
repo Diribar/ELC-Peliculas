@@ -17,7 +17,7 @@
 
 	<!-- Datos Personalizados -->
 	<% if (producto.en_castellano_id) { %><p>En idioma castellano: <%= producto.en_castellano.nombre %></p><% } %>
-	<% if (producto.color !=null) { %><p>Color: <%- producto.color ? "SI" : "NO" %></p><% } %>
+	<% if (producto.en_color_id) { %><p>Color: <%- producto.en_color_id.nombre %></p><% } %>
 	<% if (producto.publico_sugerido_id) { %><p>Público sugerido: <%= producto.publico_sugerido.nombre %></p><% } %>
 	<% if (producto.categoria_id) { %><p>Categoría: <%= producto.categoria.nombre %></p><% } %>
 	<% if (producto.subcategoria_id) { %><p>Sub-categoría: <%= producto.subcategoria.nombre %></p><% } %>

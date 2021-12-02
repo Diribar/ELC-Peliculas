@@ -490,7 +490,7 @@ module.exports = {
 		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie") {
 			confirmar.entidad_TMDB == "collection"
 				? procesarProd.agregarCapitulosDeCollection(registro.id, confirmar.capitulosId)
-				: procesarProd.agregarCapitulosDeTV({...confirmar, ...registro});
+				: procesarProd.agregarCapitulosDeTV({...confirmar, ...registro.dataValues});
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);

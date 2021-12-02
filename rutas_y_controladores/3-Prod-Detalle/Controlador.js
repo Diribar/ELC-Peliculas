@@ -12,6 +12,7 @@ module.exports = {
 		let ID = req.query.id;
 		let includes = [
 			"en_castellano",
+			"en_color",
 			"categoria",
 			"subcategoria",
 			"publico_sugerido",

@@ -65,28 +65,25 @@ module.exports = {
 			{
 				titulo: "Existe una versión en castellano",
 				campo: "en_castellano_id",
-				valores: await BD_varias.obtenerTodos("en_castellano", "id"),
+				valores: await BD_varias.obtenerTodos("si_no_parcial", "id"),
 				peliculas: true,
 				colecciones: true,
 				mensajePeli: [
 					'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
 				],
 				mensajeColec: [
-					'En caso de que algunos capítulos no estén en castellano, elegí "SI-Parcial"',
+					'En caso de que algunos capítulos estén en castellano y otros no, elegí "SI-Parcial"',
 				],
 			},
 			{
 				titulo: "Es a Color",
-				campo: "color",
-				valores: [
-					{id: 1, nombre: "SI"},
-					{id: 0, nombre: "NO"},
-				],
+				campo: "en_color_id",
+				valores: await BD_varias.obtenerTodos("si_no_parcial", "id"),
 				peliculas: true,
 				colecciones: true,
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 				mensajeColec: [
-					"Si algunos capítulos no son a color, elegí lo que represente a la mayoría",
+					'En caso de que algunos capítulos sean a color y otros no, elegí "SI-Parcial"',
 				],
 			},
 			{

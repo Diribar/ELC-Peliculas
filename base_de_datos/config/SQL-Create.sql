@@ -334,12 +334,12 @@ VALUES
 (2, 3, '1970 - 1999', 1970, 1999), 
 (1, 4, 'Antes de 1970', 1900, 1969)
 ;
-CREATE TABLE en_castellano (
+CREATE TABLE si_no_parcial (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO en_castellano (id, nombre)
+INSERT INTO si_no_parcial (id, nombre)
 VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
 CREATE TABLE cal_fe_valores (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -422,7 +422,7 @@ CREATE TABLE PROD_peliculas (
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NOT NULL,
 	en_castellano_id INT UNSIGNED NOT NULL,
-	color BOOLEAN NOT NULL,
+	en_color_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
 	publico_sugerido_id INT UNSIGNED NOT NULL,
@@ -452,7 +452,8 @@ CREATE TABLE PROD_peliculas (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
@@ -485,7 +486,7 @@ CREATE TABLE PROD_colecciones (
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,
 	en_castellano_id INT UNSIGNED NOT NULL,
-	color BOOLEAN NOT NULL,
+	en_color_id INT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	subcategoria_id INT UNSIGNED NOT NULL,
 	publico_sugerido_id INT UNSIGNED NOT NULL,
@@ -515,7 +516,8 @@ CREATE TABLE PROD_colecciones (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
@@ -550,7 +552,7 @@ CREATE TABLE PROD_capitulos (
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
 	en_castellano_id INT UNSIGNED NULL,
-	color BOOLEAN NULL,
+	en_color_id INT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id INT UNSIGNED NULL,
 	publico_sugerido_id INT UNSIGNED NULL,
@@ -580,7 +582,8 @@ CREATE TABLE PROD_capitulos (
 	
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
