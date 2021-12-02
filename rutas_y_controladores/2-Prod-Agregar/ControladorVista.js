@@ -256,16 +256,17 @@ module.exports = {
 					...variables.camposDD2(),
 			  ]);
 		//return res.send(errores)
-		let paises = await BD_varias.obtenerTodos("paises", "nombre");
-		let pais = datosDuros.pais_id ? await varias.pais_idToNombre(datosDuros.pais_id) : "";
+		let paises = datosDuros.paises_id
+			? await varias.paises_idToNombre(datosDuros.paises_id)
+			: await BD_varias.obtenerTodos("paises", "nombre");
 		// 7. Render del formulario
+		//return res.send(datosDuros);
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosDuros,
-			pais,
 			paises,
 			errores,
 			camposDD1: variables.camposDD1(),
@@ -482,25 +483,25 @@ module.exports = {
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
 		req.session.datosClaveProd = datosClaveProd;
-		res.cookie("datosClaveProd", datosClaveProd, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("datosClaveProd", datosClaveProd, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Funciones anexas
-		// 4.1 Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
-		confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie"
-			? confirmar.entidad_TMDB == "collection"
+		// Guardar la relación producto-paises
+		guardarRelacionConPaises({...confirmar, producto_id: registro.id});
+		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie") {
+			confirmar.entidad_TMDB == "collection"
 				? procesarProd.agregarCapitulosDeCollection(registro.id, confirmar.capitulosId)
 				: procesarProd.agregarCapitulosDeTV(
 						registro,
 						confirmar.TMDB_id,
 						confirmar.cantTemporadas,
 						confirmar.numeroPrimeraTemp
-				  )
-			: "";
-		// 4.2. Actualizar "cantProductos" en "Relación con la vida"
+				  );
+		}
+		// Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
-		// 4.3. Miscelaneas
+		// Miscelaneas
 		guardar_us_calificaciones(confirmar, registro);
 		varias.moverImagenCarpetaDefinitiva(confirmar.avatar, "2-Productos");
 		borrarSessionCookies(req, res, "borrarTodo");
@@ -661,4 +662,16 @@ let prepararMensaje = (desambiguar) => {
 		(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 		" en nuestra BD.";
 	return {prod_nuevos, prod_yaEnBD, mensaje};
+};
+
+let guardarRelacionConPaises = async (datos) => {
+	producto_id = (datos.entidad == "peliculas" ? "pelicula" : "coleccion") + "_id";
+	paises_idArray = datos.paises_id.split(", ");
+	for (pais_id of paises_idArray) {
+		await BD_varias.agregarRegistro({
+			entidad: "relacion_pais_prod",
+			pais_id,
+			[producto_id]: datos.producto_id,
+		}, );
+	}
 };

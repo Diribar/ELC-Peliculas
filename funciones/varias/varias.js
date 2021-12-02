@@ -36,16 +36,16 @@ module.exports = {
 		await transporter.sendMail(datos);
 	},
 
-	pais_idToNombre: async (pais_id) => {
+	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
-		if (pais_id.length) {
+		if (paises_id.length) {
 			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
-			pais_idArray = pais_id.split(", ");
+			paises_idArray = paises_id.split(", ");
 			// Convertir 'array de ID' en 'string de nombres"
-			for (pais_id of pais_idArray) {
+			for (pais_id of paises_idArray) {
 				aux = BD_paises.find((n) => n.id == pais_id);
-				aux ? resultado.push(aux.nombre) : "";
+				if (aux) resultado.push(aux.nombre);
 			}
 		}
 		resultado = resultado.length ? resultado.join(", ") : "";
@@ -159,5 +159,4 @@ module.exports = {
 			writer.on("error", (err) => reject(err));
 		});
 	},
-		
 };

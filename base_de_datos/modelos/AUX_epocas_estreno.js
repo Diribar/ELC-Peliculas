@@ -1,15 +1,15 @@
 module.exports = (sequelize, dt) => {
 	const alias = "epocas_estreno";
 	const columns = {
-		orden: { type: dt.INTEGER },
-		nombre: { type: dt.STRING(20) },
-		ano_comienzo: { type: dt.INTEGER },
-		ano_fin: { type: dt.INTEGER },
+		orden: {type: dt.INTEGER},
+		nombre: {type: dt.STRING(20)},
+		ano_comienzo: {type: dt.INTEGER},
+		ano_fin: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "epocas_estreno",
-		timestamps: false
+		timestamps: false,
 	};
-	const entidad = sequelize.define(alias,columns,config);
+	const entidad = sequelize.define(alias, columns, config);
 	return entidad;
 };

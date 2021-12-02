@@ -155,7 +155,7 @@ module.exports = {
 				: datos.duracion > 300
 				? "Debe ser un número menor"
 				: "";
-		errores.pais_id = !datos.pais_id ? cartelCampoVacio : "";
+		errores.paises_id = !datos.paises_id ? cartelCampoVacio : "";
 		errores.director =
 			camposAVerificar.indexOf("director") == -1
 				? ""
