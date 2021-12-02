@@ -94,7 +94,6 @@ module.exports = {
 		// 1. Obtener más información del producto
 		infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
 		//return res.send(infoTMDBparaDD)
-		//if (infoTMDBparaDD.)
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoTMDBparaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
