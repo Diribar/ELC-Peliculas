@@ -72,7 +72,7 @@ module.exports = {
 					'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
 				],
 				mensajeColec: [
-					'En caso de que algunos capítulos estén en castellano y otros no, elegí "SI-Parcial"',
+					'En caso de que algunos capítulos estén en castellano y otros no, elegí "Parcial"',
 				],
 			},
 			{
@@ -83,7 +83,7 @@ module.exports = {
 				colecciones: true,
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 				mensajeColec: [
-					'En caso de que algunos capítulos sean a color y otros no, elegí "SI-Parcial"',
+					'En caso de que algunos capítulos sean a color y otros no, elegí "Parcial"',
 				],
 			},
 			{
