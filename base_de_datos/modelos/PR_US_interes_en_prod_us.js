@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		interes_en_prod_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "us_interes_en_prod",
+		tableName: "pr_us_interes_en_prod",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

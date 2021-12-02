@@ -99,11 +99,16 @@
 			<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/Nosotros.css">
 		<% } %>
 	<% } %>
+	<% if (tema == "home") { %>
+		<%- include('0-Head', {titulo: "Quiénes somos"}) %>
+		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/0-Opciones.css">
+		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/Filtros.css">
+	<% } %>
 </head>
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<%- (tema == "usuario" || tema == "agregar" || tema == "opciones") ? include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) : "" %>
+		<%- (tema == "usuario" || tema == "agregar" || tema == "opciones" || tema=="home") ? include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) : "" %>
 		<%- (tema == "producto") ? include('2-ImagenDerecha', {title: producto.nombre_castellano, url: avatar}) : "" %>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
@@ -141,7 +146,7 @@
 					<%- include("RCLV") %>
 				</section>
 			<% } else %>
-			<% if (tema=="opciones") { %><%- include("0-HomeOpciones") %><% } %>
+			<% if (tema=="opcione") { %><%- include("0-HomeOpciones") %><% } %>
 			<% if (tema=="institucional") { %>
 				<%- codigo == "nosotros" ? include("Nosotros") : "" %>
 			<% } %>

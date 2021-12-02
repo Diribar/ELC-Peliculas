@@ -175,6 +175,12 @@ module.exports = {
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
 			datosAPI_renamed.cantTemporadas = datosAPI.seasons.length;
+			datosAPI_renamed.cantCapitulos = datosAPI.seasons
+				.map((n) => n.episode_count)
+				.reduce((a, b) => {
+					return a + b;
+				});
+			console.log(datosAPI_renamed.cantCapitulos);
 		}
 		let resultado = {
 			...datosIniciales,

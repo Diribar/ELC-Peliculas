@@ -5,7 +5,10 @@ let BD_varias = require("../../funciones/BD/varias");
 // *********** Controlador ***********
 module.exports = {
 	home: (req, res) => {
-		return res.redirect("/productos");
+		tema = "home";
+		return res.render("Home", {
+			tema,
+		});
 	},
 
 	nosotros: (req, res) => {
