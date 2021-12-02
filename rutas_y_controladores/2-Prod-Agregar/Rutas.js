@@ -13,15 +13,16 @@ let upload = require("../../middlewares/varios/multer");
 //************************ Controladores ****************************
 // Controladores de APIs
 // Validar campos vs. sintaxis
-router.get("/api/palabras-clave/", API.validarPalabrasClave);
-router.get("/api/validar-copiar-fa/", API.validarCopiarFA);
-router.get("/api/validar-datos-duros/", API.validarDatosDuros);
-router.get("/api/validar-datos-pers/", API.validarDatosPers);
-router.get("/api/obtener-fa-id/", API.obtenerFA_id);
-router.get("/api/obtener-elc-id/", API.obtenerELC_id);
+router.get("/api/palabras-clave", API.validarPalabrasClave);
+router.get("/api/validar-copiar-fa", API.validarCopiarFA);
+router.get("/api/validar-datos-duros", API.validarDatosDuros);
+router.get("/api/validar-datos-pers", API.validarDatosPers);
+router.get("/api/obtener-fa-id", API.obtenerFA_id);
+router.get("/api/obtener-elc-id", API.obtenerELC_id);
 
-// Validar campos vs. API/BD
-router.get("/api/averiguar-cant-prod/", API.cantProductos);
+// Temas generales de APIs
+router.get("/api/PC-cant-prod", API.cantProductos);
+router.get("/api/DD-paises", API.obtenerPaises);
 
 // Controladores de vistas de "Agregar Productos"
 router.get("/palabras-clave", usuarios, vista.palabrasClaveForm);
