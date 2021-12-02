@@ -92,11 +92,11 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		infoParaDD = await procesarProd["infoParaDD_" + req.body.entidad_TMDB](req.body);
-		//return res.send(infoParaDD)
-		//if (infoParaDD.)
+		infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
+		//return res.send(infoTMDBparaDD)
+		//if (infoTMDBparaDD.)
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarProd.desambiguar(infoParaDD);
+		let errores = await validarProd.desambiguar(infoTMDBparaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
 		//return res.send(errores);
 		// 4. Detectar errores
@@ -111,8 +111,8 @@ module.exports = {
 			return res.redirect("/producto/agregar/desambiguar");
 		}
 		// 5. Generar la session para la siguiente instancia
-		req.session.datosDuros = infoParaDD;
-		res.cookie("datosDuros", infoParaDD, {maxAge: 24 * 60 * 60 * 1000});
+		req.session.datosDuros = infoTMDBparaDD;
+		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: 24 * 60 * 60 * 1000});
 		// 6. Redireccionar a la siguiente instancia
 		req.session.erroresDES = false;
 		res.redirect("/producto/agregar/datos-duros");
@@ -209,7 +209,7 @@ module.exports = {
 			return res.redirect("/producto/agregar/copiar-fa");
 		}
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
-		req.session.datosDuros = await procesarProd.infoParaDD_prodFA(copiarFA);
+		req.session.datosDuros = await procesarProd.infoFAparaDD(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
@@ -491,12 +491,7 @@ module.exports = {
 		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie") {
 			confirmar.entidad_TMDB == "collection"
 				? procesarProd.agregarCapitulosDeCollection(registro.id, confirmar.capitulosId)
-				: procesarProd.agregarCapitulosDeTV(
-						registro,
-						confirmar.TMDB_id,
-						confirmar.cantTemporadas,
-						confirmar.numeroPrimeraTemp
-				  );
+				: procesarProd.agregarCapitulosDeTV(registro, confirmar);
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
@@ -672,6 +667,6 @@ let guardarRelacionConPaises = async (datos) => {
 			entidad: "relacion_pais_prod",
 			pais_id,
 			[producto_id]: datos.producto_id,
-		}, );
+		});
 	}
 };

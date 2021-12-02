@@ -155,7 +155,11 @@ module.exports = {
 				: datos.duracion > 300
 				? "Debe ser un número menor"
 				: "";
-		errores.paises_id = !datos.paises_id ? cartelCampoVacio : "";
+		errores.paises_id = !datos.paises_id
+			? cartelCampoVacio
+			: datos.paises_id.length > 2 * 1 + 4 * 3
+			? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
+			: "";
 		errores.director =
 			camposAVerificar.indexOf("director") == -1
 				? ""
@@ -190,7 +194,8 @@ module.exports = {
 			camposAVerificar.indexOf("actores") == -1
 				? ""
 				: !datos.actores
-				? cartelCampoVacio + '. Si no tiene actores (ej. un Documental), poné "No tiene actores"'
+				? cartelCampoVacio +
+				  '. Si no tiene actores (ej. un Documental), poné "No tiene actores"'
 				: longitud(datos.actores, 2, 500)
 				? longitud(datos.actores, 2, 500)
 				: castellano(datos.actores)

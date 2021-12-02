@@ -1,7 +1,8 @@
-<section id="paises_id" class="label-input">
+<section id="paises_id">
 	<label>País/es de origen</label>
 	<div class="input-error">
 		<% if (dataEntry.paises_id) { %>
+			<!-- Lugar donde mostrar los nombres -->
 			<input type="text" class="input" value="<%= paises %>" disabled>
 			<%- include("39-DD-Mensajes") %>
 		<% } else { %>
@@ -10,7 +11,7 @@
 			<!-- Lugar donde almacenar los ID -->
 			<input name="paises_id" type="text" class="ocultar" >
 			<!-- Opciones de países -->
-			<select name="paises_id" autofocus class="input">
+			<select autofocus class="input">
 				<option value="" selected class="ocultar">Elejí un país</option>
 				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 				<% for (continente of continentes) { %>
@@ -25,5 +26,5 @@
 		<i class="fas fa-times-circle<%- !errores.paises_id ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.paises_id %></span>
 		</i>
-	</div>
+</div>
 </section>

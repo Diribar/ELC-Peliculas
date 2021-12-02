@@ -3,6 +3,19 @@ QUICK SEARCH
     - "No borradas"
     - "Sólo aprobadas o agregadas por el usuario"
 
+PROTOCOLO DE CAPTURA
+- Es una función
+- Se dispara cuando se quiere editar o revisar un producto
+- Al querer acceder al menú de edición/revisión, si el producto:
+	- No está capturado, queda capturado y se accede
+	- Está capturado desde hace más de una hora, lo "rescata" y se accede
+	- Está capturado desde hace menos de 1 hora,
+		- Averigua por quién (sobrenombre)
+		- En qué proceso está
+		- Cuándo se libera a más tardar
+- No se puede editar si está capturada --> Mensaje de aviso
+
+
 TIMER 
 - Con el tiempo regresivo
 - Ubicado en el extremo superior derecho
