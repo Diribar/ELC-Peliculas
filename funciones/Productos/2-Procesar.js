@@ -183,73 +183,67 @@ module.exports = {
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
-	infoTMDBparaAgregarCapitulosDeTV: (registro_id, datosCol, datosTemp, tempUnica, datosCap) => {
+	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
-		let datosAPI_renamed = {entidad: "capitulos", fuente: "TMDB", creada_por_id: 2};
+		let datos = {entidad: "capitulos", fuente: "TMDB", creada_por_id: 2};
 
-		// Datos que provienen de la cabecera
-		datosAPI_renamed.coleccion_id = datosTemp.coleccion_id;
-		if (!tempUnica) datosAPI_renamed.temporada = datosTemp.season_number;
-		if (datosTemp.duracion) datosAPI_renamed.duracion = datosAPIdeCabecera.duracion;
-		if (datosTemp.idioma_original)
-			datosAPI_renamed.idioma_original = datosAPIdeCabecera.idioma_original;
+		// Datos de la colección
+		datos.coleccion_id = datosTemp.coleccion_id;
+		if (datosCol.duracion) datos.duracion = datosCol.duracion;
+		if (datosCol.idioma_original) datos.idioma_original = datosCol.idioma_original;
+
+		// Datos de la temporada
+		if (!datosCol.tempUnica) datos.temporada = datosTemp.season_number;
 
 		// Datos distintivos del capítulo
-		datosAPI_renamed.TMDB_id = capitulo.id;
-		datosAPI_renamed.capitulo = capitulo.episode_number;
-		if (capitulo.name) datosAPI_renamed.nombre_castellano = capitulo.name;
-		if (capitulo.air_date) datosAPI_renamed.ano_estreno = capitulo.air_date;
-		if (capitulo.crew.length > 0) {
-			datosAPI_renamed = {
-				...datosAPI_renamed,
-				...funcionCrew(capitulo.crew, "director", "Directing"),
-				...funcionCrew(capitulo.crew, "guion", "Writing"),
-				...funcionCrew(capitulo.crew, "musica", "Sound"),
+		datos.capitulo = datosCap.episode_number;
+		datos.TMDB_id = datosCap.id;
+		if (datosCap.name) datos.nombre_castellano = datosCap.name;
+		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
+		if (datosCap.crew.length > 0) {
+			datos = {
+				...datos,
+				...funcionCrew(datosCap.crew, "director", "Directing"),
+				...funcionCrew(datosCap.crew, "guion", "Writing"),
+				...funcionCrew(datosCap.crew, "musica", "Sound"),
 			};
 		}
-		if (capitulo.guest_stars.length > 0) {
-			datosAPI_renamed.actores = capitulo.guest_stars
+		if (datosCap.guest_stars.length > 0) {
+			datos.actores = datosCap.guest_stars
 				.map((n) => n.name + (n.character ? " (" + n.character + ")" : ""))
 				.join(", ");
 		}
-		while (capitulo.guest_stars.length > 0 && datosAPI_renamed.actores.length > 500) {
-			aux = datosAPI_renamed.actores;
-			datosAPI_renamed.actores = aux.slice(0, aux.lastIndexOf(","));
+		while (datosCap.guest_stars.length > 0 && datos.actores.length > 500) {
+			aux = datos.actores;
+			datos.actores = aux.slice(0, aux.lastIndexOf(","));
 		}
-		if (capitulo.overview) datosAPI_renamed.sinopsis = capitulo.overview;
-		avatar =
-			"https://image.tmdb.org/t/p/original" +
-			(capitulo.still_path
-				? capitulo.still_path
-				: capitulo.poster_path
-				? capitulo.poster_path
-				: "");
-		if (avatar) datosAPI_renamed.avatar = avatar;
-		return datosAPI_renamed;
+		if (datosCap.overview) datos.sinopsis = datosCap.overview;
+		avatar = datosCap.still_path
+			? datosCap.still_path
+			: datosCap.poster_path
+			? datosCap.poster_path
+			: "";
+		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
+		return datos;
 	},
 
 	// ControllerVista (confirmar)
-	agregarCapitulosDeTV: async function (registro, datosCol) {
+	agregarCapitulosDeTV: async function (datosCol) {
 		// Detectar si es una única temporada
-		tempUnica = datosCol.cantTemporadas == 1 ? true : false;
+		datosCol.tempUnica = datosCol.cantTemporadas == 1 ? true : false;
 		// Loop de TEMPORADAS ***********************************************
-		for (temporada = 0; temporada < datosCol.cantTemporadas; temporada++) {
+		for (temporada = 1; temporada <= datosCol.cantTemporadas; temporada++) {
 			// Datos de UNA TEMPORADA
-			entidad_TMDB = temporada;
-			datosTemp = await detailsTMDB(entidad_TMDB, registro.TMDB_id);
-			if (datosCol.duracion) datosAPI.duracion = datosCol.duracion;
-			if (datosCol.idioma_original) datosAPI.idioma_original = datosCol.idioma_original;
+			datosTemp = await detailsTMDB(temporada, registro.TMDB_id);
 			// Loop de CAPITULOS ********************************************
 			for (indice = 0; indice < datosAPI.episodes.length; indice++) {
-				datosAPI_renamed = this.infoTMDBparaAgregarCapitulosDeTV(
-					registro.id,
+				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(
 					datosCol,
-					datosAPI,
-					datosAPI.episodes[indice],
-					tempUnica,
-					datosCol
+					datosTemp,
+					datosTemp.episodes[indice]
 				);
-				await BD_varias.agregarRegistro(datosAPI_renamed);
+
+				await BD_varias.agregarRegistro(datosCap);
 			}
 		}
 		return;
