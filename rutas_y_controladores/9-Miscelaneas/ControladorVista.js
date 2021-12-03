@@ -6,9 +6,7 @@ let BD_varias = require("../../funciones/BD/varias");
 module.exports = {
 	home: (req, res) => {
 		tema = "home";
-		return res.render("Home", {
-			tema,
-		});
+		return res.render("Home", {tema});
 	},
 
 	nosotros: (req, res) => {

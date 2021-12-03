@@ -14,12 +14,9 @@
 					Elegí una opción
 				</option>
 			<% } %> 
-			<% for (let n of opciones_BD) { %>
-				<option
-					value="/productos/<%= n.url %>"
-					<% if (opcionElegida && opcionElegida.id == n.id) { %>selected<% } %>
-				>
-					<%= n.nombre %>
+			<% for (opcion of opciones) { %>
+				<option value="/productos/<%= opcion.url %>" <% if (opcionElegida && opcionElegida.id == opcion.id) { %>selected<% } %>>
+					<%= opcion.nombre %>
 				</option>
 			<% } %>
 		</select>
