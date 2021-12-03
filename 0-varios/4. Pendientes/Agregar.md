@@ -1,22 +1,6 @@
-PERSONAJE HISTÓRICO
-- Miembro de la Iglesia Católica al fallecer
-    SI/NO
-- En proceso de canonización (comenzado o terminado)
-    SI/NO
-- Estado eclesial en la Iglesia Católica
-    laico, laico casado, religioso consagrado
-
-RCLV
-- Simplificar: quitar el "verificar", y reemplazar por botonSinLink
-- Agregar link a wikipedia en función del nombre
-    https://es.wikipedia.org/wiki/Rosa de Lima
-
 AGREGAR PRODUCTOS
 - Bloquear las flechas de retroceso y avance del navegador
 - Estandarización de títulos y formatos en Agregar
-
-PALABRA CLAVE
-- Quitar el logo de IM
 
 DESAMBIGUAR
 - FE: detectar si una película pertenece a una colección y mostrar el resultado
@@ -35,12 +19,6 @@ for (var i = min; i<=max; i++){
 
 COPIAR FA: 
 - Para las películas, buscar también en "capítulos" si ya están en BD
-
-DATOS DUROS: 
-- Cuando está vacío, permitir elegir más de 1 país
-
-DATOS PERSONALIZADOS
-- Si la película o serie de TV informa que el producto existe en castellano, llevar ese dato a DP
 
 CONFIRMAR Vista:
     - Mismos datos que en Desambiguar, más Director y Actor

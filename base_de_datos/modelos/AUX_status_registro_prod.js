@@ -1,10 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "status_registro_producto";
+	const alias = "status_registro";
 	const columns = {
 		nombre: {type: dt.STRING(10)},
 	};
 	const config = {
-		tableName: "status_registro_producto",
+		tableName: "status_registro",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
