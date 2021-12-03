@@ -146,7 +146,7 @@ module.exports = {
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		let numCapitulo = 0;
-		for (capituloTMDB_Id of datosCol.capitulosTMDB_Id) {
+		for (capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
 			existe = await BD_varias.obtenerELC_id({
@@ -349,7 +349,7 @@ module.exports = {
 				datosAPI_renamed.avatar =
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
-			datosAPI_renamed.capitulosTMDB_Id = datosAPI.parts.map((n) => n.id);
+			datosAPI_renamed.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
 			datosAPI_renamed.cant_capitulos = datosAPI.parts.length;
 		}
 		let resultado = {
