@@ -1,5 +1,5 @@
 /* Formato del cuerpo */
-.cuerpo {align-items: center;justify-content: center;}
+.cuerpo {align-items: center; justify-content: center; height: 100%;}
 .cuerpo #titulo {margin: 0px;}
 
 #dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}

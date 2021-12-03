@@ -288,19 +288,19 @@ module.exports = {
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Averiguar si hay errores de validación
-		avatar = req.file && !req.body.avatar ? req.file.filename : datosDuros.avatar;
+		// Si hay multer, entonces que sea ese archivo
+		avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validarProd.datosDuros({...datosDuros, avatar}, [
 			...variables.camposDD1(),
 			...variables.camposDD2(),
 		]);
 		// 5. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original) {
-			datos = {
+			elc_id = await BD_varias.obtenerELC_id({
 				entidad: datosDuros.entidad,
 				campo: datosDuros.fuente + "_id",
 				valor: datosDuros[datosDuros.fuente + "_id"],
-			};
-			elc_id = await BD_varias.obtenerELC_id(datos);
+			});
 			if (elc_id) {
 				errores.nombre_original =
 					"El código interno ya se encuentra en nuestra base de datos";
@@ -339,13 +339,19 @@ module.exports = {
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
+		// Configurar los valores de la variable 'avatar'
+		let avatarDP = "/imagenes/9-Provisorio/" + nombre;
+		let avatarCF = nombre;
 		// Si la imagen venía de TMDB, entonces grabarla
-		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file)
-			await varias.download(datosDuros.avatar, rutaYnombre);
+		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
+			varias.download(datosDuros.avatar, rutaYnombre);
+			avatarDP = datosDuros.avatar;
+		}
 		// 8. Generar la session para la siguiente instancia
 		req.session.datosPers = {
 			...req.session.datosDuros,
-			avatarDP: nombre,
+			avatarDP,
+			avatarCF,
 		};
 		res.cookie("datosPers", req.session.datosPers, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -410,19 +416,21 @@ module.exports = {
 		}
 		// 3. Si no hay errores, continuar
 		// Obtener la calificación
-		fe_valores = await BD_varias.obtenerPorParametro("fe_valores", "id", req.body.fe_valores_id)
-			.then((n) => n.valor / 4)
-			.then((n) => n.toFixed(2));
-		entretiene = await BD_varias.obtenerPorParametro("entretiene", "id", req.body.entretiene_id)
-			.then((n) => n.valor / 4)
-			.then((n) => n.toFixed(2));
+		fe_valores = await BD_varias.obtenerPorParametro(
+			"fe_valores",
+			"id",
+			req.body.fe_valores_id
+		).then((n) => n.valor);
+		entretiene = await BD_varias.obtenerPorParametro(
+			"entretiene",
+			"id",
+			req.body.entretiene_id
+		).then((n) => n.valor);
 		calidad_tecnica = await BD_varias.obtenerPorParametro(
 			"calidad_tecnica",
 			"id",
 			req.body.calidad_tecnica_id
-		)
-			.then((n) => n.valor / 4)
-			.then((n) => n.toFixed(2));
+		).then((n) => n.valor);
 		calificacion = (fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2).toFixed(2);
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
@@ -477,7 +485,7 @@ module.exports = {
 			: "";
 		if (!confirmar) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Guardar el registro del producto
-		confirmar.avatar = confirmar.avatarDP;
+		confirmar.avatar = confirmar.avatarCF;
 		registro = await BD_varias.agregarRegistro(confirmar);
 		// 3. Guardar datosClaveProd
 		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
@@ -489,7 +497,8 @@ module.exports = {
 		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie") {
 			confirmar.entidad_TMDB == "collection"
-				? procesarProd.agregarCapitulosDeCollection(registro.id, confirmar.capitulosId)
+				? procesarProd.agregarCapitulosDeCollection({...confirmar, ...registro.dataValues})
+				// registro.id, confirmar.capitulosId
 				: procesarProd.agregarCapitulosDeTV({...confirmar, ...registro.dataValues});
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
