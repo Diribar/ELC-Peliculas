@@ -1,0 +1,84 @@
+/* Formato del cuerpo */
+.cuerpo {align-items: center;justify-content: center;}
+.cuerpo #titulo {margin: 0px;}
+
+/* Temas generales del formulario */
+#dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
+#dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
+	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#datos {display: flex; flex-direction: row}
+#datos .input-error {position: relative;}
+#datos input, 
+#datos select, 
+#datos #posiblesDuplicados,
+#adicionales select {border-width: .7px; border-radius: 5px; background-color: white;}
+
+/* Partes específicas de Datos */
+#datos #primeraCol {display: flex; flex-direction: column;}
+#datos #primeraCol .campo {margin-top: 15px;}
+#datos #primeraCol .campo:first-child {margin-top: 0;}
+#datos #primeraCol .campo input[name="nombre"] {width: 100%; padding-left: 5px;}
+#datos #primeraCol .campo .tituloCampo {margin-bottom: 3px}
+#datos #primeraCol .campo #valoresFecha {min-height: 80px; justify-content: space-around;}
+#datos #columnaMedio {width: 70px}
+#datos #segundaCol {display: flex; flex-direction: column; width: 180px;}
+
+/* Posibles Duplicados */
+#datos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+#datos #posiblesDuplicados {height: 100px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
+#datos #posiblesDuplicados li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
+#datos #posiblesDuplicados li input {margin-right: 5px;}
+
+/* Datos Adicionales */
+#adicionales {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px; display: flex; flex-direction: column;}
+#adicionales .tituloCampo {margin-bottom: 5px;}
+#adicionales #mostrarSiEsCatolico {display: noe;}
+#adicionales .input-error {display: flex; flex-direction: row; align-items: center; margin-bottom: 5px;}
+#adicionales .input-error .inputRadio,
+#adicionales .input-error select {margin-right: 10px; width: 100px;}
+#adicionales .input-error .inputRadio {padding: 0 10px; display: flex; justify-content: space-between;}
+#adicionales .input-error .inputRadio .pares {display: flex; flex-direction: row; align-items: center;}
+#adicionales .input-error .inputRadio .pares label {margin-right: 5px;}
+
+/* Todos los mensajes */
+#datos .mensajeError, #datos .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
+#datos .mensajeError {max-width: 200px;}
+
+/* Mensajes de ayuda */
+#datos .fa-question-circle {right: -20px;}
+#datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
+
+/*  Mensajes de error*/
+#datos .fa-times-circle, #datos .fa-check-circle {left: -20px;}
+#datos .fa-times-circle {z-index: 1; cursor: pointer;}
+
+/* Submit button */
+#dataEntry #flechas {margin-top: 20px;}
+#dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
+#dataEntry #flechas button {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
+#dataEntry #flechas button em {color: var(--amarillo-claro); background-color: inherit;}
+
+/* Resultados */
+/* Todos */
+.resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
+	{padding: 3px 10px; color: white; font-weight: bold;}
+.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
+.fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
+.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
+/* Exito */
+.resultadoExitoso {background-color: var(--verde-oscuro);}
+.fa-check-circle {color: var(--verde-oscuro); cursor: default;}
+/* Neutro */
+.resultadoEnEspera {background-color: var(--gris-oscuro);}
+.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
+.link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
+.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+.mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
+/* Error */
+.resultadoInvalido {background-color: var(--rojo-oscuro);}
+.fa-times-circle {color: var(--rojo-oscuro);}
+.fa-times-circle:hover .mensajeError {display: inline;}
+.mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; left: 20px; padding: 3px 7px;}
+.mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
