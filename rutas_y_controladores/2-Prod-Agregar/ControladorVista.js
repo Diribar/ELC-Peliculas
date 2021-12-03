@@ -287,8 +287,7 @@ module.exports = {
 		let datosDuros = {...aux, ...req.body};
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
-		// 4. Averiguar si hay errores de validación
-		// Si hay multer, entonces que sea ese archivo
+		// 4. Averiguar si hay errores de validación. Se usa el nombre del archivo multer, si existe
 		avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validarProd.datosDuros({...datosDuros, avatar}, [
 			...variables.camposDD1(),
