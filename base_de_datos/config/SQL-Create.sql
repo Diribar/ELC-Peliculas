@@ -335,9 +335,9 @@ CREATE TABLE cal_entretiene (
 INSERT INTO cal_entretiene (id, orden, valor, nombre)
 VALUES 
 (5, 1, 10, 'Mucho'),
-(4, 2, 7.5, 'Sí'),
+(4, 2, 8, 'Sí'),
 (3, 3, 5, 'Moderado'),
-(2, 4, 2.5, 'Poco'),
+(2, 4, 2, 'Poco'),
 (1, 5, 0, 'No')
 ;
 CREATE TABLE cal_calidad_tecnica (
