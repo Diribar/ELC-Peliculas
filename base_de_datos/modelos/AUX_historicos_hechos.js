@@ -3,8 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
-		dia_del_ano_id: {type: dt.INTEGER},
-		cant_productos: {type: dt.INTEGER},
+		pais_id: {type: dt.STRING(2)},
 
 		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
@@ -31,6 +30,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
+		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
@@ -41,7 +41,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "hecho_historico_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_historico_id"});
+		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "hecho_historico_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "hecho_historico_id"});
 	};
 	return entidad;
 };

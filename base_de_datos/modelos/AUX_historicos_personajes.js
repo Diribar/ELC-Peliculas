@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
-		cant_productos: {type: dt.INTEGER},
+		pais_id: {type: dt.STRING(2)},
 
 		catolico: {type: dt.BOOLEAN},
 		en_canonizacion: {type: dt.BOOLEAN},
@@ -34,6 +34,7 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
+		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
@@ -45,6 +46,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "personaje_historico_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_historico_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "personaje_historico_id"});
 	};
 	return entidad;
 };
