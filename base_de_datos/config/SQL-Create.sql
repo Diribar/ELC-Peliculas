@@ -268,9 +268,9 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, estado_eclesial_id)
+INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, estado_eclesial_id, pais_id)
 VALUES 
-(1, 'Juan Pablo II', 296, 1, 1, 'SC')
+(1, 'Juan Pablo II', 296, 1, 1, 'SC', 'PL')
 ;
 CREATE TABLE historicos_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
