@@ -2,6 +2,7 @@ window.addEventListener("load", () => {
 	// DOM
 	let input = document.querySelector("#busquedaRapida #inputMasResultados input");
 	let display = document.querySelector("#busquedaRapida #inputMasResultados #displayResultados");
+	let escribiMas = document.querySelector("#busquedaRapida #inputMasResultados #escribiMas")
 
 	// Variables
 	teclasValidas = /^[a-z áéíóúüñ\d]+$/;
@@ -10,13 +11,6 @@ window.addEventListener("load", () => {
 		// Impide los caracteres que no son válidos
 		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
 		dataEntry = input.value;
-
-		// Termina el proceso si la palabra tiene menos de 4 caracteres
-		if (dataEntry.length < 4) {
-			display.classList.add("ocultar");
-			input.style.borderRadius = "5px";
-			return;
-		}
 
 		// Elimina palabras repetidas
 		palabras = dataEntry.split(" ");
@@ -28,9 +22,18 @@ window.addEventListener("load", () => {
 				palabras.splice(i, 1);
 			}
 		}
-		palabras = palabras.join(" ");
+		pasaNoPasa = palabras.join("");
+
+		// Termina el proceso si la palabra tiene menos de 4 caracteres significativos
+		if (pasaNoPasa.length < 4) {
+			input.style.borderRadius = "5px";
+			display.classList.add("ocultar");
+			escribiMas.classList.remove("ocultar")
+			return;
+		} else escribiMas.classList.add("ocultar")
 
 		// Busca los productos
+		palabras = palabras.join(" ");
 		let resultados = await fetch("/quick-search/?palabras=" + palabras).then((n) => n.json());
 		resultados = resultados.map((n) => {
 			return {

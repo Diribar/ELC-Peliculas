@@ -1,25 +1,25 @@
 <%- include('0-Head') %>
 <body>
-  <%- include('0-Header') %>
-  <main class="flex-row">
-    <section id="imagen-derecha">
-      <img alt="<%= producto.nombre_castellano %>" src="/imagenes/2-Productos/<%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
-    </section>
-    <section id="cuerpo-y-footer" class="flex-col grow">
-      <%- include('3-Footer') %>
-      <!--**************************** CUERPO ************************-->
-      <section class="cuerpo margen-izquierdo flex-col">
-        <button class="titulo"><%= producto.nombre_castellano %></button>
-        <button class="subtitulo activo"><%= nombre %> </button>
-        <%- nombre.includes("Información") ? include('2-Informacion') : "" %>
-        <%- nombre.includes("Trailer") ?     include('3-Trailer') : "" %>
-        <%- nombre.includes("Película") ?    include('4-Pelicula') : "" %>
-        <%- nombre.includes("Calific") ?     include('5-Calificala') : "" %>
-        <%- nombre.includes("Editar") ?      include('7-Editar') : "" %>
-        <%- nombre.includes("Eliminar") ?    include('8-Eliminar') : "" %>
-      </section>
-      <!--****************************** FIN *************************-->
-    </section>
-  </main>
+	<%- include('0-Header') %>
+	<main class="flex-row">
+		<section id="imagen-derecha">
+			<img alt="<%= producto.nombre_castellano %>" src="/imagenes/2-Productos/<%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
+		</section>
+		<section id="cuerpo-y-footer" class="flex-col grow">
+			<%- include('3-Footer') %>
+			<!--**************************** CUERPO ************************-->
+			<section class="cuerpo margen-izquierdo flex-col">
+				<button class="titulo"><%= producto.nombre_castellano %></button>
+				<button class="subtitulo activo"><%= nombre %> </button>
+				<%- nombre.includes("Información") ? include('2-Informacion') : "" %>
+				<%- nombre.includes("Trailer") ?     include('3-Trailer') : "" %>
+				<%- nombre.includes("Película") ?    include('4-Pelicula') : "" %>
+				<%- nombre.includes("Calific") ?     include('5-Calificala') : "" %>
+				<%- nombre.includes("Editar") ?      include('7-Editar') : "" %>
+				<%- nombre.includes("Eliminar") ?    include('8-Eliminar') : "" %>
+			</section>
+			<!--****************************** FIN *************************-->
+		</section>
+	</main>
 </body>
 </html>

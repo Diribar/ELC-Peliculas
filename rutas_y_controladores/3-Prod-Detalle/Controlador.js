@@ -24,10 +24,11 @@ module.exports = {
 			"borrada_motivo",
 		];
 		let producto = await BD_especificas.obtenerProductoPorIdConInclude(entidad, ID, includes);
-		let avatar =
-			producto.avatar.substring(0, 5) != "https"
+		let avatar = producto.avatar
+			? producto.avatar.substring(0, 5) != "https"
 				? "/imagenes/2-Productos/" + producto.avatar
-				: producto.avatar;
+				: producto.avatar
+			: "/imagenes/0-Agregar/Desamb-IM.jpg";
 		// Ir a la vista
 		//return res.send(producto);
 		return res.render("Home", {
