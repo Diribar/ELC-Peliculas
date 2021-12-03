@@ -25,20 +25,20 @@ header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:5
 /* Íconos de búsqueda rápida e inputMasResultados */
 header section .grupos#busquedaRapida {position: relative;}
 header section .grupos#busquedaRapida #inputMasResultados {position: absolute; top: 35px;}
-header section .grupos#busquedaRapida #inputMasResultados input,
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados
-	{border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-header section .grupos#busquedaRapida #inputMasResultados input {padding: 2px 5px;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table,
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table thead,
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table thead th,
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados p {width: max-content;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table {border-collapse: collapse;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados p,
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody td {padding: 2px 5px;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody td:nth-of-type(2) {text-align: center;}
-header section .grupos#busquedaRapida #inputMasResultados #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
+#inputMasResultados input, #inputMasResultados #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+#inputMasResultados input {padding: 2px 5px; }
+#inputMasResultados #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
+#inputMasResultados #displayResultados table,
+#inputMasResultados #displayResultados table thead,
+#inputMasResultados #displayResultados table thead th,
+#inputMasResultados #escribiMas, 
+#inputMasResultados #displayResultados p {width: max-content;}
+#inputMasResultados #displayResultados table {border-collapse: collapse;}
+#inputMasResultados #displayResultados p,
+#inputMasResultados #displayResultados table tbody td {padding: 2px 5px;}
+#inputMasResultados #displayResultados table tbody td:nth-of-type(2) {text-align: center;}
+#inputMasResultados #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
+#inputMasResultados #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
 
 /* Formato del Título */
 header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
