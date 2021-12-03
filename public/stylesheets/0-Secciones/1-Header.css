@@ -12,7 +12,7 @@ header section .grupos .scale:hover {transform: scale(1.3);}
 
 /* Formato de Menús */
 header section .grupos a {color: var(--azul-oscuro);}
-header section .grupos .dropdown-content {position: absolute; top: 50px;}
+header section .grupos .dropdown-content {position: absolute; top: 42px;}
 header section .grupos .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
 header section .grupos .dropdown-content a {padding: 4px 16px; display: block;}
 header section .grupos .dropdown-content .fas,

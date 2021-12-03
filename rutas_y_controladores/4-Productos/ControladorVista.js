@@ -5,13 +5,11 @@ let BD_varias = require("../../funciones/BD/varias");
 module.exports = {
 	home: async (req, res) => {
 		tema = "opciones";
-		// Obtener las opciones
-		//let opciones_BD = await BD_varias.obtenerTodos("menu_opciones", "id");
-		//res.send(opciones_BD);
 		res.render("Home", {
 			tema,
 			titulo: "ELC-Películas",
-			//opciones_BD,
+			opciones: opciones(),
+			opcionesListado: opcionesListado(),
 			opcionElegida: null,
 		});
 	},
@@ -86,11 +84,45 @@ let vistas = async (opcion) => {
 	// obtener el Título de la opción elegida
 	let titulo =
 		"Películas - " +
-		(await BD_varias.obtenerPorParametro(
-			"menu_opciones",
-			"url",
-			opcion
-		).then((n) => n[0].titulo));
+		(await BD_varias.obtenerPorParametro("menu_opciones", "url", opcion).then(
+			(n) => n[0].titulo
+		));
 	// Exportar los datos
 	return [opciones_BD, opcionElegida, tipos_BD, titulo];
+};
+
+let opciones = () => {
+	return [
+		{
+			nombre: "Listado de Películas",
+			url: "listado",
+			titulo: "Listado",
+			vista: "1-Listado",
+			comentario: "Todas las películas de nuestra Base de Datos",
+		},
+		{
+			nombre: "Un paseo por CFC",
+			url: "cfc",
+			titulo: "CFC",
+			vista: "2-CFC",
+			comentario: "Películas Centradas en la Fe Católica (CFC)",
+		},
+		{
+			nombre: "Un paseo por VPC",
+			url: "vpc",
+			titulo: "VPC",
+			vista: "3-VPC",
+			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+		},
+	];
+};
+
+let opcionesListado = () => {
+	return [
+		{nombre: "Sugeridas para el momento del año", url: "listado/sugeridas"},
+		{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
+		{nombre: "Por año de estreno", url: "listado/estreno"},
+		{nombre: "Por orden de incorporación a nuestra BD", url: "listado/incorporacion"},
+		{nombre: "Por orden de visita", url: "listado/visita"},
+	];
 };
