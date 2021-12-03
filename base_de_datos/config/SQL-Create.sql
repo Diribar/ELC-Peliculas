@@ -309,7 +309,7 @@ CREATE TABLE si_no_parcial (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO si_no_parcial (id, nombre)
-VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
+VALUES (1, 'SI'), (2, 'Parcial'), (3, 'NO');
 CREATE TABLE cal_fe_valores (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -319,10 +319,10 @@ CREATE TABLE cal_fe_valores (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_fe_valores (id, orden, valor, nombre)
 VALUES 
-(5, 1, 4, 'Mucho'),
-(4, 2, 3, 'Sí'),
-(3, 3, 2, 'Moderado'),
-(2, 4, 1, 'Poco'),
+(5, 1, 10, 'Mucho'),
+(4, 2, 8, 'Sí'),
+(3, 3, 5, 'Moderado'),
+(2, 4, 2, 'Poco'),
 (1, 5, 0, 'No')
 ;
 CREATE TABLE cal_entretiene (
@@ -334,10 +334,10 @@ CREATE TABLE cal_entretiene (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_entretiene (id, orden, valor, nombre)
 VALUES 
-(5, 1, 4, 'Mucho'),
-(4, 2, 3, 'Sí'),
-(3, 3, 2, 'Moderado'),
-(2, 4, 1, 'Poco'),
+(5, 1, 10, 'Mucho'),
+(4, 2, 8, 'Sí'),
+(3, 3, 5, 'Moderado'),
+(2, 4, 2, 'Poco'),
 (1, 5, 0, 'No')
 ;
 CREATE TABLE cal_calidad_tecnica (
@@ -349,8 +349,9 @@ CREATE TABLE cal_calidad_tecnica (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
 VALUES 
-(2, 1, 4, 'No afecta el disfrute'),
-(1, 2, 0, 'Perjudica el disfrute')
+(3, 1, 10, 'Sin problemas'),
+(2, 2, 5, 'Afecta un poco el disfrute'),
+(1, 3, 0, 'Complica el disfrute')
 ;
 CREATE TABLE interes_en_prod (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -446,8 +447,8 @@ CREATE TABLE PROD_colecciones (
 	ano_estreno SMALLINT UNSIGNED NULL,
 	ano_fin SMALLINT UNSIGNED NULL,
 	idioma_original VARCHAR(20) NOT NULL,
-	cantTemporadas TINYINT UNSIGNED NULL,
-	cantCapitulos SMALLINT UNSIGNED NULL,
+	cant_temporadas TINYINT UNSIGNED NULL,
+	cant_capitulos SMALLINT UNSIGNED NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
 	musica VARCHAR(100) NOT NULL,
