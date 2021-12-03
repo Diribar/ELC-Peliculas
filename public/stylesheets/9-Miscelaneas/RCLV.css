@@ -32,7 +32,7 @@
 /* Datos Adicionales */
 #adicionales {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px; display: flex; flex-direction: column;}
 #adicionales .tituloCampo {margin-bottom: 5px;}
-#adicionales #mostrarSiEsCatolico {display: noe;}
+#adicionales #mostrarSiEsCatolico {display: none;}
 #adicionales .input-error {display: flex; flex-direction: row; align-items: center; margin-bottom: 5px;}
 #adicionales .input-error .inputRadio,
 #adicionales .input-error select {margin-right: 10px; width: 100px;}
