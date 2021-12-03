@@ -6,12 +6,12 @@ module.exports = {
 	home: async (req, res) => {
 		tema = "opciones";
 		// Obtener las opciones
-		let opciones_BD = await BD_varias.obtenerTodos("menu_opciones", "id");
+		//let opciones_BD = await BD_varias.obtenerTodos("menu_opciones", "id");
 		//res.send(opciones_BD);
 		res.render("Home", {
 			tema,
 			titulo: "ELC-Películas",
-			opciones_BD,
+			//opciones_BD,
 			opcionElegida: null,
 		});
 	},

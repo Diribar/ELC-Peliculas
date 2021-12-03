@@ -26,7 +26,7 @@ VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('a
 ;
 CREATE TABLE estados_eclesiales (
 	id VARCHAR(2) NOT NULL,
-	orden INT UNSIGNED NOT NULL,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -39,8 +39,8 @@ VALUES
 ('SC', 4, 'Sacerdote')
 ;
 CREATE TABLE roles_usuario (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
 	aut_altas_productos BOOLEAN NOT NULL,
 	aut_aprobar_altas_prod BOOLEAN NOT NULL,
@@ -64,8 +64,8 @@ INSERT INTO sexos (id, nombre, letra_final)
 VALUES ('F','Femenino', 'a'), ('M','Masculino', 'o')
 ;
 CREATE TABLE status_registro_usuario (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -80,8 +80,8 @@ CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
-	status_registro_id INT UNSIGNED DEFAULT 1,
-	rol_usuario_id INT UNSIGNED DEFAULT 1,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	autorizado_fa BOOLEAN NULL DEFAULT 0,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
@@ -114,10 +114,10 @@ VALUES
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 CREATE TABLE penalizaciones_motivos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
-	duracion INT UNSIGNED NOT NULL,
+	duracion SMALLINT UNSIGNED NOT NULL,
 	comentario VARCHAR(500) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -130,13 +130,13 @@ VALUES
 (5, 5, 400, 'Pornografía primera vez', 'Pornografía, primera vez'),
 (6, 6, 1000, 'Pornografía reincidente', 'Pornografía, reincidente')
 ;
-CREATE TABLE penalizaciones_usuarios (
+CREATE TABLE us_penalizaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	usuario_id INT UNSIGNED NOT NULL,
-	rol_usuario_id INT UNSIGNED NOT NULL,
+	rol_usuario_id TINYINT UNSIGNED NOT NULL,
 	penalizado_por_id INT UNSIGNED NULL,
-	penalizacion_id INT UNSIGNED NOT NULL,
+	penalizacion_id TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
@@ -146,7 +146,7 @@ CREATE TABLE penalizaciones_usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE categorias (
 	id VARCHAR(3) NOT NULL,
-	orden INT UNSIGNED NOT NULL,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -156,8 +156,8 @@ VALUES
 ('VPC', 2, 'Valores Presentes en la Cultura')
 ;
 CREATE TABLE categorias_sub (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
 	url VARCHAR(20) NOT NULL,
@@ -178,40 +178,9 @@ VALUES
 (10, 'VPC', 'Novelas', 'vpc/novelas'), 
 (11, 'VPC', 'Musicales', 'vpc/musicales')
 ;
-CREATE TABLE listado_peliculas (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL,
-	url VARCHAR(50) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO listado_peliculas (id, orden, nombre, url)
-VALUES 
-(1, 1, 'Sugeridas para el momento del año', 'listado/sugeridas'), 
-(2, 2, 'Por orden de calificación en nuestra página', 'listado/calificacion'), 
-(3, 3, 'Por año de estreno', 'listado/estreno'), 
-(4, 4, 'Por orden de incorporación a nuestra base de datos', 'listado/incorporacion'), 
-(5, 5, 'Por orden de visita', 'listado/visita')
-;
-CREATE TABLE menu_opciones (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL,
-	url VARCHAR(50) NOT NULL,
-	titulo VARCHAR(50) NOT NULL,
-	vista VARCHAR(20) NOT NULL,
-	comentario VARCHAR(100) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO menu_opciones (id, orden, nombre, url, titulo, vista, comentario)
-VALUES 
-(1, 1, 'Listado de Películas', 'listado', 'Listado', '1-Listado', 'Todas las películas de nuestra Base de Datos'),
-(2, 2, 'Un paseo por CFC', 'cfc', 'CFC', '2-CFC', 'Películas Centradas en la Fe Católica (CFC)'),
-(3, 3, 'Un paseo por VPC', 'vpc', 'VPC', '3-VPC', 'Películas con Valores Presentes en nuestra Cultura (VPC)')
-;
 CREATE TABLE publicos_sugeridos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,	
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,	
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -224,7 +193,7 @@ VALUES
 (1, 5, 'Menores solamente')
 ;
 CREATE TABLE motivos_para_borrar (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	productos BOOLEAN DEFAULT 0,
 	historicos_personajes BOOLEAN DEFAULT 0,
@@ -239,38 +208,38 @@ VALUES
 ('Spam inocuo, no alineado con nuestro perfil', 1, 1, 1)
 ;
 CREATE TABLE meses (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO meses (nombre)
 VALUES ('Enero'), ('Febrero'), ('Marzo'), ('Abril'), ('Mayo'), ('Junio'), ('Julio'), ('Agosto'), ('Septiembre'), ('Octubre'), ('Noviembre'), ('Diciembre');
 CREATE TABLE dias_del_ano (
-	id INT UNSIGNED NOT NULL,
-	dia INT UNSIGNED NOT NULL,
-	mes_id INT UNSIGNED NOT NULL,
+	id SMALLINT UNSIGNED NOT NULL,
+	dia TINYINT UNSIGNED NOT NULL,
+	mes_id TINYINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (mes_id) REFERENCES meses(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO dias_del_ano (id, dia, mes_id)
 VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 1), (8, 8, 1), (9, 9, 1), (10, 10, 1), (11, 11, 1), (12, 12, 1), (13, 13, 1), (14, 14, 1), (15, 15, 1), (16, 16, 1), (17, 17, 1), (18, 18, 1), (19, 19, 1), (20, 20, 1), (21, 21, 1), (22, 22, 1), (23, 23, 1), (24, 24, 1), (25, 25, 1), (26, 26, 1), (27, 27, 1), (28, 28, 1), (29, 29, 1), (30, 30, 1), (31, 31, 1), (32, 1, 2), (33, 2, 2), (34, 3, 2), (35, 4, 2), (36, 5, 2), (37, 6, 2), (38, 7, 2), (39, 8, 2), (40, 9, 2), (41, 10, 2), (42, 11, 2), (43, 12, 2), (44, 13, 2), (45, 14, 2), (46, 15, 2), (47, 16, 2), (48, 17, 2), (49, 18, 2), (50, 19, 2), (51, 20, 2), (52, 21, 2), (53, 22, 2), (54, 23, 2), (55, 24, 2), (56, 25, 2), (57, 26, 2), (58, 27, 2), (59, 28, 2), (60, 29, 2), (61, 1, 3), (62, 2, 3), (63, 3, 3), (64, 4, 3), (65, 5, 3), (66, 6, 3), (67, 7, 3), (68, 8, 3), (69, 9, 3), (70, 10, 3), (71, 11, 3), (72, 12, 3), (73, 13, 3), (74, 14, 3), (75, 15, 3), (76, 16, 3), (77, 17, 3), (78, 18, 3), (79, 19, 3), (80, 20, 3), (81, 21, 3), (82, 22, 3), (83, 23, 3), (84, 24, 3), (85, 25, 3), (86, 26, 3), (87, 27, 3), (88, 28, 3), (89, 29, 3), (90, 30, 3), (91, 31, 3), (92, 1, 4), (93, 2, 4), (94, 3, 4), (95, 4, 4), (96, 5, 4), (97, 6, 4), (98, 7, 4), (99, 8, 4), (100, 9, 4), (101, 10, 4), (102, 11, 4), (103, 12, 4), (104, 13, 4), (105, 14, 4), (106, 15, 4), (107, 16, 4), (108, 17, 4), (109, 18, 4), (110, 19, 4), (111, 20, 4), (112, 21, 4), (113, 22, 4), (114, 23, 4), (115, 24, 4), (116, 25, 4), (117, 26, 4), (118, 27, 4), (119, 28, 4), (120, 29, 4), (121, 30, 4), (122, 1, 5), (123, 2, 5), (124, 3, 5), (125, 4, 5), (126, 5, 5), (127, 6, 5), (128, 7, 5), (129, 8, 5), (130, 9, 5), (131, 10, 5), (132, 11, 5), (133, 12, 5), (134, 13, 5), (135, 14, 5), (136, 15, 5), (137, 16, 5), (138, 17, 5), (139, 18, 5), (140, 19, 5), (141, 20, 5), (142, 21, 5), (143, 22, 5), (144, 23, 5), (145, 24, 5), (146, 25, 5), (147, 26, 5), (148, 27, 5), (149, 28, 5), (150, 29, 5), (151, 30, 5), (152, 31, 5), (153, 1, 6), (154, 2, 6), (155, 3, 6), (156, 4, 6), (157, 5, 6), (158, 6, 6), (159, 7, 6), (160, 8, 6), (161, 9, 6), (162, 10, 6), (163, 11, 6), (164, 12, 6), (165, 13, 6), (166, 14, 6), (167, 15, 6), (168, 16, 6), (169, 17, 6), (170, 18, 6), (171, 19, 6), (172, 20, 6), (173, 21, 6), (174, 22, 6), (175, 23, 6), (176, 24, 6), (177, 25, 6), (178, 26, 6), (179, 27, 6), (180, 28, 6), (181, 29, 6), (182, 30, 6), (183, 1, 7), (184, 2, 7), (185, 3, 7), (186, 4, 7), (187, 5, 7), (188, 6, 7), (189, 7, 7), (190, 8, 7), (191, 9, 7), (192, 10, 7), (193, 11, 7), (194, 12, 7), (195, 13, 7), (196, 14, 7), (197, 15, 7), (198, 16, 7), (199, 17, 7), (200, 18, 7), (201, 19, 7), (202, 20, 7), (203, 21, 7), (204, 22, 7), (205, 23, 7), (206, 24, 7), (207, 25, 7), (208, 26, 7), (209, 27, 7), (210, 28, 7), (211, 29, 7), (212, 30, 7), (213, 31, 7), (214, 1, 8), (215, 2, 8), (216, 3, 8), (217, 4, 8), (218, 5, 8), (219, 6, 8), (220, 7, 8), (221, 8, 8), (222, 9, 8), (223, 10, 8), (224, 11, 8), (225, 12, 8), (226, 13, 8), (227, 14, 8), (228, 15, 8), (229, 16, 8), (230, 17, 8), (231, 18, 8), (232, 19, 8), (233, 20, 8), (234, 21, 8), (235, 22, 8), (236, 23, 8), (237, 24, 8), (238, 25, 8), (239, 26, 8), (240, 27, 8), (241, 28, 8), (242, 29, 8), (243, 30, 8), (244, 31, 8), (245, 1, 9), (246, 2, 9), (247, 3, 9), (248, 4, 9), (249, 5, 9), (250, 6, 9), (251, 7, 9), (252, 8, 9), (253, 9, 9), (254, 10, 9), (255, 11, 9), (256, 12, 9), (257, 13, 9), (258, 14, 9), (259, 15, 9), (260, 16, 9), (261, 17, 9), (262, 18, 9), (263, 19, 9), (264, 20, 9), (265, 21, 9), (266, 22, 9), (267, 23, 9), (268, 24, 9), (269, 25, 9), (270, 26, 9), (271, 27, 9), (272, 28, 9), (273, 29, 9), (274, 30, 9), (275, 1, 10), (276, 2, 10), (277, 3, 10), (278, 4, 10), (279, 5, 10), (280, 6, 10), (281, 7, 10), (282, 8, 10), (283, 9, 10), (284, 10, 10), (285, 11, 10), (286, 12, 10), (287, 13, 10), (288, 14, 10), (289, 15, 10), (290, 16, 10), (291, 17, 10), (292, 18, 10), (293, 19, 10), (294, 20, 10), (295, 21, 10), (296, 22, 10), (297, 23, 10), (298, 24, 10), (299, 25, 10), (300, 26, 10), (301, 27, 10), (302, 28, 10), (303, 29, 10), (304, 30, 10), (305, 31, 10), (306, 1, 11), (307, 2, 11), (308, 3, 11), (309, 4, 11), (310, 5, 11), (311, 6, 11), (312, 7, 11), (313, 8, 11), (314, 9, 11), (315, 10, 11), (316, 11, 11), (317, 12, 11), (318, 13, 11), (319, 14, 11), (320, 15, 11), (321, 16, 11), (322, 17, 11), (323, 18, 11), (324, 19, 11), (325, 20, 11), (326, 21, 11), (327, 22, 11), (328, 23, 11), (329, 24, 11), (330, 25, 11), (331, 26, 11), (332, 27, 11), (333, 28, 11), (334, 29, 11), (335, 30, 11), (336, 1, 12), (337, 2, 12), (338, 3, 12), (339, 4, 12), (340, 5, 12), (341, 6, 12), (342, 7, 12), (343, 8, 12), (344, 9, 12), (345, 10, 12), (346, 11, 12), (347, 12, 12), (348, 13, 12), (349, 14, 12), (350, 15, 12), (351, 16, 12), (352, 17, 12), (353, 18, 12), (354, 19, 12), (355, 20, 12), (356, 21, 12), (357, 22, 12), (358, 23, 12), (359, 24, 12), (360, 25, 12), (361, 26, 12), (362, 27, 12), (363, 28, 12), (364, 29, 12), (365, 30, 12), (366, 31, 12);
 CREATE TABLE historicos_personajes (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia_del_ano_id INT UNSIGNED NULL,
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	cant_productos INT UNSIGNED DEFAULT 0,
+	cant_productos SMALLINT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
-	cant_ediciones INT UNSIGNED NULL,
+	cant_ediciones TINYINT UNSIGNED NULL,
 	aprobada BOOLEAN DEFAULT 0,
 	borrada BOOLEAN DEFAULT 0,
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
@@ -286,22 +255,22 @@ VALUES
 (2, 'Otro', 296)
 ;
 CREATE TABLE historicos_hechos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia_del_ano_id INT UNSIGNED NULL,
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	cant_productos INT UNSIGNED DEFAULT 0,
+	cant_productos SMALLINT UNSIGNED DEFAULT 0,
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
-	cant_ediciones INT UNSIGNED NULL,
+	cant_ediciones TINYINT UNSIGNED NULL,
 	aprobada BOOLEAN DEFAULT 0,
 	borrada BOOLEAN DEFAULT 0,
 	borrada_por_id INT UNSIGNED NULL,
 	borrada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
@@ -320,11 +289,11 @@ VALUES
 (5, 150, 'Pentecostés')
 ;
 CREATE TABLE epocas_estreno (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL,
-	ano_comienzo INT UNSIGNED NOT NULL,
-	ano_fin INT UNSIGNED NOT NULL,
+	ano_comienzo SMALLINT UNSIGNED NOT NULL,
+	ano_fin SMALLINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
@@ -334,17 +303,17 @@ VALUES
 (2, 3, '1970 - 1999', 1970, 1999), 
 (1, 4, 'Antes de 1970', 1900, 1969)
 ;
-CREATE TABLE en_castellano (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE si_no_parcial (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO en_castellano (id, nombre)
+INSERT INTO si_no_parcial (id, nombre)
 VALUES (1, 'SI'), (2, 'SI-Parcial'), (3, 'NO');
 CREATE TABLE cal_fe_valores (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -357,9 +326,9 @@ VALUES
 (1, 5, 0, 'No')
 ;
 CREATE TABLE cal_entretiene (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -372,9 +341,9 @@ VALUES
 (1, 5, 0, 'No')
 ;
 CREATE TABLE cal_calidad_tecnica (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
-	valor INT UNSIGNED NOT NULL,	
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
 	nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -384,8 +353,8 @@ VALUES
 (1, 2, 0, 'Perjudica el disfrute')
 ;
 CREATE TABLE interes_en_prod (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden INT UNSIGNED NOT NULL,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -396,7 +365,7 @@ VALUES
 (1, 3, 'Prefiero que no me la recomienden')
 ;
 CREATE TABLE status_registro_producto (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -411,8 +380,8 @@ CREATE TABLE PROD_peliculas (
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NOT NULL,
 	nombre_castellano VARCHAR(50) NOT NULL,
-	duracion INT UNSIGNED NOT NULL,
-	ano_estreno INT UNSIGNED NOT NULL,
+	duracion SMALLINT UNSIGNED NOT NULL,
+	ano_estreno SMALLINT UNSIGNED NOT NULL,
 	idioma_original VARCHAR(20) NOT NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
@@ -421,38 +390,39 @@ CREATE TABLE PROD_peliculas (
 	productor VARCHAR(100) NOT NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NOT NULL,
-	en_castellano_id INT UNSIGNED NOT NULL,
-	color BOOLEAN NOT NULL,
+	en_castellano_id TINYINT UNSIGNED NOT NULL,
+	en_color_id TINYINT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
-	subcategoria_id INT UNSIGNED NOT NULL,
-	publico_sugerido_id INT UNSIGNED NOT NULL,
-	personaje_historico_id INT UNSIGNED NULL,
-	hecho_historico_id INT UNSIGNED NULL,
+	subcategoria_id TINYINT UNSIGNED NOT NULL,
+	publico_sugerido_id TINYINT UNSIGNED NOT NULL,
+	personaje_historico_id SMALLINT UNSIGNED NULL,
+	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
-	calificacion INT UNSIGNED NOT NULL,
+	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
-	lead_time_creacion INT UNSIGNED NULL,
-	status_registro_id INT UNSIGNED DEFAULT 1,
+	lead_time_creacion SMALLINT UNSIGNED NULL,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
-	lead_time_edicion INT UNSIGNED NULL,
+	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
@@ -473,10 +443,11 @@ CREATE TABLE PROD_colecciones (
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(100) NOT NULL,
 	nombre_castellano VARCHAR(100) NOT NULL,
-	ano_estreno INT UNSIGNED NULL,
-	ano_fin INT UNSIGNED NULL,
+	ano_estreno SMALLINT UNSIGNED NULL,
+	ano_fin SMALLINT UNSIGNED NULL,
 	idioma_original VARCHAR(20) NOT NULL,
-	cantTemporadas INT UNSIGNED NULL,
+	cantTemporadas TINYINT UNSIGNED NULL,
+	cantCapitulos SMALLINT UNSIGNED NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
 	musica VARCHAR(100) NOT NULL,
@@ -484,38 +455,39 @@ CREATE TABLE PROD_colecciones (
 	productor VARCHAR(50) NULL,
 	sinopsis VARCHAR(800) NOT NULL,
 	avatar VARCHAR(100) NULL,
-	en_castellano_id INT UNSIGNED NOT NULL,
-	color BOOLEAN NOT NULL,
+	en_castellano_id TINYINT UNSIGNED NOT NULL,
+	en_color_id TINYINT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
-	subcategoria_id INT UNSIGNED NOT NULL,
-	publico_sugerido_id INT UNSIGNED NOT NULL,
-	personaje_historico_id INT UNSIGNED NULL,
-	hecho_historico_id INT UNSIGNED NULL,
+	subcategoria_id TINYINT UNSIGNED NOT NULL,
+	publico_sugerido_id TINYINT UNSIGNED NOT NULL,
+	personaje_historico_id SMALLINT UNSIGNED NULL,
+	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
-	calificacion INT UNSIGNED NULL,
+	calificacion TINYINT UNSIGNED NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
-	lead_time_creacion INT UNSIGNED NULL,
-	status_registro_id INT UNSIGNED DEFAULT 1,
+	lead_time_creacion SMALLINT UNSIGNED NULL,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
-	lead_time_edicion INT UNSIGNED NULL,
+	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
@@ -531,16 +503,16 @@ CREATE TABLE PROD_colecciones (
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
-	temporada INT UNSIGNED DEFAULT NULL,
-	capitulo INT UNSIGNED NOT NULL,
+	temporada TINYINT UNSIGNED DEFAULT NULL,
+	capitulo TINYINT UNSIGNED NOT NULL,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
 	FA_id VARCHAR(10) NULL UNIQUE,
 	IMDB_id VARCHAR(10) NULL UNIQUE,
 	fuente VARCHAR(10) NOT NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
-	duracion INT UNSIGNED NULL,
-	ano_estreno INT UNSIGNED NULL,
+	duracion TINYINT UNSIGNED NULL,
+	ano_estreno SMALLINT UNSIGNED NULL,
 	idioma_original VARCHAR(20) NOT NULL,
 	director VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
@@ -549,38 +521,39 @@ CREATE TABLE PROD_capitulos (
 	productor VARCHAR(100) NULL,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
-	en_castellano_id INT UNSIGNED NULL,
-	color BOOLEAN NULL,
+	en_castellano_id TINYINT UNSIGNED NULL,
+	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
-	subcategoria_id INT UNSIGNED NULL,
-	publico_sugerido_id INT UNSIGNED NULL,
-	personaje_historico_id INT UNSIGNED NULL,
-	hecho_historico_id INT UNSIGNED NULL,
+	subcategoria_id TINYINT UNSIGNED NULL,
+	publico_sugerido_id TINYINT UNSIGNED NULL,
+	personaje_historico_id SMALLINT UNSIGNED NULL,
+	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
-	calificacion INT UNSIGNED NULL,
+	calificacion TINYINT UNSIGNED NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
 	analizada_en DATETIME NULL,
-	borrada_motivo_id INT UNSIGNED NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
 	borrada_motivo_comentario VARCHAR(500) NULL,
-	lead_time_creacion INT UNSIGNED NULL,
-	status_registro_id INT UNSIGNED DEFAULT 1,
+	lead_time_creacion SMALLINT UNSIGNED NULL,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
 	revisada_por_id INT UNSIGNED NULL,
 	revisada_en DATETIME NULL,
-	lead_time_edicion INT UNSIGNED NULL,
+	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
 	
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES en_castellano(id),
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -595,19 +568,19 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE us_calificaciones (
+CREATE TABLE pr_us_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
-	fe_valores_id INT UNSIGNED NOT NULL,
-	entretiene_id INT UNSIGNED NOT NULL,
-	calidad_tecnica_id INT UNSIGNED NOT NULL,
-	fe_valores_valor DECIMAL(3,2) UNSIGNED NOT NULL,
-	entretiene_valor DECIMAL(3,2) UNSIGNED NOT NULL,
-	calidad_tecnica_valor DECIMAL(3,2) UNSIGNED NOT NULL,
-	resultado DECIMAL(3,2) UNSIGNED NOT NULL,
+	fe_valores_id TINYINT UNSIGNED NOT NULL,
+	entretiene_id TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica_id TINYINT UNSIGNED NOT NULL,
+	fe_valores_valor TINYINT UNSIGNED NOT NULL,
+	entretiene_valor TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica_valor TINYINT UNSIGNED NOT NULL,
+	resultado TINYINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
@@ -617,13 +590,13 @@ CREATE TABLE us_calificaciones (
 	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
 	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE us_interes_en_prod (
+CREATE TABLE pr_us_interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
-	interes_en_prod_id INT UNSIGNED NULL,
+	interes_en_prod_id TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
@@ -631,7 +604,7 @@ CREATE TABLE us_interes_en_prod (
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE relacion_pais_prod (
+CREATE TABLE pr_relacion_pais_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pais_id VARCHAR(2) NOT NULL,
 	pelicula_id INT UNSIGNED NULL,
@@ -642,19 +615,19 @@ CREATE TABLE relacion_pais_prod (
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE filtros_personales (
+CREATE TABLE us_filtros_personales_cabecera (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	usuario_id INT UNSIGNED NOT NULL,
-	campo1 VARCHAR(100),
-	valor1_id INT UNSIGNED,
-	campo2 VARCHAR(100),
-	valor2_id INT UNSIGNED,
-	campo3 VARCHAR(100),
-	valor3_id INT UNSIGNED,
-	campo4 VARCHAR(100),
-	valor4_id INT UNSIGNED,
 	palabras_clave VARCHAR(100),
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE us_filtros_personales_campos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	filtro_cabecera_id INT UNSIGNED,
+	campo_id VARCHAR(100),
+	valor_id SMALLINT UNSIGNED,
+	PRIMARY KEY (id),
+	FOREIGN KEY (filtro_cabecera_id) REFERENCES us_filtros_personales_cabecera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

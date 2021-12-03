@@ -175,6 +175,12 @@ module.exports = {
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
 			datosAPI_renamed.cantTemporadas = datosAPI.seasons.length;
+			datosAPI_renamed.cantCapitulos = datosAPI.seasons
+				.map((n) => n.episode_count)
+				.reduce((a, b) => {
+					return a + b;
+				});
+			console.log(datosAPI_renamed.cantCapitulos);
 		}
 		let resultado = {
 			...datosIniciales,
@@ -188,9 +194,14 @@ module.exports = {
 		let datos = {entidad: "capitulos", fuente: "TMDB", creada_por_id: 2};
 
 		// Datos de la colección
-		datos.coleccion_id = datosTemp.coleccion_id;
+		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
 		if (datosCol.idioma_original) datos.idioma_original = datosCol.idioma_original;
+		if (datosCol.en_castellano_id != 2) datos.en_castellano_id = datosCol.en_castellano_id;
+		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
+		datos.categoria_id = datosCol.categoria_id;
+		datos.subcategoria_id = datosCol.subcategoria_id;
+		datos.publico_sugerido_id = datosCol.publico_sugerido_id;
 
 		// Datos de la temporada
 		if (!datosCol.tempUnica) datos.temporada = datosTemp.season_number;
@@ -230,19 +241,14 @@ module.exports = {
 	// ControllerVista (confirmar)
 	agregarCapitulosDeTV: async function (datosCol) {
 		// Detectar si es una única temporada
-		datosCol.tempUnica = datosCol.cantTemporadas == 1 ? true : false;
+		datosCol.tempUnica = datosCol.cantTemporadas == 1;
 		// Loop de TEMPORADAS ***********************************************
 		for (temporada = 1; temporada <= datosCol.cantTemporadas; temporada++) {
 			// Datos de UNA TEMPORADA
 			datosTemp = await detailsTMDB(temporada, registro.TMDB_id);
 			// Loop de CAPITULOS ********************************************
-			for (indice = 0; indice < datosAPI.episodes.length; indice++) {
-				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(
-					datosCol,
-					datosTemp,
-					datosTemp.episodes[indice]
-				);
-
+			for (episode of datosTemp.episodes) {
+				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				await BD_varias.agregarRegistro(datosCap);
 			}
 		}

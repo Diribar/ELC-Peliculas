@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		comentario: {type: dt.STRING(100)},
 	};
 	const config = {
-		tableName: "penalizaciones_usuarios",
+		tableName: "us_penalizaciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -7,9 +7,7 @@ window.addEventListener("load", () => {
 	let mensajes = document.querySelector(".form-grupo .mensajeError");
 
 	// Anular 'submit' si hay algún error
-	!asterisco.classList.contains("ocultar")
-		? button.classList.add("botonSinLink")
-		: "";
+	if (!asterisco.classList.contains("ocultar")) button.classList.add("botonSinLink")
 	// Acciones si se realizan cambios
 	input.addEventListener("change", async () => {
 		campo = input.name;

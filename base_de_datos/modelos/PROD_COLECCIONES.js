@@ -11,6 +11,7 @@ module.exports = (sequelize, dt) => {
 		ano_estreno: {type: dt.INTEGER},
 		ano_fin: {type: dt.INTEGER},
 		cantTemporadas: {type: dt.INTEGER},
+		cantCapitulos: {type: dt.INTEGER},
 		director: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
@@ -19,7 +20,7 @@ module.exports = (sequelize, dt) => {
 		sinopsis: {type: dt.STRING(800)},
 		avatar: {type: dt.STRING(100)},
 		en_castellano_id: {type: dt.INTEGER},
-		color: {type: dt.BOOLEAN},
+		en_color_id: {type: dt.INTEGER},
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
@@ -53,7 +54,8 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.en_castellano, {as: "en_castellano", foreignKey: "en_castellano_id"});
+		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
+		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});

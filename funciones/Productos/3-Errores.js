@@ -242,8 +242,8 @@ module.exports = {
 				: !datos.en_castellano_id
 				? cartelSelectVacio
 				: "";
-		errores.color =
-			camposAVerificar.indexOf("color") == -1 ? "" : !datos.color ? cartelSelectVacio : "";
+		errores.en_color_id =
+			camposAVerificar.indexOf("en_color_id") == -1 ? "" : !datos.en_color_id ? cartelSelectVacio : "";
 		errores.categoria_id =
 			camposAVerificar.indexOf("categoria_id") == -1
 				? ""

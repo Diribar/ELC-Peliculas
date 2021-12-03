@@ -1,12 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "listado_peliculas";
+	const alias = "si_no_parcial";
 	const columns = {
-		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(50)},
-		url: {type: dt.STRING(50)},
+		nombre: {type: dt.STRING(10)},
 	};
 	const config = {
-		tableName: "listado_peliculas",
+		tableName: "si_no_parcial",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		resultado: {type: dt.DECIMAL},
 	};
 	const config = {
-		tableName: "us_calificaciones",
+		tableName: "pr_us_calificaciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
