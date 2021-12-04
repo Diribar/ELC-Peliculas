@@ -83,7 +83,7 @@ window.addEventListener("load", () => {
 				for (i = 0; i < 2; i++) {
 					let celda = document.createElement("td");
 					let textoCelda = document.createTextNode(datos[i]);
-					// Agrega el texto a la celda
+					// Agrega el texto al 'anchor' (celda nombre_castellano) o a la celda (entidad)
 					if (i == 0) {
 						anchor.appendChild(textoCelda);
 						celda.appendChild(anchor);

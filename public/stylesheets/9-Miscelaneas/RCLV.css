@@ -7,7 +7,7 @@
 #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
 	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #datos {display: flex; flex-direction: row}
-#datos .input-error {position: relative;}
+#dataEntry .validar {position: relative;}
 #datos input, 
 #datos select, 
 #datos #posiblesDuplicados,
@@ -32,7 +32,7 @@
 /* Datos Adicionales */
 #adicionales {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px; display: flex; flex-direction: column;}
 #adicionales .tituloCampo {margin-bottom: 5px;}
-#adicionales #mostrarSiEsCatolico {display: none;}
+#adicionales #mostrarSiEsCatolico {display: non;}
 #adicionales .input-error {display: flex; flex-direction: row; align-items: center; margin-bottom: 5px;}
 #adicionales .input-error .inputRadio,
 #adicionales .input-error select {margin-right: 10px; width: 100px;}
@@ -50,8 +50,9 @@
 #datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
-#datos .fa-times-circle, #datos .fa-check-circle {left: -20px;}
-#datos .fa-times-circle {z-index: 1; cursor: pointer;}
+#dataEntry .fa-times-circle, 
+#dataEntry .fa-check-circle {left: -20px;}
+#dataEntry .fa-times-circle {z-index: 1; cursor: pointer;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px;}

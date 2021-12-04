@@ -50,34 +50,30 @@ module.exports = {
 			? req.session[codigo]
 			: req.cookies[codigo]
 			? req.cookies[codigo]
-			: "";
-		producto = datosPers.producto_RCLV;
-		//return res.send(datosPers)
+			: {};
+		datosRCLV = {...datosRCLV, entidad: codigo, producto: datosPers.producto_RCLV};
 		// 4. Errores
-		let errores = req.session.errores
-			? req.session.errores
-			: datosRCLV
-			? await validarRCLV.RCLV(datosRCLV)
-			: "";
+		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
-		let estados_eclesiales = await BD_varias.obtenerTodos("estados_eclesiales", "orden");
+		let vocacion_iglesia = await BD_varias.obtenerTodos("vocacion_iglesia", "orden");
 		// 6. Render
+		//return res.send(errores);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			producto,
-			datosRCLV,
+			dataEntry: datosRCLV,
 			errores,
 			meses,
 			paises,
-			estados_eclesiales,
+			vocacion_iglesia,
 		});
 	},
 
 	RCLV_Grabar: async (req, res) => {
+		//return res.send(req.body)
 		// 1. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
 			? req.session.datosPers
@@ -90,12 +86,12 @@ module.exports = {
 		let entidad = datosPers.entidad_RCLV;
 		let datosRCLV = {...req.body, entidad};
 		// 3. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV(datosRCLV);
+		let errores = await validarRCLV.RCLV_consolidado(datosRCLV);
 		// 4. Acciones si hay errores
 		if (errores.hay) {
 			req.session[entidad] = datosRCLV;
 			res.cookie(entidad, datosRCLV, {maxAge: 24 * 60 * 60 * 1000});
-			req.session.errores = errores;
+			req.session.erroresRCLV = errores;
 			return res.redirect(req.url);
 		}
 		// 5. Borrar session y cookies innecesarios
@@ -103,16 +99,14 @@ module.exports = {
 		if (req.cookies && req.cookies[entidad]) res.clearCookie([entidad]);
 		// 6. Preparar la info a guardar
 		datos = {
+			...datosRCLV,
 			entidad,
-			nombre: datosRCLV.nombre,
 			creada_por_id: req.session.usuario.id,
 		};
-		if (datosRCLV.mes_id && datosRCLV.dia && datosRCLV.desconocida == undefined) {
-			dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.filter((m) => m.mes_id == datosRCLV.mes_id))
-				.then((n) => n.find((m) => m.dia == datosRCLV.dia))
+		if (!datosRCLV.desconocida) {
+			datos.dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
+				.then((n) => n.find((m) => m.mes_id == datosRCLV.mes_id && m.dia == datosRCLV.dia))
 				.then((n) => n.id);
-			datos.dia_del_ano_id = dia_del_ano_id;
 		}
 		// 7. Crear el registro en la BD
 		let {id} = await BD_varias.agregarRegistro(datos);

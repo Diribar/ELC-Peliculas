@@ -166,7 +166,7 @@ module.exports = {
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let estados_eclesiales = await BD_varias.obtenerTodos("estados_eclesiales", "orden");
+		let vocacion_iglesia = await BD_varias.obtenerTodos("vocacion_iglesia", "orden");
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
@@ -177,7 +177,7 @@ module.exports = {
 			errores,
 			hablaHispana,
 			hablaNoHispana,
-			estados_eclesiales,
+			vocacion_iglesia,
 		});
 	},
 

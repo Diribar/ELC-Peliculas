@@ -29,7 +29,6 @@ window.addEventListener("load", async () => {
 				campo = inputs[i].name;
 				valor = inputs[i].value;
 			}
-			console.log(campo, valor);
 			errores = await fetch(
 				"/producto/agregar/api/validar-datos-duros/?" + campo + "=" + valor
 			).then((n) => n.json());

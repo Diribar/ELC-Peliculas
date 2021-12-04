@@ -1,60 +1,204 @@
 window.addEventListener("load", async () => {
 	// Variables generales
+	let entidad = document.querySelector("#entidad").innerHTML;
 	let form = document.querySelector("#dataEntry");
+	let ruta = "/agregar/api/rclv/?RCLV=";
 	let button = document.querySelector("#dataEntry button[type='submit']");
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
-	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
-	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	let OK = {};
+	let errores = {};
 
-	// Función para mostrar el ícono de error/acierto y agregar el mensaje de error
-	let accionesSiHayErrores = (i, mensajes) => {
-		// Averiguar si hay un error
-		mensaje = mensajes[i];
-		mensajesError[i].innerHTML = mensaje;
-		// En caso de error
-		mensaje
-			? iconoError[i].classList.remove("ocultar")
-			: iconoError[i].classList.add("ocultar");
-		mensaje
-			? iconoOK[i].classList.add("ocultar")
-			: iconoOK[i].classList.remove("ocultar");
-	};
+	// Variables de errores
+	let iconoOK = document.querySelectorAll(".validar .fa-check-circle");
+	let iconoError = document.querySelectorAll(".validar .fa-times-circle");
+	let mensajeError = document.querySelectorAll(".validar .mensajeError");
 
-	// Funcion para revisar todos los errores
-	let buscarErroresEnTodoElForm = () => {
-		entidad = document.querySelector("#entidad").innerHTML;
-		inputs = document.querySelectorAll(".input-error .input");
-		url = "?";
-		for (let i = 0; i < inputs.length; i++) {
-			i > 0 ? (url += "&") : "";
-			valor =
-				inputs[i].name == "desconocida" || i > 3
-					? inputs[i].checked
-					: encodeURIComponent(inputs[i].value);
-			url += inputs[i].name;
-			url += "=";
-			url += valor;
-		}
-		url += "&entidad=" + entidad;
-		return fetch("/agregar/api/validar-relacion-con-la-vida/" + url).then((n) => n.json());
-	};
+	// Campos específicos de fechas
+	let mes_id = document.querySelector(".input-error select[name='mes_id']");
+	let dia = document.querySelector(".input-error select[name='dia']");
+	let desconocida = document.querySelector(".input-error input[name='desconocida']");
+	// Campos específicos de adicionales
+	let pais_id = document.querySelector(".input-error select[name='pais_id']");
+	let catolico = document.querySelectorAll("input[name='catolico']");
+	let canonizacion = document.querySelectorAll("input[name='canonizacion']");
+	let estado_eclesial_id = document.querySelector("select[name='estado_eclesial_id']");
+	// Otros campos de Data Entry
+	let nombre = document.querySelector(".input-error input[name='nombre']");
+	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 
-	// Detecta si hubo alguna novedad de data-entry
+	// Status inicial
+	if (mes_id.value != "") diasDelMes(mes_id, dia);
+
 	form.addEventListener("change", async (e) => {
-		button.innerHTML = "Verificar";
+		campo = e.target.name;
+
+		// NOMBRE ***********************************************
+		if (campo == "nombre") {
+			url = "&nombre=" + nombre.value + "&entidad=" + entidad;
+			errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
+			OK.nombre = !errores.nombre ? true : false;
+		}
+
+		// FECHAS ***********************************************
+		if (campo == "mes_id") diasDelMes(mes_id, dia);
+		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
+			// Si se desconoce la fecha...
+			if (desconocida.checked) {
+				errores.fecha = "";
+				errores.duplicados = "";
+				OK.fecha = true;
+				OK.duplicados = true;
+				mes_id.value = "";
+				dia.value = "";
+				posiblesDuplicados.innerHTML = "";
+			} else {
+				// Se averigua si hay un error con la fecha
+				if (mes_id.value && dia.value) {
+					url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+					url += "&desconocida=" + desconocida.checked;
+					errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
+					OK.fecha = !errores.fecha ? true : false;
+					// Agregar los registros que tengan esa fecha
+					if (OK.fecha) {
+						errores.duplicados = await registrosConEsaFecha(mes_id.value, dia.value);
+						OK.duplicados = !errores.duplicados ? true : false;
+					} else {
+						errores.duplicados = "";
+						OK.duplicados = false;
+					}
+				} else {
+					OK.fecha = false;
+					OK.duplicados = false;
+				}
+			}
+		}
+
+		// REGISTROS DUPLICADOS **********************************
+		if (campo == "repetido") {
+			casos = document.querySelectorAll("#posiblesDuplicados li input");
+			errores.duplicados = "";
+			for (caso of casos) {
+				if (caso.checked) errores.duplicados = cartelDuplicado;
+				break;
+			}
+			OK.duplicados = !errores.duplicados ? true : false;
+		}
+
+		// ADICIONALES ******************************************
+		if (
+			campo == "pais_id" ||
+			campo == "catolico" ||
+			campo == "canonizacion" ||
+			campo == "estado_eclesial_id"
+		) {
+			OK.adicionales = !pais_id.value
+				? false
+				: catolico[1].checked
+				? true
+				: catolico[0].checked
+				? canonizacion[0].checked || canonizacion[1].checked
+					? estado_eclesial_id.value
+						? true
+						: false
+					: false
+				: false;
+
+			if (OK.adicionales) errores.adicionales = "";
+		}
+		// Final de la rutina
+		feedback(OK, errores);
 	});
+
+	let feedback = (OK, errores) => {
+		// Definir las variables
+		let bloques = ["nombre", "fecha", "duplicados", "adicionales"];
+
+		// Rutina
+		for (i = 0; i < bloques.length; i++) {
+			// Ícono de OK
+			OK[bloques[i]]
+				? iconoOK[i].classList.remove("ocultar")
+				: iconoOK[i].classList.add("ocultar");
+			// Ícono de error
+			errores[bloques[i]]
+				? iconoError[i].classList.remove("ocultar")
+				: iconoError[i].classList.add("ocultar");
+			// Mensaje de error
+			errores[bloques[i]]
+				? (mensajeError[i].innerHTML = errores[bloques[i]])
+				: (mensajeError[i].innerHTML = "");
+		}
+
+		// Conclusiones
+		resultado = Object.values(OK);
+		resultadoTrue = resultado.reduce((a, b) => {
+			return !!a && !!b;
+		});
+
+		// Alterar el botón submit
+		resultadoTrue && resultado.length == 4
+			? button.classList.remove("botonSinLink")
+			: button.classList.add("botonSinLink");
+	};
 
 	// Submit
-	form.addEventListener("submit", async (e) => {
-		if (button.innerHTML == "Verificar") {
-			e.preventDefault();
-			// Actualizar los errores
-			errores = await buscarErroresEnTodoElForm();
-			mensajes = Object.values(errores);
-			for (i = 0; i < iconoError.length; i++) {
-				accionesSiHayErrores(i, mensajes);
-			}
-			if (!errores.hay) button.innerHTML = "Agregar";
-		}
+	form.addEventListener("submit", (e) => {
+		if (button.classList.contains("botonSinLink")) e.preventDefault();
 	});
+	
 });
+
+// Buscar otros casos en esa fecha
+registrosConEsaFecha = async (mes_id, dia) => {
+	entidad = document.querySelector("#entidad").innerHTML;
+	// Obtener los casos
+	url = "/agregar/api/RCVL-otros-casos/?mes_id=" + mes_id + "&dia=" + dia + "&entidad=" + entidad;
+	casos = await fetch(url).then((n) => n.json());
+	// Si no hay, mensaje de "no hay casos"
+	if (!casos.length) {
+		posiblesDuplicados.innerHTML = "¡No hay otros casos!";
+		posiblesDuplicados.classList.add("sinCasos");
+		return "";
+	} else {
+		// Si hay, mostrarlos
+		posiblesDuplicados.innerHTML = "";
+		posiblesDuplicados.classList.remove("sinCasos");
+		for (caso of casos) {
+			// Crear el input
+			let input = document.createElement("input");
+			input.type = "checkbox";
+			input.name = "repetido";
+			input.checked = true;
+			// Crear la label
+			let texto = document.createTextNode(caso);
+			let label = document.createElement("label");
+			label.appendChild(texto);
+			// Crear el 'li'
+			let li = document.createElement("li");
+			li.appendChild(input);
+			li.appendChild(label);
+			posiblesDuplicados.appendChild(li);
+		}
+		return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+	}
+};
+
+// Aplicar cambios en los días 30 y 31
+let diasDelMes = (mes_id, dia) => {
+	// Variables
+	let dia30 = document.querySelector("select[name='dia'] option[value='30']");
+	let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+
+	// Revisar para febrero
+	if (mes_id.value == 2) {
+		dia30.classList.add("ocultar");
+		dia31.classList.add("ocultar");
+		if (dia.value > 29) dia.value = "";
+	} else {
+		// Revisar para los demás meses de 30 días
+		dia30.classList.remove("ocultar");
+		if (mes_id.value == 4 || mes_id.value == 6 || mes_id.value == 9 || mes_id.value == 11) {
+			dia31.classList.add("ocultar");
+			if (dia.value > 30) dia.value = "";
+		} else dia31.classList.remove("ocultar");
+	}
+};
