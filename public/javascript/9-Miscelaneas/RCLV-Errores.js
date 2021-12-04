@@ -151,7 +151,7 @@ window.addEventListener("load", async () => {
 registrosConEsaFecha = async (mes_id, dia) => {
 	entidad = document.querySelector("#entidad").innerHTML;
 	// Obtener los casos
-	url = "/agregar/api/RCVL-otros-casos/?mes_id=" + mes_id + "&dia=" + dia + "&entidad=" + entidad;
+	url = "/agregar/api/rclv-otros-casos/?mes_id=" + mes_id + "&dia=" + dia + "&entidad=" + entidad;
 	casos = await fetch(url).then((n) => n.json());
 	// Si no hay, mensaje de "no hay casos"
 	if (!casos.length) {

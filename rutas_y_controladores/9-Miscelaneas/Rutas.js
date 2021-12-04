@@ -9,7 +9,7 @@ let usuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 // Controladores *******************************************
 // Controladores de APIs
-router.get("/agregar/api/RCVL-otros-casos/", API.buscarOtrosCasos);
+router.get("/agregar/api/rclv-otros-casos/", API.buscarOtrosCasos);
 router.get("/agregar/api/rclv/", API.validarRCLV);
 router.get("/quick-search/", API.quickSearch);
 
