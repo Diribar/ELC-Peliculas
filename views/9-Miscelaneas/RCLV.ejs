@@ -2,9 +2,9 @@
 <h1 class="titulo" id="titulo">Agregá un <%= producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
-	<section id="cuerpo">
+	<section id="datos">
 		<!--Primera columna-->
-		<div class="flex-col">
+		<div id="primeraCol">
 			<!-- NOMBRE -->
 			<div class="flex-col campo">
 				<!-- Título del campo y Ayuda -->
@@ -33,17 +33,15 @@
 			<!-- FECHA REPRESENTATIVA -->
 			<div class="flex-col campo">
 				<!-- Título del campo -->
-				<div class="flex-row">
-					<div class="tituloCampo" style="position: relative;">
-						<h3>Fecha más representativa</h3>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Usamos la fecha en que se lo recuerda.</li>
-							<li>Para los santos o beatos, es la fecha en el santoral.</li>
-							<li>Para los demás, suele ser la fecha de su muerte.</li>
-						</ul>
-					</div>
+				<div class="tituloCampo" style="position: relative;">
+					<h3>Fecha más representativa</h3>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle"></i>
+					<ul type="dots" class="mensajeAyuda ocultar">
+						<li>Usamos la fecha en que se lo recuerda.</li>
+						<li>Para los santos o beatos, es la fecha en el santoral.</li>
+						<li>Para los demás, suele ser la fecha de su muerte.</li>
+					</ul>
 				</div>
 				<!-- Valores del campo -->
 				<div class="flex-col" id="valoresFecha">
@@ -93,7 +91,7 @@
 			<!-- REPETIDOS -->
 			<div class="input-error">
 				<h3>Nombres con esa fecha</h3>
-				<p>Destildalos para estar seguro/a de no repetirlos</p>
+				<p>Destildalos para controlar si no está ya en nuestra BD</p>
 				<ul type="none" id="posiblesDuplicados"></ul>
 				<!-- Errores -->			
 				<i class="fas fa-times-circle<%- !errores.repetidos ? ' ocultar' : '' %>">
@@ -102,6 +100,79 @@
 				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 		</div>
+	</section>
+	<!-- DATOS ADICIONALES -->
+	<section id="adicionales">
+		<h3 class="tituloCampo">Datos Adicionales</h3>
+		<!-- País -->
+		<div class="input-error">
+			<select name="pais_id" class="input">
+				<option value="" class="ocultar">Elegí</option>
+				<% for (pais of paises) { %>
+					<option value="<%= pais.id %>"><%= pais.nombre %></option>
+				<% } %>
+			</select>
+			<label>País de referencia</label>
+			<!-- Errores -->			
+			<i class="fas fa-times-circle<%- !errores.pais_id ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores.pais_id %></span>
+			</i>
+		</div>
+		<% if (codigo=="historicos_personajes") { %>
+			<!-- ¿Era católico? -->
+			<div class="input-error">
+				<div class="inputRadio">
+					<div class="pares">
+						<label for="SI">SI</label>
+						<input type="radio" id="SI" name="catolico" value="1">
+					</div>
+					<div class="pares">
+						<label for="NO">NO</label>
+						<input type="radio" id="NO" name="catolico" value="0">
+					</div>		
+				</div>
+				<label>Era miembro de la Iglesia Católica al fallecer</label>
+				<!-- Errores -->			
+				<i class="fas fa-times-circle<%- !errores.mes_id ? ' ocultar' : '' %>">
+					<span class="mensajeError"><%= errores.mes_id %></span>
+				</i>
+			</div>
+			<div id="mostrarSiEsCatolico">
+				<!-- ¿Para canonizar? -->
+				<div class="input-error">
+					<div class="inputRadio">
+						<div class="pares">
+							<label for="SI">SI</label>
+							<input type="radio" id="SI" name="catolico" value="1">
+						</div>
+						<div class="pares">
+							<label for="NO">NO</label>
+							<input type="radio" id="NO" name="catolico" value="0">
+						</div>		
+					</div>
+					<label>En proceso de canonización (comenzado o terminado)</label>
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.mes_id ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.mes_id %></span>
+					</i>
+				</div>
+				<!-- Estado eclesial -->
+				<div class="input-error">
+					<select name="estado_eclesial_id" class="input">
+						<option value="" class="ocultar">Elegí</option>
+						<% for (i = 1 ; i < estados_eclesiales.length;i++) { %>
+							<!-- Se usa 'i' desde 1, para saltear el registro '0', que es la computadora -->
+							<option value="<%= estados_eclesiales[i].id %>"><%= estados_eclesiales[i].nombre %></option>
+						<% } %>
+					</select>
+					<label>Estado eclesial en la Iglesia Católica</label>
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.estado_eclesial_id ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.estado_eclesial_id %></span>
+					</i>
+				</div>
+			</div>
+		<% } %>
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-evenly">

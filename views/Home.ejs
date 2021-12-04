@@ -93,7 +93,7 @@
 	<% if (tema == "RCLV") { %>
 		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 		<%- include('0-Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
-		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RelacionConLaVida.css">
+		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RCLV.css">
 		<script src="/javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
 		<script src="/javascript/9-Miscelaneas/RCLV-Fechas.js"></script>
 		<script src="/javascript/9-Miscelaneas/RCLV-Errores.js"></script>
@@ -108,8 +108,11 @@
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<%- (tema == "usuario" || tema == "agregar" || tema == "opciones" || tema=="home") ? include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) : "" %>
-		<%- (tema == "producto") ? include('2-ImagenDerecha', {title: producto.nombre_castellano, url: avatar}) : "" %>
+		<% if (tema == "producto") { %>
+			<%- include('2-ImagenDerecha', {title: producto.nombre_castellano, url: avatar}) %>
+		<% } else { %>
+			<%- include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
+		<% } %>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
@@ -122,8 +125,9 @@
 					<%- codigo == "detalle" ? include("detalle") : "" %>
 					<%- codigo == "editar" ? include("editar") : "" %>
 				</section>
-			<% } else %>
-			<section class="cuerpo flex-col grow">
+			<% } %>
+			<% if (tema=="agregar" || tema=="producto" || tema=="RCLV") { %> 
+				<section class="cuerpo flex-col grow">
 				<% if (tema=="agregar") { %>
 					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
 					<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
@@ -139,11 +143,14 @@
 					<%- codigo == "detalle" ? include("1-Detalle") : "" %>
 				<% } else %>
 				<% if (tema=="RCLV") { %><%- include("RCLV") %><% } else %>
-			</section>
-			<section id="cuerpo" class="flex-row grow">
-				<% if (tema=="home") { %><%- include("Inicio") %><% } %>
-				<% if (tema=="opciones") { %><%- include("0-Opciones") %><% } %>
-			</section>
+				</section>
+			<% } %>
+			<% if (tema=="home" || tema=="opciones") { %>
+				<section id="cuerpo" class="flex-row grow">
+					<% if (tema=="home") { %><%- include("Inicio") %><% } %>
+					<% if (tema=="opciones") { %><%- include("0-Opciones") %><% } %>
+				</section>
+			<% } %>
 			<% if (tema=="institucional") { %><%- codigo == "nosotros" ? include("Nosotros") : "" %><% } %>
 
 			<!--****************************** FIN *******************************-->

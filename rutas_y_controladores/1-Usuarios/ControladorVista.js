@@ -13,9 +13,7 @@ module.exports = {
 	altaMailForm: (req, res) => {
 		tema = "usuario";
 		codigo = "mail";
-		let dataEntry = req.session.dataEntry
-			? req.session.dataEntry
-			: false;
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
@@ -46,7 +44,7 @@ module.exports = {
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
-		await BD_varias.agregarRegistro({entidad: "usuarios", email, contrasena });
+		await BD_varias.agregarRegistro({entidad: "usuarios", email, contrasena});
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
@@ -75,7 +73,7 @@ module.exports = {
 		codigo = "login";
 		// 2. Data Entry propio y errores
 		dataEntry = req.session.email
-			? { email: req.session.email, contrasena: req.session.contrasena }
+			? {email: req.session.email, contrasena: req.session.contrasena}
 			: null;
 		errores = req.session.errores ? req.session.errores : false;
 		// 3. Render del formulario
@@ -96,8 +94,7 @@ module.exports = {
 		contrasena = usuario ? usuario.contrasena : "";
 		errores.credencialesInvalidas =
 			!errores.email && !errores.contrasena
-				? !contrasena ||
-				  !bcryptjs.compareSync(req.body.contrasena, contrasena)
+				? !contrasena || !bcryptjs.compareSync(req.body.contrasena, contrasena)
 				: false;
 		errores.credencialesInvalidas ? (errores.hay = true) : "";
 		// 3. Si hay errores de validación, redireccionar
@@ -109,17 +106,11 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_varias.actualizarRegistro(
-				"usuario",
-				{ status_registro_id: 2 },
-				usuario.id
-			);
+			await BD_varias.actualizarRegistro("usuario", {status_registro_id: 2}, usuario.id);
 		}
 		// 5. Iniciar la sesión
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(
-			usuario.id
-		);
-		res.cookie("email", req.body.email, { maxAge: 1000 * 60 * 60 * 24 });
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
+		res.cookie("email", req.body.email, {maxAge: 1000 * 60 * 60 * 24});
 		delete req.session["email"];
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
@@ -136,9 +127,7 @@ module.exports = {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "perennes";
-		let dataEntry = req.session.dataEntry
-			? req.session.dataEntry
-			: false;
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
@@ -165,9 +154,7 @@ module.exports = {
 		// Actualizar el registro
 		req.body.status_registro_id = 3;
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(
-			usuario.id
-		);
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -179,13 +166,8 @@ module.exports = {
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let estados_eclesiales = await BD_varias.obtenerTodos(
-			"estados_eclesiales",
-			"orden"
-		);
-		let dataEntry = req.session.dataEntry
-			? req.session.dataEntry
-			: false;
+		let estados_eclesiales = await BD_varias.obtenerTodos("estados_eclesiales", "orden");
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
 			tema,
@@ -207,9 +189,7 @@ module.exports = {
 		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.file
-				? borrarArchivoDeImagen(req.file.filename, req.file.path)
-				: null;
+			req.file ? borrarArchivoDeImagen(req.file.filename, req.file.path) : null;
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
@@ -229,9 +209,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "detalle";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(
-				req.cookies.email
-			);
+			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
 		}
 		res.render("Home", {
 			tema,
@@ -244,9 +222,7 @@ module.exports = {
 		tema = "usuario";
 		codigo = "editar";
 		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(
-				req.cookies.email
-			);
+			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
 		}
 		res.render("Home", {
 			tema,

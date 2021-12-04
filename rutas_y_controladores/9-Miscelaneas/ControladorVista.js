@@ -52,14 +52,17 @@ module.exports = {
 			? req.cookies[codigo]
 			: "";
 		producto = datosPers.producto_RCLV;
+		//return res.send(datosPers)
 		// 4. Errores
 		let errores = req.session.errores
 			? req.session.errores
 			: datosRCLV
 			? await validarRCLV.RCLV(datosRCLV)
 			: "";
-		// 5. Meses del año
-		meses = await BD_varias.obtenerTodos("meses", "id");
+		// 5. Bases de Datos para la vista
+		let meses = await BD_varias.obtenerTodos("meses", "id");
+		let paises = await BD_varias.obtenerTodos("paises", "nombre");
+		let estados_eclesiales = await BD_varias.obtenerTodos("estados_eclesiales", "orden");
 		// 6. Render
 		return res.render("Home", {
 			tema,
@@ -69,6 +72,8 @@ module.exports = {
 			datosRCLV,
 			errores,
 			meses,
+			paises,
+			estados_eclesiales,
 		});
 	},
 
