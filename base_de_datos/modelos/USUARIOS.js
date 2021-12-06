@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		fecha_nacimiento: {type: dt.DATE},
 		sexo_id: {type: dt.STRING(1)},
 		pais_id: {type: dt.STRING(2)},
-		estado_eclesial_id: {type: dt.STRING(2)},
+		vocacion_id: {type: dt.STRING(2)},
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},
 		editado_en: {type: dt.DATE},
@@ -34,7 +34,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.paises, {as: "pais", foreignKey: "pais_id"});
 		entidad.belongsTo(n.roles_usuarios, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
 		entidad.belongsTo(n.status_registro_usuario, {as: "status_registro", foreignKey: "status_registro_id"});
-		entidad.belongsTo(n.vocacion_iglesia, {as: "estado_eclesial", foreignKey: "estado_eclesial_id"});
+		entidad.belongsTo(n.vocacion_iglesia, {as: "estado_eclesial", foreignKey: "vocacion_id"});
 		entidad.belongsTo(n.usuarios, {as: "borrado_por", foreignKey: "borrado_por_id"});
 		entidad.hasMany(n.us_calificaciones, {as: "calificaciones",foreignKey: "usuario_id"});
 		entidad.hasMany(n.us_interes_en_prod, {as: "interes_en_prod",foreignKey: "usuario_id"});

@@ -8,16 +8,12 @@
 		</div>
 		<!-- Crear/Menú de Película -->
 		<div class="grupos">
-			<% if (typeof detalle != "undefined") { %>
-				<i id="pelis-icono" class="fas fa-video"></i>
-				<%- include("2-MenuPelis") %> <% } else { %>
 			<div id="pelis-icono" class="scale">
 				<a href="/producto/agregar/palabras-clave">
 					<i class="fas fa-video"></i>
 					<i id="plus">+</i>
 				</a>
 			</div>
-			<% } %>
 		</div>
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">

@@ -42,3 +42,7 @@ CONCLUSION
         Si el registro queda aprobado, quedará accesible para todo el público.
     - Mientras tanto, podés ver los datos agregados y editarlos si corresponde.
     - Ícono: --> Lupa
+
+RCLV
+- Agregar link a wikipedia en función del nombre
+	https://es.wikipedia.org/w/index.php?search=padre+damian+veuster

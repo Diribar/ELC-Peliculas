@@ -133,29 +133,29 @@
 				</div>
 				<label>Era miembro de la Iglesia Católica al fallecer</label>
 			</div>
-			<div id="mostrarSiEsCatolico">
+			<div id="mostrarSiEsCatolico" class="invisible">
 				<!-- ¿Para canonizar? -->
 				<div class="input-error">
 					<div class="inputRadio">
 						<div class="pares">
-							<label for="SI">SI</label>
-							<input type="radio" id="SI" name="canonizacion" value="1" <% if (dataEntry.catolico=="1") { %>checked<% } %>>
+							<label>SI</label>
+							<input type="radio" name="canonizacion" value="1" <% if (dataEntry.catolico=="1") { %>checked<% } %>>
 						</div>
 						<div class="pares">
-							<label for="NO">NO</label>
-							<input type="radio" id="NO" name="canonizacion" value="0" <% if (dataEntry.catolico=="0") { %>checked<% } %>>
+							<label>NO</label>
+							<input type="radio" name="canonizacion" value="0" <% if (dataEntry.catolico=="0") { %>checked<% } %>>
 						</div>		
 					</div>
 					<label>En proceso de canonización (comenzado o terminado)</label>
 				</div>
-				<!-- Estado eclesial -->
+				<!-- Vocación -->
 				<div class="input-error">
-					<select name="estado_eclesial_id" class="input">
+					<select name="vocacion_id" class="input">
 						<option value="" class="ocultar">Elegí</option>
-						<% for (estado_eclesial of vocacion_iglesia) { %>
-							<% if (estado_eclesial.id != vocacion_iglesia[0].id) { %>
-								<option value="<%= estado_eclesial.id %>" <% if (dataEntry.estado_eclesial_id == estado_eclesial.id) { %>selected<% } %>>
-									<%= estado_eclesial.nombre %>
+						<% for (vocacion of vocacion_iglesia) { %>
+							<% if (vocacion.id != vocacion_iglesia[0].id) { %>
+								<option value="<%= vocacion.id %>" <% if (dataEntry.vocacion_id == vocacion.id) { %>selected<% } %>>
+									<%= vocacion.nombre %>
 								</option>
 							<% } %>
 						<% } %>

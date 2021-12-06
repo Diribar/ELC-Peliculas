@@ -50,7 +50,7 @@ module.exports = {
 		if (!datos.catolico) return "Necesitamos que respondas la segunda pregunta"
 		if (datos.catolico == "1") {
 			if (!datos.canonizacion) return "Necesitamos que respondas la tercera pregunta"
-			if (!datos.estado_eclesial_id) return "Necesitamos que respondas la cuarta pregunta"
+			if (!datos.vocacion_id) return "Necesitamos que respondas la cuarta pregunta"
 		}
 		return "";
 	},

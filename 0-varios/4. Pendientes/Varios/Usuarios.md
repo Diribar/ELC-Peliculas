@@ -1,3 +1,5 @@
+Ocultar los id="PC" y "PP" en vocacion
+
 Cartel de contraseña enviada por e-mail
 Cartel de mail enviado
 Cartel de confirmación de usuario completado

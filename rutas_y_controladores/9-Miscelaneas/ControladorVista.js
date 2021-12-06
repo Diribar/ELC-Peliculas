@@ -73,6 +73,7 @@ module.exports = {
 	},
 
 	RCLV_Grabar: async (req, res) => {
+		if (req.body.vocacion_id=="") delete req.body.vocacion_id
 		//return res.send(req.body)
 		// 1. Feedback de la instancia anterior o Data Entry propio
 		datosPers = req.session.datosPers
