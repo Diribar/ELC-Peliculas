@@ -531,10 +531,10 @@ module.exports = {
 			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
 		}
 		// 4. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		archivos = fs.readdirSync("./public/imagenes/0-Agregar/Muchas-gracias/");
+		archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
 		indice = parseInt(Math.random() * muchasGracias.length);
-		imagen = "/imagenes/0-Agregar/Muchas-gracias/" + muchasGracias[indice];
+		imagen = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
 		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {

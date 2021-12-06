@@ -37,7 +37,7 @@
 	<!-- Agregar productos -->
 	<% if (tema == "agregar") { %>
 		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
-		<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Agregar.css">
+		<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/8-Agregar.css">
 		<% if (codigo == "palabrasClave") { %>
 			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/1-PalabrasClave.css">
 			<script src="/javascript/2-Productos/1-palabrasClave.js"></script>
@@ -81,6 +81,8 @@
 	<% if (tema == "producto") { %>
 		<% if (codigo == "detalle") { %>
 			<%- include('0-Head', {titulo: "Detalle del Producto"}) %>
+			<link rel="stylesheet" href="/stylesheets/3-Producto/0-Producto.css">
+			<link rel="stylesheet" href="/stylesheets/3-Producto/1-Detalles.css">
 		<% } %>
 	<% } %>
 	<!-- Opciones de layout -->
@@ -127,21 +129,21 @@
 			<% } %>
 			<% if (tema=="agregar" || tema=="producto" || tema=="RCLV") { %> 
 				<section class="cuerpo flex-col grow">
-				<% if (tema=="agregar") { %>
-					<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
-					<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
-					<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
-					<%- codigo == "tipoProducto" ? include("2B-TipoProducto") : "" %>
-					<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
-					<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
-					<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
-					<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>
-					<%- codigo == "conclusion" ? include("6-Conclusion") : "" %>
-				<% } else %>
-				<% if (tema=="producto") { %>
-					<%- codigo == "detalle" ? include("1-Detalle") : "" %>
-				<% } else %>
-				<% if (tema=="RCLV") { %><%- include("RCLV") %><% } else %>
+					<% if (tema=="agregar") { %>
+						<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
+						<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
+						<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
+						<%- codigo == "tipoProducto" ? include("2B-TipoProducto") : "" %>
+						<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
+						<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
+						<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
+						<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>
+						<%- codigo == "conclusion" ? include("6-Conclusion") : "" %>
+					<% } %>
+					<% if (tema=="RCLV") { %><%- include("RCLV") %><% } %>
+					<% if (tema=="producto") { %>
+						<%- codigo == "detalle" ? include("1-Detalle") : "" %>
+					<% } %>
 				</section>
 			<% } %>
 			<% if (tema=="home" || tema=="opciones") { %>

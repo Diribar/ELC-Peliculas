@@ -28,12 +28,19 @@ module.exports = {
 			? producto.avatar.substring(0, 5) != "https"
 				? "/imagenes/2-Productos/" + producto.avatar
 				: producto.avatar
-			: "/imagenes/0-Agregar/Desamb-IM.jpg";
+			: "/imagenes/8-Agregar/Desamb-IM.jpg";
+		titulo =
+			entidad == "peliculas"
+				? "Película"
+				: entidad == "colecciones"
+				? "Colección"
+				: "Capítulo";
 		// Ir a la vista
 		//return res.send(producto);
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo,
 			entidad,
 			ID,
 			producto,
