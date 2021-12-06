@@ -50,7 +50,7 @@
 			<% estado_eclesial_id = dataEntry ? dataEntry.estado_eclesial_id : "" %>
 			<select name="estado_eclesial_id" class="input">
 				<option value="" <% if (estado_eclesial_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
-				<% for (n of estados_eclesiales) { %>
+				<% for (n of vocacion_iglesia) { %>
 					<option value="<%= n.id %>" <% if (estado_eclesial_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
 				<% } %> 
 			</select>

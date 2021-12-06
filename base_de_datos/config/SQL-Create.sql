@@ -24,19 +24,20 @@ CREATE TABLE idiomas (
 INSERT INTO idiomas (id, nombre)
 VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('ak','Akano'),('am','Amhárico'),('an','Aragonés'),('ar','Árabe'),('as','Asamés'),('av','Ávaro'),('ay','Aimara'),('az','Azerí'),('ba','Baskir'),('be','Bielorruso'),('bg','Búlgaro'),('bh','Bhoyapurí'),('bi','Bislama'),('bm','Bambara'),('bn','Bengalí'),('bo','Tibetano'),('br','Bretón'),('bs','Bosnio'),('ca','Catalán'),('ce','Checheno'),('ch','Chamorro'),('co','Corso'),('cr','Cree'),('cs','Checo'),('cu','Eslavo eclesiástico'),('cv','Chuvasio'),('cy','Galés'),('da','Danés'),('de','Alemán'),('dv','Maldivo'),('dz','Dzongkha'),('ee','Ewé'),('el','Griego'),('en','Inglés'),('eo','Esperanto'),('es','Castellano'),('et','Estonio'),('eu','Euskera'),('fa','Persa'),('ff','Fula'),('fi','Finés'),('fj','Fiyiano'),('fo','Feroés'),('fr','Francés'),('fy','Frisón'),('ga','Gaélico'),('gd','Gaélico escocés'),('gl','Gallego'),('gn','Guaraní'),('gu','Guyaratí'),('gv','Gaélico manés'),('ha','Hausa'),('he','Hebreo'),('hi','Hindi'),('ho','Hiri motu'),('hr','Croata'),('ht','Haitiano'),('hu','Húngaro'),('hy','Armenio'),('hz','Herero'),('ia','Interlingua'),('id','Indonesio'),('ie','Occidental'),('ig','Igbo'),('ii','Yi de Sichuán'),('ik','Iñupiaq'),('io','Ido'),('is','Islandés'),('it','Italiano'),('iu','Inuktitut'),('ja','Japonés'),('jv','Javanés'),('ka','Georgiano'),('kg','Kongo'),('ki','Kikuyu'),('kj','Kuanyama'),('kk','Kazajo'),('kl','Kalaallisut'),('km','Camboyano'),('kn','Canarés'),('ko','Coreano'),('kr','Kanuri'),('ks','Cachemiro'),('ku','Kurdo'),('kv','Komi'),('kw','Córnico'),('ky','Kirguís'),('la','Latín'),('lb','Luxemburgués'),('lg','Luganda'),('li','Limburgués'),('ln','Lingala'),('lo','Lao'),('lt','Lituano'),('lu','Luba-katanga'),('lv','Letón'),('mg','Malgache'),('mh','Marshalés'),('mi','Maorí'),('mk','Macedonio'),('ml','Malayalam'),('mn','Mongol'),('mr','Maratí'),('ms','Malayo'),('mt','Maltés'),('my','Birmano'),('na','Nauruano'),('nb','Noruego bokmål'),('nd','Ndebele del norte'),('ne','Nepalí'),('ng','Ndonga'),('nl','Neerlandés'),('nn','Nynorsk'),('no','Noruego'),('nr','Ndebele del sur'),('nv','Navajo'),('ny','Chichewa'),('oc','Occitano'),('oj','Ojibwa'),('om','Oromo'),('or','Oriya'),('os','Osético'),('pa','Panyabí'),('pi','Pali'),('pl','Polaco'),('ps','Pastú'),('pt','Portugués'),('qu','Quechua'),('rm','Romanche'),('rn','Kirundi'),('ro','Rumano'),('ru','Ruso'),('rw','Ruandés'),('sa','Sánscrito'),('sc','Sardo'),('sd','Sindhi'),('se','Sami septentrional'),('sg','Sango'),('si','Cingalés'),('sk','Eslovaco'),('sl','Esloveno'),('sm','Samoano'),('sn','Shona'),('so','Somalí'),('sq','Albanés'),('sr','Serbio'),('ss','Suazi'),('st','Sesotho'),('su','Sundanés'),('sv','Sueco'),('sw','Suajili'),('ta','Tamil'),('te','Télugu'),('tg','Tayiko'),('th','Tailandés'),('ti','Tigriña'),('tk','Turcomano'),('tl','Tagalo'),('tn','Setsuana'),('to','Tongano'),('tr','Turco'),('ts','Tsonga'),('tt','Tártaro'),('tw','Twi'),('ty','Tahitiano'),('ug','Uigur'),('uk','Ucraniano'),('ur','Urdu'),('uz','Uzbeko'),('ve','Venda'),('vi','Vietnamita'),('vo','Volapük'),('wa','Valón'),('wo','Wolof'),('xh','Xhosa'),('yi','Yídish'),('yo','Yoruba'),('za','Zhuang'),('zh','Chino'),('zu','Zulú')
 ;
-CREATE TABLE estados_eclesiales (
+CREATE TABLE vocacion_iglesia (
 	id VARCHAR(2) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO estados_eclesiales (id, orden, nombre)
+INSERT INTO vocacion_iglesia (id, orden, nombre)
 VALUES 
 ('PC', 0, 'Computadora'),
 ('LS', 1, 'Laico/a soltero'),
 ('LC', 2, 'Laico/a casado'),
 ('RC', 3, 'Religioso/a consagrado'),
-('SC', 4, 'Sacerdote/Obispo')
+('SC', 4, 'Sacerd./Obispo/Card.'),
+('PP', 5, 'Papa')
 ;
 CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -104,7 +105,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id)
+	FOREIGN KEY (estado_eclesial_id) REFERENCES vocacion_iglesia(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
 VALUES 
@@ -259,7 +260,7 @@ CREATE TABLE historicos_personajes (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (estado_eclesial_id) REFERENCES estados_eclesiales(id),
+	FOREIGN KEY (estado_eclesial_id) REFERENCES vocacion_iglesia(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -270,7 +271,8 @@ CREATE TABLE historicos_personajes (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, estado_eclesial_id, pais_id)
 VALUES 
-(1, 'Juan Pablo II', 296, 1, 1, 'SC', 'PL')
+(1, 'Juan Pablo II', 296, 1, 1, 'SC', 'PL'),
+(2, 'Juan Pablo III', 296, 1, 1, 'SC', 'PL')
 ;
 CREATE TABLE historicos_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,

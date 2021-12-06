@@ -30,10 +30,10 @@ window.addEventListener("load", async () => {
 			: button.classList.remove("botonSinLink");
 	};
 
+	// Busca losvalores de todo el formulario, para hacer un análisis global
 	let buscarTodosLosValores = () => {
-		url = "/?";
 		for (let i = 0; i < inputs.length; i++) {
-			i > 0 ? (url += "&") : "";
+			i == 0 ? (url = "/?") : (url += "&");
 			url += inputs[i].name;
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
@@ -44,9 +44,7 @@ window.addEventListener("load", async () => {
 	// Funciones para revisar todos los inputs, devuelve los errores
 	let buscarErroresEnTodoElForm = () => {
 		let url = buscarTodosLosValores();
-		return fetch("/producto/agregar/api/validar-datos-pers" + url).then(
-			(n) => n.json()
-		);
+		return fetch("/producto/agregar/api/validar-datos-pers" + url).then((n) => n.json());
 	};
 
 	// Status inicial
