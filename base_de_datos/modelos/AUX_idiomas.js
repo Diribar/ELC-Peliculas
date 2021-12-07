@@ -1,6 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "idiomas";
 	const columns = {
+		id: {type: dt.STRING(2), primaryKey: true},
 		nombre: {type: dt.STRING(20)},
 	};
 	const config = {

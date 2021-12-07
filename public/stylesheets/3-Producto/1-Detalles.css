@@ -2,10 +2,11 @@
 h1, h3 {align-self: center;}
 
 #datosDeProductos {padding: 20px; display: flex; flex-direction: row; justify-content: space-between;}
-#datosDeProductos div {width: 45%;}
+#datosDeProductos div#DD {width: 55%;}
+#datosDeProductos div#DP {width: 35%;}
 
 #datosDeProductos dl {position: relative;}
 #datosDeProductos dl dt {position: absolute; width: 125px; text-align: right; font-weight: bold;}
-#datosDeProductos dl dd {margin-left: 130px;}
+#datosDeProductos dl dd {margin-left: 130px; max-height: 50px; overflow: hidden;}
 
 #datosDeProductos input {background-color: transparent; border: none; width: 100%;}

@@ -7,13 +7,20 @@ module.exports = {
 		});
 	},
 
-	obtenerPorParametro: (entidad, parametro, valor) => {
+	filtrarPorParametro: (entidad, parametro, valor) => {
 		return db[entidad].findOne({
 			where: {[parametro]: valor},
 		});
 	},
 
-	obtenerPorId: (entidad, id) => {
+	filtrarPorParametroConInclude: (entidad, parametro, valor, includes) => {
+		return db[entidad].findAll({
+			where: {[parametro]: valor},
+			include: includes,
+		});
+	},
+
+	filtrarPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
 	},
 

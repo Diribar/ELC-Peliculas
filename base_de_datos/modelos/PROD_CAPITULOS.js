@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		fuente: {type: dt.STRING(5)},
 		nombre_castellano: {type: dt.STRING(100)},
 		nombre_original: {type: dt.STRING(100)},
-		idioma_original: {type: dt.STRING(20)},
+		idioma_original_id: {type: dt.STRING(2)},
 		duracion: {type: dt.INTEGER},
 		ano_estreno: {type: dt.INTEGER},
 		director: {type: dt.STRING(100)},
@@ -29,7 +29,7 @@ module.exports = (sequelize, dt) => {
 		hecho_historico_id: {type: dt.INTEGER},
 		link_trailer: {type: dt.STRING(200)},
 		link_pelicula: {type: dt.STRING(200)},
-		calificacion: {type: dt.DECIMAL},
+		calificacion: {type: dt.INTEGER},
 
 		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
@@ -58,6 +58,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
+		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});

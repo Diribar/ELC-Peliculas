@@ -18,7 +18,7 @@ module.exports = {
 		});
 	},
 
-	obtenerProductoPorIdConInclude: (entidad, id, includes) => {
+	filtrarProductoPorIdConInclude: (entidad, id, includes) => {
 		return db[entidad].findByPk(id, {
 			include: includes,
 		});
