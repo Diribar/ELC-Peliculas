@@ -103,7 +103,7 @@ module.exports = {
 			req.session.erroresDES = errores;
 			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos
 			if (errores.mensaje == "agregarCapitulos")
-				await procesarProd.agregarCapitulosFaltantes(
+				await procesarProd.agregarCapitulosNuevos(
 					errores.en_colec_id,
 					errores.colec_TMDB_id
 				);
