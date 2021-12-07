@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	let pais_id = document.querySelector(".input-error select[name='pais_id']");
 	let catolico = document.querySelectorAll("input[name='catolico']");
 	let canonizacion = document.querySelectorAll("input[name='canonizacion']");
-	let estado_eclesial_id = document.querySelector("select[name='estado_eclesial_id']");
+	let vocacion_id = document.querySelector("select[name='vocacion_id']");
 	// Otros campos de Data Entry
 	let nombre = document.querySelector(".input-error input[name='nombre']");
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
@@ -88,21 +88,22 @@ window.addEventListener("load", async () => {
 			campo == "pais_id" ||
 			campo == "catolico" ||
 			campo == "canonizacion" ||
-			campo == "estado_eclesial_id"
+			campo == "vocacion_id"
 		) {
-			OK.adicionales = !pais_id.value
-				? false
-				: catolico[1].checked
-				? true
-				: catolico[0].checked
-				? canonizacion[0].checked || canonizacion[1].checked
-					? estado_eclesial_id.value
-						? true
-						: false
-					: false
-				: false;
+			// Ocultar / mostrar lo referido a si es católico
+			catolico[0].checked
+				? mostrarSiEsCatolico.classList.remove("invisible")
+				: mostrarSiEsCatolico.classList.add("invisible");
 
-			if (OK.adicionales) errores.adicionales = "";
+			//
+			url = "&pais_id=" + pais_id.value + "&vocacion_id=" + vocacion_id.value;
+			if (catolico[0].checked) url += "&catolico=1";
+			if (catolico[1].checked) url += "&catolico=0";
+			if (canonizacion[0].checked) url += "&canonizacion=1";
+			if (canonizacion[1].checked) url += "&canonizacion=0";
+			errores.adicionales = await fetch(ruta + "adicionales" + url).then((n) => n.json());
+			OK.adicionales = !errores.adicionales ? true : false;
+			errores.adicionales = "";
 		}
 		// Final de la rutina
 		feedback(OK, errores);
@@ -143,8 +144,11 @@ window.addEventListener("load", async () => {
 	// Submit
 	form.addEventListener("submit", (e) => {
 		if (button.classList.contains("botonSinLink")) e.preventDefault();
+		
+		// No logré hacer funcionar lo siguiente, para hacer un API
+		const data = new FormData(form);
+
 	});
-	
 });
 
 // Buscar otros casos en esa fecha

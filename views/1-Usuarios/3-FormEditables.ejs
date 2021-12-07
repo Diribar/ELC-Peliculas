@@ -45,17 +45,17 @@
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
-		<label for="estado_eclesial_id">Estado de vida <br>en la iglesia</label>
+		<label for="vocacion_id">Estado de vida <br>en la iglesia</label>
 		<div class="form-grupo">
-			<% estado_eclesial_id = dataEntry ? dataEntry.estado_eclesial_id : "" %>
-			<select name="estado_eclesial_id" class="input">
-				<option value="" <% if (estado_eclesial_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
+			<% vocacion_id = dataEntry ? dataEntry.vocacion_id : "" %>
+			<select name="vocacion_id" class="input">
+				<option value="" <% if (vocacion_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
 				<% for (n of vocacion_iglesia) { %>
-					<option value="<%= n.id %>" <% if (estado_eclesial_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
+					<option value="<%= n.id %>" <% if (vocacion_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
 				<% } %> 
 			</select>
-			<i class="fas fa-times-circle <%- !(errores && errores.estado_eclesial_id) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.estado_eclesial_id) ? errores.estado_eclesial_id : "" %></span>
+			<i class="fas fa-times-circle <%- !(errores && errores.vocacion_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.vocacion_id) ? errores.vocacion_id : "" %></span>
 			</i>
 		</div>
 	</section>

@@ -14,5 +14,6 @@
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
 .ocultar {display: none;}
+.invisible {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
 .botonSinLink {opacity: .2; border-color: transparent; cursor: default;}

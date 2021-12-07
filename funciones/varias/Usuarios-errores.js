@@ -80,7 +80,7 @@ module.exports = {
 			? "Necesitamos que elijas un valor"
 			: "";
 
-		errores.estado_eclesial_id = !datos.estado_eclesial_id
+		errores.vocacion_id = !datos.vocacion_id
 			? "Necesitamos que elijas un valor"
 			: "";
 		errores.avatar = !datos.avatar

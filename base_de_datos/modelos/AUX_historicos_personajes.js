@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 
 		catolico: {type: dt.BOOLEAN},
 		en_canonizacion: {type: dt.BOOLEAN},
-		estado_eclesial_id: {type: dt.STRING(2)},
+		vocacion_id: {type: dt.STRING(2)},
 
 		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
