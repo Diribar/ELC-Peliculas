@@ -1,5 +1,4 @@
-DETALLE
-- Que muestre los países de origen
+GENERAL
 - Gráfico de barras horizontales
 	https://www.w3schools.com/js/js_graphics_chartjs.asp
 	https://canvasjs.com/html5-javascript-bar-chart/
@@ -7,26 +6,25 @@ DETALLE
 	Vista: chart "Detalle Prod.jpg"
 - Botón de editar
 	- Sin link, si está capturado
-- Películas
-	- DD  y DP
-	- Gráfico de barras horizontales
-	- Abajo: 
-		- Ver el trailer
-		- Ver la película
-		- Calificala
-		- Comentarios de los usuarios
-			- Ver comentarios
-			- Hacé tu propio comentario
-		- Prefiero que no me la sugiera más
-		- Ya la vi
-- Colecciones
-	- DD  y DP
-	- Gráfico de barras horizontales
-	- Abajo:
-		- Link a los capítulos
-- Capítulos
+
+PELÍCULAS
+- Gráfico de barras horizontales
+- Abajo: 
+	- Ver el trailer
+	- Ver la película
+	- Calificala
+	- Comentarios de los usuarios
+		- Ver comentarios
+		- Hacé tu propio comentario
+	- Prefiero que no me la sugiera más
+	- Ya la vi
+
+COLECCIONES
+- Gráfico de barras horizontales
+- Abajo: link a los capítulos
+
+CAPÍTULOS
 	- DD y DP
-		- Ídem Películas
 		- Adicionales:
 			- Temp y n° de capítulo
 			- Pertenece a la colección:

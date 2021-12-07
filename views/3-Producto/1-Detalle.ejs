@@ -3,14 +3,40 @@
 <section id="datosDeProductos">
 	<div id="DD">
 		<dl>
+			<!-- Nombre original -->
 			<dt>Título original:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.nombre_original %><% } else { %><input type="text" value="<%= producto.nombre_original %>"><% } %></dd>
-			<dt>Duracion:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.duracion %><% } else { %><input type="text" value="<%= producto.duracion %>"><% } %></dd>
+			<dd><% if (codigo == "detalle") { %>
+					<%= producto.nombre_original ? producto.nombre_original : "Sin datos" %>
+				<% } else { %>
+					<input type="text" value="<%= producto.nombre_original %>">
+				<% } %>
+			</dd>
+			<!-- Cantidad de Temporadas y de Capítulos -->
+				<% if (entidad == "colecciones") { %>
+				<dt>Cant. Temporadas:</dt>
+				<dd><%= producto.cant_temporadas %></dd>
+				<dt>Cant. Capítulos:</dt>
+				<dd><%= producto.cant_capitulos %></dd>
+				<% } %>
+			<!-- Colección a la que pertenece -->
+			<% if (entidad == "capitulos") { %>
+				<dt>De la colección:</dt>
+				<dd><a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></dd>
+				<dt>Temp. y Capítulo</dt>
+				<dd><%= producto.temporada ? "Temp. " + producto.temporada : "Única temporada" %>, <%= "cap. " + producto.capitulo %> </dd>
+			<% } %>
+			<!-- Duración -->
+			<% if (entidad != "colecciones") { %>
+				<dt>Duracion:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.duracion %> minutos<% } else { %><input type="text" value="<%= producto.duracion %>"><% } %></dd>
+			<% } %>
+			<!-- Varios -->
 			<dt>Año de estreno:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.ano_estreno %><% } else { %><input type="text" value="<%= producto.ano_estreno %>"><% } %></dd>
+			<dt>País/es de origen:</dt>
+			<dd><% if (codigo == "detalle") { %><%= paises %><% } %></dd>
 			<dt>Idioma original:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.idioma_original %><% } else { %><input type="text" value="<%= producto.idioma_original %>"><% } %></dd>
+			<dd><% if (codigo == "detalle") { %><%= producto.idioma_original.nombre %><% } else { %><input type="text" value="<%= producto.idioma_original %>"><% } %></dd>
 			<dt>Director:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.director %><% } else { %><input type="text" value="<%= producto.director %>"><% } %></dd>
 			<dt>Guión:</dt>
@@ -24,43 +50,36 @@
 			<dt>Sinopsis:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.sinopsis %><% } else { %><input type="text" value="<%= producto.sinopsis %>"><% } %></dd>
 		</dl>
-	<div id="Dd">
-		<p>pqqq</p>
+	</div>
+	<div id="DP">
+		<dl>
+			<dt>En idioma castellano:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.en_castellano.nombre %><% } else { %><% } %></dd>
+			<dt>Es a color:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.en_color.nombre %><% } else { %><% } %></dd>
+			<dt>Categoría:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.categoria.nombre %><% } else { %><% } %></dd>
+			<dt>Sub-categoría:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.subcategoria.nombre %><% } else { %><% } %></dd>
+			<dt>Público sugerido:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.publico_sugerido.nombre %><% } else { %><% } %></dd>
+			<% if (producto.personaje_historico_id) { %>
+				<dt>Personaje histórico:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.personaje_historico.nombre %><% } else { %><% } %></dd>
+			<% } %>
+			<% if (producto.hecho_historico_id) { %>
+				<dt>Hecho histórico:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.hecho_historico.nombre %><% } else { %><% } %></dd>
+			<% } %>
+			<dt>Creada por:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.creada_por.apodo %><% } else { %><% } %></dd>
+			<dt>Status de Aprob.:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.status_registro.nombre %><% } else { %><% } %></dd>
+			<dt>Público sugerido:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.publico_sugerido.nombre %><% } else { %><% } %></dd>
+			<dt>Calificación general:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.calificacion %> %<% } else { %><% } %></dd>
+
+		</dl>
 	</div>
 </section>
-	<!-- Datos Duros -->
-	<% if (entidad=="colecciones") { %><p>ID: <%= producto.id %></p><% } %>	
-	<% if (entidad=="capitulos" && producto.temporada) { %><p>Temporada: <%= producto.temporada %></p><% } %>
-	<% if (entidad=="capitulos") { %><p>Capítulo: <%= producto.capitulo %></p><% } %>
-	<p>País/es de origen: REVISAR</p>
-	<p>Dirección: <%= producto.director %></p>
-	<p>Guión: <%= producto.guion %></p>
-	<p>Música: <%= producto.musica %></p>
-	<p>Actores: <%= producto.actores %></p>
-	<p>Productor: <%= producto.productor %></p>
-	<p>Sinopsis: <%= producto.sinopsis %></p>
-
-	<!-- Datos Personalizados -->
-	<% if (producto.en_castellano_id) { %><p>En idioma castellano: <%= producto.en_castellano.nombre %></p><% } %>
-	<% if (producto.en_color_id) { %><p>Color: <%= producto.en_color.nombre %></p><% } %>
-	<% if (producto.publico_sugerido_id) { %><p>Público sugerido: <%= producto.publico_sugerido.nombre %></p><% } %>
-	<% if (producto.categoria_id) { %><p>Categoría: <%= producto.categoria.nombre %></p><% } %>
-	<% if (producto.subcategoria_id) { %><p>Sub-categoría: <%= producto.subcategoria.nombre %></p><% } %>
-	<% 	convertirFormatoFecha = (fecha) => {
-			dia=fecha.getDate()
-			mes=fecha.toLocaleDateString("es", {month:'short'}).slice(0,3)
-			ano=fecha.getFullYear()
-			hora=("00"+fecha.getHours()).slice(-2)
-			minutos=("00"+fecha.getMinutes()).slice(-2)
-			return dia + "/" + mes + "/" + ano + ", " + hora + ":" + minutos + "hs."
-		}
-	%> 
-	<p>Creada en: <%= convertirFormatoFecha(producto.creada_en) %></p>
-	<p>Status de Aprobación: <%= producto.status_registro.nombre %> </p>
-	<!-- Aprobada -->
-	<% if (producto.editada_por_id) { %><p>Editada por: <%= producto.editada_por.apodo %></p><% } %>
-	<% if (producto.personaje_historico_id) { %><p>Personaje histórico: <%= producto.personaje_historico.nombre %></p><% } %>
-	<% if (producto.hecho_historico_id) { %><p>Personaje histórico: <%= producto.hecho_historico.nombre %></p><% } %>
-	<p>Calificación general: <%= producto.calificacion ? producto.calificacion*100 + "%" : "Sin calificar todavía, ¿querés ser el primero?" %></p>
-	<p>Tu calificación: </p>
-	<!-- interés_en_peli -->

@@ -4,7 +4,9 @@ const fetch = require("node-fetch");
 
 module.exports = async (TMDB_id) => {
 	// PARTES DEL URL
-	//let url = "https://api.themoviedb.org/3/movie/38516/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es-ES"
+	// https://api.themoviedb.org/3/movie/38516/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es-ES
+	// https://api.themoviedb.org/3/tv/1781/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es
+	
 	let url =
 		"https://api.themoviedb.org/3/movie/" +
 		TMDB_id +

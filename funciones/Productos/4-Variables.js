@@ -151,8 +151,8 @@ module.exports = {
 				peliculas: true,
 				colecciones: true,
 				mensajes: [
-					"Podés ingresar un registro nuevo, haciendo click acá.",
-					"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
+					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
+					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
 				],
 				link: "personaje-historico",
 			},
@@ -164,7 +164,7 @@ module.exports = {
 				colecciones: true,
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
-					"Si agregás un registro, tenés que actualizar la vista para poderlo ver.",
+					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
 				],
 				link: "hecho-historico",
 			},

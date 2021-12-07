@@ -41,7 +41,7 @@ module.exports = {
 			if (datosAPI.title) datosAPI_renamed.nombre_castellano = datosAPI.title;
 			// Idioma
 			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original = datosAPI.original_language;
+				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
 					(datosAPI.spoken_languages &&
@@ -100,7 +100,7 @@ module.exports = {
 		// Datos de la colección
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
-		if (datosCol.idioma_original) datos.idioma_original = datosCol.idioma_original;
+		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
 		if (datosCol.en_castellano_id != 2) datos.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
 		datos.categoria_id = datosCol.categoria_id;
@@ -199,7 +199,7 @@ module.exports = {
 				datosAPI_renamed.duracion = datosAPI.episode_run_time[0];
 			// Idioma
 			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original = datosAPI.original_language;
+				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
 					(datosAPI.spoken_languages &&
@@ -252,7 +252,7 @@ module.exports = {
 		// Datos de la colección
 		datos.coleccion_id = datosCol.id;
 		if (datosCol.duracion) datos.duracion = datosCol.duracion;
-		if (datosCol.idioma_original) datos.idioma_original = datosCol.idioma_original;
+		if (datosCol.idioma_original_id) datos.idioma_original_id = datosCol.idioma_original_id;
 		if (datosCol.en_castellano_id != 2) datos.en_castellano_id = datosCol.en_castellano_id;
 		if (datosCol.en_color_id != 2) datos.en_color_id = datosCol.en_color_id;
 		datos.categoria_id = datosCol.categoria_id;
@@ -330,7 +330,7 @@ module.exports = {
 			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
 			// Idioma
 			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original = datosAPI.original_language;
+				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
 				if (datosAPI.original_language == "es") datosAPI_renamed.en_castellano_id = 1;
 			}
 			// año de estreno, año de fin

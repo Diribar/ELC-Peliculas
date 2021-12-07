@@ -3,7 +3,9 @@ main.flex-row {flex-direction: row-reverse;}
 main #cuerpo-y-footer {flex-direction: column-reverse; justify-content: space-between;}
 
 /* CONFIGURAR IMAGEN */
-#imagen-derecha img {height: 100%;}
+/* #imagen-derecha {height: 100%; width: 150vw; position: relative;} */
+/* #imagen-derecha img {height: 100%; width: 100%; object-fit: cover; position: absolute;} */
+#imagen-derecha img {height: 100%; max-width: 30vw;}
 
 /* ESTILOS Y CLASES */
 main h1 {font-size: 1.25rem;}

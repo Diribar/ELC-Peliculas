@@ -1,4 +1,5 @@
 // ************ Requires *************
+let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 
 // *********** Controlador ***********
@@ -11,6 +12,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		let includes = [
+			"idioma_original",
 			"en_castellano",
 			"en_color",
 			"categoria",
@@ -23,20 +25,41 @@ module.exports = {
 			"editada_por",
 			"borrada_motivo",
 		];
-		let producto = await BD_especificas.obtenerProductoPorIdConInclude(entidad, ID, includes);
-		let avatar = producto.avatar
-			? producto.avatar.substring(0, 5) != "https"
+		entidad == "capitulos" ? includes.push("coleccion") : includes.push("paises");
+		let producto = await BD_especificas.filtrarProductoPorIdConInclude(entidad, ID, includes);
+		//return res.send(producto)
+		if (entidad == "capitulos") {
+			avatar = producto.avatar;
+			producto.paises = await BD_especificas.filtrarProductoPorIdConInclude(
+				"colecciones",
+				producto.coleccion_id,
+				"paises"
+			).then(n=>n.paises)
+			//return res.send(producto.paises);
+		} else
+			avatar = producto.avatar
 				? "/imagenes/2-Productos/" + producto.avatar
-				: producto.avatar
-			: "/imagenes/8-Agregar/Desamb-IM.jpg";
+				: "/imagenes/8-Agregar/Desamb-IM.jpg";
+		// Obtener el título
 		titulo =
 			entidad == "peliculas"
 				? "Película"
 				: entidad == "colecciones"
 				? "Colección"
 				: "Capítulo";
+		// Obtener los paises
+		let paises = [];
+		//return res.send(producto);
+		let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+		for (pais of producto.paises) {
+			nombre = BD_paises.find((n) => n.id == pais.pais_id).nombre;
+			paises.push(nombre);
+		}
+		paises = paises.join(", ");
+		//return res.send(paises);
 		// Ir a la vista
 		//return res.send(producto);
+		//return res.send(paises);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -45,6 +68,7 @@ module.exports = {
 			ID,
 			producto,
 			avatar,
+			paises,
 		});
 	},
 

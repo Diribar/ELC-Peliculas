@@ -91,7 +91,7 @@ CREATE TABLE USUARIOS (
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
-	estado_eclesial_id VARCHAR(2) NULL,
+	vocacion_id VARCHAR(2) NULL,
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
@@ -105,9 +105,9 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (estado_eclesial_id) REFERENCES vocacion_iglesia(id)
+	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, estado_eclesial_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, vocacion_id, creado_en, completado_en)
 VALUES 
 (1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
 (2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
@@ -238,8 +238,8 @@ CREATE TABLE historicos_personajes (
 	pais_id VARCHAR(2) NULL,
 	
 	catolico BOOLEAN NOT NULL,
-	en_canonizacion BOOLEAN DEFAULT 0,
-	estado_eclesial_id VARCHAR(2) NULL,
+	en_canonizacion BOOLEAN NULL,
+	vocacion_id VARCHAR(2) NULL,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -260,7 +260,7 @@ CREATE TABLE historicos_personajes (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (estado_eclesial_id) REFERENCES vocacion_iglesia(id),
+	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -269,7 +269,7 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, estado_eclesial_id, pais_id)
+INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, vocacion_id, pais_id)
 VALUES 
 (1, 'Juan Pablo II', 296, 1, 1, 'SC', 'PL'),
 (2, 'Juan Pablo III', 296, 1, 1, 'SC', 'PL')
