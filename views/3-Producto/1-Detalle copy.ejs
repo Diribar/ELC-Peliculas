@@ -1,35 +1,33 @@
-<h1><%= producto.nombre_castellano %></h1>
-<h3>- <%= titulo %> -</h2>
 <section id="datosDeProductos">
 	<div id="DD">
-		<dl>
-			<dt>Título original:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.nombre_original %><% } else { %><input type="text" value="<%= producto.nombre_original %>"><% } %></dd>
-			<dt>Duracion:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.duracion %><% } else { %><input type="text" value="<%= producto.duracion %>"><% } %></dd>
-			<dt>Año de estreno:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.ano_estreno %><% } else { %><input type="text" value="<%= producto.ano_estreno %>"><% } %></dd>
-			<dt>Idioma original:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.idioma_original %><% } else { %><input type="text" value="<%= producto.idioma_original %>"><% } %></dd>
-			<dt>Director:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.director %><% } else { %><input type="text" value="<%= producto.director %>"><% } %></dd>
-			<dt>Guión:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.guion %><% } else { %><input type="text" value="<%= producto.guion %>"><% } %></dd>
-			<dt>Música:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.musica %><% } else { %><input type="text" value="<%= producto.musica %>"><% } %></dd>
-			<dt>Actores:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.actores %><% } else { %><input type="text" value="<%= producto.actores %>"><% } %></dd>
-			<dt>Productor:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.productor %><% } else { %><input type="text" value="<%= producto.productor %>"><% } %></dd>
-			<dt>Sinopsis:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.sinopsis %><% } else { %><input type="text" value="<%= producto.sinopsis %>"><% } %></dd>
-		</dl>
-	<div id="Dd">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th style="width: 400px;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong>Título en castellano:</strong></td>
+					<td><input type="text" value="<%= producto.nombre_castellano %>"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="DP">
 		<p>pqqq</p>
 	</div>
 </section>
+
+
 	<!-- Datos Duros -->
+	<p style="font-weight: bold">Título en castellano: <%= producto.nombre_castellano %></p>
+	<p><%= entidad %> </p>
 	<% if (entidad=="colecciones") { %><p>ID: <%= producto.id %></p><% } %>	
+	<p>Título original: <%= producto.nombre_original %></p>
+	<p>Duración: <%= producto.duracion %> minutos</p>
+	<p>Año de estreno: <%= producto.ano_estreno %></p>
 	<% if (entidad=="capitulos" && producto.temporada) { %><p>Temporada: <%= producto.temporada %></p><% } %>
 	<% if (entidad=="capitulos") { %><p>Capítulo: <%= producto.capitulo %></p><% } %>
 	<p>País/es de origen: REVISAR</p>
