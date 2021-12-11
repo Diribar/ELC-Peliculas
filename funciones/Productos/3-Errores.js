@@ -26,22 +26,18 @@ module.exports = {
 			};
 			// Si la colección no está en nuestra BD
 			if (!dato.en_colec_id) {
-				errores = {
+				errores += {
 					mensaje: "agregarColeccion",
-					...errores,
 					// Datos originales
-					peli_entidad_TMDB: "movie",
 					peli_TMDB_id: dato.TMDB_id,
-					peli_nombre: dato.nombre_castellano,
+					//peli_nombre: dato.nombre_castellano,
 					// Datos nuevos
-					colec_entidad_TMDB: "collection",
 					colec_TMDB_id: dato.en_colec_TMDB_id,
 					colec_nombre: dato.en_colec_nombre,
 				};
 			} else {
-				errores = {
+				errores += {
 					mensaje: "agregarCapitulos",
-					...errores,
 					en_colec_id: dato.en_colec_id,
 				};
 			}

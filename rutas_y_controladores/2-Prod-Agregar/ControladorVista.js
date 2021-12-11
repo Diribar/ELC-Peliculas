@@ -64,7 +64,6 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		//return res.send(req.cookies.desambiguar)
 		let palabrasClave = req.session.palabrasClave
 			? req.session.palabrasClave
 			: req.cookies.palabrasClave
@@ -93,12 +92,9 @@ module.exports = {
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
 		infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
-		//return res.send(infoTMDBparaDD)
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoTMDBparaDD);
 		// 3. Si no supera el filtro anterior, redireccionar
-		//return res.send(errores);
-		// 4. Detectar errores
 		if (errores.hay) {
 			req.session.erroresDES = errores;
 			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos

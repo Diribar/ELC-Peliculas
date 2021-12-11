@@ -28,14 +28,14 @@ module.exports = {
 	},
 
 	// Vista (desambiguar)
-	averiguarColeccion: (req, res) => {
-		console.log(req.query);
-		return res.json()
+	averiguarColeccion: async (req, res) => {
+		datos = await procesarProd.averiguarColeccion(req.query.TMDB_id);
+		return res.json(datos);
 	},
 
 	// Vista (datosDuros)
-	obtenerPaises: async (req,res)=> {
-		paises = await BD_varias.obtenerTodos("paises", "nombre")
+	obtenerPaises: async (req, res) => {
+		paises = await BD_varias.obtenerTodos("paises", "nombre");
 		return res.json(paises);
 	},
 

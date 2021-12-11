@@ -89,6 +89,27 @@ module.exports = {
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
+	averiguarColeccion: async (TMDB_id) => {
+		// Obtener la API
+		let datosAPI = await detailsTMDB("movie", TMDB_id);
+
+		// Datos de la colección a la que pertenece, si corresponde
+		let datos = {};
+		if (datosAPI.belongs_to_collection != null) {
+			// Obtener datos de la colección
+			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
+			datos.colec_nombre = datosAPI.belongs_to_collection.name;
+			// ELC_id de la colección
+			datos.colec_id = await BD_varias.obtenerELC_id({
+				entidad: "colecciones",
+				campo: "TMDB_id",
+				valor: datos.colec_TMDB_id,
+			});
+			if (datos.colec_id) return datos
+		}
+		return datos
+	},
+
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_collection: async (datos) => {
