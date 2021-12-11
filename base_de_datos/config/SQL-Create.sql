@@ -14,7 +14,7 @@ CREATE TABLE paises (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO paises (id, alpha3Code, nombre, continente , idioma , zona_horaria, bandera)
 /*<img src="https://restcountries.com/data/<%= n.alpha3code.toLowerCase %>.svg">*/
-VALUES ('AX','ALA','Aland','Europa','Swedish','+02:00','ala.svg'), ('AS','ASM','Samoa Americana','Oceanía','English','-11:00','asm.svg'), ('AD','AND','Andorra','Europa','Catalan','+01:00','and.svg'), ('AO','AGO','Angola','Africa','Portuguese','+01:00','ago.svg'), ('AI','AIA','Anguila','América','English','-04:00','aia.svg'), ('AQ','ATA','Antártida','Polar','English','-03:00','ata.svg'), ('AG','ATG','Antigua y Barbuda','América','English','-04:00','atg.svg'), ('AR','ARG','Argentina','América','Spanish','-03:00','arg.svg'), ('AW','ABW','Aruba','América','Dh','-04:00','abw.svg'), ('AU','AUS','Australia','Oceanía','English','+05:00','aus.svg'), ('AZ','AZE','Azerbaiyán','Asia','Azerbaijani','+04:00','aze.svg'), ('BS','BHS','Bahamas','América','English','-05:00','bhs.svg'), ('BD','BGD','Bangladés','Asia','Bengali','+06:00','bgd.svg'), ('BB','BRB','Barbados','América','English','-04:00','brb.svg'), ('BE','BEL','Bélgica','Europa','Dh','+01:00','bel.svg'), ('BZ','BLZ','Belice','América','English','-06:00','blz.svg'), ('BJ','BEN','Benín','Africa','French','+01:00','ben.svg'), ('BM','BMU','Bermudas','América','English','-04:00','bmu.svg'), ('BO','BOL','Bolivia','América','Spanish','-04:00','bol.svg'), ('BQ','BES','Bonaire, San Eustaquio y Saba','América','Dh','-04:00','bes.svg'), ('BA','BIH','Bosnia y Herzegovina','Europa','Bosnian','+01:00','bih.svg'), ('BW','BWA','Botswana','Africa','English','+02:00','bwa.svg'), ('BV','BVT','Isla Bouvet','Polar','Norwegian','+01:00','bvt.svg'), ('BR','BRA','Brasil','América','Portuguese','-05:00','bra.svg'), ('IO','IOT','Territorio Británico Índico','Africa','English','+06:00','iot.svg'), ('VG','VGB','Islas Vírgenes Británicas','América','English','-04:00','vgb.svg'), ('BT','BTN','Bután','Asia','Dzongkha','+06:00','btn.svg'), ('BF','BFA','Burkina Faso','Africa','French','','bfa.svg'), ('BI','BDI','Burundi','Africa','French','+02:00','bdi.svg'), ('CV','CPV','Cabo Verde','Africa','Portuguese','-01:00','cpv.svg'), ('CM','CMR','Camerún','Africa','English','+01:00','cmr.svg'), ('CA','CAN','Canadá','América','English','-08:00','can.svg'), ('KY','CYM','Islas Caimán','América','English','-05:00','cym.svg'), ('CZ','CZE','República Checa','Europa','Czech','+01:00','cze.svg'), ('CL','CHL','Chile','América','Spanish','-06:00','chl.svg'), ('CX','CXR','Isla de Navidad','Oceanía','English','+07:00','cxr.svg'), ('CC','CCK','Islas Cocos','Oceanía','English','+06:30','cck.svg'), ('CO','COL','Colombia','América','Spanish','-05:00','col.svg'), ('CK','COK','Islas Cook','Oceanía','English','-10:00','cok.svg'), ('CR','CRI','Costa Rica','América','Spanish','-06:00','cri.svg'), ('CI','CIV','Costa de Marfil','Africa','French','','civ.svg'), ('CU','CUB','Cuba','América','Spanish','-05:00','cub.svg'), ('CW','CUW','Curazao','América','Dh','-04:00','cuw.svg'), ('DK','DNK','Dinamarca','Europa','Danish','-04:00','dnk.svg'), ('DE','DEU','Alemania','Europa','German','+01:00','deu.svg'), ('DJ','DJI','Yibuti','Africa','French','+03:00','dji.svg'), ('DM','DMA','Dominica','América','English','-04:00','dma.svg'), ('EC','ECU','Ecuador','América','Spanish','-06:00','ecu.svg'), ('EE','EST','Estonia','Europa','Estonian','+02:00','est.svg'), ('IE','IRL','Irlanda','Europa','Irish','','irl.svg'), ('SV','SLV','El Salvador','América','Spanish','-06:00','slv.svg'), ('ES','ESP','España','Europa','Spanish','','esp.svg'), ('FJ','FJI','Fiyi','Oceanía','English','+12:00','fji.svg'), ('FO','FRO','Islas Feroe','Europa','Faroese','+00:00','fro.svg'), ('FR','FRA','Francia','Europa','French','-10:00','fra.svg'), ('GA','GAB','Gabón','Africa','French','+01:00','gab.svg'), ('GM','GMB','Gambia','Africa','English','+00:00','gmb.svg'), ('GH','GHA','Ghana','Africa','English','','gha.svg'), ('GI','GIB','Gibraltar','Europa','English','+01:00','gib.svg'), ('GD','GRD','Granada','América','English','-04:00','grd.svg'), ('GP','GLP','Guadalupe','América','French','-04:00','glp.svg'), ('GU','GUM','Guam','Oceanía','English','+10:00','gum.svg'), ('GT','GTM','Guatemala','América','Spanish','-06:00','gtm.svg'), ('GG','GGY','Guernsey','Europa','English','+00:00','ggy.svg'), ('GQ','GNQ','Guinea Ecuatorial','Africa','Spanish','+01:00','gnq.svg'), ('GW','GNB','Guinea-Bisáu','Africa','Portuguese','','gnb.svg'), ('GN','GIN','Guinea','Africa','French','','gin.svg'), ('GY','GUY','Guyana','América','English','-04:00','guy.svg'), ('GF','GUF','Guayana Francesa','América','French','-03:00','guf.svg'), ('HT','HTI','Haití','América','French','-05:00','hti.svg'), ('HM','HMD','Islas Heard y McDonald','Oceanía','English','+05:00','hmd.svg'), ('HN','HND','Honduras','América','Spanish','-06:00','hnd.svg'), ('HR','HRV','Croacia','Europa','Croatian','+01:00','hrv.svg'), ('ID','IDN','Indonesia','Asia','Indonesian','+07:00','idn.svg'), ('IS','ISL','Islandia','Europa','Icelandic','','isl.svg'), ('FK','FLK','Islas Malvinas','América','English','-04:00','flk.svg'), ('IM','IMN','Isla de Man','Europa','English','+00:00','imn.svg'), ('IT','ITA','Italia','Europa','Italian','+01:00','ita.svg'), ('JM','JAM','Jamaica','América','English','-05:00','jam.svg'), ('JE','JEY','Jersey','Europa','English','+01:00','jey.svg'), ('GL','GRL','Groenlandia','América','Kalaallisut','-04:00','grl.svg'), ('KH','KHM','Camboya','Asia','Khmer','+07:00','khm.svg'), ('KE','KEN','Kenia','Africa','English','+03:00','ken.svg'), ('KI','KIR','Kiribati','Oceanía','English','+12:00','kir.svg'), ('CF','CAF','República Centroafricana','Africa','French','+01:00','caf.svg'), ('KM','COM','Comoras','Africa','Arabic','+03:00','com.svg'), ('RE','REU','Reunión','Africa','French','+04:00','reu.svg'), ('LV','LVA','Letonia','Europa','Latvian','+02:00','lva.svg'), ('LS','LSO','Lesoto','Africa','English','+02:00','lso.svg'), ('LR','LBR','Liberia','Africa','English','','lbr.svg'), ('LI','LIE','Liechtenstein','Europa','German','+01:00','lie.svg'), ('LT','LTU','Lituania','Europa','Lithuanian','+02:00','ltu.svg'), ('LU','LUX','Luxemburgo','Europa','French','+01:00','lux.svg'), ('MG','MDG','Madagascar','Africa','French','+03:00','mdg.svg'), ('HU','HUN','Hungría','Europa','Hungarian','+01:00','hun.svg'), ('MH','MHL','Islas Marshall','Oceanía','English','+12:00','mhl.svg'), ('MW','MWI','Malaui','Africa','English','+02:00','mwi.svg'), ('MY','MYS','Malasia','Asia','Malaysian','+08:00','mys.svg'), ('MV','MDV','Maldivas','Asia','Divehi','+05:00','mdv.svg'), ('ML','MLI','Malí','Africa','French','','mli.svg'), ('MT','MLT','Malta','Europa','Maltese','+01:00','mlt.svg'), ('MQ','MTQ','Martinica','América','French','-04:00','mtq.svg'), ('MU','MUS','Mauricio','Africa','English','+04:00','mus.svg'), ('YT','MYT','Mayotte','Africa','French','+03:00','myt.svg'), ('MX','MEX','México','América','Spanish','-08:00','mex.svg'), ('FM','FSM','Micronesia','Oceanía','English','+10:00','fsm.svg'), ('MZ','MOZ','Mozambique','Africa','Portuguese','+02:00','moz.svg'), ('MD','MDA','Moldavia','Europa','Romanian','+02:00','mda.svg'), ('MC','MCO','Mónaco','Europa','French','+01:00','mco.svg'), ('MS','MSR','Montserrat','América','English','-04:00','msr.svg'), ('MM','MMR','Myanmar','Asia','Burmese','+06:30','mmr.svg'), ('NA','NAM','Namibia','Africa','English','+01:00','nam.svg'), ('NR','NRU','Nauru','Oceanía','English','+12:00','nru.svg'), ('NL','NLD','Países Bajos','Europa','Dh','-04:00','nld.svg'), ('BN','BRN','Brunéi','Asia','Malay','+08:00','brn.svg'), ('NZ','NZL','Nueva Zelanda','Oceanía','English','-11:00','nzl.svg'), ('NI','NIC','Nicaragua','América','Spanish','-06:00','nic.svg'), ('NE','NER','Níger','Africa','French','+01:00','ner.svg'), ('NG','NGA','Nigeria','Africa','English','+01:00','nga.svg'), ('NU','NIU','Niue','Oceanía','English','-11:00','niu.svg'), ('NF','NFK','Isla Norfolk','Oceanía','English','+11:30','nfk.svg'), ('NO','NOR','Noruega','Europa','Norwegian','+01:00','nor.svg'), ('MP','MNP','Islas Marianas del Norte','Oceanía','English','+10:00','mnp.svg'), ('NC','NCL','Nueva Caledonia','Oceanía','French','+11:00','ncl.svg'), ('UZ','UZB','Uzbekistán','Asia','Uzbek','+05:00','uzb.svg'), ('AT','AUT','Austria','Europa','German','+01:00','aut.svg'), ('PK','PAK','Pakistán','Asia','English','+05:00','pak.svg'), ('PW','PLW','Palaos','Oceanía','English','+09:00','plw.svg'), ('PA','PAN','Panamá','América','Spanish','-05:00','pan.svg'), ('PG','PNG','Papúa Nueva Guinea','Oceanía','English','+10:00','png.svg'), ('PY','PRY','Paraguay','América','Spanish','-04:00','pry.svg'), ('PE','PER','Perú','América','Spanish','-05:00','per.svg'), ('PH','PHL','Filipinas','Asia','English','+08:00','phl.svg'), ('PN','PCN','Islas Pitcairn','Oceanía','English','-08:00','pcn.svg'), ('PL','POL','Polonia','Europa','Polish','+01:00','pol.svg'), ('PF','PYF','Polinesia Francesa','Oceanía','French','-10:00','pyf.svg'), ('PT','PRT','Portugal','Europa','Portuguese','-01:00','prt.svg'), ('PR','PRI','Puerto Rico','América','Spanish','-04:00','pri.svg'), ('DO','DOM','República Dominicana','América','Spanish','-04:00','dom.svg'), ('XK','KOS','República de Kosovo','Europe','Albanian','+01:00','kos.svg'), ('CD','COD','Congo','Africa','French','+01:00','cod.svg'), ('CG','COG','República del Congo','Africa','French','+01:00','cog.svg'), ('RO','ROU','Rumania','Europa','Romanian','+02:00','rou.svg'), ('RW','RWA','Ruanda','Africa','Kinyarwanda','+02:00','rwa.svg'), ('SH','SHN','Santa Elena','Africa','English','+00:00','shn.svg'), ('KN','KNA','San Cristóbal y Nieves','América','English','-04:00','kna.svg'), ('LC','LCA','Santa Lucía','América','English','-04:00','lca.svg'), ('VC','VCT','San Vicente y las Granadinas','América','English','-04:00','vct.svg'), ('BL','BLM','San Bartolomé','América','French','-04:00','blm.svg'), ('MF','MAF','San Martín','América','English','-04:00','maf.svg'), ('PM','SPM','San Pedro y Miquelón','América','French','-03:00','spm.svg'), ('WS','WSM','Samoa','Oceanía','Samoan','+13:00','wsm.svg'), ('SM','SMR','San Marino','Europa','Italian','+01:00','smr.svg'), ('VA','VAT','Ciudad del Vaticano','Europa','Latin','+01:00','vat.svg'), ('ST','STP','Santo Tomé y Príncipe','Africa','Portuguese','','stp.svg'), ('CH','CHE','Suiza','Europa','German','+01:00','che.svg'), ('SN','SEN','Senegal','Africa','French','','sen.svg'), ('SC','SYC','Seychelles','Africa','French','+04:00','syc.svg'), ('AL','ALB','Albania','Europa','Albanian','+01:00','alb.svg'), ('SL','SLE','Sierra Leona','Africa','English','','sle.svg'), ('SG','SGP','Singapur','Asia','English','+08:00','sgp.svg'), ('SX','SXM','San Martín','América','Dh','-04:00','sxm.svg'), ('SI','SVN','Eslovenia','Europa','Slovene','+01:00','svn.svg'), ('SK','SVK','Eslovaquia','Europa','Slovak','+01:00','svk.svg'), ('SB','SLB','Islas Salomón','Oceanía','English','+11:00','slb.svg'), ('SO','SOM','Somalia','Africa','Somali','+03:00','som.svg'), ('ZA','ZAF','Sudáfrica','Africa','Afrikaans','+02:00','zaf.svg'), ('GS','SGS','Islas Georgias del Sur','América','English','-02:00','sgs.svg'), ('SS','SSD','Sudán del Sur','Africa','English','+03:00','ssd.svg'), ('LK','LKA','Sri Lanka','Asia','Sinhalese','+05:30','lka.svg'), ('FI','FIN','Finlandia','Europa','Finnish','+02:00','fin.svg'), ('SR','SUR','Surinam','América','Dh','-03:00','sur.svg'), ('SJ','SJM','Svalbard y Jan Mayen','Europa','Norwegian','+01:00','sjm.svg'), ('SE','SWE','Suecia','Europa','Swedish','+01:00','swe.svg'), ('SZ','SWZ','Suazilandia','Africa','English','+02:00','swz.svg'), ('TZ','TZA','Tanzania','Africa','Swahili','+03:00','tza.svg'), ('TD','TCD','Chad','Africa','French','+01:00','tcd.svg'), ('TF','ATF','Tierras Antárticas Francesas','Africa','French','+05:00','atf.svg'), ('TL','TLS','Timor Oriental','Asia','Portuguese','+09:00','tls.svg'), ('TG','TGO','Togo','Africa','French','','tgo.svg'), ('TK','TKL','Tokelau','Oceanía','English','+13:00','tkl.svg'), ('TO','TON','Tonga','Oceanía','English','+13:00','ton.svg'), ('TT','TTO','Trinidad y Tobago','América','English','-04:00','tto.svg'), ('TR','TUR','Turquía','Asia','Turkish','+03:00','tur.svg'), ('TM','TKM','Turkmenistán','Asia','Turkmen','+05:00','tkm.svg'), ('TC','TCA','Islas Turcas y Caicos','América','English','-04:00','tca.svg'), ('TV','TUV','Tuvalu','Oceanía','English','+12:00','tuv.svg'), ('UG','UGA','Uganda','Africa','English','+03:00','uga.svg'), ('GB','GBR','Reino Unido','Europa','English','-08:00','gbr.svg'), ('US','USA','Estados Unidos','América','English','-12:00','usa.svg'), ('UM','UMI','Islas Menores de EE.UU.','América','English','-11:00','umi.svg'), ('UY','URY','Uruguay','América','Spanish','-03:00','ury.svg'), ('VU','VUT','Vanuatu','Oceanía','Bislama','+11:00','vut.svg'), ('VE','VEN','Venezuela','América','Spanish','-04:00','ven.svg'), ('VN','VNM','Vietnam','Asia','Vietnamese','+07:00','vnm.svg'), ('VI','VIR','Islas Vírgenes de EE.UU.','América','English','-04:00','vir.svg'), ('WF','WLF','Wallis y Futuna','Oceanía','French','+12:00','wlf.svg'), ('ZM','ZMB','Zambia','Africa','English','+02:00','zmb.svg'), ('ZW','ZWE','Zimbabue','Africa','English','+02:00','zwe.svg'), ('GR','GRC','Grecia','Europa','Greek modern','+02:00','grc.svg'), ('CY','CYP','Chipre','Europa','Greek modern','+02:00','cyp.svg'), ('BY','BLR','Bielorrusia','Europa','Belarusian','+03:00','blr.svg'), ('BG','BGR','Bulgaria','Europa','Bulgarian','+02:00','bgr.svg'), ('KG','KGZ','Kirguistán','Asia','Kyrgyz','+06:00','kgz.svg'), ('KZ','KAZ','Kazajistán','Asia','Kazakh','+05:00','kaz.svg'), ('MK','MKD','Macedonia del Norte','Europa','Macedonian','+01:00','mkd.svg'), ('MN','MNG','Mongolia','Asia','Mongolian','+07:00','mng.svg'), ('RU','RUS','Rusia','Europa','Russian','+03:00','rus.svg'), ('RS','SRB','Serbia','Europa','Serbian','+01:00','srb.svg'), ('TJ','TJK','Tayikistán','Asia','Tajik','+05:00','tjk.svg'), ('UA','UKR','Ucrania','Europa','Ukrainian','+02:00','ukr.svg'), ('ME','MNE','Montenegro','Europa','Serbian','+01:00','mne.svg'), ('AM','ARM','Armenia','Asia','Armenian','+04:00','arm.svg'), ('GE','GEO','Georgia','Asia','Georgian','-05:00','geo.svg'), ('IL','ISR','Israel','Asia','Hebrew modern','+02:00','isr.svg'), ('AF','AFG','Afganistán','Asia','Pashto','+04:30','afg.svg'), ('JO','JOR','Jordania','Asia','Arabic','+03:00','jor.svg'), ('BH','BHR','Baréin','Asia','Arabic','+03:00','bhr.svg'), ('DZ','DZA','Argelia','Africa','Arabic','+01:00','dza.svg'), ('SD','SDN','Sudán','Africa','Arabic','+03:00','sdn.svg'), ('EH','ESH','República Árabe Saharaui','Africa','Arabic','+00:00','esh.svg'), ('IQ','IRQ','Irak','Asia','Arabic','+03:00','irq.svg'), ('SA','SAU','Arabia Saudita','Asia','Arabic','+03:00','sau.svg'), ('KW','KWT','Kuwait','Asia','Arabic','+03:00','kwt.svg'), ('MA','MAR','Marruecos','Africa','Arabic','','mar.svg'), ('YE','YEM','Yemen','Asia','Arabic','+03:00','yem.svg'), ('IR','IRN','Irán','Asia','Persian Farsi','+03:30','irn.svg'), ('TN','TUN','Túnez','Africa','Arabic','+01:00','tun.svg'), ('AE','ARE','Emiratos Árabes Unidos','Asia','Arabic','+04','are.svg'), ('SY','SYR','Siria','Asia','Arabic','+02:00','syr.svg'), ('OM','OMN','Omán','Asia','Arabic','+04:00','omn.svg'), ('PS','PSE','Palestina','Asia','Arabic','+02:00','pse.svg'), ('QA','QAT','Catar','Asia','Arabic','+03:00','qat.svg'), ('LB','LBN','Líbano','Asia','Arabic','+02:00','lbn.svg'), ('LY','LBY','Libia','Africa','Arabic','+01:00','lby.svg'), ('EG','EGY','Egipto','Africa','Arabic','+02:00','egy.svg'), ('MR','MRT','Mauritania','Africa','Arabic','','mrt.svg'), ('NP','NPL','Nepal','Asia','Nepali','+05:45','npl.svg'), ('IN','IND','India','Asia','Hindi','+05:30','ind.svg'), ('TH','THA','Tailandia','Asia','Thai','+07:00','tha.svg'), ('LA','LAO','Laos','Asia','Lao','+07:00','lao.svg'), ('ET','ETH','Etiopía','Africa','Amharic','+03:00','eth.svg'), ('ER','ERI','Eritrea','Africa','Tigrinya','+03:00','eri.svg'), ('KR','KOR','Corea del Sur','Asia','Korean','+09:00','kor.svg'), ('KP','PRK','Corea del Norte','Asia','Korean','+09:00','prk.svg'), ('CN','CHN','China','Asia','Chinese','+08:00','chn.svg'), ('JP','JPN','Japón','Asia','Japanese','+09:00','jpn.svg'), ('MO','MAC','Macao','Asia','Chinese','+08:00','mac.svg'), ('TW','TWN','Taiwán','Asia','Chinese','+08:00','twn.svg'), ('HK','HKG','Hong Kong','Asia','English','+08:00','hkg.svg')
+VALUES ('AX','ALA','Aland','Europa','Swedish','+02:00','ala.svg'), ('AS','ASM','Samoa Americana','Oceanía','English','-11:00','asm.svg'), ('AD','AND','Andorra','Europa','Catalan','+01:00','and.svg'), ('AO','AGO','Angola','Africa','Portuguese','+01:00','ago.svg'), ('AI','AIA','Anguila','América','English','-04:00','aia.svg'), ('AQ','ATA','Antártida','Polar','English','-03:00','ata.svg'), ('AG','ATG','Antigua y Barbuda','América','English','-04:00','atg.svg'), ('AR','ARG','Argentina','América','Spanish','-03:00','arg.svg'), ('AW','ABW','Aruba','América','Dh','-04:00','abw.svg'), ('AU','AUS','Australia','Oceanía','English','+05:00','aus.svg'), ('AZ','AZE','Azerbaiyán','Asia','Azerbaijani','+04:00','aze.svg'), ('BS','BHS','Bahamas','América','English','-05:00','bhs.svg'), ('BD','BGD','Bangladés','Asia','Bengali','+06:00','bgd.svg'), ('BB','BRB','Barbados','América','English','-04:00','brb.svg'), ('BE','BEL','Bélgica','Europa','Dh','+01:00','bel.svg'), ('BZ','BLZ','Belice','América','English','-06:00','blz.svg'), ('BJ','BEN','Benín','Africa','French','+01:00','ben.svg'), ('BM','BMU','Bermudas','América','English','-04:00','bmu.svg'), ('BO','BOL','Bolivia','América','Spanish','-04:00','bol.svg'), ('BQ','BES','Bonaire, San Eustaquio y Saba','América','Dh','-04:00','bes.svg'), ('BA','BIH','Bosnia y Herzegovina','Europa','Bosnian','+01:00','bih.svg'), ('BW','BWA','Botswana','Africa','English','+02:00','bwa.svg'), ('BV','BVT','Isla Bouvet','Polar','Norwegian','+01:00','bvt.svg'), ('BR','BRA','Brasil','América','Portuguese','-05:00','bra.svg'), ('IO','IOT','Territorio Británico Índico','Africa','English','+06:00','iot.svg'), ('VG','VGB','Islas Vírgenes Británicas','América','English','-04:00','vgb.svg'), ('BT','BTN','Bután','Asia','Dzongkha','+06:00','btn.svg'), ('BF','BFA','Burkina Faso','Africa','French','','bfa.svg'), ('BI','BDI','Burundi','Africa','French','+02:00','bdi.svg'), ('CV','CPV','Cabo Verde','Africa','Portuguese','-01:00','cpv.svg'), ('CM','CMR','Camerún','Africa','English','+01:00','cmr.svg'), ('CA','CAN','Canadá','América','English','-08:00','can.svg'), ('KY','CYM','Islas Caimán','América','English','-05:00','cym.svg'), ('CZ','CZE','República Checa','Europa','Czech','+01:00','cze.svg'), ('CL','CHL','Chile','América','Spanish','-06:00','chl.svg'), ('CX','CXR','Isla de Navidad','Oceanía','English','+07:00','cxr.svg'), ('CC','CCK','Islas Cocos','Oceanía','English','+06:30','cck.svg'), ('CO','COL','Colombia','América','Spanish','-05:00','col.svg'), ('CK','COK','Islas Cook','Oceanía','English','-10:00','cok.svg'), ('CR','CRI','Costa Rica','América','Spanish','-06:00','cri.svg'), ('CI','CIV','Costa de Marfil','Africa','French','','civ.svg'), ('CU','CUB','Cuba','América','Spanish','-05:00','cub.svg'), ('CW','CUW','Curazao','América','Dh','-04:00','cuw.svg'), ('DK','DNK','Dinamarca','Europa','Danish','-04:00','dnk.svg'), ('DE','DEU','Alemania','Europa','German','+01:00','deu.svg'), ('DJ','DJI','Yibuti','Africa','French','+03:00','dji.svg'), ('DM','DMA','Dominica','América','English','-04:00','dma.svg'), ('EC','ECU','Ecuador','América','Spanish','-06:00','ecu.svg'), ('EE','EST','Estonia','Europa','Estonian','+02:00','est.svg'), ('IE','IRL','Irlanda','Europa','Irish','','irl.svg'), ('SV','SLV','El Salvador','América','Spanish','-06:00','slv.svg'), ('ES','ESP','España','Europa','Spanish','','esp.svg'), ('FJ','FJI','Fiyi','Oceanía','English','+12:00','fji.svg'), ('FO','FRO','Islas Feroe','Europa','Faroese','+00:00','fro.svg'), ('FR','FRA','Francia','Europa','French','-10:00','fra.svg'), ('GA','GAB','Gabón','Africa','French','+01:00','gab.svg'), ('GM','GMB','Gambia','Africa','English','+00:00','gmb.svg'), ('GH','GHA','Ghana','Africa','English','','gha.svg'), ('GI','GIB','Gibraltar','Europa','English','+01:00','gib.svg'), ('GD','GRD','Granada','América','English','-04:00','grd.svg'), ('GP','GLP','Guadalupe','América','French','-04:00','glp.svg'), ('GU','GUM','Guam','Oceanía','English','+10:00','gum.svg'), ('GT','GTM','Guatemala','América','Spanish','-06:00','gtm.svg'), ('GG','GGY','Guernsey','Europa','English','+00:00','ggy.svg'), ('GQ','GNQ','Guinea Ecuatorial','Africa','Spanish','+01:00','gnq.svg'), ('GW','GNB','Guinea-Bisáu','Africa','Portuguese','','gnb.svg'), ('GN','GIN','Guinea','Africa','French','','gin.svg'), ('GY','GUY','Guyana','América','English','-04:00','guy.svg'), ('GF','GUF','Guayana Francesa','América','French','-03:00','guf.svg'), ('HT','HTI','Haití','América','French','-05:00','hti.svg'), ('HM','HMD','Islas Heard y McDonald','Oceanía','English','+05:00','hmd.svg'), ('HN','HND','Honduras','América','Spanish','-06:00','hnd.svg'), ('HR','HRV','Croacia','Europa','Croatian','+01:00','hrv.svg'), ('ID','IDN','Indonesia','Asia','Indonesian','+07:00','idn.svg'), ('IS','ISL','Islandia','Europa','Icelandic','','isl.svg'), ('FK','FLK','Islas Malvinas','América','English','-04:00','flk.svg'), ('IM','IMN','Isla de Man','Europa','English','+00:00','imn.svg'), ('IT','ITA','Italia','Europa','Italian','+01:00','ita.svg'), ('JM','JAM','Jamaica','América','English','-05:00','jam.svg'), ('JE','JEY','Jersey','Europa','English','+01:00','jey.svg'), ('GL','GRL','Groenlandia','América','Kalaallisut','-04:00','grl.svg'), ('KH','KHM','Camboya','Asia','Khmer','+07:00','khm.svg'), ('KE','KEN','Kenia','Africa','English','+03:00','ken.svg'), ('KI','KIR','Kiribati','Oceanía','English','+12:00','kir.svg'), ('CF','CAF','República Centroafricana','Africa','French','+01:00','caf.svg'), ('KM','COM','Comoras','Africa','Arabic','+03:00','com.svg'), ('RE','REU','Reunión','Africa','French','+04:00','reu.svg'), ('LV','LVA','Letonia','Europa','Latvian','+02:00','lva.svg'), ('LS','LSO','Lesoto','Africa','English','+02:00','lso.svg'), ('LR','LBR','Liberia','Africa','English','','lbr.svg'), ('LI','LIE','Liechtenstein','Europa','German','+01:00','lie.svg'), ('LT','LTU','Lituania','Europa','Lithuanian','+02:00','ltu.svg'), ('LU','LUX','Luxemburgo','Europa','French','+01:00','lux.svg'), ('MG','MDG','Madagascar','Africa','French','+03:00','mdg.svg'), ('HU','HUN','Hungría','Europa','Hungarian','+01:00','hun.svg'), ('MH','MHL','Islas Marshall','Oceanía','English','+12:00','mhl.svg'), ('MW','MWI','Malaui','Africa','English','+02:00','mwi.svg'), ('MY','MYS','Malasia','Asia','Malaysian','+08:00','mys.svg'), ('MV','MDV','Maldivas','Asia','Divehi','+05:00','mdv.svg'), ('ML','MLI','Malí','Africa','French','','mli.svg'), ('MT','MLT','Malta','Europa','Maltese','+01:00','mlt.svg'), ('MQ','MTQ','Martinica','América','French','-04:00','mtq.svg'), ('MU','MUS','Mauricio','Africa','English','+04:00','mus.svg'), ('YT','MYT','Mayotte','Africa','French','+03:00','myt.svg'), ('MX','MEX','México','América','Spanish','-08:00','mex.svg'), ('FM','FSM','Micronesia','Oceanía','English','+10:00','fsm.svg'), ('MZ','MOZ','Mozambique','Africa','Portuguese','+02:00','moz.svg'), ('MD','MDA','Moldavia','Europa','Romanian','+02:00','mda.svg'), ('MC','MCO','Mónaco','Europa','French','+01:00','mco.svg'), ('MS','MSR','Montserrat','América','English','-04:00','msr.svg'), ('MM','MMR','Myanmar','Asia','Burmese','+06:30','mmr.svg'), ('NA','NAM','Namibia','Africa','English','+01:00','nam.svg'), ('NR','NRU','Nauru','Oceanía','English','+12:00','nru.svg'), ('NL','NLD','Países Bajos','Europa','Dh','-04:00','nld.svg'), ('BN','BRN','Brunéi','Asia','Malay','+08:00','brn.svg'), ('NZ','NZL','Nueva Zelanda','Oceanía','English','-11:00','nzl.svg'), ('NI','NIC','Nicaragua','América','Spanish','-06:00','nic.svg'), ('NE','NER','Níger','Africa','French','+01:00','ner.svg'), ('NG','NGA','Nigeria','Africa','English','+01:00','nga.svg'), ('NU','NIU','Niue','Oceanía','English','-11:00','niu.svg'), ('NF','NFK','Isla Norfolk','Oceanía','English','+11:30','nfk.svg'), ('NO','NOR','Noruega','Europa','Norwegian','+01:00','nor.svg'), ('MP','MNP','Islas Marianas del Norte','Oceanía','English','+10:00','mnp.svg'), ('NC','NCL','Nueva Caledonia','Oceanía','French','+11:00','ncl.svg'), ('UZ','UZB','Uzbekistán','Asia','Uzbek','+05:00','uzb.svg'), ('AT','AUT','Austria','Europa','German','+01:00','aut.svg'), ('PK','PAK','Pakistán','Asia','English','+05:00','pak.svg'), ('PW','PLW','Palaos','Oceanía','English','+09:00','plw.svg'), ('PA','PAN','Panamá','América','Spanish','-05:00','pan.svg'), ('PG','PNG','Papúa Nueva Guinea','Oceanía','English','+10:00','png.svg'), ('PY','PRY','Paraguay','América','Spanish','-04:00','pry.svg'), ('PE','PER','Perú','América','Spanish','-05:00','per.svg'), ('PH','PHL','Filipinas','Asia','English','+08:00','phl.svg'), ('PN','PCN','Islas Pitcairn','Oceanía','English','-08:00','pcn.svg'), ('PL','POL','Polonia','Europa','Polish','+01:00','pol.svg'), ('PF','PYF','Polinesia Francesa','Oceanía','French','-10:00','pyf.svg'), ('PT','PRT','Portugal','Europa','Portuguese','-01:00','prt.svg'), ('PR','PRI','Puerto Rico','América','Spanish','-04:00','pri.svg'), ('DO','DOM','República Dominicana','América','Spanish','-04:00','dom.svg'), ('XK','KOS','República de Kosovo','Europe','Albanian','+01:00','kos.svg'), ('CD','COD','Congo','Africa','French','+01:00','cod.svg'), ('CG','COG','República del Congo','Africa','French','+01:00','cog.svg'), ('RO','ROU','Rumania','Europa','Romanian','+02:00','rou.svg'), ('RW','RWA','Ruanda','Africa','Kinyarwanda','+02:00','rwa.svg'), ('SH','SHN','Santa Elena','Africa','English','+00:00','shn.svg'), ('KN','KNA','San Cristóbal y Nieves','América','English','-04:00','kna.svg'), ('LC','LCA','Santa Lucía','América','English','-04:00','lca.svg'), ('VC','VCT','San Vicente y las Granadinas','América','English','-04:00','vct.svg'), ('BL','BLM','San Bartolomé','América','French','-04:00','blm.svg'), ('MF','MAF','San Martín','América','English','-04:00','maf.svg'), ('PM','SPM','San Pedro y Miquelón','América','French','-03:00','spm.svg'), ('WS','WSM','Samoa','Oceanía','Samoan','+13:00','wsm.svg'), ('SM','SMR','San Marino','Europa','Italian','+01:00','smr.svg'), ('VA','VAT','Ciudad del Vaticano','Europa','Latin','+01:00','vat.svg'), ('ST','STP','Santo Tomé y Príncipe','Africa','Portuguese','','stp.svg'), ('CH','CHE','Suiza','Europa','German','+01:00','che.svg'), ('SN','SEN','Senegal','Africa','French','','sen.svg'), ('SC','SYC','Seychelles','Africa','French','+04:00','syc.svg'), ('AL','ALB','Albania','Europa','Albanian','+01:00','alb.svg'), ('SL','SLE','Sierra Leona','Africa','English','','sle.svg'), ('SG','SGP','Singapur','Asia','English','+08:00','sgp.svg'), ('SX','SXM','San Martín','América','Dh','-04:00','sxm.svg'), ('SI','SVN','Eslovenia','Europa','Slovene','+01:00','svn.svg'), ('SK','SVK','Eslovaquia','Europa','Slovak','+01:00','svk.svg'), ('SB','SLB','Islas Salomón','Oceanía','English','+11:00','slb.svg'), ('SO','SOM','Somalia','Africa','Somali','+03:00','som.svg'), ('ZA','ZAF','Sudáfrica','Africa','Afrikaans','+02:00','zaf.svg'), ('GS','SGS','Islas Georgias del Sur','América','English','-02:00','sgs.svg'), ('SS','SSD','Sudán del Sur','Africa','English','+03:00','ssd.svg'), ('LK','LKA','Sri Lanka','Asia','Sinhalese','+05:30','lka.svg'), ('FI','FIN','Finlandia','Europa','Finnish','+02:00','fin.svg'), ('SR','SUR','Surinam','América','Dh','-03:00','sur.svg'), ('SJ','SJM','Svalbard y Jan Mayen','Europa','Norwegian','+01:00','sjm.svg'), ('SE','SWE','Suecia','Europa','Swedish','+01:00','swe.svg'), ('SZ','SWZ','Suazilandia','Africa','English','+02:00','swz.svg'), ('TZ','TZA','Tanzania','Africa','Swahili','+03:00','tza.svg'), ('TD','TCD','Chad','Africa','French','+01:00','tcd.svg'), ('TF','ATF','Tierras Antárticas Francesas','Africa','French','+05:00','atf.svg'), ('TL','TLS','Timor Oriental','Asia','Portuguese','+09:00','tls.svg'), ('TG','TGO','Togo','Africa','French','','tgo.svg'), ('TK','TKL','Tokelau','Oceanía','English','+13:00','tkl.svg'), ('TO','TON','Tonga','Oceanía','English','+13:00','ton.svg'), ('TT','TTO','Trinidad y Tobago','América','English','-04:00','tto.svg'), ('TR','TUR','Turquía','Asia','Turkish','+03:00','tur.svg'), ('TM','TKM','Turkmenistán','Asia','Turkmen','+05:00','tkm.svg'), ('TC','TCA','Islas Turcas y Caicos','América','English','-04:00','tca.svg'), ('TV','TUV','Tuvalu','Oceanía','English','+12:00','tuv.svg'), ('UG','UGA','Uganda','Africa','English','+03:00','uga.svg'), ('GB','GBR','Reino Unido','Europa','English','-08:00','gbr.svg'), ('US','USA','Estados Unidos','América','English','-12:00','usa.svg'), ('UM','UMI','Islas Menores de EE.UU.','América','English','-11:00','umi.svg'), ('UY','URY','Uruguay','América','Spanish','-03:00','ury.svg'), ('VU','VUT','Vanuatu','Oceanía','Bislama','+11:00','vut.svg'), ('VE','VEN','Venezuela','América','Spanish','-04:00','ven.svg'), ('VN','VNM','Vietnam','Asia','Vietnamese','+07:00','vnm.svg'), ('VI','VIR','Islas Vírgenes de EE.UU.','América','English','-04:00','vir.svg'), ('WF','WLF','Wallis y Futuna','Oceanía','French','+12:00','wlf.svg'), ('ZM','ZMB','Zambia','Africa','English','+02:00','zmb.svg'), ('ZW','ZWE','Zimbabue','Africa','English','+02:00','zwe.svg'), ('GR','GRC','Grecia','Europa','Greek modern','+02:00','grc.svg'), ('CY','CYP','Chipre','Europa','Greek modern','+02:00','cyp.svg'), ('BY','BLR','Bielorrusia','Europa','Belarusian','+03:00','blr.svg'), ('BG','BGR','Bulgaria','Europa','Bulgarian','+02:00','bgr.svg'), ('KG','KGZ','Kirguistán','Asia','Kyrgyz','+06:00','kgz.svg'), ('KZ','KAZ','Kazajistán','Asia','Kazakh','+05:00','kaz.svg'), ('MK','MKD','Macedonia del Norte','Europa','Macedonian','+01:00','mkd.svg'), ('MN','MNG','Mongolia','Asia','Mongolian','+07:00','mng.svg'), ('RU','RUS','Rusia','Europa','Russian','+03:00','rus.svg'), ('RS','SRB','Serbia','Europa','Serbian','+01:00','srb.svg'), ('TJ','TJK','Tayikistán','Asia','Tajik','+05:00','tjk.svg'), ('UA','UKR','Ucrania','Europa','Ukrainian','+02:00','ukr.svg'), ('ME','MNE','Montenegro','Europa','Serbian','+01:00','mne.svg'), ('AM','ARM','Armenia','Asia','Armenian','+04:00','arm.svg'), ('GE','GEO','Georgia','Asia','Georgian','-05:00','geo.svg'), ('IL','ISR','Israel','Asia','Hebrew modern','+02:00','isr.svg'), ('AF','AFG','Afganistán','Asia','Pashto','+04:30','afg.svg'), ('JO','JOR','Jordania','Asia','Arabic','+03:00','jor.svg'), ('BH','BHR','Baréin','Asia','Arabic','+03:00','bhr.svg'), ('DZ','DZA','Argelia','Africa','Arabic','+01:00','dza.svg'), ('SD','SDN','Sudán','Africa','Arabic','+03:00','sdn.svg'), ('EH','ESH','República Árabe Saharaui','Africa','Arabic','+00:00','esh.svg'), ('IQ','IRQ','Irak','Asia','Arabic','+03:00','irq.svg'), ('SA','SAU','Arabia Saudita','Asia','Arabic','+03:00','sau.svg'), ('KW','KWT','Kuwait','Asia','Arabic','+03:00','kwt.svg'), ('MA','MAR','Marruecos','Africa','Arabic','','mar.svg'), ('YE','YEM','Yemen','Asia','Arabic','+03:00','yem.svg'), ('IR','IRN','Irán','Asia','Persian Farsi','+03:30','irn.svg'), ('TN','TUN','Túnez','Africa','Arabic','+01:00','tun.svg'), ('AE','ARE','Emiratos Árabes Unidos','Asia','Arabic','+04','are.svg'), ('SY','SYR','Siria','Asia','Arabic','+02:00','syr.svg'), ('OM','OMN','Omán','Asia','Arabic','+04:00','omn.svg'), ('PS','PSE','Palestina','Asia','Arabic','+02:00','pse.svg'), ('QA','QAT','Catar','Asia','Arabic','+03:00','qat.svg'), ('LB','LBN','Líbano','Asia','Arabic','+02:00','lbn.svg'), ('LY','LBY','Libia','Africa','Arabic','+01:00','lby.svg'), ('EG','EGY','Egipto','Africa','Arabic','+02:00','egy.svg'), ('MR','MRT','Mauritania','Africa','Arabic','','mrt.svg'), ('NP','NPL','Nepal','Asia','Nepali','+05:45','npl.svg'), ('IN','IND','India','Asia','Hindi','+05:30','ind.svg'), ('TH','THA','Tailandia','Asia','Thai','+07:00','tha.svg'), ('LA','LAO','Laos','Asia','Lao','+07:00','lao.svg'), ('ET','ETH','Etiopía','Africa','Amharic','+03:00','eth.svg'), ('ER','ERI','Eritrea','Africa','Tigrinya','+03:00','eri.svg'), ('KR','KOR','Corea del Sur','Asia','Korean','+09:00','kor.svg'), ('KP','PRK','Corea del Norte','Asia','Korean','+09:00','prk.svg'), ('CN','CHN','China','Asia','Chinese','+08:00','chn.svg'), ('JP','JPN','Japón','Asia','Japanese','+09:00','jpn.svg'), ('MO','MAC','Macao','Asia','Chinese','+08:00','mac.svg'), ('TW','TWN','Taiwán','Asia','Chinese','+08:00','twn.svg'), ('HK','HKG','Hong Kong','Asia','English','+08:00','hkg.svg'), ('NN','NNN','- Sin un país de referencia -','-','-','00:00','-')
 ;
 CREATE TABLE idiomas (
 	id VARCHAR(2) NOT NULL UNIQUE,
@@ -33,11 +33,11 @@ CREATE TABLE vocacion_iglesia (
 INSERT INTO vocacion_iglesia (id, orden, nombre)
 VALUES 
 ('PC', 0, 'Computadora'),
-('LS', 1, 'Laico/a soltero'),
-('LC', 2, 'Laico/a casado'),
-('RC', 3, 'Religioso/a consagrado'),
-('SC', 4, 'Sacerd./Obispo/Card.'),
-('PP', 5, 'Papa')
+('LS', 2, 'Laico/a soltero/a'),
+('LC', 3, 'Laico/a casado/a'),
+('RC', 4, 'Religioso/a consagrado/a'),
+('PP', 7, 'Papa'),
+('OT', 9, 'Otro')
 ;
 CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -77,43 +77,6 @@ VALUES
 (3, 3, 'Datos perennes OK'), 
 (4, 4, 'Datos editables OK')
 ;
-CREATE TABLE USUARIOS (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	email VARCHAR(100) NOT NULL UNIQUE,
-	contrasena VARCHAR(100) NOT NULL,
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
-	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
-	autorizado_fa BOOLEAN NULL DEFAULT 0,
-	nombre VARCHAR(50) NULL,
-	apellido VARCHAR(50) NULL,
-	apodo VARCHAR(50) NULL,
-	avatar VARCHAR(100) DEFAULT '-',
-	fecha_nacimiento DATE NULL,
-	sexo_id VARCHAR(1) NULL,
-	pais_id VARCHAR(2) NULL,
-	vocacion_id VARCHAR(2) NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
-	completado_en DATETIME NULL,
-	editado_en DATETIME NULL,
-	aut_data_entry BOOLEAN DEFAULT 0,
-	borrado BOOLEAN NULL DEFAULT 0,
-	borrado_en DATETIME NULL,
-	borrado_motivo VARCHAR(500) NULL,
-	borrado_por_id INT UNSIGNED NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
-	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
-	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
-	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, vocacion_id, creado_en, completado_en)
-VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
-;
 CREATE TABLE penalizaciones_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -131,20 +94,6 @@ VALUES
 (5, 5, 400, 'Pornografía primera vez', 'Pornografía, primera vez'),
 (6, 6, 1000, 'Pornografía reincidente', 'Pornografía, reincidente')
 ;
-CREATE TABLE us_penalizaciones (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
-	usuario_id INT UNSIGNED NOT NULL,
-	rol_usuario_id TINYINT UNSIGNED NOT NULL,
-	penalizado_por_id INT UNSIGNED NULL,
-	penalizacion_id TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(500) NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
-	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (penalizacion_id) REFERENCES penalizaciones_motivos(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE categorias (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -231,6 +180,145 @@ CREATE TABLE status_registro (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO status_registro (id, nombre)
 VALUES (1, 'Pendiente'), (2, 'Aprobada'), (3, 'Borrada');
+CREATE TABLE epocas_estreno (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	ano_comienzo SMALLINT UNSIGNED NOT NULL,
+	ano_fin SMALLINT UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
+VALUES 
+(4, 1, '2015 - Presente', 2015, 2025),
+(3, 2, '2000 - 2014', 2000, 2014), 
+(2, 3, '1970 - 1999', 1970, 1999), 
+(1, 4, 'Antes de 1970', 1900, 1969)
+;
+CREATE TABLE si_no_parcial (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(10) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO si_no_parcial (id, nombre)
+VALUES (1, 'SI'), (2, 'Parcial'), (3, 'NO');
+CREATE TABLE cal_fe_valores (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_fe_valores (id, orden, valor, nombre)
+VALUES 
+(5, 1, 100, 'Mucho'),
+(4, 2, 75, 'Sí'),
+(3, 3, 50, 'Moderado'),
+(2, 4, 25, 'Poco'),
+(1, 5, 0, 'No')
+;
+CREATE TABLE cal_entretiene (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_entretiene (id, orden, valor, nombre)
+VALUES 
+(5, 1, 100, 'Mucho'),
+(4, 2, 75, 'Sí'),
+(3, 3, 50, 'Moderado'),
+(2, 4, 25, 'Poco'),
+(1, 5, 0, 'No')
+;
+CREATE TABLE cal_calidad_tecnica (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	valor TINYINT UNSIGNED NOT NULL,	
+	nombre VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
+VALUES 
+(3, 1, 100, 'Sin problemas'),
+(2, 2, 50, 'Afecta un poco el disfrute'),
+(1, 3, 0, 'Complica el disfrute')
+;
+CREATE TABLE interes_en_prod (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO interes_en_prod (id, orden, nombre)
+VALUES 
+(3, 1, 'Recordame que quiero verla'),
+(2, 2, 'Ya la vi'),
+(1, 3, 'Prefiero que no me la recomienden')
+;
+
+CREATE TABLE USUARIOS (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	contrasena VARCHAR(100) NOT NULL,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	autorizado_fa BOOLEAN NULL DEFAULT 0,
+	nombre VARCHAR(50) NULL,
+	apellido VARCHAR(50) NULL,
+	apodo VARCHAR(50) NULL,
+	avatar VARCHAR(100) DEFAULT '-',
+	fecha_nacimiento DATE NULL,
+	sexo_id VARCHAR(1) NULL,
+	pais_id VARCHAR(2) NULL,
+	vocacion_id VARCHAR(2) NULL,
+	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	completado_en DATETIME NULL,
+	editado_en DATETIME NULL,
+	aut_data_entry BOOLEAN DEFAULT 0,
+	borrado BOOLEAN NULL DEFAULT 0,
+	borrado_en DATETIME NULL,
+	borrado_motivo VARCHAR(500) NULL,
+	borrado_por_id INT UNSIGNED NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
+	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
+	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
+	FOREIGN KEY (pais_id) REFERENCES paises(id),
+	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE us_penalizaciones (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	usuario_id INT UNSIGNED NOT NULL,
+	rol_usuario_id TINYINT UNSIGNED NOT NULL,
+	penalizado_por_id INT UNSIGNED NULL,
+	penalizacion_id TINYINT UNSIGNED NOT NULL,
+	comentario VARCHAR(500) NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
+	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (penalizacion_id) REFERENCES penalizaciones_motivos(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE us_filtros_personales_cabecera (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	usuario_id INT UNSIGNED NOT NULL,
+	palabras_clave VARCHAR(100),
+	PRIMARY KEY (id),
+	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE us_filtros_personales_campos (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	filtro_cabecera_id INT UNSIGNED,
+	campo_id VARCHAR(100),
+	valor_id SMALLINT UNSIGNED,
+	PRIMARY KEY (id),
+	FOREIGN KEY (filtro_cabecera_id) REFERENCES us_filtros_personales_cabecera(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE historicos_personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
@@ -238,7 +326,7 @@ CREATE TABLE historicos_personajes (
 	pais_id VARCHAR(2) NULL,
 	
 	catolico BOOLEAN NOT NULL,
-	en_canonizacion BOOLEAN NULL,
+	canonizacion BOOLEAN NULL,
 	vocacion_id VARCHAR(2) NULL,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
@@ -269,11 +357,6 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, en_canonizacion, vocacion_id, pais_id)
-VALUES 
-(1, 'Juan Pablo II', 296, 1, 1, 'SC', 'PL'),
-(2, 'Juan Pablo III', 296, 1, 1, 'SC', 'PL')
-;
 CREATE TABLE historicos_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
@@ -307,91 +390,6 @@ CREATE TABLE historicos_hechos (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre)
-VALUES 
-(1, 249, 'Guerra Mundial - 2a (segunda)'),
-(2, 100, 'Semana Santa'),
-(3, 105, 'Semana Santa - Viernes Santo'),
-(4, 107, 'Semana Santa - Resurrección'),
-(5, 150, 'Pentecostés')
-;
-CREATE TABLE epocas_estreno (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(20) NOT NULL,
-	ano_comienzo SMALLINT UNSIGNED NOT NULL,
-	ano_fin SMALLINT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
-VALUES 
-(4, 1, '2015 - Presente', 2015, 2025),
-(3, 2, '2000 - 2014', 2000, 2014), 
-(2, 3, '1970 - 1999', 1970, 1999), 
-(1, 4, 'Antes de 1970', 1900, 1969)
-;
-CREATE TABLE si_no_parcial (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(10) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO si_no_parcial (id, nombre)
-VALUES (1, 'SI'), (2, 'Parcial'), (3, 'NO');
-CREATE TABLE cal_fe_valores (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	valor TINYINT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_fe_valores (id, orden, valor, nombre)
-VALUES 
-(5, 1, 10, 'Mucho'),
-(4, 2, 8, 'Sí'),
-(3, 3, 5, 'Moderado'),
-(2, 4, 2, 'Poco'),
-(1, 5, 0, 'No')
-;
-CREATE TABLE cal_entretiene (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	valor TINYINT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_entretiene (id, orden, valor, nombre)
-VALUES 
-(5, 1, 10, 'Mucho'),
-(4, 2, 8, 'Sí'),
-(3, 3, 5, 'Moderado'),
-(2, 4, 2, 'Poco'),
-(1, 5, 0, 'No')
-;
-CREATE TABLE cal_calidad_tecnica (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	valor TINYINT UNSIGNED NOT NULL,	
-	nombre VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_calidad_tecnica (id, orden, valor, nombre)
-VALUES 
-(3, 1, 10, 'Sin problemas'),
-(2, 2, 5, 'Afecta un poco el disfrute'),
-(1, 3, 0, 'Complica el disfrute')
-;
-CREATE TABLE interes_en_prod (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL UNIQUE,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO interes_en_prod (id, orden, nombre)
-VALUES 
-(3, 1, 'Recordame que quiero verla'),
-(2, 2, 'Ya la vi'),
-(1, 3, 'Prefiero que no me la recomienden')
-;
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -403,7 +401,7 @@ CREATE TABLE PROD_peliculas (
 	nombre_castellano VARCHAR(50) NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	ano_estreno SMALLINT UNSIGNED NOT NULL,
-	idioma_original VARCHAR(20) NOT NULL,
+	idioma_original_id VARCHAR(2) NOT NULL,
 	director VARCHAR(100) NOT NULL,
 	guion VARCHAR(100) NOT NULL,
 	musica VARCHAR(100) NOT NULL,
@@ -444,6 +442,7 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
@@ -466,7 +465,7 @@ CREATE TABLE PROD_colecciones (
 	nombre_castellano VARCHAR(100) NOT NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	ano_fin SMALLINT UNSIGNED NULL,
-	idioma_original VARCHAR(20) NOT NULL,
+	idioma_original_id VARCHAR(2) NOT NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
 	cant_capitulos SMALLINT UNSIGNED NULL,
 	director VARCHAR(100) NOT NULL,
@@ -534,7 +533,7 @@ CREATE TABLE PROD_capitulos (
 	nombre_castellano VARCHAR(50) NULL,
 	duracion TINYINT UNSIGNED NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
-	idioma_original VARCHAR(20) NOT NULL,
+	idioma_original_id VARCHAR(2) NOT NULL,
 	director VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
 	musica VARCHAR(100) NULL,
@@ -575,6 +574,7 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -636,19 +636,30 @@ CREATE TABLE pr_relacion_pais_prod (
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE us_filtros_personales_cabecera (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100) NOT NULL,
-	usuario_id INT UNSIGNED NOT NULL,
-	palabras_clave VARCHAR(100),
-	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE us_filtros_personales_campos (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	filtro_cabecera_id INT UNSIGNED,
-	campo_id VARCHAR(100),
-	valor_id SMALLINT UNSIGNED,
-	PRIMARY KEY (id),
-	FOREIGN KEY (filtro_cabecera_id) REFERENCES us_filtros_personales_cabecera(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, vocacion_id, creado_en, completado_en)
+VALUES 
+(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
+;
+
+INSERT INTO historicos_personajes (id, nombre, catolico, canonizacion, vocacion_id, pais_id )
+VALUES 
+(1, 'Jesús', 1, 1, 'OT', 'NN')
+;
+
+INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, canonizacion, vocacion_id, pais_id)
+VALUES 
+(10, 'Juan Pablo II', 296, 1, 1, 'PP', 'PL')
+;
+
+INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre)
+VALUES 
+(1, 249, 'Guerra Mundial - 2a (segunda)'),
+(2, 100, 'Semana Santa'),
+(3, 105, 'Semana Santa - Viernes Santo'),
+(4, 107, 'Semana Santa - Resurrección'),
+(5, 150, 'Pentecostés')
+;
+
