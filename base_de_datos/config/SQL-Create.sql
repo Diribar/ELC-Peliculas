@@ -323,11 +323,6 @@ CREATE TABLE historicos_personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	pais_id VARCHAR(2) NULL,
-	
-	catolico BOOLEAN NOT NULL,
-	canonizacion BOOLEAN NULL,
-	vocacion_id VARCHAR(2) NULL,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -347,8 +342,6 @@ CREATE TABLE historicos_personajes (
 	
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
-	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -361,7 +354,6 @@ CREATE TABLE historicos_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	pais_id VARCHAR(2) NULL,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -381,7 +373,6 @@ CREATE TABLE historicos_hechos (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
-	FOREIGN KEY (pais_id) REFERENCES paises(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -418,6 +409,9 @@ CREATE TABLE PROD_peliculas (
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
+	fe_valores TINYINT UNSIGNED NOT NULL,
+	entretiene TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica TINYINT UNSIGNED NOT NULL,
 	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
@@ -484,7 +478,10 @@ CREATE TABLE PROD_colecciones (
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
-	calificacion TINYINT UNSIGNED NULL,
+	fe_valores TINYINT UNSIGNED NOT NULL,
+	entretiene TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica TINYINT UNSIGNED NOT NULL,
+	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -550,7 +547,10 @@ CREATE TABLE PROD_capitulos (
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
-	calificacion TINYINT UNSIGNED NULL,
+	fe_valores TINYINT UNSIGNED NOT NULL,
+	entretiene TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica TINYINT UNSIGNED NOT NULL,
+	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creada_por_id INT UNSIGNED NOT NULL,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -638,22 +638,20 @@ CREATE TABLE pr_relacion_pais_prod (
 
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, vocacion_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'startup', '', 'startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'automatizado', '', 'automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
 (10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 
-INSERT INTO historicos_personajes (id, nombre, catolico, canonizacion, vocacion_id, pais_id )
+INSERT INTO historicos_personajes (id, nombre )
 VALUES 
-(1, 'Jesús', 1, 1, 'OT', 'NN')
+(1, 'Jesús')
 ;
-
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, catolico, canonizacion, vocacion_id, pais_id)
+INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id)
 VALUES 
-(10, 'Juan Pablo II', 296, 1, 1, 'PP', 'PL')
+(10, 'Juan Pablo II', 296)
 ;
-
 INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre)
 VALUES 
 (1, 249, 'Guerra Mundial - 2a (segunda)'),
@@ -662,4 +660,3 @@ VALUES
 (4, 107, 'Semana Santa - Resurrección'),
 (5, 150, 'Pentecostés')
 ;
-
