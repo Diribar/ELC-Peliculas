@@ -119,7 +119,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
-			entidad_TMDB:"collection",
+			entidad_TMDB: "collection",
 			...datos,
 		};
 		// Obtener las API
@@ -212,7 +212,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
-			entidad_TMDB:"tv",
+			entidad_TMDB: "tv",
 			...datos,
 		};
 		// Obtener las API
