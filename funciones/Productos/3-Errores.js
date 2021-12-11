@@ -28,12 +28,7 @@ module.exports = {
 			if (!dato.en_colec_id) {
 				errores += {
 					mensaje: "agregarColeccion",
-					// Datos originales
-					peli_TMDB_id: dato.TMDB_id,
-					//peli_nombre: dato.nombre_castellano,
-					// Datos nuevos
 					colec_TMDB_id: dato.en_colec_TMDB_id,
-					colec_nombre: dato.en_colec_nombre,
 				};
 			} else {
 				errores += {

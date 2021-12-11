@@ -103,7 +103,7 @@ module.exports = {
 		// 4. Si es una película de una colección que no existe en la BD, cambiar la película por la colección
 		if (errores.mensaje == "agregarColeccion")
 			infoTMDBparaDD = await procesarProd.infoTMDBparaDD_collection({
-				TMDB_id: req.body.TMDB_id,
+				TMDB_id: errores.colec_TMDB_id,
 			});
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoTMDBparaDD;
