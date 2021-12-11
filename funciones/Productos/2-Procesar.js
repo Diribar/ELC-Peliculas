@@ -8,7 +8,8 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	// MOVIES *****************************
 	infoTMDBparaDD_movie: async (datos) => {
-		let datosIniciales = {fuente: "TMDB", ...datos};
+		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
+		let datosIniciales = {fuente: "TMDB", entidad_TMDB: "movie", ...datos};
 		// Obtener las API
 		let general = detailsTMDB("movie", datos.TMDB_id);
 		let credits = creditsTMDB("movie", datos.TMDB_id);
@@ -105,9 +106,9 @@ module.exports = {
 				campo: "TMDB_id",
 				valor: datos.colec_TMDB_id,
 			});
-			if (datos.colec_id) return datos
+			if (datos.colec_id) return datos;
 		}
-		return datos
+		return datos;
 	},
 
 	// COLLECTIONS ************************
@@ -118,6 +119,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
+			entidad_TMDB:"collection",
 			...datos,
 		};
 		// Obtener las API
@@ -210,6 +212,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
+			entidad_TMDB:"tv",
 			...datos,
 		};
 		// Obtener las API

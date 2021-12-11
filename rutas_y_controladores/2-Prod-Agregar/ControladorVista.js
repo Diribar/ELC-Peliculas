@@ -90,21 +90,21 @@ module.exports = {
 	},
 
 	desambiguarGuardar: async (req, res) => {
+		//return res.send(req.body)
 		// 1. Obtener más información del producto
 		infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoTMDBparaDD);
-		// 3. Si no supera el filtro anterior, redireccionar
-		if (errores.hay) {
-			req.session.erroresDES = errores;
-			// Si la colección está creada, pero su capítulo NO, actualizar los capítulos
-			if (errores.mensaje == "agregarCapitulos")
-				await procesarProd.agregarCapitulosNuevos(
-					errores.en_colec_id,
-					errores.colec_TMDB_id
-				);
+		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
+		if (errores.mensaje == "agregarCapitulos") {
+			await procesarProd.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
 			return res.redirect("/producto/agregar/desambiguar");
 		}
+		// 4. Si es una película de una colección que no existe en la BD, cambiar la película por la colección
+		if (errores.mensaje == "agregarColeccion")
+			infoTMDBparaDD = await procesarProd.infoTMDBparaDD_collection({
+				TMDB_id: req.body.TMDB_id,
+			});
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoTMDBparaDD;
 		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: 24 * 60 * 60 * 1000});
@@ -426,7 +426,7 @@ module.exports = {
 			"id",
 			req.body.calidad_tecnica_id
 		).then((n) => n.valor);
-		calificacion = (fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2);
+		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// Preparar la info para el siguiente paso
 		req.session.confirmar = {
 			...req.session.datosPers,

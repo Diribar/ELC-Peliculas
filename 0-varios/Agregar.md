@@ -1,5 +1,4 @@
 DESAMBIGUAR
-- FE: detectar si una película pertenece a una colección y mostrar el resultado
 - BE Colecciones:
     - Agregar 
         - nombre_original

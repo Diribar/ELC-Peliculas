@@ -21,15 +21,18 @@
 					<p><em><%= prod_nuevo.nombre_castellano %></em></p>	
 				</div>
 				<!-- Coleccion -->
-				<% if (errores && prod_nuevo.entidad_TMDB == "movie" && prod_nuevo.TMDB_id == errores.peli_TMDB_id) { %>
-					<div id="mensaje">
-						<p id="colec_TMDB_id" class="ocultar"><%= errores.colec_TMDB_id %></p>
-						<p>Si la elejís, serás redirigido para cargar la colección:</p>
-						<p id="colec_nombre"><%= errores.colec_nombre %></p>
-					</div>
-				<% } %>
+				<div id="coleccion" class="ocultar">
+					<p>Si la elejís, serás redirigido para cargar la colección:</p>
+					<p id="colec_nombre"></p>
+				</div>
 			</section>
 		</button>
+		<!-- Mensaje de Error -->
+		<i class="fas fa-times-circle ocultar">
+			<span class="mensajeError">
+				<p>Esta película pertenece a una colección, que no figura en nuestra BD. Para avanzar, podés agregar la colección y la película se agregará automáticamente.</p>
+			</span>
+		</i>
 	</form>
 </li>
 <% } %>
