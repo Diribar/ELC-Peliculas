@@ -14,6 +14,7 @@ module.exports = async (entidad_TMDB, TMDB_id) => {
 		season = "/season/" + entidad_TMDB;
 		entidad_TMDB = "tv";
 	} else season = "";
+	
 	// Generar la url de consulta
 	let url =
 		"https://api.themoviedb.org/3/" +
@@ -23,7 +24,7 @@ module.exports = async (entidad_TMDB, TMDB_id) => {
 		season +
 		"?api_key=" +
 		API_key +
-		"&language=es" +
+		"&language=es-ES" +
 		(entidad_TMDB == "movie" ? "&append_to_response=credits" : "");
 		// Se usa "credits", porque mejora el resultado de la API
 	// BUSCAR LA INFO
