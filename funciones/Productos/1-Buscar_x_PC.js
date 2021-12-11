@@ -103,6 +103,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			TMDB_id: m.id,
 			nombre_original,
 			nombre_castellano,
+			idioma_original_id: m.original_language,
 			lanzamiento: ano,
 			avatar: m.poster_path,
 			comentario: m.overview,
@@ -224,8 +225,8 @@ let averiguarSiYaEnBD = async (datos) => {
 			dato.entidad = "capitulos";
 			YaEnBD = await BD_varias.obtenerELC_id(dato);
 			if (YaEnBD) {
-				capitulo = await BD_varias.filtrarPorId("capitulos", YaEnBD);
-				coleccion = await BD_varias.filtrarPorId("colecciones", capitulo.coleccion_id);
+				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD);
+				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
 				datos.resultados[i].producto =
 					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';

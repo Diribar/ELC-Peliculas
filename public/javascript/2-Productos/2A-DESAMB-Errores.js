@@ -1,4 +1,4 @@
-window.addEventListener("load", async () => {
+window.addEventListener("load", () => {
 	// Definir variables
 	let texto = document.querySelectorAll("#dataEntry #texto");
 

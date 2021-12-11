@@ -15,6 +15,7 @@ let upload = require("../../middlewares/varios/multer");
 // Validar campos vs. sintaxis
 router.get("/api/palabras-clave", API.validarPalabrasClave);
 router.get("/api/validar-copiar-fa", API.validarCopiarFA);
+router.get("/api/averiguar-coleccion", API.averiguarColeccion);
 router.get("/api/validar-datos-duros", API.validarDatosDuros);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
 router.get("/api/obtener-fa-id", API.obtenerFA_id);

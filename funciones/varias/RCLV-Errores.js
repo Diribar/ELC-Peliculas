@@ -7,7 +7,6 @@ module.exports = {
 		let errores = {
 			nombre: await this.RCLV_nombre(datos),
 			fecha: this.RCLV_fecha(datos),
-			adicionales: this.RCLV_adicionales(datos),
 		};
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
 		// Completar con 'hay errores'
@@ -45,21 +44,10 @@ module.exports = {
 		return error;
 	},
 
-	RCLV_adicionales: (datos) => {
-		if (!datos.pais_id) return "Necesitamos que elijas un país"
-		if (!datos.catolico) return "Necesitamos que respondas la segunda pregunta"
-		if (datos.catolico == "1") {
-			if (!datos.canonizacion) return "Necesitamos que respondas la tercera pregunta"
-			if (!datos.vocacion_id) return "Necesitamos que respondas la cuarta pregunta"
-		}
-		return "";
-	},
 };
 
 cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 cartelCampoVacio = "Necesitamos que completes este campo";
-cartelSelectVacio = "Necesitamos que elijas un valor";
-cartelRadiobuttonVacio="Necesitamos que elijas una opción";
 cartelSupera = "El número de día y el mes elegidos son incompatibles";
 cartelRepetido = "Ya tenemos un registro con ese nombre";
 cartelCastellano =

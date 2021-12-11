@@ -14,7 +14,7 @@
 			<!-- Cantidad de Temporadas y de Capítulos -->
 				<% if (entidad == "colecciones") { %>
 				<dt>Cant. Temporadas:</dt>
-				<dd><%= producto.cant_temporadas %></dd>
+				<dd><%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></dd>
 				<dt>Cant. Capítulos:</dt>
 				<dd><%= producto.cant_capitulos %></dd>
 				<% } %>
@@ -23,7 +23,7 @@
 				<dt>De la colección:</dt>
 				<dd><a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></dd>
 				<dt>Temp. y Capítulo</dt>
-				<dd><%= producto.temporada ? "Temp. " + producto.temporada : "Única temporada" %>, <%= "cap. " + producto.capitulo %> </dd>
+				<dd><%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporada" %>, <%= "cap. " + producto.capitulo %> </dd>
 			<% } %>
 			<!-- Duración -->
 			<% if (entidad != "colecciones") { %>
@@ -54,7 +54,7 @@
 	<div id="DP">
 		<dl>
 			<dt>En idioma castellano:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.en_castellano.nombre %><% } else { %><% } %></dd>
+			<dd><% if (codigo == "detalle") { %><%= producto.en_castellano_id ? producto.en_castellano.nombre : "<br>" %><% } else { %><% } %></dd>
 			<dt>Es a color:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.en_color.nombre %><% } else { %><% } %></dd>
 			<dt>Categoría:</dt>
@@ -75,8 +75,6 @@
 			<dd><% if (codigo == "detalle") { %><%= producto.creada_por.apodo %><% } else { %><% } %></dd>
 			<dt>Status de Aprob.:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.status_registro.nombre %><% } else { %><% } %></dd>
-			<dt>Público sugerido:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.publico_sugerido.nombre %><% } else { %><% } %></dd>
 			<dt>Calificación general:</dt>
 			<dd><% if (codigo == "detalle") { %><%= producto.calificacion %> %<% } else { %><% } %></dd>
 

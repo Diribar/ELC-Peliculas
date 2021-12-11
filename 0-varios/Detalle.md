@@ -4,11 +4,11 @@ GENERAL
 	https://canvasjs.com/html5-javascript-bar-chart/
 	BE: Generar la info para "Detalle Prod.jpg"
 	Vista: chart "Detalle Prod.jpg"
-- Botón de editar
-	- Sin link, si está capturado
+- Botón de editar:
+	- En la esquina sup/der
+	- Mensaje de "capturado" si es el caso
 
 PELÍCULAS
-- Gráfico de barras horizontales
 - Abajo: 
 	- Ver el trailer
 	- Ver la película
@@ -16,8 +16,8 @@ PELÍCULAS
 	- Comentarios de los usuarios
 		- Ver comentarios
 		- Hacé tu propio comentario
-	- Prefiero que no me la sugiera más
-	- Ya la vi
+	- Interés en el producto
+- Gráfico de barras horizontales
 
 COLECCIONES
 - Gráfico de barras horizontales
