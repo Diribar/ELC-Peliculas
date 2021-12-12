@@ -26,10 +26,7 @@ module.exports = {
 			};
 			// Si la colección no está en nuestra BD
 			if (!dato.en_colec_id) {
-				errores += {
-					mensaje: "agregarColeccion",
-					colec_TMDB_id: dato.en_colec_TMDB_id,
-				};
+				errores.mensaje = "agregarColeccion";
 			} else {
 				errores += {
 					mensaje: "agregarCapitulos",
@@ -234,7 +231,11 @@ module.exports = {
 				? cartelSelectVacio
 				: "";
 		errores.en_color_id =
-			camposAVerificar.indexOf("en_color_id") == -1 ? "" : !datos.en_color_id ? cartelSelectVacio : "";
+			camposAVerificar.indexOf("en_color_id") == -1
+				? ""
+				: !datos.en_color_id
+				? cartelSelectVacio
+				: "";
 		errores.categoria_id =
 			camposAVerificar.indexOf("categoria_id") == -1
 				? ""
