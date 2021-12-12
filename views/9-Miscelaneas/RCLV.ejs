@@ -74,7 +74,7 @@
 					</div>
 					<!-- Fecha desconocida -->
 					<div class="input-error flex-row align-center">
-						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" tabindex="-1" 
+						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
 							<% if (dataEntry.desconocida=="on") { %>checked<% } %>
 						>
 						<label>Sin fecha conocida o de referencia</label>
@@ -102,73 +102,6 @@
 			</i>
 			<i class="fas fa-check-circle ocultar"></i>
 		</div>
-	</section>
-	<!-- DATOS ADICIONALES -->
-	<section id="adicionales" class="validar">
-		<h3 class="tituloCampo">Datos Adicionales</h3>
-		<!-- País -->
-		<div class="input-error">
-			<select name="pais_id" class="input">
-				<option value="" class="ocultar">Elegí</option>
-				<% for (pais of paises) { %>
-					<option value="<%= pais.id %>" <% if (dataEntry.pais_id == pais.id) { %>selected<% } %>>
-						<%= pais.nombre %>
-					</option>
-				<% } %>
-			</select>
-			<label>País de referencia</label>
-		</div>
-		<% if (codigo=="historicos_personajes") { %>
-			<!-- ¿Era católico? -->
-			<div class="input-error">
-				<div class="inputRadio">
-					<div class="pares">
-						<label for="SI">SI</label>
-						<input type="radio" id="SI" name="catolico" value="1" <% if (dataEntry.catolico=="1") { %>checked<% } %>>
-					</div>
-					<div class="pares">
-						<label for="NO">NO</label>
-						<input type="radio" id="NO" name="catolico" value="0" <% if (dataEntry.catolico=="0") { %>checked<% } %>>
-					</div>		
-				</div>
-				<label>Era miembro de la Iglesia Católica al fallecer</label>
-			</div>
-			<div id="mostrarSiEsCatolico" class="invisible">
-				<!-- ¿Para canonizar? -->
-				<div class="input-error">
-					<div class="inputRadio">
-						<div class="pares">
-							<label>SI</label>
-							<input type="radio" name="canonizacion" value="1" <% if (dataEntry.catolico=="1") { %>checked<% } %>>
-						</div>
-						<div class="pares">
-							<label>NO</label>
-							<input type="radio" name="canonizacion" value="0" <% if (dataEntry.catolico=="0") { %>checked<% } %>>
-						</div>		
-					</div>
-					<label>Es santo o está en proceso de canonización</label>
-				</div>
-				<!-- Vocación -->
-				<div class="input-error">
-					<select name="vocacion_id" class="input">
-						<option value="" class="ocultar">Elegí</option>
-						<% for (vocacion of vocacion_iglesia) { %>
-							<% if (vocacion.id != vocacion_iglesia[0].id) { %>
-								<option value="<%= vocacion.id %>" <% if (dataEntry.vocacion_id == vocacion.id) { %>selected<% } %>>
-									<%= vocacion.nombre %>
-								</option>
-							<% } %>
-						<% } %>
-					</select>
-					<label>Vocación en la Iglesia Católica</label>
-				</div>
-			</div>
-		<% } %>
-		<!-- Errores -->			
-		<i class="fas fa-times-circle<%- !errores.adicionales ? ' ocultar' : '' %>">
-			<span class="mensajeError"><%= errores.adicionales %></span>
-		</i>
-		<i class="fas fa-check-circle ocultar"></i>		
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas" class="flex-row space-evenly">

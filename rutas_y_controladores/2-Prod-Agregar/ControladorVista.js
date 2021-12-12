@@ -380,7 +380,7 @@ module.exports = {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		// 5. Render del formulario
-		//return res.send(req.cookies);
+		// return res.send(req.cookies);
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		return res.render("Home", {
 			tema,

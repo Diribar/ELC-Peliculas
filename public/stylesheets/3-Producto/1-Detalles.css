@@ -7,6 +7,6 @@ h1, h3 {align-self: center;}
 
 #datosDeProductos dl {position: relative;}
 #datosDeProductos dl dt {position: absolute; width: 125px; text-align: right; font-weight: bold;}
-#datosDeProductos dl dd {margin-left: 130px; max-height: 50px; overflow: hidden;}
+#datosDeProductos dl dd {margin-left: 130px; max-height: 65px; overflow-y: auto;}
 
 #datosDeProductos input {background-color: transparent; border: none; width: 100%;}

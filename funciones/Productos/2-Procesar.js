@@ -107,11 +107,7 @@ module.exports = {
 			// Datos obtenidos de la API
 			// nombre_castellano
 			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
-			// Idioma
-			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
-				if (datosAPI.original_language == "es") datosAPI_renamed.en_castellano_id = 1;
-			}
+			// Idioma - En el caso particular de las colecciones, este dato sólo figura en el 'Search'
 			// año de estreno, año de fin
 			if (datosAPI.parts.length > 0) {
 				datosAPI_renamed.ano_estreno = Math.min(

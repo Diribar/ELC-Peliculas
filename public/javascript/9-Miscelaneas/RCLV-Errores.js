@@ -16,11 +16,6 @@ window.addEventListener("load", async () => {
 	let mes_id = document.querySelector(".input-error select[name='mes_id']");
 	let dia = document.querySelector(".input-error select[name='dia']");
 	let desconocida = document.querySelector(".input-error input[name='desconocida']");
-	// Campos específicos de adicionales
-	let pais_id = document.querySelector(".input-error select[name='pais_id']");
-	let catolico = document.querySelectorAll("input[name='catolico']");
-	let canonizacion = document.querySelectorAll("input[name='canonizacion']");
-	let vocacion_id = document.querySelector("select[name='vocacion_id']");
 	// Otros campos de Data Entry
 	let nombre = document.querySelector(".input-error input[name='nombre']");
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
@@ -83,35 +78,13 @@ window.addEventListener("load", async () => {
 			OK.duplicados = !errores.duplicados ? true : false;
 		}
 
-		// ADICIONALES ******************************************
-		if (
-			campo == "pais_id" ||
-			campo == "catolico" ||
-			campo == "canonizacion" ||
-			campo == "vocacion_id"
-		) {
-			// Ocultar / mostrar lo referido a si es católico
-			catolico[0].checked
-				? mostrarSiEsCatolico.classList.remove("invisible")
-				: mostrarSiEsCatolico.classList.add("invisible");
-
-			//
-			url = "&pais_id=" + pais_id.value + "&vocacion_id=" + vocacion_id.value;
-			if (catolico[0].checked) url += "&catolico=1";
-			if (catolico[1].checked) url += "&catolico=0";
-			if (canonizacion[0].checked) url += "&canonizacion=1";
-			if (canonizacion[1].checked) url += "&canonizacion=0";
-			errores.adicionales = await fetch(ruta + "adicionales" + url).then((n) => n.json());
-			OK.adicionales = !errores.adicionales ? true : false;
-			errores.adicionales = "";
-		}
 		// Final de la rutina
 		feedback(OK, errores);
 	});
 
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "duplicados", "adicionales"];
+		let bloques = ["nombre", "fecha", "duplicados"];
 
 		// Rutina
 		for (i = 0; i < bloques.length; i++) {
@@ -136,7 +109,7 @@ window.addEventListener("load", async () => {
 		});
 
 		// Alterar el botón submit
-		resultadoTrue && resultado.length == 4
+		resultadoTrue && resultado.length == bloques.length
 			? button.classList.remove("botonSinLink")
 			: button.classList.add("botonSinLink");
 	};

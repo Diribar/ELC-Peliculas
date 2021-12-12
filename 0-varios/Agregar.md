@@ -1,24 +1,21 @@
-AGREGAR PRODUCTOS
-- Bloquear las flechas de retroceso y avance del navegador
-- Estandarización de títulos y formatos en Agregar
-
 DESAMBIGUAR
 - FE: detectar si una película pertenece a una colección y mostrar el resultado
+- BE Colecciones:
+    - Hacer un objeto literal para los campos:
+        - País/es de origen
+        - Director
+        - Guión
+        - Música
+        - Actores
+        - Productor
+    - Obtener los máximos para cada campo
+        - Primera opción: todos los máximos empatados, siempre que sean más de uno
+        - Segunda opción: los máximos tres que superen el 50%
+        - Tercera opción: el máximo
+    - Llevar el resultado a cada campo
 
-TIPO PRODUCTO
-var min = 12,
-    max = 100,
-    select = document.getElementById('selectElementId');
-
-for (var i = min; i<=max; i++){
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.innerHTML = i;
-    select.appendChild(opt);
-}
-
-COPIAR FA: 
-- Para las películas, buscar también en "capítulos" si ya están en BD
+AGREGAR PRODUCTOS
+- Bloquear las flechas de retroceso y avance del navegador
 
 CONFIRMAR Vista:
     - Mismos datos que en Desambiguar, más Director y Actor
@@ -46,3 +43,20 @@ CONCLUSION
 RCLV
 - Agregar link a wikipedia en función del nombre
 	https://es.wikipedia.org/w/index.php?search=padre+damian+veuster
+- Agregar link a santopedia en función del nombre
+
+*******************************************************************************
+TIPO PRODUCTO
+var min = 12,
+    max = 100,
+    select = document.getElementById('selectElementId');
+
+for (var i = min; i<=max; i++){
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.innerHTML = i;
+    select.appendChild(opt);
+}
+
+COPIAR FA: 
+- Para las películas, buscar también en "capítulos" si ya están en BD

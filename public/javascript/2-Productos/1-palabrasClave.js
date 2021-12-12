@@ -10,8 +10,7 @@ window.addEventListener("load", () => {
 
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
-		let link =
-			"/producto/agregar/api/palabras-clave/?palabrasClave=" + dato;
+		let link = "/producto/agregar/api/palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {
@@ -70,16 +69,12 @@ window.addEventListener("load", () => {
 		resultado.classList.remove(...resultado.classList);
 		resultado.classList.add("resultadoEnEspera");
 		// Obtener el link
-		return (
-			"/producto/agregar/api/PC-cant-prod/?palabrasClave=" +
-			palabrasClave
-		);
+		return "/producto/agregar/api/PC-cant-prod/?palabrasClave=" + palabrasClave;
 	};
 
 	let api_post = async (lectura) => {
 		// Averiguar cantidad de coincidencias
-		let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD == false)
-			.length;
+		let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD == false).length;
 		let cantResultados = lectura.cantResultados;
 		let hayMas = lectura.hayMas;
 		// Determinar oracion y formato
@@ -93,12 +88,12 @@ window.addEventListener("load", () => {
 					: cantResultados +
 					  " coincidencias, " +
 					  (prod_nuevos == cantResultados
-							? "ninguna"
+							? "y ninguna"
 							: prod_nuevos
 							? prod_nuevos + " no"
 							: "y todas")) +
 				" está" +
-				(prod_nuevos > 1 ? "n" : "") +
+				(prod_nuevos > 1 && prod_nuevos != cantResultados ? "n" : "") +
 				" en nuestra BD";
 			formatoVigente = "resultadoExitoso";
 			formatoAnterior = "resultadoInvalido";

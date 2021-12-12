@@ -174,8 +174,8 @@ module.exports = {
 	datosPersInput: () => {
 		return [
 			{
-				tituloPeli: "Link del trailer",
-				tituloColec: "Link del 1er trailer",
+				tituloPeli: "Link de un trailer",
+				tituloColec: "Link de un trailer",
 				campo: "link_trailer",
 				peliculas: true,
 				colecciones: true,
@@ -187,10 +187,9 @@ module.exports = {
 			},
 			{
 				tituloPeli: "Link de la película",
-				tituloColec: "Link de la 1a película",
 				campo: "link_pelicula",
 				peliculas: true,
-				colecciones: true,
+				colecciones: false,
 				mensajes: [
 					"Nos interesa el link del primer capítulo.",
 					"Debe ser de un sitio seguro, sin virus.",

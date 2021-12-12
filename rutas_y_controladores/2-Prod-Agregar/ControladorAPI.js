@@ -27,6 +27,12 @@ module.exports = {
 		return res.json(errores);
 	},
 
+	// Vista (desambiguar)
+	averiguarColeccion: (req, res) => {
+		console.log(req.query);
+		return res.json()
+	},
+
 	// Vista (datosDuros)
 	obtenerPaises: async (req,res)=> {
 		paises = await BD_varias.obtenerTodos("paises", "nombre")
