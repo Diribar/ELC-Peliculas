@@ -25,9 +25,8 @@ module.exports = {
 				hay: true,
 			};
 			// Si la colección no está en nuestra BD
-			if (!dato.en_colec_id) {
-				errores.mensaje = "agregarColeccion";
-			} else {
+			if (!dato.en_colec_id) errores.mensaje = "agregarColeccion";
+			else {
 				errores += {
 					mensaje: "agregarCapitulos",
 					en_colec_id: dato.en_colec_id,
