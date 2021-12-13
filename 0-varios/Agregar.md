@@ -1,23 +1,6 @@
-DESAMBIGUAR
-- BE Colecciones:
-    - Agregar de Search
-        - nombre_original
-        - idioma_original_id
-    - Hacer un objeto literal para los campos:
-        - País/es de origen
-        - Director
-        - Guión
-        - Música
-        - Actores
-        - Productor
-    - Obtener los máximos para cada campo
-        - Primera opción: todos los máximos empatados, siempre que sean más de uno
-        - Segunda opción: los máximos tres que superen el 50%
-        - Tercera opción: el máximo
-    - Llevar el resultado a cada campo
-
-AGREGAR PRODUCTOS
-- Bloquear las flechas de retroceso y avance del navegador
+DATOS DUROS
+- Agregar Temporadas
+- Agregar Cantidad de capítulos
 
 CONFIRMAR Vista:
     - Mismos datos que en Desambiguar, más Director y Actor
@@ -46,6 +29,9 @@ RCLV
 - Agregar link a wikipedia en función del nombre
 	https://es.wikipedia.org/w/index.php?search=padre+damian+veuster
 - Agregar link a santopedia en función del nombre
+
+AGREGAR PRODUCTOS
+- Bloquear las flechas de retroceso y avance del navegador
 
 *******************************************************************************
 TIPO PRODUCTO

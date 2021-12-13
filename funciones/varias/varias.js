@@ -68,6 +68,21 @@ module.exports = {
 		return resultado;
 	},
 
+	letrasIngles: (palabra) => {
+		word = palabra
+			.toLowerCase()
+			.replace(/-/g, " ")
+			.replace(/á/g, "a")
+			.replace(/é/g, "e")
+			.replace(/í/g, "i")
+			.replace(/ó/g, "o")
+			.replace(/úü/g, "u")
+			.replace(/ñ/g, "n")
+			.replace(/:¿![.][?]/g, "")
+			.replace(/ +/g, " ");
+		return word;
+	},
+
 	convertirLetrasAlCastellano: (resultado) => {
 		campos = Object.keys(resultado);
 		valores = Object.values(resultado);
