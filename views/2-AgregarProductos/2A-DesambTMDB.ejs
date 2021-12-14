@@ -4,15 +4,6 @@
 		<h2>Paso 2 de 4: Hacé click sobre tu opción</h2>
 		<p class="flex-row"><%= mensaje %></p>
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
-		<!-- Errores -->
-		<% if (errores && errores.mensaje == "agregarColeccion") { %>
-			<i class="fas fa-times-circle">
-				<span class="mensajeError">
-					<p>La película <%= errores.peli_nombre %> que elejiste, pertenece a la colección <em><strong><%= errores.colec_nombre %></strong></em>, que no figura en nuestra BD.</p>
-					<p>Tenés que cargar la colección, y a continuación la película se cargará automáticamente. Vos las podrás editar.</p>
-				</span>
-			</i>
-		<% } %>
 	</div>
 	<ul id="resultadoDesamb">
 		<%- include('21-ProductosNuevos', { prod_nuevos }) %>

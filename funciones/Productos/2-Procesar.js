@@ -8,7 +8,8 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	// MOVIES *****************************
 	infoTMDBparaDD_movie: async (datos) => {
-		let datosIniciales = {fuente: "TMDB", ...datos};
+		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
+		let datosIniciales = {fuente: "TMDB", entidad_TMDB: "movie", ...datos};
 		// Obtener las API
 		let general = detailsTMDB("movie", datos.TMDB_id);
 		let credits = creditsTMDB("movie", datos.TMDB_id);
@@ -89,6 +90,27 @@ module.exports = {
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
+	averiguarColeccion: async (TMDB_id) => {
+		// Obtener la API
+		let datosAPI = await detailsTMDB("movie", TMDB_id);
+
+		// Datos de la colección a la que pertenece, si corresponde
+		let datos = {};
+		if (datosAPI.belongs_to_collection != null) {
+			// Obtener datos de la colección
+			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
+			datos.colec_nombre = datosAPI.belongs_to_collection.name;
+			// ELC_id de la colección
+			datos.colec_id = await BD_varias.obtenerELC_id({
+				entidad: "colecciones",
+				campo: "TMDB_id",
+				valor: datos.colec_TMDB_id,
+			});
+			if (datos.colec_id) return datos;
+		}
+		return datos;
+	},
+
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_collection: async (datos) => {
@@ -97,6 +119,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
+			entidad_TMDB: "collection",
 			...datos,
 		};
 		// Obtener las API
@@ -189,6 +212,7 @@ module.exports = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
+			entidad_TMDB: "tv",
 			...datos,
 		};
 		// Obtener las API

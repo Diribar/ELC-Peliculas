@@ -1,6 +1,8 @@
 DESAMBIGUAR
-- FE: detectar si una película pertenece a una colección y mostrar el resultado
 - BE Colecciones:
+    - Agregar de Search
+        - nombre_original
+        - idioma_original_id
     - Hacer un objeto literal para los campos:
         - País/es de origen
         - Director

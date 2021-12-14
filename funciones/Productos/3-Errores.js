@@ -25,23 +25,10 @@ module.exports = {
 				hay: true,
 			};
 			// Si la colección no está en nuestra BD
-			if (!dato.en_colec_id) {
-				errores = {
-					mensaje: "agregarColeccion",
-					...errores,
-					// Datos originales
-					peli_entidad_TMDB: "movie",
-					peli_TMDB_id: dato.TMDB_id,
-					peli_nombre: dato.nombre_castellano,
-					// Datos nuevos
-					colec_entidad_TMDB: "collection",
-					colec_TMDB_id: dato.en_colec_TMDB_id,
-					colec_nombre: dato.en_colec_nombre,
-				};
-			} else {
-				errores = {
+			if (!dato.en_colec_id) errores.mensaje = "agregarColeccion";
+			else {
+				errores += {
 					mensaje: "agregarCapitulos",
-					...errores,
 					en_colec_id: dato.en_colec_id,
 				};
 			}
@@ -243,7 +230,11 @@ module.exports = {
 				? cartelSelectVacio
 				: "";
 		errores.en_color_id =
-			camposAVerificar.indexOf("en_color_id") == -1 ? "" : !datos.en_color_id ? cartelSelectVacio : "";
+			camposAVerificar.indexOf("en_color_id") == -1
+				? ""
+				: !datos.en_color_id
+				? cartelSelectVacio
+				: "";
 		errores.categoria_id =
 			camposAVerificar.indexOf("categoria_id") == -1
 				? ""
