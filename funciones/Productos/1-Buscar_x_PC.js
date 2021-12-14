@@ -121,17 +121,13 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 let eliminarSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
-		if (typeof m == "undefined" || m == null) {
-			return;
-		}
+		if (typeof m == "undefined" || m == null) return;
 		for (palabra of palabras) {
 			if (
 				varias.letrasIngles(m.nombre_original).includes(palabra) ||
 				varias.letrasIngles(m.nombre_castellano).includes(palabra) ||
 				varias.letrasIngles(m.comentario).includes(palabra)
-			) {
-				return m;
-			}
+			) return m;
 		}
 		return;
 	});
@@ -264,4 +260,3 @@ let ordenarDatos = (datos, palabrasClave) => {
 	};
 	return datosEnOrden;
 };
-
