@@ -1,15 +1,15 @@
 // Require
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
-let procesarProd = require("./2-Procesar");
 let BD_varias = require("../../funciones/BD/varias");
+let varias = require("../Varias/Varias");
 
 // Función a exportar
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave) => {
-		palabrasClave = letrasIngles(palabrasClave);
+		palabrasClave = varias.letrasIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
@@ -93,8 +93,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		desempate2 = letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+		desempate1 = varias.letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		desempate2 = varias.letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -121,17 +121,13 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 let eliminarSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
-		if (typeof m == "undefined" || m == null) {
-			return;
-		}
+		if (typeof m == "undefined" || m == null) return;
 		for (palabra of palabras) {
 			if (
-				letrasIngles(m.nombre_original).includes(palabra) ||
-				letrasIngles(m.nombre_castellano).includes(palabra) ||
-				letrasIngles(m.comentario).includes(palabra)
-			) {
-				return m;
-			}
+				varias.letrasIngles(m.nombre_original).includes(palabra) ||
+				varias.letrasIngles(m.nombre_castellano).includes(palabra) ||
+				varias.letrasIngles(m.comentario).includes(palabra)
+			) return m;
 		}
 		return;
 	});
@@ -263,24 +259,4 @@ let ordenarDatos = (datos, palabrasClave) => {
 		resultados: datos.resultados,
 	};
 	return datosEnOrden;
-};
-
-let letrasIngles = (palabra) => {
-	word = palabra
-		.toLowerCase()
-		.replace(/-/g, " ")
-		.replace(/á/g, "a")
-		.replace(/é/g, "e")
-		.replace(/í/g, "i")
-		.replace(/ó/g, "o")
-		.replace(/ú/g, "u")
-		.replace(/ü/g, "u")
-		.replace(/ñ/g, "n")
-		.replace(/:/g, "")
-		.replace(/[.]/g, "")
-		.replace(/¿/g, "")
-		.replace(/[?]/g, "")
-		.replace(/!/g, "");
-
-	return word;
 };
