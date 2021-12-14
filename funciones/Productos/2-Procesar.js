@@ -158,7 +158,7 @@ module.exports = {
 		// Datos de los capítulos para completar la colección
 		let otrosDatos = await this.completarColeccion(resultado);
 		resultado = {...resultado, ...otrosDatos};
-		//resultados = {...resultados, ...otrosDatos};
+
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
 
