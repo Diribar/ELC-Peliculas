@@ -1,40 +1,28 @@
-<h1 class="titulo" id="titulo">Terminaste</h1>
+<h1 class="titulo" id="titulo">Agregaste una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="/producto/agregar/detalle" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
-		<h2>¡Tu <%= dataEntry.producto %> ha sido agregada con éxito!</h2>
 		<img id="gracias" src="<%= imagen %>" alt="Muchas gracias">
 		<ul>
-			<li style="font-size: 1.2rem;"><u style="font-size: inherit;"><%= dataEntry.producto %></u>: <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong></li>
-			<li>Nuestro equipo de Administradores revisará los datos ingresados.</li>
+			<li style="font-size: 1.2rem;">¡La <%= dataEntry.producto %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> fue agregada con éxito!</li>
 			<li>
-				El resultado puede ser:
-				<ol>
-					<li><strong style="font-size: inherit;">Aprobado</strong>, con o sin edición a cargo del administrador.</li>
-					<li><strong style="font-size: inherit;">Desaprobado</strong>, en caso de que la <%= dataEntry.producto.toLowerCase() %> no esté alineada con <a href="" style="color: inherit;"><u>nuestro perfil</u></a>.</li>
-				</ol>
+				Nuestro equipo de Administradores revisará los datos ingresados.
+				<i class="fas fa-question-circle">
+					<ol type="dots" class="mensajeAyuda ocultar">
+						<li>
+							El resultado puede ser:
+							<ul>
+								<li><strong><em>Aprobado</em></strong>, con o sin edición a cargo del administrador.</li>
+								<li><strong><em>Desaprobado</em></strong>, si no está alineada con nuestro perfil.</li>
+							</ul>
+						</li>
+						<li>Enviamos un único mail con las novedades del día anterior.</li>
+						<p>Si el registro es aprobado, queda accesible para todo el público.</p>
+					</ol>
+				</i>
 			</li>
-			<li>Enviamos un único mail diario con el resultado de todos los registros revisados el día anterior.</li>
-			<li>Si el registro queda aprobado, quedará accesible para todo el público.</li>
-			<!-- <li>El plazo promedio de revisión viene siendo de XX días/horas.</li> -->
-			<li>Mientras tanto, podés ver los datos agregados y editarlos si corresponde.</li>
+			<li>Mientras tanto, sólo vos podrás ver el registro agregado y editarlo si corresponde.</li>
 			<!-- Variable inicial -->
 			<% botonColeccion = "" %>
-			<!-- Película en colección -->
-			<% if (dataEntry.entidad == "peliculas") { %>
-				<% if (dataEntry.en_coleccion) { %>
-					<% if (!dataEntry.coleccionYaEnBD) { %>
-						<% botonColeccion = "Agregar la Colección" %>
-						<% linkColeccion = "/producto/agregar/coleccion" %>
-						<% if (dataEntry.en_colec_TMDB_id) { %>
-							<!-- En TMDB -->
-							<li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>. ¿Podés ayudarnos agregándola a nuestra BD?</li>
-						<% } else { %>
-							<!-- Fuera de TMDB -->
-							<li>Nos informaste que la película corresponde a una colección. ¿Podés ayudarnos agregándola a nuestra BD?</li>
-						<% } %>
-					<% } else { %><li>Detectamos que la película corresponde a <%- dataEntry.en_colec_nombre ? "la colección <em><strong>" + dataEntry.en_colec_nombre + "</strong></em>" : "una colección" %>, que ya tenemos en nuestra BD</li><% } %>
-				<% } %>
-			<% } %>
 			<!-- Colección -->
 			<% if (dataEntry.entidad == "colecciones") { %>
 				<% if (dataEntry.TMDB_id) { %>
@@ -42,8 +30,8 @@
 					<li id="partesAutomatico">Las partes de la colección se agregaron a nuestra BD en forma automática.</li>
 				<% } else { %>
 					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
-					<% botonColeccion = "Agregar las Partes" %>
-					<% linkColeccion = "/producto/agregar/partes-de-coleccion" %>
+					<% botonColeccion = "Ir a Ingreso Manual" %>
+					<% linkColeccion = "/producto/agregar/tipo-producto" %>
 				<% } %>
 			<% } %>
 		</ul>

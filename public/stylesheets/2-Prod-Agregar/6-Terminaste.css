@@ -1,13 +1,20 @@
-#dataEntry {background-color: var(--verde-claro); border: var(--verde-oscuro) 7px solid; max-width: 80%; position: relative;}
+/* General */
+#dataEntry {background-color: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid; max-width: 80%; display: flex; flex-direction: column;}
+#dataEntry li {color: inherit;}
 
-#dataEntry h2 {background-color: var(--verde-oscuro);}
-#dataEntry #gracias {position: absolute; right: 30px; width: 150px; border-radius: 10px;}
+/* Título */
+#dataEntry #gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
 
-#dataEntry li {color: var(--verde-oscuro);}
-#dataEntry ul {margin: 10px 0 30px; padding-left: 20px;}
-#dataEntry ul li {margin-top: 10px; font-size: 1.1rem;}
+/* Texto */
+#dataEntry ul {padding-left: 20px;}
+#dataEntry ul li {margin: 5px 0; font-size: 1.1rem;}
+#dataEntry ul li .fa-question-circle {position: relative; transform: none; margin-left: 5px; right: 0; color: inherit;}
+#dataEntry ul li .fa-question-circle .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 400px; color: var(--gris-claro);}
+#dataEntry ul li .fa-question-circle .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
+#dataEntry ul li .fa-question-circle .mensajeAyuda li ul li {margin: 0px}
+
 #dataEntry ul li#partesAutomatico {border: 1px solid var(--verde-oscuro); width: fit-content; padding: 1px 5px; background-color: var(--verde-oscuro); color: var(--verde-claro);}
-#dataEntry ul li ol {padding-left: 30px;}
-#dataEntry ul li ol li {margin-top: 2.5px; font-size: 1rem;}
 
+/* Submit */
+#dataEntry #flechas {margin-top: 30px;}
 #dataEntry button, #dataEntry input[type="submit"] {max-width: 140px;}
