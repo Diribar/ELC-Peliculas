@@ -28,7 +28,6 @@ module.exports = {
 		entidad == "capitulos" ? includes.push("coleccion") : includes.push("paises");
 		let producto = await BD_especificas.filtrarProductoPorIdConInclude(entidad, ID, includes);
 		//return res.send(producto)
-		return res.send(producto)
 		if (entidad == "capitulos") {
 			avatar = producto.avatar;
 			producto.paises = await BD_especificas.filtrarProductoPorIdConInclude(
