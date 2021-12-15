@@ -66,7 +66,7 @@ module.exports = {
 			if (datosAPI.poster_path)
 				datosAPI_renamed.avatar =
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
-			// Productor
+			// Producción
 			if (datosAPI.production_companies.length > 0)
 				datosAPI_renamed.produccion = datosAPI.production_companies
 					.map((n) => n.name)
@@ -195,7 +195,7 @@ module.exports = {
 			if (datosAPI.production_countries.length > 0)
 				paises_id +=
 					datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
-			// Productor
+			// Producción
 			if (datosAPI.production_companies.length > 0)
 				produccion += datosAPI.production_companies.map((n) => n.name).join(", ") + ", ";
 			// Crew
