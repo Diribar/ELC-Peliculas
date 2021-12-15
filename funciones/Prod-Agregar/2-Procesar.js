@@ -220,7 +220,7 @@ module.exports = {
 		return exportar;
 	},
 
-	// ControllerVista (confirmar)
+	// ControllerVista (confirma)
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		let numCapitulo = 0;
@@ -256,7 +256,7 @@ module.exports = {
 		return;
 	},
 
-	// ControllerVista (confirmar)
+	// ControllerVista (confirma)
 	agregarCapitulosNuevos: async function (coleccion_id, TMDB_id) {
 		// Obtener el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
@@ -400,7 +400,7 @@ module.exports = {
 		return datos;
 	},
 
-	// ControllerVista (confirmar)
+	// ControllerVista (confirma)
 	agregarCapitulosDeTV: async function (datosCol) {
 		// Detectar si es una única temporada
 		datosCol.tempUnica = datosCol.cant_temporadas == 1;

@@ -2,10 +2,10 @@
 let fs = require("fs");
 let path = require("path");
 let requestPromise = require("request-promise");
-let buscar_x_PC = require("../../funciones/Productos/1-Buscar_x_PC");
-let procesarProd = require("../../funciones/Productos/2-Procesar");
-let validarProd = require("../../funciones/Productos/3-Errores");
-let variables = require("../../funciones/Productos/4-Variables");
+let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
+let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
+let validarProd = require("../../funciones/Prod-Agregar/3-Errores");
+let variables = require("../../funciones/Prod-Agregar/4-Variables");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/Varias");
 
@@ -428,7 +428,7 @@ module.exports = {
 		).then((n) => n.valor);
 		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// Preparar la info para el siguiente paso
-		req.session.confirmar = {
+		req.session.confirma = {
 			...req.session.datosPers,
 			fe_valores,
 			entretiene,
@@ -436,27 +436,27 @@ module.exports = {
 			calificacion,
 			creada_por_id: req.session.usuario.id,
 		};
-		res.cookie("confirmar", req.session.confirmar, {
+		res.cookie("confirma", req.session.confirma, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
 		//Redireccionar a la siguiente instancia
 		req.session.erroresDP = false;
-		return res.redirect("/producto/agregar/confirmar");
+		return res.redirect("/producto/agregar/confirma");
 	},
 
-	confirmarForm: (req, res) => {
+	confirmaForm: (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
-		codigo = "confirmar";
+		codigo = "confirma";
 		// 2. Si se perdió la info anterior, volver a esa instancia
-		confirmar = req.session.confirmar
-			? req.session.confirmar
-			: req.cookies.confirmar
-			? req.cookies.confirmar
+		confirma = req.session.confirma
+			? req.session.confirma
+			: req.cookies.confirma
+			? req.cookies.confirma
 			: "";
-		if (!confirmar) return res.redirect("/producto/agregar/datos-personalizados");
+		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd(confirmar);
+		datosClaveProd = funcDatosClaveProd(confirma);
 		req.session.datosClaveProd = datosClaveProd;
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
@@ -467,49 +467,49 @@ module.exports = {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			dataEntry: confirmar,
+			dataEntry: confirma,
 		});
 	},
 
-	confirmarGuardar: async (req, res) => {
+	confirmaGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		confirmar = req.session.confirmar
-			? req.session.confirmar
-			: req.cookies.confirmar
-			? req.cookies.confirmar
+		confirma = req.session.confirma
+			? req.session.confirma
+			: req.cookies.confirma
+			? req.cookies.confirma
 			: "";
-		if (!confirmar) return res.redirect("/producto/agregar/datos-personalizados");
+		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Guardar el registro del producto
-		confirmar.avatar = confirmar.avatarCF;
-		registro = await BD_varias.agregarRegistro(confirmar);
+		confirma.avatar = confirma.avatarCF;
+		registro = await BD_varias.agregarRegistro(confirma);
 		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd({...confirmar, id: registro.id});
+		datosClaveProd = funcDatosClaveProd({...confirma, id: registro.id});
 		req.session.datosClaveProd = datosClaveProd;
 		res.cookie("datosClaveProd", datosClaveProd, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Funciones anexas
 		// Guardar la relación producto-paises
-		guardarRelacionConPaises({...confirmar, producto_id: registro.id});
+		guardarRelacionConPaises({...confirma, producto_id: registro.id});
 		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
-		if (confirmar.fuente == "TMDB" && confirmar.entidad_TMDB != "movie") {
-			confirmar.entidad_TMDB == "collection"
-				? procesarProd.agregarCapitulosDeCollection({...confirmar, ...registro.dataValues})
-				: procesarProd.agregarCapitulosDeTV({...confirmar, ...registro.dataValues});
+		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
+			confirma.entidad_TMDB == "collection"
+				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro.dataValues})
+				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro.dataValues});
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
 		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
 		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
 		// Miscelaneas
-		guardar_us_calificaciones(confirmar, registro);
-		varias.moverImagenCarpetaDefinitiva(confirmar.avatar, "2-Productos");
+		guardar_us_calificaciones(confirma, registro);
+		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "2-Productos");
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 5. Redireccionar
-		return res.redirect("/producto/agregar/conclusion");
+		return res.redirect("/producto/agregar/terminaste");
 	},
 
-	conclusionForm: async (req, res) => {
+	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
-		codigo = "conclusion";
+		codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
 		datosClaveProd = req.session.datosClaveProd
 			? req.session.datosClaveProd
@@ -542,7 +542,7 @@ module.exports = {
 		});
 	},
 
-	conclusionGuardar: async (req, res) => {
+	terminasteGuardar: async (req, res) => {
 		datos = {...req.body, url: req.url.slice(1)};
 		//return res.send(datos);
 		// Eliminar session y cookie de datosClaveProd
@@ -595,24 +595,24 @@ let actualizarRCLV = async (entidad, id) => {
 	}
 };
 
-let guardar_us_calificaciones = (confirmar, registro) => {
+let guardar_us_calificaciones = (confirma, registro) => {
 	entidad_id =
-		confirmar.entidad == "peliculas"
+		confirma.entidad == "peliculas"
 			? "pelicula_id"
-			: confirmar.entidad == "colecciones"
+			: confirma.entidad == "colecciones"
 			? "coleccion_id"
 			: "capitulo_id";
 	let datos = {
 		entidad: "us_calificaciones",
-		usuario_id: confirmar.creada_por_id,
+		usuario_id: confirma.creada_por_id,
 		[entidad_id]: registro.id,
-		fe_valores_id: confirmar.fe_valores_id,
-		entretiene_id: confirmar.entretiene_id,
-		calidad_tecnica_id: confirmar.calidad_tecnica_id,
-		fe_valores_valor: confirmar.fe_valores,
-		entretiene_valor: confirmar.entretiene,
-		calidad_tecnica_valor: confirmar.calidad_tecnica,
-		resultado: confirmar.calificacion,
+		fe_valores_id: confirma.fe_valores_id,
+		entretiene_id: confirma.entretiene_id,
+		calidad_tecnica_id: confirma.calidad_tecnica_id,
+		fe_valores_valor: confirma.fe_valores,
+		entretiene_valor: confirma.entretiene,
+		calidad_tecnica_valor: confirma.calidad_tecnica,
+		resultado: confirma.calificacion,
 	};
 	BD_varias.agregarRegistro(datos);
 };
@@ -628,7 +628,7 @@ let borrarSessionCookies = (req, res, paso) => {
 		"datosDurosPartes",
 		"datosDuros",
 		"datosPers",
-		"confirmar",
+		"confirma",
 	];
 	let indice = pasos.indexOf(paso) + 1;
 	for (indice; indice < pasos.length; indice++) {

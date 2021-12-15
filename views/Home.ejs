@@ -73,11 +73,11 @@
 			<script src="/javascript/2-Productos/4-DP-Errores.js"></script>
 			<script src="/javascript/2-Productos/4-DP-Subcat.js"></script>
 		<% } else %>
-		<% if (codigo == "confirmar") { %>
-			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css">
-			<script src="/javascript/2-Productos/5-Confirmar-Ayuda.js"></script>
+		<% if (codigo == "confirma") { %>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirma.css">
+			<script src="/javascript/2-Productos/5-Confirma-Ayuda.js"></script>
 		<% } else %>
-		<% if (codigo == "conclusion") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/6-Conclusion.css"><% } else %>
+		<% if (codigo == "terminaste") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/6-Terminaste.css"><% } else %>
 		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Responsabilidad.css"><% } %>
 	<% } %>
 	<!-- Producto -->
@@ -140,8 +140,8 @@
 						<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
 						<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
 						<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
-						<%- codigo == "confirmar" ? include("5-Confirmar") : "" %>
-						<%- codigo == "conclusion" ? include("6-Conclusion") : "" %>
+						<%- codigo == "confirma" ? include("5-Confirma") : "" %>
+						<%- codigo == "terminaste" ? include("6-Terminaste") : "" %>
 					<% } %>
 					<% if (tema=="RCLV") { %><%- include("RCLV") %><% } %>
 					<% if (tema=="producto") { %>
