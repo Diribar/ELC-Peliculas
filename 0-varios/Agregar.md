@@ -1,6 +1,3 @@
-DESAMBIGUAR
-- Las flechas del teclado cambian el form elegido
-
 AGREGAR PRODUCTOS
 - Ícono 'check' (verde) para avanzar (DD, DP)
 
