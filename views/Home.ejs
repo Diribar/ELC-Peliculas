@@ -4,111 +4,111 @@
 	<!-- Home -->
 	<% if (tema == "home") { %>
 		<%- include('0-Head', {titulo: "Inicio"}) %>
-		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/Inicio.css">
+		<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Inicio.css">
 	<% } %>
 	<!-- Agregar usuarios -->
 	<% if (tema == "usuario") { %>
 		<% if (codigo == "login") { %>
 			<%- include('0-Head', {titulo: "Login"}) %>
-			<link rel="stylesheet" href="/stylesheets/1-Usuarios/Login.css">
-			<script src="/javascript/1-Usuarios/ojitoContrasena.js"></script>
-			<script src="/javascript/1-Usuarios/0-Login-validar.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/Login.css">
+			<script src="/progrFrontEnd/1-Usuarios/ojitoContrasena.js"></script>
+			<script src="/progrFrontEnd/1-Usuarios/0-Login-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "mail") { %>
 			<%- include('0-Head', {titulo: "Registro de Mail"}) %>
-			<link rel="stylesheet" href="/stylesheets/1-Usuarios/1-FormMail.css">
-			<script src="/javascript/1-Usuarios/1-Mail-validar.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-FormMail.css">
+			<script src="/progrFrontEnd/1-Usuarios/1-Mail-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "perennes") { %>
 			<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
-			<script src="/javascript/1-Usuarios/2-Perennes-validar.js"></script>
+			<script src="/progrFrontEnd/1-Usuarios/2-Perennes-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "editables") { %>
 			<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
-			<link rel="stylesheet" href="/stylesheets/1-Usuarios/3-FormEditables.css">
-			<script src="/javascript/1-Usuarios/3-Editables-imagen.js"></script>
-			<script src="/javascript/1-Usuarios/3-Editables-validar.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-FormEditables.css">
+			<script src="/progrFrontEnd/1-Usuarios/3-Editables-imagen.js"></script>
+			<script src="/progrFrontEnd/1-Usuarios/3-Editables-validar.js"></script>
 		<% } else %>
 		<% if (codigo == "detalle") { %>
 			<%- include('0-Head', {titulo: "Detalle de Usuario"}) %>
 		<% } %>
-		<link rel="stylesheet" href="/stylesheets/1-Usuarios/0-UsuariosGral.css">
+		<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/0-UsuariosGral.css">
 	<% } %>
 	<!-- Agregar productos -->
 	<% if (tema == "agregar") { %>
 		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
-		<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/0-Agregar.css">
+		<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/0-Agregar.css">
 		<% if (codigo == "palabrasClave") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/1-PalabrasClave.css">
-			<script src="/javascript/2-Prod-Agregar/1-palabrasClave.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/1-PalabrasClave.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/1-palabrasClave.js"></script>
 		<% } else %>
 		<% if (codigo == "desambiguar") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/2A-DesambTMDB.css">
-			<script src="/javascript/2-Prod-Agregar/2A-DESAMB-Coleccion.js"></script>
-			<script src="/javascript/2-Prod-Agregar/2A-DESAMB-Desplazam.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2A-DesambTMDB.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/2A-DESAMB-Coleccion.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/2A-DESAMB-Desplazam.js"></script>
 		<% } else %>
 		<% if (codigo == "tipoProducto") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/2B-TipoProducto.css">
-			<!-- <script src="/javascript/2-Prod-Agregar/2B-tipoProd-Errores.js"></script> -->
-			<script src="/javascript/2-Prod-Agregar/2B-tipoProd-Mostrar.js"></script>
-			<!-- <script src="/javascript/2-Prod-Agregar/2B-tipoProd-Ayuda.js"></script> -->
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2B-TipoProducto.css">
+			<!-- <script src="/progrFrontEnd/2-Prod-Agregar/2B-tipoProd-Errores.js"></script> -->
+			<script src="/progrFrontEnd/2-Prod-Agregar/2B-tipoProd-Mostrar.js"></script>
+			<!-- <script src="/progrFrontEnd/2-Prod-Agregar/2B-tipoProd-Ayuda.js"></script> -->
 		<% } else %>
 		<% if (codigo == "copiarFA") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/2C-CopiarFA.css">
-			<script src="/javascript/2-Prod-Agregar/2C-copiarFA-Errores.js"></script>
-			<script src="/javascript/2-Prod-Agregar/2C-copiarFA-Mostrar.js"></script>
-			<script src="/javascript/2-Prod-Agregar/2C-copiarFA-Ayuda.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2C-CopiarFA.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/2C-copiarFA-Errores.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/2C-copiarFA-Mostrar.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/2C-copiarFA-Ayuda.js"></script>
 		<% } else %>
 		<% if (codigo == "datosDuros") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/3-DatosDuros.css">
-			<script src="/javascript/2-Prod-Agregar/3-DD-Ayuda.js"></script>
-			<script src="/javascript/2-Prod-Agregar/3-DD-Errores.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/3-DatosDuros.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/3-DD-Ayuda.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/3-DD-Errores.js"></script>
 			<% if (dataEntry) { %>
-				<% if (!dataEntry.avatar || dataEntry.fuente!="TMDB") { %><script src="/javascript/2-Prod-Agregar/3-DD-Imagen.js"></script><% } %>
+				<% if (!dataEntry.avatar || dataEntry.fuente!="TMDB") { %><script src="/progrFrontEnd/2-Prod-Agregar/3-DD-Imagen.js"></script><% } %>
 			<% } %>
 		<% } else %>
 		<% if (codigo == "datosPers") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/4-DatosPers.css">
-			<script src="/javascript/2-Prod-Agregar/4-DP-Ayuda.js"></script>
-			<script src="/javascript/2-Prod-Agregar/4-DP-Errores.js"></script>
-			<script src="/javascript/2-Prod-Agregar/4-DP-Subcat.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/4-DatosPers.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/4-DP-Ayuda.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/4-DP-Errores.js"></script>
+			<script src="/progrFrontEnd/2-Prod-Agregar/4-DP-Subcat.js"></script>
 		<% } else %>
 		<% if (codigo == "confirma") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/5-Confirma.css">
-			<script src="/javascript/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/5-Confirma.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
 		<% } else %>
 		<% if (codigo == "terminaste") { %>
-			<link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/6-Terminaste.css">
-			<script src="/javascript/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/6-Terminaste.css">
+			<script src="/progrFrontEnd/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
 		<% } else %>
-		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/2-Prod-Agregar/0-Responsabilidad.css"><% } %>
+		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/0-Responsabilidad.css"><% } %>
 	<% } %>
 	<!-- Producto -->
 	<% if (tema == "producto") { %>
 		<% if (codigo == "detalle") { %>
 			<%- include('0-Head', {titulo: "Detalle del Producto"}) %>
-			<link rel="stylesheet" href="/stylesheets/3-Prod-RUD/0-Producto.css">
-			<link rel="stylesheet" href="/stylesheets/3-Prod-RUD/1-Detalles.css">
+			<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/0-Producto.css">
+			<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/1-Detalles.css">
 		<% } %>
 	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>
 		<%- include('0-Head', {titulo}) %>
-		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/0-Opciones.css">
-		<link rel="stylesheet" href="/stylesheets/3-ElegirOpciones/Filtros.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-ElegirOpciones/0-Opciones.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-ElegirOpciones/Filtros.css">
 	<% } %>
 	<!-- Miscelaneas -->
 	<% if (tema == "RCLV") { %>
 		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
 		<%- include('0-Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
-		<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/RCLV.css">
-		<script src="/javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
-		<script src="/javascript/9-Miscelaneas/RCLV-Errores.js"></script>
+		<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/RCLV.css">
+		<script src="/progrFrontEnd/9-Miscelaneas/RCLV-Ayuda.js"></script>
+		<script src="/progrFrontEnd/9-Miscelaneas/RCLV-Errores.js"></script>
 	<% } %>
 	<% if (tema == "institucional") { %>
 		<% if (codigo == "nosotros") { %>
 			<%- include('0-Head', {titulo: "Quiénes somos"}) %>
-			<link rel="stylesheet" href="/stylesheets/9-Miscelaneas/Nosotros.css">
+			<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Nosotros.css">
 		<% } %>
 	<% } %>
 </head>
