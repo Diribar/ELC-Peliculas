@@ -154,6 +154,7 @@ module.exports = {
 		let resultado = {
 			...datosIniciales,
 			...datosAPI_renamed,
+			cant_temporadas: 1,
 		};
 		// Datos de los capítulos para completar la colección
 		let otrosDatos = await this.completarColeccion(resultado);
