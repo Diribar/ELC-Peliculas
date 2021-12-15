@@ -1,15 +1,4 @@
-RCLV
-- Flecha izq. para retroceder
-- Controlador: Agregar en la BD el sufijo que corresponda
-
-CONFIRMAR (vista)
-- Imagen del producto más:
-    - Peli/Colec: nombre_cast
-    - Año delanzam.
-    - Dirección
-    - Actuación
-
-TERMINASTE (cambiarle el título)
+TERMINASTE
 - Leyendas:
     - ¡La Película/Colec xxx ha sido agregada con éxito!
     - Nuestro equipo de Administradores revisará los datos ingresados. (?)
@@ -24,8 +13,19 @@ TERMINASTE (cambiarle el título)
     Imagen MUCHAS GRACIAS en el centro
     Cambiar 'submit' x lupa
 
+RCLV
+- Flecha izq. para retroceder
+- Controlador: Agregar en la BD el sufijo que corresponda
+
+CONFIRMAR (vista)
+- Imagen del producto más:
+    - Peli/Colec: nombre_cast
+    - Año delanzam.
+    - Dirección
+    - Actuación
+
 AGREGAR PRODUCTOS
-- Ícono 'check' (verde) para avanzar (DD, DP, Confirmar, RCLV)
+- Ícono 'check' (verde) para avanzar (DD, DP, Confirma, RCLV)
 
 *******************************************************************************
 TIPO PRODUCTO

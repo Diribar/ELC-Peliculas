@@ -31,9 +31,9 @@ app.set("views", [
 	path.resolve(__dirname, "./views/0-Secciones"),
 	path.resolve(__dirname, "./views/0-Secciones/menusHeader"),
 	path.resolve(__dirname, "./views/1-Usuarios"),
-	path.resolve(__dirname, "./views/2-AgregarProductos"),
-	path.resolve(__dirname, "./views/2-AgregarProductos/Includes"),
-	path.resolve(__dirname, "./views/3-Producto"),
+	path.resolve(__dirname, "./views/2-Prod-Agregar"),
+	path.resolve(__dirname, "./views/2-Prod-Agregar/Includes"),
+	path.resolve(__dirname, "./views/3-Prod-RUD"),
 	path.resolve(__dirname, "./views/4-ElegirOpciones"),
 	path.resolve(__dirname, "./views/9-Miscelaneas"),
 ]);
@@ -41,7 +41,7 @@ app.set("views", [
 // ************************* Rutas ********************************
 let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 let rutaProdAgregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
-let rutaProdDetalle = require("./rutas_y_controladores/3-Prod-Detalle/Rutas");
+let rutaProdDetalle = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
 let rutaProductos = require("./rutas_y_controladores/4-Productos/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
