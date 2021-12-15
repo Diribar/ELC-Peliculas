@@ -505,7 +505,7 @@ module.exports = {
 		return res.redirect("/producto/agregar/terminaste");
 	},
 
-	terminasteForm: async (req, res) => {
+	terminasteForm: (req, res) => {
 		//return res.send(req.cookies);
 		// 1. Tema y Código
 		tema = "agregar";
