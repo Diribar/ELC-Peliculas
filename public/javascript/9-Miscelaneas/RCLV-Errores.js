@@ -2,20 +2,32 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let form = document.querySelector("#dataEntry");
-	let ruta = "/agregar/api/rclv/?RCLV=";
 	let button = document.querySelector("#dataEntry button[type='submit']");
-	let OK = {};
-	let errores = {};
+	let ruta = "/agregar/api/rclv/?RCLV=";
+
+	// Links a otros sitios
+	let wiki = document.querySelector("#dataEntry #wiki");
+	let url_wiki = "https://es.wikipedia.org/wiki/";
+	let santopedia = document.querySelector("#dataEntry #santopedia");
+	let url_santopedia = "https://www.santopedia.com/buscar?q=";
 
 	// Variables de errores
 	let iconoOK = document.querySelectorAll(".validar .fa-check-circle");
 	let iconoError = document.querySelectorAll(".validar .fa-times-circle");
 	let mensajeError = document.querySelectorAll(".validar .mensajeError");
+	let OK = {};
+	let errores = {};
+	if (entidad != "historicos_personajes") OK.adicionales = true;
 
 	// Campos específicos de fechas
 	let mes_id = document.querySelector(".input-error select[name='mes_id']");
 	let dia = document.querySelector(".input-error select[name='dia']");
 	let desconocida = document.querySelector(".input-error input[name='desconocida']");
+	// Campos específicos de adicionales
+	let ocultar = document.querySelector("#ocultar");
+	let enProcCan = document.querySelectorAll("input[name='enProcCan']");
+	let statusProcCan = document.querySelectorAll("input[name='statusProcCan']");
+	let genero = document.querySelectorAll("input[name='genero']");
 	// Otros campos de Data Entry
 	let nombre = document.querySelector(".input-error input[name='nombre']");
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
@@ -32,7 +44,6 @@ window.addEventListener("load", async () => {
 			errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
 			OK.nombre = !errores.nombre ? true : false;
 		}
-
 		// FECHAS ***********************************************
 		if (campo == "mes_id") diasDelMes(mes_id, dia);
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
@@ -78,13 +89,48 @@ window.addEventListener("load", async () => {
 			OK.duplicados = !errores.duplicados ? true : false;
 		}
 
+		// ADICIONALES ******************************************
+		if (campo == "enProcCan" || campo == "statusProcCan" || campo == "genero") {
+			// Ocultar / mostrar lo referido al status y género
+			enProcCan[0].checked
+				? ocultar.classList.remove("invisible")
+				: ocultar.classList.add("invisible");
+			// Armar la url
+			url = "";
+			url += enProcCan[0].checked ? "&enProcCan=1" : "&enProcCan=0";
+			url += statusProcCan[0].checked
+				? "&statusProcCan=4"
+				: statusProcCan[1].checked
+				? "&statusProcCan=3"
+				: statusProcCan[2].checked
+				? "&statusProcCan=2"
+				: statusProcCan[3].checked
+				? "&statusProcCan=1"
+				: "";
+			url += genero[0].checked ? "&genero=1" : genero[1].checked ? "&genero=2" : "";
+			// Obtener los errores
+			errores.adicionales = await fetch(ruta + "adicionales" + url).then((n) => n.json());
+			OK.adicionales = !errores.adicionales ? true : false;
+			errores.adicionales = "";
+		}
+
+		// Logos de Wikipedia y Santopedia
+		if (OK.nombre) {
+			wiki.href = url_wiki + nombre.value;
+			wiki.classList.remove("ocultar");
+			if (enProcCan[0].checked) {
+				santopedia.href = url_santopedia + nombre.value;
+				santopedia.classList.remove("ocultar");
+			} else santopedia.classList.add("ocultar");
+		} else wiki.classList.add("ocultar");
+
 		// Final de la rutina
 		feedback(OK, errores);
 	});
 
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "duplicados"];
+		let bloques = ["nombre", "fecha", "duplicados", "adicionales"];
 
 		// Rutina
 		for (i = 0; i < bloques.length; i++) {
@@ -117,10 +163,9 @@ window.addEventListener("load", async () => {
 	// Submit
 	form.addEventListener("submit", (e) => {
 		if (button.classList.contains("botonSinLink")) e.preventDefault();
-		
+
 		// No logré hacer funcionar lo siguiente, para hacer un API
 		const data = new FormData(form);
-
 	});
 });
 

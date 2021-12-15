@@ -21,7 +21,7 @@ module.exports = {
 
 	// RCLV
 	validarRCLV: async (req, res) => {
-		let errores = await validarRCLV["RCLV_"+req.query.RCLV](req.query);
+		let errores = await validarRCLV["RCLV_" + req.query.RCLV](req.query);
 		return res.json(errores);
 	},
 

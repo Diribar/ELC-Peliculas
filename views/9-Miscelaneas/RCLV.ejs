@@ -6,10 +6,10 @@
 		<!--Primera columna-->
 		<div id="primeraCol">
 			<!-- NOMBRE -->
-			<div class="flex-col campo validar">
+			<div class="campo validar">
 				<!-- Título del campo y Ayuda -->
 				<div class="flex-row">
-					<div class="tituloCampo" style="position: relative;">
+					<div class="tituloCampo">
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
 						<i class="fas fa-question-circle"></i>
@@ -17,36 +17,42 @@
 							<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 							<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 						</ul>
+						<!-- Errores -->			
+						<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.nombre %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
 					</div>
-					<div></div>
 				</div>
 				<!-- Valores del campo -->
 				<div class="input-error">
 					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 				</div>
-				<!-- Errores -->			
-				<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
-					<span class="mensajeError"><%= errores.nombre %></span>
-				</i>
-				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 			<!-- FECHA REPRESENTATIVA -->
-			<div class="flex-col campo validar">
-				<!-- Título y Ayuda -->
-				<div class="tituloCampo" style="position: relative;">
-					<h3>Fecha más representativa</h3>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle"></i>
-					<ul type="dots" class="mensajeAyuda ocultar">
-						<li>Usamos la fecha en que se lo recuerda.</li>
-						<li>Para los santos o beatos, es la fecha en el santoral.</li>
-						<li>Para los demás, suele ser la fecha de su muerte.</li>
-					</ul>
+			<div class="campo validar">
+				<!-- Título del campo y Ayuda -->
+				<div class="flex-row">
+					<div class="tituloCampo">
+						<h3>Fecha más representativa</h3>
+						<!-- Ayuda -->
+						<i class="fas fa-question-circle"></i>
+						<ul type="dots" class="mensajeAyuda ocultar">
+							<li>Usamos la fecha en que se lo recuerda.</li>
+							<li>Para los santos o beatos, es la fecha en el santoral.</li>
+							<li>Para los demás, suele ser la fecha de su muerte.</li>
+						</ul>
+						<!-- Errores -->			
+						<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.dia %></span>
+						</i>
+						<i class="fas fa-check-circle ocultar"></i>
+					</div>
 				</div>
-				<!-- Etiquetas y Valores -->
+				<!-- Valores del campo -->
 				<div class="flex-col" id="valoresFecha">
 					<!-- Meses -->
-					<div class="input-error mesDia flex-row align-center">
+					<div class="input-error mesDia">
 						<label style="width: 40px;">Mes:</label>
 						<select name="mes_id" class="input">
 							<option value="" class="ocultar" <% if (!datosRCLV.mes_id) { %>selected<% } %>>Elegí</option>
@@ -56,9 +62,15 @@
 								</option>
 							<% } %>
 						</select>
+						<a id="wiki" target="blank" class="ocultar" tabindex="-1">
+							<img src="/imagenes/0-Base/LogoWiki.jpg" title="Consultar en Wikipedia">
+						</a>
+						<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
+							<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
+						</a>
 					</div>
 					<!-- Días -->
-					<div class="input-error mesDia flex-row align-center">
+					<div class="input-error mesDia">
 						<label style="width: 40px;">Día:</label>
 						<select name="dia" class="input">
 							<option value="" class="ocultar" <% if (!datosRCLV.dia) { %>selected<% } %>>Elegí</option>
@@ -80,27 +92,87 @@
 						<label>Sin fecha conocida o de referencia</label>
 					</div>
 				</div>
-				<!-- Errores -->			
-				<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
-					<span class="mensajeError"><%= errores.dia %></span>
-				</i>
-				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 		</div>
 		<!--Columna del medio-->
 		<div id="columnaMedio">
 		</div>
 		<!--Segunda columna-->
-		<!-- POSIBLES DUPLICADOS -->
-		<div id="segundaCol" class="input-error validar">
-			<h3>Nombres con esa fecha</h3>
+		<div id="segundaCol" class="input-error">
+			<div class="validar">
+				<h3>Nombres con esa fecha</h3>
+				<!-- Errores -->			
+				<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
+					<span class="mensajeError"><%= errores.duplicados %></span>
+				</i>
+				<i class="fas fa-check-circle ocultar"></i>
+			</div>
 			<p>Destildalos para controlar si no está ya en nuestra BD</p>
 			<ul type="none" id="posiblesDuplicados"></ul>
-			<!-- Errores -->			
-			<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores.duplicados %></span>
+		</div>
+	</section>
+	<!-- DATOS ADICIONALES (sólo para personajes históricos) -->
+	<section id="adicionales" class="<% if (codigo!="historicos_personajes") { %> ocultar<% } %>">
+		<div class="validar">
+			<h3 class="tituloCampo">Datos Adicionales</h3>
+			<!-- Errores -->
+			<i class="fas fa-times-circle<%- !errores.adicionales ? ' ocultar' : '' %>">
+				<span class="mensajeError"><%= errores.adicionales %></span>
 			</i>
 			<i class="fas fa-check-circle ocultar"></i>
+		</div>
+		<!-- ¿En proceso de canonización? -->
+		<div class="sector">
+			<h4>Es santo o está en proceso de canonización (Iglesia Católica):</h4>
+			<div class="input-error">
+				<div class="pares">
+					<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
+					<label>SI</label>
+				</div>
+				<div class="pares">
+					<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %>>
+					<label>NO</label>
+				</div>
+			</div>
+		</div>
+		<!-- Sectores ocultos salvo que esté en proceso de canonización -->
+		<div id="ocultar" class="invisible">
+			<!-- Status del proceso de canonización -->
+			<div class="sector">
+				<h4>Status del proceso:</h4>
+				<div class="input-error">
+					<div class="pares">
+						<input type="radio" name="statusProcCan" value="4" <% if (dataEntry.statusProcCan=="4") { %>checked<% } %>>
+						<label>Santo/a</label>
+					</div>
+					<div class="pares">
+						<input type="radio" name="statusProcCan" value="3" <% if (dataEntry.statusProcCan=="3") { %>checked<% } %>>
+						<label>Beato/a</label>
+					</div>
+					<div class="pares">
+						<input type="radio" name="statusProcCan" value="2" <% if (dataEntry.statusProcCan=="2") { %>checked<% } %>>
+						<label>Venerable</label>
+					</div>
+					<div class="pares">
+						<input type="radio" name="statusProcCan" value="1" <% if (dataEntry.statusProcCan=="1") { %>checked<% } %>>
+						<label>Siervo/a de Dios</label>
+					</div>
+				</div>	
+			</div>
+			<!-- Genero -->
+			<div class="sector">
+				<h4>Género:</h4>
+				<div class="input-error">
+					<div class="pares">
+						<input type="radio" name="genero" value="4" <% if (dataEntry.genero=="4") { %>checked<% } %>>
+						<label>Varón</label>
+					</div>
+					<div class="pares">
+						<input type="radio" name="genero" value="3" <% if (dataEntry.genero=="3") { %>checked<% } %>>
+						<label>Mujer</label>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 	<!-- Flechas y Botón -->
