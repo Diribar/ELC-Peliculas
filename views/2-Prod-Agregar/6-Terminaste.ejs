@@ -42,13 +42,11 @@
 					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
 				</a>
 			<% } else if (dataEntry.entidad == "capitulos") { %>
-				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.id %>">
+				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.coleccion_id %>">
 					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
 				</a>
 			<% } %>
 		<% } %>
-
-
 		<a href="<%= urlDetalle %>">
 			<button type="text" autofocus>Ver el Detalle de la <%= dataEntry.producto %> agregada</button>
 		</a>
