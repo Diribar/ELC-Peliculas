@@ -18,7 +18,7 @@
 #datos #primeraCol .campo {margin-top: 15px;}
 #datos #primeraCol .campo:first-child {margin-top: 0;}
 #datos #primeraCol .campo input[name="nombre"] {width: 100%; padding-left: 5px;}
-#datos #primeraCol .campo .tituloCampo {margin-bottom: 3px}
+#datos #primeraCol .campo .tituloCampo {margin-bottom: 3px; position: relative;}
 #datos #primeraCol .campo #valoresFecha {min-height: 80px; justify-content: space-around;}
 #datos #columnaMedio {width: 70px}
 #datos #segundaCol {display: flex; flex-direction: column; width: 180px;}
@@ -30,14 +30,12 @@
 #datos #posiblesDuplicados li input {margin-right: 5px;}
 
 /* Datos Adicionales */
-#adicionales {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px; display: flex; flex-direction: column;}
+#adicionales {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px;}
 #adicionales .tituloCampo {margin-bottom: 5px;}
-#adicionales .input-error {display: flex; flex-direction: row; align-items: center; margin-bottom: 5px;}
-#adicionales .input-error .inputRadio,
-#adicionales .input-error select {margin-right: 10px; width: 100px;}
-#adicionales .input-error .inputRadio {padding: 0 10px; display: flex; justify-content: space-between;}
-#adicionales .input-error .inputRadio .pares {display: flex; flex-direction: row; align-items: center;}
-#adicionales .input-error .inputRadio .pares label {margin-right: 5px;}
+#adicionales .sector {display: flex; flex-direction: row; margin-bottom: 10px;}
+#adicionales .sector .input-error, #adicionales .sector .input-error .pares {display: flex; flex-direction: row; align-items: center;}
+#adicionales .sector .input-error .pares input {margin: 0 3px 0 12px;}
+#adicionales .sector .input-error .pares label {line-height: .8;}
 
 /* Todos los mensajes */
 #datos .mensajeError, #datos .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
@@ -54,7 +52,7 @@
 #dataEntry .fa-times-circle {z-index: 1; cursor: pointer;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 20px;}
+#dataEntry #flechas {margin-top: 10px;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 #dataEntry #flechas button {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
 #dataEntry #flechas button em {color: var(--amarillo-claro); background-color: inherit;}

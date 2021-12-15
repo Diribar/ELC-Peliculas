@@ -2,10 +2,11 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let form = document.querySelector("#dataEntry");
-	let ruta = "/agregar/api/rclv/?RCLV=";
 	let button = document.querySelector("#dataEntry button[type='submit']");
+	let ruta = "/agregar/api/rclv/?RCLV=";
 	let OK = {};
 	let errores = {};
+	if (entidad != "historicos_personajes") OK.adicionales = true;
 
 	// Variables de errores
 	let iconoOK = document.querySelectorAll(".validar .fa-check-circle");
@@ -16,6 +17,11 @@ window.addEventListener("load", async () => {
 	let mes_id = document.querySelector(".input-error select[name='mes_id']");
 	let dia = document.querySelector(".input-error select[name='dia']");
 	let desconocida = document.querySelector(".input-error input[name='desconocida']");
+	// Campos específicos de adicionales
+	let ocultar = document.querySelector("#ocultar");
+	let enProcCan = document.querySelectorAll("input[name='enProcCan']");
+	let statusProcCan = document.querySelectorAll("input[name='statusProcCan']");
+	let genero = document.querySelectorAll("input[name='genero']");
 	// Otros campos de Data Entry
 	let nombre = document.querySelector(".input-error input[name='nombre']");
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
@@ -78,13 +84,39 @@ window.addEventListener("load", async () => {
 			OK.duplicados = !errores.duplicados ? true : false;
 		}
 
+		// ADICIONALES ******************************************
+		if (campo == "enProcCan" || campo == "statusProcCan" || campo == "genero") {
+			// Ocultar / mostrar lo referido al status y género
+			enProcCan[0].checked
+				? ocultar.classList.remove("invisible")
+				: ocultar.classList.add("invisible");
+			// Armar la url
+			url = "";
+			url += enProcCan[0].checked ? "&enProcCan=1" : "&enProcCan=0";
+			url += statusProcCan[0].checked
+				? "&statusProcCan=4"
+				: statusProcCan[1].checked
+				? "&statusProcCan=3"
+				: statusProcCan[2].checked
+				? "&statusProcCan=2"
+				: statusProcCan[3].checked
+				? "&statusProcCan=1"
+				: "";
+			url += genero[0].checked ? "&genero=1" : genero[1].checked ? "&genero=2" : "";
+			// Obtener los errores
+			errores.adicionales = await fetch(ruta + "adicionales" + url).then((n) => n.json());
+			OK.adicionales = !errores.adicionales ? true : false;
+			console.log(OK.adicionales);
+			errores.adicionales = "";
+		}
+
 		// Final de la rutina
 		feedback(OK, errores);
 	});
 
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "duplicados"];
+		let bloques = ["nombre", "fecha", "duplicados", "adicionales"];
 
 		// Rutina
 		for (i = 0; i < bloques.length; i++) {
@@ -117,10 +149,9 @@ window.addEventListener("load", async () => {
 	// Submit
 	form.addEventListener("submit", (e) => {
 		if (button.classList.contains("botonSinLink")) e.preventDefault();
-		
+
 		// No logré hacer funcionar lo siguiente, para hacer un API
 		const data = new FormData(form);
-
 	});
 });
 

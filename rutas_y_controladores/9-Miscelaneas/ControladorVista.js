@@ -56,8 +56,6 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
-		let paises = await BD_varias.obtenerTodos("paises", "nombre");
-		let vocacion_iglesia = await BD_varias.obtenerTodos("vocacion_iglesia", "orden");
 		// 6. Render
 		//return res.send(errores);
 		return res.render("Home", {
@@ -67,8 +65,6 @@ module.exports = {
 			dataEntry: datosRCLV,
 			errores,
 			meses,
-			paises,
-			vocacion_iglesia,
 		});
 	},
 

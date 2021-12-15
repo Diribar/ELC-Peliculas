@@ -7,6 +7,7 @@ module.exports = {
 		let errores = {
 			nombre: await this.RCLV_nombre(datos),
 			fecha: this.RCLV_fecha(datos),
+			adicionales: this.RCLV_adicionales(datos),
 		};
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
 		// Completar con 'hay errores'
@@ -44,6 +45,14 @@ module.exports = {
 		return error;
 	},
 
+	RCLV_adicionales: (datos) => {
+		if (!datos.enProcCan) return "Necesitamos que respondas si está en Proceso de Canonización"
+		if (datos.enProcCan == "1") {
+			if (!datos.statusProcCan) return "Necesitamos que respondas sobre el Status del Proceso de Canonización"
+			if (!datos.genero) return "Necesitamos que respondas el género de la persona"
+		}
+		return "";
+	},
 };
 
 cartelFechaIncompleta = "Falta elegir el mes y/o el día";
