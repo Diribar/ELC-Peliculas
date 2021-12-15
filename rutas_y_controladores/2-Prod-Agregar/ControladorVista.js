@@ -108,7 +108,7 @@ module.exports = {
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoTMDBparaDD;
 		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: 24 * 60 * 60 * 1000});
-		// 6. Redireccionar a la siguiente instancia
+		// 7. Redireccionar a la siguiente instancia
 		req.session.erroresDES = false;
 		res.redirect("/producto/agregar/datos-duros");
 	},
@@ -237,12 +237,10 @@ module.exports = {
 				? "copiar-fa"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect("/producto/agregar/" + origen);
-		// 5. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd(datosDuros);
-		req.session.datosClaveProd = datosClaveProd;
-		res.cookie("datosClaveProd", datosClaveProd, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		// 5. Guardar DatosTerminaste
+		datosTerminaste = funcDatosTerminaste(datosDuros);
+		req.session.datosTerminaste = datosTerminaste;
+		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
 		// 6. Detectar errores
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
@@ -369,13 +367,7 @@ module.exports = {
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
-		// 4. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd(datosPers);
-		req.session.datosClaveProd = datosClaveProd;
-		res.cookie("datosClaveProd", datosClaveProd, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 5. Render del formulario
+		// 4. Render del formulario
 		// return res.send(req.cookies);
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		return res.render("Home", {
@@ -455,23 +447,17 @@ module.exports = {
 			? req.cookies.confirma
 			: "";
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
-		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd(confirma);
-		req.session.datosClaveProd = datosClaveProd;
-		res.cookie("datosClaveProd", datosClaveProd, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 4. Datos de la producción
+		// 3. Datos de la producción
 		maximo = 50;
 		let direccion = confirma.direccion.slice(0, maximo);
 		indice = direccion.lastIndexOf(",") != -1 ? direccion.lastIndexOf(",") : maximo;
 		direccion = direccion.slice(0, indice);
-		// 5. Datos de la actuación
+		// 4. Datos de la actuación
 		maximo = 170;
 		let actuacion = confirma.actuacion.slice(0, maximo);
 		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
 		actuacion = actuacion.slice(0, indice);
-		// 6. Render del formulario
+		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
@@ -494,10 +480,10 @@ module.exports = {
 		// 2. Guardar el registro del producto
 		confirma.avatar = confirma.avatarCF;
 		registro = await BD_varias.agregarRegistro(confirma);
-		// 3. Guardar datosClaveProd
-		datosClaveProd = funcDatosClaveProd({...confirma, id: registro.id});
-		req.session.datosClaveProd = datosClaveProd;
-		res.cookie("datosClaveProd", datosClaveProd, {maxAge: 24 * 60 * 60 * 1000});
+		// 3. Guardar datosTerminaste
+		datosTerminaste = funcDatosTerminaste({...confirma, id: registro.id});
+		req.session.datosTerminaste = datosTerminaste;
+		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Funciones anexas
 		// Guardar la relación producto-paises
 		guardarRelacionConPaises({...confirma, producto_id: registro.id});
@@ -513,59 +499,47 @@ module.exports = {
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "2-Productos");
+		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 5. Redireccionar
 		return res.redirect("/producto/agregar/terminaste");
 	},
 
 	terminasteForm: async (req, res) => {
+		//return res.send(req.cookies);
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
-		datosClaveProd = req.session.datosClaveProd
-			? req.session.datosClaveProd
-			: req.cookies.datosClaveProd
-			? req.cookies.datosClaveProd
+		datosTerminaste = req.session.datosTerminaste
+			? req.session.datosTerminaste
+			: req.cookies.datosTerminaste
+			? req.cookies.datosTerminaste
 			: "";
-		if (!datosClaveProd) return res.redirect("/producto/agregar/palabras-clave");
-		// 3. Averiguar si el producto está en una colección y si la colección ya está en nuestra BD
-		if (datosClaveProd.en_coleccion && datosClaveProd.en_colec_TMDB_id) {
-			coleccionYaEnBD = await BD_varias.obtenerELC_id({
-				entidad: "colecciones",
-				campo: "TMDB_id",
-				valor: datosClaveProd.en_colec_TMDB_id,
-			});
-			if (coleccionYaEnBD) datosClaveProd.coleccionYaEnBD = true;
-		}
-		// 4. Preparar la información sobre las imágenes de MUCHAS GRACIAS
+		if (!datosTerminaste) return res.redirect("/producto/agregar/palabras-clave");
+		// 3. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
 		indice = parseInt(Math.random() * muchasGracias.length);
-		imagen = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
-		// 5. Render del formulario
+		imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
+		// 4. Generar la info para redirigir a Detalle
+		ruta = "/producto/detalle/?entidad=";
+		entidad = datosTerminaste.entidad;
+		id = datosTerminaste.id;
+		urlDetalle = ruta + entidad + "&id=" + id;
+		// 5. Eliminar session y cookie de datosTerminaste
+		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
+		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
+		// 6. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
-			dataEntry: datosClaveProd,
-			imagen,
+			dataEntry: datosTerminaste,
+			imagenMuchasGracias,
+			urlDetalle,
 		});
-	},
-
-	terminasteGuardar: async (req, res) => {
-		datos = {...req.body, url: req.url.slice(1)};
-		//return res.send(datos);
-		// Eliminar session y cookie de datosClaveProd
-		if (req.cookies.datosClaveProd) res.clearCookie("datosClaveProd");
-		if (req.session.datosClaveProd) delete req.session.datosClaveProd;
-		// Generar la info para redirigir a Detalle
-		ruta = "/producto/detalle/?entidad=";
-		entidad = datos.entidad;
-		id = datos.id;
-		// Redirigir a Detalles
-		return res.redirect(ruta + entidad + "&id=" + id);
 	},
 
 	responsabilidad: (req, res) => {
@@ -579,22 +553,15 @@ module.exports = {
 	},
 };
 
-let funcDatosClaveProd = (datos) => {
+let funcDatosTerminaste = (datos) => {
 	let datosClave = {
-		producto: datos.producto,
 		entidad: datos.entidad,
+		producto: datos.producto,
 		fuente: datos.fuente,
 		[datos.fuente + "_id"]: datos[datos.fuente + "_id"],
 		nombre_castellano: datos.nombre_castellano,
 	};
-	if (datos.fuente == "TMDB") datosClave.entidad_TMDB = datos.entidad_TMDB;
-	if (datosClave.entidad == "peliculas") {
-		datosClave.en_coleccion = datos.en_coleccion;
-		if (datos.en_coleccion && datos.fuente == "TMDB") {
-			datosClave.en_colec_TMDB_id = datos.en_colec_TMDB_id;
-			datosClave.en_colec_nombre = datos.en_colec_nombre;
-		}
-	}
+	if (datosClave.entidad == "capitulos") datosClave.coleccion_id = datos.coleccion_id
 	if (datos.id) datosClave.id = datos.id;
 	return datosClave;
 };
@@ -637,7 +604,6 @@ let borrarSessionCookies = (req, res, paso) => {
 		"desambiguar",
 		"tipoProducto",
 		"copiarFA",
-		"datosDurosPartes",
 		"datosDuros",
 		"datosPers",
 		"confirma",

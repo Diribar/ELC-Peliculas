@@ -127,7 +127,8 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 				varias.letrasIngles(m.nombre_original).includes(palabra) ||
 				varias.letrasIngles(m.nombre_castellano).includes(palabra) ||
 				varias.letrasIngles(m.comentario).includes(palabra)
-			) return m;
+			)
+				return m;
 		}
 		return;
 	});
@@ -218,8 +219,8 @@ let averiguarSiYaEnBD = async (datos) => {
 		};
 		YaEnBD = await BD_varias.obtenerELC_id(dato);
 		if (entidad == "peliculas" && !YaEnBD) {
-			dato.entidad = "capitulos";
-			YaEnBD = await BD_varias.obtenerELC_id(dato);
+			// Debe averiguarlo, porque el 'search' no avisa si pertenecea una colección
+			YaEnBD = await BD_varias.obtenerELC_id({...dato, entidad: "capitulos"});
 			if (YaEnBD) {
 				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id);

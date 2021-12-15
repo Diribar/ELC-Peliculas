@@ -9,6 +9,9 @@ RCLV
 TERMINASTE
 - Cambiar 'submit' x lupa
 
+DESAMBIGUAR
+- Si se agregó un capítulo a una colección ya existente, avisarlo en DesambForm con la opción de 'check'
+
 *******************************************************************************
 TIPO PRODUCTO
 var min = 12,
