@@ -8,10 +8,7 @@
 	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 #datos {display: flex; flex-direction: row}
 #dataEntry .validar {position: relative;}
-#datos input, 
-#datos select, 
-#datos #posiblesDuplicados,
-#adicionales select {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos input, #datos select, #datos #posiblesDuplicados {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Partes específicas de Datos */
 #datos #primeraCol {display: flex; flex-direction: column;}
@@ -20,6 +17,9 @@
 #datos #primeraCol .campo input[name="nombre"] {width: 100%; padding-left: 5px;}
 #datos #primeraCol .campo .tituloCampo {margin-bottom: 3px; position: relative;}
 #datos #primeraCol .campo #valoresFecha {min-height: 80px; justify-content: space-around;}
+#datos #primeraCol .campo #valoresFecha .mesDia {display: flex; flex-direction: row; align-items: center;} 
+#datos #primeraCol .campo #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
+#datos #primeraCol .campo #valoresFecha a img {position: absolute; object-fit: cover; height: 100%; width: 100%;}
 #datos #columnaMedio {width: 70px}
 #datos #segundaCol {display: flex; flex-direction: column; width: 180px;}
 

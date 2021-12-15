@@ -4,14 +4,20 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button[type='submit']");
 	let ruta = "/agregar/api/rclv/?RCLV=";
-	let OK = {};
-	let errores = {};
-	if (entidad != "historicos_personajes") OK.adicionales = true;
+
+	// Links a otros sitios
+	let wiki = document.querySelector("#dataEntry #wiki");
+	let url_wiki = "https://es.wikipedia.org/wiki/";
+	let santopedia = document.querySelector("#dataEntry #santopedia");
+	let url_santopedia = "https://www.santopedia.com/buscar?q=";
 
 	// Variables de errores
 	let iconoOK = document.querySelectorAll(".validar .fa-check-circle");
 	let iconoError = document.querySelectorAll(".validar .fa-times-circle");
 	let mensajeError = document.querySelectorAll(".validar .mensajeError");
+	let OK = {};
+	let errores = {};
+	if (entidad != "historicos_personajes") OK.adicionales = true;
 
 	// Campos específicos de fechas
 	let mes_id = document.querySelector(".input-error select[name='mes_id']");
@@ -38,7 +44,6 @@ window.addEventListener("load", async () => {
 			errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
 			OK.nombre = !errores.nombre ? true : false;
 		}
-
 		// FECHAS ***********************************************
 		if (campo == "mes_id") diasDelMes(mes_id, dia);
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
@@ -106,9 +111,18 @@ window.addEventListener("load", async () => {
 			// Obtener los errores
 			errores.adicionales = await fetch(ruta + "adicionales" + url).then((n) => n.json());
 			OK.adicionales = !errores.adicionales ? true : false;
-			console.log(OK.adicionales);
 			errores.adicionales = "";
 		}
+
+		// Logos de Wikipedia y Santopedia
+		if (OK.nombre) {
+			wiki.href = url_wiki + nombre.value;
+			wiki.classList.remove("ocultar");
+			if (enProcCan[0].checked) {
+				santopedia.href = url_santopedia + nombre.value;
+				santopedia.classList.remove("ocultar");
+			} else santopedia.classList.add("ocultar");
+		} else wiki.classList.add("ocultar");
 
 		// Final de la rutina
 		feedback(OK, errores);

@@ -326,7 +326,6 @@ module.exports = {
 			// Credits
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				console.log("linea 328");
 				datosAPI_renamed = {
 					...datosAPI_renamed,
 					director: funcionCrew(datosAPI.crew, "Directing"),

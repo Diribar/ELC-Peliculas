@@ -1,7 +1,4 @@
 RCLV
-- Agregar link a wikipedia en función del nombre
-	https://es.wikipedia.org/w/index.php?search=padre+damian+veuster
-- Sólo para personajes santos: agregar link a santopedia en función del nombre
 - Agregar en la BD el sufijo que corresponda
 
 CONFIRMAR Vista:
