@@ -17,6 +17,7 @@ PELÍCULAS
 		- Ver comentarios
 		- Hacé tu propio comentario
 	- Interés en el producto
+	- Convertir en un Capítulo de Colección
 - Gráfico de barras horizontales
 
 COLECCIONES
