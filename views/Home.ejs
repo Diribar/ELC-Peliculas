@@ -73,7 +73,10 @@
 			<script src="/javascript/2-Productos/4-DP-Errores.js"></script>
 			<script src="/javascript/2-Productos/4-DP-Subcat.js"></script>
 		<% } else %>
-		<% if (codigo == "confirmar") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css"><% } else %>
+		<% if (codigo == "confirmar") { %>
+			<link rel="stylesheet" href="/stylesheets/2-AgregarProductos/5-Confirmar.css">
+			<script src="/javascript/2-Productos/5-Confirmar-Ayuda.js"></script>
+		<% } else %>
 		<% if (codigo == "conclusion") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/6-Conclusion.css"><% } else %>
 		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/stylesheets/2-AgregarProductos/0-Responsabilidad.css"><% } %>
 	<% } %>

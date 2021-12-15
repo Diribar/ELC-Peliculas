@@ -1,26 +1,26 @@
 <h1 class="titulo" id="titulo">Confirmá el agregado a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
-		<h2>¡Vamos que ya estamos por terminar!</h2>
-		<img id="confirmar" src="/imagenes/8-Agregar/Confirmar.svg" alt="Confirmar">
+		<h2>Paso 5 de 5: Confirmar</h2>
+		<img id="running" src="/imagenes/8-Agregar/Confirmar.svg" alt="Confirmar">
 		<ul>
-			<li style="font-size: 1.2rem;"><u style="font-size: inherit;"><%= dataEntry.producto %></u>: <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong></li>
 			<li>Estamos listos para agregar el registro a nuestra Base de Datos</li>
 			<li>
-				Una vez que confirmes la operación en este paso,
-				<ol>
-					<li>No hay vuelta atrás: el registro quedará para siempre en nuestra BD y tu usuario asociado a él.</li>
-					<li>Sólo vos podrás ver el registro hasta que un administrador de nuestra BD lo apruebe.</li>
-				</ol>
+				Una vez que confirmes la operación, no hay "marcha atrás"
+				<i class="fas fa-question-circle">
+					<span class="mensajeAyuda ocultar">El registro quedará para siempre en nuestra BD, y tu usuario asociado a él.</span>
+				</i>
 			</li>
 			<li>
-				Damos una puntuación por la calidad y responsabilidad de la información aportada:
-				<ol>
-					<li>Que la película/colección esté alineada con nuestro perfil (2 puntos).</li>
-					<li>La precisión de la información <u>manual</u> aportada (2 puntos).</li>
-					<li>Los links de trailer (1 punto) y de película/colección (2 puntos), y que respeten los derechos de autor.</li>
-					<li>El puntaje nos permite evaluar al usuario como potencial <em>Revisor de Altas</em> de otros usuarios.</li>
-				</ol>
+				Damos una puntuación por la calidad y responsabilidad de la información aportada
+				<i class="fas fa-question-circle">
+					<ol type="dots" class="mensajeAyuda ocultar">
+						<li>Que la película/colección esté alineada con nuestro perfil (2 puntos).</li>
+						<li>La precisión de la información manual aportada (2 puntos).</li>
+						<li>Que los links de trailer (1 punto) y de película (2 puntos) respeten los derechos de autor.</li>
+						<p>El puntaje nos permite evaluar al usuario como potencial <em>Revisor de Altas de Registros</em> de otros usuarios.</p>
+					</ol>
+				</i>
 			</li>
 		</ul>
 	</section>
