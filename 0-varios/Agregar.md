@@ -1,4 +1,4 @@
-TERMINASTE (cambiarle el título)
+TERMINASTE
 - Leyendas:
     - ¡La Película/Colec xxx ha sido agregada con éxito!
     - Nuestro equipo de Administradores revisará los datos ingresados. (?)
