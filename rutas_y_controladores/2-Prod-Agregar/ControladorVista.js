@@ -461,13 +461,25 @@ module.exports = {
 		res.cookie("datosClaveProd", datosClaveProd, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		// 4. Render del formulario
+		// 4. Datos de la producción
+		maximo = 50;
+		let direccion = confirma.direccion.slice(0, maximo);
+		indice = direccion.lastIndexOf(",") != -1 ? direccion.lastIndexOf(",") : maximo;
+		direccion = direccion.slice(0, indice);
+		// 5. Datos de la actuación
+		maximo = 170;
+		let actuacion = confirma.actuacion.slice(0, maximo);
+		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
+		actuacion = actuacion.slice(0, indice);
+		// 6. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: confirma,
+			direccion,
+			actuacion,
 		});
 	},
 

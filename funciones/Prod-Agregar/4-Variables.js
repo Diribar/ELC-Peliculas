@@ -58,16 +58,16 @@ module.exports = {
 		return [
 			{
 				titulo: "Dirección",
-				campo: "director",
+				campo: "direccion",
 				peliculas: true,
 				colecciones: true,
 			},
 			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
 			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
-			{titulo: "Actuación", campo: "actores", peliculas: true, colecciones: true},
+			{titulo: "Actuación", campo: "actuacion", peliculas: true, colecciones: true},
 			{
 				titulo: "Productor",
-				campo: "productor",
+				campo: "produccion",
 				peliculas: true,
 				colecciones: true,
 			},

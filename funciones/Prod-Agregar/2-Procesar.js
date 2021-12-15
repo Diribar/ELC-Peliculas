@@ -68,19 +68,19 @@ module.exports = {
 					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Productor
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.productor = datosAPI.production_companies
+				datosAPI_renamed.produccion = datosAPI.production_companies
 					.map((n) => n.name)
 					.join(", ");
 			// Crew
 			if (datosAPI.crew.length > 0)
 				datosAPI_renamed = {
 					...datosAPI_renamed,
-					director: funcionCrew(datosAPI.crew, "Directing"),
+					direccion: funcionCrew(datosAPI.crew, "Directing"),
 					guion: funcionCrew(datosAPI.crew, "Writing"),
 					musica: funcionCrew(datosAPI.crew, "Sound"),
 				};
 			// Cast
-			if (datosAPI.cast.length > 0) datosAPI_renamed.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datosAPI_renamed.actuacion = funcionCast(datosAPI.cast);
 		}
 		// Consolidar los resultados
 		let resultado = {
@@ -176,11 +176,11 @@ module.exports = {
 		}
 		// Definir variables
 		let paises_id = "";
-		let productor = "";
-		let director = "";
+		let produccion = "";
+		let direccion = "";
 		let guion = "";
 		let musica = "";
-		let actores = "";
+		let actuacion = "";
 
 		// for por cada capítulo ID
 		for (capituloTMDB_id of datos.capitulosTMDB_id) {
@@ -197,25 +197,25 @@ module.exports = {
 					datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Productor
 			if (datosAPI.production_companies.length > 0)
-				productor += datosAPI.production_companies.map((n) => n.name).join(", ") + ", ";
+				produccion += datosAPI.production_companies.map((n) => n.name).join(", ") + ", ";
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				director += funcionCrew(datosAPI.crew, "Directing") + ", ";
+				direccion += funcionCrew(datosAPI.crew, "Directing") + ", ";
 				guion += funcionCrew(datosAPI.crew, "Writing") + ", ";
 				musica += funcionCrew(datosAPI.crew, "Sound") + ", ";
 			}
 			// Cast
 			if (datosAPI.cast.length > 0)
-				actores += datosAPI.cast.map((n) => n.name).join(", ") + ", ";
+				actuacion += datosAPI.cast.map((n) => n.name).join(", ") + ", ";
 		}
 		// Procesar los resultados
 		let capitulos = datos.capitulosTMDB_id.length;
 		if (paises_id) exportar.paises_id = datosColeccion(paises_id, capitulos);
-		if (productor) exportar.productor = datosColeccion(productor, capitulos);
-		if (director) exportar.director = datosColeccion(director, capitulos);
+		if (produccion) exportar.produccion = datosColeccion(produccion, capitulos);
+		if (direccion) exportar.direccion = datosColeccion(direccion, capitulos);
 		if (guion) exportar.guion = datosColeccion(guion, capitulos);
 		if (musica) exportar.musica = datosColeccion(musica, capitulos);
-		if (actores) exportar.actores = datosColeccion(actores, capitulos);
+		if (actuacion) exportar.actuacion = datosColeccion(actuacion, capitulos);
 
 		return exportar;
 	},
@@ -320,7 +320,7 @@ module.exports = {
 			if (datosAPI.created_by.length > 0)
 				datosAPI_renamed.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.productor = datosAPI.production_companies
+				datosAPI_renamed.produccion = datosAPI.production_companies
 					.map((n) => n.name)
 					.join(", ");
 			// Credits
@@ -328,13 +328,13 @@ module.exports = {
 			if (datosAPI.crew.length > 0) {
 				datosAPI_renamed = {
 					...datosAPI_renamed,
-					director: funcionCrew(datosAPI.crew, "Directing"),
+					direccion: funcionCrew(datosAPI.crew, "Directing"),
 					guion: funcionCrew(datosAPI.crew, "Writing"),
 					musica: funcionCrew(datosAPI.crew, "Sound"),
 				};
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datosAPI_renamed.actores = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datosAPI_renamed.actuacion = funcionCast(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
@@ -365,10 +365,10 @@ module.exports = {
 		datos.categoria_id = datosCol.categoria_id;
 		datos.subcategoria_id = datosCol.subcategoria_id;
 		datos.publico_sugerido_id = datosCol.publico_sugerido_id;
-		datos.director = datosCol.director;
+		datos.direccion = datosCol.direccion;
 		datos.guion = datosCol.guion;
 		datos.musica = datosCol.musica;
-		datos.productor = datosCol.productor;
+		datos.produccion = datosCol.produccion;
 
 		// Datos de la temporada
 		if (!datosCol.tempUnica) datos.temporada = datosTemp.season_number;
@@ -381,15 +381,15 @@ module.exports = {
 		if (datosCap.crew.length > 0) {
 			datos = {
 				...datos,
-				director: funcionCrew(datosCap.crew, "Directing"),
+				direccion: funcionCrew(datosCap.crew, "Directing"),
 				guion: funcionCrew(datosCap.crew, "Writing"),
 				musica: funcionCrew(datosCap.crew, "Sound"),
 			};
 		}
-		let actores = [];
-		if (datosTemp.cast.length) actores.push(...datosTemp.cast);
-		if (datosCap.guest_stars.length) actores.push(...datosCap.guest_stars);
-		if (actores.length) datos.actores = funcionCast(actores);
+		let actuacion = [];
+		if (datosTemp.cast.length) actuacion.push(...datosTemp.cast);
+		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
+		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
 		avatar = datosCap.still_path
 			? datosCap.still_path
@@ -479,15 +479,15 @@ module.exports = {
 			resultado.pais_nombre = pais_nombre.slice((pais_nombre.length + 1) / 2);
 		}
 		if (contenido.indexOf("Dirección") > 0)
-			resultado.director = contenido[contenido.indexOf("Dirección") + 1];
+			resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
 		if (contenido.indexOf("Guion") > 0)
 			resultado.guion = contenido[contenido.indexOf("Guion") + 1];
 		if (contenido.indexOf("Música") > 0)
 			resultado.musica = contenido[contenido.indexOf("Música") + 1];
 		if (contenido.indexOf("Reparto") > 0)
-			resultado.actores = contenido[contenido.indexOf("Reparto") + 1];
+			resultado.actuacion = contenido[contenido.indexOf("Reparto") + 1];
 		if (contenido.indexOf("Productora") > 0)
-			resultado.productor = contenido[contenido.indexOf("Productora") + 1];
+			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
 			aux = contenido[contenido.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
@@ -573,9 +573,9 @@ let funcionCrew = (crew, campo_TMDB) => {
 };
 
 let funcionCast = (dato) => {
-	actores = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
-	while (dato.length > 0 && actores.length > 500) {
-		actores = actores.slice(0, actores.lastIndexOf(","));
+	actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
+	while (dato.length > 0 && actuacion.length > 500) {
+		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
-	return actores;
+	return actuacion;
 };

@@ -1,10 +1,4 @@
 CONFIRMA
-- Imagen del producto más:
-    - Peli/Colec: nombre_cast
-    - Año delanzam.
-    - Dirección
-    - Actuación
-- 'Running' para avanzar
 
 AGREGAR PRODUCTOS
 - Ícono 'check' (verde) para avanzar (DD, DP)
