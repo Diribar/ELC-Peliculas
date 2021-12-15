@@ -148,14 +148,14 @@ module.exports = {
 			: datos.paises_id.length > 2 * 1 + 4 * 3
 			? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
 			: "";
-		errores.director =
-			camposAVerificar.indexOf("director") == -1
+		errores.direccion =
+			camposAVerificar.indexOf("direccion") == -1
 				? ""
-				: !datos.director
+				: !datos.direccion
 				? cartelCampoVacio
-				: longitud(datos.director, 2, 100)
-				? longitud(datos.director, 2, 100)
-				: castellano(datos.director)
+				: longitud(datos.direccion, 2, 100)
+				? longitud(datos.direccion, 2, 100)
+				: castellano(datos.direccion)
 				? cartelCastellano
 				: "";
 		errores.guion =
@@ -178,25 +178,25 @@ module.exports = {
 				: castellano(datos.musica)
 				? cartelCastellano
 				: "";
-		errores.actores =
-			camposAVerificar.indexOf("actores") == -1
+		errores.actuacion =
+			camposAVerificar.indexOf("actuacion") == -1
 				? ""
-				: !datos.actores
+				: !datos.actuacion
 				? cartelCampoVacio +
-				  '. Si no tiene actores (ej. un Documental), poné "No tiene actores"'
-				: longitud(datos.actores, 2, 500)
-				? longitud(datos.actores, 2, 500)
-				: castellano(datos.actores)
+				  '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
+				: longitud(datos.actuacion, 2, 500)
+				? longitud(datos.actuacion, 2, 500)
+				: castellano(datos.actuacion)
 				? cartelCastellano
 				: "";
-		errores.productor =
-			camposAVerificar.indexOf("productor") == -1
+		errores.produccion =
+			camposAVerificar.indexOf("produccion") == -1
 				? ""
-				: !datos.productor
+				: !datos.produccion
 				? cartelCampoVacio
-				: longitud(datos.productor, 2, 100)
-				? longitud(datos.productor, 2, 100)
-				: castellano(datos.productor)
+				: longitud(datos.produccion, 2, 100)
+				? longitud(datos.produccion, 2, 100)
+				: castellano(datos.produccion)
 				? cartelCastellano
 				: "";
 		errores.sinopsis = !datos.sinopsis

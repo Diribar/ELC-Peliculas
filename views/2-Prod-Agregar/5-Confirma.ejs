@@ -4,28 +4,38 @@
 		<h2>Paso 5 de 5: Confirmá el agregado</h2>
 		<img id="running" src="/imagenes/8-Agregar/Confirma.svg" alt="Confirma">
 		<ul>
-			<li>Estamos listos para agregar el registro a nuestra Base de Datos</li>
+			<li>Estamos listos para agregar el producto a nuestra Base de Datos</li>
 			<li>
 				Una vez que confirmes la operación, no hay "marcha atrás"
 				<i class="fas fa-question-circle">
-					<span class="mensajeAyuda ocultar">El registro quedará para siempre en nuestra BD, y tu usuario asociado a él.</span>
+					<span class="mensajeAyuda ocultar">El producto quedará para siempre en nuestra BD, y tu usuario asociado a él.</span>
 				</i>
 			</li>
 			<li>
 				Damos una puntuación por la calidad y responsabilidad de la información aportada
 				<i class="fas fa-question-circle">
 					<ol class="mensajeAyuda ocultar">
-						<li>Que la película/colección esté alineada con nuestro perfil (2 puntos).</li>
-						<li>La precisión de la información manual aportada (2 puntos).</li>
-						<li>Que los links de trailer (1 punto) y de película (2 puntos) respeten los derechos de autor.</li>
-						<p>El puntaje nos permite evaluar al usuario como potencial <em>Revisor de Altas de Registros</em> de otros usuarios.</p>
+						<p>Aspectos que consideramos:</p>
+						<li>Que el producto esté alineado con nuestro perfil.</li>
+						<li>La precisión de los datos personalizados aportados.</li>
+						<li>Los links de trailer y de película.</li>
+						<p>El puntaje nos permite evaluar al usuario como potencial <em>Revisor de Altas de Productos</em> de otros usuarios.</p>
 					</ol>
 				</i>
 			</li>
 		</ul>
+		<div id="datosProd">
+			<img id="afiche" src="<%= dataEntry.avatarDP %>" alt="afiche">
+			<div id="referenciasProd">
+				<p><%= dataEntry.producto %>: <strong><%= dataEntry.nombre_castellano %></strong></p>
+				<p>Año de estreno: <strong><%= dataEntry.ano_estreno %></strong></p>
+				<p>Dirección: <strong><%= direccion %></strong></p>
+				<p>Actuación: <%= actuacion %></p>
+			</div>
+		</div>
 	</section>
 	<!-- Flechas y Botón -->
-	<section id="flechas" class="flex-row">
+	<section id="flechas">
 		<a href="/producto/agregar/datos-personalizados" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" autofocus>Confirma</button>
 		<% if (false) { %>
