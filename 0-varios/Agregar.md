@@ -1,3 +1,11 @@
+CONFIRMA
+- Imagen del producto más:
+    - Peli/Colec: nombre_cast
+    - Año delanzam.
+    - Dirección
+    - Actuación
+- 'Running' para avanzar
+
 AGREGAR PRODUCTOS
 - Ícono 'check' (verde) para avanzar (DD, DP)
 
@@ -5,14 +13,6 @@ RCLV
 - Flecha izq. para retroceder
 - Ícono 'check' (verde) para avanzar
 - Controlador: Agregar en la BD el sufijo que corresponda
-
-CONFIRMA
-- Imagen del producto más:
-    - Peli/Colec: nombre_cast
-    - Año delanzam.
-    - Dirección
-    - Actuación
-- Ícono 'check' (verde) para avanzar
 
 TERMINASTE
 - Cambiar 'submit' x lupa

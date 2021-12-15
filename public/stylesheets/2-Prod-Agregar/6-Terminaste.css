@@ -7,7 +7,7 @@
 
 /* Texto */
 #dataEntry ul {padding-left: 20px;}
-#dataEntry ul li {margin: 5px 0; font-size: 1.1rem;}
+#dataEntry ul li {margin: 5px 0; font-size: 1.2rem;}
 #dataEntry ul li .fa-question-circle {position: relative; transform: none; margin-left: 5px; right: 0; color: inherit;}
 #dataEntry ul li .fa-question-circle .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 400px; color: var(--gris-claro);}
 #dataEntry ul li .fa-question-circle .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
