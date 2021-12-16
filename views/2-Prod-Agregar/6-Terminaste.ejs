@@ -1,7 +1,7 @@
 <h1 class="titulo" id="titulo">Agregaste una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
-<form action="/producto/agregar/detalle" method="POST" id="dataEntry" class="flex-col">
-	<section class="flex-col">
-		<img id="gracias" src="<%= imagen %>" alt="Muchas gracias">
+<section id="dataEntry" class="flex-col">
+	<div class="flex-col">
+		<img id="gracias" src="<%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul>
 			<li>La <%= dataEntry.producto %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> ¡fue agregada con éxito!</li>
 			<li>
@@ -25,26 +25,30 @@
 			<% botonColeccion = "" %>
 			<!-- Colección -->
 			<% if (dataEntry.entidad == "colecciones") { %>
-				<% if (dataEntry.TMDB_id) { %>
+				<% if (dataEntry.fuente == "TMDB") { %>
 					<!-- En TMDB -->
-					<li id="partesAutomatico">Las partes de la colección se agregaron a nuestra BD en forma automática.</li>
+					<li id="partesAutomatico">Los capítulos de la colección se agregaron a nuestra BD en forma automática.</li>
 				<% } else { %>
-					<li>¡Muchas gracias! ¿Podrás ahora cargar las partes de la colección?</li>
-					<% botonColeccion = "Ir a Ingreso Manual" %>
-					<% linkColeccion = "/producto/agregar/tipo-producto" %>
+					<li>¡Muchas gracias! ¿Podrás ahora cargar los capítulos de la colección?</li>
 				<% } %>
 			<% } %>
 		</ul>
-	</section>
-	<!-- Generar la info de req.body -->
-	<section class="ocultar">
-		<% for (campo in dataEntry) { %>
-			<input type="text" name="<%= campo %>" value="<%= dataEntry[campo] %>">
-		<% } %> 
-	</section>
+	</div>
 	<!-- Botones -->
-	<section id="flechas" class="flex-row">
-		<% if (botonColeccion) { %><input type="submit" autofocus value="<%= botonColeccion %>" formaction="<%= linkColeccion %>" formmethod="post"><% } %>
-		<button type="submit" autofocus>Ver el Detalle de la <%= dataEntry.producto %> agregada</button>
-	</section>	
-</form>
+	<div id="flechas" class="flex-row">
+		<% if (dataEntry.fuente != "TMDB") { %>
+			<% if (dataEntry.entidad == "colecciones") { %>
+				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.id %>">
+					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
+				</a>
+			<% } else if (dataEntry.entidad == "capitulos") { %>
+				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.coleccion_id %>">
+					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
+				</a>
+			<% } %>
+		<% } %>
+		<a href="<%= urlDetalle %>">
+			<button type="text" autofocus>Ver el Detalle de la <%= dataEntry.producto %> agregada</button>
+		</a>
+	</div>	
+</section>

@@ -35,16 +35,15 @@ router.post("/tipo-producto-dd", usuarios, vista.tipoProducto_Guardar);
 router.post("/tipo-producto-fa", usuarios, vista.tipoProducto_Guardar);
 router.get("/copiar-fa", usuarios, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", usuarios, vista.copiarFA_Guardar);
-router.get("/datos-duros", usuarios, vista.datosDurosForm);
+// Comienzo de "prodEnBD"
+router.get("/datos-duros", usuarios, prodEnBD, vista.datosDurosForm);
 router.post("/datos-duros", usuarios, prodEnBD, upload.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-personalizados", usuarios, vista.datosPersForm);
+router.get("/datos-personalizados", usuarios, prodEnBD, vista.datosPersForm);
 router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar);
-router.get("/confirma", usuarios, vista.confirmaForm);
+router.get("/confirma", usuarios, prodEnBD, vista.confirmaForm);
 router.post("/confirma", usuarios, prodEnBD, vista.confirmaGuardar);
+// Fin de "prodEnBD"
 router.get("/terminaste", usuarios, vista.terminasteForm);
-router.post("/detalle", usuarios, vista.terminasteGuardar);
-router.post("/coleccion", usuarios, vista.terminasteGuardar);
-router.post("/partes-de-coleccion", usuarios, vista.terminasteGuardar);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", usuarios, vista.responsabilidad);

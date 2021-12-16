@@ -56,21 +56,11 @@ module.exports = {
 
 	camposDD2: () => {
 		return [
-			{
-				titulo: "Dirección",
-				campo: "direccion",
-				peliculas: true,
-				colecciones: true,
-			},
+			{titulo: "Dirección", campo: "direccion", peliculas: true, colecciones: true},
 			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
 			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
 			{titulo: "Actuación", campo: "actuacion", peliculas: true, colecciones: true},
-			{
-				titulo: "Productor",
-				campo: "produccion",
-				peliculas: true,
-				colecciones: true,
-			},
+			{titulo: "Producción", campo: "produccion", peliculas: true, colecciones: true},
 		];
 	},
 
