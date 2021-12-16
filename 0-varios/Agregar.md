@@ -1,18 +1,11 @@
-AGREGAR PRODUCTOS
-- Ícono 'check' (verde) para avanzar (DD, DP)
-
 RCLV
-- Flecha izq. para retroceder
-- Ícono 'check' (verde) para avanzar
+- Agregar: Rol
 - Controlador: Agregar en la BD el sufijo que corresponda
 
-TERMINASTE
-- Cambiar 'submit' x lupa
-
+*******************************************************************************
 DESAMBIGUAR
 - Si se agregó un capítulo a una colección ya existente, avisarlo en DesambForm con la opción de 'check'
 
-*******************************************************************************
 TIPO PRODUCTO
 var min = 12,
     max = 100,

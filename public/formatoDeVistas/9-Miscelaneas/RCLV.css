@@ -51,15 +51,16 @@
 #dataEntry .fa-times-circle {z-index: 1; cursor: pointer;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 10px;}
+#dataEntry #flechas {margin-top: 10px; display: flex; flex-direction: row; justify-content: space-evenly;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
-#dataEntry #flechas button {color: white; background-color: var(--gris-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
-#dataEntry #flechas button em {color: var(--amarillo-claro); background-color: inherit;}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
+#dataEntry #flechas i {font-size: 2rem;}
+#dataEntry #flechas a i {color: var(--gris-oscuro)}
 
 /* Resultados */
 /* Todos */
-.resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
-	{padding: 3px 10px; color: white; font-weight: bold;}
+.resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; font-weight: bold;}
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
 .fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}

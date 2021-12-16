@@ -28,6 +28,8 @@ module.exports = {
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "palabrasClave");
+		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
+		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 4. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
@@ -63,6 +65,8 @@ module.exports = {
 		codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
+		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
+		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let palabrasClave = req.session.palabrasClave
 			? req.session.palabrasClave
@@ -406,17 +410,17 @@ module.exports = {
 		fe_valores = await BD_varias.filtrarPorParametro(
 			"fe_valores",
 			"id",
-			req.body.fe_valores_id
+			datosPers.fe_valores_id
 		).then((n) => n.valor);
 		entretiene = await BD_varias.filtrarPorParametro(
 			"entretiene",
 			"id",
-			req.body.entretiene_id
+			datosPers.entretiene_id
 		).then((n) => n.valor);
 		calidad_tecnica = await BD_varias.filtrarPorParametro(
 			"calidad_tecnica",
 			"id",
-			req.body.calidad_tecnica_id
+			datosPers.calidad_tecnica_id
 		).then((n) => n.valor);
 		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// Preparar la info para el siguiente paso

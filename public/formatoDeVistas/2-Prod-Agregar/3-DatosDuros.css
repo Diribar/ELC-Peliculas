@@ -41,4 +41,7 @@
 #dataEntry #imagenPeli img {position: absolute; height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
-#dataEntry #flechas {margin-top: 20px;}
+#dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
+

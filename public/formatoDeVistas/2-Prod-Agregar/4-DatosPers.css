@@ -37,3 +37,5 @@
 
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px;}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
