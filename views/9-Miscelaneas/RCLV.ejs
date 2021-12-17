@@ -1,97 +1,107 @@
-<div id="entidad" class="ocultar"><%= dataEntry.entidad %></div>
 <h1 class="titulo" id="titulo">Agregá un <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
-	<section id="datos">
+	<section id="datos" class="flex-row">
 		<!--Primera columna-->
 		<div id="primeraCol">
-			<!-- NOMBRE -->
-			<div class="campo validar">
-				<!-- Título del campo y Ayuda -->
-				<div class="flex-row">
-					<div class="tituloCampo">
-						<h3>Nombre</h3>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-							<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-						</ul>
-						<!-- Errores -->			
-						<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.nombre %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
-					</div>
-				</div>
-				<!-- Valores del campo -->
-				<div class="input-error">
-					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+			<!-- NOMBRE Y GÉNERO -->
+			<!-- Título del campo y Ayuda -->
+			<div class="flex-row">
+				<div class="margenBottomTitulo relative">
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.nombre %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+					<!-- Título -->
+					<h3>Nombre</h3>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle"></i>
+					<ul type="dots" class="mensajeAyuda ocultar">
+						<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+						<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+					</ul>
 				</div>
 			</div>
-			<!-- FECHA REPRESENTATIVA -->
-			<div class="campo validar">
-				<!-- Título del campo y Ayuda -->
-				<div class="flex-row">
-					<div class="tituloCampo">
-						<h3>Fecha más representativa</h3>
-						<!-- Ayuda -->
-						<i class="fas fa-question-circle"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Usamos la fecha en que se lo recuerda.</li>
-							<li>Para los santos o beatos, es la fecha en el santoral.</li>
-							<li>Para los demás, suele ser la fecha de su muerte.</li>
-						</ul>
-						<!-- Errores -->			
-						<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.dia %></span>
-						</i>
-						<i class="fas fa-check-circle ocultar"></i>
+			<!-- Valores del campo -->
+			<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+			<% if (codigo == "historicos_personajes") { %>
+				<!-- Genero -->
+				<div id="genero" class="flex-row">
+					<h4>Género:</h4>
+					<div class="flex-row">
+						<div class="flexRowAlign">
+							<input type="radio" name="genero" value="V" <% if (dataEntry.genero=="V") { %>checked<% } %>>
+							<label>Varón</label>
+						</div>
+						<div class="flexRowAlign">
+							<input type="radio" name="genero" value="M" <% if (dataEntry.genero=="M") { %>checked<% } %>>
+							<label>Mujer</label>
+						</div>
 					</div>
 				</div>
-				<!-- Valores del campo -->
-				<div class="flex-col" id="valoresFecha">
-					<!-- Meses -->
-					<div class="input-error mesDia">
-						<label style="width: 40px;">Mes:</label>
-						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!datosRCLV.mes_id) { %>selected<% } %>>Elegí</option>
-							<% for (mes of meses) { %>
-								<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
-									<%= mes.nombre %>
-								</option>
-							<% } %>
-						</select>
-						<a id="wiki" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Logos/LogoWiki.jpg" title="Consultar en Wikipedia">
-						</a>
-						<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
-						</a>
-					</div>
-					<!-- Días -->
-					<div class="input-error mesDia">
-						<label style="width: 40px;">Día:</label>
-						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!datosRCLV.dia) { %>selected<% } %>>Elegí</option>
-							<% for (dia = 1; dia < 32; dia++) { %>
-								<option value="<%= dia %>" 
-									<% if (dia > 29) { %>class="ocultar"<% } %>
-									<% if (dataEntry.dia == dia) { %>selected<% } %>
-								>
-									<%= dia %>
-								</option>
-							<% } %>
-						</select>
-					</div>
-					<!-- Fecha desconocida -->
-					<div class="input-error flex-row align-center">
-						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
-							<% if (dataEntry.desconocida=="on") { %>checked<% } %>
-							tabindex="-1"
-						>
-						<label>Sin fecha conocida o de referencia</label>
-					</div>
+			<% } %>
+			<!-- FECHA REPRESENTATIVA -->
+			<!-- Título del campo y Ayuda -->
+			<div class="flex-row">
+				<div class="margenTopTitulo margenBottomTitulo relative">
+					<h3>Fecha más representativa</h3>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle"></i>
+					<ul type="dots" class="mensajeAyuda ocultar">
+						<li>Usamos la fecha en que se lo recuerda.</li>
+						<li>Para los santos o beatos, es la fecha en el santoral.</li>
+						<li>Para los demás, suele ser la fecha de su muerte.</li>
+					</ul>
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.dia %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+			</div>
+			<!-- Valores del campo -->
+			<div id="valoresFecha" class="flex-col space-between">
+				<!-- Meses -->
+				<div class="flexRowAlign">
+					<label style="width: 40px;">Mes:</label>
+					<select name="mes_id" class="input">
+						<option value="" class="ocultar" <% if (!datosRCLV.mes_id) { %>selected<% } %>>Elegí</option>
+						<% for (mes of meses) { %>
+							<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+								<%= mes.nombre %>
+							</option>
+						<% } %>
+					</select>
+					<a id="wiki" target="blank" class="ocultar" tabindex="-1">
+						<img src="/imagenes/0-Logos/LogoWiki.jpg" title="Consultar en Wikipedia">
+					</a>
+					<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
+						<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
+					</a>
+				</div>
+				<!-- Días -->
+				<div class="flexRowAlign">
+					<label style="width: 40px;">Día:</label>
+					<select name="dia" class="input">
+						<option value="" class="ocultar" <% if (!datosRCLV.dia) { %>selected<% } %>>Elegí</option>
+						<% for (dia = 1; dia < 32; dia++) { %>
+							<option value="<%= dia %>" 
+								<% if (dia > 29) { %>class="ocultar"<% } %>
+								<% if (dataEntry.dia == dia) { %>selected<% } %>
+							>
+								<%= dia %>
+							</option>
+						<% } %>
+					</select>
+				</div>
+				<!-- Fecha desconocida -->
+				<div class="flex-row align-center">
+					<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
+						<% if (dataEntry.desconocida=="on") { %>checked<% } %>
+						tabindex="-1"
+					>
+					<label>Sin fecha conocida o de referencia</label>
 				</div>
 			</div>
 		</div>
@@ -99,8 +109,8 @@
 		<div id="columnaMedio">
 		</div>
 		<!--Segunda columna-->
-		<div id="segundaCol" class="input-error">
-			<div class="validar">
+		<div class="segundaCol">
+			<div class="relative">
 				<h3>Nombres con esa fecha</h3>
 				<!-- Errores -->			
 				<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
@@ -112,70 +122,58 @@
 			<ul type="none" id="posiblesDuplicados"></ul>
 		</div>
 	</section>
-	<!-- DATOS ADICIONALES (sólo para personajes históricos) -->
-	<section id="adicionales" class="<% if (codigo!="historicos_personajes") { %> ocultar<% } %>">
-		<div class="validar">
-			<h3 class="tituloCampo">Datos Adicionales</h3>
-			<!-- Errores -->
-			<i class="fas fa-times-circle<%- !errores.adicionales ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores.adicionales %></span>
-			</i>
-			<i class="fas fa-check-circle ocultar"></i>
-		</div>
-		<!-- ¿En proceso de canonización? -->
-		<div class="sector">
-			<h4>Es santo o está en proceso de canonización (Iglesia Católica):</h4>
-			<div class="input-error">
-				<div class="pares">
-					<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
-					<label>SI</label>
+	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
+	<% if (codigo == "historicos_personajes") { %>
+		<section id="RCLI" class="flex-row space-between">
+			<div class="flex-col">
+				<!-- Título de la sección -->
+				<div class="relative">
+					<!-- Errores -->
+					<i class="fas fa-times-circle<%- !errores.RCLI ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.RCLI %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+					<!-- Título -->
+					<h3 class="margenBottomTitulo">Relación con la Iglesia</h3>
 				</div>
-				<div class="pares">
-					<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %>>
-					<label>NO</label>
-				</div>
-			</div>
-		</div>
-		<!-- Sectores ocultos salvo que esté en proceso de canonización -->
-		<div id="ocultar" class="invisible">
-			<!-- Status del proceso de canonización -->
-			<div class="sector">
-				<h4>Status del proceso:</h4>
-				<div class="input-error">
-					<div class="pares">
-						<input type="radio" name="statusProcCan" value="4" <% if (dataEntry.statusProcCan=="4") { %>checked<% } %>>
-						<label>Santo/a</label>
+				<!-- ¿En proceso de canonización? -->
+				<h4>Es santo o está en proceso de canonización:</h4>
+				<div id="opcionesIglesia" class="flex-row">
+					<div class="flexRowAlign">
+						<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
+						<label>SI</label>
 					</div>
-					<div class="pares">
-						<input type="radio" name="statusProcCan" value="3" <% if (dataEntry.statusProcCan=="3") { %>checked<% } %>>
-						<label>Beato/a</label>
-					</div>
-					<div class="pares">
-						<input type="radio" name="statusProcCan" value="2" <% if (dataEntry.statusProcCan=="2") { %>checked<% } %>>
-						<label>Venerable</label>
-					</div>
-					<div class="pares">
-						<input type="radio" name="statusProcCan" value="1" <% if (dataEntry.statusProcCan=="1") { %>checked<% } %>>
-						<label>Siervo/a de Dios</label>
-					</div>
-				</div>	
-			</div>
-			<!-- Genero -->
-			<div class="sector">
-				<h4>Género:</h4>
-				<div class="input-error">
-					<div class="pares">
-						<input type="radio" name="genero" value="4" <% if (dataEntry.genero=="4") { %>checked<% } %>>
-						<label>Varón</label>
-					</div>
-					<div class="pares">
-						<input type="radio" name="genero" value="3" <% if (dataEntry.genero=="3") { %>checked<% } %>>
-						<label>Mujer</label>
+					<div class="flexRowAlign">
+						<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %>>
+						<label>NO</label>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+			<!-- Sectores ocultos salvo que esté en proceso de canonización -->
+			<div id="ocultar" class="invisible flex-col space-between">
+				<!-- Status del proceso de canonización -->
+				<div class="flexRowAlign">
+					<label>Status del proceso:</label>
+					<select name="proceso_canonizacion_id">
+						<option value="" <% if (dataEntry.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
+						<% for (proceso of procesos_canonizacion) { %>
+							<option value="<%= proceso.id %>" <% if (dataEntry.proceso_canonizacion_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+						<% } %> 
+					</select>
+				</div>
+				<!-- Rol en la Iglesia -->
+				<div class="flexRowAlign">
+					<label>Rol en la Iglesia:</label>
+					<select name="rol_iglesia_id">
+						<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
+						<% for (rol_iglesia of roles_iglesia) { %>
+							<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+						<% } %> 
+					</select>
+				</div>
+			</div>
+		</section>	
+	<% } %>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
 		<a href="/producto/agregar/datos-personalizados" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>

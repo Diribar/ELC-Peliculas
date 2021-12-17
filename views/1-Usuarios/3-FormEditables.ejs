@@ -14,26 +14,25 @@
 	<section class="label-input flex-row"><!--Pais de residencia-->
 		<label for="pais">País de residencia</label>
 		<div class="form-grupo">
-			<% pais_id = dataEntry ? dataEntry.pais_id : "" %>
 			<select name="pais_id" class="input">
-				<option value="" <% if (pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+				<option value="" <% if (dataEntry.pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (n of hablaHispana.filter(n => n.continente == "América")) { %>
-						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>	
 				</optgroup>
 				<optgroup label="Europa/África (habla hispana)">
 					<% for (n of hablaHispana.filter(n => n.continente != "América")) { %>
-						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>
 				</optgroup>
 				<optgroup label="Países de habla no hispana">
 					<% for (n of hablaNoHispana) { %>
-						<option  value="<%= n.id %>" <% if (pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>
@@ -45,17 +44,16 @@
 		</div>
 	</section>
 	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
-		<label for="vocacion_id">Estado de vida <br>en la iglesia</label>
+		<label for="rol_iglesia_id">Rol en<br>la iglesia</label>
 		<div class="form-grupo">
-			<% vocacion_id = dataEntry ? dataEntry.vocacion_id : "" %>
-			<select name="vocacion_id" class="input">
-				<option value="" <% if (vocacion_id=="") {%> selected <%}%> class="ocultar">Elejí un estado_eclesial</option>
-				<% for (n of vocacion_iglesia) { %>
-					<option value="<%= n.id %>" <% if (vocacion_id==n.id) { %> selected <% } %>><%= n.nombre %></option>
+			<select name="rol_iglesia_id" class="input">
+				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí un rol en la Iglesia</option>
+				<% for (rol_iglesia of roles_iglesia) { %>
+					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %> 
 			</select>
-			<i class="fas fa-times-circle <%- !(errores && errores.vocacion_id) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.vocacion_id) ? errores.vocacion_id : "" %></span>
+			<i class="fas fa-times-circle <%- !(errores && errores.rol_iglesia_id) ? 'ocultar' : '' %> ">
+				<span class="mensajeError"><%- (errores && errores.rol_iglesia_id) ? errores.rol_iglesia_id : "" %></span>
 			</i>
 		</div>
 	</section>

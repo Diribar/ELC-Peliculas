@@ -52,14 +52,14 @@ module.exports = {
 	// Usuarios *************************************************
 	obtenerUsuarioPorID: (id) => {
 		return usuarios.findByPk(id, {
-			include: ["rol_usuario", "sexo", "status_registro", "pais", "estado_eclesial"],
+			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
 
 	obtenerUsuarioPorMail: (email) => {
 		return usuarios.findOne({
 			where: {email: email},
-			include: ["rol_usuario", "sexo", "status_registro", "pais", "estado_eclesial"],
+			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
 

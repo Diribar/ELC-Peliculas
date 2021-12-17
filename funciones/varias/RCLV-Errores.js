@@ -5,11 +5,17 @@ let BD_varias = require("../BD/varias");
 module.exports = {
 	RCLV_consolidado: async function (datos) {
 		let errores = {
-			nombre: await this.RCLV_nombre(datos),
 			fecha: this.RCLV_fecha(datos),
-			adicionales: this.RCLV_adicionales(datos),
 		};
+		// Errores "nombre"
+		nombre = await this.RCLV_nombre(datos);
+		let genero = "";
+		if (datos.entidad == "historicos_personajes") genero = await this.RCLV_genero(datos);
+		errores.nombre = nombre ? nombre : genero;
+		// Errores "datos repetidos"
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
+		// Errores "RCLI"
+		if (datos.entidad == "historicos_personajes") errores.RCLI = this.RCLV_RCLI(datos);
 		// Completar con 'hay errores'
 		errores.hay = hayErrores(errores);
 		return errores;
@@ -26,6 +32,10 @@ module.exports = {
 			: (await BD_varias.obtenerELC_id({entidad, campo: "nombre", valor: nombre}))
 			? cartelRepetido
 			: "";
+	},
+
+	RCLV_genero: (datos) => {
+		return !datos.genero ? "Necesitamos que respondas el genero de la persona" : "";
 	},
 
 	RCLV_fecha: (datos) => {
@@ -45,13 +55,16 @@ module.exports = {
 		return error;
 	},
 
-	RCLV_adicionales: (datos) => {
-		if (!datos.enProcCan) return "Necesitamos que respondas si está en Proceso de Canonización"
-		if (datos.enProcCan == "1") {
-			if (!datos.statusProcCan) return "Necesitamos que respondas sobre el Status del Proceso de Canonización"
-			if (!datos.genero) return "Necesitamos que respondas el género de la persona"
-		}
-		return "";
+	RCLV_RCLI: (datos) => {
+		return !datos.enProcCan
+			? "Necesitamos que respondas si está en Proceso de Canonización"
+			: datos.enProcCan == "1"
+			? !datos.proceso_canonizacion_id
+				? "Necesitamos que respondas sobre el Status del Proceso de Canonización"
+				: !datos.rol_iglesia_id
+				? "Necesitamos que respondas el rol de la persona en la Iglesia"
+				: ""
+			: "";
 	},
 };
 
@@ -77,10 +90,9 @@ let castellano = (dato) => {
 };
 
 let hayErrores = (errores) => {
-	resultado = false;
 	valores = Object.values(errores);
 	for (valor of valores) {
-		valor ? (resultado = true) : "";
+		if (valor) return true;
 	}
-	return resultado;
+	return false;
 };
