@@ -358,7 +358,8 @@ CREATE TABLE historicos_personajes (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	proceso_canonizacion_id VARCHAR(3) NULL,
-
+	rol_iglesia_id VARCHAR(3) NULL,
+	
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	analizada_por_id INT UNSIGNED NULL,
@@ -378,6 +379,7 @@ CREATE TABLE historicos_personajes (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
 	FOREIGN KEY (proceso_canonizacion_id) REFERENCES procesos_canonizacion(id),
+	FOREIGN KEY (rol_iglesia_id) REFERENCES roles_iglesia(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -684,9 +686,9 @@ INSERT INTO historicos_personajes (id, nombre )
 VALUES 
 (1, 'Jesús')
 ;
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id)
+INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
 VALUES 
-(10, 'Juan Pablo II', 296)
+(10, 'Juan Pablo II', 296, 'STV', 'PPV')
 ;
 INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre)
 VALUES 
