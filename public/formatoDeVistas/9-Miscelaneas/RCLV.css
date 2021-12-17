@@ -28,7 +28,7 @@
 #datos #posiblesDuplicados li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
 #datos #posiblesDuplicados li input {margin-right: 5px;}
 
-/* Datos Adicionales */
+/* RCLI */
 #RCLI {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px;}
 #RCLI h4 {margin-bottom: 5px; width: 145px; text-align: center;}
 #RCLI #opcionesIglesia {justify-content: space-evenly;}
