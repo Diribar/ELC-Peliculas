@@ -30,7 +30,8 @@ window.addEventListener("load", async () => {
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
 	if (entidad == "historicos_personajes") {
-		ocultar = document.querySelector("#ocultar");
+		santosanta = document.querySelector("#dataEntry #santosanta");
+		ocultar = document.querySelector("#dataEntry #ocultar");
 		enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
 		rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
@@ -131,6 +132,7 @@ window.addEventListener("load", async () => {
 			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
 		}
 		OK.nombre = !errores.nombre && !errores.genero;
+		if (!nombre.value) errores.nombre=""
 		errores.genero = "";
 		return [OK, errores];
 	};
@@ -201,13 +203,27 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionGenero = () => {
+		if (entidad != "historicos_personajes") return;
 		// Definir variables
 		generoElegido = genero[0].checked
 			? genero[0].value
 			: genero[1].checked
 			? genero[1].value
 			: "";
+
 		enProcCanElegido = enProcCan[0].checked;
+
+		// Cambiar el género de una leyenda, si corresponde
+		if (generoElegido) {
+			letraActual = generoElegido == "V" ? "o" : "a";
+			letraAnterior = generoElegido == "V" ? "a" : "o";
+			cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
+			if (cambiarGenero)
+				santosanta.innerHTML = santosanta.innerHTML.replace(
+					"sant" + letraAnterior,
+					"sant" + letraActual
+				);
+		}
 
 		// Detectar si no se debe usar la función
 		if (!generoElegido || !enProcCanElegido) return;
