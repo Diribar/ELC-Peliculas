@@ -1,9 +1,10 @@
 RCLV
-- Vista Personaje: agregar masc/femen a las palabras de RCLI, en función del sexo
+- Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
 
-*******************************************************************************
 DESAMBIGUAR
 - Si se agregó un capítulo a una colección ya existente, avisarlo en DesambForm con la opción de 'check'
+
+*******************************************************************************
 
 TIPO PRODUCTO
 var min = 12,
