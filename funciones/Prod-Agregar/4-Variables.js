@@ -158,7 +158,7 @@ module.exports = {
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
 				],
-				link: "personaje-historico",
+				link: "historicos_personajes",
 			},
 			{
 				titulo: "Hecho histórico",
@@ -170,7 +170,7 @@ module.exports = {
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
 				],
-				link: "hecho-historico",
+				link: "historicos_hechos",
 			},
 		];
 	},

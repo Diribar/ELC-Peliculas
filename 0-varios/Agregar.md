@@ -1,6 +1,5 @@
 RCLV
-- Agregar: Rol
-- Controlador: Agregar en la BD el sufijo que corresponda
+- Vista Personaje: agregar masc/femen a las palabras de RCLI, en función del sexo
 
 *******************************************************************************
 DESAMBIGUAR

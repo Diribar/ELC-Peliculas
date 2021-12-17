@@ -24,21 +24,52 @@ CREATE TABLE idiomas (
 INSERT INTO idiomas (id, nombre)
 VALUES ('aa','Afar'),('ab','Abjasio'),('ae','Avéstico'),('af','Afrikáans'),('ak','Akano'),('am','Amhárico'),('an','Aragonés'),('ar','Árabe'),('as','Asamés'),('av','Ávaro'),('ay','Aimara'),('az','Azerí'),('ba','Baskir'),('be','Bielorruso'),('bg','Búlgaro'),('bh','Bhoyapurí'),('bi','Bislama'),('bm','Bambara'),('bn','Bengalí'),('bo','Tibetano'),('br','Bretón'),('bs','Bosnio'),('ca','Catalán'),('ce','Checheno'),('ch','Chamorro'),('co','Corso'),('cr','Cree'),('cs','Checo'),('cu','Eslavo eclesiástico'),('cv','Chuvasio'),('cy','Galés'),('da','Danés'),('de','Alemán'),('dv','Maldivo'),('dz','Dzongkha'),('ee','Ewé'),('el','Griego'),('en','Inglés'),('eo','Esperanto'),('es','Castellano'),('et','Estonio'),('eu','Euskera'),('fa','Persa'),('ff','Fula'),('fi','Finés'),('fj','Fiyiano'),('fo','Feroés'),('fr','Francés'),('fy','Frisón'),('ga','Gaélico'),('gd','Gaélico escocés'),('gl','Gallego'),('gn','Guaraní'),('gu','Guyaratí'),('gv','Gaélico manés'),('ha','Hausa'),('he','Hebreo'),('hi','Hindi'),('ho','Hiri motu'),('hr','Croata'),('ht','Haitiano'),('hu','Húngaro'),('hy','Armenio'),('hz','Herero'),('ia','Interlingua'),('id','Indonesio'),('ie','Occidental'),('ig','Igbo'),('ii','Yi de Sichuán'),('ik','Iñupiaq'),('io','Ido'),('is','Islandés'),('it','Italiano'),('iu','Inuktitut'),('ja','Japonés'),('jv','Javanés'),('ka','Georgiano'),('kg','Kongo'),('ki','Kikuyu'),('kj','Kuanyama'),('kk','Kazajo'),('kl','Kalaallisut'),('km','Camboyano'),('kn','Canarés'),('ko','Coreano'),('kr','Kanuri'),('ks','Cachemiro'),('ku','Kurdo'),('kv','Komi'),('kw','Córnico'),('ky','Kirguís'),('la','Latín'),('lb','Luxemburgués'),('lg','Luganda'),('li','Limburgués'),('ln','Lingala'),('lo','Lao'),('lt','Lituano'),('lu','Luba-katanga'),('lv','Letón'),('mg','Malgache'),('mh','Marshalés'),('mi','Maorí'),('mk','Macedonio'),('ml','Malayalam'),('mn','Mongol'),('mr','Maratí'),('ms','Malayo'),('mt','Maltés'),('my','Birmano'),('na','Nauruano'),('nb','Noruego bokmål'),('nd','Ndebele del norte'),('ne','Nepalí'),('ng','Ndonga'),('nl','Neerlandés'),('nn','Nynorsk'),('no','Noruego'),('nr','Ndebele del sur'),('nv','Navajo'),('ny','Chichewa'),('oc','Occitano'),('oj','Ojibwa'),('om','Oromo'),('or','Oriya'),('os','Osético'),('pa','Panyabí'),('pi','Pali'),('pl','Polaco'),('ps','Pastú'),('pt','Portugués'),('qu','Quechua'),('rm','Romanche'),('rn','Kirundi'),('ro','Rumano'),('ru','Ruso'),('rw','Ruandés'),('sa','Sánscrito'),('sc','Sardo'),('sd','Sindhi'),('se','Sami septentrional'),('sg','Sango'),('si','Cingalés'),('sk','Eslovaco'),('sl','Esloveno'),('sm','Samoano'),('sn','Shona'),('so','Somalí'),('sq','Albanés'),('sr','Serbio'),('ss','Suazi'),('st','Sesotho'),('su','Sundanés'),('sv','Sueco'),('sw','Suajili'),('ta','Tamil'),('te','Télugu'),('tg','Tayiko'),('th','Tailandés'),('ti','Tigriña'),('tk','Turcomano'),('tl','Tagalo'),('tn','Setsuana'),('to','Tongano'),('tr','Turco'),('ts','Tsonga'),('tt','Tártaro'),('tw','Twi'),('ty','Tahitiano'),('ug','Uigur'),('uk','Ucraniano'),('ur','Urdu'),('uz','Uzbeko'),('ve','Venda'),('vi','Vietnamita'),('vo','Volapük'),('wa','Valón'),('wo','Wolof'),('xh','Xhosa'),('yi','Yídish'),('yo','Yoruba'),('za','Zhuang'),('zh','Chino'),('zu','Zulú')
 ;
-CREATE TABLE vocacion_iglesia (
-	id VARCHAR(2) NOT NULL,
+CREATE TABLE roles_iglesia (
+	id VARCHAR(3) NOT NULL,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	usuario BOOLEAN NOT NULL,
+	personaje BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO roles_iglesia (id, orden, nombre, usuario, personaje)
+VALUES 
+('PC', 0, 'Computadora', 0, 0),
+('LS', 1, 'Laico soltero', 1, 1),
+('LSV', 1, 'Laico soltero', 1, 1),
+('LSM', 1, 'Laica soltera', 1, 1),
+('LC', 2, 'Laico casado', 1, 1),
+('LCV', 2, 'Laico casado', 1, 1),
+('LCM', 2, 'Laico casada', 1, 1),
+('RC', 3, 'Religioso consagrado', 1, 1),
+('RCV', 3, 'Religioso consagrado', 1, 1),
+('RCM', 3, 'Religioso consagrado', 1, 1),
+('PP', 4, 'Papa', 0, 1),
+('PPV', 4, 'Papa', 0, 1)
+;
+
+CREATE TABLE procesos_canonizacion (
+	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO vocacion_iglesia (id, orden, nombre)
+INSERT INTO procesos_canonizacion (id, orden, nombre)
 VALUES 
-('PC', 0, 'Computadora'),
-('LS', 2, 'Laico/a soltero/a'),
-('LC', 3, 'Laico/a casado/a'),
-('RC', 4, 'Religioso/a consagrado/a'),
-('PP', 7, 'Papa'),
-('OT', 9, 'Otro')
+('ST', 1, 'Santo'),
+('STV', 1, 'Santo'),
+('STM', 1, 'Santa'),
+('BT', 2, 'Beato'),
+('BTV', 2, 'Beato'),
+('BTM', 2, 'Beata'),
+('VN', 3, 'Venerable'),
+('VNV', 3, 'Venerable'),
+('VNM', 3, 'Venerable'),
+('SD', 4, 'Siervo de Dios'),
+('SDV', 4, 'Siervo de Dios'),
+('SDM', 4, 'Sierva de Dios')
 ;
+
 CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -62,7 +93,7 @@ CREATE TABLE sexos (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO sexos (id, nombre, letra_final)
-VALUES ('F','Femenino', 'a'), ('M','Masculino', 'o')
+VALUES ('M','Mujer', 'a'), ('V','Varón', 'o'), ('O','Otro','o')
 ;
 CREATE TABLE status_registro_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -262,9 +293,6 @@ CREATE TABLE USUARIOS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
-	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
-	autorizado_fa BOOLEAN NULL DEFAULT 0,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
 	apodo VARCHAR(50) NULL,
@@ -272,21 +300,27 @@ CREATE TABLE USUARIOS (
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
-	vocacion_id VARCHAR(2) NULL,
+	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	rol_iglesia_id VARCHAR(3) NULL,
+	autorizado_fa BOOLEAN NULL DEFAULT 0,
+	aut_data_entry BOOLEAN DEFAULT 0,
+
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	completado_en DATETIME NULL,
+	borrado_motivo_id TINYINT UNSIGNED NULL,
+	borrado_motivo_comentario VARCHAR(500) NULL,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	
 	editado_en DATETIME NULL,
-	aut_data_entry BOOLEAN DEFAULT 0,
-	borrado BOOLEAN NULL DEFAULT 0,
-	borrado_en DATETIME NULL,
-	borrado_motivo VARCHAR(500) NULL,
-	borrado_por_id INT UNSIGNED NULL,
+
 	PRIMARY KEY (id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
-	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES paises(id),
-	FOREIGN KEY (vocacion_id) REFERENCES vocacion_iglesia(id)
+	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
+	FOREIGN KEY (rol_iglesia_id) REFERENCES roles_iglesia(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
+	FOREIGN KEY (borrado_motivo_id) REFERENCES motivos_para_borrar(id)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE us_penalizaciones (
@@ -323,6 +357,7 @@ CREATE TABLE historicos_personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
+	proceso_canonizacion_id VARCHAR(3) NULL,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -342,6 +377,7 @@ CREATE TABLE historicos_personajes (
 	
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES dias_del_ano(id),
+	FOREIGN KEY (proceso_canonizacion_id) REFERENCES procesos_canonizacion(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -636,12 +672,12 @@ CREATE TABLE pr_relacion_pais_prod (
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, vocacion_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, rol_iglesia_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'M', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'M', 'AR', 'LC', '2021-03-26', '2021-03-26')
+(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 
 INSERT INTO historicos_personajes (id, nombre )
