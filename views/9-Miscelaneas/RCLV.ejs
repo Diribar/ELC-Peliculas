@@ -88,6 +88,7 @@
 					<div class="input-error flex-row align-center">
 						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
 							<% if (dataEntry.desconocida=="on") { %>checked<% } %>
+							tabindex="-1"
 						>
 						<label>Sin fecha conocida o de referencia</label>
 					</div>
@@ -176,8 +177,8 @@
 		</div>
 	</section>
 	<!-- Flechas y Botón -->
-	<section id="flechas" class="flex-row space-evenly">
-		<button type="button" tabindex="-1"><a href="/producto/agregar/datos-personalizados" style="color: inherit;" tabindex="-1">Regresar</a></button>
-		<button type="submit" class="botonSinLink">Agregalo</button>
+	<section id="flechas">
+		<a href="/producto/agregar/datos-personalizados" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<button type="submit" class="botonSinLink"><i class="fas fa-check-circle"></i></button>
 	</section>
 </form>

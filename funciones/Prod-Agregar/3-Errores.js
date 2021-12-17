@@ -320,8 +320,7 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	//formato = /^[A-ZÁÉÍÓÚÜÑ"][A-ZÁÉÍÓÚÜÑa-z ,.:;…"°áéíóúüñ'¿?¡!+-/()\d\r\n\#]+$/;
-	formato = /^[A-ZÁÉÍÓÚÜÑ"][a-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/i;
+	formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line

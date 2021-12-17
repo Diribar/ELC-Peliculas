@@ -18,3 +18,5 @@
 /* Submit */
 #dataEntry #flechas {margin-top: 30px;}
 #dataEntry button, #dataEntry input[type="submit"] {max-width: 140px;}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-info-circle {color: var(--verde-oscuro);}

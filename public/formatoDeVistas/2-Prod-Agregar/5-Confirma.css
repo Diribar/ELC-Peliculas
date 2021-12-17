@@ -3,6 +3,7 @@
 
 /* Título */
 #dataEntry h2 {margin-bottom: 10px;}
+#dataEntry #running {position: absolute; right: 30px; max-width: 150px; max-height: 80px}
 
 /* Texto */
 #dataEntry ul {padding-left: 20px;}
@@ -18,4 +19,5 @@
 #dataEntry #referenciasProd p {margin: 3px;}
 
 #dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row;}
-#dataEntry #running {position: absolute; right: 30px; max-width: 150px; max-height: 80px}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
