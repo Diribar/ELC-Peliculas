@@ -9,9 +9,9 @@ module.exports = {
 		};
 		// Errores "nombre"
 		nombre = await this.RCLV_nombre(datos);
-		let genero=""
+		let genero = "";
 		if (datos.entidad == "historicos_personajes") genero = await this.RCLV_genero(datos);
-		errores.nombre = nombre ? nombre : genero ? genero : "";
+		errores.nombre = nombre ? nombre : genero;
 		// Errores "datos repetidos"
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
 		// Errores "RCLI"
@@ -92,7 +92,7 @@ let castellano = (dato) => {
 let hayErrores = (errores) => {
 	valores = Object.values(errores);
 	for (valor of valores) {
-		if (valor) return true
+		if (valor) return true;
 	}
-	return false
+	return false;
 };
