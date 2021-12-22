@@ -1,5 +1,7 @@
-.cuerpo {
-	background-image: url("/imagenes/8-Miscelaneas/Detalle.jpg");
-	background-size: cover;
-	background-attachment: fixed;
+#RUD.cuerpo {
+	background-color: var(--gris-claro);
+	flex-grow: 1;
 }
+
+#imagenProducto {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
+#imagenProducto img {max-height: 100%; max-width: 40vw; }

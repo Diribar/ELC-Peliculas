@@ -1,12 +1,17 @@
+#datos {flex-grow: 1;}
 
-h1, h3 {align-self: center;}
+#datosLargos {padding: 0 15px; display: flex; flex-direction: column; justify-content: space-between;}
+#datosLargos #contenido h1 {font-size: 1.5rem;}
+#datosLargos #contenido h1 em {font-size: 1.1rem;}
+#datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
+#datosLargos #contenido #sinopsis {padding: 20px; font-size: 1.2rem; border-radius: 15px; margin: 10px 30px 25px}
+#datosLargos #contenido #sinopsis {background-color: var(--amarillo-claro);}
+#datosLargos #contenido .datosAdicionales {margin: 15px; margin-bottom: 0;}
+#datosLargos #botones {display: flex; flex-direction: row; justify-content: space-around; padding-right: 20px; flex-grow: 1; align-items: center;}
+#datosLargos #botones button {background-color: var(--gris-oscuro); color: var(--gris-claro); padding: 7px; border-radius: 10px; font-weight: bolder; font-size: 1.1rem; line-height: 1;}
 
-#datosDeProductos {padding: 20px; display: flex; flex-direction: row; justify-content: space-between;}
-#datosDeProductos div#DD {width: 55%;}
-#datosDeProductos div#DP {width: 35%;}
-
-#datosDeProductos dl {position: relative;}
-#datosDeProductos dl dt {position: absolute; width: 125px; text-align: right; font-weight: bold;}
-#datosDeProductos dl dd {margin-left: 130px; max-height: 65px; overflow-y: auto;}
-
-#datosDeProductos input {background-color: transparent; border: none; width: 100%;}
+#datosBreves {width: max-content; display: flex; flex-direction: column; justify-content: center; flex-grow: 1;}
+#datosBreves #graficoCalificacion {width:180px;}
+#datosBreves #texto {margin-right: 15px;}
+#datosBreves #texto dt, #datosBreves #texto p {margin-top: 10px;}
+#datosBreves #texto dt {font-weight: bold;}

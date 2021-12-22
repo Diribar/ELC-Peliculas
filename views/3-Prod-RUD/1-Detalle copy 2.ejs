@@ -1,0 +1,83 @@
+<h1><%= producto.nombre_castellano %></h1>
+<h3>- <%= titulo %> -</h2>
+<section id="datosDeProductos">
+	<div id="DD">
+		<dl>
+			<!-- Nombre original -->
+			<dt>Título original:</dt>
+			<dd><% if (codigo == "detalle") { %>
+					<%= producto.nombre_original ? producto.nombre_original : "Sin datos" %>
+				<% } else { %>
+					<input type="text" value="<%= producto.nombre_original %>">
+				<% } %>
+			</dd>
+			<!-- Cantidad de Temporadas y de Capítulos -->
+				<% if (entidad == "colecciones") { %>
+				<dt>Cant. Temporadas:</dt>
+				<dd><%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></dd>
+				<dt>Cant. Capítulos:</dt>
+				<dd><%= producto.cant_capitulos %></dd>
+				<% } %>
+			<!-- Colección a la que pertenece -->
+			<% if (entidad == "capitulos") { %>
+				<dt>De la colección:</dt>
+				<dd><a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></dd>
+				<dt>Temp. y Capítulo</dt>
+				<dd><%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporada" %>, <%= "cap. " + producto.capitulo %> </dd>
+			<% } %>
+			<!-- Duración -->
+			<% if (entidad != "colecciones") { %>
+				<dt>Duracion:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.duracion %> minutos<% } else { %><input type="text" value="<%= producto.duracion %>"><% } %></dd>
+			<% } %>
+			<!-- Varios -->
+			<dt>Año de estreno:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.ano_estreno %><% } else { %><input type="text" value="<%= producto.ano_estreno %>"><% } %></dd>
+			<dt>País/es de origen:</dt>
+			<dd><% if (codigo == "detalle") { %><%= paises %><% } %></dd>
+			<dt>Idioma original:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.idioma_original.nombre %><% } else { %><input type="text" value="<%= producto.idioma_original %>"><% } %></dd>
+			<dt>Dirección:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.direccion %><% } else { %><input type="text" value="<%= producto.direccion %>"><% } %></dd>
+			<dt>Guión:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.guion %><% } else { %><input type="text" value="<%= producto.guion %>"><% } %></dd>
+			<dt>Música:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.musica %><% } else { %><input type="text" value="<%= producto.musica %>"><% } %></dd>
+			<dt>Actuación:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.actuacion %><% } else { %><input type="text" value="<%= producto.actuacion %>"><% } %></dd>
+			<dt>Producción:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.produccion %><% } else { %><input type="text" value="<%= producto.produccion %>"><% } %></dd>
+			<dt>Sinopsis:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.sinopsis %><% } else { %><input type="text" value="<%= producto.sinopsis %>"><% } %></dd>
+		</dl>
+	</div>
+	<div id="DP">
+		<dl>
+			<dt>En idioma castellano:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.en_castellano_id ? producto.en_castellano.nombre : "<br>" %><% } else { %><% } %></dd>
+			<dt>Es a color:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.en_color.nombre %><% } else { %><% } %></dd>
+			<dt>Categoría:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.categoria.nombre %><% } else { %><% } %></dd>
+			<dt>Sub-categoría:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.subcategoria.nombre %><% } else { %><% } %></dd>
+			<dt>Público sugerido:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.publico_sugerido.nombre %><% } else { %><% } %></dd>
+			<% if (producto.personaje_historico_id) { %>
+				<dt>Personaje histórico:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.personaje_historico.nombre %><% } else { %><% } %></dd>
+			<% } %>
+			<% if (producto.hecho_historico_id) { %>
+				<dt>Hecho histórico:</dt>
+				<dd><% if (codigo == "detalle") { %><%= producto.hecho_historico.nombre %><% } else { %><% } %></dd>
+			<% } %>
+			<dt>Creada por:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.creada_por.apodo %><% } else { %><% } %></dd>
+			<dt>Status de Aprob.:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.status_registro.nombre %><% } else { %><% } %></dd>
+			<dt>Calificación general:</dt>
+			<dd><% if (codigo == "detalle") { %><%= producto.calificacion %> %<% } else { %><% } %></dd>
+
+		</dl>
+	</div>
+</section>

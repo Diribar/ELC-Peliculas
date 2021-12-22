@@ -1,6 +1,6 @@
 /* Formato del cuerpo */
 .cuerpo {align-items: center; justify-content: center;}
-.cuerpo #titulo {margin: 0px;}
+.cuerpo #titulo {margin: 0px; background-color: var(--amarillo-claro);}
 
 #dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
 #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 

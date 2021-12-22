@@ -1,83 +1,128 @@
-<h1><%= producto.nombre_castellano %></h1>
-<h3>- <%= titulo %> -</h2>
-<section id="datosDeProductos">
-	<div id="DD">
-		<dl>
-			<!-- Nombre original -->
-			<dt>Título original:</dt>
-			<dd><% if (codigo == "detalle") { %>
-					<%= producto.nombre_original ? producto.nombre_original : "Sin datos" %>
-				<% } else { %>
-					<input type="text" value="<%= producto.nombre_original %>">
-				<% } %>
-			</dd>
-			<!-- Cantidad de Temporadas y de Capítulos -->
+<div class="flex-row" id="datos">
+	<section id="datosLargos">
+		<div id="contenido">
+			<!-- 1. Tipo de Producto, Temporada, Capítulo, Colección -->
+			<div>
+				<h1><%= producto.nombre_castellano %> <em><% if (producto.nombre_original) { %>(<%= producto.nombre_original %>)<% } %></em></h1>
+				<!-- Tipo de Producto -->
+				<h3 id="titulo">Detalle <%- entidad == "capitulos" ? "del" : "de la" %> <%= titulo %></h3>
+				<!-- Cantidad de Temporadas y de Capítulos -->
 				<% if (entidad == "colecciones") { %>
-				<dt>Cant. Temporadas:</dt>
-				<dd><%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></dd>
-				<dt>Cant. Capítulos:</dt>
-				<dd><%= producto.cant_capitulos %></dd>
+					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
+					<% } %>
+				<!-- Colección a la que pertenece -->
+				<% if (entidad == "capitulos") { %>
+					<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></p>
+					<p><strong>N° de Temporada y de Capítulo:</strong> <%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporadas" %>, <%= "Capítulo " + producto.capitulo %></p>
 				<% } %>
-			<!-- Colección a la que pertenece -->
-			<% if (entidad == "capitulos") { %>
-				<dt>De la colección:</dt>
-				<dd><a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></dd>
-				<dt>Temp. y Capítulo</dt>
-				<dd><%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporada" %>, <%= "cap. " + producto.capitulo %> </dd>
-			<% } %>
-			<!-- Duración -->
+			</div>
+			<!-- 2. Sinopsis -->
+			<div id="sinopsis"><%= producto.sinopsis %></div>
+			<!-- 3. Adicionales -->
+			<div>
+				<div class="datosAdicionales">
+					<strong>País/es de origen</strong>: <%= paises %>. 
+					<strong>Idioma original</strong>: <%= producto.idioma_original.nombre %>.
+				</div>
+				<div class="datosAdicionales">
+					<strong>Dirección:</strong> <%= producto.direccion %>. 
+					<strong>Guión:</strong> <%= producto.guion %>. 
+					<strong>Música:</strong> <%= producto.musica %>. 
+					<strong>Producción:</strong> <%= producto.produccion %>. 
+				</div>
+				<div class="datosAdicionales">
+					<strong>Actuación:</strong> <%= producto.actuacion %>. 
+				</div>	
+			</div>
+			<!-- 4. Capítulos de Colección -->
+		</div>
+		<!-- 5. Botones -->
+		<div id="botones">
+			<button>Ver un Trailer</button>
 			<% if (entidad != "colecciones") { %>
-				<dt>Duracion:</dt>
-				<dd><% if (codigo == "detalle") { %><%= producto.duracion %> minutos<% } else { %><input type="text" value="<%= producto.duracion %>"><% } %></dd>
-			<% } %>
-			<!-- Varios -->
-			<dt>Año de estreno:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.ano_estreno %><% } else { %><input type="text" value="<%= producto.ano_estreno %>"><% } %></dd>
-			<dt>País/es de origen:</dt>
-			<dd><% if (codigo == "detalle") { %><%= paises %><% } %></dd>
-			<dt>Idioma original:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.idioma_original.nombre %><% } else { %><input type="text" value="<%= producto.idioma_original %>"><% } %></dd>
-			<dt>Dirección:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.direccion %><% } else { %><input type="text" value="<%= producto.direccion %>"><% } %></dd>
-			<dt>Guión:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.guion %><% } else { %><input type="text" value="<%= producto.guion %>"><% } %></dd>
-			<dt>Música:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.musica %><% } else { %><input type="text" value="<%= producto.musica %>"><% } %></dd>
-			<dt>Actuación:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.actuacion %><% } else { %><input type="text" value="<%= producto.actuacion %>"><% } %></dd>
-			<dt>Producción:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.produccion %><% } else { %><input type="text" value="<%= producto.produccion %>"><% } %></dd>
-			<dt>Sinopsis:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.sinopsis %><% } else { %><input type="text" value="<%= producto.sinopsis %>"><% } %></dd>
-		</dl>
-	</div>
-	<div id="DP">
-		<dl>
-			<dt>En idioma castellano:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.en_castellano_id ? producto.en_castellano.nombre : "<br>" %><% } else { %><% } %></dd>
-			<dt>Es a color:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.en_color.nombre %><% } else { %><% } %></dd>
+				<button>Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= titulo %></button>
+			<% } else { %>
+				<button>Temporadas</button>
+			<% } %> 
+			<button>Calificala</button>
+			<button>Comentarios</button>
+			<button>Interés Personal</button>
+			<button>Editar</button>
+		</div>
+	</section>
+	<section id="datosBreves">
+		<div>
+			<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
+			<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
+		</div>
+		<div id="graficoCalificacion"></div>
+		<div id="texto">
+			<dt>Público Sugerido:</dt>
+			<dd><%= producto.publico_sugerido.nombre %></dd>
 			<dt>Categoría:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.categoria.nombre %><% } else { %><% } %></dd>
+			<dd><%= producto.categoria.nombre %></dd>
 			<dt>Sub-categoría:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.subcategoria.nombre %><% } else { %><% } %></dd>
-			<dt>Público sugerido:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.publico_sugerido.nombre %><% } else { %><% } %></dd>
+			<dd><%= producto.subcategoria.nombre %></dd>
 			<% if (producto.personaje_historico_id) { %>
-				<dt>Personaje histórico:</dt>
-				<dd><% if (codigo == "detalle") { %><%= producto.personaje_historico.nombre %><% } else { %><% } %></dd>
+				<dt>Personaje Histórico:</dt>
+				<dd><%= producto.personaje_historico.nombre %> </dd>
 			<% } %>
 			<% if (producto.hecho_historico_id) { %>
-				<dt>Hecho histórico:</dt>
-				<dd><% if (codigo == "detalle") { %><%= producto.hecho_historico.nombre %><% } else { %><% } %></dd>
+				<dt>Hecho Histórico:</dt>
+				<dd><%= producto.hecho_historico.nombre %> </dd>
 			<% } %>
-			<dt>Creada por:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.creada_por.apodo %><% } else { %><% } %></dd>
-			<dt>Status de Aprob.:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.status_registro.nombre %><% } else { %><% } %></dd>
-			<dt>Calificación general:</dt>
-			<dd><% if (codigo == "detalle") { %><%= producto.calificacion %> %<% } else { %><% } %></dd>
+			<p><strong>Año de estreno:</strong> <%= producto.ano_estreno %></p>
+			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= producto.duracion %> min.</p><% } %>
+			<p><strong>En castellano:</strong> <%= producto.en_castellano.nombre %></p>
+			<p><strong>Es a color:</strong> <%= producto.en_color.nombre %></p>
+			<% if (producto.status_registro_id != 2) { %>
+				<dt>Status de Aprobación:</dt>
+				<dd><%= producto.status_registro.nombre %></dd>
+			<% } %>
+		</div>
+	</section>
+</div>
+<script>
+	google.charts.load('current', {packages: ['corechart', 'bar']});
+	google.charts.setOnLoadCallback(drawBarColors);
 
-		</dl>
-	</div>
-</section>
+	function drawBarColors() {
+		// https://developers.google.com/chart/interactive/docs/gallery/barchart
+		var data = google.visualization.arrayToDataTable([
+			['Aptitud', 'Gral.', 'Tuya'],
+			['IFV', .81, .80],
+			['En.', .37, .36],
+			['CSV', .26, .28],
+		]);
+
+		var options = {
+			fontSize: 10,
+			animation: {
+				duration: 500,
+				easing: 'out',
+				startup: true,
+			},
+			numberStyle: 'percent',
+			chartArea: {
+				top: '10%'
+			},
+			colors: ['green', 'lightgreen'],
+			legend: {
+				position: 'bottom',
+				alignment: 'start',
+				textStyle: {italic: true,}
+			},
+			hAxis: {
+				minValue: 0,
+				maxValue: 1,
+				ticks: [0, .5, 1],
+				format: 'percent',
+				gridlines: {count: 3},
+				textStyle: {fontSize:10}
+			},
+		};
+		var chart = new google.visualization.BarChart(document.getElementById('graficoCalificacion'));
+		chart.draw(data, options);
+	}
+</script>
