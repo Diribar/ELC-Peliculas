@@ -1,3 +1,4 @@
+<section id="cuerpo" class="flex-row grow">
 	<!--********************** CONTADOR ****************************-->
 	<% if (opcionElegida && tipoElegido) { %>
 		<button type="text" id="contador-de-peliculas">Contador</button>
@@ -42,3 +43,4 @@
 		<!--///////////////////// Redireccionar ///////////////////-->
 		<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
 	</div>
+</section>

@@ -1,0 +1,14 @@
+<!-- Inicio -->
+<% if (codigo == "inicio") { %>
+	<section id="cuerpo" class="flex-row grow">
+		<%- include("Inicio") %>
+	</section>
+<% } %>
+<!-- Nosotros -->
+<% if (codigo == "nosotros") { %><%- include("Nosotros") %><% } %>
+<!-- RCLV -->
+<% if (codigo.includes("historicos")) { %>
+	<section class="cuerpo flex-col grow">
+		<%- include('RCLV') %>
+	</section>
+<% } %>

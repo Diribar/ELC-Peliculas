@@ -1,9 +1,9 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let entidad = document.querySelector("select[name='entidad']");
-	let coleccion_id = document.querySelector("input[name='coleccion_id']");
+	let coleccion_id = document.querySelector("select[name='coleccion_id']");
 	let temporada = document.querySelector("select[name='temporada']");
-	let capitulo = document.querySelector("input[name='capitulo']");
+	let capitulo = document.querySelector("select[name='capitulo']");
 	let submit = document.querySelectorAll(".submit");
 
 	// Interacción con los DataEntry

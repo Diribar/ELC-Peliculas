@@ -1,0 +1,17 @@
+<!-- Inicio -->
+<% if (codigo == "inicio") { %>
+	<%- include('0-Head', {titulo: "Inicio"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Inicio.css">
+<% } %>
+<!-- Nosotros -->
+<% if (codigo == "nosotros") { %>
+	<%- include('0-Head', {titulo: "Quiénes somos"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Nosotros.css">
+<% } %>
+<!-- RCLV -->
+<% if (codigo.includes("historicos")) { %>
+	<%- include('0-Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/RCLV.css">
+	<script src="/FE-javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
+	<script src="/FE-javascript/9-Miscelaneas/RCLV-Errores.js"></script>
+<% } %>
