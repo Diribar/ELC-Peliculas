@@ -62,9 +62,9 @@ module.exports = {
 			procesos_canonizacion = await BD_varias.obtenerTodos(
 				"procesos_canonizacion",
 				"orden"
-			).then((n) => n.filter((m) => m.id.length == 2));
+			).then((n) => n.filter((m) => m.id.length == 3));
 			roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
-				n.filter((m) => m.id.length == 2)
+				n.filter((m) => m.id.length == 3)
 			);
 		}
 		// 6. Render

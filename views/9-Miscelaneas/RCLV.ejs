@@ -125,6 +125,7 @@
 	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
 	<% if (codigo == "historicos_personajes") { %>
 		<section id="RCLI" class="flex-row space-between">
+			<!-- ¿En proceso de canonización? -->
 			<div class="flex-col">
 				<!-- Título de la sección -->
 				<div class="relative">
@@ -137,7 +138,7 @@
 					<h3 class="margenBottomTitulo">Relación con la Iglesia</h3>
 				</div>
 				<!-- ¿En proceso de canonización? -->
-				<h4>Es santo o está en proceso de canonización:</h4>
+				<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
 				<div id="opcionesIglesia" class="flex-row">
 					<div class="flexRowAlign">
 						<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
