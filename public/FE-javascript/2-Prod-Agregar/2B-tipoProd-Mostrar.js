@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 		limpiarOpciones(temporada);
 		// Obtener la cantidad de temporadas de la colección
 		let cantTemporadas = await fetch(
-			"/producto/agregar/api/TP-averiguar-coleccion/?id=" + coleccion_id.value
+			"/producto/agregar/api/TP-averiguar-cant-temporadas/?id=" + coleccion_id.value
 		).then((n) => n.json());
 		// Agregar las temporadas vigentes más una
 		for (numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
@@ -71,7 +71,7 @@ window.addEventListener("load", async () => {
 		// Limpiar las opciones de lo relacionado con capitulos
 		limpiarOpciones(capitulo);
 		// Obtener los capitulos de la temporada
-		let ruta = "/producto/agregar/api/TP-averiguar-temporada/";
+		let ruta = "/producto/agregar/api/TP-averiguar-capitulos/";
 		let capitulos = await fetch(
 			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value
 		).then((n) => n.json());

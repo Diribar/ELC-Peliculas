@@ -42,7 +42,7 @@ module.exports = {
 	},
 
 	// Vista (tipoProducto)
-	obtenerColeccion: async (req, res) => {
+	averiguarCantTemporadas: async (req, res) => {
 		datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
 			.then((n) => n.dataValues)
 			.then((n) => n.cant_temporadas);
@@ -50,12 +50,11 @@ module.exports = {
 	},
 
 	// Vista (tipoProducto)
-	obtenerTemporada: async (req, res) => {
+	averiguarCapitulos: async (req, res) => {
 		datos = await BD_especificas.filtrarCapitulos(
 			req.query.coleccion_id,
 			req.query.temporada
 		).then((n) => n.map((m) => m.capitulo));
-		//.then(n=>n.filter(m=>m.temporada==req.query.temporada))
 		return res.json(datos);
 	},
 
