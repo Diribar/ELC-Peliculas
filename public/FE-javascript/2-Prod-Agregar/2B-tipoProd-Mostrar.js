@@ -106,9 +106,8 @@ let utilizar = (campo) => {
 	let inputs = document.querySelectorAll(".input");
 	let habilitar = true;
 	for (i = 0; i < inputs.length; i++) {
-		if (habilitar) {
-			inputs[i].removeAttribute("disabled");
-		} else {
+		if (habilitar) inputs[i].removeAttribute("disabled");
+		else {
 			inputs[i].setAttribute("disabled", "disabled");
 			inputs[i].value = "";
 		}
