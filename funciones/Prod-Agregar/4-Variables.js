@@ -130,7 +130,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				peliculas: true,
 				colecciones: true,
-				mensajes: ["¿Considerás que deja algo positivo en el corazón?"],
+				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 			},
 			{
 				titulo: "Entretiene",

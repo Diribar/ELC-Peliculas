@@ -15,7 +15,7 @@ main h3 {font-size: 1.15rem;}
 /* Configuración del cuerpo */
 main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; 
 	font-weight: bold;}
-main .cuerpo .titulo {font-family: var(--Arial); font-size: 1.2rem; background-color: var(--amarillo-claro); 
-	margin-top: 30px;}
-main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul-oscuro); margin-top: 30px;}
+main .cuerpo .titulo {font-family: var(--Arial); font-size: 1.2rem;}
+
+main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul-oscuro);}
 main .margen-izquierdo {margin-left: 40px;}

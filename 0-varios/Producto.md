@@ -1,35 +1,37 @@
 GENERAL
 - Gráfico de barras horizontales
-	https://www.w3schools.com/js/js_graphics_chartjs.asp
-	https://canvasjs.com/html5-javascript-bar-chart/
-	BE: Generar la info para "Detalle Prod.jpg"
-	Vista: chart "Detalle Prod.jpg"
-- Botón de editar:
-	- En la esquina sup/der
-	- Mensaje de "capturado" si es el caso
-
-PELÍCULAS
-- Abajo: 
-	- Ver el trailer
-	- Ver la película
-	- Calificala
-	- Comentarios de los usuarios
-		- Ver comentarios
-		- Hacé tu propio comentario
-	- Interés en el producto
-	- Convertir en un Capítulo de Colección
-- Gráfico de barras horizontales
+	- Vista: 
+		- Explicar las siglas de las aptitudes con un '?'
+		- Para capítulos, mostrarlo sólo si tiene calificaciones
+	- FE: generar la info
+- Menú desplegable: (<i class="fas fa-film"></i>)
+	- Ver el trailer (menú pop-up)
+	- Ver la película o el capítulo (link a externo)
+	- Calificala (menú pop-up)
+	- Comentarios (ver y hacer) --> link a Comentarios
+	- Interés en el producto (menú pop-up)
+	- Convertir en un Capítulo de Colección (sólo Pelis) --> link a Tipo de Prod.
+	- EDITAR
+		- Si está "capturado" --> menú pop-up
+		- Else --> link
+	- Sugerir borrarla (menú pop-up)
+- Centrar verticalmente la sección 'datosLargos'
+- Botón de "Necesita edición" cuando haya algún campo vacío
+	- Fondo rojo
+	- Letras gris claro
 
 COLECCIONES
-- Gráfico de barras horizontales
-- Abajo: link a los capítulos
+- Agregar "Ir a:"
+	- Temporada:
+		- let chars = ['A', 'B', 'A', 'C', 'B'];
+		- let uniqueChars = [...new Set(chars)];
+		- console.log(uniqueChars);
+		- Output: --> ['A', 'B', 'C']
+	- Capítulo: 
+		- Una vez elegida la temporada, menú desplegable c/link a los capítulos
 
 CAPÍTULOS
-	- DD y DP
-		- Adicionales:
-			- Temp y n° de capítulo
-			- Pertenece a la colección:
-		- Para los campos vacíos, poner "sin datos"
-		- Mensaje de "¿querés ser protagonista y completar los campos vacíos?"
-	- Gráfico de barras horizontales, sólo si tiene calificaciones
-	- Abajo: ídem películas
+- Para los campos vacíos, poner "sin datos"
+- Agregar "Ir a:"
+	- Temporada (default: actual)
+	- Capítulo (default: actual)

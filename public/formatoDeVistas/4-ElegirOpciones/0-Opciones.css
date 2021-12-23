@@ -1,4 +1,6 @@
 /* Contador de Películas */
+main .cuerpo .titulo {margin-top: 30px;}
+main .cuerpo .subtitulo {margin-top: 30px;}
 .cuerpo {align-items:flex-start;}
 .cuerpo #contador-de-peliculas {padding: 3px 5px;border-style: none;border-radius: 5px;}
 .cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}

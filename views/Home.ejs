@@ -83,14 +83,6 @@
 		<% } else %>
 		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/0-Responsabilidad.css"><% } %>
 	<% } %>
-	<!-- Producto -->
-	<% if (tema == "producto") { %>
-		<% if (codigo == "detalle") { %>
-			<%- include('0-Head', {titulo: "Detalle del Producto"}) %>
-			<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/0-Producto.css">
-			<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/1-Detalles.css">
-		<% } %>
-	<% } %>
 	<!-- Opciones de layout -->
 	<% if (tema == "opciones") { %>
 		<%- include('0-Head', {titulo}) %>
@@ -115,11 +107,7 @@
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<% if (tema == "producto") { %>
-			<%- include('2-ImagenDerecha', {title: producto.nombre_castellano, url: avatar}) %>
-		<% } else { %>
-			<%- include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
-		<% } %>
+		<%- include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
@@ -133,7 +121,7 @@
 					<%- codigo == "editar" ? include("editar") : "" %>
 				</section>
 			<% } %>
-			<% if (tema=="agregar" || tema=="producto" || tema=="RCLV") { %> 
+			<% if (tema=="agregar" || tema=="RCLV") { %> 
 				<section class="cuerpo flex-col grow">
 					<% if (tema=="agregar") { %>
 						<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
@@ -147,9 +135,6 @@
 						<%- codigo == "terminaste" ? include("6-Terminaste") : "" %>
 					<% } %>
 					<% if (tema=="RCLV") { %><%- include("RCLV") %><% } %>
-					<% if (tema=="producto") { %>
-						<%- codigo == "detalle" ? include("1-Detalle") : "" %>
-					<% } %>
 				</section>
 			<% } %>
 			<% if (tema=="home" || tema=="opciones") { %>

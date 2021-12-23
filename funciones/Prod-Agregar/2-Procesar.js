@@ -512,7 +512,7 @@ module.exports = {
 
 // Funciones *********************
 let fuenteSinopsisTMDB = (sinopsis) => {
-	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis = sinopsis + " (TMDB)";
+	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis += " (fuente: TMDB)";
 	return sinopsis;
 };
 

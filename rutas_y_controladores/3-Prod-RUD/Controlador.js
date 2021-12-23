@@ -34,7 +34,7 @@ module.exports = {
 				"colecciones",
 				producto.coleccion_id,
 				"paises"
-			).then(n=>n.paises)
+			).then((n) => n.paises);
 			//return res.send(producto.paises);
 		} else
 			avatar = producto.avatar
@@ -60,7 +60,7 @@ module.exports = {
 		// Ir a la vista
 		//return res.send(producto);
 		//return res.send(paises);
-		return res.render("Home", {
+		return res.render("0-Producto", {
 			tema,
 			codigo,
 			titulo,

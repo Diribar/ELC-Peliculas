@@ -1,22 +1,25 @@
-<%- include('0-Head') %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('0-Head', {titulo: "Detalle del Producto"}) %>
+	<!-- Detalle de producto -->
+	<% if (codigo == "detalle") { %>
+		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/0-Producto.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/1-Detalles.css">
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<% } %>
+</head>
 <body>
-	<%- include('0-Header') %>
+	<%- include('1-Header') %>
 	<main class="flex-row">
-		<section id="imagen-derecha">
-			<img alt="<%= producto.nombre_castellano %>" src="/imagenes/2-Productos/<%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
+		<section id="imagenProducto">
+			<img alt="<%= producto.nombre_castellano %>" src="<% if (producto.avatar.slice(0,4)!="http") { %>/imagenes/2-Productos/<% } %><%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
 		</section>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ************************-->
-			<section class="cuerpo margen-izquierdo flex-col">
-				<button class="titulo"><%= producto.nombre_castellano %></button>
-				<button class="subtitulo activo"><%= nombre %> </button>
-				<%- nombre.includes("Información") ? include('2-Informacion') : "" %>
-				<%- nombre.includes("Trailer") ?     include('3-Trailer') : "" %>
-				<%- nombre.includes("Película") ?    include('4-Pelicula') : "" %>
-				<%- nombre.includes("Calific") ?     include('5-Calificala') : "" %>
-				<%- nombre.includes("Editar") ?      include('7-Editar') : "" %>
-				<%- nombre.includes("Eliminar") ?    include('8-Eliminar') : "" %>
+			<section class="cuerpo flex-col" id="RUD">
+				<%- codigo == "detalle" ?	include('1-Detalle') : "" %>
 			</section>
 			<!--****************************** FIN *************************-->
 		</section>
