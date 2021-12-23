@@ -7,40 +7,94 @@ window.addEventListener("load", async () => {
 	let submit = document.querySelectorAll(".submit");
 
 	// Interacción con los DataEntry
-	entidad.addEventListener("change", () => {
-		console.log(entidad.value);
+	entidad.addEventListener("change", async () => {
+		// Es una película o colección
 		if (entidad.value != "capitulos") {
-			inutilizar(entidad);
-			if (entidad.value == "colecciones" || entidad.value == "peliculas") {
-				for (i = 0; i < submit.length; i++) {
-					submit[i].classList.remove("botonSinLink");
-				}
-			} else
-				for (i = 0; i < submit.length; i++) {
-					submit[i].classList.add("botonSinLink");
-				}
-		} else {
-			inutilizar(entidad);
+			// Dejar accesible solamente el campo "entidad"
 			utilizar(entidad);
-			console.log("off");
+			// Limpiar las opciones de lo relacionado con colecciones
+			limpiarOpciones(coleccion_id);
+			// Habilitar los botones 'submit'
+			for (i = 0; i < submit.length; i++) {
+				submit[i].classList.remove("botonSinLink");
+			}
+		} else {
+			// Es un capítulo
+			// Agregar como visible el campo 'Nombre de Colección'
+			utilizar(coleccion_id);
+			// Inhabilitar los botones 'submit'
 			for (i = 0; i < submit.length; i++) {
 				submit[i].classList.add("botonSinLink");
 			}
+			// Obtener el listado de las colecciones
+			let colecciones = await fetch("/producto/agregar/api/TP-averiguar-colecciones").then(
+				(n) => n.json()
+			);
+			// Agregar el id y nombre de las colecciones a las opciones
+			for (coleccion of colecciones) {
+				opcion = document.createElement("option");
+				opcion.value = coleccion.id;
+				opcion.innerHTML = coleccion.nombre_castellano;
+				coleccion_id.appendChild(opcion);
+			}
 		}
 	});
-	coleccion_id.addEventListener("change", () => {
-		if ("sin errores") {
-			inutilizar(coleccion_id);
-			utilizar(coleccion_id);
+
+	coleccion_id.addEventListener("change", async () => {
+		// Existe un valor
+		if (!coleccion_id.value) return;
+		// Limpiar las opciones de lo relacionado con temporadas
+		limpiarOpciones(temporada);
+		// Obtener la cantidad de temporadas de la colección
+		let cantTemporadas = await fetch(
+			"/producto/agregar/api/TP-averiguar-cant-temporadas/?id=" + coleccion_id.value
+		).then((n) => n.json());
+		// Agregar las temporadas vigentes más una
+		for (numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
+			// Agregar el n° y el nombre de las temporadas a las opciones
+			opcion = document.createElement("option");
+			opcion.value = numTemporada;
+			opcion.innerHTML =
+				cantTemporadas == 1 && numTemporada == 1
+					? "Temporada única"
+					: "Temporada " + numTemporada;
+			temporada.appendChild(opcion);
 		}
+		// Habilitar campo siguiente
+		utilizar(temporada);
 	});
-	temporada.addEventListener("change", () => {
-		if ("sin errores") {
-			utilizar(temporada);
+
+	temporada.addEventListener("change", async () => {
+		// Existe un valor
+		if (!coleccion_id.value) return;
+		if (!temporada.value) return;
+		// Limpiar las opciones de lo relacionado con capitulos
+		limpiarOpciones(capitulo);
+		// Obtener los capitulos de la temporada
+		let ruta = "/producto/agregar/api/TP-averiguar-capitulos/";
+		let capitulos = await fetch(
+			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value
+		).then((n) => n.json());
+		// Agregar las temporadas vigentes más una
+		let cantCapitulos = capitulos.length
+			? Math.max(...capitulos)
+			: 0
+		for (numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
+			// Agregar sólo los capítulos inexistentes
+			if (!capitulos.includes(numCapitulo)) {
+				// Agregar el n° y el nombre del capitulo a las opciones
+				opcion = document.createElement("option");
+				opcion.value = numCapitulo;
+				opcion.innerHTML = "Capítulo " + numCapitulo;
+				capitulo.appendChild(opcion);
+			}
 		}
+		// Habilitar campo siguiente
+		utilizar(capitulo);
 	});
+
 	capitulo.addEventListener("change", () => {
-		if ("sin errores") {
+		if (capitulo.value) {
 			for (i = 0; i < submit.length; i++) {
 				submit[i].classList.remove("botonSinLink");
 			}
@@ -48,29 +102,27 @@ window.addEventListener("load", async () => {
 	});
 });
 
-let inutilizar = (campo) => {
+let utilizar = (campo) => {
 	let inputs = document.querySelectorAll(".input");
+	let habilitar = true;
 	for (i = 0; i < inputs.length; i++) {
-		if (inputs[i] == campo) break;
-	}
-	for (j = i + 1; j < inputs.length; j++) {
-		inputs[j].setAttribute("disabled", "disabled");
-		inputs[j].value = "";
-		inputs[j].style.opacity = "30%";
+		if (habilitar) inputs[i].removeAttribute("disabled");
+		else {
+			inputs[i].setAttribute("disabled", "disabled");
+			inputs[i].value = "";
+		}
+		if (inputs[i] == campo) habilitar = false;
 	}
 	return;
 };
 
-let utilizar = (campo) => {
+let limpiarOpciones = (campo) => {
 	let inputs = document.querySelectorAll(".input");
-	console.log(campo);
-	for (i = 0; i < inputs.length - 1; i++) {
-		console.log(inputs[i]);
-		if (inputs[i] == campo) {
-			inputs[i + 1].removeAttribute("disabled");
-			inputs[i + 1].style.opacity = "100%";
-			break;
-		}
+	let habilitar = false;
+	for (i = 0; i < inputs.length; i++) {
+		if (inputs[i] == campo) habilitar = true;
+		// Borrar opciones y dejar sólo el estándar
+		if (habilitar) inputs[i].innerHTML = "<option value=''>Elejí una opción</option>";
 	}
 	return;
 };

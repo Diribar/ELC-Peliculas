@@ -407,17 +407,17 @@ module.exports = {
 		}
 		// 3. Si no hay errores, continuar
 		// Obtener la calificación
-		fe_valores = await BD_varias.filtrarPorParametro(
+		fe_valores = await BD_varias.obtenerPorParametro(
 			"fe_valores",
 			"id",
 			datosPers.fe_valores_id
 		).then((n) => n.valor);
-		entretiene = await BD_varias.filtrarPorParametro(
+		entretiene = await BD_varias.obtenerPorParametro(
 			"entretiene",
 			"id",
 			datosPers.entretiene_id
 		).then((n) => n.valor);
-		calidad_tecnica = await BD_varias.filtrarPorParametro(
+		calidad_tecnica = await BD_varias.obtenerPorParametro(
 			"calidad_tecnica",
 			"id",
 			datosPers.calidad_tecnica_id
@@ -572,7 +572,7 @@ let funcDatosTerminaste = (datos) => {
 
 let actualizarRCLV = async (entidad, id) => {
 	if (id) {
-		aux = await BD_varias.filtrarPorId(entidad, id);
+		aux = await BD_varias.obtenerPorId(entidad, id);
 		aux.cant_productos++;
 		BD_varias.actualizarRegistro(entidad, {cant_productos: aux.cant_productos}, id);
 	}

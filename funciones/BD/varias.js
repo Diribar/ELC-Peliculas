@@ -7,20 +7,13 @@ module.exports = {
 		});
 	},
 
-	filtrarPorParametro: (entidad, parametro, valor) => {
+	obtenerPorParametro: (entidad, parametro, valor) => {
 		return db[entidad].findOne({
 			where: {[parametro]: valor},
 		});
 	},
 
-	filtrarPorParametroConInclude: (entidad, parametro, valor, includes) => {
-		return db[entidad].findAll({
-			where: {[parametro]: valor},
-			include: includes,
-		});
-	},
-
-	filtrarPorId: (entidad, id) => {
+	obtenerPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
 	},
 
@@ -29,6 +22,13 @@ module.exports = {
 			return n ? n.id : false;
 		});
 	},
+
+	// filtrarPorParametroConInclude: (entidad, parametro, valor, includes) => {
+	// 	return db[entidad].findAll({
+	// 		where: {[parametro]: valor},
+	// 		include: includes,
+	// 	});
+	// },
 
 	agregarRegistro: (datos) => {
 		return db[datos.entidad].create(datos);
