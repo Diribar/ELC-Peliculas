@@ -94,8 +94,9 @@ window.addEventListener("load", async () => {
 		// Habilitar campo siguiente
 		utilizar(capitulo);
 	});
+
 	capitulo.addEventListener("change", () => {
-		if ("sin errores") {
+		if (capitulo.value) {
 			for (i = 0; i < submit.length; i++) {
 				submit[i].classList.remove("botonSinLink");
 			}
