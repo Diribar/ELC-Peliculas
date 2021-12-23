@@ -50,11 +50,11 @@ window.addEventListener("load", async () => {
 	// Revisar si el FA_id ya está en la BD
 	let verificarRepetido = async () => {
 		direccion = document.querySelector(".input[name='direccion']").value;
-		FA_id = await fetch(pre + "obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
+		FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
 		url = "entidad=" + entidad.value;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
-		ELC_id = await fetch(pre + "obtener-elc-id/?" + url).then((n) => n.json());
+		ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
 		// Definir el mensaje
 		return ELC_id
 			? "Esta " +

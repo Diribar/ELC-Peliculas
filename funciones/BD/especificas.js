@@ -18,7 +18,7 @@ module.exports = {
 		});
 	},
 
-	filtrarProductoPorIdConInclude: (entidad, id, includes) => {
+	obtenerProductoPorIdConInclude: (entidad, id, includes) => {
 		return db[entidad].findByPk(id, {
 			include: includes,
 		});
@@ -66,4 +66,12 @@ module.exports = {
 	obtenerAutorizadoFA: (id) => {
 		return usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
+
+	filtrarCapitulos: (coleccion_id, temporada) => {
+		return db.capitulos.findAll({
+			where: {coleccion_id: coleccion_id, temporada: temporada},
+		});
+	},
+
+
 };

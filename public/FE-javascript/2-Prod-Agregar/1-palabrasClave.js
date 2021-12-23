@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
 
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
-		let link = "/producto/agregar/api/palabras-clave/?palabrasClave=" + dato;
+		let link = "/producto/agregar/api/validar-palabras-clave/?palabrasClave=" + dato;
 		respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {

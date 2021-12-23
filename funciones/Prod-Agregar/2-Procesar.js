@@ -238,6 +238,7 @@ module.exports = {
 					entidad: "capitulos",
 					coleccion_id: datosCol.id,
 					fuente: "TMDB",
+					temporada: 1,
 					capitulo: numCapitulo,
 					creada_por_id: 2,
 				};
@@ -371,7 +372,7 @@ module.exports = {
 		datos.produccion = datosCol.produccion;
 
 		// Datos de la temporada
-		if (!datosCol.tempUnica) datos.temporada = datosTemp.season_number;
+		datos.temporada = datosTemp.season_number
 
 		// Datos distintivos del capítulo
 		datos.capitulo = datosCap.episode_number;
@@ -402,8 +403,6 @@ module.exports = {
 
 	// ControllerVista (confirma)
 	agregarCapitulosDeTV: async function (datosCol) {
-		// Detectar si es una única temporada
-		datosCol.tempUnica = datosCol.cant_temporadas == 1;
 		// Loop de TEMPORADAS ***********************************************
 		for (temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
 			// Datos de UNA TEMPORADA
@@ -523,7 +522,6 @@ let funcionParentesis = (dato) => {
 };
 
 let datosColeccion = (datos, cantCapitulos) => {
-
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
 	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
