@@ -5,7 +5,7 @@
 #datosLargos #contenido h1 em {font-size: 1.1rem;}
 #datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
 #datosLargos #contenido #sinopsis {padding: 20px; font-size: 1.2rem; border-radius: 15px; margin: 10px 30px 25px}
-#datosLargos #contenido #sinopsis {background-color: var(--amarillo-claro);}
+#datosLargos #contenido #sinopsis {background-color: var(--amarillo-claro); max-height: 220px;}
 #datosLargos #contenido .datosAdicionales {margin: 15px; margin-bottom: 0;}
 #datosLargos #botones {display: flex; flex-direction: row; justify-content: space-around; padding-right: 20px; flex-grow: 1; align-items: center;}
 #datosLargos #botones button {background-color: var(--gris-oscuro); color: var(--gris-claro); padding: 7px; border-radius: 10px; font-weight: bolder; font-size: 1.1rem; line-height: 1;}

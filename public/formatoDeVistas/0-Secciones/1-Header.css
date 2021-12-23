@@ -19,8 +19,8 @@ header section .grupos .dropdown-content .fas,
 header section .grupos .dropdown-content .far {color: inherit; font-size: inherit;}
 
 /* Ícono de agregar producto */
-header section .grupos #pelis-icono {position: relative;}
-header section .grupos #pelis-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
+header section .grupos #crear-prod-icono {position: relative;}
+header section .grupos #crear-prod-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
 
 /* Íconos de búsqueda rápida e inputMasResultados */
 header section .grupos#busquedaRapida {position: relative;}

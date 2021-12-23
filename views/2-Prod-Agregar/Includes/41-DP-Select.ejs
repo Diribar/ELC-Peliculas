@@ -2,7 +2,7 @@
 <% if (registro[dataEntry.entidad]) { %>
 	<section class="label-input flex-row">
 		<label><%= registro.titulo %></label>
-		<div id="<%= campo %>" class="input-error<%- (campo == 'subcategoria_id') ? ' ocultar' : '' %>">
+		<div class="input-error">
 			<!-- Input -->
 			<select name="<%= campo %>" class="input" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
 				<option value="" class="<% if (!campo.includes("historico")) { %>ocultar<% } %>" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
