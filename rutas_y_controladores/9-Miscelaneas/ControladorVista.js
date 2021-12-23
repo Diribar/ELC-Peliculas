@@ -5,12 +5,13 @@ let BD_varias = require("../../funciones/BD/varias");
 // *********** Controlador ***********
 module.exports = {
 	home: (req, res) => {
-		tema = "home";
-		return res.render("Home", {tema});
+		tema = "miscelaneas";
+		codigo = "inicio";
+		return res.render("Home", {tema, codigo});
 	},
 
 	nosotros: (req, res) => {
-		tema = "institucional";
+		tema = "miscelaneas";
 		codigo = "nosotros";
 		return res.render("Home", {
 			tema,
@@ -43,7 +44,7 @@ module.exports = {
 		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		//return res.send(req.session.datosPers);
 		// 2. Tema y Código
-		tema = "RCLV";
+		tema = "miscelaneas";
 		codigo = datosPers.entidad_RCLV;
 		// 3. Data-entry
 		datosRCLV = req.session[codigo]

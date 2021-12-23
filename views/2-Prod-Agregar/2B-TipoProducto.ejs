@@ -1,92 +1,63 @@
 <h1 class="titulo" id="titulo">Elegí el Tipo de Producto a agregar</h1>
 <div class="flex-col" id="dataEntry">
-	<h2 id="paso2">Paso 2 de 4: Datos clave</h2>
+	<h2 id="paso2">Paso 2 de 4: Datos Globales</h2>
 	<form action="<%= link %>-dd" method="POST">
 		<!-- Datos a completar -->
 		<section id="datos">
 			<!-- Tipo de Producto -->
 			<h3>Tipo de Producto</h3>
+			<select name="entidad" class="input" autofocus>
+				<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
+				<option value="peliculas"
+					<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
+					Película
+				</option>
+				<option value="colecciones"
+					<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
+					Colección
+				</option>
+				<option value="capitulos"
+					<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
+					Capítulo de una colección
+				</option>
+			</select>
+			<!-- Datos del capítulo -->
+			<h3>Nombre de la Colección</h3>
 			<div class="flex-row">
-				<select name="entidad" class="input" autofocus>
-					<option style="font-style: italic" value="" selected class="ocultar">Elegí una opción</option>
-					<option value="peliculas"
-						<% if (dataEntry && dataEntry.entidad == "peliculas") { %>selected<% } %>>
-						Película
-					</option>
-					<option value="colecciones"
-						<% if (dataEntry && dataEntry.entidad == "colecciones") { %>selected<% } %>>
-						Colección
-					</option>
-					<option value="capitulos"
-						<% if (dataEntry && dataEntry.entidad == "capitulo") { %>selected<% } %>>
-						Capítulo de una colección
-					</option>
+				<!-- Data Entry -->
+				<select name="coleccion_id" class="input" disabled>
+					<option value="">Elejí una opción</option>
 				</select>
+				<!-- Ayuda -->
 				<i class="fas fa-question-circle relative">
 					<ul class="mensajeAyuda ocultar" type="dots">
-						<li>
-						</li>
+						<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+						<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
 					</ul>	
 				</i>
+			</div>
+			<h3>Número de Temporada</h3>
+			<div class="flex-row">
+				<!-- Data Entry -->
+				<select name="temporada" class="input" disabled>
+					<option value="">Elejí una opción</option>
+					<option value="">Única temporada</option>
+				</select>
+			</div>
+			<h3>Número de Capítulo</h3>
+			<div class="flex-row">
+				<input name="capitulo" type="text" class="input" readonly disabled>
+				<!-- Ayuda -->
+				<i class="fas fa-question-circle relative">
+					<ul class="mensajeAyuda ocultar" type="dots">
+						<li></li>
+					</ul>
+				</i>
+				<!-- Errores -->
 				<i class="fas fa-times-circle ocultar">
-					<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
+					<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
 				</i>
 				<i class="fas fa-check-circle ocultar"></i>
-			</div>
-			<!-- Datos del capítulo -->
-			<div id="resto ocultar">
-				<h3>ID de la colección</h3>
-				<div class="flex-row">
-					<!-- Data Entry -->
-					<input type="text" name="coleccion_id" class="input" disabled>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-							<li>Si no la encontrás, vamos a necesitar que la agregues antes que la película</li>
-						</ul>	
-					</i>
-					<!-- Errores -->
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.entidad ? errores.entidad : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
-				</div>
-				<h3>Número de Temporada</h3>
-				<div class="flex-row">
-					<!-- Data Entry -->
-					<select name="temporada" class="input" disabled>
-						<option value="">Elejí una opción</option>
-						<option value="">Única temporada</option>
-					</select>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li>
-							</li>
-						</ul>	
-					</i>
-					<!-- Errores -->
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.temporada ? errores.temporada : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
-				</div>
-				<h3>N° de Capítulo</h3>
-				<div class="flex-row">
-					<input name="capitulo" type="text" class="input" readonly disabled>
-					<!-- Ayuda -->
-					<i class="fas fa-question-circle relative">
-						<ul class="mensajeAyuda ocultar" type="dots">
-							<li></li>
-						</ul>
-					</i>
-					<!-- Errores -->
-					<i class="fas fa-times-circle ocultar">
-						<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
-				</div>
 			</div>
 		</section>
 		<!-- Flechas -->

@@ -1,0 +1,11 @@
+<section class="cuerpo flex-col grow">
+	<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
+	<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
+	<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
+	<%- codigo == "tipoProducto" ? include("2B-TipoProducto") : "" %>
+	<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
+	<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
+	<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
+	<%- codigo == "confirma" ? include("5-Confirma") : "" %>
+	<%- codigo == "terminaste" ? include("6-Terminaste") : "" %>
+</section>

@@ -94,9 +94,11 @@ window.addEventListener("load", async () => {
 
 		// Conclusiones
 		resultado = Object.values(OK);
-		resultadoTrue = resultado.reduce((a, b) => {
-			return !!a && !!b;
-		});
+		resultadoTrue = resultado.length
+			? resultado.reduce((a, b) => {
+					return !!a && !!b;
+			  })
+			: false;
 
 		// Alterar el botón submit
 		resultadoTrue && resultado.length == bloques.length
@@ -132,7 +134,7 @@ window.addEventListener("load", async () => {
 			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
 		}
 		OK.nombre = !errores.nombre && !errores.genero;
-		if (!nombre.value) errores.nombre=""
+		if (!nombre.value) errores.nombre = "";
 		errores.genero = "";
 		return [OK, errores];
 	};

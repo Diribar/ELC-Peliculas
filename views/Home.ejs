@@ -1,108 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<!-- Home -->
-	<% if (tema == "home") { %>
-		<%- include('0-Head', {titulo: "Inicio"}) %>
-		<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Inicio.css">
-	<% } %>
-	<!-- Agregar usuarios -->
-	<% if (tema == "usuario") { %>
-		<% if (codigo == "login") { %>
-			<%- include('0-Head', {titulo: "Login"}) %>
-			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/Login.css">
-			<script src="/FE-javascript/1-Usuarios/ojitoContrasena.js"></script>
-			<script src="/FE-javascript/1-Usuarios/0-Login-validar.js"></script>
-		<% } else %>
-		<% if (codigo == "mail") { %>
-			<%- include('0-Head', {titulo: "Registro de Mail"}) %>
-			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-FormMail.css">
-			<script src="/FE-javascript/1-Usuarios/1-Mail-validar.js"></script>
-		<% } else %>
-		<% if (codigo == "perennes") { %>
-			<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
-			<script src="/FE-javascript/1-Usuarios/2-Perennes-validar.js"></script>
-		<% } else %>
-		<% if (codigo == "editables") { %>
-			<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
-			<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-FormEditables.css">
-			<script src="/FE-javascript/1-Usuarios/3-Editables-imagen.js"></script>
-			<script src="/FE-javascript/1-Usuarios/3-Editables-validar.js"></script>
-		<% } else %>
-		<% if (codigo == "detalle") { %>
-			<%- include('0-Head', {titulo: "Detalle de Usuario"}) %>
-		<% } %>
-		<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/0-UsuariosGral.css">
-	<% } %>
-	<!-- Agregar productos -->
-	<% if (tema == "agregar") { %>
-		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
-		<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/0-Agregar.css">
-		<% if (codigo == "palabrasClave") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/1-PalabrasClave.css">
-			<script src="/FE-javascript/2-Prod-Agregar/1-palabrasClave.js"></script>
-		<% } else %>
-		<% if (codigo == "desambiguar") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2A-DesambTMDB.css">
-			<script src="/FE-javascript/2-Prod-Agregar/2A-DESAMB-Coleccion.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/2A-DESAMB-Desplazam.js"></script>
-		<% } else %>
-		<% if (codigo == "tipoProducto") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2B-TipoProducto.css">
-			<!-- <script src="/FE-javascript/2-Prod-Agregar/2B-tipoProd-Errores.js"></script> -->
-			<script src="/FE-javascript/2-Prod-Agregar/2B-tipoProd-Mostrar.js"></script>
-			<!-- <script src="/FE-javascript/2-Prod-Agregar/2B-tipoProd-Ayuda.js"></script> -->
-		<% } else %>
-		<% if (codigo == "copiarFA") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/2C-CopiarFA.css">
-			<script src="/FE-javascript/2-Prod-Agregar/2C-copiarFA-Errores.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/2C-copiarFA-Mostrar.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/2C-copiarFA-Ayuda.js"></script>
-		<% } else %>
-		<% if (codigo == "datosDuros") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/3-DatosDuros.css">
-			<script src="/FE-javascript/2-Prod-Agregar/3-DD-Ayuda.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/3-DD-Errores.js"></script>
-			<% if (dataEntry) { %>
-				<% if (!dataEntry.avatar || dataEntry.fuente!="TMDB") { %><script src="/FE-javascript/2-Prod-Agregar/3-DD-Imagen.js"></script><% } %>
-			<% } %>
-		<% } else %>
-		<% if (codigo == "datosPers") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/4-DatosPers.css">
-			<script src="/FE-javascript/2-Prod-Agregar/4-DP-Ayuda.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/4-DP-Errores.js"></script>
-			<script src="/FE-javascript/2-Prod-Agregar/4-DP-Subcat.js"></script>
-		<% } else %>
-		<% if (codigo == "confirma") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/5-Confirma.css">
-			<script src="/FE-javascript/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
-		<% } else %>
-		<% if (codigo == "terminaste") { %>
-			<link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/6-Terminaste.css">
-			<script src="/FE-javascript/2-Prod-Agregar/5-Confirma-Ayuda.js"></script>
-		<% } else %>
-		<% if (codigo == "responsabilidad") { %><link rel="stylesheet" href="/formatoDeVistas/2-Prod-Agregar/0-Responsabilidad.css"><% } %>
-	<% } %>
-	<!-- Opciones de layout -->
-	<% if (tema == "opciones") { %>
-		<%- include('0-Head', {titulo}) %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-ElegirOpciones/0-Opciones.css">
-		<link rel="stylesheet" href="/formatoDeVistas/3-ElegirOpciones/Filtros.css">
-	<% } %>
-	<!-- Miscelaneas -->
-	<% if (tema == "RCLV") { %>
-		<%- include('0-Head', {titulo: "PEL-Agregar"}) %>
-		<%- include('0-Head', {titulo: "Agregar un "+ codigo +" Histórico"}) %>
-		<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/RCLV.css">
-		<script src="/FE-javascript/9-Miscelaneas/RCLV-Ayuda.js"></script>
-		<script src="/FE-javascript/9-Miscelaneas/RCLV-Errores.js"></script>
-	<% } %>
-	<% if (tema == "institucional") { %>
-		<% if (codigo == "nosotros") { %>
-			<%- include('0-Head', {titulo: "Quiénes somos"}) %>
-			<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Nosotros.css">
-		<% } %>
-	<% } %>
+	<!-- Head -->
+	<% if (tema == "usuario") { %><%- include('0-HeadUsuario') %><% } %>
+	<% if (tema == "agregar") { %><%- include('0-HeadAgregar') %><% } %>
+	<% if (tema == "opciones") { %><%- include('0-HeadOpciones') %><% } %>
+	<% if (tema == "miscelaneas") { %><%- include('0-HeadMiscelaneas') %><% } %>
 </head>
 <body>
 	<%- include('1-Header') %>
@@ -111,40 +14,10 @@
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
-			<% if (tema=="usuario") { %>
-				<section id="Form" class="flex-col">
-					<%- codigo == "login" ? include("0-LoginForm") : "" %>
-					<%- codigo == "mail" ? include("1-FormMail") : "" %>
-					<%- codigo == "perennes" ? include("2-FormPerennes") : "" %>
-					<%- codigo == "editables" ? include("3-FormEditables") : "" %>
-					<%- codigo == "detalle" ? include("detalle") : "" %>
-					<%- codigo == "editar" ? include("editar") : "" %>
-				</section>
-			<% } %>
-			<% if (tema=="agregar" || tema=="RCLV") { %> 
-				<section class="cuerpo flex-col grow">
-					<% if (tema=="agregar") { %>
-						<%- codigo == "responsabilidad" ? include("0-Responsabilidad") : "" %>
-						<%- codigo == "palabrasClave" ? include("1-PalabrasClave") : "" %>
-						<%- codigo == "desambiguar" ? include("2A-DesambTMDB") : "" %>
-						<%- codigo == "tipoProducto" ? include("2B-TipoProducto") : "" %>
-						<%- codigo == "copiarFA" ? include("2C-CopiarFA") : "" %>
-						<%- codigo == "datosDuros" ? include("3-DatosDuros") : "" %>
-						<%- codigo == "datosPers" ? include("4-DatosPers") : "" %>
-						<%- codigo == "confirma" ? include("5-Confirma") : "" %>
-						<%- codigo == "terminaste" ? include("6-Terminaste") : "" %>
-					<% } %>
-					<% if (tema=="RCLV") { %><%- include("RCLV") %><% } %>
-				</section>
-			<% } %>
-			<% if (tema=="home" || tema=="opciones") { %>
-				<section id="cuerpo" class="flex-row grow">
-					<% if (tema=="home") { %><%- include("Inicio") %><% } %>
-					<% if (tema=="opciones") { %><%- include("0-Opciones") %><% } %>
-				</section>
-			<% } %>
-			<% if (tema=="institucional") { %><%- codigo == "nosotros" ? include("Nosotros") : "" %><% } %>
-
+			<% if (tema == "usuario") { %><%- include('0-CuerpoUsuarios') %><% } %>
+			<% if (tema == "agregar") { %><%- include('0-CuerpoAgregar') %><% } %>
+			<% if (tema == "miscelaneas") { %><%- include("0-CuerpoMiscelaneas") %><% } %>
+			<% if (tema == "opciones") { %><%- include("0-CuerpoOpciones") %><% } %>
 			<!--****************************** FIN *******************************-->
 		</section>
 	</main>

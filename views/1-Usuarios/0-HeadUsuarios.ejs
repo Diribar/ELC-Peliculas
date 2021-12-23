@@ -1,0 +1,25 @@
+<% if (codigo == "login") { %>
+	<%- include('0-Head', {titulo: "Login"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/Login.css">
+	<script src="/FE-javascript/1-Usuarios/ojitoContrasena.js"></script>
+	<script src="/FE-javascript/1-Usuarios/0-Login-validar.js"></script>
+<% } else %>
+<% if (codigo == "mail") { %>
+	<%- include('0-Head', {titulo: "Registro de Mail"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-FormMail.css">
+	<script src="/FE-javascript/1-Usuarios/1-Mail-validar.js"></script>
+<% } else %>
+<% if (codigo == "perennes") { %>
+	<%- include('0-Head', {titulo: "Registro de Datos Perennes"}) %>
+	<script src="/FE-javascript/1-Usuarios/2-Perennes-validar.js"></script>
+<% } else %>
+<% if (codigo == "editables") { %>
+	<%- include('0-Head', {titulo: "Registro de Datos Editables"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-FormEditables.css">
+	<script src="/FE-javascript/1-Usuarios/3-Editables-imagen.js"></script>
+	<script src="/FE-javascript/1-Usuarios/3-Editables-validar.js"></script>
+<% } else %>
+<% if (codigo == "detalle") { %>
+	<%- include('0-Head', {titulo: "Detalle de Usuario"}) %>
+<% } %>
+<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/0-UsuariosGral.css">
