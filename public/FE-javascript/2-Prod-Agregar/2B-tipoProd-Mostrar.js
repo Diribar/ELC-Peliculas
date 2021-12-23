@@ -75,12 +75,10 @@ window.addEventListener("load", async () => {
 		let capitulos = await fetch(
 			ruta + "?coleccion_id=" + coleccion_id.value + "&temporada=" + temporada.value
 		).then((n) => n.json());
-		console.log(capitulos);
 		// Agregar las temporadas vigentes más una
 		let cantCapitulos = capitulos.length
 			? Math.max(...capitulos)
 			: 0
-		console.log(cantCapitulos);
 		for (numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
 			// Agregar sólo los capítulos inexistentes
 			if (!capitulos.includes(numCapitulo)) {
