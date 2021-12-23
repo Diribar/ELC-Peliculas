@@ -24,7 +24,6 @@ router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
 router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
 router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
 router.get("/api/TP-averiguar-capitulos", API.averiguarCapitulos);
-
 router.get("/api/FA-obtener-fa-id", API.obtenerFA_id);
 router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
 router.get("/api/DD-paises", API.obtenerPaises);
