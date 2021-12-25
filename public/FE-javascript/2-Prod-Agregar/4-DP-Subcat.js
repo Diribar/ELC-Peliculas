@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
-	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] opcion");
+	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	let RCLVs = document.querySelectorAll(".RCLV");
 
 	// Aplicar cambios en la subcategoría

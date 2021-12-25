@@ -7,6 +7,7 @@
 #dataEntry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
 #dataEntry #cuerpo #columnaMedio {width: 70px}
 #dataEntry .label-input {justify-content: space-between; margin-top: 3px;}
+#dataEntry #primeraColumna {min-width: 281px; min-height: 326px;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}
@@ -37,6 +38,6 @@
 #dataEntry #imagenPeli img {position: absolute; left: 50%; transform: translateX(-50%); height: 100%; max-width: 220px; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
-#dataEntry #flechas {margin-top: 20px; }
+#dataEntry #flechas {margin-top: 20px;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
