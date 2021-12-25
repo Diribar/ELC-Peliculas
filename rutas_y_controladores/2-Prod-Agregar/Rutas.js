@@ -28,7 +28,7 @@ router.get("/api/validar-copiar-fa", API.validarCopiarFA);
 // Temas de Datos Duros
 router.get("/api/validar-datos-duros", API.validarDatosDuros);
 // Temas de Datos Personalizados
-router.get("/api/obtener-RCLV-subcategoria", API.obtenerRCLV_subcategorias);
+router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
 // Temas generales de APIs
 router.get("/api/DD-paises", API.obtenerPaises);

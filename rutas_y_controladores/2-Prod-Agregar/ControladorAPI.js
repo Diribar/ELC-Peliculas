@@ -74,7 +74,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	// Vista (datosPers)
-	obtenerRCLV_subcategorias: async (req, res) => {
+	obtenerDatosSubcategoria: async (req, res) => {
 		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id)
 		return res.json(subcategoria);
 	},
