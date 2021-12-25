@@ -141,23 +141,27 @@ CREATE TABLE categorias_sub (
 	orden TINYINT UNSIGNED NOT NULL,
 	categoria_id VARCHAR(3) NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
+	personaje BOOLEAN DEFAULT 0,
+	hecho BOOLEAN DEFAULT 0,
+	valor BOOLEAN DEFAULT 0,
 	url VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO categorias_sub (orden, categoria_id, nombre, url)
+INSERT INTO categorias_sub (id, orden, categoria_id, nombre, personaje, hecho, valor, url)
 VALUES 
-(1, 'CFC', 'Jesús', 'cfc/jesus'), 
-(2, 'CFC', 'Contemporáneos de Jesús', 'cfc/contemporaneos'), 
-(3, 'CFC', 'Apariciones Marianas', 'cfc/marianas'), 
-(4, 'CFC', 'Hagiografías', 'cfc/hagiografias'), 
-(5, 'CFC', 'Historias de la Iglesia', 'cfc/historias'), 
-(6, 'CFC', 'Novelas centradas en la fe', 'cfc/novelas'), 
-(7, 'CFC', 'Documentales', 'cfc/documentales'), 
-(8, 'VPC', 'Biografías e Historias', 'vpc/bios_historias'), 
-(9, 'VPC', 'Matrimonio y Familia', 'vpc/matrimonio'), 
-(10, 'VPC', 'Novelas', 'vpc/novelas'), 
-(11, 'VPC', 'Musicales', 'vpc/musicales')
+(1, 1, 'CFC', 'Jesús', 1, 0, 0, 'cfc/jesus'), 
+(2, 2, 'CFC', 'Contemporáneos de Jesús', 1, 0, 0, 'cfc/contemporaneos'), 
+(3, 3, 'CFC', 'Apariciones Marianas', 0, 1, 0, 'cfc/marianas'), 
+(4, 4, 'CFC', 'Hagiografías', 1, 0, 0, 'cfc/hagiografias'), 
+(5, 5, 'CFC', 'Historias de la Iglesia', 0, 1, 0, 'cfc/historias'), 
+(6, 6, 'CFC', 'Novelas centradas en la fe', 0, 0, 1, 'cfc/novelas'), 
+(7, 7, 'CFC', 'Documentales', 0, 0, 0, 'cfc/documentales'), 
+(8, 8, 'VPC', 'Biografías', 1, 0, 1, 'vpc/bios_historias'), 
+(12, 9, 'VPC', 'Historias', 0, 1, 1, 'vpc/bios_historias'),
+(9, 10, 'VPC', 'Matrimonio y Familia', 0, 0, 1, 'vpc/matrimonio'), 
+(10, 11, 'VPC', 'Novelas', 0, 0, 1, 'vpc/novelas'), 
+(11, 12, 'VPC', 'Musicales', 0, 0, 1, 'vpc/musicales')
 ;
 CREATE TABLE publicos_sugeridos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -177,16 +181,15 @@ CREATE TABLE motivos_para_borrar (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100) NOT NULL,
 	productos BOOLEAN DEFAULT 0,
-	historicos_personajes BOOLEAN DEFAULT 0,
-	historicos_hechos BOOLEAN DEFAULT 0,
+	RCLV BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO motivos_para_borrar (nombre, productos, historicos_personajes, historicos_hechos)
+INSERT INTO motivos_para_borrar (nombre, productos, RCLV)
 VALUES
-('Registro duplicado', 1, 1, 1),
-('Sin relación con ninguna Película o Colección', 0, 1, 1),
-('Spam dañino, no alineado con nuestro perfil', 1, 1, 1),
-('Spam inocuo, no alineado con nuestro perfil', 1, 1, 1)
+('Registro duplicado', 1, 1),
+('Sin relación con ninguna Película o Colección', 0, 1),
+('Spam dañino, no alineado con nuestro perfil', 1, 1),
+('Spam inocuo, no alineado con nuestro perfil', 1, 1)
 ;
 CREATE TABLE meses (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -206,11 +209,18 @@ INSERT INTO dias_del_ano (id, dia, mes_id)
 VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 1), (8, 8, 1), (9, 9, 1), (10, 10, 1), (11, 11, 1), (12, 12, 1), (13, 13, 1), (14, 14, 1), (15, 15, 1), (16, 16, 1), (17, 17, 1), (18, 18, 1), (19, 19, 1), (20, 20, 1), (21, 21, 1), (22, 22, 1), (23, 23, 1), (24, 24, 1), (25, 25, 1), (26, 26, 1), (27, 27, 1), (28, 28, 1), (29, 29, 1), (30, 30, 1), (31, 31, 1), (32, 1, 2), (33, 2, 2), (34, 3, 2), (35, 4, 2), (36, 5, 2), (37, 6, 2), (38, 7, 2), (39, 8, 2), (40, 9, 2), (41, 10, 2), (42, 11, 2), (43, 12, 2), (44, 13, 2), (45, 14, 2), (46, 15, 2), (47, 16, 2), (48, 17, 2), (49, 18, 2), (50, 19, 2), (51, 20, 2), (52, 21, 2), (53, 22, 2), (54, 23, 2), (55, 24, 2), (56, 25, 2), (57, 26, 2), (58, 27, 2), (59, 28, 2), (60, 29, 2), (61, 1, 3), (62, 2, 3), (63, 3, 3), (64, 4, 3), (65, 5, 3), (66, 6, 3), (67, 7, 3), (68, 8, 3), (69, 9, 3), (70, 10, 3), (71, 11, 3), (72, 12, 3), (73, 13, 3), (74, 14, 3), (75, 15, 3), (76, 16, 3), (77, 17, 3), (78, 18, 3), (79, 19, 3), (80, 20, 3), (81, 21, 3), (82, 22, 3), (83, 23, 3), (84, 24, 3), (85, 25, 3), (86, 26, 3), (87, 27, 3), (88, 28, 3), (89, 29, 3), (90, 30, 3), (91, 31, 3), (92, 1, 4), (93, 2, 4), (94, 3, 4), (95, 4, 4), (96, 5, 4), (97, 6, 4), (98, 7, 4), (99, 8, 4), (100, 9, 4), (101, 10, 4), (102, 11, 4), (103, 12, 4), (104, 13, 4), (105, 14, 4), (106, 15, 4), (107, 16, 4), (108, 17, 4), (109, 18, 4), (110, 19, 4), (111, 20, 4), (112, 21, 4), (113, 22, 4), (114, 23, 4), (115, 24, 4), (116, 25, 4), (117, 26, 4), (118, 27, 4), (119, 28, 4), (120, 29, 4), (121, 30, 4), (122, 1, 5), (123, 2, 5), (124, 3, 5), (125, 4, 5), (126, 5, 5), (127, 6, 5), (128, 7, 5), (129, 8, 5), (130, 9, 5), (131, 10, 5), (132, 11, 5), (133, 12, 5), (134, 13, 5), (135, 14, 5), (136, 15, 5), (137, 16, 5), (138, 17, 5), (139, 18, 5), (140, 19, 5), (141, 20, 5), (142, 21, 5), (143, 22, 5), (144, 23, 5), (145, 24, 5), (146, 25, 5), (147, 26, 5), (148, 27, 5), (149, 28, 5), (150, 29, 5), (151, 30, 5), (152, 31, 5), (153, 1, 6), (154, 2, 6), (155, 3, 6), (156, 4, 6), (157, 5, 6), (158, 6, 6), (159, 7, 6), (160, 8, 6), (161, 9, 6), (162, 10, 6), (163, 11, 6), (164, 12, 6), (165, 13, 6), (166, 14, 6), (167, 15, 6), (168, 16, 6), (169, 17, 6), (170, 18, 6), (171, 19, 6), (172, 20, 6), (173, 21, 6), (174, 22, 6), (175, 23, 6), (176, 24, 6), (177, 25, 6), (178, 26, 6), (179, 27, 6), (180, 28, 6), (181, 29, 6), (182, 30, 6), (183, 1, 7), (184, 2, 7), (185, 3, 7), (186, 4, 7), (187, 5, 7), (188, 6, 7), (189, 7, 7), (190, 8, 7), (191, 9, 7), (192, 10, 7), (193, 11, 7), (194, 12, 7), (195, 13, 7), (196, 14, 7), (197, 15, 7), (198, 16, 7), (199, 17, 7), (200, 18, 7), (201, 19, 7), (202, 20, 7), (203, 21, 7), (204, 22, 7), (205, 23, 7), (206, 24, 7), (207, 25, 7), (208, 26, 7), (209, 27, 7), (210, 28, 7), (211, 29, 7), (212, 30, 7), (213, 31, 7), (214, 1, 8), (215, 2, 8), (216, 3, 8), (217, 4, 8), (218, 5, 8), (219, 6, 8), (220, 7, 8), (221, 8, 8), (222, 9, 8), (223, 10, 8), (224, 11, 8), (225, 12, 8), (226, 13, 8), (227, 14, 8), (228, 15, 8), (229, 16, 8), (230, 17, 8), (231, 18, 8), (232, 19, 8), (233, 20, 8), (234, 21, 8), (235, 22, 8), (236, 23, 8), (237, 24, 8), (238, 25, 8), (239, 26, 8), (240, 27, 8), (241, 28, 8), (242, 29, 8), (243, 30, 8), (244, 31, 8), (245, 1, 9), (246, 2, 9), (247, 3, 9), (248, 4, 9), (249, 5, 9), (250, 6, 9), (251, 7, 9), (252, 8, 9), (253, 9, 9), (254, 10, 9), (255, 11, 9), (256, 12, 9), (257, 13, 9), (258, 14, 9), (259, 15, 9), (260, 16, 9), (261, 17, 9), (262, 18, 9), (263, 19, 9), (264, 20, 9), (265, 21, 9), (266, 22, 9), (267, 23, 9), (268, 24, 9), (269, 25, 9), (270, 26, 9), (271, 27, 9), (272, 28, 9), (273, 29, 9), (274, 30, 9), (275, 1, 10), (276, 2, 10), (277, 3, 10), (278, 4, 10), (279, 5, 10), (280, 6, 10), (281, 7, 10), (282, 8, 10), (283, 9, 10), (284, 10, 10), (285, 11, 10), (286, 12, 10), (287, 13, 10), (288, 14, 10), (289, 15, 10), (290, 16, 10), (291, 17, 10), (292, 18, 10), (293, 19, 10), (294, 20, 10), (295, 21, 10), (296, 22, 10), (297, 23, 10), (298, 24, 10), (299, 25, 10), (300, 26, 10), (301, 27, 10), (302, 28, 10), (303, 29, 10), (304, 30, 10), (305, 31, 10), (306, 1, 11), (307, 2, 11), (308, 3, 11), (309, 4, 11), (310, 5, 11), (311, 6, 11), (312, 7, 11), (313, 8, 11), (314, 9, 11), (315, 10, 11), (316, 11, 11), (317, 12, 11), (318, 13, 11), (319, 14, 11), (320, 15, 11), (321, 16, 11), (322, 17, 11), (323, 18, 11), (324, 19, 11), (325, 20, 11), (326, 21, 11), (327, 22, 11), (328, 23, 11), (329, 24, 11), (330, 25, 11), (331, 26, 11), (332, 27, 11), (333, 28, 11), (334, 29, 11), (335, 30, 11), (336, 1, 12), (337, 2, 12), (338, 3, 12), (339, 4, 12), (340, 5, 12), (341, 6, 12), (342, 7, 12), (343, 8, 12), (344, 9, 12), (345, 10, 12), (346, 11, 12), (347, 12, 12), (348, 13, 12), (349, 14, 12), (350, 15, 12), (351, 16, 12), (352, 17, 12), (353, 18, 12), (354, 19, 12), (355, 20, 12), (356, 21, 12), (357, 22, 12), (358, 23, 12), (359, 24, 12), (360, 25, 12), (361, 26, 12), (362, 27, 12), (363, 28, 12), (364, 29, 12), (365, 30, 12), (366, 31, 12);
 CREATE TABLE status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(10) NOT NULL UNIQUE,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(22) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro (id, nombre)
-VALUES (1, 'Pendiente'), (2, 'Aprobada'), (3, 'Borrada');
+INSERT INTO status_registro (id, orden, nombre)
+VALUES 
+(1, 1, 'Creada'), 
+(6, 2, 'Editada'),
+(2, 3, 'Aprobada'),
+(5, 4, 'Sugerida p/borrar'),
+(3, 5, 'Borrada')
+;
 CREATE TABLE epocas_estreno (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -353,7 +363,7 @@ CREATE TABLE us_filtros_personales_campos (
 	PRIMARY KEY (id),
 	FOREIGN KEY (filtro_cabecera_id) REFERENCES us_filtros_personales_cabecera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE historicos_personajes (
+CREATE TABLE rclv_personajes_historicos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
@@ -388,7 +398,7 @@ CREATE TABLE historicos_personajes (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE historicos_hechos (
+CREATE TABLE rclv_hechos_historicos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
@@ -419,6 +429,31 @@ CREATE TABLE historicos_hechos (
 	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE rclv_valores (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(30) NOT NULL UNIQUE,
+
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	creada_por_id INT UNSIGNED DEFAULT 1,
+	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	editada_por_id INT UNSIGNED NULL,
+	editada_en DATETIME NULL,
+	lead_time_edicion SMALLINT UNSIGNED NULL,
+	revisada_por_id INT UNSIGNED NULL,
+	revisada_en DATETIME NULL,
+	borrada_motivo_id TINYINT UNSIGNED NULL,
+	borrada_motivo_comentario VARCHAR(500) NULL,
+	capturada_por_id INT UNSIGNED NULL,
+	capturada_en DATETIME NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
+	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
+	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -445,6 +480,7 @@ CREATE TABLE PROD_peliculas (
 	publico_sugerido_id TINYINT UNSIGNED NOT NULL,
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NOT NULL,
@@ -477,8 +513,9 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -514,6 +551,7 @@ CREATE TABLE PROD_colecciones (
 	publico_sugerido_id TINYINT UNSIGNED NOT NULL,
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NOT NULL,
@@ -545,8 +583,9 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -583,6 +622,7 @@ CREATE TABLE PROD_capitulos (
 	publico_sugerido_id TINYINT UNSIGNED NULL,
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NULL,
@@ -616,8 +656,9 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES historicos_personajes(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES historicos_hechos(id),
+	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
+	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
@@ -682,19 +723,32 @@ VALUES
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 
-INSERT INTO historicos_personajes (id, nombre )
+INSERT INTO rclv_personajes_historicos (id, nombre )
 VALUES 
-(1, 'Jesús')
+(2, 'Jesús'),
+(3, 'María, madre de Jesús')
 ;
-INSERT INTO historicos_personajes (id, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
+INSERT INTO rclv_personajes_historicos (id, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
 VALUES 
-(10, 'Juan Pablo II', 296, 'STV', 'PPV')
+(10, 'José, padre de Jesús', 79, 'STV', 'LCV'),
+(11, 'Juan Pablo II', 296, 'STV', 'PPV')
 ;
-INSERT INTO historicos_hechos (id, dia_del_ano_id, nombre)
+INSERT INTO rclv_hechos_historicos (id, dia_del_ano_id, nombre)
 VALUES 
-(1, 249, 'Guerra Mundial - 2a (segunda)'),
-(2, 100, 'Semana Santa'),
-(3, 105, 'Semana Santa - Viernes Santo'),
-(4, 107, 'Semana Santa - Resurrección'),
-(5, 150, 'Pentecostés')
+(2, 100, 'Sem. Santa - 1. General'),
+(3, 105, 'Sem. Santa - 2. Viernes Santo'),
+(4, 107, 'Sem. Santa - 3. Resurrección'),
+(5, 150, 'Pentecostés'),
+(6, 210, 'Guerra Mundial - 1a'),
+(7, 245, 'Guerra Mundial - 2a')
+;
+
+INSERT INTO rclv_valores (id, nombre)
+VALUES 
+(1, 'Ninguno del listado'),
+(2, 'Valores en el deporte'),
+(3, 'Perseverancia'),
+(4, 'Pacificar un país dividido'),
+(5, 'Pasión por ayudar'),
+(6, 'Superación personal')
 ;

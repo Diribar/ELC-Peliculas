@@ -26,6 +26,7 @@ module.exports = (sequelize, dt) => {
 		publico_sugerido_id: {type: dt.INTEGER},
 		personaje_historico_id: {type: dt.INTEGER},
 		hecho_historico_id: {type: dt.INTEGER},
+		valor_id: {type: dt.INTEGER},
 		link_trailer: {type: dt.STRING(200)},
 		link_pelicula: {type: dt.STRING(200)},
 		fe_valores: {type: dt.INTEGER},
@@ -65,6 +66,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 		entidad.belongsTo(n.RCLV_personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
 		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
+		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
