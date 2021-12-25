@@ -46,6 +46,7 @@ module.exports = {
 		// 2. Tema y Código
 		tema = "miscelaneas";
 		codigo = datosPers.entidad_RCLV;
+		console.log(codigo);
 		// 3. Data-entry
 		datosRCLV = req.session[codigo]
 			? req.session[codigo]
@@ -123,7 +124,11 @@ module.exports = {
 		let {id} = await BD_varias.agregarRegistro(datos);
 		//return res.send(id+"");
 		// 7. Guardar el id en 'Datos Personalizados'
-		campo = entidad.slice(11, -1) + "_historico_id";
+		campo = entidad.includes("personaje")
+			? "personaje_historico_id"
+			: entidad.includes("hecho")
+			? "hecho_historico_id"
+			: "valor_id";
 		req.session.datosPers[campo] = id;
 		res.cookie(datosPers[campo], id, {maxAge: 24 * 60 * 60 * 1000});
 		// 8. Borrar session y cookies innecesarios
