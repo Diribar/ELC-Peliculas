@@ -124,11 +124,7 @@ module.exports = {
 		let {id} = await BD_varias.agregarRegistro(datos);
 		//return res.send(id+"");
 		// 7. Guardar el id en 'Datos Personalizados'
-		campo = entidad.includes("personaje")
-			? "personaje_historico_id"
-			: entidad.includes("hecho")
-			? "hecho_historico_id"
-			: "valor_id";
+		campo = entidad.includes("personaje") ? "personaje_historico_id" : "hecho_historico_id";
 		req.session.datosPers[campo] = id;
 		res.cookie(datosPers[campo], id, {maxAge: 24 * 60 * 60 * 1000});
 		// 8. Borrar session y cookies innecesarios
