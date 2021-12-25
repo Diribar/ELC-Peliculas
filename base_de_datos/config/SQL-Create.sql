@@ -746,9 +746,9 @@ VALUES
 INSERT INTO rclv_valores (id, nombre)
 VALUES 
 (1, 'Ninguno del listado'),
-(2, 'Valores en el deporte'),
-(3, 'Perseverancia'),
-(4, 'Pacificar un país dividido'),
-(5, 'Pasión por ayudar'),
-(6, 'Superación personal')
+(10, 'Valores en el deporte'),
+(11, 'Perseverancia'),
+(12, 'Pacificar un país dividido'),
+(13, 'Pasión por ayudar'),
+(14, 'Superación personal')
 ;
