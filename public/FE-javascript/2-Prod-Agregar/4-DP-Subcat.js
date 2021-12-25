@@ -1,7 +1,8 @@
 window.addEventListener("load", () => {
-	let categoria = document.querySelector("form select[name='categoria_id']");
-	let subcategorias = document.querySelector("select[name='subcategoria_id']");
+	let categoria = document.querySelector("select[name='categoria_id']");
+	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriasOption = document.querySelectorAll("select[name='subcategoria_id'] option");
+	let RCLVs = document.querySelectorAll(".RCLV");
 
 	// Aplicar cambios en la subcategoría
 	funcionSubcat = () => {
@@ -10,13 +11,49 @@ window.addEventListener("load", () => {
 				? option.classList.remove("ocultar")
 				: option.classList.add("ocultar");
 		}
-		subcategorias.removeAttribute("disabled");
+		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
+	};
+
+	// Aplicar cambios en RCLV
+	funcionRCLV = async () => {
+		if (!subcategoria.value) return;
+		// Averiguar qué RCLV corresponde
+		let {personaje, hecho, valor} = await fetch(
+			"/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value
+		).then((n) => n.json());
+		// Procesar personaje
+		if (personaje) {
+			RCLVs[0].classList.remove("ocultar");
+		} else {
+			RCLVs[0].classList.add("ocultar");
+			document.querySelector("select[name='personaje_historico_id']").value = "";
+		}
+		// Procesar hechos
+		if (hecho) {
+			RCLVs[1].classList.remove("ocultar");
+		} else {
+			RCLVs[1].classList.add("ocultar");
+			document.querySelector("select[name='hecho_historico_id']").value = "";
+		}
+		// Procesar valor
+		if (valor) {
+			RCLVs[2].classList.remove("ocultar");
+		} else {
+			RCLVs[2].classList.add("ocultar");
+			document.querySelector("select[name='valor_id']").value = "";
+		}
 	};
 
 	// Detectar cambios en categorías
-	categoria.value != "" ? funcionSubcat() : subcategorias.setAttribute("disabled", "disabled")
-	categoria.addEventListener("change", () => {
-		subcategorias.value=""
+	categoria.value != "" ? funcionSubcat() : subcategoria.setAttribute("disabled", "disabled");
+	categoria.addEventListener("change", async () => {
+		subcategoria.value = "";
 		funcionSubcat();
+	});
+
+	// Detectar cambios en subcategorías
+	if (subcategoria.value != "") funcionRCLV();
+	subcategoria.addEventListener("change", () => {
+		funcionRCLV();
 	});
 });

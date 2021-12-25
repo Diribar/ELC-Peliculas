@@ -14,14 +14,11 @@ module.exports = {
 		let lectura = await buscar_x_PalClave.search(palabrasClave);
 		return res.json(lectura);
 	},
-
-	// Vista (palabrasClave)
 	validarPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
 		let errores = validarProd.palabrasClave(palabrasClave);
 		return res.json(errores.palabrasClave);
 	},
-
 	// Vista (desambiguar)
 	averiguarColeccion: async (req, res) => {
 		datos = await procesarProd.averiguarColeccion(req.query.TMDB_id);
@@ -40,16 +37,12 @@ module.exports = {
 		);
 		return res.json(datos);
 	},
-
-	// Vista (tipoProducto)
 	averiguarCantTemporadas: async (req, res) => {
 		datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
 			.then((n) => n.dataValues)
 			.then((n) => n.cant_temporadas);
 		return res.json(datos);
 	},
-
-	// Vista (tipoProducto)
 	averiguarCapitulos: async (req, res) => {
 		datos = await BD_especificas.filtrarCapitulos(
 			req.query.coleccion_id,
@@ -57,39 +50,34 @@ module.exports = {
 		).then((n) => n.map((m) => m.capitulo));
 		return res.json(datos);
 	},
-
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
 		errores = validarProd.copiarFA(req.query);
 		return res.json(errores);
 	},
-
-	// Vista (copiarFA)
 	obtenerFA_id: (req, res) => {
 		FA_id = procesarProd.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
-
-	// Vista (copiarFA)
 	obtenerELC_id: async (req, res) => {
 		let {entidad, campo, valor} = req.query;
 		ELC_id = await BD_varias.obtenerELC_id({entidad, campo, valor});
 		return res.json(ELC_id);
 	},
-
 	// Vista (datosDuros)
 	obtenerPaises: async (req, res) => {
 		paises = await BD_varias.obtenerTodos("paises", "nombre");
 		return res.json(paises);
 	},
-
-	// Vista (datosDuros)
 	validarDatosDuros: async (req, res) => {
 		errores = await validarProd.datosDuros(req.query, Object.keys(req.query));
 		return res.json(errores);
 	},
-
 	// Vista (datosPers)
+	obtenerRCLV_subcategorias: async (req, res) => {
+		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id)
+		return res.json(subcategoria);
+	},
 	validarDatosPers: async (req, res) => {
 		errores = await validarProd.datosPers(req.query, Object.keys(req.query));
 		return res.json(errores);

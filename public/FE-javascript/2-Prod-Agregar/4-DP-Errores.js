@@ -7,7 +7,6 @@ window.addEventListener("load", async () => {
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	let links = document.querySelectorAll(".input-error a.link");
-	let statusInicial = true;
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = (i, errores) => {
@@ -48,12 +47,9 @@ window.addEventListener("load", async () => {
 	};
 
 	// Status inicial
-	if (statusInicial) {
-		errores = await buscarErroresEnTodoElForm();
-		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
-		}
-		statusInicial = false;
+	let errores = await buscarErroresEnTodoElForm();
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 	}
 
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no

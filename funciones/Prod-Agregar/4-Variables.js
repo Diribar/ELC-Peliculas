@@ -159,6 +159,7 @@ module.exports = {
 					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
 				],
 				link: "RCLV_personajes_historicos",
+				RCLV: true
 			},
 			{
 				titulo: "Hecho histórico",
@@ -171,6 +172,19 @@ module.exports = {
 					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
 				],
 				link: "RCLV_hechos_historicos",
+				RCLV: true
+			},
+			{
+				titulo: "Valor principal",
+				campo: "valor_id",
+				valores: await BD_varias.obtenerTodos("RCLV_valores", "nombre"),
+				peliculas: true,
+				colecciones: true,
+				mensajes: [
+					"Poné el valor más representativo.",
+					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
+				],
+				RCLV: true
 			},
 		];
 	},

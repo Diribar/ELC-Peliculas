@@ -1,21 +1,13 @@
 <% registro = datosPersSelect.find(n => n.campo == campo) %>
 <% if (registro[dataEntry.entidad]) { %>
-	<section class="label-input flex-row">
+	<section class="label-input flex-row<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
 		<label><%= registro.titulo %></label>
 		<div class="input-error">
 			<!-- Input -->
-			<%= console.log(registro.valores.find(n => n.id == 1)) %>
 			<select name="<%= campo %>" class="input" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
 				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
-				<% if (campo.includes("historico")) { %>
-					<option value="1"
-						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
-					>
-						<%= registro.valores.find(n => n.id == 1).nombre %>
-					</option>
-				<% } %>
-				<% valores= !campo.includes("historico") ? registro.valores : registro.valores.filter(n => n.id != 1) %> 
-				<% for (valor of valores) { %>
+				<% if (campo == "valor_id") { %><option value="1" <% if (dataEntry[campo]==1) { %>selected<% } %>>Ninguno del listado</option><% } %> 
+				<% for (valor of registro.valores) { %>
 					<option value="<%= valor.id %>" 
 						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 						<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
@@ -37,7 +29,7 @@
 			</i>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 			<!-- Link a Relación con la vida -->
-			<% if (campo.includes("historico")) { %>
+			<% if (campo.includes("RCLV")) { %>
 				<a class="link <%= campo %>" title='Link a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fas fa-plus-circle"></i></a>
 			<% } %>
 		</div>
