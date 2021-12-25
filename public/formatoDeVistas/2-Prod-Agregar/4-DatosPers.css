@@ -1,5 +1,4 @@
 /* Encabezado del formulario */
-#dataEntry {min-height: 488px;}
 #dataEntry #titulos {display: flex; justify-content: space-between;}
 #dataEntry #titulos h1 {margin-top: 0;}
 
