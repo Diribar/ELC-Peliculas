@@ -1,15 +1,15 @@
 window.addEventListener("load", () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
-	let subcategoriasOption = document.querySelectorAll("select[name='subcategoria_id'] option");
+	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] opcion");
 	let RCLVs = document.querySelectorAll(".RCLV");
 
 	// Aplicar cambios en la subcategoría
 	funcionSubcat = () => {
-		for (option of subcategoriasOption) {
-			option.className.includes(categoria.value)
-				? option.classList.remove("ocultar")
-				: option.classList.add("ocultar");
+		for (opcion of subcategoriaOpciones) {
+			opcion.className.includes(categoria.value)
+				? opcion.classList.remove("ocultar")
+				: opcion.classList.add("ocultar");
 		}
 		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
 	};
