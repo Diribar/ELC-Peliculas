@@ -1,9 +1,7 @@
 window.addEventListener("load", () => {
 	let categoria = document.querySelector("form select[name='categoria_id']");
-	let subcategorias = document.querySelector("form div#subcategoria_id");
-	let subcategoriasOption = document.querySelectorAll(
-		"form #cuerpo select[name='subcategoria_id'] option"
-	);
+	let subcategorias = document.querySelector("select[name='subcategoria_id']");
+	let subcategoriasOption = document.querySelectorAll("select[name='subcategoria_id'] option");
 
 	// Aplicar cambios en la subcategoría
 	funcionSubcat = () => {
@@ -12,12 +10,13 @@ window.addEventListener("load", () => {
 				? option.classList.remove("ocultar")
 				: option.classList.add("ocultar");
 		}
-		subcategorias.classList.remove("ocultar");
+		subcategorias.removeAttribute("disabled");
 	};
 
 	// Detectar cambios en categorías
-	categoria.value != "" ? funcionSubcat() : "";
+	categoria.value != "" ? funcionSubcat() : subcategorias.setAttribute("disabled", "disabled")
 	categoria.addEventListener("change", () => {
+		subcategorias.value=""
 		funcionSubcat();
 	});
 });

@@ -6,15 +6,6 @@
 			<i id="home-icono" class="fas fa-home scale"></i>
 			<%- include("1-MenuHome") %>
 		</div>
-		<!-- Crear/Menú de Película -->
-		<div class="grupos">
-			<div id="pelis-icono" class="scale">
-				<a href="/producto/agregar/palabras-clave">
-					<i class="fas fa-video"></i>
-					<i id="plus">+</i>
-				</a>
-			</div>
-		</div>
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
 			<i class="fas fa-search scale"></i>
@@ -25,6 +16,22 @@
 				<div id="escribiMas" class="ocultar">Por favor escribí algo más...</div>
 			</div>
 		</div>
+		<!-- Crear de Producto -->
+		<div class="grupos">
+			<div id="crear-prod-icono" class="scale">
+				<a href="/producto/agregar/palabras-clave">
+					<i class="fas fa-video"></i>
+					<i id="plus">+</i>
+				</a>
+			</div>
+		</div>
+		<!-- Menú de Producto -->
+		<div class="<%= locals.urlReferencia.includes("producto/detalle") ? 'grupos' : 'ocultar' %>">
+			<div id="producto-icono" class="scale">
+				<i class="fas fa-film"></i>
+			</div>
+		</div>
+
 	</section>
 	<!-- Título del Encabezado -->
 	<p id="titulo">Evangelicemos la Cultura</p>

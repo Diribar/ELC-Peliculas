@@ -20,7 +20,7 @@ desplegarMenus = (e)=> {
 
 	// Menú Detalle de Películas
 	window.location.href.includes("/peliculas/detalle/")
-		? e.target.matches("#pelis-icono")
+		? e.target.matches("#crear-prod-icono")
 			? document.getElementById("pelis-menu").classList.toggle("ocultar")
 			: document.getElementById("pelis-menu").classList.add("ocultar")
 		: "";

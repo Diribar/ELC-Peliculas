@@ -1,15 +1,14 @@
 TIPO PRODUCTO
-- Hacerlo
-var min = 12,
-    max = 100,
-    select = document.getElementById('selectElementId');
-
-for (var i = min; i<=max; i++){
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.innerHTML = i;
-    select.appendChild(opt);
-}
+- BE-Form:
+    - Campo del "nombre_castellano"
+    - Link para el submit
+- Vista:
+    - Agregar el campo del "nombre_castellano"
+    - Submit a donde corresponda
+    - Ayuda
+        - Temporada: se muestran las temporadas ya en BD, y una más adicional
+        - Capítulos: se muestran los que no existen en nuestra BD
+    - Errores
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
@@ -20,4 +19,4 @@ DESAMBIGUAR
 *******************************************************************************
 
 COPIAR FA: 
-- Para las películas, buscar también en "capítulos" si ya están en BD
+- Para las películas, buscar el FA_id también en "capítulos" si ya están en BD

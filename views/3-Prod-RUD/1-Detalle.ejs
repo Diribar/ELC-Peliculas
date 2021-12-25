@@ -19,22 +19,24 @@
 			</div>
 			<!-- 2. Sinopsis -->
 			<div id="sinopsis"><%= producto.sinopsis %></div>
-			<!-- 3. Adicionales -->
-			<div>
-				<div class="datosAdicionales">
-					<strong>País/es de origen</strong>: <%= paises %>. 
-					<strong>Idioma original</strong>: <%= producto.idioma_original.nombre %>.
-				</div>
-				<div class="datosAdicionales">
-					<strong>Dirección:</strong> <%= producto.direccion %>. 
-					<strong>Guión:</strong> <%= producto.guion %>. 
-					<strong>Música:</strong> <%= producto.musica %>. 
-					<strong>Producción:</strong> <%= producto.produccion %>. 
-				</div>
-				<div class="datosAdicionales">
-					<strong>Actuación:</strong> <%= producto.actuacion %>. 
-				</div>	
+			<!-- País, Idioma, Castellano, Color -->
+			<div class="datosAdicionales">
+				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises %>. 
+				<strong>Idioma original</strong>: <%= producto.idioma_original.nombre %>. 
+				<strong>En castellano:</strong> <%= producto.en_castellano.nombre %>. 
+				<strong>Es a color:</strong> <%= producto.en_color.nombre %>. 
 			</div>
+			<!-- Dirección, Guión, Música, Producción -->
+			<div class="datosAdicionales">
+				<strong>Dirección:</strong> <%= producto.direccion %>. 
+				<strong>Guión:</strong> <%= producto.guion %>. 
+				<strong>Música:</strong> <%= producto.musica %>. 
+				<strong>Producción:</strong> <%= producto.produccion %>. 
+			</div>
+			<!-- Actuación -->
+			<div class="datosAdicionales">
+				<strong>Actuación:</strong> <%= producto.actuacion %>. 
+			</div>	
 			<!-- 4. Capítulos de Colección -->
 		</div>
 		<!-- 5. Botones -->
@@ -58,12 +60,9 @@
 		</div>
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
-			<dt>Público Sugerido:</dt>
-			<dd><%= producto.publico_sugerido.nombre %></dd>
-			<dt>Categoría:</dt>
-			<dd><%= producto.categoria.nombre %></dd>
-			<dt>Sub-categoría:</dt>
-			<dd><%= producto.subcategoria.nombre %></dd>
+			<p><strong>Público Sugerido:</strong> <%= producto.publico_sugerido.nombre %></p>
+			<p><strong>Categoría:</strong> <%= producto.categoria.nombre %></p>
+			<p><strong>Sub-categoría:</strong> <%= producto.subcategoria.nombre %></dd>
 			<% if (producto.personaje_historico_id) { %>
 				<dt>Personaje Histórico:</dt>
 				<dd><%= producto.personaje_historico.nombre %> </dd>
@@ -74,8 +73,6 @@
 			<% } %>
 			<p><strong>Año de estreno:</strong> <%= producto.ano_estreno %></p>
 			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= producto.duracion %> min.</p><% } %>
-			<p><strong>En castellano:</strong> <%= producto.en_castellano.nombre %></p>
-			<p><strong>Es a color:</strong> <%= producto.en_color.nombre %></p>
 			<% if (producto.status_registro_id != 2) { %>
 				<dt>Status de Aprobación:</dt>
 				<dd><%= producto.status_registro.nombre %></dd>
