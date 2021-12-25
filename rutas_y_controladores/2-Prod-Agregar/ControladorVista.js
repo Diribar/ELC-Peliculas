@@ -498,8 +498,8 @@ module.exports = {
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro.dataValues});
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
-		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
+		actualizarRCLV("RCLV_personajes_historicos", registro.personaje_historico_id);
+		actualizarRCLV("RCLV_hechos_historicos", registro.hecho_historico_id);
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "2-Productos");

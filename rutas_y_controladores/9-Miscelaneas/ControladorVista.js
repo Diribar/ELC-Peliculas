@@ -28,9 +28,9 @@ module.exports = {
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 3 Si existe 'req.query', recargar la página
-		return datosPers.entidad_RCLV == "historicos_personajes"
-			? res.redirect("/agregar/historicos_personajes")
-			: res.redirect("/agregar/historicos_hechos");
+		return datosPers.entidad_RCLV == "RCLV_personajes_historicos"
+			? res.redirect("/agregar/RCLV_personajes_historicos")
+			: res.redirect("/agregar/RCLV_hechos_historicos");
 	},
 
 	RCLV_Form: async (req, res) => {
@@ -59,7 +59,7 @@ module.exports = {
 		let meses = await BD_varias.obtenerTodos("meses", "id");
 		let procesos_canonizacion = [];
 		let roles_iglesia = [];
-		if (codigo == "historicos_personajes") {
+		if (codigo == "RCLV_personajes_historicos") {
 			procesos_canonizacion = await BD_varias.obtenerTodos(
 				"procesos_canonizacion",
 				"orden"
@@ -94,7 +94,7 @@ module.exports = {
 		let entidad = datosPers.entidad_RCLV;
 		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		// 2. Generar información
-		if (entidad == "historicos_personajes" && req.body.enProcCan == "0") {
+		if (entidad == "RCLV_personajes_historicos" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}

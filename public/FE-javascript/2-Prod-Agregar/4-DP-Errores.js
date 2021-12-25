@@ -80,10 +80,10 @@ window.addEventListener("load", async () => {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
 			if (links[i].className.includes("personaje")) {
-				entidad_RCLV = "historicos_personajes";
+				entidad_RCLV = "RCLV_personajes_historicos";
 				producto_RCLV = "Personaje Histórico";
 			} else {
-				entidad_RCLV = "historicos_hechos";
+				entidad_RCLV = "RCLV_hechos_historicos";
 				producto_RCLV = "Hecho Histórico";
 			}
 			let url = buscarTodosLosValores();

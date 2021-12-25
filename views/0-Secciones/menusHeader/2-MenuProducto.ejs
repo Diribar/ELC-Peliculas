@@ -1,0 +1,30 @@
+<div id="prod-menu" class="dropdown-content ocultar">
+	<% if (booleanMenuProducto) { %>
+		<% entidad = url.slice(url.indexOf("entidad")+8, url.indexOf("&")) %>
+		<a href="#">Editar la información</a>
+		<hr>
+		<% if (entidad=="peliculas") { %>
+			<a href="#">
+				Convertirla en un 
+				<br>
+				Capítulo de Colección
+			</a>
+		<% } %>
+		<% if (entidad=="capitulos") { %>
+			<a href="#">
+				Convertirlo en Película y
+				<br>
+				quitarlo de la Colección
+			</a>
+		<% } %>
+		<hr>
+		<a href="#">Sugerir dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja</a>
+		<hr>
+		<a href="#">
+			Hacenos un comentario
+			<br>
+			privado sobre est<%= (entidad=="capitulos" ? "e capítulo" : "a " + (entidad=="peliculas" ? "película" : "colección")) %>
+		</a>
+
+	<% } %>
+</div>

@@ -201,8 +201,8 @@ module.exports = {
 				: "";
 		errores.sinopsis = !datos.sinopsis
 			? cartelCampoVacio
-			: longitud(datos.sinopsis, 15, 1000)
-			? longitud(datos.sinopsis, 15, 1000)
+			: longitud(datos.sinopsis, 15, 800)
+			? longitud(datos.sinopsis, 15, 800)
 			: castellano(datos.sinopsis)
 			? cartelCastellano
 			: "";
@@ -254,32 +254,6 @@ module.exports = {
 				: !datos.publico_sugerido_id
 				? cartelSelectVacio
 				: "";
-		// Relación con la vida
-		if (
-			!datos.personaje_historico_id &&
-			!datos.hecho_historico_id &&
-			(datos.subcategoria_id == 4 || datos.subcategoria_id == 5 || datos.subcategoria_id == 9)
-		) {
-			errores.personaje_historico_id = relacionConLaVidaVacio;
-			errores.hecho_historico_id = relacionConLaVidaVacio;
-		}
-		// Links gratuitos
-		errores.link_trailer =
-			camposAVerificar.indexOf("link_trailer") == -1
-				? ""
-				: !datos.link_trailer
-				? ""
-				: !validarFuente(datos.link_trailer)
-				? "Debe ser de una fuente confiable"
-				: "";
-		errores.link_pelicula =
-			camposAVerificar.indexOf("link_pelicula") == -1
-				? ""
-				: !datos.link_pelicula
-				? ""
-				: !validarFuente(datos.link_pelicula)
-				? "Debe ser de una fuente confiable"
-				: "";
 		// Tu calificación
 		errores.fe_valores_id =
 			camposAVerificar.indexOf("fe_valores_id") == -1
@@ -300,6 +274,43 @@ module.exports = {
 				? cartelSelectVacio
 				: "";
 		errores.hay = hayErrores(errores);
+		// Relación con la vida
+		if (
+			!datos.personaje_historico_id &&
+			!datos.hecho_historico_id &&
+			(datos.subcategoria_id == 4 || datos.subcategoria_id == 5 || datos.subcategoria_id == 9)
+		) {
+			errores.personaje_historico_id = relacionConLaVidaVacio;
+			errores.hecho_historico_id = relacionConLaVidaVacio;
+		}
+
+		errores.personaje_historico_id =
+			camposAVerificar.indexOf("calidad_tecnica_id") == -1
+				? ""
+				// Si no se eligió una opción...
+				: !datos.personaje_historico_id
+				? cartelSelectVacio
+				// Si se eligió "Ninguno" y la subcategoría es alguna de éstas, avisar:
+					// - Hagiografía
+					// -  
+				: "";
+		// Links gratuitos
+		errores.link_trailer =
+			camposAVerificar.indexOf("link_trailer") == -1
+				? ""
+				: !datos.link_trailer
+				? ""
+				: !validarFuente(datos.link_trailer)
+				? "Debe ser de una fuente confiable"
+				: "";
+		errores.link_pelicula =
+			camposAVerificar.indexOf("link_pelicula") == -1
+				? ""
+				: !datos.link_pelicula
+				? ""
+				: !validarFuente(datos.link_pelicula)
+				? "Debe ser de una fuente confiable"
+				: "";
 		return errores;
 	},
 };
@@ -316,7 +327,7 @@ let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"
 		: dato.length > largo
-		? "El contenido debe ser más corto"
+		? ("El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + ".")
 		: "";
 };
 let castellano = (dato) => {

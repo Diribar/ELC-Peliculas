@@ -25,7 +25,7 @@
 			</div>
 			<!-- Valores del campo -->
 			<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-			<% if (codigo == "historicos_personajes") { %>
+			<% if (codigo == "RCLV_personajes_historicos") { %>
 				<!-- Genero -->
 				<div id="genero" class="flex-row">
 					<h4>Género:</h4>
@@ -123,7 +123,7 @@
 		</div>
 	</section>
 	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
-	<% if (codigo == "historicos_personajes") { %>
+	<% if (codigo == "RCLV_personajes_historicos") { %>
 		<section id="RCLI" class="flex-row space-between">
 			<!-- ¿En proceso de canonización? -->
 			<div class="flex-col">
