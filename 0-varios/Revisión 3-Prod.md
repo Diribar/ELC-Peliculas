@@ -14,11 +14,13 @@
 	- Status 1-CREADA:
 		- Que el producto sea afín a nuestro perfil. Se tiene acceso a los links de los videos
 		- Recién después, se puede acceder a lo siguiente:
-			- Los campos de DD que tienen diferencias con la fuente API
-			- Los campos vacíos (ej: TMDB_id, FA_id, IMDB_id, links)
-			- Datos generales
-			- RCLV
-			- Los links a videos
+			- Los campos ID vacíos (ej: TMDB_id, FA_id, IMDB_id)
+			- El tipo de producto a partir del API de TMDB_id
+			- DD: los campos que tienen diferencias con la fuente API
+			- DP: 
+				- Datos generales
+				- RCLV
+				- Los links a videos
 	- Status 2-EDITADA
 		- Sólo los campos cambiados respecto a la versión vigente
 	- Status 4-SUGERIDA PARA BORRAR
