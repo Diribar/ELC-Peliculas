@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 			valor: datosTerminaste[datosTerminaste.fuente + "_id"],
 		};
 		ELC_id = await BD_varias.obtenerELC_id(datos);
-		ruta = "/producto/agregar/ya-en-bd/?entidad=" + datosTerminaste.entidad + "valor=" + ELC_id;
+		ruta = "/producto/agregar/ya-en-bd/?entidad=" + datosTerminaste.entidad + "&valor=" + ELC_id;
 		if (ELC_id) return res.redirect(ruta);
 	}
 	next();

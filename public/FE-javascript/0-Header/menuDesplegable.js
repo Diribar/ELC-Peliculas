@@ -24,10 +24,10 @@ desplegarMenus = (e)=> {
 
 	// Menú de Producto
 	e.target.matches("#prod-icono") ||
-	e.target.matches("#prod-menu") ||
-	e.target.matches("#prod-menu *")
-		? document.getElementById("prod-menu").classList.remove("ocultar")
-		: document.getElementById("prod-menu").classList.add("ocultar")
+	e.target.matches("#producto-menu") ||
+	e.target.matches("#producto-menu *")
+		? document.getElementById("producto-menu").classList.remove("ocultar")
+		: document.getElementById("producto-menu").classList.add("ocultar")
 
 	// Menú de usuario
 	e.target.matches("#usuario-icono *") ||

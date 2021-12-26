@@ -1,4 +1,4 @@
-Ocultar los id="PC" y "PP" en vocacion
+Ocultar los id="PC" y "PP" en ROL
 
 Cartel de contraseña enviada por e-mail
 Cartel de mail enviado
@@ -12,8 +12,15 @@ Avatar circular
 - Perennes: Estos datos se deben cargar en forma definitiva, no son editables. Por favor asegúrese de ingresar la información correcta.
 
 Menú de usuarios
-- Productos pendientes de aprobación
 - Interés en ciertos productos
 	- Prefiero que no me la recomienden
 	- Ya la vi
 	- Recordame que quiero verla
+- Mis estadísticas
+	Películas vistas (por rubro y subrubro, descartando las que no me interesan)
+- Productos agregados por mí
+	- Pendientes de aprobación
+	- Aprobadas
+- RCLV agregado por mí
+	- Pendientes de aprobación
+	- Aprobadas
