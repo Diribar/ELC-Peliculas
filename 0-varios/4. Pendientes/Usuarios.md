@@ -19,8 +19,12 @@ Menú de usuarios
 - Mis estadísticas
 	Películas vistas (por rubro y subrubro, descartando las que no me interesan)
 - Productos agregados por mí
-	- Pendientes de aprobación
+	- Creados
 	- Aprobadas
+	- Editados
+	- Solicitados borrar
+	- Borrados
 - RCLV agregado por mí
-	- Pendientes de aprobación
-	- Aprobadas
+	- Creados
+	- Aprobados
+	- Borrados
