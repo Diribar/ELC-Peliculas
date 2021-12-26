@@ -16,7 +16,7 @@
 		- Recién después, se puede acceder a lo siguiente:
 			- Los campos ID vacíos (ej: TMDB_id, FA_id, IMDB_id)
 			- El tipo de producto a partir del API de TMDB_id
-			- DD: los campos que tienen diferencias con la fuente API
+			- DD: los campos que tienen diferencias con la fuente TMDB
 			- DP: 
 				- Datos generales
 				- RCLV
