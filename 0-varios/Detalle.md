@@ -1,0 +1,40 @@
+Vista:
+- Centrar verticalmente la sección 'datosLargos'
+- Cuando haya algún campo vacío,
+	- Cartel diciendo: "Necesita edición para completarle datos"
+	- Ubicación: a continuación de "Detalle del Producto"
+	- Fondo rojo
+	- Letras gris claro
+- Gráfico de barras horizontales
+	- Para capítulos, mostrarlo sólo si tiene calificaciones
+	- Explicar las siglas de las aptitudes con un '?'
+- Gráfico de barras horizontales: generar la info en el FE
+- Agregar "Ir a:"
+	- Colecciones:
+		- Temporada
+		- Capítulo (una vez elegida la temporada, menú desplegable c/link a los capítulos)
+	- Capítulos:
+		- Anterior
+		- Siguiente
+
+RUTINAS:
+- Editar
+	- Si está "capturado" --> menú pop-up avisándolo
+	- Else --> link a la vista editar
+- Ver el trailer (menú pop-up)
+- Ver la película / el capítulo (link a externo)
+- Calificala (menú pop-up)
+- Interés en el producto (menú pop-up)
+- Comentarios (ver y hacer) --> link a Comentarios
+- Sugerir borrarla (menú pop-up)
+- Convertir en un Capítulo de Colección (sólo Pelis) --> Reconvertir:
+	- Link a Tipo de Prod.
+	- Copiar los datos en un registro de capítulos
+	- Actualizar el registro de la película como borrado
+- Quitar este Capítulo de la Colección (sólo Capítulos) --> Reconvertir:
+	- Verificar que los datos mandatorios estén completos
+		- Sí, continuar
+		- No, cartel de aviso
+	- Continuar:
+		- Copiar los datos en un registro de películas
+		- Actualizar el registro del capítulo como borrado

@@ -39,10 +39,10 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
+let rutaUsuarios =    require("./rutas_y_controladores/1-Usuarios/Rutas");
 let rutaProdAgregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
 let rutaProdDetalle = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
-let rutaProductos = require("./rutas_y_controladores/4-Productos/Rutas");
+let rutaProductos =   require("./rutas_y_controladores/4-Productos/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProdAgregar);

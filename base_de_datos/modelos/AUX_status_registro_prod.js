@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "status_registro";
 	const columns = {
-		nombre: {type: dt.STRING(10)},
+		nombre: {type: dt.STRING(22)},
 	};
 	const config = {
 		tableName: "status_registro",

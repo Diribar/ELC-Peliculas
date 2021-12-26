@@ -46,11 +46,14 @@
 				<button>Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= titulo %></button>
 			<% } else { %>
 				<button>Temporadas</button>
-			<% } %> 
-			<button>Calificala</button>
+			<% } %>
+			<button>Califica<%= (entidad=="capitulos" ? "lo" : "la") %></button>
+			<button>
+				Mi interés en
+				<br>
+				<%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>
+			</button>
 			<button>Comentarios</button>
-			<button>Interés Personal</button>
-			<button>Editar</button>
 		</div>
 	</section>
 	<section id="datosBreves">

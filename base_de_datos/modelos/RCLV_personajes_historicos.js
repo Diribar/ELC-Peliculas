@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "historicos_personajes";
+	const alias = "RCLV_personajes_historicos";
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
@@ -25,7 +25,7 @@ module.exports = (sequelize, dt) => {
 		capturada_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "historicos_personajes",
+		tableName: "RCLV_personajes_historicos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

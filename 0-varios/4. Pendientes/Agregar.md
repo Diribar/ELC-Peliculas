@@ -1,3 +1,10 @@
+DATOS PERS
+- RCLV
+    - Agregar campo "valor"
+    - Mostrar solamente los campos acordes con la subcategoría
+    - En errores, verificar que esté respondido el campo correspondiente
+        - 
+
 TIPO PRODUCTO
 - BE-Form:
     - Campo del "nombre_castellano"

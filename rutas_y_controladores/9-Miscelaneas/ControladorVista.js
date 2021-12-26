@@ -28,9 +28,9 @@ module.exports = {
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 3 Si existe 'req.query', recargar la página
-		return datosPers.entidad_RCLV == "historicos_personajes"
-			? res.redirect("/agregar/historicos_personajes")
-			: res.redirect("/agregar/historicos_hechos");
+		return datosPers.entidad_RCLV == "RCLV_personajes_historicos"
+			? res.redirect("/agregar/RCLV_personajes_historicos")
+			: res.redirect("/agregar/RCLV_hechos_historicos");
 	},
 
 	RCLV_Form: async (req, res) => {
@@ -46,6 +46,7 @@ module.exports = {
 		// 2. Tema y Código
 		tema = "miscelaneas";
 		codigo = datosPers.entidad_RCLV;
+		console.log(codigo);
 		// 3. Data-entry
 		datosRCLV = req.session[codigo]
 			? req.session[codigo]
@@ -59,7 +60,7 @@ module.exports = {
 		let meses = await BD_varias.obtenerTodos("meses", "id");
 		let procesos_canonizacion = [];
 		let roles_iglesia = [];
-		if (codigo == "historicos_personajes") {
+		if (codigo == "RCLV_personajes_historicos") {
 			procesos_canonizacion = await BD_varias.obtenerTodos(
 				"procesos_canonizacion",
 				"orden"
@@ -94,7 +95,7 @@ module.exports = {
 		let entidad = datosPers.entidad_RCLV;
 		if (!req.session.datosPers) req.session.datosPers = datosPers;
 		// 2. Generar información
-		if (entidad == "historicos_personajes" && req.body.enProcCan == "0") {
+		if (entidad == "RCLV_personajes_historicos" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}
@@ -123,7 +124,7 @@ module.exports = {
 		let {id} = await BD_varias.agregarRegistro(datos);
 		//return res.send(id+"");
 		// 7. Guardar el id en 'Datos Personalizados'
-		campo = entidad.slice(11, -1) + "_historico_id";
+		campo = entidad.includes("personaje") ? "personaje_historico_id" : "hecho_historico_id";
 		req.session.datosPers[campo] = id;
 		res.cookie(datosPers[campo], id, {maxAge: 24 * 60 * 60 * 1000});
 		// 8. Borrar session y cookies innecesarios

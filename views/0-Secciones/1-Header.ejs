@@ -1,7 +1,7 @@
 <header>
 	<!-- Home y Agregar -->
 	<section>
-		<!-- Home -->
+		<!-- Menú de Home -->
 		<div class="grupos">
 			<i id="home-icono" class="fas fa-home scale"></i>
 			<%- include("1-MenuHome") %>
@@ -26,10 +26,11 @@
 			</div>
 		</div>
 		<!-- Menú de Producto -->
-		<div class="<%= locals.urlReferencia.includes("producto/detalle") ? 'grupos' : 'ocultar' %>">
-			<div id="producto-icono" class="scale">
-				<i class="fas fa-film"></i>
-			</div>
+		<% url = locals.urlReferencia %> 
+		<% booleanMenuProducto = url.includes("producto/") && !url.includes("producto/agregar") %>
+		<div class="<%= booleanMenuProducto ? 'grupos' : 'ocultar' %>">
+			<i id="prod-icono" class="fas fa-film scale"></i>
+			<%- include("2-MenuProducto") %>
 		</div>
 
 	</section>
@@ -42,6 +43,6 @@
 			<audio src="/audio/Música-de-fondo.mp3"></audio>
 		</div>
 		<!-- Usuario -->
-		<div class="grupos"><%- include("4-MenuUsuario") %></div>
+		<div class="grupos"><%- include("3-MenuUsuario") %></div>
 	</section>
 </header>

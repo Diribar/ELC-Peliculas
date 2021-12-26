@@ -151,26 +151,40 @@ module.exports = {
 			{
 				titulo: "Personaje histórico",
 				campo: "personaje_historico_id",
-				valores: await BD_varias.obtenerTodos("historicos_personajes", "nombre"),
+				valores: await BD_varias.obtenerTodos("RCLV_personajes_historicos", "nombre"),
 				peliculas: true,
 				colecciones: true,
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
 				],
-				link: "historicos_personajes",
+				link: "RCLV_personajes_historicos",
+				RCLV: true
 			},
 			{
 				titulo: "Hecho histórico",
 				campo: "hecho_historico_id",
-				valores: await BD_varias.obtenerTodos("historicos_hechos", "nombre"),
+				valores: await BD_varias.obtenerTodos("RCLV_hechos_historicos", "nombre"),
 				peliculas: true,
 				colecciones: true,
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
 				],
-				link: "historicos_hechos",
+				link: "RCLV_hechos_historicos",
+				RCLV: true
+			},
+			{
+				titulo: "Valor principal",
+				campo: "valor_id",
+				valores: await BD_varias.obtenerTodos("RCLV_valores", "nombre"),
+				peliculas: true,
+				colecciones: true,
+				mensajes: [
+					"Poné el valor más representativo.",
+					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
+				],
+				RCLV: true
 			},
 		];
 	},

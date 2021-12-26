@@ -1,19 +1,20 @@
 <% registro = datosPersSelect.find(n => n.campo == campo) %>
 <% if (registro[dataEntry.entidad]) { %>
-	<section class="label-input flex-row">
+	<section class="label-input flex-row<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
 		<label><%= registro.titulo %></label>
 		<div class="input-error">
 			<!-- Input -->
 			<select name="<%= campo %>" class="input" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
-				<option value="" class="<% if (!campo.includes("historico")) { %>ocultar<% } %>" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+				<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+				<% if (campo == "valor_id") { %><option value="1" <% if (dataEntry[campo]==1) { %>selected<% } %>>Ninguno del listado</option><% } %> 
 				<% for (valor of registro.valores) { %>
-				<option value="<%= valor.id %>" 
-					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
-					<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
-					<% if (dataEntry.entidad == "peliculas" && (campo == "en_castellano_id" || campo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
-				>
-					<%= valor.nombre %>
-				</option>
+					<option value="<%= valor.id %>" 
+						<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
+						<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
+						<% if (dataEntry.entidad == "peliculas" && (campo == "en_castellano_id" || campo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
+					>
+						<%= valor.nombre %>
+					</option>
 				<% } %>
 			</select>
 			<!-- Ayuda -->
@@ -28,7 +29,7 @@
 			</i>
 			<i class="fas fa-check-circle ocultar" style="display: none;"></i>
 			<!-- Link a Relación con la vida -->
-			<% if (campo.includes("historico")) { %>
+			<% if (registro.RCLV) { %>
 				<a class="link <%= campo %>" title='Link a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fas fa-plus-circle"></i></a>
 			<% } %>
 		</div>

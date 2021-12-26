@@ -19,10 +19,10 @@ router.get("/nosotros", vista.nosotros);
 
 // Controladores de vistas - Relación con la vida
 router.get("/agregar/relacion-vida", usuarios, vista.RCLV);
-router.get("/agregar/historicos_personajes", usuarios, vista.RCLV_Form);
-router.get("/agregar/historicos_hechos", usuarios, vista.RCLV_Form);
-router.post("/agregar/historicos_personajes", usuarios, vista.RCLV_Grabar);
-router.post("/agregar/historicos_hechos", usuarios, vista.RCLV_Grabar);
+router.get("/agregar/RCLV_personajes_historicos", usuarios, vista.RCLV_Form);
+router.get("/agregar/RCLV_hechos_historicos", usuarios, vista.RCLV_Form);
+router.post("/agregar/RCLV_personajes_historicos", usuarios, vista.RCLV_Grabar);
+router.post("/agregar/RCLV_hechos_historicos", usuarios, vista.RCLV_Grabar);
 
 // Exportarlo **********************************************
 module.exports = router;

@@ -1,5 +1,6 @@
 // ************ Requires ************
 let procesarProd = require("./2-Procesar");
+let BD_varias = require("../BD/varias");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -201,8 +202,8 @@ module.exports = {
 				: "";
 		errores.sinopsis = !datos.sinopsis
 			? cartelCampoVacio
-			: longitud(datos.sinopsis, 15, 1000)
-			? longitud(datos.sinopsis, 15, 1000)
+			: longitud(datos.sinopsis, 15, 800)
+			? longitud(datos.sinopsis, 15, 800)
 			: castellano(datos.sinopsis)
 			? cartelCastellano
 			: "";
@@ -216,7 +217,7 @@ module.exports = {
 	},
 
 	// ControllerAPI (validarDatosPers)
-	datosPers: (datos, camposDP) => {
+	datosPers: async (datos, camposDP) => {
 		// Averiguar cuáles son los campos a verificar
 		camposAVerificar = datos.entidad
 			? camposDP.filter((n) => n[datos.entidad]).map((n) => n.campo)
@@ -254,32 +255,6 @@ module.exports = {
 				: !datos.publico_sugerido_id
 				? cartelSelectVacio
 				: "";
-		// Relación con la vida
-		if (
-			!datos.personaje_historico_id &&
-			!datos.hecho_historico_id &&
-			(datos.subcategoria_id == 4 || datos.subcategoria_id == 5 || datos.subcategoria_id == 9)
-		) {
-			errores.personaje_historico_id = relacionConLaVidaVacio;
-			errores.hecho_historico_id = relacionConLaVidaVacio;
-		}
-		// Links gratuitos
-		errores.link_trailer =
-			camposAVerificar.indexOf("link_trailer") == -1
-				? ""
-				: !datos.link_trailer
-				? ""
-				: !validarFuente(datos.link_trailer)
-				? "Debe ser de una fuente confiable"
-				: "";
-		errores.link_pelicula =
-			camposAVerificar.indexOf("link_pelicula") == -1
-				? ""
-				: !datos.link_pelicula
-				? ""
-				: !validarFuente(datos.link_pelicula)
-				? "Debe ser de una fuente confiable"
-				: "";
 		// Tu calificación
 		errores.fe_valores_id =
 			camposAVerificar.indexOf("fe_valores_id") == -1
@@ -299,7 +274,55 @@ module.exports = {
 				: !datos.calidad_tecnica_id
 				? cartelSelectVacio
 				: "";
+		// Relación con la vida
+		if (datos.subcategoria_id != "") {
+			// Obtener el registro de la subcategoría
+			let subcategoria = await BD_varias.obtenerPorParametro(
+				"subcategorias",
+				"id",
+				datos.subcategoria_id
+			);
+			// Revisar atributos
+			errores.personaje_historico_id =
+				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
+				camposAVerificar.indexOf("personaje_historico_id") == -1 || !subcategoria.personaje
+					? ""
+					: !datos.personaje_historico_id
+					? cartelSelectVacio
+					: "";
+			errores.hecho_historico_id =
+				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
+				camposAVerificar.indexOf("hecho_historico_id") == -1 || !subcategoria.hecho
+					? ""
+					: !datos.hecho_historico_id
+					? cartelSelectVacio
+					: "";
+			errores.valor_id =
+				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
+				camposAVerificar.indexOf("valor_id") == -1 || !subcategoria.valor
+					? ""
+					: !datos.valor_id
+					? cartelSelectVacio
+					: "";
+		}
 		errores.hay = hayErrores(errores);
+		// Links gratuitos
+		errores.link_trailer =
+			camposAVerificar.indexOf("link_trailer") == -1
+				? ""
+				: !datos.link_trailer
+				? ""
+				: !validarFuente(datos.link_trailer)
+				? "Debe ser de una fuente confiable"
+				: "";
+		errores.link_pelicula =
+			camposAVerificar.indexOf("link_pelicula") == -1
+				? ""
+				: !datos.link_pelicula
+				? ""
+				: !validarFuente(datos.link_pelicula)
+				? "Debe ser de una fuente confiable"
+				: "";
 		return errores;
 	},
 };
@@ -316,7 +339,11 @@ let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"
 		: dato.length > largo
-		? "El contenido debe ser más corto"
+		? "El contenido debe ser más corto. Tiene " +
+		  dato.length +
+		  " caracteres, el límite es " +
+		  largo +
+		  "."
 		: "";
 };
 let castellano = (dato) => {

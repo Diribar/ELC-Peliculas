@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	// Campos de POSIBLES DUPLICADOS
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
-	if (entidad == "historicos_personajes") {
+	if (entidad == "RCLV_personajes_historicos") {
 		santosanta = document.querySelector("#dataEntry #santosanta");
 		ocultar = document.querySelector("#dataEntry #ocultar");
 		enProcCan = document.querySelectorAll("input[name='enProcCan']");
@@ -59,7 +59,7 @@ window.addEventListener("load", async () => {
 
 		// RCLI ******************************************
 		if (
-			entidad == "historicos_personajes" &&
+			entidad == "RCLV_personajes_historicos" &&
 			(campo == "enProcCan" ||
 				campo == "proceso_canonizacion_id" ||
 				campo == "rol_iglesia_id")
@@ -74,7 +74,7 @@ window.addEventListener("load", async () => {
 	let feedback = (OK, errores) => {
 		// Definir las variables
 		let bloques = ["nombre", "fecha", "duplicados"];
-		if (entidad == "historicos_personajes") bloques.push("RCLI");
+		if (entidad == "RCLV_personajes_historicos") bloques.push("RCLI");
 
 		// Rutina
 		for (i = 0; i < bloques.length; i++) {
@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
 		if (OK.nombre) {
 			wiki.href = url_wiki + nombre.value;
 			wiki.classList.remove("ocultar");
-			if (entidad == "historicos_personajes" && enProcCan[0].checked) {
+			if (entidad == "RCLV_personajes_historicos" && enProcCan[0].checked) {
 				santopedia.href = url_santopedia + nombre.value;
 				santopedia.classList.remove("ocultar");
 			} else santopedia.classList.add("ocultar");
@@ -129,7 +129,7 @@ window.addEventListener("load", async () => {
 		url = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
 		//OK.nombre = !errores.nombre ? true : false;
-		if (entidad == "historicos_personajes" && !errores.nombre) {
+		if (entidad == "RCLV_personajes_historicos" && !errores.nombre) {
 			url = "&genero=" + (genero[0].checked ? "V" : genero[1].checked ? "M" : "");
 			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
 		}
@@ -184,7 +184,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionRCLI = async () => {
-		if (entidad != "historicos_personajes") return;
+		if (entidad != "RCLV_personajes_historicos") return;
 		// Ocultar / mostrar lo referido al status y género
 		enProcCan[0].checked
 			? ocultar.classList.remove("invisible")
@@ -205,7 +205,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionGenero = () => {
-		if (entidad != "historicos_personajes") return;
+		if (entidad != "RCLV_personajes_historicos") return;
 		// Definir variables
 		generoElegido = genero[0].checked
 			? genero[0].value
@@ -317,7 +317,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Status inicial
-	if (entidad == "historicos_personajes") {
+	if (entidad == "RCLV_personajes_historicos") {
 		funcionGenero();
 		if (enProcCan[0].checked) ocultar.classList.remove("invisible");
 		[OK, errores] = await funcionRCLI();

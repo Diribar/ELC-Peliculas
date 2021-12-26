@@ -12,20 +12,25 @@ let upload = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
-// Validar campos vs. sintaxis
-router.get("/api/validar-palabras-clave", API.validarPalabrasClave);
-router.get("/api/validar-copiar-fa", API.validarCopiarFA);
-router.get("/api/validar-datos-duros", API.validarDatosDuros);
-router.get("/api/validar-datos-pers", API.validarDatosPers);
-
-// Temas generales de APIs
+// Temas de Palabras Clave
 router.get("/api/PC-cant-prod", API.cantProductos);
+router.get("/api/validar-palabras-clave", API.validarPalabrasClave);
+// Temas de Desambiguar
 router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
+// Temas de Tipo de Producto
 router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
 router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
 router.get("/api/TP-averiguar-capitulos", API.averiguarCapitulos);
+// Temas de Copiar FA
 router.get("/api/FA-obtener-fa-id", API.obtenerFA_id);
 router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
+router.get("/api/validar-copiar-fa", API.validarCopiarFA);
+// Temas de Datos Duros
+router.get("/api/validar-datos-duros", API.validarDatosDuros);
+// Temas de Datos Personalizados
+router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
+router.get("/api/validar-datos-pers", API.validarDatosPers);
+// Temas generales de APIs
 router.get("/api/DD-paises", API.obtenerPaises);
 
 // Controladores de vistas de "Agregar Productos"

@@ -386,27 +386,28 @@ module.exports = {
 	},
 
 	datosPersGuardar: async (req, res) => {
-		// 1.1. Si se perdió la info anterior, volver a esa instancia
+		// 1. Si se perdió la info anterior, volver a esa instancia
 		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("/producto/agregar/datos-duros");
-		// 1.2. Sumar el req.body a lo que ya se tenía
+		// 2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
-		// 1.3. Si no se guardaron datos de RCLV, se quitan del dataEntry para evitar conflicto con la BD
-		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
-		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
-		// 1.4. Guardar el data entry en session y cookie
+		// 4. Guardar el data entry en session y cookie
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
-		// 2.1. Averiguar si hay errores de validación
+		// 5. Averiguar si hay errores de validación
 		camposDP = [...(await variables.datosPersSelect()), ...variables.datosPersInput()];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
-		// 2.2. Si hay errores de validación, redireccionar
+		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.erroresDP = errores;
 			return res.redirect("/producto/agregar/datos-personalizados");
 		}
-		// 3. Si no hay errores, continuar
-		// Obtener la calificación
+		// Si no hay errores, continuar
+		// 7. Si no se guardaron datos de RCLV, se quitan del dataEntry para evitar conflicto con la BD
+		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
+		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
+		if (!datosPers.valor_id || datosPers.valor_id == 1) delete datosPers.valor_id;
+		// 8. Obtener la calificación
 		fe_valores = await BD_varias.obtenerPorParametro(
 			"fe_valores",
 			"id",
@@ -423,7 +424,7 @@ module.exports = {
 			datosPers.calidad_tecnica_id
 		).then((n) => n.valor);
 		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-		// Preparar la info para el siguiente paso
+		// 9. Preparar la info para el siguiente paso
 		req.session.confirma = {
 			...req.session.datosPers,
 			fe_valores,
@@ -435,7 +436,7 @@ module.exports = {
 		res.cookie("confirma", req.session.confirma, {
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		//Redireccionar a la siguiente instancia
+		// 10. Redireccionar a la siguiente instancia
 		req.session.erroresDP = false;
 		return res.redirect("/producto/agregar/confirma");
 	},
@@ -498,8 +499,8 @@ module.exports = {
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro.dataValues});
 		}
 		// Actualizar "cantProductos" en "Relación con la vida"
-		actualizarRCLV("historicos_personajes", registro.personaje_historico_id);
-		actualizarRCLV("historicos_hechos", registro.hecho_historico_id);
+		actualizarRCLV("RCLV_personajes_historicos", registro.personaje_historico_id);
+		actualizarRCLV("RCLV_hechos_historicos", registro.hecho_historico_id);
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "2-Productos");
@@ -565,7 +566,7 @@ let funcDatosTerminaste = (datos) => {
 		[datos.fuente + "_id"]: datos[datos.fuente + "_id"],
 		nombre_castellano: datos.nombre_castellano,
 	};
-	if (datosClave.entidad == "capitulos") datosClave.coleccion_id = datos.coleccion_id
+	if (datosClave.entidad == "capitulos") datosClave.coleccion_id = datos.coleccion_id;
 	if (datos.id) datosClave.id = datos.id;
 	return datosClave;
 };
