@@ -5,3 +5,11 @@ header section .grupos .dropdown-content {padding: 4px 0; border-radius: 10px; b
 header section .grupos .dropdown-content a {padding: 4px 16px; display: block;}
 header section .grupos .dropdown-content .fas,
 header section .grupos .dropdown-content .far {color: inherit; font-size: inherit;}
+
+/* Íconos que acompañan al menú */
+header #usuario-menu .fas,
+header #producto-menu .fas {font-size: inherit; color: inherit; font-weight: bold; margin-right: 10px;}
+
+/* Específico del Menú de Usuario */
+header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}
+header #usuario-menu {right: 30px;}

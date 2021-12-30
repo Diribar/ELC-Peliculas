@@ -1,6 +1,4 @@
-Favoritas
 Interés (Para ver/Ya la vi/Descartadas)
-Creada por mí
 
 Época de estreno
 País de origen
@@ -8,10 +6,12 @@ Color
 Público Recomendado
 Categoria
 Subcategoría
-Colección
+Película / Colección / Capítulo
 Dirección
 Actuación
 Música
 Producción
 Personaje Histórico
 Hecho Histórico
+Valor
+Rol en la Iglesia

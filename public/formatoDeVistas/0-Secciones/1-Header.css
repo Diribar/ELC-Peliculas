@@ -22,6 +22,3 @@ header #usuario-icono {border-radius: 50%; overflow: hidden; }
 header #usuario-icono #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
 header #usuario-icono #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
 header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
-header #usuario-menu {right: 30px;}
-header #usuario-menu .fas {font-size: inherit; color: -webkit-link; font-weight: bold; margin-right: 10px;}
-header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}

@@ -1,0 +1,3 @@
+- Revisa qué está disponible para revisar
+	- Orden FIFO
+	- Sólo permite elegir de entre el TOP 5 de productos, que no tengan un RCLV anterior

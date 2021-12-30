@@ -1,29 +1,49 @@
-<div id="prod-menu" class="dropdown-content ocultar">
+<div id="producto-menu" class="dropdown-content ocultar">
 	<% if (booleanMenuProducto) { %>
-		<% entidad = url.slice(url.indexOf("entidad")+8, url.indexOf("&")) %>
-		<a href="#">Editar la información</a>
-		<hr>
+		<% entidad = url.slice(url.indexOf("entidad") + 8, url.indexOf("&")) %>
+		<% if (!url.includes("producto/editar")) { %>
+			<a href="#"><i class="fas fa-edit"></i>Editá la información</a>
+			<hr>
+		<% } %> 
 		<% if (entidad=="peliculas") { %>
 			<a href="#">
-				Convertirla en un 
-				<br>
-				Capítulo de Colección
+				<div class="flex-row">
+					<i class="fas fa-file-download"></i>
+					<div>
+						Convetila en un 
+						<br>
+						Capítulo de Colección
+					</div>
+				</div>
 			</a>
 		<% } %>
 		<% if (entidad=="capitulos") { %>
 			<a href="#">
-				Convertirlo en Película y
-				<br>
-				quitarlo de la Colección
+				<div class="flex-row">
+					<i class="fas fa-file-upload"></i>
+					<div>
+						Convertirlo en Película y
+						<br>
+						quitarlo de la Colección
+					</div>
+				</div>
 			</a>
 		<% } %>
 		<hr>
-		<a href="#">Sugerir dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja</a>
+		<a href="#">
+			<i class="fas fa-trash-alt"></i>
+			Sugerir dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
+		</a>
 		<hr>
 		<a href="#">
-			Hacenos un comentario
-			<br>
-			privado sobre est<%= (entidad=="capitulos" ? "e capítulo" : "a " + (entidad=="peliculas" ? "película" : "colección")) %>
+			<div class="flex-row">
+				<i class="fas fa-envelope"></i>
+				<div>
+					Hacenos un comentario
+					<br>
+					privado sobre est<%= (entidad=="capitulos" ? "e capítulo" : "a " + (entidad=="peliculas" ? "película" : "colección")) %>
+				</div>
+			</div>
 		</a>
 
 	<% } %>
