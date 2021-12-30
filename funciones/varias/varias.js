@@ -9,7 +9,7 @@ module.exports = {
 		let url = req.originalUrl;
 		if (url.indexOf("/usuarios/") == -1 && url.indexOf("/api/") == -1) req.session.urlReferencia = url;
 		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
-		console.log(res.locals.urlReferencia);
+		// console.log(res.locals.urlReferencia);
 	},
 
 	enviarMail: async (asunto, mail, comentario) => {
