@@ -23,6 +23,13 @@ module.exports = {
 					// Está capturado por mí hace menos de 1 hora o 
 					// Está capturado por otra persona hace más de 1 hora
 
-		return false
+		// Resultados false
+			// 1. Se dio de alta por mí hace más de 1 hora, y todavía no está aprobado
+			// 2. Varios:
+				// Se dio de alta por otra persona hace menos de 1 hora o
+				// Está capturado por mí hace más de 1 hora o 
+				// Está capturado por otra persona hace menos de 1 hora
+			// 3. Soy un usuario y todavía no está aprobado
+			return false
 	},
 };
