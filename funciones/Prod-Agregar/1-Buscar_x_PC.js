@@ -1,7 +1,7 @@
 // Require
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
-let BD_varias = require("../../funciones/BD/varias");
+let BD_varias = require("../BD/varias");
 let varias = require("../Varias/Varias");
 
 // Función a exportar
@@ -9,7 +9,7 @@ module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave) => {
-		palabrasClave = varias.letrasIngles(palabrasClave);
+		palabrasClave = varias.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
@@ -93,8 +93,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = varias.letrasIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		desempate2 = varias.letrasIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+		desempate1 = varias.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		desempate2 = varias.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -124,9 +124,9 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 		if (typeof m == "undefined" || m == null) return;
 		for (palabra of palabras) {
 			if (
-				varias.letrasIngles(m.nombre_original).includes(palabra) ||
-				varias.letrasIngles(m.nombre_castellano).includes(palabra) ||
-				varias.letrasIngles(m.comentario).includes(palabra)
+				varias.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
+				varias.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
+				varias.convertirLetrasAlIngles(m.comentario).includes(palabra)
 			)
 				return m;
 		}

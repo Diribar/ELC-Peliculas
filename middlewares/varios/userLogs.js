@@ -1,6 +1,6 @@
-const funciones = require("../../funciones/Varias/varias");
+const varias = require("../../funciones/Varias/varias");
 
 module.exports = (req, res, next) => {
-	funciones.userLogs(req, res)
+	varias.userLogs(req, res)
 	next();
 };

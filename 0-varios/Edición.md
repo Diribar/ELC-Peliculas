@@ -10,3 +10,4 @@
 - Timer:
 	- Con el tiempo regresivo
 	- Ubicado en el extremo superior derecho
+- Actualizar "creado_en" si es un alta pendiente de aprobar

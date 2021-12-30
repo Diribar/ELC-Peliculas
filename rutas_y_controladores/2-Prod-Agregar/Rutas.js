@@ -5,7 +5,7 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let usuarios = require("../../middlewares/usuarios/soloUsuarios");
+let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 let prodEnBD = require("../../middlewares/varios/productoYaEnBD");
 let upload = require("../../middlewares/varios/multer");
@@ -34,28 +34,34 @@ router.get("/api/validar-datos-pers", API.validarDatosPers);
 router.get("/api/DD-paises", API.obtenerPaises);
 
 // Controladores de vistas de "Agregar Productos"
-router.get("/palabras-clave", usuarios, vista.palabrasClaveForm);
-router.post("/palabras-clave", usuarios, vista.palabrasClaveGuardar);
-router.get("/desambiguar", usuarios, vista.desambiguarForm);
-router.post("/desambiguar", usuarios, vista.desambiguarGuardar);
-router.get("/tipo-producto", usuarios, autorizadoFA, vista.tipoProducto_Form);
-router.post("/tipo-producto-dd", usuarios, vista.tipoProducto_Guardar);
-router.post("/tipo-producto-fa", usuarios, vista.tipoProducto_Guardar);
-router.get("/copiar-fa", usuarios, autorizadoFA, vista.copiarFA_Form);
-router.post("/copiar-fa", usuarios, vista.copiarFA_Guardar);
+router.get("/palabras-clave", soloUsuarios, vista.palabrasClaveForm);
+router.post("/palabras-clave", soloUsuarios, vista.palabrasClaveGuardar);
+router.get("/desambiguar", soloUsuarios, vista.desambiguarForm);
+router.post("/desambiguar", soloUsuarios, vista.desambiguarGuardar);
+router.get("/tipo-producto", soloUsuarios, autorizadoFA, vista.tipoProducto_Form);
+router.post("/tipo-producto-dd", soloUsuarios, vista.tipoProducto_Guardar);
+router.post("/tipo-producto-fa", soloUsuarios, vista.tipoProducto_Guardar);
+router.get("/copiar-fa", soloUsuarios, autorizadoFA, vista.copiarFA_Form);
+router.post("/copiar-fa", soloUsuarios, vista.copiarFA_Guardar);
 // Comienzo de "prodEnBD"
-router.get("/datos-duros", usuarios, prodEnBD, vista.datosDurosForm);
-router.post("/datos-duros", usuarios, prodEnBD, upload.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-personalizados", usuarios, prodEnBD, vista.datosPersForm);
-router.post("/datos-personalizados", usuarios, prodEnBD, vista.datosPersGuardar);
-router.get("/confirma", usuarios, prodEnBD, vista.confirmaForm);
-router.post("/confirma", usuarios, prodEnBD, vista.confirmaGuardar);
+router.get("/datos-duros", soloUsuarios, prodEnBD, vista.datosDurosForm);
+router.post(
+	"/datos-duros",
+	soloUsuarios,
+	prodEnBD,
+	upload.single("avatar"),
+	vista.datosDurosGuardar
+);
+router.get("/datos-personalizados", soloUsuarios, prodEnBD, vista.datosPersForm);
+router.post("/datos-personalizados", soloUsuarios, prodEnBD, vista.datosPersGuardar);
+router.get("/confirma", soloUsuarios, prodEnBD, vista.confirmaForm);
+router.post("/confirma", soloUsuarios, prodEnBD, vista.confirmaGuardar);
 // Fin de "prodEnBD"
-router.get("/terminaste", usuarios, vista.terminasteForm);
+router.get("/terminaste", soloUsuarios, vista.terminasteForm);
 
 // Controladores de vistas auxiliares
-router.get("/responsabilidad", usuarios, vista.responsabilidad);
-router.get("/ya-en-bd", usuarios, vista.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, vista.yaEnBD_Form);
+router.get("/responsabilidad", soloUsuarios, vista.responsabilidad);
+router.get("/ya-en-bd", soloUsuarios, vista.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, vista.yaEnBD_Form);
 
 // Fin
 module.exports = router;
