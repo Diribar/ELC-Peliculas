@@ -19,7 +19,7 @@ module.exports = {
 		console.log("Creado en:   " + (producto.creada_en - 0));
 		console.log("Hace 1 hora: " + haceUnaHora);
 		disponible.status = true;
-	if (
+		if (
 			// 1. CREADOR
 			producto.creada_por_id == usuario.id && // Se dio de alta por este usuario y
 			haceUnaHora < producto.creada_en // Se dio de alta hace menos de 1 hora
