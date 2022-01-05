@@ -1,5 +1,5 @@
 // ************ Requires ************
-let buscar_x_PalClave = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
+let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 let validarProd = require("../../funciones/Prod-Agregar/3-Errores");
 let BD_varias = require("../../funciones/BD/varias");
@@ -11,7 +11,7 @@ module.exports = {
 	cantProductos: async (req, res) => {
 		let {palabrasClave} = req.query;
 		// Obtener la cantidad de productos encontrados que coinciden con las palabras clave
-		let lectura = await buscar_x_PalClave.search(palabrasClave);
+		let lectura = await buscar_x_PC.search(palabrasClave);
 		return res.json(lectura);
 	},
 	validarPalabrasClave: (req, res) => {
@@ -24,7 +24,6 @@ module.exports = {
 		datos = await procesarProd.averiguarColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
-
 	// Vista (tipoProducto)
 	averiguarColecciones: async (req, res) => {
 		datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>

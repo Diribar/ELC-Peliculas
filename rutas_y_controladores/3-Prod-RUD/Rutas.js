@@ -1,16 +1,22 @@
 //************************* Requires *******************************
 let express = require("express");
 let router = express.Router();
-let controlador = require("./Controlador");
+let API = require("./ControladorAPI");
+let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 //************************ Controladores ****************************
-router.get("/detalle", controlador.detalle);
-router.get("/editar", soloUsuarios, controlador.editar);
-router.get("/calificala", soloUsuarios, controlador.calificala);
-router.get("/eliminar", soloUsuarios, controlador.eliminar);
+// Controladores de APIs
+router.get("/api/averiguar-si-esta-capturado", API.averiguarSiEstaCapturado);
+
+
+// Controladores de vistas
+router.get("/detalle", vista.detalle);
+router.get("/editar", soloUsuarios, vista.editar);
+router.get("/calificala", soloUsuarios, vista.calificala);
+router.get("/eliminar", soloUsuarios, vista.eliminar);
 
 // Fin
 module.exports = router;

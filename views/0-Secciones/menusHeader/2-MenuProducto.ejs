@@ -2,7 +2,10 @@
 	<% if (booleanMenuProducto) { %>
 		<% entidad = url.slice(url.indexOf("entidad") + 8, url.indexOf("&")) %>
 		<% if (!url.includes("producto/editar")) { %>
-			<a href="#"><i class="fas fa-edit"></i>Editá la información</a>
+			<a id="editarProducto">
+				<i class="fas fa-edit"></i>
+				Editá la información
+			</a>
 			<hr>
 		<% } %> 
 		<% if (entidad=="peliculas") { %>

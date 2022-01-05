@@ -56,10 +56,9 @@ module.exports = {
 			paises.push(nombre);
 		}
 		paises = paises.join(", ");
-		//return res.send(paises);
 		// Ir a la vista
-		//return res.send(producto);
 		//return res.send(paises);
+		//return res.send(producto);
 		return res.render("0-Producto", {
 			tema,
 			codigo,

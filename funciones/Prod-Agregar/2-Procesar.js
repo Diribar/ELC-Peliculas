@@ -1,13 +1,13 @@
 // ************ Requires ************
+let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
 let creditsTMDB = require("../APIs_TMDB/3-Credits");
 let BD_varias = require("../BD/varias");
 let varias = require("../Varias/Varias");
-let searchTMDB = require("../APIs_TMDB/1-Search");
 
 module.exports = {
-	// ControllerVista (desambiguarGuardar)
 	// MOVIES *****************************
+	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		let datosIniciales = {fuente: "TMDB", entidad_TMDB: "movie", ...datos};
@@ -39,7 +39,7 @@ module.exports = {
 				datosIniciales.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
-			if (datosAPI.IMDB_id) datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
+			if (datosAPI.imdb_id) datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
 			if (datosAPI.original_title) datosAPI_renamed.nombre_original = datosAPI.original_title;
 			if (datosAPI.title) datosAPI_renamed.nombre_castellano = datosAPI.title;
 			// Idioma
@@ -90,7 +90,6 @@ module.exports = {
 
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
-
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
 		let datosAPI = await detailsTMDB("movie", TMDB_id);
@@ -162,10 +161,9 @@ module.exports = {
 
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
-
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id
-		palabrasClave = varias.letrasIngles(datos.nombre_castellano);
+		palabrasClave = varias.convertirLetrasAlIngles(datos.nombre_castellano);
 		let exportar = await searchTMDB(palabrasClave, "collection", 1);
 		if (exportar.results.length) {
 			exportar = exportar.results.find((n) => (n.id = datos.TMDB_id));
@@ -219,7 +217,6 @@ module.exports = {
 
 		return exportar;
 	},
-
 	// ControllerVista (confirma)
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
@@ -256,7 +253,6 @@ module.exports = {
 		}
 		return;
 	},
-
 	// ControllerVista (confirma)
 	agregarCapitulosNuevos: async function (coleccion_id, TMDB_id) {
 		// Obtener el API actualizada de la colección
@@ -352,7 +348,6 @@ module.exports = {
 		};
 		return varias.convertirLetrasAlCastellano(resultado);
 	},
-
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
 		let datos = {entidad: "capitulos", fuente: "TMDB", creada_por_id: 2};
@@ -400,7 +395,6 @@ module.exports = {
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
-
 	// ControllerVista (confirma)
 	agregarCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS ***********************************************
@@ -448,7 +442,6 @@ module.exports = {
 		resultado = varias.convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
-
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
 	contenidoFA: (contenido) => {
@@ -494,7 +487,6 @@ module.exports = {
 		}
 		return resultado;
 	},
-
 	// ControllerVista (copiarFA_Guardar)
 	// ControllerAPI (obtenerFA_id)
 	obtenerFA_id: (url) => {
@@ -514,13 +506,11 @@ let fuenteSinopsisTMDB = (sinopsis) => {
 	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis += " (fuente: TMDB)";
 	return sinopsis;
 };
-
 let funcionParentesis = (dato) => {
 	desde = dato.indexOf(" (");
 	hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
-
 let datosColeccion = (datos, cantCapitulos) => {
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
@@ -553,7 +543,6 @@ let datosColeccion = (datos, cantCapitulos) => {
 	resultado = resultado.join(", ");
 	return resultado;
 };
-
 let funcionCrew = (crew, campo_TMDB) => {
 	datos = valores = crew.filter((n) => n.department == campo_TMDB);
 	if (datos.length > 0) {
@@ -569,7 +558,6 @@ let funcionCrew = (crew, campo_TMDB) => {
 	}
 	return "";
 };
-
 let funcionCast = (dato) => {
 	actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
 	while (dato.length > 0 && actuacion.length > 500) {

@@ -6,12 +6,10 @@ let axios = require("axios");
 
 module.exports = {
 	userLogs: (req, res) => {
-		let URL = req.originalUrl;
-		let hasta = URL.slice(1).indexOf("/") > 0 ? URL.slice(1).indexOf("/") + 1 : URL.length;
-		let tema = URL.slice(1, hasta);
-		tema != "login" && tema != "usuarios" ? (req.session.urlReferencia = URL) : "";
+		let url = req.originalUrl;
+		if (url.indexOf("/usuarios/") == -1 && url.indexOf("/api/") == -1) req.session.urlReferencia = url;
 		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
-		//console.log(res.locals.urlReferencia);
+		// console.log(res.locals.urlReferencia);
 	},
 
 	enviarMail: async (asunto, mail, comentario) => {
@@ -68,7 +66,7 @@ module.exports = {
 		return resultado;
 	},
 
-	letrasIngles: (palabra) => {
+	convertirLetrasAlIngles: (palabra) => {
 		word = palabra
 			.toLowerCase()
 			.replace(/-/g, " ")
