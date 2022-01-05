@@ -13,29 +13,30 @@
 				<div class="flex-row">
 					<i class="fas fa-file-download"></i>
 					<div>
-						Convetila en un 
+						Convertila en un 
 						<br>
 						Capítulo de Colección
 					</div>
 				</div>
 			</a>
-		<% } %>
+			<hr>
+			<% } %>
 		<% if (entidad=="capitulos") { %>
 			<a href="#">
 				<div class="flex-row">
 					<i class="fas fa-file-upload"></i>
 					<div>
-						Convertirlo en Película y
+						Convertilo en una Película
 						<br>
-						quitarlo de la Colección
+						y quitalo de la Colección
 					</div>
 				</div>
 			</a>
-		<% } %>
-		<hr>
+			<hr>
+			<% } %>
 		<a href="#">
 			<i class="fas fa-trash-alt"></i>
-			Sugerir dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
+			Sugerí dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
 		</a>
 		<hr>
 		<a href="#">
