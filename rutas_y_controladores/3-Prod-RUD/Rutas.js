@@ -9,7 +9,7 @@ let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 
 //************************ Controladores ****************************
 // Controladores de APIs
-router.get("/api/averiguar-si-esta-capturado", API.averiguarSiEstaCapturado);
+router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
 
 
 // Controladores de vistas
