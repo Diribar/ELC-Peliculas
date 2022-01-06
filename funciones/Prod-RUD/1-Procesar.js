@@ -51,6 +51,7 @@ module.exports = {
 				!producto.analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "creador";
+				disponible.mensaje="El producto se creó hace más de una hora. Está reservado para que nuestro equipo la pueda analizar."
 			} else if (
 				// 2. NO REVISOR
 				// No soy revisor, no lo creé y todavía no está aprobado
@@ -59,6 +60,7 @@ module.exports = {
 				!producto.analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "noRevisor";
+				disponible.mensaje="El producto no está autorizado aún, no se puede editar."				
 			} else if (
 				// 3. RECIÉN CREADO
 				// Se dio de alta por otra persona hace menos de 1 hora
@@ -66,6 +68,7 @@ module.exports = {
 				haceUnaHora < producto.creada_en // Se dio de alta hace menos de 1 hora
 			) {
 				disponible.codigo = "recienCreado";
+				disponible.mensaje="El producto está recién creado. La primera hora se reserva para que el usuario que la creó la pueda editar."
 			} else if (
 				// 4. CAPTURA EXCESIVA
 				// Está capturado por mí hace más de 1 hora
@@ -73,6 +76,7 @@ module.exports = {
 				haceUnaHora > producto.capturada_en // Está capturado hace más de 1 hora
 			) {
 				disponible.codigo = "capturaExcesiva";
+				disponible.mensaje="El producto está reservado por vos desde hace más de una hora. Deberás esperar a que se cumplan más de 2 horas."
 			} else if (
 				// 5. CAPTURADO
 				// Está capturado por otra persona hace menos de 1 hora

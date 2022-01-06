@@ -24,8 +24,9 @@
 
 /* Íconos y Mensajes de error */
 #Form .form-grupo {position: relative;}
-#Form .fa-times-circle, #Form .fa-check-circle {left: -20px;}
+#Form .form-grupo .fa-check-circle, #Form .form-grupo .fa-times-circle {left: -20px;}
 #Form .mensajeError {left: 20px; max-width: 200px;}
+#Form .mensajeError::before {left: -12px;}
 
 /* Botones */
 #Form form #buttons {margin: 15px auto 5px;}

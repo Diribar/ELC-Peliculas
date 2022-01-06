@@ -13,7 +13,6 @@
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}
-
 #dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
 /* Todos los mensajes */
@@ -37,24 +36,16 @@
 /* Todos */
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
 /* Exito */
 .resultadoExitoso {background-color: var(--verde-oscuro);}
-.fa-check-circle {color: var(--verde-oscuro); cursor: default;}
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
 .mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 /* Error */
 .resultadoInvalido {background-color: var(--rojo-oscuro);}
-.fa-times-circle {color: var(--rojo-oscuro);}
-.fa-times-circle:hover .mensajeError {display: inline;}
-.mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; left: 20px; padding: 3px 7px;}
-.mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
+.mensajeError {left: 20px;}
+.mensajeError::before {left: -12px;}
 
 /* Botones */
 #dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--verde-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
