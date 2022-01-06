@@ -1,6 +1,7 @@
 // ************ Requires *************
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
+let varias = require("../../funciones/Varias/varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -25,16 +26,16 @@ module.exports = {
 			"editada_por",
 			"borrada_motivo",
 		];
-		entidad == "capitulos" ? includes.push("coleccion") : includes.push("paises");
+		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_especificas.obtenerProductoPorIdConInclude(entidad, ID, includes);
 		//return res.send(producto)
 		if (entidad == "capitulos") {
 			avatar = producto.avatar;
-			producto.paises = await BD_especificas.obtenerProductoPorIdConInclude(
+			producto.paises_id = await BD_varias.obtenerPorParametro(
 				"colecciones",
-				producto.coleccion_id,
-				"paises"
-			).then((n) => n.paises);
+				"id",
+				producto.coleccion_id
+			).then((n) => n.paises_id);
 			//return res.send(producto.paises);
 		} else
 			avatar = producto.avatar
@@ -48,16 +49,11 @@ module.exports = {
 				? "Colección"
 				: "Capítulo";
 		// Obtener los paises
-		let paises = [];
-		//return res.send(producto);
-		let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
-		for (pais of producto.paises) {
-			nombre = BD_paises.find((n) => n.id == pais.pais_id).nombre;
-			paises.push(nombre);
-		}
-		paises = paises.join(", ");
+		let paises = producto.paises_id
+			? await varias.paises_idToNombre(producto.paises_id)
+			:""
 		// Ir a la vista
-		//return res.send(paises);
+		return res.send(paises);
 		//return res.send(producto);
 		return res.render("0-Producto", {
 			tema,

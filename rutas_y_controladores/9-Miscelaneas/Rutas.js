@@ -24,5 +24,9 @@ router.get("/agregar/RCLV_hechos_historicos", usuarios, vista.RCLV_Form);
 router.post("/agregar/RCLV_personajes_historicos", usuarios, vista.RCLV_Grabar);
 router.post("/agregar/RCLV_hechos_historicos", usuarios, vista.RCLV_Grabar);
 
+// Miscelaneas
+router.get("/session", vista.session);
+router.get("/cookies", vista.cookies);
+
 // Exportarlo **********************************************
 module.exports = router;

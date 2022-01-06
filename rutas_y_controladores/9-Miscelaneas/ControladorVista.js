@@ -46,7 +46,6 @@ module.exports = {
 		// 2. Tema y Código
 		tema = "miscelaneas";
 		codigo = datosPers.entidad_RCLV;
-		console.log(codigo);
 		// 3. Data-entry
 		datosRCLV = req.session[codigo]
 			? req.session[codigo]
@@ -109,6 +108,7 @@ module.exports = {
 			req.session.erroresRCLV = errores;
 			return res.redirect(req.url);
 		}
+		// Si no hay errores...
 		// 5. Preparar la info a guardar
 		datos = {
 			...datosRCLV,
@@ -122,16 +122,27 @@ module.exports = {
 		}
 		// 6. Crear el registro en la BD
 		let {id} = await BD_varias.agregarRegistro(datos);
-		//return res.send(id+"");
-		// 7. Guardar el id en 'Datos Personalizados'
+		// 7. Actualizar session y cookie de DatosPers
+		// Descartar info innecesaria
+		delete req.session.datosPers.entidad_RCLV;
+		delete req.session.datosPers.producto_RCLV;
+		// Agregarle el ID
 		campo = entidad.includes("personaje") ? "personaje_historico_id" : "hecho_historico_id";
 		req.session.datosPers[campo] = id;
-		res.cookie(datosPers[campo], id, {maxAge: 24 * 60 * 60 * 1000});
-		// 8. Borrar session y cookies innecesarios
+		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session[entidad]) delete req.session[entidad];
 		if (req.cookies && req.cookies[entidad]) res.clearCookie([entidad]);
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect("/producto/agregar/datos-personalizados");
+	},
+
+	session: (req, res) => {
+		return res.send(req.session);
+	},
+
+	cookies: (req, res) => {
+		return res.send(req.cookies);
 	},
 };

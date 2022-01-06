@@ -7,6 +7,7 @@ module.exports = (sequelize, dt) => {
 		fuente: {type: dt.STRING(5)},
 		nombre_castellano: {type: dt.STRING(100)},
 		nombre_original: {type: dt.STRING(100)},
+		paises_id: {type: dt.STRING(18)},
 		idioma_original_id: {type: dt.STRING(2)},
 		ano_estreno: {type: dt.INTEGER},
 		ano_fin: {type: dt.INTEGER},
@@ -77,7 +78,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
-		entidad.hasMany(n.relacion_pais_prod, {as: "paises",foreignKey: "coleccion_id"});
 	};
 	return entidad;
 };
