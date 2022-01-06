@@ -1,5 +1,4 @@
 PROTOCOLO DE CAPTURA
-- Es una función, con resultado V/F
 - Accesibilidad
 	< 1 hora --> sólo para el usuario que lo creó
 			 --> punto de partida: el horario en que lo creó

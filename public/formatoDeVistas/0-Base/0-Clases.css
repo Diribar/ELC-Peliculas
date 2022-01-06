@@ -8,6 +8,22 @@
 .space-around {justify-content: space-around;}
 .wrap {flex-wrap: wrap;}
 
+/* Mensajes */
+/* Estandarizaciones */
+.mensajeError, .mensajeError::before, 
+.mensajeAyuda, .mensajeAyuda::before,
+.fa-check-circle, .fa-question-circle, 
+.fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px; display: none;}
+.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
+/* Específicos */
+.mensajeError::before {content: ""; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
+.mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; padding: 3px 7px; }
+.fa-times-circle {color: var(--rojo-oscuro); cursor: pointer;}
+.fa-times-circle:hover .mensajeError {display: inline;}
+.fa-check-circle {color: var(--verde-oscuro); cursor: pointer;}
+.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
+
 /* Otras */
 .absolute {position: absolute}
 .relative {position: relative;}

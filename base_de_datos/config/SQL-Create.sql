@@ -47,7 +47,23 @@ VALUES
 ('PP', 4, 'Papa', 0, 1),
 ('PPV', 4, 'Papa', 0, 1)
 ;
-
+CREATE TABLE roles_usuario (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(30) NOT NULL,
+	aut_altas_productos BOOLEAN NOT NULL,
+	aut_aprobar_altas_prod BOOLEAN NOT NULL,
+	aut_cambiar_perfil_usuarios BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO roles_usuario (id, orden, nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
+VALUES 
+(1, 1, 'Usuario', 0, 0, 0),
+(5, 2, 'Autorizado p/Altas de Productos', 1, 0, 0),
+(2, 3, 'Gestión de Productos', 1, 1, 0),
+(3, 4, 'Gestión de Usuarios', 1, 0, 1),
+(4, 5, 'Gestión de Prod. y Usuarios', 1, 1, 1)
+;
 CREATE TABLE procesos_canonizacion (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -68,23 +84,6 @@ VALUES
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
 ('SDM', 4, 'Sierva de Dios')
-;
-
-CREATE TABLE roles_usuario (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(30) NOT NULL,
-	aut_altas_productos BOOLEAN NOT NULL,
-	aut_aprobar_altas_prod BOOLEAN NOT NULL,
-	aut_cambiar_perfil_usuarios BOOLEAN NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_usuario (id, orden, nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
-VALUES 
-(1, 1, 'Usuario', 1, 0, 0),
-(2, 2, 'Revisor de Altas de Productos', 1, 1, 0),
-(3, 3, 'Gestor de Usuarios', 1, 0, 1),
-(4, 4, 'Todos los permisos', 1, 1, 1)
 ;
 CREATE TABLE sexos (
 	id VARCHAR(1) NOT NULL,
@@ -717,9 +716,9 @@ CREATE TABLE pr_relacion_pais_prod (
 
 INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, rol_iglesia_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 4, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 4, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26'),
+(1, 'sinMail1', 'sinContraseña', 4, 5, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(2, 'sinMail2', 'sinContraseña', 4, 5, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 5, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 
@@ -745,7 +744,6 @@ VALUES
 
 INSERT INTO rclv_valores (id, nombre)
 VALUES 
-(1, 'Ninguno del listado'),
 (10, 'Valores en el deporte'),
 (11, 'Perseverancia'),
 (12, 'Pacificar un país dividido'),

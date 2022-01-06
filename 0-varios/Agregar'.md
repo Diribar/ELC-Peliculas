@@ -1,6 +1,3 @@
-DESAMBIGUAR
-- Si se agregó un capítulo a una colección ya existente, avisarlo en DesambForm con la opción de 'check + Entendido'
-
 TIPO PRODUCTO
 - BE-Form:
     - Campo del "nombre_castellano"
