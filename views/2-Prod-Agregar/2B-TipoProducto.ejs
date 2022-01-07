@@ -21,49 +21,52 @@
 					Capítulo de una colección
 				</option>
 			</select>
-			<!-- Datos del capítulo -->
-			<h3>Nombre de la Colección</h3>
-			<div class="flex-row">
-				<!-- Data Entry -->
-				<select name="coleccion_id" class="input" disabled>
-					<option value="">Elejí una opción</option>
-				</select>
-				<!-- Ayuda -->
-				<i class="fas fa-question-circle relative">
-					<ul class="mensajeAyuda ocultar" type="dots">
-						<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
-						<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
-					</ul>	
-				</i>
-			</div>
-			<h3>Número de Temporada</h3>
-			<div class="flex-row">
-				<!-- Data Entry -->
-				<select name="temporada" class="input" disabled>
-					<option value="">Elejí una opción</option>
-				</select>
-			</div>
-			<h3>Número de Capítulo</h3>
-			<div class="flex-row">
-				<select name="capitulo" class="input" disabled>
-					<option value="">Elejí una opción</option>
-				</select>
-				<!-- Ayuda -->
-				<i class="fas fa-question-circle relative">
-					<ul class="mensajeAyuda ocultar" type="dots">
-						<li></li>
-					</ul>
-				</i>
-				<!-- Errores -->
-				<i class="fas fa-times-circle ocultar">
-					<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
-				</i>
-				<i class="fas fa-check-circle ocultar"></i>
+			<div class="invisible">
+				<!-- Datos del capítulo -->
+				<h3>Nombre de la Colección</h3>
+				<div class="flex-row">
+					<!-- Data Entry -->
+					<select name="coleccion_id" class="input" disabled>
+						<option value="">Elejí una opción</option>
+					</select>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<li>Buscá entre las colecciones que tenemos en nuestra Base de Datos</li>
+							<li>Si no la encontrás, vamos a necesitar que la agregues antes que el capítulo</li>
+						</ul>	
+					</i>
+				</div>
+				<h3>Número de Temporada</h3>
+				<div class="flex-row">
+					<!-- Data Entry -->
+					<select name="temporada" class="input" disabled>
+						<option value="">Elejí una opción</option>
+					</select>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<li>Se muestran todas las temporadas según nuestra base de datos, y una más</li>
+						</ul>
+					</i>
+				</div>
+				<h3>Número de Capítulo</h3>
+				<div class="flex-row">
+					<select name="capitulo" class="input" disabled>
+						<option value="">Elejí una opción</option>
+					</select>
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle relative">
+						<ul class="mensajeAyuda ocultar" type="dots">
+							<li>Se muestran solamente los capítulos que no tenemos en nuestra base de datos</li>
+						</ul>
+					</i>
+				</div>
 			</div>
 		</section>
 		<!-- Flechas -->
 		<section id="flechas">
-			<a href="/producto/agregar/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
+			<a href="/producto/agregar/desambiguar"><i class="fas fa-arrow-alt-circle-left"></i></a>
 			<button class="botonSinLink submit" type="submit">Avanzar</button>
 			<% if (autorizado_fa) { %>
 				<label class="botonSinLink submit" for="inputSubmit"><img src="/imagenes/0-Logos/LogoFA.jpg" alt="FA" height="30px" title="FA"></label>

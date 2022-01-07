@@ -1,7 +1,9 @@
 TIPO PRODUCTO
 - BE-Form:
-    - Campo del "nombre_castellano"
     - Link para el submit
+- BE-Grabar:
+   	- Antes de redireccionar a DD, se crea una cookie con los datos provistos por la API
+
 - Vista:
     - Agregar el campo del "nombre_castellano"
     - Submit a donde corresponda
@@ -12,9 +14,12 @@ TIPO PRODUCTO
 
 COPIAR FA: 
 - Para las películas, buscar el FA_id también en "capítulos" si ya están en BD
+- BE-Grabar:
+   	- Antes de redireccionar a DD, se crea una cookie con los datos provistos por la API
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
+- Personaje histórico: varios <-- Agregarlo en el startup
 - Valores:
     - Agregar link en DP
     - Agregar vista

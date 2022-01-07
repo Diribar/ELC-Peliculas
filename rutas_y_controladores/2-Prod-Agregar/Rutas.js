@@ -38,9 +38,9 @@ router.get("/palabras-clave", soloUsuarios, vista.palabrasClaveForm);
 router.post("/palabras-clave", soloUsuarios, vista.palabrasClaveGuardar);
 router.get("/desambiguar", soloUsuarios, vista.desambiguarForm);
 router.post("/desambiguar", soloUsuarios, vista.desambiguarGuardar);
-router.get("/tipo-producto", soloUsuarios, autorizadoFA, vista.tipoProducto_Form);
-router.post("/tipo-producto-dd", soloUsuarios, vista.tipoProducto_Guardar);
-router.post("/tipo-producto-fa", soloUsuarios, vista.tipoProducto_Guardar);
+router.get("/tipo-producto", soloUsuarios, autorizadoFA, vista.tipoProd_Form);
+router.post("/tipo-producto-dd", soloUsuarios, vista.tipoProd_Guardar);
+router.post("/tipo-producto-fa", soloUsuarios, vista.tipoProd_Guardar);
 router.get("/copiar-fa", soloUsuarios, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", soloUsuarios, vista.copiarFA_Guardar);
 // Comienzo de "prodEnBD"

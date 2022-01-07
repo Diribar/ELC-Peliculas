@@ -50,7 +50,7 @@
 			<% } %>
 			<!-- Si no existe una imagen -->
 			<% if (!dataEntry.avatar) { %>
-				<button type="button">Elegí una imagen de<br>la web y pegá el URL</button>
+				<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
 			<% } %>
 			<!-- Rutina para todos los casos -->
 			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
@@ -61,7 +61,7 @@
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<% retroceso = dataEntry.fuente != "FA" ? "desambiguar" : "copiar-fa" %>
+		<% retroceso = dataEntry.fuente == "FA" ? "copiar-fa": dataEntry.fuente == "IM" ? "tipo-producto" : "desambiguar" %>
 		<a href="/producto/agregar/<%= retroceso %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" autofocus><i class="fas fa-check-circle"></i></button>
 	</section>

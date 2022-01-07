@@ -9,9 +9,10 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "producto";
 		codigo = "detalle";
-		// Obtener los datos de la película
+		// Obtener los datos clave de la película
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
+		// Definir los campos include
 		let includes = [
 			"idioma_original",
 			"en_castellano",
@@ -27,8 +28,10 @@ module.exports = {
 			"borrada_motivo",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
+		// Obtener los datos de la película
 		let producto = await BD_especificas.obtenerProductoPorIdConInclude(entidad, ID, includes);
-		//return res.send(producto)
+		if (!producto) return res.send("Producto no encontrado")
+		return res.send(producto)
 		if (entidad == "capitulos") {
 			avatar = producto.avatar;
 			producto.paises_id = await BD_varias.obtenerPorParametro(
@@ -53,7 +56,7 @@ module.exports = {
 			? await varias.paises_idToNombre(producto.paises_id)
 			:""
 		// Ir a la vista
-		return res.send(paises);
+		//return res.send(paises);
 		//return res.send(producto);
 		return res.render("0-Producto", {
 			tema,
