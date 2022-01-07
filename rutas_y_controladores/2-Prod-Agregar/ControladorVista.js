@@ -123,21 +123,23 @@ module.exports = {
 		codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "tipoProducto");
-		// 3. Data Entry propio y errores
+		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd
 			? req.session.tipoProd
 			: req.cookies.tipoProd
 			? req.cookies.tipoProd
 			: "";
-		autorizado_fa = req.session.usuario.autorizado_fa;
-		// 4. Render del formulario
+		// 4. Obtener los errores
+		let errores = req.session.erroresTP ? req.session.erroresTP : "";
+		// 5. Render del formulario
 		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: tipoProd,
-			autorizado_fa,
+			autorizado_fa: req.session.usuario.autorizado_fa,
+			errores,
 		});
 	},
 
@@ -385,9 +387,10 @@ module.exports = {
 			? req.cookies.datosPers
 			: "";
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
-		// 4. Render del formulario
-		// return res.send(req.cookies);
+		// 4. Obtener los errores
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
+		// 5. Render del formulario
+		// return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
