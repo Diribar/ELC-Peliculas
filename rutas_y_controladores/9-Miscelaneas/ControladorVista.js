@@ -149,10 +149,8 @@ module.exports = {
 			: req.cookies.noAprobado
 			? req.cookies.noAprobado
 			: "";
-		return res.send(
-			"El producto no está aprobado para ser mostrado. Status actual: " +
-				noAprobado.status_registro.nombre
-		);
+		let frase = "El producto no está aprobado para ser mostrado. Status actual: ";
+		return res.send(frase + noAprobado.status_registro.nombre);
 		return res.send("El producto no está aprobado para ser mostrado. Status actual: ");
 	},
 
