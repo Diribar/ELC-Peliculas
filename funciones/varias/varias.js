@@ -40,7 +40,7 @@ module.exports = {
 		if (paises_id.length) {
 			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			paises_idArray = paises_id.split(", ");
-			// Convertir 'array de ID' en 'string de nombres"
+			// Convertir 'array de ID' en 'string de nombres'
 			for (pais_id of paises_idArray) {
 				aux = BD_paises.find((n) => n.id == pais_id);
 				if (aux) resultado.push(aux.nombre);

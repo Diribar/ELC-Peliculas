@@ -112,6 +112,7 @@ module.exports = {
 		// 5. Generar la session para la siguiente instancia
 		req.session.datosDuros = infoTMDBparaDD;
 		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: 24 * 60 * 60 * 1000});
 		// 7. Redireccionar a la siguiente instancia
 		req.session.erroresDES = false;
 		res.redirect("/producto/agregar/datos-duros");
@@ -285,6 +286,7 @@ module.exports = {
 		let datosDuros = {...aux, ...req.body};
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Averiguar si hay errores de validación. Se usa el nombre del archivo multer, si existe
 		avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validarProd.datosDuros({...datosDuros, avatar}, [
@@ -305,7 +307,7 @@ module.exports = {
 				errores.hay = true;
 			}
 		}
-		// 6. Si aún no hay errores de imagen, revisar el archivo de imagen
+		// 6. Si no hay errores de imagen, revisar el archivo de imagen
 		rutaYnombre = req.file ? req.file.path : "";
 		if (!errores.avatar) {
 			if (req.file) {
@@ -350,10 +352,9 @@ module.exports = {
 			avatarDP,
 			avatarCF,
 		};
-		res.cookie("datosPers", req.session.datosPers, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 9. Redireccionar a la siguiente instancia
+		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
+		// 10. Redireccionar a la siguiente instancia
 		req.session.erroresDD = false;
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
@@ -391,9 +392,22 @@ module.exports = {
 		if (!aux) return res.redirect("/producto/agregar/datos-duros");
 		// 2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
+		// 3. Borrar campos vacíos
+		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
+		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
+		if (!datosPers.valor_id || datosPers.valor_id == 1) delete datosPers.valor_id;
+		if (!datosPers.link_trailer) delete datosPers.link_trailer
+		if (!datosPers.link_pelicula) delete datosPers.link_pelicula
+		//return res.send(datosPers)
 		// 4. Guardar el data entry en session y cookie
+		// Actualizar la session
 		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		// Descartar info innecesaria si la hubiera
+		if (req.session.datosPers.entidad_RCLV) delete req.session.datosPers.entidad_RCLV;
+		if (req.session.datosPers.producto_RCLV) delete req.session.datosPers.producto_RCLV;
+		// Actualizar la cookie Datos Pers
+		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
 		camposDP = [...(await variables.datosPersSelect()), ...variables.datosPersInput()];
 		let errores = await validarProd.datosPers(datosPers, camposDP);
@@ -403,11 +417,7 @@ module.exports = {
 			return res.redirect("/producto/agregar/datos-personalizados");
 		}
 		// Si no hay errores, continuar
-		// 7. Si no se guardaron datos de RCLV, se quitan del dataEntry para evitar conflicto con la BD
-		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
-		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
-		if (!datosPers.valor_id || datosPers.valor_id == 1) delete datosPers.valor_id;
-		// 8. Obtener la calificación
+		// 7. Obtener la calificación
 		fe_valores = await BD_varias.obtenerPorParametro(
 			"fe_valores",
 			"id",
@@ -424,7 +434,7 @@ module.exports = {
 			datosPers.calidad_tecnica_id
 		).then((n) => n.valor);
 		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-		// 9. Preparar la info para el siguiente paso
+		// 8. Preparar la info para el siguiente paso
 		req.session.confirma = {
 			...req.session.datosPers,
 			fe_valores,
@@ -433,10 +443,9 @@ module.exports = {
 			calificacion,
 			creada_por_id: req.session.usuario.id,
 		};
-		res.cookie("confirma", req.session.confirma, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
-		// 10. Redireccionar a la siguiente instancia
+		res.cookie("confirma", req.session.confirma, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
+		// 9. Redireccionar a la siguiente instancia
 		req.session.erroresDP = false;
 		return res.redirect("/producto/agregar/confirma");
 	},
@@ -482,16 +491,44 @@ module.exports = {
 			? req.cookies.confirma
 			: "";
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
-		// 2. Guardar el registro del producto
+		// 2. Guardar los datos de 'Original'
+		let hora = new Date();
+		let original = {
+			...req.cookies.datosOriginales,
+			fe_valores: confirma.fe_valores,
+			entretiene: confirma.entretiene,
+			calidad_tecnica: confirma.calidad_tecnica,
+			calificacion: confirma.calificacion,
+			creada_por_id: confirma.creada_por_id,
+			creada_en: hora,
+			status_registro_id: 1,
+		};
+		if (confirma.link_trailer) original.link_trailer = confirma.link_trailer;
+		if (confirma.link_pelicula) original.link_pelicula = confirma.link_pelicula;
+		registro = await BD_varias.agregarRegistro(original);
+		//return res.send(original)
+		// 2. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarCF;
-		registro = await BD_varias.agregarRegistro(confirma);
+		let edicion = {
+			// Datos de 'confirma'
+			...confirma,
+			entidad: confirma.entidad + "Edicion",
+			editada_por_id: confirma.creada_por_id,
+			capturada_por_id: confirma.creada_por_id,
+			// Datos varios
+			ELC_id: registro.id,
+			editada_en: hora,
+			capturada_en: hora,
+			status_registro_id: 6,
+		};
+		//return res.send([original, registro, edicion]);
+		let edit = await BD_varias.agregarRegistro(edicion);
+		//return res.send([registro, edit]);
 		// 3. Guardar datosTerminaste
 		datosTerminaste = funcDatosTerminaste({...confirma, id: registro.id});
 		req.session.datosTerminaste = datosTerminaste;
 		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Funciones anexas
-		// Guardar la relación producto-paises
-		guardarRelacionConPaises({...confirma, producto_id: registro.id});
 		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
@@ -503,7 +540,7 @@ module.exports = {
 		actualizarRCLV("RCLV_hechos_historicos", registro.hecho_historico_id);
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);
-		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "2-Productos");
+		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProductosEditados");
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 5. Redireccionar
@@ -609,6 +646,7 @@ let borrarSessionCookies = (req, res, paso) => {
 		"desambiguar",
 		"tipoProducto",
 		"copiarFA",
+		"datosOriginales",
 		"datosDuros",
 		"datosPers",
 		"confirma",
@@ -642,16 +680,4 @@ let prepararMensaje = (desambiguar) => {
 		(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 		" en nuestra BD.";
 	return {prod_nuevos, prod_yaEnBD, mensaje};
-};
-
-let guardarRelacionConPaises = async (datos) => {
-	producto_id = (datos.entidad == "peliculas" ? "pelicula" : "coleccion") + "_id";
-	paises_idArray = datos.paises_id.split(", ");
-	for (pais_id of paises_idArray) {
-		await BD_varias.agregarRegistro({
-			entidad: "relacion_pais_prod",
-			pais_id,
-			[producto_id]: datos.producto_id,
-		});
-	}
 };

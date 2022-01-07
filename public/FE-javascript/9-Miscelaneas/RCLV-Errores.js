@@ -37,6 +37,11 @@ window.addEventListener("load", async () => {
 		rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
 
+	nombre.addEventListener("input", () => {
+		wiki.href = url_wiki + nombre.value;
+		santopedia.href = url_santopedia + nombre.value;
+	});
+
 	form.addEventListener("change", async (e) => {
 		campo = e.target.name;
 		// Situaciones particulares
@@ -45,8 +50,21 @@ window.addEventListener("load", async () => {
 
 		// NOMBRE ***********************************************
 		if (campo == "nombre" || campo == "genero") {
+			// Llamar a la función
 			[OK, errores] = await funcionNombre();
+			// Logos de Wikipedia y Santopedia
+			if (campo == "nombre") {
+				if (nombre.value && !errores.nombre) {
+					wiki.classList.remove("ocultar");
+					if (entidad == "RCLV_personajes_historicos" && enProcCan[0].checked)
+						santopedia.classList.remove("ocultar");
+				} else {
+					wiki.classList.add("ocultar");
+					santopedia.classList.add("ocultar");
+				}
+			}
 		}
+
 		// FECHAS ***********************************************
 		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
 			[OK, errores] = await funcionFechas();
@@ -65,6 +83,11 @@ window.addEventListener("load", async () => {
 				campo == "rol_iglesia_id")
 		) {
 			[OK, errores] = await funcionRCLI();
+			// Logo de Santopedia
+			if (campo == "enProcCan" && nombre.value && !errores.nombre)
+				enProcCan[0].checked
+					? santopedia.classList.remove("ocultar")
+					: santopedia.classList.add("ocultar");
 		}
 
 		// Final de la rutina
@@ -104,16 +127,6 @@ window.addEventListener("load", async () => {
 		resultadoTrue && resultado.length == bloques.length
 			? button.classList.remove("botonSinLink")
 			: button.classList.add("botonSinLink");
-
-		// Logos de Wikipedia y Santopedia
-		if (OK.nombre) {
-			wiki.href = url_wiki + nombre.value;
-			wiki.classList.remove("ocultar");
-			if (entidad == "RCLV_personajes_historicos" && enProcCan[0].checked) {
-				santopedia.href = url_santopedia + nombre.value;
-				santopedia.classList.remove("ocultar");
-			} else santopedia.classList.add("ocultar");
-		} else wiki.classList.add("ocultar");
 	};
 
 	// Submit

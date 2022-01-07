@@ -15,6 +15,9 @@ COPIAR FA:
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
+- Valores:
+    - Agregar link en DP
+    - Agregar vista
 
 PRODUCTO YA EN BD
 Vista:

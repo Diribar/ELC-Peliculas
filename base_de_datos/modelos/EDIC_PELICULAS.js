@@ -1,13 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "capitulos";
+	const alias = "peliculasEdicion";
 	const columns = {
-		coleccion_id: {type: dt.INTEGER},
-		temporada: {type: dt.INTEGER},
-		capitulo: {type: dt.INTEGER},
+		ELC_id: {type: dt.INTEGER},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
-		fuente: {type: dt.STRING(5)},
 		nombre_castellano: {type: dt.STRING(100)},
 		nombre_original: {type: dt.STRING(100)},
 		idioma_original_id: {type: dt.STRING(2)},
@@ -31,36 +28,23 @@ module.exports = (sequelize, dt) => {
 		valor_id: {type: dt.INTEGER},
 		link_trailer: {type: dt.STRING(200)},
 		link_pelicula: {type: dt.STRING(200)},
-		fe_valores: {type: dt.INTEGER},
-		entretiene: {type: dt.INTEGER},
-		calidad_tecnica: {type: dt.INTEGER},
-		calificacion: {type: dt.INTEGER},
 
-		creada_por_id: {type: dt.INTEGER},
-		creada_en: {type: dt.DATE},
-		analizada_por_id: {type: dt.INTEGER},
-		analizada_en: {type: dt.DATE},
 		borrada_motivo_id: {type: dt.INTEGER},
 		borrada_motivo_comentario: {type: dt.STRING(500)},
-		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 
 		editada_por_id: {type: dt.INTEGER},
 		editada_en: {type: dt.DATE},
-		revisada_por_id: {type: dt.INTEGER},
-		revisada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.INTEGER},
 
 		capturada_por_id: {type: dt.INTEGER},
 		capturada_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "PROD_capitulos",
+		tableName: "EDIC_peliculas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
@@ -71,13 +55,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "analizada_por_id"});
 		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "revisada_por", foreignKey: "revisada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
+
 	};
 	return entidad;
 };

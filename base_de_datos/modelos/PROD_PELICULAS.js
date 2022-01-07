@@ -9,6 +9,7 @@ module.exports = (sequelize, dt) => {
 		nombre_original: {type: dt.STRING(100)},
 		idioma_original_id: {type: dt.STRING(2)},
 		duracion: {type: dt.INTEGER},
+		paises_id: {type: dt.STRING(18)},
 		ano_estreno: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
@@ -74,7 +75,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
 		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
 
-		entidad.hasMany(n.relacion_pais_prod, {as: "paises",foreignKey: "pelicula_id"});
 	};
 	return entidad;
 };
