@@ -1,6 +1,7 @@
 const db = require("../../base_de_datos/modelos");
 
 module.exports = {
+	// Obtener
 	obtenerTodos: (entidad, orden) => {
 		return db[entidad].findAll({
 			order: [[orden, "ASC"]],
@@ -23,13 +24,7 @@ module.exports = {
 		});
 	},
 
-	// filtrarPorParametroConInclude: (entidad, parametro, valor, includes) => {
-	// 	return db[entidad].findAll({
-	// 		where: {[parametro]: valor},
-	// 		include: includes,
-	// 	});
-	// },
-
+	// Otras
 	agregarRegistro: (datos) => {
 		return db[datos.entidad].create(datos);
 	},
@@ -37,4 +32,11 @@ module.exports = {
 	actualizarRegistro: (entidad, datos, id) => {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
+
+	contarCasos: (entidad, campo, valor) => {
+		return db[entidad].count({
+			where: {[campo]: valor}
+		})
+	}
+
 };
