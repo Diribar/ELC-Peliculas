@@ -33,14 +33,12 @@ module.exports = {
 		// Problema 1: PRODUCTO NO ENCONTRADO
 		if (!producto) return res.redirect("/producto/no-encontrado");
 		// Problema 2: PRODUCTO NO APROBADO
-		if (
-			!producto.status_registro.aprobada &&
-			(!req.session.req.session.usuario ||
-				producto.creada_por_id != req.session.req.session.usuario.id)
-		) {
-			req.session.noAprobado = producto;
-			cookie = {status_registro: {nombre: producto.status_registro.nombre}};
-			res.cookie("noAprobado", cookie, {maxAge: 24 * 60 * 60 * 1000});
+		let noAprobada = !producto.status_registro.aprobada;
+		let usuario = req.session.req.session.usuario;
+		let otroUsuario = !usuario || producto.creada_por_id != usuario.id;
+		if (noAprobada && otroUsuario) {
+			req.session.noAprobado = {status_registro: {nombre: producto.status_registro.nombre}};
+			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
 			return res.redirect("/producto/no-aprobado");
 		}
 		// Continuar...
