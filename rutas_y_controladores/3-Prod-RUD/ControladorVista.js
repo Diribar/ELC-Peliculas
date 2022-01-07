@@ -9,7 +9,7 @@ module.exports = {
 		// 1. Tema y Código
 		tema = "producto";
 		codigo = "detalle";
-		// Obtener los datos clave de la película
+		// Obtener los datos identificatorios de la película
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Definir los campos include
