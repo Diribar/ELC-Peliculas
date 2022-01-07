@@ -384,7 +384,6 @@ module.exports = {
 		// 4. Obtener los errores
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		// 5. Render del formulario
-		// return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
