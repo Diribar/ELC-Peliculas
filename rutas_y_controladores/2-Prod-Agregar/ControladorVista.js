@@ -527,7 +527,7 @@ module.exports = {
 			ELC_id: registro.id,
 			editada_en: hora,
 			capturada_en: hora,
-			status_registro_id: 6,
+			status_registro_id: 2,
 		};
 		//return res.send([original, registro, edicion]);
 		await BD_varias.agregarRegistro(edicion);

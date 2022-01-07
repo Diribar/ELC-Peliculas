@@ -28,10 +28,23 @@ module.exports = {
 			"borrada_motivo",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener los datos de la película
+		// Obtener los datos del producto
 		let producto = await BD_especificas.obtenerProductoPorIdConInclude(entidad, ID, includes);
-		if (!producto) return res.send("Producto no encontrado")
-		return res.send(producto)
+		// Problema 1: PRODUCTO NO ENCONTRADO
+		if (!producto) return res.redirect("/producto/no-encontrado");
+		// Problema 2: PRODUCTO NO APROBADO
+		if (
+			!producto.status_registro.aprobada &&
+			(!req.session.req.session.usuario ||
+				producto.creada_por_id != req.session.req.session.usuario.id)
+		) {
+			req.session.noAprobado = producto;
+			cookie = {status_registro: {nombre: producto.status_registro.nombre}};
+			res.cookie("noAprobado", cookie, {maxAge: 24 * 60 * 60 * 1000});
+			return res.redirect("/producto/no-aprobado");
+		}
+		// Continuar...
+		return res.send(producto);
 		if (entidad == "capitulos") {
 			avatar = producto.avatar;
 			producto.paises_id = await BD_varias.obtenerPorParametro(
@@ -52,9 +65,7 @@ module.exports = {
 				? "Colección"
 				: "Capítulo";
 		// Obtener los paises
-		let paises = producto.paises_id
-			? await varias.paises_idToNombre(producto.paises_id)
-			:""
+		let paises = producto.paises_id ? await varias.paises_idToNombre(producto.paises_id) : "";
 		// Ir a la vista
 		//return res.send(paises);
 		//return res.send(producto);

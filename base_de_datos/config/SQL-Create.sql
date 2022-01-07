@@ -51,15 +51,15 @@ CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
-	aut_altas_productos BOOLEAN NOT NULL,
-	aut_aprobar_altas_prod BOOLEAN NOT NULL,
-	aut_cambiar_perfil_usuarios BOOLEAN NOT NULL,
+	aut_output BOOLEAN NOT NULL,
+	aut_gestion_prod BOOLEAN NOT NULL,
+	aut_gestion_us BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_usuario (id, orden, nombre, aut_altas_productos, aut_aprobar_altas_prod, aut_cambiar_perfil_usuarios)
+INSERT INTO roles_usuario (id, orden, nombre, aut_output, aut_gestion_prod, aut_gestion_us)
 VALUES 
 (1, 1, 'Usuario', 0, 0, 0),
-(5, 2, 'Autorizado p/Altas de Prod.', 1, 0, 0),
+(5, 2, 'Autorizado p/Outputs', 1, 0, 0),
 (2, 3, 'Gestión de Productos', 1, 1, 0),
 (3, 4, 'Gestión de Usuarios', 1, 0, 1),
 (4, 5, 'Gestión de Prod. y Usuarios', 1, 1, 1)
@@ -209,16 +209,17 @@ VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 
 CREATE TABLE status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(22) NOT NULL UNIQUE,
+	nombre VARCHAR(25) NOT NULL UNIQUE,
+	aprobado BOOLEAN,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro (id, orden, nombre)
+INSERT INTO status_registro (id, orden, nombre, aprobado)
 VALUES 
-(1, 1, 'Creada'), 
-(6, 2, 'Editada'),
-(2, 3, 'Aprobada'),
-(5, 4, 'Sugerida p/borrar'),
-(3, 5, 'Borrada')
+(1, 1, 'Creada pend./aprobar', 0), 
+(2, 2, 'Editada pend./aprobar', 0),
+(3, 3, 'Aprobada', 1),
+(4, 4, 'Sugerida p/borrar', 0),
+(5, 5, 'Borrada', 0)
 ;
 CREATE TABLE epocas_estreno (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -311,7 +312,7 @@ CREATE TABLE USUARIOS (
 	pais_id VARCHAR(2) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	rol_iglesia_id VARCHAR(3) NULL,
-	autorizado_fa BOOLEAN NULL DEFAULT 0,
+	autorizado_fa BOOLEAN DEFAULT 0,
 	aut_data_entry BOOLEAN DEFAULT 0,
 
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -717,8 +718,9 @@ VALUES
 
 INSERT INTO rclv_personajes_historicos (id, nombre )
 VALUES 
-(2, 'Jesús'),
-(3, 'María, madre de Jesús')
+(1, 'Varios (colección)'),
+(6, 'Jesús'),
+(7, 'María, madre de Jesús')
 ;
 INSERT INTO rclv_personajes_historicos (id, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
 VALUES 
