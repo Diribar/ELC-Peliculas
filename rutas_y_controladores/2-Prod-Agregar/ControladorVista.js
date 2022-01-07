@@ -31,7 +31,6 @@ module.exports = {
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 4. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -80,7 +79,6 @@ module.exports = {
 		let desambiguar = await buscar_x_PC.search(palabrasClave);
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -132,7 +130,6 @@ module.exports = {
 		// 4. Obtener los errores
 		let errores = req.session.erroresTP ? req.session.erroresTP : "";
 		// 5. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -185,7 +182,6 @@ module.exports = {
 			? await validarProd.copiarFA(copiarFA)
 			: "";
 		// 4. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -243,7 +239,6 @@ module.exports = {
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 		}
 		borrarSessionCookies(req, res, "datosDuros");
-		//return res.send(req.cookies);
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosDuros = req.session.datosDuros
 			? req.session.datosDuros
@@ -274,7 +269,6 @@ module.exports = {
 			: await BD_varias.obtenerTodos("paises", "nombre");
 		// 7. Render del formulario
 		//return res.send(datosDuros);
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -488,7 +482,6 @@ module.exports = {
 		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
 		actuacion = actuacion.slice(0, indice);
 		// 5. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -560,7 +553,6 @@ module.exports = {
 	},
 
 	terminasteForm: (req, res) => {
-		//return res.send(req.cookies);
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "terminaste";
@@ -585,7 +577,6 @@ module.exports = {
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 6. Render del formulario
-		//return res.send(req.cookies);
 		return res.render("Home", {
 			tema,
 			codigo,
