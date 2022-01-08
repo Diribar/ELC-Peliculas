@@ -132,13 +132,13 @@ CREATE TABLE RCLV_borrado_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
-	penalizacion_id TINYINT UNSIGNED NOT NULL,
+	penalizacion_id TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (penalizacion_id) REFERENCES penalizaciones_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO RCLV_borrado_motivos (id, orden, penalizacion_id, nombre)
 VALUES 
-(1, 1, 6, 'Spam, el nombre no son palabras'),
+(1, 1, 6, 'Nombre inexistente'),
 (2, 3, null, 'No tiene productos asociados')
 ;
 
@@ -146,16 +146,16 @@ CREATE TABLE PROD_borrado_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
-	penalizacion_id BOOLEAN NOT NULL,
+	penalizacion_id TINYINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (penalizacion_id) REFERENCES penalizaciones_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO PROD_borrado_motivos (id, orden, penalizacion_id, nombre)
 VALUES 
-(4, 1, 4, 'Producto duplicado', 'Ya tenemos el producto en nuestra BD, en otro registro'),
-(1, 2, 1, 'Ajeno a nuestro perfil', 'Audiovisual ajeno a nuestro perfil'),
-(2, 3, 2, 'Ajeno con mofa', 'Audiovisual ajeno a nuestro perfil, con mofa'),
-(3, 4, 3,'Ajeno con pornografía', 'Audiovisual ajeno a nuestro perfil, con pornografía'),
+(4, 1, 4, 'Producto duplicado'),
+(1, 2, 1, 'Ajeno a nuestro perfil'),
+(2, 3, 2, 'Ajeno con mofa'),
+(3, 4, 3,'Ajeno con pornografía')
 ;
 
 CREATE TABLE categorias (
@@ -339,6 +339,7 @@ CREATE TABLE USUARIOS (
 	contrasena VARCHAR(100) NOT NULL,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
+	numero_documento INT UNSIGNED NULL,
 	apodo VARCHAR(50) NULL,
 	avatar VARCHAR(100) DEFAULT '-',
 	fecha_nacimiento DATE NULL,
@@ -351,11 +352,11 @@ CREATE TABLE USUARIOS (
 
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	completado_en DATETIME NULL,
-	borrado_motivo_id TINYINT UNSIGNED NULL,
-	borrado_motivo_comentario VARCHAR(500) NULL,
+	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	editado_en DATETIME NULL,
+	inhabilitado_id TINYINT UNSIGNED NULL,
+	inhabilitado_hasta DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (sexo_id) REFERENCES sexos(id),
@@ -363,7 +364,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_usuario(id),
-	FOREIGN KEY (borrado_motivo_id) REFERENCES motivos_para_borrar(id)
+	FOREIGN KEY (inhabilitado_id) REFERENCES motivos_para_borrar(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE us_penalizaciones (
@@ -405,7 +406,7 @@ CREATE TABLE RCLV_borrados(
 	borrado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	motivo VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (borrado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE RCLV_personajes_historicos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -511,10 +512,10 @@ CREATE TABLE PROD_peliculas (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+
+	borrada_id TINYINT UNSIGNED NULL,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
@@ -537,11 +538,11 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
+	FOREIGN KEY (borrada_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PROD_colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -583,10 +584,10 @@ CREATE TABLE PROD_colecciones (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+
+	borrada_id TINYINT UNSIGNED NULL,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
@@ -608,11 +609,11 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
+	FOREIGN KEY (borrada_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -655,10 +656,10 @@ CREATE TABLE PROD_capitulos (
 	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+
+	borrada_id TINYINT UNSIGNED NULL,
 
 	editada_por_id INT UNSIGNED NULL,
 	editada_en DATETIME NULL,
@@ -682,11 +683,11 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
+	FOREIGN KEY (borrada_id) REFERENCES motivos_para_borrar(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE PROD_borrados(
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -696,7 +697,7 @@ CREATE TABLE PROD_borrados(
 	borrado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	motivo VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (borrado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE pr_us_calificaciones (

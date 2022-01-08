@@ -32,12 +32,9 @@ module.exports = (sequelize, dt) => {
 		link_trailer: {type: dt.STRING(200)},
 		link_pelicula: {type: dt.STRING(200)},
 
-		borrada_motivo_id: {type: dt.INTEGER},
-		borrada_motivo_comentario: {type: dt.STRING(500)},
-		status_registro_id: {type: dt.INTEGER},
-
 		editada_por_id: {type: dt.INTEGER},
 		editada_en: {type: dt.DATE},
+		status_registro_id: {type: dt.INTEGER},
 
 		capturada_por_id: {type: dt.INTEGER},
 		capturada_en: {type: dt.DATE},
@@ -59,10 +56,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
-		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id"});
+		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
 	};
 	return entidad;
 };

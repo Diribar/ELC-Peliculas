@@ -31,12 +31,9 @@ CREATE TABLE EDIC_peliculas (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
@@ -51,10 +48,9 @@ CREATE TABLE EDIC_peliculas (
 	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
 	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS EDIC_colecciones;
@@ -90,12 +86,9 @@ CREATE TABLE EDIC_colecciones (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
@@ -109,10 +102,9 @@ CREATE TABLE EDIC_colecciones (
 	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
 	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS EDIC_capitulos;
@@ -149,12 +141,9 @@ CREATE TABLE EDIC_capitulos (
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
 
-	borrada_motivo_id TINYINT UNSIGNED NULL,
-	borrada_motivo_comentario VARCHAR(500) NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
 	
 	capturada_por_id INT UNSIGNED NULL,
 	capturada_en DATETIME NULL,
@@ -170,8 +159,7 @@ CREATE TABLE EDIC_capitulos (
 	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
 	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (borrada_motivo_id) REFERENCES motivos_para_borrar(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id),	
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

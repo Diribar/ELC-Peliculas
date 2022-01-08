@@ -23,9 +23,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
 		entidad.belongsTo(n.RCLV_borrados, {as: "borrado", foreignKey: "borrado_id"});
 
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "valores_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "valores_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "valores_id"});
+		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "valor_id"});
+		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "valor_id"});
+		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "valor_id"});
 	};
 	return entidad;
 };
