@@ -27,13 +27,13 @@ module.exports = {
 			disponible.codigo = "creador";
 		} else if (
 			// 2. REVISOR
-			usuario.rol_usuario.aut_aprobar_altas_prod && // Soy un revisor y
+			usuario.rol_usuario.aut_gestion_prod && // Soy un gestor y
 			!producto.analizada_en && // No está analizada aún y
 			producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
 			haceUnaHora > producto.creada_en && // Se dio de alta hace más de 1 hora
 			statusCaptura
 		) {
-			disponible.codigo = "revisor";
+			disponible.codigo = "gestor";
 		} else if (
 			// 3. EN_REGIMEN
 			producto.analizada_en && // El producto está analizado y
@@ -54,8 +54,8 @@ module.exports = {
 				disponible.mensaje="El producto se creó hace más de una hora. Está reservado para que nuestro equipo la pueda analizar."
 			} else if (
 				// 2. NO REVISOR
-				// No soy revisor, no lo creé y todavía no está aprobado
-				!usuario.rol_usuario.aut_aprobar_altas_prod && // No soy un revisor y
+				// No soy gestor, no lo creé y todavía no está aprobado
+				!usuario.rol_usuario.aut_gestion_prod && // No soy un gestor y
 				producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
 				!producto.analizada_en // No está analizada aún
 			) {

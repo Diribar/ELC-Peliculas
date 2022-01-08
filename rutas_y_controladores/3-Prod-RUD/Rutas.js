@@ -11,7 +11,6 @@ let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
 // Controladores de APIs
 router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
 
-
 // Controladores de vistas
 router.get("/detalle", vista.detalle);
 router.get("/editar", soloUsuarios, vista.editar);

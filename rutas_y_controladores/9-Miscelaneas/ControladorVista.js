@@ -138,6 +138,22 @@ module.exports = {
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 
+	prodNoEncontrado: (req, res) => {
+		return res.send("Producto no encontrado");
+	},
+
+	prodNoAprobado: (req, res) => {
+		// Tomar datos de session o cookies
+		noAprobado = req.session.noAprobado
+			? req.session.noAprobado
+			: req.cookies.noAprobado
+			? req.cookies.noAprobado
+			: "";
+		let frase = "El producto no está aprobado para ser mostrado. Status actual: ";
+		return res.send(frase + noAprobado.status_registro.nombre);
+		return res.send("El producto no está aprobado para ser mostrado. Status actual: ");
+	},
+
 	session: (req, res) => {
 		return res.send(req.session);
 	},
