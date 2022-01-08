@@ -510,6 +510,8 @@ module.exports = {
 			creada_por_id: confirma.creada_por_id,
 			creada_en: hora,
 			status_registro_id: 1,
+			capturada_por_id: confirma.creada_por_id,
+			capturada_en: hora,
 		};
 		if (confirma.link_trailer) original.link_trailer = confirma.link_trailer;
 		if (confirma.link_pelicula) original.link_pelicula = confirma.link_pelicula;
@@ -527,7 +529,7 @@ module.exports = {
 			ELC_id: registro.id,
 			editada_en: hora,
 			capturada_en: hora,
-			status_registro_id: 2,
+			status_registro_id: 1,
 		};
 		//return res.send([original, registro, edicion]);
 		await BD_varias.agregarRegistro(edicion);

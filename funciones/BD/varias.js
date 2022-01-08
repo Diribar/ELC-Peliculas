@@ -14,8 +14,26 @@ module.exports = {
 		});
 	},
 
+	obtenerPorParametroConInclude: (entidad, parametro, valor, includes) => {
+		return db[entidad].findOne({
+			where: {[parametro]: valor},
+			include: includes,
+		});
+	},
+
+	obtenerPorParametrosConInclude: (entidad, parametro1, valor1, parametro2, valor2, includes) => {
+		return db[entidad].findOne({
+			where: {[parametro1]: valor1, [parametro2]: valor2},
+			include: includes,
+		});
+	},
+
 	obtenerPorId: (entidad, id) => {
 		return db[entidad].findByPk(id);
+	},
+
+	obtenerPorIdConInclude: (entidad, id, includes) => {
+		return db[entidad].findByPk(id, {include: includes});
 	},
 
 	obtenerELC_id: (datos) => {
@@ -35,8 +53,7 @@ module.exports = {
 
 	contarCasos: (entidad, campo, valor) => {
 		return db[entidad].count({
-			where: {[campo]: valor}
-		})
-	}
-
+			where: {[campo]: valor},
+		});
+	},
 };

@@ -28,7 +28,7 @@ module.exports = {
 		} else if (
 			// 2. REVISOR
 			usuario.rol_usuario.aut_gestion_prod && // Soy un gestor y
-			!producto.analizada_en && // No está analizada aún y
+			!producto.alta_analizada_en && // No está analizada aún y
 			producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
 			haceUnaHora > producto.creada_en && // Se dio de alta hace más de 1 hora
 			statusCaptura
@@ -36,7 +36,7 @@ module.exports = {
 			disponible.codigo = "gestor";
 		} else if (
 			// 3. EN_REGIMEN
-			producto.analizada_en && // El producto está analizado y
+			producto.alta_analizada_en && // El producto está analizado y
 			statusCaptura
 		) {
 			disponible.codigo = "regimen";
@@ -48,7 +48,7 @@ module.exports = {
 				// Se dio de alta por mí hace más de 1 hora, y todavía no está analizado
 				producto.creada_por_id == usuario.id && // Se dio de alta por este usuario y
 				haceUnaHora > producto.creada_en && // Se dio de alta hace menos de 1 hora
-				!producto.analizada_en // No está analizada aún
+				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "creador";
 				disponible.mensaje="El producto se creó hace más de una hora. Está reservado para que nuestro equipo la pueda analizar."
@@ -57,7 +57,7 @@ module.exports = {
 				// No soy gestor, no lo creé y todavía no está aprobado
 				!usuario.rol_usuario.aut_gestion_prod && // No soy un gestor y
 				producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
-				!producto.analizada_en // No está analizada aún
+				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "noRevisor";
 				disponible.mensaje="El producto no está autorizado aún, no se puede editar."				
