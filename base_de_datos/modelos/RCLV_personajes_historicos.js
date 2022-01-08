@@ -8,22 +8,12 @@ module.exports = (sequelize, dt) => {
 
 		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
-		alta_analizada_por_id: {type: dt.INTEGER},
-		alta_analizada_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.INTEGER},
-		status_registro_id: {type: dt.INTEGER},
-
-		borrada_motivo_id: {type: dt.INTEGER},
-		borrada_motivo_comentario: {type: dt.STRING(500)},
-
 		editada_por_id: {type: dt.INTEGER},
 		editada_en: {type: dt.DATE},
-		edic_analizada_por_id: {type: dt.INTEGER},
-		edic_analizada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.INTEGER},
-
 		capturada_por_id: {type: dt.INTEGER},
 		capturada_en: {type: dt.DATE},
+
+		borrado_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "RCLV_personajes_historicos",
@@ -36,12 +26,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "analizada_por", foreignKey: "alta_analizada_por_id"});
-		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id",});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id",});
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
-		entidad.belongsTo(n.motivos_para_borrar, {as: "borrada_motivo", foreignKey: "borrada_motivo_id",});
+		entidad.belongsTo(n.RCLV_borrados, {as: "borrado", foreignKey: "borrado_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "personaje_historico_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_historico_id"});

@@ -13,6 +13,7 @@ RCLV
 - Valores:
     - Agregar link en DP
     - Agregar vista
+- Cuando el nombre ya figura en la BD, "traer" todos los datos
 
 PRODUCTO YA EN BD
 Vista:
