@@ -19,12 +19,6 @@ module.exports = {
 		});
 	},
 
-	obtenerProductoPorIdConInclude: (entidad, id, includes) => {
-		return db[entidad].findByPk(id, {
-			include: includes,
-		});
-	},
-
 	quickSearch: async (condiciones) => {
 		let peliculas = db.peliculas.findAll({where: condiciones, limit: 10}).then((n) =>
 			n.map((m) => {
