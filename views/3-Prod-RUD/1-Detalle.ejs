@@ -1,7 +1,7 @@
 <div class="flex-row" id="datos">
 	<section id="datosLargos">
 		<div id="contenido">
-			<!-- 1. Tipo de Producto, Temporada, Capítulo, Colección -->
+			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<div>
 				<h1><%= producto.nombre_castellano %> <em><% if (producto.nombre_original) { %>(<%= producto.nombre_original %>)<% } %></em></h1>
 				<!-- Tipo de Producto -->
@@ -17,7 +17,7 @@
 					<p><strong>N° de Temporada y de Capítulo:</strong> <%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporadas" %>, <%= "Capítulo " + producto.capitulo %></p>
 				<% } %>
 			</div>
-			<!-- 2. Sinopsis -->
+			<!-- Sinopsis -->
 			<div id="sinopsis"><%= producto.sinopsis %></div>
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
@@ -37,9 +37,9 @@
 			<div class="datosAdicionales">
 				<strong>Actuación:</strong> <%= producto.actuacion %>. 
 			</div>	
-			<!-- 4. Capítulos de Colección -->
+			<!-- Capítulos de Colección -->
 		</div>
-		<!-- 5. Botones -->
+		<!-- Botones -->
 		<div id="botones">
 			<button>Ver un Trailer</button>
 			<% if (entidad != "colecciones") { %>

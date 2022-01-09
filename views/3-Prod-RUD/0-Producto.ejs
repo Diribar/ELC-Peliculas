@@ -16,7 +16,7 @@
 	<%- include('1-Header') %>
 	<main class="flex-row">
 		<section id="imagenProducto">
-			<img alt="<%= producto.nombre_castellano %>" src="<% if (producto.avatar.slice(0,4)!="http") { %>/imagenes/2-Productos/<% } %><%= producto.avatar %>" title="<%= producto.nombre_castellano %>">
+			<img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
 		</section>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
