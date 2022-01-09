@@ -83,20 +83,26 @@ module.exports = {
 			delete edicion.id;
 			delete edicion.ELC_id;
 			// Cruzar la info
-			detalle = {...producto, ...edicion}
+			detalle = {...producto, ...edicion};
 		} else detalle = {...producto};
-		return res.send([detalle, producto, edicion]);
-		// Continuar...
+		//return res.send(detalle);
+		// Obtener avatar
+		let rutaAvatar = prodEditado ? "/imagenes/3-ProductosEditados/" : "/imagenes/2-Productos/";
+		let avatar = detalle.avatar
+			? entidad == "capitulos"
+				? detalle.avatar
+				: rutaAvatar + detalle.avatar
+			: "/imagenes/8-Agregar/Desamb-IM.jpg";
+		// Obtener los países
+		let paises = producto.paises_id ? await varias.paises_idToNombre(producto.paises_id) : "";
 		// Ir a la vista
-		//return res.send(paises);
-		//return res.send(producto);
 		return res.render("0-Producto", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
 			ID,
-			producto,
+			producto: detalle,
 			avatar,
 			paises,
 		});
