@@ -666,7 +666,7 @@ let borrarSessionCookies = (req, res, paso) => {
 		"desambiguar",
 		"tipoProducto",
 		"datosOriginales",
-		// 'copiarFA va después de datosOriginales porque se genera antes
+		// 'copiarFA va después de datosOriginales porque ese es el orden en el que se generan
 		"copiarFA",
 		"datosDuros",
 		"datosPers",
