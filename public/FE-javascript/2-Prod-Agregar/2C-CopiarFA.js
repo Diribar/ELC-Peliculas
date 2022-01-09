@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let iconoError = document.querySelectorAll(".fa-times-circle");
 	let resultadoComentario = document.querySelector("#resultado");
-	let entidad = document.querySelector("select[name='entidad']");
+	let entidad = document.querySelector("#entidad").innerHTML;
 	let statusInicial = true;
 	let pre = "/producto/agregar/api/";
 
@@ -51,19 +51,19 @@ window.addEventListener("load", async () => {
 	let verificarRepetido = async () => {
 		direccion = document.querySelector(".input[name='direccion']").value;
 		FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
-		url = "entidad=" + entidad.value;
+		url = "entidad=" + entidad;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
 		ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
 		// Definir el mensaje
-		return ELC_id
+		return ELC_id 
 			? "Esta " +
-					"<a href='/producto/detalle/informacion/?entidad=" +
-					entidad.value +
+					"<a href='/producto/detalle/?entidad=" +
+					entidad +
 					"&id=" +
 					ELC_id +
 					"' target='_blank'><u><strong>" +
-					entidad.selectedOptions[0].label +
+					entidad +
 					"</strong></u></a>" +
 					" ya se encuentra en nuestra base de datos"
 			: "";

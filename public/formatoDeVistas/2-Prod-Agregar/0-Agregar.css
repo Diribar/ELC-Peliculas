@@ -25,7 +25,7 @@
 #dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
-#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {left: -20px;}
+#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {right: -20px;}
 #dataEntry .fa-times-circle {z-index: 1;}
 
 /* Procesando información */

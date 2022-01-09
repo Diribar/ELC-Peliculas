@@ -1,3 +1,13 @@
+DATOS DUROS
+- Agregar el campo "idioma original"
+
+CONFIRMAR --> Original según el origen:
+- copiarFA
+    - FA_id
+    - fuente
+    - creada por
+    - calificaciones
+
 TIPO PRODUCTO
 - Vista: Errores
 - BE-Guardar: Revisar errores
@@ -10,7 +20,7 @@ COPIAR FA:
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
-- Valores:
+- Rubro "Valores":
     - Agregar link en DP
     - Agregar vista
 - Cuando el nombre ya figura en la BD, "traer" todos los datos
