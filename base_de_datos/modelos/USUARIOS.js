@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		contrasena: {type: dt.STRING(50)},
 		nombre: {type: dt.STRING(50)},
 		apellido: {type: dt.STRING(50)},
+		numero_documento: {type: dt.INTEGER},
 		apodo: {type: dt.STRING(50)},
 		avatar: {type: dt.STRING(100)},
 		fecha_nacimiento: {type: dt.DATE},
@@ -16,11 +17,11 @@ module.exports = (sequelize, dt) => {
 
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},
-		borrado_motivo_id: {type: dt.INTEGER},
-		borrado_motivo_comentario: {type: dt.STRING(500)},
+		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
 
-		editado_en: {type: dt.DATE},
+		inhabilitado_id: {type: dt.INTEGER},
+		inhabilitado_hasta: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "usuarios",
@@ -34,7 +35,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.roles_usuarios, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 		entidad.belongsTo(n.status_registro_usuario, {as: "status_registro", foreignKey: "status_registro_id"});
-		entidad.belongsTo(n.motivos_para_borrar, {as: "borrado_motivo", foreignKey: "borrado_motivo_id"});
+		entidad.belongsTo(n.motivos_para_borrar, {as: "inhabilitado", foreignKey: "inhabilitado_id"});
 
 		entidad.hasMany(n.us_calificaciones, {as: "calificaciones",foreignKey: "usuario_id"});
 		entidad.hasMany(n.us_interes_en_prod, {as: "interes_en_prod",foreignKey: "usuario_id"});

@@ -25,8 +25,8 @@ router.post("/agregar/RCLV_personajes_historicos", soloUsuarios, vista.RCLV_Grab
 router.post("/agregar/RCLV_hechos_historicos", soloUsuarios, vista.RCLV_Grabar);
 
 // Errores
-router.get("/producto/no-encontrado", vista.prodNoEncontrado);
-router.get("/producto/no-aprobado", vista.prodNoAprobado);
+router.get("/error/producto-no-encontrado", vista.prodNoEncontrado);
+router.get("/error/producto-no-aprobado", vista.prodNoAprobado);
 
 // Miscelaneas
 router.get("/session", vista.session);

@@ -349,7 +349,7 @@ module.exports = {
 		}
 		// 7. Configurar los valores de la variable 'avatar'
 		let avatarDP = "/imagenes/9-Provisorio/" + nombre;
-		let avatarCF = nombre;
+		let avatarBD = nombre;
 		// 8. Si la imagen venía de TMDB, entonces grabarla
 		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
 			varias.download(datosDuros.avatar, rutaYnombre);
@@ -359,7 +359,7 @@ module.exports = {
 		req.session.datosPers = {
 			...req.session.datosDuros,
 			avatarDP,
-			avatarCF,
+			avatarBD,
 		};
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
@@ -515,13 +515,20 @@ module.exports = {
 		};
 		if (confirma.link_trailer) original.link_trailer = confirma.link_trailer;
 		if (confirma.link_pelicula) original.link_pelicula = confirma.link_pelicula;
-		//return res.send(original)
 		registro = await BD_varias.agregarRegistro(original);
-		// 2. Guardar los datos de 'Edición'
-		confirma.avatar = confirma.avatarCF;
+		// 3. Almacenar el dato de BD del avatar
+		confirma.avatar = confirma.avatarBD;
+		// 4. Eliminar los datos prescindibles en Edición
+		datosEdicion = {...confirma};
+		let campos = Object.keys(datosEdicion);
+		let valores = Object.values(datosEdicion);
+		for (i = campos.length - 1; i >= 0; i--) {
+			if (valores[i] === original[campos[i]]) delete datosEdicion[campos[i]];
+		}
+		// 5. Guardar los datos de 'Edición'
 		let edicion = {
 			// Datos de 'confirma'
-			...confirma,
+			...datosEdicion,
 			entidad: confirma.entidad + "Edicion",
 			editada_por_id: confirma.creada_por_id,
 			capturada_por_id: confirma.creada_por_id,
@@ -531,13 +538,12 @@ module.exports = {
 			capturada_en: hora,
 			status_registro_id: 1,
 		};
-		//return res.send([original, registro, edicion]);
 		await BD_varias.agregarRegistro(edicion);
-		// 3. Guardar datosTerminaste
+		// 6. Guardar datosTerminaste
 		datosTerminaste = funcDatosTerminaste({...confirma, id: registro.id});
 		req.session.datosTerminaste = datosTerminaste;
 		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
-		// 4. Funciones anexas
+		// 7. Otras tareas
 		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
@@ -549,7 +555,7 @@ module.exports = {
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProductosEditados");
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
-		// 5. Redireccionar
+		// 8. Redireccionar
 		return res.redirect("/producto/agregar/terminaste");
 	},
 
