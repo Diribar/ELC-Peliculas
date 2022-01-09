@@ -317,7 +317,7 @@ module.exports = {
 			...variables.camposDD2(),
 		]);
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
-		if (!errores.nombre_original && (datosDuros.TMDB_id || datosDuros.FA_id)) {
+		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			elc_id = await BD_varias.obtenerELC_id({
 				entidad: datosDuros.entidad,
 				campo: datosDuros.fuente + "_id",
