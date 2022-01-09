@@ -181,18 +181,20 @@ module.exports = {
 			res.cookie("copiarFA", req.body, {maxAge: 24 * 60 * 60 * 1000});
 			res.cookie("datosOriginales", req.body, {maxAge: 24 * 60 * 60 * 1000});
 		}
-		// 4. Data Entry propio y errores
+		// 4. Si se perdió la info anterior, volver a esa instancia
 		let copiarFA = req.session.copiarFA
 			? req.session.copiarFA
 			: req.cookies.copiarFA
 			? req.cookies.copiarFA
 			: "";
+		if (!copiarFA) return res.redirect("/producto/agregar/tipo-producto");
+		// 5. Detectar errores
 		let errores = req.session.erroresCFA
 			? req.session.erroresCFA
 			: copiarFA
 			? await validarProd.copiarFA(copiarFA)
 			: "";
-		// 5. Render del formulario
+		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -263,11 +265,11 @@ module.exports = {
 				? "tipo-producto"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect("/producto/agregar/" + origen);
-		// 5. Guardar DatosTerminaste
+		// 4. Guardar DatosTerminaste
 		datosTerminaste = funcDatosTerminaste(datosDuros);
 		req.session.datosTerminaste = datosTerminaste;
 		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
-		// 6. Detectar errores
+		// 5. Detectar errores
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await validarProd.datosDuros(datosDuros, [
@@ -278,9 +280,7 @@ module.exports = {
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
-		// 7. Detectar el origen
-
-		// 8. Render del formulario
+		// 6. Render del formulario
 		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
