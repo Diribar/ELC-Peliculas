@@ -11,6 +11,6 @@
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Submit button */
-#dataEntry #flechas {margin: 20px 0 0; display: flex; justify-content: space-around; align-items: center;}
+#dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
