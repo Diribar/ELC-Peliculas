@@ -8,8 +8,8 @@ window.addEventListener("load", async () => {
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Campos a controlar
 	let ruta = "/producto/agregar/api/campos-DD-a-verificar/?entidad=" + entidad + "&change=";
-	let datosDuros_change = await fetch(ruta + "true").then((n) => n.json());
-	let datosDuros_input = await fetch(ruta + "false").then((n) => n.json());
+	let campos_change = await fetch(ruta + "true").then((n) => n.json());
+	let campos_input = await fetch(ruta + "false").then((n) => n.json());
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
