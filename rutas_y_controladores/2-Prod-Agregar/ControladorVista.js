@@ -252,7 +252,7 @@ module.exports = {
 		// 5. Detectar errores
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
-			: await validarProd.datosDuros(datosDuros, variables.camposDD());
+			: await validarProd.datosDuros_input(datosDuros, variables.camposDD());
 		//return res.send(errores)
 		// Obtener países e idiomas
 		let paises = datosDuros.paises_id
@@ -291,7 +291,7 @@ module.exports = {
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 3. Averiguar si hay errores de validación. Se usa el nombre del archivo multer, si existe
 		avatar = req.file ? req.file.filename : datosDuros.avatar;
-		let errores = await validarProd.datosDuros({...datosDuros, avatar}, variables.camposDD);
+		let errores = await validarProd.datosDuros_input({...datosDuros, avatar}, variables.camposDD);
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			elc_id = await BD_varias.obtenerELC_id({

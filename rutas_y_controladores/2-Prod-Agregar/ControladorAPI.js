@@ -64,13 +64,13 @@ module.exports = {
 		return res.json(ELC_id);
 	},
 	// Vista (datosDuros)
-	obtenerPaises: async (req, res) => {
+	camposDD: async (req, res) => {
 		paises = await BD_varias.obtenerTodos("paises", "nombre");
 		return res.json(paises);
 	},
-	validarDatosDuros: (req, res) => {
+	validarDatosDuros_input: (req, res) => {
 		let campoParaAnalizar = Object.keys(req.query).pop()
-		errores = validarProd.datosDuros(req.query, campoParaAnalizar);
+		errores = validarProd.datosDuros_input(req.query, campoParaAnalizar);
 		return res.json(errores);
 	},
 	// Vista (datosPers)

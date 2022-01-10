@@ -3,6 +3,7 @@ TIPO PRODUCTO
 - BE-Guardar: Revisar errores
 
 DATOS DUROS
+- FE: tomar los países de las opciones de la vista
 - Campos a agregar para colecciones:
     - cant_temporadas
     - cant_capitulos
