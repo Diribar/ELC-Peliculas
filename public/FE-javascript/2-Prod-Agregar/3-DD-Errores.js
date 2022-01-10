@@ -10,8 +10,6 @@ window.addEventListener("load", async () => {
 	let ruta = "/producto/agregar/api/campos-DD-a-verificar/?entidad=" + entidad + "&change=";
 	let datosDuros_change = await fetch(ruta + "true").then((n) => n.json());
 	let datosDuros_input = await fetch(ruta + "false").then((n) => n.json());
-	console.log(datosDuros_change);
-	console.log(datosDuros_input);
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
@@ -27,7 +25,7 @@ window.addEventListener("load", async () => {
 		campo = e.target.name;
 		console.log(campo);
 		if (campo == "nombre_original" || campo == "ano_estreno") {
-			
+
 		}
 		if (campo == "nombre_castellano" || campo == "ano_estreno") {}
 	})
