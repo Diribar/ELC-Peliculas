@@ -1,7 +1,7 @@
 <section class="label-input">
 	<label>Idioma original</label>
 	<div class="input-error">
-		<select name="idioma_original_id" autofocus class="input">
+		<select name="idioma_original_id" autofocus class="input" <% if (idioma_id) { %>disabled<% } %>>
 			<option value="" <% if (idioma_id=="") { %>selected<% } %> class="ocultar">Elejí un idioma</option>
 			<optgroup label="Más frecuentes">
 				<% for (idioma of idiomas.filter(n => n.mas_frecuente)) { %>
@@ -14,6 +14,9 @@
 				<% } %>	
 			</optgroup>
 		</select>
+		<!-- Ayuda -->
+		<%- (dataEntry.idioma_original_id && !errores.idioma_original_id) ? include("39-DD-Mensajes") : "" %>
+		<!-- Errores -->
 		<i class="fas fa-times-circle<%- !errores.idioma_original_id ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.idioma_original_id %></span>
 		</i>

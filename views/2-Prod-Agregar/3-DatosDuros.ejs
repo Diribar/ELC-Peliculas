@@ -2,6 +2,7 @@
 	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
 </h1>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
+	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
 	<section id="titulos">
 		<h2>Paso 3 de 5: Completá los Datos Duros</h2>
 		<!-- Links a otras páginas de consulta -->

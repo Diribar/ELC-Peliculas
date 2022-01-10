@@ -2,19 +2,23 @@
 let BD_varias = require("../BD/varias");
 
 module.exports = {
-	camposDD1: () => {
+	camposDD: () => {
 		return [
 			{
 				titulo: "Título original",
 				campo: "nombre_original",
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
+				change: true,
 			},
 			{
 				titulo: "Título en castellano",
 				campo: "nombre_castellano",
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
+				change: true,
 			},
 			{
 				titulo: "Temporadas",
@@ -22,6 +26,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Capítulos",
@@ -29,6 +34,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Año de estreno",
@@ -36,6 +42,7 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Año de finalización",
@@ -43,6 +50,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Duración (minutos)",
@@ -50,12 +58,8 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: false,
+				antesDePais: true,
 			},
-		];
-	},
-
-	camposDD2: () => {
-		return [
 			{titulo: "Dirección", campo: "direccion", peliculas: true, colecciones: true},
 			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
 			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},

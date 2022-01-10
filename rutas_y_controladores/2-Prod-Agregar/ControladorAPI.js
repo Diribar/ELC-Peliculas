@@ -1,7 +1,7 @@
 // ************ Requires ************
 let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
-let validarProd = require("../../funciones/Prod-Agregar/3-Errores");
+let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 
@@ -69,12 +69,13 @@ module.exports = {
 		return res.json(paises);
 	},
 	validarDatosDuros: async (req, res) => {
-		errores = await validarProd.datosDuros(req.query, Object.keys(req.query));
+		let campoParaAnalizar = Object.keys(req.query).pop()
+		errores = await validarProd.datosDuros(req.query, campoParaAnalizar);
 		return res.json(errores);
 	},
 	// Vista (datosPers)
 	obtenerDatosSubcategoria: async (req, res) => {
-		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id)
+		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id);
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {

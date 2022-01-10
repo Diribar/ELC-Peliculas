@@ -3,7 +3,13 @@ TIPO PRODUCTO
 - BE-Guardar: Revisar errores
 
 DATOS DUROS
-- Considerar como error si el nombre original o en castellano, ya existen
+- Campos a agregar para colecciones:
+    - cant_temporadas
+    - cant_capitulos
+- Averiguar si el nombre original o en castellano, ya existen y son del mismo año
+    - Averiguarlo mediante un 'change' en el input
+    - Si es la misma entidad, considerarlo como un 'error'
+    - Si es otra entidad, considerarlo como un 'warning'
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol
