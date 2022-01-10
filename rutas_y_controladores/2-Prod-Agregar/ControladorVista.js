@@ -257,9 +257,11 @@ module.exports = {
 					...variables.camposDD2(),
 			  ]);
 		//return res.send(errores)
+		// Obtener países e idiomas
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
+		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 		// 6. Render del formulario
 		//return res.send(datosDuros);
 		return res.render("Home", {
@@ -267,10 +269,11 @@ module.exports = {
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosDuros,
-			paises,
 			errores,
 			camposDD1: variables.camposDD1(),
 			camposDD2: variables.camposDD2(),
+			paises,
+			idiomas,
 			origen,
 		});
 	},

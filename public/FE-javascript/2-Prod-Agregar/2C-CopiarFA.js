@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 		valor = encodeURIComponent(inputs[i].value);
 		mensaje = errores[campo];
 		// Verificar si el FA_id ya está en nuestra BD
-		if (campo == "direccion" && !mensaje) mensaje = await verificarRepetido();
+		if (campo == "direccion" && !mensaje) mensaje = await verificarRepetido_FA_id();
 		// Agregar comentario en 'contenido'
 		if (campo == "contenido") comentarioContenido(errores.campos, valor);
 		// En caso de error
@@ -48,15 +48,21 @@ window.addEventListener("load", async () => {
 	};
 
 	// Revisar si el FA_id ya está en la BD
-	let verificarRepetido = async () => {
+	let verificarRepetido_FA_id = async () => {
 		direccion = document.querySelector(".input[name='direccion']").value;
 		FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
 		url = "entidad=" + entidad;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
 		ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+		if (!ELC_id && entidad != "colecciones") {
+			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
+			url += "&campo=FA_id";
+			url += "&valor=" + FA_id;
+			ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+		}
 		// Definir el mensaje
-		return ELC_id 
+		return ELC_id
 			? "Esta " +
 					"<a href='/producto/detalle/?entidad=" +
 					entidad +

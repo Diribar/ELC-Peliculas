@@ -2,11 +2,7 @@ TIPO PRODUCTO
 - Vista: Errores
 - BE-Guardar: Revisar errores
 
-COPIAR FA: 
-- Para las películas, buscar el FA_id también en "capítulos" si ya están en BD
-
 DATOS DUROS
-- Agregar el campo "idioma original"
 - Considerar como error si el nombre original o en castellano, ya existen
 
 RCLV

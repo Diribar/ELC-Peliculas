@@ -144,6 +144,12 @@ module.exports = {
 			: datos.paises_id.length > 2 * 1 + 4 * 3
 			? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
 			: "";
+		errores.idioma_original_id =
+			camposAVerificar.indexOf("idioma_original_id") == -1
+				? ""
+				: !datos.idioma_original_id
+				? cartelCampoVacio
+				: "";
 		errores.direccion =
 			camposAVerificar.indexOf("direccion") == -1
 				? ""
