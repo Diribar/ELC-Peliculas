@@ -75,7 +75,7 @@ module.exports = {
 	},
 
 	// ControllerAPI (validarDatosDuros)
-	datosDuros: async (datos, camposDD) => {
+	datosDuros: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
 		camposAVerificar = typeof(camposDD)=="string"
 			? camposDD

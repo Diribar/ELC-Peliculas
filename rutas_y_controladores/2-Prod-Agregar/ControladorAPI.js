@@ -68,9 +68,9 @@ module.exports = {
 		paises = await BD_varias.obtenerTodos("paises", "nombre");
 		return res.json(paises);
 	},
-	validarDatosDuros: async (req, res) => {
+	validarDatosDuros: (req, res) => {
 		let campoParaAnalizar = Object.keys(req.query).pop()
-		errores = await validarProd.datosDuros(req.query, campoParaAnalizar);
+		errores = validarProd.datosDuros(req.query, campoParaAnalizar);
 		return res.json(errores);
 	},
 	// Vista (datosPers)
