@@ -40,10 +40,10 @@ VALUES
 ('LSM', 1, 'Laica soltera', 1, 1),
 ('LC', 2, 'Laico casado', 1, 1),
 ('LCV', 2, 'Laico casado', 1, 1),
-('LCM', 2, 'Laico casada', 1, 1),
+('LCM', 2, 'Laica casada', 1, 1),
 ('RC', 3, 'Religioso consagrado', 1, 1),
 ('RCV', 3, 'Religioso consagrado', 1, 1),
-('RCM', 3, 'Religioso consagrado', 1, 1),
+('RCM', 3, 'Religiosa consagrada', 1, 1),
 ('PP', 4, 'Papa', 0, 1),
 ('PPV', 4, 'Papa', 0, 1)
 ;

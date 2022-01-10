@@ -172,4 +172,13 @@ module.exports = {
 			writer.on("error", (err) => reject(err));
 		});
 	},
+
+	producto: (entidad) => {
+		return entidad == "peliculas"
+			? "Película"
+			: entidad == "colecciones"
+			? "Colección"
+			: "Capítulo";
+	},
+
 };
