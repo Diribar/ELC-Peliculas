@@ -170,26 +170,37 @@ module.exports = {
 		codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "copiarFA");
-		// 3. Data Entry propio y errores
+		// 3. Generar la cookie de datosOriginales
+		if (req.body) {
+			req.body.producto =
+				req.body.entidad == "peliculas"
+					? "Película"
+					: req.body.entidad == "colecciones"
+					? "Colección"
+					: "Capítulo";
+			res.cookie("copiarFA", req.body, {maxAge: 24 * 60 * 60 * 1000});
+			res.cookie("datosOriginales", req.body, {maxAge: 24 * 60 * 60 * 1000});
+		}
+		// 4. Si se perdió la info anterior, volver a esa instancia
 		let copiarFA = req.session.copiarFA
 			? req.session.copiarFA
 			: req.cookies.copiarFA
 			? req.cookies.copiarFA
 			: "";
+		if (!copiarFA) return res.redirect("/producto/agregar/tipo-producto");
+		// 5. Detectar errores
 		let errores = req.session.erroresCFA
 			? req.session.erroresCFA
 			: copiarFA
 			? await validarProd.copiarFA(copiarFA)
 			: "";
-		// 4. Render del formulario
+		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: copiarFA,
 			errores,
-			colecPropias,
-			colecAjenas,
 		});
 	},
 
@@ -246,17 +257,19 @@ module.exports = {
 			? req.cookies.datosDuros
 			: "";
 		origen =
-			!!req.session.desambiguar || req.cookies.desambiguar
+			datosDuros.fuente == "TMDB"
 				? "desambiguar"
-				: !!req.session.copiarFA || req.cookies.copiarFA
+				: datosDuros.fuente == "FA"
 				? "copiar-fa"
+				: datosDuros.fuente == "IM"
+				? "tipo-producto"
 				: "palabras-clave";
 		if (!datosDuros) return res.redirect("/producto/agregar/" + origen);
-		// 5. Guardar DatosTerminaste
+		// 4. Guardar DatosTerminaste
 		datosTerminaste = funcDatosTerminaste(datosDuros);
 		req.session.datosTerminaste = datosTerminaste;
 		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
-		// 6. Detectar errores
+		// 5. Detectar errores
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await validarProd.datosDuros(datosDuros, [
@@ -267,7 +280,7 @@ module.exports = {
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
-		// 7. Render del formulario
+		// 6. Render del formulario
 		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
@@ -278,6 +291,7 @@ module.exports = {
 			errores,
 			camposDD1: variables.camposDD1(),
 			camposDD2: variables.camposDD2(),
+			origen,
 		});
 	},
 
@@ -303,7 +317,7 @@ module.exports = {
 			...variables.camposDD2(),
 		]);
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
-		if (!errores.nombre_original) {
+		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			elc_id = await BD_varias.obtenerELC_id({
 				entidad: datosDuros.entidad,
 				campo: datosDuros.fuente + "_id",
@@ -362,8 +376,12 @@ module.exports = {
 			avatarBD,
 		};
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
-		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
-		// 10. Redireccionar a la siguiente instancia
+		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
+		let cookie = req.cookies.datosOriginales;
+		if ((datosDuros.fuente = "IM")) cookie.nombre_original = datosDuros.nombre_original;
+		if ((datosDuros.fuente = "IM")) cookie.nombre_castellano = datosDuros.nombre_castellano;
+		res.cookie("datosOriginales", cookie, {maxAge: 24 * 60 * 60 * 1000});
+		// 11. Redireccionar a la siguiente instancia
 		req.session.erroresDD = false;
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
@@ -647,8 +665,9 @@ let borrarSessionCookies = (req, res, paso) => {
 		"tipoProducto",
 		"desambiguar",
 		"tipoProducto",
-		"copiarFA",
 		"datosOriginales",
+		// 'copiarFA va después de datosOriginales porque ese es el orden en el que se generan
+		"copiarFA",
 		"datosDuros",
 		"datosPers",
 		"confirma",

@@ -1,4 +1,6 @@
-<h1 class="titulo" id="titulo">Agregaste una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">
+	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+</h1>
 <section id="dataEntry" class="flex-col">
 	<div class="flex-col">
 		<img id="gracias" src="<%= imagenMuchasGracias %>" alt="Muchas gracias">

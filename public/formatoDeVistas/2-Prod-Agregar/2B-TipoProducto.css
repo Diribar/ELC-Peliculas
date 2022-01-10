@@ -6,10 +6,11 @@
 #dataEntry #datos select {padding: 0px 2px;}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-question-circle {align-self: center; transform: translateY(0); right: auto; margin-left: 10px; position: static;}
+#dataEntry .fa-question-circle {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
 #dataEntry .mensajeAyuda {max-width: 300px; right: -10px;}
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Submit button */
-#dataEntry #flechas {margin: 20px 0px 0; display: flex; justify-content: space-evenly; align-items: center;}
-#dataEntry #flechas button {align-self: center;}
+#dataEntry #flechas {margin-top: 20px; display: flex; justify-content: space-around; align-items: center;}
+#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}

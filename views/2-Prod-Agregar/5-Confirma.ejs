@@ -1,4 +1,6 @@
-<h1 class="titulo" id="titulo">Agregá una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">
+	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<h2>Paso 5 de 5: Confirmá el agregado</h2>

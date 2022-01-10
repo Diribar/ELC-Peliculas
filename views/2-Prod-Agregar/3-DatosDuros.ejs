@@ -1,4 +1,6 @@
-<h1 class="titulo" id="titulo">Agregá una <%= dataEntry.producto %> a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">
+	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+</h1>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
 	<section id="titulos">
 		<h2>Paso 3 de 5: Completá los Datos Duros</h2>
@@ -61,8 +63,7 @@
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<% retroceso = dataEntry.fuente == "FA" ? "copiar-fa": dataEntry.fuente == "IM" ? "tipo-producto" : "desambiguar" %>
-		<a href="/producto/agregar/<%= retroceso %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<a href="/producto/agregar/<%= origen %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" autofocus><i class="fas fa-check-circle"></i></button>
 	</section>
 </form>

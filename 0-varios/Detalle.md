@@ -1,7 +1,3 @@
-BE:
-	- Obtener los datos pendientes
-	- Generar la vista
-
 Vista:
 - Centrar verticalmente la sección 'datosLargos'
 - Cuando haya algún campo vacío,

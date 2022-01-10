@@ -7,7 +7,6 @@ module.exports = {
 		producto = await BD_varias.obtenerPorParametro(entidad, "id", prod_id).then(
 			(n) => n.dataValues
 		);
-		console.log(producto);
 		haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =

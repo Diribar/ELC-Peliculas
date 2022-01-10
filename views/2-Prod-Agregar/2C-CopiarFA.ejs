@@ -1,16 +1,20 @@
-<h1 class="titulo" id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<h1 class="titulo" id="titulo">
+	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+</h1>
 <div class="flex-col" id="dataEntry">
 	<h2 id="paso2">Paso 2 de 4: Importala desde Film Affinity</h2>
 	<form action="<%= link %>" method="POST">
+		<div id="entidad" class="ocultar"><%= dataEntry.entidad %></div>
 		<!-- Datos a completar -->
 		<section id="datos">
 			<h3>Ingresá la dirección de la página</h3>
-			<div class="flex-row">
+			<div class="input-error">
 				<!-- Data Entry -->
 				<input name="direccion" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.direccion : null %>"
 					placeholder="Pegá acá la dirección"
 					autocomplete="off"
+					autofocus
 				>
 				<!-- Ayuda -->
 				<i class="fas fa-question-circle relative">
@@ -32,7 +36,7 @@
 				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
-			<div class="flex-row">
+			<div class="input-error">
 				<input name="avatar" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.avatar : null %>"
 					placeholder="Pegá acá la dirección"
@@ -54,7 +58,7 @@
 				<i class="fas fa-check-circle ocultar"></i>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
-			<div class="flex-row relative">
+			<div class="input-error">
 				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
 				<i class="fas fa-question-circle relative">
@@ -79,8 +83,8 @@
 		</section>
 		<!-- Flechas -->
 		<section id="flechas" class="flex-row space-between">
-			<a href="/producto/agregar/palabras-clave"><i class="fas fa-arrow-alt-circle-left"></i></a>
-			<button id="submit" class="botonSinLink" type="submit">Avanzar</button>
+			<a href="/producto/agregar/tipo-producto"><i class="fas fa-arrow-alt-circle-left"></i></a>
+			<button id="submit" class="botonSinLink" type="submit"><i class="fas fa-check-circle"></i></button>
 		</section>
 	</form>
 </div>
