@@ -18,9 +18,7 @@ module.exports = {
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave
 			? req.session.palabrasClave
-			: req.cookies.palabrasClave
-			? req.cookies.palabrasClave
-			: "";
+			: req.cookies.palabrasClave;
 		let errores = req.session.erroresPC
 			? req.session.erroresPC
 			: palabrasClave
@@ -69,9 +67,7 @@ module.exports = {
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let palabrasClave = req.session.palabrasClave
 			? req.session.palabrasClave
-			: req.cookies.palabrasClave
-			? req.cookies.palabrasClave
-			: "";
+			: req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.erroresDES ? req.session.erroresDES : "";
@@ -122,11 +118,7 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
-		let tipoProd = req.session.tipoProd
-			? req.session.tipoProd
-			: req.cookies.tipoProd
-			? req.cookies.tipoProd
-			: "";
+		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 4. Obtener los errores
 		let errores = req.session.erroresTP ? req.session.erroresTP : "";
 		// 5. Render del formulario
@@ -143,13 +135,7 @@ module.exports = {
 	tipoProd_Guardar: async (req, res) => {
 		// 1. Guardar el data entry en session y cookie
 		let tipoProd = {...req.body, fuente: "IM"};
-		let entidad = tipoProd.entidad;
-		tipoProd.producto =
-			entidad == "peliculas"
-				? "Película"
-				: entidad == "colecciones"
-				? "Colección"
-				: "Capítulo";
+		tipoProd.producto = varias.producto(tipoProd.entidad);
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: 24 * 60 * 60 * 1000});
 		// 2. Averiguar si hay errores de validación
@@ -171,26 +157,19 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
-		if (req.body) {
-			req.body.producto =
-				req.body.entidad == "peliculas"
-					? "Película"
-					: req.body.entidad == "colecciones"
-					? "Colección"
-					: "Capítulo";
+		if (req.body && req.body.entidad) {
+			req.body.producto = varias.producto(req.body.entidad);
+			req.body.fuente = "FA";
+			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: 24 * 60 * 60 * 1000});
 			res.cookie("datosOriginales", req.body, {maxAge: 24 * 60 * 60 * 1000});
 		}
 		// 4. Si se perdió la info anterior, volver a esa instancia
-		let copiarFA = req.session.copiarFA
-			? req.session.copiarFA
-			: req.cookies.copiarFA
-			? req.cookies.copiarFA
-			: "";
+		let copiarFA = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
 		if (!copiarFA) return res.redirect("/producto/agregar/tipo-producto");
 		// 5. Detectar errores
-		let errores = req.session.erroresCFA
-			? req.session.erroresCFA
+		let errores = req.session.erroresFA
+			? req.session.erroresFA
 			: copiarFA
 			? await validarProd.copiarFA(copiarFA)
 			: "";
@@ -198,15 +177,18 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
-			link: req.originalUrl,
+			link: "/producto/agregar/copiar-fa",
 			dataEntry: copiarFA,
 			errores,
 		});
 	},
 
 	copiarFA_Guardar: async (req, res) => {
+		// 1. Si se perdió la info anterior, volver a esa instancia
+		aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
+		if (!aux) return res.redirect("/producto/agregar/tipo-producto");
 		// 1. Guardar el data entry en session y cookie
-		let copiarFA = req.body;
+		let copiarFA = {...aux, ...req.body};
 		req.session.copiarFA = copiarFA;
 		res.cookie("copiarFA", copiarFA, {maxAge: 24 * 60 * 60 * 1000});
 		// 2.1. Averiguar si hay errores de validación
@@ -227,16 +209,18 @@ module.exports = {
 		}
 		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) {
-			req.session.erroresCFA = errores;
+			req.session.erroresFA = errores;
 			return res.redirect("/producto/agregar/copiar-fa");
 		}
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
 		req.session.datosDuros = await procesarProd.infoFAparaDD(copiarFA);
-		res.cookie("datosDuros", req.session.datosDuros, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("datosDuros", req.session.datosDuros, {maxAge: 24 * 60 * 60 * 1000});
+		// 4. Completar la cookie datosOriginales con el FA_id
+		let cookie = req.cookies.datosOriginales;
+		cookie.FA_id = req.session.datosDuros.FA_id;
+		res.cookie("datosOriginales", cookie, {maxAge: 24 * 60 * 60 * 1000});
 		// 4. Redireccionar a la siguiente instancia
-		req.session.erroresCFA = false;
+		req.session.erroresFA = false;
 		return res.redirect("/producto/agregar/datos-duros");
 	},
 
@@ -251,11 +235,7 @@ module.exports = {
 		}
 		borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		datosDuros = req.session.datosDuros
-			? req.session.datosDuros
-			: req.cookies.datosDuros
-			? req.cookies.datosDuros
-			: "";
+		datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		origen =
 			datosDuros.fuente == "TMDB"
 				? "desambiguar"
@@ -393,11 +373,7 @@ module.exports = {
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		datosPers = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers
-			? req.cookies.datosPers
-			: "";
+		datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 4. Obtener los errores
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
@@ -482,11 +458,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "confirma";
 		// 2. Si se perdió la info anterior, volver a esa instancia
-		confirma = req.session.confirma
-			? req.session.confirma
-			: req.cookies.confirma
-			? req.cookies.confirma
-			: "";
+		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 3. Datos de la producción
 		maximo = 50;
@@ -511,11 +483,7 @@ module.exports = {
 
 	confirmaGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		confirma = req.session.confirma
-			? req.session.confirma
-			: req.cookies.confirma
-			? req.cookies.confirma
-			: "";
+		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Guardar los datos de 'Original'
 		let hora = new Date();
@@ -584,9 +552,7 @@ module.exports = {
 		// 2. Obtener los datos clave del producto
 		datosTerminaste = req.session.datosTerminaste
 			? req.session.datosTerminaste
-			: req.cookies.datosTerminaste
-			? req.cookies.datosTerminaste
-			: "";
+			: req.cookies.datosTerminaste;
 		if (!datosTerminaste) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");

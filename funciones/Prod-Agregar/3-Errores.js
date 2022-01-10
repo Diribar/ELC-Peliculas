@@ -42,11 +42,6 @@ module.exports = {
 	// ControllerAPI (validarCopiarFA)
 	copiarFA: (datos) => {
 		let errores = {};
-		// Entidad
-		errores.entidad = !datos.entidad ? "Elegí una opción" : "";
-		// En colección
-		errores.en_coleccion =
-			!datos.en_coleccion && datos.entidad == "peliculas" ? "Elegí una opción" : "";
 		// Dirección
 		url = datos.direccion;
 		errores.direccion = !url
