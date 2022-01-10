@@ -19,8 +19,7 @@ window.addEventListener("load", async () => {
 		// Status inicial
 		!iconoError[i].classList.contains("ocultar") ? button.classList.add("botonSinLink") : "";
 		// Acciones ante cambios en el input
-		// Conviene que sea mediante 'change' para disminuir las consultas a la BD
-		inputs[i].addEventListener("change", async () => {
+		inputs[i].addEventListener("input", async () => {
 			// Averiguar si hay algún error
 			if (selectPais && selectPais == inputs[i]) {
 				funcionPaises();
