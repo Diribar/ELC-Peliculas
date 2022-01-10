@@ -1,6 +1,7 @@
 // **** Requires ***********
 let BD_varias = require("../BD/varias");
 
+// *********** Para exportar ***********
 module.exports = {
 	camposDD: () => {
 		return [
@@ -21,28 +22,13 @@ module.exports = {
 				change: true,
 			},
 			{
-				titulo: "Temporadas",
-				campo: "cant_temporadas",
-				numero: true,
-				peliculas: false,
-				colecciones: true,
-				antesDePais: true,
-			},
-			{
-				titulo: "Capítulos",
-				campo: "cant_capitulos",
-				numero: true,
-				peliculas: false,
-				colecciones: true,
-				antesDePais: true,
-			},
-			{
 				titulo: "Año de estreno",
 				campo: "ano_estreno",
 				numero: true,
 				peliculas: true,
 				colecciones: true,
 				antesDePais: true,
+				change: true,
 			},
 			{
 				titulo: "Año de finalización",
@@ -60,11 +46,25 @@ module.exports = {
 				colecciones: false,
 				antesDePais: true,
 			},
+			{
+				campo: "paises_id",
+				peliculas: true,
+				colecciones: true,
+				omitirRutinaVista: true,
+			},
+			{
+				campo: "idioma_original_id",
+				peliculas: true,
+				colecciones: true,
+				omitirRutinaVista: true,
+			},
 			{titulo: "Dirección", campo: "direccion", peliculas: true, colecciones: true},
 			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
 			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
 			{titulo: "Actuación", campo: "actuacion", peliculas: true, colecciones: true},
 			{titulo: "Producción", campo: "produccion", peliculas: true, colecciones: true},
+			{campo: "sinopsis", peliculas: true, colecciones: true, omitirRutinaVista: true},
+			{campo: "avatar", peliculas: true, colecciones: true, omitirRutinaVista: true},
 		];
 	},
 

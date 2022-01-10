@@ -4,6 +4,7 @@ let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
+let variables = require("../../funciones/Prod-Agregar/4-Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -19,11 +20,13 @@ module.exports = {
 		let errores = validarProd.palabrasClave(palabrasClave);
 		return res.json(errores.palabrasClave);
 	},
+
 	// Vista (desambiguar)
 	averiguarColeccion: async (req, res) => {
 		datos = await procesarProd.averiguarColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
+	
 	// Vista (tipoProducto)
 	averiguarColecciones: async (req, res) => {
 		datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
@@ -49,6 +52,7 @@ module.exports = {
 		).then((n) => n.map((m) => m.capitulo));
 		return res.json(datos);
 	},
+
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
 		errores = validarProd.copiarFA(req.query);
@@ -63,16 +67,27 @@ module.exports = {
 		ELC_id = await BD_varias.obtenerELC_id({entidad, campo, valor});
 		return res.json(ELC_id);
 	},
+
 	// Vista (datosDuros)
-	camposDD: async (req, res) => {
-		paises = await BD_varias.obtenerTodos("paises", "nombre");
-		return res.json(paises);
+	camposDD: (req, res) => {
+		let {entidad, change} = req.query;
+		// Filtra para que queden solamente los campos que corresponden para la entidad
+		let campos = variables.camposDD().filter((n) => n[entidad]);
+		// Filtra para que queden solamente los campos que tengan 'change' true/false
+		campos = campos.filter((n) => (change == "true" ? n.change : !n.change));
+		// Devuelve el resultado
+		return res.json(campos);
 	},
-	validarDatosDuros_input: (req, res) => {
-		let campoParaAnalizar = Object.keys(req.query).pop()
-		errores = validarProd.datosDuros_input(req.query, campoParaAnalizar);
+	validarDatosDuros: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		console.log(campos);
+		// Averigua los errores solamente para esos campos
+		let errores = await validarProd.datosDuros_input(campos, req.query);
+		// Devuelve el resultado
 		return res.json(errores);
 	},
+
 	// Vista (datosPers)
 	obtenerDatosSubcategoria: async (req, res) => {
 		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id);

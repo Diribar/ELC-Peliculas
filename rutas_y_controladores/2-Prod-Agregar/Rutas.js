@@ -27,7 +27,7 @@ router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
 router.get("/api/validar-copiar-fa", API.validarCopiarFA);
 // Temas de Datos Duros
 router.get("/api/campos-DD-a-verificar", API.camposDD);
-router.get("/api/validar-datos-duros-input", API.validarDatosDuros_input);
+router.get("/api/validar-datos-duros", API.validarDatosDuros);
 // Temas de Datos Personalizados
 router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
 router.get("/api/validar-datos-pers", API.validarDatosPers);

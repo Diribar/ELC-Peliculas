@@ -1,19 +1,17 @@
-<% if (registro[dataEntry.entidad]) { %>
-	<section class="label-input">
-		<label><%= registro.titulo %></label>
-		<!-- Data-entry y Errores -->
-		<div class="input-error">
-			<input type="text" class="input" name="<%= registro.campo %>"
-				value="<%= dataEntry[registro.campo] %>"
-				<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
-				<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>
-			>
-			<!-- Ayuda -->
-			<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
-			<!-- Errores -->
-			<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">
-				<span class="mensajeError"><%= errores[registro.campo] %></span>
-			</i>
-		</div>
-	</section>
-<% } %> 
+<section class="label-input">
+	<label><%= registro.titulo %></label>
+	<!-- Data-entry y Errores -->
+	<div class="input-error">
+		<input type="text" class="input" name="<%= registro.campo %>"
+			value="<%= dataEntry[registro.campo] %>"
+			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
+			<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>
+		>
+		<!-- Ayuda -->
+		<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
+		<!-- Errores -->
+		<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores[registro.campo] %></span>
+		</i>
+	</div>
+</section>
