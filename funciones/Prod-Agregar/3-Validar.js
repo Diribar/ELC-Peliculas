@@ -241,7 +241,7 @@ module.exports = {
 		errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
 		errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
-		// rclv
+		// RCLV
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_varias.obtenerPorCampo(
