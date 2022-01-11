@@ -28,7 +28,6 @@ window.addEventListener("load", async () => {
 		errores.hay
 			? button.classList.add("botonSinLink")
 			: button.classList.remove("botonSinLink");
-		console.log(errores);
 	};
 
 	// Función para buscar los valores del formulario
