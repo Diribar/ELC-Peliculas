@@ -79,9 +79,10 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		let errores = {};
 		// Errores 'change' ******************************************
-
+		if (campos.includes("nombre_original") && 1) {
+		}
 		// Errores 'input' *******************************************
-		campos.indexOf("nombre_original") != -1 && !errores.nombre_original
+		campos.includes("nombre_original") && !errores.nombre_original
 			? (errores.nombre_original = !datos.nombre_original
 					? cartelCampoVacio
 					: longitud(datos.nombre_original, 2, 50)
@@ -90,7 +91,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("nombre_castellano") != -1 && !errores.nombre_castellano
+		campos.includes("nombre_castellano") && !errores.nombre_castellano
 			? (errores.nombre_castellano = !datos.nombre_castellano
 					? cartelCampoVacio
 					: longitud(datos.nombre_castellano, 2, 50)
@@ -99,7 +100,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("ano_estreno") != -1
+		campos.includes("ano_estreno")
 			? (errores.ano_estreno = !datos.ano_estreno
 					? cartelCampoVacio
 					: formatoAno(datos.ano_estreno)
@@ -110,7 +111,7 @@ module.exports = {
 					? "El número no puede superar al año actual"
 					: "")
 			: "";
-		campos.indexOf("ano_fin") != -1
+		campos.includes("ano_fin")
 			? (errores.ano_fin = !datos.ano_fin
 					? cartelCampoVacio
 					: formatoAno(datos.ano_fin)
@@ -123,7 +124,7 @@ module.exports = {
 					? "El año de finalización debe ser igual o mayor que el año de estreno"
 					: "")
 			: "";
-		campos.indexOf("duracion") != -1
+		campos.includes("duracion")
 			? (errores.duracion = !datos.duracion
 					? cartelCampoVacio
 					: formatoNumero(datos.duracion, 20)
@@ -132,17 +133,17 @@ module.exports = {
 					? "Debe ser un número menor"
 					: "")
 			: "";
-		campos.indexOf("paises_id") != -1
+		campos.includes("paises_id")
 			? (errores.paises_id = !datos.paises_id
 					? cartelCampoVacio
 					: datos.paises_id.length > 2 * 1 + 4 * 3
 					? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
 					: "")
 			: "";
-		campos.indexOf("idioma_original_id") != -1
+		campos.includes("idioma_original_id")
 			? (errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "")
 			: "";
-		campos.indexOf("direccion") != -1
+		campos.includes("direccion")
 			? (errores.direccion = !datos.direccion
 					? cartelCampoVacio
 					: longitud(datos.direccion, 2, 100)
@@ -151,7 +152,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("guion") != -1
+		campos.includes("guion")
 			? (errores.guion = !datos.guion
 					? cartelCampoVacio
 					: longitud(datos.guion, 2, 100)
@@ -160,7 +161,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("musica") != -1
+		campos.includes("musica")
 			? (errores.musica = !datos.musica
 					? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 					: longitud(datos.musica, 2, 100)
@@ -169,7 +170,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("actuacion") != -1
+		campos.includes("actuacion")
 			? (errores.actuacion = !datos.actuacion
 					? cartelCampoVacio +
 					  '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
@@ -179,7 +180,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("produccion") != -1
+		campos.includes("produccion")
 			? (errores.produccion = !datos.produccion
 					? cartelCampoVacio
 					: longitud(datos.produccion, 2, 100)
@@ -188,7 +189,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("sinopsis") != -1
+		campos.includes("sinopsis")
 			? (errores.sinopsis = !datos.sinopsis
 					? cartelCampoVacio
 					: longitud(datos.sinopsis, 15, 800)
@@ -197,7 +198,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.indexOf("avatar") != -1
+		campos.includes("avatar")
 			? (errores.avatar = !datos.avatar
 					? "Necesitamos que agregues una imagen"
 					: extensiones(datos.avatar)
@@ -209,64 +210,34 @@ module.exports = {
 	},
 
 	// ControllerAPI (validarDatosPers)
-	datosPers: async (datos, camposDP) => {
-		// Averiguar cuáles son los campos a verificar
-		camposAVerificar = datos.entidad
-			? camposDP.filter((n) => n[datos.entidad]).map((n) => n.campo)
-			: camposDP;
-		// Comenzar con las revisiones
+	datosPers: async (campos, datos) => {
 		let errores = {};
 		// Datos generales
-		errores.en_castellano_id =
-			camposAVerificar.indexOf("en_castellano_id") == -1
-				? ""
-				: !datos.en_castellano_id
-				? cartelSelectVacio
-				: "";
-		errores.en_color_id =
-			camposAVerificar.indexOf("en_color_id") == -1
-				? ""
-				: !datos.en_color_id
-				? cartelSelectVacio
-				: "";
-		errores.categoria_id =
-			camposAVerificar.indexOf("categoria_id") == -1
-				? ""
-				: !datos.categoria_id
-				? cartelSelectVacio
-				: "";
-		errores.subcategoria_id =
-			camposAVerificar.indexOf("subcategoria_id") == -1
-				? ""
-				: !datos.subcategoria_id
-				? cartelSelectVacio
-				: "";
-		errores.publico_sugerido_id =
-			camposAVerificar.indexOf("publico_sugerido_id") == -1
-				? ""
-				: !datos.publico_sugerido_id
-				? cartelSelectVacio
-				: "";
+		campos.includes("en_castellano_id")
+			? (errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("en_color_id")
+			? (errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("categoria_id")
+			? (errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("subcategoria_id")
+			? (errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("publico_sugerido_id")
+			? (errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "")
+			: "";
 		// Tu calificación
-		errores.fe_valores_id =
-			camposAVerificar.indexOf("fe_valores_id") == -1
-				? ""
-				: !datos.fe_valores_id
-				? cartelSelectVacio
-				: "";
-		errores.entretiene_id =
-			camposAVerificar.indexOf("entretiene_id") == -1
-				? ""
-				: !datos.entretiene_id
-				? cartelSelectVacio
-				: "";
-		errores.calidad_tecnica_id =
-			camposAVerificar.indexOf("calidad_tecnica_id") == -1
-				? ""
-				: !datos.calidad_tecnica_id
-				? cartelSelectVacio
-				: "";
-		// Relación con la vida
+		campos.includes("fe_valores_id")
+			? (errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("entretiene_id")
+			? (errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "")
+			: "";
+		campos.includes("calidad_tecnica_id")
+			? (errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "")
+			: "";
 		if (datos.subcategoria_id != "") {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_varias.obtenerPorCampo(
@@ -274,47 +245,35 @@ module.exports = {
 				"id",
 				datos.subcategoria_id
 			);
-			// Revisar atributos
-			errores.personaje_historico_id =
-				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
-				camposAVerificar.indexOf("personaje_historico_id") == -1 || !subcategoria.personaje
-					? ""
-					: !datos.personaje_historico_id
-					? cartelSelectVacio
-					: "";
-			errores.hecho_historico_id =
-				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
-				camposAVerificar.indexOf("hecho_historico_id") == -1 || !subcategoria.hecho
-					? ""
-					: !datos.hecho_historico_id
-					? cartelSelectVacio
-					: "";
-			errores.valor_id =
-				// Si desde el vamos no hay que fijarse en el atributo o el atributo es opcional...
-				camposAVerificar.indexOf("valor_id") == -1 || !subcategoria.valor
-					? ""
-					: !datos.valor_id
-					? cartelSelectVacio
-					: "";
+			// Relación con la vida
+			campos.includes("personaje_historico_id") || !subcategoria.personaje
+				? (errores.personaje_historico_id = !datos.personaje_historico_id
+						? cartelSelectVacio
+						: "")
+				: "";
+			campos.includes("hecho_historico_id") || !subcategoria.hecho
+				? (errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "")
+				: "";
+			campos.includes("valor_id") || !subcategoria.valor
+				? (errores.valor_id = !datos.valor_id ? cartelSelectVacio : "")
+				: "";
 		}
 		errores.hay = hayErrores(errores);
 		// Links gratuitos
-		errores.link_trailer =
-			camposAVerificar.indexOf("link_trailer") == -1
-				? ""
-				: !datos.link_trailer
-				? ""
-				: !validarFuente(datos.link_trailer)
-				? "Debe ser de una fuente confiable"
-				: "";
-		errores.link_pelicula =
-			camposAVerificar.indexOf("link_pelicula") == -1
-				? ""
-				: !datos.link_pelicula
-				? ""
-				: !validarFuente(datos.link_pelicula)
-				? "Debe ser de una fuente confiable"
-				: "";
+		campos.includes("link_trailer")
+			? (errores.link_trailer = !datos.link_trailer
+					? ""
+					: !validarFuente(datos.link_trailer)
+					? "Debe ser de una fuente confiable"
+					: "")
+			: "";
+		campos.includes("link_pelicula")
+			? (errores.link_pelicula = !datos.link_pelicula
+					? ""
+					: !validarFuente(datos.link_pelicula)
+					? "Debe ser de una fuente confiable"
+					: "")
+			: "";
 		return errores;
 	},
 };
