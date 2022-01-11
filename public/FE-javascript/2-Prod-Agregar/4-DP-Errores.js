@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 			: button.classList.remove("botonSinLink");
 	};
 
-	// Función para buscar los valores del formulario
+	// Función para buscar todos los valores del formulario
 	let buscarTodosLosValores = () => {
 		for (let i = 0; i < inputs.length; i++) {
 			i == 0 ? (url = "/?") : (url += "&");
