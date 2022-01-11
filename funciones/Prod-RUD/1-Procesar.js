@@ -4,7 +4,7 @@ let BD_varias = require("../BD/varias");
 module.exports = {
 	averiguarSiEstaDisponible: async (entidad, prod_id, usuario) => {
 		// Obtiene el registro con los datos del producto
-		producto = await BD_varias.obtenerPorParametro(entidad, "id", prod_id).then(
+		producto = await BD_varias.obtenerPorCampo(entidad, "id", prod_id).then(
 			(n) => n.dataValues
 		);
 		haceUnaHora = new Date() - 1000 * 60 * 60;

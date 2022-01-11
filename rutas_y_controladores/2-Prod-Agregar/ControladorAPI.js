@@ -69,28 +69,19 @@ module.exports = {
 	},
 
 	// Vista (datosDuros)
-	camposDD: (req, res) => {
-		let {entidad, change} = req.query;
-		// Filtra para que queden solamente los campos que corresponden para la entidad
-		let campos = variables.camposDD().filter((n) => n[entidad]);
-		// Filtra para que queden solamente los campos que tengan 'change' true/false
-		campos = campos.filter((n) => (change == "true" ? n.change : !n.change));
-		// Devuelve el resultado
-		return res.json(campos);
-	},
 	validarDatosDuros: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		console.log(campos, req.query);
 		// Averigua los errores solamente para esos campos
 		let errores = await validarProd.datosDuros(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},
 
+
 	// Vista (datosPers)
 	obtenerDatosSubcategoria: async (req, res) => {
-		subcategoria = await BD_varias.obtenerPorParametro("subcategorias", "id", req.query.id);
+		subcategoria = await BD_varias.obtenerPorCampo("subcategorias", "id", req.query.id);
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {

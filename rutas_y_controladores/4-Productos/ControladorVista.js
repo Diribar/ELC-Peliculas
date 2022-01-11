@@ -75,7 +75,7 @@ let vistas = async (opcion) => {
 	if (opcion == "listado") {
 		tipos_BD = await BD_varias.obtenerTodos("listado_peliculas", "id");
 	} else {
-		tipos_BD = await BD_varias.obtenerPorParametro(
+		tipos_BD = await BD_varias.obtenerPorCampo(
 			"subcategorias",
 			"categoria_id",
 			opcion.toUpperCase()
@@ -84,7 +84,7 @@ let vistas = async (opcion) => {
 	// obtener el Título de la opción elegida
 	let titulo =
 		"Películas - " +
-		(await BD_varias.obtenerPorParametro("menu_opciones", "url", opcion).then(
+		(await BD_varias.obtenerPorCampo("menu_opciones", "url", opcion).then(
 			(n) => n[0].titulo
 		));
 	// Exportar los datos

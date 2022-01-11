@@ -79,7 +79,7 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		let errores = {};
 		// Errores 'change' ******************************************
-		
+
 		// Errores 'input' *******************************************
 		campos.indexOf("nombre_original") != -1 && !errores.nombre_original
 			? (errores.nombre_original = !datos.nombre_original
@@ -269,7 +269,7 @@ module.exports = {
 		// Relación con la vida
 		if (datos.subcategoria_id != "") {
 			// Obtener el registro de la subcategoría
-			let subcategoria = await BD_varias.obtenerPorParametro(
+			let subcategoria = await BD_varias.obtenerPorCampo(
 				"subcategorias",
 				"id",
 				datos.subcategoria_id

@@ -6,9 +6,10 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	// Campos a controlar
-	let ruta = "/producto/agregar/api/campos-DD-a-verificar/?entidad=" + entidad;
-	let campos = await fetch(ruta).then((n) => n.json());
+	// Campos 'change'
+	let nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
+	let nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
+	let ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
@@ -18,6 +19,8 @@ window.addEventListener("load", async () => {
 		mostrarPaises = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 		inputPais = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 	}
+	// Otras variables
+	let ruta = "/producto/agregar/api/validar-datos-duros/?";
 
 	// Status inicial
 	Array.from(mensajesError).find((n) => n.innerHTML)
@@ -27,11 +30,18 @@ window.addEventListener("load", async () => {
 	// Revisar data-entries 'change' y comunicar los aciertos y errores
 	form.addEventListener("change", async (e) => {
 		campo = e.target.name;
-		console.log(campo);
-		if (campo == "nombre_original" || campo == "ano_estreno") {
-		}
-		if (campo == "nombre_castellano" || campo == "ano_estreno") {
-		}
+		if (
+			(campo == "nombre_original" || campo == "ano_estreno") &&
+			nombre_original.value &&
+			ano_estreno.value
+		)
+			await funcionChange("nombre_original", nombre_original.value);
+		if (
+			(campo == "nombre_castellano" || campo == "ano_estreno") &&
+			nombre_castellano.value &&
+			ano_estreno.value
+		)
+			await funcionChange("nombre_castellano", nombre_castellano.value);
 	});
 
 	// Revisar data-entries 'input' y comunicar los aciertos y errores
@@ -47,16 +57,11 @@ window.addEventListener("load", async () => {
 				valor = e.target.value;
 			}
 			// Averiguar si hay algún error
-			let ruta = "/producto/agregar/api/validar-datos-duros/?";
 			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
 			mensajesError[i].innerHTML = errores[campo];
 			// Verificar que el año de fin sea mayor o igual que el de estreno
 			if (!mensajesError[i].innerHTML && campo == "ano_fin") {
-				inputs.forEach((input, index) => {
-					if (input.name == "ano_estreno") indice = index;
-				});
-				ano_estreno = inputs[indice].value;
-				valor < ano_estreno
+				valor < ano_estreno.value
 					? (mensajesError[i].innerHTML =
 							"El año de finalización debe ser igual o mayor que el año de estreno")
 					: "";
@@ -111,5 +116,14 @@ window.addEventListener("load", async () => {
 			}
 		}
 		mostrarPaises.value = paisesNombre;
+	};
+
+	let funcionChange = async (campo, valor) => {
+		dato1 = "entidad=" + entidad;
+		dato2 = campo + "=" + valor;
+		dato3 = "ano_estreno=" + ano_estreno.value;
+		let repetido = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
+		console.log(repetido);
+		return repetido ? repetido.id : "";
 	};
 });
