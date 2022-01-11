@@ -1,11 +1,19 @@
-TIPO PRODUCTO
-- Vista: Errores
-- BE-Guardar: Revisar errores
+COPIAR FA
+- Agregar el 'ano_lanzamiento' al cookie 'original'
 
 DATOS DUROS
 - Averiguar si el nombre original o en castellano, ya existen y son del mismo año
-    - Si es la misma entidad, considerarlo como un 'error'
     - Si es otra entidad, considerarlo como un 'warning'
+- Si fuente=="IM"--> Agregar el 'ano_lanzamiento' al cookie 'original'
+
+DATOS PERS
+- Ordenar el fetch (campos, datos)
+    - FE
+    - BE
+
+TIPO PRODUCTO
+- Vista: Errores
+- BE-Guardar: Revisar errores
 
 RCLV
 - Errores: revisar masc/fem en el ID de opciones_proc y opciones_rol

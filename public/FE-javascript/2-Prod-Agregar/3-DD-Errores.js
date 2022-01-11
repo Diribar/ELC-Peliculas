@@ -6,10 +6,20 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+
 	// Campos 'change'
+	// Campos 'change' - nombre_original
 	let nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
+	let iconoErrorNO = document.querySelector(".input-error .fa-times-circle.nombre_original");
+	let mensajesErrorNO = document.querySelector(".input-error .mensajeError.nombre_original");
+	// Campos 'change' - nombre_castellano
 	let nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
+	let iconoErrorNC = document.querySelector(".input-error .fa-times-circle.nombre_castellano");
+	let mensajesErrorNC = document.querySelector(".input-error .mensajeError.nombre_castellano");
+	// Campos 'change' - ano_estreno
 	let ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
+	let mensajesErrorAE = document.querySelector(".input-error .mensajeError.ano_estreno");
+
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
@@ -19,16 +29,19 @@ window.addEventListener("load", async () => {
 		mostrarPaises = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 		inputPais = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 	}
+
 	// Otras variables
 	let ruta = "/producto/agregar/api/validar-datos-duros/?";
 
-	// Status inicial
-	let botonSubmit=()=> {
+	// Botón 'submit'
+	let botonSubmit = () => {
 		Array.from(mensajesError).find((n) => n.innerHTML)
 			? button.classList.add("botonSinLink")
 			: button.classList.remove("botonSinLink");
-	}
-	botonSubmit()
+	};
+
+	// Status inicial
+	botonSubmit();
 
 	// Revisar data-entries 'change' y comunicar los aciertos y errores
 	form.addEventListener("change", async (e) => {
@@ -36,15 +49,20 @@ window.addEventListener("load", async () => {
 		if (
 			(campo == "nombre_original" || campo == "ano_estreno") &&
 			nombre_original.value &&
-			ano_estreno.value
-		)
-			await funcionChange("nombre_original", nombre_original.value);
+			!mensajesErrorNO.innerHTML &&
+			ano_estreno.value &&
+			!mensajesErrorAE.innerHTML
+		) {
+			funcionChange("nombre_original", nombre_original.value);
+		}
 		if (
 			(campo == "nombre_castellano" || campo == "ano_estreno") &&
 			nombre_castellano.value &&
-			ano_estreno.value
+			!mensajesErrorNC.innerHTML &&
+			ano_estreno.value &&
+			!mensajesErrorAE.innerHTML
 		)
-			await funcionChange("nombre_castellano", nombre_castellano.value);
+			funcionChange("nombre_castellano", nombre_castellano.value);
 	});
 
 	// Revisar data-entries 'input' y comunicar los aciertos y errores
@@ -59,9 +77,14 @@ window.addEventListener("load", async () => {
 				campo = e.target.name;
 				valor = e.target.value;
 			}
+
 			// Averiguar si hay algún error
+			// console.log(campo);
 			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+			// console.log(campo);
+			if (e.target == selectPais) campo = "paises_id";
 			mensajesError[i].innerHTML = errores[campo];
+
 			// Verificar que el año de fin sea mayor o igual que el de estreno
 			if (!mensajesError[i].innerHTML && campo == "ano_fin") {
 				valor < ano_estreno.value
@@ -75,7 +98,7 @@ window.addEventListener("load", async () => {
 				button.classList.add("botonSinLink");
 			} else {
 				iconoError[i].classList.add("ocultar");
-				botonSubmit()
+				botonSubmit();
 			}
 		});
 	}
@@ -120,12 +143,27 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionChange = async (campo, valor) => {
+		// Obtener el mensaje para el campo
 		dato1 = "entidad=" + entidad;
 		dato2 = campo + "=" + valor;
 		dato3 = "ano_estreno=" + ano_estreno.value;
-		let repetido = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
-		console.log(repetido);
-		botonSubmit()
-		return repetido ? repetido.id : "";
+		let mensaje = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
+		if (mensaje) mensaje = mensaje[campo];
+		// Impactar en la vista
+		campo == "nombre_original"
+			? mensajesErrorNO.innerHTML = mensaje
+			: mensajesErrorNC.innerHTML = mensaje
+		// Acciones en función de si hay o no mensajes de error
+		if (mensaje) {
+			campo == "nombre_original"
+				? iconoErrorNO.classList.remove("ocultar")
+				: iconoErrorNC.classList.remove("ocultar");
+			button.classList.add("botonSinLink");
+		} else {
+			campo == "nombre_original"
+				? iconoErrorNO.classList.add("ocultar")
+				: iconoErrorNC.classList.add("ocultar");
+			botonSubmit();
+		}
 	};
 });

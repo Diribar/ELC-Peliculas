@@ -1,7 +1,9 @@
 // ************ Requires ************
 let procesarProd = require("./2-Procesar");
 let BD_varias = require("../BD/varias");
+let varias = require("../Varias/Varias");
 
+// *********** Para exportar ***********
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	palabrasClave: (dato) => {
@@ -78,11 +80,8 @@ module.exports = {
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
 		let errores = {};
-		// Errores 'change' ******************************************
-		if (campos.includes("nombre_original") && 1) {
-		}
 		// Errores 'input' *******************************************
-		campos.includes("nombre_original") && !errores.nombre_original
+		campos.includes("nombre_original")
 			? (errores.nombre_original = !datos.nombre_original
 					? cartelCampoVacio
 					: longitud(datos.nombre_original, 2, 50)
@@ -91,7 +90,7 @@ module.exports = {
 					? cartelCastellano
 					: "")
 			: "";
-		campos.includes("nombre_castellano") && !errores.nombre_castellano
+		campos.includes("nombre_castellano")
 			? (errores.nombre_castellano = !datos.nombre_castellano
 					? cartelCampoVacio
 					: longitud(datos.nombre_castellano, 2, 50)
@@ -205,6 +204,26 @@ module.exports = {
 					? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
 					: "")
 			: "";
+		// Errores 'change' ******************************************
+		if (
+			datos.nombre_original &&
+			!errores.nombre_original &&
+			datos.ano_estreno &&
+			!errores.ano_estreno &&
+			datos.entidad
+		) {
+			errores.nombre_original = await validarRepetidos("nombre_original", datos);
+		}
+		if (
+			datos.nombre_castellano &&
+			!errores.nombre_castellano &&
+			datos.ano_estreno &&
+			!errores.ano_estreno &&
+			datos.entidad
+		) {
+			errores.nombre_castellano = await validarRepetidos("nombre_castellano", datos);
+		}
+		// Resumen ***************************************************
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
@@ -281,10 +300,8 @@ module.exports = {
 // Variables **************************
 let cartelCampoVacio = "Necesitamos que completes esta información";
 let cartelCastellano =
-	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula. Buscá qué letra o símbolo puede ser extraña al idioma castellano, y corregila";
+	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 let cartelSelectVacio = "Necesitamos que elijas una opción";
-let relacionConLaVidaVacio =
-	"Necesitamos que elijas una opción en alguno de estos dos campos o en ambos";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
@@ -332,4 +349,31 @@ let hayErrores = (errores) => {
 let validarFuente = (link) => {
 	aux = link.indexOf("youtube.com/watch");
 	return aux >= 0 && aux <= 12;
+};
+let validarRepetidos = async (campo, datos) => {
+	// Obtener casos
+	let repetido = await BD_varias.obtenerPorCampos(
+		datos.entidad,
+		campo,
+		datos[campo],
+		"ano_estreno",
+		datos.ano_estreno
+	).then((n) => {
+		return n ? n.toJSON() : "";
+	});
+	// Si hay casos --> mensaje de error con la entidad y el id
+	if (repetido) {
+		let producto = varias.producto(datos.entidad);
+		mensaje =
+			"Esta " +
+			"<a href='/producto/detalle/?entidad=" +
+			datos.entidad +
+			"&id=" +
+			repetido.id +
+			"' target='_blank'><u><strong>" +
+			producto.toLowerCase() +
+			"</strong></u></a>" +
+			" ya se encuentra en nuestra base de datos";
+	} else mensaje = "";
+	return mensaje;
 };

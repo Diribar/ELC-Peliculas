@@ -138,7 +138,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: varias.producto(tipoProd.entidad),
+			producto: varias.producto(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: 24 * 60 * 60 * 1000});
