@@ -4,7 +4,7 @@ let path = require("path");
 let requestPromise = require("request-promise");
 let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
-let validarProd = require("../../funciones/Prod-Agregar/3-Errores");
+let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 let variables = require("../../funciones/Prod-Agregar/4-Variables");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/Varias");
@@ -252,25 +252,24 @@ module.exports = {
 		// 5. Detectar errores
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
-			: await validarProd.datosDuros(datosDuros, [
-					...variables.camposDD1(),
-					...variables.camposDD2(),
-			  ]);
+			: await validarProd.datosDuros(datosDuros, variables.camposDD());
 		//return res.send(errores)
+		// Obtener países e idiomas
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
+		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 		// 6. Render del formulario
-		//return res.send(datosDuros);
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosDuros,
-			paises,
 			errores,
-			camposDD1: variables.camposDD1(),
-			camposDD2: variables.camposDD2(),
+			camposDD1: variables.camposDD().filter((n) => n.antesDePais),
+			camposDD2: variables.camposDD().filter((n) => !n.antesDePais),
+			paises,
+			idiomas,
 			origen,
 		});
 	},
@@ -292,10 +291,7 @@ module.exports = {
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 3. Averiguar si hay errores de validación. Se usa el nombre del archivo multer, si existe
 		avatar = req.file ? req.file.filename : datosDuros.avatar;
-		let errores = await validarProd.datosDuros({...datosDuros, avatar}, [
-			...variables.camposDD1(),
-			...variables.camposDD2(),
-		]);
+		let errores = await validarProd.datosDuros({...datosDuros, avatar}, variables.camposDD);
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			elc_id = await BD_varias.obtenerELC_id({

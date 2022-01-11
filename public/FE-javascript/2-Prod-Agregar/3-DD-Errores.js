@@ -2,17 +2,17 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button[type='submit']");
+	let entidad = document.querySelector("#dataEntry #entidad").innerHTML;
 	let inputs = document.querySelectorAll(".input-error .input");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
-	let mensajeError = document.querySelectorAll(".input-error .mensajeError");
+	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
 		paises = await fetch("/producto/agregar/api/DD-paises").then((n) => n.json());
 		inputPais = document.querySelector("#paises_id input[name='paises_id']");
 		mostrarPaises = document.querySelector("#dataEntry #paises_id #mostrarPaises");
-	} 
-
+	}
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	for (let i = 0; i < inputs.length; i++) {
@@ -21,17 +21,16 @@ window.addEventListener("load", async () => {
 		// Acciones ante cambios en el input
 		inputs[i].addEventListener("input", async () => {
 			// Averiguar si hay algún error
-			if (selectPais == inputs[i]) {
-				funcionPaises()
+			if (selectPais && selectPais == inputs[i]) {
+				funcionPaises();
 				campo = "paises_id";
 				valor = inputPais.value;
 			} else {
 				campo = inputs[i].name;
 				valor = inputs[i].value;
 			}
-			errores = await fetch(
-				"/producto/agregar/api/validar-datos-duros/?" + campo + "=" + valor
-			).then((n) => n.json());
+			let ruta = "/producto/agregar/api/validar-datos-duros/?entidad=" + entidad + "&";
+			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
 			mensaje = errores[campo];
 			// Verificar que el año de fin sea mayor o igual que el de estreno
 			if (!mensaje && campo == "ano_fin") {
@@ -44,17 +43,16 @@ window.addEventListener("load", async () => {
 							"El año de finalización debe ser igual o mayor que el año de estreno")
 					: "";
 			}
-			mensajeError[i].innerHTML = mensaje;
+			mensajesError[i].innerHTML = mensaje;
 			// Acciones en función de si hay o no mensajes de error
 			if (mensaje) {
 				iconoError[i].classList.remove("ocultar");
 				button.classList.add("botonSinLink");
 			} else {
 				iconoError[i].classList.add("ocultar");
-				button.classList.remove("botonSinLink");
-				for (let j = 0; j < inputs.length; j++) {
-					if (mensajeError[j].innerHTML) button.classList.add("botonSinLink");
-				}
+				Array.from(mensajesError).find((n) => n.innerHTML)
+					? button.classList.add("botonSinLink")
+					: button.classList.remove("botonSinLink");
 			}
 		});
 	}

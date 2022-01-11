@@ -77,12 +77,14 @@ module.exports = {
 	// ControllerAPI (validarDatosDuros)
 	datosDuros: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
-		if (datos.entidad) {
-			camposAVerificar = camposDD.filter((n) => n[datos.entidad]).map((n) => n.campo);
-		} else camposAVerificar = camposDD;
+		camposAVerificar = typeof(camposDD)=="string"
+			? camposDD
+			// Explicación de la siguiente rutina
+			// filter((n) -> n[datos.entidad]) -> quedan los objetos cuya método [entidad] es true
+			// map((n) => n.campo) -> de esos objetos, se toma el método "campo"
+			: camposDD.filter((n) => n[datos.entidad]).map((n) => n.campo);
 		// Comenzar con las revisiones
 		let errores = {};
-		// En colección
 		errores.nombre_original =
 			camposAVerificar.indexOf("nombre_original") == -1
 				? ""
@@ -139,11 +141,20 @@ module.exports = {
 				: datos.duracion > 300
 				? "Debe ser un número menor"
 				: "";
-		errores.paises_id = !datos.paises_id
-			? cartelCampoVacio
-			: datos.paises_id.length > 2 * 1 + 4 * 3
-			? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
-			: "";
+		errores.paises_id =
+			camposAVerificar.indexOf("paises_id") == -1
+				? ""
+				: !datos.paises_id
+				? cartelCampoVacio
+				: datos.paises_id.length > 2 * 1 + 4 * 3
+				? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
+				: "";
+		errores.idioma_original_id =
+			camposAVerificar.indexOf("idioma_original_id") == -1
+				? ""
+				: !datos.idioma_original_id
+				? cartelCampoVacio
+				: "";
 		errores.direccion =
 			camposAVerificar.indexOf("direccion") == -1
 				? ""
@@ -195,18 +206,24 @@ module.exports = {
 				: castellano(datos.produccion)
 				? cartelCastellano
 				: "";
-		errores.sinopsis = !datos.sinopsis
-			? cartelCampoVacio
-			: longitud(datos.sinopsis, 15, 800)
-			? longitud(datos.sinopsis, 15, 800)
-			: castellano(datos.sinopsis)
-			? cartelCastellano
-			: "";
-		errores.avatar = !datos.avatar
-			? "Necesitamos que agregues una imagen"
-			: extensiones(datos.avatar)
-			? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
-			: "";
+		errores.sinopsis =
+			camposAVerificar.indexOf("sinopsis") == -1
+				? ""
+				: !datos.sinopsis
+				? cartelCampoVacio
+				: longitud(datos.sinopsis, 15, 800)
+				? longitud(datos.sinopsis, 15, 800)
+				: castellano(datos.sinopsis)
+				? cartelCastellano
+				: "";
+		errores.avatar =
+			camposAVerificar.indexOf("avatar") == -1
+				? ""
+				: !datos.avatar
+				? "Necesitamos que agregues una imagen"
+				: extensiones(datos.avatar)
+				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
+				: "";
 		errores.hay = hayErrores(errores);
 		return errores;
 	},

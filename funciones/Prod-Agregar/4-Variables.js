@@ -2,19 +2,23 @@
 let BD_varias = require("../BD/varias");
 
 module.exports = {
-	camposDD1: () => {
+	camposDD: () => {
 		return [
 			{
 				titulo: "Título original",
 				campo: "nombre_original",
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
+				change: true,
 			},
 			{
 				titulo: "Título en castellano",
 				campo: "nombre_castellano",
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
+				change: true,
 			},
 			{
 				titulo: "Temporadas",
@@ -22,6 +26,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Capítulos",
@@ -29,6 +34,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Año de estreno",
@@ -36,6 +42,7 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Año de finalización",
@@ -43,6 +50,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				antesDePais: true,
 			},
 			{
 				titulo: "Duración (minutos)",
@@ -50,12 +58,8 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: false,
+				antesDePais: true,
 			},
-		];
-	},
-
-	camposDD2: () => {
-		return [
 			{titulo: "Dirección", campo: "direccion", peliculas: true, colecciones: true},
 			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
 			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
@@ -159,7 +163,7 @@ module.exports = {
 					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
 				],
 				link: "RCLV_personajes_historicos",
-				RCLV: true
+				RCLV: true,
 			},
 			{
 				titulo: "Hecho histórico",
@@ -172,7 +176,7 @@ module.exports = {
 					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
 				],
 				link: "RCLV_hechos_historicos",
-				RCLV: true
+				RCLV: true,
 			},
 			{
 				titulo: "Valor principal",
@@ -184,7 +188,7 @@ module.exports = {
 					"Poné el valor más representativo.",
 					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
 				],
-				RCLV: true
+				RCLV: true,
 			},
 		];
 	},
