@@ -74,8 +74,9 @@ module.exports = {
 		return errores;
 	},
 
-	// ControllerAPI (validarDatosDuros)
-	datosDuros: (datos, camposDD) => {
+	// ControllerAPI (validarDatosDuros_input)
+	// ControllerVista (DD - Form y Grabar)
+	datosDuros_input: (datos, camposDD) => {
 		// Averiguar cuáles son los campos a verificar
 		camposAVerificar = typeof(camposDD)=="string"
 			? camposDD
