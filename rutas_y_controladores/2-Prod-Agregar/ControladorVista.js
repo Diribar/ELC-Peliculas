@@ -426,17 +426,17 @@ module.exports = {
 		}
 		// Si no hay errores, continuar
 		// 7. Obtener la calificación
-		fe_valores = await BD_varias.obtenerPorParametro(
+		fe_valores = await BD_varias.obtenerPorCampo(
 			"fe_valores",
 			"id",
 			datosPers.fe_valores_id
 		).then((n) => n.valor);
-		entretiene = await BD_varias.obtenerPorParametro(
+		entretiene = await BD_varias.obtenerPorCampo(
 			"entretiene",
 			"id",
 			datosPers.entretiene_id
 		).then((n) => n.valor);
-		calidad_tecnica = await BD_varias.obtenerPorParametro(
+		calidad_tecnica = await BD_varias.obtenerPorCampo(
 			"calidad_tecnica",
 			"id",
 			datosPers.calidad_tecnica_id

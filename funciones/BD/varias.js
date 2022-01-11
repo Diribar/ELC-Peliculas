@@ -8,22 +8,28 @@ module.exports = {
 		});
 	},
 
-	obtenerPorParametro: (entidad, parametro, valor) => {
+	obtenerPorCampo: (entidad, campo, valor) => {
 		return db[entidad].findOne({
-			where: {[parametro]: valor},
+			where: {[campo]: valor},
 		});
 	},
 
-	obtenerPorParametroConInclude: (entidad, parametro, valor, includes) => {
+	obtenerPorCampos: (entidad, campo1, valor1, campo2, valor2) => {
 		return db[entidad].findOne({
-			where: {[parametro]: valor},
+			where: {[campo1]: valor1, [campo2]: valor2},
+		});
+	},
+
+	obtenerPorCampoConInclude: (entidad, campo, valor, includes) => {
+		return db[entidad].findOne({
+			where: {[campo]: valor},
 			include: includes,
 		});
 	},
 
-	obtenerPorParametrosConInclude: (entidad, parametro1, valor1, parametro2, valor2, includes) => {
+	obtenerPorCamposConInclude: (entidad, campo1, valor1, campo2, valor2, includes) => {
 		return db[entidad].findOne({
-			where: {[parametro1]: valor1, [parametro2]: valor2},
+			where: {[campo1]: valor1, [campo2]: valor2},
 			include: includes,
 		});
 	},

@@ -4,7 +4,6 @@ TIPO PRODUCTO
 
 DATOS DUROS
 - Averiguar si el nombre original o en castellano, ya existen y son del mismo año
-    - Averiguarlo mediante un 'change' en el input
     - Si es la misma entidad, considerarlo como un 'error'
     - Si es otra entidad, considerarlo como un 'warning'
 

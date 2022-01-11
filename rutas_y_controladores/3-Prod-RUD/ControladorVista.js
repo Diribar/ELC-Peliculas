@@ -61,7 +61,7 @@ module.exports = {
 		// Definir los campos include
 		includes.splice(-2);
 		// Obtener los datos
-		let prodEditado = await BD_varias.obtenerPorParametrosConInclude(
+		let prodEditado = await BD_varias.obtenerPorCamposConInclude(
 			entidad + "Edicion",
 			"ELC_id",
 			producto.id,
