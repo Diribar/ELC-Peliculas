@@ -76,155 +76,114 @@ module.exports = {
 
 	// ControllerAPI (validarDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
-	datosDuros_input: (datos, camposDD) => {
-		// Averiguar cuáles son los campos a verificar
-		camposAVerificar = typeof(camposDD)=="string"
-			? camposDD
-			// Explicación de la siguiente rutina
-			// filter((n) -> n[datos.entidad]) -> quedan los objetos cuya método [entidad] es true
-			// map((n) => n.campo) -> de esos objetos, se toma el método "campo"
-			: camposDD.filter((n) => n[datos.entidad]).map((n) => n.campo);
+	datosDuros: async (campos, datos) => {
 		// Comenzar con las revisiones
 		let errores = {};
-		errores.nombre_original =
-			camposAVerificar.indexOf("nombre_original") == -1
-				? ""
-				: !datos.nombre_original
-				? cartelCampoVacio
-				: longitud(datos.nombre_original, 2, 50)
-				? longitud(datos.nombre_original, 2, 50)
-				: castellano(datos.nombre_original)
-				? cartelCastellano
-				: "";
-		errores.nombre_castellano =
-			camposAVerificar.indexOf("nombre_castellano") == -1
-				? ""
-				: !datos.nombre_castellano
-				? cartelCampoVacio
-				: longitud(datos.nombre_castellano, 2, 50)
-				? longitud(datos.nombre_castellano, 2, 50)
-				: castellano(datos.nombre_castellano)
-				? cartelCastellano
-				: "";
-		errores.ano_estreno =
-			camposAVerificar.indexOf("ano_estreno") == -1
-				? ""
-				: !datos.ano_estreno
-				? cartelCampoVacio
-				: formatoAno(datos.ano_estreno)
-				? "Debe ser un número de 4 dígitos"
-				: datos.ano_estreno < 1900
-				? "El año debe ser mayor a 1900"
-				: datos.ano_estreno > new Date().getFullYear()
-				? "El número no puede superar al año actual"
-				: "";
-		errores.ano_fin =
-			camposAVerificar.indexOf("ano_fin") == -1
-				? ""
-				: !datos.ano_fin
-				? cartelCampoVacio
-				: formatoAno(datos.ano_fin)
-				? "Debe ser un número de 4 dígitos"
-				: datos.ano_fin < 1900
-				? "El año debe ser mayor a 1900"
-				: datos.ano_fin > new Date().getFullYear()
-				? "El número no puede superar al año actual"
-				: !errores.ano_estreno && datos.ano_estreno && datos.ano_estreno > datos.ano_fin
-				? "El año de finalización debe ser igual o mayor que el año de estreno"
-				: "";
-		errores.duracion =
-			camposAVerificar.indexOf("duracion") == -1
-				? ""
-				: !datos.duracion
-				? cartelCampoVacio
-				: formatoNumero(datos.duracion, 20)
-				? formatoNumero(datos.duracion, 20)
-				: datos.duracion > 300
-				? "Debe ser un número menor"
-				: "";
-		errores.paises_id =
-			camposAVerificar.indexOf("paises_id") == -1
-				? ""
-				: !datos.paises_id
-				? cartelCampoVacio
-				: datos.paises_id.length > 2 * 1 + 4 * 3
-				? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
-				: "";
-		errores.idioma_original_id =
-			camposAVerificar.indexOf("idioma_original_id") == -1
-				? ""
-				: !datos.idioma_original_id
-				? cartelCampoVacio
-				: "";
-		errores.direccion =
-			camposAVerificar.indexOf("direccion") == -1
-				? ""
-				: !datos.direccion
-				? cartelCampoVacio
-				: longitud(datos.direccion, 2, 100)
-				? longitud(datos.direccion, 2, 100)
-				: castellano(datos.direccion)
-				? cartelCastellano
-				: "";
-		errores.guion =
-			camposAVerificar.indexOf("guion") == -1
-				? ""
-				: !datos.guion
-				? cartelCampoVacio
-				: longitud(datos.guion, 2, 100)
-				? longitud(datos.guion, 2, 100)
-				: castellano(datos.guion)
-				? cartelCastellano
-				: "";
-		errores.musica =
-			camposAVerificar.indexOf("musica") == -1
-				? ""
-				: !datos.musica
-				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
-				: longitud(datos.musica, 2, 100)
-				? longitud(datos.musica, 2, 100)
-				: castellano(datos.musica)
-				? cartelCastellano
-				: "";
-		errores.actuacion =
-			camposAVerificar.indexOf("actuacion") == -1
-				? ""
-				: !datos.actuacion
-				? cartelCampoVacio +
-				  '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
-				: longitud(datos.actuacion, 2, 500)
-				? longitud(datos.actuacion, 2, 500)
-				: castellano(datos.actuacion)
-				? cartelCastellano
-				: "";
-		errores.produccion =
-			camposAVerificar.indexOf("produccion") == -1
-				? ""
-				: !datos.produccion
-				? cartelCampoVacio
-				: longitud(datos.produccion, 2, 100)
-				? longitud(datos.produccion, 2, 100)
-				: castellano(datos.produccion)
-				? cartelCastellano
-				: "";
-		errores.sinopsis =
-			camposAVerificar.indexOf("sinopsis") == -1
-				? ""
-				: !datos.sinopsis
-				? cartelCampoVacio
-				: longitud(datos.sinopsis, 15, 800)
-				? longitud(datos.sinopsis, 15, 800)
-				: castellano(datos.sinopsis)
-				? cartelCastellano
-				: "";
-		errores.avatar =
-			camposAVerificar.indexOf("avatar") == -1
-				? ""
-				: !datos.avatar
-				? "Necesitamos que agregues una imagen"
-				: extensiones(datos.avatar)
-				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
-				: "";
+		campos.indexOf("ano_estreno") != -1
+			? (errores.ano_estreno = !datos.ano_estreno
+					? cartelCampoVacio
+					: formatoAno(datos.ano_estreno)
+					? "Debe ser un número de 4 dígitos"
+					: datos.ano_estreno < 1900
+					? "El año debe ser mayor a 1900"
+					: datos.ano_estreno > new Date().getFullYear()
+					? "El número no puede superar al año actual"
+					: "")
+			: "";
+		campos.indexOf("ano_fin") != -1
+			? (errores.ano_fin = !datos.ano_fin
+					? cartelCampoVacio
+					: formatoAno(datos.ano_fin)
+					? "Debe ser un número de 4 dígitos"
+					: datos.ano_fin < 1900
+					? "El año debe ser mayor a 1900"
+					: datos.ano_fin > new Date().getFullYear()
+					? "El número no puede superar al año actual"
+					: !errores.ano_estreno && datos.ano_estreno && datos.ano_estreno > datos.ano_fin
+					? "El año de finalización debe ser igual o mayor que el año de estreno"
+					: "")
+			: "";
+		campos.indexOf("duracion") != -1
+			? (errores.duracion = !datos.duracion
+					? cartelCampoVacio
+					: formatoNumero(datos.duracion, 20)
+					? formatoNumero(datos.duracion, 20)
+					: datos.duracion > 300
+					? "Debe ser un número menor"
+					: "")
+			: "";
+		campos.indexOf("paises_id") != -1
+			? (errores.paises_id = !datos.paises_id
+					? cartelCampoVacio
+					: datos.paises_id.length > 2 * 1 + 4 * 3
+					? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
+					: "")
+			: "";
+		campos.indexOf("idioma_original_id") != -1
+			? (errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "")
+			: "";
+		campos.indexOf("direccion") != -1
+			? (errores.direccion = !datos.direccion
+					? cartelCampoVacio
+					: longitud(datos.direccion, 2, 100)
+					? longitud(datos.direccion, 2, 100)
+					: castellano(datos.direccion)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("guion") != -1
+			? (errores.guion = !datos.guion
+					? cartelCampoVacio
+					: longitud(datos.guion, 2, 100)
+					? longitud(datos.guion, 2, 100)
+					: castellano(datos.guion)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("musica") != -1
+			? (errores.musica = !datos.musica
+					? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
+					: longitud(datos.musica, 2, 100)
+					? longitud(datos.musica, 2, 100)
+					: castellano(datos.musica)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("actuacion") != -1
+			? (errores.actuacion = !datos.actuacion
+					? cartelCampoVacio +
+					  '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
+					: longitud(datos.actuacion, 2, 500)
+					? longitud(datos.actuacion, 2, 500)
+					: castellano(datos.actuacion)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("produccion") != -1
+			? (errores.produccion = !datos.produccion
+					? cartelCampoVacio
+					: longitud(datos.produccion, 2, 100)
+					? longitud(datos.produccion, 2, 100)
+					: castellano(datos.produccion)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("sinopsis") != -1
+			? (errores.sinopsis = !datos.sinopsis
+					? cartelCampoVacio
+					: longitud(datos.sinopsis, 15, 800)
+					? longitud(datos.sinopsis, 15, 800)
+					: castellano(datos.sinopsis)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("avatar") != -1
+			? (errores.avatar = !datos.avatar
+					? "Necesitamos que agregues una imagen"
+					: extensiones(datos.avatar)
+					? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
+					: "")
+			: "";
 		errores.hay = hayErrores(errores);
 		return errores;
 	},

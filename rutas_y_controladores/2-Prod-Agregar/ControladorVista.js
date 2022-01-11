@@ -133,9 +133,13 @@ module.exports = {
 	},
 
 	tipoProd_Guardar: async (req, res) => {
+		// 1. Preparar los datos a guardar
 		// 1. Guardar el data entry en session y cookie
-		let tipoProd = {...req.body, fuente: "IM"};
-		tipoProd.producto = varias.producto(tipoProd.entidad);
+		let tipoProd = {
+			...req.body,
+			fuente: "IM",
+			producto: varias.producto(tipoProd.entidad),
+		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: 24 * 60 * 60 * 1000});
 		// 2. Averiguar si hay errores de validación
@@ -249,25 +253,28 @@ module.exports = {
 		datosTerminaste = funcDatosTerminaste(datosDuros);
 		req.session.datosTerminaste = datosTerminaste;
 		res.cookie("datosTerminaste", datosTerminaste, {maxAge: 24 * 60 * 60 * 1000});
-		// 5. Detectar errores
+		// 5. Obtiene los campos que corresponden para la 'entidad'
+		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
+		// 6. Obtiene los errores
+		let camposDD_errores = camposDD.map((n) => n.campo);
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
-			: await validarProd.datosDuros_input(datosDuros, variables.camposDD());
-		//return res.send(errores)
-		// Obtener países e idiomas
+			: await validarProd.datosDuros(camposDD_errores, datosDuros);
+		// 7. Obtiene variables para la vista
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
 		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
-		// 6. Render del formulario
+		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
+		// 8. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosDuros,
 			errores,
-			camposDD1: variables.camposDD().filter((n) => n.antesDePais),
-			camposDD2: variables.camposDD().filter((n) => !n.antesDePais),
+			camposDD1: camposDD_vista.filter((n) => n.antesDePais),
+			camposDD2: camposDD_vista.filter((n) => !n.antesDePais),
 			paises,
 			idiomas,
 			origen,
@@ -289,9 +296,11 @@ module.exports = {
 		req.session.datosDuros = datosDuros;
 		res.cookie("datosDuros", datosDuros, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
-		// 3. Averiguar si hay errores de validación. Se usa el nombre del archivo multer, si existe
+		// 3. Averiguar si hay errores de validación
+		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
+		let camposDD_errores = camposDD.map((n) => n.campo);
 		avatar = req.file ? req.file.filename : datosDuros.avatar;
-		let errores = await validarProd.datosDuros_input({...datosDuros, avatar}, variables.camposDD);
+		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
 			elc_id = await BD_varias.obtenerELC_id({
