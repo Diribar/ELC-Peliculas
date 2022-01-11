@@ -232,32 +232,17 @@ module.exports = {
 	datosPers: async (campos, datos) => {
 		let errores = {};
 		// Datos generales
-		campos.includes("en_castellano_id")
-			? (errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("en_color_id")
-			? (errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("categoria_id")
-			? (errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("subcategoria_id")
-			? (errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("publico_sugerido_id")
-			? (errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "")
-			: "";
+		errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
+		errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
+		errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
+		errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "";
+		errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "";
 		// Tu calificación
-		campos.includes("fe_valores_id")
-			? (errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("entretiene_id")
-			? (errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "")
-			: "";
-		campos.includes("calidad_tecnica_id")
-			? (errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "")
-			: "";
-		if (datos.subcategoria_id != "") {
+		errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
+		errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
+		errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
+		// rclv
+		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_varias.obtenerPorCampo(
 				"subcategorias",
@@ -265,17 +250,15 @@ module.exports = {
 				datos.subcategoria_id
 			);
 			// Relación con la vida
-			campos.includes("personaje_historico_id") || !subcategoria.personaje
+			subcategoria.personaje
 				? (errores.personaje_historico_id = !datos.personaje_historico_id
 						? cartelSelectVacio
 						: "")
 				: "";
-			campos.includes("hecho_historico_id") || !subcategoria.hecho
+			subcategoria.hecho
 				? (errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "")
 				: "";
-			campos.includes("valor_id") || !subcategoria.valor
-				? (errores.valor_id = !datos.valor_id ? cartelSelectVacio : "")
-				: "";
+			subcategoria.valor ? (errores.valor_id = !datos.valor_id ? cartelSelectVacio : "") : "";
 		}
 		errores.hay = hayErrores(errores);
 		// Links gratuitos

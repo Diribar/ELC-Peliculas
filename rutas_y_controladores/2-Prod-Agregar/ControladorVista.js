@@ -260,7 +260,7 @@ module.exports = {
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await validarProd.datosDuros(camposDD_errores, datosDuros);
-		// 7. Obtiene variables para la vista
+		// 7. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
 			: await BD_varias.obtenerTodos("paises", "nombre");
@@ -382,15 +382,18 @@ module.exports = {
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 4. Obtener los errores
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
-		// 5. Render del formulario
+		// 5. Preparar variables para la vista
+		let datosPersSelect = await variables.datosPersSelect();
+		let datosPersInput = variables.datosPersInput().filter((m) => m[datosPers.entidad]);
+		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			link: req.originalUrl,
 			dataEntry: datosPers,
 			errores,
-			datosPersSelect: await variables.datosPersSelect(),
-			datosPersInput: variables.datosPersInput(),
+			datosPersSelect,
+			datosPersInput,
 		});
 	},
 
@@ -400,25 +403,18 @@ module.exports = {
 		if (!aux) return res.redirect("/producto/agregar/datos-duros");
 		// 2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
-		// 3. Borrar campos vacíos
-		if (!datosPers.personaje_historico_id) delete datosPers.personaje_historico_id;
-		if (!datosPers.hecho_historico_id) delete datosPers.hecho_historico_id;
-		if (!datosPers.valor_id || datosPers.valor_id == 1) delete datosPers.valor_id;
-		if (!datosPers.link_trailer) delete datosPers.link_trailer;
-		if (!datosPers.link_pelicula) delete datosPers.link_pelicula;
-		//return res.send(datosPers)
+		// 3. Borrar campos innecesarios
+		for (campo in datosPers) {
+			if (!datosPers[campo]) delete datosPers[campo];
+			if (campo == "entidad_RCLV" || campo == "producto_RCLV") delete datosPers[campo];
+		}
 		// 4. Guardar el data entry en session y cookie
-		// Actualizar la session
 		req.session.datosPers = datosPers;
-		// Descartar info innecesaria si la hubiera
-		if (req.session.datosPers.entidad_RCLV) delete req.session.datosPers.entidad_RCLV;
-		if (req.session.datosPers.producto_RCLV) delete req.session.datosPers.producto_RCLV;
-		// Actualizar la cookie Datos Pers
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
 		camposDP = [...(await variables.datosPersSelect()), ...variables.datosPersInput()];
-		let errores = await validarProd.datosPers(datosPers, camposDP);
+		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.erroresDP = errores;
