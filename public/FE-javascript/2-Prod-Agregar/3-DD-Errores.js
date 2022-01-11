@@ -23,9 +23,12 @@ window.addEventListener("load", async () => {
 	let ruta = "/producto/agregar/api/validar-datos-duros/?";
 
 	// Status inicial
-	Array.from(mensajesError).find((n) => n.innerHTML)
-		? button.classList.add("botonSinLink")
-		: button.classList.remove("botonSinLink");
+	let botonSubmit=()=> {
+		Array.from(mensajesError).find((n) => n.innerHTML)
+			? button.classList.add("botonSinLink")
+			: button.classList.remove("botonSinLink");
+	}
+	botonSubmit()
 
 	// Revisar data-entries 'change' y comunicar los aciertos y errores
 	form.addEventListener("change", async (e) => {
@@ -72,9 +75,7 @@ window.addEventListener("load", async () => {
 				button.classList.add("botonSinLink");
 			} else {
 				iconoError[i].classList.add("ocultar");
-				Array.from(mensajesError).find((n) => n.innerHTML)
-					? button.classList.add("botonSinLink")
-					: button.classList.remove("botonSinLink");
+				botonSubmit()
 			}
 		});
 	}
@@ -124,6 +125,7 @@ window.addEventListener("load", async () => {
 		dato3 = "ano_estreno=" + ano_estreno.value;
 		let repetido = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
 		console.log(repetido);
+		botonSubmit()
 		return repetido ? repetido.id : "";
 	};
 });
