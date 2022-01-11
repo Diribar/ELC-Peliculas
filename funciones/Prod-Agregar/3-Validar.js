@@ -250,15 +250,13 @@ module.exports = {
 				datos.subcategoria_id
 			);
 			// Relación con la vida
-			subcategoria.personaje
-				? (errores.personaje_historico_id = !datos.personaje_historico_id
-						? cartelSelectVacio
-						: "")
-				: "";
-			subcategoria.hecho
-				? (errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "")
-				: "";
-			subcategoria.valor ? (errores.valor_id = !datos.valor_id ? cartelSelectVacio : "") : "";
+			if (subcategoria.personaje)
+				errores.personaje_historico_id = !datos.personaje_historico_id
+					? cartelSelectVacio
+					: "";
+			if (subcategoria.hecho)
+				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		errores.hay = hayErrores(errores);
 		// Links gratuitos
