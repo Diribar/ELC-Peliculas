@@ -77,8 +77,28 @@ module.exports = {
 	// ControllerAPI (validarDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
-		// Comenzar con las revisiones
 		let errores = {};
+		// Errores 'change' ******************************************
+		
+		// Errores 'input' *******************************************
+		campos.indexOf("nombre_original") != -1 && !errores.nombre_original
+			? (errores.nombre_original = !datos.nombre_original
+					? cartelCampoVacio
+					: longitud(datos.nombre_original, 2, 50)
+					? longitud(datos.nombre_original, 2, 50)
+					: castellano(datos.nombre_original)
+					? cartelCastellano
+					: "")
+			: "";
+		campos.indexOf("nombre_castellano") != -1 && !errores.nombre_castellano
+			? (errores.nombre_castellano = !datos.nombre_castellano
+					? cartelCampoVacio
+					: longitud(datos.nombre_castellano, 2, 50)
+					? longitud(datos.nombre_castellano, 2, 50)
+					: castellano(datos.nombre_castellano)
+					? cartelCastellano
+					: "")
+			: "";
 		campos.indexOf("ano_estreno") != -1
 			? (errores.ano_estreno = !datos.ano_estreno
 					? cartelCampoVacio

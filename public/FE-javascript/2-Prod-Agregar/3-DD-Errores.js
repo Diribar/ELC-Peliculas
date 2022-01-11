@@ -7,9 +7,8 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Campos a controlar
-	let ruta = "/producto/agregar/api/campos-DD-a-verificar/?entidad=" + entidad + "&change=";
-	let campos_change = await fetch(ruta + "true").then((n) => n.json());
-	let campos_input = await fetch(ruta + "false").then((n) => n.json());
+	let ruta = "/producto/agregar/api/campos-DD-a-verificar/?entidad=" + entidad;
+	let campos = await fetch(ruta).then((n) => n.json());
 	// Variables de país
 	let selectPais = document.querySelector("#paises_id select");
 	if (selectPais) {
@@ -20,15 +19,60 @@ window.addEventListener("load", async () => {
 		inputPais = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 	}
 
-	// Revisar el data-entry y comunicar los aciertos y errores
-	form.addEventListener("change", async(e)=> {
+	// Status inicial
+	Array.from(mensajesError).find((n) => n.innerHTML)
+		? button.classList.add("botonSinLink")
+		: button.classList.remove("botonSinLink");
+
+	// Revisar data-entries 'change' y comunicar los aciertos y errores
+	form.addEventListener("change", async (e) => {
 		campo = e.target.name;
 		console.log(campo);
 		if (campo == "nombre_original" || campo == "ano_estreno") {
-
 		}
-		if (campo == "nombre_castellano" || campo == "ano_estreno") {}
-	})
+		if (campo == "nombre_castellano" || campo == "ano_estreno") {
+		}
+	});
+
+	// Revisar data-entries 'input' y comunicar los aciertos y errores
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener("input", async (e) => {
+			// Definir los valores para 'campo' y 'valor'
+			if (e.target == selectPais) {
+				funcionPaises();
+				campo = "paises_id";
+				valor = inputPais.value;
+			} else {
+				campo = e.target.name;
+				valor = e.target.value;
+			}
+			// Averiguar si hay algún error
+			let ruta = "/producto/agregar/api/validar-datos-duros/?";
+			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+			mensajesError[i].innerHTML = errores[campo];
+			// Verificar que el año de fin sea mayor o igual que el de estreno
+			if (!mensajesError[i].innerHTML && campo == "ano_fin") {
+				inputs.forEach((input, index) => {
+					if (input.name == "ano_estreno") indice = index;
+				});
+				ano_estreno = inputs[indice].value;
+				valor < ano_estreno
+					? (mensajesError[i].innerHTML =
+							"El año de finalización debe ser igual o mayor que el año de estreno")
+					: "";
+			}
+			// Acciones en función de si hay o no mensajes de error
+			if (mensajesError[i].innerHTML) {
+				iconoError[i].classList.remove("ocultar");
+				button.classList.add("botonSinLink");
+			} else {
+				iconoError[i].classList.add("ocultar");
+				Array.from(mensajesError).find((n) => n.innerHTML)
+					? button.classList.add("botonSinLink")
+					: button.classList.remove("botonSinLink");
+			}
+		});
+	}
 
 	// Submit
 	form.addEventListener("submit", (e) => {
