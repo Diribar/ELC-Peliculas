@@ -81,9 +81,9 @@ module.exports = {
 	validarDatosDuros: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		console.log(campos);
+		console.log(campos, req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validarProd.datosDuros_input(campos, req.query);
+		let errores = await validarProd.datosDuros(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},

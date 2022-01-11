@@ -11,7 +11,6 @@ module.exports = {
 				peliculas: true,
 				colecciones: true,
 				antesDePais: true,
-				change: true,
 			},
 			{
 				titulo: "Título en castellano",
@@ -19,7 +18,6 @@ module.exports = {
 				peliculas: true,
 				colecciones: true,
 				antesDePais: true,
-				change: true,
 			},
 			{
 				titulo: "Año de estreno",
@@ -28,7 +26,6 @@ module.exports = {
 				peliculas: true,
 				colecciones: true,
 				antesDePais: true,
-				change: true,
 			},
 			{
 				titulo: "Año de finalización",
