@@ -32,7 +32,7 @@
 /* Imagen de la película */
 #dataEntry #imagenPeli {position: relative; height: 100%; width: 250px;}
 #dataEntry #imagenPeli img {position: absolute; border-radius: 15px; width: auto; height: auto; max-width: 100%; max-height: 100%; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;}
-  
+
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
