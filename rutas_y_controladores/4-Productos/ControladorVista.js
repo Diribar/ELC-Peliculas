@@ -38,10 +38,10 @@ module.exports = {
 		tema = "opciones";
 		// Obtener el código de Opción y Tipo
 		let url = req.url.slice(1);
-		// Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		// Obtener la opción, los tipos para la opción elegida y el título
 		let opcion = url.slice(0, url.indexOf("/"));
 		let [tipos, titulo] = await datosVista(opcion);
-		// Obtener la Opción y el Tipo elegido
+		// Obtener la Opción Elegida y el Tipo Elegido
 		let opcionElegida = opciones.find((n) => n.opcion == opcion);
 		let tipoElegido = tipos.find((n) => n.url == url);
 		// Ir a la vista
