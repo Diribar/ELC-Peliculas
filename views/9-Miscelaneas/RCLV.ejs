@@ -1,18 +1,12 @@
 <h1 class="titulo" id="titulo">Agregá un <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
-	<section id="datos" class="flex-row">
+	<section id="datos" class="flex-row OK">
 		<!--Primera columna-->
 		<div id="primeraCol">
-			<!-- NOMBRE Y GÉNERO -->
-			<!-- Título del campo y Ayuda -->
+			<!-- Nombre: Título y Ayuda -->
 			<div class="flex-row">
 				<div class="margenBottomTitulo relative">
-					<!-- Errores -->			
-					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.nombre %></span>
-					</i>
-					<i class="fas fa-check-circle ocultar"></i>
 					<!-- Título -->
 					<h3>Nombre</h3>
 					<!-- Ayuda -->
@@ -21,12 +15,17 @@
 						<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 						<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 					</ul>
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.nombre %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
 				</div>
 			</div>
-			<!-- Valores del campo -->
+			<!-- Nombre: Input -->
 			<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+			<!-- Genero -->
 			<% if (codigo == "RCLV_personajes_historicos") { %>
-				<!-- Genero -->
 				<div id="genero" class="flex-row">
 					<h4>Género:</h4>
 					<div class="flex-row">
@@ -41,10 +40,10 @@
 					</div>
 				</div>
 			<% } %>
-			<!-- FECHA REPRESENTATIVA -->
-			<!-- Título del campo y Ayuda -->
-			<div class="flex-row">
-				<div class="margenTopTitulo margenBottomTitulo relative">
+			<!-- Fecha Representativa: Título y Ayuda -->
+			<div class="flex-row borderTop">
+				<div class="margenBottomTitulo relative">
+					<!-- Título -->
 					<h3>Fecha más representativa</h3>
 					<!-- Ayuda -->
 					<i class="fas fa-question-circle"></i>
@@ -60,7 +59,7 @@
 					<i class="fas fa-check-circle ocultar"></i>
 				</div>
 			</div>
-			<!-- Valores del campo -->
+			<!-- Fecha Representativa: Valores -->
 			<div id="valoresFecha" class="flex-col space-between">
 				<!-- Meses -->
 				<div class="flexRowAlign">
@@ -104,12 +103,31 @@
 					<label>Sin fecha conocida o de referencia</label>
 				</div>
 			</div>
+			<!-- Año Nacimiento/Ocurrencia: Título y Ayuda -->
+			<div class="flex-row borderTop">
+				<div class="margenBottomTitulo relative flex-row align-center">
+					<!-- Título -->
+					<h3>Año de <%= codigo == "RCLV_personajes_historicos" ? "Nacimiento" : "Ocurrencia" %></h3>
+					<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+					<!-- Ayuda -->
+					<i class="fas fa-question-circle"></i>
+					<ul type="dots" class="mensajeAyuda ocultar">
+						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %></li>
+						<li>Si es anterior a Cristo, elegí un valor negativo</li>
+					</ul>
+					<!-- Errores -->			
+					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.nombre %></span>
+					</i>
+					<i class="fas fa-check-circle ocultar"></i>
+				</div>
+			</div>
 		</div>
 		<!--Columna del medio-->
 		<div id="columnaMedio">
 		</div>
 		<!--Segunda columna-->
-		<div class="segundaCol">
+		<div id="segundaCol">
 			<div class="relative">
 				<h3>Nombres con esa fecha</h3>
 				<!-- Errores -->			
@@ -124,7 +142,7 @@
 	</section>
 	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
 	<% if (codigo == "RCLV_personajes_historicos") { %>
-		<section id="RCLI" class="flex-row space-between">
+		<section id="RCLI" class="flex-row space-between borderTop OK">
 			<!-- ¿En proceso de canonización? -->
 			<div class="flex-col">
 				<!-- Título de la sección -->

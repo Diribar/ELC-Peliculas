@@ -13,8 +13,8 @@ window.addEventListener("load", async () => {
 	let url_santopedia = "https://www.santopedia.com/buscar?q=";
 
 	// Variables de errores
-	let iconoOK = document.querySelectorAll("#dataEntry .fa-check-circle");
-	let iconoError = document.querySelectorAll("#dataEntry .fa-times-circle");
+	let iconoOK = document.querySelectorAll("#dataEntry .OK .fa-check-circle");
+	let iconoError = document.querySelectorAll("#dataEntry .OK .fa-times-circle");
 	let mensajeError = document.querySelectorAll("#dataEntry .mensajeError");
 	let OK = {};
 	let errores = {};
@@ -26,6 +26,8 @@ window.addEventListener("load", async () => {
 	let mes_id = document.querySelector("#dataEntry select[name='mes_id']");
 	let dia = document.querySelector("#dataEntry select[name='dia']");
 	let desconocida = document.querySelector("#dataEntry input[name='desconocida']");
+	// Campos de AÑO DE NACIMIENTO
+	let ano = document.querySelector("#dataEntry input[name='ano']");
 	// Campos de POSIBLES DUPLICADOS
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
@@ -37,6 +39,7 @@ window.addEventListener("load", async () => {
 		rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
 
+	// Add Event Listeners **************
 	nombre.addEventListener("input", () => {
 		wiki.href = url_wiki + nombre.value;
 		santopedia.href = url_santopedia + nombre.value;
@@ -70,6 +73,11 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionFechas();
 		}
 
+		// AÑO DE NACIMIENTO ************************************
+		if (campo == "ano") {
+			[OK, errores] = await funcionAno();
+		}
+
 		// REGISTROS DUPLICADOS **********************************
 		if (campo == "repetido") {
 			[OK, errores] = funcionRepetido();
@@ -94,9 +102,17 @@ window.addEventListener("load", async () => {
 		feedback(OK, errores);
 	});
 
+	form.addEventListener("submit", (e) => {
+		if (button.classList.contains("botonSinLink")) e.preventDefault();
+
+		// No logré hacer funcionar lo siguiente, para hacer un API
+		const data = new FormData(form);
+	});
+
+	// Funciones ************************
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "duplicados"];
+		let bloques = ["nombre", "fecha", "ano", "duplicados"];
 		if (entidad == "RCLV_personajes_historicos") bloques.push("RCLI");
 
 		// Rutina
@@ -129,19 +145,10 @@ window.addEventListener("load", async () => {
 			: button.classList.add("botonSinLink");
 	};
 
-	// Submit
-	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("botonSinLink")) e.preventDefault();
-
-		// No logré hacer funcionar lo siguiente, para hacer un API
-		const data = new FormData(form);
-	});
-
-	// Funciones ************************
 	let funcionNombre = async () => {
 		url = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
-		//OK.nombre = !errores.nombre ? true : false;
+		//OK.nombre = !errores.nombre ;
 		if (entidad == "RCLV_personajes_historicos" && !errores.nombre) {
 			url = "&genero=" + (genero[0].checked ? "V" : genero[1].checked ? "M" : "");
 			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
@@ -168,11 +175,11 @@ window.addEventListener("load", async () => {
 				url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
 				url += "&desconocida=" + desconocida.checked;
 				errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
-				OK.fecha = !errores.fecha ? true : false;
+				OK.fecha = !errores.fecha;
 				// Agregar los registros que tengan esa fecha
 				if (OK.fecha) {
 					errores.duplicados = await registrosConEsaFecha(mes_id.value, dia.value);
-					OK.duplicados = !errores.duplicados ? true : false;
+					OK.duplicados = !errores.duplicados;
 				} else {
 					errores.duplicados = "";
 					OK.duplicados = false;
@@ -185,6 +192,16 @@ window.addEventListener("load", async () => {
 		return [OK, errores];
 	};
 
+	let funcionAno = async () => {
+		// Se averigua si hay un error con el año
+		if (ano.value) {
+			url = "&ano=" + ano.value;
+			errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
+			OK.ano = !errores.ano;
+		} else OK.ano = false;
+		return [OK, errores];
+	};
+
 	let funcionRepetido = () => {
 		casos = document.querySelectorAll("#posiblesDuplicados li input");
 		errores.duplicados = "";
@@ -192,7 +209,7 @@ window.addEventListener("load", async () => {
 			if (caso.checked) errores.duplicados = cartelDuplicado;
 			break;
 		}
-		OK.duplicados = !errores.duplicados ? true : false;
+		OK.duplicados = !errores.duplicados;
 		return [OK, errores];
 	};
 
@@ -212,7 +229,7 @@ window.addEventListener("load", async () => {
 		url += "&rol_iglesia_id=" + rol_iglesia_id.value;
 		// Obtener los errores
 		errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
-		OK.RCLI = !errores.RCLI ? true : false;
+		OK.RCLI = !errores.RCLI;
 		errores.RCLI = "";
 		return [OK, errores];
 	};

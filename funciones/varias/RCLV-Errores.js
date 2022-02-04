@@ -6,11 +6,12 @@ module.exports = {
 	RCLV_consolidado: async function (datos) {
 		let errores = {
 			fecha: this.RCLV_fecha(datos),
+			ano: this.RCLV_ano(datos),
 		};
 		// Errores "nombre"
-		nombre = await this.RCLV_nombre(datos);
-		let genero = "";
-		if (datos.entidad == "RCLV_personajes_historicos") genero = await this.RCLV_genero(datos);
+		let nombre = await this.RCLV_nombre(datos);
+		let genero =
+			datos.entidad == "RCLV_personajes_historicos" ? await this.RCLV_genero(datos) : "";
 		errores.nombre = nombre ? nombre : genero;
 		// Errores "datos repetidos"
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
@@ -23,12 +24,14 @@ module.exports = {
 
 	RCLV_nombre: async (datos) => {
 		let {entidad, nombre} = datos;
-		return !datos.nombre
+		return !nombre
 			? cartelCampoVacio
-			: longitud(datos.nombre, 2, 30)
-			? longitud(datos.nombre, 2, 30)
-			: castellano(datos.nombre)
+			: longitud(nombre, 2, 30)
+			? longitud(nombre, 2, 30)
+			: castellano(nombre)
 			? cartelCastellano
+			: prefijo(nombre)
+			? cartelPrefijo
 			: (await BD_varias.obtenerELC_id({entidad, campo: "nombre", valor: nombre}))
 			? cartelRepetido
 			: "";
@@ -49,9 +52,22 @@ module.exports = {
 					(mes == 2 && dia > 29) ||
 					((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
 				)
-					errorFecha = cartelSupera;
+					error = cartelSupera;
 			}
 		}
+		return error;
+	},
+
+	RCLV_ano: (datos) => {
+		let ano = parseInt(datos.ano);
+		let error =
+			typeof ano != "number"
+				? "No es un número válido"
+				: ano > new Date().getFullYear()
+				? "El año no debe superar el año actual"
+				: ano < -32768
+				? "El año no debe ser inferior a -32.768"
+				: "";
 		return error;
 	},
 
@@ -75,6 +91,7 @@ cartelRepetido = "Ya tenemos un registro con ese nombre";
 cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto
@@ -87,6 +104,25 @@ let longitud = (dato, corto, largo) => {
 let castellano = (dato) => {
 	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
+};
+
+let prefijo = (nombre) => {
+	return (
+		nombre.startsWith("San ") ||
+		nombre.startsWith("Santa ") ||
+		nombre.startsWith("Santo ") ||
+		nombre.startsWith("Beato ") ||
+		nombre.startsWith("Beata ") ||
+		nombre.startsWith("Ven. ") ||
+		nombre.startsWith("Venerable ") ||
+		nombre.startsWith("Madre ") ||
+		nombre.startsWith("Hna. ") ||
+		nombre.startsWith("Hermana ") ||
+		nombre.startsWith("Padre ") ||
+		nombre.startsWith("Don ") ||
+		nombre.startsWith("Doña ") ||
+		nombre.startsWith("Papa ")
+	);
 };
 
 let hayErrores = (errores) => {

@@ -1,6 +1,7 @@
 /* Formato del cuerpo */
-.cuerpo {align-items: center;justify-content: center;}
-.cuerpo #titulo {margin: 0px; background-color: var(--amarillo-claro);}
+.cuerpo {align-items: center; justify-content: center; position: relative;}
+.cuerpo #titulo {margin: 0px; background-color: var(--amarillo-claro); position: absolute; top: 0; left: 0;}
+.cuerpo #titulo {border-bottom-right-radius: 10px;}
 
 /* Temas generales del formulario */
 #dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
@@ -10,26 +11,27 @@
 #dataEntry .flexRowAlign input {margin-right: 3px;}
 #dataEntry #genero label, #dataEntry #opcionesIglesia label {line-height: .8;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
-#dataEntry .segundaCol {display: flex; flex-direction: column; width: 180px;}
+#dataEntry #columnaMedio {width: 70px}
+#dataEntry #segundaCol {display: flex; flex-direction: column; width: 180px;}
+#dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 
 /* Temas generales de datos */
-#datos #columnaMedio {width: 70px}
-#datos input, #datos #posiblesDuplicados {border-width: .7px; border-radius: 5px; background-color: white;}
-#datos #primeraCol .margenTopTitulo {margin-top: 5px;}
 #datos #primeraCol .input[name="nombre"] {width: 100%; padding-left: 5px;}
 #datos #primeraCol #genero {margin-top: 5px; margin-bottom: 10px;}
 #datos #primeraCol #genero input {margin-left: 12px;}
 #datos #primeraCol #valoresFecha {height: 80px;}
 #datos #primeraCol #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #datos #primeraCol #valoresFecha a img {position: absolute; object-fit: cover; height: 100%; width: 100%;}
-#datos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
+#datos #primeraCol .input[name='ano'] {width: 65px; margin-left: 10px; padding-left: 5px;}
+
+#datos input, #datos #posiblesDuplicados {border-width: .7px; border-radius: 5px; background-color: white;}
 #datos #posiblesDuplicados {height: 100%; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
 #datos #posiblesDuplicados li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
 #datos #posiblesDuplicados li input {margin-right: 5px;}
+#datos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* RCLI */
-#RCLI {border-top: solid 1px gray; margin-top: 15px; padding-top: 10px;}
 #RCLI h4 {margin-bottom: 5px; width: 145px; text-align: center;}
 #RCLI #opcionesIglesia {justify-content: space-evenly;}
 #RCLI #ocultar {align-items: flex-end; padding: 8px 0;}
@@ -37,20 +39,20 @@
 
 /* Todos los mensajes */
 #datos .mensajeError, #datos .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
-#datos .mensajeError {max-width: 200px;}
 
 /* Mensajes de ayuda */
 #datos .fa-question-circle {right: -20px;}
+#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); max-width: 350px;}
 #datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
-#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
 #dataEntry .fa-times-circle, 
 #dataEntry .fa-check-circle {left: -20px;}
 #dataEntry .fa-times-circle {z-index: 1; cursor: pointer;}
+#datos .mensajeError {max-width: 200px;}
 
 /* Submit button */
-#dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row; justify-content: space-evenly;}
+#dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row; justify-content: space-evenly;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #dataEntry #flechas button .fa-check-circle {position: static; transform: none;}

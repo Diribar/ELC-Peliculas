@@ -3,7 +3,7 @@
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
+		<select name="<%= campo %>" class="input <%= registro.clase ? registro.clase : '' %>" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 			<% if (campo == "valor_id") { %><option value="1" <% if (dataEntry[campo]==1) { %>selected<% } %>>Ninguno del listado</option><% } %> 
 			<% for (valor of registro.valores) { %>

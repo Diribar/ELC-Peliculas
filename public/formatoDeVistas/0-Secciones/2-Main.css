@@ -14,7 +14,7 @@ main h2 {font-size: 1.25rem;}
 main h3 {font-size: 1.15rem;}
 
 /* Configuración del cuerpo */
-main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; font-weight: bold;}
+main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; padding: 8px 10px; font-weight: bold;}
 main .cuerpo .titulo {font-family: var(--Arial); font-size: 1.2rem;}
 
 main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul-oscuro);}

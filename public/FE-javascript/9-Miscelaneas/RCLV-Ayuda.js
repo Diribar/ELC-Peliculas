@@ -6,8 +6,7 @@ window.addEventListener("load", () => {
 	// Mensajes de ayuda
 	window.onclick = (e) => {
 		for (let i = 0; i < iconosAyuda.length; i++) {
-			iconosAyuda[i].parentNode.children[0].firstChild.data ==
-				e.target.parentNode.children[0].innerText &&
+			iconosAyuda[i].parentNode.children[0] == e.target.parentNode.children[0] &&
 			e.target.className.includes("fa-question-circle")
 				? mensajesAyuda[i].classList.toggle("ocultar")
 				: mensajesAyuda[i].classList.add("ocultar");
