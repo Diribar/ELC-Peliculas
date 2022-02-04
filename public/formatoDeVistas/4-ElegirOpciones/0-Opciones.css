@@ -18,4 +18,3 @@
 #cuerpo #menu-tipos {margin-top: 30px; padding: 8px 16px; font-size: 1.25rem; font-weight: bold;}
 #cuerpo #menu-opciones,
 #cuerpo #menu-tipos {border-radius: 10px; background-color: var(--gris-claro);}
-#cuerpo #explicacion {background-color: var(--azul-oscuro); color: var(--amarillo-claro); padding: 2px 7px; border-radius: 10px;}
