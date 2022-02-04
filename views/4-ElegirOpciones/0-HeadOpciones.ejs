@@ -1,5 +1,5 @@
 <%- include('0-Head', {titulo}) %>
 <link rel="stylesheet" href="/formatoDeVistas/4-ElegirOpciones/0-Opciones.css">
-<link rel="stylesheet" href="/formatoDeVistas/4-ElegirOpciones/Filtros.css">
+<% if (opcionElegida && tipoElegido) { %><link rel="stylesheet" href="/formatoDeVistas/4-ElegirOpciones/Filtros.css"><% } %>
 <% if (opcion == "listado") { %><link rel="stylesheet" href="/formatoDeVistas/4-ElegirOpciones/1-Listado.css"><% } %>
 <% if (opcion == "cfc" || opcion == "vpc") { %><link rel="stylesheet" href="/formatoDeVistas/4-ElegirOpciones/2-CFC-VPC.css"><% } %>
