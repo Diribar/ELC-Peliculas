@@ -20,11 +20,10 @@ module.exports = {
 		tema = "opciones";
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
+		let opcionElegida = opciones.find((n) => n.opcion == opcion);
 		//return res.send(opcion);
 		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
 		let [tipos, titulo] = await datosVista(opcion);
-		// Obtener la Opción
-		let opcionElegida = opciones.find((n) => n.opcion == opcion);
 		// Ir a la vista
 		res.render("Home", {
 			tema,
