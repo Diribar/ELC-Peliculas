@@ -47,20 +47,9 @@
 		<!--Columna del medio-->
 		<div id="columnaMedio">
 		</div>
-		<!--Segunda columna-->
-		<div class="flex-col" style="align-items: center;">
-			<!-- Avatar -->
-			<div id="imagenPeli" class="form-grupo">
-				<img src="<%= dataEntry.avatarDP %>" alt="afiche">
-			</div>	
-			<!-- Links -->
-			<div class="flex-col">
-				<h3>Links gratuitos</h3>
-				<!--Link del trailer-->
-				<%- include("42-DP-Input", {campo: "link_trailer"}) %>
-				<!--Links gratuitos para ver la película-->
-				<%- include("42-DP-Input", {campo: "link_pelicula"}) %>
-			</div>
+		<!--Segunda columna (Avatar)-->
+		<div id="imagenPeli">
+			<img src="<%= dataEntry.avatarDP %>" alt="afiche">
 		</div>
 	</section>
 	<!-- Flechas y Botón -->

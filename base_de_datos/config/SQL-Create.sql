@@ -417,6 +417,7 @@ CREATE TABLE RCLV_borrados(
 CREATE TABLE RCLV_personajes_historicos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
@@ -442,6 +443,7 @@ CREATE TABLE RCLV_personajes_historicos (
 CREATE TABLE RCLV_hechos_historicos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 
 	creada_por_id INT UNSIGNED DEFAULT 1,
@@ -751,25 +753,21 @@ VALUES
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 4, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26')
 ;
 
-INSERT INTO rclv_personajes_historicos (id, nombre )
+INSERT INTO rclv_personajes_historicos (id, nombre ) VALUES (1, 'Varios (colección)');
+INSERT INTO rclv_personajes_historicos (id, ano, nombre ) VALUES (6, 0, 'Jesús'), (7, -15, 'María, madre de Jesús');
+INSERT INTO rclv_personajes_historicos (id, ano, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
 VALUES 
-(1, 'Varios (colección)'),
-(6, 'Jesús'),
-(7, 'María, madre de Jesús')
+(10, -20, 'José, padre de Jesús', 79, 'STV', 'LCV'),
+(11, 1920, 'Juan Pablo II', 296, 'STV', 'PPV')
 ;
-INSERT INTO rclv_personajes_historicos (id, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
+INSERT INTO rclv_hechos_historicos (id, dia_del_ano_id, ano, nombre)
 VALUES 
-(10, 'José, padre de Jesús', 79, 'STV', 'LCV'),
-(11, 'Juan Pablo II', 296, 'STV', 'PPV')
-;
-INSERT INTO rclv_hechos_historicos (id, dia_del_ano_id, nombre)
-VALUES 
-(2, 100, 'Sem. Santa - 1. General'),
-(3, 105, 'Sem. Santa - 2. Viernes Santo'),
-(4, 107, 'Sem. Santa - 3. Resurrección'),
-(5, 150, 'Pentecostés'),
-(6, 210, 'Guerra Mundial - 1a'),
-(7, 245, 'Guerra Mundial - 2a')
+(2, 100, 33, 'Sem. Santa - 1. General'),
+(3, 105, 33, 'Sem. Santa - 2. Viernes Santo'),
+(4, 107, 33, 'Sem. Santa - 3. Resurrección'),
+(5, 150, 33, 'Pentecostés'),
+(6, 210, 1914, 'Guerra Mundial - 1a'),
+(7, 245, 1942, 'Guerra Mundial - 2a')
 ;
 INSERT INTO rclv_valores (id, nombre)
 VALUES 

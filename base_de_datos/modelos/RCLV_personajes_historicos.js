@@ -2,6 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "RCLV_personajes_historicos";
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
+		ano: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
 		proceso_canonizacion_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},

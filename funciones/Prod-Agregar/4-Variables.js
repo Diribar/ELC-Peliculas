@@ -77,6 +77,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos estén en castellano y otros no, elegí "Parcial"',
 				],
+				clase:"angosto",
 			},
 			{
 				titulo: "Es a Color",
@@ -86,6 +87,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos sean a color y otros no, elegí "Parcial"',
 				],
+				clase:"angosto",
 			},
 			{
 				titulo: "Categoría",
@@ -120,18 +122,21 @@ module.exports = {
 				campo: "fe_valores_id",
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
+				clase:"angosto",
 			},
 			{
 				titulo: "Entretiene",
 				campo: "entretiene_id",
 				valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 				mensajes: ["Se disfruta el rato viéndola"],
+				clase:"angosto",
 			},
 			{
 				titulo: "Calidad sonora y visual",
 				campo: "calidad_tecnica_id",
 				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
+				clase:"angosto",
 			},
 			{
 				titulo: "Personaje histórico",
@@ -139,7 +144,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("RCLV_personajes_historicos", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
-					"Si son varias las personas, podés poner la más representativa, o ninguna si es una colección y luego se especifica en los capítulos",
+					"Si son varias las personas, podés poner la más representativa, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
 				link: "RCLV_personajes_historicos",
 				RCLV: true,
@@ -150,7 +155,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("RCLV_hechos_historicos", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
-					"Si son varios los hechos, podés poner el más representativo, o ninguno si es una colección y luego se especifica en los capítulos",
+					"Si son varios los hechos, podés poner el más representativo, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
 				link: "RCLV_hechos_historicos",
 				RCLV: true,
