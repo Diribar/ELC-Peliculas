@@ -45,6 +45,8 @@
 			</select>
 		<% } %>
 		<!--///////////////////// Redireccionar ///////////////////-->
-		<% if (opcionElegida && tipoElegido) { %><%- include(opcionElegida.vista) %><% } %>
+		<div id="vistaPelis">
+			<% if (opcionElegida && tipoElegido) { %><%- include(opcionElegida.vista) %><% } %>
+		</div>
 	</div>
 </section>

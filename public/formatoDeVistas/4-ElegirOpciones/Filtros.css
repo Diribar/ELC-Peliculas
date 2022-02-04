@@ -1,5 +1,5 @@
 /* General */
-#filtros {width: 200px; box-shadow: 0px 0px 10px rgb(100, 100, 100); border-radius: 10px; overflow: hidden;}
+#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); border-radius: 10px; overflow: hidden;}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
 #filtros * {font-size: 1rem; margin: 0;}
 #filtros select {border-radius: 5px;}
