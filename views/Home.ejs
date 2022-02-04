@@ -11,13 +11,13 @@
 	<%- include('1-Header') %>
 	<main class="flex-row">
 		<%- include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
-		<section id="cuerpo-y-footer" class="flex-col grow">
+		<section id="cuerpo-y-footer">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-CuerpoUsuarios') %><% } %>
 			<% if (tema == "agregar") { %><%- include('0-CuerpoAgregar') %><% } %>
-			<% if (tema == "miscelaneas") { %><%- include("0-CuerpoMiscelaneas") %><% } %>
 			<% if (tema == "opciones") { %><%- include("0-CuerpoOpciones") %><% } %>
+			<% if (tema == "miscelaneas") { %><%- include("0-CuerpoMiscelaneas") %><% } %>
 			<!--****************************** FIN *******************************-->
 		</section>
 	</main>

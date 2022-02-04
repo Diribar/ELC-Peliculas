@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 			iconoOK[i].classList.add("ocultar");
 		} else {
 			iconoError[i].classList.add("ocultar");
-			valor ? iconoOK[i].classList.remove("ocultar") : "";
+			if (valor) iconoOK[i].classList.remove("ocultar");
 		}
 		errores.hay
 			? button.classList.add("botonSinLink")
