@@ -10,9 +10,7 @@ module.exports = {
 			opcion: null,
 			titulo: "ELC-Películas",
 			opciones,
-			opcionesListado,
 			opcionElegida: null,
-			tipoElegido: null,
 		});
 	},
 
@@ -79,7 +77,7 @@ let datosVista = async (opcion) => {
 	// Obtener los Tipos de la opción elegida
 	let tipos =
 		opcion == "listado"
-			? opcionesListado
+			? tiposListado
 			: await BD_varias.obtenerPorCampo("subcategorias", "categoria_id", opcion).then((n) => {
 					return {nombre: n.nombre, url: n.url};
 			  });
@@ -116,7 +114,7 @@ let opciones = [
 	},
 ];
 
-let opcionesListado = [
+let tiposListado = [
 	{nombre: "Sugeridas para el momento del año", url: "listado/sugeridas"},
 	{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
 	{nombre: "Por año de estreno", url: "listado/estreno"},
