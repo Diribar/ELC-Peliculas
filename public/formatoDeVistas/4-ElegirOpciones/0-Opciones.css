@@ -19,8 +19,3 @@
 #cuerpo #menu-opciones,
 #cuerpo #menu-tipos {border-radius: 10px; background-color: var(--gris-claro);}
 #cuerpo #explicacion {background-color: var(--azul-oscuro); color: var(--amarillo-claro); padding: 2px 7px; border-radius: 10px;}
-
-/* Menú de Tipos */
-
-/* Botones */
-#final {position: relative;}
