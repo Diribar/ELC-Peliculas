@@ -4,7 +4,6 @@ let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
-let variables = require("../../funciones/Prod-Agregar/4-Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -84,7 +83,7 @@ module.exports = {
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {
-		errores = await validarProd.datosPers(req.query, Object.keys(req.query));
+		errores = await validarProd.datosPers(Object.keys(req.query), req.query);
 		return res.json(errores);
 	},
 };

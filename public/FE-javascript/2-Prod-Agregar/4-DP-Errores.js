@@ -8,7 +8,9 @@ window.addEventListener("load", async () => {
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	let links = document.querySelectorAll(".input-error a.link");
 
-	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
+	// Funciones ********************************************************************
+	// Función para anular/activar el botón 'Submit'
+	// Los aciertos de los 'select' están configurados como invisibles en la vista (EJS)
 	let accionesSiHayErrores = (i, errores) => {
 		// Averiguar si hay un error
 		campo = inputs[i].name;
@@ -16,20 +18,19 @@ window.addEventListener("load", async () => {
 		mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// En caso de error
-		mensaje
-			? iconoError[i].classList.remove("ocultar")
-			: iconoError[i].classList.add("ocultar");
-		mensaje
-			? iconoOK[i].classList.add("ocultar")
-			: valor
-			? iconoOK[i].classList.remove("ocultar")
-			: "";
+		if (mensaje) {
+			iconoError[i].classList.remove("ocultar");
+			iconoOK[i].classList.add("ocultar");
+		} else {
+			iconoError[i].classList.add("ocultar");
+			valor ? iconoOK[i].classList.remove("ocultar") : "";
+		}
 		errores.hay
 			? button.classList.add("botonSinLink")
 			: button.classList.remove("botonSinLink");
 	};
 
-	// Busca losvalores de todo el formulario, para hacer un análisis global
+	// Función para buscar todos los valores del formulario
 	let buscarTodosLosValores = () => {
 		for (let i = 0; i < inputs.length; i++) {
 			i == 0 ? (url = "/?") : (url += "&");
@@ -40,17 +41,19 @@ window.addEventListener("load", async () => {
 		return url;
 	};
 
-	// Funciones para revisar todos los inputs, devuelve los errores
+	// Función para revisar todos los inputs, devuelve los errores
 	let buscarErroresEnTodoElForm = () => {
 		let url = buscarTodosLosValores();
 		return fetch("/producto/agregar/api/validar-datos-pers" + url).then((n) => n.json());
 	};
 
-	// Status inicial
+	// Status inicial ********************************************************************
 	let errores = await buscarErroresEnTodoElForm();
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
+		if (inputs[i].value) accionesSiHayErrores(i, errores);
 	}
+
+	// Rutinas on-line *********************************************************************
 
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
@@ -78,11 +81,16 @@ window.addEventListener("load", async () => {
 			if (links[i].className.includes("personaje")) {
 				entidad_RCLV = "RCLV_personajes_historicos";
 				producto_RCLV = "Personaje Histórico";
-			} else {
+			} else if (links[i].className.includes("hecho")) {
 				entidad_RCLV = "RCLV_hechos_historicos";
 				producto_RCLV = "Hecho Histórico";
+			} else {
+				entidad_RCLV = "RCLV_valores";
+				producto_RCLV = "Valor";
 			}
+			// Para preservar los valores ingresados hasta el momento
 			let url = buscarTodosLosValores();
+			// Para ir a la vista RCLV
 			window.location.href =
 				"/agregar/relacion-vida" +
 				url +

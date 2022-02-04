@@ -1,4 +1,4 @@
-Vista:
+Vista DETALLE:
 - Centrar verticalmente la sección 'datosLargos'
 - Cuando haya algún campo vacío,
 	- Cartel diciendo: "Necesita edición para completarle datos"
