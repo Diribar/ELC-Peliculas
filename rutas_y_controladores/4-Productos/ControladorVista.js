@@ -83,8 +83,7 @@ let datosVista = async (opcion) => {
 			  });
 
 	// obtener el Título de la opción elegida
-	let titulo = "Películas - ";
-	titulo += opciones.find((n) => n.opcion == opcion).titulo;
+	let titulo = "Películas - " + opciones.find((n) => n.opcion == opcion).titulo;
 	// Exportar los datos
 	return [tipos, titulo];
 };
