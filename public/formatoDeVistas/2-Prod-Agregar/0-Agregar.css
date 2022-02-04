@@ -34,6 +34,10 @@
 
 /* Resultados */
 /* Todos */
+.mensajeError, .mensajeError::before, 
+.mensajeAyuda, .mensajeAyuda::before,
+.fa-check-circle, .fa-question-circle, 
+.fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
 /* Exito */

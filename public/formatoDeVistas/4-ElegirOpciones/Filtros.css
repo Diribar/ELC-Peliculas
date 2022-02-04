@@ -1,33 +1,27 @@
 /* General */
-#filtros {margin: 0px 10px; width: 200px; height: 100%; justify-content: center;}
-#filtros form {box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#filtros {width: 100%; box-shadow: 0px 0px 10px rgb(100, 100, 100); border-radius: 10px; overflow: hidden;}
 #filtros h1, #filtros button, #filtros select, #filtros option {font-family: var(--Calibri);}
 #filtros * {font-size: 1rem; margin: 0;}
+#filtros select {border-radius: 5px;}
 
 /* Filtros personales guardados */
-#filtro-sup {background-color: var(--azul-oscuro);padding: 20px; border-bottom: solid 1px;}
-#filtro-sup {border-top-left-radius: 10px; border-top-right-radius: 10px;}
-#filtros #personalizado h1 {color: var(--celeste-claro);font-weight: bold;}
-#filtros #personalizado select {font-weight: bold; margin-bottom: 0px;}
-#filtros #personalizado select, #filtros #personalizado option 
-	{color: var(--azul-oscuro);  background-color: var(--amarillo-claro);}
+#personalizado {display: flex; flex-direction: column; background-color: var(--azul-oscuro); padding: 20px;}
+#personalizado h1 {color: var(--celeste-claro);}
+#personalizado select {font-weight: bold;}
+#personalizado select, #personalizado option {color: var(--azul-oscuro);  background-color: var(--amarillo-claro);}
 
 /* Filtros actuales */
 #filtro-inf {background-color: var(--gris-claro); padding: 20px;}
-#filtro-inf {border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
-
-/* Varios */
-#filtro-inf select {margin-bottom: 15px;border-radius: 5px;}
+#filtro-inf select {margin-bottom: 15px;}
 #filtro-inf .radio {margin: 2px auto 15px;}
 #filtro-inf .radio input {margin-right: 3px;margin-top: 2px;}
-#filtro-inf #busqueda {padding-bottom:15px;}
-#filtro-inf #busqueda input {padding:0px 4px 0px 4px;}
+#filtro-inf #busqueda {padding-bottom: 15px;}
+#filtro-inf #busqueda input {padding: 0px 4px 0px 4px;}
 #filtro-inf .margen-izq {margin-left: 15px;}
 
 /* Final */
 #filtro-inf #final {justify-content: space-around; align-items: center;}
 #filtro-inf #final button {border: none;}
 #filtro-inf #final .fas {transform: scale(1.5);}
-#filtro-inf #final .fa-times-circle, #filtros #final .fa-check-circle {color:red;}
 #filtro-inf #final .fa-save {color:blue; border-style: none;}
 #filtro-inf #final .fa-arrow-alt-circle-right {color:green;}

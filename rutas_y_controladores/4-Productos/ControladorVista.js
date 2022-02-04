@@ -7,9 +7,9 @@ module.exports = {
 		tema = "opciones";
 		res.render("Home", {
 			tema,
+			opcion: null,
 			titulo: "ELC-Películas",
-			opciones: opciones(),
-			opcionesListado: opcionesListado(),
+			opciones,
 			opcionElegida: null,
 		});
 	},
@@ -18,14 +18,17 @@ module.exports = {
 		tema = "opciones";
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
-		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
-		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await vistas(opcion);
+		let opcionElegida = opciones.find((n) => n.opcion == opcion);
+		// Obtener los tipos para la opción elegida y el título
+		let [tipos, titulo] = await datosVista(opcion);
 		// Ir a la vista
+		// return res.send([tema, opcion, titulo, opciones, tipos, opcionElegida]);
 		res.render("Home", {
 			tema,
+			opcion,
 			titulo,
-			opciones_BD,
-			tipos_BD,
+			opciones,
+			tipos,
 			opcionElegida,
 			tipoElegido: null,
 		});
@@ -35,17 +38,20 @@ module.exports = {
 		tema = "opciones";
 		// Obtener el código de Opción y Tipo
 		let url = req.url.slice(1);
-		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		// Obtener la opción, los tipos para la opción elegida y el título
 		let opcion = url.slice(0, url.indexOf("/"));
-		let [opciones_BD, opcionElegida, tipos_BD, titulo] = await vistas(opcion);
-		// Obtener el Tipo elegido
-		let tipoElegido = tipos_BD.filter((n) => n.url == url)[0];
+		let [tipos, titulo] = await datosVista(opcion);
+		// Obtener la Opción Elegida y el Tipo Elegido
+		let opcionElegida = opciones.find((n) => n.opcion == opcion);
+		let tipoElegido = tipos.find((n) => n.url == url);
 		// Ir a la vista
+		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
 		res.render("Home", {
 			tema,
+			opcion,
 			titulo,
-			opciones_BD,
-			tipos_BD,
+			opciones,
+			tipos,
 			opcionElegida,
 			tipoElegido,
 		});
@@ -66,63 +72,54 @@ module.exports = {
 	},
 };
 
-// Obtener info para las vistas
-let vistas = async (opcion) => {
-	// Obtener las Opciones
-	let opciones_BD = await BD_varias.obtenerTodos("menu_opciones", "id");
-	let opcionElegida = opciones_BD.filter((n) => n.url == opcion)[0];
+// Obtener info para la vista
+let datosVista = async (opcion) => {
 	// Obtener los Tipos de la opción elegida
-	if (opcion == "listado") {
-		tipos_BD = await BD_varias.obtenerTodos("listado_peliculas", "id");
-	} else {
-		tipos_BD = await BD_varias.obtenerPorCampo(
-			"subcategorias",
-			"categoria_id",
-			opcion.toUpperCase()
-		);
-	}
+	let tipos =
+		opcion == "listado"
+			? tiposListado
+			: await BD_varias.obtenerTodos("subcategorias", "orden", opcion)
+					.then((n) => n.filter((m) => m.categoria_id == opcion.toUpperCase()))
+					.then((n) =>
+						n.map((m) => {
+							return {nombre: m.nombre, url: m.url};
+						})
+					);
 	// obtener el Título de la opción elegida
-	let titulo =
-		"Películas - " +
-		(await BD_varias.obtenerPorCampo("menu_opciones", "url", opcion).then(
-			(n) => n[0].titulo
-		));
+	let titulo = "Películas - " + opciones.find((n) => n.opcion == opcion).titulo;
 	// Exportar los datos
-	return [opciones_BD, opcionElegida, tipos_BD, titulo];
+	return [tipos, titulo];
 };
 
-let opciones = () => {
-	return [
-		{
-			nombre: "Listado de Películas",
-			url: "listado",
-			titulo: "Listado",
-			vista: "1-Listado",
-			comentario: "Todas las películas de nuestra Base de Datos",
-		},
-		{
-			nombre: "Un paseo por CFC",
-			url: "cfc",
-			titulo: "CFC",
-			vista: "2-CFC",
-			comentario: "Películas Centradas en la Fe Católica (CFC)",
-		},
-		{
-			nombre: "Un paseo por VPC",
-			url: "vpc",
-			titulo: "VPC",
-			vista: "3-VPC",
-			comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
-		},
-	];
-};
+// Variables
+let opciones = [
+	{
+		nombre: "Listado de Películas",
+		opcion: "listado",
+		titulo: "Listado",
+		vista: "1-Listado",
+		comentario: "Todas las películas de nuestra Base de Datos",
+	},
+	{
+		nombre: "Un paseo por CFC",
+		opcion: "cfc",
+		titulo: "CFC",
+		vista: "2-CFC",
+		comentario: "Películas Centradas en la Fe Católica (CFC)",
+	},
+	{
+		nombre: "Un paseo por VPC",
+		opcion: "vpc",
+		titulo: "VPC",
+		vista: "3-VPC",
+		comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+	},
+];
 
-let opcionesListado = () => {
-	return [
-		{nombre: "Sugeridas para el momento del año", url: "listado/sugeridas"},
-		{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
-		{nombre: "Por año de estreno", url: "listado/estreno"},
-		{nombre: "Por orden de incorporación a nuestra BD", url: "listado/incorporacion"},
-		{nombre: "Por orden de visita", url: "listado/visita"},
-	];
-};
+let tiposListado = [
+	{nombre: "Sugeridas para el momento del año", url: "listado/sugeridas"},
+	{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
+	{nombre: "Por año de estreno", url: "listado/estreno"},
+	{nombre: "Por orden de incorporación a nuestra BD", url: "listado/incorporacion"},
+	{nombre: "Por orden de visita", url: "listado/visita"},
+];

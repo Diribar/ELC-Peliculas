@@ -1,3 +1,4 @@
+"use strict"
 // ************ Requires ************
 const API_key = "e90d1beb11c74cdf9852d97a354a6d45";
 const fetch = require("node-fetch");

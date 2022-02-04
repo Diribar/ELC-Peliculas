@@ -1,6 +1,7 @@
 /* CONFIGURAR SECCIONES */
 main.flex-row {flex-direction: row-reverse;}
-main #cuerpo-y-footer {flex-direction: column-reverse; justify-content: space-between;}
+main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse; justify-content: space-between;}
+main #zona-de-vitreaux {padding-left: 30px; width: 220px; height: 100%; display: flex; flex-direction: column; justify-content: center;}
 
 /* CONFIGURAR IMAGEN */
 /* #imagen-derecha {height: 100%; width: 150vw; position: relative;} */
@@ -13,8 +14,7 @@ main h2 {font-size: 1.25rem;}
 main h3 {font-size: 1.15rem;}
 
 /* Configuración del cuerpo */
-main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; 
-	font-weight: bold;}
+main .cuerpo .titulo, main .cuerpo .subtitulo {border-style: none; border-radius: 5px; padding: 8px 10px; font-weight: bold;}
 main .cuerpo .titulo {font-family: var(--Arial); font-size: 1.2rem;}
 
 main .cuerpo .subtitulo {font-family: var(--Calibri);font-size: 16px;color: var(--azul-oscuro);}

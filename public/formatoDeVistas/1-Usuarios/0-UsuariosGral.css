@@ -23,6 +23,10 @@
 #Form #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Íconos y Mensajes de error */
+.mensajeError, .mensajeError::before, 
+.mensajeAyuda, .mensajeAyuda::before,
+.fa-check-circle, .fa-question-circle, 
+.fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #Form .form-grupo {position: relative;}
 #Form .form-grupo .fa-check-circle, #Form .form-grupo .fa-times-circle {left: -20px;}
 #Form .mensajeError {left: 20px; max-width: 200px;}
