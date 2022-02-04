@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 	let mes_id = document.querySelector("#dataEntry select[name='mes_id']");
 	let dia = document.querySelector("#dataEntry select[name='dia']");
 	let desconocida = document.querySelector("#dataEntry input[name='desconocida']");
-	// Campos de AÑO DE NACIMIENTO
+	// Campos de AÑO
 	let ano = document.querySelector("#dataEntry input[name='ano']");
 	// Campos de POSIBLES DUPLICADOS
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
