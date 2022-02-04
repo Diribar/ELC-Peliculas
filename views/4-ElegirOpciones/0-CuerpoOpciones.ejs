@@ -13,7 +13,7 @@
 	</div>
 	<!--******************* ZONA DE PELÍCULAS **********************-->
 	<div id="zona-de-pelis" class="flex-col grow">
-		<!--///////////////////// TÍTULO PRINCIPAL ///////////////////-->
+		<!-- Opción -->
 		<select name="" onchange="location = this.value;" id="menu-opciones">
 			<% if (!opcionElegida) { %>
 				<option class="ocultar" selected>
@@ -26,8 +26,7 @@
 				</option>
 			<% } %>
 		</select>
-		<% if (opcionElegida) { %><p id="explicacion"><%= opcionElegida.comentario %></p><% } %>
-		<!--///////////////////// TÍTULO SECUNDARIO ///////////////////-->
+		<!-- Tipo -->
 		<% if (opcionElegida) { %>
 			<select name="" onchange="location = this.value;" id="menu-tipos">
 			<% if (!tipoElegido) { %>
@@ -46,6 +45,6 @@
 			</select>
 		<% } %>
 		<!--///////////////////// Redireccionar ///////////////////-->
-		<%- opcionElegida && tipoElegido ? include(opcionElegida.vista) : "" %>
+		<% if (opcionElegida && tipoElegido) { %><%- include(opcionElegida.vista) %><% } %>
 	</div>
 </section>

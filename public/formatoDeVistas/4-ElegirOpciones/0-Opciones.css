@@ -5,7 +5,7 @@
 #cuerpo #contador-de-peliculas {padding: 3px 5px;border-style: none;border-radius: 5px;}
 #cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}
 #cuerpo #contador-de-peliculas {border: solid 2px gray;}
-#cuerpo #contador-de-peliculas {font-size: 20px;font-weight: bold;}
+#cuerpo #contador-de-peliculas {font-size: 1.1rem; font-weight: bold;}
 
 /* Filtros */
 /* #cuerpo #zona-de-vitreaux {border: red 2px solid;} */

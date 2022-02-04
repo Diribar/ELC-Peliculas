@@ -19,10 +19,10 @@ module.exports = {
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
 		let opcionElegida = opciones.find((n) => n.opcion == opcion);
-		//return res.send(opcion);
-		// // Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		// Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
 		let [tipos, titulo] = await datosVista(opcion);
 		// Ir a la vista
+		// return res.send([tema, opcion, titulo, opciones, tipos, opcionElegida]);
 		res.render("Home", {
 			tema,
 			opcion,
@@ -78,10 +78,13 @@ let datosVista = async (opcion) => {
 	let tipos =
 		opcion == "listado"
 			? tiposListado
-			: await BD_varias.obtenerPorCampo("subcategorias", "categoria_id", opcion).then((n) => {
-					return {nombre: n.nombre, url: n.url};
-			  });
-
+			: await BD_varias.obtenerTodos("subcategorias", "orden", opcion)
+					.then((n) => n.filter((m) => m.categoria_id == opcion.toUpperCase()))
+					.then((n) =>
+						n.map((m) => {
+							return {nombre: m.nombre, url: m.url};
+						})
+					);
 	// obtener el Título de la opción elegida
 	let titulo = "Películas - " + opciones.find((n) => n.opcion == opcion).titulo;
 	// Exportar los datos
