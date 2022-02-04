@@ -19,7 +19,7 @@ module.exports = {
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
 		let opcionElegida = opciones.find((n) => n.opcion == opcion);
-		// Obtener las Opciones, la Opción elegida, los Tipos para la opción elegida y el título
+		// Obtener los tipos para la opción elegida y el título
 		let [tipos, titulo] = await datosVista(opcion);
 		// Ir a la vista
 		// return res.send([tema, opcion, titulo, opciones, tipos, opcionElegida]);
