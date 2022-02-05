@@ -4,7 +4,7 @@
 	<!-- Head -->
 	<% if (tema == "usuario") { %><%- include('0-HeadUsuarios') %><% } %>
 	<% if (tema == "agregar") { %><%- include('0-HeadAgregar') %><% } %>
-	<% if (tema == "opciones") { %><%- include('0-HeadOpciones') %><% } %>
+	<% if (tema == "opciones") { %><%- include('0-HeadProductos') %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include('0-HeadMiscelaneas') %><% } %>
 </head>
 <body>
@@ -16,7 +16,7 @@
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-CuerpoUsuarios') %><% } %>
 			<% if (tema == "agregar") { %><%- include('0-CuerpoAgregar') %><% } %>
-			<% if (tema == "opciones") { %><%- include("0-CuerpoOpciones") %><% } %>
+			<% if (tema == "opciones") { %><%- include("0-CuerpoProductos") %><% } %>
 			<% if (tema == "miscelaneas") { %><%- include("0-CuerpoMiscelaneas") %><% } %>
 			<!--****************************** FIN *******************************-->
 		</section>

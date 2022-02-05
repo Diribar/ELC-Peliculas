@@ -96,7 +96,7 @@ module.exports = {
 		// Obtener los países
 		let paises = producto.paises_id ? await varias.paises_idToNombre(producto.paises_id) : "";
 		// Ir a la vista
-		return res.render("0-Producto", {
+		return res.render("0-RUD", {
 			tema,
 			codigo,
 			titulo,
