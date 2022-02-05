@@ -107,7 +107,14 @@ module.exports = {
 	},
 
 	editar: (req, res) => {
-		return res.send("Estoy en editar");
+		// Tema y Código
+		tema = "producto";
+		codigo = "editar";
+		// Ir a la vista
+		return res.render("0-RUD", {
+			tema,
+			codigo,
+		});
 	},
 
 	calificala: (req, res) => {
