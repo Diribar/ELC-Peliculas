@@ -1,6 +1,6 @@
 <!-- Inicio -->
 <% if (codigo == "inicio") { %>
-	<section id="cuerpo" class="flex-row grow">
+	<section id="cuerpo" class="flex-row">
 		<%- include("Inicio") %>
 	</section>
 <% } %>
@@ -8,7 +8,7 @@
 <% if (codigo == "nosotros") { %><%- include("Nosotros") %><% } %>
 <!-- RCLV -->
 <% if (codigo.includes("historicos")) { %>
-	<section class="cuerpo flex-col grow">
+	<section id="cuerpo" class="flex-col">
 		<%- include('RCLV') %>
 	</section>
 <% } %>

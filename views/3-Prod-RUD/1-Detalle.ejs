@@ -1,11 +1,10 @@
-<div class="flex-row" id="datos">
+<div id="datos">
+	<h1 id="titulo">Detalle <%- entidad == "capitulos" ? "del" : "de la" %> <%= titulo %></h1>
 	<section id="datosLargos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<div>
 				<h1><%= producto.nombre_castellano %> <em><% if (producto.nombre_original) { %>(<%= producto.nombre_original %>)<% } %></em></h1>
-				<!-- Tipo de Producto -->
-				<h3 id="titulo">Detalle <%- entidad == "capitulos" ? "del" : "de la" %> <%= titulo %></h3>
 				<!-- Cantidad de Temporadas y de Capítulos -->
 				<% if (entidad == "colecciones") { %>
 					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>

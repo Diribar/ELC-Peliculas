@@ -1,4 +1,4 @@
-<h1 class="titulo" id="titulo">Agregá un <%= dataEntry.producto %> a nuestra Base de Datos</h1>
+<h1 id="titulo">Agregá un <%= dataEntry.producto %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
 	<section id="datos" class="flex-row OK">
@@ -112,8 +112,8 @@
 					<!-- Ayuda -->
 					<i class="fas fa-question-circle"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
-						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %></li>
-						<li>Si es anterior a Cristo, elegí un valor negativo</li>
+						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %>.</li>
+						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 					</ul>
 					<!-- Errores -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
