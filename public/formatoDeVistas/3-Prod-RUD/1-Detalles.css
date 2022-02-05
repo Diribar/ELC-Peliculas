@@ -1,6 +1,8 @@
-#datos {flex-grow: 1;}
+/* Cuerpo */
+#datos {display: flex; flex-direction: row; flex-grow: 1;}
 
-#datosLargos {padding: 0 15px; display: flex; flex-direction: column; justify-content: space-between;}
+/* Datos Largos */
+#datosLargos {display: flex; flex-direction: column; justify-content: space-between; padding: 40px 15px 0;}
 #datosLargos #contenido h1 {font-size: 1.5rem;}
 #datosLargos #contenido h1 em {font-size: 1.1rem;}
 #datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
@@ -10,7 +12,8 @@
 #datosLargos #botones {display: flex; flex-direction: row; justify-content: space-around; padding-right: 20px; flex-grow: 1; align-items: center;}
 #datosLargos #botones button {background-color: var(--gris-oscuro); color: var(--gris-claro); padding: 7px; border-radius: 10px; font-weight: bolder; font-size: 1.1rem; line-height: 1;}
 
-#datosBreves {width: max-content; display: flex; flex-direction: column; justify-content: center; flex-grow: 1;}
+/* Datos Breves */
+#datosBreves {display: flex; flex-direction: column; justify-content: center; flex-grow: 1; width: max-content; }
 #datosBreves #graficoCalificacion {width:180px;}
 #datosBreves #texto {margin-right: 15px;}
 #datosBreves #texto dt, #datosBreves #texto p {margin-top: 10px;}

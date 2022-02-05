@@ -3,9 +3,8 @@
 #dataEntry #titulos h1 {margin-top: 0;}
 
 /* Cuerpo del formulario */
-#dataEntry {padding-right: 50px;}
-#dataEntry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #cuerpo #columnaMedio {width: 70px}
+#dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
+#dataEntry #datos #columnaMedio {width: 70px}
 #dataEntry .label-input {justify-content: space-between; margin-top: 3px;}
 #dataEntry #primeraColumna {min-width: 281px; min-height: 326px;}
 

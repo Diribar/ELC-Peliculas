@@ -1,9 +1,10 @@
 /* Formato del cuerpo */
-.cuerpo {align-items: center; justify-content: center; position: relative;}
-.cuerpo #titulo {position: absolute; top: 0; left: 0;}
-.cuerpo #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
+#cuerpo {align-items: center; justify-content: center; position: relative; padding-top: 35px;}
+#cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo #titulo {position: absolute; top: 0; left: 0;}
+#cuerpo #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
 
-#dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
+#dataEntry {padding: 30px 40px; border-radius: 20px;}
 #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
 	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
