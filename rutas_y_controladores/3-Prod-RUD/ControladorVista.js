@@ -41,7 +41,7 @@ module.exports = {
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || producto.creada_por_id != usuario.id;
 		if (noAprobada && otroUsuario) {
-			req.session.noAprobado = {status_registro: {nombre: producto.status_registro.nombre}};
+			req.session.noAprobado = producto;
 			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
 			return res.redirect("/error/producto-no-aprobado");
 		}
@@ -58,16 +58,15 @@ module.exports = {
 				? "Colección"
 				: "Capítulo";
 		// Obtener los datos del producto editado ***********************************
-		// Definir los campos include
-		includes.splice(-2);
-		// Obtener los datos
+		// Obtener los datos editados
+		console.log(includes.slice(0, -2));
 		let prodEditado = await BD_varias.obtenerPorCamposConInclude(
 			entidad + "Edicion",
 			"ELC_id",
 			producto.id,
 			"editada_por_id",
 			usuario.id,
-			includes
+			includes.slice(0, -2)
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
@@ -85,14 +84,13 @@ module.exports = {
 			// Cruzar la info
 			detalle = {...producto, ...edicion};
 		} else detalle = {...producto};
-		//return res.send(detalle);
 		// Obtener avatar
-		let rutaAvatar = prodEditado ? "/imagenes/3-ProductosEditados/" : "/imagenes/2-Productos/";
+		let rutaAvatar = "/imagenes/" + (prodEditado ? "3-ProductosEditados/" : "2-Productos/");
 		let avatar = detalle.avatar
 			? entidad == "capitulos"
 				? detalle.avatar
 				: rutaAvatar + detalle.avatar
-			: "/imagenes/8-Agregar/Desamb-IM.jpg";
+			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = producto.paises_id ? await varias.paises_idToNombre(producto.paises_id) : "";
 		// Ir a la vista
