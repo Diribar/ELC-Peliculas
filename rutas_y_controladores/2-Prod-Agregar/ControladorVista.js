@@ -363,8 +363,8 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
 		let cookie = req.cookies.datosOriginales;
-		if ((datosDuros.fuente = "IM")) cookie.nombre_original = datosDuros.nombre_original;
-		if ((datosDuros.fuente = "IM")) cookie.nombre_castellano = datosDuros.nombre_castellano;
+		if ((datosDuros.fuente == "IM")) cookie.nombre_original = datosDuros.nombre_original;
+		if ((datosDuros.fuente == "IM")) cookie.nombre_castellano = datosDuros.nombre_castellano;
 		res.cookie("datosOriginales", cookie, {maxAge: 24 * 60 * 60 * 1000});
 		// 11. Redireccionar a la siguiente instancia
 		req.session.erroresDD = false;
