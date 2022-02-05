@@ -1,6 +1,6 @@
 /* Formato del cuerpo */
 #cuerpo {align-items: center; justify-content: center; position: relative;}
-#cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {display: flex; flex-grow: 1;}
 
 #cuerpo #titulo {position: absolute; top: 0; left: 0;}
 #cuerpo #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
