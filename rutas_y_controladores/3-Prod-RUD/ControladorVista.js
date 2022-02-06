@@ -16,13 +16,6 @@ module.exports = {
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
 		let redirect = revisarQuery(entidad, ID);
 		if (redirect) return res.redirect(redirect);
-		// Configurar los valores de Producto y Título
-		let producto = varias.producto(entidad);
-		let titulo =
-			(codigo == "detalle" ? "Detalle" : codigo == "editar" ? "Edición" : "") +
-			" de" +
-			(entidad == "capitulos" ? "l " : " la ") +
-			producto;
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -94,12 +87,17 @@ module.exports = {
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
+		// Configurar el Título
+		let titulo =
+			(codigo == "detalle" ? "Detalle" : codigo == "editar" ? "Edición" : "") +
+			" de" +
+			(entidad == "capitulos" ? "l " : " la ") +
+			varias.producto(entidad);
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
 			codigo,
 			titulo,
-			producto,
 			entidad,
 			ID,
 			registro: registroCombinado,
@@ -111,20 +109,21 @@ module.exports = {
 	revisar: (req, res) => {
 		// Tema y Código
 		tema = "producto";
-		codigo = "editar";
+		codigo = "revisar";
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
 		let redirect = revisarQuery(entidad, ID);
 		if (redirect) return res.redirect(redirect);
-		// Configurar los valores de Producto y Título
+		// Configurar el Título
 		producto = varias.producto(entidad);
-		titulo = "Detalle de" + (entidad == "capitulos" ? "l " : " la ") + producto;
+		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
 			codigo,
+			titulo,
 		});
 	},
 

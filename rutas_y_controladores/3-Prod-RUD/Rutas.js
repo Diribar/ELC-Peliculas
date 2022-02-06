@@ -14,6 +14,7 @@ router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
 // Controladores de vistas
 router.get("/detalle", vista.detalle);
 router.get("/editar", soloAutOutput, vista.detalle);
+router.get("/revisar", soloAutOutput, vista.revisar);
 router.get("/calificala", soloAutOutput, vista.calificala);
 router.get("/eliminar", soloAutOutput, vista.eliminar);
 
