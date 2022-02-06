@@ -7,16 +7,22 @@ let varias = require("../../funciones/Varias/varias");
 module.exports = {
 	detalle: async (req, res) => {
 		// Tema y Código
-		tema = "producto";
-		codigo = "detalle";
-		// Obtener los datos identificatorios del producto **************************
+		let tema = "producto";
+		let url = req.url.slice(1);
+		let codigo = url.slice(0, url.indexOf("/"));
+		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
-		// Problema: ENTIDAD INEXISTENTE
-		if (!entidad) return res.redirect("/error/producto-no-encontrado");
-		producto = varias.producto(entidad);
-		if (!producto) return res.redirect("/error/producto-no-encontrado");
-		// Obtener los datos del producto *******************************************
+		// Redireccionar si se encuentran errores en la entidad y/o el ID
+		let redirect = revisarQuery(entidad, ID);
+		if (redirect) return res.redirect(redirect);
+		// Configurar los valores de Producto y Título
+		let producto = varias.producto(entidad);
+		let titulo =
+			(codigo == "detalle" ? "Detalle" : codigo == "editar" ? "Edición" : "") +
+			" de" +
+			(entidad == "capitulos" ? "l " : " la ") +
+			producto;
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -34,7 +40,7 @@ module.exports = {
 			"borrada",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener los datos
+		// Obtener los datos del producto
 		let registro = await BD_varias.obtenerPorIdConInclude(entidad, ID, includes).then((n) => {
 			return n ? n.toJSON() : "";
 		});
@@ -55,7 +61,6 @@ module.exports = {
 			if (registro[campos[i]] === null) delete registro[campos[i]];
 		}
 		// Obtener los datos editados
-		console.log(includes.slice(0, -2));
 		let registroEditado = await BD_varias.obtenerPorCamposConInclude(
 			entidad + "Edicion",
 			"ELC_id",
@@ -93,7 +98,7 @@ module.exports = {
 		return res.render("0-RUD", {
 			tema,
 			codigo,
-			titulo: "Detalle del Producto",
+			titulo,
 			producto,
 			entidad,
 			ID,
@@ -103,13 +108,19 @@ module.exports = {
 		});
 	},
 
-	editar: (req, res) => {
+	revisar: (req, res) => {
 		// Tema y Código
 		tema = "producto";
 		codigo = "editar";
-		// Obtener los datos identificatorios del producto **************************
+		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
+		// Redireccionar si se encuentran errores en la entidad y/o el ID
+		let redirect = revisarQuery(entidad, ID);
+		if (redirect) return res.redirect(redirect);
+		// Configurar los valores de Producto y Título
+		producto = varias.producto(entidad);
+		titulo = "Detalle de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -124,4 +135,14 @@ module.exports = {
 	eliminar: (req, res) => {
 		return res.send("Estoy en eliminar");
 	},
+};
+
+let revisarQuery = (entidad, ID) => {
+	let redirect = "";
+	// Sin entidad y/o ID
+	if (!entidad || !ID) redirect = "/error/producto-no-encontrado";
+	// Entidad inexistente
+	producto = varias.producto(entidad);
+	if (!producto) redirect = "/error/producto-no-encontrado";
+	return redirect;
 };

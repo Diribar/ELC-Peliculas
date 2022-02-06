@@ -1,7 +1,11 @@
-#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1; position: relative;}
+/* Cuerpo */
+#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
 
-#cuerpo #titulo {position: absolute; top: 0; left: 0;}
-#cuerpo #titulo {border-bottom-right-radius: 10px; background-color: var(--gris-oscuro); color: var(--gris-claro)}
+/* Datos */
+#cuerpo #datos {position: relative;}
+#cuerpo #datos #titulo {position: absolute; top: 0; left: 0;}
+#cuerpo #datos #titulo {border-bottom-right-radius: 10px; background-color: var(--gris-oscuro); color: var(--gris-claro)}
 
+/* Imagen */
 #imagenProducto {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
 #imagenProducto img {max-height: 100%; max-width: 40vw; }

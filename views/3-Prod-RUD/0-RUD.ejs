@@ -9,18 +9,22 @@
 		<!-- <script src="/FE-javascript/3-Prod-RUD/MenuEditar.js"></script> -->
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<% } %>
+	<% if (codigo == "editar") { %><link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Editar.css"><% } %>
 </head>
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<section id="imagenProducto">
-			<img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
-		</section>
+		<% if (codigo != "revisar") { %>
+			<section id="imagenProducto">
+				<img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
+			</section>	
+		<% } %>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ************************-->
 			<section id="cuerpo">
 				<%- codigo == "detalle" ?	include('1-Detalle') : "" %>
+				<%- codigo == "editar" ?	include('2-Editar') : "" %>
 			</section>
 			<!--****************************** FIN *************************-->
 		</section>
