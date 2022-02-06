@@ -178,7 +178,9 @@ module.exports = {
 			? "Película"
 			: entidad == "colecciones"
 			? "Colección"
-			: "Capítulo";
+			: entidad == "capitulos"
+			? "Capítulo"
+			: "";
 	},
 
 };

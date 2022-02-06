@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 		// Averiguar si el producto está disponible
 		// Campos: status, código, mensaje
 		disponible = await fetch(API_EditarProd + entidad + "&id=" + id).then((n) => n.json());
-		console.log(disponible);
+		//console.log(disponible);
 		// Acciones si el status es false
 		if (!disponible.status) {
 			// Si el usuario no está logueado, redirigir a Login

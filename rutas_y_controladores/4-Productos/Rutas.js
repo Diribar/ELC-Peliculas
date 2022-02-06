@@ -4,7 +4,7 @@ let router = express.Router();
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloUsuarios = require("../../middlewares/usuarios/soloUsuarios");
+let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
 
 //************************ Controladores ****************************
 // Controladores de Opciones

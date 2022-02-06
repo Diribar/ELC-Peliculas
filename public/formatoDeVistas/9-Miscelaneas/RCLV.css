@@ -14,12 +14,12 @@
 #dataEntry .flexRowAlign input {margin-right: 3px;}
 #dataEntry #genero label, #dataEntry #opcionesIglesia label {line-height: .8;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
-#dataEntry #columnaMedio {width: 70px}
 #dataEntry #segundaCol {display: flex; flex-direction: column; width: 180px;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
 
 /* Temas generales de datos */
+#datos #primeraCol {margin-right: 70px}
 #datos #primeraCol .input[name="nombre"] {width: 100%; padding-left: 5px;}
 #datos #primeraCol #genero {margin-top: 5px; margin-bottom: 10px;}
 #datos #primeraCol #genero input {margin-left: 12px;}

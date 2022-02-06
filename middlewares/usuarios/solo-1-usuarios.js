@@ -1,8 +1,8 @@
-const funciones = require("../../funciones/Varias/varias");
+const varias = require("../../funciones/Varias/varias");
 
 module.exports = (req, res, next) => {
 	if (!req.session.usuario) {
-		funciones.userLogs(req, res);
+		varias.userLogs(req, res);
 		return res.redirect("/usuarios/login");
 	}
 	next();
