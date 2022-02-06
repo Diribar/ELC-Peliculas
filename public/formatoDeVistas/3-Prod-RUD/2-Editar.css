@@ -1,5 +1,60 @@
-#datos {display: flex; flex-direction: row; justify-content: space-between; padding: 50px 40px 0;}
+/* Cuerpo del formulario */
+#datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}
+.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
+.fa-check-circle, .fa-question-circle, .fa-times-circle, .link
+	{position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
-#datosDuros, #datosPers {width: 45%; border: red solid 2px}
+/* Columnas */
+/* #datos #primeraColumna, #datos #segundaColumna {border: red solid 2px} */
+#datos #primeraColumna {width: 40%;}
+#datos #primeraColumna .label-input .input-error .input {align-self: center; width: 200px;}
+#datos #primeraColumna .label-input .input-error .input.angosto {width: 70px}
+#datos #primeraColumna .label-input .input-error .input.numero {width: 70px; text-align: right;}
+#datos #segundaColumna {width: 50%;}
+#datos #segundaColumna .label-input .input-error .input {align-self: center; width: 280px;}
 
-.label-input {display: flex; flex-direction: row;}
+/* Inputs, Select, Textarea */
+#datos .label-input .input-error .input {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .label-input .input-error .input:disabled {background-color: var(--amarillo-claro); opacity: 1;}
+
+/* Partes específicas del formulario */
+#datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
+#datos section h3:first-child {margin-top: 0;}
+#datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
+#datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
+#datos .label-input .input-error {position: relative; margin-left: 5px;}
+#datos .label-input .input-error input {padding: 0px 5px;}
+#datos .label-input .input-error select {padding: 0;}
+#datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
+#datos .label-input#textarea .input-error {width: 100%; margin-left: 0;} 
+#datos #segundaColumna #textarea textarea {width: 100%;}
+#datos .label-input .input-error .link {right: -40px; width: 15px;}
+
+/* País */
+#datos #paises_id {align-items: center;}
+#datos #paises_id .input-error {width: 200px;}
+#datos #paises_id .input-error input,
+#datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
+#datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
+#datos #paises_id .input-error select {width: 100%; padding: 0;}
+
+/* Íconos */
+
+/* Todos los mensajes */
+.mensajeError, .mensajeError::before, 
+.mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
+
+/* Mensajes de ayuda */
+#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
+#datos .mensajeAyuda {max-width: 270px;}
+#datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#datos .fa-question-circle {right: -20px;}
+
+/*  Mensajes de error*/
+#datos .mensajeError {max-width: 200px;}
+#datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
+#datos .fa-times-circle {z-index: 1;}
+
+/* Flechas */
+#datos #flechas {margin-top: 20px;}
+#datos #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}

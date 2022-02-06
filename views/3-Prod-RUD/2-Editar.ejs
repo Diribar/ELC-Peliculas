@@ -1,43 +1,42 @@
 <form id="datos"  action="">
 	<h1 id="titulo"><%= titulo %></h1>
 	<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
-	<section id="datosDuros">
+	<!-- Datos generales -->
+	<section id="primeraColumna">
+		<h3>Datos generales (Duros)</h3>
 		<!-- Primeros campos -->
 		<% for (campo of camposDD1) { %><%- include("21-Editar-Input", {campo}) %><% } %>
 		<!-- País -->
 		<%- include("22-Editar-Pais") %>
 		<!-- Idioma original -->
 		<%- include("23-Editar-Idioma", {idioma_id: registro.idioma_original_id}) %>
-		<!-- Siguientes campos -->
+		<!--Es a Color-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
+		<!--Existe una versión en castellano-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_castellano_id")}) %>
+		<% for (campo of camposDD3) { %><%- include("21-Editar-Input", {campo}) %><% } %>
+		<h3>Datos Subjetivos</h3>
+		<!--Categoría-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "categoria_id")}) %>
+		<!--Sub-categoría-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "subcategoria_id")}) %>
+		<!--Público sugerido-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "publico_sugerido_id")}) %>
+	</section>
+	<section id="segundaColumna">
+		<!-- Personas -->
+		<h3>Personas</h3>
 		<% for (campo of camposDD2) { %><%- include("21-Editar-Input", {campo}) %><% } %>
+		<!-- Relación con la vida -->
+		<h3>Relación con la vida</h3>
+		<!--Personaje histórico-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "personaje_historico_id")}) %>
+		<!--Hecho histórico-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "hecho_historico_id")}) %>
+		<!--Valor-->
+		<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "valor_id")}) %>
+		<h3>Sinopsis</h3>
 		<!--Sinopsis-->
 		<%- include("24-Editar-Sinopsis") %>
-	</section>
-	<section id="datosPers">
-		<!-- Datos generales -->
-		<div class="flex-col">
-			<h3 style="margin-top: 0;">Datos generales</h3>
-			<!--Existe una versión en castellano-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_castellano_id")}) %>
-			<!--Es a Color-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
-			<!--Categoría-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "categoria_id")}) %>
-			<!--Sub-categoría-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "subcategoria_id")}) %>
-			<!--Público sugerido-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "publico_sugerido_id")}) %>
-		</div>
-		<!-- Relación con la vida -->
-		<div class="flex-col">
-			<h3>Relación con la vida</h3>
-			<!--Personaje histórico-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "personaje_historico_id")}) %>
-			<% console.log(datosPers.find(n => n.campo == "personaje_historico_id")) %> 
-			<!--Hecho histórico-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "hecho_historico_id")}) %>
-			<!--Valor-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "valor_id")}) %>
-		</div>
 	</section>
 </form>
