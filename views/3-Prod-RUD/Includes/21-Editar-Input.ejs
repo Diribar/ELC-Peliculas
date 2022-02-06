@@ -2,8 +2,7 @@
 	<label><%= campo.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="input-error">
-		<input
-			type="text" name="<%= campo.campo %>" value="<%= registro[campo.campo] %>"
+		<input type="text" name="<%= campo.campo %>" value="<%= registro[campo.campo] %>"
 			<%- campo.numero ? 'class="input numero" placeholder="sólo números"' : 'class="input"' %>
 		>
 		<!-- Ayuda -->
