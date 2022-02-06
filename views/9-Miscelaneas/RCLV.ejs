@@ -115,7 +115,7 @@
 						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %>.</li>
 						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 					</ul>
-					<!-- Errores/OK -->			
+					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.nombre %></span>
 					</i>
@@ -130,7 +130,7 @@
 		<div id="segundaCol">
 			<div class="relative">
 				<h3>Nombres con esa fecha</h3>
-				<!-- Errores/OK -->			
+				<!-- Error/OK -->			
 				<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
 					<span class="mensajeError"><%= errores.duplicados %></span>
 				</i>
