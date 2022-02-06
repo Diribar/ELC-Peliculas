@@ -108,8 +108,8 @@ module.exports = {
 
 	revisar: (req, res) => {
 		// Tema y Código
-		tema = "producto";
-		codigo = "revisar";
+		let tema = "producto";
+		let codigo = "revisar";
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
@@ -117,7 +117,7 @@ module.exports = {
 		let redirect = revisarQuery(entidad, ID);
 		if (redirect) return res.redirect(redirect);
 		// Configurar el Título
-		producto = varias.producto(entidad);
+		let producto = varias.producto(entidad);
 		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Ir a la vista
 		return res.render("0-RUD", {
