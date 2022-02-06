@@ -1,11 +1,11 @@
 module.exports = (sequelize, dt) => {
-	const alias = "status_registro_usuario";
+	const alias = "status_registro_us";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
 	};
 	const config = {
-		tableName: "status_registro_usuario",
+		tableName: "status_registro_us",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

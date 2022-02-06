@@ -42,16 +42,17 @@ module.exports = {
 		// 1. Guardar el data entry en session y cookie
 		let palabrasClave = req.body.palabrasClave;
 		req.session.palabrasClave = palabrasClave;
-		res.cookie("palabrasClave", palabrasClave, {
-			maxAge: 24 * 60 * 60 * 1000,
-		});
+		res.cookie("palabrasClave", palabrasClave, {maxAge: 24 * 60 * 60 * 1000});
 		// 2. Si hay errores de validación, redireccionar
 		let errores = await validarProd.palabrasClave(palabrasClave);
 		if (errores.palabrasClave) {
 			req.session.erroresPC = errores;
 			return res.redirect("/producto/agregar/palabras-clave");
 		}
-		// 3. Redireccionar a la siguiente instancia
+		// 3. Generar la session para la siguiente instancia
+		req.session.desambiguar = palabrasClave;
+		res.cookie("desambiguar", palabrasClave, {maxAge: 24 * 60 * 60 * 1000});
+		// 4. Redireccionar a la siguiente instancia
 		req.session.erroresPC = false;
 		return res.redirect("/producto/agregar/desambiguar");
 	},
@@ -65,9 +66,9 @@ module.exports = {
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		let palabrasClave = req.session.palabrasClave
-			? req.session.palabrasClave
-			: req.cookies.palabrasClave;
+		let palabrasClave = req.session.desambiguar
+			? req.session.desambiguar
+			: req.cookies.desambiguar;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.erroresDES ? req.session.erroresDES : "";
@@ -240,6 +241,8 @@ module.exports = {
 		borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
+		// Averiguar el origen
 		origen =
 			datosDuros.fuente == "TMDB"
 				? "desambiguar"
@@ -248,7 +251,6 @@ module.exports = {
 				: datosDuros.fuente == "IM"
 				? "tipo-producto"
 				: "palabras-clave";
-		if (!datosDuros) return res.redirect("/producto/agregar/" + origen);
 		// 4. Guardar DatosTerminaste
 		datosTerminaste = funcDatosTerminaste(datosDuros);
 		req.session.datosTerminaste = datosTerminaste;
@@ -363,8 +365,8 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
 		let cookie = req.cookies.datosOriginales;
-		if ((datosDuros.fuente == "IM")) cookie.nombre_original = datosDuros.nombre_original;
-		if ((datosDuros.fuente == "IM")) cookie.nombre_castellano = datosDuros.nombre_castellano;
+		if (datosDuros.fuente == "IM") cookie.nombre_original = datosDuros.nombre_original;
+		if (datosDuros.fuente == "IM") cookie.nombre_castellano = datosDuros.nombre_castellano;
 		res.cookie("datosOriginales", cookie, {maxAge: 24 * 60 * 60 * 1000});
 		// 11. Redireccionar a la siguiente instancia
 		req.session.erroresDD = false;
