@@ -2,6 +2,7 @@
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 let varias = require("../../funciones/Varias/varias");
+let variables = require("../../funciones/Varias/Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -93,6 +94,18 @@ module.exports = {
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			varias.producto(entidad);
+		// Info exclusiva para la vista de Editar
+		if (codigo == "editar") {
+			let camposDD = variables
+				.camposDD()
+				.filter((n) => n[entidad])
+				.filter((n) => !n.omitirRutinaVista);
+			var camposDD1 = camposDD.filter((n) => n.antesDePais);
+			var camposDD2 = camposDD.filter((n) => !n.antesDePais);
+			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
+			var datosPers = await variables.datosPersSelect();
+		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, datosPers] = [];
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -103,6 +116,12 @@ module.exports = {
 			registro: registroCombinado,
 			avatar,
 			paises,
+			camposDD1,
+			camposDD2,
+			BD_paises,
+			BD_idiomas,
+			datosPers,
+			errores: {},
 		});
 	},
 

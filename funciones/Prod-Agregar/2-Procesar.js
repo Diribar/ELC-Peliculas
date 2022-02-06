@@ -503,7 +503,7 @@ module.exports = {
 
 // Funciones *********************
 let fuenteSinopsisTMDB = (sinopsis) => {
-	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis += " (fuente: TMDB)";
+	if (sinopsis && !sinopsis.includes("(FILMAFFINITY)")) sinopsis += " (Fuente: TMDB)";
 	return sinopsis;
 };
 let funcionParentesis = (dato) => {

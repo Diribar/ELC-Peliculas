@@ -77,7 +77,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos estén en castellano y otros no, elegí "Parcial"',
 				],
-				clase:"angosto",
+				clase: "angosto",
 			},
 			{
 				titulo: "Es a Color",
@@ -87,7 +87,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos sean a color y otros no, elegí "Parcial"',
 				],
-				clase:"angosto",
+				clase: "angosto",
 			},
 			{
 				titulo: "Categoría",
@@ -122,21 +122,21 @@ module.exports = {
 				campo: "fe_valores_id",
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
-				clase:"angosto",
+				clase: "angosto",
 			},
 			{
 				titulo: "Entretiene",
 				campo: "entretiene_id",
 				valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 				mensajes: ["Se disfruta el rato viéndola"],
-				clase:"angosto",
+				clase: "angosto",
 			},
 			{
 				titulo: "Calidad sonora y visual",
 				campo: "calidad_tecnica_id",
 				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-				clase:"angosto",
+				clase: "angosto",
 			},
 			{
 				titulo: "Personaje histórico",
@@ -169,36 +169,6 @@ module.exports = {
 					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
 				],
 				RCLV: true,
-			},
-		];
-	},
-
-	datosPersInput: () => {
-		return [
-			{
-				tituloPeli: "Link de un trailer",
-				tituloColec: "Link de un trailer",
-				campo: "link_trailer",
-				peliculas: true,
-				colecciones: true,
-				mensajes: [
-					"Nos interesa el trailer del primer capítulo.",
-					"Debe ser de un sitio seguro, sin virus.",
-					"Es ideal si vincula a un link de You Tube.",
-				],
-			},
-			{
-				tituloPeli: "Link de la película",
-				campo: "link_pelicula",
-				peliculas: true,
-				colecciones: false,
-				mensajes: [
-					"Nos interesa el link del primer capítulo.",
-					"Debe ser de un sitio seguro, sin virus.",
-					"Debe ser de un sitio con política de respeto al copyright. Ej: You Tube.",
-					"Pedimos un link con una antigüedad mayor a 3 meses.",
-					"En lo posible, elegí un link en castellano y de buena calidad.",
-				],
 			},
 		];
 	},

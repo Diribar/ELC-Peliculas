@@ -25,7 +25,7 @@
 	<!-- Datos -->
 	<section id="cuerpo">
 		<!--Primera columna-->
-		<div class="flex-col">
+		<div id="primeraColumna">
 			<!-- Primeros campos -->
 			<% for (registro of camposDD1) { %><%- include("31-DD-Input", {registro}) %><% } %>
 			<!-- País -->
@@ -37,19 +37,16 @@
 			<!--Sinopsis-->
 			<%- include("34-DD-Sinopsis") %>
 		</div>
-		<!--Columna intermedia-->
-		<div id="columnaMedio">
-		</div>
 		<!--Segunda columna-->
-		<div id="imagenPeli" class="input-error">
+		<div id="segundaColumna" class="input-error">
 			<!-- Si existe una imagen y viene desde TMDB -->
-			<% if (dataEntry.avatar && dataEntry.fuente=="TMDB") { %>
+			<% if (dataEntry.avatar && dataEntry.fuente == "TMDB") { %>
 				<img src="<%= dataEntry.avatar %>" alt="afiche">
 			<% } else { %>
 				<label for="imagen" id="preview"></label>
 			<% } %>
 			<!-- Si existe una imagen que no viene de TMDB -->
-			<% if (dataEntry.avatar && dataEntry.fuente!="TMDB") { %>
+			<% if (dataEntry.avatar && dataEntry.fuente != "TMDB") { %>
 				<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
 				<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
 			<% } %>
