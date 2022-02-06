@@ -8,7 +8,7 @@
 
 /* Cuerpo del formulario */
 #dataEntry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #cuerpo #columnaMedio {width: 50px}
+#dataEntry #cuerpo #primeraColumna {margin-right: 50px; display: flex; flex-direction: column;}
 #dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 4px;}
 
 /* Partes específicas del formulario */
@@ -38,10 +38,10 @@
 #dataEntry .mensajeError {max-width: 200px;}
 
 /* Imagen de la película */
-#dataEntry #imagenPeli {width: 200px; height: 100%; position: relative;}
-#dataEntry #imagenPeli, #dataEntry #imagenPeli label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
-#dataEntry #imagenPeli label {height: 100%; width: 100%; position: absolute;}
-#dataEntry #imagenPeli img {position: absolute; height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
+#dataEntry #segundaColumna {width: 200px; height: 100%; position: relative;}
+#dataEntry #segundaColumna, #dataEntry #segundaColumna label {display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#dataEntry #segundaColumna label {height: 100%; width: 100%; position: absolute;}
+#dataEntry #segundaColumna img {position: absolute; height: 100%; width: 100%; object-fit: cover; border-radius: 15px;}
 
 /* Flechas */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row;}

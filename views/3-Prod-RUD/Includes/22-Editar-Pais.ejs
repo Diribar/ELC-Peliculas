@@ -1,0 +1,24 @@
+<section id="paises_id">
+	<label>País/es de origen</label>
+	<div class="input-error">
+		<!-- Lugar donde mostrar los nombres -->
+		<input id="mostrarPaises" type="text" class="input" value="<%= paises %>" readonly>
+		<!-- Lugar donde almacenar los ID -->
+		<input name="paises_id" type="text" class="ocultar" >
+		<!-- Opciones de países -->
+		<select autofocus class="input">
+			<option value="borrar">Borrar todo/s</option>
+			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
+			<% for (continente of continentes) { %>
+				<optgroup label="<%= continente %>">
+					<% for (pais of BD_paises.filter(m => m.continente == continente)) { %>
+						<option value="<%= pais.id %>"><%= pais.nombre %></option>
+					<% } %>	
+				</optgroup>
+			<% } %> 
+		</select>
+		<i class="fas fa-times-circle<%- !errores.paises_id ? ' ocultar' : '' %>">
+			<span class="mensajeError"><%= errores.paises_id %></span>
+		</i>
+	</div>
+</section>

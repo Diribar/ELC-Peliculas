@@ -6,19 +6,18 @@
 	<!-- Detalle de producto -->
 	<% if (codigo == "detalle") { %>
 		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/1-Detalles.css">
-		<!-- <script src="/FE-javascript/3-Prod-RUD/MenuEditar.js"></script> -->
+		<!-- <script src="/FE-javascript/3-Prod-RUD/1-Detalle-MenuEditar.js"></script> -->
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<% } %>
-	<% if (codigo == "editar") { %><link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Editar.css"><% } %>
+	<% if (codigo == "editar") { %>
+		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Editar.css">
+		<script src="/FE-javascript/3-Prod-RUD/2-Editar-Imagen.js"></script>
+	<% } %>
 </head>
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<% if (codigo != "revisar") { %>
-			<section id="imagenProducto">
-				<img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
-			</section>	
-		<% } %>
+		<label for="imagen" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
 		<section id="cuerpo-y-footer" class="flex-col grow">
 			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ************************-->

@@ -5,7 +5,7 @@ let requestPromise = require("request-promise");
 let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
-let variables = require("../../funciones/Prod-Agregar/4-Variables");
+let variables = require("../../funciones/Varias/Variables");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/Varias");
 
@@ -386,7 +386,6 @@ module.exports = {
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		// 5. Preparar variables para la vista
 		let datosPersSelect = await variables.datosPersSelect();
-		let datosPersInput = variables.datosPersInput().filter((m) => m[datosPers.entidad]);
 		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
@@ -395,7 +394,6 @@ module.exports = {
 			dataEntry: datosPers,
 			errores,
 			datosPersSelect,
-			datosPersInput,
 		});
 	},
 

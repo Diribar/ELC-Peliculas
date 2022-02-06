@@ -4,9 +4,8 @@
 
 /* Cuerpo del formulario */
 #dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #datos #columnaMedio {width: 70px}
+#dataEntry #primeraColumna {min-width: 281px; min-height: 326px; margin-right: 70px;}
 #dataEntry .label-input {justify-content: space-between; margin-top: 3px;}
-#dataEntry #primeraColumna {min-width: 281px; min-height: 326px;}
 
 /* Partes específicas del formulario */
 #dataEntry h1 {margin-bottom: 15px;}

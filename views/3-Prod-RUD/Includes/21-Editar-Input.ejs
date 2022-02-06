@@ -1,0 +1,16 @@
+<section class="label-input">
+	<label><%= campo.titulo %></label>
+	<!-- Data-entry y Errores -->
+	<div class="input-error">
+		<input type="text" class="input" name="<%= campo.campo %>"
+			value="<%= registro[campo.campo] %>"
+			<% if (campo.numero) { %>id="numero" placeholder="sólo números"<% } %>
+		>
+		<!-- Ayuda -->
+		<%- (registro[campo.campo] && !errores[campo.campo]) ? include("39-DD-Mensajes") : "" %>
+		<!-- Errores -->
+		<i class="fas fa-times-circle <%= campo.campo %><%- !errores[campo.campo] ? ' ocultar' : '' %>">
+			<span class="mensajeError <%= campo.campo %>"><%= errores[campo.campo] %></span>
+		</i>
+	</div>
+</section>

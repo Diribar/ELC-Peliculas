@@ -1,0 +1,5 @@
+#datos {display: flex; flex-direction: row; justify-content: space-between; padding: 50px 40px 0;}
+
+#datosDuros, #datosPers {width: 45%; border: red solid 2px}
+
+.label-input {display: flex; flex-direction: row;}
