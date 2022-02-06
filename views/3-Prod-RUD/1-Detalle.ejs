@@ -1,40 +1,40 @@
 <div id="datos">
-	<h1 id="titulo">Detalle <%- entidad == "capitulos" ? "del" : "de la" %> <%= titulo %></h1>
+	<h1 id="titulo">Detalle <%- entidad == "capitulos" ? "del" : "de la" %> <%= producto %></h1>
 	<section id="datosLargos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<div>
-				<h1><%= producto.nombre_castellano %> <em><% if (producto.nombre_original) { %>(<%= producto.nombre_original %>)<% } %></em></h1>
+				<h1><%= registro.nombre_castellano %> <em><% if (registro.nombre_original) { %>(<%= registro.nombre_original %>)<% } %></em></h1>
 				<!-- Cantidad de Temporadas y de Capítulos -->
 				<% if (entidad == "colecciones") { %>
-					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
-					<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
+					<p><strong>Cantidad de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cantidad de Capítulos:</strong> <%= registro.cant_capitulos %></p>
 					<% } %>
 				<!-- Colección a la que pertenece -->
 				<% if (entidad == "capitulos") { %>
-					<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></p>
-					<p><strong>N° de Temporada y de Capítulo:</strong> <%= producto.temporada ? "Temp. " + producto.temporada : "Sin temporadas" %>, <%= "Capítulo " + producto.capitulo %></p>
+					<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>"><%= registro.coleccion.nombre_castellano %></a></p>
+					<p><strong>N° de Temporada y de Capítulo:</strong> <%= registro.temporada ? "Temp. " + registro.temporada : "Sin temporadas" %>, <%= "Capítulo " + registro.capitulo %></p>
 				<% } %>
 			</div>
 			<!-- Sinopsis -->
-			<div id="sinopsis"><%= producto.sinopsis %></div>
+			<div id="sinopsis"><%= registro.sinopsis %></div>
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
 				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises %>. 
-				<strong>Idioma original</strong>: <%= producto.idioma_original.nombre %>. 
-				<strong>En castellano:</strong> <%= producto.en_castellano.nombre %>. 
-				<strong>Es a color:</strong> <%= producto.en_color.nombre %>. 
+				<strong>Idioma original</strong>: <%= registro.idioma_original.nombre %>. 
+				<strong>En castellano:</strong> <%= registro.en_castellano.nombre %>. 
+				<strong>Es a color:</strong> <%= registro.en_color.nombre %>. 
 			</div>
 			<!-- Dirección, Guión, Música, Producción -->
 			<div class="datosAdicionales">
-				<strong>Dirección:</strong> <%= producto.direccion %>. 
-				<strong>Guión:</strong> <%= producto.guion %>. 
-				<strong>Música:</strong> <%= producto.musica %>. 
-				<strong>Producción:</strong> <%= producto.produccion %>. 
+				<strong>Dirección:</strong> <%= registro.direccion %>. 
+				<strong>Guión:</strong> <%= registro.guion %>. 
+				<strong>Música:</strong> <%= registro.musica %>. 
+				<strong>Producción:</strong> <%= registro.produccion %>. 
 			</div>
 			<!-- Actuación -->
 			<div class="datosAdicionales">
-				<strong>Actuación:</strong> <%= producto.actuacion %>. 
+				<strong>Actuación:</strong> <%= registro.actuacion %>. 
 			</div>	
 			<!-- Capítulos de Colección -->
 		</div>
@@ -66,22 +66,22 @@
 		</div>
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
-			<p><strong>Público Sugerido:</strong> <%= producto.publico_sugerido.nombre %></p>
-			<p><strong>Categoría:</strong> <%= producto.categoria.nombre %></p>
-			<p><strong>Sub-categoría:</strong> <%= producto.subcategoria.nombre %></dd>
-			<% if (producto.personaje_historico_id) { %>
+			<p><strong>Público Sugerido:</strong> <%= registro.publico_sugerido.nombre %></p>
+			<p><strong>Categoría:</strong> <%= registro.categoria.nombre %></p>
+			<p><strong>Sub-categoría:</strong> <%= registro.subcategoria.nombre %></dd>
+			<% if (registro.personaje_historico_id) { %>
 				<dt>Personaje Histórico:</dt>
-				<dd><%= producto.personaje_historico.nombre %> </dd>
+				<dd><%= registro.personaje_historico.nombre %> </dd>
 			<% } %>
-			<% if (producto.hecho_historico_id) { %>
+			<% if (registro.hecho_historico_id) { %>
 				<dt>Hecho Histórico:</dt>
-				<dd><%= producto.hecho_historico.nombre %> </dd>
+				<dd><%= registro.hecho_historico.nombre %> </dd>
 			<% } %>
-			<p><strong>Año de estreno:</strong> <%= producto.ano_estreno %></p>
-			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= producto.duracion %> min.</p><% } %>
-			<% if (producto.status_registro_id != 2) { %>
+			<p><strong>Año de estreno:</strong> <%= registro.ano_estreno %></p>
+			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= registro.duracion %> min.</p><% } %>
+			<% if (registro.status_registro_id != 2) { %>
 				<dt>Status de Aprobación:</dt>
-				<dd><%= producto.status_registro.nombre %></dd>
+				<dd><%= registro.status_registro.nombre %></dd>
 			<% } %>
 		</div>
 	</section>

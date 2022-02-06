@@ -31,39 +31,33 @@ module.exports = {
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener los datos
-		let producto = await BD_varias.obtenerPorIdConInclude(entidad, ID, includes).then((n) => {
+		let registro = await BD_varias.obtenerPorIdConInclude(entidad, ID, includes).then((n) => {
 			return n ? n.toJSON() : "";
 		});
 		// Problema 1: PRODUCTO NO ENCONTRADO
-		if (!producto) return res.redirect("/error/producto-no-encontrado");
+		if (!registro) return res.redirect("/error/producto-no-encontrado");
 		// Problema 2: PRODUCTO NO APROBADO
-		let noAprobada = !producto.status_registro.aprobada;
+		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
-		let otroUsuario = !usuario || producto.creada_por_id != usuario.id;
+		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
 		if (noAprobada && otroUsuario) {
-			req.session.noAprobado = producto;
+			req.session.noAprobado = registro;
 			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
 			return res.redirect("/error/producto-no-aprobado");
 		}
 		// Quitarle los campos 'null'
-		let campos = Object.keys(producto);
+		let campos = Object.keys(registro);
 		for (i = campos.length - 1; i >= 0; i--) {
-			if (producto[campos[i]] === null) delete producto[campos[i]];
+			if (registro[campos[i]] === null) delete registro[campos[i]];
 		}
-		// Obtener el título ********************************************************
-		titulo =
-			entidad == "peliculas"
-				? "Película"
-				: entidad == "colecciones"
-				? "Colección"
-				: "Capítulo";
-		// Obtener los datos del producto editado ***********************************
+		// Obtener el Producto ******************************************************
+		producto = varias.producto(entidad);
 		// Obtener los datos editados
 		console.log(includes.slice(0, -2));
-		let prodEditado = await BD_varias.obtenerPorCamposConInclude(
+		let registroEditado = await BD_varias.obtenerPorCamposConInclude(
 			entidad + "Edicion",
 			"ELC_id",
-			producto.id,
+			registro.id,
 			"editada_por_id",
 			usuario.id,
 			includes.slice(0, -2)
@@ -71,36 +65,37 @@ module.exports = {
 			return n ? n.toJSON() : "";
 		});
 		// Generar los datos a mostrar en la vista
-		if (prodEditado) {
+		if (registroEditado) {
 			// Quitarle los campos 'null'
-			let campos = Object.keys(prodEditado);
+			let campos = Object.keys(registroEditado);
 			for (i = campos.length - 1; i >= 0; i--) {
-				if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
+				if (registroEditado[campos[i]] === null) delete registroEditado[campos[i]];
 			}
 			// Preparar la info a cruzar
-			edicion = {...prodEditado};
+			edicion = {...registroEditado};
 			delete edicion.id;
 			delete edicion.ELC_id;
 			// Cruzar la info
-			detalle = {...producto, ...edicion};
-		} else detalle = {...producto};
+			registroCombinado = {...registro, ...edicion};
+		} else registroCombinado = {...registro};
 		// Obtener avatar
-		let rutaAvatar = "/imagenes/" + (prodEditado ? "3-ProductosEditados/" : "2-Productos/");
-		let avatar = detalle.avatar
+		let rutaAvatar = "/imagenes/" + (registroEditado ? "3-ProductosEditados/" : "2-Productos/");
+		let avatar = registroCombinado.avatar
 			? entidad == "capitulos"
-				? detalle.avatar
-				: rutaAvatar + detalle.avatar
+				? registroCombinado.avatar
+				: rutaAvatar + registroCombinado.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = producto.paises_id ? await varias.paises_idToNombre(producto.paises_id) : "";
+		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
 			codigo,
-			titulo,
+			titulo: "Detalle del Producto",
+			producto,
 			entidad,
 			ID,
-			producto: detalle,
+			registro: registroCombinado,
 			avatar,
 			paises,
 		});

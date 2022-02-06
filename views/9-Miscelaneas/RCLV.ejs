@@ -4,7 +4,7 @@
 	<section id="datos" class="flex-row OK">
 		<!--Primera columna-->
 		<div id="primeraCol">
-			<!-- Nombre: Título y Ayuda -->
+			<!-- Nombre: Título, Ayuda y Error/OK -->
 			<div class="flex-row">
 				<div class="margenBottomTitulo relative">
 					<!-- Título -->
@@ -15,7 +15,7 @@
 						<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 						<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 					</ul>
-					<!-- Errores -->			
+					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.nombre %></span>
 					</i>
@@ -40,8 +40,8 @@
 					</div>
 				</div>
 			<% } %>
-			<!-- Fecha Representativa: Título y Ayuda -->
-			<div class="flex-row borderTop">
+			<!-- Fecha Representativa: Título, Ayuda y Error/OK -->
+			<div class="borderTop flex-row">
 				<div class="margenBottomTitulo relative">
 					<!-- Título -->
 					<h3>Fecha más representativa</h3>
@@ -52,7 +52,7 @@
 						<li>Para los santos o beatos, es la fecha en el santoral.</li>
 						<li>Para los demás, suele ser la fecha de su muerte.</li>
 					</ul>
-					<!-- Errores -->			
+					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.dia %></span>
 					</i>
@@ -103,8 +103,8 @@
 					<label>Sin fecha conocida o de referencia</label>
 				</div>
 			</div>
-			<!-- Año: Título, Valor y Ayuda -->
-			<div class="flex-row borderTop">
+			<!-- Año: Título, Valor, Ayuda y Error/OK -->
+			<div class="borderTop flex-row">
 				<div class="margenBottomTitulo relative flex-row align-center">
 					<!-- Título -->
 					<h3>Año de <%= codigo == "RCLV_personajes_historicos" ? "Nacimiento" : "Ocurrencia" %></h3>
@@ -115,7 +115,7 @@
 						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %>.</li>
 						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 					</ul>
-					<!-- Errores -->			
+					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.nombre %></span>
 					</i>
@@ -130,7 +130,7 @@
 		<div id="segundaCol">
 			<div class="relative">
 				<h3>Nombres con esa fecha</h3>
-				<!-- Errores -->			
+				<!-- Error/OK -->			
 				<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
 					<span class="mensajeError"><%= errores.duplicados %></span>
 				</i>
@@ -142,18 +142,17 @@
 	</section>
 	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
 	<% if (codigo == "RCLV_personajes_historicos") { %>
-		<section id="RCLI" class="flex-row space-between borderTop OK">
-			<!-- ¿En proceso de canonización? -->
+		<section id="RCLI" class="borderTop flex-row space-between OK">
 			<div class="flex-col">
-				<!-- Título de la sección -->
-				<div class="relative">
-					<!-- Errores -->
+				<!-- En proceso de canonización: Título y Error/OK -->
+				<div class="margenBottomTitulo relative">
+					<!-- Título -->
+					<h3 class="">Relación con la Iglesia</h3>
+					<!-- Error/OK -->
 					<i class="fas fa-times-circle<%- !errores.RCLI ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.RCLI %></span>
 					</i>
 					<i class="fas fa-check-circle ocultar"></i>
-					<!-- Título -->
-					<h3 class="margenBottomTitulo">Relación con la Iglesia</h3>
 				</div>
 				<!-- ¿En proceso de canonización? -->
 				<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
