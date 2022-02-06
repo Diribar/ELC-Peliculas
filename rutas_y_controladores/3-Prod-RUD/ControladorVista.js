@@ -12,6 +12,10 @@ module.exports = {
 		// Obtener los datos identificatorios del producto **************************
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
+		// Problema: ENTIDAD INEXISTENTE
+		if (!entidad) return res.redirect("/error/producto-no-encontrado");
+		producto = varias.producto(entidad);
+		if (!producto) return res.redirect("/error/producto-no-encontrado");
 		// Obtener los datos del producto *******************************************
 		// Definir los campos include
 		let includes = [
@@ -34,9 +38,9 @@ module.exports = {
 		let registro = await BD_varias.obtenerPorIdConInclude(entidad, ID, includes).then((n) => {
 			return n ? n.toJSON() : "";
 		});
-		// Problema 1: PRODUCTO NO ENCONTRADO
+		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registro) return res.redirect("/error/producto-no-encontrado");
-		// Problema 2: PRODUCTO NO APROBADO
+		// Problema: PRODUCTO NO APROBADO
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
@@ -50,8 +54,6 @@ module.exports = {
 		for (i = campos.length - 1; i >= 0; i--) {
 			if (registro[campos[i]] === null) delete registro[campos[i]];
 		}
-		// Obtener el Producto ******************************************************
-		producto = varias.producto(entidad);
 		// Obtener los datos editados
 		console.log(includes.slice(0, -2));
 		let registroEditado = await BD_varias.obtenerPorCamposConInclude(
@@ -105,6 +107,9 @@ module.exports = {
 		// Tema y Código
 		tema = "producto";
 		codigo = "editar";
+		// Obtener los datos identificatorios del producto **************************
+		let entidad = req.query.entidad;
+		let ID = req.query.id;
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
