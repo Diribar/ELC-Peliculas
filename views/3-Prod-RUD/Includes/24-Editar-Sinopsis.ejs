@@ -1,7 +1,7 @@
 <section class="label-input" id="textarea">
 	<div class="input-error">
 		<textarea 
-			name="sinopsis" rows="5" class="input" placeholder="Ingresa aquí la sinopsis"
+			name="sinopsis" rows="8" class="input" placeholder="Ingresa aquí la sinopsis"
 		><%= registro.sinopsis %></textarea>
 		<!-- Ayuda -->
 		<%- (registro.sinopsis && !errores.sinopsis) ? include("39-DD-Mensajes") : "" %>

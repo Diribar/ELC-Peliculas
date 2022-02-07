@@ -79,9 +79,7 @@ window.addEventListener("load", async () => {
 			}
 
 			// Averiguar si hay algún error
-			// console.log(campo);
 			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-			// console.log(campo);
 			if (e.target == selectPais) campo = "paises_id";
 			mensajesError[i].innerHTML = errores[campo];
 

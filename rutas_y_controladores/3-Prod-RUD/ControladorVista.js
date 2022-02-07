@@ -1,6 +1,5 @@
 // ************ Requires *************
 let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
 let varias = require("../../funciones/Varias/varias");
 let variables = require("../../funciones/Varias/variables");
 
@@ -15,8 +14,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let redirect = revisarQuery(entidad, ID);
-		if (redirect) return res.redirect(redirect);
+		let errorEnQuery = revisarQuery(entidad, ID);
+		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -39,7 +38,8 @@ module.exports = {
 			return n ? n.toJSON() : "";
 		});
 		// Problema: PRODUCTO NO ENCONTRADO
-		if (!registro) return res.redirect("/error/producto-no-encontrado");
+		if (!registro) return res.send("Producto no encontrado");
+
 		// Problema: PRODUCTO NO APROBADO
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
@@ -47,7 +47,7 @@ module.exports = {
 		if (noAprobada && otroUsuario) {
 			req.session.noAprobado = registro;
 			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
-			return res.redirect("/error/producto-no-aprobado");
+			return res.send("Producto noaprobado");
 		}
 		// Quitarle los campos 'null'
 		let campos = Object.keys(registro);
@@ -135,8 +135,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let redirect = revisarQuery(entidad, ID);
-		if (redirect) return res.redirect(redirect);
+		let errorEnQuery = revisarQuery(entidad, ID);
+		if (errorEnQuery) return res.send(errorEnQuery);
 		// Configurar el Título
 		let producto = varias.producto(entidad);
 		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + producto;
@@ -158,11 +158,11 @@ module.exports = {
 };
 
 let revisarQuery = (entidad, ID) => {
-	let redirect = "";
+	let errorEnQuery = "";
 	// Sin entidad y/o ID
-	if (!entidad || !ID) redirect = "/error/producto-no-encontrado";
+	if (!entidad || !ID) errorEnQuery = "Producto no encontrado";
 	// Entidad inexistente
 	producto = varias.producto(entidad);
-	if (!producto) redirect = "/error/producto-no-encontrado";
-	return redirect;
+	if (!producto) errorEnQuery = "Producto no encontrado";
+	return errorEnQuery;
 };

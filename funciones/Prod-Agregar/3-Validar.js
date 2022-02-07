@@ -259,21 +259,7 @@ module.exports = {
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		errores.hay = hayErrores(errores);
-		// Links gratuitos
-		campos.includes("link_trailer")
-			? (errores.link_trailer = !datos.link_trailer
-					? ""
-					: !validarFuente(datos.link_trailer)
-					? "Debe ser de una fuente confiable"
-					: "")
-			: "";
-		campos.includes("link_pelicula")
-			? (errores.link_pelicula = !datos.link_pelicula
-					? ""
-					: !validarFuente(datos.link_pelicula)
-					? "Debe ser de una fuente confiable"
-					: "")
-			: "";
+		// Fin
 		return errores;
 	},
 };

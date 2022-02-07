@@ -2,9 +2,8 @@
 #cuerpo {position: relative; display: flex; flex-direction: row; flex-grow: 1; align-items: flex-start;}
 
 /* Contador de Películas */
-#cuerpo #contador-de-peliculas {padding: 3px 5px;border-style: none;border-radius: 5px;}
 #cuerpo #contador-de-peliculas {position: absolute; right: 0px; top: 0px;}
-#cuerpo #contador-de-peliculas {border: solid 2px gray;}
+#cuerpo #contador-de-peliculas {padding: 3px 5px; border: solid 2px gray; border-radius: 5px;}
 #cuerpo #contador-de-peliculas {font-size: 1.1rem; font-weight: bold;}
 
 /* Filtros */
