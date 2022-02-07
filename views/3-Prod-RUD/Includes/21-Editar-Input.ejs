@@ -2,9 +2,8 @@
 	<label><%= campo.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="input-error">
-		<input type="text" class="input" name="<%= campo.campo %>"
-			value="<%= registro[campo.campo] %>"
-			<% if (campo.numero) { %>id="numero" placeholder="sólo números"<% } %>
+		<input type="text" name="<%= campo.campo %>" value="<%= registro[campo.campo] %>"
+			<%- campo.numero ? 'class="input numero" placeholder="sólo números"' : 'class="input"' %>
 		>
 		<!-- Ayuda -->
 		<%- (registro[campo.campo] && !errores[campo.campo]) ? include("39-DD-Mensajes") : "" %>

@@ -2,7 +2,7 @@
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 let varias = require("../../funciones/Varias/varias");
-let variables = require("../../funciones/Varias/Variables");
+let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -101,7 +101,8 @@ module.exports = {
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			var camposDD1 = camposDD.filter((n) => n.antesDePais);
-			var camposDD2 = camposDD.filter((n) => !n.antesDePais);
+			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.campo != "produccion");
+			var camposDD3 = camposDD.filter((n) => n.campo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var datosPers = await variables.datosPersSelect();
@@ -118,6 +119,7 @@ module.exports = {
 			paises,
 			camposDD1,
 			camposDD2,
+			camposDD3,
 			BD_paises,
 			BD_idiomas,
 			datosPers,
