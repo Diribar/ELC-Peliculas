@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 		// 2. Revisar CAMPOS INDIVIDUALES
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		if (errores[campo] == undefined) errores[campo]="No lo pudimos validar"
+		if (errores[campo] == undefined) errores[campo] = "No lo pudimos validar";
 		mensajesError[indice].innerHTML = errores[campo];
 		if (errores[campo]) {
 			iconoOK[indice].classList.add("ocultar");
@@ -62,27 +62,27 @@ window.addEventListener("load", async () => {
 
 		// 3. Revisar CAMPOS COMBINADOS --> Ejemplos:
 		// 3.A. (Título original / castellano) + año lanzamiento
-		// if (
-		// 	(campo == "nombre_original" || campo == "ano_estreno") &&
-		// 	nombre_original.value &&
-		// 	!mensajesErrorNO.innerHTML &&
-		// 	ano_estreno.value &&
-		// 	!mensajesErrorAE.innerHTML
-		// )
-		// 	funcionTituloDuplicado("nombre_original", nombre_original.value);
-		// if (
-		// 	(campo == "nombre_castellano" || campo == "ano_estreno") &&
-		// 	nombre_castellano.value &&
-		// 	!mensajesErrorNC.innerHTML &&
-		// 	ano_estreno.value &&
-		// 	!mensajesErrorAE.innerHTML
-		// )
-		// 	funcionTituloDuplicado("nombre_castellano", nombre_castellano.value);
-		// 3.B. Año de lanzamiento + Año de finalización
-		// 3.C. Subcategoría + RCLV
+		if (
+			(campo == "nombre_original" || campo == "ano_estreno") &&
+			nombre_original.value &&
+			!mensajesErrorNO.innerHTML &&
+			ano_estreno.value &&
+			!mensajesErrorAE.innerHTML
+		)
+			funcionTituloDuplicado("nombre_original", nombre_original.value);
+		if (
+			(campo == "nombre_castellano" || campo == "ano_estreno") &&
+			nombre_castellano.value &&
+			!mensajesErrorNC.innerHTML &&
+			ano_estreno.value &&
+			!mensajesErrorAE.innerHTML
+		)
+			// 	funcionTituloDuplicado("nombre_castellano", nombre_castellano.value);
+			// 3.B. Año de lanzamiento + Año de finalización
+			// 3.C. Subcategoría + RCLV
 
-		// Fin
-		botonSubmit();
+			// Fin
+			botonSubmit();
 	});
 
 	// Respuestas 'botonSinLink' ante cambios de 'flechas'
@@ -139,23 +139,20 @@ window.addEventListener("load", async () => {
 		dato1 = "entidad=" + entidad;
 		dato2 = campo + "=" + valor;
 		dato3 = "ano_estreno=" + ano_estreno.value;
-		let mensaje = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
-		if (mensaje) mensaje = mensaje[campo];
-		// Impactar en la vista
-		campo == "nombre_original"
-			? (mensajesErrorNO.innerHTML = mensaje)
-			: (mensajesErrorNC.innerHTML = mensaje);
+		let errores = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
+		mensaje = errores[campo];
 		// Acciones en función de si hay o no mensajes de error
-		if (mensaje) {
-			campo == "nombre_original"
+		if (campo == "nombre_original") {
+			mensajesErrorNO.innerHTML = mensaje;
+			mensaje
 				? iconoErrorNO.classList.remove("ocultar")
-				: iconoErrorNC.classList.remove("ocultar");
-		} else {
-			campo == "nombre_original"
-				? iconoErrorNO.classList.add("ocultar")
+				: iconoErrorNO.classList.add("ocultar");
+		} else if (campo == "nombre_castellano") {
+			mensajesErrorNC.innerHTML = mensaje;
+			mensaje
+				? iconoErrorNC.classList.remove("ocultar")
 				: iconoErrorNC.classList.add("ocultar");
 		}
-		botonSubmit();
 	};
 
 	let botonSubmit = () => {

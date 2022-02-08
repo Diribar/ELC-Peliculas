@@ -13,8 +13,6 @@ module.exports = (sequelize, dt) => {
 		editada_en: {type: dt.DATE},
 		capturada_por_id: {type: dt.INTEGER},
 		capturada_en: {type: dt.DATE},
-
-		borrado_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "RCLV_personajes_historicos",
@@ -29,7 +27,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
-		entidad.belongsTo(n.RCLV_borrados, {as: "borrado", foreignKey: "borrado_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "personaje_historico_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_historico_id"});

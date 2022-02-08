@@ -55,15 +55,16 @@
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
+.mensajeError, .mensajeAyuda {max-width: 200px; left: 20px;}
+.mensajeError::before, .mensajeAyuda::before {left: -12px;}
 
 /* Mensajes de ayuda */
 #datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
-#datos .mensajeAyuda {max-width: 270px;}
 #datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 #datos .fa-question-circle {right: -20px;}
 
 /*  Mensajes de error*/
-#datos .mensajeError {max-width: 200px;}
+#datos .mensajeError {left: 20px; }
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
 
