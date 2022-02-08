@@ -150,13 +150,12 @@ window.addEventListener("load", async () => {
 			campo == "nombre_original"
 				? iconoErrorNO.classList.remove("ocultar")
 				: iconoErrorNC.classList.remove("ocultar");
-			submit.classList.add("botonSinLink");
 		} else {
 			campo == "nombre_original"
 				? iconoErrorNO.classList.add("ocultar")
 				: iconoErrorNC.classList.add("ocultar");
-			botonSubmit();
 		}
+		botonSubmit();
 	};
 
 	let botonSubmit = () => {
