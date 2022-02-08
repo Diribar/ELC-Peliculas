@@ -17,10 +17,11 @@
 			<%- include("22-Edicion-Pais") %>
 			<!-- Idioma original -->
 			<%- include("23-Edicion-Idioma", {idioma_id: registro.idioma_original_id}) %>
-			<!--Es a Color-->
-			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
 			<!--Existe una versión en castellano-->
 			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "en_castellano_id")}) %>
+			<!--Es a Color-->
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
+			<!-- Producción -->
 			<% for (campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 			<h3>Datos Subjetivos</h3>
 			<!--Categoría-->
