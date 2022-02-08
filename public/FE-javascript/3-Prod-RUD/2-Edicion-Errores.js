@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 		// 2. Revisar CAMPOS INDIVIDUALES
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		// if (e.target == paisesSelect) campo = paisesID.name;
+		if (errores[campo] == undefined) errores[campo]="No lo pudimos validar"
 		mensajesError[indice].innerHTML = errores[campo];
 		if (errores[campo]) {
 			iconoOK[indice].classList.add("ocultar");

@@ -2,8 +2,9 @@
 #cuerpo {position: relative;}
 
 /* Contador */
-#cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 5px; border-bottom-left-radius: 5px;}
-#cuerpo #contador {background-color: var(--verde-oscuro); color: var(--gris-claro); font-size: 1.1rem; font-weight: bold;}
+#cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
+#cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
+#cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Cuerpo del formulario */
 #datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}

@@ -413,7 +413,7 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
-		camposDP = [...(await variables.datosPersSelect()), ...variables.datosPersInput()];
+		camposDP = await variables.datosPers();
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {

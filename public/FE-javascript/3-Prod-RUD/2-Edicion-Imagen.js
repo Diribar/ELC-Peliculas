@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	let inputImagen = document.querySelector("input[name='avatar']");
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
-		ext = texto.slice(texto.length - 4);
+		ext = texto.slice(texto.lastIndexOf(".") + 1);
 		[".jpg", ".png", ".gif", ".bmp"].includes(ext) ? mostrarImagen(e) : "";
 	});
 });

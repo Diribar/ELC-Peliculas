@@ -4,7 +4,6 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
 		aprobada: {type: dt.BOOLEAN},
-		borrada: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "status_registro_prod",

@@ -50,7 +50,7 @@ CREATE TABLE EDIC_peliculas (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS EDIC_colecciones;
@@ -104,7 +104,7 @@ CREATE TABLE EDIC_colecciones (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS EDIC_capitulos;
@@ -161,5 +161,5 @@ CREATE TABLE EDIC_capitulos (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (editada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
