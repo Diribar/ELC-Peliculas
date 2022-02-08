@@ -1,4 +1,4 @@
-<form action="">
+<form action="/producto/detalle">
 	<!-- Partes ocultas o con posición absoluta -->
 	<section>
 		<button type="text" id="contador" tabindex="-1">60 min.</button>
@@ -12,23 +12,23 @@
 		<section id="primeraColumna">
 			<h3>Datos generales</h3>
 			<!-- Primeros campos -->
-			<% for (campo of camposDD1) { %><%- include("21-Editar-Input", {campo}) %><% } %>
+			<% for (campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 			<!-- País -->
-			<%- include("22-Editar-Pais") %>
+			<%- include("22-Edicion-Pais") %>
 			<!-- Idioma original -->
-			<%- include("23-Editar-Idioma", {idioma_id: registro.idioma_original_id}) %>
+			<%- include("23-Edicion-Idioma", {idioma_id: registro.idioma_original_id}) %>
 			<!--Es a Color-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "en_color_id")}) %>
 			<!--Existe una versión en castellano-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "en_castellano_id")}) %>
-			<% for (campo of camposDD3) { %><%- include("21-Editar-Input", {campo}) %><% } %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "en_castellano_id")}) %>
+			<% for (campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 			<h3>Datos Subjetivos</h3>
 			<!--Categoría-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "categoria_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "categoria_id")}) %>
 			<!--Sub-categoría-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "subcategoria_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "subcategoria_id")}) %>
 			<!--Público sugerido-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "publico_sugerido_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "publico_sugerido_id")}) %>
 			<!-- Links a Trailer y Película -->
 			<div id="links">
 				<h3>Links</h3>
@@ -43,18 +43,18 @@
 		<section id="segundaColumna">
 			<!-- Personas -->
 			<h3>Personas</h3>
-			<% for (campo of camposDD2) { %><%- include("21-Editar-Input", {campo}) %><% } %>
+			<% for (campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 			<!-- Relación con la vida -->
 			<h3>Relación con la vida</h3>
 			<!--Personaje histórico-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "personaje_historico_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "personaje_historico_id")}) %>
 			<!--Hecho histórico-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "hecho_historico_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "hecho_historico_id")}) %>
 			<!--Valor-->
-			<%- include("25-Editar-Select", {campo: datosPers.find(n => n.campo == "valor_id")}) %>
+			<%- include("25-Edicion-Select", {campo: datosPers.find(n => n.campo == "valor_id")}) %>
 			<h3>Sinopsis</h3>
 			<!--Sinopsis-->
-			<%- include("24-Editar-Sinopsis") %>
+			<%- include("24-Edicion-Sinopsis") %>
 		</section>
 	</section>
 	<!-- Botones -->
@@ -66,7 +66,8 @@
 			<i class="fas3 fas fa-home" title='Mostrar la versión original'></i>
 		</div>
 		<div class="tres">
-			<i class="fas1 fas fa-save botonSinLink" title='Guardar los cambios'></i>
+			<label class="fas1 fas fa-save botonSinLink" for="inputSubmit" title='Guardar los cambios'></label>
+			<input type="submit" id="inputSubmit" class="ocultar" formaction="/producto/edicion" formmethod="post">
 			<i class="fas2 fas fa-slash"></i>
 			<i class="fas3 fas fa-trash-alt botonSinLink" title='Eliminar la edición'></i>
 		</div>

@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 	console.log(paisesID.value);
 
 	// Otras variables
-	let ruta = "/producto/api/validar-editar/?";
+	let ruta = "/producto/api/validar-edicion/?";
 
 	// ****************** FIN DE VARIABLES ***************************
 

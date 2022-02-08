@@ -32,8 +32,8 @@ router.post('/datos-editables', uploadFile.single('avatar'), vista.altaEditables
 
 // Controladores de Consultas
 router.get('/detalle', soloUsuarios, vista.detalle)
-router.get('/editar', soloUsuarios, vista.editarForm)
-router.put('/editar', uploadFile.single('avatar'), vista.editarGuardar) //Validar mail y editables
+router.get('/edicion', soloUsuarios, vista.editarForm)
+router.put('/edicion', uploadFile.single('avatar'), vista.editarGuardar) //Validar mail y editables
 router.delete('/eliminar', soloUsuarios, vista.baja)
 
 module.exports = router;
