@@ -49,8 +49,6 @@
 #datos #links button {margin-left: 20px; padding: 2px 5px; border-radius: 10px;}
 #datos #links button {background-color: var(--azul-oscuro); color: var(--gris-claro); font-weight: bold;}
 
-/* Íconos */
-
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
