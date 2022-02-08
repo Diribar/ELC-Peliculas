@@ -9,10 +9,10 @@
 		<!-- <script src="/FE-javascript/3-Prod-RUD/1-Detalle-MenuEditar.js"></script> -->
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<% } %>
-	<% if (codigo == "editar") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Editar.css">
-		<script src="/FE-javascript/3-Prod-RUD/2-Editar-Imagen.js"></script>
-		<script src="/FE-javascript/3-Prod-RUD/2-Editar-Errores.js"></script>
+	<% if (codigo == "edicion") { %>
+		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Edicion.css">
+		<script src="/FE-javascript/3-Prod-RUD/2-Edicion-Imagen.js"></script>
+		<script src="/FE-javascript/3-Prod-RUD/2-Edicion-Errores.js"></script>
 	<% } %>
 </head>
 <body>
@@ -24,7 +24,7 @@
 			<!--**************************** CUERPO ************************-->
 			<section id="cuerpo">
 				<%- codigo == "detalle" ?	include('1-Detalle') : "" %>
-				<%- codigo == "editar" ?	include('2-Editar') : "" %>
+				<%- codigo == "edicion" ?	include('2-Edicion') : "" %>
 			</section>
 			<!--****************************** FIN *************************-->
 		</section>

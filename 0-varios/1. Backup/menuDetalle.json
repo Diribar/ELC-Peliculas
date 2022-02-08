@@ -28,10 +28,10 @@
 		"grupo": "Detalle"
 	},
 	{
-		"titulo": "Editar",
-		"nombre": "Editar",
-		"codigo": "detalle/editar",
-		"vista": "editar",
+		"titulo": "Edicion",
+		"nombre": "Edicion",
+		"codigo": "detalle/edicion",
+		"vista": "edicion",
 		"grupo": ""
 	},
 	{

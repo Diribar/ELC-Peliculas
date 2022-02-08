@@ -19,6 +19,6 @@ window.addEventListener("load", () => {
 			// Si el usuario no está logueado, redirigir a Login
 			if (disponible.codigo == "hacerLogin") window.location.href = "/usuarios/login";
 			// false --> cartel de "Bloqueado" + motivo
-		} // else (true) --> ir a Editar
+		} // else (true) --> ir a Edicion
 	});
 });

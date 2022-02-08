@@ -220,7 +220,7 @@ module.exports = {
 
 	editarForm: async (req, res) => {
 		tema = "usuario";
-		codigo = "editar";
+		codigo = "edicion";
 		if (!req.session.usuario) {
 			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
 		}
@@ -232,7 +232,7 @@ module.exports = {
 	},
 
 	editarGuardar: (req, res) => {
-		res.send("/editar/guardar");
+		res.send("/edicion/guardar");
 	},
 
 	baja: (req, res) => {

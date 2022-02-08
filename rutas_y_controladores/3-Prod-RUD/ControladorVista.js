@@ -90,12 +90,12 @@ module.exports = {
 		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
 		// Configurar el Título
 		let titulo =
-			(codigo == "detalle" ? "Detalle" : codigo == "editar" ? "Edición" : "") +
+			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			varias.producto(entidad);
-		// Info exclusiva para la vista de Editar
-		if (codigo == "editar") {
+		// Info exclusiva para la vista de Edicion
+		if (codigo == "edicion") {
 			let camposDD = variables
 				.camposDD()
 				.filter((n) => n[entidad])
