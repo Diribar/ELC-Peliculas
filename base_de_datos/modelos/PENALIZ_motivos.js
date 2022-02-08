@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "penalizaciones_motivos";
+	const alias = "penaliz_us_motivos";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(40)},
@@ -9,14 +9,12 @@ module.exports = (sequelize, dt) => {
 		mensaje_mail: {type: dt.STRING(200)},
 	};
 	const config = {
-		tableName: "penalizaciones_motivos",
+		tableName: "penaliz_us_motivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.penalizaciones_usuarios, {as: "penalizaciones_usuarios", foreignKey: "penalizacion_id"});
-		entidad.hasMany(n.PROD_borrado_motivos, {as: "motivos_borrado_PROD", foreignKey: "penalizacion_id"});
-		entidad.hasMany(n.RCLV_borrado_motivos, {as: "motivos_borrado_RCLV", foreignKey: "penalizacion_id"});
+		entidad.hasMany(n.penaliz_us_usuarios, {as: "usuarios_penalizados", foreignKey: "penaliz_motivo_id"});
 	};
 	return entidad;
 };

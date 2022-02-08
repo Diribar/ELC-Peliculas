@@ -43,8 +43,6 @@ module.exports = (sequelize, dt) => {
 		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 
-		borrada_id: {type: dt.INTEGER},
-
 		editada_por_id: {type: dt.INTEGER},
 		editada_en: {type: dt.DATE},
 		edic_analizada_por_id: {type: dt.INTEGER},
@@ -77,7 +75,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
 		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
-		entidad.belongsTo(n.PROD_borrados, {as: "borrada", foreignKey: "borrada_id"});
 	};
 	return entidad;
 };
