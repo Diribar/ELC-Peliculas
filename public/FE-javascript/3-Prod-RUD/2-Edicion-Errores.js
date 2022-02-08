@@ -59,7 +59,6 @@ window.addEventListener("load", async () => {
 			iconoError[indice].classList.add("ocultar");
 			iconoOK[indice].classList.remove("ocultar");
 		}
-		console.log(campo, errores[campo], !!errores[campo]);
 
 		// 3. Revisar CAMPOS COMBINADOS --> Ejemplos:
 		// 3.A. (Título original / castellano) + año lanzamiento
