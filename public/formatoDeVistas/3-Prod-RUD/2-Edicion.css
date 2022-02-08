@@ -27,7 +27,7 @@
 #datos section h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
-#datos .label-input .input-error {position: relative; margin-left: 5px;}
+#datos .label-input .input-error {position: relative; margin-left: 5px; display: flex; flex-direction: row;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
@@ -72,7 +72,7 @@
 /* Flechas - Particularidades */
 #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#flechas .fas.botonSinLink {cursor: default;}
+#flechas .fas.botonSinLink, #flechas .botonSinLink .fas {cursor: default;}
 
 /* Flechas - Grupo con slash */
 #flechas .tres {width: 75px; position: relative;}

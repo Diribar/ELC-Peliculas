@@ -10,6 +10,7 @@ let soloAutOutput = require("../../middlewares/usuarios/solo-2-aut-output");
 //************************ Controladores ****************************
 // Controladores de APIs
 router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
+router.get("/api/validar-edicion", API.validarEdicion);
 
 // Controladores de vistas
 router.get("/detalle", vista.detalle);

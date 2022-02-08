@@ -1,7 +1,7 @@
 // ************ Requires ************
 let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
-let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
-let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
+let procesar = require("../../funciones/Prod-Agregar/2-Procesar");
+let validar = require("../../funciones/Prod-Agregar/3-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 
@@ -16,16 +16,16 @@ module.exports = {
 	},
 	validarPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
-		let errores = validarProd.palabrasClave(palabrasClave);
+		let errores = validar.palabrasClave(palabrasClave);
 		return res.json(errores.palabrasClave);
 	},
 
 	// Vista (desambiguar)
 	averiguarColeccion: async (req, res) => {
-		datos = await procesarProd.averiguarColeccion(req.query.TMDB_id);
+		datos = await procesar.averiguarColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
-	
+
 	// Vista (tipoProducto)
 	averiguarColecciones: async (req, res) => {
 		datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
@@ -54,11 +54,11 @@ module.exports = {
 
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
-		errores = validarProd.copiarFA(req.query);
+		errores = validar.copiarFA(req.query);
 		return res.json(errores);
 	},
 	obtenerFA_id: (req, res) => {
-		FA_id = procesarProd.obtenerFA_id(req.query.direccion);
+		FA_id = procesar.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 	obtenerELC_id: async (req, res) => {
@@ -72,7 +72,7 @@ module.exports = {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validarProd.datosDuros(campos, req.query);
+		let errores = await validar.datosDuros(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},
@@ -83,7 +83,7 @@ module.exports = {
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {
-		errores = await validarProd.datosPers(Object.keys(req.query), req.query);
+		errores = await validar.datosPers(Object.keys(req.query), req.query);
 		return res.json(errores);
 	},
 };
