@@ -38,10 +38,10 @@
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .input-error {width: 200px;}
-#datos #paises_id .input-error input,
-#datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
+#datos #paises_id .input-error input#mostrarPaises,
+#datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+
 #datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
-#datos #paises_id .input-error #mostrarPaises {border-top-right-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
 #datos #paises_id .input-error select {width: 100%; padding: 0;}
 
 /* Links a Trailer y Película */
