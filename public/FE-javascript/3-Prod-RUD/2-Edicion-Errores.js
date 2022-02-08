@@ -49,7 +49,7 @@ window.addEventListener("load", async () => {
 		let indice = campos.indexOf(campo);
 		// 2. Revisar CAMPOS INDIVIDUALES
 		// Averiguar si hay algún error
-		errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
 		// if (e.target == paisesSelect) campo = paisesID.name;
 		mensajesError[indice].innerHTML = errores[campo];
 		if (errores[campo]) {
