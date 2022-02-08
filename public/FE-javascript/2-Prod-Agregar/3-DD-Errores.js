@@ -7,16 +7,15 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 
-	// Campos 'change'
-	// Campos 'change' - nombre_original
+	// Campos combinados - nombre_original
 	let nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
 	let iconoErrorNO = document.querySelector(".input-error .fa-times-circle.nombre_original");
 	let mensajesErrorNO = document.querySelector(".input-error .mensajeError.nombre_original");
-	// Campos 'change' - nombre_castellano
+	// Campos combinados - nombre_castellano
 	let nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
 	let iconoErrorNC = document.querySelector(".input-error .fa-times-circle.nombre_castellano");
 	let mensajesErrorNC = document.querySelector(".input-error .mensajeError.nombre_castellano");
-	// Campos 'change' - ano_estreno
+	// Campos combinados - ano_estreno
 	let ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
 	let mensajesErrorAE = document.querySelector(".input-error .mensajeError.ano_estreno");
 
@@ -43,7 +42,7 @@ window.addEventListener("load", async () => {
 	// Status inicial
 	botonSubmit();
 
-	// Revisar data-entries 'change' y comunicar los aciertos y errores
+	// Campos combinados
 	form.addEventListener("change", async (e) => {
 		campo = e.target.name;
 		if (
@@ -52,9 +51,8 @@ window.addEventListener("load", async () => {
 			!mensajesErrorNO.innerHTML &&
 			ano_estreno.value &&
 			!mensajesErrorAE.innerHTML
-		) {
+		)
 			funcionChange("nombre_original", nombre_original.value);
-		}
 		if (
 			(campo == "nombre_castellano" || campo == "ano_estreno") &&
 			nombre_castellano.value &&
@@ -106,6 +104,7 @@ window.addEventListener("load", async () => {
 		if (button.classList.contains("botonSinLink")) e.preventDefault();
 	});
 
+	// Funciones
 	let funcionPaises = () => {
 		let paisId = selectPais.value;
 		if (paisId == "borrar") {
@@ -149,8 +148,8 @@ window.addEventListener("load", async () => {
 		if (mensaje) mensaje = mensaje[campo];
 		// Impactar en la vista
 		campo == "nombre_original"
-			? mensajesErrorNO.innerHTML = mensaje
-			: mensajesErrorNC.innerHTML = mensaje
+			? (mensajesErrorNO.innerHTML = mensaje)
+			: (mensajesErrorNC.innerHTML = mensaje);
 		// Acciones en función de si hay o no mensajes de error
 		if (mensaje) {
 			campo == "nombre_original"

@@ -5,79 +5,8 @@ let varias = require("../Varias/Varias");
 
 // *********** Para exportar ***********
 module.exports = {
-	// ControllerAPI (validarPalabrasClave)
-	palabrasClave: (dato) => {
-		cartelCampoVacio = "Necesitamos que completes este campo";
-		let errores = {};
-		errores.palabrasClave = !dato
-			? cartelCampoVacio
-			: longitud(dato, 2, 50)
-			? longitud(dato, 2, 50)
-			: "";
-		return errores;
-	},
-
-	// ControllerAPI (validarPalabrasClave)
-	desambiguar: (dato) => {
-		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
-		errores = {hay: false};
-		// Si es una película y está en una colección
-		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
-			errores = {
-				colec_TMDB_id: dato.en_colec_TMDB_id,
-				hay: true,
-			};
-			// Si la colección no está en nuestra BD
-			if (!dato.en_colec_id) errores.mensaje = "agregarColeccion";
-			else {
-				errores = {
-					...errores,
-					mensaje: "agregarCapitulos",
-					en_colec_id: dato.en_colec_id,
-				};
-			}
-		}
-		// Enviar el feedback
-		return errores;
-	},
-
-	// ControllerAPI (validarCopiarFA)
-	copiarFA: (datos) => {
-		let errores = {};
-		// Dirección
-		url = datos.direccion;
-		errores.direccion = !url
-			? cartelCampoVacio
-			: !url.includes("www.filmaffinity.com/") ||
-			  !(
-					url.indexOf("www.filmaffinity.com/") + 21 < url.indexOf("/film") &&
-					url.indexOf("/film") + 5 < url.indexOf(".html")
-			  )
-			? "No parece ser una dirección de Film Affinity"
-			: "";
-		// Avatar
-		errores.avatar = !datos.avatar
-			? "Necesitamos que agregues una imagen"
-			: !datos.avatar.includes("pics.filmaffinity.com/")
-			? "No parece ser una imagen de FilmAffinity"
-			: !datos.avatar.includes("large.jpg")
-			? "Necesitamos que consigas el link de la imagen grande"
-			: "";
-		// Contenido
-		aux = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
-		errores.contenido = !datos.contenido
-			? cartelCampoVacio
-			: !Object.keys(aux).length
-			? "No se obtuvo ningún dato"
-			: "";
-		// Final
-		errores.hay = hayErrores(errores);
-		errores.campos = Object.keys(aux).length;
-		return errores;
-	},
-
-	// ControllerAPI (validarDatosDuros_input)
-	// ControllerVista (DD - Form y Grabar)
+	// ControllerAPI (validarEdicion_changes)
+	// ControllerVista (Edicion - Form + Grabar)
 	datosDuros: async (campos, datos) => {
 		let errores = {};
 		// Errores 'input' *******************************************

@@ -1,7 +1,12 @@
+/* Contador */
+#cuerpo {position: relative;}
+#cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 5px; border-bottom-left-radius: 5px;}
+#cuerpo #contador {background-color: var(--verde-oscuro); color: var(--gris-claro); font-size: 1.1rem; font-weight: bold;}
+
 /* Cuerpo del formulario */
 #datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, .fa-times-circle, .link
+#datos .fa-check-circle, .fa-question-circle, .fa-times-circle, .linkRCLV
 	{position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Columnas */
@@ -14,8 +19,8 @@
 #datos #segundaColumna .label-input .input-error .input {align-self: center; width: 280px;}
 
 /* Inputs, Select, Textarea */
-#datos .label-input .input-error .input {border-width: .7px; border-radius: 5px; background-color: white;}
-#datos .label-input .input-error .input:disabled {background-color: var(--amarillo-claro); opacity: 1;}
+#datos .label-input .input-error .input,
+#datos .label-input .input-error input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Partes específicas del formulario */
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
@@ -28,15 +33,21 @@
 #datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
 #datos .label-input#textarea .input-error {width: 100%; margin-left: 0;} 
 #datos #segundaColumna #textarea textarea {width: 100%;}
-#datos .label-input .input-error .link {right: -40px; width: 15px;}
+#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px;}
 
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .input-error {width: 200px;}
 #datos #paises_id .input-error input,
 #datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px;}
-#datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 0 5px;}
+#datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
+#datos #paises_id .input-error #mostrarPaises {border-top-right-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
 #datos #paises_id .input-error select {width: 100%; padding: 0;}
+
+/* Links a Trailer y Película */
+#datos #links {display: flex; flex-direction: row; margin-top: 20px; align-items: center;}
+#datos #links button {margin-left: 20px; padding: 2px 5px; border-radius: 10px;}
+#datos #links button {background-color: var(--azul-oscuro); color: var(--gris-claro); font-weight: bold;}
 
 /* Íconos */
 
@@ -55,6 +66,19 @@
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
 
-/* Flechas */
-#datos #flechas {margin-top: 20px;}
-#datos #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+/* Flechas - General*/
+#flechas {display: flex; flex-direction: row; justify-content: space-between;}
+#flechas {margin: 20px auto 0; padding: 10px 20px; width: 45%; border-radius: 15px;}
+#flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
+
+/* Flechas - Particularidades */
+#flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
+#flechas .fas.botonSinLink {cursor: default;}
+
+/* Flechas - Grupo con slash */
+#flechas .tres {width: 75px; position: relative;}
+#flechas .tres .fas1 {position: absolute; left: 0;}
+#flechas .tres .fas2 {display: flex; flex-direction: row; justify-content: center; cursor: default;}
+#flechas .tres .fas2.fa-slash {transform: rotate(85deg);}
+#flechas .tres .fas3 {position: absolute; right: 0; top: 0;}
