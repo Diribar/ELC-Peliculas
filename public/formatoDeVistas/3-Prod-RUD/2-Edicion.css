@@ -1,5 +1,7 @@
-/* Contador */
+/* Cuerpo */
 #cuerpo {position: relative;}
+
+/* Contador */
 #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 5px; border-bottom-left-radius: 5px;}
 #cuerpo #contador {background-color: var(--verde-oscuro); color: var(--gris-claro); font-size: 1.1rem; font-weight: bold;}
 
@@ -66,7 +68,7 @@
 
 /* Flechas - General*/
 #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#flechas {margin: 20px auto 0; padding: 10px 20px; width: 45%; border-radius: 15px;}
+#flechas {margin: 20px auto 0; padding: 7px 12px; width: 45%; border-radius: 15px;}
 #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
 
 /* Flechas - Particularidades */
