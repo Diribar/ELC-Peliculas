@@ -1,5 +1,4 @@
 // ************ Requires ************
-let procesarProd = require("./2-Procesar");
 let BD_varias = require("../BD/varias");
 let varias = require("../Varias/Varias");
 
@@ -7,7 +6,7 @@ let varias = require("../Varias/Varias");
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
 	// ControllerVista (Edicion - Form + Grabar)
-	datosDuros: async (campos, datos) => {
+	edicion: async (campos, datos) => {
 		let errores = {};
 		// Errores 'input' *******************************************
 		campos.includes("nombre_original")

@@ -1,9 +1,15 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("form");
-	let button = document.querySelector("form button[type='submit']");
 	let entidad = document.querySelector("#entidad").innerHTML;
+	let submit = document.querySelectorAll("form .submit");
+
+	// Datos
 	let inputs = document.querySelectorAll("#datos .input");
+	let campos = Array.from(inputs).map((n) => n.name);
+
+	// OK/Errores
+	let iconoOK = document.querySelectorAll("#datos .fa-check-circle");
 	let iconoError = document.querySelectorAll("#datos .fa-times-circle");
 	let mensajesError = document.querySelectorAll("#datos .mensajeError");
 
@@ -28,7 +34,6 @@ window.addEventListener("load", async () => {
 			return {id: n.value, nombre: n.innerHTML};
 		}
 	);
-	console.log(paisesID.value);
 
 	// Otras variables
 	let ruta = "/producto/api/validar-edicion/?";
@@ -39,51 +44,59 @@ window.addEventListener("load", async () => {
 	form.addEventListener("change", async (e) => {
 		// 1. Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
-		campo = e.target == paisesSelect ? paisesID.name : e.target.name;
-		valor = e.target == paisesSelect ? paisesID.value : e.target.value;
+		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
+		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
+		let indice = campos.indexOf(campo);
 		// 2. Revisar CAMPOS INDIVIDUALES
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		console.log(campo);
-		if (e.target == paisesSelect) campo = paisesID.name;
-		mensajesError[i].innerHTML = errores[campo];
+		// if (e.target == paisesSelect) campo = paisesID.name;
+		mensajesError[indice].innerHTML = errores[campo];
+		if (errores[campo]) {
+			iconoOK[indice].classList.add("ocultar");
+			iconoError[indice].classList.remove("ocultar");
+		} else {
+			iconoError[indice].classList.add("ocultar");
+			iconoOK[indice].classList.remove("ocultar");
+		}
 
 		// 3. Revisar CAMPOS COMBINADOS --> Ejemplos:
 		// 3.A. (Título original / castellano) + año lanzamiento
-		if (
-			(campo == "nombre_original" || campo == "ano_estreno") &&
-			nombre_original.value &&
-			!mensajesErrorNO.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
-		)
-			errorNO = funcionTituloDuplicado("nombre_original", nombre_original.value);
-		if (
-			(campo == "nombre_castellano" || campo == "ano_estreno") &&
-			nombre_castellano.value &&
-			!mensajesErrorNC.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
-		)
-			errorNC = funcionTituloDuplicado("nombre_castellano", nombre_castellano.value);
+		// if (
+		// 	(campo == "nombre_original" || campo == "ano_estreno") &&
+		// 	nombre_original.value &&
+		// 	!mensajesErrorNO.innerHTML &&
+		// 	ano_estreno.value &&
+		// 	!mensajesErrorAE.innerHTML
+		// )
+		// 	funcionTituloDuplicado("nombre_original", nombre_original.value);
+		// if (
+		// 	(campo == "nombre_castellano" || campo == "ano_estreno") &&
+		// 	nombre_castellano.value &&
+		// 	!mensajesErrorNC.innerHTML &&
+		// 	ano_estreno.value &&
+		// 	!mensajesErrorAE.innerHTML
+		// )
+		// 	funcionTituloDuplicado("nombre_castellano", nombre_castellano.value);
 		// 3.B. Año de lanzamiento + Año de finalización
 		// 3.C. Subcategoría + RCLV
 
-		// 4. Acciones en función de si hay o no mensajes de error
-			if (mensajesError[i].innerHTML) {
-				iconoError[i].classList.remove("ocultar");
-				button.classList.add("botonSinLink");
-			} else {
-				iconoError[i].classList.add("ocultar");
-				botonSubmit();
-			}
+		// Fin
+		botonSubmit();
 	});
 
 	// Respuestas 'botonSinLink' ante cambios de 'flechas'
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("botonSinLink")) e.preventDefault();
+		// if (submit.classList.contains("botonSinLink")) e.preventDefault();
+		if (
+			Array.from(submit)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.includes("botonSinLink")
+		)
+			e.preventDefault();
 	});
 
 	// Funciones
@@ -137,19 +150,37 @@ window.addEventListener("load", async () => {
 			campo == "nombre_original"
 				? iconoErrorNO.classList.remove("ocultar")
 				: iconoErrorNC.classList.remove("ocultar");
-			button.classList.add("botonSinLink");
 		} else {
 			campo == "nombre_original"
 				? iconoErrorNO.classList.add("ocultar")
 				: iconoErrorNC.classList.add("ocultar");
-			botonSubmit();
 		}
-		return !!mensaje;
+		botonSubmit();
 	};
 
 	let botonSubmit = () => {
-		Array.from(mensajesError).find((n) => n.innerHTML)
-			? button.classList.add("botonSinLink")
-			: button.classList.remove("botonSinLink");
+		OK =
+			Array.from(iconoOK)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar < iconoOK.length;
+		error =
+			Array.from(iconoError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar < iconoError.length;
+		if (OK && !error) {
+			submit[0].classList.remove("botonSinLink");
+			submit[1].classList.remove("botonSinLink");
+		} else {
+			submit[0].classList.add("botonSinLink");
+			submit[1].classList.add("botonSinLink");
+		}
 	};
 });

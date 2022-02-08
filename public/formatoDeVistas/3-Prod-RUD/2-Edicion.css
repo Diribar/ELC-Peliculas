@@ -1,5 +1,7 @@
-/* Contador */
+/* Cuerpo */
 #cuerpo {position: relative;}
+
+/* Contador */
 #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 5px; border-bottom-left-radius: 5px;}
 #cuerpo #contador {background-color: var(--verde-oscuro); color: var(--gris-claro); font-size: 1.1rem; font-weight: bold;}
 
@@ -27,7 +29,7 @@
 #datos section h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
-#datos .label-input .input-error {position: relative; margin-left: 5px;}
+#datos .label-input .input-error {position: relative; margin-left: 5px; display: flex; flex-direction: row;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
@@ -66,13 +68,13 @@
 
 /* Flechas - General*/
 #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#flechas {margin: 20px auto 0; padding: 10px 20px; width: 45%; border-radius: 15px;}
+#flechas {margin: 20px auto 0; padding: 7px 12px; width: 45%; border-radius: 15px;}
 #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
 
 /* Flechas - Particularidades */
 #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#flechas .fas.botonSinLink {cursor: default;}
+#flechas .fas.botonSinLink, #flechas .botonSinLink .fas {cursor: default;}
 
 /* Flechas - Grupo con slash */
 #flechas .tres {width: 75px; position: relative;}

@@ -7,7 +7,11 @@ module.exports = {
 	home: (req, res) => {
 		tema = "miscelaneas";
 		codigo = "inicio";
-		return res.render("Home", {tema, codigo});
+		return res.render("Home", {
+			tema,
+			codigo,
+			titulo: "Inicio",
+		});
 	},
 
 	nosotros: (req, res) => {
@@ -16,6 +20,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Quiénes somos",
 		});
 	},
 
