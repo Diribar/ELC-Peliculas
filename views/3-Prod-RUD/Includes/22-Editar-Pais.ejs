@@ -2,11 +2,11 @@
 	<label>País/es de origen</label>
 	<div class="input-error">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" class="input" value="<%= paises %>" readonly>
+		<input id="mostrarPaises" type="text" value="<%= paises %>" readonly tabindex="-1">
 		<!-- Lugar donde almacenar los ID -->
-		<input name="paises_id" type="text" class="ocultar" >
+		<input name="paises_id" type="text" value="<%= registro.paises_id %>" class="ocultar input">
 		<!-- Opciones de países -->
-		<select autofocus class="input">
+		<select>
 			<option value="borrar">Borrar todo/s</option>
 			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 			<% for (continente of continentes) { %>
