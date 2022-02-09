@@ -629,7 +629,6 @@ let borrarSessionCookies = (req, res, paso) => {
 	let pasos = [
 		"borrarTodo",
 		"palabrasClave",
-		"tipoProducto",
 		"desambiguar",
 		"tipoProducto",
 		"datosOriginales",
