@@ -15,4 +15,4 @@ main h3 {font-size: 1.15rem;}
 
 /* Configuración del cuerpo */
 main #cuerpo #titulo {border-style: none; padding: 8px 10px; font-weight: bold;}
-main #cuerpo #titulo {font-family: var(--Arial); font-size: 1.2rem; margin: 0;}
+main #cuerpo #titulo {font-family: var(--Arial); font-size: 1.2rem; margin: 0; line-height: 1;}

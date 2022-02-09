@@ -1,19 +1,24 @@
 <form action="/producto/detalle" method="post">
-	<label for="imagen" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
+	<section id="imagen" class="input-error">
+		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
+		<input name="avatar" id="avatar" type="file" accept="image/*" class="input ocultar">
+		<!-- Ayuda -->
+		<%- (registro.avatar && !errores.avatar) ? include("39-DD-Mensajes") : "" %>
+		<!-- Errores -->
+		<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
+			<span class="mensajeError"><%= errores.avatar %></span>
+		</i>
+		<i class="fas fa-check-circle ocultar"></i>
+	</section>
 	<section id="cuerpo-y-footer" class="flex-col grow">
 		<%- include('3-Footer') %>
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
 			<button type="text" id="contador" tabindex="-1">60 min.</button>
 			<h1 id="titulo"><%= titulo %></h1>
+			<p id="entidad" class="ocultar"><%= entidad %></p>
 			<%- include('2-EdicionForm') %>
 		</div>
 		<!--****************************** FIN *************************-->
 	</section>
-	<!-- Partes ocultas o con posición absoluta -->
-	<section>
-		<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
-		<p id="entidad" class="ocultar"><%= entidad %></p>
-	</section>
-
 </form>

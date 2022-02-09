@@ -25,13 +25,20 @@ module.exports = {
 	},
 
 	RCLV: (req, res) => {
-		// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
-		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-		if (!aux) return res.redirect("/producto/agregar/palabras-clave");
-		// 2. Guardar el data entry en session y cookie
-		let datosPers = {...aux, ...req.query};
-		req.session.datosPers = datosPers;
-		res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		// Detectar el origen
+		let origen = req.query.origen;
+		if (origen=="DP") {
+			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
+			aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
+			if (!aux) return res.redirect("/producto/agregar/palabras-clave");
+			// 2. Guardar el data entry en session y cookie
+			let datosPers = {...aux, ...req.query};
+			req.session.datosPers = datosPers;
+			res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		} else if (origen=="edicion") {
+			
+		}
+		return res.send("");
 		// 3 Si existe 'req.query', recargar la página
 		return datosPers.entidad_RCLV == "RCLV_personajes_historicos"
 			? res.redirect("/agregar/RCLV_personajes_historicos")
@@ -78,7 +85,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
-			titulo: "Agregar - "+ datosRCLV.producto,
+			titulo: "Agregar - " + datosRCLV.producto,
 			link: req.originalUrl,
 			dataEntry: datosRCLV,
 			errores,

@@ -1,7 +1,10 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let inputs = document.querySelectorAll(".input-error .input");
-	let links = document.querySelectorAll(".input-error a.link");
+	let links = document.querySelectorAll(".input-error a.linkRCLV");
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let id = new URL(window.location.href).searchParams.get("id");
+	console.log(entidad,id);
 
 	// Función para buscar todos los valores del formulario
 	let buscarTodosLosValores = () => {
@@ -16,6 +19,7 @@ window.addEventListener("load", async () => {
 	// Links a Relación con la vida
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
+			console.log(123);
 			e.preventDefault();
 			if (links[i].className.includes("personaje")) {
 				entidad_RCLV = "RCLV_personajes_historicos";
@@ -31,7 +35,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/agregar/relacion-vida/?origen=DP" +
+				"/agregar/relacion-vida/?origen=edicion" +
 				"&entidad_RCLV=" +
 				entidad_RCLV +
 				"&producto_RCLV=" +

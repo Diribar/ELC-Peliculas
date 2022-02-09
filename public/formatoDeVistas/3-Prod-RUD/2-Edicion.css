@@ -1,50 +1,43 @@
-/* Cuerpo */
+/* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1;}
 #cuerpo {position: relative;}
+.input-error {position: relative; display: flex; flex-direction: row;}
 
 /* Contador */
 #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
 #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
 #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
-/* Cuerpo del formulario */
+/* Datos del formulario */
 #datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-#datos .fa-check-circle, .fa-question-circle, .fa-times-circle, .linkRCLV
-	{position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-
-/* Columnas */
-/* #datos #primeraColumna, #datos #segundaColumna {border: red solid 2px} */
 #datos #primeraColumna {width: 40%;}
-#datos #primeraColumna .label-input .input-error .input {align-self: center; width: 200px;}
+#datos #segundaColumna {width: 45%;}
+#datos #primeraColumna .label-input .input-error .input {width: 200px;}
 #datos #primeraColumna .label-input .input-error .input.angosto {width: 70px}
 #datos #primeraColumna .label-input .input-error .input.numero {width: 70px; text-align: right;}
-#datos #segundaColumna {width: 50%;}
-#datos #segundaColumna .label-input .input-error .input {align-self: center; width: 280px;}
-
-/* Inputs, Select, Textarea */
-#datos .label-input .input-error .input,
-#datos .label-input .input-error input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos #segundaColumna .label-input .input-error .input {width: 250px;}
 
 /* Partes específicas del formulario */
+#datos .label-input .input-error .input,
+#datos .label-input .input-error input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos .input-error {margin-left: 5px;}
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
 #datos section h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
-#datos .label-input .input-error {position: relative; margin-left: 5px; display: flex; flex-direction: row;}
+#datos .label-input .input-error .input {align-self: center;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
+#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px;}
 #datos .label-input#textarea .input-error {width: 100%; margin-left: 0;} 
 #datos #segundaColumna #textarea textarea {width: 100%;}
-#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px;}
 
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .input-error {width: 200px;}
 #datos #paises_id .input-error input#mostrarPaises,
 #datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
-
 #datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
 #datos #paises_id .input-error select {width: 100%; padding: 0;}
 
@@ -56,6 +49,8 @@ main form {display: flex; flex-direction: row-reverse; flex-grow: 1;}
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
+.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fas, 
+.linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError, .mensajeAyuda {max-width: 200px; left: 20px;}
 .mensajeError::before, .mensajeAyuda::before {left: -12px;}
 
@@ -68,6 +63,7 @@ main form {display: flex; flex-direction: row-reverse; flex-grow: 1;}
 #datos .mensajeError {left: 20px; }
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
+form #imagen .fas {left: 50%; transform: translate(-50%,-50%); font-size: 4rem}
 
 /* Flechas - General*/
 #flechas {display: flex; flex-direction: row; justify-content: space-between;}

@@ -4,12 +4,12 @@ window.addEventListener("load", async () => {
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let submit = document.querySelectorAll("form .submit");
 	// Datos
-	let inputs = document.querySelectorAll("#datos .input");
+	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll("#datos .fa-check-circle");
-	let iconoError = document.querySelectorAll("#datos .fa-times-circle");
-	let mensajesError = document.querySelectorAll("#datos .mensajeError");
+	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
+	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Variables de país
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
@@ -73,7 +73,6 @@ window.addEventListener("load", async () => {
 				"hecho_historico_id",
 				"valor_id",
 			]);
-
 		// Fin
 		botonSubmit();
 	});
