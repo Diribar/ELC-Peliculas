@@ -1,4 +1,5 @@
 /* Cuerpo */
+main form {display: flex; flex-direction: row-reverse; flex-grow: 1;}
 #cuerpo {position: relative;}
 
 /* Contador */
