@@ -20,15 +20,13 @@ window.addEventListener("load", async () => {
 		let indice = campos.indexOf(campo);
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		if (errores[campo] != undefined) {
-			mensajesError[indice].innerHTML = errores[campo];
-			if (errores[campo]) {
-				iconoOK[indice].classList.add("ocultar");
-				iconoError[indice].classList.remove("ocultar");
-			} else {
-				iconoOK[indice].classList.remove("ocultar");
-				iconoError[indice].classList.add("ocultar");
-			}
+		mensajesError[indice].innerHTML = errores[campo];
+		if (errores[campo]) {
+			iconoOK[indice].classList.add("ocultar");
+			iconoError[indice].classList.remove("ocultar");
+		} else {
+			iconoOK[indice].classList.remove("ocultar");
+			iconoError[indice].classList.add("ocultar");
 		}
 		// Esta función está definida en '4-DP-Subcat'
 		if (campo == "subcategoria_id") await funcionRCLV();
@@ -75,7 +73,7 @@ window.addEventListener("load", async () => {
 	};
 	let botonSubmit = () => {
 		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
-		let OK_RCLV = document.querySelectorAll(".RCLV .fa-check-circle.ocultar").length
+		let OK_RCLV = document.querySelectorAll(".RCLV .fa-check-circle.ocultar").length;
 		// Detectar la cantidad de 'no aciertos'
 		let OK =
 			Array.from(iconoOK)
@@ -84,8 +82,8 @@ window.addEventListener("load", async () => {
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar==OK_RCLV
-				// == undefined;
+				}, {}).ocultar == OK_RCLV;
+		// == undefined;
 		// Detectar la cantidad de 'no errores'
 		let error =
 			Array.from(iconoError)
