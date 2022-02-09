@@ -133,28 +133,14 @@ window.addEventListener("load", async () => {
 		}
 		// Obtener el mensaje para el campo
 		let errores = await fetch(ruta + dato).then((n) => n.json());
-		if (campo) {
-			mensaje = errores[campo];
-			indice = campos.indexOf(campo);
-			// Reemplaza
-			mensajesError[indice].innerHTML = mensaje;
-			// Acciones en función de si hay o no mensajes de error
-			mensaje
-				? iconoError[indice].classList.remove("ocultar")
-				: iconoError[indice].classList.add("ocultar");
-		} else {
-			for (let i = 0; i < valores.length; i++) {
-				// Captura el mensaje de error
-				mensaje = errores[valores[i]];
-				if (mensaje == undefined) mensaje = "";
-				// Reemplaza
-				mensajesError[indice[i]].innerHTML = mensaje;
-				// Acciones en función de si hay o no mensajes de error
-				mensaje
-					? iconoError[indice[i]].classList.remove("ocultar")
-					: iconoError[indice[i]].classList.add("ocultar");
-			}
-		}
+		mensaje = errores[campo];
+		indice = campos.indexOf(campo);
+		// Reemplaza
+		mensajesError[indice].innerHTML = mensaje;
+		// Acciones en función de si hay o no mensajes de error
+		mensaje
+			? iconoError[indice].classList.remove("ocultar")
+			: iconoError[indice].classList.add("ocultar");
 		return;
 	};
 
