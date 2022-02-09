@@ -235,7 +235,7 @@ module.exports = {
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			rutaYnombre = "./public/imagenes/9-Provisorio/" + req.cookies.datosPers.avatarDP;
+			rutaYnombre = "./public/imagenes/9-Provisorio/" + req.cookies.datosPers.avatarBD;
 			if (fs.existsSync(rutaYnombre)) fs.unlinkSync(rutaYnombre);
 		}
 		borrarSessionCookies(req, res, "datosDuros");
