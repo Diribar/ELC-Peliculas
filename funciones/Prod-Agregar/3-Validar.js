@@ -223,16 +223,31 @@ module.exports = {
 	datosPers: async (campos, datos) => {
 		let errores = {};
 		// Datos generales
-		errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
-		errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
-		errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
-		errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "";
-		errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "";
+		if (campos.includes("en_castellano_id"))
+			errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
+			if (campos.includes("en_color_id"))
+			errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
+			if (campos.includes("categoria_id"))
+			errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
+		if (campos.includes("subcategoria_id"))
+			errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "";
+		if (campos.includes("publico_sugerido_id"))
+			errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "";
 		// Tu calificación
-		errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
-		errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
-		errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
+		if (campos.includes("fe_valores_id"))
+			errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
+		if (campos.includes("entretiene_id"))
+			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
+		if (campos.includes("calidad_tecnica_id"))
+			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
 		// RCLV
+		if (campos.includes("personaje_historico_id"))
+		errores.personaje_historico_id = !datos.personaje_historico_id ? cartelSelectVacio : "";
+		if (campos.includes("hecho_historico_id"))
+		errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+		if (campos.includes("valor_id"))
+		errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
+		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_varias.obtenerPorCampo(
@@ -249,8 +264,8 @@ module.exports = {
 				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
+		// ***** RESUMEN *******
 		errores.hay = hayErrores(errores);
-		// Fin
 		return errores;
 	},
 };

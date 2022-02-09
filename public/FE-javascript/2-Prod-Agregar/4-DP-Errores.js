@@ -1,103 +1,103 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
-	let button = document.querySelector("#dataEntry button[type='submit']");
+	let submit = document.querySelector("#dataEntry button[type='submit']");
+	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let campos = Array.from(inputs).map((n) => n.name);
+	// OK/Errores
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
+	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	let links = document.querySelectorAll(".input-error a.link");
+	// Otras variables
+	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
-	// Funciones ********************************************************************
-	// Función para anular/activar el botón 'Submit'
-	// Los aciertos de los 'select' están configurados como invisibles en la vista (EJS)
-	let accionesSiHayErrores = (i, errores) => {
-		// Averiguar si hay un error
-		campo = inputs[i].name;
-		valor = encodeURIComponent(inputs[i].value);
-		mensaje = errores[campo];
-		mensajesError[i].innerHTML = mensaje;
-		// En caso de error
-		if (mensaje) {
-			iconoError[i].classList.remove("ocultar");
-			iconoOK[i].classList.add("ocultar");
-		} else {
-			iconoError[i].classList.add("ocultar");
-			if (valor) iconoOK[i].classList.remove("ocultar");
-		}
-		errores.hay
-			? button.classList.add("botonSinLink")
-			: button.classList.remove("botonSinLink");
-	};
-
-	// Función para buscar todos los valores del formulario
-	let buscarTodosLosValores = () => {
-		for (let i = 0; i < inputs.length; i++) {
-			i == 0 ? (url = "/?") : (url += "&");
-			url += inputs[i].name;
-			url += "=";
-			url += encodeURIComponent(inputs[i].value);
-		}
-		return url;
-	};
-
-	// Función para revisar todos los inputs, devuelve los errores
-	let buscarErroresEnTodoElForm = () => {
-		let url = buscarTodosLosValores();
-		return fetch("/producto/agregar/api/validar-datos-pers" + url).then((n) => n.json());
-	};
-
-	// Status inicial ********************************************************************
-	let errores = await buscarErroresEnTodoElForm();
-	for (let i = 0; i < inputs.length; i++) {
-		if (inputs[i].value) accionesSiHayErrores(i, errores);
-	}
-
-	// Rutinas on-line *********************************************************************
-
-	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async () => {
-			errores = await buscarErroresEnTodoElForm();
-			accionesSiHayErrores(i, errores);
-		});
-	}
+	// Averiguar si hubieron cambios
+	form.addEventListener("input", async (e) => {
+		// Definir los valores para 'campo' y 'valor'
+		let campo = e.target.name;
+		let valor = e.target.value;
+		let indice = campos.indexOf(campo);
+		// Averiguar si hay algún error
+		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		mensajesError[indice].innerHTML = errores[campo];
+		errores[campo]
+			? iconoOK[indice].classList.add("ocultar")
+			: iconoOK[indice].classList.remove("ocultar");
+		errores[campo]
+			? iconoError[indice].classList.remove("ocultar")
+			: iconoError[indice].classList.add("ocultar");
+		// Esta función está definida en '4-DP-Subcat'
+		if (campo == "subcategoria_id") await funcionRCLV();
+		// Fin
+		botonSubmit();
+	});
 
 	// Submit
 	form.addEventListener("submit", async (e) => {
-		if (button.classList.contains("botonSinLink")) {
+		if (submit.classList.contains("botonSinLink")) {
 			e.preventDefault();
-			errores = await buscarErroresEnTodoElForm();
-			for (let i = 0; i < inputs.length; i++) {
-				accionesSiHayErrores(i, errores);
-			}
+			statusInicial((inputValue = false));
 		}
 	});
 
-	// Links a Relación con la vida
-	for (let i = 0; i < links.length; i++) {
-		links[i].addEventListener("click", (e) => {
-			e.preventDefault();
-			if (links[i].className.includes("personaje")) {
-				entidad_RCLV = "RCLV_personajes_historicos";
-				producto_RCLV = "Personaje Histórico";
-			} else if (links[i].className.includes("hecho")) {
-				entidad_RCLV = "RCLV_hechos_historicos";
-				producto_RCLV = "Hecho Histórico";
-			} else {
-				entidad_RCLV = "RCLV_valores";
-				producto_RCLV = "Valor";
+	// Funciones
+	let statusInicial = async (inputValue) => {
+		//Buscar todos los valores
+		let url = "";
+		for (input of inputs) {
+			if (input != inputs[0]) url += "&";
+			url += input.name + "=";
+			url += encodeURIComponent(input.value);
+		}
+		let errores = await fetch(ruta + url).then((n) => n.json());
+		for (input of inputs) {
+			if (inputValue ? input.value : true) {
+				// Averiguar si hay un error
+				campo = input.name;
+				indice = campos.indexOf(campo);
+				mensaje = errores[campo];
+				mensajesError[indice].innerHTML = mensaje;
+				// En caso de error
+				if (mensaje != undefined) {
+					mensaje
+						? iconoError[indice].classList.remove("ocultar")
+						: iconoError[indice].classList.add("ocultar");
+					mensaje
+						? iconoOK[indice].classList.add("ocultar")
+						: iconoOK[indice].classList.remove("ocultar");
+				}
 			}
-			// Para preservar los valores ingresados hasta el momento
-			let url = buscarTodosLosValores();
-			// Para ir a la vista RCLV
-			window.location.href =
-				"/agregar/relacion-vida" +
-				url +
-				"&entidad_RCLV=" +
-				entidad_RCLV +
-				"&producto_RCLV=" +
-				producto_RCLV;
-		});
-	}
+		}
+	};
+	let botonSubmit = () => {
+		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
+		let OK_RCLV = document.querySelectorAll(".RCLV .fa-check-circle.ocultar").length;
+		// Detectar la cantidad de 'no aciertos'
+		let OK =
+			Array.from(iconoOK)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar == OK_RCLV;
+		// == undefined;
+		// Detectar la cantidad de 'no errores'
+		let error =
+			Array.from(iconoError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar != iconoError.length;
+		// Consecuencias
+		OK && !error
+			? submit.classList.remove("botonSinLink")
+			: submit.classList.add("botonSinLink");
+	};
+
+	// Status inicial
+	await statusInicial((inputValue = true));
 });

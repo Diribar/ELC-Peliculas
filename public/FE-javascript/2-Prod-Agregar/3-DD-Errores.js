@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
-		// 1. Definir los valores para 'campo' y 'valor'
+		// Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
@@ -145,5 +145,5 @@ window.addEventListener("load", async () => {
 	};
 
 	// Status inicial
-	botonSubmit(mensajesError, submit);
+	botonSubmit();
 });

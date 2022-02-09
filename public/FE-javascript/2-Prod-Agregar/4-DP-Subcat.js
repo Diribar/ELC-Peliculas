@@ -47,7 +47,8 @@ window.addEventListener("load", () => {
 	});
 
 	// Detectar cambios en subcategorías
-	subcategoria.addEventListener("change", () => {
-		funcionRCLV();
-	});
+	// La función de abajo se pasó a 4-DP-Errores, porque conviene que esté allí por la secuencia
+	// subcategoria.addEventListener("change", () => {
+	// 	funcionRCLV();
+	// });
 });
