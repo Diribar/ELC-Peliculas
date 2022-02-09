@@ -1,159 +1,163 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
-	let button = document.querySelector("#dataEntry button[type='submit']");
 	let entidad = document.querySelector("#dataEntry #entidad").innerHTML;
+	let submit = document.querySelector("#dataEntry button[type='submit']");
+	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
+	let campos = Array.from(inputs).map((n) => n.name);
+	// OK/Errores
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-
-	// Campos combinados - nombre_original
-	let nombre_original = document.querySelector("#dataEntry input[name='nombre_original']");
-	let iconoErrorNO = document.querySelector(".input-error .fa-times-circle.nombre_original");
-	let mensajesErrorNO = document.querySelector(".input-error .mensajeError.nombre_original");
-	// Campos combinados - nombre_castellano
-	let nombre_castellano = document.querySelector("#dataEntry input[name='nombre_castellano']");
-	let iconoErrorNC = document.querySelector(".input-error .fa-times-circle.nombre_castellano");
-	let mensajesErrorNC = document.querySelector(".input-error .mensajeError.nombre_castellano");
-	// Campos combinados - ano_estreno
-	let ano_estreno = document.querySelector("#dataEntry input[name='ano_estreno']");
-	let mensajesErrorAE = document.querySelector(".input-error .mensajeError.ano_estreno");
-
 	// Variables de país
-	let selectPais = document.querySelector("#paises_id select");
-	if (selectPais) {
-		paises = Array.from(document.querySelectorAll("#paises_id select option")).map((n) => {
-			return {id: n.value, nombre: n.innerHTML};
-		});
-		mostrarPaises = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
-		inputPais = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
+	let paisesSelect = document.querySelector("#paises_id select");
+	if (paisesSelect) {
+		paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
+		paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
+		paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
+			(n) => {
+				return {id: n.value, nombre: n.innerHTML};
+			}
+		);
 	}
-
 	// Otras variables
 	let ruta = "/producto/agregar/api/validar-datos-duros/?";
 
-	// Botón 'submit'
-	let botonSubmit = () => {
-		Array.from(mensajesError).find((n) => n.innerHTML)
-			? button.classList.add("botonSinLink")
-			: button.classList.remove("botonSinLink");
-	};
+	// Revisar campos en forma INDIVIDUAL
+	form.addEventListener("input", async (e) => {
+		// 1. Definir los valores para 'campo' y 'valor'
+		if (e.target == paisesSelect) funcionPaises();
+		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
+		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
+		let indice = campos.indexOf(campo);
+		// Averiguar si hay algún error
+		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		mensajesError[indice].innerHTML = errores[campo];
+		// Acciones en función de si hay o no mensajes de error
+		errores[campo]
+			? iconoError[indice].classList.remove("ocultar")
+			: iconoError[indice].classList.add("ocultar");
 
-	// Status inicial
-	botonSubmit();
-
-	// Campos combinados
-	form.addEventListener("change", async (e) => {
-		campo = e.target.name;
-		if (
-			(campo == "nombre_original" || campo == "ano_estreno") &&
-			nombre_original.value &&
-			!mensajesErrorNO.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
-		)
-			funcionChange("nombre_original", nombre_original.value);
-		if (
-			(campo == "nombre_castellano" || campo == "ano_estreno") &&
-			nombre_castellano.value &&
-			!mensajesErrorNC.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
-		)
-			funcionChange("nombre_castellano", nombre_castellano.value);
+		botonSubmit();
 	});
 
-	// Revisar data-entries 'input' y comunicar los aciertos y errores
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async (e) => {
-			// Definir los valores para 'campo' y 'valor'
-			if (e.target == selectPais) {
-				funcionPaises();
-				campo = "paises_id";
-				valor = inputPais.value;
-			} else {
-				campo = e.target.name;
-				valor = e.target.value;
-			}
-
-			// Averiguar si hay algún error
-			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-			if (e.target == selectPais) campo = "paises_id";
-			mensajesError[i].innerHTML = errores[campo];
-
-			// Acciones en función de si hay o no mensajes de error
-			if (mensajesError[i].innerHTML) {
-				iconoError[i].classList.remove("ocultar");
-				button.classList.add("botonSinLink");
-			} else {
-				iconoError[i].classList.add("ocultar");
-				botonSubmit();
-			}
-		});
-	}
+	// Revisar campos COMBINADOS
+	form.addEventListener("change", async (e) => {
+		// Obtener el valor para 'campo'
+		let campo = e.target.name;
+		// (Título original / castellano) + año lanzamiento
+		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
+			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
+			funcionDosCampos(datos, campo);
+			datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
+			funcionDosCampos(datos, campo);
+		}
+		// Año de lanzamiento + año de finalización
+		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
+			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
+			funcionDosCampos(datos, campo);
+		}
+		// Fin
+		botonSubmit();
+	});
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("botonSinLink")) e.preventDefault();
+		if (submit.classList.contains("botonSinLink")) e.preventDefault();
 	});
 
 	// Funciones
 	let funcionPaises = () => {
-		let paisId = selectPais.value;
-		if (paisId == "borrar") {
-			selectPais.value = "";
-			mostrarPaises.value = "";
-			inputPais.value = "";
+		let paisID = paisesSelect.value;
+		if (paisID == "borrar") {
+			paisesSelect.value = "";
+			paisesMostrar.value = "";
+			paisesID.value = "";
 			return;
 		}
-		// Verificar si figura en inputPais
-		let agregar = !inputPais.value.includes(paisId);
-		// Si no figura en inputPais, agregárselo
+		// Verificar si figura en paisesID
+		let agregar = !paisesID.value.includes(paisID);
+		// Si no figura en paisesID, agregárselo
 		if (agregar) {
 			// Limita la cantidad máxima de países a 1+4 = 5, para permitir el mensaje de error
-			if (inputPais.value.length >= 2 * 1 + 4 * 4) return;
-			inputPais.value += !inputPais.value ? paisId : ", " + paisId;
+			if (paisesID.value.length >= 2 * 1 + 4 * 4) return;
+			paisesID.value += !paisesID.value ? paisID : ", " + paisID;
 		} else {
 			// Si sí figura, quitárselo
-			paises_idArray = inputPais.value.split(", ");
-			indice = paises_idArray.indexOf(paisId);
+			paises_idArray = paisesID.value.split(", ");
+			indice = paises_idArray.indexOf(paisID);
 			paises_idArray.splice(indice, 1);
-			inputPais.value = paises_idArray.join(", ");
+			paisesID.value = paises_idArray.join(", ");
 		}
 		// Agregar los países a mostrar
 		paisesNombre = "";
-		if (inputPais.value) {
-			paises_idArray = inputPais.value.split(", ");
+		if (paisesID.value) {
+			paises_idArray = paisesID.value.split(", ");
 			for (pais_id of paises_idArray) {
-				paisNombre = paises.find((n) => n.id == pais_id).nombre;
+				paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 				paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
 			}
 		}
-		mostrarPaises.value = paisesNombre;
+		paisesMostrar.value = paisesNombre;
 	};
 
-	let funcionChange = async (campo, valor) => {
-		// Obtener el mensaje para el campo
-		dato1 = "entidad=" + entidad;
-		dato2 = campo + "=" + valor;
-		dato3 = "ano_estreno=" + ano_estreno.value;
-		let mensaje = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
-		if (mensaje) mensaje = mensaje[campo];
-		// Impactar en la vista
-		campo == "nombre_original"
-			? (mensajesErrorNO.innerHTML = mensaje)
-			: (mensajesErrorNC.innerHTML = mensaje);
-		// Acciones en función de si hay o no mensajes de error
-		if (mensaje) {
-			campo == "nombre_original"
-				? iconoErrorNO.classList.remove("ocultar")
-				: iconoErrorNC.classList.remove("ocultar");
-			button.classList.add("botonSinLink");
-		} else {
-			campo == "nombre_original"
-				? iconoErrorNO.classList.add("ocultar")
-				: iconoErrorNC.classList.add("ocultar");
-			botonSubmit();
-		}
+	// Botón 'submit'
+	let botonSubmit = () => {
+		Array.from(mensajesError).find((n) => n.innerHTML)
+			? submit.classList.add("botonSinLink")
+			: submit.classList.remove("botonSinLink");
 	};
+
+	let funcionDosCampos = async (datos, campo) => {
+		campo1 = datos.campo1;
+		campo2 = datos.campo2;
+		indice1 = campos.indexOf(campo1);
+		indice2 = campos.indexOf(campo2);
+		if (
+			(campo == campo1 || campo == campo2) &&
+			inputs[indice1].value &&
+			!mensajesError[indice1].innerHTML &&
+			inputs[indice2].value &&
+			!mensajesError[indice2].innerHTML
+		)
+			funcionCamposCombinados([campo1, campo2], campo1);
+	};
+
+	let funcionCamposCombinados = async (valores, campo) => {
+		// Armado de la ruta
+		let dato = "entidad=" + entidad;
+		let indice = [];
+		for (let i = 0; i < valores.length; i++) {
+			indice.push(campos.indexOf(valores[i]));
+			dato += "&" + valores[i] + "=" + inputs[indice[i]].value;
+		}
+		// Obtener el mensaje para el campo
+		let errores = await fetch(ruta + dato).then((n) => n.json());
+		if (campo) {
+			mensaje = errores[campo];
+			indice = campos.indexOf(campo);
+			// Reemplaza
+			mensajesError[indice].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
+			mensaje
+				? iconoError[indice].classList.remove("ocultar")
+				: iconoError[indice].classList.add("ocultar");
+		} else {
+			for (let i = 0; i < valores.length; i++) {
+				// Captura el mensaje de error
+				mensaje = errores[valores[i]];
+				if (mensaje == undefined) mensaje = "";
+				// Reemplaza
+				mensajesError[indice[i]].innerHTML = mensaje;
+				// Acciones en función de si hay o no mensajes de error
+				mensaje
+					? iconoError[indice[i]].classList.remove("ocultar")
+					: iconoError[indice[i]].classList.add("ocultar");
+			}
+		}
+		return;
+	};
+
+	// Status inicial
+	botonSubmit(mensajesError, submit);
 });

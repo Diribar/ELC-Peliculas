@@ -11,9 +11,9 @@ window.addEventListener("load", async () => {
 	let iconoError = document.querySelectorAll("#datos .fa-times-circle");
 	let mensajesError = document.querySelectorAll("#datos .mensajeError");
 	// Variables de país
+	let paisesSelect = document.querySelector("#paises_id select");
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
-	let paisesSelect = document.querySelector("#paises_id select");
 	let paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
 		(n) => {
 			return {id: n.value, nombre: n.innerHTML};
@@ -37,8 +37,8 @@ window.addEventListener("load", async () => {
 				iconoOK[indice].classList.add("ocultar");
 				iconoError[indice].classList.remove("ocultar");
 			} else {
-				iconoError[indice].classList.add("ocultar");
 				iconoOK[indice].classList.remove("ocultar");
+				iconoError[indice].classList.add("ocultar");
 			}
 		}
 		botonSubmit();
@@ -58,7 +58,6 @@ window.addEventListener("load", async () => {
 		// Año de lanzamiento + año de finalización
 		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
 			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
-			console.log(campo, datos);
 			funcionDosCampos(datos, campo);
 		}
 		// Subcategoría + RCLV
