@@ -32,6 +32,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Palabras Clave",
 			link: req.originalUrl,
 			palabrasClave,
 			errores,
@@ -79,6 +80,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Desambiguar",
 			link: req.originalUrl,
 			prod_nuevos,
 			prod_yaEnBD,
@@ -126,6 +128,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Tipo de Producto",
 			link: req.originalUrl,
 			dataEntry: tipoProd,
 			autorizado_fa: req.session.usuario.autorizado_fa,
@@ -182,6 +185,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Copiar FA",
 			link: "/producto/agregar/copiar-fa",
 			dataEntry: copiarFA,
 			errores,
@@ -272,6 +276,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Datos Duros",
 			link: req.originalUrl,
 			dataEntry: datosDuros,
 			errores,
@@ -390,6 +395,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Datos Personalizados",
 			link: req.originalUrl,
 			dataEntry: datosPers,
 			errores,
@@ -475,6 +481,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Confirma",
 			link: req.originalUrl,
 			dataEntry: confirma,
 			direccion,
@@ -572,6 +579,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - Terminaste",
 			link: req.originalUrl,
 			dataEntry: datosTerminaste,
 			imagenMuchasGracias,
@@ -582,10 +590,12 @@ module.exports = {
 	responsabilidad: (req, res) => {
 		tema = "agregar";
 		codigo = "responsabilidad";
-		return res.render("Home", {tema, codigo});
+		titulo= "Agregar - Responsabilidad"
+		return res.render("Home", {tema, codigo, titulo});
 	},
 
 	yaEnBD_Form: (req, res) => {
+		titulo= "Agregar - Ya en Base de Datos"
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
 };
