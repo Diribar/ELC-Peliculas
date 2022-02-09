@@ -14,7 +14,6 @@ window.addEventListener("load", async () => {
 
 	// Averiguar si hubieron cambios
 	form.addEventListener("input", async (e) => {
-		// Revisar campos en forma INDIVIDUAL
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = e.target.value;
