@@ -1,5 +1,5 @@
 <% registro = camposDP.find(n => n.campo == campo) %>
-<section class="label-input flex-row<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
+<section class="label-input<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
