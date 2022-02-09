@@ -1,34 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%- include('0-Head', {titulo}) %>
-	<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/0-RUD.css">
-	<!-- Detalle de producto -->
-	<% if (codigo == "detalle") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/1-Detalles.css">
-		<!-- <script src="/FE-javascript/3-Prod-RUD/1-Detalle-MenuEditar.js"></script> -->
-		<script src="https://www.gstatic.com/charts/loader.js"></script>
-	<% } %>
-	<% if (codigo == "edicion") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Prod-RUD/2-Edicion.css">
-		<script src="/FE-javascript/3-Prod-RUD/2-Edicion-Errores.js"></script>
-		<script src="/FE-javascript/3-Prod-RUD/2-Edicion-Imagen.js"></script>
-		<script src="/FE-javascript/3-Prod-RUD/2-Edicion-Timer.js"></script>
-	<% } %>
+	<%- include('0-Head') %>
+	<%- include('RUD-Head') %>
 </head>
 <body>
 	<%- include('1-Header') %>
 	<main class="flex-row">
-		<label for="imagen" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
-		<section id="cuerpo-y-footer" class="flex-col grow">
-			<%- include('3-Footer') %>
-			<!--**************************** CUERPO ************************-->
-			<section id="cuerpo">
-				<%- codigo == "detalle" ?	include('1-Detalle') : "" %>
-				<%- codigo == "edicion" ?	include('2-Edicion') : "" %>
-			</section>
-			<!--****************************** FIN *************************-->
-		</section>
+		<%- codigo != "edicion" ? include('0-RUD-Cuerpo') : "" %>
+		<%- codigo == "edicion" ? include('2-Edicion') : "" %>
 	</main>
 </body>
 </html>

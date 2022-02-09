@@ -1,0 +1,9 @@
+<label for="imagen" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
+<section id="cuerpo-y-footer" class="flex-col grow">
+	<%- include('3-Footer') %>
+	<!--**************************** CUERPO ************************-->
+	<section id="cuerpo">
+		<%- codigo == "detalle" ?	include('1-Detalle') : "" %>
+	</section>
+	<!--****************************** FIN *************************-->
+</section>

@@ -78,6 +78,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Agregar - "+ datosRCLV.producto,
 			link: req.originalUrl,
 			dataEntry: datosRCLV,
 			errores,

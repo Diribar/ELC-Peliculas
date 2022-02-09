@@ -1,0 +1,75 @@
+<!-- Partes ocultas o con posición absoluta -->
+<section>
+	<button type="text" id="contador" tabindex="-1">60 min.</button>
+	<h1 id="titulo"><%= titulo %></h1>
+	<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
+	<p id="entidad" class="ocultar"><%= entidad %></p>
+</section>
+<!-- Datos -->
+<section id="datos" action="">
+	<!-- Datos generales -->
+	<section id="primeraColumna">
+		<h3>Datos generales</h3>
+		<!-- Primeros campos -->
+		<% for (campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<!-- País -->
+		<%- include("22-Edicion-Pais") %>
+		<!-- Idioma original -->
+		<%- include("23-Edicion-Idioma", {idioma_id: registro.idioma_original_id}) %>
+		<!--Existe una versión en castellano-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "en_castellano_id")}) %>
+		<!--Es a Color-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "en_color_id")}) %>
+		<!-- Producción -->
+		<% for (campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<h3>Datos Subjetivos</h3>
+		<!--Categoría-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "categoria_id")}) %>
+		<!--Sub-categoría-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "subcategoria_id")}) %>
+		<!--Público sugerido-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "publico_sugerido_id")}) %>
+		<!-- Links a Trailer y Película -->
+		<div id="links">
+			<h3>Links</h3>
+			<a href="/" target="blank" tabindex="-1">
+				<button type="button" tabindex="-1">Links de Trailer</button>
+			</a>
+			<a href="/" target="blank" tabindex="-1">
+				<button type="button" tabindex="-1">Links de Película</button>
+			</a>
+		</div>
+	</section>
+	<section id="segundaColumna">
+		<!-- Personas -->
+		<h3>Personas</h3>
+		<% for (campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<!-- Relación con la vida -->
+		<h3>Relación con la vida</h3>
+		<!--Personaje histórico-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "personaje_historico_id")}) %>
+		<!--Hecho histórico-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "hecho_historico_id")}) %>
+		<!--Valor-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "valor_id")}) %>
+		<h3>Sinopsis</h3>
+		<!--Sinopsis-->
+		<%- include("24-Edicion-Sinopsis") %>
+	</section>
+</section>
+<!-- Botones -->
+<section id="flechas">
+	<button onclick="history.back()" tabindex="-1"><i class="fas fa-arrow-alt-circle-left" tabindex="-1" title='Cancelar y volver a la vista anterior'></i></button>
+	<div class="tres">
+		<i class="fas1 fas fa-pencil-alt botonSinLink" title='Mostrar la versión editada'></i>
+		<i class="fas2 fas fa-slash"></i>
+		<i class="fas3 fas fa-home" title='Mostrar la versión original'></i>
+	</div>
+	<div class="tres">
+		<label class="fas1 fas fa-save botonSinLink submit" for="inputSubmit" title='Guardar los cambios'></label>
+		<input type="submit" id="inputSubmit" class="ocultar" formaction="/producto/edicion" formmethod="post">
+		<i class="fas2 fas fa-slash"></i>
+		<i class="fas3 fas fa-trash-alt botonSinLink" title='Eliminar la edición'></i>
+	</div>
+	<button type="submit" tabindex="-1" class="submit botonSinLink"><i class="fas fa-check-circle" tabindex="-1" title="Guardar y volver a la vista anterior"></i></button>
+</section>
