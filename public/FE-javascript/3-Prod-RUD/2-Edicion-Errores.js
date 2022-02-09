@@ -3,28 +3,13 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("form");
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let submit = document.querySelectorAll("form .submit");
-
 	// Datos
 	let inputs = document.querySelectorAll("#datos .input");
 	let campos = Array.from(inputs).map((n) => n.name);
-
 	// OK/Errores
 	let iconoOK = document.querySelectorAll("#datos .fa-check-circle");
 	let iconoError = document.querySelectorAll("#datos .fa-times-circle");
 	let mensajesError = document.querySelectorAll("#datos .mensajeError");
-
-	// Campos combinados - nombre_original
-	let nombre_original = document.querySelector("#datos input[name='nombre_original']");
-	let iconoErrorNO = document.querySelector("#datos .fa-times-circle.nombre_original");
-	let mensajesErrorNO = document.querySelector("#datos .mensajeError.nombre_original");
-	// Campos combinados - nombre_castellano
-	let nombre_castellano = document.querySelector("#datos input[name='nombre_castellano']");
-	let iconoErrorNC = document.querySelector("#datos .fa-times-circle.nombre_castellano");
-	let mensajesErrorNC = document.querySelector("#datos .mensajeError.nombre_castellano");
-	// Campos combinados - ano_estreno
-	let ano_estreno = document.querySelector("#datos input[name='ano_estreno']");
-	let mensajesErrorAE = document.querySelector("#datos .mensajeError.ano_estreno");
-
 	// Variables de país
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
@@ -34,55 +19,64 @@ window.addEventListener("load", async () => {
 			return {id: n.value, nombre: n.innerHTML};
 		}
 	);
-
 	// Otras variables
 	let ruta = "/producto/api/validar-edicion/?";
 
-	// ****************** FIN DE VARIABLES ***************************
-
-	// Respuestas OK/Error ante cambios 'change' en el form
-	form.addEventListener("change", async (e) => {
+	// Revisar campos en forma INDIVIDUAL
+	form.addEventListener("input", async (e) => {
 		// 1. Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
 		let indice = campos.indexOf(campo);
-		// 2. Revisar CAMPOS INDIVIDUALES
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		if (errores[campo] == undefined) errores[campo] = "No lo pudimos validar";
-		mensajesError[indice].innerHTML = errores[campo];
-		if (errores[campo]) {
-			iconoOK[indice].classList.add("ocultar");
-			iconoError[indice].classList.remove("ocultar");
-		} else {
-			iconoError[indice].classList.add("ocultar");
-			iconoOK[indice].classList.remove("ocultar");
+		if (errores[campo] != undefined) {
+			mensajesError[indice].innerHTML = errores[campo];
+			if (errores[campo]) {
+				iconoOK[indice].classList.add("ocultar");
+				iconoError[indice].classList.remove("ocultar");
+			} else {
+				iconoError[indice].classList.add("ocultar");
+				iconoOK[indice].classList.remove("ocultar");
+			}
 		}
+		botonSubmit();
+	});
 
-		// 3. Revisar CAMPOS COMBINADOS --> Ejemplos:
-		// 3.A. (Título original / castellano) + año lanzamiento
+	// Revisar campos COMBINADOS
+	form.addEventListener("change", async (e) => {
+		// Obtener el valor para 'campo'
+		let campo = e.target.name;
+		// (Título original / castellano) + año lanzamiento
+		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
+			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
+			funcionDosCampos(datos, campo);
+			datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
+			funcionDosCampos(datos, campo);
+		}
+		// Año de lanzamiento + año de finalización
+		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
+			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
+			console.log(campo, datos);
+			funcionDosCampos(datos, campo);
+		}
+		// Subcategoría + RCLV
 		if (
-			(campo == "nombre_original" || campo == "ano_estreno") &&
-			nombre_original.value &&
-			!mensajesErrorNO.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
+			campo == "subcategoria_id" ||
+			campo == "personaje_historico_id" ||
+			campo == "hecho_historico_id" ||
+			campo == "valor_id"
 		)
-			funcionTituloDuplicado("nombre_original", nombre_original.value);
-		if (
-			(campo == "nombre_castellano" || campo == "ano_estreno") &&
-			nombre_castellano.value &&
-			!mensajesErrorNC.innerHTML &&
-			ano_estreno.value &&
-			!mensajesErrorAE.innerHTML
-		)
-			// 	funcionTituloDuplicado("nombre_castellano", nombre_castellano.value);
-			// 3.B. Año de lanzamiento + Año de finalización
-			// 3.C. Subcategoría + RCLV
+			funcionCamposCombinados([
+				"subcategoria_id",
+				"personaje_historico_id",
+				"hecho_historico_id",
+				"valor_id",
+			]);
 
-			// Fin
-			botonSubmit();
+		// Fin
+		botonSubmit();
 	});
 
 	// Respuestas 'botonSinLink' ante cambios de 'flechas'
@@ -134,27 +128,6 @@ window.addEventListener("load", async () => {
 		paisesMostrar.value = paisesNombre;
 	};
 
-	let funcionTituloDuplicado = async (campo, valor) => {
-		// Obtener el mensaje para el campo
-		dato1 = "entidad=" + entidad;
-		dato2 = campo + "=" + valor;
-		dato3 = "ano_estreno=" + ano_estreno.value;
-		let errores = await fetch(ruta + dato1 + "&" + dato2 + "&" + dato3).then((n) => n.json());
-		mensaje = errores[campo];
-		// Acciones en función de si hay o no mensajes de error
-		if (campo == "nombre_original") {
-			mensajesErrorNO.innerHTML = mensaje;
-			mensaje
-				? iconoErrorNO.classList.remove("ocultar")
-				: iconoErrorNO.classList.add("ocultar");
-		} else if (campo == "nombre_castellano") {
-			mensajesErrorNC.innerHTML = mensaje;
-			mensaje
-				? iconoErrorNC.classList.remove("ocultar")
-				: iconoErrorNC.classList.add("ocultar");
-		}
-	};
-
 	let botonSubmit = () => {
 		OK =
 			Array.from(iconoOK)
@@ -179,5 +152,55 @@ window.addEventListener("load", async () => {
 			submit[0].classList.add("botonSinLink");
 			submit[1].classList.add("botonSinLink");
 		}
+	};
+
+	let funcionDosCampos = async (datos, campo) => {
+		campo1 = datos.campo1;
+		campo2 = datos.campo2;
+		indice1 = campos.indexOf(campo1);
+		indice2 = campos.indexOf(campo2);
+		if (
+			(campo == campo1 || campo == campo2) &&
+			inputs[indice1].value &&
+			!mensajesError[indice1].innerHTML &&
+			inputs[indice2].value &&
+			!mensajesError[indice2].innerHTML
+		)
+			funcionCamposCombinados([campo1, campo2], campo1);
+	};
+
+	let funcionCamposCombinados = async (valores, campo) => {
+		// Armado de la ruta
+		let dato = "entidad=" + entidad;
+		let indice = [];
+		for (let i = 0; i < valores.length; i++) {
+			indice.push(campos.indexOf(valores[i]));
+			dato += "&" + valores[i] + "=" + inputs[indice[i]].value;
+		}
+		// Obtener el mensaje para el campo
+		let errores = await fetch(ruta + dato).then((n) => n.json());
+		if (campo) {
+			mensaje = errores[campo];
+			indice = campos.indexOf(campo);
+			// Reemplaza
+			mensajesError[indice].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
+			mensaje
+				? iconoError[indice].classList.remove("ocultar")
+				: iconoError[indice].classList.add("ocultar");
+		} else {
+			for (let i = 0; i < valores.length; i++) {
+				// Captura el mensaje de error
+				mensaje = errores[valores[i]];
+				if (mensaje == undefined) mensaje = "";
+				// Reemplaza
+				mensajesError[indice[i]].innerHTML = mensaje;
+				// Acciones en función de si hay o no mensajes de error
+				mensaje
+					? iconoError[indice[i]].classList.remove("ocultar")
+					: iconoError[indice[i]].classList.add("ocultar");
+			}
+		}
+		return;
 	};
 });
