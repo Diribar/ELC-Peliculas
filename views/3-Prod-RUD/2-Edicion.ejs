@@ -3,9 +3,17 @@
 	<section id="cuerpo-y-footer" class="flex-col grow">
 		<%- include('3-Footer') %>
 		<!--**************************** CUERPO ************************-->
-		<section id="cuerpo">
-			<%- include('2-EdicionForm') : "" %>
-		</section>
+		<div id="cuerpo">
+			<button type="text" id="contador" tabindex="-1">60 min.</button>
+			<h1 id="titulo"><%= titulo %></h1>
+			<%- include('2-EdicionForm') %>
+		</div>
 		<!--****************************** FIN *************************-->
 	</section>
+	<!-- Partes ocultas o con posición absoluta -->
+	<section>
+		<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
+		<p id="entidad" class="ocultar"><%= entidad %></p>
+	</section>
+
 </form>
