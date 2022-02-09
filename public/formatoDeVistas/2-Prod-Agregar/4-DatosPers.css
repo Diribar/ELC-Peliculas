@@ -15,12 +15,13 @@
 #dataEntry .label-input .input-error .input {align-self: center; width: 150px;}
 #dataEntry .label-input .input-error input {padding: 0px 5px;}
 #dataEntry .label-input .input-error select {padding: 0;}
-#dataEntry .label-input .input-error .link {right: -38px; font-size: .9rem; width: 15px;}
+#dataEntry .label-input .input-error .link {right: -40px; font-size: .9rem; width: 15px;}
 
 /* Mensajes */
 #dataEntry .mensajeAyuda {max-width: 270px;}
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
-#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {right: -37px;}
+#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {right: -40px;}
+#dataEntry .RCLV .fa-times-circle, #dataEntry .RCLV .fa-check-circle {right: -60px;}
 #dataEntry .mensajeError {max-width: 200px;}
 
 /* Anchos específicos de inputs */
