@@ -21,13 +21,12 @@ window.addEventListener("load", async () => {
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
 		mensajesError[indice].innerHTML = errores[campo];
-		if (errores[campo]) {
-			iconoOK[indice].classList.add("ocultar");
-			iconoError[indice].classList.remove("ocultar");
-		} else {
-			iconoOK[indice].classList.remove("ocultar");
-			iconoError[indice].classList.add("ocultar");
-		}
+		errores[campo]
+			? iconoOK[indice].classList.add("ocultar")
+			: iconoOK[indice].classList.remove("ocultar");
+		errores[campo]
+			? iconoError[indice].classList.remove("ocultar")
+			: iconoError[indice].classList.add("ocultar");
 		// Esta función está definida en '4-DP-Subcat'
 		if (campo == "subcategoria_id") await funcionRCLV();
 		// Fin
