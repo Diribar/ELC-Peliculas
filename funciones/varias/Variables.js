@@ -65,7 +65,7 @@ module.exports = {
 		];
 	},
 
-	datosPersSelect: async () => {
+	camposDP: async () => {
 		return [
 			{
 				titulo: "Existe una versión en castellano",

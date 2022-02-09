@@ -81,13 +81,6 @@ window.addEventListener("load", async () => {
 			if (e.target == selectPais) campo = "paises_id";
 			mensajesError[i].innerHTML = errores[campo];
 
-			// Verificar que el año de fin sea mayor o igual que el de estreno
-			if (!mensajesError[i].innerHTML && campo == "ano_fin") {
-				valor < ano_estreno.value
-					? (mensajesError[i].innerHTML =
-							"El año de finalización debe ser igual o mayor que el año de estreno")
-					: "";
-			}
 			// Acciones en función de si hay o no mensajes de error
 			if (mensajesError[i].innerHTML) {
 				iconoError[i].classList.remove("ocultar");

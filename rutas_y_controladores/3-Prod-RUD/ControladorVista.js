@@ -30,7 +30,6 @@ module.exports = {
 			"editada_por",
 			// A partir de acá, van los campos exclusivos de 'Original'
 			"creada_por",
-			"borrada",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener los datos del producto
@@ -105,8 +104,8 @@ module.exports = {
 			var camposDD3 = camposDD.filter((n) => n.campo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
-			var datosPers = await variables.datosPersSelect();
-		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, datosPers] = [];
+			var camposDP = await variables.camposDP();
+		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP] = [];
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -122,7 +121,7 @@ module.exports = {
 			camposDD3,
 			BD_paises,
 			BD_idiomas,
-			datosPers,
+			camposDP,
 			errores: {},
 		});
 	},

@@ -45,8 +45,6 @@ module.exports = {
 				? "El año debe ser mayor a 1900"
 				: datos.ano_fin > new Date().getFullYear()
 				? "El número no puede superar al año actual"
-				: !errores.ano_estreno && datos.ano_estreno && datos.ano_estreno > datos.ano_fin
-				? "El año de finalización debe ser igual o mayor que el año de estreno"
 				: "";
 		if (campos.includes("duracion"))
 			errores.duracion = !datos.duracion
@@ -150,6 +148,12 @@ module.exports = {
 			datos.entidad
 		)
 			errores.nombre_castellano = await validarRepetidos("nombre_castellano", datos);
+		// Año de Estreno y Año Fin
+		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
+			if (datos.ano_estreno > datos.ano_fin)
+				errores.ano_estreno =
+					"El año de estreno debe ser menor o igual que el año de finalización";
+		}
 		// RCLV
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría

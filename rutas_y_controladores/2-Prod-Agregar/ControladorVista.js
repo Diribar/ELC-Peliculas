@@ -375,17 +375,17 @@ module.exports = {
 
 	datosPersForm: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "datosPers";
+		let tema = "agregar";
+		let codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
+		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 4. Obtener los errores
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		// 5. Preparar variables para la vista
-		let datosPersSelect = await variables.datosPersSelect();
+		let camposDP = await variables.camposDP();
 		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
@@ -393,7 +393,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: datosPers,
 			errores,
-			datosPersSelect,
+			camposDP,
 		});
 	},
 
@@ -413,7 +413,7 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
-		camposDP = await variables.datosPers();
+		camposDP = await variables.camposDP();
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {

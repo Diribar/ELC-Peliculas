@@ -1,4 +1,4 @@
-<% registro = datosPersSelect.find(n => n.campo == campo) %>
+<% registro = campos.find(n => n.campo == campo) %>
 <section class="label-input flex-row<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
