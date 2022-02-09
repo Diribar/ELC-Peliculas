@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
-		// 1. Definir los valores para 'campo' y 'valor'
+		// Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
@@ -82,7 +82,6 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		// if (submit.classList.contains("botonSinLink")) e.preventDefault();
 		if (
 			Array.from(submit)
 				.map((n) => n.classList.value)
@@ -128,7 +127,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let botonSubmit = () => {
-		OK =
+		let OK =
 			Array.from(iconoOK)
 				.map((n) => n.classList.value)
 				.join(" ")
@@ -136,7 +135,7 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoOK.length;
-		error =
+		let error =
 			Array.from(iconoError)
 				.map((n) => n.classList.value)
 				.join(" ")

@@ -5,7 +5,6 @@
 		<!-- Input -->
 		<select name="<%= campo %>" class="input <%= registro.clase ? registro.clase : '' %>" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
-			<% if (campo == "valor_id") { %><option value="1" <% if (dataEntry[campo]==1) { %>selected<% } %>>Ninguno del listado</option><% } %> 
 			<% for (valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
@@ -14,6 +13,9 @@
 				>
 					<%= valor.nombre %>
 				</option>
+				<!-- Agregar como selected si el valor de la opción coincide con el data-entry -->
+				<!-- Agregar el valor de la categoría como clase -->
+				<!-- Ocultar casos de parcial para idioma y color de películas -->
 			<% } %>
 		</select>
 		<!-- Ayuda -->
@@ -26,7 +28,7 @@
 		<i class="fas fa-times-circle<%- !errores[campo] ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores[campo] %></span>
 		</i>
-		<i class="fas fa-check-circle ocultar" style="display: none;"></i>
+		<i class="fas fa-check-circle ocultar" ></i>
 		<!-- Link a Relación con la vida -->
 		<% if (registro.RCLV) { %>
 			<a class="link <%= campo %>" title='Link a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fas fa-plus-circle"></i></a>
