@@ -31,24 +31,8 @@ window.addEventListener("load", async () => {
 				iconoError[indice].classList.add("ocultar");
 			}
 		}
-		// Revisar campos COMBINADOS
-		// Subcategoría + RCLV
-		if (
-			campo == "subcategoria_id" ||
-			campo == "personaje_historico_id" ||
-			campo == "hecho_historico_id" ||
-			campo == "valor_id"
-		) {
-			funcionCamposCombinados([
-				"subcategoria_id",
-				"personaje_historico_id",
-				"hecho_historico_id",
-				"valor_id",
-			]);
-			// Esta función está definida en '4-DP-Subcat'
-			await funcionRCLV();
-		}
-
+		// Esta función está definida en '4-DP-Subcat'
+		if (campo == "subcategoria_id") await funcionRCLV();
 		// Fin
 		botonSubmit();
 	});
@@ -91,6 +75,8 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let botonSubmit = () => {
+		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
+		let OK_RCLV = document.querySelectorAll(".RCLV .fa-check-circle.ocultar").length
 		// Detectar la cantidad de 'no aciertos'
 		let OK =
 			Array.from(iconoOK)
@@ -99,7 +85,8 @@ window.addEventListener("load", async () => {
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == undefined;
+				}, {}).ocultar==OK_RCLV
+				// == undefined;
 		// Detectar la cantidad de 'no errores'
 		let error =
 			Array.from(iconoError)
@@ -113,32 +100,6 @@ window.addEventListener("load", async () => {
 		OK && !error
 			? submit.classList.remove("botonSinLink")
 			: submit.classList.add("botonSinLink");
-	};
-	let funcionCamposCombinados = async (valores) => {
-		// Armado de la ruta
-		let dato = "";
-		let indice = [];
-		for (let i = 0; i < valores.length; i++) {
-			indice.push(campos.indexOf(valores[i]));
-			dato += "&" + valores[i] + "=" + inputs[indice[i]].value;
-		}
-		// Obtener el mensaje para el campo
-		let errores = await fetch(ruta + dato).then((n) => n.json());
-		for (let i = 0; i < valores.length; i++) {
-			// Captura el mensaje de error
-			mensaje = errores[valores[i]];
-			if (mensaje == undefined) mensaje = "";
-			// Reemplaza
-			mensajesError[indice[i]].innerHTML = mensaje;
-			// Acciones en función de si hay o no mensajes de error
-			mensaje
-				? iconoOK[indice[i]].classList.add("ocultar")
-				: iconoOK[indice[i]].classList.remove("ocultar");
-			mensaje
-				? iconoError[indice[i]].classList.remove("ocultar")
-				: iconoError[indice[i]].classList.add("ocultar");
-		}
-		return;
 	};
 
 	// Status inicial
