@@ -171,7 +171,6 @@ module.exports = {
 				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
-
 		// ***** RESUMEN *******
 		errores.hay = hayErrores(errores);
 		return errores;
