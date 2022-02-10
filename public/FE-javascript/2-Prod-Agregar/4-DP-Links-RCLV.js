@@ -7,7 +7,8 @@ window.addEventListener("load", async () => {
 	let buscarTodosLosValores = () => {
 		let url = "";
 		for (let i = 0; i < inputs.length; i++) {
-			url += "&" + inputs[i].name + "=";
+			i == 0 ? url = "" : (url += "&");
+			url += inputs[i].name + "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
 		return url;
