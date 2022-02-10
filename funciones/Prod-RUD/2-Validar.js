@@ -215,7 +215,7 @@ let formatoNumero = (dato, minimo) => {
 };
 let extensiones = (nombre) => {
 	if (!nombre) return false;
-	ext = nombre.slice(nombre.lastIndexOf(".") + 1);
+	ext = nombre.slice(nombre.lastIndexOf("."));
 	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext);
 };
 let hayErrores = (errores) => {

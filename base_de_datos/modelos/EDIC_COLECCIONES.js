@@ -39,7 +39,7 @@ module.exports = (sequelize, dt) => {
 		capturada_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "EDIC_colecciones",
+		tableName: "edic_colecciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

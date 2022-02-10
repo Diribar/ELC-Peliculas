@@ -8,4 +8,4 @@
 
 /* Imagen */
 #imagenProducto {display: flex; flex-direction: column; justify-content: center;}
-#imagenProducto img {max-height: 100%; max-width: 40vw;}
+#imagenProducto img {max-height: 100%; max-width: 30vw;}

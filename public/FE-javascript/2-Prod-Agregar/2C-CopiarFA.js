@@ -98,7 +98,7 @@ window.addEventListener("load", async () => {
 	let validarDataEntry = () => {
 		url = "?";
 		for (let i = 0; i < inputs.length; i++) {
-			i > 0 ? (url += "&") : "";
+			if (i > 0) url += "&";
 			url += inputs[i].name;
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
