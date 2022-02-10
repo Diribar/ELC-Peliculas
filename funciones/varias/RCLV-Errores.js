@@ -23,9 +23,7 @@ module.exports = {
 	},
 
 	RCLV_nombre: async (datos) => {
-		//console.log(datos);
-		let {entidad_RCLV, nombre} = datos;
-		//console.log({entidad_RCLV, campo: "nombre", valor: nombre});
+		let {entidad, nombre} = datos;
 		return !nombre
 			? cartelCampoVacio
 			: longitud(nombre, 2, 30)
@@ -34,8 +32,8 @@ module.exports = {
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
-			// : (await BD_varias.obtenerELC_id({entidad_RCLV, campo: "nombre", valor: nombre}))
-			// ? cartelRepetido
+			:(await BD_varias.obtenerELC_id({entidad, campo: "nombre", valor: nombre}))
+			? cartelRepetido
 			: "";
 	},
 
