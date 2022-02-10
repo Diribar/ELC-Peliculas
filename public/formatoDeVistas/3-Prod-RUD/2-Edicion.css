@@ -1,12 +1,12 @@
 /* Temas generales */
-main form {display: flex; flex-direction: row-reverse; flex-grow: 1;}
-#cuerpo {position: relative;}
-.input-error {position: relative; display: flex; flex-direction: row;}
+main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
+main form #cuerpo {position: relative;}
+main form .input-error {position: relative; display: flex; flex-direction: row;}
 
 /* Contador */
-#cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
-#cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
-#cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
+form #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
+form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
+form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Datos del formulario */
 #datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}

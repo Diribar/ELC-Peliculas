@@ -12,7 +12,7 @@ header section .grupos .scale:hover {transform: scale(1.3);}
 
 /* Ícono de agregar producto */
 header section .grupos #crear-prod-icono {position: relative;}
-header section .grupos #crear-prod-icono #plus {z-index: 1; position: absolute; top:50%; transform: translateY(-50%); left: 3px;}
+header section .grupos #crear-prod-icono #plus {z-index: 1; position: absolute; top:42%; transform: translateY(-50%); left: 3px;}
 
 /* Formato del Título */
 header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}

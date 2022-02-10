@@ -1,0 +1,7 @@
+/* Cartel de advertencia */
+main #fondoCartel {position: absolute; left: 0px; top: 0px; z-index: 10;}
+main #fondoCartel {background-color:var(--gris-claro); opacity:70%; height: 100%; width: 100%;}
+main #cartelAdvertencia {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
+main #cartelAdvertencia {padding: 20px; border-radius: 15px;}
+main #cartelAdvertencia {color: white; border: 5px double white; background-color: var(--rojo-oscuro);}
+

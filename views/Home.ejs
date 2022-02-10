@@ -2,18 +2,18 @@
 <html lang="es">
 <head>
 	<!-- Head -->
-	<%- include('0-Head', {titulo}) %>
+	<%- include('Head') %>
 	<% if (tema == "usuario") { %><%- include('0-UsuariosHead') %><% } %>
 	<% if (tema == "agregar") { %><%- include('0-AgregarHead') %><% } %>
 	<% if (tema == "productos") { %><%- include('0-ProductosHead') %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include('0-MiscelaneasHead') %><% } %>
 </head>
 <body>
-	<%- include('1-Header') %>
+	<%- include('Header') %>
 	<main class="flex-row">
-		<%- include('2-ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
+		<%- include('ImagenDerecha', {title: 'Sagrada Familia', url: '/imagenes/0-Base/Sagrada Familia.jpg'}) %>
 		<section id="cuerpo-y-footer">
-			<%- include('3-Footer') %>
+			<%- include('Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-UsuariosCuerpo') %><% } %>
 			<% if (tema == "agregar") { %><%- include('0-AgregarCuerpo') %><% } %>
