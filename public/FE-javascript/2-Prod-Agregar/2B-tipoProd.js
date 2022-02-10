@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		(entidad.value == "capitulos" && coleccion_id.value && temporada.value && capitulo.value)
 	) {
 		for (i = 0; i < submit.length; i++) {
-			submit[i].classList.remove("botonSinLink");
+			submit[i].classList.remove("botonInactivado");
 		}
 	}
 
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 			limpiarOpciones(coleccion_id);
 			// Habilitar los botones 'submit'
 			for (i = 0; i < submit.length; i++) {
-				submit[i].classList.remove("botonSinLink");
+				submit[i].classList.remove("botonInactivado");
 			}
 		} else {
 			// Es un capítulo
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 			invisible.classList.remove("invisible");
 			// Inhabilitar los botones 'submit'
 			for (i = 0; i < submit.length; i++) {
-				submit[i].classList.add("botonSinLink");
+				submit[i].classList.add("botonInactivado");
 			}
 			// Obtener el listado de las colecciones
 			let colecciones = await fetch("/producto/agregar/api/TP-averiguar-colecciones").then(
@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 	capitulo.addEventListener("change", () => {
 		if (capitulo.value) {
 			for (i = 0; i < submit.length; i++) {
-				submit[i].classList.remove("botonSinLink");
+				submit[i].classList.remove("botonInactivado");
 			}
 		}
 	});

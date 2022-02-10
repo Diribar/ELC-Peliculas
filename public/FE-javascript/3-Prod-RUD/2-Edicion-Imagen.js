@@ -1,6 +1,7 @@
 window.addEventListener("load", () => {
-	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("input[name='avatar']");
+	
+	// Acciones si cambió alguna imagen
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
 		ext = texto.slice(texto.lastIndexOf("."));

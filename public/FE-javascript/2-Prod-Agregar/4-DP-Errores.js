@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", async (e) => {
-		if (submit.classList.contains("botonSinLink")) {
+		if (submit.classList.contains("botonInactivado")) {
 			e.preventDefault();
 			statusInicial((inputValue = false));
 		}
@@ -94,8 +94,8 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar != iconoError.length;
 		// Consecuencias
 		OK && !error
-			? submit.classList.remove("botonSinLink")
-			: submit.classList.add("botonSinLink");
+			? submit.classList.remove("botonInactivado")
+			: submit.classList.add("botonInactivado");
 	};
 
 	// Status inicial

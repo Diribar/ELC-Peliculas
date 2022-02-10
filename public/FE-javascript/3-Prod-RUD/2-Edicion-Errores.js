@@ -1,7 +1,7 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("form");
-	let entidad = document.querySelector("#entidad").innerHTML;
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let submit = document.querySelectorAll("form .submit");
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
@@ -19,6 +19,9 @@ window.addEventListener("load", async () => {
 			return {id: n.value, nombre: n.innerHTML};
 		}
 	);
+	// Variables de íconos
+	let salir = document.querySelector("#cuerpo #flechas .fa-arrow-alt-circle-left");
+	
 	// Otras variables
 	let ruta = "/producto/api/validar-edicion/?";
 
@@ -41,7 +44,10 @@ window.addEventListener("load", async () => {
 				iconoError[indice].classList.add("ocultar");
 			}
 		}
-		botonSubmit();
+		
+		botonSubmit()	// Activar o desactivar el botón 'submit'
+		salir.classList.add("botonInactivado") // Desactivar el botón 'salir'
+		
 	});
 
 	// Revisar campos COMBINADOS
@@ -83,7 +89,7 @@ window.addEventListener("load", async () => {
 			Array.from(submit)
 				.map((n) => n.classList.value)
 				.join(" ")
-				.includes("botonSinLink")
+				.includes("botonInactivado")
 		)
 			e.preventDefault();
 	});
@@ -141,11 +147,11 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
 		if (OK && !error) {
-			submit[0].classList.remove("botonSinLink");
-			submit[1].classList.remove("botonSinLink");
+			submit[0].classList.remove("botonInactivado");
+			submit[1].classList.remove("botonInactivado");
 		} else {
-			submit[0].classList.add("botonSinLink");
-			submit[1].classList.add("botonSinLink");
+			submit[0].classList.add("botonInactivado");
+			submit[1].classList.add("botonInactivado");
 		}
 	};
 

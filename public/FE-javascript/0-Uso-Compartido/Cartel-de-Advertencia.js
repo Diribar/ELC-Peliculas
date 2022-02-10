@@ -3,7 +3,6 @@ window.addEventListener("load", () => {
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
 	let cartelAdvertencia = document.querySelector("#cartelAdvertencia");
 	let cancelar = document.querySelector("#cartelAdvertencia .fa-arrow-alt-circle-left");
-	// let continuar = document.querySelector("#cartelAdvertencia .fa-check-circle");
 
 	cancelar.addEventListener("click", () => {
 		taparElFondo.classList.add("ocultar");

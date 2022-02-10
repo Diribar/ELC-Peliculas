@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 	});
 
 	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("botonSinLink")) e.preventDefault();
+		if (button.classList.contains("botonInactivado")) e.preventDefault();
 
 		// No logré hacer funcionar lo siguiente, para hacer un API
 		const data = new FormData(form);
@@ -141,8 +141,8 @@ window.addEventListener("load", async () => {
 
 		// Alterar el botón submit
 		resultadoTrue && resultado.length == bloques.length
-			? button.classList.remove("botonSinLink")
-			: button.classList.add("botonSinLink");
+			? button.classList.remove("botonInactivado")
+			: button.classList.add("botonInactivado");
 	};
 
 	let funcionNombre = async () => {
