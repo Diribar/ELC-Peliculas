@@ -175,9 +175,7 @@ module.exports = {
 			? "personaje_historico_id"
 			: RCLV.entidad_RCLV.includes("hecho")
 			? "hecho_historico_id"
-			: RCLV.entidad_RCLV.includes("valor")
-			? "valor"
-			: "";
+			: "valor"
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
 			req.session.datosPers[campo] = RCLV_id;
