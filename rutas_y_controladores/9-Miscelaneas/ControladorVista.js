@@ -63,8 +63,7 @@ module.exports = {
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: 24 * 60 * 60 * 1000});
-		//return res.send(RCLV);
-		// 3 Si existe 'req.query', recargar la página
+		// Redirigir
 		return res.redirect("/agregar/" + RCLV.entidad_RCLV);
 	},
 
