@@ -18,6 +18,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Registro de Mail",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -80,6 +81,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Login",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -132,6 +134,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Registro de Datos Perennes",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -172,6 +175,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Registro de Datos Editables",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -214,6 +218,7 @@ module.exports = {
 		res.render("Home", {
 			tema,
 			codigo,
+			titulo: "Detalle de Usuario",
 			usuario: req.session.usuario,
 		});
 	},

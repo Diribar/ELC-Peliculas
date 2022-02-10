@@ -3,8 +3,8 @@
 #Form {justify-content:center; align-items: center;}
 
 /* Tapar el fondo */
-#Form #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%; height:100%; width:100%;}
-#Form #tapar-el-fondo {position: absolute; left:0px; top:0px}
+#Form #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%; height: 100%; width: 100%;}
+#Form #tapar-el-fondo {position: absolute; left: 0px; top: 0px}
 
 /* General del formulario */
 #Form form {background-color:var(--gris-oscuro); border-radius: 10px;}
