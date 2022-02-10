@@ -5,7 +5,6 @@ window.addEventListener("load", () => {
 	let input = document.querySelector("#dataEntry input");
 	let iconoError = document.querySelector("#dataEntry .fa-times-circle");
 	let mensajeError = document.querySelector("#dataEntry .mensajeError");
-	let mensajeAyuda = document.querySelector("#dataEntry .mensajeAyuda");
 	let resultado = document.querySelector("#dataEntry #resultado");
 
 	// Fórmula de revisar input
@@ -30,13 +29,6 @@ window.addEventListener("load", () => {
 	iconoError.classList.contains("ocultar") && input.value != ""
 		? accionesSiHayErrores(input.value)
 		: "";
-
-	// Mensaje de ayuda
-	window.onclick = (e) => {
-		e.target.matches(".fa-question-circle")
-			? mensajeAyuda.classList.toggle("ocultar")
-			: mensajeAyuda.classList.add("ocultar");
-	};
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	input.addEventListener("input", async () => {
