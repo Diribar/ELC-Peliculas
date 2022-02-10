@@ -1,6 +1,6 @@
-<h1 id="titulo">Elegí el Tipo de Producto a agregar</h1>
+<h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 <div class="flex-col" id="dataEntry">
-	<h2 id="paso2">Paso 2 de 4: Datos Globales</h2>
+	<h2 id="paso2">Paso 2 de 4: Tipo de Producto</h2>
 	<form action="<%= link %>-dd" method="POST">
 		<!-- Datos a completar -->
 		<section id="datos">
@@ -66,11 +66,11 @@
 		</section>
 		<!-- Flechas -->
 		<section id="flechas">
-			<a href="/producto/agregar/desambiguar"><i class="fas fa-arrow-alt-circle-left"></i></a>
-			<button class="botonSinLink submit" type="submit"><i class="fas fa-check-circle"></i></button>
+			<a href="/producto/agregar/desambiguar" tabindex="-1" title="Volver al paso anterior"><i class="fas fa-arrow-alt-circle-left"></i></a>
+			<button class="botonSinLink submit" type="submit" title="Avanzar"><i class="fas fa-check-circle"></i></button>
 			<% if (autorizado_fa) { %>
-				<label class="botonSinLink submit" for="inputSubmit"><img src="/imagenes/0-Logos/LogoFA.jpg" alt="FA" height="30px" title="FA"></label>
-				<input id="inputSubmit" type="submit" class="submit ocultar" formaction="/producto/agregar/tipo-producto-fa" formmethod="post">
+				<label class="botonSinLink submit" for="inputSubmit" title="Avanzar mediante Film Affinity"><img src="/imagenes/0-Logos/LogoFA.jpg" alt="FA" height="30px"></label>
+				<input id="inputSubmit" type="submit" class="submit ocultar" formaction="/producto/agregar/tipo-producto-fa" formmethod="post" >
 			<% } %> 
 		</section>
 	</form>

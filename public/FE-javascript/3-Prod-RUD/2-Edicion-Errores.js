@@ -77,8 +77,6 @@ window.addEventListener("load", async () => {
 		botonSubmit();
 	});
 
-	// Respuestas 'botonSinLink' ante cambios de 'flechas'
-
 	// Submit
 	form.addEventListener("submit", (e) => {
 		if (
