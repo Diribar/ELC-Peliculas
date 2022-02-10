@@ -1,7 +1,16 @@
-/* Cartel de advertencia */
-main #fondoCartel {position: absolute; left: 0px; top: 0px; z-index: 10;}
-main #fondoCartel {background-color:var(--gris-claro); opacity:70%; height: 100%; width: 100%;}
-main #cartelAdvertencia {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
-main #cartelAdvertencia {padding: 20px; border-radius: 15px;}
-main #cartelAdvertencia {color: white; border: 5px double white; background-color: var(--rojo-oscuro);}
+/* Formato general del cartel */
+#cartelAdvertencia {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
+#cartelAdvertencia {padding: 20px; border-radius: 15px;}
+#cartelAdvertencia {color: white; border: 6px double white; background-color: var(--rojo-oscuro);}
 
+/* Alineación interna */
+#cartelAdvertencia {display: flex; flex-direction: column; align-items: center;}
+
+/* Partes internas */
+#cartelAdvertencia .fa-triangle-exclamation {font-size: 2rem; margin-bottom: 15px; color: var(--amarillo-oscuro);}
+#cartelAdvertencia p {font-size: 1.2rem;}
+
+/* Botones 'Cancelar' y 'Continuar' */
+#cartelAdvertencia #flechas {margin-top: 40px; width: 45%; display: flex; flex-direction: row; justify-content: space-between;}
+#cartelAdvertencia .fas {background-color: white; border: 1px solid white;}
+#cartelAdvertencia .fas {font-size: 2rem; border-radius: 50%; cursor: pointer;}

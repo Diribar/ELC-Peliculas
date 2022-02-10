@@ -1,6 +1,5 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
-main form #cuerpo {position: relative;}
 main form .input-error {position: relative; display: flex; flex-direction: row;}
 
 /* Contador */
@@ -66,18 +65,18 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 form #imagen .fas {left: 50%; transform: translate(-50%,-50%); font-size: 4rem}
 
 /* Flechas - General*/
-#flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#flechas {margin: 20px auto 0; padding: 7px 12px; width: 45%; border-radius: 15px;}
-#flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
+#cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
+#cuerpo #flechas {margin: 20px auto 0; padding: 7px 12px; width: 45%; border-radius: 15px;}
+#cuerpo #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
 
 /* Flechas - Particularidades */
-#flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#flechas .fas.botonSinLink, #flechas .botonSinLink .fas {cursor: default;}
+#cuerpo #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
+#cuerpo #flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
+#cuerpo #flechas .fas.botonSinLink, #cuerpo #flechas .botonSinLink .fas {cursor: default;}
 
 /* Flechas - Grupo con slash */
-#flechas .tres {width: 75px; position: relative;}
-#flechas .tres .fas1 {position: absolute; left: 0;}
-#flechas .tres .fas2 {display: flex; flex-direction: row; justify-content: center; cursor: default;}
-#flechas .tres .fas2.fa-slash {transform: rotate(85deg);}
-#flechas .tres .fas3 {position: absolute; right: 0; top: 0;}
+#cuerpo #flechas .tres {width: 75px; position: relative;}
+#cuerpo #flechas .tres .fas1 {position: absolute; left: 0;}
+#cuerpo #flechas .tres .fas2 {display: flex; flex-direction: row; justify-content: center; cursor: default;}
+#cuerpo #flechas .tres .fas2.fa-slash {transform: rotate(85deg);}
+#cuerpo #flechas .tres .fas3 {position: absolute; right: 0; top: 0;}

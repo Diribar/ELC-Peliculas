@@ -2,10 +2,6 @@
 #Form {position: absolute; margin: 0; height: 100%; width: 100%; z-index: 1;}
 #Form {justify-content: center; align-items: center;}
 
-/* Tapar el fondo */
-#Form #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
-#Form #tapar-el-fondo {position: absolute; left: 0px; top: 0px}
-
 /* General del formulario */
 #Form form {background-color: var(--gris-oscuro); border-radius: 10px;}
 #Form form {padding: 20px; z-index: 2; min-width: 360px;}
