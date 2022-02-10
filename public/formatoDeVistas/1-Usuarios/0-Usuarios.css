@@ -1,19 +1,19 @@
 /* General */
-#Form {position: absolute; margin:0; height: 100%; width: 100%; z-index: 1;}
-#Form {justify-content:center; align-items: center;}
+#Form {position: absolute; margin: 0; height: 100%; width: 100%; z-index: 1;}
+#Form {justify-content: center; align-items: center;}
 
 /* Tapar el fondo */
-#Form #tapar-el-fondo {background-color:var(--gris-claro); opacity:70%; height: 100%; width: 100%;}
+#Form #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 #Form #tapar-el-fondo {position: absolute; left: 0px; top: 0px}
 
 /* General del formulario */
-#Form form {background-color:var(--gris-oscuro); border-radius: 10px;}
+#Form form {background-color: var(--gris-oscuro); border-radius: 10px;}
 #Form form {padding: 20px; z-index: 2; min-width: 360px;}
 
 /* Partes del formulario */
 #Form form h1 {color: var(--amarillo-claro); margin-bottom: 25px;}
 #Form form h1 {font-weight: bold; font-size: 1.3em; text-align: center;}
-#Form form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items:center}
+#Form form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
 
 /* Input del formulario */
 #Form form label {color: white; margin-right: 20px; }
@@ -23,20 +23,20 @@
 #Form #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Íconos y Mensajes de error */
-.mensajeError, .mensajeError::before, 
-.mensajeAyuda, .mensajeAyuda::before,
+.mensajeError, .mensajeError: : before, 
+.mensajeAyuda, .mensajeAyuda: : before,
 .fa-check-circle, .fa-question-circle, 
 .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #Form .form-grupo {position: relative;}
 #Form .form-grupo .fa-check-circle, #Form .form-grupo .fa-times-circle {left: -20px;}
 #Form .mensajeError {left: 20px; max-width: 200px;}
-#Form .mensajeError::before {left: -12px;}
+#Form .mensajeError: : before {left: -12px;}
 
 /* Botones */
 #Form form #buttons {margin: 15px auto 5px;}
 #Form form #buttons {padding-top: 5px; justify-content: space-evenly;}
 #Form form #buttons button {padding: 2px 5px;}
-#Form form #buttons button {font-size: 1rem;font-weight: bold; color:white;}
+#Form form #buttons button {font-size: 1rem;font-weight: bold; color: white;}
 #Form form #buttons button {border: solid 2px var(--amarillo-claro); border-radius: 7px;}
 #Form form #buttons button[type="submit"] {background-color: var(--verde-oscuro);}
 #Form form #buttons button[type="button"] {background-color: var(--azul-oscuro);}
