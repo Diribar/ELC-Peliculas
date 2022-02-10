@@ -1,6 +1,7 @@
 // ************ Requires ************
 let validarRCLV = require("../../funciones/Varias/RCLV-Errores");
 let BD_varias = require("../../funciones/BD/varias");
+let procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -27,50 +28,70 @@ module.exports = {
 	RCLV: (req, res) => {
 		// Detectar el origen
 		let origen = req.query.origen;
-		if (origen=="DP") {
+		let RCLV = {origen};
+		if (origen == "DP") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
-			aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-			if (!aux) return res.redirect("/producto/agregar/palabras-clave");
-			// 2. Guardar el data entry en session y cookie
-			let datosPers = {...aux, ...req.query};
+			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
+			if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
+			// Obtener los datos actualizados del formulario
+			let datosActualizados = {...req.query};
+			delete datosActualizados.origen;
+			delete datosActualizados.entidad_RCLV;
+			// Session y Cookie actualizados
+			datosPers = {...datosPers, ...datosActualizados};
 			req.session.datosPers = datosPers;
 			res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
-		} else if (origen=="edicion") {
-			
+			// Completar RCLV
+			RCLV.entidad_RCLV = datosPers.entidad_RCLV;
+			RCLV.destino = "/producto/agregar/datos-personalizados";
+		} else if (origen == "edicion") {
+			// Completar RCLV
+			RCLV.entidad = req.query.entidad;
+			RCLV.producto_id = req.query.id;
+			RCLV.entidad_RCLV = req.query.entidad_RCLV;
+			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.producto_id;
 		}
-		return res.send("");
+		// Producto a RCLV
+		RCLV.producto_RCLV =
+			RCLV.entidad_RCLV == "RCLV_personajes_historicos"
+				? "Personaje Histórico"
+				: RCLV.entidad_RCLV == "RCLV_hechos_historicos"
+				? "Hecho Histórico"
+				: RCLV.entidad_RCLV == "RCLV_valores"
+				? "Valor"
+				: "";
+		// Session y Cookie para RCLV
+		req.session.RCLV = RCLV;
+		res.cookie("RCLV", RCLV, {maxAge: 24 * 60 * 60 * 1000});
+		//return res.send(RCLV);
 		// 3 Si existe 'req.query', recargar la página
-		return datosPers.entidad_RCLV == "RCLV_personajes_historicos"
-			? res.redirect("/agregar/RCLV_personajes_historicos")
-			: res.redirect("/agregar/RCLV_hechos_historicos");
+		return res.redirect("/agregar/" + RCLV.entidad_RCLV);
 	},
 
 	RCLV_Form: async (req, res) => {
-		// 1. Feedback de la instancia anterior
-		datosPers = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers
-			? req.cookies.datosPers
-			: "";
-		if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
-		if (!req.session.datosPers) req.session.datosPers = datosPers;
-		//return res.send(req.session.datosPers);
+		// 1. Si se perdió la info anterior, ir a inicio
+		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
+		if (!RCLV)
+			return res.send(
+				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
+			);
 		// 2. Tema y Código
 		tema = "miscelaneas";
-		codigo = datosPers.entidad_RCLV;
-		// 3. Data-entry
-		datosRCLV = req.session[codigo]
-			? req.session[codigo]
-			: req.cookies[codigo]
-			? req.cookies[codigo]
-			: {};
-		datosRCLV = {...datosRCLV, entidad: codigo, producto: datosPers.producto_RCLV};
+		codigo = RCLV.entidad_RCLV;
+		// Pasos exclusivos para Datos Personalizados
+		if (RCLV.origen == "DP") {
+			datosPers = req.session.datosPers
+				? req.session.datosPers
+				: req.cookies.datosPers
+				? req.cookies.datosPers
+				: "";
+			if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
+			if (!req.session.datosPers) req.session.datosPers = datosPers;
+		}
 		// 4. Errores
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
-		let procesos_canonizacion = [];
-		let roles_iglesia = [];
 		if (codigo == "RCLV_personajes_historicos") {
 			procesos_canonizacion = await BD_varias.obtenerTodos(
 				"procesos_canonizacion",
@@ -79,15 +100,18 @@ module.exports = {
 			roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
 			);
+		} else {
+			procesos_canonizacion = [];
+			roles_iglesia = [];
 		}
 		// 6. Render
 		//return res.send(errores);
 		return res.render("Home", {
 			tema,
 			codigo,
-			titulo: "Agregar - " + datosRCLV.producto,
+			titulo: "Agregar - " + RCLV.producto_RCLV,
 			link: req.originalUrl,
-			dataEntry: datosRCLV,
+			dataEntry: RCLV,
 			errores,
 			meses,
 			roles_iglesia,
@@ -96,59 +120,81 @@ module.exports = {
 	},
 
 	RCLV_Grabar: async (req, res) => {
-		//return res.send(req.body)
-		// 1. Feedback de la instancia anterior
-		datosPers = req.session.datosPers
-			? req.session.datosPers
-			: req.cookies.datosPers
-			? req.cookies.datosPers
-			: "";
-		if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
-		let entidad = datosPers.entidad_RCLV;
-		if (!req.session.datosPers) req.session.datosPers = datosPers;
+		// 1. Si se perdió la info anterior, ir a inicio
+		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
+		if (!RCLV)
+			return res.send(
+				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
+			);
+		// Pasos exclusivos para Datos Personalizados
+		if (RCLV.origen == "DP") {
+			datosPers = req.session.datosPers
+				? req.session.datosPers
+				: req.cookies.datosPers
+				? req.cookies.datosPers
+				: "";
+			if (!datosPers)
+				return res.send(
+					"Se perdió información crítica. Tenga cuidado de que no pase 1 día sin completarlo."
+				);
+			if (!req.session.datosPers) req.session.datosPers = datosPers;
+		}
 		// 2. Generar información
-		if (entidad == "RCLV_personajes_historicos" && req.body.enProcCan == "0") {
+		if (RCLV.entidad_RCLV == "RCLV_personajes_historicos" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}
-		let datosRCLV = {...req.body, entidad};
+		RCLV = {...req.body, ...RCLV};
 		// 3. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV_consolidado(datosRCLV);
+		let errores = await validarRCLV.RCLV_consolidado(RCLV);
 		// 4. Acciones si hay errores
 		if (errores.hay) {
-			req.session[entidad] = datosRCLV;
-			res.cookie(entidad, datosRCLV, {maxAge: 24 * 60 * 60 * 1000});
+			req.session.RCLV = RCLV;
+			res.cookie(RCLV, RCLV, {maxAge: 24 * 60 * 60 * 1000});
 			req.session.erroresRCLV = errores;
 			return res.redirect(req.url);
 		}
 		// Si no hay errores...
 		// 5. Preparar la info a guardar
 		datos = {
-			...datosRCLV,
-			entidad,
+			...RCLV,
 			creada_por_id: req.session.usuario.id,
 		};
-		if (!datosRCLV.desconocida) {
+		// Obtener el día del año
+		if (!RCLV.desconocida)
 			datos.dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.find((m) => m.mes_id == datosRCLV.mes_id && m.dia == datosRCLV.dia))
+				.then((n) => n.find((m) => m.mes_id == RCLV.mes_id && m.dia == RCLV.dia))
 				.then((n) => n.id);
-		}
+
 		// 6. Crear el registro en la BD
-		let {id} = await BD_varias.agregarRegistro(datos);
-		// 7. Actualizar session y cookie de DatosPers
-		// Descartar info innecesaria
-		delete req.session.datosPers.entidad_RCLV;
-		delete req.session.datosPers.producto_RCLV;
-		// Agregarle el ID
-		campo = entidad.includes("personaje") ? "personaje_historico_id" : "hecho_historico_id";
-		req.session.datosPers[campo] = id;
-		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		let {id: RCLV_id} = await BD_varias.agregarRegistro({
+			...datos,
+			entidad: RCLV.entidad_RCLV,
+		});
+		// Averiguar el campo para el RCLV-ID
+		campo = RCLV.entidad_RCLV.includes("personaje")
+			? "personaje_historico_id"
+			: RCLV.entidad_RCLV.includes("hecho")
+			? "hecho_historico_id"
+			: RCLV.entidad_RCLV.includes("valor")
+			? "valor"
+			: "";
+		// Agregar el RCLV_id al origen
+		if (RCLV.origen == "DP") {
+			req.session.datosPers[campo] = RCLV_id;
+			res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+		} else if (RCLV.origen == "edicion") {
+			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.producto_id, {
+				[campo]: RCLV_id,
+			});
+		}
+		// Obtener el destino a dónde redireccionar
 		// 8. Borrar session y cookies de RCLV
-		if (req.session && req.session[entidad]) delete req.session[entidad];
-		if (req.cookies && req.cookies[entidad]) res.clearCookie([entidad]);
+		if (req.session && req.session.RCLV) delete req.session.RCLV;
+		if (req.cookies && req.cookies.RCLV) res.clearCookie("RCLV");
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect("/producto/agregar/datos-personalizados");
+		return res.redirect(RCLV.destino);
 	},
 
 	prodNoEncontrado: (req, res) => {

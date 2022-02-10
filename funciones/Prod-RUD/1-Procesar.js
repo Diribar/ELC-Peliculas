@@ -50,7 +50,8 @@ module.exports = {
 				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "creador";
-				disponible.mensaje="El producto se creó hace más de una hora. Está reservado para que nuestro equipo la pueda analizar."
+				disponible.mensaje =
+					"El producto se creó hace más de una hora. Está reservado para que nuestro equipo la pueda analizar.";
 			} else if (
 				// 2. NO REVISOR
 				// No soy gestor, no lo creé y todavía no está aprobado
@@ -59,7 +60,7 @@ module.exports = {
 				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "noRevisor";
-				disponible.mensaje="El producto no está autorizado aún, no se puede editar."				
+				disponible.mensaje = "El producto no está autorizado aún, no se puede editar.";
 			} else if (
 				// 3. RECIÉN CREADO
 				// Se dio de alta por otra persona hace menos de 1 hora
@@ -67,7 +68,8 @@ module.exports = {
 				haceUnaHora < producto.creada_en // Se dio de alta hace menos de 1 hora
 			) {
 				disponible.codigo = "recienCreado";
-				disponible.mensaje="El producto está recién creado. La primera hora se reserva para que el usuario que la creó la pueda editar."
+				disponible.mensaje =
+					"El producto está recién creado. La primera hora se reserva para que el usuario que la creó la pueda editar.";
 			} else if (
 				// 4. CAPTURA EXCESIVA
 				// Está capturado por mí hace más de 1 hora
@@ -75,7 +77,8 @@ module.exports = {
 				haceUnaHora > producto.capturada_en // Está capturado hace más de 1 hora
 			) {
 				disponible.codigo = "capturaExcesiva";
-				disponible.mensaje="El producto está reservado por vos desde hace más de una hora. Deberás esperar a que se cumplan más de 2 horas."
+				disponible.mensaje =
+					"El producto está reservado por vos desde hace más de una hora. Deberás esperar a que se cumplan más de 2 horas.";
 			} else if (
 				// 5. CAPTURADO
 				// Está capturado por otra persona hace menos de 1 hora
@@ -86,5 +89,19 @@ module.exports = {
 			} else disponible.codigo = "desconocido";
 		}
 		return disponible;
+	},
+
+	guardar_o_actualizar_Edicion: async (entidad, producto_id, datos) => {
+		let pointer = {entidad: entidad+"Edicion", campo: "ELC_id", valor: producto_id};
+		// Averiguar si ya exista la edición
+		let edicion_id = await BD_varias.obtenerELC_id(pointer);
+		// Acciones en función de si existe o no
+		edicion_id
+			? await BD_varias.actualizarRegistro(pointer.entidad, datos, edicion_id)
+			: await BD_varias.agregarRegistro({
+					entidad: pointer.entidad,
+					ELC_id: producto_id,
+					...datos
+			  });
 	},
 };

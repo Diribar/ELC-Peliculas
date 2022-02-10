@@ -1,4 +1,4 @@
-<h1 id="titulo">Agregá un <%= dataEntry.producto %> a nuestra Base de Datos</h1>
+<h1 id="titulo">Agregá un <%= dataEntry.producto_RCLV %> a nuestra Base de Datos</h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<!-- Datos -->
 	<section id="datos" class="flex-row OK">
@@ -65,7 +65,7 @@
 				<div class="flexRowAlign">
 					<label style="width: 40px;">Mes:</label>
 					<select name="mes_id" class="input">
-						<option value="" class="ocultar" <% if (!datosRCLV.mes_id) { %>selected<% } %>>Elegí</option>
+						<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
 						<% for (mes of meses) { %>
 							<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
 								<%= mes.nombre %>
@@ -83,7 +83,7 @@
 				<div class="flexRowAlign">
 					<label style="width: 40px;">Día:</label>
 					<select name="dia" class="input">
-						<option value="" class="ocultar" <% if (!datosRCLV.dia) { %>selected<% } %>>Elegí</option>
+						<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
 						<% for (dia = 1; dia < 32; dia++) { %>
 							<option value="<%= dia %>" 
 								<% if (dia > 29) { %>class="ocultar"<% } %>
@@ -112,8 +112,9 @@
 					<!-- Ayuda -->
 					<i class="fas fa-question-circle"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
-						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto %>.</li>
+						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto_RCLV %>.</li>
 						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+						<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
 					</ul>
 					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
@@ -191,7 +192,7 @@
 	<% } %>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<a href="/producto/agregar/datos-personalizados" tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
+		<a href="<%= dataEntry.destino %> " tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
 		<button type="submit" class="botonSinLink"><i class="fas fa-check-circle"></i></button>
 	</section>
 </form>

@@ -405,7 +405,6 @@ module.exports = {
 			let datosTemp = await Promise.all([general, credits]).then(([a, b]) => {
 				return {...a, ...b};
 			});
-			// console.log(datosTemp);
 			// Loop de CAPITULOS ********************************************
 			for (episode of datosTemp.episodes) {
 				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);

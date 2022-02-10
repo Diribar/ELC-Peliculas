@@ -17,26 +17,17 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
-			if (links[i].className.includes("personaje")) {
-				entidad_RCLV = "RCLV_personajes_historicos";
-				producto_RCLV = "Personaje Histórico";
-			} else if (links[i].className.includes("hecho")) {
-				entidad_RCLV = "RCLV_hechos_historicos";
-				producto_RCLV = "Hecho Histórico";
-			} else {
-				entidad_RCLV = "RCLV_valores";
-				producto_RCLV = "Valor";
-			}
+			// Obtener la entidad_RCLV
+			let entidad_RCLV = links[i].className.includes("personaje")
+				? "RCLV_personajes_historicos"
+				: links[i].className.includes("hecho")
+				? "RCLV_hechos_historicos"
+				: "RCLV_valores";
 			// Para preservar los valores ingresados hasta el momento
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/agregar/relacion-vida/?origen=DP" +
-				"&entidad_RCLV=" +
-				entidad_RCLV +
-				"&producto_RCLV=" +
-				producto_RCLV +
-				url;
+				"/agregar/relacion-vida/?origen=DP&entidad_RCLV=" + entidad_RCLV + url;
 		});
 	}
 });
