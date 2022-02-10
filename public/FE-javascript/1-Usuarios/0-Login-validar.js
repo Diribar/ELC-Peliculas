@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 		if (mensaje) {
 			iconoError[i].classList.remove("ocultar");
 			iconoOK[i].classList.add("ocultar");
-			button.classList.add("botonSinLink");
+			button.classList.add("botonInactivado");
 		} else {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
@@ -33,8 +33,8 @@ window.addEventListener("load", async () => {
 					: "";
 			}
 			sinErrores
-				? button.classList.remove("botonSinLink")
-				: button.classList.add("botonSinLink");
+				? button.classList.remove("botonInactivado")
+				: button.classList.add("botonInactivado");
 		}
 	};
 
@@ -72,6 +72,6 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("botonSinLink")) e.preventDefault();
+		if (button.classList.contains("botonInactivado")) e.preventDefault();
 	});
 });

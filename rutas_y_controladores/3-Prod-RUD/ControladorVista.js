@@ -38,7 +38,6 @@ module.exports = {
 		});
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registro) return res.send("Producto no encontrado");
-
 		// Problema: PRODUCTO NO APROBADO
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;

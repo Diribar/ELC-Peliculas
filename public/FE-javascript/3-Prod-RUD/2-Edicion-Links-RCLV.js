@@ -1,13 +1,12 @@
 window.addEventListener("load", async () => {
 	// Variables generales
-	let links = document.querySelectorAll(".input-error a.linkRCLV");
+	let links = document.querySelectorAll(".input-error i.linkRCLV");
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let id = new URL(window.location.href).searchParams.get("id");
+	let producto_id = new URL(window.location.href).searchParams.get("id");
 
 	// Links a Relación con la vida
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
-			e.preventDefault();
 			// Obtener la entidad_RCLV
 			let entidad_RCLV = links[i].className.includes("personaje")
 				? "RCLV_personajes_historicos"
@@ -19,7 +18,7 @@ window.addEventListener("load", async () => {
 				"/agregar/relacion-vida/?origen=edicion&entidad=" +
 				entidad +
 				"&id=" +
-				id +
+				producto_id +
 				"&entidad_RCLV=" +
 				entidad_RCLV;
 		});
