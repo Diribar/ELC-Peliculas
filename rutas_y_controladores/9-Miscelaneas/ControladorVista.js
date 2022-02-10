@@ -29,7 +29,7 @@ module.exports = {
 		// Detectar el origen
 		let origen = req.query.origen;
 		let RCLV = {origen};
-		if (origen == "DP") {
+		if (origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 			if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
@@ -78,7 +78,7 @@ module.exports = {
 		tema = "miscelaneas";
 		codigo = RCLV.entidad_RCLV;
 		// Pasos exclusivos para Datos Personalizados
-		if (RCLV.origen == "DP") {
+		if (RCLV.origen == "datosPers") {
 			datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
@@ -126,7 +126,7 @@ module.exports = {
 				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
 			);
 		// Pasos exclusivos para Datos Personalizados
-		if (RCLV.origen == "DP") {
+		if (RCLV.origen == "datosPers") {
 			datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
@@ -179,7 +179,7 @@ module.exports = {
 			? "valor"
 			: "";
 		// Agregar el RCLV_id al origen
-		if (RCLV.origen == "DP") {
+		if (RCLV.origen == "datosPers") {
 			req.session.datosPers[campo] = RCLV_id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		} else if (RCLV.origen == "edicion") {
