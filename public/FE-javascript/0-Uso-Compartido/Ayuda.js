@@ -1,7 +1,7 @@
 window.addEventListener("load", async () => {
 	// Variables
-	let iconosAyuda = document.querySelectorAll(".fa-question-circle");
-	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	let iconosAyuda = document.querySelectorAll("main .fa-question-circle");
+	let mensajesAyuda = document.querySelectorAll("main .mensajeAyuda");
 
 	// Mensajes de ayuda
 	window.onclick = (e) => {

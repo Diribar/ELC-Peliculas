@@ -1,6 +1,5 @@
 window.addEventListener("load", async () => {
 	// Variables generales
-	let inputs = document.querySelectorAll(".input-error .input");
 	let links = document.querySelectorAll(".input-error a.linkRCLV");
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let id = new URL(window.location.href).searchParams.get("id");
