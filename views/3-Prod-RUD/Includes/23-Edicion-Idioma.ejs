@@ -13,8 +13,6 @@
 				<% } %>	
 			</optgroup>
 		</select>
-		<!-- Ayuda -->
-		<%- (registro.idioma_original_id && !errores.idioma_original_id) ? include("39-DD-Mensajes") : "" %>
 		<!-- Errores -->
 		<i class="fas fa-times-circle<%- !errores.idioma_original_id ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.idioma_original_id %></span>

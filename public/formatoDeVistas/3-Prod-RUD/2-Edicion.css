@@ -27,10 +27,9 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 #datos .label-input .input-error .input {align-self: center;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
-#datos .label-input .input-error textarea {padding: 0px 5px; resize:none;}
 #datos .label-input .input-error .linkRCLV {right: -40px; width: 15px;}
-#datos .label-input#textarea .input-error {width: 100%; margin-left: 0;} 
-#datos #segundaColumna #textarea textarea {width: 100%;}
+#datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
+#datos #segundaColumna #sinopsis textarea {width: 100%; padding: 0px 5px; resize: none;}
 
 /* País */
 #datos #paises_id {align-items: center;}
@@ -50,13 +49,15 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fas, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.mensajeError, .mensajeAyuda {max-width: 200px; left: 20px;}
-.mensajeError::before, .mensajeAyuda::before {left: -12px;}
+.mensajeError {max-width: 200px; left: 20px;}
+.mensajeError::before {left: -12px;}
+.mensajeAyuda::before {left: -20px;}
 
 /* Mensajes de ayuda */
-#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
-#datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 #datos .fa-question-circle {right: -20px;}
+#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
+#datos .mensajeAyuda {max-width: 300px;}
+#datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /*  Mensajes de error*/
 #datos .mensajeError {left: 20px; }

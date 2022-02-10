@@ -1,14 +1,14 @@
-window.addEventListener("load", async () => {
+window.addEventListener("load", () => {
 	// Variables
 	let iconosAyuda = document.querySelectorAll("main .fa-question-circle");
 	let mensajesAyuda = document.querySelectorAll("main .mensajeAyuda");
 
 	// Mensajes de ayuda
-	window.onclick = (e) => {
+	window.addEventListener("click", (e) => {
 		for (let i = 0; i < iconosAyuda.length; i++) {
 			e.target == iconosAyuda[i]
 				? mensajesAyuda[i].classList.toggle("ocultar")
 				: mensajesAyuda[i].classList.add("ocultar");
 		}
-	};
+	});
 });
