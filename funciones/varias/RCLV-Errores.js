@@ -32,7 +32,7 @@ module.exports = {
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
-			:(await BD_varias.obtenerELC_id({entidad, campo: "nombre", valor: nombre}))
+			: (await BD_varias.obtenerELC_id({entidad, campo: "nombre", valor: nombre}))
 			? cartelRepetido
 			: "";
 	},
