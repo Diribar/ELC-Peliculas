@@ -1,12 +1,12 @@
 /* Cuerpo */
-main form #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
+main #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Datos */
-main form #cuerpo {position: relative;}
-main form #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
-main form #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+main #cuerpo {position: relative;}
+main #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
+main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
 
 /* Imagen */
-main form #imagenProducto {display: flex; flex-direction: column; justify-content: center;}
-main form #imagenProducto img {max-height: 100%;}
+main #imagenProducto {display: flex; flex-direction: column; justify-content: center;}
+main #imagenProducto img {max-height: 100%;}
 /* #imagenProducto img {max-width: 30vw;} */
