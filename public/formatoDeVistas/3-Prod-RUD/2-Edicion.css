@@ -51,7 +51,7 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError {max-width: 200px; left: 20px;}
 .mensajeError::before {left: -12px;}
-.mensajeAyuda::before {left: 20px;}
+.mensajeAyuda::before {left: -20px;}
 
 /* Mensajes de ayuda */
 #datos .fa-question-circle {right: -20px;}
