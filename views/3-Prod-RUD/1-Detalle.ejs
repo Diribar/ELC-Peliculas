@@ -17,7 +17,16 @@
 				<% } %>
 			</div>
 			<!-- Sinopsis -->
-			<div id="sinopsis"><%= registro.sinopsis %></div>
+			<div id="sinopsis">
+				<nav>
+					<%= registro.sinopsis %>
+				</nav>
+				<!-- Ayuda -->
+				<i class="fas fa-question-circle"></i>
+				<ul type="none" class="mensajeAyuda ocultar">
+					<li>Podés deslizar el contenido con la ruedita del mouse</li>
+				</ul>
+			</div>
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
 				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises %>. 
@@ -40,23 +49,21 @@
 		</div>
 		<!-- Botones -->
 		<div id="botones">
-			<button>Ver un Trailer</button>
-			<% if (entidad != "colecciones") { %>
-				<button>Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= titulo %></button>
-			<% } else { %>
-				<button>Temporadas</button>
-			<% } %>
-			<button>Califica<%= (entidad=="capitulos" ? "lo" : "la") %></button>
-			<button>
-				Mi interés en
-				<br>
-				<%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>
-			</button>
-			<button>
-				Hacer o ver
-				<br>
-				comentarios
-			</button>
+			<div>
+				<button>Ver un Trailer</button>
+				<% if (entidad != "colecciones") { %>
+					<button>Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= titulo %></button>
+				<% } else { %>
+					<button>Temporadas</button>
+				<% } %>
+				<button>Califica<%= (entidad=="capitulos" ? "lo" : "la") %></button>
+				<button>
+					Mi interés en<br><%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>
+				</button>
+				<button>
+					Hacer o ver<br>comentarios
+				</button>
+			</div>
 		</div>
 	</section>
 	<section id="datosBreves">
