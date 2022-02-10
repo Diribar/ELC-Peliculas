@@ -14,8 +14,7 @@
 /* Sinopsis - Ayuda */
 #sinopsis .fa-question-circle, #sinopsis .mensajeAyuda, #sinopsis .mensajeAyuda::before {position: absolute; z-index: 2;}
 #sinopsis .fa-question-circle {top: 25px; right: -25px; transform: translateY(-50%);}
-#sinopsis .mensajeAyuda {top: 25px; right: -32px; transform: translate(100%, -50%); width: 200px;}
-#sinopsis .mensajeAyuda {padding: 7px 10px; background-color: var(--gris-oscuro); color: var(--gris-claro);}
+#sinopsis .mensajeAyuda {top: 25px; right: -32px; width: 200px; transform: translate(100%, -50%);}
 #sinopsis .mensajeAyuda::before {left: -10px; top: 50%; transform: translateY(-50%);}
 #sinopsis .mensajeAyuda::before {border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent; content: "";}
 /* Sinopsis - Ocultar la 'side-bar' */

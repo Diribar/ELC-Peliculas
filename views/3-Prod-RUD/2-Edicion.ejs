@@ -4,7 +4,7 @@
 		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
 		<input name="avatar" id="avatar" type="file" accept="image/*" class="input ocultar">
 		<!-- Ayuda -->
-		<%- (registro.avatar && !errores.avatar) ? include("39-DD-Mensajes") : "" %>
+		
 		<!-- Errores -->
 		<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.avatar %></span>

@@ -6,8 +6,6 @@
 			class="input <% if (campo.numero) { %>numero<% } %>"
 			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
 		>
-		<!-- Ayuda -->
-		<%- (registro[campo.campo] && !errores[campo.campo]) ? include("39-DD-Mensajes") : "" %>
 		<!-- Errores -->
 		<i class="fas fa-times-circle <%- !errores[campo.campo] ? 'ocultar' : '' %>">
 			<span class="mensajeError "><%= errores[campo.campo] %></span>
