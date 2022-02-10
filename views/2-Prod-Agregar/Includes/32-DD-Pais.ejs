@@ -3,13 +3,13 @@
 	<div class="input-error">
 		<% if (dataEntry.paises_id) { %>
 			<!-- Lugar donde mostrar los nombres -->
-			<input type="text" class="input" value="<%= paises %>" disabled>
+			<input type="text" value="<%= paises %>" disabled>
 			<%- include("39-DD-Mensajes") %>
 		<% } else { %>
+			<!-- Lugar donde almacenar los ID -->
+			<input name="paises_id" type="text" class="ocultar input" >
 			<!-- Lugar donde mostrar los nombres -->
 			<input id="mostrarPaises" type="text" readonly tabindex="-1">
-			<!-- Lugar donde almacenar los ID -->
-			<input name="paises_id" type="text" class="ocultar" >
 			<!-- Opciones de países -->
 			<select autofocus class="input">
 				<option value="" selected class="ocultar">Elejí un país</option>
