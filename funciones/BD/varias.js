@@ -42,7 +42,7 @@ module.exports = {
 		return db[entidad].findByPk(id, {include: includes});
 	},
 
-	obtenerELC_id: async(datos) => {
+	obtenerELC_id: (datos) => {
 		return db[datos.entidad].findOne({where: {[datos.campo]: datos.valor}}).then((n) => {
 			return n ? n.id : false;
 		});
