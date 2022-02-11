@@ -27,9 +27,11 @@ module.exports = {
 
 	RCLV: (req, res) => {
 		// Detectar el origen
-		let origen = req.query.origen;
-		let RCLV = {origen};
-		if (origen == "datosPers") {
+		let RCLV = {
+			origen: req.query.origen,
+			entidad_RCLV: req.query.entidad_RCLV,
+		};
+		if (RCLV.origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 			if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
@@ -42,13 +44,11 @@ module.exports = {
 			req.session.datosPers = datosPers;
 			res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
 			// Completar RCLV
-			RCLV.entidad_RCLV = datosPers.entidad_RCLV;
 			RCLV.destino = "/producto/agregar/datos-personalizados";
-		} else if (origen == "edicion") {
+		} else if (RCLV.origen == "edicion") {
 			// Completar RCLV
 			RCLV.entidad = req.query.entidad;
 			RCLV.producto_id = req.query.id;
-			RCLV.entidad_RCLV = req.query.entidad_RCLV;
 			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.producto_id;
 		}
 		// Producto a RCLV
@@ -64,6 +64,7 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: 24 * 60 * 60 * 1000});
 		// Redirigir
+		//return res.send(RCLV)
 		return res.redirect("/agregar/" + RCLV.entidad_RCLV);
 	},
 

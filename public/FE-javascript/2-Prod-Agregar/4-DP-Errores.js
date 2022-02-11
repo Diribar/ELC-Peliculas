@@ -69,6 +69,7 @@ window.addEventListener("load", async () => {
 				}
 			}
 		}
+		botonSubmit()
 	};
 	let botonSubmit = () => {
 		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
@@ -82,7 +83,6 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar == OK_RCLV;
-		// == undefined;
 		// Detectar la cantidad de 'no errores'
 		let error =
 			Array.from(iconoError)

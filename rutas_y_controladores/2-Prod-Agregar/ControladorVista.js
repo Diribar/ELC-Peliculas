@@ -428,21 +428,17 @@ module.exports = {
 		}
 		// Si no hay errores, continuar
 		// 7. Obtener la calificación
-		fe_valores = await BD_varias.obtenerPorCampo(
-			"fe_valores",
-			"id",
-			datosPers.fe_valores_id
-		).then((n) => n.valor);
-		entretiene = await BD_varias.obtenerPorCampo(
-			"entretiene",
-			"id",
-			datosPers.entretiene_id
-		).then((n) => n.valor);
-		calidad_tecnica = await BD_varias.obtenerPorCampo(
-			"calidad_tecnica",
-			"id",
-			datosPers.calidad_tecnica_id
-		).then((n) => n.valor);
+		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
+			BD_varias.obtenerPorCampo("fe_valores", "id", datosPers.fe_valores_id).then(
+				(n) => n.valor
+			),
+			BD_varias.obtenerPorCampo("entretiene", "id", datosPers.entretiene_id).then(
+				(n) => n.valor
+			),
+			BD_varias.obtenerPorCampo("calidad_tecnica", "id", datosPers.calidad_tecnica_id).then(
+				(n) => n.valor
+			),
+		]);
 		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// 8. Preparar la info para el siguiente paso
 		req.session.confirma = {
@@ -461,6 +457,7 @@ module.exports = {
 	},
 
 	confirmaForm: (req, res) => {
+		console.log();
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "confirma";
@@ -507,8 +504,6 @@ module.exports = {
 			capturada_por_id: confirma.creada_por_id,
 			capturada_en: hora,
 		};
-		if (confirma.link_trailer) original.link_trailer = confirma.link_trailer;
-		if (confirma.link_pelicula) original.link_pelicula = confirma.link_pelicula;
 		registro = await BD_varias.agregarRegistro(original);
 		// 3. Almacenar el dato de BD del avatar
 		confirma.avatar = confirma.avatarBD;
@@ -590,12 +585,12 @@ module.exports = {
 	responsabilidad: (req, res) => {
 		tema = "agregar";
 		codigo = "responsabilidad";
-		titulo= "Agregar - Responsabilidad"
+		titulo = "Agregar - Responsabilidad";
 		return res.render("Home", {tema, codigo, titulo});
 	},
 
 	yaEnBD_Form: (req, res) => {
-		titulo= "Agregar - Ya en Base de Datos"
+		titulo = "Agregar - Ya en Base de Datos";
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
 };
