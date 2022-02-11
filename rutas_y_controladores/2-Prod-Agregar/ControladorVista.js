@@ -457,7 +457,6 @@ module.exports = {
 	},
 
 	confirmaForm: (req, res) => {
-		console.log();
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "confirma";
