@@ -46,8 +46,10 @@ window.addEventListener("load", () => {
 
 	// Acción si se elige 'descartar'
 	descartar.addEventListener("click", () => {
-		// Recargar la vista
-		location.reload();
+		if (!descartar.classList.contains("botonInactivado")) {
+			// Recargar la vista
+			location.reload();
+		}
 	});
 
 	console.log({
