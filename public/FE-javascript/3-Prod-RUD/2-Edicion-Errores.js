@@ -2,7 +2,7 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let submit = document.querySelectorAll("form .submit");
+	let submit = document.querySelector("form #flechas button[type='submit'");
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
@@ -20,13 +20,12 @@ window.addEventListener("load", async () => {
 		}
 	);
 	// Variables de íconos
-	let salir = document.querySelector("#cuerpo #flechas .fa-arrow-alt-circle-left");
+	let salir = document.querySelector("#cuerpo #flechas .fa-circle-info");
 	let edicion = document.querySelector("#cuerpo #flechas .fa-pencil-alt");
 	let original = document.querySelector("#cuerpo #flechas .fa-home");
 	let guardar = document.querySelector("#cuerpo #flechas .fa-save");
 	let descartar = document.querySelector("#cuerpo #flechas .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #flechas .fa-trash-alt");
-	let guardarSalir = document.querySelector("#cuerpo #flechas .fa-check-circle");
 
 	// Otras variables
 	let linksRCLV = document.querySelectorAll(".input-error i.linkRCLV");
@@ -67,7 +66,6 @@ window.addEventListener("load", async () => {
 		// Activar íconos
 		guardar.classList.remove("botonInactivado");
 		descartar.classList.remove("botonInactivado");
-		guardarSalir.classList.remove("botonInactivado");
 	});
 
 	// Revisar campos COMBINADOS
@@ -166,13 +164,9 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
-		if (OK && !error) {
-			submit[0].classList.remove("botonInactivado");
-			submit[1].classList.remove("botonInactivado");
-		} else {
-			submit[0].classList.add("botonInactivado");
-			submit[1].classList.add("botonInactivado");
-		}
+		OK && !error
+			? submit.classList.remove("botonInactivado")
+			: submit.classList.add("botonInactivado");
 	};
 
 	let funcionDosCampos = async (datos, campo) => {

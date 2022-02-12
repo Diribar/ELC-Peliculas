@@ -1,4 +1,4 @@
-<form action="/producto/detalle" method="post">
+<form action="/producto/edicion" method="post">
 	<%- include('CartelAdvertencia') %>
 	<section id="imagen" class="input-error">
 		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
@@ -15,11 +15,11 @@
 		<%- include('Footer') %>
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
-			<button type="text" id="contador" tabindex="-1">60 min.</button>
+			<button type="text" id="contador" class="ocultar" tabindex="-1"><%= tiempo %> min.</button>
 			<h1 id="titulo"><%= titulo %></h1>
-			<p id="existeEdicion" class="ocultar"><%= existeEdicion %></p>
-			<p id="version" class="ocultar"><%= version %></p>
-			<p id="status_creada" class="ocultar"><%= registro.status_registro.creada %></p>
+			<p class="ocultar" id="existeEdicion"><%= existeEdicion %></p>
+			<p class="ocultar" id="version"><%= version %></p>
+			<p class="ocultar" id="status_creada"><%= registro.status_registro.creada %></p>
 			<%- include('2-EdicionForm') %>
 		</div>
 		<!--****************************** FIN *************************-->
