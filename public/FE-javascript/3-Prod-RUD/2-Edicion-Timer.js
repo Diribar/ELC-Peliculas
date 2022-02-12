@@ -4,6 +4,13 @@ window.addEventListener("load", () => {
 	let tiempo = contador.innerHTML.slice(0, contador.innerHTML.indexOf(" "));
 	let pulgarArriba = document.querySelector("#cartelAdvertencia .fa-thumbs-up");
 
+	// Mensajes
+	let mensaje0 = [
+		"Se acabó el tiempo (1 hora) para continuar con esta edición.",
+		"Quedó a disposición de quienes analizan tu trabajo.",
+		"Si hacés <em>click</em> en <strong>Entendido</strong>, serás redirigido a la vista de <strong>Detalle</strong>",
+	];
+
 	// Funciones
 	let funcionTimer = () => {
 		// Mostrar el timer
@@ -26,7 +33,7 @@ window.addEventListener("load", () => {
 			if (tiempo == 0) {
 				clearInterval(timer);
 				// Cartel de "time out"
-				funcionCartelAdvertencia();
+				funcionCartelAdvertencia(mensaje0);
 			} else if (tiempo < 15) {
 				// Rojo y Gris Claro
 				contador.style.backgroundColor = "var(--rojo-oscuro)";
@@ -37,28 +44,20 @@ window.addEventListener("load", () => {
 				contador.style.borderColor = "var(--naranja-oscuro)";
 				contador.style.color = "var(--azul-oscuro)";
 			}
-		}, 1000);
+		}, 1000*60);
 	};
 
-	let funcionCartelAdvertencia = () => {
+	let funcionCartelAdvertencia = (mensajes) => {
 		// Variables
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartelAdvertencia = document.querySelector("#cartelAdvertencia");
-		let mensajeHTML = document.querySelector("#cartelAdvertencia #mensaje");
-		let mensajeTexto = [
-			"Se acabó el tiempo de 1 hora, para continuar con esta edición.",
-			"Quedó a disposición de quienes analizan tu trabajo.",
-			"Si hacés 'click' en 'Entendido', serás redirigido a la vista de 'Detalle'",
-		];
-		let ul = document.createElement("ul");
-		for (mensaje of mensajeTexto) {
-			let texto = document.createTextNode(mensaje);
-			let li = document.createElement("li");
-			li.appendChild(texto);
-			ul.appendChild(li);
-			mensajeHTML.appendChild(li);
+		let mensajeHTML = document.querySelector("#cartelAdvertencia ul#mensaje");
+		mensajeHTML.innerHTML = "";
+
+		// Cambiar el contenido del mensaje
+		for (mensaje of mensajes) {
+			mensajeHTML.innerHTML += "<li>" + mensaje + "</li>";
 		}
-		console.log(ul);
 
 		// Íconos a mostrar y ocultar
 		document
@@ -68,7 +67,6 @@ window.addEventListener("load", () => {
 		document.querySelector("#cartelAdvertencia .fa-check-circle").classList.add("ocultar");
 
 		// Cambiar el texto del mensajeHTML
-		mensajeHTML.innerHTML = mensajeTexto;
 		pulgarArriba.setAttribute("id", "irDetalle");
 
 		// Mostrar el cartel
@@ -77,7 +75,7 @@ window.addEventListener("load", () => {
 	};
 
 	// Startup
-	if (tiempo == 0) funcionCartelAdvertencia();
+	if (tiempo == 0) funcionCartelAdvertencia(mensaje0);
 	else if (tiempo != "false") funcionTimer();
 
 	// Ir a 'Detalle'

@@ -7,6 +7,12 @@ form #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7
 form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
 form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
+/* Imagen */
+form #imagen .fas, form #imagen .mensajeError, form #imagen .mensajeAyuda
+	{left: 50%; }
+form #imagen .fas {font-size: 4rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
+form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
+
 /* Datos del formulario */
 #datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}
 #datos #primeraColumna {width: 40%;}
@@ -58,15 +64,14 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Mensajes de ayuda */
 #datos .fa-question-circle {right: -20px;}
-#datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
-#datos .mensajeAyuda {max-width: 300px;}
-#datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#datos .mensajeAyuda {right: -25px; transform: translate(100%, -50%);}
+.mensajeAyuda {max-width: 300px;}
+.mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /*  Mensajes de error*/
 #datos .mensajeError {left: 20px; }
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
-form #imagen .fas {left: 50%; transform: translate(-50%,-50%); font-size: 4rem}
 
 /* Flechas - General*/
 #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}

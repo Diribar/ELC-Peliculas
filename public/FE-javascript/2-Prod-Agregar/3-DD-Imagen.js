@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
 		ext = texto.slice(texto.length - 4);
-		[".jpg", ".png", ".gif", ".bmp"].includes(ext) ? mostrarImagen(e) : "";
+		[".jpg", ".png"].includes(ext) ? mostrarImagen(e) : "";
 	});
 });
 

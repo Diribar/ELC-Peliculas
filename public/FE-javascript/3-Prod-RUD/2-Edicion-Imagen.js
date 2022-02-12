@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
 		ext = texto.slice(texto.lastIndexOf("."));
-		[".jpg", ".png", ".gif", ".bmp"].includes(ext) ? mostrarImagen(e) : "";
+		[".jpg", ".png"].includes(ext) ? mostrarImagen(e) : "";
 	});
 });
 
