@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 		}, 1000);
 	};
 
-	let funcionCartelAdvertencia = (mensaje) => {
+	let funcionCartelAdvertencia = () => {
 		// Variables
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartelAdvertencia = document.querySelector("#cartelAdvertencia");
