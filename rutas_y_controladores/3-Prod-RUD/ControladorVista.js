@@ -108,7 +108,10 @@ module.exports = {
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP();
-		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP] = [];
+			var tiempo = existeEdicion
+				? Math.max(0, parseInt(registroEditado.capturada_en - new Date() + 1000 * 60 * 60)/1000/60)
+				: false;
+		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -128,6 +131,7 @@ module.exports = {
 			errores: {},
 			existeEdicion,
 			version,
+			tiempo,
 		});
 	},
 

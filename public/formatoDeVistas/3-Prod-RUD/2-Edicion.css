@@ -79,6 +79,5 @@ form #imagen .fas {left: 50%; transform: translate(-50%,-50%); font-size: 4rem}
 #cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
 
 /* Flechas - Grupo con slash */
-#cuerpo #flechas .pack {width: 75px;}
 #cuerpo #flechas .pack {display: flex; flex-direction: row; justify-content: center;}
 #cuerpo #flechas .pack .fa-slash {transform: rotate(85deg); cursor: default;}

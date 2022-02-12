@@ -8,10 +8,13 @@
 #cartelAdvertencia.ocultar {display: none;}
 
 /* Partes internas */
-#cartelAdvertencia .fa-triangle-exclamation {font-size: 2rem; margin-bottom: 15px; color: var(--amarillo-oscuro);}
-#cartelAdvertencia p {font-size: 1.2rem;}
+#cartelAdvertencia .fa-triangle-exclamation {font-size: 2rem; color: var(--amarillo-oscuro);}
+#cartelAdvertencia #mensaje {font-size: 1.2rem; text-align: center; margin: 40px 10px;}
 
-/* Botones 'Cancelar' y 'Continuar' */
-#cartelAdvertencia #flechas {margin-top: 40px; width: 45%; display: flex; flex-direction: row; justify-content: space-between;}
-#cartelAdvertencia .fas {background-color: white; border: 1px solid white;}
-#cartelAdvertencia .fas {font-size: 2rem; border-radius: 50%; cursor: pointer;}
+/* Botones 'Cancelar', 'Entendido' y 'Continuar' */
+#cartelAdvertencia #flechas { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
+#cartelAdvertencia #flechas i {border: 1px solid white; background-color: white;}
+#cartelAdvertencia #flechas i {font-size: 2rem; border-radius: 50%; cursor: pointer;}
+
+/* Botón Entendido */
+#cartelAdvertencia #flechas i.fa-thumbs-up {color: white;background-color: transparent; border: none;}

@@ -52,9 +52,4 @@ window.addEventListener("load", () => {
 		}
 	});
 
-	console.log({
-		version,
-		existeEdicion,
-		status_creada,
-	});
 });
