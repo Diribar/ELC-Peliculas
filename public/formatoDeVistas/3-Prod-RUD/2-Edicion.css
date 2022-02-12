@@ -27,9 +27,7 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 #datos .label-input .input-error .input {align-self: center;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
-#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px;}
-#datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
-#datos #segundaColumna #sinopsis textarea {width: 100%; padding: 0px 5px; resize: none;}
+#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px; cursor: pointer;}
 
 /* País */
 #datos #paises_id {align-items: center;}
@@ -43,6 +41,11 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 #datos #links {display: flex; flex-direction: row; margin-top: 20px; align-items: center;}
 #datos #links button {margin-left: 20px; padding: 2px 5px; border-radius: 10px;}
 #datos #links button {background-color: var(--azul-oscuro); color: var(--gris-claro); font-weight: bold;}
+
+/* Sinopsis */
+#datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
+#datos #segundaColumna #sinopsis textarea {width: 100%; padding: 5px 10px; resize: none;}
+#datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
@@ -72,12 +75,10 @@ form #imagen .fas {left: 50%; transform: translate(-50%,-50%); font-size: 4rem}
 
 /* Flechas - Particularidades */
 #cuerpo #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#cuerpo #flechas .fas {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#cuerpo #flechas .fas.botonInactivado, #cuerpo #flechas .botonInactivado .fas {cursor: default;}
+#cuerpo #flechas i  {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
+#cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
 
 /* Flechas - Grupo con slash */
-#cuerpo #flechas .tres {width: 75px; position: relative;}
-#cuerpo #flechas .tres .fas1 {position: absolute; left: 0;}
-#cuerpo #flechas .tres .fas2 {display: flex; flex-direction: row; justify-content: center; cursor: default;}
-#cuerpo #flechas .tres .fas2.fa-slash {transform: rotate(85deg);}
-#cuerpo #flechas .tres .fas3 {position: absolute; right: 0; top: 0;}
+#cuerpo #flechas .pack {width: 75px;}
+#cuerpo #flechas .pack {display: flex; flex-direction: row; justify-content: center;}
+#cuerpo #flechas .pack .fa-slash {transform: rotate(85deg); cursor: default;}

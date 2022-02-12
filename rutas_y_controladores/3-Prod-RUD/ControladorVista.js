@@ -32,7 +32,7 @@ module.exports = {
 			"creada_por",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener los datos del producto
+		// Obtener los datos originales del producto
 		let registro = await BD_varias.obtenerPorIdConInclude(entidad, ID, includes).then((n) => {
 			return n ? n.toJSON() : "";
 		});
@@ -63,8 +63,11 @@ module.exports = {
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
+		// Información sobre la versión original y editada
+		let existeEdicion = !!registroEditado;
+		let version = req.query.verOriginal == "true" || !existeEdicion ? "original" : "edicion";
 		// Generar los datos a mostrar en la vista
-		if (registroEditado) {
+		if (version == "edicion") {
 			// Quitarle los campos 'null'
 			let campos = Object.keys(registroEditado);
 			for (i = campos.length - 1; i >= 0; i--) {
@@ -79,10 +82,11 @@ module.exports = {
 		} else registroCombinado = {...registro};
 		// Obtener avatar
 		let rutaAvatar = "/imagenes/" + (registroEditado ? "3-ProductosEditados/" : "2-Productos/");
-		let avatar = registroCombinado.avatar
+		let avatar = registroCombinado.avatar;
+		avatar = avatar
 			? entidad == "capitulos"
-				? registroCombinado.avatar
-				: rutaAvatar + registroCombinado.avatar
+				? avatar
+				: (avatar.slice(0, 4) == "http" ? "" : rutaAvatar) + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
@@ -122,6 +126,8 @@ module.exports = {
 			BD_idiomas,
 			camposDP,
 			errores: {},
+			existeEdicion,
+			version,
 		});
 	},
 

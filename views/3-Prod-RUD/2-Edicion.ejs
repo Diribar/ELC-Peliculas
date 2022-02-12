@@ -17,7 +17,9 @@
 		<div id="cuerpo">
 			<button type="text" id="contador" tabindex="-1">60 min.</button>
 			<h1 id="titulo"><%= titulo %></h1>
-			<p id="entidad" class="ocultar"><%= entidad %></p>
+			<p id="existeEdicion" class="ocultar"><%= existeEdicion %></p>
+			<p id="version" class="ocultar"><%= version %></p>
+			<p id="status_creada" class="ocultar"><%= registro.status_registro.creada %></p>
 			<%- include('2-EdicionForm') %>
 		</div>
 		<!--****************************** FIN *************************-->

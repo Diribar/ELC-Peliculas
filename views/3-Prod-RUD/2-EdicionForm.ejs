@@ -1,5 +1,5 @@
 <!-- Datos -->
-<section id="datos" action="">
+<section id="datos">
 	<!-- Datos generales -->
 	<section id="primeraColumna">
 		<h3>Datos generales</h3>
@@ -53,16 +53,19 @@
 <!-- Botones -->
 <section id="flechas">
 	<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= ID %>" tabindex="-1"><i class="fas fa-arrow-alt-circle-left" tabindex="-1" title="Salir e ir a la vista 'Detalle'"></i></a>
-	<div class="tres">
-		<i class="fas1 fas fa-pencil-alt botonInactivado" title='Mostrar la versión editada'></i>
-		<i class="fas2 fas fa-slash"></i>
-		<i class="fas3 fas fa-home botonInactivado" title='Mostrar la versión original'></i>
+	<div class="pack">
+		<i class="fas fa-pencil-alt botonInactivado" title='Mostrar la versión editada'></i>
+		<i class="fas fa-slash botonInactivado"></i>
+		<i class="fas fa-home botonInactivado" title='Mostrar la versión original'></i>
 	</div>
-	<div class="tres">
-		<label class="fas1 fas fa-save botonInactivado submit" for="inputSubmit" title='Guardar los cambios'></label>
+	
+	<div class="pack">
+		<label  for="inputSubmit" title='Guardar los cambios'><i class="fas1 fas fa-save botonInactivado submit"></i></label>
 		<input type="submit" id="inputSubmit" class="ocultar" formaction="/producto/edicion" formmethod="post">
-		<i class="fas2 fas fa-slash"></i>
-		<i class="fas3 fas fa-trash-alt botonInactivado" title='Eliminar definitivamente tu edición'></i>
+		<i class="fas fa-slash botonInactivado"></i>
+		<i class="fa-solid fa-rotate-right botonInactivado" title='Descartar los cambios sin guardar'></i>
+		<i class="fas fa-slash botonInactivado"></i>
+		<i class="fas fa-trash-alt botonInactivado" title='Eliminar definitivamente tu edición'></i>
 	</div>
 	<button type="submit" tabindex="-1" class="submit botonInactivado"><i class="fas fa-check-circle" tabindex="-1" title="Guardar y volver a la vista anterior"></i></button>
 </section>

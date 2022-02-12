@@ -222,17 +222,20 @@ CREATE TABLE status_registro_prod (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
+	creada BOOLEAN NOT NULL,
+	editada BOOLEAN NOT NULL,
 	aprobada BOOLEAN NOT NULL,
+	sugerida_borrar BOOLEAN NOT NULL,
 	borrada BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro_prod (id, orden, nombre, aprobada, borrada)
+INSERT INTO status_registro_prod (id, orden, nombre, creada, editada, aprobada, sugerida_borrar, borrada)
 VALUES 
-(1, 1, 'Creada pend./aprobar', 0, 0), 
-(2, 2, 'Editada pend./aprobar', 0, 0),
-(3, 3, 'Aprobada', 1, 0),
-(4, 4, 'Sugerida p/borrar', 0, 1),
-(5, 5, 'Borrada', 0, 1)
+(1, 1, 'Creada pend./aprobar', 1, 0, 0, 0, 0), 
+(2, 2, 'Editada pend./aprobar', 0, 1, 0, 0, 0),
+(3, 3, 'Aprobada', 0, 0, 1, 0, 0),
+(4, 4, 'Sugerida p/borrar', 0, 0, 0, 1, 0),
+(5, 5, 'Borrada', 0, 0, 0, 0, 1)
 ;
 CREATE TABLE epocas_estreno (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -21,8 +21,15 @@ window.addEventListener("load", async () => {
 	);
 	// Variables de íconos
 	let salir = document.querySelector("#cuerpo #flechas .fa-arrow-alt-circle-left");
-	
+	let edicion = document.querySelector("#cuerpo #flechas .fa-pencil-alt");
+	let original = document.querySelector("#cuerpo #flechas .fa-home");
+	let guardar = document.querySelector("#cuerpo #flechas .fa-save");
+	let descartar = document.querySelector("#cuerpo #flechas .fa-rotate-right");
+	let eliminar = document.querySelector("#cuerpo #flechas .fa-trash-alt");
+	let guardarSalir = document.querySelector("#cuerpo #flechas .fa-check-circle");
+
 	// Otras variables
+	let linksRCLV = document.querySelectorAll(".input-error i.linkRCLV");
 	let ruta = "/producto/api/validar-edicion/?";
 
 	// Revisar campos en forma INDIVIDUAL
@@ -44,10 +51,23 @@ window.addEventListener("load", async () => {
 				iconoError[indice].classList.add("ocultar");
 			}
 		}
-		
-		botonSubmit()	// Activar o desactivar el botón 'submit'
-		salir.classList.add("botonInactivado") // Desactivar el botón 'salir'
-		
+
+		// Activar o desactivar el botón 'submit'
+		botonSubmit();
+
+		// Desactivar íconos
+		salir.classList.add("botonInactivado");
+		edicion.classList.add("botonInactivado");
+		original.classList.add("botonInactivado");
+		eliminar.classList.add("botonInactivado");
+		for (let i = 0; i < linksRCLV.length; i++) {
+			linksRCLV[i].classList.add("botonInactivado");
+		}
+
+		// Activar íconos
+		guardar.classList.remove("botonInactivado");
+		descartar.classList.remove("botonInactivado");
+		guardarSalir.classList.remove("botonInactivado");
 	});
 
 	// Revisar campos COMBINADOS
