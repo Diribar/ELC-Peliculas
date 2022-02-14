@@ -4,7 +4,11 @@
 		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
 		<input name="avatar" id="avatar" type="file" accept="image/*" class="input ocultar">
 		<!-- Ayuda -->
-		
+		<i class="fas fa-question-circle"></i>
+		<ul type="dots" class="mensajeAyuda ocultar">
+			<li>Haciendo <em>click</em> en la imagen podés ingresar otra.</li>
+			<li>La extensión de la imagen debe ser <em><strong>jpg</strong></em> o <em><strong>png</strong></em></li>
+		</ul>		
 		<!-- Errores -->
 		<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.avatar %></span>

@@ -127,7 +127,7 @@ module.exports = {
 			errores.avatar = !datos.avatar
 				? "Necesitamos que agregues una imagen"
 				: extensiones(datos.avatar)
-				? "Las extensiones de archivo válidas son jpg, png, gif, bmp"
+				? "Las extensiones de archivo válidas son jpg y png"
 				: "";
 		// ***** CAMPOS COMBINADOS *******
 		// Nombre Original y Año de Estreno
@@ -216,7 +216,7 @@ let formatoNumero = (dato, minimo) => {
 let extensiones = (nombre) => {
 	if (!nombre) return false;
 	ext = nombre.slice(nombre.lastIndexOf("."));
-	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext);
+	return ![".jpg", ".png"].includes(ext);
 };
 let hayErrores = (errores) => {
 	resultado = false;

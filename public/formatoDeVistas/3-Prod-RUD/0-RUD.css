@@ -12,5 +12,5 @@ main #imagenProducto img {max-height: 100%;}
 /* #imagenProducto img {max-width: 30vw;} */
 
 /* Ayuda */
-main #cuerpo .mensajeAyuda {padding: 7px 10px; z-index: 2;}
-main #cuerpo .mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+.mensajeAyuda {padding: 7px 10px; z-index: 2;}
+.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}

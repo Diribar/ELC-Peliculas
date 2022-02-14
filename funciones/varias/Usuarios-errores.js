@@ -130,7 +130,7 @@ let castellano = (dato) => {
 let extension = (nombre) => {
 	if (!nombre) return false;
 	ext = path.extname(nombre);
-	return ![".jpg", ".png", ".gif", ".bmp"].includes(ext) ? ext : false;
+	return ![".jpg", ".png"].includes(ext) ? ext : false;
 };
 
 let hayErrores = (errores) => {

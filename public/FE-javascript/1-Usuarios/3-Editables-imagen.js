@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");
-	let extensionesValidas = [".jpg", ".png", ".gif", ".bmp"];
+	let extensionesValidas = [".jpg", ".png"];
 
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
