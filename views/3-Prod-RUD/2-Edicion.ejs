@@ -1,4 +1,4 @@
-<form action="/producto/edicion" method="post">
+<form>
 	<%- include('CartelAdvertencia') %>
 	<section id="imagen" class="input-error">
 		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
@@ -6,8 +6,8 @@
 		<!-- Ayuda -->
 		<i class="fas fa-question-circle"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
-			<li>Haciendo <em>click</em> en la imagen podés ingresar otra.</li>
-			<li>La extensión de la imagen debe ser <em><strong>jpg</strong></em> o <em><strong>png</strong></em></li>
+			<li>Haciendo <em>click</em> en la imagen podés reemplazarla por otra.</li>
+			<li>La extensión de la imagen debe ser <em><strong>JPG</strong></em> o <em><strong>PNG</strong></em></li>
 		</ul>		
 		<!-- Errores -->
 		<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">

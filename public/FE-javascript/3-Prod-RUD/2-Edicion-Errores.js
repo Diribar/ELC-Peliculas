@@ -2,7 +2,6 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let submit = document.querySelector("form #flechas button[type='submit'");
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
@@ -51,9 +50,6 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Activar o desactivar el botón 'submit'
-		botonSubmit();
-
 		// Desactivar íconos
 		salir.classList.add("botonInactivado");
 		edicion.classList.add("botonInactivado");
@@ -64,8 +60,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Activar íconos
-		guardar.classList.remove("botonInactivado");
 		descartar.classList.remove("botonInactivado");
+		botonGuardar();
 	});
 
 	// Revisar campos COMBINADOS
@@ -98,18 +94,7 @@ window.addEventListener("load", async () => {
 				"valor_id",
 			]);
 		// Fin
-		botonSubmit();
-	});
-
-	// Submit
-	form.addEventListener("submit", (e) => {
-		if (
-			Array.from(submit)
-				.map((n) => n.classList.value)
-				.join(" ")
-				.includes("botonInactivado")
-		)
-			e.preventDefault();
+		botonGuardar();
 	});
 
 	// Funciones
@@ -147,7 +132,7 @@ window.addEventListener("load", async () => {
 		paisesMostrar.value = paisesNombre;
 	};
 
-	let botonSubmit = () => {
+	let botonGuardar = () => {
 		let OK =
 			Array.from(iconoOK)
 				.map((n) => n.classList.value)
@@ -165,8 +150,8 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
 		OK && !error
-			? submit.classList.remove("botonInactivado")
-			: submit.classList.add("botonInactivado");
+			? guardar.classList.remove("botonInactivado")
+			: guardar.classList.add("botonInactivado");
 	};
 
 	let funcionDosCampos = async (datos, campo) => {
