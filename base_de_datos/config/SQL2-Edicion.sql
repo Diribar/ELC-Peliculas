@@ -28,8 +28,6 @@ CREATE TABLE EDIC_peliculas (
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
@@ -83,8 +81,6 @@ CREATE TABLE EDIC_colecciones (
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
@@ -138,8 +134,6 @@ CREATE TABLE EDIC_capitulos (
 	personaje_historico_id SMALLINT UNSIGNED NULL,
 	hecho_historico_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 
 	editada_por_id INT UNSIGNED NOT NULL,
 	editada_en DATETIME NOT NULL,
