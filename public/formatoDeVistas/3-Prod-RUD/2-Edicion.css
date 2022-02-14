@@ -37,7 +37,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 
 /* País */
 #datos #paises_id {align-items: center;}
-#datos #paises_id .input-error {width: 200px;}
+#datos #paises_id .input-error {width: 200px; min-width: 200px;}
 #datos #paises_id .input-error input#mostrarPaises,
 #datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
@@ -75,7 +75,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 
 /* Flechas - General*/
 #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #flechas {margin: 20px auto 0; padding: 7px 12px; width: 45%; border-radius: 15px;}
+#cuerpo #flechas {margin: 20px auto 0; padding: 10px 15px; width: 45%; border-radius: 15px;}
 #cuerpo #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
 
 /* Flechas - Particularidades */

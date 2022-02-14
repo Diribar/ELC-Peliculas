@@ -24,12 +24,9 @@
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "publico_sugerido_id")}) %>
 		<!-- Links a Trailer y Película -->
 		<div id="links">
-			<h3>Links</h3>
-			<a href="/" target="blank" tabindex="-1">
-				<button type="button" tabindex="-1">Links de Trailer</button>
-			</a>
-			<a href="/" target="blank" tabindex="-1">
-				<button type="button" tabindex="-1">Links de Película</button>
+			<h3>Links de Trailer y/o <%= producto %> </h3>
+			<a href="/producto/links/?entidad=<%= entidad %>&id=<%= ID %> " target="blank" tabindex="-1">
+				<button type="button" tabindex="-1">Links</button>
 			</a>
 		</div>
 	</section>
@@ -52,15 +49,14 @@
 </section>
 <!-- Botones -->
 <section id="flechas">
-	<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= ID %>" tabindex="-1"><i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i></a>
+	<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
 	<div class="pack">
 		<i class="fas fa-pencil-alt botonInactivado" title='Mostrar la versión editada'></i>
 		<i class="fas fa-slash botonInactivado"></i>
 		<i class="fas fa-home botonInactivado" title='Mostrar la versión original'></i>
 	</div>
 	<div class="pack">
-		<label  for="inputSubmit" title='Guardar los cambios'><i class="fas1 fas fa-save botonInactivado submit"></i></label>
-		<button type="submit" id="inputSubmit" class="ocultar"></button>
+		<i class="fas fa-save botonInactivado" title='Guardar los cambios'></i>
 		<i class="fas fa-slash botonInactivado"></i>
 		<i class="fa-solid fa-rotate-right botonInactivado" title='Descartar los cambios sin guardar'></i>
 		<i class="fas fa-slash botonInactivado"></i>

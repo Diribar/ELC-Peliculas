@@ -1,8 +1,7 @@
 <div id="producto-menu" class="dropdown-content ocultar">
 	<% if (booleanMenuProducto) { %>
-		<% entidad = url.slice(url.indexOf("entidad") + 8, url.indexOf("&")) %>
 		<% if (!url.includes("producto/edicion")) { %>
-			<a id="editarProducto">
+			<a href="/producto/edicion/?entidad=<%= entidad %>&id=<%= ID %> " id="editarProducto">
 				<i class="fas fa-edit"></i>
 				Editá la información
 			</a>

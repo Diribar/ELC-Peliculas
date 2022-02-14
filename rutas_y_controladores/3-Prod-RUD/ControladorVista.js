@@ -42,11 +42,11 @@ module.exports = {
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
-		if (noAprobada && otroUsuario) {
-			req.session.noAprobado = registro;
-			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
-			return res.send("Producto noaprobado");
-		}
+		// if (noAprobada && otroUsuario) {
+		// 	req.session.noAprobado = registro;
+		// 	res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
+		// 	return res.send("Producto noaprobado");
+		// }
 		// Quitarle los campos 'null'
 		let campos = Object.keys(registro);
 		for (i = campos.length - 1; i >= 0; i--) {
@@ -109,7 +109,7 @@ module.exports = {
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP();
 			var tiempo = existeEdicion
-				? Math.max(10, parseInt(registroEditado.capturada_en - new Date() + 1000 * 60 * 60)/1000/60)
+				? Math.max(1, parseInt((registroEditado.capturada_en - new Date() + 1000 * 60 * 60)/1000/60))
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Ir a la vista
