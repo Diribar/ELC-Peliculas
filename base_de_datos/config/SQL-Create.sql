@@ -65,7 +65,7 @@ CREATE TABLE roles_usuario (
 INSERT INTO roles_usuario (id, orden, nombre, aut_output, aut_gestion_prod, aut_gestion_us)
 VALUES 
 (1, 1, 'Usuario', 0, 0, 0),
-(2, 2, 'Autorizado p/Outputs', 1, 0, 0),
+(2, 2, 'Autorizado p/Inputs', 1, 0, 0),
 (3, 3, 'Gestión de Productos', 1, 1, 0),
 (4, 4, 'Gestión de Usuarios', 1, 0, 1),
 (5, 5, 'Gestión de Prod. y Usuarios', 1, 1, 1)
@@ -128,8 +128,8 @@ INSERT INTO penaliz_us_motivos (alta, edicion, id, orden, duracion, nombre, mens
 VALUES 
 (1, 0, 4, 1, 0, 'PROD-Audiovisual duplicado', 'Audiovisual ya existente en nuestra base  de datos. Puede estar con otro nombre. Si no lo encontrás, nos podés consultar mediante Inicio -> Contactanos'),
 (1, 0, 1, 2, 1, 'PROD-Ajeno a nuestro perfil', 'Audiovisual ajeno a nuestro perfil. Te sugerimos que leas sobre nuestro perfil de películas. Lo encontrás en el menú de Inicio -> Nuestro perfil de películas'),
-(1, 0, 2, 3, 180, 'PROD-Ajeno con mofa', 'Audiovisual ajeno a nuestro perfil, con mofa. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
-(1, 0, 3, 4, 365, 'PROD-Ajeno con pornografía', 'Audiovisual ajeno a nuestro perfil, con pornografía. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
+(1, 0, 2, 3, 90, 'PROD-Ajeno con mofa', 'Audiovisual ajeno a nuestro perfil, con mofa. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
+(1, 0, 3, 4, 180, 'PROD-Ajeno con pornografía', 'Audiovisual ajeno a nuestro perfil, con pornografía. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
 (0, 1, 5, 10, 5, 'CONT-Incompleto', 'Datos incompletos. Dejaste incompletos algunos datos fáciles de conseguir.'),
 (0, 1, 6, 11, 5, 'CONT-Spam', 'Datos con spam. Completaste algunos datos con spam.'),
 (0, 1, 7, 12, 10, 'CONT-Spam e incompleto', 'Datos con spam e incompletos. Completaste algunos datos con spam y dejaste otros incompletos.')
@@ -313,6 +313,19 @@ VALUES
 (3, 1, 'Recordame que quiero verla'),
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
+;
+
+CREATE TABLE proveedores_links (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(20) NOT NULL UNIQUE,
+	avatar VARCHAR(20) NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO proveedores_links (id, orden, nombre, avatar)
+VALUES 
+(1, 1, 'YouTube', 'YouTube.jpg'),
+(2, 2, 'Formed', 'Formed.jpg')
 ;
 
 CREATE TABLE USUARIOS (
@@ -646,32 +659,43 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE PROD_borrados_pel(
+CREATE TABLE PROD_borrados(
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	prod_id INT UNSIGNED NOT NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (prod_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE PROD_borrados_col(
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	prod_id INT UNSIGNED NOT NULL,
-	motivo_id TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(50) NOT NULL,
+CREATE TABLE PROD_links (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
+	url VARCHAR(200) NOT NULL,
+	proveedor_id TINYINT UNSIGNED NOT NULL,
+	gratuito BOOLEAN NOT NULL,
+	
+	creada_por_id INT UNSIGNED NOT NULL,
+	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	alta_analizada_por_id INT UNSIGNED NULL,
+	alta_analizada_en DATETIME NULL,
+	revisada_por_id INT UNSIGNED NULL,
+	revisada_en DATETIME NULL,
+
 	PRIMARY KEY (id),
-	FOREIGN KEY (prod_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE PROD_borrados_cap(
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	prod_id INT UNSIGNED NOT NULL,
-	motivo_id TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(50) NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (prod_id) REFERENCES PROD_capitulos(id),
-	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
+	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
+	FOREIGN KEY (proveedor_id) REFERENCES proveedores_links(id),
+	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE pr_us_calificaciones (
