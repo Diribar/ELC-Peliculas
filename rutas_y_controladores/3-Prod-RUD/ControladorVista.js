@@ -163,14 +163,18 @@ module.exports = {
 		let [links, provs, producto] = await Promise.all([
 			BD_varias.obtenerTodosPorCampoConInclude("prod_links", campo_id, ID, includes).then(
 				(n) => {
-					return n ? n.toJSON() : "";
+					return n != [] ? n.toJSON() : "";
 				}
 			),
 			BD_varias.obtenerTodos("provs_links", "orden"),
 			BD_varias.obtenerPorId(entidad, ID),
 		]);
+		if (producto == null)
+			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
+		console.log(links, entidad, producto);
+
 		// Configurar el Título
-		let titulo =varias.producto(entidad)+": "+producto.nombre_castellano
+		let titulo = varias.producto(entidad) + ": " + producto.nombre_castellano;
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
