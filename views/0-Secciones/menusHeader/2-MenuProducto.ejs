@@ -1,11 +1,4 @@
 <div id="producto-menu" class="dropdown-content ocultar">
-	<% if (!url.includes("producto/edicion")) { %>
-		<a href="/producto/edicion/?entidad=<%= entidad %>&id=<%= ID %> " id="editarProducto">
-			<i class="fas fa-edit"></i>
-			Editá la información
-		</a>
-		<hr>
-	<% } %>
 	<% if (entidad=="peliculas") { %>
 		<a href="#">
 			<div class="flex-row">
