@@ -1,5 +1,5 @@
 /* Configuración general */
-header {background-color: var(--azul-oscuro); justify-content: space-between; position: relative; z-index: 1;}
+header {background-color: var(--azul-oscuro); justify-content: space-between; position: relative; z-index: 20;}
 header, header section, header section .grupos {display: flex; flex-direction: row; align-items: center;}
 header section {margin: 0 15px;}
 

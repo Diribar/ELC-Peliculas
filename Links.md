@@ -1,9 +1,9 @@
+OTROS
+- Resolver 'avanzar' de Datos Pers
+
 PENDIENTES
-- Producto: ruta y controlador
 - Vista
-	- Secciones: head, header, avatar, cuerpo
 	- Cuerpo:
-		- Título de la vista
 		- Título en castellano de la película
 		- Cartel:
 			- Por favor intentá incluir por lo menos un link gratuito

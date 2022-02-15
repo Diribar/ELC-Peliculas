@@ -79,23 +79,33 @@ module.exports = {
 			delete edicion.ELC_id;
 			// Cruzar la info
 			registroCombinado = {...registro, ...edicion};
-		} else registroCombinado = {...registro};
-		// Obtener avatar
-		let rutaAvatar = "/imagenes/" + (registroEditado ? "3-ProductosEditados/" : "2-Productos/");
-		let avatar = registroCombinado.avatar;
-		avatar = avatar
-			? entidad == "capitulos"
-				? avatar
-				: (avatar.slice(0, 4) == "http" ? "" : rutaAvatar) + avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+			// Obtener avatar
+			let imagen = registroCombinado.avatar;
+			var avatar = imagen
+				? (imagen.slice(0, 4) != "http"
+						? registroEditado.avatar
+							? "/imagenes/3-ProductosEditados/"
+							: "/imagenes/2-Productos/"
+						: "") + imagen
+				: "/imagenes/8-Agregar/IM.jpg";
+		} else {
+			// Cruzar la info
+			registroCombinado = {...registro};
+			// Obtener avatar
+			let imagen = registroCombinado.avatar;
+			var avatar = imagen
+				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+				: "/imagenes/8-Agregar/IM.jpg";
+		}
 		// Obtener los países
 		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
 		// Configurar el Título
+		let producto = varias.producto(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			varias.producto(entidad);
+			producto;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
 			let camposDD = variables
@@ -122,6 +132,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
+			producto,
 			entidad,
 			ID,
 			registro: registroCombinado,
@@ -160,21 +171,36 @@ module.exports = {
 				? "coleccion_id"
 				: "capitulo_id";
 		// Obtener los links, provs_links, producto
-		let [links, provs, producto] = await Promise.all([
-			BD_varias.obtenerTodosPorCampoConInclude("prod_links", campo_id, ID, includes).then(
-				(n) => {
-					return n != [] ? n.toJSON() : "";
-				}
-			),
-			BD_varias.obtenerTodos("provs_links", "orden"),
-			BD_varias.obtenerPorId(entidad, ID),
+		let [links, provs, registroProd] = await Promise.all([
+			BD_varias.obtenerTodosPorCampoConInclude("prod_links", campo_id, ID, includes),
+			BD_varias.obtenerTodos("provs_links", "orden").then((n) => n.map((m) => m.dataValues)),
+			BD_varias.obtenerPorId(entidad, ID).then((n) => {
+				return n ? n.toJSON() : "";
+			}),
 		]);
-		if (producto == null)
+		if (registroProd == null)
 			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
-		console.log(links, entidad, producto);
+		// Configurar el Producto y Título
+		let producto = varias.producto(entidad);
+		let titulo = "Links de la " + producto;
+		// Configurar el avatar
+		let registroEditado = await BD_varias.obtenerPorCampos(
+			entidad + "Edicion",
+			"ELC_id",
+			ID,
+			"editada_por_id",
+			req.session.req.session.usuario.id,
+		).then((n) => {
+			return n ? n.toJSON() : "";
+		});
+		let imagenOr = registroProd.avatar;
+		let imagenEd = registroEditado.avatar;
+		let avatar = imagenEd
+			? (imagenEd.slice(0, 4) != "http" ? "/imagenes/3-ProductosEditados/" : "") + imagenEd
+			: imagenOr
+			? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
+			: "/imagenes/8-Agregar/IM.jpg";
 
-		// Configurar el Título
-		let titulo = varias.producto(entidad) + ": " + producto.nombre_castellano;
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -182,7 +208,11 @@ module.exports = {
 			titulo,
 			links,
 			provs,
+			registroProd,
 			producto,
+			entidad,
+			ID,
+			avatar,
 		});
 	},
 

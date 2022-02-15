@@ -26,16 +26,16 @@
 			</div>
 		</div>
 		<!-- Menú de Producto -->
-		<% url = locals.urlReferencia %> 
-		<% booleanMenuProducto = url.includes("producto/") && !url.includes("producto/agregar") %>
-		<div class="<%= booleanMenuProducto ? 'grupos' : 'ocultar' %>">
-			<i id="prod-icono" class="fas fa-film scale"></i>
-			<%- include("2-MenuProducto") %>
-		</div>
-
+		<% url = locals.urlReferencia %>
+		<% if (url.includes("/producto/edicion")) { %>
+			<div class="grupos">
+				<i id="prod-icono" class="fas fa-film scale"></i>
+				<%- include("2-MenuProducto") %>
+			</div>
+		<% } %>
 	</section>
 	<!-- Título del Encabezado -->
-	<p id="titulo">Evangelicemos la Cultura</p>
+	<p id="titulo">ELC - Películas</p>
 	<section>
 		<!-- Música de fondo -->
 		<div class="grupos">
