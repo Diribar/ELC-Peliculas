@@ -5,7 +5,7 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloAutOutput = require("../../middlewares/usuarios/solo-2-aut-output");
+let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 let prodEnBD = require("../../middlewares/varios/productoYaEnBD");
 let upload = require("../../middlewares/varios/multer");
@@ -32,30 +32,30 @@ router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
 
 // Controladores de vistas de "Agregar Productos"
-router.get("/palabras-clave", soloAutOutput, vista.palabrasClaveForm);
-router.post("/palabras-clave", soloAutOutput, vista.palabrasClaveGuardar);
-router.get("/desambiguar", soloAutOutput, vista.desambiguarForm);
-router.post("/desambiguar", soloAutOutput, vista.desambiguarGuardar);
-router.get("/tipo-producto", soloAutOutput, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto-dd", soloAutOutput, vista.tipoProd_Guardar);
-router.post("/tipo-producto-fa", soloAutOutput, vista.copiarFA_Form);
-router.get("/copiar-fa", soloAutOutput, autorizadoFA, vista.copiarFA_Form);
-router.post("/copiar-fa", soloAutOutput, vista.copiarFA_Guardar);
+router.get("/palabras-clave", soloAutInput, vista.palabrasClaveForm);
+router.post("/palabras-clave", soloAutInput, vista.palabrasClaveGuardar);
+router.get("/desambiguar", soloAutInput, vista.desambiguarForm);
+router.post("/desambiguar", soloAutInput, vista.desambiguarGuardar);
+router.get("/tipo-producto", soloAutInput, autorizadoFA, vista.tipoProd_Form);
+router.post("/tipo-producto-dd", soloAutInput, vista.tipoProd_Guardar);
+router.post("/tipo-producto-fa", soloAutInput, vista.copiarFA_Form);
+router.get("/copiar-fa", soloAutInput, autorizadoFA, vista.copiarFA_Form);
+router.post("/copiar-fa", soloAutInput, vista.copiarFA_Guardar);
 // Comienzo de "prodEnBD"
-router.get("/datos-duros", soloAutOutput, prodEnBD, vista.datosDurosForm);
+router.get("/datos-duros", soloAutInput, prodEnBD, vista.datosDurosForm);
 router.post(
 	"/datos-duros",
-	soloAutOutput,
+	soloAutInput,
 	prodEnBD,
 	upload.single("avatar"),
 	vista.datosDurosGuardar
 );
-router.get("/datos-personalizados", soloAutOutput, prodEnBD, vista.datosPersForm);
-router.post("/datos-personalizados", soloAutOutput, prodEnBD, vista.datosPersGuardar);
-router.get("/confirma", soloAutOutput, prodEnBD, vista.confirmaForm);
-router.post("/confirma", soloAutOutput, prodEnBD, vista.confirmaGuardar);
+router.get("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersForm);
+router.post("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersGuardar);
+router.get("/confirma", soloAutInput, prodEnBD, vista.confirmaForm);
+router.post("/confirma", soloAutInput, prodEnBD, vista.confirmaGuardar);
 // Fin de "prodEnBD"
-router.get("/terminaste", soloAutOutput, vista.terminasteForm);
+router.get("/terminaste", soloAutInput, vista.terminasteForm);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", vista.responsabilidad);
