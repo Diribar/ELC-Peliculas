@@ -79,24 +79,16 @@ module.exports = {
 			delete edicion.ELC_id;
 			// Cruzar la info
 			registroCombinado = {...registro, ...edicion};
-			// Obtener avatar
-			let imagen = registroCombinado.avatar;
-			var avatar = imagen
-				? (imagen.slice(0, 4) != "http"
-						? registroEditado.avatar
-							? "/imagenes/3-ProductosEditados/"
-							: "/imagenes/2-Productos/"
-						: "") + imagen
-				: "/imagenes/8-Agregar/IM.jpg";
-		} else {
-			// Cruzar la info
-			registroCombinado = {...registro};
-			// Obtener avatar
-			let imagen = registroCombinado.avatar;
-			var avatar = imagen
-				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
-				: "/imagenes/8-Agregar/IM.jpg";
-		}
+		} else registroCombinado = {...registro};
+		// Obtener avatar
+		let imagen = registroCombinado.avatar;
+		var avatar = imagen
+			? (imagen.slice(0, 4) != "http"
+					? version == "edicion" && registroEditado.avatar
+						? "/imagenes/3-ProductosEditados/"
+						: "/imagenes/2-Productos/"
+					: "") + imagen
+			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = registro.paises_id ? await varias.paises_idToNombre(registro.paises_id) : "";
 		// Configurar el Título
@@ -189,7 +181,7 @@ module.exports = {
 			"ELC_id",
 			ID,
 			"editada_por_id",
-			req.session.req.session.usuario.id,
+			req.session.req.session.usuario.id
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
