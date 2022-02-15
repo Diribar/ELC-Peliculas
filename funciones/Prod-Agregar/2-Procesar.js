@@ -12,11 +12,13 @@ module.exports = {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		let datosIniciales = {fuente: "TMDB", entidad_TMDB: "movie", ...datos};
 		// Obtener las API
-		let general = detailsTMDB("movie", datos.TMDB_id);
-		let credits = creditsTMDB("movie", datos.TMDB_id);
-		let datosAPI = await Promise.all([general, credits]).then(([a, b]) => {
+		let datosAPI = await Promise.all([
+			detailsTMDB("movie", datos.TMDB_id),
+			creditsTMDB("movie", datos.TMDB_id),
+		]).then(([a, b]) => {
 			return {...a, ...b};
 		});
+		console.log(datosAPI);
 		// Cambiarle el nombre a los campos y procesar la información
 		let datosAPI_renamed = {};
 		if (Object.keys(datosAPI).length > 0) {
@@ -183,9 +185,10 @@ module.exports = {
 		// for por cada capítulo ID
 		for (capituloTMDB_id of datos.capitulosTMDB_id) {
 			// Obtener las API
-			let general = detailsTMDB("movie", capituloTMDB_id);
-			let credits = creditsTMDB("movie", capituloTMDB_id);
-			let datosAPI = await Promise.all([general, credits]).then(([a, b]) => {
+			let datosAPI = await Promise.all([
+				detailsTMDB("movie", capituloTMDB_id),
+				creditsTMDB("movie", capituloTMDB_id),
+			]).then(([a, b]) => {
 				return {...a, ...b};
 			});
 			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
@@ -276,9 +279,10 @@ module.exports = {
 			...datos,
 		};
 		// Obtener las API
-		let general = detailsTMDB("tv", datos.TMDB_id);
-		let credits = creditsTMDB("tv", datos.TMDB_id);
-		let datosAPI = await Promise.all([general, credits]).then(([a, b]) => {
+		let datosAPI = await Promise.all([
+			detailsTMDB("tv", datos.TMDB_id),
+			creditsTMDB("tv", datos.TMDB_id),
+		]).then(([a, b]) => {
 			return {...a, ...b};
 		});
 		// Cambiarle el nombre a los campos y procesar la información
@@ -367,7 +371,7 @@ module.exports = {
 		datos.produccion = datosCol.produccion;
 
 		// Datos de la temporada
-		datos.temporada = datosTemp.season_number
+		datos.temporada = datosTemp.season_number;
 
 		// Datos distintivos del capítulo
 		datos.capitulo = datosCap.episode_number;
@@ -400,9 +404,10 @@ module.exports = {
 		// Loop de TEMPORADAS ***********************************************
 		for (temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
 			// Datos de UNA TEMPORADA
-			let general = detailsTMDB(temporada, registro.TMDB_id);
-			let credits = creditsTMDB(temporada, registro.TMDB_id);
-			let datosTemp = await Promise.all([general, credits]).then(([a, b]) => {
+			let datosTemp = await Promise.all([
+				detailsTMDB(temporada, registro.TMDB_id),
+				creditsTMDB(temporada, registro.TMDB_id),
+			]).then(([a, b]) => {
 				return {...a, ...b};
 			});
 			// Loop de CAPITULOS ********************************************

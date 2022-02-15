@@ -5,7 +5,7 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloAutOutput = require("../../middlewares/usuarios/solo-2-aut-output");
+let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 
 // Controladores *******************************************
 // Controladores de APIs
@@ -18,11 +18,11 @@ router.get("/", vista.home);
 router.get("/nosotros", vista.nosotros);
 
 // Controladores de vistas - Relación con la vida
-router.get("/agregar/relacion-vida", soloAutOutput, vista.RCLV);
-router.get("/agregar/RCLV_personajes_historicos", soloAutOutput, vista.RCLV_Form);
-router.get("/agregar/RCLV_hechos_historicos", soloAutOutput, vista.RCLV_Form);
-router.post("/agregar/RCLV_personajes_historicos", soloAutOutput, vista.RCLV_Grabar);
-router.post("/agregar/RCLV_hechos_historicos", soloAutOutput, vista.RCLV_Grabar);
+router.get("/agregar/relacion-vida", soloAutInput, vista.RCLV);
+router.get("/agregar/RCLV_personajes_historicos", soloAutInput, vista.RCLV_Form);
+router.get("/agregar/RCLV_hechos_historicos", soloAutInput, vista.RCLV_Form);
+router.post("/agregar/RCLV_personajes_historicos", soloAutInput, vista.RCLV_Grabar);
+router.post("/agregar/RCLV_hechos_historicos", soloAutInput, vista.RCLV_Grabar);
 
 // Errores
 router.get("/error/producto-no-encontrado", vista.prodNoEncontrado);

@@ -4,7 +4,7 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		url: {type: dt.STRING(200)},
+		url: {type: dt.STRING(100)},
 		proveedor_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
 		fecha_prov: {type: dt.DATE},
@@ -26,7 +26,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
-		entidad.belongsTo(n.proveedores_links, {as: "proveedor", foreignKey: "proveedor_id"});
+		entidad.belongsTo(n.provs_links, {as: "proveedor", foreignKey: "proveedor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});

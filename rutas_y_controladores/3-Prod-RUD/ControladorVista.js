@@ -5,7 +5,7 @@ let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
-	detalle: async (req, res) => {
+	detalleEdicion: async (req, res) => {
 		// Tema y Código
 		let tema = "producto";
 		let url = req.url.slice(1);
@@ -42,11 +42,11 @@ module.exports = {
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
-		// if (noAprobada && otroUsuario) {
-		// 	req.session.noAprobado = registro;
-		// 	res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
-		// 	return res.send("Producto noaprobado");
-		// }
+		if (noAprobada && otroUsuario) {
+			req.session.noAprobado = registro;
+			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
+			return res.send("Producto noaprobado");
+		}
 		// Quitarle los campos 'null'
 		let campos = Object.keys(registro);
 		for (i = campos.length - 1; i >= 0; i--) {
@@ -109,7 +109,12 @@ module.exports = {
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP();
 			var tiempo = existeEdicion
-				? Math.max(1, parseInt((registroEditado.capturada_en - new Date() + 1000 * 60 * 60)/1000/60))
+				? Math.max(
+						1,
+						parseInt(
+							(registroEditado.capturada_en - new Date() + 1000 * 60 * 60) / 1000 / 60
+						)
+				  )
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Ir a la vista
@@ -132,6 +137,52 @@ module.exports = {
 			existeEdicion,
 			version,
 			tiempo,
+		});
+	},
+
+	links: async (req, res) => {
+		// Tema y Código
+		let tema = "producto";
+		let codigo = "links";
+		// Obtener los datos identificatorios del producto
+		let entidad = req.query.entidad;
+		let ID = req.query.id;
+		// Redireccionar si se encuentran errores en la entidad y/o el ID
+		let errorEnQuery = revisarQuery(entidad, ID);
+		if (errorEnQuery) return res.send(errorEnQuery);
+		// Definir los campos include
+		let includes = ["proveedor", "creada_por", "alta_analizada_por", "revisada_por"];
+		// Obtener el 'campo_id'
+		let campo_id =
+			entidad == "peliculas"
+				? "pelicula_id"
+				: entidad == "colecciones"
+				? "coleccion_id"
+				: "capitulo_id";
+		// Obtener los links, provs_links, producto
+		let [links, provs, producto] = await Promise.all([
+			BD_varias.obtenerTodosPorCampoConInclude("prod_links", campo_id, ID, includes).then(
+				(n) => {
+					return n != [] ? n.toJSON() : "";
+				}
+			),
+			BD_varias.obtenerTodos("provs_links", "orden"),
+			BD_varias.obtenerPorId(entidad, ID),
+		]);
+		if (producto == null)
+			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
+		console.log(links, entidad, producto);
+
+		// Configurar el Título
+		let titulo = varias.producto(entidad) + ": " + producto.nombre_castellano;
+		// Ir a la vista
+		return res.render("0-RUD", {
+			tema,
+			codigo,
+			titulo,
+			links,
+			provs,
+			producto,
 		});
 	},
 
@@ -168,9 +219,10 @@ module.exports = {
 let revisarQuery = (entidad, ID) => {
 	let errorEnQuery = "";
 	// Sin entidad y/o ID
-	if (!entidad || !ID) errorEnQuery = "Producto no encontrado";
+	if (!entidad) errorEnQuery = "Falta el dato de la 'entidad'";
+	if (!ID) errorEnQuery = "Falta el dato del 'ID'";
 	// Entidad inexistente
 	producto = varias.producto(entidad);
-	if (!producto) errorEnQuery = "Producto no encontrado";
+	if (!producto) errorEnQuery = "La entidad ingresada no es válida";
 	return errorEnQuery;
 };
