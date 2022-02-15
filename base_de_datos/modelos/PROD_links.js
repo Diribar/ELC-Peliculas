@@ -7,6 +7,7 @@ module.exports = (sequelize, dt) => {
 		url: {type: dt.STRING(200)},
 		proveedor_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
+		fecha_prov: {type: dt.DATE},
 
 		creada_por_id: {type: dt.INTEGER},
 		creada_en: {type: dt.DATE},
