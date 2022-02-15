@@ -11,14 +11,14 @@
 			<nav class="flex-row">
 				<% if (dataEntry.fuente!="TMDB") { %>
 					<% tmdb = dataEntry.nombre_original ? "search?language=es&query=" + dataEntry.nombre_original : "" %>
-					<a class="logos" href="https://www.themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Logos/LogoTMDB.jpg" alt="TMDB"></a>
+					<a class="logos" href="https://www.themoviedb.org/<%= tmdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-TMDB.jpg" alt="TMDB"></a>
 				<% } %>
 				<% if (dataEntry.fuente!="FA") { %>
 					<% fa = dataEntry.nombre_original ? "search.php?stext="+dataEntry.nombre_original : "" %>
-					<a class="logos" href="https://www.filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Logos/LogoFA.jpg" alt="FA"></a>
+					<a class="logos" href="https://www.filmaffinity.com/es/<%= fa %>" target="_blank"><img src="/imagenes/0-Logos/BD-FA.jpg" alt="FA"></a>
 				<% } %>
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "") %>
-				<a class="logos" href="https://www.imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/LogoIMDB.jpg" alt="IMDB"></a>
+				<a class="logos" href="https://www.imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-IMDB.jpg" alt="IMDB"></a>
 			</nav>
 		</div>
 	</section>
