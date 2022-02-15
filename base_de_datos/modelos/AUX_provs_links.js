@@ -1,9 +1,11 @@
 module.exports = (sequelize, dt) => {
-	const alias = "proveedores_links";
+	const alias = "provs_links";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(20)},
+		nombre: {type: dt.STRING(30)},
 		avatar: {type: dt.STRING(20)},
+		siempre_pago: {type: dt.BOOLEAN},
+		url: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "proveedores_links",

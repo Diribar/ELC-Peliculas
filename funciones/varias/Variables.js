@@ -172,4 +172,17 @@ module.exports = {
 			},
 		];
 	},
+
+	provs_que_no_respetan_copyright: () => {
+		return [
+			{
+				nombre: "Gloria TV",
+				url: "gloria.tv",
+			},
+			{
+				nombre: "Cuevana",
+				url: "cuevana",
+			},
+		];
+	},
 };

@@ -13,8 +13,9 @@ router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
 router.get("/api/validar-edicion", API.validarEdicion);
 
 // Controladores de vistas
-router.get("/detalle", vista.detalle);
-router.get("/edicion", soloAutOutput, vista.detalle);
+router.get("/detalle", vista.detalleEdicion);
+router.get("/edicion", soloAutOutput, vista.detalleEdicion);
+router.get("/links", soloAutOutput, vista.links);
 router.get("/revisar", soloAutOutput, vista.revisar);
 router.get("/calificala", soloAutOutput, vista.calificala);
 router.get("/eliminar", soloAutOutput, vista.eliminar);
