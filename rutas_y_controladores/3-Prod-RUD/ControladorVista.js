@@ -154,7 +154,13 @@ module.exports = {
 		let errorEnQuery = revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
-		let includes = ["link_tipo", "link_prov", "creado_por", "alta_analizada_por", "revisado_por"];
+		let includes = [
+			"link_tipo",
+			"link_prov",
+			"creado_por",
+			"alta_analizada_por",
+			"revisado_por",
+		];
 		// Obtener el 'campo_id'
 		let campo_id =
 			entidad == "peliculas"
@@ -194,8 +200,10 @@ module.exports = {
 			: imagenOr
 			? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Obtener
-		let links_tipos = await BD_varias.obtenerTodos("links_tipos", "id").then(n=>n.map((m) => m.dataValues))
+		// Obtener los tipos de links
+		let links_tipos = await BD_varias.obtenerTodos("links_tipos", "id").then((n) =>
+			n.map((m) => m.dataValues)
+		);
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
