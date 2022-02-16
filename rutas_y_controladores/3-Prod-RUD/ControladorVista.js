@@ -186,7 +186,7 @@ module.exports = {
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
-		// Configurar el avatar
+		// Obtener el avatar
 		let imagenOr = registroProd.avatar;
 		let imagenEd = registroEditado.avatar;
 		let avatar = imagenEd
