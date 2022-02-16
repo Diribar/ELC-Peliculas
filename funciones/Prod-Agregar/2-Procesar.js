@@ -18,7 +18,6 @@ module.exports = {
 		]).then(([a, b]) => {
 			return {...a, ...b};
 		});
-		console.log(datosAPI);
 		// Cambiarle el nombre a los campos y procesar la información
 		let datosAPI_renamed = {};
 		if (Object.keys(datosAPI).length > 0) {

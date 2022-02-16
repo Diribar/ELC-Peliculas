@@ -1,53 +1,43 @@
 <div id="producto-menu" class="dropdown-content ocultar">
-	<% if (booleanMenuProducto) { %>
-		<% if (!url.includes("producto/edicion")) { %>
-			<a href="/producto/edicion/?entidad=<%= entidad %>&id=<%= ID %> " id="editarProducto">
-				<i class="fas fa-edit"></i>
-				Editá la información
-			</a>
-			<hr>
-		<% } %> 
-		<% if (entidad=="peliculas") { %>
-			<a href="#">
-				<div class="flex-row">
-					<i class="fas fa-file-download"></i>
-					<div>
-						Convertila en un 
-						<br>
-						Capítulo de Colección
-					</div>
-				</div>
-			</a>
-			<hr>
-			<% } %>
-		<% if (entidad=="capitulos") { %>
-			<a href="#">
-				<div class="flex-row">
-					<i class="fas fa-file-upload"></i>
-					<div>
-						Convertilo en una Película
-						<br>
-						y quitalo de la Colección
-					</div>
-				</div>
-			</a>
-			<hr>
-		<% } %>
-		<a href="#">
-			<i class="fas fa-trash-alt"></i>
-			Sugerí dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
-		</a>
-		<hr>
+	<% if (entidad=="peliculas") { %>
 		<a href="#">
 			<div class="flex-row">
-				<i class="fas fa-envelope"></i>
+				<i class="fas fa-file-download"></i>
 				<div>
-					Hacenos un comentario
+					Convertila en un 
 					<br>
-					privado sobre est<%= (entidad=="capitulos" ? "e capítulo" : "a " + (entidad=="peliculas" ? "película" : "colección")) %>
+					Capítulo de Colección
 				</div>
 			</div>
 		</a>
-
+		<hr>
+		<% } %>
+	<% if (entidad=="capitulos") { %>
+		<a href="#">
+			<div class="flex-row">
+				<i class="fas fa-file-upload"></i>
+				<div>
+					Convertilo en una Película
+					<br>
+					y quitalo de la Colección
+				</div>
+			</div>
+		</a>
+		<hr>
 	<% } %>
+	<a href="#">
+		<i class="fas fa-trash-alt"></i>
+		Sugerí dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
+	</a>
+	<hr>
+	<a href="#">
+		<div class="flex-row">
+			<i class="fas fa-envelope"></i>
+			<div>
+				Hacenos un comentario
+				<br>
+				privado sobre est<%= (entidad=="capitulos" ? "e capítulo" : "a " + (entidad=="peliculas" ? "película" : "colección")) %>
+			</div>
+		</div>
+	</a>
 </div>
