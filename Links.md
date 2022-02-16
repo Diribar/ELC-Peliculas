@@ -4,7 +4,6 @@ OTROS
 PENDIENTES
 - Vista
 	- Cuerpo:
-		- Título en castellano de la película
 		- Cartel:
 			- Por favor intentá incluir por lo menos un link gratuito
 			- Sé muy cuidadoso de incluir un link que respete los derechos de autor

@@ -154,7 +154,7 @@ module.exports = {
 		let errorEnQuery = revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
-		let includes = ["proveedor", "creada_por", "alta_analizada_por", "revisada_por"];
+		let includes = ["link_tipo", "link_prov", "creado_por", "alta_analizada_por", "revisado_por"];
 		// Obtener el 'campo_id'
 		let campo_id =
 			entidad == "peliculas"
@@ -162,10 +162,10 @@ module.exports = {
 				: entidad == "colecciones"
 				? "coleccion_id"
 				: "capitulo_id";
-		// Obtener los links, provs_links, producto
-		let [links, provs, registroProd] = await Promise.all([
-			BD_varias.obtenerTodosPorCampoConInclude("prod_links", campo_id, ID, includes),
-			BD_varias.obtenerTodos("provs_links", "orden").then((n) => n.map((m) => m.dataValues)),
+		// Obtener los links, links_provs, producto
+		let [links, link_proves, registroProd] = await Promise.all([
+			BD_varias.obtenerTodosPorCampoConInclude("links_prod", campo_id, ID, includes),
+			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
 			BD_varias.obtenerPorId(entidad, ID).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
@@ -175,16 +175,18 @@ module.exports = {
 		// Configurar el Producto y Título
 		let producto = varias.producto(entidad);
 		let titulo = "Links de la " + producto;
-		// Configurar el avatar
+		// Obtener el usuario
+		let usuario = req.session.req.session.usuario;
 		let registroEditado = await BD_varias.obtenerPorCampos(
 			entidad + "Edicion",
 			"ELC_id",
 			ID,
 			"editada_por_id",
-			req.session.req.session.usuario.id
+			usuario.id
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
+		// Configurar el avatar
 		let imagenOr = registroProd.avatar;
 		let imagenEd = registroEditado.avatar;
 		let avatar = imagenEd
@@ -192,19 +194,22 @@ module.exports = {
 			: imagenOr
 			? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 			: "/imagenes/8-Agregar/IM.jpg";
-
+		// Obtener
+		let links_tipos = await BD_varias.obtenerTodos("links_tipos", "id").then(n=>n.map((m) => m.dataValues))
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
 			codigo,
 			titulo,
 			links,
-			provs,
-			registroProd,
+			link_proves,
+			registro: registroProd,
 			producto,
 			entidad,
 			ID,
 			avatar,
+			usuario,
+			links_tipos,
 		});
 	},
 

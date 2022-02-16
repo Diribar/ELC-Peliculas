@@ -1,0 +1,21 @@
+USE ELC_Peliculas;
+
+INSERT INTO `usuarios` VALUES (1,'sinMail1','sinContraseña','Startup','',NULL,'Startup','','2000-01-01','O','AR',2,'PC',1,0,'2000-01-01 00:00:00','2000-01-01 00:00:00',NULL,4,NULL,NULL),(2,'sinMail2','sinContraseña','Automatizado','',NULL,'Automatizado','','2000-01-01','O','AR',2,'PC',1,0,'2000-01-01 00:00:00','2000-01-01 00:00:00',NULL,4,NULL,NULL),(10,'diegoiribarren2015@gmail.com','$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm','Diego','Iribarren',NULL,'Diego','1617370359746.jpg','1969-08-16','V','AR',2,'LC',1,0,'2021-03-26 00:00:00','2021-03-26 00:00:00',NULL,4,NULL,NULL),(11,'diegoiribarren2021@gmail.com','$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm','Diego','Iribarren',NULL,'Diego','1632959816163.jpg','1969-08-16','V','AR',5,'LC',1,0,'2021-03-26 00:00:00','2021-03-26 00:00:00',NULL,4,NULL,NULL);
+
+INSERT INTO `rclv_hechos_historicos` VALUES (2,100,33,'Sem. Santa - 1. General',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(3,105,33,'Sem. Santa - 2. Viernes Santo',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(4,107,33,'Sem. Santa - 3. Resurrección',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(5,150,33,'Pentecostés',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(6,210,1914,'Guerra Mundial - 1a',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(7,245,1942,'Guerra Mundial - 2a',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL);
+
+INSERT INTO `rclv_personajes_historicos` VALUES (1,NULL,NULL,'Varios (colección)',NULL,NULL,1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(6,NULL,0,'Jesús',NULL,NULL,1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(7,NULL,-15,'María, madre de Jesús',NULL,NULL,1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(10,79,-20,'José, padre de Jesús','STV','LCV',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(11,296,1920,'Juan Pablo II','STV','PPV',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL);
+
+INSERT INTO `rclv_valores` VALUES (10,'Valores en el deporte',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(11,'Perseverancia',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(12,'Pacificar un país dividido',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(13,'Pasión por ayudar',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL),(14,'Superación personal',1,'2022-02-15 12:49:07',NULL,NULL,NULL,NULL);
+
+
+
+
+
+INSERT INTO `prod_peliculas` VALUES (1,'220731',NULL,'tt2806908','TMDB','Le métis de Dieu','Lustiger, el cardenal judío',96,'FR',2013,'fr','Ilan Duran Cohen','Ilan Duran Cohen, Chantal Derudder','','Laurent Lucas (Jean-Marie Lustiger), Aurélien Recoing (Jean-Paul II), Audrey Dana (Fanny), Grégoire Leprince-Ringuet (Le pere Julien), Alex Skarbek (Pere Kristof), Nathalie Richard (La Mere Superiéure), Bruno Todeschini (Théo Klein), Jean-Noel Martin (Monseigneur Courcoux), Henri Guybet (Charles Lustiger)','ARTE, A Plus Image 4, ARTE France Cinéma','Biopic sobre Jean-Marie Lustiger, hijo de inmigrantes judíos polacos que mantuvo su identidad cultural como judío, incluso después de la conversión al catolicismo a una edad temprana y más tarde unirse al sacerdocio. Tras un rápido ascenso en la jerarquía eclesial, fue nombrado arzobispo de París por el Papa Juan Pablo II y encontró una nueva plataforma para reivindicar su doble identidad como judío católico, lo que le supuso tanto amigos como enemigos de ambas partes. Cuando en los años 80 las monjas carmelitas establecieron un convento dentro de las murallas de Auschwitz, se provocó un conflicto entre las dos comunidades. Lustiger se encuentra como mediador entre judíos y católicos y es forzado a posicionarse en favor de unos u otros. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/npiru6LqqfZGzkfmlFUIwS3lzUz.jpg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,75,75,100,80,10,'2022-02-15 15:50:20',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,10,'2022-02-15 15:50:20');
+
+INSERT INTO `edic_peliculas` VALUES (1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Efmefme',NULL,NULL,NULL,'1644940198058.jpg',1,1,'CFC',4,4,10,NULL,NULL,10,'2022-02-15 15:50:20',1,10,'2022-02-15 15:50:20');
+
+INSERT INTO `links_prod` VALUES (1,1,NULL,NULL,'youtube.com/watch?v=lpsa5we4lGM',2,1,1,'2020-07-04',10,'2022-02-16 00:00:00',NULL,NULL,NULL,NULL);
+
+INSERT INTO `pr_us_calificaciones` VALUES (1,10,1,NULL,NULL,4,4,3,75,75,100,80);

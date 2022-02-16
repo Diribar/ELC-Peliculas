@@ -57,12 +57,12 @@ CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
-	aut_output BOOLEAN NOT NULL,
+	aut_input BOOLEAN NOT NULL,
 	aut_gestion_prod BOOLEAN NOT NULL,
 	aut_gestion_us BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_usuario (id, orden, nombre, aut_output, aut_gestion_prod, aut_gestion_us)
+INSERT INTO roles_usuario (id, orden, nombre, aut_input, aut_gestion_prod, aut_gestion_us)
 VALUES 
 (1, 1, 'Usuario', 0, 0, 0),
 (2, 2, 'Autorizado p/Inputs', 1, 0, 0),
@@ -313,19 +313,6 @@ VALUES
 (3, 1, 'Recordame que quiero verla'),
 (2, 2, 'Ya la vi'),
 (1, 3, 'Prefiero que no me la recomienden')
-;
-
-CREATE TABLE proveedores_links (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(20) NOT NULL UNIQUE,
-	avatar VARCHAR(20) NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO proveedores_links (id, orden, nombre, avatar)
-VALUES 
-(1, 1, 'YouTube', 'YouTube.jpg'),
-(2, 2, 'Formed', 'Formed.jpg')
 ;
 
 CREATE TABLE USUARIOS (
@@ -672,30 +659,66 @@ CREATE TABLE PROD_borrados(
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE PROD_links (
+
+CREATE TABLE links_provs (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(20) NOT NULL UNIQUE,
+	avatar VARCHAR(20) NULL,
+	siempre_pago BOOLEAN NOT NULL,
+	url VARCHAR(20) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, url)
+VALUES 
+(1, 1, 'YouTube', 'PT-YouTube.jpg', 0, 'youtube.com'),
+(2, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 'ver.formed.lat'),
+(3, 3, 'Formed', 'PT-Formed.jpg', 0, 'watch.formed.org'),
+(4, 4, 'Brochero', 'PT-Brochero.jpg', 1, 'brochero.org'),
+(5, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 'famflix.mx'),
+(6, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 'famiplay.com'),
+(7, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 'goyaproducciones.com'),
+(99, 99, 'Otro','PT-Otro.jpg', 0, '')
+;
+CREATE TABLE links_tipos (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(10) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO links_tipos (id, nombre)
+VALUES 
+(1, 'Trailer'),
+(2, 'Película'),
+(3, 'Colección'),
+(4, 'Capítulo')
+;
+CREATE TABLE links_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
-	url VARCHAR(200) NOT NULL,
-	proveedor_id TINYINT UNSIGNED NOT NULL,
+	url VARCHAR(100) NOT NULL,
+	link_tipo_id TINYINT UNSIGNED NOT NULL,
+	link_prov_id TINYINT UNSIGNED NOT NULL,
 	gratuito BOOLEAN NOT NULL,
-	
-	creada_por_id INT UNSIGNED NOT NULL,
-	creada_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	fecha_prov DATE NULL,
+	creado_por_id INT UNSIGNED NOT NULL,
+	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	revisada_por_id INT UNSIGNED NULL,
-	revisada_en DATETIME NULL,
+	revisado_por_id INT UNSIGNED NULL,
+	revisado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
-	FOREIGN KEY (proveedor_id) REFERENCES proveedores_links(id),
-	FOREIGN KEY (creada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
+	
+	FOREIGN KEY (link_prov_id) REFERENCES links_provs(id),
+	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (revisada_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (revisado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE pr_us_calificaciones (
@@ -734,36 +757,3 @@ CREATE TABLE pr_us_interes_en_prod (
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (interes_en_prod_id) REFERENCES interes_en_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO USUARIOS (id, email, contrasena, status_registro_id, rol_usuario_id, autorizado_fa, nombre, apellido, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, rol_iglesia_id, creado_en, completado_en)
-VALUES 
-(1, 'sinMail1', 'sinContraseña', 4, 2, 1, 'Startup', '', 'Startup', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(2, 'sinMail2', 'sinContraseña', 4, 2, 1, 'Automatizado', '', 'Automatizado', '', '2000-01-01', 'O', 'AR', 'PC', '2000-01-01', '2000-01-01'),
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 2, 1, 'Diego', 'Iribarren', 'Diego', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 4, 5, 1, 'Diego', 'Iribarren', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 'LC', '2021-03-26', '2021-03-26')
-;
-
-INSERT INTO rclv_personajes_historicos (id, nombre ) VALUES (1, 'Varios (colección)');
-INSERT INTO rclv_personajes_historicos (id, ano, nombre ) VALUES (6, 0, 'Jesús'), (7, -15, 'María, madre de Jesús');
-INSERT INTO rclv_personajes_historicos (id, ano, nombre, dia_del_ano_id, proceso_canonizacion_id, rol_iglesia_id)
-VALUES 
-(10, -20, 'José, padre de Jesús', 79, 'STV', 'LCV'),
-(11, 1920, 'Juan Pablo II', 296, 'STV', 'PPV')
-;
-INSERT INTO rclv_hechos_historicos (id, dia_del_ano_id, ano, nombre)
-VALUES 
-(2, 100, 33, 'Sem. Santa - 1. General'),
-(3, 105, 33, 'Sem. Santa - 2. Viernes Santo'),
-(4, 107, 33, 'Sem. Santa - 3. Resurrección'),
-(5, 150, 33, 'Pentecostés'),
-(6, 210, 1914, 'Guerra Mundial - 1a'),
-(7, 245, 1942, 'Guerra Mundial - 2a')
-;
-INSERT INTO rclv_valores (id, nombre)
-VALUES 
-(10, 'Valores en el deporte'),
-(11, 'Perseverancia'),
-(12, 'Pacificar un país dividido'),
-(13, 'Pasión por ayudar'),
-(14, 'Superación personal')
-;
