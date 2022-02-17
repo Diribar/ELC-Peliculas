@@ -11,6 +11,7 @@ let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 // Controladores de APIs
 router.get("/api/averiguar-si-esta-disponible", API.averiguarSiEstaDisponible);
 router.get("/api/validar-edicion", API.validarEdicion);
+router.get("/api/validar-links", API.validarLinks);
 
 // Controladores de vistas
 router.get("/detalle", vista.detalleEdicion);

@@ -25,4 +25,13 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
+
+	validarLinks: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		// Averigua los errores solamente para esos campos
+		let errores = await validar.links(campos, req.query);
+		// Devuelve el resultado
+		return res.json(errores);
+	},
 };

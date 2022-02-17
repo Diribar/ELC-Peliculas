@@ -176,8 +176,12 @@ module.exports = {
 				return n ? n.toJSON() : "";
 			}),
 		]);
-		if (registroProd == null)
+		if (registroProd == "")
 			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
+		if (links.length > 1)
+			links.sort((a, b) => {
+				return a < b ? -1 : a > b ? 1 : 0;
+			});
 		// Configurar el Producto y Título
 		let producto = varias.producto(entidad);
 		let titulo = "Links de la " + producto;

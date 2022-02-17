@@ -175,6 +175,44 @@ module.exports = {
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
+
+	// ControllerAPI (validarLinks)
+	links: async (campos, datos) => {
+		let errores = {};
+		// ***** CAMPOS INDIVIDUALES *******
+		// Datos generales
+		if (campos.includes("url"))
+			errores.url = !datos.url
+				? cartelCampoVacio
+				: longitud(datos.url, 5, 100)
+				? longitud(datos.url, 5, 100)
+				: datos.url.includes("/")
+				? "Por favor ingresá una url válida"
+				: "";
+		if (campos.includes("link_tipo_id"))
+			errores.link_tipo_id = !datos.link_tipo_id
+				? cartelCampoVacio
+				: datos.link_tipo_id < "1" && datos.link_tipo_id > "4"
+				? "Por favor elegí una opción válida"
+				: "";
+		if (campos.includes("fecha_prov"))
+			errores.fecha_prov = !datos.fecha_prov
+				? datos.url.includes("youtube")
+					? "Por favor ingresá una fecha"
+					: ""
+				: datos.fecha_prov.constructor.toString().indexOf("Date") > -1
+				? "Por favor ingresá una fecha válida"
+				: datos.fecha_prov > new Date()
+				? "La fecha debe ser menor o igual a la de hoy"
+				: "";
+		if (campos.includes("gratuito"))
+			errores.gratuito =
+				datos.gratuito == ""
+					? cartelCampoVacio
+					: datos.gratuito < "0" && datos.gratuito > "1"
+					? "Por favor elegí una opción válida"
+					: "";
+	},
 };
 
 // Variables **************************

@@ -4,22 +4,37 @@
 
 /* Temas generales de las tablas */
 #datos #yaExistentes, #datos form {align-self: center;}
-#datos table {border-collapse: separate; border-spacing: 20px 5px;}
+#datos table {border-collapse: collapse}
 #datos table * {font-size: 1.1rem;}
-#datos table tbody tr td {height: 25px; vertical-align: middle; text-align: center;}
+#datos table thead tr {border-bottom: solid 1px black;}
+#datos table thead tr th {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 10px;}
 
 /* Tablas - Logo del proveedor */
-#datos table .logoProv {display: flex; align-items: center; justify-content: center;}
 #datos table .logoProv img {max-width: 150px; max-height: 25px;}
 
 /* Formato de los datos ya existentes */
 #datos #yaExistentes {margin-top: 20px;}
-#datos #yaExistentes tbody tr td {height: 25px; vertical-align: middle;}
 #datos #yaExistentes tbody tr td.url {width: 200px; max-width: 200px; padding: 2px 5px; overflow: hidden; white-space: nowrap;}
 #datos #yaExistentes tbody tr td.url a {text-decoration: none;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form input, #datos form select {height: 25px; display: flex; flex-direction: row; align-items: center;}
+#datos form input, #datos form select {height: 25px; border-radius: 5px;}
 #datos form input[name='url'] {width: 200px; padding: 2px 5px;}
-#datos form input[name='fecha_prov'] {width: 145px; padding-left: 5px;}
+#datos form input[name='fecha_prov'] {width: 100px; padding-left: 5px;}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Íconos */
+#datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
+#datos form tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
+#datos tbody tr td .fa-solid {font-size: 1.2rem;}
+
+/* Errores */
+.input-error {border: red 1px solid; position: relative; margin-right: 20px;}
+.input-error .fas {position: absolute; right: -20px; top: 50%; transform: translateY(-50%);}
