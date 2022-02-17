@@ -182,9 +182,7 @@ module.exports = {
 		let errores = {};
 		// Comienzan las revisiones
 		if (campos.includes("link_prov_id"))
-			errores.link_prov_id = !datos.link_prov_id
-				? cartelCampoVacio
-				: "";
+			errores.link_prov_id = !datos.link_prov_id ? cartelCampoVacio : "";
 		if (campos.includes("url")) {
 			errores.url = !datos.url
 				? cartelCampoVacio
@@ -213,7 +211,9 @@ module.exports = {
 				: "";
 		if (campos.includes("fecha_prov"))
 			errores.fecha_prov = !datos.fecha_prov
-				? cartelCampoVacio
+				? datos.url.includes("youtube")
+					? "Por favor ingresá una fecha"
+					: ""
 				: datos.fecha_prov > new Date().toISOString().slice(0, 10)
 				? "La fecha debe ser menor o igual a la de hoy"
 				: datos.fecha_prov < "2005"
