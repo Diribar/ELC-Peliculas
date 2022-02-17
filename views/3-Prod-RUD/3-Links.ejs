@@ -1,1 +1,114 @@
 <h1 id="titulo"><%= titulo %></h1>
+<div id="datos">
+	<h1><%= registro.nombre_castellano %> <em><% if (registro.nombre_original) { %>(<%= registro.nombre_original %>)<% } %></em></h1>
+	<!-- Tabla con links ya existentes -->
+	<table id="yaExistentes">
+		<caption>Links ya Existentes</caption>
+		<thead>
+			<tr>
+				<th>Tipo</th>
+				<th>Link</th>
+				<th>Proveedor</th>
+				<th>Fecha Prov.</th>
+				<th>Gratuito</th>
+				<th>Creado en</th>
+				<th>Creado por</th>
+				<% if (usuario.rol_usuario.aut_gestion_prod) { %>
+					<th>Alta analizada por</th>
+					<th>Revisada en</th>
+					<th>Revisada por</th>
+				<% } %>
+				<th>Eliminar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for (link of links) { %>
+				<tr>
+					<td><%= link.link_tipo.nombre %></td>
+					<td class="url"><a href="//<%= link.url %>" target="_blank"><%= link.url %></a></td>
+					<td class="logoProv"><img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>"></td>
+					<td><%= link.fecha_prov.slice(-2) + "/" + link.fecha_prov.slice(5, 7) + "/" + link.fecha_prov.slice(0, 4) %></td>
+					<td><%= link.gratuito ? "SI" :  "NO" %></td>
+					<td><%= link.creado_en.toLocaleString("en-GB").slice(0, 10) %></td>
+					<td><%= link.creado_por.nombre %></td>
+					<td>
+						<i class="fa-solid fa-trash-can" title='Eliminar definitivamente tu edición'></i>
+					</td>
+				</tr>
+			<% } %>
+		</tbody>
+	</table>
+	<!-- Tabla para nuevo link -->
+	<form>
+		<table>
+			<caption>Agregar links</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Link</th>
+					<th>Proveedor</th>
+					<th>Fecha Prov.</th>
+					<th>Gratuito</th>
+					<th>Agregar</th>
+				</tr>
+			</thead>
+				<tbody>
+					<tr>
+						<!-- Tipo de Link -->
+						<td>
+							<div class="input-error">
+								<select name="link_tipo_id" class="input">
+									<option value="" class="ocultar">Elejí</option>
+									<% for (tipo of links_tipos) { %>
+										<option value="<%= tipo.id %>"><%= tipo.nombre %></option>
+									<% } %>
+								</select>
+								<!-- Errores -->
+								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle "></i>
+							</div>
+						</td>
+						<!-- url -->
+						<td>
+							<div class="input-error">
+								<input name="url" type="text" autofocus class="input">
+								<!-- Errores -->
+								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle "></i>
+							</div>
+						</td>
+						<!-- Avatar -->
+						<td class="logoProv"><img src="/imagenes/0-Logos/PT-YouTube.jpg" alt=""></td>
+						<!-- Fecha del proveedor -->
+						<td>
+							<div class="input-error">
+								<input name="fecha_prov" type="date" class="input">
+								<!-- Errores -->
+								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle "></i>
+							</div>
+						</td>
+						<!-- Gratuito -->
+						<td>
+							<div class="input-error">
+								<select name="gratuito" class="input">
+									<option value="" class="ocultar" selected>?</option>
+									<option value="1">SI</option>
+									<option value="0">NO</option>
+								</select>
+								<!-- Errores -->
+								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle "></i>
+							</div>
+						</td>
+						<td><i class="fa-solid fa-floppy-disk" title='Guardar'></i></td>
+					</tr>
+				</tbody>
+		</table>
+		<ul>
+			Comentarios
+			<li>Por favor intentá incluir por lo menos un link gratuito</li>
+			<li>Sé muy cuidadoso de incluir un link que respete los derechos de autor</li>
+		</ul>
+	</form>
+</div>

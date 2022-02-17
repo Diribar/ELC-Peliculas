@@ -8,6 +8,13 @@ module.exports = {
 		});
 	},
 
+	obtenerTodosConInclude: (entidad, orden, include) => {
+		return db[entidad].findAll({
+			order: [[orden, "ASC"]],
+			include: includes,
+		});
+	},
+
 	obtenerPorCampo: (entidad, campo, valor) => {
 		return db[entidad].findOne({
 			where: {[campo]: valor},

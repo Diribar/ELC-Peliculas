@@ -23,7 +23,9 @@ desplegarMenus = (e)=> {
 	e.target.matches("#producto-menu") ||
 	e.target.matches("#producto-menu *")
 		? document.getElementById("producto-menu").classList.toggle("ocultar")
-		: document.getElementById("producto-menu").classList.add("ocultar")
+		: document.getElementById("producto-menu")
+		? document.getElementById("producto-menu").classList.add("ocultar")
+		: ""
 
 	// Menú de usuario
 	e.target.matches("#usuario-icono *") ||
