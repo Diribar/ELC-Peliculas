@@ -212,7 +212,7 @@ module.exports = {
 		if (campos.includes("fecha_prov"))
 			errores.fecha_prov = datos.url.includes("youtube")
 				? !datos.fecha_prov
-					? "Por favor ingresá una fecha"
+					? cartelCampoVacio
 					: datos.fecha_prov > new Date().toISOString().slice(0, 10)
 					? "La fecha debe ser menor o igual a la de hoy"
 					: datos.fecha_prov < "2005"
