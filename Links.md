@@ -12,6 +12,7 @@ PENDIENTES
 					Por esa razón, no aceptamos links de ese proveedor.
 					Si querés hacernos un comentario, podés hacer click 'aquí'".
 			- En función del link se intenta detectar el proveedor --> imagen
+	- Submit
 
 CRITERIOS
 - Puede haber más de un link por proveedor (ej: YT)
