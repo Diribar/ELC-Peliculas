@@ -8,67 +8,93 @@ window.addEventListener("load", () => {
 	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	// Variables de íconos
-	let guardar = document.querySelector("#cuerpo #flechas .fa-save");
-	// Otras variables
-	let ruta = "/producto/api/validar-links/?";
+	// Guardar o Eliminar
+	let eliminar = document.querySelectorAll("#yaExistentes .fa-trash-can");
+	let guardar = document.querySelector("form .fa-floppy-disk");
+	// Variables del nuevo avatar
+	let imgAvatar = document.querySelector("form .logoProv img");
+	let indiceAvatar = campos.indexOf("link_prov_id");
+	// Rutas
+	let rutaValidar = "/producto/api/validar-links/?";
+	let rutaObtener = "/producto/api/obtener-provs-links";
 
 	// Detectar 'changes' en el form
-	form.addEventListener("change",async (e) => {
+	form.addEventListener("change", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
 		// Si es url...
 		if (campo == "url") {
-			// Quitar los prefijos
-			aux = inputs[indice].value.indexOf("www.");
-			if (aux != -1) {
-				inputs[indice].value = valor.slice(aux + 4);
-				valor = e.target.value;
-			}
-			aux = inputs[indice].value.indexOf("https://");
-			if (aux != -1) {
-				inputs[indice].value = valor.slice(aux + 8);
-				valor = e.target.value;
-			}
-			aux = inputs[indice].value.indexOf("http://");
-			if (aux != -1) {
-				inputs[indice].value = valor.slice(aux + 7);
-				valor = e.target.value;
-			}
-			// Verificar si el 'Tipo de Link' está elegido
-			let campoLK = "link_tipo_id";
-			let indiceLK = campos.indexOf(campoLK);
-			let valorLK = inputs[indiceLK].value;
-			if (!valorLK) valor += "&" + campoLK + "=" + valorLK;
-			// Verificar errores
-			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-			if (errores.hay) {
-			} else {
-				// Obtener el proveedor
-				// Reemplazar la imagen
-			}
-		} else {
-			// Para otros, verificar errores
-			let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-			// Si hay errores
-			if (errores[campo] != undefined) {
-				mensajesError[indice].innerHTML = errores[campo];
-				if (errores[campo]) {
-					iconoOK[indice].classList.add("ocultar");
-					iconoError[indice].classList.remove("ocultar");
+			// 1. Quitar los prefijos
+			let aux1 = inputs[indice].value.indexOf("www.");
+			let aux2 = inputs[indice].value.indexOf("//");
+			inputs[indice].value =
+				aux1 != -1 ? valor.slice(aux1 + 4) : aux2 != -1 ? valor.slice(aux2 + 2) : valor;
+			valor = encodeURIComponent(e.target.value);
+			// 2. Detectar el proveedor del link
+			let proveedor = await fetch(rutaObtener).then((n) => n.json());
+			let aux = proveedor
+				.filter((n) => !n.generico)
+				.find((n) => valor.includes(n.url_distintivo));
+			proveedor = aux ? aux : proveedor.find((n) => n.generico);
+			// 3. Actualizar la imagen y el input
+			imgAvatar.src = "/imagenes/0-Logos/" + proveedor.avatar;
+			inputs[indiceAvatar].value = proveedor.id;
+			// 4. Agregar campos 'Proveedor del Link', 'Tipo de Link', 'Fecha de Prov.'
+			valor += agregarCampos("link_prov_id");
+			valor += agregarCampos("link_tipo_id");
+			valor += agregarCampos("fecha_prov");
+		}
+		// Verificar errores
+		let errores = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());
+		// Si hay errores
+		for (i = 0; i < campos.length; i++) {
+			if (errores[campos[i]] != undefined) {
+				mensajesError[i].innerHTML = errores[campos[i]];
+				if (errores[campos[i]]) {
+					iconoOK[i].classList.add("ocultar");
+					iconoError[i].classList.remove("ocultar");
 				} else {
-					iconoOK[indice].classList.remove("ocultar");
-					iconoError[indice].classList.add("ocultar");
+					iconoOK[i].classList.remove("ocultar");
+					iconoError[i].classList.add("ocultar");
 				}
 			}
 		}
-		// botonSubmit
+		// Submit
 		botonGuardar();
 	});
 
 	// Form submit
+
 	// Si 'save' OK,
 	// rutinas
+
+	// Funciones
+	let botonGuardar = () => {
+		let OK =
+			Array.from(iconoOK)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar == undefined;
+		let error =
+			Array.from(iconoError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar != iconoError.length;
+		OK && !error
+			? guardar.classList.remove("botonInactivado")
+			: guardar.classList.add("botonInactivado");
+	};
+	let agregarCampos = (campoAux) => {
+		let indiceAux = campos.indexOf(campoAux);
+		let valorAux = inputs[indiceAux].value;
+		return "&" + campoAux + "=" + valorAux;
+	};
 });

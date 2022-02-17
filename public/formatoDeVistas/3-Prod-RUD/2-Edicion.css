@@ -59,14 +59,14 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fas, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError {max-width: 200px; left: 20px;}
+.mensajeAyuda {max-width: 300px;}
 .mensajeError::before {left: -12px;}
 .mensajeAyuda::before {left: -20px;}
+.mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de ayuda */
 #datos .fa-question-circle {right: -20px;}
 #datos .mensajeAyuda {right: -25px; transform: translate(100%, -50%);}
-.mensajeAyuda {max-width: 300px;}
-.mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /*  Mensajes de error*/
 #datos .mensajeError {left: 20px; }

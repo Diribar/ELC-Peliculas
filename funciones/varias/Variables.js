@@ -185,4 +185,11 @@ module.exports = {
 			},
 		];
 	},
+
+	provs_lista_negra: ()=> {
+		return [
+			"youporn",
+			"pornhub",
+		]
+	}
 };
