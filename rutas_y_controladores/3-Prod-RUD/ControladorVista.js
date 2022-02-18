@@ -214,6 +214,7 @@ module.exports = {
 			n.map((m) => m.dataValues)
 		);
 		// Ir a la vista
+		console.log(registroProd.nombre_castellano);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
