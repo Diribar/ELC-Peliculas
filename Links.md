@@ -18,7 +18,6 @@ PENDIENTES
 		- Temporada + Capítulo
 - Programación FE:
 	- Apertura entre Trailers/Películas: botón para elegir
-	- Links a Detalle, Editar
 	- Eliminar
 	- Submit
 

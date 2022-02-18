@@ -4,8 +4,6 @@ window.addEventListener("load", () => {
 	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
-	let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
-	let links = document.querySelector("#cuerpo #flechas .fa-film");
 	let original = document.querySelector("#cuerpo #comandos .fa-home");
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
@@ -55,30 +53,6 @@ window.addEventListener("load", () => {
 		if (!descartar.classList.contains("botonInactivado")) {
 			// Recargar la vista
 			location.reload();
-		}
-	});
-
-	// FLECHAS ---------------------------------------------
-	// Acción si se elige 'detalle'
-	detalle.addEventListener("click", () => {
-		if (!detalle.classList.contains("botonInactivado")) {
-			// Ir a la vista 'detalle'
-			window.location.href =
-				"/producto/detalle/?entidad=" +
-				entidad +
-				"&id=" +
-				producto_id;
-		}
-	});
-	// Acción si se elige 'links'
-	links.addEventListener("click", () => {
-		if (!links.classList.contains("botonInactivado")) {
-			// Ir a la vista 'links'
-			window.location.href =
-				"/producto/links/?entidad=" +
-				entidad +
-				"&id=" +
-				producto_id;
 		}
 	});
 
