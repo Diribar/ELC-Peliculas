@@ -1,6 +1,7 @@
 // ************ Requires ************
 let BD_varias = require("../BD/varias");
 let varias = require("../Varias/Varias");
+let variables = require("../Varias/Variables");
 
 // *********** Para exportar ***********
 module.exports = {
@@ -138,7 +139,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			errores.nombre_original = await validarRepetidos("nombre_original", datos);
+			errores.nombre_original = await validarProdRepetido("nombre_original", datos);
 		// Nombre Castellano y Año de Estreno
 		if (
 			datos.nombre_castellano &&
@@ -147,7 +148,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			errores.nombre_castellano = await validarRepetidos("nombre_castellano", datos);
+			errores.nombre_castellano = await validarProdRepetido("nombre_castellano", datos);
 		// Año de Estreno y Año Fin
 		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
 			if (datos.ano_estreno > datos.ano_fin)
@@ -172,23 +173,36 @@ module.exports = {
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
 	// ControllerAPI (validarLinks)
 	links: async (campos, datos) => {
 		let errores = {};
-		// ***** CAMPOS INDIVIDUALES *******
-		// Datos generales
-		if (campos.includes("url"))
+		// Comienzan las revisiones
+		if (campos.includes("link_prov_id"))
+			errores.link_prov_id = !datos.link_prov_id ? cartelCampoVacio : "";
+		if (campos.includes("url")) {
 			errores.url = !datos.url
 				? cartelCampoVacio
 				: longitud(datos.url, 5, 100)
 				? longitud(datos.url, 5, 100)
-				: datos.url.includes("/")
+				: !datos.url.includes("/")
 				? "Por favor ingresá una url válida"
+				: variables
+						.provs_que_no_respetan_copyright()
+						.map((n) => n.url)
+						.some((n) => datos.url.includes(n))
+				? "No nos consta que ese proveedor respete los derechos de autor."
+				: variables.provs_lista_negra().some((n) => datos.url.includes(n))
+				? "Los videos de ese portal son ajenos a nuestro perfil"
 				: "";
+			if (!errores.url) {
+				let repetido = await validarLinkRepetido(datos.url);
+				if (repetido) errores.url = repetido;
+			}
+		}
 		if (campos.includes("link_tipo_id"))
 			errores.link_tipo_id = !datos.link_tipo_id
 				? cartelCampoVacio
@@ -196,14 +210,14 @@ module.exports = {
 				? "Por favor elegí una opción válida"
 				: "";
 		if (campos.includes("fecha_prov"))
-			errores.fecha_prov = !datos.fecha_prov
-				? datos.url.includes("youtube")
-					? "Por favor ingresá una fecha"
+			errores.fecha_prov = datos.url.includes("youtube")
+				? !datos.fecha_prov
+					? cartelCampoVacio
+					: datos.fecha_prov > new Date().toISOString().slice(0, 10)
+					? "La fecha debe ser menor o igual a la de hoy"
+					: datos.fecha_prov < "2005"
+					? "Por favor ingresá la fecha correcta"
 					: ""
-				: datos.fecha_prov.constructor.toString().indexOf("Date") > -1
-				? "Por favor ingresá una fecha válida"
-				: datos.fecha_prov > new Date()
-				? "La fecha debe ser menor o igual a la de hoy"
 				: "";
 		if (campos.includes("gratuito"))
 			errores.gratuito =
@@ -212,6 +226,9 @@ module.exports = {
 					: datos.gratuito < "0" && datos.gratuito > "1"
 					? "Por favor elegí una opción válida"
 					: "";
+		// ***** RESUMEN *******
+		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores;
 	},
 };
 
@@ -256,15 +273,7 @@ let extensiones = (nombre) => {
 	ext = nombre.slice(nombre.lastIndexOf("."));
 	return ![".jpg", ".png"].includes(ext);
 };
-let hayErrores = (errores) => {
-	resultado = false;
-	valores = Object.values(errores);
-	for (valor of valores) {
-		valor ? (resultado = true) : "";
-	}
-	return resultado;
-};
-let validarRepetidos = async (campo, datos) => {
+let validarProdRepetido = async (campo, datos) => {
 	// Obtener casos
 	let repetido = await BD_varias.obtenerPorCampos(
 		datos.entidad,
@@ -287,6 +296,36 @@ let validarRepetidos = async (campo, datos) => {
 			"' target='_blank'><u><strong>" +
 			producto.toLowerCase() +
 			"</strong></u></a>" +
+			" ya se encuentra en nuestra base de datos";
+	} else mensaje = "";
+	return mensaje;
+};
+let validarLinkRepetido = async (dato) => {
+	// Obtener casos
+	let repetido = await BD_varias.obtenerPorCampo("links_prod", "url", dato).then((n) => {
+		return n ? n.toJSON() : "";
+	});
+	// Si hay casos --> mensaje de error con la entidad y el id
+	if (repetido) {
+		mensaje =
+			"Este " +
+			"<a href='/producto/links/?entidad=" +
+			(repetido.pelicula_id
+				? "peliculas"
+				: repetido.coleccion_id
+				? "colecciones"
+				: repetido.capitulo_id
+				? "capitulos"
+				: "") +
+			"&id=" +
+			(repetido.pelicula_id
+				? repetido.pelicula_id
+				: repetido.coleccion_id
+				? repetido.coleccion_id
+				: repetido.capitulo_id
+				? repetido.capitulo_id
+				: "") +
+			"' target='_blank'><u><strong>link</strong></u></a>" +
 			" ya se encuentra en nuestra base de datos";
 	} else mensaje = "";
 	return mensaje;

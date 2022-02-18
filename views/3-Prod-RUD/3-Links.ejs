@@ -6,9 +6,9 @@
 		<caption>Links ya Existentes</caption>
 		<thead>
 			<tr>
-				<th>Tipo</th>
-				<th>Link</th>
 				<th>Proveedor</th>
+				<th>Link</th>
+				<th>Tipo</th>
 				<th>Fecha Prov.</th>
 				<th>Gratuito</th>
 				<th>Creado en</th>
@@ -24,9 +24,9 @@
 		<tbody>
 			<% for (link of links) { %>
 				<tr>
-					<td><%= link.link_tipo.nombre %></td>
-					<td class="url"><a href="//<%= link.url %>" target="_blank"><%= link.url %></a></td>
 					<td class="logoProv"><img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>"></td>
+					<td class="url"><a href="//<%= link.url %>" target="_blank"><%= link.url %></a></td>
+					<td><%= link.link_tipo.nombre %></td>
 					<td><%= link.fecha_prov.slice(-2) + "/" + link.fecha_prov.slice(5, 7) + "/" + link.fecha_prov.slice(0, 4) %></td>
 					<td><%= link.gratuito ? "SI" :  "NO" %></td>
 					<td><%= link.creado_en.toLocaleString("en-GB").slice(0, 10) %></td>
@@ -44,9 +44,9 @@
 			<caption>Agregar links</caption>
 			<thead>
 				<tr>
-					<th>Tipo</th>
-					<th>Link</th>
 					<th>Proveedor</th>
+					<th>Link</th>
+					<th>Tipo</th>
 					<th>Fecha Prov.</th>
 					<th>Gratuito</th>
 					<th>Agregar</th>
@@ -54,8 +54,27 @@
 			</thead>
 				<tbody>
 					<tr>
+						<!-- Proveedor -->
+						<td style="z-index: 6;" class="logoProv">
+							<div class="input-error">
+								<img>
+								<input name="link_prov_id" class="input ocultar">
+								<!-- Errores -->
+								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar"></i>
+							</div>
+						</td>
+						<!-- url -->
+						<td style="z-index: 5;">
+							<div class="input-error">
+								<input name="url" type="text" autofocus class="input">
+								<!-- Errores -->
+								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar"></i>
+							</div>
+						</td>
 						<!-- Tipo de Link -->
-						<td>
+						<td style="z-index: 4;">
 							<div class="input-error">
 								<select name="link_tipo_id" class="input">
 									<option value="" class="ocultar">Elejí</option>
@@ -64,32 +83,21 @@
 									<% } %>
 								</select>
 								<!-- Errores -->
-								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
-								<i class="fas fa-check-circle "></i>
+								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar"></i>
 							</div>
 						</td>
-						<!-- url -->
-						<td>
-							<div class="input-error">
-								<input name="url" type="text" autofocus class="input">
-								<!-- Errores -->
-								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
-								<i class="fas fa-check-circle "></i>
-							</div>
-						</td>
-						<!-- Avatar -->
-						<td class="logoProv"><img src="/imagenes/0-Logos/PT-YouTube.jpg" alt=""></td>
 						<!-- Fecha del proveedor -->
-						<td>
+						<td style="z-index: 3;">
 							<div class="input-error">
 								<input name="fecha_prov" type="date" class="input">
 								<!-- Errores -->
-								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
-								<i class="fas fa-check-circle "></i>
+								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar"></i>
 							</div>
 						</td>
 						<!-- Gratuito -->
-						<td>
+						<td style="z-index: 2;">
 							<div class="input-error">
 								<select name="gratuito" class="input">
 									<option value="" class="ocultar" selected>?</option>
@@ -97,11 +105,14 @@
 									<option value="0">NO</option>
 								</select>
 								<!-- Errores -->
-								<i class="fas fa-times-circle "><span class="mensajeError "></span></i>
-								<i class="fas fa-check-circle "></i>
+								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar"></i>
 							</div>
 						</td>
-						<td><i class="fa-solid fa-floppy-disk" title='Guardar'></i></td>
+						<!-- Guardar -->
+						<td>
+							<i class="fa-solid fa-floppy-disk botonInactivado" title='Guardar'></i>
+						</td>
 					</tr>
 				</tbody>
 		</table>

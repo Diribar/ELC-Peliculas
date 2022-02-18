@@ -5,7 +5,11 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(20)},
 		avatar: {type: dt.STRING(20)},
 		siempre_pago: {type: dt.BOOLEAN},
-		url: {type: dt.STRING(20)},
+		generico: {type: dt.BOOLEAN},
+		url_distintivo: {type: dt.STRING(20)},
+		buscador_automatico: {type: dt.BOOLEAN},
+		url_buscar_pre: {type: dt.STRING(25)},
+		url_buscar_post: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "links_provs",

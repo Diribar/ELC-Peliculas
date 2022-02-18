@@ -11,7 +11,9 @@
 #datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 10px;}
 
 /* Tablas - Logo del proveedor */
-#datos table .logoProv img {max-width: 150px; max-height: 25px;}
+#datos table .logoProv {width: 90px; padding: 0;}
+#datos table .logoProv .input-error {margin-left: 5px; margin-right: 5px;}
+#datos table .logoProv img {max-width: 80px; max-height: 25px;}
 
 /* Formato de los datos ya existentes */
 #datos #yaExistentes {margin-top: 20px;}
@@ -36,5 +38,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 #datos tbody tr td .fa-solid {font-size: 1.2rem;}
 
 /* Errores */
-.input-error {border: red 1px solid; position: relative; margin-right: 20px;}
-.input-error .fas {position: absolute; right: -20px; top: 50%; transform: translateY(-50%);}
+.mensajeError, .mensajeError::before, .input-error .fas
+    {position: absolute; transform: translateY(-50%); top: 50%;}
+#datos .input-error {position: relative; margin: 0 10px;}
+#datos .input-error .fas {right: -20px;}
+#datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
+#datos .input-error .mensajeError::before {left: -12px;}
+#datos .input-error .fa-times-circle {z-index: 1;}
