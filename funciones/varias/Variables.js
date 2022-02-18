@@ -10,6 +10,7 @@ module.exports = {
 				campo: "nombre_original",
 				peliculas: true,
 				colecciones: true,
+				capitulos: true,
 				antesDePais: true,
 			},
 			{
@@ -17,6 +18,7 @@ module.exports = {
 				campo: "nombre_castellano",
 				peliculas: true,
 				colecciones: true,
+				capitulos: true,
 				antesDePais: true,
 			},
 			{
@@ -25,6 +27,7 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: true,
+				capitulos: true,
 				antesDePais: true,
 			},
 			{
@@ -33,6 +36,7 @@ module.exports = {
 				numero: true,
 				peliculas: false,
 				colecciones: true,
+				capitulos: false,
 				antesDePais: true,
 			},
 			{
@@ -41,6 +45,7 @@ module.exports = {
 				numero: true,
 				peliculas: true,
 				colecciones: false,
+				capitulos: true,
 				antesDePais: true,
 			},
 			{
@@ -55,13 +60,55 @@ module.exports = {
 				colecciones: true,
 				omitirRutinaVista: true,
 			},
-			{titulo: "Dirección", campo: "direccion", peliculas: true, colecciones: true},
-			{titulo: "Guión", campo: "guion", peliculas: true, colecciones: true},
-			{titulo: "Música", campo: "musica", peliculas: true, colecciones: true},
-			{titulo: "Actuación", campo: "actuacion", peliculas: true, colecciones: true},
-			{titulo: "Producción", campo: "produccion", peliculas: true, colecciones: true},
-			{campo: "sinopsis", peliculas: true, colecciones: true, omitirRutinaVista: true},
-			{campo: "avatar", peliculas: true, colecciones: true, omitirRutinaVista: true},
+			{
+				titulo: "Dirección",
+				campo: "direccion",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+			},
+			{
+				titulo: "Guión",
+				campo: "guion",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+			},
+			{
+				titulo: "Música",
+				campo: "musica",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+			},
+			{
+				titulo: "Actuación",
+				campo: "actuacion",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+			},
+			{
+				titulo: "Producción",
+				campo: "produccion",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+			},
+			{
+				campo: "sinopsis",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+				omitirRutinaVista: true,
+			},
+			{
+				campo: "avatar",
+				peliculas: true,
+				colecciones: true,
+				capitulos: true,
+				omitirRutinaVista: true,
+			},
 		];
 	},
 
@@ -111,7 +158,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden"),
 				mensajes: [
 					"Mayores solamente: sensualidad o crueldad explícita, puede dañar la sensibilidad de un niño de 12 años.",
-					"Mayores apto familia: para mayores, sin dañar la sensibilidad de un niño.",
+					"Mayores apto familia: para mayores, y niños si están acompañados por sus padres.",
 					"Familia: ideal para compartir en familia y que todos disfruten",
 					"Menores apto familia: para menores, también la puede disfrutar un adulto.",
 					"Menores solamente: apuntado a un público solamente infantil.",
@@ -186,10 +233,7 @@ module.exports = {
 		];
 	},
 
-	provs_lista_negra: ()=> {
-		return [
-			"youporn",
-			"pornhub",
-		]
-	}
+	provs_lista_negra: () => {
+		return ["youporn", "pornhub"];
+	},
 };

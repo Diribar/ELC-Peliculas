@@ -823,19 +823,23 @@ CREATE TABLE links_provs (
 	url_distintivo VARCHAR(20) NOT NULL UNIQUE,
 	buscador_automatico BOOLEAN NOT NULL,
 	url_buscar_pre VARCHAR(25) NOT NULL,
-	url_buscar_post VARCHAR(20) NOT NULL,
+	trailer BOOLEAN NOT NULL,
+	url_buscar_post_tra VARCHAR(20) NOT NULL,
+	pelicula BOOLEAN NOT NULL,
+	url_buscar_post_pel VARCHAR(20) NOT NULL,	
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, url_distintivo, url_buscar_pre, url_buscar_post, buscador_automatico)
+INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
 VALUES 
-(2, 1, 'YouTube', 'PT-YouTube.jpg', 0, 'youtube.com', '/results?search_query=', 'sp=EgIYAg%253D%253D', 1),
-(3, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 'ver.formed.lat', '/search?q=', '', 1),
-(4, 3, 'Formed', 'PT-Formed.jpg', 0, 'watch.formed.org', '/search?q=', '', 1),
-(5, 4, 'Brochero', 'PT-Brochero.jpg', 1, 'brochero.org', '', '', 0),
-(6, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 'famflix.mx', '', '', 0),
-(7, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 'famiplay.com', '/catalogo?s=', '', 1),
-(8, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 'goyaproducciones.com', '/?s=', '', 1),
-(1, 128, 'Desconocido','PT-Desconocido.jpg', 0, '', '', '', 0)
+(1, 0, 'Desconocido','PT-Desconocido.jpg', 0, '', '', '', '', 0, 1, 1),
+(2, 1, 'YouTube', 'PT-YouTube.jpg', 0, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
+(3, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
+(4, 3, 'Formed', 'PT-Formed.jpg', 0, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
+(5, 4, 'Brochero', 'PT-Brochero.jpg', 1, 'brochero.org', '', '', '', 0, 0, 1),
+(6, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 'famflix.mx', '', '', '', 0, 0, 1),
+(7, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 'famiplay.com', '/catalogo?s=', '', '', 1, 0, 1),
+(8, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
+(9, 8, 'IMDb', 'PT-IMDB.jpg', 0, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
 ;
 UPDATE links_provs SET generico = 1 WHERE id = 1
 ;

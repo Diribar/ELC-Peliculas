@@ -124,20 +124,19 @@
 	</form>
 
 </section>
+<!-- Comandos -->
+<section id="comandos">
+	<% for (prov of provs.filter(n => n.buscador_automatico)) { %>
+		<a 
+			href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+			target="_blank"
+		>
+			<img src="/imagenes/0-Logos/<%= prov.avatar %>" alt="">
+		</a>
+	<% } %>
+</section>
 <!-- Botones -->
 <section id="flechas">
-	<div id="pack1">
-		<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-		<i class="fas fa-pencil-alt" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-	</div>
-	<div id="pack2">
-		<% for (prov of provs.filter(n => n.buscador_automatico)) { %>
-			<a 
-				href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
-				target="_blank"
-			>
-				<img src="/imagenes/0-Logos/<%= prov.avatar %>" alt="">
-			</a>
-		<% } %>
-	</div>
+	<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+	<i class="fas fa-pencil-alt" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 </section>

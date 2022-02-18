@@ -9,7 +9,10 @@ module.exports = (sequelize, dt) => {
 		url_distintivo: {type: dt.STRING(20)},
 		buscador_automatico: {type: dt.BOOLEAN},
 		url_buscar_pre: {type: dt.STRING(25)},
-		url_buscar_post: {type: dt.STRING(20)},
+		trailer: {type: dt.BOOLEAN},
+		url_buscar_post_tra: {type: dt.STRING(20)},
+		pelicula: {type: dt.BOOLEAN},
+		url_buscar_post_pel: {type: dt.STRING(20)},	
 	};
 	const config = {
 		tableName: "links_provs",

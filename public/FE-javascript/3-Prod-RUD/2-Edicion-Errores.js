@@ -19,12 +19,13 @@ window.addEventListener("load", async () => {
 		}
 	);
 	// Variables de íconos
-	let salir = document.querySelector("#cuerpo #flechas .fa-circle-info");
-	let edicion = document.querySelector("#cuerpo #flechas .fa-pencil-alt");
-	let original = document.querySelector("#cuerpo #flechas .fa-home");
-	let guardar = document.querySelector("#cuerpo #flechas .fa-save");
-	let descartar = document.querySelector("#cuerpo #flechas .fa-rotate-right");
-	let eliminar = document.querySelector("#cuerpo #flechas .fa-trash-alt");
+	let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
+	let links = document.querySelector("#cuerpo #flechas .fa-film");
+	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
+	let original = document.querySelector("#cuerpo #comandos .fa-home");
+	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
+	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-alt");
 
 	// Otras variables
 	let linksRCLV = document.querySelectorAll(".input-error i.linkRCLV");
@@ -51,7 +52,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Desactivar íconos
-		salir.classList.add("botonInactivado");
+		detalle.classList.add("botonInactivado");
+		links.classList.add("botonInactivado");
 		edicion.classList.add("botonInactivado");
 		original.classList.add("botonInactivado");
 		eliminar.classList.add("botonInactivado");
