@@ -4,8 +4,8 @@ window.addEventListener("load", () => {
 	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
-	let original = document.querySelector("#cuerpo #comandos .fa-home");
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
+	let original = document.querySelector("#cuerpo #comandos .fa-home");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-alt");
@@ -55,5 +55,5 @@ window.addEventListener("load", () => {
 			location.reload();
 		}
 	});
-
+	// Acción si se elige 'eliminar'
 });
