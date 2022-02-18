@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	// Variables de íconos
 	let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
 	let links = document.querySelector("#cuerpo #flechas .fa-globe");
-	let edicion = document.querySelector("#cuerpo #comandos .pencil-alt");
+	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
 	let original = document.querySelector("#cuerpo #comandos .fa-home");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
