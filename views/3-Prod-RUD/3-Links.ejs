@@ -1,5 +1,5 @@
 <h1 id="titulo"><%= titulo %></h1>
-<div id="datos">
+<section id="datos">
 	<h1><%= registro.nombre_castellano %> <em><% if (registro.nombre_original) { %>(<%= registro.nombre_original %>)<% } %></em></h1>
 	<!-- Tabla con links ya existentes -->
 	<table id="yaExistentes">
@@ -60,8 +60,8 @@
 								<img>
 								<input name="link_prov_id" class="input ocultar">
 								<!-- Errores -->
-								<i class="fas fa-times-circle ocultar"><span class="mensajeError "></span></i>
-								<i class="fas fa-check-circle ocultar"></i>
+								<i class="fas fa-times-circle ocultar invisible"><span class="mensajeError "></span></i>
+								<i class="fas fa-check-circle ocultar invisible"></i>
 							</div>
 						</td>
 						<!-- url -->
@@ -122,4 +122,22 @@
 			<li>Sé muy cuidadoso de incluir un link que respete los derechos de autor</li>
 		</ul>
 	</form>
-</div>
+
+</section>
+<!-- Botones -->
+<section id="flechas">
+	<div id="pack1">
+		<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
+		<i class="fas fa-pencil-alt" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+	</div>
+	<div id="pack2">
+		<% for (prov of provs.filter(n => n.buscador_automatico)) { %>
+			<a 
+				href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+				target="_blank"
+			>
+				<img src="/imagenes/0-Logos/<%= prov.avatar %>" alt="">
+			</a>
+		<% } %>
+	</div>
+</section>

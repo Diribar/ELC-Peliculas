@@ -169,8 +169,9 @@ module.exports = {
 				? "coleccion_id"
 				: "capitulo_id";
 		// Obtener los links, links_provs, producto
-		let [links, registroProd] = await Promise.all([
+		let [links, provs, registroProd] = await Promise.all([
 			BD_varias.obtenerTodosPorCampoConInclude("links_prod", campo_id, ID, includes),
+			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
 			BD_varias.obtenerPorId(entidad, ID).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
@@ -213,6 +214,7 @@ module.exports = {
 			codigo,
 			titulo,
 			links,
+			provs,
 			registro: registroProd,
 			producto,
 			entidad,
