@@ -22,15 +22,13 @@
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form input, #datos form select {height: 25px; border-radius: 5px;}
+#datos form input, #datos form select {height: 25px; border-radius: 5px; border-width: 1px;}
 #datos form input[name='url'] {width: 200px; padding: 2px 5px;}
 #datos form input[name='fecha_prov'] {width: 100px; padding-left: 5px;}
 
+/* Formato del campo fecha */
 input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
+input[type="date"]::-webkit-calendar-picker-indicator {display: none; -webkit-appearance: none;}
 
 /* Íconos */
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
@@ -45,3 +43,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 #datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
 #datos .input-error .mensajeError::before {left: -12px;}
 #datos .input-error .fa-times-circle {z-index: 1;}
+
+/* Flechas - General*/
+#cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #flechas {margin: 20px auto; padding: 10px 15px; border-radius: 15px;}
+#cuerpo #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
+
+/* Flechas - Particularidades */
+#cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
+#cuerpo #flechas #pack1, #cuerpo #flechas #pack2 
+    {display: flex; flex-direction: row; align-items: center; justify-content: space-between;}
+#cuerpo #flechas #pack1 {width: 60px; margin-right: 40px;}
+#cuerpo #flechas #pack1 i {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
+#cuerpo #flechas #pack2 {width: 400px;}
+#cuerpo #flechas #pack2 a {display: flex; flex-direction: row; }
+#cuerpo #flechas #pack2 a img { max-width: 70px; max-height: 70px; border-radius: 20px;}
