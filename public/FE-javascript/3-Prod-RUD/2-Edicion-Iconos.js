@@ -70,7 +70,7 @@ window.addEventListener("load", () => {
 				producto_id;
 		}
 	});
-	// Acción si se elige 'detalle'
+	// Acción si se elige 'links'
 	links.addEventListener("click", () => {
 		if (!links.classList.contains("botonInactivado")) {
 			// Ir a la vista 'links'
