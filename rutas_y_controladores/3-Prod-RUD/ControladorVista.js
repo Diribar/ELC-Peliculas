@@ -158,15 +158,6 @@ module.exports = {
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
 		let errorEnQuery = revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
-		// Redireccionar si se trata de una colección
-		if (entidad == "colecciones") {
-			let registro = await BD_varias.obtenerPorCampo("capitulos", "coleccion_id", ID).then(
-				(n) => {
-					return n ? n.toJSON() : "";
-				}
-			);
-			return res.redirect("/producto/links/?entidad=capitulos&id=" + registro.id);
-		}
 		// Definir los campos include
 		let includes = [
 			"link_tipo",
@@ -198,7 +189,7 @@ module.exports = {
 			});
 		// Configurar el Producto y Título
 		let producto = varias.producto(entidad);
-		let titulo = "Links de la " + producto;
+		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Obtener el usuario
 		let usuario = req.session.req.session.usuario;
 		let registroEditado = await BD_varias.obtenerPorCampos(

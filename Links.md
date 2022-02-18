@@ -2,8 +2,7 @@ OTROS
 - Resolver 'avanzar' de Datos Pers
 
 PENDIENTES
-- No se usan links para colecciones, sólo para películas y capítulos
-	- Programación BE: derivar al primer capítulo de la colección
+- Para colecciones, sólo links de Trailer
 	- BD en MySQL y Modelos:
 		- Tabla 'links_prod': quitar campo y vínculo de 'coleccion_id'
 		- Tabla 'colecciones': quitar vínculo a 'links_prod'
