@@ -1,0 +1,12 @@
+<tr>
+	<td class="logoProv"><img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>"></td>
+	<td class="url"><a href="//<%= link.url %>" target="_blank"><%= link.url %></a></td>
+	<td><%= link.link_tipo.nombre %></td>
+	<td><%= link.fecha_prov.slice(-2) + "/" + link.fecha_prov.slice(5, 7) + "/" + link.fecha_prov.slice(0, 4) %></td>
+	<td><%= link.gratuito ? "SI" :  "NO" %></td>
+	<td><%= link.creado_en.toLocaleString("en-GB").slice(0, 10) %></td>
+	<td><%= link.creado_por.nombre %></td>
+	<td>
+		<i class="fa-solid fa-trash-can" title='Eliminar definitivamente tu edición'></i>
+	</td>
+</tr>

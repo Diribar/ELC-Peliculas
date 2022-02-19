@@ -3,21 +3,15 @@ OTROS
 
 PENDIENTES
 - Vista:
-	- Apertura entre Trailers/Películas
-		- Links a otros portales
-		- Para colecciones, sólo links de Trailer
-	- Cuadro para 'ya existentes': 
-		- Alto mínimo: libre
-		- Alto máximo: 4 filas
-		- Una clase para Trailer y otra para Películas
-		- Si no hay links --> cartel informándolo
-	- Cuadro para 'nuevo': Form + 'links a otros portales'
-	- Sólo para capítulos:
-		- Capítulo anterior
-		- Capítulo siguiente
-		- Temporada + Capítulo
+	- Formato del select de Tipo de Link
+	- Tabla:
+		- Alto máximo con desplazamiento vertical
+		- Color de campos sin uso
 - Programación FE:
-	- Apertura entre Trailers/Películas: botón para elegir
+	- Dinámica con select de Tipo de Link
+		- Mostrar links de Trailer / Películas / Todos
+		- Para colecciones, sólo links de Trailer
+		- Links externos, sólo a Trailer / Películas / Todos
 	- Eliminar
 	- Submit
 

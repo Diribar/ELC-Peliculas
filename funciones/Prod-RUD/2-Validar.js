@@ -209,16 +209,6 @@ module.exports = {
 				: datos.link_tipo_id < "1" && datos.link_tipo_id > "4"
 				? "Por favor elegí una opción válida"
 				: "";
-		if (campos.includes("fecha_prov"))
-			errores.fecha_prov = datos.url.includes("youtube")
-				? !datos.fecha_prov
-					? cartelCampoVacio
-					: datos.fecha_prov > new Date().toISOString().slice(0, 10)
-					? "La fecha debe ser menor o igual a la de hoy"
-					: datos.fecha_prov < "2005"
-					? "Por favor ingresá la fecha correcta"
-					: ""
-				: "";
 		if (campos.includes("gratuito"))
 			errores.gratuito =
 				datos.gratuito == ""

@@ -3,12 +3,17 @@ main #cuerpo {justify-content: space-between; padding: 40px 40px 20px;}
 main #cuerpo h1 {margin: 0;}
 #cuerpo #datos {display: flex; flex-direction: column; align-items: flex-start;}
 
+/* Solapas Trailer / Películas */
+#cuerpo #datos #tiposLink {display: flex; flex-direction: row;}
+#cuerpo #datos #tiposLink p {margin: 0 20px; cursor: pointer;}
+
 /* Temas generales de las tablas */
-#datos form {align-self: center;}
-#datos form table {border-collapse: collapse}
-#datos form table * {font-size: 1.1rem;}
-#datos form table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
-#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px;}
+#datos #yaExistentes, #datos form {align-self: center;}
+#datos table {border-collapse: collapse}
+#datos table * {font-size: 1.1rem;}
+#datos table thead tr {border-bottom: solid 1px black;}
+#datos table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
+#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 10px;}
 
 /* Tablas - Logo del proveedor */
 #datos table .logoProv {width: 90px; padding: 0;}
@@ -16,29 +21,24 @@ main #cuerpo h1 {margin: 0;}
 #datos table .logoProv img {max-width: 80px; max-height: 25px;}
 
 /* Formato de los datos ya existentes */
-#datos tbody tr.yaExistentes td.url {width: 150px; overflow: hidden; white-space: nowrap; display: inline-block;}
+#datos #yaExistentes {margin-top: 20px;}
+#datos #yaExistentes tbody tr td.url {width: 200px; max-width: 200px; padding: 2px 5px; overflow: hidden; white-space: nowrap;}
+#datos #yaExistentes tbody tr td.url a {text-decoration: none;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form input, #datos form select {height: 25px; border-radius: 5px; border-width: 1px; text-align: center; padding: 2px 5px; line-height: 1;}
+#datos form input, #datos form select {height: 25px; border-radius: 5px; border-width: 1px;}
+#datos form input[name='url'] {width: 200px; padding: 2px 5px;}
+#datos form input[name='fecha_prov'] {width: 100px; padding-left: 5px;}
 
-/* Formato del campo url */
-#datos form .url .input-error {margin: 0; text-align: left; width: 130px;}
-#datos form input[name='url'] {width: 100%;}
-
-/* Formato del desperdicio */
-.desperdicio {background-color: var(--gris-oscuro);}
-
-/* Quitar la flecha de los select */
-select::-ms-expand {display: none;}
-select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+/* Formato del campo fecha */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {display: none; -webkit-appearance: none;}
 
 /* Íconos */
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos form tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td .fa-solid {font-size: 1.2rem; cursor: pointer;}
-#datos tbody tr td .fa-solid.botonInactivado {cursor: default;}
-
+#datos tbody tr td .fa-solid {font-size: 1.2rem;}
 
 /* Errores */
 .mensajeError, .mensajeError::before, .input-error .fas
@@ -62,5 +62,3 @@ select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-
 #cuerpo #flechas {background-color: var(--azul-oscuro); width: 100px;}
 #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
 #cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
-
-th, td {border: red solid 1px;}
