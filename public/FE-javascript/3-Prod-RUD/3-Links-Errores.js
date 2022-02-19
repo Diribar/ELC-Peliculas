@@ -41,7 +41,6 @@ window.addEventListener("load", () => {
 			// 3. Actualizar la imagen y el input
 			imgAvatar.src = "/imagenes/0-Logos/" + proveedor.avatar;
 			inputs[indiceAvatar].value = proveedor.id;
-			console.log(imgAvatar);
 			// 4. Agregar campos 'Proveedor del Link', 'Tipo de Link', 'Fecha de Prov.'
 			valor += agregarCampos("link_prov_id");
 			valor += agregarCampos("link_tipo_id");
