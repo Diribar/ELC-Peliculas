@@ -574,6 +574,7 @@ module.exports = {
 			codigo,
 			titulo: "Agregar - Terminaste",
 			dataEntry: datosTerminaste,
+			imagenMuchasGracias,
 		});
 	},
 
