@@ -1,5 +1,3 @@
-OTROS
-
 PENDIENTES
 - Vista:
 	- Formato del select de Tipo de Link

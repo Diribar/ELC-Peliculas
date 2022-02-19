@@ -1,5 +1,5 @@
 <h1 id="titulo">
-	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+	Agregá un<%= entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
 </h1>
 <section id="dataEntry" class="flex-col">
 	<div class="flex-col">
@@ -26,7 +26,7 @@
 			<!-- Variable inicial -->
 			<% botonColeccion = "" %>
 			<!-- Colección -->
-			<% if (dataEntry.entidad == "colecciones") { %>
+			<% if (entidad == "colecciones") { %>
 				<% if (dataEntry.fuente == "TMDB") { %>
 					<!-- En TMDB -->
 					<li id="partesAutomatico">Los capítulos de la colección se agregaron a nuestra BD en forma automática.</li>
@@ -37,20 +37,21 @@
 		</ul>
 	</div>
 	<!-- Botones -->
-	<div id="flechas" class="flex-row">
-		<% if (dataEntry.fuente != "TMDB") { %>
-			<% if (dataEntry.entidad == "colecciones") { %>
-				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.id %>">
-					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
-				</a>
-			<% } else if (dataEntry.entidad == "capitulos") { %>
-				<a href="/producto/agregar/tipo-producto/?coleccion=<%= dataEntry.coleccion_id %>">
-					<button type="text" autofocus>Agregar Capítulos en forma manual</button>
-				</a>
-			<% } %>
+	<div id="flechas">
+		<% if (dataEntry.fuente != "TMDB" && entidad != "peliculas") { %>
+			<a href="<%= ruta %>agregar/tipo-producto/?entidad=capitulos&id=<%= entidad == "colecciones" ? id : dataEntry.coleccion_id %>" autofocus>
+				<i class="fa-solid fa-layer-group" title="Agregar un capítulo en forma manual"></i>
+			</a>
 		<% } %>
-		<a href="<%= urlDetalle %>">
-			<button type="text" autofocus><i class="fas fa-info-circle"></i></button>
+		<!-- Tridente 'Detalle', 'Edición', 'Links' -->
+		<a href="<%= ruta + "detalle/?entidad=" + entidad + "&id=" + id %>">
+			<i class="fa-solid fa-circle-info" autofocus title="Ir a la vista 'Detalle'"></i>
+		</a>
+		<a href="<%= ruta + "edicion/?entidad=" + entidad + "&id=" + id %>">
+			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+		</a>
+		<a href="<%= ruta + "links/?entidad=" + entidad + "&id=" + id %>">
+			<i class="fa-solid fa-globe" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
 	</div>	
 </section>
