@@ -1,5 +1,4 @@
 OTROS
-- Resolver 'avanzar' de Datos Pers
 
 PENDIENTES
 - Vista:
