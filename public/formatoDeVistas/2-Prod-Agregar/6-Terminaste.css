@@ -15,8 +15,10 @@
 
 #dataEntry ul li#partesAutomatico {border: 1px solid var(--verde-oscuro); width: fit-content; padding: 1px 5px; background-color: var(--verde-oscuro); color: var(--verde-claro);}
 
-/* Submit */
-#dataEntry #flechas {margin-top: 30px;}
-#dataEntry button, #dataEntry input[type="submit"] {max-width: 140px;}
-#dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-info-circle {color: var(--verde-oscuro);}
+/* Flechas */
+#dataEntry #flechas {margin: 30px auto 0; padding: 7px 15px; border-radius: 15px; display: flex; flex-direction: row; width: auto;}
+#dataEntry #flechas {background-color: var(--azul-oscuro);}
+#dataEntry #flechas a {margin: 0 15px;}
+#dataEntry #flechas a:first-child {margin-left: 0;}
+#dataEntry #flechas a:last-child {margin-right: 0;}
+#dataEntry #flechas a i {color: var(--gris-claro); font-size: 1.25rem; cursor: pointer;}

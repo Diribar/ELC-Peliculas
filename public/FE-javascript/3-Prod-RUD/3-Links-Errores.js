@@ -9,10 +9,10 @@ window.addEventListener("load", () => {
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Guardar o Eliminar
-	let eliminar = document.querySelectorAll("#yaExistentes .fa-trash-can");
+	let eliminar = document.querySelectorAll("table .fa-trash-can");
 	let guardar = document.querySelector("form .fa-floppy-disk");
 	// Variables del nuevo avatar
-	let imgAvatar = document.querySelector("form .logoProv img");
+	let imgAvatar = document.querySelector("form #dataEntry .logoProv img");
 	let indiceAvatar = campos.indexOf("link_prov_id");
 	// Rutas
 	let rutaValidar = "/producto/api/validar-links/?";
@@ -44,7 +44,6 @@ window.addEventListener("load", () => {
 			// 4. Agregar campos 'Proveedor del Link', 'Tipo de Link', 'Fecha de Prov.'
 			valor += agregarCampos("link_prov_id");
 			valor += agregarCampos("link_tipo_id");
-			valor += agregarCampos("fecha_prov");
 		}
 		// Verificar errores
 		let errores = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());

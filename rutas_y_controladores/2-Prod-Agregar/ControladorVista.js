@@ -562,22 +562,19 @@ module.exports = {
 		indice = parseInt(Math.random() * muchasGracias.length);
 		imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
 		// 4. Generar la info para redirigir a Detalle
-		ruta = "/producto/detalle/?entidad=";
+		ruta = "/producto/";
 		entidad = datosTerminaste.entidad;
 		id = datosTerminaste.id;
-		urlDetalle = ruta + entidad + "&id=" + id;
 		// 5. Eliminar session y cookie de datosTerminaste
-		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
-		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
+		// if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
+		// if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			titulo: "Agregar - Terminaste",
-			link: req.originalUrl,
 			dataEntry: datosTerminaste,
 			imagenMuchasGracias,
-			urlDetalle,
 		});
 	},
 

@@ -9,15 +9,22 @@ window.addEventListener("load", async () => {
 	let iconoOK = document.querySelectorAll(".fa-check-circle");
 	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	// Otras variables
+	// Categoría y subcategoría
+	let categoria = document.querySelector("select[name='categoria_id']");
+	let subcategoria = document.querySelector("select[name='subcategoria_id']");
+	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
+	let RCLVs = document.querySelectorAll(".RCLV");
+	// Ruta
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
+	// ADD EVENT LISTENERS *********************************
 	// Averiguar si hubieron cambios
 	form.addEventListener("input", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
+
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
 		mensajesError[indice].innerHTML = errores[campo];
@@ -27,7 +34,13 @@ window.addEventListener("load", async () => {
 		errores[campo]
 			? iconoError[indice].classList.remove("ocultar")
 			: iconoError[indice].classList.add("ocultar");
-		// Esta función está definida en '4-DP-Subcat'
+
+		// Si se cambia la categoría --> actualiza subcategoría
+		if (campo == "categoria_id") {
+			subcategoria.value = "";
+			funcionSubcat();
+		}
+		// Si se cambia la subcategoría --> actualiza RCLV
 		if (campo == "subcategoria_id") await funcionRCLV();
 		// Fin
 		botonSubmit();
@@ -41,6 +54,7 @@ window.addEventListener("load", async () => {
 		}
 	});
 
+	// FUNCIONES *******************************************
 	// Funciones
 	let statusInicial = async (inputValue) => {
 		//Buscar todos los valores
@@ -69,11 +83,40 @@ window.addEventListener("load", async () => {
 				}
 			}
 		}
-		botonSubmit()
+		botonSubmit();
+	};
+	// Aplicar cambios en la subcategoría
+	funcionSubcat = () => {
+		for (opcion of subcategoriaOpciones) {
+			opcion.className.includes(categoria.value)
+				? opcion.classList.remove("ocultar")
+				: opcion.classList.add("ocultar");
+		}
+		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
+	};
+	// Aplicar cambios en RCLV
+	funcionRCLV = async () => {
+		if (!subcategoria.value) return;
+		// Averiguar qué RCLV corresponde
+		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
+		let registro = await fetch(ruta).then((n) => n.json());
+		let campos = ["personaje", "hecho", "valor"];
+		let nombres = ["personaje_historico_id", "hecho_historico_id", "valor_id"];
+		for (i = 0; i < campos.length; i++) {
+			// Mostrar el campo RCLV
+			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
+			else {
+				// Ocultar el campo RCLV
+				RCLVs[i].classList.add("ocultar");
+				// Eliminar el valor del campo que se oculta
+				document.querySelector("select[name='" + nombres[i] + "']").value = "";
+			}
+		}
 	};
 	let botonSubmit = () => {
 		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
-		let OK_RCLV = document.querySelectorAll(".RCLV .fa-check-circle.ocultar").length;
+		let RCLV_ocultos = document.querySelectorAll(".label-input.ocultar.RCLV").length;
+
 		// Detectar la cantidad de 'no aciertos'
 		let OK =
 			Array.from(iconoOK)
@@ -82,7 +125,8 @@ window.addEventListener("load", async () => {
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == OK_RCLV;
+				}, {}).ocultar == RCLV_ocultos;
+
 		// Detectar la cantidad de 'no errores'
 		let error =
 			Array.from(iconoError)
@@ -92,12 +136,19 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar != iconoError.length;
+
 		// Consecuencias
+		//console.log(OK, error);
 		OK && !error
 			? submit.classList.remove("botonInactivado")
 			: submit.classList.add("botonInactivado");
 	};
 
-	// Status inicial
+	// STATUS INICIAL *************************************
+	// Rutinas de categoría / subcategoría
+	categoria.value != "" ? funcionSubcat() : subcategoria.setAttribute("disabled", "disabled");
+	if (subcategoria.value != "") funcionRCLV();
+
+	// Errores y boton 'Submit'
 	await statusInicial((inputValue = true));
 });
