@@ -1,13 +1,14 @@
 /* Temas generales */
-#datos {padding: 40px 40px 20px;}
-#datos {display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1;}
+main #cuerpo {justify-content: space-between; padding: 40px 40px 20px;}
+main #cuerpo h1 {margin: 0;}
+#cuerpo #datos {display: flex; flex-direction: column; align-items: flex-start;}
 
 /* Temas generales de las tablas */
 #datos #yaExistentes, #datos form {align-self: center;}
 #datos table {border-collapse: collapse}
 #datos table * {font-size: 1.1rem;}
 #datos table thead tr {border-bottom: solid 1px black;}
-#datos table thead tr th {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
+#datos table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
 #datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 10px;}
 
 /* Tablas - Logo del proveedor */
@@ -44,17 +45,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {display: none; -webkit-ap
 #datos .input-error .mensajeError::before {left: -12px;}
 #datos .input-error .fa-times-circle {z-index: 1;}
 
-/* Flechas - General*/
-#cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#cuerpo #flechas {margin: 20px auto; padding: 10px 15px; border-radius: 15px;}
-#cuerpo #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
+/* Comandos y Flechas */
+#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
+
+/* Comandos - Particularidades */
+#cuerpo #comandos {background-color: var(--verde-oscuro); width: 450px;}
+#cuerpo #comandos a {display: flex; flex-direction: row; }
+#cuerpo #comandos a img { max-width: 70px; max-height: 70px; border-radius: 20px;}
 
 /* Flechas - Particularidades */
+#cuerpo #flechas {background-color: var(--azul-oscuro); width: 100px;}
+#cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
 #cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
-#cuerpo #flechas #pack1, #cuerpo #flechas #pack2 
-    {display: flex; flex-direction: row; align-items: center; justify-content: space-between;}
-#cuerpo #flechas #pack1 {width: 60px; margin-right: 40px;}
-#cuerpo #flechas #pack1 i {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#cuerpo #flechas #pack2 {width: 400px;}
-#cuerpo #flechas #pack2 a {display: flex; flex-direction: row; }
-#cuerpo #flechas #pack2 a img { max-width: 70px; max-height: 70px; border-radius: 20px;}

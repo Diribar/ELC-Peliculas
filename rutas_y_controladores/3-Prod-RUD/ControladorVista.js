@@ -43,9 +43,14 @@ module.exports = {
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
 		if (noAprobada && otroUsuario) {
-			req.session.noAprobado = registro;
-			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
-			return res.send("Producto noaprobado");
+			if (
+				entidad != "capitulos" ||
+				!(entidad == "capitulos" && registro.coleccion.creada_por_id == usuario.id)
+			) {
+				req.session.noAprobado = registro;
+				res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
+				return res.send("Producto no aprobado");
+			}
 		}
 		// Quitarle los campos 'null'
 		let campos = Object.keys(registro);
@@ -112,7 +117,7 @@ module.exports = {
 			var camposDP = await variables.camposDP();
 			var tiempo = existeEdicion
 				? Math.max(
-						1,
+						10,
 						parseInt(
 							(registroEditado.capturada_en - new Date() + 1000 * 60 * 60) / 1000 / 60
 						)
@@ -153,6 +158,15 @@ module.exports = {
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
 		let errorEnQuery = revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
+		// Redireccionar si se trata de una colección
+		if (entidad == "colecciones") {
+			let registro = await BD_varias.obtenerPorCampo("capitulos", "coleccion_id", ID).then(
+				(n) => {
+					return n ? n.toJSON() : "";
+				}
+			);
+			return res.redirect("/producto/links/?entidad=capitulos&id=" + registro.id);
+		}
 		// Definir los campos include
 		let includes = [
 			"link_tipo",

@@ -1,7 +1,7 @@
 <!-- Datos -->
 <section id="datos">
 	<!-- Datos generales -->
-	<section id="primeraColumna">
+	<div id="primeraColumna">
 		<h3>Datos generales</h3>
 		<!-- Primeros campos -->
 		<% for (campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
@@ -22,15 +22,8 @@
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "subcategoria_id")}) %>
 		<!--Público sugerido-->
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.campo == "publico_sugerido_id")}) %>
-		<!-- Links a Trailer y Película -->
-		<div id="links">
-			<h3>Links de Trailer y/o <%= producto %> </h3>
-			<a href="/producto/links/?entidad=<%= entidad %>&id=<%= ID %> " target="blank" tabindex="-1">
-				<button type="button" tabindex="-1">Links</button>
-			</a>
-		</div>
-	</section>
-	<section id="segundaColumna">
+	</div>
+	<div id="segundaColumna">
 		<!-- Personas -->
 		<h3>Personas</h3>
 		<% for (campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
@@ -45,21 +38,27 @@
 		<h3>Sinopsis</h3>
 		<!--Sinopsis-->
 		<%- include("24-Edicion-Sinopsis") %>
-	</section>
+	</div>
+</section>
+<!-- Comandos -->
+<section id="comandos">
+	<div class="pack">
+		<i class="fas fa-pencil-alt botonInactivado" tabindex="-1" title='Mostrar la versión editada'></i>
+		<i class="fas fa-slash botonInactivado" tabindex="-1"></i>
+		<i class="fas fa-home botonInactivado" tabindex="-1" title='Mostrar la versión original'></i>
+	</div>
+	<div class="pack">
+		<i class="fas fa-save botonInactivado" tabindex="-1" title='Guardar los cambios'></i>
+		<i class="fas fa-slash botonInactivado" tabindex="-1"></i>
+		<i class="fa-solid fa-rotate-right botonInactivado" tabindex="-1" title='Descartar los cambios sin guardar'></i>
+		<i class="fas fa-slash botonInactivado" tabindex="-1"></i>
+		<i class="fas fa-trash-alt botonInactivado" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
+	</div>
 </section>
 <!-- Botones -->
 <section id="flechas">
 	<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'"></i>
-	<div class="pack">
-		<i class="fas fa-pencil-alt botonInactivado" title='Mostrar la versión editada'></i>
-		<i class="fas fa-slash botonInactivado"></i>
-		<i class="fas fa-home botonInactivado" title='Mostrar la versión original'></i>
-	</div>
-	<div class="pack">
-		<i class="fas fa-save botonInactivado" title='Guardar los cambios'></i>
-		<i class="fas fa-slash botonInactivado"></i>
-		<i class="fa-solid fa-rotate-right botonInactivado" title='Descartar los cambios sin guardar'></i>
-		<i class="fas fa-slash botonInactivado"></i>
-		<i class="fas fa-trash-alt botonInactivado" title='Eliminar definitivamente tu edición'></i>
-	</div>
+	<% if (entidad != "colecciones") { %>
+		<i class="fa-solid fa-globe" tabindex="-1" title="Ir a la vista 'Links'"></i>
+	<% } %>
 </section>

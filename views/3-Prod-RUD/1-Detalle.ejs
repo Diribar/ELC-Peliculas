@@ -18,9 +18,7 @@
 			</div>
 			<!-- Sinopsis -->
 			<div id="sinopsis">
-				<nav>
-					<%= registro.sinopsis %>
-				</nav>
+				<nav><%= registro.sinopsis %></nav>
 				<!-- Ayuda -->
 				<i class="fas fa-question-circle"></i>
 				<ul type="none" class="mensajeAyuda ocultar">
@@ -47,23 +45,22 @@
 			</div>	
 			<!-- Capítulos de Colección -->
 		</div>
+		<!-- Comandos -->
+		<div id="comandos">
+			<% if (entidad != "colecciones") { %>
+				<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
+				<i class="fa-solid fa-film" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
+			<% } else { %>
+				<i class="fa-solid fa-layer-group" tabindex="-1" title="Ver el Detalle de un Capítulo"></i>
+			<% } %>
+			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+		</div>		
 		<!-- Botones -->
-		<div id="botones">
-			<div>
-				<button>Ver un Trailer</button>
-				<% if (entidad != "colecciones") { %>
-					<button>Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %></button>
-				<% } else { %>
-					<button>Temporadas</button>
-				<% } %>
-				<button>Califica<%= (entidad=="capitulos" ? "lo" : "la") %></button>
-				<button>
-					Mi interés en<br><%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>
-				</button>
-				<button>
-					Hacer o ver<br>comentarios
-				</button>
-			</div>
+		<div id="flechas">
+			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
+			<i class="fa-solid fa-globe" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</div>
 	</section>
 	<section id="datosBreves">

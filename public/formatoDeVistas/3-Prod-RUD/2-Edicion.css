@@ -1,6 +1,7 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 main form .input-error {position: relative; display: flex; flex-direction: row;}
+main form #cuerpo {justify-content: space-between; padding: 50px 70px 20px 50px;}
 
 /* Contador */
 form #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
@@ -8,13 +9,12 @@ form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-
 form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Imagen */
-form #imagen .fas, form #imagen .mensajeError, form #imagen .mensajeAyuda
-	{left: 50%; }
+form #imagen .fas, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
 form #imagen .fas {font-size: 4rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
 form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
 
 /* Datos del formulario */
-#datos {padding: 60px 70px 0 50px; display: flex; flex-direction: row; justify-content: space-between;}
+#datos {display: flex; flex-direction: row; justify-content: space-between;}
 #datos #primeraColumna {width: 40%;}
 #datos #segundaColumna {width: 45%;}
 #datos #primeraColumna .label-input .input-error .input {width: 200px;}
@@ -27,7 +27,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .label-input .input-error input#mostrarPaises {border-width: .7px; border-radius: 5px; background-color: white;}
 #datos .input-error {margin-left: 5px;}
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
-#datos section h3:first-child {margin-top: 0;}
+#datos h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
 #datos .label-input .input-error .input {align-self: center;}
@@ -50,7 +50,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 
 /* Sinopsis */
 #datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
-#datos #segundaColumna #sinopsis textarea {width: 100%; padding: 5px 10px; resize: none;}
+#datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
 /* Todos los mensajes */
@@ -73,16 +73,20 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
 
-/* Flechas - General*/
-#cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #flechas {margin: 20px auto 0; padding: 10px 15px; width: 45%; border-radius: 15px;}
-#cuerpo #flechas {border: solid 2px var(--azul-oscuro); background-color: var(--celeste-oscuro);}
+/* Comandos y Flechas */
+#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
+#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
+#cuerpo #comandos .pack:first-child, #cuerpo #flechas i:first-child {margin-left: 0;}
+#cuerpo #comandos .pack:last-child, #cuerpo #flechas i:last-child {margin-right: 0;}
+#cuerpo #comandos .pack i, #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
+#cuerpo .botonInactivado, #cuerpo .botonInactivado * {cursor: default;}
+
+/* Comandos - Particularidades */
+#cuerpo #comandos {background-color: var(--verde-oscuro);}
+#cuerpo #comandos .pack {margin: 0 20px;}
+#cuerpo #comandos .pack {display: flex; flex-direction: row; justify-content: center;}
+#cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
 
 /* Flechas - Particularidades */
-#cuerpo #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#cuerpo #flechas i  {color: var(--gris-oscuro); font-size: 1.5rem; cursor: pointer;}
-#cuerpo #flechas .botonInactivado, #cuerpo #flechas .botonInactivado * {cursor: default;}
-
-/* Flechas - Grupo con slash */
-#cuerpo #flechas .pack {display: flex; flex-direction: row; justify-content: center;}
-#cuerpo #flechas .pack .fa-slash {transform: rotate(85deg); cursor: default;}
+#cuerpo #flechas {background-color: var(--azul-oscuro);}
+#cuerpo #flechas i {margin: 0 15px;}
