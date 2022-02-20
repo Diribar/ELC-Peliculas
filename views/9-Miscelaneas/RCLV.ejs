@@ -25,7 +25,7 @@
 			<!-- Nombre: Input -->
 			<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 			<!-- Genero -->
-			<% if (codigo == "RCLV_personajes_historicos") { %>
+			<% if (codigo == "RCLV_personajes") { %>
 				<div id="genero" class="flex-row">
 					<h4>Género:</h4>
 					<div class="flex-row">
@@ -107,7 +107,7 @@
 			<div class="borderTop flex-row">
 				<div class="margenBottomTitulo relative flex-row align-center">
 					<!-- Título -->
-					<h3>Año de <%= codigo == "RCLV_personajes_historicos" ? "Nacimiento" : "Ocurrencia" %></h3>
+					<h3>Año de <%= codigo == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 					<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					<!-- Ayuda -->
 					<i class="fas fa-question-circle"></i>
@@ -139,7 +139,7 @@
 		</div>
 	</section>
 	<!-- Relación con la Iglesia (sólo para personajes históricos) -->
-	<% if (codigo == "RCLV_personajes_historicos") { %>
+	<% if (codigo == "RCLV_personajes") { %>
 		<section id="RCLI" class="borderTop flex-row space-between OK">
 			<div class="flex-col">
 				<!-- En proceso de canonización: Título y Error/OK -->

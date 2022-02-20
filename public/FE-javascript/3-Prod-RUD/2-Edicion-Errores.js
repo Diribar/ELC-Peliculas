@@ -85,14 +85,14 @@ window.addEventListener("load", async () => {
 		// Subcategoría + RCLV
 		if (
 			campo == "subcategoria_id" ||
-			campo == "personaje_historico_id" ||
-			campo == "hecho_historico_id" ||
+			campo == "personaje_id" ||
+			campo == "hecho_id" ||
 			campo == "valor_id"
 		)
 			funcionCamposCombinados([
 				"subcategoria_id",
-				"personaje_historico_id",
-				"hecho_historico_id",
+				"personaje_id",
+				"hecho_id",
 				"valor_id",
 			]);
 		// Fin

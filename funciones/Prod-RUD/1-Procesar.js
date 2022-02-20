@@ -10,26 +10,26 @@ module.exports = {
 		haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =
-			!producto.capturada_en || // No está capturado o
-			(producto.capturada_por_id == usuario.id && haceUnaHora < producto.capturada_en) || // Está capturado por mí hace menos de 1 hora o
-			(producto.capturada_por_id != usuario.id && haceUnaHora > producto.capturada_en); // Está capturado por otra persona hace más de 1 hora
+			!producto.capturado_en || // No está capturado o
+			(producto.capturado_por_id == usuario.id && haceUnaHora < producto.capturado_en) || // Está capturado por mí hace menos de 1 hora o
+			(producto.capturado_por_id != usuario.id && haceUnaHora > producto.capturado_en); // Está capturado por otra persona hace más de 1 hora
 
 		// Resultados TRUE:
-		console.log("Creado en:   " + (producto.creada_en - 0));
+		console.log("Creado en:   " + (producto.creado_en - 0));
 		console.log("Hace 1 hora: " + haceUnaHora);
 		disponible.status = true;
 		if (
 			// 1. CREADOR
-			producto.creada_por_id == usuario.id && // Se dio de alta por este usuario y
-			haceUnaHora < producto.creada_en // Se dio de alta hace menos de 1 hora
+			producto.creado_por_id == usuario.id && // Se dio de alta por este usuario y
+			haceUnaHora < producto.creado_en // Se dio de alta hace menos de 1 hora
 		) {
 			disponible.codigo = "creador";
 		} else if (
 			// 2. REVISOR
 			usuario.rol_usuario.aut_gestion_prod && // Soy un gestor y
 			!producto.alta_analizada_en && // No está analizada aún y
-			producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
-			haceUnaHora > producto.creada_en && // Se dio de alta hace más de 1 hora
+			producto.creado_por_id != usuario.id && // Se dio de alta por otro usuario y
+			haceUnaHora > producto.creado_en && // Se dio de alta hace más de 1 hora
 			statusCaptura
 		) {
 			disponible.codigo = "gestor";
@@ -45,8 +45,8 @@ module.exports = {
 			if (
 				// 1. CREADOR
 				// Se dio de alta por mí hace más de 1 hora, y todavía no está analizado
-				producto.creada_por_id == usuario.id && // Se dio de alta por este usuario y
-				haceUnaHora > producto.creada_en && // Se dio de alta hace menos de 1 hora
+				producto.creado_por_id == usuario.id && // Se dio de alta por este usuario y
+				haceUnaHora > producto.creado_en && // Se dio de alta hace menos de 1 hora
 				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "creador";
@@ -56,7 +56,7 @@ module.exports = {
 				// 2. NO REVISOR
 				// No soy gestor, no lo creé y todavía no está aprobado
 				!usuario.rol_usuario.aut_gestion_prod && // No soy un gestor y
-				producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
+				producto.creado_por_id != usuario.id && // Se dio de alta por otro usuario y
 				!producto.alta_analizada_en // No está analizada aún
 			) {
 				disponible.codigo = "noRevisor";
@@ -64,8 +64,8 @@ module.exports = {
 			} else if (
 				// 3. RECIÉN CREADO
 				// Se dio de alta por otra persona hace menos de 1 hora
-				producto.creada_por_id != usuario.id && // Se dio de alta por otro usuario y
-				haceUnaHora < producto.creada_en // Se dio de alta hace menos de 1 hora
+				producto.creado_por_id != usuario.id && // Se dio de alta por otro usuario y
+				haceUnaHora < producto.creado_en // Se dio de alta hace menos de 1 hora
 			) {
 				disponible.codigo = "recienCreado";
 				disponible.mensaje =
@@ -73,8 +73,8 @@ module.exports = {
 			} else if (
 				// 4. CAPTURA EXCESIVA
 				// Está capturado por mí hace más de 1 hora
-				producto.capturada_por_id == usuario.id && // Está capturado por mí
-				haceUnaHora > producto.capturada_en // Está capturado hace más de 1 hora
+				producto.capturado_por_id == usuario.id && // Está capturado por mí
+				haceUnaHora > producto.capturado_en // Está capturado hace más de 1 hora
 			) {
 				disponible.codigo = "capturaExcesiva";
 				disponible.mensaje =
@@ -82,8 +82,8 @@ module.exports = {
 			} else if (
 				// 5. CAPTURADO
 				// Está capturado por otra persona hace menos de 1 hora
-				producto.capturada_por_id != usuario.id && // Está capturado por otra persona
-				haceUnaHora < producto.capturada_en // Está capturado hace menos de 1 hora
+				producto.capturado_por_id != usuario.id && // Está capturado por otra persona
+				haceUnaHora < producto.capturado_en // Está capturado hace menos de 1 hora
 			) {
 				disponible.codigo = "capturado";
 			} else disponible.codigo = "desconocido";

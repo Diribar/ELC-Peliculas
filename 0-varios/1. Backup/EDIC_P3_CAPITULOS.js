@@ -1,7 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "peliculasEdicion";
+	const alias = "capitulosEdicion";
 	const columns = {
 		ELC_id: {type: dt.INTEGER},
+		coleccion_id: {type: dt.INTEGER},
+		temporada: {type: dt.INTEGER},
+		capitulo: {type: dt.INTEGER},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
@@ -27,19 +30,19 @@ module.exports = (sequelize, dt) => {
 		hecho_historico_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
 
-		editada_por_id: {type: dt.INTEGER},
-		editada_en: {type: dt.DATE},
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
-
-		capturada_por_id: {type: dt.INTEGER},
-		capturada_en: {type: dt.DATE},
+		capturado_por_id: {type: dt.INTEGER},
+		capturado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "edic_peliculas",
+		tableName: "edic_capitulos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
@@ -50,10 +53,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
-
 	};
 	return entidad;
 };

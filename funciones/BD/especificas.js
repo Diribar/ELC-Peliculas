@@ -52,8 +52,8 @@ module.exports = {
 
 	actualizarRCLV: async (datos) => {
 		// Definir variables
-		let camposRCLV = ["personaje_historico_id", "hecho_historico_id", "valor_id"];
-		let entidadesRCLV = ["personajes_historicos", "hechos_historicos", "valores"];
+		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
+		let entidadesRCLV = ["personajes", "hechos", "valores"];
 		let entidadesProd = ["peliculas", "colecciones", "capitulos"];
 
 		// Rutina por cada campo RCLV

@@ -165,11 +165,11 @@ module.exports = {
 			);
 			// Relación con la vida
 			if (subcategoria.personaje)
-				errores.personaje_historico_id = !datos.personaje_historico_id
+				errores.personaje_id = !datos.personaje_id
 					? cartelSelectVacio
 					: "";
 			if (subcategoria.hecho)
-				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+				errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******

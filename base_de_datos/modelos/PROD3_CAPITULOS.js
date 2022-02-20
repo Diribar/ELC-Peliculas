@@ -26,8 +26,8 @@ module.exports = (sequelize, dt) => {
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
-		personaje_historico_id: {type: dt.INTEGER},
-		hecho_historico_id: {type: dt.INTEGER},
+		personaje_id: {type: dt.INTEGER},
+		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
 		link_trailer: {type: dt.STRING(200)},
 		link_pelicula: {type: dt.STRING(200)},
@@ -36,21 +36,21 @@ module.exports = (sequelize, dt) => {
 		calidad_tecnica: {type: dt.INTEGER},
 		calificacion: {type: dt.INTEGER},
 
-		creada_por_id: {type: dt.INTEGER},
-		creada_en: {type: dt.DATE},
+		creado_por_id: {type: dt.INTEGER},
+		creado_en: {type: dt.DATE},
 		alta_analizada_por_id: {type: dt.INTEGER},
 		alta_analizada_en: {type: dt.DATE},
 		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 
-		editada_por_id: {type: dt.INTEGER},
-		editada_en: {type: dt.DATE},
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
 		edic_analizada_por_id: {type: dt.INTEGER},
 		edic_analizada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.INTEGER},
 
-		capturada_por_id: {type: dt.INTEGER},
-		capturada_en: {type: dt.DATE},
+		capturado_por_id: {type: dt.INTEGER},
+		capturado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "PROD_capitulos",
@@ -65,15 +65,15 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
-		entidad.belongsTo(n.RCLV_personajes_historicos, {as: "personaje_historico", foreignKey: "personaje_historico_id"});
-		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
+		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creada_por", foreignKey: "creada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
 
 		entidad.hasMany(n.links_prod, {as: "links", foreignKey: "capitulo_id"});
