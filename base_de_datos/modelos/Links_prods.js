@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "links_prod";
+	const alias = "links_prods";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
@@ -26,7 +26,7 @@ module.exports = (sequelize, dt) => {
 		capturado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "links_prod",
+		tableName: "links_prods",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

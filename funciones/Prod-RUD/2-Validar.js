@@ -292,7 +292,7 @@ let validarProdRepetido = async (campo, datos) => {
 };
 let validarLinkRepetido = async (dato) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampo("links_prod", "url", dato).then((n) => {
+	let repetido = await BD_varias.obtenerPorCampo("links_prods", "url", dato).then((n) => {
 		return n ? n.toJSON() : "";
 	});
 	// Si hay casos --> mensaje de error con la entidad y el id
