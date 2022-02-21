@@ -517,10 +517,11 @@ module.exports = {
 		let edicion = {
 			// Datos de 'confirma'
 			...datosEdicion,
-			entidad: confirma.entidad + "Edicion",
+			ELC_entidad: confirma.entidad,
 			editado_por_id: confirma.creado_por_id,
 			capturado_por_id: confirma.creado_por_id,
 			// Datos varios
+			entidad: "productos_edic",
 			ELC_id: registro.id,
 			editado_en: hora,
 			capturado_en: hora,
@@ -561,20 +562,16 @@ module.exports = {
 		muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
 		indice = parseInt(Math.random() * muchasGracias.length);
 		imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
-		// 4. Generar la info para redirigir a Detalle
-		ruta = "/producto/";
-		entidad = datosTerminaste.entidad;
-		id = datosTerminaste.id;
-		// 5. Eliminar session y cookie de datosTerminaste
-		// if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
-		// if (req.session.datosTerminaste) delete req.session.datosTerminaste;
-		// 6. Render del formulario
+		// 4. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			titulo: "Agregar - Terminaste",
 			dataEntry: datosTerminaste,
 			imagenMuchasGracias,
+			ruta: "/producto/",
+			entidad: datosTerminaste.entidad,
+			id: datosTerminaste.id,
 		});
 	},
 

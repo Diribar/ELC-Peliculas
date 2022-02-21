@@ -1,13 +1,15 @@
 module.exports = (sequelize, dt) => {
 	const alias = "links_prods_edic";
 	const columns = {
+		pelicula_id: {type: dt.INTEGER},
+		coleccion_id: {type: dt.INTEGER},
+		capitulo_id: {type: dt.INTEGER},
 		ELC_id: {type: dt.INTEGER},
 		url: {type: dt.STRING(100)},
 		link_tipo_id: {type: dt.INTEGER},
 		link_prov_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
 
-		
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
@@ -20,6 +22,9 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 		entidad.belongsTo(n.links_prods, {as: "link_prod", foreignKey: "ELC_id"});
 		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
 		entidad.belongsTo(n.links_provs, {as: "link_prov", foreignKey: "link_prov_id"});

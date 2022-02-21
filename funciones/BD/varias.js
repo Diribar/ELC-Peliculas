@@ -41,9 +41,16 @@ module.exports = {
 		});
 	},
 
-	obtenerPorCamposConInclude: (entidad, campo1, valor1, campo2, valor2, includes) => {
+	obtenerPor2CamposConInclude: (entidad, campo1, valor1, campo2, valor2, includes) => {
 		return db[entidad].findOne({
 			where: {[campo1]: valor1, [campo2]: valor2},
+			include: includes,
+		});
+	},
+
+	obtenerPor3CamposConInclude: (entidad, campo1, valor1, campo2, valor2, campo3, valor3, includes) => {
+		return db[entidad].findOne({
+			where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
 			include: includes,
 		});
 	},
