@@ -265,7 +265,7 @@ let extensiones = (nombre) => {
 };
 let validarProdRepetido = async (campo, datos) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampos(
+	let repetido = await BD_varias.obtenerPor2Campos(
 		datos.entidad,
 		campo,
 		datos[campo],

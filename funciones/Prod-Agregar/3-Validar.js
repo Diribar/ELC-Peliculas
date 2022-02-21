@@ -321,7 +321,7 @@ let hayErrores = (errores) => {
 };
 let validarRepetidos = async (campo, datos) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampos(
+	let repetido = await BD_varias.obtenerPor2Campos(
 		datos.entidad,
 		campo,
 		datos[campo],

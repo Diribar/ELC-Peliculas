@@ -167,7 +167,7 @@ module.exports = {
 			"link_prov",
 			"creado_por",
 			"alta_analizada_por",
-			"revisado_por",
+			"baja_analizada_por",
 			"status_registro",
 		];
 		// Obtener el 'campo_id'
@@ -218,8 +218,10 @@ module.exports = {
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Obtener el avatar
-		let registroEditado = await BD_varias.obtenerPorCampos(
+		let registroEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
+			"ELC_entidad",
+			entidad,
 			"ELC_id",
 			ID,
 			"editado_por_id",
