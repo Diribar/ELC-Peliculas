@@ -15,9 +15,9 @@ router.get("/api/validar-links", API.validarLinks);
 router.get("/api/obtener-provs-links", API.obtenerProvsLinks);
 
 // Controladores de vistas
-router.get("/detalle", vista.detalleEdicion);
-router.get("/edicion", soloAutInput, vista.detalleEdicion);
-router.get("/links", soloAutInput, vista.links);
+router.get("/detalle", vista.detalle_BM_prod);
+router.get("/edicion", soloAutInput, vista.detalle_BM_prod);
+router.get("/links", soloAutInput, vista.detalle_AB_links);
 router.get("/revisar", soloAutInput, vista.revisar);
 router.get("/calificala", soloAutInput, vista.calificala);
 router.get("/eliminar", soloAutInput, vista.eliminar);

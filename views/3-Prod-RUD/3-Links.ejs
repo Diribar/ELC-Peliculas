@@ -25,8 +25,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% for (link of links.filter(n => n.link_tipo_id == 1)) { %><%- include("31-Links-Datos") %><% } %>
-				<% for (link of links.filter(n => n.link_tipo_id == 2)) { %><%- include("31-Links-Datos") %><% } %>
+				<% for (link of linksAprob.filter(n => n.link_tipo_id == 1)) { %><%- include("31-Links-Datos") %><% } %>
+				<% for (link of linksAprob.filter(n => n.link_tipo_id == 2)) { %><%- include("31-Links-Datos") %><% } %>
 				<!-- Fila para nuevo link -->
 				<tr id="dataEntry">
 					<!-- Proveedor -->
