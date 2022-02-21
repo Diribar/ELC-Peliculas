@@ -58,8 +58,10 @@ module.exports = {
 			if (registro[campos[i]] === null) delete registro[campos[i]];
 		}
 		// Obtener los datos editados
-		let registroEditado = await BD_varias.obtenerPorCamposConInclude(
-			entidad + "Edicion",
+		let registroEditado = await BD_varias.obtenerPor3CamposConInclude(
+			"productos_edic",
+			"ELC_entidad",
+			entidad,
 			"ELC_id",
 			registro.id,
 			"editado_por_id",
@@ -81,7 +83,6 @@ module.exports = {
 			// Preparar la info a cruzar
 			edicion = {...registroEditado};
 			delete edicion.id;
-			delete edicion.ELC_id;
 			// Cruzar la info
 			registroCombinado = {...registro, ...edicion};
 		} else registroCombinado = {...registro};
@@ -173,27 +174,32 @@ module.exports = {
 				: entidad == "colecciones"
 				? "coleccion_id"
 				: "capitulo_id";
-		// Obtener los links, links_provs, producto
-		let [links, provs, registroProd] = await Promise.all([
-			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, ID, includes),
-			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
-			BD_varias.obtenerPorId(entidad, ID).then((n) => {
+		// Obtener el producto y los links_provs
+		let [registroProd, provs, linksABM] = await Promise.all([
+			BD_varias.obtenerPorIdConInclude(entidad, ID, "links").then((n) => {
 				return n ? n.toJSON() : "";
 			}),
+			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
+			BD_varias.obtenerTodosPorCampoConInclude("links_prods_edic", campo_id, ID, includes),
 		]);
 		if (registroProd == "")
 			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
-		if (links.length > 1)
-			links.sort((a, b) => {
-				return a < b ? -1 : a > b ? 1 : 0;
-			});
-		// Configurar el Producto y Título
+		// Obtener los links del producto
+		let linksAprob = registroProd.links;
+		//let 
+		// if (links.length > 1)
+		// 	links.sort((a, b) => {
+		// 		return a < b ? -1 : a > b ? 1 : 0;
+		// 	});
+		// Configurar el Producto y el Título
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		// Obtener el usuario
 		let usuario = req.session.req.session.usuario;
+
+		// Obtener el avatar
 		let registroEditado = await BD_varias.obtenerPorCampos(
-			entidad + "Edicion",
+			"productos_edic",
 			"ELC_id",
 			ID,
 			"editado_por_id",
@@ -201,7 +207,6 @@ module.exports = {
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
-		// Obtener el avatar
 		let imagenOr = registroProd.avatar;
 		let imagenEd = registroEditado.avatar;
 		let avatar = imagenEd
