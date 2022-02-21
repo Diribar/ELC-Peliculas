@@ -321,7 +321,7 @@ CREATE TABLE USUARIOS (
 	contrasena VARCHAR(100) NOT NULL,
 	nombre VARCHAR(50) NULL,
 	apellido VARCHAR(50) NULL,
-	numero_documento INT UNSIGNED NULL,
+	numero_documento INT UNSIGNED UNIQUE NULL,
 	apodo VARCHAR(50) NULL,
 	avatar VARCHAR(100) DEFAULT '-',
 	fecha_nacimiento DATE NULL,
@@ -349,6 +349,17 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (penaliz_motivo_id) REFERENCES penaliz_us_motivos(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO USUARIOS (id, email, contrasena, nombre, apodo, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, aut_data_entry, completado_en, status_registro_id)
+VALUES 
+(1, 'sinMail1', 'sinContraseña', 'Startup', 'Startup','O', 'AR', 2, 'PC', 1, 0, '2000-01-01 00:00:00', 4),
+(2, 'sinMail2', 'sinContraseña', 'Automatizado', 'Automatizado', 'O', 'AR', 2, 'PC', 1, 0, '2000-01-01 00:00:00', 4)
+;
+INSERT INTO USUARIOS (id, email, contrasena, nombre, apellido, numero_documento, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, aut_data_entry, completado_en, status_registro_id)
+VALUES 
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Data Entry', 'Startup', '0', 'Data Entry', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 2, 'LC', 1, 0, '2021-03-26 00:00:00', 4),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', '21072001', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LC', 1, 0, '2021-03-26 00:00:00', 4)
+;
+
 CREATE TABLE penaliz_us_usuarios (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -380,7 +391,7 @@ CREATE TABLE us_filtros_personales_campos (
 	FOREIGN KEY (filtro_cabecera_id) REFERENCES us_filtros_personales_cabecera(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE RCLV_personajes_historicos (
+CREATE TABLE RCLV_personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -415,7 +426,17 @@ CREATE TABLE RCLV_personajes_historicos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE RCLV_hechos_historicos (
+INSERT INTO RCLV_personajes (id, ano, nombre, creado_por_id)
+VALUES 
+(1, NULL, 'Varios (colección)', 1),
+(2, 0, 'Jesús', 1)
+;
+INSERT INTO RCLV_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
+VALUES 
+(5, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1),
+(6, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1)
+;
+CREATE TABLE RCLV_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -446,6 +467,16 @@ CREATE TABLE RCLV_hechos_historicos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO RCLV_hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
+VALUES
+(1,359,0,'Navidad',1),
+(2,100,33,'Sem. Santa - 1. General',1),
+(3,105,33,'Sem. Santa - 2. Viernes Santo',1),
+(4,107,33,'Sem. Santa - 3. Resurrección',1),
+(5,150,33,'Pentecostés',1),
+(6,210,1914,'Guerra Mundial - 1a',1),
+(7,245,1942,'Guerra Mundial - 2a',1)
+;
 CREATE TABLE RCLV_valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
@@ -474,6 +505,14 @@ CREATE TABLE RCLV_valores (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO RCLV_valores (id, nombre, creado_por_id)
+VALUES
+(10,'Valores en el deporte',1),
+(11,'Perseverancia',1),
+(12,'Pacificar un país dividido',1),
+(13,'Pasión por ayudar',1),
+(14,'Superación personal',1)
+;
 
 CREATE TABLE PROD_peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -499,8 +538,8 @@ CREATE TABLE PROD_peliculas (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
@@ -532,8 +571,8 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -550,9 +589,9 @@ CREATE TABLE PROD_colecciones (
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(100) NULL,
 	nombre_castellano VARCHAR(100) NULL,
-	paises_id VARCHAR(18) NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	ano_fin SMALLINT UNSIGNED NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
 	cant_capitulos SMALLINT UNSIGNED NULL,
@@ -568,8 +607,8 @@ CREATE TABLE PROD_colecciones (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
@@ -600,8 +639,8 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -637,8 +676,8 @@ CREATE TABLE PROD_capitulos (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 	link_trailer VARCHAR(200) NULL,
 	link_pelicula VARCHAR(200) NULL,
@@ -671,8 +710,8 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -694,159 +733,6 @@ CREATE TABLE PROD_borrados(
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
 	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE EDIC_peliculas (
-	id INT UNSIGNED AUTO_INCREMENT,
-	ELC_id INT UNSIGNED NOT NULL,
-	TMDB_id VARCHAR(10) NULL UNIQUE,
-	FA_id VARCHAR(10) NULL UNIQUE,
-	IMDB_id VARCHAR(10) NULL UNIQUE,
-	nombre_original VARCHAR(50) NULL,
-	nombre_castellano VARCHAR(50) NULL,
-	duracion SMALLINT UNSIGNED NULL,
-	paises_id VARCHAR(18) NULL,
-	ano_estreno SMALLINT UNSIGNED NULL,
-	idioma_original_id VARCHAR(2) NULL,
-	direccion VARCHAR(100) NULL,
-	guion VARCHAR(100) NULL,
-	musica VARCHAR(100) NULL,
-	actuacion VARCHAR(500) NULL,
-	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(800) NULL,
-	avatar VARCHAR(100) NULL,
-	en_castellano_id TINYINT UNSIGNED NULL,
-	en_color_id TINYINT UNSIGNED NULL,
-	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
-	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-	
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
-	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
-	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE EDIC_colecciones (
-	id INT UNSIGNED AUTO_INCREMENT,
-	ELC_id INT UNSIGNED NOT NULL,
-	TMDB_id VARCHAR(10) NULL UNIQUE,
-	FA_id VARCHAR(10) NULL UNIQUE,
-	entidad_TMDB VARCHAR(10) NULL,
-	nombre_original VARCHAR(100) NULL,
-	nombre_castellano VARCHAR(100) NULL,
-	paises_id VARCHAR(18) NULL,
-	ano_estreno SMALLINT UNSIGNED NULL,
-	ano_fin SMALLINT UNSIGNED NULL,
-	idioma_original_id VARCHAR(2) NULL,
-	cant_temporadas TINYINT UNSIGNED NULL,
-	cant_capitulos SMALLINT UNSIGNED NULL,
-	direccion VARCHAR(100) NULL,
-	guion VARCHAR(100) NULL,
-	musica VARCHAR(100) NULL,
-	actuacion VARCHAR(500) NULL,
-	produccion VARCHAR(50) NULL,
-	sinopsis VARCHAR(800) NULL,
-	avatar VARCHAR(100) NULL,
-	en_castellano_id TINYINT UNSIGNED NULL,
-	en_color_id TINYINT UNSIGNED NULL,
-	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
-	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-	
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
-	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE EDIC_capitulos (
-	id INT UNSIGNED AUTO_INCREMENT,
-	ELC_id INT UNSIGNED NOT NULL,
-	coleccion_id INT UNSIGNED NULL,
-	temporada TINYINT UNSIGNED NULL,
-	capitulo TINYINT UNSIGNED NULL,
-	TMDB_id VARCHAR(10) NULL UNIQUE,
-	FA_id VARCHAR(10) NULL UNIQUE,
-	IMDB_id VARCHAR(10) NULL UNIQUE,
-	nombre_original VARCHAR(50) NULL,
-	nombre_castellano VARCHAR(50) NULL,
-	duracion TINYINT UNSIGNED NULL,
-	paises_id VARCHAR(18) NULL,
-	ano_estreno SMALLINT UNSIGNED NULL,
-	idioma_original_id VARCHAR(2) NULL,
-	direccion VARCHAR(100) NULL,
-	guion VARCHAR(100) NULL,
-	musica VARCHAR(100) NULL,
-	actuacion VARCHAR(500) NULL,
-	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(800) NULL,
-	avatar VARCHAR(100) NULL,
-	en_castellano_id TINYINT UNSIGNED NULL,
-	en_color_id TINYINT UNSIGNED NULL,
-	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
-	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_historico_id SMALLINT UNSIGNED NULL,
-	hecho_historico_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
-	
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
-	
-	PRIMARY KEY (id),
-	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
-	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
-	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
-	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
-	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
-	FOREIGN KEY (personaje_historico_id) REFERENCES rclv_personajes_historicos(id),
-	FOREIGN KEY (hecho_historico_id) REFERENCES rclv_hechos_historicos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE links_provs (
@@ -879,7 +765,6 @@ VALUES
 ;
 UPDATE links_provs SET generico = 1 WHERE id = 1
 ;
-
 CREATE TABLE links_tipos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
@@ -890,7 +775,7 @@ VALUES
 (1, 'Trailer'),
 (2, 'Película')
 ;
-CREATE TABLE links_prod (
+CREATE TABLE links_prods (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
@@ -899,7 +784,6 @@ CREATE TABLE links_prod (
 	link_tipo_id TINYINT UNSIGNED NOT NULL,
 	link_prov_id TINYINT UNSIGNED NOT NULL,
 	gratuito BOOLEAN NOT NULL,
-	fecha_prov DATE NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,

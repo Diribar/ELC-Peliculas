@@ -1,9 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "RCLV_edic";
 	const columns = {
-		personaje_id: {type: dt.INTEGER},
-		hecho_id: {type: dt.INTEGER},
-		valor_id: {type: dt.INTEGER},
+		ELC_id: {type: dt.INTEGER},
+		entidad: {type: dt.STRING(20)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
@@ -22,9 +21,6 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
 		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
