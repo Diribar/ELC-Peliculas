@@ -5,7 +5,7 @@ let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
-	detalle_BM_prod: async (req, res) => {
+	prod_DBM: async (req, res) => {
 		// DETALLE - BAJAS - EDICIÓN (modificaciones)
 		// Tema y Código
 		let tema = "producto";
@@ -150,7 +150,7 @@ module.exports = {
 		});
 	},
 
-	detalle_AB_links: async (req, res) => {
+	links_DAB: async (req, res) => {
 		// DETALLE - ALTAS - BAJAS
 		// Tema y Código
 		let tema = "producto";
