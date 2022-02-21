@@ -101,7 +101,7 @@ window.addEventListener("load", async () => {
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
-		let nombres = ["personaje_historico_id", "hecho_historico_id", "valor_id"];
+		let nombres = ["personaje_id", "hecho_id", "valor_id"];
 		for (i = 0; i < campos.length; i++) {
 			// Mostrar el campo RCLV
 			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");

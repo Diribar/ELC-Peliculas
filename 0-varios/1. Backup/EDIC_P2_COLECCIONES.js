@@ -7,8 +7,8 @@ module.exports = (sequelize, dt) => {
 		entidad_TMDB: {type: dt.STRING(10)},
 		nombre_castellano: {type: dt.STRING(100)},
 		nombre_original: {type: dt.STRING(100)},
-		paises_id: {type: dt.STRING(18)},
 		idioma_original_id: {type: dt.STRING(2)},
+		paises_id: {type: dt.STRING(18)},
 		ano_estreno: {type: dt.INTEGER},
 		ano_fin: {type: dt.INTEGER},
 		cant_temporadas: {type: dt.INTEGER},
@@ -29,12 +29,11 @@ module.exports = (sequelize, dt) => {
 		hecho_historico_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
 
-		editada_por_id: {type: dt.INTEGER},
-		editada_en: {type: dt.DATE},
+		editado_por_id: {type: dt.INTEGER},
+		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
-
-		capturada_por_id: {type: dt.INTEGER},
-		capturada_en: {type: dt.DATE},
+		capturado_por_id: {type: dt.INTEGER},
+		capturado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "edic_colecciones",
@@ -52,11 +51,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_hechos_historicos, {as: "hecho_historico", foreignKey: "hecho_historico_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "editada_por", foreignKey: "editada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturada_por", foreignKey: "capturada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
-
-		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
 	};
 	return entidad;
 };

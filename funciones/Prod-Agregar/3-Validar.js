@@ -241,10 +241,10 @@ module.exports = {
 		if (campos.includes("calidad_tecnica_id"))
 			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
 		// RCLV
-		if (campos.includes("personaje_historico_id"))
-		errores.personaje_historico_id = !datos.personaje_historico_id ? cartelSelectVacio : "";
-		if (campos.includes("hecho_historico_id"))
-		errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+		if (campos.includes("personaje_id"))
+		errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
+		if (campos.includes("hecho_id"))
+		errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 		if (campos.includes("valor_id"))
 		errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		// RCLV - Combinados
@@ -257,11 +257,11 @@ module.exports = {
 			);
 			// Relación con la vida
 			if (subcategoria.personaje)
-				errores.personaje_historico_id = !datos.personaje_historico_id
+				errores.personaje_id = !datos.personaje_id
 					? cartelSelectVacio
 					: "";
 			if (subcategoria.hecho)
-				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+				errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******

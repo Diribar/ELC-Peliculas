@@ -11,12 +11,12 @@ module.exports = {
 		// Errores "nombre"
 		let nombre = await this.RCLV_nombre(datos);
 		let genero =
-			datos.entidad == "RCLV_personajes_historicos" ? await this.RCLV_genero(datos) : "";
+			datos.entidad == "RCLV_personajes" ? await this.RCLV_genero(datos) : "";
 		errores.nombre = nombre ? nombre : genero;
 		// Errores "datos repetidos"
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
 		// Errores "RCLI"
-		if (datos.entidad == "RCLV_personajes_historicos") errores.RCLI = this.RCLV_RCLI(datos);
+		if (datos.entidad == "RCLV_personajes") errores.RCLI = this.RCLV_RCLI(datos);
 		// Completar con 'hay errores'
 		errores.hay = hayErrores(errores);
 		return errores;

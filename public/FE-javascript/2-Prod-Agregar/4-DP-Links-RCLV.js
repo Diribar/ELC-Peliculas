@@ -19,9 +19,9 @@ window.addEventListener("load", async () => {
 			e.preventDefault();
 			// Obtener la entidad_RCLV
 			let entidad_RCLV = links[i].className.includes("personaje")
-				? "RCLV_personajes_historicos"
+				? "RCLV_personajes"
 				: links[i].className.includes("hecho")
-				? "RCLV_hechos_historicos"
+				? "RCLV_hechos"
 				: "RCLV_valores";
 			// Para preservar los valores ingresados hasta el momento
 			let url = buscarTodosLosValores();

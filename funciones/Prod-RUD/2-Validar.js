@@ -165,11 +165,11 @@ module.exports = {
 			);
 			// Relación con la vida
 			if (subcategoria.personaje)
-				errores.personaje_historico_id = !datos.personaje_historico_id
+				errores.personaje_id = !datos.personaje_id
 					? cartelSelectVacio
 					: "";
 			if (subcategoria.hecho)
-				errores.hecho_historico_id = !datos.hecho_historico_id ? cartelSelectVacio : "";
+				errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
@@ -292,7 +292,7 @@ let validarProdRepetido = async (campo, datos) => {
 };
 let validarLinkRepetido = async (dato) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampo("links_prod", "url", dato).then((n) => {
+	let repetido = await BD_varias.obtenerPorCampo("links_prods", "url", dato).then((n) => {
 		return n ? n.toJSON() : "";
 	});
 	// Si hay casos --> mensaje de error con la entidad y el id

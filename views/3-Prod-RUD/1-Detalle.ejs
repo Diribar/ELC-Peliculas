@@ -74,13 +74,13 @@
 			<p><strong>Público Sugerido:</strong> <%= registro.publico_sugerido.nombre %></p>
 			<p><strong>Categoría:</strong> <%= registro.categoria.nombre %></p>
 			<p><strong>Sub-categoría:</strong> <%= registro.subcategoria.nombre %></dd>
-			<% if (registro.personaje_historico_id) { %>
+			<% if (registro.personaje_id) { %>
 				<dt>Personaje Histórico:</dt>
-				<dd><%= registro.personaje_historico.nombre %> </dd>
+				<dd><%= registro.personaje.nombre %> </dd>
 			<% } %>
-			<% if (registro.hecho_historico_id) { %>
+			<% if (registro.hecho_id) { %>
 				<dt>Hecho Histórico:</dt>
-				<dd><%= registro.hecho_historico.nombre %> </dd>
+				<dd><%= registro.hecho.nombre %> </dd>
 			<% } %>
 			<p><strong>Año de estreno:</strong> <%= registro.ano_estreno %></p>
 			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= registro.duracion %> min.</p><% } %>

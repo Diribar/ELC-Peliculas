@@ -447,7 +447,7 @@ module.exports = {
 			entretiene,
 			calidad_tecnica,
 			calificacion,
-			creada_por_id: req.session.usuario.id,
+			creado_por_id: req.session.usuario.id,
 		};
 		res.cookie("confirma", req.session.confirma, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
@@ -497,11 +497,11 @@ module.exports = {
 			entretiene: confirma.entretiene,
 			calidad_tecnica: confirma.calidad_tecnica,
 			calificacion: confirma.calificacion,
-			creada_por_id: confirma.creada_por_id,
-			creada_en: hora,
+			creado_por_id: confirma.creado_por_id,
+			creado_en: hora,
 			status_registro_id: 1,
-			capturada_por_id: confirma.creada_por_id,
-			capturada_en: hora,
+			capturado_por_id: confirma.creado_por_id,
+			capturado_en: hora,
 		};
 		registro = await BD_varias.agregarRegistro(original);
 		// 3. Almacenar el dato de BD del avatar
@@ -518,12 +518,12 @@ module.exports = {
 			// Datos de 'confirma'
 			...datosEdicion,
 			entidad: confirma.entidad + "Edicion",
-			editada_por_id: confirma.creada_por_id,
-			capturada_por_id: confirma.creada_por_id,
+			editado_por_id: confirma.creado_por_id,
+			capturado_por_id: confirma.creado_por_id,
 			// Datos varios
 			ELC_id: registro.id,
-			editada_en: hora,
-			capturada_en: hora,
+			editado_en: hora,
+			capturado_en: hora,
 			status_registro_id: 1,
 		};
 		await BD_varias.agregarRegistro(edicion);
@@ -613,7 +613,7 @@ let guardar_us_calificaciones = (confirma, registro) => {
 			: "capitulo_id";
 	let datos = {
 		entidad: "us_calificaciones",
-		usuario_id: confirma.creada_por_id,
+		usuario_id: confirma.creado_por_id,
 		[entidad_id]: registro.id,
 		fe_valores_id: confirma.fe_valores_id,
 		entretiene_id: confirma.entretiene_id,

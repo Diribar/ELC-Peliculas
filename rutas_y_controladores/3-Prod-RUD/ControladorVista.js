@@ -24,12 +24,12 @@ module.exports = {
 			"categoria",
 			"subcategoria",
 			"publico_sugerido",
-			"personaje_historico",
-			"hecho_historico",
+			"personaje",
+			"hecho",
 			"status_registro",
-			"editada_por",
+			"editado_por",
 			// A partir de acá, van los campos exclusivos de 'Original'
-			"creada_por",
+			"creado_por",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener los datos originales del producto
@@ -41,11 +41,11 @@ module.exports = {
 		// Problema: PRODUCTO NO APROBADO
 		let noAprobada = !registro.status_registro.aprobada;
 		let usuario = req.session.req.session.usuario;
-		let otroUsuario = !usuario || registro.creada_por_id != usuario.id;
+		let otroUsuario = !usuario || registro.creado_por_id != usuario.id;
 		if (noAprobada && otroUsuario) {
 			if (
 				entidad != "capitulos" ||
-				!(entidad == "capitulos" && registro.coleccion.creada_por_id == usuario.id)
+				!(entidad == "capitulos" && registro.coleccion.creado_por_id == usuario.id)
 			) {
 				req.session.noAprobado = registro;
 				res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
@@ -62,7 +62,7 @@ module.exports = {
 			entidad + "Edicion",
 			"ELC_id",
 			registro.id,
-			"editada_por_id",
+			"editado_por_id",
 			usuario.id,
 			includes.slice(0, -2)
 		).then((n) => {
@@ -119,7 +119,7 @@ module.exports = {
 				? Math.max(
 						10,
 						parseInt(
-							(registroEditado.capturada_en - new Date() + 1000 * 60 * 60) / 1000 / 60
+							(registroEditado.capturado_en - new Date() + 1000 * 60 * 60) / 1000 / 60
 						)
 				  )
 				: false;
@@ -175,7 +175,7 @@ module.exports = {
 				: "capitulo_id";
 		// Obtener los links, links_provs, producto
 		let [links, provs, registroProd] = await Promise.all([
-			BD_varias.obtenerTodosPorCampoConInclude("links_prod", campo_id, ID, includes),
+			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, ID, includes),
 			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
 			BD_varias.obtenerPorId(entidad, ID).then((n) => {
 				return n ? n.toJSON() : "";
@@ -196,7 +196,7 @@ module.exports = {
 			entidad + "Edicion",
 			"ELC_id",
 			ID,
-			"editada_por_id",
+			"editado_por_id",
 			usuario.id
 		).then((n) => {
 			return n ? n.toJSON() : "";

@@ -53,9 +53,9 @@ module.exports = {
 		}
 		// Producto a RCLV
 		RCLV.producto_RCLV =
-			RCLV.entidad_RCLV == "RCLV_personajes_historicos"
+			RCLV.entidad_RCLV == "RCLV_personajes"
 				? "Personaje Histórico"
-				: RCLV.entidad_RCLV == "RCLV_hechos_historicos"
+				: RCLV.entidad_RCLV == "RCLV_hechos"
 				? "Hecho Histórico"
 				: RCLV.entidad_RCLV == "RCLV_valores"
 				? "Valor"
@@ -92,7 +92,7 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
-		if (codigo == "RCLV_personajes_historicos") {
+		if (codigo == "RCLV_personajes") {
 			procesos_canonizacion = await BD_varias.obtenerTodos(
 				"procesos_canonizacion",
 				"orden"
@@ -140,7 +140,7 @@ module.exports = {
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 2. Generar información
-		if (RCLV.entidad_RCLV == "RCLV_personajes_historicos" && req.body.enProcCan == "0") {
+		if (RCLV.entidad_RCLV == "RCLV_personajes" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}
@@ -158,7 +158,7 @@ module.exports = {
 		// 5. Preparar la info a guardar
 		datos = {
 			...RCLV,
-			creada_por_id: req.session.usuario.id,
+			creado_por_id: req.session.usuario.id,
 		};
 		// Obtener el día del año
 		if (!RCLV.desconocida)
@@ -173,9 +173,9 @@ module.exports = {
 		});
 		// Averiguar el campo para el RCLV-ID
 		campo = RCLV.entidad_RCLV.includes("personaje")
-			? "personaje_historico_id"
+			? "personaje_id"
 			: RCLV.entidad_RCLV.includes("hecho")
-			? "hecho_historico_id"
+			? "hecho_id"
 			: "valor"
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
