@@ -23,12 +23,12 @@
 #dataEntry .link i {color: var(--gris-oscuro);}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-question-circle {right: -20px;}
+#dataEntry .fa-circle-question {right: -20px;}
 #dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
-#dataEntry .fa-times-circle, #dataEntry .fa-check-circle {right: -20px;}
-#dataEntry .fa-times-circle {z-index: 1;}
+#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -20px;}
+#dataEntry .fa-circle-xmark {z-index: 1;}
 
 /* Procesando información */
 #dataEntry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
@@ -38,8 +38,8 @@
 /* Todos */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, 
-.fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.fa-circle-check, .fa-circle-question, 
+.fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
 /* Exito */
@@ -63,7 +63,6 @@
 #dataEntry #flechas i {font-size: 2rem;}
 #dataEntry #flechas a i {color: var(--gris-oscuro);}
 #dataEntry .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
-#dataEntry #flechas .fa-arrow-alt-circle-right {visibility: hidden;}
 
 /* Submit button */
 #dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}

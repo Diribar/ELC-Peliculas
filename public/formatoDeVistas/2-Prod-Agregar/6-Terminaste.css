@@ -8,10 +8,10 @@
 /* Texto */
 #dataEntry ul {padding-left: 20px;}
 #dataEntry ul li {margin: 5px 0; font-size: 1.2rem;}
-#dataEntry ul li .fa-question-circle {position: relative; transform: none; margin-left: 5px; right: 0; color: inherit;}
-#dataEntry ul li .fa-question-circle .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 400px; color: var(--gris-claro);}
-#dataEntry ul li .fa-question-circle .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
-#dataEntry ul li .fa-question-circle .mensajeAyuda li ul li {margin: 0px}
+#dataEntry ul li .fa-circle-question {position: relative; transform: none; margin-left: 5px; right: 0; color: inherit;}
+#dataEntry ul li .fa-circle-question .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 400px; color: var(--gris-claro);}
+#dataEntry ul li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
+#dataEntry ul li .fa-circle-question .mensajeAyuda li ul li {margin: 0px}
 
 #dataEntry ul li#partesAutomatico {border: 1px solid var(--verde-oscuro); width: fit-content; padding: 1px 5px; background-color: var(--verde-oscuro); color: var(--verde-claro);}
 

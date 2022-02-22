@@ -13,8 +13,8 @@ window.addEventListener("load", async () => {
 	let url_santopedia = "https://www.santopedia.com/buscar?q=";
 
 	// Variables de errores
-	let iconoOK = document.querySelectorAll("#dataEntry .OK .fa-check-circle");
-	let iconoError = document.querySelectorAll("#dataEntry .OK .fa-times-circle");
+	let iconoOK = document.querySelectorAll("#dataEntry .OK .fa-circle-check");
+	let iconoError = document.querySelectorAll("#dataEntry .OK .fa-circle-xmark");
 	let mensajeError = document.querySelectorAll("#dataEntry .mensajeError");
 	let OK = {};
 	let errores = {};

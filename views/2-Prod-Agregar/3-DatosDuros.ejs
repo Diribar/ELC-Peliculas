@@ -56,14 +56,14 @@
 			<% } %>
 			<!-- Rutina para todos los casos -->
 			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
-			<i class="fas fa-times-circle <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
+			<i class="fa-solid fa-circle-xmark <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.avatar %></span>
 			</i>
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<a href="/producto/agregar/<%= origen %>" tabindex="-1" title="Volver al paso anterior"><i class="fas fa-arrow-alt-circle-left"></i></a>
-		<button type="submit" autofocus title="Avanzar"><i class="fas fa-check-circle"></i></button>
+		<a href="/producto/agregar/<%= origen %>" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
+		<button type="submit" autofocus title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
 	</section>
 </form>

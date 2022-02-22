@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll(".form-grupo .input");
 	let asteriscos = document.querySelectorAll(
-		".form-grupo .fa-times-circle"
+		".form-grupo .fa-circle-xmark"
 	);
 	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
 

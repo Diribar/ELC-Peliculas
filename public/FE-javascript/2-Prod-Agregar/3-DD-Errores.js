@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Variables de país
 	let paisesSelect = document.querySelector("#paises_id select");

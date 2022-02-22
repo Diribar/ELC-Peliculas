@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	let forms = document.querySelectorAll("#resultadoDesamb form");
 	let colecciones = document.querySelectorAll("#resultadoDesamb form #coleccion");
 	let colec_nombre = document.querySelectorAll("#resultadoDesamb form #coleccion #colec_nombre");
-	let mensaje = document.querySelectorAll("#resultadoDesamb form .fa-times-circle");
+	let mensaje = document.querySelectorAll("#resultadoDesamb form .fa-circle-xmark");
 	let ruta = "/producto/agregar/api/DS-averiguar-coleccion/?TMDB_id=";
 
 	// Rutina para detectar si pertenece a una pelicula

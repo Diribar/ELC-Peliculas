@@ -21,10 +21,10 @@
 /* Íconos y Mensajes de error */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, 
-.fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.fa-circle-check, .fa-circle-question, 
+.fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #cuerpo .form-grupo {position: relative;}
-#cuerpo .form-grupo .fa-check-circle, #cuerpo .form-grupo .fa-times-circle {left: -20px;}
+#cuerpo .form-grupo .fa-circle-check, #cuerpo .form-grupo .fa-circle-xmark {left: -20px;}
 #cuerpo .mensajeError {left: 20px; max-width: 200px;}
 #cuerpo .mensajeError::before {left: -12px;}
 

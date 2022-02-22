@@ -15,14 +15,14 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 /* Mensajes */
 /* Estandarizaciones */
 .mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
+.fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
 /* Específicos */
 .mensajeError::before {content: ""; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
 .mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; padding: 3px 7px; display: none;}
-.fa-times-circle {color: var(--rojo-oscuro); cursor: pointer;}
-.fa-times-circle:hover .mensajeError {display: inline;}
-.fa-check-circle {color: var(--verde-oscuro); cursor: pointer;}
-.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
+.fa-circle-xmark {color: var(--rojo-oscuro); cursor: pointer;}
+.fa-circle-xmark:hover .mensajeError {display: inline;}
+.fa-circle-check {color: var(--verde-oscuro); cursor: pointer;}
+.fa-circle-question {color: var(--gris-oscuro); cursor: pointer;}
 
 /* Otras */
 .absolute {position: absolute}

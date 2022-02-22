@@ -44,21 +44,21 @@
 #datos .mensajeError, #datos .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
 
 /* Mensajes de ayuda */
-#datos .fa-question-circle {right: -20px;}
+#datos .fa-circle-question {right: -20px;}
 #datos .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); max-width: 350px;}
 #datos .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /*  Mensajes de error*/
-#dataEntry .fa-times-circle, 
-#dataEntry .fa-check-circle {left: -20px;}
-#dataEntry .fa-times-circle {z-index: 1; cursor: pointer;}
+#dataEntry .fa-circle-xmark, 
+#dataEntry .fa-circle-check {left: -20px;}
+#dataEntry .fa-circle-xmark {z-index: 1; cursor: pointer;}
 #datos .mensajeError {max-width: 200px;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row; justify-content: space-evenly;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
+#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}
 #dataEntry #flechas i {font-size: 2rem;}
 #dataEntry #flechas a i {color: var(--gris-oscuro)}
 
@@ -66,21 +66,21 @@
 /* Todos */
 .resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; font-weight: bold;}
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.fa-check-circle, .fa-question-circle, .fa-times-circle {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.fa-circle-check, .fa-circle-question, .fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-check-circle, .fa-times-circle {background-color: var(--gris-claro); border-radius: 50%;}
+.fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
 /* Exito */
 .resultadoExitoso {background-color: var(--verde-oscuro);}
-.fa-check-circle {color: var(--verde-oscuro); cursor: default;}
+.fa-circle-check {color: var(--verde-oscuro); cursor: default;}
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.fa-question-circle {color: var(--gris-oscuro); cursor: pointer;}
+.fa-circle-question {color: var(--gris-oscuro); cursor: pointer;}
 .link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
 .mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 /* Error */
 .resultadoInvalido {background-color: var(--rojo-oscuro);}
-.fa-times-circle {color: var(--rojo-oscuro);}
-.fa-times-circle:hover .mensajeError {display: inline;}
+.fa-circle-xmark {color: var(--rojo-oscuro);}
+.fa-circle-xmark:hover .mensajeError {display: inline;}
 .mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; left: 20px; padding: 3px 7px;}
 .mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}

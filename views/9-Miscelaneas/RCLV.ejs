@@ -10,7 +10,7 @@
 					<!-- Título -->
 					<h3>Nombre</h3>
 					<!-- Ayuda -->
-					<i class="fas fa-question-circle"></i>
+					<i class="fa-solid fa-circle-question"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
 						<% if (codigo == "RCLV_personajes") { %>
 							<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
@@ -19,10 +19,10 @@
 						<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
 					</ul>
 					<!-- Error/OK -->			
-					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+					<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.nombre %></span>
 					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 			</div>
 			<!-- Nombre: Input -->
@@ -49,17 +49,17 @@
 					<!-- Título -->
 					<h3>Fecha más representativa</h3>
 					<!-- Ayuda -->
-					<i class="fas fa-question-circle"></i>
+					<i class="fa-solid fa-circle-question"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
 						<li>Usamos la fecha en que se lo recuerda.</li>
 						<li>Para los santos o beatos, es la fecha en el santoral.</li>
 						<li>Para los demás, suele ser la fecha de su muerte.</li>
 					</ul>
 					<!-- Error/OK -->			
-					<i class="fas fa-times-circle<%- !errores.fecha ? ' ocultar' : '' %>">
+					<i class="fa-solid fa-circle-xmark<%- !errores.fecha ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.dia %></span>
 					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 			</div>
 			<!-- Fecha Representativa: Valores -->
@@ -113,17 +113,17 @@
 					<h3>Año de <%= codigo == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 					<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 					<!-- Ayuda -->
-					<i class="fas fa-question-circle"></i>
+					<i class="fa-solid fa-circle-question"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
 						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto_RCLV %>.</li>
 						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 						<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
 					</ul>
 					<!-- Error/OK -->			
-					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
+					<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.nombre %></span>
 					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 			</div>
 		</div>
@@ -132,10 +132,10 @@
 			<div class="relative">
 				<h3>Nombres con esa fecha</h3>
 				<!-- Error/OK -->			
-				<i class="fas fa-times-circle<%- !errores.duplicados ? ' ocultar' : '' %>">
+				<i class="fa-solid fa-circle-xmark<%- !errores.duplicados ? ' ocultar' : '' %>">
 					<span class="mensajeError"><%= errores.duplicados %></span>
 				</i>
-				<i class="fas fa-check-circle ocultar"></i>
+				<i class="fa-solid fa-circle-check ocultar"></i>
 			</div>
 			<p>Destildalos para controlar si no está ya en nuestra BD</p>
 			<ul type="none" id="posiblesDuplicados"></ul>
@@ -150,10 +150,10 @@
 					<!-- Título -->
 					<h3 class="">Relación con la Iglesia</h3>
 					<!-- Error/OK -->
-					<i class="fas fa-times-circle<%- !errores.RCLI ? ' ocultar' : '' %>">
+					<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
 						<span class="mensajeError"><%= errores.RCLI %></span>
 					</i>
-					<i class="fas fa-check-circle ocultar"></i>
+					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 				<!-- ¿En proceso de canonización? -->
 				<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
@@ -195,7 +195,7 @@
 	<% } %>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
-		<a href="<%= dataEntry.destino %> " tabindex="-1"><i class="fas fa-arrow-alt-circle-left"></i></a>
-		<button type="submit" class="botonInactivado"><i class="fas fa-check-circle"></i></button>
+		<a href="<%= dataEntry.destino %> " tabindex="-1"><i class="fa-solid fa-circle-left"></i></a>
+		<button type="submit" class="botonInactivado"><i class="fa-solid fa-circle-check"></i></button>
 	</section>
 </form>

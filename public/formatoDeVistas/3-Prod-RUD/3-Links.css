@@ -40,13 +40,13 @@ select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-
 #datos tbody tr td .fa-solid.botonInactivado {cursor: default;}
 
 /* Errores */
-.mensajeError, .mensajeError::before, .input-error .fas
+.mensajeError, .mensajeError::before, .input-error .fa-solid
     {position: absolute; transform: translateY(-50%); top: 50%;}
 #datos .input-error {position: relative; margin: 0 10px;}
-#datos .input-error .fas {right: -20px;}
+#datos .input-error .fa-solid {right: -20px;}
 #datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
 #datos .input-error .mensajeError::before {left: -12px;}
-#datos .input-error .fa-times-circle {z-index: 1;}
+#datos .input-error .fa-circle-xmark {z-index: 1;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}
