@@ -66,7 +66,6 @@ window.addEventListener("load", async () => {
 		// Obtener el capítulo anterior y posterior
 		let ruta = "/producto/api/obtener-cap-ant-y-post/?id=";
 		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
-		console.log(capAntID, capPostID);
 		// Acción si se elije "capítulo anterior"
 		if (capAntID) {
 			capAntDOM.classList.remove("botonInactivado");
