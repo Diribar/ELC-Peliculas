@@ -41,4 +41,25 @@ module.exports = {
 		);
 		return res.json(provs);
 	},
+
+	obtenerColCap: async (req, res) => {
+		let {entidad, id} = req.query;
+		let ID =
+			entidad == "colecciones"
+				? await BD_varias.obtenerPor3Campos(
+						"capitulos",
+						"coleccion_id",
+						id,
+						"temporada",
+						1,
+						"capitulo",
+						1
+				  )
+						.then((n) => n.dataValues)
+						.then((n) => n.id)
+				: await BD_varias.obtenerPorId("capitulos", id)
+						.then((n) => n.dataValues)
+						.then((n) => n.coleccion_id);
+		return res.json(ID);
+	},
 };

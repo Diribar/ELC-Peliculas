@@ -147,6 +147,7 @@ module.exports = {
 			existeEdicion,
 			version,
 			tiempo,
+			vista: req.baseUrl + req.path,
 		});
 	},
 
@@ -255,6 +256,7 @@ module.exports = {
 			avatar,
 			usuario,
 			links_tipos,
+			vista: req.baseUrl + req.path,
 		});
 	},
 

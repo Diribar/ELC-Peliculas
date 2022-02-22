@@ -51,19 +51,12 @@
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-film" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
 			<% } %>
-			<% if (entidad != "peliculas") { %>
-				<i class="fa-solid fa-layer-group" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
-			<% } %>
 			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
 			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
-		</div>		
-		<!-- Botones -->
-		<div id="flechas">
-			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
-			<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista 'Detalle'" style="display: none;"></i>
-			<i class="fa-solid fa-globe" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</div>
+		<!-- Botones -->
+		<%- include("0-Flechas") %> 
 	</section>
 	<section id="datosBreves">
 		<div>

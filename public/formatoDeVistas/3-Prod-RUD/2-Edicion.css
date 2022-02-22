@@ -73,20 +73,9 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
 #datos .fa-times-circle {z-index: 1;}
 
-/* Comandos y Flechas */
-#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
-#cuerpo #comandos .pack:first-child, #cuerpo #flechas i:first-child {margin-left: 0;}
-#cuerpo #comandos .pack:last-child, #cuerpo #flechas i:last-child {margin-right: 0;}
-#cuerpo #comandos .pack i, #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
-#cuerpo .botonInactivado, #cuerpo .botonInactivado * {cursor: default;}
-
 /* Comandos - Particularidades */
-#cuerpo #comandos {background-color: var(--verde-oscuro);}
 #cuerpo #comandos .pack {margin: 0 20px;}
 #cuerpo #comandos .pack {display: flex; flex-direction: row; justify-content: center;}
+#cuerpo #comandos .pack:first-child {margin-left: 0;}
+#cuerpo #comandos .pack:last-child {margin-right: 0;}
 #cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
-
-/* Flechas - Particularidades */
-#cuerpo #flechas {background-color: var(--azul-oscuro);}
-#cuerpo #flechas i {margin: 0 15px;}
