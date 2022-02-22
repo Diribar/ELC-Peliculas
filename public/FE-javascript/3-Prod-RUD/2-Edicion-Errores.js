@@ -55,16 +55,16 @@ window.addEventListener("load", async () => {
 		}
 
 		// Desactivar íconos
-		detalle.classList.add("botonInactivado");
-		links.classList.add("botonInactivado");
-		edicion.classList.add("botonInactivado");
-		original.classList.add("botonInactivado");
-		eliminar.classList.add("botonInactivado");
+		detalle.classList.add("botonInactivo");
+		links.classList.add("botonInactivo");
+		edicion.classList.add("botonInactivo");
+		original.classList.add("botonInactivo");
+		eliminar.classList.add("botonInactivo");
 		for (let i = 0; i < linksRCLV.length; i++) {
-			linksRCLV[i].classList.add("botonInactivado");
+			linksRCLV[i].classList.add("botonInactivo");
 		}
 		// Activar íconos
-		descartar.classList.remove("botonInactivado");
+		descartar.classList.remove("botonInactivo");
 
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
@@ -160,8 +160,8 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
 		OK && !error
-			? guardar.classList.remove("botonInactivado")
-			: guardar.classList.add("botonInactivado");
+			? guardar.classList.remove("botonInactivo")
+			: guardar.classList.add("botonInactivo");
 	};
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;

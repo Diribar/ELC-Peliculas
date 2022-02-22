@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	// Links a Relación con la vida
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", () => {
-			if (!links[i].classList.contains("botonInactivado")) {
+			if (!links[i].classList.contains("botonInactivo")) {
 				// Obtener la entidad_RCLV
 				let entidad_RCLV = links[i].className.includes("personaje")
 					? "RCLV_personajes"

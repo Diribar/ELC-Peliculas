@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
 	let mensajes = document.querySelector(".form-grupo .mensajeError");
 
 	// Anular 'submit' si hay algún error
-	if (!asterisco.classList.contains("ocultar")) button.classList.add("botonInactivado")
+	if (!asterisco.classList.contains("ocultar")) button.classList.add("botonInactivo")
 	// Acciones si se realizan cambios
 	input.addEventListener("change", async () => {
 		campo = input.name;
@@ -19,14 +19,14 @@ window.addEventListener("load", () => {
 		mensajes.innerHTML = mensaje;
 		if (mensaje) {
 			asterisco.classList.remove("ocultar");
-			button.classList.add("botonInactivado");
+			button.classList.add("botonInactivo");
 		} else {
 			asterisco.classList.add("ocultar");
-			button.classList.remove("botonInactivado");
+			button.classList.remove("botonInactivo");
 		}
 	});
 
 	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonInactivado") ? e.preventDefault() : "";
+		button.classList.contains("botonInactivo") ? e.preventDefault() : "";
 	});
 });

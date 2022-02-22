@@ -15,14 +15,14 @@ window.addEventListener("load", () => {
 
 	// Status inicial
 	if (version == "edicion") {
-		original.classList.remove("botonInactivado");
-		if (!status_creada) eliminar.classList.remove("botonInactivado");
-	} else if (version == "original" && existeEdicion) edicion.classList.remove("botonInactivado");
+		original.classList.remove("botonInactivo");
+		if (!status_creada) eliminar.classList.remove("botonInactivo");
+	} else if (version == "original" && existeEdicion) edicion.classList.remove("botonInactivo");
 
 	// COMANDOS ---------------------------------------------
 	// Acción si se elige 'edicion'
 	edicion.addEventListener("click", () => {
-		if (!edicion.classList.contains("botonInactivado")) {
+		if (!edicion.classList.contains("botonInactivo")) {
 			// Ir a la vista 'edicion'
 			window.location.href =
 				window.location.pathname + "?entidad=" + entidad + "&id=" + producto_id;
@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
 	});
 	// Acción si se elige 'original'
 	original.addEventListener("click", () => {
-		if (!original.classList.contains("botonInactivado")) {
+		if (!original.classList.contains("botonInactivo")) {
 			// Ir a la vista 'original'
 			window.location.href =
 				window.location.pathname +
@@ -43,14 +43,14 @@ window.addEventListener("load", () => {
 	});
 	// Acción si se elige 'guardar'
 	guardar.addEventListener("click", () => {
-		if (!guardar.classList.contains("botonInactivado")) {
+		if (!guardar.classList.contains("botonInactivo")) {
 			// Guardar los cambios mediante API
 			console.log("guardar");
 		}
 	});
 	// Acción si se elige 'descartar'
 	descartar.addEventListener("click", () => {
-		if (!descartar.classList.contains("botonInactivado")) {
+		if (!descartar.classList.contains("botonInactivo")) {
 			// Recargar la vista
 			location.reload();
 		}

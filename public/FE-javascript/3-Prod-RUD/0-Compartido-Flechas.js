@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	if (vista != "/producto/detalle/") {
 		let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
 		detalle.addEventListener("click", () => {
-			if (!detalle.classList.contains("botonInactivado")) {
+			if (!detalle.classList.contains("botonInactivo")) {
 				// Ir a la vista 'detalle'
 				window.location.href =
 					"/producto/detalle/?entidad=" + entidad + "&id=" + producto_id;
@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	if (vista != "/producto/edicion/") {
 		let edicion = document.querySelector("#cuerpo #flechas .fa-pen");
 		edicion.addEventListener("click", () => {
-			if (!edicion.classList.contains("botonInactivado")) {
+			if (!edicion.classList.contains("botonInactivo")) {
 				// Ir a la vista 'edicion'
 				window.location.href =
 					"/producto/edicion/?entidad=" + entidad + "&id=" + producto_id;
@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 	if (vista != "/producto/links/") {
 		let links = document.querySelector("#cuerpo #flechas .fa-globe");
 		links.addEventListener("click", () => {
-			if (!links.classList.contains("botonInactivado")) {
+			if (!links.classList.contains("botonInactivo")) {
 				// Ir a la vista 'links'
 				window.location.href = "/producto/links/?entidad=" + entidad + "&id=" + producto_id;
 			}
@@ -68,17 +68,17 @@ window.addEventListener("load", async () => {
 		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
 		// Acción si se elije "capítulo anterior"
 		if (capAntID) {
-			capAntDOM.classList.remove("botonInactivado");
+			capAntDOM.classList.remove("botonInactivo");
 			capAntDOM.addEventListener("click", () => {
 				window.location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
 			});
-		} else capAntDOM.classList.add("botonInactivado");
+		} else capAntDOM.classList.add("botonInactivo");
 		// Acción si se elije "capítulo posterior"
 		if (capPostID) {
-			capPostDOM.classList.remove("botonInactivado");
+			capPostDOM.classList.remove("botonInactivo");
 			capPostDOM.addEventListener("click", () => {
 				window.location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
 			});
-		} else capPostDOM.classList.add("botonInactivado");
+		} else capPostDOM.classList.add("botonInactivo");
 	}
 });

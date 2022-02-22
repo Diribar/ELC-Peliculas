@@ -37,7 +37,7 @@ select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos form tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 #datos tbody tr td .fa-solid {font-size: 1.2rem; cursor: pointer;}
-#datos tbody tr td .fa-solid.botonInactivado {cursor: default;}
+#datos tbody tr td .fa-solid.botonInactivo {cursor: default;}
 
 /* Errores */
 .mensajeError, .mensajeError::before, .input-error .fa-solid

@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", async (e) => {
-		if (submit.classList.contains("botonInactivado")) {
+		if (submit.classList.contains("botonInactivo")) {
 			e.preventDefault();
 			statusInicial((inputValue = false));
 		}
@@ -140,8 +140,8 @@ window.addEventListener("load", async () => {
 		// Consecuencias
 		//console.log(OK, error);
 		OK && !error
-			? submit.classList.remove("botonInactivado")
-			: submit.classList.add("botonInactivado");
+			? submit.classList.remove("botonInactivo")
+			: submit.classList.add("botonInactivo");
 	};
 
 	// STATUS INICIAL *************************************
