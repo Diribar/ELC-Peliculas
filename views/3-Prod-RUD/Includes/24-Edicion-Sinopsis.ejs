@@ -4,9 +4,9 @@
 			name="sinopsis" class="input" placeholder="Ingresa aquí la sinopsis"
 		><%= registro.sinopsis %></textarea>
 		<!-- Errores -->
-		<i class="fas fa-times-circle<%- !errores.sinopsis ? ' ocultar' : '' %>">
+		<i class="fa-solid fa-circle-xmark<%- !errores.sinopsis ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.sinopsis %></span>
 		</i>
-		<i class="fas fa-check-circle ocultar"></i>
+		<i class="fa-solid fa-circle-check ocultar"></i>
 	</div>
 </section>

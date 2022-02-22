@@ -9,8 +9,8 @@ form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-
 form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Imagen */
-form #imagen .fas, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
-form #imagen .fas {font-size: 4rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
+form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
+form #imagen .fa-solid {font-size: 4rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
 form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
 
 /* Datos del formulario */
@@ -56,7 +56,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 /* Todos los mensajes */
 .mensajeError, .mensajeError::before, 
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fas, 
+.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fa-solid, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 .mensajeError {max-width: 200px; left: 20px;}
 .mensajeAyuda {max-width: 300px;}
@@ -65,17 +65,17 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de ayuda */
-#datos .fa-question-circle {right: -20px;}
+#datos .fa-circle-question {right: -20px;}
 #datos .mensajeAyuda {right: -25px; transform: translate(100%, -50%);}
 
 /*  Mensajes de error*/
 #datos .mensajeError {left: 20px; }
-#datos .fa-times-circle, #datos .fa-check-circle {right: -20px;}
-#datos .fa-times-circle {z-index: 1;}
+#datos .fa-circle-xmark, #datos .fa-circle-check {right: -20px;}
+#datos .fa-circle-xmark {z-index: 1;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos .pack {margin: 0 20px;}
 #cuerpo #comandos .pack {display: flex; flex-direction: row; justify-content: center;}
 #cuerpo #comandos .pack:first-child {margin-left: 0;}
 #cuerpo #comandos .pack:last-child {margin-right: 0;}
-#cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
+#cuerpo #comandos .pack .fa-slash-forward {cursor: default;}

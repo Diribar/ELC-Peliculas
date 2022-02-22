@@ -10,7 +10,7 @@
 		<!-- Ayuda -->
 		<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
 		<!-- Errores -->
-		<i class="fas fa-times-circle <%= registro.campo %><%- !errores[registro.campo] ? ' ocultar' : '' %>">
+		<i class="fa-solid fa-circle-xmark <%= registro.campo %><%- !errores[registro.campo] ? ' ocultar' : '' %>">
 			<span class="mensajeError <%= registro.campo %>"><%= errores[registro.campo] %></span>
 		</i>
 	</div>

@@ -6,7 +6,7 @@
 		<div class="form-grupo">
 			<% apodo = dataEntry ? dataEntry.apodo : "" %>
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
-			<i class="fas fa-times-circle <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.apodo) ? errores.apodo : "" %></span>
 			</i>
 		</div>
@@ -38,7 +38,7 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<i class="fas fa-times-circle <%- !(errores && errores.pais_id) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.pais_id) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.pais_id) ? errores.pais_id : "" %></span>
 			</i>
 		</div>
@@ -52,7 +52,7 @@
 					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %> 
 			</select>
-			<i class="fas fa-times-circle <%- !(errores && errores.rol_iglesia_id) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.rol_iglesia_id) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.rol_iglesia_id) ? errores.rol_iglesia_id : "" %></span>
 			</i>
 		</div>
@@ -65,10 +65,10 @@
 				<img src="<%= avatar %>" alt="">
 			</label>
 			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="ocultar input">
-			<i class="fas fa-times-circle <%- !(errores && errores.avatar) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.avatar) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.avatar) ? errores.avatar : "" %></span>
 			</i>
-			<i class="fas fa-check-circle ocultar"></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</section>
 	<section id="buttons" class="flex-row"><!--Buttons-->

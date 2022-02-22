@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button");
 	let input = document.querySelector("#dataEntry input");
-	let iconoError = document.querySelector("#dataEntry .fa-times-circle");
+	let iconoError = document.querySelector("#dataEntry .fa-circle-xmark");
 	let mensajeError = document.querySelector("#dataEntry .mensajeError");
 	let resultado = document.querySelector("#dataEntry #resultado");
 

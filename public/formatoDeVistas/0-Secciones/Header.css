@@ -6,13 +6,13 @@ header section {margin: 0 15px;}
 /* Formato de íconos */
 header section .grupos {margin: 0 15px;}
 header section .grupos i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; position: static; transform: none;}
-header #usuario-icono #letraInicial, header #plus {color: var(--azul-oscuro); font-weight: bold;}
+header #usuario-icono #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
 header section .grupos .scale {transition: 300ms;}
 header section .grupos .scale:hover {transform: scale(1.3);}
 
 /* Ícono de agregar producto */
 header section .grupos #crear-prod-icono {position: relative;}
-header section .grupos #crear-prod-icono #plus {z-index: 1; position: absolute; top:42%; transform: translateY(-50%); left: 3px;}
+header section .grupos #crear-prod-icono .fa-plus {font-size: 1rem; top:48%; left: 3px; transform: translateY(-50%); color: var(--azul-oscuro); z-index: 1; position: absolute;}
 
 /* Formato del Título */
 header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}

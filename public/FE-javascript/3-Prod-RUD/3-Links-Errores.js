@@ -5,8 +5,8 @@ window.addEventListener("load", () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let iconoOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Guardar o Eliminar
 	let eliminar = document.querySelectorAll("table .fa-trash-can");

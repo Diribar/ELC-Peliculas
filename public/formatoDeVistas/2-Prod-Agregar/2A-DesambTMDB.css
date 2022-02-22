@@ -24,8 +24,8 @@
 #dataEntry #prod_nuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
 #dataEntry #coleccion #colec_nombre {font-weight: bold; font-style: italic}
 #dataEntry .interlineadoChico {margin-top: 5px;}
-#dataEntry .fa-times-circle {top: 15px; left: 0px; transform: none;}
-#dataEntry .fa-times-circle .mensajeError {max-width: 300px;}
+#dataEntry .fa-circle-xmark {top: 15px; left: 0px; transform: none;}
+#dataEntry .fa-circle-xmark .mensajeError {max-width: 300px;}
 
 /* Barra de desplazamiento */
 ::-webkit-scrollbar {outline: transparent;}

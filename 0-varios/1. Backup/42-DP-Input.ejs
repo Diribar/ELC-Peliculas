@@ -6,7 +6,7 @@
 			<input type="text" name="<%= registro.campo %>" autocomplete="off"
 				value="<%= dataEntry[registro.campo] %>" class="input">
 			<!-- Ayuda -->
-			<i class="fas fa-question-circle"></i>
+			<i class="fa-solid fa-circle-question"></i>
 			<ul type="dots" class="mensajeAyuda ocultar">
 				<% for (mensaje of registro.mensajes) { %>
 					<% if (dataEntry.entidad == "coleccion" || mensaje != registro.mensajes[0]) { %>
@@ -15,10 +15,10 @@
 				<% } %> 
 			</ul>
 			<!-- Errores -->			
-			<i class="fas fa-times-circle<%- !errores[registro.campo] ? ' ocultar' : '' %>">
+			<i class="fa-solid fa-circle-xmark<%- !errores[registro.campo] ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores[registro.campo] %></span>
 			</i>
-			<i class="fas fa-check-circle ocultar"></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</section>
 <% } %>

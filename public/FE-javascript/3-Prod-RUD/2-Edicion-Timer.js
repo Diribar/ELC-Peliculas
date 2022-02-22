@@ -61,10 +61,10 @@ window.addEventListener("load", () => {
 
 		// Íconos a mostrar y ocultar
 		document
-			.querySelector("#cartelAdvertencia .fa-arrow-alt-circle-left")
+			.querySelector("#cartelAdvertencia .fa-circle-left")
 			.classList.add("ocultar");
 		pulgarArriba.classList.remove("ocultar");
-		document.querySelector("#cartelAdvertencia .fa-check-circle").classList.add("ocultar");
+		document.querySelector("#cartelAdvertencia .fa-circle-check").classList.add("ocultar");
 
 		// Cambiar el texto del mensajeHTML
 		pulgarArriba.setAttribute("id", "irDetalle");

@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
 	// Variables
-	let iconosAyuda = document.querySelectorAll("main .fa-question-circle");
+	let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
 	let mensajesAyuda = document.querySelectorAll("main .mensajeAyuda");
 
 	// Mensajes de ayuda

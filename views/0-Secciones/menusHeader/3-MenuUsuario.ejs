@@ -9,20 +9,20 @@
 				<%= usuario.nombre.slice(0,1).toUpperCase() %>
 			</i>
 		<% } else { %>
-			<i class="fas fa-user-circle"></i>
+			<i class="fa-solid fa-circle-user"></i>
 		<% } %>
 	<% } else { %>
-		<i class="fas fa-question-circle"></i>
+		<i class="fa-solid fa-circle-question"></i>
 	<% } %>
 </div>
 <div id="usuario-menu" class="dropdown-content ocultar">
 	<% if (locals.usuario) { %>
-		<a href="/usuarios/detalle"><i class="fas fa-user"></i>Mi usuario</a>
-		<a href="#"><i class="fas fa-chart-bar"></i>Mis estadísticas</a>
+		<a href="/usuarios/detalle"><i class="fa-solid fa-user"></i>Mi usuario</a>
+		<a href="#"><i class="fa-solid fa-chart-bar"></i>Mis estadísticas</a>
 		<hr />
-		<a href="/usuarios/logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
+		<a href="/usuarios/logout"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
 	<% } else { %>
-		<a href="/usuarios/login"><i class="fas fa-sign-in-alt"></i>Login</a>
-		<a href="/usuarios/mail"><i class="fas fa-registered"></i>Registrarse</a>
+		<a href="/usuarios/login"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
+		<a href="/usuarios/mail"><i class="fa-solid fa-registered"></i>Registrarse</a>
 	<% } %>
 </div>

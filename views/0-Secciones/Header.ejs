@@ -3,12 +3,12 @@
 	<section>
 		<!-- Menú de Home -->
 		<div class="grupos">
-			<i id="home-icono" class="fas fa-home scale"></i>
+			<i id="home-icono" class="fa-solid fa-house scale"></i>
 			<%- include("1-MenuHome") %>
 		</div>
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
-			<i class="fas fa-search scale"></i>
+			<i class="fa-solid fa-magnifying-glass scale"></i>
 			<!-- Se crea el sector donde están el input y los resultados -->
 			<div id="inputMasResultados" class="ocultar">
 				<input type="text" placeholder="Escribí más de 3 letras">
@@ -20,26 +20,18 @@
 		<div class="grupos">
 			<div id="crear-prod-icono" class="scale">
 				<a href="/producto/agregar/confirma" tabindex="-1">
-					<i class="fas fa-video"></i>
-					<i id="plus">+</i>
+					<i class="fa-solid fa-video"></i>
+					<i class="fa-solid fa-plus"></i>
 				</a>
 			</div>
 		</div>
-		<!-- Menú de Producto -->
-		<% url = locals.urlReferencia %>
-		<% if (url.includes("/producto/edicion")) { %>
-			<div class="grupos">
-				<i id="prod-icono" class="fas fa-film scale"></i>
-				<%- include("2-MenuProducto") %>
-			</div>
-		<% } %>
 	</section>
 	<!-- Título del Encabezado -->
 	<p id="titulo">ELC - Películas</p>
 	<section>
 		<!-- Música de fondo -->
 		<div class="grupos">
-			<i id="musica-icono" class="fas fa-music scale"></i>
+			<i id="musica-icono" class="fa-solid fa-music scale"></i>
 			<audio src="/audio/Música-de-fondo.mp3"></audio>
 		</div>
 		<!-- Usuario -->

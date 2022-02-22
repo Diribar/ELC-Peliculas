@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll(".fa-check-circle");
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let iconoOK = document.querySelectorAll(".fa-circle-check");
+	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");

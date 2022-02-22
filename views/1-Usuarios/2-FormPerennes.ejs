@@ -6,7 +6,7 @@
 		<div class="form-grupo">
 			<% nombre = dataEntry ? dataEntry.nombre : "" %>
 			<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
-			<i class="fas fa-times-circle <%- !(errores && errores.nombre) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.nombre) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.nombre) ? errores.nombre : "" %></span>
 			</i>
 		</div>
@@ -16,7 +16,7 @@
 		<div class="form-grupo">
 			<% apellido = dataEntry ? dataEntry.apellido : "" %>
 			<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
-			<i class="fas fa-times-circle <%- !(errores && errores.apellido) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.apellido) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.apellido) ? errores.apellido : "" %></span>
 			</i>
 		</div>
@@ -30,7 +30,7 @@
 				<option value="F" <% if (sexo_id=="F") {%>selected<% } %>>Femenino</option>
 				<option value="M" <% if (sexo_id=="M") {%>selected<% } %>>Masculino</option>
 			</select>
-			<i class="fas fa-times-circle <%- !(errores && errores.sexo_id) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.sexo_id) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.sexo_id) ? errores.sexo_id : "" %></span>
 			</i>
 		</div>
@@ -40,7 +40,7 @@
 		<div class="form-grupo">
 			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 			<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-			<i class="fas fa-times-circle <%- !(errores && errores.fecha_nacimiento) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.fecha_nacimiento) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.fecha_nacimiento) ? errores.fecha_nacimiento : "" %></span>
 			</i>
 		</div>

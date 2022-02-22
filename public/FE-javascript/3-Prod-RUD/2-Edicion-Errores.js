@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll(".input-error .fa-check-circle");
-	let iconoError = document.querySelectorAll(".input-error .fa-times-circle");
+	let iconoOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Variables de país
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
@@ -22,10 +22,10 @@ window.addEventListener("load", async () => {
 	let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
 	let links = document.querySelector("#cuerpo #flechas .fa-globe");
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
-	let original = document.querySelector("#cuerpo #comandos .fa-home");
+	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
-	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-alt");
+	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");

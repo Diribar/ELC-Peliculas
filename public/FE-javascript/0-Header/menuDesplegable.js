@@ -15,7 +15,7 @@ desplegarMenus = (e)=> {
 		: document.getElementById("home-menu").classList.add("ocultar");
 
 	// Menú de Quick Search
-	if (e.target.matches("#busquedaRapida .fa-search"))
+	if (e.target.matches("#busquedaRapida .fa-magnifying-glass"))
 		document.querySelector("#busquedaRapida #inputMasResultados").classList.toggle("ocultar");
 
 	// Menú de Producto

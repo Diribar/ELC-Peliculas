@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	let button = document.querySelector("form button[type='submit']");
 	let inputs = document.querySelectorAll("#dataEntry .input");
 	let mensajesError = document.querySelectorAll(".mensajeError");
-	let iconoOK = document.querySelectorAll(".fa-check-circle");
-	let iconoError = document.querySelectorAll(".fa-times-circle");
+	let iconoOK = document.querySelectorAll(".fa-circle-check");
+	let iconoError = document.querySelectorAll(".fa-circle-xmark");
 	let resultadoComentario = document.querySelector("#resultado");
 	let entidad = document.querySelector("#entidad").innerHTML;
 	let statusInicial = true;

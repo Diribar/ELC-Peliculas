@@ -10,14 +10,14 @@
 					autofocus autocomplete="off"
 				>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle"></i>
+				<i class="fa-solid fa-circle-question"></i>
 				<p class="mensajeAyuda ocultar">
 					Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>. 
 					Escribí de manera precisa todas las palabras que sepas.
 				</p>
 			</div>
 			<!-- Errores -->
-			<i class="fas fa-times-circle<%- !errores.palabrasClave ? ' ocultar' : '' %>">
+			<i class="fa-solid fa-circle-xmark<%- !errores.palabrasClave ? ' ocultar' : '' %>">
 				<span class="mensajeError"><%= errores.palabrasClave %></span>
 			</i>
 		</div>

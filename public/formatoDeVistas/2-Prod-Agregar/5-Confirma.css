@@ -8,9 +8,9 @@
 /* Texto */
 #dataEntry ul {padding-left: 20px;}
 #dataEntry ul li {margin: 3px 0; font-size: 1.2rem;}
-#dataEntry ul li .fa-question-circle {position: relative; transform: none; margin-left: 5px; right: 0;}
-#dataEntry ul li .fa-question-circle .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 350px;}
-#dataEntry ul li .fa-question-circle .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
+#dataEntry ul li .fa-circle-question {position: relative; transform: none; margin-left: 5px; right: 0;}
+#dataEntry ul li .fa-circle-question .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 350px;}
+#dataEntry ul li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
 
 /* Datos del producto */
 #dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: row; width: 85%; align-self: center;}
@@ -20,4 +20,4 @@
 
 #dataEntry #flechas {margin-top: 30px; display: flex; flex-direction: row;}
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
-#dataEntry #flechas button .fa-check-circle {position: static; transform: none;}
+#dataEntry #flechas button .fa-circle-check {position: static; transform: none;}

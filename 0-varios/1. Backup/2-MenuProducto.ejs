@@ -26,7 +26,7 @@
 		<hr>
 	<% } %>
 	<a href="#">
-		<i class="fas fa-trash-alt"></i>
+		<i class="fa-solid fa-trash-can"></i>
 		Sugerí dar<%= (entidad=="capitulos" ? "lo" : "la") %> de baja
 	</a>
 	<hr>
@@ -41,3 +41,12 @@
 		</div>
 	</a>
 </div>
+
+		<!-- Menú de Producto -->
+		<% url = locals.urlReferencia %>
+		<% if (url.includes("/producto/edicion")) { %>
+			<div class="grupos">
+				<i id="prod-icono" class="fas fa-film scale"></i>
+				<%- include("2-MenuProducto") %>
+			</div>
+		<% } %>

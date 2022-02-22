@@ -5,10 +5,10 @@ window.addEventListener("load", () => {
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
-	let original = document.querySelector("#cuerpo #comandos .fa-home");
+	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
-	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-alt");
+	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let producto_id = new URL(window.location.href).searchParams.get("id");

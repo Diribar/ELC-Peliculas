@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
 	let input = document.querySelector(".form-grupo .input");
-	let asterisco = document.querySelector(".form-grupo .fa-times-circle");
+	let asterisco = document.querySelector(".form-grupo .fa-circle-xmark");
 	let mensajes = document.querySelector(".form-grupo .mensajeError");
 
 	// Anular 'submit' si hay algún error

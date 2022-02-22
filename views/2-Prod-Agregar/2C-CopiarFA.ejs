@@ -17,7 +17,7 @@
 					autofocus
 				>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle relative">
+				<i class="fa-solid fa-circle-question relative">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
 						<li>
@@ -30,10 +30,10 @@
 					</ul>
 				</i>
 				<!-- Errores -->
-				<i class="fas fa-times-circle ocultar">
+				<i class="fa-solid fa-circle-xmark ocultar">
 					<span class="mensajeError"><%- errores && errores.direccion ? errores.direccion : "" %></span>
 				</i>
-				<i class="fas fa-check-circle ocultar"></i>
+				<i class="fa-solid fa-circle-check ocultar"></i>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
 			<div class="input-error">
@@ -43,7 +43,7 @@
 					autocomplete="off"
 				>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle relative" id="ayuda_avatar">
+				<i class="fa-solid fa-circle-question relative" id="ayuda_avatar">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<p><strong><u>Pasos</u></strong>:</p>
 						<li>En la página de FA, hacé <strong><em>click izquierdo</em></strong> sobre la imagen de la película.</li>
@@ -52,16 +52,16 @@
 					</ul>
 				</i>
 				<!-- Errores -->
-				<i class="fas fa-times-circle ocultar">
+				<i class="fa-solid fa-circle-xmark ocultar">
 					<span class="mensajeError"><%- errores && errores.avatar ? errores.avatar : "" %></span>
 				</i>
-				<i class="fas fa-check-circle ocultar"></i>
+				<i class="fa-solid fa-circle-check ocultar"></i>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="input-error">
 				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
-				<i class="fas fa-question-circle relative">
+				<i class="fa-solid fa-circle-question relative">
 					<ul class="mensajeAyuda ocultar" type="dots">
 						<strong><u>Pasos</u></strong>:<br>
 						<li>
@@ -74,17 +74,17 @@
 					</ul>
 				</i>
 				<!-- Errores -->
-				<i class="fas fa-times-circle ocultar">
+				<i class="fa-solid fa-circle-xmark ocultar">
 					<span class="mensajeError"><%- errores && errores.contenido ? errores.contenido : "" %></span>
 				</i>
-				<i class="fas fa-check-circle ocultar"></i>
+				<i class="fa-solid fa-circle-check ocultar"></i>
 			</div>
 			<div id="resultado"><br></div>
 		</section>
 		<!-- Flechas -->
 		<section id="flechas" class="flex-row space-between">
-			<a href="/producto/agregar/tipo-producto" tabindex="-1" title="Volver al paso anterior"><i class="fas fa-arrow-alt-circle-left"></i></a>
-			<button id="submit" class="botonInactivado" type="submit" title="Avanzar"><i class="fas fa-check-circle"></i></button>
+			<a href="/producto/agregar/tipo-producto" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
+			<button id="submit" class="botonInactivado" type="submit" title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
 		</section>
 	</form>
 </div>

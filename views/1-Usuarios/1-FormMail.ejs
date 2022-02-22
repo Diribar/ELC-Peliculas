@@ -4,7 +4,7 @@
 	<section class="label-input flex-row">  <!--E-Mail-->
 		<div class="form-grupo">
 			<input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico" value="" autofocus>
-			<i class="fas fa-times-circle <%- !(errores && errores.email) ? 'ocultar' : '' %> ">
+			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.email) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.email) ? errores.email : "" %></span>
 			</i>
 		</div>

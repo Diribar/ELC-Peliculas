@@ -3,13 +3,12 @@ header section .grupos a {color: var(--azul-oscuro);}
 header section .grupos .dropdown-content {position: absolute; top: 42px; border: 1px solid rgba(0,0,0,.15);}
 header section .grupos .dropdown-content {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
 header section .grupos .dropdown-content a {padding: 4px 16px; display: block;}
-header section .grupos .dropdown-content .fas,
-header section .grupos .dropdown-content .far {color: inherit; font-size: inherit;}
+header section .grupos .dropdown-content .fa-solid {color: inherit; font-size: inherit;}
 
 /* Íconos que acompañan al menú */
-header #usuario-menu .fas,
-header #producto-menu .fas {font-size: inherit; color: inherit; font-weight: bold; margin-right: 10px;}
+header #usuario-menu .fa-solid,
+header #producto-menu .fa-solid {font-size: inherit; color: inherit; font-weight: bold; margin-right: 10px;}
 
 /* Específico del Menú de Usuario */
-header #usuario-menu .fas.fa-sign-out-alt {transform: rotate(180deg);}
+header #usuario-menu .fa-solid.fa-sign-out-alt {transform: rotate(180deg);}
 header #usuario-menu {right: 30px;}

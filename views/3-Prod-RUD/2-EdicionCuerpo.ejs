@@ -4,16 +4,16 @@
 		<label for="avatar" id="imagenProducto"><img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>"></label>
 		<input name="avatar" id="avatar" type="file" accept="image/*" class="input ocultar">
 		<!-- Ayuda -->
-		<i class="fas fa-question-circle"></i>
+		<i class="fa-solid fa-circle-question"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
 			<li>Haciendo <em>click</em> en la imagen podés reemplazarla por otra.</li>
 			<li>La extensión de la imagen debe ser <em><strong>JPG</strong></em> o <em><strong>PNG</strong></em></li>
 		</ul>		
 		<!-- Errores -->
-		<i class="fas fa-times-circle <%- !errores.avatar ? 'ocultar' : '' %>">
+		<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.avatar %></span>
 		</i>
-		<i class="fas fa-check-circle ocultar"></i>
+		<i class="fa-solid fa-circle-check ocultar"></i>
 	</section>
 	<section id="cuerpo-y-footer" class="flex-col grow">
 		<%- include('Footer') %>

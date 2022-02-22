@@ -7,9 +7,9 @@
 			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
 		>
 		<!-- Errores -->
-		<i class="fas fa-times-circle <%- !errores[campo.campo] ? 'ocultar' : '' %>">
+		<i class="fa-solid fa-circle-xmark <%- !errores[campo.campo] ? 'ocultar' : '' %>">
 			<span class="mensajeError "><%= errores[campo.campo] %></span>
 		</i>
-		<i class="fas fa-check-circle ocultar"></i>
+		<i class="fa-solid fa-circle-check ocultar"></i>
 	</div>
 </section>
