@@ -114,40 +114,27 @@ VALUES
 (4, 4, 'Datos editables OK')
 ;
 
-CREATE TABLE penaliz_us_motivos (
+CREATE TABLE borrar_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(40) NOT NULL,
-	alta  BOOLEAN NOT NULL,
-	edicion BOOLEAN NOT NULL,
+	prod  BOOLEAN NOT NULL,
+	rclv BOOLEAN NOT NULL,
+	links BOOLEAN NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	mensaje_mail VARCHAR(200) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO penaliz_us_motivos (alta, edicion, id, orden, duracion, nombre, mensaje_mail)
+INSERT INTO borrar_motivos (id, orden, prod, rclv, links, duracion, nombre, mensaje_mail)
 VALUES 
-(1, 0, 4, 1, 0, 'PROD-Audiovisual duplicado', 'Audiovisual ya existente en nuestra base  de datos. Puede estar con otro nombre. Si no lo encontrás, nos podés consultar mediante Inicio -> Contactanos'),
-(1, 0, 1, 2, 1, 'PROD-Ajeno a nuestro perfil', 'Audiovisual ajeno a nuestro perfil. Te sugerimos que leas sobre nuestro perfil de películas. Lo encontrás en el menú de Inicio -> Nuestro perfil de películas'),
-(1, 0, 2, 3, 90, 'PROD-Ajeno con mofa', 'Audiovisual ajeno a nuestro perfil, con mofa. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
-(1, 0, 3, 4, 180, 'PROD-Ajeno con pornografía', 'Audiovisual ajeno a nuestro perfil, con pornografía. Te pedimos que no sigas intentando agregar películas o colecciones de estas característias.'),
-(0, 1, 5, 10, 5, 'CONT-Incompleto', 'Datos incompletos. Dejaste incompletos algunos datos fáciles de conseguir.'),
-(0, 1, 6, 11, 5, 'CONT-Spam', 'Datos con spam. Completaste algunos datos con spam.'),
-(0, 1, 7, 12, 10, 'CONT-Spam e incompleto', 'Datos con spam e incompletos. Completaste algunos datos con spam y dejaste otros incompletos.')
-;
-CREATE TABLE PROD_borrar_motivos(
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(30) NOT NULL,
-	penaliz_asoc_id TINYINT UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (penaliz_asoc_id) REFERENCES penaliz_us_motivos(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_borrar_motivos (id, orden, penaliz_asoc_id, nombre)
-VALUES 
-(1, 1, 1, 'Producto duplicado'),
-(2, 2, 2, 'Ajeno a nuestro perfil'),
-(3, 3, 3, 'Ajeno con mofa'),
-(4, 4, 4,'Ajeno con pornografía')
+(1, 1, 1, 0, 0, 0, 'Producto duplicado', 'El audiovisual ya existente en nuestra base  de datos. Puede estar con otro nombre. Si no lo encontrás, podés buscarlos usando los filtros'),
+(2, 2, 1, 0, 0, 1, 'Producto ajeno a nuestro perfil', 'Te sugerimos que leas sobre nuestro perfil de películas, que se encuentra en Inicio -> Nuestro perfil de películas'),
+(3, 3, 1, 0, 0, 90, 'Producto ajeno a nuestro perfil con mofa', 'Te pedimos que tengas cuidado de no agregar este tipo de películas o colecciones'),
+(4, 4, 1, 0, 0, 180, 'Producto con pornografía', 'Te pedimos que no agregues películas o colecciones de estas característias.'),
+(5, 5, 1, 0, 0, 5, 'Campos incompletos', 'Dejaste incompletos algunos datos fáciles de conseguir.'),
+(6, 5, 1, 1, 1, 5, 'Información con errores', 'Dejaste incompletos algunos datos fáciles de conseguir.'),
+(7, 6, 1, 1, 1, 10, 'Campos con spam', 'Completaste algunos datos con spam.'),
+(8, 1, 0, 1, 0, 0, 'Registro duplicado', '')
 ;
 
 CREATE TABLE categorias (
@@ -222,20 +209,20 @@ CREATE TABLE status_registro_prod (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	creada BOOLEAN NOT NULL,
-	editada BOOLEAN NOT NULL,
-	aprobada BOOLEAN NOT NULL,
-	sugerida_borrar BOOLEAN NOT NULL,
-	borrada BOOLEAN NOT NULL,
+	creado BOOLEAN NOT NULL,
+	editado BOOLEAN NOT NULL,
+	aprobado BOOLEAN NOT NULL,
+	sugerido_borrar BOOLEAN NOT NULL,
+	borrado BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro_prod (id, orden, nombre, creada, editada, aprobada, sugerida_borrar, borrada)
+INSERT INTO status_registro_prod (id, orden, nombre, creado, editado, aprobado, sugerido_borrar, borrado)
 VALUES 
-(1, 1, 'Creada pend./aprobar', 1, 0, 0, 0, 0), 
-(2, 2, 'Editada pend./aprobar', 0, 1, 0, 0, 0),
-(3, 3, 'Aprobada', 0, 0, 1, 0, 0),
-(4, 4, 'Sugerida p/borrar', 0, 0, 0, 1, 0),
-(5, 5, 'Borrada', 0, 0, 0, 0, 1)
+(1, 1, 'Creado pend./aprobar', 1, 0, 0, 0, 0), 
+(2, 2, 'Editado pend./aprobar', 0, 1, 0, 0, 0),
+(3, 3, 'Aprobado', 0, 0, 1, 0, 0),
+(4, 4, 'Sugerido p/borrar', 0, 0, 0, 1, 0),
+(5, 5, 'Borrado', 0, 0, 0, 0, 1)
 ;
 CREATE TABLE epocas_estreno (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -346,7 +333,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_us(id),
-	FOREIGN KEY (penaliz_motivo_id) REFERENCES penaliz_us_motivos(id)
+	FOREIGN KEY (penaliz_motivo_id) REFERENCES borrar_motivos(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, nombre, apodo, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, aut_data_entry, completado_en, status_registro_id)
@@ -372,7 +359,7 @@ CREATE TABLE penaliz_us_usuarios (
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES roles_usuario(id),
 	FOREIGN KEY (penaliz_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (penaliz_motivo_id) REFERENCES penaliz_us_motivos(id)
+	FOREIGN KEY (penaliz_motivo_id) REFERENCES borrar_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE us_filtros_personales_cabecera (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -426,16 +413,24 @@ CREATE TABLE RCLV_personajes (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO RCLV_personajes (id, ano, nombre, creado_por_id)
+INSERT INTO RCLV_personajes (id, ano, nombre, creado_por_id, status_registro_id)
 VALUES 
-(1, NULL, 'Varios (colección)', 1),
-(2, 0, 'Jesús', 1)
+(1, NULL, 'Varios (colección)', 1, 3),
+(2, 0, 'Jesús', 1, 3)
+;
+INSERT INTO RCLV_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, status_registro_id)
+VALUES 
+(5, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
+(6, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
 ;
 INSERT INTO RCLV_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
 VALUES 
-(5, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1),
-(6, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1)
+(7,249,1910,'Teresa de Calcuta','STM','RCM',10),
+(8,285,1958,'Juan XXIII','STV','PPV',10),
+(9,31,1815,'Juan Bosco','STV','RCV',10),
+(10,296,1920,'Juan Pablo II','STV','PPV',10)
 ;
+
 CREATE TABLE RCLV_hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
@@ -522,9 +517,9 @@ CREATE TABLE PROD_peliculas (
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
+	ano_estreno SMALLINT UNSIGNED NULL,
 	duracion SMALLINT UNSIGNED NULL,
 	paises_id VARCHAR(18) NULL,
-	ano_estreno SMALLINT UNSIGNED NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
@@ -533,6 +528,7 @@ CREATE TABLE PROD_peliculas (
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
+	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
@@ -541,8 +537,6 @@ CREATE TABLE PROD_peliculas (
 	personaje_id SMALLINT UNSIGNED NULL,
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -562,7 +556,7 @@ CREATE TABLE PROD_peliculas (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -581,6 +575,15 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, status_registro_id, capturado_por_id, capturado_en)
+VALUES 
+(1,'218275',NULL,'tt1445208','TMDB','The Letters','Cartas de la Madre Teresa',2015,125,'US','en','William Riead','William Riead','','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/8qnZycQWka7I8TbZ7UcvJ6I3weB.jpg',100,75,100,92,10,'2022-02-21 13:26:41',1,10,'2022-02-21 13:26:41'),
+(2,'109429',NULL,'tt0327086','TMDB','Il Papa buono','El Santo Padre Juan XXIII',2003,180,'IT','en','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/sRtTl8tVhBcE7KUGGWHOqx5LAeC.jpg',100,75,100,92,10,'2022-02-21 15:50:06',1,10,'2022-02-21 15:50:06'),
+(3,'108672',NULL,'tt0317009','TMDB','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz',2002,208,'IT','it','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich',NULL,'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del viejo cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus hábiles negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía; su','https://image.tmdb.org/t/p/original/llb1oSGE9F18QlIMx0teXXMosCY.jpg',100,100,100,100,10,'2022-02-21 15:53:45',1,10,'2022-02-21 15:53:45'),
+(4,'122977',NULL,'tt0416694','TMDB','Don Bosco','Don Bosco',2004,146,'IT','it','Lodovico Gasparini','Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, Francesca Panzarel','','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/fVFlTWdjvu3t98l9WlXB1984ATl.jpg',100,100,100,100,10,'2022-02-21 16:07:14',1,10,'2022-02-21 16:07:14'),
+(5,'254489',NULL,'tt0095051','TMDB','Don Bosco','Don Bosco',1988,150,'IT','it','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xlPz5FaH3D0ogxlF07f03CTQA07.jpg',100,75,100,92,10,'2022-02-21 16:13:51',1,10,'2022-02-21 16:13:51')
+;
+
 CREATE TABLE PROD_colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
@@ -610,8 +613,6 @@ CREATE TABLE PROD_colecciones (
 	personaje_id SMALLINT UNSIGNED NULL,
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -631,7 +632,7 @@ CREATE TABLE PROD_colecciones (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -649,6 +650,10 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO PROD_colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, status_registro_id, capturado_por_id, capturado_en)
+VALUES
+(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,'2022-02-21 21:52:19',1,10,'2022-02-21 21:52:19');
+
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
@@ -660,9 +665,9 @@ CREATE TABLE PROD_capitulos (
 	fuente VARCHAR(10) NOT NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
-	paises_id VARCHAR(18) NULL,
-	duracion TINYINT UNSIGNED NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
+	duracion TINYINT UNSIGNED NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NOT NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
@@ -679,8 +684,6 @@ CREATE TABLE PROD_capitulos (
 	personaje_id SMALLINT UNSIGNED NULL,
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
-	link_trailer VARCHAR(200) NULL,
-	link_pelicula VARCHAR(200) NULL,
 	fe_valores TINYINT UNSIGNED NULL,
 	entretiene TINYINT UNSIGNED NULL,
 	calidad_tecnica TINYINT UNSIGNED NULL,
@@ -720,19 +723,90 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO PROD_capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id, creado_en, status_registro_id)
+VALUES
+(1,1,1,1,'38516',NULL,'tt0435100','TMDB','Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa',2005,195,'PL, IT','it','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg',1,1,'CFC',4,5,2,'2022-02-21 22:05:26',1),
+(2,1,1,2,'75470',NULL,'tt0495039','TMDB','Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre',2006,184,'IT, PL, CA','it','Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg',1,1,'CFC',4,5,2,'2022-02-21 22:05:26',1)
+;
 
-CREATE TABLE PROD_borrados(
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	pelicula_id INT UNSIGNED NULL,
+CREATE TABLE EDIC_productos (
+	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
+	elc_id INT UNSIGNED NOT NULL,
+	elc_entidad VARCHAR(11) NOT NULL,
 	coleccion_id INT UNSIGNED NULL,
-	capitulo_id INT UNSIGNED NULL,
+	temporada TINYINT UNSIGNED DEFAULT NULL,
+	capitulo TINYINT UNSIGNED NULL,
+	TMDB_id VARCHAR(10) NULL UNIQUE,
+	FA_id VARCHAR(10) NULL UNIQUE,
+	IMDB_id VARCHAR(10) NULL UNIQUE,
+	entidad_TMDB VARCHAR(10) NULL,
+	nombre_original VARCHAR(50) NULL,
+	nombre_castellano VARCHAR(50) NULL,
+	duracion SMALLINT UNSIGNED NULL,
+	ano_estreno SMALLINT UNSIGNED NULL,
+	ano_fin SMALLINT UNSIGNED NULL,
+	paises_id VARCHAR(18) NULL,
+	idioma_original_id VARCHAR(2) NULL,
+	cant_temporadas TINYINT UNSIGNED NULL,
+	cant_capitulos SMALLINT UNSIGNED NULL,
+	direccion VARCHAR(100) NULL,
+	guion VARCHAR(100) NULL,
+	musica VARCHAR(100) NULL,
+	actuacion VARCHAR(500) NULL,
+	produccion VARCHAR(100) NULL,
+	sinopsis VARCHAR(800) NULL,
+	avatar VARCHAR(100) NULL,
+	en_castellano_id TINYINT UNSIGNED NULL,
+	en_color_id TINYINT UNSIGNED NULL,
+	categoria_id VARCHAR(3) NULL,
+	subcategoria_id TINYINT UNSIGNED NULL,
+	publico_sugerido_id TINYINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
+
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME NOT NULL,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),	
+	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (en_color_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (idioma_original_id) REFERENCES idiomas(id),
+	FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES categorias_sub(id),
+	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, hecho_id, valor_id, editado_por_id, editado_en, status_registro_id, capturado_por_id, capturado_en)
+VALUES
+(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,7,NULL,NULL,10,'2022-02-21 13:26:41',1,10,'2022-02-21 13:26:41'),
+(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,8,NULL,NULL,10,'2022-02-21 15:50:06',1,10,'2022-02-21 15:50:06'),
+(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,8,NULL,NULL,10,'2022-02-21 15:53:45',1,10,'2022-02-21 15:53:45'),
+(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,9,NULL,NULL,10,'2022-02-21 16:07:14',1,10,'2022-02-21 16:07:14'),
+(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,9,NULL,NULL,10,'2022-02-21 16:13:51',1,10,'2022-02-21 16:13:51'),
+(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,10,NULL,NULL,10,'2022-02-21 22:05:26',1,10,'2022-02-21 22:05:26')
+;
+UPDATE EDIC_productos SET musica = 'Ciaran Hope' WHERE id = 1;
+UPDATE EDIC_productos SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
+UPDATE EDIC_productos SET guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
+
+CREATE TABLE borrados_registros (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	elc_id INT UNSIGNED NOT NULL,
+	elc_entidad VARCHAR(20) NOT NULL,
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
-	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
-	FOREIGN KEY (capitulo_id) REFERENCES PROD_capitulos(id),
-	FOREIGN KEY (motivo_id) REFERENCES PROD_borrar_motivos(id)
+	FOREIGN KEY (motivo_id) REFERENCES borrar_motivos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE links_provs (
@@ -792,11 +866,11 @@ CREATE TABLE links_prods (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
-	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
-	edic_analizada_en DATETIME NULL,
-	lead_time_edicion SMALLINT UNSIGNED NULL,
+	baja_sugerida_por_id INT UNSIGNED NULL,
+	baja_sugerida_en DATETIME NULL,
+	baja_analizada_por_id INT UNSIGNED NULL,
+	baja_analizada_en DATETIME NULL,
+	lead_time_baja SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -809,8 +883,8 @@ CREATE TABLE links_prods (
 	FOREIGN KEY (link_prov_id) REFERENCES links_provs(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (baja_sugerida_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (baja_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -837,6 +911,15 @@ CREATE TABLE pr_us_calificaciones (
 	FOREIGN KEY (entretiene_id) REFERENCES cal_entretiene(id),
 	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_calidad_tecnica(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO pr_us_calificaciones (id, usuario_id, pelicula_id, coleccion_id, capitulo_id, fe_valores_id, entretiene_id, calidad_tecnica_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado)
+VALUES
+(1,10,1,NULL,NULL,5,4,3,100,75,100,92),
+(2,10,2,NULL,NULL,5,4,3,100,75,100,92),
+(3,10,3,NULL,NULL,5,5,3,100,100,100,100),
+(4,10,4,NULL,NULL,5,5,3,100,100,100,100),
+(5,10,5,NULL,NULL,5,4,3,100,75,100,92)
+;
+
 CREATE TABLE pr_us_interes_en_prod (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	usuario_id INT UNSIGNED NOT NULL,
