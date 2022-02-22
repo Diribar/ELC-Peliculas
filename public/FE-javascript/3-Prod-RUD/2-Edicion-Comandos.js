@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
-	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil-alt");
+	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
