@@ -21,22 +21,14 @@
 #datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
 #datosLargos #contenido #sinopsis nav {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
 
-/* Comandos y Flechas */
-#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
-#cuerpo #comandos i, #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer; margin: 0 15px;}
-#cuerpo #comandos i:first-child, #cuerpo #flechas i:first-child {margin-left: 0;}
-#cuerpo #comandos i:last-child, #cuerpo #flechas i:last-child {margin-right: 0;}
-
-/* Comandos - Particularidades */
-#cuerpo #comandos {background-color: var(--verde-oscuro);}
-
-/* Flechas - Particularidades */
-#cuerpo #flechas {background-color: var(--azul-oscuro);}
-
 /* Datos Breves */
 #datosBreves {display: flex; flex-direction: column; justify-content: center; flex-grow: 1; width: max-content; }
 #datosBreves #graficoCalificacion {width:180px;}
 #datosBreves #texto {margin-right: 15px;}
 #datosBreves #texto dt, #datosBreves #texto p {margin-top: 10px;}
 #datosBreves #texto dt {font-weight: bold;}
+
+/* Comandos - Particularidades */
+#cuerpo #comandos i {margin: 0 15px;}
+#cuerpo #comandos i:first-child {margin-left: 0;}
+#cuerpo #comandos i:last-child {margin-right: 0;}
