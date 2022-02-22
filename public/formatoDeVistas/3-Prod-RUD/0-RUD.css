@@ -8,8 +8,8 @@ main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-cl
 
 /* Imagen */
 main #imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
-main #imagenProducto img {max-height: 90.5vh; line-height: 1}
-main #imagenProducto img {max-width: 30vw; line-height: 1}
+main #imagenProducto img {max-height: 90.5vh;}
+main #imagenProducto img {max-width: 30vw;}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}
