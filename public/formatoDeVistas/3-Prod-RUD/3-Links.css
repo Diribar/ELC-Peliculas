@@ -8,7 +8,7 @@ main #cuerpo h1 {margin: 0;}
 #datos form table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos form table * {font-size: 1.1rem;}
 #datos form table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
-#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px;}
+#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px; vertical-align: middle;}
 
 /* Tablas - Logo del proveedor */
 #datos table .logoProv {width: 90px; padding: 0;}

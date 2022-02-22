@@ -8,29 +8,21 @@ module.exports = {
 		});
 	},
 
-	obtenerTodosConInclude: (entidad, orden, include) => {
-		return db[entidad].findAll({
-			order: [[orden, "ASC"]],
-			include: includes,
-		});
-	},
-
 	obtenerPorCampo: (entidad, campo, valor) => {
 		return db[entidad].findOne({
 			where: {[campo]: valor},
 		});
 	},
 
-	obtenerPorCampos: (entidad, campo1, valor1, campo2, valor2) => {
+	obtenerPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
 		return db[entidad].findOne({
 			where: {[campo1]: valor1, [campo2]: valor2},
 		});
 	},
 
-	obtenerPorCampoConInclude: (entidad, campo, valor, includes) => {
+	obtenerPor3Campos: (entidad, campo1, valor1, campo2, valor2, campo3, valor3) => {
 		return db[entidad].findOne({
-			where: {[campo]: valor},
-			include: includes,
+			where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
 		});
 	},
 

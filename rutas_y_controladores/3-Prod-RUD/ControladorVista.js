@@ -5,7 +5,8 @@ let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
-	detalleEdicion: async (req, res) => {
+	prod_DBM: async (req, res) => {
+		// DETALLE - BAJAS - EDICIÓN (modificaciones)
 		// Tema y Código
 		let tema = "producto";
 		let url = req.url.slice(1);
@@ -39,7 +40,7 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registro) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO NO APROBADO
-		let noAprobada = !registro.status_registro.aprobada;
+		let noAprobada = !registro.status_registro.aprobado;
 		let usuario = req.session.req.session.usuario;
 		let otroUsuario = !usuario || registro.creado_por_id != usuario.id;
 		if (noAprobada && otroUsuario) {
@@ -149,7 +150,8 @@ module.exports = {
 		});
 	},
 
-	links: async (req, res) => {
+	links_DAB: async (req, res) => {
+		// DETALLE - ALTAS - BAJAS
 		// Tema y Código
 		let tema = "producto";
 		let codigo = "links";
@@ -165,7 +167,8 @@ module.exports = {
 			"link_prov",
 			"creado_por",
 			"alta_analizada_por",
-			"revisado_por",
+			"baja_analizada_por",
+			"status_registro",
 		];
 		// Obtener el 'campo_id'
 		let campo_id =
@@ -175,31 +178,50 @@ module.exports = {
 				? "coleccion_id"
 				: "capitulo_id";
 		// Obtener el producto y los links_provs
-		let [registroProd, provs, linksABM] = await Promise.all([
+		let [registroProd, links_prods, provs] = await Promise.all([
 			BD_varias.obtenerPorIdConInclude(entidad, ID, "links").then((n) => {
 				return n ? n.toJSON() : "";
 			}),
+
+			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, ID, includes),
 			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
-			BD_varias.obtenerTodosPorCampoConInclude("links_prods_edic", campo_id, ID, includes),
 		]);
 		if (registroProd == "")
 			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
-		// Obtener los links del producto
-		let linksAprob = registroProd.links;
-		//let 
-		// if (links.length > 1)
-		// 	links.sort((a, b) => {
-		// 		return a < b ? -1 : a > b ? 1 : 0;
-		// 	});
+		// Obtener el usuario
+		let usuario = req.session.req.session.usuario;
+		// Obtener los links del producto. Se incluyen:
+		// linksAprob: Aprobados + Creados por el usuario
+		let linksAprob = [
+			...links_prods.filter((n) => n.status_registro.aprobado),
+			...links_prods.filter((n) => n.status_registro.creado && n.creado_por_id == usuario.id),
+		];
+		// linksBorr --> incluye el motivo y el comentario
+		let linksBorr = links_prods.filter(
+			(n) => n.status_registro.sugerido_borrar || n.status_registro.borrado
+		);
+		if (linksBorr.length) {
+			for (i = 0; i < linksBorr; i++) {
+				let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
+					"registros_borrados",
+					"ELC_id",
+					linksBorr[i].id,
+					"ELC_entidad",
+					"links_prods",
+					["motivo"]
+				);
+				linksBorr[i].motivo = registro_borrado.motivo.nombre;
+				linksBorr[i].comentario = registro_borrado.comentario;
+			}
+		}
 		// Configurar el Producto y el Título
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
-		// Obtener el usuario
-		let usuario = req.session.req.session.usuario;
-
 		// Obtener el avatar
-		let registroEditado = await BD_varias.obtenerPorCampos(
+		let registroEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
+			"ELC_entidad",
+			entidad,
 			"ELC_id",
 			ID,
 			"editado_por_id",
@@ -223,7 +245,8 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			links,
+			linksAprob,
+			linksBorr,
 			provs,
 			registro: registroProd,
 			producto,

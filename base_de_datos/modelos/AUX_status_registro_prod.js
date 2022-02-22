@@ -3,11 +3,11 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
-		creada: {type: dt.BOOLEAN},
-		editada: {type: dt.BOOLEAN},
-		aprobada: {type: dt.BOOLEAN},
-		sugerida_borrar: {type: dt.BOOLEAN},
-		borrada: {type: dt.BOOLEAN},
+		creado: {type: dt.BOOLEAN},
+		editado: {type: dt.BOOLEAN},
+		aprobado: {type: dt.BOOLEAN},
+		sugerido_borrar: {type: dt.BOOLEAN},
+		borrado: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "status_registro_prod",
