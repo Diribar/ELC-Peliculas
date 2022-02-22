@@ -7,7 +7,8 @@ let axios = require("axios");
 module.exports = {
 	userLogs: (req, res) => {
 		let url = req.originalUrl;
-		if (url.indexOf("/usuarios/") == -1 && url.indexOf("/api/") == -1) req.session.urlReferencia = url;
+		if (url.indexOf("/usuarios/") == -1 && url.indexOf("/api/") == -1)
+			req.session.urlReferencia = url;
 		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
 		// console.log(res.locals.urlReferencia);
 	},
@@ -183,4 +184,14 @@ module.exports = {
 			: "";
 	},
 
+	revisarQuery: function (entidad, ID) {
+		let errorEnQuery = "";
+		// Sin entidad y/o ID
+		if (!entidad) errorEnQuery = "Falta el dato de la 'entidad'";
+		if (!ID) errorEnQuery = "Falta el dato del 'ID'";
+		// Entidad inexistente
+		producto = this.producto(entidad);
+		if (!producto) errorEnQuery = "La entidad ingresada no es válida";
+		return errorEnQuery;
+	},
 };
