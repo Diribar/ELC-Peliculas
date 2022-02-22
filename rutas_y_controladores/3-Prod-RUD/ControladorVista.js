@@ -15,7 +15,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = revisarQuery(entidad, ID);
+		let errorEnQuery = varias.revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
 		let includes = [
@@ -159,7 +159,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = revisarQuery(entidad, ID);
+		let errorEnQuery = varias.revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
 		let includes = [
@@ -186,8 +186,8 @@ module.exports = {
 			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, ID, includes),
 			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
 		]);
-		if (registroProd == "")
-			return res.send("No tenemos en nuestra Base de Datos un producto con esa 'id'");
+		// Problema: PRODUCTO NO ENCONTRADO
+		if (!registroProd) return res.send("Producto no encontrado");
 		// Obtener el usuario
 		let usuario = req.session.req.session.usuario;
 		// Obtener los links del producto. Se incluyen:
@@ -266,7 +266,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = revisarQuery(entidad, ID);
+		let errorEnQuery = varias.revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Configurar el Título
 		let producto = varias.producto(entidad);
@@ -288,13 +288,3 @@ module.exports = {
 	},
 };
 
-let revisarQuery = (entidad, ID) => {
-	let errorEnQuery = "";
-	// Sin entidad y/o ID
-	if (!entidad) errorEnQuery = "Falta el dato de la 'entidad'";
-	if (!ID) errorEnQuery = "Falta el dato del 'ID'";
-	// Entidad inexistente
-	producto = varias.producto(entidad);
-	if (!producto) errorEnQuery = "La entidad ingresada no es válida";
-	return errorEnQuery;
-};

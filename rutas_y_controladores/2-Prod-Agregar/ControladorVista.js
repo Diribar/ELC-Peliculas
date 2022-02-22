@@ -545,33 +545,50 @@ module.exports = {
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
-		return res.redirect("/producto/agregar/terminaste");
+		return res.redirect(
+			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
+		);
 	},
 
-	terminasteForm: (req, res) => {
+	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
 		tema = "agregar";
 		codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
-		datosTerminaste = req.session.datosTerminaste
-			? req.session.datosTerminaste
-			: req.cookies.datosTerminaste;
-		if (!datosTerminaste) return res.redirect("/producto/agregar/palabras-clave");
-		// 3. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
-		muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
-		indice = parseInt(Math.random() * muchasGracias.length);
-		imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
+		let entidad = req.query.entidad;
+		let id = req.query.id;
+		// 3. Redireccionar si se encuentran errores en la entidad y/o el id
+		let errorEnQuery = varias.revisarQuery(entidad, id);
+		if (errorEnQuery) return res.send(errorEnQuery);
+		// 4. Obtener los demás datos del producto
+		let registroProd = await BD_varias.obtenerPorIdConInclude(
+			entidad,
+			id,
+			"status_registro"
+		);
+		// Problema: PRODUCTO NO ENCONTRADO
+		if (!registroProd) return res.send("Producto no encontrado");
+		// Problema: PRODUCTO YA EN 'BD'
+		if (!registroProd.status_registro.creado)
+			return res.redirect("/producto/agregar/ya-en-bd/?entidad=" + entidad + "&valor=" + id);
+		// 5. Obtener el producto
+		let producto = varias.producto(entidad);		
+		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
+		let archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
+		let muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));
+		let indice = parseInt(Math.random() * muchasGracias.length);
+		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
 		// 4. Render del formulario
 		return res.render("Home", {
 			tema,
 			codigo,
 			titulo: "Agregar - Terminaste",
-			dataEntry: datosTerminaste,
+			entidad,
+			id,
+			dataEntry: registroProd,
+			producto,
 			imagenMuchasGracias,
 			ruta: "/producto/",
-			entidad: datosTerminaste.entidad,
-			id: datosTerminaste.id,
 		});
 	},
 
@@ -626,6 +643,7 @@ let guardar_us_calificaciones = (confirma, registro) => {
 let borrarSessionCookies = (req, res, paso) => {
 	let pasos = [
 		"borrarTodo",
+		"datosTerminaste",
 		"palabrasClave",
 		"desambiguar",
 		"tipoProducto",
