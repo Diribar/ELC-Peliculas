@@ -50,7 +50,6 @@ module.exports = {
 		});
 	},
 
-
 	actualizarRCLV: async (datos) => {
 		// Definir variables
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
