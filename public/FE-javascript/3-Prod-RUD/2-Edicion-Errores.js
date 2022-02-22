@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 	let links = document.querySelector("#cuerpo #flechas .fa-globe");
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
-	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
+	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Categoría y subcategoría

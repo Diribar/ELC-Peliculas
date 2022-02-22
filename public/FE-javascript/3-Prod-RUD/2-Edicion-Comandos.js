@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
 	// Variables de íconos
 	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
-	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
+	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Pointer del producto
