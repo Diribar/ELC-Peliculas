@@ -10,5 +10,5 @@ header #usuario-menu .fa-solid,
 header #producto-menu .fa-solid {font-size: inherit; color: inherit; font-weight: bold; margin-right: 10px;}
 
 /* Específico del Menú de Usuario */
-header #usuario-menu .fa-solid.fa-sign-out-alt {transform: rotate(180deg);}
+header #usuario-menu .fa-solid.fa-right-from-bracket {transform: rotate(180deg);}
 header #usuario-menu {right: 30px;}
