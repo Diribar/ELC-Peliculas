@@ -63,7 +63,7 @@ window.addEventListener("load", async () => {
 		// Obtener el DOM
 		let capAntDOM = document.querySelector("#cuerpo #flechas .fa-circle-left");
 		let capPostDOM = document.querySelector("#cuerpo #flechas .fa-circle-right");
-		// Obtener el capítulo anterior y posterior
+		// Obtener el ID del capítulo anterior y del posterior
 		let ruta = "/producto/api/obtener-cap-ant-y-post/?id=";
 		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
 		// Acción si se elije "capítulo anterior"
