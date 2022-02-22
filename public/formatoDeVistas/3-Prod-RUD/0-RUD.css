@@ -19,7 +19,7 @@ main #imagenProducto img {max-height: 100%;}
 #cuerpo .botonInactivado, #cuerpo .botonInactivado * {cursor: default;}
 #cuerpo #comandos, #cuerpo #flechas {background-color: var(--azul-oscuro);}
 #cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
+#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 5px; border-radius: 15px;}
 #cuerpo #comandos i, #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
 
 /* Comandos - Particularidades */
@@ -27,5 +27,3 @@ main #imagenProducto img {max-height: 100%;}
 
 /* Flechas - Particularidades */
 #cuerpo #flechas i {margin: 0 15px;}
-#cuerpo #flechas i:first-child {margin-left: 0;}
-#cuerpo #flechas i:last-child {margin-right: 0;}

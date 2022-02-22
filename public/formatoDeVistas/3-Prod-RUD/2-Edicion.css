@@ -76,6 +76,4 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 /* Comandos - Particularidades */
 #cuerpo #comandos .pack {margin: 0 20px;}
 #cuerpo #comandos .pack {display: flex; flex-direction: row; justify-content: center;}
-#cuerpo #comandos .pack:first-child {margin-left: 0;}
-#cuerpo #comandos .pack:last-child {margin-right: 0;}
 #cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
