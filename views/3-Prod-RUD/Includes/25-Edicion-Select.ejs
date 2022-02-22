@@ -1,10 +1,9 @@
-<section class="label-input <% if (campo.RCLV) { %> ocultar RCLV<% } %>">
+<section class="label-input <% if (campo.RCLV) { %> RCLV<% } %>">
 	<label><%= campo.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
 		<select name="<%= campo.campo %>" class="input <%= campo.clase ? campo.clase : '' %>">
-			<% if (campo.RCLV) { %><option value="" <% if (!registro[campo.campo]) { %>selected<% } %>>Ninguno del listado / No aplica</option><% } %>
-			<% if (!campo.RCLV && !registro[campo.campo]) { %><option value="" selected class="ocultar">Elejí una opción</option><% } %>
+			<option value="" class="ocultar" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí una opción</option>
 			<% for (valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (registro[campo.campo] == valor.id) { %>selected<% } %>

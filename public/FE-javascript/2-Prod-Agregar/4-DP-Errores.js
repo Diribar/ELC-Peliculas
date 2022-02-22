@@ -147,7 +147,7 @@ window.addEventListener("load", async () => {
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
 	categoria.value != "" ? funcionSubcat() : subcategoria.setAttribute("disabled", "disabled");
-	if (subcategoria.value != "") funcionRCLV();
+	if (subcategoria.value) funcionRCLV();
 
 	// Errores y boton 'Submit'
 	await statusInicial((inputValue = true));

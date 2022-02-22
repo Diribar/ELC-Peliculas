@@ -26,7 +26,10 @@ window.addEventListener("load", async () => {
 	let guardar = document.querySelector("#cuerpo #comandos .fa-save");
 	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-alt");
-
+	// Categoría y subcategoría
+	let categoria = document.querySelector("select[name='categoria_id']");
+	let subcategoria = document.querySelector("select[name='subcategoria_id']");
+	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
 	let linksRCLV = document.querySelectorAll(".input-error i.linkRCLV");
 	let ruta = "/producto/api/validar-edicion/?";
@@ -60,9 +63,15 @@ window.addEventListener("load", async () => {
 		for (let i = 0; i < linksRCLV.length; i++) {
 			linksRCLV[i].classList.add("botonInactivado");
 		}
-
 		// Activar íconos
 		descartar.classList.remove("botonInactivado");
+
+		// Si se cambia la categoría --> actualiza subcategoría
+		if (campo == "categoria_id") {
+			subcategoria.value = "";
+			funcionSubcat();
+		}
+		// Fin
 		botonGuardar();
 	});
 
@@ -133,7 +142,6 @@ window.addEventListener("load", async () => {
 		}
 		paisesMostrar.value = paisesNombre;
 	};
-
 	let botonGuardar = () => {
 		let OK =
 			Array.from(iconoOK)
@@ -155,7 +163,6 @@ window.addEventListener("load", async () => {
 			? guardar.classList.remove("botonInactivado")
 			: guardar.classList.add("botonInactivado");
 	};
-
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;
 		campo2 = datos.campo2;
@@ -170,7 +177,6 @@ window.addEventListener("load", async () => {
 		)
 			funcionCamposCombinados([campo1, campo2], campo1);
 	};
-
 	let funcionCamposCombinados = async (valores, campo) => {
 		// Armado de la ruta
 		let dato = "entidad=" + entidad;
@@ -205,4 +211,16 @@ window.addEventListener("load", async () => {
 		}
 		return;
 	};
+	// Aplicar cambios en la subcategoría
+	funcionSubcat = () => {
+		for (opcion of subcategoriaOpciones) {
+			opcion.className.includes(categoria.value)
+				? opcion.classList.remove("ocultar")
+				: opcion.classList.add("ocultar");
+		}
+	};
+
+	// STATUS INICIAL *************************************
+	// Rutinas de categoría / subcategoría
+	if (categoria.value) funcionSubcat();
 });

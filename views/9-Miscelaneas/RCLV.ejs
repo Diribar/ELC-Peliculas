@@ -12,8 +12,11 @@
 					<!-- Ayuda -->
 					<i class="fas fa-question-circle"></i>
 					<ul type="dots" class="mensajeAyuda ocultar">
-						<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-						<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+						<% if (codigo == "RCLV_personajes") { %>
+							<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+							<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+						<% } %>
+						<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
 					</ul>
 					<!-- Error/OK -->			
 					<i class="fas fa-times-circle<%- !errores.nombre ? ' ocultar' : '' %>">
