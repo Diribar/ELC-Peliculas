@@ -266,7 +266,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = BD_varias.revisarQuery(entidad, ID);
+		let errorEnQuery = varias.revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Configurar el Título
 		let producto = varias.producto(entidad);
