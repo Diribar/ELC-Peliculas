@@ -133,8 +133,6 @@ module.exports = {
 				registroCombinado.coleccion_id,
 				registroCombinado.temporada
 			)
-				.then((n) => n.map((m) => m.dataValues))
-				.then((n) => n.map((m) => m.capitulo));
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -260,8 +258,6 @@ module.exports = {
 				registroProd.coleccion_id,
 				registroProd.temporada
 			)
-				.then((n) => n.map((m) => m.dataValues))
-				.then((n) => n.map((m) => m.capitulo));
 		// Ir a la vista
 		//return res.send(registroProd);
 		return res.render("0-RUD", {
