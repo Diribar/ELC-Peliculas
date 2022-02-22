@@ -1,10 +1,15 @@
 /* Cuerpo */
 main #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
 
-/* Datos */
+/* Título */
 main #cuerpo {position: relative;}
 main #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
 main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+
+/* Encabezado */
+main #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+main #cuerpo #encabezado #nombres h1 {margin: 0; }
+main #cuerpo #encabezado #colCap {text-align: right;}
 
 /* Imagen */
 main #imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}

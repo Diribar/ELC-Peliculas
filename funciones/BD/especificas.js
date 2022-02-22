@@ -44,11 +44,12 @@ module.exports = {
 		return resultado;
 	},
 
-	filtrarCapitulos: (coleccion_id, temporada) => {
+	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos.findAll({
 			where: {coleccion_id: coleccion_id, temporada: temporada},
 		});
 	},
+
 
 	actualizarRCLV: async (datos) => {
 		// Definir variables

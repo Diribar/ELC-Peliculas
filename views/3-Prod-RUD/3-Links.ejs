@@ -1,6 +1,7 @@
 <h1 id="titulo"><%= titulo %></h1>
 <section id="datos">
-	<h1><%= registro.nombre_castellano %> <em><% if (registro.nombre_original) { %>(<%= registro.nombre_original %>)<% } %></em></h1>
+	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+	<%- include("0-RUD-Encabezado") %>
 	<select id="tipoLink">
 		<option value="TR">Trailer</option>
 		<option value="PL">Película</option>
@@ -104,4 +105,4 @@
 	<% } %>
 </section>
 <!-- Botones -->
-<%- include("0-Flechas") %> 
+<%- include("0-RUD-Flechas") %> 

@@ -1,5 +1,6 @@
 // ************ Requires *************
 let BD_varias = require("../../funciones/BD/varias");
+let BD_especificas = require("../../funciones/BD/especificas");
 let varias = require("../../funciones/Varias/varias");
 let variables = require("../../funciones/Varias/variables");
 
@@ -126,6 +127,14 @@ module.exports = {
 				  )
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
+		// Obtener datos para la vista
+		if (entidad == "capitulos")
+			registroCombinado.capitulos = await BD_especificas.obtenerCapitulos(
+				registroCombinado.coleccion_id,
+				registroCombinado.temporada
+			)
+				.then((n) => n.map((m) => m.dataValues))
+				.then((n) => n.map((m) => m.capitulo));
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -180,7 +189,11 @@ module.exports = {
 				: "capitulo_id";
 		// Obtener el producto y los links_provs
 		let [registroProd, links_prods, provs] = await Promise.all([
-			BD_varias.obtenerPorIdConInclude(entidad, ID, "links").then((n) => {
+			BD_varias.obtenerPorIdConInclude(
+				entidad,
+				ID,
+				entidad == "capitulos" ? "coleccion" : ""
+			).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
 
@@ -241,7 +254,16 @@ module.exports = {
 		let links_tipos = await BD_varias.obtenerTodos("links_tipos", "id").then((n) =>
 			n.map((m) => m.dataValues)
 		);
+		// Obtener datos para la vista
+		if (entidad == "capitulos")
+			registroProd.capitulos = await BD_especificas.obtenerCapitulos(
+				registroProd.coleccion_id,
+				registroProd.temporada
+			)
+				.then((n) => n.map((m) => m.dataValues))
+				.then((n) => n.map((m) => m.capitulo));
 		// Ir a la vista
+		//return res.send(registroProd);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -289,4 +311,3 @@ module.exports = {
 		return res.send("Estoy en eliminar");
 	},
 };
-

@@ -45,7 +45,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguarCapitulos: async (req, res) => {
-		datos = await BD_especificas.filtrarCapitulos(
+		datos = await BD_especificas.obtenerCapitulos(
 			req.query.coleccion_id,
 			req.query.temporada
 		).then((n) => n.map((m) => m.capitulo));
