@@ -8,6 +8,19 @@ module.exports = {
 		});
 	},
 
+	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
+		return db[entidad].findAll({
+			where: {[campo]: valor},
+			include: includes,
+		});
+	},
+
+	obtenerTodosPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
+		return db[entidad].findAll({
+			where: {[campo1]: valor1, [campo2]: valor2},
+		});
+	},
+
 	obtenerPorCampo: (entidad, campo, valor) => {
 		return db[entidad].findOne({
 			where: {[campo]: valor},
@@ -23,13 +36,6 @@ module.exports = {
 	obtenerPor3Campos: (entidad, campo1, valor1, campo2, valor2, campo3, valor3) => {
 		return db[entidad].findOne({
 			where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
-		});
-	},
-
-	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
-		return db[entidad].findAll({
-			where: {[campo]: valor},
-			include: includes,
 		});
 	},
 

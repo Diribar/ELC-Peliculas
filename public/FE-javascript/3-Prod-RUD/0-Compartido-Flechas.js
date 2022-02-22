@@ -1,9 +1,9 @@
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
+	// Vista
+	let vista = window.location.pathname;
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let producto_id = new URL(window.location.href).searchParams.get("id");
-	// Vista
-	let vista = window.location.pathname;
 
 	// Acción si se elige 'detalle'
 	if (vista != "/producto/detalle/") {
@@ -44,12 +44,11 @@ window.addEventListener("load", () => {
 	if (entidad != "peliculas") {
 		// Obtener el DOM
 		let colCapDOM = document.querySelector("#cuerpo #flechas .fa-layer-group");
-		// Obtener la colección o el capítulo
+		// Obtener el 'colCapID'
 		let ruta = "/producto/api/obtener-col-cap/?entidad=";
-		colCapDOM.addEventListener("click", async () => {
-			// Obtener el 'colCapID'
-			let colCapID = await fetch(ruta + entidad + "&id=" + producto_id).then((n) => n.json());
-			// Alternar entre colección y capítulo
+		let colCapID = await fetch(ruta + entidad + "&id=" + producto_id).then((n) => n.json());
+		// Alternar entre colección y capítulo
+		colCapDOM.addEventListener("click", () => {
 			window.location.href =
 				vista +
 				"?entidad=" +
@@ -57,5 +56,30 @@ window.addEventListener("load", () => {
 				"&id=" +
 				colCapID;
 		});
+	}
+
+	// Acción si se elije "capítulo anterior" o "posterior"
+	if (entidad == "capitulos") {
+		// Obtener el DOM
+		let capAntDOM = document.querySelector("#cuerpo #flechas .fa-circle-left");
+		let capPostDOM = document.querySelector("#cuerpo #flechas .fa-circle-right");
+		// Obtener el capítulo anterior y posterior
+		let ruta = "/producto/api/obtener-cap-ant-y-post/?id=";
+		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
+		console.log(capAntID, capPostID);
+		// Acción si se elije "capítulo anterior"
+		if (capAntID) {
+			capAntDOM.classList.remove("botonInactivado");
+			capAntDOM.addEventListener("click", () => {
+				window.location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
+			});
+		} else capAntDOM.classList.add("botonInactivado");
+		// Acción si se elije "capítulo posterior"
+		if (capPostID) {
+			capPostDOM.classList.remove("botonInactivado");
+			capPostDOM.addEventListener("click", () => {
+				window.location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
+			});
+		} else capPostDOM.classList.add("botonInactivado");
 	}
 });
