@@ -30,5 +30,3 @@
 
 /* Comandos - Particularidades */
 #cuerpo #comandos i {margin: 0 15px;}
-#cuerpo #comandos i:first-child {margin-left: 0;}
-#cuerpo #comandos i:last-child {margin-right: 0;}

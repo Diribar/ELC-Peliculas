@@ -7,9 +7,9 @@ main #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-r
 main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
 
 /* Imagen */
-main #imagenProducto {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
-main #imagenProducto img {max-height: 100%;}
-/* #imagenProducto img {max-width: 30vw;} */
+main #imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
+main #imagenProducto img {max-height: 90.5vh;}
+main #imagenProducto img {max-width: 30vw;}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}
@@ -19,13 +19,12 @@ main #imagenProducto img {max-height: 100%;}
 #cuerpo .botonInactivado, #cuerpo .botonInactivado * {cursor: default;}
 #cuerpo #comandos, #cuerpo #flechas {background-color: var(--azul-oscuro);}
 #cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
-#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 15px; border-radius: 15px;}
+#cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 5px; border-radius: 15px;}
 #cuerpo #comandos i, #cuerpo #flechas i {color: white; font-size: 1.25rem; cursor: pointer;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {background-color: var(--verde-oscuro);}
 
 /* Flechas - Particularidades */
-#cuerpo #flechas i {margin: 0 15px;}
-#cuerpo #flechas i:first-child {margin-left: 0;}
-#cuerpo #flechas i:last-child {margin-right: 0;}
+#cuerpo #flechas i, #cuerpo #flechas .pack {margin: 0 15px;}
+#cuerpo #flechas .pack i {margin: 0 0px;}
