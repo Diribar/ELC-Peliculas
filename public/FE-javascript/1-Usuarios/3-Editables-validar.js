@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	for (let i = 0; i < inputs.length; i++) {
 		// Anular 'submit' si hay algún error
 		!asteriscos[i].classList.contains("ocultar")
-			? button.classList.add("botonInactivado")
+			? button.classList.add("botonInactivo")
 			: "";
 		// Acciones si se realizan cambios
 		inputs[i].addEventListener("change", async () => {
@@ -27,19 +27,19 @@ window.addEventListener("load", () => {
 			mensajes[i].innerHTML = mensaje;
 			if (mensaje) {
 				asteriscos[i].classList.remove("ocultar");
-				button.classList.add("botonInactivado");
+				button.classList.add("botonInactivo");
 			} else {
 				asteriscos[i].classList.add("ocultar");
-				button.classList.remove("botonInactivado");
+				button.classList.remove("botonInactivo");
 				for (let j = 0; j < inputs.length; j++) {
 					mensajes[j].innerHTML
-						? button.classList.add("botonInactivado")
+						? button.classList.add("botonInactivo")
 						: "";
 				}
 			}
 		});
 	}
 	form.addEventListener("submit", (e) => {
-		button.classList.contains("botonInactivado") ? e.preventDefault() : "";
+		button.classList.contains("botonInactivo") ? e.preventDefault() : "";
 	});
 });

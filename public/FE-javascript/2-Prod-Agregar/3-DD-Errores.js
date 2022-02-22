@@ -63,7 +63,7 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", (e) => {
-		if (submit.classList.contains("botonInactivado")) e.preventDefault();
+		if (submit.classList.contains("botonInactivo")) e.preventDefault();
 	});
 
 	// Funciones
@@ -104,8 +104,8 @@ window.addEventListener("load", async () => {
 	// Botón 'submit'
 	let botonSubmit = () => {
 		Array.from(mensajesError).find((n) => n.innerHTML)
-			? submit.classList.add("botonInactivado")
-			: submit.classList.remove("botonInactivado");
+			? submit.classList.add("botonInactivo")
+			: submit.classList.remove("botonInactivo");
 	};
 
 	let funcionDosCampos = async (datos, campo) => {

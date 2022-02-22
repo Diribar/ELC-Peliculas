@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 		if (mensaje) {
 			iconoError[i].classList.remove("ocultar");
 			iconoOK[i].classList.add("ocultar");
-			button.classList.add("botonInactivado");
+			button.classList.add("botonInactivo");
 		} else {
 			// En caso de que no haya error
 			iconoError[i].classList.add("ocultar");
@@ -42,8 +42,8 @@ window.addEventListener("load", async () => {
 					: "";
 			}
 			sinErrores
-				? button.classList.remove("botonInactivado")
-				: button.classList.add("botonInactivado");
+				? button.classList.remove("botonInactivo")
+				: button.classList.add("botonInactivo");
 		}
 	};
 
@@ -125,7 +125,7 @@ window.addEventListener("load", async () => {
 
 	// Submit
 	form.addEventListener("submit", async (e) => {
-		if (button.classList.contains("botonInactivado")) {
+		if (button.classList.contains("botonInactivo")) {
 			e.preventDefault();
 			errores = await validarDataEntry();
 			for (let i = 0; i < inputs.length; i++) {
