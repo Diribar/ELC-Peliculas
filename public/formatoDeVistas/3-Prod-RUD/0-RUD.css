@@ -9,12 +9,14 @@ main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-cl
 /* Encabezado */
 main #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 main #cuerpo #encabezado #nombres h1 {margin: 0; }
-main #cuerpo #encabezado #colCap {text-align: right;}
+main #cuerpo #encabezado #colCap, main #cuerpo #encabezado #colCap #tempCap {text-align: right;}
+main #cuerpo #encabezado #colCap #tempCap {margin-top: 5px;}
+main #cuerpo #encabezado #colCap #tempCap #capitulo {margin-left: 5px;}
 
 /* Imagen */
 main #imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
 main #imagenProducto img {max-height: 90.5vh;}
-main #imagenProducto img {max-width: 30vw;}
+main #imagenProducto img {width: 30vw;}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}
