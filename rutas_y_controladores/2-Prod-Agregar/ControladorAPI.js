@@ -44,11 +44,11 @@ module.exports = {
 			.then((n) => n.cant_temporadas);
 		return res.json(datos);
 	},
-	averiguarCapitulos: async (req, res) => {
-		datos = await BD_especificas.filtrarCapitulos(
+	obtenerCapitulos: async (req, res) => {
+		datos = await BD_especificas.obtenerCapitulos(
 			req.query.coleccion_id,
 			req.query.temporada
-		).then((n) => n.map((m) => m.capitulo));
+		)
 		return res.json(datos);
 	},
 

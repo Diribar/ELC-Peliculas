@@ -1,7 +1,8 @@
 /* Temas generales */
 main #cuerpo {justify-content: space-between; padding: 40px 40px 20px;}
 main #cuerpo h1 {margin: 0;}
-#cuerpo #datos {display: flex; flex-direction: column; align-items: flex-start;}
+main #cuerpo #datos {display: flex; flex-direction: column;}
+main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Temas generales de las tablas */
 #datos form {align-self: center;}
@@ -30,8 +31,8 @@ main #cuerpo h1 {margin: 0;}
 .desperdicio {background-color: var(--gris-oscuro);}
 
 /* Quitar la flecha de los select */
-select::-ms-expand {display: none;}
-select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+form select::-ms-expand {display: none;}
+form select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 /* Íconos en la tabla */
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
