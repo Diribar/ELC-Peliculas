@@ -14,13 +14,13 @@
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
 			<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>"><%= registro.coleccion.nombre_castellano %></a></p>
-			<div class="flex">
-				<select id="">
+			<div id="tempCap">
+				<select id="temporada">
 					<% for (temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
 						<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 					<% } %>
 				</select>
-				<select id="">
+				<select id="capitulo">
 					<% for (cap of registro.capitulos) { %>
 						<option <% if (registro.capitulo == cap) { %>selected<% } %> >Capítulo <%= cap %></option>
 					<% } %>

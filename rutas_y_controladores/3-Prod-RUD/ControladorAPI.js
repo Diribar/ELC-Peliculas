@@ -155,4 +155,20 @@ module.exports = {
 		// // Enviar el resultado
 		return res.json([capAntID, capPostID]);
 	},
+
+	obtenerCapID: async (req, res) => {
+		let {coleccion_id, temporada, capitulo} = req.query;
+		let ID = await BD_varias.obtenerPor3Campos(
+			"capitulos",
+			"coleccion_id",
+			coleccion_id,
+			"temporada",
+			temporada,
+			"capitulo",
+			capitulo
+		)
+			.then((n) => n.dataValues)
+			.then((n) => n.id);
+		return res.json(ID);
+	},
 };

@@ -15,7 +15,7 @@ router.get("/api/validar-links", API.validarLinks);
 router.get("/api/obtener-provs-links", API.obtenerProvsLinks);
 router.get("/api/obtener-col-cap", API.obtenerColCap);
 router.get("/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
-
+router.get("/api/obtener-cap-id", API.obtenerCapID);
 
 // Controladores de vistas
 router.get("/detalle", vista.prod_DBM);
