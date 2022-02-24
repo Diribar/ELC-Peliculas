@@ -247,7 +247,7 @@ module.exports = {
 				"subcategorias",
 				"id",
 				datos.subcategoria_id
-			).then(n=>n.dataValues)
+			).then((n) => n.dataValues);
 			// Relación con la vida
 			if (subcategoria.personaje)
 				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
