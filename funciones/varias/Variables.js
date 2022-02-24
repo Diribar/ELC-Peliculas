@@ -52,12 +52,14 @@ module.exports = {
 				campo: "paises_id",
 				peliculas: true,
 				colecciones: true,
+				capitulos: true,
 				omitirRutinaVista: true,
 			},
 			{
 				campo: "idioma_original_id",
 				peliculas: true,
 				colecciones: true,
+				capitulos: true,
 				omitirRutinaVista: true,
 			},
 			{
