@@ -8,13 +8,25 @@
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
-			<p><strong>Cantidad de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
-			<p><strong>Cantidad de Capítulos:</strong> <%= registro.cant_capitulos %></p>
+			<div id="colecciones">
+				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<div>
+					<p><strong>Cantidad de Temporadas:</strong> <%= registro.cant_temporadas ? registro.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cantidad de Capítulos:</strong> <%= registro.cant_capitulos %></p>
+				</div>
+			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
-			<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>"><%= registro.coleccion.nombre_castellano %></a></p>
-			<div id="tempCap">
+			<div id="tempCapI">
+				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
+				<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= registro.coleccion_id %>"><%= registro.coleccion.nombre_castellano %></a></p>
+			</div>
+			<div id="tempCapS">
+				<div class="pack">
+					<i class="fa-solid fa-circle-left" tabindex="-1" title="Ir al capítulo anterior"></i>
+					<i class="fa-solid fa-circle-right" tabindex="-1" title="Ir al capítulo posterior"></i>
+				</div>
 				<select id="temporada">
 					<% for (temp = 1; temp <= registro.coleccion.cant_temporadas; temp++) { %>
 						<option <% if (registro.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>

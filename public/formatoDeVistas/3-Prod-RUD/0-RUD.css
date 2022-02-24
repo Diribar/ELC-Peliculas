@@ -1,22 +1,31 @@
 /* Cuerpo */
-main #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Título */
-main #cuerpo {position: relative;}
-main #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
-main #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+#cuerpo {position: relative;}
+#cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
+#cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
 
 /* Encabezado */
-main #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-main #cuerpo #encabezado #nombres h1 {margin: 0; }
-main #cuerpo #encabezado #colCap, main #cuerpo #encabezado #colCap #tempCap {text-align: right;}
-main #cuerpo #encabezado #colCap #tempCap {margin-top: 5px;}
-main #cuerpo #encabezado #colCap #tempCap #capitulo {margin-left: 5px;}
+#cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#cuerpo #encabezado #nombres h1 {margin: 0; }
+#cuerpo #encabezado #colCap {text-align: right;}
+#cuerpo #encabezado #colCap #colecciones,
+#cuerpo #encabezado #colCap #tempCapI,
+#cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center; line-height: 1;}
+#cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
+#cuerpo #encabezado #colCap #colecciones i,
+#cuerpo #encabezado #colCap #tempCapI i {color: white; background-color: var(--gris-oscuro); cursor: pointer; margin-right: 15px; align-self: center; line-height: 1; border-radius: 15px;}
 
+#cuerpo #encabezado #colCap #colecciones i {padding: 5px; font-size: .9rem;}
+#cuerpo #encabezado #colCap #tempCapI i {padding: 3px 5px 2px; font-size: .9rem;}
+#cuerpo #encabezado #colCap #tempCapS .pack {line-height: 1; margin-right: 5px;}
+#cuerpo #encabezado #colCap #tempCapS .pack i {color: var(--gris-oscuro); font-size: 1.1rem; margin-right: 3px;}
+#cuerpo #encabezado #colCap #tempCapS #temporada {margin-right: 8px;}
 /* Imagen */
-main #imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
-main #imagenProducto img {max-height: 90.5vh;}
-main #imagenProducto img {width: 30vw;}
+#imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
+#imagenProducto img {max-height: 90.5vh;}
+#imagenProducto img {width: 30vw;}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}

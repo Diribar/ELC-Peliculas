@@ -22,10 +22,10 @@ window.addEventListener("load", async () => {
 			(n) => n.json()
 		);
 		// Eliminar las opciones actuales
-		capitulo.innerHTML = "<option selected>Capítulo 1</option>";
+		capitulo.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
-		for (i = 1; i < capitulos.length; i++) {
-			capitulo.innerHTML += "<option>Capítulo " + capitulos[i] + "</option>";
+		for (cap of capitulos) {
+			capitulo.innerHTML += "<option>Capítulo " + cap + "</option>";
 		}
 	});
 

@@ -15,7 +15,7 @@
 			</div>
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
-				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises %>. 
+				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises ? paises : "Sin datos" %>. 
 				<strong>Idioma original</strong>: <%= registro.idioma_original.nombre %>. 
 				<strong>En castellano:</strong> <%= registro.en_castellano.nombre %>. 
 				<strong>Es a color:</strong> <%= registro.en_color.nombre %>. 
@@ -37,7 +37,7 @@
 		<div id="comandos">
 			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
 			<% if (entidad != "colecciones") { %>
-				<i class="fa-solid fa-film" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
+				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
 			<% } %>
 			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
 			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
