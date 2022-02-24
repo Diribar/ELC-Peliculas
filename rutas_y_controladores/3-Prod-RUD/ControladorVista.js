@@ -75,7 +75,7 @@ module.exports = {
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
-		// Información sobre la versión original y editada
+		// Información sobre la edicion Guardada y Session
 		let existeEdicionGuardada = !!prodEditado;
 		let existeEdicionSession =
 			req.session.edicion &&
