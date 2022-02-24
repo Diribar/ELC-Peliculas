@@ -3,7 +3,7 @@
 	<div class="input-error">
 		<!-- Input -->
 		<select name="<%= campo.campo %>" class="input <%= campo.clase ? campo.clase : '' %>">
-			<option value="" class="ocultar" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí una opción</option>
+			<option value="" class="<% if (!campo.RCLV) { %>ocultar<% } %>" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí una opción</option>
 			<% for (valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (registro[campo.campo] == valor.id) { %>selected<% } %>

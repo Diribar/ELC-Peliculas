@@ -225,9 +225,9 @@ module.exports = {
 		// Datos generales
 		if (campos.includes("en_castellano_id"))
 			errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
-			if (campos.includes("en_color_id"))
+		if (campos.includes("en_color_id"))
 			errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
-			if (campos.includes("categoria_id"))
+		if (campos.includes("categoria_id"))
 			errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
 		if (campos.includes("subcategoria_id"))
 			errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "";
@@ -240,13 +240,6 @@ module.exports = {
 			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		if (campos.includes("calidad_tecnica_id"))
 			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
-		// RCLV
-		if (campos.includes("personaje_id"))
-		errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
-		if (campos.includes("hecho_id"))
-		errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
-		if (campos.includes("valor_id"))
-		errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
@@ -254,14 +247,11 @@ module.exports = {
 				"subcategorias",
 				"id",
 				datos.subcategoria_id
-			);
+			).then(n=>n.dataValues)
 			// Relación con la vida
 			if (subcategoria.personaje)
-				errores.personaje_id = !datos.personaje_id
-					? cartelSelectVacio
-					: "";
-			if (subcategoria.hecho)
-				errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
+				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
+			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
@@ -331,7 +321,7 @@ let validarRepetidos = async (campo, datos) => {
 		return n ? n.toJSON() : "";
 	});
 	// Si hay casos --> mensaje de error con la entidad y el id
-	if (repetido) {
+	if (repetido && repetido.id != datos.id) {
 		let producto = varias.producto(datos.entidad);
 		mensaje =
 			"Esta " +
