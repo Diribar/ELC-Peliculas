@@ -157,7 +157,7 @@ module.exports = {
 				campo: "publico_sugerido_id",
 				valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden"),
 				mensajes: [
-					"Mayores solamente: sensualidad o crueldad explícita, puede dañar la sensibilidad de un niño de 12 años.",
+					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un niño de 12 años.",
 					"Mayores apto familia: para mayores, y niños si están acompañados por sus padres.",
 					"Familia: ideal para compartir en familia y que todos disfruten",
 					"Menores apto familia: para menores, también la puede disfrutar un adulto.",

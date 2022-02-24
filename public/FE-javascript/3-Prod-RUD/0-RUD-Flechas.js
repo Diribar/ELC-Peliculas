@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 	// Acción si se elige 'colección/capítulo'
 	if (entidad != "peliculas") {
 		// Obtener el DOM
-		let colCapDOM = document.querySelector("#cuerpo #flechas .fa-layer-group");
+		let colCapDOM = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 		// Obtener el 'colCapID'
 		let ruta = "/producto/api/obtener-col-cap/?entidad=";
 		let colCapID = await fetch(ruta + entidad + "&id=" + producto_id).then((n) => n.json());
@@ -61,8 +61,8 @@ window.addEventListener("load", async () => {
 	// Acción si se elije "capítulo anterior" o "posterior"
 	if (entidad == "capitulos") {
 		// Obtener el DOM
-		let capAntDOM = document.querySelector("#cuerpo #flechas .fa-circle-left");
-		let capPostDOM = document.querySelector("#cuerpo #flechas .fa-circle-right");
+		let capAntDOM = document.querySelector("#cuerpo #encabezado .fa-circle-left");
+		let capPostDOM = document.querySelector("#cuerpo #encabezado .fa-circle-right");
 		// Obtener el ID del capítulo anterior y del posterior
 		let ruta = "/producto/api/obtener-cap-ant-y-post/?id=";
 		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
