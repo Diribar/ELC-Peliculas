@@ -7,7 +7,7 @@ let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	prodEdicForm: async (req, res) => {
+	edicForm: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// Tema y Código
 		let tema = "producto";
@@ -163,7 +163,7 @@ module.exports = {
 		});
 	},
 
-	prodEdicAct: async (req, res) => {
+	edicAct: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
@@ -241,7 +241,7 @@ module.exports = {
 		return res.send(["Actualizar", req.body]);
 	},
 
-	prodEdicElim: async (req, res) => {
+	edicElim: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
