@@ -16,22 +16,21 @@
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
 				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises ? paises : "Sin datos" %>. 
-				<strong>Idioma original</strong>: <%= registro.idioma_original.nombre %>. 
-				<strong>En castellano:</strong> <%= registro.en_castellano.nombre %>. 
-				<strong>Es a color:</strong> <%= registro.en_color.nombre %>. 
+				<strong>Idioma original</strong>: <%= registro.idioma_original.nombre ? registro.idioma_original.nombre : "Sin datos" %>. 
+				<strong>En castellano:</strong> <%= registro.en_castellano.nombre ? registro.en_castellano.nombre : "Sin datos" %>. 
+				<strong>Es a color:</strong> <%= registro.en_color.nombre ? registro.en_color.nombre : "Sin datos" %>. 
 			</div>
 			<!-- Dirección, Guión, Música, Producción -->
 			<div class="datosAdicionales">
-				<strong>Dirección:</strong> <%= registro.direccion %>. 
-				<strong>Guión:</strong> <%= registro.guion %>. 
-				<strong>Música:</strong> <%= registro.musica %>. 
-				<strong>Producción:</strong> <%= registro.produccion %>. 
+				<strong>Dirección:</strong> <%= registro.direccion ? registro.direccion : "Sin datos" %>. 
+				<strong>Guión:</strong> <%= registro.guion ? registro.guion : "Sin datos" %>. 
+				<strong>Música:</strong> <%= registro.musica ? registro.musica : "Sin datos" %>. 
+				<strong>Producción:</strong> <%= registro.produccion ? registro.produccion : "Sin datos" %>. 
 			</div>
 			<!-- Actuación -->
 			<div class="datosAdicionales">
-				<strong>Actuación:</strong> <%= registro.actuacion %>. 
+				<strong>Actuación:</strong> <%= registro.actuacion ? registro.actuacion : "Sin datos" %>. 
 			</div>	
-			<!-- Capítulos de Colección -->
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">
