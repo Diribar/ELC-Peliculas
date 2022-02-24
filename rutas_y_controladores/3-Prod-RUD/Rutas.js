@@ -18,9 +18,13 @@ router.get("/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
 router.get("/api/obtener-cap-id", API.obtenerCapID);
 
 // Controladores de vistas
-router.get("/detalle", vista.prod_DBM);
-router.get("/edicion", soloAutInput, vista.prod_DBM);
-router.get("/links", soloAutInput, vista.links_DAB);
+router.get("/detalle", vista.prodForm);
+router.get("/edicion", soloAutInput, vista.prodForm);
+
+router.put("/edicion", soloAutInput, vista.prodActualizar);
+router.delete("/edicion", soloAutInput, vista.prodEliminar);
+
+router.get("/links", soloAutInput, vista.linksForm);
 router.get("/revisar", soloAutInput, vista.revisar);
 router.get("/calificala", soloAutInput, vista.calificala);
 router.get("/eliminar", soloAutInput, vista.eliminar);

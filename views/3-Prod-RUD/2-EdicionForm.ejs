@@ -50,11 +50,18 @@
 		<i class="fa-solid fa-house botonInactivo" tabindex="-1" title='Mostrar la versión original'></i>
 	</div>
 	<div class="pack">
-		<i class="fa-solid fa-floppy-disk botonInactivo" tabindex="-1" title='Guardar los cambios'></i>
+		<!-- Actualizar -->
+		<input type="text" name="entidad" value="<%= entidad %>" class="ocultar">
+		<input type="text" name="id" value="<%= ID %>" class="ocultar">
+		<label for="guardar"><i class="fa-solid fa-floppy-disk botonInactivo" tabindex="-1" title='Guardar los cambios'></i></label>
+		<button type="submit" id="guardar" class="ocultar"></button>
+		<!-- Descartar -->
 		<i class="fa-solid fa-slash botonInactivo" tabindex="-1"></i>
 		<i class="fa-solid fa-rotate-right botonInactivo" tabindex="-1" title='Descartar los cambios sin guardar'></i>
 		<i class="fa-solid fa-slash botonInactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-trash-can botonInactivo" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
+		<!-- Eliminar -->
+		<label for="eliminar"><i class="fa-solid fa-trash-can botonInactivo" tabindex="-1" title='Eliminar definitivamente tu edición'></i></label>
+		<input type="submit" id="eliminar" class="ocultar" formaction = "<%= vista %>?_method=DELETE" formmethod="POST">
 	</div>
 </section>
 <!-- Botones -->

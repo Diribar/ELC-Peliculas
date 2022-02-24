@@ -1,4 +1,4 @@
-<form>
+<form action="<%= vista %>?_method=PUT" method="POST" >
 	<%- include('CartelAdvertencia') %>
 	<section id="imagen" class="input-error">
 		<label for="avatar" id="imagenProducto">
@@ -22,7 +22,6 @@
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
 			<p class="ocultar" id="existeEdicion"><%= existeEdicion %></p>
-			<p class="ocultar" id="version"><%= version %></p>
 			<p class="ocultar" id="status_creada"><%= registro.status_registro.creado %></p>
 			<button type="text" id="contador" class="ocultar" tabindex="-1"><%= tiempo %> min.</button>
 			<h1 id="titulo"><%= titulo %></h1>

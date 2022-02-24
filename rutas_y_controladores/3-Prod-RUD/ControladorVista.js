@@ -6,7 +6,7 @@ let variables = require("../../funciones/Varias/variables");
 
 // *********** Controlador ***********
 module.exports = {
-	prod_DBM: async (req, res) => {
+	prodForm: async (req, res) => {
 		// DETALLE - BAJAS - EDICIÓN (modificaciones)
 		// Tema y Código
 		let tema = "producto";
@@ -158,7 +158,28 @@ module.exports = {
 		});
 	},
 
-	links_DAB: async (req, res) => {
+	prodGuardar: async (req,res)=> {
+		return res.send([
+			"Guardar",
+			req.body,
+		])
+	},
+
+	prodActualizar: async (req,res)=> {
+		return res.send([
+			"Actualizar",
+			req.body,
+		])
+	},
+
+	prodEliminar: async (req,res)=> {
+		return res.send([
+			"Eliminar",
+			req.body,
+		])
+	},
+
+	linksForm: async (req, res) => {
 		// DETALLE - ALTAS - BAJAS
 		// Tema y Código
 		let tema = "producto";
