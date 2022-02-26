@@ -21,7 +21,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos #primeraColumna .label-input .input-error .input {width: 200px;}
 #datos #primeraColumna .label-input .input-error .input.angosto {width: 70px}
 #datos #primeraColumna .label-input .input-error .input.numero {width: 70px; text-align: right;}
-#datos #segundaColumna .label-input .input-error .input {width: 250px;}
+#datos #segundaColumna .label-input .input-error .input {width: 245px;}
 
 /* Partes específicas del formulario */
 #datos .label-input .input-error .input,

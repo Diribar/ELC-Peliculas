@@ -68,8 +68,16 @@ window.addEventListener("load", async () => {
 
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
+			// Cambiar los valores que se pueden mostrar en la subcategoría
+			mostrarValoresSubcat();
+			// Borrar el valor anterior
 			subcategoria.value = "";
-			funcionSubcat();
+			// Marcar que hay que elegir un valor
+			indice = campos.indexOf("subcategoria_id");
+			errores = await fetch(ruta + "subcategoria_id=").then((n) => n.json());
+			mensajesError[indice].innerHTML = errores.subcategoria_id;
+			iconoOK[indice].classList.add("ocultar");
+			iconoError[indice].classList.remove("ocultar");
 		}
 		// Fin
 		botonGuardar();
@@ -82,14 +90,14 @@ window.addEventListener("load", async () => {
 		// (Título original / castellano) + año lanzamiento
 		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
 			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
-			funcionDosCampos(datos, campo);
+			await funcionDosCampos(datos, campo);
 			datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
-			funcionDosCampos(datos, campo);
+			await funcionDosCampos(datos, campo);
 		}
 		// Año de lanzamiento + año de finalización
 		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
 			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
-			funcionDosCampos(datos, campo);
+			await funcionDosCampos(datos, campo);
 		}
 		// Subcategoría + RCLV
 		if (
@@ -98,7 +106,7 @@ window.addEventListener("load", async () => {
 			campo == "hecho_id" ||
 			campo == "valor_id"
 		)
-			funcionCamposCombinados([
+			await funcionCamposCombinados([
 				"subcategoria_id",
 				"personaje_id",
 				"hecho_id",
@@ -196,23 +204,29 @@ window.addEventListener("load", async () => {
 			mensaje
 				? iconoError[indice].classList.remove("ocultar")
 				: iconoError[indice].classList.add("ocultar");
+			!mensaje
+				? iconoOK[indice].classList.remove("ocultar")
+				: iconoOK[indice].classList.add("ocultar");
 		} else {
 			for (let i = 0; i < valores.length; i++) {
 				// Captura el mensaje de error
 				mensaje = errores[valores[i]];
-				if (mensaje == undefined) mensaje = "";
-				// Reemplaza
-				mensajesError[indice[i]].innerHTML = mensaje;
-				// Acciones en función de si hay o no mensajes de error
-				mensaje
-					? iconoError[indice[i]].classList.remove("ocultar")
-					: iconoError[indice[i]].classList.add("ocultar");
+				if (mensaje != undefined) {
+					// Reemplaza
+					mensajesError[indice[i]].innerHTML = mensaje;
+					// Acciones en función de si hay o no mensajes de error
+					mensaje
+						? iconoError[indice[i]].classList.remove("ocultar")
+						: iconoError[indice[i]].classList.add("ocultar");
+					!mensaje
+						? iconoOK[indice[i]].classList.remove("ocultar")
+						: iconoOK[indice[i]].classList.add("ocultar");
+				}
 			}
 		}
-		return;
 	};
 	// Aplicar cambios en la subcategoría
-	funcionSubcat = () => {
+	mostrarValoresSubcat = () => {
 		for (opcion of subcategoriaOpciones) {
 			opcion.className.includes(categoria.value)
 				? opcion.classList.remove("ocultar")
@@ -222,5 +236,5 @@ window.addEventListener("load", async () => {
 
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
-	if (categoria.value) funcionSubcat();
+	if (categoria.value) mostrarValoresSubcat();
 });

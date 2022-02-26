@@ -75,10 +75,20 @@ module.exports = {
 		).then((n) => {
 			return n ? n.toJSON() : "";
 		});
-		// Información sobre la versión original y editada
-		let existeEdicion = !!prodEditado;
-		let version = req.query.verOriginal == "true" || !existeEdicion ? "original" : "edicion";
+		// Información sobre la edicion Guardada y Session
+		let existeEdicionGuardada = !!prodEditado;
+		let existeEdicionSession =
+			req.session.edicion &&
+			req.session.edicion == entidad &&
+			req.session.edicion.id == prodID;
+		let existeEdicion = existeEdicionGuardada || existeEdicionSession;
+		// Obtener la versión a mostrar
+		let version = req.query.version;
+		if (!version) version = existeEdicionGuardada ? "edicion" : "original";
+		if (version == "session" && !existeEdicionSession)
+			return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 		// Generar los datos a mostrar en la vista
+		let prodCombinado = {};
 		if (version == "edicion") {
 			// Quitarle los campos 'null'
 			let campos = Object.keys(prodEditado);
@@ -86,11 +96,14 @@ module.exports = {
 				if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
 			}
 			// Preparar la info a cruzar
-			edicion = {...prodEditado};
-			delete edicion.id;
+			delete prodEditado.id;
 			// Cruzar la info
-			prodCombinado = {...prodOriginal, ...edicion};
-		} else prodCombinado = {...prodOriginal};
+			prodCombinado = {...prodOriginal, ...prodEditado};
+		} else
+			prodCombinado =
+				version == "session"
+					? {...prodOriginal, ...req.session.edicion}
+					: {...prodOriginal};
 		// Obtener avatar
 		let imagen = prodCombinado.avatar;
 		var avatar = imagen
@@ -132,6 +145,8 @@ module.exports = {
 				  )
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
+		// Averiguar si hay errores de validación
+		let errores = await funcionErroresEdicion(prodCombinado, entidad);
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodCombinado.capitulos = await BD_especificas.obtenerCapitulos(
@@ -139,6 +154,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
+		//return res.send([prodCombinado, errores])
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -155,9 +171,8 @@ module.exports = {
 			BD_paises,
 			BD_idiomas,
 			camposDP,
-			errores: {},
+			errores,
 			existeEdicion,
-			version,
 			tiempo,
 			vista: req.baseUrl + req.path,
 		});
@@ -175,7 +190,7 @@ module.exports = {
 		let userID = usuario.id;
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
 
-		// Problema: EL USUARIO NO TIENE UNA EDICION DE ESTE PRODUCTO
+		// Obtener el producto editado anterior, si lo hubiera
 		let prodEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
 			"ELC_entidad",
@@ -185,10 +200,11 @@ module.exports = {
 			"editado_por_id",
 			userID
 		);
-		if (!prodEditado) return res.send("No tenés una edicion de este producto");
-		// Problema: PRODUCTO 'CAPTURADO'
-
-		// Obtener el registro 'Original'
+		if (!prodEditado) prodEditado = {};
+		else {
+			// Problema: EDICION 'CAPTURADA'
+		}
+		// Obtener el producto 'Original'
 		let prodOriginal = await BD_varias.obtenerPorId(entidad, prodID).then((n) => n.dataValues);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
@@ -202,31 +218,16 @@ module.exports = {
 		}
 		// Unir 'Original' y 'Edición'
 		let prodCombinado = {...prodOriginal, ...req.body, avatar};
-		// return res.send([prodCombinado, req.body]);
-		// Averiguar si hay errores de validación DD
-		let camposDD = variables
-			.camposDD()
-			.filter((n) => n[entidad])
-			.map((n) => n.campo);
-		let erroresDD = await validarProd.datosDuros(camposDD, prodCombinado)
-		// Averiguar si hay errores de validación DP
-		let camposDP = await variables.camposDP().then(n=>n.map(m=>m.campo))
-		for (i = camposDP.length - 1; i >= 0; i--) {
-			if (
-				camposDP[i] == "fe_valores_id" ||
-				camposDP[i] == "entretiene_id" ||
-				camposDP[i] == "calidad_tecnica_id"
-			)
-				camposDP.splice(i, 1);
-		}
-		let erroresDP = await validarProd.datosPers(camposDP, prodCombinado)
-		//return res.send([erroresDD, erroresDP])
+		// Averiguar si hay errores de validación
+		let errores = await funcionErroresEdicion(prodCombinado, entidad);
 		// Si hay errores de validación, redireccionar
-		if (erroresDD.hay || erroresDP.hay) {
+		if (errores.hay || !errores.hay) {
 			// Session para data-entry
 			req.session.edicion = req.body;
 			// Redireccionar
-			return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
+			return res.redirect(
+				"/producto/edicion/?entidad=" + entidad + "&id=" + prodID + "&version=session"
+			);
 		}
 
 		// Si no hay errores,
@@ -400,4 +401,29 @@ module.exports = {
 	eliminar: (req, res) => {
 		return res.send("Estoy en eliminar");
 	},
+};
+
+let funcionErroresEdicion = async (prodCombinado, entidad) => {
+	// Averiguar si hay errores de validación DD
+	let camposDD = variables
+		.camposDD()
+		.filter((n) => n[entidad])
+		.map((n) => n.campo);
+	let erroresDD = await validarProd.datosDuros(camposDD, prodCombinado);
+	// Averiguar si hay errores de validación DP
+	let camposDP = await variables.camposDP().then((n) => n.map((m) => m.campo));
+	for (i = camposDP.length - 1; i >= 0; i--) {
+		if (
+			camposDP[i] == "fe_valores_id" ||
+			camposDP[i] == "entretiene_id" ||
+			camposDP[i] == "calidad_tecnica_id"
+		)
+			camposDP.splice(i, 1);
+	}
+	let erroresDP = await validarProd.datosPers(camposDP, prodCombinado);
+	//return res.send([erroresDD, erroresDP])
+	// Terminar
+	let errores = {...erroresDD, ...erroresDP};
+	errores.hay = erroresDD.hay || erroresDP.hay;
+	return errores;
 };

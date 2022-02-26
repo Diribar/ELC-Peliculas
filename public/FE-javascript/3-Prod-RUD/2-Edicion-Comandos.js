@@ -1,9 +1,6 @@
 window.addEventListener("load", () => {
 	// Versión del producto y status
-	let version =
-		new URL(window.location.href).searchParams.get("verOriginal") == "true"
-			? "original"
-			: "edicion";
+	let version = new URL(window.location.href).searchParams.get("version");
 	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
@@ -41,7 +38,7 @@ window.addEventListener("load", () => {
 				entidad +
 				"&id=" +
 				producto_id +
-				"&verOriginal=true";
+				"&version=original";
 		}
 	});
 	// Acción si se elige 'guardar'

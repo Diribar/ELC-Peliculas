@@ -240,6 +240,10 @@ module.exports = {
 			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		if (campos.includes("calidad_tecnica_id"))
 			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
+		// RCLV
+		// if (campos.includes("personaje_id") && datos.personaje_id) errores.personaje_id = "";
+		// if (campos.includes("hecho_id") && datos.hecho_id) errores.hecho_id = "";
+		// if (campos.includes("valor_id") && datos.valor_id) errores.valor_id = "";
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
@@ -249,10 +253,10 @@ module.exports = {
 				datos.subcategoria_id
 			).then((n) => n.dataValues);
 			// Relación con la vida
-			if (subcategoria.personaje)
-				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
-			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
-			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
+			errores.personaje_id =
+				subcategoria.personaje && !datos.personaje_id ? cartelSelectVacio : "";
+			errores.hecho_id = subcategoria.hecho && !datos.hecho_id ? cartelSelectVacio : "";
+			errores.valor_id = subcategoria.valor && !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = hayErrores(errores);
