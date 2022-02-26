@@ -53,6 +53,64 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 
+	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
+		// Definir los campos include
+		let includes = [
+			"idioma_original",
+			"en_castellano",
+			"en_color",
+			"categoria",
+			"subcategoria",
+			"publico_sugerido",
+			"personaje",
+			"hecho",
+			"status_registro",
+			"editado_por",
+			// A partir de acá, van los campos exclusivos de 'Original'
+			"creado_por",
+		];
+		if (entidad == "capitulos") includes.push("coleccion");
+		// Obtener el producto ORIGINAL
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then(
+			(n) => {
+				return n ? n.toJSON() : "";
+			}
+		);
+		// Obtener el producto EDITADO
+		let prodEditado = {};
+		if (prodOriginal) {
+			// Quitarle los campos 'null'
+			let campos = Object.keys(prodOriginal);
+			for (i = campos.length - 1; i >= 0; i--) {
+				if (prodOriginal[campos[i]] === null) delete prodOriginal[campos[i]];
+			}
+			// Obtener los datos EDITADOS del producto
+			prodEditado = await BD_varias.obtenerPor3CamposConInclude(
+				"productos_edic",
+				"ELC_entidad",
+				entidad,
+				"ELC_id",
+				prodID,
+				"editado_por_id",
+				userID,
+				includes.slice(0, -2)
+			).then((n) => {
+				return n ? n.toJSON() : "";
+			});
+			if (!prodEditado) prodEditado = {} 
+			else {
+				// Quitarle el ID para que no se superponga con el del producto original
+				delete prodEditado.id;
+				// Quitarle los campos 'null'
+				let campos = Object.keys(prodEditado);
+				for (i = campos.length - 1; i >= 0; i--) {
+					if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
+				}
+			}
+		}
+		return [prodOriginal, prodEditado];
+	},
+
 	actualizarRCLV: async (datos) => {
 		// Definir variables
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];

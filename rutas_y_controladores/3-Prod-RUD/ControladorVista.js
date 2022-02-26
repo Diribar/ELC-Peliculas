@@ -7,7 +7,7 @@ let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 
 // *********** Controlador ***********
 module.exports = {
-	edicForm: async (req, res) => {
+	detEdicForm: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// Tema y Código
 		let tema = "producto";
@@ -16,99 +16,45 @@ module.exports = {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el prodID
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
-		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"status_registro",
-			"editado_por",
-			// A partir de acá, van los campos exclusivos de 'Original'
-			"creado_por",
-		];
-		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener los datos originales del producto
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then(
-			(n) => {
-				return n ? n.toJSON() : "";
-			}
+		// Obtener los datos ORIGINALES y EDITADOS del producto
+		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+			entidad,
+			prodID,
+			userID
 		);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!prodOriginal) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO NO APROBADO
 		let noAprobada = !prodOriginal.status_registro.aprobado;
-		let usuario = req.session.usuario;
-		let otroUsuario = prodOriginal.creado_por_id != usuario.id;
+		let otroUsuario = prodOriginal.creado_por_id != userID;
 		if (noAprobada && otroUsuario) {
 			if (
 				entidad != "capitulos" ||
-				!(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == usuario.id)
+				!(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID)
 			) {
 				req.session.noAprobado = prodOriginal;
 				res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
 				return res.send("Producto no aprobado");
 			}
 		}
-		// Quitarle los campos 'null'
-		let campos = Object.keys(prodOriginal);
-		for (i = campos.length - 1; i >= 0; i--) {
-			if (prodOriginal[campos[i]] === null) delete prodOriginal[campos[i]];
-		}
-		// Obtener los datos editados
-		let prodEditado = await BD_varias.obtenerPor3CamposConInclude(
-			"productos_edic",
-			"ELC_entidad",
-			entidad,
-			"ELC_id",
-			prodOriginal.id,
-			"editado_por_id",
-			usuario.id,
-			includes.slice(0, -2)
-		).then((n) => {
-			return n ? n.toJSON() : "";
-		});
-		// Información sobre la edicion Guardada y Session
-		let existeEdicionGuardada = !!prodEditado;
-		let existeEdicionSession =
+		// User la versión 'session' (si existe) en vez de la guardada
+		if (
 			req.session.edicion &&
-			req.session.edicion == entidad &&
-			req.session.edicion.id == prodID;
-		let existeEdicion = existeEdicionGuardada || existeEdicionSession;
-		// Obtener la versión a mostrar
-		let version = req.query.version;
-		if (!version) version = existeEdicionGuardada ? "edicion" : "original";
-		if (version == "session" && !existeEdicionSession)
-			return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
+			req.session.edicion.entidad == entidad &&
+			req.session.edicion.id == prodID
+		)
+			prodEditado = {...prodEditado, ...req.session.edicion};
 		// Generar los datos a mostrar en la vista
-		let prodCombinado = {};
-		if (version == "edicion") {
-			// Quitarle los campos 'null'
-			let campos = Object.keys(prodEditado);
-			for (i = campos.length - 1; i >= 0; i--) {
-				if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
-			}
-			// Preparar la info a cruzar
-			delete prodEditado.id;
-			// Cruzar la info
-			prodCombinado = {...prodOriginal, ...prodEditado};
-		} else
-			prodCombinado =
-				version == "session"
-					? {...prodOriginal, ...req.session.edicion}
-					: {...prodOriginal};
+		prodCombinado = {...prodOriginal, ...prodEditado};
 		// Obtener avatar
 		let imagen = prodCombinado.avatar;
-		var avatar = imagen
+		let avatar = imagen
 			? (imagen.slice(0, 4) != "http"
-					? version == "edicion" && prodEditado.avatar
+					? prodEditado.avatar
 						? "/imagenes/3-ProdRevisar/"
 						: "/imagenes/2-Productos/"
 					: "") + imagen
@@ -136,7 +82,7 @@ module.exports = {
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP();
-			var tiempo = existeEdicion
+			var tiempo = prodEditado.capturado_en
 				? Math.max(
 						10,
 						parseInt(
@@ -172,7 +118,6 @@ module.exports = {
 			BD_idiomas,
 			camposDP,
 			errores,
-			existeEdicion,
 			tiempo,
 			vista: req.baseUrl + req.path,
 		});

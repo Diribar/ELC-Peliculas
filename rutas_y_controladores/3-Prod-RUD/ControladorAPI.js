@@ -6,42 +6,6 @@ let BD_varias = require("../../funciones/BD/varias");
 
 // *********** Controlador ***********
 module.exports = {
-	averiguarSiEstaDisponible: async (req, res) => {
-		// Viene con los datos de la entidad y el producto_id
-		let {entidad, id} = req.query;
-		// Los envía a una función y recibe 'true/false'
-		let disponible = req.session.usuario
-			? await procesar.averiguarSiEstaDisponible(entidad, id, req.session.usuario)
-			: {status: false, codigo: "hacerLogin"};
-		// Devuelve la info
-		return res.json(disponible);
-	},
-
-	validarEdicion: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
-		// Averigua los errores solamente para esos campos
-		let errores = await validar.edicion(campos, req.query);
-		// Devuelve el resultado
-		return res.json(errores);
-	},
-
-	validarLinks: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
-		// Averigua los errores solamente para esos campos
-		let errores = await validar.links(campos, req.query);
-		// Devuelve el resultado
-		return res.json(errores);
-	},
-
-	obtenerProvsLinks: async (req, res) => {
-		let provs = await BD_varias.obtenerTodos("links_provs", "orden").then((n) =>
-			n.map((m) => m.dataValues)
-		);
-		return res.json(provs);
-	},
-
 	obtenerColCap: async (req, res) => {
 		let {entidad, id} = req.query;
 		let ID =
@@ -171,4 +135,42 @@ module.exports = {
 			.then((n) => n.id);
 		return res.json(ID);
 	},
+
+	validarEdicion: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		// Averigua los errores solamente para esos campos
+		let errores = await validar.edicion(campos, req.query);
+		// Devuelve el resultado
+		return res.json(errores);
+	},
+
+	obtenerVersionesDeProducto: async (req, res) => {
+		let {entidad, prodID} = req.query;
+		userID = req.session.usuario.id
+		// Obtener los datos ORIGINALES y EDITADOS del producto
+		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+			entidad,
+			prodID,
+			userID
+		);
+		return res.json([prodOriginal, prodEditado]);
+	},
+
+	validarLinks: async (req, res) => {
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		// Averigua los errores solamente para esos campos
+		let errores = await validar.links(campos, req.query);
+		// Devuelve el resultado
+		return res.json(errores);
+	},
+
+	obtenerProvsLinks: async (req, res) => {
+		let provs = await BD_varias.obtenerTodos("links_provs", "orden").then((n) =>
+			n.map((m) => m.dataValues)
+		);
+		return res.json(provs);
+	},
+
 };
