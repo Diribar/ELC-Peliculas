@@ -1,6 +1,9 @@
 window.addEventListener("load", () => {
 	// Versión del producto y status
-	let version = document.querySelector("#version").innerHTML;
+	let version =
+		new URL(window.location.href).searchParams.get("verOriginal") == "true"
+			? "original"
+			: "edicion";
 	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
 	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
 	// Variables de íconos
@@ -42,10 +45,9 @@ window.addEventListener("load", () => {
 		}
 	});
 	// Acción si se elige 'guardar'
-	guardar.addEventListener("click", () => {
-		if (!guardar.classList.contains("botonInactivo")) {
-			// Guardar los cambios mediante API
-			console.log("guardar");
+	guardar.addEventListener("click", (e) => {
+		if (guardar.classList.contains("botonInactivo")) {
+			e.preventDefault();
 		}
 	});
 	// Acción si se elige 'descartar'
@@ -56,4 +58,9 @@ window.addEventListener("load", () => {
 		}
 	});
 	// Acción si se elige 'eliminar'
+	// eliminar.addEventListener("click", (e) => {
+	// 	if (eliminar.classList.contains("botonInactivo")) {
+	// 		e.preventDefault();
+	// 	}
+	// });
 });

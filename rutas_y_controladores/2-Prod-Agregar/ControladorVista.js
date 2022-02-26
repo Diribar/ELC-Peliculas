@@ -306,7 +306,7 @@ module.exports = {
 		// 3. Averiguar si hay errores de validación
 		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
 		let camposDD_errores = camposDD.map((n) => n.campo);
-		avatar = req.file ? req.file.filename : datosDuros.avatar;
+		let avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
@@ -419,7 +419,7 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
-		camposDP = await variables.camposDP();
+		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.campo));
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
@@ -541,7 +541,7 @@ module.exports = {
 		}
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);
-		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProductosEditados");
+		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
@@ -561,18 +561,14 @@ module.exports = {
 		let errorEnQuery = varias.revisarQuery(entidad, id);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// 4. Obtener los demás datos del producto
-		let registroProd = await BD_varias.obtenerPorIdConInclude(
-			entidad,
-			id,
-			"status_registro"
-		);
+		let registroProd = await BD_varias.obtenerPorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO YA EN 'BD'
 		if (!registroProd.status_registro.creado)
 			return res.redirect("/producto/agregar/ya-en-bd/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = varias.producto(entidad);		
+		let producto = varias.producto(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let archivos = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let muchasGracias = archivos.filter((n) => n.includes("Muchas gracias"));

@@ -5,6 +5,7 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
+let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
 let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 
 //************************ Controladores ****************************
@@ -18,9 +19,12 @@ router.get("/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
 router.get("/api/obtener-cap-id", API.obtenerCapID);
 
 // Controladores de vistas
-router.get("/detalle", vista.prod_DBM);
-router.get("/edicion", soloAutInput, vista.prod_DBM);
-router.get("/links", soloAutInput, vista.links_DAB);
+router.get("/detalle", soloUsuarios, vista.edicForm);
+router.get("/edicion", soloAutInput, vista.edicForm);
+router.post("/edicion", soloAutInput, vista.edicAct);
+router.get("/edicion/eliminar_edicion", soloAutInput, vista.edicElim);
+
+router.get("/links", soloAutInput, vista.linksForm);
 router.get("/revisar", soloAutInput, vista.revisar);
 router.get("/calificala", soloAutInput, vista.calificala);
 router.get("/eliminar", soloAutInput, vista.eliminar);

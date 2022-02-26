@@ -9,7 +9,6 @@ window.addEventListener("load", () => {
 			contenidos.forEach((contenido) => {
 				contenido.classList.add("ocultar");
 			});
-			console.log(e.target.dataset.entidad);
 			const listado = document.querySelector(e.target.dataset.entidad);
 			listado.classList.remove("ocultar");
 		});

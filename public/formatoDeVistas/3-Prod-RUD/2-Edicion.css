@@ -11,7 +11,7 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 /* Imagen */
 form #imagen #imagenProducto img {cursor: pointer;}
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
-form #imagen .fa-solid {font-size: 4rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
+form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
 form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
 
 /* Datos del formulario */
