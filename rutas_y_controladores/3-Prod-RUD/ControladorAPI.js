@@ -147,14 +147,15 @@ module.exports = {
 
 	obtenerVersionesDeProducto: async (req, res) => {
 		let {entidad, prodID} = req.query;
-		userID = req.session.usuario.id
+		userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
 		);
-		return res.json([prodOriginal, prodEditado]);
+		let prodSession = req.session.edicion;
+		return res.json([prodOriginal, prodEditado, prodSession]);
 	},
 
 	validarLinks: async (req, res) => {
@@ -172,5 +173,4 @@ module.exports = {
 		);
 		return res.json(provs);
 	},
-
 };

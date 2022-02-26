@@ -19,20 +19,14 @@ window.addEventListener("load", async () => {
 		}
 	);
 	// Variables de íconos
-	let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
-	let links = document.querySelector("#cuerpo #flechas .fa-film");
-	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil");
-	let original = document.querySelector("#cuerpo #comandos .fa-house");
+	let edicionSession = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
-	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
-	let linksRCLV = document.querySelectorAll(".input-error i.linkRCLV");
-	let ruta = "/producto/api/validar-edicion/?";
+	let ruta = "/producto/edicion/api/validar-edicion/?";
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
@@ -54,17 +48,9 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Desactivar íconos
-		detalle.classList.add("botonInactivo");
-		links.classList.add("botonInactivo");
-		edicion.classList.add("botonInactivo");
-		original.classList.add("botonInactivo");
-		eliminar.classList.add("botonInactivo");
-		for (let i = 0; i < linksRCLV.length; i++) {
-			linksRCLV[i].classList.add("botonInactivo");
-		}
-		// Activar íconos
-		descartar.classList.remove("botonInactivo");
+		// Botonera de comandos
+		edicionSession.classList.remove("inactivoDinamico");
+		guardar.classList.remove("inactivoDinamico");
 
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {

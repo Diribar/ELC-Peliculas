@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let vista = window.location.pathname;
 
 	// Obtener el ID de la colección
-	let ruta = "/producto/api/obtener-col-cap/?entidad=capitulos&id=";
+	let ruta = "/producto/tridente/api/obtener-col-cap/?entidad=capitulos&id=";
 	let coleccion_id = await fetch(ruta + producto_id).then((n) => n.json());
 
 	// Obtener DOM de Temporada y Capítulos
@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 		let temp = temporada.value.slice(10);
 		let cap = capitulo.value.slice(9);
 		// Obtener el capID
-		ruta = "/producto/api/obtener-cap-id/?entidad=capitulos";
+		ruta = "/producto/tridente/api/obtener-cap-id/?entidad=capitulos";
 		let capID = await fetch(
 			ruta + "&coleccion_id=" + col + "&temporada=" + temp + "&capitulo=" + cap
 		).then((n) => n.json());
