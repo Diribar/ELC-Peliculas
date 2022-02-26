@@ -2,7 +2,7 @@
 let procesar = require("../../funciones/Prod-RUD/1-Procesar");
 let validar = require("../../funciones/Prod-RUD/2-Validar");
 let BD_varias = require("../../funciones/BD/varias");
-// let BD_especificas = require("../../funciones/BD/especificas");
+let BD_especificas = require("../../funciones/BD/especificas");
 
 // *********** Controlador ***********
 module.exports = {
@@ -146,7 +146,7 @@ module.exports = {
 	},
 
 	obtenerVersionesDeProducto: async (req, res) => {
-		let {entidad, prodID} = req.query;
+		let {entidad, id: prodID} = req.query;
 		userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
@@ -154,7 +154,9 @@ module.exports = {
 			prodID,
 			userID
 		);
+		// Obtener los datos SESSION del producto
 		let prodSession = req.session.edicion;
+		// Enviar los datos
 		return res.json([prodOriginal, prodEditado, prodSession]);
 	},
 
