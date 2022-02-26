@@ -147,7 +147,6 @@ module.exports = {
 
 	obtenerVersionesDeProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
-		console.log(entidad, prodID);
 		userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
