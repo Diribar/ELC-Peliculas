@@ -154,8 +154,8 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
 		OK && !error
-			? guardar.classList.remove("botonInactivo")
-			: guardar.classList.add("botonInactivo");
+			? guardar.classList.remove("inactivo")
+			: guardar.classList.add("inactivo");
 	};
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;

@@ -15,12 +15,12 @@ window.addEventListener("load", () => {
 		if (respuesta) {
 			// Mostrar errores
 			iconoError.classList.remove("ocultar");
-			button.classList.add("botonInactivo");
+			button.classList.add("inactivo");
 			mensajeError.innerHTML = respuesta;
 		} else {
 			// Ocultar errores
 			iconoError.classList.add("ocultar");
-			button.classList.remove("botonInactivo");
+			button.classList.remove("inactivo");
 			mensajeError.innerHTML = "";
 		}
 	};
@@ -43,12 +43,12 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.innerHTML == "Verificar") {
 			e.preventDefault();
-			if (!button.classList.contains("botonInactivo")) {
-				button.classList.add("botonInactivo");
+			if (!button.classList.contains("inactivo")) {
+				button.classList.add("inactivo");
 				let link = api_pre(input.value);
 				let lectura = await fetch(link).then((n) => n.json());
 				api_post(lectura);
-				button.classList.remove("botonInactivo");
+				button.classList.remove("inactivo");
 				button.innerHTML = "Avanzar";
 			}
 		}

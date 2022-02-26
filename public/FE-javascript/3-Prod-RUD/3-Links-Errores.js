@@ -88,8 +88,8 @@ window.addEventListener("load", () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar != iconoError.length;
 		OK && !error
-			? guardar.classList.remove("botonInactivo")
-			: guardar.classList.add("botonInactivo");
+			? guardar.classList.remove("inactivo")
+			: guardar.classList.add("inactivo");
 	};
 	let agregarCampos = (campoAux) => {
 		let indiceAux = campos.indexOf(campoAux);
