@@ -97,7 +97,7 @@ module.exports = {
 			).then((n) => {
 				return n ? n.toJSON() : "";
 			});
-			if (!prodEditado) prodEditado = {} 
+			if (!prodEditado) prodEditado = {}
 			else {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
@@ -107,6 +107,7 @@ module.exports = {
 					if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
 				}
 			}
+			prodEditado={...prodOriginal,...prodEditado}
 		}
 		return [prodOriginal, prodEditado]
 	},
