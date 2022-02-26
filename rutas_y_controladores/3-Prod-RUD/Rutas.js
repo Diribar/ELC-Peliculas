@@ -10,7 +10,7 @@ let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 
 //************************ Controladores ****************************
 // Controladores de APIs
-// Tridente - Detalle - Edición- Links
+// Tridente: Detalle, Edición, Links
 router.get("/api/tridente/obtener-col-cap", API.obtenerColCap);
 router.get("/api/tridente/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
 router.get("/api/tridente/obtener-cap-id", API.obtenerCapID);
