@@ -108,7 +108,7 @@ module.exports = {
 				}
 			}
 		}
-		return [prodOriginal, prodEditado];
+		return [prodOriginal, prodEditado]
 	},
 
 	actualizarRCLV: async (datos) => {

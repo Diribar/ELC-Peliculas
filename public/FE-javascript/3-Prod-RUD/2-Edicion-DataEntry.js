@@ -18,14 +18,12 @@ window.addEventListener("load", async () => {
 			return {id: n.value, nombre: n.innerHTML};
 		}
 	);
-	// Variables de íconos
-	let edicionSession = document.querySelector("#cuerpo #comandos .fa-pencil");
-	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
+	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
 	let ruta = "/producto/edicion/api/validar-edicion/?";
 
 	// Revisar campos en forma INDIVIDUAL
@@ -49,8 +47,9 @@ window.addEventListener("load", async () => {
 		}
 
 		// Botonera de comandos
-		edicionSession.classList.remove("inactivoDinamico");
-		guardar.classList.remove("inactivoDinamico");
+		for (inactivo of inactivoDinamico) {
+			inactivo.classList.remove("inactivoDinamico");
+		}
 
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
@@ -137,6 +136,7 @@ window.addEventListener("load", async () => {
 		paisesMostrar.value = paisesNombre;
 	};
 	let botonGuardar = () => {
+		let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 		let OK =
 			Array.from(iconoOK)
 				.map((n) => n.classList.value)
