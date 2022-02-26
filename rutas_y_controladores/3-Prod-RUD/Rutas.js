@@ -11,15 +11,15 @@ let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 //************************ Controladores ****************************
 // Controladores de APIs
 // Tridente: Detalle, Edición, Links
-router.get("/api/tridente/obtener-col-cap", API.obtenerColCap);
-router.get("/api/tridente/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
-router.get("/api/tridente/obtener-cap-id", API.obtenerCapID);
+router.get("/tridente/api/obtener-col-cap", API.obtenerColCap);
+router.get("/tridente/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
+router.get("/tridente/api/obtener-cap-id", API.obtenerCapID);
 // Edición
-router.get("/api/edicion/validar-edicion", API.validarEdicion);
-router.get("/api/edicion/obtener-versiones", API.obtenerVersionesDeProducto);
+router.get("/edicion/api/validar-edicion", API.validarEdicion);
+router.get("/edicion/api/obtener-versiones", API.obtenerVersionesDeProducto);
 // Links
-router.get("/api/links/validar-links", API.validarLinks);
-router.get("/api/links/obtener-provs-links", API.obtenerProvsLinks);
+router.get("/links/api/validar-links", API.validarLinks);
+router.get("/links/api/obtener-provs-links", API.obtenerProvsLinks);
 
 // Controladores de vistas
 router.get("/detalle", soloUsuarios, vista.detEdicForm);

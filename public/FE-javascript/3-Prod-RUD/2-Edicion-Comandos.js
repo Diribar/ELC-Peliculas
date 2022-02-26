@@ -1,17 +1,29 @@
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Versión del producto y status
-	let version = new URL(window.location.href).searchParams.get("version");
-	let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
-	let status_creada = document.querySelector("#status_creada").innerHTML == "true";
+	// let version = new URL(window.location.href).searchParams.get("version");
+	// let existeEdicion = document.querySelector("#existeEdicion").innerHTML == "true";
+	// let status_creada = document.querySelector("#status_creada").innerHTML == "true";
+
 	// Variables de íconos
-	let edicion = document.querySelector("#cuerpo #comandos .fa-pencil");
+	let edicSession = document.querySelector("#cuerpo #comandos .fa-pencil");
+	let edicGuardada = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let descartar = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
+
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let producto_id = new URL(window.location.href).searchParams.get("id");
+	let prodID = new URL(window.location.href).searchParams.get("id");
+
+	// Versiones existentes
+	let ruta = "/producto/edicion/api/obtener-versiones/";
+	let [verOriginal, verEdicG, VerEdicS] = await fetch(
+		ruta +
+		"?entidad=" +
+		entidad+
+		+
+		prodID
+	).then((n) => n.json());
 
 	// Status inicial
 	if (version == "edicion") {
@@ -25,7 +37,7 @@ window.addEventListener("load", () => {
 		if (!edicion.classList.contains("botonInactivo")) {
 			// Ir a la vista 'edicion'
 			window.location.href =
-				window.location.pathname + "?entidad=" + entidad + "&id=" + producto_id;
+				window.location.pathname + "?entidad=" + entidad + "&id=" + prodID;
 		}
 	});
 	// Acción si se elige 'original'
@@ -37,7 +49,7 @@ window.addEventListener("load", () => {
 				"?entidad=" +
 				entidad +
 				"&id=" +
-				producto_id +
+				prodID +
 				"&version=original";
 		}
 	});

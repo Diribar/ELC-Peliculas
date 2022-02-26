@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 		// Obtener el DOM
 		let colCapDOM = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 		// Obtener el 'colCapID'
-		let ruta = "/producto/api/obtener-col-cap/?entidad=";
+		let ruta = "/producto/tridente/api/obtener-col-cap/?entidad=";
 		let colCapID = await fetch(ruta + entidad + "&id=" + producto_id).then((n) => n.json());
 		// Alternar entre colección y capítulo
 		colCapDOM.addEventListener("click", () => {
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 		let capAntDOM = document.querySelector("#cuerpo #encabezado .fa-circle-left");
 		let capPostDOM = document.querySelector("#cuerpo #encabezado .fa-circle-right");
 		// Obtener el ID del capítulo anterior y del posterior
-		let ruta = "/producto/api/obtener-cap-ant-y-post/?id=";
+		let ruta = "/producto/tridente/api/obtener-cap-ant-y-post/?id=";
 		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
 		// Acción si se elije "capítulo anterior"
 		if (capAntID) {

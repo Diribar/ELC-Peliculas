@@ -45,23 +45,23 @@
 <!-- Comandos -->
 <section id="comandos">
 	<div class="pack">
-		<!-- Versión editada sin guardar -->
-		<i class="fa-solid fa-pencil botonInactivo" tabindex="-1" title='Versión editada sin guardar'></i>
-		<!-- Versión editada guardada -->
+		<!-- Versión editada 'session' -->
+		<i class="fa-solid fa-pencil inactivoDinamico" tabindex="-1" title='Versión editada sin guardar'></i>
+		<!-- Versión editada 'guardada' -->
 		<i class="fa-solid fa-slash botonInactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-rotate-right botonInactivo" tabindex="-1" title='Versión editada guardada'></i>
+		<i class="fa-solid fa-rotate-right inactivoEstable" tabindex="-1" title='Versión editada guardada'></i>
 		<!-- Versión original -->
 		<i class="fa-solid fa-slash botonInactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-house botonInactivo" tabindex="-1" title='Versión original'></i>
+		<i class="fa-solid fa-house" tabindex="-1" title='Versión original'></i>
 	</div>
 	<div class="pack">
-		<!-- Actualizar -->
-		<label for="guardar"><i class="fa-solid fa-floppy-disk botonInactivo" tabindex="-1" title='Guardar los cambios'></i></label>
+		<!-- Guardar cambios -->
+		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivoDinamico" tabindex="-1" title='Guardar los cambios'></i></label>
 		<button type="submit" id="guardar" class="ocultar"></button>
 		<!-- Eliminar -->
 		<i class="fa-solid fa-slash botonInactivo" tabindex="-1"></i>
 		<a href="<%= vista %>eliminar_edicion/?entidad=<%= entidad %>&id=<%= prodID %>">
-			<i class="fa-solid fa-trash-can botonInactivo" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
+			<i class="fa-solid fa-trash-can inactivoEstable" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
 		</a>
 	</div>
 </section>

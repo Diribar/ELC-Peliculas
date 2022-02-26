@@ -15,8 +15,8 @@ window.addEventListener("load", () => {
 	let imgAvatar = document.querySelector("form #dataEntry .logoProv img");
 	let indiceAvatar = campos.indexOf("link_prov_id");
 	// Rutas
-	let rutaValidar = "/producto/api/validar-links/?";
-	let rutaObtener = "/producto/api/obtener-provs-links";
+	let rutaValidar = "/producto/links/api/validar-links/?";
+	let rutaObtener = "/producto/links/api/obtener-provs-links";
 
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {

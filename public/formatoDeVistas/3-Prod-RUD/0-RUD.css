@@ -32,7 +32,6 @@
 .mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 
 /* Comandos y Flechas */
-#cuerpo .botonInactivo, #cuerpo .botonInactivo * {cursor: default;}
 #cuerpo #comandos, #cuerpo #flechas {background-color: var(--azul-oscuro);}
 #cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between;}
 #cuerpo #comandos, #cuerpo #flechas {margin: 0 auto; padding: 7px 5px; border-radius: 15px;}
