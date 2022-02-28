@@ -55,14 +55,16 @@ window.addEventListener("load", async () => {
 	// EVENT LISTENERS ---------------------------------------
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
-		// Definir los valores para 'campo' y 'valor'
+		// Averiguar si hay ERRORES
+		// 1. Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
 		let indice = campos.indexOf(campo);
-		// Averiguar si hay algún error
+		// 2. Averiguar si hay algún error y aplicar las consecuencias
 		let error = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
 		consecuenciaError(error, campo);
+
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			// Cambiar los valores que se pueden mostrar en la subcategoría
