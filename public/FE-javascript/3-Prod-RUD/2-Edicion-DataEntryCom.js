@@ -76,8 +76,10 @@ window.addEventListener("load", async () => {
 			iconoOK[indiceSC].classList.add("ocultar");
 			iconoError[indiceSC].classList.remove("ocultar");
 		}
+
 		// Activar el botón 'Guardar'
 		activarBotonGuardar();
+
 		// Guardar Data-Entry en session
 		fetch(rutaRQ + dataEntry());
 
@@ -89,7 +91,8 @@ window.addEventListener("load", async () => {
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!botonEdicSession.classList.contains("plus"))
 			actualizaLaBotoneraDeComandos(botonEdicSession);
-		// 3. Ponerle la flecha al campo cambiado
+
+		// Ponerle la flecha al campo cambiado
 		flechasAviso[indice].classList.remove("ocultar");
 	});
 	// Revisar campos COMBINADOS
