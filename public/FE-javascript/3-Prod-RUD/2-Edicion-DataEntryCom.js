@@ -60,7 +60,6 @@ window.addEventListener("load", async () => {
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
-		let indice = campos.indexOf(campo);
 		// 2. Averiguar si hay algún error y aplicar las consecuencias
 		let error = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
 		consecuenciaError(error, campo);
@@ -79,23 +78,16 @@ window.addEventListener("load", async () => {
 			iconoError[indiceSC].classList.remove("ocultar");
 		}
 
-		// Activar el botón 'Guardar'
-		activarBotonGuardar();
+		// Tareas varias
+		activarBotonGuardar(); // Activa/Desactiva el botón 'Guardar'
+		fetch(rutaRQ + dataEntry()); // Guarda el Data-Entry en session
+		inputEnBotoneraComandos();
 
-		// Guardar Data-Entry en session
-		fetch(rutaRQ + dataEntry());
+		// Le pone la flecha al campo cambiado
+		let indice = campos.indexOf(campo);
+		flechasAviso[indice].classList.remove("ocultar");
 
 		// Actualizar la botonera de comandos
-		// 1. Quitar la clase 'inactivoDinamico'
-		for (inactivo of inactivoDinamico) {
-			inactivo.classList.remove("inactivoDinamico");
-		}
-		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
-		if (!botonEdicSession.classList.contains("plus"))
-			actualizaLaBotoneraDeComandos(botonEdicSession);
-
-		// Ponerle la flecha al campo cambiado
-		flechasAviso[indice].classList.remove("ocultar");
 	});
 	// Revisar campos COMBINADOS
 	form.addEventListener("change", async (e) => {
@@ -144,12 +136,12 @@ window.addEventListener("load", async () => {
 		funcionInput(botonOriginal, versionOriginal);
 	});
 	botonGuardar.addEventListener("click", (e) => {
-		if (botonGuardar.classList.contains("inactivo")) {
+		if (botonGuardar.classList.join(" ").includes("inactivo")) {
 			e.preventDefault();
 		}
 	});
 	botonEliminar.addEventListener("click", (e) => {
-		if (botonEliminar.classList.contains("inactivo")) {
+		if (botonEliminar.classList.join(" ").includes("inactivo")) {
 			e.preventDefault();
 		}
 	});
@@ -312,24 +304,15 @@ window.addEventListener("load", async () => {
 					: iconoOK[indice].classList.add("ocultar");
 		}
 	};
-	// Aplicar cambios en la subcategoría
-	let mostrarValoresSubcat = () => {
-		for (opcion of subcategoriaOpciones) {
-			opcion.className.includes(categoria.value)
-				? opcion.classList.remove("ocultar")
-				: opcion.classList.add("ocultar");
-		}
-	};
-	// Actualizar la botonera de comandos
-	let startupBotoneraComandos = (existeEdicG, existeEdicS) => {
-		// Quitar inactivoDinamico si existe una versión 'session"
+	let startupBotoneraComandos = () => {
+		// Quita 'inactivoDinamico' si existe una versión 'session"
 		if (existeEdicS) {
 			for (inactivo of inactivoDinamico) {
 				inactivo.classList.remove("inactivoDinamico");
 			}
 		}
+		// Quita 'inactivoEstable' si existe una versión 'guardada'
 		if (existeEdicG) {
-			// Quitar inactivoEstable si existe una versión 'guardada'
 			for (inactivo of inactivoEstable) {
 				if (inactivo != botonEliminar || !status_creada)
 					inactivo.classList.remove("inactivoEstable");
@@ -342,10 +325,27 @@ window.addEventListener("load", async () => {
 			? botonEdicGuardada.classList.add("plus")
 			: botonOriginal.classList.add("plus");
 	};
+	let inputEnBotoneraComandos = () => {
+		// 1. Quitar la clase 'inactivoDinamico'
+		for (inactivo of inactivoDinamico) {
+			if (inactivo.classList.contains("inactivoDinamico"))
+				inactivo.classList.remove("inactivoDinamico");
+		}
+		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
+		if (!botonEdicSession.classList.contains("plus"))
+			actualizaLaBotoneraDeComandos(botonEdicSession);
+	};
+	// Aplicar cambios en la subcategoría
+	let mostrarValoresSubcat = () => {
+		for (opcion of subcategoriaOpciones) {
+			opcion.className.includes(categoria.value)
+				? opcion.classList.remove("ocultar")
+				: opcion.classList.add("ocultar");
+		}
+	};
 
 	// STATUS INICIAL ---------------------------------------
+	startupBotoneraComandos();
 	// Rutinas de categoría / subcategoría
 	if (categoria.value) mostrarValoresSubcat();
-	// Actualizar la botonera de comandos
-	startupBotoneraComandos(existeEdicG, existeEdicS);
 });
