@@ -172,7 +172,7 @@ module.exports = {
 	},
 
 	enviarA_ReqQuery: async (req, res) => {
-		delete req.query.avatar;
+		if (req.query.avatar) delete req.query.avatar;
 		req.session.edicion = req.query;
 		//console.log(req.query);
 		return res.json();
