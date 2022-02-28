@@ -28,8 +28,8 @@ window.addEventListener("load", async () => {
 	let botonEdicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let botonEdicGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
-	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
+	let botonGuardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
+	let botonEliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
 	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
@@ -76,8 +76,8 @@ window.addEventListener("load", async () => {
 			iconoOK[indiceSC].classList.add("ocultar");
 			iconoError[indiceSC].classList.remove("ocultar");
 		}
-		// Botón guardar
-		botonGuardar();
+		// Activar el botón 'Guardar'
+		activarBotonGuardar();
 		// Guardar Data-Entry en session
 		fetch(rutaRQ + dataEntry());
 
@@ -122,7 +122,7 @@ window.addEventListener("load", async () => {
 				"valor_id",
 			]);
 		// Fin
-		botonGuardar();
+		activarBotonGuardar();
 	});
 	// BOTONERA DE COMANDOS ----------------------------------
 	botonEdicSession.addEventListener("click", async () => {
@@ -138,13 +138,13 @@ window.addEventListener("load", async () => {
 	botonOriginal.addEventListener("click", () => {
 		funcionInput(botonOriginal, versionOriginal);
 	});
-	guardar.addEventListener("click", (e) => {
-		if (guardar.classList.contains("inactivoDinamico")) {
+	botonGuardar.addEventListener("click", (e) => {
+		if (botonGuardar.classList.contains("inactivo")) {
 			e.preventDefault();
 		}
 	});
-	eliminar.addEventListener("click", (e) => {
-		if (eliminar.classList.contains("inactivoEstable")) {
+	botonEliminar.addEventListener("click", (e) => {
+		if (botonEliminar.classList.contains("inactivo")) {
 			e.preventDefault();
 		}
 	});
@@ -225,8 +225,7 @@ window.addEventListener("load", async () => {
 		}
 		paisesMostrar.value = paisesNombre;
 	};
-	let botonGuardar = () => {
-		let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
+	let activarBotonGuardar = () => {
 		let OK =
 			Array.from(iconoOK)
 				.map((n) => n.classList.value)
@@ -243,7 +242,9 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
-		OK && !error ? guardar.classList.remove("inactivo") : guardar.classList.add("inactivo");
+		OK && !error
+			? botonGuardar.classList.remove("inactivoErrores")
+			: botonGuardar.classList.add("inactivoErrores");
 	};
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;
@@ -307,7 +308,7 @@ window.addEventListener("load", async () => {
 		}
 	};
 	// Aplicar cambios en la subcategoría
-	mostrarValoresSubcat = () => {
+	let mostrarValoresSubcat = () => {
 		for (opcion of subcategoriaOpciones) {
 			opcion.className.includes(categoria.value)
 				? opcion.classList.remove("ocultar")
@@ -325,7 +326,7 @@ window.addEventListener("load", async () => {
 		if (existeEdicG) {
 			// Quitar inactivoEstable si existe una versión 'guardada'
 			for (inactivo of inactivoEstable) {
-				if (inactivo != eliminar || !status_creada)
+				if (inactivo != botonEliminar || !status_creada)
 					inactivo.classList.remove("inactivoEstable");
 			}
 		}
