@@ -75,6 +75,9 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .fa-circle-xmark {z-index: 1;}
 
 /* Comandos - Particularidades */
+#cuerpo #comandos {padding: 0;}
 #cuerpo #comandos .pack {margin: 0 20px;}
-#cuerpo #comandos .pack {display: flex; flex-direction: row; justify-content: center;}
+#cuerpo #comandos .pack {display: flex; flex-direction: row; align-items: center;}
+#cuerpo #comandos .pack i {margin: 8px 0;}
 #cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
+#cuerpo #comandos .pack i.version {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 0;}

@@ -1,13 +1,14 @@
 window.addEventListener("load", async () => {
 	// Variables de íconos
-	let edicSession = document.querySelector("#cuerpo #comandos .fa-pencil");
-	let edicGuardada = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let edicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let edicGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
 	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
+	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
@@ -50,7 +51,9 @@ window.addEventListener("load", async () => {
 						? (input.value = version[input.name])
 						: (input.value = "");
 			}
-			// } else {
+			for (version of versiones) {
+				version.style.borderColor = version == botonVersion ? "var(--amarillo-oscuro)" : "transparent";
+			}
 		}
 	};
 
