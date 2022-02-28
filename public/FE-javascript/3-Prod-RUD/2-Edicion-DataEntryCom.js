@@ -86,8 +86,6 @@ window.addEventListener("load", async () => {
 		// Le pone la flecha al campo cambiado
 		let indice = campos.indexOf(campo);
 		flechasAviso[indice].classList.remove("ocultar");
-
-		// Actualizar la botonera de comandos
 	});
 	// Revisar campos COMBINADOS
 	form.addEventListener("change", async (e) => {
