@@ -11,49 +11,74 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	// Versiones existentes
-	let ruta = "/producto/edicion/api/obtener-versiones/";
-	let [versionOriginal, versionEdicG, versionEdicS] = await fetch(
-		ruta + "?entidad=" + entidad + "&id=" + prodID
+	// Obtener versiones existentes
+	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
+	let [versionOriginal, versionEdicG] = await fetch(
+		rutaVersiones + "?entidad=" + entidad + "&id=" + prodID
 	).then((n) => n.json());
-	// Datos de la Edición Guardada
 	let existeEdicG = !!versionEdicG.ELC_id;
+	// Obtener version 'session'
+	let rutaSession = "/producto/edicion/api/obtener-version-session/";
+	let versionEdicS = await fetch(rutaSession + "?entidad=" + entidad + "&id=" + prodID).then(
+		(n) => n.json()
+	);
+	let existeEdicS = !!versionEdicS;
+	// Otras variables
 	let status_creada = existeEdicG ? versionEdicG.status_registro.creado : false;
+	let inputs = document.querySelectorAll(".input-error .input");
 
-	// QUITAR 'INACTIVO' SI CORRESPONDE -------------------------------------
-	// Quitar inactivoEstable si existe una versión 'guardada'
-	if (existeEdicG)
-		for (inactivo of inactivoEstable) {
-			if (inactivo != eliminar || !status_creada)
-				inactivo.classList.remove("inactivoEstable");
+	// Funciones ------------------------------------------------------------
+	let quitarInactivos = (existeEdicG, existeEdicS) => {
+		// Quitar inactivoEstable si existe una versión 'guardada'
+		if (existeEdicG)
+			for (inactivo of inactivoEstable) {
+				if (inactivo != eliminar || !status_creada)
+					inactivo.classList.remove("inactivoEstable");
+			}
+		// Quitar inactivoDinamico si existe una versión 'session"
+		if (existeEdicS)
+			for (inactivo of inactivoDinamico) {
+				inactivo.classList.remove("inactivoDinamico");
+			}
+	};
+	let funcionInput = (botonVersion, version) => {
+		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
+			//console.log(version);
+			for (input of inputs) {
+				if (input.name != "avatar")
+					version[input.name] != undefined
+						? (input.value = version[input.name])
+						: (input.value = "");
+			}
+			// } else {
 		}
-	// Quitar inactivoDinamico si existe una versión 'session"
-	if (versionEdicS)
-		for (inactivo of inactivoDinamico) {
-			inactivo.classList.remove("inactivoDinamico");
-		}
+	};
 
-	// COMANDOS -------------------------------------------------------------
-	// Acción si se elige 'edicion'
+	// INTERACCIÓN DE COMANDOS ----------------------------------------------
+	edicSession.addEventListener("click", async () => {
+		// Obtener Data-Entry de session
+		let versionEdicS = await fetch(rutaSession + "?entidad=" + entidad + "&id=" + prodID).then(
+			(n) => n.json()
+		);
+		funcionInput(edicSession, versionEdicS);
+	});
 	edicGuardada.addEventListener("click", () => {
-		//console.log(Array.from(edicGuardada.classList).join(" ").includes("inactivo"));
-		if (!Array.from(edicGuardada.classList).join(" ").includes("inactivo")) {
-			console.log("hacer algo");
-		} else console.log("inactivo");
+		funcionInput(edicGuardada, versionEdicG);
 	});
-	// Acción si se elige 'original'
 	original.addEventListener("click", () => {
+		funcionInput(original, versionOriginal);
 	});
-	// Acción si se elige 'guardar'
 	guardar.addEventListener("click", (e) => {
 		if (guardar.classList.contains("inactivoDinamico")) {
 			e.preventDefault();
 		}
 	});
-	// Acción si se elige 'eliminar'
 	eliminar.addEventListener("click", (e) => {
 		if (eliminar.classList.contains("inactivoEstable")) {
 			e.preventDefault();
 		}
 	});
+
+	// Start-up -------------------------------------------------------------
+	quitarInactivos(existeEdicG, existeEdicS);
 });

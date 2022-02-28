@@ -2,6 +2,7 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let id = new URL(window.location.href).searchParams.get("id");
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
@@ -24,7 +25,8 @@ window.addEventListener("load", async () => {
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
-	let ruta = "/producto/edicion/api/validar-edicion/?";
+	let rutaVE = "/producto/edicion/api/validar-edicion/?";
+	let rutaRQ = "/producto/edicion/api/enviar-a-req-query/?";
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
@@ -34,7 +36,7 @@ window.addEventListener("load", async () => {
 		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
 		let indice = campos.indexOf(campo);
 		// Averiguar si hay algún error
-		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		let errores = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
 		if (errores[campo] != undefined) {
 			mensajesError[indice].innerHTML = errores[campo];
 			if (errores[campo]) {
@@ -59,13 +61,21 @@ window.addEventListener("load", async () => {
 			subcategoria.value = "";
 			// Marcar que hay que elegir un valor
 			indice = campos.indexOf("subcategoria_id");
-			errores = await fetch(ruta + "subcategoria_id=").then((n) => n.json());
+			errores = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
 			mensajesError[indice].innerHTML = errores.subcategoria_id;
 			iconoOK[indice].classList.add("ocultar");
 			iconoError[indice].classList.remove("ocultar");
 		}
-		// Fin
+
+		// Botón guardar
 		botonGuardar();
+
+		// Guardar Data-Entry en session
+		let objeto = "entidad=" + entidad + "&id=" + id;
+		for (input of inputs) {
+			objeto += "&" + input.name + "=" + input.value;
+		}
+		fetch(rutaRQ + objeto);
 	});
 
 	// Revisar campos COMBINADOS
@@ -153,9 +163,7 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
-		OK && !error
-			? guardar.classList.remove("inactivo")
-			: guardar.classList.add("inactivo");
+		OK && !error ? guardar.classList.remove("inactivo") : guardar.classList.add("inactivo");
 	};
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;
@@ -180,7 +188,7 @@ window.addEventListener("load", async () => {
 			dato += "&" + valores[i] + "=" + inputs[indice[i]].value;
 		}
 		// Obtener el mensaje para el campo
-		let errores = await fetch(ruta + dato).then((n) => n.json());
+		let errores = await fetch(rutaVE + dato).then((n) => n.json());
 		if (campo) {
 			mensaje = errores[campo];
 			indice = campos.indexOf(campo);

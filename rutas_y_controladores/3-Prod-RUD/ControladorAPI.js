@@ -6,6 +6,7 @@ let BD_especificas = require("../../funciones/BD/especificas");
 
 // *********** Controlador ***********
 module.exports = {
+	// Tridente
 	obtenerColCap: async (req, res) => {
 		let {entidad, id} = req.query;
 		let ID =
@@ -136,6 +137,7 @@ module.exports = {
 		return res.json(ID);
 	},
 
+	// Edición
 	validarEdicion: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
@@ -145,7 +147,7 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	obtenerVersionesDeProducto: async (req, res) => {
+	obtenerVersionesDelProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
@@ -154,12 +156,28 @@ module.exports = {
 			prodID,
 			userID
 		);
-		// Obtener los datos SESSION del producto
-		let prodSession = req.session.edicion;
 		// Enviar los datos
-		return res.json([prodOriginal, prodEditado, prodSession]);
+		return res.json([prodOriginal, prodEditado]);
 	},
 
+	obtenerVersionSessionDelProducto: async (req, res) => {
+		let {entidad, id: prodID} = req.query;
+		let prodSession =
+			req.session.edicion &&
+			req.session.edicion.entidad == entidad &&
+			req.session.edicion.id == prodID
+				? req.session.edicion
+				: "";
+		return res.json(prodSession);
+	},
+
+	enviarA_ReqQuery: async (req, res) => {
+		delete req.query.avatar;
+		req.session.edicion = req.query;
+		//console.log(req.query);
+		return res.json();
+	},
+	// Links
 	validarLinks: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
