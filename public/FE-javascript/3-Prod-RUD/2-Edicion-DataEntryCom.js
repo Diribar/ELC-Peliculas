@@ -167,7 +167,7 @@ window.addEventListener("load", async () => {
 	};
 	let funcionInput = async (botonVersion, version) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVersion.classList).join(" ").includes("inactivo")) return;
+		if (Array.from(botonVersion.classList).join(" ").includes("inactivo") || !version) return;
 		// Rutina para cada input
 		for (let i = 0; i < inputs.length; i++) {
 			agrega_o_quita_una_flecha_dependiendo_de_si_hay_cambios(version, i);
