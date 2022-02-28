@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!botonEdicSession.classList.contains("plus"))
 			actualizaLaBotoneraDeComandos(botonEdicSession);
-		// 3. Ponerle la flecha de cambio al campo cambiado
+		// 3. Ponerle la flecha al campo cambiado
 		flechasAviso[indice].classList.remove("ocultar");
 	});
 	// Revisar campos COMBINADOS
