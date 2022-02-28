@@ -25,6 +25,8 @@ window.addEventListener("load", async () => {
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
+	let edicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	let rutaVE = "/producto/edicion/api/validar-edicion/?";
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-query/?";
 
@@ -48,11 +50,6 @@ window.addEventListener("load", async () => {
 			}
 		}
 
-		// Botonera de comandos
-		for (inactivo of inactivoDinamico) {
-			inactivo.classList.remove("inactivoDinamico");
-		}
-
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			// Cambiar los valores que se pueden mostrar en la subcategoría
@@ -60,11 +57,11 @@ window.addEventListener("load", async () => {
 			// Borrar el valor anterior
 			subcategoria.value = "";
 			// Marcar que hay que elegir un valor
-			indice = campos.indexOf("subcategoria_id");
-			errores = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
-			mensajesError[indice].innerHTML = errores.subcategoria_id;
-			iconoOK[indice].classList.add("ocultar");
-			iconoError[indice].classList.remove("ocultar");
+			let indiceSC = campos.indexOf("subcategoria_id");
+			let erroresSC = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
+			mensajesError[indiceSC].innerHTML = erroresSC.subcategoria_id;
+			iconoOK[indiceSC].classList.add("ocultar");
+			iconoError[indiceSC].classList.remove("ocultar");
 		}
 
 		// Botón guardar
@@ -76,6 +73,19 @@ window.addEventListener("load", async () => {
 			objeto += "&" + input.name + "=" + input.value;
 		}
 		fetch(rutaRQ + objeto);
+
+		// Actualizar la botonera de comandos
+		for (inactivo of inactivoDinamico) {
+			inactivo.classList.remove("inactivoDinamico");
+		}
+		if (!edicSession.classList.contains("plus")) {
+			for (version of versiones) {
+				version == edicSession
+					? version.classList.add("plus")
+					: version.classList.remove("plus");
+			}
+		}
+		
 	});
 
 	// Revisar campos COMBINADOS

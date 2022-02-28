@@ -27,6 +27,7 @@ window.addEventListener("load", async () => {
 	// Otras variables
 	let status_creada = existeEdicG ? versionEdicG.status_registro.creado : false;
 	let inputs = document.querySelectorAll(".input-error .input");
+	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
 
 	// Funciones ------------------------------------------------------------
 	let startup = (existeEdicG, existeEdicS) => {
@@ -35,28 +36,42 @@ window.addEventListener("load", async () => {
 			for (inactivo of inactivoDinamico) {
 				inactivo.classList.remove("inactivoDinamico");
 			}
-			edicSession.style.borderColor = "var(--amarillo-oscuro)"
-		} else if (existeEdicG) {
+		}
+		if (existeEdicG) {
 			// Quitar inactivoEstable si existe una versión 'guardada'
 			for (inactivo of inactivoEstable) {
 				if (inactivo != eliminar || !status_creada)
 					inactivo.classList.remove("inactivoEstable");
 			}
-			edicGuardada.style.borderColor = "var(--amarillo-oscuro)"
 		}
-		else original.style.borderColor = "var(--amarillo-oscuro)"
+		// Agregar la clase 'plus' a la versión activa
+		existeEdicS
+			? edicSession.classList.add("plus")
+			: existeEdicG
+			? edicGuardada.classList.add("plus")
+			: original.classList.add("plus");
 	};
 	let funcionInput = (botonVersion, version) => {
+		console.log(!Array.from(botonVersion.classList).join(" ").includes("inactivo"));
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
 			//console.log(version);
-			for (input of inputs) {
-				if (input.name != "avatar")
-					version[input.name] != undefined
-						? (input.value = version[input.name])
-						: (input.value = "");
+			for (let i = 0; i < inputs.length; i++) {
+				// Agregar las flechas cuando ocurren cambios
+				inputs[i].value != version[inputs[i].name] &&
+				(version[inputs[i].name] || inputs[i].value)
+					? flechasAviso[i].classList.remove("ocultar")
+					: flechasAviso[i].classList.add("ocultar");
+				// Cambiar los valores del input
+				if (inputs[i].name != "avatar")
+					version[inputs[i].name] != undefined
+						? (inputs[i].value = version[inputs[i].name])
+						: (inputs[i].value = "");
 			}
+			// Actualizar la botonera de comandos
 			for (version of versiones) {
-				version.style.borderColor = version == botonVersion ? "var(--amarillo-oscuro)" : "transparent";
+				version == botonVersion
+					? version.classList.add("plus")
+					: version.classList.remove("plus");
 			}
 		}
 	};
