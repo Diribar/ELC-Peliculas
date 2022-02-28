@@ -1,13 +1,14 @@
 window.addEventListener("load", async () => {
 	// Variables de íconos
-	let edicSession = document.querySelector("#cuerpo #comandos .fa-pencil");
-	let edicGuardada = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let edicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
+	let edicGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let original = document.querySelector("#cuerpo #comandos .fa-house");
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
 	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
+	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
@@ -28,18 +29,22 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 
 	// Funciones ------------------------------------------------------------
-	let quitarInactivos = (existeEdicG, existeEdicS) => {
-		// Quitar inactivoEstable si existe una versión 'guardada'
-		if (existeEdicG)
+	let startup = (existeEdicG, existeEdicS) => {
+		// Quitar inactivoDinamico si existe una versión 'session"
+		if (existeEdicS) {
+			for (inactivo of inactivoDinamico) {
+				inactivo.classList.remove("inactivoDinamico");
+			}
+			edicSession.style.borderColor = "var(--amarillo-oscuro)"
+		} else if (existeEdicG) {
+			// Quitar inactivoEstable si existe una versión 'guardada'
 			for (inactivo of inactivoEstable) {
 				if (inactivo != eliminar || !status_creada)
 					inactivo.classList.remove("inactivoEstable");
 			}
-		// Quitar inactivoDinamico si existe una versión 'session"
-		if (existeEdicS)
-			for (inactivo of inactivoDinamico) {
-				inactivo.classList.remove("inactivoDinamico");
-			}
+			edicGuardada.style.borderColor = "var(--amarillo-oscuro)"
+		}
+		else original.style.borderColor = "var(--amarillo-oscuro)"
 	};
 	let funcionInput = (botonVersion, version) => {
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
@@ -50,7 +55,9 @@ window.addEventListener("load", async () => {
 						? (input.value = version[input.name])
 						: (input.value = "");
 			}
-			// } else {
+			for (version of versiones) {
+				version.style.borderColor = version == botonVersion ? "var(--amarillo-oscuro)" : "transparent";
+			}
 		}
 	};
 
@@ -80,5 +87,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up -------------------------------------------------------------
-	quitarInactivos(existeEdicG, existeEdicS);
+	startup(existeEdicG, existeEdicS);
 });
