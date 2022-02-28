@@ -52,7 +52,6 @@ window.addEventListener("load", async () => {
 			: original.classList.add("plus");
 	};
 	let funcionInput = (botonVersion, version) => {
-		console.log(!Array.from(botonVersion.classList).join(" ").includes("inactivo"));
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
 			//console.log(version);
 			for (let i = 0; i < inputs.length; i++) {
