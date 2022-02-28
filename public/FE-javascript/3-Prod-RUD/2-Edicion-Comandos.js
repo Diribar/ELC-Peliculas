@@ -53,7 +53,6 @@ window.addEventListener("load", async () => {
 	};
 	let funcionInput = (botonVersion, version) => {
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
-			//console.log(version);
 			for (let i = 0; i < inputs.length; i++) {
 				// Agregar las flechas cuando ocurren cambios
 				inputs[i].value != version[inputs[i].name] &&
