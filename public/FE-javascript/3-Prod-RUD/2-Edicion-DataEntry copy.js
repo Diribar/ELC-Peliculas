@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Otras variables
-	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
+	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
 	let edicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
@@ -76,9 +76,9 @@ window.addEventListener("load", async () => {
 		fetch(rutaRQ + objeto);
 
 		// Actualizar la botonera de comandos
-		// 1. Quitar la clase 'inactivoDinamico'
-		for (inactivo of inactivoDinamico) {
-			inactivo.classList.remove("inactivoDinamico");
+		// 1. Quitar la clase 'inactivo_NoExisteEdicSess'
+		for (inactivo of inactivo_NoExisteEdicSess) {
+			inactivo.classList.remove("inactivo_NoExisteEdicSess");
 		}
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!edicSession.classList.contains("plus")) {

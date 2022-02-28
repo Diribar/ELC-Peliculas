@@ -31,8 +31,8 @@ window.addEventListener("load", async () => {
 	let botonGuardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let botonEliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
-	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
-	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
+	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
+	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Obtener versiones existentes
 	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
@@ -305,17 +305,17 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let startupBotoneraComandos = () => {
-		// Quita 'inactivoDinamico' si existe una versión 'session"
+		// Quita 'inactivo_NoExisteEdicSess' si existe una versión 'session"
 		if (existeEdicS) {
-			for (inactivo of inactivoDinamico) {
-				inactivo.classList.remove("inactivoDinamico");
+			for (inactivo of inactivo_NoExisteEdicSess) {
+				inactivo.classList.remove("inactivo_NoExisteEdicSess");
 			}
 		}
-		// Quita 'inactivoEstable' si existe una versión 'guardada'
+		// Quita 'inactivo_NoExisteEdicGua' si existe una versión 'guardada'
 		if (existeEdicG) {
-			for (inactivo of inactivoEstable) {
+			for (inactivo of inactivo_NoExisteEdicGua) {
 				if (inactivo != botonEliminar || !status_creada)
-					inactivo.classList.remove("inactivoEstable");
+					inactivo.classList.remove("inactivo_NoExisteEdicGua");
 			}
 		}
 		// Agregar la clase 'plus' a la versión activa
@@ -326,10 +326,10 @@ window.addEventListener("load", async () => {
 			: botonOriginal.classList.add("plus");
 	};
 	let inputEnBotoneraComandos = () => {
-		// 1. Quitar la clase 'inactivoDinamico'
-		for (inactivo of inactivoDinamico) {
-			if (inactivo.classList.contains("inactivoDinamico"))
-				inactivo.classList.remove("inactivoDinamico");
+		// 1. Quitar la clase 'inactivo_NoExisteEdicSess'
+		for (inactivo of inactivo_NoExisteEdicSess) {
+			if (inactivo.classList.contains("inactivo_NoExisteEdicSess"))
+				inactivo.classList.remove("inactivo_NoExisteEdicSess");
 		}
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!botonEdicSession.classList.contains("plus"))

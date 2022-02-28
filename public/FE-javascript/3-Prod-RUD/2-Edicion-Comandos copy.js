@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
-	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
-	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
+	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
+	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
@@ -31,17 +31,17 @@ window.addEventListener("load", async () => {
 
 	// Funciones ------------------------------------------------------------
 	let startup = (existeEdicG, existeEdicS) => {
-		// Quitar inactivoDinamico si existe una versión 'session"
+		// Quitar inactivo_NoExisteEdicSess si existe una versión 'session"
 		if (existeEdicS) {
-			for (inactivo of inactivoDinamico) {
-				inactivo.classList.remove("inactivoDinamico");
+			for (inactivo of inactivo_NoExisteEdicSess) {
+				inactivo.classList.remove("inactivo_NoExisteEdicSess");
 			}
 		}
 		if (existeEdicG) {
-			// Quitar inactivoEstable si existe una versión 'guardada'
-			for (inactivo of inactivoEstable) {
+			// Quitar inactivo_NoExisteEdicGua si existe una versión 'guardada'
+			for (inactivo of inactivo_NoExisteEdicGua) {
 				if (inactivo != eliminar || !status_creada)
-					inactivo.classList.remove("inactivoEstable");
+					inactivo.classList.remove("inactivo_NoExisteEdicGua");
 			}
 		}
 		// Agregar la clase 'plus' a la versión activa
@@ -120,12 +120,12 @@ window.addEventListener("load", async () => {
 		funcionInput(original, versionOriginal);
 	});
 	guardar.addEventListener("click", (e) => {
-		if (guardar.classList.contains("inactivoDinamico")) {
+		if (guardar.classList.contains("inactivo_NoExisteEdicSess")) {
 			e.preventDefault();
 		}
 	});
 	eliminar.addEventListener("click", (e) => {
-		if (eliminar.classList.contains("inactivoEstable")) {
+		if (eliminar.classList.contains("inactivo_NoExisteEdicGua")) {
 			e.preventDefault();
 		}
 	});
