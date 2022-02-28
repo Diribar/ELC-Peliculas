@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
 					: version.classList.remove("plus");
 			}
 		}
-		// Ponerle la flecha de cambio al campo cambiado
+		// 3. Ponerle la flecha de cambio al campo cambiado
 		flechasAviso[indice].classList.remove("ocultar")
 	});
 
