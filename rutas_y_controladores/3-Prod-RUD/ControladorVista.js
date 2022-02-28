@@ -100,7 +100,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		//return res.send([prodCombinado, errores])
+		//return res.send(prodOriginal)
 		return res.render("0-RUD", {
 			tema,
 			codigo,

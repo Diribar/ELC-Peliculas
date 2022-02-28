@@ -3,7 +3,7 @@
 	<div class="input-error">
 		<!-- Input -->
 		<select name="<%= campo.campo %>" class="input <%= campo.clase ? campo.clase : '' %>">
-			<option value="" class="<% if (!campo.RCLV) { %>ocultar<% } %>" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí una opción</option>
+			<option value="" class="<% if (!campo.RCLV) { %>ocultar<% } %>" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí<% if (!campo.clase) { %> una opción<% } %></option>
 			<% for (valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (registro[campo.campo] == valor.id) { %>selected<% } %>
@@ -25,6 +25,8 @@
 			<span class="mensajeError"><%= errores[campo.campo] %></span>
 		</i>
 		<i class="fa-solid fa-circle-check ocultar"></i>
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->
 		<% if (campo.RCLV) { %>
 			<i class="fa-solid fa-circle-plus linkRCLV <%= campo.campo %>" title='Link a "Agregar <%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>

@@ -21,7 +21,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos #primeraColumna .label-input .input-error .input {width: 200px;}
 #datos #primeraColumna .label-input .input-error .input.angosto {width: 70px}
 #datos #primeraColumna .label-input .input-error .input.numero {width: 70px; text-align: right;}
-#datos #segundaColumna .label-input .input-error .input {width: 245px;}
+#datos #segundaColumna .label-input .input-error .input {width: 240px;}
 
 /* Partes específicas del formulario */
 #datos .label-input .input-error .input,
@@ -30,7 +30,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos h3 {margin-top: 15px; color: var(--verde-oscuro);}
 #datos h3:first-child {margin-top: 0;}
 #datos .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
-#datos .label-input label {margin: 2px 15px 0 0; font-weight: bold; min-height: 19px;}
+#datos .label-input label {margin: 2px 20px 0 0; font-weight: bold; min-height: 19px;}
 #datos .label-input .input-error .input {align-self: center;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
@@ -74,10 +74,13 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .fa-circle-xmark, #datos .fa-circle-check {right: -20px;}
 #datos .fa-circle-xmark {z-index: 1;}
 
+/* Mensajes de aviso de cambio de data-entry */
+.input-error .fa-arrow-right-long {left: -5px ; position: absolute; transform: translate(-100%, -50%); color: var(--verde-oscuro);}
+
 /* Comandos - Particularidades */
 #cuerpo #comandos {padding: 0;}
 #cuerpo #comandos .pack {margin: 0 20px;}
 #cuerpo #comandos .pack {display: flex; flex-direction: row; align-items: center;}
-#cuerpo #comandos .pack i {margin: 8px 0;}
 #cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
-#cuerpo #comandos .pack i.version {padding: 5px; border-radius: 50%; border: 2px solid transparent; margin: 0;}
+#cuerpo #comandos .pack i.version {padding: 5px 0; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
+#cuerpo #comandos .pack i.version.plus {padding: 5px; border-color: var(--amarillo-oscuro);}
