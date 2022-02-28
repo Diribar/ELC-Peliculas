@@ -29,18 +29,22 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 
 	// Funciones ------------------------------------------------------------
-	let quitarInactivos = (existeEdicG, existeEdicS) => {
-		// Quitar inactivoEstable si existe una versión 'guardada'
-		if (existeEdicG)
+	let startup = (existeEdicG, existeEdicS) => {
+		// Quitar inactivoDinamico si existe una versión 'session"
+		if (existeEdicS) {
+			for (inactivo of inactivoDinamico) {
+				inactivo.classList.remove("inactivoDinamico");
+			}
+			edicSession.style.borderColor = "var(--amarillo-oscuro)"
+		} else if (existeEdicG) {
+			// Quitar inactivoEstable si existe una versión 'guardada'
 			for (inactivo of inactivoEstable) {
 				if (inactivo != eliminar || !status_creada)
 					inactivo.classList.remove("inactivoEstable");
 			}
-		// Quitar inactivoDinamico si existe una versión 'session"
-		if (existeEdicS)
-			for (inactivo of inactivoDinamico) {
-				inactivo.classList.remove("inactivoDinamico");
-			}
+			edicGuardada.style.borderColor = "var(--amarillo-oscuro)"
+		}
+		else original.style.borderColor = "var(--amarillo-oscuro)"
 	};
 	let funcionInput = (botonVersion, version) => {
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
@@ -83,5 +87,5 @@ window.addEventListener("load", async () => {
 	});
 
 	// Start-up -------------------------------------------------------------
-	quitarInactivos(existeEdicG, existeEdicS);
+	startup(existeEdicG, existeEdicS);
 });
