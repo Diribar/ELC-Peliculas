@@ -75,7 +75,7 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .fa-circle-xmark {z-index: 1;}
 
 /* Mensajes de aviso de cambio de data-entry */
-#datos .fa-arrow-right-long {left: -5px ; position: absolute; transform: translate(-100%, -50%); color: var(--verde-oscuro);}
+.input-error .fa-arrow-right-long {left: -5px ; position: absolute; transform: translate(-100%, -50%); color: var(--verde-oscuro);}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {padding: 0;}
