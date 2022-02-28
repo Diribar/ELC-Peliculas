@@ -27,6 +27,7 @@ window.addEventListener("load", async () => {
 	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
 	let edicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
+	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
 	let rutaVE = "/producto/edicion/api/validar-edicion/?";
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-query/?";
 
@@ -75,9 +76,11 @@ window.addEventListener("load", async () => {
 		fetch(rutaRQ + objeto);
 
 		// Actualizar la botonera de comandos
+		// 1. Quitar la clase 'inactivoDinamico'
 		for (inactivo of inactivoDinamico) {
 			inactivo.classList.remove("inactivoDinamico");
 		}
+		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!edicSession.classList.contains("plus")) {
 			for (version of versiones) {
 				version == edicSession
@@ -85,7 +88,8 @@ window.addEventListener("load", async () => {
 					: version.classList.remove("plus");
 			}
 		}
-		
+		// Ponerle la flecha de cambio al campo cambiado
+		flechasAviso[indice].classList.remove("ocultar")
 	});
 
 	// Revisar campos COMBINADOS
