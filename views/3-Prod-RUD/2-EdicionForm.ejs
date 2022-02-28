@@ -46,22 +46,22 @@
 <section id="comandos">
 	<div class="pack">
 		<!-- Versión editada 'session' -->
-		<i class="fa-solid fa-rotate-right inactivoDinamico version" tabindex="-1" title='Versión editada sin guardar'></i>
+		<i class="fa-solid fa-rotate-right inactivo_NoExisteEdicSess version" tabindex="-1" title='Versión editada sin guardar'></i>
 		<!-- Versión editada 'guardada' -->
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-pencil inactivoEstable version" tabindex="-1" title='Versión editada guardada'></i>
+		<i class="fa-solid fa-pencil inactivo_NoExisteEdicGua version" tabindex="-1" title='Versión editada guardada'></i>
 		<!-- Versión original -->
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
 		<i class="fa-solid fa-house version" tabindex="-1" title='Versión original'></i>
 	</div>
 	<div class="pack">
 		<!-- Guardar cambios -->
-		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivoDinamico" tabindex="-1" title='Guardar los cambios'></i></label>
+		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivo_NoExisteEdicSess" tabindex="-1" title='Guardar los cambios'></i></label>
 		<button type="submit" id="guardar" class="ocultar"></button>
 		<!-- Eliminar -->
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
 		<a href="<%= vista %>eliminar_edicion/?entidad=<%= entidad %>&id=<%= prodID %>">
-			<i class="fa-solid fa-trash-can inactivoEstable" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
+			<i class="fa-solid fa-trash-can inactivo_NoExisteEdicGua" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
 		</a>
 	</div>
 </section>

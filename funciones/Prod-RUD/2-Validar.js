@@ -165,11 +165,8 @@ module.exports = {
 			);
 			// Relación con la vida
 			if (subcategoria.personaje)
-				errores.personaje_id = !datos.personaje_id
-					? cartelSelectVacio
-					: "";
-			if (subcategoria.hecho)
-				errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
+				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
+			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
@@ -264,8 +261,8 @@ let extensiones = (nombre) => {
 	return ![".jpg", ".png"].includes(ext);
 };
 let validarProdRepetido = async (campo, datos) => {
-	// Obtener casos
-	let repetido = await BD_varias.obtenerPor2Campos(
+	// Averiguar si existe algún caso en la BD
+	let averiguar = await BD_varias.obtenerPor2Campos(
 		datos.entidad,
 		campo,
 		datos[campo],
@@ -274,6 +271,8 @@ let validarProdRepetido = async (campo, datos) => {
 	).then((n) => {
 		return n ? n.toJSON() : "";
 	});
+	// Si se encontró algún caso, compara las ID
+	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
 	if (repetido) {
 		let producto = varias.producto(datos.entidad);

@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let guardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
 	let eliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
-	let inactivoDinamico = document.querySelectorAll("#cuerpo #comandos .inactivoDinamico");
-	let inactivoEstable = document.querySelectorAll("#cuerpo #comandos .inactivoEstable");
+	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
+	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
@@ -31,17 +31,17 @@ window.addEventListener("load", async () => {
 
 	// Funciones ------------------------------------------------------------
 	let startup = (existeEdicG, existeEdicS) => {
-		// Quitar inactivoDinamico si existe una versión 'session"
+		// Quitar inactivo_NoExisteEdicSess si existe una versión 'session"
 		if (existeEdicS) {
-			for (inactivo of inactivoDinamico) {
-				inactivo.classList.remove("inactivoDinamico");
+			for (inactivo of inactivo_NoExisteEdicSess) {
+				inactivo.classList.remove("inactivo_NoExisteEdicSess");
 			}
 		}
 		if (existeEdicG) {
-			// Quitar inactivoEstable si existe una versión 'guardada'
-			for (inactivo of inactivoEstable) {
+			// Quitar inactivo_NoExisteEdicGua si existe una versión 'guardada'
+			for (inactivo of inactivo_NoExisteEdicGua) {
 				if (inactivo != eliminar || !status_creada)
-					inactivo.classList.remove("inactivoEstable");
+					inactivo.classList.remove("inactivo_NoExisteEdicGua");
 			}
 		}
 		// Agregar la clase 'plus' a la versión activa
@@ -51,8 +51,10 @@ window.addEventListener("load", async () => {
 			? edicGuardada.classList.add("plus")
 			: original.classList.add("plus");
 	};
-	let funcionInput = (botonVersion, version) => {
+	let funcionInput = async (botonVersion, version) => {
+		// Se ejecuta solamente si el botón está activo
 		if (!Array.from(botonVersion.classList).join(" ").includes("inactivo")) {
+			// Rutina para cada input
 			for (let i = 0; i < inputs.length; i++) {
 				// Agregar las flechas cuando ocurren cambios
 				inputs[i].value != version[inputs[i].name] &&
@@ -61,10 +63,39 @@ window.addEventListener("load", async () => {
 					: flechasAviso[i].classList.add("ocultar");
 				// Cambiar los valores del input
 				if (inputs[i].name != "avatar")
-					version[inputs[i].name] != undefined
-						? (inputs[i].value = version[inputs[i].name])
-						: (inputs[i].value = "");
+					if (version[inputs[i].name] != undefined) {
+						if ((inputs[i].value = version[inputs[i].name])) {
+							inputs[i].value = version[inputs[i].name];
+						}
+					} else inputs[i].value = "";
 			}
+			// Actualizar los errores
+			// 1. Generar los datos para el 'fetch'
+			let rutaVE = "/producto/edicion/api/validar-edicion/?";
+			let objeto = "entidad=" + entidad + "&id=" + prodID;
+			for (input of inputs) {
+				objeto += "&" + input.name + "=" + input.value;
+			}
+			// 2. Averiguar los errores
+			let errores = await fetch(rutaVE + objeto).then((n) => n.json());
+			// 3. Poner el resultado de los errores
+			for (let i = 0; i < inputs.length; i++) {
+				// Captura el mensaje de error
+				mensaje = errores[inputs[i].name];
+				if (mensaje != undefined) {
+					// Reemplaza
+					mensajesError[indice[i]].innerHTML = mensaje;
+					// Acciones en función de si hay o no mensajes de error
+					mensaje
+						? iconoError[indice[i]].classList.remove("ocultar")
+						: iconoError[indice[i]].classList.add("ocultar");
+					!mensaje
+						? iconoOK[indice[i]].classList.remove("ocultar")
+						: iconoOK[indice[i]].classList.add("ocultar");
+				}
+			}
+			console.log(errores);
+
 			// Actualizar la botonera de comandos
 			for (version of versiones) {
 				version == botonVersion
@@ -89,12 +120,12 @@ window.addEventListener("load", async () => {
 		funcionInput(original, versionOriginal);
 	});
 	guardar.addEventListener("click", (e) => {
-		if (guardar.classList.contains("inactivoDinamico")) {
+		if (guardar.classList.contains("inactivo_NoExisteEdicSess")) {
 			e.preventDefault();
 		}
 	});
 	eliminar.addEventListener("click", (e) => {
-		if (eliminar.classList.contains("inactivoEstable")) {
+		if (eliminar.classList.contains("inactivo_NoExisteEdicGua")) {
 			e.preventDefault();
 		}
 	});
