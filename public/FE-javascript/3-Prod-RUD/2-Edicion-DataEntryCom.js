@@ -24,12 +24,15 @@ window.addEventListener("load", async () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
-	// Variables de íconos
-	let botonEdicSession = document.querySelector("#cuerpo #comandos .fa-rotate-right");
-	let botonEdicGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
+	// Variables de botones 'session'
+	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
+	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
+	let botonGuardarSession = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
+	// Variables de botones 'guardada'
+	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
+	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
+	// Variable de botón 'original'
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
-	let botonGuardar = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let botonEliminar = document.querySelector("#cuerpo #comandos .fa-trash-can");
 	// Variables de clases
 	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
 	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
@@ -120,28 +123,36 @@ window.addEventListener("load", async () => {
 		activarBotonGuardar();
 	});
 	// BOTONERA DE COMANDOS ----------------------------------
-	botonEdicSession.addEventListener("click", async () => {
+	// Session
+	botonVerSession.addEventListener("click", async () => {
 		// Obtener Data-Entry de session
 		let versionEdicS = await fetch(rutaSession + "?entidad=" + entidad + "&id=" + prodID).then(
 			(n) => n.json()
 		);
-		funcionInput(botonEdicSession, versionEdicS);
+		funcionInput(botonVerSession, versionEdicS);
 	});
-	botonEdicGuardada.addEventListener("click", () => {
-		funcionInput(botonEdicGuardada, versionEdicG);
+	botonEliminarSession.addEventListener("click", (e) => {
+		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return
+		fetch(rutaRQ); // Elimina el Data-Entry en session
+		location.reload();
 	});
+	botonGuardarSession.addEventListener("click", (e) => {
+		if (Array.from(botonGuardarSession.classList).join(" ").includes("inactivo")) {
+			e.preventDefault();
+		}
+	});
+	// Guardada
+	botonVerGuardada.addEventListener("click", () => {
+		funcionInput(botonVerGuardada, versionEdicG);
+	});
+	botonEliminarGuardada.addEventListener("click", (e) => {
+		if (Array.from(botonEliminarGuardada.classList).join(" ").includes("inactivo")) {
+			e.preventDefault();
+		}
+	});
+	// Original
 	botonOriginal.addEventListener("click", () => {
 		funcionInput(botonOriginal, versionOriginal);
-	});
-	botonGuardar.addEventListener("click", (e) => {
-		if (botonGuardar.classList.join(" ").includes("inactivo")) {
-			e.preventDefault();
-		}
-	});
-	botonEliminar.addEventListener("click", (e) => {
-		if (botonEliminar.classList.join(" ").includes("inactivo")) {
-			e.preventDefault();
-		}
 	});
 
 	// FUNCIONES ---------------------------------------------
@@ -238,8 +249,8 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconoError.length;
 		OK && !error
-			? botonGuardar.classList.remove("inactivoErrores")
-			: botonGuardar.classList.add("inactivoErrores");
+			? botonGuardarSession.classList.remove("inactivoErrores")
+			: botonGuardarSession.classList.add("inactivoErrores");
 	};
 	let funcionDosCampos = async (datos, campo) => {
 		campo1 = datos.campo1;
@@ -284,7 +295,6 @@ window.addEventListener("load", async () => {
 			: iconoOK[indice].classList.add("ocultar");
 	};
 	let consecuenciasErrores = (errores, camposEspecificos, mostrarOK) => {
-		console.log(mostrarOK);
 		for (campo of camposEspecificos) {
 			// Guarda el mensaje de error
 			mensaje = errores[campo];
@@ -312,15 +322,15 @@ window.addEventListener("load", async () => {
 		// Quita 'inactivo_NoExisteEdicGua' si existe una versión 'guardada'
 		if (existeEdicG) {
 			for (inactivo of inactivo_NoExisteEdicGua) {
-				if (inactivo != botonEliminar || !status_creada)
+				if (inactivo != botonEliminarGuardada || !status_creada)
 					inactivo.classList.remove("inactivo_NoExisteEdicGua");
 			}
 		}
 		// Agregar la clase 'plus' a la versión activa
 		existeEdicS
-			? botonEdicSession.classList.add("plus")
+			? botonVerSession.classList.add("plus")
 			: existeEdicG
-			? botonEdicGuardada.classList.add("plus")
+			? botonVerGuardada.classList.add("plus")
 			: botonOriginal.classList.add("plus");
 	};
 	let inputEnBotoneraComandos = () => {
@@ -330,8 +340,8 @@ window.addEventListener("load", async () => {
 				inactivo.classList.remove("inactivo_NoExisteEdicSess");
 		}
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
-		if (!botonEdicSession.classList.contains("plus"))
-			actualizaLaBotoneraDeComandos(botonEdicSession);
+		if (!botonVerSession.classList.contains("plus"))
+			actualizaLaBotoneraDeComandos(botonVerSession);
 	};
 	// Aplicar cambios en la subcategoría
 	let mostrarValoresSubcat = () => {

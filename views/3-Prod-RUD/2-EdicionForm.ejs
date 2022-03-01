@@ -44,25 +44,32 @@
 </section>
 <!-- Comandos -->
 <section id="comandos">
-	<div class="pack">
-		<!-- Versión editada 'session' -->
-		<i class="fa-solid fa-rotate-right inactivo_NoExisteEdicSess version" tabindex="-1" title='Versión editada sin guardar'></i>
-		<!-- Versión editada 'guardada' -->
+	<!-- Versión editada 'session' -->
+	<div class="pack" id="session">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-pen-to-square inactivo_NoExisteEdicSess version" tabindex="-1" title='Ver la versión editada SIN GUARDAR'></i>
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-pencil inactivo_NoExisteEdicGua version" tabindex="-1" title='Versión editada guardada'></i>
-		<!-- Versión original -->
+		<!-- Descartar la versión -->
+		<i class="fa-solid fa-trash-can inactivo_NoExisteEdicSess" tabindex="-1" title='Descartar esta versión'></i>
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
-		<i class="fa-solid fa-house version" tabindex="-1" title='Versión original'></i>
-	</div>
-	<div class="pack">
-		<!-- Guardar cambios -->
-		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivo_NoExisteEdicSess" tabindex="-1" title='Guardar los cambios'></i></label>
+		<!-- Guardar los cambios -->
+		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivo_NoExisteEdicSess" tabindex="-1" title='Guardar esta versión'></i></label>
 		<button type="submit" id="guardar" class="ocultar"></button>
-		<!-- Eliminar -->
+	</div>
+	<!-- Versión editada 'guardada' -->
+	<div class="pack" id="guardada">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-pencil inactivo_NoExisteEdicGua version" tabindex="-1" title='Ver la versión editada GUARDADA'></i>
+		<!-- Eliminar la versión -->
 		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
 		<a href="<%= vista %>eliminar_edicion/?entidad=<%= entidad %>&id=<%= prodID %>">
-			<i class="fa-solid fa-trash-can inactivo_NoExisteEdicGua" tabindex="-1" title='Eliminar definitivamente tu edición'></i>
+			<i class="fa-solid fa-trash-can inactivo_NoExisteEdicGua" tabindex="-1" title='Eliminar esta versión'></i>
 		</a>
+	</div>
+	<!-- Versión original -->
+	<div class="pack">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-house version" tabindex="-1" title='Ver la versión original'></i>
 	</div>
 </section>
 <!-- Botones -->
