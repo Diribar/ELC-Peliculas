@@ -15,11 +15,9 @@ window.addEventListener("load", async () => {
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 	let paisesSelect = document.querySelector("#paises_id select");
-	let paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
-		(n) => {
-			return {id: n.value, nombre: n.innerHTML};
-		}
-	);
+	let paisesListado = Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
+		return {id: n.value, nombre: n.innerHTML};
+	});
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
@@ -34,8 +32,8 @@ window.addEventListener("load", async () => {
 	// Variable de botón 'original'
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
 	// Variables de clases
-	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
-	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
+	let inactivo_EdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicSess");
+	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Obtener versiones existentes
 	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
@@ -132,7 +130,7 @@ window.addEventListener("load", async () => {
 		funcionInput(botonVerSession, versionEdicS);
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
-		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return
+		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
 		location.reload();
 	});
@@ -305,25 +303,23 @@ window.addEventListener("load", async () => {
 			mensaje
 				? iconoError[indice].classList.remove("ocultar")
 				: iconoError[indice].classList.add("ocultar");
-			if (mensaje) iconoOK[indice].classList.add("ocultar");
-			if (!mensaje)
-				mostrarOK
-					? iconoOK[indice].classList.remove("ocultar")
-					: iconoOK[indice].classList.add("ocultar");
+			mensaje || !mostrarOK
+				? iconoOK[indice].classList.add("ocultar")
+				: iconoOK[indice].classList.remove("ocultar");
 		}
 	};
 	let startupBotoneraComandos = () => {
-		// Quita 'inactivo_NoExisteEdicSess' si existe una versión 'session"
+		// Quita 'inactivo_EdicSess' si existe una versión 'session"
 		if (existeEdicS) {
-			for (inactivo of inactivo_NoExisteEdicSess) {
-				inactivo.classList.remove("inactivo_NoExisteEdicSess");
+			for (inactivo of inactivo_EdicSess) {
+				inactivo.classList.remove("inactivo_EdicSess");
 			}
 		}
-		// Quita 'inactivo_NoExisteEdicGua' si existe una versión 'guardada'
+		// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
 		if (existeEdicG) {
-			for (inactivo of inactivo_NoExisteEdicGua) {
+			for (inactivo of inactivo_EdicGua) {
 				if (inactivo != botonEliminarGuardada || !status_creada)
-					inactivo.classList.remove("inactivo_NoExisteEdicGua");
+					inactivo.classList.remove("inactivo_EdicGua");
 			}
 		}
 		// Agregar la clase 'plus' a la versión activa
@@ -334,10 +330,10 @@ window.addEventListener("load", async () => {
 			: botonOriginal.classList.add("plus");
 	};
 	let inputEnBotoneraComandos = () => {
-		// 1. Quitar la clase 'inactivo_NoExisteEdicSess'
-		for (inactivo of inactivo_NoExisteEdicSess) {
-			if (inactivo.classList.contains("inactivo_NoExisteEdicSess"))
-				inactivo.classList.remove("inactivo_NoExisteEdicSess");
+		// 1. Quitar la clase 'inactivo_EdicSess'
+		for (inactivo of inactivo_EdicSess) {
+			if (inactivo.classList.contains("inactivo_EdicSess"))
+				inactivo.classList.remove("inactivo_EdicSess");
 		}
 		// 2. Actualizar la clase 'plus' en 'edicionSession' y quitársela a los demás
 		if (!botonVerSession.classList.contains("plus"))

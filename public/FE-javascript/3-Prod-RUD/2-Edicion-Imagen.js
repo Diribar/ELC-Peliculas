@@ -1,5 +1,7 @@
 window.addEventListener("load", () => {
 	let inputImagen = document.querySelector("input[name='avatar']");
+	let imagen=document.querySelector("#imagenProducto img")
+	console.log(imagen.src);
 	
 	// Acciones si cambió alguna imagen
 	inputImagen.addEventListener("change", (e) => {
@@ -16,9 +18,9 @@ let mostrarImagen = (e) => {
 	reader.readAsDataURL(e.target.files[0]);
 	// Le decimos que cuando esté listo ejecute el código interno
 	reader.onload = () => {
-		preview = document.querySelector("#imagenProducto");
 		image = document.createElement("img");
 		image.src = reader.result;
+		preview = document.querySelector("#imagenProducto");
 		preview.innerHTML = "";
 		preview.append(image);
 	};
