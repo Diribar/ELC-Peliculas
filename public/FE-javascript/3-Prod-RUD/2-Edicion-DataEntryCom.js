@@ -34,12 +34,8 @@ window.addEventListener("load", async () => {
 	// Variable de botón 'original'
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
 	// Variables de clases
-	let inactivo_EdicSess = document.querySelectorAll(
-		"#cuerpo #comandos .inactivo_EdicSess"
-	);
-	let inactivo_EdicGua = document.querySelectorAll(
-		"#cuerpo #comandos .inactivo_EdicGua"
-	);
+	let inactivo_EdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicSess");
+	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Obtener versiones existentes
 	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
