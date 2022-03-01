@@ -15,11 +15,9 @@ window.addEventListener("load", async () => {
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
 	let paisesSelect = document.querySelector("#paises_id select");
-	let paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
-		(n) => {
-			return {id: n.value, nombre: n.innerHTML};
-		}
-	);
+	let paisesListado = Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
+		return {id: n.value, nombre: n.innerHTML};
+	});
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
