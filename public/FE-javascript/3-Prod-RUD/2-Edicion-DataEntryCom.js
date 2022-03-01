@@ -134,10 +134,11 @@ window.addEventListener("load", async () => {
 		// Obtener Data-Entry de session
 		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 		// Corregir el avatar
-		let imagen = document.querySelector("#imagenProducto img");
-		if (!datosEdicS.avatar && inputAvatar.value) datosEdicS.avatar = imagen.src;
-		console.log(datosEdicS);
-		console.log(datosEdicS.avatar);
+		// let imagen = document.querySelector("#imagenProducto img");
+		// if (!datosEdicS.avatar && inputAvatar.value) datosEdicS.avatar = imagen.src;
+		// console.log(datosEdicS);
+		// console.log(datosEdicS.avatar);
+		// Fin
 		if (!datosEdicS) return;
 		funcionInput(botonVerSession, datosEdicS);
 	});
