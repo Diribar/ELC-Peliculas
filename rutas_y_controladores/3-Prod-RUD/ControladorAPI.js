@@ -27,7 +27,6 @@ module.exports = {
 						.then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
-
 	obtenerCapAntPostID: async (req, res) => {
 		let {id} = req.query;
 		// Obtener la coleccion_id, la temporada y el capítulo
@@ -120,7 +119,6 @@ module.exports = {
 		// // Enviar el resultado
 		return res.json([capAntID, capPostID]);
 	},
-
 	obtenerCapID: async (req, res) => {
 		let {coleccion_id, temporada, capitulo} = req.query;
 		let ID = await BD_varias.obtenerPor3Campos(
@@ -146,7 +144,6 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-
 	obtenerVersionesDelProducto: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		userID = req.session.usuario.id;
@@ -159,8 +156,14 @@ module.exports = {
 		// Enviar los datos
 		return res.json([prodOriginal, prodEditado]);
 	},
-
-	obtenerVersionSessionDelProducto: async (req, res) => {
+	enviarAReqSession: async (req, res) => {
+		console.log(req.query);
+		if (req.query.avatar) delete req.query.avatar;
+		req.session.edicion = req.query;
+		//console.log(req.query);
+		return res.json();
+	},
+	obtenerDeReqSession: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		let prodSession =
 			req.session.edicion &&
@@ -169,13 +172,6 @@ module.exports = {
 				? req.session.edicion
 				: "";
 		return res.json(prodSession);
-	},
-
-	enviarA_ReqQuery: async (req, res) => {
-		if (req.query.avatar) delete req.query.avatar;
-		req.session.edicion = req.query;
-		//console.log(req.query);
-		return res.json();
 	},
 	// Links
 	validarLinks: async (req, res) => {
@@ -186,7 +182,6 @@ module.exports = {
 		// Devuelve el resultado
 		return res.json(errores);
 	},
-
 	obtenerProvsLinks: async (req, res) => {
 		let provs = await BD_varias.obtenerTodos("links_provs", "orden").then((n) =>
 			n.map((m) => m.dataValues)
