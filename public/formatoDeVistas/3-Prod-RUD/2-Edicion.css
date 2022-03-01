@@ -85,3 +85,4 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #cuerpo #comandos .pack i.version {padding: 5px 0; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
 #cuerpo #comandos .pack i.version.plus {padding: 5px; border-color: var(--amarillo-oscuro);}
 .inactivoErrores, .inactivo_NoExisteEdicGua, .inactivo_NoExisteEdicSess  {opacity: .5; border-color: transparent; cursor: default;}
+#cuerpo #comandos .pack i, #cuerpo #flechas i {font-size: 1rem;}

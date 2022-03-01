@@ -34,8 +34,12 @@ window.addEventListener("load", async () => {
 	// Variable de botón 'original'
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
 	// Variables de clases
-	let inactivo_NoExisteEdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicSess");
-	let inactivo_NoExisteEdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_NoExisteEdicGua");
+	let inactivo_NoExisteEdicSess = document.querySelectorAll(
+		"#cuerpo #comandos .inactivo_NoExisteEdicSess"
+	);
+	let inactivo_NoExisteEdicGua = document.querySelectorAll(
+		"#cuerpo #comandos .inactivo_NoExisteEdicGua"
+	);
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
 	// Obtener versiones existentes
 	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
@@ -132,7 +136,7 @@ window.addEventListener("load", async () => {
 		funcionInput(botonVerSession, versionEdicS);
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
-		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return
+		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
 		location.reload();
 	});
@@ -305,11 +309,9 @@ window.addEventListener("load", async () => {
 			mensaje
 				? iconoError[indice].classList.remove("ocultar")
 				: iconoError[indice].classList.add("ocultar");
-			if (mensaje) iconoOK[indice].classList.add("ocultar");
-			if (!mensaje)
-				mostrarOK
-					? iconoOK[indice].classList.remove("ocultar")
-					: iconoOK[indice].classList.add("ocultar");
+			mensaje || !mostrarOK
+				? iconoOK[indice].classList.add("ocultar")
+				: iconoOK[indice].classList.remove("ocultar");
 		}
 	};
 	let startupBotoneraComandos = () => {
