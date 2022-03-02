@@ -1,16 +1,48 @@
 window.addEventListener("load", async () => {
-	// Variables generales
-	let form = document.querySelector("form");
+	// VARIABLES GENERALES -----------------------------------------------------------------------
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	// Data Entry
+	let form = document.querySelector("form");
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
 	let iconoOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+
+	// VERSIONES DE DATOS -------------------------------------------------------------------------
+	// Obtener versiones GUARDADA y ORIGINAL
+	let rutaVersiones =
+		"/producto/edicion/api/obtener-versiones/?entidad=" + entidad + "&id=" + prodID;
+	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
+	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
+	let rutaVE = "/producto/edicion/api/validar-edicion/?";
+	// Temas de la versión ORIGINAL
+	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
+	let avatar_or = avatar_obtenerRutaNombre(datosOriginales.avatar, "original");
+	// Temas de la version GUARDADA
+	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
+	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
+	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
+	let existeEdicG = !!datosEdicG.ELC_id;
+	let avatar_eg = datosEdicG.avatar
+		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
+		: datosOriginales.imagen;
+	let status_creada = existeEdicG ? datosEdicG.status_registro.creado : false;
+	// Temas de la versión SESSION
+	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
+	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
+	let botonGuardarSession = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
+	let rutaSession =
+		"/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
+	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
+	datosEdicS = datosEdicS ? datosEdicS : existeEdicG ? datosEdicG : datosOriginales;
+	let avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
+	let rutaRQ = "/producto/edicion/api/enviar-a-req-session/?";
+
+	// OTRAS VARIABLES --------------------------------------------------------------------------
 	// Variables de país
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
@@ -22,39 +54,6 @@ window.addEventListener("load", async () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
-	// Variables de botones 'session'
-	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
-	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
-	let botonGuardarSession = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	// Variables de botones 'guardada'
-	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
-	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
-	// Variable de botón 'original'
-	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
-	// Variables de clases
-	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
-	// Obtener versiones GUARDADA y ORIGINAL
-	let rutaVersiones =
-		"/producto/edicion/api/obtener-versiones/?entidad=" + entidad + "&id=" + prodID;
-	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
-	// Temas de la versión ORIGINAL
-	avatar_or = avatar_obtenerRutaNombre(datosOriginales.avatar, "original");
-	// Temas de la version GUARDADA
-	let existeEdicG = !!datosEdicG.ELC_id;
-	avatar_eg = datosEdicG.avatar
-		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
-		: datosOriginales.imagen;
-	// Obtener version SESSION
-	let rutaSession =
-		"/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
-	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-	datosEdicS = datosEdicS ? datosEdicS : existeEdicG ? datosEdicG : datosOriginales;
-	avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
-	// Otras variables
-	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
-	let status_creada = existeEdicG ? datosEdicG.status_registro.creado : false;
-	let rutaVE = "/producto/edicion/api/validar-edicion/?";
-	let rutaRQ = "/producto/edicion/api/enviar-a-req-session/?";
 
 	// EVENT LISTENERS ---------------------------------------
 	// Revisar campos en forma INDIVIDUAL
@@ -124,6 +123,7 @@ window.addEventListener("load", async () => {
 		// Fin
 		formInputChange_botonGuardar();
 	});
+
 	// BOTONERA DE COMANDOS ----------------------------------
 	// Edición Session
 	botonVerSession.addEventListener("click", async () => {
@@ -375,13 +375,16 @@ window.addEventListener("load", async () => {
 		}
 	};
 
-	// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
+	// STARTUP ------------------------------------------------------------------
+	// Activa "Edición Guardada' si existe esa versión
 	startup_activarEdicionGuardado();
-	// Aplicar cambios en la subcategoría
+	// Activa "Edición Session' si existe esa versión
+	if (datosEdicS == datosEdicG) formInput_activarEdicionSession()
+	// Actualiza 'subcategoría' si existe una categoría
 	if (categoria.value) formInput_mostrarValoresSubcat();
 });
 
-// FUNCIONES QUE SE NECESITAN CARGAR ANTES DEL ON-LOAD
+// FUNCIONES QUE SE PUEDEN CARGAR ANTES DEL ON-LOAD
 let avatar_obtenerRutaNombre = (imagen, status) => {
 	return imagen
 		? (imagen.slice(0, 4) != "http"
