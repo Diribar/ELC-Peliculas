@@ -34,12 +34,10 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error .linkRCLV {right: -40px; width: 15px; cursor: pointer;}
-
 #datos .label-input .input-error .input:disabled, 
 #datos .label-input#paises_id input#mostrarPaises:disabled,
 #datos .label-input#paises_id select:disabled
 	{background-color: var(--amarillo-claro); opacity: 1; color: inherit; cursor: default;}
-
 
 /* País */
 #datos #paises_id {align-items: center;}
