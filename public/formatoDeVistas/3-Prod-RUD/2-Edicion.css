@@ -9,12 +9,11 @@ form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-
 form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 
 /* Imagen */
-form #imagen #imagenProducto img {cursor: pointer;}
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
 form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
 
-/* Datos del formulario */
+/* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
 #datos #primeraColumna {width: 40%;}
 #datos #segundaColumna {width: 45%;}
@@ -36,6 +35,12 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error .linkRCLV {right: -40px; width: 15px; cursor: pointer;}
 
+#datos .label-input .input-error .input:disabled, 
+#datos .label-input#paises_id input#mostrarPaises:disabled,
+#datos .label-input#paises_id select:disabled
+	{background-color: var(--amarillo-claro); opacity: 1; color: inherit; cursor: default;}
+
+
 /* País */
 #datos #paises_id {align-items: center;}
 #datos #paises_id .input-error {width: 200px; min-width: 200px;}
@@ -43,11 +48,6 @@ form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: tra
 #datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
 #datos #paises_id .input-error select {width: 100%; padding: 0;}
-
-/* Links a Trailer y Película */
-#datos #links {display: flex; flex-direction: row; margin-top: 20px; align-items: center;}
-#datos #links button {margin-left: 20px; padding: 2px 5px; border-radius: 10px;}
-#datos #links button {background-color: var(--azul-oscuro); color: var(--gris-claro); font-weight: bold;}
 
 /* Sinopsis */
 #datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
