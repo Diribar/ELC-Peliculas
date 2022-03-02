@@ -35,9 +35,10 @@ module.exports = {
 		}
 		// Si no hubieron errores de validación...
 		// Enviar la contraseña por mail
-		asunto = "Contraseña para ELC";
-		email = req.body.email;
-		contrasena = Math.round(Math.random() * Math.pow(10, 10)) + "";
+		let asunto = "Contraseña para ELC";
+		let email = req.body.email;
+		let contrasena = 123456789
+		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)) + "";
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
