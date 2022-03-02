@@ -54,7 +54,6 @@ module.exports = {
 	altaRedireccionar: async (req, res) => {
 		let status_registro = req.session.usuario.status_registro_id;
 		// Redireccionar
-		//console.log("status_registro: " + status_registro);
 		status_registro == 1
 			? res.redirect("/usuarios/login")
 			: status_registro == 2
