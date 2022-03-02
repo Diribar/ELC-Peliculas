@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	// Data Entry
+	// Datos del formulario
 	let form = document.querySelector("form");
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 	let rutaSession =
 		"/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
 	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-	datosEdicS = datosEdicS ? datosEdicS : existeEdicG ? datosEdicG : datosOriginales;
+	datosEdicS = datosEdicS ? datosEdicS : datosEdicG;
 	let avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-session/?";
 
@@ -129,9 +129,6 @@ window.addEventListener("load", async () => {
 	botonVerSession.addEventListener("click", async () => {
 		// Obtener Data-Entry de session
 		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-		// Obtener el avatar
-		let imagen = document.querySelector("#imagenProducto img");
-		//avatar_es=
 		// Fin
 		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOriginales;
 		comandos_ActualizarInput(botonVerSession, datosEdicS, (readOnly = false));
@@ -177,8 +174,10 @@ window.addEventListener("load", async () => {
 			actualizarInput_flechas(botonVersion, datosVersion, i);
 			actualizarInput_valores(botonVersion, datosVersion, i, disabled);
 		}
-		// Rutinas para todo el form
+		// Activar la botonera de comandos con la versión activa
 		actualizarInput_clasePlus(botonVersion);
+		// Actualizar los links RCLV
+		actualizarInput_linksRCLV(disabled);
 		// Actualizar los errores
 		let rutaVE = "/producto/edicion/api/validar-edicion/?";
 		let errores = await fetch(rutaVE + actualizarInput_dataEntry()).then((n) => n.json());
@@ -192,7 +191,7 @@ window.addEventListener("load", async () => {
 				: flechasAviso[i].classList.add("ocultar");
 		else {
 			// Obtener los avatar ACTUAL y NUEVO
-			avatarActual = document.querySelector("#imagenProducto img").src;
+			avatarActual = document.querySelector("#imagenProducto img").getAttribute("src");
 			avatarNuevo = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			// Compararlos y tomar acciones
 			avatarActual != avatarNuevo
@@ -200,18 +199,25 @@ window.addEventListener("load", async () => {
 				: flechasAviso[i].classList.add("ocultar");
 		}
 	};
-	let actualizarInput_valores = (botonVersion, datosVersion, i, disabled) => {
+	let actualizarInput_valores = (botonVersion, datosVersion, i, trueFalse) => {
 		// Actualizar los valores en los inputs
-		if (inputs[i].name != "avatar")
+		if (inputs[i].name != "avatar") {
 			datosVersion[inputs[i].name] != undefined
 				? (inputs[i].value = datosVersion[inputs[i].name])
 				: (inputs[i].value = "");
-		else {
+			if (inputs[i].name == "paises_id") {
+				paisesMostrar.disabled = trueFalse;
+				paisesSelect.disabled = trueFalse;
+			}
+		} else {
 			// Actualizar el avatar
 			avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
+			let imgAvatar = document.querySelector(".input-error #imagenProducto img");
+			trueFalse ? imgAvatar.classList.remove("pointer") : imgAvatar.classList.add("pointer");
 		}
-		inputs[i].disabled = disabled;
+		// Activar o desactivar todos los inputs, incluyendo el avatar
+		inputs[i].disabled = trueFalse;
 	};
 	let actualizarInput_clasePlus = (boton) => {
 		// Variable de botones versiones
@@ -221,6 +227,18 @@ window.addEventListener("load", async () => {
 			botonVersion == boton
 				? botonVersion.classList.add("plus")
 				: botonVersion.classList.remove("plus");
+		}
+	};
+	let actualizarInput_linksRCLV = (trueFalse) => {
+		let links = document.querySelectorAll(".input-error i.linkRCLV");
+		for (link of links) {
+			trueFalse ? link.classList.add("ocultar") : link.classList.remove("ocultar");
+		}
+		let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
+		for (iconoAyuda of iconosAyuda) {
+			trueFalse
+				? iconoAyuda.classList.add("ocultar")
+				: iconoAyuda.classList.remove("ocultar");
 		}
 	};
 	let actualizarInput_errores = (errores, camposEspecificos, mostrarOK) => {
@@ -240,7 +258,7 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let actualizarInput_AvatarDeLaNuevaVersion = (botonVersion) => {
-		avatar_es = document.querySelector("#imagenProducto2 img").src;
+		avatar_es = document.querySelector("#imagenProducto2 img").getAttribute("src");
 		return botonVersion == botonOriginal
 			? avatar_or
 			: botonVersion == botonVerGuardada
@@ -379,7 +397,7 @@ window.addEventListener("load", async () => {
 	// Activa "Edición Guardada' si existe esa versión
 	startup_activarEdicionGuardado();
 	// Activa "Edición Session' si existe esa versión
-	if (datosEdicS == datosEdicG) formInput_activarEdicionSession()
+	if (datosEdicS != datosEdicG) formInput_activarEdicionSession();
 	// Actualiza 'subcategoría' si existe una categoría
 	if (categoria.value) formInput_mostrarValoresSubcat();
 });
