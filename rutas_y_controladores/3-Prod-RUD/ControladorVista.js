@@ -1,8 +1,8 @@
 // ************ Requires *************
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
-let varias = require("../../funciones/Varias/varias");
-let variables = require("../../funciones/Varias/variables");
+let varias = require("../../funciones/Varias/Varias");
+let variables = require("../../funciones/Varias/Variables");
 let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 
 // *********** Controlador ***********
@@ -157,27 +157,28 @@ module.exports = {
 			: prodEditado.avatar
 			? prodEditado.avatar
 			: prodOriginal.avatar;
-		if (req.file && req.file.filename) {
-			// Mover el archivo a 3-ProdRevisar
-			// Eliminar archivo 3-ProdRevisar/prodEditado.avatar
-		}
-		// Unir 'Original' y 'Edición'
+		// Unir 'Edición' y 'Original'
 		let prodCombinado = {...prodOriginal, ...req.body, avatar};
+		// Mover el archivo avatar a '3-ProdRevisar'
+		if (req.file && req.file.filename) {
+			// Mover el archivo ingresado
+			varias.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
+			// Eliminar el archivo 3-ProdRevisar/prodEditado.avatar
+			if (prodEditado.avatar) varias.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
+		}
+		console.log(123);
 		// Averiguar si hay errores de validación
 		let errores = await funcionErroresEdicion(prodCombinado, entidad);
 		// Si hay errores de validación, redireccionar
 		if (errores.hay || !errores.hay) {
 			// Session para data-entry
-			req.session.edicion = req.body;
+			req.session.edicion = prodCombinado;
 			// Redireccionar
-			return res.redirect(
-				"/producto/edicion/?entidad=" + entidad + "&id=" + prodID + "&version=session"
-			);
+			return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 		}
-
 		// Si no hay errores,
 		// Obtener los campos del form
-		// Quitar coincidencias de 'edicion' con 'original'
+		// Quitar coincidencias con 'original'
 
 		// Quitar vacíos de 'editar'
 

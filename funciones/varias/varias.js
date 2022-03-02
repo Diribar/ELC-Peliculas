@@ -2,6 +2,7 @@
 let nodemailer = require("nodemailer");
 let BD_varias = require("../BD/varias");
 let fs = require("fs");
+let path = require("path");
 let axios = require("axios");
 
 module.exports = {
@@ -148,6 +149,13 @@ module.exports = {
 			else console.log("Archivo de imagen movido a su carpeta definitiva");
 		});
 	},
+
+	borrarArchivo: (archivo, ruta) => {
+		console.log(path);
+		let archivoImagen = path.join(ruta, archivo);
+		console.log("Archivo " + archivoImagen + " borrado");
+		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);
+	},	
 
 	revisarImagen: (tipo, tamano) => {
 		tamanoMaximo = 2;

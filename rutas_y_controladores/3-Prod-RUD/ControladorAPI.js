@@ -157,10 +157,8 @@ module.exports = {
 		return res.json([prodOriginal, prodEditado]);
 	},
 	enviarAReqSession: async (req, res) => {
-		console.log(req.query);
 		if (req.query.avatar) delete req.query.avatar;
 		req.session.edicion = req.query;
-		//console.log(req.query);
 		return res.json();
 	},
 	obtenerDeReqSession: async (req, res) => {
