@@ -189,7 +189,7 @@ window.addEventListener("load", async () => {
 				: flechasAviso[i].classList.add("ocultar");
 		else {
 			// Obtener los avatar ACTUAL y NUEVO
-			avatarActual = document.querySelector("#imagenProducto img").getAttribute('src')
+			avatarActual = document.querySelector("#imagenProducto img").getAttribute("src");
 			avatarNuevo = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			// Compararlos y tomar acciones
 			avatarActual != avatarNuevo
@@ -237,7 +237,7 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let actualizarInput_AvatarDeLaNuevaVersion = (botonVersion) => {
-		avatar_es = document.querySelector("#imagenProducto2 img").getAttribute('src')
+		avatar_es = document.querySelector("#imagenProducto2 img").getAttribute("src");
 		return botonVersion == botonOriginal
 			? avatar_or
 			: botonVersion == botonVerGuardada
@@ -376,7 +376,7 @@ window.addEventListener("load", async () => {
 	// Activa "Edición Guardada' si existe esa versión
 	startup_activarEdicionGuardado();
 	// Activa "Edición Session' si existe esa versión
-	if (datosEdicS == datosEdicG) formInput_activarEdicionSession()
+	if (datosEdicS == datosEdicG) formInput_activarEdicionSession();
 	// Actualiza 'subcategoría' si existe una categoría
 	if (categoria.value) formInput_mostrarValoresSubcat();
 });
