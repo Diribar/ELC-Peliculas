@@ -30,6 +30,19 @@ VALUES ('ot', 'Otro idioma', 1)
 ;
 UPDATE idiomas SET mas_frecuente = 1 WHERE id = 'es' OR id = 'en'
 ;
+CREATE TABLE sexos (
+	id VARCHAR(1) NOT NULL,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	letra_final VARCHAR(1) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO sexos (id, orden, nombre, letra_final)
+VALUES 
+('M', 1, 'Mujer', 'a'), 
+('V', 2, 'Varón', 'o'), 
+('O', 3, 'Otro','o')
+;
 CREATE TABLE roles_iglesia (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -88,19 +101,6 @@ VALUES
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
 ('SDM', 4, 'Sierva de Dios')
-;
-CREATE TABLE sexos (
-	id VARCHAR(1) NOT NULL,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(20) NOT NULL,
-	letra_final VARCHAR(1) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO sexos (id, orden, nombre, letra_final)
-VALUES 
-('M', 1, 'Mujer', 'a'), 
-('V', 2, 'Varón', 'o'), 
-('O', 3, 'Otro','o')
 ;
 CREATE TABLE status_registro_us (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
