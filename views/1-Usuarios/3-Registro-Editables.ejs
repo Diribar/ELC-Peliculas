@@ -1,7 +1,8 @@
 <div id="tapar-el-fondo"></div>
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<h1>Registro de Datos Editables</h1>
-	<section class="label-input flex-row"><!--Apodo-->
+	<!--Apodo-->
+	<section class="label-input flex-row">
 		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
 		<div class="form-grupo">
 			<% apodo = dataEntry ? dataEntry.apodo : "" %>
@@ -11,7 +12,8 @@
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Pais de residencia-->
+	<!--Pais de residencia-->
+	<section class="label-input flex-row">
 		<label for="pais">País de residencia</label>
 		<div class="form-grupo">
 			<select name="pais_id" class="input">
@@ -43,7 +45,8 @@
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
+	<!--Estado de vida en la iglesia-->
+	<section class="label-input flex-row">
 		<label for="rol_iglesia_id">Rol en<br>la iglesia</label>
 		<div class="form-grupo">
 			<select name="rol_iglesia_id" class="input">
@@ -57,10 +60,11 @@
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Imagen de perfil-->
+	<!--Imagen de perfil-->
+	<section class="label-input flex-row">
 		<label>Imagen personal <br>(opcional)</label>
 		<div class="form-grupo flex-col" id="divImagen">
-			<% avatar = dataEntry ? dataEntry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
+			<% avatar = dataEntry ? dataEntry.avatar : "/imagenes/0-Base/AvatarGenericoUsuario.png" %>
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>" alt="">
 			</label>

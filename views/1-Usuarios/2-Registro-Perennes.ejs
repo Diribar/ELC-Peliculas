@@ -1,7 +1,8 @@
 <div id="tapar-el-fondo"></div>
 <form action="<%= link %>" method="POST">
 	<h1>Registro de Datos Perennes</h1>
-	<section class="label-input flex-row"><!--Nombre-->
+	<!--Nombre-->
+	<section class="label-input flex-row">
 		<label for="nombre">Nombre</label>
 		<div class="form-grupo">
 			<% nombre = dataEntry ? dataEntry.nombre : "" %>
@@ -11,7 +12,8 @@
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Apellido-->
+	<!--Apellido-->
+	<section class="label-input flex-row">
 		<label for="apellido">Apellido</label>
 		<div class="form-grupo">
 			<% apellido = dataEntry ? dataEntry.apellido : "" %>
@@ -21,21 +23,24 @@
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Sexo-->
+	<!--Sexo-->
+	<section class="label-input flex-row">
 		<label for="sexo_id">Sexo</label>
 		<div class="form-grupo">
 			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 			<select name="sexo_id" class="input">
 				<option value=""  <% if (sexo_id=="")  {%>selected<% } %> style="display: none;">Elegí una opción</option>
-				<option value="F" <% if (sexo_id=="F") {%>selected<% } %>>Femenino</option>
-				<option value="M" <% if (sexo_id=="M") {%>selected<% } %>>Masculino</option>
+				<% for (sexo of sexos) { %>
+					<option value="<%= sexo.id %> " <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
+				<% } %> 
 			</select>
 			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.sexo_id) ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.sexo_id) ? errores.sexo_id : "" %></span>
 			</i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Fecha de Nacimiento-->
+	<!--Fecha de Nacimiento-->
+	<section class="label-input flex-row">
 		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
 		<div class="form-grupo">
 			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
@@ -45,7 +50,8 @@
 			</i>
 		</div>
 	</section>
-	<section id="buttons" class="flex-row"><!--Buttons-->
+	<!--Buttons-->
+	<section id="buttons" class="flex-row">
 		<button type="submit">Aceptar</button>
 		<a href="/"><button type="button">Cancelar</button></a>
 	</section>

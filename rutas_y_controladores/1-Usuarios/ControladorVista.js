@@ -106,7 +106,7 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_varias.actualizarRegistro("usuario", {status_registro_id: 2}, usuario.id);
+			await BD_varias.actualizarRegistro("usuarios", {status_registro_id: 2}, usuario.id);
 		}
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
@@ -124,11 +124,12 @@ module.exports = {
 	},
 
 	altaPerennesForm: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "perennes";
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		let errores = req.session.errores ? req.session.errores : false;
+		// Preparar datos para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
+		let errores = req.session.errores ? req.session.errores : "";
+		let sexos = await BD_varias.obtenerTodos("sexos", "orden")
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -136,6 +137,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
+			sexos,
 		});
 	},
 
@@ -161,13 +163,13 @@ module.exports = {
 	},
 
 	altaEditablesForm: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "editables";
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden");
+		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden")
+		// .then(n=>n.filter(m=>m.))
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
@@ -210,9 +212,6 @@ module.exports = {
 	detalle: async (req, res) => {
 		tema = "usuario";
 		codigo = "detalle";
-		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
-		}
 		res.render("Home", {
 			tema,
 			codigo,
