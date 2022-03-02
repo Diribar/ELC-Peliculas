@@ -8,8 +8,8 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll(".input-error .fa-circle-check");
-	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------------------
@@ -77,8 +77,8 @@ window.addEventListener("load", async () => {
 			let indiceSC = campos.indexOf("subcategoria_id");
 			let erroresSC = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
 			mensajesError[indiceSC].innerHTML = erroresSC.subcategoria_id;
-			iconoOK[indiceSC].classList.add("ocultar");
-			iconoError[indiceSC].classList.remove("ocultar");
+			iconosOK[indiceSC].classList.add("ocultar");
+			iconosError[indiceSC].classList.remove("ocultar");
 		}
 
 		// Tareas varias
@@ -250,11 +250,11 @@ window.addEventListener("load", async () => {
 			mensajesError[indice].innerHTML = mensaje;
 			// Acciones en función de si hay o no mensajes de error
 			mensaje
-				? iconoError[indice].classList.remove("ocultar")
-				: iconoError[indice].classList.add("ocultar");
+				? iconosError[indice].classList.remove("ocultar")
+				: iconosError[indice].classList.add("ocultar");
 			mensaje || !mostrarOK
-				? iconoOK[indice].classList.add("ocultar")
-				: iconoOK[indice].classList.remove("ocultar");
+				? iconosOK[indice].classList.add("ocultar")
+				: iconosOK[indice].classList.remove("ocultar");
 		}
 	};
 	let actualizarInput_AvatarDeLaNuevaVersion = (botonVersion) => {
@@ -274,21 +274,21 @@ window.addEventListener("load", async () => {
 	};
 	let formInputChange_botonGuardar = () => {
 		let OK =
-			Array.from(iconoOK)
+			Array.from(iconosOK)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar < iconoOK.length;
+				}, {}).ocultar < iconosOK.length;
 		let error =
-			Array.from(iconoError)
+			Array.from(iconosError)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar < iconoError.length;
+				}, {}).ocultar < iconosError.length;
 		OK && !error
 			? botonGuardarSession.classList.remove("inactivoErrores")
 			: botonGuardarSession.classList.add("inactivoErrores");
@@ -298,14 +298,14 @@ window.addEventListener("load", async () => {
 		mensaje = error[campo];
 		// Reemplaza el mensaje
 		indice = campos.indexOf(campo);
-		mensajesError[indice].innerHTML = error[campo];
+		mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error
 		mensaje
-			? iconoError[indice].classList.remove("ocultar")
-			: iconoError[indice].classList.add("ocultar");
+			? iconosError[indice].classList.remove("ocultar")
+			: iconosError[indice].classList.add("ocultar");
 		!mensaje
-			? iconoOK[indice].classList.remove("ocultar")
-			: iconoOK[indice].classList.add("ocultar");
+			? iconosOK[indice].classList.remove("ocultar")
+			: iconosOK[indice].classList.add("ocultar");
 	};
 	let formInput_paises = () => {
 		let paisID = paisesSelect.value;

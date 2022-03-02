@@ -171,8 +171,13 @@ module.exports = {
 		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
 			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
 		);
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
+		// Generar la info para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		avatar = dataEntry.avatar
+			? "/imagenes/9-Provisorio/" + dataEntry.avatar
+			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
+		// Ir a la vista
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -183,17 +188,17 @@ module.exports = {
 			hablaHispana,
 			hablaNoHispana,
 			roles_iglesia,
+			avatar,
 		});
 	},
 
 	altaEditablesGuardar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		let usuario = req.session.usuario;
+		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
-		let datos = req.body;
-		let errores = await validarUsuarios.editables(datos);
-		// Redireccionar si hubo algún error de validación
+		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
+			if (req.file) delete req.body.avatar
 			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
@@ -205,7 +210,8 @@ module.exports = {
 		req.body.avatar = req.file ? req.file.filename : "-";
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Pendiente mover el archivo a la carpeta definitiva
+		// Mover el archivo a la carpeta definitiva
+		if (req.body.avatar) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
