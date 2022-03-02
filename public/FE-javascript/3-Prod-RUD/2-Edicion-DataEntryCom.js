@@ -35,21 +35,26 @@ window.addEventListener("load", async () => {
 	let inactivo_EdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicSess");
 	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
 	let versiones = document.querySelectorAll("#cuerpo #comandos .version");
-	// Obtener versiones existentes
-	let rutaVersiones = "/producto/edicion/api/obtener-versiones/";
-	let [versionOriginal, versionEdicG] = await fetch(
-		rutaVersiones + "?entidad=" + entidad + "&id=" + prodID
-	).then((n) => n.json());
-	let existeEdicG = !!versionEdicG.ELC_id;
-	// Obtener version 'session'
-	let rutaSession = "/producto/edicion/api/obtener-version-session/";
-	let versionEdicS = await fetch(rutaSession + "?entidad=" + entidad + "&id=" + prodID).then(
-		(n) => n.json()
-	);
-	let existeEdicS = !!versionEdicS;
+	// Obtener versiones GUARDADA y ORIGINAL
+	let rutaVersiones =
+		"/producto/edicion/api/obtener-versiones/?entidad=" + entidad + "&id=" + prodID;
+	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
+	let existeEdicG = !!datosEdicG.ELC_id;
+	// Obtener version SESSION
+	let rutaSession =
+		"/producto/edicion/api/obtener-version-session/?entidad=" + entidad + "&id=" + prodID;
+	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
+	let existeEdicS = !!datosEdicS;
+	// Temas del avatar
+	datosOriginales.avatar = avatar_obtenerRutaNombre(datosOriginales.avatar, "original");
+	datosEdicG.avatar = datosEdicG.avatar
+		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
+		: datosOriginales.avatar;
+	if (datosEdicS.avatar) delete datosEdicS.avatar; // Porque no hay ningún archivo en 'input "avatar"'
+	let inputAvatar = document.querySelector("input#avatar");
 	// Otras variables
 	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
-	let status_creada = existeEdicG ? versionEdicG.status_registro.creado : false;
+	let status_creada = existeEdicG ? datosEdicG.status_registro.creado : false;
 	let rutaVE = "/producto/edicion/api/validar-edicion/?";
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-query/?";
 
@@ -80,6 +85,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// Tareas varias
+		if (campo == "avatar" && !error.hay) avatar_nuevoIngresado(e); // Cambia el avatar
 		activarBotonGuardar(); // Activa/Desactiva el botón 'Guardar'
 		fetch(rutaRQ + dataEntry()); // Guarda el Data-Entry en session
 		inputEnBotoneraComandos();
@@ -123,25 +129,38 @@ window.addEventListener("load", async () => {
 	// BOTONERA DE COMANDOS ----------------------------------
 	// Session
 	botonVerSession.addEventListener("click", async () => {
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonVerSession.classList).join(" ").includes("inactivo")) return;
 		// Obtener Data-Entry de session
-		let versionEdicS = await fetch(rutaSession + "?entidad=" + entidad + "&id=" + prodID).then(
-			(n) => n.json()
-		);
-		funcionInput(botonVerSession, versionEdicS);
+		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
+		// Corregir el avatar
+		// let imagen = document.querySelector("#imagenProducto img");
+		// if (!datosEdicS.avatar && inputAvatar.value) datosEdicS.avatar = imagen.src;
+		// console.log(datosEdicS);
+		// console.log(datosEdicS.avatar);
+		// Fin
+		if (!datosEdicS) return;
+		funcionInput(botonVerSession, datosEdicS);
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
+		// Si el botón está inactivo, concluye la función
 		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
 		location.reload();
 	});
 	botonGuardarSession.addEventListener("click", (e) => {
+		// Si el botón está inactivo, concluye la función
 		if (Array.from(botonGuardarSession.classList).join(" ").includes("inactivo")) {
 			e.preventDefault();
 		}
 	});
 	// Guardada
 	botonVerGuardada.addEventListener("click", () => {
-		funcionInput(botonVerGuardada, versionEdicG);
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonVerGuardada.classList).join(" ").includes("inactivo") || !datosEdicG)
+			return;
+		// Ejecuta la función 'Input'
+		funcionInput(botonVerGuardada, datosEdicG);
 	});
 	botonEliminarGuardada.addEventListener("click", (e) => {
 		if (Array.from(botonEliminarGuardada.classList).join(" ").includes("inactivo")) {
@@ -150,37 +169,32 @@ window.addEventListener("load", async () => {
 	});
 	// Original
 	botonOriginal.addEventListener("click", () => {
-		funcionInput(botonOriginal, versionOriginal);
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonOriginal.classList).join(" ").includes("inactivo") || !datosOriginales)
+			return;
+		// Ejecuta la función 'Input'
+		funcionInput(botonOriginal, datosOriginales);
 	});
 
 	// FUNCIONES ---------------------------------------------
-	let agrega_o_quita_una_flecha_dependiendo_de_si_hay_cambios = (version, i) => {
-		inputs[i].value != version[inputs[i].name] && (version[inputs[i].name] || inputs[i].value)
-			? flechasAviso[i].classList.remove("ocultar")
-			: flechasAviso[i].classList.add("ocultar");
+	let avatar_nuevoIngresado = async (e) => {
+		// Creamos el objeto de la clase FileReader
+		reader = new FileReader();
+		// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+		reader.readAsDataURL(e.target.files[0]);
+		// Le decimos que cuando esté listo ejecute el código interno
+		reader.onload = () => {
+			avatar = reader.result;
+			avatar_cambiarEnLaVista(avatar);
+
+			// fetch(rutaRQ + dataEntry()+); // Guarda el Data-Entry en session
+		};
 	};
-	let cambiarLosValoresDelInput = (version, i) => {
-		if (inputs[i].name != "avatar")
-			if (version[inputs[i].name] != undefined) {
-				if ((inputs[i].value = version[inputs[i].name])) {
-					inputs[i].value = version[inputs[i].name];
-				}
-			} else inputs[i].value = "";
-	};
-	let actualizaLaBotoneraDeComandos = (botonVersion) => {
-		for (version of versiones) {
-			version == botonVersion
-				? version.classList.add("plus")
-				: version.classList.remove("plus");
-		}
-	};
-	let funcionInput = async (botonVersion, version) => {
-		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVersion.classList).join(" ").includes("inactivo") || !version) return;
+	let funcionInput = async (botonVersion, datosVersion) => {
 		// Rutina para cada input
 		for (let i = 0; i < inputs.length; i++) {
-			agrega_o_quita_una_flecha_dependiendo_de_si_hay_cambios(version, i);
-			cambiarLosValoresDelInput(version, i);
+			agrega_o_quita_una_flecha(botonVersion, datosVersion, i);
+			cambiarLosValoresDelInput(datosVersion, i);
 		}
 		// Rutinas para todo el form
 		actualizaLaBotoneraDeComandos(botonVersion);
@@ -189,10 +203,73 @@ window.addEventListener("load", async () => {
 		let errores = await fetch(rutaVE + dataEntry()).then((n) => n.json());
 		consecuenciasErrores(errores, campos, (mostrarOK = false));
 	};
+	let agrega_o_quita_una_flecha = (botonVersion, datosVersion, i) => {
+		if (inputs[i].name != "avatar")
+			inputs[i].value != datosVersion[inputs[i].name] &&
+			(inputs[i].value || datosVersion[inputs[i].name])
+				? flechasAviso[i].classList.remove("ocultar")
+				: flechasAviso[i].classList.add("ocultar");
+		else {
+			// Si el botonVersion es SESSION, sale de la función
+			if (botonVersion == botonVerSession && !inputs[i].value) return;
+			// Cambia el avatar actual por el ORIGINAL o GUARDADO
+			let imagen = document.querySelector("#imagenProducto img");
+			avatarAnterior = imagen.src;
+			avatarNuevo =
+				botonVersion == botonOriginal
+					? datosOriginales.avatar
+					: botonVersion == botonVerGuardada
+					? datosEdicG.avatar
+					: "";
+			avatar_cambiarEnLaVista(avatarNuevo);
+			// Si cambió el avatar, lo avisa
+			avatarNuevo != avatarAnterior
+				? flechasAviso[i].classList.remove("ocultar")
+				: flechasAviso[i].classList.add("ocultar");
+		}
+	};
+	let avatar_cambiarEnLaVista = (avatar) => {
+		// Crear elementos
+		image = document.createElement("img");
+		preview = document.querySelector("#imagenProducto");
+		preview.innerHTML = "";
+		image.src = avatar;
+		// Cambiar el avatar visible
+		preview.append(image);
+	};
+	let cambiarLosValoresDelInput = (version, i) => {
+		if (inputs[i].name != "avatar")
+			version[inputs[i].name] != undefined
+				? (inputs[i].value = version[inputs[i].name])
+				: (inputs[i].value = "");
+	};
+	let actualizaLaBotoneraDeComandos = (botonVersion) => {
+		for (version of versiones) {
+			version == botonVersion
+				? version.classList.add("plus")
+				: version.classList.remove("plus");
+		}
+	};
+	let consecuenciasErrores = (errores, camposEspecificos, mostrarOK) => {
+		for (campo of camposEspecificos) {
+			// Guarda el mensaje de error
+			mensaje = errores[campo];
+			// Reemplaza
+			indice = campos.indexOf(campo);
+			mensajesError[indice].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
+			mensaje
+				? iconoError[indice].classList.remove("ocultar")
+				: iconoError[indice].classList.add("ocultar");
+			mensaje || !mostrarOK
+				? iconoOK[indice].classList.add("ocultar")
+				: iconoOK[indice].classList.remove("ocultar");
+		}
+	};
 	let dataEntry = () => {
 		let objeto = "entidad=" + entidad + "&id=" + prodID;
 		for (input of inputs) {
-			objeto += "&" + input.name + "=" + input.value;
+			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}
 		return objeto;
 	};
@@ -292,22 +369,6 @@ window.addEventListener("load", async () => {
 			? iconoOK[indice].classList.remove("ocultar")
 			: iconoOK[indice].classList.add("ocultar");
 	};
-	let consecuenciasErrores = (errores, camposEspecificos, mostrarOK) => {
-		for (campo of camposEspecificos) {
-			// Guarda el mensaje de error
-			mensaje = errores[campo];
-			// Reemplaza
-			indice = campos.indexOf(campo);
-			mensajesError[indice].innerHTML = mensaje;
-			// Acciones en función de si hay o no mensajes de error
-			mensaje
-				? iconoError[indice].classList.remove("ocultar")
-				: iconoError[indice].classList.add("ocultar");
-			mensaje || !mostrarOK
-				? iconoOK[indice].classList.add("ocultar")
-				: iconoOK[indice].classList.remove("ocultar");
-		}
-	};
 	let startupBotoneraComandos = () => {
 		// Quita 'inactivo_EdicSess' si existe una versión 'session"
 		if (existeEdicS) {
@@ -347,9 +408,19 @@ window.addEventListener("load", async () => {
 				: opcion.classList.add("ocultar");
 		}
 	};
-
 	// STATUS INICIAL ---------------------------------------
 	startupBotoneraComandos();
 	// Rutinas de categoría / subcategoría
 	if (categoria.value) mostrarValoresSubcat();
 });
+
+// FUNCIONES QUE SE NECESITAN CARGAR ANTES DEL ON-LOAD
+let avatar_obtenerRutaNombre = (imagen, status) => {
+	return imagen
+		? (imagen.slice(0, 4) != "http"
+				? status == "original"
+					? "/imagenes/2-Productos/"
+					: "/imagenes/3-ProdRevisar/"
+				: "") + imagen
+		: "/imagenes/8-Agregar/IM.jpg";
+};
