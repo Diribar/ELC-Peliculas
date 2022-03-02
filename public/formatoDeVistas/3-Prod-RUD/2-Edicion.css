@@ -11,7 +11,10 @@ form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
 /* Imagen */
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
-form #imagen .mensajeError, form #imagen .mensajeAyuda {top: 56%; transform: translateX(-50%);}
+form #imagen .mensajeAyuda {top: 53%; transform: translateX(-50%);}
+form #imagen .mensajeError {top: 120%; transform: translateX(-50%);}
+form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
+form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);}
 
 /* Partes del formulario */
 #datos {display: flex; flex-direction: row; justify-content: space-between;}
