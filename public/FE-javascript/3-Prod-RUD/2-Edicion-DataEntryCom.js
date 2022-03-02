@@ -129,9 +129,6 @@ window.addEventListener("load", async () => {
 	botonVerSession.addEventListener("click", async () => {
 		// Obtener Data-Entry de session
 		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-		// Obtener el avatar
-		let imagen = document.querySelector("#imagenProducto img");
-		//avatar_es=
 		// Fin
 		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOriginales;
 		comandos_ActualizarInput(botonVerSession, datosEdicS, (readOnly = false));
@@ -192,7 +189,7 @@ window.addEventListener("load", async () => {
 				: flechasAviso[i].classList.add("ocultar");
 		else {
 			// Obtener los avatar ACTUAL y NUEVO
-			avatarActual = document.querySelector("#imagenProducto img").src;
+			avatarActual = document.querySelector("#imagenProducto img").getAttribute('src')
 			avatarNuevo = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			// Compararlos y tomar acciones
 			avatarActual != avatarNuevo
@@ -240,7 +237,7 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let actualizarInput_AvatarDeLaNuevaVersion = (botonVersion) => {
-		avatar_es = document.querySelector("#imagenProducto2 img").src;
+		avatar_es = document.querySelector("#imagenProducto2 img").getAttribute('src')
 		return botonVersion == botonOriginal
 			? avatar_or
 			: botonVersion == botonVerGuardada
