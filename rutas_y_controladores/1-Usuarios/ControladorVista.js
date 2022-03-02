@@ -1,9 +1,7 @@
 // ************ Requires ************
-let fs = require("fs");
-let path = require("path");
 let BD_especificas = require("../../funciones/BD/especificas");
 let BD_varias = require("../../funciones/BD/varias");
-let rutaImagenes = "../public/imagenes/1-Usuarios/";
+let varias = require("../../funciones/Varias/Varias");
 let funciones = require("../../funciones/Varias/varias");
 let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
 let bcryptjs = require("bcryptjs");
@@ -193,7 +191,7 @@ module.exports = {
 		let errores = await validarUsuarios.editables(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.file ? borrarArchivoDeImagen(req.file.filename, req.file.path) : null;
+			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
@@ -226,9 +224,6 @@ module.exports = {
 	editarForm: async (req, res) => {
 		tema = "usuario";
 		codigo = "edicion";
-		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
-		}
 		res.render("Home", {
 			tema,
 			codigo,
@@ -245,11 +240,4 @@ module.exports = {
 		guardar(ruta_nombre, nuevaBD);
 		res.redirect("/");
 	},
-};
-
-// ************ Funciones ************
-let borrarArchivoDeImagen = (archivo, ruta) => {
-	let archivoImagen = path.join(ruta, archivo);
-	console.log("Archivo " + archivoImagen + " borrado");
-	archivo && fs.existsSync(archivoImagen) ? fs.unlinkSync(archivoImagen) : "";
 };

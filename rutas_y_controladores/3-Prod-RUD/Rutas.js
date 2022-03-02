@@ -7,6 +7,7 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
 let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
+let upload = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
@@ -26,7 +27,7 @@ router.get("/links/api/obtener-provs-links", API.obtenerProvsLinks);
 // Controladores de vistas
 router.get("/detalle", soloUsuarios, vista.detEdicForm);
 router.get("/edicion", soloAutInput, vista.detEdicForm);
-router.post("/edicion", soloAutInput, vista.edicAct);
+router.post("/edicion", soloAutInput, upload.single("avatar"), vista.edicAct);
 router.get("/edicion/eliminar_edicion", soloAutInput, vista.edicElim);
 
 router.get("/links", soloAutInput, vista.linksForm);
