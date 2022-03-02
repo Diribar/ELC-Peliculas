@@ -1,9 +1,10 @@
 // ************ Requires ************
-let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
+let validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
 
 // *********** Controlador ***********
 module.exports = {
 	validarMail: async (req, res) => {
+		console.log(req.query);
 		let errores = await validarUsuarios.registroMail(req.query.email);
 		return res.json(errores);
 	},

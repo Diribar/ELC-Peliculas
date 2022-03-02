@@ -2,7 +2,7 @@
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
 let creditsTMDB = require("../APIs_TMDB/3-Credits");
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 let varias = require("../Varias/Varias");
 
 module.exports = {
@@ -27,11 +27,11 @@ module.exports = {
 				datosAPI_renamed.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datosAPI_renamed.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// ELC_id de la colección
-				datosAPI_renamed.en_colec_id = await BD_varias.obtenerELC_id({
-					entidad: "colecciones",
-					campo: "TMDB_id",
-					valor: datosAPI_renamed.en_colec_TMDB_id,
-				});
+				datosAPI_renamed.en_colec_id = await BD_varias.obtenerELC_id(
+					"colecciones",
+					"TMDB_id",
+					datosAPI_renamed.en_colec_TMDB_id
+				);
 				datosIniciales.producto = "Capítulo";
 				datosIniciales.entidad = "capitulos";
 			} else {
@@ -102,11 +102,11 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// ELC_id de la colección
-			datos.colec_id = await BD_varias.obtenerELC_id({
-				entidad: "colecciones",
-				campo: "TMDB_id",
-				valor: datos.colec_TMDB_id,
-			});
+			datos.colec_id = await BD_varias.obtenerELC_id(
+				"colecciones",
+				"TMDB_id",
+				datos.colec_TMDB_id
+			);
 			if (datos.colec_id) return datos;
 		}
 		return datos;
@@ -226,11 +226,7 @@ module.exports = {
 		for (capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
-			existe = await BD_varias.obtenerELC_id({
-				entidad: "capitulos",
-				campo: "TMDB_id",
-				valor: capituloTMDB_Id,
-			});
+			existe = await BD_varias.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
 			if (!existe) {
 				// Preparar datos del capítulo
 				datosCap = {

@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 			url += "=";
 			url += encodeURIComponent(inputs[i].value);
 		}
-		return fetch("/usuarios/api/validarlogin/" + url).then((n) => n.json());
+		return fetch("/usuarios/api/validar-login/" + url).then((n) => n.json());
 	};
 
 	// Status inicial

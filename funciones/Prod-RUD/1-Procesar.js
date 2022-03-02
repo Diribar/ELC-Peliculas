@@ -92,16 +92,16 @@ module.exports = {
 	},
 
 	guardar_o_actualizar_Edicion: async (entidad, producto_id, datos) => {
-		let pointer = {entidad: entidad+"Edicion", campo: "ELC_id", valor: producto_id};
+		entidad = entidad + "Edicion";
 		// Averiguar si ya exista la edición
-		let edicion_id = await BD_varias.obtenerELC_id(pointer);
+		let edicion_id = await BD_varias.obtenerELC_id(entidad, "ELC_id", producto_id);
 		// Acciones en función de si existe o no
 		edicion_id
-			? await BD_varias.actualizarRegistro(pointer.entidad, datos, edicion_id)
+			? await BD_varias.actualizarRegistro(entidad, datos, edicion_id)
 			: await BD_varias.agregarRegistro({
-					entidad: pointer.entidad,
+					entidad,
 					ELC_id: producto_id,
-					...datos
+					...datos,
 			  });
 	},
 };

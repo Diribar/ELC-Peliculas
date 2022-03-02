@@ -205,11 +205,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			elc_id = await BD_varias.obtenerELC_id({
-				entidad: copiarFA.entidad,
-				campo: "FA_id",
-				valor: FA_id,
-			});
+			elc_id = await BD_varias.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -239,10 +235,7 @@ module.exports = {
 		codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			varias.borrarArchivo(
-				req.cookies.datosPers.avatarBD,
-				"./public/imagenes/9-Provisorio/"
-			);
+			varias.borrarArchivo(req.cookies.datosPers.avatarBD, "./public/imagenes/9-Provisorio/");
 		}
 		borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -312,11 +305,11 @@ module.exports = {
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			elc_id = await BD_varias.obtenerELC_id({
-				entidad: datosDuros.entidad,
-				campo: datosDuros.fuente + "_id",
-				valor: datosDuros[datosDuros.fuente + "_id"],
-			});
+			elc_id = await BD_varias.obtenerELC_id(
+				datosDuros.entidad,
+				datosDuros.fuente + "_id",
+				datosDuros[datosDuros.fuente + "_id"]
+			);
 			if (elc_id) {
 				errores.nombre_original =
 					"El código interno ya se encuentra en nuestra base de datos";

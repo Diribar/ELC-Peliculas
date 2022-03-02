@@ -30,28 +30,45 @@ VALUES ('ot', 'Otro idioma', 1)
 ;
 UPDATE idiomas SET mas_frecuente = 1 WHERE id = 'es' OR id = 'en'
 ;
+CREATE TABLE sexos (
+	id VARCHAR(1) NOT NULL,
+	orden TINYINT UNSIGNED NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	letra_final VARCHAR(1) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO sexos (id, orden, nombre, letra_final)
+VALUES 
+('M', 1, 'Mujer', 'a'), 
+('V', 2, 'Varón', 'o'), 
+('O', 3, 'Otro','o')
+;
 CREATE TABLE roles_iglesia (
 	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	usuario BOOLEAN NOT NULL,
 	personaje BOOLEAN NOT NULL,
-	PRIMARY KEY (id)
+	sexo_id VARCHAR(1) NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (sexo_id) REFERENCES sexos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO roles_iglesia (id, orden, nombre, usuario, personaje)
+INSERT INTO roles_iglesia (id, orden, nombre, usuario, personaje, sexo_id)
 VALUES 
-('PC', 0, 'Computadora', 0, 0),
-('LS', 1, 'Laico soltero', 1, 1),
-('LSV', 1, 'Laico soltero', 1, 1),
-('LSM', 1, 'Laica soltera', 1, 1),
-('LC', 2, 'Laico casado', 1, 1),
-('LCV', 2, 'Laico casado', 1, 1),
-('LCM', 2, 'Laica casada', 1, 1),
-('RC', 3, 'Religioso consagrado', 1, 1),
-('RCV', 3, 'Religioso consagrado', 1, 1),
-('RCM', 3, 'Religiosa consagrada', 1, 1),
-('PP', 4, 'Papa', 0, 1),
-('PPV', 4, 'Papa', 0, 1)
+('PC', 0, 'Computadora', 0, 0, 'O'),
+('LS', 1, 'Laico soltero', 1, 1, '-'),
+('LSV', 1, 'Laico soltero', 1, 1, 'V'),
+('LSM', 1, 'Laica soltera', 1, 1, 'M'),
+('LC', 2, 'Laico casado', 1, 1, '-'),
+('LCV', 2, 'Laico casado', 1, 1, 'V'),
+('LCM', 2, 'Laica casada', 1, 1, 'M'),
+('RC', 3, 'Religioso consagrado', 1, 1, '-'),
+('RCV', 3, 'Religioso consagrado', 1, 1, 'V'),
+('RCM', 3, 'Religiosa consagrada', 1, 1, 'M'),
+('SC', 4, 'Sacerdote', 1, 1, '-'),
+('SCV', 4, 'Sacerdote', 1, 1, 'V'),
+('PP', 5, 'Papa', 0, 1, '-'),
+('PPV', 5, 'Papa', 0, 1, 'V')
 ;
 CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -90,15 +107,6 @@ VALUES
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
 ('SDM', 4, 'Sierva de Dios')
-;
-CREATE TABLE sexos (
-	id VARCHAR(1) NOT NULL,
-	nombre VARCHAR(20) NOT NULL,
-	letra_final VARCHAR(1) NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO sexos (id, nombre, letra_final)
-VALUES ('M','Mujer', 'a'), ('V','Varón', 'o'), ('O','Otro','o')
 ;
 CREATE TABLE status_registro_us (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -343,8 +351,8 @@ VALUES
 ;
 INSERT INTO USUARIOS (id, email, contrasena, nombre, apellido, numero_documento, apodo, avatar, fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, aut_data_entry, completado_en, status_registro_id)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Data Entry', 'Startup', '0', 'Data Entry', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 2, 'LC', 1, 0, '2021-03-26 00:00:00', 4),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', '21072001', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LC', 1, 0, '2021-03-26 00:00:00', 4)
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Data Entry', 'Startup', '0', 'Data Entry', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 2, 'LCV', 1, 0, '2021-03-26 00:00:00', 4),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', '21072001', 'Diego', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, 0, '2021-03-26 00:00:00', 4)
 ;
 
 CREATE TABLE penaliz_us_usuarios (

@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(100)},
 		usuario: {type: dt.BOOLEAN},
 		personaje: {type: dt.BOOLEAN},
+		sexo_id: {type: dt.STRING(1)},
 	};
 	const config = {
 		tableName: "roles_iglesia",

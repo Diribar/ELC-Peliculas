@@ -1,6 +1,6 @@
 // ************ Requires ************
 let procesarProd = require("./2-Procesar");
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 let varias = require("../Varias/Varias");
 
 // *********** Para exportar ***********

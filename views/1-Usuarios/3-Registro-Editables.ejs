@@ -1,78 +1,87 @@
 <div id="tapar-el-fondo"></div>
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<h1>Registro de Datos Editables</h1>
-	<section class="label-input flex-row"><!--Apodo-->
+	<!--Apodo-->
+	<section class="label-input flex-row">
 		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
-		<div class="form-grupo">
-			<% apodo = dataEntry ? dataEntry.apodo : "" %>
-			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= apodo %>">
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.apodo) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.apodo) ? errores.apodo : "" %></span>
+		<div class="input-error">
+			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.apodo ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.apodo ? errores.apodo : "" %></span>
 			</i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.apodo && errores.apodo) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Pais de residencia-->
+	<!--Pais de residencia-->
+	<section class="label-input flex-row">
 		<label for="pais">País de residencia</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<select name="pais_id" class="input">
-				<option value="" <% if (dataEntry.pais_id=="") {%> selected <%}%> class="ocultar">Elejí un país</option>
+				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (n of hablaHispana.filter(n => n.continente == "América")) { %>
-						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %>selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>	
 				</optgroup>
 				<optgroup label="Europa/África (habla hispana)">
 					<% for (n of hablaHispana.filter(n => n.continente != "América")) { %>
-						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %>selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>
 				</optgroup>
 				<optgroup label="Países de habla no hispana">
 					<% for (n of hablaNoHispana) { %>
-						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %> selected <% } %>>
+						<option  value="<%= n.id %>" <% if (dataEntry.pais_id==n.id) { %>selected <% } %>>
 							<%= n.nombre %>
 						</option>
 					<% } %>
 				</optgroup>
 			</select>
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.pais_id) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.pais_id) ? errores.pais_id : "" %></span>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
 			</i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id && errores.pais_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Estado de vida en la iglesia-->
+	<!--Estado de vida en la iglesia-->
+	<section class="label-input flex-row">
 		<label for="rol_iglesia_id">Rol en<br>la iglesia</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<select name="rol_iglesia_id" class="input">
-				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí un rol en la Iglesia</option>
+				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>class="ocultar">Elejí un rol en la Iglesia</option>
 				<% for (rol_iglesia of roles_iglesia) { %>
-					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
-				<% } %> 
+					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+				<% } %>
 			</select>
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.rol_iglesia_id) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.rol_iglesia_id) ? errores.rol_iglesia_id : "" %></span>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.rol_iglesia_id ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.rol_iglesia_id ? errores.rol_iglesia_id : "" %></span>
 			</i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.rol_iglesia_id && errores.rol_iglesia_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
-	<section class="label-input flex-row"><!--Imagen de perfil-->
+	<!--Imagen de perfil-->
+	<section class="label-input flex-row">
 		<label>Imagen personal <br>(opcional)</label>
-		<div class="form-grupo flex-col" id="divImagen">
-			<% avatar = dataEntry ? dataEntry.avatar : "/imagenes/0-Base/Avatar genérico.png" %>
+		<div class="input-error flex-col" id="divImagen">
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>" alt="">
 			</label>
 			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="ocultar input">
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.avatar) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.avatar) ? errores.avatar : "" %></span>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 			</i>
-			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</section>
-	<section id="buttons" class="flex-row"><!--Buttons-->
-		<button type="submit">Aceptar</button>
+	<!--Buttons-->
+	<section id="buttons" class="flex-row">
+		<button type="submit" class="inactivo">Aceptar</button>
 		<a href="/"><button type="button">Cancelar</button></a>
 	</section>
 </form>

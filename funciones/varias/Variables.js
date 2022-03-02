@@ -1,5 +1,5 @@
 // **** Requires ***********
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 
 // *********** Para exportar ***********
 module.exports = {

@@ -1,5 +1,5 @@
 // **** Requires ***********
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 let path = require("path");
 
 // Objeto literal
@@ -7,9 +7,9 @@ module.exports = {
 	registroMail: async (email) => {
 		let errores = {};
 		errores.email = !email
-			? mailVacio
+			? cartelMailVacio
 			: formatoMail(email)
-			? mailFormato
+			? cartelMailFormato
 			: (await BD_varias.obtenerELC_id("usuarios", "email", email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
@@ -20,12 +20,12 @@ module.exports = {
 	login: (login) => {
 		let errores = {};
 		errores.email = !login.email
-			? mailVacio
+			? cartelMailVacio
 			: formatoMail(login.email)
-			? mailFormato
+			? cartelMailFormato
 			: "";
 		errores.contrasena = !login.contrasena
-			? contrasenaVacia
+			? cartelContrasenaVacia
 			: largoContrasena(login.contrasena)
 			? largoContrasena(login.contrasena)
 			: "";
@@ -34,9 +34,6 @@ module.exports = {
 	},
 
 	perennes: (datos) => {
-		cartelCampoVacio = "Necesitamos que completes este campo";
-		cartelCastellano =
-			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
@@ -52,9 +49,7 @@ module.exports = {
 			: castellano(datos.apellido)
 			? cartelCastellano
 			: "";
-		errores.sexo_id = !datos.sexo_id
-			? "Necesitamos que elijas un valor"
-			: "";
+		errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
 		errores.fecha_nacimiento = !datos.fecha_nacimiento
 			? "Necesitamos que ingreses la fecha"
 			: fechaRazonable(datos.fecha_nacimiento)
@@ -65,9 +60,6 @@ module.exports = {
 	},
 
 	editables: (datos) => {
-		cartelCampoVacio = "Necesitamos que completes este campo";
-		cartelCastellano =
-			"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 		let errores = {};
 		errores.apodo = !datos.apodo
 			? cartelCampoVacio
@@ -76,19 +68,14 @@ module.exports = {
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
-		errores.paises_id = !datos.paises_id
-			? "Necesitamos que elijas un valor"
-			: "";
-
-		errores.rol_iglesia_id = !datos.rol_iglesia_id
-			? "Necesitamos que elijas un valor"
-			: "";
+		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
 		errores.avatar = !datos.avatar
 			? ""
 			: extension(datos.avatar)
 			? "Usaste un archivo con la extensión " +
 			  extension(datos.avatar).slice(1).toUpperCase() +
-			  ". Las extensiones de archivo válidas son JPG, PNG, GIF y BMP."
+			  ". Las extensiones de archivo válidas son JPG y PNG"
 			: datos.tamano > 1100000
 			? "El archivo es de " +
 			  parseInt(datos.tamano / 10000) / 100 +
@@ -99,9 +86,13 @@ module.exports = {
 	},
 };
 
-let mailVacio = "Necesitamos que escribas un correo electrónico";
-let mailFormato = "Debes escribir un formato de correo válido";
-let contrasenaVacia = "Necesitamos que escribas una contraseña";
+let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
+let cartelMailFormato = "Debes escribir un formato de correo válido";
+let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
+let cartelCampoVacio = "Necesitamos que completes este campo";
+let cartelCastellano =
+	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+let cartelElejiUnValor = "Necesitamos que elijas un valor";
 
 let formatoMail = (email) => {
 	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -137,7 +128,7 @@ let hayErrores = (errores) => {
 	resultado = false;
 	valores = Object.values(errores);
 	for (valor of valores) {
-		valor ? (resultado = true) : "";
+		if (valor) resultado = true;
 	}
 	return resultado;
 };

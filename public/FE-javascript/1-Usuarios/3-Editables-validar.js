@@ -1,45 +1,65 @@
 window.addEventListener("load", () => {
-	// Variables generales
+	// VARIABLES GENERALES -----------------------------------------------------------------------
+	// Datos del formulario
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll(".form-grupo .input");
-	let asteriscos = document.querySelectorAll(
-		".form-grupo .fa-circle-xmark"
-	);
-	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
+	let inputs = document.querySelectorAll(".input-error .input");
+	// OK/Errores
+	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 
+	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
-		// Anular 'submit' si hay algún error
-		!asteriscos[i].classList.contains("ocultar")
-			? button.classList.add("inactivo")
-			: "";
-		// Acciones si se realizan cambios
 		inputs[i].addEventListener("change", async () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
-			errores = await fetch(
-				"/usuarios/api/validareditables/?" +
-					campo +
-					"=" +
-					valor
-			).then((n) => n.json());
-			mensaje = errores[campo];
-			mensajes[i].innerHTML = mensaje;
-			if (mensaje) {
-				asteriscos[i].classList.remove("ocultar");
-				button.classList.add("inactivo");
-			} else {
-				asteriscos[i].classList.add("ocultar");
-				button.classList.remove("inactivo");
-				for (let j = 0; j < inputs.length; j++) {
-					mensajes[j].innerHTML
-						? button.classList.add("inactivo")
-						: "";
-				}
-			}
+			errores = await fetch("/usuarios/api/validar-editables/?" + campo + "=" + valor).then(
+				(n) => n.json()
+			);
+			consecuenciaError(errores, campo, i);
+			botonGuardar(); // Activa/Desactiva el botón 'Guardar'
 		});
 	}
 	form.addEventListener("submit", (e) => {
 		button.classList.contains("inactivo") ? e.preventDefault() : "";
 	});
+
+	// FUNCIONES --------------------------------------------------------------
+	let botonGuardar = () => {
+		let OK =
+			Array.from(iconosOK)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar == undefined;
+		// < iconosOK.length;
+		let error =
+			Array.from(iconosError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar == iconosError.length;
+		OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
+	};
+	let consecuenciaError = (error, campo, indice) => {
+		// Guarda el mensaje de error
+		mensaje = error[campo];
+		// Reemplaza el mensaje
+		mensajesError[indice].innerHTML = mensaje;
+		// Acciones en función de si hay o no mensajes de error
+		mensaje
+			? iconosError[indice].classList.remove("ocultar")
+			: iconosError[indice].classList.add("ocultar");
+		if (indice < iconosOK.length) !mensaje
+			? iconosOK[indice].classList.remove("ocultar")
+			: iconosOK[indice].classList.add("ocultar");
+	};
+
+	// STARTUP ----------------------------------------------------------------
+	botonGuardar()
 });

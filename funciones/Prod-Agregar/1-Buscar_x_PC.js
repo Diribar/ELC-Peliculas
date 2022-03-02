@@ -93,8 +93,14 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = varias.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		desempate2 = varias.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+		desempate1 = varias
+			.convertirLetrasAlIngles(nombre_original)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
+		desempate2 = varias
+			.convertirLetrasAlIngles(nombre_castellano)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -212,15 +218,14 @@ let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		entidad_TMDB = datos.resultados[i].entidad_TMDB;
 		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		dato = {
-			entidad,
-			campo: "TMDB_id",
-			valor: datos.resultados[i].TMDB_id,
-		};
-		YaEnBD = await BD_varias.obtenerELC_id(dato);
+		YaEnBD = await BD_varias.obtenerELC_id(entidad, "TMDB_id", datos.resultados[i].TMDB_id);
 		if (entidad == "peliculas" && !YaEnBD) {
-			// Debe averiguarlo, porque el 'search' no avisa si pertenecea una colección
-			YaEnBD = await BD_varias.obtenerELC_id({...dato, entidad: "capitulos"});
+			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
+			YaEnBD = await BD_varias.obtenerELC_id(
+				"capitulos",
+				"TMDB_id",
+				datos.resultados[i].TMDB_id
+			);
 			if (YaEnBD) {
 				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id);

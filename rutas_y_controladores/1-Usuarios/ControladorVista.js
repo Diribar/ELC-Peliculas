@@ -3,7 +3,7 @@ let BD_especificas = require("../../funciones/BD/especificas");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/Varias");
 let funciones = require("../../funciones/Varias/varias");
-let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
+let validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
 let bcryptjs = require("bcryptjs");
 
 // *********** Controlador ***********
@@ -37,8 +37,8 @@ module.exports = {
 		// Enviar la contraseña por mail
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
-		let contrasena = 123456789
-		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)) + "";
+		let contrasena = "123456789";
+		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
@@ -52,10 +52,8 @@ module.exports = {
 	},
 
 	altaRedireccionar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
-		let status_registro = req.session.usuario.status_registro_id + "";
+		let status_registro = req.session.usuario.status_registro_id;
 		// Redireccionar
-		//console.log("status_registro: " + status_registro);
 		status_registro == 1
 			? res.redirect("/usuarios/login")
 			: status_registro == 2
@@ -107,7 +105,7 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_varias.actualizarRegistro("usuario", {status_registro_id: 2}, usuario.id);
+			await BD_varias.actualizarRegistro("usuarios", {status_registro_id: 2}, usuario.id);
 		}
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
@@ -125,11 +123,12 @@ module.exports = {
 	},
 
 	altaPerennesForm: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "perennes";
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		let errores = req.session.errores ? req.session.errores : false;
+		// Preparar datos para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
+		let errores = req.session.errores ? req.session.errores : "";
+		let sexos = await BD_varias.obtenerTodos("sexos", "orden");
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -137,6 +136,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
+			sexos,
 		});
 	},
 
@@ -162,15 +162,21 @@ module.exports = {
 	},
 
 	altaEditablesForm: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		tema = "usuario";
 		codigo = "editables";
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden");
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
+			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
+		);
 		let errores = req.session.errores ? req.session.errores : false;
+		// Generar la info para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		avatar = dataEntry.avatar
+			? "/imagenes/9-Provisorio/" + dataEntry.avatar
+			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
+		// Ir a la vista
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -181,17 +187,17 @@ module.exports = {
 			hablaHispana,
 			hablaNoHispana,
 			roles_iglesia,
+			avatar,
 		});
 	},
 
 	altaEditablesGuardar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		let usuario = req.session.usuario;
+		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
-		let datos = req.body;
-		let errores = await validarUsuarios.editables(datos);
-		// Redireccionar si hubo algún error de validación
+		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
+			if (req.file) delete req.body.avatar
 			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
@@ -203,7 +209,8 @@ module.exports = {
 		req.body.avatar = req.file ? req.file.filename : "-";
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Pendiente mover el archivo a la carpeta definitiva
+		// Mover el archivo a la carpeta definitiva
+		if (req.body.avatar) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -211,9 +218,6 @@ module.exports = {
 	detalle: async (req, res) => {
 		tema = "usuario";
 		codigo = "detalle";
-		if (!req.session.usuario) {
-			req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
-		}
 		res.render("Home", {
 			tema,
 			codigo,
