@@ -1,6 +1,6 @@
 // **** Requires ***********
 let nodemailer = require("nodemailer");
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 let fs = require("fs");
 let path = require("path");
 let axios = require("axios");

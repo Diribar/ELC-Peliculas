@@ -3,7 +3,7 @@ let BD_especificas = require("../../funciones/BD/especificas");
 let BD_varias = require("../../funciones/BD/varias");
 let varias = require("../../funciones/Varias/Varias");
 let funciones = require("../../funciones/Varias/varias");
-let validarUsuarios = require("../../funciones/Varias/usuarios-Errores");
+let validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
 let bcryptjs = require("bcryptjs");
 
 // *********** Controlador ***********
@@ -37,8 +37,8 @@ module.exports = {
 		// Enviar la contraseña por mail
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
-		let contrasena = 123456789
-		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)) + "";
+		let contrasena = "123456789"
+		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
@@ -52,8 +52,7 @@ module.exports = {
 	},
 
 	altaRedireccionar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
-		let status_registro = req.session.usuario.status_registro_id + "";
+		let status_registro = req.session.usuario.status_registro_id;
 		// Redireccionar
 		//console.log("status_registro: " + status_registro);
 		status_registro == 1

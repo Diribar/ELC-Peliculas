@@ -1,5 +1,5 @@
 // **** Requires ***********
-let BD_varias = require("../BD/varias");
+let BD_varias = require("../BD/Varias");
 let path = require("path");
 
 // Objeto literal
@@ -19,11 +19,7 @@ module.exports = {
 
 	login: (login) => {
 		let errores = {};
-		errores.email = !login.email
-			? mailVacio
-			: formatoMail(login.email)
-			? mailFormato
-			: "";
+		errores.email = !login.email ? mailVacio : formatoMail(login.email) ? mailFormato : "";
 		errores.contrasena = !login.contrasena
 			? contrasenaVacia
 			: largoContrasena(login.contrasena)
@@ -52,9 +48,7 @@ module.exports = {
 			: castellano(datos.apellido)
 			? cartelCastellano
 			: "";
-		errores.sexo_id = !datos.sexo_id
-			? "Necesitamos que elijas un valor"
-			: "";
+		errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
 		errores.fecha_nacimiento = !datos.fecha_nacimiento
 			? "Necesitamos que ingreses la fecha"
 			: fechaRazonable(datos.fecha_nacimiento)
@@ -76,13 +70,9 @@ module.exports = {
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
-		errores.paises_id = !datos.paises_id
-			? "Necesitamos que elijas un valor"
-			: "";
+		errores.paises_id = !datos.paises_id ? "Necesitamos que elijas un valor" : "";
 
-		errores.rol_iglesia_id = !datos.rol_iglesia_id
-			? "Necesitamos que elijas un valor"
-			: "";
+		errores.rol_iglesia_id = !datos.rol_iglesia_id ? "Necesitamos que elijas un valor" : "";
 		errores.avatar = !datos.avatar
 			? ""
 			: extension(datos.avatar)

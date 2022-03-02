@@ -1,6 +1,6 @@
 let db = require("../../base_de_datos/modelos");
 let usuarios = db.usuarios;
-let BD_varias = require("./varias");
+let BD_varias = require("./Varias");
 
 module.exports = {
 	// Productos *****************************************

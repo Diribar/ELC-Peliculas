@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/usuarios/api/validarperennes/?" +
+				"/usuarios/api/validar-perennes/?" +
 					campo +
 					"=" +
 					valor

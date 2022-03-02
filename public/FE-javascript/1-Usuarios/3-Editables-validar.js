@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
 			campo = inputs[i].name;
 			valor = inputs[i].value;
 			errores = await fetch(
-				"/usuarios/api/validareditables/?" +
+				"/usuarios/api/validar-editables/?" +
 					campo +
 					"=" +
 					valor

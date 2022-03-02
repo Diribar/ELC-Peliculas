@@ -63,7 +63,7 @@ module.exports = {
 	},
 	obtenerELC_id: async (req, res) => {
 		let {entidad, campo, valor} = req.query;
-		ELC_id = await BD_varias.obtenerELC_id({entidad, campo, valor});
+		ELC_id = await BD_varias.obtenerELC_id(entidad, campo, valor);
 		return res.json(ELC_id);
 	},
 
