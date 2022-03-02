@@ -17,8 +17,8 @@ router.get("/tridente/api/obtener-cap-id", API.obtenerCapID);
 // Edición
 router.get("/edicion/api/validar-edicion", API.validarEdicion);
 router.get("/edicion/api/obtener-versiones", API.obtenerVersionesDelProducto);
-router.get("/edicion/api/obtener-version-session", API.obtenerVersionSessionDelProducto);
-router.get("/edicion/api/enviar-a-req-query", API.enviarA_ReqQuery);
+router.get("/edicion/api/enviar-a-req-session", API.enviarAReqSession);
+router.get("/edicion/api/obtener-de-req-session", API.obtenerDeReqSession);
 // Links
 router.get("/links/api/validar-links", API.validarLinks);
 router.get("/links/api/obtener-provs-links", API.obtenerProvsLinks);
