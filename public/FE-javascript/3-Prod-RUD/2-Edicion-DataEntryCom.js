@@ -39,7 +39,7 @@ window.addEventListener("load", async () => {
 	let rutaSession =
 		"/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
 	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-	datosEdicS = datosEdicS ? datosEdicS : existeEdicG ? datosEdicG : datosOriginales;
+	datosEdicS = datosEdicS ? datosEdicS : datosEdicG;
 	let avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-session/?";
 
