@@ -37,7 +37,7 @@ module.exports = {
 		// Enviar la contraseña por mail
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
-		let contrasena = "123456789"
+		let contrasena = "123456789";
 		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
@@ -129,7 +129,7 @@ module.exports = {
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		let errores = req.session.errores ? req.session.errores : "";
-		let sexos = await BD_varias.obtenerTodos("sexos", "orden")
+		let sexos = await BD_varias.obtenerTodos("sexos", "orden");
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -168,8 +168,9 @@ module.exports = {
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden")
-		// .then(n=>n.filter(m=>m.))
+		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
+			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
+		);
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {

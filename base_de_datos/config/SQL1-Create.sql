@@ -56,13 +56,19 @@ CREATE TABLE roles_iglesia (
 INSERT INTO roles_iglesia (id, orden, nombre, usuario, personaje, sexo_id)
 VALUES 
 ('PC', 0, 'Computadora', 0, 0, 'O'),
+('LS', 1, 'Laico soltero', 1, 1, '-'),
 ('LSV', 1, 'Laico soltero', 1, 1, 'V'),
 ('LSM', 1, 'Laica soltera', 1, 1, 'M'),
+('LC', 2, 'Laico casado', 1, 1, '-'),
 ('LCV', 2, 'Laico casado', 1, 1, 'V'),
 ('LCM', 2, 'Laica casada', 1, 1, 'M'),
+('RC', 3, 'Religioso consagrado', 1, 1, '-'),
 ('RCV', 3, 'Religioso consagrado', 1, 1, 'V'),
 ('RCM', 3, 'Religiosa consagrada', 1, 1, 'M'),
-('PPV', 4, 'Papa', 0, 1, 'V')
+('SC', 4, 'Sacerdote', 1, 1, '-'),
+('SCV', 4, 'Sacerdote', 1, 1, 'V'),
+('PP', 5, 'Papa', 0, 1, '-'),
+('PPV', 5, 'Papa', 0, 1, 'V')
 ;
 CREATE TABLE roles_usuario (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
