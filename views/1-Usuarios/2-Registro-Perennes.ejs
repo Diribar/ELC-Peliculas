@@ -4,7 +4,7 @@
 	<!--Nombre-->
 	<section class="label-input flex-row">
 		<label for="nombre">Nombre</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<% nombre = dataEntry ? dataEntry.nombre : "" %>
 			<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
 			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.nombre) ? 'ocultar' : '' %> ">
@@ -15,7 +15,7 @@
 	<!--Apellido-->
 	<section class="label-input flex-row">
 		<label for="apellido">Apellido</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<% apellido = dataEntry ? dataEntry.apellido : "" %>
 			<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
 			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.apellido) ? 'ocultar' : '' %> ">
@@ -26,7 +26,7 @@
 	<!--Sexo-->
 	<section class="label-input flex-row">
 		<label for="sexo_id">Sexo</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 			<select name="sexo_id" class="input">
 				<option value=""  <% if (sexo_id=="")  {%>selected<% } %> style="display: none;">Elegí una opción</option>
@@ -42,7 +42,7 @@
 	<!--Fecha de Nacimiento-->
 	<section class="label-input flex-row">
 		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 			<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
 			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.fecha_nacimiento) ? 'ocultar' : '' %> ">

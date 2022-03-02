@@ -4,7 +4,7 @@
 	<!--Mail y Contraseña-->
 	<div class="label-input flex-row">  <!--Mail-->
 		<label for="email">E-Mail</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
 				value="<%= dataEntry ? dataEntry.email : null %>">
 			<!-- Errores -->
@@ -14,7 +14,7 @@
 	</div>
 	<div class="label-input flex-row">  <!--Contraseña-->
 		<label for="contrasena">Contraseña</label>
-		<div class="form-grupo">
+		<div class="input-error">
 			<input type="password" class="input" name="contrasena"
 				value="<%= dataEntry ? dataEntry.contrasena : null %>" placeholder="Contraseña"
 			>

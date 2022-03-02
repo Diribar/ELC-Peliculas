@@ -7,7 +7,7 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloVisitas = require("../../middlewares/usuarios/solo-0-visitas");
 let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
-let uploadFile = require("../../middlewares/varios/multer");
+let multer = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
@@ -31,14 +31,14 @@ router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post(
 	"/datos-editables",
 	soloUsuarios,
-	uploadFile.single("avatar"),
+	multer.single("avatar"),
 	vista.altaEditablesGuardar
 );
 
 // Controladores de Consultas
 router.get("/detalle", soloUsuarios, vista.detalle);
 router.get("/edicion", soloUsuarios, vista.editarForm);
-router.put("/edicion", soloUsuarios, uploadFile.single("avatar"), vista.editarGuardar); //Validar mail y editables
+router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.editarGuardar); //Validar mail y editables
 router.delete("/eliminar", soloUsuarios, vista.baja);
 
 module.exports = router;

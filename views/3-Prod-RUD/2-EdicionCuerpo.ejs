@@ -1,10 +1,10 @@
-<form action="<%= vista %>" method="POST" >
+<form action="<%= vista %>" method="POST" enctype="multipart/form-data">
 	<%- include('CartelAdvertencia') %>
 	<section id="imagen" class="input-error">
-		<label for="avatar" id="imagenProducto">
+		<label for="inputImagen" id="imagenProducto">
 			<img src="<%= avatar %>" class="pointer">
 		</label>
-		<input name="avatar" id="avatar" type="file" accept="image/*" class="input ocultar">
+		<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
 		<label id="imagenProducto2" class="ocultar">
 			<img src="<%= avatar %>" class="ocultar">
 		</label>
