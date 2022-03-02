@@ -7,7 +7,6 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("form");
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
-	let inputAvatar = document.querySelector(".input-error input#avatar");
 	// OK/Errores
 	let iconoOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
@@ -206,7 +205,6 @@ window.addEventListener("load", async () => {
 			datosVersion[inputs[i].name] != undefined
 				? (inputs[i].value = datosVersion[inputs[i].name])
 				: (inputs[i].value = "");
-			inputs[i].disabled = trueFalse;
 			if (inputs[i].name == "paises_id") {
 				paisesMostrar.disabled = trueFalse;
 				paisesSelect.disabled = trueFalse;
@@ -215,10 +213,11 @@ window.addEventListener("load", async () => {
 			// Actualizar el avatar
 			avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
-			inputAvatar.disabled = trueFalse;
 			let imgAvatar = document.querySelector(".input-error #imagenProducto img");
 			trueFalse ? imgAvatar.classList.remove("pointer") : imgAvatar.classList.add("pointer");
 		}
+		// Activar o desactivar todos los inputs, incluyendo el avatar
+		inputs[i].disabled = trueFalse;
 	};
 	let actualizarInput_clasePlus = (boton) => {
 		// Variable de botones versiones
