@@ -211,7 +211,7 @@ module.exports = {
 		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.body.avatar) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
+		if (req.file) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

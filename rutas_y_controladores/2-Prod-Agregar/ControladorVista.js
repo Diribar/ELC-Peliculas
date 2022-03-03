@@ -485,7 +485,6 @@ module.exports = {
 		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Guardar los datos de 'Original'
-		let hora = new Date();
 		let original = {
 			...req.cookies.datosOriginales,
 			fe_valores: confirma.fe_valores,
@@ -493,10 +492,7 @@ module.exports = {
 			calidad_tecnica: confirma.calidad_tecnica,
 			calificacion: confirma.calificacion,
 			creado_por_id: confirma.creado_por_id,
-			creado_en: hora,
-			status_registro_id: 1,
 			capturado_por_id: confirma.creado_por_id,
-			capturado_en: hora,
 		};
 		registro = await BD_varias.agregarRegistro(original);
 		// 3. Almacenar el dato de BD del avatar
@@ -518,9 +514,6 @@ module.exports = {
 			// Datos varios
 			entidad: "productos_edic",
 			ELC_id: registro.id,
-			editado_en: hora,
-			capturado_en: hora,
-			status_registro_id: 1,
 		};
 		await BD_varias.agregarRegistro(edicion);
 		// 6. Guardar datosTerminaste
