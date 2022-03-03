@@ -85,6 +85,10 @@ module.exports = {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
 
+	eliminarRegistro: (entidad, id) => {
+		return db[entidad].destroy({where: {id: id}});
+	},
+
 	contarCasos: (entidad, campo, valor) => {
 		return db[entidad].count({
 			where: {[campo]: valor},

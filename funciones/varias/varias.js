@@ -146,7 +146,7 @@ module.exports = {
 		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;
 		fs.rename(rutaProvisoria, rutaDefinitiva, (err) => {
 			if (err) throw err;
-			else console.log("Archivo de imagen movido a su carpeta definitiva");
+			else console.log("Archivo de imagen movido a la carpeta " + rutaDefinitiva);
 		});
 	},
 
@@ -155,7 +155,7 @@ module.exports = {
 		let archivoImagen = path.join(ruta, archivo);
 		console.log("Archivo " + archivoImagen + " borrado");
 		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);
-	},	
+	},
 
 	revisarImagen: (tipo, tamano) => {
 		tamanoMaximo = 2;

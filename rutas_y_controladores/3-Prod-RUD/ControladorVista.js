@@ -124,7 +124,6 @@ module.exports = {
 	},
 
 	edicAct: async (req, res) => {
-		console.log("linea 127", req.file);
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
@@ -145,13 +144,15 @@ module.exports = {
 			prodID,
 			"editado_por_id",
 			userID
-		);
-		if (!prodEditado) prodEditado = {};
-		else {
+		).then((n) => (n ? n.dataValues : ""));
+		// Verificar si el producto está capturado
+		if (prodEditado) {
 			// Problema: EDICION 'CAPTURADA'
 		}
 		// Obtener el producto 'Original'
-		let prodOriginal = await BD_varias.obtenerPorId(entidad, prodID).then((n) => n.dataValues);
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
+			"status_registro",
+		]).then((n) => n.dataValues);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
@@ -159,33 +160,67 @@ module.exports = {
 			? prodEditado.avatar
 			: prodOriginal.avatar;
 		// Unir 'Edición' y 'Original'
-		let prodCombinado = {...prodOriginal, ...req.body, avatar};
-		// Mover el archivo avatar a '3-ProdRevisar'
-		if (req.file && req.file.filename) {
-			// Mover el archivo ingresado
-			varias.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
-			// Eliminar el archivo 3-ProdRevisar/prodEditado.avatar
-			if (prodEditado.avatar) varias.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
-		}
+		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar};
 		// Averiguar si hay errores de validación
 		let errores = await funcionErroresEdicion(prodCombinado, entidad);
-		// Si hay errores de validación, redireccionar
-		if (errores.hay || !errores.hay) {
-			// Session para data-entry
+		if (errores.hay) {
+			if (req.file) delete prodCombinado.avatar;
+			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
 			req.session.edicion = prodCombinado;
-			// Redireccionar
-			return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
+		} else {
+			// Si no hubieron errores de validación...
+			// Actualizar los archivos avatar
+			if (req.file) {
+				// Mover el archivo actual a su ubicación para ser revisado
+				varias.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
+				// Eliminar el anterior archivo de imagen
+				if (prodEditado.avatar)
+					varias.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
+			}
+			// Unir las 2 ediciones en una sola
+			let edicion = {...prodEditado, ...req.body, avatar};
+			delete edicion.id;
+			// Quitar de 'edicion' las coincidencias con 'original' que vienen del 'req.body'
+			let campos = Object.keys({...req.body, avatar});
+			for (campo of campos) {
+				if (edicion[campo] == prodOriginal[campo]) delete edicion[campo];
+			}
+			// Eliminar de edicion los campos null
+			campos = Object.keys(edicion);
+			for (campo of campos) {
+				if (edicion[campo] == null) delete edicion[campo];
+			}
+			// Determinar el 'status_registro_id'
+			let status_registro = await BD_varias.obtenerTodos("status_registro_prod", "orden");
+			// 1. Si existe la 'edicion guardada' --> lo copia
+			// 2. Si no existe la 'edicion guardada',
+			// 2.1. Si el status de 'original' es 'creada' --> lo copia
+			// 2.2. Si el status de 'original' es 'aprobado' --> 'edicion'
+			let status_registro_id = prodEditado
+				? prodEditado.status_registro_id
+				: prodOriginal.status_registro.creado
+				? prodOriginal.status_registro_id
+				: prodOriginal.status_registro.aprobado
+				? status_registro.find((n) => n.editado).id
+				: "";
+			// Completar los datos de edicion
+			edicion = {
+				...edicion,
+				ELC_id: prodID,
+				ELC_entidad: entidad,
+				editado_por_id: req.session.usuario.id,
+				capturado_por_id: req.session.usuario.id,
+				entidad: "productos_edic",
+				status_registro_id,
+			};
+			// Eliminar prodEditado (si existía) de la BD
+			if (prodEditado) await BD_varias.eliminarRegistro("productos_edic", prodEditado.id);
+			// Agregar 'edición' a la BD
+			await BD_varias.agregarRegistro(edicion);
+			// Eliminar req.session.edicion
+			req.session.edicion = {};
 		}
-		// Si no hay errores,
-		// Obtener los campos del form
-		// Quitar coincidencias con 'original'
-
-		// Quitar vacíos de 'editar'
-
-		//
-
-		// Terminar
-		return res.send(["Actualizar", req.body]);
+		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
 
 	edicElim: async (req, res) => {
