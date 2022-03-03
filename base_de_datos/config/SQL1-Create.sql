@@ -575,6 +575,9 @@ CREATE TABLE PROD_peliculas (
 	
 	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	
+	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
+	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -652,6 +655,9 @@ CREATE TABLE PROD_colecciones (
 	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
+	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
+	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
@@ -725,6 +731,9 @@ CREATE TABLE PROD_capitulos (
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	
+	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
+	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES si_no_parcial(id),
@@ -804,6 +813,9 @@ CREATE TABLE EDIC_productos (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+	sin_links_gratuitos_cargados BOOLEAN NULL,
+	no_se_encuentran_links_gratuitos BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),	

@@ -28,14 +28,9 @@ router.get("/altaredireccionar", soloUsuarios, vista.altaRedireccionar);
 router.get("/datos-perennes", soloUsuarios, vista.altaPerennesForm);
 router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
-router.post(
-	"/datos-editables",
-	soloUsuarios,
-	multer.single("avatar"),
-	vista.altaEditablesGuardar
-);
+router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEG);
 
-// Controladores de Consultas
+// Controladores RUD
 router.get("/detalle", soloUsuarios, vista.detalle);
 router.get("/edicion", soloUsuarios, vista.editarForm);
 router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.editarGuardar); //Validar mail y editables

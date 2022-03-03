@@ -1,7 +1,10 @@
 module.exports = (sequelize, dt) => {
 	const alias = "si_no_parcial";
 	const columns = {
-		nombre: {type: dt.STRING(10)},
+		productos: {type: dt.STRING(10)},
+		links: {type: dt.STRING(10)},
+		si: {type: dt.BOOLEAN},
+		no: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "si_no_parcial",

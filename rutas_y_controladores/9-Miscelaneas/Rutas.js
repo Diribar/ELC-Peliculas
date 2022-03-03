@@ -24,10 +24,6 @@ router.get("/agregar/RCLV_hechos", soloAutInput, vista.RCLV_Form);
 router.post("/agregar/RCLV_personajes", soloAutInput, vista.RCLV_Grabar);
 router.post("/agregar/RCLV_hechos", soloAutInput, vista.RCLV_Grabar);
 
-// Errores
-router.get("/error/producto-no-encontrado", vista.prodNoEncontrado);
-router.get("/error/producto-no-aprobado", vista.prodNoAprobado);
-
 // Miscelaneas
 router.get("/session", vista.session);
 router.get("/cookies", vista.cookies);

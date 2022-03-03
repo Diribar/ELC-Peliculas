@@ -192,7 +192,7 @@ module.exports = {
 		});
 	},
 
-	altaEditablesGuardar: async (req, res) => {
+	altaEG: async (req, res) => {
 		let usuario = req.session.usuario;
 		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
