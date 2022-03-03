@@ -50,22 +50,21 @@ CREATE TABLE roles_iglesia (
 	usuario BOOLEAN NOT NULL,
 	personaje BOOLEAN NOT NULL,
 	sexo_id VARCHAR(1) NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (sexo_id) REFERENCES sexos(id)
+	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO roles_iglesia (id, orden, nombre, usuario, personaje, sexo_id)
 VALUES 
 ('PC', 0, 'Computadora', 0, 0, 'O'),
-('LS', 1, 'Laico soltero', 1, 1, '-'),
+('LS', 1, 'Laico soltero', 1, 1, 'O'),
 ('LSV', 1, 'Laico soltero', 1, 1, 'V'),
 ('LSM', 1, 'Laica soltera', 1, 1, 'M'),
-('LC', 2, 'Laico casado', 1, 1, '-'),
+('LC', 2, 'Laico casado', 0, 1, '-'),
 ('LCV', 2, 'Laico casado', 1, 1, 'V'),
 ('LCM', 2, 'Laica casada', 1, 1, 'M'),
-('RC', 3, 'Religioso consagrado', 1, 1, '-'),
+('RC', 3, 'Religioso consagrado', 0, 1, '-'),
 ('RCV', 3, 'Religioso consagrado', 1, 1, 'V'),
 ('RCM', 3, 'Religiosa consagrada', 1, 1, 'M'),
-('SC', 4, 'Sacerdote', 1, 1, '-'),
+('SC', 4, 'Sacerdote', 0, 1, '-'),
 ('SCV', 4, 'Sacerdote', 1, 1, 'V'),
 ('PP', 5, 'Papa', 0, 1, '-'),
 ('PPV', 5, 'Papa', 0, 1, 'V')
@@ -421,22 +420,23 @@ CREATE TABLE RCLV_personajes (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO RCLV_personajes (id, ano, nombre, creado_por_id, status_registro_id)
+INSERT INTO RCLV_personajes (id, nombre, creado_por_id, status_registro_id)
 VALUES 
-(1, NULL, 'Varios (colección)', 1, 3),
-(2, 0, 'Jesús', 1, 3)
+(1, 'Ninguno', 1, 3),
+(2, 'Varios (colección)', 1, 3)
 ;
 INSERT INTO RCLV_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, status_registro_id)
 VALUES 
-(5, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
-(6, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
+(11, NULL, 0, 'Jesús', 'STV', 'RCV', 1, 3),
+(12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
+(13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
 ;
 INSERT INTO RCLV_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
 VALUES 
-(7,249,1910,'Teresa de Calcuta','STM','RCM',10),
-(8,285,1958,'Juan XXIII','STV','PPV',10),
-(9,31,1815,'Juan Bosco','STV','RCV',10),
-(10,296,1920,'Juan Pablo II','STV','PPV',10)
+(21, 249, 1910,'Teresa de Calcuta','STM','RCM',10),
+(22, 285, 1958,'Juan XXIII','STV','PPV',10),
+(23, 31, 1815,'Juan Bosco','STV','RCV',10),
+(24, 296, 1920,'Juan Pablo II','STV','PPV',10)
 ;
 
 CREATE TABLE RCLV_hechos (
@@ -470,15 +470,20 @@ CREATE TABLE RCLV_hechos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO RCLV_hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
+VALUES
+(1, NULL, NULL, 'Ninguno', 1, 3),
+(2, NULL, NULL, 'Varios (colección)', 1, 3)
+;
 INSERT INTO RCLV_hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
 VALUES
-(1,359,0,'Navidad',1),
-(2,100,33,'Sem. Santa - 1. General',1),
-(3,105,33,'Sem. Santa - 2. Viernes Santo',1),
-(4,107,33,'Sem. Santa - 3. Resurrección',1),
-(5,150,33,'Pentecostés',1),
-(6,210,1914,'Guerra Mundial - 1a',1),
-(7,245,1942,'Guerra Mundial - 2a',1)
+(11, 359, 0, 'Navidad', 1),
+(12, 100, 33, 'Sem. Santa - 1. General', 1),
+(13, 105, 33, 'Sem. Santa - 2. Viernes Santo', 1),
+(14, 107, 33, 'Sem. Santa - 3. Resurrección', 1),
+(15, 150, 33, 'Pentecostés', 1),
+(16, 210, 1914, 'Guerra Mundial - 1a', 1),
+(17, 245, 1942, 'Guerra Mundial - 2a', 1)
 ;
 CREATE TABLE RCLV_valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -508,13 +513,18 @@ CREATE TABLE RCLV_valores (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO RCLV_valores (id, nombre, creado_por_id, status_registro_id)
+VALUES
+(1, 'Ninguno', 1, 3),
+(2, 'Varios (colección)', 1, 3)
+;
 INSERT INTO RCLV_valores (id, nombre, creado_por_id)
 VALUES
-(10,'Valores en el deporte',1),
-(11,'Perseverancia',1),
-(12,'Pacificar un país dividido',1),
-(13,'Pasión por ayudar',1),
-(14,'Superación personal',1)
+(11, 'Valores en el deporte', 1),
+(12, 'Pacificar un país dividido', 1),
+(13, 'Pasión por ayudar', 1),
+(14, 'Superación personal', 1),
+(15, 'Perseverancia', 1)
 ;
 
 CREATE TABLE PROD_peliculas (
@@ -542,9 +552,9 @@ CREATE TABLE PROD_peliculas (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED DEFAULT 1,
+	hecho_id SMALLINT UNSIGNED DEFAULT 1,
+	valor_id SMALLINT UNSIGNED DEFAULT 1,
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -563,7 +573,7 @@ CREATE TABLE PROD_peliculas (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
-	capturado_por_id INT UNSIGNED NULL,
+	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
@@ -583,13 +593,13 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, status_registro_id, capturado_por_id, capturado_en)
+INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, capturado_por_id)
 VALUES 
-(1,'218275',NULL,'tt1445208','TMDB','The Letters','Cartas de la Madre Teresa',2015,125,'US','en','William Riead','William Riead','','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/8qnZycQWka7I8TbZ7UcvJ6I3weB.jpg',100,75,100,92,10,'2022-02-21 13:26:41',1,10,'2022-02-21 13:26:41'),
-(2,'109429',NULL,'tt0327086','TMDB','Il Papa buono','El Santo Padre Juan XXIII',2003,180,'IT','en','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/sRtTl8tVhBcE7KUGGWHOqx5LAeC.jpg',100,75,100,92,10,'2022-02-21 15:50:06',1,10,'2022-02-21 15:50:06'),
-(3,'108672',NULL,'tt0317009','TMDB','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz',2002,208,'IT','it','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich',NULL,'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del viejo cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus hábiles negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía; su','https://image.tmdb.org/t/p/original/llb1oSGE9F18QlIMx0teXXMosCY.jpg',100,100,100,100,10,'2022-02-21 15:53:45',1,10,'2022-02-21 15:53:45'),
-(4,'122977',NULL,'tt0416694','TMDB','Don Bosco','Don Bosco',2004,146,'IT','it','Lodovico Gasparini','Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, Francesca Panzarel','','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/fVFlTWdjvu3t98l9WlXB1984ATl.jpg',100,100,100,100,10,'2022-02-21 16:07:14',1,10,'2022-02-21 16:07:14'),
-(5,'254489',NULL,'tt0095051','TMDB','Don Bosco','Don Bosco',1988,150,'IT','it','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xlPz5FaH3D0ogxlF07f03CTQA07.jpg',100,75,100,92,10,'2022-02-21 16:13:51',1,10,'2022-02-21 16:13:51')
+(1,'218275',NULL,'tt1445208','TMDB','The Letters','Cartas de la Madre Teresa',2015,125,'US','en','William Riead','William Riead','','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/8qnZycQWka7I8TbZ7UcvJ6I3weB.jpg',100,75,100,92,10,1,10),
+(2,'109429',NULL,'tt0327086','TMDB','Il Papa buono','El Santo Padre Juan XXIII',2003,180,'IT','en','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/sRtTl8tVhBcE7KUGGWHOqx5LAeC.jpg',100,75,100,92,10,1,10),
+(3,'108672',NULL,'tt0317009','TMDB','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz',2002,208,'IT','it','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich',NULL,'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del viejo cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus hábiles negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía; su','https://image.tmdb.org/t/p/original/llb1oSGE9F18QlIMx0teXXMosCY.jpg',100,100,100,100,10,1,10),
+(4,'122977',NULL,'tt0416694','TMDB','Don Bosco','Don Bosco',2004,146,'IT','it','Lodovico Gasparini','Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, Francesca Panzarel','','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/fVFlTWdjvu3t98l9WlXB1984ATl.jpg',100,100,100,100,10,1,10),
+(5,'254489',NULL,'tt0095051','TMDB','Don Bosco','Don Bosco',1988,150,'IT','it','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xlPz5FaH3D0ogxlF07f03CTQA07.jpg',100,75,100,92,10,1,10)
 ;
 
 CREATE TABLE PROD_colecciones (
@@ -618,9 +628,9 @@ CREATE TABLE PROD_colecciones (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED DEFAULT 1,
+	hecho_id SMALLINT UNSIGNED DEFAULT 1,
+	valor_id SMALLINT UNSIGNED DEFAULT 1,
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -639,7 +649,7 @@ CREATE TABLE PROD_colecciones (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
-	capturado_por_id INT UNSIGNED NULL,
+	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
@@ -658,9 +668,9 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, status_registro_id, capturado_por_id, capturado_en)
+INSERT INTO PROD_colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, capturado_por_id)
 VALUES
-(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,'2022-02-21 21:52:19',1,10,'2022-02-21 21:52:19');
+(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,1,10);
 
 CREATE TABLE PROD_capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -689,9 +699,9 @@ CREATE TABLE PROD_capitulos (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED DEFAULT 1,
+	hecho_id SMALLINT UNSIGNED DEFAULT 1,
+	valor_id SMALLINT UNSIGNED DEFAULT 1,
 	fe_valores TINYINT UNSIGNED NULL,
 	entretiene TINYINT UNSIGNED NULL,
 	calidad_tecnica TINYINT UNSIGNED NULL,
@@ -711,7 +721,7 @@ CREATE TABLE PROD_capitulos (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
@@ -731,10 +741,10 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO PROD_capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id, creado_en, status_registro_id)
+INSERT INTO PROD_capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id, status_registro_id)
 VALUES
-(1,1,1,1,'38516',NULL,'tt0435100','TMDB','Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa',2005,195,'PL, IT','it','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg',1,1,'CFC',4,5,2,'2022-02-21 22:05:26',1),
-(2,1,1,2,'75470',NULL,'tt0495039','TMDB','Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre',2006,184,'IT, PL, CA','it','Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg',1,1,'CFC',4,5,2,'2022-02-21 22:05:26',1)
+(1,1,1,1,'38516',NULL,'tt0435100','TMDB','Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa',2005,195,'PL, IT','it','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg',1,1,'CFC',4,5,2,1),
+(2,1,1,2,'75470',NULL,'tt0495039','TMDB','Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre',2006,184,'IT, PL, CA','it','Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg',1,1,'CFC',4,5,2,1)
 ;
 
 CREATE TABLE EDIC_productos (
@@ -774,10 +784,10 @@ CREATE TABLE EDIC_productos (
 	valor_id SMALLINT UNSIGNED NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
+	editado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),	
@@ -794,18 +804,18 @@ CREATE TABLE EDIC_productos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, hecho_id, valor_id, editado_por_id, editado_en, status_registro_id, capturado_por_id, capturado_en)
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, status_registro_id, capturado_por_id)
 VALUES
-(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,7,NULL,NULL,10,'2022-02-21 13:26:41',1,10,'2022-02-21 13:26:41'),
-(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,8,NULL,NULL,10,'2022-02-21 15:50:06',1,10,'2022-02-21 15:50:06'),
-(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,8,NULL,NULL,10,'2022-02-21 15:53:45',1,10,'2022-02-21 15:53:45'),
-(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,9,NULL,NULL,10,'2022-02-21 16:07:14',1,10,'2022-02-21 16:07:14'),
-(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,9,NULL,NULL,10,'2022-02-21 16:13:51',1,10,'2022-02-21 16:13:51'),
-(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,10,NULL,NULL,10,'2022-02-21 22:05:26',1,10,'2022-02-21 22:05:26')
+(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,21,10,1,10),
+(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,22,10,1,10),
+(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,22,10,1,10),
+(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,23,10,1,10),
+(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,23,10,1,10),
+(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,24,10,1,10)
 ;
 UPDATE EDIC_productos SET musica = 'Ciaran Hope' WHERE id = 1;
 UPDATE EDIC_productos SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
-UPDATE EDIC_productos SET guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
+UPDATE EDIC_productos SET musica = 'Marco Frisina', guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
 
 CREATE TABLE borrados_registros (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
