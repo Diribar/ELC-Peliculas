@@ -44,11 +44,13 @@ let rutaUsuarios =    require("./rutas_y_controladores/1-Usuarios/Rutas");
 let rutaProdAgregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
 let rutaProdDetalle = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
 let rutaProductos =   require("./rutas_y_controladores/4-Productos/Rutas");
+let rutaErrores = require("./rutas_y_controladores/8-Errores/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProdAgregar);
 app.use("/producto", rutaProdDetalle);
 app.use("/productos", rutaProductos);
+app.use("/error", rutaErrores);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************

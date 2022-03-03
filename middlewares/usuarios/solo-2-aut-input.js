@@ -8,7 +8,7 @@ module.exports =  (req, res, next) => {
 	}
 	if (!usuario.rol_usuario.aut_input) {
 		varias.userLogs(req, res);		
-		return res.redirect("/usuarios/aut_input");
+		return res.redirect("/error/solo-usuarios-autorizados/inputs");
 	}
 	next();
 }

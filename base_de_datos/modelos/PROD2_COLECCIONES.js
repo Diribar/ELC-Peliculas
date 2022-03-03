@@ -49,8 +49,8 @@ module.exports = (sequelize, dt) => {
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 
-		sin_links_gratuitos_cargados: {type: dt.BOOLEAN},
-		no_se_encuentran_links_gratuitos: {type: dt.BOOLEAN},
+		links_gratuitos_cargados_id: {type: dt.INTEGER},
+		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "PROD_colecciones",
@@ -74,6 +74,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
+
+		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
+		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links_prods, {as: "links", foreignKey: "coleccion_id"});
