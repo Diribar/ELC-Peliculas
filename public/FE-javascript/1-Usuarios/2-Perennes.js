@@ -2,9 +2,9 @@ window.addEventListener("load", () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll(".form-grupo .input");
-	let asteriscos = document.querySelectorAll(".form-grupo .fa-circle-xmark");
-	let mensajes = document.querySelectorAll(".form-grupo .mensajeError");
+	let inputs = document.querySelectorAll(".input-error .input");
+	let asteriscos = document.querySelectorAll(".input-error .fa-circle-xmark");
+	let mensajes = document.querySelectorAll(".input-error .mensajeError");
 
 	for (let i = 0; i < inputs.length; i++) {
 		// Anular 'submit' si hay algún error

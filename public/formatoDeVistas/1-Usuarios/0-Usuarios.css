@@ -12,7 +12,7 @@
 #cuerpo form .label-input {justify-content: space-between; margin: 20px 10px 0px 10px; align-items: center}
 
 /* Input del formulario */
-#cuerpo form label {color: white; margin-right: 20px; }
+#cuerpo form label {color: white; margin-right: 30px; }
 #cuerpo form label {text-align: left;}
 #cuerpo form .input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
 #cuerpo form select {text-align: left;}

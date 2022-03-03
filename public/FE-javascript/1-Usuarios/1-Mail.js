@@ -2,9 +2,9 @@ window.addEventListener("load", () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let input = document.querySelector(".form-grupo .input");
-	let asterisco = document.querySelector(".form-grupo .fa-circle-xmark");
-	let mensajes = document.querySelector(".form-grupo .mensajeError");
+	let input = document.querySelector(".input-error .input");
+	let asterisco = document.querySelector(".input-error .fa-circle-xmark");
+	let mensajes = document.querySelector(".input-error .mensajeError");
 
 	// Anular 'submit' si hay algún error
 	if (!asterisco.classList.contains("ocultar")) button.classList.add("inactivo")

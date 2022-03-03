@@ -177,6 +177,7 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + dataEntry.avatar
 			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
 		// Ir a la vista
+		//return res.send(dataEntry)
 		return res.render("Home", {
 			tema,
 			codigo,

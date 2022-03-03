@@ -124,6 +124,7 @@ module.exports = {
 	},
 
 	edicAct: async (req, res) => {
+		console.log("linea 127", req.file);
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
@@ -166,7 +167,6 @@ module.exports = {
 			// Eliminar el archivo 3-ProdRevisar/prodEditado.avatar
 			if (prodEditado.avatar) varias.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
 		}
-		console.log(123, !!req.file);
 		// Averiguar si hay errores de validación
 		let errores = await funcionErroresEdicion(prodCombinado, entidad);
 		// Si hay errores de validación, redireccionar

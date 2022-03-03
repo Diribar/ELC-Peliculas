@@ -3,14 +3,14 @@
 	<h1>Registro de Datos Editables</h1>
 	<!--Apodo-->
 	<section class="label-input flex-row">
-		<label for="apodo">¿Cómo querés <br>que te llamemos?</label>
+		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="input-error">
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark <%- !errores.apodo ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.apodo ? errores.apodo : "" %></span>
 			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.apodo && errores.apodo) ? 'ocultar' : '' %>"></i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.apodo || !errores.apodo) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Pais de residencia-->
@@ -45,12 +45,12 @@
 			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
 			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id && errores.pais_id) ? 'ocultar' : '' %>"></i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || !errores.pais_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
-	<!--Estado de vida en la iglesia-->
+	<!--Rol en la iglesia-->
 	<section class="label-input flex-row">
-		<label for="rol_iglesia_id">Rol en<br>la iglesia</label>
+		<label for="rol_iglesia_id">Rol en la iglesia</label>
 		<div class="input-error">
 			<select name="rol_iglesia_id" class="input">
 				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>class="ocultar">Elejí un rol en la Iglesia</option>
@@ -62,7 +62,7 @@
 			<i class="fa-solid fa-circle-xmark <%- !errores.rol_iglesia_id ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.rol_iglesia_id ? errores.rol_iglesia_id : "" %></span>
 			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.rol_iglesia_id && errores.rol_iglesia_id) ? 'ocultar' : '' %>"></i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.rol_iglesia_id || !errores.rol_iglesia_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Imagen de perfil-->
@@ -70,9 +70,9 @@
 		<label>Imagen personal <br>(opcional)</label>
 		<div class="input-error flex-col" id="divImagen">
 			<label for="inputImagen" id="preview">
-				<img src="<%= avatar %>" alt="">
+				<img src="<%= avatar %>">
 			</label>
-			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="ocultar input">
+			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>

@@ -8,7 +8,7 @@ let vista = require("./ControladorVista");
 let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 let prodEnBD = require("../../middlewares/varios/productoYaEnBD");
-let upload = require("../../middlewares/varios/multer");
+let multer = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
@@ -47,7 +47,7 @@ router.post(
 	"/datos-duros",
 	soloAutInput,
 	prodEnBD,
-	upload.single("avatar"),
+	multer.single("avatar"),
 	vista.datosDurosGuardar
 );
 router.get("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersForm);
