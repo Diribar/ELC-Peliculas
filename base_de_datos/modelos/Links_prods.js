@@ -5,6 +5,12 @@ module.exports = (sequelize, dt) => {
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
 		url: {type: dt.STRING(100)},
+
+		calidad: {type: dt.INTEGER},
+		completo: {type: dt.INTEGER},
+		cant_partes: {type: dt.INTEGER},
+		parte: {type: dt.INTEGER},
+
 		link_tipo_id: {type: dt.INTEGER},
 		link_prov_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
@@ -38,11 +44,23 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.links_provs, {as: "link_prov", foreignKey: "link_prov_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "baja_sugerida_por", foreignKey: "baja_sugerida_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "baja_analizada_por", foreignKey: "baja_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {
+			as: "alta_analizada_por",
+			foreignKey: "alta_analizada_por_id",
+		});
+		entidad.belongsTo(n.usuarios, {
+			as: "baja_sugerida_por",
+			foreignKey: "baja_sugerida_por_id",
+		});
+		entidad.belongsTo(n.usuarios, {
+			as: "baja_analizada_por",
+			foreignKey: "baja_analizada_por_id",
+		});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
-		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.status_registro_prod, {
+			as: "status_registro",
+			foreignKey: "status_registro_id",
+		});
 	};
 	return entidad;
 };

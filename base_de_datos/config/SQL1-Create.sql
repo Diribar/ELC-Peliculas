@@ -215,7 +215,8 @@ VALUES (1, 1, 1), (2, 2, 1), (3, 3, 1), (4, 4, 1), (5, 5, 1), (6, 6, 1), (7, 7, 
 CREATE TABLE status_registro_prod (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(25) NOT NULL UNIQUE,
+	productos VARCHAR(25) NOT NULL UNIQUE,
+	links VARCHAR(25) NOT NULL UNIQUE,
 	creado BOOLEAN NOT NULL,
 	editado BOOLEAN NOT NULL,
 	aprobado BOOLEAN NOT NULL,
@@ -223,13 +224,13 @@ CREATE TABLE status_registro_prod (
 	borrado BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO status_registro_prod (id, orden, nombre, creado, editado, aprobado, sugerido_borrar, borrado)
+INSERT INTO status_registro_prod (id, orden, productos, links, creado, editado, aprobado, sugerido_borrar, borrado)
 VALUES 
-(1, 1, 'Creado pend./aprobar', 1, 0, 0, 0, 0), 
-(2, 2, 'Editado pend./aprobar', 0, 1, 0, 0, 0),
-(3, 3, 'Aprobado', 0, 0, 1, 0, 0),
-(4, 4, 'Sugerido p/borrar', 0, 0, 0, 1, 0),
-(5, 5, 'Borrado', 0, 0, 0, 0, 1)
+(1, 1, 'Creado pend./aprobar', 'Creado pend./aprobar', 1, 0, 0, 0, 0), 
+(2, 2, 'Editado pend./aprobar', 'Editado pend./aprobar', 0, 1, 0, 0, 0),
+(3, 3, 'Aprobado', 'Aprobado', 0, 0, 1, 0, 0),
+(4, 4, 'Sugerido p/borrar', 'Sugerido p/inactivar', 0, 0, 0, 1, 0),
+(5, 5, 'Borrado', 'Inactivado', 0, 0, 0, 0, 1)
 ;
 CREATE TABLE epocas_estreno (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -248,11 +249,18 @@ VALUES
 ;
 CREATE TABLE si_no_parcial (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(10) NOT NULL,
+	productos VARCHAR(10) NOT NULL,
+	links VARCHAR(10) NOT NULL,
+	si BOOLEAN NOT NULL,
+	`no` BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO si_no_parcial (id, nombre)
-VALUES (1, 'SI'), (2, 'Parcial'), (3, 'NO');
+INSERT INTO si_no_parcial (id, productos, links, si, `no`)
+VALUES 
+(1, 'SI', 'SI', 1, 0),
+(2, 'Parcial', 'Tal vez', 0, 0),
+(3, 'NO', 'NO', 0, 1)
+;
 CREATE TABLE cal_fe_valores (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -576,8 +584,8 @@ CREATE TABLE PROD_peliculas (
 	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	
-	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
-	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
+	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
+	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -594,7 +602,9 @@ CREATE TABLE PROD_peliculas (
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id),
+	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO PROD_peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, capturado_por_id)
 VALUES 
@@ -655,8 +665,8 @@ CREATE TABLE PROD_colecciones (
 	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
-	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
+	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
+	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES publicos_sugeridos(id),
@@ -672,7 +682,9 @@ CREATE TABLE PROD_colecciones (
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id),
+	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO PROD_colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, capturado_por_id)
 VALUES
@@ -731,8 +743,8 @@ CREATE TABLE PROD_capitulos (
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	
-	sin_links_gratuitos_cargados BOOLEAN DEFAULT 1,
-	no_se_encuentran_links_gratuitos BOOLEAN DEFAULT 0,
+	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
+	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),
@@ -750,7 +762,9 @@ CREATE TABLE PROD_capitulos (
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id),
+	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO PROD_capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
 VALUES
@@ -814,8 +828,8 @@ CREATE TABLE EDIC_productos (
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-	sin_links_gratuitos_cargados BOOLEAN NULL,
-	no_se_encuentran_links_gratuitos BOOLEAN NULL,
+	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
+	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (coleccion_id) REFERENCES PROD_colecciones(id),	
@@ -830,7 +844,9 @@ CREATE TABLE EDIC_productos (
 	FOREIGN KEY (valor_id) REFERENCES rclv_valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
+	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id),
+	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES si_no_parcial(id),
+	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, status_registro_id, capturado_por_id)
 VALUES
@@ -906,6 +922,12 @@ CREATE TABLE links_prods (
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
 	url VARCHAR(100) NOT NULL UNIQUE,
+
+	calidad SMALLINT NULL,
+	completo BOOLEAN DEFAULT 1,
+	cant_partes TINYINT UNSIGNED NULL,
+	parte TINYINT UNSIGNED NULL,
+
 	link_tipo_id TINYINT UNSIGNED NOT NULL,
 	link_prov_id TINYINT UNSIGNED NOT NULL,
 	gratuito BOOLEAN NOT NULL,
