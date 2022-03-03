@@ -44,23 +44,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.links_provs, {as: "link_prov", foreignKey: "link_prov_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {
-			as: "alta_analizada_por",
-			foreignKey: "alta_analizada_por_id",
-		});
-		entidad.belongsTo(n.usuarios, {
-			as: "baja_sugerida_por",
-			foreignKey: "baja_sugerida_por_id",
-		});
-		entidad.belongsTo(n.usuarios, {
-			as: "baja_analizada_por",
-			foreignKey: "baja_analizada_por_id",
-		});
+		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "baja_sugerida_por", foreignKey: "baja_sugerida_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "baja_analizada_por", foreignKey: "baja_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
-		entidad.belongsTo(n.status_registro_prod, {
-			as: "status_registro",
-			foreignKey: "status_registro_id",
-		});
+		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
 	};
 	return entidad;
 };
