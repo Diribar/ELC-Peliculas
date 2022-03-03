@@ -21,6 +21,9 @@
 	<td><%= link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
-		<i class="fa-solid fa-trash-can" title='Eliminar definitivamente tu edición'></i>
+		<% if (!link.status_registro.sugerido_borrar && !link.status_registro.borrado) { %>
+			<i class="fa-solid fa-pen" title="Editar"></i>
+		<% } %>
+		<i class="fa-solid fa-trash-can" title='Inactivar'></i>
 	</td>
 </tr>

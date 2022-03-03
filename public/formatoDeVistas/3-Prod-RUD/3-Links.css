@@ -30,12 +30,6 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 /* Formato del campo calidad */
 #datos form #calidad .input-error {width: 50px;}
 #datos form #calidad .input-error input {width: 100%;}
-/* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#datos form #calidad .input-error input::-webkit-outer-spin-button,
-#datos form #calidad .input-error input::-webkit-inner-spin-button 
-    {-webkit-appearance: none; margin: 0;}
-/* Quitar flechas del input - Firefox */
-#datos form #calidad .input-error input[type=number] {-moz-appearance: textfield;}
 
 /* Formato del desperdicio */
 .desperdicio {background-color: var(--verde-intermedio); border-radius: 5px;}
