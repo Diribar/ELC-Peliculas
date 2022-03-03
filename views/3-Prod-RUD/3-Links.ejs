@@ -11,17 +11,13 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Proveedor</th>
-					<th>Link</th>
+					<th>Url</th>
+					<th>Calidad</th>
 					<th>Tipo</th>
+					<th>Completo</th>
+					<th>Parte</th>
 					<th>Gratuito</th>
-					<th>Creado en</th>
-					<th>Creado por</th>
-					<% if (usuario.rol_usuario.aut_gestion_prod) { %>
-						<th>Alta analizada por</th>
-						<th>Revisada en</th>
-						<th>Revisada por</th>
-					<% } %>
+					<th>Status</th>
 					<th>Acción</th>
 				</tr>
 			</thead>
@@ -30,27 +26,27 @@
 				<% for (link of linksAprob.filter(n => n.link_tipo_id == 2)) { %><%- include("31-Links-Datos") %><% } %>
 				<!-- Fila para nuevo link -->
 				<tr id="dataEntry">
-					<!-- Proveedor -->
-					<td style="z-index: 6;" class="logoProv">
-						<div class="input-error">
-							<img>
-							<input name="link_prov_id" class="input ocultar">
-							<!-- Errores -->
-							<i class="fa-solid fa-circle-xmark ocultar invisible"><span class="mensajeError "></span></i>
-							<i class="fa-solid fa-circle-check ocultar invisible"></i>
-						</div>
-					</td>
-					<!-- url -->
-					<td style="z-index: 5;" class="url">
+					<!-- Url y Proveedor_id-->
+					<td id="url">
 						<div class="input-error">
 							<input name="url" type="text" autofocus class="input">
+							<input name="link_prov_id" class="ocultar">
 							<!-- Errores -->
 							<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError "></span></i>
 							<i class="fa-solid fa-circle-check ocultar"></i>
 						</div>
 					</td>
-					<!-- Tipo de Link -->
-					<td style="z-index: 4;">
+					<!-- Calidad -->
+					<td id="calidad">
+						<div class="input-error">
+							<input name="calidad" type="number" autofocus class="input">
+							<!-- Errores -->
+							<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError "></span></i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</td>
+					<!-- Tipo -->
+					<td>
 						<div class="input-error">
 							<select name="link_tipo_id" class="input">
 								<option value="" class="ocultar">Elejí</option>
@@ -63,6 +59,21 @@
 							<i class="fa-solid fa-circle-check ocultar"></i>
 						</div>
 					</td>
+					<!-- Completo -->
+					<td id="completo">
+						<div class="input-error">
+							<select name="completo" class="input">
+								<option value="" class="ocultar">Elejí</option>
+								<option value="1">SI</option>
+								<option value="0">NO</option>
+							</select>
+							<!-- Errores -->
+							<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError "></span></i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</td>
+					<!-- Parte -->
+					<td id="parte" class="desperdicio"></td>
 					<!-- Gratuito -->
 					<td style="z-index: 2;">
 						<div class="input-error">
@@ -76,9 +87,9 @@
 							<i class="fa-solid fa-circle-check ocultar"></i>
 						</div>
 					</td>
-					<!-- Desperdicio -->
-					<td class="desperdicio"></td><td class="desperdicio"></td>
-					<!-- Guardar -->
+					<!-- Status -->
+					<td class="desperdicio"></td>
+					<!-- Acción -->
 					<td>
 						<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
 					</td>

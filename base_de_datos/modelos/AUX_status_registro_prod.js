@@ -2,7 +2,8 @@ module.exports = (sequelize, dt) => {
 	const alias = "status_registro_prod";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(25)},
+		productos: {type: dt.STRING(25)},
+		links: {type: dt.STRING(25)},
 		creado: {type: dt.BOOLEAN},
 		editado: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},

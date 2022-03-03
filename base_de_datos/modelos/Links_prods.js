@@ -5,6 +5,12 @@ module.exports = (sequelize, dt) => {
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
 		url: {type: dt.STRING(100)},
+
+		calidad: {type: dt.INTEGER},
+		completo: {type: dt.INTEGER},
+		cant_partes: {type: dt.INTEGER},
+		parte: {type: dt.INTEGER},
+
 		link_tipo_id: {type: dt.INTEGER},
 		link_prov_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},

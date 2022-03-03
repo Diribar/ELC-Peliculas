@@ -17,18 +17,28 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 #datos table .logoProv img {max-width: 80px; max-height: 25px;}
 
 /* Formato de los datos ya existentes */
-#datos tbody tr.yaExistentes td.url {width: 150px; overflow: hidden; white-space: nowrap; display: inline-block;}
+#datos tbody tr.yaExistentes td#url {width: 150px; overflow: hidden; white-space: nowrap; display: inline-block;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form input, #datos form select {height: 25px; border-radius: 5px; border-width: 1px; text-align: center; padding: 2px 5px; line-height: 1;}
+#datos form input, #datos form select {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
 
 /* Formato del campo url */
-#datos form .url .input-error {margin: 0; text-align: left; width: 130px;}
-#datos form input[name='url'] {width: 100%;}
+#datos form #url .input-error {text-align: left; width: 130px;}
+#datos form #url .input-error input {width: 100%;}
+
+/* Formato del campo calidad */
+#datos form #calidad .input-error {width: 50px;}
+#datos form #calidad .input-error input {width: 100%;}
+/* Quitar flechas del input - Chrome, Safari, Edge, Opera */
+#datos form #calidad .input-error input::-webkit-outer-spin-button,
+#datos form #calidad .input-error input::-webkit-inner-spin-button 
+    {-webkit-appearance: none; margin: 0;}
+/* Quitar flechas del input - Firefox */
+#datos form #calidad .input-error input[type=number] {-moz-appearance: textfield;}
 
 /* Formato del desperdicio */
-.desperdicio {background-color: var(--gris-oscuro);}
+.desperdicio {background-color: var(--verde-intermedio); border-radius: 5px;}
 
 /* Quitar la flecha de los select */
 form select::-ms-expand {display: none;}
