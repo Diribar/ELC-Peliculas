@@ -21,7 +21,7 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form input, #datos form select {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 2px 5px; line-height: 1;}
+#datos form input, #datos form select {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
 
 /* Formato del campo url */
 #datos form #url .input-error {text-align: left; width: 130px;}
