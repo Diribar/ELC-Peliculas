@@ -215,7 +215,7 @@ module.exports = {
 			};
 			// Eliminar prodEditado (si existía) de la BD
 			if (prodEditado) await BD_varias.eliminarRegistro("productos_edic", prodEditado.id);
-			// Agregar 'edición' a la BD (con los datos de alta y captura heredados de la edición anterior)
+			// Agregar 'edición' a la BD
 			await BD_varias.agregarRegistro(edicion);
 			// Eliminar req.session.edicion
 			req.session.edicion = {};
