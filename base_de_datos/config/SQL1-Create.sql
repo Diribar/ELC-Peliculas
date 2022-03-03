@@ -882,6 +882,8 @@ CREATE TABLE links_provs (
 	nombre VARCHAR(20) NOT NULL UNIQUE,
 	avatar VARCHAR(20) NULL,
 	siempre_pago BOOLEAN NOT NULL,
+	peli_siempre_completa BOOLEAN NULL,
+	calidad SMALLINT NULL,
 	generico BOOLEAN DEFAULT 0,
 	url_distintivo VARCHAR(20) NOT NULL UNIQUE,
 	buscador_automatico BOOLEAN NOT NULL,
@@ -892,17 +894,17 @@ CREATE TABLE links_provs (
 	url_buscar_post_pel VARCHAR(20) NOT NULL,	
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
+INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
 VALUES 
-(1, 0, 'Desconocido','PT-Desconocido.jpg', 0, '', '', '', '', 0, 1, 1),
-(2, 1, 'YouTube', 'PT-YouTube.jpg', 0, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
-(3, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
-(4, 3, 'Formed', 'PT-Formed.jpg', 0, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
-(5, 4, 'Brochero', 'PT-Brochero.jpg', 1, 'brochero.org', '', '', '', 0, 0, 1),
-(6, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 'famflix.mx', '', '', '', 0, 0, 1),
-(7, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 'famiplay.com', '/catalogo?s=', '', '', 1, 0, 1),
-(8, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
-(9, 8, 'IMDb', 'PT-IMDB.jpg', 0, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
+(1, 0, 'Desconocido','PT-Desconocido.jpg', 0, 0, NULL, '', '', '', '', 0, 1, 1),
+(11, 1, 'YouTube', 'PT-YouTube.jpg', 0, 0, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
+(12, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 1, 1081, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
+(13, 3, 'Formed', 'PT-Formed.jpg', 0, 1, 1081, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
+(14, 4, 'Brochero', 'PT-Brochero.jpg', 1, 1, 1081, 'brochero.org', '', '', '', 0, 0, 1),
+(15, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 1, 1081, 'famflix.mx', '', '', '', 0, 0, 1),
+(16, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 1, 1081, 'famiplay.com', '/catalogo?s=', '', '', 1, 0, 1),
+(17, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 1, 1081, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
+(18, 8, 'IMDb', 'PT-IMDB.jpg', 0, 0, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
 ;
 UPDATE links_provs SET generico = 1 WHERE id = 1
 ;
@@ -946,7 +948,7 @@ CREATE TABLE links_prods (
 	lead_time_baja SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
