@@ -40,6 +40,9 @@ module.exports = (sequelize, dt) => {
 		status_registro_id: {type: dt.INTEGER},
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
+
+		sin_links_gratuitos_cargados: {type: dt.BOOLEAN},
+		no_se_encuentran_links_gratuitos: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "edic_productos",

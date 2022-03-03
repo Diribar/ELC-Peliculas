@@ -49,6 +49,9 @@ module.exports = (sequelize, dt) => {
 
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
+
+		sin_links_gratuitos_cargados: {type: dt.BOOLEAN},
+		no_se_encuentran_links_gratuitos: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "PROD_capitulos",
