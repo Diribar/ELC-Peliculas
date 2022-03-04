@@ -5,6 +5,7 @@
 	<select id="tipoLink">
 		<option value="TR">Trailer</option>
 		<option value="PL">Película</option>
+		<option value="IN">Inactivos</option>
 		<option value="TD">Todos</option>
 	</select>
 	<form>
@@ -12,7 +13,7 @@
 			<thead>
 				<tr>
 					<th>Url</th>
-					<th>Calidad</th>
+					<th>Calidad (px)</th>
 					<th>Tipo</th>
 					<th>Completo</th>
 					<th>Parte</th>
@@ -39,7 +40,16 @@
 					<!-- Calidad -->
 					<td id="calidad">
 						<div class="input-error">
-							<input name="calidad" type="number" autofocus class="input">
+							<select name="calidad" class="input" autofocus>
+								<option value="" class="ocultar">Elejí</option>
+								<option value="144">144</option>
+								<option value="240">240</option>
+								<option value="360">360</option>
+								<option value="480">480</option>
+								<option value="720">720</option>
+								<option value="1080">1080</option>
+								<option value="1081">>1080</option>
+							</select>
 							<!-- Errores -->
 							<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError "></span></i>
 							<i class="fa-solid fa-circle-check ocultar"></i>
