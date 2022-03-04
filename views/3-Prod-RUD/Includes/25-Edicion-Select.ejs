@@ -1,9 +1,9 @@
-<section class="label-input <% if (campo.RCLV) { %> RCLV<% } %>">
+<section class="label-input <% if (campo.grupo=="RCLV") { %> RCLV<% } %>">
 	<label><%= campo.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo.campo %>" class="input <%= campo.clase ? campo.clase : '' %>">
-			<option value="" class="ocultar" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí<% if (!campo.clase) { %> una opción<% } %></option>
+		<select name="<%= campo.campo %>" class="input <%= campo.angosto ? 'angosto' : '' %>">
+			<option value="" class="ocultar" <% if (!registro[campo.campo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (registro[campo.campo] == valor.id) { %>selected<% } %>
@@ -28,7 +28,7 @@
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->
-		<% if (campo.RCLV) { %>
+		<% if (campo.grupo=="RCLV") { %>
 			<i class="fa-solid fa-circle-plus linkRCLV <%= campo.campo %>" title='Link a "Agregar <%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
 		<% } %>
 	</div>

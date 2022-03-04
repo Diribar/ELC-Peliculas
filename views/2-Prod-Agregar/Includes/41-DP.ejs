@@ -1,9 +1,9 @@
 <% registro = camposDP.find(n => n.campo == campo) %>
-<section class="label-input<% if (registro.RCLV) { %> ocultar RCLV<% } %>">
+<section class="label-input<% if (registro.grupo=="RCLV") { %> ocultar RCLV<% } %>">
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input <%= registro.clase ? registro.clase : '' %>" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
+		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 			<% for (valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
@@ -30,7 +30,7 @@
 		</i>
 		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		<!-- Link a Relación con la vida -->
-		<% if (registro.RCLV) { %>
+		<% if (registro.grupo=="RCLV") { %>
 			<a class="link <%= campo %>" title='Link a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-circle-plus"></i></a>
 		<% } %>
 	</div>

@@ -126,7 +126,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos estén en castellano y otros no, elegí "Parcial"',
 				],
-				clase: "angosto",
+				angosto: true,
 			},
 			{
 				titulo: "Es a Color",
@@ -136,7 +136,7 @@ module.exports = {
 				mensajeColec: [
 					'En caso de que algunos capítulos sean a color y otros no, elegí "Parcial"',
 				],
-				clase: "angosto",
+				angosto: true,
 			},
 			{
 				titulo: "Categoría",
@@ -171,24 +171,24 @@ module.exports = {
 				campo: "fe_valores_id",
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
-				clase: "angosto",
-				grupo:"calificala",
+				angosto: true,
+				grupo: "calificala",
 			},
 			{
 				titulo: "Entretiene",
 				campo: "entretiene_id",
 				valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 				mensajes: ["Se disfruta el rato viéndola"],
-				clase: "angosto",
-				grupo:"calificala",
+				angosto: true,
+				grupo: "calificala",
 			},
 			{
 				titulo: "Calidad sonora y visual",
 				campo: "calidad_tecnica_id",
 				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
-				clase: "angosto",
-				grupo:"calificala",
+				angosto: true,
+				grupo: "calificala",
 			},
 			{
 				titulo: "Personaje histórico",
@@ -199,7 +199,7 @@ module.exports = {
 					"Si son varias las personas, podés poner la más representativa, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
 				link: "RCLV_personajes",
-				RCLV: true,
+				grupo: "RCLV",
 			},
 			{
 				titulo: "Hecho histórico",
@@ -210,7 +210,7 @@ module.exports = {
 					"Si son varios los hechos, podés poner el más representativo, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
 				link: "RCLV_hechos",
-				RCLV: true,
+				grupo: "RCLV",
 			},
 			{
 				titulo: "Valor principal",
@@ -220,7 +220,7 @@ module.exports = {
 					"Poné el valor más representativo.",
 					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
 				],
-				RCLV: true,
+				grupo: "RCLV",
 			},
 		];
 	},
