@@ -226,8 +226,8 @@ CREATE TABLE status_registro_prod (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO status_registro_prod (id, orden, productos, links, creado, editado, aprobado, sugerido_borrar, borrado)
 VALUES 
-(1, 1, 'Creado pend./aprobar', 'Creado pend./aprobar', 1, 0, 0, 0, 0), 
-(2, 2, 'Editado pend./aprobar', 'Editado pend./aprobar', 0, 1, 0, 0, 0),
+(1, 1, 'Creado', 'Creado', 1, 0, 0, 0, 0), 
+(2, 2, 'Editado', 'Editado', 0, 1, 0, 0, 0),
 (3, 3, 'Aprobado', 'Aprobado', 0, 0, 1, 0, 0),
 (4, 4, 'Sugerido p/borrar', 'Sugerido p/inactivar', 0, 0, 0, 1, 0),
 (5, 5, 'Borrado', 'Inactivado', 0, 0, 0, 0, 1)
@@ -881,7 +881,7 @@ CREATE TABLE links_provs (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL UNIQUE,
 	avatar VARCHAR(20) NULL,
-	siempre_pago BOOLEAN NOT NULL,
+	siempre_pago BOOLEAN NULL,
 	peli_siempre_completa BOOLEAN NULL,
 	calidad SMALLINT NULL,
 	generico BOOLEAN DEFAULT 0,
@@ -894,17 +894,17 @@ CREATE TABLE links_provs (
 	url_buscar_post_pel VARCHAR(20) NOT NULL,	
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
+INSERT INTO links_provs (id, orden, nombre, avatar, siempre_pago, peli_siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
 VALUES 
-(1, 0, 'Desconocido','PT-Desconocido.jpg', 0, 0, NULL, '', '', '', '', 0, 1, 1),
-(11, 1, 'YouTube', 'PT-YouTube.jpg', 0, 0, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
-(12, 2, 'Formed en Español', 'PT-Formed cast.jpg', 0, 1, 1081, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
-(13, 3, 'Formed', 'PT-Formed.jpg', 0, 1, 1081, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
+(1, 0, 'Desconocido','PT-Desconocido.jpg', NULL, NULL, NULL, '', '', '', '', 0, 1, 1),
+(11, 1, 'YouTube', 'PT-YouTube.jpg', NULL, 0, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
+(12, 2, 'Formed en Español', 'PT-Formed cast.jpg', NULL, 1, 1081, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
+(13, 3, 'Formed', 'PT-Formed.jpg', NULL, 1, 1081, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
 (14, 4, 'Brochero', 'PT-Brochero.jpg', 1, 1, 1081, 'brochero.org', '', '', '', 0, 0, 1),
 (15, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 1, 1081, 'famflix.mx', '', '', '', 0, 0, 1),
 (16, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 1, 1081, 'famiplay.com', '/catalogo?s=', '', '', 1, 0, 1),
 (17, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 1, 1081, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
-(18, 8, 'IMDb', 'PT-IMDB.jpg', 0, 0, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
+(18, 8, 'IMDb', 'PT-IMDB.jpg', NULL, NULL, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
 ;
 UPDATE links_provs SET generico = 1 WHERE id = 1
 ;
@@ -927,7 +927,6 @@ CREATE TABLE links_prods (
 
 	calidad SMALLINT NULL,
 	completo BOOLEAN DEFAULT 1,
-	cant_partes TINYINT UNSIGNED NULL,
 	parte TINYINT UNSIGNED NULL,
 
 	link_tipo_id TINYINT UNSIGNED NOT NULL,
