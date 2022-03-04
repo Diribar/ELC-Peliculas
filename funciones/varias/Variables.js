@@ -172,6 +172,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				clase: "angosto",
+				grupo:"calificala",
 			},
 			{
 				titulo: "Entretiene",
@@ -179,6 +180,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 				mensajes: ["Se disfruta el rato viéndola"],
 				clase: "angosto",
+				grupo:"calificala",
 			},
 			{
 				titulo: "Calidad sonora y visual",
@@ -186,6 +188,7 @@ module.exports = {
 				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				clase: "angosto",
+				grupo:"calificala",
 			},
 			{
 				titulo: "Personaje histórico",

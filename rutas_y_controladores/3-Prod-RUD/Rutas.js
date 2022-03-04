@@ -31,6 +31,7 @@ router.post("/edicion", soloAutInput, multer.single("avatar"), vista.edicAct);
 router.get("/edicion/eliminar_edicion", soloAutInput, vista.edicElim);
 
 router.get("/links", soloAutInput, vista.linksForm);
+router.post("/links", soloAutInput, vista.linksGuardar);
 router.get("/revisar", soloAutInput, vista.revisar);
 router.get("/calificala", soloAutInput, vista.calificala);
 router.get("/eliminar", soloAutInput, vista.eliminar);

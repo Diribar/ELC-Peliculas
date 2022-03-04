@@ -1,5 +1,4 @@
 // ************ Requires *************
-let procesar = require("../../funciones/Prod-RUD/1-Procesar");
 let validar = require("../../funciones/Prod-RUD/2-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
@@ -173,10 +172,8 @@ module.exports = {
 	},
 	// Links
 	validarLinks: async (req, res) => {
-		// Obtiene los campos
-		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validar.links(campos, req.query);
+		let errores = await validar.links(req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},

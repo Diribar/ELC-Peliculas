@@ -94,7 +94,6 @@ window.addEventListener("load", () => {
 			url.includes("&t=") &&
 			url.slice(-1)=="s"
 		) url=url.slice(0, url.lastIndexOf("&t=")	)
-		console.log(url);
 		// Resultado
 		inputs[indice].value = url;
 		return url;

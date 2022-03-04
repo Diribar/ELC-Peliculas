@@ -3,7 +3,8 @@ let BD_varias = require("../../funciones/BD/Varias");
 let BD_especificas = require("../../funciones/BD/Especificas");
 let varias = require("../../funciones/Varias/Varias");
 let variables = require("../../funciones/Varias/Variables");
-let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
+let validar = require("../../funciones/Prod-RUD/2-Validar");
+const {camposDD} = require("../../funciones/Varias/Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -72,7 +73,7 @@ module.exports = {
 			producto;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
-			let camposDD = variables
+			var camposDD = variables
 				.camposDD()
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
@@ -81,7 +82,9 @@ module.exports = {
 			var camposDD3 = camposDD.filter((n) => n.campo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
-			var camposDP = await variables.camposDP();
+			var camposDP = await variables
+				.camposDP()
+				.then((n) => n.filter((m) => m.grupo != "calificala"));
 			var tiempo = prodEditado.capturado_en
 				? Math.max(
 						10,
@@ -92,7 +95,7 @@ module.exports = {
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Averiguar si hay errores de validación
-		let errores = await funcionErroresEdicion(prodCombinado, entidad);
+		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodCombinado.capitulos = await BD_especificas.obtenerCapitulos(
@@ -122,7 +125,6 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 		});
 	},
-
 	edicAct: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
@@ -162,7 +164,7 @@ module.exports = {
 		// Unir 'Edición' y 'Original'
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar};
 		// Averiguar si hay errores de validación
-		let errores = await funcionErroresEdicion(prodCombinado, entidad);
+		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) delete prodCombinado.avatar;
 			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
@@ -222,7 +224,6 @@ module.exports = {
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
-
 	edicElim: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
@@ -230,10 +231,10 @@ module.exports = {
 		// Redireccionar si se encuentran errores en la entidad y/o el ID
 		let errorEnQuery = varias.revisarQuery(entidad, ID);
 		if (errorEnQuery) return res.send(errorEnQuery);
+		// Pendiente...
 		// Terminar
 		return res.send(["Eliminar", entidad, ID]);
 	},
-
 	linksForm: async (req, res) => {
 		// DETALLE - ALTAS - BAJAS
 		// Tema y Código
@@ -241,19 +242,12 @@ module.exports = {
 		let codigo = "links";
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
-		let ID = req.query.id;
-		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = varias.revisarQuery(entidad, ID);
+		let prodID = req.query.id;
+		// Redireccionar si se encuentran errores en la entidad y/o el prodID
+		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
-		let includes = [
-			"link_tipo",
-			"link_prov",
-			"creado_por",
-			"alta_analizada_por",
-			"baja_analizada_por",
-			"status_registro",
-		];
+		let includes = ["link_tipo", "link_prov", "status_registro"];
 		// Obtener el 'campo_id'
 		let campo_id =
 			entidad == "peliculas"
@@ -261,18 +255,18 @@ module.exports = {
 				: entidad == "colecciones"
 				? "coleccion_id"
 				: "capitulo_id";
-		// Obtener el producto y los links_provs
-		let [registroProd, links_prods, provs] = await Promise.all([
+		// Obtener el producto, los links_provs, los provs y los tipos de links
+		let [registroProd, links_prods, provs, links_tipos] = await Promise.all([
 			BD_varias.obtenerPorIdConInclude(
 				entidad,
-				ID,
+				prodID,
 				entidad == "capitulos" ? "coleccion" : ""
 			).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
-
-			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, ID, includes),
+			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, prodID, includes),
 			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
+			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.dataValues)),
 		]);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) return res.send("Producto no encontrado");
@@ -311,7 +305,7 @@ module.exports = {
 			"ELC_entidad",
 			entidad,
 			"ELC_id",
-			ID,
+			prodID,
 			"editado_por_id",
 			usuario.id
 		).then((n) => {
@@ -324,16 +318,13 @@ module.exports = {
 			: imagenOr
 			? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Obtener los tipos de links
-		let links_tipos = await BD_varias.obtenerTodos("links_tipos", "id").then((n) =>
-			n.map((m) => m.dataValues)
-		);
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			registroProd.capitulos = await BD_especificas.obtenerCapitulos(
 				registroProd.coleccion_id,
 				registroProd.temporada
 			);
+		let dataEntry = req.session.links ? req.session.links : "";
 		// Ir a la vista
 		//return res.send(registroProd);
 		return res.render("0-RUD", {
@@ -346,12 +337,36 @@ module.exports = {
 			registro: registroProd,
 			producto,
 			entidad,
-			ID,
-			avatar,
+			prodID,
 			usuario,
 			links_tipos,
 			vista: req.baseUrl + req.path,
+			dataEntry,
+			avatar,
 		});
+	},
+	linksGuardar: async (req, res) => {
+		//return res.send(req.body)
+		let datos = req.body;
+		// Obtener los datos identificatorios del producto
+		let entidad = datos.entidad;
+		let prodID = datos.id;
+		// Redireccionar si se encuentran errores en la entidad y/o el prodID
+		let errorEnQuery = varias.revisarQuery(entidad, prodID);
+		if (errorEnQuery) return res.send(errorEnQuery);
+		// Obtener el userID
+		let usuario = req.session.usuario;
+		let userID = usuario.id;
+		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
+
+		// Averiguar si hay errores de validación
+		let errores = await validar.links(datos);
+		//return res.send(errores);
+		if (errores.hay || true) {
+			req.session.links = datos;
+		} else {
+		}
+		return res.redirect("/producto/links/?entidad=" + entidad + "&id=" + prodID);
 	},
 
 	revisar: (req, res) => {
@@ -382,29 +397,4 @@ module.exports = {
 	eliminar: (req, res) => {
 		return res.send("Estoy en eliminar");
 	},
-};
-
-let funcionErroresEdicion = async (prodCombinado, entidad) => {
-	// Averiguar si hay errores de validación DD
-	let camposDD = variables
-		.camposDD()
-		.filter((n) => n[entidad])
-		.map((n) => n.campo);
-	let erroresDD = await validarProd.datosDuros(camposDD, prodCombinado);
-	// Averiguar si hay errores de validación DP
-	let camposDP = await variables.camposDP().then((n) => n.map((m) => m.campo));
-	for (i = camposDP.length - 1; i >= 0; i--) {
-		if (
-			camposDP[i] == "fe_valores_id" ||
-			camposDP[i] == "entretiene_id" ||
-			camposDP[i] == "calidad_tecnica_id"
-		)
-			camposDP.splice(i, 1);
-	}
-	let erroresDP = await validarProd.datosPers(camposDP, prodCombinado);
-	//return res.send([erroresDD, erroresDP])
-	// Terminar
-	let errores = {...erroresDD, ...erroresDP};
-	errores.hay = erroresDD.hay || erroresDP.hay;
-	return errores;
 };
