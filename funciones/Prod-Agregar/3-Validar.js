@@ -64,15 +64,15 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		aux = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
+		cantDatosObtenidos = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
-			: !Object.keys(aux).length
+			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
 			: "";
 		// Final
-		errores.hay = hayErrores(errores);
-		errores.campos = Object.keys(aux).length;
+		errores.hay = Object.values(errores).some((n) => !!n);
+		errores.campos = Object.keys(cantDatosObtenidos).length;
 		return errores;
 	},
 
@@ -215,7 +215,7 @@ module.exports = {
 					"El año de estreno debe ser menor o igual que el año de finalización";
 		}
 		// ***** RESUMEN *******
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
@@ -253,13 +253,13 @@ module.exports = {
 				datos.subcategoria_id
 			).then((n) => n.dataValues);
 			// Relación con la vida
-			errores.personaje_id =
-				subcategoria.personaje && !datos.personaje_id ? cartelSelectVacio : "";
-			errores.hecho_id = subcategoria.hecho && !datos.hecho_id ? cartelSelectVacio : "";
-			errores.valor_id = subcategoria.valor && !datos.valor_id ? cartelSelectVacio : "";
+			if (subcategoria.personaje)
+				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
+			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
+			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 };
@@ -305,17 +305,9 @@ let extensiones = (nombre) => {
 	ext = nombre.slice(nombre.length - 4);
 	return ![".jpg", ".png"].includes(ext);
 };
-let hayErrores = (errores) => {
-	resultado = false;
-	valores = Object.values(errores);
-	for (valor of valores) {
-		valor ? (resultado = true) : "";
-	}
-	return resultado;
-};
 let validarRepetidos = async (campo, datos) => {
-	// Obtener casos
-	let repetido = await BD_varias.obtenerPor2Campos(
+	// Averiguar si existe algún caso en la BD
+	let averiguar = await BD_varias.obtenerPor2Campos(
 		datos.entidad,
 		campo,
 		datos[campo],
@@ -324,8 +316,10 @@ let validarRepetidos = async (campo, datos) => {
 	).then((n) => {
 		return n ? n.toJSON() : "";
 	});
+	// Si se encontró algún caso, compara las ID
+	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
-	if (repetido && repetido.id != datos.id) {
+	if (repetido) {
 		let producto = varias.producto(datos.entidad);
 		mensaje =
 			"Esta " +

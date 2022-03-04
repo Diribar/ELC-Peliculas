@@ -2,16 +2,16 @@
 	<label><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="input-error">
-		<input type="text" class="input" name="<%= registro.campo %>" autocomplete="off"
-			value="<%= dataEntry[registro.campo] %>"
+		<input type="text" class="input" name="<%= registro.nombreDelCampo %>" autocomplete="off"
+			value="<%= dataEntry[registro.nombreDelCampo] %>"
 			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>
-			<% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>
+			<% if (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) { %>disabled<% } else { %>autofocus<% } %>
 		>
 		<!-- Ayuda -->
-		<%- (dataEntry[registro.campo] && !errores[registro.campo]) ? include("39-DD-Mensajes") : "" %>
+		<%- (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) ? include("39-DD-Mensajes") : "" %>
 		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark <%= registro.campo %><%- !errores[registro.campo] ? ' ocultar' : '' %>">
-			<span class="mensajeError <%= registro.campo %>"><%= errores[registro.campo] %></span>
+		<i class="fa-solid fa-circle-xmark <%= registro.nombreDelCampo %><%- !errores[registro.nombreDelCampo] ? ' ocultar' : '' %>">
+			<span class="mensajeError <%= registro.nombreDelCampo %>"><%= errores[registro.nombreDelCampo] %></span>
 		</i>
 	</div>
 </section>

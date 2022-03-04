@@ -83,7 +83,9 @@ module.exports = {
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {
-		errores = await validar.datosPers(Object.keys(req.query), req.query);
+		// Obtiene los campos
+		let campos = Object.keys(req.query);
+		errores = await validar.datosPers(campos, req.query);
 		return res.json(errores);
 	},
 };
