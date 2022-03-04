@@ -382,11 +382,12 @@ module.exports = {
 				creado_por_id: userID,
 			};
 			delete datos.id;
-			// Agregar 'el link' a la BD
-			//return res.send(datos);
+			// Agregar el 'link' a la BD
 			await BD_varias.agregarRegistro(datos);
 			// Eliminar req.session.edicion
 			req.session.links = {};
+			// Adecuar el producto respecto al link
+			// Pendiente
 		}
 		return res.redirect("/producto/links/?entidad=" + entidad + "&id=" + prodID);
 	},
