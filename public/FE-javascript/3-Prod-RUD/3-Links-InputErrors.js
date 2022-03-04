@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
 	let calidad = document.querySelector("#calidad");
 	let tipo = document.querySelector("#tipo");
 	let gratuito = document.querySelector("#gratuito");
-	// Form - Campos particulares
+	// Form - Inputs particulares
 	let urlInput = document.querySelector(".input-error input[name='url'");
 	let prov_idInput = document.querySelector(".input-error input[name='link_prov_id'");
 	let completoInput = document.querySelector("#completo .input-error .input");
@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 			var error = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());
 			consecuenciaError(error, campo);
 			// Acciones si no hay errores en el url
-			if (!error[campo]) funcionesDerivadasDelUrl(url);
+			if (!error[campo]) await funcionesDerivadasDelUrl(url);
 		} else if (campo == "link_tipo_id") impactosEnCompletoParte2(valor);
 		else if (campo == "completo") impactoEnParte(valor);
 		else if (campo == "parte" && valor < 1) parteInput.value = 1;
@@ -286,7 +286,7 @@ window.addEventListener("load", async () => {
 	// Start-up
 	if (urlInput.value) {
 		// Funciones derivadas del url
-		funcionesDerivadasDelUrl(urlInput.value);
+		await funcionesDerivadasDelUrl(urlInput.value);
 		// Actualizar los errores de todo el form
 		let dataEntry = actualizarDataEntry();
 		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
