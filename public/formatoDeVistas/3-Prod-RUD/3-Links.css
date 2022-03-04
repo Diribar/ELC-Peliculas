@@ -62,7 +62,6 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 #datos .input-error .fa-solid {right: -20px;}
 #datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
 #datos .input-error .mensajeError::before {left: -12px;}
-/* #datos .input-error .fa-circle-xmark {z-index: 1;} */
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}
