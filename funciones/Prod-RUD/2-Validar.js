@@ -177,7 +177,6 @@ module.exports = {
 	// ControllerAPI (validarLinks)
 	links: async (campos, datos) => {
 		let errores = {};
-		// Revisiones INDIVIDUALES
 		// link_prov_id
 		if (campos.includes("link_prov_id"))
 			errores.link_prov_id = !datos.link_prov_id ? cartelCampoVacio : "";
