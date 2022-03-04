@@ -225,7 +225,7 @@ module.exports = {
 		];
 	},
 
-	provs_que_no_respetan_copyright: () => {
+	provsQueNoRespetanCopyright: () => {
 		return [
 			{
 				nombre: "Gloria TV",
@@ -238,7 +238,8 @@ module.exports = {
 		];
 	},
 
-	provs_lista_negra: () => {
+	provsListaNegra: () => {
 		return ["youporn", "pornhub"];
 	},
+
 };

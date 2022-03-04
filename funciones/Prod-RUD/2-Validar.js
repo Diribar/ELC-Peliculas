@@ -43,11 +43,11 @@ module.exports = {
 				: !datos.url.includes("/")
 				? "Por favor ingresá una url válida"
 				: variables
-						.provs_que_no_respetan_copyright()
+						.provsQueNoRespetanCopyright()
 						.map((n) => n.url)
 						.some((n) => datos.url.includes(n))
 				? "No nos consta que ese proveedor respete los derechos de autor."
-				: variables.provs_lista_negra().some((n) => datos.url.includes(n))
+				: variables.provsListaNegra().some((n) => datos.url.includes(n))
 				? "Los videos de ese portal son ajenos a nuestro perfil"
 				: "";
 			if (!errores.url) {
