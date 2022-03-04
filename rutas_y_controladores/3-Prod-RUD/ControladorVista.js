@@ -78,8 +78,8 @@ module.exports = {
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			var camposDD1 = camposDD.filter((n) => n.antesDePais);
-			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.campo != "produccion");
-			var camposDD3 = camposDD.filter((n) => n.campo == "produccion");
+			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
+			var camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables

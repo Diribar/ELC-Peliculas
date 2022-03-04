@@ -1,14 +1,14 @@
 <section class="label-input">
-	<label><%= campo.titulo %></label>
+	<label><%= elemento.titulo %></label>
 	<!-- Data-entry y Errores -->
 	<div class="input-error">
-		<input type="text" name="<%= campo.campo %>" value="<%= registro[campo.campo] %>" autofocus autocomplete="off" 
-			class="input <% if (campo.numero) { %>numero<% } %>"
-			<% if (campo.numero) { %>placeholder="sólo números"<% } %>
+		<input type="text" name="<%= elemento.nombreDelCampo %>" value="<%= registro[elemento.nombreDelCampo] %>" autofocus autocomplete="off" 
+			class="input <% if (elemento.numero) { %>numero<% } %>"
+			<% if (elemento.numero) { %>placeholder="sólo números"<% } %>
 		>
 		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark <%- !errores[campo.campo] ? 'ocultar' : '' %>">
-			<span class="mensajeError "><%= errores[campo.campo] %></span>
+		<i class="fa-solid fa-circle-xmark <%- !errores[elemento.nombreDelCampo] ? 'ocultar' : '' %>">
+			<span class="mensajeError "><%= errores[elemento.nombreDelCampo] %></span>
 		</i>
 		<i class="fa-solid fa-circle-check ocultar"></i>
 		<!-- Aviso de cambio en el data-entry -->

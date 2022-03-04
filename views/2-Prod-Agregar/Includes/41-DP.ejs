@@ -1,9 +1,9 @@
-<% registro = camposDP.find(n => n.campo == campo) %>
+<% registro = camposDP.find(n => n.nombreDelCampo == campo) %>
 <section class="label-input<% if (registro.grupo=="RCLV") { %> ocultar RCLV<% } %>">
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" <% if (dataEntry[registro.campo] && !errores[registro.campo]) { %>disabled<% } else { %>autofocus<% } %>>
+		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" <% if (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 			<% for (valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 

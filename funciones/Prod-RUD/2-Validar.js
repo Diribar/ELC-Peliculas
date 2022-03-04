@@ -16,7 +16,7 @@ module.exports = {
 			let camposDP = await variables
 				.camposDP()
 				.then((n) => n.filter((m) => m.grupo != "calificala"));
-			campos = [...camposDD, ...camposDP].map((n) => n.campo);
+			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}
 		// Averiguar si hay errores de validación DD y DP
 		let erroresDD = await validar_PA.datosDuros(campos, prodCombinado);

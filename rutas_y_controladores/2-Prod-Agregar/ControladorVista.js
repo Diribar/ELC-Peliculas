@@ -257,7 +257,7 @@ module.exports = {
 		// 5. Obtiene los campos que corresponden para la 'entidad'
 		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
 		// 6. Obtiene los errores
-		let camposDD_errores = camposDD.map((n) => n.campo);
+		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
 		let errores = req.session.erroresDD
 			? req.session.erroresDD
 			: await validarProd.datosDuros(camposDD_errores, datosDuros);
@@ -300,7 +300,7 @@ module.exports = {
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 3. Averiguar si hay errores de validación
 		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
-		let camposDD_errores = camposDD.map((n) => n.campo);
+		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
 		let avatar = req.file ? req.file.filename : datosDuros.avatar;
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
@@ -414,7 +414,7 @@ module.exports = {
 		res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 5. Averiguar si hay errores de validación
-		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.campo));
+		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombreDelCampo));
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {

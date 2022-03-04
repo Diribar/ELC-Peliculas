@@ -7,7 +7,7 @@ module.exports = {
 		return [
 			{
 				titulo: "Título original",
-				campo: "nombre_original",
+				nombreDelCampo: "nombre_original",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
@@ -15,7 +15,7 @@ module.exports = {
 			},
 			{
 				titulo: "Título en castellano",
-				campo: "nombre_castellano",
+				nombreDelCampo: "nombre_castellano",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
@@ -23,7 +23,7 @@ module.exports = {
 			},
 			{
 				titulo: "Año de estreno",
-				campo: "ano_estreno",
+				nombreDelCampo: "ano_estreno",
 				numero: true,
 				peliculas: true,
 				colecciones: true,
@@ -32,7 +32,7 @@ module.exports = {
 			},
 			{
 				titulo: "Año de finalización",
-				campo: "ano_fin",
+				nombreDelCampo: "ano_fin",
 				numero: true,
 				peliculas: false,
 				colecciones: true,
@@ -41,7 +41,7 @@ module.exports = {
 			},
 			{
 				titulo: "Duración (minutos)",
-				campo: "duracion",
+				nombreDelCampo: "duracion",
 				numero: true,
 				peliculas: true,
 				colecciones: false,
@@ -49,14 +49,14 @@ module.exports = {
 				antesDePais: true,
 			},
 			{
-				campo: "paises_id",
+				nombreDelCampo: "paises_id",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 				omitirRutinaVista: true,
 			},
 			{
-				campo: "idioma_original_id",
+				nombreDelCampo: "idioma_original_id",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
@@ -64,48 +64,48 @@ module.exports = {
 			},
 			{
 				titulo: "Dirección",
-				campo: "direccion",
+				nombreDelCampo: "direccion",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 			},
 			{
 				titulo: "Guión",
-				campo: "guion",
+				nombreDelCampo: "guion",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 			},
 			{
 				titulo: "Música",
-				campo: "musica",
+				nombreDelCampo: "musica",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 			},
 			{
 				titulo: "Actuación",
-				campo: "actuacion",
+				nombreDelCampo: "actuacion",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 			},
 			{
 				titulo: "Producción",
-				campo: "produccion",
+				nombreDelCampo: "produccion",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 			},
 			{
-				campo: "sinopsis",
+				nombreDelCampo: "sinopsis",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
 				omitirRutinaVista: true,
 			},
 			{
-				campo: "avatar",
+				nombreDelCampo: "avatar",
 				peliculas: true,
 				colecciones: true,
 				capitulos: true,
@@ -118,7 +118,7 @@ module.exports = {
 		return [
 			{
 				titulo: "Existe una versión en castellano",
-				campo: "en_castellano_id",
+				nombreDelCampo: "en_castellano_id",
 				valores: await BD_varias.obtenerTodos("si_no_parcial", "id"),
 				mensajePeli: [
 					'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
@@ -130,7 +130,7 @@ module.exports = {
 			},
 			{
 				titulo: "Es a Color",
-				campo: "en_color_id",
+				nombreDelCampo: "en_color_id",
 				valores: await BD_varias.obtenerTodos("si_no_parcial", "id"),
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 				mensajeColec: [
@@ -140,7 +140,7 @@ module.exports = {
 			},
 			{
 				titulo: "Categoría",
-				campo: "categoria_id",
+				nombreDelCampo: "categoria_id",
 				valores: await BD_varias.obtenerTodos("categorias", "orden"),
 				mensajes: [
 					'"Centradas en la Fe Católica", significa que el rol de la Fe Católica es protagónico.',
@@ -150,13 +150,13 @@ module.exports = {
 			},
 			{
 				titulo: "Sub-categoría",
-				campo: "subcategoria_id",
+				nombreDelCampo: "subcategoria_id",
 				valores: await BD_varias.obtenerTodos("subcategorias", "orden"),
 				mensajes: ["Elegí la subcategoría que mejor represente el tema."],
 			},
 			{
 				titulo: "Público sugerido",
-				campo: "publico_sugerido_id",
+				nombreDelCampo: "publico_sugerido_id",
 				valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden"),
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un niño de 12 años.",
@@ -168,7 +168,7 @@ module.exports = {
 			},
 			{
 				titulo: "Inspira fe y/o valores",
-				campo: "fe_valores_id",
+				nombreDelCampo: "fe_valores_id",
 				valores: await BD_varias.obtenerTodos("fe_valores", "orden"),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				angosto: true,
@@ -176,7 +176,7 @@ module.exports = {
 			},
 			{
 				titulo: "Entretiene",
-				campo: "entretiene_id",
+				nombreDelCampo: "entretiene_id",
 				valores: await BD_varias.obtenerTodos("entretiene", "orden"),
 				mensajes: ["Se disfruta el rato viéndola"],
 				angosto: true,
@@ -184,7 +184,7 @@ module.exports = {
 			},
 			{
 				titulo: "Calidad sonora y visual",
-				campo: "calidad_tecnica_id",
+				nombreDelCampo: "calidad_tecnica_id",
 				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden"),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				angosto: true,
@@ -192,7 +192,7 @@ module.exports = {
 			},
 			{
 				titulo: "Personaje histórico",
-				campo: "personaje_id",
+				nombreDelCampo: "personaje_id",
 				valores: await BD_varias.obtenerTodos("RCLV_personajes", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
@@ -203,7 +203,7 @@ module.exports = {
 			},
 			{
 				titulo: "Hecho histórico",
-				campo: "hecho_id",
+				nombreDelCampo: "hecho_id",
 				valores: await BD_varias.obtenerTodos("RCLV_hechos", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
@@ -214,7 +214,7 @@ module.exports = {
 			},
 			{
 				titulo: "Valor principal",
-				campo: "valor_id",
+				nombreDelCampo: "valor_id",
 				valores: await BD_varias.obtenerTodos("RCLV_valores", "nombre"),
 				mensajes: [
 					"Poné el valor más representativo.",
