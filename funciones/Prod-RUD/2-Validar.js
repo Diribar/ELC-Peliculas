@@ -177,9 +177,10 @@ module.exports = {
 	// ControllerAPI (validarLinks)
 	links: async (campos, datos) => {
 		let errores = {};
-		// Comienzan las revisiones
+		// link_prov_id
 		if (campos.includes("link_prov_id"))
 			errores.link_prov_id = !datos.link_prov_id ? cartelCampoVacio : "";
+		// url
 		if (campos.includes("url")) {
 			errores.url = !datos.url
 				? cartelCampoVacio
@@ -200,19 +201,31 @@ module.exports = {
 				if (repetido) errores.url = repetido;
 			}
 		}
-		if (campos.includes("link_tipo_id"))
+		// calidad
+		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? cartelCampoVacio : "";
+		// link_tipo_id
+		if (campos.includes("link_tipo_id")) {
 			errores.link_tipo_id = !datos.link_tipo_id
 				? cartelCampoVacio
-				: datos.link_tipo_id < "1" && datos.link_tipo_id > "4"
+				: datos.link_tipo_id < "1" && datos.link_tipo_id > "2"
 				? "Por favor elegí una opción válida"
 				: "";
-		if (campos.includes("gratuito"))
+		}
+		// completo
+		if (campos.includes("completo") && datos.link_tipo_id != 1)
+			errores.completo = datos.completo == "" ? cartelCampoVacio : "";
+		// parte
+		if (campos.includes("parte") && datos.completo != 1 && datos.link_tipo_id != 1)
+			errores.parte = datos.parte == "" ? cartelCampoVacio : "";
+		// gratuito
+		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
 					? cartelCampoVacio
 					: datos.gratuito < "0" && datos.gratuito > "1"
 					? "Por favor elegí una opción válida"
 					: "";
+		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;

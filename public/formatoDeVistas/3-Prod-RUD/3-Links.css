@@ -26,17 +26,28 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 /* Formato del campo url */
 #datos form #url .input-error {text-align: left; width: 130px;}
 #datos form #url .input-error input {width: 100%;}
+#datos form #url .input-error .prov_id {display: none;}
 
-/* Formato del campo calidad */
+/* Formato del campo calidad y parte */
 #datos form #calidad .input-error {width: 50px;}
-#datos form #calidad .input-error input {width: 100%;}
+#datos form #parte .input-error {width: 30px;}    
+#datos form #calidad .input-error input,
+#datos form #parte .input-error input {width: 100%;}
 
 /* Formato del desperdicio */
-.desperdicio {background-color: var(--verde-intermedio); border-radius: 5px;}
+#datos form .desperdicio {background-color: var(--verde-intermedio);}
+#datos form .desperdicio .input-error .fa-circle-check {display: none;}
 
 /* Quitar la flecha de los select */
-form select::-ms-expand {display: none;}
-form select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+#datos form select::-ms-expand {display: none;}
+#datos form select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+
+/* Quitar flechas del input - Chrome, Safari, Edge, Opera */
+#datos form .input-error input[type='number']::-webkit-outer-spin-button,
+#datos form .input-error input[type='number']::-webkit-inner-spin-button 
+    {-webkit-appearance: none; margin: 0;}
+/* Quitar flechas del input - Firefox */
+#datos form .input-error input[type=number] {-moz-appearance: textfield;}
 
 /* Íconos en la tabla */
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
@@ -51,7 +62,6 @@ form select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; 
 #datos .input-error .fa-solid {right: -20px;}
 #datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
 #datos .input-error .mensajeError::before {left: -12px;}
-#datos .input-error .fa-circle-xmark {z-index: 1;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}
