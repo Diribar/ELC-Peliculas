@@ -64,15 +64,15 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		aux = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
+		cantDatosObtenidos = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
-			: !Object.keys(aux).length
+			: !Object.keys(cantDatosObtenidos).length
 			? "No se obtuvo ningún dato"
 			: "";
 		// Final
 		errores.hay = Object.values(errores).some((n) => !!n);
-		errores.campos = Object.keys(aux).length;
+		errores.campos = Object.keys(cantDatosObtenidos).length;
 		return errores;
 	},
 
