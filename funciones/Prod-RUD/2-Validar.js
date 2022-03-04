@@ -1,7 +1,7 @@
 // ************ Requires ************
 let BD_varias = require("../BD/Varias");
 let variables = require("../Varias/Variables");
-let validarProd = require("../Prod-Agregar/3-Validar");
+let validar_PA = require("../Prod-Agregar/3-Validar");
 
 // *********** Para exportar ***********
 module.exports = {
@@ -19,9 +19,9 @@ module.exports = {
 			campos = [...camposDD, ...camposDP].map((n) => n.campo);
 		}
 		// Averiguar si hay errores de validación DD
-		let erroresDD = await validarProd.datosDuros(campos, prodCombinado);
+		let erroresDD = await validar_PA.datosDuros(campos, prodCombinado);
 		// Averiguar si hay errores de validación DP
-		let erroresDP = await validarProd.datosPers(campos, prodCombinado);
+		let erroresDP = await validar_PA.datosPers(campos, prodCombinado);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDP};
 		errores.hay = erroresDD.hay || erroresDP.hay;
