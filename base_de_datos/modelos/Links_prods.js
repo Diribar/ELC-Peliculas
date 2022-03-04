@@ -8,7 +8,6 @@ module.exports = (sequelize, dt) => {
 
 		calidad: {type: dt.INTEGER},
 		completo: {type: dt.INTEGER},
-		cant_partes: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
 
 		link_tipo_id: {type: dt.INTEGER},
