@@ -285,13 +285,13 @@ window.addEventListener("load", async () => {
 
 	// Start-up
 	if (urlInput.value) {
-	// Funciones derivadas del url
-	funcionesDerivadasDelUrl(urlInput.value)
-	// Actualizar los errores de todo el form
-	let dataEntry = actualizarDataEntry();
-	errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
-	consecuenciasErrores(errores, campos);
-	} 
+		// Funciones derivadas del url
+		funcionesDerivadasDelUrl(urlInput.value);
+		// Actualizar los errores de todo el form
+		let dataEntry = actualizarDataEntry();
+		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
+		consecuenciasErrores(errores, campos);
+	}
 
 	// Submit
 	botonGuardar();
