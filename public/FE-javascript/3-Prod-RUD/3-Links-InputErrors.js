@@ -13,10 +13,10 @@ window.addEventListener("load", async () => {
 	// Form - Inputs particulares
 	let urlInput = document.querySelector(".input-error input[name='url'");
 	let prov_idInput = document.querySelector(".input-error input[name='link_prov_id'");
-	let completoInput = document.querySelector("#completo .input-error .input");
-	let parteInput = document.querySelector("#parte .input-error .input");
 	let calidadInput = document.querySelector("#calidad .input-error .input");
 	let tipoInput = document.querySelector("#tipo .input-error .input");
+	let completoInput = document.querySelector("#completo .input-error .input");
+	let parteInput = document.querySelector("#parte .input-error .input");
 	let gratuitoInput = document.querySelector("#gratuito .input-error .input");
 
 	// OK/Errores
@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 
 	// Descartar 'basura' del 'url'
 	urlInput.addEventListener("input", () => {
-		descartarSobranteDelUrl();
+		depurarElUrl();
 	});
 
 	// Detectar 'changes' en el form
@@ -50,9 +50,9 @@ window.addEventListener("load", async () => {
 			var error = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());
 			consecuenciaError(error, campo);
 			// Acciones si no hay errores en el url
-			if (!error[campo]) await funcionesDerivadasDelUrl(url);
-		} else if (campo == "link_tipo_id") impactosEnCompletoParte2(valor);
-		else if (campo == "completo") impactoEnParte(valor);
+			if (!error[campo]) await funcionesDerivadasDelUrl();
+		} else if (campo == "link_tipo_id") impactosPorTipoLink();
+		else if (campo == "completo") impactoPorCompleto(valor);
 		else if (campo == "parte" && valor < 1) parteInput.value = 1;
 
 		// Actualizar los errores de todo el form
@@ -66,8 +66,27 @@ window.addEventListener("load", async () => {
 		botonGuardar();
 	});
 
-	// FUNCIONES ---------------------------------------------
-	let descartarSobranteDelUrl = () => {
+	// FUNCIONES ---------------------------------------------------------------
+	// DERIVADAS DEL URL -------------------------------------------------------
+	let funcionesDerivadasDelUrl = async () => {
+		// Depurar el url
+		depurarElUrl();
+		// 1. Obtiene el proveedor del url
+		let proveedor = await obtenerProvUrl();
+		// 2. Agregar el prov_id en el form
+		prov_idInput.value = proveedor.id;
+		// 3. Actualizar el ícono OK del url
+		actualizarIconoProv(proveedor);
+		// 4. Impacto en 'calidad'
+		impactoEnCalidad(proveedor);
+		// 5. Impacto en 'tipo'
+		impactoEnTipo(proveedor);
+		// 6. Impacto en 'completo' y 'parte'
+		impactosEnCompletoParte(proveedor);
+		// 7. Impacto en 'gratuito'
+		impactoEnGratuito(proveedor);
+	};
+	let depurarElUrl = () => {
 		// Obtener el valor actual
 		let indice = campos.indexOf("url");
 		let valor = inputs[indice].value;
@@ -98,53 +117,10 @@ window.addEventListener("load", async () => {
 		inputs[indice].value = url;
 		return url;
 	};
-	let consecuenciaError = (error, campo) => {
-		// Guarda el mensaje de error
-		mensaje = error[campo];
-		// Reemplaza el mensaje
-		indice = campos.indexOf(campo);
-		mensajesError[indice].innerHTML = mensaje;
-		// Acciones en función de si hay o no mensajes de error
-		mensaje
-			? iconosError[indice].classList.remove("ocultar")
-			: iconosError[indice].classList.add("ocultar");
-		!mensaje
-			? iconosOK[indice].classList.remove("ocultar")
-			: iconosOK[indice].classList.add("ocultar");
-	};
-	let consecuenciasErrores = (errores, camposEspecificos) => {
-		for (campo of camposEspecificos) {
-			// Guarda el mensaje de error
-			mensaje = errores[campo];
-			// Reemplaza
-			indice = campos.indexOf(campo);
-			mensajesError[indice].innerHTML = mensaje;
-			// Acciones en función de si hay o no mensajes de error
-			mensaje
-				? iconosError[indice].classList.remove("ocultar")
-				: iconosError[indice].classList.add("ocultar");
-			!mensaje
-				? iconosOK[indice].classList.remove("ocultar")
-				: iconosOK[indice].classList.add("ocultar");
-		}
-	};
-	let funcionesDerivadasDelUrl = async (url) => {
-		// 1. Obtiene el proveedor del url
-		let proveedor = await obtenerProvUrl(url);
-		// 2. Agregar el prov_id en el form
-		prov_idInput.value = proveedor.id;
-		// 3. Actualizar el ícono
-		actualizarIconoProv(proveedor);
-		// 4. Impacto en 'calidad'
-		impactoEnCalidad(proveedor);
-		// 5. Impacto en 'tipo'
-		impactoEnTipo(proveedor);
-		// 6. Impacto en 'completo' y 'parte'
-		impactosEnCompletoParte(proveedor);
-		// 7. Impacto en 'gratuito'
-		impactoEnGratuito(proveedor);
-	};
-	let obtenerProvUrl = async (url) => {
+	let obtenerProvUrl = async () => {
+		// Obtener el url
+		let indice = campos.indexOf("url");
+		let url = inputs[indice].value;
 		// Obtener todos los proveedores
 		let proveedores = await fetch(rutaObtenerProv).then((n) => n.json());
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
@@ -210,7 +186,30 @@ window.addEventListener("load", async () => {
 			parteInput.disabled = false;
 		}
 	};
-	let impactosEnCompletoParte2 = (valor) => {
+	let impactoEnGratuito = (proveedor) => {
+		// Adecuaciones
+		if (proveedor.siempre_pago || proveedor.siempre_pago == false) {
+			gratuito.classList.add("desperdicio");
+			gratuitoInput.classList.add("ocultar");
+			gratuitoInput.value = proveedor.siempre_pago ? 0 : 1;
+		} else {
+			gratuito.classList.remove("desperdicio");
+			gratuitoInput.classList.remove("ocultar");
+		}
+	};
+	// DERIVADAS DE OTROS DATA-ENTRY -------------------------------------------
+	let funcionesDerivadasDeOtrosDataEntry = () => {
+		// Impacto en 'completo' y 'parte'
+		impactosPorTipoLink()
+		// Impacto en 'parte'
+		impactoPorCompleto()
+		// Impacto en 'parte'
+		if (parteInput.value < 1) parteInput.value = 1;
+	};
+	let impactosPorTipoLink = () => {
+		// Obtener el valor
+		let valor = tipoInput.value;
+		// Consecuencias
 		if (valor == 1) {
 			completo.classList.add("desperdicio");
 			completoInput.classList.add("ocultar");
@@ -231,7 +230,10 @@ window.addEventListener("load", async () => {
 			}
 		}
 	};
-	let impactoEnParte = (valor) => {
+	let impactoPorCompleto = () => {
+		// Obtener el valor
+		let valor = completoInput.value;
+		// Consecuencias
 		if (valor == 1) {
 			parte.classList.add("desperdicio");
 			parteInput.classList.add("ocultar");
@@ -244,15 +246,35 @@ window.addEventListener("load", async () => {
 			}
 		}
 	};
-	let impactoEnGratuito = (proveedor) => {
-		// Adecuaciones
-		if (proveedor.siempre_pago || proveedor.siempre_pago == false) {
-			gratuito.classList.add("desperdicio");
-			gratuitoInput.classList.add("ocultar");
-			gratuitoInput.value = proveedor.siempre_pago ? 0 : 1;
-		} else {
-			gratuito.classList.remove("desperdicio");
-			gratuitoInput.classList.remove("ocultar");
+	// OTRAS FUNCIONES --------------------------------------------------------
+	let consecuenciaError = (error, campo) => {
+		// Guarda el mensaje de error
+		mensaje = error[campo];
+		// Reemplaza el mensaje
+		indice = campos.indexOf(campo);
+		mensajesError[indice].innerHTML = mensaje;
+		// Acciones en función de si hay o no mensajes de error
+		mensaje
+			? iconosError[indice].classList.remove("ocultar")
+			: iconosError[indice].classList.add("ocultar");
+		!mensaje
+			? iconosOK[indice].classList.remove("ocultar")
+			: iconosOK[indice].classList.add("ocultar");
+	};
+	let consecuenciasErrores = (errores, camposEspecificos) => {
+		for (campo of camposEspecificos) {
+			// Guarda el mensaje de error
+			mensaje = errores[campo];
+			// Reemplaza
+			indice = campos.indexOf(campo);
+			mensajesError[indice].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
+			mensaje
+				? iconosError[indice].classList.remove("ocultar")
+				: iconosError[indice].classList.add("ocultar");
+			!mensaje
+				? iconosOK[indice].classList.remove("ocultar")
+				: iconosOK[indice].classList.add("ocultar");
 		}
 	};
 	let actualizarDataEntry = () => {
@@ -262,7 +284,6 @@ window.addEventListener("load", async () => {
 		}
 		return objeto;
 	};
-
 	let botonGuardar = () => {
 		let OK =
 			Array.from(iconosOK)
@@ -286,7 +307,9 @@ window.addEventListener("load", async () => {
 	// Start-up
 	if (urlInput.value) {
 		// Funciones derivadas del url
-		await funcionesDerivadasDelUrl(urlInput.value);
+		await funcionesDerivadasDelUrl();
+		// Funciones derivadas del Dara Entry
+		funcionesDerivadasDeOtrosDataEntry()
 		// Actualizar los errores de todo el form
 		let dataEntry = actualizarDataEntry();
 		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());

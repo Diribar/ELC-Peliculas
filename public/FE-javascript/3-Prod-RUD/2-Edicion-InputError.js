@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
 	// VERSIONES DE DATOS -------------------------------------------------------------------------
 	// Obtener versiones GUARDADA y ORIGINAL
 	let rutaVersiones =
-		"/producto/edicion/api/obtener-versiones/?entidad=" + entidad + "&id=" + prodID;
+		"/producto/edicion/api/obtener-original-y-edicion/?entidad=" + entidad + "&id=" + prodID;
 	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
 	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
 	let rutaVE = "/producto/edicion/api/validar-edicion/?";

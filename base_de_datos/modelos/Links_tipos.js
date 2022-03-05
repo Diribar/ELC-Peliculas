@@ -2,6 +2,8 @@ module.exports = (sequelize, dt) => {
 	const alias = "links_tipos";
 	const columns = {
 		nombre: {type: dt.STRING(10)},
+		pelicula: {type: dt.BOOLEAN},
+		trailer: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "links_tipos",

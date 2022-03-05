@@ -105,7 +105,7 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_varias.actualizarRegistro("usuarios", {status_registro_id: 2}, usuario.id);
+			await BD_varias.actualizarRegistro("usuarios", usuario.id, {status_registro_id: 2});
 		}
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
@@ -155,7 +155,7 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
 		req.body.status_registro_id = 3;
-		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
+		await BD_varias.actualizarRegistro("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
@@ -208,7 +208,7 @@ module.exports = {
 		// Grabar novedades en el usuario
 		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_varias.actualizarRegistro("usuarios", req.body, usuario.id);
+		await BD_varias.actualizarRegistro("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
 		if (req.file) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");

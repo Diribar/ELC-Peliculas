@@ -23,14 +23,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% for (link of linksAprob.filter(n => n.link_tipo_id == 1)) { %><%- include("31-Links-Datos") %><% } %>
-				<% for (link of linksAprob.filter(n => n.link_tipo_id == 2)) { %><%- include("31-Links-Datos") %><% } %>
+				<% for (link of linksAprob) { %><%- include("31-Links-Datos") %><% } %>
 				<!-- Fila para nuevo link -->
 				<tr id="dataEntry">
 					<!-- Url y Proveedor_id-->
 					<td id="url">
 						<div class="input-error">
-							<input name="url" type="text" autofocus class="input" value="<%- dataEntry.url ? dataEntry.url : "" %>">
+							<input name="url" type="text" autofocus class="input" value="<%- dataEntry.url ? dataEntry.url : "" %>" autocomplete="off">
 							<input name="link_prov_id" class="ocultar" value="<%- dataEntry.link_prov_id ? dataEntry.link_prov_id : "" %>">
 							<!-- Errores -->
 							<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError "></span></i>

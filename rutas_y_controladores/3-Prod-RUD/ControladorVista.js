@@ -148,7 +148,7 @@ module.exports = {
 			prodID,
 			"editado_por_id",
 			userID
-		).then((n) => (n ? n.dataValues : ""));
+		).then((n) => n.toJSON());
 		// Verificar si el producto está capturado
 		if (prodEditado) {
 			// Problema: EDICION 'CAPTURADA'
@@ -156,7 +156,7 @@ module.exports = {
 		// Obtener el producto 'Original'
 		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
 			"status_registro",
-		]).then((n) => n.dataValues);
+		]).then((n) => n.toJSON());
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
@@ -267,8 +267,8 @@ module.exports = {
 				return n ? n.toJSON() : "";
 			}),
 			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, prodID, includes),
-			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.dataValues)),
-			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.dataValues)),
+			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.toJSON())),
+			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 		]);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) return res.send("Producto no encontrado");
@@ -357,29 +357,21 @@ module.exports = {
 		// Redireccionar si se encuentran errores en la entidad y/o el prodID
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
-		// Obtener el userID
-		let usuario = req.session.usuario;
-		let userID = usuario.id;
-		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
-
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);
 		if (errores.hay) {
 			req.session.links = datos;
 		} else {
 			// Si no hubieron errores de validación...
-			// Adecuar algunos campos y valores
-			let entidad_id =
-				entidad == "peliculas"
-					? "pelicula_id"
-					: entidad == "colecciones"
-					? "coleccion_id"
-					: "capitulo_id";
+			// Generar información para el nuevo registro
+			let entidad_id = funcionEntidadID(entidad);
+			let userID = req.session.usuario.id;
 			datos = {
 				...datos,
 				[entidad_id]: prodID,
 				entidad: "links_prods",
 				creado_por_id: userID,
+				capturado_por_id: userID,
 			};
 			delete datos.id;
 			// Agregar el 'link' a la BD
@@ -387,7 +379,7 @@ module.exports = {
 			// Eliminar req.session.edicion
 			req.session.links = {};
 			// Adecuar el producto respecto al link
-			// Pendiente
+			productoConLinksWeb(entidad, prodID);
 		}
 		return res.redirect("/producto/links/?entidad=" + entidad + "&id=" + prodID);
 	},
@@ -420,4 +412,70 @@ module.exports = {
 	eliminar: (req, res) => {
 		return res.send("Estoy en eliminar");
 	},
+};
+
+// FUNCIONES --------------------------------------------------
+let funcionEntidadID = (entidad) => {
+	return entidad == "peliculas"
+		? "pelicula_id"
+		: entidad == "colecciones"
+		? "coleccion_id"
+		: "capitulo_id";
+};
+
+let productoConLinksWeb = async (entidad, prodID) => {
+	// Obtener el producto con include a links
+	let producto = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
+		"links_gratuitos_cargados",
+		"links_gratuitos_en_la_web",
+		"links",
+		"status_registro",
+	]).then((n) => n.toJSON());
+
+	// Obtener los links gratuitos de películas del producto
+	let links = await BD_varias.obtenerTodosPorCampoConInclude(
+		"links_prods",
+		funcionEntidadID(entidad),
+		prodID,
+		["status_registro", "link_tipo"]
+	)
+		.then((n) => n.map((m) => m.toJSON()))
+		.then((n) => n.filter((n) => n.gratuito))
+		.then((n) => n.filter((n) => n.link_tipo.pelicula));
+
+	// Obtener los links 'Aprobados' y 'TalVez'
+	let linksAprob = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
+	let linksTalVez = links.filter((n) => n.status_registro.creado || n.status_registro.editado);
+	if (!linksAprob.length && !linksTalVez.length) return;
+
+	// Obtener los ID de si, no y TalVez
+	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) =>
+		n.map((m) => m.toJSON())
+	);
+	let si = si_no_parcial.find((n) => n.si).id;
+	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
+	let no = si_no_parcial.find((n) => n.no).id;
+	console.log(si, talVez, no);
+
+	// Acciones si existen 'linksAprob'
+	if (linksAprob.length) {
+		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
+		BD_varias.actualizarRegistro(entidad, prodID, datos);
+		return;
+	} else if (producto.links_gratuitos_en_la_web_id == si) {
+		let datos = {links_gratuitos_en_la_web_id: talVez};
+		BD_varias.actualizarRegistro(entidad, prodID, datos);
+	}
+
+	// Acciones si existen 'linksTalVez'
+	if (linksTalVez.length) {
+		let datos = {links_gratuitos_cargados_id: talVez};
+		BD_varias.actualizarRegistro(entidad, prodID, datos);
+		return;
+	}
+
+	// Acciones si no se cumplen los anteriores
+	let datos = {links_gratuitos_cargados_id: no};
+	BD_varias.actualizarRegistro(entidad, prodID, datos);
+	return;
 };
