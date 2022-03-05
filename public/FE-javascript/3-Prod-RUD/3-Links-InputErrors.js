@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 
 	// Descartar 'basura' del 'url'
 	urlInput.addEventListener("input", () => {
-		depurarElUrl();
+		depurarUrl();
 	});
 
 	// Detectar 'changes' en el form
@@ -70,7 +70,7 @@ window.addEventListener("load", async () => {
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async () => {
 		// Depurar el url
-		depurarElUrl();
+		depurarUrl();
 		// 1. Obtiene el proveedor del url
 		let proveedor = await obtenerProvUrl();
 		// 2. Agregar el prov_id en el form
@@ -86,7 +86,7 @@ window.addEventListener("load", async () => {
 		// 7. Impacto en 'gratuito'
 		impactoEnGratuito(proveedor);
 	};
-	let depurarElUrl = () => {
+	let depurarUrl = () => {
 		// Obtener el valor actual
 		let indice = campos.indexOf("url");
 		let valor = inputs[indice].value;
