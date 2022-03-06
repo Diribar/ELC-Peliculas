@@ -7,6 +7,7 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
 let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
+let soloGestionProd = require("../../middlewares/usuarios/solo-3-gestion-prod");
 let multer = require("../../middlewares/varios/multer");
 let capturaUsuario;
 let capturaProducto;
@@ -28,15 +29,16 @@ router.get("/links/api/obtener-provs-links", API.obtenerProvsLinks);
 
 // Controladores de vistas
 router.get("/detalle", vista.detEdicForm);
-router.get("/edicion", soloAutInput, vista.detEdicForm); // capturaUsuario, capturaProducto
-router.post("/edicion/actualizar", soloAutInput, multer.single("avatar"), vista.edicAct); // capturaUsuario, capturaProducto
-router.get("/edicion/eliminar", soloAutInput, vista.edicElim); // capturaUsuario, capturaProducto;
-
-router.get("/links", soloAutInput, vista.linksForm); // capturaUsuario, capturaProducto;
-router.post("/links", soloAutInput, vista.linksGuardar); // capturaUsuario, capturaProducto;
-router.get("/revisar", soloAutInput, vista.revisar); // capturaUsuario, capturaProducto;
-router.get("/eliminar", soloAutInput, vista.eliminar); // capturaUsuario, capturaProducto;
 router.get("/calificala", soloAutInput, vista.calificala);
+
+router.get("/edicion", soloAutInput, vista.detEdicForm);
+router.post("/edicion/actualizar", soloAutInput, multer.single("avatar"), vista.edicAct);
+router.get("/edicion/eliminar", soloAutInput, vista.edicElim);
+router.get("/links", soloAutInput, vista.linksForm);
+router.post("/links", soloAutInput, vista.linksGuardar);
+
+router.get("/revisión", soloGestionProd, vista.revisar);
+
 
 // Fin
 module.exports = router;
