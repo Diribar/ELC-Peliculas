@@ -1,20 +1,22 @@
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
 	// Variables
 	let form = document.querySelector("#datos form");
 	// Form - Campos en general
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
-	// Form - Campos particulares
-	let prov_id = document.querySelector(".input-error input[name='link_prov_id'");
+	// Sectores - Campos particulares
 	let completo = document.querySelector("#completo");
-	let completoInput = document.querySelector("#completo .input-error .input");
 	let parte = document.querySelector("#parte");
-	let parteInput = document.querySelector("#parte .input-error .input");
 	let calidad = document.querySelector("#calidad");
-	let calidadInput = document.querySelector("#calidad .input-error .input");
 	let tipo = document.querySelector("#tipo");
-	let tipoInput = document.querySelector("#tipo .input-error .input");
 	let gratuito = document.querySelector("#gratuito");
+	// Form - Inputs particulares
+	let urlInput = document.querySelector(".input-error input[name='url'");
+	let prov_idInput = document.querySelector(".input-error input[name='link_prov_id'");
+	let completoInput = document.querySelector("#completo .input-error .input");
+	let parteInput = document.querySelector("#parte .input-error .input");
+	let calidadInput = document.querySelector("#calidad .input-error .input");
+	let tipoInput = document.querySelector("#tipo .input-error .input");
 	let gratuitoInput = document.querySelector("#gratuito .input-error .input");
 
 	// OK/Errores
@@ -30,6 +32,11 @@ window.addEventListener("load", () => {
 	let rutaValidar = "/producto/links/api/validar-links/?";
 	let rutaObtenerProv = "/producto/links/api/obtener-provs-links";
 
+	// Descartar 'basura' del 'url'
+	urlInput.addEventListener("input", () => {
+		descartarSobranteDelUrl();
+	});
+
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {
 		// Definir los valores para 'campo' y 'valor'
@@ -38,27 +45,12 @@ window.addEventListener("load", () => {
 		// Si es url...
 		if (campo == "url") {
 			// 1. Actualizar el valor sin los prefijos
-			url = await urlSinPrefijos(campo);
+			url = valor;
 			// 2. Averiguar si hay algún error y aplicar las consecuencias
 			var error = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());
 			consecuenciaError(error, campo);
 			// Acciones si no hay errores en el url
-			if (!error[campo]) {
-				// 1. Obtiene el proveedor del url
-				let proveedor = await obtenerProvUrl(url);
-				// 2. Agregar el prov_id en el form
-				prov_id.value = proveedor.id;
-				// 3. Actualizar el ícono
-				actualizarIconoProv(proveedor);
-				// 4. Impacto en 'calidad'
-				impactoEnCalidad(proveedor);
-				// 5. Impacto en 'tipo'
-				impactoEnTipo(proveedor);
-				// 6. Impacto en 'completo' y 'parte'
-				impactosEnCompletoParte(proveedor);
-				// 7. Impacto en 'gratuito'
-				impactoEnGratuito(proveedor);
-			}
+			if (!error[campo]) await funcionesDerivadasDelUrl(url);
 		} else if (campo == "link_tipo_id") impactosEnCompletoParte2(valor);
 		else if (campo == "completo") impactoEnParte(valor);
 		else if (campo == "parte" && valor < 1) parteInput.value = 1;
@@ -75,9 +67,9 @@ window.addEventListener("load", () => {
 	});
 
 	// FUNCIONES ---------------------------------------------
-	let urlSinPrefijos = (campo) => {
+	let descartarSobranteDelUrl = () => {
 		// Obtener el valor actual
-		let indice = campos.indexOf(campo);
+		let indice = campos.indexOf("url");
 		let valor = inputs[indice].value;
 		// Obtener ambos índices
 		let indice1 = valor.indexOf("www.");
@@ -88,13 +80,21 @@ window.addEventListener("load", () => {
 				: indice2 != -1
 				? valor.slice(indice2 + 2)
 				: valor;
-		// Quitarle el sufijo a YouTube
+		// Si es YOUTUBE, quitarle el sufijo
 		if (
-			url.slice(0,"youtube.com".length)=="youtube.com" &&
+			url.slice(0, "youtube.com".length) == "youtube.com" &&
 			url.includes("&t=") &&
-			url.slice(-1)=="s"
-		) url=url.slice(0, url.lastIndexOf("&t=")	)
-		// Resultado
+			url.slice(-1) == "s"
+		)
+			url = url.slice(0, url.lastIndexOf("&t="));
+		// Si es FORMED-LAT, quitarle el nombre repetido del producto
+		if (url.slice(0, "ver.formed.lat".length) == "ver.formed.lat") {
+			let producto = url.slice(url.lastIndexOf("/"));
+			nuevaUrl = url.split(producto);
+			nuevaUrl.pop();
+			url = nuevaUrl.join("") + producto;
+		}
+		// Conclusiones
 		inputs[indice].value = url;
 		return url;
 	};
@@ -128,6 +128,22 @@ window.addEventListener("load", () => {
 				: iconosOK[indice].classList.add("ocultar");
 		}
 	};
+	let funcionesDerivadasDelUrl = async (url) => {
+		// 1. Obtiene el proveedor del url
+		let proveedor = await obtenerProvUrl(url);
+		// 2. Agregar el prov_id en el form
+		prov_idInput.value = proveedor.id;
+		// 3. Actualizar el ícono
+		actualizarIconoProv(proveedor);
+		// 4. Impacto en 'calidad'
+		impactoEnCalidad(proveedor);
+		// 5. Impacto en 'tipo'
+		impactoEnTipo(proveedor);
+		// 6. Impacto en 'completo' y 'parte'
+		impactosEnCompletoParte(proveedor);
+		// 7. Impacto en 'gratuito'
+		impactoEnGratuito(proveedor);
+	};
 	let obtenerProvUrl = async (url) => {
 		// Obtener todos los proveedores
 		let proveedores = await fetch(rutaObtenerProv).then((n) => n.json());
@@ -148,8 +164,6 @@ window.addEventListener("load", () => {
 			: provConocido.classList.add("prov_id");
 	};
 	let impactoEnCalidad = (proveedor) => {
-		// 'Reset'
-		calidadInput.value = "";
 		// Adecuaciones
 		if (proveedor.calidad) {
 			calidad.classList.add("desperdicio");
@@ -158,12 +172,9 @@ window.addEventListener("load", () => {
 		} else {
 			calidad.classList.remove("desperdicio");
 			calidadInput.classList.remove("ocultar");
-			calidadInput.value = "";
 		}
 	};
 	let impactoEnTipo = (proveedor) => {
-		// 'Reset'
-		tipoInput.value = "";
 		// Adecuaciones
 		if (!proveedor.trailer || !proveedor.pelicula) {
 			tipo.classList.add("desperdicio");
@@ -175,9 +186,6 @@ window.addEventListener("load", () => {
 		}
 	};
 	let impactosEnCompletoParte = (proveedor) => {
-		// 'Reset'
-		completoInput.value = "";
-		parteInput.value = "";
 		// Cambios en el campo 'completo'
 		if (!proveedor.pelicula || proveedor.peli_siempre_completa) {
 			completo.classList.add("desperdicio");
@@ -237,8 +245,6 @@ window.addEventListener("load", () => {
 		}
 	};
 	let impactoEnGratuito = (proveedor) => {
-		// 'Reset'
-		gratuitoInput.value = "";
 		// Adecuaciones
 		if (proveedor.siempre_pago || proveedor.siempre_pago == false) {
 			gratuito.classList.add("desperdicio");
@@ -276,4 +282,17 @@ window.addEventListener("load", () => {
 				}, {}).ocultar == iconosError.length;
 		OK && error ? guardar.classList.remove("inactivo") : guardar.classList.add("inactivo");
 	};
+
+	// Start-up
+	if (urlInput.value) {
+		// Funciones derivadas del url
+		await funcionesDerivadasDelUrl(urlInput.value);
+		// Actualizar los errores de todo el form
+		let dataEntry = actualizarDataEntry();
+		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
+		consecuenciasErrores(errores, campos);
+	}
+
+	// Submit
+	botonGuardar();
 });

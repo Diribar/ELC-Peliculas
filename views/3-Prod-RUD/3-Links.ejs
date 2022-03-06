@@ -31,7 +31,7 @@
 					<td id="url">
 						<div class="input-error">
 							<input name="url" type="text" autofocus class="input" value="<%- dataEntry.url ? dataEntry.url : "" %>">
-							<input name="link_prov_id" class="ocultar">
+							<input name="link_prov_id" class="ocultar" value="<%- dataEntry.link_prov_id ? dataEntry.link_prov_id : "" %>">
 							<!-- Errores -->
 							<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError "></span></i>
 							<i class="fa-solid fa-circle-question prov_id"></i>
@@ -41,7 +41,7 @@
 					<!-- Calidad -->
 					<td id="calidad">
 						<div class="input-error">
-							<select name="calidad" class="input" autofocus>
+							<select name="calidad" class="input">
 								<option value="" class="ocultar" <%- dataEntry.calidad=="" ? "selected" : "" %>>Elejí</option>
 								<% for (calidad of calidades) { %>
 									<option value="<%= calidad %>" <%- dataEntry.calidad==calidad ? "selected" : "" %>><%= calidad %> </option>
@@ -83,7 +83,7 @@
 					<!-- Parte -->
 					<td id="parte">
 						<div class="input-error">
-							<input name="parte" type="number" class="input" <%- dataEntry.parte ? dataEntry.parte : "" %>>
+							<input name="parte" type="number" class="input" value="<%- dataEntry.parte ? dataEntry.parte : '' %>">
 							<!-- Errores -->
 							<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
 							<i class="fa-solid fa-circle-check ocultar"></i>
@@ -107,9 +107,9 @@
 					<!-- Acción -->
 					<td>
 						<label for="guardar">
-							<i class="fa-solid fa-floppy-disk inactivo" tabindex="-1" title='Guardar'></i>
+							<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
+							<button type="submit" id="guardar" class="ocultar"></button>				
 						</label>
-						<button type="submit" id="guardar" class="ocultar"></button>				
 					</td>
 				</tr>
 			</tbody>

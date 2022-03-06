@@ -78,7 +78,9 @@ module.exports = {
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			var camposDD1 = camposDD.filter((n) => n.antesDePais);
-			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
+			var camposDD2 = camposDD.filter(
+				(n) => !n.antesDePais && n.nombreDelCampo != "produccion"
+			);
 			var camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
@@ -362,10 +364,30 @@ module.exports = {
 
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);
-		//return res.send(errores);
-		if (errores.hay || true) {
+		if (errores.hay) {
 			req.session.links = datos;
 		} else {
+			// Si no hubieron errores de validación...
+			// Adecuar algunos campos y valores
+			let entidad_id =
+				entidad == "peliculas"
+					? "pelicula_id"
+					: entidad == "colecciones"
+					? "coleccion_id"
+					: "capitulo_id";
+			datos = {
+				...datos,
+				[entidad_id]: prodID,
+				entidad: "links_prods",
+				creado_por_id: userID,
+			};
+			delete datos.id;
+			// Agregar el 'link' a la BD
+			await BD_varias.agregarRegistro(datos);
+			// Eliminar req.session.edicion
+			req.session.links = {};
+			// Adecuar el producto respecto al link
+			// Pendiente
 		}
 		return res.redirect("/producto/links/?entidad=" + entidad + "&id=" + prodID);
 	},
