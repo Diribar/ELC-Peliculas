@@ -100,12 +100,9 @@ window.addEventListener("load", async () => {
 				? valor.slice(indice2 + 2)
 				: valor;
 		// Si es YOUTUBE, quitarle el sufijo
-		if (
-			url.slice(0, "youtube.com".length) == "youtube.com" &&
-			url.includes("&t=") &&
-			url.slice(-1) == "s"
-		)
+		if (url.slice(0, "youtube.com".length) == "youtube.com" && url.includes("&"))
 			url = url.slice(0, url.lastIndexOf("&t="));
+
 		// Si es FORMED-LAT, quitarle el nombre repetido del producto
 		if (url.slice(0, "ver.formed.lat".length) == "ver.formed.lat") {
 			let producto = url.slice(url.lastIndexOf("/"));
@@ -200,9 +197,9 @@ window.addEventListener("load", async () => {
 	// DERIVADAS DE OTROS DATA-ENTRY -------------------------------------------
 	let funcionesDerivadasDeOtrosDataEntry = () => {
 		// Impacto en 'completo' y 'parte'
-		impactosPorTipoLink()
+		impactosPorTipoLink();
 		// Impacto en 'parte'
-		impactoPorCompleto()
+		impactoPorCompleto();
 		// Impacto en 'parte'
 		if (parteInput.value < 1) parteInput.value = 1;
 	};
@@ -309,7 +306,7 @@ window.addEventListener("load", async () => {
 		// Funciones derivadas del url
 		await funcionesDerivadasDelUrl();
 		// Funciones derivadas del Dara Entry
-		funcionesDerivadasDeOtrosDataEntry()
+		funcionesDerivadasDeOtrosDataEntry();
 		// Actualizar los errores de todo el form
 		let dataEntry = actualizarDataEntry();
 		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());

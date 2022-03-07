@@ -87,12 +87,10 @@ module.exports = {
 			var camposDP = await variables
 				.camposDP()
 				.then((n) => n.filter((m) => m.grupo != "calificala"));
-			var tiempo = prodEditado.capturado_en
+			var tiempo = prodEditado.editado_en
 				? Math.max(
 						10,
-						parseInt(
-							(prodEditado.capturado_en - new Date() + 1000 * 60 * 60) / 1000 / 60
-						)
+						parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60)
 				  )
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
@@ -139,7 +137,11 @@ module.exports = {
 		let userID = usuario.id;
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
 
-		// Obtener el producto editado anterior, si lo hubiera
+		// Obtener el producto 'Original'
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
+			"status_registro",
+		]).then((n) => n.toJSON());
+		// Obtener el producto 'Editado' guardado, si lo hubiera
 		let prodEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
 			"ELC_entidad",
@@ -148,19 +150,17 @@ module.exports = {
 			prodID,
 			"editado_por_id",
 			userID
-		).then((n) => n.toJSON());
+		).then((n) => {
+			n ? n.toJSON() : "";
+		});
 		// Verificar si el producto está capturado
 		if (prodEditado) {
 			// Problema: EDICION 'CAPTURADA'
 		}
-		// Obtener el producto 'Original'
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
-			"status_registro",
-		]).then((n) => n.toJSON());
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
-			: prodEditado.avatar
+			: prodEditado && prodEditado.avatar
 			? prodEditado.avatar
 			: prodOriginal.avatar;
 		// Unir 'Edición' y 'Original'

@@ -582,7 +582,7 @@ CREATE TABLE PROD_peliculas (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	capturado_en DATETIME DEFAULT NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -663,7 +663,7 @@ CREATE TABLE PROD_colecciones (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	capturado_en DATETIME DEFAULT NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -741,7 +741,7 @@ CREATE TABLE PROD_capitulos (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	capturado_en DATETIME DEFAULT NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -825,8 +825,8 @@ CREATE TABLE EDIC_productos (
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
-	capturado_por_id INT UNSIGNED NOT NULL,
-	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME DEFAULT NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
@@ -848,19 +848,18 @@ CREATE TABLE EDIC_productos (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, status_registro_id, capturado_por_id)
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, status_registro_id)
 VALUES
-(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,21,10,1,10),
-(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,22,10,1,10),
-(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,22,10,1,10),
-(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,23,10,1,10),
-(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,23,10,1,10),
-(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,24,10,1,10)
+(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,21,10,1),
+(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,22,10,1),
+(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,22,10,1),
+(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,23,10,1),
+(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,23,10,1),
+(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,24,10,1)
 ;
-INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, status_registro_id, capturado_por_id)
-VALUES
-(7,2,'colecciones','1646276771102.jpg',2,1,'VPC',10,4,15,10,1,10)
-;
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, status_registro_id) VALUES (7,2,'colecciones','1646276771102.jpg',2,1,'VPC',10,4,15,10,1);
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, nombre_original, personaje_id, editado_por_id, status_registro_id) VALUES (8,1,'capitulos','Karol - Un uomo diventato Papa',24,10,1);
+INSERT INTO EDIC_productos (id, elc_id, elc_entidad, produccion, personaje_id, editado_por_id, status_registro_id) VALUES (9,2,'capitulos','TAO Film',24,10,1);
 UPDATE EDIC_productos SET musica = 'Ciaran Hope' WHERE id = 1;
 UPDATE EDIC_productos SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
 UPDATE EDIC_productos SET musica = 'Marco Frisina', guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
@@ -942,14 +941,14 @@ CREATE TABLE links_prods (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	baja_sugerida_por_id INT UNSIGNED NULL,
-	baja_sugerida_en DATETIME NULL,
-	baja_analizada_por_id INT UNSIGNED NULL,
-	baja_analizada_en DATETIME NULL,
-	lead_time_baja SMALLINT UNSIGNED NULL,
+	editado_por_id INT UNSIGNED NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NULL,
+	edic_analizada_en DATETIME NULL,
+	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	capturado_en DATETIME DEFAULT NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES PROD_peliculas(id),
@@ -959,11 +958,20 @@ CREATE TABLE links_prods (
 	FOREIGN KEY (link_prov_id) REFERENCES links_provs(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (baja_sugerida_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (baja_analizada_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES status_registro_prod(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO links_prods (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id)
+VALUES 
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,NULL,2,11,1,10),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,1,2,11,1,10),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,2,2,11,1,10),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,3,2,11,1,10),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,4,2,11,1,10),
+(6,NULL,NULL,1,'www/fefe',144,1,NULL,1,1,0,10)
+;
 
 CREATE TABLE pr_us_calificaciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
