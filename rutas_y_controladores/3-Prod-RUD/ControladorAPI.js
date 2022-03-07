@@ -185,26 +185,26 @@ module.exports = {
 	},
 	linksEliminar: async (req, res) => {
 		// Definir las variables
-		let mensaje =""
-		let resultado=false
-		let link_id=req.query.id
+		let mensaje = "";
+		let resultado = false;
+		let link_id = req.query.id;
 		// Descartar que no hayan errores con el 'link_id'
-		if (!link_id) mensaje="Faltan datos"
+		if (!link_id) mensaje = "Faltan datos";
 		else {
 			let link = await BD_varias.obtenerPorId("links_prods", link_id);
 			// Verificar que el usuario sea el autor del link
 			// En caso correcto, eliminarlo
-			if (link && link.creado_por_id == req.session.usuario.id){
-				await BD_varias.eliminarRegistro("links_prods", link_id)
+			if (link && link.creado_por_id == req.session.usuario.id) {
+				await BD_varias.eliminarRegistro("links_prods", link_id);
 				mensaje = "El link fue eliminado con éxito";
-				resultado=true
+				resultado = true;
 			} else if (!link) {
-				mensaje="El link ya había sido quitado de la base de datos"
+				mensaje = "El link ya había sido quitado de la base de datos";
 			} else if (link && link.creado_por_id != req.session.usuario.id) {
 				// En caso incorrecto,  mensaje de error
-				mensaje="El registro fue creado por otra persona"
+				mensaje = "El registro fue creado por otra persona";
 			}
-		}			
+		}
 		return res.json({mensaje, resultado});
 	},
 };
