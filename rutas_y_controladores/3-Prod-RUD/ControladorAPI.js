@@ -195,7 +195,7 @@ module.exports = {
 			// Verificar que el usuario sea el autor del link
 			// En caso correcto, eliminarlo
 			if (link && link.creado_por_id == req.session.usuario.id){
-				// await BD_varias.eliminarRegistro("links_prods", link_id)
+				await BD_varias.eliminarRegistro("links_prods", link_id)
 				mensaje = "El link fue eliminado con éxito";
 				resultado=true
 			} else if (!link) {
