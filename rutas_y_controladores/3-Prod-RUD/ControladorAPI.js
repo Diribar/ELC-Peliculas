@@ -19,10 +19,10 @@ module.exports = {
 						"capitulo",
 						1
 				  )
-						.then((n) => n.dataValues)
+						.then((n) => n.toJSON())
 						.then((n) => n.id)
 				: await BD_varias.obtenerPorId("capitulos", id)
-						.then((n) => n.dataValues)
+						.then((n) => n.toJSON())
 						.then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
@@ -32,7 +32,7 @@ module.exports = {
 		let {coleccion_id, temporada, capitulo} = await BD_varias.obtenerPorId(
 			"capitulos",
 			id
-		).then((n) => n.dataValues);
+		).then((n) => n.toJSON());
 		// Averiguar los datos del capítulo anterior **********************
 		// Obtener los datos del capítulo anterior (temporada y capítulo)
 		let tempAnt = temporada;
@@ -49,7 +49,7 @@ module.exports = {
 				"temporada",
 				tempAnt
 			)
-				.then((n) => n.map((m) => m.dataValues))
+				.then((n) => n.map((n) => n.toJSON()))
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n));
 		}
@@ -64,12 +64,12 @@ module.exports = {
 				"temporada",
 				temporada
 			)
-				.then((n) => n.map((m) => m.dataValues))
+				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
 			// Obtener el último número de temporada de la colección
 			BD_varias.obtenerPorId("colecciones", coleccion_id)
-				.then((n) => n.dataValues)
+				.then((n) => n.toJSON())
 				.then((n) => n.cant_temporadas),
 		]).then(([a, b]) => {
 			return [a, b];
@@ -96,7 +96,7 @@ module.exports = {
 						"capitulo",
 						capAnt
 				  )
-						.then((n) => n.dataValues)
+						.then((n) => n.toJSON())
 						.then((n) => n.id)
 				: false,
 			capPost
@@ -109,7 +109,7 @@ module.exports = {
 						"capitulo",
 						capPost
 				  )
-						.then((n) => n.dataValues)
+						.then((n) => n.toJSON())
 						.then((n) => n.id)
 				: false,
 		]).then(([a, b]) => {
@@ -129,7 +129,7 @@ module.exports = {
 			"capitulo",
 			capitulo
 		)
-			.then((n) => n.dataValues)
+			.then((n) => n.toJSON())
 			.then((n) => n.id);
 		return res.json(ID);
 	},
@@ -179,7 +179,7 @@ module.exports = {
 	},
 	obtenerProvsLinks: async (req, res) => {
 		let provs = await BD_varias.obtenerTodos("links_provs", "orden").then((n) =>
-			n.map((m) => m.dataValues)
+			n.map((m) => m.toJSON())
 		);
 		return res.json(provs);
 	},

@@ -581,7 +581,7 @@ CREATE TABLE PROD_peliculas (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
-	capturado_por_id INT UNSIGNED NOT NULL,
+	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -662,7 +662,7 @@ CREATE TABLE PROD_colecciones (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
-	capturado_por_id INT UNSIGNED NOT NULL,
+	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -825,7 +825,7 @@ CREATE TABLE EDIC_productos (
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
-	capturado_por_id INT UNSIGNED NULL,
+	capturado_por_id INT UNSIGNED NOT NULL,
 	capturado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
@@ -911,12 +911,14 @@ UPDATE links_provs SET generico = 1 WHERE id = 1
 CREATE TABLE links_tipos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
+	pelicula BOOLEAN DEFAULT 0,
+	trailer BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_tipos (id, nombre)
+INSERT INTO links_tipos (id, nombre, pelicula, trailer)
 VALUES 
-(1, 'Trailer'),
-(2, 'Película')
+(1, 'Trailer', 0, 1),
+(2, 'Película', 1, 0)
 ;
 CREATE TABLE links_prods (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,

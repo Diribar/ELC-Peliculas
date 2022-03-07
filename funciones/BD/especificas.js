@@ -20,24 +20,30 @@ module.exports = {
 	},
 
 	quickSearch: async (condiciones) => {
-		let peliculas = db.peliculas.findAll({where: condiciones, limit: 10}).then((n) =>
-			n.map((m) => {
-				m.dataValues.entidad = "peliculas";
-				return m;
-			})
-		);
-		let colecciones = db.colecciones.findAll({where: condiciones, limit: 5}).then((n) =>
-			n.map((m) => {
-				m.dataValues.entidad = "colecciones";
-				return m;
-			})
-		);
-		let capitulos = db.capitulos.findAll({where: condiciones, limit: 10}).then((n) =>
-			n.map((m) => {
-				m.dataValues.entidad = "capitulos";
-				return m;
-			})
-		);
+		let peliculas = db.peliculas
+			.findAll({where: condiciones, limit: 10})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) =>
+				n.map((m) => {
+					return {...m, entidad: "peliculas"};
+				})
+			);
+		let colecciones = db.colecciones
+			.findAll({where: condiciones, limit: 5})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) =>
+				n.map((m) => {
+					return {...m, entidad: "colecciones"};
+				})
+			);
+		let capitulos = db.capitulos
+			.findAll({where: condiciones, limit: 10})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) =>
+				n.map((m) => {
+					return {...m, entidad: "capitulos"};
+				})
+			);
 		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
 			return [...a, ...b, ...c];
 		});
@@ -45,12 +51,14 @@ module.exports = {
 	},
 
 	obtenerCapitulos: (coleccion_id, temporada) => {
-		return db.capitulos
-			.findAll({
-				where: {coleccion_id: coleccion_id, temporada: temporada},
-			})
-			.then((n) => n.map((m) => m.dataValues))
-			.then((n) => n.map((m) => m.capitulo));
+		return (
+			db.capitulos
+				.findAll({
+					where: {coleccion_id: coleccion_id, temporada: temporada},
+				})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) => n.map((m) => m.capitulo))
+		);
 	},
 
 	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
@@ -130,7 +138,7 @@ module.exports = {
 				}
 				// Actualizar entidad de RCLV
 				id = valor;
-				BD_varias.actualizarRegistro("RCLV_" + entidadesRCLV[i], {cant_productos}, id);
+				BD_varias.actualizarRegistro("RCLV_" + entidadesRCLV[i], id, {cant_productos});
 			}
 		}
 	},

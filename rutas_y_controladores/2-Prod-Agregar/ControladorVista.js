@@ -494,7 +494,8 @@ module.exports = {
 			creado_por_id: confirma.creado_por_id,
 			capturado_por_id: confirma.creado_por_id,
 		};
-		registro = await BD_varias.agregarRegistro(original);
+		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
+
 		// 3. Almacenar el dato de BD del avatar
 		confirma.avatar = confirma.avatarBD;
 		// 4. Eliminar los datos prescindibles en Edición
@@ -524,8 +525,8 @@ module.exports = {
 		// Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
-				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro.dataValues})
-				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro.dataValues});
+				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro})
+				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// Miscelaneas
 		guardar_us_calificaciones(confirma, registro);

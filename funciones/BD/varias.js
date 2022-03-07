@@ -81,7 +81,7 @@ module.exports = {
 		return db[datos.entidad].create(datos);
 	},
 
-	actualizarRegistro: (entidad, datos, id) => {
+	actualizarRegistro: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
 

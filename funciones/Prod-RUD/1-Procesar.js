@@ -4,9 +4,7 @@ let BD_varias = require("../BD/varias");
 module.exports = {
 	averiguarSiEstaDisponible: async (entidad, prod_id, usuario) => {
 		// Obtiene el registro con los datos del producto
-		producto = await BD_varias.obtenerPorCampo(entidad, "id", prod_id).then(
-			(n) => n.dataValues
-		);
+		producto = await BD_varias.obtenerPorCampo(entidad, "id", prod_id).then((n) => n.toJSON());
 		haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =
@@ -97,7 +95,7 @@ module.exports = {
 		let edicion_id = await BD_varias.obtenerELC_id(entidad, "ELC_id", producto_id);
 		// Acciones en función de si existe o no
 		edicion_id
-			? await BD_varias.actualizarRegistro(entidad, datos, edicion_id)
+			? await BD_varias.actualizarRegistro(entidad, edicion_id, datos)
 			: await BD_varias.agregarRegistro({
 					entidad,
 					ELC_id: producto_id,

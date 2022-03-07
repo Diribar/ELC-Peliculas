@@ -40,15 +40,12 @@ module.exports = {
 	},
 	averiguarCantTemporadas: async (req, res) => {
 		datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
-			.then((n) => n.dataValues)
+			.then((n) => n.toJSON())
 			.then((n) => n.cant_temporadas);
 		return res.json(datos);
 	},
 	obtenerCapitulos: async (req, res) => {
-		datos = await BD_especificas.obtenerCapitulos(
-			req.query.coleccion_id,
-			req.query.temporada
-		)
+		datos = await BD_especificas.obtenerCapitulos(req.query.coleccion_id, req.query.temporada);
 		return res.json(datos);
 	},
 
