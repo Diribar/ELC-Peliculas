@@ -16,4 +16,3 @@ window.addEventListener("load", () => {
 		});
 	}
 });
-// botón input 'submit'
