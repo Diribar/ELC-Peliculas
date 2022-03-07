@@ -8,7 +8,7 @@ const {camposDD} = require("../../funciones/Varias/Variables");
 
 // *********** Controlador ***********
 module.exports = {
-	detEdicForm: async (req, res) => {
+	detalleEdicionForm: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// Tema y Código
 		let tema = "producto";
@@ -125,7 +125,7 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 		});
 	},
-	edicAct: async (req, res) => {
+	edicionActualizar: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
@@ -226,7 +226,7 @@ module.exports = {
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
-	edicElim: async (req, res) => {
+	edicionEliminar: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
@@ -238,7 +238,7 @@ module.exports = {
 		return res.send(["Eliminar", entidad, ID]);
 	},
 	linksForm: async (req, res) => {
-		// DETALLE - ALTAS - BAJAS
+		// DETALLE - EDICIÓN
 		// Tema y Código
 		let tema = "producto";
 		let codigo = "links";
@@ -278,7 +278,7 @@ module.exports = {
 		// linksAprob: Aprobados + Creados por el usuario
 		let linksAprob = [
 			...links_prods.filter((n) => n.status_registro.aprobado),
-			...links_prods.filter((n) => n.status_registro.creado && n.creado_por_id == usuario.id),
+			...links_prods.filter((n) => n.status_registro.creado),
 		];
 		// linksBorr --> incluye el motivo y el comentario
 		let linksBorr = links_prods.filter(
@@ -353,7 +353,7 @@ module.exports = {
 		let datos = req.body;
 		// Obtener los datos identificatorios del producto
 		let entidad = datos.entidad;
-		let prodID = datos.id;
+		let prodID = datos.prod_id;
 		// Redireccionar si se encuentran errores en la entidad y/o el prodID
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
@@ -371,7 +371,6 @@ module.exports = {
 				[entidad_id]: prodID,
 				entidad: "links_prods",
 				creado_por_id: userID,
-				capturado_por_id: userID,
 			};
 			delete datos.id;
 			// Agregar el 'link' a la BD

@@ -4,6 +4,7 @@
 		<a href="//<%= link.url %>" target="_blank">
 			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
 		</a>
+		<div class="ocultar" id="link_id"><%= link.id %></div>
 	</td>
 	<!-- Calidad -->
 	<td><%= link.calidad %></td>
@@ -21,9 +22,10 @@
 	<td><%= link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
-		<% if (!link.status_registro.sugerido_borrar && !link.status_registro.borrado) { %>
-			<i class="fa-solid fa-pen" title="Editar"></i>
+		<% if (link.creado_por_id == usuario.id) { %>
+			<i class="fa-solid fa-trash-can out" title='Eliminar'></i>
+		<% } else { %>
+			<i class="fa-solid fa-circle-xmark out" title='Inactivar'></i>
 		<% } %>
-		<i class="fa-solid fa-trash-can" title='Inactivar'></i>
 	</td>
 </tr>

@@ -24,18 +24,19 @@ router.get("/edicion/api/obtener-original-y-edicion", API.obtenerVersionesDelPro
 router.get("/edicion/api/enviar-a-req-session", API.enviarAReqSession);
 router.get("/edicion/api/obtener-de-req-session", API.obtenerDeReqSession);
 // Links
-router.get("/links/api/validar-links", API.validarLinks);
-router.get("/links/api/obtener-provs-links", API.obtenerProvsLinks);
+router.get("/links/api/validar-links", API.linksValidar);
+router.get("/links/api/obtener-provs-links", API.linksObtenerProvs);
+router.get("/links/eliminar", API.linksEliminar);
 
 // Controladores de vistas
-router.get("/detalle", vista.detEdicForm);
+router.get("/detalle", vista.detalleEdicionForm);
 router.get("/calificala", soloAutInput, vista.calificala);
 
-router.get("/edicion", soloAutInput, vista.detEdicForm);
-router.post("/edicion/actualizar", soloAutInput, multer.single("avatar"), vista.edicAct);
-router.get("/edicion/eliminar", soloAutInput, vista.edicElim);
+router.get("/edicion", soloAutInput, vista.detalleEdicionForm);
+router.post("/edicion/actualizar", soloAutInput, multer.single("avatar"), vista.edicionActualizar);
+router.get("/edicion/eliminar", soloAutInput, vista.edicionEliminar);
 router.get("/links", soloAutInput, vista.linksForm);
-router.post("/links", soloAutInput, vista.linksGuardar);
+router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 
 router.get("/revisión", soloGestionProd, vista.revisar);
 

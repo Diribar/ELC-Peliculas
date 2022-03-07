@@ -215,12 +215,11 @@ window.addEventListener("load", async () => {
 			parteInput.classList.add("ocultar");
 			parteInput.disabled = true;
 		} else {
-			if (completoInput.value == "") {
-				completo.classList.remove("desperdicio");
-				completoInput.classList.remove("ocultar");
-				completoInput.disabled = false;
-			}
-			if (!completoInput.value && parteInput.value == "") {
+			completo.classList.remove("desperdicio");
+			completoInput.classList.remove("ocultar");
+			completoInput.disabled = false;
+
+			if (!completoInput.value) {
 				parte.classList.remove("desperdicio");
 				parteInput.classList.remove("ocultar");
 				parteInput.disabled = false;
