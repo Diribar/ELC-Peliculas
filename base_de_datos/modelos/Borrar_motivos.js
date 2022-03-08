@@ -3,8 +3,12 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
-		penaliz_asoc_id: {type: dt.INTEGER},
-	};
+		prod: {type: dt.BOOLEAN},
+		rclv: {type: dt.BOOLEAN},
+		links: {type: dt.BOOLEAN},
+		duracion: {type: dt.INTEGER},
+		mensaje_mail: {type: dt.STRING(200)},
+		};
 	const config = {
 		tableName: "borrar_motivos",
 		timestamps: false,

@@ -192,17 +192,50 @@ module.exports = {
 		if (!link_id) mensaje = "Faltan datos";
 		else {
 			let link = await BD_varias.obtenerPorId("links_prods", link_id);
-			// Verificar que el usuario sea el autor del link
-			// En caso correcto, eliminarlo
-			if (link && link.creado_por_id == req.session.usuario.id) {
-				await BD_varias.eliminarRegistro("links_prods", link_id);
+			if (!link) {
+				mensaje = "El link ya había sido quitado de la base de datos";
+			} else if (link && link.creado_por_id == req.session.usuario.id) {
+				// Si el usuario es el autor del link --> eliminarlo
+				BD_varias.eliminarRegistro("links_prods", link_id);
 				mensaje = "El link fue eliminado con éxito";
 				resultado = true;
-			} else if (!link) {
-				mensaje = "El link ya había sido quitado de la base de datos";
 			} else if (link && link.creado_por_id != req.session.usuario.id) {
-				// En caso incorrecto,  mensaje de error
-				mensaje = "El registro fue creado por otra persona";
+				// Si el usuario no es el autor del link --> sugerir_borrarlo
+				// Verificar que figure el motivo
+				req.query = {...req.query, motivo_id: 20};
+				// En caso que no, abortar con mensaje de error
+				if (!req.query.motivo_id) {
+					mensaje = "Falta especificar el motivo";
+					resultado = false;
+				} else {
+					// En caso que sí, continuar
+					// 1. Obtener el status de borrado
+					let status = await BD_varias.obtenerPorCampo(
+						"status_registro_prod",
+						"sugerido_borrar",
+						1
+					).then((n) => n.toJSON());
+					// 2. Generar los datos
+					let datos={}
+					// 3. Actualizar el link original
+					datos = {
+						status_registro_id: status.id,
+						editado_por_id: req.session.usuario.id,
+						editado_en: new Date(),
+					};
+					BD_varias.actualizarRegistro("links_prods", link_id, datos);
+					// 4. Actualizar la BD con el motivo
+					datos = {
+						entidad: "registros_borrados",
+						ELC_id: link_id,
+						ELC_entidad: "links_prods",
+						motivo_id: req.query.motivo_id,
+					};
+					BD_varias.agregarRegistro(datos);
+					// 5. Fin
+					mensaje = "El link fue inactivado con éxito";
+					resultado = true;
+				}
 			}
 		}
 		return res.json({mensaje, resultado});

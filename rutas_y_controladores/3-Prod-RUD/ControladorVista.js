@@ -327,6 +327,15 @@ module.exports = {
 				registroProd.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
+		let motivos = await BD_varias.obtenerTodos("borrar_motivos", "orden")
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) => n.filter((m) => m.links))
+			.then((n) =>
+				n.map((m) => {
+					return {id: m.id, nombre: m.nombre};
+				})
+			);
+		console.log(motivos);
 		// Ir a la vista
 		//return res.send(registroProd);
 		return res.render("0-RUD", {
@@ -346,6 +355,7 @@ module.exports = {
 			dataEntry,
 			avatar,
 			calidades: [144, 240, 360, 480, 720, 1080],
+			motivos,
 		});
 	},
 	linksGuardar: async (req, res) => {
