@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		url: {type: dt.STRING(20)},
 	};
 	const config = {
-		tableName: "categorias_sub",
+		tableName: "prod_categ2_sub",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

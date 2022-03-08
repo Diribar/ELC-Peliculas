@@ -102,7 +102,7 @@ let longitud = (dato, corto, largo) => {
 };
 let validarLinkRepetidos = async (dato) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampo("links_prods", "url", dato).then((n) => {
+	let repetido = await BD_varias.obtenerPorCampo("links_productos", "url", dato).then((n) => {
 		return n ? n.toJSON() : "";
 	});
 	// Si hay casos --> mensaje de error con la entidad y el id

@@ -8,10 +8,11 @@ module.exports = (sequelize, dt) => {
 		editado: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
 		sugerido_borrar: {type: dt.BOOLEAN},
+		sugerido_desborrar: {type: dt.BOOLEAN},
 		borrado: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "status_registro_ent",
+		tableName: "aux_status_registro",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

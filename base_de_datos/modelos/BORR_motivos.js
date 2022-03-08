@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		duracion: {type: dt.INTEGER},
 		};
 	const config = {
-		tableName: "borrar_motivos",
+		tableName: "borr_motivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -1,20 +1,18 @@
 module.exports = (sequelize, dt) => {
-	const alias = "us_calificaciones";
+	const alias = "cal_registros";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		fe_valores_id: {type: dt.INTEGER},
-		entretiene_id: {type: dt.INTEGER},
-		calidad_tecnica_id: {type: dt.INTEGER},
-		fe_valores_valor: {type: dt.DECIMAL},
-		entretiene_valor: {type: dt.DECIMAL},
-		calidad_tecnica_valor: {type: dt.DECIMAL},
+		fe_valores: {type: dt.DECIMAL},
+		entretiene: {type: dt.DECIMAL},
+		calidad_tecnica: {type: dt.DECIMAL},
 		resultado: {type: dt.DECIMAL},
+		creado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "pr_us_calificaciones",
+		tableName: "cal_1registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
@@ -23,9 +21,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
-		entidad.belongsTo(n.fe_valores, {as: "fe_valores", foreignKey: "fe_valores_id"});
-		entidad.belongsTo(n.entretiene, {as: "entretiene", foreignKey: "entretiene_id"});
-		entidad.belongsTo(n.calidad_tecnica, {as: "calidad_tecnica", foreignKey: "calidad_tecnica_id"});
 	};
 	return entidad;
 };

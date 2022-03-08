@@ -1,19 +1,24 @@
 module.exports = (sequelize, dt) => {
-	const alias = "capitulos";
+	const alias = "productos_edic";
 	const columns = {
+		elc_id: {type: dt.INTEGER},
+		elc_entidad: {type: dt.STRING(11)},
 		coleccion_id: {type: dt.INTEGER},
 		temporada: {type: dt.INTEGER},
 		capitulo: {type: dt.INTEGER},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
-		fuente: {type: dt.STRING(5)},
-		nombre_castellano: {type: dt.STRING(100)},
+		entidad_TMDB: {type: dt.STRING(10)},
 		nombre_original: {type: dt.STRING(100)},
-		idioma_original_id: {type: dt.STRING(2)},
+		nombre_castellano: {type: dt.STRING(100)},
 		duracion: {type: dt.INTEGER},
-		paises_id: {type: dt.STRING(18)},
 		ano_estreno: {type: dt.INTEGER},
+		ano_fin: {type: dt.INTEGER},
+		paises_id: {type: dt.STRING(18)},
+		idioma_original_id: {type: dt.STRING(2)},
+		cant_temporadas: {type: dt.INTEGER},
+		cant_capitulos: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
@@ -29,24 +34,10 @@ module.exports = (sequelize, dt) => {
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
-		fe_valores: {type: dt.INTEGER},
-		entretiene: {type: dt.INTEGER},
-		calidad_tecnica: {type: dt.INTEGER},
-		calificacion: {type: dt.INTEGER},
-
-		creado_por_id: {type: dt.INTEGER},
-		creado_en: {type: dt.DATE},
-		alta_analizada_por_id: {type: dt.INTEGER},
-		alta_analizada_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.INTEGER},
-		status_registro_id: {type: dt.INTEGER},
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-		edic_analizada_por_id: {type: dt.INTEGER},
-		edic_analizada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.INTEGER},
-
+		status_registro_id: {type: dt.INTEGER},
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 
@@ -54,12 +45,12 @@ module.exports = (sequelize, dt) => {
 		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "PROD_capitulos",
+		tableName: "prod_4edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.colecciones, {as: "pertenece_a_coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
@@ -70,17 +61,12 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro_ent, {as: "status_registro", foreignKey: "status_registro_id"});
 
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
-
-		entidad.hasMany(n.links_prods, {as: "links", foreignKey: "capitulo_id"});
 	};
 	return entidad;
 };

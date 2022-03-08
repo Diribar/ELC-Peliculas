@@ -1,14 +1,15 @@
 module.exports = (sequelize, dt) => {
-	const alias = "us_interes_en_prod";
+	const alias = "interes_en_prod";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
 		interes_en_prod_id: {type: dt.INTEGER},
+		creado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "pr_us_interes_en_prod",
+		tableName: "int_1registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		mas_frecuente: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "idiomas",
+		tableName: "aux_idiomas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

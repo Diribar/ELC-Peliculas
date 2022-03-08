@@ -1,14 +1,16 @@
 module.exports = (sequelize, dt) => {
-	const alias = "fe_valores";
+	const alias = "interes_en_prod";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		valor: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
 	};
 	const config = {
-		tableName: "cal_fe_valores",
+		tableName: "int_opciones",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
+	entidad.associate = (n) => {
+		entidad.hasMany(n.interes_en_prod, {as: "interes_en_prod", foreignKey: "interes_en_prod_id"});
+	};
 	return entidad;
 };

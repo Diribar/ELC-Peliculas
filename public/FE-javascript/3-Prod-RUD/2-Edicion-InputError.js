@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
 	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
-	let existeEdicG = !!datosEdicG.ELC_id;
+	let existeEdicG = !!datosEdicG.elc_id;
 	let avatar_eg = datosEdicG.avatar
 		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
 		: datosOriginales.imagen;

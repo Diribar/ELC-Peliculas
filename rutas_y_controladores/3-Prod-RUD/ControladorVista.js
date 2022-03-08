@@ -144,9 +144,9 @@ module.exports = {
 		// Obtener el producto 'Editado' guardado, si lo hubiera
 		let prodEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
-			"ELC_entidad",
+			"elc_entidad",
 			entidad,
-			"ELC_id",
+			"elc_id",
 			prodID,
 			"editado_por_id",
 			userID
@@ -210,8 +210,8 @@ module.exports = {
 			// Completar los datos de edicion
 			edicion = {
 				...edicion,
-				ELC_id: prodID,
-				ELC_entidad: entidad,
+				elc_id: prodID,
+				elc_entidad: entidad,
 				editado_por_id: req.session.usuario.id,
 				capturado_por_id: req.session.usuario.id,
 				entidad: "productos_edic",
@@ -257,8 +257,8 @@ module.exports = {
 				: entidad == "colecciones"
 				? "coleccion_id"
 				: "capitulo_id";
-		// Obtener el producto, los links_provs, los provs y los tipos de links
-		let [registroProd, links_prods, provs, links_tipos] = await Promise.all([
+		// Obtener el producto, los links_proveedores, los provs y los tipos de links
+		let [registroProd, links_productos, provs, links_tipos] = await Promise.all([
 			BD_varias.obtenerPorIdConInclude(
 				entidad,
 				prodID,
@@ -266,8 +266,10 @@ module.exports = {
 			).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
-			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, prodID, includes),
-			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.toJSON())),
+			BD_varias.obtenerTodosPorCampoConInclude("links_productos", campo_id, prodID, includes),
+			BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
+				n.map((m) => m.toJSON())
+			),
 			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 		]);
 		// Problema: PRODUCTO NO ENCONTRADO
@@ -277,21 +279,24 @@ module.exports = {
 		// Obtener los links del producto. Se incluyen:
 		// linksAprob: Aprobados + Creados por el usuario
 		let linksAprob = [
-			...links_prods.filter((n) => n.status_registro.aprobado),
-			...links_prods.filter((n) => n.status_registro.creado),
+			...links_productos.filter((n) => n.status_registro.aprobado),
+			...links_productos.filter((n) => n.status_registro.creado),
 		];
 		// linksBorr --> incluye el motivo y el comentario
-		let linksBorr = links_prods.filter(
-			(n) => n.status_registro.sugerido_borrar || n.status_registro.borrado
+		let linksBorr = links_productos.filter(
+			(n) =>
+				n.status_registro.sugerido_borrar ||
+				n.status_registro.sugerido_desborrar ||
+				n.status_registro.borrado
 		);
 		if (linksBorr.length) {
 			for (i = 0; i < linksBorr; i++) {
 				let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
 					"registros_borrados",
-					"ELC_id",
+					"elc_id",
 					linksBorr[i].id,
-					"ELC_entidad",
-					"links_prods",
+					"elc_entidad",
+					"links_productos",
 					["motivo"]
 				);
 				linksBorr[i].motivo = registro_borrado.motivo.nombre;
@@ -304,9 +309,9 @@ module.exports = {
 		// Obtener el avatar
 		let registroEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
-			"ELC_entidad",
+			"elc_entidad",
 			entidad,
-			"ELC_id",
+			"elc_id",
 			prodID,
 			"editado_por_id",
 			usuario.id
@@ -378,7 +383,7 @@ module.exports = {
 			datos = {
 				...datos,
 				[entidad_id]: prodID,
-				entidad: "links_prods",
+				entidad: "links_productos",
 				creado_por_id: userID,
 			};
 			delete datos.id;
@@ -442,7 +447,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_varias.obtenerTodosPorCampoConInclude(
-		"links_prods",
+		"links_productos",
 		funcionEntidadID(entidad),
 		prodID,
 		["status_registro", "link_tipo"]

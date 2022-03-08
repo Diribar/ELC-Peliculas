@@ -26,7 +26,7 @@ module.exports = {
 				datosAPI_renamed.en_coleccion = true;
 				datosAPI_renamed.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datosAPI_renamed.en_colec_nombre = datosAPI.belongs_to_collection.name;
-				// ELC_id de la colección
+				// elc_id de la colección
 				datosAPI_renamed.en_colec_id = await BD_varias.obtenerELC_id(
 					"colecciones",
 					"TMDB_id",
@@ -101,7 +101,7 @@ module.exports = {
 			// Obtener datos de la colección
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
-			// ELC_id de la colección
+			// elc_id de la colección
 			datos.colec_id = await BD_varias.obtenerELC_id(
 				"colecciones",
 				"TMDB_id",

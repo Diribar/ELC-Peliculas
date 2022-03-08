@@ -1,16 +1,16 @@
 module.exports = (sequelize, dt) => {
-	const alias = "dias_del_ano";
+	const alias = "status_registro_us";
 	const columns = {
-		dia: {type: dt.INTEGER},
-		mes_id: {type: dt.INTEGER},
+		orden: {type: dt.INTEGER},
+		nombre: {type: dt.STRING(50)},
 	};
 	const config = {
-		tableName: "dias_del_ano",
+		tableName: "us_status_registro",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.meses, {as: "mes", foreignKey: "mes_id"});
+		entidad.hasMany(n.usuarios, {as: "usuarios", foreignKey: "status_registro_id"});
 	};
 	return entidad;
 };

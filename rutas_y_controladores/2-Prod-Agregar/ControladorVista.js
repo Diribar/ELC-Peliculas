@@ -509,12 +509,12 @@ module.exports = {
 		let edicion = {
 			// Datos de 'confirma'
 			...datosEdicion,
-			ELC_entidad: confirma.entidad,
+			elc_entidad: confirma.entidad,
 			editado_por_id: confirma.creado_por_id,
 			capturado_por_id: confirma.creado_por_id,
 			// Datos varios
 			entidad: "productos_edic",
-			ELC_id: registro.id,
+			elc_id: registro.id,
 		};
 		await BD_varias.agregarRegistro(edicion);
 		// 6. Guardar datosTerminaste
@@ -529,7 +529,7 @@ module.exports = {
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// Miscelaneas
-		guardar_us_calificaciones(confirma, registro);
+		guardar_cal_registros(confirma, registro);
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
@@ -603,7 +603,7 @@ let funcDatosTerminaste = (datos) => {
 	return datosClave;
 };
 
-let guardar_us_calificaciones = (confirma, registro) => {
+let guardar_cal_registros = (confirma, registro) => {
 	entidad_id =
 		confirma.entidad == "peliculas"
 			? "pelicula_id"
@@ -611,15 +611,12 @@ let guardar_us_calificaciones = (confirma, registro) => {
 			? "coleccion_id"
 			: "capitulo_id";
 	let datos = {
-		entidad: "us_calificaciones",
+		entidad: "cal_registros",
 		usuario_id: confirma.creado_por_id,
 		[entidad_id]: registro.id,
-		fe_valores_id: confirma.fe_valores_id,
-		entretiene_id: confirma.entretiene_id,
-		calidad_tecnica_id: confirma.calidad_tecnica_id,
-		fe_valores_valor: confirma.fe_valores,
-		entretiene_valor: confirma.entretiene,
-		calidad_tecnica_valor: confirma.calidad_tecnica,
+		fe_valores: confirma.fe_valores,
+		entretiene: confirma.entretiene,
+		calidad_tecnica: confirma.calidad_tecnica,
 		resultado: confirma.calificacion,
 	};
 	BD_varias.agregarRegistro(datos);
