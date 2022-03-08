@@ -5,7 +5,7 @@ let BD_especificas = require("../../funciones/BD/especificas");
 
 // *********** Controlador ***********
 module.exports = {
-	// Tridente
+	// Tridente: Detalle - Edición del Producto - Links
 	obtenerColCap: async (req, res) => {
 		let {entidad, id} = req.query;
 		let ID =
@@ -134,7 +134,7 @@ module.exports = {
 		return res.json(ID);
 	},
 
-	// Edición
+	// Edición del Producto
 	validarEdicion: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
@@ -184,60 +184,83 @@ module.exports = {
 		return res.json(provs);
 	},
 	linksEliminar: async (req, res) => {
+		// Proceso
+		// 1. Si el usuario lo creó hace menos de 1 hora, lo elimina definitivamente
+		// 2. En los demás casos, debe explicar el motivo y se inactiva
 		// Definir las variables
-		let mensaje = "";
-		let resultado = false;
+		let respuesta = {};
+		let datosActualizar = {};
 		let link_id = req.query.id;
+		let haceUnaHora = new Date() - 1000 * 60 * 60;
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) mensaje = "Faltan datos";
 		else {
-			let link = await BD_varias.obtenerPorId("links_productos", link_id);
+			let link = await BD_varias.obtenerPorIdConInclude("links_productos", link_id, [
+				"status_registro",
+			]);
 			if (!link) {
-				mensaje = "El link ya había sido quitado de la base de datos";
-			} else if (link && link.creado_por_id == req.session.usuario.id) {
-				// Si el usuario es el autor del link --> eliminarlo
+				// Consecuencias si el link no existe en la BD
+				respuesta.mensaje = "El link no existe en la base de datos";
+				respuesta.resultado = false;
+				respuesta.reload = true;
+			} else if (
+				link.creado_por_id == req.session.usuario.id &&
+				link.creado_en > haceUnaHora &&
+				link.status_registro.creado
+			) {
+				// 1. Acciones si el usuario lo creó hace menos de 1 hora --> Elimina el link
 				BD_varias.eliminarRegistro("links_productos", link_id);
-				mensaje = "El link fue eliminado con éxito";
-				resultado = true;
-			} else if (link && link.creado_por_id != req.session.usuario.id) {
-				// Si el usuario no es el autor del link --> sugerir_borrarlo
-				// Verificar que figure el motivo
-				req.query = {...req.query, motivo_id: 20};
-				// En caso que no, abortar con mensaje de error
+				respuesta.mensaje = "El link fue eliminado con éxito";
+				respuesta.resultado = true;
+			} else {
+				// 2. En los demás casos, debe explicar el motivo y se inactiva
+				// Si no figura el motivo --> Abortar con mensaje de error
 				if (!req.query.motivo_id) {
-					mensaje = "Falta especificar el motivo";
-					resultado = false;
+					respuesta.mensaje = "Falta especificar el motivo";
+					respuesta.resultado = false;
 				} else {
-					// En caso que sí, continuar
-					// 1. Obtener el status de borrado
-					let status = await BD_varias.obtenerPorCampo(
+					// Si figura el motivo --> continuar hasta 'inactivar'
+					// 1. Obtener datos clave
+					// Obtener el status_id de 'sugerido para borrar'
+					let status_id = await BD_varias.obtenerPorCampo(
 						"status_registro_ent",
 						"sugerido_borrar",
 						1
-					).then((n) => n.toJSON());
-					// 2. Generar los datos
-					let datos={}
-					// 3. Actualizar el link original
-					datos = {
-						status_registro_id: status.id,
+					)
+						.then((n) => n.toJSON())
+						.then((n) => n.id);
+					// Obtener la duración
+					let duracion = await BD_varias.obtenerPorId(
+						"motivos_para_borrar",
+						req.query.motivo_id
+					)
+						.then((n) => n.toJSON())
+						.then((n) => n.duracion);
+					// 2. Actualizar la BD de 'links_productos'
+					datosActualizar = {
 						editado_por_id: req.session.usuario.id,
 						editado_en: new Date(),
+						status_registro_id: status_id,
 					};
-					BD_varias.actualizarRegistro("links_productos", link_id, datos);
-					// 4. Actualizar la BD con el motivo
-					datos = {
+					BD_varias.actualizarRegistro("links_productos", link_id, datosActualizar);
+					// 3. Actualizar la BD de 'registros_borrados'
+					datosActualizar = {
 						entidad: "registros_borrados",
 						elc_id: link_id,
 						elc_entidad: "links_productos",
+						usuario_sancionado_id: link.creado_por_id,
+						evaluado_por_usuario_id: req.session.usuario.id,
 						motivo_id: req.query.motivo_id,
+						duracion: duracion,
+						status_registro_id: status_id,
 					};
-					BD_varias.agregarRegistro(datos);
-					// 5. Fin
-					mensaje = "El link fue inactivado con éxito";
-					resultado = true;
+					BD_varias.agregarRegistro(datosActualizar);
+					// 4. Fin
+					respuesta.mensaje = "El link fue inactivado con éxito";
+					respuesta.resultado = true;
 				}
 			}
 		}
-		return res.json({mensaje, resultado});
+		return res.json(respuesta);
 	},
 };

@@ -22,13 +22,13 @@ window.addEventListener("load", () => {
 			// console.log(filas_yaExistentes[i].children);
 			// <td class="logoProv" title="<%= link.url %>">
 			// 	<a href="//<%= link.url %>" target="_blank">
-			// 		<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
+			// 		<img src="/imagenes/0-Logos/<%= link.proveedor_link.avatar %>" alt="<%= link.proveedor_link.nombre %>">
 			// 	</a>
 			// </td>
 			// <!-- Calidad -->
 			// <td><%= link.calidad %></td>
 			// <!-- Tipo -->
-			// <td><%= link.link_tipo.nombre %></td>
+			// <td><%= link.tipo_link.nombre %></td>
 			// <!-- Completo -->
 			// <td><%- link.completo ? "SI" : "NO" %></td>
 			// <!-- Parte -->
