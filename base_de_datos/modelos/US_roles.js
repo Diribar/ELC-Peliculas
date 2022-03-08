@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		aut_gestion_us: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "us_aux_roles",
+		tableName: "us_roles",
 		timestamps: false,
 	};
 
