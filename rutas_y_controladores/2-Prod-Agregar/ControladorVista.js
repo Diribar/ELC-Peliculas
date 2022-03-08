@@ -614,9 +614,9 @@ let guardar_cal_registros = (confirma, registro) => {
 		entidad: "cal_registros",
 		usuario_id: confirma.creado_por_id,
 		[entidad_id]: registro.id,
-		fe_valores_valor: confirma.fe_valores,
-		entretiene_valor: confirma.entretiene,
-		calidad_tecnica_valor: confirma.calidad_tecnica,
+		fe_valores: confirma.fe_valores,
+		entretiene: confirma.entretiene,
+		calidad_tecnica: confirma.calidad_tecnica,
 		resultado: confirma.calificacion,
 	};
 	BD_varias.agregarRegistro(datos);
