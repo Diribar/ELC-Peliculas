@@ -1,8 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "productos_edic";
 	const columns = {
-		ELC_id: {type: dt.INTEGER},
-		ELC_entidad: {type: dt.STRING(11)},
+		elc_id: {type: dt.INTEGER},
+		elc_entidad: {type: dt.STRING(11)},
 		coleccion_id: {type: dt.INTEGER},
 		temporada: {type: dt.INTEGER},
 		capitulo: {type: dt.INTEGER},

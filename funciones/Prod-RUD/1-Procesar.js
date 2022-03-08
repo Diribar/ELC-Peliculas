@@ -92,13 +92,13 @@ module.exports = {
 	guardar_o_actualizar_Edicion: async (entidad, producto_id, datos) => {
 		entidad = entidad + "Edicion";
 		// Averiguar si ya exista la edición
-		let edicion_id = await BD_varias.obtenerELC_id(entidad, "ELC_id", producto_id);
+		let edicion_id = await BD_varias.obtenerELC_id(entidad, "elc_id", producto_id);
 		// Acciones en función de si existe o no
 		edicion_id
 			? await BD_varias.actualizarRegistro(entidad, edicion_id, datos)
 			: await BD_varias.agregarRegistro({
 					entidad,
-					ELC_id: producto_id,
+					elc_id: producto_id,
 					...datos,
 			  });
 	},

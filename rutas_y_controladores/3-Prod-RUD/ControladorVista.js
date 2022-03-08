@@ -144,9 +144,9 @@ module.exports = {
 		// Obtener el producto 'Editado' guardado, si lo hubiera
 		let prodEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
-			"ELC_entidad",
+			"elc_entidad",
 			entidad,
-			"ELC_id",
+			"elc_id",
 			prodID,
 			"editado_por_id",
 			userID
@@ -210,8 +210,8 @@ module.exports = {
 			// Completar los datos de edicion
 			edicion = {
 				...edicion,
-				ELC_id: prodID,
-				ELC_entidad: entidad,
+				elc_id: prodID,
+				elc_entidad: entidad,
 				editado_por_id: req.session.usuario.id,
 				capturado_por_id: req.session.usuario.id,
 				entidad: "productos_edic",
@@ -288,9 +288,9 @@ module.exports = {
 			for (i = 0; i < linksBorr; i++) {
 				let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
 					"registros_borrados",
-					"ELC_id",
+					"elc_id",
 					linksBorr[i].id,
-					"ELC_entidad",
+					"elc_entidad",
 					"links_productos",
 					["motivo"]
 				);
@@ -304,9 +304,9 @@ module.exports = {
 		// Obtener el avatar
 		let registroEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
-			"ELC_entidad",
+			"elc_entidad",
 			entidad,
-			"ELC_id",
+			"elc_id",
 			prodID,
 			"editado_por_id",
 			usuario.id

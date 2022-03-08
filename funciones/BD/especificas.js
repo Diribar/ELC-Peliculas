@@ -95,9 +95,9 @@ module.exports = {
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_varias.obtenerPor3CamposConInclude(
 				"productos_edic",
-				"ELC_entidad",
+				"elc_entidad",
 				entidad,
-				"ELC_id",
+				"elc_id",
 				prodID,
 				"editado_por_id",
 				userID,

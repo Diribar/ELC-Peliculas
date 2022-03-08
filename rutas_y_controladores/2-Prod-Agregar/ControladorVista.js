@@ -509,12 +509,12 @@ module.exports = {
 		let edicion = {
 			// Datos de 'confirma'
 			...datosEdicion,
-			ELC_entidad: confirma.entidad,
+			elc_entidad: confirma.entidad,
 			editado_por_id: confirma.creado_por_id,
 			capturado_por_id: confirma.creado_por_id,
 			// Datos varios
 			entidad: "productos_edic",
-			ELC_id: registro.id,
+			elc_id: registro.id,
 		};
 		await BD_varias.agregarRegistro(edicion);
 		// 6. Guardar datosTerminaste

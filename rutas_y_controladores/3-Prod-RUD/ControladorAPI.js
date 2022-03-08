@@ -227,8 +227,8 @@ module.exports = {
 					// 4. Actualizar la BD con el motivo
 					datos = {
 						entidad: "registros_borrados",
-						ELC_id: link_id,
-						ELC_entidad: "links_productos",
+						elc_id: link_id,
+						elc_entidad: "links_productos",
 						motivo_id: req.query.motivo_id,
 					};
 					BD_varias.agregarRegistro(datos);

@@ -54,20 +54,20 @@ window.addEventListener("load", async () => {
 		url = "entidad=" + entidad;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
-		ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
-		if (!ELC_id && entidad != "colecciones") {
+		elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+		if (!elc_id && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
 			url += "&campo=FA_id";
 			url += "&valor=" + FA_id;
-			ELC_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+			elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
 		}
 		// Definir el mensaje
-		return ELC_id
+		return elc_id
 			? "Esta " +
 					"<a href='/producto/detalle/?entidad=" +
 					entidad +
 					"&id=" +
-					ELC_id +
+					elc_id +
 					"' target='_blank'><u><strong>" +
 					entidad +
 					"</strong></u></a>" +
