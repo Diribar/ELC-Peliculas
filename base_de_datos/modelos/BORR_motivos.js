@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "borrar_motivos";
+	const alias = "motivos_para_borrar";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},

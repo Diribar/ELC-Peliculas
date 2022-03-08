@@ -249,7 +249,7 @@ module.exports = {
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
-		let includes = ["link_tipo", "link_prov", "status_registro"];
+		let includes = ["tipo_link", "proveedor_link", "status_registro"];
 		// Obtener el 'campo_id'
 		let campo_id =
 			entidad == "peliculas"
@@ -279,8 +279,8 @@ module.exports = {
 		// Obtener los links del producto. Se incluyen:
 		// linksAprob: Aprobados + Creados por el usuario
 		let linksAprob = [
-			...links_productos.filter((n) => n.status_registro.aprobado),
 			...links_productos.filter((n) => n.status_registro.creado),
+			...links_productos.filter((n) => n.status_registro.aprobado),
 		];
 		// linksBorr --> incluye el motivo y el comentario
 		let linksBorr = links_productos.filter(
@@ -332,7 +332,7 @@ module.exports = {
 				registroProd.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
-		let motivos = await BD_varias.obtenerTodos("borrar_motivos", "orden")
+		let motivos = await BD_varias.obtenerTodos("motivos_para_borrar", "orden")
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
@@ -450,11 +450,11 @@ let productoConLinksWeb = async (entidad, prodID) => {
 		"links_productos",
 		funcionEntidadID(entidad),
 		prodID,
-		["status_registro", "link_tipo"]
+		["status_registro", "tipo_link"]
 	)
 		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) => n.filter((n) => n.gratuito))
-		.then((n) => n.filter((n) => n.link_tipo.pelicula));
+		.then((n) => n.filter((n) => n.tipo_link.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
 	let linksAprob = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
