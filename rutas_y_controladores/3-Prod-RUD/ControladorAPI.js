@@ -211,7 +211,7 @@ module.exports = {
 					// En caso que sí, continuar
 					// 1. Obtener el status de borrado
 					let status = await BD_varias.obtenerPorCampo(
-						"status_registro_prod",
+						"status_registro_ent",
 						"sugerido_borrar",
 						1
 					).then((n) => n.toJSON());

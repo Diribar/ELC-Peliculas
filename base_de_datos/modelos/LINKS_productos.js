@@ -1,7 +1,18 @@
 module.exports = (sequelize, dt) => {
-	const alias = "RCLV_valores";
+	const alias = "links_prods";
 	const columns = {
-		nombre: {type: dt.STRING(30)},
+		pelicula_id: {type: dt.INTEGER},
+		coleccion_id: {type: dt.INTEGER},
+		capitulo_id: {type: dt.INTEGER},
+		url: {type: dt.STRING(100)},
+
+		calidad: {type: dt.INTEGER},
+		completo: {type: dt.INTEGER},
+		parte: {type: dt.INTEGER},
+
+		link_tipo_id: {type: dt.INTEGER},
+		link_prov_id: {type: dt.INTEGER},
+		gratuito: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
@@ -20,21 +31,23 @@ module.exports = (sequelize, dt) => {
 		capturado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "RCLV_valores",
+		tableName: "links_prods",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
+		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
+		entidad.belongsTo(n.links_provs, {as: "link_prov", foreignKey: "link_prov_id"});
+
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
-		entidad.belongsTo(n.status_registro_prod, {as: "status_registro", foreignKey: "status_registro_id"});
-
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "valor_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "valor_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "valor_id"});
+		entidad.belongsTo(n.status_registro_ent, {as: "status_registro", foreignKey: "status_registro_id"});
 	};
 	return entidad;
 };

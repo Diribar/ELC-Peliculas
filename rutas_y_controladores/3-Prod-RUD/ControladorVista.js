@@ -195,7 +195,7 @@ module.exports = {
 				if (edicion[campo] == null) delete edicion[campo];
 			}
 			// Determinar el 'status_registro_id'
-			let status_registro = await BD_varias.obtenerTodos("status_registro_prod", "orden");
+			let status_registro = await BD_varias.obtenerTodos("status_registro_ent", "orden");
 			// 1. Si existe la 'edicion guardada' --> lo copia
 			// 2. Si no existe la 'edicion guardada',
 			// 2.1. Si el status de 'original' es 'creada' --> lo copia
