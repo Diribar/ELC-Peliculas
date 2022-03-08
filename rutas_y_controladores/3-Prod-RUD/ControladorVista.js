@@ -238,7 +238,7 @@ module.exports = {
 		return res.send(["Eliminar", entidad, ID]);
 	},
 	linksForm: async (req, res) => {
-		// DETALLE - EDICIÓN
+		// DETALLE - ABM
 		// Tema y Código
 		let tema = "producto";
 		let codigo = "links";
@@ -335,7 +335,6 @@ module.exports = {
 					return {id: m.id, nombre: m.nombre};
 				})
 			);
-		console.log(motivos);
 		// Ir a la vista
 		//return res.send(registroProd);
 		return res.render("0-RUD", {
