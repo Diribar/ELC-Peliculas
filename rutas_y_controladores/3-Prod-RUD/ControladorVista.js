@@ -267,7 +267,9 @@ module.exports = {
 				return n ? n.toJSON() : "";
 			}),
 			BD_varias.obtenerTodosPorCampoConInclude("links_productos", campo_id, prodID, includes),
-			BD_varias.obtenerTodos("links_proveedores", "orden").then((n) => n.map((m) => m.toJSON())),
+			BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
+				n.map((m) => m.toJSON())
+			),
 			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 		]);
 		// Problema: PRODUCTO NO ENCONTRADO
@@ -282,7 +284,10 @@ module.exports = {
 		];
 		// linksBorr --> incluye el motivo y el comentario
 		let linksBorr = links_productos.filter(
-			(n) => n.status_registro.sugerido_borrar || n.status_registro.borrado
+			(n) =>
+				n.status_registro.sugerido_borrar ||
+				n.status_registro.sugerido_desborrar ||
+				n.status_registro.borrado
 		);
 		if (linksBorr.length) {
 			for (i = 0; i < linksBorr; i++) {
