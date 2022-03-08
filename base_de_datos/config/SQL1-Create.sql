@@ -264,7 +264,7 @@ VALUES
 ;
 
 /* RCLV */;
-CREATE TABLE RCLV1_personajes (
+CREATE TABLE rclv_1personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -299,25 +299,25 @@ CREATE TABLE RCLV1_personajes (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO RCLV1_personajes (id, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_1personajes (id, nombre, creado_por_id, status_registro_id)
 VALUES 
 (1, 'Ninguno', 1, 3),
 (2, 'Varios (colección)', 1, 3)
 ;
-INSERT INTO RCLV1_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, status_registro_id)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, status_registro_id)
 VALUES 
 (11, NULL, 0, 'Jesús', 'STV', 'RCV', 1, 3),
 (12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
 (13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
 ;
-INSERT INTO RCLV1_personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
 VALUES 
 (21, 249, 1910,'Teresa de Calcuta','STM','RCM',10),
 (22, 285, 1958,'Juan XXIII','STV','PPV',10),
 (23, 31, 1815,'Juan Bosco','STV','RCV',10),
 (24, 296, 1920,'Juan Pablo II','STV','PPV',10)
 ;
-CREATE TABLE RCLV2_hechos (
+CREATE TABLE rclv_2hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -348,12 +348,12 @@ CREATE TABLE RCLV2_hechos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO RCLV2_hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
 VALUES
 (1, NULL, NULL, 'Ninguno', 1, 3),
 (2, NULL, NULL, 'Varios (colección)', 1, 3)
 ;
-INSERT INTO RCLV2_hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
 VALUES
 (11, 359, 0, 'Navidad', 1),
 (12, 100, 33, 'Sem. Santa - 1. General', 1),
@@ -363,7 +363,7 @@ VALUES
 (16, 210, 1914, 'Guerra Mundial - 1a', 1),
 (17, 245, 1942, 'Guerra Mundial - 2a', 1)
 ;
-CREATE TABLE RCLV3_valores (
+CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 
@@ -391,12 +391,12 @@ CREATE TABLE RCLV3_valores (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO RCLV3_valores (id, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_3valores (id, nombre, creado_por_id, status_registro_id)
 VALUES
 (1, 'Ninguno', 1, 3),
 (2, 'Varios (colección)', 1, 3)
 ;
-INSERT INTO RCLV3_valores (id, nombre, creado_por_id)
+INSERT INTO rclv_3valores (id, nombre, creado_por_id)
 VALUES
 (11, 'Valores en el deporte', 1),
 (12, 'Pacificar un país dividido', 1),
@@ -533,9 +533,9 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (idioma_original_id) REFERENCES aux_idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
-	FOREIGN KEY (personaje_id) REFERENCES RCLV1_personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES RCLV2_hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES RCLV3_valores(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -612,9 +612,9 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (en_color_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
-	FOREIGN KEY (personaje_id) REFERENCES RCLV1_personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES RCLV2_hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES RCLV3_valores(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -691,9 +691,9 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES prod_publicos_sugeridos(id),
-	FOREIGN KEY (personaje_id) REFERENCES RCLV1_personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES RCLV2_hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES RCLV3_valores(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -775,9 +775,9 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES prod_publicos_sugeridos(id),
-	FOREIGN KEY (personaje_id) REFERENCES RCLV1_personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES RCLV2_hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES RCLV3_valores(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
@@ -1027,20 +1027,3 @@ CREATE TABLE borr_1registros (
 	FOREIGN KEY (motivo_id) REFERENCES borr_motivos(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/* TABLAS AUXILIARES */;
-CREATE TABLE prod_epocas_estreno (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(20) NOT NULL,
-	ano_comienzo SMALLINT UNSIGNED NOT NULL,
-	ano_fin SMALLINT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_epocas_estreno (id, orden, nombre, ano_comienzo, ano_fin)
-VALUES 
-(4, 1, '2015 - Presente', 2015, 2025),
-(3, 2, '2000 - 2014', 2000, 2014), 
-(2, 3, '1970 - 1999', 1970, 1999), 
-(1, 4, 'Antes de 1970', 1900, 1969)
-;
