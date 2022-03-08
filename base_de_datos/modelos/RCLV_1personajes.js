@@ -24,7 +24,7 @@ module.exports = (sequelize, dt) => {
 		capturado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "RCLV1_personajes",
+		tableName: "rclv_1personajes",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
