@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "status_registro_prod";
+	const alias = "status_registro_ent";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		productos: {type: dt.STRING(25)},
@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		borrado: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "status_registro_prod",
+		tableName: "status_registro_ent",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

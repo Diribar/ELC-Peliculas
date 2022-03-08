@@ -195,7 +195,7 @@ module.exports = {
 				if (edicion[campo] == null) delete edicion[campo];
 			}
 			// Determinar el 'status_registro_id'
-			let status_registro = await BD_varias.obtenerTodos("status_registro_prod", "orden");
+			let status_registro = await BD_varias.obtenerTodos("status_registro_ent", "orden");
 			// 1. Si existe la 'edicion guardada' --> lo copia
 			// 2. Si no existe la 'edicion guardada',
 			// 2.1. Si el status de 'original' es 'creada' --> lo copia
@@ -238,7 +238,7 @@ module.exports = {
 		return res.send(["Eliminar", entidad, ID]);
 	},
 	linksForm: async (req, res) => {
-		// DETALLE - EDICIÓN
+		// DETALLE - ABM
 		// Tema y Código
 		let tema = "producto";
 		let codigo = "links";
@@ -335,7 +335,6 @@ module.exports = {
 					return {id: m.id, nombre: m.nombre};
 				})
 			);
-		console.log(motivos);
 		// Ir a la vista
 		//return res.send(registroProd);
 		return res.render("0-RUD", {
