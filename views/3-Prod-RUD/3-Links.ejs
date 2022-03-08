@@ -8,7 +8,7 @@
 		<option value="IN">Inactivos</option>
 		<option value="TD">Todos</option>
 	</select>
-	<form action="<%= vista %>" method="POST">
+	<form action="<%= vista %>guardar" method="POST">
 		<table>
 			<thead>
 				<tr>
@@ -23,6 +23,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				<!-- Filas para links existentes -->
 				<% for (link of linksAprob) { %><%- include("31-Links-Datos") %><% } %>
 				<!-- Fila para nuevo link -->
 				<tr id="dataEntry">
@@ -43,7 +44,7 @@
 							<select name="calidad" class="input">
 								<option value="" class="ocultar" <%- dataEntry.calidad=="" ? "selected" : "" %>>Elejí</option>
 								<% for (calidad of calidades) { %>
-									<option value="<%= calidad %>" <%- dataEntry.calidad==calidad ? "selected" : "" %>><%= calidad %> </option>
+									<option value="<%= calidad %>" <%- dataEntry.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
 								<% } %>
 								<option value="1081" <%- dataEntry.calidad=="1081" ? "selected" : "" %>>>1080</option>
 							</select>
@@ -115,7 +116,7 @@
 		</table>
 		<!-- Entidad e ID -->
 		<input type="text" name="entidad" value="<%= entidad %>" class="ocultar">
-		<input type="text" name="id" value="<%= prodID %>" class="ocultar">
+		<input type="text" name="prod_id" value="<%= prodID %>" class="ocultar">
 	</form>
 	<ul>
 		Comentarios
@@ -136,4 +137,4 @@
 	<% } %>
 </section>
 <!-- Botones -->
-<%- include("0-RUD-Flechas") %> 
+<%- include("0-RUD-Flechas") %>

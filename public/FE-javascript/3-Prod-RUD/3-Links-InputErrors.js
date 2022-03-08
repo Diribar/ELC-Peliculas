@@ -56,7 +56,7 @@ window.addEventListener("load", async () => {
 		else if (campo == "parte" && valor < 1) parteInput.value = 1;
 
 		// Actualizar los errores de todo el form
-		if (campo != "url" || !error.url) {
+		if ((campo != "url" || !error.url) && e.target.name != "motivo") {
 			let dataEntry = actualizarDataEntry();
 			errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
 			consecuenciasErrores(errores, campos);
@@ -215,12 +215,11 @@ window.addEventListener("load", async () => {
 			parteInput.classList.add("ocultar");
 			parteInput.disabled = true;
 		} else {
-			if (completoInput.value == "") {
-				completo.classList.remove("desperdicio");
-				completoInput.classList.remove("ocultar");
-				completoInput.disabled = false;
-			}
-			if (!completoInput.value && parteInput.value == "") {
+			completo.classList.remove("desperdicio");
+			completoInput.classList.remove("ocultar");
+			completoInput.disabled = false;
+
+			if (!completoInput.value) {
 				parte.classList.remove("desperdicio");
 				parteInput.classList.remove("ocultar");
 				parteInput.disabled = false;
