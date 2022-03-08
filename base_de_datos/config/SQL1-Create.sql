@@ -208,21 +208,20 @@ CREATE TABLE aux_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	productos VARCHAR(25) NOT NULL UNIQUE,
 	links VARCHAR(25) NOT NULL UNIQUE,
-	creado BOOLEAN NOT NULL,
-	editado BOOLEAN NOT NULL,
-	aprobado BOOLEAN NOT NULL,
-	sugerido_borrar BOOLEAN NOT NULL,
-	borrado BOOLEAN NOT NULL,
+	creado BOOLEAN DEFAULT 0,
+	editado BOOLEAN DEFAULT 0,
+	aprobado BOOLEAN DEFAULT 0,
+	sugerido_borrar BOOLEAN DEFAULT 0,
+	sugerido_desborrar BOOLEAN DEFAULT 0,
+	borrado BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, productos, links, creado, editado, aprobado, sugerido_borrar, borrado)
-VALUES 
-(1, 1, 'Creado', 'Creado', 1, 0, 0, 0, 0), 
-(2, 2, 'Editado', 'Editado', 0, 1, 0, 0, 0),
-(3, 3, 'Aprobado', 'Aprobado', 0, 0, 1, 0, 0),
-(4, 4, 'Sugerido p/borrar', 'Sugerido p/inactivar', 0, 0, 0, 1, 0),
-(5, 5, 'Borrado', 'Inactivado', 0, 0, 0, 0, 1)
-;
+INSERT INTO aux_status_registro (id, orden, productos, links, creado) VALUES (1, 1, 'Creado', 'Creado', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, editado) VALUES (2, 2, 'Editado', 'Editado', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, aprobado) VALUES (3, 3, 'Aprobado', 'Aprobado', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, sugerido_borrar) VALUES (4, 4, 'Sugerido p/borrar', 'Sugerido p/inactivar', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, sugerido_desborrar) VALUES (5, 5, 'Sugerido p/desborrar', 'Sugerido p/activar', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, borrado) VALUES (6, 6, 'Borrado', 'Inactivado', 1);
 
 /* TABLAS AUXILIARES PARA RCLV */;
 CREATE TABLE rclv_meses (
