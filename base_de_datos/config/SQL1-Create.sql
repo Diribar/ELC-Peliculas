@@ -161,7 +161,7 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	penaliz_motivo_id TINYINT UNSIGNED NULL,
+	motivo_penalizac_id TINYINT UNSIGNED NULL,
 	penalizado_hasta DATETIME NULL,
 
 	PRIMARY KEY (id),
@@ -170,7 +170,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
-	FOREIGN KEY (penaliz_motivo_id) REFERENCES borr_motivos(id)
+	FOREIGN KEY (motivo_penalizac_id) REFERENCES borr_motivos(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, nombre, apodo, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, aut_data_entry, completado_en, status_registro_id)
@@ -1013,15 +1013,13 @@ CREATE TABLE borr_1registros (
 	elc_id INT UNSIGNED NOT NULL,
 	elc_entidad VARCHAR(20) NOT NULL,
 	usuario_sancionado_id INT UNSIGNED NOT NULL,
-	rol_usuario_sancionado_id TINYINT UNSIGNED NOT NULL,
 	evaluado_por_usuario_id INT UNSIGNED NOT NULL,
 	motivo_id TINYINT UNSIGNED NOT NULL,
-	duracion SMALLINT UNSIGNED DEFAULT NULL,
+	duracion SMALLINT UNSIGNED NOT NULL,
 	status_registro_id TINYINT UNSIGNED NOT NULL,	
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_sancionado_id) REFERENCES usuarios(id),
-	FOREIGN KEY (rol_usuario_sancionado_id) REFERENCES us_roles(id),
 	FOREIGN KEY (evaluado_por_usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES borr_motivos(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
