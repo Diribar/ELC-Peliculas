@@ -61,20 +61,38 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
-		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
+		entidad.belongsTo(n.publicos_sugeridos, {
+			as: "publico_sugerido",
+			foreignKey: "publico_sugerido_id",
+		});
 		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {
+			as: "alta_analizada_por",
+			foreignKey: "alta_analizada_por_id",
+		});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {
+			as: "edic_analizada_por",
+			foreignKey: "edic_analizada_por_id",
+		});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
-		entidad.belongsTo(n.status_registro_ent, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.status_registro_ent, {
+			as: "status_registro",
+			foreignKey: "status_registro_id",
+		});
 
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
+		entidad.belongsTo(n.si_no_parcial, {
+			as: "links_gratuitos_cargados",
+			foreignKey: "links_gratuitos_cargados_id",
+		});
+		entidad.belongsTo(n.si_no_parcial, {
+			as: "links_gratuitos_en_la_web",
+			foreignKey: "links_gratuitos_en_la_web_id",
+		});
 
 		entidad.hasMany(n.links_productos, {as: "links", foreignKey: "pelicula_id"});
 	};

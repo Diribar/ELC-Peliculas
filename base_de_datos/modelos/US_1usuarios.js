@@ -25,7 +25,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const config = {
 		tableName: "usuarios",
-		createdAt: "creado_en",
+		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {

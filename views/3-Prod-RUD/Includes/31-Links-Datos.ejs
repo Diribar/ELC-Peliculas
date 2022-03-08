@@ -12,7 +12,7 @@
 		<select name="motivo">
 			<option value="" class="ocultar" selected>Elejí el motivo</option>
 			<% for (motivo of motivos) { %>
-				<option value="<%= motivo.id %>"><%= motivo.nombre %></option>
+				<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 			<% } %>
 		</select>
 	</td>

@@ -201,4 +201,10 @@ module.exports = {
 		if (!producto) errorEnQuery = "La entidad ingresada no es válida";
 		return errorEnQuery;
 	},
+
+	funcionHaceUnaHora: () => {
+		let haceUnaHora = new Date();
+		haceUnaHora.setHours(haceUnaHora.getHours() - 1);
+		return haceUnaHora;
+	},
 };

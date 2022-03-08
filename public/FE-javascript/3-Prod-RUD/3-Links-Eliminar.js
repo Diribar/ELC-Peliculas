@@ -4,17 +4,19 @@ window.addEventListener("load", () => {
 	let botonesOut = document.querySelectorAll(".yaExistentes .out");
 	let links_id = document.querySelectorAll(".yaExistentes #link_id");
 	let taparMotivo = document.querySelectorAll(".yaExistentes .taparMotivo");
-	let motivos = document.querySelectorAll(".yaExistentes #motivo");
+	let motivosFila = document.querySelectorAll(".yaExistentes #motivo");
+	let motivosSelect = document.querySelectorAll(".yaExistentes #motivo select");
 
 	// Listener de 'edición'
 	for (let i = 0; i < botonesOut.length; i++) {
 		botonesOut[i].addEventListener("click", async () => {
 			if (botonesOut[i].classList.contains("fa-trash-can")) {
-				
-				let feedback = await fetch(
-					"/producto/links/eliminar/?id=" + links_id[i].innerHTML
+				console.log(motivosSelect[i].value);
+				let respuesta = await fetch(
+					"/producto/links/eliminar/?id=" + links_id[i].innerHTML+"&motivo_id="+motivosSelect[i].value
 				).then((n) => n.json());
-				if (feedback.resultado == true) filas_yaExistentes[i].classList.add("ocultar");
+				console.log(respuesta);
+				if (respuesta.resultado == true) filas_yaExistentes[i].classList.add("ocultar");
 			} else if (botonesOut[i].classList.contains("fa-circle-xmark")) {
 				// Reemplazar por el tacho
 				botonesOut[i].classList.add("fa-trash-can");
@@ -24,7 +26,7 @@ window.addEventListener("load", () => {
 					taparMotivo[i * 6 + j].classList.add("ocultar");
 				}
 				// Mostrar el select
-				motivos[i].classList.remove("ocultar");
+				motivosFila[i].classList.remove("ocultar");
 			}
 		});
 	}

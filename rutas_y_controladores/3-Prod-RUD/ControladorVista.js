@@ -337,11 +337,11 @@ module.exports = {
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {
-					return {id: m.id, nombre: m.nombre};
+					return {id: m.id, comentario: m.comentario};
 				})
 			);
 		// Ir a la vista
-		//return res.send(registroProd);
+		//return res.send(motivos);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
