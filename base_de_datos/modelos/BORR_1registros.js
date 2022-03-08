@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		comentario: {type: dt.STRING(50)},
 	};
 	const config = {
-		tableName: "borrados_registros",
+		tableName: "borr_1registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

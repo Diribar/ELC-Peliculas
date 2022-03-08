@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "us_calificaciones";
+	const alias = "cal_registros";
 	const columns = {
 		usuario_id: {type: dt.INTEGER},
 		pelicula_id: {type: dt.INTEGER},
@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		resultado: {type: dt.DECIMAL},
 	};
 	const config = {
-		tableName: "pr_us_calificaciones",
+		tableName: "cal_1registros",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

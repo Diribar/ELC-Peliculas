@@ -8,7 +8,7 @@ module.exports = (sequelize, dt) => {
 		sexo_id: {type: dt.STRING(1)},
 	};
 	const config = {
-		tableName: "roles_iglesia",
+		tableName: "aux_roles_iglesia",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -1,6 +1,9 @@
 module.exports = (sequelize, dt) => {
-	const alias = "peliculas";
+	const alias = "capitulos";
 	const columns = {
+		coleccion_id: {type: dt.INTEGER},
+		temporada: {type: dt.INTEGER},
+		capitulo: {type: dt.INTEGER},
 		TMDB_id: {type: dt.STRING(10)},
 		FA_id: {type: dt.STRING(10)},
 		IMDB_id: {type: dt.STRING(10)},
@@ -51,11 +54,12 @@ module.exports = (sequelize, dt) => {
 		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "PROD_peliculas",
+		tableName: "prod_3capitulos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
+		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
@@ -76,7 +80,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
-		entidad.hasMany(n.links_prods, {as: "links", foreignKey: "pelicula_id"});
+		entidad.hasMany(n.links_productos, {as: "links", foreignKey: "capitulo_id"});
 	};
 	return entidad;
 };

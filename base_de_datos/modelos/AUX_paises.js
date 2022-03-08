@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		// bandera: {type: dt.STRING(10)},
 	};
 	const config = {
-		tableName: "paises",
+		tableName: "aux_paises",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

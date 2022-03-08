@@ -16,7 +16,7 @@ module.exports = (sequelize, dt) => {
 		capturado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "EDIC_RCLV",
+		tableName: "rclv_4edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

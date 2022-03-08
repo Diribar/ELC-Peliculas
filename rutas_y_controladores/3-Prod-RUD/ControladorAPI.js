@@ -178,7 +178,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	linksObtenerProvs: async (req, res) => {
-		let provs = await BD_varias.obtenerTodos("links_provs", "orden").then((n) =>
+		let provs = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
 			n.map((m) => m.toJSON())
 		);
 		return res.json(provs);
@@ -191,12 +191,12 @@ module.exports = {
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) mensaje = "Faltan datos";
 		else {
-			let link = await BD_varias.obtenerPorId("links_prods", link_id);
+			let link = await BD_varias.obtenerPorId("links_productos", link_id);
 			if (!link) {
 				mensaje = "El link ya había sido quitado de la base de datos";
 			} else if (link && link.creado_por_id == req.session.usuario.id) {
 				// Si el usuario es el autor del link --> eliminarlo
-				BD_varias.eliminarRegistro("links_prods", link_id);
+				BD_varias.eliminarRegistro("links_productos", link_id);
 				mensaje = "El link fue eliminado con éxito";
 				resultado = true;
 			} else if (link && link.creado_por_id != req.session.usuario.id) {
@@ -223,12 +223,12 @@ module.exports = {
 						editado_por_id: req.session.usuario.id,
 						editado_en: new Date(),
 					};
-					BD_varias.actualizarRegistro("links_prods", link_id, datos);
+					BD_varias.actualizarRegistro("links_productos", link_id, datos);
 					// 4. Actualizar la BD con el motivo
 					datos = {
 						entidad: "registros_borrados",
 						ELC_id: link_id,
-						ELC_entidad: "links_prods",
+						ELC_entidad: "links_productos",
 						motivo_id: req.query.motivo_id,
 					};
 					BD_varias.agregarRegistro(datos);

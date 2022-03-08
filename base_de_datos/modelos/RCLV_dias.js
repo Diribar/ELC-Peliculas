@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		mes_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "dias_del_ano",
+		tableName: "rclv_dias",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -257,8 +257,8 @@ module.exports = {
 				: entidad == "colecciones"
 				? "coleccion_id"
 				: "capitulo_id";
-		// Obtener el producto, los links_provs, los provs y los tipos de links
-		let [registroProd, links_prods, provs, links_tipos] = await Promise.all([
+		// Obtener el producto, los links_proveedores, los provs y los tipos de links
+		let [registroProd, links_productos, provs, links_tipos] = await Promise.all([
 			BD_varias.obtenerPorIdConInclude(
 				entidad,
 				prodID,
@@ -266,8 +266,8 @@ module.exports = {
 			).then((n) => {
 				return n ? n.toJSON() : "";
 			}),
-			BD_varias.obtenerTodosPorCampoConInclude("links_prods", campo_id, prodID, includes),
-			BD_varias.obtenerTodos("links_provs", "orden").then((n) => n.map((m) => m.toJSON())),
+			BD_varias.obtenerTodosPorCampoConInclude("links_productos", campo_id, prodID, includes),
+			BD_varias.obtenerTodos("links_proveedores", "orden").then((n) => n.map((m) => m.toJSON())),
 			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 		]);
 		// Problema: PRODUCTO NO ENCONTRADO
@@ -277,11 +277,11 @@ module.exports = {
 		// Obtener los links del producto. Se incluyen:
 		// linksAprob: Aprobados + Creados por el usuario
 		let linksAprob = [
-			...links_prods.filter((n) => n.status_registro.aprobado),
-			...links_prods.filter((n) => n.status_registro.creado),
+			...links_productos.filter((n) => n.status_registro.aprobado),
+			...links_productos.filter((n) => n.status_registro.creado),
 		];
 		// linksBorr --> incluye el motivo y el comentario
-		let linksBorr = links_prods.filter(
+		let linksBorr = links_productos.filter(
 			(n) => n.status_registro.sugerido_borrar || n.status_registro.borrado
 		);
 		if (linksBorr.length) {
@@ -291,7 +291,7 @@ module.exports = {
 					"ELC_id",
 					linksBorr[i].id,
 					"ELC_entidad",
-					"links_prods",
+					"links_productos",
 					["motivo"]
 				);
 				linksBorr[i].motivo = registro_borrado.motivo.nombre;
@@ -378,7 +378,7 @@ module.exports = {
 			datos = {
 				...datos,
 				[entidad_id]: prodID,
-				entidad: "links_prods",
+				entidad: "links_productos",
 				creado_por_id: userID,
 			};
 			delete datos.id;
@@ -442,7 +442,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_varias.obtenerTodosPorCampoConInclude(
-		"links_prods",
+		"links_productos",
 		funcionEntidadID(entidad),
 		prodID,
 		["status_registro", "link_tipo"]

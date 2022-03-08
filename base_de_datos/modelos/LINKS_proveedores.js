@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "links_provs";
+	const alias = "links_proveedores";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
@@ -17,12 +17,12 @@ module.exports = (sequelize, dt) => {
 		url_buscar_post_pel: {type: dt.STRING(20)},	
 	};
 	const config = {
-		tableName: "links_provs",
+		tableName: "links_proveedores",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.links_prods, {as: "links", foreignKey: "link_prov_id"});
+		entidad.hasMany(n.links_productos, {as: "links", foreignKey: "link_prov_id"});
 	};
 	return entidad;
 };

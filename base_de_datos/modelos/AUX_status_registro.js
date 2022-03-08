@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		borrado: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "status_registro_ent",
+		tableName: "aux_status_registro",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

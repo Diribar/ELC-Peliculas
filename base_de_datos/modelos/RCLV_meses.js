@@ -1,13 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "epocas_estreno";
+	const alias = "meses";
 	const columns = {
-		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
-		ano_comienzo: {type: dt.INTEGER},
-		ano_fin: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "epocas_estreno",
+		tableName: "rclv_meses",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(100)},
 	};
 	const config = {
-		tableName: "procesos_canonizacion",
+		tableName: "rclv_proc_canoniz",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

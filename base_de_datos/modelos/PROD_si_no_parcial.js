@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		no: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "si_no_parcial",
+		tableName: "prod_si_no_parcial",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

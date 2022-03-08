@@ -45,7 +45,7 @@ module.exports = (sequelize, dt) => {
 		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "edic_productos",
+		tableName: "prod_4edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

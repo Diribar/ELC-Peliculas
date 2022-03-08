@@ -26,7 +26,6 @@ module.exports = (sequelize, dt) => {
 	const config = {
 		tableName: "usuarios",
 		createdAt: "creado_en",
-		updatedAt: "editado_en",
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
@@ -37,7 +36,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.status_registro_us, {as: "status_registro", foreignKey: "status_registro_id"});
 		entidad.belongsTo(n.borrar_motivos, {as: "penaliz_motivo", foreignKey: "penaliz_motivo_id"});
 
-		entidad.hasMany(n.us_calificaciones, {as: "calificaciones",foreignKey: "usuario_id"});
+		entidad.hasMany(n.cal_registros, {as: "calificaciones",foreignKey: "usuario_id"});
 		entidad.hasMany(n.us_interes_en_prod, {as: "interes_en_prod",foreignKey: "usuario_id"});
 	};
 	return entidad;
