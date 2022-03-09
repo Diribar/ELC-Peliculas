@@ -30,8 +30,9 @@
 		<div class="input-error">
 			<select name="link_tipo_id" class="input">
 				<option value="" class="ocultar">Elejí</option>
-				<% for (tipo of links_tipos) { %>
-					<option value="<%= tipo.id %>" <%- dataEntry.link_tipo_id==tipo.id ? "selected" : "" %>><%= tipo.nombre %></option>
+				<option value="<%= links_tipos[0].id %>" <%- (dataEntry.link_tipo_id==links_tipos[0].id || entidad == "colecciones") ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
+				<% if (entidad != "colecciones") { %>
+					<option value="<%= links_tipos[1].id %>" <%- dataEntry.link_tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
 				<% } %>
 			</select>
 			<!-- Errores -->

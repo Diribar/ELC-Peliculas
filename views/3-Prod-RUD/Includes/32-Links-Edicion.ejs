@@ -25,7 +25,9 @@
 			<select name="link_tipo_id" class="input">
 				<option value="" class="ocultar">Elejí</option>
 				<option value="<%= links_tipos[0].id %>" <%- link.link_tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
-				<option value="<%= links_tipos[1].id %>" <%- link.link_tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
+				<% if (entidad != "colecciones") { %>
+					<option value="<%= links_tipos[1].id %>" <%- link.link_tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
+				<% } %>
 			</select>
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError "></span></i>
