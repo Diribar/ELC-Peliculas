@@ -2,6 +2,7 @@
 let validar = require("../../funciones/Prod-RUD/2-Validar");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
+let varias = require("../../funciones/Varias/Varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -191,7 +192,7 @@ module.exports = {
 		let respuesta = {};
 		let datosActualizar = {};
 		let link_id = req.query.id;
-		let haceUnaHora = new Date() - 1000 * 60 * 60;
+		let haceUnaHora = varias.funcionHaceUnaHora()
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) mensaje = "Faltan datos";
 		else {
