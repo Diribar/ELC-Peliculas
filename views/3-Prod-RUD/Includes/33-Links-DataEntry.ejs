@@ -1,0 +1,86 @@
+<tr id="dataEntry">
+	<!-- Url y Proveedor_id-->
+	<td id="url">
+		<div class="input-error">
+			<input name="url" type="text" autofocus class="input" value="<%- dataEntry.url ? dataEntry.url : "" %>" autocomplete="off">
+			<input name="link_prov_id" class="ocultar" value="<%- dataEntry.link_prov_id ? dataEntry.link_prov_id : "" %>">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-question prov_id"></i>
+			<i class="fa-solid fa-circle-check prov_id"></i>
+		</div>
+	</td>
+	<!-- Calidad -->
+	<td id="calidad">
+		<div class="input-error">
+			<select name="calidad" class="input">
+				<option value="" class="ocultar" <%- dataEntry.calidad=="" ? "selected" : "" %>>Elejí</option>
+				<% for (calidad of calidades) { %>
+					<option value="<%= calidad %>" <%- dataEntry.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
+				<% } %>
+				<option value="1081" <%- dataEntry.calidad=="1081" ? "selected" : "" %>>>1080</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 9"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Tipo -->
+	<td id="tipo">
+		<div class="input-error">
+			<select name="link_tipo_id" class="input">
+				<option value="" class="ocultar">Elejí</option>
+				<% for (tipo of links_tipos) { %>
+					<option value="<%= tipo.id %>" <%- dataEntry.link_tipo_id==tipo.id ? "selected" : "" %>><%= tipo.nombre %></option>
+				<% } %>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Completo -->
+	<td id="completo">
+		<div class="input-error">
+			<select name="completo" class="input">
+				<option value="" class="ocultar" <%- dataEntry.completo=="" ? "selected" : "" %>>Elejí</option>
+				<option value="1" <%- dataEntry.completo=="1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- dataEntry.completo=="0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 7"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Parte -->
+	<td id="parte">
+		<div class="input-error">
+			<input name="parte" type="number" class="input" value="<%- dataEntry.parte ? dataEntry.parte : '' %>">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Gratuito -->
+	<td id="gratuito">
+		<div class="input-error">
+			<select name="gratuito" class="input">
+				<option value="" class="ocultar" <%- dataEntry.gratuito=="" ? "selected" : "" %>>?</option>
+				<option value="1" <%- dataEntry.gratuito=="1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- dataEntry.gratuito=="0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Status -->
+	<td class="desperdicio"></td>
+	<!-- Acción -->
+	<td>
+		<label for="guardar">
+			<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
+			<button type="submit" id="guardar" class="ocultar"></button>				
+		</label>
+	</td>
+</tr>

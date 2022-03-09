@@ -32,7 +32,7 @@
 	<td class="taparMotivo"><%= link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
-		<% if (link.creado_por_id == usuario.id) { %>
+		<% if (link.creado_por_id == usuario.id && link.creado_en > haceUnaHora && link.status_registro.creado) { %>
 			<i class="fa-solid fa-trash-can out" title='Eliminar'></i>
 		<% } else { %>
 			<i class="fa-solid fa-circle-xmark out" title='Inactivar'></i>

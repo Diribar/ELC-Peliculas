@@ -209,7 +209,7 @@ module.exports = {
 				link.creado_en > haceUnaHora &&
 				link.status_registro.creado
 			) {
-				// 1. Acciones si el usuario lo creó hace menos de 1 hora --> Elimina el link
+				// 1. Acciones si el usuario lo creó, no está capturado, y 
 				BD_varias.eliminarRegistro("links_productos", link_id);
 				respuesta.mensaje = "El link fue eliminado con éxito";
 				respuesta.resultado = true;

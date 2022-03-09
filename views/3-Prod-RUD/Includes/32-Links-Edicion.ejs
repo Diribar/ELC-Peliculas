@@ -1,0 +1,76 @@
+<tr class="edicion <%- link.creado_en < haceUnaHora ? 'ocultar' : ''%>">
+	<!-- Url -->
+	<td class="logoProv" title="<%= link.url %>">
+		<img src="/imagenes/0-Logos/<%= link.proveedor_link.avatar %>" alt="<%= link.proveedor_link.nombre %>">
+		<div class="ocultar" id="link_id"><%= link.id %></div>
+	</td>
+	<!-- Calidad -->
+	<td id="calidad">
+		<div class="input-error">
+			<select name="calidad" class="input">
+				<option value="" class="ocultar" <%- link.calidad=="" ? "selected" : "" %>>Elejí</option>
+				<% for (calidad of calidades) { %>
+					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
+				<% } %>
+				<option value="1081" <%- link.calidad=="1081" ? "selected" : "" %>>>1080</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 9"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Tipo -->
+	<td id="tipo">
+		<div class="input-error">
+			<select name="link_tipo_id" class="input">
+				<option value="" class="ocultar">Elejí</option>
+				<option value="<%= links_tipos[0].id %>" <%- link.link_tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
+				<option value="<%= links_tipos[1].id %>" <%- link.link_tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Completo -->
+	<td id="completo">
+		<div class="input-error">
+			<select name="completo" class="input">
+				<option value="" class="ocultar" <%- link.completo=="" ? "selected" : "" %>>Elejí</option>
+				<option value="1" <%- link.completo=="1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.completo=="0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 7"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Parte -->
+	<td id="parte">
+		<div class="input-error">
+			<input name="parte" type="number" class="input" value="<%- link.parte ? link.parte : '' %>">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Gratuito -->
+	<td id="gratuito">
+		<div class="input-error">
+			<select name="gratuito" class="input">
+				<option value="" class="ocultar" <%- link.gratuito=="" ? "selected" : "" %>>?</option>
+				<option value="1" <%- link.gratuito=="1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.gratuito=="0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Status -->
+	<td class="taparMotivo"><%= link.status_registro.links %> </td>
+	<!-- Acción -->
+	<td>
+		<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
+	</td>
+</tr>
