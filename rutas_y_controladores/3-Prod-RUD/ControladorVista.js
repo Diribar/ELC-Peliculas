@@ -361,7 +361,6 @@ module.exports = {
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
 			haceUnaHora: varias.funcionHaceUnaHora(),
-
 		});
 	},
 	linksGuardar: async (req, res) => {
