@@ -196,7 +196,7 @@ module.exports = {
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) mensaje = "Faltan datos";
 		else {
-			let link = await BD_varias.obtenerPorIdConInclude("links_productos", link_id, [
+			let link = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
 			]);
 			if (!link) {
@@ -210,7 +210,7 @@ module.exports = {
 				link.status_registro.creado
 			) {
 				// 1. Acciones si el usuario lo creó, no está capturado, y 
-				BD_varias.eliminarRegistro("links_productos", link_id);
+				BD_varias.eliminarRegistro("links_originales", link_id);
 				respuesta.mensaje = "El link fue eliminado con éxito";
 				respuesta.resultado = true;
 			} else {
@@ -237,18 +237,18 @@ module.exports = {
 					)
 						.then((n) => n.toJSON())
 						.then((n) => n.duracion);
-					// 2. Actualizar la BD de 'links_productos'
+					// 2. Actualizar la BD de 'links_originales'
 					datosActualizar = {
 						editado_por_id: req.session.usuario.id,
 						editado_en: new Date(),
 						status_registro_id: status_id,
 					};
-					BD_varias.actualizarRegistro("links_productos", link_id, datosActualizar);
+					BD_varias.actualizarRegistro("links_originales", link_id, datosActualizar);
 					// 3. Actualizar la BD de 'registros_borrados'
 					datosActualizar = {
 						entidad: "registros_borrados",
 						elc_id: link_id,
-						elc_entidad: "links_productos",
+						elc_entidad: "links_originales",
 						usuario_sancionado_id: link.creado_por_id,
 						evaluado_por_usuario_id: req.session.usuario.id,
 						motivo_id: req.query.motivo_id,

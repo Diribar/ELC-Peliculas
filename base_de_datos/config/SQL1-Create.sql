@@ -845,7 +845,7 @@ VALUES
 (1, 'Trailer', 0, 1),
 (2, 'Película', 1, 0)
 ;
-CREATE TABLE links_productos (
+CREATE TABLE links_1productos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
@@ -889,7 +889,7 @@ CREATE TABLE links_productos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_productos (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id)
+INSERT INTO links_1productos (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id)
 VALUES 
 (1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,NULL,2,11,1,10),
 (2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,1,2,11,1,10),
@@ -899,6 +899,31 @@ VALUES
 (6,NULL,NULL,1,'www/fefe',144,1,NULL,1,1,0,1),
 (7,NULL,NULL,1,'weww/fefe',144,1,NULL,1,1,0,10)
 ;
+CREATE TABLE links_2edicion (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	elc_id INT UNSIGNED NOT NULL,
+
+	calidad SMALLINT NULL,
+	completo BOOLEAN DEFAULT 1,
+	parte TINYINT UNSIGNED NULL,
+	link_tipo_id TINYINT UNSIGNED NOT NULL,
+	link_prov_id TINYINT UNSIGNED NOT NULL,
+	gratuito BOOLEAN NOT NULL,
+
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	status_registro_id TINYINT UNSIGNED DEFAULT 2,
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME DEFAULT NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (elc_id) REFERENCES links_1productos(id),
+	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
+	FOREIGN KEY (link_prov_id) REFERENCES links_proveedores(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;
 CREATE TABLE cal_21fe_valores (
