@@ -247,11 +247,11 @@ module.exports = {
 		if (!registroProd) return res.send("Producto no encontrado");
 		// Obtener el usuario
 		let usuario = req.session.req.session.usuario;
-		// Unir a cada link original la edición del usuario si existe
+		// Fusionar la edición del usuario (si existe) con el link original 
 		links_originales = await fusionarLinkOriginalConEdicion(links_originales, usuario, includes);
-		// Obtener los links del producto. Se incluyen:
+		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(links_originales);
-		// Configurar el Producto, el Título y el avatar
+		// Configurar el producto, el título y el avatar
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
 		let avatar = await obtenerAvatar(entidad, prodID, usuario, registroProd);
@@ -362,7 +362,6 @@ module.exports = {
 let funcionEntidadID = (entidad) => {
 	return entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 };
-
 let productoConLinksWeb = async (entidad, prodID) => {
 	// Obtener el producto con include a links
 	let producto = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
@@ -393,8 +392,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
-	console.log(si, talVez, no);
-
+	
 	// Acciones si existen 'linksActivos'
 	if (linksActivos.length) {
 		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
@@ -417,7 +415,6 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	BD_varias.actualizarRegistro(entidad, prodID, datos);
 	return;
 };
-
 let obtenerInfoDeBD = (entidad, prodID, includes) => {
 	// Obtener el 'campo_id'
 	let campo_id =
@@ -439,7 +436,6 @@ let obtenerInfoDeBD = (entidad, prodID, includes) => {
 		BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 	]);
 };
-
 let fusionarLinkOriginalConEdicion = async (links_originales, usuario, includes) => {
 	for (let i = 0; i < links_originales.length; i++) {
 		link_edicion = await BD_varias.obtenerPor2CamposConInclude(
@@ -452,12 +448,11 @@ let fusionarLinkOriginalConEdicion = async (links_originales, usuario, includes)
 		).then((n) => (n ? n.toJSON() : ""));
 		if (link_edicion) {
 			delete link_edicion.id;
+			links_originales[i] = {...links_originales[i], ...link_edicion};
 		}
-		links_originales[i] = {...links_originales[i], ...link_edicion};
 	}
 	return links_originales;
 };
-
 let ActivosInactivos = async (links_originales) => {
 	if (!links_originales.length) return "", "";
 	// linksActivos: Aprobados + Creados por el usuario
