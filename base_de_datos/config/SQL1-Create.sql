@@ -156,7 +156,7 @@ CREATE TABLE USUARIOS (
 	autorizado_fa BOOLEAN DEFAULT 0,
 	aut_data_entry BOOLEAN DEFAULT 0,
 
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
@@ -220,7 +220,7 @@ INSERT INTO aux_status_registro (id, orden, productos, links, creado) VALUES (1,
 INSERT INTO aux_status_registro (id, orden, productos, links, editado) VALUES (2, 2, 'Editado', 'Editado', 1);
 INSERT INTO aux_status_registro (id, orden, productos, links, aprobado) VALUES (3, 3, 'Aprobado', 'Aprobado', 1);
 INSERT INTO aux_status_registro (id, orden, productos, links, sugerido_borrar) VALUES (4, 4, 'Sugerido p/borrar', 'Sugerido p/inactivar', 1);
-INSERT INTO aux_status_registro (id, orden, productos, links, sugerido_desborrar) VALUES (5, 5, 'Sugerido p/desborrar', 'Sugerido p/activar', 1);
+INSERT INTO aux_status_registro (id, orden, productos, links, sugerido_desborrar) VALUES (5, 5, 'Sugerido p/desborrar', 'Sugerido p/reactivar', 1);
 INSERT INTO aux_status_registro (id, orden, productos, links, borrado) VALUES (6, 6, 'Borrado', 'Inactivado', 1);
 
 /* TABLAS AUXILIARES PARA RCLV */;
@@ -272,7 +272,7 @@ CREATE TABLE rclv_1personajes (
 	rol_iglesia_id VARCHAR(3) NULL,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -323,7 +323,7 @@ CREATE TABLE rclv_2hechos (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -367,7 +367,7 @@ CREATE TABLE rclv_3valores (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -483,7 +483,7 @@ CREATE TABLE prod_1peliculas (
 	nombre_castellano VARCHAR(50) NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	duracion SMALLINT UNSIGNED NULL,
-	aux_paises_id VARCHAR(18) NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
@@ -507,7 +507,7 @@ CREATE TABLE prod_1peliculas (
 	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -544,7 +544,7 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_1peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, aux_paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, capturado_por_id)
+INSERT INTO prod_1peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, capturado_por_id)
 VALUES 
 (1,'218275',NULL,'tt1445208','TMDB','The Letters','Cartas de la Madre Teresa',2015,125,'US','en','William Riead','William Riead','','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/8qnZycQWka7I8TbZ7UcvJ6I3weB.jpg',100,75,100,92,10,1,10),
 (2,'109429',NULL,'tt0327086','TMDB','Il Papa buono','El Santo Padre Juan XXIII',2003,180,'IT','en','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/sRtTl8tVhBcE7KUGGWHOqx5LAeC.jpg',100,75,100,92,10,1,10),
@@ -562,7 +562,7 @@ CREATE TABLE prod_2colecciones (
 	nombre_castellano VARCHAR(100) NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	ano_fin SMALLINT UNSIGNED NULL,
-	aux_paises_id VARCHAR(18) NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
 	cant_capitulos SMALLINT UNSIGNED NULL,
@@ -587,7 +587,7 @@ CREATE TABLE prod_2colecciones (
 	calificacion TINYINT UNSIGNED NOT NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -623,7 +623,7 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, aux_paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, capturado_por_id)
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, capturado_por_id)
 VALUES
 (1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,10),
 (2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/agSYE5U98pz8OLNI6C6d2NQvn6h.jpg',75,75,100,80,10,10)
@@ -641,7 +641,7 @@ CREATE TABLE prod_3capitulos (
 	nombre_castellano VARCHAR(50) NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	duracion TINYINT UNSIGNED NULL,
-	aux_paises_id VARCHAR(18) NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NOT NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
@@ -664,7 +664,7 @@ CREATE TABLE prod_3capitulos (
 	calificacion TINYINT UNSIGNED NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -702,12 +702,12 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, aux_paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
+INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
 VALUES
 (1,1,1,1,'38516','tt0435100','TMDB','Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa',2005,195,'PL, IT','it','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg',1,1,'CFC',4,5,2),
 (2,1,1,2,'75470','tt0495039','TMDB','Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre',2006,184,'IT, PL, CA','it','Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg',1,1,'CFC',4,5,2)
 ;
-INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, aux_paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
+INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
 VALUES
 (3,2,1,1,'16250','tt0345591','TMDB','Love Comes Softly','El amor llega suavemente',2003,84,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','Ken Thorne, Michael Wetherwax, William Ashford','Katherine Heigl (Marty Claridge), Dale Midkiff (Clark Davis), Skye McCole Bartusiak (Missie Davis), Corbin Bernsen (Ben Graham), Theresa Russell (Sarah Graham), Oliver Macready (Aaron Claridge), Tiffany Amber Knight (Laura Graham), Nick Scoggin (Reverend Johnson), Rutanya Alda (Wanda Marshall), Jaimz Woolvett (Wagon Train Scout), Janet Rotblatt (Woman in Wagon), Adam Loeffler (Clint Graham), David Fine (Jed Larsen (uncredited)), Dani Goldman (Young Marty (uncredited))','Larry Levinson Productions, Hallmark Entertainment, Alpine Medien Productions','Estando de ruta hacia su nuevo hogar en las grandes llanuras del oeste, una joven se queda repentinamente viuda en medio del largo viaje en carreta. Con una dura temporada invernal acechando y sin recursos para regresar, la joven acepta el trato que le ofrece un granjero: casarse con él para ocuparse de su hija, a cambio de cobijo y de un pasaje de vuelta en primavera. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eDxmL7CCHWCcFpbdS6yVnspOjV1.jpg',NULL,1,'VPC',10,4,2),
 (4,2,1,2,'20641','tt0402348','TMDB','Love\'s Enduring Promise','El amor lo puede todo',2004,95,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','','January Jones (Missie Davis), Logan Bartholomew (Willie / Nate), Dale Midkiff (Clark Davis), Katherine Heigl (Marty Claridge), Kesun Loder (Aaron Davis), Logan Arens (Arnie Davis), Mackenzie Astin (Grant Thomas), Cliff DeYoung (Zeke), Matthew Peters (Brian Murphy), Michael Bartel (Willie at 15), Dominic Scott Kay (Mattie), Blaine Pate (Sam), Cara DeLizia (Annie Walker), Robert F. Lyons (Doc Watkins), Douglas Fisher (Edward Trumball), E.J. Callahan (Asa), Katia Coe (Clara), Gary Sievers (Ranxher)',NULL,'Una familia de granjeros del Oeste, cuya subsistencia depende de sus cosechas, ve cómo un accidente del cabeza de familia, que se verá obligado a guardar cama, pone en grave peligro su situación económica. Su hija, una maestra de escuela, se ve obligada a realizar las duras labores de la granja, hasta que un forastero se ofrece a ayudarles y a curar al herido... (Fuente: TMDB)','https://image.tmdb.org/t/p/original/lwbeyOtRpn1izaRnVVhDSJGwHRu.jpg',NULL,1,'VPC',10,4,2),
@@ -737,7 +737,7 @@ CREATE TABLE prod_4edicion (
 	duracion SMALLINT UNSIGNED NULL,
 	ano_estreno SMALLINT UNSIGNED NULL,
 	ano_fin SMALLINT UNSIGNED NULL,
-	aux_paises_id VARCHAR(18) NULL,
+	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
 	cant_capitulos SMALLINT UNSIGNED NULL,
@@ -758,7 +758,7 @@ CREATE TABLE prod_4edicion (
 	valor_id SMALLINT UNSIGNED NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT NULL,
@@ -800,7 +800,7 @@ UPDATE prod_4edicion SET produccion = 'Coproducción Italia-Alemania', sinopsis 
 UPDATE prod_4edicion SET musica = 'Marco Frisina', guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
 UPDATE prod_4edicion SET nombre_original = 'Love Comes Softly', nombre_castellano = 'El amor llega suavemente', musica = 'Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon' WHERE id = 7;
 
-/* TABLAS AUXILIARES PARA LINKS */;
+/* LINKS */;
 CREATE TABLE links_proveedores (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -845,8 +845,6 @@ VALUES
 (1, 'Trailer', 0, 1),
 (2, 'Película', 1, 0)
 ;
-
-/* LINKS */;
 CREATE TABLE links_productos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pelicula_id INT UNSIGNED NULL,
@@ -863,7 +861,7 @@ CREATE TABLE links_productos (
 	gratuito BOOLEAN NOT NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
@@ -1017,7 +1015,7 @@ CREATE TABLE borr_1registros (
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	status_registro_id TINYINT UNSIGNED NOT NULL,	
-	creado_en DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_sancionado_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_usuario_id) REFERENCES usuarios(id),

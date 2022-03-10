@@ -22,7 +22,9 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form #dataEntry input, #datos form #dataEntry select {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
+#datos form #dataEntry input, #datos form #dataEntry select,
+#datos form .edicion input, #datos form .edicion select
+    {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
 
 /* Formato del campo url */
 #datos form #url .input-error {text-align: left; width: 130px;}
@@ -40,8 +42,9 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 #datos form .desperdicio .input-error .fa-circle-check {display: none;}
 
 /* Quitar la flecha de los select */
-#datos form #dataEntry select::-ms-expand {display: none;}
-#datos form #dataEntry select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+#datos form #dataEntry select::-ms-expand, #datos form .edicion select::-ms-expand {display: none;}
+#datos form #dataEntry select, #datos form .edicion select
+ {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
 #datos form .input-error input[type='number']::-webkit-outer-spin-button,

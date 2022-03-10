@@ -1,6 +1,5 @@
 window.addEventListener("load", async () => {
 	// Variables
-	let colecciones = new URL(window.location.href).searchParams.get("entidad") != "colecciones";
 	let form = document.querySelector("#datos form");
 	let guardar = document.querySelector("form #dataEntry .fa-floppy-disk");
 	// Form - Campos en general
@@ -148,10 +147,10 @@ window.addEventListener("load", async () => {
 	};
 	let impactoEnTipo = (proveedor) => {
 		// Adecuaciones
-		if (!proveedor.trailer || !proveedor.pelicula || colecciones) {
+		if (!proveedor.trailer || !proveedor.pelicula) {
 			tipo.classList.add("desperdicio");
 			tipoInput.classList.add("ocultar");
-			tipoInput.value = proveedor.trailer || colecciones ? 1 : 2;
+			tipoInput.value = proveedor.trailer ? 1 : 2;
 		} else {
 			tipo.classList.remove("desperdicio");
 			tipoInput.classList.remove("ocultar");
@@ -159,7 +158,7 @@ window.addEventListener("load", async () => {
 	};
 	let impactosEnCompletoParte = (proveedor) => {
 		// Cambios en el campo 'completo'
-		if (proveedor.trailer || proveedor.peli_siempre_completa || colecciones) {
+		if (!proveedor.pelicula || proveedor.peli_siempre_completa) {
 			completo.classList.add("desperdicio");
 			completoInput.classList.add("ocultar");
 			!proveedor.pelicula
@@ -172,7 +171,7 @@ window.addEventListener("load", async () => {
 			completoInput.disabled = false;
 		}
 		// Cambios en el campo 'parte'
-		if (proveedor.trailer || proveedor.peli_siempre_completa || colecciones) {
+		if (!proveedor.pelicula || proveedor.peli_siempre_completa) {
 			parte.classList.add("desperdicio");
 			parteInput.classList.add("ocultar");
 			parteInput.disabled = true;
