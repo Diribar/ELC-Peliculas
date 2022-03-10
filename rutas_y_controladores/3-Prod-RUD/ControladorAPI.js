@@ -232,26 +232,6 @@ module.exports = {
 	},
 };
 
-let obtenerLinksFusionados = async (link_id, usuario) => {
-	// Obtener el 'campo_id'
-	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
-		"status_registro",
-	]).then((n) => n.toJSON());
-	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
-		"links_edicion",
-		"elc_id",
-		link_id,
-		"editado_por_id",
-		usuario.id,
-		["status_registro"]
-	).then((n) => (n ? n.toJSON() : ""));
-	if (link_edicion) {
-		delete link_edicion.id;
-		link_original = {...link_original, ...link_edicion};
-	}
-	return link_original;
-};
-
 let funcionInactivar = async (motivo_id, usuario, link) => {
 	// 1. Obtener datos clave
 	let datosParaBD = {};
@@ -274,7 +254,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Preparar los datos
 	datosParaBD = {
 		entidad: "links_edicion",
-		elc_id:link.id,
+		elc_id: link.id,
 		editado_por_id: usuario.id,
 		editado_en: new Date(),
 		status_registro_id: status_id,
@@ -296,4 +276,25 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 		status_registro_id: status_id,
 	};
 	BD_varias.agregarRegistro(datosParaBD);
+};
+
+let obtenerLinksFusionados = async (link_id, usuario) => {
+	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
+		"status_registro",
+	]).then((n) => n.toJSON());
+	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+		"links_edicion",
+		"elc_id",
+		link_id,
+		"editado_por_id",
+		usuario.id,
+		["status_registro"]
+	).then((n) => (n ? n.toJSON() : ""));
+	if (link_edicion) {
+		delete link_edicion.id;
+		link_original = {...link_original, ...link_edicion};
+	}
+	// Quitarle los campos 'null'
+	link_original = this.quitarLosCamposNull(link_original);
+	return link_original;
 };

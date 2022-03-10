@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	let colecciones = new URL(window.location.href).searchParams.get("entidad") == "colecciones";
 	let form = document.querySelector("#datos form");
 	// Form - Campos en general
-	let inputs = document.querySelectorAll("#dataEntry .input");
+	let inputs = document.querySelectorAll("form .input");
 	console.log(inputs);
 	let campos = Array.from(inputs).map((n) => n.name);
 	// Sectores - Campos particulares
@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 
 	form.addEventListener("submit", (e) => {
 		if (guardarAgregar.classList.contains("inactivo")) {
-			e.preventDefault();
+			// e.preventDefault();
 			console.log(123);
 		}
 	});

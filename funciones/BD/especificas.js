@@ -51,17 +51,15 @@ module.exports = {
 	},
 
 	obtenerCapitulos: (coleccion_id, temporada) => {
-		return (
-			db.capitulos
-				.findAll({
-					where: {coleccion_id: coleccion_id, temporada: temporada},
-				})
-				.then((n) => n.map((m) => m.toJSON()))
-				.then((n) => n.map((m) => m.capitulo))
-		);
+		return db.capitulos
+			.findAll({
+				where: {coleccion_id: coleccion_id, temporada: temporada},
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			.then((n) => n.map((m) => m.capitulo));
 	},
 
-	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
+	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -79,19 +77,14 @@ module.exports = {
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then(
-			(n) => {
-				return n ? n.toJSON() : "";
-			}
-		);
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) => {
+			return n ? n.toJSON() : "";
+		});
 		// Obtener el producto EDITADO
-		let prodEditado = {};
+		let prodEditado = "";
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			let campos = Object.keys(prodOriginal);
-			for (i = campos.length - 1; i >= 0; i--) {
-				if (prodOriginal[campos[i]] === null) delete prodOriginal[campos[i]];
-			}
+			prodOriginal = this.quitarLosCamposNull(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_varias.obtenerPor3CamposConInclude(
 				"productos_edic",
@@ -105,19 +98,23 @@ module.exports = {
 			).then((n) => {
 				return n ? n.toJSON() : "";
 			});
-			if (!prodEditado) prodEditado = {};
-			else {
+			if (prodEditado) {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
 				// Quitarle los campos 'null'
-				let campos = Object.keys(prodEditado);
-				for (i = campos.length - 1; i >= 0; i--) {
-					if (prodEditado[campos[i]] === null) delete prodEditado[campos[i]];
-				}
+				prodEditado = this.quitarLosCamposNull(prodEditado);
 			}
 			prodEditado = {...prodOriginal, ...prodEditado};
 		}
 		return [prodOriginal, prodEditado];
+	},
+
+	quitarLosCamposNull: (objeto) => {
+		let campos = Object.keys(objeto);
+		for (i = campos.length - 1; i >= 0; i--) {
+			if (objeto[campos[i]] === null) delete objeto[campos[i]];
+		}
+		return objeto;
 	},
 
 	actualizarRCLV: async (datos) => {

@@ -23,8 +23,8 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "elc_id"});
-		entidad.belongsTo(n.links_tipos, {as: "tipo_link", foreignKey: "link_tipo_id"});
-		entidad.belongsTo(n.links_proveedores, {as: "proveedor_link", foreignKey: "link_prov_id"});
+		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
+		entidad.belongsTo(n.links_proveedores, {as: "link_prov", foreignKey: "link_prov_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
