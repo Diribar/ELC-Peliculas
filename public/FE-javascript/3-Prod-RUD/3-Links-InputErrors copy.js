@@ -2,9 +2,9 @@ window.addEventListener("load", async () => {
 	// Variables
 	let colecciones = new URL(window.location.href).searchParams.get("entidad") == "colecciones";
 	let form = document.querySelector("#datos form");
-	let guardarAgregar = document.querySelector("form #dataEntry .fa-floppy-disk");
 	// Form - Campos en general
 	let inputs = document.querySelectorAll("#dataEntry .input");
+	console.log(inputs);
 	let campos = Array.from(inputs).map((n) => n.name);
 	// Sectores - Campos particulares
 	let completo = document.querySelector("#dataEntry #completo");
