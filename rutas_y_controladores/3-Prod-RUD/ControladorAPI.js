@@ -30,10 +30,9 @@ module.exports = {
 	obtenerCapAntPostID: async (req, res) => {
 		let {id} = req.query;
 		// Obtener la coleccion_id, la temporada y el capítulo
-		let {coleccion_id, temporada, capitulo} = await BD_varias.obtenerPorId(
-			"capitulos",
-			id
-		).then((n) => n.toJSON());
+		let {coleccion_id, temporada, capitulo} = await BD_varias.obtenerPorId("capitulos", id).then((n) =>
+			n.toJSON()
+		);
 		// Averiguar los datos del capítulo anterior **********************
 		// Obtener los datos del capítulo anterior (temporada y capítulo)
 		let tempAnt = temporada;
@@ -164,9 +163,7 @@ module.exports = {
 	obtenerDeReqSession: async (req, res) => {
 		let {entidad, id: prodID} = req.query;
 		let prodSession =
-			req.session.edicion &&
-			req.session.edicion.entidad == entidad &&
-			req.session.edicion.id == prodID
+			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
 				? req.session.edicion
 				: "";
 		return res.json(prodSession);
@@ -186,82 +183,117 @@ module.exports = {
 	},
 	linksEliminar: async (req, res) => {
 		// Proceso
-		// 1. Si el usuario lo creó hace menos de 1 hora, lo elimina definitivamente
-		// 2. En los demás casos, debe explicar el motivo y se inactiva
+		// - Con "captura válida", no se pueden tocar (borrar)
+		//		- Sin "captura válida", links creados por el usuario y con status 'creado' --> se eliminan definitivamente
+		// 			- Los links con status 'aprobado' --> se inactivan (motivo)
+		//			- Sin "captura válida", links creados por otro autor --> se inactivan (motivo)
+
 		// Definir las variables
 		let respuesta = {};
-		let datosActualizar = {};
-		let link_id = req.query.id;
-		let haceUnaHora = varias.funcionHaceUnaHora()
+		let {link_id, motivo_id} = req.query;
+		let haceUnaHora = varias.funcionHaceUnaHora();
+		let usuario = req.session.usuario;
 		// Descartar que no hayan errores con el 'link_id'
-		if (!link_id) mensaje = "Faltan datos";
+		if (!link_id) respuesta.mensaje = "Faltan datos";
 		else {
 			let link = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
-			]);
+			]).then((n) => n.toJSON());
 			if (!link) {
 				// Consecuencias si el link no existe en la BD
 				respuesta.mensaje = "El link no existe en la base de datos";
 				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (
-				link.creado_por_id == req.session.usuario.id &&
-				link.creado_en > haceUnaHora &&
-				link.status_registro.creado
-			) {
-				// 1. Acciones si el usuario lo creó, no está capturado, y 
+			} else if (link.capturado_en > haceUnaHora) {
+				// Con "captura válida", no se pueden tocar (borrar)
+				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
+				respuesta.resultado = false;
+				respuesta.reload = true;
+			} else if (link.creado_por_id == usuario.id && link.status_registro.creado) {
+				// Sin "captura válida", links creados por el usuario y con status 'creado' --> se eliminan definitivamente
 				BD_varias.eliminarRegistro("links_originales", link_id);
 				respuesta.mensaje = "El link fue eliminado con éxito";
 				respuesta.resultado = true;
+			} else if (!motivo_id) {
+				// Los demás casos son:
+				//		- Links con status 'aprobado'
+				//		- Links sin "captura válida" y creados por otro autor
+				// 1. Si no figura el motivo --> Abortar con mensaje de error
+				respuesta.mensaje = "Falta especificar el motivo";
+				respuesta.resultado = false;
 			} else {
-				// 2. En los demás casos, debe explicar el motivo y se inactiva
-				// Si no figura el motivo --> Abortar con mensaje de error
-				if (!req.query.motivo_id) {
-					respuesta.mensaje = "Falta especificar el motivo";
-					respuesta.resultado = false;
-				} else {
-					// Si figura el motivo --> continuar hasta 'inactivar'
-					// 1. Obtener datos clave
-					// Obtener el status_id de 'sugerido para borrar'
-					let status_id = await BD_varias.obtenerPorCampo(
-						"status_registro_ent",
-						"sugerido_borrar",
-						1
-					)
-						.then((n) => n.toJSON())
-						.then((n) => n.id);
-					// Obtener la duración
-					let duracion = await BD_varias.obtenerPorId(
-						"motivos_para_borrar",
-						req.query.motivo_id
-					)
-						.then((n) => n.toJSON())
-						.then((n) => n.duracion);
-					// 2. Actualizar la BD de 'links_originales'
-					datosActualizar = {
-						editado_por_id: req.session.usuario.id,
-						editado_en: new Date(),
-						status_registro_id: status_id,
-					};
-					BD_varias.actualizarRegistro("links_originales", link_id, datosActualizar);
-					// 3. Actualizar la BD de 'registros_borrados'
-					datosActualizar = {
-						entidad: "registros_borrados",
-						elc_id: link_id,
-						elc_entidad: "links_originales",
-						usuario_sancionado_id: link.creado_por_id,
-						evaluado_por_usuario_id: req.session.usuario.id,
-						motivo_id: req.query.motivo_id,
-						duracion: duracion,
-						status_registro_id: status_id,
-					};
-					BD_varias.agregarRegistro(datosActualizar);
-					// 4. Fin
-					respuesta.mensaje = "El link fue inactivado con éxito";
-					respuesta.resultado = true;
-				}
+				// Si explica el motivo, se inactiva
+				funcionInactivar(motivo_id, usuario, link);
+				respuesta.mensaje = "El link fue inactivado con éxito";
+				respuesta.resultado = true;
 			}
 		}
 		return res.json(respuesta);
 	},
+};
+
+let obtenerLinksFusionados = async (link_id, usuario) => {
+	// Obtener el 'campo_id'
+	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
+		"status_registro",
+	]).then((n) => n.toJSON());
+	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+		"links_edicion",
+		"elc_id",
+		link_id,
+		"editado_por_id",
+		usuario.id,
+		["status_registro"]
+	).then((n) => (n ? n.toJSON() : ""));
+	if (link_edicion) {
+		delete link_edicion.id;
+		link_original = {...link_original, ...link_edicion};
+	}
+	return link_original;
+};
+
+let funcionInactivar = async (motivo_id, usuario, link) => {
+	// 1. Obtener datos clave
+	let datosParaBD = {};
+	// Obtener la duración
+	let duracion = await BD_varias.obtenerPorId("motivos_para_borrar", motivo_id)
+		.then((n) => n.toJSON())
+		.then((n) => n.duracion);
+	// Obtener el status_id de 'sugerido para borrar'
+	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "sugerido_borrar", 1)
+		.then((n) => n.toJSON())
+		.then((n) => n.id);
+	// Averiguar si ya existe una edición del usuario
+	let link_edicion = await BD_varias.obtenerPor2Campos(
+		"links_edicion",
+		"elc_id",
+		link.id,
+		"editado_por_id",
+		usuario.id
+	).then((n) => (n ? n.toJSON() : ""));
+	// Preparar los datos
+	datosParaBD = {
+		entidad: "links_edicion",
+		elc_id:link.id,
+		editado_por_id: usuario.id,
+		editado_en: new Date(),
+		status_registro_id: status_id,
+	};
+	link_edicion
+		? // Actualiza el registro 'edicion' en la BD
+		  BD_varias.actualizarRegistro("links_edicion", link_edicion.id, datosParaBD)
+		: // Crea un registro 'edicion' en la BD
+		  BD_varias.agregarRegistro(datosParaBD);
+	// 3. Actualiza la BD de 'registros_borrados'
+	datosParaBD = {
+		entidad: "registros_borrados",
+		elc_id: link.id,
+		elc_entidad: "links_originales",
+		usuario_sancionado_id: link.creado_por_id,
+		evaluado_por_usuario_id: usuario.id,
+		motivo_id: motivo_id,
+		duracion: duracion,
+		status_registro_id: status_id,
+	};
+	BD_varias.agregarRegistro(datosParaBD);
 };
