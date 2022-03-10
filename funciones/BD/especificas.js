@@ -84,7 +84,7 @@ module.exports = {
 		let prodEditado = {};
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			prodOriginal = this.quitarLosCamposNull(prodOriginal);
+			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_varias.obtenerPor3CamposConInclude(
 				"productos_edic",
@@ -102,17 +102,17 @@ module.exports = {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
 				// Quitarle los campos 'null'
-				prodEditado = this.quitarLosCamposNull(prodEditado);
+				prodEditado = this.quitarLosCamposSinContenido(prodEditado);
 			}
 			prodEditado = {...prodOriginal, ...prodEditado};
 		}
 		return [prodOriginal, prodEditado];
 	},
 
-	quitarLosCamposNull: (objeto) => {
+	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
-			if (objeto[campos[i]] === null) delete objeto[campos[i]];
+			if (objeto[campos[i]] === null || objeto[campos[i]]=="") delete objeto[campos[i]];
 		}
 		return objeto;
 	},

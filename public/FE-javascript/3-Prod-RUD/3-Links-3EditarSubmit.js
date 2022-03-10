@@ -26,11 +26,11 @@ window.addEventListener("load", async () => {
 		let botonGuardar = botonesGuardar[i];
 		botonGuardar.addEventListener("click", () => {
 			// Averiguar si está inactivo --> return
-			if (botonGuardar.classList.contains("inactivo")) return;
+			// if (botonGuardar.classList.contains("inactivo")) return;
 			// Agregar el valor al numeroFila
-			numeroFila.value=i
+			numeroFila.value = i;
 			// submit --> form.submit();
-			form.submit()
+			form.submit();
 		});
 	}
 });
