@@ -81,7 +81,7 @@ module.exports = {
 			return n ? n.toJSON() : "";
 		});
 		// Obtener el producto EDITADO
-		let prodEditado = "";
+		let prodEditado = {};
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposNull(prodOriginal);
