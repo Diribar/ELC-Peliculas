@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#datos form");
 	// Form - Campos en general
 	let inputs = document.querySelectorAll("form .input");
-	console.log(inputs);
+	//console.log(inputs);
 	let campos = Array.from(inputs).map((n) => n.name);
 	// Sectores - Campos particulares
 	let completo = document.querySelector("#dataEntry #completo");

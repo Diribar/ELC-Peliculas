@@ -4,7 +4,6 @@ let BD_especificas = require("../../funciones/BD/Especificas");
 let varias = require("../../funciones/Varias/Varias");
 let variables = require("../../funciones/Varias/Variables");
 let validar = require("../../funciones/Prod-RUD/2-Validar");
-const {camposDD} = require("../../funciones/Varias/Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -235,14 +234,14 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!Producto) return res.send("Producto no encontrado");
 		// Obtener información de BD
-		let [links_originales, links_proveedores, links_tipos] = await obtenerInfoDeLinks(
+		let [linksOriginales, links_proveedores, links_tipos] = await obtenerInfoDeLinks(
 			entidad,
 			prodID,
 			userID,
 			includes
 		);
 		// Separar entre 'activos' e 'inactivos'
-		let [linksActivos, linksInactivos] = await ActivosInactivos(links_originales);
+		let [linksActivos, linksInactivos] = await ActivosInactivos(linksOriginales);
 		// Configurar el producto, el título y el avatar
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
@@ -263,7 +262,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		//return res.send(motivos);
+		//return res.send([1, linksOriginales, linksActivos]);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -412,7 +411,7 @@ let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 	let campo_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 	return Promise.all([
-		// links_originales
+		// linksOriginales
 		BD_varias.obtenerTodosPorCampoConInclude("links_originales", campo_id, prodID, includes)
 			.then((n) => n.map((m) => m.toJSON()))
 			.then(async (n) => await fusionarLinksOriginalesConSuEdicion(n, userID, includes)),
@@ -422,31 +421,31 @@ let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 		BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 	]);
 };
-let fusionarLinksOriginalesConSuEdicion = async (links_originales, userID, includes) => {
-	for (let i = 0; i < links_originales.length; i++) {
-		link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+let fusionarLinksOriginalesConSuEdicion = async (linksOriginales, userID, includes) => {
+	for (let i = 0; i < linksOriginales.length; i++) {
+		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
 			"links_edicion",
 			"elc_id",
-			links_originales[i].id,
+			linksOriginales[i].id,
 			"editado_por_id",
 			userID,
 			includes
-		).then((n) => (n ? n.toJSON() : ""));
-		if (link_edicion) {
-			delete link_edicion.id;
-			links_originales[i] = {...links_originales[i], ...link_edicion};
+		).then((n) => (n ? n.toJSON() : []));
+		if (linkEditado) {
+			delete linkEditado.id;
+			linksOriginales[i] = {...linksOriginales[i], ...linkEditado};
 		}
 	}
-	return links_originales;
+	return linksOriginales;
 };
-let ActivosInactivos = async (links_originales) => {
-	if (!links_originales.length) return "", "";
+let ActivosInactivos = async (linksOriginales) => {
+	if (!linksOriginales.length) return [[], []];
 	// linksActivos: Aprobados + Creados por el usuario
-	let linksActivos = links_originales.filter(
+	let linksActivos = linksOriginales.filter(
 		(n) => n.status_registro.creado || n.status_registro.editado || n.status_registro.aprobado
 	);
 	// linksInactivos --> incluye el motivo
-	let linksInactivos = links_originales.filter(
+	let linksInactivos = linksOriginales.filter(
 		(n) =>
 			n.status_registro.sugerido_borrar ||
 			n.status_registro.sugerido_desborrar ||
