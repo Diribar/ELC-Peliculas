@@ -1,10 +1,10 @@
 window.addEventListener("load", async () => {
 	// Variables
-	let colecciones = new URL(window.location.href).searchParams.get("entidad") != "colecciones";
+	let colecciones = new URL(window.location.href).searchParams.get("entidad") == "colecciones";
 	let form = document.querySelector("#datos form");
-	let guardar = document.querySelector("form #dataEntry .fa-floppy-disk");
 	// Form - Campos en general
 	let inputs = document.querySelectorAll("#dataEntry .input");
+	console.log(inputs);
 	let campos = Array.from(inputs).map((n) => n.name);
 	// Sectores - Campos particulares
 	let completo = document.querySelector("#dataEntry #completo");
@@ -12,6 +12,7 @@ window.addEventListener("load", async () => {
 	let calidad = document.querySelector("#dataEntry #calidad");
 	let tipo = document.querySelector("#dataEntry #tipo");
 	let gratuito = document.querySelector("#dataEntry #gratuito");
+	let guardar = document.querySelector("form #dataEntry .fa-floppy-disk");
 	// Form - Inputs particulares
 	let urlInput = document.querySelector("#dataEntry input[name='url'");
 	let prov_idInput = document.querySelector("#dataEntry input[name='link_prov_id'");
@@ -65,6 +66,13 @@ window.addEventListener("load", async () => {
 		botonGuardar();
 	});
 
+	form.addEventListener("submit", (e) => {
+		if (guardarAgregar.classList.contains("inactivo")) {
+			e.preventDefault();
+			console.log(123);
+		}
+	});
+
 	// FUNCIONES ---------------------------------------------------------------
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async () => {
@@ -92,12 +100,7 @@ window.addEventListener("load", async () => {
 		// Obtener ambos índices
 		let indice1 = valor.indexOf("www.");
 		let indice2 = valor.indexOf("//");
-		let url =
-			indice1 != -1
-				? valor.slice(indice1 + 4)
-				: indice2 != -1
-				? valor.slice(indice2 + 2)
-				: valor;
+		let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
 		// Si es YOUTUBE, quitarle el sufijo
 		if (url.slice(0, "youtube.com".length) == "youtube.com" && url.includes("&"))
 			url = url.slice(0, url.lastIndexOf("&t="));
@@ -120,9 +123,7 @@ window.addEventListener("load", async () => {
 		// Obtener todos los proveedores
 		let proveedores = await fetch(rutaObtenerProv).then((n) => n.json());
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-		let aux = proveedores
-			.filter((n) => !n.generico)
-			.find((n) => url.includes(n.url_distintivo));
+		let aux = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
 		// Si no se reconoce el proveedor, se asume el 'desconocido'
 		return aux ? aux : proveedores.find((n) => n.generico);
 	};
@@ -159,12 +160,10 @@ window.addEventListener("load", async () => {
 	};
 	let impactosEnCompletoParte = (proveedor) => {
 		// Cambios en el campo 'completo'
-		if (proveedor.trailer || proveedor.peli_siempre_completa || colecciones) {
+		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
 			completo.classList.add("desperdicio");
 			completoInput.classList.add("ocultar");
-			!proveedor.pelicula
-				? (completoInput.disabled = true)
-				: (completoInput.disabled = false);
+			!proveedor.pelicula ? (completoInput.disabled = true) : (completoInput.disabled = false);
 			if (proveedor.peli_siempre_completa) completoInput.value = "1";
 		} else {
 			completo.classList.remove("desperdicio");
@@ -172,7 +171,7 @@ window.addEventListener("load", async () => {
 			completoInput.disabled = false;
 		}
 		// Cambios en el campo 'parte'
-		if (proveedor.trailer || proveedor.peli_siempre_completa || colecciones) {
+		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
 			parte.classList.add("desperdicio");
 			parteInput.classList.add("ocultar");
 			parteInput.disabled = true;
@@ -252,9 +251,7 @@ window.addEventListener("load", async () => {
 		mensaje
 			? iconosError[indice].classList.remove("ocultar")
 			: iconosError[indice].classList.add("ocultar");
-		!mensaje
-			? iconosOK[indice].classList.remove("ocultar")
-			: iconosOK[indice].classList.add("ocultar");
+		!mensaje ? iconosOK[indice].classList.remove("ocultar") : iconosOK[indice].classList.add("ocultar");
 	};
 	let consecuenciasErrores = (errores, camposEspecificos) => {
 		for (campo of camposEspecificos) {

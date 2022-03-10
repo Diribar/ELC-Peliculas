@@ -294,7 +294,7 @@ module.exports = {
 		});
 	},
 	linksGuardar: async (req, res) => {
-		//return res.send(req.body)
+		return res.send(req.body)
 		let datos = req.body;
 		// Obtener los datos identificatorios del producto
 		let entidad = datos.entidad;

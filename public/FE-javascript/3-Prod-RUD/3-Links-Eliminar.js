@@ -12,12 +12,11 @@ window.addEventListener("load", () => {
 		botonesOut[i].addEventListener("click", async () => {
 			if (botonesOut[i].classList.contains("fa-trash-can")) {
 				let respuesta = await fetch(
-					"/producto/links/eliminar/?id=" +
+					"/producto/links/eliminar/?link_id=" +
 						links_id[i].innerHTML +
 						"&motivo_id=" +
 						motivosSelect[i].value
 				).then((n) => n.json());
-				//console.log(respuesta);
 				if (respuesta.resultado == true) filas_yaExistentes[i].classList.add("ocultar");
 			} else if (botonesOut[i].classList.contains("fa-circle-xmark")) {
 				// Reemplazar por el tacho
