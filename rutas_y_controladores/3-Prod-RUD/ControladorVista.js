@@ -275,7 +275,7 @@ module.exports = {
 			entidad,
 			prodID,
 			userID,
-			links_tipos:linksTipos,
+			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			dataEntry,
 			avatar,
@@ -422,7 +422,7 @@ let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 	]);
 };
 let fusionarLinksOriginalesConSuEdicion = async (linksOriginales, userID, includes) => {
-	let linksCombinados=[]
+	let linksCombinados = [];
 	for (let i = 0; i < linksOriginales.length; i++) {
 		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
 			"links_edicion",
