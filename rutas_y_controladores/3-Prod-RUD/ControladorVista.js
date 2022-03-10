@@ -234,14 +234,14 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!Producto) return res.send("Producto no encontrado");
 		// Obtener información de BD
-		let [linksOriginales, linksProveedores, linksTipos] = await obtenerInfoDeLinks(
+		let [linksCombinados, linksProveedores, linksTipos] = await obtenerInfoDeLinks(
 			entidad,
 			prodID,
 			userID,
 			includes
 		);
 		// Separar entre 'activos' e 'inactivos'
-		let [linksActivos, linksInactivos] = await ActivosInactivos(linksOriginales);
+		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
@@ -262,7 +262,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		//return res.send([1, linksOriginales, linksActivos]);
+		//return res.send([1, linksCombinados, linksActivos]);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -422,6 +422,7 @@ let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 	]);
 };
 let fusionarLinksOriginalesConSuEdicion = async (linksOriginales, userID, includes) => {
+	let linksCombinados=[]
 	for (let i = 0; i < linksOriginales.length; i++) {
 		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
 			"links_edicion",
@@ -430,13 +431,13 @@ let fusionarLinksOriginalesConSuEdicion = async (linksOriginales, userID, includ
 			"editado_por_id",
 			userID,
 			includes
-		).then((n) => (n ? n.toJSON() : []));
+		).then((n) => (n ? n.toJSON() : null));
 		if (linkEditado) {
 			delete linkEditado.id;
-			linksOriginales[i] = {...linksOriginales[i], ...linkEditado};
+			linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
 		}
 	}
-	return linksOriginales;
+	return linksCombinados;
 };
 let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
