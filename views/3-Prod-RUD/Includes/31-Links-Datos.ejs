@@ -39,7 +39,7 @@
 				Este link está siendo analizado por el equipo de revisores. A más tardar, debería terminarse de revisar a las <%= new Date() %>
 			</span>
 		<% } else { %>
-			<!-- Ícono de edición -->
+			<!-- Los demás links se pueden editar siempre -->
 			<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
 			<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
 				<!-- Los links en status 'creado' y creados por el usuario, se pueden eliminar definitivamente -->
