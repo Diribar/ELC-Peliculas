@@ -35,6 +35,7 @@
 		<!-- Entidad e ID -->
 		<input type="text" name="entidad" value="<%= entidad %>" class="ocultar">
 		<input type="text" name="prod_id" value="<%= prodID %>" class="ocultar">
+		<input type="number" name="numeroFila" value="" class="ocultar">
 	</form>
 	<ul>
 		Comentarios
@@ -46,7 +47,7 @@
 <section id="comandos">
 	<% for (prov of provs.filter(n => n.buscador_automatico)) { %>
 		<a 
-			href="//<%= prov.url_distintivo + prov.url_buscar_pre + registro.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+			href="//<%= prov.url_distintivo + prov.url_buscar_pre + Producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
 			target="_blank"
 			tabindex="-1"
 		>

@@ -9,10 +9,12 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 #datos form table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos form table * {font-size: 1.1rem;}
 #datos form table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
-#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px; vertical-align: middle;}
+#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px; vertical-align: middle; line-height: 1;}
+#datos table tbody tr.yaExistentes, #datos table tbody tr.edicion {height: 28px;}
+#datos table tbody tr.edicion td {padding: 1px 5px;}
 
 /* Tablas - Logo del proveedor */
-#datos table .logoProv {width: 90px; padding: 0;}
+#datos table tbody tr td.logoProv {width: 90px; padding: 0;}
 #datos table .logoProv .input-error {margin-left: 5px; margin-right: 5px;}
 #datos table .logoProv img {max-width: 80px; max-height: 25px;}
 

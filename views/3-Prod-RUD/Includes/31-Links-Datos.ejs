@@ -2,7 +2,7 @@
 	<!-- Url -->
 	<td class="logoProv" title="<%= link.url %>">
 		<a href="//<%= link.url %>" target="_blank">
-			<img src="/imagenes/0-Logos/<%= link.proveedor_link.avatar %>" alt="<%= link.proveedor_link.nombre %>">
+			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
 		</a>
 		<div class="ocultar" id="link_id"><%= link.id %></div>
 	</td>
@@ -19,7 +19,7 @@
 	<!-- Calidad -->
 	<td class="taparMotivo"><%= link.calidad %></td>
 	<!-- Tipo -->
-	<td class="taparMotivo"><%= link.tipo_link.nombre %></td>
+	<td class="taparMotivo"><%= link.link_tipo.nombre %></td>
 	<!-- Completo -->
 	<td class="taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
 	<!-- Parte -->
@@ -32,21 +32,15 @@
 	<td class="taparMotivo"><%= link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
-		<!-- Los links con status 'aprobado' se pueden editar/inactivar siempre -->
-		<% if (link.status_registro.aprobado) { %>
-			<!-- Ícono de edición -->
-			<i class="fa-solid fa-pen" tabindex="-1" title="Editar"></i>
-			<!-- Ícono de 'inactivar' -->
-			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title='Inactivar'></i>
-		<% } else if (link.capturado_en > haceUnaHora) { %>
+		<% if (link.capturado_en > haceUnaHora) { %>
 			<!-- Los links con captura 'válida' no se pueden 'tocar' -->
-			<i class="fa-solid fa-circle-question" tabindex="-1" ></i>
+			<i class="fa-solid fa-circle-question editar" tabindex="-1" ></i>
 			<span class="mensajeAyuda ocultar">
 				Este link está siendo analizado por el equipo de revisores. A más tardar, debería terminarse de revisar a las <%= new Date() %>
 			</span>
 		<% } else { %>
 			<!-- Los demás links se pueden editar siempre -->
-			<i class="fa-solid fa-pen" tabindex="-1" title="Editar"></i>
+			<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
 			<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
 				<!-- Los links en status 'creado' y creados por el usuario, se pueden eliminar definitivamente -->
 				<i class="fa-solid fa-trash-can out" tabindex="-1" title='Eliminar'></i>

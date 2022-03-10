@@ -4,7 +4,6 @@ let BD_especificas = require("../../funciones/BD/Especificas");
 let varias = require("../../funciones/Varias/Varias");
 let variables = require("../../funciones/Varias/Variables");
 let validar = require("../../funciones/Prod-RUD/2-Validar");
-const {camposDD} = require("../../funciones/Varias/Variables");
 
 // *********** Controlador ***********
 module.exports = {
@@ -30,17 +29,10 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!prodOriginal) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO NO APROBADO
-		let noAprobada = !prodOriginal.status_registro.aprobado;
-		let otroUsuario = prodOriginal.creado_por_id != userID;
-		if (noAprobada && otroUsuario) {
-			if (
-				entidad != "capitulos" ||
-				!(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID)
-			) {
-				req.session.noAprobado = prodOriginal;
-				res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
-				return res.send("Producto no aprobado");
-			}
+		if (funcionNoAprobado(prodOriginal, entidad, userID)) {
+			req.session.noAprobado = prodOriginal;
+			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
+			return res.send("Producto no aprobado");
 		}
 		// User la versión 'session' (si existe) en vez de la guardada
 		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
@@ -98,7 +90,7 @@ module.exports = {
 			producto,
 			entidad,
 			prodID,
-			registro: prodCombinado,
+			Producto: prodCombinado,
 			avatar,
 			paises,
 			camposDD1,
@@ -120,8 +112,7 @@ module.exports = {
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Obtener el userID
-		let usuario = req.session.usuario;
-		let userID = usuario.id;
+		let userID = req.session.usuario.id;
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
 
 		// Obtener el producto 'Original'
@@ -199,8 +190,8 @@ module.exports = {
 				...edicion,
 				elc_id: prodID,
 				elc_entidad: entidad,
-				editado_por_id: req.session.usuario.id,
-				capturado_por_id: req.session.usuario.id,
+				editado_por_id: userID,
+				capturado_por_id: userID,
 				entidad: "productos_edic",
 				status_registro_id,
 			};
@@ -229,37 +220,37 @@ module.exports = {
 		// Tema y Código
 		let tema = "producto";
 		let codigo = "links";
-		// Obtener los datos identificatorios del producto
+		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
 		// Redireccionar si se encuentran errores en la entidad y/o el prodID
 		let errorEnQuery = varias.revisarQuery(entidad, prodID);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
-		let includes = ["tipo_link", "proveedor_link", "status_registro"];
+		let includes = ["link_tipo", "link_prov", "status_registro"];
+		// Obtener el producto
+		let [, Producto] = await BD_especificas.obtenerVersionesDeProducto(entidad, prodID, userID);
+		// Problema: PRODUCTO NO ENCONTRADO
+		if (!Producto) return res.send("Producto no encontrado");
 		// Obtener información de BD
-		let [registroProd, links_originales, links_proveedores, links_tipos] = await obtenerInfoDeBD(
+		let [linksCombinados, linksProveedores, linksTipos] = await obtenerInfoDeLinks(
 			entidad,
 			prodID,
+			userID,
 			includes
 		);
-		// Problema: PRODUCTO NO ENCONTRADO
-		if (!registroProd) return res.send("Producto no encontrado");
-		// Obtener el usuario
-		let usuario = req.session.req.session.usuario;
-		// Fusionar la edición del usuario (si existe) con el link original 
-		links_originales = await fusionarLinkOriginalConEdicion(links_originales, usuario, includes);
 		// Separar entre 'activos' e 'inactivos'
-		let [linksActivos, linksInactivos] = await ActivosInactivos(links_originales);
+		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
-		let avatar = await obtenerAvatar(entidad, prodID, usuario, registroProd);
+		let avatar = await obtenerAvatar(entidad, prodID, userID, Producto);
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
-			registroProd.capitulos = await BD_especificas.obtenerCapitulos(
-				registroProd.coleccion_id,
-				registroProd.temporada
+			Producto.capitulos = await BD_especificas.obtenerCapitulos(
+				Producto.coleccion_id,
+				Producto.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_varias.obtenerTodos("motivos_para_borrar", "orden")
@@ -271,20 +262,20 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		//return res.send(motivos);
+		//return res.send([1, linksCombinados, linksActivos]);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
 			titulo,
 			linksActivos,
 			linksInactivos,
-			provs: links_proveedores,
-			registro: registroProd,
+			provs: linksProveedores,
+			Producto,
 			producto,
 			entidad,
 			prodID,
-			usuario,
-			links_tipos,
+			userID,
+			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			dataEntry,
 			avatar,
@@ -294,7 +285,7 @@ module.exports = {
 		});
 	},
 	linksGuardar: async (req, res) => {
-		return res.send(req.body)
+		return res.send(req.body);
 		let datos = req.body;
 		// Obtener los datos identificatorios del producto
 		let entidad = datos.entidad;
@@ -376,11 +367,11 @@ let productoConLinksWeb = async (entidad, prodID) => {
 		"links_originales",
 		funcionEntidadID(entidad),
 		prodID,
-		["status_registro", "tipo_link"]
+		["status_registro", "link_tipo"]
 	)
 		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) => n.filter((n) => n.gratuito))
-		.then((n) => n.filter((n) => n.tipo_link.pelicula));
+		.then((n) => n.filter((n) => n.link_tipo.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
 	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
@@ -392,7 +383,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
-	
+
 	// Acciones si existen 'linksActivos'
 	if (linksActivos.length) {
 		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
@@ -415,52 +406,47 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	BD_varias.actualizarRegistro(entidad, prodID, datos);
 	return;
 };
-let obtenerInfoDeBD = (entidad, prodID, includes) => {
+let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 	// Obtener el 'campo_id'
 	let campo_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 	return Promise.all([
-		// registroProd
-		BD_varias.obtenerPorIdConInclude(entidad, prodID, entidad == "capitulos" ? "coleccion" : "").then(
-			(n) => {
-				return n ? n.toJSON() : "";
-			}
-		),
-		// links_originales
-		BD_varias.obtenerTodosPorCampoConInclude("links_originales", campo_id, prodID, includes).then((n) =>
-			n.map((m) => m.toJSON())
-		),
-		// links_proveedores
+		// linksOriginales
+		BD_varias.obtenerTodosPorCampoConInclude("links_originales", campo_id, prodID, includes)
+			.then((n) => n.map((m) => m.toJSON()))
+			.then(async (n) => await fusionarLinksOriginalesConSuEdicion(n, userID, includes)),
+		// linksProveedores
 		BD_varias.obtenerTodos("links_proveedores", "orden").then((n) => n.map((m) => m.toJSON())),
-		// links_tipos
+		// linksTipos
 		BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 	]);
 };
-let fusionarLinkOriginalConEdicion = async (links_originales, usuario, includes) => {
-	for (let i = 0; i < links_originales.length; i++) {
-		link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+let fusionarLinksOriginalesConSuEdicion = async (linksOriginales, userID, includes) => {
+	let linksCombinados = [];
+	for (let i = 0; i < linksOriginales.length; i++) {
+		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
 			"links_edicion",
 			"elc_id",
-			links_originales[i].id,
+			linksOriginales[i].id,
 			"editado_por_id",
-			usuario.id,
+			userID,
 			includes
-		).then((n) => (n ? n.toJSON() : ""));
-		if (link_edicion) {
-			delete link_edicion.id;
-			links_originales[i] = {...links_originales[i], ...link_edicion};
+		).then((n) => (n ? n.toJSON() : null));
+		if (linkEditado) {
+			delete linkEditado.id;
+			linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
 		}
 	}
-	return links_originales;
+	return linksCombinados;
 };
-let ActivosInactivos = async (links_originales) => {
-	if (!links_originales.length) return "", "";
+let ActivosInactivos = async (linksOriginales) => {
+	if (!linksOriginales.length) return [[], []];
 	// linksActivos: Aprobados + Creados por el usuario
-	let linksActivos = links_originales.filter(
+	let linksActivos = linksOriginales.filter(
 		(n) => n.status_registro.creado || n.status_registro.editado || n.status_registro.aprobado
 	);
 	// linksInactivos --> incluye el motivo
-	let linksInactivos = links_originales.filter(
+	let linksInactivos = linksOriginales.filter(
 		(n) =>
 			n.status_registro.sugerido_borrar ||
 			n.status_registro.sugerido_desborrar ||
@@ -479,7 +465,7 @@ let ActivosInactivos = async (links_originales) => {
 	}
 	return [linksActivos, linksInactivos];
 };
-let obtenerAvatar = async (entidad, prodID, usuario, registroProd) => {
+let obtenerAvatar = async (entidad, prodID, userID, Producto) => {
 	let registroEditado = await BD_varias.obtenerPor3Campos(
 		"productos_edic",
 		"elc_entidad",
@@ -487,15 +473,24 @@ let obtenerAvatar = async (entidad, prodID, usuario, registroProd) => {
 		"elc_id",
 		prodID,
 		"editado_por_id",
-		usuario.id
+		userID
 	).then((n) => {
 		return n ? n.toJSON() : "";
 	});
-	let imagenOr = registroProd.avatar;
+	let imagenOr = Producto.avatar;
 	let imagenEd = registroEditado.avatar;
 	return imagenEd
 		? (imagenEd.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + imagenEd
 		: imagenOr
 		? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 		: "/imagenes/8-Agregar/IM.jpg";
+};
+let funcionNoAprobado = (prodOriginal, entidad, userID) => {
+	let noAprobada = !prodOriginal.status_registro.aprobado;
+	let otroUsuario = prodOriginal.creado_por_id != userID;
+	return (
+		noAprobada &&
+		otroUsuario &&
+		(entidad != "capitulos" || (entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID))
+	);
 };
