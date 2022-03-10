@@ -66,13 +66,6 @@ window.addEventListener("load", async () => {
 		botonGuardar();
 	});
 
-	form.addEventListener("submit", (e) => {
-		if (guardarAgregar.classList.contains("inactivo")) {
-			// e.preventDefault();
-			console.log(123);
-		}
-	});
-
 	// FUNCIONES ---------------------------------------------------------------
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async () => {
