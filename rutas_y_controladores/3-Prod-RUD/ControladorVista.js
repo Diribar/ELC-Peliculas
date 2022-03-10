@@ -234,7 +234,7 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!Producto) return res.send("Producto no encontrado");
 		// Obtener información de BD
-		let [linksOriginales, links_proveedores, links_tipos] = await obtenerInfoDeLinks(
+		let [linksOriginales, linksProveedores, linksTipos] = await obtenerInfoDeLinks(
 			entidad,
 			prodID,
 			userID,
@@ -269,13 +269,13 @@ module.exports = {
 			titulo,
 			linksActivos,
 			linksInactivos,
-			provs: links_proveedores,
+			provs: linksProveedores,
 			Producto,
 			producto,
 			entidad,
 			prodID,
 			userID,
-			links_tipos,
+			links_tipos:linksTipos,
 			vista: req.baseUrl + req.path,
 			dataEntry,
 			avatar,
@@ -415,9 +415,9 @@ let obtenerInfoDeLinks = (entidad, prodID, userID, includes) => {
 		BD_varias.obtenerTodosPorCampoConInclude("links_originales", campo_id, prodID, includes)
 			.then((n) => n.map((m) => m.toJSON()))
 			.then(async (n) => await fusionarLinksOriginalesConSuEdicion(n, userID, includes)),
-		// links_proveedores
+		// linksProveedores
 		BD_varias.obtenerTodos("links_proveedores", "orden").then((n) => n.map((m) => m.toJSON())),
-		// links_tipos
+		// linksTipos
 		BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
 	]);
 };
