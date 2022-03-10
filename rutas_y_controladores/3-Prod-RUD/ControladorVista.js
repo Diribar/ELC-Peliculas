@@ -43,11 +43,7 @@ module.exports = {
 			}
 		}
 		// User la versión 'session' (si existe) en vez de la guardada
-		if (
-			req.session.edicion &&
-			req.session.edicion.entidad == entidad &&
-			req.session.edicion.id == prodID
-		)
+		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
 			prodEditado = {...prodEditado, ...req.session.edicion};
 		// Generar los datos a mostrar en la vista
 		prodCombinado = {...prodOriginal, ...prodEditado};
@@ -61,9 +57,7 @@ module.exports = {
 					: "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = prodOriginal.paises_id
-			? await varias.paises_idToNombre(prodOriginal.paises_id)
-			: "";
+		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
 		let producto = varias.producto(entidad);
 		let titulo =
@@ -78,20 +72,13 @@ module.exports = {
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
 			var camposDD1 = camposDD.filter((n) => n.antesDePais);
-			var camposDD2 = camposDD.filter(
-				(n) => !n.antesDePais && n.nombreDelCampo != "produccion"
-			);
+			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
 			var camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
 			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
-			var camposDP = await variables
-				.camposDP()
-				.then((n) => n.filter((m) => m.grupo != "calificala"));
+			var camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			var tiempo = prodEditado.editado_en
-				? Math.max(
-						10,
-						parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60)
-				  )
+				? Math.max(10, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Averiguar si hay errores de validación
@@ -138,9 +125,9 @@ module.exports = {
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
 
 		// Obtener el producto 'Original'
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
-			"status_registro",
-		]).then((n) => n.toJSON());
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, ["status_registro"]).then(
+			(n) => n.toJSON()
+		);
 		// Obtener el producto 'Editado' guardado, si lo hubiera
 		let prodEditado = await BD_varias.obtenerPor3Campos(
 			"productos_edic",
@@ -250,81 +237,24 @@ module.exports = {
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// Definir los campos include
 		let includes = ["tipo_link", "proveedor_link", "status_registro"];
-		// Obtener el 'campo_id'
-		let campo_id =
-			entidad == "peliculas"
-				? "pelicula_id"
-				: entidad == "colecciones"
-				? "coleccion_id"
-				: "capitulo_id";
-		// Obtener el producto, los links_proveedores, los provs y los tipos de links
-		let [registroProd, links_productos, provs, links_tipos] = await Promise.all([
-			BD_varias.obtenerPorIdConInclude(
-				entidad,
-				prodID,
-				entidad == "capitulos" ? "coleccion" : ""
-			).then((n) => {
-				return n ? n.toJSON() : "";
-			}),
-			BD_varias.obtenerTodosPorCampoConInclude("links_productos", campo_id, prodID, includes),
-			BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
-				n.map((m) => m.toJSON())
-			),
-			BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
-		]);
+		// Obtener información de BD
+		let [registroProd, links_originales, links_proveedores, links_tipos] = await obtenerInfoDeBD(
+			entidad,
+			prodID,
+			includes
+		);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) return res.send("Producto no encontrado");
 		// Obtener el usuario
 		let usuario = req.session.req.session.usuario;
-		// Obtener los links del producto. Se incluyen:
-		// linksAprob: Aprobados + Creados por el usuario
-		let linksAprob = [
-			...links_productos.filter((n) => n.status_registro.creado),
-			...links_productos.filter((n) => n.status_registro.aprobado),
-		];
-		// linksBorr --> incluye el motivo y el comentario
-		let linksBorr = links_productos.filter(
-			(n) =>
-				n.status_registro.sugerido_borrar ||
-				n.status_registro.sugerido_desborrar ||
-				n.status_registro.borrado
-		);
-		if (linksBorr.length) {
-			for (i = 0; i < linksBorr; i++) {
-				let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
-					"registros_borrados",
-					"elc_id",
-					linksBorr[i].id,
-					"elc_entidad",
-					"links_productos",
-					["motivo"]
-				);
-				linksBorr[i].motivo = registro_borrado.motivo.nombre;
-				linksBorr[i].comentario = registro_borrado.comentario;
-			}
-		}
-		// Configurar el Producto y el Título
+		// Fusionar la edición del usuario (si existe) con el link original 
+		links_originales = await fusionarLinkOriginalConEdicion(links_originales, usuario, includes);
+		// Separar entre 'activos' e 'inactivos'
+		let [linksActivos, linksInactivos] = await ActivosInactivos(links_originales);
+		// Configurar el producto, el título y el avatar
 		let producto = varias.producto(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + producto;
-		// Obtener el avatar
-		let registroEditado = await BD_varias.obtenerPor3Campos(
-			"productos_edic",
-			"elc_entidad",
-			entidad,
-			"elc_id",
-			prodID,
-			"editado_por_id",
-			usuario.id
-		).then((n) => {
-			return n ? n.toJSON() : "";
-		});
-		let imagenOr = registroProd.avatar;
-		let imagenEd = registroEditado.avatar;
-		let avatar = imagenEd
-			? (imagenEd.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + imagenEd
-			: imagenOr
-			? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
-			: "/imagenes/8-Agregar/IM.jpg";
+		let avatar = await obtenerAvatar(entidad, prodID, usuario, registroProd);
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			registroProd.capitulos = await BD_especificas.obtenerCapitulos(
@@ -346,9 +276,9 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			linksAprob,
-			linksBorr,
-			provs,
+			linksActivos,
+			linksInactivos,
+			provs: links_proveedores,
 			registro: registroProd,
 			producto,
 			entidad,
@@ -384,7 +314,7 @@ module.exports = {
 			datos = {
 				...datos,
 				[entidad_id]: prodID,
-				entidad: "links_productos",
+				entidad: "links_originales",
 				creado_por_id: userID,
 			};
 			delete datos.id;
@@ -430,13 +360,8 @@ module.exports = {
 
 // FUNCIONES --------------------------------------------------
 let funcionEntidadID = (entidad) => {
-	return entidad == "peliculas"
-		? "pelicula_id"
-		: entidad == "colecciones"
-		? "coleccion_id"
-		: "capitulo_id";
+	return entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 };
-
 let productoConLinksWeb = async (entidad, prodID) => {
 	// Obtener el producto con include a links
 	let producto = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
@@ -448,7 +373,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_varias.obtenerTodosPorCampoConInclude(
-		"links_productos",
+		"links_originales",
 		funcionEntidadID(entidad),
 		prodID,
 		["status_registro", "tipo_link"]
@@ -458,21 +383,18 @@ let productoConLinksWeb = async (entidad, prodID) => {
 		.then((n) => n.filter((n) => n.tipo_link.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
-	let linksAprob = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
+	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
 	let linksTalVez = links.filter((n) => n.status_registro.creado || n.status_registro.editado);
-	if (!linksAprob.length && !linksTalVez.length) return;
+	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) =>
-		n.map((m) => m.toJSON())
-	);
+	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
-	console.log(si, talVez, no);
-
-	// Acciones si existen 'linksAprob'
-	if (linksAprob.length) {
+	
+	// Acciones si existen 'linksActivos'
+	if (linksActivos.length) {
 		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
 		BD_varias.actualizarRegistro(entidad, prodID, datos);
 		return;
@@ -492,4 +414,88 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	let datos = {links_gratuitos_cargados_id: no};
 	BD_varias.actualizarRegistro(entidad, prodID, datos);
 	return;
+};
+let obtenerInfoDeBD = (entidad, prodID, includes) => {
+	// Obtener el 'campo_id'
+	let campo_id =
+		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
+	return Promise.all([
+		// registroProd
+		BD_varias.obtenerPorIdConInclude(entidad, prodID, entidad == "capitulos" ? "coleccion" : "").then(
+			(n) => {
+				return n ? n.toJSON() : "";
+			}
+		),
+		// links_originales
+		BD_varias.obtenerTodosPorCampoConInclude("links_originales", campo_id, prodID, includes).then((n) =>
+			n.map((m) => m.toJSON())
+		),
+		// links_proveedores
+		BD_varias.obtenerTodos("links_proveedores", "orden").then((n) => n.map((m) => m.toJSON())),
+		// links_tipos
+		BD_varias.obtenerTodos("links_tipos", "id").then((n) => n.map((m) => m.toJSON())),
+	]);
+};
+let fusionarLinkOriginalConEdicion = async (links_originales, usuario, includes) => {
+	for (let i = 0; i < links_originales.length; i++) {
+		link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+			"links_edicion",
+			"elc_id",
+			links_originales[i].id,
+			"editado_por_id",
+			usuario.id,
+			includes
+		).then((n) => (n ? n.toJSON() : ""));
+		if (link_edicion) {
+			delete link_edicion.id;
+			links_originales[i] = {...links_originales[i], ...link_edicion};
+		}
+	}
+	return links_originales;
+};
+let ActivosInactivos = async (links_originales) => {
+	if (!links_originales.length) return "", "";
+	// linksActivos: Aprobados + Creados por el usuario
+	let linksActivos = links_originales.filter(
+		(n) => n.status_registro.creado || n.status_registro.editado || n.status_registro.aprobado
+	);
+	// linksInactivos --> incluye el motivo
+	let linksInactivos = links_originales.filter(
+		(n) =>
+			n.status_registro.sugerido_borrar ||
+			n.status_registro.sugerido_desborrar ||
+			n.status_registro.borrado
+	);
+	for (i = 0; i < linksInactivos.length; i++) {
+		let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
+			"registros_borrados",
+			"elc_id",
+			linksInactivos[i].id,
+			"elc_entidad",
+			"links_originales",
+			["motivo"]
+		);
+		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
+	}
+	return [linksActivos, linksInactivos];
+};
+let obtenerAvatar = async (entidad, prodID, usuario, registroProd) => {
+	let registroEditado = await BD_varias.obtenerPor3Campos(
+		"productos_edic",
+		"elc_entidad",
+		entidad,
+		"elc_id",
+		prodID,
+		"editado_por_id",
+		usuario.id
+	).then((n) => {
+		return n ? n.toJSON() : "";
+	});
+	let imagenOr = registroProd.avatar;
+	let imagenEd = registroEditado.avatar;
+	return imagenEd
+		? (imagenEd.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + imagenEd
+		: imagenOr
+		? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
+		: "/imagenes/8-Agregar/IM.jpg";
 };
