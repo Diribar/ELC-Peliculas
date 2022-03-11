@@ -909,7 +909,7 @@ CREATE TABLE links_2edicion (
 	calidad SMALLINT NULL,
 	link_tipo_id TINYINT UNSIGNED NULL,
 	completo BOOLEAN NULL,
-	parte VARCHAR(3) NOT NULL,
+	parte VARCHAR(3) NULL,
 	gratuito BOOLEAN NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
