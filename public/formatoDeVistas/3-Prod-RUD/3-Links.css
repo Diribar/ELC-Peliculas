@@ -15,7 +15,7 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Tablas - Logo del proveedor */
 #datos table tbody tr td.logoProv {width: 90px; padding: 0;}
-#datos table .logoProv .input-error {margin-left: 5px; margin-right: 5px;}
+#datos table .logoProv .inputError {margin-left: 5px; margin-right: 5px;}
 #datos table .logoProv img {max-width: 80px; max-height: 25px;}
 
 /* Formato de los datos ya existentes */
@@ -24,36 +24,36 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Formato del form */
 #datos form {margin-top: 20px;}
-#datos form #dataEntry input, #datos form #dataEntry select,
+#datos form #altas input, #datos form #altas select,
 #datos form .edicion input, #datos form .edicion select
     {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
 
 /* Formato del campo url */
-#datos form #url .input-error {text-align: left; width: 130px;}
-#datos form #url .input-error input {width: 100%;}
-#datos form #url .input-error .prov_id {display: none;}
+#datos form #altas #url .inputError {text-align: left; width: 130px;}
+#datos form #altas #url .inputError input {width: 100%;}
+#datos form #altas #url .inputError .prov_id {display: none;}
 
 /* Formato del campo calidad y parte */
-#datos form #calidad .input-error {width: 50px;}
-#datos form #parte .input-error {width: 30px;}    
-#datos form #calidad .input-error input,
-#datos form #parte .input-error input {width: 100%;}
+#datos form #calidad .inputError {width: 50px;}
+#datos form #parte .inputError {width: 30px;}    
+#datos form #calidad .inputError input,
+#datos form #parte .inputError input {width: 100%;}
 
 /* Formato del desperdicio */
 #datos form .desperdicio {background-color: var(--verde-intermedio);}
-#datos form .desperdicio .input-error .fa-circle-check {display: none;}
+#datos form .desperdicio .inputError .fa-circle-check {display: none;}
 
 /* Quitar la flecha de los select */
-#datos form #dataEntry select::-ms-expand, #datos form .edicion select::-ms-expand {display: none;}
-#datos form #dataEntry select, #datos form .edicion select
+#datos form #altas select::-ms-expand, #datos form .edicion select::-ms-expand {display: none;}
+#datos form #altas select, #datos form .edicion select
  {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#datos form .input-error input[type='number']::-webkit-outer-spin-button,
-#datos form .input-error input[type='number']::-webkit-inner-spin-button 
+#datos form .inputError input[type='number']::-webkit-outer-spin-button,
+#datos form .inputError input[type='number']::-webkit-inner-spin-button 
     {-webkit-appearance: none; margin: 0;}
 /* Quitar flechas del input - Firefox */
-#datos form .input-error input[type=number] {-moz-appearance: textfield;}
+#datos form .inputError input[type=number] {-moz-appearance: textfield;}
 
 /* Íconos en la tabla */
 #datos #yaExistentes tbody tr td .fa-trash-can {color: var(--rojo-oscuro);}
@@ -62,12 +62,12 @@ main #cuerpo #datos #tipoLink {align-self: flex-start;}
 #datos tbody tr td .fa-solid.inactivo {cursor: default;}
 
 /* Errores */
-.mensajeError, .mensajeError::before, .input-error .fa-solid
+.mensajeError, .mensajeError::before, .inputError .fa-solid
     {position: absolute; transform: translateY(-50%); top: 50%;}
-#datos .input-error {position: relative; margin: 0 10px;}
-#datos .input-error .fa-solid {right: -20px;}
-#datos .input-error .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
-#datos .input-error .mensajeError::before {left: -12px;}
+#datos .inputError {position: relative; margin: 0 10px;}
+#datos .inputError .fa-solid {right: -20px;}
+#datos .inputError .mensajeError {max-width: 200px; left: 20px; line-height: 1.2rem; text-align: left;}
+#datos .inputError .mensajeError::before {left: -12px;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}

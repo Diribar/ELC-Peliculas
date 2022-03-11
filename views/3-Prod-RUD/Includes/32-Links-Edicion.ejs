@@ -1,15 +1,18 @@
 <tr class="edicion ocultar">
 	<!-- Url -->
-	<td class="logoProv" title="<%= link.url %>">
-		<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
-		<input name="url" type="text" class="input ocultar" value="<%= link.url %>">
-		<input name="id" type="text" class="ocultar" value="<%= link.id %>">
-		<i class="fa-solid fa-circle-xmark ocultar" style="display: none"></i>
-		<i class="fa-solid fa-circle-check" style="display: none"></i>
+	<td id="url" class="logoProv" title="<%= link.url %>">
+		<div class="inputError">
+			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
+			<input name="url" type="text" class="input ocultar" value="<%= link.url %>">
+			<input name="id" type="text" class="ocultar" value="<%= link.id %>">
+			<i class="fa-solid fa-circle-xmark ocultar" style="display: none"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check"></i>
+			<i class="fa-solid fa-circle-question prov_id" style="display: none"></i>
+		</div>
 	</td>
 	<!-- Calidad -->
 	<td id="calidad">
-		<div class="input-error">
+		<div class="inputError">
 			<select name="calidad" class="input">
 				<% for (calidad of calidades) { %>
 					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
@@ -23,7 +26,7 @@
 	</td>
 	<!-- Tipo -->
 	<td id="tipo">
-		<div class="input-error">
+		<div class="inputError">
 			<select name="link_tipo_id" class="input">
 				<option value="<%= links_tipos[0].id %>" <%- link.link_tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
@@ -37,7 +40,7 @@
 	</td>
 	<!-- Completo -->
 	<td id="completo">
-		<div class="input-error">
+		<div class="inputError">
 			<select name="completo" class="input">
 				<option value="1" <%- link.completo=="1" ? "selected" : "" %>>SI</option>
 				<option value="0" <%- link.completo=="0" ? "selected" : "" %>>NO</option>
@@ -49,7 +52,7 @@
 	</td>
 	<!-- Parte -->
 	<td id="parte">
-		<div class="input-error">
+		<div class="inputError">
 			<input name="parte" type="number" class="input" value="<%- link.parte ? link.parte : '' %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
@@ -58,7 +61,7 @@
 	</td>
 	<!-- Gratuito -->
 	<td id="gratuito">
-		<div class="input-error">
+		<div class="inputError">
 			<select name="gratuito" class="input">
 				<option value="1" <%- link.gratuito=="1" ? "selected" : "" %>>SI</option>
 				<option value="0" <%- link.gratuito=="0" ? "selected" : "" %>>NO</option>
