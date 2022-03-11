@@ -579,10 +579,11 @@ let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar linksOriginales
 	BD_varias.actualizarPorCampo("links_originales", campo_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	let elc_ids = await BD_varias.obtenerTodosPorCampo("links_originales", campo_id, prodID)
+	BD_varias.obtenerTodosPorCampo("links_originales", campo_id, prodID)
 		.then((n) => n.map((m) => m.toJSON()))
-		.then((n) => n.map((m) => m.id));
-	for (elc_id of elc_ids) {
-		BD_varias.actualizarPorCampo("links_edicion", "elc_id", elc_id, {fecha_referencia});
-	}
+		.then((n) =>
+			n.map((m) =>
+				BD_varias.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
+			)
+		);
 };
