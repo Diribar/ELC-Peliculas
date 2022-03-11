@@ -261,7 +261,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	};
 	link_edicion
 		? // Actualiza el registro 'edicion' en la BD
-		  BD_varias.actualizarRegistro("links_edicion", link_edicion.id, datosParaBD)
+		  BD_varias.actualizarPorId("links_edicion", link_edicion.id, datosParaBD)
 		: // Crea un registro 'edicion' en la BD
 		  BD_varias.agregarRegistro(datosParaBD);
 	// 3. Actualiza la BD de 'registros_borrados'

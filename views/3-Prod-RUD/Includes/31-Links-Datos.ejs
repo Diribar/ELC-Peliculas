@@ -27,14 +27,14 @@
 		<%- !link.completo ? link.parte : '' %>
 	</td>
 	<!-- Gratuito -->
-	<td class="taparMotivo"><%= link.gratuito ? "SI" :  "NO" %></td>
+	<td class="taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
 	<td class="taparMotivo"><%- link.capturado_en > haceUnaHora ? "En Revisión" : link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
 		<% if (link.capturado_en > haceUnaHora) { %>
 			<!-- Los links con captura 'válida' no se pueden 'tocar' -->
-			<i class="fa-solid fa-circle-question editar" tabindex="-1" ></i>
+			<i class="fa-solid fa-circle-question editar out" tabindex="-1" ></i>
 			<span class="mensajeAyuda ocultar">
 				Este link está siendo analizado por el equipo de revisores. A más tardar, debería terminarse de revisar a las <%= new Date() %>
 			</span>

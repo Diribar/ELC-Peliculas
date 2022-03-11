@@ -107,7 +107,7 @@ module.exports = {
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
-			if (objeto[campos[i]] === null || objeto[campos[i]]=="") delete objeto[campos[i]];
+			if (objeto[campos[i]] === null || objeto[campos[i]]==="") delete objeto[campos[i]];
 		}
 		return objeto;
 	},
@@ -136,7 +136,7 @@ module.exports = {
 				}
 				// Actualizar entidad de RCLV
 				id = valor;
-				BD_varias.actualizarRegistro("RCLV_" + entidadesRCLV[i], id, {cant_productos});
+				BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], id, {cant_productos});
 			}
 		}
 	},

@@ -8,6 +8,12 @@ module.exports = {
 		});
 	},
 
+	obtenerTodosPorCampo: (entidad, campo, valor) => {
+		return db[entidad].findAll({
+			where: {[campo]: valor},
+		});
+	},
+
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
 		return db[entidad].findAll({
 			where: {[campo]: valor},
@@ -72,8 +78,12 @@ module.exports = {
 		return db[datos.entidad].create(datos);
 	},
 
-	actualizarRegistro: (entidad, id, datos) => {
+	actualizarPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});
+	},
+
+	actualizarPorCampo: (entidad, campo, valor, datos) => {
+		return db[entidad].update(datos, {where: {[campo]: valor}});
 	},
 
 	eliminarRegistro: (entidad, id) => {

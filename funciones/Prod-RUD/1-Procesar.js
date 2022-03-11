@@ -95,7 +95,7 @@ module.exports = {
 		let edicion_id = await BD_varias.obtenerELC_id(entidad, "elc_id", producto_id);
 		// Acciones en función de si existe o no
 		edicion_id
-			? await BD_varias.actualizarRegistro(entidad, edicion_id, datos)
+			? await BD_varias.actualizarPorId(entidad, edicion_id, datos)
 			: await BD_varias.agregarRegistro({
 					entidad,
 					elc_id: producto_id,
