@@ -812,7 +812,7 @@ CREATE TABLE links_proveedores (
 	generico BOOLEAN DEFAULT 0,
 	url_distintivo VARCHAR(20) NOT NULL UNIQUE,
 	buscador_automatico BOOLEAN NOT NULL,
-	url_buscar_pre VARCHAR(25) NOT NULL,
+	url_buscar_pre VARCHAR(25) DEFAULT '',
 	trailer BOOLEAN NOT NULL,
 	url_buscar_post_tra VARCHAR(20) NOT NULL,
 	pelicula BOOLEAN NOT NULL,
@@ -822,14 +822,14 @@ CREATE TABLE links_proveedores (
 INSERT INTO links_proveedores (id, orden, nombre, avatar, siempre_pago, peli_siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
 VALUES 
 (1, 0, 'Desconocido','PT-Desconocido.jpg', NULL, NULL, NULL, '', '', '', '', 0, 1, 1),
-(11, 1, 'YouTube', 'PT-YouTube.jpg', NULL, 0, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
+(11, 1, 'YouTube', 'PT-YouTube.jpg', NULL, NULL, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
 (12, 2, 'Formed en Español', 'PT-Formed cast.jpg', NULL, 1, 1081, 'ver.formed.lat', '/search?q=', '', '', 1, 0, 1),
 (13, 3, 'Formed', 'PT-Formed.jpg', NULL, 1, 1081, 'watch.formed.org', '/search?q=', '', '', 1, 0, 1),
 (14, 4, 'Brochero', 'PT-Brochero.jpg', 1, 1, 1081, 'brochero.org', '', '', '', 0, 0, 1),
 (15, 5, 'FamFlix', 'PT-FamFlix.jpg', 1, 1, 1081, 'famflix.mx', '', '', '', 0, 0, 1),
 (16, 6, 'FamiPlay', 'PT-FamiPlay.jpg', 1, 1, 1081, 'famiplay.com', '/catalogo?s=', '', '', 1, 0, 1),
 (17, 7, 'Goya Prod.', 'PT-Goya.jpg', 1, 1, 1081, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
-(18, 8, 'IMDb', 'PT-IMDB.jpg', NULL, NULL, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
+(18, 8, 'IMDb', 'PT-IMDB.jpg', 0, NULL, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
 ;
 UPDATE links_proveedores SET generico = 1 WHERE id = 1
 ;
@@ -845,7 +845,7 @@ VALUES
 (1, 'Trailer', 0, 1),
 (2, 'Película', 1, 0)
 ;
-CREATE TABLE links_1productos (
+CREATE TABLE links_1originales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
@@ -854,7 +854,7 @@ CREATE TABLE links_1productos (
 
 	calidad SMALLINT NULL,
 	completo BOOLEAN DEFAULT 1,
-	parte TINYINT UNSIGNED NULL,
+	parte VARCHAR(3) NOT NULL,
 
 	link_tipo_id TINYINT UNSIGNED NOT NULL,
 	link_prov_id TINYINT UNSIGNED NOT NULL,
@@ -873,6 +873,7 @@ CREATE TABLE links_1productos (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
+	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT NULL,
 
@@ -889,37 +890,39 @@ CREATE TABLE links_1productos (
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_1productos (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id)
+INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,NULL,2,11,1,10),
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,10),
 (2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,1,2,11,1,10),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,2,2,11,1,10),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,2,2,11,1,1),
 (4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,3,2,11,1,10),
 (5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,4,2,11,1,10),
-(6,NULL,NULL,1,'www/fefe',144,1,NULL,1,1,0,1),
-(7,NULL,NULL,1,'weww/fefe',144,1,NULL,1,1,0,10)
+(6,NULL,NULL,1,'www/fefe',144,1,"-",1,1,0,1),
+(7,NULL,NULL,1,'weww/fefe',144,1,"-",1,1,0,10),
+(8,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10)
 ;
+UPDATE links_1originales SET capturado_por_id = 1, capturado_en = UTC_TIMESTAMP WHERE id = 1;
 CREATE TABLE links_2edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	elc_id INT UNSIGNED NOT NULL,
 
 	calidad SMALLINT NULL,
-	completo BOOLEAN DEFAULT 1,
-	parte TINYINT UNSIGNED NULL,
-	link_tipo_id TINYINT UNSIGNED NOT NULL,
-	link_prov_id TINYINT UNSIGNED NOT NULL,
-	gratuito BOOLEAN NOT NULL,
+	link_tipo_id TINYINT UNSIGNED NULL,
+	completo BOOLEAN NULL,
+	parte VARCHAR(3) NOT NULL,
+	gratuito BOOLEAN NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	status_registro_id TINYINT UNSIGNED DEFAULT 2,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
+
+	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
+	capturado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (elc_id) REFERENCES links_1productos(id),
+	FOREIGN KEY (elc_id) REFERENCES links_1originales(id),
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
-	FOREIGN KEY (link_prov_id) REFERENCES links_proveedores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
