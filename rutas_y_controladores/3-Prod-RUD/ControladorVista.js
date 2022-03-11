@@ -270,7 +270,7 @@ module.exports = {
 		// Procesar los datos en la operación que corresponda
 		let respuesta = datos.alta ? await altaDeLink(req, datos) : await edicionDeLink(req, datos);
 		// Fin
-		// Si hayun error en el url, comunicarlo
+		// Si hay un error en el url, comunicarlo
 		if (respuesta) return res.send(respuesta);
 		// Estandarizar fechaRef en originales y editados del mismo "prodEntidad" y "prodId"
 		else estandarizarFechaRef(datos.prodEntidad, datos.prodID);
