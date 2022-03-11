@@ -295,6 +295,6 @@ let obtenerLinksFusionados = async (link_id, usuario) => {
 		link_original = {...link_original, ...link_edicion};
 	}
 	// Quitarle los campos 'null'
-	link_original = this.quitarLosCamposNull(link_original);
+	link_original = BD_especificas.quitarLosCamposSinContenido(link_original);
 	return link_original;
 };

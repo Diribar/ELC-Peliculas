@@ -36,7 +36,7 @@ router.get("/edicion", soloAutInput, vista.detalleEdicionForm);
 router.post("/edicion/actualizar", soloAutInput, multer.single("avatar"), vista.edicionActualizar);
 router.get("/edicion/eliminar", soloAutInput, vista.edicionEliminar);
 router.get("/links", soloAutInput, vista.linksForm);
-router.post("/links/guardar", soloAutInput, vista.linksGuardar);
+router.post("/links/guardar-editar", soloAutInput, vista.linksGuardarEditar);
 
 router.get("/revisión", soloGestionProd, vista.revisar);
 
