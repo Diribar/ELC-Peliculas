@@ -9,11 +9,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.palabrasClave = !dato
-			? cartelCampoVacio
-			: longitud(dato, 2, 50)
-			? longitud(dato, 2, 50)
-			: "";
+		errores.palabrasClave = !dato ? cartelCampoVacio : longitud(dato, 2, 50) ? longitud(dato, 2, 50) : "";
 		return errores;
 	},
 
@@ -160,8 +156,7 @@ module.exports = {
 				: "";
 		if (campos.includes("actuacion"))
 			errores.actuacion = !datos.actuacion
-				? cartelCampoVacio +
-				  '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
+				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 2, 500)
 				? longitud(datos.actuacion, 2, 500)
 				: castellano(datos.actuacion)
@@ -211,8 +206,7 @@ module.exports = {
 		// Año de Estreno y Año Fin
 		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
 			if (datos.ano_estreno > datos.ano_fin)
-				errores.ano_estreno =
-					"El año de estreno debe ser menor o igual que el año de finalización";
+				errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -225,8 +219,7 @@ module.exports = {
 		// Datos generales
 		if (campos.includes("en_castellano_id"))
 			errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
-		if (campos.includes("en_color_id"))
-			errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
+		if (campos.includes("en_color_id")) errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
 		if (campos.includes("categoria_id"))
 			errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
 		if (campos.includes("subcategoria_id"))
@@ -253,8 +246,7 @@ module.exports = {
 				datos.subcategoria_id
 			).then((n) => n.toJSON());
 			// Relación con la vida
-			if (subcategoria.personaje)
-				errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
+			if (subcategoria.personaje) errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
 			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
 			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
 		}
@@ -274,11 +266,7 @@ let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"
 		: dato.length > largo
-		? "El contenido debe ser más corto. Tiene " +
-		  dato.length +
-		  " caracteres, el límite es " +
-		  largo +
-		  "."
+		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
 		: "";
 };
 let castellano = (dato) => {
@@ -321,16 +309,16 @@ let validarRepetidos = async (campo, datos) => {
 	// Si hay casos --> mensaje de error con la entidad y el id
 	if (repetido) {
 		let producto = varias.producto(datos.entidad);
-		mensaje =
+		var mensaje =
 			"Esta " +
 			"<a href='/producto/detalle/?entidad=" +
 			datos.entidad +
 			"&id=" +
-			repetido.id +
+			averiguar.id +
 			"' target='_blank'><u><strong>" +
 			producto.toLowerCase() +
 			"</strong></u></a>" +
 			" ya se encuentra en nuestra base de datos";
-	} else mensaje = "";
+	} else var mensaje = "";
 	return mensaje;
 };

@@ -4,10 +4,9 @@ module.exports = (sequelize, dt) => {
 		elc_id: {type: dt.INTEGER},
 
 		calidad: {type: dt.INTEGER},
+		link_tipo_id: {type: dt.INTEGER},
 		completo: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
-		link_tipo_id: {type: dt.INTEGER},
-		link_prov_id: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
 
 		editado_por_id: {type: dt.INTEGER},
@@ -24,7 +23,6 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "elc_id"});
 		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
-		entidad.belongsTo(n.links_proveedores, {as: "link_prov", foreignKey: "link_prov_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});

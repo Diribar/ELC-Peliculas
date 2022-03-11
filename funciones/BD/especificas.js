@@ -10,7 +10,6 @@ module.exports = {
 			order: [[orden, "ASC"]],
 		});
 	},
-
 	obtenerProductosConInclude: (entidad, orden, includes) => {
 		return db[entidad].findAll({
 			where: {borrado: false},
@@ -18,7 +17,6 @@ module.exports = {
 			order: [[orden, "ASC"]],
 		});
 	},
-
 	quickSearch: async (condiciones) => {
 		let peliculas = db.peliculas
 			.findAll({where: condiciones, limit: 10})
@@ -49,7 +47,6 @@ module.exports = {
 		});
 		return resultado;
 	},
-
 	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
@@ -58,7 +55,6 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
-
 	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
 		// Definir los campos include
 		let includes = [
@@ -108,7 +104,6 @@ module.exports = {
 		}
 		return [prodOriginal, prodEditado];
 	},
-
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
@@ -116,7 +111,13 @@ module.exports = {
 		}
 		return objeto;
 	},
-
+	quitarDeEdicionLasCoincidenciasConOriginal: (original,edicion)=> {
+		let campos = Object.keys(edicion);
+		for (campo of campos) {
+			if (edicion[campo] == original[campo]) delete edicion[campo];
+		}
+		return edicion
+	},
 	actualizarRCLV: async (datos) => {
 		// Definir variables
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];

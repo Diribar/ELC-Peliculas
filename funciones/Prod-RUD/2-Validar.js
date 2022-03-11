@@ -13,9 +13,7 @@ module.exports = {
 		// Obtener los campos
 		if (!campos) {
 			let camposDD = variables.camposDD().filter((n) => n[entidad]);
-			let camposDP = await variables
-				.camposDP()
-				.then((n) => n.filter((m) => m.grupo != "calificala"));
+			let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}
 		// Averiguar si hay errores de validación DD y DP
@@ -51,7 +49,7 @@ module.exports = {
 				? "Los videos de ese portal son ajenos a nuestro perfil"
 				: "";
 			if (!errores.url) {
-				let repetido = await validarLinkRepetidos(datos.url);
+				let repetido = await validarLinkRepetidos(datos);
 				if (repetido) errores.url = repetido;
 			}
 		}
@@ -93,37 +91,35 @@ let longitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El contenido debe ser más largo"
 		: dato.length > largo
-		? "El contenido debe ser más corto. Tiene " +
-		  dato.length +
-		  " caracteres, el límite es " +
-		  largo +
-		  "."
+		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
 		: "";
 };
-let validarLinkRepetidos = async (dato) => {
+let validarLinkRepetidos = async (datos) => {
 	// Obtener casos
-	let repetido = await BD_varias.obtenerPorCampo("links_originales", "url", dato).then((n) => {
+	let averiguar = await BD_varias.obtenerPorCampo("links_originales", "url", datos.url).then((n) => {
 		return n ? n.toJSON() : "";
 	});
+	// Si se encontró algún caso, compara las ID
+	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
 	if (repetido) {
 		mensaje =
 			"Este " +
 			"<a href='/producto/links/?entidad=" +
-			(repetido.pelicula_id
+			(averiguar.pelicula_id
 				? "peliculas"
-				: repetido.coleccion_id
+				: averiguar.coleccion_id
 				? "colecciones"
-				: repetido.capitulo_id
+				: averiguar.capitulo_id
 				? "capitulos"
 				: "") +
 			"&id=" +
-			(repetido.pelicula_id
-				? repetido.pelicula_id
-				: repetido.coleccion_id
-				? repetido.coleccion_id
-				: repetido.capitulo_id
-				? repetido.capitulo_id
+			(averiguar.pelicula_id
+				? averiguar.pelicula_id
+				: averiguar.coleccion_id
+				? averiguar.coleccion_id
+				: averiguar.capitulo_id
+				? averiguar.capitulo_id
 				: "") +
 			"' target='_blank'><u><strong>link</strong></u></a>" +
 			" ya se encuentra en nuestra base de datos";
