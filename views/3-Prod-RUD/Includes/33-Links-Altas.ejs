@@ -14,9 +14,9 @@
 	<td id="calidad">
 		<div class="inputError">
 			<select name="calidad" class="input">
-				<option value="" class="ocultar" <%- dataEntry.calidad=="" ? "selected" : "" %>>Elejí</option>
+				<option value="" class="ocultar" <%- !dataEntry.calidad ? "selected" : "" %>>Elejí</option>
 				<% for (calidad of calidades) { %>
-					<option value="<%= calidad %>" <%- dataEntry.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
+					<option value="<%= calidad %>" <%- (dataEntry.numeroFila == fila && dataEntry.calidad == calidad) ? "selected" : "" %>><%= calidad %></option>
 				<% } %>
 				<option value="1081" <%- dataEntry.calidad=="1081" ? "selected" : "" %>>>1080</option>
 			</select>

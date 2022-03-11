@@ -300,7 +300,7 @@ window.addEventListener("load", async () => {
 	let botonGuardar = (fila) => {
 		let OK =
 			Array.from(iconosOK)
-				.slice(fila, fila + columnasInput)
+				.slice(fila * columnasInput, (fila + 1) * columnasInput)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
@@ -309,14 +309,13 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == undefined;
 		let error =
 			Array.from(iconosError)
-				.slice(fila, fila + columnasInput)
+				.slice(fila * columnasInput, (fila + 1) * columnasInput)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar == columnasInput;
-		console.log(OK, error);
 		OK && error ? guardar[fila].classList.remove("inactivo") : guardar[fila].classList.add("inactivo");
 	};
 

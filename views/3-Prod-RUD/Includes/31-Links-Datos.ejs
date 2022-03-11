@@ -29,7 +29,7 @@
 	<!-- Gratuito -->
 	<td class="taparMotivo"><%= link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
-	<td class="taparMotivo"><%= link.status_registro.links %> </td>
+	<td class="taparMotivo"><%- link.capturado_en > haceUnaHora?"En Revisión": link.status_registro.links %> </td>
 	<!-- Acción -->
 	<td>
 		<% if (link.capturado_en > haceUnaHora) { %>
