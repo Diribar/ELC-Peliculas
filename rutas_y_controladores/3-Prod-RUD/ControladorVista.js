@@ -554,15 +554,15 @@ let limpiarLosDatos = (datos) => {
 	// Fin
 	return datos;
 };
-let determinarStatusRegistroId = async (prodOriginal, prodEditado) => {
+let determinarStatusRegistroId = async (original, editado) => {
 	let status_registro = await BD_varias.obtenerTodos("status_registro_ent", "orden");
-	return prodEditado
+	return editado
 		? // 1. Si existe la 'edicion guardada' --> lo copia
-		  prodEditado.status_registro_id
-		: prodOriginal.status_registro.creado
+		  editado.status_registro_id
+		: original.status_registro.creado
 		? // 2.1. Si el status de 'original' es 'creada' --> lo copia
-		  prodOriginal.status_registro_id
-		: prodOriginal.status_registro.aprobado
+		  original.status_registro_id
+		: original.status_registro.aprobado
 		? // 2.2. Si el status de 'original' es 'aprobado' --> 'edicion'
 		  status_registro.find((n) => n.editado).id
 		: "";
