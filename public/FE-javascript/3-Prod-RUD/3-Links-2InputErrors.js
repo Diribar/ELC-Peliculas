@@ -2,94 +2,101 @@ window.addEventListener("load", async () => {
 	// Variables
 	let colecciones = new URL(window.location.href).searchParams.get("entidad") == "colecciones";
 	let form = document.querySelector("#datos form");
+	let prov_idInput = document.querySelector(".inputError input[name='link_prov_id'");
+
 	// Form - Campos en general
 	let inputs = document.querySelectorAll("form .input");
-	//console.log(inputs);
-	let campos = Array.from(inputs).map((n) => n.name);
-	// Sectores - Campos particulares
-	let completo = document.querySelector("#dataEntry #completo");
-	let parte = document.querySelector("#dataEntry #parte");
-	let calidad = document.querySelector("#dataEntry #calidad");
-	let tipo = document.querySelector("#dataEntry #tipo");
-	let gratuito = document.querySelector("#dataEntry #gratuito");
-	let guardar = document.querySelector("form #dataEntry .fa-floppy-disk");
-	// Form - Inputs particulares
-	let urlInput = document.querySelector("#dataEntry input[name='url'");
-	let prov_idInput = document.querySelector("#dataEntry input[name='link_prov_id'");
-	let calidadInput = document.querySelector("#dataEntry #calidad .input");
-	let tipoInput = document.querySelector("#dataEntry #tipo .input");
-	let completoInput = document.querySelector("#dataEntry #completo .input");
-	let parteInput = document.querySelector("#dataEntry #parte .input");
-	let gratuitoInput = document.querySelector("#dataEntry #gratuito .input");
+	let columnasInput = document.querySelectorAll("form #altas .input").length;
+	let camposInput = Array.from(inputs)
+		.map((n) => n.name)
+		.slice(0, columnasInput);
+	let filasInput = inputs.length / columnasInput;
+	let filaUrlAlta = filasInput - 1;
+
+	// Sectores particulares
+	let calidad = document.querySelectorAll("form #calidad");
+	let tipo = document.querySelectorAll("form #tipo");
+	let completo = document.querySelectorAll("form #completo");
+	let parte = document.querySelectorAll("form #parte");
+	let gratuito = document.querySelectorAll("form #gratuito");
+	let guardar = document.querySelectorAll("form .fa-floppy-disk");
+
+	// Inputs particulares
+	let urlInputs = document.querySelectorAll(".inputError input[name='url'");
+	let calidadInputs = document.querySelectorAll("#calidad .inputError .input");
+	let tipoInputs = document.querySelectorAll("#tipo .inputError .input");
+	let completoInputs = document.querySelectorAll("#completo .inputError .input");
+	let parteInputs = document.querySelectorAll("#parte .inputError .input");
+	let gratuitoInputs = document.querySelectorAll("#gratuito .inputError .input");
 
 	// OK/Errores
-	let provDesconocido = document.querySelector("#dataEntry #url .fa-circle-question");
-	let provConocido = document.querySelector("#dataEntry #url .fa-circle-check");
-	let iconosOK = document.querySelectorAll("#dataEntry .fa-circle-check");
-	let iconosError = document.querySelectorAll("#dataEntry .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll("#dataEntry .mensajeError");
+	let provsDesconocido = document.querySelectorAll("#url .inputError .fa-circle-question");
+	let provsConocido = document.querySelectorAll("#url .inputError .fa-circle-check");
+	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
+	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	// Rutas
 	let rutaValidar = "/producto/links/api/validar-links/?";
 	let rutaObtenerProv = "/producto/links/api/obtener-provs-links";
 
-	// Descartar 'basura' del 'url'
-	urlInput.addEventListener("input", () => {
+	// Depurar el 'url' de alta
+	urlInputs[filaUrlAlta].addEventListener("input", () => {
 		depurarUrl();
 	});
 
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {
-		// Definir los valores para 'campo' y 'valor'
-		let campo = e.target.name;
-		let valor = e.target.value;
-		// Si es url...
-		if (campo == "url") {
-			// 1. Actualizar el valor sin los prefijos
-			url = valor;
-			// 2. Averiguar si hay algún error y aplicar las consecuencias
-			var error = await fetch(rutaValidar + campo + "=" + valor).then((n) => n.json());
-			consecuenciaError(error, campo);
-			// Acciones si no hay errores en el url
-			if (!error[campo]) await funcionesDerivadasDelUrl();
-		} else if (campo == "link_tipo_id") impactosPorTipoLink();
-		else if (campo == "completo") impactoPorCompleto(valor);
-		else if (campo == "parte" && valor < 1) parteInput.value = 1;
-
-		// Actualizar los errores de todo el form
-		if ((campo != "url" || !error.url) && e.target.name != "motivo") {
-			let dataEntry = actualizarDataEntry();
-			errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
-			consecuenciasErrores(errores, campos);
-		}
-
-		// Submit
-		botonGuardar();
+		let fila = funcionIndice(e);
+		rutinaFormChange(e, fila);
 	});
 
 	// FUNCIONES ---------------------------------------------------------------
-	// DERIVADAS DEL URL -------------------------------------------------------
-	let funcionesDerivadasDelUrl = async () => {
-		// Depurar el url
-		depurarUrl();
-		// 1. Obtiene el proveedor del url
-		let proveedor = await obtenerProvUrl();
-		// 2. Agregar el prov_id en el form
-		prov_idInput.value = proveedor.id;
-		// 3. Actualizar el ícono OK del url
-		actualizarIconoProv(proveedor);
-		// 4. Impacto en 'calidad'
-		impactoEnCalidad(proveedor);
-		// 5. Impacto en 'tipo'
-		impactoEnTipo(proveedor);
-		// 6. Impacto en 'completo' y 'parte'
-		impactosEnCompletoParte(proveedor);
-		// 7. Impacto en 'gratuito'
-		impactoEnGratuito(proveedor);
+	let funcionIndice = (e) => {
+		for (let fila = 0; fila < filasInput; fila++) {
+			for (let col = 0; col < camposInput.length; col++) {
+				if (e.target == inputs[fila * columnasInput + col]) return fila;
+			}
+		}
 	};
+	let rutinaFormChange = async (e, fila) => {
+		// Definir los valores para 'campo'
+		let campo = e.target.name;
+		let valor = e.target.value;
+		// Si es url...
+		if (campo == "url") await funcionesDerivadasDelUrl(fila);
+		else if (campo == "link_tipo_id") impactosPorTipoLink(fila);
+		else if (campo == "completo") impactoPorCompleto(fila, valor);
+		else if (campo == "parte" && valor < 1 && valor != "") parteInputs[fila].value = 1;
+		// Actualizar los errores de toda la fila
+		if (campo != "url" && campo != "motivo") await consecuenciasErrores(fila);
+		// Submit
+		botonGuardar(fila);
+	};
+	// DERIVADAS DEL URL -------------------------------------------------------
+	let funcionesDerivadasDelUrl = async (fila) => {
+		// 1. Impacto en errores
+		if (fila == filaUrlAlta) {
+			// Depurar el url
+			// let url = encodeURIComponent(depurarUrl())
+			let url = depurarUrl();
+			// 2. Averiguar si hay algún error y aplicar las consecuencias
+			var error = await fetch(rutaValidar + "url=" + url).then((n) => n.json());
+		} else var error = {hay: false};
+		let proveedor = await consecuenciaErrorUrl(error, fila);
+		if (error.url) return;
+		// 2. Impacto en 'calidad'
+		impactoEnCalidad(proveedor, fila);
+		// 3. Impacto en 'tipo'
+		impactoEnTipo(proveedor, fila);
+		// 4. Impacto en 'completo' y 'parte'
+		impactosEnCompletoParte(proveedor, fila);
+		// 5. Impacto en 'gratuito'
+		impactoEnGratuito(proveedor, fila);
+	};
+	// 1. Impacto en errores
 	let depurarUrl = () => {
 		// Obtener el valor actual
-		let indice = campos.indexOf("url");
-		let valor = inputs[indice].value;
+		let valor = urlInputs[filaUrlAlta].value;
 		// Obtener ambos índices
 		let indice1 = valor.indexOf("www.");
 		let indice2 = valor.indexOf("//");
@@ -106,172 +113,194 @@ window.addEventListener("load", async () => {
 			url = nuevaUrl.join("") + producto;
 		}
 		// Conclusiones
-		inputs[indice].value = url;
+		urlInputs[filaUrlAlta].value = url;
 		return url;
 	};
-	let obtenerProvUrl = async () => {
+	let consecuenciaErrorUrl = async (error, fila) => {
+		// Guarda el mensaje de error
+		mensaje = error.url;
+		// Reemplaza el mensaje
+		let indiceGral = fila * columnasInput;
+		mensajesError[indiceGral].innerHTML = mensaje;
+		// Acciones en función de si hay o no mensajes de error
+		mensaje
+			? iconosError[indiceGral].classList.remove("ocultar")
+			: iconosError[indiceGral].classList.add("ocultar");
+		!mensaje
+			? iconosOK[indiceGral].classList.remove("ocultar")
+			: iconosOK[indiceGral].classList.add("ocultar");
+		if (!mensaje) {
+			// 1. Obtiene el proveedor del url
+			let proveedor = await obtenerProvUrl(fila);
+			// 2. Agregar el prov_id en el form (sólo en la fila de 'altas')
+			prov_idInput.value = proveedor.id;
+			// 3. Actualizar el ícono OK del url
+			actualizarIconoProv(proveedor, fila);
+			return proveedor;
+		}
+		return null;
+	};
+	let obtenerProvUrl = async (fila) => {
 		// Obtener el url
-		let indice = campos.indexOf("url");
-		let url = inputs[indice].value;
+		let url = urlInputs[fila].value;
 		// Obtener todos los proveedores
 		let proveedores = await fetch(rutaObtenerProv).then((n) => n.json());
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-		let aux = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+		let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
 		// Si no se reconoce el proveedor, se asume el 'desconocido'
-		return aux ? aux : proveedores.find((n) => n.generico);
+		return proveedor ? proveedor : proveedores.find((n) => n.generico);
 	};
-	let actualizarIconoProv = (proveedor) => {
+	let actualizarIconoProv = (proveedor, fila) => {
 		// Acciones en función de si el proveedor es genérico
 		proveedor.generico
-			? provDesconocido.classList.remove("prov_id")
-			: provDesconocido.classList.add("prov_id");
+			? provsDesconocido[fila].classList.remove("prov_id")
+			: provsDesconocido[fila].classList.add("prov_id");
 		!proveedor.generico
-			? provConocido.classList.remove("prov_id")
-			: provConocido.classList.add("prov_id");
+			? provsConocido[fila].classList.remove("prov_id")
+			: provsConocido[fila].classList.add("prov_id");
 	};
-	let impactoEnCalidad = (proveedor) => {
+	// 2. Impacto en 'calidad'
+	let impactoEnCalidad = (proveedor, fila) => {
 		// Adecuaciones
 		if (proveedor.calidad) {
-			calidad.classList.add("desperdicio");
-			calidadInput.classList.add("ocultar");
-			calidadInput.value = proveedor.calidad;
+			calidad[fila].classList.add("desperdicio");
+			calidadInputs[fila].classList.add("ocultar");
+			calidadInputs[fila].value = proveedor.calidad;
 		} else {
-			calidad.classList.remove("desperdicio");
-			calidadInput.classList.remove("ocultar");
+			calidad[fila].classList.remove("desperdicio");
+			calidadInputs[fila].classList.remove("ocultar");
 		}
 	};
-	let impactoEnTipo = (proveedor) => {
-		// Adecuaciones
+	// 3. Impacto en 'tipo'
+	let impactoEnTipo = (proveedor, fila) => {
 		if (!proveedor.trailer || !proveedor.pelicula || colecciones) {
-			tipo.classList.add("desperdicio");
-			tipoInput.classList.add("ocultar");
-			tipoInput.value = proveedor.trailer || colecciones ? 1 : 2;
+			tipo[fila].classList.add("desperdicio");
+			tipoInputs[fila].classList.add("ocultar");
+			tipoInputs[fila].value = proveedor.trailer || colecciones ? 1 : 2;
 		} else {
-			tipo.classList.remove("desperdicio");
-			tipoInput.classList.remove("ocultar");
+			tipo[fila].classList.remove("desperdicio");
+			tipoInputs[fila].classList.remove("ocultar");
 		}
 	};
-	let impactosEnCompletoParte = (proveedor) => {
+	// 4. Impacto en 'completo' y 'parte'
+	let impactosEnCompletoParte = (proveedor, fila) => {
 		// Cambios en el campo 'completo'
 		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
-			completo.classList.add("desperdicio");
-			completoInput.classList.add("ocultar");
-			!proveedor.pelicula ? (completoInput.disabled = true) : (completoInput.disabled = false);
-			if (proveedor.peli_siempre_completa) completoInput.value = "1";
+			completo[fila].classList.add("desperdicio");
+			completoInputs[fila].classList.add("ocultar");
+			!proveedor.pelicula
+				? (completoInputs[fila].disabled = true)
+				: (completoInputs[fila].disabled = false);
+			if (proveedor.peli_siempre_completa) completoInputs[fila].value = "1";
 		} else {
-			completo.classList.remove("desperdicio");
-			completoInput.classList.remove("ocultar");
-			completoInput.disabled = false;
+			completo[fila].classList.remove("desperdicio");
+			completoInputs[fila].classList.remove("ocultar");
+			completoInputs[fila].disabled = false;
 		}
 		// Cambios en el campo 'parte'
 		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
-			parte.classList.add("desperdicio");
-			parteInput.classList.add("ocultar");
-			parteInput.disabled = true;
+			parte[fila].classList.add("desperdicio");
+			parteInputs[fila].classList.add("ocultar");
+			parteInputs[fila].disabled = true;
 		} else {
-			parte.classList.remove("desperdicio");
-			parteInput.classList.remove("ocultar");
-			parteInput.disabled = false;
+			parte[fila].classList.remove("desperdicio");
+			parteInputs[fila].classList.remove("ocultar");
+			parteInputs[fila].disabled = false;
 		}
 	};
-	let impactoEnGratuito = (proveedor) => {
+	// 5. Impacto en 'gratuito'
+	let impactoEnGratuito = (proveedor, fila) => {
 		// Adecuaciones
 		if (proveedor.siempre_pago || proveedor.siempre_pago == false) {
-			gratuito.classList.add("desperdicio");
-			gratuitoInput.classList.add("ocultar");
-			gratuitoInput.value = proveedor.siempre_pago ? 0 : 1;
+			gratuito[fila].classList.add("desperdicio");
+			gratuitoInputs[fila].classList.add("ocultar");
+			gratuitoInputs[fila].value = proveedor.siempre_pago ? 0 : 1;
 		} else {
-			gratuito.classList.remove("desperdicio");
-			gratuitoInput.classList.remove("ocultar");
+			gratuito[fila].classList.remove("desperdicio");
+			gratuitoInputs[fila].classList.remove("ocultar");
 		}
 	};
 	// DERIVADAS DE OTROS DATA-ENTRY -------------------------------------------
-	let funcionesDerivadasDeOtrosDataEntry = () => {
+	let funcionesDerivadasDeOtrosDataEntry = (fila) => {
 		// Impacto en 'completo' y 'parte'
-		impactosPorTipoLink();
+		impactosPorTipoLink(fila);
 		// Impacto en 'parte'
-		impactoPorCompleto();
+		impactoPorCompleto(fila);
 		// Impacto en 'parte'
-		if (parteInput.value < 1) parteInput.value = 1;
+		if (parteInputs[fila].value < 1 && parteInputs[fila].value != "") parteInputs[fila].value = 1;
 	};
-	let impactosPorTipoLink = () => {
+	let impactosPorTipoLink = (fila) => {
 		// Obtener el valor
-		let valor = tipoInput.value;
+		let valor = tipoInputs[fila].value;
 		// Consecuencias
 		if (valor == 1) {
-			completo.classList.add("desperdicio");
-			completoInput.classList.add("ocultar");
-			completoInput.disabled = true;
-			parte.classList.add("desperdicio");
-			parteInput.classList.add("ocultar");
-			parteInput.disabled = true;
+			completo[fila].classList.add("desperdicio");
+			completoInputs[fila].classList.add("ocultar");
+			completoInputs[fila].disabled = true;
+			parte[fila].classList.add("desperdicio");
+			parteInputs[fila].classList.add("ocultar");
+			parteInputs[fila].disabled = true;
 		} else {
-			completo.classList.remove("desperdicio");
-			completoInput.classList.remove("ocultar");
-			completoInput.disabled = false;
+			completo[fila].classList.remove("desperdicio");
+			completoInputs[fila].classList.remove("ocultar");
+			completoInputs[fila].disabled = false;
 
-			if (!completoInput.value) {
-				parte.classList.remove("desperdicio");
-				parteInput.classList.remove("ocultar");
-				parteInput.disabled = false;
+			if (!completoInputs[fila].value) {
+				parte[fila].classList.remove("desperdicio");
+				parteInputs[fila].classList.remove("ocultar");
+				parteInputs[fila].disabled = false;
 			}
 		}
 	};
-	let impactoPorCompleto = () => {
+	let impactoPorCompleto = (fila) => {
 		// Obtener el valor
-		let valor = completoInput.value;
+		let valor = completoInputs[fila].value;
 		// Consecuencias
 		if (valor == 1) {
-			parte.classList.add("desperdicio");
-			parteInput.classList.add("ocultar");
-			parteInput.disabled = true;
+			parte[fila].classList.add("desperdicio");
+			parteInputs[fila].classList.add("ocultar");
+			parteInputs[fila].disabled = true;
 		} else {
-			if (completoInput.value == "0" && parteInput.value == "") {
-				parte.classList.remove("desperdicio");
-				parteInput.classList.remove("ocultar");
-				parteInput.disabled = false;
+			if (completoInputs[fila].value == "0") {
+				parte[fila].classList.remove("desperdicio");
+				parteInputs[fila].classList.remove("ocultar");
+				parteInputs[fila].disabled = false;
 			}
 		}
 	};
 	// OTRAS FUNCIONES --------------------------------------------------------
-	let consecuenciaError = (error, campo) => {
-		// Guarda el mensaje de error
-		mensaje = error[campo];
-		// Reemplaza el mensaje
-		indice = campos.indexOf(campo);
-		mensajesError[indice].innerHTML = mensaje;
-		// Acciones en función de si hay o no mensajes de error
-		mensaje
-			? iconosError[indice].classList.remove("ocultar")
-			: iconosError[indice].classList.add("ocultar");
-		!mensaje ? iconosOK[indice].classList.remove("ocultar") : iconosOK[indice].classList.add("ocultar");
-	};
-	let consecuenciasErrores = (errores, camposEspecificos) => {
-		for (campo of camposEspecificos) {
+	let consecuenciasErrores = async (fila) => {
+		// Obtener la info de losdata-entry de la fila
+		let dataEntry = actualizarDataEntry(fila);
+		// Obtener los errores de la fila
+		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
+		// Consecuencias en cada celda
+		for (campo of camposInput) {
 			// Guarda el mensaje de error
-			mensaje = errores[campo];
-			// Reemplaza
-			indice = campos.indexOf(campo);
-			mensajesError[indice].innerHTML = mensaje;
-			// Acciones en función de si hay o no mensajes de error
+			let mensaje = fila == filaUrlAlta || campo != "url" ? errores[campo] : "";
+			// Reemplaza el mensaje de error
+			let columna = camposInput.indexOf(campo);
+			let celda = fila * columnasInput + columna;
+			mensajesError[celda].innerHTML = mensaje;
+			// Consecuencias de los errores
 			mensaje
-				? iconosError[indice].classList.remove("ocultar")
-				: iconosError[indice].classList.add("ocultar");
-			!mensaje
-				? iconosOK[indice].classList.remove("ocultar")
-				: iconosOK[indice].classList.add("ocultar");
+				? iconosError[celda].classList.remove("ocultar")
+				: iconosError[celda].classList.add("ocultar");
+			!mensaje ? iconosOK[celda].classList.remove("ocultar") : iconosOK[celda].classList.add("ocultar");
 		}
 	};
-	let actualizarDataEntry = () => {
+	let actualizarDataEntry = (fila) => {
 		let objeto = "";
-		for (input of inputs) {
-			objeto += "&" + input.name + "=" + input.value;
+		for (let i = 0; i < columnasInput; i++) {
+			let celda = fila * columnasInput + i;
+			objeto += "&" + inputs[celda].name + "=" + inputs[celda].value;
 		}
 		return objeto;
 	};
-	let botonGuardar = () => {
+	let botonGuardar = (fila) => {
 		let OK =
 			Array.from(iconosOK)
+				.slice(fila, fila + columnasInput)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
@@ -280,27 +309,28 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == undefined;
 		let error =
 			Array.from(iconosError)
+				.slice(fila, fila + columnasInput)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == iconosError.length;
-		OK && error ? guardar.classList.remove("inactivo") : guardar.classList.add("inactivo");
+				}, {}).ocultar == columnasInput;
+		console.log(OK, error);
+		OK && error ? guardar[fila].classList.remove("inactivo") : guardar[fila].classList.add("inactivo");
 	};
 
-	// Start-up
-	if (urlInput.value) {
-		// Funciones derivadas del url
-		await funcionesDerivadasDelUrl();
-		// Funciones derivadas del Dara Entry
-		funcionesDerivadasDeOtrosDataEntry();
-		// Actualizar los errores de todo el form
-		let dataEntry = actualizarDataEntry();
-		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
-		consecuenciasErrores(errores, campos);
+	// START-UP ---------------------------------------------------------------------
+	for (let fila = 0; fila < filasInput; fila++) {
+		if (urlInputs[fila].value) {
+			// Funciones derivadas del url
+			await funcionesDerivadasDelUrl(fila);
+			// Funciones derivadas del Dara Entry
+			funcionesDerivadasDeOtrosDataEntry(fila);
+			// Actualizar los errores de todo el form
+			await consecuenciasErrores(fila);
+			// Submit
+			botonGuardar(fila);
+		}
 	}
-
-	// Submit
-	botonGuardar();
 });
