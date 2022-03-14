@@ -2,6 +2,7 @@ window.addEventListener("load", () => {
 	// Variables
 	let filas_yaExistentes = document.querySelectorAll(".yaExistentes");
 	let botonesOut = document.querySelectorAll(".yaExistentes .out");
+	let botonesEditar = document.querySelectorAll(".yaExistentes .editar");
 	let links_id = document.querySelectorAll(".yaExistentes #link_id");
 	let taparMotivo = document.querySelectorAll(".yaExistentes .taparMotivo");
 	let motivosFila = document.querySelectorAll(".yaExistentes #motivo");
@@ -22,6 +23,8 @@ window.addEventListener("load", () => {
 				// Reemplazar por el tacho
 				botonesOut[i].classList.add("fa-trash-can");
 				botonesOut[i].classList.remove("fa-circle-xmark");
+				// Ocultar elbotón de editar
+				botonesEditar[i].classList.add("ocultar");
 				// Ocultar los 6 campos
 				for (let j = 0; j < 6; j++) {
 					taparMotivo[i * 6 + j].classList.add("ocultar");

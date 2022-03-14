@@ -56,7 +56,7 @@
 	<!-- Parte -->
 	<td id="parte">
 		<div class="inputError">
-			<input name="parte" type="number" class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte) ? dataEntry.parte : '' %>">
+			<input name="parte" type="number" class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte != "-") ? dataEntry.parte : '' %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>

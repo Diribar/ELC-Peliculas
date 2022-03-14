@@ -266,11 +266,16 @@ module.exports = {
 	},
 	linksAltasEditar: async (req, res) => {
 		let datos = limpiarLosDatos(req.body);
+		//return res.send(datos)
 		// Procesar los datos en la operación que corresponda
 		let respuesta = datos.alta ? await altaDeLink(req, datos) : await edicionDeLink(req, datos);
 		// Fin
+		// Si hay un error en el url, comunicarlo
 		if (respuesta) return res.send(respuesta);
-		//return res.send(datos)
+		// Estandarizar fechaRef en originales y editados del mismo "prodEntidad" y "prodId"
+		else estandarizarFechaRef(datos.prodEntidad, datos.prodID);
+		// Redireccionar
+		// return res.send(datos)
 		return res.redirect("/producto/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
 	},
 
@@ -329,23 +334,23 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Acciones si existen 'linksActivos'
 	if (linksActivos.length) {
 		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
-		BD_varias.actualizarRegistro(prodEntidad, prodID, datos);
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
 		return;
 	} else if (producto.links_gratuitos_en_la_web_id == si) {
 		let datos = {links_gratuitos_en_la_web_id: talVez};
-		BD_varias.actualizarRegistro(prodEntidad, prodID, datos);
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
 	}
 
 	// Acciones si existen 'linksTalVez'
 	if (linksTalVez.length) {
 		let datos = {links_gratuitos_cargados_id: talVez};
-		BD_varias.actualizarRegistro(prodEntidad, prodID, datos);
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
 		return;
 	}
 
 	// Acciones si no se cumplen los anteriores
 	let datos = {links_gratuitos_cargados_id: no};
-	BD_varias.actualizarRegistro(prodEntidad, prodID, datos);
+	BD_varias.actualizarPorId(prodEntidad, prodID, datos);
 	return;
 };
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
@@ -503,7 +508,7 @@ let edicionDeLink = async (req, datos) => {
 			linkOriginalNuevo = {...linkOriginal, ...datos};
 			//return linkOriginalNuevo
 			// 2. Actualizarlo en la BD
-			await BD_varias.actualizarRegistro("links_originales", datos.id, linkOriginalNuevo)
+			await BD_varias.actualizarPorId("links_originales", datos.id, linkOriginalNuevo);
 		} else {
 			// Editados se guarda en versión edición
 			// 1. Obtener el link 'Edición Nueva'
@@ -566,4 +571,19 @@ let determinarStatusRegistroId = async (original, editado) => {
 		? // 2.2. Si el status de 'original' es 'aprobado' --> 'edicion'
 		  status_registro.find((n) => n.editado).id
 		: "";
+};
+let estandarizarFechaRef = async (prodEntidad, prodID) => {
+	// Actualizar todos los originales
+	let campo_id = entidad_id(prodEntidad);
+	let fecha_referencia = new Date();
+	// Actualizar linksOriginales
+	BD_varias.actualizarPorCampo("links_originales", campo_id, prodID, {fecha_referencia});
+	// Actualizar linksEdicion
+	BD_varias.obtenerTodosPorCampo("links_originales", campo_id, prodID)
+		.then((n) => n.map((m) => m.toJSON()))
+		.then((n) =>
+			n.map((m) =>
+				BD_varias.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
+			)
+		);
 };

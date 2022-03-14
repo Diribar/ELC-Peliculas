@@ -26,6 +26,7 @@ module.exports = (sequelize, dt) => {
 		edic_analizada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.INTEGER},
 
+		fecha_referencia: {type: dt.DATE},
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
 	};

@@ -68,9 +68,10 @@ window.addEventListener("load", async () => {
 		else if (campo == "completo") impactoPorCompleto(fila, valor);
 		else if (campo == "parte" && valor < 1 && valor != "") parteInputs[fila].value = 1;
 		// Actualizar los errores de toda la fila
-		if (campo != "url" && campo != "motivo") await consecuenciasErrores(fila);
-		// Submit
-		botonGuardar(fila);
+		if (campo != "motivo_id") {
+			if (campo != "url") await consecuenciasErrores(fila);
+			botonGuardar(fila);
+		}
 	};
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async (fila) => {
@@ -211,7 +212,7 @@ window.addEventListener("load", async () => {
 	// 5. Impacto en 'gratuito'
 	let impactoEnGratuito = (proveedor, fila) => {
 		// Adecuaciones
-		if (proveedor.siempre_pago || proveedor.siempre_pago == false) {
+		if (proveedor.siempre_pago != null) {
 			gratuito[fila].classList.add("desperdicio");
 			gratuitoInputs[fila].classList.add("ocultar");
 			gratuitoInputs[fila].value = proveedor.siempre_pago ? 0 : 1;

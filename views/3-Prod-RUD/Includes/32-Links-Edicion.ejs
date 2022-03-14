@@ -53,7 +53,7 @@
 	<!-- Parte -->
 	<td id="parte">
 		<div class="inputError">
-			<input name="parte" type="number" class="input" value="<%- link.parte ? link.parte : '' %>">
+			<input name="parte" type="number" class="input" value="<%- link.parte != "-" ? link.parte : '' %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
@@ -63,8 +63,8 @@
 	<td id="gratuito">
 		<div class="inputError">
 			<select name="gratuito" class="input">
-				<option value="1" <%- link.gratuito=="1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.gratuito=="0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.gratuito == "0" ? "selected" : "" %>>NO</option>
 			</select>
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
