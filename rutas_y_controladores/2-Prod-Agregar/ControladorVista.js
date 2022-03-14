@@ -487,7 +487,6 @@ module.exports = {
 			creado_por_id: confirma.creado_por_id,
 		};
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
-		//return res.send("123")
 		// 3. Almacenar el dato de BD del avatar
 		confirma.avatar = confirma.avatarBD;
 		// 4. Eliminar los datos prescindibles en Edición
@@ -502,7 +501,7 @@ module.exports = {
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		// 5. Guardar los datos de 'Edición'
-		//await BD_varias.agregarRegistro(edicion);
+		await BD_varias.agregarRegistro(edicion);
 		// 6. Guardar datosTerminaste
 		datosTerminaste = funcDatosTerminaste({...confirma, id: registro.id});
 		req.session.datosTerminaste = datosTerminaste;
