@@ -45,7 +45,7 @@ module.exports = {
 		res.cookie("RCLV", RCLV, {maxAge: 24 * 60 * 60 * 1000});
 		// Redirigir
 		//return res.send(RCLV)
-		return res.redirect("/agregar/rclv/" + RCLV.entidad_RCLV.slice(5));
+		return res.redirect("/producto/rclv/" + RCLV.entidad_RCLV.slice(5));
 	},
 
 	RCLV_Form: async (req, res) => {

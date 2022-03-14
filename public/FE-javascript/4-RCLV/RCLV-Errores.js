@@ -1,10 +1,10 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = window.location.href;
-	entidad = entidad.slice(entidad.lastIndexOf("/") + 1);
+	entidad = "RCLV_" + entidad.slice(entidad.lastIndexOf("/") + 1);
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button[type='submit']");
-	let ruta = "/api/validar/?RCLV=";
+	let ruta = "/producto/rclv/api/validar/?RCLV=";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -86,9 +86,7 @@ window.addEventListener("load", async () => {
 		// RCLI ******************************************
 		if (
 			entidad == "RCLV_personajes" &&
-			(campo == "enProcCan" ||
-				campo == "proceso_canonizacion_id" ||
-				campo == "rol_iglesia_id")
+			(campo == "enProcCan" || campo == "proceso_canonizacion_id" || campo == "rol_iglesia_id")
 		) {
 			[OK, errores] = await funcionRCLI();
 			// Logo de Santopedia
@@ -118,9 +116,7 @@ window.addEventListener("load", async () => {
 		// Rutina
 		for (i = 0; i < bloques.length; i++) {
 			// Ícono de OK
-			OK[bloques[i]]
-				? iconoOK[i].classList.remove("ocultar")
-				: iconoOK[i].classList.add("ocultar");
+			OK[bloques[i]] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
 			// Ícono de error
 			errores[bloques[i]]
 				? iconoError[i].classList.remove("ocultar")
@@ -216,9 +212,7 @@ window.addEventListener("load", async () => {
 	let funcionRCLI = async () => {
 		if (entidad != "RCLV_personajes") return;
 		// Ocultar / mostrar lo referido al status y género
-		enProcCan[0].checked
-			? ocultar.classList.remove("invisible")
-			: ocultar.classList.add("invisible");
+		enProcCan[0].checked ? ocultar.classList.remove("invisible") : ocultar.classList.add("invisible");
 		// Armar la url
 		url = "";
 		// En proceso de canonización
@@ -237,11 +231,7 @@ window.addEventListener("load", async () => {
 	let funcionGenero = () => {
 		if (entidad != "RCLV_personajes") return;
 		// Definir variables
-		generoElegido = genero[0].checked
-			? genero[0].value
-			: genero[1].checked
-			? genero[1].value
-			: "";
+		generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
 
 		enProcCanElegido = enProcCan[0].checked;
 
@@ -309,13 +299,7 @@ window.addEventListener("load", async () => {
 	// Buscar otros casos en esa fecha
 	registrosConEsaFecha = async () => {
 		// Obtener los casos
-		url =
-			"/api/otros-casos/?mes_id=" +
-			mes_id.value +
-			"&dia=" +
-			dia.value +
-			"&entidad=" +
-			entidad;
+		url = "/producto/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
 		casos = await fetch(url).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {

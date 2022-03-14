@@ -135,11 +135,10 @@ window.addEventListener("load", async () => {
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar != iconoError.length;
+				}, {}).ocultar == iconoError.length;
 
 		// Consecuencias
-		//console.log(OK, error);
-		OK && !error
+		OK && error
 			? submit.classList.remove("inactivo")
 			: submit.classList.add("inactivo");
 	};

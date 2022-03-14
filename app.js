@@ -35,7 +35,9 @@ app.set("views", [
 	path.resolve(__dirname, "./views/2-Prod-Agregar/Includes"),
 	path.resolve(__dirname, "./views/3-Prod-RUD"),
 	path.resolve(__dirname, "./views/3-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./views/4-Productos"),
+	path.resolve(__dirname, "./views/4-RCLV"),
+	path.resolve(__dirname, "./views/5-Revisar"),
+	path.resolve(__dirname, "./views/6-Productos"),
 	path.resolve(__dirname, "./views/9-Miscelaneas"),
 ]);
 

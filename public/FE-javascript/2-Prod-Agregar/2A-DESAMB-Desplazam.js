@@ -2,9 +2,9 @@ window.addEventListener("load", async () => {
 	// Definir variables
 	let resultado = document.querySelector("#resultadoDesamb"); // Todo el 'ul'
 	let ventana = resultado.offsetWidth; // El ancho de la ventana de lo que se ve (700)
-	let anchoForm = document.querySelector("#resultadoDesamb form").clientWidth; // El ancho del formulario (330)
-	let cantFormsVisibles = parseInt(ventana / anchoForm); // Cant. de forms visibles en simultáneo
 	let boton = document.querySelectorAll("#resultadoDesamb button");
+	let anchoForm = document.querySelector("#resultadoDesamb li").clientWidth; // El ancho del formulario (330)
+	let cantFormsVisibles = parseInt(ventana / anchoForm); // Cant. de forms visibles en simultáneo
 	let indiceFocus = 0;
 
 	// Desplazamiento por teclado

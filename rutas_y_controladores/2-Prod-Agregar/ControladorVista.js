@@ -7,6 +7,7 @@ let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 let variables = require("../../funciones/Varias/Variables");
 let BD_varias = require("../../funciones/BD/varias");
+let BD_especificas = require("../../funciones/BD/Especificas");
 let varias = require("../../funciones/Varias/Varias");
 
 // *********** Controlador ***********
@@ -16,9 +17,7 @@ module.exports = {
 		tema = "agregar";
 		codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
-		let palabrasClave = req.session.palabrasClave
-			? req.session.palabrasClave
-			: req.cookies.palabrasClave;
+		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		let errores = req.session.erroresPC
 			? req.session.erroresPC
 			: palabrasClave
@@ -67,9 +66,7 @@ module.exports = {
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		let palabrasClave = req.session.desambiguar
-			? req.session.desambiguar
-			: req.cookies.desambiguar;
+		let palabrasClave = req.session.desambiguar ? req.session.desambiguar : req.cookies.desambiguar;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Errores
 		let errores = req.session.erroresDES ? req.session.erroresDES : "";
@@ -264,8 +261,8 @@ module.exports = {
 		// 7. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await varias.paises_idToNombre(datosDuros.paises_id)
-			: await BD_varias.obtenerTodos("paises", "nombre");
-		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
+			: await BD_varias.obtenerTodos("paises", "nombre").then((n) => n.map((m) => m.toJSON()));
+		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre").then((n) => n.map((m) => m.toJSON()));
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 8. Render del formulario
 		return res.render("Home", {
@@ -311,8 +308,7 @@ module.exports = {
 				datosDuros[datosDuros.fuente + "_id"]
 			);
 			if (elc_id) {
-				errores.nombre_original =
-					"El código interno ya se encuentra en nuestra base de datos";
+				errores.nombre_original = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
 				errores.hay = true;
 			}
@@ -386,6 +382,7 @@ module.exports = {
 		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		// 5. Preparar variables para la vista
 		let camposDP = await variables.camposDP();
+		//return res.send(camposDP.find(n=>n.nombreDelCampo == "en_castellano_id").valores)
 		// 6. Render del formulario
 		return res.render("Home", {
 			tema,
@@ -424,12 +421,8 @@ module.exports = {
 		// Si no hay errores, continuar
 		// 7. Obtener la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_varias.obtenerPorCampo("fe_valores", "id", datosPers.fe_valores_id).then(
-				(n) => n.valor
-			),
-			BD_varias.obtenerPorCampo("entretiene", "id", datosPers.entretiene_id).then(
-				(n) => n.valor
-			),
+			BD_varias.obtenerPorCampo("fe_valores", "id", datosPers.fe_valores_id).then((n) => n.valor),
+			BD_varias.obtenerPorCampo("entretiene", "id", datosPers.entretiene_id).then((n) => n.valor),
 			BD_varias.obtenerPorCampo("calidad_tecnica", "id", datosPers.calidad_tecnica_id).then(
 				(n) => n.valor
 			),
@@ -492,31 +485,24 @@ module.exports = {
 			calidad_tecnica: confirma.calidad_tecnica,
 			calificacion: confirma.calificacion,
 			creado_por_id: confirma.creado_por_id,
-			capturado_por_id: confirma.creado_por_id,
 		};
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
-
+		//return res.send("123")
 		// 3. Almacenar el dato de BD del avatar
 		confirma.avatar = confirma.avatarBD;
 		// 4. Eliminar los datos prescindibles en Edición
-		datosEdicion = {...confirma};
-		let campos = Object.keys(datosEdicion);
-		let valores = Object.values(datosEdicion);
-		for (i = campos.length - 1; i >= 0; i--) {
-			if (valores[i] === original[campos[i]]) delete datosEdicion[campos[i]];
-		}
-		// 5. Guardar los datos de 'Edición'
 		let edicion = {
 			// Datos de 'confirma'
-			...datosEdicion,
+			...confirma,
 			elc_entidad: confirma.entidad,
 			editado_por_id: confirma.creado_por_id,
-			capturado_por_id: confirma.creado_por_id,
 			// Datos varios
 			entidad: "productos_edic",
 			elc_id: registro.id,
 		};
-		await BD_varias.agregarRegistro(edicion);
+		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
+		// 5. Guardar los datos de 'Edición'
+		//await BD_varias.agregarRegistro(edicion);
 		// 6. Guardar datosTerminaste
 		datosTerminaste = funcDatosTerminaste({...confirma, id: registro.id});
 		req.session.datosTerminaste = datosTerminaste;
@@ -530,6 +516,7 @@ module.exports = {
 		}
 		// Miscelaneas
 		guardar_cal_registros(confirma, registro);
+		//return res.send("456")
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
 		// Eliminar todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
@@ -550,7 +537,9 @@ module.exports = {
 		let errorEnQuery = varias.revisarQuery(entidad, id);
 		if (errorEnQuery) return res.send(errorEnQuery);
 		// 4. Obtener los demás datos del producto
-		let registroProd = await BD_varias.obtenerPorIdConInclude(entidad, id, "status_registro");
+		let registroProd = await BD_varias.obtenerPorIdConInclude(entidad, id, "status_registro").then((n) =>
+			n.toJSON()
+		);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO YA EN 'BD'
@@ -586,6 +575,7 @@ module.exports = {
 
 	yaEnBD_Form: (req, res) => {
 		titulo = "Agregar - Ya en Base de Datos";
+		borrarSessionCookies(req, res, "borrarTodo");
 		return res.send("La Película / Colección ya está en nuestra BD");
 	},
 };
@@ -656,11 +646,7 @@ let prepararMensaje = (desambiguar) => {
 			: (hayMas ? "muchas" : coincidencias) +
 			  " coincidencias" +
 			  (hayMas ? ". Te mostramos " + coincidencias : "") +
-			  (nuevos == coincidencias
-					? ", ninguna"
-					: nuevos
-					? ", " + nuevos + " no"
-					: ", todas ya")) +
+			  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
 		" está" +
 		(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 		" en nuestra BD.";
