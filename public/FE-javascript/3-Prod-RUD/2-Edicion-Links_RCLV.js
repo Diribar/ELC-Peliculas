@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
 					: "RCLV_valores";
 				// Para ir a la vista RCLV
 				window.location.href =
-					"/agregar/relacion-vida/?origen=edicion&entidad=" +
+					"/agregar/rclv/redireccionar/?origen=edicion&entidad=" +
 					entidad +
 					"&id=" +
 					producto_id +

@@ -6,7 +6,7 @@
 			<%- include("0-RUD-Encabezado") %>
 			<!-- Sinopsis -->
 			<div id="sinopsis">
-				<nav><%= registro.sinopsis %></nav>
+				<nav><%= Producto.sinopsis %></nav>
 				<!-- Ayuda -->
 				<i class="fa-solid fa-circle-question"></i>
 				<ul type="none" class="mensajeAyuda ocultar">
@@ -16,20 +16,20 @@
 			<!-- País, Idioma, Castellano, Color -->
 			<div class="datosAdicionales">
 				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises ? paises : "Sin datos" %>. 
-				<strong>Idioma original</strong>: <%= registro.idioma_original.nombre ? registro.idioma_original.nombre : "Sin datos" %>. 
-				<strong>En castellano:</strong> <%= registro.en_castellano.productos ? registro.en_castellano.productos : "Sin datos" %>. 
-				<strong>Es a color:</strong> <%= registro.en_color.productos ? registro.en_color.productos : "Sin datos" %>. 
+				<strong>Idioma original</strong>: <%= Producto.idioma_original.nombre ? Producto.idioma_original.nombre : "Sin datos" %>. 
+				<strong>En castellano:</strong> <%= Producto.en_castellano.productos ? Producto.en_castellano.productos : "Sin datos" %>. 
+				<strong>Es a color:</strong> <%= Producto.en_color.productos ? Producto.en_color.productos : "Sin datos" %>. 
 			</div>
 			<!-- Dirección, Guión, Música, Producción -->
 			<div class="datosAdicionales">
-				<strong>Dirección:</strong> <%= registro.direccion ? registro.direccion : "Sin datos" %>. 
-				<strong>Guión:</strong> <%= registro.guion ? registro.guion : "Sin datos" %>. 
-				<strong>Música:</strong> <%= registro.musica ? registro.musica : "Sin datos" %>. 
-				<strong>Producción:</strong> <%= registro.produccion ? registro.produccion : "Sin datos" %>. 
+				<strong>Dirección:</strong> <%= Producto.direccion ? Producto.direccion : "Sin datos" %>. 
+				<strong>Guión:</strong> <%= Producto.guion ? Producto.guion : "Sin datos" %>. 
+				<strong>Música:</strong> <%= Producto.musica ? Producto.musica : "Sin datos" %>. 
+				<strong>Producción:</strong> <%= Producto.produccion ? Producto.produccion : "Sin datos" %>. 
 			</div>
 			<!-- Actuación -->
 			<div class="datosAdicionales">
-				<strong>Actuación:</strong> <%= registro.actuacion ? registro.actuacion : "Sin datos" %>. 
+				<strong>Actuación:</strong> <%= Producto.actuacion ? Producto.actuacion : "Sin datos" %>. 
 			</div>	
 		</div>
 		<!-- Comandos -->
@@ -52,22 +52,22 @@
 		</div>
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
-			<p><strong>Público Sugerido:</strong> <%= registro.publico_sugerido.nombre %></p>
-			<p><strong>Categoría:</strong> <%= registro.categoria.nombre %></p>
-			<p><strong>Sub-categoría:</strong> <%= registro.subcategoria.nombre %></dd>
-			<% if (registro.personaje_id) { %>
+			<p><strong>Público Sugerido:</strong> <%= Producto.publico_sugerido.nombre %></p>
+			<p><strong>Categoría:</strong> <%= Producto.categoria.nombre %></p>
+			<p><strong>Sub-categoría:</strong> <%= Producto.subcategoria.nombre %></dd>
+			<% if (Producto.personaje_id) { %>
 				<dt>Personaje Histórico:</dt>
-				<dd><%= registro.personaje.nombre %> </dd>
+				<dd><%= Producto.personaje.nombre %> </dd>
 			<% } %>
-			<% if (registro.hecho_id) { %>
+			<% if (Producto.hecho_id) { %>
 				<dt>Hecho Histórico:</dt>
-				<dd><%= registro.hecho.nombre %> </dd>
+				<dd><%= Producto.hecho.nombre %> </dd>
 			<% } %>
-			<p><strong>Año de estreno:</strong> <%= registro.ano_estreno %></p>
-			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= registro.duracion %> min.</p><% } %>
-			<% if (registro.status_registro_id != 2) { %>
+			<p><strong>Año de estreno:</strong> <%= Producto.ano_estreno %></p>
+			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= Producto.duracion %> min.</p><% } %>
+			<% if (Producto.status_Producto_id != 2) { %>
 				<dt>Status del Registro:</dt>
-				<dd><%= registro.status_registro.productos %></dd>
+				<dd><%= Producto.status_registro.productos %></dd>
 			<% } %>
 		</div>
 	</section>

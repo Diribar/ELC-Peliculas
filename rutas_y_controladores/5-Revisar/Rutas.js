@@ -8,16 +8,6 @@ let vista = require("./ControladorVista");
 let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
 
 // Controladores *******************************************
-// Controladores de APIs
-router.get("/quick-search/", API.quickSearch);
-
-// Controladores de vistas - Institucional
-router.get("/", vista.home);
-router.get("/nosotros", vista.nosotros);
-
-// Miscelaneas
-router.get("/session", vista.session);
-router.get("/cookies", vista.cookies);
 
 // Exportarlo **********************************************
 module.exports = router;

@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/agregar/relacion-vida/?origen=datosPers&entidad_RCLV=" + entidad_RCLV + url;
+				"/agregar/rclv/redireccionar/?origen=datosPers&entidad_RCLV=" + entidad_RCLV + url;
 		});
 	}
 });
