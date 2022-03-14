@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	entidad = entidad.slice(entidad.lastIndexOf("/") + 1);
 	let form = document.querySelector("#dataEntry");
 	let button = document.querySelector("#dataEntry button[type='submit']");
-	let ruta = "/agregar/api/rclv/?RCLV=";
+	let ruta = "/api/validar/?RCLV=";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -310,7 +310,7 @@ window.addEventListener("load", async () => {
 	registrosConEsaFecha = async () => {
 		// Obtener los casos
 		url =
-			"/agregar/api/rclv-otros-casos/?mes_id=" +
+			"/api/otros-casos/?mes_id=" +
 			mes_id.value +
 			"&dia=" +
 			dia.value +
