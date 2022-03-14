@@ -5,7 +5,7 @@ let procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 // *********** Controlador ***********
 module.exports = {
-	RCLV: (req, res) => {
+	Redireccionar: (req, res) => {
 		// Detectar el origen
 		let RCLV = {
 			origen: req.query.origen,
