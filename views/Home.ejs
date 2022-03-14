@@ -3,10 +3,11 @@
 <head>
 	<!-- Head -->
 	<%- include('Head') %>
-	<% if (tema == "usuario") { %><%- include('0-UsuariosHead') %><% } %>
-	<% if (tema == "agregar") { %><%- include('0-AgregarHead') %><% } %>
-	<% if (tema == "productos") { %><%- include('0-ProductosHead') %><% } %>
-	<% if (tema == "miscelaneas") { %><%- include('0-MiscelaneasHead') %><% } %>
+	<% if (tema == "usuario") { %><%- include('0-Usuarios-Head') %><% } %>
+	<% if (tema == "agregar") { %><%- include('0-Agregar-Head') %><% } %>
+	<% if (tema == "rclv") { %><%- include('0-RCLV-Head') %><% } %>
+	<% if (tema == "productos") { %><%- include('0-Productos-Head') %><% } %>
+	<% if (tema == "miscelaneas") { %><%- include('0-Miscelaneas-Head') %><% } %>
 </head>
 <body>
 	<%- include('Header') %>
@@ -15,10 +16,11 @@
 		<section id="cuerpo-y-footer">
 			<%- include('Footer') %>
 			<!--**************************** CUERPO ******************************-->
-			<% if (tema == "usuario") { %><%- include('0-UsuariosCuerpo') %><% } %>
-			<% if (tema == "agregar") { %><%- include('0-AgregarCuerpo') %><% } %>
-			<% if (tema == "productos") { %><%- include("0-ProductosCuerpo") %><% } %>
-			<% if (tema == "miscelaneas") { %><%- include("0-MiscelaneasCuerpo") %><% } %>
+			<% if (tema == "usuario") { %><%- include('0-Usuarios-Cuerpo') %><% } %>
+			<% if (tema == "agregar") { %><%- include('0-Agregar-Cuerpo') %><% } %>
+			<% if (tema == "rclv") { %><%- include('0-RCLV-Cuerpo') %><% } %>
+			<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
+			<% if (tema == "miscelaneas") { %><%- include("0-Miscelaneas-Cuerpo") %><% } %>
 			<!--****************************** FIN *******************************-->
 		</section>
 	</main>
