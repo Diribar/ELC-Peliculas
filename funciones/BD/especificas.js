@@ -147,14 +147,12 @@ module.exports = {
 			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
-
 	obtenerUsuarioPorMail: (email) => {
 		return usuarios.findOne({
 			where: {email: email},
 			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
-
 	obtenerAutorizadoFA: (id) => {
 		return usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
