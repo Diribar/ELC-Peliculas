@@ -25,8 +25,8 @@ module.exports = {
 
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
 		return db[entidad].findAll({
-			include: includes,
 			where: {[campo]: valor},
+			include: includes,
 		});
 	},
 
