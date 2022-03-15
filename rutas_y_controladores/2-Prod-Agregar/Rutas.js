@@ -43,13 +43,7 @@ router.get("/copiar-fa", soloAutInput, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", soloAutInput, vista.copiarFA_Guardar);
 // Comienzo de "prodEnBD"
 router.get("/datos-duros", soloAutInput, prodEnBD, vista.datosDurosForm);
-router.post(
-	"/datos-duros",
-	soloAutInput,
-	prodEnBD,
-	multer.single("avatar"),
-	vista.datosDurosGuardar
-);
+router.post("/datos-duros", soloAutInput, prodEnBD, multer.single("avatar"), vista.datosDurosGuardar);
 router.get("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersForm);
 router.post("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersGuardar);
 router.get("/confirma", soloAutInput, prodEnBD, vista.confirmaForm);
