@@ -13,6 +13,10 @@ CREATE TABLE borr_motivos (
 	duracion SMALLINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO borr_motivos (id, orden, duracion, comentario, prod, rclv, links)
+VALUES
+(1, 0, 0, 'Otro motivo', 1, 1, 1)
+;
 INSERT INTO borr_motivos (id, orden, duracion, comentario, links)
 VALUES
 (19, 1, 0, 'Link reemplazado por otro más acorde', 1),
@@ -118,11 +122,11 @@ CREATE TABLE us_roles (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_roles (id, orden, nombre, aut_input, aut_gestion_prod, aut_gestion_us)
 VALUES 
-(1, 1, 'Usuario', 0, 0, 0),
+(1, 1, 'Sin privilegios', 0, 0, 0),
 (2, 2, 'Autorizado p/Inputs', 1, 0, 0),
 (3, 3, 'Gestión de Productos', 1, 1, 0),
 (4, 4, 'Gestión de Usuarios', 1, 0, 1),
-(5, 5, 'Gestión de Prod. y Usuarios', 1, 1, 1)
+(5, 5, 'Omnipotente', 1, 1, 1)
 ;
 CREATE TABLE us_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -978,31 +982,25 @@ CREATE TABLE cal_1registros (
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
-	fe_valores_id TINYINT UNSIGNED NOT NULL,
-	entretiene_id TINYINT UNSIGNED NOT NULL,
-	calidad_tecnica_id TINYINT UNSIGNED NOT NULL,
-	fe_valores_valor TINYINT UNSIGNED NOT NULL,
-	entretiene_valor TINYINT UNSIGNED NOT NULL,
-	calidad_tecnica_valor TINYINT UNSIGNED NOT NULL,
+	fe_valores TINYINT UNSIGNED NOT NULL,
+	entretiene TINYINT UNSIGNED NOT NULL,
+	calidad_tecnica TINYINT UNSIGNED NOT NULL,
 	resultado TINYINT UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
-	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
-	FOREIGN KEY (fe_valores_id) REFERENCES cal_21fe_valores(id),
-	FOREIGN KEY (entretiene_id) REFERENCES cal_22entretiene(id),
-	FOREIGN KEY (calidad_tecnica_id) REFERENCES cal_23calidad_tecnica(id)
+	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO cal_1registros (id, usuario_id, pelicula_id, coleccion_id, capitulo_id, fe_valores_id, entretiene_id, calidad_tecnica_id, fe_valores_valor, entretiene_valor, calidad_tecnica_valor, resultado)
+INSERT INTO cal_1registros (id, usuario_id, pelicula_id, coleccion_id, capitulo_id, fe_valores, entretiene, calidad_tecnica, resultado)
 VALUES
-(1,10,1,NULL,NULL,5,4,3,100,75,100,92),
-(2,10,2,NULL,NULL,5,4,3,100,75,100,92),
-(3,10,3,NULL,NULL,5,5,3,100,100,100,100),
-(4,10,4,NULL,NULL,5,5,3,100,100,100,100),
-(5,10,5,NULL,NULL,5,4,3,100,75,100,92),
-(6,10,NULL,1,NULL,4,4,3,75,75,100,80),
-(7,10,NULL,2,NULL,4,4,3,75,75,100,80)
+(1,10,1,NULL,NULL,100,75,100,92),
+(2,10,2,NULL,NULL,100,75,100,92),
+(3,10,3,NULL,NULL,100,100,100,100),
+(4,10,4,NULL,NULL,100,100,100,100),
+(5,10,5,NULL,NULL,100,75,100,92),
+(6,10,NULL,1,NULL,75,75,100,80),
+(7,10,NULL,2,NULL,75,75,100,80)
 ;
 
 /* ENTORNO DE INTERÉS EN PRODUCTO */;
@@ -1014,9 +1012,10 @@ CREATE TABLE int_opciones (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO int_opciones (id, orden, nombre)
 VALUES 
-(3, 1, 'Recordame que quiero verla'),
-(2, 2, 'Ya la vi'),
-(1, 3, 'Prefiero que no me la recomienden')
+(3, 1, 'La quiero ver'),
+(2, 2, 'Es de mis favoritas'),
+(4, 3, 'Ya la vi'),
+(1, 4, 'No me interesa')
 ;
 CREATE TABLE int_1registros (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
