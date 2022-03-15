@@ -10,7 +10,7 @@
 		<!-- País -->
 		<%- include("22-Edicion-Pais") %>
 		<!-- Idioma original -->
-		<%- include("23-Edicion-Idioma", {idioma_id: registro.idioma_original_id}) %>
+		<%- include("23-Edicion-Idioma", {idioma_id: Producto.idioma_original_id}) %>
 		<!--Existe una versión en castellano-->
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "en_castellano_id")}) %>
 		<!--Es a Color-->
