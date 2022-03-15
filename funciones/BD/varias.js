@@ -1,10 +1,19 @@
+// Variables --------------------------------------
 const db = require("../../base_de_datos/modelos");
+const Op = db.Sequelize.Op;
 
+// A exportar -------------------------------------
 module.exports = {
 	// Obtener
 	obtenerTodos: (entidad, orden) => {
 		return db[entidad].findAll({
 			order: [[orden, "ASC"]],
+		});
+	},
+
+	obtenerTodosConInclude: (entidad, includes) => {
+		return db[entidad].findAll({
+			include: includes,
 		});
 	},
 
@@ -16,8 +25,8 @@ module.exports = {
 
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
 		return db[entidad].findAll({
-			where: {[campo]: valor},
 			include: includes,
+			where: {[campo]: valor},
 		});
 	},
 

@@ -1,22 +1,9 @@
-let db = require("../../base_de_datos/modelos");
-let usuarios = db.usuarios;
+const db = require("../../base_de_datos/modelos");
+const Op = db.Sequelize.Op;
 let BD_varias = require("./Varias");
 
 module.exports = {
 	// Productos *****************************************
-	obtenerProductos: (entidad, orden) => {
-		return db[entidad].findAll({
-			where: {borrado: false},
-			order: [[orden, "ASC"]],
-		});
-	},
-	obtenerProductosConInclude: (entidad, orden, includes) => {
-		return db[entidad].findAll({
-			where: {borrado: false},
-			include: includes,
-			order: [[orden, "ASC"]],
-		});
-	},
 	quickSearch: async (condiciones) => {
 		let peliculas = db.peliculas
 			.findAll({where: condiciones, limit: 10})
@@ -107,16 +94,16 @@ module.exports = {
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
-			if (objeto[campos[i]] === null || objeto[campos[i]]==="") delete objeto[campos[i]];
+			if (objeto[campos[i]] === null || objeto[campos[i]] === "") delete objeto[campos[i]];
 		}
 		return objeto;
 	},
-	quitarDeEdicionLasCoincidenciasConOriginal: (original,edicion)=> {
+	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
 		let campos = Object.keys(edicion);
 		for (campo of campos) {
 			if (edicion[campo] == original[campo]) delete edicion[campo];
 		}
-		return edicion
+		return edicion;
 	},
 	actualizarRCLV: async (datos) => {
 		// Definir variables
@@ -140,20 +127,55 @@ module.exports = {
 			}
 		}
 	},
+	prodRevision: async function (entidad, includes) {
+		let [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id] =
+			await this.obtenerStatus();
+		return db[entidad]
+			.findAll({
+				where: {
+					status_registro_id: {
+						[Op.and]: {
+							[Op.ne]: aprobado_id,
+							[Op.ne]: inactivado_id,
+						},
+					},
+				},
+				include: includes,
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""))
+			.then((n) =>
+				n.filter(
+					(m) =>
+						m.personaje_id == aprobado_id || m.hecho_id == aprobado_id || m.valor_id == aprobado_id
+				)
+			);
+	},
+	obtenerStatus: async () => {
+		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
+			n.map((m) => m.toJSON())
+		);
+		let creado_id = status.find((n) => n.creado).id;
+		let editado_id = status.find((n) => n.editado).id;
+		let aprobado_id = status.find((n) => n.aprobado).id;
+		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
+		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
+		let inactivado_id = status.find((n) => n.inactivado).id;
+		return [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id];
+	},
 
 	// Usuarios *************************************************
 	obtenerUsuarioPorID: (id) => {
-		return usuarios.findByPk(id, {
+		return db.usuarios.findByPk(id, {
 			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
 	obtenerUsuarioPorMail: (email) => {
-		return usuarios.findOne({
+		return db.usuarios.findOne({
 			where: {email: email},
 			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
 		});
 	},
 	obtenerAutorizadoFA: (id) => {
-		return usuarios.findByPk(id).then((n) => n.autorizado_fa);
+		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 };

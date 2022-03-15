@@ -411,9 +411,9 @@ let ActivosInactivos = async (linksOriginales) => {
 	// linksInactivos --> incluye el motivo
 	let linksInactivos = linksOriginales.filter(
 		(n) =>
-			n.status_registro.sugerido_borrar ||
-			n.status_registro.sugerido_desborrar ||
-			n.status_registro.borrado
+			n.status_registro.sugerido_inactivar ||
+			n.status_registro.sugerido_recuperar ||
+			n.status_registro.inactivado
 	);
 	for (i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
