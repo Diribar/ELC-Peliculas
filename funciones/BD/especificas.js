@@ -105,7 +105,7 @@ module.exports = {
 		}
 		return edicion;
 	},
-	actualizarCantCasos_RCLV: async function (datos) {
+	actualizarCantCasos_RCLV: async (datos, status_id) => {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
@@ -115,38 +115,24 @@ module.exports = {
 			campo = camposRCLV[i];
 			valor = datos[campo];
 			if (valor) {
-				let cant_productos = 0;
-				// Rutina por cada entidad de Productos
-				for (entidadProd of entidadesProd) {
-					cant_productos += await BD_varias.contarCasos(entidadProd, campo, valor);
-				}
+				cant_productos = await BD_varias.contarCasos(entidadProd, campo, valor, status_id);
 				// Actualizar entidad de RCLV
-				id = valor;
-				BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], id, {cant_productos});
+				await BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], valor, {cant_productos});
 			}
 		}
 	},
-	contarProductos:async function (entidad, campo, valor) {
-		let [creado_id, , aprobado_id, , ,] = await this.obtenerStatus();
-		return db[entidad].count({
-			where: {
-				[campo]: valor,
-				status_registro_id: aprobado_id,
-			},
-		});
-	},
-
-	obtenerTodos_Revision: async function (entidad, includes, haceUnaHora) {
-		let [, , aprobado_id, , , inactivado_id] = await this.obtenerStatus();
-		return db[entidad]
-			.findAll({
+	contarProductos: async (entidadProd, campo, valor, status_id) => {
+		let cant_productos = 0;
+		// Rutina por cada entidad de Productos
+		for (entidadProd of entidadesProd) {
+			cant_productos += await db[entidadProd].count({
 				where: {
-					[Op.not]: [{status_registro_id: [aprobado_id, inactivado_id]}],
-					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					[campo]: valor,
+					status_registro_id: status_id,
 				},
-				include: includes,
-			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+			});
+		}
+		return cant_productos
 	},
 	obtenerStatus: async () => {
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
@@ -158,7 +144,7 @@ module.exports = {
 		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
 		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
 		let inactivado_id = status.find((n) => n.inactivado).id;
-		return [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id];
+		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
 	obtenerEdicion_Revision: async function (entidad, original) {
 		// Definir los campos include
