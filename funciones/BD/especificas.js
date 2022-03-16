@@ -167,7 +167,7 @@ module.exports = {
 			campo = camposRCLV[i];
 			valor = datos[campo];
 			if (valor) {
-				cant_productos = await BD_varias.contarCasos(entidadProd, campo, valor, status_id);
+				let cant_productos = await BD_varias.contarCasos(entidadProd, campo, valor, status_id);
 				// Actualizar entidad de RCLV
 				await BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], valor, {cant_productos});
 			}
