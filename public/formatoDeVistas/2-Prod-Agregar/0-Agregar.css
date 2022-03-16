@@ -40,8 +40,7 @@
 .mensajeAyuda, .mensajeAyuda::before,
 .fa-circle-check, .fa-circle-question, 
 .fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.resultadoEnEspera, .sinResultado 
-	{padding: 3px 10px; color: white; font-weight: bold;}
+.resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold;}
 
 /* Exito */
 /* Neutro */
