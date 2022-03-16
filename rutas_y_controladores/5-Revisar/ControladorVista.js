@@ -8,7 +8,6 @@ let varias = require("../../funciones/Varias/Varias");
 // *********** Controlador ***********
 module.exports = {
 	home: async (req, res) => {
-		return res.send(unDia+"")
 		tema = "revision";
 		codigo = "visionGeneral";
 		// Obtener status a analizar
