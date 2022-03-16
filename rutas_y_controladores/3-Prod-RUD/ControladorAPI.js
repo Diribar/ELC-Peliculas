@@ -240,7 +240,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 		.then((n) => n.toJSON())
 		.then((n) => n.duracion);
 	// Obtener el status_id de 'sugerido para borrar'
-	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "sugerido_borrar", 1)
+	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "sugerido_inactivar", 1)
 		.then((n) => n.toJSON())
 		.then((n) => n.id);
 	// Averiguar si ya existe una edición del usuario

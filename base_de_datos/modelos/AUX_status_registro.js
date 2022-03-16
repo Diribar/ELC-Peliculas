@@ -2,14 +2,14 @@ module.exports = (sequelize, dt) => {
 	const alias = "status_registro_ent";
 	const columns = {
 		orden: {type: dt.INTEGER},
-		productos: {type: dt.STRING(25)},
-		links: {type: dt.STRING(25)},
+		nombre: {type: dt.STRING(25)},
+		provisorio: {type: dt.BOOLEAN},
 		creado: {type: dt.BOOLEAN},
 		editado: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
-		sugerido_borrar: {type: dt.BOOLEAN},
-		sugerido_desborrar: {type: dt.BOOLEAN},
-		borrado: {type: dt.BOOLEAN},
+		sugerido_inactivar: {type: dt.BOOLEAN},
+		sugerido_recuperar: {type: dt.BOOLEAN},
+		inactivado: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_status_registro",

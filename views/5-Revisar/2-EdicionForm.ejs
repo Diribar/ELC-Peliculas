@@ -1,0 +1,76 @@
+<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+<%- include("0-RUD-Encabezado") %>
+<!-- Datos -->
+<section id="datos">
+	<!-- Datos generales -->
+	<div id="primeraColumna">
+		<h3>Datos generales</h3>
+		<!-- Primeros campos -->
+		<% for (campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<!-- País -->
+		<%- include("22-Edicion-Pais") %>
+		<!-- Idioma original -->
+		<%- include("23-Edicion-Idioma", {idioma_id: Producto.idioma_original_id}) %>
+		<!--Existe una versión en castellano-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "en_castellano_id")}) %>
+		<!--Es a Color-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "en_color_id")}) %>
+		<!-- Producción -->
+		<% for (campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<h3>Datos Subjetivos</h3>
+		<!--Categoría-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "categoria_id")}) %>
+		<!--Sub-categoría-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "subcategoria_id")}) %>
+		<!--Público sugerido-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "publico_sugerido_id")}) %>
+	</div>
+	<div id="segundaColumna">
+		<!-- Personas -->
+		<h3>Personas</h3>
+		<% for (campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<!-- Relación con la vida -->
+		<h3>Relación con la vida</h3>
+		<!--Personaje histórico-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "personaje_id")}) %>
+		<!--Hecho histórico-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "hecho_id")}) %>
+		<!--Valor-->
+		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "valor_id")}) %>
+		<h3>Sinopsis</h3>
+		<!--Sinopsis-->
+		<%- include("24-Edicion-Sinopsis") %>
+	</div>
+</section>
+<!-- Comandos -->
+<section id="comandos">
+	<!-- Versión editada 'session' -->
+	<div class="pack" id="session">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-pen-to-square version plus" tabindex="-1" title='Ver la versión editada SIN GUARDAR'></i>
+		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+		<!-- Descartar la versión -->
+		<i class="fa-solid fa-trash-can inactivo_EdicSess" tabindex="-1" title='Descartar esta versión'></i>
+		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+		<!-- Guardar los cambios -->
+		<label for="guardar"><i class="fa-solid fa-floppy-disk inactivo_EdicSess" tabindex="-1" title='Guardar esta versión'></i></label>
+		<button type="submit" id="guardar" class="ocultar"></button>
+	</div>
+	<!-- Versión editada 'guardada' -->
+	<div class="pack" id="guardada">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-pencil inactivo_EdicGua version" tabindex="-1" title='Ver la versión editada GUARDADA'></i>
+		<!-- Eliminar la versión -->
+		<i class="fa-solid fa-slash inactivo" tabindex="-1"></i>
+		<a href="<%= vista %>eliminar_edicion/?entidad=<%= entidad %>&id=<%= prodID %>">
+			<i class="fa-solid fa-trash-can inactivo_EdicGua" tabindex="-1" title='Eliminar esta versión'></i>
+		</a>
+	</div>
+	<!-- Versión original -->
+	<div class="pack">
+		<!-- Ver la versión -->
+		<i class="fa-solid fa-house version" tabindex="-1" title='Ver la versión original'></i>
+	</div>
+</section>
+<!-- Botones -->
+<%- include("0-RUD-Flechas") %> 
