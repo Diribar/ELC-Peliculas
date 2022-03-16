@@ -3,6 +3,7 @@ let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
 let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/especificas");
 let procesar = require("../../funciones/Prod-RUD/1-Procesar");
+let varias = require("../../funciones/Varias/Varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -12,27 +13,34 @@ module.exports = {
 		// Obtener status a analizar
 		let [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id] =
 			await BD_especificas.obtenerStatus();
-		// Obtener Productos
+		// Fijar el horario de corte
+		let haceUnaHora = varias.funcionHaceUnaHora();
+		// Obtener Productos -------------------------------------------------------------
 		let includes = ["personaje", "hecho", "valor", "status_registro"];
-		let peliculas = await BD_especificas.prodRevision("peliculas", includes);
-		let colecciones = await BD_especificas.prodRevision("colecciones", includes);
-		let Productos = [...peliculas, ...colecciones]
+		let peliculas = await BD_especificas.obtenerTodos_Revision("peliculas", includes, haceUnaHora);
+		let colecciones = await BD_especificas.obtenerTodos_Revision("colecciones", includes, haceUnaHora);
+		let Productos = [...peliculas, ...colecciones];
 		//return res.send(peliculas);
 		// Obtener los Productos según su estado
 		let [productosCreado, productosEditado, productosInactivar, productosRecuperar] = Productos.length
 			? [
-					Productos.filter((n) => n.status_registro_id == statusCreado),
-					Productos.filter((n) => n.status_registro_id == statusEditado),
-					Productos.filter((n) => n.status_registro_id == statusInactivar),
-					Productos.filter((n) => n.status_registro_id == statusRecuperar),
+					Productos.filter((n) => n.status_registro_id == creado_id),
+					Productos.filter((n) => n.status_registro_id == editado_id),
+					Productos.filter((n) => n.status_registro_id == inactivar_id),
+					Productos.filter((n) => n.status_registro_id == recuperar_id),
 			  ]
 			: ["", "", "", ""];
-		return res.send(productosCreado);
-		// Obtener RCLV
-		// let personaje=await BD_varias.obtenerTodosPorCampo("")
+		//return res.send(productosCreado);
+		// Obtener RCLV -----------------------------------------------------------------
+		let personajes = await BD_especificas.obtenerTodos_Revision("RCLV_personajes", "");
+		let hechos = await BD_especificas.obtenerTodos_Revision("RCLV_hechos", "");
+		let valores = await BD_especificas.obtenerTodos_Revision("RCLV_valores", "");
+		let RCLV = [...personajes, ...hechos, ...valores];
+		//return res.send(RCLV);
+		// Obtener Links ----------------------------------------------------------------
 
-		// Obtener Links
-
+		// Ir a la vista
+		return res.send("Revisar")
 		return res.render("Home", {
 			tema,
 			codigo,
