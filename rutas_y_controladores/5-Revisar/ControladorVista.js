@@ -20,19 +20,21 @@ module.exports = {
 		let colecciones = await BD_especificas.obtenerProductos("colecciones", includes, haceUnaHora, st);
 		let Productos = [...peliculas, ...colecciones];
 		// Obtener los productos en sus variantes a mostrar
-		let prodCreado = extraerPorStatus(Productos, status.creado_id);
-		let prodInactivar = extraerPorStatus(Productos, status.inactivar_id);
-		let prodRecuperar = extraerPorStatus(Productos, status.recuperar_id);
-		return res.send(prodCreado);
+		let prodCreado = prodPorStatus(Productos, status.creado_id);
+		let prodInactivar = prodPorStatus(Productos, status.inactivar_id);
+		let prodRecuperar = prodPorStatus(Productos, status.recuperar_id);
+		//return res.send(prodCreado);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
 
 		// Obtener RCLV -----------------------------------------------------------------
-		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", haceUnaHora, status.aprobado_id);
+		includes = ["peliculas", "colecciones", "capitulos", "ediciones"];
+		st = status.aprobado_id;
+		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", includes, haceUnaHora, st);
 		let hechos = await BD_especificas.obtenerRCLV("RCLV_hechos", haceUnaHora, status.aprobado_id);
 		let valores = await BD_especificas.obtenerRCLV("RCLV_valores", haceUnaHora, status.aprobado_id);
 		let RCLV = [...personajes, ...hechos, ...valores];
 		// Obtener los RCLV en sus variantes a mostrar
-		let [RCLV_creado, RCLV_sinProd] = RCLVs_status(RCLV, status);
+		let [RCLV_creado, RCLV_sinProd] = rclvPorStatus(RCLV, status);
 		//return res.send(RCLV);
 		// Obtener Links ----------------------------------------------------------------
 
@@ -52,6 +54,11 @@ module.exports = {
 
 // Funciones ------------------------------------------------------------------------------
 
-let extraerPorStatus = (array, status) => {
+let prodPorStatus = (array, status) => {
+	return array.length ? array.filter((n) => n.status_registro_id == status) : [];
+};
+let rclvPorStatus = (array, status, cant_prod) => {
+	// RCLV_creado
+	// RCLV_sinProd
 	return array.length ? array.filter((n) => n.status_registro_id == status) : [];
 };
