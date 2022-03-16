@@ -11,7 +11,7 @@ module.exports = {
 		tema = "revision";
 		codigo = "visionGeneral";
 		// Obtener status a analizar
-		let [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id] =
+		let [creado_id, , aprobado_id, inactivar_id, recuperar_id, inactivado_id] =
 			await BD_especificas.obtenerStatus();
 		// Fijar el horario de corte
 		let haceUnaHora = varias.funcionHaceUnaHora();
@@ -22,15 +22,15 @@ module.exports = {
 		let Productos = [...peliculas, ...colecciones];
 		//return res.send(peliculas);
 		// Obtener los Productos según su estado
-		let [productosCreado, productosEditado, productosInactivar, productosRecuperar] = Productos.length
+		let [productosCreado, productosInactivar, productosRecuperar] = Productos.length
 			? [
 					Productos.filter((n) => n.status_registro_id == creado_id),
-					Productos.filter((n) => n.status_registro_id == editado_id),
 					Productos.filter((n) => n.status_registro_id == inactivar_id),
 					Productos.filter((n) => n.status_registro_id == recuperar_id),
 			  ]
-			: ["", "", "", ""];
+			: ["", "", ""];
 		//return res.send(productosCreado);
+		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// Obtener RCLV -----------------------------------------------------------------
 		let personajes = await BD_especificas.obtenerTodos_Revision("RCLV_personajes", "");
 		let hechos = await BD_especificas.obtenerTodos_Revision("RCLV_hechos", "");
@@ -40,7 +40,7 @@ module.exports = {
 		// Obtener Links ----------------------------------------------------------------
 
 		// Ir a la vista
-		return res.send("Revisar")
+		return res.send("Revisar");
 		return res.render("Home", {
 			tema,
 			codigo,
