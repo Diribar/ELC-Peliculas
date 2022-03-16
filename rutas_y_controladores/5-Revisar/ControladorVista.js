@@ -16,20 +16,20 @@ module.exports = {
 		// Obtener Productos -------------------------------------------------------------
 		let includes = ["personaje", "hecho", "valor", "status_registro"];
 		let st = [status.aprobado_id, status.inactivado_id];
-		let peliculas = await obtenerProductos("peliculas", includes, haceUnaHora, st);
-		let colecciones = await obtenerProductos("colecciones", includes, haceUnaHora, st);
+		let peliculas = await BD_especificas.obtenerProductos("peliculas", includes, haceUnaHora, st);
+		let colecciones = await BD_especificas.obtenerProductos("colecciones", includes, haceUnaHora, st);
 		let Productos = [...peliculas, ...colecciones];
 		// Obtener los productos en sus variantes a mostrar
 		let prodCreado = extraerPorStatus(Productos, status.creado_id);
 		let prodInactivar = extraerPorStatus(Productos, status.inactivar_id);
 		let prodRecuperar = extraerPorStatus(Productos, status.recuperar_id);
-		//return res.send(productosCreado);
+		return res.send(prodCreado);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
 
 		// Obtener RCLV -----------------------------------------------------------------
-		let personajes = await obtenerRCLV("RCLV_personajes", "");
-		let hechos = await obtenerRCLV("RCLV_hechos", "");
-		let valores = await obtenerRCLV("RCLV_valores", "");
+		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", haceUnaHora, status.aprobado_id);
+		let hechos = await BD_especificas.obtenerRCLV("RCLV_hechos", haceUnaHora, status.aprobado_id);
+		let valores = await BD_especificas.obtenerRCLV("RCLV_valores", haceUnaHora, status.aprobado_id);
 		let RCLV = [...personajes, ...hechos, ...valores];
 		// Obtener los RCLV en sus variantes a mostrar
 		let [RCLV_creado, RCLV_sinProd] = RCLVs_status(RCLV, status);
@@ -53,25 +53,5 @@ module.exports = {
 // Funciones ------------------------------------------------------------------------------
 
 let extraerPorStatus = (array, status) => {
-	return array.length
-		? array.filter((n) => n.status_registro_id == status)
-		: []
+	return array.length ? array.filter((n) => n.status_registro_id == status) : [];
 };
-
-let obtenerRCLV = async (entidad, includes, haceUnaHora, status) => {
-	// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
-	return db[entidad]
-		.findAll({
-			where: {
-				// 	Con registro distinto a 'aprobado' e 'inactivado'
-				[Op.not]: [{status_registro_id: status}],
-				// Que no esté capturado
-				[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
-				// Que esté en condiciones de ser capturado
-				creado_en: {[Op.lt]: haceUnaHora},
-			},
-			include: includes,
-		})
-		.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
-};
-

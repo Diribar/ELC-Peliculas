@@ -140,7 +140,23 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
 	},
-	// Nadie
+	// Controlador-Revisar
+	obtenerRCLV: async (entidad, haceUnaHora, aprobado_id) => {
+		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+		return db[entidad]
+			.findAll({
+				where: {
+					// 	Con status != 'aprobado' o 'cant_productos'==0
+					[Op.or]: [{status_registro_id: {[Op.ne]: aprobado_id}}, {cant_productos: 0}],
+					// Que no esté capturado
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					// Que esté en condiciones de ser capturado
+					creado_en: {[Op.lt]: haceUnaHora},
+				},
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+	},
+		// Nadie
 	actualizarCantCasos_RCLV: async (datos, status_id) => {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];

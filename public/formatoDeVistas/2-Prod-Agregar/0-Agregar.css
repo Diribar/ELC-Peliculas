@@ -40,16 +40,15 @@
 .mensajeAyuda, .mensajeAyuda::before,
 .fa-circle-check, .fa-circle-question, 
 .fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.resultadoExitoso, .resultadoEnEspera, .resultadoInvalido, .sinResultado 
+.resultadoEnEspera, .sinResultado 
 	{padding: 3px 10px; color: white; font-weight: bold;}
+
 /* Exito */
-.resultadoExitoso {background-color: var(--verde-oscuro);}
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
 .mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 /* Error */
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
 .mensajeError {left: 20px;}
 .mensajeError::before {left: -12px;}
 
