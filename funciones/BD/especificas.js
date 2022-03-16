@@ -127,28 +127,17 @@ module.exports = {
 			}
 		}
 	},
-	prodRevision: async function (entidad, includes) {
-		let [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id] =
-			await this.obtenerStatus();
+	obtenerTodos_Revision: async function (entidad, includes, haceUnaHora) {
+		let [, , aprobado_id, , , inactivado_id] = await this.obtenerStatus();
 		return db[entidad]
 			.findAll({
 				where: {
-					status_registro_id: {
-						[Op.and]: {
-							[Op.ne]: aprobado_id,
-							[Op.ne]: inactivado_id,
-						},
-					},
+					[Op.not]: [{status_registro_id: [aprobado_id, inactivado_id]}],
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 				},
 				include: includes,
 			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""))
-			.then((n) =>
-				n.filter(
-					(m) =>
-						m.personaje_id == aprobado_id || m.hecho_id == aprobado_id || m.valor_id == aprobado_id
-				)
-			);
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
 	},
 	obtenerStatus: async () => {
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
@@ -161,6 +150,36 @@ module.exports = {
 		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
 		let inactivado_id = status.find((n) => n.inactivado).id;
 		return [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id];
+	},
+	obtenerEdicion_Revision: async function (entidad, original) {
+		// Definir los campos include
+		let includes = [
+			"idioma_original",
+			"en_castellano",
+			"en_color",
+			"categoria",
+			"subcategoria",
+			"publico_sugerido",
+			"personaje",
+			"hecho",
+			"status_registro",
+		];
+		if (original.entidad == "capitulos") includes.push("coleccion");
+		// Obtener el producto EDITADO
+		let prodEditado = await BD_varias.obtenerPor2CamposConInclude(
+			entidad,
+			"elc_entidad",
+			original.entidad,
+			"elc_id",
+			original.id,
+			includes.slice(0, -2)
+		).then((n) => {
+			return n ? n.toJSON() : "";
+		});
+		// Quitarle los campos 'null'
+		if (prodEditado) prodEditado = this.quitarLosCamposSinContenido(prodEditado);
+		// Fin
+		return prodEditado;
 	},
 
 	// Usuarios *************************************************

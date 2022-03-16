@@ -15,3 +15,5 @@ Personaje Histórico
 Hecho Histórico
 Valor
 Rol en la Iglesia
+
+Opción de mostrar los capítulos

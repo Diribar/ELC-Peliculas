@@ -5,7 +5,7 @@ module.exports = {
 	averiguarSiEstaDisponible: async (entidad, prod_id, usuario) => {
 		// Obtiene el registro con los datos del producto
 		producto = await BD_varias.obtenerPorCampo(entidad, "id", prod_id).then((n) => n.toJSON());
-		haceUnaHora = new Date() - 1000 * 60 * 60;
+		let haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =
 			!producto.capturado_en || // No está capturado o
