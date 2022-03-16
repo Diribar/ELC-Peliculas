@@ -419,24 +419,8 @@ module.exports = {
 			return res.redirect("/producto/agregar/datos-personalizados");
 		}
 		// Si no hay errores, continuar
-		// 7. Obtener la calificación
-		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_varias.obtenerPorCampo("fe_valores", "id", datosPers.fe_valores_id).then((n) => n.valor),
-			BD_varias.obtenerPorCampo("entretiene", "id", datosPers.entretiene_id).then((n) => n.valor),
-			BD_varias.obtenerPorCampo("calidad_tecnica", "id", datosPers.calidad_tecnica_id).then(
-				(n) => n.valor
-			),
-		]);
-		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// 8. Preparar la info para el siguiente paso
-		req.session.confirma = {
-			...req.session.datosPers,
-			fe_valores,
-			entretiene,
-			calidad_tecnica,
-			calificacion,
-			creado_por_id: req.session.usuario.id,
-		};
+		req.session.confirma = req.session.datosPers;
 		res.cookie("confirma", req.session.confirma, {maxAge: 24 * 60 * 60 * 1000});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: 24 * 60 * 60 * 1000});
 		// 9. Redireccionar a la siguiente instancia
@@ -474,17 +458,26 @@ module.exports = {
 	},
 
 	confirmaGuardar: async (req, res) => {
-		// 1. Si se perdió la info anterior, volver a esa instancia
+		// 1. Si se perdió la info, volver a la instancia anterior
 		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
+		// 7. Obtener la calificación
+		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
+			BD_varias.obtenerPorCampo("fe_valores", "id", confirma.fe_valores_id).then((n) => n.valor),
+			BD_varias.obtenerPorCampo("entretiene", "id", confirma.entretiene_id).then((n) => n.valor),
+			BD_varias.obtenerPorCampo("calidad_tecnica", "id", confirma.calidad_tecnica_id).then(
+				(n) => n.valor
+			),
+		]);
+		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		// 2. Guardar los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
-			fe_valores: confirma.fe_valores,
-			entretiene: confirma.entretiene,
-			calidad_tecnica: confirma.calidad_tecnica,
-			calificacion: confirma.calificacion,
-			creado_por_id: confirma.creado_por_id,
+			fe_valores,
+			entretiene,
+			calidad_tecnica,
+			calificacion,
+			creado_por_id: req.session.usuario.id,
 		};
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Almacenar el dato de BD del avatar
@@ -494,7 +487,7 @@ module.exports = {
 			// Datos de 'confirma'
 			...confirma,
 			elc_entidad: confirma.entidad,
-			editado_por_id: confirma.creado_por_id,
+			editado_por_id: req.session.usuario.id,
 			// Datos varios
 			entidad: "productos_edic",
 			elc_id: registro.id,
