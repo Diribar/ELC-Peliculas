@@ -1,0 +1,15 @@
+Menú de usuarios
+- Mi interés en algunos productos
+- Mis estadísticas
+	- Películas vistas (por rubro y subrubro, descartando las que no me interesan)
+- Productos agregados por mí
+	- Creados
+	- En edición
+	- Aprobados
+	- Solicitados inactivar
+	- Solicitados recuperar
+	- Inactivados
+- RCLV agregado por mí
+	- Creados
+	- Aprobados
+	- Inactivados
