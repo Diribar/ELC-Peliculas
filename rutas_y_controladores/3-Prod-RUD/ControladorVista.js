@@ -31,7 +31,7 @@ module.exports = {
 		// Problema: PRODUCTO NO APROBADO
 		if (funcionNoAprobado(prodOriginal, entidad, userID)) {
 			req.session.noAprobado = prodOriginal;
-			res.cookie("noAprobado", req.session.noAprobado, {maxAge: 24 * 60 * 60 * 1000});
+			res.cookie("noAprobado", req.session.noAprobado, {maxAge: unDia});
 			return res.send("Producto no aprobado");
 		}
 		// User la versión 'session' (si existe) en vez de la guardada

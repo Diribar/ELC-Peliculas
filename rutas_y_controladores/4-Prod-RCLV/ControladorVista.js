@@ -22,7 +22,7 @@ module.exports = {
 			// Session y Cookie actualizados
 			datosPers = {...datosPers, ...datosActualizados};
 			req.session.datosPers = datosPers;
-			res.cookie("datosPers", datosPers, {maxAge: 24 * 60 * 60 * 1000});
+			res.cookie("datosPers", datosPers, {maxAge: unDia});
 			// Completar RCLV
 			RCLV.destino = "/producto/agregar/datos-personalizados";
 		} else if (RCLV.origen == "edicion") {
@@ -42,7 +42,7 @@ module.exports = {
 				: "";
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
-		res.cookie("RCLV", RCLV, {maxAge: 24 * 60 * 60 * 1000});
+		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
 		//return res.send(RCLV)
 		return res.redirect("/producto/rclv/" + RCLV.entidad_RCLV.slice(5));
@@ -130,7 +130,7 @@ module.exports = {
 		// 4. Acciones si hay errores
 		if (errores.hay) {
 			req.session.RCLV = RCLV;
-			res.cookie(RCLV, RCLV, {maxAge: 24 * 60 * 60 * 1000});
+			res.cookie(RCLV, RCLV, {maxAge: unDia});
 			req.session.erroresRCLV = errores;
 			return res.redirect(req.url);
 		}
@@ -156,11 +156,11 @@ module.exports = {
 			? "personaje_id"
 			: RCLV.entidad_RCLV.includes("hecho")
 			? "hecho_id"
-			: "valor"
+			: "valor_id"
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
 			req.session.datosPers[campo] = RCLV_id;
-			res.cookie("datosPers", req.session.datosPers, {maxAge: 24 * 60 * 60 * 1000});
+			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (RCLV.origen == "edicion") {
 			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.producto_id, {
 				[campo]: RCLV_id,

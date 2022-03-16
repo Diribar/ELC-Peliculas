@@ -105,10 +105,10 @@ module.exports = {
 		}
 		return edicion;
 	},
-	actualizarRCLV: async (datos) => {
+	actualizarCantCasos_RCLV: async (datos) => {
 		// Definir variables
-		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
+		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
 		let entidadesProd = ["peliculas", "colecciones", "capitulos"];
 
 		// Rutina por cada campo RCLV
@@ -116,10 +116,10 @@ module.exports = {
 			campo = camposRCLV[i];
 			valor = datos[campo];
 			if (valor) {
-				cantidad = 0;
+				let cant_productos = 0;
 				// Rutina por cada entidad de Productos
-				for (j = 0; j < entidadesProd.length; j++) {
-					cant_productos += await BD_varias.contarCasos(entidadesProd[j], campo, valor);
+				for (entidadProd of entidadesProd) {
+					cant_productos += await BD_varias.contarCasos(entidadProd, campo, valor);
 				}
 				// Actualizar entidad de RCLV
 				id = valor;

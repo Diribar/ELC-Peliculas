@@ -6,13 +6,14 @@ const path = require("path");
 const methodOverride = require("method-override"); // Para usar PUT y DELETE
 const session = require("express-session"); // Para usar la propiedad "session"
 const cookies = require("cookie-parser"); // Para usar cookies
+global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 
 // ************** Middlewares de Aplicación ***********************
 app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a los archivos de la carpeta public
-app.use(express.urlencoded({ extended: false })); // Para usar archivos en los formularios (Multer)
+app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(methodOverride("_method")); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
-app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false })); // Para usar la propiedad "sesión"
+app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
 app.use(cookies());
 const usuario = require("./middlewares/usuarios/loginCookie");
 app.use(usuario); // Para recuperar usuario a partir de cookie
@@ -42,12 +43,12 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaUsuarios =    require("./rutas_y_controladores/1-Usuarios/Rutas");
+let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
 let rutaProd_Agregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
 let rutaProd_RUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
 let rutaProd_RCLV = require("./rutas_y_controladores/4-Prod-RCLV/Rutas");
 let rutaRevisar = require("./rutas_y_controladores/5-Revisar/Rutas");
-let rutaProductos =   require("./rutas_y_controladores/6-Productos/Rutas");
+let rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
 let rutaErrores = require("./rutas_y_controladores/8-Errores/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
