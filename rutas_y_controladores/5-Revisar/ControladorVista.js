@@ -27,9 +27,9 @@ module.exports = {
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
 
 		// Obtener RCLV -----------------------------------------------------------------
-		let personajes = await BD_especificas.obtenerTodos_Revision("RCLV_personajes", "");
-		let hechos = await BD_especificas.obtenerTodos_Revision("RCLV_hechos", "");
-		let valores = await BD_especificas.obtenerTodos_Revision("RCLV_valores", "");
+		let personajes = await obtenerRCLV("RCLV_personajes", "");
+		let hechos = await obtenerRCLV("RCLV_hechos", "");
+		let valores = await obtenerRCLV("RCLV_valores", "");
 		let RCLV = [...personajes, ...hechos, ...valores];
 		// Obtener los RCLV en sus variantes a mostrar
 		let [RCLV_creado, RCLV_sinProd] = RCLVs_status(RCLV, status);
@@ -52,7 +52,14 @@ module.exports = {
 
 // Funciones ------------------------------------------------------------------------------
 
-let obtenerProductos = async (entidad, includes, haceUnaHora, status) => {
+let extraerPorStatus = (array, status) => {
+	return array.length
+		? array.filter((n) => n.status_registro_id == status)
+		: []
+};
+
+let obtenerRCLV = async (entidad, includes, haceUnaHora, status) => {
+	// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 	return db[entidad]
 		.findAll({
 			where: {
@@ -68,24 +75,3 @@ let obtenerProductos = async (entidad, includes, haceUnaHora, status) => {
 		.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
 };
 
-let extraerPorStatus = (array, status) => {
-	return array.length
-		? array.filter((n) => n.status_registro_id == status)
-		: []
-};
-
-let RCLVs_status = (RCLV, status) => {
-	// Creado: status creado, con productos aprobados
-
-	// Sin producto:
-	//	- status creado, sin productos aprobados
-	//	- status creado, sin productos creados
-
-	return Productos.length
-		? [
-				Productos.filter((n) => n.status_registro_id == status.creado_id),
-				Productos.filter((n) => n.status_registro_id == status.inactivar_id),
-				Productos.filter((n) => n.status_registro_id == status.recuperar_id),
-		  ]
-		: ["", "", ""];
-};

@@ -4,6 +4,7 @@ let BD_varias = require("./Varias");
 
 module.exports = {
 	// Productos *****************************************
+	// Header
 	quickSearch: async (condiciones) => {
 		let peliculas = db.peliculas
 			.findAll({where: condiciones, limit: 10})
@@ -34,6 +35,7 @@ module.exports = {
 		});
 		return resultado;
 	},
+	// API-Agregar
 	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
@@ -42,6 +44,15 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
+	// Controladora-Agregar
+	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
+		let campos = Object.keys(edicion);
+		for (campo of campos) {
+			if (edicion[campo] == original[campo]) delete edicion[campo];
+		}
+		return edicion;
+	},
+	// API-RUD
 	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
 		// Definir los campos include
 		let includes = [
@@ -91,6 +102,7 @@ module.exports = {
 		}
 		return [prodOriginal, prodEditado];
 	},
+	// API-RUD
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
@@ -98,13 +110,37 @@ module.exports = {
 		}
 		return objeto;
 	},
-	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
-		let campos = Object.keys(edicion);
-		for (campo of campos) {
-			if (edicion[campo] == original[campo]) delete edicion[campo];
-		}
-		return edicion;
+	// Controlador-Revisar
+	obtenerStatus: async () => {
+		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
+			n.map((m) => m.toJSON())
+		);
+		let creado_id = status.find((n) => n.creado).id;
+		let editado_id = status.find((n) => n.editado).id;
+		let aprobado_id = status.find((n) => n.aprobado).id;
+		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
+		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
+		let inactivado_id = status.find((n) => n.inactivado).id;
+		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
+	// Controlador-Revisar
+	obtenerProductos: async (entidad, includes, haceUnaHora, status) => {
+		// Obtener los registros del Producto, que cumplan ciertas condiciones
+		return db[entidad]
+			.findAll({
+				where: {
+					// 	Con registro distinto a 'aprobado' e 'inactivado'
+					[Op.not]: [{status_registro_id: status}],
+					// Que no esté capturado
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					// Que esté en condiciones de ser capturado
+					creado_en: {[Op.lt]: haceUnaHora},
+				},
+				include: includes,
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+	},
+	// Nadie
 	actualizarCantCasos_RCLV: async (datos, status_id) => {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
@@ -121,6 +157,7 @@ module.exports = {
 			}
 		}
 	},
+	// Nadie
 	contarProductos: async (entidadProd, campo, valor, status_id) => {
 		let cant_productos = 0;
 		// Rutina por cada entidad de Productos
@@ -134,18 +171,7 @@ module.exports = {
 		}
 		return cant_productos
 	},
-	obtenerStatus: async () => {
-		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
-			n.map((m) => m.toJSON())
-		);
-		let creado_id = status.find((n) => n.creado).id;
-		let editado_id = status.find((n) => n.editado).id;
-		let aprobado_id = status.find((n) => n.aprobado).id;
-		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
-		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
-		let inactivado_id = status.find((n) => n.inactivado).id;
-		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
-	},
+	// Nadie
 	obtenerEdicion_Revision: async function (entidad, original) {
 		// Definir los campos include
 		let includes = [
