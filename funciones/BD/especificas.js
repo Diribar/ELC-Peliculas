@@ -105,12 +105,11 @@ module.exports = {
 		}
 		return edicion;
 	},
-	actualizarCantCasos_RCLV: async (datos) => {
+	actualizarCantCasos_RCLV: async function (datos) {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
-		let entidadesProd = ["peliculas", "colecciones", "capitulos"];
-
+		let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
 		// Rutina por cada campo RCLV
 		for (i = 0; i < camposRCLV.length; i++) {
 			campo = camposRCLV[i];
@@ -127,6 +126,16 @@ module.exports = {
 			}
 		}
 	},
+	contarProductos:async function (entidad, campo, valor) {
+		let [creado_id, , aprobado_id, , ,] = await this.obtenerStatus();
+		return db[entidad].count({
+			where: {
+				[campo]: valor,
+				status_registro_id: aprobado_id,
+			},
+		});
+	},
+
 	obtenerTodos_Revision: async function (entidad, includes, haceUnaHora) {
 		let [, , aprobado_id, , , inactivado_id] = await this.obtenerStatus();
 		return db[entidad]
