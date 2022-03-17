@@ -1,8 +1,8 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
 header #busquedaRapida {position: relative;}
 header #busquedaRapida .menuOpciones {position: absolute; top: 35px;}
-header #busquedaRapida .menuOpciones input, header #busquedaRapida .menuOpciones #displayResultados 
- 	{border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+header #busquedaRapida .menuOpciones input, 
+header #busquedaRapida .menuOpciones #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
 header #busquedaRapida .menuOpciones input {padding: 2px 5px; }
 header #busquedaRapida .menuOpciones #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
 header #busquedaRapida .menuOpciones #displayResultados table,
