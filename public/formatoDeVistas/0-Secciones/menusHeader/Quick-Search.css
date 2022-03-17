@@ -15,6 +15,5 @@ header #busquedaRapida .menuOpciones #displayResultados p,
 header #busquedaRapida .menuOpciones #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
 header #busquedaRapida .menuOpciones #displayResultados table tbody tr td {padding: 2px 5px;}
 header #busquedaRapida .menuOpciones #displayResultados table tbody tr td:nth-of-type(2) {text-align: center;}
-header #busquedaRapida .menuOpciones #displayResultados table tbody tr td a {padding-left: 0px;}
 header #busquedaRapida .menuOpciones #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
 
