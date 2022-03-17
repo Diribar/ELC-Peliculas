@@ -55,7 +55,7 @@ app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProd_Agregar);
 app.use("/producto/rclv", rutaProd_RCLV);
 app.use("/producto", rutaProd_RUD);
-app.use("/revisar", rutaRevisar);
+app.use("/revision", rutaRevisar);
 app.use("/productos", rutaProductos);
 app.use("/error", rutaErrores);
 app.use("/", rutaMiscelaneas);

@@ -124,7 +124,7 @@ module.exports = {
 		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
 	// Controlador-Revisar
-	obtenerProductos: async (entidad, includes, haceUnaHora, status) => {
+	obtenerProductos: (entidad, includes, haceUnaHora, status) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		return db[entidad]
 			.findAll({
@@ -138,7 +138,7 @@ module.exports = {
 				},
 				include: includes,
 			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
 	obtenerRCLV: async (entidad, haceUnaHora) => {

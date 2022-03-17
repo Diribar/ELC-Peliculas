@@ -38,8 +38,5 @@ router.get("/edicion/eliminar", soloAutInput, vista.edicionEliminar);
 router.get("/links", soloAutInput, vista.linksForm);
 router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
 
-router.get("/revisión", soloGestionProd, vista.revisar);
-
-
 // Fin
 module.exports = router;

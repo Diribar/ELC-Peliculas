@@ -23,5 +23,10 @@ module.exports = {
 
 	soloAutInput: (req, res) => {
 		return res.send("Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click acá.")
-	}
+	},
+
+	soloGestionProd: (req, res) => {
+		return res.send("Se requiere aumentar el nivel de confianza, para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés gestionar haciendo click acá.")
+	},
+
 };

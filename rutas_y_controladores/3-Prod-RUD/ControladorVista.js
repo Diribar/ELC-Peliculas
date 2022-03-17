@@ -279,10 +279,6 @@ module.exports = {
 		return res.redirect("/producto/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
 	},
 
-	revisar: (req, res) => {
-		return res.send("revisar");
-	},
-
 	calificala: (req, res) => {
 		return res.send("Estoy en calificala");
 	},
