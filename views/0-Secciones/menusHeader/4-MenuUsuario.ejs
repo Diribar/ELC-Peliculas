@@ -1,18 +1,36 @@
 <div class="menuOpciones menuFondo ocultar" id="menu-usuario">
 	<% if (locals.usuario) { %>
+		<!-- Mi interés en algunos productos -->
+		<a href="#">
+			<div class="flex-row align-center inactivo">
+				<div class="icono"><i class="fa-solid fa-heart"></i></i></div>
+				<div>Mi interés en productos</div>
+			</div>
+		</a>
+		<!-- Mis estadísticas -->
+		<a href="#">
+			<div class="flex-row align-center inactivo">
+				<div class="icono"><i class="fa-solid fa-film"></i></div>
+				<div>Mi historial</div>
+			</div>
+		</a>
+		<hr />
+		<!-- % de entidades aprobadas / presentadas -->
+		<a href="#">
+			<div class="flex-row align-center inactivo">
+				<div class="icono"><i class="fa-solid fa-thumbs-up"></i></div>
+				<div>Mi precisión de inputs</div>
+			</div>
+		</a>
+		<hr />
+		<!-- Detalle del usuario -->
 		<a href="/usuarios/detalle">
-			<div class="flex-row align-center">
+			<div class="flex-row align-center inactivo">
 				<div class="icono"><i class="fa-solid fa-user"></i></div>
 				<div>Mi usuario</div>
 			</div>
 		</a>
-		<a href="#">
-			<div class="flex-row align-center">
-				<div class="icono"><i class="fa-solid fa-chart-bar"></i></div>
-				<div>Mis estadísticas</div>
-			</div>
-		</a>
-		<hr />
+		<!-- Logout -->
 		<a href="/usuarios/logout">
 			<div class="flex-row align-center">
 				<div class="icono"><i class="fa-solid fa-right-from-bracket"></i></div>
@@ -33,4 +51,5 @@
 			</div>
 		</a>
 	<% } %>
+
 </div>
