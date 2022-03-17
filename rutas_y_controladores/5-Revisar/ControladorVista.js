@@ -30,35 +30,33 @@ module.exports = {
 		let prodInactivar = prodPorStatus(Productos, status.inactivar_id);
 		let prodRecuperar = prodPorStatus(Productos, status.recuperar_id);
 		Productos = [...prodInactivar, ...prodCreado, ...prodRecuperar];
-		// return res.send(Productos);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
 
 		// Obtener RCLV -----------------------------------------------------------------
-		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", haceUnaHora);
-		let hechos = await BD_especificas.obtenerRCLV("RCLV_hechos", haceUnaHora);
-		let valores = await BD_especificas.obtenerRCLV("RCLV_valores", haceUnaHora);
+		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", haceUnaHora, ai);
+		let hechos = await BD_especificas.obtenerRCLV("RCLV_hechos", haceUnaHora, ai);
+		let valores = await BD_especificas.obtenerRCLV("RCLV_valores", haceUnaHora, ai);
 		let RCLV = [...personajes, ...hechos, ...valores];
-		//return res.send(RCLV[0])
 		// Obtener los RCLV en sus variantes a mostrar
 		let RCLV_creado = rclvCreado(RCLV, status.creado_id);
 		let RCLV_sinProds = rclvSinProds(RCLV, status.creado_id, status.aprobado_id);
-		RCLV = [...RCLV_creado, ...RCLV_sinProds];
-		//return res.send([RCLV_creado, RCLV_sinProds]);
+		RCLVs = [...RCLV_creado, ...RCLV_sinProds];
 		// Obtener Links ----------------------------------------------------------------
 		includes = ["pelicula", "coleccion", "capitulo"];
 		let links = await BD_especificas.obtenerLinks(haceUnaHora, includes, ai);
 		// Obtener los productos de los links
 		let prodsLinks = productosLinks(links, status.aprobado_id);
-		return res.send(prodsLinks);
 
 		// Ir a la vista
-		// return res.send("Revisar");
+		//return res.send(Productos);
+		//return res.send(RCLVs)
+		//return res.send(prodsLinks);
 		return res.render("Home", {
 			tema,
 			codigo,
 			titulo: "Revisar - Visión General",
 			Productos,
-			RCLV,
+			RCLVs,
 			prodsLinks,
 		});
 	},
@@ -79,7 +77,7 @@ let procesar = (array, entidad) => {
 		return {
 			id: registro.id,
 			entidad,
-			nombre_castellano: nombre,
+			nombre: nombre,
 			ano_estreno: registro.ano_estreno,
 			abrev: registro.entidad.slice(0, 3).toUpperCase(),
 			status_registro_id: registro.status_registro_id,
@@ -131,7 +129,7 @@ let productosLinks = (links, aprobado_id) => {
 				prods.push({
 					entidad: aux.entidad,
 					id: link[aux.nombre].id,
-					nombre_castellano: link[aux.nombre].nombre_castellano,
+					nombre: link[aux.nombre].nombre_castellano,
 					ano_estreno: link[aux.nombre].ano_estreno,
 					abrev: aux.nombre.slice(0, 3).toUpperCase(),
 				});

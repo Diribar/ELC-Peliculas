@@ -141,17 +141,19 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerRCLV: async (entidad, haceUnaHora) => {
+	obtenerRCLV: async (entidad, haceUnaHora,status) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db[entidad]
 			.findAll({
 				where: {
-					// Cuyo 'id' sea mayor que 10
-					id: {[Op.gt]: 10},
+					// 	Con registro distinto a 'aprobado' e 'inactivado'
+					[Op.not]: [{status_registro_id: status}],
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
 					creado_en: {[Op.lt]: haceUnaHora},
+					// Cuyo 'id' sea mayor que 10
+					id: {[Op.gt]: 10},
 				},
 				// include: includes,
 			})
