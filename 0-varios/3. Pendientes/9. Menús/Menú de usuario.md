@@ -13,3 +13,4 @@ Menú de usuarios
 	- Creados
 	- Aprobados
 	- Inactivados
+- % de entidades aprobadas / presentadas

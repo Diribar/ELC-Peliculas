@@ -141,23 +141,40 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
 	},
 	// Controlador-Revisar
-	obtenerRCLV: async (entidad, includes, haceUnaHora, aprobado_id) => {
+	obtenerRCLV: async (entidad, haceUnaHora) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db[entidad]
 			.findAll({
 				where: {
-					// 	Con status != 'aprobado' o 'cant_productos' == 0
-					[Op.or]: [{status_registro_id: {[Op.ne]: aprobado_id}}, {cant_productos: 0}],
+					// Cuyo 'id' sea mayor que 10
+					id: {[Op.gt]: 10},
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
 					creado_en: {[Op.lt]: haceUnaHora},
 				},
+				// include: includes,
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
+	},
+	// Controlador-Revisar
+	obtenerLinks: async (haceUnaHora, includes, status) => {
+		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+		return db.links_originales
+			.findAll({
+				where: {
+					// Con registro distinto a 'aprobado' e 'inactivado'
+					[Op.not]: [{status_registro_id: status}],
+					// Que no esté capturado
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					// Que esté en condiciones de ser capturado
+					fecha_referencia: {[Op.lt]: haceUnaHora},
+				},
 				include: includes,
 			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-		// Nadie
+	// Nadie
 	actualizarCantCasos_RCLV: async (datos, status_id) => {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
@@ -186,7 +203,7 @@ module.exports = {
 				},
 			});
 		}
-		return cant_productos
+		return cant_productos;
 	},
 	// Nadie
 	obtenerEdicion_Revision: async function (entidad, original) {
