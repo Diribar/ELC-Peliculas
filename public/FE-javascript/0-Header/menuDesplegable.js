@@ -17,12 +17,11 @@ window.addEventListener("load", () => {
 
 	// Funciones --------------------------------------------------------------------
 	toggleMenus = (e) => {
-		if (e.target != inputBusquedaRapida) {
+		if (e.target != inputBusquedaRapida)
 			for (let i = 0; i < menus.length; i++) {
 				e.target == iconos[i]
 					? menus[i].classList.toggle("ocultar")
 					: menus[i].classList.add("ocultar");
 			}
-		}
 	};
 });
