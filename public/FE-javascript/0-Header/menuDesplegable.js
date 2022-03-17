@@ -17,17 +17,12 @@ window.addEventListener("load", () => {
 
 	// Funciones --------------------------------------------------------------------
 	toggleMenus = (e) => {
-		// Íconos únicos
-		if (e.target != inputBusquedaRapida)
-			for (let i = 0; i < iconos.length; i++) {
+		if (e.target != inputBusquedaRapida) {
+			for (let i = 0; i < menus.length; i++) {
 				e.target == iconos[i]
 					? menus[i].classList.toggle("ocultar")
 					: menus[i].classList.add("ocultar");
 			}
-
-		// Íconos múltiples
-		e.target.matches("header #icono-usuario *")
-			? menu_usuario.classList.toggle("ocultar")
-			: menu_usuario.classList.add("ocultar");
+		}
 	};
 });
