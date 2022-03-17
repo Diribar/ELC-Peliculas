@@ -43,7 +43,7 @@ module.exports = {
 		let links = await BD_especificas.obtenerLinks(haceUnaHora, includes, ai);
 		// Obtener los productos de los links
 		let prodsLinks = productosLinks(links, status.aprobado_id);
-		return res.send(prodsLinks);
+		//return res.send(prodsLinks);
 
 		// Ir a la vista
 		// return res.send("Revisar");
