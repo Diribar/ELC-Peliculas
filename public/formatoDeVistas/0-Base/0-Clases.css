@@ -15,6 +15,9 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 /* Mensajes */
 /* Estandarizaciones */
 .mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
+.resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; font-weight: bold;}
+.resultadoExitoso {background-color: var(--verde-oscuro);}
+.resultadoInvalido {background-color: var(--rojo-oscuro);}
 .fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
 /* Específicos */
 .mensajeError::before {content: ""; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}

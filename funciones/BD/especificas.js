@@ -4,6 +4,7 @@ let BD_varias = require("./Varias");
 
 module.exports = {
 	// Productos *****************************************
+	// Header
 	quickSearch: async (condiciones) => {
 		let peliculas = db.peliculas
 			.findAll({where: condiciones, limit: 10})
@@ -34,6 +35,7 @@ module.exports = {
 		});
 		return resultado;
 	},
+	// API-Agregar
 	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
@@ -42,6 +44,15 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
+	// Controladora-Agregar
+	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
+		let campos = Object.keys(edicion);
+		for (campo of campos) {
+			if (edicion[campo] == original[campo]) delete edicion[campo];
+		}
+		return edicion;
+	},
+	// API-RUD
 	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
 		// Definir los campos include
 		let includes = [
@@ -91,6 +102,7 @@ module.exports = {
 		}
 		return [prodOriginal, prodEditado];
 	},
+	// API-RUD
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
 		for (i = campos.length - 1; i >= 0; i--) {
@@ -98,56 +110,7 @@ module.exports = {
 		}
 		return objeto;
 	},
-	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
-		let campos = Object.keys(edicion);
-		for (campo of campos) {
-			if (edicion[campo] == original[campo]) delete edicion[campo];
-		}
-		return edicion;
-	},
-	actualizarCantCasos_RCLV: async function (datos) {
-		// Definir variables
-		let entidadesRCLV = ["personajes", "hechos", "valores"];
-		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
-		let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
-		// Rutina por cada campo RCLV
-		for (i = 0; i < camposRCLV.length; i++) {
-			campo = camposRCLV[i];
-			valor = datos[campo];
-			if (valor) {
-				let cant_productos = 0;
-				// Rutina por cada entidad de Productos
-				for (entidadProd of entidadesProd) {
-					cant_productos += await BD_varias.contarCasos(entidadProd, campo, valor);
-				}
-				// Actualizar entidad de RCLV
-				id = valor;
-				BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], id, {cant_productos});
-			}
-		}
-	},
-	contarProductos:async function (entidad, campo, valor) {
-		let [creado_id, , aprobado_id, , ,] = await this.obtenerStatus();
-		return db[entidad].count({
-			where: {
-				[campo]: valor,
-				status_registro_id: aprobado_id,
-			},
-		});
-	},
-
-	obtenerTodos_Revision: async function (entidad, includes, haceUnaHora) {
-		let [, , aprobado_id, , , inactivado_id] = await this.obtenerStatus();
-		return db[entidad]
-			.findAll({
-				where: {
-					[Op.not]: [{status_registro_id: [aprobado_id, inactivado_id]}],
-					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
-				},
-				include: includes,
-			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
-	},
+	// Controlador-Revisar
 	obtenerStatus: async () => {
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
 			n.map((m) => m.toJSON())
@@ -158,8 +121,74 @@ module.exports = {
 		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
 		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
 		let inactivado_id = status.find((n) => n.inactivado).id;
-		return [creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id];
+		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
+	// Controlador-Revisar
+	obtenerProductos: async (entidad, includes, haceUnaHora, status) => {
+		// Obtener los registros del Producto, que cumplan ciertas condiciones
+		return db[entidad]
+			.findAll({
+				where: {
+					// 	Con registro distinto a 'aprobado' e 'inactivado'
+					[Op.not]: [{status_registro_id: status}],
+					// Que no esté capturado
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					// Que esté en condiciones de ser capturado
+					creado_en: {[Op.lt]: haceUnaHora},
+				},
+				include: includes,
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+	},
+	// Controlador-Revisar
+	obtenerRCLV: async (entidad, includes, haceUnaHora, aprobado_id) => {
+		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+		return db[entidad]
+			.findAll({
+				where: {
+					// 	Con status != 'aprobado' o 'cant_productos' == 0
+					[Op.or]: [{status_registro_id: {[Op.ne]: aprobado_id}}, {cant_productos: 0}],
+					// Que no esté capturado
+					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+					// Que esté en condiciones de ser capturado
+					creado_en: {[Op.lt]: haceUnaHora},
+				},
+				include: includes,
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : ""));
+	},
+		// Nadie
+	actualizarCantCasos_RCLV: async (datos, status_id) => {
+		// Definir variables
+		let entidadesRCLV = ["personajes", "hechos", "valores"];
+		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
+		let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
+		// Rutina por cada campo RCLV
+		for (i = 0; i < camposRCLV.length; i++) {
+			campo = camposRCLV[i];
+			valor = datos[campo];
+			if (valor) {
+				let cant_productos = await BD_varias.contarCasos(entidadProd, campo, valor, status_id);
+				// Actualizar entidad de RCLV
+				await BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], valor, {cant_productos});
+			}
+		}
+	},
+	// Nadie
+	contarProductos: async (entidadProd, campo, valor, status_id) => {
+		let cant_productos = 0;
+		// Rutina por cada entidad de Productos
+		for (entidadProd of entidadesProd) {
+			cant_productos += await db[entidadProd].count({
+				where: {
+					[campo]: valor,
+					status_registro_id: status_id,
+				},
+			});
+		}
+		return cant_productos
+	},
+	// Nadie
 	obtenerEdicion_Revision: async function (entidad, original) {
 		// Definir los campos include
 		let includes = [

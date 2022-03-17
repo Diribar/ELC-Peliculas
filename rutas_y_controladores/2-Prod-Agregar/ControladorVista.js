@@ -492,21 +492,19 @@ module.exports = {
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		await BD_varias.agregarRegistro(edicion);
-		// 4. Actualizar la cantidad de casos de RCLV
-		BD_especificas.actualizarCantCasos_RCLV(confirma)
-		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		// 4. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
 				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro})
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro});
 		}
-		// 6. Guarda las calificaciones
+		// 5. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
-		// 7. Mueve el avatar de 'provisorio' a 'revisar'
+		// 6. Mueve el avatar de 'provisorio' a 'revisar'
 		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
-		// 8. Elimina todas las session y cookie del proceso AgregarProd
+		// 7. Elimina todas las session y cookie del proceso AgregarProd
 		borrarSessionCookies(req, res, "borrarTodo");
-		// 9. Redireccionar
+		// 8. Redireccionar
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
 		);
