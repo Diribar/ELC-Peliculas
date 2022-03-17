@@ -6,7 +6,7 @@ header section {margin: 0 15px;}
 /* Formato de íconos */
 header section .grupos {margin: 0 15px;}
 header section .grupos i {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; position: static; transform: none;}
-header #usuario-icono #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
+header #icono-usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
 header section .grupos .scale {transition: 300ms;}
 header section .grupos .scale:hover {transform: scale(1.3);}
 
@@ -18,7 +18,7 @@ header section .grupos #crear-prod-icono .fa-plus {font-size: 1rem; top:48%; lef
 header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
 
 /* Íconos de usuario */
-header #usuario-icono {border-radius: 50%; overflow: hidden; }
-header #usuario-icono #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
-header #usuario-icono #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
-header #usuario-icono #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}
+header #icono-usuario {border-radius: 50%; overflow: hidden; }
+header #icono-usuario #imagenUsuario {height: 3rem; width: 3rem; cursor: pointer;}
+header #icono-usuario #imagenUsuario img {height: 100%; width: 100%; object-fit: cover;}
+header #icono-usuario #letraInicial {background-color: var(--celeste-claro); padding: 0 8px; font-size: 1.6rem;}

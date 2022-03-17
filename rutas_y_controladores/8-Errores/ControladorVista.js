@@ -22,6 +22,6 @@ module.exports = {
 	},
 
 	soloAutInput: (req, res) => {
-		return res.send("Se requiere autorización para ingresar información a nuestro sistema.")
+		return res.send("Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click acá.")
 	}
 };
