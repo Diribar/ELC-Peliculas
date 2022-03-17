@@ -300,59 +300,6 @@ let entidad_id = (prodEntidad) => {
 		? "coleccion_id"
 		: "capitulo_id";
 };
-let productoConLinksWeb = async (prodEntidad, prodID) => {
-	// Obtener el producto con include a links
-	let producto = await BD_varias.obtenerPorIdConInclude(prodEntidad, prodID, [
-		"links_gratuitos_cargados",
-		"links_gratuitos_en_la_web",
-		"links",
-		"status_registro",
-	]).then((n) => n.toJSON());
-
-	// Obtener los links gratuitos de películas del producto
-	let links = await BD_varias.obtenerTodosPorCampoConInclude(
-		"links_originales",
-		entidad_id(prodEntidad),
-		prodID,
-		["status_registro", "link_tipo"]
-	)
-		.then((n) => n.map((m) => m.toJSON()))
-		.then((n) => n.filter((n) => n.gratuito))
-		.then((n) => n.filter((n) => n.link_tipo.pelicula));
-
-	// Obtener los links 'Aprobados' y 'TalVez'
-	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
-	let linksTalVez = links.filter((n) => n.status_registro.creado || n.status_registro.editado);
-	if (!linksActivos.length && !linksTalVez.length) return;
-
-	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
-	let si = si_no_parcial.find((n) => n.si).id;
-	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
-	let no = si_no_parcial.find((n) => n.no).id;
-
-	// Acciones si existen 'linksActivos'
-	if (linksActivos.length) {
-		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
-		return;
-	} else if (producto.links_gratuitos_en_la_web_id == si) {
-		let datos = {links_gratuitos_en_la_web_id: talVez};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
-	}
-
-	// Acciones si existen 'linksTalVez'
-	if (linksTalVez.length) {
-		let datos = {links_gratuitos_cargados_id: talVez};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
-		return;
-	}
-
-	// Acciones si no se cumplen los anteriores
-	let datos = {links_gratuitos_cargados_id: no};
-	BD_varias.actualizarPorId(prodEntidad, prodID, datos);
-	return;
-};
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Definir valores necesarios
 	let campo_id = entidad_id(prodEntidad);
@@ -485,6 +432,59 @@ let altaDeLink = async (req, datos) => {
 		productoConLinksWeb(datos.prodEntidad, datos.prodID);
 	}
 	return "";
+};
+let productoConLinksWeb = async (prodEntidad, prodID) => {
+	// Obtener el producto con include a links
+	let producto = await BD_varias.obtenerPorIdConInclude(prodEntidad, prodID, [
+		"links_gratuitos_cargados",
+		"links_gratuitos_en_la_web",
+		"links",
+		"status_registro",
+	]).then((n) => n.toJSON());
+
+	// Obtener los links gratuitos de películas del producto
+	let links = await BD_varias.obtenerTodosPorCampoConInclude(
+		"links_originales",
+		entidad_id(prodEntidad),
+		prodID,
+		["status_registro", "link_tipo"]
+	)
+		.then((n) => n.map((m) => m.toJSON()))
+		.then((n) => n.filter((n) => n.gratuito))
+		.then((n) => n.filter((n) => n.link_tipo.pelicula));
+
+	// Obtener los links 'Aprobados' y 'TalVez'
+	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
+	let linksTalVez = links.filter((n) => n.status_registro.creado || n.status_registro.editado);
+	if (!linksActivos.length && !linksTalVez.length) return;
+
+	// Obtener los ID de si, no y TalVez
+	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
+	let si = si_no_parcial.find((n) => n.si).id;
+	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
+	let no = si_no_parcial.find((n) => n.no).id;
+
+	// Acciones si existen 'linksActivos'
+	if (linksActivos.length) {
+		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+		return;
+	} else if (producto.links_gratuitos_en_la_web_id == si) {
+		let datos = {links_gratuitos_en_la_web_id: talVez};
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+	}
+
+	// Acciones si existen 'linksTalVez'
+	if (linksTalVez.length) {
+		let datos = {links_gratuitos_cargados_id: talVez};
+		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+		return;
+	}
+
+	// Acciones si no se cumplen los anteriores
+	let datos = {links_gratuitos_cargados_id: no};
+	BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+	return;
 };
 let edicionDeLink = async (req, datos) => {
 	// Redireccionar si se encuentran errores en la prodEntidad y/o el prodID

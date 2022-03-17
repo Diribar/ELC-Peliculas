@@ -6,7 +6,8 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		proceso_canonizacion_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
-		cant_productos: {type: dt.INTEGER},
+		cant_prod_creados: {type: dt.INTEGER},
+		cant_prod_aprobados: {type: dt.INTEGER},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
