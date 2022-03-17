@@ -5,10 +5,10 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
-		fe_valores: {type: dt.DECIMAL},
-		entretiene: {type: dt.DECIMAL},
-		calidad_tecnica: {type: dt.DECIMAL},
-		resultado: {type: dt.DECIMAL},
+		fe_valores: {type: dt.INTEGER},
+		entretiene: {type: dt.INTEGER},
+		calidad_tecnica: {type: dt.INTEGER},
+		calificacion: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
 	};
 	const config = {
