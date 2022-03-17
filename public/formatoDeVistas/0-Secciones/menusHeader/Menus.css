@@ -6,7 +6,7 @@ header section .grupos .menuFondo a {padding: 4px 16px; display: block;}
 
 /* Íconos que acompañan al menú */
 header .menuOpciones .icono {margin-right: 10px; width: 18px; display: flex; justify-content: center; align-items: center;}
-header .menuOpciones .icono i {font-size: inherit; color: inherit; font-weight: bold;}
+header .menuOpciones .icono i {font-weight: bold;}
 header .menuOpciones .icono#ELC {background-color: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px; font-weight: bold;}
 
 /* Específico del Menú de Usuario */
