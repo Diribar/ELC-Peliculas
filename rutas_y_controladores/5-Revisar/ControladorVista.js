@@ -36,7 +36,7 @@ module.exports = {
 		// Obtener los RCLV en sus variantes a mostrar
 		let RCLV_creado = rclvCreado(RCLV, status.creado_id);
 		let RCLV_sinProds = rclvSinProds(RCLV, status.creado_id, status.aprobado_id);
-		RCLV = [...RCLV_creado, RCLV_sinProds];
+		RCLV = [...RCLV_creado, ...RCLV_sinProds];
 		//return res.send([RCLV_creado, RCLV_sinProds]);
 		// Obtener Links ----------------------------------------------------------------
 		includes = ["pelicula", "coleccion", "capitulo"];
