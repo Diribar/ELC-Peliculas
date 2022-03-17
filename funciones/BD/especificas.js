@@ -163,7 +163,7 @@ module.exports = {
 		return db.links_originales
 			.findAll({
 				where: {
-					// 	Con registro distinto a 'aprobado' e 'inactivado'
+					// Con registro distinto a 'aprobado' e 'inactivado'
 					[Op.not]: [{status_registro_id: status}],
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
