@@ -1,36 +1,27 @@
 window.addEventListener("load", () => {
+	// Definir variables
+	let iconos = document.querySelectorAll("header .iconoMenu");
+	let menus = document.querySelectorAll("header .menuOpciones");
+	let menu_usuario = document.querySelector("header #menu-usuario");
+	// Otras variables
+	let seccionBusquedaRapida = document.querySelector("#busquedaRapida .menuOpciones");
+	let inputBusquedaRapida = document.querySelector("#busquedaRapida .menuOpciones input");
+
+	// Add Event Listeners
 	window.addEventListener("click", (e) => {
-		desplegarMenus(e)
-		if (!e.target.matches("#busquedaRapida *"))
-			document.querySelector("#busquedaRapida #inputMasResultados").classList.add("ocultar");
+		// Visibilidad de menús
+		toggleMenus(e);
+		// Foco en búsqueda rápida
+		if (!seccionBusquedaRapida.classList.contains("ocultar")) inputBusquedaRapida.focus();
 	});
+
+	// Funciones --------------------------------------------------------------------
+	toggleMenus = (e) => {
+		if (e.target != inputBusquedaRapida)
+			for (let i = 0; i < menus.length; i++) {
+				e.target == iconos[i]
+					? menus[i].classList.toggle("ocultar")
+					: menus[i].classList.add("ocultar");
+			}
+	};
 });
-
-desplegarMenus = (e)=> {
-	// Menú de Home
-	e.target.matches("#home-icono") ||
-	e.target.matches("#home-menu") ||
-	e.target.matches("#home-menu *")
-		? document.getElementById("home-menu").classList.toggle("ocultar")
-		: document.getElementById("home-menu").classList.add("ocultar");
-
-	// Menú de Quick Search
-	if (e.target.matches("#busquedaRapida .fa-magnifying-glass"))
-		document.querySelector("#busquedaRapida #inputMasResultados").classList.toggle("ocultar");
-
-	// Menú de Producto
-	e.target.matches("#prod-icono") ||
-	e.target.matches("#producto-menu") ||
-	e.target.matches("#producto-menu *")
-		? document.getElementById("producto-menu").classList.toggle("ocultar")
-		: document.getElementById("producto-menu")
-		? document.getElementById("producto-menu").classList.add("ocultar")
-		: ""
-
-	// Menú de usuario
-	e.target.matches("#usuario-icono *") ||
-	e.target.matches("#usuario-menu") ||
-	e.target.matches("#usuario-menu *")
-		? document.getElementById("usuario-menu").classList.toggle("ocultar")
-		: document.getElementById("usuario-menu").classList.add("ocultar");
-}

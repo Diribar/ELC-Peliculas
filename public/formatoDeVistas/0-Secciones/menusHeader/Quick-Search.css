@@ -1,18 +1,19 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
-header section .grupos#busquedaRapida {position: relative;}
-header section .grupos#busquedaRapida #inputMasResultados {position: absolute; top: 35px;}
-#inputMasResultados input, #inputMasResultados #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
-#inputMasResultados input {padding: 2px 5px; }
-#inputMasResultados #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
-#inputMasResultados #displayResultados table,
-#inputMasResultados #displayResultados table thead,
-#inputMasResultados #displayResultados table thead th,
-#inputMasResultados #escribiMas, 
-#inputMasResultados #displayResultados p {width: max-content;}
-#inputMasResultados #displayResultados table {border-collapse: collapse;}
-#inputMasResultados #displayResultados p,
-#inputMasResultados #displayResultados table tbody td {padding: 2px 5px;}
-#inputMasResultados #displayResultados table tbody td:nth-of-type(2) {text-align: center;}
-#inputMasResultados #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
-#inputMasResultados #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
+header #busquedaRapida {position: relative;}
+header #busquedaRapida .menuOpciones {position: absolute; top: 35px;}
+header #busquedaRapida .menuOpciones input, 
+header #busquedaRapida .menuOpciones #displayResultados {border: 1px solid var(--azul-oscuro); border-radius: 5px;}
+header #busquedaRapida .menuOpciones input {padding: 2px 5px; }
+header #busquedaRapida .menuOpciones #displayResultados {border-top-left-radius: 0; background-color: whitesmoke; overflow: hidden;}
+header #busquedaRapida .menuOpciones #displayResultados table,
+header #busquedaRapida .menuOpciones #displayResultados table thead,
+header #busquedaRapida .menuOpciones #displayResultados table thead th,
+header #busquedaRapida .menuOpciones #escribiMas, 
+header #busquedaRapida .menuOpciones #displayResultados p {width: max-content;}
+header #busquedaRapida .menuOpciones #displayResultados table {border-collapse: collapse;}
+header #busquedaRapida .menuOpciones #displayResultados p,
+header #busquedaRapida .menuOpciones #displayResultados table tbody tr:nth-of-type(even) {background-color: var(--celeste-claro);}
+header #busquedaRapida .menuOpciones #displayResultados table tbody tr td {padding: 2px 5px;}
+header #busquedaRapida .menuOpciones #displayResultados table tbody tr td:nth-of-type(2) {text-align: center;}
+header #busquedaRapida .menuOpciones #escribiMas {background-color: var(--gris-claro); font-style: italic; padding: 2px 7px; border-radius: 5px;}
 

@@ -1,8 +1,8 @@
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida #inputMasResultados input");
-	let display = document.querySelector("#busquedaRapida #inputMasResultados #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida #inputMasResultados #escribiMas")
+	let input = document.querySelector("#busquedaRapida .menuOpciones input");
+	let display = document.querySelector("#busquedaRapida .menuOpciones #displayResultados");
+	let escribiMas = document.querySelector("#busquedaRapida .menuOpciones #escribiMas")
 
 	// Variables
 	teclasValidas = /^[a-z áéíóúüñ\d]+$/;

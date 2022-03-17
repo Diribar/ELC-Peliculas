@@ -59,7 +59,6 @@ module.exports = {
 };
 
 // Funciones ------------------------------------------------------------------------------
-
 let prodPorStatus = (array, status) => {
 	return array.length ? array.filter((n) => n.status_registro_id == status) : [];
 };
@@ -84,37 +83,34 @@ let productosLinks = (links, aprobado_id) => {
 	// Resultado esperado:
 	//	- Solo productos aprobados
 	//	- Campos: {abrev, entidad, id, ano_estreno,}
+	
+	// Definir las  variables
 	let prods = [];
+	let auxs = [
+		{nombre: "pelicula", entidad: "peliculas", abrev: "PEL"},
+		{nombre: "coleccion", entidad: "colecciones", abrev: "COL"},
+		{nombre: "capitulo", entidad: "capitulos", abrev: "CAP"},
+	];
+	// Rutina para cada link
 	for (link of links) {
 		let dato = {};
-		if (link.pelicula && link.pelicula.status_registro_id == aprobado_id) {
-			dato = {
-				entidad: "peliculas",
-				id: link.pelicula.id,
-				nombre_castellano: link.pelicula.nombre_castellano,
-				ano_estreno: link.pelicula.ano_estreno,
-				abrev: "PEL",
-			};
-		} else if (link.coleccion && link.coleccion.status_registro_id == aprobado_id) {
-			dato = {
-				entidad: "colecciones",
-				id: link.coleccion.id,
-				nombre_castellano: link.coleccion.nombre_castellano,
-				ano_estreno: link.coleccion.ano_estreno,
-				abrev: "COL",
-			};
-		} else if (link.capitulo && link.capitulo.status_registro_id == aprobado_id) {
-			dato = {
-				entidad: "capitulos",
-				id: link.capitulo.id,
-				nombre_castellano: link.capitulo.nombre_castellano,
-				ano_estreno: link.capitulo.ano_estreno,
-				abrev: "CAP",
-			};
+		// Verificación para cada Producto
+		for (aux of auxs) {
+			if (link[aux.nombre] && link[aux.nombre].status_registro_id == aprobado_id) {
+				dato = {
+					entidad: aux.entidad,
+					id: link[aux.nombre].id,
+					nombre_castellano: link[aux.nombre].nombre_castellano,
+					ano_estreno: link[aux.nombre].ano_estreno,
+					abrev: aux.abrev,
+				};
+				break
+			}
 		}
-		if (dato != {} && prods.findIndex((n) => n.entidad == dato.entidad && n.id == dato.id) < 0)
+		if (dato != {} && prods.findIndex((n) => n.entidad == dato.entidad && n.id == dato.id) < 0) {
 			dato = {...dato, fecha: link.fecha_referencia};
-		prods.push(dato);
+			prods.push(dato);
+		}
 	}
 	return prods;
 };

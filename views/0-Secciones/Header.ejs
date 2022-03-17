@@ -3,35 +3,18 @@
 	<section>
 		<!-- Menú de Home -->
 		<div class="grupos">
-			<i id="home-icono" class="fa-solid fa-house scale" title="Menú de Inicio"></i>
+			<i class="fa-solid fa-house scale iconoMenu" title="Menú de Inicio"></i>
 			<%- include("1-MenuHome") %>
 		</div>
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
-			<i class="fa-solid fa-magnifying-glass scale" title="Búsqueda rápida"></i>
-			<!-- Se crea el sector donde están el input y los resultados -->
-			<div id="inputMasResultados" class="ocultar">
-				<input type="text" placeholder="Escribí más de 3 letras">
-				<div id="displayResultados" class="ocultar"></div>
-				<div id="escribiMas" class="ocultar">Por favor escribí algo más...</div>
-			</div>
+			<i class="fa-solid fa-magnifying-glass scale iconoMenu" title="Búsqueda rápida"></i>
+			<%- include("2-MenuBusqueda") %>
 		</div>
-		<!-- Agregar un Producto -->
+		<!-- Menú de Productos -->
 		<div class="grupos">
-			<div id="crear-prod-icono" class="scale" title="Agregar un Producto">
-				<a href="/producto/agregar/confirma" tabindex="-1">
-					<i class="fa-solid fa-video"></i>
-					<i class="fa-solid fa-plus"></i>
-				</a>
-			</div>
-		</div>
-		<!-- Revisiones -->
-		<div class="grupos">
-			<div id="revisar" class="scale" title="Revisiones">
-				<a href="/revisar" tabindex="-1">
-					<i class="fa-solid fa-check"></i>
-				</a>
-			</div>
+			<i class="fa-solid fa-video scale iconoMenu" title="Menú de Productos"></i>
+			<%- include("3-MenuProducto") %>
 		</div>
 	</section>
 	<!-- Título del Encabezado -->
@@ -39,10 +22,13 @@
 	<section>
 		<!-- Música de fondo -->
 		<div class="grupos">
-			<i id="musica-icono" class="fa-solid fa-music scale"></i>
+			<i id="icono-musica" class="fa-solid fa-music scale"></i>
 			<audio src="/audio/Música-de-fondo.mp3"></audio>
 		</div>
 		<!-- Usuario -->
-		<div class="grupos"><%- include("3-MenuUsuario") %></div>
+		<div class="grupos">
+			<%- include("4-IconoUsuario") %>
+			<%- include("4-MenuUsuario") %>
+		</div>
 	</section>
 </header>
