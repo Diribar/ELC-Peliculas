@@ -40,45 +40,4 @@ window.addEventListener("load", async () => {
 		});
 	}
 
-	// Acción si se elige 'colección/capítulo'
-	if (entidad != "peliculas") {
-		// Obtener el DOM
-		let colCapDOM = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
-		// Obtener el 'colCapID'
-		let ruta = "/producto/tridente/api/obtener-col-cap/?entidad=";
-		let colCapID = await fetch(ruta + entidad + "&id=" + producto_id).then((n) => n.json());
-		// Alternar entre colección y capítulo
-		colCapDOM.addEventListener("click", () => {
-			window.location.href =
-				vista +
-				"?entidad=" +
-				(entidad == "colecciones" ? "capitulos" : "colecciones") +
-				"&id=" +
-				colCapID;
-		});
-	}
-
-	// Acción si se elije "capítulo anterior" o "posterior"
-	if (entidad == "capitulos") {
-		// Obtener el DOM
-		let capAntDOM = document.querySelector("#cuerpo #encabezado .fa-circle-left");
-		let capPostDOM = document.querySelector("#cuerpo #encabezado .fa-circle-right");
-		// Obtener el ID del capítulo anterior y del posterior
-		let ruta = "/producto/tridente/api/obtener-cap-ant-y-post/?id=";
-		let [capAntID, capPostID] = await fetch(ruta + producto_id).then((n) => n.json());
-		// Acción si se elije "capítulo anterior"
-		if (capAntID) {
-			capAntDOM.classList.remove("inactivo");
-			capAntDOM.addEventListener("click", () => {
-				window.location.href = vista + "?entidad=" + entidad + "&id=" + capAntID;
-			});
-		} else capAntDOM.classList.add("inactivo");
-		// Acción si se elije "capítulo posterior"
-		if (capPostID) {
-			capPostDOM.classList.remove("inactivo");
-			capPostDOM.addEventListener("click", () => {
-				window.location.href = vista + "?entidad=" + entidad + "&id=" + capPostID;
-			});
-		} else capPostDOM.classList.add("inactivo");
-	}
 });

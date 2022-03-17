@@ -29,7 +29,7 @@ router.get("/links/api/obtener-provs-links", API.linksObtenerProvs);
 router.get("/links/eliminar", API.linksEliminar);
 
 // Controladores de vistas
-router.get("/detalle", vista.detalleEdicionForm);
+router.get("/detalle", soloUsuarios, vista.detalleEdicionForm);
 router.get("/calificala", soloAutInput, vista.calificala);
 
 router.get("/edicion", soloAutInput, vista.detalleEdicionForm);
