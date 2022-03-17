@@ -8,7 +8,7 @@ let vista = require("./ControladorVista");
 router.get("/producto-no-encontrado", vista.prodNoEncontrado);
 router.get("/producto-no-aprobado", vista.prodNoAprobado);
 router.get("/solo-usuarios-autorizados/inputs", vista.soloAutInput);
-router.get("/solo-usuarios-autorizados/gestion", vista.soloGestionProd);
+router.get("/solo-usuarios-autorizados/gestion-prod", vista.soloGestionProd);
 
 // Exportarlo **********************************************
 module.exports = router;
