@@ -7,8 +7,8 @@ module.exports = (sequelize, dt) => {
 		creado: {type: dt.BOOLEAN},
 		editado: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
-		sugerido_inactivar: {type: dt.BOOLEAN},
-		sugerido_recuperar: {type: dt.BOOLEAN},
+		inactivar: {type: dt.BOOLEAN},
+		recuperar: {type: dt.BOOLEAN},
 		inactivado: {type: dt.BOOLEAN},
 	};
 	const config = {

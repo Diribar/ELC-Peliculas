@@ -64,10 +64,10 @@ module.exports = {
 			"publico_sugerido",
 			"personaje",
 			"hecho",
-			"status_registro",
 			"editado_por",
 			// A partir de acá, van los campos exclusivos de 'Original'
 			"creado_por",
+			"status_registro",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto ORIGINAL
@@ -118,8 +118,8 @@ module.exports = {
 		let creado_id = status.find((n) => n.creado).id;
 		let editado_id = status.find((n) => n.editado).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		let inactivar_id = status.find((n) => n.sugerido_inactivar).id;
-		let recuperar_id = status.find((n) => n.sugerido_recuperar).id;
+		let inactivar_id = status.find((n) => n.inactivar).id;
+		let recuperar_id = status.find((n) => n.recuperar).id;
 		let inactivado_id = status.find((n) => n.inactivado).id;
 		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
@@ -243,7 +243,6 @@ module.exports = {
 			"publico_sugerido",
 			"personaje",
 			"hecho",
-			"status_registro",
 		];
 		if (original.entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto EDITADO
