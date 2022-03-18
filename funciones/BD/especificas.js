@@ -126,9 +126,10 @@ module.exports = {
 	// Controlador-Revisar
 	obtenerProductos: async (haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		// Entidades
+		// Declarar variables
 		let entidades = ["peliculas", "colecciones"];
 		let resultados = [];
+		// Rutina por entidad
 		for (let i = 0; i < entidades.length; i++) {
 			resultados.push();
 			resultados[i] = db[entidades[i]]
@@ -149,9 +150,11 @@ module.exports = {
 					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
 				);
 		}
+		// Consolidar los resultados
 		let resultado = await Promise.all([resultados[0], resultados[1]]).then(([a, b]) => {
 			return [...a, ...b];
 		});
+		// Fin
 		return resultado;
 	},
 	// Controlador-Revisar
