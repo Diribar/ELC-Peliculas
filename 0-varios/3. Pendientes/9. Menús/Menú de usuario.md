@@ -1,16 +1,14 @@
 Menú de usuarios
 - Mi interés en algunos productos
+	- Para ver
+	- Mis Favoritas
+	- No me interesan
 - Mis estadísticas
 	- Películas vistas (por rubro y subrubro, descartando las que no me interesan)
-- Productos agregados por mí
+- Status de Productos agregados por mí
 	- Creados
 	- En edición
 	- Aprobados
 	- Solicitados inactivar
 	- Solicitados recuperar
 	- Inactivados
-- RCLV agregado por mí
-	- Creados
-	- Aprobados
-	- Inactivados
-- % de entidades aprobadas / presentadas

@@ -29,7 +29,7 @@ router.get("/links/api/obtener-provs-links", API.linksObtenerProvs);
 router.get("/links/eliminar", API.linksEliminar);
 
 // Controladores de vistas
-router.get("/detalle", vista.detalleEdicionForm);
+router.get("/detalle", soloUsuarios, vista.detalleEdicionForm);
 router.get("/calificala", soloAutInput, vista.calificala);
 
 router.get("/edicion", soloAutInput, vista.detalleEdicionForm);
@@ -37,9 +37,6 @@ router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.edi
 router.get("/edicion/eliminar", soloAutInput, vista.edicionEliminar);
 router.get("/links", soloAutInput, vista.linksForm);
 router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
-
-router.get("/revisión", soloGestionProd, vista.revisar);
-
 
 // Fin
 module.exports = router;

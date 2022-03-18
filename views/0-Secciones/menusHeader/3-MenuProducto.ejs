@@ -8,15 +8,15 @@
 	</a>
 	<!-- Buscar productos sin links gratuitos -->
 	<a href="#">
-		<div class="flex-row align-center">
+		<div class="flex-row align-center inactivo">
 			<div class="icono"><i class="fa-solid fa-up-right-from-square"></i></div>
-			<div>Buscar productos sin links gratuitos</div>
+			<div>Productos sin links gratuitos</div>
 		</div>
 	</a>
 	<!-- Revisiones -->
 	<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_prod) { %>
 		<hr>
-		<a href="/revisar">
+		<a href="/revision/vision-general">
 			<div class="flex-row align-center">
 				<div class="icono"><i class="fa-solid fa-check"></i></div>
 				<div>Revisar entidades</div>

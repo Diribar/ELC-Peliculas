@@ -38,6 +38,7 @@ app.set("views", [
 	path.resolve(__dirname, "./views/3-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./views/4-RCLV"),
 	path.resolve(__dirname, "./views/5-Revisar"),
+	path.resolve(__dirname, "./views/5-Revisar/Includes"),
 	path.resolve(__dirname, "./views/6-Productos"),
 	path.resolve(__dirname, "./views/9-Miscelaneas"),
 ]);
@@ -55,7 +56,7 @@ app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProd_Agregar);
 app.use("/producto/rclv", rutaProd_RCLV);
 app.use("/producto", rutaProd_RUD);
-app.use("/revisar", rutaRevisar);
+app.use("/revision", rutaRevisar);
 app.use("/productos", rutaProductos);
 app.use("/error", rutaErrores);
 app.use("/", rutaMiscelaneas);

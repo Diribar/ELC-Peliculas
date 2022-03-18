@@ -4,14 +4,49 @@
 	<section id="entidades">
 		<!-- Datos generales -->
 		<div id="primeraColumna">
-			<h2>Productos</h3>
-			<% for (producto of Productos) { %>
-			<% } %>
+			<h2>Productos</h2>
+			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.inactivar_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Editado", estado: status.editado_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Creado", estado: status.creado_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.recuperar_id}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
-			<h2>Relación con la Vida (RCLV)</h3>
-			<h2>Links</h3>
+			<div>
+				<h2>Relación con la Vida (RCLV)</h2>
+				<table>
+					<tbody>
+					<% for (RCLV of RCLVs) { %>
+						<tr>
+							<td>
+								<a href="/revision/rclv/?entidad=<%= RCLV.entidad %>&id=<%= RCLV.id %>">
+									<%= RCLV.nombre %>
+								</a>
+							</td>
+							<td><%= RCLV.entidad.slice(5,8).toUpperCase() %></td>
+						</tr>
+					<% } %>
+					</tbody>
+				</table>	
+			</div>
+			<div>
+				<h2>Links</h2>
+				<table>
+					<tbody>
+					<% for (prodLinks of prodsLinks) { %>
+						<tr>
+							<td>
+								<a href="/revision/links/?entidad=<%= prodLinks.entidad %>&id=<%= prodLinks.id %>">
+									<%= prodLinks.nombre %>
+								</a>
+							</td>
+							<td><%= prodLinks.entidad.slice(0,3).toUpperCase() %></td>
+						</tr>
+					<% } %>
+					</tbody>
+				</table>
+	
+			</div>
 		</div>
 	</section>
 </div>

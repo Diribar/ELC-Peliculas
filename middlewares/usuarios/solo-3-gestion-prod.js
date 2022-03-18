@@ -8,7 +8,7 @@ module.exports =  (req, res, next) => {
 	}
 	if (!usuario.rol_usuario.aut_gestion_prod) {
 		varias.userLogs(req, res);		
-		return res.redirect("/error/solo-usuarios-autorizados/gestion_prod");
+		return res.redirect("/error/solo-usuarios-autorizados/gestion-prod");
 	}
 	next();
 }

@@ -2,7 +2,7 @@ window.addEventListener("load", () => {
 	// DOM
 	let input = document.querySelector("#busquedaRapida .menuOpciones input");
 	let display = document.querySelector("#busquedaRapida .menuOpciones #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida .menuOpciones #escribiMas")
+	let escribiMas = document.querySelector("#busquedaRapida .menuOpciones #escribiMas");
 
 	// Variables
 	teclasValidas = /^[a-z áéíóúüñ\d]+$/;
@@ -28,9 +28,9 @@ window.addEventListener("load", () => {
 		if (pasaNoPasa.length < 4) {
 			input.style.borderRadius = "5px";
 			display.classList.add("ocultar");
-			escribiMas.classList.remove("ocultar")
+			escribiMas.classList.remove("ocultar");
 			return;
-		} else escribiMas.classList.add("ocultar")
+		} else escribiMas.classList.add("ocultar");
 
 		// Busca los productos
 		palabras = palabras.join(" ");
@@ -67,20 +67,19 @@ window.addEventListener("load", () => {
 				let fila = document.createElement("tr");
 				let anchor = document.createElement("a");
 				id = registro.id;
-				anchor.href =
-					"/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
+				anchor.href = "/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
 
 				// Prepara las variables de la fila
-				anchoMax = 30;
-				nombre =
+				let anchoMax = 30;
+				let nombre =
 					registro.nombre_castellano.length > anchoMax
-						? registro.nombre_castellano.slice(0, anchoMax) + "…"
+						? registro.nombre_castellano.slice(0, anchoMax - 1) + "…"
 						: registro.nombre_castellano;
 				nombre += " (" + registro.ano_estreno + ")";
-				entidad = registro.entidad.slice(0, 3).toUpperCase();
+				let entidad = registro.entidad.slice(0, 3).toUpperCase();
 				let datos = [nombre, entidad];
 				// Crea las celdas
-				for (i = 0; i < 2; i++) {
+				for (i = 0; i < datos.length; i++) {
 					let celda = document.createElement("td");
 					let textoCelda = document.createTextNode(datos[i]);
 					// Agrega el texto al 'anchor' (celda nombre_castellano) o a la celda (entidad)

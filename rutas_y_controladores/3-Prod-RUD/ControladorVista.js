@@ -82,7 +82,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		//return res.send(prodOriginal)
+		//return res.send(prodCombinado)
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -277,10 +277,6 @@ module.exports = {
 		// Redireccionar
 		// return res.send(datos)
 		return res.redirect("/producto/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
-	},
-
-	revisar: (req, res) => {
-		return res.send("revisar");
 	},
 
 	calificala: (req, res) => {
