@@ -126,10 +126,10 @@ module.exports = {
 	// Controlador-Revisar
 	obtenerProductos: async (haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		// Declarar variables
+		// Declarar las variables
 		let entidades = ["peliculas", "colecciones"];
 		let resultados = [];
-		// Rutina por entidad
+		// Obtener el resultado por entidad
 		for (let i = 0; i < entidades.length; i++) {
 			resultados.push();
 			resultados[i] = db[entidades[i]]
@@ -181,7 +181,9 @@ module.exports = {
 	// Controlador-Revisar
 	obtenerLinks: (haceUnaHora, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+		// Declarar las variables
 		includes = ["pelicula", "coleccion", "capitulo"];
+		// Obtener el resultado por entidad
 		return db.links_originales
 			.findAll({
 				where: {
