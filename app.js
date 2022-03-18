@@ -15,7 +15,7 @@ app.use(methodOverride("_method")); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
 app.use(cookies());
-const usuario = require("./middlewares/usuarios/loginCookie");
+const usuario = require("./middlewares/usuarios/loginConCookie");
 app.use(usuario); // Para recuperar usuario a partir de cookie
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs); // Para registrar los URL de las páginas navegadas
