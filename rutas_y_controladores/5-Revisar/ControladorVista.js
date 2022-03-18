@@ -14,64 +14,18 @@ module.exports = {
 		let aprobInact = [status.aprobado_id, status.inactivado_id];
 		let userID = req.session.usuario.id;
 		let haceUnaHora = varias.funcionHaceUnaHora();
-		// Obtener Productos -------------------------------------------------------------
-		let includes = ["personaje", "hecho", "valor", "status_registro"];
-		let peliculas = await BD_especificas.obtenerProductos(
-			"peliculas",
-			includes,
-			haceUnaHora,
-			aprobInact,
-			userID
-		).then((n) => procesar(n, "peliculas"));
-		let colecciones = await BD_especificas.obtenerProductos(
-			"colecciones",
-			includes,
-			haceUnaHora,
-			aprobInact,
-			userID
-		).then((n) => procesar(n, "colecciones"));
-		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
-
+		// Obtener Productos ------------------------------------------------------------
+		let Productos = await BD_especificas.obtenerProductos(haceUnaHora, aprobInact, userID);
+		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// Consolidar Productos y ordenar
-		let Productos = [...peliculas, ...colecciones].sort((a, b) => {
-			return new Date(a.fecha) - new Date(b.fecha);
-		});
+		Productos = procesar(Productos);
 		// Obtener RCLV -----------------------------------------------------------------
-		includes = ["peliculas", "colecciones", "capitulos"];
-		let personajes = await BD_especificas.obtenerRCLV(
-			"RCLV_personajes",
-			includes,
-			haceUnaHora,
-			aprobInact,
-			userID
-		);
-		let hechos = await BD_especificas.obtenerRCLV(
-			"RCLV_hechos",
-			includes,
-			haceUnaHora,
-			aprobInact,
-			userID
-		);
-		let valores = await BD_especificas.obtenerRCLV(
-			"RCLV_valores",
-			includes,
-			haceUnaHora,
-			aprobInact,
-			userID
-		);
-		let RCLV = [...personajes, ...hechos, ...valores];
-		// Obtener los RCLV en sus variantes a mostrar
-		let RCLV_creado = rclvCreado(RCLV, status.creado_id);
-		let RCLV_sinProds = rclvSinProds(RCLV, status.creado_id, status.aprobado_id);
-		RCLVs = [...RCLV_creado, ...RCLV_sinProds];
 		// Obtener Links ----------------------------------------------------------------
-		includes = ["pelicula", "coleccion", "capitulo"];
-		let links = await BD_especificas.obtenerLinks(haceUnaHora, includes, aprobInact, userID);
+		let links = await BD_especificas.obtenerLinks(haceUnaHora, aprobInact, userID);
 		// Obtener los productos de los links
 		let prodsLinks = productosLinks(links, status.aprobado_id);
-
-		// Ir a la vista
-		//return res.send(peliculas);
+		// Ir a la vista ----------------------------------------------------------------
+		//return res.send(Productos);
 		//return res.send(RCLV_creado)
 		//return res.send(links);
 		return res.render("Home", {
@@ -79,7 +33,7 @@ module.exports = {
 			codigo,
 			titulo: "Revisar - Visión General",
 			Productos,
-			RCLVs,
+			RCLVs:[],
 			prodsLinks,
 			status,
 		});
@@ -87,10 +41,11 @@ module.exports = {
 };
 
 // Funciones ------------------------------------------------------------------------------
-let procesar = (array, entidad) => {
+let procesar = (Productos) => {
 	// Procesar los registros
 	let anchoMax = 30;
-	return array.map((registro) => {
+	// Reconvertir los elementos
+	Productos = Productos.map((registro) => {
 		let nombre =
 			(registro.nombre_castellano.length > anchoMax
 				? registro.nombre_castellano.slice(0, anchoMax - 1) + "…"
@@ -100,7 +55,7 @@ let procesar = (array, entidad) => {
 			")";
 		return {
 			id: registro.id,
-			entidad,
+			entidad: registro.entidad,
 			nombre: nombre,
 			ano_estreno: registro.ano_estreno,
 			abrev: registro.entidad.slice(0, 3).toUpperCase(),
@@ -108,9 +63,12 @@ let procesar = (array, entidad) => {
 			fecha: registro.creado_en,
 		};
 	});
-};
-let prodPorStatus = (array, status) => {
-	return array.length ? array.filter((n) => n.status_registro_id == status) : [];
+	// Ordenar los elementos por fecha
+	Productos.sort((a, b) => {
+		return new Date(a.fecha) - new Date(b.fecha);
+	});
+	// Fin
+	return Productos;
 };
 let rclvCreado = (array, creado_id) => {
 	// Creado, con productos aprobados
@@ -162,3 +120,33 @@ let productosLinks = (links, aprobado_id) => {
 	}
 	return prods;
 };
+
+
+
+// includes = ["peliculas", "colecciones", "capitulos"];
+// let personajes = await BD_especificas.obtenerRCLV(
+// 	"RCLV_personajes",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let hechos = await BD_especificas.obtenerRCLV(
+// 	"RCLV_hechos",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let valores = await BD_especificas.obtenerRCLV(
+// 	"RCLV_valores",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let RCLV = [...personajes, ...hechos, ...valores];
+// // Obtener los RCLV en sus variantes a mostrar
+// let RCLV_creado = rclvCreado(RCLV, status.creado_id);
+// let RCLV_sinProds = rclvSinProds(RCLV, status.creado_id, status.aprobado_id);
+// RCLVs = [...RCLV_creado, ...RCLV_sinProds];

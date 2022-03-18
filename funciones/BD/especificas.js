@@ -124,23 +124,35 @@ module.exports = {
 		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
 	// Controlador-Revisar
-	obtenerProductos: (entidad, includes, haceUnaHora, status, userID) => {
+	obtenerProductos: async (haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		return db[entidad]
-			.findAll({
-				where: {
-					// 	Con registro distinto a 'aprobado' e 'inactivado'
-					[Op.not]: [{status_registro_id: status}],
-					// Que no esté capturado
-					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
-					// Que esté en condiciones de ser capturado
-					creado_en: {[Op.lt]: haceUnaHora},
-					// Que esté creado por otro usuario
-					creado_por_id: {[Op.ne]: userID},
-				},
-				include: includes,
-			})
-			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
+		// Entidades
+		let entidades = ["peliculas", "colecciones"];
+		let resultados = [];
+		for (let i = 0; i < entidades.length; i++) {
+			resultados.push();
+			resultados[i] = db[entidades[i]]
+				.findAll({
+					where: {
+						// 	Con registro distinto a 'aprobado' e 'inactivado'
+						[Op.not]: [{status_registro_id: status}],
+						// Que no esté capturado
+						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+						// Que esté en condiciones de ser capturado
+						creado_en: {[Op.lt]: haceUnaHora},
+						// Que esté creado por otro usuario
+						creado_por_id: {[Op.ne]: userID},
+					},
+					include: "status_registro",
+				})
+				.then((n) =>
+					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
+				);
+		}
+		let resultado = await Promise.all([resultados[0], resultados[1]]).then(([a, b]) => {
+			return [...a, ...b];
+		});
+		return resultado;
 	},
 	// Controlador-Revisar
 	obtenerRCLV: (entidad, includes, haceUnaHora, status, userID) => {
@@ -164,8 +176,9 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerLinks: (haceUnaHora, includes, status, userID) => {
+	obtenerLinks: (haceUnaHora, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+		includes = ["pelicula", "coleccion", "capitulo"];
 		return db.links_originales
 			.findAll({
 				where: {
