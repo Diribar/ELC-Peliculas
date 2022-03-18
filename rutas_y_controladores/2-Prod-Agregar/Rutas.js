@@ -5,7 +5,7 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloAutInput = require("../../middlewares/usuarios/solo-2-aut-input");
+let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 let prodEnBD = require("../../middlewares/varios/productoYaEnBD");
 let multer = require("../../middlewares/varios/multer");

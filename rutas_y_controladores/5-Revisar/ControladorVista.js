@@ -7,8 +7,9 @@ let varias = require("../../funciones/Varias/Varias");
 // *********** Controlador ***********
 module.exports = {
 	visionGeneral: async (req, res) => {
-		tema = "revision";
-		codigo = "visionGeneral";
+		// Tema y Código
+		let tema = "revision";
+		let codigo = "visionGeneral";
 		// Definir variables
 		let status = await BD_especificas.obtenerStatus();
 		let aprobInact = [status.aprobado_id, status.inactivado_id];
@@ -31,10 +32,18 @@ module.exports = {
 			codigo,
 			titulo: "Revisar - Visión General",
 			Productos,
-			RCLVs:[],
+			RCLVs: [],
 			prodsLinks,
 			status,
 		});
+	},
+
+	producto: async (req, res) => {
+		// Tema y Código
+		let tema = "revision";
+		let url = req.url.slice(1);
+		let codigo = url.slice(0, url.indexOf("/"));
+		// Capturar el producto
 	},
 };
 
@@ -118,8 +127,6 @@ let productosLinks = (links, aprobado_id) => {
 	}
 	return prods;
 };
-
-
 
 // includes = ["peliculas", "colecciones", "capitulos"];
 // let personajes = await BD_especificas.obtenerRCLV(

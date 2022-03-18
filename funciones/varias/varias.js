@@ -8,9 +8,8 @@ let axios = require("axios");
 module.exports = {
 	userLogs: (req, res) => {
 		let url = req.originalUrl;
-		if (url.indexOf("/usuarios/") == -1 && url.indexOf("/api/") == -1)
-			req.session.urlReferencia = url;
-		res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
+		if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
+		// res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
 		// console.log(res.locals.urlReferencia);
 	},
 
@@ -161,9 +160,7 @@ module.exports = {
 		return tipo.slice(0, 6) != "image/"
 			? "Necesitamos un archivo de imagen"
 			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-			? "El tamaño del archivo es superior a " +
-			  tamanoMaximo +
-			  " MB, necesitamos uno más pequeño"
+			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
 			: "";
 	},
 
