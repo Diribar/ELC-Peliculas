@@ -25,8 +25,6 @@ module.exports = {
 		// Obtener los productos de los links
 		let prodsLinks = productosLinks(links, status.aprobado_id);
 		// Ir a la vista ----------------------------------------------------------------
-		//return res.send(Productos);
-		//return res.send(RCLV_creado)
 		//return res.send(links);
 		return res.render("Home", {
 			tema,
