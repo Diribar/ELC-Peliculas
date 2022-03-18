@@ -19,7 +19,7 @@
 #dataEntry .label-input .input-error .link {right: -40px; font-size: .9rem; width: 15px;}
 
 /* Mensajes */
-#dataEntry .mensajeAyuda {max-width: 270px;}
+#dataEntry .mensajeAyuda {max-width: 400px;}
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 #dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -40px;}
 #dataEntry .RCLV .fa-circle-xmark, #dataEntry .RCLV .fa-circle-check {right: -60px;}

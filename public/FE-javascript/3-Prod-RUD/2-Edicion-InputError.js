@@ -30,13 +30,14 @@ window.addEventListener("load", async () => {
 	let avatar_eg = datosEdicG.avatar
 		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
 		: datosOriginales.imagen;
-	let status_creada = existeEdicG ? datosEdicG.status_registro.creado : false;
+	let status_creada = existeEdicG
+		? datosOriginales.status_registro.creado || datosOriginales.status_registro.editado
+		: false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
 	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
 	let botonGuardarSession = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let rutaSession =
-		"/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
+	let rutaSession = "/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
 	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 	datosEdicS = datosEdicS ? datosEdicS : datosEdicG;
 	let avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
@@ -114,12 +115,7 @@ window.addEventListener("load", async () => {
 			campo == "hecho_id" ||
 			campo == "valor_id"
 		)
-			await formChange_camposCombinados([
-				"subcategoria_id",
-				"personaje_id",
-				"hecho_id",
-				"valor_id",
-			]);
+			await formChange_camposCombinados(["subcategoria_id", "personaje_id", "hecho_id", "valor_id"]);
 		// Fin
 		formInputChange_botonGuardar();
 	});
@@ -148,8 +144,7 @@ window.addEventListener("load", async () => {
 	// Edición Guardada
 	botonVerGuardada.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVerGuardada.classList).join(" ").includes("inactivo") || !datosEdicG)
-			return;
+		if (Array.from(botonVerGuardada.classList).join(" ").includes("inactivo") || !datosEdicG) return;
 		// Ejecuta la función 'Input'
 		comandos_ActualizarInput(botonVerGuardada, datosEdicG, (readOnly = true));
 	});
@@ -161,8 +156,7 @@ window.addEventListener("load", async () => {
 	// Original
 	botonOriginal.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonOriginal.classList).join(" ").includes("inactivo") || !datosOriginales)
-			return;
+		if (Array.from(botonOriginal.classList).join(" ").includes("inactivo") || !datosOriginales) return;
 		// Ejecuta la función 'Input'
 		comandos_ActualizarInput(botonOriginal, datosOriginales, (readOnly = true));
 	});
@@ -236,9 +230,7 @@ window.addEventListener("load", async () => {
 		}
 		let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
 		for (iconoAyuda of iconosAyuda) {
-			trueFalse
-				? iconoAyuda.classList.add("ocultar")
-				: iconoAyuda.classList.remove("ocultar");
+			trueFalse ? iconoAyuda.classList.add("ocultar") : iconoAyuda.classList.remove("ocultar");
 		}
 	};
 	let actualizarInput_errores = (errores, camposEspecificos, mostrarOK) => {
@@ -303,9 +295,7 @@ window.addEventListener("load", async () => {
 		mensaje
 			? iconosError[indice].classList.remove("ocultar")
 			: iconosError[indice].classList.add("ocultar");
-		!mensaje
-			? iconosOK[indice].classList.remove("ocultar")
-			: iconosOK[indice].classList.add("ocultar");
+		!mensaje ? iconosOK[indice].classList.remove("ocultar") : iconosOK[indice].classList.add("ocultar");
 	};
 	let formInput_paises = () => {
 		let paisID = paisesSelect.value;

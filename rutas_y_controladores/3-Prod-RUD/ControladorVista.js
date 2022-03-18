@@ -116,7 +116,7 @@ module.exports = {
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
 
 		// Obtener el producto 'Original'
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, ["status_registro"]).then(
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
 			(n) => n.toJSON()
 		);
 		// Obtener el producto 'Editado' guardado, si lo hubiera
@@ -319,7 +319,7 @@ let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 			linksOriginales[i].id,
 			"editado_por_id",
 			userID,
-			includes
+			includes.slice(0, -1)
 		).then((n) => (n ? n.toJSON() : null));
 		// Hacer la combinación
 		if (linkEditado) {
@@ -349,13 +349,13 @@ let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
 	// linksActivos: Aprobados + Creados por el usuario
 	let linksActivos = linksOriginales.filter(
-		(n) => n.status_registro.creado || n.status_registro.editado || n.status_registro.aprobado
+		(n) => n.status_registro.creado || n.status_registro.aprobado
 	);
 	// linksInactivos --> incluye el motivo
 	let linksInactivos = linksOriginales.filter(
 		(n) =>
-			n.status_registro.sugerido_inactivar ||
-			n.status_registro.sugerido_recuperar ||
+			n.status_registro.inactivar ||
+			n.status_registro.recuperar ||
 			n.status_registro.inactivado
 	);
 	for (i = 0; i < linksInactivos.length; i++) {

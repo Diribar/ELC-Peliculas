@@ -168,6 +168,7 @@ module.exports = {
 				: "";
 		return res.json(prodSession);
 	},
+
 	// Links
 	linksValidar: async (req, res) => {
 		// Averigua los errores solamente para esos campos
@@ -214,10 +215,14 @@ module.exports = {
 				BD_varias.eliminarRegistro("links_originales", link_id);
 				respuesta.mensaje = "El link fue eliminado con éxito";
 				respuesta.resultado = true;
+			} else if (!link.status_registro.aprobado) {
+				// Si los links no están aprobados, no se pueden inactivar
+				respuesta.mensaje = "El link no está en estado aprobado";
+				respuesta.resultado = false;
 			} else if (!motivo_id) {
 				// Los demás casos son:
-				//		- Links con status 'aprobado'
-				//		- Links sin "captura válida" y creados por otro autor
+				//		- Links con status 'aprobado' o creados por otro autor
+				//		- Links sin "captura válida"
 				// 1. Si no figura el motivo --> Abortar con mensaje de error
 				respuesta.mensaje = "Falta especificar el motivo";
 				respuesta.resultado = false;
@@ -233,68 +238,52 @@ module.exports = {
 };
 
 let funcionInactivar = async (motivo_id, usuario, link) => {
-	// 1. Obtener datos clave
-	let datosParaBD = {};
 	// Obtener la duración
 	let duracion = await BD_varias.obtenerPorId("motivos_para_borrar", motivo_id)
 		.then((n) => n.toJSON())
 		.then((n) => n.duracion);
-	// Obtener el status_id de 'sugerido para borrar'
-	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "sugerido_inactivar", 1)
+	// Obtener el status_id de 'inactivar'
+	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "inactivar", 1)
 		.then((n) => n.toJSON())
 		.then((n) => n.id);
-	// Averiguar si ya existe una edición del usuario
-	let link_edicion = await BD_varias.obtenerPor2Campos(
-		"links_edicion",
-		"elc_id",
-		link.id,
-		"editado_por_id",
-		usuario.id
-	).then((n) => (n ? n.toJSON() : ""));
 	// Preparar los datos
-	datosParaBD = {
-		entidad: "links_edicion",
-		elc_id: link.id,
+	let datosParaLink = {
 		editado_por_id: usuario.id,
 		editado_en: new Date(),
 		status_registro_id: status_id,
 	};
-	link_edicion
-		? // Actualiza el registro 'edicion' en la BD
-		  BD_varias.actualizarPorId("links_edicion", link_edicion.id, datosParaBD)
-		: // Crea un registro 'edicion' en la BD
-		  BD_varias.agregarRegistro(datosParaBD);
-	// 3. Actualiza la BD de 'registros_borrados'
-	datosParaBD = {
+	// Actualiza el registro 'original' en la BD
+	BD_varias.actualizarPorId("links_originales", link.id, datosParaLink);
+	// 3. Crea un registro en la BD de 'registros_borrados'
+	let datosParaBorrados = {
 		entidad: "registros_borrados",
 		elc_id: link.id,
 		elc_entidad: "links_originales",
-		usuario_sancionado_id: link.creado_por_id,
+		usuario_implicado_id: link.creado_por_id,
 		evaluado_por_usuario_id: usuario.id,
 		motivo_id: motivo_id,
 		duracion: duracion,
 		status_registro_id: status_id,
 	};
-	BD_varias.agregarRegistro(datosParaBD);
+	BD_varias.agregarRegistro(datosParaBorrados);
 };
 
-let obtenerLinksFusionados = async (link_id, usuario) => {
-	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
-		"status_registro",
-	]).then((n) => n.toJSON());
-	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
-		"links_edicion",
-		"elc_id",
-		link_id,
-		"editado_por_id",
-		usuario.id,
-		["status_registro"]
-	).then((n) => (n ? n.toJSON() : ""));
-	if (link_edicion) {
-		delete link_edicion.id;
-		link_original = {...link_original, ...link_edicion};
-	}
-	// Quitarle los campos 'null'
-	link_original = BD_especificas.quitarLosCamposSinContenido(link_original);
-	return link_original;
-};
+// let obtenerLinksFusionados = async (link_id, usuario) => {
+// 	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
+// 		"status_registro",
+// 	]).then((n) => n.toJSON());
+// 	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+// 		"links_edicion",
+// 		"elc_id",
+// 		link_id,
+// 		"editado_por_id",
+// 		usuario.id,
+// 	).then((n) => (n ? n.toJSON() : ""));
+// 	if (link_edicion) {
+// 		delete link_edicion.id;
+// 		link_original = {...link_original, ...link_edicion};
+// 	}
+// 	// Quitarle los campos 'null'
+// 	link_original = BD_especificas.quitarLosCamposSinContenido(link_original);
+// 	return link_original;
+// };

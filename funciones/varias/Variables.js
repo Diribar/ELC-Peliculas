@@ -123,10 +123,13 @@ module.exports = {
 					n.map((m) => m.toJSON())
 				),
 				mensajePeli: [
-					'Para poner "SI", estate seguro de que hayas escuchado LA PELÍCULA ENTERA en ese idioma. No te guíes por el trailer.',
+					"Para poner 'SI', escuchá la película entera y asegurate de que sea el idioma principal.",
+					"Si la película es subtitulada en castellano, a los fines de preservar la sencillez, corresponde decir 'SI'. Luego en los links, se podrá especificar que es subtitulada.",
 				],
 				mensajeColec: [
-					'En caso de que algunos capítulos estén en castellano y otros no, elegí "Parcial"',
+					"Para poner 'SI', debe ser el idioma principal de los capítulos. En paso contrario elegí 'PARCIAL'",
+					"Si los capítulos son subtitulados en castellano, a los fines de preservar la sencillez, corresponde decir 'SI'. Luego en los links, se podrá especificar que son subtitulados.",
+					"En caso de que algunos capítulos estén en castellano y otros no, elegí 'PARCIAL'",
 				],
 				angosto: true,
 			},
