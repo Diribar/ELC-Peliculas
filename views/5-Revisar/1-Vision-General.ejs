@@ -5,20 +5,10 @@
 		<!-- Datos generales -->
 		<div id="primeraColumna">
 			<h2>Productos</h2>
-			<table>
-				<tbody>
-				<% for (producto of Productos) { %>
-					<tr>
-						<td>
-							<a href="/revision/producto/?entidad=<%= producto.entidad %>&id=<%= producto.id %>">
-								<%= producto.nombre %>
-							</a>
-						</td>
-						<td><%= producto.abrev %></td>
-					</tr>
-				<% } %>
-				</tbody>
-			</table>
+			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.inactivar_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Editado", estado: status.editado_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Creado", estado: status.creado_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.recuperar_id}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->

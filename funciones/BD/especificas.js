@@ -124,7 +124,7 @@ module.exports = {
 		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
 	},
 	// Controlador-Revisar
-	obtenerProductos: (entidad, includes, haceUnaHora, status) => {
+	obtenerProductos: (entidad, includes, haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		return db[entidad]
 			.findAll({
@@ -135,13 +135,15 @@ module.exports = {
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
 					creado_en: {[Op.lt]: haceUnaHora},
+					// Que esté creado por otro usuario
+					creado_por_id: {[Op.ne]: userID},
 				},
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerRCLV: async (entidad, haceUnaHora,status) => {
+	obtenerRCLV: async (entidad, includes, haceUnaHora, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db[entidad]
 			.findAll({
@@ -152,15 +154,17 @@ module.exports = {
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
 					creado_en: {[Op.lt]: haceUnaHora},
+					// Que esté creado por otro usuario
+					creado_por_id: {[Op.ne]: userID},
 					// Cuyo 'id' sea mayor que 10
-					id: {[Op.gt]: 10},
+					id: {[Op.gt]: 20},
 				},
-				// include: includes,
+				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerLinks: async (haceUnaHora, includes, status) => {
+	obtenerLinks: async (haceUnaHora, includes, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db.links_originales
 			.findAll({
@@ -171,6 +175,8 @@ module.exports = {
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
 					fecha_referencia: {[Op.lt]: haceUnaHora},
+					// Que esté creado por otro usuario
+					creado_por_id: {[Op.ne]: userID},
 				},
 				include: includes,
 			})

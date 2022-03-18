@@ -11,31 +11,54 @@ module.exports = {
 		codigo = "visionGeneral";
 		// Definir variables
 		let status = await BD_especificas.obtenerStatus();
-		let ai = [status.aprobado_id, status.inactivado_id];
+		let aprobInact = [status.aprobado_id, status.inactivado_id];
+		let userID = req.session.usuario.id;
 		let haceUnaHora = varias.funcionHaceUnaHora();
 		// Obtener Productos -------------------------------------------------------------
 		let includes = ["personaje", "hecho", "valor", "status_registro"];
-		let peliculas = await BD_especificas.obtenerProductos("peliculas", includes, haceUnaHora, ai).then(
-			(n) => procesar(n, "peliculas")
-		);
+		let peliculas = await BD_especificas.obtenerProductos(
+			"peliculas",
+			includes,
+			haceUnaHora,
+			aprobInact,
+			userID
+		).then((n) => procesar(n, "peliculas"));
 		let colecciones = await BD_especificas.obtenerProductos(
 			"colecciones",
 			includes,
 			haceUnaHora,
-			ai
+			aprobInact,
+			userID
 		).then((n) => procesar(n, "colecciones"));
-		let Productos = [...peliculas, ...colecciones];
-		// Obtener los productos en sus variantes a mostrar
-		let prodCreado = prodPorStatus(Productos, status.creado_id);
-		let prodInactivar = prodPorStatus(Productos, status.inactivar_id);
-		let prodRecuperar = prodPorStatus(Productos, status.recuperar_id);
-		Productos = [...prodInactivar, ...prodCreado, ...prodRecuperar];
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE ----------------------
 
+		// Consolidar Productos y ordenar
+		let Productos = [...peliculas, ...colecciones].sort((a, b) => {
+			return new Date(a.fecha) - new Date(b.fecha);
+		});
 		// Obtener RCLV -----------------------------------------------------------------
-		let personajes = await BD_especificas.obtenerRCLV("RCLV_personajes", haceUnaHora, ai);
-		let hechos = await BD_especificas.obtenerRCLV("RCLV_hechos", haceUnaHora, ai);
-		let valores = await BD_especificas.obtenerRCLV("RCLV_valores", haceUnaHora, ai);
+		includes = ["peliculas", "colecciones", "capitulos"];
+		let personajes = await BD_especificas.obtenerRCLV(
+			"RCLV_personajes",
+			includes,
+			haceUnaHora,
+			aprobInact,
+			userID
+		);
+		let hechos = await BD_especificas.obtenerRCLV(
+			"RCLV_hechos",
+			includes,
+			haceUnaHora,
+			aprobInact,
+			userID
+		);
+		let valores = await BD_especificas.obtenerRCLV(
+			"RCLV_valores",
+			includes,
+			haceUnaHora,
+			aprobInact,
+			userID
+		);
 		let RCLV = [...personajes, ...hechos, ...valores];
 		// Obtener los RCLV en sus variantes a mostrar
 		let RCLV_creado = rclvCreado(RCLV, status.creado_id);
@@ -43,14 +66,14 @@ module.exports = {
 		RCLVs = [...RCLV_creado, ...RCLV_sinProds];
 		// Obtener Links ----------------------------------------------------------------
 		includes = ["pelicula", "coleccion", "capitulo"];
-		let links = await BD_especificas.obtenerLinks(haceUnaHora, includes, ai);
+		let links = await BD_especificas.obtenerLinks(haceUnaHora, includes, aprobInact, userID);
 		// Obtener los productos de los links
 		let prodsLinks = productosLinks(links, status.aprobado_id);
 
 		// Ir a la vista
-		//return res.send(Productos);
-		//return res.send(RCLVs)
-		//return res.send(prodsLinks);
+		//return res.send(peliculas);
+		//return res.send(RCLV_creado)
+		//return res.send(links);
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -58,6 +81,7 @@ module.exports = {
 			Productos,
 			RCLVs,
 			prodsLinks,
+			status,
 		});
 	},
 };
@@ -81,6 +105,7 @@ let procesar = (array, entidad) => {
 			ano_estreno: registro.ano_estreno,
 			abrev: registro.entidad.slice(0, 3).toUpperCase(),
 			status_registro_id: registro.status_registro_id,
+			fecha: registro.creado_en,
 		};
 	});
 };
