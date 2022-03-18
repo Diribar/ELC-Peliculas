@@ -143,7 +143,7 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerRCLV: async (entidad, includes, haceUnaHora, status, userID) => {
+	obtenerRCLV: (entidad, includes, haceUnaHora, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db[entidad]
 			.findAll({
@@ -164,7 +164,7 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerLinks: async (haceUnaHora, includes, status, userID) => {
+	obtenerLinks: (haceUnaHora, includes, status, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db.links_originales
 			.findAll({
