@@ -12,7 +12,7 @@ module.exports = {
 		let codigo = "visionGeneral";
 		// Definir variables
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden");
-		let revisar = status.filter((n) => n.revisar).map((m) => m.id);
+		let revisar = status.filter((n) => n.revisar).map((n) => n.id);
 		let userID = req.session.usuario.id;
 		let haceUnaHora = varias.funcionHaceUnaHora();
 		// Obtener Productos ------------------------------------------------------------
