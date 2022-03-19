@@ -222,15 +222,21 @@ module.exports = {
 					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
 					respuesta.resultado = false;
 				}
-			} else if (motivo_id) {
-				// Sin "captura válida" y links con status 'aprobado'
-				// Si explica el motivo, se inactiva
-				funcionInactivar(motivo_id, usuario, link);
-				respuesta.mensaje = "El link fue inactivado con éxito";
-				respuesta.resultado = true;
+			} else if (link.status_registro.aprobado) {
+				// Sin "captura válida" y con status 'aprobado'
+				if (motivo_id) {
+					// Si explica el motivo, se inactiva
+					funcionInactivar(motivo_id, usuario, link);
+					respuesta.mensaje = "El link fue inactivado con éxito";
+					respuesta.resultado = true;
+				} else {
+					// Si no figura el motivo --> Abortar con mensaje de error
+					respuesta.mensaje = "Falta especificar el motivo";
+					respuesta.resultado = false;
+				}
 			} else {
-				// Si no figura el motivo --> Abortar con mensaje de error
-				respuesta.mensaje = "Falta especificar el motivo";
+				// Sin "captura válida" y con status 'inactivos'
+				respuesta.mensaje = "El link está en status inactivo";
 				respuesta.resultado = false;
 			}
 		}
