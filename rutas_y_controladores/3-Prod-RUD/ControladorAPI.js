@@ -197,6 +197,7 @@ module.exports = {
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) respuesta.mensaje = "Faltan datos";
 		else {
+			// El link_id existe
 			let link = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
 			]).then((n) => n.toJSON());
