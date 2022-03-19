@@ -51,12 +51,12 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
-		let producto = varias.Producto(entidad);
+		let nombreProducto = varias.Producto(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			producto;
+			nombreProducto;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
 			var camposDD = variables
@@ -87,7 +87,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			producto,
+			nombreProducto,
 			entidad,
 			prodID,
 			Producto: prodCombinado,
@@ -120,11 +120,10 @@ module.exports = {
 			(n) => n.toJSON()
 		);
 		// Obtener el producto 'Editado' guardado, si lo hubiera
-		let prodEditado = await BD_varias.obtenerPor3Campos(
+		let producto = varias.producto(entidad);
+		let prodEditado = await BD_varias.obtenerPor2Campos(
 			"productos_edic",
-			"elc_entidad",
-			entidad,
-			"elc_id",
+			"elc_" + producto + "_id",
 			prodID,
 			"editado_por_id",
 			userID
@@ -167,10 +166,10 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
+			let producto = varias.producto(entidad);
 			edicion = {
 				...edicion,
-				elc_id: prodID,
-				elc_entidad: entidad,
+				["elc_" + producto + "id"]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
@@ -222,8 +221,8 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let producto = varias.Producto(prodEntidad);
-		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + producto;
+		let nombreProducto = varias.Producto(prodEntidad);
+		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + nombreProducto;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, Producto);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
@@ -366,11 +365,10 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let registroEditado = await BD_varias.obtenerPor3Campos(
+	let producto = varias.producto(prodEntidad);
+	let registroEditado = await BD_varias.obtenerPor2Campos(
 		"productos_edic",
-		"elc_entidad",
-		prodEntidad,
-		"elc_id",
+		["elc_" + producto + "id"],
 		prodID,
 		"editado_por_id",
 		userID

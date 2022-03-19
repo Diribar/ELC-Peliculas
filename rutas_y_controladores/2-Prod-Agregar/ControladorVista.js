@@ -481,14 +481,14 @@ module.exports = {
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
+		let producto = varias.producto(entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
-			elc_entidad: confirma.entidad,
 			editado_por_id: req.session.usuario.id,
 			// Datos varios
 			entidad: "productos_edic",
-			elc_id: registro.id,
+			["elc_" + producto + "_id"]: registro.id,
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		await BD_varias.agregarRegistro(edicion);

@@ -77,14 +77,14 @@ module.exports = {
 		});
 		// Obtener el producto EDITADO
 		let prodEditado = {};
-		let elc_producto_id = "elc_" + varias.producto(entidad) + "_id";
+		let producto = varias.producto(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_varias.obtenerPor2CamposConInclude(
 				"productos_edic",
-				elc_producto_id,
+				"elc_" + producto + "_id",
 				prodID,
 				"editado_por_id",
 				userID,
