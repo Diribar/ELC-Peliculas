@@ -123,7 +123,7 @@ module.exports = {
 				.findAll({
 					where: {
 						// Con status de 'aprobar'
-						[Op.or]: [{status_registro_id: status}],
+						status_registro_id: status,
 						// Que no esté capturado
 						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 						// Que esté en condiciones de ser capturado
@@ -151,7 +151,7 @@ module.exports = {
 			.findAll({
 				where: {
 					// Con status de 'aprobar'
-					[Op.or]: [{status_registro_id: status}],
+					status_registro_id: status,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
@@ -175,7 +175,7 @@ module.exports = {
 			.findAll({
 				where: {
 					// Con status de 'aprobar'
-					[Op.or]: [{status_registro_id: status}],
+					status_registro_id: status,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
