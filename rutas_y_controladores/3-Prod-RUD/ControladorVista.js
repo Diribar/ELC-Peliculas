@@ -346,8 +346,8 @@ let obtenerLinkCombinado = async (elc_id, userID) => {
 };
 let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
-	// linksActivos: Aprobar + Aprobados
-	let linksActivos = linksOriginales.filter((n) => n.status_registro.aprobar || n.status_registro.aprobado);
+	// linksActivos
+	let linksActivos = linksOriginales.filter((n) => !n.status_registro.inactivos);
 	// linksInactivos
 	let linksInactivos = linksOriginales.filter((n) => n.status_registro.inactivos);
 	// A los Inactivos, agregarles el motivo
