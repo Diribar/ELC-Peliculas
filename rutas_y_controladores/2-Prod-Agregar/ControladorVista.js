@@ -527,8 +527,8 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (registroProd == {}) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO YA REVISADO
-		if (!registroProd.status_registro.creado && !registroProd.status_registro.editado)
-			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
+		if (registroProd.status_registro.aprobac_termin)
+			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
 		let producto = varias.producto(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS

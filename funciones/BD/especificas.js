@@ -111,19 +111,6 @@ module.exports = {
 		return objeto;
 	},
 	// Controlador-Revisar
-	obtenerStatus: async () => {
-		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
-			n.map((m) => m.toJSON())
-		);
-		let creado_id = status.find((n) => n.creado).id;
-		let editado_id = status.find((n) => n.editado).id;
-		let aprobado_id = status.find((n) => n.aprobado).id;
-		let inactivar_id = status.find((n) => n.inactivar).id;
-		let recuperar_id = status.find((n) => n.recuperar).id;
-		let inactivado_id = status.find((n) => n.inactivado).id;
-		return {creado_id, editado_id, aprobado_id, inactivar_id, recuperar_id, inactivado_id};
-	},
-	// Controlador-Revisar
 	obtenerProductos: async (haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
@@ -135,8 +122,8 @@ module.exports = {
 			resultados[i] = db[entidades[i]]
 				.findAll({
 					where: {
-						// 	Con registro distinto a 'aprobado' e 'inactivado'
-						[Op.not]: [{status_registro_id: status}],
+						// Con status de 'aprobar'
+						[Op.or]: [{status_registro_id: status}],
 						// Que no esté capturado
 						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 						// Que esté en condiciones de ser capturado
@@ -163,8 +150,8 @@ module.exports = {
 		return db[entidad]
 			.findAll({
 				where: {
-					// Con registro distinto a 'aprobado' e 'inactivado'
-					[Op.not]: [{status_registro_id: status}],
+					// Con status de 'aprobar'
+					[Op.or]: [{status_registro_id: status}],
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
@@ -187,8 +174,8 @@ module.exports = {
 		return db.links_originales
 			.findAll({
 				where: {
-					// Con registro distinto a 'aprobado' e 'inactivado'
-					[Op.not]: [{status_registro_id: status}],
+					// Con status de 'aprobar'
+					[Op.or]: [{status_registro_id: status}],
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
@@ -218,49 +205,49 @@ module.exports = {
 		}
 	},
 	// Nadie
-	contarProductos: async (entidadProd, campo, valor, status_id) => {
-		let cant_productos = 0;
-		// Rutina por cada entidad de Productos
-		for (entidadProd of entidadesProd) {
-			cant_productos += await db[entidadProd].count({
-				where: {
-					[campo]: valor,
-					status_registro_id: status_id,
-				},
-			});
-		}
-		return cant_productos;
-	},
+	// contarProductos: async (entidadProd, campo, valor, status_id) => {
+	// 	let cant_productos = 0;
+	// 	// Rutina por cada entidad de Productos
+	// 	for (entidadProd of entidadesProd) {
+	// 		cant_productos += await db[entidadProd].count({
+	// 			where: {
+	// 				[campo]: valor,
+	// 				status_registro_id: status_id,
+	// 			},
+	// 		});
+	// 	}
+	// 	return cant_productos;
+	// },
 	// Nadie
-	obtenerEdicion_Revision: async function (entidad, original) {
-		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-		];
-		if (original.entidad == "capitulos") includes.push("coleccion");
-		// Obtener el producto EDITADO
-		let prodEditado = await BD_varias.obtenerPor2CamposConInclude(
-			entidad,
-			"elc_entidad",
-			original.entidad,
-			"elc_id",
-			original.id,
-			includes.slice(0, -2)
-		).then((n) => {
-			return n ? n.toJSON() : "";
-		});
-		// Quitarle los campos 'null'
-		if (prodEditado) prodEditado = this.quitarLosCamposSinContenido(prodEditado);
-		// Fin
-		return prodEditado;
-	},
+	// obtenerEdicion_Revision: async function (entidad, original) {
+	// 	// Definir los campos include
+	// 	let includes = [
+	// 		"idioma_original",
+	// 		"en_castellano",
+	// 		"en_color",
+	// 		"categoria",
+	// 		"subcategoria",
+	// 		"publico_sugerido",
+	// 		"personaje",
+	// 		"hecho",
+	// 	];
+	// 	if (original.entidad == "capitulos") includes.push("coleccion");
+	// 	// Obtener el producto EDITADO
+	// 	let prodEditado = await BD_varias.obtenerPor2CamposConInclude(
+	// 		entidad,
+	// 		"elc_entidad",
+	// 		original.entidad,
+	// 		"elc_id",
+	// 		original.id,
+	// 		includes.slice(0, -2)
+	// 	).then((n) => {
+	// 		return n ? n.toJSON() : "";
+	// 	});
+	// 	// Quitarle los campos 'null'
+	// 	if (prodEditado) prodEditado = this.quitarLosCamposSinContenido(prodEditado);
+	// 	// Fin
+	// 	return prodEditado;
+	// },
 
 	// Usuarios *************************************************
 	obtenerUsuarioPorID: (id) => {

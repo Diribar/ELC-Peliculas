@@ -210,27 +210,28 @@ module.exports = {
 				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
 				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (link.creado_por_id == usuario.id && link.status_registro.creado) {
-				// Sin "captura válida", links creados por el usuario y con status 'creado' --> se eliminan definitivamente
-				BD_varias.eliminarRegistro("links_originales", link_id);
-				respuesta.mensaje = "El link fue eliminado con éxito";
-				respuesta.resultado = true;
-			} else if (!link.status_registro.aprobado) {
-				// Si los links no están aprobados, no se pueden inactivar
-				respuesta.mensaje = "El link no está en estado aprobado";
-				respuesta.resultado = false;
-			} else if (!motivo_id) {
-				// Los demás casos son:
-				//		- Links con status 'aprobado' o creados por otro autor
-				//		- Links sin "captura válida"
-				// 1. Si no figura el motivo --> Abortar con mensaje de error
-				respuesta.mensaje = "Falta especificar el motivo";
-				respuesta.resultado = false;
-			} else {
+			} else if (link.status_registro.aprobar) {
+				// Sin "captura válida" y con status 'aprobar'
+				if (link.creado_por_id == usuario.id) {
+					// Creados por el usuario --> se eliminan definitivamente
+					BD_varias.eliminarRegistro("links_originales", link_id);
+					respuesta.mensaje = "El link fue eliminado con éxito";
+					respuesta.resultado = true;
+				} else {
+					// Creados por otro usuario --> no se pueden inactivar
+					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
+					respuesta.resultado = false;
+				}
+			} else if (motivo_id) {
+				// Sin "captura válida" y links con status 'aprobado'
 				// Si explica el motivo, se inactiva
 				funcionInactivar(motivo_id, usuario, link);
 				respuesta.mensaje = "El link fue inactivado con éxito";
 				respuesta.resultado = true;
+			} else {
+				// Si no figura el motivo --> Abortar con mensaje de error
+				respuesta.mensaje = "Falta especificar el motivo";
+				respuesta.resultado = false;
 			}
 		}
 		return res.json(respuesta);
