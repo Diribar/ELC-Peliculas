@@ -111,7 +111,7 @@ module.exports = {
 		return objeto;
 	},
 	// Controlador-Revisar
-	obtenerProductos: async (haceUnaHora, status, userID) => {
+	obtenerProductos: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
 		let entidades = ["peliculas", "colecciones"];
@@ -123,7 +123,7 @@ module.exports = {
 				.findAll({
 					where: {
 						// Con status de 'revisar'
-						status_registro_id: status,
+						status_registro_id: revisar,
 						// Que no esté capturado
 						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 						// Que esté en condiciones de ser capturado
@@ -145,13 +145,13 @@ module.exports = {
 		return resultado;
 	},
 	// Controlador-Revisar
-	obtenerRCLV: (entidad, includes, haceUnaHora, status, userID) => {
+	obtenerRCLV: (entidad, includes, haceUnaHora, revisar, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		return db[entidad]
 			.findAll({
 				where: {
 					// Con status de 'revisar'
-					status_registro_id: status,
+					status_registro_id: revisar,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
@@ -166,7 +166,7 @@ module.exports = {
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad})) : []));
 	},
 	// Controlador-Revisar
-	obtenerLinks: (haceUnaHora, status, userID) => {
+	obtenerLinks: (haceUnaHora, revisar, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		// Declarar las variables
 		includes = ["pelicula", "coleccion", "capitulo"];
@@ -175,7 +175,7 @@ module.exports = {
 			.findAll({
 				where: {
 					// Con status de 'revisar'
-					status_registro_id: status,
+					status_registro_id: revisar,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
 					// Que esté en condiciones de ser capturado
