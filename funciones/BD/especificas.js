@@ -82,7 +82,6 @@ module.exports = {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-
 			prodEditado = await BD_varias.obtenerPor2CamposConInclude(
 				"productos_edic",
 				elc_producto_id,
