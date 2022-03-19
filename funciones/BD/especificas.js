@@ -1,6 +1,7 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 let BD_varias = require("./Varias");
+let varias = require("../varias/Varias");
 
 module.exports = {
 	// Productos *****************************************
@@ -76,15 +77,15 @@ module.exports = {
 		});
 		// Obtener el producto EDITADO
 		let prodEditado = {};
+		let elc_producto_id = "elc_" + varias.producto(entidad) + "_id";
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-			prodEditado = await BD_varias.obtenerPor3CamposConInclude(
+
+			prodEditado = await BD_varias.obtenerPor2CamposConInclude(
 				"productos_edic",
-				"elc_entidad",
-				entidad,
-				"elc_id",
+				elc_producto_id,
 				prodID,
 				"editado_por_id",
 				userID,

@@ -178,13 +178,23 @@ module.exports = {
 		});
 	},
 
-	producto: (entidad) => {
+	Producto: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
 			? "Colección"
 			: entidad == "capitulos"
 			? "Capítulo"
+			: "";
+	},
+
+	producto: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula"
+			: entidad == "colecciones"
+			? "coleccion"
+			: entidad == "capitulos"
+			? "capitulo"
 			: "";
 	},
 

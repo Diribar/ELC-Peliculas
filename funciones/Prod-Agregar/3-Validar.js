@@ -308,7 +308,7 @@ let validarRepetidos = async (campo, datos) => {
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
 	if (repetido) {
-		let producto = varias.producto(datos.entidad);
+		let producto = varias.Producto(datos.entidad);
 		var mensaje =
 			"Esta " +
 			"<a href='/producto/detalle/?entidad=" +

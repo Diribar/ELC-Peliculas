@@ -11,7 +11,7 @@
 // 			- ProdEdición	--> CREADO < 1hr
 // 			- Links			--> CREADO < 1hr
 // 		NO	--> REDIRECCIONA a 'El producto no está aprobado aún para su edición'
-//	3- Editado por 
+//	3- Editado por
 // Requires
 const BD_varias = require("../../funciones/BD/Varias");
 
@@ -21,8 +21,9 @@ module.exports = async (req, res, next) => {
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
+	console.log(entidad, prodID, userID);
 	// Obtener el producto original
-	prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID,"status_registro");
+	prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 	// Obtener los status
 	// let status = await BD_varias.obtenerTodos("status_registro_ent", "orden").then((n) =>
 	// 	n.map((m) => m.toJSON())
@@ -31,5 +32,5 @@ module.exports = async (req, res, next) => {
 	// let editado_id = status.find((n) => n.editado).id;
 	// Si el producto está en status 'creado' o 'editado'
 	// if (prodOriginal.status_registro_id == creado_id || prodOriginal.status_registro_id == editado_id) next();
-	if (prodOriginal.status_registro.provisorio)
+	// if (prodOriginal.status_registro.provisorio)
 };

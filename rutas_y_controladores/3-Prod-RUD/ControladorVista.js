@@ -51,7 +51,7 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
-		let producto = varias.producto(entidad);
+		let producto = varias.Producto(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -222,7 +222,7 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let producto = varias.producto(prodEntidad);
+		let producto = varias.Producto(prodEntidad);
 		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + producto;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, Producto);
 		// Obtener datos para la vista
