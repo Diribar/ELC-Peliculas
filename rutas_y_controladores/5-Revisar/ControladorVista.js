@@ -27,7 +27,7 @@ module.exports = {
 		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
 		let prodsLinks = productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
-		//return res.send(links);
+		//return res.send(Productos);
 		return res.render("Home", {
 			tema,
 			codigo,
