@@ -122,7 +122,7 @@ module.exports = {
 			resultados[i] = db[entidades[i]]
 				.findAll({
 					where: {
-						// Con status de 'aprobar'
+						// Con status de 'revisar'
 						status_registro_id: status,
 						// Que no esté capturado
 						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
@@ -150,7 +150,7 @@ module.exports = {
 		return db[entidad]
 			.findAll({
 				where: {
-					// Con status de 'aprobar'
+					// Con status de 'revisar'
 					status_registro_id: status,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
@@ -174,7 +174,7 @@ module.exports = {
 		return db.links_originales
 			.findAll({
 				where: {
-					// Con status de 'aprobar'
+					// Con status de 'revisar'
 					status_registro_id: status,
 					// Que no esté capturado
 					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
