@@ -78,7 +78,7 @@ module.exports = {
 		// Obtener el producto EDITADO
 		let prodEditado = {};
 		let entidadEnSingular = varias.entidadEnSingular(entidad);
-		if (prodOriginal != {}) {
+		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
@@ -90,7 +90,7 @@ module.exports = {
 				userID,
 				includes.slice(0, -2)
 			).then((n) => (n ? n.toJSON() : ""));
-			if (prodEditado != {}) {
+			if (prodEditado) {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
 				// Quitarle los campos 'null'
