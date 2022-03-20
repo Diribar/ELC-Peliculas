@@ -109,10 +109,10 @@ module.exports = {
 			(n) => n.toJSON()
 		);
 		// Obtener el producto 'Editado' guardado, si lo hubiera
-		let producto = varias.entidadEnSingular(entidad);
+		let entidadEnSingular = varias.entidadEnSingular(entidad);
 		let prodEditado = await BD_varias.obtenerPor2Campos(
 			"productos_edic",
-			"elc_" + producto + "_id",
+			"elc_" + entidadEnSingular + "_id",
 			prodID,
 			"editado_por_id",
 			userID
@@ -155,10 +155,10 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let producto = varias.entidadEnSingular(entidad);
+			let entidadEnSingular = varias.entidadEnSingular(entidad);
 			edicion = {
 				...edicion,
-				["elc_" + producto + "id"]: prodID,
+				["elc_" + entidadEnSingular + "id"]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
