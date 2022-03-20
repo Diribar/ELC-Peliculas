@@ -189,7 +189,7 @@ module.exports = {
 			: "";
 	},
 
-	producto: (entidad) => {
+	entidadSingular: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
 			: entidad == "colecciones"

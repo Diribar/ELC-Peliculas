@@ -139,7 +139,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: varias.nombreProducto(req.body.entidad),
+			producto: varias.entidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -163,7 +163,7 @@ module.exports = {
 		borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.producto = varias.nombreProducto(req.body.entidad);
+			req.body.producto = varias.entidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -481,7 +481,7 @@ module.exports = {
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto = varias.producto(entidad);
+		let producto = varias.entidadSingular(entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -527,7 +527,7 @@ module.exports = {
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = varias.nombreProducto(entidad);
+		let producto = varias.entidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

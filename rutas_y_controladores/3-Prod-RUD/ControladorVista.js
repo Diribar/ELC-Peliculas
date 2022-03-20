@@ -43,7 +43,7 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
-		let nombreProducto = varias.nombreProducto(entidad);
+		let nombreProducto = varias.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -109,7 +109,7 @@ module.exports = {
 			(n) => n.toJSON()
 		);
 		// Obtener el producto 'Editado' guardado, si lo hubiera
-		let producto = varias.producto(entidad);
+		let producto = varias.entidadSingular(entidad);
 		let prodEditado = await BD_varias.obtenerPor2Campos(
 			"productos_edic",
 			"elc_" + producto + "_id",
@@ -155,7 +155,7 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let producto = varias.producto(entidad);
+			let producto = varias.entidadSingular(entidad);
 			edicion = {
 				...edicion,
 				["elc_" + producto + "id"]: prodID,
@@ -205,7 +205,7 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let nombreProducto = varias.nombreProducto(prodEntidad);
+		let nombreProducto = varias.entidadNombre(prodEntidad);
 		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + nombreProducto;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodOriginal);
 		// Obtener datos para la vista
@@ -349,7 +349,7 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let producto = varias.producto(prodEntidad);
+	let producto = varias.entidadSingular(prodEntidad);
 	let registroEditado = await BD_varias.obtenerPor2Campos(
 		"productos_edic",
 		["elc_" + producto + "_id"],
