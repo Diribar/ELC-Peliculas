@@ -1,4 +1,4 @@
-VISTA RCLV, ProdEdicion, Links
+VISTA ProdEdicion, RCLV, Links
 - Si está "capturado" --> menú pop-up avisándolo
 	- Capturado por quién (nombre)
 	- Cuándo se libera a más tardar
