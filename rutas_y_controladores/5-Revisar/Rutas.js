@@ -11,7 +11,6 @@ const entidadId = require("../../middlewares/entidades/entidadId");
 // Controladores *******************************************
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);
 router.get("/producto", soloGestionProd, entidadId, vista.producto);
-// router.get("/producto", soloGestionProd, vista.visionGeneral);
 // router.get("/rclv", soloGestionProd, vista.visionGeneral);
 // router.get("/links", soloGestionProd, vista.visionGeneral);
 
