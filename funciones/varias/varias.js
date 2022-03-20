@@ -189,7 +189,7 @@ module.exports = {
 			: "";
 	},
 
-	entidadSingular: (entidad) => {
+	entidadEnSingular: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
 			: entidad == "colecciones"

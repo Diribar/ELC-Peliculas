@@ -77,7 +77,7 @@ module.exports = {
 		});
 		// Obtener el producto EDITADO
 		let prodEditado = {};
-		let producto = varias.entidadSingular(entidad);
+		let producto = varias.entidadEnSingular(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);

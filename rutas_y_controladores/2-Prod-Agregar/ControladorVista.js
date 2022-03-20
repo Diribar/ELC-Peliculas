@@ -481,7 +481,7 @@ module.exports = {
 		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto = varias.entidadSingular(entidad);
+		let producto = varias.entidadEnSingular(entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
