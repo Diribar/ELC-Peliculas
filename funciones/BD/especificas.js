@@ -1,7 +1,7 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
-let BD_varias = require("./Varias");
-let varias = require("../varias/Varias");
+const BD_varias = require("./Varias");
+const varias = require("../varias/Varias");
 
 module.exports = {
 	// Productos *****************************************
