@@ -3,10 +3,8 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
-		aprobar: {type: dt.BOOLEAN},
-		aprobac_termin: {type: dt.BOOLEAN},
+		pend_aprobar: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
-		revisar: {type: dt.BOOLEAN},
 		revisado: {type: dt.BOOLEAN},
 		inactivos: {type: dt.BOOLEAN},
 		creado: {type: dt.BOOLEAN},

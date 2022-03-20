@@ -1,8 +1,8 @@
 <section id="encabezado">
 	<div id="nombres">
-		<h1><%= Producto.nombre_castellano %></h1>
-		<% if (Producto.nombre_original) { %>
-			<h2><em><%= Producto.nombre_original %></em></h2>
+		<h1><%= producto.nombre_castellano %></h1>
+		<% if (producto.nombre_original) { %>
+			<h2><em><%= producto.nombre_original %></em></h2>
 		<% } %>
 	</div>
 	<div id="colCap">
@@ -11,8 +11,8 @@
 			<div id="colecciones">
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
 				<div>
-					<p><strong>Cantidad de Temporadas:</strong> <%= Producto.cant_temporadas ? Producto.cant_temporadas : "Sin temporada" %></p>
-					<p><strong>Cantidad de Capítulos:</strong> <%= Producto.cant_capitulos %></p>
+					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
+					<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
 				</div>
 			</div>
 			<% } %>
@@ -20,7 +20,7 @@
 		<% if (entidad == "capitulos") { %>
 			<div id="tempCapI">
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
-				<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= Producto.coleccion_id %>"><%= Producto.coleccion.nombre_castellano %></a></p>
+				<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></p>
 			</div>
 			<div id="tempCapS">
 				<div class="pack">
@@ -28,13 +28,13 @@
 					<i class="fa-solid fa-circle-right" tabindex="-1" title="Ir al capítulo posterior"></i>
 				</div>
 				<select id="temporada">
-					<% for (temp = 1; temp <= Producto.coleccion.cant_temporadas; temp++) { %>
-						<option <% if (Producto.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
+					<% for (temp = 1; temp <= producto.coleccion.cant_temporadas; temp++) { %>
+						<option <% if (producto.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 					<% } %>
 				</select>
 				<select id="capitulo">
-					<% for (cap of Producto.capitulos) { %>
-						<option <% if (Producto.capitulo == cap) { %>selected<% } %> >Capítulo <%= cap %></option>
+					<% for (cap of producto.capitulos) { %>
+						<option <% if (producto.capitulo == cap) { %>selected<% } %> >Capítulo <%= cap %></option>
 					<% } %>
 				</select>
 			</div>

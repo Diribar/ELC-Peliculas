@@ -3,10 +3,10 @@
 	<div class="input-error">
 		<!-- Input -->
 		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto' : '' %>">
-			<option value="" class="ocultar" <% if (!Producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
+			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
-					<% if (Producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>
+					<% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>
 					<% if (campo.nombreDelCampo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
 					<% if (entidad != "colecciones" && (campo.nombreDelCampo == "en_castellano_id" || campo.nombreDelCampo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
 				>

@@ -211,21 +211,26 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	provisorio BOOLEAN DEFAULT 1,
-	creado BOOLEAN DEFAULT 0,
-	editado BOOLEAN DEFAULT 0,
+	pend_aprobar BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
-	sugerido_inactivar BOOLEAN DEFAULT 0,
-	sugerido_recuperar BOOLEAN DEFAULT 0,
+	revisado BOOLEAN DEFAULT 0,
+	inactivos BOOLEAN DEFAULT 0,
+	creado BOOLEAN DEFAULT 0,
+	pre_autorizado BOOLEAN DEFAULT 0,
+	autorizado BOOLEAN DEFAULT 0,
+	editado BOOLEAN DEFAULT 0,
+	inactivar BOOLEAN DEFAULT 0,
+	recuperar BOOLEAN DEFAULT 0,
 	inactivado BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado) VALUES (1, 1, 'Creado', 1);
-INSERT INTO aux_status_registro (id, orden, nombre, editado) VALUES (2, 2, 'Editado', 1);
-INSERT INTO aux_status_registro (id, orden, nombre, aprobado, provisorio) VALUES (3, 3, 'Aprobado', 1, 0);
-INSERT INTO aux_status_registro (id, orden, nombre, sugerido_inactivar) VALUES (4, 4, 'Sugerido p/inactivar', 1);
-INSERT INTO aux_status_registro (id, orden, nombre, sugerido_recuperar) VALUES (5, 5, 'Sugerido p/recuperar', 1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, provisorio) VALUES (6, 6, 'Inactivado', 1, 0);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, pend_aprobar) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, pre_autorizado, pend_aprobar) VALUES (2, 2, 'Pre-autorizado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, autorizado, aprobado, revisado) VALUES (3, 3, 'Autorizado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, editado, aprobado, revisado) VALUES (4, 4, 'Editado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivar, inactivos) VALUES (5, 5, 'Inactivar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar, inactivos) VALUES (6, 6, 'Recuperar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivado, revisado, inactivos) VALUES (7, 7, 'Inactivado',1,1,1);
 
 /* TABLAS AUXILIARES PARA RCLV */;
 CREATE TABLE rclv_meses (
@@ -734,8 +739,9 @@ VALUES
 ;
 CREATE TABLE prod_4edicion (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	elc_id INT UNSIGNED NOT NULL,
-	elc_entidad VARCHAR(11) NOT NULL,
+	elc_pelicula_id INT UNSIGNED DEFAULT NULL,
+	elc_coleccion_id INT UNSIGNED DEFAULT NULL,
+	elc_capitulo_id INT UNSIGNED DEFAULT NULL,
 	coleccion_id INT UNSIGNED NULL,
 	temporada TINYINT UNSIGNED DEFAULT NULL,
 	capitulo TINYINT UNSIGNED NULL,
@@ -770,7 +776,6 @@ CREATE TABLE prod_4edicion (
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT NULL,
 
@@ -778,7 +783,9 @@ CREATE TABLE prod_4edicion (
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
+	FOREIGN KEY (elc_pelicula_id) REFERENCES prod_1peliculas(id),
+	FOREIGN KEY (elc_coleccion_id) REFERENCES prod_2colecciones(id),	
+	FOREIGN KEY (elc_capitulo_id) REFERENCES prod_3capitulos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (en_color_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (idioma_original_id) REFERENCES aux_idiomas(id),
@@ -790,27 +797,25 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_4edicion (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, status_registro_id, editado_en)
+INSERT INTO prod_4edicion (id, elc_pelicula_id, elc_coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en)
 VALUES
-(1,1,'peliculas','1645444885482.jpg',3,1,'CFC',4,4,21,10,1,'2022-03-16 23:25:20'),
-(2,2,'peliculas','1645458510332.jpg',1,1,'CFC',4,4,22,10,1,'2022-03-16 23:25:20'),
-(3,3,'peliculas','1645458705918.jpg',1,1,'CFC',4,4,22,10,1,'2022-03-16 23:25:20'),
-(4,4,'peliculas','1645459542226.jpg',1,1,'CFC',4,4,23,10,1,'2022-03-16 23:25:20'),
-(5,5,'peliculas','1645459996491.jpg',1,1,'CFC',4,4,23,10,1,'2022-03-16 23:25:20'),
-(6,1,'colecciones','1645481101308.jpg',1,1,'CFC',4,5,24,10,1,'2022-03-16 23:25:20')
+(1,1,NULL,'1645444885482.jpg',3,1,'CFC',4,4,21,11,'2022-03-16 23:25:20'),
+(2,2,NULL,'1645458510332.jpg',1,1,'CFC',4,4,22,10,'2022-03-16 23:25:21'),
+(3,3,NULL,'1645458705918.jpg',1,1,'CFC',4,4,22,10,'2022-03-16 23:25:23'),
+(4,4,NULL,'1645459542226.jpg',1,1,'CFC',4,4,23,10,'2022-03-16 23:25:24'),
+(5,5,NULL,'1645459996491.jpg',1,1,'CFC',4,4,23,10,'2022-03-16 23:25:25'),
+(6,NULL,1,'1645481101308.jpg',1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19')
 ;
-INSERT INTO prod_4edicion (id, elc_id, elc_entidad, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, status_registro_id) VALUES (7,2,'colecciones','1646276771102.jpg',2,1,'VPC',10,4,15,10,1);
-INSERT INTO prod_4edicion (id, elc_id, elc_entidad, nombre_original, personaje_id, editado_por_id, status_registro_id) VALUES (8,1,'capitulos','Karol - Un uomo diventato Papa',24,10,1);
-INSERT INTO prod_4edicion (id, elc_id, elc_entidad, produccion, personaje_id, editado_por_id, status_registro_id) VALUES (9,2,'capitulos','TAO Film',24,10,1);
+INSERT INTO prod_4edicion (id, elc_pelicula_id, elc_coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES (7,NULL,2,'1646276771102.jpg',2,1,'VPC',10,4,15,10,'2022-03-16 23:25:22');
+INSERT INTO prod_4edicion (elc_capitulo_id, nombre_original, personaje_id, editado_por_id) VALUES (1,'Karol - Un uomo diventato Papa',24,10);
+INSERT INTO prod_4edicion (elc_capitulo_id, produccion, personaje_id, editado_por_id) VALUES (2,'TAO Film',24,10);
 UPDATE prod_4edicion SET musica = 'Ciaran Hope' WHERE id = 1;
 UPDATE prod_4edicion SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
 UPDATE prod_4edicion SET musica = 'Marco Frisina', guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
 UPDATE prod_4edicion SET nombre_original = 'Love Comes Softly', nombre_castellano = 'El amor llega suavemente', musica = 'Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon' WHERE id = 7;
-
 
 /* LINKS */;
 CREATE TABLE links_proveedores (
@@ -925,7 +930,6 @@ CREATE TABLE links_2edicion (
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
 
 	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
@@ -935,7 +939,6 @@ CREATE TABLE links_2edicion (
 	FOREIGN KEY (elc_id) REFERENCES links_1originales(id),
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1044,14 +1047,14 @@ CREATE TABLE borr_1registros (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	elc_id INT UNSIGNED NOT NULL,
 	elc_entidad VARCHAR(20) NOT NULL,
-	usuario_sancionado_id INT UNSIGNED NOT NULL,
+	usuario_implicado_id INT UNSIGNED NOT NULL,
 	evaluado_por_usuario_id INT UNSIGNED NOT NULL,
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	status_registro_id TINYINT UNSIGNED NOT NULL,	
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_sancionado_id) REFERENCES usuarios(id),
+	FOREIGN KEY (usuario_implicado_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES borr_motivos(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)

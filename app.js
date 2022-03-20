@@ -50,7 +50,6 @@ let rutaProd_RUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
 let rutaProd_RCLV = require("./rutas_y_controladores/4-Prod-RCLV/Rutas");
 let rutaRevisar = require("./rutas_y_controladores/5-Revisar/Rutas");
 let rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
-let rutaErrores = require("./rutas_y_controladores/8-Errores/Rutas");
 let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProd_Agregar);
@@ -58,7 +57,6 @@ app.use("/producto/rclv", rutaProd_RCLV);
 app.use("/producto", rutaProd_RUD);
 app.use("/revision", rutaRevisar);
 app.use("/productos", rutaProductos);
-app.use("/error", rutaErrores);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************

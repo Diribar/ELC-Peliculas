@@ -5,12 +5,11 @@ let fs = require("fs");
 let path = require("path");
 let axios = require("axios");
 
+// Exportar ------------------------------------
 module.exports = {
 	userLogs: (req, res) => {
 		let url = req.originalUrl;
 		if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
-		// res.locals.urlReferencia = req.session.urlReferencia ? req.session.urlReferencia : "/";
-		// console.log(res.locals.urlReferencia);
 	},
 
 	enviarMail: async (asunto, mail, comentario) => {
@@ -178,7 +177,7 @@ module.exports = {
 		});
 	},
 
-	producto: (entidad) => {
+	entidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -188,15 +187,14 @@ module.exports = {
 			: "";
 	},
 
-	revisarQuery: function (entidad, ID) {
-		let errorEnQuery = "";
-		// Sin entidad y/o ID
-		if (!entidad) errorEnQuery = "Falta el dato de la 'entidad'";
-		if (!ID) errorEnQuery = "Falta el dato del 'ID'";
-		// Entidad inexistente
-		producto = this.producto(entidad);
-		if (!producto) errorEnQuery = "La entidad ingresada no es válida";
-		return errorEnQuery;
+	entidadEnSingular: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula"
+			: entidad == "colecciones"
+			? "coleccion"
+			: entidad == "capitulos"
+			? "capitulo"
+			: "";
 	},
 
 	funcionHaceUnaHora: () => {

@@ -1,18 +1,30 @@
 //************************* Requires *******************************
-let express = require("express");
-let router = express.Router();
-let API = require("./ControladorAPI");
-let vista = require("./ControladorVista");
+const express = require("express");
+const router = express.Router();
+const API = require("./ControladorAPI");
+const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-let soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
-let multer = require("../../middlewares/varios/multer");
+const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+const entidadId = require("../../middlewares/entidades/entidadId");
+const prodEdicion = require("../../middlewares/entidades/RUD-edicion");
+const multer = require("../../middlewares/varios/multer");
 let capturaUsuario;
 let capturaProducto;
 
 //************************ Controladores ****************************
+// Controladores de vistas
+router.get("/detalle", soloUsuarios, entidadId, vista.detalleEdicionForm);
+router.get("/calificala", soloAutInput, entidadId, vista.calificala);
+
+router.get("/edicion", soloAutInput, entidadId, prodEdicion, vista.detalleEdicionForm);
+router.post("/edicion/guardar", soloAutInput, entidadId,prodEdicion, multer.single("avatar"), vista.edicionGuardar);
+router.get("/edicion/eliminar", soloAutInput, entidadId, vista.edicionEliminar);
+router.get("/links", soloAutInput, entidadId, vista.linksForm);
+
+router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
+
 // Controladores de APIs
 // Tridente: Detalle, Edición, Links
 router.get("/tridente/api/obtener-col-cap", API.obtenerColCap);
@@ -27,16 +39,6 @@ router.get("/edicion/api/obtener-de-req-session", API.obtenerDeReqSession);
 router.get("/links/api/validar-links", API.linksValidar);
 router.get("/links/api/obtener-provs-links", API.linksObtenerProvs);
 router.get("/links/eliminar", API.linksEliminar);
-
-// Controladores de vistas
-router.get("/detalle", soloUsuarios, vista.detalleEdicionForm);
-router.get("/calificala", soloAutInput, vista.calificala);
-
-router.get("/edicion", soloAutInput, vista.detalleEdicionForm);
-router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.edicionGuardar);
-router.get("/edicion/eliminar", soloAutInput, vista.edicionEliminar);
-router.get("/links", soloAutInput, vista.linksForm);
-router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
 
 // Fin
 module.exports = router;

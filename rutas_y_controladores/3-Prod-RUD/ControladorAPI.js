@@ -211,8 +211,8 @@ module.exports = {
 				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
 				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (link.status_registro.aprobar) {
-				// Sin "captura válida" y con status 'aprobar'
+			} else if (link.status_registro.pend_aprobar) {
+				// Sin "captura válida" y con status 'pend_aprobar'
 				if (link.creado_por_id == usuario.id) {
 					// Creados por el usuario --> se eliminan definitivamente
 					BD_varias.eliminarRegistro("links_originales", link_id);
