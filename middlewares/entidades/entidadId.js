@@ -1,3 +1,5 @@
+const varias = require("../../funciones/Varias/Varias");
+
 module.exports = async (req, res, next) => {
 	// Obtener los datos identificatorios del producto
 	let entidad = req.query.entidad;
@@ -8,15 +10,8 @@ module.exports = async (req, res, next) => {
 	if (!entidad) mensaje = "Falta el dato de la 'entidad'";
 	if (!prodID) mensaje = "Falta el dato del 'ID'";
 	// Entidad inexistente
-	let producto =
-		entidad == "peliculas"
-			? "pelicula"
-			: entidad == "colecciones"
-			? "coleccion"
-			: entidad == "capitulos"
-			? "capitulo"
-			: "";
-	if (!producto && !mensaje) mensaje = "qqq-La entidad ingresada no es válida";
+	let producto = varias.entidadEnSingular(entidad);
+	if (!producto && !mensaje) mensaje = "La entidad ingresada no es válida";
 	// Conclusiones
 	if (mensaje) res.render("Errores", {mensaje});
 	else next();
