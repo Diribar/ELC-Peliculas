@@ -79,7 +79,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			entidadNombre,
+			producto: entidadNombre,
 			entidad,
 			prodID,
 			Producto: prodCombinado,
