@@ -544,7 +544,7 @@ let problemas = (prodOriginal, entidad, userID) => {
 	let otraCondicion =
 		entidad != "capitulos" || (entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
 	// Conclusión
-	if (pendAprobar && otroUsuario && otraCondicion) mensaje = "Producto no aprobado";
+	if (pendAprobar && otroUsuario && otraCondicion) mensaje = "El producto no está aprobado para ser mostrado. El status actual es: " + prodOriginal.status_registro.nombre;
 	// Fin
 	return mensaje;
 };
