@@ -1,8 +1,9 @@
 module.exports = (sequelize, dt) => {
 	const alias = "productos_edic";
 	const columns = {
-		elc_id: {type: dt.INTEGER},
-		elc_entidad: {type: dt.STRING(11)},
+		elc_pelicula_id: {type: dt.INTEGER},
+		elc_coleccion_id: {type: dt.INTEGER},
+		elc_capitulo_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		temporada: {type: dt.INTEGER},
 		capitulo: {type: dt.INTEGER},
@@ -49,7 +50,9 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.colecciones, {as: "pertenece_a_coleccion", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.peliculas, {as: "pelicula_original", foreignKey: "pelicula_id"});
+		entidad.belongsTo(n.colecciones, {as: "coleccion_original", foreignKey: "coleccion_id"});
+		entidad.belongsTo(n.capitulos, {as: "capitulo_original", foreignKey: "capitulo_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
 		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});

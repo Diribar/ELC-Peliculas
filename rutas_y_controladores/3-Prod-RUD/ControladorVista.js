@@ -29,7 +29,7 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!prodOriginal) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO NO APROBADO
-		if (funcionNoAprobado(prodOriginal, entidad, userID)) {
+		if (pendAprobar(prodOriginal, entidad, userID)) {
 			req.session.noAprobado = prodOriginal;
 			res.cookie("noAprobado", req.session.noAprobado, {maxAge: unDia});
 			return res.send("Producto no aprobado");
@@ -173,7 +173,6 @@ module.exports = {
 				elc_entidad: entidad,
 				editado_por_id: userID,
 				entidad: "productos_edic",
-				status_registro_id: await determinarStatusRegistroId(prodOriginal, prodEditado),
 			};
 			// Eliminar prodEditado (si existía) de la BD
 			if (prodEditado) await BD_varias.eliminarRegistro("productos_edic", prodEditado.id);
@@ -347,17 +346,11 @@ let obtenerLinkCombinado = async (elc_id, userID) => {
 };
 let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
-	// linksActivos: Aprobados + Creados por el usuario
-	let linksActivos = linksOriginales.filter(
-		(n) => n.status_registro.creado || n.status_registro.aprobado
-	);
-	// linksInactivos --> incluye el motivo
-	let linksInactivos = linksOriginales.filter(
-		(n) =>
-			n.status_registro.inactivar ||
-			n.status_registro.recuperar ||
-			n.status_registro.inactivado
-	);
+	// linksActivos
+	let linksActivos = linksOriginales.filter((n) => !n.status_registro.inactivos);
+	// linksInactivos
+	let linksInactivos = linksOriginales.filter((n) => n.status_registro.inactivos);
+	// A los Inactivos, agregarles el motivo
 	for (i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
 			"registros_borrados",
@@ -365,10 +358,11 @@ let ActivosInactivos = async (linksOriginales) => {
 			linksInactivos[i].id,
 			"elc_entidad",
 			"links_originales",
-			["motivo"]
-		);
+			"motivo"
+		).then((n) => n.toJSON());
 		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
 	}
+	// Fin
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
@@ -391,11 +385,12 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 		? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 		: "/imagenes/8-Agregar/IM.jpg";
 };
-let funcionNoAprobado = (prodOriginal, prodEntidad, userID) => {
-	let noAprobada = !prodOriginal.status_registro.aprobado;
+let pendAprobar = (prodOriginal, prodEntidad, userID) => {
+	// 'True' si está pendiente de aprobar, pertenece a otro usuario, y (no es un capítuo o su colección es de otro usuario)
+	let pendAprobar = prodOriginal.status_registro.aprobar;
 	let otroUsuario = prodOriginal.creado_por_id != userID;
 	return (
-		noAprobada &&
+		pendAprobar &&
 		otroUsuario &&
 		(prodEntidad != "capitulos" ||
 			(prodEntidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID))
@@ -450,8 +445,8 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 		.then((n) => n.filter((n) => n.link_tipo.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
-	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : false;
-	let linksTalVez = links.filter((n) => n.status_registro.creado || n.status_registro.editado);
+	let linksTalVez = links.length ? links.filter((n) => n.status_registro.aprobar) : [];
+	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
 	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
@@ -494,9 +489,11 @@ let edicionDeLink = async (req, datos) => {
 		// Adecuar la información del formulario
 		if (!datos.parte) datos.parte = "-";
 		// Averiguar si el link está en 'creado' y por este usuario
-		let linkOriginal = await BD_varias.obtenerPorIdConInclude("links_originales", datos.id, [
-			"status_registro",
-		]).then((n) => n.toJSON());
+		let linkOriginal = await BD_varias.obtenerPorIdConInclude(
+			"links_originales",
+			datos.id,
+			"status_registro"
+		).then((n) => n.toJSON());
 		let userID = req.session.usuario.id;
 		if (linkOriginal.status_registro.creado && linkOriginal.creado_por_id == userID) {
 			// Editados reemplaza el original
@@ -509,7 +506,7 @@ let edicionDeLink = async (req, datos) => {
 			// Editados se guarda en versión edición
 			// 1. Obtener el link 'Edición Nueva'
 			// 1.1. Obtener el link 'combinado'
-			let linkCombinado = await obtenerLinkCombinado((elc_id = linkOriginal.id), userID);
+			let linkCombinado = await obtenerLinkCombinado(linkOriginal.id, userID);
 			// 1.2. Adecuar la información del formulario
 			datos.entidad = "links_edicion";
 			// 1.3. Obtener el link 'Edición Nueva'
@@ -531,7 +528,6 @@ let edicionDeLink = async (req, datos) => {
 					...linkEdicionNueva,
 					elc_id: linkOriginal.id,
 					editado_por_id: userID,
-					status_registro_id: await determinarStatusRegistroId(linkOriginal, null),
 				};
 			}
 			// 3. Agregar 'edición' a la BD
@@ -554,19 +550,6 @@ let limpiarLosDatos = (datos) => {
 	datos = BD_especificas.quitarLosCamposSinContenido(datos);
 	// Fin
 	return datos;
-};
-let determinarStatusRegistroId = async (original, editado) => {
-	let status_registro = await BD_varias.obtenerTodos("status_registro_ent", "orden");
-	return editado
-		? // 1. Si existe la 'edicion guardada' --> lo copia
-		  editado.status_registro_id
-		: original.status_registro.creado
-		? // 2.1. Si el status de 'original' es 'creada' --> lo copia
-		  original.status_registro_id
-		: original.status_registro.aprobado
-		? // 2.2. Si el status de 'original' es 'aprobado' --> 'edicion'
-		  status_registro.find((n) => n.editado).id
-		: "";
 };
 let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar todos los originales

@@ -197,6 +197,7 @@ module.exports = {
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) respuesta.mensaje = "Faltan datos";
 		else {
+			// El link_id existe
 			let link = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
 			]).then((n) => n.toJSON());
@@ -210,27 +211,34 @@ module.exports = {
 				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
 				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (link.creado_por_id == usuario.id && link.status_registro.creado) {
-				// Sin "captura válida", links creados por el usuario y con status 'creado' --> se eliminan definitivamente
-				BD_varias.eliminarRegistro("links_originales", link_id);
-				respuesta.mensaje = "El link fue eliminado con éxito";
-				respuesta.resultado = true;
-			} else if (!link.status_registro.aprobado) {
-				// Si los links no están aprobados, no se pueden inactivar
-				respuesta.mensaje = "El link no está en estado aprobado";
-				respuesta.resultado = false;
-			} else if (!motivo_id) {
-				// Los demás casos son:
-				//		- Links con status 'aprobado' o creados por otro autor
-				//		- Links sin "captura válida"
-				// 1. Si no figura el motivo --> Abortar con mensaje de error
-				respuesta.mensaje = "Falta especificar el motivo";
-				respuesta.resultado = false;
+			} else if (link.status_registro.aprobar) {
+				// Sin "captura válida" y con status 'aprobar'
+				if (link.creado_por_id == usuario.id) {
+					// Creados por el usuario --> se eliminan definitivamente
+					BD_varias.eliminarRegistro("links_originales", link_id);
+					respuesta.mensaje = "El link fue eliminado con éxito";
+					respuesta.resultado = true;
+				} else {
+					// Creados por otro usuario --> no se pueden inactivar
+					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
+					respuesta.resultado = false;
+				}
+			} else if (link.status_registro.aprobado) {
+				// Sin "captura válida" y con status 'aprobado'
+				if (motivo_id) {
+					// Si explica el motivo, se inactiva
+					funcionInactivar(motivo_id, usuario, link);
+					respuesta.mensaje = "El link fue inactivado con éxito";
+					respuesta.resultado = true;
+				} else {
+					// Si no figura el motivo --> Abortar con mensaje de error
+					respuesta.mensaje = "Falta especificar el motivo";
+					respuesta.resultado = false;
+				}
 			} else {
-				// Si explica el motivo, se inactiva
-				funcionInactivar(motivo_id, usuario, link);
-				respuesta.mensaje = "El link fue inactivado con éxito";
-				respuesta.resultado = true;
+				// Sin "captura válida" y con status 'inactivos'
+				respuesta.mensaje = "El link está en status inactivo";
+				respuesta.resultado = false;
 			}
 		}
 		return res.json(respuesta);

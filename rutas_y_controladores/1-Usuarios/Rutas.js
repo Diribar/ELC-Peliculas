@@ -5,8 +5,8 @@ let API = require("./ControladorAPI");
 let vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloVisitas = require("../../middlewares/usuarios/solo-0-visitas");
-let soloUsuarios = require("../../middlewares/usuarios/solo-1-usuarios");
+let soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
+let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 let multer = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************

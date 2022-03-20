@@ -5,10 +5,9 @@
 		<!-- Datos generales -->
 		<div id="primeraColumna">
 			<h2>Productos</h2>
-			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.inactivar_id}) %>
-			<%- include("11-Vision-Prods", {titulo: "Editado", estado: status.editado_id}) %>
-			<%- include("11-Vision-Prods", {titulo: "Creado", estado: status.creado_id}) %>
-			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.recuperar_id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.find(n=>n.inactivar).id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Creado", estado: status.find(n=>n.creado).id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.find(n=>n.recuperar).id}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->

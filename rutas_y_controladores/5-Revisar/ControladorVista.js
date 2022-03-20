@@ -7,34 +7,44 @@ let varias = require("../../funciones/Varias/Varias");
 // *********** Controlador ***********
 module.exports = {
 	visionGeneral: async (req, res) => {
-		tema = "revision";
-		codigo = "visionGeneral";
+		// Tema y Código
+		let tema = "revision";
+		let codigo = "visionGeneral";
 		// Definir variables
-		let status = await BD_especificas.obtenerStatus();
-		let aprobInact = [status.aprobado_id, status.inactivado_id];
+		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden");
+		let revisar = status.filter((n) => n.revisar).map((n) => n.id);
 		let userID = req.session.usuario.id;
 		let haceUnaHora = varias.funcionHaceUnaHora();
 		// Obtener Productos ------------------------------------------------------------
-		let Productos = await BD_especificas.obtenerProductos(haceUnaHora, aprobInact, userID);
+		let Productos = await BD_especificas.obtenerProductos(haceUnaHora, revisar, userID);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// Consolidar Productos y ordenar
 		Productos = procesar(Productos);
 		// Obtener RCLV -----------------------------------------------------------------
 		// Obtener Links ----------------------------------------------------------------
-		let links = await BD_especificas.obtenerLinks(haceUnaHora, aprobInact, userID);
+		let links = await BD_especificas.obtenerLinks(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
-		let prodsLinks = productosLinks(links, status.aprobado_id);
+		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
+		let prodsLinks = productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
-		//return res.send(links);
+		//return res.send(Productos);
 		return res.render("Home", {
 			tema,
 			codigo,
 			titulo: "Revisar - Visión General",
 			Productos,
-			RCLVs:[],
+			RCLVs: [],
 			prodsLinks,
 			status,
 		});
+	},
+
+	producto: async (req, res) => {
+		// Tema y Código
+		let tema = "revision";
+		let url = req.url.slice(1);
+		let codigo = url.slice(0, url.indexOf("/"));
+		// Capturar el producto
 	},
 };
 
@@ -70,22 +80,15 @@ let procesar = (Productos) => {
 };
 let rclvCreado = (array, creado_id) => {
 	// Creado, con productos aprobados
-	return array.length
-		? array.filter((n) => n.status_registro_id == creado_id && n.cant_prod_aprobados)
-		: [];
+	return array.length ? array.filter((n) => n.status_registro.aprobar && n.cant_prod_aprobados) : [];
 };
 let rclvSinProds = (array, creado_id, aprobado_id) => {
-	// Status 'creado' / 'aprobado', sin productos creados, sin productos aprobados
+	// Status 'activo', sin productos creados, sin productos aprobados
 	return array.length
-		? array.filter(
-				(n) =>
-					(n.status_registro_id == creado_id || n.status_registro_id == aprobado_id) &&
-					!n.cant_prod_creados &&
-					!n.cant_prod_aprobados
-		  )
+		? array.filter((n) => !n.status_registro.inactivos && !n.cant_prod_creados && !n.cant_prod_aprobados)
 		: [];
 };
-let productosLinks = (links, aprobado_id) => {
+let productosLinks = (links, aprobado) => {
 	// Resultado esperado:
 	//	- Solo productos aprobados
 	//	- Campos: {abrev, entidad, id, ano_estreno,}
@@ -99,12 +102,11 @@ let productosLinks = (links, aprobado_id) => {
 	];
 	// Rutina para cada link
 	for (link of links) {
-		let dato = {};
 		// Verificación para cada Producto
 		for (aux of auxs) {
 			if (
 				link[aux.nombre] &&
-				link[aux.nombre].status_registro_id == aprobado_id &&
+				aprobado.includes(link[aux.nombre].status_registro_id) &&
 				prods.findIndex((n) => n.entidad == aux.entidad && n.id == link[aux.nombre].id) < 0
 			)
 				prods.push({
@@ -118,8 +120,6 @@ let productosLinks = (links, aprobado_id) => {
 	}
 	return prods;
 };
-
-
 
 // includes = ["peliculas", "colecciones", "capitulos"];
 // let personajes = await BD_especificas.obtenerRCLV(
