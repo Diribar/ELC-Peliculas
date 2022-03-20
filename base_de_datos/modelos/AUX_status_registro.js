@@ -4,7 +4,6 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
 		pend_aprobar: {type: dt.BOOLEAN},
-		aprobac_termin: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
 		revisado: {type: dt.BOOLEAN},
 		inactivos: {type: dt.BOOLEAN},
