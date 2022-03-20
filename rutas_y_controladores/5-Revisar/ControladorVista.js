@@ -12,7 +12,7 @@ module.exports = {
 		let codigo = "visionGeneral";
 		// Definir variables
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden");
-		let revisar = status.filter((n) => n.revisar).map((n) => n.id);
+		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
 		let userID = req.session.usuario.id;
 		let haceUnaHora = varias.funcionHaceUnaHora();
 		// Obtener Productos ------------------------------------------------------------
@@ -80,7 +80,7 @@ let procesar = (Productos) => {
 };
 let rclvCreado = (array, creado_id) => {
 	// Creado, con productos aprobados
-	return array.length ? array.filter((n) => n.status_registro.aprobar && n.cant_prod_aprobados) : [];
+	return array.length ? array.filter((n) => n.status_registro.pend_aprobar && n.cant_prod_aprobados) : [];
 };
 let rclvSinProds = (array, creado_id, aprobado_id) => {
 	// Status 'activo', sin productos creados, sin productos aprobados

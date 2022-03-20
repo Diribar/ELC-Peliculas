@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 	let avatar_eg = datosEdicG.avatar
 		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
 		: datosOriginales.imagen;
-	let status_aprobar = existeEdicG ? datosOriginales.status_registro.aprobar : false;
+	let status_aprobar = existeEdicG ? datosOriginales.status_registro.pend_aprobar : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
 	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");

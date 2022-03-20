@@ -1,14 +1,15 @@
 //************************* Requires *******************************
-let express = require("express");
-let router = express.Router();
-let API = require("./ControladorAPI");
-let vista = require("./ControladorVista");
+const express = require("express");
+const router = express.Router();
+const API = require("./ControladorAPI");
+const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-let autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-let prodEnBD = require("../../middlewares/varios/productoYaEnBD");
-let multer = require("../../middlewares/varios/multer");
+const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
+const prodEnBD = require("../../middlewares/varios/productoYaEnBD");
+const entidadId = require("../../middlewares/entidades/entidadId");
+const multer = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
 // Controladores de APIs
@@ -49,7 +50,7 @@ router.post("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersGuar
 router.get("/confirma", soloAutInput, prodEnBD, vista.confirmaForm);
 router.post("/confirma", soloAutInput, prodEnBD, vista.confirmaGuardar);
 // Fin de "prodEnBD"
-router.get("/terminaste", soloAutInput, vista.terminasteForm);
+router.get("/terminaste", soloAutInput, entidadId, vista.terminasteForm);
 
 // Controladores de vistas auxiliares
 router.get("/responsabilidad", vista.responsabilidad);

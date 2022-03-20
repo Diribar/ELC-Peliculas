@@ -17,23 +17,15 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Redireccionar si se encuentran errores en la entidad y/o el prodID
-		let errorEnQuery = varias.revisarQuery(entidad, prodID);
-		if (errorEnQuery) return res.send(errorEnQuery);
 		// Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
 		);
-		// Problema: PRODUCTO NO ENCONTRADO
-		if (!prodOriginal) return res.send("Producto no encontrado");
-		// Problema: PRODUCTO NO APROBADO
-		if (pendAprobar(prodOriginal, entidad, userID)) {
-			req.session.noAprobado = prodOriginal;
-			res.cookie("noAprobado", req.session.noAprobado, {maxAge: unDia});
-			return res.send("Producto no aprobado");
-		}
+		// Problemas
+		let mensaje = problemas(prodOriginal, entidad, userID);
+		if (mensaje) return res.render("Errores", {mensaje});
 		// User la versión 'session' (si existe) en vez de la guardada
 		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
 			prodEditado = {...prodEditado, ...req.session.edicion};
@@ -51,7 +43,7 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
-		let nombreProducto = varias.Producto(entidad);
+		let nombreProducto = varias.nombreProducto(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -108,9 +100,6 @@ module.exports = {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
-		// Redireccionar si se encuentran errores en la entidad y/o el prodID
-		let errorEnQuery = varias.revisarQuery(entidad, prodID);
-		if (errorEnQuery) return res.send(errorEnQuery);
 		// Obtener el userID
 		let userID = req.session.usuario.id;
 		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
@@ -186,9 +175,6 @@ module.exports = {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
-		// Redireccionar si se encuentran errores en la entidad y/o el ID
-		let errorEnQuery = varias.revisarQuery(entidad, ID);
-		if (errorEnQuery) return res.send(errorEnQuery);
 		// Pendiente...
 		// Terminar
 		return res.send(["Eliminar", entidad, ID]);
@@ -202,13 +188,11 @@ module.exports = {
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Redireccionar si se encuentran errores en la prodEntidad y/o el prodID
-		let errorEnQuery = varias.revisarQuery(prodEntidad, prodID);
-		if (errorEnQuery) return res.send(errorEnQuery);
 		// Obtener el producto
-		let [, Producto] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
-		// Problema: PRODUCTO NO ENCONTRADO
-		if (!Producto) return res.send("Producto no encontrado");
+		let [, prodOriginal] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
+		// Problemas
+		let mensaje = problemas(prodOriginal, entidad, userID);
+		if (mensaje) return res.render("Errores", {mensaje});
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
 		let linksProveedores = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
@@ -221,14 +205,14 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let nombreProducto = varias.Producto(prodEntidad);
+		let nombreProducto = varias.nombreProducto(prodEntidad);
 		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + nombreProducto;
-		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, Producto);
+		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodOriginal);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
-			Producto.capitulos = await BD_especificas.obtenerCapitulos(
-				Producto.coleccion_id,
-				Producto.temporada
+			prodOriginal.capitulos = await BD_especificas.obtenerCapitulos(
+				prodOriginal.coleccion_id,
+				prodOriginal.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_varias.obtenerTodos("motivos_para_borrar", "orden")
@@ -248,7 +232,7 @@ module.exports = {
 			linksActivos,
 			linksInactivos,
 			provs: linksProveedores,
-			Producto,
+			Producto: prodOriginal,
 			producto,
 			entidad: prodEntidad,
 			prodID,
@@ -368,7 +352,7 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 	let producto = varias.producto(prodEntidad);
 	let registroEditado = await BD_varias.obtenerPor2Campos(
 		"productos_edic",
-		["elc_" + producto + "id"],
+		["elc_" + producto + "_id"],
 		prodID,
 		"editado_por_id",
 		userID
@@ -383,21 +367,7 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 		? (imagenOr.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOr
 		: "/imagenes/8-Agregar/IM.jpg";
 };
-let pendAprobar = (prodOriginal, prodEntidad, userID) => {
-	// 'True' si está pendiente de aprobar, pertenece a otro usuario, y (no es un capítuo o su colección es de otro usuario)
-	let pendAprobar = prodOriginal.status_registro.aprobar;
-	let otroUsuario = prodOriginal.creado_por_id != userID;
-	return (
-		pendAprobar &&
-		otroUsuario &&
-		(prodEntidad != "capitulos" ||
-			(prodEntidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID))
-	);
-};
 let altaDeLink = async (req, datos) => {
-	// Redireccionar si se encuentran errores en la prodEntidad y/o el prodID
-	errorEnQuery = varias.revisarQuery(datos.prodEntidad, datos.prodID);
-	if (errorEnQuery) return errorEnQuery;
 	// Averiguar si hay errores de validación
 	let errores = await validar.links(datos);
 	if (errores.hay) {
@@ -443,7 +413,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 		.then((n) => n.filter((n) => n.link_tipo.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
-	let linksTalVez = links.length ? links.filter((n) => n.status_registro.aprobar) : [];
+	let linksTalVez = links.length ? links.filter((n) => n.status_registro.pend_aprobar) : [];
 	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
 	if (!linksActivos.length && !linksTalVez.length) return;
 
@@ -476,9 +446,6 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	return;
 };
 let edicionDeLink = async (req, datos) => {
-	// Redireccionar si se encuentran errores en la prodEntidad y/o el prodID
-	errorEnQuery = varias.revisarQuery(datos.prodEntidad, datos.prodID);
-	if (errorEnQuery) return errorEnQuery;
 	// Averiguar si hay errores de validación
 	let errores = await validar.links(datos);
 	if (errores.hay) req.session.links = datos;
@@ -563,4 +530,22 @@ let estandarizarFechaRef = async (prodEntidad, prodID) => {
 				BD_varias.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
 			)
 		);
+};
+let problemas = (prodOriginal, entidad, userID) => {
+	let mensaje = "";
+	// Problema: PRODUCTO NO ENCONTRADO
+	if (!prodOriginal) mensaje = "Producto no encontrado";
+	// Problema: PRODUCTO NO APROBADO
+	// 'True' si:
+	//	- Está pendiente de aprobar
+	let pendAprobar = prodOriginal.status_registro.pend_aprobar;
+	//	- Pertenece a otro usuario
+	let otroUsuario = prodOriginal.creado_por_id != userID;
+	//	- No es un capítuo o su colección es de otro usuario
+	let otraCondicion =
+		entidad != "capitulos" || (entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
+	// Conclusión
+	if (pendAprobar && otroUsuario && otraCondicion) mensaje = "Producto no aprobado";
+	// Fin
+	return mensaje;
 };

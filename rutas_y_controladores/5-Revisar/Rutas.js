@@ -1,16 +1,16 @@
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
-let API = require("./ControladorAPI");
-let vista = require("./ControladorVista");
+const API = require("./ControladorAPI");
+const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-let soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
+const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
+const entidadId = require("../../middlewares/entidades/entidadId");
 
 // Controladores *******************************************
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);
-router.get("/producto", soloGestionProd, vista.producto);
+router.get("/producto", soloGestionProd, entidadId, vista.producto);
 // router.get("/producto", soloGestionProd, vista.visionGeneral);
 // router.get("/rclv", soloGestionProd, vista.visionGeneral);
 // router.get("/links", soloGestionProd, vista.visionGeneral);

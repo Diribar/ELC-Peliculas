@@ -5,6 +5,7 @@ let fs = require("fs");
 let path = require("path");
 let axios = require("axios");
 
+// Exportar ------------------------------------
 module.exports = {
 	userLogs: (req, res) => {
 		let url = req.originalUrl;
@@ -178,7 +179,7 @@ module.exports = {
 		});
 	},
 
-	Producto: (entidad) => {
+	nombreProducto: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -196,17 +197,6 @@ module.exports = {
 			: entidad == "capitulos"
 			? "capitulo"
 			: "";
-	},
-
-	revisarQuery: function (entidad, ID) {
-		let errorEnQuery = "";
-		// Sin entidad y/o ID
-		if (!entidad) errorEnQuery = "Falta el dato de la 'entidad'";
-		if (!ID) errorEnQuery = "Falta el dato del 'ID'";
-		// Entidad inexistente
-		producto = this.producto(entidad);
-		if (!producto) errorEnQuery = "La entidad ingresada no es válida";
-		return errorEnQuery;
 	},
 
 	funcionHaceUnaHora: () => {

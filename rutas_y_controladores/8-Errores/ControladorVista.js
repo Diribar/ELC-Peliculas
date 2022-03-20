@@ -6,7 +6,8 @@ let procesar = require("../../funciones/Prod-RUD/1-Procesar");
 // *********** Controlador ***********
 module.exports = {
 	prodNoEncontrado: (req, res) => {
-		return res.send("Producto no encontrado");
+		let mensaje = "Producto no encontrado"
+		return res.render("Errores", {mensaje})
 	},
 
 	prodNoAprobado: (req, res) => {
@@ -16,17 +17,18 @@ module.exports = {
 			: req.cookies.noAprobado
 			? req.cookies.noAprobado
 			: "";
-		let frase = "El producto no está aprobado para ser mostrado. Status actual: ";
-		return res.send(frase + noAprobado.status_registro.nombre);
-		return res.send("El producto no está aprobado para ser mostrado. Status actual: ");
+		let mensaje = "El producto no está aprobado para ser mostrado. Status actual: " + noAprobado.status_registro.nombre;
+		return res.render("Errores", {mensaje})
 	},
 
 	soloAutInput: (req, res) => {
-		return res.send("Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click acá.")
+		let mensaje = "Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click acá."
+		return res.render("Errores", {mensaje})
 	},
 
 	soloGestionProd: (req, res) => {
-		return res.send("Se requiere aumentar el nivel de confianza, para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés gestionar haciendo click acá.")
+		let mensaje = "Se requiere aumentar el nivel de confianza, para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés gestionar haciendo click acá."
+		return res.render("Errores", {mensaje})
 	},
 
 };
