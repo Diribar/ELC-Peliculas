@@ -301,9 +301,7 @@ let validarRepetidos = async (campo, datos) => {
 		datos[campo],
 		"ano_estreno",
 		datos.ano_estreno
-	).then((n) => {
-		return n ? n.toJSON() : "";
-	});
+	).then((n) => (n ? n.toJSON() : ""));
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id

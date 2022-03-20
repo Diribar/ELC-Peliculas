@@ -72,13 +72,13 @@ module.exports = {
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) => {
-			return n ? n.toJSON() : "";
-		});
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) =>
+			n ? n.toJSON() : ""
+		);
 		// Obtener el producto EDITADO
 		let prodEditado = {};
 		let entidadEnSingular = varias.entidadEnSingular(entidad);
-		if (prodOriginal) {
+		if (prodOriginal != {}) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
@@ -89,10 +89,8 @@ module.exports = {
 				"editado_por_id",
 				userID,
 				includes.slice(0, -2)
-			).then((n) => {
-				return n ? n.toJSON() : "";
-			});
-			if (prodEditado) {
+			).then((n) => (n ? n.toJSON() : ""));
+			if (prodEditado != {}) {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
 				// Quitarle los campos 'null'
@@ -240,9 +238,7 @@ module.exports = {
 	// 		"elc_id",
 	// 		original.id,
 	// 		includes.slice(0, -2)
-	// 	).then((n) => {
-	// 		return n ? n.toJSON() : "";
-	// 	});
+	// 	).then((n) =>  n ? n.toJSON() : "");
 	// 	// Quitarle los campos 'null'
 	// 	if (prodEditado) prodEditado = this.quitarLosCamposSinContenido(prodEditado);
 	// 	// Fin
