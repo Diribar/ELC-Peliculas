@@ -2,7 +2,7 @@
 	<div class="input-error">
 		<textarea
 			name="sinopsis" class="input" placeholder="Ingresa aquí la sinopsis"
-		><%= Producto.sinopsis %></textarea>
+		><%= producto.sinopsis %></textarea>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark<%- !errores.sinopsis ? ' ocultar' : '' %>">
 			<span class="mensajeError"><%= errores.sinopsis %></span>

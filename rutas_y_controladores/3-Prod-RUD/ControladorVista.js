@@ -79,10 +79,10 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			producto: entidadNombre,
+			entidadNombre,
 			entidad,
 			prodID,
-			Producto: prodCombinado,
+			producto: prodCombinado,
 			avatar,
 			paises,
 			camposDD1,
@@ -191,7 +191,7 @@ module.exports = {
 		// Obtener el producto
 		let [, prodOriginal] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
 		// Problemas
-		let mensaje = problemas(prodOriginal, entidad, userID);
+		let mensaje = problemas(prodOriginal, prodEntidad, userID);
 		if (mensaje) return res.render("Errores", {mensaje});
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
@@ -232,8 +232,7 @@ module.exports = {
 			linksActivos,
 			linksInactivos,
 			provs: linksProveedores,
-			Producto: prodOriginal,
-			producto,
+			producto: prodOriginal,
 			entidad: prodEntidad,
 			prodID,
 			userID,
