@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
 	let avatar_eg = datosEdicG.avatar
 		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
 		: datosOriginales.imagen;
-	let status_aprobar = existeEdicG ? datosOriginales.status_registro.pend_aprobar : false;
+	let statusPendAprobar = existeEdicG ? datosOriginales.status_registro.pend_aprobar : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
 	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
@@ -375,7 +375,7 @@ window.addEventListener("load", async () => {
 		// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
 		if (existeEdicG) {
 			for (inactivo of inactivo_EdicGua) {
-				if (inactivo != botonEliminarGuardada || !status_aprobar)
+				if (inactivo != botonEliminarGuardada || !statusPendAprobar)
 					inactivo.classList.remove("inactivo_EdicGua");
 			}
 		}
