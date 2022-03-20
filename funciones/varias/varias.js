@@ -8,7 +8,8 @@ let axios = require("axios");
 // Exportar ------------------------------------
 module.exports = {
 	userLogs: (req, res) => {
-		if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = req.originalUrl;
+		let url = req.originalUrl;
+		if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
 	},
 
 	enviarMail: async (asunto, mail, comentario) => {
