@@ -179,7 +179,7 @@ module.exports = {
 		});
 	},
 
-	nombreProducto: (entidad) => {
+	entidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"

@@ -43,12 +43,12 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el Título
-		let nombreProducto = varias.entidadNombre(entidad);
+		let entidadNombre = varias.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			nombreProducto;
+			entidadNombre;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
 			var camposDD = variables
@@ -79,7 +79,7 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			nombreProducto,
+			entidadNombre,
 			entidad,
 			prodID,
 			Producto: prodCombinado,
@@ -205,8 +205,8 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let nombreProducto = varias.entidadNombre(prodEntidad);
-		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + nombreProducto;
+		let entidadNombre = varias.entidadNombre(prodEntidad);
+		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodOriginal);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
