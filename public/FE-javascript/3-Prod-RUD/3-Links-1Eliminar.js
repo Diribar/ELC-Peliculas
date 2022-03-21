@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Variables
 	let filas_yaExistentes = document.querySelectorAll(".yaExistentes");

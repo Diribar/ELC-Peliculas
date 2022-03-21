@@ -1,3 +1,4 @@
+"use strict";
 // ************ Requires *************
 const BD_varias = require("../../funciones/BD/Varias");
 const BD_especificas = require("../../funciones/BD/Especificas");
@@ -171,7 +172,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener el producto
-		let [, prodOriginal] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
+		let [, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
 		let linksProveedores = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
@@ -186,12 +187,12 @@ module.exports = {
 		// Configurar el producto, el título y el avatar
 		let entidadNombre = varias.entidadNombre(prodEntidad);
 		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + entidadNombre;
-		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodOriginal);
+		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodEditado);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
-			prodOriginal.capitulos = await BD_especificas.obtenerCapitulos(
-				prodOriginal.coleccion_id,
-				prodOriginal.temporada
+			prodEditado.capitulos = await BD_especificas.obtenerCapitulos(
+				prodEditado.coleccion_id,
+				prodEditado.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_varias.obtenerTodos("motivos_para_borrar", "orden")
@@ -211,7 +212,7 @@ module.exports = {
 			linksActivos,
 			linksInactivos,
 			provs: linksProveedores,
-			producto: prodOriginal,
+			producto: prodEditado,
 			entidad: prodEntidad,
 			prodID,
 			userID,
@@ -221,7 +222,7 @@ module.exports = {
 			avatar,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
-			haceUnaHora: varias.funcionHaceUnaHora(),
+			haceUnaHora: varias.haceUnaHora(),
 		});
 	},
 	linksAltasEditar: async (req, res) => {
@@ -249,30 +250,23 @@ module.exports = {
 };
 
 // FUNCIONES --------------------------------------------------
-let entidad_id = (prodEntidad) => {
-	return prodEntidad == "peliculas"
-		? "pelicula_id"
-		: prodEntidad == "colecciones"
-		? "coleccion_id"
-		: "capitulo_id";
-};
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Definir valores necesarios
-	let campo_id = entidad_id(prodEntidad);
+	let entidad_id = varias.entidad_id(prodEntidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
 	let linksOriginales = await BD_varias.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		campo_id,
+		entidad_id,
 		prodID,
 		includes
-	).then((n) => n.map((m) => m.toJSON()));
+	).then((n) => (n.length ? n.map((m) => m.toJSON()) : []));
 	// Combinarlos con la edición, si existe
 	includes.splice(includes.indexOf("link_prov"), 1);
 	let linksCombinados = linksOriginales;
 	// Rutina de combinación
 	for (let i = 0; i < linksOriginales.length; i++) {
-		// Obtener el duplicado
+		// Obtener la edición
 		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
 			"links_edicion",
 			"elc_id",
@@ -353,10 +347,11 @@ let altaDeLink = async (req, datos) => {
 		if (!datos.parte) datos.parte = "-";
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
+		let entidad_id = varias.entidad_id(datos.prodEntidad);
 		datos = {
 			...datos,
 			entidad: "links_originales",
-			[entidad_id(datos.prodEntidad)]: datos.prodID,
+			[entidad_id]: datos.prodID,
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
@@ -380,7 +375,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_varias.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		entidad_id(prodEntidad),
+		varias.entidad_id(prodEntidad),
 		prodID,
 		["status_registro", "link_tipo"]
 	)
@@ -494,12 +489,12 @@ let limpiarLosDatos = (datos) => {
 };
 let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar todos los originales
-	let campo_id = entidad_id(prodEntidad);
+	let entidad_id = varias.entidad_id(prodEntidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
-	BD_varias.actualizarPorCampo("links_originales", campo_id, prodID, {fecha_referencia});
+	BD_varias.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_varias.obtenerTodosPorCampo("links_originales", campo_id, prodID)
+	BD_varias.obtenerTodosPorCampo("links_originales", entidad_id, prodID)
 		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) =>
 			n.map((m) =>

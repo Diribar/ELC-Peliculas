@@ -1,8 +1,9 @@
+"use strict";
 // ************ Requires *************
-let validar = require("../../funciones/Prod-RUD/2-Validar");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
-let varias = require("../../funciones/Varias/Varias");
+const validar = require("../../funciones/Prod-RUD/2-Validar");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/especificas");
+const varias = require("../../funciones/Varias/Varias");
 
 // *********** Controlador ***********
 module.exports = {
@@ -192,7 +193,7 @@ module.exports = {
 		// Definir las variables
 		let respuesta = {};
 		let {link_id, motivo_id} = req.query;
-		let haceUnaHora = varias.funcionHaceUnaHora();
+		let haceUnaHora = varias.haceUnaHora();
 		let usuario = req.session.usuario;
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) respuesta.mensaje = "Faltan datos";

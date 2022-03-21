@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// Variables
 	let entidad = new URL(window.location.href).searchParams.get("entidad");

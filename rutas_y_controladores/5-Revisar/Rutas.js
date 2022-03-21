@@ -1,3 +1,4 @@
+"use strict";
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
@@ -7,10 +8,11 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
 const entidadId = require("../../middlewares/entidades/entidadId");
+const permisoProducto = require("../../middlewares/entidades/permisoRV_producto");
 
-// Controladores *******************************************
+// Rutas *******************************************
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);
-router.get("/producto", soloGestionProd, entidadId, vista.producto);
+router.get("/producto", soloGestionProd, entidadId, permisoProducto, vista.producto);
 // router.get("/rclv", soloGestionProd, vista.visionGeneral);
 // router.get("/links", soloGestionProd, vista.visionGeneral);
 

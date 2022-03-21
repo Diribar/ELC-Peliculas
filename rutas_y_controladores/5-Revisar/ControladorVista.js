@@ -1,10 +1,9 @@
+"use strict";
 // ************ Requires ************
-let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
-let varias = require("../../funciones/Varias/Varias");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/especificas");
+const varias = require("../../funciones/Varias/Varias");
 
-// *********** Controlador ***********
 module.exports = {
 	visionGeneral: async (req, res) => {
 		// Tema y Código
@@ -14,7 +13,7 @@ module.exports = {
 		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
 		let userID = req.session.usuario.id;
-		let haceUnaHora = varias.funcionHaceUnaHora();
+		let haceUnaHora = varias.haceUnaHora();
 		// Obtener Productos ------------------------------------------------------------
 		let Productos = await BD_especificas.obtenerProductos(haceUnaHora, revisar, userID);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
@@ -40,6 +39,7 @@ module.exports = {
 	},
 
 	producto: async (req, res) => {
+		return res.send("producto")
 		// Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);

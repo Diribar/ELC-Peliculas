@@ -1,7 +1,7 @@
-// **** Requires ***********
-let BD_varias = require("../BD/Varias");
+"use strict";
+// Definir variables
+const BD_varias = require("../BD/Varias");
 
-// *********** Para exportar ***********
 module.exports = {
 	camposDD: () => {
 		return [

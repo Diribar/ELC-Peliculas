@@ -1,29 +1,28 @@
+"use strict";
+// Requires
 const varias = require("../../funciones/Varias/Varias");
 const BD_varias = require("../../funciones/BD/Varias");
 
 module.exports = async (req, res, next) => {
-	// Evaluar:
-	//	1. Si el producto existe
-	//	2. Si el producto está aprobado o es la ventana disponible para el usuario creador (sólo 'edición')
-
 	// Definir variables
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
+	let haceUnaHora = varias.haceUnaHora();
+	let mensaje = "";
+	// CONTROLES PARA PRODUCTO *******************************************************
 	let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, "status_registro").then((n) =>
 		n ? n.toJSON() : ""
 	);
-	let mensaje = "";
-	// Problema: PRODUCTO NO ENCONTRADO
+	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {
-		// Problema: PRODUCTO NO APROBADO
-		let pendAprobar = prodOriginal.status_registro.pend_aprobar;
+		// Problemas VARIOS
 		// 1-¿Producto en estado 'pend_aprobar'?
-		if (pendAprobar) {
-			// 2-¿Creado por el usuario?
+		if (prodOriginal.status_registro.pend_aprobar) {
+			// 2-¿Creado por el usuario actual?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
 				entidad != "capitulos" ||
@@ -32,11 +31,29 @@ module.exports = async (req, res, next) => {
 				// 3-¿La vista es "Edición"?
 				if (codigo == "edicion") {
 					// 4-¿Creado < haceUnaHora?
-					if (prodOriginal.creado_en < varias.funcionHaceUnaHora())
+					// Problema2: TIEMPO DE EDICIÓN CUMPLIDO ---------------------------------
+					if (prodOriginal.creado_en < haceUnaHora)
 						mensaje =
 							"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión";
+				} else if (codigo == "links") {
+					// ¿Producto capturado?
+					// Problema3: PRODUCTO CAPTURADO Y APTO PARA SER REVISADO ------
+					if (prodOriginal.capturado_en > haceUnaHora) {
+						let entidad_id = varias.entidad_id(prodEntidad);
+						let links = await BD_varias.obtenerTodosPorCampo(
+							"links_originales",
+							entidad_id,
+							prodID
+						).then((n) => (n.length ? n.map((m) => m.toJSON()) : []));
+						let cantLinks = links.length;
+						if (cantLinks && links[cantLinks - 1].fecha_referencia < haceUnaHora)
+							mensaje =
+								"El producto está en revisión. Una vez revisado, podrás acceder a esta vista";
+					}
 				}
-			} else
+			}
+			// Problema4: PRODUCTO NO APROBADO ----------------------------------------
+			else
 				mensaje =
 					"El producto no está aprobado aún para ser mostrado o editado. El status actual es: " +
 					prodOriginal.status_registro.nombre;

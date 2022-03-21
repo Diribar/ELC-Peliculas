@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Definir variables
 	let iconos = document.querySelectorAll("header .iconoMenu");
@@ -16,7 +17,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Funciones --------------------------------------------------------------------
-	toggleMenus = (e) => {
+	let toggleMenus = (e) => {
 		if (e.target != inputBusquedaRapida)
 			for (let i = 0; i < menus.length; i++) {
 				e.target == iconos[i]

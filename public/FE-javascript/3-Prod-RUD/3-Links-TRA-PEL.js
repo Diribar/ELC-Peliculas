@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Variables
 	const entidades = document.querySelectorAll("[data-entidad]");

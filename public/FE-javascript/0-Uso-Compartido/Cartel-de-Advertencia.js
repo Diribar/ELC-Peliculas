@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Variables
 	let taparElFondo = document.querySelector("#tapar-el-fondo");

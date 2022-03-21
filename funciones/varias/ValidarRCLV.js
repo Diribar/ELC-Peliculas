@@ -1,7 +1,7 @@
-// Requires *******************
+"use strict";
+// Definir variables
 let BD_varias = require("../BD/varias");
 
-// Objeto literal *************
 module.exports = {
 	RCLV_consolidado: async function (datos) {
 		let errores = {
@@ -10,8 +10,7 @@ module.exports = {
 		};
 		// Errores "nombre"
 		let nombre = await this.RCLV_nombre(datos);
-		let genero =
-			datos.entidad == "RCLV_personajes" ? await this.RCLV_genero(datos) : "";
+		let genero = datos.entidad == "RCLV_personajes" ? await this.RCLV_genero(datos) : "";
 		errores.nombre = nombre ? nombre : genero;
 		// Errores "datos repetidos"
 		if (datos.repetido) errores.duplicados = cartelDuplicado;
@@ -48,10 +47,7 @@ module.exports = {
 			if (!error) {
 				mes = datos.mes_id;
 				dia = datos.dia;
-				if (
-					(mes == 2 && dia > 29) ||
-					((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
-				)
+				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
 					error = cartelSupera;
 			}
 		}
@@ -84,14 +80,14 @@ module.exports = {
 	},
 };
 
-cartelFechaIncompleta = "Falta elegir el mes y/o el día";
-cartelCampoVacio = "Necesitamos que completes este campo";
-cartelSupera = "El número de día y el mes elegidos son incompatibles";
-cartelRepetido = "Ya tenemos un registro con ese nombre";
-cartelCastellano =
+const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
+const cartelCampoVacio = "Necesitamos que completes este campo";
+const cartelSupera = "El número de día y el mes elegidos son incompatibles";
+const cartelRepetido = "Ya tenemos un registro con ese nombre";
+const cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
-cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
+const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+const cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
 let longitud = (dato, corto, largo) => {
 	return dato.length < corto

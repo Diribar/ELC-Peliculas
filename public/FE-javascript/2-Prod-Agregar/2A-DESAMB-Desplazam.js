@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// Definir variables
 	let resultado = document.querySelector("#resultadoDesamb"); // Todo el 'ul'

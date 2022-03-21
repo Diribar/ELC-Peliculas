@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Variables
 	let iconosAyuda = document.querySelectorAll(".fa-circle-question");

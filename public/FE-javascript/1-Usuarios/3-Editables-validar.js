@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// VARIABLES GENERALES -----------------------------------------------------------------------
 	// Datos del formulario

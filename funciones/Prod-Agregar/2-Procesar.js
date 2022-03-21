@@ -1,4 +1,5 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
 let creditsTMDB = require("../APIs_TMDB/3-Credits");

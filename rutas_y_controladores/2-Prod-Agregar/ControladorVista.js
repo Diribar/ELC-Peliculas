@@ -1,16 +1,16 @@
-// ************ Requires ************
-let fs = require("fs");
-let path = require("path");
-let requestPromise = require("request-promise");
-let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
-let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
-let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
-let variables = require("../../funciones/Varias/Variables");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/Especificas");
-let varias = require("../../funciones/Varias/Varias");
+"use strict";
+// Definir variables
+const fs = require("fs");
+const path = require("path");
+const requestPromise = require("request-promise");
+const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
+const procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
+const validarProd = require("../../funciones/Prod-Agregar/3-Validar");
+const variables = require("../../funciones/Varias/Variables");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const varias = require("../../funciones/Varias/Varias");
 
-// *********** Controlador ***********
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
@@ -562,12 +562,7 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	entidad_id =
-		confirma.entidad == "peliculas"
-			? "pelicula_id"
-			: confirma.entidad == "colecciones"
-			? "coleccion_id"
-			: "capitulo_id";
+	entidad_id = varias.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: confirma.creado_por_id,

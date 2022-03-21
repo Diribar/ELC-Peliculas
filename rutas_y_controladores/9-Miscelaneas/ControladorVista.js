@@ -1,13 +1,10 @@
-// ************ Requires ************
-let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-let BD_varias = require("../../funciones/BD/varias");
-let procesar = require("../../funciones/Prod-RUD/1-Procesar");
+"use strict";
 
 // *********** Controlador ***********
 module.exports = {
 	home: (req, res) => {
-		tema = "miscelaneas";
-		codigo = "inicio";
+		let tema = "miscelaneas";
+		let codigo = "inicio";
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -16,8 +13,8 @@ module.exports = {
 	},
 
 	nosotros: (req, res) => {
-		tema = "miscelaneas";
-		codigo = "nosotros";
+		let tema = "miscelaneas";
+		let codigo = "nosotros";
 		return res.render("Home", {
 			tema,
 			codigo,

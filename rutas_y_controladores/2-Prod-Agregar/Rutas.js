@@ -1,3 +1,4 @@
+"use strict";
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
@@ -11,8 +12,8 @@ const prodEnBD = require("../../middlewares/varios/productoYaEnBD");
 const entidadId = require("../../middlewares/entidades/entidadId");
 const multer = require("../../middlewares/varios/multer");
 
-//************************ Controladores ****************************
-// Controladores de APIs
+//************************ Rutas ****************************
+// Rutas de APIs
 // Temas de Palabras Clave
 router.get("/api/PC-cant-prod", API.cantProductos);
 router.get("/api/validar-palabras-clave", API.validarPalabrasClave);
@@ -32,7 +33,7 @@ router.get("/api/validar-datos-duros", API.validarDatosDuros);
 router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
 
-// Controladores de vistas de "Agregar Productos"
+// Rutas de vistas de "Agregar Productos"
 router.get("/palabras-clave", soloAutInput, vista.palabrasClaveForm);
 router.post("/palabras-clave", soloAutInput, vista.palabrasClaveGuardar);
 router.get("/desambiguar", soloAutInput, vista.desambiguarForm);
@@ -52,7 +53,7 @@ router.post("/confirma", soloAutInput, prodEnBD, vista.confirmaGuardar);
 // Fin de "prodEnBD"
 router.get("/terminaste", soloAutInput, entidadId, vista.terminasteForm);
 
-// Controladores de vistas auxiliares
+// Rutas de vistas auxiliares
 router.get("/responsabilidad", vista.responsabilidad);
 router.get("/ya-en-bd", vista.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, vista.yaEnBD_Form);
 

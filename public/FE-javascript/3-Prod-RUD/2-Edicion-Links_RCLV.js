@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
 	let links = document.querySelectorAll(".input-error i.linkRCLV");

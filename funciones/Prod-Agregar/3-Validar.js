@@ -1,9 +1,9 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let procesarProd = require("./2-Procesar");
 let BD_varias = require("../BD/Varias");
 let varias = require("../Varias/Varias");
 
-// *********** Para exportar ***********
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	palabrasClave: (dato) => {

@@ -1,9 +1,9 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let BD_varias = require("../BD/Varias");
 let variables = require("../Varias/Variables");
 let validar_PA = require("../Prod-Agregar/3-Validar");
 
-// *********** Para exportar ***********
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
 	// ControllerVista (Edicion - Form + Grabar)

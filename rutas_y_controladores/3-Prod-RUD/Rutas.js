@@ -1,3 +1,4 @@
+"use strict";
 //************************* Requires *******************************
 const express = require("express");
 const router = express.Router();
@@ -8,30 +9,29 @@ const vista = require("./ControladorVista");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidadId = require("../../middlewares/entidades/entidadId");
-const permisoAccesoRUD = require("../../middlewares/entidades/permisoAccesoRUD");
-const permisoAccesoLinks = require("../../middlewares/entidades/permisoAccesoLinks");
+const permisoRUD = require("../../middlewares/entidades/permisoRUD");
 const multer = require("../../middlewares/varios/multer");
 
-//************************ Controladores ****************************
-// Controladores de vistas
-router.get("/detalle", soloUsuarios, entidadId, permisoAccesoRUD, vista.detalleEdicionForm);
-router.get("/calificala", soloAutInput, entidadId, permisoAccesoRUD, vista.calificala);
+//************************ Rutas ****************************
+// Rutas de vistas
+router.get("/detalle", soloUsuarios, entidadId, permisoRUD, vista.detalleEdicionForm);
+router.get("/calificala", soloAutInput, entidadId, permisoRUD, vista.calificala);
 
-router.get("/edicion", soloAutInput, entidadId, permisoAccesoRUD, vista.detalleEdicionForm);
+router.get("/edicion", soloAutInput, entidadId, permisoRUD, vista.detalleEdicionForm);
 router.post(
 	"/edicion/guardar",
 	soloAutInput,
 	entidadId,
-	permisoAccesoRUD,
+	permisoRUD,
 	multer.single("avatar"),
 	vista.edicionGuardar
 );
-router.get("/edicion/eliminar", soloAutInput, entidadId, permisoAccesoRUD, vista.edicionEliminar);
-router.get("/links", soloAutInput, entidadId, permisoAccesoRUD, permisoAccesoLinks, vista.linksForm);
+router.get("/edicion/eliminar", soloAutInput, entidadId, permisoRUD, vista.edicionEliminar);
+router.get("/links", soloAutInput, entidadId, permisoRUD, vista.linksForm);
 
-router.post("/links/altas-editar", soloAutInput, permisoAccesoRUD, permisoAccesoLinks, vista.linksAltasEditar);
+router.post("/links/altas-editar", soloAutInput, permisoRUD, vista.linksAltasEditar);
 
-// Controladores de APIs
+// Rutas de APIs
 // Tridente: Detalle, Edición, Links
 router.get("/tridente/api/obtener-col-cap", API.obtenerColCap);
 router.get("/tridente/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
