@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires *************
-let validar = require("../../funciones/Prod-RUD/2-Validar");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
-let varias = require("../../funciones/Varias/Varias");
+const validar = require("../../funciones/Prod-RUD/2-Validar");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/especificas");
+const varias = require("../../funciones/Varias/Varias");
 
 // *********** Controlador ***********
 module.exports = {

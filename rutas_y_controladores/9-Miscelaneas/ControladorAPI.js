@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-let BD_especificas = require("../../funciones/BD/especificas");
-let {Op} = require("sequelize");
+const BD_especificas = require("../../funciones/BD/especificas");
+const {Op} = require("sequelize");
 
 module.exports = {
 	// Quick Search

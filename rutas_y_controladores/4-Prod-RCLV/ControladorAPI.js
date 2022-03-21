@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires ************
-let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
-let {Op} = require("sequelize");
+const validarRCLV = require("../../funciones/Varias/ValidarRCLV");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/especificas");
+const {Op} = require("sequelize");
 
 module.exports = {
 	// RCLV

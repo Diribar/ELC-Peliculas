@@ -2,8 +2,8 @@
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
-let API = require("./ControladorAPI");
-let vista = require("./ControladorVista");
+const API = require("./ControladorAPI");
+const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");

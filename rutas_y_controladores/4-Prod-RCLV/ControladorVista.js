@@ -1,8 +1,8 @@
 "use strict";
 // ************ Requires ************
-let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-let BD_varias = require("../../funciones/BD/varias");
-let procesar = require("../../funciones/Prod-RUD/1-Procesar");
+const validarRCLV = require("../../funciones/Varias/ValidarRCLV");
+const BD_varias = require("../../funciones/BD/varias");
+const procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 module.exports = {
 	Redireccionar: (req, res) => {

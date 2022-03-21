@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-let BD_varias = require("../../funciones/BD/varias");
+const BD_varias = require("../../funciones/BD/varias");
 
 module.exports = {
 	home: async (req, res) => {
