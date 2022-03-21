@@ -29,9 +29,13 @@ window.addEventListener("load", async () => {
 
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor + aux).then((n) => n.json());
-		funcionIconos(errores,campo,indice)
-		console.log("linea 33", errores);
-
+		mensajesError[indice].innerHTML = errores[campo];
+		errores[campo]
+			? iconoOK[indice].classList.add("ocultar")
+			: iconoOK[indice].classList.remove("ocultar");
+		errores[campo]
+			? iconoError[indice].classList.remove("ocultar")
+			: iconoError[indice].classList.add("ocultar");
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			subcategoria.value = "";
@@ -99,13 +103,10 @@ window.addEventListener("load", async () => {
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
 		let nombres = ["personaje_id", "hecho_id", "valor_id"];
-		
+
 		// Mostrar/Ocultar el campo RCLV
 		for (let i = 0; i < campos.length; i++) {
-			if (registro[campos[i]]) {
-				// Mostrar el campo RCLV
-				RCLVs[i].classList.remove("ocultar");		
-			} 
+			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
 			else {
 				// Ocultar el campo RCLV
 				RCLVs[i].classList.add("ocultar");
@@ -141,16 +142,6 @@ window.addEventListener("load", async () => {
 		// Consecuencias
 		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
-	let funcionIconos=(errores,campo,indice)=>{
-		mensajesError[indice].innerHTML = errores[campo];
-		errores[campo]
-			? iconoOK[indice].classList.add("ocultar")
-			: iconoOK[indice].classList.remove("ocultar");
-		errores[campo]
-			? iconoError[indice].classList.remove("ocultar")
-			: iconoError[indice].classList.add("ocultar");
-
-	}
 
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
