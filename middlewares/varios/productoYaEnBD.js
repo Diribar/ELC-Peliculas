@@ -1,4 +1,5 @@
-let BD_varias = require("../../funciones/BD/varias");
+"use strict";
+const BD_varias = require("../../funciones/BD/varias");
 
 module.exports = async (req, res, next) => {
 	datosTerminaste = req.session.datosTerminaste

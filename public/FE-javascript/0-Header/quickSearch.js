@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// DOM
 	let input = document.querySelector("#busquedaRapida .menuOpciones input");

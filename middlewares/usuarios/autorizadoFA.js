@@ -1,3 +1,4 @@
+"use strict";
 let BD_especificas = require("../../funciones/BD/especificas");
 
 module.exports = (req, res, next) => {

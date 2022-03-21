@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Declarar las variables
 	let form = document.querySelector("#dataEntry");

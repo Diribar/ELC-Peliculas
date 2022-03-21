@@ -1,9 +1,10 @@
-// ************ Requires ************
-let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
-let procesar = require("../../funciones/Prod-Agregar/2-Procesar");
-let validar = require("../../funciones/Prod-Agregar/3-Validar");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/especificas");
+"use strict";
+// Definir variables
+const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
+const procesar = require("../../funciones/Prod-Agregar/2-Procesar");
+const validar = require("../../funciones/Prod-Agregar/3-Validar");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/especificas");
 
 // *********** Controlador ***********
 module.exports = {

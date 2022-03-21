@@ -1,8 +1,8 @@
-// **** Requires ***********
-let BD_varias = require("../BD/Varias");
-let path = require("path");
+"use strict";
+// Definir variables
+const BD_varias = require("../BD/Varias");
+const path = require("path");
 
-// Objeto literal
 module.exports = {
 	registroMail: async (email) => {
 		let errores = {};

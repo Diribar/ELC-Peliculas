@@ -1,4 +1,5 @@
-//************************* Requires *******************************
+"use strict";
+// Definir variables
 let express = require("express");
 let router = express.Router();
 let vista = require("./ControladorVista");
@@ -6,8 +7,7 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 
-//************************ Controladores ****************************
-// Controladores de Opciones
+// Vistas de Opciones
 router.get("/:id", vista.opcion);
 router.get("/:id/:id", vista.tipo);
 // router.post("/:id/:id", soloUsuarios, vista.filtros);

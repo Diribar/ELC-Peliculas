@@ -1,10 +1,8 @@
-// ************ Requires ************
-let validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-let BD_varias = require("../../funciones/BD/varias");
+"use strict";
+// Definir variables
 let BD_especificas = require("../../funciones/BD/especificas");
 let {Op} = require("sequelize");
 
-// *********** Controlador ***********
 module.exports = {
 	// Quick Search
 	quickSearch: async (req, res) => {

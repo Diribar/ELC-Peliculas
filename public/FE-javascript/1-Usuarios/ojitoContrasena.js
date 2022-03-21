@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	let contrasena = document.querySelector("input[name='contrasena']");
 	let ojito = document.getElementById('eye');

@@ -1,9 +1,10 @@
-// **** Requires ***********
-let nodemailer = require("nodemailer");
-let BD_varias = require("../BD/Varias");
-let fs = require("fs");
-let path = require("path");
-let axios = require("axios");
+"use strict";
+// Definir variables
+const nodemailer = require("nodemailer");
+const BD_varias = require("../BD/Varias");
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -197,7 +198,15 @@ module.exports = {
 			: "";
 	},
 
-	funcionHaceUnaHora: () => {
+	entidad_id: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula_id"
+			: entidad == "colecciones"
+			? "coleccion_id"
+			: "capitulo_id";
+	},
+
+	haceUnaHora: () => {
 		let haceUnaHora = new Date();
 		haceUnaHora.setHours(haceUnaHora.getHours() - 1);
 		return haceUnaHora;

@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Definir variables
 	let iconos = document.querySelectorAll("header .iconoMenu");

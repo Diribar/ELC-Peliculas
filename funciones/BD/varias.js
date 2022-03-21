@@ -1,8 +1,7 @@
-// Variables --------------------------------------
+"use strict";
+// Definir variables
 const db = require("../../base_de_datos/modelos");
-const Op = db.Sequelize.Op;
 
-// A exportar -------------------------------------
 module.exports = {
 	// Obtener
 	obtenerTodos: (entidad, orden) => {

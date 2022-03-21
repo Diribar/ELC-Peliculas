@@ -1,3 +1,5 @@
+"use strict";
+// Definir variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_varias = require("./Varias");

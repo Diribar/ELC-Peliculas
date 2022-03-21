@@ -1,12 +1,12 @@
-// ************ Requires ************
-let BD_especificas = require("../../funciones/BD/especificas");
-let BD_varias = require("../../funciones/BD/varias");
-let varias = require("../../funciones/Varias/Varias");
-let funciones = require("../../funciones/Varias/varias");
-let validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
-let bcryptjs = require("bcryptjs");
+"use strict";
+// Definir variables
+const BD_especificas = require("../../funciones/BD/especificas");
+const BD_varias = require("../../funciones/BD/varias");
+const varias = require("../../funciones/Varias/Varias");
+const funciones = require("../../funciones/Varias/varias");
+const validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
+const bcryptjs = require("bcryptjs");
 
-// *********** Controlador ***********
 module.exports = {
 	altaMailForm: (req, res) => {
 		tema = "usuario";

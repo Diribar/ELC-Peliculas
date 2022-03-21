@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");

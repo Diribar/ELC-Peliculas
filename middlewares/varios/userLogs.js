@@ -1,3 +1,4 @@
+"use strict";
 const varias = require("../../funciones/Varias/varias");
 
 module.exports = (req, res, next) => {

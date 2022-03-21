@@ -1,3 +1,4 @@
+"use strict";
 // Requires ************************************************
 const express = require("express");
 const router = express.Router();
@@ -7,12 +8,12 @@ let vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 
-// Controladores *******************************************
-// Controladores de APIs
+// Rutas *******************************************
+// Rutas de APIs
 router.get("/api/otros-casos/", API.buscarOtrosCasos);
 router.get("/api/validar/", API.validarRCLV);
 
-// Controladores de vistas - Relación con la vida
+// Rutas de vistas - Relación con la vida
 router.get("/redireccionar", soloAutInput, vista.Redireccionar);
 router.get("/personajes", soloAutInput, vista.RCLV_Form);
 router.get("/hechos", soloAutInput, vista.RCLV_Form);

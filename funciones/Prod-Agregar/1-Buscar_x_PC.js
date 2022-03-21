@@ -1,10 +1,10 @@
-// Require
+"use strict";
+// Definir variables
 let searchTMDB = require("../APIs_TMDB/1-Search");
 let detailsTMDB = require("../APIs_TMDB/2-Details");
 let BD_varias = require("../BD/varias");
 let varias = require("../Varias/Varias");
 
-// Función a exportar
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)

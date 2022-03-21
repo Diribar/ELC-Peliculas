@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Variables generales
 	let form = document.querySelector("form");

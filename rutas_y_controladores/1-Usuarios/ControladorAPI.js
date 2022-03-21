@@ -1,7 +1,7 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
 
-// *********** Controlador ***********
 module.exports = {
 	validarMail: async (req, res) => {
 		let errores = await validarUsuarios.registroMail(req.query.email);

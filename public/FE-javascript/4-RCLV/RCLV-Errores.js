@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = window.location.href;

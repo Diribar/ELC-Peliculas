@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// VARIABLES GENERALES -----------------------------------------------------------------------
 	// Pointer del producto

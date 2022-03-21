@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", async () => {
 	// Definir las variables
 	let forms = document.querySelectorAll("#resultadoDesamb form");

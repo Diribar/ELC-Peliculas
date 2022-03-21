@@ -1,7 +1,7 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let BD_varias = require("../../funciones/BD/varias");
 
-// *********** Controlador ***********
 module.exports = {
 	home: async (req, res) => {
 		tema = "productos";

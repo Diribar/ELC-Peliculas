@@ -1,4 +1,5 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let fs = require("fs");
 let path = require("path");
 let requestPromise = require("request-promise");
@@ -10,7 +11,6 @@ let BD_varias = require("../../funciones/BD/varias");
 let BD_especificas = require("../../funciones/BD/Especificas");
 let varias = require("../../funciones/Varias/Varias");
 
-// *********** Controlador ***********
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
@@ -562,12 +562,7 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	entidad_id =
-		confirma.entidad == "peliculas"
-			? "pelicula_id"
-			: confirma.entidad == "colecciones"
-			? "coleccion_id"
-			: "capitulo_id";
+	entidad_id = varias.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: confirma.creado_por_id,

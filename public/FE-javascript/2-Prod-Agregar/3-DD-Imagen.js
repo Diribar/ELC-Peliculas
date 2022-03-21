@@ -1,3 +1,4 @@
+"use strict";
 window.addEventListener("load", () => {
 	// Declaración de variables
 	let preview = document.querySelector("form #segundaColumna #preview");

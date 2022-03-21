@@ -1,4 +1,5 @@
-// ************ Requires ************
+"use strict";
+// Definir variables
 let BD_varias = require("../BD/varias");
 
 module.exports = {
