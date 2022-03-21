@@ -9,7 +9,6 @@ const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidadId = require("../../middlewares/entidades/entidadId");
 const permisoAccesoRUD = require("../../middlewares/entidades/permisoAccesoRUD");
-const permisoAccesoLinks = require("../../middlewares/entidades/permisoAccesoLinks");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Controladores ****************************
@@ -27,9 +26,9 @@ router.post(
 	vista.edicionGuardar
 );
 router.get("/edicion/eliminar", soloAutInput, entidadId, permisoAccesoRUD, vista.edicionEliminar);
-router.get("/links", soloAutInput, entidadId, permisoAccesoRUD, permisoAccesoLinks, vista.linksForm);
+router.get("/links", soloAutInput, entidadId, permisoAccesoRUD, vista.linksForm);
 
-router.post("/links/altas-editar", soloAutInput, permisoAccesoRUD, permisoAccesoLinks, vista.linksAltasEditar);
+router.post("/links/altas-editar", soloAutInput, permisoAccesoRUD, vista.linksAltasEditar);
 
 // Controladores de APIs
 // Tridente: Detalle, Edición, Links

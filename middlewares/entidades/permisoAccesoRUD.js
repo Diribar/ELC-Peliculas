@@ -16,13 +16,14 @@ module.exports = async (req, res, next) => {
 		n ? n.toJSON() : ""
 	);
 	let mensaje = "";
-	// Problema: PRODUCTO NO ENCONTRADO
+
+	// Problema: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {
-		// Problema: PRODUCTO NO APROBADO
-		let pendAprobar = prodOriginal.status_registro.pend_aprobar;
+
+		// Problemas VARIOS
 		// 1-¿Producto en estado 'pend_aprobar'?
-		if (pendAprobar) {
+		if (prodOriginal.status_registro.pend_aprobar) {
 			// 2-¿Creado por el usuario?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
@@ -32,11 +33,21 @@ module.exports = async (req, res, next) => {
 				// 3-¿La vista es "Edición"?
 				if (codigo == "edicion") {
 					// 4-¿Creado < haceUnaHora?
+					// Problema: TIEMPO CUMPLIDO ---------------------------------
 					if (prodOriginal.creado_en < varias.funcionHaceUnaHora())
 						mensaje =
 							"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión";
+				} else if (codigo == "links") {
+					// ¿Producto capturado?
+					// Problema: PRODUCTO CAPTURADO ------------------------------
+					if (prodOriginal.capturado_en > varias.funcionHaceUnaHora()) {
+						
+						mensaje =
+							"El producto está en revisión. Una vez revisado, podrás acceder a esta vista";
+					}
 				}
 			} else
+		// Problema: PRODUCTO NO APROBADO ----------------------------------------
 				mensaje =
 					"El producto no está aprobado aún para ser mostrado o editado. El status actual es: " +
 					prodOriginal.status_registro.nombre;
