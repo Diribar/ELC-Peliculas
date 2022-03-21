@@ -25,6 +25,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
+		// Para que incluya los datos de la subcategoría, por si necesitan para validar RCLV
 		let aux = subcategoria.value ? "&subcategoria_id=" + subcategoria.value : "";
 
 		// Averiguar si hay algún error
