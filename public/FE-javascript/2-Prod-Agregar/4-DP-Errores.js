@@ -109,7 +109,6 @@ window.addEventListener("load", async () => {
 		for (let i = 0; i < campos.length; i++) {
 			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
 			else {
-				// Ocultar el campo RCLV
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta
 				document.querySelector("select[name='" + nombres[i] + "']").value = "";
