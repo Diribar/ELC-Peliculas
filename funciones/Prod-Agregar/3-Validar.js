@@ -233,13 +233,6 @@ module.exports = {
 			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		if (campos.includes("calidad_tecnica_id"))
 			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
-		// RCLV
-		// if (campos.includes("personaje_id"))
-		// 	errores.personaje_id = !datos.personaje_id || datos.personaje_id == 1 ? cartelSelectVacio : "";
-		// if (campos.includes("hecho_id"))
-		// 	errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? cartelSelectVacio : "";
-		// if (campos.includes("valor_id"))
-		// 	errores.valor_id = !datos.valor_id || datos.valor_id == 1 ? cartelSelectVacio : "";
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
