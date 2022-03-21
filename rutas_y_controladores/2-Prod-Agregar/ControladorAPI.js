@@ -6,7 +6,6 @@ const validar = require("../../funciones/Prod-Agregar/3-Validar");
 const BD_varias = require("../../funciones/BD/varias");
 const BD_especificas = require("../../funciones/BD/especificas");
 
-// *********** Controlador ***********
 module.exports = {
 	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {

@@ -1,15 +1,15 @@
 "use strict";
 // Definir variables
-let fs = require("fs");
-let path = require("path");
-let requestPromise = require("request-promise");
-let buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
-let procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
-let validarProd = require("../../funciones/Prod-Agregar/3-Validar");
-let variables = require("../../funciones/Varias/Variables");
-let BD_varias = require("../../funciones/BD/varias");
-let BD_especificas = require("../../funciones/BD/Especificas");
-let varias = require("../../funciones/Varias/Varias");
+const fs = require("fs");
+const path = require("path");
+const requestPromise = require("request-promise");
+const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
+const procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
+const validarProd = require("../../funciones/Prod-Agregar/3-Validar");
+const variables = require("../../funciones/Varias/Variables");
+const BD_varias = require("../../funciones/BD/varias");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const varias = require("../../funciones/Varias/Varias");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
