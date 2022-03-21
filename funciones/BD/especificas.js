@@ -8,7 +8,32 @@ const varias = require("../Varias/Varias");
 module.exports = {
 	// Productos *****************************************
 	// Header
-	quickSearch: async (condiciones) => {
+	quickSearchCondiciones: (palabras)=> {
+		palabras = palabras.split(" ");
+		// Definir los campos en los cuales buscar
+		let campos = ["nombre_original", "nombre_castellano"];
+		// Crear el objeto literal con los valores a buscar
+		let valoresOR = [];
+		for (let campo of campos) {
+			let CondicionesDeCampo = [];
+			for (let palabra of palabras) {
+				let CondiciondePalabra = {
+					[Op.or]: [
+						{[campo]: {[Op.like]: "% " + palabra + "%"}},
+						{[campo]: {[Op.like]: palabra + "%"}},
+					],
+				};
+				CondicionesDeCampo.push(CondiciondePalabra);
+			}
+			let ResumenDeCampo = {[Op.and]: CondicionesDeCampo};
+			valoresOR.push(ResumenDeCampo);
+		}
+		let condiciones = {[Op.or]: valoresOR};
+		return condiciones
+	},
+
+	quickSearchProductos: async (condiciones) => {
+		// Obtener las películas
 		let peliculas = db.peliculas
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
@@ -17,6 +42,7 @@ module.exports = {
 					return {...m, entidad: "peliculas"};
 				})
 			);
+		// Obtener las colecciones
 		let colecciones = db.colecciones
 			.findAll({where: condiciones, limit: 5})
 			.then((n) => n.map((m) => m.toJSON()))
@@ -25,6 +51,7 @@ module.exports = {
 					return {...m, entidad: "colecciones"};
 				})
 			);
+		// Obtener los capítulos
 		let capitulos = db.capitulos
 			.findAll({where: condiciones, limit: 10})
 			.then((n) => n.map((m) => m.toJSON()))
@@ -33,9 +60,19 @@ module.exports = {
 					return {...m, entidad: "capitulos"};
 				})
 			);
+		// Consolidar los hallazgos
 		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
 			return [...a, ...b, ...c];
 		});
+		// Ordenar el resultado
+		resultado.sort((a, b) => {
+			return a.nombre_castellano < b.nombre_castellano
+				? -1
+				: a.nombre_castellano > b.nombre_castellano
+				? 1
+				: 0;
+		});
+		// Enviar el resultado
 		return resultado;
 	},
 	// API-Agregar

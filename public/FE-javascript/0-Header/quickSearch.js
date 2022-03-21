@@ -6,15 +6,15 @@ window.addEventListener("load", () => {
 	let escribiMas = document.querySelector("#busquedaRapida .menuOpciones #escribiMas");
 
 	// Variables
-	teclasValidas = /^[a-z áéíóúüñ\d]+$/;
+	let teclasValidas = /^[a-z áéíóúüñ\d]+$/;
 
 	input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
 		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
-		dataEntry = input.value;
+		let dataEntry = input.value;
 
 		// Elimina palabras repetidas
-		palabras = dataEntry.split(" ");
+		let palabras = dataEntry.split(" ");
 		for (let i = palabras.length - 1; i > 0; i--) {
 			if (
 				palabras.filter((x) => x == palabras[i]).length > 1 ||
@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 				palabras.splice(i, 1);
 			}
 		}
-		pasaNoPasa = palabras.join("");
+		let pasaNoPasa = palabras.join("");
 
 		// Termina el proceso si la palabra tiene menos de 4 caracteres significativos
 		if (pasaNoPasa.length < 4) {
@@ -44,12 +44,12 @@ window.addEventListener("load", () => {
 				entidad: n.entidad,
 			};
 		});
-		datos = resultados.length ? resultados : "- No encontramos coincidencias -";
+		let datos = resultados.length ? resultados : "- No encontramos coincidencias -";
 		//console.log(resultados);
 		agregarHallazgos(datos);
 	});
 
-	agregarHallazgos = (registros) => {
+	let agregarHallazgos = (registros) => {
 		// Generar las condiciones para que se pueda mostrar el 'display'
 		input.style.borderBottomLeftRadius = 0;
 		input.style.borderBottomRightRadius = 0;
@@ -63,11 +63,11 @@ window.addEventListener("load", () => {
 			let tblBody = document.createElement("tbody");
 
 			// Crea las filas y celdas
-			for (registro of registros) {
+			for (let registro of registros) {
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				let anchor = document.createElement("a");
-				id = registro.id;
+				let id = registro.id;
 				anchor.href = "/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
 
 				// Prepara las variables de la fila
@@ -80,7 +80,7 @@ window.addEventListener("load", () => {
 				let entidad = registro.entidad.slice(0, 3).toUpperCase();
 				let datos = [nombre, entidad];
 				// Crea las celdas
-				for (i = 0; i < datos.length; i++) {
+				for (let i = 0; i < datos.length; i++) {
 					let celda = document.createElement("td");
 					let textoCelda = document.createTextNode(datos[i]);
 					// Agrega el texto al 'anchor' (celda nombre_castellano) o a la celda (entidad)

@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Funciones --------------------------------------------------------------------
-	toggleMenus = (e) => {
+	let toggleMenus = (e) => {
 		if (e.target != inputBusquedaRapida)
 			for (let i = 0; i < menus.length; i++) {
 				e.target == iconos[i]

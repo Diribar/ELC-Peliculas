@@ -3,8 +3,8 @@
 // *********** Controlador ***********
 module.exports = {
 	home: (req, res) => {
-		tema = "miscelaneas";
-		codigo = "inicio";
+		let tema = "miscelaneas";
+		let codigo = "inicio";
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -13,8 +13,8 @@ module.exports = {
 	},
 
 	nosotros: (req, res) => {
-		tema = "miscelaneas";
-		codigo = "nosotros";
+		let tema = "miscelaneas";
+		let codigo = "nosotros";
 		return res.render("Home", {
 			tema,
 			codigo,
