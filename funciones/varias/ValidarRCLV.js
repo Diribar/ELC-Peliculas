@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-let BD_varias = require("../BD/varias");
+const BD_genericas = require("../BD/Genericas");
 
 module.exports = {
 	RCLV_consolidado: async function (datos) {
@@ -31,7 +31,7 @@ module.exports = {
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
-			: (await BD_varias.obtenerELC_id(entidad, "nombre", nombre))
+			: (await BD_genericas.obtenerELC_id(entidad, "nombre", nombre))
 			? cartelRepetido
 			: "";
 	},

@@ -3,8 +3,8 @@
 const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 const procesar = require("../../funciones/Prod-Agregar/2-Procesar");
 const validar = require("../../funciones/Prod-Agregar/3-Validar");
-const BD_varias = require("../../funciones/BD/varias");
-const BD_especificas = require("../../funciones/BD/especificas");
+const BD_genericas = require("../../funciones/BD/Genericas");
+const BD_especificas = require("../../funciones/BD/Especificas");
 
 module.exports = {
 	// Vista (palabrasClave)
@@ -28,7 +28,7 @@ module.exports = {
 
 	// Vista (tipoProducto)
 	averiguarColecciones: async (req, res) => {
-		let datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
+		let datos = await BD_genericas.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
 			n.map((m) => {
 				return {
 					id: m.id,
@@ -39,7 +39,7 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguarCantTemporadas: async (req, res) => {
-		let datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
+		let datos = await BD_genericas.obtenerPorId("colecciones", req.query.id)
 			.then((n) => n.toJSON())
 			.then((n) => n.cant_temporadas);
 		return res.json(datos);
@@ -60,7 +60,7 @@ module.exports = {
 	},
 	obtenerELC_id: async (req, res) => {
 		let {entidad, campo, valor} = req.query;
-		let elc_id = await BD_varias.obtenerELC_id(entidad, campo, valor);
+		let elc_id = await BD_genericas.obtenerELC_id(entidad, campo, valor);
 		return res.json(elc_id);
 	},
 
@@ -76,7 +76,7 @@ module.exports = {
 
 	// Vista (datosPers)
 	obtenerDatosSubcategoria: async (req, res) => {
-		let subcategoria = await BD_varias.obtenerPorCampo("subcategorias", "id", req.query.id);
+		let subcategoria = await BD_genericas.obtenerPorCampo("subcategorias", "id", req.query.id);
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {

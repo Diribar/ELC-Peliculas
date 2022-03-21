@@ -1,8 +1,9 @@
 "use strict";
 // Requires
-const varias = require("../../funciones/Varias/varias");
+const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = (req, res, next) => {
-	varias.userLogs(req, res)
+	let url = req.originalUrl;
+	if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
 	next();
 };

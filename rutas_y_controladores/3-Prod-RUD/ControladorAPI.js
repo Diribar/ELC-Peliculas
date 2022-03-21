@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires *************
 const validar = require("../../funciones/Prod-RUD/2-Validar");
-const BD_varias = require("../../funciones/BD/varias");
-const BD_especificas = require("../../funciones/BD/especificas");
-const varias = require("../../funciones/Varias/Varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const especificas = require("../../funciones/Varias/Especificas");
 
 // *********** Controlador ***********
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 		let {entidad, id} = req.query;
 		let ID =
 			entidad == "colecciones"
-				? await BD_varias.obtenerPor3Campos(
+				? await BD_genericas.obtenerPor3Campos(
 						"capitulos",
 						"coleccion_id",
 						id,
@@ -23,7 +23,7 @@ module.exports = {
 				  )
 						.then((n) => n.toJSON())
 						.then((n) => n.id)
-				: await BD_varias.obtenerPorId("capitulos", id)
+				: await BD_genericas.obtenerPorId("capitulos", id)
 						.then((n) => n.toJSON())
 						.then((n) => n.coleccion_id);
 		return res.json(ID);
@@ -31,7 +31,7 @@ module.exports = {
 	obtenerCapAntPostID: async (req, res) => {
 		let {id} = req.query;
 		// Obtener la coleccion_id, la temporada y el capítulo
-		let {coleccion_id, temporada, capitulo} = await BD_varias.obtenerPorId("capitulos", id).then((n) =>
+		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtenerPorId("capitulos", id).then((n) =>
 			n.toJSON()
 		);
 		// Averiguar los datos del capítulo anterior **********************
@@ -43,7 +43,7 @@ module.exports = {
 		else {
 			tempAnt = temporada - 1;
 			// Obtener el último número de capítulo de la temporada anterior
-			capAnt = await BD_varias.obtenerTodosPor2Campos(
+			capAnt = await BD_genericas.obtenerTodosPor2Campos(
 				"capitulos",
 				"coleccion_id",
 				coleccion_id,
@@ -58,7 +58,7 @@ module.exports = {
 		// Obtener datos de la colección y el capítulo
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtener el último número de capítulo de la temporada actual
-			BD_varias.obtenerTodosPor2Campos(
+			BD_genericas.obtenerTodosPor2Campos(
 				"capitulos",
 				"coleccion_id",
 				coleccion_id,
@@ -69,7 +69,7 @@ module.exports = {
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
 			// Obtener el último número de temporada de la colección
-			BD_varias.obtenerPorId("colecciones", coleccion_id)
+			BD_genericas.obtenerPorId("colecciones", coleccion_id)
 				.then((n) => n.toJSON())
 				.then((n) => n.cant_temporadas),
 		]).then(([a, b]) => {
@@ -88,7 +88,7 @@ module.exports = {
 		let [capAntID, capPostID] = await Promise.all([
 			// Obtener el ID del capítulo anterior
 			capAnt
-				? BD_varias.obtenerPor3Campos(
+				? BD_genericas.obtenerPor3Campos(
 						"capitulos",
 						"coleccion_id",
 						coleccion_id,
@@ -101,7 +101,7 @@ module.exports = {
 						.then((n) => n.id)
 				: false,
 			capPost
-				? BD_varias.obtenerPor3Campos(
+				? BD_genericas.obtenerPor3Campos(
 						"capitulos",
 						"coleccion_id",
 						coleccion_id,
@@ -121,7 +121,7 @@ module.exports = {
 	},
 	obtenerCapID: async (req, res) => {
 		let {coleccion_id, temporada, capitulo} = req.query;
-		let ID = await BD_varias.obtenerPor3Campos(
+		let ID = await BD_genericas.obtenerPor3Campos(
 			"capitulos",
 			"coleccion_id",
 			coleccion_id,
@@ -178,7 +178,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	linksObtenerProvs: async (req, res) => {
-		let provs = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
+		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden").then((n) =>
 			n.map((m) => m.toJSON())
 		);
 		return res.json(provs);
@@ -193,13 +193,13 @@ module.exports = {
 		// Definir las variables
 		let respuesta = {};
 		let {link_id, motivo_id} = req.query;
-		let haceUnaHora = varias.haceUnaHora();
+		let haceUnaHora = especificas.haceUnaHora();
 		let usuario = req.session.usuario;
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) respuesta.mensaje = "Faltan datos";
 		else {
 			// El link_id existe
-			let link = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
+			let link = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
 			]).then((n) => n.toJSON());
 			if (!link) {
@@ -216,7 +216,7 @@ module.exports = {
 				// Sin "captura válida" y con status 'pend_aprobar'
 				if (link.creado_por_id == usuario.id) {
 					// Creados por el usuario --> se eliminan definitivamente
-					BD_varias.eliminarRegistro("links_originales", link_id);
+					BD_genericas.eliminarRegistro("links_originales", link_id);
 					respuesta.mensaje = "El link fue eliminado con éxito";
 					respuesta.resultado = true;
 				} else {
@@ -248,11 +248,11 @@ module.exports = {
 
 let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Obtener la duración
-	let duracion = await BD_varias.obtenerPorId("motivos_para_borrar", motivo_id)
+	let duracion = await BD_genericas.obtenerPorId("motivos_para_borrar", motivo_id)
 		.then((n) => n.toJSON())
 		.then((n) => n.duracion);
 	// Obtener el status_id de 'inactivar'
-	let status_id = await BD_varias.obtenerPorCampo("status_registro_ent", "inactivar", 1)
+	let status_id = await BD_genericas.obtenerPorCampo("status_registro_ent", "inactivar", 1)
 		.then((n) => n.toJSON())
 		.then((n) => n.id);
 	// Preparar los datos
@@ -262,7 +262,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 		status_registro_id: status_id,
 	};
 	// Actualiza el registro 'original' en la BD
-	BD_varias.actualizarPorId("links_originales", link.id, datosParaLink);
+	BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
 	// 3. Crea un registro en la BD de 'registros_borrados'
 	let datosParaBorrados = {
 		entidad: "registros_borrados",
@@ -274,14 +274,14 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 		duracion: duracion,
 		status_registro_id: status_id,
 	};
-	BD_varias.agregarRegistro(datosParaBorrados);
+	BD_genericas.agregarRegistro(datosParaBorrados);
 };
 
 // let obtenerLinksFusionados = async (link_id, usuario) => {
-// 	let link_original = await BD_varias.obtenerPorIdConInclude("links_originales", link_id, [
+// 	let link_original = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
 // 		"status_registro",
 // 	]).then((n) => n.toJSON());
-// 	link_edicion = await BD_varias.obtenerPor2CamposConInclude(
+// 	link_edicion = await BD_genericas.obtenerPor2CamposConInclude(
 // 		"links_edicion",
 // 		"elc_id",
 // 		link_id,

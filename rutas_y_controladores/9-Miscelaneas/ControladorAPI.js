@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/BD/especificas");
+const BD_especificas = require("../../funciones/BD/Especificas");
 
 module.exports = {
 	// Quick Search

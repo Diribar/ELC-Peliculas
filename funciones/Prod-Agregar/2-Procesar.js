@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-let searchTMDB = require("../APIs_TMDB/1-Search");
-let detailsTMDB = require("../APIs_TMDB/2-Details");
-let creditsTMDB = require("../APIs_TMDB/3-Credits");
-let BD_varias = require("../BD/Varias");
-let varias = require("../Varias/Varias");
+const searchTMDB = require("../APIs_TMDB/1-Search");
+const detailsTMDB = require("../APIs_TMDB/2-Details");
+const creditsTMDB = require("../APIs_TMDB/3-Credits");
+const BD_genericas = require("../BD/Genericas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
 	// MOVIES *****************************
@@ -28,7 +28,7 @@ module.exports = {
 				datosAPI_renamed.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datosAPI_renamed.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// elc_id de la colección
-				datosAPI_renamed.en_colec_id = await BD_varias.obtenerELC_id(
+				datosAPI_renamed.en_colec_id = await BD_genericas.obtenerELC_id(
 					"colecciones",
 					"TMDB_id",
 					datosAPI_renamed.en_colec_TMDB_id
@@ -85,7 +85,7 @@ module.exports = {
 			...datosAPI_renamed,
 		};
 
-		return varias.convertirLetrasAlCastellano(resultado);
+		return especificas.convertirLetrasAlCastellano(resultado);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -98,7 +98,7 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_varias.obtenerELC_id("colecciones", "TMDB_id", datos.colec_TMDB_id);
+			datos.colec_id = await BD_genericas.obtenerELC_id("colecciones", "TMDB_id", datos.colec_TMDB_id);
 			if (datos.colec_id) return datos;
 		}
 		return datos;
@@ -150,11 +150,11 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(resultado);
 		resultado = {...resultado, ...otrosDatos};
 
-		return varias.convertirLetrasAlCastellano(resultado);
+		return especificas.convertirLetrasAlCastellano(resultado);
 	},
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id
-		palabrasClave = varias.convertirLetrasAlIngles(datos.nombre_castellano);
+		palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
 		let exportar = await searchTMDB(palabrasClave, "collection", 1);
 		if (exportar.results.length) {
 			exportar = exportar.results.find((n) => (n.id = datos.TMDB_id));
@@ -214,7 +214,7 @@ module.exports = {
 		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
-			existe = await BD_varias.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
+			existe = await BD_genericas.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
 			if (!existe) {
 				// Preparar datos del capítulo
 				datosCap = {
@@ -233,7 +233,7 @@ module.exports = {
 				// Guardar los datos del capítulo
 				await this.infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
 					.then((n) => (n = {...n, ...datosCap}))
-					.then((n) => BD_varias.agregarRegistro(n));
+					.then((n) => BD_genericas.agregarRegistro(n));
 			}
 		}
 		return;
@@ -327,7 +327,7 @@ module.exports = {
 			...datosIniciales,
 			...datosAPI_renamed,
 		};
-		return varias.convertirLetrasAlCastellano(resultado);
+		return especificas.convertirLetrasAlCastellano(resultado);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -387,7 +387,7 @@ module.exports = {
 			for (let episode of datosTemp.episodes) {
 				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				// Obtener las API
-				await BD_varias.agregarRegistro(datosCap);
+				await BD_genericas.agregarRegistro(datosCap);
 			}
 		}
 		return;
@@ -399,11 +399,11 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		producto = varias.entidadNombre(entidad);
+		producto = especificas.entidadNombre(entidad);
 		FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			contenido.paises_id = await varias.paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = await especificas.paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -416,7 +416,7 @@ module.exports = {
 			avatar,
 			...contenido,
 		};
-		resultado = varias.convertirLetrasAlCastellano(resultado);
+		resultado = especificas.convertirLetrasAlCastellano(resultado);
 		return resultado;
 	},
 	// Función validar (copiarFA)

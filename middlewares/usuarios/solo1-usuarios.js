@@ -1,10 +1,9 @@
 "use strict";
 // Requires
-const varias = require("../../funciones/Varias/Varias");
+const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = (req, res, next) => {
 	if (!req.session.usuario) {
-		varias.userLogs(req, res);
 		return res.redirect("/usuarios/login");
 	}
 	next();

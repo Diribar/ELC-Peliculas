@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_varias = require("../BD/Varias");
+const BD_genericas = require("../BD/Genericas");
 
 module.exports = {
 	camposDD: () => {
@@ -119,7 +119,7 @@ module.exports = {
 			{
 				titulo: "Existe una versión en castellano",
 				nombreDelCampo: "en_castellano_id",
-				valores: await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) =>
+				valores: await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajePeli: [
@@ -136,7 +136,7 @@ module.exports = {
 			{
 				titulo: "Es a Color",
 				nombreDelCampo: "en_color_id",
-				valores: await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) =>
+				valores: await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
@@ -146,7 +146,7 @@ module.exports = {
 			{
 				titulo: "Categoría",
 				nombreDelCampo: "categoria_id",
-				valores: await BD_varias.obtenerTodos("categorias", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("categorias", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: [
@@ -158,7 +158,7 @@ module.exports = {
 			{
 				titulo: "Sub-categoría",
 				nombreDelCampo: "subcategoria_id",
-				valores: await BD_varias.obtenerTodos("subcategorias", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("subcategorias", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: ["Elegí la subcategoría que mejor represente el tema."],
@@ -166,7 +166,7 @@ module.exports = {
 			{
 				titulo: "Público sugerido",
 				nombreDelCampo: "publico_sugerido_id",
-				valores: await BD_varias.obtenerTodos("publicos_sugeridos", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("publicos_sugeridos", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: [
@@ -180,7 +180,7 @@ module.exports = {
 			{
 				titulo: "Inspira fe y/o valores",
 				nombreDelCampo: "fe_valores_id",
-				valores: await BD_varias.obtenerTodos("fe_valores", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("fe_valores", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
@@ -190,7 +190,7 @@ module.exports = {
 			{
 				titulo: "Entretiene",
 				nombreDelCampo: "entretiene_id",
-				valores: await BD_varias.obtenerTodos("entretiene", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("entretiene", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: ["Se disfruta el rato viéndola"],
@@ -200,7 +200,7 @@ module.exports = {
 			{
 				titulo: "Calidad sonora y visual",
 				nombreDelCampo: "calidad_tecnica_id",
-				valores: await BD_varias.obtenerTodos("calidad_tecnica", "orden").then((n) =>
+				valores: await BD_genericas.obtenerTodos("calidad_tecnica", "orden").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
@@ -210,7 +210,7 @@ module.exports = {
 			{
 				titulo: "Personaje histórico",
 				nombreDelCampo: "personaje_id",
-				valores: await BD_varias.obtenerTodos("RCLV_personajes", "nombre").then((n) =>
+				valores: await BD_genericas.obtenerTodos("RCLV_personajes", "nombre").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: [
@@ -223,7 +223,7 @@ module.exports = {
 			{
 				titulo: "Hecho histórico",
 				nombreDelCampo: "hecho_id",
-				valores: await BD_varias.obtenerTodos("RCLV_hechos", "nombre").then((n) =>
+				valores: await BD_genericas.obtenerTodos("RCLV_hechos", "nombre").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: [
@@ -236,7 +236,7 @@ module.exports = {
 			{
 				titulo: "Valor principal",
 				nombreDelCampo: "valor_id",
-				valores: await BD_varias.obtenerTodos("RCLV_valores", "nombre").then((n) =>
+				valores: await BD_genericas.obtenerTodos("RCLV_valores", "nombre").then((n) =>
 					n.map((m) => m.toJSON())
 				),
 				mensajes: [

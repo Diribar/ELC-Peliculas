@@ -1,8 +1,8 @@
 "use strict";
 // ************ Requires *************
-const BD_varias = require("../../funciones/BD/Varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
-const varias = require("../../funciones/Varias/Varias");
+const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
 const validar = require("../../funciones/Prod-RUD/2-Validar");
 
@@ -39,9 +39,9 @@ module.exports = {
 					: "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el título de la vista
-		let entidadNombre = varias.entidadNombre(entidad);
+		let entidadNombre = especificas.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -56,8 +56,8 @@ module.exports = {
 			var camposDD1 = camposDD.filter((n) => n.antesDePais);
 			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
 			var camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
-			var BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
-			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
+			var BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			var BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			var tiempo = prodEditado.editado_en
 				? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
@@ -117,17 +117,17 @@ module.exports = {
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) delete prodCombinado.avatar;
-			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
+			if (req.file) especificas.borrarArchivo(req.file.filename, req.file.path);
 			req.session.edicion = prodCombinado;
 		} else {
 			// Si no hubieron errores de validación...
 			// Actualizar los archivos avatar
 			if (req.file) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				varias.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
+				especificas.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					varias.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
+					especificas.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
 			}
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición
@@ -137,7 +137,7 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let entidadEnSingular = varias.entidadEnSingular(entidad);
+			let entidadEnSingular = especificas.entidadEnSingular(entidad);
 			edicion = {
 				...edicion,
 				["elc_" + entidadEnSingular + "id"]: prodID,
@@ -145,9 +145,9 @@ module.exports = {
 				entidad: "productos_edic",
 			};
 			// Eliminar prodEditado (si existía) de la BD
-			if (prodEditado) await BD_varias.eliminarRegistro("productos_edic", prodEditado.id);
+			if (prodEditado) await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
 			// Agregar 'edición' a la BD
-			await BD_varias.agregarRegistro(edicion);
+			await BD_genericas.agregarRegistro(edicion);
 			// Eliminar req.session.edicion
 			req.session.edicion = {};
 		}
@@ -175,17 +175,17 @@ module.exports = {
 		let [, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
-		let linksProveedores = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
+		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden").then((n) =>
 			n.map((m) => m.toJSON())
 		);
-		let linksTipos = await BD_varias.obtenerTodos("links_tipos", "id").then((n) =>
+		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id").then((n) =>
 			n.map((m) => m.toJSON())
 		);
 
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let entidadNombre = varias.entidadNombre(prodEntidad);
+		let entidadNombre = especificas.entidadNombre(prodEntidad);
 		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodEditado);
 		// Obtener datos para la vista
@@ -195,7 +195,7 @@ module.exports = {
 				prodEditado.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
-		let motivos = await BD_varias.obtenerTodos("motivos_para_borrar", "orden")
+		let motivos = await BD_genericas.obtenerTodos("motivos_para_borrar", "orden")
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
@@ -222,7 +222,7 @@ module.exports = {
 			avatar,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
-			haceUnaHora: varias.haceUnaHora(),
+			haceUnaHora: especificas.haceUnaHora(),
 		});
 	},
 	linksAltasEditar: async (req, res) => {
@@ -252,10 +252,10 @@ module.exports = {
 // FUNCIONES --------------------------------------------------
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Definir valores necesarios
-	let entidad_id = varias.entidad_id(prodEntidad);
+	let entidad_id = especificas.entidad_id(prodEntidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
-	let linksOriginales = await BD_varias.obtenerTodosPorCampoConInclude(
+	let linksOriginales = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
 		entidad_id,
 		prodID,
@@ -267,7 +267,7 @@ let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Rutina de combinación
 	for (let i = 0; i < linksOriginales.length; i++) {
 		// Obtener la edición
-		linkEditado = await BD_varias.obtenerPor2CamposConInclude(
+		linkEditado = await BD_genericas.obtenerPor2CamposConInclude(
 			"links_edicion",
 			"elc_id",
 			linksOriginales[i].id,
@@ -286,7 +286,7 @@ let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	return linksCombinados;
 };
 let obtenerLinkCombinado = async (elc_id, userID) => {
-	let linkEditado = await BD_varias.obtenerPor2CamposConInclude(
+	let linkEditado = await BD_genericas.obtenerPor2CamposConInclude(
 		"links_edicion",
 		"elc_id",
 		elc_id,
@@ -307,7 +307,7 @@ let ActivosInactivos = async (linksOriginales) => {
 	let linksInactivos = linksOriginales.filter((n) => n.status_registro.inactivos);
 	// A los Inactivos, agregarles el motivo
 	for (let i = 0; i < linksInactivos.length; i++) {
-		let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
+		let registro_borrado = await BD_genericas.obtenerPor2CamposConInclude(
 			"registros_borrados",
 			"elc_id",
 			linksInactivos[i].id,
@@ -321,8 +321,8 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let entidadEnSingular = varias.entidadEnSingular(prodEntidad);
-	let registroEditado = await BD_varias.obtenerPor2Campos(
+	let entidadEnSingular = especificas.entidadEnSingular(prodEntidad);
+	let registroEditado = await BD_genericas.obtenerPor2Campos(
 		"productos_edic",
 		["elc_" + entidadEnSingular + "_id"],
 		prodID,
@@ -347,7 +347,7 @@ let altaDeLink = async (req, datos) => {
 		if (!datos.parte) datos.parte = "-";
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
-		let entidad_id = varias.entidad_id(datos.prodEntidad);
+		let entidad_id = especificas.entidad_id(datos.prodEntidad);
 		let datos = {
 			...datos,
 			entidad: "links_originales",
@@ -355,7 +355,7 @@ let altaDeLink = async (req, datos) => {
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
-		await BD_varias.agregarRegistro(datos);
+		await BD_genericas.agregarRegistro(datos);
 		// Eliminar req.session.edicion
 		req.session.links = {};
 		// Adecuar el producto respecto al link
@@ -365,7 +365,7 @@ let altaDeLink = async (req, datos) => {
 };
 let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Obtener el producto con include a links
-	let producto = await BD_varias.obtenerPorIdConInclude(prodEntidad, prodID, [
+	let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
 		"links_gratuitos_cargados",
 		"links_gratuitos_en_la_web",
 		"links",
@@ -373,9 +373,9 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	]).then((n) => n.toJSON());
 
 	// Obtener los links gratuitos de películas del producto
-	let links = await BD_varias.obtenerTodosPorCampoConInclude(
+	let links = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		varias.entidad_id(prodEntidad),
+		especificas.entidad_id(prodEntidad),
 		prodID,
 		["status_registro", "link_tipo"]
 	)
@@ -389,7 +389,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_varias.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
+	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
@@ -397,23 +397,23 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Acciones si existen 'linksActivos'
 	if (linksActivos.length) {
 		let datos = {links_gratuitos_cargados_id: si, links_gratuitos_en_la_web_id: si};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+		BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
 		return;
 	} else if (producto.links_gratuitos_en_la_web_id == si) {
 		let datos = {links_gratuitos_en_la_web_id: talVez};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+		BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
 	}
 
 	// Acciones si existen 'linksTalVez'
 	if (linksTalVez.length) {
 		let datos = {links_gratuitos_cargados_id: talVez};
-		BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+		BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
 		return;
 	}
 
 	// Acciones si no se cumplen los anteriores
 	let datos = {links_gratuitos_cargados_id: no};
-	BD_varias.actualizarPorId(prodEntidad, prodID, datos);
+	BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
 	return;
 };
 let edicionDeLink = async (req, datos) => {
@@ -425,7 +425,7 @@ let edicionDeLink = async (req, datos) => {
 		// Adecuar la información del formulario
 		if (!datos.parte) datos.parte = "-";
 		// Averiguar si el link está en 'creado' y por este usuario
-		let linkOriginal = await BD_varias.obtenerPorIdConInclude(
+		let linkOriginal = await BD_genericas.obtenerPorIdConInclude(
 			"links_originales",
 			datos.id,
 			"status_registro"
@@ -437,7 +437,7 @@ let edicionDeLink = async (req, datos) => {
 			linkOriginalNuevo = {...linkOriginal, ...datos};
 			//return linkOriginalNuevo
 			// 2. Actualizarlo en la BD
-			await BD_varias.actualizarPorId("links_originales", datos.id, linkOriginalNuevo);
+			await BD_genericas.actualizarPorId("links_originales", datos.id, linkOriginalNuevo);
 		} else {
 			// Editados se guarda en versión edición
 			// 1. Obtener el link 'Edición Nueva'
@@ -457,7 +457,7 @@ let edicionDeLink = async (req, datos) => {
 			delete linkEdicionNueva.id;
 			// 2.2. Si el linkCombinado incluye una edición previa, se toma su 'id' para eliminarla
 			if (linkEdicionNueva.elc_id)
-				await BD_varias.eliminarRegistro("links_edicion", (id = linkCombinado.id));
+				await BD_genericas.eliminarRegistro("links_edicion", (id = linkCombinado.id));
 			else {
 				// 3. De lo contrario, se completa la info
 				linkEdicionNueva = {
@@ -467,7 +467,7 @@ let edicionDeLink = async (req, datos) => {
 				};
 			}
 			// 3. Agregar 'edición' a la BD
-			await BD_varias.agregarRegistro(linkEdicionNueva);
+			await BD_genericas.agregarRegistro(linkEdicionNueva);
 		}
 	}
 	return "";
@@ -489,16 +489,16 @@ let limpiarLosDatos = (datos) => {
 };
 let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar todos los originales
-	let entidad_id = varias.entidad_id(prodEntidad);
+	let entidad_id = especificas.entidad_id(prodEntidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
-	BD_varias.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
+	BD_genericas.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_varias.obtenerTodosPorCampo("links_originales", entidad_id, prodID)
+	BD_genericas.obtenerTodosPorCampo("links_originales", entidad_id, prodID)
 		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) =>
 			n.map((m) =>
-				BD_varias.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
+				BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
 			)
 		);
 };

@@ -1,18 +1,13 @@
 "use strict";
 // Definir variables
 const nodemailer = require("nodemailer");
-const BD_varias = require("../BD/Varias");
+const BD_genericas = require("../BD/Genericas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
-	userLogs: (req, res) => {
-		let url = req.originalUrl;
-		if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
-	},
-
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -39,7 +34,7 @@ module.exports = {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
 		if (paises_id.length) {
-			let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 			let paises_idArray = paises_id.split(", ");
 			// Convertir 'array de ID' en 'string de nombres'
 			for (let pais_id of paises_idArray) {
@@ -55,7 +50,7 @@ module.exports = {
 		// Función para convertir 'string de nombre' en  'string de ID'
 		let resultado = [];
 		if (pais_nombre.length) {
-			let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 			pais_nombreArray = pais_nombre.split(", ");
 			// Convertir 'array de nombres' en 'string de ID"
 			for (let pais_nombre of pais_nombreArray) {
@@ -210,4 +205,25 @@ module.exports = {
 		haceUnaHora.setHours(haceUnaHora.getHours() - 1);
 		return haceUnaHora;
 	},
+
+	borrarSessionCookies: (req, res, paso) => {
+		let pasos = [
+			"borrarTodo",
+			"datosTerminaste",
+			"palabrasClave",
+			"desambiguar",
+			"tipoProducto",
+			"datosOriginales",
+			"copiarFA",
+			"datosDuros",
+			"datosPers",
+			"confirma",
+		];
+		let indice = pasos.indexOf(paso) + 1;
+		for (indice; indice < pasos.length; indice++) {
+			if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
+			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
+		}
+	},
+	
 };

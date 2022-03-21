@@ -1,8 +1,8 @@
 "use strict";
 // ************ Requires ************
-const BD_varias = require("../../funciones/BD/varias");
-const BD_especificas = require("../../funciones/BD/especificas");
-const varias = require("../../funciones/Varias/Varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = {
 	visionGeneral: async (req, res) => {
@@ -10,10 +10,10 @@ module.exports = {
 		let tema = "revision";
 		let codigo = "visionGeneral";
 		// Definir variables
-		let status = await BD_varias.obtenerTodos("status_registro_ent", "orden");
+		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
 		let userID = req.session.usuario.id;
-		let haceUnaHora = varias.haceUnaHora();
+		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener Productos ------------------------------------------------------------
 		let Productos = await BD_especificas.obtenerProductos(haceUnaHora, revisar, userID);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
@@ -57,9 +57,9 @@ module.exports = {
 		let imagen = prodEditado.avatar;
 		let avatar = imagen ? "/imagenes/3-ProdRevisar/" + imagen : "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el título de la vista
-		let entidadNombre = varias.entidadNombre(entidad);
+		let entidadNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
 		// Info exclusiva para la vista de Edicion
 		let camposDD = variables
@@ -69,8 +69,8 @@ module.exports = {
 		let camposDD1 = camposDD.filter((n) => n.antesDePais);
 		let camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
 		let camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
-		let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
-		let BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
+		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 		let tiempo = prodEditado.editado_en
 			? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))

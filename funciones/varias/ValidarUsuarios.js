@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_varias = require("../BD/Varias");
+const BD_genericas = require("../BD/Genericas");
 const path = require("path");
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
 			? cartelMailVacio
 			: formatoMail(email)
 			? cartelMailFormato
-			: (await BD_varias.obtenerELC_id("usuarios", "email", email))
+			: (await BD_genericas.obtenerELC_id("usuarios", "email", email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 		errores.hay = hayErrores(errores);
