@@ -429,8 +429,7 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "agregar";
 		let codigo = "confirma";
-		let maximo
-		let indice
+		let maximo, indice
 		// 2. Si se perdió la info anterior, volver a esa instancia
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
