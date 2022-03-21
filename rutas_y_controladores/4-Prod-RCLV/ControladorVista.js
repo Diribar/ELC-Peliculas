@@ -72,8 +72,7 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
-		let procesos_canonizacion = [];
-		let roles_iglesia = [];
+		let procesos_canonizacion = roles_iglesia = [];
 		if (codigo == "RCLV_personajes") {
 			procesos_canonizacion = await BD_varias.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
