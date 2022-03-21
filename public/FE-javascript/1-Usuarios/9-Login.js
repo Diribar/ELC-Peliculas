@@ -13,9 +13,9 @@ window.addEventListener("load", async () => {
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = (i, errores) => {
 		// Averiguar si hay un error
-		campo = inputs[i].name;
-		valor = encodeURIComponent(inputs[i].value);
-		mensaje = errores[campo];
+		let campo = inputs[i].name;
+		let valor = encodeURIComponent(inputs[i].value);
+		let mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// En caso de error
 		if (mensaje) {
@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
 
 	// Revisa todos los inputs y devuelve todos los errores
 	let validarDataEntry = () => {
-		url = "?";
+		let url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			if (i > 0) url += "&";
 			url += inputs[i].name;
@@ -53,7 +53,7 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (statusInicial) {
-		errores = await validarDataEntry();
+		let errores = await validarDataEntry();
 		// Revisa los errores en los inputs
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("change", async () => {
 			resultadoInvalido.classList.add("ocultar");
-			errores = await validarDataEntry();
+			let errores = await validarDataEntry();
 			// Realiza acciones sobre el input cambiado
 			accionesSiHayErrores(i, errores);
 		});

@@ -1,9 +1,11 @@
 "use strict";
 // Requires
 const BD_varias = require("../../funciones/BD/varias");
+const controladoraAgregar = require("../../rutas_y_controladores/2-Prod-Agregar/ControladorVista");
 
 module.exports = async (req, res, next) => {
-	datosTerminaste = req.session.datosTerminaste
+	let mensaje;
+	let datosTerminaste = req.session.datosTerminaste
 		? req.session.datosTerminaste
 		: req.cookies.datosTerminaste
 		? req.cookies.datosTerminaste
@@ -14,9 +16,11 @@ module.exports = async (req, res, next) => {
 			datosTerminaste.fuente + "_id",
 			datosTerminaste[datosTerminaste.fuente + "_id"]
 		);
-		let ruta =
-			"/producto/agregar/ya-en-bd/?entidad=" + datosTerminaste.entidad + "&valor=" + elc_id;
-		if (elc_id) return res.redirect(ruta);
+		mensaje = "La Película / Colección ya está en nuestra BD";
+	}
+	if (mensaje) {
+		controladoraAgregar.borrarSessionCookies(req, res, "borrarTodo");
+		return res.render("Errores", {mensaje});
 	}
 	next();
 };

@@ -14,15 +14,15 @@ window.addEventListener("load", () => {
 			: "";
 		// Acciones si se realizan cambios
 		inputs[i].addEventListener("change", async () => {
-			campo = inputs[i].name;
-			valor = inputs[i].value;
-			errores = await fetch(
+			let campo = inputs[i].name;
+			let valor = inputs[i].value;
+			let errores = await fetch(
 				"/usuarios/api/validar-perennes/?" +
 					campo +
 					"=" +
 					valor
 			).then((n) => n.json());
-			mensaje = errores[campo];
+			let mensaje = errores[campo];
 			mensajes[i].innerHTML = mensaje;
 			if (mensaje) {
 				asteriscos[i].classList.remove("ocultar");

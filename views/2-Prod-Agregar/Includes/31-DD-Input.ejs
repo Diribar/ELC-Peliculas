@@ -11,7 +11,7 @@
 		<%- (dataEntry[registro.nombreDelCampo] && !errores[registro.nombreDelCampo]) ? include("39-DD-Mensajes") : "" %>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark <%= registro.nombreDelCampo %><%- !errores[registro.nombreDelCampo] ? ' ocultar' : '' %>">
-			<span class="mensajeError <%= registro.nombreDelCampo %>"><%= errores[registro.nombreDelCampo] %></span>
+			<span class="mensajeError <%= registro.nombreDelCampo %>"><%- errores[registro.nombreDelCampo] %></span>
 		</i>
 	</div>
 </section>

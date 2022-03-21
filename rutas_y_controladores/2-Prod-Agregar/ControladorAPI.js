@@ -22,13 +22,13 @@ module.exports = {
 
 	// Vista (desambiguar)
 	averiguarColeccion: async (req, res) => {
-		datos = await procesar.averiguarColeccion(req.query.TMDB_id);
+		let datos = await procesar.averiguarColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
 
 	// Vista (tipoProducto)
 	averiguarColecciones: async (req, res) => {
-		datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
+		let datos = await BD_varias.obtenerTodos("colecciones", "nombre_castellano").then((n) =>
 			n.map((m) => {
 				return {
 					id: m.id,
@@ -39,28 +39,28 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguarCantTemporadas: async (req, res) => {
-		datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
+		let datos = await BD_varias.obtenerPorId("colecciones", req.query.id)
 			.then((n) => n.toJSON())
 			.then((n) => n.cant_temporadas);
 		return res.json(datos);
 	},
 	obtenerCapitulos: async (req, res) => {
-		datos = await BD_especificas.obtenerCapitulos(req.query.coleccion_id, req.query.temporada);
+		let datos = await BD_especificas.obtenerCapitulos(req.query.coleccion_id, req.query.temporada);
 		return res.json(datos);
 	},
 
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
-		errores = validar.copiarFA(req.query);
+		let errores = validar.copiarFA(req.query);
 		return res.json(errores);
 	},
 	obtenerFA_id: (req, res) => {
-		FA_id = procesar.obtenerFA_id(req.query.direccion);
+		let FA_id = procesar.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 	obtenerELC_id: async (req, res) => {
 		let {entidad, campo, valor} = req.query;
-		elc_id = await BD_varias.obtenerELC_id(entidad, campo, valor);
+		let elc_id = await BD_varias.obtenerELC_id(entidad, campo, valor);
 		return res.json(elc_id);
 	},
 
@@ -76,13 +76,13 @@ module.exports = {
 
 	// Vista (datosPers)
 	obtenerDatosSubcategoria: async (req, res) => {
-		subcategoria = await BD_varias.obtenerPorCampo("subcategorias", "id", req.query.id);
+		let subcategoria = await BD_varias.obtenerPorCampo("subcategorias", "id", req.query.id);
 		return res.json(subcategoria);
 	},
 	validarDatosPers: async (req, res) => {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
-		errores = await validar.datosPers(campos, req.query);
+		let errores = await validar.datosPers(campos, req.query);
 		return res.json(errores);
 	},
 };

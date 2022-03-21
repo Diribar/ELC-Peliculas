@@ -9,8 +9,8 @@ const bcryptjs = require("bcryptjs");
 
 module.exports = {
 	altaMailForm: (req, res) => {
-		tema = "usuario";
-		codigo = "mail";
+		let tema = "usuario";
+		let codigo = "mail";
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("Home", {
@@ -67,13 +67,13 @@ module.exports = {
 
 	loginForm: (req, res) => {
 		// 1. Tema y Código
-		tema = "usuario";
-		codigo = "login";
+		let tema = "usuario";
+		let codigo = "login";
 		// 2. Data Entry propio y errores
-		dataEntry = req.session.email
+		let dataEntry = req.session.email
 			? {email: req.session.email, contrasena: req.session.contrasena}
 			: null;
-		errores = req.session.errores ? req.session.errores : false;
+		let errores = req.session.errores ? req.session.errores : false;
 		// 3. Render del formulario
 		return res.render("Home", {
 			tema,
@@ -116,15 +116,15 @@ module.exports = {
 	},
 
 	logout: (req, res) => {
-		url = req.session.urlReferencia ? req.session.urlReferencia : "/";
+		let url = req.session.urlReferencia ? req.session.urlReferencia : "/";
 		res.clearCookie("email");
 		req.session.destroy();
 		return res.redirect(url);
 	},
 
 	altaPerennesForm: async (req, res) => {
-		tema = "usuario";
-		codigo = "perennes";
+		let tema = "usuario";
+		let codigo = "perennes";
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		let errores = req.session.errores ? req.session.errores : "";
@@ -162,8 +162,8 @@ module.exports = {
 	},
 
 	altaEditablesForm: async (req, res) => {
-		tema = "usuario";
-		codigo = "editables";
+		let tema = "usuario";
+		let codigo = "editables";
 		let paises = await BD_varias.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
@@ -173,7 +173,7 @@ module.exports = {
 		let errores = req.session.errores ? req.session.errores : false;
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		avatar = dataEntry.avatar
+		let avatar = dataEntry.avatar
 			? "/imagenes/9-Provisorio/" + dataEntry.avatar
 			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
 		// Ir a la vista
@@ -198,7 +198,7 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
-			if (req.file) delete req.body.avatar
+			if (req.file) delete req.body.avatar;
 			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
@@ -217,8 +217,8 @@ module.exports = {
 	},
 
 	detalle: async (req, res) => {
-		tema = "usuario";
-		codigo = "detalle";
+		let tema = "usuario";
+		let codigo = "detalle";
 		res.render("Home", {
 			tema,
 			codigo,
@@ -228,8 +228,8 @@ module.exports = {
 	},
 
 	editarForm: async (req, res) => {
-		tema = "usuario";
-		codigo = "edicion";
+		let tema = "usuario";
+		let codigo = "edicion";
 		res.render("Home", {
 			tema,
 			codigo,

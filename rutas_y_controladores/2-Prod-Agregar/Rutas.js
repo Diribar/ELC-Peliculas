@@ -8,8 +8,8 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-const prodEnBD = require("../../middlewares/varios/productoYaEnBD");
-const entidadId = require("../../middlewares/entidades/entidadId");
+const prodEnBD = require("../../middlewares/producto/productoYaEnBD");
+const entidadId = require("../../middlewares/producto/entidadId");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -55,7 +55,6 @@ router.get("/terminaste", soloAutInput, entidadId, vista.terminasteForm);
 
 // Rutas de vistas auxiliares
 router.get("/responsabilidad", vista.responsabilidad);
-router.get("/ya-en-bd", vista.yaEnBD_Form); //router.post("/ya-en-bd", usuarios, vista.yaEnBD_Form);
 
 // Fin
 module.exports = router;

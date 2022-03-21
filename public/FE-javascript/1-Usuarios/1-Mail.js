@@ -11,12 +11,12 @@ window.addEventListener("load", () => {
 	if (!asterisco.classList.contains("ocultar")) button.classList.add("inactivo")
 	// Acciones si se realizan cambios
 	input.addEventListener("change", async () => {
-		campo = input.name;
-		valor = input.value;
-		errores = await fetch(
+		let campo = input.name;
+		let valor = input.value;
+		let errores = await fetch(
 			"/usuarios/api/validar-mail/?" + campo + "=" + valor
 		).then((n) => n.json());
-		mensaje = errores[campo];
+		let mensaje = errores[campo];
 		mensajes.innerHTML = mensaje;
 		if (mensaje) {
 			asterisco.classList.remove("ocultar");

@@ -69,9 +69,9 @@ window.addEventListener("load", async () => {
 		for (let input of inputs) {
 			if (inputValue ? input.value : true) {
 				// Averiguar si hay un error
-				campo = input.name;
-				indice = campos.indexOf(campo);
-				mensaje = errores[campo];
+				let campo = input.name;
+				let indice = campos.indexOf(campo);
+				let mensaje = errores[campo];
 				mensajesError[indice].innerHTML = mensaje;
 				// En caso de error
 				if (mensaje != undefined) {
@@ -87,7 +87,7 @@ window.addEventListener("load", async () => {
 		botonSubmit();
 	};
 	// Aplicar cambios en la subcategoría
-	funcionSubcat = () => {
+	let funcionSubcat = () => {
 		for (let opcion of subcategoriaOpciones) {
 			opcion.className.includes(categoria.value)
 				? opcion.classList.remove("ocultar")
@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
 	};
 	// Aplicar cambios en RCLV
-	funcionRCLV = async () => {
+	let funcionRCLV = async () => {
 		if (!subcategoria.value) return;
 		// Averiguar qué RCLV corresponde
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
@@ -150,5 +150,5 @@ window.addEventListener("load", async () => {
 	if (subcategoria.value) funcionRCLV();
 
 	// Errores y boton 'Submit'
-	await statusInicial((inputValue = true));
+	await statusInicial(true);
 });

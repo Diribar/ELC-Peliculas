@@ -14,8 +14,8 @@ const varias = require("../../funciones/Varias/Varias");
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "palabrasClave";
+		let tema = "agregar";
+		let codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		let errores = req.session.erroresPC
@@ -59,8 +59,8 @@ module.exports = {
 
 	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "desambiguar";
+		let tema = "agregar";
+		let codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "desambiguar");
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
@@ -89,7 +89,7 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
+		let infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
@@ -113,8 +113,8 @@ module.exports = {
 
 	tipoProd_Form: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "tipoProducto";
+		let tema = "agregar";
+		let codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
@@ -157,8 +157,8 @@ module.exports = {
 
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "copiarFA";
+		let tema = "agregar";
+		let codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
 		borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
@@ -202,7 +202,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			elc_id = await BD_varias.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
+			let elc_id = await BD_varias.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -228,18 +228,18 @@ module.exports = {
 
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "datosDuros";
+		let tema = "agregar";
+		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
 			varias.borrarArchivo(req.cookies.datosPers.avatarBD, "./public/imagenes/9-Provisorio/");
 		}
 		borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
-		datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
 		// Averiguar el origen
-		origen =
+		let origen =
 			datosDuros.fuente == "TMDB"
 				? "desambiguar"
 				: datosDuros.fuente == "FA"
@@ -279,7 +279,7 @@ module.exports = {
 	datosDurosGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
-		origen =
+		let origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
 				: req.session.copiarFA || req.cookies.copiarFA
@@ -298,7 +298,7 @@ module.exports = {
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			elc_id = await BD_varias.obtenerELC_id(
+			let elc_id = await BD_varias.obtenerELC_id(
 				datosDuros.entidad,
 				datosDuros.fuente + "_id",
 				datosDuros[datosDuros.fuente + "_id"]
@@ -310,7 +310,8 @@ module.exports = {
 			}
 		}
 		// 5. Si no hay errores de imagen, revisar el archivo de imagen
-		rutaYnombre = req.file ? req.file.path : "";
+		let rutaYnombre = req.file ? req.file.path : "";
+		let tipo, tamano,nombre
 		if (!errores.avatar) {
 			if (req.file) {
 				// En caso de archivo por multer
@@ -426,10 +427,12 @@ module.exports = {
 
 	confirmaForm: (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "confirma";
+		let tema = "agregar";
+		let codigo = "confirma";
+		let maximo
+		let indice
 		// 2. Si se perdió la info anterior, volver a esa instancia
-		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 3. Datos de la producción
 		maximo = 50;
@@ -455,7 +458,7 @@ module.exports = {
 
 	confirmaGuardar: async (req, res) => {
 		// 1. Si se perdió la info, volver a la instancia anterior
-		confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
+		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 7. Obtener la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
@@ -465,7 +468,7 @@ module.exports = {
 				(n) => n.valor
 			),
 		]);
-		calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
+		let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
 		let objetoCalificacion = {
 			fe_valores,
 			entretiene,
@@ -478,10 +481,10 @@ module.exports = {
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
 		};
-		registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
+		let registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let entidadEnSingular = varias.entidadEnSingular(entidad);
+		let entidadEnSingular = varias.entidadEnSingular(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -512,8 +515,8 @@ module.exports = {
 
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
-		tema = "agregar";
-		codigo = "terminaste";
+		let tema = "agregar";
+		let codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;
@@ -548,21 +551,16 @@ module.exports = {
 	},
 
 	responsabilidad: (req, res) => {
-		tema = "agregar";
-		codigo = "responsabilidad";
-		titulo = "Agregar - Responsabilidad";
+		let tema = "agregar";
+		let codigo = "responsabilidad";
+		let titulo = "Agregar - Responsabilidad";
 		return res.render("Home", {tema, codigo, titulo});
 	},
 
-	yaEnBD_Form: (req, res) => {
-		titulo = "Agregar - Ya en Base de Datos";
-		borrarSessionCookies(req, res, "borrarTodo");
-		return res.send("La Película / Colección ya está en nuestra BD");
-	},
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	entidad_id = varias.entidad_id(confirma.entidad);
+	let entidad_id = varias.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: confirma.creado_por_id,
@@ -600,9 +598,9 @@ let prepararMensaje = (desambiguar) => {
 	let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
 	let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
 	let coincidencias = desambiguar.resultados.length;
-	nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+	let nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
 	let hayMas = desambiguar.hayMas;
-	mensaje =
+	let mensaje =
 		"Encontramos " +
 		(coincidencias == 1
 			? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")

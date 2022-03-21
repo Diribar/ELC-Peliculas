@@ -102,6 +102,7 @@ let validarLinkRepetidos = async (datos) => {
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
+	let mensaje
 	if (repetido) {
 		mensaje =
 			"Este " +

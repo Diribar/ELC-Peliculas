@@ -95,6 +95,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("change", async (e) => {
 		// Obtener el valor para 'campo'
 		let campo = e.target.name;
+		let datos;
 		// (Título botonOriginal / castellano) + año lanzamiento
 		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
 			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
@@ -235,9 +236,9 @@ window.addEventListener("load", async () => {
 	let actualizarInput_errores = (errores, camposEspecificos, mostrarOK) => {
 		for (let campo of camposEspecificos) {
 			// Guarda el mensaje de error
-			mensaje = errores[campo];
+			let mensaje = errores[campo];
 			// Reemplaza
-			indice = campos.indexOf(campo);
+			let indice = campos.indexOf(campo);
 			mensajesError[indice].innerHTML = mensaje;
 			// Acciones en función de si hay o no mensajes de error
 			mensaje
@@ -286,9 +287,9 @@ window.addEventListener("load", async () => {
 	};
 	let formInputChange_consecuenciaError = (error, campo) => {
 		// Guarda el mensaje de error
-		mensaje = error[campo];
+		let mensaje = error[campo];
 		// Reemplaza el mensaje
-		indice = campos.indexOf(campo);
+		let indice = campos.indexOf(campo);
 		mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error
 		mensaje

@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	// Fórmula de revisar input
 	let accionesSiHayErrores = async (dato) => {
 		let link = "/producto/agregar/api/validar-palabras-clave/?palabrasClave=" + dato;
-		respuesta = await fetch(link).then((n) => n.json());
+		let respuesta = await fetch(link).then((n) => n.json());
 		// Acciones en función de la respuesta
 		if (respuesta) {
 			// Mostrar errores
@@ -56,7 +56,7 @@ window.addEventListener("load", () => {
 	});
 
 	let api_pre = (input) => {
-		palabrasClave = input.trim();
+		let palabrasClave = input.trim();
 		// Procesando la información
 		resultado.innerHTML = "Procesando la información...";
 		resultado.classList.remove(...resultado.classList);
@@ -71,7 +71,9 @@ window.addEventListener("load", () => {
 		let cantResultados = lectura.cantResultados;
 		let hayMas = lectura.hayMas;
 		// Determinar oracion y formato
-		let formatoVigente = "";
+		let formatoAnterior
+		let formatoVigente
+		let oracion
 		// Resultado exitoso
 		if (cantResultados > 0 && !hayMas) {
 			oracion =

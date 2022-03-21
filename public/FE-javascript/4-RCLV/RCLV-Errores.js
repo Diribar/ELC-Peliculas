@@ -33,11 +33,11 @@ window.addEventListener("load", async () => {
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
 	if (entidad == "RCLV_personajes") {
-		santosanta = document.querySelector("#dataEntry #santosanta");
-		ocultar = document.querySelector("#dataEntry #ocultar");
-		enProcCan = document.querySelectorAll("input[name='enProcCan']");
-		proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
-		rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
+		var santosanta = document.querySelector("#dataEntry #santosanta");
+		var ocultar = document.querySelector("#dataEntry #ocultar");
+		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
+		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
 
 	// Add Event Listeners **************
@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 	});
 
 	form.addEventListener("change", async (e) => {
-		campo = e.target.name;
+		let campo = e.target.name;
 		// Situaciones particulares
 		if (campo == "genero" || campo == "enProcCan") funcionGenero();
 		if (campo == "mes_id") diasDelMes();
@@ -129,8 +129,8 @@ window.addEventListener("load", async () => {
 		}
 
 		// Conclusiones
-		resultado = Object.values(OK);
-		resultadoTrue = resultado.length
+		let resultado = Object.values(OK);
+		let resultadoTrue = resultado.length
 			? resultado.reduce((a, b) => {
 					return !!a && !!b;
 			  })
@@ -143,7 +143,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionNombre = async () => {
-		url = "&nombre=" + nombre.value + "&entidad=" + entidad;
+		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
 		//OK.nombre = !errores.nombre ;
 		if (entidad == "RCLV_personajes" && !errores.nombre) {
@@ -169,7 +169,7 @@ window.addEventListener("load", async () => {
 		} else {
 			// Se averigua si hay un error con la fecha
 			if (mes_id.value && dia.value) {
-				url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+				let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
 				url += "&desconocida=" + desconocida.checked;
 				errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
 				OK.fecha = !errores.fecha;
@@ -192,7 +192,7 @@ window.addEventListener("load", async () => {
 	let funcionAno = async () => {
 		// Se averigua si hay un error con el año
 		if (ano.value) {
-			url = "&ano=" + ano.value;
+			let url = "&ano=" + ano.value;
 			errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
 			OK.ano = !errores.ano;
 		} else OK.ano = false;
@@ -215,7 +215,7 @@ window.addEventListener("load", async () => {
 		// Ocultar / mostrar lo referido al status y género
 		enProcCan[0].checked ? ocultar.classList.remove("invisible") : ocultar.classList.add("invisible");
 		// Armar la url
-		url = "";
+		let url = "";
 		// En proceso de canonización
 		url += enProcCan[0].checked ? "&enProcCan=1" : enProcCan[1].checked ? "&enProcCan=0" : "";
 		// Status del proceso de canonización
@@ -232,15 +232,15 @@ window.addEventListener("load", async () => {
 	let funcionGenero = () => {
 		if (entidad != "RCLV_personajes") return;
 		// Definir variables
-		generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
+		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
 
-		enProcCanElegido = enProcCan[0].checked;
+		let enProcCanElegido = enProcCan[0].checked;
 
 		// Cambiar el género de una leyenda, si corresponde
 		if (generoElegido) {
-			letraActual = generoElegido == "V" ? "o" : "a";
-			letraAnterior = generoElegido == "V" ? "a" : "o";
-			cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
+			let letraActual = generoElegido == "V" ? "o" : "a";
+			let letraAnterior = generoElegido == "V" ? "a" : "o";
+			let cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
 			if (cambiarGenero)
 				santosanta.innerHTML = santosanta.innerHTML.replace(
 					"sant" + letraAnterior,
@@ -252,7 +252,7 @@ window.addEventListener("load", async () => {
 		if (!generoElegido || !enProcCanElegido) return;
 
 		// Filtrar y dejar solamente los ID alineados con el género
-		opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
+		let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
 		opciones_proc.forEach((n) =>
 			n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
 		);
@@ -264,7 +264,7 @@ window.addEventListener("load", async () => {
 			proceso_canonizacion_id.value = "";
 
 		// Filtrar y dejar solamente los ID alineados con el género
-		opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+		let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
 		opciones_rol.forEach((n) =>
 			n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
 		);
@@ -298,10 +298,10 @@ window.addEventListener("load", async () => {
 	};
 
 	// Buscar otros casos en esa fecha
-	registrosConEsaFecha = async () => {
+	let registrosConEsaFecha = async () => {
 		// Obtener los casos
-		url = "/producto/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
-		casos = await fetch(url).then((n) => n.json());
+		let url = "/producto/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
+		let casos = await fetch(url).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
 			posiblesDuplicados.innerHTML = "¡No hay otros casos!";

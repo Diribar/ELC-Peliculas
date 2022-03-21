@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	// Verificar los datos
-	let mensaje = "";
+	let mensaje;
 	// Sin entidad y/o ID
 	if (!entidad) mensaje = "Falta el dato de la 'entidad'";
 	if (!prodID) mensaje = "Falta el dato del 'ID'";

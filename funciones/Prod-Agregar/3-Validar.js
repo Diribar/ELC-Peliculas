@@ -16,7 +16,7 @@ module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	desambiguar: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
-		errores = {hay: false};
+		let errores = {hay: false};
 		// Si es una película y está en una colección
 		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
 			errores = {
@@ -41,7 +41,7 @@ module.exports = {
 	copiarFA: (datos) => {
 		let errores = {};
 		// Dirección
-		url = datos.direccion;
+		let url = datos.direccion;
 		errores.direccion = !url
 			? cartelCampoVacio
 			: !url.includes("www.filmaffinity.com/") ||
@@ -60,7 +60,7 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		cantDatosObtenidos = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
+		let cantDatosObtenidos = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
 			: !Object.keys(cantDatosObtenidos).length
@@ -246,9 +246,13 @@ module.exports = {
 				datos.subcategoria_id
 			).then((n) => n.toJSON());
 			// Relación con la vida
-			if (subcategoria.personaje) errores.personaje_id = !datos.personaje_id ? cartelSelectVacio : "";
-			if (subcategoria.hecho) errores.hecho_id = !datos.hecho_id ? cartelSelectVacio : "";
-			if (subcategoria.valor) errores.valor_id = !datos.valor_id ? cartelSelectVacio : "";
+			if (subcategoria.personaje)
+				errores.personaje_id =
+					!datos.personaje_id || datos.personaje_id == 1 ? cartelSelectVacio : "";
+			if (subcategoria.hecho)
+				errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? cartelSelectVacio : "";
+			if (subcategoria.valor)
+				errores.valor_id = !datos.valor_id || datos.valor_id == 1 ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -305,9 +309,10 @@ let validarRepetidos = async (campo, datos) => {
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
+	let mensaje;
 	if (repetido) {
 		let producto = varias.entidadNombre(datos.entidad);
-		var mensaje =
+		mensaje =
 			"Esta " +
 			"<a href='/producto/detalle/?entidad=" +
 			datos.entidad +
@@ -317,6 +322,6 @@ let validarRepetidos = async (campo, datos) => {
 			producto.toLowerCase() +
 			"</strong></u></a>" +
 			" ya se encuentra en nuestra base de datos";
-	} else var mensaje = "";
+	} else mensaje = "";
 	return mensaje;
 };
