@@ -520,11 +520,12 @@ let funcionCrew = (crew, campo_TMDB) => {
 	let datos = crew.filter((n) => n.department == campo_TMDB);
 	let valores = "";
 	if (datos.length) {
-		let valores = datos.map((m) => m.name);
+		valores = datos.map((m) => m.name);
 		if (datos.length > 1) {
 			datos.sort((a, b) => {
 				return a > b ? 1 : a < b ? -1 : 0;
 			});
+			console.log(datos);
 			for (let i = datos.length - 1; i > 0; i--) {
 				if (valores[i] == valores[i - 1]) valores.splice(i, 1);
 			}

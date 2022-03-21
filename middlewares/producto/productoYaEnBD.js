@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const BD_genericas = require("../../funciones/BD/Genericas");
+const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = async (req, res, next) => {
@@ -11,7 +11,8 @@ module.exports = async (req, res, next) => {
 		: req.cookies.datosOriginales
 		? req.cookies.datosOriginales
 		: "";
-	if (datos != "" && datos.fuente != "IM") {
+	if (datos=="") mensaje="Debés comenzar desde el principio el proceso de agregado de una película o colección"
+	else if (datos.fuente != "IM") {
 		elc_id = await BD_especificas.obtenerELC_id(
 			datos.entidad,
 			datos.fuente + "_id",
