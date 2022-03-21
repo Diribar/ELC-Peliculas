@@ -17,8 +17,8 @@
 				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 				<% for (let continente of continentes) { %>
 					<optgroup label="<%= continente %>">
-						<% for (let n of paises.filter(m => m.continente == continente)) { %>
-							<option value="<%= n.id %>"><%= n.nombre %></option>
+						<% for (let pais of paises.filter(n => n.continente == continente)) { %>
+							<option value="<%= pais.id %>"><%= pais.nombre %></option>
 						<% } %>	
 					</optgroup>
 				<% } %> 
