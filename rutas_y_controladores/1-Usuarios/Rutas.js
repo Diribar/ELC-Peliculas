@@ -1,14 +1,14 @@
 "use strict";
 //************************* Requires *******************************
-let express = require("express");
-let router = express.Router();
-let API = require("./ControladorAPI");
-let vista = require("./ControladorVista");
+const express = require("express");
+const router = express.Router();
+const API = require("./ControladorAPI");
+const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
-let soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
-let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-let multer = require("../../middlewares/varios/multer");
+const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
+const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
 // Rutas de APIs
