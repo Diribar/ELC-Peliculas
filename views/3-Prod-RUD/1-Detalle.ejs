@@ -14,6 +14,7 @@
 				</ul>
 			</div>
 			<!-- País, Idioma, Castellano, Color -->
+			<% console.log(producto) %> 
 			<div class="datosAdicionales">
 				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises ? paises : "Sin datos" %>. 
 				<strong>Idioma original</strong>: <%= producto.idioma_original.nombre ? producto.idioma_original.nombre : "Sin datos" %>. 

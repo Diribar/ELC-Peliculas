@@ -348,7 +348,7 @@ let altaDeLink = async (req, datos) => {
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
 		let entidad_id = varias.entidad_id(datos.prodEntidad);
-		datos = {
+		let datos = {
 			...datos,
 			entidad: "links_originales",
 			[entidad_id]: datos.prodID,

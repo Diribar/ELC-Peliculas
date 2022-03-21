@@ -4,7 +4,7 @@ const BD_varias = require("../../funciones/BD/varias");
 
 module.exports = {
 	home: async (req, res) => {
-		tema = "productos";
+		let tema = "productos";
 		res.render("Home", {
 			tema,
 			opcion: null,
@@ -15,7 +15,7 @@ module.exports = {
 	},
 
 	opcion: async (req, res) => {
-		tema = "productos";
+		let tema = "productos";
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
 		let opcionElegida = opciones.find((n) => n.opcion == opcion);
@@ -35,7 +35,7 @@ module.exports = {
 	},
 
 	tipo: async (req, res) => {
-		tema = "productos";
+		let tema = "productos";
 		// Obtener el código de Opción y Tipo
 		let url = req.url.slice(1);
 		// Obtener la opción, los tipos para la opción elegida y el título
@@ -58,7 +58,7 @@ module.exports = {
 	},
 
 	filtros: (req, res) => {
-		tema = "productos";
+		let tema = "productos";
 		return res.send("Filtros");
 		//	let user_entry = req.query;
 		//	let results = [];

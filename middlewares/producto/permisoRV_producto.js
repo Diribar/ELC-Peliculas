@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
 	let haceUnaHora = varias.haceUnaHora();
-	let mensaje = "";
+	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
 		"status_registro",

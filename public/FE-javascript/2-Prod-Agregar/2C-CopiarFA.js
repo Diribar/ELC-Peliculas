@@ -15,9 +15,9 @@ window.addEventListener("load", async () => {
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
 	let accionesSiHayErrores = async (i, errores) => {
 		// Averiguar si hay un error
-		campo = inputs[i].name;
-		valor = encodeURIComponent(inputs[i].value);
-		mensaje = errores[campo];
+		let campo = inputs[i].name;
+		let valor = encodeURIComponent(inputs[i].value);
+		let mensaje = errores[campo];
 		// Verificar si el FA_id ya está en nuestra BD
 		if (campo == "direccion" && !mensaje) mensaje = await verificarRepetido_FA_id();
 		// Agregar comentario en 'contenido'
@@ -50,12 +50,12 @@ window.addEventListener("load", async () => {
 
 	// Revisar si el FA_id ya está en la BD
 	let verificarRepetido_FA_id = async () => {
-		direccion = document.querySelector(".input[name='direccion']").value;
-		FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
-		url = "entidad=" + entidad;
+		let direccion = document.querySelector(".input[name='direccion']").value;
+		let FA_id = await fetch(pre + "FA-obtener-fa-id/?direccion=" + direccion).then((n) => n.json());
+		let url = "entidad=" + entidad;
 		url += "&campo=FA_id";
 		url += "&valor=" + FA_id;
-		elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
+		let elc_id = await fetch(pre + "FA-obtener-elc-id/?" + url).then((n) => n.json());
 		if (!elc_id && entidad != "colecciones") {
 			url = "entidad=" + (entidad == "peliculas" ? "capitulos" : "peliculas");
 			url += "&campo=FA_id";
@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
 
 	// Revisa todos los inputs y devuelve los errores
 	let validarDataEntry = () => {
-		url = "?";
+		let url = "?";
 		for (let i = 0; i < inputs.length; i++) {
 			if (i > 0) url += "&";
 			url += inputs[i].name;
@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (statusInicial) {
-		errores = await validarDataEntry();
+		let errores = await validarDataEntry();
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
 		}
@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 	// Revisa un data-entry en particular (el modificado) y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			errores = await validarDataEntry();
+			let errores = await validarDataEntry();
 			accionesSiHayErrores(i, errores);
 		});
 	}
@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
-			errores = await validarDataEntry();
+			let errores = await validarDataEntry();
 			for (let i = 0; i < inputs.length; i++) {
 				accionesSiHayErrores(i, errores);
 			}

@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 	};
 	let consecuenciaErrorUrl = async (error, fila) => {
 		// Guarda el mensaje de error
-		mensaje = error.url;
+		let mensaje = error.url;
 		// Reemplaza el mensaje
 		let indiceGral = fila * columnasInput;
 		mensajesError[indiceGral].innerHTML = mensaje;
@@ -275,7 +275,7 @@ window.addEventListener("load", async () => {
 		// Obtener la info de losdata-entry de la fila
 		let dataEntry = actualizarDataEntry(fila);
 		// Obtener los errores de la fila
-		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
+		let errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
 		// Consecuencias en cada celda
 		for (let campo of camposInput) {
 			// Guarda el mensaje de error

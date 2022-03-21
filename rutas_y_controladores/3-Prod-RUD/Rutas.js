@@ -8,8 +8,8 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-const entidadId = require("../../middlewares/entidades/entidadId");
-const permisoRUD = require("../../middlewares/entidades/permisoRUD");
+const entidadId = require("../../middlewares/producto/entidadId");
+const permisoRUD = require("../../middlewares/producto/permisoRUD");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************

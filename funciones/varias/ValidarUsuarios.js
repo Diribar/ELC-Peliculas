@@ -125,8 +125,8 @@ let extension = (nombre) => {
 };
 
 let hayErrores = (errores) => {
-	resultado = false;
-	valores = Object.values(errores);
+	let resultado = false;
+	let valores = Object.values(errores);
 	for (let valor of valores) {
 		if (valor) resultado = true;
 	}

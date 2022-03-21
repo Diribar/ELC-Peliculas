@@ -45,8 +45,8 @@ module.exports = {
 		if (datos.desconocida == "false" || datos.desconocida == undefined) {
 			if (!datos.mes_id || !datos.dia) error = cartelFechaIncompleta;
 			if (!error) {
-				mes = datos.mes_id;
-				dia = datos.dia;
+				let mes = datos.mes_id;
+				let dia = datos.dia;
 				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
 					error = cartelSupera;
 			}
@@ -122,7 +122,7 @@ let prefijo = (nombre) => {
 };
 
 let hayErrores = (errores) => {
-	valores = Object.values(errores);
+	let valores = Object.values(errores);
 	for (let valor of valores) {
 		if (valor) return true;
 	}

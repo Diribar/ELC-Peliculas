@@ -49,8 +49,7 @@ module.exports = {
 				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages &&
-						datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
+					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
 				)
 					datosAPI_renamed.en_castellano_id = 1;
 			}
@@ -63,16 +62,12 @@ module.exports = {
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview)
-				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar =
-					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.produccion = datosAPI.production_companies
-					.map((n) => n.name)
-					.join(", ");
+				datosAPI_renamed.produccion = datosAPI.production_companies.map((n) => n.name).join(", ");
 			// Crew
 			if (datosAPI.crew.length > 0)
 				datosAPI_renamed = {
@@ -103,11 +98,7 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_varias.obtenerELC_id(
-				"colecciones",
-				"TMDB_id",
-				datos.colec_TMDB_id
-			);
+			datos.colec_id = await BD_varias.obtenerELC_id("colecciones", "TMDB_id", datos.colec_TMDB_id);
 			if (datos.colec_id) return datos;
 		}
 		return datos;
@@ -117,7 +108,7 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_collection: async function (datos) {
 		// Datos obtenidos sin la API
-		datosIniciales = {
+		let datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
@@ -143,11 +134,9 @@ module.exports = {
 				);
 			}
 			// sinopsis, avatar
-			if (datosAPI.overview)
-				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar =
-					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
 			datosAPI_renamed.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
 			datosAPI_renamed.cant_capitulos = datosAPI.parts.length;
@@ -194,8 +183,7 @@ module.exports = {
 			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
 			// Paises_id
 			if (datosAPI.production_countries.length > 0)
-				paises_id +=
-					datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
+				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
 				produccion += datosAPI.production_companies.map((n) => n.name).join(", ") + ", ";
@@ -206,8 +194,7 @@ module.exports = {
 				musica += funcionCrew(datosAPI.crew, "Sound") + ", ";
 			}
 			// Cast
-			if (datosAPI.cast.length > 0)
-				actuacion += datosAPI.cast.map((n) => n.name).join(", ") + ", ";
+			if (datosAPI.cast.length > 0) actuacion += datosAPI.cast.map((n) => n.name).join(", ") + ", ";
 		}
 		// Procesar los resultados
 		let capitulos = datos.capitulosTMDB_id.length;
@@ -238,8 +225,7 @@ module.exports = {
 					capitulo: numCapitulo,
 					creado_por_id: 2,
 				};
-				if (datosCol.en_castellano_id != 2)
-					datosCap.en_castellano_id = datosCol.en_castellano_id;
+				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
 				if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
 				datosCap.categoria_id = datosCol.categoria_id;
 				datosCap.subcategoria_id = datosCol.subcategoria_id;
@@ -267,7 +253,7 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_tv: async (datos) => {
 		// Datos obtenidos sin la API
-		datosIniciales = {
+		let datosIniciales = {
 			producto: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
@@ -294,8 +280,7 @@ module.exports = {
 				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
-					(datosAPI.spoken_languages &&
-						datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
+					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
 				)
 					datosAPI_renamed.en_castellano_id = 1;
 			}
@@ -309,17 +294,13 @@ module.exports = {
 					.map((n) => n.iso_3166_1)
 					.join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview)
-				datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar =
-					"https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			if (datosAPI.created_by.length > 0)
 				datosAPI_renamed.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.produccion = datosAPI.production_companies
-					.map((n) => n.name)
-					.join(", ");
+				datosAPI_renamed.produccion = datosAPI.production_companies.map((n) => n.name).join(", ");
 			// Credits
 			// Crew
 			if (datosAPI.crew.length > 0) {
@@ -387,11 +368,7 @@ module.exports = {
 		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
 		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		avatar = datosCap.still_path
-			? datosCap.still_path
-			: datosCap.poster_path
-			? datosCap.poster_path
-			: "";
+		avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
@@ -453,9 +430,7 @@ module.exports = {
 		// Armar el objeto literal
 		let resultado = {};
 		if (contenido.indexOf("Ficha") > 0)
-			resultado.nombre_castellano = funcionParentesis(
-				contenido[contenido.indexOf("Ficha") - 1]
-			);
+			resultado.nombre_castellano = funcionParentesis(contenido[contenido.indexOf("Ficha") - 1]);
 		if (contenido.indexOf("Título original") > 0)
 			resultado.nombre_original = funcionParentesis(
 				contenido[contenido.indexOf("Título original") + 1]
@@ -472,10 +447,8 @@ module.exports = {
 		}
 		if (contenido.indexOf("Dirección") > 0)
 			resultado.direccion = contenido[contenido.indexOf("Dirección") + 1];
-		if (contenido.indexOf("Guion") > 0)
-			resultado.guion = contenido[contenido.indexOf("Guion") + 1];
-		if (contenido.indexOf("Música") > 0)
-			resultado.musica = contenido[contenido.indexOf("Música") + 1];
+		if (contenido.indexOf("Guion") > 0) resultado.guion = contenido[contenido.indexOf("Guion") + 1];
+		if (contenido.indexOf("Música") > 0) resultado.musica = contenido[contenido.indexOf("Música") + 1];
 		if (contenido.indexOf("Reparto") > 0)
 			resultado.actuacion = contenido[contenido.indexOf("Reparto") + 1];
 		if (contenido.indexOf("Productora") > 0)
@@ -544,22 +517,24 @@ let datosColeccion = (datos, cantCapitulos) => {
 	return resultado;
 };
 let funcionCrew = (crew, campo_TMDB) => {
-	datos = valores = crew.filter((n) => n.department == campo_TMDB);
-	if (datos.length > 0) {
-		valores = datos.map((m) => m.name);
-		let i = 1;
-		while (i < valores.length) {
-			if (valores[i] == valores[i - 1]) {
-				valores.splice(i, 1);
-			} else i++;
+	let datos = crew.filter((n) => n.department == campo_TMDB);
+	let valores = "";
+	if (datos.length) {
+		let valores = datos.map((m) => m.name);
+		if (datos.length > 1) {
+			datos.sort((a, b) => {
+				return a > b ? 1 : a < b ? -1 : 0;
+			});
+			for (let i = datos.length - 1; i > 0; i--) {
+				if (valores[i] == valores[i - 1]) valores.splice(i, 1);
+			}
 		}
 		valores = valores.join(", ");
-		return valores;
 	}
-	return "";
+	return valores;
 };
 let funcionCast = (dato) => {
-	actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
+	let actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
 	while (dato.length > 0 && actuacion.length > 500) {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}

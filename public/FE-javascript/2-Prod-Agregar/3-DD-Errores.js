@@ -46,6 +46,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("change", async (e) => {
 		// Obtener el valor para 'campo'
 		let campo = e.target.name;
+		let datos
 		// (Título original / castellano) + año lanzamiento
 		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
 			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
@@ -86,7 +87,7 @@ window.addEventListener("load", async () => {
 		} else {
 			// Si sí figura, quitárselo
 			let paises_idArray = paisesID.value.split(", ");
-			indice = paises_idArray.indexOf(paisID);
+			let indice = paises_idArray.indexOf(paisID);
 			paises_idArray.splice(indice, 1);
 			paisesID.value = paises_idArray.join(", ");
 		}

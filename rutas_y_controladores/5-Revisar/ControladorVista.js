@@ -61,8 +61,44 @@ module.exports = {
 		// Configurar el título de la vista
 		let entidadNombre = varias.entidadNombre(entidad);
 		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
-		// Información complementaria
-
+		// Info exclusiva para la vista de Edicion
+		let camposDD = variables
+			.camposDD()
+			.filter((n) => n[entidad])
+			.filter((n) => !n.omitirRutinaVista);
+		let camposDD1 = camposDD.filter((n) => n.antesDePais);
+		let camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
+		let camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
+		let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+		let BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
+		let camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
+		let tiempo = prodEditado.editado_en
+			? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
+			: false;
+		// Averiguar si hay errores de validación
+		let errores = await validar.edicion("", {...prodCombinado, entidad});
+		// Ir a la vista
+		//return res.send(prodCombinado)
+		return res.render("0-RUD", {
+			tema,
+			codigo,
+			titulo,
+			entidad,
+			prodID,
+			prodOriginal,
+			prodEditado,
+			avatar,
+			paises,
+			camposDD1,
+			camposDD2,
+			camposDD3,
+			BD_paises,
+			BD_idiomas,
+			camposDP,
+			errores,
+			tiempo,
+			vista: req.baseUrl + req.path,
+		});
 	},
 };
 

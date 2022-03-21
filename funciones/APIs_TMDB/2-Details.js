@@ -11,9 +11,10 @@ module.exports = async (entidad_TMDB, TMDB_id) => {
 	// https://api.themoviedb.org/3/tv/		   61865/season/0?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es
 
 	// Generar el agregado para consultar una temporada de TV
+	let season
 	if (typeof entidad_TMDB == "number") {
 		season = "/season/" + entidad_TMDB;
-		entidad_TMDB = "tv";
+		let entidad_TMDB = "tv";
 	} else season = "";
 	
 	// Generar la url de consulta

@@ -24,7 +24,7 @@ module.exports = {
 				pass: "rudhfurovpjsjjzp", // generated  password
 			},
 		});
-		datos = {
+		let datos = {
 			from: '"Mensaje de la página web" <mensaje.web.01@gmail.com>', // sender address
 			//to: mail,
 			to: "diegoiribarren2015@gmail.com",
@@ -68,7 +68,7 @@ module.exports = {
 	},
 
 	convertirLetrasAlIngles: (palabra) => {
-		word = palabra
+		return palabra
 			.toLowerCase()
 			.replace(/-/g, " ")
 			.replace(/á/g, "a")
@@ -79,12 +79,11 @@ module.exports = {
 			.replace(/ñ/g, "n")
 			.replace(/:¿![.][?]/g, "")
 			.replace(/ +/g, " ");
-		return word;
 	},
 
 	convertirLetrasAlCastellano: (resultado) => {
-		campos = Object.keys(resultado);
-		valores = Object.values(resultado);
+		let campos = Object.keys(resultado);
+		let valores = Object.values(resultado);
 		for (let i = 0; i < campos.length; i++) {
 			if (typeof valores[i] == "string") {
 				resultado[campos[i]] = valores[i]
@@ -151,12 +150,12 @@ module.exports = {
 
 	borrarArchivo: (archivo, ruta) => {
 		let archivoImagen = path.join(ruta, archivo);
-		console.log("Archivo " + archivoImagen + " inactivado");
+		console.log("Archivo " + archivoImagen + " borrado");
 		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);
 	},
 
 	revisarImagen: (tipo, tamano) => {
-		tamanoMaximo = 2;
+		let tamanoMaximo = 2;
 		return tipo.slice(0, 6) != "image/"
 			? "Necesitamos un archivo de imagen"
 			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)

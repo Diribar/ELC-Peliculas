@@ -7,8 +7,8 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
-const entidadId = require("../../middlewares/entidades/entidadId");
-const permisoProducto = require("../../middlewares/entidades/permisoRV_producto");
+const entidadId = require("../../middlewares/producto/entidadId");
+const permisoProducto = require("../../middlewares/producto/permisoRV_producto");
 
 // Rutas *******************************************
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);

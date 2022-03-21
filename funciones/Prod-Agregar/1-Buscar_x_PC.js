@@ -94,7 +94,10 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
 		let desempate1 = varias.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		let desempate2 = varias.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
+		let desempate2 = varias
+			.convertirLetrasAlIngles(nombre_castellano)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -139,10 +142,8 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 };
 
 let eliminarIncompletos = (dato) => {
-	while (true) {
-		indice = dato.resultados.findIndex((m) => m == null);
-		if (indice == -1) break;
-		dato.resultados.splice(indice, 1);
+	for (let indice = dato.resultados.length - 1; indice >= 0; indice--) {
+		if (dato.resultados[indice] == null) dato.resultados.splice(indice, 1);
 	}
 	return dato;
 };
@@ -190,12 +191,12 @@ let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
 
 let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
-		contar = datos.resultados.filter(
+		let contar = datos.resultados.filter(
 			(m) =>
 				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) && m.desempate3 == n.desempate3
 		);
 		if (contar.length > 1) {
-			indice = datos.resultados.findIndex(
+			let indice = datos.resultados.findIndex(
 				(m) =>
 					(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&

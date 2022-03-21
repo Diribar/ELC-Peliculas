@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < forms.length; i++) {
 		forms[i].addEventListener("submit", async (e) => {
 			e.preventDefault();
-			destino = e.currentTarget;
+			let destino = e.currentTarget;
 
 			// Descartar las entidades que no sean películas
 			if (forms[i].children[0].value != "movie") {
@@ -20,8 +20,8 @@ window.addEventListener("load", async () => {
 			}
 
 			// Obtener los datos necesarios para saber si la película pertenece a una colección
-			tmdb_id = forms[i].children[1].value;
-			datos = await fetch(ruta + tmdb_id).then((n) => n.json());
+			let tmdb_id = forms[i].children[1].value;
+			let datos = await fetch(ruta + tmdb_id).then((n) => n.json());
 
 			// Descartar las que no pertenecen a una colección, y las que pertenecen a una colección que ya está en BD
 			if (!Object.keys(datos).length || datos.colec_id) {

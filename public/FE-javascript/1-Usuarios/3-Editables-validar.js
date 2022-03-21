@@ -13,9 +13,9 @@ window.addEventListener("load", () => {
 	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("change", async () => {
-			campo = inputs[i].name;
-			valor = inputs[i].value;
-			errores = await fetch("/usuarios/api/validar-editables/?" + campo + "=" + valor).then(
+			let campo = inputs[i].name;
+			let valor = inputs[i].value;
+			let errores = await fetch("/usuarios/api/validar-editables/?" + campo + "=" + valor).then(
 				(n) => n.json()
 			);
 			consecuenciaError(errores, campo, i);
@@ -49,7 +49,7 @@ window.addEventListener("load", () => {
 	};
 	let consecuenciaError = (error, campo, indice) => {
 		// Guarda el mensaje de error
-		mensaje = error[campo];
+		let mensaje = error[campo];
 		// Reemplaza el mensaje
 		mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error

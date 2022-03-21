@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	// Desplazamiento por teclado
 	window.addEventListener("keydown", (e) => {
 		// Comandos iniciales
-		posicion = resultado.scrollLeft;
+		let posicion = resultado.scrollLeft;
 		if (e.key == "ArrowLeft" || e.key == "ArrowRight") e.preventDefault();
 
 		// Home y End

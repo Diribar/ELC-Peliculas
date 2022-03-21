@@ -56,11 +56,11 @@ module.exports = {
 				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
 			);
 		// 2. Tema y Código
-		tema = "rclv";
-		codigo = RCLV.entidad_RCLV;
+		let tema = "rclv";
+		let codigo = RCLV.entidad_RCLV;
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "datosPers") {
-			datosPers = req.session.datosPers
+			let datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
 				? req.cookies.datosPers
@@ -72,17 +72,14 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_varias.obtenerTodos("meses", "id");
+		let procesos_canonizacion = roles_iglesia = [];
 		if (codigo == "RCLV_personajes") {
-			procesos_canonizacion = await BD_varias.obtenerTodos(
-				"procesos_canonizacion",
-				"orden"
-			).then((n) => n.filter((m) => m.id.length == 3));
+			procesos_canonizacion = await BD_varias.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+				n.filter((m) => m.id.length == 3)
+			);
 			roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
 			);
-		} else {
-			procesos_canonizacion = [];
-			roles_iglesia = [];
 		}
 		// 6. Render
 		//return res.send(errores);
@@ -108,7 +105,7 @@ module.exports = {
 			);
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "datosPers") {
-			datosPers = req.session.datosPers
+			let datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
 				? req.cookies.datosPers
@@ -136,7 +133,7 @@ module.exports = {
 		}
 		// Si no hay errores...
 		// 5. Preparar la info a guardar
-		datos = {
+		let datos = {
 			...RCLV,
 			creado_por_id: req.session.usuario.id,
 		};
@@ -152,18 +149,18 @@ module.exports = {
 			entidad: RCLV.entidad_RCLV,
 		});
 		// Averiguar el campo para el RCLV-ID
-		campo = RCLV.entidad_RCLV.includes("personaje")
+		let entidad_id = RCLV.entidad_RCLV.includes("personaje")
 			? "personaje_id"
 			: RCLV.entidad_RCLV.includes("hecho")
 			? "hecho_id"
-			: "valor_id"
+			: "valor_id";
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
-			req.session.datosPers[campo] = RCLV_id;
+			req.session.datosPers[entidad_id] = RCLV_id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (RCLV.origen == "edicion") {
 			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.producto_id, {
-				[campo]: RCLV_id,
+				[entidad_id]: RCLV_id,
 			});
 		}
 		// Obtener el destino a dónde redireccionar
