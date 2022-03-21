@@ -347,10 +347,11 @@ let altaDeLink = async (req, datos) => {
 		if (!datos.parte) datos.parte = "-";
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
+		let entidad_id = varias.entidad_id(datos.prodEntidad);
 		datos = {
 			...datos,
 			entidad: "links_originales",
-			[varias.entidad_id(datos.prodEntidad)]: datos.prodID,
+			[entidad_id]: datos.prodID,
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
