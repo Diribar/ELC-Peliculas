@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const BD_genericas = require("../../funciones/BD/Genericas");
-const controladoraAgregar = require("../../rutas_y_controladores/2-Prod-Agregar/ControladorVista");
+const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = async (req, res, next) => {
 	let mensaje;
@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 	}
 	console.log("linea 21", elc_id, mensaje, datos.nombre_castellano);
 	if (mensaje) {
-		controladoraAgregar.borrarSessionCookies(req, res, "borrarTodo");
+		especificas.borrarSessionCookies(req, res, "borrarTodo");
 		return res.render("Errores", {mensaje});
 	}
 	next();
