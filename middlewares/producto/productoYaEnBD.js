@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 		: req.cookies.datosOriginales
 		? req.cookies.datosOriginales
 		: "";
-	if (datos=="") mensaje="Debés comenzar desde el principio el proceso de agregado de una película o colección"
+	if (datos == "") return res.redirect("/producto/agregar/palabras-clave");
 	else if (datos.fuente != "IM") {
 		elc_id = await BD_especificas.obtenerELC_id(
 			datos.entidad,
@@ -20,7 +20,6 @@ module.exports = async (req, res, next) => {
 		);
 		if (elc_id) mensaje = "La Película / Colección ya está en nuestra BD";
 	}
-	console.log("linea 21", elc_id, mensaje, datos.nombre_castellano);
 	if (mensaje) {
 		especificas.borrarSessionCookies(req, res, "borrarTodo");
 		return res.render("Errores", {mensaje});
