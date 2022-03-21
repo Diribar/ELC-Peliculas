@@ -28,13 +28,13 @@
 					<i class="fa-solid fa-circle-right" tabindex="-1" title="Ir al capítulo posterior"></i>
 				</div>
 				<select id="temporada">
-					<% for (temp = 1; temp <= producto.coleccion.cant_temporadas; temp++) { %>
+					<% for (let temp = 1; temp <= producto.coleccion.cant_temporadas; temp++) { %>
 						<option <% if (producto.temporada == temp) { %>selected<% } %> >Temporada <%= temp %></option>
 					<% } %>
 				</select>
 				<select id="capitulo">
-					<% for (cap of producto.capitulos) { %>
-						<option <% if (producto.capitulo == cap) { %>selected<% } %> >Capítulo <%= cap %></option>
+					<% for (let capitulo of producto.capitulos) { %>
+						<option <% if (producto.capitulo == capitulo) { %>selected<% } %> >Capítulo <%= capitulo %></option>
 					<% } %>
 				</select>
 			</div>

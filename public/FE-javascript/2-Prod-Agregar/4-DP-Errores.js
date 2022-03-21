@@ -60,13 +60,13 @@ window.addEventListener("load", async () => {
 	let statusInicial = async (inputValue) => {
 		//Buscar todos los valores
 		let url = "";
-		for (input of inputs) {
+		for (let input of inputs) {
 			if (input != inputs[0]) url += "&";
 			url += input.name + "=";
 			url += encodeURIComponent(input.value);
 		}
 		let errores = await fetch(ruta + url).then((n) => n.json());
-		for (input of inputs) {
+		for (let input of inputs) {
 			if (inputValue ? input.value : true) {
 				// Averiguar si hay un error
 				campo = input.name;
@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
 	};
 	// Aplicar cambios en la subcategoría
 	funcionSubcat = () => {
-		for (opcion of subcategoriaOpciones) {
+		for (let opcion of subcategoriaOpciones) {
 			opcion.className.includes(categoria.value)
 				? opcion.classList.remove("ocultar")
 				: opcion.classList.add("ocultar");
@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
 		let nombres = ["personaje_id", "hecho_id", "valor_id"];
-		for (i = 0; i < campos.length; i++) {
+		for (let i = 0; i < campos.length; i++) {
 			// Mostrar el campo RCLV
 			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
 			else {

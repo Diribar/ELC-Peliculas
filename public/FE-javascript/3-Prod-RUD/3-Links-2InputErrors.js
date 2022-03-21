@@ -277,7 +277,7 @@ window.addEventListener("load", async () => {
 		// Obtener los errores de la fila
 		errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
 		// Consecuencias en cada celda
-		for (campo of camposInput) {
+		for (let campo of camposInput) {
 			// Guarda el mensaje de error
 			let mensaje = fila == filaUrlAlta || campo != "url" ? errores[campo] : "";
 			// Reemplaza el mensaje de error

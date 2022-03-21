@@ -26,8 +26,8 @@ window.addEventListener("load", async () => {
 		// Eliminar las opciones actuales
 		capitulo.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
-		for (cap of capitulos) {
-			capitulo.innerHTML += "<option>Capítulo " + cap + "</option>";
+		for (let capitulo of capitulos) {
+			capitulo.innerHTML += "<option>Capítulo " + capitulo + "</option>";
 		}
 	});
 
@@ -36,11 +36,11 @@ window.addEventListener("load", async () => {
 		// Obtener los 3 datos para conseguir el capID
 		let col = coleccion_id;
 		let temp = temporada.value.slice(10);
-		let cap = capitulo.value.slice(9);
+		let capitulo = capitulo.value.slice(9);
 		// Obtener el capID
 		ruta = "/producto/tridente/api/obtener-cap-id/?entidad=capitulos";
 		let capID = await fetch(
-			ruta + "&coleccion_id=" + col + "&temporada=" + temp + "&capitulo=" + cap
+			ruta + "&coleccion_id=" + col + "&temporada=" + temp + "&capitulo=" + capitulo
 		).then((n) => n.json());
 		window.location.href = vista + "?entidad=capitulos&id=" + capID;
 	});

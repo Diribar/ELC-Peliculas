@@ -87,7 +87,7 @@ module.exports = {
 	// Controladora-Agregar
 	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
 		let campos = Object.keys(edicion);
-		for (campo of campos) {
+		for (let campo of campos) {
 			if (edicion[campo] == original[campo]) delete edicion[campo];
 		}
 		return edicion;
@@ -142,7 +142,7 @@ module.exports = {
 	// API-RUD
 	quitarLosCamposSinContenido: (objeto) => {
 		let campos = Object.keys(objeto);
-		for (i = campos.length - 1; i >= 0; i--) {
+		for (let i = campos.length - 1; i >= 0; i--) {
 			if (objeto[campos[i]] === null || objeto[campos[i]] === "") delete objeto[campos[i]];
 		}
 		return objeto;
@@ -231,7 +231,7 @@ module.exports = {
 		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
 		let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
 		// Rutina por cada campo RCLV
-		for (i = 0; i < camposRCLV.length; i++) {
+		for (let i = 0; i < camposRCLV.length; i++) {
 			campo = camposRCLV[i];
 			valor = datos[campo];
 			if (valor) {
@@ -245,7 +245,7 @@ module.exports = {
 	// contarProductos: async (entidadProd, campo, valor, status_id) => {
 	// 	let cant_productos = 0;
 	// 	// Rutina por cada entidad de Productos
-	// 	for (entidadProd of entidadesProd) {
+	// 	for (let entidadProd of entidadesProd) {
 	// 		cant_productos += await db[entidadProd].count({
 	// 			where: {
 	// 				[campo]: valor,

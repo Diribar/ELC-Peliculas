@@ -183,7 +183,7 @@ module.exports = {
 		let actuacion = "";
 
 		// for por cada capítulo ID
-		for (capituloTMDB_id of datos.capitulosTMDB_id) {
+		for (let capituloTMDB_id of datos.capitulosTMDB_id) {
 			// Obtener las API
 			let datosAPI = await Promise.all([
 				detailsTMDB("movie", capituloTMDB_id),
@@ -224,7 +224,7 @@ module.exports = {
 	agregarCapitulosDeCollection: async function (datosCol) {
 		// Replicar para todos los capítulos de la colección
 		let numCapitulo = 0;
-		for (capituloTMDB_Id of datosCol.capitulosTMDB_id) {
+		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
 			existe = await BD_varias.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
@@ -398,7 +398,7 @@ module.exports = {
 	// ControllerVista (confirma)
 	agregarCapitulosDeTV: async function (datosCol) {
 		// Loop de TEMPORADAS ***********************************************
-		for (temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
+		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
 			// Datos de UNA TEMPORADA
 			let datosTemp = await Promise.all([
 				detailsTMDB(temporada, registro.TMDB_id),
@@ -407,7 +407,7 @@ module.exports = {
 				return {...a, ...b};
 			});
 			// Loop de CAPITULOS ********************************************
-			for (episode of datosTemp.episodes) {
+			for (let episode of datosTemp.episodes) {
 				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				// Obtener las API
 				await BD_varias.agregarRegistro(datosCap);
@@ -481,7 +481,7 @@ module.exports = {
 		if (contenido.indexOf("Productora") > 0)
 			resultado.produccion = contenido[contenido.indexOf("Productora") + 1];
 		if (contenido.indexOf("Sinopsis") > 0) {
-			aux = contenido[contenido.indexOf("Sinopsis") + 1];
+			let aux = contenido[contenido.indexOf("Sinopsis") + 1];
 			if (!aux.includes("(FILMAFFINITY)")) aux += " (FILMAFFINITY)";
 			resultado.sinopsis = aux.replace(/"/g, "'");
 		}
@@ -491,12 +491,12 @@ module.exports = {
 	// ControllerAPI (obtenerFA_id)
 	obtenerFA_id: (url) => {
 		// Output para FE y BE
-		aux = url.indexOf("www.filmaffinity.com/");
+		let aux = url.indexOf("www.filmaffinity.com/");
 		url = url.slice(aux + 21);
 		aux = url.indexOf("/film");
 		url = url.slice(aux + 5);
 		aux = url.indexOf(".html");
-		FA_id = url.slice(0, aux);
+		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
 };
@@ -520,7 +520,7 @@ let datosColeccion = (datos, cantCapitulos) => {
 	// Crear un objeto literal para el campo
 	let campo = {};
 	// En el objeto literal, hacer un método por cada valor, con la cantidad de veces que aparece
-	for (dato of datos) {
+	for (let dato of datos) {
 		campo[dato] ? campo[dato]++ : (campo[dato] = 1);
 	}
 	// Averiguar cuántas veces se repite el método más frecuente
@@ -529,8 +529,8 @@ let datosColeccion = (datos, cantCapitulos) => {
 	let frecMaxima = Math.max(...repeticiones);
 	// Copiar el nombre del método
 	let resultado = [];
-	for (frecuencia = frecMaxima; frecuencia > 0; frecuencia--) {
-		for (indice = 0; indice < repeticiones.length; indice++) {
+	for (let frecuencia = frecMaxima; frecuencia > 0; frecuencia--) {
+		for (let indice = 0; indice < repeticiones.length; indice++) {
 			if (repeticiones[indice] == frecuencia) resultado.push(valores[indice]);
 		}
 		// 1: Los máximos, siempre que sean más de uno

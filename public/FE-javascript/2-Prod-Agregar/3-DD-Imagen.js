@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 	let inputImagen = document.querySelector("form input[name='avatar']");
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
-		ext = texto.slice(texto.length - 4);
+		let ext = texto.slice(texto.length - 4);
 		[".jpg", ".png"].includes(ext) ? mostrarImagen(e) : "";
 	});
 });

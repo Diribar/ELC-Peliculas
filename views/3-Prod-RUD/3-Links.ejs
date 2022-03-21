@@ -25,7 +25,7 @@
 			<tbody>
 				<!-- Filas para links existentes -->
 				<% let fila = 0 %> 
-				<% for (link of linksActivos) { %>
+				<% for (let link of linksActivos) { %>
 					<%- include("31-Links-Datos") %>
 					<%- include("32-Links-Edicion", {fila}) %>
 					<% fila++ %> 
@@ -47,7 +47,7 @@
 </section>
 <!-- Comandos -->
 <section id="comandos">
-	<% for (prov of provs.filter(n => n.buscador_automatico)) { %>
+	<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
 		<a 
 			href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
 			target="_blank"

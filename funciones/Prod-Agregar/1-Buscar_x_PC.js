@@ -15,7 +15,7 @@ module.exports = {
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (entidad_TMDB of entidadesTMDB) {
+			for (let entidad_TMDB of entidadesTMDB) {
 				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
 					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
 						.then((n) => infoQueQueda(n))
@@ -53,12 +53,12 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
-			producto = "Colección";
-			entidad = "colecciones";
-			ano = "-";
-			nombre_original = m.original_name;
-			nombre_castellano = m.name;
-			desempate3 = "-";
+			var producto = "Colección";
+			var entidad = "colecciones";
+			var ano = "-";
+			var nombre_original = m.original_name;
+			var nombre_castellano = m.name;
+			var desempate3 = "-";
 		}
 		if (entidad_TMDB == "tv") {
 			if (
@@ -69,12 +69,12 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			producto = "Colección";
-			entidad = "colecciones";
-			ano = parseInt(m.first_air_date.slice(0, 4));
-			nombre_original = m.original_name;
-			nombre_castellano = m.name;
-			desempate3 = m.first_air_date;
+			var producto = "Colección";
+			var entidad = "colecciones";
+			var ano = parseInt(m.first_air_date.slice(0, 4));
+			var nombre_original = m.original_name;
+			var nombre_castellano = m.name;
+			var desempate3 = m.first_air_date;
 		}
 		if (entidad_TMDB == "movie") {
 			if (
@@ -85,22 +85,16 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			producto = "Película";
-			entidad = "peliculas";
-			ano = parseInt(m.release_date.slice(0, 4));
-			nombre_original = m.original_title;
-			nombre_castellano = m.title;
-			desempate3 = m.release_date;
+			var producto = "Película";
+			var entidad = "peliculas";
+			var ano = parseInt(m.release_date.slice(0, 4));
+			var nombre_original = m.original_title;
+			var nombre_castellano = m.title;
+			var desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		desempate1 = varias
-			.convertirLetrasAlIngles(nombre_original)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
-		desempate2 = varias
-			.convertirLetrasAlIngles(nombre_castellano)
-			.replace(/ /g, "")
-			.replace(/'/g, "");
+		let desempate1 = varias.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		let desempate2 = varias.convertirLetrasAlIngles(nombre_castellano).replace(/ /g, "").replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
 			producto,
@@ -128,7 +122,7 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
 		if (typeof m == "undefined" || m == null) return;
-		for (palabra of palabras) {
+		for (let palabra of palabras) {
 			if (
 				varias.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
 				varias.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
@@ -198,8 +192,7 @@ let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
 		contar = datos.resultados.filter(
 			(m) =>
-				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
-				m.desempate3 == n.desempate3
+				(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) && m.desempate3 == n.desempate3
 		);
 		if (contar.length > 1) {
 			indice = datos.resultados.findIndex(
@@ -216,22 +209,17 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		entidad_TMDB = datos.resultados[i].entidad_TMDB;
-		entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		YaEnBD = await BD_varias.obtenerELC_id(entidad, "TMDB_id", datos.resultados[i].TMDB_id);
+		let entidad_TMDB = datos.resultados[i].entidad_TMDB;
+		let entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+		let YaEnBD = await BD_varias.obtenerELC_id(entidad, "TMDB_id", datos.resultados[i].TMDB_id);
 		if (entidad == "peliculas" && !YaEnBD) {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
-			YaEnBD = await BD_varias.obtenerELC_id(
-				"capitulos",
-				"TMDB_id",
-				datos.resultados[i].TMDB_id
-			);
+			YaEnBD = await BD_varias.obtenerELC_id("capitulos", "TMDB_id", datos.resultados[i].TMDB_id);
 			if (YaEnBD) {
 				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
-				datos.resultados[i].producto =
-					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
+				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
 			}
 		}
 		datos.resultados[i] = {

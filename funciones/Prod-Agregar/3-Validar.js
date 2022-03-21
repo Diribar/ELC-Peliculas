@@ -270,18 +270,18 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 let castellano = (dato) => {
-	formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line
 	return !formato.test(dato);
 };
 let formatoAno = (dato) => {
-	formato = /^\d{4}$/;
+	let formato = /^\d{4}$/;
 	return !formato.test(dato);
 };
 let formatoNumero = (dato, minimo) => {
-	formato = /^\d+$/;
+	let formato = /^\d+$/;
 	return !formato.test(dato)
 		? "Debe ser un número"
 		: dato < minimo
@@ -290,7 +290,7 @@ let formatoNumero = (dato, minimo) => {
 };
 let extensiones = (nombre) => {
 	if (!nombre) return false;
-	ext = nombre.slice(nombre.length - 4);
+	let ext = nombre.slice(nombre.length - 4);
 	return ![".jpg", ".png"].includes(ext);
 };
 let validarRepetidos = async (campo, datos) => {

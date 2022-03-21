@@ -98,7 +98,7 @@ let longitud = (dato, corto, largo) => {
 };
 
 let castellano = (dato) => {
-	formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\d+-]+$/;
+	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
 };
 
@@ -123,7 +123,7 @@ let prefijo = (nombre) => {
 
 let hayErrores = (errores) => {
 	valores = Object.values(errores);
-	for (valor of valores) {
+	for (let valor of valores) {
 		if (valor) return true;
 	}
 	return false;

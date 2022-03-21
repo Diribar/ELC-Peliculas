@@ -30,7 +30,7 @@
 			<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 			<select name="sexo_id" class="input">
 				<option value=""  <% if (sexo_id=="")  {%>selected<% } %> style="display: none;">Elegí una opción</option>
-				<% for (sexo of sexos) { %>
+				<% for (let sexo of sexos) { %>
 					<option value="<%= sexo.id %> " <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 				<% } %> 
 			</select>

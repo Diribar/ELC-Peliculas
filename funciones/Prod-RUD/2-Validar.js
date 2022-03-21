@@ -9,7 +9,7 @@ module.exports = {
 	// ControllerVista (Edicion - Form + Grabar)
 	edicion: async (campos, prodCombinado) => {
 		// Obtener la entidad
-		entidad = prodCombinado.entidad;
+		let entidad = prodCombinado.entidad;
 		// Obtener los campos
 		if (!campos) {
 			let camposDD = variables.camposDD().filter((n) => n[entidad]);

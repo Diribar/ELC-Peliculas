@@ -5,7 +5,7 @@
 		<!-- Input -->
 		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" <% if (dataEntry[campo] && !errores[campo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
-			<% for (valor of registro.valores) { %>
+			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 					<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
@@ -22,7 +22,7 @@
 		<i class="fa-solid fa-circle-question"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
 			<% if (registro.mensajePeli) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
-			<% for (mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
+			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark<%- !errores[campo] ? ' ocultar' : '' %>">

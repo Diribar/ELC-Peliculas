@@ -216,7 +216,7 @@ window.addEventListener("load", async () => {
 		// Variable de botones versiones
 		let botonesVersion = document.querySelectorAll("#cuerpo #comandos .version");
 		// Colocarle la clase 'plus' al ícono que corresponde
-		for (botonVersion of botonesVersion) {
+		for (let botonVersion of botonesVersion) {
 			botonVersion == boton
 				? botonVersion.classList.add("plus")
 				: botonVersion.classList.remove("plus");
@@ -224,16 +224,16 @@ window.addEventListener("load", async () => {
 	};
 	let actualizarInput_linksRCLV = (trueFalse) => {
 		let links = document.querySelectorAll(".input-error i.linkRCLV");
-		for (link of links) {
+		for (let link of links) {
 			trueFalse ? link.classList.add("ocultar") : link.classList.remove("ocultar");
 		}
 		let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
-		for (iconoAyuda of iconosAyuda) {
+		for (let iconoAyuda of iconosAyuda) {
 			trueFalse ? iconoAyuda.classList.add("ocultar") : iconoAyuda.classList.remove("ocultar");
 		}
 	};
 	let actualizarInput_errores = (errores, camposEspecificos, mostrarOK) => {
-		for (campo of camposEspecificos) {
+		for (let campo of camposEspecificos) {
 			// Guarda el mensaje de error
 			mensaje = errores[campo];
 			// Reemplaza
@@ -258,7 +258,7 @@ window.addEventListener("load", async () => {
 	};
 	let actualizarInput_dataEntry = () => {
 		let objeto = "entidad=" + entidad + "&id=" + prodID;
-		for (input of inputs) {
+		for (let input of inputs) {
 			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}
 		return objeto;
@@ -313,17 +313,17 @@ window.addEventListener("load", async () => {
 			paisesID.value += !paisesID.value ? paisID : ", " + paisID;
 		} else {
 			// Si sí figura, quitárselo
-			paises_idArray = paisesID.value.split(", ");
-			indice = paises_idArray.indexOf(paisID);
+			let paises_idArray = paisesID.value.split(", ");
+			let indice = paises_idArray.indexOf(paisID);
 			paises_idArray.splice(indice, 1);
 			paisesID.value = paises_idArray.join(", ");
 		}
 		// Agregar los países a mostrar
-		paisesNombre = "";
+		let paisesNombre = "";
 		if (paisesID.value) {
 			paises_idArray = paisesID.value.split(", ");
-			for (pais_id of paises_idArray) {
-				paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
+			for (let pais_id of paises_idArray) {
+				let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 				paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
 			}
 		}
@@ -332,13 +332,13 @@ window.addEventListener("load", async () => {
 	let formInput_activarEdicionSession = () => {
 		// Quitar la clase 'inactivo_EdicSess'
 		let inactivo_EdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicSess");
-		for (inactivo of inactivo_EdicSess) {
+		for (let inactivo of inactivo_EdicSess) {
 			if (inactivo.classList.contains("inactivo_EdicSess"))
 				inactivo.classList.remove("inactivo_EdicSess");
 		}
 	};
 	let formInput_mostrarValoresSubcat = () => {
-		for (opcion of subcategoriaOpciones) {
+		for (let opcion of subcategoriaOpciones) {
 			opcion.className.includes(categoria.value)
 				? opcion.classList.remove("ocultar")
 				: opcion.classList.add("ocultar");
@@ -375,7 +375,7 @@ window.addEventListener("load", async () => {
 	let startup_activarEdicionGuardado = () => {
 		// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
 		if (existeEdicG) {
-			for (inactivo of inactivo_EdicGua) {
+			for (let inactivo of inactivo_EdicGua) {
 				if (inactivo != botonEliminarGuardada || !statusPendAprobar)
 					inactivo.classList.remove("inactivo_EdicGua");
 			}

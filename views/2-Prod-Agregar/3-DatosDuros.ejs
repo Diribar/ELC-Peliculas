@@ -27,13 +27,13 @@
 		<!--Primera columna-->
 		<div id="primeraColumna">
 			<!-- Primeros campos -->
-			<% for (registro of camposDD1) { %><%- include("31-DD-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD1) { %><%- include("31-DD-Input", {registro}) %><% } %>
 			<!-- País -->
 			<%- include("32-DD-Pais") %>
 			<!-- Idioma original -->
 			<%- include("33-DD-Idioma", {idioma_id: dataEntry.idioma_original_id}) %>
 			<!-- Siguientes campos -->
-			<% for (registro of camposDD2) { %><%- include("31-DD-Input", {registro}) %><% } %>
+			<% for (let registro of camposDD2) { %><%- include("31-DD-Input", {registro}) %><% } %>
 			<!--Sinopsis-->
 			<%- include("34-DD-Sinopsis") %>
 		</div>

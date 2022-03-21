@@ -6,7 +6,7 @@
 	<div id="primeraColumna">
 		<h3>Datos generales</h3>
 		<!-- Primeros campos -->
-		<% for (campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD1) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 		<!-- País -->
 		<%- include("22-Edicion-Pais") %>
 		<!-- Idioma original -->
@@ -16,7 +16,7 @@
 		<!--Es a Color-->
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "en_color_id")}) %>
 		<!-- Producción -->
-		<% for (campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD3) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 		<h3>Datos Subjetivos</h3>
 		<!--Categoría-->
 		<%- include("25-Edicion-Select", {campo: camposDP.find(n => n.nombreDelCampo == "categoria_id")}) %>
@@ -28,7 +28,7 @@
 	<div id="segundaColumna">
 		<!-- Personas -->
 		<h3>Personas</h3>
-		<% for (campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD2) { %><%- include("21-Edicion-Input", {campo}) %><% } %>
 		<!-- Relación con la vida -->
 		<h3>Relación con la vida</h3>
 		<!--Personaje histórico-->

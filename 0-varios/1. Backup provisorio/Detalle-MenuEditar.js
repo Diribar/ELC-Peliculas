@@ -6,13 +6,13 @@ window.addEventListener("load", () => {
 	// Acciones si se le hace 'click'
 	linkEditarProd.addEventListener("click", async (e) => {
 		// Obtener los parámetros
-		url = window.location.search;
-		indice = url.indexOf("&id=");
-		entidad = url.slice(9, indice);
-		id = url.slice(indice + 4);
+		let url = window.location.search;
+		let indice = url.indexOf("&id=");
+		let entidad = url.slice(9, indice);
+		let id = url.slice(indice + 4);
 		// Averiguar si el producto está disponible
 		// Campos: status, código, mensaje
-		disponible = await fetch(API_EditarProd + entidad + "&id=" + id).then((n) => n.json());
+		let disponible = await fetch(API_EditarProd + entidad + "&id=" + id).then((n) => n.json());
 		//console.log(disponible);
 		// Acciones si el status es false
 		if (!disponible.status) {
