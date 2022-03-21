@@ -10,7 +10,7 @@ module.exports = {
 			? cartelMailVacio
 			: formatoMail(email)
 			? cartelMailFormato
-			: (await BD_genericas.obtenerELC_id("usuarios", "email", email))
+			: (await BD_especificas.obtenerELC_id("usuarios", "email", email))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
 		errores.hay = hayErrores(errores);

@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		? req.cookies.datosOriginales
 		: "";
 	if (datos != "" && datos.fuente != "IM") {
-		elc_id = await BD_genericas.obtenerELC_id(
+		elc_id = await BD_especificas.obtenerELC_id(
 			datos.entidad,
 			datos.fuente + "_id",
 			datos[datos.fuente + "_id"]

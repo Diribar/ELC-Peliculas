@@ -75,12 +75,6 @@ module.exports = {
 		return db[entidad].findByPk(id, {include: includes});
 	},
 
-	obtenerELC_id: (entidad, campo, valor) => {
-		return db[entidad].findOne({where: {[campo]: valor}}).then((n) => {
-			return n ? n.id : false;
-		});
-	},
-
 	// Otras
 	agregarRegistro: (datos) => {
 		return db[datos.entidad].create(datos);

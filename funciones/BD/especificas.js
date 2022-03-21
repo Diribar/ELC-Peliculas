@@ -84,6 +84,11 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
+	obtenerELC_id: (entidad, campo, valor) => {
+		return db[entidad].findOne({where: {[campo]: valor}}).then((n) => {
+			return n ? n.id : false;
+		});
+	},
 	// Controladora-Agregar
 	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
 		let campos = Object.keys(edicion);

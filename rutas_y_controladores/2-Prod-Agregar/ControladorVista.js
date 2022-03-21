@@ -202,7 +202,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			let elc_id = await BD_genericas.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
+			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -300,7 +300,7 @@ module.exports = {
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			let elc_id = await BD_genericas.obtenerELC_id(
+			let elc_id = await BD_especificas.obtenerELC_id(
 				datosDuros.entidad,
 				datosDuros.fuente + "_id",
 				datosDuros[datosDuros.fuente + "_id"]
