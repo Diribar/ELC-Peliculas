@@ -56,7 +56,7 @@ window.addEventListener("load", () => {
 		mensajeHTML.innerHTML = "";
 
 		// Cambiar el contenido del mensaje
-		for (mensaje of mensajes) {
+		for (let mensaje of mensajes) {
 			mensajeHTML.innerHTML += "<li>" + mensaje + "</li>";
 		}
 

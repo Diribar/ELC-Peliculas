@@ -20,7 +20,7 @@
 					Elegí una opción
 				</option>
 			<% } %> 
-			<% for (opcion of opciones) { %>
+			<% for (let opcion of opciones) { %>
 				<option value="/productos/<%= opcion.opcion %>" <% if (opcionElegida && opcionElegida.opcion == opcion.opcion) { %>selected<% } %>>
 					<%= opcion.nombre %>
 				</option>

@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
 
 	inputImagen.addEventListener("change", (e) => {
 		texto = inputImagen.value;
-		ext = texto.slice(texto.length - 4);
+		let ext = texto.slice(texto.length - 4);
 		extensionesValidas.includes(ext) ? mostrarImagen(e) : "";
 	});
 })

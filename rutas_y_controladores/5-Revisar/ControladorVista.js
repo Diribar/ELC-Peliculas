@@ -39,12 +39,30 @@ module.exports = {
 	},
 
 	producto: async (req, res) => {
-		return res.send("producto")
 		// Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.indexOf("/"));
-		// Capturar el producto
+		// Obtener los datos identificatorios del producto
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
+		// Obtener los datos ORIGINALES y EDITADOS del producto
+		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+			entidad,
+			prodID,
+			userID
+		);
+		// Obtener avatar
+		let imagen = prodEditado.avatar;
+		let avatar = imagen ? "/imagenes/3-ProdRevisar/" + imagen : "/imagenes/8-Agregar/IM.jpg";
+		// Obtener los países
+		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
+		// Configurar el título de la vista
+		let entidadNombre = varias.entidadNombre(entidad);
+		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		// Información complementaria
+
 	},
 };
 
@@ -101,9 +119,9 @@ let productosLinks = (links, aprobado) => {
 		{nombre: "capitulo", entidad: "capitulos"},
 	];
 	// Rutina para cada link
-	for (link of links) {
+	for (let link of links) {
 		// Verificación para cada Producto
-		for (aux of auxs) {
+		for (let aux of auxs) {
 			if (
 				link[aux.nombre] &&
 				aprobado.includes(link[aux.nombre].status_registro_id) &&

@@ -15,7 +15,7 @@
 				<h2>Relación con la Vida (RCLV)</h2>
 				<table>
 					<tbody>
-					<% for (RCLV of RCLVs) { %>
+					<% for (let RCLV of RCLVs) { %>
 						<tr>
 							<td>
 								<a href="/revision/rclv/?entidad=<%= RCLV.entidad %>&id=<%= RCLV.id %>">
@@ -32,7 +32,7 @@
 				<h2>Links</h2>
 				<table>
 					<tbody>
-					<% for (prodLinks of prodsLinks) { %>
+					<% for (let prodLinks of prodsLinks) { %>
 						<tr>
 							<td>
 								<a href="/revision/links/?entidad=<%= prodLinks.entidad %>&id=<%= prodLinks.id %>">

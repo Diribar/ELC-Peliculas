@@ -28,7 +28,7 @@ module.exports = {
 		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
 			prodEditado = {...prodEditado, ...req.session.edicion};
 		// Generar los datos a mostrar en la vista
-		prodCombinado = {...prodOriginal, ...prodEditado};
+		let prodCombinado = {...prodOriginal, ...prodEditado};
 		// Obtener avatar
 		let imagen = prodCombinado.avatar;
 		let avatar = imagen
@@ -60,7 +60,7 @@ module.exports = {
 			var BD_idiomas = await BD_varias.obtenerTodos("idiomas", "nombre");
 			var camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 			var tiempo = prodEditado.editado_en
-				? Math.max(10, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
+				? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
 				: false;
 		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		// Averiguar si hay errores de validación
@@ -306,7 +306,7 @@ let ActivosInactivos = async (linksOriginales) => {
 	// linksInactivos
 	let linksInactivos = linksOriginales.filter((n) => n.status_registro.inactivos);
 	// A los Inactivos, agregarles el motivo
-	for (i = 0; i < linksInactivos.length; i++) {
+	for (let i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_varias.obtenerPor2CamposConInclude(
 			"registros_borrados",
 			"elc_id",
@@ -479,7 +479,7 @@ let limpiarLosDatos = (datos) => {
 	if (datos.alta) delete datos.id;
 	delete datos.motivo_id;
 	// Obtener los datos de la fila que necesitamos
-	for (campo in datos) {
+	for (let campo in datos) {
 		if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
 	}
 	// Quitar campos innecesarios

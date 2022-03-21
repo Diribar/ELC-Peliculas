@@ -85,7 +85,7 @@ window.addEventListener("load", async () => {
 			paisesID.value += !paisesID.value ? paisID : ", " + paisID;
 		} else {
 			// Si sí figura, quitárselo
-			paises_idArray = paisesID.value.split(", ");
+			let paises_idArray = paisesID.value.split(", ");
 			indice = paises_idArray.indexOf(paisID);
 			paises_idArray.splice(indice, 1);
 			paisesID.value = paises_idArray.join(", ");
@@ -94,8 +94,8 @@ window.addEventListener("load", async () => {
 		paisesNombre = "";
 		if (paisesID.value) {
 			paises_idArray = paisesID.value.split(", ");
-			for (pais_id of paises_idArray) {
-				paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
+			for (let pais_id of paises_idArray) {
+				let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 				paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
 			}
 		}
@@ -110,10 +110,10 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionDosCampos = async (datos, campo) => {
-		campo1 = datos.campo1;
-		campo2 = datos.campo2;
-		indice1 = campos.indexOf(campo1);
-		indice2 = campos.indexOf(campo2);
+		let campo1 = datos.campo1;
+		let campo2 = datos.campo2;
+		let indice1 = campos.indexOf(campo1);
+		let indice2 = campos.indexOf(campo2);
 		if (
 			(campo == campo1 || campo == campo2) &&
 			inputs[indice1].value &&
@@ -134,7 +134,7 @@ window.addEventListener("load", async () => {
 		}
 		// Obtener el mensaje para el campo
 		let errores = await fetch(ruta + dato).then((n) => n.json());
-		mensaje = errores[campo];
+		let mensaje = errores[campo];
 		indice = campos.indexOf(campo);
 		// Reemplaza
 		mensajesError[indice].innerHTML = mensaje;

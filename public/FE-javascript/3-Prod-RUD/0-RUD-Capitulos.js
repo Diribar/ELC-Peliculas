@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 		// Eliminar las opciones actuales
 		capitulo.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
-		for (cap of capitulos) {
+		for (let cap of capitulos) {
 			capitulo.innerHTML += "<option>Capítulo " + cap + "</option>";
 		}
 	});

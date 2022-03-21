@@ -11,7 +11,7 @@
 		<strong>Motivo: </strong>
 		<select name="motivo_id">
 			<option value="" class="ocultar" selected>Elejí el motivo</option>
-			<% for (motivo of motivos) { %>
+			<% for (let motivo of motivos) { %>
 				<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 			<% } %>
 		</select>

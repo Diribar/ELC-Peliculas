@@ -3,7 +3,7 @@
 	<h3>Status <%= titulo %> </h3>
 	<table>
 		<tbody>
-		<% for (producto of productos) { %>
+		<% for (let producto of productos) { %>
 			<tr>
 				<td>
 					<a href="/revision/producto/?entidad=<%= producto.entidad %>&id=<%= producto.id %>">

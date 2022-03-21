@@ -114,20 +114,20 @@ let longitud = (dato, corto, largo) => {
 };
 
 let castellano = (dato) => {
-	formato = /^[A-Z][A-Za-z ,.:áéíóúüñ'/()\d+-]+$/;
+	let formato = /^[A-Z][A-Za-z ,.:áéíóúüñ'/()\d+-]+$/;
 	return !formato.test(dato);
 };
 
 let extension = (nombre) => {
 	if (!nombre) return false;
-	ext = path.extname(nombre);
+	let ext = path.extname(nombre);
 	return ![".jpg", ".png"].includes(ext) ? ext : false;
 };
 
 let hayErrores = (errores) => {
 	resultado = false;
 	valores = Object.values(errores);
-	for (valor of valores) {
+	for (let valor of valores) {
 		if (valor) resultado = true;
 	}
 	return resultado;

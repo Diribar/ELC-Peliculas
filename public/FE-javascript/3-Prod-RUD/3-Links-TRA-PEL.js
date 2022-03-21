@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	//console.log(entidades);
 	const contenidos = document.querySelectorAll("[data-contenido]");
 
-	for (entidad of entidades) {
+	for (let entidad of entidades) {
 		entidad.addEventListener("click", (e) => {
 			contenidos.forEach((contenido) => {
 				contenido.classList.add("ocultar");

@@ -1,8 +1,4 @@
-VISTA ProdEdicion, RCLV, Links
-- Si está "capturado" --> menú pop-up avisándolo
-	- Capturado por quién (nombre)
-	- Cuándo se libera a más tardar
-
+Averiguar qué pasa con los middlewares aplicados a las API
 
 Para Detalle y Edición
 - Convertila en un Capítulo de Colección

@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		entidad.value != "capitulos" ||
 		(entidad.value == "capitulos" && coleccion_id.value && temporada.value && capitulo.value)
 	) {
-		for (i = 0; i < submit.length; i++) {
+		for (let i = 0; i < submit.length; i++) {
 			submit[i].classList.remove("inactivo");
 		}
 	}
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 			// Limpiar las opciones de lo relacionado con colecciones
 			limpiarOpciones(coleccion_id);
 			// Habilitar los botones 'submit'
-			for (i = 0; i < submit.length; i++) {
+			for (let i = 0; i < submit.length; i++) {
 				submit[i].classList.remove("inactivo");
 			}
 		} else {
@@ -38,7 +38,7 @@ window.addEventListener("load", async () => {
 			// Dejar visible todos los campos
 			invisible.classList.remove("invisible");
 			// Inhabilitar los botones 'submit'
-			for (i = 0; i < submit.length; i++) {
+			for (let i = 0; i < submit.length; i++) {
 				submit[i].classList.add("inactivo");
 			}
 			// Obtener el listado de las colecciones
@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 				(n) => n.json()
 			);
 			// Agregar el id y nombre de las colecciones a las opciones
-			for (coleccion of colecciones) {
+			for (let coleccion of colecciones) {
 				opcion = document.createElement("option");
 				opcion.value = coleccion.id;
 				opcion.innerHTML = coleccion.nombre_castellano;
@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
 			"/producto/agregar/api/TP-averiguar-cant-temporadas/?id=" + coleccion_id.value
 		).then((n) => n.json());
 		// Agregar las temporadas vigentes más una
-		for (numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
+		for (let numTemporada = 1; numTemporada <= cantTemporadas + 1; numTemporada++) {
 			// Agregar el n° y el nombre de las temporadas a las opciones
 			opcion = document.createElement("option");
 			opcion.value = numTemporada;
@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
 		).then((n) => n.json());
 		// Agregar las temporadas vigentes más una
 		let cantCapitulos = capitulos.length ? Math.max(...capitulos) : 0;
-		for (numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
+		for (let numCapitulo = 1; numCapitulo <= cantCapitulos + 1; numCapitulo++) {
 			// Agregar sólo los capítulos inexistentes
 			if (!capitulos.includes(numCapitulo)) {
 				// Agregar el n° y el nombre del capitulo a las opciones
@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
 
 	capitulo.addEventListener("change", () => {
 		if (capitulo.value) {
-			for (i = 0; i < submit.length; i++) {
+			for (let i = 0; i < submit.length; i++) {
 				submit[i].classList.remove("inactivo");
 			}
 		}
@@ -118,7 +118,7 @@ window.addEventListener("load", async () => {
 let utilizar = (campo) => {
 	let inputs = document.querySelectorAll(".input");
 	let habilitar = true;
-	for (i = 0; i < inputs.length; i++) {
+	for (let i = 0; i < inputs.length; i++) {
 		if (habilitar) inputs[i].removeAttribute("disabled");
 		else {
 			inputs[i].setAttribute("disabled", "disabled");
@@ -132,7 +132,7 @@ let utilizar = (campo) => {
 let limpiarOpciones = (campo) => {
 	let inputs = document.querySelectorAll(".input");
 	let habilitar = false;
-	for (i = 0; i < inputs.length; i++) {
+	for (let i = 0; i < inputs.length; i++) {
 		if (inputs[i] == campo) habilitar = true;
 		// Borrar opciones y dejar sólo el estándar
 		if (habilitar) inputs[i].innerHTML = "<option value=''>Elejí una opción</option>";

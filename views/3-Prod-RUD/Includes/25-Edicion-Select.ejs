@@ -4,7 +4,7 @@
 		<!-- Input -->
 		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto' : '' %>">
 			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
-			<% for (valor of campo.valores) { %>
+			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>
 					<% if (campo.nombreDelCampo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
@@ -18,7 +18,7 @@
 		<i class="fa-solid fa-circle-question"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
 			<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
-			<% for (mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
+			<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 		<!-- Errores -->
 		<i class="fa-solid fa-circle-xmark<%- !errores[campo.nombreDelCampo] ? ' ocultar' : '' %>">

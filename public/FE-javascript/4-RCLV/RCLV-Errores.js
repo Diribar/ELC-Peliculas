@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
 		if (entidad == "RCLV_personajes") bloques.push("RCLI");
 
 		// Rutina
-		for (i = 0; i < bloques.length; i++) {
+		for (let i = 0; i < bloques.length; i++) {
 			// Ícono de OK
 			OK[bloques[i]] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
 			// Ícono de error
@@ -202,7 +202,7 @@ window.addEventListener("load", async () => {
 	let funcionRepetido = () => {
 		casos = document.querySelectorAll("#posiblesDuplicados li input");
 		errores.duplicados = "";
-		for (caso of casos) {
+		for (let caso of casos) {
 			if (caso.checked) errores.duplicados = cartelDuplicado;
 			break;
 		}
@@ -311,7 +311,7 @@ window.addEventListener("load", async () => {
 			// Si hay, mostrarlos
 			posiblesDuplicados.innerHTML = "";
 			posiblesDuplicados.classList.remove("sinCasos");
-			for (caso of casos) {
+			for (let caso of casos) {
 				// Crear el input
 				let input = document.createElement("input");
 				input.type = "checkbox";

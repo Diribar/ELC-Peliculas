@@ -191,7 +191,7 @@ module.exports = {
 
 	copiarFA_Guardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
+		let aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
 		if (!aux) return res.redirect("/producto/agregar/tipo-producto");
 		// 1. Guardar el data entry en session y cookie
 		let copiarFA = {...aux, ...req.body};
@@ -278,7 +278,7 @@ module.exports = {
 
 	datosDurosGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		origen =
 			req.session.desambiguar || req.cookies.desambiguar
 				? "desambiguar"
@@ -393,12 +393,12 @@ module.exports = {
 
 	datosPersGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
-		aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
+		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!aux) return res.redirect("/producto/agregar/datos-duros");
 		// 2. Sumar el req.body a lo que ya se tenía
 		let datosPers = {...aux, ...req.body};
 		// 3. Borrar campos innecesarios
-		for (campo in datosPers) {
+		for (let campo in datosPers) {
 			if (!datosPers[campo]) delete datosPers[campo];
 			if (campo == "entidad_RCLV" || campo == "producto_RCLV") delete datosPers[campo];
 		}
@@ -590,7 +590,7 @@ let borrarSessionCookies = (req, res, paso) => {
 		"confirma",
 	];
 	let indice = pasos.indexOf(paso) + 1;
-	for (indice; indice < pasos.length; indice++) {
+	for (let indice; indice < pasos.length; indice++) {
 		if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
 		if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 	}

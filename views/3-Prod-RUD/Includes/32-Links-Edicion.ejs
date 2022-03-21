@@ -14,7 +14,7 @@
 	<td id="calidad">
 		<div class="inputError">
 			<select name="calidad" class="input">
-				<% for (calidad of calidades) { %>
+				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>" <%- link.calidad==calidad ? "selected" : "" %>><%= calidad %></option>
 				<% } %>
 				<option value="1081" <%- link.calidad=="1081" ? "selected" : "" %>>>1080</option>

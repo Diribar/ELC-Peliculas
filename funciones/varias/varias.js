@@ -39,11 +39,11 @@ module.exports = {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
 		if (paises_id.length) {
-			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
-			paises_idArray = paises_id.split(", ");
+			let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(", ");
 			// Convertir 'array de ID' en 'string de nombres'
-			for (pais_id of paises_idArray) {
-				aux = BD_paises.find((n) => n.id == pais_id);
+			for (let pais_id of paises_idArray) {
+				let aux = BD_paises.find((n) => n.id == pais_id);
 				if (aux) resultado.push(aux.nombre);
 			}
 		}
@@ -55,11 +55,11 @@ module.exports = {
 		// Función para convertir 'string de nombre' en  'string de ID'
 		let resultado = [];
 		if (pais_nombre.length) {
-			BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
+			let BD_paises = await BD_varias.obtenerTodos("paises", "nombre");
 			pais_nombreArray = pais_nombre.split(", ");
 			// Convertir 'array de nombres' en 'string de ID"
-			for (pais_nombre of pais_nombreArray) {
-				aux = BD_paises.find((n) => n.nombre == pais_nombre);
+			for (let pais_nombre of pais_nombreArray) {
+				let aux = BD_paises.find((n) => n.nombre == pais_nombre);
 				aux ? resultado.push(aux.id) : "";
 			}
 		}

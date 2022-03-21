@@ -9,9 +9,9 @@
 		<select>
 			<option value="borrar">Borrar todo/s</option>
 			<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
-			<% for (continente of continentes) { %>
+			<% for (let continente of continentes) { %>
 				<optgroup label="<%= continente %>">
-					<% for (pais of BD_paises.filter(m => m.continente == continente)) { %>
+					<% for (let pais of BD_paises.filter(m => m.continente == continente)) { %>
 						<option value="<%= pais.id %>"><%= pais.nombre %></option>
 					<% } %>	
 				</optgroup>
