@@ -1,7 +1,7 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_varias = require("./Varias");
-const varias = require("../varias/Varias");
+const varias = require("../Varias/Varias");
 
 module.exports = {
 	// Productos *****************************************
@@ -72,9 +72,9 @@ module.exports = {
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) => {
-			return n ? n.toJSON() : "";
-		});
+		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) =>
+			n ? n.toJSON() : ""
+		);
 		// Obtener el producto EDITADO
 		let prodEditado = {};
 		let entidadEnSingular = varias.entidadEnSingular(entidad);
@@ -89,9 +89,7 @@ module.exports = {
 				"editado_por_id",
 				userID,
 				includes.slice(0, -2)
-			).then((n) => {
-				return n ? n.toJSON() : "";
-			});
+			).then((n) => (n ? n.toJSON() : ""));
 			if (prodEditado) {
 				// Quitarle el ID para que no se superponga con el del producto original
 				delete prodEditado.id;
@@ -240,9 +238,7 @@ module.exports = {
 	// 		"elc_id",
 	// 		original.id,
 	// 		includes.slice(0, -2)
-	// 	).then((n) => {
-	// 		return n ? n.toJSON() : "";
-	// 	});
+	// 	).then((n) =>  n ? n.toJSON() : "");
 	// 	// Quitarle los campos 'null'
 	// 	if (prodEditado) prodEditado = this.quitarLosCamposSinContenido(prodEditado);
 	// 	// Fin

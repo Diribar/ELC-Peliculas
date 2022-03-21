@@ -8,22 +8,28 @@ const vista = require("./ControladorVista");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidadId = require("../../middlewares/entidades/entidadId");
-const prodEdicion = require("../../middlewares/entidades/RUD-edicion");
+const permisoAccesoRUD = require("../../middlewares/entidades/permisoAccesoRUD");
+const permisoAccesoLinks = require("../../middlewares/entidades/permisoAccesoLinks");
 const multer = require("../../middlewares/varios/multer");
-let capturaUsuario;
-let capturaProducto;
 
 //************************ Controladores ****************************
 // Controladores de vistas
-router.get("/detalle", soloUsuarios, entidadId, vista.detalleEdicionForm);
-router.get("/calificala", soloAutInput, entidadId, vista.calificala);
+router.get("/detalle", soloUsuarios, entidadId, permisoAccesoRUD, vista.detalleEdicionForm);
+router.get("/calificala", soloAutInput, entidadId, permisoAccesoRUD, vista.calificala);
 
-router.get("/edicion", soloAutInput, entidadId, prodEdicion, vista.detalleEdicionForm);
-router.post("/edicion/guardar", soloAutInput, entidadId,prodEdicion, multer.single("avatar"), vista.edicionGuardar);
-router.get("/edicion/eliminar", soloAutInput, entidadId, vista.edicionEliminar);
-router.get("/links", soloAutInput, entidadId, vista.linksForm);
+router.get("/edicion", soloAutInput, entidadId, permisoAccesoRUD, vista.detalleEdicionForm);
+router.post(
+	"/edicion/guardar",
+	soloAutInput,
+	entidadId,
+	permisoAccesoRUD,
+	multer.single("avatar"),
+	vista.edicionGuardar
+);
+router.get("/edicion/eliminar", soloAutInput, entidadId, permisoAccesoRUD, vista.edicionEliminar);
+router.get("/links", soloAutInput, entidadId, permisoAccesoRUD, permisoAccesoLinks, vista.linksForm);
 
-router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
+router.post("/links/altas-editar", soloAutInput, permisoAccesoRUD, permisoAccesoLinks, vista.linksAltasEditar);
 
 // Controladores de APIs
 // Tridente: Detalle, Edición, Links

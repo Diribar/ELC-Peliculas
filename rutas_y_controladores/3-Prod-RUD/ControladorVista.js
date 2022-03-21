@@ -1,9 +1,9 @@
 // ************ Requires *************
-let BD_varias = require("../../funciones/BD/Varias");
-let BD_especificas = require("../../funciones/BD/Especificas");
-let varias = require("../../funciones/Varias/Varias");
-let variables = require("../../funciones/Varias/Variables");
-let validar = require("../../funciones/Prod-RUD/2-Validar");
+const BD_varias = require("../../funciones/BD/Varias");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const varias = require("../../funciones/Varias/Varias");
+const variables = require("../../funciones/Varias/Variables");
+const validar = require("../../funciones/Prod-RUD/2-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -23,9 +23,6 @@ module.exports = {
 			prodID,
 			userID
 		);
-		// Problemas
-		let mensaje = problemas(prodOriginal, entidad, userID);
-		if (mensaje) return res.render("Errores", {mensaje});
 		// User la versión 'session' (si existe) en vez de la guardada
 		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
 			prodEditado = {...prodEditado, ...req.session.edicion};
@@ -42,7 +39,7 @@ module.exports = {
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await varias.paises_idToNombre(prodOriginal.paises_id) : "";
-		// Configurar el Título
+		// Configurar el título de la vista
 		let entidadNombre = varias.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
@@ -101,27 +98,12 @@ module.exports = {
 		let prodID = req.body.id;
 		// Obtener el userID
 		let userID = req.session.usuario.id;
-		// Problema: USUARIO CON OTROS PRODUCTOS CAPTURADOS
-
 		// Obtener el producto 'Original'
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
-			(n) => n.toJSON()
-		);
-		// Obtener el producto 'Editado' guardado, si lo hubiera
-		let entidadEnSingular = varias.entidadEnSingular(entidad);
-		let prodEditado = await BD_varias.obtenerPor2Campos(
-			"productos_edic",
-			"elc_" + entidadEnSingular + "_id",
+		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+			entidad,
 			prodID,
-			"editado_por_id",
 			userID
-		).then((n) => {
-			n ? n.toJSON() : "";
-		});
-		// Verificar si el producto está capturado
-		if (prodEditado) {
-			// Problema: EDICION 'CAPTURADA'
-		}
+		);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
@@ -175,6 +157,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Pendiente...
+		// No se puede eliminar la edición de un status "pend_aprobar"
 		// Terminar
 		return res.send(["Eliminar", entidad, ID]);
 	},
@@ -189,9 +172,6 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		// Obtener el producto
 		let [, prodOriginal] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
-		// Problemas
-		let mensaje = problemas(prodOriginal, prodEntidad, userID);
-		if (mensaje) return res.render("Errores", {mensaje});
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
 		let linksProveedores = await BD_varias.obtenerTodos("links_proveedores", "orden").then((n) =>
@@ -354,9 +334,7 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 		prodID,
 		"editado_por_id",
 		userID
-	).then((n) => {
-		return n ? n.toJSON() : "";
-	});
+	).then((n) => (n ? n.toJSON() : ""));
 	let imagenOr = Producto.avatar;
 	let imagenEd = registroEditado.avatar;
 	return imagenEd
@@ -528,22 +506,4 @@ let estandarizarFechaRef = async (prodEntidad, prodID) => {
 				BD_varias.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
 			)
 		);
-};
-let problemas = (prodOriginal, entidad, userID) => {
-	let mensaje = "";
-	// Problema: PRODUCTO NO ENCONTRADO
-	if (!prodOriginal) mensaje = "Producto no encontrado";
-	// Problema: PRODUCTO NO APROBADO
-	// 'True' si:
-	//	- Está pendiente de aprobar
-	let pendAprobar = prodOriginal.status_registro.pend_aprobar;
-	//	- Pertenece a otro usuario
-	let otroUsuario = prodOriginal.creado_por_id != userID;
-	//	- No es un capítuo o su colección es de otro usuario
-	let otraCondicion =
-		entidad != "capitulos" || (entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
-	// Conclusión
-	if (pendAprobar && otroUsuario && otraCondicion) mensaje = "El producto no está aprobado para ser mostrado. El status actual es: " + prodOriginal.status_registro.nombre;
-	// Fin
-	return mensaje;
 };
