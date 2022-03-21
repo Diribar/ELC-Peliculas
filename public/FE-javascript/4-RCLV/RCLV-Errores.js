@@ -32,13 +32,13 @@ window.addEventListener("load", async () => {
 	// Campos de POSIBLES DUPLICADOS
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
-	if (entidad == "RCLV_personajes") {
-		var santosanta = document.querySelector("#dataEntry #santosanta");
-		var ocultar = document.querySelector("#dataEntry #ocultar");
-		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
-		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
-		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
-	}
+	let santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
+	let ocultar = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultar") : "";
+	let enProcCan = entidad == "RCLV_personajes" ? document.querySelectorAll("input[name='enProcCan']") : "";
+	let proceso_canonizacion_id =
+		entidad == "RCLV_personajes" ? document.querySelector("select[name='proceso_canonizacion_id']") : "";
+	let rol_iglesia_id =
+		entidad == "RCLV_personajes" ? document.querySelector("select[name='rol_iglesia_id']") : "";
 
 	// Add Event Listeners **************
 	nombre.addEventListener("input", () => {
@@ -300,7 +300,13 @@ window.addEventListener("load", async () => {
 	// Buscar otros casos en esa fecha
 	let registrosConEsaFecha = async () => {
 		// Obtener los casos
-		let url = "/producto/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
+		let url =
+			"/producto/rclv/api/otros-casos/?mes_id=" +
+			mes_id.value +
+			"&dia=" +
+			dia.value +
+			"&entidad=" +
+			entidad;
 		let casos = await fetch(url).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
