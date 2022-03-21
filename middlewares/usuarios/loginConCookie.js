@@ -1,5 +1,6 @@
 "use strict";
-let BD_especificas = require("../../funciones/BD/especificas");
+// Requires
+const BD_especificas = require("../../funciones/BD/especificas");
 
 module.exports = async (req, res, next) => {
 	// Uso de cookies para identificar al usuario

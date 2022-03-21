@@ -1,4 +1,5 @@
 "use strict";
+// Requires
 const varias = require("../../funciones/Varias/Varias");
 const BD_varias = require("../../funciones/BD/Varias");
 

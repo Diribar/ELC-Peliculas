@@ -1,4 +1,5 @@
 "use strict";
+// Requires
 const BD_varias = require("../../funciones/BD/varias");
 
 module.exports = async (req, res, next) => {
