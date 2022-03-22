@@ -269,7 +269,7 @@ let validarRepetidos = async (campo, datos) => {
 	// Si hay casos --> mensaje de error con la entidad y el id
 	let mensaje = "";
 	if (repetido) {
-		let producto = especificas.productoNombre(datos.entidad);
+		let productoNombre = especificas.productoNombre(datos.entidad);
 		mensaje =
 			"Esta " +
 			"<a href='/producto/detalle/?entidad=" +
@@ -277,7 +277,7 @@ let validarRepetidos = async (campo, datos) => {
 			"&id=" +
 			averiguar.id +
 			"' target='_blank'><u><strong>" +
-			producto.toLowerCase() +
+			productoNombre.toLowerCase() +
 			"</strong></u></a>" +
 			" ya se encuentra en nuestra base de datos";
 	}
