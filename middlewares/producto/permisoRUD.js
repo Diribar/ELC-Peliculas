@@ -13,8 +13,7 @@ module.exports = async (req, res, next) => {
 	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let includes = ["status_registro"];
-	if (entidad == "capitulos") includes.push("coleccion");
+	let includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
