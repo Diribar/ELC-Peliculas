@@ -10,7 +10,7 @@
 				<!-- Ayuda -->
 				<i class="fa-solid fa-circle-question"></i>
 				<ul type="none" class="mensajeAyuda ocultar">
-					<li>Podés deslizar el contenido con la ruedita del mouse</li>
+					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
 				</ul>
 			</div>
 			<!-- Demás Datos Duros -->
@@ -43,7 +43,7 @@
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
 			<% for (bloque of bloquesDerecha) { %>
-				<p <%- bloque.titulo.startsWith("Status") ? ('id="status' + bloque.id + '"') : "" %>>
+				<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
 					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 				</p>
 			<% } %>

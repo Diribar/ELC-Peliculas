@@ -39,9 +39,9 @@ module.exports = {
 		return res.json(datos);
 	},
 	averiguarCantTemporadas: async (req, res) => {
-		let datos = await BD_genericas.obtenerPorId("colecciones", req.query.id)
-			.then((n) => n.toJSON())
-			.then((n) => n.cant_temporadas);
+		let datos = await BD_genericas.obtenerPorId("colecciones", req.query.id).then(
+			(n) => n.cant_temporadas
+		);
 		return res.json(datos);
 	},
 	obtenerCapitulos: async (req, res) => {

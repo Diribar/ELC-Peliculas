@@ -240,7 +240,7 @@ module.exports = {
 				"subcategorias",
 				"id",
 				datos.subcategoria_id
-			).then((n) => n.toJSON());
+			);
 			// Relación con la vida
 			if (subcategoria.personaje)
 				errores.personaje_id =
@@ -301,7 +301,7 @@ let validarRepetidos = async (campo, datos) => {
 		datos[campo],
 		"ano_estreno",
 		datos.ano_estreno
-	).then((n) => (n ? n.toJSON() : ""));
+	);
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id

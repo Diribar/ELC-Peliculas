@@ -249,12 +249,8 @@ module.exports = {
 		let [, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(prodEntidad, prodID, userID);
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
-		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden").then((n) =>
-			n.map((m) => m.toJSON())
-		);
-		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id").then((n) =>
-			n.map((m) => m.toJSON())
-		);
+		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
@@ -270,7 +266,6 @@ module.exports = {
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_genericas.obtenerTodos("motivos_para_borrar", "orden")
-			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {
@@ -334,7 +329,7 @@ let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 		entidad_id,
 		prodID,
 		includes
-	).then((n) => (n.length ? n.map((m) => m.toJSON()) : []));
+	);
 	// Combinarlos con la edición, si existe
 	includes.splice(includes.indexOf("link_prov"), 1);
 	let linksCombinados = linksOriginales;
@@ -348,7 +343,7 @@ let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 			"editado_por_id",
 			userID,
 			includes.slice(0, -1)
-		).then((n) => (n ? n.toJSON() : null));
+		);
 		// Hacer la combinación
 		if (linkEditado) {
 			delete linkEditado.id;
@@ -366,7 +361,7 @@ let obtenerLinkCombinado = async (elc_id, userID) => {
 		elc_id,
 		"editado_por_id",
 		userID
-	).then((n) => (n ? n.toJSON() : ""));
+	);
 	// Hacer la combinación
 	// Si existe 'linkEditado', se preserva su 'id'
 	let linkCombinado = {...linkOriginal, ...linkEditado};
@@ -388,7 +383,7 @@ let ActivosInactivos = async (linksOriginales) => {
 			"elc_entidad",
 			"links_originales",
 			"motivo"
-		).then((n) => n.toJSON());
+		);
 		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
 	}
 	// Fin
@@ -402,7 +397,7 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 		prodID,
 		"editado_por_id",
 		userID
-	).then((n) => (n ? n.toJSON() : ""));
+	);
 	let imagenOr = Producto.avatar;
 	let imagenEd = registroEditado.avatar;
 	return imagenEd
@@ -444,7 +439,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 		"links_gratuitos_en_la_web",
 		"links",
 		"status_registro",
-	]).then((n) => n.toJSON());
+	]);
 
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_genericas.obtenerTodosPorCampoConInclude(
@@ -453,7 +448,6 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 		prodID,
 		["status_registro", "link_tipo"]
 	)
-		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) => n.filter((n) => n.gratuito))
 		.then((n) => n.filter((n) => n.link_tipo.pelicula));
 
@@ -463,9 +457,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) =>
-		n.map((m) => m.toJSON())
-	);
+	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
@@ -505,7 +497,7 @@ let edicionDeLink = async (req, datos) => {
 			"links_originales",
 			datos.id,
 			"status_registro"
-		).then((n) => n.toJSON());
+		);
 		let userID = req.session.usuario.id;
 		if (linkOriginal.status_registro.creado && linkOriginal.creado_por_id == userID) {
 			// Editados reemplaza el original

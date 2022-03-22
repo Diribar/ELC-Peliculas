@@ -13,9 +13,9 @@ module.exports = async (req, res, next) => {
 	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
-		(n) => (n ? n.toJSON() : "")
-	);
+	let includes = ["status_registro"];
+	if (entidad == "capitulos") includes.push("coleccion");
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {

@@ -26,7 +26,7 @@
 #datosBreves #graficoCalificacion {width:180px;}
 #datosBreves #texto {margin-right: 15px;}
 #datosBreves #texto p {margin-top: 10px;}
-#datosBreves #texto p span {padding: 0 3px; border-radius: 5px; font-weight: bold;}
+#datosBreves #texto p.status span {padding: 0 3px; border-radius: 5px; font-weight: bold;}
 #datosBreves #texto p#status1 span, #datosBreves #texto p#status2 span {background-color: var(--verde-claro); color: var(--verde-oscuro); border: 1px solid var(--verde-oscuro);}
 #datosBreves #texto p#status3 span, #datosBreves #texto p#status4 span {background-color: var(--verde-oscuro); color: wheat;}
 #datosBreves #texto p#status5 span {background-color: var(--rojo-claro); color: var(--rojo-oscuro); border: 1px solid var(--rojo-oscuro);}

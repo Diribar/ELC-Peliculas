@@ -20,20 +20,14 @@ module.exports = {
 						1,
 						"capitulo",
 						1
-				  )
-						.then((n) => n.toJSON())
-						.then((n) => n.id)
-				: await BD_genericas.obtenerPorId("capitulos", id)
-						.then((n) => n.toJSON())
-						.then((n) => n.coleccion_id);
+				  ).then((n) => n.id)
+				: await BD_genericas.obtenerPorId("capitulos", id).then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
 	obtenerCapAntPostID: async (req, res) => {
 		let {id} = req.query;
 		// Obtener la coleccion_id, la temporada y el capítulo
-		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtenerPorId("capitulos", id).then((n) =>
-			n.toJSON()
-		);
+		let {coleccion_id, temporada, capitulo} = await BD_genericas.obtenerPorId("capitulos", id);
 		// Averiguar los datos del capítulo anterior **********************
 		// Obtener los datos del capítulo anterior (temporada y capítulo)
 		let tempAnt = temporada;
@@ -50,7 +44,6 @@ module.exports = {
 				"temporada",
 				tempAnt
 			)
-				.then((n) => n.map((n) => n.toJSON()))
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n));
 		}
@@ -65,13 +58,10 @@ module.exports = {
 				"temporada",
 				temporada
 			)
-				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
 			// Obtener el último número de temporada de la colección
-			BD_genericas.obtenerPorId("colecciones", coleccion_id)
-				.then((n) => n.toJSON())
-				.then((n) => n.cant_temporadas),
+			BD_genericas.obtenerPorId("colecciones", coleccion_id).then((n) => n.cant_temporadas),
 		]).then(([a, b]) => {
 			return [a, b];
 		});
@@ -96,9 +86,7 @@ module.exports = {
 						tempAnt,
 						"capitulo",
 						capAnt
-				  )
-						.then((n) => n.toJSON())
-						.then((n) => n.id)
+				  ).then((n) => n.id)
 				: false,
 			capPost
 				? BD_genericas.obtenerPor3Campos(
@@ -109,9 +97,7 @@ module.exports = {
 						tempPost,
 						"capitulo",
 						capPost
-				  )
-						.then((n) => n.toJSON())
-						.then((n) => n.id)
+				  ).then((n) => n.id)
 				: false,
 		]).then(([a, b]) => {
 			return [a, b];
@@ -129,9 +115,7 @@ module.exports = {
 			temporada,
 			"capitulo",
 			capitulo
-		)
-			.then((n) => n.toJSON())
-			.then((n) => n.id);
+		).then((n) => n.id);
 		return res.json(ID);
 	},
 
@@ -178,9 +162,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	linksObtenerProvs: async (req, res) => {
-		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden").then((n) =>
-			n.map((m) => m.toJSON())
-		);
+		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		return res.json(provs);
 	},
 	linksEliminar: async (req, res) => {
@@ -201,7 +183,7 @@ module.exports = {
 			// El link_id existe
 			let link = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
 				"status_registro",
-			]).then((n) => n.toJSON());
+			]);
 			if (!link) {
 				// Consecuencias si el link no existe en la BD
 				respuesta.mensaje = "El link no existe en la base de datos";
@@ -248,13 +230,11 @@ module.exports = {
 
 let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Obtener la duración
-	let duracion = await BD_genericas.obtenerPorId("motivos_para_borrar", motivo_id)
-		.then((n) => n.toJSON())
-		.then((n) => n.duracion);
+	let duracion = await BD_genericas.obtenerPorId("motivos_para_borrar", motivo_id).then((n) => n.duracion);
 	// Obtener el status_id de 'inactivar'
-	let status_id = await BD_genericas.obtenerPorCampo("status_registro_ent", "inactivar", 1)
-		.then((n) => n.toJSON())
-		.then((n) => n.id);
+	let status_id = await BD_genericas.obtenerPorCampo("status_registro_ent", "inactivar", 1).then(
+		(n) => n.id
+	);
 	// Preparar los datos
 	let datosParaLink = {
 		editado_por_id: usuario.id,
@@ -280,14 +260,14 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 // let obtenerLinksFusionados = async (link_id, usuario) => {
 // 	let link_original = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
 // 		"status_registro",
-// 	]).then((n) => n.toJSON());
+// 	]);
 // 	link_edicion = await BD_genericas.obtenerPor2CamposConInclude(
 // 		"links_edicion",
 // 		"elc_id",
 // 		link_id,
 // 		"editado_por_id",
 // 		usuario.id,
-// 	).then((n) => (n ? n.toJSON() : ""));
+// 	);
 // 	if (link_edicion) {
 // 		delete link_edicion.id;
 // 		link_original = {...link_original, ...link_edicion};

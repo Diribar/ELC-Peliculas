@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 		"status_registro",
 		"capturado_por",
-	]).then((n) => (n ? n.toJSON() : ""));
+	]);
 	// Problema1: PRODUCTO NO ENCONTRADO ----------------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {
@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
 					mensaje = "El producto estará disponible para su revisión en " + espera + " " + unidad;
 				// --------------------------------------------------------------------
 				else {
-					// Creado < haceUnaHora>
+					// Creado < haceUnaHora
 					// ----------------------------------------------------------------
 					let horarioCaptura;
 					let meses = [
