@@ -200,16 +200,23 @@ module.exports = {
 			: "capitulo_id";
 	},
 
-	haceUnaHora: () => {
-		let haceUnaHora = new Date();
-		haceUnaHora.setHours(haceUnaHora.getHours() - 1);
-		return haceUnaHora;
+	ahora: () => {
+		// Instante actual en horario local
+		let ahora = new Date(new Date().toUTCString());
+		//console.log("linea 206", ahora);
+		return ahora
 	},
 
-	haceDosHoras: () => {
-		let haceUnaHora = new Date();
-		haceUnaHora.setHours(haceUnaHora.getHours() - 2);
-		return haceUnaHora;
+	haceUnaHora: function () {
+		let horario = this.ahora();
+		horario.setHours(horario.getHours() - 1);
+		return horario;
+	},
+
+	haceDosHoras: function () {
+		let horario = this.ahora();
+		horario.setHours(horario.getHours() - 2);
+		return horario;
 	},
 
 	borrarSessionCookies: (req, res, paso) => {
@@ -231,5 +238,4 @@ module.exports = {
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
 	},
-	
 };

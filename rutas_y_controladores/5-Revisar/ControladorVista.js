@@ -59,8 +59,7 @@ module.exports = {
 		// Obtener los países
 		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Configurar el título de la vista
-		let entidadNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisión de" + (entidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		let titulo = "Revisión del Producto: " + prodEditado.nombre_castellano;
 		// Info exclusiva para la vista de Edicion
 		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");

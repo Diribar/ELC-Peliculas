@@ -5,11 +5,11 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
-	let entidad = req.query.entidad;
-	let prodID = req.query.id;
-	let userID = req.session.usuario.id;
-	let haceUnaHora = especificas.haceUnaHora();
-	let haceDosHoras = especificas.haceDosHoras();
+	const entidad = req.query.entidad;
+	const prodID = req.query.id;
+	const userID = req.session.usuario.id;
+	const haceUnaHora = especificas.haceUnaHora();
+	const haceDosHoras = especificas.haceDosHoras();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
@@ -45,27 +45,39 @@ module.exports = async (req, res, next) => {
 					// Creado < haceUnaHora>
 					// ----------------------------------------------------------------
 					let horarioCaptura;
+					let meses = [
+						"ene",
+						"feb",
+						"mar",
+						"abr",
+						"may",
+						"jun",
+						"jul",
+						"ago",
+						"sep",
+						"oct",
+						"nov",
+						"dic",
+					];
 					if (prodOriginal.capturado_en)
 						horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
 							"/" +
-							prodOriginal.capturado_en.getMonth() +
+							meses[prodOriginal.capturado_en.getUTCMonth()] +
 							" " +
 							prodOriginal.capturado_en.getHours() +
 							":" +
-							prodOriginal.capturado_en.getMinutes();
+							String(prodOriginal.capturado_en.getMinutes()).padStart(2, "0");
 					// Capturado > haceUnaHora
 					if (prodOriginal.capturado_en > haceUnaHora) {
 						// Problema4: EL PRODUCTO ESTÁ CAPTURADO POR OTRO USUARIO
-						if (prodOriginal.capturado_por_id != userID) {
-							let usuarioCaptura = prodOriginal.capturado_por.apodo;
+						if (prodOriginal.capturado_por_id != userID)
 							mensaje =
 								"El producto está en revisión por el usuario " +
-								usuarioCaptura +
+								prodOriginal.capturado_por.apodo +
 								", desde las " +
 								horarioCaptura +
 								"hs";
-						}
 					} else {
 						// No capturado o capturado < haceUnaHora
 						// Problema5: EL USUARIO DEJÓ CAPTURADO ESTE PRODUCTO LUEGO DE LA HORA
@@ -81,7 +93,7 @@ module.exports = async (req, res, next) => {
 						else {
 							// Sin problemas: CAPTURA DEL PRODUCTO
 							let datos = {
-								capturado_en: new Date(),
+								capturado_en: especificas.ahora(),
 								capturado_por_id: userID,
 							};
 							BD_genericas.actualizarPorId(entidad, prodID, datos);

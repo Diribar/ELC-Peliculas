@@ -8,7 +8,7 @@ const especificas = require("../Varias/Especificas");
 module.exports = {
 	// Productos *****************************************
 	// Header
-	quickSearchCondiciones: (palabras)=> {
+	quickSearchCondiciones: (palabras) => {
 		palabras = palabras.split(" ");
 		// Definir los campos en los cuales buscar
 		let campos = ["nombre_original", "nombre_castellano"];
@@ -29,7 +29,7 @@ module.exports = {
 			valoresOR.push(ResumenDeCampo);
 		}
 		let condiciones = {[Op.or]: valoresOR};
-		return condiciones
+		return condiciones;
 	},
 
 	quickSearchProductos: async (condiciones) => {
@@ -167,8 +167,14 @@ module.exports = {
 					where: {
 						// Con status de 'revisar'
 						status_registro_id: revisar,
-						// Que no esté capturado
-						[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
+						[Op.or]: [
+							// Que no esté capturado
+							{capturado_en: null},
+							// Que esté capturado hace más de una hora
+							{capturado_en: {[Op.lt]: haceUnaHora}},
+							// Que esté capturado por este usuario
+							{capturado_por_id: userID},
+						],
 						// Que esté en condiciones de ser capturado
 						creado_en: {[Op.lt]: haceUnaHora},
 						// Que esté creado por otro usuario
@@ -229,6 +235,47 @@ module.exports = {
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
+	},
+	// Middleware-Revisar
+	revisaSiTieneOtrasCapturas: async (entidadActual, prodID, userID) => {
+		// Variables
+		let haceUnaHora = especificas.haceUnaHora();
+		let entidades = [
+			"peliculas",
+			"colecciones",
+			"capitulos",
+			"RCLV_personajes",
+			"RCLV_hechos",
+			"RCLV_valores",
+		];
+		// Averiguar si tiene algún producto capturado
+		let lectura;
+		let entidad;
+		for (entidad of entidades) {
+			lectura =
+				entidad == entidadActual
+					? await db[entidad]
+							.findOne({
+								where: {
+									// Que esté capturado por este usuario
+									capturado_por_id: userID,
+									// Que esté capturado hace menos de una hora
+									capturado_en: {[Op.gt]: haceUnaHora},
+									// Distinto al producto actual
+									id: {[Op.ne]: prodID},
+								},
+							})
+							.then((n) => (n ? n.toJSON() : ""))
+					: await db[entidad]
+							.findOne({
+								where: {capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
+							})
+							.then((n) => (n ? n.toJSON() : ""));
+			if (lectura) break;
+		}
+		// Fin
+		console.log("264", {...lectura, entidad});
+		return lectura ? {...lectura, entidad} : lectura;
 	},
 	// Nadie
 	actualizarCantCasos_RCLV: async (datos, status_id) => {

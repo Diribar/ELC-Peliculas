@@ -17,9 +17,11 @@ module.exports = {
 	},
 
 	obtenerTodosPorCampo: (entidad, campo, valor) => {
-		return db[entidad].findAll({
-			where: {[campo]: valor},
-		});
+		return db[entidad]
+			.findAll({
+				where: {[campo]: valor},
+			})
+			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {

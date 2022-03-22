@@ -525,7 +525,6 @@ let funcionCrew = (crew, campo_TMDB) => {
 			datos.sort((a, b) => {
 				return a > b ? 1 : a < b ? -1 : 0;
 			});
-			console.log(datos);
 			for (let i = datos.length - 1; i > 0; i--) {
 				if (valores[i] == valores[i - 1]) valores.splice(i, 1);
 			}

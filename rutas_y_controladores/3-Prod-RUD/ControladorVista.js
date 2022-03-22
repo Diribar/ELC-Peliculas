@@ -570,13 +570,11 @@ let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar linksOriginales
 	BD_genericas.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_genericas.obtenerTodosPorCampo("links_originales", entidad_id, prodID)
-		.then((n) => n.map((m) => m.toJSON()))
-		.then((n) =>
-			n.map((m) =>
-				BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {
-					fecha_referencia,
-				})
-			)
-		);
+	BD_genericas.obtenerTodosPorCampo("links_originales", entidad_id, prodID).then((n) =>
+		n.map((m) =>
+			BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {
+				fecha_referencia,
+			})
+		)
+	);
 };

@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 							"links_originales",
 							entidad_id,
 							prodID
-						).then((n) => (n.length ? n.map((m) => m.toJSON()) : []));
+						);
 						let cantLinks = links.length;
 						if (cantLinks && links[cantLinks - 1].fecha_referencia < haceUnaHora)
 							mensaje =
