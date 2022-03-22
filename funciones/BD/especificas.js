@@ -274,7 +274,6 @@ module.exports = {
 			if (lectura) break;
 		}
 		// Fin
-		console.log("264", {...lectura, entidad});
 		return lectura ? {...lectura, entidad} : lectura;
 	},
 	// Nadie
