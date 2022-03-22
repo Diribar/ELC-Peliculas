@@ -69,7 +69,7 @@ module.exports = {
 			: false;
 		// Ir a la vista
 		//return res.send(prodCombinado)
-		return res.render("Home", {
+		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
