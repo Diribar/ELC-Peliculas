@@ -29,10 +29,12 @@ window.addEventListener("load", async () => {
 		// Definir los valores para 'campo' y 'valor'
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
-		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
+		let valor = e.target == paisesSelect ? paisesID.value : encodeURIComponent(e.target.value);
+		console.log(valor);
 		let indice = campos.indexOf(campo);
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		console.log(errores);
 		mensajesError[indice].innerHTML = errores[campo];
 		// Acciones en función de si hay o no mensajes de error
 		errores[campo]

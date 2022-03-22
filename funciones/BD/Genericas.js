@@ -9,7 +9,8 @@ module.exports = {
 			.findAll({
 				order: [[orden, "ASC"]],
 			})
-			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosConInclude: (entidad, includes) => {
@@ -17,7 +18,8 @@ module.exports = {
 			.findAll({
 				include: includes,
 			})
-			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPorCampo: (entidad, campo, valor) => {
@@ -25,7 +27,8 @@ module.exports = {
 			.findAll({
 				where: {[campo]: valor},
 			})
-			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
@@ -34,7 +37,8 @@ module.exports = {
 				where: {[campo]: valor},
 				include: includes,
 			})
-			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
@@ -42,7 +46,8 @@ module.exports = {
 			.findAll({
 				where: {[campo1]: valor1, [campo2]: valor2},
 			})
-			.then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerPorCampo: (entidad, campo, valor) => {

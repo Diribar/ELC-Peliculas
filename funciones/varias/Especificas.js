@@ -134,6 +134,14 @@ module.exports = {
 		return resultado;
 	},
 
+	letrasValidasCastellano: (dato) => {
+		let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+		// \d: any decimal
+		// \r: carriage return
+		// \n: new line
+		return !formato.test(dato);
+	},	
+
 	moverImagenCarpetaDefinitiva: (nombre, destino) => {
 		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
 		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;

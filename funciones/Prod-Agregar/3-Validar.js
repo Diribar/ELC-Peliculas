@@ -82,7 +82,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.nombre_original, 2, 50)
 				? longitud(datos.nombre_original, 2, 50)
-				: castellano(datos.nombre_original)
+				: especificas.letrasValidasCastellano(datos.nombre_original)
 				? cartelCastellano
 				: "";
 		if (campos.includes("nombre_castellano"))
@@ -90,7 +90,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.nombre_castellano, 2, 50)
 				? longitud(datos.nombre_castellano, 2, 50)
-				: castellano(datos.nombre_castellano)
+				: especificas.letrasValidasCastellano(datos.nombre_castellano)
 				? cartelCastellano
 				: "";
 		if (campos.includes("ano_estreno"))
@@ -135,7 +135,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.direccion, 2, 100)
 				? longitud(datos.direccion, 2, 100)
-				: castellano(datos.direccion)
+				: especificas.letrasValidasCastellano(datos.direccion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("guion"))
@@ -143,7 +143,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.guion, 2, 100)
 				? longitud(datos.guion, 2, 100)
-				: castellano(datos.guion)
+				: especificas.letrasValidasCastellano(datos.guion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("musica"))
@@ -151,7 +151,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 2, 100)
 				? longitud(datos.musica, 2, 100)
-				: castellano(datos.musica)
+				: especificas.letrasValidasCastellano(datos.musica)
 				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
@@ -159,7 +159,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 2, 500)
 				? longitud(datos.actuacion, 2, 500)
-				: castellano(datos.actuacion)
+				: especificas.letrasValidasCastellano(datos.actuacion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("produccion"))
@@ -167,7 +167,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.produccion, 2, 100)
 				? longitud(datos.produccion, 2, 100)
-				: castellano(datos.produccion)
+				: especificas.letrasValidasCastellano(datos.produccion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("sinopsis"))
@@ -175,7 +175,7 @@ module.exports = {
 				? cartelCampoVacio
 				: longitud(datos.sinopsis, 15, 800)
 				? longitud(datos.sinopsis, 15, 800)
-				: castellano(datos.sinopsis)
+				: especificas.letrasValidasCastellano(datos.sinopsis)
 				? cartelCastellano
 				: "";
 		if (campos.includes("avatar"))
@@ -268,13 +268,6 @@ let longitud = (dato, corto, largo) => {
 		: dato.length > largo
 		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
 		: "";
-};
-let castellano = (dato) => {
-	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
-	// \d: any decimal
-	// \r: carriage return
-	// \n: new line
-	return !formato.test(dato);
 };
 let formatoAno = (dato) => {
 	let formato = /^\d{4}$/;
