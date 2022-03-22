@@ -211,10 +211,10 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let productoEnSingular = especificas.productoEnSingular(entidad);
+			let producto_id = especificas.producto_id(entidad);
 			edicion = {
 				...edicion,
-				["elc_" + productoEnSingular + "id"]: prodID,
+				["elc_" + producto_id]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
