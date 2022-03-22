@@ -206,6 +206,12 @@ module.exports = {
 		return haceUnaHora;
 	},
 
+	haceDosHoras: () => {
+		let haceUnaHora = new Date();
+		haceUnaHora.setHours(haceUnaHora.getHours() - 2);
+		return haceUnaHora;
+	},
+
 	borrarSessionCookies: (req, res, paso) => {
 		let pasos = [
 			"borrarTodo",
