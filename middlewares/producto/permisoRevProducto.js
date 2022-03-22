@@ -45,20 +45,9 @@ module.exports = async (req, res, next) => {
 					// Creado < haceUnaHora
 					// ----------------------------------------------------------------
 					let horarioCaptura;
-					let meses = [
-						"ene",
-						"feb",
-						"mar",
-						"abr",
-						"may",
-						"jun",
-						"jul",
-						"ago",
-						"sep",
-						"oct",
-						"nov",
-						"dic",
-					];
+					let meses = ["ene", "feb", "mar", "abr", "may", "jun"];
+					meses.push("jul", "ago", "sep", "oct", "nov", "dic");
+					console.log(meses);
 					if (prodOriginal.capturado_en)
 						horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
