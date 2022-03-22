@@ -120,14 +120,14 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
 		let prodEditado = {};
-		let entidadEnSingular = especificas.entidadEnSingular(entidad);
+		let productoEnSingular = especificas.productoEnSingular(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 				"productos_edic",
-				"elc_" + entidadEnSingular + "_id",
+				"elc_" + productoEnSingular + "_id",
 				prodID,
 				"editado_por_id",
 				userID,
@@ -263,14 +263,14 @@ module.exports = {
 									id: {[Op.ne]: prodID},
 								},
 							})
-							.then((n) => n.toJSON())
+							.then((n) => (n ? n.toJSON() : ""))
 					: await db[entidad]
 							.findOne({
 								// Que esté capturado por este usuario
 								// Que esté capturado hace menos de una hora
 								where: {capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 							})
-							.then((n) => n.toJSON());
+							.then((n) => (n ? n.toJSON() : ""));
 			if (lectura) break;
 		}
 		// Fin

@@ -139,7 +139,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: especificas.entidadNombre(req.body.entidad),
+			producto: especificas.productoNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -163,7 +163,7 @@ module.exports = {
 		especificas.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.producto = especificas.entidadNombre(req.body.entidad);
+			req.body.producto = especificas.productoNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -479,14 +479,14 @@ module.exports = {
 		let registro = await BD_genericas.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let entidadEnSingular = especificas.entidadEnSingular(confirma.entidad);
+		let productoEnSingular = especificas.productoEnSingular(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
 			editado_por_id: req.session.usuario.id,
 			// Datos varios
 			entidad: "productos_edic",
-			["elc_" + entidadEnSingular + "_id"]: registro.id,
+			["elc_" + productoEnSingular + "_id"]: registro.id,
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion);
@@ -523,7 +523,7 @@ module.exports = {
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = especificas.entidadNombre(entidad);
+		let producto = especificas.productoNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

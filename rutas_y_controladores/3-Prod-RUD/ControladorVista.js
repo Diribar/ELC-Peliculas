@@ -43,12 +43,12 @@ module.exports = {
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// Configurar el título de la vista
-		let entidadNombre = especificas.entidadNombre(entidad);
+		let productoNombre = especificas.productoNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			entidadNombre;
+			productoNombre;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
 			// Variables de 'Detalle'
@@ -211,10 +211,10 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let entidadEnSingular = especificas.entidadEnSingular(entidad);
+			let productoEnSingular = especificas.productoEnSingular(entidad);
 			edicion = {
 				...edicion,
-				["elc_" + entidadEnSingular + "id"]: prodID,
+				["elc_" + productoEnSingular + "id"]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
@@ -255,8 +255,8 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let entidadNombre = especificas.entidadNombre(prodEntidad);
-		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		let productoNombre = especificas.productoNombre(prodEntidad);
+		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + productoNombre;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodEditado);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
@@ -390,10 +390,10 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let entidadEnSingular = especificas.entidadEnSingular(prodEntidad);
+	let productoEnSingular = especificas.productoEnSingular(prodEntidad);
 	let registroEditado = await BD_genericas.obtenerPor2Campos(
 		"productos_edic",
-		["elc_" + entidadEnSingular + "_id"],
+		["elc_" + productoEnSingular + "_id"],
 		prodID,
 		"editado_por_id",
 		userID
