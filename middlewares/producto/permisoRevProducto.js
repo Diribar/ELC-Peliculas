@@ -44,7 +44,6 @@ module.exports = async (req, res, next) => {
 				else {
 					// Creado < haceUnaHora>
 					// ----------------------------------------------------------------
-					// Capturado > haceUnaHora
 					let horarioCaptura;
 					if (prodOriginal.capturado_en)
 						horarioCaptura =
@@ -55,7 +54,7 @@ module.exports = async (req, res, next) => {
 							prodOriginal.capturado_en.getHours() +
 							":" +
 							prodOriginal.capturado_en.getMinutes();
-
+					// Capturado > haceUnaHora
 					if (prodOriginal.capturado_en > haceUnaHora) {
 						// Problema4: EL PRODUCTO ESTÁ CAPTURADO POR OTRO USUARIO
 						if (prodOriginal.capturado_por_id != userID) {
