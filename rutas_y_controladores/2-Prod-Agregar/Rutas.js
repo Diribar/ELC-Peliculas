@@ -9,7 +9,7 @@ const vista = require("./ControladorVista");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
-const entidadId = require("../../middlewares/producto/entidadId");
+const entidadId = require("../../middlewares/producto/validarEntidadId");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
