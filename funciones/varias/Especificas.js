@@ -211,7 +211,6 @@ module.exports = {
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());
-		//console.log("linea 206", ahora);
 		return ahora
 	},
 
