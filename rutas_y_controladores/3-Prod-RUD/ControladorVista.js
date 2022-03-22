@@ -390,10 +390,10 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let productoEnSingular = especificas.productoEnSingular(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let registroEditado = await BD_genericas.obtenerPor2Campos(
 		"productos_edic",
-		["elc_" + productoEnSingular + "_id"],
+		["elc_" + producto_id],
 		prodID,
 		"editado_por_id",
 		userID
