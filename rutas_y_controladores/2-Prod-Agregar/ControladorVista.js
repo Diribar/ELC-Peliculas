@@ -552,11 +552,11 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	let entidad_id = especificas.entidad_id(confirma.entidad);
+	let producto_id = especificas.producto_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: registro.creado_por_id,
-		[entidad_id]: registro.id,
+		[producto_id]: registro.id,
 		fe_valores: confirma.fe_valores,
 		entretiene: confirma.entretiene,
 		calidad_tecnica: confirma.calidad_tecnica,

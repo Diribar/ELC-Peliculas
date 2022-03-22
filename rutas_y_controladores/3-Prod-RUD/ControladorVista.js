@@ -321,12 +321,12 @@ module.exports = {
 // FUNCIONES --------------------------------------------------
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Definir valores necesarios
-	let entidad_id = especificas.entidad_id(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
 	let linksOriginales = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		entidad_id,
+		producto_id,
 		prodID,
 		includes
 	);
@@ -416,11 +416,11 @@ let altaDeLink = async (req, datos) => {
 		if (!datos.parte) datos.parte = "-";
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
-		let entidad_id = especificas.entidad_id(datos.prodEntidad);
+		let producto_id = especificas.producto_id(datos.prodEntidad);
 		let datos = {
 			...datos,
 			entidad: "links_originales",
-			[entidad_id]: datos.prodID,
+			[producto_id]: datos.prodID,
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
@@ -444,7 +444,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		especificas.entidad_id(prodEntidad),
+		especificas.producto_id(prodEntidad),
 		prodID,
 		["status_registro", "link_tipo"]
 	)
@@ -557,12 +557,12 @@ let limpiarLosDatos = (datos) => {
 };
 let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar todos los originales
-	let entidad_id = especificas.entidad_id(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
-	BD_genericas.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
+	BD_genericas.actualizarPorCampo("links_originales", producto_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_genericas.obtenerTodosPorCampo("links_originales", entidad_id, prodID).then((n) =>
+	BD_genericas.obtenerTodosPorCampo("links_originales", producto_id, prodID).then((n) =>
 		n.map((m) =>
 			BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {
 				fecha_referencia,

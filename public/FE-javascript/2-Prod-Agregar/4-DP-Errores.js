@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
-		let nombres = ["personaje_id", "hecho_id", "valor_id"];
+		let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];
 
 		// Mostrar/Ocultar el campo RCLV
 		for (let i = 0; i < campos.length; i++) {
@@ -111,7 +111,7 @@ window.addEventListener("load", async () => {
 			else {
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta
-				document.querySelector("select[name='" + nombres[i] + "']").value = "";
+				document.querySelector("select[name='" + RCLV_id[i] + "']").value = "";
 			}
 		}
 	};

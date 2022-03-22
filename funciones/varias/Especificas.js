@@ -200,7 +200,7 @@ module.exports = {
 			: "";
 	},
 
-	entidad_id: (entidad) => {
+	producto_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"

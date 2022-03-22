@@ -263,12 +263,14 @@ module.exports = {
 									id: {[Op.ne]: prodID},
 								},
 							})
-							.then((n) => (n ? n.toJSON() : ""))
+							.then((n) => n.toJSON())
 					: await db[entidad]
 							.findOne({
+								// Que esté capturado por este usuario
+								// Que esté capturado hace menos de una hora
 								where: {capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 							})
-							.then((n) => (n ? n.toJSON() : ""));
+							.then((n) => n.toJSON());
 			if (lectura) break;
 		}
 		// Fin
@@ -278,11 +280,11 @@ module.exports = {
 	actualizarCantCasos_RCLV: async (datos, status_id) => {
 		// Definir variables
 		let entidadesRCLV = ["personajes", "hechos", "valores"];
-		let camposRCLV = ["personaje_id", "hecho_id", "valor_id"];
+		let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];
 		let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
 		// Rutina por cada campo RCLV
-		for (let i = 0; i < camposRCLV.length; i++) {
-			campo = camposRCLV[i];
+		for (let i = 0; i < RCLV_id.length; i++) {
+			campo = RCLV_id[i];
 			valor = datos[campo];
 			if (valor) {
 				let cant_productos = await BD_genericas.contarCasos(entidadProd, campo, valor, status_id);

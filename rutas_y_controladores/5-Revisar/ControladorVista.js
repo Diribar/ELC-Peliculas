@@ -9,6 +9,13 @@ module.exports = {
 		// Tema y Código
 		let tema = "revision";
 		let codigo = "visionGeneral";
+		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
+		let prodCapturado= await especificas.revisaSiTieneOtrasCapturas("", "", userID)
+		if (prodCapturado) return res.redirect(
+			"/revisar/"+
+			especificas. prodCapturado.entidad+
+			"/"
+		)
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
