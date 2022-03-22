@@ -13,24 +13,14 @@
 					<li>Podés deslizar el contenido con la ruedita del mouse</li>
 				</ul>
 			</div>
-			<!-- País, Idioma, Castellano, Color -->
-			<div class="datosAdicionales">
-				<strong>País<%= paises.includes(",") ? "es" : "" %> de origen</strong>: <%= paises ? paises : "Sin datos" %>. 
-				<strong>Idioma original</strong>: <%= producto.idioma_original.nombre ? producto.idioma_original.nombre : "Sin datos" %>. 
-				<strong>En castellano:</strong> <%= producto.en_castellano.productos ? producto.en_castellano.productos : "Sin datos" %>. 
-				<strong>Es a color:</strong> <%= producto.en_color.productos ? producto.en_color.productos : "Sin datos" %>. 
-			</div>
-			<!-- Dirección, Guión, Música, Producción -->
-			<div class="datosAdicionales">
-				<strong>Dirección:</strong> <%= producto.direccion ? producto.direccion : "Sin datos" %>. 
-				<strong>Guión:</strong> <%= producto.guion ? producto.guion : "Sin datos" %>. 
-				<strong>Música:</strong> <%= producto.musica ? producto.musica : "Sin datos" %>. 
-				<strong>Producción:</strong> <%= producto.produccion ? producto.produccion : "Sin datos" %>. 
-			</div>
-			<!-- Actuación -->
-			<div class="datosAdicionales">
-				<strong>Actuación:</strong> <%= producto.actuacion ? producto.actuacion : "Sin datos" %>. 
-			</div>	
+			<!-- Demás Datos Duros -->
+			<% for (bloque of bloquesIzquierda) { %>
+				<div class="datosAdicionales">
+					<% for (campo of bloque) { %>
+						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
+					<% } %> 
+				</div>				
+			<% } %>
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">
@@ -43,7 +33,7 @@
 			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
 		</div>
 		<!-- Botones -->
-		<%- include("0-RUD-Flechas") %> 
+		<%- include("0-RUD-Flechas") %>
 	</section>
 	<section id="datosBreves">
 		<div>
@@ -52,22 +42,10 @@
 		</div>
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
-			<p><strong>Público Sugerido:</strong> <%= producto.publico_sugerido.nombre %></p>
-			<p><strong>Categoría:</strong> <%= producto.categoria.nombre %></p>
-			<p><strong>Sub-categoría:</strong> <%= producto.subcategoria.nombre %></dd>
-			<% if (producto.personaje_id) { %>
-				<dt>Personaje Histórico:</dt>
-				<dd><%= producto.personaje.nombre %> </dd>
-			<% } %>
-			<% if (producto.hecho_id) { %>
-				<dt>Hecho Histórico:</dt>
-				<dd><%= producto.hecho.nombre %> </dd>
-			<% } %>
-			<p><strong>Año de estreno:</strong> <%= producto.ano_estreno %></p>
-			<% if (entidad != "colecciones") { %><p><strong>Duracion:</strong> <%= producto.duracion %> min.</p><% } %>
-			<% if (producto.status_Producto_id != 2) { %>
-				<dt>Status del Registro:</dt>
-				<dd><%= producto.status_registro.nombre %></dd>
+			<% for (bloque of bloquesDerecha) { %>
+				<p <%- bloque.titulo.startsWith("Status") ? ('id="status' + bloque.id + '"') : "" %>>
+					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+				</p>
 			<% } %>
 		</div>
 	</section>

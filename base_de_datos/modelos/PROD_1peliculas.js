@@ -23,9 +23,11 @@ module.exports = (sequelize, dt) => {
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
+
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
+
 		fe_valores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
 		calidad_tecnica: {type: dt.INTEGER},
@@ -62,6 +64,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
+
 		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});

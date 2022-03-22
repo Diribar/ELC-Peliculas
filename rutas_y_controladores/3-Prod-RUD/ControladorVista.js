@@ -39,7 +39,9 @@ module.exports = {
 					: "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id
+			? await especificas.paises_idToNombre(prodOriginal.paises_id)
+			: "";
 		// Configurar el título de la vista
 		let entidadNombre = especificas.entidadNombre(entidad);
 		let titulo =
@@ -49,6 +51,9 @@ module.exports = {
 			entidadNombre;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
+			// Variables de 'Detalle'
+			var [bloquesIzquierda, bloquesDerecha] = [];
+			// Variables de 'Edición'
 			var camposDD = variables
 				.camposDD()
 				.filter((n) => n[entidad])
@@ -62,7 +67,75 @@ module.exports = {
 			var tiempo = prodEditado.editado_en
 				? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
 				: false;
-		} else var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
+		} else {
+			// Variables de 'Detalle'
+			let bloque1 = [
+				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
+				{
+					titulo: "Idioma original",
+					valor: prodCombinado.idioma_original.nombre
+						? prodCombinado.idioma_original.nombre
+						: "Sin datos",
+				},
+				{
+					titulo: "En castellano",
+					valor: prodCombinado.en_castellano.productos
+						? prodCombinado.en_castellano.productos
+						: "Sin datos",
+				},
+				{
+					titulo: "Es a color",
+					valor: prodCombinado.en_color.productos ? prodCombinado.en_color.productos : "Sin datos",
+				},
+			];
+			let bloque2 = [
+				{titulo: "Dirección", valor: prodCombinado.direccion ? prodCombinado.direccion : "Sin datos"},
+				{titulo: "Guión", valor: prodCombinado.guion ? prodCombinado.guion : "Sin datos"},
+				{titulo: "Música", valor: prodCombinado.musica ? prodCombinado.musica : "Sin datos"},
+				{
+					titulo: "Producción",
+					valor: prodCombinado.produccion ? prodCombinado.produccion : "Sin datos",
+				},
+			];
+			let bloque3 = [
+				{titulo: "Actuación", valor: prodCombinado.actuacion ? prodCombinado.actuacion : "Sin datos"},
+			];
+			var bloquesIzquierda = [bloque1, bloque2, bloque3];
+			var bloquesDerecha = [
+				{
+					titulo: "Público Sugerido",
+					valor: prodCombinado.publico_sugerido.nombre
+						? prodCombinado.publico_sugerido.nombre
+						: "Sin datos",
+				},
+				{
+					titulo: "Categoría",
+					valor: prodCombinado.categoria.nombre ? prodCombinado.categoria.nombre : "Sin datos",
+				},
+				{
+					titulo: "Sub-categoría",
+					valor: prodCombinado.subcategoria.nombre
+						? prodCombinado.subcategoria.nombre
+						: "Sin datos",
+				},
+			];
+			if (prodCombinado.personaje_id != 1)
+				bloquesDerecha.push({titulo: "Personaje Histórico", valor: prodCombinado.personaje.nombre});
+			if (prodCombinado.hecho_id != 1)
+				bloquesDerecha.push({titulo: "Hecho Histórico", valor: prodCombinado.hecho.nombre});
+			if (prodCombinado.valor_id != 1)
+				bloquesDerecha.push({titulo: "Valor", valor: prodCombinado.valor.nombre});
+			bloquesDerecha.push({titulo: "Año de estreno", valor: prodCombinado.ano_estreno});
+			if (entidad != "colecciones")
+				bloquesDerecha.push({titulo: "Duracion", valor: prodCombinado.duracion + " min."});
+			bloquesDerecha.push({
+				titulo: "Status del Registro",
+				valor: prodCombinado.status_registro.nombre,
+				id: prodCombinado.status_registro.id,
+			});
+			// Variables de 'Edición'
+			var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
+		}
 		// Averiguar si hay errores de validación
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		// Obtener datos para la vista
@@ -81,7 +154,8 @@ module.exports = {
 			prodID,
 			producto: prodCombinado,
 			avatar,
-			paises,
+			bloquesIzquierda,
+			bloquesDerecha,
 			camposDD1,
 			camposDD2,
 			camposDD3,
@@ -389,7 +463,9 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) => n.map((m) => m.toJSON()));
+	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id").then((n) =>
+		n.map((m) => m.toJSON())
+	);
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
@@ -498,7 +574,9 @@ let estandarizarFechaRef = async (prodEntidad, prodID) => {
 		.then((n) => n.map((m) => m.toJSON()))
 		.then((n) =>
 			n.map((m) =>
-				BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {fecha_referencia})
+				BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {
+					fecha_referencia,
+				})
 			)
 		);
 };

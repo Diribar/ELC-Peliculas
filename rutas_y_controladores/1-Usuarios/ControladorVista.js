@@ -89,7 +89,7 @@ module.exports = {
 		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarUsuarios.login(req.body);
-		contrasena = usuario ? usuario.contrasena : "";
+		let contrasena = usuario ? usuario.contrasena : "";
 		errores.credencialesInvalidas =
 			!errores.email && !errores.contrasena
 				? !contrasena || !bcryptjs.compareSync(req.body.contrasena, contrasena)
