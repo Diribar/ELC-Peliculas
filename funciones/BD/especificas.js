@@ -120,14 +120,14 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
 		let prodEditado = {};
-		let productoEnSingular = especificas.productoEnSingular(entidad);
+		let producto_id = especificas.producto_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 				"productos_edic",
-				"elc_" + productoEnSingular + "_id",
+				"elc_" + producto_id,
 				prodID,
 				"editado_por_id",
 				userID,
