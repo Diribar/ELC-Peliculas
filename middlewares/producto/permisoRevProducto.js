@@ -8,7 +8,6 @@ module.exports = async (req, res, next) => {
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
-	let ahora;
 	let haceUnaHora = especificas.haceUnaHora();
 	let haceDosHoras = especificas.haceDosHoras();
 	let mensaje;
