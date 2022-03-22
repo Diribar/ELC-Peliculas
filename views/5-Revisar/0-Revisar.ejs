@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('Head') %>
+	<%- include('0-Revisar-Head') %>
+</head>
+<body>
+	<%- include('Header') %>
+	<main class="flex-row">
+		<section id="cuerpo">
+			<%- codigo == "producto" ? include("2-Producto") : "" %>
+		</section>
+	</main>
+</body>
+</html>

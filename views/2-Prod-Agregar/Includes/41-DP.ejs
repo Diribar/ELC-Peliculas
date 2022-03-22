@@ -10,6 +10,7 @@
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 					<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
 					<% if (dataEntry.entidad == "peliculas" && (campo == "en_castellano_id" || campo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
+					<% if (registro.grupo == "RCLV" && valor.id == 1) { %>class="ocultar"<% } %>
 				>
 					<%= valor[nombre] %>
 				</option>

@@ -1,8 +1,8 @@
 "use strict";
 // Definir variables
-let BD_varias = require("../BD/Varias");
-let variables = require("../Varias/Variables");
-let validar_PA = require("../Prod-Agregar/3-Validar");
+const BD_genericas = require("../BD/Genericas");
+const variables = require("../Varias/Variables");
+const validar_PA = require("../Prod-Agregar/3-Validar");
 
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
@@ -96,7 +96,7 @@ let longitud = (dato, corto, largo) => {
 };
 let validarLinkRepetidos = async (datos) => {
 	// Obtener casos
-	let averiguar = await BD_varias.obtenerPorCampo("links_originales", "url", datos.url).then((n) =>
+	let averiguar = await BD_genericas.obtenerPorCampo("links_originales", "url", datos.url).then((n) =>
 		n ? n.toJSON() : ""
 	);
 	// Si se encontró algún caso, compara las ID

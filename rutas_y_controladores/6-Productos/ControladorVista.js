@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_varias = require("../../funciones/BD/varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = {
 	home: async (req, res) => {
@@ -78,7 +78,7 @@ let datosVista = async (opcion) => {
 	let tipos =
 		opcion == "listado"
 			? tiposListado
-			: await BD_varias.obtenerTodos("subcategorias", "orden", opcion)
+			: await BD_genericas.obtenerTodos("subcategorias", "orden", opcion)
 					.then((n) => n.filter((m) => m.categoria_id == opcion.toUpperCase()))
 					.then((n) =>
 						n.map((m) => {

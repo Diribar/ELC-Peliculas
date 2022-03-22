@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires ************
 const validarRCLV = require("../../funciones/Varias/ValidarRCLV");
-const BD_varias = require("../../funciones/BD/varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
 const procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 module.exports = {
@@ -71,13 +71,14 @@ module.exports = {
 		// 4. Errores
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
-		let meses = await BD_varias.obtenerTodos("meses", "id");
-		let procesos_canonizacion = roles_iglesia = [];
+		let meses = await BD_genericas.obtenerTodos("meses", "id");
+		let procesos_canonizacion = [];
+		let roles_iglesia = [];
 		if (codigo == "RCLV_personajes") {
-			procesos_canonizacion = await BD_varias.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
 			);
-			roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
+			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
 			);
 		}
@@ -139,12 +140,12 @@ module.exports = {
 		};
 		// Obtener el día del año
 		if (!RCLV.desconocida)
-			datos.dia_del_ano_id = await BD_varias.obtenerTodos("dias_del_ano", "id")
+			datos.dia_del_ano_id = await BD_genericas.obtenerTodos("dias_del_ano", "id")
 				.then((n) => n.find((m) => m.mes_id == RCLV.mes_id && m.dia == RCLV.dia))
 				.then((n) => n.id);
 
 		// 6. Crear el registro en la BD
-		let {id: RCLV_id} = await BD_varias.agregarRegistro({
+		let {id: RCLV_id} = await BD_genericas.agregarRegistro({
 			...datos,
 			entidad: RCLV.entidad_RCLV,
 		});

@@ -25,9 +25,11 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
+		// Para que incluya los datos de la subcategoría, por si necesitan para validar RCLV
+		let aux = subcategoria.value ? "&subcategoria_id=" + subcategoria.value : "";
 
 		// Averiguar si hay algún error
-		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
+		let errores = await fetch(ruta + campo + "=" + valor + aux).then((n) => n.json());
 		mensajesError[indice].innerHTML = errores[campo];
 		errores[campo]
 			? iconoOK[indice].classList.add("ocultar")
@@ -35,7 +37,6 @@ window.addEventListener("load", async () => {
 		errores[campo]
 			? iconoError[indice].classList.remove("ocultar")
 			: iconoError[indice].classList.add("ocultar");
-
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			subcategoria.value = "";
@@ -51,7 +52,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (submit.classList.contains("inactivo")) {
 			e.preventDefault();
-			statusInicial((inputValue = false));
+			statusInicial(false);
 		}
 	});
 
@@ -103,11 +104,11 @@ window.addEventListener("load", async () => {
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
 		let nombres = ["personaje_id", "hecho_id", "valor_id"];
+
+		// Mostrar/Ocultar el campo RCLV
 		for (let i = 0; i < campos.length; i++) {
-			// Mostrar el campo RCLV
 			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
 			else {
-				// Ocultar el campo RCLV
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta
 				document.querySelector("select[name='" + nombres[i] + "']").value = "";
@@ -139,9 +140,7 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == iconoError.length;
 
 		// Consecuencias
-		OK && error
-			? submit.classList.remove("inactivo")
-			: submit.classList.add("inactivo");
+		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
 
 	// STATUS INICIAL *************************************
@@ -150,5 +149,5 @@ window.addEventListener("load", async () => {
 	if (subcategoria.value) funcionRCLV();
 
 	// Errores y boton 'Submit'
-	await statusInicial(true);
+	statusInicial(true);
 });

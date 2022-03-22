@@ -1,11 +1,11 @@
 "use strict";
 // Definir variables
-let BD_varias = require("../BD/varias");
+const BD_genericas = require("../BD/Genericas");
 
 module.exports = {
 	averiguarSiEstaDisponible: async (entidad, prod_id, usuario) => {
 		// Obtiene el registro con los datos del producto
-		producto = await BD_varias.obtenerPorCampo(entidad, "id", prod_id).then((n) => n.toJSON());
+		producto = await BD_genericas.obtenerPorCampo(entidad, "id", prod_id).then((n) => n.toJSON());
 		let haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =
@@ -93,11 +93,11 @@ module.exports = {
 	guardar_o_actualizar_Edicion: async (entidad, producto_id, datos) => {
 		entidad = entidad + "Edicion";
 		// Averiguar si ya exista la edición
-		let edicion_id = await BD_varias.obtenerELC_id(entidad, "elc_id", producto_id);
+		let edicion_id = await BD_especificas.obtenerELC_id(entidad, "elc_id", producto_id);
 		// Acciones en función de si existe o no
 		edicion_id
-			? await BD_varias.actualizarPorId(entidad, edicion_id, datos)
-			: await BD_varias.agregarRegistro({
+			? await BD_genericas.actualizarPorId(entidad, edicion_id, datos)
+			: await BD_genericas.agregarRegistro({
 					entidad,
 					elc_id: producto_id,
 					...datos,

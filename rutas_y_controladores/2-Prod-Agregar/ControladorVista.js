@@ -7,9 +7,9 @@ const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
 const procesarProd = require("../../funciones/Prod-Agregar/2-Procesar");
 const validarProd = require("../../funciones/Prod-Agregar/3-Validar");
 const variables = require("../../funciones/Varias/Variables");
-const BD_varias = require("../../funciones/BD/varias");
+const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
-const varias = require("../../funciones/Varias/Varias");
+const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = {
 			? await validarProd.palabrasClave(palabrasClave)
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
-		borrarSessionCookies(req, res, "palabrasClave");
+		especificas.borrarSessionCookies(req, res, "palabrasClave");
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 4. Render del formulario
@@ -62,7 +62,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
-		borrarSessionCookies(req, res, "desambiguar");
+		especificas.borrarSessionCookies(req, res, "desambiguar");
 		if (req.cookies.datosTerminaste) res.clearCookie("datosTerminaste");
 		if (req.session.datosTerminaste) delete req.session.datosTerminaste;
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -116,7 +116,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
-		borrarSessionCookies(req, res, "tipoProducto");
+		especificas.borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 4. Obtener los errores
@@ -139,7 +139,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: varias.entidadNombre(req.body.entidad),
+			producto: especificas.entidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -160,10 +160,10 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		borrarSessionCookies(req, res, "copiarFA");
+		especificas.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.producto = varias.entidadNombre(req.body.entidad);
+			req.body.producto = especificas.entidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -202,7 +202,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			let elc_id = await BD_varias.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
+			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -232,9 +232,9 @@ module.exports = {
 		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			varias.borrarArchivo(req.cookies.datosPers.avatarBD, "./public/imagenes/9-Provisorio/");
+			especificas.borrarArchivo(req.cookies.datosPers.avatarBD, "./public/imagenes/9-Provisorio/");
 		}
-		borrarSessionCookies(req, res, "datosDuros");
+		especificas.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
@@ -256,9 +256,11 @@ module.exports = {
 			: await validarProd.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
-			? await varias.paises_idToNombre(datosDuros.paises_id)
-			: await BD_varias.obtenerTodos("paises", "nombre").then((n) => n.map((m) => m.toJSON()));
-		let idiomas = await BD_varias.obtenerTodos("idiomas", "nombre").then((n) => n.map((m) => m.toJSON()));
+			? await especificas.paises_idToNombre(datosDuros.paises_id)
+			: await BD_genericas.obtenerTodos("paises", "nombre").then((n) => n.map((m) => m.toJSON()));
+		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre").then((n) =>
+			n.map((m) => m.toJSON())
+		);
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		return res.render("Home", {
@@ -298,7 +300,7 @@ module.exports = {
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			let elc_id = await BD_varias.obtenerELC_id(
+			let elc_id = await BD_especificas.obtenerELC_id(
 				datosDuros.entidad,
 				datosDuros.fuente + "_id",
 				datosDuros[datosDuros.fuente + "_id"]
@@ -311,7 +313,7 @@ module.exports = {
 		}
 		// 5. Si no hay errores de imagen, revisar el archivo de imagen
 		let rutaYnombre = req.file ? req.file.path : "";
-		let tipo, tamano,nombre
+		let tipo, tamano, nombre;
 		if (!errores.avatar) {
 			if (req.file) {
 				// En caso de archivo por multer
@@ -329,13 +331,13 @@ module.exports = {
 				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 			}
 			// Revisar errores nuevamente
-			errores.avatar = varias.revisarImagen(tipo, tamano);
+			errores.avatar = especificas.revisarImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			varias.borrarArchivo(nombre, "./public/imagenes/9-Provisorio/");
+			especificas.borrarArchivo(nombre, "./public/imagenes/9-Provisorio/");
 			// Guardar los errores en session
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -346,7 +348,7 @@ module.exports = {
 		let avatarBD = nombre;
 		// 8. Si la imagen venía de TMDB, entonces grabarla
 		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
-			varias.download(datosDuros.avatar, rutaYnombre);
+			especificas.download(datosDuros.avatar, rutaYnombre);
 			avatarDP = datosDuros.avatar;
 		}
 		// 9. Generar la session para la siguiente instancia
@@ -371,16 +373,16 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
-		borrarSessionCookies(req, res, "datosPers");
+		especificas.borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
-		// 4. Obtener los errores
-		let errores = req.session.erroresDP ? req.session.erroresDP : "";
 		// 5. Preparar variables para la vista
 		let camposDP = await variables.camposDP();
-		//return res.send(camposDP.find(n=>n.nombreDelCampo == "en_castellano_id").valores)
+		// 4. Obtener los errores
+		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Render del formulario
+		//return res.send(errores)
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -401,7 +403,6 @@ module.exports = {
 		// 3. Borrar campos innecesarios
 		for (let campo in datosPers) {
 			if (!datosPers[campo]) delete datosPers[campo];
-			if (campo == "entidad_RCLV" || campo == "producto_RCLV") delete datosPers[campo];
 		}
 		// 4. Guardar el data entry en session y cookie
 		req.session.datosPers = datosPers;
@@ -411,10 +412,7 @@ module.exports = {
 		let camposDP = await variables.camposDP().then((n) => n.map((m) => m.nombreDelCampo));
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Si hay errores de validación, redireccionar
-		if (errores.hay) {
-			req.session.erroresDP = errores;
-			return res.redirect("/producto/agregar/datos-personalizados");
-		}
+		if (errores.hay) return res.redirect("/producto/agregar/datos-personalizados");
 		// Si no hay errores, continuar
 		// 8. Preparar la info para el siguiente paso
 		req.session.confirma = req.session.datosPers;
@@ -429,7 +427,7 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "agregar";
 		let codigo = "confirma";
-		let maximo, indice
+		let maximo, indice;
 		// 2. Si se perdió la info anterior, volver a esa instancia
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
@@ -461,9 +459,9 @@ module.exports = {
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 7. Obtener la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_varias.obtenerPorCampo("fe_valores", "id", confirma.fe_valores_id).then((n) => n.valor),
-			BD_varias.obtenerPorCampo("entretiene", "id", confirma.entretiene_id).then((n) => n.valor),
-			BD_varias.obtenerPorCampo("calidad_tecnica", "id", confirma.calidad_tecnica_id).then(
+			BD_genericas.obtenerPorCampo("fe_valores", "id", confirma.fe_valores_id).then((n) => n.valor),
+			BD_genericas.obtenerPorCampo("entretiene", "id", confirma.entretiene_id).then((n) => n.valor),
+			BD_genericas.obtenerPorCampo("calidad_tecnica", "id", confirma.calidad_tecnica_id).then(
 				(n) => n.valor
 			),
 		]);
@@ -480,10 +478,10 @@ module.exports = {
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
 		};
-		let registro = await BD_varias.agregarRegistro(original).then((n) => n.toJSON());
+		let registro = await BD_genericas.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let entidadEnSingular = varias.entidadEnSingular(confirma.entidad);
+		let entidadEnSingular = especificas.entidadEnSingular(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -493,7 +491,7 @@ module.exports = {
 			["elc_" + entidadEnSingular + "_id"]: registro.id,
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
-		await BD_varias.agregarRegistro(edicion);
+		await BD_genericas.agregarRegistro(edicion);
 		// 4. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
@@ -503,9 +501,9 @@ module.exports = {
 		// 5. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 6. Mueve el avatar de 'provisorio' a 'revisar'
-		varias.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
+		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
 		// 7. Elimina todas las session y cookie del proceso AgregarProd
-		borrarSessionCookies(req, res, "borrarTodo");
+		especificas.borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
@@ -520,8 +518,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		// 4. Obtener los demás datos del producto
-		let registroProd = await BD_varias.obtenerPorIdConInclude(entidad, id, "status_registro").then((n) =>
-			n.toJSON()
+		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro").then(
+			(n) => n.toJSON()
 		);
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (registroProd == {}) return res.send("Producto no encontrado");
@@ -529,7 +527,7 @@ module.exports = {
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = varias.entidadNombre(entidad);
+		let producto = especificas.entidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
@@ -555,42 +553,20 @@ module.exports = {
 		let titulo = "Agregar - Responsabilidad";
 		return res.render("Home", {tema, codigo, titulo});
 	},
-
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	let entidad_id = varias.entidad_id(confirma.entidad);
+	let entidad_id = especificas.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
-		usuario_id: confirma.creado_por_id,
+		usuario_id: registro.creado_por_id,
 		[entidad_id]: registro.id,
 		fe_valores: confirma.fe_valores,
 		entretiene: confirma.entretiene,
 		calidad_tecnica: confirma.calidad_tecnica,
 		resultado: confirma.calificacion,
 	};
-	BD_varias.agregarRegistro(datos);
-};
-
-let borrarSessionCookies = (req, res, paso) => {
-	let pasos = [
-		"borrarTodo",
-		"datosTerminaste",
-		"palabrasClave",
-		"desambiguar",
-		"tipoProducto",
-		"datosOriginales",
-		// 'copiarFA va después de datosOriginales porque ese es el orden en el que se generan
-		"copiarFA",
-		"datosDuros",
-		"datosPers",
-		"confirma",
-	];
-	let indice = pasos.indexOf(paso) + 1;
-	for (let indice; indice < pasos.length; indice++) {
-		if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
-		if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
-	}
+	BD_genericas.agregarRegistro(datos);
 };
 
 let prepararMensaje = (desambiguar) => {

@@ -2,8 +2,8 @@
 // Definir variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
-const BD_varias = require("./Varias");
-const varias = require("../Varias/Varias");
+const BD_genericas = require("./Genericas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
 	// Productos *****************************************
@@ -84,6 +84,11 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
+	obtenerELC_id: (entidad, campo, valor) => {
+		return db[entidad].findOne({where: {[campo]: valor}}).then((n) => {
+			return n ? n.id : false;
+		});
+	},
 	// Controladora-Agregar
 	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
 		let campos = Object.keys(edicion);
@@ -111,17 +116,17 @@ module.exports = {
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, includes).then((n) =>
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes).then((n) =>
 			n ? n.toJSON() : ""
 		);
 		// Obtener el producto EDITADO
 		let prodEditado = {};
-		let entidadEnSingular = varias.entidadEnSingular(entidad);
+		let entidadEnSingular = especificas.entidadEnSingular(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-			prodEditado = await BD_varias.obtenerPor2CamposConInclude(
+			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 				"productos_edic",
 				"elc_" + entidadEnSingular + "_id",
 				prodID,
@@ -206,7 +211,7 @@ module.exports = {
 	obtenerLinks: (haceUnaHora, revisar, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		// Declarar las variables
-		includes = ["pelicula", "coleccion", "capitulo"];
+		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener el resultado por entidad
 		return db.links_originales
 			.findAll({
@@ -235,9 +240,9 @@ module.exports = {
 			campo = camposRCLV[i];
 			valor = datos[campo];
 			if (valor) {
-				let cant_productos = await BD_varias.contarCasos(entidadProd, campo, valor, status_id);
+				let cant_productos = await BD_genericas.contarCasos(entidadProd, campo, valor, status_id);
 				// Actualizar entidad de RCLV
-				await BD_varias.actualizarPorId("RCLV_" + entidadesRCLV[i], valor, {cant_productos});
+				await BD_genericas.actualizarPorId("RCLV_" + entidadesRCLV[i], valor, {cant_productos});
 			}
 		}
 	},
@@ -270,7 +275,7 @@ module.exports = {
 	// 	];
 	// 	if (original.entidad == "capitulos") includes.push("coleccion");
 	// 	// Obtener el producto EDITADO
-	// 	let prodEditado = await BD_varias.obtenerPor2CamposConInclude(
+	// 	let prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 	// 		entidad,
 	// 		"elc_entidad",
 	// 		original.entidad,

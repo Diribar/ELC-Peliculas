@@ -1,8 +1,8 @@
 "use strict";
 // Definir variables
-let procesarProd = require("./2-Procesar");
-let BD_varias = require("../BD/Varias");
-let varias = require("../Varias/Varias");
+const procesarProd = require("./2-Procesar");
+const BD_genericas = require("../BD/Genericas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -233,14 +233,10 @@ module.exports = {
 			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
 		if (campos.includes("calidad_tecnica_id"))
 			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
-		// RCLV
-		// if (campos.includes("personaje_id") && datos.personaje_id) errores.personaje_id = "";
-		// if (campos.includes("hecho_id") && datos.hecho_id) errores.hecho_id = "";
-		// if (campos.includes("valor_id") && datos.valor_id) errores.valor_id = "";
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
-			let subcategoria = await BD_varias.obtenerPorCampo(
+			let subcategoria = await BD_genericas.obtenerPorCampo(
 				"subcategorias",
 				"id",
 				datos.subcategoria_id
@@ -299,7 +295,7 @@ let extensiones = (nombre) => {
 };
 let validarRepetidos = async (campo, datos) => {
 	// Averiguar si existe algún caso en la BD
-	let averiguar = await BD_varias.obtenerPor2Campos(
+	let averiguar = await BD_genericas.obtenerPor2Campos(
 		datos.entidad,
 		campo,
 		datos[campo],
@@ -311,7 +307,7 @@ let validarRepetidos = async (campo, datos) => {
 	// Si hay casos --> mensaje de error con la entidad y el id
 	let mensaje = "";
 	if (repetido) {
-		let producto = varias.entidadNombre(datos.entidad);
+		let producto = especificas.entidadNombre(datos.entidad);
 		mensaje =
 			"Esta " +
 			"<a href='/producto/detalle/?entidad=" +

@@ -8,7 +8,7 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-const prodEnBD = require("../../middlewares/producto/productoYaEnBD");
+const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
 const entidadId = require("../../middlewares/producto/entidadId");
 const multer = require("../../middlewares/varios/multer");
 
@@ -43,14 +43,14 @@ router.post("/tipo-producto-dd", soloAutInput, vista.tipoProd_Guardar);
 router.post("/tipo-producto-fa", soloAutInput, vista.copiarFA_Form);
 router.get("/copiar-fa", soloAutInput, autorizadoFA, vista.copiarFA_Form);
 router.post("/copiar-fa", soloAutInput, vista.copiarFA_Guardar);
-// Comienzo de "prodEnBD"
-router.get("/datos-duros", soloAutInput, prodEnBD, vista.datosDurosForm);
-router.post("/datos-duros", soloAutInput, prodEnBD, multer.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersForm);
-router.post("/datos-personalizados", soloAutInput, prodEnBD, vista.datosPersGuardar);
-router.get("/confirma", soloAutInput, prodEnBD, vista.confirmaForm);
-router.post("/confirma", soloAutInput, prodEnBD, vista.confirmaGuardar);
-// Fin de "prodEnBD"
+// Comienzo de "prodYaEnBD"
+router.get("/datos-duros", soloAutInput, prodYaEnBD, vista.datosDurosForm);
+router.post("/datos-duros", soloAutInput, prodYaEnBD, multer.single("avatar"), vista.datosDurosGuardar);
+router.get("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersForm);
+router.post("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersGuardar);
+router.get("/confirma", soloAutInput, prodYaEnBD, vista.confirmaForm);
+router.post("/confirma", soloAutInput, prodYaEnBD, vista.confirmaGuardar);
+// Fin de "prodYaEnBD"
 router.get("/terminaste", soloAutInput, entidadId, vista.terminasteForm);
 
 // Rutas de vistas auxiliares

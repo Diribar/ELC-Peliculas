@@ -1,19 +1,17 @@
 "use strict";
 // Requires
-const varias = require("../../funciones/Varias/Varias");
-const BD_varias = require("../../funciones/BD/Varias");
+const especificas = require("../../funciones/Varias/Especificas");
+const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
-	let url = req.url.slice(1);
-	let codigo = url.slice(0, url.indexOf("/"));
-	let haceUnaHora = varias.haceUnaHora();
+	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, [
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 		"status_registro",
 		"capturado_por",
 	]).then((n) => (n ? n.toJSON() : ""));
@@ -26,8 +24,7 @@ module.exports = async (req, res, next) => {
 			// 2-¿Creado por el usuario actual?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
-				entidad != "capitulos" ||
-				(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
+				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			// Problema2: EL REVISOR NO DEBE REVISAR UN PRODUCTO AGREGADO POR ÉL ------
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
 				mensaje = "El producto debe ser analizado por otro revisor, no por su creador";
@@ -69,7 +66,7 @@ module.exports = async (req, res, next) => {
 							capturado_en: new Date(),
 							capturado_por_id: userID,
 						};
-						BD_varias.actualizarPorId(entidad, prodID, datos);
+						BD_genericas.actualizarPorId(entidad, prodID, datos);
 					}
 				}
 			}

@@ -1,15 +1,16 @@
 "use strict";
 // Definir variables
-let searchTMDB = require("../APIs_TMDB/1-Search");
-let detailsTMDB = require("../APIs_TMDB/2-Details");
-let BD_varias = require("../BD/varias");
-let varias = require("../Varias/Varias");
+const searchTMDB = require("../APIs_TMDB/1-Search");
+const detailsTMDB = require("../APIs_TMDB/2-Details");
+const BD_genericas = require("../BD/Genericas");
+const BD_especificas = require("../BD/Especificas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave) => {
-		palabrasClave = varias.convertirLetrasAlIngles(palabrasClave);
+		palabrasClave = especificas.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
@@ -93,8 +94,8 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			var desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		let desempate1 = varias.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
-		let desempate2 = varias
+		let desempate1 = especificas.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		let desempate2 = especificas
 			.convertirLetrasAlIngles(nombre_castellano)
 			.replace(/ /g, "")
 			.replace(/'/g, "");
@@ -127,9 +128,9 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 		if (typeof m == "undefined" || m == null) return;
 		for (let palabra of palabras) {
 			if (
-				varias.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
-				varias.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
-				varias.convertirLetrasAlIngles(m.comentario).includes(palabra)
+				especificas.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
+				especificas.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
+				especificas.convertirLetrasAlIngles(m.comentario).includes(palabra)
 			)
 				return m;
 		}
@@ -212,13 +213,13 @@ let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let entidad_TMDB = datos.resultados[i].entidad_TMDB;
 		let entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
-		let YaEnBD = await BD_varias.obtenerELC_id(entidad, "TMDB_id", datos.resultados[i].TMDB_id);
+		let YaEnBD = await BD_especificas.obtenerELC_id(entidad, "TMDB_id", datos.resultados[i].TMDB_id);
 		if (entidad == "peliculas" && !YaEnBD) {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección
-			YaEnBD = await BD_varias.obtenerELC_id("capitulos", "TMDB_id", datos.resultados[i].TMDB_id);
+			YaEnBD = await BD_especificas.obtenerELC_id("capitulos", "TMDB_id", datos.resultados[i].TMDB_id);
 			if (YaEnBD) {
-				capitulo = await BD_varias.obtenerPorId("capitulos", YaEnBD);
-				coleccion = await BD_varias.obtenerPorId("colecciones", capitulo.coleccion_id);
+				capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
+				coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
 				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
 			}

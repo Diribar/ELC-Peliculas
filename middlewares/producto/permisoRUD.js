@@ -1,7 +1,7 @@
 "use strict";
 // Requires
-const varias = require("../../funciones/Varias/Varias");
-const BD_varias = require("../../funciones/BD/Varias");
+const especificas = require("../../funciones/Varias/Especificas");
+const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
@@ -10,11 +10,11 @@ module.exports = async (req, res, next) => {
 	let userID = req.session.usuario.id;
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
-	let haceUnaHora = varias.haceUnaHora();
+	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_varias.obtenerPorIdConInclude(entidad, prodID, "status_registro").then((n) =>
-		n ? n.toJSON() : ""
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
+		(n) => (n ? n.toJSON() : "")
 	);
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
@@ -25,8 +25,7 @@ module.exports = async (req, res, next) => {
 			// 2-¿Creado por el usuario actual?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
-				entidad != "capitulos" ||
-				(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
+				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			if (creadoPorElUsuario1 || creadoPorElUsuario2) {
 				// 3-¿La vista es "Edición"?
 				if (codigo == "edicion") {
@@ -39,8 +38,8 @@ module.exports = async (req, res, next) => {
 					// ¿Producto capturado?
 					// Problema3: PRODUCTO CAPTURADO Y APTO PARA SER REVISADO ------
 					if (prodOriginal.capturado_en > haceUnaHora) {
-						let entidad_id = varias.entidad_id(prodEntidad);
-						let links = await BD_varias.obtenerTodosPorCampo(
+						let entidad_id = especificas.entidad_id(prodEntidad);
+						let links = await BD_genericas.obtenerTodosPorCampo(
 							"links_originales",
 							entidad_id,
 							prodID

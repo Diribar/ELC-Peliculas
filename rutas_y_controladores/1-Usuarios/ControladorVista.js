@@ -1,9 +1,8 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/BD/especificas");
-const BD_varias = require("../../funciones/BD/varias");
-const varias = require("../../funciones/Varias/Varias");
-const funciones = require("../../funciones/Varias/varias");
+const BD_especificas = require("../../funciones/BD/Especificas");
+const BD_genericas = require("../../funciones/BD/Genericas");
+const especificas = require("../../funciones/Varias/Especificas");
 const validarUsuarios = require("../../funciones/Varias/ValidarUsuarios");
 const bcryptjs = require("bcryptjs");
 
@@ -41,10 +40,10 @@ module.exports = {
 		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		funciones.enviarMail(asunto, email, comentario).catch(console.error);
+		especificas.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
-		await BD_varias.agregarRegistro({entidad: "usuarios", email, contrasena});
+		await BD_genericas.agregarRegistro({entidad: "usuarios", email, contrasena});
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
@@ -105,7 +104,7 @@ module.exports = {
 		}
 		// 4. Si corresponde, actualizar el Status del Usuario
 		if (usuario.status_registro_id == 1) {
-			await BD_varias.actualizarPorId("usuarios", usuario.id, {status_registro_id: 2});
+			await BD_genericas.actualizarPorId("usuarios", usuario.id, {status_registro_id: 2});
 		}
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
@@ -128,7 +127,7 @@ module.exports = {
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		let errores = req.session.errores ? req.session.errores : "";
-		let sexos = await BD_varias.obtenerTodos("sexos", "orden");
+		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -155,7 +154,7 @@ module.exports = {
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
 		req.body.status_registro_id = 3;
-		await BD_varias.actualizarPorId("usuarios", usuario.id, req.body);
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
@@ -164,10 +163,10 @@ module.exports = {
 	altaEditablesForm: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "editables";
-		let paises = await BD_varias.obtenerTodos("paises", "nombre");
+		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_varias.obtenerTodos("roles_iglesia", "orden").then((n) =>
+		let roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
 			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
 		);
 		let errores = req.session.errores ? req.session.errores : false;
@@ -199,7 +198,7 @@ module.exports = {
 		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) varias.borrarArchivo(req.file.filename, req.file.path);
+			if (req.file) especificas.borrarArchivo(req.file.filename, req.file.path);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
@@ -208,10 +207,10 @@ module.exports = {
 		// Grabar novedades en el usuario
 		req.body.status_registro_id = 4;
 		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_varias.actualizarPorId("usuarios", usuario.id, req.body);
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.file) varias.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
+		if (req.file) especificas.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
