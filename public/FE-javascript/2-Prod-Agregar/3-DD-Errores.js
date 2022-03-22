@@ -30,7 +30,6 @@ window.addEventListener("load", async () => {
 		if (e.target == paisesSelect) funcionPaises();
 		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
 		let valor = e.target == paisesSelect ? paisesID.value : encodeURIComponent(e.target.value);
-		console.log(valor);
 		let indice = campos.indexOf(campo);
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
