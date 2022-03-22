@@ -33,7 +33,6 @@ window.addEventListener("load", async () => {
 		let indice = campos.indexOf(campo);
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor).then((n) => n.json());
-		console.log(errores);
 		mensajesError[indice].innerHTML = errores[campo];
 		// Acciones en función de si hay o no mensajes de error
 		errores[campo]
