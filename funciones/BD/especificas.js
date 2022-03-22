@@ -211,7 +211,7 @@ module.exports = {
 	obtenerLinks: (haceUnaHora, revisar, userID) => {
 		// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
 		// Declarar las variables
-		includes = ["pelicula", "coleccion", "capitulo"];
+		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener el resultado por entidad
 		return db.links_originales
 			.findAll({

@@ -13,8 +13,8 @@ module.exports = async (req, res, next) => {
 	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro").then((n) =>
-		n ? n.toJSON() : ""
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
+		(n) => (n ? n.toJSON() : "")
 	);
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
@@ -25,8 +25,7 @@ module.exports = async (req, res, next) => {
 			// 2-¿Creado por el usuario actual?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
-				entidad != "capitulos" ||
-				(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
+				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			if (creadoPorElUsuario1 || creadoPorElUsuario2) {
 				// 3-¿La vista es "Edición"?
 				if (codigo == "edicion") {

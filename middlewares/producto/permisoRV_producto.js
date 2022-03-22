@@ -8,8 +8,6 @@ module.exports = async (req, res, next) => {
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
-	let url = req.url.slice(1);
-	let codigo = url.slice(0, url.indexOf("/"));
 	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
@@ -26,8 +24,7 @@ module.exports = async (req, res, next) => {
 			// 2-¿Creado por el usuario actual?
 			let creadoPorElUsuario1 = prodOriginal.creado_por_id == userID;
 			let creadoPorElUsuario2 =
-				entidad != "capitulos" ||
-				(entidad == "capitulos" && prodOriginal.coleccion.creado_por_id != userID);
+				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			// Problema2: EL REVISOR NO DEBE REVISAR UN PRODUCTO AGREGADO POR ÉL ------
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
 				mensaje = "El producto debe ser analizado por otro revisor, no por su creador";
