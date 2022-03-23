@@ -45,8 +45,9 @@ module.exports = async (req, res, next) => {
 					// Creado < haceUnaHora
 					// ----------------------------------------------------------------
 					let horarioCaptura;
-					let meses = ["ene", "feb", "mar", "abr", "may", "jun"];
-					meses.push("jul", "ago", "sep", "oct", "nov", "dic");
+					let meses = await BD_genericas.obtenerTodos("meses", "id").then((n) =>
+						n.map((m) => m.abrev)
+					);
 					if (prodOriginal.capturado_en)
 						horarioCaptura =
 							prodOriginal.capturado_en.getDate() +

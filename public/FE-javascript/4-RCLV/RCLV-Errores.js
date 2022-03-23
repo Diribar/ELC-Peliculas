@@ -111,7 +111,8 @@ window.addEventListener("load", async () => {
 	// Funciones ************************
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "ano", "duplicados"];
+		let bloques = ["nombre", "fecha", "duplicados"];
+		if (entidad != "RCLV_valores") bloques.push("ano")
 		if (entidad == "RCLV_personajes") bloques.push("RCLI");
 
 		// Rutina
@@ -143,16 +144,20 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionNombre = async () => {
+		// Verificar errores en el nombre
 		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
-		//OK.nombre = !errores.nombre ;
+		// Verificar errores en el genero
 		if (entidad == "RCLV_personajes" && !errores.nombre) {
 			url = "&genero=" + (genero[0].checked ? "V" : genero[1].checked ? "M" : "");
 			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
 		}
+		// Consolidar la info
 		OK.nombre = !errores.nombre && !errores.genero;
-		if (!nombre.value) errores.nombre = "";
 		errores.genero = "";
+		// Eliminar los errores del nombre si  el campo se vació
+		if (!nombre.value) errores.nombre = "";
+		// Fin
 		return [OK, errores];
 	};
 

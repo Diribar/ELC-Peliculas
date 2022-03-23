@@ -103,29 +103,31 @@
 						<% if (dataEntry.desconocida=="on") { %>checked<% } %>
 						tabindex="-1"
 					>
-					<label>Sin fecha conocida o de referencia</label>
+					<label>Sin fecha representativa</label>
 				</div>
 			</div>
-			<!-- Año: Título, Valor, Ayuda y Error/OK -->
-			<div class="borderTop flex-row">
-				<div class="margenBottomTitulo relative flex-row align-center">
-					<!-- Título -->
-					<h3>Año de <%= codigo == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-					<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-					<!-- Ayuda -->
-					<i class="fa-solid fa-circle-question"></i>
-					<ul type="dots" class="mensajeAyuda ocultar">
-						<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto_RCLV %>.</li>
-						<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-						<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
-					</ul>
-					<!-- Error/OK -->			
-					<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.nombre %></span>
-					</i>
-					<i class="fa-solid fa-circle-check ocultar"></i>
+			<!-- Año de nacimiento u ocurrencia -->
+			<% if (codigo == "RCLV_personajes" || codigo == "RCLV_hechos") { %>
+				<div class="borderTop flex-row">
+					<div class="margenBottomTitulo relative flex-row align-center">
+						<!-- Título -->
+						<h3>Año de <%= codigo == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
+						<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+						<!-- Ayuda -->
+						<i class="fa-solid fa-circle-question"></i>
+						<ul type="dots" class="mensajeAyuda ocultar">
+							<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto_RCLV %>.</li>
+							<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+							<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+						</ul>
+						<!-- Error/OK -->			
+						<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.nombre %></span>
+						</i>
+						<i class="fa-solid fa-circle-check ocultar"></i>
+					</div>
 				</div>
-			</div>
+			<% } %>
 		</div>
 		<!--Segunda columna-->
 		<div id="segundaCol">
