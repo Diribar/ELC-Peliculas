@@ -48,7 +48,6 @@ module.exports = async (req, res, next) => {
 					let meses = await BD_genericas.obtenerTodos("meses", "id").then((n) =>
 						n.map((m) => m.abrev)
 					);
-					console.log(meses);
 					if (prodOriginal.capturado_en)
 						horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
