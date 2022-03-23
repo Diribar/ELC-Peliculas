@@ -12,23 +12,10 @@ module.exports = {
 		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
 		let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas("", "", userID);
-		if (prodCapturado) {
-			let entidad = especificas.familiaEnSingular(prodCapturado.entidad);
-			if (entidad == "producto")
-				entidad += prodCapturado.status_registro.creado
-					? "/perfil"
-					: prodCapturado.status_registro.pre_autorizado || prodCapturado.status_registro.aprobado
-					? "/edicion"
-					: "/inactivos";
+		if (prodCapturado)
 			return res.redirect(
-				"/revision/" +
-					especificas.familiaEnSingular(prodCapturado.entidad) +
-					"/?entidad=" +
-					prodCapturado.entidad +
-					"&id=" +
-					prodCapturado.id
+				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
 			);
-		}
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
@@ -55,6 +42,24 @@ module.exports = {
 			prodsLinks,
 			status,
 		});
+	},
+
+	redireccionar: async (req, res) => {
+		// Obtener los datos identificatorios del producto
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		// Obtener el producto
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+		// Obtener la familia
+		let destino = especificas.familiaEnSingular(entidad);
+		// Obtener la sub-dirección de destino
+		if (destino == "producto")
+			destino += producto.status_registro.creado
+				? "/perfil"
+				: producto.status_registro.inactivos
+				? "/inactivos"
+				: "/edicion";
+		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID);
 	},
 
 	productoPerfil: async (req, res) => {
