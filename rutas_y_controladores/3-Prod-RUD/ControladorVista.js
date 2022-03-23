@@ -43,12 +43,12 @@ module.exports = {
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// Configurar el título de la vista
-		let entidadNombre = especificas.entidadNombre(entidad);
+		let productoNombre = especificas.productoNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			entidadNombre;
+			productoNombre;
 		// Info exclusiva para la vista de Edicion
 		if (codigo == "edicion") {
 			// Variables de 'Detalle'
@@ -211,10 +211,10 @@ module.exports = {
 			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
 			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let entidadEnSingular = especificas.entidadEnSingular(entidad);
+			let producto_id = especificas.producto_id(entidad);
 			edicion = {
 				...edicion,
-				["elc_" + entidadEnSingular + "id"]: prodID,
+				["elc_" + producto_id]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
@@ -255,8 +255,8 @@ module.exports = {
 		// Separar entre 'activos' e 'inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
-		let entidadNombre = especificas.entidadNombre(prodEntidad);
-		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + entidadNombre;
+		let productoNombre = especificas.productoNombre(prodEntidad);
+		let titulo = "Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + productoNombre;
 		let avatar = await obtenerAvatar(prodEntidad, prodID, userID, prodEditado);
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos")
@@ -301,7 +301,7 @@ module.exports = {
 		let respuesta = datos.alta ? await altaDeLink(req, datos) : await edicionDeLink(req, datos);
 		// Fin
 		// Si hay un error en el url, comunicarlo
-		if (respuesta) return res.send(respuesta);
+		if (respuesta) return res.render("Errores", {mensaje: respuesta});
 		// Estandarizar fechaRef en originales y editados del mismo "prodEntidad" y "prodId"
 		else estandarizarFechaRef(datos.prodEntidad, datos.prodID);
 		// Redireccionar
@@ -321,12 +321,12 @@ module.exports = {
 // FUNCIONES --------------------------------------------------
 let obtenerLinksCombinados = async (prodEntidad, prodID, userID) => {
 	// Definir valores necesarios
-	let entidad_id = especificas.entidad_id(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
 	let linksOriginales = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		entidad_id,
+		producto_id,
 		prodID,
 		includes
 	);
@@ -390,10 +390,10 @@ let ActivosInactivos = async (linksOriginales) => {
 	return [linksActivos, linksInactivos];
 };
 let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
-	let entidadEnSingular = especificas.entidadEnSingular(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let registroEditado = await BD_genericas.obtenerPor2Campos(
 		"productos_edic",
-		["elc_" + entidadEnSingular + "_id"],
+		["elc_" + producto_id],
 		prodID,
 		"editado_por_id",
 		userID
@@ -416,11 +416,11 @@ let altaDeLink = async (req, datos) => {
 		if (!datos.parte) datos.parte = "-";
 		// Generar información para el nuevo registro
 		let userID = req.session.usuario.id;
-		let entidad_id = especificas.entidad_id(datos.prodEntidad);
+		let producto_id = especificas.producto_id(datos.prodEntidad);
 		let datos = {
 			...datos,
 			entidad: "links_originales",
-			[entidad_id]: datos.prodID,
+			[producto_id]: datos.prodID,
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
@@ -444,7 +444,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_genericas.obtenerTodosPorCampoConInclude(
 		"links_originales",
-		especificas.entidad_id(prodEntidad),
+		especificas.producto_id(prodEntidad),
 		prodID,
 		["status_registro", "link_tipo"]
 	)
@@ -557,12 +557,12 @@ let limpiarLosDatos = (datos) => {
 };
 let estandarizarFechaRef = async (prodEntidad, prodID) => {
 	// Actualizar todos los originales
-	let entidad_id = especificas.entidad_id(prodEntidad);
+	let producto_id = especificas.producto_id(prodEntidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
-	BD_genericas.actualizarPorCampo("links_originales", entidad_id, prodID, {fecha_referencia});
+	BD_genericas.actualizarPorCampo("links_originales", producto_id, prodID, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_genericas.obtenerTodosPorCampo("links_originales", entidad_id, prodID).then((n) =>
+	BD_genericas.obtenerTodosPorCampo("links_originales", producto_id, prodID).then((n) =>
 		n.map((m) =>
 			BD_genericas.actualizarPorCampo("links_edicion", "elc_id", (elc_id = m.id), {
 				fecha_referencia,

@@ -9,10 +9,21 @@ module.exports = {
 		// Tema y Código
 		let tema = "revision";
 		let codigo = "visionGeneral";
+		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
+		let userID = req.session.usuario.id;
+		let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas("", "", userID);
+		if (prodCapturado)
+			return res.redirect(
+				"/revision/" +
+					especificas.familiaEnSingular(prodCapturado.entidad) +
+					"/?entidad=" +
+					prodCapturado.entidad+
+					"&id="+
+					prodCapturado.id
+			);
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
-		let userID = req.session.usuario.id;
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
 		let productos = await BD_especificas.obtenerProductos(haceUnaHora, revisar, userID);
@@ -57,7 +68,9 @@ module.exports = {
 		let imagen = prodEditado.avatar;
 		let avatar = imagen ? "/imagenes/3-ProdRevisar/" + imagen : "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
-		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id
+			? await especificas.paises_idToNombre(prodOriginal.paises_id)
+			: "";
 		// Configurar el título de la vista
 		let titulo = "Revisión del Producto: " + prodEditado.nombre_castellano;
 		// Info exclusiva para la vista de Edicion

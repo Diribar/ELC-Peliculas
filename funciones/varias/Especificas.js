@@ -140,7 +140,7 @@ module.exports = {
 		// \r: carriage return
 		// \n: new line
 		return !formato.test(dato);
-	},	
+	},
 
 	moverImagenCarpetaDefinitiva: (nombre, destino) => {
 		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
@@ -180,7 +180,15 @@ module.exports = {
 		});
 	},
 
-	entidadNombre: (entidad) => {
+	familiaEnSingular: (entidad) => {
+		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
+			? "producto"
+			: entidad.includes("RCLV_")
+			? "rclv"
+			: "";
+	},
+
+	productoNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -190,7 +198,7 @@ module.exports = {
 			: "";
 	},
 
-	entidadEnSingular: (entidad) => {
+	productoEnSingular: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula"
 			: entidad == "colecciones"
@@ -200,7 +208,7 @@ module.exports = {
 			: "";
 	},
 
-	entidad_id: (entidad) => {
+	producto_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -211,7 +219,7 @@ module.exports = {
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());
-		return ahora
+		return ahora;
 	},
 
 	haceUnaHora: function () {

@@ -139,7 +139,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: especificas.entidadNombre(req.body.entidad),
+			producto: especificas.productoNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -163,7 +163,7 @@ module.exports = {
 		especificas.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.producto = especificas.entidadNombre(req.body.entidad);
+			req.body.producto = especificas.productoNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -257,8 +257,8 @@ module.exports = {
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await especificas.paises_idToNombre(datosDuros.paises_id)
-			: await BD_genericas.obtenerTodos("paises", "nombre")
-		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre")
+			: await BD_genericas.obtenerTodos("paises", "nombre");
+		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		return res.render("Home", {
@@ -479,14 +479,14 @@ module.exports = {
 		let registro = await BD_genericas.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let entidadEnSingular = especificas.entidadEnSingular(confirma.entidad);
+		let producto_id = especificas.producto_id(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
 			editado_por_id: req.session.usuario.id,
 			// Datos varios
 			entidad: "productos_edic",
-			["elc_" + entidadEnSingular + "_id"]: registro.id,
+			["elc_" + producto_id]: registro.id,
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion);
@@ -518,12 +518,12 @@ module.exports = {
 		// 4. Obtener los demás datos del producto
 		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
-		if (registroProd == {}) return res.send("Producto no encontrado");
+		if (!registroProd) return res.render("Errores", {mensaje: "Producto no encontrado"});
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = especificas.entidadNombre(entidad);
+		let producto = especificas.productoNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
@@ -552,11 +552,11 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	let entidad_id = especificas.entidad_id(confirma.entidad);
+	let producto_id = especificas.producto_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: registro.creado_por_id,
-		[entidad_id]: registro.id,
+		[producto_id]: registro.id,
 		fe_valores: confirma.fe_valores,
 		entretiene: confirma.entretiene,
 		calidad_tecnica: confirma.calidad_tecnica,
