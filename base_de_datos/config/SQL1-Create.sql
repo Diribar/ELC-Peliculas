@@ -235,11 +235,12 @@ INSERT INTO aux_status_registro (id, orden, nombre, inactivado, revisado, inacti
 /* TABLAS AUXILIARES PARA RCLV */;
 CREATE TABLE rclv_meses (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(20) NOT NULL,
+	nombre VARCHAR(10) NOT NULL,
+	abrev VARCHAR(3) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_meses (nombre)
-VALUES ('Enero'), ('Febrero'), ('Marzo'), ('Abril'), ('Mayo'), ('Junio'), ('Julio'), ('Agosto'), ('Septiembre'), ('Octubre'), ('Noviembre'), ('Diciembre');
+INSERT INTO rclv_meses (nombre, abrev)
+VALUES ('Enero', 'ene'), ('Febrero', 'feb'), ('Marzo', 'mar'), ('Abril', 'abr'), ('Mayo', 'may'), ('Junio', 'jun'), ('Julio', 'jul'), ('Agosto', 'ago'), ('Septiembre', 'sep'), ('Octubre', 'oct'), ('Noviembre', 'nov'), ('Diciembre', 'dic');
 CREATE TABLE rclv_dias (
 	id SMALLINT UNSIGNED NOT NULL,
 	dia TINYINT UNSIGNED NOT NULL,
@@ -378,6 +379,7 @@ VALUES
 ;
 CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
 	cant_prod_aprobados TINYINT UNSIGNED DEFAULT 0,
@@ -518,7 +520,7 @@ CREATE TABLE prod_1peliculas (
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano TINYINT UNSIGNED NULL,
+	dia_del_ano_id TINYINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
@@ -539,7 +541,8 @@ CREATE TABLE prod_1peliculas (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
+	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -555,6 +558,7 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -603,7 +607,7 @@ CREATE TABLE prod_2colecciones (
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano TINYINT UNSIGNED NULL,
+	dia_del_ano_id TINYINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
@@ -624,7 +628,8 @@ CREATE TABLE prod_2colecciones (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
+	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -635,9 +640,12 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (en_color_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
+
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
+
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -683,7 +691,7 @@ CREATE TABLE prod_3capitulos (
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano TINYINT UNSIGNED NULL,
+	dia_del_ano_id TINYINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NULL,
 	entretiene TINYINT UNSIGNED NULL,
@@ -704,7 +712,8 @@ CREATE TABLE prod_3capitulos (
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
+	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED DEFAULT 2,
@@ -717,9 +726,12 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
 	FOREIGN KEY (publico_sugerido_id) REFERENCES prod_publicos_sugeridos(id),
+
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
+
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -788,7 +800,8 @@ CREATE TABLE prod_4edicion (
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
+	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
