@@ -5,74 +5,101 @@ const db = require("../../base_de_datos/modelos");
 module.exports = {
 	// Obtener
 	obtenerTodos: (entidad, orden) => {
-		return db[entidad].findAll({
-			order: [[orden, "ASC"]],
-		});
+		return db[entidad]
+			.findAll({
+				order: [[orden, "ASC"]],
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosConInclude: (entidad, includes) => {
-		return db[entidad].findAll({
-			include: includes,
-		});
+		return db[entidad]
+			.findAll({
+				include: includes,
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPorCampo: (entidad, campo, valor) => {
-		return db[entidad].findAll({
-			where: {[campo]: valor},
-		});
+		return db[entidad]
+			.findAll({
+				where: {[campo]: valor},
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
-		return db[entidad].findAll({
-			where: {[campo]: valor},
-			include: includes,
-		});
+		return db[entidad]
+			.findAll({
+				where: {[campo]: valor},
+				include: includes,
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerTodosPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
-		return db[entidad].findAll({
-			where: {[campo1]: valor1, [campo2]: valor2},
-		});
+		return db[entidad]
+			.findAll({
+				where: {[campo1]: valor1, [campo2]: valor2},
+			})
+			.then((n) => n.map((m) => m.toJSON()))
+			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
 	obtenerPorCampo: (entidad, campo, valor) => {
-		return db[entidad].findOne({
-			where: {[campo]: valor},
-		});
+		return db[entidad]
+			.findOne({
+				where: {[campo]: valor},
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
-		return db[entidad].findOne({
-			where: {[campo1]: valor1, [campo2]: valor2},
-		});
+		return db[entidad]
+			.findOne({
+				where: {[campo1]: valor1, [campo2]: valor2},
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPor2CamposConInclude: (entidad, campo1, valor1, campo2, valor2, includes) => {
-		return db[entidad].findOne({
-			where: {[campo1]: valor1, [campo2]: valor2},
-			include: includes,
-		});
+		return db[entidad]
+			.findOne({
+				where: {[campo1]: valor1, [campo2]: valor2},
+				include: includes,
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPor3Campos: (entidad, campo1, valor1, campo2, valor2, campo3, valor3) => {
-		return db[entidad].findOne({
-			where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
-		});
+		return db[entidad]
+			.findOne({
+				where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPor3CamposConInclude: (entidad, campo1, valor1, campo2, valor2, campo3, valor3, includes) => {
-		return db[entidad].findOne({
-			where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
-			include: includes,
-		});
+		return db[entidad]
+			.findOne({
+				where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
+				include: includes,
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPorId: (entidad, id) => {
-		return db[entidad].findByPk(id);
+		return db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : ""));
 	},
 
 	obtenerPorIdConInclude: (entidad, id, includes) => {
-		return db[entidad].findByPk(id, {include: includes});
+		return db[entidad]
+			.findByPk(id, {include: includes})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// Otras

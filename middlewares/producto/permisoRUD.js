@@ -13,9 +13,8 @@ module.exports = async (req, res, next) => {
 	let haceUnaHora = especificas.haceUnaHora();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro").then(
-		(n) => (n ? n.toJSON() : "")
-	);
+	let includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {
@@ -43,7 +42,7 @@ module.exports = async (req, res, next) => {
 							"links_originales",
 							entidad_id,
 							prodID
-						).then((n) => (n.length ? n.map((m) => m.toJSON()) : []));
+						);
 						let cantLinks = links.length;
 						if (cantLinks && links[cantLinks - 1].fecha_referencia < haceUnaHora)
 							mensaje =

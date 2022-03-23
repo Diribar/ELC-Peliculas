@@ -257,10 +257,8 @@ module.exports = {
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await especificas.paises_idToNombre(datosDuros.paises_id)
-			: await BD_genericas.obtenerTodos("paises", "nombre").then((n) => n.map((m) => m.toJSON()));
-		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre").then((n) =>
-			n.map((m) => m.toJSON())
-		);
+			: await BD_genericas.obtenerTodos("paises", "nombre")
+		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre")
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		return res.render("Home", {
@@ -518,9 +516,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let id = req.query.id;
 		// 4. Obtener los demás datos del producto
-		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro").then(
-			(n) => n.toJSON()
-		);
+		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (registroProd == {}) return res.send("Producto no encontrado");
 		// Problema: PRODUCTO YA REVISADO

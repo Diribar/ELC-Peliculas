@@ -5,7 +5,7 @@ const BD_genericas = require("../BD/Genericas");
 module.exports = {
 	averiguarSiEstaDisponible: async (entidad, prod_id, usuario) => {
 		// Obtiene el registro con los datos del producto
-		producto = await BD_genericas.obtenerPorCampo(entidad, "id", prod_id).then((n) => n.toJSON());
+		producto = await BD_genericas.obtenerPorCampo(entidad, "id", prod_id);
 		let haceUnaHora = new Date() - 1000 * 60 * 60;
 		let disponible = {};
 		let statusCaptura =

@@ -1,18 +1,19 @@
 "use strict";
 // Requires
 const especificas = require("../../funciones/Varias/Especificas");
+const BD_especificas = require("../../funciones/BD/Especificas");
 const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = async (req, res, next) => {
-	// - Revisa si tiene capturas en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
-	// 1. Sin capturas de otros productos
-	// 	--> NEXT
-	// 2. Con capturas de otros productos
-	// 	3. Con capturas < 1 hora
-	// 		--> REDIRECCIONA: 'Tenés que liberar estos casos...'
-	// 	3. Sin capturas < 1 hora
-	// 		--> Las LIBERA + NEXT
-	// Fin
-	if (mensaje) return res.render("Errores", {mensaje});
-	next();
+	// Definir variables
+	let entidadActual = req.query.entidad;
+	let prodID = req.query.id;
+	let userID = req.session.usuario.id;
+	// CONTROLES PARA PRODUCTO *******************************************************
+	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
+	let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas(entidadActual, prodID, userID);
+	if (prodCapturado) {
+		let mensaje = "Tenés que liberar algunos casos. Volvé a la vista 'Visión General'";
+		return res.render("Errores", {mensaje});
+	} else next();
 };

@@ -134,6 +134,14 @@ module.exports = {
 		return resultado;
 	},
 
+	letrasValidasCastellano: (dato) => {
+		let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+		// \d: any decimal
+		// \r: carriage return
+		// \n: new line
+		return !formato.test(dato);
+	},	
+
 	moverImagenCarpetaDefinitiva: (nombre, destino) => {
 		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
 		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;
@@ -200,10 +208,22 @@ module.exports = {
 			: "capitulo_id";
 	},
 
-	haceUnaHora: () => {
-		let haceUnaHora = new Date();
-		haceUnaHora.setHours(haceUnaHora.getHours() - 1);
-		return haceUnaHora;
+	ahora: () => {
+		// Instante actual en horario local
+		let ahora = new Date(new Date().toUTCString());
+		return ahora
+	},
+
+	haceUnaHora: function () {
+		let horario = this.ahora();
+		horario.setHours(horario.getHours() - 1);
+		return horario;
+	},
+
+	haceDosHoras: function () {
+		let horario = this.ahora();
+		horario.setHours(horario.getHours() - 2);
+		return horario;
 	},
 
 	borrarSessionCookies: (req, res, paso) => {
@@ -225,5 +245,4 @@ module.exports = {
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
 	},
-	
 };

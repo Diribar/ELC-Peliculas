@@ -75,24 +75,27 @@ module.exports = {
 	// ControllerAPI (validarDatosDuros_input)
 	// ControllerVista (DD - Form y Grabar)
 	datosDuros: async (campos, datos) => {
+		// Definir variables
 		let errores = {};
+		let camposPosibles = [
+			{nombre: "nombre_original", corto: 2, largo: 50},
+			{nombre: "nombre_castellano", corto: 2, largo: 50},
+			{nombre: "direccion", corto: 2, largo: 100},
+			{nombre: "guion", corto: 2, largo: 100},
+			{nombre: "produccion", corto: 2, largo: 100},
+			{nombre: "sinopsis", corto: 15, largo: 800},
+		];
 		// ***** CAMPOS INDIVIDUALES *******
-		if (campos.includes("nombre_original"))
-			errores.nombre_original = !datos.nombre_original
-				? cartelCampoVacio
-				: longitud(datos.nombre_original, 2, 50)
-				? longitud(datos.nombre_original, 2, 50)
-				: castellano(datos.nombre_original)
-				? cartelCastellano
-				: "";
-		if (campos.includes("nombre_castellano"))
-			errores.nombre_castellano = !datos.nombre_castellano
-				? cartelCampoVacio
-				: longitud(datos.nombre_castellano, 2, 50)
-				? longitud(datos.nombre_castellano, 2, 50)
-				: castellano(datos.nombre_castellano)
-				? cartelCastellano
-				: "";
+		for (let campo of camposPosibles) {
+			if (campos.includes(campo.nombre))
+				errores[campo.nombre] = !datos[campo.nombre]
+					? cartelCampoVacio
+					: longitud(datos[campo.nombre], campo.corto, campo.largo)
+					? longitud(datos[campo.nombre], campo.corto, campo.largo)
+					: especificas.letrasValidasCastellano(datos[campo.nombre])
+					? cartelCastellano
+					: "";
+		}
 		if (campos.includes("ano_estreno"))
 			errores.ano_estreno = !datos.ano_estreno
 				? cartelCampoVacio
@@ -130,28 +133,12 @@ module.exports = {
 		if (campos.includes("idioma_original_id"))
 			errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "";
 		// Personas
-		if (campos.includes("direccion"))
-			errores.direccion = !datos.direccion
-				? cartelCampoVacio
-				: longitud(datos.direccion, 2, 100)
-				? longitud(datos.direccion, 2, 100)
-				: castellano(datos.direccion)
-				? cartelCastellano
-				: "";
-		if (campos.includes("guion"))
-			errores.guion = !datos.guion
-				? cartelCampoVacio
-				: longitud(datos.guion, 2, 100)
-				? longitud(datos.guion, 2, 100)
-				: castellano(datos.guion)
-				? cartelCastellano
-				: "";
 		if (campos.includes("musica"))
 			errores.musica = !datos.musica
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 2, 100)
 				? longitud(datos.musica, 2, 100)
-				: castellano(datos.musica)
+				: especificas.letrasValidasCastellano(datos.musica)
 				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
@@ -159,23 +146,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 2, 500)
 				? longitud(datos.actuacion, 2, 500)
-				: castellano(datos.actuacion)
-				? cartelCastellano
-				: "";
-		if (campos.includes("produccion"))
-			errores.produccion = !datos.produccion
-				? cartelCampoVacio
-				: longitud(datos.produccion, 2, 100)
-				? longitud(datos.produccion, 2, 100)
-				: castellano(datos.produccion)
-				? cartelCastellano
-				: "";
-		if (campos.includes("sinopsis"))
-			errores.sinopsis = !datos.sinopsis
-				? cartelCampoVacio
-				: longitud(datos.sinopsis, 15, 800)
-				? longitud(datos.sinopsis, 15, 800)
-				: castellano(datos.sinopsis)
+				: especificas.letrasValidasCastellano(datos.actuacion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("avatar"))
@@ -215,24 +186,22 @@ module.exports = {
 
 	// ControllerAPI (validarDatosPers)
 	datosPers: async (campos, datos) => {
+		// Definir variables
 		let errores = {};
-		// Datos generales
-		if (campos.includes("en_castellano_id"))
-			errores.en_castellano_id = !datos.en_castellano_id ? cartelSelectVacio : "";
-		if (campos.includes("en_color_id")) errores.en_color_id = !datos.en_color_id ? cartelSelectVacio : "";
-		if (campos.includes("categoria_id"))
-			errores.categoria_id = !datos.categoria_id ? cartelSelectVacio : "";
-		if (campos.includes("subcategoria_id"))
-			errores.subcategoria_id = !datos.subcategoria_id ? cartelSelectVacio : "";
-		if (campos.includes("publico_sugerido_id"))
-			errores.publico_sugerido_id = !datos.publico_sugerido_id ? cartelSelectVacio : "";
-		// Tu calificación
-		if (campos.includes("fe_valores_id"))
-			errores.fe_valores_id = !datos.fe_valores_id ? cartelSelectVacio : "";
-		if (campos.includes("entretiene_id"))
-			errores.entretiene_id = !datos.entretiene_id ? cartelSelectVacio : "";
-		if (campos.includes("calidad_tecnica_id"))
-			errores.calidad_tecnica_id = !datos.calidad_tecnica_id ? cartelSelectVacio : "";
+		let camposPosibles = [
+			"en_castellano_id",
+			"en_color_id",
+			"categoria_id",
+			"subcategoria_id",
+			"publico_sugerido_id",
+			"fe_valores_id",
+			"entretiene_id",
+			"calidad_tecnica_id",
+		];
+		// Datos generales + calificación
+		for (let campo of camposPosibles) {
+			if (campos.includes(campo)) errores[campo] = !datos[campo] ? cartelSelectVacio : "";
+		}
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
@@ -240,7 +209,7 @@ module.exports = {
 				"subcategorias",
 				"id",
 				datos.subcategoria_id
-			).then((n) => n.toJSON());
+			);
 			// Relación con la vida
 			if (subcategoria.personaje)
 				errores.personaje_id =
@@ -269,13 +238,6 @@ let longitud = (dato, corto, largo) => {
 		? "El contenido debe ser más corto. Tiene " + dato.length + " caracteres, el límite es " + largo + "."
 		: "";
 };
-let castellano = (dato) => {
-	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
-	// \d: any decimal
-	// \r: carriage return
-	// \n: new line
-	return !formato.test(dato);
-};
 let formatoAno = (dato) => {
 	let formato = /^\d{4}$/;
 	return !formato.test(dato);
@@ -301,7 +263,7 @@ let validarRepetidos = async (campo, datos) => {
 		datos[campo],
 		"ano_estreno",
 		datos.ano_estreno
-	).then((n) => (n ? n.toJSON() : ""));
+	);
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id

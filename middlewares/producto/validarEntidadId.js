@@ -2,7 +2,7 @@
 // Requires
 const especificas = require("../../funciones/Varias/Especificas");
 
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
 	// Obtener los datos identificatorios del producto
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
