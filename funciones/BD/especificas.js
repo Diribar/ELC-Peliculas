@@ -248,9 +248,9 @@ module.exports = {
 		];
 		// Crear el objeto literal con las condiciones a cumplirse
 		let condiciones = {
-			capturado_por_id: userID,				// Que esté capturado por este usuario
-			capturado_en: {[Op.gt]: haceUnaHora},	// Que esté capturado hace menos de una hora
-			captura_activa: 1,						// Que la captura sea 'activa'
+			capturado_por_id: userID,               // Que esté capturado por este usuario
+			capturado_en: {[Op.gt]: haceUnaHora},   // Que esté capturado hace menos de una hora
+			captura_activa: 1,                      // Que la captura sea 'activa'
 		};
 		// Averiguar si tiene algún producto capturado
 		let lectura;
