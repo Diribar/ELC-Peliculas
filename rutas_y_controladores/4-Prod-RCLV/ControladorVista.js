@@ -33,7 +33,7 @@ module.exports = {
 			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
-		RCLV.producto_RCLV = especificas.RCLV_Nombre(RCLV.entidad_RCLV);
+		RCLV.RCLV_Nombre = especificas.RCLV_Nombre(RCLV.entidad_RCLV);
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
@@ -81,7 +81,7 @@ module.exports = {
 		return res.render("Home", {
 			tema,
 			codigo,
-			titulo: "Agregar - " + RCLV.producto_RCLV,
+			titulo: "Agregar - " + RCLV.RCLV_Nombre,
 			link: req.originalUrl,
 			dataEntry: RCLV,
 			errores,
