@@ -119,12 +119,13 @@ module.exports = {
 		// Obtener el producto ORIGINAL
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
-		let prodEditado = {};
+		let prodEditado = "";
 		let producto_id = especificas.producto_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
+			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 				"productos_edic",
 				"elc_" + producto_id,
@@ -248,9 +249,9 @@ module.exports = {
 		];
 		// Crear el objeto literal con las condiciones a cumplirse
 		let condiciones = {
-			capturado_por_id: userID,               // Que esté capturado por este usuario
-			capturado_en: {[Op.gt]: haceUnaHora},   // Que esté capturado hace menos de una hora
-			captura_activa: 1,                      // Que la captura sea 'activa'
+			capturado_por_id: userID, // Que esté capturado por este usuario
+			capturado_en: {[Op.gt]: haceUnaHora}, // Que esté capturado hace menos de una hora
+			captura_activa: 1, // Que la captura sea 'activa'
 		};
 		// Averiguar si tiene algún producto capturado
 		let lectura;
