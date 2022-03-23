@@ -78,19 +78,15 @@ module.exports = {
 				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
 				{
 					titulo: "Idioma original",
-					valor: prodCombinado.idioma_original.nombre
-						? prodCombinado.idioma_original.nombre
-						: "Sin datos",
+					valor: prodCombinado.idioma_original ? prodCombinado.idioma_original.nombre : "Sin datos",
 				},
 				{
 					titulo: "En castellano",
-					valor: prodCombinado.en_castellano.productos
-						? prodCombinado.en_castellano.productos
-						: "Sin datos",
+					valor: prodCombinado.en_castellano ? prodCombinado.en_castellano.productos : "Sin datos",
 				},
 				{
 					titulo: "Es a color",
-					valor: prodCombinado.en_color.productos ? prodCombinado.en_color.productos : "Sin datos",
+					valor: prodCombinado.en_color ? prodCombinado.en_color.productos : "Sin datos",
 				},
 			];
 			let bloque2 = [
@@ -109,19 +105,17 @@ module.exports = {
 			var bloquesDerecha = [
 				{
 					titulo: "Público Sugerido",
-					valor: prodCombinado.publico_sugerido.nombre
+					valor: prodCombinado.publico_sugerido
 						? prodCombinado.publico_sugerido.nombre
 						: "Sin datos",
 				},
 				{
 					titulo: "Categoría",
-					valor: prodCombinado.categoria.nombre ? prodCombinado.categoria.nombre : "Sin datos",
+					valor: prodCombinado.categoria ? prodCombinado.categoria.nombre : "Sin datos",
 				},
 				{
 					titulo: "Sub-categoría",
-					valor: prodCombinado.subcategoria.nombre
-						? prodCombinado.subcategoria.nombre
-						: "Sin datos",
+					valor: prodCombinado.subcategoria ? prodCombinado.subcategoria.nombre : "Sin datos",
 				},
 			];
 			if (prodCombinado.personaje_id != 1)
@@ -170,6 +164,7 @@ module.exports = {
 			errores,
 			tiempo,
 			vista: req.baseUrl + req.path,
+			paises,
 		});
 	},
 	edicionGuardar: async (req, res) => {

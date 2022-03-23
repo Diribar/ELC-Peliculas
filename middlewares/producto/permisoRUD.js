@@ -7,7 +7,8 @@ module.exports = async (req, res, next) => {
 	// Definir variables
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
-	let userID = req.session.usuario.id;
+	let usuario= req.session.usuario
+	let userID =usuario.id;
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
 	let haceUnaHora = especificas.haceUnaHora();
@@ -49,9 +50,8 @@ module.exports = async (req, res, next) => {
 								"El producto está en revisión. Una vez revisado, podrás acceder a esta vista";
 					}
 				}
-			}
-			// Problema4: PRODUCTO NO APROBADO ----------------------------------------
-			else
+			} else if (!usuario.rol_usuario.aut_gestion_prod)
+				// Problema4: PRODUCTO NO APROBADO ----------------------------------------
 				mensaje =
 					"El producto no está aprobado aún para ser mostrado o editado. El status actual es: " +
 					prodOriginal.status_registro.nombre;
