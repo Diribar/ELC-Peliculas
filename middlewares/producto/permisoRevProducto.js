@@ -68,7 +68,7 @@ module.exports = async (req, res, next) => {
 								"hs";
 					} else {
 						// No capturado o capturado < haceUnaHora
-						// Problema5: EL USUARIO DEJÓ CAPTURADO ESTE PRODUCTO LUEGO DE LA HORA
+						// Problema5: EL USUARIO DEJÓ CAPTURADO ESTE PRODUCTO LUEGO DE LA HORA Y NO TRANSCURRIERON AÚN LAS 2 HORAS
 						// ¿Capturado por este usuario > haceDosHoras?
 						if (
 							prodOriginal.capturado_en > haceDosHoras &&

@@ -27,6 +27,7 @@ module.exports = (sequelize, dt) => {
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
+		dia_del_ano: {type: dt.INTEGER},
 
 		fe_valores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},

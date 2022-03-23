@@ -514,9 +514,12 @@ CREATE TABLE prod_1peliculas (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
+
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
+	dia_del_ano TINYINT UNSIGNED NULL,
+
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -548,9 +551,11 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (idioma_original_id) REFERENCES aux_idiomas(id),
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
+
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
@@ -594,9 +599,12 @@ CREATE TABLE prod_2colecciones (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
+
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
+	dia_del_ano TINYINT UNSIGNED NULL,
+
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
@@ -671,9 +679,12 @@ CREATE TABLE prod_3capitulos (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
+
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
+	dia_del_ano TINYINT UNSIGNED NULL,
+
 	fe_valores TINYINT UNSIGNED NULL,
 	entretiene TINYINT UNSIGNED NULL,
 	calidad_tecnica TINYINT UNSIGNED NULL,

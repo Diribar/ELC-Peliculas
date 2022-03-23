@@ -3,7 +3,11 @@
 const especificas = require("../../funciones/Varias/Especificas");
 
 module.exports = (req, res, next) => {
+	let urlAnt = req.session.urlReferencia;
 	let url = req.originalUrl;
-	if (url.indexOf("/usuarios/") < 0 && url.indexOf("/api/") < 0) req.session.urlReferencia = url;
+	if (!url.includes("/usuarios/") && !url.includes("/api/") && url != req.session.urlReferencia) {
+		req.session.urlReferencia = url;
+		if (urlAnt != req.session.urlReferencia) req.session.urlAnterior = urlAnt;
+	}
 	next();
 };
