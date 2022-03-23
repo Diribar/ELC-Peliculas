@@ -85,16 +85,15 @@ module.exports = {
 		// Configurar el título de la vista
 		let productoNombre = especificas.productoNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// Info exclusiva para la vista de Edicion
+		// Info para la vista
 		let reloj = Math.max(0, parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60))
 		// Ir a la vista
-		//return res.send(prodCombinado)
+		//return res.send(producto)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
-			prodID,
 			producto,
 			usuarioCreador,
 			avatar,
