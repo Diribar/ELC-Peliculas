@@ -119,12 +119,13 @@ module.exports = {
 		// Obtener el producto ORIGINAL
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
-		let prodEditado = {};
+		let prodEditado = "";
 		let producto_id = especificas.producto_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
+			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
 				"productos_edic",
 				"elc_" + producto_id,
@@ -246,31 +247,20 @@ module.exports = {
 			"RCLV_hechos",
 			"RCLV_valores",
 		];
+		// Crear el objeto literal con las condiciones a cumplirse
+		let condiciones = {
+			capturado_por_id: userID, // Que esté capturado por este usuario
+			capturado_en: {[Op.gt]: haceUnaHora}, // Que esté capturado hace menos de una hora
+			captura_activa: 1, // Que la captura sea 'activa'
+		};
 		// Averiguar si tiene algún producto capturado
 		let lectura;
 		let entidad;
 		for (entidad of entidades) {
-			lectura =
-				entidad == entidadActual
-					? await db[entidad]
-							.findOne({
-								where: {
-									// Que esté capturado por este usuario
-									capturado_por_id: userID,
-									// Que esté capturado hace menos de una hora
-									capturado_en: {[Op.gt]: haceUnaHora},
-									// Distinto al producto actual
-									id: {[Op.ne]: prodID},
-								},
-							})
-							.then((n) => (n ? n.toJSON() : ""))
-					: await db[entidad]
-							.findOne({
-								// Que esté capturado por este usuario
-								// Que esté capturado hace menos de una hora
-								where: {capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
-							})
-							.then((n) => (n ? n.toJSON() : ""));
+			// Distinto al producto actual
+			if (entidad == entidadActual) condiciones.id = {[Op.ne]: prodID};
+			lectura = await db[entidad].findOne({where: condiciones}).then((n) => (n ? n.toJSON() : ""));
+			if (condiciones.id) delete condiciones.id;
 			if (lectura) break;
 		}
 		// Fin

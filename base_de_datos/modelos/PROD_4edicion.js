@@ -4,7 +4,6 @@ module.exports = (sequelize, dt) => {
 		elc_pelicula_id: {type: dt.INTEGER},
 		elc_coleccion_id: {type: dt.INTEGER},
 		elc_capitulo_id: {type: dt.INTEGER},
-		coleccion_id: {type: dt.INTEGER},
 		temporada: {type: dt.INTEGER},
 		capitulo: {type: dt.INTEGER},
 		TMDB_id: {type: dt.STRING(10)},

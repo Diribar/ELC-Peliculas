@@ -22,6 +22,7 @@ module.exports = (sequelize, dt) => {
 
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
+		captura_activa: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "rclv_2hechos",

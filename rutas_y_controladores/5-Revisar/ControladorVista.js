@@ -72,7 +72,7 @@ module.exports = {
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// Configurar el título de la vista
-		let titulo = "Revisión del Producto: " + prodEditado.nombre_castellano;
+		let titulo = "Revisión - " + prodEditado.nombre_castellano;
 		// Info exclusiva para la vista de Edicion
 		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
