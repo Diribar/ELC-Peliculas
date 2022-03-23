@@ -47,7 +47,7 @@ module.exports = async (req, res, next) => {
 						n.map((m) => m.abrev)
 					);
 					if (prodOriginal.capturado_en)
-						horarioCaptura =
+						var horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
 							"/" +
 							meses[prodOriginal.capturado_en.getUTCMonth()] +
@@ -80,17 +80,23 @@ module.exports = async (req, res, next) => {
 							"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.";
 					// Comienzo de las soluciones
 					// 1. Activar si no lo está, de lo contrario no hace nada
-					else if (!prodOriginal.captura_activa) {
+					else if (
+						!prodOriginal.captura_activa ||
+						prodOriginal.capturado_por_id != userID ||
+						prodOriginal.capturado_en < haceDosHoras
+					) {
 						let datos = {captura_activa: 1};
 						// 2. Cambiar de usuario si estaba capturado por otro
-						if (prodOriginal.capturado_por_id != userID) datos += {capturado_por_id: userID};
+						if (prodOriginal.capturado_por_id != userID) datos.capturado_por_id = userID;
 						// 3. Fijarle la nueva hora de captura si corresponde
 						if (
 							prodOriginal.capturado_por_id != userID ||
 							prodOriginal.capturado_en < haceDosHoras
 						)
-							datos += {capturado_en: especificas.ahora()};
+							datos.capturado_en = especificas.ahora();
 						// CAPTURA DEL PRODUCTO
+						console.log(entidad, prodID);
+						console.log(datos);
 						BD_genericas.actualizarPorId(entidad, prodID, datos);
 					}
 				}
