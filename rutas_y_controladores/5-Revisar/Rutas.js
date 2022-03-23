@@ -13,7 +13,14 @@ const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
 
 // Rutas *******************************************
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);
-router.get("/producto", soloGestionProd, entidadId, permisoProducto, permisoUsuario, vista.producto);
+router.get(
+	"/producto/perfil",
+	soloGestionProd,
+	entidadId,
+	permisoProducto,
+	permisoUsuario,
+	vista.productoPerfil
+);
 // router.get("/rclv", soloGestionProd, vista.visionGeneral);
 // router.get("/links", soloGestionProd, vista.visionGeneral);
 

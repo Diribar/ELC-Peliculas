@@ -12,15 +12,23 @@ module.exports = {
 		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
 		let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas("", "", userID);
-		if (prodCapturado)
+		if (prodCapturado) {
+			let entidad = especificas.familiaEnSingular(prodCapturado.entidad);
+			if (entidad == "producto")
+				entidad += prodCapturado.status_registro.creado
+					? "/perfil"
+					: prodCapturado.status_registro.pre_autorizado || prodCapturado.status_registro.aprobado
+					? "/edicion"
+					: "/inactivos";
 			return res.redirect(
 				"/revision/" +
 					especificas.familiaEnSingular(prodCapturado.entidad) +
 					"/?entidad=" +
-					prodCapturado.entidad+
-					"&id="+
+					prodCapturado.entidad +
+					"&id=" +
 					prodCapturado.id
 			);
+		}
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
@@ -49,7 +57,7 @@ module.exports = {
 		});
 	},
 
-	producto: async (req, res) => {
+	productoPerfil: async (req, res) => {
 		// Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
@@ -64,15 +72,27 @@ module.exports = {
 			prodID,
 			userID
 		);
-		// Obtener avatar
-		let imagen = prodEditado.avatar;
-		let avatar = imagen ? "/imagenes/3-ProdRevisar/" + imagen : "/imagenes/8-Agregar/IM.jpg";
+		// Redireccionar dependiendo del status
+
+		// Obtener avatar original
+		let avatarOriginal = prodOriginal.avatar
+			? (prodOriginal.avatar.slice(0, 4) != "http"
+					? prodOriginal.status_registro.pend_aprobar
+						? "/imagenes/3-ProdRevisar/"
+						: "/imagenes/2-Productos/"
+					: "") + prodOriginal.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+		// Obtener avatar editado
+		let avatarEditado = prodEditado.avatar
+			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = prodOriginal.paises_id
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// Configurar el título de la vista
-		let titulo = "Revisión - " + prodEditado.nombre_castellano;
+		let productoNombre = especificas.productoNombre(entidad);
+		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Info exclusiva para la vista de Edicion
 		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
@@ -89,7 +109,8 @@ module.exports = {
 			prodID,
 			prodOriginal,
 			prodEditado,
-			avatar,
+			avatarOriginal,
+			avatarEditado,
 			paises,
 			BD_paises,
 			BD_idiomas,

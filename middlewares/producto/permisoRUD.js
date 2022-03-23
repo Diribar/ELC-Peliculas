@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {
 					// ¿Producto capturado?
 					// Problema3: PRODUCTO CAPTURADO Y APTO PARA SER REVISADO ------
 					if (prodOriginal.capturado_en > haceUnaHora) {
-						let producto_id = especificas.producto_id(prodEntidad);
+						let producto_id = especificas.producto_id(prodOriginal);
 						let links = await BD_genericas.obtenerTodosPorCampo(
 							"links_originales",
 							producto_id,
