@@ -95,8 +95,6 @@ module.exports = async (req, res, next) => {
 						)
 							datos.capturado_en = especificas.ahora();
 						// CAPTURA DEL PRODUCTO
-						console.log(entidad, prodID);
-						console.log(datos);
 						BD_genericas.actualizarPorId(entidad, prodID, datos);
 					}
 				}
