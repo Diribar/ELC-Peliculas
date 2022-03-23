@@ -216,6 +216,26 @@ module.exports = {
 			: "capitulo_id";
 	},
 
+	RCLV_Nombre: (input) => {
+		return input.includes("personaje")
+			? "Personaje Histórico"
+			: input.includes("hecho")
+			? "Hecho Histórico"
+			: input.includes("valor")
+			? "Valor"
+			: "";
+	},
+
+	RCLV_id: (input) => {
+		return input.includes("personaje")
+			? "personaje_id"
+			: input.includes("hecho")
+			? "hecho_id"
+			: input.includes("valor")
+			? "valor_id"
+			: "";
+	},
+
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());

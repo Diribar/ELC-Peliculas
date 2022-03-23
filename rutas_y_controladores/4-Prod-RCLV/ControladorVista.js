@@ -2,6 +2,7 @@
 // ************ Requires ************
 const validarRCLV = require("../../funciones/Varias/ValidarRCLV");
 const BD_genericas = require("../../funciones/BD/Genericas");
+const especificas = require("../../funciones/Varias/Especificas");
 const procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 module.exports = {
@@ -28,18 +29,11 @@ module.exports = {
 		} else if (RCLV.origen == "edicion") {
 			// Completar RCLV
 			RCLV.entidad = req.query.entidad;
-			RCLV.producto_id = req.query.id;
-			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.producto_id;
+			RCLV.prodID = req.query.id;
+			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
-		RCLV.producto_RCLV =
-			RCLV.entidad_RCLV == "RCLV_personajes"
-				? "Personaje Histórico"
-				: RCLV.entidad_RCLV == "RCLV_hechos"
-				? "Hecho Histórico"
-				: RCLV.entidad_RCLV == "RCLV_valores"
-				? "Valor"
-				: "";
+		RCLV.producto_RCLV = especificas.RCLV_Nombre(RCLV.entidad_RCLV);
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
@@ -70,16 +64,18 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		let procesos_canonizacion = [];
-		let roles_iglesia = [];
-		if (codigo == "RCLV_personajes") {
-			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then(
-				(n) => n.filter((m) => m.id.length == 3)
-			);
-			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
-				n.filter((m) => m.id.length == 3)
-			);
-		}
+		let procesos_canonizacion =
+			codigo == "RCLV_personajes"
+				? await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
+						n.filter((m) => m.id.length == 3)
+				  )
+				: "";
+		let roles_iglesia =
+			codigo == "RCLV_personajes"
+				? await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
+						n.filter((m) => m.id.length == 3)
+				  )
+				: "";
 		// 6. Render
 		//return res.send(errores);
 		return res.render("Home", {
@@ -96,7 +92,7 @@ module.exports = {
 	},
 
 	RCLV_Grabar: async (req, res) => {
-		// 1. Si se perdió la info anterior, ir a inicio
+		// 1. Si se perdió la info anterior => error
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV)
 			return res.render("Errores", {mensaje: "Se perdió información crítica. Reiniciá este proceso."});
@@ -141,23 +137,19 @@ module.exports = {
 				.then((n) => n.id);
 
 		// 6. Crear el registro en la BD
-		let {id: RCLV_id} = await BD_genericas.agregarRegistro({
+		let {id} = await BD_genericas.agregarRegistro({
 			...datos,
 			entidad: RCLV.entidad_RCLV,
 		});
 		// Averiguar el campo para el RCLV-ID
-		let entidad_id = RCLV.entidad_RCLV.includes("personaje")
-			? "personaje_id"
-			: RCLV.entidad_RCLV.includes("hecho")
-			? "hecho_id"
-			: "valor_id";
+		let RCLV_id = especificas.RCLV_id(RCLV.entidad_RCLV)
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
-			req.session.datosPers[entidad_id] = RCLV_id;
+			req.session.datosPers[RCLV_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (RCLV.origen == "edicion") {
-			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.producto_id, {
-				[entidad_id]: RCLV_id,
+			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, {
+				[RCLV_id]: id,
 			});
 		}
 		// Obtener el destino a dónde redireccionar
