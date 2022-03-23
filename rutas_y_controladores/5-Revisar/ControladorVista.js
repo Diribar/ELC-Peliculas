@@ -198,3 +198,31 @@ let productosLinks = (links, aprobado) => {
 	}
 	return prods;
 };
+
+// includes = ["peliculas", "colecciones", "capitulos"];
+// let personajes = await BD_especificas.obtenerRCLV(
+// 	"RCLV_personajes",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let hechos = await BD_especificas.obtenerRCLV(
+// 	"RCLV_hechos",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let valores = await BD_especificas.obtenerRCLV(
+// 	"RCLV_valores",
+// 	includes,
+// 	haceUnaHora,
+// 	aprobInact,
+// 	userID
+// );
+// let RCLV = [...personajes, ...hechos, ...valores];
+// // Obtener los RCLV en sus variantes a mostrar
+// let RCLV_creado = rclvCreado(RCLV, status.creado_id);
+// let RCLV_sinProds = rclvSinProds(RCLV, status.creado_id, status.aprobado_id);
+// RCLVs = [...RCLV_creado, ...RCLV_sinProds];
