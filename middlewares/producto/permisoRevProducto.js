@@ -55,7 +55,7 @@ module.exports = async (req, res, next) => {
 							" " +
 							prodOriginal.capturado_en.getHours() +
 							":" +
-							String(prodOriginal.capturado_en.getMinutes()).padStart(2, "0");
+							String(prodOriginal.capturado_en.getMinutes() + 1).padStart(2, "0");
 					// Capturado > haceUnaHora
 					if (prodOriginal.capturado_en > haceUnaHora) {
 						// Problema4: EL PRODUCTO ESTÁ CAPTURADO POR OTRO USUARIO

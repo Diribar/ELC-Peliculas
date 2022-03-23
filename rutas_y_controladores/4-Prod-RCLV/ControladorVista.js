@@ -52,9 +52,7 @@ module.exports = {
 		// 1. Si se perdió la info anterior, ir a inicio
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV)
-			return res.send(
-				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
-			);
+			return res.render("Errores", {mensaje: "Se perdió información crítica. Reiniciá este proceso."});
 		// 2. Tema y Código
 		let tema = "rclv";
 		let codigo = RCLV.entidad_RCLV;
@@ -75,8 +73,8 @@ module.exports = {
 		let procesos_canonizacion = [];
 		let roles_iglesia = [];
 		if (codigo == "RCLV_personajes") {
-			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
-				n.filter((m) => m.id.length == 3)
+			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then(
+				(n) => n.filter((m) => m.id.length == 3)
 			);
 			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
 				n.filter((m) => m.id.length == 3)
@@ -101,9 +99,7 @@ module.exports = {
 		// 1. Si se perdió la info anterior, ir a inicio
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV)
-			return res.send(
-				"Se perdió información crítica. Tenga cuidado de no completar este formulario en 2 pestañas distintas, o que no pase 1 día sin completarlo."
-			);
+			return res.render("Errores", {mensaje: "Se perdió información crítica. Reiniciá este proceso."});
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "datosPers") {
 			let datosPers = req.session.datosPers
@@ -112,9 +108,9 @@ module.exports = {
 				? req.cookies.datosPers
 				: "";
 			if (!datosPers)
-				return res.send(
-					"Se perdió información crítica. Tenga cuidado de que no pase 1 día sin completarlo."
-				);
+				return res.render("Errores", {
+					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+				});
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 2. Generar información

@@ -301,7 +301,7 @@ module.exports = {
 		let respuesta = datos.alta ? await altaDeLink(req, datos) : await edicionDeLink(req, datos);
 		// Fin
 		// Si hay un error en el url, comunicarlo
-		if (respuesta) return res.send(respuesta);
+		if (respuesta) return res.render("Errores", {mensaje: respuesta});
 		// Estandarizar fechaRef en originales y editados del mismo "prodEntidad" y "prodId"
 		else estandarizarFechaRef(datos.prodEntidad, datos.prodID);
 		// Redireccionar

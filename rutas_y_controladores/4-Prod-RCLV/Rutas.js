@@ -17,8 +17,10 @@ router.get("/api/validar/", API.validarRCLV);
 router.get("/redireccionar", soloAutInput, vista.Redireccionar);
 router.get("/personajes", soloAutInput, vista.RCLV_Form);
 router.get("/hechos", soloAutInput, vista.RCLV_Form);
+router.get("/valores", soloAutInput, vista.RCLV_Form);
 router.post("/personajes", soloAutInput, vista.RCLV_Grabar);
 router.post("/hechos", soloAutInput, vista.RCLV_Grabar);
+router.post("/valores", soloAutInput, vista.RCLV_Grabar);
 
 // Exportarlo **********************************************
 module.exports = router;
