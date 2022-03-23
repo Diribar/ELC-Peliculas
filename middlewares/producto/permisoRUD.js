@@ -7,8 +7,8 @@ module.exports = async (req, res, next) => {
 	// Definir variables
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
-	let usuario= req.session.usuario
-	let userID =usuario.id;
+	let usuario = req.session.usuario;
+	let userID = usuario.id;
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
 	let haceUnaHora = especificas.haceUnaHora();
