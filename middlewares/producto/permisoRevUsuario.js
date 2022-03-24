@@ -13,7 +13,15 @@ module.exports = async (req, res, next) => {
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
 	let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas(entidadActual, prodID, userID);
 	if (prodCapturado) {
-		let mensaje = "Tenés que liberar algunos casos. Volvé a la vista 'Visión General'";
+		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
+		let mensaje =
+			"Tenés que liberar el/la " +
+			entidadNombre +
+			" " +
+			(prodCapturado.nombre_castellano
+				? prodCapturado.nombre_castellano
+				: prodCapturado.nombre_original) +
+			". Volvé a la vista 'Visión General'";
 		return res.render("Errores", {mensaje});
 	} else next();
 };

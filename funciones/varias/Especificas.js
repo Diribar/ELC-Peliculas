@@ -249,6 +249,22 @@ module.exports = {
 			: "";
 	},
 
+	entidadNombre: (entidad) => {
+		return entidad == "peliculas"
+			? "Película"
+			: entidad == "colecciones"
+			? "Colección"
+			: entidad == "capitulos"
+			? "Capítulo"
+			: entidad.includes("personaje")
+			? "Personaje Histórico"
+			: entidad.includes("hecho")
+			? "Hecho Histórico"
+			: entidad.includes("valor")
+			? "Valor"
+			: "";
+	},
+
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());

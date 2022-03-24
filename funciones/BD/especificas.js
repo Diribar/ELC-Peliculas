@@ -354,48 +354,67 @@ module.exports = {
 		let includes = ["status_registro", "rol_iglesia", "peliculas", "colecciones"];
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Generar los datos específicos
-		let cant_prods = usuario.peliculas.length + usuario.colecciones.length;
+		let antiguedad =
+			(
+				parseInt(
+					((especificas.ahora().getTime() - new Date(usuario.creado_en).getTime()) /
+						1000 /
+						60 /
+						60 /
+						24 /
+						365) *
+						10
+				) / 10
+			)
+				.toFixed(1)
+				.replace(".", ",") + " años";
+		let cantProds = usuario.peliculas.length + usuario.colecciones.length;
 		let statusInactivadoId = await BD_genericas.obtenerPorCampo(
 			"status_registro_ent",
 			"inactivado",
 			1
 		).then((n) => n.id);
-		let calidadInputs = cant_prods
+		let calidadInputs = cantProds
 			? parseInt(
 					((usuario.peliculas.filter((n) => n.status_registro_id != statusInactivadoId).length +
 						usuario.colecciones.filter((n) => n.status_registro_id != statusInactivadoId)
 							.length) /
-						cant_prods) *
+						cantProds) *
 						100
 			  ) + "%"
 			: "-";
-		let edad = parseInt(
-			(especificas.ahora().getTime() - new Date(usuario.fecha_nacimiento).getTime()) /
-				1000 /
-				60 /
-				60 /
-				24 /
-				365
-		)+" años";
-		let antiguedad = (
-			parseInt(
-				((especificas.ahora().getTime() - new Date(usuario.creado_en).getTime()) /
-					1000 /
-					60 /
-					60 /
-					24 /
-					365) *
-					10
-			) / 10
-		).toFixed(1).replace(".",",")+" años";
 		let diasPenalizacion = usuario.registros_borrados ? usuario.registros_borrados.duracion : 0;
-		return {
-			rolIglesia: usuario.rol_iglesia.nombre,
-			edad,
-			antiguedad,
-			calidadInputs,
-			cant_prods,
-			diasPenalizacion,
+		let resultado = {
+			apodo: ["Apodo", usuario.apodo],
+			calidadInputs: ["Afín con el perfil", calidadInputs],
+			antiguedad: ["Tiempo en ELC", antiguedad],
+			cantProds: ["Cant. Prods. Agregados", cantProds],
+			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
 		};
+
+		if (usuario.fecha_nacimiento) {
+			let edad =
+				parseInt(
+					(especificas.ahora().getTime() - new Date(usuario.fecha_nacimiento).getTime()) /
+						1000 /
+						60 /
+						60 /
+						24 /
+						365
+				) + " años";
+			resultado.edad = ["Edad", edad];
+		}
+		if (usuario.rol_iglesia) resultado.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		// Datos a enviar
+		let enviar={}
+		enviar.apodo=resultado.apodo
+		if (usuario.rol_iglesia) enviar.rolIglesia= resultado.rolIglesia
+		if (usuario.fecha_nacimiento) enviar.edad=resultado.edad
+		enviar.calidadInputs=resultado.calidadInputs
+		enviar.antiguedad=resultado.antiguedad
+		enviar.cantProds=resultado.cantProds
+		enviar.diasPenalizacion=resultado.diasPenalizacion
+		// Fin
+		return enviar;
 	},
 };

@@ -28,12 +28,13 @@
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
 			<% } %>
-			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
-			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
-			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
 		</div>
 		<!-- Botones -->
-		<%- include("0-Revisar-Flechas") %>
+		<div id="flechas">
+			<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+			<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
+			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
+		</div>		
 	</section>
 	<section id="datosBreves">
 		<div>
@@ -42,11 +43,14 @@
 		</div>
 		<div id="graficoCalificacion"></div>
 		<div id="texto">
-			<% for (bloque of bloqueDer) { %>
-				<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
-					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+			<% for (campo of bloqueDer[0]) { %>
+				<p <%- campo.titulo.startsWith("Status") ? ('class="status" id="status' + campo.id + '"') : "" %>>
+					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
 			<% } %>
+			<% for (campo in bloqueDer[1]) { %>
+				<p><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+		<% } %> 
 		</div>
 	</section>
 </div>
