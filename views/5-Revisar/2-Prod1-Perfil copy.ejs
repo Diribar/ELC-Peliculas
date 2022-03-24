@@ -1,0 +1,23 @@
+<h1 id="titulo"><%= titulo %></h1>
+<section id="dentroDelPadding">
+	<!-- Contenido -->
+	<div id="">
+		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+		<%- include("0-Revisar-Encabezado") %>
+		<!-- Sinopsis -->
+		<div id="sinopsis">
+			<nav><%= producto.sinopsis %></nav>
+			<!-- Ayuda -->
+			<i class="fa-solid fa-circle-question"></i>
+			<ul type="none" class="mensajeAyuda ocultar">
+				<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+			</ul>
+		</div>
+	</div>
+	<!-- Comandos -->
+	<div id="comandos">
+		<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+		<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
+		<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Inactivarlo"></i>
+	</div>
+</section>

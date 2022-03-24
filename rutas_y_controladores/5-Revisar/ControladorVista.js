@@ -63,35 +63,37 @@ module.exports = {
 	},
 
 	productoPerfil: async (req, res) => {
-		// Tema y Código
+		// 1. Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.lastIndexOf("/"));
-		// Obtener los datos identificatorios del producto
+		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		let userID = req.session.usuario.id;
 		let includes;
-		// Obtener los datos ORIGINALES del producto
+		// 3. Obtener los datos ORIGINALES del producto
 		includes = ["status_registro"];
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		if (!producto.status_registro.creado)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		// Obtener los datos del usuario
-		includes = ["status_registro"];
-		let usuarioCreador = await BD_genericas.obtenerPorIdConInclude("usuarios", prodID, includes);
-		// Obtener avatar original
+		// Obtener datos del usuario
+		let fichaDelUsuario = await BD_especificas.fichaDelUsuario(entidad, prodID);
+		// 4. Obtener avatar original
 		let avatar = producto.avatar
 			? (producto.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + producto.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Configurar el título de la vista
+		// 5. Configurar el título de la vista
 		let productoNombre = especificas.productoNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// Info para la vista
+		// Reloj
 		let reloj = Math.max(
 			0,
 			parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60)
 		);
+		// 6. Obtener los países
+		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
+		// Info para la vista
+		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises);
 		// Ir a la vista
 		//return res.send(producto)
 		return res.render("0-Revisar", {
@@ -100,10 +102,12 @@ module.exports = {
 			titulo,
 			entidad,
 			producto,
-			usuarioCreador,
 			avatar,
 			reloj,
 			vista: req.baseUrl + req.path,
+			fichaDelUsuario,
+			bloqueIzq,
+			bloqueDer,
 		});
 	},
 
@@ -161,16 +165,6 @@ let procesar = (productos) => {
 	// Fin
 	return productos;
 };
-let rclvCreado = (array, creado_id) => {
-	// Creado, con productos aprobados
-	return array.length ? array.filter((n) => n.status_registro.pend_aprobar && n.cant_prod_aprobados) : [];
-};
-let rclvSinProds = (array, creado_id, aprobado_id) => {
-	// Status 'activo', sin productos creados, sin productos aprobados
-	return array.length
-		? array.filter((n) => !n.status_registro.inactivos && !n.cant_prod_creados && !n.cant_prod_aprobados)
-		: [];
-};
 let productosLinks = (links, aprobado) => {
 	// Resultado esperado:
 	//	- Solo productos aprobados
@@ -203,7 +197,40 @@ let productosLinks = (links, aprobado) => {
 	}
 	return prods;
 };
+let funcionBloques = (producto, paises) => {
+	let [bloque1, bloque2, bloque3] = [[],[],[]];
+	// Bloque 1
+	if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
+	if (producto.idioma_original)
+		bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
+	// Bloque 2
+	if (producto.direccion) bloque2.push({titulo: "Dirección", valor: producto.direccion});
+	if (producto.guion) bloque2.push({titulo: "Guión", valor: producto.guion});
+	if (producto.musica) bloque2.push({titulo: "Música", valor: producto.musica});
+	if (producto.produccion) bloque2.push({titulo: "Producción", valor: producto.produccion});
+	// Bloque 3
+	if (producto.actuacion) bloque3.push({titulo: "Actuación", valor: producto.actuacion});
+	// Bloque izquierda consolidado
+	let izquierda = [bloque1, bloque2, bloque3];
+	// Bloque derecha consolidado
+	let derecha = [];
+	if (producto.ano_estreno) derecha.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+	if (producto.ano_fin) derecha.push({titulo: "Año de fin", valor: producto.ano_fin});
+	if (producto.duracion) derecha.push({titulo: "Duracion", valor: producto.duracion + " min."});
 
+	return [izquierda, derecha];
+};
+
+// let rclvCreado = (array, creado_id) => {
+// 	// Creado, con productos aprobados
+// 	return array.length ? array.filter((n) => n.status_registro.pend_aprobar && n.cant_prod_aprobados) : [];
+// };
+// let rclvSinProds = (array, creado_id, aprobado_id) => {
+// 	// Status 'activo', sin productos creados, sin productos aprobados
+// 	return array.length
+// 		? array.filter((n) => !n.status_registro.inactivos && !n.cant_prod_creados && !n.cant_prod_aprobados)
+// 		: [];
+// };
 // includes = ["peliculas", "colecciones", "capitulos"];
 // let personajes = await BD_especificas.obtenerRCLV(
 // 	"RCLV_personajes",

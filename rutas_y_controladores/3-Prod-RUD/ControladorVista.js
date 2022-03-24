@@ -10,26 +10,26 @@ const validar = require("../../funciones/Prod-RUD/2-Validar");
 module.exports = {
 	detalleEdicionForm: async (req, res) => {
 		// DETALLE - EDICIÓN
-		// Tema y Código
+		// 1. Tema y Código
 		let tema = "producto";
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.indexOf("/"));
-		// Obtener los datos identificatorios del producto
+		let codigo = url.slice(0, url.lastIndexOf("/"));
+		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
+		// 3. Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
 		);
-		// User la versión 'session' (si existe) en vez de la guardada
+		// Usar la versión 'session' (si existe) en vez de la guardada
 		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
 			prodEditado = {...prodEditado, ...req.session.edicion};
 		// Generar los datos a mostrar en la vista
 		let prodCombinado = {...prodOriginal, ...prodEditado};
-		// Obtener avatar
+		// 4. Obtener avatar
 		let imagen = prodCombinado.avatar;
 		let avatar = imagen
 			? (imagen.slice(0, 4) != "http"
@@ -38,18 +38,18 @@ module.exports = {
 						: "/imagenes/2-Productos/"
 					: "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Obtener los países
-		let paises = prodOriginal.paises_id
-			? await especificas.paises_idToNombre(prodOriginal.paises_id)
-			: "";
-		// Configurar el título de la vista
+		// 5. Configurar el título de la vista
 		let productoNombre = especificas.productoNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			productoNombre;
-		// Info exclusiva para la vista de Edicion o Detalle
+		// 6. Obtener los países
+		let paises = prodOriginal.paises_id
+			? await especificas.paises_idToNombre(prodOriginal.paises_id)
+			: "";
+		// 7. Info para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Variables de 'Detalle'
 			var [bloquesIzquierda, bloquesDerecha] = [];
