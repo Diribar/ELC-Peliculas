@@ -18,8 +18,8 @@ router.get(
 	"/producto/perfil",
 	soloGestionProd,
 	entidadId,
-	permisoProducto,
 	permisoUsuario,
+	permisoProducto,
 	vista.productoPerfil
 );
 // router.get("/rclv", soloGestionProd, vista.visionGeneral);

@@ -66,7 +66,7 @@ module.exports = {
 		// Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.indexOf("/"));
+		let codigo = url.slice(0, url.lastIndexOf("/"));
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
@@ -75,6 +75,8 @@ module.exports = {
 		// Obtener los datos ORIGINALES del producto
 		includes = ["status_registro"];
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		if (!producto.status_registro.creado)
+			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// Obtener los datos del usuario
 		includes = ["status_registro"];
 		let usuarioCreador = await BD_genericas.obtenerPorIdConInclude("usuarios", prodID, includes);
@@ -86,7 +88,10 @@ module.exports = {
 		let productoNombre = especificas.productoNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Info para la vista
-		let reloj = Math.max(0, parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60))
+		let reloj = Math.max(
+			0,
+			parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60)
+		);
 		// Ir a la vista
 		//return res.send(producto)
 		return res.render("0-Revisar", {

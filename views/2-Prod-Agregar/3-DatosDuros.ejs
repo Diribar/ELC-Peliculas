@@ -22,8 +22,10 @@
 				<!-- IMDB -->
 				<% imdb = dataEntry.IMDB_id ? "title/"+dataEntry.IMDB_id+"/technical" : (dataEntry.nombre_original ? "find?q="+dataEntry.nombre_original : "") %>
 				<a class="logos" href="//imdb.com/<%= imdb %>" target="_blank"><img src="/imagenes/0-Logos/BD-IMDB.jpg" alt="IMDB"></a>
-				<!-- Wikipedia -->
-				<a class="logos" href="//es.wikipedia.org/wiki/<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Wiki.jpg" alt="Wikipedia"></a>
+				<% if (dataEntry.fuente!="IM") { %>
+					<!-- Wikipedia -->
+					<a class="logos" href="//es.wikipedia.org/wiki/<%= dataEntry.nombre_castellano.toLowerCase() %>" target="_blank"><img src="/imagenes/0-Logos/BD-Wiki.jpg" alt="Wikipedia"></a>
+				<% } %>
 			</nav>
 		</div>
 	</section>
