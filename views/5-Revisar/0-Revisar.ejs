@@ -7,9 +7,14 @@
 <body>
 	<%- include('Header') %>
 	<main class="flex-row">
-		<section id="cuerpo">
-			<%- codigo == "producto" ? include("2-Producto") : "" %>
+		<section id="imagen-derecha">
+			<img src="<%= avatarOriginal %>" title="<%= prodOriginal.nombre_castellano %>">
 		</section>
+		<section id="cuerpo-y-footer">
+			<%- include('Footer') %>
+			<section id="cuerpo">
+				<%- codigo == "producto" ? include("2-Prod1-Perfil") : "" %>
+			</section>
 	</main>
 </body>
 </html>

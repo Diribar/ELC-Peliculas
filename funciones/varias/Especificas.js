@@ -180,6 +180,19 @@ module.exports = {
 		});
 	},
 
+	status: function (status, capturado_en, captura_activa) {
+		let id =
+			captura_activa && capturado_en > this.haceUnaHora()
+				? 2
+				: status.pend_aprobar
+				? 1
+				: status.aprobado
+				? 3
+				: 4;
+		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
+		return {id, nombre: nombres[id - 1]};
+	},
+
 	familiaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"

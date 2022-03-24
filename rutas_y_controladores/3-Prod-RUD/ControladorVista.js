@@ -49,7 +49,7 @@ module.exports = {
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			productoNombre;
-		// Info exclusiva para la vista de Edicion
+		// Info exclusiva para la vista de Edicion o Detalle
 		if (codigo == "edicion") {
 			// Variables de 'Detalle'
 			var [bloquesIzquierda, bloquesDerecha] = [];
@@ -69,6 +69,11 @@ module.exports = {
 				: false;
 		} else {
 			// Variables de 'Detalle'
+			let status = especificas.status(
+				prodCombinado.status_registro,
+				prodCombinado.capturado_en,
+				prodCombinado.captura_activa
+			);
 			let bloque1 = [
 				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
 				{
@@ -129,9 +134,9 @@ module.exports = {
 			if (entidad != "colecciones")
 				bloquesDerecha.push({titulo: "Duracion", valor: prodCombinado.duracion + " min."});
 			bloquesDerecha.push({
-				titulo: "Status del Registro",
-				valor: prodCombinado.status_registro.nombre,
-				id: prodCombinado.status_registro.id,
+				titulo: "Status",
+				valor: status.nombre,
+				id: status.id,
 			});
 			// Variables de 'Edición'
 			var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];

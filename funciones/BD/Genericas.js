@@ -50,6 +50,16 @@ module.exports = {
 			// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 
+	obtenerPorId: (entidad, id) => {
+		return db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : ""));
+	},
+
+	obtenerPorIdConInclude: (entidad, id, includes) => {
+		return db[entidad]
+			.findByPk(id, {include: includes})
+			.then((n) => (n ? n.toJSON() : ""));
+	},
+
 	obtenerPorCampo: (entidad, campo, valor) => {
 		return db[entidad]
 			.findOne({
@@ -89,16 +99,6 @@ module.exports = {
 				where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
 				include: includes,
 			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
-
-	obtenerPorId: (entidad, id) => {
-		return db[entidad].findByPk(id).then((n) => (n ? n.toJSON() : ""));
-	},
-
-	obtenerPorIdConInclude: (entidad, id, includes) => {
-		return db[entidad]
-			.findByPk(id, {include: includes})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
 

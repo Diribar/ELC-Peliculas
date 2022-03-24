@@ -259,7 +259,11 @@ module.exports = {
 		for (entidad of entidades) {
 			// Distinto al producto actual
 			if (entidad == entidadActual) condiciones.id = {[Op.ne]: prodID};
-			lectura = await db[entidad].findOne({where: condiciones}).then((n) => (n ? n.toJSON() : ""));
+			lectura = await db[entidad].findOne({
+					where: condiciones,
+					include:"status_registro",
+			}
+				).then((n) => (n ? n.toJSON() : ""));
 			if (condiciones.id) delete condiciones.id;
 			if (lectura) break;
 		}
