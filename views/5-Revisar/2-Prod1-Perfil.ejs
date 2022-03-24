@@ -1,6 +1,7 @@
 <h1 id="titulo"><%= titulo %></h1>
-<div id="datos">
-	<div id="contenido">
+<section id="dentroDelPadding">
+	<!-- Contenido -->
+	<div id="">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 		<%- include("0-Revisar-Encabezado") %>
 		<!-- Sinopsis -->
@@ -13,4 +14,10 @@
 			</ul>
 		</div>
 	</div>
-</div>
+	<!-- Comandos -->
+	<div id="comandos">
+		<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+		<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
+		<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Inactivarlo"></i>
+	</div>
+</section>

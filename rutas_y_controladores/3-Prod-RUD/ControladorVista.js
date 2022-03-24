@@ -125,8 +125,8 @@ module.exports = {
 			if (prodCombinado.valor_id != 1)
 				bloquesDerecha.push({titulo: "Valor", valor: prodCombinado.valor.nombre});
 			bloquesDerecha.push({titulo: "Año de estreno", valor: prodCombinado.ano_estreno});
-			if (entidad != "colecciones")
-				bloquesDerecha.push({titulo: "Duracion", valor: prodCombinado.duracion + " min."});
+			if (entidad == "colecciones") bloquesDerecha.push({titulo: "Año de fin", valor:prodCombinado.ano_fin})
+			else bloquesDerecha.push({titulo: "Duracion", valor: prodCombinado.duracion + " min."});
 			bloquesDerecha.push({
 				titulo: "Status",
 				valor: status.nombre,

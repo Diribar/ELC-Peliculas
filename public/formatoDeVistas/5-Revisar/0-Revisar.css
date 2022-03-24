@@ -5,3 +5,7 @@
 #cuerpo {position: relative;}
 #cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
 #cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+
+/* Comandos y Flechas */
+#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto; }
+#cuerpo #comandos i, #cuerpo #flechas i {cursor: pointer;}
