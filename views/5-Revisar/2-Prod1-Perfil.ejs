@@ -1,23 +1,95 @@
 <h1 id="titulo"><%= titulo %></h1>
-<section id="dentroDelPadding">
-	<!-- Contenido -->
-	<div id="">
-		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-		<%- include("0-Revisar-Encabezado") %>
-		<!-- Sinopsis -->
-		<div id="sinopsis">
-			<nav><%= producto.sinopsis %></nav>
-			<!-- Ayuda -->
-			<i class="fa-solid fa-circle-question"></i>
-			<ul type="none" class="mensajeAyuda ocultar">
-				<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
-			</ul>
+<div id="datos">
+	<section id="datosLargos">
+		<div id="contenido">
+			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+			<%- include("0-Revisar-Encabezado") %>
+			<!-- Sinopsis -->
+			<div id="sinopsis">
+				<nav><%= producto.sinopsis %></nav>
+				<!-- Ayuda -->
+				<i class="fa-solid fa-circle-question"></i>
+				<ul type="none" class="mensajeAyuda ocultar">
+					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+				</ul>
+			</div>
+			<!-- Demás Datos Duros -->
+			<% for (bloque of bloqueIzq) { %>
+				<div class="datosAdicionales">
+					<% for (campo of bloque) { %>
+						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
+					<% } %> 
+				</div>				
+			<% } %>
 		</div>
-	</div>
-	<!-- Comandos -->
-	<div id="comandos">
-		<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
-		<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
-		<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Inactivarlo"></i>
-	</div>
-</section>
+		<!-- Comandos -->
+		<div id="comandos">
+			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
+			<% if (entidad != "colecciones") { %>
+				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= producto %>"></i>
+			<% } %>
+			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+		</div>
+		<!-- Botones -->
+		<%- include("0-Revisar-Flechas") %>
+	</section>
+	<section id="datosBreves">
+		<div>
+			<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
+			<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
+		</div>
+		<div id="graficoCalificacion"></div>
+		<div id="texto">
+			<% for (bloque of bloqueDer) { %>
+				<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
+					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+				</p>
+			<% } %>
+		</div>
+	</section>
+</div>
+<script>
+	google.charts.load('current', {packages: ['corechart', 'bar']});
+	google.charts.setOnLoadCallback(drawBarColors);
+
+	function drawBarColors() {
+		// https://developers.google.com/chart/interactive/docs/gallery/barchart
+		var data = google.visualization.arrayToDataTable([
+			['Aptitud', 'Gral.', 'Tuya'],
+			['IFV', .81, .80],
+			['En.', .37, .36],
+			['CSV', .26, .28],
+		]);
+
+		var options = {
+			fontSize: 10,
+			animation: {
+				duration: 500,
+				easing: 'out',
+				startup: true,
+			},
+			numberStyle: 'percent',
+			chartArea: {
+				top: '10%'
+			},
+			colors: ['green', 'lightgreen'],
+			legend: {
+				position: 'bottom',
+				alignment: 'start',
+				textStyle: {italic: true,}
+			},
+			hAxis: {
+				minValue: 0,
+				maxValue: 1,
+				ticks: [0, .5, 1],
+				format: 'percent',
+				gridlines: {count: 3},
+				textStyle: {fontSize:10}
+			},
+		};
+		var chart = new google.visualization.BarChart(document.getElementById('graficoCalificacion'));
+		chart.draw(data, options);
+	}
+</script>

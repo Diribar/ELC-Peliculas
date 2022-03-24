@@ -259,11 +259,12 @@ module.exports = {
 		for (entidad of entidades) {
 			// Distinto al producto actual
 			if (entidad == entidadActual) condiciones.id = {[Op.ne]: prodID};
-			lectura = await db[entidad].findOne({
+			lectura = await db[entidad]
+				.findOne({
 					where: condiciones,
-					include:"status_registro",
-			}
-				).then((n) => (n ? n.toJSON() : ""));
+					include: "status_registro",
+				})
+				.then((n) => (n ? n.toJSON() : ""));
 			if (condiciones.id) delete condiciones.id;
 			if (lectura) break;
 		}
@@ -344,5 +345,57 @@ module.exports = {
 	},
 	obtenerAutorizadoFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
+	},
+	fichaDelUsuario: async function (entidad, prodID) {
+		// Obtener el producto
+		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
+		let userID = producto.creado_por_id;
+		// Obtener los datos del usuario
+		let includes = ["status_registro", "rol_iglesia", "peliculas", "colecciones"];
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+		// Generar los datos específicos
+		let cant_prods = usuario.peliculas.length + usuario.colecciones.length;
+		let statusInactivadoId = await BD_genericas.obtenerPorCampo(
+			"status_registro_ent",
+			"inactivado",
+			1
+		).then((n) => n.id);
+		let calidadInputs = cant_prods
+			? parseInt(
+					((usuario.peliculas.filter((n) => n.status_registro_id != statusInactivadoId).length +
+						usuario.colecciones.filter((n) => n.status_registro_id != statusInactivadoId)
+							.length) /
+						cant_prods) *
+						100
+			  ) + "%"
+			: "-";
+		let edad = parseInt(
+			(especificas.ahora().getTime() - new Date(usuario.fecha_nacimiento).getTime()) /
+				1000 /
+				60 /
+				60 /
+				24 /
+				365
+		)+" años";
+		let antiguedad = (
+			parseInt(
+				((especificas.ahora().getTime() - new Date(usuario.creado_en).getTime()) /
+					1000 /
+					60 /
+					60 /
+					24 /
+					365) *
+					10
+			) / 10
+		).toFixed(1).replace(".",",")+" años";
+		let diasPenalizacion = usuario.registros_borrados ? usuario.registros_borrados.duracion : 0;
+		return {
+			rolIglesia: usuario.rol_iglesia.nombre,
+			edad,
+			antiguedad,
+			calidadInputs,
+			cant_prods,
+			diasPenalizacion,
+		};
 	},
 };

@@ -1,4 +1,4 @@
-<section id="encabezado">
+	<section id="encabezado">
 	<div id="nombres">
 		<h1><%= producto.nombre_castellano %></h1>
 		<% if (producto.nombre_original) { %>
@@ -9,11 +9,8 @@
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
-				<div>
-					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
-					<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
-				</div>
+				<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
+				<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
 			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->
