@@ -15,7 +15,8 @@ module.exports = async (req, res, next) => {
 	if (prodCapturado) {
 		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
 		let mensaje =
-			"Tenés que liberar el/la " +
+			"Tenés que liberar " +
+			(prodCapturado.entidad != "capitulos" ? "la " : "el ") +
 			entidadNombre +
 			" " +
 			(prodCapturado.nombre_castellano
