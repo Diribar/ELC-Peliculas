@@ -49,7 +49,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		// Obtener el producto
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID);
 		// Obtener la familia
 		let destino = especificas.familiaEnSingular(entidad);
 		// Obtener la sub-dirección de destino
@@ -71,13 +71,42 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+		let includes;
+		// Obtener los datos ORIGINALES del producto
+		includes = ["status_registro"];
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		// Obtener los datos del usuario
+		includes = ["status_registro"];
+		let usuarioCreador = await BD_genericas.obtenerPorIdConInclude("usuarios", prodID, includes);
+		// Obtener avatar original
+		let avatar = producto.avatar
+			? (producto.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + producto.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+		// Configurar el título de la vista
+		let productoNombre = especificas.productoNombre(entidad);
+		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		// Info para la vista
+		let reloj = Math.max(0, parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60))
+		// Ir a la vista
+		//return res.send(producto)
+		return res.render("0-Revisar", {
+			tema,
+			codigo,
+			titulo,
 			entidad,
-			prodID,
-			userID
-		);
-		// Redireccionar dependiendo del status
+			producto,
+			usuarioCreador,
+			avatar,
+			reloj,
+			vista: req.baseUrl + req.path,
+		});
+	},
+
+	productoEditado: async (req, res) => {
+		// Obtener avatar editado
+		let avatarEditado = prodEditado.avatar
+			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
 
 		// Obtener avatar original
 		let avatarOriginal = prodOriginal.avatar
@@ -87,41 +116,13 @@ module.exports = {
 						: "/imagenes/2-Productos/"
 					: "") + prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Obtener avatar editado
-		let avatarEditado = prodEditado.avatar
-			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
 		// Obtener los países
 		let paises = prodOriginal.paises_id
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
-		// Configurar el título de la vista
-		let productoNombre = especificas.productoNombre(entidad);
-		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Info exclusiva para la vista de Edicion
 		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
-		let tiempo = prodEditado.editado_en
-			? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
-			: false;
-		// Ir a la vista
-		//return res.send(prodCombinado)
-		return res.render("0-Revisar", {
-			tema,
-			codigo,
-			titulo,
-			entidad,
-			prodID,
-			prodOriginal,
-			prodEditado,
-			avatarOriginal,
-			avatarEditado,
-			paises,
-			BD_paises,
-			BD_idiomas,
-			tiempo,
-			vista: req.baseUrl + req.path,
-		});
 	},
 };
 

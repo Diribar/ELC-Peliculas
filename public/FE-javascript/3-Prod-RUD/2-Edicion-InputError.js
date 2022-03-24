@@ -371,7 +371,7 @@ window.addEventListener("load", async () => {
 		let errores = await fetch(rutaVE + dato).then((n) => n.json());
 		campo
 			? formInputChange_consecuenciaError(errores, campo)
-			: actualizarInput_errores(errores, camposEspecificos, (mostrarOK = true));
+			: actualizarInput_errores(errores, camposEspecificos, (true));
 	};
 	let startup_activarEdicionGuardado = () => {
 		// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
