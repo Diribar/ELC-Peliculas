@@ -102,6 +102,6 @@ module.exports = async (req, res, next) => {
 		}
 	}
 	// Fin
-	if (mensaje) return res.render("Errores", {informacion});
+	if (informacion) return res.render("Errores", {informacion});
 	else next();
 };
