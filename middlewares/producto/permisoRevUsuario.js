@@ -20,14 +20,15 @@ module.exports = async (req, res, next) => {
 		// Datos para el mensaje
 		let entidad = prodCapturado.entidad;
 		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
-		let linkEntidadCapturada =
-			"/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
+		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
 		let horario = prodCapturado.capturado_en.getHours() + ":" + prodCapturado.capturado_en.getMinutes();
 		// Preparar la información
 		let informacion = {
 			mensaje:
 				"Tenés que liberar " +
-				(prodCapturado.entidad != "capitulos" ? "la " : "el ") +
+				(prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
+					? "la "
+					: "el ") +
 				entidadNombre.toLowerCase() +
 				" <span>" +
 				(prodCapturado.nombre_castellano

@@ -1,5 +1,5 @@
 <h1 id="titulo">
-	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.producto %> a nuestra Base de Datos
+	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.productoNombre %> a nuestra Base de Datos
 </h1>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
 	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
