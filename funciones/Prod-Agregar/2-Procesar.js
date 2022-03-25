@@ -408,7 +408,7 @@ module.exports = {
 		}
 		// Generar el resultado
 		let resultado = {
-			productoNombre, // acáaa
+			productoNombre,
 			entidad,
 			fuente: "FA",
 			FA_id,
