@@ -409,7 +409,6 @@ let obtenerAvatar = async (prodEntidad, prodID, userID, Producto) => {
 		: "/imagenes/8-Agregar/IM.jpg";
 };
 let altaDeLink = async (req, datos) => {
-	// Si no hubieron errores de validación...
 	if (!datos.parte) datos.parte = "-";
 	// Generar información para el nuevo registro
 	let userID = req.session.usuario.id;
@@ -480,7 +479,6 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 	return;
 };
 let edicionDeLink = async (req, datos) => {
-	// Si no hubieron errores de validación...
 	// Adecuar la información del formulario
 	if (!datos.parte) datos.parte = "-";
 	// Averiguar si el link está en 'creado' y por este usuario
