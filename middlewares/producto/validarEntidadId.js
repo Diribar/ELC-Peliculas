@@ -7,14 +7,26 @@ module.exports = (req, res, next) => {
 	let entidad = req.query.entidad;
 	let prodID = req.query.id;
 	// Verificar los datos
-	let mensaje;
+	let informacion;
 	// Sin entidad y/o ID
-	if (!entidad) mensaje = "Falta el dato de la 'entidad'";
-	if (!prodID) mensaje = "Falta el dato del 'ID'";
+	if (!entidad)
+		informacion = {
+			mensaje: "Falta el dato de la 'entidad'",
+			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+		};
+	if (!prodID)
+		informacion = {
+			mensaje: "Falta el dato del 'ID'",
+			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+		};
 	// Entidad inexistente
-	let producto = especificas.productoEnSingular(entidad);
-	if (!producto && !mensaje) mensaje = "La entidad ingresada no es válida";
+	let producto = especificas.entidadNombre(entidad);
+	if (!producto && !mensaje) 
+	informacion = {
+		mensaje: "La entidad ingresada no es válida",
+		iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+	};
 	// Conclusiones
-	if (mensaje) res.render("Errores", {mensaje});
+	if (informacion) res.render("Errores", {informacion});
 	else next();
 };

@@ -1,3 +1,31 @@
-<div>
-	<%= mensaje %> 
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<!-- Head -->
+	<%- include('Head', {titulo: "Error"}) %>
+	<link rel="stylesheet" href="/formatoDeVistas/0-Secciones/CartelAdvertencia.css">
+</head>
+<body>
+	<%- include('Header') %>
+	<main class="flex-row">
+		<%- include('ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
+		<section id="cuerpo-y-footer">
+			<%- include('Footer') %>
+			<!--**************************** CUERPO ******************************-->
+			<section id="tapar-el-fondo">
+			</section>
+			<section id="cartelAdvertencia">
+				<i class="fa-solid fa-triangle-exclamation"></i>
+				<p id="mensaje"><%- informacion.mensaje %></p>
+				<div id="flechas">
+					<% for (icono of informacion.iconos) { %>
+						<a href="<%= icono.link %>"><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
+					<% } %>
+				</div>
+			</section>
+			
+			<!--****************************** FIN *******************************-->
+		</section>
+	</main>
+</body>
+</html>

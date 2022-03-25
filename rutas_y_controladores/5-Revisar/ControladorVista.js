@@ -11,7 +11,7 @@ module.exports = {
 		let codigo = "visionGeneral";
 		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
-		let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas("", "", userID);
+		let prodCapturado = await BD_especificas.revisaSiElUsuarioTieneOtrasCapturas("", "", userID);
 		if (prodCapturado)
 			return res.redirect(
 				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
@@ -21,7 +21,7 @@ module.exports = {
 		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
-		let productos = await BD_especificas.obtenerProductos(haceUnaHora, revisar, userID);
+		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// Consolidar productos y ordenar
 		productos = procesar(productos);
@@ -92,7 +92,7 @@ module.exports = {
 			? (producto.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + producto.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 5. Configurar el título de la vista
-		let productoNombre = especificas.productoNombre(entidad);
+		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Reloj
 		let reloj = Math.max(
@@ -243,21 +243,21 @@ let funcionBloques = (producto, paises, fichaDelUsuario) => {
 // 		: [];
 // };
 // includes = ["peliculas", "colecciones", "capitulos"];
-// let personajes = await BD_especificas.obtenerRCLV(
+// let personajes = await BD_especificas.obtenerRCLVaRevisar(
 // 	"RCLV_personajes",
 // 	includes,
 // 	haceUnaHora,
 // 	aprobInact,
 // 	userID
 // );
-// let hechos = await BD_especificas.obtenerRCLV(
+// let hechos = await BD_especificas.obtenerRCLVaRevisar(
 // 	"RCLV_hechos",
 // 	includes,
 // 	haceUnaHora,
 // 	aprobInact,
 // 	userID
 // );
-// let valores = await BD_especificas.obtenerRCLV(
+// let valores = await BD_especificas.obtenerRCLVaRevisar(
 // 	"RCLV_valores",
 // 	includes,
 // 	haceUnaHora,

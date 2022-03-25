@@ -12,3 +12,5 @@ Menú de usuarios
 	- Solicitados inactivar
 	- Solicitados recuperar
 	- Inactivados
+- Mi cuenta
+	- Antigüedad en ELC

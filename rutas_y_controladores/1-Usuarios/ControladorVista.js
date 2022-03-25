@@ -53,15 +53,27 @@ module.exports = {
 	altaRedireccionar: async (req, res) => {
 		let status_registro = req.session.usuario.status_registro_id;
 		// Redireccionar
-		status_registro == 1
-			? res.redirect("/usuarios/login")
-			: status_registro == 2
-			? res.redirect("/usuarios/datos-perennes")
-			: status_registro == 3
+		status_registro.datos_editables
+			? req.session.urlReferencia
+				? res.redirect(req.session.urlReferencia)
+				: res.redirect("/")
+			: status_registro.datos_perennes
 			? res.redirect("/usuarios/datos-editables")
-			: req.session.urlReferencia
-			? res.redirect(req.session.urlReferencia)
-			: res.redirect("/");
+			: status_registro.mail_validado
+			? res.redirect("/usuarios/datos-perennes")
+			: res.redirect("/usuarios/login")
+
+		// status_registro == 1
+		// 	? res.redirect("/usuarios/login")
+		// 	: status_registro == 2
+		// 	? res.redirect("/usuarios/datos-perennes")
+		// 	: status_registro == 3
+		// 	? res.redirect("/usuarios/datos-editables")
+		// 	: status_registro == 4
+		// 	? req.session.urlReferencia
+		// 		? res.redirect(req.session.urlReferencia)
+		// 		: res.redirect("/")
+		// 	: null
 	},
 
 	loginForm: (req, res) => {
@@ -108,8 +120,10 @@ module.exports = {
 		}
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		res.cookie("email", req.body.email, {maxAge: 1000 * 60 * 60 * 24});
+		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session["email"];
+		// 6. Notificar al contador de logins
+		BD_especificas.actualizarElContadorDeLogins(req.session.usuario)
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

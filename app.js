@@ -60,4 +60,4 @@ app.use("/productos", rutaProductos);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
-//app.use((req,res) => {res.status(404).render('not found')})
+//app.use((req,res) => {res.status(404).render("Errores", {})})

@@ -139,7 +139,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			producto: especificas.productoNombre(req.body.entidad),
+			producto: especificas.entidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -163,7 +163,7 @@ module.exports = {
 		especificas.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.producto = especificas.productoNombre(req.body.entidad);
+			req.body.producto = especificas.entidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -479,7 +479,7 @@ module.exports = {
 		let registro = await BD_genericas.agregarRegistro(original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto_id = especificas.producto_id(confirma.entidad);
+		let producto_id = especificas.entidad_id(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -518,12 +518,18 @@ module.exports = {
 		// 4. Obtener los demás datos del producto
 		let registroProd = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 		// Problema: PRODUCTO NO ENCONTRADO
-		if (!registroProd) return res.render("Errores", {mensaje: "Producto no encontrado"});
+		if (!registroProd) {
+			let informacion = {
+				mensaje: "Producto no encontrado",
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+			};
+			return res.render("Errores", {informacion});	
+		} 
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.pend_aprobar)
-			return res.redirect("/producto/?entidad=" + entidad + "&valor=" + id);
+			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let producto = especificas.productoNombre(entidad);
+		let producto = especificas.entidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
@@ -552,7 +558,7 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	let producto_id = especificas.producto_id(confirma.entidad);
+	let producto_id = especificas.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: registro.creado_por_id,

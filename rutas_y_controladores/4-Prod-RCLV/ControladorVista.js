@@ -33,7 +33,7 @@ module.exports = {
 			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
-		RCLV.RCLV_Nombre = especificas.RCLV_Nombre(RCLV.entidad_RCLV);
+		RCLV.RCLV_Nombre = especificas.entidadNombre(RCLV.entidad_RCLV);
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
@@ -45,8 +45,13 @@ module.exports = {
 	RCLV_Form: async (req, res) => {
 		// 1. Si se perdió la info anterior, ir a inicio
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
-		if (!RCLV)
-			return res.render("Errores", {mensaje: "Se perdió información crítica. Reiniciá este proceso."});
+		if (!RCLV) {
+			let informacion = {
+				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+			};
+			return res.render("Errores", informacion);
+		}
 		// 2. Tema y Código
 		let tema = "rclv";
 		let codigo = RCLV.entidad_RCLV;
@@ -57,7 +62,13 @@ module.exports = {
 				: req.cookies.datosPers
 				? req.cookies.datosPers
 				: "";
-			if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
+			if (!datosPers) {
+				let informacion = {
+					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+					iconos: [{nombre: "fa-circle-left", link: "/producto/agregar/datos-duros"}],
+				};
+				return res.render("Errores", informacion);
+			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 4. Errores
@@ -94,8 +105,13 @@ module.exports = {
 	RCLV_Grabar: async (req, res) => {
 		// 1. Si se perdió la info anterior => error
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
-		if (!RCLV)
-			return res.render("Errores", {mensaje: "Se perdió información crítica. Reiniciá este proceso."});
+		if (!RCLV) {
+			let informacion = {
+				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+			};
+			return res.render("Errores", {informacion});
+		}
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "datosPers") {
 			let datosPers = req.session.datosPers
@@ -103,10 +119,13 @@ module.exports = {
 				: req.cookies.datosPers
 				? req.cookies.datosPers
 				: "";
-			if (!datosPers)
-				return res.render("Errores", {
+			if (!datosPers) {
+				let informacion = {
 					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-				});
+					iconos: [{nombre: "fa-circle-left", link: "/producto/agregar/datos-duros"}],
+				};
+				return res.render("Errores", informacion);
+			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 2. Generar información
@@ -142,7 +161,7 @@ module.exports = {
 			entidad: RCLV.entidad_RCLV,
 		});
 		// Averiguar el campo para el RCLV-ID
-		let RCLV_id = especificas.RCLV_id(RCLV.entidad_RCLV)
+		let RCLV_id = especificas.RCLV_id(RCLV.entidad_RCLV);
 		// Agregar el RCLV_id al origen
 		if (RCLV.origen == "datosPers") {
 			req.session.datosPers[RCLV_id] = id;

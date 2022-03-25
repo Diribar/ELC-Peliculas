@@ -8,28 +8,7 @@ const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
-	enviarMail: async (asunto, mail, comentario) => {
-		// create reusable transporter object using the default SMTP transport
-		let transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true, // true for 465, false for other ports
-			auth: {
-				user: "mensaje.web.01@gmail.com", // generated mail address
-				pass: "rudhfurovpjsjjzp", // generated  password
-			},
-		});
-		let datos = {
-			from: '"Mensaje de la página web" <mensaje.web.01@gmail.com>', // sender address
-			//to: mail,
-			to: "diegoiribarren2015@gmail.com",
-			subject: asunto, // Subject line
-			text: comentario, // plain text body
-			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
-		};
-		await transporter.sendMail(datos);
-	},
-
+	// Países
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
@@ -45,7 +24,6 @@ module.exports = {
 		resultado = resultado.length ? resultado.join(", ") : "";
 		return resultado;
 	},
-
 	paisNombreToId: async function (pais_nombre) {
 		// Función para convertir 'string de nombre' en  'string de ID'
 		let resultado = [];
@@ -62,6 +40,7 @@ module.exports = {
 		return resultado;
 	},
 
+	// Temas de idioma
 	convertirLetrasAlIngles: (palabra) => {
 		return palabra
 			.toLowerCase()
@@ -75,7 +54,6 @@ module.exports = {
 			.replace(/:¿![.][?]/g, "")
 			.replace(/ +/g, " ");
 	},
-
 	convertirLetrasAlCastellano: (resultado) => {
 		let campos = Object.keys(resultado);
 		let valores = Object.values(resultado);
@@ -133,7 +111,6 @@ module.exports = {
 		}
 		return resultado;
 	},
-
 	letrasValidasCastellano: (dato) => {
 		let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
 		// \d: any decimal
@@ -142,6 +119,7 @@ module.exports = {
 		return !formato.test(dato);
 	},
 
+	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, destino) => {
 		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
 		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;
@@ -150,13 +128,11 @@ module.exports = {
 			else console.log("Archivo de imagen movido a la carpeta " + rutaDefinitiva);
 		});
 	},
-
 	borrarArchivo: (archivo, ruta) => {
 		let archivoImagen = path.join(ruta, archivo);
 		console.log("Archivo " + archivoImagen + " borrado");
 		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);
 	},
-
 	revisarImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
 		return tipo.slice(0, 6) != "image/"
@@ -165,7 +141,6 @@ module.exports = {
 			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
 			: "";
 	},
-
 	download: async (url, rutaYnombre) => {
 		let writer = fs.createWriteStream(rutaYnombre);
 		let response = await axios({
@@ -180,19 +155,7 @@ module.exports = {
 		});
 	},
 
-	status: function (status, capturado_en, captura_activa) {
-		let id =
-			captura_activa && capturado_en > this.haceUnaHora()
-				? 2
-				: status.pend_aprobar
-				? 1
-				: status.aprobado
-				? 3
-				: 4;
-		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
-		return {id, nombre: nombres[id - 1]};
-	},
-
+	// Conversión de nombres
 	familiaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
@@ -200,55 +163,6 @@ module.exports = {
 			? "rclv"
 			: "";
 	},
-
-	productoNombre: (entidad) => {
-		return entidad == "peliculas"
-			? "Película"
-			: entidad == "colecciones"
-			? "Colección"
-			: entidad == "capitulos"
-			? "Capítulo"
-			: "";
-	},
-
-	productoEnSingular: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula"
-			: entidad == "colecciones"
-			? "coleccion"
-			: entidad == "capitulos"
-			? "capitulo"
-			: "";
-	},
-
-	producto_id: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula_id"
-			: entidad == "colecciones"
-			? "coleccion_id"
-			: "capitulo_id";
-	},
-
-	RCLV_Nombre: (input) => {
-		return input.includes("personaje")
-			? "Personaje Histórico"
-			: input.includes("hecho")
-			? "Hecho Histórico"
-			: input.includes("valor")
-			? "Valor"
-			: "";
-	},
-
-	RCLV_id: (input) => {
-		return input.includes("personaje")
-			? "personaje_id"
-			: input.includes("hecho")
-			? "hecho_id"
-			: input.includes("valor")
-			? "valor_id"
-			: "";
-	},
-
 	entidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
@@ -262,27 +176,61 @@ module.exports = {
 			? "Hecho Histórico"
 			: entidad.includes("valor")
 			? "Valor"
+			: entidad == "links"
+			? "Links"
+			: "";
+	},
+	entidadEnSingular: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula"
+			: entidad == "colecciones"
+			? "coleccion"
+			: entidad == "capitulos"
+			? "capitulo"
+			: entidad.includes("personaje")
+			? "personaje"
+			: entidad.includes("hecho")
+			? "hecho"
+			: entidad.includes("valor")
+			? "valor"
+			: entidad == "links"
+			? "link"
+			: "";
+	},
+	entidad_id: (entidad) => {
+		return entidad == "peliculas"
+			? "pelicula_id"
+			: entidad == "colecciones"
+			? "coleccion_id"
+			: entidad == "capitulos"
+			? "capitulo_id"
+			: input.includes("personaje")
+			? "personaje_id"
+			: input.includes("hecho")
+			? "hecho_id"
+			: input.includes("valor")
+			? "valor_id"
 			: "";
 	},
 
+	// Temas de fecha y hora
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());
 		return ahora;
 	},
-
 	haceUnaHora: function () {
 		let horario = this.ahora();
 		horario.setHours(horario.getHours() - 1);
 		return horario;
 	},
-
 	haceDosHoras: function () {
 		let horario = this.ahora();
 		horario.setHours(horario.getHours() - 2);
 		return horario;
 	},
 
+	// Varios
 	borrarSessionCookies: (req, res, paso) => {
 		let pasos = [
 			"borrarTodo",
@@ -301,5 +249,38 @@ module.exports = {
 			if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
+	},
+	enviarMail: async (asunto, mail, comentario) => {
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport({
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true, // true for 465, false for other ports
+			auth: {
+				user: "mensaje.web.01@gmail.com", // generated mail address
+				pass: "rudhfurovpjsjjzp", // generated  password
+			},
+		});
+		let datos = {
+			from: '"Mensaje de la página web" <mensaje.web.01@gmail.com>', // sender address
+			//to: mail,
+			to: "diegoiribarren2015@gmail.com",
+			subject: asunto, // Subject line
+			text: comentario, // plain text body
+			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
+		};
+		await transporter.sendMail(datos);
+	},
+	statusResumido: function (status, capturado_en, captura_activa) {
+		let id =
+			captura_activa && capturado_en > this.haceUnaHora()
+				? 2
+				: status.pend_aprobar
+				? 1
+				: status.aprobado
+				? 3
+				: 4;
+		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
+		return {id, nombre: nombres[id - 1]};
 	},
 };
