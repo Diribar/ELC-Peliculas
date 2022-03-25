@@ -422,7 +422,7 @@ let altaDeLink = async (req, datos) => {
 	// Agregar el 'link' a la BD
 	await BD_genericas.agregarRegistro(datos);
 	// Eliminar req.session.edicion
-	req.session.links = {};
+	delete req.session.links;
 	// Adecuar el producto respecto al link
 	productoConLinksWeb(datos.prodEntidad, datos.prodID);
 };
