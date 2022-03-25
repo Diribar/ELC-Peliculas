@@ -5,4 +5,4 @@ module.exports = (req, res, next) => {
 		return res.redirect('/usuarios/logout')
 	}
 	next();
-}
+};
