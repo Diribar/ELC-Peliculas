@@ -12,10 +12,9 @@ module.exports = async (req, res, next) => {
 	const haceDosHoras = especificas.haceDosHoras();
 	let mensaje;
 	// CONTROLES PARA PRODUCTO *******************************************************
-	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
-		"status_registro",
-		"capturado_por",
-	]);
+	let includes = ["status_registro", "capturado_por"];
+	if (entidad == "capitulos") includes.push("coleccion")
+	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Problema1: PRODUCTO NO ENCONTRADO ----------------------------------------------
 	if (!prodOriginal) mensaje = "Producto no encontrado";
 	else {

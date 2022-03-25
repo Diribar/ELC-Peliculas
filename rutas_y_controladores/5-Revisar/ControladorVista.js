@@ -49,7 +49,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		// Obtener el producto
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID);
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		// Obtener la familia
 		let destino = especificas.familiaEnSingular(entidad);
 		// Obtener la sub-dirección de destino
@@ -70,9 +70,18 @@ module.exports = {
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		let includes;
+		if (entidad == "capitulos") {
+			// Liberar la captura del capítulo
+			let datos = {capturado_por_id: null, capturado_en: null, captura_activa: null};
+			BD_genericas.actualizarPorId("capitulos", prodID, datos);
+			// Obtener el ID de la colección
+			let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "coleccion");
+			let colecID = producto.coleccion.id;
+			// Redireccionar a la colección
+			return res.redirect("/revision/redireccionar/?entidad=colecciones&id=" + colecID);
+		}
 		// 3. Obtener los datos ORIGINALES del producto
-		includes = ["status_registro"];
+		let includes = ["status_registro"];
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		if (!producto.status_registro.creado)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
@@ -93,7 +102,7 @@ module.exports = {
 		// 6. Obtener los países
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
-		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises);
+		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises, fichaDelUsuario);
 		// Ir a la vista
 		//return res.send(producto)
 		return res.render("0-Revisar", {
@@ -105,7 +114,6 @@ module.exports = {
 			avatar,
 			reloj,
 			vista: req.baseUrl + req.path,
-			fichaDelUsuario,
 			bloqueIzq,
 			bloqueDer,
 		});
@@ -197,8 +205,9 @@ let productosLinks = (links, aprobado) => {
 	}
 	return prods;
 };
-let funcionBloques = (producto, paises) => {
-	let [bloque1, bloque2, bloque3] = [[],[],[]];
+let funcionBloques = (producto, paises, fichaDelUsuario) => {
+	// Bloque izquierdo
+	let [bloque1, bloque2, bloque3] = [[], [], []];
 	// Bloque 1
 	if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
 	if (producto.idioma_original)
@@ -210,14 +219,16 @@ let funcionBloques = (producto, paises) => {
 	if (producto.produccion) bloque2.push({titulo: "Producción", valor: producto.produccion});
 	// Bloque 3
 	if (producto.actuacion) bloque3.push({titulo: "Actuación", valor: producto.actuacion});
-	// Bloque izquierda consolidado
+	// Bloque izquierdo consolidado
 	let izquierda = [bloque1, bloque2, bloque3];
-	// Bloque derecha consolidado
-	let derecha = [];
-	if (producto.ano_estreno) derecha.push({titulo: "Año de estreno", valor: producto.ano_estreno});
-	if (producto.ano_fin) derecha.push({titulo: "Año de fin", valor: producto.ano_fin});
-	if (producto.duracion) derecha.push({titulo: "Duracion", valor: producto.duracion + " min."});
-
+	// Bloque derecho
+	[bloque1, bloque2] = [[], []];
+	// Bloque 1
+	if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
+	if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
+	if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion + " min."});
+	// Bloque derecho consolidado
+	let derecha = [bloque1, fichaDelUsuario];
 	return [izquierda, derecha];
 };
 

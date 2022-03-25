@@ -32,6 +32,8 @@
 #datosBreves #texto p#status3 span {background-color: var(--verde-oscuro); color: snow;}
 #datosBreves #texto p#status4 span {background-color: var(--rojo-oscuro); color: snow;}
 
-
 /* Comandos - Particularidades */
+#cuerpo #comandos {background-color: var(--azul-oscuro);}
 #cuerpo #comandos i {margin: 0 15px;}
+#cuerpo #flechas i {font-size: 2rem;}
+#cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);}
