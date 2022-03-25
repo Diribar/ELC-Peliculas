@@ -20,6 +20,7 @@ router.get("/api/validar-editables", API.validarEditables);
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
 router.post("/login", soloVisitas, vista.loginGuardar);
+router.get("/pre-logout", soloVisitas, vista.logout);
 router.get("/logout", soloUsuarios, vista.logout);
 
 // Rutas de Altas

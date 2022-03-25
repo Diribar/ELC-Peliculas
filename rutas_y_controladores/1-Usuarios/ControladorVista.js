@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	altaRedireccionar: async (req, res) => {
-		let status_registro = req.session.usuario.status_registro_id;
+		let status_registro = req.session.usuario.status_registro;
 		// Redireccionar
 		status_registro.datos_editables
 			? req.session.urlReferencia

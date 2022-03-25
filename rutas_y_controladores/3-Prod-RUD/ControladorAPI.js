@@ -119,6 +119,40 @@ module.exports = {
 		return res.json(ID);
 	},
 
+	// Detalle
+	obtenerCalificaciones: async (req, res) => {
+		let {entidad, id, detalle} = req.query;
+		let datos;
+		// Datos generales
+		datos = await BD_genericas.obtenerPorId(entidad, id).then((n) => [
+			n.fe_valores / 100,
+			n.entretiene / 100,
+			n.calidad_tecnica / 100,
+			n.calificacion / 100,
+		]);
+		let calificacionGral = {encabezado: "Gral.", valores: datos};
+		let calificaciones = [calificacionGral];
+		if (detalle) {
+			let producto_id = especificas.entidad_id(entidad);
+			datos = await BD_genericas.obtenerPor2Campos(
+				"cal_registros",
+				"usuario_id",
+				req.session.usuario.id,
+				producto_id,
+				id
+			).then((n) =>
+				n
+					? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
+					: ""
+			);
+			if (datos) {
+				let calificacionUsuario = {encabezado: "Tuya", valores: datos};
+				calificaciones.push(calificacionUsuario);
+			}
+		}
+		return res.json(calificaciones);
+	},
+
 	// Edición del Producto
 	validarEdicion: async (req, res) => {
 		// Obtiene los campos
