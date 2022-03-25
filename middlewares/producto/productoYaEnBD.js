@@ -22,10 +22,15 @@ module.exports = async (req, res, next) => {
 		if (elc_id) {
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 			informacion = {
-				mensaje: "La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en la flecha hacia la derecha",
+				mensaje:
+					"La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en la flecha hacia la derecha",
 				iconos: [
-					{nombre: "fa-circle-left", link: "/producto/agregar/palabras-clave", titulo:"Regresar a 'Palabra Clave'"},
-					{nombre: "fa-circle-right", link: linkDetalle, titulo:"Ir a la vista Detalle"},
+					{
+						nombre: "fa-circle-left",
+						link: "/producto/agregar/palabras-clave",
+						titulo: "Regresar a 'Palabra Clave'",
+					},
+					{nombre: "fa-circle-right", link: linkDetalle, titulo: "Ir a la vista Detalle"},
 				],
 			};
 		}
