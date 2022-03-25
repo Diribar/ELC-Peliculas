@@ -65,7 +65,7 @@ module.exports = {
 			if (!datosPers) {
 				let informacion = {
 					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-					iconos: [{nombre: "fa-circle-left", link: "/producto/agregar/datos-duros"}],
+					iconos: [{nombre: "fa-thumb-up", link: "/producto/agregar/datos-duros"}],
 				};
 				return res.render("Errores", informacion);
 			}
@@ -122,7 +122,7 @@ module.exports = {
 			if (!datosPers) {
 				let informacion = {
 					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-					iconos: [{nombre: "fa-circle-left", link: "/producto/agregar/datos-duros"}],
+					iconos: [{nombre: "fa-thumb-up", link: "/producto/agregar/datos-duros"}],
 				};
 				return res.render("Errores", informacion);
 			}

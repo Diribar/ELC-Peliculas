@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
 				informacion = {
 					mensaje: "El producto debe ser analizado por otro revisor, no por su creador",
-					iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+					iconos: [{nombre: "fa-thumb-up", link: req.session.urlAnterior}],
 				};
 			// ------------------------------------------------------------------------
 			else {
@@ -47,7 +47,10 @@ module.exports = async (req, res, next) => {
 				if (espera > 0)
 					informacion = {
 						mensaje: "El producto estará disponible para su revisión en " + espera + " " + unidad,
-						iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+						iconos: [
+							{nombre: "fa-circle-left", link: req.session.urlAnterior},
+							{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
+						],						
 					};
 				// --------------------------------------------------------------------
 				else {
@@ -78,7 +81,10 @@ module.exports = async (req, res, next) => {
 								", desde las " +
 								horarioCaptura +
 								"hs",
-							iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+							iconos: [
+								{nombre: "fa-circle-left", link: req.session.urlAnterior},
+								{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
+							],
 						};
 					// Problema5: EL USUARIO DEJÓ INCONCLUSA LA REVISIÓN LUEGO DE LA HORA Y NO TRANSCURRIERON AÚN LAS 2 HORAS
 					else if (
@@ -91,9 +97,12 @@ module.exports = async (req, res, next) => {
 								"Tu revisión de este producto quedó inconclusa desde un poco antes de las " +
 								horarioCaptura +
 								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
-							iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+							iconos: [
+								{nombre: "fa-circle-left", link: req.session.urlAnterior},
+								{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
+							],
 						};
-					// Comienzo de las soluciones
+					// SOLUCIONES
 					// 1. Activar si no lo está, de lo contrario no hace nada
 					else if (
 						!prodOriginal.captura_activa ||
