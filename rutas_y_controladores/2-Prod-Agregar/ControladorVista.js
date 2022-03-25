@@ -163,7 +163,7 @@ module.exports = {
 		especificas.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.productoNombre = especificas.entidadNombre(req.body.entidad);// acáaa
+			req.body.productoNombre = especificas.entidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -529,7 +529,7 @@ module.exports = {
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let productoNombre = especificas.entidadNombre(entidad); //acáaa
+		let productoNombre = especificas.entidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

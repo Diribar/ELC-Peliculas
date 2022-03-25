@@ -180,23 +180,6 @@ module.exports = {
 			? "Links"
 			: "";
 	},
-	entidadEnSingular: (entidad) => {
-		return entidad == "peliculas"
-			? "pelicula"
-			: entidad == "colecciones"
-			? "coleccion"
-			: entidad == "capitulos"
-			? "capitulo"
-			: entidad.includes("personaje")
-			? "personaje"
-			: entidad.includes("hecho")
-			? "hecho"
-			: entidad.includes("valor")
-			? "valor"
-			: entidad == "links"
-			? "link"
-			: "";
-	},
 	entidad_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
