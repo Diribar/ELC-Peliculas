@@ -21,7 +21,9 @@ module.exports = async (req, res, next) => {
 	if (!prodOriginal)
 		informacion = {
 			mensaje: "Producto no encontrado",
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			],
 		};
 	else {
 		// Problemas VARIOS
@@ -41,8 +43,16 @@ module.exports = async (req, res, next) => {
 							mensaje:
 								"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión",
 							iconos: [
-								{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
-								{nombre: "fa-circle-rigth", link: linkDetalle, titulo:"Ir a la vista Detalle"},
+								{
+									nombre: "fa-circle-left",
+									link: req.session.urlAnterior,
+									titulo: "Ir a la vista anterior",
+								},
+								{
+									nombre: "fa-circle-rigth",
+									link: linkDetalle,
+									titulo: "Ir a la vista Detalle",
+								},
 							],
 						};
 				} else if (codigo == "links") {
@@ -61,8 +71,16 @@ module.exports = async (req, res, next) => {
 								mensaje:
 									"El producto está en revisión. Una vez revisado, podrás acceder a esta vista",
 								iconos: [
-									{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
-									{nombre: "fa-circle-rigth", link: linkDetalle, titulo:"Ir a la vista Detalle"},
+									{
+										nombre: "fa-circle-left",
+										link: req.session.urlAnterior,
+										titulo: "Ir a la vista anterior",
+									},
+									{
+										nombre: "fa-circle-rigth",
+										link: linkDetalle,
+										titulo: "Ir a la vista Detalle",
+									},
 								],
 							};
 					}
@@ -73,7 +91,13 @@ module.exports = async (req, res, next) => {
 					mensaje:
 						"El producto no está aprobado aún para ser mostrado o editado. El status actual es: " +
 						prodOriginal.status_registro.nombre,
-					iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+					iconos: [
+						{
+							nombre: "fa-circle-left",
+							link: req.session.urlAnterior,
+							titulo: "Ir a la vista anterior",
+						},
+					],
 				};
 		}
 	}
