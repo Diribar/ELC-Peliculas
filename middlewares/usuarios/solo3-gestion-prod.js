@@ -10,8 +10,8 @@ module.exports = (req, res, next) => {
 		let informacion = {
 			mensaje: "Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha.",
 			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior},
-				{nombre: "fa-circle-right", link: linkUsuarioAutProductos},
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+				{nombre: "fa-circle-right", link: linkUsuarioAutProductos, titulo:"Solicitar el permiso"},
 			],
 		};
 		return res.render("Errores", {informacion});

@@ -521,7 +521,7 @@ module.exports = {
 		if (!registroProd) {
 			let informacion = {
 				mensaje: "Producto no encontrado",
-				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
 			};
 			return res.render("Errores", {informacion});	
 		} 

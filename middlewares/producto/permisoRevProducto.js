@@ -19,7 +19,9 @@ module.exports = async (req, res, next) => {
 	if (!prodOriginal)
 		informacion = {
 			mensaje: "Producto no encontrado",
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			],
 		};
 	else {
 		// ¿Producto en estado 'pend_aprobar'?
@@ -33,7 +35,11 @@ module.exports = async (req, res, next) => {
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
 				informacion = {
 					mensaje: "El producto debe ser analizado por otro revisor, no por su creador",
-					iconos: [{nombre: "fa-thumb-up", link: req.session.urlAnterior}],
+					iconos: [
+						{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+						{nombre: "fa-thumbs-up", link: "/revision/vision-general", titulo:"Ir a la vista de inicio de revision"},
+						
+					],
 				};
 			// ------------------------------------------------------------------------
 			else {
@@ -48,9 +54,9 @@ module.exports = async (req, res, next) => {
 					informacion = {
 						mensaje: "El producto estará disponible para su revisión en " + espera + " " + unidad,
 						iconos: [
-							{nombre: "fa-circle-left", link: req.session.urlAnterior},
-							{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
-						],						
+							{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+							{nombre: "fa-thumbs-up", link: "/revision/vision-general", titulo:"Ir a la vista de inicio de revision"},
+						],
 					};
 				// --------------------------------------------------------------------
 				else {
@@ -82,8 +88,8 @@ module.exports = async (req, res, next) => {
 								horarioCaptura +
 								"hs",
 							iconos: [
-								{nombre: "fa-circle-left", link: req.session.urlAnterior},
-								{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
+								{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+								{nombre: "fa-thumbs-up", link: "/revision/vision-general", titulo:"Ir a la vista de inicio de revision"},
 							],
 						};
 					// Problema5: EL USUARIO DEJÓ INCONCLUSA LA REVISIÓN LUEGO DE LA HORA Y NO TRANSCURRIERON AÚN LAS 2 HORAS
@@ -98,8 +104,8 @@ module.exports = async (req, res, next) => {
 								horarioCaptura +
 								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
 							iconos: [
-								{nombre: "fa-circle-left", link: req.session.urlAnterior},
-								{nombre: "fa-thumb-up", link: "/revisar/vision-general"},
+								{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+								{nombre: "fa-thumbs-up", link: "/revision/vision-general", titulo:"Ir a la vista de inicio de revision"},
 							],
 						};
 					// SOLUCIONES

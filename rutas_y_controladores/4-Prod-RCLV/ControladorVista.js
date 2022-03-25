@@ -48,7 +48,7 @@ module.exports = {
 		if (!RCLV) {
 			let informacion = {
 				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
 			};
 			return res.render("Errores", informacion);
 		}
@@ -65,12 +65,12 @@ module.exports = {
 			if (!datosPers) {
 				let informacion = {
 					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-					iconos: [{nombre: "fa-thumb-up", link: "/producto/agregar/datos-duros"}],
+					iconos: [{nombre: "fa-thumbs-up", link: "/producto/agregar/datos-duros", titulo:"Regresar al entorno de Agregar Productos"},],
 				};
 				return res.render("Errores", informacion);
 			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
-		}
+		};
 		// 4. Errores
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
@@ -108,7 +108,7 @@ module.exports = {
 		if (!RCLV) {
 			let informacion = {
 				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior}],
+				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
 			};
 			return res.render("Errores", {informacion});
 		}
@@ -122,7 +122,7 @@ module.exports = {
 			if (!datosPers) {
 				let informacion = {
 					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
-					iconos: [{nombre: "fa-thumb-up", link: "/producto/agregar/datos-duros"}],
+					iconos: [{nombre: "fa-thumbs-up", link: "/producto/agregar/datos-duros", link: linkUsuarioAutInput, titulo:"Regresar al entorno de Agregar Productos"}],
 				};
 				return res.render("Errores", informacion);
 			}

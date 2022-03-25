@@ -11,8 +11,8 @@ module.exports = (req, res, next) => {
 			mensaje:
 				"Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click abajo, en la flecha hacia la derecha.",
 			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior},
-				{nombre: "fa-circle-right", link: linkUsuarioAutInput},
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"},
+				{nombre: "fa-circle-right", link: linkUsuarioAutInput, titulo:"Solicitar el permiso"},
 			],
 		};
 		return res.render("Errores", {informacion});

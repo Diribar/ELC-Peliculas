@@ -14,7 +14,7 @@
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartelAdvertencia #flechas { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
-#cartelAdvertencia #flechas i {border: 1px solid white; background-color: white;}
+#cartelAdvertencia #flechas i {color: white; background-color: var(--rojo-oscuro);}
 #cartelAdvertencia #flechas i {font-size: 2rem; border-radius: 50%; cursor: pointer;}
 
 /* Botón Entendido */

@@ -24,8 +24,8 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensaje: "La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en la flecha hacia la derecha",
 				iconos: [
-					{nombre: "fa-circle-left", link: req.session.urlAnterior},
-					{nombre: "fa-circle-right", link: linkDetalle},
+					{nombre: "fa-circle-left", link: "/producto/agregar/palabras-clave", titulo:"Regresar a 'Palabra Clave'"},
+					{nombre: "fa-circle-right", link: linkDetalle, titulo:"Ir a la vista Detalle"},
 				],
 			};
 		}
