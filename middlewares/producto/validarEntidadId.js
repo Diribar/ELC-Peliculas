@@ -12,12 +12,16 @@ module.exports = (req, res, next) => {
 	if (!entidad)
 		informacion = {
 			mensaje: "Falta el dato de la 'entidad'",
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			],
 		};
 	else if (!prodID)
 		informacion = {
 			mensaje: "Falta el dato del 'ID'",
-			iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			],
 		};
 	else {
 		// Entidad inexistente
@@ -25,7 +29,13 @@ module.exports = (req, res, next) => {
 		if (!productoNombre)
 			informacion = {
 				mensaje: "La entidad ingresada no es válida",
-				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+				iconos: [
+					{
+						nombre: "fa-circle-left",
+						link: req.session.urlAnterior,
+						titulo: "Ir a la vista anterior",
+					},
+				],
 			};
 	}
 	// Conclusiones
