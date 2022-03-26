@@ -1,11 +1,11 @@
 <h1 id="titulo">
-	Agregá un<%= entidad != "capitulos" ? "a" : "" %> <%= producto %> a nuestra Base de Datos
+	Agregá un<%= entidad != "capitulos" ? "a" : "" %> <%= productoNombre %> a nuestra Base de Datos
 </h1>
 <section id="dataEntry" class="flex-col">
 	<div class="flex-col">
 		<img id="gracias" src="<%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul>
-			<li>La <%= producto %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> ¡fue agregada con éxito!</li>
+			<li>La <%= productoNombre.toLowerCase %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> ¡fue agregada con éxito!</li>
 			<li>
 				Nuestro equipo de Administradores revisará los datos ingresados.
 				<i class="fa-solid fa-circle-question">
@@ -52,7 +52,7 @@
 			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</a>
 		<a href="<%= ruta + "links/?entidad=" + entidad + "&id=" + id %>">
-			<i class="fa-solid fa-up-right-from-square" tabindex="-1" title="Ir a la vista 'Links'"></i>
+			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
 	</div>	
 </section>

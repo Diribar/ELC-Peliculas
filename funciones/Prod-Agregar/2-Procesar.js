@@ -399,7 +399,7 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let producto = especificas.productoNombre(entidad);
+		let productoNombre = especificas.entidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
@@ -408,7 +408,7 @@ module.exports = {
 		}
 		// Generar el resultado
 		let resultado = {
-			producto,
+			productoNombre,
 			entidad,
 			fuente: "FA",
 			FA_id,

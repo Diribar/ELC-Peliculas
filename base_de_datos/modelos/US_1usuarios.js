@@ -15,6 +15,9 @@ module.exports = (sequelize, dt) => {
 		rol_usuario_id: {type: dt.INTEGER},
 		autorizado_fa: {type: dt.BOOLEAN},
 
+		dias_login: {type: dt.INTEGER},
+		fecha_ultimo_login: {type: dt.DATE},
+	
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},
 		editado_en: {type: dt.DATE},

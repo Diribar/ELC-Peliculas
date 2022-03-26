@@ -159,6 +159,9 @@ CREATE TABLE USUARIOS (
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	autorizado_fa BOOLEAN DEFAULT 0,
 
+	dias_login SMALLINT UNSIGNED DEFAULT 1,
+	fecha_ultimo_login DATE DEFAULT UTC_TIMESTAMP,
+
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
@@ -176,16 +179,16 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (motivo_penalizac_id) REFERENCES borr_motivos(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, completado_en, status_registro_id)
+INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, '2000-01-01 00:00:00', 4),
-(2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, '2000-01-01 00:00:00', 4),
-(3, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Usuario Sin Privilegios', 1, 1, '2000-01-01 00:00:00', 4)
+(1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, 4, '2021-01-01','2021-01-02'),
+(2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02'),
+(3, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Usuario Sin Privilegios', 1, 1, 4, '2021-01-01', '2021-01-02')
 ;
-INSERT INTO USUARIOS (id, email, contrasena, nombre, apellido, apodo, numero_documento, avatar, fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, completado_en, status_registro_id)
+INSERT INTO USUARIOS (id, email, contrasena, nombre, apellido, apodo, numero_documento, avatar, fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Data Entry', 'Startup', 'Data Entry', '0', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, '2021-03-26 00:00:00', 4),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', 'Diego', '21072001', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, '2021-03-26 00:00:00', 4)
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Startup', 'Diego', '0', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, 4, '2021-01-01','2021-01-02'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', 'Diego', '21072001', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, 4, '2021-01-01','2021-01-02')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;
@@ -302,6 +305,7 @@ CREATE TABLE rclv_1personajes (
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
@@ -356,6 +360,7 @@ CREATE TABLE rclv_2hechos (
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
@@ -403,6 +408,7 @@ CREATE TABLE rclv_3valores (
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
@@ -769,7 +775,6 @@ CREATE TABLE prod_4edicion (
 	elc_pelicula_id INT UNSIGNED DEFAULT NULL,
 	elc_coleccion_id INT UNSIGNED DEFAULT NULL,
 	elc_capitulo_id INT UNSIGNED DEFAULT NULL,
-	coleccion_id INT UNSIGNED NULL,
 	temporada TINYINT UNSIGNED DEFAULT NULL,
 	capitulo TINYINT UNSIGNED NULL,
 	TMDB_id VARCHAR(10) NULL UNIQUE,

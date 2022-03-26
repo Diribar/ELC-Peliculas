@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 
 	// Acción si se elige 'links'
 	if (vista != "/producto/links/") {
-		let links = document.querySelector("#cuerpo #flechas .fa-up-right-from-square");
+		let links = document.querySelector("#cuerpo #flechas .fa-link");
 		links.addEventListener("click", () => {
 			if (!links.classList.contains("inactivo")) {
 				// Ir a la vista 'links'

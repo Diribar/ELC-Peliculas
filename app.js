@@ -60,4 +60,13 @@ app.use("/productos", rutaProductos);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
-//app.use((req,res) => {res.status(404).render('not found')})
+app.use((req, res) => {
+	let informacion = {
+		mensaje: "No tenemos esa dirección de url en nuestro sitio",
+		iconos: [
+			{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			{nombre: "fa-thumbs-up", link: "/", titulo: "Ir a inico"},
+		],
+	};
+	res.status(404).render("Errores", {informacion});
+});

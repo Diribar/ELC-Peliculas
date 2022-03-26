@@ -10,13 +10,19 @@ module.exports = async (req, res, next) => {
 	const userID = req.session.usuario.id;
 	const haceUnaHora = especificas.haceUnaHora();
 	const haceDosHoras = especificas.haceDosHoras();
-	let mensaje;
+	let informacion;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	let includes = ["status_registro", "capturado_por"];
-	if (entidad == "capitulos") includes.push("coleccion")
+	if (entidad == "capitulos") includes.push("coleccion");
 	let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Problema1: PRODUCTO NO ENCONTRADO ----------------------------------------------
-	if (!prodOriginal) mensaje = "Producto no encontrado";
+	if (!prodOriginal)
+		informacion = {
+			mensaje: "Producto no encontrado",
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+			],
+		};
 	else {
 		// ¿Producto en estado 'pend_aprobar'?
 		if (prodOriginal.status_registro.pend_aprobar) {
@@ -27,7 +33,21 @@ module.exports = async (req, res, next) => {
 			let creadoPorElUsuario2 =
 				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
-				mensaje = "El producto debe ser analizado por otro revisor, no por su creador";
+				informacion = {
+					mensaje: "El producto debe ser analizado por otro revisor, no por su creador",
+					iconos: [
+						{
+							nombre: "fa-circle-left",
+							link: req.session.urlAnterior,
+							titulo: "Ir a la vista anterior",
+						},
+						{
+							nombre: "fa-thumbs-up",
+							link: "/revision/vision-general",
+							titulo: "Ir a la vista de inicio de revision",
+						},
+					],
+				};
 			// ------------------------------------------------------------------------
 			else {
 				// Creado por otro usuario
@@ -38,7 +58,21 @@ module.exports = async (req, res, next) => {
 				let unidad = espera > 60 ? "minutos" : "segundos";
 				if (espera > 60) espera = parseInt(espera / 60);
 				if (espera > 0)
-					mensaje = "El producto estará disponible para su revisión en " + espera + " " + unidad;
+					informacion = {
+						mensaje: "El producto estará disponible para su revisión en " + espera + " " + unidad,
+						iconos: [
+							{
+								nombre: "fa-circle-left",
+								link: req.session.urlAnterior,
+								titulo: "Ir a la vista anterior",
+							},
+							{
+								nombre: "fa-thumbs-up",
+								link: "/revision/vision-general",
+								titulo: "Ir a la vista de inicio de revision",
+							},
+						],
+					};
 				// --------------------------------------------------------------------
 				else {
 					// Definir nuevas variables
@@ -61,23 +95,51 @@ module.exports = async (req, res, next) => {
 						prodOriginal.capturado_por_id != userID &&
 						prodOriginal.captura_activa
 					)
-						mensaje =
-							"El producto está en revisión por el usuario " +
-							prodOriginal.capturado_por.apodo +
-							", desde las " +
-							horarioCaptura +
-							"hs";
+						informacion = {
+							mensaje:
+								"El producto está en revisión por el usuario " +
+								prodOriginal.capturado_por.apodo +
+								", desde las " +
+								horarioCaptura +
+								"hs",
+							iconos: [
+								{
+									nombre: "fa-circle-left",
+									link: req.session.urlAnterior,
+									titulo: "Ir a la vista anterior",
+								},
+								{
+									nombre: "fa-thumbs-up",
+									link: "/revision/vision-general",
+									titulo: "Ir a la vista de inicio de revision",
+								},
+							],
+						};
 					// Problema5: EL USUARIO DEJÓ INCONCLUSA LA REVISIÓN LUEGO DE LA HORA Y NO TRANSCURRIERON AÚN LAS 2 HORAS
 					else if (
 						prodOriginal.capturado_en < haceUnaHora &&
 						prodOriginal.capturado_en > haceDosHoras &&
 						prodOriginal.capturado_por_id == userID
 					)
-						mensaje =
-							"Tu revisión de este producto quedó inconclusa desde un poco antes de las " +
-							horarioCaptura +
-							"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.";
-					// Comienzo de las soluciones
+						informacion = {
+							mensaje:
+								"Tu revisión de este producto quedó inconclusa desde un poco antes de las " +
+								horarioCaptura +
+								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
+							iconos: [
+								{
+									nombre: "fa-circle-left",
+									link: req.session.urlAnterior,
+									titulo: "Ir a la vista anterior",
+								},
+								{
+									nombre: "fa-thumbs-up",
+									link: "/revision/vision-general",
+									titulo: "Ir a la vista de inicio de revision",
+								},
+							],
+						};
+					// SOLUCIONES
 					// 1. Activar si no lo está, de lo contrario no hace nada
 					else if (
 						!prodOriginal.captura_activa ||
@@ -101,6 +163,6 @@ module.exports = async (req, res, next) => {
 		}
 	}
 	// Fin
-	if (mensaje) return res.render("Errores", {mensaje});
+	if (informacion) return res.render("Errores", {informacion});
 	next();
 };

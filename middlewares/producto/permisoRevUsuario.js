@@ -11,18 +11,39 @@ module.exports = async (req, res, next) => {
 	let userID = req.session.usuario.id;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
-	let prodCapturado = await BD_especificas.revisaSiTieneOtrasCapturas(entidadActual, prodID, userID);
+	let prodCapturado = await BD_especificas.revisaSiElUsuarioTieneOtrasCapturas(
+		entidadActual,
+		prodID,
+		userID
+	);
 	if (prodCapturado) {
+		// Datos para el mensaje
+		let entidad = prodCapturado.entidad;
 		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
-		let mensaje =
-			"Tenés que liberar " +
-			(prodCapturado.entidad != "capitulos" ? "la " : "el ") +
-			entidadNombre +
-			" " +
-			(prodCapturado.nombre_castellano
-				? prodCapturado.nombre_castellano
-				: prodCapturado.nombre_original) +
-			". Volvé a la vista 'Visión General'";
-		return res.render("Errores", {mensaje});
+		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
+		let horario = prodCapturado.capturado_en.getHours() + ":" + prodCapturado.capturado_en.getMinutes();
+		// Preparar la información
+		let informacion = {
+			mensaje:
+				"Tenés que liberar " +
+				(prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
+					? "la "
+					: "el ") +
+				entidadNombre.toLowerCase() +
+				" <span>" +
+				(prodCapturado.nombre_castellano
+					? prodCapturado.nombre_castellano
+					: prodCapturado.nombre_original) +
+				"</span>, que está reservad" +
+				(prodCapturado.entidad != "capitulos" ? "a" : "o") +
+				" desde las " +
+				horario,
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior", titulo:"Ir a la vista anterior"},
+				{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"},
+			],
+		};
+
+		return res.render("Errores", {informacion});
 	} else next();
 };

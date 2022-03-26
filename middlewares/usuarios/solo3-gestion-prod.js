@@ -6,8 +6,16 @@ module.exports = (req, res, next) => {
 	let usuario = req.session.usuario;
 	if (!usuario) return res.redirect("/usuarios/login");
 	if (!usuario.rol_usuario.aut_gestion_prod) {
-		let mensaje = "Se requiere aumentar el nivel de confianza, para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés gestionar haciendo click acá."
-		return res.render("Errores", {mensaje})
+		let linkUsuarioAutProductos = "/usuarios/autorizado-productos/solicitud";
+		let informacion = {
+			mensaje:
+				"Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha.",
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+				{nombre: "fa-circle-right", link: linkUsuarioAutProductos, titulo: "Solicitar el permiso"},
+			],
+		};
+		return res.render("Errores", {informacion});
 	}
 	next();
 };

@@ -1,9 +1,6 @@
-Averiguar qué pasa con los middlewares aplicados a las API
-
 Para Detalle y Edición
 - Convertila en un Capítulo de Colección
 - Convertilo en una Película y quitalo de la Colección
-- Sugerí darla de baja
 - Hacenos un comentario privado sobre este producto
 
 1. PRODUCTO 'APROBADO'
