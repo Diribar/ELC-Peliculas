@@ -23,12 +23,11 @@
 
 /* Datos Breves */
 #datosBreves {display: flex; flex-direction: column; justify-content: center; flex-grow: 1; width: max-content; }
-#datosBreves .titulo {padding: 3px 10px; font-size: 1.1rem; font-weight: bold; background-color: var(--gris-oscuro); color: snow; border-radius: 10px; text-align: center;}
-#datosBreves #grafico {margin-right: 15px;}
-#datosBreves #calificacionesGrafico {width:180px;}
+#datosBreves .titulo {width:160px; padding: 3px 10px; font-size: 1.1rem;}
+#datosBreves .titulo {font-weight: bold; background-color: var(--gris-oscuro); color: snow; border-radius: 10px; text-align: center;}
 #datosBreves #texto {margin-right: 15px;}
-#datosBreves .datosProducto, #datosBreves #texto .datosUsuario {margin-top: 6px;}
-#datosBreves #texto .titulo {margin-top: 10px;}
+#datosBreves .datosProducto, #datosBreves #texto .datosUsuario {margin-top: 10px;}
+#datosBreves #texto .titulo {margin-top: 20px;}
 #datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
 #datosBreves #texto p#status1 span {background-color: var(--gris-oscuro); color: snow;}
 #datosBreves #texto p#status2 span {background-color: var(--naranja-oscuro); color: snow;}
