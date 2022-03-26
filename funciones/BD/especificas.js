@@ -339,7 +339,6 @@ module.exports = {
 		let hoyAhora = especificas.ahora().toISOString().slice(0, 10);
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		console.log("contador");
 		if (hoyAhora != hoyUsuario) {
 			BD_genericas.aumentarElValorDeUnCampo("usuarios", usuario.id, "dias_login");
 			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
