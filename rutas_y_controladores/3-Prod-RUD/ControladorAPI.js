@@ -123,15 +123,18 @@ module.exports = {
 	obtenerCalificaciones: async (req, res) => {
 		let {entidad, id, detalle} = req.query;
 		let datos;
+		let calificaciones = [];
 		// Datos generales
-		datos = await BD_genericas.obtenerPorId(entidad, id).then((n) => [
-			n.fe_valores / 100,
-			n.entretiene / 100,
-			n.calidad_tecnica / 100,
-			n.calificacion / 100,
-		]);
-		let calificacionGral = {encabezado: "Gral.", valores: datos};
-		let calificaciones = [calificacionGral];
+		datos = await BD_genericas.obtenerPorId(entidad, id).then((n) =>
+			n.fe_valores != null
+				? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
+				: ""
+		);
+		if (datos) {
+			let calificacionGral = {encabezado: "Gral.", valores: datos};
+			calificaciones.push(calificacionGral);
+		}
+		// Datos particulares
 		if (detalle) {
 			let producto_id = especificas.entidad_id(entidad);
 			datos = await BD_genericas.obtenerPor2Campos(

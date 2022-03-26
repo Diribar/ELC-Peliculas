@@ -25,7 +25,7 @@
 #datosBreves {display: flex; flex-direction: column; justify-content: center; flex-grow: 1; width: max-content; }
 #datosBreves .titulo {padding: 3px 10px; font-size: 1.1rem; font-weight: bold; background-color: var(--gris-oscuro); color: snow; border-radius: 10px; text-align: center;}
 #datosBreves #grafico {margin-right: 15px;}
-#datosBreves #graficoCalificacion {width:180px;}
+#datosBreves #calificacionesGrafico {width:180px;}
 #datosBreves #texto {margin-right: 15px;}
 #datosBreves .datosProducto, #datosBreves #texto .datosUsuario {margin-top: 6px;}
 #datosBreves #texto .titulo {margin-top: 10px;}

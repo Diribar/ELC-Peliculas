@@ -39,9 +39,9 @@
 	<section id="datosBreves">
 		<div>
 			<p id="grafico" class="titulo">Datos del Producto</p>
-			<p class="datosProducto">General: <span>77%</span> / Tuya: <span>78%</span></p>
+			<p id="calificacionesDatos" class="datosProducto"></p>
 		</div>
-		<div id="graficoCalificacion"></div>
+		<div id="calificacionesGrafico"></div>
 		<div id="texto">
 			<% for (campo of bloqueDer[0]) { %>
 				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
