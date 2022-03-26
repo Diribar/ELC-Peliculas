@@ -187,11 +187,11 @@ module.exports = {
 			? "coleccion_id"
 			: entidad == "capitulos"
 			? "capitulo_id"
-			: input.includes("personaje")
+			: entidad.includes("personaje")
 			? "personaje_id"
-			: input.includes("hecho")
+			: entidad.includes("hecho")
 			? "hecho_id"
-			: input.includes("valor")
+			: entidad.includes("valor")
 			? "valor_id"
 			: "";
 	},

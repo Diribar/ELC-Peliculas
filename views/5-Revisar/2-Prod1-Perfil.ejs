@@ -38,62 +38,20 @@
 	</section>
 	<section id="datosBreves">
 		<div>
-			<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
-			<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
+			<p id="grafico" class="titulo">Datos del Producto</p>
+			<p id="calificacionesDatos" class="datosProducto"></p>
 		</div>
-		<div id="graficoCalificacion"></div>
+		<div id="calificacionesGrafico"></div>
 		<div id="texto">
 			<% for (campo of bloqueDer[0]) { %>
-				<p <%- campo.titulo.startsWith("Status") ? ('class="status" id="status' + campo.id + '"') : "" %>>
+				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
 					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 				</p>
 			<% } %>
+			<p class="titulo">Datos del Usuario</p>
 			<% for (campo in bloqueDer[1]) { %>
-				<p><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
 		<% } %> 
 		</div>
 	</section>
 </div>
-<script>
-	google.charts.load('current', {packages: ['corechart', 'bar']});
-	google.charts.setOnLoadCallback(drawBarColors);
-
-	function drawBarColors() {
-		// https://developers.google.com/chart/interactive/docs/gallery/barchart
-		var data = google.visualization.arrayToDataTable([
-			['Aptitud', 'Gral.', 'Tuya'],
-			['IFV', .81, .80],
-			['En.', .37, .36],
-			['CSV', .26, .28],
-		]);
-
-		var options = {
-			fontSize: 10,
-			animation: {
-				duration: 500,
-				easing: 'out',
-				startup: true,
-			},
-			numberStyle: 'percent',
-			chartArea: {
-				top: '10%'
-			},
-			colors: ['green', 'lightgreen'],
-			legend: {
-				position: 'bottom',
-				alignment: 'start',
-				textStyle: {italic: true,}
-			},
-			hAxis: {
-				minValue: 0,
-				maxValue: 1,
-				ticks: [0, .5, 1],
-				format: 'percent',
-				gridlines: {count: 3},
-				textStyle: {fontSize:10}
-			},
-		};
-		var chart = new google.visualization.BarChart(document.getElementById('graficoCalificacion'));
-		chart.draw(data, options);
-	}
-</script>

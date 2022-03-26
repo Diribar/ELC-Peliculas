@@ -36,6 +36,8 @@ router.post("/links/altas-editar", soloAutInput, permisoRUD, vista.linksAltasEdi
 router.get("/tridente/api/obtener-col-cap", API.obtenerColCap);
 router.get("/tridente/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
 router.get("/tridente/api/obtener-cap-id", API.obtenerCapID);
+// Detalle
+router.get("/detalle/api/obtener-calificaciones", API.obtenerCalificaciones);
 // Edición
 router.get("/edicion/api/validar-edicion", API.validarEdicion);
 router.get("/edicion/api/obtener-original-y-edicion", API.obtenerVersionesDelProducto);

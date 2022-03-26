@@ -53,6 +53,7 @@ module.exports = {
 		// Obtener la familia
 		let destino = especificas.familiaEnSingular(entidad);
 		// Obtener la sub-dirección de destino
+		// return res.send([entidad,prodID])
 		if (destino == "producto")
 			destino += producto.status_registro.creado
 				? "/perfil"
@@ -70,6 +71,7 @@ module.exports = {
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		// 3. Redirigir hacia la colección
 		if (entidad == "capitulos") {
 			// Liberar la captura del capítulo
 			let datos = {capturado_por_id: null, capturado_en: null, captura_activa: null};
@@ -80,30 +82,30 @@ module.exports = {
 			// Redireccionar a la colección
 			return res.redirect("/revision/redireccionar/?entidad=colecciones&id=" + colecID);
 		}
-		// 3. Obtener los datos ORIGINALES del producto
+		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		if (!producto.status_registro.creado)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		// Obtener datos del usuario
+		// 5. Obtener datos del usuario
 		let fichaDelUsuario = await BD_especificas.fichaDelUsuario(entidad, prodID);
-		// 4. Obtener avatar original
+		// 6. Obtener avatar original
 		let avatar = producto.avatar
 			? (producto.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + producto.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
-		// 5. Configurar el título de la vista
+		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// Reloj
+		// 8. Reloj
 		let reloj = Math.max(
 			0,
 			parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60)
 		);
-		// 6. Obtener los países
+		// 9.. Obtener los países
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
 		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises, fichaDelUsuario);
-		// Ir a la vista
+		// 10. Ir a la vista
 		//return res.send(producto)
 		return res.render("0-Revisar", {
 			tema,

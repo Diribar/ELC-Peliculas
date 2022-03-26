@@ -3,7 +3,7 @@
 <head>
 	<!-- Head -->
 	<%- include('Head', {titulo: "Error"}) %>
-	<link rel="stylesheet" href="/formatoDeVistas/0-Secciones/CartelAdvertencia.css">
+	<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Errores.css">
 </head>
 <body>
 	<%- include('Header') %>
@@ -19,7 +19,7 @@
 				<p id="mensaje"><%- informacion.mensaje %></p>
 				<div id="flechas">
 					<% for (icono of informacion.iconos) { %>
-						<a href="<%= icono.link %>"><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
+						<a href="<%= icono.link %>" autofocus><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
 					<% } %>
 				</div>
 			</section>

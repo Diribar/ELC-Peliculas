@@ -38,9 +38,10 @@
 	<section id="datosBreves">
 		<div>
 			<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
-			<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
+			<!-- <p>General: <span>77%</span> / Tuya: <span>78%</span></p> -->
+			<p id="calificacionesResultados"></p>
 		</div>
-		<div id="graficoCalificacion"></div>
+		<div id="calificacionesGrafico"></div>
 		<div id="texto">
 			<% for (bloque of bloquesDerecha) { %>
 				<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
@@ -50,46 +51,3 @@
 		</div>
 	</section>
 </div>
-<script>
-	google.charts.load('current', {packages: ['corechart', 'bar']});
-	google.charts.setOnLoadCallback(drawBarColors);
-
-	function drawBarColors() {
-		// https://developers.google.com/chart/interactive/docs/gallery/barchart
-		var data = google.visualization.arrayToDataTable([
-			['Aptitud', 'Gral.', 'Tuya'],
-			['IFV', .81, .80],
-			['En.', .37, .36],
-			['CSV', .26, .28],
-		]);
-
-		var options = {
-			fontSize: 10,
-			animation: {
-				duration: 500,
-				easing: 'out',
-				startup: true,
-			},
-			numberStyle: 'percent',
-			chartArea: {
-				top: '10%'
-			},
-			colors: ['green', 'lightgreen'],
-			legend: {
-				position: 'bottom',
-				alignment: 'start',
-				textStyle: {italic: true,}
-			},
-			hAxis: {
-				minValue: 0,
-				maxValue: 1,
-				ticks: [0, .5, 1],
-				format: 'percent',
-				gridlines: {count: 3},
-				textStyle: {fontSize:10}
-			},
-		};
-		var chart = new google.visualization.BarChart(document.getElementById('graficoCalificacion'));
-		chart.draw(data, options);
-	}
-</script>
