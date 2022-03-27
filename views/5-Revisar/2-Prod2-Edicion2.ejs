@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('Head') %>
+	<%- include('0-Revisar-Head') %>
+</head>
+<body>
+	<%- include('Header') %>
+	<main class="flex-row">
+		<section id="imagen-derecha" class="">
+			<img src="<%= avatar.original %>" title="<%= prodOriginal.nombre_castellano %>">
+			<% if (prodEditado.avatar) { %>
+				<img src="<%= avatar.edicion %>" title="<%= prodEditado.nombre_castellano %>">
+			<% } %>
+		</section>
+		<section id="cuerpo-y-footer">
+			<%- include('Footer') %>
+			<section id="cuerpo">
+				<%- include("2-Prod2-EdicionCuerpo") %>
+			</section>
+		</section>
+	</main>
+</body>
+</html>
