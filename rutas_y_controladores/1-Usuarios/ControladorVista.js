@@ -43,7 +43,7 @@ module.exports = {
 		especificas.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
-		await BD_genericas.agregarRegistro({entidad: "usuarios", email, contrasena});
+		await BD_genericas.agregarRegistro("usuarios", {email, contrasena});
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
@@ -61,7 +61,7 @@ module.exports = {
 			? res.redirect("/usuarios/datos-editables")
 			: status_registro.mail_validado
 			? res.redirect("/usuarios/datos-perennes")
-			: res.redirect("/usuarios/login")
+			: res.redirect("/usuarios/login");
 
 		// status_registro == 1
 		// 	? res.redirect("/usuarios/login")
@@ -123,7 +123,7 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session["email"];
 		// 6. Notificar al contador de logins
-		BD_especificas.actualizarElContadorDeLogins(req.session.usuario)
+		BD_especificas.actualizarElContadorDeLogins(req.session.usuario);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

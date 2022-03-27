@@ -282,7 +282,6 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
 	// 3. Crea un registro en la BD de 'registros_borrados'
 	let datosParaBorrados = {
-		entidad: "registros_borrados",
 		elc_id: link.id,
 		elc_entidad: "links_originales",
 		usuario_implicado_id: link.creado_por_id,
@@ -291,7 +290,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 		duracion: duracion,
 		status_registro_id: status_id,
 	};
-	BD_genericas.agregarRegistro(datosParaBorrados);
+	BD_genericas.agregarRegistro("registros_borrados", datosParaBorrados);
 };
 
 // let obtenerLinksFusionados = async (link_id, usuario) => {

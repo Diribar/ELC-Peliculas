@@ -98,7 +98,11 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_especificas.obtenerELC_id("colecciones", "TMDB_id", datos.colec_TMDB_id);
+			datos.colec_id = await BD_especificas.obtenerELC_id(
+				"colecciones",
+				"TMDB_id",
+				datos.colec_TMDB_id
+			);
 			if (datos.colec_id) return datos;
 		}
 		return datos;
@@ -218,7 +222,6 @@ module.exports = {
 			if (!existe) {
 				// Preparar datos del capítulo
 				datosCap = {
-					entidad: "capitulos",
 					coleccion_id: datosCol.id,
 					fuente: "TMDB",
 					temporada: 1,
@@ -233,7 +236,7 @@ module.exports = {
 				// Guardar los datos del capítulo
 				await this.infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
 					.then((n) => (n = {...n, ...datosCap}))
-					.then((n) => BD_genericas.agregarRegistro(n));
+					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
 			}
 		}
 		return;
@@ -387,7 +390,7 @@ module.exports = {
 			for (let episode of datosTemp.episodes) {
 				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				// Obtener las API
-				await BD_genericas.agregarRegistro(datosCap);
+				await BD_genericas.agregarRegistro(datosCap.entidad, datosCap);
 			}
 		}
 		return;

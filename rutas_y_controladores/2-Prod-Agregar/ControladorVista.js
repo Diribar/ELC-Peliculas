@@ -476,7 +476,7 @@ module.exports = {
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
 		};
-		let registro = await BD_genericas.agregarRegistro(original).then((n) => n.toJSON());
+		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
 		// 3. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
 		let producto_id = especificas.entidad_id(confirma.entidad);
@@ -489,7 +489,7 @@ module.exports = {
 			["elc_" + producto_id]: registro.id,
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
-		await BD_genericas.agregarRegistro(edicion);
+		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 		// 4. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
@@ -521,10 +521,16 @@ module.exports = {
 		if (!registroProd) {
 			let informacion = {
 				mensaje: "Producto no encontrado",
-				iconos: [{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo:"Ir a la vista anterior"}],
+				iconos: [
+					{
+						nombre: "fa-circle-left",
+						link: req.session.urlAnterior,
+						titulo: "Ir a la vista anterior",
+					},
+				],
 			};
-			return res.render("Errores", {informacion});	
-		} 
+			return res.render("Errores", {informacion});
+		}
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.pend_aprobar)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
@@ -568,7 +574,7 @@ let guardar_cal_registros = (confirma, registro) => {
 		calidad_tecnica: confirma.calidad_tecnica,
 		resultado: confirma.calificacion,
 	};
-	BD_genericas.agregarRegistro(datos);
+	BD_genericas.agregarRegistro(datos.entidad, datos);
 };
 
 let prepararMensaje = (desambiguar) => {
