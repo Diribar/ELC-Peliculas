@@ -50,6 +50,7 @@ module.exports = {
 		// Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let edicID = req.query.edicion_id;
 		let destino = especificas.familiaEnSingular(entidad);
 		let usuario = req.session.usuario;
 		let datosEdicion = "";
@@ -64,14 +65,16 @@ module.exports = {
 				: "/edicion";
 			destino += subDestino;
 			if (subDestino == "/edicion") {
-				// Obtener el id de la edición
-				let producto_id = especificas.entidad_id(entidad);
-				let prodEditado_id = await BD_especificas.obtenerEdicionAjena(
-					"elc_" + producto_id,
-					prodID,
-					usuario.id
-				);
-				if (prodEditado_id) datosEdicion = "&edicion_id=" + prodEditado_id;
+				if (!edicID) {
+					// Obtener el id de la edición
+					let producto_id = especificas.entidad_id(entidad);
+					edicID = await BD_especificas.obtenerEdicionAjena(
+						"elc_" + producto_id,
+						prodID,
+						usuario.id
+					);
+				}
+				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 			}
 		}
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
@@ -143,8 +146,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		let producto_id = await especificas.entidad_id(entidad);
-		let edicion_id;
-		let vista;
+		let edicion_id, vista, avatar;
 		// Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorId(entidad, prodID);
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
@@ -165,7 +167,12 @@ module.exports = {
 			};
 		} else {
 			// Vista 'Edición-Avatar'
-			vista = "2-Prod2-Edicion2";
+			vista = "2-Prod2-Edicion2Datos";
+			// Obtener el avatar
+			let imagen = prodOriginal.avatar;
+			avatar = imagen
+				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+				: "/imagenes/8-Agregar/IM.jpg";
 			// Quitar los campos con valor 'null'
 			for (let campo in prodEditado) if (prodEditado[campo] === null) delete prodEditado[campo];
 			// Quitar los campos que no se deben comparar

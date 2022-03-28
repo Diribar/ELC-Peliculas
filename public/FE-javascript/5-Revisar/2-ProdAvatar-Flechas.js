@@ -25,7 +25,8 @@ window.addEventListener("load", () => {
 		aceptar.style.cursor = "wait";
 		let ruta = "/revision/producto/edicion/api/aprobarAvatar/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id);
-		window.location.href = "/revision/vision-general";
+		window.location.href =
+			"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
 	});
 
 	// Aceptar el nuevo avatar

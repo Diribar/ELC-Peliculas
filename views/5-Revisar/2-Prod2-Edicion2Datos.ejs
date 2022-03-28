@@ -8,15 +8,12 @@
 	<%- include('Header') %>
 	<main class="flex-row">
 		<section id="imagen-derecha" class="">
-			<img src="<%= avatar.original %>" title="<%= prodOriginal.nombre_castellano %>">
-			<% if (prodEditado.avatar) { %>
-				<img src="<%= avatar.edicion %>" title="<%= prodEditado.nombre_castellano %>">
-			<% } %>
+			<img src="<%= avatar %>" title="<%= prodOriginal.nombre_castellano %>">
 		</section>
 		<section id="cuerpo-y-footer">
 			<%- include('Footer') %>
 			<section id="cuerpo">
-				<%- include("2-Prod2-EdicionCuerpo") %>
+				<%- include("2-Prod2-Edicion3Cuerpo") %>
 			</section>
 		</section>
 	</main>
