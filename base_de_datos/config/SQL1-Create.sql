@@ -106,7 +106,8 @@ CREATE TABLE aux_sexos (
 INSERT INTO aux_sexos (id, orden, nombre, letra_final)
 VALUES 
 ('M', 1, 'Mujer', 'a'), 
-('V', 2, 'Varón', 'o')
+('V', 2, 'Varón', 'o'),
+('P', 3, 'Prefiero no decirlo', 'o')
 ;
 
 /* TABLAS AUXILIARES PARA USUARIOS */;
