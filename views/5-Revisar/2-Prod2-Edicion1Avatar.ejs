@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('Head') %>
+	<%- include('0-Revisar-Head') %>
+</head>
+<body>
+	<%- include('Header') %>
+	<main id="cuerpo-y-footer">
+		<%- include('Footer') %>
+		<section id="cuerpo">
+			<h1 id="titulo"><%= titulo %></h1>
+			<div id="imagenes">
+				<!-- Versión editada -->
+				<div class="flex-row">
+					<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>			
+					<div class="flex-col">
+						<h2>Imagen de Edición</h2>
+						<img id="editada" src="<%= avatar.edicion %>" title="Realizar el reemplazo">
+					</div>
+					<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
+				</div>
+				<!-- Versión original -->
+				<div class="flex-col">
+					<h2>Imagen Original</h2>
+					<img src="<%= avatar.original %>">
+				</div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

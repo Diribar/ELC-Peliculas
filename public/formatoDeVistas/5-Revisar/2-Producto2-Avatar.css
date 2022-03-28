@@ -1,0 +1,20 @@
+#cuerpo-y-footer {display: flex; flex-direction: column-reverse;}
+#cuerpo-y-footer #cuerpo {background-color: transparent; height: 80vh;}
+
+#cuerpo #imagenes {display: flex; flex-direction: row; justify-content: space-evenly;}
+#cuerpo #imagenes {height: 100%; padding-top: 45px; padding-bottom: 10px;}
+
+#cuerpo #imagenes h2 {background-color: var(--verde-oscuro); color: var(--celeste-claro);}
+#cuerpo #imagenes h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal;}
+#cuerpo #imagenes h2	{margin: 0 auto 5px;}
+#cuerpo #imagenes img {height: 100%; max-width: 30vw;}
+#cuerpo #imagenes img {height: 90%; border-radius: 10px;}
+#cuerpo #imagenes div {margin: 0;}
+
+/* Flechas */
+#cuerpo #imagenes {display: flex; flex-direction: row; align-self: center;}
+#cuerpo #imagenes i, #cuerpo #imagenes img#editada {transition: 500ms; cursor: pointer;}
+#cuerpo #imagenes img#editada:hover {transform: scale(1.05);}
+#cuerpo #imagenes i {font-size: 2rem; margin: 5px 15px;}
+#cuerpo #imagenes i {align-self: center; background-color: var(--celeste-claro); border-radius: 50%;}
+#cuerpo #imagenes i:hover {transform: scale(1.3);}

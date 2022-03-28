@@ -96,11 +96,6 @@ module.exports = {
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// 8. Reloj
-		let reloj = Math.max(
-			0,
-			parseInt((producto.capturado_en - especificas.ahora() + 1000 * 60 * 60) / 1000 / 60)
-		);
 		// 9.. Obtener los países
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
@@ -117,7 +112,6 @@ module.exports = {
 			entidad,
 			producto,
 			avatar,
-			reloj,
 			vista: req.baseUrl + req.path,
 			bloqueIzq,
 			bloqueDer,
@@ -126,27 +120,59 @@ module.exports = {
 	},
 
 	productoEdicion: async (req, res) => {
-		// Obtener avatar editado
-		return res.send("productoEdicion");
-		let avatarEditado = prodEditado.avatar
-			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+		// 1. Tema y Código
+		let tema = "revision";
+		let url = req.url.slice(1);
+		let codigo = url.slice(0, url.lastIndexOf("/"));
+		// 2. Obtener los datos identificatorios del producto
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		// Obtener ambas versiones
+		let prodOriginal = await BD_genericas.obtenerPorId(entidad, prodID);
+		let producto_id = await especificas.entidad_id(entidad);
+		let prodEditado = await BD_genericas.obtenerPorCampo("productos_edic", "elc_" + producto_id, prodID);
 
-		// Obtener avatar original
-		let avatarOriginal = prodOriginal.avatar
-			? (prodOriginal.avatar.slice(0, 4) != "http"
-					? prodOriginal.status_registro.pend_aprobar
-						? "/imagenes/3-ProdRevisar/"
-						: "/imagenes/2-Productos/"
-					: "") + prodOriginal.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
-		// Obtener los países
-		let paises = prodOriginal.paises_id
-			? await especificas.paises_idToNombre(prodOriginal.paises_id)
-			: "";
-		// Info exclusiva para la vista de Edicion
-		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		let BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
+		// Quitar los campos con valor 'null'
+		for (let campo in prodEditado) if (prodEditado[campo] === null) delete prodEditado[campo];
+		//return res.send([prodOriginal, prodEditado]);
+		// Quitar los campos que no se deben comparar
+		let edicion_id = prodEditado.id;
+		delete prodEditado.id;
+		delete prodEditado["elc_" + producto_id];
+		// Quitar de edición las igualdades
+		for (let campo in prodEditado) {
+			if (prodOriginal[campo] === prodEditado[campo]) delete prodEditado[campo];
+		}
+		// return res.send(prodEditado);
+		// Obtener rutas de los avatar
+		let avatar;
+		let vista = "2-Prod2-Edicion2";
+		if (prodEditado.avatar) {
+			avatar = {
+				original: prodOriginal.avatar
+					? (prodOriginal.avatar.slice(0, 4) != "http"
+							? prodOriginal.status_registro.pend_aprobar
+								? "/imagenes/3-ProdRevisar/"
+								: "/imagenes/2-Productos/"
+							: "") + prodOriginal.avatar
+					: "/imagenes/8-Agregar/IM.jpg",
+				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
+			};
+			vista = "2-Prod2-Edicion1Avatar";
+		}
+		// 7. Configurar el título de la vista
+		let productoNombre = especificas.entidadNombre(entidad);
+		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		// Enviar las diferencias a la vista
+		return res.render(vista, {
+			tema,
+			codigo,
+			titulo,
+			prodOriginal,
+			prodEditado,
+			edicion_id,
+			avatar,
+		});
 	},
 };
 
