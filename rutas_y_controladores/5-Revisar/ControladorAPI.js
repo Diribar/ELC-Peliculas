@@ -14,7 +14,7 @@ module.exports = {
 		return res.json();
 	},
 
-	preAutorizar: async (req, res) => {
+	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Obtener el status que corresponde a "Alta-aprobada"
 		let preAutorizado = await BD_genericas.obtenerPorCampo(

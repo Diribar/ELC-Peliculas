@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
 
 	// Flechas
 	let liberarSalir = document.querySelector("#flechas .fa-circle-left");
-	let preAutorizar = document.querySelector("#flechas .fa-circle-check");
+	let aprobarAlta = document.querySelector("#flechas .fa-circle-check");
 	let menuInactivar = document.querySelector("#flechas .fa-circle-xmark");
 
 	// Liberar y salir
@@ -24,8 +24,8 @@ window.addEventListener("load", () => {
 	});
 
 	// Pre-autorizar
-	preAutorizar.addEventListener("click", async () => {
-		let ruta = "/revision/producto/perfil/api/pre-autorizar/?entidad=";
+	aprobarAlta.addEventListener("click", async () => {
+		let ruta = "/revision/producto/perfil/api/alta_aprob/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
 	});
