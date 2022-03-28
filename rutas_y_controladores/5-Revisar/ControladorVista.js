@@ -53,7 +53,7 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		let destino = especificas.familiaEnSingular(entidad);
 		let usuario = req.session.usuario;
-		let datosEdicion = "";
+		let datosEdicion;
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		// Obtener la sub-dirección de destino
