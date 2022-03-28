@@ -17,7 +17,7 @@ module.exports = {
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Obtener el status que corresponde a "Alta-aprobada"
-		let preAutorizado = await BD_genericas.obtenerPorCampo(
+		let statusAltaAprob = await BD_genericas.obtenerPorCampo(
 			"status_registro_ent",
 			"alta_aprob",
 			1
@@ -25,7 +25,7 @@ module.exports = {
 		// Cambiar el status a 'Alta-aprobada'
 		// Dejar la marca del usuario y fecha en que esto se realizó
 		let datos = {
-			status_registro_id: preAutorizado,
+			status_registro_id: statusAltaAprob,
 			alta_analizada_por_id: req.session.usuario.id,
 			alta_analizada_en: especificas.ahora(),
 		};

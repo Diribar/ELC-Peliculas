@@ -24,6 +24,7 @@ module.exports = {
 		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
 		//return res.send(productos.map(n=> {return [n.nombre_castellano,n.status_registro]}));
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
+		// let ediciones=await BD_especificas.obtenerEdicionesARevisar();
 		// Consolidar productos y ordenar
 		productos = procesar(productos);
 		// Obtener RCLV -----------------------------------------------------------------
@@ -199,10 +200,6 @@ let procesar = (productos) => {
 			status_registro_id: registro.status_registro_id,
 			fecha: registro.creado_en,
 		};
-	});
-	// Ordenar los elementos por fecha
-	productos.sort((a, b) => {
-		return new Date(a.fecha) - new Date(b.fecha);
 	});
 	// Fin
 	return productos;
