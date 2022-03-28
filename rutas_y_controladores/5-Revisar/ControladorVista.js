@@ -51,8 +51,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
+		let userID = req.session.usuario.id;
 		let destino = especificas.familiaEnSingular(entidad);
-		let usuario = req.session.usuario;
 		let datosEdicion;
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
@@ -71,7 +71,7 @@ module.exports = {
 					edicID = await BD_especificas.obtenerEdicionAjena(
 						"elc_" + producto_id,
 						prodID,
-						usuario.id
+						userID,
 					);
 				}
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
