@@ -177,7 +177,7 @@ module.exports = {
 				);
 		}
 		// Consolidar y ordenar los resultados
-		let resultado = await Promise.all([resultados[0], resultados[1]]).then(([a, b]) => {
+		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
 			// Consolidarlos
 			let casos = [...a, ...b];
 			// Ordenarlos
@@ -188,6 +188,31 @@ module.exports = {
 		});
 		// Fin
 		return resultado;
+	},
+	// Controlador-Redireccionar
+	obtenerEdicionAjena: async (elc_producto_id, prodID, userID) => {
+		let haceUnaHora = especificas.haceUnaHora();
+		return db.productos_edic
+			.findOne({
+				where: {
+					// Que pertenezca al producto que nos interesa
+					[elc_producto_id]: prodID,
+					// Que cumpla alguna de las siguientes condiciones
+					[Op.or]: [
+						// Que no esté capturado
+						{capturado_en: null},
+						// Que la captura haya sido hace más de una hora
+						{capturado_en: {[Op.lt]: haceUnaHora}},
+						// Que esté capturado por este usuario
+						{capturado_por_id: userID},
+					],
+					// Que esté en condiciones de ser capturado
+					editado_en: {[Op.lt]: haceUnaHora},
+					// Que esté creado por otro usuario
+					editado_por_id: {[Op.ne]: userID},
+				},
+			})
+			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Controlador-Revisar - SIN USO AÚN
 	obtenerEdicionesARevisar: async (haceUnaHora, revisar, userID) => {

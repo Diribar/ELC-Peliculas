@@ -120,15 +120,17 @@ module.exports = {
 	},
 
 	// Gestión de archivos
-	moverImagenCarpetaDefinitiva: (nombre, destino) => {
-		let rutaProvisoria = "./public/imagenes/9-Provisorio/" + nombre;
-		let rutaDefinitiva = "./public/imagenes/" + destino + "/" + nombre;
-		fs.rename(rutaProvisoria, rutaDefinitiva, (err) => {
-			if (err) throw err;
-			else console.log("Archivo de imagen movido a la carpeta " + rutaDefinitiva);
-		});
+	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
+		let archivoOrigen = "./public/imagenes/" + origen + "/" + nombre;
+		let archivoDestino = "./public/imagenes/" + destino + "/" + nombre;
+		if (fs.existsSync(archivoOrigen)) {
+			fs.rename(archivoOrigen, archivoDestino, (error) => {
+				if (error) throw error;
+				else console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+			});
+		} else console.log("No se encuentra el archivo " + archivoOrigen);
 	},
-	borrarArchivo: (archivo, ruta) => {
+	borrarArchivo: (ruta, archivo) => {
 		let archivoImagen = path.join(ruta, archivo);
 		console.log("Archivo " + archivoImagen + " borrado");
 		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);

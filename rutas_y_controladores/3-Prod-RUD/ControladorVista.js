@@ -145,7 +145,6 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		//return res.send(prodCombinado)
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -192,17 +191,21 @@ module.exports = {
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) delete prodCombinado.avatar;
-			if (req.file) especificas.borrarArchivo(req.file.filename, req.file.path);
+			if (req.file) especificas.borrarArchivo(req.file.path, req.file.filename);
 			req.session.edicion = prodCombinado;
 		} else {
 			// Si no hubieron errores de validación...
 			// Actualizar los archivos avatar
 			if (req.file) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				especificas.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "3-ProdRevisar");
+				especificas.moverImagenCarpetaDefinitiva(
+					prodCombinado.avatar,
+					"9-Provisorio",
+					"3-ProdRevisar"
+				);
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					especificas.borrarArchivo(prodEditado.avatar, "./public/imagenes/3-ProdRevisar");
+					especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
 			}
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición

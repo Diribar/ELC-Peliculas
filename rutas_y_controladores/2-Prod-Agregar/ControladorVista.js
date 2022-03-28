@@ -232,7 +232,7 @@ module.exports = {
 		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			especificas.borrarArchivo(req.cookies.datosPers.avatarBD, "./public/imagenes/9-Provisorio/");
+			especificas.borrarArchivo("./public/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
 		}
 		especificas.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -335,7 +335,7 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			especificas.borrarArchivo(nombre, "./public/imagenes/9-Provisorio/");
+			especificas.borrarArchivo("./public/imagenes/9-Provisorio/", nombre);
 			// Guardar los errores en session
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -380,7 +380,6 @@ module.exports = {
 		// 4. Obtener los errores
 		let errores = await validarProd.datosPers(camposDP, datosPers);
 		// 6. Render del formulario
-		//return res.send(errores)
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -499,7 +498,7 @@ module.exports = {
 		// 5. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 6. Mueve el avatar de 'provisorio' a 'revisar'
-		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "3-ProdRevisar");
+		especificas.moverImagenCarpetaDefinitiva(confirma.avatar,"9-Provisorio", "3-ProdRevisar");
 		// 7. Elimina todas las session y cookie del proceso AgregarProd
 		especificas.borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar

@@ -23,11 +23,11 @@ window.addEventListener("load", () => {
 		window.location.href = "/revision/vision-general";
 	});
 
-	// Pre-autorizar
+	// Aprobar el alta
 	aprobarAlta.addEventListener("click", async () => {
 		let ruta = "/revision/producto/perfil/api/aprobar-alta/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
-		window.location.href = "/revision/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
+		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
 	});
 
 	// Menú inactivar

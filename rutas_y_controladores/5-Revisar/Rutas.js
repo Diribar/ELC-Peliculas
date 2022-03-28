@@ -14,7 +14,14 @@ const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
 // Rutas *******************************************
 // Vistas
 router.get("/vision-general", soloGestionProd, vista.visionGeneral);
-router.get("/redireccionar", soloGestionProd, vista.redireccionar);
+router.get(
+	"/redireccionar",
+	soloGestionProd,
+	entidadId,
+	permisoUsuario,
+	permisoProducto,
+	vista.redireccionar
+);
 router.get(
 	"/producto/perfil",
 	soloGestionProd,
@@ -40,8 +47,8 @@ router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Perfil
 router.get("/producto/perfil/api/aprobar-alta", soloGestionProd, API.aprobarAlta);
 // Producto-Avatar
-router.get("/producto/avatar/api/aprobar-avatar", soloGestionProd, API.aprobarAvatar);
-router.get("/producto/avatar/api/rechazar-avatar", soloGestionProd, API.rechazarAvatar);
+router.get("/producto/edicion/api/aprobarAvatar", soloGestionProd, API.aprobarAvatar);
+router.get("/producto/edicion/api/rechazarAvatar", soloGestionProd, API.rechazarAvatar);
 
 // Exportarlo **********************************************
 module.exports = router;
