@@ -222,7 +222,7 @@ module.exports = {
 			// Eliminar prodEditado (si existía) de la BD
 			if (prodEditado) await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
 			// Agregar 'edición' a la BD
-			await BD_genericas.agregarRegistro(edicion);
+			await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 			// Eliminar req.session.edicion
 			req.session.edicion = {};
 		}
@@ -305,7 +305,7 @@ module.exports = {
 			datos.alta ? await altaDeLink(req, datos) : await edicionDeLink(req, datos);
 			// Estandarizar fechaRef en originales y editados del mismo "prodEntidad" y "prodId"
 			estandarizarFechaRef(datos.prodEntidad, datos.prodID);
-			delete req.session.links
+			delete req.session.links;
 		}
 		// Redireccionar
 		return res.redirect("/producto/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
@@ -415,12 +415,11 @@ let altaDeLink = async (req, datos) => {
 	let producto_id = especificas.entidad_id(datos.prodEntidad);
 	datos = {
 		...datos,
-		entidad: "links_originales",
 		[producto_id]: datos.prodID,
 		creado_por_id: userID,
 	};
 	// Agregar el 'link' a la BD
-	await BD_genericas.agregarRegistro(datos);
+	await BD_genericas.agregarRegistro("links_originales", datos);
 	// Eliminar req.session.edicion
 	delete req.session.links;
 	// Adecuar el producto respecto al link
@@ -524,7 +523,7 @@ let edicionDeLink = async (req, datos) => {
 			};
 		}
 		// 3. Agregar 'edición' a la BD
-		await BD_genericas.agregarRegistro(linkEdicionNueva);
+		await BD_genericas.agregarRegistro("links_edicion", linkEdicionNueva);
 	}
 };
 let limpiarLosDatos = (datos) => {

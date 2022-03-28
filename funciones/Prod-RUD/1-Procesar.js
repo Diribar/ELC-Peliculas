@@ -11,10 +11,6 @@ module.exports = {
 		// Acciones en función de si existe o no
 		edicion_id
 			? await BD_genericas.actualizarPorId(entidad, edicion_id, datos)
-			: await BD_genericas.agregarRegistro({
-					entidad,
-					elc_id: producto_id,
-					...datos,
-			  });
+			: await BD_genericas.agregarRegistro(entidad, {elc_id: producto_id, ...datos});
 	},
 };

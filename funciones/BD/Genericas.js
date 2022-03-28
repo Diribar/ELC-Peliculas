@@ -90,8 +90,8 @@ module.exports = {
 	},
 
 	// Otras
-	agregarRegistro: (datos) => {
-		return db[datos.entidad].create(datos);
+	agregarRegistro: (entidad, datos) => {
+		return db[entidad].create(datos);
 	},
 	actualizarPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});

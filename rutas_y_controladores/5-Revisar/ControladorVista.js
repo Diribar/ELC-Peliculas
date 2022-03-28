@@ -105,6 +105,9 @@ module.exports = {
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
 		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises, fichaDelUsuario);
+		let motivosInactivar = await BD_genericas.obtenerTodos("motivos_para_borrar", "orden").then((n) =>
+			n.filter((m) => m.prod)
+		);
 		// 10. Ir a la vista
 		//return res.send(producto)
 		return res.render("0-Revisar", {
@@ -118,11 +121,13 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 			bloqueIzq,
 			bloqueDer,
+			motivosInactivar,
 		});
 	},
 
-	productoEditado: async (req, res) => {
+	productoEdicion: async (req, res) => {
 		// Obtener avatar editado
+		return res.send("productoEdicion");
 		let avatarEditado = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
