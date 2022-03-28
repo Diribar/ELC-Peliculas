@@ -189,7 +189,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	// Controlador-Revisar
+	// Controlador-Revisar - SIN USO AÚN
 	obtenerEdicionesARevisar: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
