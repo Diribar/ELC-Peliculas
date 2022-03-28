@@ -47,11 +47,7 @@ router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Perfil
 router.get("/producto/perfil/api/aprobar-alta", soloGestionProd, API.aprobarAlta);
 // Producto-Avatar
-router.get("/producto/edicion/api/aprobarAvatar", soloGestionProd, 
-entidadId,
-permisoUsuario,
-permisoProducto,
-API.aprobarAvatar);
+router.get("/producto/edicion/api/aprobarAvatar", soloGestionProd, API.aprobarAvatar);
 router.get("/producto/edicion/api/rechazarAvatar", soloGestionProd, API.rechazarAvatar);
 
 // Exportarlo **********************************************
