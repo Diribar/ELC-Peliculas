@@ -47,22 +47,37 @@ module.exports = {
 	},
 
 	redireccionar: async (req, res) => {
-		// Obtener los datos identificatorios del producto
+		// Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let edicID = req.query.edicion_id;
+		let userID = req.session.usuario.id;
+		let destino = especificas.familiaEnSingular(entidad);
+		let datosEdicion=""
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		// Obtener la familia
-		let destino = especificas.familiaEnSingular(entidad);
 		// Obtener la sub-dirección de destino
-		// return res.send([entidad,prodID])
-		if (destino == "producto")
-			destino += producto.status_registro.creado
+		if (destino == "producto") {
+			let subDestino = producto.status_registro.creado
 				? "/perfil"
 				: producto.status_registro.gr_inactivos
 				? "/inactivos"
 				: "/edicion";
-		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID);
+			destino += subDestino;
+			if (subDestino == "/edicion") {
+				if (!edicID) {
+					// Obtener el id de la edición
+					let producto_id = especificas.entidad_id(entidad);
+					edicID = await BD_especificas.obtenerEdicionAjena(
+						"elc_" + producto_id,
+						prodID,
+						userID,
+					);
+				}
+				if (edicID) datosEdicion = "&edicion_id=" + edicID;
+			}
+		}
+		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
 	},
 
 	productoPerfil: async (req, res) => {
@@ -126,30 +141,20 @@ module.exports = {
 		let tema = "revision";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.lastIndexOf("/"));
-		// 2. Obtener los datos identificatorios del producto
+		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let edicID = req.query.edicion_id;
+		let producto_id = await especificas.entidad_id(entidad);
+		let edicion_id, vista, avatar;
 		// Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorId(entidad, prodID);
-		let producto_id = await especificas.entidad_id(entidad);
-		let prodEditado = await BD_genericas.obtenerPorCampo("productos_edic", "elc_" + producto_id, prodID);
-
-		// Quitar los campos con valor 'null'
-		for (let campo in prodEditado) if (prodEditado[campo] === null) delete prodEditado[campo];
-		//return res.send([prodOriginal, prodEditado]);
-		// Quitar los campos que no se deben comparar
-		let edicion_id = prodEditado.id;
-		delete prodEditado.id;
-		delete prodEditado["elc_" + producto_id];
-		// Quitar de edición las igualdades
-		for (let campo in prodEditado) {
-			if (prodOriginal[campo] === prodEditado[campo]) delete prodEditado[campo];
-		}
-		// return res.send(prodEditado);
-		// Obtener rutas de los avatar
-		let avatar;
-		let vista = "2-Prod2-Edicion2";
+		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
+		// Averiguar si está editado el avatar
 		if (prodEditado.avatar) {
+			// Vista 'Edición-Avatar'
+			vista = "2-Prod2-Edicion1Avatar";
+			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
 					? (prodOriginal.avatar.slice(0, 4) != "http"
@@ -160,7 +165,24 @@ module.exports = {
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
 			};
-			vista = "2-Prod2-Edicion1Avatar";
+		} else {
+			// Vista 'Edición-Avatar'
+			vista = "2-Prod2-Edicion2Datos";
+			// Obtener el avatar
+			let imagen = prodOriginal.avatar;
+			avatar = imagen
+				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+				: "/imagenes/8-Agregar/IM.jpg";
+			// Quitar los campos con valor 'null'
+			for (let campo in prodEditado) if (prodEditado[campo] === null) delete prodEditado[campo];
+			// Quitar los campos que no se deben comparar
+			edicion_id = prodEditado.id;
+			delete prodEditado.id;
+			delete prodEditado["elc_" + producto_id];
+			// Quitar de edición las igualdades
+			for (let campo in prodEditado) {
+				if (prodOriginal[campo] === prodEditado[campo]) delete prodEditado[campo];
+			}
 		}
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);

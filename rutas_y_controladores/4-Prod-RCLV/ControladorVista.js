@@ -38,7 +38,6 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		//return res.send(RCLV)
 		return res.redirect("/producto/rclv/" + RCLV.entidad_RCLV.slice(5));
 	},
 
@@ -100,7 +99,6 @@ module.exports = {
 				  )
 				: "";
 		// 6. Render
-		//return res.send(errores);
 		return res.render("Home", {
 			tema,
 			codigo,

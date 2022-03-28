@@ -129,7 +129,7 @@ module.exports = async (req, res, next) => {
 							iconos: [
 								{
 									nombre: "fa-circle-left",
-									link: req.session.urlAnterior,
+									link: "/revision/vision-general",
 									titulo: "Ir a la vista anterior",
 								},
 								{

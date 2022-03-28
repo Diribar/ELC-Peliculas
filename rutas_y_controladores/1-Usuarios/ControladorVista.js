@@ -190,7 +190,6 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + dataEntry.avatar
 			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
 		// Ir a la vista
-		//return res.send(dataEntry)
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -212,7 +211,7 @@ module.exports = {
 		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) especificas.borrarArchivo(req.file.filename, req.file.path);
+			if (req.file) especificas.borrarArchivo(req.file.path, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
@@ -224,7 +223,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.file) especificas.moverImagenCarpetaDefinitiva(req.body.avatar, "1-Usuarios");
+		if (req.file) especificas.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

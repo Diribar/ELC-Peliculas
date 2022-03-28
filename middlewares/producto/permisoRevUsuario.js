@@ -39,7 +39,6 @@ module.exports = async (req, res, next) => {
 				" desde las " +
 				horario,
 			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior", titulo:"Ir a la vista anterior"},
 				{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"},
 			],
 		};
