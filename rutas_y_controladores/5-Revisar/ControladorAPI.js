@@ -37,9 +37,8 @@ module.exports = {
 		let {entidad, id: prodID, edicion_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
-		let avatar;
-		let datos;
 		let userID = req.session.usuario.id;
+		let avatar, datos;
 		// Si el avatar original es un archivo, eliminarlo
 		avatar = prodOriginal.avatar;
 		if (avatar.slice(0, 4) != "http") {
