@@ -1,18 +1,11 @@
 <% let prods = productos.filter((n) => n.status_registro_id == estado) %>
 <% if (prods.length) { %>
-	<h3>Status <%= titulo %> </h3>
-	<table>
-		<tbody>
-		<% for (let producto of prods) { %>
-			<tr>
-				<td>
-					<a href="/revision/redireccionar/?entidad=<%= producto.entidad %>&id=<%= producto.id %>">
-						<%= producto.nombre %>
-					</a>
-				</td>
-				<td><%= producto.abrev %></td>
-			</tr>
-		<% } %>
-		</tbody>
-	</table>
+	<h3><%= titulo %> </h3>
+	<% for (let producto of prods) { %>
+		<p>
+			<a href="/revision/redireccionar/?entidad=<%= producto.entidad %>&id=<%= producto.id %>">
+				<%= producto.abrev %> - <%= producto.nombre %>
+			</a>
+		</p>
+	<% } %>
 <% } %>

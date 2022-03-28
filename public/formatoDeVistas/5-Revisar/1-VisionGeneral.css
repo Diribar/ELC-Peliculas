@@ -1,1 +1,5 @@
 main #entidades {display: flex; flex-direction: row; justify-content: space-between; padding: 40px 70px 20px 50px;}
+
+main #entidades #primeraColumna h3 {margin-top: 12px;}
+
+/* main #entidades #primeraColumna .nombre {width: 225px;} */

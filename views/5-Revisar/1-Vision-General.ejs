@@ -7,8 +7,13 @@
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
 			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id}) %>
-			<!-- Ediciones -->
-			<%- include("11-Vision-Prods", {titulo: "Pend. Aprobar", estado: status.find(n => n.gr_pend_aprob).id}) %>
+			<!-- Aprobar la edición de productos aprobados -->
+
+			<!-- Aprobar la edición de productos pendientes de aprobar -->
+			<%- include("11-Vision-Prods", {titulo: "Ediciones de Pend. Aprobar", estado: status.find(n => n.alta_aprob).id}) %>
+			<!-- Aprobar el Alta -->
+			<%- include("11-Vision-Prods", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id}) %>
+			<!-- Recuperar -->
 			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id}) %>
 		</div>
 		<div id="segundaColumna">

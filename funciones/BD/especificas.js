@@ -176,12 +176,30 @@ module.exports = {
 					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
 				);
 		}
-		// Consolidar los resultados
+		// Consolidar y ordenar los resultados
 		let resultado = await Promise.all([resultados[0], resultados[1]]).then(([a, b]) => {
-			return [...a, ...b];
+			// Consolidarlos
+			let casos = [...a, ...b];
+			// Ordenarlos
+			casos.sort((a, b) => {
+				return new Date(a.creado_en) - new Date(b.creado_en);
+			});
+			return casos;
 		});
 		// Fin
 		return resultado;
+	},
+	// Controlador-Revisar
+	obtenerEdicionesARevisar: async (haceUnaHora, revisar, userID) => {
+		// Obtener los registros del Producto, que cumplan ciertas condiciones
+		// Declarar las variables
+		let entidades = ["peliculas", "colecciones", "capitulos"];
+		let resultados = [];
+
+		// Se deben excluir las ediciones realizadas por el usuario
+		// Obtener Ediciones de productos en status alta_aprob
+
+		// Obtener Ediciones de productos en status gr_aprob
 	},
 
 	// LINKS -------------------------------------------------------------
