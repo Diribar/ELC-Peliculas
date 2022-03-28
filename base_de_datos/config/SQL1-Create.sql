@@ -214,12 +214,12 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	pend_aprobar BOOLEAN DEFAULT 0,
+	pend_aut BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
 	revisado BOOLEAN DEFAULT 0,
 	inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
-	pre_autorizado BOOLEAN DEFAULT 0,
+	alta_aprob BOOLEAN DEFAULT 0,
 	autorizado BOOLEAN DEFAULT 0,
 	editado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
@@ -227,8 +227,8 @@ CREATE TABLE aux_status_registro (
 	inactivado BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado, pend_aprobar) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, pre_autorizado, pend_aprobar) VALUES (2, 2, 'Pre-autorizado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, pend_aut) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, pend_aut) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, autorizado, aprobado, revisado) VALUES (3, 3, 'Autorizado',1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, editado, aprobado, revisado) VALUES (4, 4, 'Editado',1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, inactivos) VALUES (5, 5, 'Inactivar',1,1);

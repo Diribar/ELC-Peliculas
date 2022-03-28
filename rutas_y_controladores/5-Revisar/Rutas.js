@@ -35,8 +35,12 @@ router.get(
 // router.get("/links", soloGestionProd, vista.visionGeneral);
 
 // API
-router.get("/producto/perfil/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
+// Producto
+router.get("/producto/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
+// Producto-Perfil
 router.get("/producto/perfil/api/pre-autorizar", soloGestionProd, API.preAutorizar);
+router.get("/producto/perfil/api/inactivar", soloGestionProd, API.inactivar);
+// Producto-Avatar
 router.get("/producto/perfil/api/inactivar", soloGestionProd, API.inactivar);
 
 // Exportarlo **********************************************

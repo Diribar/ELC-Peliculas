@@ -5,9 +5,10 @@
 		<!-- Datos generales -->
 		<div id="primeraColumna">
 			<h2>Productos</h2>
+			<!-- Para inactivar -->
 			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id}) %>
 			<!-- Ediciones -->
-			<%- include("11-Vision-Prods", {titulo: "Pend. Aprobar", estado: status.find(n => n.pend_aprobar).id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Pend. Aprobar", estado: status.find(n => n.gr_pend_aprob).id}) %>
 			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id}) %>
 		</div>
 		<div id="segundaColumna">

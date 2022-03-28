@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	let userID = req.session.usuario.id;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
-	let prodCapturado = await BD_especificas.revisaSiElUsuarioTieneOtrasCapturas(
+	let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario(
 		entidadActual,
 		prodID,
 		userID

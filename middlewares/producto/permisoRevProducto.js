@@ -24,8 +24,8 @@ module.exports = async (req, res, next) => {
 			],
 		};
 	else {
-		// ¿Producto en estado 'pend_aprobar'?
-		if (prodOriginal.status_registro.pend_aprobar) {
+		// ¿Producto en alguno de los estados 'gr_pend_aprob'?
+		if (prodOriginal.status_registro.gr_pend_aprob) {
 			// ------------------------------------------------------------------------
 			// Problema2: EL REVISOR NO DEBE REVISAR UN PRODUCTO AGREGADO POR ÉL
 			// ¿Creado por el usuario actual?
