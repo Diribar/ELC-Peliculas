@@ -328,32 +328,55 @@ module.exports = {
 			)
 				.toFixed(1)
 				.replace(".", ",") + " años";
-		let cantProds = usuario.peliculas.length + usuario.colecciones.length;
+		// Precisión del perfil de productos
+		// 1. Obtener los status
+		let statusAltaAprobId = await BD_genericas.obtenerPorCampo(
+			"status_registro_ent",
+			"alta_aprob",
+			1
+		).then((n) => n.id);
+		let statusAprobadoId = await BD_genericas.obtenerPorCampo("status_registro_ent", "aprobado", 1).then(
+			(n) => n.id
+		);
+		let statusEditadoId = await BD_genericas.obtenerPorCampo("status_registro_ent", "editado", 1).then(
+			(n) => n.id
+		);
 		let statusInactivadoId = await BD_genericas.obtenerPorCampo(
 			"status_registro_ent",
 			"inactivado",
 			1
 		).then((n) => n.id);
-		let calidadInputs = cantProds
-			? parseInt(
-					((usuario.peliculas.filter((n) => n.status_registro_id != statusInactivadoId).length +
-						usuario.colecciones.filter((n) => n.status_registro_id != statusInactivadoId)
-							.length) /
-						cantProds) *
-						100
-			  ) + "%"
-			: "-";
+		// 2. Contar los casos aprobados
+		let aprobados = usuario.peliculas.length
+			? usuario.peliculas.filter(
+					(n) =>
+						n.status_registro_id == statusAltaAprobId ||
+						n.status_registro_id == statusAprobadoId ||
+						n.status_registro_id == statusEditadoId
+			  ).length
+			: 0;
+		aprobados += usuario.colecciones.length
+			? usuario.colecciones.filter(
+					(n) =>
+						n.status_registro_id == statusAltaAprobId ||
+						n.status_registro_id == statusAprobadoId ||
+						n.status_registro_id == statusEditadoId
+			  ).length
+			: 0;
+		// 3. Contar los casos rechazados
+		let rechazados = usuario.peliculas.length
+			? usuario.peliculas.filter((n) => n.status_registro_id == statusInactivadoId).length
+			: 0;
+		rechazados += usuario.colecciones.length
+			? usuario.colecciones.filter((n) => n.status_registro_id == statusInactivadoId).length
+			: 0;
+		// 4. Medir la precisión del input
+		let cantProds = aprobados + rechazados;
+		let calidadInputs = cantProds ? parseInt((aprobados / cantProds) * 100) + "%" : "-";
 		let diasPenalizacion = usuario.registros_borrados ? usuario.registros_borrados.duracion : 0;
-		let resultado = {
-			apodo: ["Apodo", usuario.apodo],
-			calidadInputs: ["Afín con el perfil", calidadInputs],
-			antiguedad: ["Tiempo en ELC", antiguedad],
-			cantProds: ["Cant. Prods. Agregados", cantProds],
-			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-		};
-
+		// Edad
 		if (usuario.fecha_nacimiento) {
-			let edad =
+			var edad =
 				parseInt(
 					(especificas.ahora().getTime() - new Date(usuario.fecha_nacimiento).getTime()) /
 						1000 /
@@ -362,18 +385,16 @@ module.exports = {
 						24 /
 						365
 				) + " años";
-			resultado.edad = ["Edad", edad];
 		}
-		if (usuario.rol_iglesia) resultado.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
 		// Datos a enviar
 		let enviar = {};
-		enviar.apodo = resultado.apodo;
-		if (usuario.rol_iglesia) enviar.rolIglesia = resultado.rolIglesia;
-		if (usuario.fecha_nacimiento) enviar.edad = resultado.edad;
-		enviar.calidadInputs = resultado.calidadInputs;
-		enviar.antiguedad = resultado.antiguedad;
-		enviar.cantProds = resultado.cantProds;
-		enviar.diasPenalizacion = resultado.diasPenalizacion;
+		enviar.apodo = ["Apodo", usuario.apodo];
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+		if (usuario.fecha_nacimiento) enviar.edad = ["Edad", edad];
+		enviar.calidadInputs = ["Afín con el perfil", calidadInputs];
+		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		enviar.cantProds = ["Cant. Prods. Agregados", cantProds];
+		enviar.diasPenalizacion = ["Días Penalizado", diasPenalizacion];
 		// Fin
 		return enviar;
 	},

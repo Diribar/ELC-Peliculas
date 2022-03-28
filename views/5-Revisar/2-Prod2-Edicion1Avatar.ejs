@@ -12,16 +12,15 @@
 			<h1 id="titulo"><%= titulo %></h1>
 			<div id="imagenes">
 				<!-- Versión editada -->
-				<div class="flex-row">
-					<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>			
-					<div class="flex-col">
-						<h2>Imagen de Edición</h2>
-						<img id="editada" src="<%= avatar.edicion %>" title="Realizar el reemplazo">
-					</div>
-					<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
+				<div id="editada" class="flex-col">
+					<!-- Liberar y salir -->
+					<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+					<!-- Imagen -->
+					<h2>Imagen de Edición</h2>
+					<img src="<%= avatar.edicion %>" title="Realizar el reemplazo">
 				</div>
 				<!-- Versión original -->
-				<div class="flex-col">
+				<div id="original" class="flex-col">
 					<h2>Imagen Original</h2>
 					<img src="<%= avatar.original %>">
 				</div>
