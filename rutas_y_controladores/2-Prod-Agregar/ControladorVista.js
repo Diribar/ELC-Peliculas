@@ -532,7 +532,7 @@ module.exports = {
 			return res.render("Errores", {informacion});
 		}
 		// Problema: PRODUCTO YA REVISADO
-		if (!registroProd.status_registro.pend_aprobar)
+		if (!registroProd.status_registro.gr_pend_aprob)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
 		let productoNombre = especificas.entidadNombre(entidad);

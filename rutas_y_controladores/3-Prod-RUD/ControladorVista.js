@@ -233,7 +233,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
 		// Pendiente...
-		// No se puede eliminar la edición de un status "pend_aprobar"
+		// No se puede eliminar la edición de un status "gr_pend_aprob"
 		// Terminar
 		return res.send(["Eliminar", entidad, ID]);
 	},
@@ -253,7 +253,7 @@ module.exports = {
 		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 
-		// Separar entre 'activos' e 'inactivos'
+		// Separar entre 'gr_activos' y 'gr_inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
 		let productoNombre = especificas.entidadNombre(prodEntidad);
@@ -373,9 +373,9 @@ let obtenerLinkCombinado = async (elc_id, userID) => {
 let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
 	// linksActivos
-	let linksActivos = linksOriginales.filter((n) => !n.status_registro.inactivos);
+	let linksActivos = linksOriginales.filter((n) => !n.status_registro.gr_inactivos);
 	// linksInactivos
-	let linksInactivos = linksOriginales.filter((n) => n.status_registro.inactivos);
+	let linksInactivos = linksOriginales.filter((n) => n.status_registro.gr_inactivos);
 	// A los Inactivos, agregarles el motivo
 	for (let i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_genericas.obtenerPor2CamposConInclude(
@@ -445,7 +445,7 @@ let productoConLinksWeb = async (prodEntidad, prodID) => {
 		.then((n) => n.filter((n) => n.link_tipo.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
-	let linksTalVez = links.length ? links.filter((n) => n.status_registro.pend_aprobar) : [];
+	let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
 	let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
 	if (!linksActivos.length && !linksTalVez.length) return;
 

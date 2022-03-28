@@ -14,15 +14,15 @@ module.exports = {
 		return res.json();
 	},
 
-	preAutorizar: async (req, res) => {
+	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
-		// Obtener el status que corresponde a "pre-autorizado"
+		// Obtener el status que corresponde a "Alta-aprobada"
 		let preAutorizado = await BD_genericas.obtenerPorCampo(
 			"status_registro_ent",
-			"pre_autorizado",
+			"alta_aprob",
 			1
 		).then((n) => n.id);
-		// Cambiar el status a 'pre-autorizado'
+		// Cambiar el status a 'Alta-aprobada'
 		// Dejar la marca del usuario y fecha en que esto se realizó
 		let datos = {
 			status_registro_id: preAutorizado,
@@ -33,6 +33,10 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+
+	aprobarAvatar: async (req, res) => {},
+
+	rechazarAvatar: async (req, res) => {},
 
 	inactivar: async (req, res) => {
 		// Obtener las variables

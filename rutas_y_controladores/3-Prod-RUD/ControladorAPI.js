@@ -231,8 +231,8 @@ module.exports = {
 				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
 				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (link.status_registro.pend_aprobar) {
-				// Sin "captura válida" y con status 'pend_aprobar'
+			} else if (link.status_registro.gr_pend_aprob) {
+				// Sin "captura válida" y con status 'gr_pend_aprob'
 				if (link.creado_por_id == usuario.id) {
 					// Creados por el usuario --> se eliminan definitivamente
 					BD_genericas.eliminarRegistro("links_originales", link_id);
@@ -243,7 +243,7 @@ module.exports = {
 					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
 					respuesta.resultado = false;
 				}
-			} else if (link.status_registro.aprobado) {
+			} else if (link.status_registro.gr_aprobados) {
 				// Sin "captura válida" y con status 'aprobado'
 				if (motivo_id) {
 					// Si explica el motivo, se inactiva
@@ -256,7 +256,7 @@ module.exports = {
 					respuesta.resultado = false;
 				}
 			} else {
-				// Sin "captura válida" y con status 'inactivos'
+				// Sin "captura válida" y con status 'gr_inactivos'
 				respuesta.mensaje = "El link está en status inactivo";
 				respuesta.resultado = false;
 			}

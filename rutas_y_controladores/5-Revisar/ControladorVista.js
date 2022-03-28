@@ -11,17 +11,18 @@ module.exports = {
 		let codigo = "visionGeneral";
 		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
-		let prodCapturado = await BD_especificas.revisaSiElUsuarioTieneOtrasCapturas("", "", userID);
+		let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario("", "", userID);
 		if (prodCapturado)
 			return res.redirect(
 				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
 			);
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
-		let revisar = status.filter((n) => !n.revisado).map((n) => n.id);
+		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
 		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
+		//return res.send(productos.map(n=> {return [n.nombre_castellano,n.status_registro]}));
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// Consolidar productos y ordenar
 		productos = procesar(productos);
@@ -57,7 +58,7 @@ module.exports = {
 		if (destino == "producto")
 			destino += producto.status_registro.creado
 				? "/perfil"
-				: producto.status_registro.inactivos
+				: producto.status_registro.gr_inactivos
 				? "/inactivos"
 				: "/edicion";
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID);
@@ -151,7 +152,7 @@ module.exports = {
 			avatar = {
 				original: prodOriginal.avatar
 					? (prodOriginal.avatar.slice(0, 4) != "http"
-							? prodOriginal.status_registro.pend_aprobar
+							? prodOriginal.status_registro.gr_pend_aprob
 								? "/imagenes/3-ProdRevisar/"
 								: "/imagenes/2-Productos/"
 							: "") + prodOriginal.avatar
@@ -267,12 +268,12 @@ let funcionBloques = (producto, paises, fichaDelUsuario) => {
 
 // let rclvCreado = (array, creado_id) => {
 // 	// Creado, con productos aprobados
-// 	return array.length ? array.filter((n) => n.status_registro.pend_aprobar && n.cant_prod_aprobados) : [];
+// 	return array.length ? array.filter((n) => n.status_registro.gr_pend_aprob && n.cant_prod_aprobados) : [];
 // };
 // let rclvSinProds = (array, creado_id, aprobado_id) => {
 // 	// Status 'activo', sin productos creados, sin productos aprobados
 // 	return array.length
-// 		? array.filter((n) => !n.status_registro.inactivos && !n.cant_prod_creados && !n.cant_prod_aprobados)
+// 		? array.filter((n) => !n.status_registro.gr_inactivos && !n.cant_prod_creados && !n.cant_prod_aprobados)
 // 		: [];
 // };
 // includes = ["peliculas", "colecciones", "capitulos"];

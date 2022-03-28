@@ -13,19 +13,19 @@ window.addEventListener("load", () => {
 
 	// Flechas
 	let liberarSalir = document.querySelector("#flechas .fa-circle-left");
-	let preAutorizar = document.querySelector("#flechas .fa-circle-check");
+	let aprobarAlta = document.querySelector("#flechas .fa-circle-check");
 	let menuInactivar = document.querySelector("#flechas .fa-circle-xmark");
 
 	// Liberar y salir
 	liberarSalir.addEventListener("click", async () => {
-		let ruta = "/revision/producto/perfil/api/liberar-y-salir/?entidad=";
+		let ruta = "/revision/api/liberar-y-salir/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/vision-general";
 	});
 
 	// Pre-autorizar
-	preAutorizar.addEventListener("click", async () => {
-		let ruta = "/revision/producto/perfil/api/pre-autorizar/?entidad=";
+	aprobarAlta.addEventListener("click", async () => {
+		let ruta = "/revision/producto/perfil/api/aprobar-alta/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
 	});

@@ -258,7 +258,7 @@ module.exports = {
 		let id =
 			captura_activa && capturado_en > this.haceUnaHora()
 				? 2
-				: status.pend_aprobar
+				: status.gr_pend_aprob
 				? 1
 				: status.aprobado
 				? 3

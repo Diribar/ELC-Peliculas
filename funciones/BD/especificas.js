@@ -160,7 +160,7 @@ module.exports = {
 						[Op.or]: [
 							// Que no esté capturado
 							{capturado_en: null},
-							// Que esté capturado hace más de una hora
+							// Que la captura haya sido hace más de una hora
 							{capturado_en: {[Op.lt]: haceUnaHora}},
 							// Que esté capturado por este usuario
 							{capturado_por_id: userID},
@@ -187,7 +187,7 @@ module.exports = {
 	// LINKS -------------------------------------------------------------
 	// Controlador-Revisar
 	obtenerLinks: (haceUnaHora, revisar, userID) => {
-		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' con 'cant_productos'
+		// Obtener todos los registros de links, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
 		// Declarar las variables
 		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener el resultado por entidad
@@ -227,7 +227,7 @@ module.exports = {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	// Middleware/RevisarUsuario
-	revisaSiElUsuarioTieneOtrasCapturas: async (entidadActual, prodID, userID) => {
+	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
 		// Variables
 		let haceUnaHora = especificas.haceUnaHora();
 		let entidades = [
@@ -418,7 +418,7 @@ module.exports = {
 // RCLV --------------------------------------------------------------
 // Controlador-Revisar
 // obtenerRCLVaRevisar: (entidad, includes, haceUnaHora, revisar, userID) => {
-// 	// Obtener todos los registros de RCLV, excepto los que tengan status 'aprobado' con 'cant_productos'
+// 	// Obtener todos los registros de RCLV, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
 // 	return db[entidad]
 // 		.findAll({
 // 			where: {
