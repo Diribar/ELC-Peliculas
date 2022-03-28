@@ -34,6 +34,10 @@ module.exports = {
 		return res.json();
 	},
 
+	aprobarAvatar: async (req, res) => {},
+
+	rechazarAvatar: async (req, res) => {},
+
 	inactivar: async (req, res) => {
 		// Obtener las variables
 		let {entidad, id, motivo_id} = req.query;

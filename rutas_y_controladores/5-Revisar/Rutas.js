@@ -40,9 +40,8 @@ router.get("/producto/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Perfil
 router.get("/producto/perfil/api/aprobar-alta", soloGestionProd, API.aprobarAlta);
 // Producto-Avatar
-router.get("/producto/avatar/api/inactivar", soloGestionProd, API.inactivar);
-
-router.get("/producto/perfil/api/inactivar", soloGestionProd, API.inactivar);
+router.get("/producto/avatar/api/aprobar-avatar", soloGestionProd, API.aprobarAvatar);
+router.get("/producto/avatar/api/rechazar-avatar", soloGestionProd, API.rechazarAvatar);
 
 // Exportarlo **********************************************
 module.exports = router;
