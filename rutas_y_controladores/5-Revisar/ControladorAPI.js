@@ -38,9 +38,8 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
 		let userID = req.session.usuario.id;
-		let avatar, datos;
 		// Si el avatar original es un archivo, eliminarlo
-		avatar = prodOriginal.avatar;
+		let avatar = prodOriginal.avatar;
 		if (avatar.slice(0, 4) != "http") {
 			let ruta = prodOriginal.status_registro.alta_aprob
 				? "/imagenes/3-ProdRevisar/"
@@ -51,7 +50,7 @@ module.exports = {
 		// El nuevo avatar
 		// Los datos de la edición (fecha,id)
 		// Los datos de la revisión (fecha,id)
-		datos = {
+		let datos = {
 			avatar: prodEditado.avatar,
 			editado_por_id: prodEditado.editado_por_id,
 			editado_en: prodEditado.editado_en,
