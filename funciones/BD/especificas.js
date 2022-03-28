@@ -197,7 +197,7 @@ module.exports = {
 				where: {
 					// Que pertenezca al producto que nos interesa
 					[elc_producto_id]: prodID,
-					// Que cumpla alguna de las siguientes condiciones
+					// Que cumpla alguna de las siguientes condiciones de captura
 					[Op.or]: [
 						// Que no esté capturado
 						{capturado_en: null},
@@ -208,7 +208,7 @@ module.exports = {
 					],
 					// Que esté en condiciones de ser capturado
 					editado_en: {[Op.lt]: haceUnaHora},
-					// Que esté creado por otro usuario
+					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 				},
 			})
