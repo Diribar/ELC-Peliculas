@@ -15,7 +15,7 @@ CREATE TABLE borr_motivos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO borr_motivos (id, orden, duracion, comentario, prod, rclv, links)
 VALUES
-(1, 0, 0, 'Otro motivo', 1, 1, 1)
+(1, 10, 0, 'Otro motivo', 1, 1, 1)
 ;
 INSERT INTO borr_motivos (id, orden, duracion, comentario, links)
 VALUES
@@ -106,8 +106,7 @@ CREATE TABLE aux_sexos (
 INSERT INTO aux_sexos (id, orden, nombre, letra_final)
 VALUES 
 ('M', 1, 'Mujer', 'a'), 
-('V', 2, 'Varón', 'o'), 
-('O', 3, 'Otro','o')
+('V', 2, 'Varón', 'o')
 ;
 
 /* TABLAS AUXILIARES PARA USUARIOS */;
@@ -122,24 +121,29 @@ CREATE TABLE us_roles (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_roles (id, orden, nombre, aut_input, aut_gestion_prod, aut_gestion_us)
 VALUES 
-(1, 1, 'Sin privilegios', 0, 0, 0),
+(1, 1, 'Consultas', 0, 0, 0),
 (2, 2, 'Autorizado p/Inputs', 1, 0, 0),
-(3, 3, 'Gestión de Productos', 1, 1, 0),
-(4, 4, 'Gestión de Usuarios', 1, 0, 1),
+(3, 3, 'Gestor de Productos', 1, 1, 0),
+(4, 4, 'Gestor de Usuarios', 1, 0, 1),
 (5, 5, 'Omnipotente', 1, 1, 1)
 ;
 CREATE TABLE us_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
+	mail_validado BOOLEAN NULL,
+	datos_perennes BOOLEAN NULL,
+	datos_editables BOOLEAN NULL,
+	documento BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre)
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes, datos_editables, documento)
 VALUES 
-(1, 1, 'Mail a validar'), 
-(2, 2, 'Mail validado'), 
-(3, 3, 'Datos perennes OK'), 
-(4, 4, 'Datos editables OK')
+(1, 1, 'Mail a validar', 0, 0, 0, 0), 
+(2, 2, 'Mail validado', 1, 0, 0, 0), 
+(3, 3, 'Datos perennes OK', 1, 1, 0, 0), 
+(4, 4, 'Datos editables OK', 1, 1, 1, 0),
+(5, 5, 'Documento OK', 1, 1, 1, 1)
 ;
 
 /* USUARIOS */;
@@ -167,6 +171,8 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
+	documento_validado_por_id INT UNSIGNED NULL,
+	
 	motivo_penalizac_id TINYINT UNSIGNED NULL,
 	penalizado_hasta DATETIME NULL,
 
@@ -176,6 +182,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
+	FOREIGN KEY (documento_validado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_penalizac_id) REFERENCES borr_motivos(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -214,26 +221,26 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	pend_aut BOOLEAN DEFAULT 0,
-	aprobado BOOLEAN DEFAULT 0,
-	revisado BOOLEAN DEFAULT 0,
-	inactivos BOOLEAN DEFAULT 0,
+	gr_pend_aprob BOOLEAN DEFAULT 0,
+	gr_aprobados BOOLEAN DEFAULT 0,
+	gr_revisados BOOLEAN DEFAULT 0,
+	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
 	alta_aprob BOOLEAN DEFAULT 0,
-	autorizado BOOLEAN DEFAULT 0,
+	aprobado BOOLEAN DEFAULT 0,
 	editado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
 	recuperar BOOLEAN DEFAULT 0,
 	inactivado BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado, pend_aut) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, pend_aut) VALUES (2, 2, 'Alta-aprobada',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, autorizado, aprobado, revisado) VALUES (3, 3, 'Autorizado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, editado, aprobado, revisado) VALUES (4, 4, 'Editado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivar, inactivos) VALUES (5, 5, 'Inactivar',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, recuperar, inactivos) VALUES (6, 6, 'Recuperar',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, revisado, inactivos) VALUES (7, 7, 'Inactivado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_aprobados, gr_revisados) VALUES (3, 3, 'Aprobado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, editado, gr_aprobados, gr_revisados) VALUES (4, 4, 'Editado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos) VALUES (5, 5, 'Inactivar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_inactivos) VALUES (6, 6, 'Recuperar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (7, 7, 'Inactivado',1,1,1);
 
 /* TABLAS AUXILIARES PARA RCLV */;
 CREATE TABLE rclv_meses (
@@ -1029,6 +1036,7 @@ CREATE TABLE cal_1registros (
 	entretiene TINYINT UNSIGNED NOT NULL,
 	calidad_tecnica TINYINT UNSIGNED NOT NULL,
 	calificacion TINYINT UNSIGNED NOT NULL,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	PRIMARY KEY (id),
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
