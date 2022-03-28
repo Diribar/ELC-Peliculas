@@ -25,7 +25,7 @@ window.addEventListener("load", () => {
 
 	// Pre-autorizar
 	aprobarAlta.addEventListener("click", async () => {
-		let ruta = "/revision/producto/perfil/api/alta_aprob/?entidad=";
+		let ruta = "/revision/producto/perfil/api/aprobar-alta/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
 	});
