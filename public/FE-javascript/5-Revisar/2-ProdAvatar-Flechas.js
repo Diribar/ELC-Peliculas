@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 
 	// Liberar y salir
 	liberarSalir.addEventListener("click", async () => {
-		let ruta = "/revision/producto/api/liberar-y-salir/?entidad=";
+		let ruta = "/revision/api/liberar-y-salir/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/vision-general";
 	});
