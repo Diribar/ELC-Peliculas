@@ -29,7 +29,7 @@ window.addEventListener("load", () => {
 			"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
 	});
 
-	// Aceptar el nuevo avatar
+	// Rechazar el nuevo avatar
 	rechazar.addEventListener("click", async () => {
 		rechazar.style.transform = "scale(1)";
 		rechazar.style.cursor = "wait";
