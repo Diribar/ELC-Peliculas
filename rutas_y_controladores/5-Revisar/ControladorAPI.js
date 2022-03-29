@@ -6,6 +6,7 @@ const especificas = require("../../funciones/Varias/Especificas");
 
 // *********** Controlador ***********
 module.exports = {
+	// Todas las vistas de Revisar
 	liberarSalir: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Liberar y salir
@@ -14,14 +15,16 @@ module.exports = {
 		return res.json();
 	},
 
+	// Revisar el alta
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
-		// Obtener el status que corresponde a "Alta-aprobada"
-		let statusAltaAprob = await BD_genericas.obtenerPorCampo("status_registro_ent", "alta_aprob", 1).then(
-			(n) => n.id
-		);
-		// Cambiar el status a 'Alta-aprobada'
-		// Dejar la marca del usuario y fecha en que esto se realizó
+		// Averiguar el id del status
+		let statusAltaAprob = await BD_genericas.obtenerPorCampo(
+			"status_registro_ent",
+			"alta_aprob",
+			true
+		).then((n) => n.id);
+		// Cambiar el status, dejar la marca del usuario y fecha en que esto se realizó
 		let datos = {
 			status_registro_id: statusAltaAprob,
 			alta_analizada_por_id: req.session.usuario.id,
@@ -29,6 +32,39 @@ module.exports = {
 		};
 		await BD_genericas.actualizarPorId(entidad, id, datos);
 		// Fin
+		return res.json();
+	},
+	rechazarAlta: async (req, res) => {
+		// Obtener las variables
+		let {entidad, id, motivo_id} = req.query;
+		// Averiguar el id del status
+		let statusInactivar = await BD_genericas.obtenerPorCampo(
+			"status_registro_ent",
+			"inactivar",
+			true
+		).then((n) => n.id);
+		// Cambiar el status, dejar la marca del usuario y fecha en que esto se realizó
+		let datos = {
+			status_registro_id: statusInactivar,
+			alta_analizada_por_id: req.session.usuario.id,
+			alta_analizada_en: especificas.ahora(),
+			captura_activa: 0,
+		};
+		BD_genericas.actualizarPorId(entidad, id, datos);
+		let producto = await BD_genericas.obtenerPorId(entidad, id);
+		// Agregar el registro de borrados
+		datos = {
+			elc_entidad: entidad,
+			elc_id: id,
+			campo: "alta-producto",
+			motivo_id: motivo_id,
+			duracion: 0, // porque todavía lo tiene que analizar un segundo revisor
+			input_por_id: producto.creado_por_id,
+			input_en: producto.creado_en,
+			evaluado_por_id: producto.alta_analizada_por_id,
+			evaluado_en: producto.alta_analizada_en,
+		};
+		BD_genericas.agregarRegistro("inputs_rech", datos);
 		return res.json();
 	},
 
@@ -67,35 +103,4 @@ module.exports = {
 	},
 
 	rechazarAvatar: async (req, res) => {},
-
-	inactivar: async (req, res) => {
-		// Obtener las variables
-		let {entidad, id, motivo_id} = req.query;
-		// Averiguar el id del status
-		let inactivar = await BD_genericas.obtenerPorCampo("status_registro_ent", "inactivar", true).then(
-			(n) => n.id
-		);
-		let datos;
-		// Actualizar el status en la entidad
-		datos = {
-			alta_analizada_en: especificas.ahora(),
-			alta_analizada_por_id: req.session.usuario.id,
-			status_registro_id: inactivar,
-			captura_activa: 0,
-		};
-		BD_genericas.actualizarPorId(entidad, id, datos);
-		let creado_por_id = await BD_genericas.obtenerPorId(entidad, id).then((n) => n.creado_por_id);
-		// Agregar el registro de borrados
-		datos = {
-			elc_id: id,
-			elc_entidad: entidad,
-			usuario_implicado_id: creado_por_id,
-			evaluado_por_usuario_id: req.session.usuario.id,
-			motivo_id: motivo_id,
-			duracion: 0,
-			status_registro_id: inactivar,
-		};
-		BD_genericas.agregarRegistro("registros_borrados", datos);
-		return res.json();
-	},
 };

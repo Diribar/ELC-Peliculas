@@ -198,7 +198,7 @@ module.exports = {
 			: "";
 	},
 
-	// Temas de fecha y hora
+	// Fecha y Hora
 	ahora: () => {
 		// Instante actual en horario local
 		let ahora = new Date(new Date().toUTCString());
