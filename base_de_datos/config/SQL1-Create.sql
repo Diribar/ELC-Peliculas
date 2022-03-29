@@ -2,43 +2,6 @@ DROP DATABASE IF EXISTS ELC_Peliculas;
 CREATE DATABASE ELC_Peliculas;
 USE ELC_Peliculas;
 
-/* TABLAS AUXILIARES PARA USUARIOS Y ENTIDADES */;
-CREATE TABLE borr_motivos (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(41) NOT NULL,
-	prod BOOLEAN DEFAULT 0,
-	rclv BOOLEAN DEFAULT 0,
-	links BOOLEAN DEFAULT 0,
-	duracion SMALLINT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO borr_motivos (id, orden, duracion, comentario, prod, rclv, links)
-VALUES
-(1, 10, 0, 'Otro motivo', 1, 1, 1)
-;
-INSERT INTO borr_motivos (id, orden, duracion, comentario, links)
-VALUES
-(19, 1, 0, 'Link reemplazado por otro más acorde', 1),
-(20, 2, 10, 'Link a video sin relación con el producto', 1),
-(21, 3, 0, 'Link a video no disponible', 1),
-(22, 4, 10, 'Link a sitio inexistente', 1)
-;
-INSERT INTO borr_motivos (id, orden, duracion, comentario, prod)
-VALUES
-(11, 1, 0, 'Producto duplicado', 1),
-(12, 2, 1, 'Producto ajeno a nuestro perfil', 1),
-(13, 3, 90, 'Producto ofensivo a nuestro perfil', 1),
-(14, 4, 180, 'Producto ofensivo con pornografía', 1)
-;
-INSERT INTO borr_motivos (id, orden, duracion, comentario, rclv)
-VALUES
-(15, 5, 5, 'RCLV - Datos fáciles sin completar', 1),
-(16, 5, 5, 'RCLV - Información con errores', 1),
-(17, 6, 10, 'RCLV - Campos con spam', 1),
-(18, 1, 0, 'RCLV - Registro duplicado', 1)
-;
-
 /* TABLAS AUXILIARES PARA USUARIOS Y PRODUCTOS */;
 CREATE TABLE aux_idiomas (
 	id VARCHAR(2) NOT NULL UNIQUE,
@@ -165,7 +128,7 @@ CREATE TABLE USUARIOS (
 	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
-	fecha_ultimo_login DATE DEFAULT UTC_TIMESTAMP,
+	fecha_ultimo_login DATE DEFAULT UTC_DATE,
 
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
@@ -174,8 +137,9 @@ CREATE TABLE USUARIOS (
 	
 	documento_validado_por_id INT UNSIGNED NULL,
 	
-	motivo_penalizac_id TINYINT UNSIGNED NULL,
+	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME NULL,
+	penalizado_por_id INT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (sexo_id) REFERENCES aux_sexos(id),
@@ -184,8 +148,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
 	FOREIGN KEY (documento_validado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_penalizac_id) REFERENCES borr_motivos(id)
-
+	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
@@ -1083,22 +1046,4 @@ CREATE TABLE int_1registros (
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
 	FOREIGN KEY (int_opciones_id) REFERENCES int_opciones(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/* ENTORNO DE BORRADOS */;
-CREATE TABLE borr_1registros (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	elc_id INT UNSIGNED NOT NULL,
-	elc_entidad VARCHAR(20) NOT NULL,
-	usuario_implicado_id INT UNSIGNED NOT NULL,
-	evaluado_por_usuario_id INT UNSIGNED NOT NULL,
-	motivo_id TINYINT UNSIGNED NOT NULL,
-	duracion SMALLINT UNSIGNED NOT NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,	
-	creado_en DATETIME DEFAULT UTC_TIMESTAMP NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (usuario_implicado_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_usuario_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES borr_motivos(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
