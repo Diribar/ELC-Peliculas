@@ -12,8 +12,7 @@
 #dataEntry ul li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
 #dataEntry ul li .fa-circle-question .mensajeAyuda li ul li {margin: 0px}
 
-#dataEntry ul li#partesAutomatico {background-color: var(--verde-oscuro); width: fit-content;}
-#dataEntry ul li#partesAutomatico {padding: 1px 5px; border-radius: 5px;}
+#dataEntry ul li#partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
 #dataEntry ul li#partesAutomatico span {color: var(--verde-claro);}
 
 /* Flechas */
