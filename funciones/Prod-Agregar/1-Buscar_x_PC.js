@@ -35,7 +35,7 @@ module.exports = {
 			if (datos.resultados.length >= 20 || !datos.hayMas) break;
 			else page++;
 		}
-		if (mostrar) datos = ordenarDatos(datos, palabrasClave);
+		if (mostrar) datos = ordenarDatos(datos);
 		datos = {
 			palabrasClave: palabrasClave,
 			hayMas: datos.hayMas,
