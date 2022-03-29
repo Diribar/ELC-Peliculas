@@ -67,13 +67,14 @@ module.exports = {
 		BD_genericas.agregarRegistro("inputs_rech", datos);
 		return res.json();
 	},
-
+	// Revisar el avatar
 	aprobarAvatar: async (req, res) => {
 		// Variables
 		let {entidad, id: prodID, edicion_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
 		let userID = req.session.usuario.id;
+		let datos;
 		// Si el avatar original es un archivo, eliminarlo
 		let avatar = prodOriginal.avatar;
 		if (avatar.slice(0, 4) != "http") {
@@ -83,10 +84,10 @@ module.exports = {
 			especificas.borrarArchivo(ruta, avatar);
 		}
 		// Actualizar la BD_original con:
-		// El nuevo avatar
-		// Los datos de la edición (fecha,id)
-		// Los datos de la revisión (fecha,id)
-		let datos = {
+		// 	- El nuevo avatar
+		// 	- Los datos de la edición (fecha, usuario)
+		// 	- Los datos de la revisión (fecha, usuario)
+		datos = {
 			avatar: prodEditado.avatar,
 			editado_por_id: prodEditado.editado_por_id,
 			editado_en: prodEditado.editado_en,
@@ -97,10 +98,40 @@ module.exports = {
 		prodOriginal = {...prodOriginal, ...datos};
 		// Mover el nuevo avatar a la carpeta definitiva
 		especificas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
-		// Actualizar la BD_edicion quitándole el campo 'avatar'
+		// Actualizar la BD 'productos_edic' quitándole el campo 'avatar'
 		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
+		// Agregar un registro en la BD 'inputs_aprob'
+		datos = {
+			elc_entidad: entidad,
+			elc_id: id,
+			campo: "avatar",
+			input_por_id: datos.editado_por_id,
+			input_en: datos.editado_en,
+			evaluado_por_id: datos.edic_analizada_por_id,
+			evaluado_en: datos.edic_analizada_en,
+		};
+		await BD_genericas.agregarRegistro("inputs_aprob", datos);
 		return res.json();
 	},
 
-	rechazarAvatar: async (req, res) => {},
+	rechazarAvatar: async (req, res) => {
+		// Variables
+		let {entidad, id: prodID, edicion_id} = req.query;
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
+		let userID = req.session.usuario.id;
+		let datos;
+		// Eliminar el avatar editado
+		especificas.borrarArchivo("/imagenes/3-ProdRevisar/", prodEditado.avatar);
+		// Si el avatar original es un url, convertirlo a archivo en la 
+
+		let avatar = prodOriginal.avatar;
+		if (avatar.slice(0, 4) != "http") {
+			let ruta = prodOriginal.status_registro.alta_aprob
+				? "/imagenes/3-ProdRevisar/"
+				: "/imagenes/2-Productos/";
+			especificas.borrarArchivo(ruta, avatar);
+		}
+
+	},
 };

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "inputs_rech";
+	const alias = "edic_rech";
 	const columns = {
 		elc_entidad: {type: dt.STRING(20)},
 		elc_id: {type: dt.INTEGER},
@@ -15,12 +15,12 @@ module.exports = (sequelize, dt) => {
 		comunicado: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "inputs_rech",
+		tableName: "edic_rech",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.inputs_rech_motivos, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.edic_rech_motivos, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "input_por", foreignKey: "input_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "evaluado_por", foreignKey: "evaluado_por_id"});	
 	};

@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "inputs_aprob";
+	const alias = "edic_aprob";
 	const columns = {
 		elc_entidad: {type: dt.STRING(20)},
 		elc_id: {type: dt.INTEGER},
@@ -13,7 +13,7 @@ module.exports = (sequelize, dt) => {
 		comunicado: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "inputs_aprob",
+		tableName: "edic_aprob",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
