@@ -222,7 +222,7 @@ module.exports = {
 			let existe = await BD_especificas.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
 			if (!existe) {
 				// Preparar datos del capítulo
-				datosCap = {
+				let datosCap = {
 					coleccion_id: datosCol.id,
 					fuente: "TMDB",
 					temporada: 1,

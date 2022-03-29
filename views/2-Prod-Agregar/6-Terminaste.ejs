@@ -1,5 +1,5 @@
 <h1 id="titulo">
-	Agregá un<%= entidad != "capitulos" ? "a" : "" %> <%= productoNombre %> a nuestra Base de Datos
+	Agregaste un<%= entidad != "capitulos" ? "a" : "" %> <%= productoNombre %> a nuestra Base de Datos
 </h1>
 <section id="dataEntry" class="flex-col">
 	<div class="flex-col">
@@ -24,13 +24,10 @@
 			</li>
 			<li>Mientras tanto, sólo <u style="font-size: inherit;">vos</u> y los administradores podrán ver el registro agregado.</li>
 			<li>Si querés editarlo, podés hacerlo durante 1 hora desde que lo agregaste.</li>
-			<!-- Variable inicial -->
-			<% botonColeccion = "" %>
 			<!-- Colección -->
 			<% if (entidad == "colecciones") { %>
 				<% if (dataEntry.fuente == "TMDB") { %>
-					<!-- En TMDB -->
-					<li id="partesAutomatico">Los capítulos de la colección se agregaron a nuestra BD en forma automática.</li>
+					<li id="partesAutomatico"><span>Los capítulos de la colección se agregaron a nuestra BD en forma automática.</span></li>
 				<% } else { %>
 					<li>¡Muchas gracias! ¿Podrás ahora cargar los capítulos de la colección?</li>
 				<% } %>

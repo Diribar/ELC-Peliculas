@@ -1,6 +1,5 @@
 /* General */
 #dataEntry {background-color: var(--verde-claro); color: var(--verde-oscuro); border: var(--verde-oscuro) 7px solid; max-width: 80%; display: flex; flex-direction: column;}
-#dataEntry li {color: inherit;}
 
 /* Título */
 #dataEntry #gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
@@ -13,7 +12,9 @@
 #dataEntry ul li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
 #dataEntry ul li .fa-circle-question .mensajeAyuda li ul li {margin: 0px}
 
-#dataEntry ul li#partesAutomatico {border: 1px solid var(--verde-oscuro); width: fit-content; padding: 1px 5px; background-color: var(--verde-oscuro); color: var(--verde-claro);}
+#dataEntry ul li#partesAutomatico {background-color: var(--verde-oscuro); width: fit-content;}
+#dataEntry ul li#partesAutomatico {padding: 1px 5px; border-radius: 5px;}
+#dataEntry ul li#partesAutomatico span {color: var(--verde-claro);}
 
 /* Flechas */
 #dataEntry #flechas {margin: 30px auto 0; padding: 7px 15px; border-radius: 15px; display: flex; flex-direction: row; width: auto;}

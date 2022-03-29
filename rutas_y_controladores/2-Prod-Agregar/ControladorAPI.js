@@ -11,7 +11,7 @@ module.exports = {
 	cantProductos: async (req, res) => {
 		let {palabrasClave} = req.query;
 		// Obtener la cantidad de productos encontrados que coinciden con las palabras clave
-		let lectura = await buscar_x_PC.search(palabrasClave);
+		let lectura = await buscar_x_PC.search(palabrasClave, false);
 		return res.json(lectura);
 	},
 	validarPalabrasClave: (req, res) => {

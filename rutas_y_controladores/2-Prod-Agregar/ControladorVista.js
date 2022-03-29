@@ -71,10 +71,9 @@ module.exports = {
 		// 3. Errores
 		let errores = req.session.erroresDES ? req.session.erroresDES : "";
 		// 4. Preparar los datos
-		let desambiguar = await buscar_x_PC.search(palabrasClave);
+		let desambiguar = await buscar_x_PC.search(palabrasClave, true);
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
-		//return res.send(prod_nuevos)
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -500,7 +499,7 @@ module.exports = {
 		// 5. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 6. Mueve el avatar de 'provisorio' a 'revisar'
-		especificas.moverImagenCarpetaDefinitiva(confirma.avatar,"9-Provisorio", "3-ProdRevisar");
+		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
 		// 7. Elimina todas las session y cookie del proceso AgregarProd
 		especificas.borrarSessionCookies(req, res, "borrarTodo");
 		// 8. Redireccionar
