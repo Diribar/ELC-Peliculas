@@ -175,8 +175,7 @@ let agregarLanzamiento = async (dato) => {
 			for (let detalle of detalles) {
 				if (detalle < ano || !ano) ano = detalle;
 			}
-		dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
-		dato[j].desempate3 = dato[j].lanzamiento;
+		dato[j].lanzamiento = dato[j].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
 	}
 	return dato;
 };
