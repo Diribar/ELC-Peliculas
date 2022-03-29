@@ -74,6 +74,7 @@ module.exports = {
 		let desambiguar = await buscar_x_PC.search(palabrasClave);
 		let {prod_nuevos, prod_yaEnBD, mensaje} = prepararMensaje(desambiguar);
 		// 5. Render del formulario
+		//return res.send(prod_nuevos)
 		return res.render("Home", {
 			tema,
 			codigo,
@@ -261,6 +262,7 @@ module.exports = {
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
+		//return res.send(datosDuros)
 		return res.render("Home", {
 			tema,
 			codigo,

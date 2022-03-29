@@ -4,6 +4,7 @@ const searchTMDB = require("../APIs_TMDB/1-Search");
 const detailsTMDB = require("../APIs_TMDB/2-Details");
 const creditsTMDB = require("../APIs_TMDB/3-Credits");
 const BD_genericas = require("../BD/Genericas");
+const BD_especificas = require("../BD/Especificas");
 const especificas = require("../Varias/Especificas");
 
 module.exports = {
@@ -33,11 +34,11 @@ module.exports = {
 					"TMDB_id",
 					datosAPI_renamed.en_colec_TMDB_id
 				);
-				datosIniciales.producto = "Capítulo";
+				datosIniciales.productoNombre = "Capítulo";
 				datosIniciales.entidad = "capitulos";
 			} else {
 				datosAPI_renamed.en_coleccion = false;
-				datosIniciales.producto = "Película";
+				datosIniciales.productoNombre = "Película";
 				datosIniciales.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
@@ -113,7 +114,7 @@ module.exports = {
 	infoTMDBparaDD_collection: async function (datos) {
 		// Datos obtenidos sin la API
 		let datosIniciales = {
-			producto: "Colección",
+			productoNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "collection",
@@ -158,7 +159,7 @@ module.exports = {
 	},
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id
-		palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
+		let palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
 		let exportar = await searchTMDB(palabrasClave, "collection", 1);
 		if (exportar.results.length) {
 			exportar = exportar.results.find((n) => (n.id = datos.TMDB_id));
@@ -218,7 +219,7 @@ module.exports = {
 		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
-			existe = await BD_especificas.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
+			let existe = await BD_especificas.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
 			if (!existe) {
 				// Preparar datos del capítulo
 				datosCap = {
@@ -246,7 +247,7 @@ module.exports = {
 		// Obtener el API actualizada de la colección
 		let datosAPI = await detailsTMDB("collection", TMDB_id);
 		// Obtener el ID de los capitulos
-		capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
+		let capitulos_TMDB_id = datosAPI.parts.map((n) => n.id);
 		// Agregar los capítulos que correspondan
 		await this.agregarCapitulosDeCollection(coleccion_id, capitulos_TMDB_id);
 		return;
@@ -257,7 +258,7 @@ module.exports = {
 	infoTMDBparaDD_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		let datosIniciales = {
-			producto: "Colección",
+			productoNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "tv",
@@ -483,8 +484,8 @@ let fuenteSinopsisTMDB = (sinopsis) => {
 	return sinopsis;
 };
 let funcionParentesis = (dato) => {
-	desde = dato.indexOf(" (");
-	hasta = dato.indexOf(")");
+	let desde = dato.indexOf(" (");
+	let hasta = dato.indexOf(")");
 	return desde > 0 ? dato.slice(0, desde) + dato.slice(hasta + 1) : dato;
 };
 let datosColeccion = (datos, cantCapitulos) => {

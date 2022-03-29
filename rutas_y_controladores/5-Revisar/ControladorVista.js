@@ -53,7 +53,7 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
 		let destino = especificas.familiaEnSingular(entidad);
-		let datosEdicion=""
+		let datosEdicion = "";
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		// Obtener la sub-dirección de destino
@@ -68,11 +68,7 @@ module.exports = {
 				if (!edicID) {
 					// Obtener el id de la edición
 					let producto_id = especificas.entidad_id(entidad);
-					edicID = await BD_especificas.obtenerEdicionAjena(
-						"elc_" + producto_id,
-						prodID,
-						userID,
-					);
+					edicID = await BD_especificas.obtenerEdicionAjena("elc_" + producto_id, prodID, userID);
 				}
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 			}
@@ -145,6 +141,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
+		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let producto_id = await especificas.entidad_id(entidad);
 		let edicion_id, vista, avatar;
 		// Obtener ambas versiones

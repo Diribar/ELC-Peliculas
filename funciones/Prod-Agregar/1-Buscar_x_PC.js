@@ -54,7 +54,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
-			var producto = "Colección";
+			var productoNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = "-";
 			var nombre_original = m.original_name;
@@ -70,7 +70,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var producto = "Colección";
+			var productoNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = parseInt(m.first_air_date.slice(0, 4));
 			var nombre_original = m.original_name;
@@ -86,7 +86,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var producto = "Película";
+			var productoNombre = "Película";
 			var entidad = "peliculas";
 			var ano = parseInt(m.release_date.slice(0, 4));
 			var nombre_original = m.original_title;
@@ -94,14 +94,17 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			var desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		let desempate1 = especificas.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		let desempate1 = especificas
+			.convertirLetrasAlIngles(nombre_original)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
 		let desempate2 = especificas
 			.convertirLetrasAlIngles(nombre_castellano)
 			.replace(/ /g, "")
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			producto,
+			productoNombre,
 			entidad,
 			entidad_TMDB,
 			TMDB_id: m.id,
@@ -153,7 +156,7 @@ let agregarLanzamiento = async (dato) => {
 	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
 		// Obtener todas las fechas de lanzamiento
-		TMDB_id = dato[j].TMDB_id;
+		let TMDB_id = dato[j].TMDB_id;
 		detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
 			.then((n) =>
@@ -221,7 +224,7 @@ let averiguarSiYaEnBD = async (datos) => {
 				capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
-				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
+				datos.resultados[i].productoNombre = 'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
 			}
 		}
 		datos.resultados[i] = {
@@ -241,11 +244,14 @@ let hayMas = (datos, page, entidadesTMDB) => {
 };
 
 let ordenarDatos = (datos, palabrasClave) => {
-	datos.resultados.length > 1
-		? datos.resultados.sort((a, b) => {
-				return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
-		  })
-		: "";
+	if (datos.resultados.length > 1) {
+		datos.resultados.sort((a, b) => {
+			return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
+		});
+		datos.resultados.sort((a,b)=>{
+			return a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0;
+		})
+	}
 	let datosEnOrden = {
 		palabrasClave: palabrasClave,
 		hayMas: datos.hayMas,
