@@ -17,7 +17,7 @@ module.exports = {
 				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
 			);
 		// Definir variables
-		let status = await BD_genericas.obtenerTodos("status_registro_ent", "orden");
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------

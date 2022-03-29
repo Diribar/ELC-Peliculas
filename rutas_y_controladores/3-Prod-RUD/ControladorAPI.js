@@ -269,7 +269,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Obtener la duración
 	let duracion = await BD_genericas.obtenerPorId("motivos_para_borrar", motivo_id).then((n) => n.duracion);
 	// Obtener el status_id de 'inactivar'
-	let status_id = await BD_genericas.obtenerPorCampo("status_registro_ent", "inactivar", 1).then(
+	let status_id = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", 1).then(
 		(n) => n.id
 	);
 	// Preparar los datos

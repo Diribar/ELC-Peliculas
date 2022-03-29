@@ -20,7 +20,7 @@ module.exports = {
 		let {entidad, id} = req.query;
 		// Averiguar el id del status
 		let statusAltaAprob = await BD_genericas.obtenerPorCampo(
-			"status_registro_ent",
+			"status_registro",
 			"alta_aprob",
 			true
 		).then((n) => n.id);
@@ -39,7 +39,7 @@ module.exports = {
 		let {entidad, id, motivo_id} = req.query;
 		// Averiguar el id del status
 		let statusInactivar = await BD_genericas.obtenerPorCampo(
-			"status_registro_ent",
+			"status_registro",
 			"inactivar",
 			true
 		).then((n) => n.id);
