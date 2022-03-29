@@ -26,9 +26,9 @@ VALUES
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, avatar)
 VALUES
 (11, 11, 0, 'La imagen original es más adecuada', 1),
-(12, 12, 0, 'La imagen no se corresponde con el producto', 1),
+(12, 12, 10, 'La imagen no corresponde al producto', 1),
 (13, 13, 0, 'Imagen de poca nitidez', 1),
-(14, 14, 0, 'No existe ningún archivo válido de imagen', 1)
+(14, 14, 1, 'No existe un archivo válido de imagen', 1)
 ;
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, rclv)
 VALUES (21, 21, 5, 'Datos fáciles sin completar', 1);
