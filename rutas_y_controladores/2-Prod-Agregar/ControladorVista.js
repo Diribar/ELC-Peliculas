@@ -412,11 +412,11 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("/producto/agregar/datos-personalizados");
 		// Si no hay errores, continuar
-		// 8. Preparar la info para el siguiente paso
+		// 7. Preparar la info para el siguiente paso
 		req.session.confirma = req.session.datosPers;
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
-		// 9. Redireccionar a la siguiente instancia
+		// 8. Redireccionar a la siguiente instancia
 		req.session.erroresDP = false;
 		return res.redirect("/producto/agregar/confirma");
 	},
@@ -455,7 +455,7 @@ module.exports = {
 		// 1. Si se perdió la info, volver a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
-		// 7. Obtener la calificación
+		// 2. Obtener la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
 			BD_genericas.obtenerPorCampo("fe_valores", "id", confirma.fe_valores_id).then((n) => n.valor),
 			BD_genericas.obtenerPorCampo("entretiene", "id", confirma.entretiene_id).then((n) => n.valor),
@@ -470,14 +470,14 @@ module.exports = {
 			calidad_tecnica,
 			calificacion,
 		};
-		// 2. Guardar los datos de 'Original'
+		// 3. Guardar los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
-		// 3. Guardar los datos de 'Edición'
+		// 4. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
 		let producto_id = especificas.entidad_id(confirma.entidad);
 		let edicion = {
@@ -490,19 +490,19 @@ module.exports = {
 		};
 		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
-		// 4. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
+		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
 			confirma.entidad_TMDB == "collection"
 				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro})
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro});
 		}
-		// 5. Guarda las calificaciones
+		// 6. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
-		// 6. Mueve el avatar de 'provisorio' a 'revisar'
+		// 7. Mueve el avatar de 'provisorio' a 'revisar'
 		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
-		// 7. Elimina todas las session y cookie del proceso AgregarProd
+		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		especificas.borrarSessionCookies(req, res, "borrarTodo");
-		// 8. Redireccionar
+		// 9. Redireccionar
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
 		);

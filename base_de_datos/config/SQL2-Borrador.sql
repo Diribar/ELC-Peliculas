@@ -6,7 +6,8 @@ DROP TABLE IF EXISTS edic_rech_motivos;
 CREATE TABLE edic_rech_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(41) NOT NULL,
+	comentario VARCHAR(40) NOT NULL,
+	avatar BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
@@ -14,15 +15,23 @@ CREATE TABLE edic_rech_motivos (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* MOTIVOS PARA EDICIONES */;
+INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, avatar, prod, rclv, links)
+VALUES (100, 100, 0, 'Otro motivo', 1, 1, 1, 1);
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, prod, rclv, links)
 VALUES
 (1, 1, 0, 'Campo completado con información errónea', 1, 1, 1),
 (2, 2, 0, 'Errores de ortografía y/o gramática', 1, 1, 0),
-(3, 3, 10, 'Campos con spam', 1, 1, 0),
-(10, 10, 0, 'Otro motivo', 1, 1, 1)
+(3, 3, 10, 'Campos con spam', 1, 1, 0)
+;
+INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, avatar)
+VALUES
+(11, 11, 0, 'La imagen original es más adecuada', 1),
+(12, 12, 0, 'La imagen no se corresponde con el producto', 1),
+(13, 13, 0, 'Imagen de poca nitidez', 1),
+(14, 14, 0, 'No existe ningún archivo válido de imagen', 1)
 ;
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, rclv)
-VALUES (32, 2, 5, 'Datos fáciles sin completar', 1);
+VALUES (21, 21, 5, 'Datos fáciles sin completar', 1);
 CREATE TABLE edic_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	elc_entidad VARCHAR(20) NOT NULL,
@@ -77,7 +86,7 @@ CREATE TABLE altas_rech_motivos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO altas_rech_motivos (id, orden, duracion, comentario, prod, rclv, links)
 VALUES
-(1, 10, 0, 'Otro motivo', 1, 1, 1)
+(100, 100, 0, 'Otro motivo', 1, 1, 1)
 ;
 INSERT INTO altas_rech_motivos (id, orden, duracion, comentario, prod)
 VALUES
@@ -116,5 +125,6 @@ CREATE TABLE altas_rech (
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_rech_motivos(id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
