@@ -66,6 +66,7 @@ module.exports = {
 		BD_genericas.agregarRegistro("altas_rech", datos);
 		return res.json();
 	},
+
 	// Revisar el avatar
 	aprobarAvatar: async (req, res) => {
 		// Variables
@@ -146,22 +147,20 @@ module.exports = {
 		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
 		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
 		// Obtener la duración de la eventual penalización
-		let duracion=await BD_genericas.obtenerPorId("")
-		// Agregar un registro en la BD 'inputs_rech'
-
+		let duracion = await BD_genericas.obtenerPorId("");
+		// Agregar un registro en la BD 'edicion_rech'
 		datos = {
 			elc_entidad: entidad,
 			elc_id: id,
 			campo: "avatar",
 			motivo_id: motivo_id,
-			duracion: 0,
-
+			duracion,
 			input_por_id: datos.editado_por_id,
 			input_en: datos.editado_en,
 			evaluado_por_id: datos.edic_analizada_por_id,
 			evaluado_en: datos.edic_analizada_en,
 		};
-		BD_genericas.agregarRegistro("edic_aprob", datos);
+		BD_genericas.agregarRegistro("edic_rech", datos);
 		// Fin
 		return res.json();
 	},
