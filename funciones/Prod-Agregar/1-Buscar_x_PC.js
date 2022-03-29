@@ -171,11 +171,10 @@ let agregarLanzamiento = async (dato) => {
 			);
 		// Obtener el año de lanzamiento
 		let ano;
-		if (detalles.length > 1) {
+		if (detalles.length > 1)
 			for (let detalle of detalles) {
 				if (detalle < ano || !ano) ano = detalle;
 			}
-		}
 		dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
 		dato[j].desempate3 = dato[j].lanzamiento;
 	}
@@ -190,7 +189,7 @@ let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
 		};
 	}
 	// Unificar resultados
-	datos.resultados.push(...lectura.resultados)
+	datos.resultados.push(...lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
 		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
