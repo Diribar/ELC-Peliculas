@@ -110,4 +110,9 @@ module.exports = {
 			where: {[campo]: valor},
 		});
 	},
+	sumarValores: (entidad, campo, valor, campoASumar) => {
+		return db[entidad].sum(campoASumar, {
+			where: {[campo]: valor},
+		});
+	},
 };

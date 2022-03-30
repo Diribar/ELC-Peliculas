@@ -37,15 +37,15 @@
 			<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
 			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
 		</div>
-		<div id="motivosParaBorrar" class="ocultar">
+		<div id="motivosRechazar" class="ocultar">
 			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
 			<select id="">
 				<option value="" selected class="ocultar">Elegí una opción</option>	
-				<% for (motivo of motivosInactivar) { %>
+				<% for (motivo of motivosRechazar) { %>
 					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 				<% } %>
 			</select>
-			<div id="comandosBorrar">
+			<div id="comandosRechazar">
 				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
 				<i class="fa-solid fa-circle-right" title="Continuar"></i>
 			</div>

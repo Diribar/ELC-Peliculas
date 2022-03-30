@@ -42,10 +42,10 @@
 #cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);}
 
 /* Motivos para borrar */
-#motivosParaBorrar {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 11;}
-#motivosParaBorrar {background-color: var(--amarillo-oscuro); padding: 20px; border-radius: 20px;}
-#motivosParaBorrar {border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
-#motivosParaBorrar {width: 300px; text-align: center;}
-#motivosParaBorrar select {margin-top: 20px; margin-bottom: 20px; border-radius: 10px; padding: 0 5px;}
-#motivosParaBorrar #comandosBorrar {display: flex; flex-direction: row; justify-content: space-evenly;}
-#motivosParaBorrar #comandosBorrar i {color: var(--gris-oscuro); font-size: 1.5rem;}
+#motivosRechazar {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 11;}
+#motivosRechazar {background-color: var(--amarillo-oscuro); padding: 20px; border-radius: 20px;}
+#motivosRechazar {border: var(--naranja) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
+#motivosRechazar {width: 300px; text-align: center;}
+#motivosRechazar select {margin-top: 20px; margin-bottom: 20px; border-radius: 10px; padding: 0 5px;}
+#motivosRechazar #comandosRechazar {display: flex; flex-direction: row; justify-content: space-evenly;}
+#motivosRechazar #comandosRechazar i {color: var(--gris-oscuro); font-size: 1.5rem;}

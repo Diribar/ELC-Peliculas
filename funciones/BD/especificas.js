@@ -370,10 +370,10 @@ module.exports = {
 		rechazados += usuario.colecciones.length
 			? usuario.colecciones.filter((n) => n.status_registro_id == statusInactivadoId).length
 			: 0;
-		// 4. Medir la precisión del input
+		// 4. Medir la precisión del input de altas
 		let cantProds = aprobados + rechazados;
 		let calidadInputs = cantProds ? parseInt((aprobados / cantProds) * 100) + "%" : "-";
-		let diasPenalizacion = usuario.registros_borrados ? usuario.registros_borrados.duracion : 0;
+		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", "id", userID, "duracion");
 		// Edad
 		if (usuario.fecha_nacimiento) {
 			var edad =
