@@ -42,10 +42,16 @@ window.addEventListener("load", async () => {
 		let arrayMensajes =
 			codigo == "/producto/edicion/"
 				? [
-						"Se acabó el tiempo (1 hora) para continuar con esta edición.",
+						"Se acabó el tiempo de 1 hora para continuar con esta edición.",
 						"Quedó a disposición de quienes analizan tu trabajo.",
 						"Si hacés <em>click</em> en <strong>Entendido</strong>, serás redirigido a la vista de <strong>Detalle</strong>",
 				  ]
+				: codigo.startsWith("/revision/")
+				? [
+					"Se acabó el tiempo de 1 hora para continuar con esta revisión.",
+					"Quedó a disposición de que lo continúe revisando otra persona.",
+					"Si hacés <em>click</em> en <strong><i class='fa-solid fa-thumbs-up'></i></strong>, serás redirigido a la vista <strong>Visión-General</strong>",
+				]
 				: [];
 
 		// Cambiar el contenido del mensaje
@@ -75,6 +81,8 @@ window.addEventListener("load", async () => {
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
 			window.location.href = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
+		else if (codigo.startsWith("/revision/"))
+			window.location.href = "/revision/vision-general"
 	});
 
 	// STARTUP
