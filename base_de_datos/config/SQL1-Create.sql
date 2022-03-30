@@ -780,9 +780,6 @@ CREATE TABLE prod_4edicion (
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
-	captura_activa BOOLEAN NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
 	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
@@ -801,7 +798,6 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -938,14 +934,11 @@ CREATE TABLE links_2edicion (
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (elc_id) REFERENCES links_1originales(id),
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;
