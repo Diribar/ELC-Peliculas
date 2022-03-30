@@ -22,7 +22,7 @@ app.use(userLogs); // Para registrar los URL de las páginas navegadas
 
 // Para saber el recorrido del proyecto
 // var logger = require('morgan');
-// app.use(logger('dev')); 
+// app.use(logger('dev'));
 
 // *********** Para conectarse con el servidor ********************
 app.listen(80, () => console.log("Servidor funcionando..."));

@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// VARIABLES GENERALES -----------------------------------------------------------------------
+	// VARIABLES -----------------------------------------------------------------------
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");

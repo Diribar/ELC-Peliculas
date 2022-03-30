@@ -50,23 +50,21 @@ module.exports = {
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// 7. Info para la vista de Edicion o Detalle
+		let bloquesIzquierda, bloquesDerecha;
+		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Variables de 'Detalle'
-			var [bloquesIzquierda, bloquesDerecha] = [];
 			// Variables de 'Edición'
-			var camposDD = variables
+			let camposDD = variables
 				.camposDD()
 				.filter((n) => n[entidad])
 				.filter((n) => !n.omitirRutinaVista);
-			var camposDD1 = camposDD.filter((n) => n.antesDePais);
-			var camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
-			var camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
-			var BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			var BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
-			var camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
-			var tiempo = prodEditado.editado_en
-				? Math.max(0, parseInt((prodEditado.editado_en - new Date() + 1000 * 60 * 60) / 1000 / 60))
-				: false;
+			camposDD1 = camposDD.filter((n) => n.antesDePais);
+			camposDD2 = camposDD.filter((n) => !n.antesDePais && n.nombreDelCampo != "produccion");
+			camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
+			BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
+			camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
 			let statusResumido = especificas.statusResumido(
@@ -101,8 +99,8 @@ module.exports = {
 			let bloque3 = [
 				{titulo: "Actuación", valor: prodCombinado.actuacion ? prodCombinado.actuacion : "Sin datos"},
 			];
-			var bloquesIzquierda = [bloque1, bloque2, bloque3];
-			var bloquesDerecha = [
+			bloquesIzquierda = [bloque1, bloque2, bloque3];
+			bloquesDerecha = [
 				{
 					titulo: "Público Sugerido",
 					valor: prodCombinado.publico_sugerido
@@ -134,7 +132,6 @@ module.exports = {
 				id: statusResumido.id,
 			});
 			// Variables de 'Edición'
-			var [camposDD1, camposDD2, BD_paises, BD_idiomas, camposDP, tiempo] = [];
 		}
 		// Averiguar si hay errores de validación
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
@@ -144,6 +141,7 @@ module.exports = {
 				prodCombinado.coleccion_id,
 				prodCombinado.temporada
 			);
+		// Pruebas
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -162,9 +160,9 @@ module.exports = {
 			BD_idiomas,
 			camposDP,
 			errores,
-			tiempo,
 			vista: req.baseUrl + req.path,
 			paises,
+			productoNombre,
 		});
 	},
 	edicionGuardar: async (req, res) => {

@@ -10,6 +10,7 @@
 /* Partes internas */
 #cartelAdvertencia .fa-triangle-exclamation {font-size: 2rem; color: var(--amarillo-oscuro);}
 #cartelAdvertencia #mensaje {margin: 40px 20px; text-align: center; font-size: 1.2rem; line-height: 1.5;}
+#cartelAdvertencia ul#mensaje {text-align: left;}
 #cartelAdvertencia #mensaje span {font-weight: bold; font-style: italic; color: var(--amarillo-oscuro); font-size: inherit; line-height: inherit;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */

@@ -76,7 +76,7 @@ module.exports = {
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
 	},
 
-	productoPerfil: async (req, res) => {
+	productoAlta: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
@@ -112,7 +112,7 @@ module.exports = {
 		// 9.. Obtener los países
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
-		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises, fichaDelUsuario);
+		let [bloqueIzq, bloqueDer] = await funcionBloques(producto, paises, fichaDelUsuario);
 		let motivosRechazar = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -256,7 +256,7 @@ let productosLinks = (links, aprobado) => {
 	}
 	return prods;
 };
-let funcionBloques = (producto, paises, fichaDelUsuario) => {
+let funcionBloques = async (producto, paises, fichaDelUsuario) => {
 	// Bloque izquierdo
 	let [bloque1, bloque2, bloque3] = [[], [], []];
 	// Bloque 1
@@ -278,6 +278,15 @@ let funcionBloques = (producto, paises, fichaDelUsuario) => {
 	if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
 	if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
 	if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion + " min."});
+	// Obtener la fecha de alta
+	let fecha = producto.creado_en; //.toLocaleDateString();
+	let dia = fecha.getDate();
+	let meses = await BD_genericas.obtenerTodos("meses", "id").then((n) => n.map((m) => m.abrev));
+	let mes = meses[fecha.getMonth()];
+	let ano = fecha.getFullYear().toString().slice(-2);
+	fecha = dia + "/" + mes + "/" + ano;
+	// fecha=fecha.slice(0,fecha.indexOf("/"))+meses
+	bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 	// Bloque derecho consolidado
 	let derecha = [bloque1, fichaDelUsuario];
 	return [izquierda, derecha];
