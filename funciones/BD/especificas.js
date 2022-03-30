@@ -331,18 +331,18 @@ module.exports = {
 		// Precisión del perfil de productos
 		// 1. Obtener los status
 		let statusAltaAprobId = await BD_genericas.obtenerPorCampo(
-			"status_registro_ent",
+			"status_registro",
 			"alta_aprob",
 			1
 		).then((n) => n.id);
-		let statusAprobadoId = await BD_genericas.obtenerPorCampo("status_registro_ent", "aprobado", 1).then(
+		let statusAprobadoId = await BD_genericas.obtenerPorCampo("status_registro", "aprobado", 1).then(
 			(n) => n.id
 		);
-		let statusEditadoId = await BD_genericas.obtenerPorCampo("status_registro_ent", "editado", 1).then(
+		let statusEditadoId = await BD_genericas.obtenerPorCampo("status_registro", "editado", 1).then(
 			(n) => n.id
 		);
 		let statusInactivadoId = await BD_genericas.obtenerPorCampo(
-			"status_registro_ent",
+			"status_registro",
 			"inactivado",
 			1
 		).then((n) => n.id);

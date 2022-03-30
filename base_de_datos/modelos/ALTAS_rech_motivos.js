@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "motivos_para_borrar";
+	const alias = "altas_rech_motivos";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},
@@ -9,7 +9,7 @@ module.exports = (sequelize, dt) => {
 		duracion: {type: dt.INTEGER},
 		};
 	const config = {
-		tableName: "borr_motivos",
+		tableName: "altas_rech_motivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
