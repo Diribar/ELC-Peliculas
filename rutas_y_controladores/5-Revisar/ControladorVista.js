@@ -35,7 +35,7 @@ module.exports = {
 		let prodsLinks = productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(productos);
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Revisar - Visión General",
