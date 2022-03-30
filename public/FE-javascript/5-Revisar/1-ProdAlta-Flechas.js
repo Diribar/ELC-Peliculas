@@ -13,11 +13,13 @@ window.addEventListener("load", () => {
 
 	// Flechas
 	let liberarSalir = document.querySelector("#flechas .fa-circle-left");
+	console.log(liberarSalir);
 	let aprobarAlta = document.querySelector("#flechas .fa-circle-check");
 	let menuInactivar = document.querySelector("#flechas .fa-circle-xmark");
 
 	// Liberar y salir
 	liberarSalir.addEventListener("click", async () => {
+		console.log(345);
 		let ruta = "/revision/api/liberar-y-salir/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/vision-general";
@@ -25,6 +27,7 @@ window.addEventListener("load", () => {
 
 	// Aprobar el alta
 	aprobarAlta.addEventListener("click", async () => {
+		console.log(123);
 		let ruta = "/revision/producto/alta/api/aprobar/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
