@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
-	let contador = document.querySelector("#contador");
+	let timer = document.querySelector("#timer");
 	let pulgarArriba = document.querySelector("#cartelAdvertencia .fa-thumbs-up");
 	// Horario Inicial
 	let codigoEnc = encodeURIComponent(codigo);
@@ -19,15 +19,14 @@ window.addEventListener("load", async () => {
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime();
 	let minutos = Math.max(0, parseInt(tiempoRestante / 1000 / 60) + 1);
-	minutos=30
 
 	// FUNCIONES
 	let funcionTimer = () => {
-		let timer = setInterval(() => {
+		let actualizarTimer = setInterval(() => {
 			minutos--;
-			contador.innerHTML = minutos + " min.";
+			timer.innerHTML = minutos + " min.";
 			if (minutos == 0) {
-				clearInterval(timer);
+				clearInterval(actualizarTimer);
 				// Cartel de "time out"
 				funcionCartelAdvertencia();
 			} else formatoTimer(minutos);
@@ -68,8 +67,8 @@ window.addEventListener("load", async () => {
 		cartelAdvertencia.classList.remove("ocultar");
 	};
 	let formatoTimer = (minutos) => {
-		if (minutos <= 15) contador.style.backgroundColor = "var(--rojo-oscuro)"
-		else if (minutos <= 30) contador.style.backgroundColor = "var(--naranja-oscuro)";
+		if (minutos <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)"
+		else if (minutos <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
 	
 	// EVENTOS
@@ -79,8 +78,8 @@ window.addEventListener("load", async () => {
 	});
 
 	// STARTUP
-	contador.innerHTML = minutos + " min.";
+	timer.innerHTML = minutos + " min.";
 	formatoTimer(minutos);
 	funcionTimer();
-	contador.classList.remove("ocultar");
+	timer.classList.remove("ocultar");
 });
