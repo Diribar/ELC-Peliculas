@@ -13,8 +13,6 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 
 		fecha_referencia: {type: dt.DATE},
-		capturado_por_id: {type: dt.INTEGER},
-		capturado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "links_2edicion",
@@ -26,7 +24,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 	};
 	return entidad;
 };

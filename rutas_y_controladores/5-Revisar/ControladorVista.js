@@ -108,7 +108,7 @@ module.exports = {
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisión - Perfil de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// 9.. Obtener los países
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
@@ -149,7 +149,7 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID,"status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// Averiguar si está editado el avatar
-		return res.send(prodEditado)
+		//return res.send(prodEditado)
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edicion1Avatar";
