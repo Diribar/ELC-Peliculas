@@ -105,7 +105,7 @@ module.exports = {
 		// Agregar un registro en la BD 'inputs_aprob'
 		datos = {
 			elc_entidad: entidad,
-			elc_id: id,
+			elc_id: prodID,
 			campo: "avatar",
 			input_por_id: datos.editado_por_id,
 			input_en: datos.editado_en,
@@ -117,6 +117,7 @@ module.exports = {
 		return res.json();
 	},
 	rechazarAvatar: async (req, res) => {
+		console.log(req.query);
 		// Variables
 		let {entidad, id: prodID, edicion_id, motivo_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");

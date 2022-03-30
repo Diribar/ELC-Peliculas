@@ -44,7 +44,7 @@ router.get(
 // API
 // Producto
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
-// Producto-Perfil
+// Producto-Alta
 router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
 router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
 // Producto-Avatar
