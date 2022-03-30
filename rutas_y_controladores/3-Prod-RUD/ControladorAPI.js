@@ -267,30 +267,33 @@ module.exports = {
 
 let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Obtener la duración
-	let duracion = await BD_genericas.obtenerPorId("motivos_para_borrar", motivo_id).then((n) => n.duracion);
+	let duracion = await BD_genericas.obtenerPorId("altas_rech_motivos", motivo_id).then((n) => n.duracion);
 	// Obtener el status_id de 'inactivar'
-	let status_id = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", 1).then(
+	let statusInactivar_id = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", 1).then(
 		(n) => n.id
 	);
 	// Preparar los datos
 	let datosParaLink = {
 		editado_por_id: usuario.id,
 		editado_en: new Date(),
-		status_registro_id: status_id,
+		status_registro_id: statusInactivar_id,
 	};
 	// Actualiza el registro 'original' en la BD
 	BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
 	// 3. Crea un registro en la BD de 'registros_borrados'
 	let datosParaBorrados = {
-		elc_id: link.id,
 		elc_entidad: "links_originales",
-		usuario_implicado_id: link.creado_por_id,
-		evaluado_por_usuario_id: usuario.id,
+		elc_id: link.id,
 		motivo_id: motivo_id,
-		duracion: duracion,
-		status_registro_id: status_id,
+		duracion: 0, // porque todavía lo tiene que evaluar un revisor
+
+		input_por_id: link.creado_por_id,
+		input_en: link.creado_en,
+		evaluado_por_id: datosParaLink.editado_por_id,
+		evaluado_en: datosParaLink.editado_en,
+		status_registro_id: datosParaLink.status_registro_id,
 	};
-	BD_genericas.agregarRegistro("registros_borrados", datosParaBorrados);
+	BD_genericas.agregarRegistro("altas_rech", datosParaBorrados);
 };
 
 // let obtenerLinksFusionados = async (link_id, usuario) => {

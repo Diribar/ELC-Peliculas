@@ -113,7 +113,7 @@ module.exports = {
 		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
 		// Info para la vista
 		let [bloqueIzq, bloqueDer] = funcionBloques(producto, paises, fichaDelUsuario);
-		let motivosInactivar = await BD_genericas.obtenerTodos("motivos_para_borrar", "orden").then((n) =>
+		let motivosRechazar = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// 10. Ir a la vista
@@ -128,7 +128,8 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 			bloqueIzq,
 			bloqueDer,
-			motivosInactivar,
+			motivosRechazar,
+			productoNombre,
 		});
 	},
 

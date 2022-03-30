@@ -6,10 +6,10 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#motivosParaBorrar");
-	let motivosParaBorrar = document.querySelector("#motivosParaBorrar select");
-	let cancelar = document.querySelector("#comandosBorrar .fa-circle-left");
-	let inactivar = document.querySelector("#comandosBorrar .fa-circle-right");
+	let menuMotivosBorrar = document.querySelector("#motivosRechazar");
+	let motivosRechazar = document.querySelector("#motivosRechazar select");
+	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
+	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
 
 	// Flechas
 	let liberarSalir = document.querySelector("#flechas .fa-circle-left");
@@ -34,6 +34,7 @@ window.addEventListener("load", () => {
 	menuInactivar.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
+
 	});
 
 	// Cancelar menú motivos para borrar
@@ -44,11 +45,10 @@ window.addEventListener("load", () => {
 
 	// Inactivar
 	inactivar.addEventListener("click", async () => {
-		let motivo = motivosParaBorrar.value;
+		let motivo = motivosRechazar.value;
 		if (motivo) {
-			let ruta = "/revision/producto/perfil/api/inactivar/?entidad=";
+			let ruta = "/revision/producto/perfil/api/rechazar-alta/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
-			console.log(51);
 			window.location.href = "/revision/vision-general";
 		}
 	});

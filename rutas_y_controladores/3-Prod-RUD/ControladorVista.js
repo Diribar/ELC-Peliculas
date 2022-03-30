@@ -255,7 +255,6 @@ module.exports = {
 		let linksCombinados = await obtenerLinksCombinados(prodEntidad, prodID, userID);
 		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
-
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título y el avatar
@@ -269,7 +268,7 @@ module.exports = {
 				prodEditado.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
-		let motivos = await BD_genericas.obtenerTodos("motivos_para_borrar", "orden")
+		let motivos = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {
