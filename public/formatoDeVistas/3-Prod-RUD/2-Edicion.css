@@ -3,11 +3,6 @@ main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: r
 main form .input-error {position: relative; display: flex; flex-direction: row;}
 main form #cuerpo {justify-content: space-between; padding: 40px 70px 20px 50px;}
 
-/* Contador */
-form #cuerpo #contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
-form #cuerpo #contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: solid 2px var(--verde-oscuro); border-top: none; border-right: none;}
-form #cuerpo #contador {font-size: 1.1rem; font-weight: bold;}
-
 /* Imagen */
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}

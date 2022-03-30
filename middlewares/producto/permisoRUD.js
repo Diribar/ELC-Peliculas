@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
 									titulo: "Ir a la vista anterior",
 								},
 								{
-									nombre: "fa-circle-rigth",
+									nombre: "fa-circle-right",
 									link: linkDetalle,
 									titulo: "Ir a la vista Detalle",
 								},

@@ -25,7 +25,7 @@ window.addEventListener("load", () => {
 
 	// Aprobar el alta
 	aprobarAlta.addEventListener("click", async () => {
-		let ruta = "/revision/producto/perfil/api/aprobar-alta/?entidad=";
+		let ruta = "/revision/producto/alta/api/aprobar/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
 	});
@@ -47,7 +47,7 @@ window.addEventListener("load", () => {
 	inactivar.addEventListener("click", async () => {
 		let motivo = motivosRechazar.value;
 		if (motivo) {
-			let ruta = "/revision/producto/perfil/api/rechazar-alta/?entidad=";
+			let ruta = "/revision/producto/alta/api/rechazar/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
 			window.location.href = "/revision/vision-general";
 		}

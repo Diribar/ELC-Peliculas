@@ -23,12 +23,12 @@ router.get(
 	vista.redireccionar
 );
 router.get(
-	"/producto/perfil",
+	"/producto/alta",
 	soloGestionProd,
 	entidadId,
 	permisoUsuario,
 	permisoProducto,
-	vista.productoPerfil
+	vista.productoAlta
 );
 router.get(
 	"/producto/edicion",
@@ -45,8 +45,8 @@ router.get(
 // Producto
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Perfil
-router.get("/producto/perfil/api/aprobar-alta", soloGestionProd, API.aprobarAlta);
-router.get("/producto/perfil/api/rechazar-alta", soloGestionProd, API.rechazarAlta);
+router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
+router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
 // Producto-Avatar
 router.get("/producto/edicion/api/aprobarAvatar", soloGestionProd, API.aprobarAvatar);
 router.get("/producto/edicion/api/rechazarAvatar", soloGestionProd, API.rechazarAvatar);

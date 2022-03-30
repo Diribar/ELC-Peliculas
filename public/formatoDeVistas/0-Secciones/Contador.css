@@ -1,0 +1,4 @@
+/* Contador */
+#contador {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
+#contador {color: var(--gris-claro); background-color: var(--verde-oscuro); border: none;}
+#contador {font-size: 1.1rem; font-weight: bold;}

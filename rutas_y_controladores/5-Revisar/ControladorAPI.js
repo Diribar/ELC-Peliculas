@@ -3,7 +3,6 @@
 const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
-const requestPromise = require("request-promise");
 
 // *********** Controlador ***********
 module.exports = {

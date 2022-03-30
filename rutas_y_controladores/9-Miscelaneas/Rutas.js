@@ -11,6 +11,7 @@ let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 // Vistas *******************************************
 // Vistas de APIs
 router.get("/quick-search/", API.quickSearch);
+router.get("/horario-inicial/", API.horarioInicial);
 
 // Vistas de vistas - Institucional
 router.get("/", vista.home);
