@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%- include('Head') %>
+	<%- include('1-Head') %>
 	<%- include('0-RUD-Head') %>
 </head>
 <body>
-	<%- include('Header') %>
+	<%- include('21-Header') %>
 	<main class="flex-row">
 		<%- codigo != "edicion" ? include('0-RUD-Cuerpo') : "" %>
 		<%- codigo == "edicion" ? include('2-EdicionCuerpo') : "" %>
