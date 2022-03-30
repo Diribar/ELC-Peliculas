@@ -1,27 +1,27 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
+	// VARIABLES
+	// Pointer del producto
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let prodID = new URL(window.location.href).searchParams.get("id");
+	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
 	let contador = document.querySelector("#contador");
 	let pulgarArriba = document.querySelector("#cartelAdvertencia .fa-thumbs-up");
-
 	// Horario Inicial
-	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
 	let codigoEnc = encodeURIComponent(codigo);
 	let horarioInicial = new Date(
 		await fetch("/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc).then(
 			(n) => n.json()
 		)
 	);
-
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime();
 	let minutos = Math.max(0, parseInt(tiempoRestante / 1000 / 60) + 1);
 	minutos=30
 
-	// Funciones
+	// FUNCIONES
 	let funcionTimer = () => {
 		let timer = setInterval(() => {
 			minutos--;
@@ -72,13 +72,13 @@ window.addEventListener("load", async () => {
 		else if (minutos <= 30) contador.style.backgroundColor = "var(--naranja-oscuro)";
 	};
 	
-	// Eventos
+	// EVENTOS
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
 			window.location.href = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
 	});
 
-	// Startup
+	// STARTUP
 	contador.innerHTML = minutos + " min.";
 	formatoTimer(minutos);
 	funcionTimer();
