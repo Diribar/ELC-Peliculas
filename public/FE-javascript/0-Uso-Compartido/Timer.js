@@ -67,10 +67,10 @@ window.addEventListener("load", async () => {
 		cartelAdvertencia.classList.remove("ocultar");
 	};
 	let formatoTimer = (minutos) => {
-		if (minutos <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)"
+		if (minutos <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
 		else if (minutos <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
-	
+
 	// EVENTOS
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
