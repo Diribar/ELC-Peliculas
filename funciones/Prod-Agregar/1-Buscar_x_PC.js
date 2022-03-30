@@ -9,7 +9,7 @@ const especificas = require("../Varias/Especificas");
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
-	search: async (palabrasClave) => {
+	search: async (palabrasClave, mostrar) => {
 		palabrasClave = especificas.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
@@ -23,9 +23,8 @@ module.exports = {
 						.then((n) => estandarizarNombres(n, entidad_TMDB))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					entidad_TMDB == "collection" && lectura.resultados.length > 0
-						? (lectura.resultados = await agregarLanzamiento(lectura.resultados))
-						: "";
+					if (entidad_TMDB == "collection" && lectura.resultados.length && mostrar)
+						lectura.resultados = await agregarLanzamiento(lectura.resultados);
 					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
 				}
 			}
@@ -33,11 +32,18 @@ module.exports = {
 			datos = eliminarDuplicados(datos);
 			datos = await averiguarSiYaEnBD(datos);
 			datos.hayMas = hayMas(datos, page, entidadesTMDB);
-			if (datos.resultados.length >= 20 || !datos.hayMas) {
-				break;
-			} else page = page + 1;
+			if (datos.resultados.length >= 20 || !datos.hayMas) break;
+			else page++;
 		}
-		datos = ordenarDatos(datos, palabrasClave);
+		if (mostrar) datos = ordenarDatos(datos);
+		datos = {
+			palabrasClave: palabrasClave,
+			hayMas: datos.hayMas,
+			cantResultados: datos.resultados.length,
+			cantPaginasAPI: datos.cantPaginasAPI,
+			cantPaginasUsadas: datos.cantPaginasUsadas,
+			resultados: datos.resultados,
+		};
 		return datos;
 	},
 };
@@ -54,7 +60,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
-			var producto = "Colección";
+			var productoNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = "-";
 			var nombre_original = m.original_name;
@@ -70,7 +76,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var producto = "Colección";
+			var productoNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = parseInt(m.first_air_date.slice(0, 4));
 			var nombre_original = m.original_name;
@@ -86,7 +92,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var producto = "Película";
+			var productoNombre = "Película";
 			var entidad = "peliculas";
 			var ano = parseInt(m.release_date.slice(0, 4));
 			var nombre_original = m.original_title;
@@ -94,14 +100,17 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			var desempate3 = m.release_date;
 		}
 		// Definir el título sin "distractores", para encontrar duplicados
-		let desempate1 = especificas.convertirLetrasAlIngles(nombre_original).replace(/ /g, "").replace(/'/g, "");
+		let desempate1 = especificas
+			.convertirLetrasAlIngles(nombre_original)
+			.replace(/ /g, "")
+			.replace(/'/g, "");
 		let desempate2 = especificas
 			.convertirLetrasAlIngles(nombre_castellano)
 			.replace(/ /g, "")
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			producto,
+			productoNombre,
 			entidad,
 			entidad_TMDB,
 			TMDB_id: m.id,
@@ -150,26 +159,23 @@ let eliminarIncompletos = (dato) => {
 };
 
 let agregarLanzamiento = async (dato) => {
-	let detalles = [];
 	for (let j = 0; j < dato.length; j++) {
 		// Obtener todas las fechas de lanzamiento
-		TMDB_id = dato[j].TMDB_id;
-		detalles = await detailsTMDB("collection", TMDB_id)
+		let TMDB_id = dato[j].TMDB_id;
+		let detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
 			.then((n) =>
 				n.map((m) => {
 					if (m.release_date) return m.release_date;
 				})
 			);
-		// Ordenar de menor a mayor
-		detalles.length > 1
-			? detalles.sort((a, b) => {
-					return a < b ? -1 : a > b ? 1 : 0;
-			  })
-			: "";
-		let ano = detalles[0];
-		dato[j].lanzamiento = ano != "-" ? parseInt(ano.slice(0, 4)) : ano;
-		dato[j].desempate3 = ano;
+		// Obtener el año de lanzamiento
+		let ano;
+		if (detalles.length > 1)
+			for (let detalle of detalles) {
+				if (detalle < ano || !ano) ano = detalle;
+			}
+		dato[j].lanzamiento = dato[j].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
 	}
 	return dato;
 };
@@ -182,7 +188,7 @@ let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
 		};
 	}
 	// Unificar resultados
-	datos.resultados = datos.resultados.concat(lectura.resultados);
+	datos.resultados.push(...lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
 		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
@@ -221,7 +227,8 @@ let averiguarSiYaEnBD = async (datos) => {
 				capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
-				datos.resultados[i].producto = 'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
+				datos.resultados[i].productoNombre =
+					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
 			}
 		}
 		datos.resultados[i] = {
@@ -240,19 +247,14 @@ let hayMas = (datos, page, entidadesTMDB) => {
 	);
 };
 
-let ordenarDatos = (datos, palabrasClave) => {
-	datos.resultados.length > 1
-		? datos.resultados.sort((a, b) => {
-				return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
-		  })
-		: "";
-	let datosEnOrden = {
-		palabrasClave: palabrasClave,
-		hayMas: datos.hayMas,
-		cantResultados: datos.resultados.length,
-		cantPaginasAPI: datos.cantPaginasAPI,
-		cantPaginasUsadas: datos.cantPaginasUsadas,
-		resultados: datos.resultados,
-	};
-	return datosEnOrden;
+let ordenarDatos = (datos) => {
+	if (datos.resultados.length > 1) {
+		datos.resultados.sort((a, b) => {
+			return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
+		});
+		datos.resultados.sort((a, b) => {
+			return a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0;
+		});
+	}
+	return datos;
 };

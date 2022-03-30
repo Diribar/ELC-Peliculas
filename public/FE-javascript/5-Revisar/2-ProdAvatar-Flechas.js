@@ -7,8 +7,8 @@ window.addEventListener("load", () => {
 
 	// Flechas
 	let liberarSalir = document.querySelector("#imagenes .fa-circle-left");
-	let aceptar = document.querySelector("#imagenes #editada");
-	let rechazar = document.querySelector("#imagenes .fa-circle-xmark");
+	let aceptar = document.querySelector("#imagenes #editada img");
+	let rechazar = document.querySelector("#imagenes #original img");
 
 	// Liberar y salir
 	liberarSalir.addEventListener("click", async () => {
