@@ -242,4 +242,7 @@ module.exports = {
 	provsListaNegra: () => {
 		return ["youporn", "pornhub"];
 	},
+	meses: () => {
+		return ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+	},
 };

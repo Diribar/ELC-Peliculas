@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 
 	// Flechas
-	let liberarSalir = document.querySelector("#imagenes .fa-circle-left");
+	let liberarSalir = document.querySelector("#liberarSalir");
 
 	// Liberar y salir
 	liberarSalir.addEventListener("click", async () => {
