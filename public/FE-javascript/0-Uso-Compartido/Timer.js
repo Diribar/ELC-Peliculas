@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 				// Cartel de "time out"
 				funcionCartelAdvertencia();
 			} else formatoTimer(minutos);
-		}, 1000 * 1);
+		}, 1000 * 60);
 	};
 	let funcionCartelAdvertencia = () => {
 		// Variables
