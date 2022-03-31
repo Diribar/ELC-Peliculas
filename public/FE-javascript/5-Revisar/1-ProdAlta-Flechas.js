@@ -28,7 +28,6 @@ window.addEventListener("load", () => {
 	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
-
 	});
 
 	// Cancelar menú motivos para borrar
@@ -43,7 +42,7 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			rechazar.style.transform = "scale(1)";
 			rechazar.style.cursor = "wait";
-				let ruta = "/revision/producto/alta/api/rechazar/?entidad=";
+			let ruta = "/revision/producto/alta/api/rechazar/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
 			window.location.href = "/revision/vision-general";
 		}
