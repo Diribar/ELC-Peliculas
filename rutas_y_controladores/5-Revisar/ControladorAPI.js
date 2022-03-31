@@ -36,7 +36,7 @@ module.exports = {
 	rechazarAlta: async (req, res) => {
 		// Obtener las variables
 		let {entidad, id, motivo_id} = req.query;
-		let datos
+		let datos;
 		// Detectar un eventual error
 		if (!motivo_id) return res.json();
 		// Averiguar el id del status
@@ -148,12 +148,15 @@ module.exports = {
 		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
 		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
 		// Agregar un registro en la BD 'edicion_rech'
+		let duracion = await BD_genericas.obtenerPorId("edic_rech_motivos", motivo_id).then(
+			(n) => n.duracion
+		);
 		let datos = {
 			elc_entidad: entidad,
 			elc_id: prodID,
 			campo: "avatar",
 			motivo_id: motivo_id,
-			duracion: 0, // porque todavía lo tiene que analizar un segundo revisor
+			duracion,
 			input_por_id: prodEditado.editado_por_id,
 			input_en: prodEditado.editado_en,
 			evaluado_por_id: userID,

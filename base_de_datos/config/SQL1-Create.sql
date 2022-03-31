@@ -747,12 +747,6 @@ CREATE TABLE prod_4edicion (
 	elc_pelicula_id INT UNSIGNED DEFAULT NULL,
 	elc_coleccion_id INT UNSIGNED DEFAULT NULL,
 	elc_capitulo_id INT UNSIGNED DEFAULT NULL,
-	temporada TINYINT UNSIGNED DEFAULT NULL,
-	capitulo TINYINT UNSIGNED NULL,
-	TMDB_id VARCHAR(10) NULL UNIQUE,
-	FA_id VARCHAR(10) NULL UNIQUE,
-	IMDB_id VARCHAR(10) NULL UNIQUE,
-	entidad_TMDB VARCHAR(10) NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
 	duracion SMALLINT UNSIGNED NULL,
@@ -760,8 +754,6 @@ CREATE TABLE prod_4edicion (
 	ano_fin SMALLINT UNSIGNED NULL,
 	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
-	cant_temporadas TINYINT UNSIGNED NULL,
-	cant_capitulos SMALLINT UNSIGNED NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
 	musica VARCHAR(100) NULL,
@@ -781,9 +773,6 @@ CREATE TABLE prod_4edicion (
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
-	links_gratuitos_cargados_id TINYINT UNSIGNED NULL,
-	links_gratuitos_en_la_web_id TINYINT UNSIGNED NULL,
-
 	PRIMARY KEY (id),
 	FOREIGN KEY (elc_pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (elc_coleccion_id) REFERENCES prod_2colecciones(id),	
@@ -797,9 +786,7 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
-	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO prod_4edicion (id, elc_pelicula_id, elc_coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en)
 VALUES

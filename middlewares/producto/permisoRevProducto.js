@@ -2,6 +2,7 @@
 // Requires
 const especificas = require("../../funciones/Varias/Especificas");
 const BD_genericas = require("../../funciones/BD/Genericas");
+const variables = require("../../funciones/Varias/Variables");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
@@ -76,14 +77,12 @@ module.exports = async (req, res, next) => {
 				// --------------------------------------------------------------------
 				else {
 					// Definir nuevas variables
-					let meses = await BD_genericas.obtenerTodos("meses", "id").then((n) =>
-						n.map((m) => m.abrev)
-					);
+					let meses = variables.meses()
 					if (prodOriginal.capturado_en)
 						var horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
 							"/" +
-							meses[prodOriginal.capturado_en.getUTCMonth()] +
+							meses[prodOriginal.capturado_en.getMonth()] +
 							" " +
 							prodOriginal.capturado_en.getHours() +
 							":" +

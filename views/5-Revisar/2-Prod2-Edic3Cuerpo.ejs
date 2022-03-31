@@ -6,22 +6,7 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("0-Revisar-Encabezado") %>
 			<!-- Sinopsis -->
-			<div id="sinopsis">
-				<nav><%= prodOriginal.sinopsis %></nav>
-				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question"></i>
-				<ul type="none" class="mensajeAyuda ocultar">
-					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
-				</ul>
-			</div>
 			<!-- Demás Datos Duros -->
-			<% for (bloque of bloqueIzq) { %>
-				<div class="datosAdicionales">
-					<% for (campo of bloque) { %>
-						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
-					<% } %> 
-				</div>				
-			<% } %>
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">

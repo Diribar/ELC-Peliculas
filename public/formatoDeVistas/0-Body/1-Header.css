@@ -6,7 +6,7 @@ header section {margin: 0 15px;}
 
 /* Formato de íconos */
 header section .grupos {margin: 0 15px;}
-header section .grupos .iconoMenu {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; position: static; transform: none;}
+header section .grupos .iconos {color: var(--celeste-claro); font-size: 1.8rem; line-height: normal; cursor: pointer; position: static; transform: none;}
 header #icono-usuario #letraInicial {color: var(--azul-oscuro); font-weight: bold;}
 header section .grupos .scale {transition: 300ms;}
 header section .grupos .scale:hover {transform: scale(1.3);}
