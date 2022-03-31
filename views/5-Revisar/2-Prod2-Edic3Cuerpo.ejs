@@ -6,9 +6,9 @@
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("0-Revisar-Encabezado") %>
 			<!-- Ingresos -->
-
-			<% for (ingreso of ingresos) { %>
-				
+			<h3>Ingresos</h3>
+			<% for (campo of ingresos) { %>
+				<%- include("21-ProdEdic-Ingresos", {campo}) %> 
 			<% } %>
 		</div>
 		<!-- Comandos -->

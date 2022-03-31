@@ -258,6 +258,8 @@ module.exports = {
 			{
 				titulo: "Idioma Original",
 				nombreDelCampo: "idioma_original_id",
+				asociacion1: "idioma_original.nombre",
+				asociacion2:"nombre",
 			},
 			{
 				titulo: "Dirección",
@@ -286,38 +288,52 @@ module.exports = {
 			{
 				titulo: "Existe una versión en castellano",
 				nombreDelCampo: "en_castellano_id",
-				angosto: true,
+				asociacion1: "en_castellano",
+				asociacion2:"productos",
 			},
 			{
 				titulo: "Es a Color",
 				nombreDelCampo: "en_color_id",
-				angosto: true,
+				asociacion1: "en_color",
+				asociacion2:"productos",
 			},
 			{
 				titulo: "Categoría",
 				nombreDelCampo: "categoria_id",
+				asociacion1: "categoria",
+				asociacion2:"nombre",
 			},
 			{
 				titulo: "Sub-categoría",
 				nombreDelCampo: "subcategoria_id",
+				asociacion1: "subcategoria",
+				asociacion2:"nombre",
 			},
 			{
 				titulo: "Público sugerido",
 				nombreDelCampo: "publico_sugerido_id",
+				asociacion1: "publico_sugerido",
+				asociacion2:"nombre",
 			},
 			{
 				titulo: "Personaje histórico",
 				nombreDelCampo: "personaje_id",
+				asociacion1: "personaje",
+				asociacion2:"nombre",
 				rclv: true,
 			},
 			{
 				titulo: "Hecho histórico",
 				nombreDelCampo: "hecho_id",
+				asociacion1: "hecho",
+				asociacion2:"nombre",
 				rclv: true,
 			},
 			{
 				titulo: "Valor principal",
 				nombreDelCampo: "valor_id",
+				asociacion1: "valor",
+				asociacion2:"nombre",
 				rclv: true,
 			},
 		];
