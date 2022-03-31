@@ -173,6 +173,7 @@ module.exports = {
 			delete edicion.id;
 			delete edicion["elc_" + producto_id];
 			delete edicion.editado_en;
+			delete edicion.editado_por_id;
 			// Quitar los campos con valor 'null'
 			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
 			// Quitar de edición las igualdades
