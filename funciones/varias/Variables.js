@@ -226,6 +226,103 @@ module.exports = {
 		];
 	},
 
+	camposRevisarEdic: () => {
+		return [
+			{
+				titulo: "Título original",
+				nombreDelCampo: "nombre_original",
+			},
+			{
+				titulo: "Título en castellano",
+				nombreDelCampo: "nombre_castellano",
+			},
+			{
+				titulo: "Año de estreno",
+				nombreDelCampo: "ano_estreno",
+				angosto: true,
+			},
+			{
+				titulo: "Año de finalización",
+				nombreDelCampo: "ano_fin",
+				angosto: true,
+			},
+			{
+				titulo: "Duración",
+				nombreDelCampo: "duracion",
+				angosto: true,
+			},
+			{
+				titulo: "País/es",
+				nombreDelCampo: "paises_id",
+			},
+			{
+				titulo: "Idioma Original",
+				nombreDelCampo: "idioma_original_id",
+			},
+			{
+				titulo: "Dirección",
+				nombreDelCampo: "direccion",
+			},
+			{
+				titulo: "Guión",
+				nombreDelCampo: "guion",
+			},
+			{
+				titulo: "Música",
+				nombreDelCampo: "musica",
+			},
+			{
+				titulo: "Actuación",
+				nombreDelCampo: "actuacion",
+			},
+			{
+				titulo: "Producción",
+				nombreDelCampo: "produccion",
+			},
+			{
+				titulo: "Sinopsis",
+				nombreDelCampo: "sinopsis",
+			},
+			{
+				titulo: "Existe una versión en castellano",
+				nombreDelCampo: "en_castellano_id",
+				angosto: true,
+			},
+			{
+				titulo: "Es a Color",
+				nombreDelCampo: "en_color_id",
+				angosto: true,
+			},
+			{
+				titulo: "Categoría",
+				nombreDelCampo: "categoria_id",
+			},
+			{
+				titulo: "Sub-categoría",
+				nombreDelCampo: "subcategoria_id",
+			},
+			{
+				titulo: "Público sugerido",
+				nombreDelCampo: "publico_sugerido_id",
+			},
+			{
+				titulo: "Personaje histórico",
+				nombreDelCampo: "personaje_id",
+				rclv: true,
+			},
+			{
+				titulo: "Hecho histórico",
+				nombreDelCampo: "hecho_id",
+				rclv: true,
+			},
+			{
+				titulo: "Valor principal",
+				nombreDelCampo: "valor_id",
+				rclv: true,
+			},
+		];
+	},
+
 	provsQueNoRespetanCopyright: () => {
 		return [
 			{

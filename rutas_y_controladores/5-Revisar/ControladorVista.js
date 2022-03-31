@@ -115,7 +115,7 @@ module.exports = {
 			: "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await bloquesAltaProd(prodOriginal, paises);
-		let motivosRechazar = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
+		let motivosRechazo = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// Ir a la vista
@@ -129,7 +129,7 @@ module.exports = {
 			avatar,
 			bloqueIzq,
 			bloqueDer,
-			motivosRechazar,
+			motivosRechazo,
 			productoNombre,
 		});
 	},
@@ -144,15 +144,14 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		let producto_id = await especificas.entidad_id(entidad);
-		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		let vista, avatar, edicion;
+		let motivosRechazo = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		let vista, avatar, ingresos, reemplazos;
+		let bloqueIzq,
+			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// 4. Acciones dependiendo de si está editado el avatar
-		let bloqueIzq,
-			bloqueDer = [[], []];
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edic1Avatar";
@@ -167,29 +166,17 @@ module.exports = {
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
 			};
-			motivosRechazar = motivosRechazar.filter((m) => m.avatar);
+			motivosRechazo = motivosRechazo.filter((m) => m.avatar);
 		} else {
-			// Armar la variable con los datos a mostrar
-			edicion = {...prodEditado};
-			let quitarCampos = [
-				"id",
-				"elc_pelicula_id",
-				"elc_coleccion_id",
-				"elc_capitulo_id",
-				"editado_por_id",
-				"editado_en",
-			];
-			for (let campo of quitarCampos) delete edicion[campo];
-			// Quitar los campos con valor 'null' y los que son iguales al original
-			for (let campo in edicion)
-				if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
+			// Obtener los ingresos y reemplazos
+			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
-			motivosRechazar = motivosRechazar.filter((m) => m.prod);
+			motivosRechazo = motivosRechazo.filter((m) => m.prod);
 			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
 			vista = "2-Prod2-Edic2Estruct";
 		}
@@ -197,18 +184,18 @@ module.exports = {
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Ir a la vista
-
-		//return res.send(motivosRechazar)
+		//return res.send([ingresos, reemplazos]);
 		return res.render(vista, {
 			tema,
 			codigo,
 			titulo,
 			prodOriginal,
 			prodEditado,
-			edicion,
+			ingresos,
+			reemplazos,
 			avatar,
 			vista,
-			motivosRechazar,
+			motivosRechazo,
 			entidad,
 			bloqueIzq,
 			bloqueDer,
@@ -336,4 +323,27 @@ let obtenerLaFecha = (fecha) => {
 	let ano = fecha.getFullYear().toString().slice(-2);
 	fecha = dia + "/" + mes + "/" + ano;
 	return fecha;
+};
+let armarComparacion = (prodOriginal, prodEditado) => {
+	// Variables
+	let camposAComparar = variables.camposRevisarEdic();
+	// Obtener una copia de edicion
+	let edicion = {...prodEditado};
+	// Quitar los campos con valor 'null' y los que son iguales al original
+	for (let campo in edicion)
+		if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
+	// Quitar los campos que no se comparan y armar los valores a comparar
+	for (let i = camposAComparar.length - 1; i >= 0; i--) {
+		let campo = camposAComparar[i].nombreDelCampo;
+		if (!Object.keys(edicion).includes(campo)) camposAComparar.splice(i, 1);
+		else {
+			camposAComparar[i].valorOrig =
+				!camposAComparar[i].rclv || prodOriginal[campo] != 1 ? prodOriginal[campo] : null;
+			camposAComparar[i].valorEdic = edicion[campo];
+		}
+	}
+	// Ingresos de edición, sin valor en la versión original
+	let ingresos = camposAComparar.filter((n) => !n.valorOrig);
+	let reemplazos = camposAComparar.filter((n) => n.valorOrig);
+	return [ingresos, reemplazos];
 };

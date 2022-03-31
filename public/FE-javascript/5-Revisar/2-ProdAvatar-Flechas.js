@@ -11,8 +11,8 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#motivosRechazar");
-	let motivosRechazar = document.querySelector("#motivosRechazar select");
+	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
+	let motivosRechazo = document.querySelector("#motivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
 
@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 
 	// Rechazar el nuevo avatar
 	rechazar.addEventListener("click", async () => {
-		let motivo = motivosRechazar.value;
+		let motivo = motivosRechazo.value;
 		if (motivo) {
 			rechazar.style.transform = "scale(1)";
 			menuMotivosBorrar.style.cursor = "wait";
