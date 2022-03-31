@@ -13,18 +13,8 @@ window.addEventListener("load", () => {
 	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
 
 	// Flechas
-	let liberarSalir = document.querySelector("#imagenes .fa-circle-left");
 	let aprobar = document.querySelector("#imagenes #editada img");
-	let rechazar = document.querySelector("#imagenes #original img");
-
-	// Liberar y salir
-	liberarSalir.addEventListener("click", async () => {
-		liberarSalir.style.transform = "scale(1)";
-		liberarSalir.style.cursor = "wait";
-		let ruta = "/revision/api/liberar-y-salir/?entidad=";
-		await fetch(ruta + prodEntidad + "&id=" + prodID);
-		window.location.href = "/revision/vision-general";
-	});
+	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
@@ -37,7 +27,7 @@ window.addEventListener("load", () => {
 	});
 
 	// Menú inactivar
-	menuInactivar.addEventListener("click", () => {
+	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
 
