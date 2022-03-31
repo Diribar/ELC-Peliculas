@@ -145,13 +145,13 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivosRechazo = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		let vista, avatar, edicion;
+		let vista, avatar, ingresos, reemplazos;
+		let bloqueIzq,
+			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// 4. Acciones dependiendo de si está editado el avatar
-		let bloqueIzq,
-			bloqueDer = [[], []];
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edic1Avatar";
@@ -169,19 +169,12 @@ module.exports = {
 			motivosRechazo = motivosRechazo.filter((m) => m.avatar);
 		} else {
 			// Armar la variable con los datos a mostrar
-			edicion = {...prodEditado};
-			let quitarCampos = [
-				"id",
-				"elc_pelicula_id",
-				"elc_coleccion_id",
-				"elc_capitulo_id",
-				"editado_por_id",
-				"editado_en",
-			];
-			for (let campo of quitarCampos) delete edicion[campo];
+			let edicion = {...prodEditado};
 			// Quitar los campos con valor 'null' y los que son iguales al original
 			for (let campo in edicion)
 				if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
+			// Obtener los
+			[ingresos, reemplazos] = armarComparacion(prodOriginal, edicion);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -196,14 +189,15 @@ module.exports = {
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Ir a la vista
-		return res.send(edicion)
+		//return res.send([ingresos, reemplazos]);
 		return res.render(vista, {
 			tema,
 			codigo,
 			titulo,
 			prodOriginal,
 			prodEditado,
-			edicion,
+			ingresos,
+			reemplazos,
 			avatar,
 			vista,
 			motivosRechazo,
@@ -334,4 +328,21 @@ let obtenerLaFecha = (fecha) => {
 	let ano = fecha.getFullYear().toString().slice(-2);
 	fecha = dia + "/" + mes + "/" + ano;
 	return fecha;
+};
+let armarComparacion = (prodOriginal, edicion) => {
+	let camposAComparar = variables.camposRevisarEdic();
+	// Quitar los campos que no se comparan y armar los valores a comparar
+	for (let i = camposAComparar.length - 1; i >= 0; i--) {
+		let campo = camposAComparar[i].nombreDelCampo;
+		if (!Object.keys(edicion).includes(campo)) camposAComparar.splice(i, 1);
+		else {
+			camposAComparar[i].valorOrig =
+				!camposAComparar[i].rclv || prodOriginal[campo] != 1 ? prodOriginal[campo] : null;
+			camposAComparar[i].valorEdic = edicion[campo];
+		}
+	}
+	// Ingresos de edición, sin valor en la versión original
+	let ingresos = camposAComparar.filter((n) => !n.valorOrig);
+	let reemplazos = camposAComparar.filter((n) => n.valorOrig);
+	return [ingresos, reemplazos];
 };

@@ -5,8 +5,11 @@
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("0-Revisar-Encabezado") %>
-			<!-- Sinopsis -->
-			<!-- Demás Datos Duros -->
+			<!-- Ingresos -->
+
+			<% for (ingreso of ingresos) { %>
+				
+			<% } %>
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">
@@ -18,21 +21,6 @@
 		<!-- Botones -->
 		<div id="flechas">
 			<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
-			<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
-			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
-		</div>
-		<div id="motivosRechazo" class="ocultar">
-			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
-			<select>
-				<option value="" selected class="ocultar">Elegí una opción</option>	
-				<% for (motivo of motivosRechazo) { %>
-					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
-				<% } %>
-			</select>
-			<div id="comandosRechazar">
-				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
-				<i class="fa-solid fa-circle-right" title="Continuar"></i>
-			</div>
 		</div>
 	</section>
 	<section id="datosBreves">
