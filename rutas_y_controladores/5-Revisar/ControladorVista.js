@@ -127,7 +127,6 @@ module.exports = {
 			entidad,
 			prodOriginal,
 			avatar,
-			vista: req.baseUrl + req.path,
 			bloqueIzq,
 			bloqueDer,
 			motivosRechazar,
