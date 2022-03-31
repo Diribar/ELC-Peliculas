@@ -1,3 +1,67 @@
 <%- include('Timer') %>
-<button type="text" id="timer" class="ocultar" tabindex="-1"></button>
 <h1 id="titulo"><%= titulo %></h1>
+<div id="datos">
+	<section id="datosLargos">
+		<div id="contenido">
+			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+			<%- include("0-Revisar-Encabezado") %>
+			<!-- Sinopsis -->
+			<div id="sinopsis">
+				<nav><%= prodOriginal.sinopsis %></nav>
+				<!-- Ayuda -->
+				<i class="fa-solid fa-circle-question"></i>
+				<ul type="none" class="mensajeAyuda ocultar">
+					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+				</ul>
+			</div>
+			<!-- Demás Datos Duros -->
+			<% for (bloque of bloqueIzq) { %>
+				<div class="datosAdicionales">
+					<% for (campo of bloque) { %>
+						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
+					<% } %> 
+				</div>				
+			<% } %>
+		</div>
+		<!-- Comandos -->
+		<div id="comandos">
+			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
+			<% if (entidad != "colecciones") { %>
+				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= productoNombre %>"></i>
+			<% } %>
+		</div>
+		<!-- Botones -->
+		<div id="flechas">
+			<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+			<i class="fa-solid fa-circle-check" tabindex="-1" title="Aprobarlo"></i>
+			<i class="fa-solid fa-circle-xmark" tabindex="-1" title="Rechazarlo"></i>
+		</div>
+		<div id="motivosRechazar" class="ocultar">
+			<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
+			<select>
+				<option value="" selected class="ocultar">Elegí una opción</option>	
+				<% for (motivo of motivosRechazar) { %>
+					<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+				<% } %>
+			</select>
+			<div id="comandosRechazar">
+				<i class="fa-solid fa-circle-left" title="Cancelar"></i>
+				<i class="fa-solid fa-circle-right" title="Continuar"></i>
+			</div>
+		</div>
+	</section>
+	<section id="datosBreves">
+		<p class="titulo">Datos del Producto</p>
+		<div id="texto">
+			<% for (campo of bloqueDer[0]) { %>
+				<p class="datosProducto <%- campo.titulo.startsWith("Status") ? ('status" id="status' + campo.id + '') : "" %>">
+					<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
+				</p>
+			<% } %>
+			<p class="titulo">Datos del Usuario</p>
+			<% for (campo in bloqueDer[1]) { %>
+				<p class="datosUsuario"><strong><%= bloqueDer[1][campo][0] %>:</strong> <span><%= bloqueDer[1][campo][1] %></span></p>
+		<% } %> 
+		</div>
+	</section>
+</div>

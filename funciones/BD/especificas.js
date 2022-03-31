@@ -297,9 +297,8 @@ module.exports = {
 		return lectura ? {...lectura, entidad} : lectura;
 	},
 	// Controladora/Revisar/Productos
-	fichaDelUsuario: async function (entidad, prodID) {
+	fichaDelUsuario: async function (producto) {
 		// Obtener el producto
-		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
 		let userID = producto.creado_por_id;
 		// Obtener los datos del usuario
 		let includes = ["status_registro", "rol_iglesia", "peliculas", "colecciones"];

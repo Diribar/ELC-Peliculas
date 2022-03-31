@@ -3,26 +3,38 @@
 	<section>
 		<!-- Menú de Home -->
 		<div class="grupos">
-			<i class="fa-solid fa-house scale iconoMenu" title="Menú de Inicio"></i>
+			<i class="fa-solid fa-house scale iconoMenu iconos" title="Menú de Inicio"></i>
 			<%- include("1-MenuHome") %>
 		</div>
 		<!-- Búsqueda rápida -->
 		<div id="busquedaRapida" class="grupos">
-			<i class="fa-solid fa-magnifying-glass scale iconoMenu" title="Búsqueda rápida"></i>
+			<i class="fa-solid fa-magnifying-glass scale iconoMenu iconos" title="Búsqueda rápida"></i>
 			<%- include("2-MenuBusqueda") %>
 		</div>
-		<!-- Menú de Productos -->
+		<!-- Agregar un Producto -->
 		<div class="grupos">
-			<i class="fa-solid fa-film iconoMenu" title="Menú de Productos"></i>
-			<%- include("3-MenuProducto") %>
+			<a href="/producto/agregar/confirma" tabindex="-1">
+				<div id="crear-prod-icono" class="scale" title="Agregar un Producto">
+					<i class="fa-solid fa-video iconos"></i>
+					<i class="fa-solid fa-plus iconos"></i>
+				</div>
+			</a>
 		</div>
+		<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_prod) { %>
+			<!-- Revisar Altas y Ediciones -->
+			<div class="grupos">
+				<a href="/revision/vision-general" tabindex="-1">
+					<i class="fa-solid fa-spell-check scale iconos" title="Revisar Altas y Ediciones"></i>
+				</a>
+			</div>
+		<% } %>
 	</section>
 	<!-- Título del Encabezado -->
 	<p id="titulo">ELC - Películas</p>
 	<section>
 		<!-- Música de fondo -->
 		<div class="grupos">
-			<i id="icono-musica" class="fa-solid fa-music scale"></i>
+			<i id="icono-musica" class="fa-solid fa-music scale iconos"></i>
 			<audio src="/audio/Música-de-fondo.mp3"></audio>
 		</div>
 		<!-- Usuario -->

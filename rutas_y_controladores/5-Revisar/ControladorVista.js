@@ -97,33 +97,33 @@ module.exports = {
 		}
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-		if (!producto.status_registro.creado)
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		if (!prodOriginal.status_registro.creado)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// 5. Obtener datos del usuario
 		let fichaDelUsuario = await BD_especificas.fichaDelUsuario(entidad, prodID);
 		// 6. Obtener avatar original
-		let avatar = producto.avatar
-			? (producto.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + producto.avatar
+		let avatar = prodOriginal.avatar
+			? (prodOriginal.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") + prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// 9.. Obtener los países
-		let paises = producto.paises_id ? await especificas.paises_idToNombre(producto.paises_id) : "";
+		let paises = prodOriginal.paises_id ? await especificas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// Info para la vista
-		let [bloqueIzq, bloqueDer] = await funcionBloques(producto, paises, fichaDelUsuario);
+		let [bloqueIzq, bloqueDer] = await funcionBloques(prodOriginal, paises, fichaDelUsuario);
 		let motivosRechazar = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// 10. Ir a la vista
-		//return res.send(producto)
+		//return res.send(prodOriginal)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
-			producto,
+			prodOriginal,
 			avatar,
 			vista: req.baseUrl + req.path,
 			bloqueIzq,
@@ -146,10 +146,11 @@ module.exports = {
 		let producto_id = await especificas.entidad_id(entidad);
 		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let edicion_id, vista, avatar;
-		// Obtener ambas versiones
+		// 3. Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
-		// Acciones dependiendo de si está editado el avatar
+		// 4. Acciones dependiendo de si está editado el avatar
+		let bloqueIzq, bloqueDer=[[],[]]
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edicion1Avatar";
@@ -184,11 +185,13 @@ module.exports = {
 				if (prodOriginal[campo] === prodEditado[campo]) delete prodEditado[campo];
 			}
 			motivosRechazar = motivosRechazar.filter((m) => m.prod);
+			bloqueDer = await funcionBloqueDer(prodOriginal, fichaDelUsuario);
 		}
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Ir a la vista
+		
 		//return res.send(motivosRechazar)
 		return res.render(vista, {
 			tema,
@@ -200,6 +203,9 @@ module.exports = {
 			avatar,
 			vista,
 			motivosRechazar,
+			entidad,
+			bloqueIzq,
+			bloqueDer,
 		});
 	},
 };
@@ -262,30 +268,30 @@ let productosLinks = (links, aprobado) => {
 	}
 	return prods;
 };
-let funcionBloques = async (producto, paises, fichaDelUsuario) => {
+let funcionBloques = async (prodOriginal, paises) => {
 	// Bloque izquierdo
 	let [bloque1, bloque2, bloque3] = [[], [], []];
 	// Bloque 1
 	if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-	if (producto.idioma_original)
-		bloque1.push({titulo: "Idioma original", valor: producto.idioma_original.nombre});
+	if (prodOriginal.idioma_original)
+		bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
 	// Bloque 2
-	if (producto.direccion) bloque2.push({titulo: "Dirección", valor: producto.direccion});
-	if (producto.guion) bloque2.push({titulo: "Guión", valor: producto.guion});
-	if (producto.musica) bloque2.push({titulo: "Música", valor: producto.musica});
-	if (producto.produccion) bloque2.push({titulo: "Producción", valor: producto.produccion});
+	if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
+	if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
+	if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
+	if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
 	// Bloque 3
-	if (producto.actuacion) bloque3.push({titulo: "Actuación", valor: producto.actuacion});
+	if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
 	// Bloque izquierdo consolidado
 	let izquierda = [bloque1, bloque2, bloque3];
 	// Bloque derecho
 	[bloque1, bloque2] = [[], []];
 	// Bloque 1
-	if (producto.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: producto.ano_estreno});
-	if (producto.ano_fin) bloque1.push({titulo: "Año de fin", valor: producto.ano_fin});
-	if (producto.duracion) bloque1.push({titulo: "Duracion", valor: producto.duracion + " min."});
+	if (prodOriginal.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
+	if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
+	if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
 	// Obtener la fecha de alta
-	let fecha = producto.creado_en; //.toLocaleDateString();
+	let fecha = prodOriginal.creado_en; //.toLocaleDateString();
 	let dia = fecha.getDate();
 	let meses = await BD_genericas.obtenerTodos("meses", "id").then((n) => n.map((m) => m.abrev));
 	let mes = meses[fecha.getMonth()];
@@ -293,6 +299,9 @@ let funcionBloques = async (producto, paises, fichaDelUsuario) => {
 	fecha = dia + "/" + mes + "/" + ano;
 	// fecha=fecha.slice(0,fecha.indexOf("/"))+meses
 	bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+	// 5. Obtener los datos del usuario
+	let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodOriginal);
+
 	// Bloque derecho consolidado
 	let derecha = [bloque1, fichaDelUsuario];
 	return [izquierda, derecha];
