@@ -19,6 +19,7 @@ window.addEventListener("load", async () => {
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime();
 	let minutos = Math.min(60, Math.max(0, parseInt(tiempoRestante / 1000 / 60)));
+	//minutos=1
 
 	// FUNCIONES
 	let funcionTimer = () => {
@@ -30,7 +31,7 @@ window.addEventListener("load", async () => {
 				// Cartel de "time out"
 				funcionCartelAdvertencia();
 			} else formatoTimer(minutos);
-		}, 1000 * 60);
+		}, 1000 * 1);
 	};
 	let funcionCartelAdvertencia = () => {
 		// Variables
