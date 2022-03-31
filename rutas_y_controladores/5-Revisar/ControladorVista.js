@@ -115,7 +115,7 @@ module.exports = {
 			: "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await bloquesAltaProd(prodOriginal, paises);
-		let motivosRechazar = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
+		let motivosRechazo = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// Ir a la vista
@@ -129,7 +129,7 @@ module.exports = {
 			avatar,
 			bloqueIzq,
 			bloqueDer,
-			motivosRechazar,
+			motivosRechazo,
 			productoNombre,
 		});
 	},
@@ -144,8 +144,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		let producto_id = await especificas.entidad_id(entidad);
-		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		let motivosRechazo = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, edicion;
 		// 3. Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
@@ -167,7 +166,7 @@ module.exports = {
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
 			};
-			motivosRechazar = motivosRechazar.filter((m) => m.avatar);
+			motivosRechazo = motivosRechazo.filter((m) => m.avatar);
 		} else {
 			// Armar la variable con los datos a mostrar
 			edicion = {...prodEditado};
@@ -189,7 +188,7 @@ module.exports = {
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
-			motivosRechazar = motivosRechazar.filter((m) => m.prod);
+			motivosRechazo = motivosRechazo.filter((m) => m.prod);
 			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
 			vista = "2-Prod2-Edic2Estruct";
 		}
@@ -197,8 +196,7 @@ module.exports = {
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Ir a la vista
-
-		//return res.send(motivosRechazar)
+		return res.send(edicion)
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -208,7 +206,7 @@ module.exports = {
 			edicion,
 			avatar,
 			vista,
-			motivosRechazar,
+			motivosRechazo,
 			entidad,
 			bloqueIzq,
 			bloqueDer,

@@ -18,11 +18,11 @@
 					<!-- Imagen -->
 					<h2>Imagen de Edición</h2>
 					<img src="<%= avatar.edicion %>" title="Realizar el reemplazo">
-					<section id="motivosRechazar" class="ocultar">
+					<section id="motivosRechazo" class="ocultar">
 						<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
 						<select>
 							<option value="" selected class="ocultar">Elegí una opción</option>	
-							<% for (motivo of motivosRechazar) { %>
+							<% for (motivo of motivosRechazo) { %>
 								<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 							<% } %>
 						</select>
