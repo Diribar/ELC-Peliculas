@@ -30,7 +30,6 @@ window.addEventListener("load", () => {
 	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
-
 	});
 
 	// Cancelar menú motivos para borrar
@@ -41,15 +40,21 @@ window.addEventListener("load", () => {
 
 	// Rechazar el nuevo avatar
 	rechazar.addEventListener("click", async () => {
-		rechazar.style.transform = "scale(1)";
-		menuMotivosBorrar.style.cursor = "wait";
 		let motivo = motivosRechazar.value;
 		if (motivo) {
+			rechazar.style.transform = "scale(1)";
+			menuMotivosBorrar.style.cursor = "wait";
 			let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
-			await fetch(ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id + "&motivo_id=" + motivo);
+			await fetch(
+				ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id + "&motivo_id=" + motivo
+			);
 			window.location.href =
-				"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
+				"/revision/redireccionar/?entidad=" +
+				prodEntidad +
+				"&id=" +
+				prodID +
+				"&edicion_id=" +
+				edicion_id;
 		}
-
 	});
 });
