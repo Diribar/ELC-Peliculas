@@ -33,8 +33,10 @@ window.addEventListener("load", () => {
 	rechazar.addEventListener("click", async () => {
 		rechazar.style.transform = "scale(1)";
 		rechazar.style.cursor = "wait";
-		// let ruta = "/revision/producto/edicion/api/aprobarAvatar/?entidad=";
-		// await fetch(ruta + prodEntidad + "&id=" + prodID);
-		// window.location.href = "/revision/vision-general";
+		let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
+		await fetch(ruta + prodEntidad + "&id=" + prodID);
+		window.location.href = "/";
+		// window.location.href =
+		// 	"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
 	});
 });

@@ -196,6 +196,7 @@ module.exports = {
 			prodEditado,
 			edicion_id,
 			avatar,
+			vista,
 		});
 	},
 };

@@ -118,6 +118,7 @@ module.exports = {
 	},
 	rechazarAvatar: async (req, res) => {
 		console.log(req.query);
+		return res.json();
 		// Variables
 		let {entidad, id: prodID, edicion_id, motivo_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
