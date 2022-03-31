@@ -34,6 +34,9 @@ module.exports = {
 				titulo: "Año de finalización",
 				nombreDelCampo: "ano_fin",
 				numero: true,
+				peliculas: false,
+				colecciones: true,
+				capitulos: false,
 				antesDePais: true,
 			},
 			{
