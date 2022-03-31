@@ -5,7 +5,7 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 module.exports = {
 	home: async (req, res) => {
 		let tema = "productos";
-		res.render("Home", {
+		res.render("0-VistaEstandar", {
 			tema,
 			opcion: null,
 			titulo: "ELC-Películas",
@@ -23,7 +23,7 @@ module.exports = {
 		let [tipos, titulo] = await datosVista(opcion);
 		// Ir a la vista
 		// return res.send([tema, opcion, titulo, opciones, tipos, opcionElegida]);
-		res.render("Home", {
+		res.render("0-VistaEstandar", {
 			tema,
 			opcion,
 			titulo,
@@ -46,7 +46,7 @@ module.exports = {
 		let tipoElegido = tipos.find((n) => n.url == url);
 		// Ir a la vista
 		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
-		res.render("Home", {
+		res.render("0-VistaEstandar", {
 			tema,
 			opcion,
 			titulo,

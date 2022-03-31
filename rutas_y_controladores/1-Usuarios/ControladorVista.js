@@ -12,7 +12,7 @@ module.exports = {
 		let codigo = "mail";
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let errores = req.session.errores ? req.session.errores : false;
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Registro de Mail",
@@ -86,7 +86,7 @@ module.exports = {
 			: null;
 		let errores = req.session.errores ? req.session.errores : false;
 		// 3. Render del formulario
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Login",
@@ -142,7 +142,7 @@ module.exports = {
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		let errores = req.session.errores ? req.session.errores : "";
 		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Registro de Datos Perennes",
@@ -190,7 +190,7 @@ module.exports = {
 			? "/imagenes/9-Provisorio/" + dataEntry.avatar
 			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
 		// Ir a la vista
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Registro de Datos Editables",
@@ -231,7 +231,7 @@ module.exports = {
 	detalle: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "detalle";
-		res.render("Home", {
+		res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Detalle de Usuario",
@@ -242,7 +242,7 @@ module.exports = {
 	editarForm: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "edicion";
-		res.render("Home", {
+		res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			usuario: req.session.usuario,

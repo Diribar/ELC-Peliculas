@@ -35,7 +35,7 @@ module.exports = {
 		let prodsLinks = productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(productos);
-		return res.render("Home", {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo: "Revisar - Visión General",
@@ -59,7 +59,7 @@ module.exports = {
 		// Obtener la sub-dirección de destino
 		if (destino == "producto") {
 			let subDestino = producto.status_registro.creado
-				? "/perfil"
+				? "/alta"
 				: producto.status_registro.gr_inactivos
 				? "/inactivos"
 				: "/edicion";
@@ -146,9 +146,10 @@ module.exports = {
 		let producto_id = await especificas.entidad_id(entidad);
 		let edicion_id, vista, avatar;
 		// Obtener ambas versiones
-		let prodOriginal = await BD_genericas.obtenerPorId(entidad, prodID);
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID,"status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// Averiguar si está editado el avatar
+		return res.send(prodEditado)
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edicion1Avatar";
@@ -186,6 +187,7 @@ module.exports = {
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Enviar las diferencias a la vista
+
 		return res.render(vista, {
 			tema,
 			codigo,

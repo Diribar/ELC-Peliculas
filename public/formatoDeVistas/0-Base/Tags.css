@@ -1,15 +1,7 @@
 /* GENERAL */
-header {height: 9vh;}
-main {height:91vh;}
+
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
 select, option, a, button[type="submit"] {cursor: pointer;}
-
-/* BACKGROUND IMAGE */
-body {
-	background-image: url("/imagenes/0-Base/Color de fondo.png");
-	background-size: cover;
-	background-attachment: fixed;
-}
 
 /* Formato para elementos */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%- include('Head') %>
+	<%- include('1-Head') %>
 	<%- include('0-Revisar-Head') %>
 </head>
 <body>
-	<%- include('Header') %>
+	<%- include('21-Header') %>
 	<main class="flex-row">
 		<section id="imagen-derecha">
 			<img src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
 		</section>
 		<section id="cuerpo-y-footer">
-			<%- include('Footer') %>
+			<%- include('23-Footer') %>
 			<section id="cuerpo">
 				<%- codigo == "producto/alta" ? include("2-Prod1-Alta") : "" %>
 			</section>
