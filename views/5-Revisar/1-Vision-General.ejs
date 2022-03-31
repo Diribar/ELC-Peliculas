@@ -10,7 +10,7 @@
 			<!-- Aprobar la edición de productos aprobados -->
 
 			<!-- Aprobar la edición de productos pendientes de aprobar -->
-			<%- include("11-Vision-Prods", {titulo: "Ediciones de Pend. Aprobar", estado: status.find(n => n.alta_aprob).id}) %>
+			<%- include("11-Vision-Prods", {titulo: "Ediciones Pendientes de Aprobar", estado: status.find(n => n.alta_aprob).id}) %>
 			<!-- Aprobar el Alta -->
 			<%- include("11-Vision-Prods", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id}) %>
 			<!-- Recuperar -->

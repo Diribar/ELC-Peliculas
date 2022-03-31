@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime();
-	let minutos = Math.max(0, parseInt(tiempoRestante / 1000 / 60) + 1);
+	let minutos = Math.min(60, Math.max(0, parseInt(tiempoRestante / 1000 / 60)));
 
 	// FUNCIONES
 	let funcionTimer = () => {
@@ -42,9 +42,15 @@ window.addEventListener("load", async () => {
 		let arrayMensajes =
 			codigo == "/producto/edicion/"
 				? [
-						"Se acabó el tiempo (1 hora) para continuar con esta edición.",
+						"Se acabó el tiempo de 1 hora para continuar con esta edición.",
 						"Quedó a disposición de quienes analizan tu trabajo.",
 						"Si hacés <em>click</em> en <strong>Entendido</strong>, serás redirigido a la vista de <strong>Detalle</strong>",
+				  ]
+				: codigo.startsWith("/revision/")
+				? [
+						"Se acabó el tiempo de 1 hora para continuar con esta revisión.",
+						"Quedó a disposición de que lo continúe revisando otra persona.",
+						"Si hacés <em>click</em> en <strong><i class='fa-solid fa-thumbs-up'></i></strong>, serás redirigido a la vista <strong>Visión-General</strong>",
 				  ]
 				: [];
 
@@ -58,9 +64,7 @@ window.addEventListener("load", async () => {
 		pulgarArriba.setAttribute("id", "irDetalle");
 
 		// Íconos a mostrar y ocultar
-		document.querySelector("#cartelAdvertencia .fa-circle-left").classList.add("ocultar");
 		pulgarArriba.classList.remove("ocultar");
-		document.querySelector("#cartelAdvertencia .fa-circle-check").classList.add("ocultar");
 
 		// Mostrar el cartel
 		taparElFondo.classList.remove("ocultar");
@@ -75,6 +79,7 @@ window.addEventListener("load", async () => {
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
 			window.location.href = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
+		else if (codigo.startsWith("/revision/")) window.location.href = "/revision/vision-general";
 	});
 
 	// STARTUP

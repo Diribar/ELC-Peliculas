@@ -1,22 +1,23 @@
 /* Formato general del cartel */
 #cartelAdvertencia {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
 #cartelAdvertencia {padding: 20px; border-radius: 15px;}
-#cartelAdvertencia {color: white; border: 6px double white; background-color: var(--rojo-oscuro);}
+#cartelAdvertencia {border: 6px double white; background-color: var(--rojo-oscuro);}
+#cartelAdvertencia , #cartelAdvertencia * {color:var(--gris-claro)}
 
 /* Alineación interna */
-#cartelAdvertencia {display: flex; flex-direction: column; align-items: center; max-width: 500px;}
+#cartelAdvertencia {display: flex; flex-direction: column; align-items: center; width: fit-content; max-width: 550px;}
 #cartelAdvertencia.ocultar {display: none;}
 
 /* Partes internas */
-#cartelAdvertencia .fa-triangle-exclamation {font-size: 2rem; color: var(--amarillo-oscuro);}
-#cartelAdvertencia #mensaje {margin: 40px 20px; text-align: center; font-size: 1.2rem; line-height: 1.5;}
+#cartelAdvertencia .fa-triangle-exclamation {font-size: 4rem; color: var(--amarillo-oscuro);}
+#cartelAdvertencia #mensaje {margin: 40px 20px; text-align: center; line-height: 1.5;}
 #cartelAdvertencia ul#mensaje {text-align: left;}
+#cartelAdvertencia ul#mensaje li, #cartelAdvertencia ul#mensaje li * {font-size: 1.2rem;}
 #cartelAdvertencia #mensaje span {font-weight: bold; font-style: italic; color: var(--amarillo-oscuro); font-size: inherit; line-height: inherit;}
 
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartelAdvertencia #flechas { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
-#cartelAdvertencia #flechas i {color: white;}
-#cartelAdvertencia #flechas i {font-size: 2rem; border-radius: 50%; cursor: pointer;}
+#cartelAdvertencia #flechas i {font-size: 3rem; border-radius: 50%; cursor: pointer;}
 
 /* Botón Entendido */
-#cartelAdvertencia #flechas i.fa-thumbs-up {color: white;background-color: transparent; border: none;}
+#cartelAdvertencia #flechas i.fa-thumbs-up {background-color: transparent; border: none; color: var(--amarillo-oscuro);}

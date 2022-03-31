@@ -35,22 +35,23 @@ module.exports = {
 	rechazarAlta: async (req, res) => {
 		// Obtener las variables
 		let {entidad, id, motivo_id} = req.query;
+		let datos
 		// Detectar un eventual error
 		if (!motivo_id) return res.json();
 		// Averiguar el id del status
 		let statusInactivar = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", true).then(
 			(n) => n.id
 		);
-		// Cambiar el status, dejar la marca del usuario y fecha en que esto se realizó
-		let datos = {
+		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
+		datos = {
 			status_registro_id: statusInactivar,
 			alta_analizada_por_id: req.session.usuario.id,
 			alta_analizada_en: especificas.ahora(),
 			captura_activa: 0,
 		};
 		BD_genericas.actualizarPorId(entidad, id, datos);
-		let producto = await BD_genericas.obtenerPorId(entidad, id);
 		// Agregar el registro de borrados
+		let producto = await BD_genericas.obtenerPorId(entidad, id);
 		datos = {
 			elc_entidad: entidad,
 			elc_id: id,
@@ -104,7 +105,7 @@ module.exports = {
 		// Agregar un registro en la BD 'inputs_aprob'
 		datos = {
 			elc_entidad: entidad,
-			elc_id: id,
+			elc_id: prodID,
 			campo: "avatar",
 			input_por_id: datos.editado_por_id,
 			input_en: datos.editado_en,
@@ -116,6 +117,8 @@ module.exports = {
 		return res.json();
 	},
 	rechazarAvatar: async (req, res) => {
+		console.log(req.query);
+		return res.json();
 		// Variables
 		let {entidad, id: prodID, edicion_id, motivo_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
