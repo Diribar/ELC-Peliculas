@@ -127,7 +127,6 @@ module.exports = {
 		// Detectar un eventual error
 		if (!prodEditado || !prodEditado.avatar || !motivo_id) return res.json();
 		// Eliminar el avatar editado
-		const rutaImagen = path.join(__dirname, "../../public/imagenes/3-ProdRevisar/");
 		especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
 		// Acciones si el status es 'alta-aprobada'
 		if (prodOriginal.status_registro.alta_aprob) {
