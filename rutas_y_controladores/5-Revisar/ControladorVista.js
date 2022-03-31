@@ -188,9 +188,8 @@ module.exports = {
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// 8. Motivos de rechazo
-		//return res.send(motivosRechazar)
 		// Ir a la vista
+		//return res.send(motivosRechazar)
 		return res.render(vista, {
 			tema,
 			codigo,
