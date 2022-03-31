@@ -151,8 +151,7 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// 4. Acciones dependiendo de si está editado el avatar
-		let bloqueIzq,
-			bloqueDer = [[], []];
+		let bloqueIzq, bloqueDer = [[], []];
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edic1Avatar";
