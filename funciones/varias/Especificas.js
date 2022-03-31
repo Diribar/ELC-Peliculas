@@ -132,8 +132,10 @@ module.exports = {
 	},
 	borrarArchivo: (ruta, archivo) => {
 		let archivoImagen = path.join(ruta, archivo);
-		console.log("Archivo " + archivoImagen + " borrado");
-		if (archivo && fs.existsSync(archivoImagen)) fs.unlinkSync(archivoImagen);
+		if (archivo && fs.existsSync(archivoImagen)) {
+			fs.unlinkSync(archivoImagen);
+			console.log("Archivo " + archivoImagen + " borrado");
+		} else console.log("Archivo " + archivoImagen + " no encontrado");
 	},
 	revisarImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
@@ -143,7 +145,7 @@ module.exports = {
 			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
 			: "";
 	},
-	download: async (url, rutaYnombre) => {
+	descargar: async (url, rutaYnombre) => {
 		let writer = fs.createWriteStream(rutaYnombre);
 		let response = await axios({
 			method: "GET",
@@ -153,7 +155,7 @@ module.exports = {
 		response.data.pipe(writer);
 		return new Promise((resolve, reject) => {
 			writer.on("finish", () => resolve(console.log("Imagen guardada")));
-			writer.on("error", (err) => reject(err));
+			writer.on("error", (error) => reject(error));
 		});
 	},
 

@@ -146,7 +146,7 @@ module.exports = {
 		let producto_id = await especificas.entidad_id(entidad);
 		let edicion_id, vista, avatar;
 		// Obtener ambas versiones
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID,"status_registro");
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// Averiguar si está editado el avatar
 		//return res.send(prodEditado)
@@ -186,8 +186,12 @@ module.exports = {
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// Enviar las diferencias a la vista
-
+		// 8. Motivos de rechazo
+		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden").then((n) =>
+			n.filter((m) => m.avatar)
+		);
+		//return res.send(motivosRechazar)
+		// Ir a la vista
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -197,6 +201,7 @@ module.exports = {
 			edicion_id,
 			avatar,
 			vista,
+			motivosRechazar,
 		});
 	},
 };

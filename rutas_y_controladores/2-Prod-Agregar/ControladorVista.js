@@ -347,7 +347,7 @@ module.exports = {
 		let avatarBD = nombre;
 		// 8. Si la imagen venía de TMDB, entonces grabarla
 		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
-			especificas.download(datosDuros.avatar, rutaYnombre);
+			especificas.descargar(datosDuros.avatar, rutaYnombre);
 			avatarDP = datosDuros.avatar;
 		}
 		// 9. Generar la session para la siguiente instancia

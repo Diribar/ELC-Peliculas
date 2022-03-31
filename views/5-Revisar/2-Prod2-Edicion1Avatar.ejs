@@ -15,11 +15,24 @@
 				<!-- Versión editada -->
 				<div id="editada" class="flex-col">
 					<!-- Liberar y salir -->
-					<i class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
 					<!-- Imagen -->
 					<h2>Imagen de Edición</h2>
 					<img src="<%= avatar.edicion %>" title="Realizar el reemplazo">
+					<section id="motivosRechazar" class="ocultar">
+						<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
+						<select>
+							<option value="" selected class="ocultar">Elegí una opción</option>	
+							<% for (motivo of motivosRechazar) { %>
+								<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+							<% } %>
+						</select>
+						<div id="comandosRechazar">
+							<i class="fa-solid fa-circle-left" title="Cancelar"></i>
+							<i class="fa-solid fa-circle-right" title="Continuar"></i>
+						</div>
+					</section>
 				</div>
+				<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
 				<!-- Versión original -->
 				<div id="original" class="flex-col">
 					<h2>Imagen Original</h2>
