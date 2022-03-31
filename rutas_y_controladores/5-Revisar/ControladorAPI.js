@@ -103,7 +103,7 @@ module.exports = {
 		especificas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
 		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
-		// Agregar un registro en la BD 'inputs_aprob'
+		// Agregar un registro en la BD 'edic_aprob'
 		datos = {
 			elc_entidad: entidad,
 			elc_id: prodID,

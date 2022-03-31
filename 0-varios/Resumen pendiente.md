@@ -1,19 +1,30 @@
 PRIMERA ETAPA
+- Revisiones
+	- SI/NO Productos creados / editados
+
+	- SI/NO Links creados / editados
+	- SI/NO RCLV creados / editados
+	- Vistas de inactivado
+	- Envío automático de un mail consolidado diario
+- Sugerir borrarla
+
+SEGUNDA ETAPA --> Desarrollo del Front End (enfocado en productos)
+- Carga y aprobación de 20 productos (de los rubros más pequeños)
+- Listados
+- Un paseo por ELC / VPC
+- Filtros (refresh sin recargar)
+
+TERCERA 
 - Miscelaneas de experiencia de usuario
 	- Calificala
 	- Mi interés...
-- Revisiones
-	- SI/NO Productos creados
-	- SI/NO Ediciones
-	- SI/NO RCLV
-	- SI/NO Links
-- Consecuencias
-	- Vistas de inactivado
-	- BD de inactivado
-	- Cantidad de casos
-	- Precisión de la edición
-	- Envío automático de un mail consolidado diario
-- Calificala
-- Sugerir borrarla
+- Edición de la cuenta de usuario
+	- Los mails dados de baja se guardan para impedir su reuso por otro usuario
+- Upgrade del rol del usuario
+- Detalle del usuario
+- Baja del usuario
 
-SEGUNDA ETAPA
+CUARTA
+- Feedback a distribuidores
+	- Clicks en links
+	- Visitas a Detalle
