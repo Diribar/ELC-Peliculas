@@ -168,13 +168,8 @@ module.exports = {
 			};
 			motivosRechazo = motivosRechazo.filter((m) => m.avatar);
 		} else {
-			// Armar la variable con los datos a mostrar
-			let edicion = {...prodEditado};
-			// Quitar los campos con valor 'null' y los que son iguales al original
-			for (let campo in edicion)
-				if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
-			// Obtener los
-			[ingresos, reemplazos] = armarComparacion(prodOriginal, edicion);
+			// Obtener los ingresos y reemplazos
+			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -329,8 +324,14 @@ let obtenerLaFecha = (fecha) => {
 	fecha = dia + "/" + mes + "/" + ano;
 	return fecha;
 };
-let armarComparacion = (prodOriginal, edicion) => {
+let armarComparacion = (prodOriginal, prodEditado) => {
+	// Variables
 	let camposAComparar = variables.camposRevisarEdic();
+	// Obtener una copia de edicion
+	let edicion = {...prodEditado};
+	// Quitar los campos con valor 'null' y los que son iguales al original
+	for (let campo in edicion)
+		if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
 	// Quitar los campos que no se comparan y armar los valores a comparar
 	for (let i = camposAComparar.length - 1; i >= 0; i--) {
 		let campo = camposAComparar[i].nombreDelCampo;
