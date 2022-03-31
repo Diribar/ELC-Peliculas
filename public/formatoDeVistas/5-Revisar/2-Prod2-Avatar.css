@@ -2,16 +2,17 @@
 #cuerpo-y-footer #cuerpo {background-color: transparent; height: 80vh;}
 
 /* Imágenes */
-#cuerpo #imagenes {display: flex; flex-direction: row; align-self: center; justify-content: space-evenly;}
+#cuerpo #imagenes {display: flex; flex-direction: row; align-self: center; justify-content: space-around;}
 #cuerpo #imagenes {height: 100%; padding-top: 45px; padding-bottom: 10px; width: 100%;}
-#cuerpo #imagenes #editada {position: relative;}
-#cuerpo #imagenes i {position: absolute; top: 48%; left: -50%;}
-#cuerpo #imagenes i {background-color: var(--celeste-claro); border-radius: 50%; font-size: 2rem;}
+#cuerpo #imagenes #editada, #cuerpo #imagenes #original {position: relative;}
+
+#cuerpo #imagenes i#liberarSalir {position: absolute; bottom: 5%;}
+#cuerpo #imagenes i#liberarSalir {background-color: var(--celeste-claro); border-radius: 50%; font-size: 2rem;}
 #cuerpo #imagenes h2 {background-color: var(--verde-oscuro); color: var(--celeste-claro);}
 #cuerpo #imagenes h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 0 auto 5px;}
-#cuerpo #imagenes img {height: 100%; max-width: 30vw; height: 90%; border-radius: 10px;}
+#cuerpo #imagenes img {max-width: 30vw; height: 90%; border-radius: 10px;}
 
 /* Scale */
-#cuerpo #imagenes i, #cuerpo #imagenes img {transition: 500ms; cursor: pointer;}
+#cuerpo #imagenes i#liberarSalir, #cuerpo #imagenes img {transition: 500ms; cursor: pointer;}
+#cuerpo #imagenes i#liberarSalir:hover {transform: scale(1.3);}
 #cuerpo #imagenes img:hover {transform: scale(1.05);}
-#cuerpo #imagenes i:hover {transform: scale(1.3);}

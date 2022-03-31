@@ -4,6 +4,9 @@ window.addEventListener("load", () => {
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 
+	// Flechas
+	let aprobar = document.querySelector("#flechas .fa-circle-check");
+	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
@@ -12,12 +15,10 @@ window.addEventListener("load", () => {
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
 
-	// Flechas
-	let aprobar = document.querySelector("#flechas .fa-circle-check");
-	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
-
 	// Aprobar el alta
 	aprobar.addEventListener("click", async () => {
+		aprobar.style.transform = "scale(1)";
+		aprobar.style.cursor = "wait";
 		let ruta = "/revision/producto/alta/api/aprobar/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
@@ -27,7 +28,6 @@ window.addEventListener("load", () => {
 	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
-
 	});
 
 	// Cancelar menú motivos para borrar
@@ -40,6 +40,8 @@ window.addEventListener("load", () => {
 	inactivar.addEventListener("click", async () => {
 		let motivo = motivosRechazar.value;
 		if (motivo) {
+			rechazar.style.transform = "scale(1)";
+			rechazar.style.cursor = "wait";
 			let ruta = "/revision/producto/alta/api/rechazar/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
 			window.location.href = "/revision/vision-general";

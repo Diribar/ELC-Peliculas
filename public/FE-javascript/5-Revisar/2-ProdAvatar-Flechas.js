@@ -5,16 +5,16 @@ window.addEventListener("load", () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let edicion_id = new URL(window.location.href).searchParams.get("edicion_id");
 
+	// Flechas
+	let aprobar = document.querySelector("#imagenes #editada img");
+	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
+
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
 	let menuMotivosBorrar = document.querySelector("#motivosRechazar");
 	let motivosRechazar = document.querySelector("#motivosRechazar select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
-
-	// Flechas
-	let aprobar = document.querySelector("#imagenes #editada img");
-	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
+	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
@@ -30,7 +30,6 @@ window.addEventListener("load", () => {
 	mostrarMenuMotivos.addEventListener("click", () => {
 		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
-
 	});
 
 	// Cancelar menú motivos para borrar
@@ -41,12 +40,21 @@ window.addEventListener("load", () => {
 
 	// Rechazar el nuevo avatar
 	rechazar.addEventListener("click", async () => {
-		rechazar.style.transform = "scale(1)";
-		rechazar.style.cursor = "wait";
-		let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
-		await fetch(ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id);
-		window.location.href = "/";
-		// window.location.href =
-		// 	"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
+		let motivo = motivosRechazar.value;
+		if (motivo) {
+			rechazar.style.transform = "scale(1)";
+			menuMotivosBorrar.style.cursor = "wait";
+			let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
+			await fetch(
+				ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id + "&motivo_id=" + motivo
+			);
+			window.location.href =
+				"/revision/redireccionar/?entidad=" +
+				prodEntidad +
+				"&id=" +
+				prodID +
+				"&edicion_id=" +
+				edicion_id;
+		}
 	});
 });

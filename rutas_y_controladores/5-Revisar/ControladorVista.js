@@ -144,12 +144,12 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let producto_id = await especificas.entidad_id(entidad);
+		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let edicion_id, vista, avatar;
 		// Obtener ambas versiones
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID,"status_registro");
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
-		// Averiguar si está editado el avatar
-		//return res.send(prodEditado)
+		// Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edicion1Avatar";
@@ -164,6 +164,7 @@ module.exports = {
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
 			};
+			motivosRechazar = motivosRechazar.filter((m) => m.avatar);
 		} else {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edicion2Datos";
@@ -182,12 +183,13 @@ module.exports = {
 			for (let campo in prodEditado) {
 				if (prodOriginal[campo] === prodEditado[campo]) delete prodEditado[campo];
 			}
+			motivosRechazar = motivosRechazar.filter((m) => m.prod);
 		}
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
-		// Enviar las diferencias a la vista
-
+		// Ir a la vista
+		//return res.send(motivosRechazar)
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -197,6 +199,7 @@ module.exports = {
 			edicion_id,
 			avatar,
 			vista,
+			motivosRechazar,
 		});
 	},
 };
