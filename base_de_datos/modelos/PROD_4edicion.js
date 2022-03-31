@@ -4,12 +4,6 @@ module.exports = (sequelize, dt) => {
 		elc_pelicula_id: {type: dt.INTEGER},
 		elc_coleccion_id: {type: dt.INTEGER},
 		elc_capitulo_id: {type: dt.INTEGER},
-		temporada: {type: dt.INTEGER},
-		capitulo: {type: dt.INTEGER},
-		TMDB_id: {type: dt.STRING(10)},
-		FA_id: {type: dt.STRING(10)},
-		IMDB_id: {type: dt.STRING(10)},
-		entidad_TMDB: {type: dt.STRING(10)},
 		nombre_original: {type: dt.STRING(100)},
 		nombre_castellano: {type: dt.STRING(100)},
 		duracion: {type: dt.INTEGER},
@@ -17,8 +11,6 @@ module.exports = (sequelize, dt) => {
 		ano_fin: {type: dt.INTEGER},
 		paises_id: {type: dt.STRING(18)},
 		idioma_original_id: {type: dt.STRING(2)},
-		cant_temporadas: {type: dt.INTEGER},
-		cant_capitulos: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
@@ -37,9 +29,6 @@ module.exports = (sequelize, dt) => {
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-
-		links_gratuitos_cargados_id: {type: dt.INTEGER},
-		links_gratuitos_en_la_web_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "prod_4edicion",
@@ -61,9 +50,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
-		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 	};
 	return entidad;
 };

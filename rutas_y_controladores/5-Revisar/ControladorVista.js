@@ -146,12 +146,13 @@ module.exports = {
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let producto_id = await especificas.entidad_id(entidad);
 		let motivosRechazar = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		let edicion, vista, avatar;
+		let vista, avatar, edicion;
 		// 3. Obtener ambas versiones
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		// 4. Acciones dependiendo de si está editado el avatar
-		let bloqueIzq, bloqueDer = [[], []];
+		let bloqueIzq,
+			bloqueDer = [[], []];
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edic1Avatar";
@@ -168,31 +169,33 @@ module.exports = {
 			};
 			motivosRechazar = motivosRechazar.filter((m) => m.avatar);
 		} else {
+			// Armar la variable con los datos a mostrar
 			edicion = {...prodEditado};
-			// Quitar los campos que no se deben comparar
-			delete edicion.id;
-			delete edicion["elc_" + producto_id];
-			delete edicion.editado_en;
-			delete edicion.editado_por_id;
-			// Quitar los campos con valor 'null'
-			for (let campo in edicion) if (edicion[campo] === null) delete edicion[campo];
-			// Quitar de edición las igualdades
-			for (let campo in edicion) {
-				if (prodOriginal[campo] === edicion[campo]) delete edicion[campo];
-			}
-			motivosRechazar = motivosRechazar.filter((m) => m.prod);
-			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
-			// Vista 'Edición-Avatar'
-			vista = "2-Prod2-Edic2Estruct";
+			let quitarCampos = [
+				"id",
+				"elc_pelicula_id",
+				"elc_coleccion_id",
+				"elc_capitulo_id",
+				"editado_por_id",
+				"editado_en",
+			];
+			for (let campo of quitarCampos) delete edicion[campo];
+			// Quitar los campos con valor 'null' y los que son iguales al original
+			for (let campo in edicion)
+				if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
+			// Variables
+			motivosRechazar = motivosRechazar.filter((m) => m.prod);
+			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
+			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisión - Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
 		// Ir a la vista
 
 		//return res.send(motivosRechazar)
@@ -299,9 +302,10 @@ let bloquesAltaProd = async (prodOriginal, paises) => {
 	bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 	// 5. Obtener los datos del usuario
 	let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodOriginal.creado_por_id);
-
+	// 6. Obtener la calidad de las altas
+	let calidadAltas = await BD_especificas.calidadAltas(prodOriginal.creado_por_id);
 	// Bloque derecho consolidado
-	let derecha = [bloque1, fichaDelUsuario];
+	let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 	return [izquierda, derecha];
 };
 let bloqueDerEdicProd = async (prodOriginal, prodEditado) => {
@@ -320,8 +324,10 @@ let bloqueDerEdicProd = async (prodOriginal, prodEditado) => {
 	bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 	// 5. Obtener los datos del usuario
 	let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodEditado.editado_por_id);
+	// 6. Obtener la calidad de las altas
+	let calidadEdic = await BD_especificas.calidadEdic(prodEditado.editado_por_id);
 	// Bloque derecho consolidado
-	let derecha = [bloque1, fichaDelUsuario];
+	let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 	return derecha;
 };
 let obtenerLaFecha = (fecha) => {

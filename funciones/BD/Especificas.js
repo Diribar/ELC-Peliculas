@@ -299,93 +299,105 @@ module.exports = {
 	// Controladora/Revisar/Productos
 	fichaDelUsuario: async function (userID) {
 		// Obtener los datos del usuario
-		let includes = ["status_registro", "rol_iglesia", "peliculas", "colecciones"];
+		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
-		// Generar los datos específicos
-		let antiguedad =
-			(
-				parseInt(
-					((especificas.ahora().getTime() - new Date(usuario.creado_en).getTime()) /
-						1000 /
-						60 /
-						60 /
-						24 /
-						365) *
-						10
-				) / 10
-			)
-				.toFixed(1)
-				.replace(".", ",") + " años";
-		// Precisión del perfil de productos
-		// 1. Obtener los status
-		let statusAltaAprobId = await BD_genericas.obtenerPorCampo(
-			"status_registro",
-			"alta_aprob",
-			1
-		).then((n) => n.id);
-		let statusAprobadoId = await BD_genericas.obtenerPorCampo("status_registro", "aprobado", 1).then(
-			(n) => n.id
-		);
-		let statusEditadoId = await BD_genericas.obtenerPorCampo("status_registro", "editado", 1).then(
-			(n) => n.id
-		);
-		let statusInactivadoId = await BD_genericas.obtenerPorCampo(
-			"status_registro",
-			"inactivado",
-			1
-		).then((n) => n.id);
-		// 2. Contar los casos aprobados
-		let aprobados = usuario.peliculas.length
-			? usuario.peliculas.filter(
-					(n) =>
-						n.status_registro_id == statusAltaAprobId ||
-						n.status_registro_id == statusAprobadoId ||
-						n.status_registro_id == statusEditadoId
-			  ).length
-			: 0;
-		aprobados += usuario.colecciones.length
-			? usuario.colecciones.filter(
-					(n) =>
-						n.status_registro_id == statusAltaAprobId ||
-						n.status_registro_id == statusAprobadoId ||
-						n.status_registro_id == statusEditadoId
-			  ).length
-			: 0;
-		// 3. Contar los casos rechazados
-		let rechazados = usuario.peliculas.length
-			? usuario.peliculas.filter((n) => n.status_registro_id == statusInactivadoId).length
-			: 0;
-		rechazados += usuario.colecciones.length
-			? usuario.colecciones.filter((n) => n.status_registro_id == statusInactivadoId).length
-			: 0;
-		// 4. Medir la precisión del input de altas
-		let cantProds = aprobados + rechazados;
-		let calidadInputs = cantProds ? parseInt((aprobados / cantProds) * 100) + "%" : "-";
-		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", "id", userID, "duracion");
+		// Variables
+		let anos = 1000 * 60 * 60 * 24 * 365;
+		let ahora = especificas.ahora().getTime();
 		// Edad
 		if (usuario.fecha_nacimiento) {
-			var edad =
-				parseInt(
-					(especificas.ahora().getTime() - new Date(usuario.fecha_nacimiento).getTime()) /
-						1000 /
-						60 /
-						60 /
-						24 /
-						365
-				) + " años";
+			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";
 		}
+		// Antigüedad
+		let antiguedad =
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / anos) * 10) / 10)
+				.toFixed(1)
+				.replace(".", ",") + " años";
 		// Datos a enviar
 		let enviar = {};
 		enviar.apodo = ["Apodo", usuario.apodo];
 		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
 		if (usuario.fecha_nacimiento) enviar.edad = ["Edad", edad];
-		enviar.calidadInputs = ["Afín con el perfil", calidadInputs];
 		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-		enviar.cantProds = ["Cant. Prods. Agregados", cantProds];
-		enviar.diasPenalizacion = ["Días Penalizado", diasPenalizacion];
 		// Fin
 		return enviar;
 	},
+	calidadAltas: async function (userID) {
+		// Obtener los datos del usuario
+		let includes = ["status_registro", "peliculas", "colecciones"];
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+		// 1. Obtener los status
+		let altaAprobId = await BD_genericas.obtenerPorCampo("status_registro", "alta_aprob", 1).then(
+			(n) => n.id
+		);
+		let aprobadoId = await BD_genericas.obtenerPorCampo("status_registro", "aprobado", 1).then(
+			(n) => n.id
+		);
+		let editadoId = await BD_genericas.obtenerPorCampo("status_registro", "editado", 1).then((n) => n.id);
+		let inactivadoId = await BD_genericas.obtenerPorCampo("status_registro", "inactivado", 1).then(
+			(n) => n.id
+		);
+		// 2. Contar los casos aprobados
+		let cantAprob = usuario.peliculas.length
+			? usuario.peliculas.filter(
+					(n) =>
+						n.status_registro_id == altaAprobId ||
+						n.status_registro_id == aprobadoId ||
+						n.status_registro_id == editadoId
+			  ).length
+			: 0;
+		cantAprob += usuario.colecciones.length
+			? usuario.colecciones.filter(
+					(n) =>
+						n.status_registro_id == altaAprobId ||
+						n.status_registro_id == aprobadoId ||
+						n.status_registro_id == editadoId
+			  ).length
+			: 0;
+		// 3. Contar los casos rechazados
+		let cantRech = usuario.peliculas.length
+			? usuario.peliculas.filter((n) => n.status_registro_id == inactivadoId).length
+			: 0;
+		cantRech += usuario.colecciones.length
+			? usuario.colecciones.filter((n) => n.status_registro_id == inactivadoId).length
+			: 0;
+		// 4. Precisión de altas
+		let cantAltas = cantAprob + cantRech;
+		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
+		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", "id", userID, "duracion");
+		// Datos a enviar
+		let enviar = {
+			calidadAltas: ["Calidad Altas", calidadInputs],
+			cantAltas: ["Cant. Alta Productos", cantAltas],
+			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+		};
+		// Fin
+		return enviar;
+	},
+
+	calidadEdic: async function (userID) {
+		// Obtener la cantidad de aprobaciones y de rechazos
+		let cantAprob = await BD_genericas.contarCasos("edic_aprob", "input_por_id", userID);
+		let rechazados = await BD_genericas.obtenerPorCampo("edic_rech", "input_por_id", userID);
+		let cantRech = rechazados ? rechazados.length : 0;
+		// Obtener la calidad de las ediciones
+		let cantEdics = cantAprob + cantRech;
+		let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
+		// Obtener la cantidad de penalizaciones con días
+		let cantPenalizConDias = rechazados ? rechazados.filter((n) => n.duracion).length : "-";
+		// Obtener la cantidad de días penalizados
+		let diasPenalizacion = rechazados ? rechazados.reduce((suma, a) => suma + a, 0) : "-";
+		// Datos a enviar
+		let enviar = {
+			calidadEdiciones: ["Calidad Edic.", calidadInputs],
+			cantEdiciones: ["Cant. Campos Editados", cantEdics],
+			cantPenalizConDias:["Cant. Penaliz. c/Días", cantPenalizConDias],
+			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+		};
+		// Fin
+		return enviar;
+	},
+
 	// Controladora/Usuario/Login
 	actualizarElContadorDeLogins: (usuario) => {
 		let hoyAhora = especificas.ahora().toISOString().slice(0, 10);
