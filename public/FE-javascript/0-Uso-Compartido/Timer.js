@@ -80,7 +80,7 @@ window.addEventListener("load", async () => {
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
 			window.location.href = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
-		else if (codigo.startsWith("/revision/")) window.location.href = "/revision/vision-general";
+		else if (codigo.startsWith("/revision/")) window.location.href = "/revision/tablero-de-control";
 	});
 
 	// STARTUP

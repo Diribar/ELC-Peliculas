@@ -2,14 +2,31 @@
 <h1 id="titulo"><%= titulo %></h1>
 <div id="datos">
 	<section id="datosLargos">
-		<div id="contenido">
+		<!-- Encabezado y Contenido -->
+		<div>
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
 			<%- include("0-Revisar-Encabezado") %>
 			<!-- Ingresos -->
-			<h3>Ingresos</h3>
-			<% for (campo of ingresos) { %>
-				<%- include("21-ProdEdic-Ingresos", {campo}) %> 
-			<% } %>
+			<div id="contenido">
+				<% if (ingresos.length) { %>
+					<h2>Información que no se disponía</h2>
+					<table id="ingrs">
+						<tbody>
+							<% for (campo of ingresos) { %>
+								<%- include("21-ProdEdic-Ingresos", {campo}) %> 
+							<% } %>
+						</tbody>
+					</table>
+				<% } %>
+				<% if (reemplazos.length) { %>
+					<h2>Información a reemplazar</h2>
+					<div id="comps">
+						<% for (campo of reemplazos) { %>
+							<%- include("22-ProdEdic-Reemplazos", {campo}) %>
+						<% } %>
+					</div>
+				<% } %>
+			</div>
 		</div>
 		<!-- Comandos -->
 		<div id="comandos">

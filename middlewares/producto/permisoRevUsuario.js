@@ -21,7 +21,11 @@ module.exports = async (req, res, next) => {
 		let entidad = prodCapturado.entidad;
 		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
 		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
-		let horario = prodCapturado.capturado_en.getHours() + ":" + prodCapturado.capturado_en.getMinutes();
+		let horario =
+			prodCapturado.capturado_en.getHours() +
+			":" +
+			String(prodCapturado.capturado_en.getMinutes()).padStart(2, "0")+
+			"hs.";
 		// Preparar la información
 		let informacion = {
 			mensaje:
@@ -38,9 +42,7 @@ module.exports = async (req, res, next) => {
 				(prodCapturado.entidad != "capitulos" ? "a" : "o") +
 				" desde las " +
 				horario,
-			iconos: [
-				{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"},
-			],
+			iconos: [{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"}],
 		};
 
 		return res.render("Errores", {informacion});

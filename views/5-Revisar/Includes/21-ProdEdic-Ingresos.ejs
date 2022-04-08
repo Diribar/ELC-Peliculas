@@ -1,12 +1,12 @@
-<section class="label-input">
-	<label><%= campo.titulo %></label>
-	<!-- Data-entry y Errores -->
-	<div class="input-error">
-		<p class="">
-			<%= campo.mostrarEdic %>
-		</p>
-		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark <%= campo.nombreDelCampo %>">
-		</i>
-	</div>
-</section>
+<tr>
+	<td class="campoTitulo"><%= campo.titulo %></td>
+	<td class="campoNombre ocultar"><%= campo.nombreDelCampo %></td>
+	<td class="infoMostrar">
+		<!-- Data-entry y Errores -->
+		<%= campo.mostrarEdic %>
+		<!-- Aprobar y Rechazar -->
+		<i class="fa-solid fa-circle-check"></i>
+		<i class="fa-solid fa-circle-xmark"></i>
+	</td>
+	<td class="ocultar campoValor"><%= campo.valorEdic %></td>
+</tr>

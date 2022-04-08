@@ -21,8 +21,6 @@ router.get("/edicion", soloAutInput, entidadId, permisoRUD, vista.detalleEdicion
 router.post(
 	"/edicion/guardar",
 	soloAutInput,
-	entidadId,
-	permisoRUD,
 	multer.single("avatar"),
 	vista.edicionGuardar
 );

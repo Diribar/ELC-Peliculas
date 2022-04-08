@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
 			rechazar.style.cursor = "wait";
 			let ruta = "/revision/producto/alta/api/rechazar/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
-			window.location.href = "/revision/vision-general";
+			window.location.href = "/revision/tablero-de-control";
 		}
 	});
 });
