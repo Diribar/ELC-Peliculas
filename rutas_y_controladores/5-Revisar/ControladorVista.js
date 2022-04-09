@@ -186,8 +186,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
-		if (!edicID) return res.send("edicID = ''");
-		//return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivosRechazo = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos;
 		let bloqueIzq,
