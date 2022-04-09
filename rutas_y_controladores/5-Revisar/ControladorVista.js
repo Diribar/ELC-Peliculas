@@ -149,8 +149,19 @@ module.exports = {
 		let bloqueIzq,
 			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
+		let includes = [
+			"en_castellano",
+			"en_color",
+			"idioma_original",
+			"categoria",
+			"subcategoria",
+			"publico_sugerido",
+			"personaje",
+			"hecho",
+			"valor",
+		];
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
@@ -337,9 +348,21 @@ let armarComparacion = (prodOriginal, prodEditado) => {
 		let campo = camposAComparar[i].nombreDelCampo;
 		if (!Object.keys(edicion).includes(campo)) camposAComparar.splice(i, 1);
 		else {
-			camposAComparar[i].valorOrig =
-				!camposAComparar[i].rclv || prodOriginal[campo] != 1 ? prodOriginal[campo] : null;
-			camposAComparar[i].valorEdic = edicion[campo];
+			// Variables
+			let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;
+			let asoc1 = camposAComparar[i].asociacion1;
+			let asoc2 = camposAComparar[i].asociacion2;
+			// Valores originales
+			camposAComparar[i].valorOrig = verificar ? prodOriginal[campo] : null;
+			camposAComparar[i].mostrarOrig =
+				camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
+					? prodOriginal[asoc1][asoc2]
+					: null;
+			// Valores editados
+			camposAComparar[i].valorEdic = prodEditado[campo];
+			camposAComparar[i].mostrarEdic = camposAComparar[i].asociacion1
+				? prodEditado[asoc1][asoc2]
+				: null;
 		}
 	}
 	// Ingresos de edición, sin valor en la versión original
