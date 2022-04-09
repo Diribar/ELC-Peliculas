@@ -91,10 +91,9 @@ module.exports = {
 			destino += subDestino;
 			if (subDestino == "/edicion") {
 				let producto_id = especificas.entidad_id(entidad);
-				if (!edicID) {
-					// Obtener el id de la edición
+				// Obtener el id de la edición
+				if (!edicID)
 					edicID = await BD_especificas.obtenerEdicionAjena("elc_" + producto_id, prodID, userID);
-				}
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
 					let edicion = await BD_genericas.obtenerPorCampo(
