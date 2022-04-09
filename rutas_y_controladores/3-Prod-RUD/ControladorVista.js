@@ -37,7 +37,7 @@ module.exports = {
 			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
 				? {...prodOriginal, ...prodEditado, ...req.session.edicion}
 				: "";
-		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession};
+		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo =
@@ -134,7 +134,7 @@ module.exports = {
 			// Variables de 'Edición'
 		}
 		// Averiguar si hay errores de validación
-		let errores = await validar.edicion("", {...prodCombinado, entidad, id: prodID});
+		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodCombinado.capitulos = await BD_especificas.obtenerCapitulos(
@@ -183,10 +183,9 @@ module.exports = {
 			? prodEditado.avatar
 			: prodOriginal.avatar;
 		// Unir 'Edición' y 'Original'
-		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar};
-		delete prodCombinado.id;
+		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar, id: prodID};
 		// Averiguar si hay errores de validación
-		let errores = await validar.edicion("", {...prodCombinado, entidad, id: prodID});
+		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) delete prodCombinado.avatar;
 			if (req.file) especificas.borrarArchivo(req.file.path, req.file.filename);
