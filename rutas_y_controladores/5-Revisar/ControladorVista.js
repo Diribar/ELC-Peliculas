@@ -150,8 +150,8 @@ module.exports = {
 			  prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let productoNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		let prodNombre = especificas.entidadNombre(entidad);
+		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
 		let paises = prodOriginal.paises_id
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
@@ -173,7 +173,7 @@ module.exports = {
 			bloqueIzq,
 			bloqueDer,
 			motivosRechazo,
-			productoNombre,
+			prodNombre,
 		});
 	},
 
@@ -240,8 +240,8 @@ module.exports = {
 			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
-		let productoNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		let prodNombre = especificas.entidadNombre(entidad);
+		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render(vista, {
@@ -258,7 +258,7 @@ module.exports = {
 			entidad,
 			bloqueIzq,
 			bloqueDer,
-			productoNombre,
+			prodNombre,
 		});
 	},
 };
