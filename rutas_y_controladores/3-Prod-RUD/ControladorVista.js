@@ -39,12 +39,12 @@ module.exports = {
 				: "";
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
-		let productoNombre = especificas.entidadNombre(entidad);
+		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
-			productoNombre;
+			prodNombre;
 		// 6. Obtener los países
 		let paises = prodOriginal.paises_id
 			? await especificas.paises_idToNombre(prodOriginal.paises_id)
@@ -161,7 +161,7 @@ module.exports = {
 			errores,
 			vista: req.baseUrl + req.path,
 			paises,
-			productoNombre,
+			prodNombre,
 		});
 	},
 	edicionGuardar: async (req, res) => {
@@ -269,8 +269,8 @@ module.exports = {
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
 		// Configurar el producto, el título
-		let productoNombre = especificas.entidadNombre(entidad);
-		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + productoNombre;
+		let prodNombre = especificas.entidadNombre(entidad);
+		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodEditado.capitulos = await BD_especificas.obtenerCapitulos(

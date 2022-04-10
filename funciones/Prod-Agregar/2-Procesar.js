@@ -34,11 +34,11 @@ module.exports = {
 					"TMDB_id",
 					datosAPI_renamed.en_colec_TMDB_id
 				);
-				datosIniciales.productoNombre = "Capítulo";
+				datosIniciales.prodNombre = "Capítulo";
 				datosIniciales.entidad = "capitulos";
 			} else {
 				datosAPI_renamed.en_coleccion = false;
-				datosIniciales.productoNombre = "Película";
+				datosIniciales.prodNombre = "Película";
 				datosIniciales.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
@@ -114,7 +114,7 @@ module.exports = {
 	infoTMDBparaDD_collection: async function (datos) {
 		// Datos obtenidos sin la API
 		let datosIniciales = {
-			productoNombre: "Colección",
+			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "collection",
@@ -258,7 +258,7 @@ module.exports = {
 	infoTMDBparaDD_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		let datosIniciales = {
-			productoNombre: "Colección",
+			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "tv",
@@ -403,7 +403,7 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let productoNombre = especificas.entidadNombre(entidad);
+		let prodNombre = especificas.entidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
@@ -412,7 +412,7 @@ module.exports = {
 		}
 		// Generar el resultado
 		let resultado = {
-			productoNombre,
+			prodNombre,
 			entidad,
 			fuente: "FA",
 			FA_id,

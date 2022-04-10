@@ -60,7 +60,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		// Estandarizar los nombres
 		if (entidad_TMDB == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
-			var productoNombre = "Colección";
+			var prodNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = "-";
 			var nombre_original = m.original_name;
@@ -76,7 +76,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var productoNombre = "Colección";
+			var prodNombre = "Colección";
 			var entidad = "colecciones";
 			var ano = parseInt(m.first_air_date.slice(0, 4));
 			var nombre_original = m.original_name;
@@ -92,7 +92,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 				m.poster_path == null
 			)
 				return;
-			var productoNombre = "Película";
+			var prodNombre = "Película";
 			var entidad = "peliculas";
 			var ano = parseInt(m.release_date.slice(0, 4));
 			var nombre_original = m.original_title;
@@ -110,7 +110,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			.replace(/'/g, "");
 		// Dejar sólo algunos campos
 		return {
-			productoNombre,
+			prodNombre,
 			entidad,
 			entidad_TMDB,
 			TMDB_id: m.id,
@@ -227,7 +227,7 @@ let averiguarSiYaEnBD = async (datos) => {
 				capitulo = await BD_genericas.obtenerPorId("capitulos", YaEnBD);
 				coleccion = await BD_genericas.obtenerPorId("colecciones", capitulo.coleccion_id);
 				datos.resultados[i].entidad = "capitulos";
-				datos.resultados[i].productoNombre =
+				datos.resultados[i].prodNombre =
 					'Capítulo de Colección "' + coleccion.nombre_castellano + '"';
 			}
 		}
