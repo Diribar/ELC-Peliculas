@@ -1,6 +1,6 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// VARIABLES
+	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	// Horario Inicial
 	let codigoEnc = encodeURIComponent(codigo);
 	let horarioInicial = new Date(
-		await fetch("/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc).then(
+		await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc).then(
 			(n) => n.json()
 		)
 	);
@@ -21,12 +21,12 @@ window.addEventListener("load", async () => {
 	let minutos = Math.min(60, Math.max(0, parseInt(tiempoRestante / 1000 / 60)));
 	//minutos=1
 
-	// FUNCIONES
+	// FUNCIONES ------------------------------------------------------------------------
 	let funcionTimer = () => {
 		let actualizarTimer = setInterval(() => {
 			minutos--;
 			timer.innerHTML = minutos + " min.";
-			if (minutos == 0) {
+			if (minutos <= 0) {
 				clearInterval(actualizarTimer);
 				// Cartel de "time out"
 				funcionCartelAdvertencia();
@@ -76,14 +76,14 @@ window.addEventListener("load", async () => {
 		else if (minutos <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
 
-	// EVENTOS
+	// EVENTOS -------------------------------------------------------------
 	pulgarArriba.addEventListener("click", () => {
 		if (codigo == "/producto/edicion/")
 			window.location.href = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
 		else if (codigo.startsWith("/revision/")) window.location.href = "/revision/tablero-de-control";
 	});
 
-	// STARTUP
+	// STARTUP -------------------------------------------------------------
 	timer.innerHTML = minutos + " min.";
 	formatoTimer(minutos);
 	funcionTimer();

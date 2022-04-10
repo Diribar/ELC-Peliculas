@@ -9,20 +9,26 @@
 			<!-- Ingresos -->
 			<div id="contenido">
 				<% if (ingresos.length) { %>
-					<h2>Información que no se disponía</h2>
-					<table id="ingrs">
-						<tbody>
-							<% for (campo of ingresos) { %>
-								<%- include("21-ProdEdic-Ingresos", {campo}) %> 
-							<% } %>
-						</tbody>
-					</table>
+					<div id="ingrs">
+						<h2>Información que no se disponía</h2>
+						<table>
+							<tbody>
+								<% for (campo of ingresos) { %>
+									<tr class="fila">
+										<%- include("21-ProdEdic-Ingresos", {campo}) %> 
+									</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
 				<% } %>
 				<% if (reemplazos.length) { %>
-					<h2>Información a reemplazar</h2>
-					<div id="comps">
+					<div id="reemps">
+						<h2>Información a reemplazar</h2>
 						<% for (campo of reemplazos) { %>
-							<%- include("22-ProdEdic-Reemplazos", {campo}) %>
+							<div class="fila">
+								<%- include("22-ProdEdic-Reemplazos", {campo}) %>
+							</div>
 						<% } %>
 					</div>
 				<% } %>

@@ -35,7 +35,7 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		palabras = palabras.join(" ");
-		let resultados = await fetch("/quick-search/?palabras=" + palabras).then((n) => n.json());
+		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
 		resultados = resultados.map((n) => {
 			return {
 				id: n.id,

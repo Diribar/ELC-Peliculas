@@ -48,9 +48,9 @@ router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Alta
 router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
 router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
-// Producto-Avatar
-router.get("/producto/edicion/api/aprobarAvatar", soloGestionProd, API.aprobarAvatar);
-router.get("/producto/edicion/api/rechazarAvatar", soloGestionProd, API.rechazarAvatar);
+// Producto-Edición
+router.get("/producto/edicion/api/aprobar-campo", soloGestionProd, API.aprobarCampo);
+router.get("/producto/edicion/api/rechazar-campo", soloGestionProd, API.rechazarAvatar);
 
 // Exportarlo **********************************************
 module.exports = router;
