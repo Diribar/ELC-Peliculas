@@ -134,12 +134,10 @@ module.exports = {
 				includes.slice(0, -2)
 			);
 			if (prodEditado) {
-				// Quitarle el ID para que no se superponga con el del producto original
-				delete prodEditado.id;
 				// Quitarle los campos 'null'
 				prodEditado = this.quitarLosCamposSinContenido(prodEditado);
 			}
-			prodEditado = {...prodOriginal, ...prodEditado};
+			// prodEditado = {...prodOriginal, ...prodEditado};
 		}
 		return [prodOriginal, prodEditado];
 	},
@@ -390,7 +388,7 @@ module.exports = {
 		// Datos a enviar
 		let enviar = {
 			calidadEdiciones: ["Calidad Edic.", calidadInputs],
-			cantEdiciones: ["Cant. Campos Editados", cantEdics],
+			cantEdiciones: ["Cant. Campos Proces.", cantEdics],
 			cantPenalizConDias:["Cant. Penaliz. c/Días", cantPenalizConDias],
 			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
 		};

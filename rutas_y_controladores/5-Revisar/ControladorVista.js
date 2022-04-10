@@ -6,10 +6,10 @@ const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
 
 module.exports = {
-	visionGeneral: async (req, res) => {
+	tableroControl: async (req, res) => {
 		// Tema y Código
 		let tema = "revision";
-		let codigo = "visionGeneral";
+		let codigo = "tableroControl";
 		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
 		let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario("", "", userID);
@@ -47,6 +47,30 @@ module.exports = {
 		});
 	},
 
+	inactivarCaptura: async (req, res) => {
+		// Variables
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
+		let haceUnaHora = especificas.haceUnaHora();
+		// Obtener producto
+		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
+		if (producto) {
+			// Verificar que tenga una captura activa del usuario
+			if (
+				producto.capturado_en &&
+				producto.capturado_por_id &&
+				producto.captura_activa &&
+				producto.capturado_en > haceUnaHora &&
+				producto.capturado_por_id == userID
+			)
+				// En caso afirmativo, actualizarlo inactivando la captura
+				await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
+		}
+		// Redireccionar a "Visión General"
+		return res.redirect("/revision/tablero-de-control");
+	},
+
 	redireccionar: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
@@ -66,12 +90,31 @@ module.exports = {
 				: "/edicion";
 			destino += subDestino;
 			if (subDestino == "/edicion") {
-				if (!edicID) {
-					// Obtener el id de la edición
-					let producto_id = especificas.entidad_id(entidad);
+				let producto_id = especificas.entidad_id(entidad);
+				// Obtener el id de la edición
+				if (!edicID)
 					edicID = await BD_especificas.obtenerEdicionAjena("elc_" + producto_id, prodID, userID);
-				}
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
+				else {
+					let edicion = await BD_genericas.obtenerPorCampo(
+						"productos_edic",
+						"elc_" + producto_id,
+						prodID
+					);
+					let informacion = {};
+					informacion.iconos = [
+						{
+							nombre: "fa-thumbs-up",
+							link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+							titulo: "Ir a la vista de inicio de revision",
+						},
+					];
+					informacion.mensaje =
+						edicion && edicion.editado_por_id == userID
+							? "Sólo encontramos una edición, realizada por vos. Necesitamos que la revise otra persona."
+							: "No encontramos ninguna edición para revisar";
+					return res.render("Errores", {informacion});
+				}
 			}
 		}
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
@@ -162,6 +205,10 @@ module.exports = {
 		];
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
+		// Si la edición no se corresponde con el producto, redireccionar
+		let producto_id = especificas.entidad_id(entidad);
+		if (!prodEditado["elc_" + producto_id] || prodEditado["elc_" + producto_id] != prodID)
+			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
@@ -181,6 +228,7 @@ module.exports = {
 		} else {
 			// Obtener los ingresos y reemplazos
 			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
+			//return res.send(ingresos)
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -357,12 +405,12 @@ let armarComparacion = (prodOriginal, prodEditado) => {
 			camposAComparar[i].mostrarOrig =
 				camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
 					? prodOriginal[asoc1][asoc2]
-					: null;
+					: camposAComparar[i].valorOrig;
 			// Valores editados
 			camposAComparar[i].valorEdic = prodEditado[campo];
 			camposAComparar[i].mostrarEdic = camposAComparar[i].asociacion1
 				? prodEditado[asoc1][asoc2]
-				: null;
+				: prodEditado[campo];
 		}
 	}
 	// Ingresos de edición, sin valor en la versión original

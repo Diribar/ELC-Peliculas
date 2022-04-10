@@ -44,7 +44,7 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-thumbs-up",
-							link: "/revision/vision-general",
+							link: "/revision/tablero-de-control",
 							titulo: "Ir a la vista de inicio de revision",
 						},
 					],
@@ -69,7 +69,7 @@ module.exports = async (req, res, next) => {
 							},
 							{
 								nombre: "fa-thumbs-up",
-								link: "/revision/vision-general",
+								link: "/revision/tablero-de-control",
 								titulo: "Ir a la vista de inicio de revision",
 							},
 						],
@@ -109,7 +109,7 @@ module.exports = async (req, res, next) => {
 								},
 								{
 									nombre: "fa-thumbs-up",
-									link: "/revision/vision-general",
+									link: "/revision/tablero-de-control",
 									titulo: "Ir a la vista de inicio de revision",
 								},
 							],
@@ -128,12 +128,12 @@ module.exports = async (req, res, next) => {
 							iconos: [
 								{
 									nombre: "fa-circle-left",
-									link: "/revision/vision-general",
+									link: "/revision/tablero-de-control",
 									titulo: "Ir a la vista anterior",
 								},
 								{
 									nombre: "fa-thumbs-up",
-									link: "/revision/vision-general",
+									link: "/revision/tablero-de-control",
 									titulo: "Ir a la vista de inicio de revision",
 								},
 							],

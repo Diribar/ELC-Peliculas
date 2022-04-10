@@ -24,20 +24,20 @@ module.exports = {
 			prodID,
 			userID
 		);
-		// Usar la versión 'session' (si existe) en vez de la guardada
-		if (req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID)
-			prodEditado = {...prodEditado, ...req.session.edicion};
-		// Generar los datos a mostrar en la vista
-		let prodCombinado = {...prodOriginal, ...prodEditado};
 		// 4. Obtener avatar
-		let imagen = prodCombinado.avatar;
-		let avatar = imagen
-			? (imagen.slice(0, 4) != "http"
-					? prodEditado.avatar
-						? "/imagenes/3-ProdRevisar/"
-						: "/imagenes/2-Productos/"
-					: "") + imagen
+		let avatar = prodEditado.avatar
+			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
+			: prodOriginal.avatar
+			? prodOriginal.avatar.slice(0, 4) != "http"
+				? "/imagenes/2-Productos/" + prodOriginal.avatar
+				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
+		// Usar la versión 'session' (si existe) en vez de la edición guardada
+		let prodSession =
+			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
+				? {...prodOriginal, ...prodEditado, ...req.session.edicion}
+				: "";
+		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
 		let productoNombre = especificas.entidadNombre(entidad);
 		let titulo =
@@ -141,7 +141,6 @@ module.exports = {
 				prodCombinado.coleccion_id,
 				prodCombinado.temporada
 			);
-		// Pruebas
 		// Ir a la vista
 		return res.render("0-RUD", {
 			tema,
@@ -184,7 +183,7 @@ module.exports = {
 			? prodEditado.avatar
 			: prodOriginal.avatar;
 		// Unir 'Edición' y 'Original'
-		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar};
+		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar, id: prodID};
 		// Averiguar si hay errores de validación
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {

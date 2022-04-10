@@ -14,12 +14,14 @@ window.addEventListener("load", async () => {
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------------------
-	// Obtener versiones GUARDADA y ORIGINAL
+	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
+	let rutaVE = "/producto/edicion/api/validar-edicion/?";
+	// Obtener versiones EDICION GUARDADA y ORIGINAL
 	let rutaVersiones =
 		"/producto/edicion/api/obtener-original-y-edicion/?entidad=" + entidad + "&id=" + prodID;
 	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
-	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
-	let rutaVE = "/producto/edicion/api/validar-edicion/?";
+	let avatar_eg = avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion", datosOriginales.avatar);
+	datosEdicG = {...datosOriginales, ...datosEdicG};
 	// Temas de la versión ORIGINAL
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
 	let avatar_or = avatar_obtenerRutaNombre(datosOriginales.avatar, "original");
@@ -28,9 +30,6 @@ window.addEventListener("load", async () => {
 	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
 	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
 	let existeEdicG = datosEdicG.elc_pelicula_id || datosEdicG.elc_coleccion_id || datosEdicG.elc_capitulo_id;
-	let avatar_eg = datosEdicG.avatar
-		? avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion")
-		: datosOriginales.imagen;
 	let statusPendAprobar = existeEdicG ? datosOriginales.status_registro.gr_pend_aprob : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
@@ -39,7 +38,6 @@ window.addEventListener("load", async () => {
 	let rutaSession = "/producto/edicion/api/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
 	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 	datosEdicS = datosEdicS ? datosEdicS : datosEdicG;
-	let avatar_es = avatar_eg; // Porque al cargar la vista no hay archivo 'input'
 	let rutaRQ = "/producto/edicion/api/enviar-a-req-session/?";
 
 	// OTRAS VARIABLES --------------------------------------------------------------------------
@@ -127,7 +125,7 @@ window.addEventListener("load", async () => {
 		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 		// Fin
 		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOriginales;
-		comandos_ActualizarInput(botonVerSession, datosEdicS, (readOnly = false));
+		comandos_ActualizarInput(botonVerSession, datosEdicS, false);
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
@@ -146,7 +144,7 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo, concluye la función
 		if (Array.from(botonVerGuardada.classList).join(" ").includes("inactivo") || !datosEdicG) return;
 		// Ejecuta la función 'Input'
-		comandos_ActualizarInput(botonVerGuardada, datosEdicG, (readOnly = true));
+		comandos_ActualizarInput(botonVerGuardada, datosEdicG, true);
 	});
 	botonEliminarGuardada.addEventListener("click", (e) => {
 		if (Array.from(botonEliminarGuardada.classList).join(" ").includes("inactivo")) {
@@ -158,7 +156,7 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo, concluye la función
 		if (Array.from(botonOriginal.classList).join(" ").includes("inactivo") || !datosOriginales) return;
 		// Ejecuta la función 'Input'
-		comandos_ActualizarInput(botonOriginal, datosOriginales, (readOnly = true));
+		comandos_ActualizarInput(botonOriginal, datosOriginales, true);
 	});
 
 	// FUNCIONES ---------------------------------------------
@@ -173,9 +171,8 @@ window.addEventListener("load", async () => {
 		// Actualizar los links RCLV
 		actualizarInput_linksRCLV(disabled);
 		// Actualizar los errores
-		let rutaVE = "/producto/edicion/api/validar-edicion/?";
 		let errores = await fetch(rutaVE + actualizarInput_dataEntry()).then((n) => n.json());
-		actualizarInput_errores(errores, campos, (mostrarOK = false));
+		actualizarInput_errores(errores, campos, false);
 	};
 	let actualizarInput_flechas = (botonVersion, datosVersion, i) => {
 		if (inputs[i].name != "avatar")
@@ -185,8 +182,8 @@ window.addEventListener("load", async () => {
 				: flechasAviso[i].classList.add("ocultar");
 		else {
 			// Obtener los avatar ACTUAL y NUEVO
-			avatarActual = document.querySelector("#imagenProducto img").getAttribute("src");
-			avatarNuevo = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
+			let avatarActual = document.querySelector("#imagenProducto img").getAttribute("src");
+			let avatarNuevo = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			// Compararlos y tomar acciones
 			avatarActual != avatarNuevo
 				? flechasAviso[i].classList.remove("ocultar")
@@ -205,7 +202,7 @@ window.addEventListener("load", async () => {
 			}
 		} else {
 			// Actualizar el avatar
-			avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
+			let avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
 			let imgAvatar = document.querySelector(".input-error #imagenProducto img");
 			trueFalse ? imgAvatar.classList.remove("pointer") : imgAvatar.classList.add("pointer");
@@ -250,7 +247,7 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let actualizarInput_AvatarDeLaNuevaVersion = (botonVersion) => {
-		avatar_es = document.querySelector("#imagenProducto2 img").getAttribute("src");
+		let avatar_es = document.querySelector("#imagenProducto2 img").getAttribute("src");
 		return botonVersion == botonOriginal
 			? avatar_or
 			: botonVersion == botonVerGuardada
@@ -346,10 +343,10 @@ window.addEventListener("load", async () => {
 		}
 	};
 	let formChange_dosCampos = async (datos, campo) => {
-		campo1 = datos.campo1;
-		campo2 = datos.campo2;
-		indice1 = campos.indexOf(campo1);
-		indice2 = campos.indexOf(campo2);
+		let campo1 = datos.campo1;
+		let campo2 = datos.campo2;
+		let indice1 = campos.indexOf(campo1);
+		let indice2 = campos.indexOf(campo2);
 		if (
 			(campo == campo1 || campo == campo2) &&
 			inputs[indice1].value &&
@@ -371,7 +368,7 @@ window.addEventListener("load", async () => {
 		let errores = await fetch(rutaVE + dato).then((n) => n.json());
 		campo
 			? formInputChange_consecuenciaError(errores, campo)
-			: actualizarInput_errores(errores, camposEspecificos, (true));
+			: actualizarInput_errores(errores, camposEspecificos, true);
 	};
 	let startup_activarEdicionGuardado = () => {
 		// Quita 'inactivo_EdicGua' si existe una versión 'guardada'
@@ -393,18 +390,20 @@ window.addEventListener("load", async () => {
 });
 
 // FUNCIONES QUE SE PUEDEN CARGAR ANTES DEL ON-LOAD
-let avatar_obtenerRutaNombre = (imagen, status) => {
+let avatar_obtenerRutaNombre = (imagen, status, imagenOriginal) => {
 	return imagen
 		? (imagen.slice(0, 4) != "http"
 				? status == "original"
 					? "/imagenes/2-Productos/"
 					: "/imagenes/3-ProdRevisar/"
 				: "") + imagen
+		: imagenOriginal && status == "edicion"
+		? (imagenOriginal.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagenOriginal
 		: "/imagenes/8-Agregar/IM.jpg";
 };
 let avatar_nuevoIngresado = async (e) => {
 	// Creamos el objeto de la clase FileReader
-	reader = new FileReader();
+	let reader = new FileReader();
 	// Leemos el archivo subido y se lo pasamos a nuestro fileReader
 	reader.readAsDataURL(e.target.files[0]);
 	// Le decimos que cuando esté listo ejecute el código interno
@@ -416,8 +415,8 @@ let avatar_nuevoIngresado = async (e) => {
 };
 let avatar_cambiarEnLaVista = (avatar, identificadorElemento) => {
 	// Crear elementos
-	image = document.createElement("img");
-	preview = document.querySelector(identificadorElemento);
+	let image = document.createElement("img");
+	let preview = document.querySelector(identificadorElemento);
 	preview.innerHTML = "";
 	image.src = avatar;
 	// Cambiar el avatar visible

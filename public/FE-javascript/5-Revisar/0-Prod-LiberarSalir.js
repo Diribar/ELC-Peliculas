@@ -13,6 +13,6 @@ window.addEventListener("load", () => {
 		liberarSalir.style.cursor = "wait";
 		let ruta = "/revision/api/liberar-y-salir/?entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
-		window.location.href = "/revision/vision-general";
+		window.location.href = "/revision/tablero-de-control";
 	});
 });

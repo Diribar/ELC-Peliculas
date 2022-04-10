@@ -1,5 +1,5 @@
 /* CONFIGURAR SECCIONES */
-main {height:91vh;}
+main {height:90.4vh;}
 main.flex-row {flex-direction: row-reverse;}
 main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse; justify-content: space-between;}
 main #zona-de-vitreaux {padding-left: 30px; width: 220px; height: 100%; display: flex; flex-direction: column; justify-content: center;}
