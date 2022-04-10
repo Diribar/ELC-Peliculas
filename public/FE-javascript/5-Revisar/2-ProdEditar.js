@@ -1,60 +1,63 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let edicion_id = new URL(window.location.href).searchParams.get("edicion_id");
+	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
-	// Flechas
-	let aprobar = document.querySelector("#imagenes #editada img");
-	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
+	// Detectar los 'Aprobar'y 'Rechazar'
+	let filas = document.querySelectorAll("#contenido .fila");
+	let aprobar = document.querySelectorAll("#contenido .fa-circle-check");
+	let rechazar = document.querySelectorAll("#contenido .fa-circle-xmark");
+	let campoNombres = Array.from(document.querySelectorAll("#contenido .campoNombre")).map(
+		(n) => n.innerHTML
+	);
+	// Bloques
+	let bloqueIngrs = document.querySelector("#contenido #ingrs");
+	let bloqueReemps = document.querySelector("#contenido #reemps");
+	// Otras variables
+	let filasIngrs = document.querySelectorAll("#contenido #ingrs .fila");
+	let filasReemps = document.querySelectorAll("#contenido #reemps .fila");
 
-	// Motivos para borrar
-	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
-	let motivosRechazo = document.querySelector("#motivosRechazo select");
-	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
+	// LISTENERS --------------------------------------------------------------------
+	// 'Listeners' de 'Aprobar'
+	for (let i = 0; i < aprobar.length; i++) {
+		aprobar[i].addEventListener("click", async () => {
+			// Ocultar la fila
+			filas[i].classList.add("ocultar");
+			// Actualizar el campo del producto
+			let ruta = "/revision/producto/edicion/api/aprobar-campo/?entidad=";
+			let campoNombre = campoNombres[i];
+			fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombre);
+			// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
 
-	// Aprobar el nuevo avatar
-	aprobar.addEventListener("click", async () => {
-		aprobar.style.transform = "scale(1)";
-		aprobar.style.cursor = "wait";
-		let ruta = "/revision/producto/edicion/api/aprobarAvatar/?entidad=";
-		await fetch(ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id);
-		window.location.href =
-			"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
-	});
+			// Si no lo había, agregar un registro en 'edic_aprob'
 
-	// Menú inactivar
-	mostrarMenuMotivos.addEventListener("click", () => {
-		menuMotivosBorrar.classList.remove("ocultar");
-		taparElFondo.classList.remove("ocultar");
-	});
+			// Si está todo oculto, cartel de fin
+			if (todoOculto()) console.log("fin");
+		});
+	}
 
-	// Cancelar menú motivos para borrar
-	cancelar.addEventListener("click", () => {
-		menuMotivosBorrar.classList.add("ocultar");
-		taparElFondo.classList.add("ocultar");
-	});
+	// 'Listeners' de 'Rechazar'
 
-	// Rechazar el nuevo avatar
-	rechazar.addEventListener("click", async () => {
-		let motivo = motivosRechazo.value;
-		if (motivo) {
-			rechazar.style.transform = "scale(1)";
-			menuMotivosBorrar.style.cursor = "wait";
-			let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
-			await fetch(
-				ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id + "&motivo_id=" + motivo
-			);
-			window.location.href =
-				"/revision/redireccionar/?entidad=" +
-				prodEntidad +
-				"&id=" +
-				prodID +
-				"&edicion_id=" +
-				edicion_id;
-		}
-	});
+	// FUNCIONES ----------------------------------------------------------------
+	let todoOculto = () => {
+		// Verificar si ocultar algún bloque
+		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
+		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
+		// Verificar si está todo oculto
+		let todoOculto = ingrsOculto && reempsOculto;
+		return todoOculto;
+	};
+	let verificarBloques = (filas, bloque) => {
+		// Averiguar el status
+		let ocultarBloque = Array.from(filas)
+			.map((n) => n.classList)
+			.map((n) => n.value)
+			.every((n) => n.includes("ocultar"));
+		// Ocultar el bloque si corresponde
+		if (ocultarBloque) bloque.classList.add("ocultar");
+		// Fin
+		return ocultarBloque;
+	};
 });

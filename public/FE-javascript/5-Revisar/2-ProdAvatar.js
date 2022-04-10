@@ -1,9 +1,9 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let edicion_id = new URL(window.location.href).searchParams.get("edicion_id");
+	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
 	// Flechas
 	let aprobar = document.querySelector("#imagenes #editada img");
@@ -20,10 +20,10 @@ window.addEventListener("load", () => {
 	aprobar.addEventListener("click", async () => {
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
-		let ruta = "/revision/producto/edicion/api/aprobarAvatar/?entidad=";
-		await fetch(ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id);
+		let ruta = "/revision/producto/edicion/api/aprobar-campo/?entidad=";
+		await fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombre);
 		window.location.href =
-			"/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id;
+			"/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 	});
 
 	// Menú inactivar
@@ -46,15 +46,15 @@ window.addEventListener("load", () => {
 			menuMotivosBorrar.style.cursor = "wait";
 			let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
 			await fetch(
-				ruta + prodEntidad + "&id=" + prodID + "&edicion_id=" + edicion_id + "&motivo_id=" + motivo
+				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&motivo_id=" + motivo
 			);
 			window.location.href =
 				"/revision/redireccionar/?entidad=" +
-				prodEntidad +
+				entidad +
 				"&id=" +
 				prodID +
 				"&edicion_id=" +
-				edicion_id;
+				edicID;
 		}
 	});
 });

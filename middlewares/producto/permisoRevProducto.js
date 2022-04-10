@@ -98,8 +98,10 @@ module.exports = async (req, res, next) => {
 							mensaje:
 								"El producto está en revisión por el usuario " +
 								prodOriginal.capturado_por.apodo +
-								", desde las " +
-								horarioCaptura +
+								", desde el " +
+								horarioCaptura.slice(0,horarioCaptura.indexOf(" ")) +
+								" a las "+
+								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
 								"hs",
 							iconos: [
 								{
@@ -122,8 +124,10 @@ module.exports = async (req, res, next) => {
 					)
 						informacion = {
 							mensaje:
-								"Tu revisión de este producto quedó inconclusa desde un poco antes de las " +
-								horarioCaptura +
+								"Tu revisión de este producto quedó inconclusa desde un poco antes del " +
+								horarioCaptura.slice(0,horarioCaptura.indexOf(" ")) +
+								" a las "+
+								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
 								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
 							iconos: [
 								{

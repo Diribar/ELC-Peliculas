@@ -68,46 +68,48 @@ module.exports = {
 		return res.json();
 	},
 
-	// Revisar el avatar
-	aprobarAvatar: async (req, res) => {
+	// Revisar la edición
+	aprobarCampo: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, edicion_id} = req.query;
+		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
+		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		let userID = req.session.usuario.id;
 		let datos;
 		// Detectar un eventual error
-		if (!prodEditado || !prodEditado.avatar) return res.json();
-		// Eliminar el avatar original (si es un archivo)
-		let avatar = prodOriginal.avatar;
-		if (avatar.slice(0, 4) != "http") {
-			let ruta = prodOriginal.status_registro.alta_aprob
-				? "/imagenes/3-ProdRevisar/"
-				: "/imagenes/2-Productos/";
-			especificas.borrarArchivo(ruta, avatar);
+		if (!prodEditado || !prodEditado.avatar) return res.json("error");
+		// Particularidades para el campo 'avatar'
+		if (campo == "avatar") {
+			// Eliminar el avatar original (si es un archivo)
+			let avatar = prodOriginal.avatar;
+			if (avatar.slice(0, 4) != "http") {
+				let ruta = prodOriginal.status_registro.alta_aprob
+					? "/imagenes/3-ProdRevisar/"
+					: "/imagenes/2-Productos/";
+				especificas.borrarArchivo(ruta, avatar);
+			}
+			// Mover el nuevo avatar a la carpeta definitiva
+			especificas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 		}
 		// Actualizar el registro de 'original' con:
-		// 	- El nuevo avatar
+		// 	- El nuevo valor
 		// 	- Los datos de la edición (fecha, usuario)
 		// 	- Los datos de la revisión (fecha, usuario)
 		datos = {
-			avatar: prodEditado.avatar,
+			[campo]: prodEditado[campo],
 			editado_por_id: prodEditado.editado_por_id,
 			editado_en: prodEditado.editado_en,
 			edic_analizada_por_id: userID,
 			edic_analizada_en: especificas.ahora(),
 		};
 		await BD_genericas.actualizarPorId(entidad, prodID, datos);
-		prodOriginal = {...prodOriginal, ...datos};
-		// Mover el nuevo avatar a la carpeta definitiva
-		especificas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
-		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
-		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
+		// Actualizar el registro de 'edicion' quitándole el valor al campo
+		await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
 		// Agregar un registro en la BD 'edic_aprob'
 		datos = {
 			elc_entidad: entidad,
 			elc_id: prodID,
-			campo: "avatar",
+			campo: campo,
 			input_por_id: datos.editado_por_id,
 			input_en: datos.editado_en,
 			evaluado_por_id: datos.edic_analizada_por_id,
@@ -119,10 +121,10 @@ module.exports = {
 	},
 	rechazarAvatar: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, edicion_id, motivo_id} = req.query;
+		let {entidad, id: prodID, edicion_id: edicID, motivo_id} = req.query;
 		//return res.json();
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicion_id);
+		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		let userID = req.session.usuario.id;
 		// Detectar un eventual error
 		if (!prodEditado || !prodEditado.avatar || !motivo_id) return res.json();
@@ -146,7 +148,7 @@ module.exports = {
 				especificas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
 		}
 		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
-		await BD_genericas.actualizarPorId("productos_edic", edicion_id, {avatar: null});
+		await BD_genericas.actualizarPorId("productos_edic", edicID, {avatar: null});
 		// Agregar un registro en la BD 'edicion_rech'
 		let duracion = await BD_genericas.obtenerPorId("edic_rech_motivos", motivo_id).then(
 			(n) => n.duracion

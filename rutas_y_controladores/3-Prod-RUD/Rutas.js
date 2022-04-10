@@ -27,7 +27,7 @@ router.post(
 router.get("/edicion/eliminar", soloAutInput, entidadId, permisoRUD, vista.edicionEliminar);
 router.get("/links", soloAutInput, entidadId, permisoRUD, vista.linksForm);
 
-router.post("/links/altas-editar", soloAutInput, permisoRUD, vista.linksAltasEditar);
+router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
 
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links
