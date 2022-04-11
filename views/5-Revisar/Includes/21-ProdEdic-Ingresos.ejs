@@ -2,7 +2,7 @@
 <td class="campoNombre ocultar"><%= campo.nombreDelCampo %></td>
 <td class="infoMostrar">
 	<!-- Data-entry -->
-	<%= campo.mostrarEdic %>
+	<span class="valor"><%= campo.mostrarEdic %></span>
 	<!-- Aprobar y Rechazar -->
 	<i class="fa-solid fa-circle-check"></i>
 	<i class="fa-solid fa-circle-xmark"></i>
@@ -13,7 +13,7 @@
 <td class="motivos ocultar">
 	<i class="fa-solid fa-trash-can" tabindex="-1" title='Rechazar'></i>
 	<select name="motivo_id">
-		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea) %>
+		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
 		<% for (motivo of motivos) { %>
 			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 		<% } %>

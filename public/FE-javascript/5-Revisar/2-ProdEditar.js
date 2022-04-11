@@ -11,6 +11,9 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let infoMostrar = document.querySelectorAll("#contenido .infoMostrar");
+	let valores = Array.from(document.querySelectorAll("#contenido .infoMostrar .valor")).map(
+		(n) => n.innerHTML
+	);
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
 	let rechazar = document.querySelectorAll("#contenido .motivos .fa-trash-can");
@@ -31,13 +34,25 @@ window.addEventListener("load", () => {
 	// LISTENERS --------------------------------------------------------------------
 	// 'Listeners' de 'Aprobar'
 	for (let i = 0; i < rechazar.length; i++) {
+		let valor = valores[i];
 		// Aprobar el nuevo valor
 		aprobar[i].addEventListener("click", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
 			let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=true&entidad=";
-			fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]);
+			fetch(
+				ruta +
+					entidad +
+					"&id=" +
+					prodID +
+					"&edicion_id=" +
+					edicID +
+					"&campo=" +
+					campoNombres[i] +
+					"&valor=" +
+					valor
+			);
 			// Si está todo oculto, cartel de fin
 			if (todoOculto()) fin();
 		});
@@ -65,6 +80,8 @@ window.addEventListener("load", () => {
 						edicID +
 						"&campo=" +
 						campoNombres[i] +
+						"&valor=" +
+						valor +
 						"&motivo_id=" +
 						motivo
 				);

@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		elc_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
 		titulo: {type: dt.STRING(21)},
+		valor: {type: dt.STRING(20)},
 
 		input_por_id: {type: dt.INTEGER},
 		input_en: {type: dt.DATE},

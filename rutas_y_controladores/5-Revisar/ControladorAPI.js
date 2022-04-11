@@ -72,7 +72,7 @@ module.exports = {
 	// Revisar la edición
 	editarCampo: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
+		let {entidad, id: prodID, edicion_id: edicID, campo, valor} = req.query;
 		let aprobado = req.query.aprob == "true";
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
@@ -118,8 +118,8 @@ module.exports = {
 				}
 			}
 		}
+		// Si la edición fue aprobada, actualiza el registro de 'original'
 		if (aprobado) {
-			// Actualizar el registro de 'original'
 			datos = {
 				// El nuevo valor
 				[campo]: prodEditado[campo],
@@ -147,7 +147,8 @@ module.exports = {
 			let titulo = variables.camposRevisarEdic().find((n) => n.nombreDelCampo == campo).titulo;
 			datos = {
 				...datos,
-				titulo: titulo,
+				titulo,
+				valor,
 				input_en: prodEditado.editado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
