@@ -488,10 +488,7 @@ let edicionDeLink = async (req, datos) => {
 		// 1.3. Obtener el link 'Edición Nueva'
 		var linkEdicionNueva = {...linkCombinado, ...datos};
 		// 1.4. Quitar los coincidencias con el original
-		linkEdicionNueva = especificas.quitarLasCoincidenciasConOriginal(
-			linkOriginal,
-			linkEdicionNueva
-		);
+		linkEdicionNueva = especificas.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicionNueva);
 		// 2. Temas de 'id'...
 		// 2.1. Elimina el id de la edición nueva, porque no se necesita y puede entorpecer
 		delete linkEdicionNueva.id;
@@ -532,14 +529,6 @@ let estandarizarFechaRef = async (entidad, prodID) => {
 	BD_genericas.actualizarPorCampos("links_originales", {[producto_id]: prodID}, {fecha_referencia});
 	// Actualizar linksEdicion
 	BD_genericas.obtenerTodosPorCampos("links_originales", {[producto_id]: prodID}).then((n) =>
-		n.map((m) =>
-			BD_genericas.actualizarPorCampos(
-				"links_edicion",
-				{elc_id: m.id},
-				{
-					fecha_referencia,
-				}
-			)
-		)
+		n.map((m) => BD_genericas.actualizarPorCampos("links_edicion", {elc_id: m.id}, {fecha_referencia}))
 	);
 };
