@@ -87,8 +87,8 @@ module.exports = {
 		if (campo == "avatar") {
 			if (aprobado) {
 				// Eliminar el avatar original (si es un archivo)
+				let avatar = prodOriginal.avatar;
 				if (avatar.slice(0, 4) != "http") {
-					let avatar = prodOriginal.avatar;
 					let ruta = prodOriginal.status_registro.alta_aprob
 						? "/imagenes/3-ProdRevisar/"
 						: "/imagenes/2-Productos/";
