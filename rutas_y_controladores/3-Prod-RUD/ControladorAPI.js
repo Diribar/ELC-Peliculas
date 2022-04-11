@@ -117,7 +117,7 @@ module.exports = {
 			let producto_id = especificas.entidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
 				usuario_id: req.session.usuario.id,
-				producto_id: id,
+				[producto_id]: id,
 			}).then((n) =>
 				n
 					? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
