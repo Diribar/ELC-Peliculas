@@ -24,7 +24,7 @@ window.addEventListener("load", () => {
 				// Reemplazar por el tacho
 				botonesOut[i].classList.add("fa-trash-can");
 				botonesOut[i].classList.remove("fa-circle-xmark");
-				// Ocultar elbotón de editar
+				// Ocultar el botón de editar
 				botonesEditar[i].classList.add("ocultar");
 				// Ocultar los 6 campos
 				for (let j = 0; j < 6; j++) {

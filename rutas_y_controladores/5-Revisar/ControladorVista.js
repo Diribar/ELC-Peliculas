@@ -96,11 +96,9 @@ module.exports = {
 					edicID = await BD_especificas.obtenerEdicionAjena("elc_" + producto_id, prodID, userID);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
-					let edicion = await BD_genericas.obtenerPorCampo(
-						"productos_edic",
-						"elc_" + producto_id,
-						prodID
-					);
+					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
+						["elc_" + producto_id]: prodID,
+					});
 					let informacion = {};
 					informacion.iconos = [
 						{
@@ -187,7 +185,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		let motivosRechazo = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos;
 		let bloqueIzq,
 			bloqueDer = [[], []];
@@ -224,7 +222,7 @@ module.exports = {
 					: "/imagenes/8-Agregar/IM.jpg",
 				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
 			};
-			motivosRechazo = motivosRechazo.filter((m) => m.avatar);
+			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
 			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
@@ -235,7 +233,7 @@ module.exports = {
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
-			motivosRechazo = motivosRechazo.filter((m) => m.prod);
+			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
 			vista = "2-Prod2-Edic2Estruct";
 		}
@@ -254,7 +252,7 @@ module.exports = {
 			reemplazos,
 			avatar,
 			vista,
-			motivosRechazo,
+			motivos,
 			entidad,
 			bloqueIzq,
 			bloqueDer,

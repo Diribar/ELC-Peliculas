@@ -84,7 +84,7 @@
 // 	];
 // 	if (original.entidad == "capitulos") includes.push("coleccion");
 // 	// Obtener el producto EDITADO
-// 	let prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
+// 	let prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 // 		entidad,
 // 		"elc_entidad",
 // 		original.entidad,

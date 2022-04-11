@@ -22,7 +22,7 @@
 						<p><strong>Por favor explicanos el motivo por el que sugerís que se inactive</strong></p>
 						<select>
 							<option value="" selected class="ocultar">Elegí una opción</option>	
-							<% for (motivo of motivosRechazo) { %>
+							<% for (motivo of motivos) { %>
 								<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 							<% } %>
 						</select>

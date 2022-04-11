@@ -12,15 +12,11 @@ module.exports = {
 		let {entidad, id} = req.query;
 		let ID =
 			entidad == "colecciones"
-				? await BD_genericas.obtenerPor3Campos(
-						"capitulos",
-						"coleccion_id",
-						id,
-						"temporada",
-						1,
-						"capitulo",
-						1
-				  ).then((n) => n.id)
+				? await BD_genericas.obtenerPorCampos("capitulos", {
+						coleccion_id: id,
+						temporada: 1,
+						capitulo: 1,
+				  }).then((n) => n.id)
 				: await BD_genericas.obtenerPorId("capitulos", id).then((n) => n.coleccion_id);
 		return res.json(ID);
 	},
@@ -37,13 +33,10 @@ module.exports = {
 		else {
 			tempAnt = temporada - 1;
 			// Obtener el último número de capítulo de la temporada anterior
-			capAnt = await BD_genericas.obtenerTodosPor2Campos(
-				"capitulos",
-				"coleccion_id",
-				coleccion_id,
-				"temporada",
-				tempAnt
-			)
+			capAnt = await BD_genericas.obtenerTodosPorCampos("capitulos", {
+				coleccion_id: coleccion_id,
+				temporada: tempAnt,
+			})
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n));
 		}
@@ -51,13 +44,10 @@ module.exports = {
 		// Obtener datos de la colección y el capítulo
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtener el último número de capítulo de la temporada actual
-			BD_genericas.obtenerTodosPor2Campos(
-				"capitulos",
-				"coleccion_id",
-				coleccion_id,
-				"temporada",
-				temporada
-			)
+			BD_genericas.obtenerTodosPorCampos("capitulos", {
+				coleccion_id: coleccion_id,
+				temporada: temporada,
+			})
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
 			// Obtener el último número de temporada de la colección
@@ -78,26 +68,18 @@ module.exports = {
 		let [capAntID, capPostID] = await Promise.all([
 			// Obtener el ID del capítulo anterior
 			capAnt
-				? BD_genericas.obtenerPor3Campos(
-						"capitulos",
-						"coleccion_id",
-						coleccion_id,
-						"temporada",
-						tempAnt,
-						"capitulo",
-						capAnt
-				  ).then((n) => n.id)
+				? BD_genericas.obtenerPorCampos("capitulos", {
+						coleccion_id: coleccion_id,
+						temporada: tempAnt,
+						capitulo: capAnt,
+				  }).then((n) => n.id)
 				: false,
 			capPost
-				? BD_genericas.obtenerPor3Campos(
-						"capitulos",
-						"coleccion_id",
-						coleccion_id,
-						"temporada",
-						tempPost,
-						"capitulo",
-						capPost
-				  ).then((n) => n.id)
+				? BD_genericas.obtenerPorCampos("capitulos", {
+						coleccion_id: coleccion_id,
+						temporada: tempPost,
+						capitulo: capPost,
+				  }).then((n) => n.id)
 				: false,
 		]).then(([a, b]) => {
 			return [a, b];
@@ -107,15 +89,11 @@ module.exports = {
 	},
 	obtenerCapID: async (req, res) => {
 		let {coleccion_id, temporada, capitulo} = req.query;
-		let ID = await BD_genericas.obtenerPor3Campos(
-			"capitulos",
-			"coleccion_id",
-			coleccion_id,
-			"temporada",
-			temporada,
-			"capitulo",
-			capitulo
-		).then((n) => n.id);
+		let ID = await BD_genericas.obtenerPorCampos("capitulos", {
+			coleccion_id: coleccion_id,
+			temporada: temporada,
+			capitulo: capitulo,
+		}).then((n) => n.id);
 		return res.json(ID);
 	},
 
@@ -137,13 +115,10 @@ module.exports = {
 		// Datos particulares
 		if (detalle) {
 			let producto_id = especificas.entidad_id(entidad);
-			datos = await BD_genericas.obtenerPor2Campos(
-				"cal_registros",
-				"usuario_id",
-				req.session.usuario.id,
-				producto_id,
-				id
-			).then((n) =>
+			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
+				usuario_id: req.session.usuario.id,
+				[producto_id]: id,
+			}).then((n) =>
 				n
 					? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
 					: ""
@@ -269,7 +244,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	// Obtener la duración
 	let duracion = await BD_genericas.obtenerPorId("altas_rech_motivos", motivo_id).then((n) => n.duracion);
 	// Obtener el status_id de 'inactivar'
-	let statusInactivar_id = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", 1).then(
+	let statusInactivar_id = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: 1}).then(
 		(n) => n.id
 	);
 	// Preparar los datos
@@ -300,7 +275,7 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 // 	let link_original = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
 // 		"status_registro",
 // 	]);
-// 	link_edicion = await BD_genericas.obtenerPor2CamposConInclude(
+// 	link_edicion = await BD_genericas.obtenerPorCamposConInclude(
 // 		"links_edicion",
 // 		"elc_id",
 // 		link_id,

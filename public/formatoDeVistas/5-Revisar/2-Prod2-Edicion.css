@@ -9,19 +9,21 @@
 #datosLargos #contenido #ingrs {margin-top: 5px;}
 #datosLargos #contenido p {line-height: 1;}
 #datosLargos #contenido .campoTitulo {font-size: 1.1rem; font-weight: bold;}
-#datosLargos #contenido #reemps .infoMostrar .orig, #datosLargos #contenido #reemps .infoMostrar .edic 
-	{padding: 2px 4px; border-radius: 5px;}
+#datosLargos #contenido #reemps .infoMostrar .orig, 
+#datosLargos #contenido #reemps .infoMostrar .edic {padding: 2px 4px; border-radius: 5px;}
 /* Ocultar la 'side-bar' */
 #datosLargos #contenido::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
 #datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
+#datosLargos .fa-trash-can {color: var(--rojo-oscuro); cursor: pointer;}
 
 /* Datos Largos - Ingresos */
 #datosLargos #contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
 #datosLargos #contenido #ingrs tr .campoTitulo {width: 150px;}
 #datosLargos #contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
-#datosLargos #contenido #ingrs tr .fa-solid {position: absolute; top: 50%; transform: translateY(-50%);}
-#datosLargos #contenido #ingrs tr .fa-circle-check {left: 0}
-#datosLargos #contenido #ingrs tr .fa-circle-xmark {left: 25px}
+#datosLargos #contenido #ingrs tr .infoMostrar .fa-solid {position: absolute; top: 50%; transform: translateY(-50%);}
+#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-check {left: 0}
+#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-xmark {left: 25px}
+#datosLargos #contenido #ingrs tr .motivos select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */
 #datosLargos #contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white;}

@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
-	// Flechas
+	// Opciones
 	let aprobar = document.querySelector("#imagenes #editada img");
 	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
 
@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			rechazar.style.transform = "scale(1)";
 			menuMotivosBorrar.style.cursor = "wait";
-			let ruta = "/revision/producto/edicion/api/rechazarAvatar/?entidad=";
+			let ruta = "/revision/producto/edicion/api/rechazar-campo/?entidad=";
 			await fetch(
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&motivo_id=" + motivo
 			);

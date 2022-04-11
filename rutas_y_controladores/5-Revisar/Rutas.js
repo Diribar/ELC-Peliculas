@@ -50,7 +50,7 @@ router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
 router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
 // Producto-Edición
 router.get("/producto/edicion/api/aprobar-campo", soloGestionProd, API.aprobarCampo);
-router.get("/producto/edicion/api/rechazar-campo", soloGestionProd, API.rechazarAvatar);
+router.get("/producto/edicion/api/rechazar-campo", soloGestionProd, API.rechazarCampo);
 
 // Exportarlo **********************************************
 module.exports = router;
