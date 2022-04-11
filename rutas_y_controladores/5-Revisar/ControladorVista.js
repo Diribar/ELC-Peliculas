@@ -211,7 +211,7 @@ module.exports = {
 		[quedanCampos, prodEditado] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
-				mensaje: "Esta edición no tiene novedades respecto al original",
+				mensaje: "La edición fue borrada porque no tenía novedades respecto al original",
 				iconos: [
 					{
 						nombre: "fa-spell-check",

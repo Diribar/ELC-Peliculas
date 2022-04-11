@@ -12,7 +12,7 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
-		let datosIniciales = {fuente: "TMDB", entidad_TMDB: "movie", ...datos};
+		datos = {...datos, fuente: "TMDB", entidad_TMDB: "movie"};
 		// Obtener las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("movie", datos.TMDB_id),
@@ -20,78 +20,65 @@ module.exports = {
 		]).then(([a, b]) => {
 			return {...a, ...b};
 		});
-		// Cambiarle el nombre a los campos y procesar la información
-		let datosAPI_renamed = {};
-		if (Object.keys(datosAPI).length > 0) {
+		// Procesar la información
+		if (Object.keys(datosAPI).length) {
 			// Datos de la colección a la que pertenece, si corresponde
 			if (datosAPI.belongs_to_collection != null) {
-				datosAPI_renamed.en_coleccion = true;
-				datosAPI_renamed.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
-				datosAPI_renamed.en_colec_nombre = datosAPI.belongs_to_collection.name;
+				datos.en_coleccion = true;
+				datos.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
+				datos.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// elc_id de la colección
-				datosAPI_renamed.en_colec_id = await BD_especificas.obtenerELC_id(
+				datos.en_colec_id = await BD_especificas.obtenerELC_id(
 					"colecciones",
 					"TMDB_id",
-					datosAPI_renamed.en_colec_TMDB_id
+					datos.en_colec_TMDB_id
 				);
-				datosIniciales.prodNombre = "Capítulo";
-				datosIniciales.entidad = "capitulos";
+				datos.prodNombre = "Capítulo";
+				datos.entidad = "capitulos";
 			} else {
-				datosAPI_renamed.en_coleccion = false;
-				datosIniciales.prodNombre = "Película";
-				datosIniciales.entidad = "peliculas";
+				datos.en_coleccion = false;
+				datos.prodNombre = "Película";
+				datos.entidad = "peliculas";
 			}
 			// IMDB_id, nombre_original, nombre_castellano
-			if (datosAPI.imdb_id) datosAPI_renamed.IMDB_id = datosAPI.imdb_id;
-			if (datosAPI.original_title) datosAPI_renamed.nombre_original = datosAPI.original_title;
-			if (datosAPI.title) datosAPI_renamed.nombre_castellano = datosAPI.title;
+			if (datosAPI.imdb_id) datos.IMDB_id = datosAPI.imdb_id;
+			if (datosAPI.original_title) datos.nombre_original = datosAPI.original_title;
+			if (datosAPI.title) datos.nombre_castellano = datosAPI.title;
 			// Idioma
 			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
+				datos.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
 					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
 				)
-					datosAPI_renamed.en_castellano_id = 1;
+					datos.en_castellano_id = 1;
 			}
 			// año de estreno, duración, país de origen
-			if (datosAPI.release_date)
-				datosAPI_renamed.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
-			if (datosAPI.runtime != null) datosAPI_renamed.duracion = datosAPI.runtime;
+			if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
+			if (datosAPI.runtime != null) datos.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
-				datosAPI_renamed.paises_id = datosAPI.production_countries
-					.map((n) => n.iso_3166_1)
-					.join(", ");
+				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.produccion = datosAPI.production_companies.map((n) => n.name).join(", ");
+				datos.produccion = consolidarValores(datosAPI.production_companies);
 			// Crew
-			if (datosAPI.crew.length > 0)
-				datosAPI_renamed = {
-					...datosAPI_renamed,
-					direccion: funcionCrew(datosAPI.crew, "Directing"),
-					guion: funcionCrew(datosAPI.crew, "Writing"),
-					musica: funcionCrew(datosAPI.crew, "Sound"),
-				};
+			if (datosAPI.crew.length > 0) {
+				datos.direccion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+			}
 			// Cast
-			if (datosAPI.cast.length > 0) datosAPI_renamed.actuacion = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		// Consolidar los resultados
-		let resultado = {
-			...datosIniciales,
-			...datosAPI_renamed,
-		};
-
-		return especificas.convertirLetrasAlCastellano(resultado);
+		return especificas.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
 		let datosAPI = await detailsTMDB("movie", TMDB_id);
-
 		// Datos de la colección a la que pertenece, si corresponde
 		let datos = {};
 		if (datosAPI.belongs_to_collection != null) {
@@ -113,75 +100,62 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_collection: async function (datos) {
 		// Datos obtenidos sin la API
-		let datosIniciales = {
+		datos = {
+			...datos,
 			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "collection",
-			...datos,
+			cant_temporadas: 1,
 		};
 		// Obtener las API
 		let datosAPI = await detailsTMDB("collection", datos.TMDB_id);
-		// Cambiarle el nombre a los campos y procesar la información
-		let datosAPI_renamed = {};
-		if (Object.keys(datosAPI).length > 0) {
-			// Datos obtenidos de la API
+		// Procesar la información
+		if (Object.keys(datosAPI).length) {
 			// nombre_castellano
-			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
-			// Idioma - En el caso particular de las colecciones, este dato sólo figura en el 'Search'
+			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
 			// año de estreno, año de fin
 			if (datosAPI.parts.length > 0) {
-				datosAPI_renamed.ano_estreno = Math.min(
+				datos.ano_estreno = Math.min(
 					...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
 				);
-				datosAPI_renamed.ano_fin = Math.max(
-					...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4)))
-				);
+				datos.ano_fin = Math.max(...datosAPI.parts.map((n) => parseInt(n.release_date.slice(0, 4))));
 			}
 			// sinopsis, avatar
-			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
-			datosAPI_renamed.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
-			datosAPI_renamed.cant_capitulos = datosAPI.parts.length;
+			datos.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
+			datos.cant_capitulos = datosAPI.parts.length;
 		}
-		let resultado = {
-			...datosIniciales,
-			...datosAPI_renamed,
-			cant_temporadas: 1,
-		};
 		// Datos de los capítulos para completar la colección
-		let otrosDatos = await this.completarColeccion(resultado);
-		resultado = {...resultado, ...otrosDatos};
-
-		return especificas.convertirLetrasAlCastellano(resultado);
+		let otrosDatos = await this.completarColeccion(datos);
+		datos = {...datos, ...otrosDatos};
+		// Fin
+		return especificas.convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
-		// Obtener nombre_original y idioma_original_id
+		// Obtener nombre_original y idioma_original_id (sólo se consigue desde SEARCH)
 		let palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
-		let exportar = await searchTMDB(palabrasClave, "collection", 1);
-		if (exportar.results.length) {
-			exportar = exportar.results.find((n) => (n.id = datos.TMDB_id));
+		let buscar = await searchTMDB(palabrasClave, "collection", 1);
+		let exportar;
+		if (buscar.results.length) {
+			buscar = buscar.results.find((n) => n.id == datos.TMDB_id);
 			exportar = {
-				nombre_original: exportar.original_name,
-				idioma_original_id: exportar.original_language,
+				nombre_original: buscar.original_name,
+				idioma_original_id: buscar.original_language,
 			};
 		}
 		// Definir variables
-		let paises_id = "";
-		let produccion = "";
-		let direccion = "";
-		let guion = "";
-		let musica = "";
-		let actuacion = "";
-
-		// for por cada capítulo ID
-		for (let capituloTMDB_id of datos.capitulosTMDB_id) {
+		let paises_id, produccion, direccion, guion, musica, actuacion;
+		paises_id = produccion = direccion = guion = musica = actuacion = "";
+		// Rutina por cada capítulo
+		for (let capTMDB_id of datos.capitulosTMDB_id) {
 			// Obtener las API
 			let datosAPI = await Promise.all([
-				detailsTMDB("movie", capituloTMDB_id),
-				creditsTMDB("movie", capituloTMDB_id),
+				detailsTMDB("movie", capTMDB_id),
+				creditsTMDB("movie", capTMDB_id),
 			]).then(([a, b]) => {
 				return {...a, ...b};
 			});
@@ -191,25 +165,25 @@ module.exports = {
 				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				produccion += datosAPI.production_companies.map((n) => n.name).join(", ") + ", ";
+				produccion += consolidarValores(datosAPI.production_companies);
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				direccion += funcionCrew(datosAPI.crew, "Directing") + ", ";
-				guion += funcionCrew(datosAPI.crew, "Writing") + ", ";
-				musica += funcionCrew(datosAPI.crew, "Sound") + ", ";
+				direccion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				guion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				musica += consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) actuacion += datosAPI.cast.map((n) => n.name).join(", ") + ", ";
+			if (datosAPI.cast.length > 0) actuacion += funcionCast(datosAPI.cast);
 		}
 		// Procesar los resultados
-		let capitulos = datos.capitulosTMDB_id.length;
-		if (paises_id) exportar.paises_id = datosColeccion(paises_id, capitulos);
-		if (produccion) exportar.produccion = datosColeccion(produccion, capitulos);
-		if (direccion) exportar.direccion = datosColeccion(direccion, capitulos);
-		if (guion) exportar.guion = datosColeccion(guion, capitulos);
-		if (musica) exportar.musica = datosColeccion(musica, capitulos);
-		if (actuacion) exportar.actuacion = datosColeccion(actuacion, capitulos);
-
+		let cantCapitulos = datos.capitulosTMDB_id.length;
+		if (paises_id) exportar.paises_id = datosColeccion(paises_id, cantCapitulos);
+		if (produccion) exportar.produccion = datosColeccion(produccion, cantCapitulos);
+		if (direccion) exportar.direccion = datosColeccion(direccion, cantCapitulos);
+		if (guion) exportar.guion = datosColeccion(guion, cantCapitulos);
+		if (musica) exportar.musica = datosColeccion(musica, cantCapitulos);
+		if (actuacion) exportar.actuacion = datosColeccion(actuacion, cantCapitulos);
+		// Fin
 		return exportar;
 	},
 	// ControllerVista (confirma)
@@ -257,12 +231,12 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_tv: async (datos) => {
 		// Datos obtenidos sin la API
-		let datosIniciales = {
+		datos = {
+			...datos,
 			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
 			entidad_TMDB: "tv",
-			...datos,
 		};
 		// Obtener las API
 		let datosAPI = await Promise.all([
@@ -271,67 +245,56 @@ module.exports = {
 		]).then(([a, b]) => {
 			return {...a, ...b};
 		});
-		// Cambiarle el nombre a los campos y procesar la información
-		let datosAPI_renamed = {};
-		if (Object.keys(datosAPI).length > 0) {
+		// Procesar la información
+		if (Object.keys(datosAPI).length) {
 			// nombre_original, nombre_castellano, duración de capítulos
-			if (datosAPI.original_name) datosAPI_renamed.nombre_original = datosAPI.original_name;
-			if (datosAPI.name) datosAPI_renamed.nombre_castellano = datosAPI.name;
+			if (datosAPI.original_name) datos.nombre_original = datosAPI.original_name;
+			if (datosAPI.name) datos.nombre_castellano = datosAPI.name;
 			if (datosAPI.episode_run_time && datosAPI.episode_run_time.length == 1)
-				datosAPI_renamed.duracion = datosAPI.episode_run_time[0];
+				datos.duracion = datosAPI.episode_run_time[0];
 			// Idioma
 			if (datosAPI.original_language) {
-				datosAPI_renamed.idioma_original_id = datosAPI.original_language;
+				datos.idioma_original_id = datosAPI.original_language;
 				if (
 					datosAPI.original_language == "es" ||
 					(datosAPI.spoken_languages && datosAPI.spoken_languages.find((n) => n.iso_639_1 == "es"))
 				)
-					datosAPI_renamed.en_castellano_id = 1;
+					datos.en_castellano_id = 1;
 			}
 			// año de estreno, año de fin, país de origen
-			if (datosAPI.first_air_date)
-				datosAPI_renamed.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
-			if (datosAPI.last_air_date)
-				datosAPI_renamed.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
-			if (datosAPI.production_countries.length > 0)
-				datosAPI_renamed.paises_id = datosAPI.production_countries
-					.map((n) => n.iso_3166_1)
-					.join(", ");
+			if (datosAPI.first_air_date) datos.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
+			if (datosAPI.last_air_date) datos.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
+			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(", ");
 			// sinopsis, avatar
-			if (datosAPI.overview) datosAPI_renamed.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
+			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
-				datosAPI_renamed.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
+			// Guión, produccion
 			if (datosAPI.created_by.length > 0)
-				datosAPI_renamed.guion = datosAPI.created_by.map((n) => n.name).join(", ");
+				datos.guion = datosAPI.created_by.map((n) => n.name).join(", ");
 			if (datosAPI.production_companies.length > 0)
-				datosAPI_renamed.produccion = datosAPI.production_companies.map((n) => n.name).join(", ");
+				datos.produccion = consolidarValores(datosAPI.production_companies);
 			// Credits
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				datosAPI_renamed = {
-					...datosAPI_renamed,
-					direccion: funcionCrew(datosAPI.crew, "Directing"),
-					guion: funcionCrew(datosAPI.crew, "Writing"),
-					musica: funcionCrew(datosAPI.crew, "Sound"),
-				};
+				datos.direccion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
+				datos.guion = consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
+				datos.musica = consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) datosAPI_renamed.actuacion = funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
-			datosAPI_renamed.cant_temporadas = datosAPI.seasons.length;
-			datosAPI_renamed.cant_capitulos = datosAPI.seasons
+			datos.cant_temporadas = datosAPI.seasons.length;
+			datos.cant_capitulos = datosAPI.seasons
 				.map((n) => n.episode_count)
 				.reduce((a, b) => {
 					return a + b;
 				});
 		}
-		let resultado = {
-			...datosIniciales,
-			...datosAPI_renamed,
-		};
-		return especificas.convertirLetrasAlCastellano(resultado);
+		// Fin
+		return especificas.convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -360,12 +323,9 @@ module.exports = {
 		if (datosCap.name) datos.nombre_castellano = datosCap.name;
 		if (datosCap.air_date) datos.ano_estreno = datosCap.air_date;
 		if (datosCap.crew.length > 0) {
-			datos = {
-				...datos,
-				direccion: funcionCrew(datosCap.crew, "Directing"),
-				guion: funcionCrew(datosCap.crew, "Writing"),
-				musica: funcionCrew(datosCap.crew, "Sound"),
-			};
+			datos.direccion = consolidarValores(datosCap.crew.filter((n) => n.department == "Directing"));
+			datos.guion = consolidarValores(datosCap.crew.filter((n) => n.department == "Writing"));
+			datos.musica = consolidarValores(datosCap.crew.filter((n) => n.department == "Sound"));
 		}
 		let actuacion = [];
 		if (datosTemp.cast.length) actuacion.push(...datosTemp.cast);
@@ -507,8 +467,12 @@ let datosColeccion = (datos, cantCapitulos) => {
 	// Copiar el nombre del método
 	let resultado = [];
 	for (let frecuencia = frecMaxima; frecuencia > 0; frecuencia--) {
-		for (let indice = 0; indice < repeticiones.length; indice++) {
-			if (repeticiones[indice] == frecuencia) resultado.push(valores[indice]);
+		for (let indice = repeticiones.length - 1; indice >= 0; indice--) {
+			if (repeticiones[indice] == frecuencia) {
+				resultado.push(valores[indice]);
+				delete valores[indice];
+				delete repeticiones[indice];
+			}
 		}
 		// 1: Los máximos, siempre que sean más de uno
 		if (resultado.length > 1 && frecuencia == frecMaxima - 1) break;
@@ -520,21 +484,25 @@ let datosColeccion = (datos, cantCapitulos) => {
 	resultado = resultado.join(", ");
 	return resultado;
 };
-let funcionCrew = (crew, campo_TMDB) => {
-	let datos = crew.filter((n) => n.department == campo_TMDB);
-	let valores = "";
+let consolidarValores = (datos) => {
+	// Variables
+	let largo = 100;
+	let valores = [];
+	// Procesar si hay información
 	if (datos.length) {
-		valores = datos.map((m) => m.name);
-		if (datos.length > 1) {
-			datos.sort((a, b) => {
-				return a > b ? 1 : a < b ? -1 : 0;
-			});
-			for (let i = datos.length - 1; i > 0; i--) {
-				if (valores[i] == valores[i - 1]) valores.splice(i, 1);
-			}
+		// Obtener el nombre y descartar lo demás
+		datos = datos.map((n) => n.name);
+		// Quitar duplicados
+		for (let dato of datos) if (!valores.length || !valores.includes(dato)) valores.push(dato);
+		// Acortar el string excedente
+		let texto = valores.join(", ");
+		while (texto.length > largo && valores.length > 1) {
+			valores.pop();
+			texto = valores.join(", ");
 		}
-		valores = valores.join(", ");
 	}
+	// Terminar el proceso
+	valores = valores.join(", ");
 	return valores;
 };
 let funcionCast = (dato) => {
