@@ -81,8 +81,6 @@ module.exports = {
 		let ahora = especificas.ahora();
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
-		// console.log(motivo_id);
-		// return res.json();
 		// Detectar un eventual error
 		if (!prodEditado || !prodEditado[campo] || (!aprobado && !motivo_id)) return res.json();
 		// Particularidades para el campo 'avatar'
