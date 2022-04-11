@@ -187,8 +187,8 @@ module.exports = {
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos;
-		let bloqueIzq;
-		bloqueDer = [[], []];
+		let bloqueIzq,
+			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
 		let includes = [
 			"en_castellano",
