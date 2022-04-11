@@ -85,9 +85,10 @@ window.addEventListener("load", () => {
 		let todoOculto = ingrsOculto && reempsOculto;
 		// Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
+		// Si no se procesar todas las ediciones, terminar la rutina
 		if (!todoOculto) return
-		// Averiguar si hay errores en el original
 		console.log("fin");
+		// Averiguar si hay errores en el original
 		let ruta = "/revision/producto/edicion/api/terminar/?entidad=";
 		await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
 
