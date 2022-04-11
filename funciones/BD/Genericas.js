@@ -35,11 +35,7 @@ module.exports = {
 		return db[entidad].findByPk(id, {include: includes}).then((n) => (n ? n.toJSON() : ""));
 	},
 	obtenerPorCampos: (entidad, objeto) => {
-		return db[entidad]
-			.findOne({
-				where: objeto,
-			})
-			.then((n) => (n ? n.toJSON() : ""));
+		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.toJSON() : ""));
 	},
 	obtenerPorCamposConInclude: (entidad, objeto, includes) => {
 		return db[entidad].findOne({where: objeto, include: includes}).then((n) => (n ? n.toJSON() : ""));
