@@ -125,12 +125,9 @@ module.exports = {
 			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			if (entidad == "capitulos") includes.pop();
-			prodEditado = await BD_genericas.obtenerPor2CamposConInclude(
+			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"productos_edic",
-				"elc_" + producto_id,
-				prodID,
-				"editado_por_id",
-				userID,
+				{["elc_" + producto_id]: prodID, editado_por_id: userID},
 				includes.slice(0, -2)
 			);
 			if (prodEditado) {
@@ -325,14 +322,16 @@ module.exports = {
 		let includes = ["status_registro", "peliculas", "colecciones"];
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// 1. Obtener los status
-		let altaAprobId = await BD_genericas.obtenerPorCampo("status_registro", "alta_aprob", 1).then(
+		let altaAprobId = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: 1}).then(
 			(n) => n.id
 		);
-		let aprobadoId = await BD_genericas.obtenerPorCampo("status_registro", "aprobado", 1).then(
+		let aprobadoId = await BD_genericas.obtenerPorCampos("status_registro", {aprobado: 1}).then(
 			(n) => n.id
 		);
-		let editadoId = await BD_genericas.obtenerPorCampo("status_registro", "editado", 1).then((n) => n.id);
-		let inactivadoId = await BD_genericas.obtenerPorCampo("status_registro", "inactivado", 1).then(
+		let editadoId = await BD_genericas.obtenerPorCampos("status_registro", {editado: 1}).then(
+			(n) => n.id
+		);
+		let inactivadoId = await BD_genericas.obtenerPorCampos("status_registro", {inactivado: 1}).then(
 			(n) => n.id
 		);
 		// 2. Contar los casos aprobados
@@ -362,7 +361,7 @@ module.exports = {
 		// 4. Precisión de altas
 		let cantAltas = cantAprob + cantRech;
 		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", "id", userID, "duracion");
+		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", {id: userID}, "duracion");
 		// Datos a enviar
 		let enviar = {
 			calidadAltas: ["Calidad Altas", calidadInputs],
@@ -375,8 +374,9 @@ module.exports = {
 
 	calidadEdic: async function (userID) {
 		// Obtener la cantidad de aprobaciones y de rechazos
-		let cantAprob = await BD_genericas.contarCasos("edic_aprob", "input_por_id", userID);
-		let rechazados = await BD_genericas.obtenerPorCampo("edic_rech", "input_por_id", userID);
+		let cantAprob = await BD_genericas.contarCasos("edic_aprob", {input_por_id: userID});
+		let rechazados = await BD_genericas.obtenerTodosPorCampos("edic_rech", {input_por_id: userID});
+		console.log("379", rechazados);
 		let cantRech = rechazados ? rechazados.length : 0;
 		// Obtener la calidad de las ediciones
 		let cantEdics = cantAprob + cantRech;
@@ -389,7 +389,7 @@ module.exports = {
 		let enviar = {
 			calidadEdiciones: ["Calidad Edic.", calidadInputs],
 			cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-			cantPenalizConDias:["Cant. Penaliz. c/Días", cantPenalizConDias],
+			cantPenalizConDias: ["Cant. Penaliz. c/Días", cantPenalizConDias],
 			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
 		};
 		// Fin

@@ -20,29 +20,12 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
-	obtenerTodosPorCampo: (entidad, campo, valor) => {
-		return db[entidad]
-			.findAll({
-				where: {[campo]: valor},
-			})
-			.then((n) => n.map((m) => m.toJSON()));
+	obtenerTodosPorCampos: (entidad, objeto) => {
+		return db[entidad].findAll({where: objeto}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
-	obtenerTodosPorCampoConInclude: (entidad, campo, valor, includes) => {
-		return db[entidad]
-			.findAll({
-				where: {[campo]: valor},
-				include: includes,
-			})
-			.then((n) => n.map((m) => m.toJSON()));
-		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
-	},
-	obtenerTodosPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
-		return db[entidad]
-			.findAll({
-				where: {[campo1]: valor1, [campo2]: valor2},
-			})
-			.then((n) => n.map((m) => m.toJSON()));
+	obtenerTodosPorCamposConInclude: (entidad, objeto, includes) => {
+		return db[entidad].findAll({where: objeto, include: includes}).then((n) => n.map((m) => m.toJSON()));
 		// .then((n) => (n.length ? n.map((m) => m.toJSON()) : ""));
 	},
 	obtenerPorId: (entidad, id) => {
@@ -51,39 +34,17 @@ module.exports = {
 	obtenerPorIdConInclude: (entidad, id, includes) => {
 		return db[entidad].findByPk(id, {include: includes}).then((n) => (n ? n.toJSON() : ""));
 	},
-	obtenerPorCampo: (entidad, campo, valor) => {
+	obtenerPorCampos: (entidad, objeto) => {
 		return db[entidad]
 			.findOne({
-				where: {[campo]: valor},
+				where: objeto,
 			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
-	obtenerPor2Campos: (entidad, campo1, valor1, campo2, valor2) => {
+	obtenerPorCamposConInclude: (entidad, objeto, includes) => {
 		return db[entidad]
 			.findOne({
-				where: {[campo1]: valor1, [campo2]: valor2},
-			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
-	obtenerPor2CamposConInclude: (entidad, campo1, valor1, campo2, valor2, includes) => {
-		return db[entidad]
-			.findOne({
-				where: {[campo1]: valor1, [campo2]: valor2},
-				include: includes,
-			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
-	obtenerPor3Campos: (entidad, campo1, valor1, campo2, valor2, campo3, valor3) => {
-		return db[entidad]
-			.findOne({
-				where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
-			})
-			.then((n) => (n ? n.toJSON() : ""));
-	},
-	obtenerPor3CamposConInclude: (entidad, campo1, valor1, campo2, valor2, campo3, valor3, includes) => {
-		return db[entidad]
-			.findOne({
-				where: {[campo1]: valor1, [campo2]: valor2, [campo3]: valor3},
+				where: objeto,
 				include: includes,
 			})
 			.then((n) => (n ? n.toJSON() : ""));
@@ -96,8 +57,8 @@ module.exports = {
 	actualizarPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
-	actualizarPorCampo: (entidad, campo, valor, datos) => {
-		return db[entidad].update(datos, {where: {[campo]: valor}});
+	actualizarPorCampos: (entidad, objeto, datos) => {
+		return db[entidad].update(datos, {where: objeto});
 	},
 	eliminarRegistro: (entidad, id) => {
 		return db[entidad].destroy({where: {id: id}});
@@ -105,14 +66,10 @@ module.exports = {
 	aumentarElValorDeUnCampo: (entidad, id, campo) => {
 		return db[entidad].increment(campo, {by: 1, where: {id: id}});
 	},
-	contarCasos: (entidad, campo, valor) => {
-		return db[entidad].count({
-			where: {[campo]: valor},
-		});
+	contarCasos: (entidad, objeto) => {
+		return db[entidad].count({where: objeto});
 	},
-	sumarValores: (entidad, campo, valor, campoASumar) => {
-		return db[entidad].sum(campoASumar, {
-			where: {[campo]: valor},
-		});
+	sumarValores: (entidad, objeto, campoASumar) => {
+		return db[entidad].sum(campoASumar, {where: objeto});
 	},
 };

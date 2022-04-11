@@ -1,10 +1,22 @@
 <td class="campoTitulo"><%= campo.titulo %></td>
 <td class="campoNombre ocultar"><%= campo.nombreDelCampo %></td>
 <td class="infoMostrar">
-	<!-- Data-entry y Errores -->
+	<!-- Data-entry -->
 	<%= campo.mostrarEdic %>
 	<!-- Aprobar y Rechazar -->
 	<i class="fa-solid fa-circle-check"></i>
 	<i class="fa-solid fa-circle-xmark"></i>
 </td>
 <td class="ocultar campoValor"><%= campo.valorEdic %></td>
+
+<!-- Motivo -->
+<td class="motivos ocultar">
+	<i class="fa-solid fa-trash-can" tabindex="-1" title='Rechazar'></i>
+	<select name="motivo_id">
+		<option value="" class="ocultar" selected>Elejí el motivo para rechazar</option>
+		<% for (let motivo of motivos) { %>
+			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+		<% } %>
+	</select>
+</td>
+

@@ -261,7 +261,7 @@ module.exports = {
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Combinar los datos Editados con la versión Original
-		prodEditado={...prodOriginal,...prodEditado}
+		prodEditado = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
 		let linksCombinados = await obtenerLinksCombinados(entidad, prodID, userID);
 		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
@@ -338,10 +338,9 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	let producto_id = especificas.entidad_id(entidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
-	let linksOriginales = await BD_genericas.obtenerTodosPorCampoConInclude(
+	let linksOriginales = await BD_genericas.obtenerTodosPorCamposConInclude(
 		"links_originales",
-		producto_id,
-		prodID,
+		{[producto_id]: prodID},
 		includes
 	);
 	// Combinarlos con la edición, si existe
@@ -350,12 +349,9 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	// Rutina de combinación
 	for (let i = 0; i < linksOriginales.length; i++) {
 		// Obtener la edición
-		let linkEditado = await BD_genericas.obtenerPor2CamposConInclude(
+		let linkEditado = await BD_genericas.obtenerPorCamposConInclude(
 			"links_edicion",
-			"elc_id",
-			linksOriginales[i].id,
-			"editado_por_id",
-			userID,
+			{elc_id: linksOriginales[i].id, editado_por_id: userID},
 			includes.slice(0, -1)
 		);
 		// Hacer la combinación
@@ -369,13 +365,10 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	return linksCombinados;
 };
 let obtenerLinkCombinado = async (elc_id, userID) => {
-	let linkEditado = await BD_genericas.obtenerPor2CamposConInclude(
-		"links_edicion",
-		"elc_id",
-		elc_id,
-		"editado_por_id",
-		userID
-	);
+	let linkEditado = await BD_genericas.obtenerPorCamposConInclude("links_edicion", {
+		elc_id: elc_id,
+		editado_por_id: userID,
+	});
 	// Hacer la combinación
 	// Si existe 'linkEditado', se preserva su 'id'
 	let linkCombinado = {...linkOriginal, ...linkEditado};
@@ -390,12 +383,9 @@ let ActivosInactivos = async (linksOriginales) => {
 	let linksInactivos = linksOriginales.filter((n) => n.status_registro.gr_inactivos);
 	// A los Inactivos, agregarles el motivo
 	for (let i = 0; i < linksInactivos.length; i++) {
-		let registro_borrado = await BD_genericas.obtenerPor2CamposConInclude(
+		let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
 			"registros_borrados",
-			"elc_id",
-			linksInactivos[i].id,
-			"elc_entidad",
-			"links_originales",
+			{elc_id: linksInactivos[i].id, elc_entidad: "links_originales"},
 			"motivo"
 		);
 		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
@@ -430,10 +420,9 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	]);
 
 	// Obtener los links gratuitos de películas del producto
-	let links = await BD_genericas.obtenerTodosPorCampoConInclude(
+	let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 		"links_originales",
-		especificas.entidad_id(entidad),
-		prodID,
+		{[especificas.entidad_id(entidad)]: prodID},
 		["status_registro", "link_tipo"]
 	)
 		.then((n) => n.filter((n) => n.gratuito))
@@ -540,11 +529,11 @@ let estandarizarFechaRef = async (entidad, prodID) => {
 	let producto_id = especificas.entidad_id(entidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
-	BD_genericas.actualizarPorCampo("links_originales", producto_id, prodID, {fecha_referencia});
+	BD_genericas.actualizarPorCampos("links_originales", {[producto_id]: prodID}, {fecha_referencia});
 	// Actualizar linksEdicion
-	BD_genericas.obtenerTodosPorCampo("links_originales", producto_id, prodID).then((n) =>
+	BD_genericas.obtenerTodosPorCampos("links_originales", {[producto_id]: prodID}).then((n) =>
 		n.map((m) =>
-			BD_genericas.actualizarPorCampo("links_edicion", "elc_id", m.id, {
+			BD_genericas.actualizarPorCampos("links_edicion", {elc_id: m.id}, {
 				fecha_referencia,
 			})
 		)

@@ -205,11 +205,9 @@ module.exports = {
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
-			let subcategoria = await BD_genericas.obtenerPorCampo(
-				"subcategorias",
-				"id",
-				datos.subcategoria_id
-			);
+			let subcategoria = await BD_genericas.obtenerPorCampos("subcategorias", {
+				id: datos.subcategoria_id,
+			});
 			// Relación con la vida
 			if (subcategoria.personaje)
 				errores.personaje_id =
@@ -257,13 +255,10 @@ let extensiones = (nombre) => {
 };
 let validarRepetidos = async (campo, datos) => {
 	// Averiguar si existe algún caso en la BD
-	let averiguar = await BD_genericas.obtenerPor2Campos(
-		datos.entidad,
-		campo,
-		datos[campo],
-		"ano_estreno",
-		datos.ano_estreno
-	);
+	let averiguar = await BD_genericas.obtenerPorCampos(datos.entidad, {
+		[campo]: datos[campo],
+		ano_estreno: datos.ano_estreno,
+	});
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id

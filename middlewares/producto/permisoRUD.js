@@ -60,11 +60,9 @@ module.exports = async (req, res, next) => {
 					// Problema3: PRODUCTO CAPTURADO Y APTO PARA SER REVISADO ------
 					if (prodOriginal.capturado_en > haceUnaHora) {
 						let producto_id = especificas.entidad_id(entidad);
-						let links = await BD_genericas.obtenerTodosPorCampo(
-							"links_originales",
-							producto_id,
-							prodID
-						);
+						let links = await BD_genericas.obtenerTodosPorCampos("links_originales", {
+							[producto_id]: prodID,
+						});
 						let cantLinks = links.length;
 						if (cantLinks && links[cantLinks - 1].fecha_referencia < haceUnaHora)
 							informacion = {

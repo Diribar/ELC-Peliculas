@@ -20,7 +20,7 @@ module.exports = {
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Averiguar el id del status
-		let statusAltaAprob = await BD_genericas.obtenerPorCampo("status_registro", "alta_aprob", true).then(
+		let statusAltaAprob = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: true}).then(
 			(n) => n.id
 		);
 		// Cambiar el status, dejar la marca del usuario y fecha en que esto se realizó
@@ -40,7 +40,7 @@ module.exports = {
 		// Detectar un eventual error
 		if (!motivo_id) return res.json();
 		// Averiguar el id del status
-		let statusInactivar = await BD_genericas.obtenerPorCampo("status_registro", "inactivar", true).then(
+		let statusInactivar = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
 			(n) => n.id
 		);
 		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
@@ -77,7 +77,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let datos;
 		// Detectar un eventual error
-		if (!prodEditado || !prodEditado.avatar) return res.json("error");
+		if (!prodEditado || !prodEditado[campo]) return res.json("error");
 		// Particularidades para el campo 'avatar'
 		if (campo == "avatar") {
 			// Eliminar el avatar original (si es un archivo)
@@ -95,76 +95,94 @@ module.exports = {
 		// 	- El nuevo valor
 		// 	- Los datos de la edición (fecha, usuario)
 		// 	- Los datos de la revisión (fecha, usuario)
+		let ahora = especificas.ahora();
 		datos = {
 			[campo]: prodEditado[campo],
 			editado_por_id: prodEditado.editado_por_id,
 			editado_en: prodEditado.editado_en,
 			edic_analizada_por_id: userID,
-			edic_analizada_en: especificas.ahora(),
+			edic_analizada_en: ahora,
 		};
 		await BD_genericas.actualizarPorId(entidad, prodID, datos);
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
-		// Agregar un registro en la BD 'edic_aprob'
+		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
 		datos = {
 			elc_entidad: entidad,
 			elc_id: prodID,
 			campo: campo,
-			input_por_id: datos.editado_por_id,
-			input_en: datos.editado_en,
-			evaluado_por_id: datos.edic_analizada_por_id,
-			evaluado_en: datos.edic_analizada_en,
+			input_por_id: prodEditado.editado_por_id,
 		};
-		BD_genericas.agregarRegistro("edic_aprob", datos);
+		let averiguar = await BD_genericas.obtenerPorCampos("edic_aprob", datos);
+		// Si no lo había, agregar un registro en 'edic_aprob'
+		if (!averiguar) {
+			datos = {
+				...datos,
+				input_en: prodEditado.editado_en,
+				evaluado_por_id: userID,
+				evaluado_en: ahora,
+			};
+			BD_genericas.agregarRegistro("edic_aprob", datos);
+		}
 		// Fin
 		return res.json();
 	},
-	rechazarAvatar: async (req, res) => {
+	rechazarCampo: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, edicion_id: edicID, motivo_id} = req.query;
-		//return res.json();
+		let {entidad, id: prodID, edicion_id: edicID, campo, motivo_id} = req.query;
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
 		let userID = req.session.usuario.id;
+		let datos;
 		// Detectar un eventual error
-		if (!prodEditado || !prodEditado.avatar || !motivo_id) return res.json();
-		// Eliminar el avatar editado
-		especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
-		// Acciones si el status es 'alta-aprobada'
-		if (prodOriginal.status_registro.alta_aprob) {
-			let avatar = prodOriginal.avatar;
-			// Si el avatar original es un url, convertirlo a archivo en la carpeta '3-ProdRevisar'
-			if (avatar.slice(0, 4) == "http") {
-				// Obtener el nombre
-				let nombre = Date.now() + path.extname(prodOriginal.avatar);
-				// Obtener la ruta con el nombre
-				let rutaYnombre = "./public/imagenes/2-Productos/" + nombre;
-				// Convertir el url en un archivo
-				await especificas.descargar(prodOriginal.avatar, rutaYnombre);
-				// Actualizar el nombre del avatar en la BD
-				await BD_genericas.actualizarPorId(entidad, prodID, {avatar: nombre});
-			} else if (avatar)
-				// Mover el archivo avatar a la carpeta definitiva
-				especificas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
+		if (!prodEditado || !prodEditado[campo] || !motivo_id) return res.json();
+		// Particularidades para el campo 'avatar'
+		if (campo == "avatar") {
+			// Eliminar el avatar editado
+			especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
+			// Acciones si el status es 'alta-aprobada'
+			if (prodOriginal.status_registro.alta_aprob) {
+				let avatar = prodOriginal.avatar;
+				// Si el avatar original es un url, convertirlo a archivo en la carpeta '3-ProdRevisar'
+				if (avatar.slice(0, 4) == "http") {
+					// Obtener el nombre
+					let nombre = Date.now() + path.extname(prodOriginal.avatar);
+					// Obtener la ruta con el nombre
+					let rutaYnombre = "./public/imagenes/2-Productos/" + nombre;
+					// Convertir el url en un archivo
+					await especificas.descargar(prodOriginal.avatar, rutaYnombre);
+					// Actualizar el nombre del avatar en la BD
+					await BD_genericas.actualizarPorId(entidad, prodID, {avatar: nombre});
+				} else if (avatar)
+					// Mover el archivo avatar a la carpeta definitiva
+					especificas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
+			}
 		}
-		// Actualizar el registro de 'edicion' quitándole el campo 'avatar'
-		await BD_genericas.actualizarPorId("productos_edic", edicID, {avatar: null});
-		// Agregar un registro en la BD 'edicion_rech'
-		let duracion = await BD_genericas.obtenerPorId("edic_rech_motivos", motivo_id).then(
-			(n) => n.duracion
-		);
-		let datos = {
+		// Actualizar el registro de 'edicion' quitándole el valor al campo
+		//await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
+		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
+		datos = {
 			elc_entidad: entidad,
 			elc_id: prodID,
-			campo: "avatar",
-			motivo_id: motivo_id,
-			duracion,
+			campo: campo,
 			input_por_id: prodEditado.editado_por_id,
-			input_en: prodEditado.editado_en,
-			evaluado_por_id: userID,
-			evaluado_en: especificas.ahora(),
 		};
-		BD_genericas.agregarRegistro("edic_rech", datos);
+		let averiguar = await BD_genericas.obtenerPorCampos("edic_rech", datos);
+		// Si no lo había, agregar un registro en 'edicion_rech'
+		if (!averiguar) {
+			let duracion = await BD_genericas.obtenerPorId("edic_rech_motivos", motivo_id).then(
+				(n) => n.duracion
+			);
+			datos = {
+				...datos,
+				motivo_id: motivo_id,
+				duracion,
+				input_en: prodEditado.editado_en,
+				evaluado_por_id: userID,
+				evaluado_en: especificas.ahora(),
+			};
+			BD_genericas.agregarRegistro("edic_rech", datos);
+		}
 		// Fin
 		return res.json();
 	},

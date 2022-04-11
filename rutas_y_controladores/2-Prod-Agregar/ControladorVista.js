@@ -457,9 +457,9 @@ module.exports = {
 		if (!confirma) return res.redirect("/producto/agregar/datos-personalizados");
 		// 2. Obtener la calificación
 		let [fe_valores, entretiene, calidad_tecnica] = await Promise.all([
-			BD_genericas.obtenerPorCampo("fe_valores", "id", confirma.fe_valores_id).then((n) => n.valor),
-			BD_genericas.obtenerPorCampo("entretiene", "id", confirma.entretiene_id).then((n) => n.valor),
-			BD_genericas.obtenerPorCampo("calidad_tecnica", "id", confirma.calidad_tecnica_id).then(
+			BD_genericas.obtenerPorCampos("fe_valores", {id: confirma.fe_valores_id}).then((n) => n.valor),
+			BD_genericas.obtenerPorCampos("entretiene", {id: confirma.entretiene_id}).then((n) => n.valor),
+			BD_genericas.obtenerPorCampos("calidad_tecnica", {id: confirma.calidad_tecnica_id}).then(
 				(n) => n.valor
 			),
 		]);
