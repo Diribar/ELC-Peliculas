@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 	// Opciones
 	let aprobar = document.querySelector("#imagenes #editada img");
 	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
-	
+
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
 	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
