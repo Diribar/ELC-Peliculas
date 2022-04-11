@@ -85,7 +85,7 @@ window.addEventListener("load", () => {
 		let todoOculto = ingrsOculto && reempsOculto;
 		// Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
-		// Si no se procesar todas las ediciones, terminar la rutina
+		// Si no se procesaron todas las ediciones, terminar la rutina
 		if (!todoOculto) return
 		console.log("fin");
 		// Averiguar si hay errores en el original
