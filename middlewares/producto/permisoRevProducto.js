@@ -43,9 +43,9 @@ module.exports = async (req, res, next) => {
 							titulo: "Ir a la vista anterior",
 						},
 						{
-							nombre: "fa-thumbs-up",
+							nombre: "fa-spell-check",
 							link: "/revision/tablero-de-control",
-							titulo: "Ir a la vista de inicio de revision",
+							titulo: "Ir al 'Tablero de Control' de Revisiones",
 						},
 					],
 				};
@@ -68,16 +68,16 @@ module.exports = async (req, res, next) => {
 								titulo: "Ir a la vista anterior",
 							},
 							{
-								nombre: "fa-thumbs-up",
+								nombre: "fa-spell-check",
 								link: "/revision/tablero-de-control",
-								titulo: "Ir a la vista de inicio de revision",
+								titulo: "Ir al 'Tablero de Control' de Revisiones",
 							},
 						],
 					};
 				// --------------------------------------------------------------------
 				else {
 					// Definir nuevas variables
-					let meses = variables.meses()
+					let meses = variables.meses();
 					if (prodOriginal.capturado_en)
 						var horarioCaptura =
 							prodOriginal.capturado_en.getDate() +
@@ -99,8 +99,8 @@ module.exports = async (req, res, next) => {
 								"El producto está en revisión por el usuario " +
 								prodOriginal.capturado_por.apodo +
 								", desde el " +
-								horarioCaptura.slice(0,horarioCaptura.indexOf(" ")) +
-								" a las "+
+								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+								" a las " +
 								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
 								"hs",
 							iconos: [
@@ -110,9 +110,9 @@ module.exports = async (req, res, next) => {
 									titulo: "Ir a la vista anterior",
 								},
 								{
-									nombre: "fa-thumbs-up",
+									nombre: "fa-spell-check",
 									link: "/revision/tablero-de-control",
-									titulo: "Ir a la vista de inicio de revision",
+									titulo: "Ir al 'Tablero de Control' de Revisiones",
 								},
 							],
 						};
@@ -125,20 +125,15 @@ module.exports = async (req, res, next) => {
 						informacion = {
 							mensaje:
 								"Tu revisión de este producto quedó inconclusa desde un poco antes del " +
-								horarioCaptura.slice(0,horarioCaptura.indexOf(" ")) +
-								" a las "+
+								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+								" a las " +
 								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
 								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
 							iconos: [
 								{
-									nombre: "fa-circle-left",
+									nombre: "fa-spell-check",
 									link: "/revision/tablero-de-control",
-									titulo: "Ir a la vista anterior",
-								},
-								{
-									nombre: "fa-thumbs-up",
-									link: "/revision/tablero-de-control",
-									titulo: "Ir a la vista de inicio de revision",
+									titulo: "Ir al 'Tablero de Control' de Revisiones",
 								},
 							],
 						};

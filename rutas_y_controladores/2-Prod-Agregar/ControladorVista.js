@@ -488,7 +488,7 @@ module.exports = {
 			entidad: "productos_edic",
 			["elc_" + producto_id]: registro.id,
 		};
-		edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(original, edicion);
+		edicion = especificas.quitarLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {

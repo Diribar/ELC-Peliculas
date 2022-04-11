@@ -23,14 +23,14 @@ module.exports = async (req, res, next) => {
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 			informacion = {
 				mensaje:
-					"La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en la flecha hacia la derecha",
+					"La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en el ícono de 'información'",
 				iconos: [
 					{
 						nombre: "fa-circle-left",
 						link: "/producto/agregar/palabras-clave",
 						titulo: "Regresar a 'Palabra Clave'",
 					},
-					{nombre: "fa-circle-right", link: linkDetalle, titulo: "Ir a la vista Detalle"},
+					{nombre: "fa-circle-info", link: linkDetalle, titulo: "Ir a la vista Detalle"},
 				],
 			};
 		}

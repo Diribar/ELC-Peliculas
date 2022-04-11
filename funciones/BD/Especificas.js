@@ -88,16 +88,8 @@ module.exports = {
 			return n ? n.id : false;
 		});
 	},
-	// Controladora-Agregar
-	quitarDeEdicionLasCoincidenciasConOriginal: (original, edicion) => {
-		let campos = Object.keys(edicion);
-		for (let campo of campos) {
-			if (edicion[campo] == original[campo]) delete edicion[campo];
-		}
-		return edicion;
-	},
 	// API-RUD
-	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
+	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
 		// Definir los campos include
 		let includes = [
 			"idioma_original",
@@ -122,7 +114,7 @@ module.exports = {
 		let producto_id = especificas.entidad_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
+			prodOriginal = especificas.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
@@ -132,7 +124,7 @@ module.exports = {
 			);
 			if (prodEditado) {
 				// Quitarle los campos 'null'
-				prodEditado = this.quitarLosCamposSinContenido(prodEditado);
+				prodEditado = especificas.quitarLosCamposSinContenido(prodEditado);
 			}
 			// prodEditado = {...prodOriginal, ...prodEditado};
 		}
@@ -211,6 +203,20 @@ module.exports = {
 		// Obtener Ediciones de productos en status alta_aprob
 
 		// Obtener Ediciones de productos en status gr_aprob
+	},
+	pulirEdicion: async (prodOriginal, prodEditado) => {
+		let edicion = {...prodEditado};
+		let noSeComparan;
+		edicion = especificas.quitarLosCamposSinContenido(edicion);
+		[edicion, noSeComparan] = especificas.quitarLosCamposQueNoSeComparan(edicion);
+		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+		// Averiguar si queda algún campo 'sobreviviente'
+		let quedanCampos = !!Object.keys(edicion).length;
+		// Si no quedan, eliminar el registro
+		if (!quedanCampos) await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
+		else edicion = {...noSeComparan, ...edicion};
+		// Fin
+		return [quedanCampos, edicion];
 	},
 
 	// LINKS -------------------------------------------------------------
@@ -371,7 +377,6 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
-
 	calidadEdic: async function (userID) {
 		// Obtener la cantidad de aprobaciones y de rechazos
 		let cantAprob = await BD_genericas.contarCasos("edic_aprob", {input_por_id: userID});
@@ -394,7 +399,6 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
-
 	// Controladora/Usuario/Login
 	actualizarElContadorDeLogins: (usuario) => {
 		let hoyAhora = especificas.ahora().toISOString().slice(0, 10);
@@ -405,15 +409,5 @@ module.exports = {
 			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
 		return;
-	},
-
-	// ENTIDADES ---------------------------------------------------------
-	// API-RUD
-	quitarLosCamposSinContenido: (objeto) => {
-		let campos = Object.keys(objeto);
-		for (let i = campos.length - 1; i >= 0; i--) {
-			if (objeto[campos[i]] === null || objeto[campos[i]] === "") delete objeto[campos[i]];
-		}
-		return objeto;
 	},
 };

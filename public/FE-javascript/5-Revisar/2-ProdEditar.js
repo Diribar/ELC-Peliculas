@@ -11,9 +11,6 @@ window.addEventListener("load", () => {
 
 	// Motivos para borrar
 	let infoMostrar = document.querySelectorAll("#contenido .infoMostrar");
-	let valores = Array.from(document.querySelectorAll("#contenido .infoMostrar .valor")).map(
-		(n) => n.innerHTML
-	);
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
 	let rechazar = document.querySelectorAll("#contenido .motivos .fa-trash-can");
@@ -34,25 +31,15 @@ window.addEventListener("load", () => {
 	// LISTENERS --------------------------------------------------------------------
 	// 'Listeners' de 'Aprobar'
 	for (let i = 0; i < rechazar.length; i++) {
-		let valor = valores[i];
 		// Aprobar el nuevo valor
-		aprobar[i].addEventListener("click", () => {
+		aprobar[i].addEventListener("click", async () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
 			let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=true&entidad=";
-			fetch(
-				ruta +
-					entidad +
-					"&id=" +
-					prodID +
-					"&edicion_id=" +
-					edicID +
-					"&campo=" +
-					campoNombres[i] +
-					"&valor=" +
-					valor
-			);
+			let quedanCampos = await fetch(
+				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
+			).then((n) => n.json());
 			// Si está todo oculto, cartel de fin
 			if (todoOculto()) fin();
 		});
@@ -64,14 +51,14 @@ window.addEventListener("load", () => {
 		});
 
 		// Rechazar el nuevo valor
-		rechazar[i].addEventListener("click", () => {
+		rechazar[i].addEventListener("click", async () => {
 			let motivo = motivoRechazos[i].value;
 			if (motivo) {
 				// Ocultar la fila
 				filas[i].classList.add("ocultar");
 				// Actualizar el campo del producto
 				let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=false&entidad=";
-				fetch(
+				let quedanCampos = await fetch(
 					ruta +
 						entidad +
 						"&id=" +
@@ -80,11 +67,9 @@ window.addEventListener("load", () => {
 						edicID +
 						"&campo=" +
 						campoNombres[i] +
-						"&valor=" +
-						valor +
 						"&motivo_id=" +
 						motivo
-				);
+				).then((n) => n.json());
 				// Si está todo oculto, cartel de fin
 				if (todoOculto()) fin();
 			}
@@ -112,7 +97,8 @@ window.addEventListener("load", () => {
 		return ocultarBloque;
 	};
 	let fin = async () => {
-		let ruta = "/revision/producto/edicion/api/validar-errores/?entidad=";
-		let errores = await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
+		console.log("fin");
+		// let ruta = "/revision/producto/edicion/api/validar-errores/?entidad=";
+		// let errores = await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
 	};
 });

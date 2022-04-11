@@ -5,6 +5,7 @@ const BD_genericas = require("../BD/Genericas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -269,5 +270,25 @@ module.exports = {
 				: 4;
 		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
 		return {id, nombre: nombres[id - 1]};
+	},
+	quitarLosCamposSinContenido: (objeto) => {
+		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
+		return objeto;
+	},
+	quitarLosCamposQueNoSeComparan: (edicion) => {
+		let noSeComparan={};
+		// Obtener los campos a comparar
+		let camposAComparar = variables.camposRevisarEdic().map((n) => n.nombreDelCampo);
+		// Quitar de edicion los campos que no se comparan
+		for (let campo in edicion)
+			if (!camposAComparar.includes(campo)) {
+				noSeComparan[campo] = edicion[campo];
+				delete edicion[campo];
+			}
+		return [edicion, noSeComparan];
+	},
+	quitarLasCoincidenciasConOriginal: (original, edicion) => {
+		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
+		return edicion;
 	},
 };

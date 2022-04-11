@@ -69,9 +69,8 @@ app.use((req, res) => {
 	let informacion = {
 		mensaje: "No tenemos esa dirección de url en nuestro sitio",
 		iconos: [
-			{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
 			{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			{nombre: "fa-thumbs-up", link: "/", titulo: "Ir a inico"},
+			{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
 		],
 	};
 	res.status(404).render("Errores", {informacion});

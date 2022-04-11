@@ -209,8 +209,8 @@ module.exports = {
 			let edicion = {...prodEditado, ...req.body, avatar};
 			// Quitar de 'edicion' los campos innecesarios
 			delete edicion.id;
-			edicion = BD_especificas.quitarLosCamposSinContenido(edicion);
-			edicion = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(prodOriginal, edicion);
+			edicion = especificas.quitarLosCamposSinContenido(edicion);
+			edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
 			let producto_id = especificas.entidad_id(entidad);
 			edicion = {
@@ -359,7 +359,7 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 			delete linkEditado.id;
 			linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
 		}
-		linksCombinados[i] = BD_especificas.quitarLosCamposSinContenido(linksCombinados[i]);
+		linksCombinados[i] = especificas.quitarLosCamposSinContenido(linksCombinados[i]);
 	}
 	// Fin
 	return linksCombinados;
@@ -488,7 +488,7 @@ let edicionDeLink = async (req, datos) => {
 		// 1.3. Obtener el link 'Edición Nueva'
 		var linkEdicionNueva = {...linkCombinado, ...datos};
 		// 1.4. Quitar los coincidencias con el original
-		linkEdicionNueva = BD_especificas.quitarDeEdicionLasCoincidenciasConOriginal(
+		linkEdicionNueva = especificas.quitarLasCoincidenciasConOriginal(
 			linkOriginal,
 			linkEdicionNueva
 		);
@@ -520,7 +520,7 @@ let limpiarLosDatos = (datos) => {
 		if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
 	}
 	// Quitar campos innecesarios
-	datos = BD_especificas.quitarLosCamposSinContenido(datos);
+	datos = especificas.quitarLosCamposSinContenido(datos);
 	// Fin
 	return datos;
 };
@@ -533,9 +533,13 @@ let estandarizarFechaRef = async (entidad, prodID) => {
 	// Actualizar linksEdicion
 	BD_genericas.obtenerTodosPorCampos("links_originales", {[producto_id]: prodID}).then((n) =>
 		n.map((m) =>
-			BD_genericas.actualizarPorCampos("links_edicion", {elc_id: m.id}, {
-				fecha_referencia,
-			})
+			BD_genericas.actualizarPorCampos(
+				"links_edicion",
+				{elc_id: m.id},
+				{
+					fecha_referencia,
+				}
+			)
 		)
 	);
 };

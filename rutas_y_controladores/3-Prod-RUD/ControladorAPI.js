@@ -287,6 +287,6 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 // 		link_original = {...link_original, ...link_edicion};
 // 	}
 // 	// Quitarle los campos 'null'
-// 	link_original = BD_especificas.quitarLosCamposSinContenido(link_original);
+// 	link_original = especificas.quitarLosCamposSinContenido(link_original);
 // 	return link_original;
 // };
