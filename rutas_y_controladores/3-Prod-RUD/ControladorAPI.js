@@ -45,8 +45,8 @@ module.exports = {
 		let [ultCap, ultTemp] = await Promise.all([
 			// Obtener el último número de capítulo de la temporada actual
 			BD_genericas.obtenerTodosPorCampos("capitulos", {
-				[coleccion_id]: coleccion_id,
-				[temporada]: temporada,
+				coleccion_id: coleccion_id,
+				temporada: temporada,
 			})
 				.then((n) => n.map((m) => m.capitulo))
 				.then((n) => Math.max(...n)),
