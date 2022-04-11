@@ -42,12 +42,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON() : ""));
 	},
 	obtenerPorCamposConInclude: (entidad, objeto, includes) => {
-		return db[entidad]
-			.findOne({
-				where: objeto,
-				include: includes,
-			})
-			.then((n) => (n ? n.toJSON() : ""));
+		return db[entidad].findOne({where: objeto, include: includes}).then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// Otras

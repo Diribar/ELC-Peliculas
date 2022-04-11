@@ -376,15 +376,14 @@ module.exports = {
 		// Obtener la cantidad de aprobaciones y de rechazos
 		let cantAprob = await BD_genericas.contarCasos("edic_aprob", {input_por_id: userID});
 		let rechazados = await BD_genericas.obtenerTodosPorCampos("edic_rech", {input_por_id: userID});
-		console.log("379", rechazados);
-		let cantRech = rechazados ? rechazados.length : 0;
+		let cantRech = rechazados.length ? rechazados.length : 0;
 		// Obtener la calidad de las ediciones
 		let cantEdics = cantAprob + cantRech;
 		let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
 		// Obtener la cantidad de penalizaciones con días
-		let cantPenalizConDias = rechazados ? rechazados.filter((n) => n.duracion).length : "-";
+		let cantPenalizConDias = rechazados.length ? rechazados.filter((n) => n.duracion).length : "-";
 		// Obtener la cantidad de días penalizados
-		let diasPenalizacion = rechazados ? rechazados.reduce((suma, a) => suma + a, 0) : "-";
+		let diasPenalizacion = rechazados.length ? rechazados.reduce((suma, n) => suma + n.duracion, 0) : "-";
 		// Datos a enviar
 		let enviar = {
 			calidadEdiciones: ["Calidad Edic.", calidadInputs],
