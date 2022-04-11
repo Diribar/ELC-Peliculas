@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
 	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark");
 
 	// Motivos para borrar
-	let infoMostrar= document.querySelectorAll("#contenido .infoMostrar");
+	let infoMostrar = document.querySelectorAll("#contenido .infoMostrar");
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
 	let rechazar = document.querySelectorAll("#contenido .motivos .fa-trash-can");
@@ -36,10 +36,10 @@ window.addEventListener("load", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let ruta = "/revision/producto/edicion/api/aprobar-campo/?entidad=";
+			let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=true&entidad=";
 			fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]);
 			// Si está todo oculto, cartel de fin
-			if (todoOculto()) console.log("fin");
+			if (todoOculto()) fin();
 		});
 
 		// Menú inactivar
@@ -51,12 +51,11 @@ window.addEventListener("load", () => {
 		// Rechazar el nuevo valor
 		rechazar[i].addEventListener("click", () => {
 			let motivo = motivoRechazos[i].value;
-			console.log(motivo);
 			if (motivo) {
 				// Ocultar la fila
 				filas[i].classList.add("ocultar");
 				// Actualizar el campo del producto
-				let ruta = "/revision/producto/edicion/api/rechazar-campo/?entidad=";
+				let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=false&entidad=";
 				fetch(
 					ruta +
 						entidad +
@@ -69,6 +68,8 @@ window.addEventListener("load", () => {
 						"&motivo_id=" +
 						motivo
 				);
+				// Si está todo oculto, cartel de fin
+				if (todoOculto()) fin();
 			}
 		});
 	}
@@ -92,5 +93,9 @@ window.addEventListener("load", () => {
 		if (ocultarBloque) bloque.classList.add("ocultar");
 		// Fin
 		return ocultarBloque;
+	};
+	let fin = async () => {
+		let ruta = "/revision/producto/edicion/api/validar-errores/?entidad=";
+		let errores = await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
 	};
 });

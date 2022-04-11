@@ -386,7 +386,7 @@ module.exports = {
 		let diasPenalizacion = rechazados.length ? rechazados.reduce((suma, n) => suma + n.duracion, 0) : "-";
 		// Datos a enviar
 		let enviar = {
-			calidadEdiciones: ["Calidad Edic.", calidadInputs],
+			calidadEdiciones: ["Calidad Edición", calidadInputs],
 			cantEdiciones: ["Cant. Campos Proces.", cantEdics],
 			cantPenalizConDias: ["Cant. Penaliz. c/Días", cantPenalizConDias],
 			diasPenalizacion: ["Días Penalizado", diasPenalizacion],

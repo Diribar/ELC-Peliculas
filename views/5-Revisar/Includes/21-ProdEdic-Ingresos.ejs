@@ -13,8 +13,8 @@
 <td class="motivos ocultar">
 	<i class="fa-solid fa-trash-can" tabindex="-1" title='Rechazar'></i>
 	<select name="motivo_id">
-		<option value="" class="ocultar" selected>Elejí el motivo para rechazar</option>
-		<% for (let motivo of motivos) { %>
+		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea) %>
+		<% for (motivo of motivos) { %>
 			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 		<% } %>
 	</select>

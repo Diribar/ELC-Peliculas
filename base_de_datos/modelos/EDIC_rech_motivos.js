@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		rclv: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		duracion: {type: dt.INTEGER},
+		info_erronea: {type: dt.BOOLEAN},
 		};
 	const config = {
 		tableName: "edic_rech_motivos",

@@ -434,7 +434,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	if (!linksActivos.length && !linksTalVez.length) return;
 
 	// Obtener los ID de si, no y TalVez
-	si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+	let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
 	let si = si_no_parcial.find((n) => n.si).id;
 	let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
 	let no = si_no_parcial.find((n) => n.no).id;
