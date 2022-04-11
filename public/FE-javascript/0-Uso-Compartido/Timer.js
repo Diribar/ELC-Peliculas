@@ -11,9 +11,9 @@ window.addEventListener("load", async () => {
 	// Horario Inicial
 	let codigoEnc = encodeURIComponent(codigo);
 	let horarioInicial = new Date(
-		await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc).then(
-			(n) => n.json()
-		)
+		await fetch(
+			"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
+		).then((n) => n.json())
 	);
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
@@ -25,8 +25,9 @@ window.addEventListener("load", async () => {
 	let funcionTimer = () => {
 		let actualizarTimer = setInterval(() => {
 			minutos--;
+			if (minutos < 0) minutos = 0;
 			timer.innerHTML = minutos + " min.";
-			if (minutos <= 0) {
+			if (minutos == 0) {
 				clearInterval(actualizarTimer);
 				// Cartel de "time out"
 				funcionCartelAdvertencia();

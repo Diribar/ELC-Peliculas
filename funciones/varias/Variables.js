@@ -231,25 +231,30 @@ module.exports = {
 			{
 				titulo: "Título original",
 				nombreDelCampo: "nombre_original",
+				input: true,
 			},
 			{
 				titulo: "Título en castellano",
 				nombreDelCampo: "nombre_castellano",
+				input: true,
 			},
 			{
 				titulo: "Año de estreno",
 				nombreDelCampo: "ano_estreno",
 				angosto: true,
+				input: true,
 			},
 			{
 				titulo: "Año de finalización",
 				nombreDelCampo: "ano_fin",
 				angosto: true,
+				input: true,
 			},
 			{
 				titulo: "Duración",
 				nombreDelCampo: "duracion",
 				angosto: true,
+				input: true,
 			},
 			{
 				titulo: "País/es",
@@ -264,29 +269,35 @@ module.exports = {
 			{
 				titulo: "Dirección",
 				nombreDelCampo: "direccion",
+				input: true,
 			},
 			{
 				titulo: "Guión",
 				nombreDelCampo: "guion",
+				input: true,
 			},
 			{
 				titulo: "Música",
 				nombreDelCampo: "musica",
+				input: true,
 			},
 			{
 				titulo: "Actuación",
 				nombreDelCampo: "actuacion",
+				input: true,
 			},
 			{
 				titulo: "Producción",
 				nombreDelCampo: "produccion",
+				input: true,
 			},
 			{
 				titulo: "Sinopsis",
 				nombreDelCampo: "sinopsis",
+				input: true,
 			},
 			{
-				titulo: "Existe una versión en castellano",
+				titulo: "Versión en castellano",
 				nombreDelCampo: "en_castellano_id",
 				asociacion1: "en_castellano",
 				asociacion2: "productos",
@@ -321,6 +332,7 @@ module.exports = {
 				asociacion1: "personaje",
 				asociacion2: "nombre",
 				rclv: true,
+				input: true,
 			},
 			{
 				titulo: "Hecho histórico",
@@ -328,6 +340,7 @@ module.exports = {
 				asociacion1: "hecho",
 				asociacion2: "nombre",
 				rclv: true,
+				input: true,
 			},
 			{
 				titulo: "Valor principal",
@@ -335,6 +348,7 @@ module.exports = {
 				asociacion1: "valor",
 				asociacion2: "nombre",
 				rclv: true,
+				input: true,
 			},
 		];
 	},

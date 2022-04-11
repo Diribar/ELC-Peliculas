@@ -40,11 +40,13 @@
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
 			<% } %>
+			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
+				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
+			</a>
 		</div>
 		<!-- Botones -->
 		<div id="flechas">
 			<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
-			
 		</div>
 	</section>
 	<section id="datosBreves">
