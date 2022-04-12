@@ -26,7 +26,7 @@
 #datosLargos #contenido #ingrs tr .motivos select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */
-#datosLargos #contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white;}
+#datosLargos #contenido #reemps .infoMostrar .edic {background-color: var(--gris-oscuro); color: white; width: fit-content;}
 #datosLargos #contenido #reemps .infoMostrar .edic .fa-solid {border: 1px solid white; margin-left: 5px;}
 
 /* Datos Breves */

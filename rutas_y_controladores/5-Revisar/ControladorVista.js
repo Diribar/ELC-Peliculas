@@ -186,7 +186,7 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		let vista, avatar, ingresos, reemplazos;
+		let vista, avatar, ingresos, reemplazos, quedanCampos;
 		let bloqueIzq,
 			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
@@ -203,10 +203,25 @@ module.exports = {
 		];
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
-		// Si la edición no se corresponde con el producto, redireccionar
+		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
 		if (!prodEditado["elc_" + producto_id] || prodEditado["elc_" + producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
+		[quedanCampos, prodEditado] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
+		if (!quedanCampos) {
+			let informacion = {
+				mensaje: "Esta edición no tiene novedades respecto al original",
+				iconos: [
+					{
+						nombre: "fa-spell-check",
+						link: "/revision/tablero-de-control",
+						titulo: "Ir al 'Tablero de Control' de Revisiones",
+					},
+				],
+			};
+			return res.render("Errores", {informacion});
+		}
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
@@ -226,7 +241,6 @@ module.exports = {
 		} else {
 			// Obtener los ingresos y reemplazos
 			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
-			//return res.send(ingresos)
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -382,17 +396,10 @@ let obtenerLaFecha = (fecha) => {
 	return fecha;
 };
 let armarComparacion = (prodOriginal, prodEditado) => {
-	// Variables
 	let camposAComparar = variables.camposRevisarEdic();
-	// Obtener una copia de edicion
-	let edicion = {...prodEditado};
-	// Quitar los campos con valor 'null' y los que son iguales al original
-	for (let campo in edicion)
-		if (edicion[campo] === null || prodOriginal[campo] === edicion[campo]) delete edicion[campo];
-	// Quitar los campos que no se comparan y armar los valores a comparar
 	for (let i = camposAComparar.length - 1; i >= 0; i--) {
 		let campo = camposAComparar[i].nombreDelCampo;
-		if (!Object.keys(edicion).includes(campo)) camposAComparar.splice(i, 1);
+		if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
 		else {
 			// Variables
 			let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;

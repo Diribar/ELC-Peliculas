@@ -72,7 +72,7 @@ module.exports = {
 	// Revisar la edición
 	editarCampo: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, edicion_id: edicID, campo, valor} = req.query;
+		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
@@ -148,7 +148,7 @@ module.exports = {
 			datos = {
 				...datos,
 				titulo,
-				valor,
+				valor: prodEditado[campo],
 				input_en: prodEditado.editado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
@@ -162,7 +162,10 @@ module.exports = {
 				BD_genericas.agregarRegistro("edic_rech", datos);
 			}
 		}
+		// Averiguar si quedan campos por procesar
+		prodEditado[campo] = null;
+		let [quedanCampos] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
 		// Fin
-		return res.json();
+		return res.json(quedanCampos);
 	},
 };
