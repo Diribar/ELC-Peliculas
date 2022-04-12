@@ -208,6 +208,9 @@ module.exports = {
 		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// La consulta también tiene otros efectos:
+		// 1. Elimina el registro de edición si ya no tiene más datos
+		// 2. Actualiza el status del registro original, si corresponde
 		[quedanCampos, prodEditado] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {

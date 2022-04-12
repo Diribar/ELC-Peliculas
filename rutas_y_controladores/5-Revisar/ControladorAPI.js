@@ -165,7 +165,10 @@ module.exports = {
 				BD_genericas.agregarRegistro("edic_rech", datos);
 			}
 		}
-		// Averiguar si quedan campos por procesar y eventualmente eliminar el registro de edición
+		// Averiguar si quedan campos por procesar
+		// La consulta también tiene otros efectos:
+		// 1. Elimina el registro de edición si ya no tiene más datos
+		// 2. Actualiza el status del registro original, si corresponde
 		prodEditado[campo] = null;
 		let [quedanCampos] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
 		// Fin
