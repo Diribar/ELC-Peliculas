@@ -55,8 +55,8 @@ module.exports = {
 		// Agregar el registro de borrados
 		let producto = await BD_genericas.obtenerPorId(entidad, id);
 		datos = {
-			elc_entidad: entidad,
-			elc_id: id,
+			entidad: entidad,
+			entidad_id: id,
 			motivo_id: motivo_id,
 			duracion: 0, // porque todavía lo tiene que analizar un segundo revisor
 			input_por_id: producto.creado_por_id,
@@ -136,8 +136,8 @@ module.exports = {
 		await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
 		datos = {
-			elc_entidad: entidad,
-			elc_id: prodID,
+			entidad: entidad,
+			entidad_id: prodID,
 			campo: campo,
 			input_por_id: prodEditado.editado_por_id,
 		};
@@ -165,7 +165,7 @@ module.exports = {
 				BD_genericas.agregarRegistro("edic_rech", datos);
 			}
 		}
-		// Averiguar si quedan campos por procesar
+		// Averiguar si quedan campos por procesar y eventualmente eliminar el registro de edición
 		prodEditado[campo] = null;
 		let [quedanCampos] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
 		// Fin

@@ -166,10 +166,11 @@ module.exports = {
 			return res.redirect(req.url);
 		}
 		// Si no hay errores...
+		let userID = req.session.usuario.id;
 		// 5. Preparar la info a guardar
 		let datos = {
 			...RCLV,
-			creado_por_id: req.session.usuario.id,
+			creado_por_id: userID,
 		};
 		// Obtener el día del año
 		if (!RCLV.desconocida)
@@ -180,16 +181,13 @@ module.exports = {
 		// 6. Crear el registro en la BD
 		let {id} = await BD_genericas.agregarRegistro(RCLV.entidad_RCLV, {datos});
 		// Averiguar el campo para el RCLV-ID
-		let RCLV_id = especificas.RCLV_id(RCLV.entidad_RCLV);
-		// Agregar el RCLV_id al origen
+		let entidadRCLV_id = especificas.entidad_id(RCLV.entidad_RCLV);
+		// Agregar el entidadRCLV_id al origen
 		if (RCLV.origen == "datosPers") {
-			req.session.datosPers[RCLV_id] = id;
+			req.session.datosPers[entidadRCLV_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
-		} else if (RCLV.origen == "edicion") {
-			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, {
-				[RCLV_id]: id,
-			});
-		}
+		} else if (RCLV.origen == "edicion")
+			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {[entidadRCLV_id]: id});
 		// Obtener el destino a dónde redireccionar
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.RCLV) delete req.session.RCLV;

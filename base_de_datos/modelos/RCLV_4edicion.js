@@ -1,8 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "RCLV_edic";
 	const columns = {
-		elc_id: {type: dt.INTEGER},
-		elc_entidad: {type: dt.STRING(20)},
+		entidad: {type: dt.STRING(20)},
+		entidad_id: {type: dt.INTEGER},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},

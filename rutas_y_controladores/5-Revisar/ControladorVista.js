@@ -93,11 +93,11 @@ module.exports = {
 				let producto_id = especificas.entidad_id(entidad);
 				// Obtener el id de la edición
 				if (!edicID)
-					edicID = await BD_especificas.obtenerEdicionAjena("elc_" + producto_id, prodID, userID);
+					edicID = await BD_especificas.obtenerEdicionAjena(producto_id, prodID, userID);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
 					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
-						["elc_" + producto_id]: prodID,
+						[producto_id]: prodID,
 					});
 					let informacion = {};
 					informacion.iconos = [
@@ -205,7 +205,7 @@ module.exports = {
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
 		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
-		if (!prodEditado["elc_" + producto_id] || prodEditado["elc_" + producto_id] != prodID)
+		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
 		[quedanCampos, prodEditado] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);

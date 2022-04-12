@@ -86,7 +86,7 @@
 // 	// Obtener el producto EDITADO
 // 	let prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 // 		entidad,
-// 		"elc_entidad",
+// 		"entidad",
 // 		original.entidad,
 // 		"elc_id",
 // 		original.id,

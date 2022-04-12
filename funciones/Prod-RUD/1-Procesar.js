@@ -2,15 +2,19 @@
 // Definir variables
 const BD_especificas = require("../BD/Especificas");
 const BD_genericas = require("../BD/Genericas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
-	guardar_o_actualizar_Edicion: async (entidad, producto_id, datos) => {
-		entidad = entidad + "Edicion";
+	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
+		let entidad_id = especificas.entidad_id(prodEntidad);
 		// Averiguar si ya exista la edición
-		let edicion_id = await BD_especificas.obtenerELC_id(entidad, "elc_id", producto_id);
+		let edicID = await BD_especificas.obtenerELC_id("productos_edic", {
+			[entidad_id]: prodID,
+			editado_por_id: userID,
+		});
 		// Acciones en función de si existe o no
-		edicion_id
-			? await BD_genericas.actualizarPorId(entidad, edicion_id, datos)
-			: await BD_genericas.agregarRegistro(entidad, {elc_id: producto_id, ...datos});
+		edicID
+			? await BD_genericas.actualizarPorId("productos_edic", edicID, datos)
+			: await BD_genericas.agregarRegistro("productos_edic", {[entidad_id]: prodID, ...datos});
 	},
 };

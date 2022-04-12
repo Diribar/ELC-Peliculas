@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "links_edicion";
 	const columns = {
-		elc_id: {type: dt.INTEGER},
+		link_id: {type: dt.INTEGER},
 
 		calidad: {type: dt.INTEGER},
 		link_tipo_id: {type: dt.INTEGER},
@@ -20,7 +20,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "elc_id"});
+		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "link_id"});
 		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});

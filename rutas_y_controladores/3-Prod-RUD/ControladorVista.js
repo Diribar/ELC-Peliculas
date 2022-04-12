@@ -215,7 +215,7 @@ module.exports = {
 			let producto_id = especificas.entidad_id(entidad);
 			edicion = {
 				...edicion,
-				["elc_" + producto_id]: prodID,
+				[producto_id]: prodID,
 				editado_por_id: userID,
 				entidad: "productos_edic",
 			};
@@ -351,7 +351,7 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 		// Obtener la edición
 		let linkEditado = await BD_genericas.obtenerPorCamposConInclude(
 			"links_edicion",
-			{elc_id: linksOriginales[i].id, editado_por_id: userID},
+			{link_id: linksOriginales[i].id, editado_por_id: userID},
 			includes.slice(0, -1)
 		);
 		// Hacer la combinación
@@ -364,17 +364,6 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	// Fin
 	return linksCombinados;
 };
-let obtenerLinkCombinado = async (elc_id, userID) => {
-	let linkEditado = await BD_genericas.obtenerPorCamposConInclude("links_edicion", {
-		elc_id: elc_id,
-		editado_por_id: userID,
-	});
-	// Hacer la combinación
-	// Si existe 'linkEditado', se preserva su 'id'
-	let linkCombinado = {...linkOriginal, ...linkEditado};
-	// Fin
-	return linkCombinado;
-};
 let ActivosInactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
 	// linksActivos
@@ -385,7 +374,7 @@ let ActivosInactivos = async (linksOriginales) => {
 	for (let i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
 			"registros_borrados",
-			{elc_id: linksInactivos[i].id, elc_entidad: "links_originales"},
+			{entidad_id: linksInactivos[i].id, entidad: "links_originales"},
 			"motivo"
 		);
 		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
@@ -493,19 +482,30 @@ let edicionDeLink = async (req, datos) => {
 		// 2.1. Elimina el id de la edición nueva, porque no se necesita y puede entorpecer
 		delete linkEdicionNueva.id;
 		// 2.2. Si el linkCombinado incluye una edición previa, se toma su 'id' para eliminarla
-		if (linkEdicionNueva.elc_id)
-			await BD_genericas.eliminarRegistro("links_edicion", (id = linkCombinado.id));
+		if (linkEdicionNueva.link_id)
+			await BD_genericas.eliminarRegistro("links_edicion", (linkCombinado.id));
 		else {
 			// 3. De lo contrario, se completa la info
 			linkEdicionNueva = {
 				...linkEdicionNueva,
-				elc_id: linkOriginal.id,
+				link_id: linkOriginal.id,
 				editado_por_id: userID,
 			};
 		}
 		// 3. Agregar 'edición' a la BD
 		await BD_genericas.agregarRegistro("links_edicion", linkEdicionNueva);
 	}
+};
+let obtenerLinkCombinado = async (link_id, userID) => {
+	let linkEditado = await BD_genericas.obtenerPorCamposConInclude("links_edicion", {
+		link_id: link_id,
+		editado_por_id: userID,
+	});
+	// Hacer la combinación
+	// Si existe 'linkEditado', se preserva su 'id'
+	let linkCombinado = {...linkOriginal, ...linkEditado};
+	// Fin
+	return linkCombinado;
 };
 let limpiarLosDatos = (datos) => {
 	// Adecuaciones iniciales al objeto 'datos'
@@ -529,6 +529,6 @@ let estandarizarFechaRef = async (entidad, prodID) => {
 	BD_genericas.actualizarPorCampos("links_originales", {[producto_id]: prodID}, {fecha_referencia});
 	// Actualizar linksEdicion
 	BD_genericas.obtenerTodosPorCampos("links_originales", {[producto_id]: prodID}).then((n) =>
-		n.map((m) => BD_genericas.actualizarPorCampos("links_edicion", {elc_id: m.id}, {fecha_referencia}))
+		n.map((m) => BD_genericas.actualizarPorCampos("links_edicion", {link_id: m.id}, {fecha_referencia}))
 	);
 };

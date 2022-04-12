@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 				// Para ir a la vista RCLV
 				window.location.href =
 					"/producto/rclv/redireccionar/?origen=edicion&entidad=" +
-					entidad +
+					entidad + // la entidad del producto
 					"&id=" +
 					producto_id +
 					"&entidad_RCLV=" +
