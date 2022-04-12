@@ -144,7 +144,10 @@ module.exports = {
 		let averiguar = await BD_genericas.obtenerPorCampos("edic_aprob", datos);
 		// Si no lo había, agregar un registro en 'edic_aprob' / 'edicion_rech'
 		if (!averiguar) {
-			let titulo = variables.camposRevisarEdic().find((n) => n.nombreDelCampo == campo).titulo;
+			let titulo =
+				campo == "avatar"
+					? "Avatar"
+					: variables.camposRevisarEdic().find((n) => n.nombreDelCampo == campo).titulo;
 			datos = {
 				...datos,
 				titulo,

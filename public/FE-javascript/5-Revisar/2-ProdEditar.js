@@ -40,8 +40,8 @@ window.addEventListener("load", () => {
 			let quedanCampos = await fetch(
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
 			).then((n) => n.json());
-			// Si está todo oculto, cartel de fin
-			if (todoOculto()) fin();
+			// Revisar el status
+			revisarStatus(quedanCampos);
 		});
 
 		// Menú inactivar
@@ -70,20 +70,32 @@ window.addEventListener("load", () => {
 						"&motivo_id=" +
 						motivo
 				).then((n) => n.json());
-				// Si está todo oculto, cartel de fin
-				if (todoOculto()) fin();
+				// Revisar el status
+				revisarStatus(quedanCampos);
 			}
 		});
 	}
 
 	// FUNCIONES ----------------------------------------------------------------
-	let todoOculto = () => {
+	let revisarStatus = (quedanCampos) => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
-		// Verificar si está todo oculto
+		// Averiguar si está todo oculto
 		let todoOculto = ingrsOculto && reempsOculto;
-		return todoOculto;
+		// Si hay inconsistencias, recargar la página
+		if (todoOculto == quedanCampos) window.location.reload();
+		// Si no se procesaron todas las ediciones, terminar la rutina
+		if (!todoOculto) return
+		console.log("fin");
+		// Averiguar si hay errores en el original
+		let ruta = "/revision/producto/edicion/api/terminar/?entidad=";
+		await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
+
+		// Si no hay errores en el original y el status es 'alta_aprobada', cambiarle el status a 'aprobada'
+
+		// Redirigir al 'Tablero de Control'
+
 	};
 	let verificarBloques = (filas, bloque) => {
 		// Averiguar el status
@@ -95,10 +107,5 @@ window.addEventListener("load", () => {
 		if (ocultarBloque) bloque.classList.add("ocultar");
 		// Fin
 		return ocultarBloque;
-	};
-	let fin = async () => {
-		console.log("fin");
-		// let ruta = "/revision/producto/edicion/api/validar-errores/?entidad=";
-		// let errores = await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
 	};
 });
