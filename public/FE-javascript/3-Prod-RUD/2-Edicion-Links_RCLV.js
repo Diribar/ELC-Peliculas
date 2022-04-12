@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", () => {
 			if (!links[i].classList.contains("inactivo")) {
-				// Obtener la entidad_RCLV
+				// Obtener la RCLV_entidad
 				let RCLV_entidad = links[i].className.includes("personaje")
 					? "RCLV_personajes"
 					: links[i].className.includes("hecho")
@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 					prodEntidad +
 					"&id=" +
 					prodID +
-					"&entidad_RCLV=" +
+					"&RCLV_entidad=" +
 					RCLV_entidad;
 			}
 		});

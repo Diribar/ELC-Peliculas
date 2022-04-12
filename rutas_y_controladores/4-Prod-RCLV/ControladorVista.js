@@ -10,7 +10,7 @@ module.exports = {
 		// Detectar el origen
 		let RCLV = {
 			origen: req.query.origen,
-			entidad_RCLV: req.query.entidad_RCLV,
+			RCLV_entidad: req.query.RCLV_entidad,
 		};
 		if (RCLV.origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
@@ -19,7 +19,7 @@ module.exports = {
 			// Obtener los datos actualizados del formulario
 			let datosActualizados = {...req.query};
 			delete datosActualizados.origen;
-			delete datosActualizados.entidad_RCLV;
+			delete datosActualizados.RCLV_entidad;
 			// Session y Cookie actualizados
 			datosPers = {...datosPers, ...datosActualizados};
 			req.session.datosPers = datosPers;
@@ -33,12 +33,12 @@ module.exports = {
 			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
-		RCLV.RCLV_nombre = especificas.entidadNombre(RCLV.entidad_RCLV);
+		RCLV.RCLV_nombre = especificas.entidadNombre(RCLV.RCLV_entidad);
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		return res.redirect("/producto/rclv/" + RCLV.entidad_RCLV.slice(5));
+		return res.redirect("/producto/rclv/" + RCLV.RCLV_entidad.slice(5));
 	},
 
 	RCLV_Form: async (req, res) => {
@@ -59,7 +59,7 @@ module.exports = {
 		}
 		// 2. Tema y Código
 		let tema = "rclv";
-		let codigo = RCLV.entidad_RCLV;
+		let codigo = RCLV.RCLV_entidad;
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "datosPers") {
 			let datosPers = req.session.datosPers
@@ -151,13 +151,13 @@ module.exports = {
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 2. Generar información
-		if (RCLV.entidad_RCLV == "RCLV_personajes" && req.body.enProcCan == "0") {
+		if (RCLV.RCLV_entidad == "RCLV_personajes" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}
 		RCLV = {...req.body, ...RCLV};
 		// 3. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV_consolidado({...RCLV, entidad: RCLV.entidad_RCLV});
+		let errores = await validarRCLV.RCLV_consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
 		// 4. Acciones si hay errores
 		if (errores.hay) {
 			req.session.RCLV = RCLV;
@@ -179,15 +179,15 @@ module.exports = {
 				.then((n) => n.id);
 
 		// 6. Crear el registro en la BD
-		let {id} = await BD_genericas.agregarRegistro(RCLV.entidad_RCLV, {datos});
+		let {id} = await BD_genericas.agregarRegistro(RCLV.RCLV_entidad, {datos});
 		// Averiguar el campo para el RCLV-ID
-		let entidadRCLV_id = especificas.entidad_id(RCLV.entidad_RCLV);
-		// Agregar el entidadRCLV_id al origen
+		let RCLVentidad_id = especificas.entidad_id(RCLV.RCLV_entidad);
+		// Agregar el RCLVentidad_id al origen
 		if (RCLV.origen == "datosPers") {
-			req.session.datosPers[entidadRCLV_id] = id;
+			req.session.datosPers[RCLVentidad_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (RCLV.origen == "edicion")
-			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {[entidadRCLV_id]: id});
+			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {[RCLVentidad_id]: id});
 		// Obtener el destino a dónde redireccionar
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.RCLV) delete req.session.RCLV;
