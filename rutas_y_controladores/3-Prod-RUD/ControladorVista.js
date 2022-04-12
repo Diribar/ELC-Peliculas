@@ -374,7 +374,7 @@ let separarActivos_e_Inactivos = async (linksOriginales) => {
 	for (let i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
 			"altas_rech",
-			{entidad_id: linksInactivos[i].id, entidad: "links_originales"},
+			{entidad: "links_originales", entidad_id: linksInactivos[i].id},
 			"motivo"
 		);
 		linksInactivos[i].motivo = registro_borrado.motivo.nombre;
@@ -482,8 +482,7 @@ let edicionDeLink = async (req, datos) => {
 		// 2.1. Elimina el id de la edición nueva, porque no se necesita y puede entorpecer
 		delete linkEdicionNueva.id;
 		// 2.2. Si el linkCombinado incluye una edición previa, se toma su 'id' para eliminarla
-		if (linkEdicionNueva.link_id)
-			await BD_genericas.eliminarRegistro("links_edicion", (linkCombinado.id));
+		if (linkEdicionNueva.link_id) await BD_genericas.eliminarRegistro("links_edicion", linkCombinado.id);
 		else {
 			// 3. De lo contrario, se completa la info
 			linkEdicionNueva = {
