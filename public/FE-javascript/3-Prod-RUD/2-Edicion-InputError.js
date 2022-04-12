@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
 	let inactivo_EdicGua = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicGua");
-	let existeEdicG = datosEdicG.elc_pelicula_id || datosEdicG.elc_coleccion_id || datosEdicG.elc_capitulo_id;
+	let existeEdicG = !!datosEdicG.pelicula_id || !!datosEdicG.coleccion_id || !!datosEdicG.capitulo_id;
 	let statusPendAprobar = existeEdicG ? datosOriginales.status_registro.gr_pend_aprob : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");

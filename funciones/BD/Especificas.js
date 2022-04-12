@@ -177,13 +177,13 @@ module.exports = {
 		return resultado;
 	},
 	// Controlador-Redireccionar
-	obtenerEdicionAjena: async (elc_producto_id, prodID, userID) => {
+	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
 		let haceUnaHora = especificas.haceUnaHora();
 		return db.productos_edic
 			.findOne({
 				where: {
 					// Que pertenezca al producto que nos interesa
-					[elc_producto_id]: prodID,
+					[producto_id]: prodID,
 					// Que esté en condiciones de ser capturado
 					editado_en: {[Op.lt]: haceUnaHora},
 					// Que esté editado por otro usuario
