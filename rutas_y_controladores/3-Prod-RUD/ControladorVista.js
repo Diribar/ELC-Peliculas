@@ -267,7 +267,7 @@ module.exports = {
 		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
-		let [linksActivos, linksInactivos] = await ActivosInactivos(linksCombinados);
+		let [linksActivos, linksInactivos] = await separarActivos_e_Inactivos(linksCombinados);
 		// Configurar el producto, el título
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -364,7 +364,7 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	// Fin
 	return linksCombinados;
 };
-let ActivosInactivos = async (linksOriginales) => {
+let separarActivos_e_Inactivos = async (linksOriginales) => {
 	if (!linksOriginales.length) return [[], []];
 	// linksActivos
 	let linksActivos = linksOriginales.filter((n) => !n.status_registro.gr_inactivos);
@@ -373,7 +373,7 @@ let ActivosInactivos = async (linksOriginales) => {
 	// A los Inactivos, agregarles el motivo
 	for (let i = 0; i < linksInactivos.length; i++) {
 		let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
-			"registros_borrados",
+			"altas_rech",
 			{entidad_id: linksInactivos[i].id, entidad: "links_originales"},
 			"motivo"
 		);
