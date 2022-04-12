@@ -9,7 +9,8 @@ window.addEventListener("load", async () => {
 	let botonAlternancia = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 	
 	// Obtiene el 'id' que falta (colección o capítulo)
-	let id_Colec_Cap = await fetch(ruta + entidad + "&id=" + prodID).then((n) =>> {
+	let id_Colec_Cap = await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
+	botonAlternancia.addEventListener("click", () => {
 		window.location.href =
 			vista +
 			"?entidad=" +
