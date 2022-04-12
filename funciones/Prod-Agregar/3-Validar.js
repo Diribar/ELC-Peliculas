@@ -18,7 +18,7 @@ module.exports = {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
 		let errores = {hay: false};
 		// Si es una película y está en una colección
-		if (dato.entidad_TMDB == "movie" && dato.en_coleccion) {
+		if (dato.TMDB_entidad == "movie" && dato.en_coleccion) {
 			errores = {
 				colec_TMDB_id: dato.en_colec_TMDB_id,
 				hay: true,

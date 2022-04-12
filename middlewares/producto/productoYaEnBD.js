@@ -14,11 +14,8 @@ module.exports = async (req, res, next) => {
 	// Controles
 	if (!datos) return res.redirect("/producto/agregar/palabras-clave");
 	else if (datos.fuente != "IM") {
-		let elc_id = await BD_especificas.obtenerELC_id(
-			datos.entidad,
-			datos.fuente + "_id",
-			datos[datos.fuente + "_id"]
-		);
+		let fuente_id = datos.fuente + "_id";
+		let elc_id = await BD_especificas.obtenerELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
 		if (elc_id) {
 			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 			informacion = {
