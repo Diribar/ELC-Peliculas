@@ -215,9 +215,8 @@ module.exports = {
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
-
-		}
-		else edicion = {...noSeComparan, ...edicion};
+			
+		} else edicion = {...noSeComparan, ...edicion};
 		// Fin
 		return [quedanCampos, edicion];
 	},
