@@ -16,7 +16,7 @@
 			</section>
 			<section id="cartel">
 				<i class="fa-solid fa-triangle-exclamation"></i>
-				<p id="mensaje"><%- informacion.mensaje %></p>
+				<p id="mensaje"><%= informacion.mensaje %></p>
 				<div id="flechas">
 					<% for (icono of informacion.iconos) { %>
 						<a href="<%= icono.link %>" autofocus><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>

@@ -41,7 +41,7 @@ module.exports = async (req, res, next) => {
 					if (prodOriginal.creado_en < haceUnaHora)
 						informacion = {
 							mensaje:
-								"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión",
+								"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión.",
 							iconos: [
 								{
 									nombre: "fa-circle-left",
