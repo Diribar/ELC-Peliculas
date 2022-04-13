@@ -102,7 +102,8 @@ module.exports = {
 						mensajes:
 							edicion && edicion.editado_por_id == userID
 								? [
-										"Sólo encontramos una edición, realizada por vos. Necesitamos que la revise otra persona.",
+										"Sólo encontramos una edición, realizada por vos.",
+										"Necesitamos que la revise otra persona.",
 								  ]
 								: ["No encontramos ninguna edición para revisar"],
 						iconos: [
