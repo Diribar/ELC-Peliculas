@@ -1,8 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "altas_rech";
 	const columns = {
-		elc_entidad: {type: dt.STRING(20)},
-		elc_id: {type: dt.INTEGER},
+		entidad: {type: dt.STRING(20)},
+		entidad_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 

@@ -1,8 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "edic_aprob";
 	const columns = {
-		elc_entidad: {type: dt.STRING(20)},
-		elc_id: {type: dt.INTEGER},
+		entidad: {type: dt.STRING(20)},
+		entidad_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
 		titulo: {type: dt.STRING(21)},
 		valor: {type: dt.STRING(20)},

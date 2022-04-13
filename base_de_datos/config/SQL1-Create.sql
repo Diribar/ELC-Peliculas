@@ -744,9 +744,9 @@ VALUES
 ;
 CREATE TABLE prod_4edicion (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	elc_pelicula_id INT UNSIGNED DEFAULT NULL,
-	elc_coleccion_id INT UNSIGNED DEFAULT NULL,
-	elc_capitulo_id INT UNSIGNED DEFAULT NULL,
+	pelicula_id INT UNSIGNED DEFAULT NULL,
+	coleccion_id INT UNSIGNED DEFAULT NULL,
+	capitulo_id INT UNSIGNED DEFAULT NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
 	duracion SMALLINT UNSIGNED NULL,
@@ -774,9 +774,9 @@ CREATE TABLE prod_4edicion (
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (elc_pelicula_id) REFERENCES prod_1peliculas(id),
-	FOREIGN KEY (elc_coleccion_id) REFERENCES prod_2colecciones(id),	
-	FOREIGN KEY (elc_capitulo_id) REFERENCES prod_3capitulos(id),
+	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
+	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
 	FOREIGN KEY (en_castellano_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (en_color_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (idioma_original_id) REFERENCES aux_idiomas(id),
@@ -788,7 +788,7 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_4edicion (id, elc_pelicula_id, elc_coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en)
+INSERT INTO prod_4edicion (id, pelicula_id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en)
 VALUES
 (1,1,NULL,'1645444885482.jpg',3,1,'CFC',4,4,21,11,'2022-03-16 23:25:20'),
 (2,2,NULL,'1645458510332.jpg',1,1,'CFC',4,4,22,10,'2022-03-16 23:25:21'),
@@ -797,9 +797,9 @@ VALUES
 (5,5,NULL,'1645459996491.jpg',1,1,'CFC',4,4,23,10,'2022-03-16 23:25:25'),
 (6,NULL,1,'1645481101308.jpg',1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19')
 ;
-INSERT INTO prod_4edicion (id, elc_pelicula_id, elc_coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES (7,NULL,2,'1646276771102.jpg',2,1,'VPC',10,4,15,10,'2022-03-16 23:25:22');
-INSERT INTO prod_4edicion (elc_capitulo_id, nombre_original, personaje_id, editado_por_id) VALUES (1,'Karol - Un uomo diventato Papa',24,10);
-INSERT INTO prod_4edicion (elc_capitulo_id, produccion, personaje_id, editado_por_id) VALUES (2,'TAO Film',24,10);
+INSERT INTO prod_4edicion (id, pelicula_id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES (7,NULL,2,'1646276771102.jpg',2,1,'VPC',10,4,15,10,'2022-03-16 23:25:22');
+INSERT INTO prod_4edicion (capitulo_id, nombre_original, personaje_id, editado_por_id) VALUES (1,'Karol - Un uomo diventato Papa',24,10);
+INSERT INTO prod_4edicion (capitulo_id, produccion, personaje_id, editado_por_id) VALUES (2,'TAO Film',24,10);
 UPDATE prod_4edicion SET musica = 'Ciaran Hope' WHERE id = 1;
 UPDATE prod_4edicion SET avatar = NULL WHERE id = 2;
 UPDATE prod_4edicion SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
@@ -909,7 +909,7 @@ VALUES
 ;
 CREATE TABLE links_2edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	elc_id INT UNSIGNED NOT NULL,
+	link_id INT UNSIGNED NOT NULL,
 
 	calidad SMALLINT NULL,
 	link_tipo_id TINYINT UNSIGNED NULL,
@@ -923,7 +923,7 @@ CREATE TABLE links_2edicion (
 	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (elc_id) REFERENCES links_1originales(id),
+	FOREIGN KEY (link_id) REFERENCES links_1originales(id),
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -83,9 +83,9 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
-	obtenerELC_id: (entidad, campo, valor) => {
-		return db[entidad].findOne({where: {[campo]: valor}}).then((n) => {
-			return n ? n.id : false;
+	obtenerELC_id: (entidad, objeto) => {
+		return db[entidad].findOne({where: objeto}).then((n) => {
+			return n ? n.id : "";
 		});
 	},
 	// API-RUD
@@ -119,7 +119,7 @@ module.exports = {
 			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"productos_edic",
-				{["elc_" + producto_id]: prodID, editado_por_id: userID},
+				{[producto_id]: prodID, editado_por_id: userID},
 				includes.slice(0, -2)
 			);
 			if (prodEditado) {
@@ -213,8 +213,14 @@ module.exports = {
 		// Averiguar si queda algún campo 'sobreviviente'
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan, eliminar el registro
-		if (!quedanCampos) await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
-		else edicion = {...noSeComparan, ...edicion};
+		if (!quedanCampos) {
+			// Eliminar el registro de la edición
+			await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
+			// Averiguar si el original no tiene errores
+
+			// Si no tiene errores, cambiar el status del original
+			
+		} else edicion = {...noSeComparan, ...edicion};
 		// Fin
 		return [quedanCampos, edicion];
 	},

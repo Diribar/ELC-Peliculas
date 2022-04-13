@@ -28,11 +28,9 @@ module.exports = {
 				datos.en_colec_TMDB_id = datosAPI.belongs_to_collection.id;
 				datos.en_colec_nombre = datosAPI.belongs_to_collection.name;
 				// elc_id de la colección
-				datos.en_colec_id = await BD_especificas.obtenerELC_id(
-					"colecciones",
-					"TMDB_id",
-					datos.en_colec_TMDB_id
-				);
+				datos.en_colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+					TMDB_id: datos.en_colec_TMDB_id,
+				});
 				datos.prodNombre = "Capítulo";
 				datos.entidad = "capitulos";
 			} else {
@@ -86,11 +84,9 @@ module.exports = {
 			datos.colec_TMDB_id = datosAPI.belongs_to_collection.id;
 			datos.colec_nombre = datosAPI.belongs_to_collection.name;
 			// elc_id de la colección
-			datos.colec_id = await BD_especificas.obtenerELC_id(
-				"colecciones",
-				"TMDB_id",
-				datos.colec_TMDB_id
-			);
+			datos.colec_id = await BD_especificas.obtenerELC_id("colecciones", {
+				TMDB_id: datos.colec_TMDB_id,
+			});
 			if (datos.colec_id) return datos;
 		}
 		return datos;
@@ -193,7 +189,7 @@ module.exports = {
 		for (let capituloTMDB_Id of datosCol.capitulosTMDB_id) {
 			numCapitulo++;
 			// Si el capítulo no existe, agregarlo
-			let existe = await BD_especificas.obtenerELC_id("capitulos", "TMDB_id", capituloTMDB_Id);
+			let existe = await BD_especificas.obtenerELC_id("capitulos", {TMDB_id: capituloTMDB_Id});
 			if (!existe) {
 				// Preparar datos del capítulo
 				let datosCap = {

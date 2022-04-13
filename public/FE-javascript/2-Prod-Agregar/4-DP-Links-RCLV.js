@@ -18,8 +18,8 @@ window.addEventListener("load", async () => {
 	for (let i = 0; i < links.length; i++) {
 		links[i].addEventListener("click", (e) => {
 			e.preventDefault();
-			// Obtener la entidad_RCLV
-			let entidad_RCLV = links[i].className.includes("personaje")
+			// Obtener la RCLV_entidad
+			let RCLV_entidad = links[i].className.includes("personaje")
 				? "RCLV_personajes"
 				: links[i].className.includes("hecho")
 				? "RCLV_hechos"
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/producto/rclv/redireccionar/?origen=datosPers&entidad_RCLV=" + entidad_RCLV + url;
+				"/producto/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url;
 		});
 	}
 });

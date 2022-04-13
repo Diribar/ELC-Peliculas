@@ -486,7 +486,7 @@ module.exports = {
 			editado_por_id: req.session.usuario.id,
 			// Datos varios
 			entidad: "productos_edic",
-			["elc_" + producto_id]: registro.id,
+			[producto_id]: registro.id,
 		};
 		edicion = especificas.quitarLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);

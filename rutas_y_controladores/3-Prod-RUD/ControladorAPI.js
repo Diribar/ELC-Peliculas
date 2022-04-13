@@ -255,10 +255,10 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 	};
 	// Actualiza el registro 'original' en la BD
 	BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
-	// 3. Crea un registro en la BD de 'registros_borrados'
+	// 3. Crea un registro en la BD de 'altas_rech'
 	let datosParaBorrados = {
-		elc_entidad: "links_originales",
-		elc_id: link.id,
+		entidad: "links_originales",
+		entidad_id: link.id,
 		motivo_id: motivo_id,
 		duracion: 0, // porque todavía lo tiene que evaluar un revisor
 
