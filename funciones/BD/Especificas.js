@@ -4,6 +4,7 @@ const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
 const especificas = require("../Varias/Especificas");
+const validar = require("../../funciones/Prod-RUD/2-Validar");
 
 module.exports = {
 	// PRODUCTOS ------------------------------------------------------------------
@@ -204,22 +205,37 @@ module.exports = {
 
 		// Obtener Ediciones de productos en status gr_aprob
 	},
-	pulirEdicion: async (prodOriginal, prodEditado) => {
+	quedanCampos: async function (prodOriginal, prodEditado) {
+		// Variables
 		let edicion = {...prodEditado};
 		let noSeComparan;
+		let entidad = especificas.obtenerEntidad(prodEditado);
+		// Pulir la información a tener en cuenta
 		edicion = especificas.quitarLosCamposSinContenido(edicion);
 		[edicion, noSeComparan] = especificas.quitarLosCamposQueNoSeComparan(edicion);
 		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		// Averiguar si queda algún campo 'sobreviviente'
+		// Averiguar si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Eliminar el registro de la edición
 			await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
 			// Averiguar si el original no tiene errores
-
-			// Si no tiene errores, cambiar el status del original
-			
+			let errores = await validar.edicion(null, {...prodOriginal, entidad});
+			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
+			// 1. Que no tenga errores
+			// 2. Que el status del original sea 'alta_aprob'
+			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
+				console.log(232);
+				// Obtener el 'id' del status 'aprobado'
+				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
+				// Cambiarle el status al producto
+				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {
+					status_registro_id: aprobado_id,
+				});
+				// Si es una colección, cambiarle el status también a los capítulos
+				if (entidad == "colecciones") this.cambiarleElStatusALosCapitulos(prodOriginal);
+			}
 		} else edicion = {...noSeComparan, ...edicion};
 		// Fin
 		return [quedanCampos, edicion];
@@ -415,5 +431,8 @@ module.exports = {
 			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
 		return;
+	},
+	cambiarleElStatusALosCapitulos: () => {
+		return
 	},
 };

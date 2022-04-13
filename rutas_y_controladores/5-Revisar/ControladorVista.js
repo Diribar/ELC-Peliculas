@@ -92,8 +92,7 @@ module.exports = {
 			if (subDestino == "/edicion") {
 				let producto_id = especificas.entidad_id(entidad);
 				// Obtener el id de la edición
-				if (!edicID)
-					edicID = await BD_especificas.obtenerEdicionAjena(producto_id, prodID, userID);
+				if (!edicID) edicID = await BD_especificas.obtenerEdicionAjena(producto_id, prodID, userID);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
 					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
@@ -201,7 +200,10 @@ module.exports = {
 			"hecho",
 			"valor",
 		];
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+			...includes,
+			"status_registro",
+		]);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
 		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
@@ -211,7 +213,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
 				mensaje: "La edición fue borrada porque no tenía novedades respecto al original",
@@ -416,9 +418,7 @@ let armarComparacion = (prodOriginal, prodEditado) => {
 					: camposAComparar[i].valorOrig;
 			// Valores editados
 			camposAComparar[i].valorEdic = prodEditado[campo];
-			camposAComparar[i].mostrarEdic = camposAComparar[i].asociacion1
-				? prodEditado[asoc1][asoc2]
-				: prodEditado[campo];
+			camposAComparar[i].mostrarEdic = asoc1 ? prodEditado[asoc1][asoc2] : prodEditado[campo];
 		}
 	}
 	// Ingresos de edición, sin valor en la versión original

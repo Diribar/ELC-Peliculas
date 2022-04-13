@@ -200,6 +200,15 @@ module.exports = {
 			? "valor_id"
 			: "";
 	},
+	obtenerEntidad: (edicion) => {
+		return edicion.pelicula_id
+			? "peliculas"
+			: edicion.coleccion_id
+			? "colecciones"
+			: edicion.capitulo_id
+			? "capitulos"
+			: "";
+	},
 
 	// Fecha y Hora
 	ahora: () => {
@@ -276,7 +285,7 @@ module.exports = {
 		return objeto;
 	},
 	quitarLosCamposQueNoSeComparan: (edicion) => {
-		let noSeComparan={};
+		let noSeComparan = {};
 		// Obtener los campos a comparar
 		let camposAComparar = variables.camposRevisarEdic().map((n) => n.nombreDelCampo);
 		// Quitar de edicion los campos que no se comparan

@@ -18,6 +18,7 @@ window.addEventListener("load", () => {
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector("#contenido #ingrs");
 	let filasIngrs = document.querySelectorAll("#contenido #ingrs .fila");
+
 	// Bloque Reemplazos
 	let bloqueReemps = document.querySelector("#contenido #reemps");
 	let filasReemps = document.querySelectorAll("#contenido #reemps .fila");
@@ -41,7 +42,7 @@ window.addEventListener("load", () => {
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
 			).then((n) => n.json());
 			// Revisar el status
-			revisarStatus(quedanCampos);
+			consecuenciasQC(quedanCampos);
 		});
 
 		// Menú inactivar
@@ -71,31 +72,24 @@ window.addEventListener("load", () => {
 						motivo
 				).then((n) => n.json());
 				// Revisar el status
-				revisarStatus(quedanCampos);
+				consecuenciasQC(quedanCampos);
 			}
 		});
 	}
 
 	// FUNCIONES ----------------------------------------------------------------
-	let revisarStatus = (quedanCampos) => {
+	let consecuenciasQC = async (quedanCampos) => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
 		// Averiguar si está todo oculto
 		let todoOculto = ingrsOculto && reempsOculto;
-		// Si hay inconsistencias, recargar la página
+		// 1. Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
-		// Si no se procesaron todas las ediciones, terminar la rutina
-		if (!todoOculto) return
-		console.log("fin");
-		// Averiguar si hay errores en el original
-		let ruta = "/revision/producto/edicion/api/terminar/?entidad=";
-		await fetch(ruta + entidad + "&id=" + prodID).then((n) => n.json());
-
-		// Si no hay errores en el original y el status es 'alta_aprobada', cambiarle el status a 'aprobada'
-
-		// Redirigir al 'Tablero de Control'
-
+		// 2. Acciones si no quedan más campos en la edición
+		if (!quedanCampos) {
+			// Mostrar el cartel con las conclusiones
+		}
 	};
 	let verificarBloques = (filas, bloque) => {
 		// Averiguar el status
