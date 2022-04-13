@@ -12,12 +12,6 @@
 			<%- include('Timer') %>
 			<h1 id="titulo"><%= titulo %></h1>
 			<div id="imagenes">
-				<!-- Versión original -->
-				<div id="original" class="flex-col">
-					<h2>Imagen Original</h2>
-					<img src="<%= avatar.original %>">
-				</div>
-				<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
 				<!-- Versión editada -->
 				<div id="editada" class="flex-col">
 					<!-- Liberar y salir -->
@@ -37,6 +31,12 @@
 							<i class="fa-solid fa-circle-right" title="Continuar"></i>
 						</div>
 					</section>
+				</div>
+				<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Salir sin cambios"></i>
+				<!-- Versión original -->
+				<div id="original" class="flex-col">
+					<h2>Imagen Original</h2>
+					<img src="<%= avatar.original %>">
 				</div>
 			</div>
 		</section>

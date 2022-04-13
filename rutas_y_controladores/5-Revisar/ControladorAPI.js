@@ -70,7 +70,7 @@ module.exports = {
 	},
 
 	// Revisar la edición
-	editarCampo: async (req, res) => {
+	aprobRechCampo: async (req, res) => {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
@@ -82,7 +82,7 @@ module.exports = {
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
 		// Detectar un eventual error
-		if (!prodEditado || !prodEditado[campo] || (!aprobado && !motivo_id)) return res.json();
+		if (!prodEditado || !prodEditado[campo] || (!aprobado && !motivo_id)) return res.json("false");
 		// Particularidades para el campo 'avatar'
 		if (campo == "avatar") {
 			if (aprobado) {
@@ -130,7 +130,10 @@ module.exports = {
 				edic_analizada_por_id: userID,
 				edic_analizada_en: ahora,
 			};
+			// Actualiza el registro en la BD
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
+			// Actualiza la variable 'prodOriginal'
+			prodOriginal = {...prodOriginal, ...datos};
 		}
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
@@ -165,12 +168,13 @@ module.exports = {
 				BD_genericas.agregarRegistro("edic_rech", datos);
 			}
 		}
+		// Actualiza la variable de 'edicion' quitándole el valor al campo
+		prodEditado[campo] = null;
 		// Averiguar si quedan campos por procesar
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		prodEditado[campo] = null;
-		let [quedanCampos] = await BD_especificas.pulirEdicion(prodOriginal, prodEditado);
+		let [quedanCampos] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
 		// Fin
 		return res.json(quedanCampos);
 	},

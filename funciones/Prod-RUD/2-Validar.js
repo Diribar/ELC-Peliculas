@@ -7,9 +7,9 @@ const validar_PA = require("../Prod-Agregar/3-Validar");
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
 	// ControllerVista (Edicion - Form + Grabar)
-	edicion: async (campos, prodCombinado) => {
+	edicion: async (campos, datos) => {
 		// Obtener la entidad
-		let entidad = prodCombinado.entidad;
+		let entidad = datos.entidad;
 		// Obtener los campos
 		if (!campos) {
 			let camposDD = variables.camposDD().filter((n) => n[entidad]);
@@ -17,8 +17,8 @@ module.exports = {
 			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}
 		// Averiguar si hay errores de validación DD y DP
-		let erroresDD = await validar_PA.datosDuros(campos, prodCombinado);
-		let erroresDP = await validar_PA.datosPers(campos, prodCombinado);
+		let erroresDD = await validar_PA.datosDuros(campos, datos);
+		let erroresDP = await validar_PA.datosPers(campos, datos);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDP};
 		errores.hay = erroresDD.hay || erroresDP.hay;

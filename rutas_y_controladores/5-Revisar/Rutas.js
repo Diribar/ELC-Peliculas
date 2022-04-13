@@ -49,7 +49,7 @@ router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
 router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
 // Producto-Edición
-router.get("/producto/edicion/api/editar-campo", soloGestionProd, API.editarCampo);
+router.get("/producto/edicion/api/editar-campo", soloGestionProd, API.aprobRechCampo);
 
 // Exportarlo **********************************************
 module.exports = router;
