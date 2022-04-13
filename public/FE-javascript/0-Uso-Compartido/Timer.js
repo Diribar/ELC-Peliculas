@@ -4,12 +4,6 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	// Partes del cartel
-	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let cartel = document.querySelector("#cartel");
-	let gracias = document.querySelector("#gracias");
-	let mensajes = document.querySelector("#cartel #mensajes");
-	let flechas = document.querySelector("#cartel #flechas");
 	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
@@ -39,6 +33,12 @@ window.addEventListener("load", async () => {
 		}, 1000 * 60);
 	};
 	let funcionCartel = () => {
+		// Partes del cartel
+		let taparElFondo = document.querySelector("#tapar-el-fondo");
+		let cartel = document.querySelector("#cartel");
+		let gracias = document.querySelector("#gracias");
+		let mensajes = document.querySelector("#cartel #mensajes");
+		let flechas = document.querySelector("#cartel #flechas");
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
