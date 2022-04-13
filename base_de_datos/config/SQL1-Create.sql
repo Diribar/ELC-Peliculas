@@ -563,7 +563,7 @@ CREATE TABLE prod_2colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
 	FA_id VARCHAR(10) NULL UNIQUE,
-	entidad_TMDB VARCHAR(10) NULL,
+	TMDB_entidad VARCHAR(10) NULL,
 	fuente VARCHAR(5) NOT NULL,
 	nombre_original VARCHAR(100) NULL,
 	nombre_castellano VARCHAR(100) NULL,
@@ -637,7 +637,7 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, entidad_TMDB, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en)
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en)
 VALUES
 (1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,'2022-03-16 23:25:19'),
 (2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/agSYE5U98pz8OLNI6C6d2NQvn6h.jpg',75,75,100,80,10,'2022-03-16 23:25:22')

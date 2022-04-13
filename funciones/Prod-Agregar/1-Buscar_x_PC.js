@@ -16,16 +16,16 @@ module.exports = {
 		let entidadesTMDB = ["movie", "tv", "collection"];
 		let page = 1;
 		while (true) {
-			for (let entidad_TMDB of entidadesTMDB) {
-				if (page == 1 || page <= datos.cantPaginasAPI[entidad_TMDB]) {
-					lectura = await searchTMDB(palabrasClave, entidad_TMDB, page)
+			for (let TMDB_entidad of entidadesTMDB) {
+				if (page == 1 || page <= datos.cantPaginasAPI[TMDB_entidad]) {
+					lectura = await searchTMDB(palabrasClave, TMDB_entidad, page)
 						.then((n) => infoQueQueda(n))
-						.then((n) => estandarizarNombres(n, entidad_TMDB))
+						.then((n) => estandarizarNombres(n, TMDB_entidad))
 						.then((n) => eliminarSiPCinexistente(n, palabrasClave))
 						.then((n) => eliminarIncompletos(n));
-					if (entidad_TMDB == "collection" && lectura.resultados.length && mostrar)
+					if (TMDB_entidad == "collection" && lectura.resultados.length && mostrar)
 						lectura.resultados = await agregarLanzamiento(lectura.resultados);
-					datos = unificarResultados(lectura, entidad_TMDB, datos, page);
+					datos = unificarResultados(lectura, TMDB_entidad, datos, page);
 				}
 			}
 			// Terminacion
@@ -55,10 +55,10 @@ let infoQueQueda = (datos) => {
 	};
 };
 
-let estandarizarNombres = (dato, entidad_TMDB) => {
+let estandarizarNombres = (dato, TMDB_entidad) => {
 	let resultados = dato.resultados.map((m) => {
 		// Estandarizar los nombres
-		if (entidad_TMDB == "collection") {
+		if (TMDB_entidad == "collection") {
 			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
 			var prodNombre = "Colección";
 			var entidad = "colecciones";
@@ -67,7 +67,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			var nombre_castellano = m.name;
 			var desempate3 = "-";
 		}
-		if (entidad_TMDB == "tv") {
+		if (TMDB_entidad == "tv") {
 			if (
 				typeof m.first_air_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -83,7 +83,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 			var nombre_castellano = m.name;
 			var desempate3 = m.first_air_date;
 		}
-		if (entidad_TMDB == "movie") {
+		if (TMDB_entidad == "movie") {
 			if (
 				typeof m.release_date == "undefined" ||
 				typeof m.poster_path == "undefined" ||
@@ -112,7 +112,7 @@ let estandarizarNombres = (dato, entidad_TMDB) => {
 		return {
 			prodNombre,
 			entidad,
-			entidad_TMDB,
+			TMDB_entidad,
 			TMDB_id: m.id,
 			nombre_original,
 			nombre_castellano,
@@ -180,18 +180,18 @@ let agregarLanzamiento = async (dato) => {
 	return dato;
 };
 
-let unificarResultados = (lectura, entidad_TMDB, datos, page) => {
+let unificarResultados = (lectura, TMDB_entidad, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
 			...datos.cantPaginasAPI,
-			[entidad_TMDB]: lectura.cantPaginasAPI,
+			[TMDB_entidad]: lectura.cantPaginasAPI,
 		};
 	}
 	// Unificar resultados
 	datos.resultados.push(...lectura.resultados);
 	datos.cantPaginasUsadas = {
 		...datos.cantPaginasUsadas,
-		[entidad_TMDB]: Math.min(page, datos.cantPaginasAPI[entidad_TMDB]),
+		[TMDB_entidad]: Math.min(page, datos.cantPaginasAPI[TMDB_entidad]),
 	};
 	return datos;
 };
@@ -207,7 +207,7 @@ let eliminarDuplicados = (datos) => {
 				(m) =>
 					(m.desempate1 == n.desempate1 || m.desempate2 == n.desempate2) &&
 					m.desempate3 == n.desempate3 &&
-					m.entidad_TMDB == "tv"
+					m.TMDB_entidad == "tv"
 			);
 			indice != -1 ? datos.resultados.splice(indice, 1) : "";
 		}
@@ -217,8 +217,8 @@ let eliminarDuplicados = (datos) => {
 
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
-		let entidad_TMDB = datos.resultados[i].entidad_TMDB;
-		let entidad = entidad_TMDB == "movie" ? "peliculas" : "colecciones";
+		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
+		let entidad = TMDB_entidad == "movie" ? "peliculas" : "colecciones";
 		let YaEnBD = await BD_especificas.obtenerELC_id(entidad, {TMDB_id: datos.resultados[i].TMDB_id});
 		if (entidad == "peliculas" && !YaEnBD) {
 			// Debe averiguarlo, porque el 'search' no avisa si pertenece a una colección

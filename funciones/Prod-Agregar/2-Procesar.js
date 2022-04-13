@@ -12,7 +12,7 @@ module.exports = {
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
-		datos = {...datos, fuente: "TMDB", entidad_TMDB: "movie"};
+		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
 		// Obtener las API
 		let datosAPI = await Promise.all([
 			detailsTMDB("movie", datos.TMDB_id),
@@ -101,7 +101,7 @@ module.exports = {
 			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
-			entidad_TMDB: "collection",
+			TMDB_entidad: "collection",
 			cant_temporadas: 1,
 		};
 		// Obtener las API
@@ -232,7 +232,7 @@ module.exports = {
 			prodNombre: "Colección",
 			entidad: "colecciones",
 			fuente: "TMDB",
-			entidad_TMDB: "tv",
+			TMDB_entidad: "tv",
 		};
 		// Obtener las API
 		let datosAPI = await Promise.all([
@@ -328,7 +328,7 @@ module.exports = {
 		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
 		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
@@ -338,14 +338,14 @@ module.exports = {
 		for (let temporada = 1; temporada <= datosCol.cant_temporadas; temporada++) {
 			// Datos de UNA TEMPORADA
 			let datosTemp = await Promise.all([
-				detailsTMDB(temporada, registro.TMDB_id),
-				creditsTMDB(temporada, registro.TMDB_id),
+				detailsTMDB(temporada, datosCol.TMDB_id),
+				creditsTMDB(temporada, datosCol.TMDB_id),
 			]).then(([a, b]) => {
 				return {...a, ...b};
 			});
 			// Loop de CAPITULOS ********************************************
 			for (let episode of datosTemp.episodes) {
-				datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
+				let datosCap = this.infoTMDBparaAgregarCapitulosDeTV(datosCol, datosTemp, episode);
 				// Obtener las API
 				await BD_genericas.agregarRegistro(datosCap.entidad, datosCap);
 			}

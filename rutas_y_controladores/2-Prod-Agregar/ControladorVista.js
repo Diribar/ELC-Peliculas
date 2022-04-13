@@ -89,7 +89,7 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		let infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.entidad_TMDB](req.body);
+		let infoTMDBparaDD = await procesarProd["infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validarProd.desambiguar(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
@@ -202,7 +202,7 @@ module.exports = {
 		// 2.2. Averiguar si el FA_id ya está en la BD
 		FA_id = await procesarProd.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
-			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, "FA_id", FA_id);
+			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, {FA_id: FA_id});
 			if (elc_id) {
 				errores.direccion = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -299,11 +299,10 @@ module.exports = {
 		let errores = await validarProd.datosDuros(camposDD_errores, {...datosDuros, avatar});
 		// 4. Si no hubieron errores en el nombre_original, averiguar si el TMDB_id/FA_id ya está en la BD
 		if (!errores.nombre_original && datosDuros.fuente != "IM") {
-			let elc_id = await BD_especificas.obtenerELC_id(
-				datosDuros.entidad,
-				datosDuros.fuente + "_id",
-				datosDuros[datosDuros.fuente + "_id"]
-			);
+			let fuente_id = datosDuros.fuente + "_id";
+			let elc_id = await BD_especificas.obtenerELC_id(datosDuros.entidad, {
+				[fuente_id]: datosDuros[fuente_id],
+			});
 			if (elc_id) {
 				errores.nombre_original = "El código interno ya se encuentra en nuestra base de datos";
 				errores.elc_id = elc_id;
@@ -491,8 +490,8 @@ module.exports = {
 		edicion = especificas.quitarLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
-		if (confirma.fuente == "TMDB" && confirma.entidad_TMDB != "movie") {
-			confirma.entidad_TMDB == "collection"
+		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
+			confirma.TMDB_entidad == "collection"
 				? procesarProd.agregarCapitulosDeCollection({...confirma, ...registro})
 				: procesarProd.agregarCapitulosDeTV({...confirma, ...registro});
 		}
