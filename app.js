@@ -67,7 +67,7 @@ app.use("/", rutaMiscelaneas);
 // ************************ Errores *******************************
 app.use((req, res) => {
 	let informacion = {
-		mensaje: "No tenemos esa dirección de url en nuestro sitio",
+		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [
 			{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 			{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},

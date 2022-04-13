@@ -174,8 +174,8 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		let [quedanCampos] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
+		let [quedanCampos, , statusAprobado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
 		// Fin
-		return res.json(quedanCampos);
+		return res.json([quedanCampos, statusAprobado]);
 	},
 };

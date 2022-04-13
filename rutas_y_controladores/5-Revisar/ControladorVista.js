@@ -98,18 +98,21 @@ module.exports = {
 					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
 						[producto_id]: prodID,
 					});
-					let informacion = {};
-					informacion.iconos = [
-						{
-							nombre: "fa-thumbs-up",
-							link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
-							titulo: "Ir a la vista de inicio de revision",
-						},
-					];
-					informacion.mensaje =
-						edicion && edicion.editado_por_id == userID
-							? "Sólo encontramos una edición, realizada por vos. Necesitamos que la revise otra persona."
-							: "No encontramos ninguna edición para revisar";
+					let informacion = {
+						mensajes:
+							edicion && edicion.editado_por_id == userID
+								? [
+										"Sólo encontramos una edición, realizada por vos. Necesitamos que la revise otra persona.",
+								  ]
+								: ["No encontramos ninguna edición para revisar"],
+						iconos: [
+							{
+								nombre: "fa-thumbs-up",
+								link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+								titulo: "Ir a la vista de inicio de revision",
+							},
+						],
+					};
 					return res.render("Errores", {informacion});
 				}
 			}
@@ -207,7 +210,7 @@ module.exports = {
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
 		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
-		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+		if (!prodEditado || prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
@@ -216,7 +219,7 @@ module.exports = {
 		[quedanCampos, prodEditado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
-				mensaje: "La edición fue borrada porque no tenía novedades respecto al original",
+				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
 				iconos: [
 					{
 						nombre: "fa-spell-check",

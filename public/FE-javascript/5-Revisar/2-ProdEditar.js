@@ -24,6 +24,7 @@ window.addEventListener("load", () => {
 	let filasReemps = document.querySelectorAll("#contenido #reemps .fila");
 
 	// Otras variables
+	let casos = aprobar.length == rechazar.length ? aprobar.length : 0;
 	let filas = document.querySelectorAll("#contenido .fila");
 	let campoNombres = Array.from(document.querySelectorAll("#contenido .campoNombre")).map(
 		(n) => n.innerHTML
@@ -31,18 +32,18 @@ window.addEventListener("load", () => {
 
 	// LISTENERS --------------------------------------------------------------------
 	// 'Listeners' de 'Aprobar'
-	for (let i = 0; i < rechazar.length; i++) {
+	for (let i = 0; i < casos; i++) {
 		// Aprobar el nuevo valor
 		aprobar[i].addEventListener("click", async () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
 			let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=true&entidad=";
-			let quedanCampos = await fetch(
+			let [quedanCampos, statusAprobado] = await fetch(
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
 			).then((n) => n.json());
 			// Revisar el status
-			consecuenciasQC(quedanCampos);
+			consecuenciasQC(quedanCampos, statusAprobado);
 		});
 
 		// Menú inactivar
@@ -59,7 +60,7 @@ window.addEventListener("load", () => {
 				filas[i].classList.add("ocultar");
 				// Actualizar el campo del producto
 				let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=false&entidad=";
-				let quedanCampos = await fetch(
+				let [quedanCampos, statusAprobado] = await fetch(
 					ruta +
 						entidad +
 						"&id=" +
@@ -72,13 +73,13 @@ window.addEventListener("load", () => {
 						motivo
 				).then((n) => n.json());
 				// Revisar el status
-				consecuenciasQC(quedanCampos);
+				consecuenciasQC(quedanCampos, statusAprobado);
 			}
 		});
 	}
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuenciasQC = async (quedanCampos) => {
+	let consecuenciasQC = (quedanCampos, statusAprobado) => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
@@ -87,9 +88,9 @@ window.addEventListener("load", () => {
 		// 1. Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
 		// 2. Acciones si no quedan más campos en la edición
-		if (!quedanCampos) {
-			// Mostrar el cartel con las conclusiones
-		}
+		if (!quedanCampos) cartelFin(statusAprobado);
+		// Fin
+		return;
 	};
 	let verificarBloques = (filas, bloque) => {
 		// Averiguar el status
@@ -101,5 +102,53 @@ window.addEventListener("load", () => {
 		if (ocultarBloque) bloque.classList.add("ocultar");
 		// Fin
 		return ocultarBloque;
+	};
+	let cartelFin = (statusAprobado) => {
+		// Partes del cartel
+		let taparElFondo = document.querySelector("#tapar-el-fondo");
+		let cartel = document.querySelector("#cartel");
+		let error = document.querySelector("#error");
+		let mensajes = document.querySelector("ul#mensajes");
+		let flechas = document.querySelector("#cartel #flechas");
+
+		// Formatos
+		cartel.style.backgroundColor = "var(--verde-oscuro)";
+		error.classList.add("ocultar");
+
+		// Mensajes
+		let arrayMensajes = ["Gracias por completar la revisión."];
+		// Si el status se cambió a 'aprobado', comunicarlo
+		if (statusAprobado) {
+			// Texto en función de la entidad
+			let producto =
+				entidad == "peliculas"
+					? " la película"
+					: entidad == "colecciones"
+					? " la colección"
+					: "l capítulo";
+			let texto = "El status de" + producto + " fue cambiado a <strong>aprobado</strong>.";
+			arrayMensajes.push(texto);
+			// Texto sobre los capítulos
+			if (entidad == "colecciones")
+				arrayMensajes.push("Los capítulos también fueron cambiados a ese estado.");
+		}
+		// Cambiar el contenido del mensaje
+		mensajes.innerHTML = "";
+		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+
+		// Flechas
+		let icono = {
+			HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+			link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+		};
+		flechas.innerHTML = "";
+		flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
+
+		// Mostrar el cartel
+		taparElFondo.classList.remove("ocultar");
+		cartel.classList.remove("ocultar");
+
+		// Fin
+		return;
 	};
 });

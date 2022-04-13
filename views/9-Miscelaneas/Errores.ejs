@@ -3,7 +3,7 @@
 <head>
 	<!-- Head -->
 	<%- include('1-Head', {titulo: "Error"}) %>
-	<link rel="stylesheet" href="/formatoDeVistas/9-Miscelaneas/Errores.css">
+	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 </head>
 <body>
 	<%- include('21-Header') %>
@@ -12,18 +12,24 @@
 		<section id="cuerpo-y-footer">
 			<%- include('23-Footer') %>
 			<!--**************************** CUERPO ******************************-->
-			<section id="tapar-el-fondo">
-			</section>
+			<section id="tapar-el-fondo"></section>
 			<section id="cartel">
-				<i class="fa-solid fa-triangle-exclamation"></i>
-				<p id="mensaje"><%= informacion.mensaje %></p>
+				<i id="error" class="fa-solid fa-triangle-exclamation"></i>
+				<% if (informacion.mensajes.length > 1) { %>
+					<ul id="mensajes">
+						<% for (mensaje of informacion.mensajes) { %>
+							<li><%= mensaje %> </li>
+						<% } %>
+					</ul>
+				<% } else { %>
+					<p id="mensajes"><%= informacion.mensajes[0] %> </p>
+				<% } %>
 				<div id="flechas">
 					<% for (icono of informacion.iconos) { %>
 						<a href="<%= icono.link %>" autofocus><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
 					<% } %>
 				</div>
 			</section>
-			
 			<!--****************************** FIN *******************************-->
 		</section>
 	</main>

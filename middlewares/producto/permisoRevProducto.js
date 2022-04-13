@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	// Problema1: PRODUCTO NO ENCONTRADO ----------------------------------------------
 	if (!prodOriginal)
 		informacion = {
-			mensaje: "Producto no encontrado",
+			mensajes: ["Producto no encontrado"],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 			],
@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 				entidad == "capitulos" && prodOriginal.coleccion.creado_por_id == userID;
 			if (creadoPorElUsuario1 || creadoPorElUsuario2)
 				informacion = {
-					mensaje: "El producto debe ser analizado por otro revisor, no por su creador",
+					mensajes: ["El producto debe ser analizado por otro revisor, no por su creador"],
 					iconos: [
 						{
 							nombre: "fa-circle-left",
@@ -60,7 +60,9 @@ module.exports = async (req, res, next) => {
 				if (espera > 60) espera = parseInt(espera / 60);
 				if (espera > 0)
 					informacion = {
-						mensaje: "El producto estará disponible para su revisión en " + espera + " " + unidad,
+						mensajes: [
+							"El producto estará disponible para su revisión en " + espera + " " + unidad,
+						],
 						iconos: [
 							{
 								nombre: "fa-circle-left",
@@ -95,14 +97,15 @@ module.exports = async (req, res, next) => {
 						prodOriginal.captura_activa
 					)
 						informacion = {
-							mensaje:
+							mensajes: [
 								"El producto está en revisión por el usuario " +
-								prodOriginal.capturado_por.apodo +
-								", desde el " +
-								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
-								" a las " +
-								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
-								"hs",
+									prodOriginal.capturado_por.apodo +
+									", desde el " +
+									horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+									" a las " +
+									horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+									"hs",
+							],
 							iconos: [
 								{
 									nombre: "fa-circle-left",
@@ -123,12 +126,13 @@ module.exports = async (req, res, next) => {
 						prodOriginal.capturado_por_id == userID
 					)
 						informacion = {
-							mensaje:
+							mensajes: [
 								"Tu revisión de este producto quedó inconclusa desde un poco antes del " +
-								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
-								" a las " +
-								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
-								"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
+									horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+									" a las " +
+									horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+									"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
+							],
 							iconos: [
 								{
 									nombre: "fa-spell-check",

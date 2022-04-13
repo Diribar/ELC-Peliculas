@@ -8,8 +8,8 @@ module.exports = (req, res, next) => {
 	if (!usuario.rol_usuario.aut_input) {
 		let linkUsuarioAutInput = "/usuarios/autorizado-input/solicitud";
 		let informacion = {
-			mensaje:
-				"Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click abajo, en la flecha hacia la derecha.",
+			mensajes:
+				["Se requiere aumentar el nivel de confianza, para ingresar información a nuestro sistema. Podés gestionarlo vos mismo haciendo click abajo, en la flecha hacia la derecha."],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 				{nombre: "fa-circle-right", link: linkUsuarioAutInput, titulo: "Solicitar el permiso"},

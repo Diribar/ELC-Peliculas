@@ -519,7 +519,7 @@ module.exports = {
 		// Problema: PRODUCTO NO ENCONTRADO
 		if (!registroProd) {
 			let informacion = {
-				mensaje: "Producto no encontrado",
+				mensajes: ["Producto no encontrado"],
 				iconos: [
 					{
 						nombre: "fa-circle-left",
