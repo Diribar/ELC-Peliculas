@@ -186,6 +186,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
+		//return res.send([189,edicID])
+		// VERIFICACION1: Si no existe edición --> redirecciona
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos;
@@ -208,11 +210,11 @@ module.exports = {
 			"status_registro",
 		]);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
-		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
+		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
-		if (!prodEditado || prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde

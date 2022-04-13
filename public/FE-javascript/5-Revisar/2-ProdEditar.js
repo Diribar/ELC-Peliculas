@@ -142,7 +142,7 @@ window.addEventListener("load", () => {
 			link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
 		};
 		flechas.innerHTML = "";
-		flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
+		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
 		taparElFondo.classList.remove("ocultar");
