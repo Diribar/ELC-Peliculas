@@ -39,7 +39,7 @@ module.exports = {
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
-			titulo: "Revisar - Visión General",
+			titulo: "Revisar - Tablero de Control",
 			productos,
 			RCLVs: [],
 			prodsLinks,
