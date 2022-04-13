@@ -46,7 +46,7 @@ module.exports = {
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV) {
 			let informacion = {
-				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+				mensajes: ["Se perdió información crítica. Reiniciá este proceso."],
 				iconos: [
 					{
 						nombre: "fa-circle-left",
@@ -69,7 +69,7 @@ module.exports = {
 				: "";
 			if (!datosPers) {
 				let informacion = {
-					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+					mensajes: ["Se perdió información crítica. Reiniciá este proceso."],
 					iconos: [
 						{
 							nombre: "fa-thumbs-up",
@@ -117,7 +117,7 @@ module.exports = {
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV) {
 			let informacion = {
-				mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+				mensajes: ["Se perdió información crítica. Reiniciá este proceso."],
 				iconos: [
 					{
 						nombre: "fa-circle-left",
@@ -137,7 +137,7 @@ module.exports = {
 				: "";
 			if (!datosPers) {
 				let informacion = {
-					mensaje: "Se perdió información crítica. Reiniciá este proceso.",
+					mensajes: ["Se perdió información crítica. Reiniciá este proceso."],
 					iconos: [
 						{
 							nombre: "fa-thumbs-up",

@@ -210,6 +210,7 @@ module.exports = {
 		let edicion = {...prodEditado};
 		let noSeComparan;
 		let entidad = especificas.obtenerEntidad(prodEditado);
+		let statusAprobado = false;
 		// Pulir la información a tener en cuenta
 		edicion = especificas.quitarLosCamposSinContenido(edicion);
 		[edicion, noSeComparan] = especificas.quitarLosCamposQueNoSeComparan(edicion);
@@ -226,7 +227,7 @@ module.exports = {
 			// 1. Que no tenga errores
 			// 2. Que el status del original sea 'alta_aprob'
 			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
-				console.log(232);
+				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
 				// Cambiarle el status al producto
@@ -238,7 +239,7 @@ module.exports = {
 			}
 		} else edicion = {...noSeComparan, ...edicion};
 		// Fin
-		return [quedanCampos, edicion];
+		return [quedanCampos, edicion, statusAprobado];
 	},
 
 	// LINKS -------------------------------------------------------------
@@ -433,6 +434,6 @@ module.exports = {
 		return;
 	},
 	cambiarleElStatusALosCapitulos: () => {
-		return
+		return;
 	},
 };

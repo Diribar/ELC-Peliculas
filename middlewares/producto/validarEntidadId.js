@@ -11,14 +11,14 @@ module.exports = (req, res, next) => {
 	// Sin entidad y/o ID
 	if (!entidad)
 		informacion = {
-			mensaje: "Falta el dato de la 'entidad'",
+			mensajes: ["Falta el dato de la 'entidad'"],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 			],
 		};
 	else if (!prodID)
 		informacion = {
-			mensaje: "Falta el dato del 'ID'",
+			mensajes: ["Falta el dato del 'ID'"],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 			],
@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
 		let prodNombre = especificas.entidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
-				mensaje: "La entidad ingresada no es válida",
+				mensajes: ["La entidad ingresada no es válida"],
 				iconos: [
 					{
 						nombre: "fa-circle-left",

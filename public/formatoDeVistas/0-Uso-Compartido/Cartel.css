@@ -1,0 +1,26 @@
+/* Timer */
+#timer {position: absolute; right: 0px; top: 0px; padding: 3px 7px; border-bottom-left-radius: 5px;}
+#timer {color: var(--gris-claro); background-color: var(--verde-oscuro); border: none;}
+#timer {font-size: 1.1rem; font-weight: bold;}
+
+/* Formato general del cartel */
+#cartel {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
+#cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
+#cartel , #cartel * {color:var(--gris-claro)}
+#cartel {background-color: var(--rojo-oscuro);}
+
+/* Alineación interna */
+#cartel {display: flex; flex-direction: column; align-items: center; width: fit-content; max-width: 550px;}
+#cartel.ocultar {display: none;}
+
+/* Partes internas */
+#cartel #error {font-size: 4rem; color: var(--amarillo-oscuro);}
+#cartel #mensajes {margin: 40px 20px; text-align: center;}
+#cartel #mensajes li {text-align: left;}
+#cartel #mensajes, #cartel #mensajes li, #cartel #mensajes li * {font-size: 1.2rem; line-height: 1.5;}
+#cartel #mensajes span {font-weight: bold; font-style: italic; color: inherit; font-size: inherit; line-height: inherit;}
+
+/* Botones 'Cancelar', 'Entendido' y 'Continuar' */
+#cartel #flechas { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
+#cartel #flechas a {border-radius: 50%; padding: 5px;}
+#cartel #flechas a i {color: white; font-size: 3rem; border-radius: 50%; cursor: pointer; background-color: transparent; border: none; margin: 0;}

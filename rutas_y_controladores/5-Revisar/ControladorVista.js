@@ -39,7 +39,7 @@ module.exports = {
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
-			titulo: "Revisar - Visión General",
+			titulo: "Revisar - Tablero de Control",
 			productos,
 			RCLVs: [],
 			prodsLinks,
@@ -98,18 +98,22 @@ module.exports = {
 					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
 						[producto_id]: prodID,
 					});
-					let informacion = {};
-					informacion.iconos = [
-						{
-							nombre: "fa-thumbs-up",
-							link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
-							titulo: "Ir a la vista de inicio de revision",
-						},
-					];
-					informacion.mensaje =
-						edicion && edicion.editado_por_id == userID
-							? "Sólo encontramos una edición, realizada por vos. Necesitamos que la revise otra persona."
-							: "No encontramos ninguna edición para revisar";
+					let informacion = {
+						mensajes:
+							edicion && edicion.editado_por_id == userID
+								? [
+										"Sólo encontramos una edición, realizada por vos.",
+										"Necesitamos que la revise otra persona.",
+								  ]
+								: ["No encontramos ninguna edición para revisar"],
+						iconos: [
+							{
+								nombre: "fa-thumbs-up",
+								link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+								titulo: "Ir a la vista de inicio de revision",
+							},
+						],
+					};
 					return res.render("Errores", {informacion});
 				}
 			}
@@ -183,6 +187,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
+		//return res.send([189,edicID])
+		// VERIFICACION1: Si no existe edición --> redirecciona
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos;
@@ -205,18 +211,18 @@ module.exports = {
 			"status_registro",
 		]);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
-		// VERIFICACION1: si la edición no se corresponde con el producto --> redirecciona
+		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
-		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
-		// VERIFICACION2: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
 		[quedanCampos, prodEditado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
-				mensaje: "La edición fue borrada porque no tenía novedades respecto al original",
+				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
 				iconos: [
 					{
 						nombre: "fa-spell-check",

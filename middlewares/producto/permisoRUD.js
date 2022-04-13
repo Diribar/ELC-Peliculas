@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 	// Problema1: PRODUCTO NO ENCONTRADO -----------------------------------------
 	if (!prodOriginal)
 		informacion = {
-			mensaje: "Producto no encontrado",
+			mensajes: ["Producto no encontrado"],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 			],
@@ -40,8 +40,10 @@ module.exports = async (req, res, next) => {
 					// Problema2: TIEMPO DE EDICIÓN CUMPLIDO ---------------------------------
 					if (prodOriginal.creado_en < haceUnaHora)
 						informacion = {
-							mensaje:
-								"Expiró el tiempo de edición. Está a disposición de nuestro equipo para su revisión",
+							mensajes: [
+								"Expiró el tiempo de edición.",
+								"Está a disposición de nuestro equipo para su revisión.",
+							],
 							iconos: [
 								{
 									nombre: "fa-circle-left",
@@ -66,8 +68,9 @@ module.exports = async (req, res, next) => {
 						let cantLinks = links.length;
 						if (cantLinks && links[cantLinks - 1].fecha_referencia < haceUnaHora)
 							informacion = {
-								mensaje:
+								mensajes: [
 									"El producto está en revisión. Una vez revisado, podrás acceder a esta vista",
+								],
 								iconos: [
 									{
 										nombre: "fa-circle-left",
@@ -86,9 +89,10 @@ module.exports = async (req, res, next) => {
 			} else if (!usuario.rol_usuario.aut_gestion_prod)
 				// Problema4: PRODUCTO NO APROBADO ----------------------------------------
 				informacion = {
-					mensaje:
+					mensajes: [
 						"El producto no está aprobado aún para ser mostrado o editado. El status actual es: " +
-						prodOriginal.status_registro.nombre,
+							prodOriginal.status_registro.nombre,
+					],
 					iconos: [
 						{
 							nombre: "fa-circle-left",

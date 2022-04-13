@@ -24,24 +24,25 @@ module.exports = async (req, res, next) => {
 		let horario =
 			prodCapturado.capturado_en.getHours() +
 			":" +
-			String(prodCapturado.capturado_en.getMinutes()).padStart(2, "0")+
+			String(prodCapturado.capturado_en.getMinutes()).padStart(2, "0") +
 			"hs.";
 		// Preparar la información
 		let informacion = {
-			mensaje:
+			mensajes: [
 				"Tenés que liberar " +
-				(prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
-					? "la "
-					: "el ") +
-				entidadNombre.toLowerCase() +
-				" <span>" +
-				(prodCapturado.nombre_castellano
-					? prodCapturado.nombre_castellano
-					: prodCapturado.nombre_original) +
-				"</span>, que está reservad" +
-				(prodCapturado.entidad != "capitulos" ? "a" : "o") +
-				" desde las " +
-				horario,
+					(prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
+						? "la "
+						: "el ") +
+					entidadNombre.toLowerCase() +
+					" <span>" +
+					(prodCapturado.nombre_castellano
+						? prodCapturado.nombre_castellano
+						: prodCapturado.nombre_original) +
+					"</span>, que está reservad" +
+					(prodCapturado.entidad != "capitulos" ? "a" : "o") +
+					" desde las " +
+					horario,
+			],
 			iconos: [{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"}],
 		};
 
