@@ -332,6 +332,10 @@ window.addEventListener("load", async () => {
 			await consecuenciasErrores(fila);
 			// Submit
 			botonGuardar(fila);
+		} else {
+			let filaInput = filasInput - 1;
+			impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
+			impactosPorTipoLink(filaInput);
 		}
 	}
 });

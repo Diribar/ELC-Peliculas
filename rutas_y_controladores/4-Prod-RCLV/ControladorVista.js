@@ -179,7 +179,7 @@ module.exports = {
 				.then((n) => n.id);
 
 		// 6. Crear el registro en la BD
-		let {id} = await BD_genericas.agregarRegistro(RCLV.RCLV_entidad, {datos});
+		let {id} = await BD_genericas.agregarRegistro(RCLV.RCLV_entidad, datos);
 		// Averiguar el campo para el RCLV-ID
 		let RCLVentidad_id = especificas.entidad_id(RCLV.RCLV_entidad);
 		// Agregar el RCLVentidad_id al origen
