@@ -46,7 +46,6 @@ module.exports = {
 	},
 	obtenerCapitulos: async (req, res) => {
 		let datos = await BD_especificas.obtenerCapitulos(req.query.coleccion_id, req.query.temporada);
-		console.log(datos);
 		return res.json(datos);
 	},
 
