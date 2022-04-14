@@ -228,18 +228,18 @@ module.exports = {
 	},
 	obtenerHoras: function (desde, hasta) {
 		// Corregir fechas
-		console.log(desde,hasta);
+		console.log(desde, hasta);
 		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
 		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
 		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
 		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
-		console.log(desde,hasta);
+		console.log(desde, hasta);
 		// Calcular la cantidad de horas
 		let diferencia = hasta - desde;
 		console.log(diferencia);
 		if (diferencia < 0) diferencia = 0;
 		console.log(diferencia);
-		let horasDif = parseInt((diferencia / 60 / 60 / 1000) * 100) / 100;
+		let horasDif = diferencia / 60 / 60 / 1000;
 		console.log(horasDif);
 		// Averiguar la cantidad de horas por fines de semana
 		let semanas = parseInt(horasDif / (7 * 24));
@@ -251,7 +251,9 @@ module.exports = {
 		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
 		console.log(horasFDS);
 		// Resultado
-		let leadTime = horasDif - horasFDS;
+		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
+		console.log(leadTime);
+		leadTime = Math.min(99.99, leadTime);
 		console.log(leadTime);
 		// Fin
 		return leadTime;

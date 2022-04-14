@@ -4,6 +4,7 @@
 	<!-- Head -->
 	<%- include('1-Head', {titulo: "Error"}) %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
+	<% if (informacion.logout) { %><% 'logout' %><% } %>
 </head>
 <body>
 	<%- include('21-Header') %>
@@ -13,7 +14,7 @@
 			<%- include('23-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<section id="tapar-el-fondo"></section>
-			<section id="cartel">
+			<section id="cartel" class="<% if (informacion.logout) { %><%= 'logout' %><% } %>">
 				<i id="error" class="fa-solid fa-triangle-exclamation"></i>
 				<% if (informacion.mensajes.length > 1) { %>
 					<ul id="mensajes">
