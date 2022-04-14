@@ -32,7 +32,6 @@ window.addEventListener("load", async () => {
 	let producto_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 	let existeEdicG = !!datosEdicG[producto_id];
-	console.log(datosEdicG.coleccion_id);
 	let statusPendAprobar = existeEdicG ? datosOriginales.status_registro.gr_pend_aprob : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
