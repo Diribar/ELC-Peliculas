@@ -253,7 +253,7 @@ module.exports = {
 		// Resultado
 		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
 		console.log(leadTime);
-		leadTime = Math.min(99.99, leadTime);
+		leadTime = Math.min(96, leadTime);
 		console.log(leadTime);
 		// Fin
 		return leadTime;
