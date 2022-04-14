@@ -47,16 +47,23 @@ window.addEventListener("load", async () => {
 
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {
-		rutinaFormChange(e);
+		let fila = funcionIndice(e);
+		rutinaFormChange(e, fila);
 	});
 
 	// FUNCIONES ---------------------------------------------------------------
-	let rutinaFormChange = async (e) => {
+	let funcionIndice = (e) => {
+		for (let fila = 0; fila < filasInput; fila++) {
+			for (let col = 0; col < camposInput.length; col++) {
+				if (e.target == inputs[fila * columnasInput + col]) return fila;
+			}
+		}
+	};
+	let rutinaFormChange = async (e, fila) => {
 		// Definir los valores para 'campo'
 		let campo = e.target.name;
 		let valor = e.target.value;
 		// Si es url...
-		let fila = filasInput - 1;
 		if (campo == "url") await funcionesDerivadasDelUrl(fila);
 		else if (campo == "link_tipo_id") impactosPorTipoLink(fila);
 		else if (campo == "completo") impactoPorCompleto(fila, valor);
