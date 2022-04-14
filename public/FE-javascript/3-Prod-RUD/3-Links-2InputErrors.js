@@ -47,23 +47,16 @@ window.addEventListener("load", async () => {
 
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {
-		let fila = funcionIndice(e);
-		rutinaFormChange(e, fila);
+		rutinaFormChange(e);
 	});
 
 	// FUNCIONES ---------------------------------------------------------------
-	let funcionIndice = (e) => {
-		for (let fila = 0; fila < filasInput; fila++) {
-			for (let col = 0; col < camposInput.length; col++) {
-				if (e.target == inputs[fila * columnasInput + col]) return fila;
-			}
-		}
-	};
-	let rutinaFormChange = async (e, fila) => {
+	let rutinaFormChange = async (e) => {
 		// Definir los valores para 'campo'
 		let campo = e.target.name;
 		let valor = e.target.value;
 		// Si es url...
+		let fila = filasInput - 1;
 		if (campo == "url") await funcionesDerivadasDelUrl(fila);
 		else if (campo == "link_tipo_id") impactosPorTipoLink(fila);
 		else if (campo == "completo") impactoPorCompleto(fila, valor);
@@ -332,6 +325,10 @@ window.addEventListener("load", async () => {
 			await consecuenciasErrores(fila);
 			// Submit
 			botonGuardar(fila);
+		} else {
+			let filaInput = filasInput - 1;
+			impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
+			impactosPorTipoLink(filaInput);
 		}
 	}
 });

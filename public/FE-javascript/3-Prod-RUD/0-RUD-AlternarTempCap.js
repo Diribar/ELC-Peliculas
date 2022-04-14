@@ -11,11 +11,11 @@ window.addEventListener("load", async () => {
 	let colID = await fetch(ruta + prodID).then((n) => n.json());
 
 	// Obtener DOM de Temporada y Capítulos
-	let temporada = document.querySelector("#encabezado select#temporada");
-	let capitulo = document.querySelector("#encabezado select#capitulo");
+	let tempSelect = document.querySelector("#encabezado select#temporada");
+	let capSelect = document.querySelector("#encabezado select#capitulo");
 
 	// CAMBIOS EN LA TEMPORADA --> se deben actualizar los capítulos
-	temporada.addEventListener("change", async () => {
+	tempSelect.addEventListener("change", async () => {
 		// Obtener la temporada
 		let tempNum = temporada.value.slice(10);
 		// Obtener los capítulos de la temporada
@@ -24,15 +24,15 @@ window.addEventListener("load", async () => {
 			(n) => n.json()
 		);
 		// Eliminar las opciones actuales
-		capitulo.innerHTML = "<option selected class='ocultar'>Elegí</option>";
+		capSelect.innerHTML = "<option selected class='ocultar'>Elegí</option>";
 		// Agregar las nuevas opciones
 		for (let capitulo of capitulos) {
-			capitulo.innerHTML += "<option>Capítulo " + capitulo + "</option>";
+			capSelect.innerHTML += "<option>Capítulo " + capitulo + "</option>";
 		}
 	});
 
 	// CAMBIOS EN EL CAPÍTULO --> cambiar el url
-	capitulo.addEventListener("change", async () => {
+	capSelect.addEventListener("change", async () => {
 		// Obtener los datos para conseguir el capID
 		let tempNum = temporada.value.slice(10);
 		let capNum = capitulo.value.slice(9);
