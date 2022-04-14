@@ -14,11 +14,11 @@
 <!-- Motivo -->
 <div class="motivos ocultar">
 	<i class="fa-solid fa-trash-can" tabindex="-1" title='Rechazar'></i>
-	<div name="motivo_id">
+	<select name="motivo_id">
 		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
 		<% for (motivo of motivos) { %>
 			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
 		<% } %>
-	</div>
+	</select>
 </div>
 

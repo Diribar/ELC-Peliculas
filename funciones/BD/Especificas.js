@@ -230,12 +230,16 @@ module.exports = {
 				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
-				// Cambiarle el status al producto
-				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {
-					status_registro_id: aprobado_id,
-				});
+				// Cambiarle el status al producto y liberarlo
+				let datos = {status_registro_id: aprobado_id};
+				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidad == "colecciones") this.cambiarleElStatusALosCapitulos(prodOriginal);
+				if (entidad == "colecciones") {
+					// Generar el objeto para filtrar
+					let objeto = {coleccion_id: prodOriginal.id};
+					// Actualizar el status de los capitulos
+					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
+				}
 			}
 		} else edicion = {...noSeComparan, ...edicion};
 		// Fin
@@ -431,9 +435,6 @@ module.exports = {
 			BD_genericas.aumentarElValorDeUnCampo("usuarios", usuario.id, "dias_login");
 			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
 		}
-		return;
-	},
-	cambiarleElStatusALosCapitulos: () => {
 		return;
 	},
 };
