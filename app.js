@@ -24,7 +24,7 @@ const usuario = require("./middlewares/usuarios/loginConCookie");
 app.use(usuario); 
 // Para usar el middleware de userLogs
 const userLogs = require("./middlewares/varios/userLogs");
-app.use(userLogs); 
+app.use(userLogs);
 
 // Para saber el recorrido del proyecto
 // var logger = require('morgan');
