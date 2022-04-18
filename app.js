@@ -1,24 +1,30 @@
-// ********************** Requires ********************************
-require("dotenv").config();
-const express = require("express");
-const app = express();
+// *********************** Startup ********************************
+require("dotenv").config(); // Para usar el archivo '.env'
 const path = require("path");
-const methodOverride = require("method-override"); // Para usar PUT y DELETE
-const session = require("express-session"); // Para usar la propiedad "session"
-const cookies = require("cookie-parser"); // Para usar cookies
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 
 // ************** Middlewares de Aplicación ***********************
+// Para usar propiedades de express
+const express = require("express");
+const app = express();
 app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a los archivos de la carpeta public
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
-app.use(methodOverride("_method")); // Para usar PUT y DELETE
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
-app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false})); // Para usar la propiedad "sesión"
+// Para usar PUT y DELETE
+const methodOverride = require("method-override"); 
+app.use(methodOverride("_method"));
+// Para usar la propiedad "session"
+const session = require("express-session"); 
+app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false})); 
+// Para usar cookies
+const cookies = require("cookie-parser"); 
 app.use(cookies());
+// Para usar el middleware de Login mediante Cookie
 const usuario = require("./middlewares/usuarios/loginConCookie");
-app.use(usuario); // Para recuperar usuario a partir de cookie
+app.use(usuario); 
+// Para usar el middleware de userLogs
 const userLogs = require("./middlewares/varios/userLogs");
-app.use(userLogs); // Para registrar los URL de las páginas navegadas
+app.use(userLogs); 
 
 // Para saber el recorrido del proyecto
 // var logger = require('morgan');
@@ -49,13 +55,13 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
-let rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-let rutaProd_Agregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
-let rutaProd_RUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
-let rutaProd_RCLV = require("./rutas_y_controladores/4-Prod-RCLV/Rutas");
-let rutaRevisar = require("./rutas_y_controladores/5-Revisar/Rutas");
-let rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
-let rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
+const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
+const rutaProd_Agregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
+const rutaProd_RUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
+const rutaProd_RCLV = require("./rutas_y_controladores/4-Prod-RCLV/Rutas");
+const rutaRevisar = require("./rutas_y_controladores/5-Revisar/Rutas");
+const rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
+const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProd_Agregar);
 app.use("/producto/rclv", rutaProd_RCLV);

@@ -1,6 +1,6 @@
 "use strict"
 // ************ Requires ************
-const API_key = "e90d1beb11c74cdf9852d97a354a6d45";
+const API_key = process.env.API_key;
 const fetch = require("node-fetch");
 
 module.exports = async (palabrasClave, TMDB_entidad, page) => {
