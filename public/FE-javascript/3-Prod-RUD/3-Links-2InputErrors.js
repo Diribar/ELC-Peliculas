@@ -47,6 +47,7 @@ window.addEventListener("load", async () => {
 
 	// Detectar 'changes' en el form
 	form.addEventListener("change", async (e) => {
+		// Obtener la fila del input, que puede ser una edición
 		let fila = funcionIndice(e);
 		rutinaFormChange(e, fila);
 	});
