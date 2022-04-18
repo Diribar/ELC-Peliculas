@@ -230,8 +230,15 @@ module.exports = {
 				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
+				// Averiguar el Lead Time de creación en horas
+				let ahora = especificas.ahora();
+				let leadTime = especificas.obtenerHoras(prodOriginal.creado_en, ahora);
 				// Cambiarle el status al producto y liberarlo
-				let datos = {status_registro_id: aprobado_id};
+				let datos = {
+					alta_terminada_en: ahora,
+					lead_time_creacion: leadTime,
+					status_registro_id: aprobado_id,
+				};
 				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
 				if (entidad == "colecciones") {

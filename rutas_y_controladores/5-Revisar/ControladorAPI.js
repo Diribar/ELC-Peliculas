@@ -120,16 +120,19 @@ module.exports = {
 		}
 		// Si la edición fue aprobada, actualiza el registro de 'original'
 		if (aprobado) {
-			datos = {
-				// El nuevo valor
-				[campo]: prodEditado[campo],
-				// Los datos de la edición (fecha, usuario)
-				editado_por_id: prodEditado.editado_por_id,
-				editado_en: prodEditado.editado_en,
-				// Los datos de la revisión (fecha, usuario)
-				edic_analizada_por_id: userID,
-				edic_analizada_en: ahora,
-			};
+			// El nuevo valor
+			datos = {[campo]: prodEditado[campo]};
+			// Si el producto está en status 'aprobado', agregarle los datos de la 'edición'
+			if (!prodOriginal.status_registro.aprobado)
+				datos = {
+					...datos,
+					// Los datos de la edición (fecha, usuario)
+					editado_por_id: prodEditado.editado_por_id,
+					editado_en: prodEditado.editado_en,
+					// Los datos de la revisión (fecha, usuario)
+					edic_analizada_por_id: userID,
+					edic_analizada_en: ahora,
+				};
 			// Actualiza el registro en la BD
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
 			// Actualiza la variable 'prodOriginal'
