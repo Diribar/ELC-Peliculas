@@ -5,8 +5,8 @@ const fetch = require("node-fetch");
 
 module.exports = async (TMDB_entidad, TMDB_id) => {
 	// PARTES DEL URL
-	// https://api.themoviedb.org/3/movie/38516/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es-ES
-	// https://api.themoviedb.org/3/tv/1781/credits?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es
+	// https://api.themoviedb.org/3/movie/38516/credits?api_key=&language=es-ES
+	// https://api.themoviedb.org/3/tv/1781/credits?api_key=&language=es
 	
 	// Generar el agregado para consultar una temporada de TV
 	let season

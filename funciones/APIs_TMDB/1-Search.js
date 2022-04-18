@@ -5,9 +5,9 @@ const fetch = require("node-fetch");
 
 module.exports = async (palabrasClave, TMDB_entidad, page) => {
 	// PARTES DEL URL
-	// "https://api.themoviedb.org/4/search/movie      ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
-	// "https://api.themoviedb.org/3/search/collection ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1
-	// "https://api.themoviedb.org/4/search/tv         ?api_key=e90d1beb11c74cdf9852d97a354a6d45&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+	// "https://api.themoviedb.org/4/search/movie      ?api_key=&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
+	// "https://api.themoviedb.org/3/search/collection ?api_key=&language=es&query=karol%20uomo%20papa&page=1
+	// "https://api.themoviedb.org/4/search/tv         ?api_key=&language=es&query=karol%20uomo%20papa&page=1&include_adult=false"
 	let version = TMDB_entidad != "collection" ? 4 : 3;
 	let url =
 		"https://api.themoviedb.org/" +
