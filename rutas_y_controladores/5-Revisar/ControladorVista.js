@@ -4,9 +4,6 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
-const requestPromise = require("request-promise");
-const fs = require("fs");
-const API = require("./ControladorAPI");
 
 module.exports = {
 	tableroControl: async (req, res) => {
@@ -238,14 +235,6 @@ module.exports = {
 		}
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
-			// Experimento
-			// let datos = await requestPromise.head(prodOriginal.avatar);
-			// let tipo = datos["content-type"];
-			// let tamano = datos["content-length"];
-			// let editado = fs.statSync("./public/imagenes/3-ProdRevisar/" + prodEditado.avatar).size;
-			// // return res.send([tamano, editado]);
-			// let qqq=await fetch().then(n=>n.json())
-			// return res.send(qqq)
 			// Vista 'Edición-Avatar'
 			vista = "2-Prod2-Edic1Avatar";
 			// Ruta y nombre del archivo 'avatar'
