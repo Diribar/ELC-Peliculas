@@ -6,15 +6,15 @@
 		<div id="primeraColumna">
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
-			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
 			<!-- Aprobar la edición de aprobados -->
 			<!-- titulo: "Ediciones" -->
 			<!-- Aprobar la edición de altas -->
-			<%- include("11-Vision-Prods", {titulo: "Ediciones de Altas", estado: status.find(n => n.alta_aprob).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Ediciones de Altas", estado: status.find(n => n.alta_aprob).id, registros: productos}) %>
 			<!-- Aprobar el Alta -->
-			<%- include("11-Vision-Prods", {titulo: "Altas", estado: status.find(n => n.creado).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: productos}) %>
 			<!-- Recuperar -->
-			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id, registros: productos}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
@@ -23,7 +23,7 @@
 				<!-- Aprobar la edición de aprobados -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
-				<%- include("12-Vision-RCLVs", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id}) %>
+				<%- include("11-Vision-Registros", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
 			</div>
 			<div>
 				<h2>Links</h2>

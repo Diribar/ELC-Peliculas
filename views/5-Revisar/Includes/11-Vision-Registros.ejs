@@ -1,4 +1,4 @@
-<% let regs = RCLVs.filter((n) => n.status_registro_id == estado) %>
+<% let regs = registros.filter((n) => n.status_registro_id == estado) %>
 <% if (regs.length) { %>
 	<h3><%= titulo %> </h3>
 	<% for (let registro of regs) { %>
