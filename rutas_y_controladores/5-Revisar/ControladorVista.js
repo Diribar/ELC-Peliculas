@@ -306,9 +306,9 @@ module.exports = {
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let titulo = "Revisar el " + prodNombre;
 		// Ir a la vista
-		//return res.send([ingresos, reemplazos]);
+		// return res.send(["ingresos", prodsEditados]);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
