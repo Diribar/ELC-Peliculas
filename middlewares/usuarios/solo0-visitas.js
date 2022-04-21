@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 			],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlReferencia, titulo: "Cancelar"},
-				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
+				{nombre: "fa-circle-check", link: "/usuarios/logout", titulo: "Logout"},
 			],
 			logout: true,
 		};

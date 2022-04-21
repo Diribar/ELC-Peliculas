@@ -6,7 +6,7 @@ const especificas = require("../../funciones/Varias/Especificas");
 const procesar = require("../../funciones/Prod-RUD/1-Procesar");
 
 module.exports = {
-	Redireccionar: (req, res) => {
+	redireccionar: (req, res) => {
 		// Detectar el origen
 		let RCLV = {
 			origen: req.query.origen,

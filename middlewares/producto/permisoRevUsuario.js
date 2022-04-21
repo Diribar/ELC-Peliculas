@@ -27,19 +27,24 @@ module.exports = async (req, res, next) => {
 			String(prodCapturado.capturado_en.getMinutes()).padStart(2, "0") +
 			"hs.";
 		// Preparar la información
+		let terminacion =
+			prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
+				? {entidad: "la ", reservado: "a"}
+				: {entidad: "el ", reservado: "o"};
+		let nombre = prodCapturado.entidad.includes("RCLV")
+			? "nombre"
+			: prodCapturado.nombre_castellano
+			? "nombre_castellano"
+			: "nombre_original";
 		let informacion = {
 			mensajes: [
 				"Tenés que liberar " +
-					(prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
-						? "la "
-						: "el ") +
+					terminacion.entidad +
 					entidadNombre.toLowerCase() +
-					" <span>" +
-					(prodCapturado.nombre_castellano
-						? prodCapturado.nombre_castellano
-						: prodCapturado.nombre_original) +
-					"</span>, que está reservad" +
-					(prodCapturado.entidad != "capitulos" ? "a" : "o") +
+					" "+
+					prodCapturado[nombre] +
+					", que está reservad" +
+					terminacion.reservado +
 					" desde las " +
 					horario,
 			],

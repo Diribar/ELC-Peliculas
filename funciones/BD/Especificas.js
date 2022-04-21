@@ -139,7 +139,6 @@ module.exports = {
 		let resultados = [];
 		// Obtener el resultado por entidad
 		for (let i = 0; i < entidades.length; i++) {
-			resultados.push();
 			resultados[i] = db[entidades[i]]
 				.findAll({
 					where: {
@@ -177,7 +176,6 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	// Controlador-Redireccionar
 	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
 		let haceUnaHora = especificas.haceUnaHora();
 		return db.productos_edic
@@ -253,9 +251,56 @@ module.exports = {
 		return [quedanCampos, edicion, statusAprobado];
 	},
 
+	// RCLVs -------------------------------------------------------------
+	// Controlador-Revisar
+	obtenerRCLVsARevisar: async (haceUnaHora, revisar, userID) => {
+		// Obtener los registros del Producto, que cumplan ciertas condiciones
+		// Declarar las variables
+		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		let resultados = [];
+		// Obtener el resultado por entidad
+		for (let i = 0; i < entidades.length; i++) {
+			resultados[i] = db[entidades[i]]
+				.findAll({
+					where: {
+						// Con status de 'revisar'
+						status_registro_id: revisar,
+						[Op.or]: [
+							// Que no esté capturado
+							{capturado_en: null},
+							// Que la captura haya sido hace más de una hora
+							{capturado_en: {[Op.lt]: haceUnaHora}},
+							// Que esté capturado por este usuario
+							{capturado_por_id: userID},
+						],
+						// Que esté en condiciones de ser capturado
+						creado_en: {[Op.lt]: haceUnaHora},
+						// Que esté creado por otro usuario
+						creado_por_id: {[Op.ne]: userID},
+					},
+					include: "status_registro",
+				})
+				.then((n) =>
+					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
+				);
+		}
+		// Consolidar y ordenar los resultados
+		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
+			// Consolidarlos
+			let casos = [...a, ...b];
+			// Ordenarlos
+			casos.sort((a, b) => {
+				return new Date(a.creado_en) - new Date(b.creado_en);
+			});
+			return casos;
+		});
+		// Fin
+		return resultado;
+	},
+
 	// LINKS -------------------------------------------------------------
 	// Controlador-Revisar
-	obtenerLinks: (haceUnaHora, revisar, userID) => {
+	obtenerLinksARevisar: (haceUnaHora, revisar, userID) => {
 		// Obtener todos los registros de links, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
 		// Declarar las variables
 		let includes = ["pelicula", "coleccion", "capitulo"];
@@ -281,14 +326,14 @@ module.exports = {
 	// Controladora/Usuario/Login
 	obtenerUsuarioPorID: (id) => {
 		return db.usuarios.findByPk(id, {
-			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
+			include: ["rol_usuario", "status_registro"],
 		});
 	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {
 		return db.usuarios.findOne({
 			where: {email: email},
-			include: ["rol_usuario", "sexo", "status_registro", "pais", "rol_iglesia"],
+			include: ["rol_usuario", "status_registro"],
 		});
 	},
 	// Middleware/Usuario/autorizadoFA

@@ -11,8 +11,8 @@ const entidadId = require("../../middlewares/producto/validarEntidadId");
 const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
 const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
 
-// Rutas *******************************************
-// Vistas
+// Rutas de Vistas *******************************************
+// Vistas Generales
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
 router.get("/inactivar-captura", soloGestionProd, vista.inactivarCaptura);
 router.get(
@@ -23,6 +23,7 @@ router.get(
 	permisoProducto,
 	vista.redireccionar
 );
+// Vistas de productos
 router.get(
 	"/producto/alta",
 	soloGestionProd,
@@ -39,11 +40,14 @@ router.get(
 	permisoProducto,
 	vista.productoEdicion
 );
-// router.get("/rclv", soloGestionProd, vista.tableroControl);
+// Vistas de RCLVs
+router.get("/rclv", soloGestionProd, vista.RCLV);
+
+// Vistas de Links
 // router.get("/links", soloGestionProd, vista.tableroControl);
 
-// API
-// Producto
+// Rutas de APIs *******************************************
+// Entidades
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Alta
 router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);

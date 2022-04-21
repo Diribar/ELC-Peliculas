@@ -6,34 +6,24 @@
 		<div id="primeraColumna">
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
-			<%- include("11-Vision-Prods", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id}) %>
-			<!-- Aprobar la edición de productos aprobados -->
-
-			<!-- Aprobar la edición de productos pendientes de aprobar -->
-			<%- include("11-Vision-Prods", {titulo: "Ediciones Pendientes de Aprobar", estado: status.find(n => n.alta_aprob).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
+			<!-- Aprobar la edición de aprobados -->
+			<!-- titulo: "Ediciones" -->
+			<!-- Aprobar la edición de altas -->
+			<%- include("11-Vision-Registros", {titulo: "Edición de Altas", estado: status.find(n => n.alta_aprob).id, registros: productos}) %>
 			<!-- Aprobar el Alta -->
-			<%- include("11-Vision-Prods", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: productos}) %>
 			<!-- Recuperar -->
-			<%- include("11-Vision-Prods", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id}) %>
+			<%- include("11-Vision-Registros", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id, registros: productos}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
 			<div>
 				<h2>Relación con la Vida (RCLV)</h2>
-				<table>
-					<tbody>
-					<% for (let RCLV of RCLVs) { %>
-						<tr>
-							<td>
-								<a href="/revision/rclv/?entidad=<%= RCLV.entidad %>&id=<%= RCLV.id %>">
-									<%= RCLV.nombre %>
-								</a>
-							</td>
-							<td><%= RCLV.entidad.slice(5,8).toUpperCase() %></td>
-						</tr>
-					<% } %>
-					</tbody>
-				</table>	
+				<!-- Aprobar la edición de aprobados -->
+				<!-- titulo: "Ediciones" -->
+				<!-- Aprobar el Alta -->
+				<%- include("11-Vision-Registros", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
 			</div>
 			<div>
 				<h2>Links</h2>
