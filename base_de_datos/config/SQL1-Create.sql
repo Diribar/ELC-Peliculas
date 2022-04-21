@@ -267,9 +267,7 @@ CREATE TABLE rclv_1personajes (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
@@ -282,8 +280,6 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -319,9 +315,7 @@ CREATE TABLE rclv_2hechos (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
@@ -332,8 +326,6 @@ CREATE TABLE rclv_2hechos (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -365,9 +357,7 @@ CREATE TABLE rclv_3valores (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
 	
@@ -377,8 +367,6 @@ CREATE TABLE rclv_3valores (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

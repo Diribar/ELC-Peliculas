@@ -313,7 +313,6 @@ module.exports = {
 			titulo,
 			prodOriginal,
 			prodsEditados,
-			vista,
 			motivos,
 			entidad,
 			prodNombre,
