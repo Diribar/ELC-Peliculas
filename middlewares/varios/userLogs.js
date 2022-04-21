@@ -17,6 +17,6 @@ module.exports = (req, res, next) => {
 	}
 	if (!req.session.urlReferencia) req.session.urlReferencia="/"
 	// console.log(req.session.urlAnterior, req.session.urlReferencia);
-	//console.log(req.session.urlReferencia);
+	// console.log(req.session.urlReferencia);
 	next();
 };
