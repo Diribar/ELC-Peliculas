@@ -106,7 +106,7 @@ CREATE TABLE edic_aprob (
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
-	
+
 	comunicado BOOLEAN DEFAULT 0,
 
 	PRIMARY KEY (id),
