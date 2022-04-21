@@ -192,7 +192,7 @@ module.exports = {
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// Definir más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		let vista, avatar, ingresos, reemplazos, quedanCampos,bloqueDer
+		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
 		// 3. Obtener ambas versiones
 		let includes = [
 			"en_castellano",
@@ -303,13 +303,13 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
-			// Variables
-			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
-			vista = "2-Prod2-Edic2Estruct";
-		
+		// Obtener los ingresos y reemplazos
+		[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
+		// Variables
+		motivos = motivos.filter((m) => m.prod);
+		bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
+		vista = "2-Prod2-Edic2Estruct";
+
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
