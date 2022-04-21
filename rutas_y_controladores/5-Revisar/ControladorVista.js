@@ -309,7 +309,6 @@ module.exports = {
 		motivos = motivos.filter((m) => m.prod);
 		bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
 		vista = "2-Prod2-Edic2Estruct";
-
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
