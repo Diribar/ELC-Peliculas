@@ -297,7 +297,7 @@ module.exports = {
 			...includes,
 			"status_registro",
 		]);
-		let prodsEditados = await BD_genericas.obtenerEdicAjenasUnProd("prods_edicion", edicID, includes);
+		let prodsEditados = await BD_genericas.obtenerEdicsAjenasUnProd("prods_edicion", edicID, includes);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)

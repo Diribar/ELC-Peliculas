@@ -194,7 +194,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Controlador-Revisar (RCLV)
-	obtenerEdicAjenasUnProd: async (producto_id, prodID, userID) => {
+	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID) => {
 		// Definir variables
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener los registros que cumplan ciertas condiciones
