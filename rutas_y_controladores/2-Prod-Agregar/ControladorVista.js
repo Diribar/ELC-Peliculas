@@ -320,11 +320,9 @@ module.exports = {
 				nombre = req.file.filename;
 			} else if (datosDuros.avatar) {
 				// En caso de archivo sin multer
-				let datos = await requestPromise
-					.head(datosDuros.avatar)
-					.then((n) => [n["content-type"], n["content-length"]]);
-				tipo = datos[0];
-				tamano = datos[1];
+				let datos = await requestPromise.head(datosDuros.avatar);
+				tipo = datos["content-type"];
+				tamano = datos["content-length"];
 				nombre = Date.now() + path.extname(datosDuros.avatar);
 				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 			}

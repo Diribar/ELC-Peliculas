@@ -148,11 +148,7 @@ module.exports = {
 	},
 	descargar: async (url, rutaYnombre) => {
 		let writer = fs.createWriteStream(rutaYnombre);
-		let response = await axios({
-			method: "GET",
-			url: url,
-			responseType: "stream",
-		});
+		let response = await axios({method: "GET", url: url, responseType: "stream"});
 		response.data.pipe(writer);
 		return new Promise((resolve, reject) => {
 			writer.on("finish", () => resolve(console.log("Imagen guardada")));
