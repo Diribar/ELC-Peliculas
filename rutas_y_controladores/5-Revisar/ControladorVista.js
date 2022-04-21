@@ -27,10 +27,13 @@ module.exports = {
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// let ediciones=await BD_especificas.obtenerEdicionesARevisar();
 		// Consolidar productos y ordenar
-		productos = procesar(productos);
+		productos = procesarProd(productos);
 		// Obtener RCLV -----------------------------------------------------------------
+		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
+		RCLVs = procesarRCLVs(RCLVs);
+		//return res.send(RCLVs)
 		// Obtener Links ----------------------------------------------------------------
-		let links = await BD_especificas.obtenerLinks(haceUnaHora, revisar, userID);
+		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
 		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
 		let prodsLinks = productosLinks(links, aprobado);
@@ -41,7 +44,7 @@ module.exports = {
 			codigo,
 			titulo: "Revisar - Tablero de Control",
 			productos,
-			RCLVs: [],
+			RCLVs,
 			prodsLinks,
 			status,
 		});
@@ -284,34 +287,57 @@ module.exports = {
 			prodNombre,
 		});
 	},
+
+	RCLV:  async (req, res) => {
+		return res.send("RCLV")
+	}
 };
 
 // Funciones ------------------------------------------------------------------------------
-let procesar = (productos) => {
+let procesarProd = (productos) => {
 	// Procesar los registros
 	let anchoMax = 30;
 	// Reconvertir los elementos
-	productos = productos.map((registro) => {
+	productos = productos.map((n) => {
 		let nombre =
-			(registro.nombre_castellano.length > anchoMax
-				? registro.nombre_castellano.slice(0, anchoMax - 1) + "…"
-				: registro.nombre_castellano) +
+			(n.nombre_castellano.length > anchoMax
+				? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
+				: n.nombre_castellano) +
 			" (" +
-			registro.ano_estreno +
+			n.ano_estreno +
 			")";
 		return {
-			id: registro.id,
-			entidad: registro.entidad,
-			nombre: nombre,
-			ano_estreno: registro.ano_estreno,
-			abrev: registro.entidad.slice(0, 3).toUpperCase(),
-			status_registro_id: registro.status_registro_id,
-			fecha: registro.creado_en,
+			id: n.id,
+			entidad: n.entidad,
+			nombre,
+			ano_estreno: n.ano_estreno,
+			abrev: n.entidad.slice(0, 3).toUpperCase(),
+			status_registro_id: n.status_registro_id,
+			fecha: n.creado_en,
 		};
 	});
 	// Fin
 	return productos;
 };
+let procesarRCLVs = (RCLVs) => {
+	// Procesar los registros
+	let anchoMax = 30;
+	// Reconvertir los elementos
+	RCLVs = RCLVs.map((n) => {
+		let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+		return {
+			id: n.id,
+			entidad: n.entidad,
+			nombre,
+			abrev: n.entidad.slice(5, 8).toUpperCase(),
+			status_registro_id: n.status_registro_id,
+			fecha: n.creado_en,
+		};
+	});
+	// Fin
+	return RCLVs;
+};
+
 let productosLinks = (links, aprobado) => {
 	// Resultado esperado:
 	//	- Solo productos aprobados

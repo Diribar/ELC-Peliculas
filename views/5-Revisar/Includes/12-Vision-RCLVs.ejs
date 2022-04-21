@@ -1,0 +1,11 @@
+<% let regs = RCLVs.filter((n) => n.status_registro_id == estado) %>
+<% if (regs.length) { %>
+	<h3><%= titulo %> </h3>
+	<% for (let registro of regs) { %>
+		<p>
+			<a href="/revision/redireccionar/?entidad=<%= registro.entidad %>&id=<%= registro.id %>">
+				<%= registro.abrev %> - <%= registro.nombre %>
+			</a>
+		</p>
+	<% } %>
+<% } %>

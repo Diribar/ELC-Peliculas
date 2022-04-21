@@ -14,7 +14,7 @@ router.get("/api/otros-casos/", API.buscarOtrosCasos);
 router.get("/api/validar/", API.validarRCLV);
 
 // Rutas de vistas - Relación con la vida
-router.get("/redireccionar", soloAutInput, vista.Redireccionar);
+router.get("/redireccionar", soloAutInput, vista.redireccionar);
 router.get("/personajes", soloAutInput, vista.RCLV_Form);
 router.get("/hechos", soloAutInput, vista.RCLV_Form);
 router.get("/valores", soloAutInput, vista.RCLV_Form);
