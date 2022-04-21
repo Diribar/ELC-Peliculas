@@ -290,7 +290,7 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		let userID = req.session.usuario.id;
 		let includes = [];
 		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
 		// Obtener la versión original
@@ -298,10 +298,12 @@ module.exports = {
 			...includes,
 			"status_registro",
 		]);
-		let prodsEditados = await BD_genericas.obtenerEdicsAjenasUnProd("prods_edicion", edicID, includes);
+		// Obtener todas las ediciones ajenas
+		let producto_id = especificas.entidad_id(entidad);
+		let prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
 
-
-
+		// Obtener los motivos de rechazo
+		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
