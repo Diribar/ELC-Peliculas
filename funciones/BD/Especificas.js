@@ -356,7 +356,7 @@ module.exports = {
 			"peliculas",
 			"colecciones",
 			"capitulos",
-			//"RCLV_personajes",
+			"RCLV_personajes",
 			"RCLV_hechos",
 			"RCLV_valores",
 		];
