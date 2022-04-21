@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
+		alta_analizada_en: {type: dt.DATE},
 		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 
