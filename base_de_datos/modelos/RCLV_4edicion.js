@@ -1,8 +1,10 @@
 module.exports = (sequelize, dt) => {
-	const alias = "RCLV_edic";
+	const alias = "rclv_edicion";
 	const columns = {
-		entidad: {type: dt.STRING(20)},
-		entidad_id: {type: dt.INTEGER},
+		personaje_id: {type: dt.INTEGER},
+		hecho_id: {type: dt.INTEGER},
+		valor_id: {type: dt.INTEGER},
+	
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(30)},
@@ -11,8 +13,6 @@ module.exports = (sequelize, dt) => {
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-		capturado_por_id: {type: dt.INTEGER},
-		capturado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "rclv_4edicion",
@@ -25,7 +25,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
+
 	};
 	return entidad;
 };

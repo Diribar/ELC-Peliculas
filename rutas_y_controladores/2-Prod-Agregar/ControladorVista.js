@@ -482,7 +482,7 @@ module.exports = {
 			...confirma,
 			editado_por_id: req.session.usuario.id,
 			// Datos varios
-			entidad: "productos_edic",
+			entidad: "prods_edicion",
 			[producto_id]: registro.id,
 		};
 		edicion = especificas.quitarLasCoincidenciasConOriginal(original, edicion);

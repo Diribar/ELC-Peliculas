@@ -41,7 +41,7 @@ module.exports = async (req, res, next) => {
 				"Tenés que liberar " +
 					terminacion.entidad +
 					entidadNombre.toLowerCase() +
-					" "+
+					" " +
 					prodCapturado[nombre] +
 					", que está reservad" +
 					terminacion.reservado +

@@ -11,7 +11,6 @@ module.exports = (sequelize, dt) => {
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
-		alta_analizada_por_id: {type: dt.INTEGER},
 		alta_analizada_en: {type: dt.DATE},
 		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
@@ -37,7 +36,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
@@ -46,7 +44,7 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "personaje_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "personaje_id"});
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "personaje_id"});
-		entidad.hasMany(n.productos_edic, {as: "ediciones", foreignKey: "personaje_id"});
+		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "personaje_id"});
 	};
 	return entidad;
 };

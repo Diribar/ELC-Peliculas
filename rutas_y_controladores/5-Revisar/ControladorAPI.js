@@ -75,7 +75,7 @@ module.exports = {
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		let prodEditado = await BD_genericas.obtenerPorId("productos_edic", edicID);
+		let prodEditado = await BD_genericas.obtenerPorId("prods_edicion", edicID);
 		let userID = req.session.usuario.id;
 		let datos;
 		let ahora = especificas.ahora();
@@ -139,7 +139,7 @@ module.exports = {
 			prodOriginal = {...prodOriginal, ...datos};
 		}
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
-		await BD_genericas.actualizarPorId("productos_edic", edicID, {[campo]: null});
+		await BD_genericas.actualizarPorId("prods_edicion", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
 		datos = {
 			entidad: entidad,

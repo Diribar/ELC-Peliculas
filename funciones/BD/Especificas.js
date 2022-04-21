@@ -119,7 +119,7 @@ module.exports = {
 			// Obtener los datos EDITADOS del producto
 			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
-				"productos_edic",
+				"prods_edicion",
 				{[producto_id]: prodID, editado_por_id: userID},
 				includes.slice(0, -2)
 			);
@@ -131,7 +131,7 @@ module.exports = {
 		}
 		return [prodOriginal, prodEditado];
 	},
-	// Controlador-Revisar
+	// Controlador-Revisar (Producto)
 	obtenerProductosARevisar: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
@@ -177,8 +177,10 @@ module.exports = {
 		return resultado;
 	},
 	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
+		// Definir variables
 		let haceUnaHora = especificas.haceUnaHora();
-		return db.productos_edic
+		// Obtener un registro que cumpla ciertas condiciones
+		return db.prods_edicion
 			.findOne({
 				where: {
 					// Que pertenezca al producto que nos interesa
@@ -191,17 +193,23 @@ module.exports = {
 			})
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
-	// Controlador-Revisar - SIN USO AÚN
-	obtenerEdicionesARevisar: async (haceUnaHora, revisar, userID) => {
-		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		// Declarar las variables
-		let entidades = ["peliculas", "colecciones", "capitulos"];
-		let resultados = [];
-
-		// Se deben excluir las ediciones realizadas por el usuario
-		// Obtener Ediciones de productos en status alta_aprob
-
-		// Obtener Ediciones de productos en status gr_aprob
+	// Controlador-Revisar (RCLV)
+	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID) => {
+		// Definir variables
+		let haceUnaHora = especificas.haceUnaHora();
+		// Obtener los registros que cumplan ciertas condiciones
+		return db.prods_edicion
+			.findAll({
+				where: {
+					// Que pertenezca al producto que nos interesa
+					[producto_id]: prodID,
+					// Que esté en condiciones de ser capturado
+					editado_en: {[Op.lt]: haceUnaHora},
+					// Que esté editado por otro usuario
+					editado_por_id: {[Op.ne]: userID},
+				},
+			})
+			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	quedanCampos: async function (prodOriginal, prodEditado) {
 		// Variables
@@ -218,7 +226,7 @@ module.exports = {
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Eliminar el registro de la edición
-			await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
+			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
 			// Averiguar si el original no tiene errores
 			let errores = await validar.edicion(null, {...prodOriginal, entidad});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
@@ -359,8 +367,7 @@ module.exports = {
 			captura_activa: 1, // Que la captura sea 'activa'
 		};
 		// Averiguar si tiene algún producto capturado
-		let lectura;
-		let entidad;
+		let lectura, entidad;
 		for (entidad of entidades) {
 			// Distinto al producto actual
 			if (entidad == entidadActual) condiciones.id = {[Op.ne]: prodID};
