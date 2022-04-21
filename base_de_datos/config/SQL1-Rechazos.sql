@@ -1,9 +1,7 @@
 USE ELC_Peliculas;
 
-/* FEEDBACK SOBRE ALTAS */;
-DROP TABLE IF EXISTS altas_rech;
+/* MOTIVOS DE RECHAZO DE ALTAS */;
 DROP TABLE IF EXISTS altas_rech_motivos;
-/* MOTIVOS */;
 CREATE TABLE altas_rech_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -37,7 +35,8 @@ VALUES
 (31, 1, 0, 'Registro duplicado', 1),
 (32, 2, 10, 'Spam', 1)
 ;
-/* CASOS */;
+/* RECHAZO DE ALTAS */;
+DROP TABLE IF EXISTS altas_rech;
 CREATE TABLE altas_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
@@ -60,12 +59,8 @@ CREATE TABLE altas_rech (
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-/* FEEDBACK SOBRE EDICIONES */;
-DROP TABLE IF EXISTS edic_rech;
-DROP TABLE IF EXISTS edic_aprob;
+/* MOTIVOS DE RECHAZO DE EDICIONES */;
 DROP TABLE IF EXISTS edic_rech_motivos;
-/* MOTIVOS */;
 CREATE TABLE edic_rech_motivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -83,9 +78,10 @@ INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, avatar, prod, rc
 VALUES (100, 100, 0, 'Otro motivo', 1, 1, 1, 1, 1);
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, prod, rclv, links,info_erronea)
 VALUES
-(1, 1, 0, 'Información errónea', 1, 1, 1, 1),
+(1, 1, 0, 'Es mejor la versión actual', 1, 1, 1, 0),
 (2, 2, 0, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
-(3, 3, 10, 'Spam', 1, 1, 0, 0)
+(3, 3, 0, 'Información errónea', 1, 1, 1, 1),
+(4, 4, 10, 'Spam', 1, 1, 0, 0)
 ;
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, avatar)
 VALUES
@@ -96,7 +92,29 @@ VALUES
 ;
 INSERT INTO edic_rech_motivos (id, orden, duracion, comentario, rclv)
 VALUES (21, 21, 5, 'Datos fáciles sin completar', 1);
-/* CASOS */;
+/* APROBACION DE EDICIONES */;
+DROP TABLE IF EXISTS edic_aprob;
+CREATE TABLE edic_aprob (
+	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
+	entidad VARCHAR(20) NOT NULL,
+	entidad_id INT UNSIGNED NOT NULL,
+	campo VARCHAR(20) NOT NULL,
+	titulo VARCHAR(21) NOT NULL,
+	valor VARCHAR(20) NOT NULL,
+	
+	input_por_id INT UNSIGNED NOT NULL,
+	input_en DATETIME NULL,
+	evaluado_por_id INT UNSIGNED NOT NULL,
+	evaluado_en DATETIME NULL,
+	
+	comunicado BOOLEAN DEFAULT 0,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/* RECHAZO DE EDICIONES */;
+DROP TABLE IF EXISTS edic_rech;
 CREATE TABLE edic_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
@@ -117,25 +135,6 @@ CREATE TABLE edic_rech (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES edic_rech_motivos(id),
-	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE edic_aprob (
-	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	entidad VARCHAR(20) NOT NULL,
-	entidad_id INT UNSIGNED NOT NULL,
-	campo VARCHAR(20) NOT NULL,
-	titulo VARCHAR(21) NOT NULL,
-	valor VARCHAR(20) NOT NULL,
-	
-	input_por_id INT UNSIGNED NOT NULL,
-	input_en DATETIME NULL,
-	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME NULL,
-	
-	comunicado BOOLEAN DEFAULT 0,
-
-	PRIMARY KEY (id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

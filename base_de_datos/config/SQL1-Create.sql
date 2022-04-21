@@ -263,8 +263,6 @@ CREATE TABLE rclv_1personajes (
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
@@ -283,7 +281,6 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
@@ -307,7 +304,6 @@ VALUES
 (23, 2, 31, 1815,'Juan Bosco','STV','RCV',10,'2022-03-16 23:25:20'),
 (24, 1, 296, 1920,'Juan Pablo II','STV','PPV',10,'2022-03-16 23:25:20')
 ;
-/*UPDATE rclv_1personajes SET cant_prod_aprobados = 1 WHERE id = 21 OR id = 22*/;
 CREATE TABLE rclv_2hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
@@ -318,8 +314,6 @@ CREATE TABLE rclv_2hechos (
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
@@ -336,7 +330,6 @@ CREATE TABLE rclv_2hechos (
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
@@ -366,8 +359,6 @@ CREATE TABLE rclv_3valores (
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
@@ -383,7 +374,6 @@ CREATE TABLE rclv_3valores (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
@@ -402,6 +392,26 @@ VALUES
 (14, 'Superación personal', 1, 3),
 (15, 'Perseverancia', 1, 3)
 ;
+CREATE TABLE rclv_4edicion (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	pelicula_id INT UNSIGNED DEFAULT NULL,
+	coleccion_id INT UNSIGNED DEFAULT NULL,
+	capitulo_id INT UNSIGNED DEFAULT NULL,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
+	nombre VARCHAR(30) NULL UNIQUE,
+	proceso_canonizacion_id VARCHAR(3) NULL,
+	rol_iglesia_id VARCHAR(3) NULL,
+
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME NOT NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
+	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
+	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* TABLAS AUXILIARES PARA PRODUCTOS */;
 CREATE TABLE prod_categ1 (
@@ -512,14 +522,13 @@ CREATE TABLE prod_1peliculas (
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	lead_time_creacion SMALLINT UNSIGNED NULL,
+	alta_terminada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
-	lead_time_edicion SMALLINT UNSIGNED NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -543,22 +552,19 @@ CREATE TABLE prod_1peliculas (
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_1peliculas (id, TMDB_id, FA_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, status_registro_id, creado_en)
-VALUES 
-(1,'218275',NULL,'tt1445208','TMDB','The Letters','Cartas de la Madre Teresa',2015,125,'US','en','William Riead','William Riead','','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/8qnZycQWka7I8TbZ7UcvJ6I3weB.jpg',100,75,100,92,11,1,'2022-03-16 23:25:20'),
-(2,'109429',NULL,'tt0327086','TMDB','Il Papa buono','El Santo Padre Juan XXIII',2003,180,'IT','en','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/sRtTl8tVhBcE7KUGGWHOqx5LAeC.jpg',100,75,100,92,10,1,'2022-03-16 23:25:21'),
-(3,'108672',NULL,'tt0317009','TMDB','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz',2002,208,'IT','it','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich',NULL,'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del viejo cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus hábiles negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía; su','https://image.tmdb.org/t/p/original/llb1oSGE9F18QlIMx0teXXMosCY.jpg',100,100,100,100,10,1,'2022-03-16 23:25:22'),
-(4,'122977',NULL,'tt0416694','TMDB','Don Bosco','Don Bosco',2004,146,'IT','it','Lodovico Gasparini','Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, Francesca Panzarel','','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/fVFlTWdjvu3t98l9WlXB1984ATl.jpg',100,100,100,100,10,1,'2022-03-16 23:25:23'),
-(5,'254489',NULL,'tt0095051','TMDB','Don Bosco','Don Bosco',1988,150,'IT','it','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xlPz5FaH3D0ogxlF07f03CTQA07.jpg',100,75,100,92,10,1,'2022-03-16 23:25:24')
+INSERT INTO prod_1peliculas (id,TMDB_id,IMDB_id,fuente,ano_estreno,duracion,paises_id,idioma_original_id,nombre_original,nombre_castellano,direccion,guion,musica,actuacion,produccion,sinopsis,avatar,en_castellano_id,en_color_id,categoria_id,subcategoria_id,publico_sugerido_id,personaje_id,hecho_id,valor_id,dia_del_ano_id,fe_valores,entretiene,calidad_tecnica,calificacion,creado_por_id,creado_en,alta_analizada_por_id,alta_analizada_en,lead_time_creacion,status_registro_id,editado_por_id,editado_en,edic_analizada_por_id,edic_analizada_en,lead_time_edicion,capturado_por_id,capturado_en,captura_activa,links_gratuitos_cargados_id,links_gratuitos_en_la_web_id)
+VALUES
+(1,'218275','tt1445208','TMDB',2015,125,'US','en','The Letters','Cartas de la Madre Teresa','William Riead','William Riead','Ciaran Hope','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','1645444885482.jpg',3,1,'CFC',4,4,21,1,1,NULL,100,75,100,92,11,'2022-03-16 23:25:20',10,'2022-04-13 21:31:31',NULL,3,11,'2022-03-16 23:25:20',10,'2022-04-13 21:31:40',NULL,10,'2022-04-13 21:31:29',0,3,2),
+(2,'109429','tt0327086','TMDB',2003,180,'IT','en','Il Papa buono','El Santo Padre Juan XXIII','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','1645458510332.jpg',1,1,'CFC',4,4,22,1,1,NULL,100,75,100,92,10,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,10,'2022-03-16 23:25:21',11,'2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2),
+(3,'108672','tt0317009','TMDB',2002,208,'IT','it','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich','Coproducción Italia-Alemania','En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)','1645458705918.jpg',1,1,'CFC',4,4,22,1,1,NULL,100,100,100,100,10,'2022-03-16 23:25:22',11,'2022-04-13 19:21:09',NULL,3,10,'2022-03-16 23:25:23',11,'2022-04-13 21:28:57',NULL,11,'2022-04-13 21:28:51',0,3,2),
+(4,'122977','tt0416694','TMDB',2004,146,'IT','it','Don Bosco','Don Bosco','Lodovico Gasparini','Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella','Marco Frisina','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','1645459542226.jpg',1,1,'CFC',4,4,23,1,1,NULL,100,100,100,100,10,'2022-03-16 23:25:23',11,'2022-04-13 19:21:15',NULL,3,10,'2022-03-16 23:25:24',11,'2022-04-13 21:29:05',NULL,11,'2022-04-13 21:29:00',0,3,2),
+(5,'254489','tt0095051','TMDB',1988,150,'IT','it','Don Bosco','Don Bosco','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','1645459996491.jpg',1,1,'CFC',4,4,23,1,1,NULL,100,75,100,92,10,'2022-03-16 23:25:24',11,'2022-04-13 19:21:22',NULL,3,10,'2022-03-16 23:25:25',11,'2022-04-13 21:29:11',NULL,11,'2022-04-13 21:29:07',0,3,2)
 ;
-UPDATE prod_1peliculas SET alta_analizada_en='2022-03-28 20:04:55', alta_analizada_por_id=11, status_registro_id=2, editado_por_id=10,editado_en='2022-03-16 23:25:21',edic_analizada_por_id=11,edic_analizada_en='2022-03-28 20:04:58',capturado_por_id=11,capturado_en='2022-03-28 19:48:12', avatar='1645458510332.jpg' WHERE id = 2;
 CREATE TABLE prod_2colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
@@ -600,14 +606,13 @@ CREATE TABLE prod_2colecciones (
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	lead_time_creacion SMALLINT UNSIGNED NULL,
+	alta_terminada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
-	lead_time_edicion SMALLINT UNSIGNED NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -630,8 +635,6 @@ CREATE TABLE prod_2colecciones (
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -684,14 +687,13 @@ CREATE TABLE prod_3capitulos (
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
-	lead_time_creacion SMALLINT UNSIGNED NULL,
+	alta_terminada_en DATETIME NULL,
+	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
-	lead_time_edicion SMALLINT UNSIGNED NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 	
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -716,8 +718,6 @@ CREATE TABLE prod_3capitulos (
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -788,23 +788,14 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_4edicion (id, pelicula_id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en)
-VALUES
-(1,1,NULL,'1645444885482.jpg',3,1,'CFC',4,4,21,11,'2022-03-16 23:25:20'),
-(2,2,NULL,'1645458510332.jpg',1,1,'CFC',4,4,22,10,'2022-03-16 23:25:21'),
-(3,3,NULL,'1645458705918.jpg',1,1,'CFC',4,4,22,10,'2022-03-16 23:25:23'),
-(4,4,NULL,'1645459542226.jpg',1,1,'CFC',4,4,23,10,'2022-03-16 23:25:24'),
-(5,5,NULL,'1645459996491.jpg',1,1,'CFC',4,4,23,10,'2022-03-16 23:25:25'),
-(6,NULL,1,'1645481101308.jpg',1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19')
-;
-INSERT INTO prod_4edicion (id, pelicula_id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES (7,NULL,2,'1646276771102.jpg',2,1,'VPC',10,4,15,10,'2022-03-16 23:25:22');
-INSERT INTO prod_4edicion (capitulo_id, nombre_original, personaje_id, editado_por_id) VALUES (1,'Karol - Un uomo diventato Papa',24,10);
-INSERT INTO prod_4edicion (capitulo_id, produccion, personaje_id, editado_por_id) VALUES (2,'TAO Film',24,10);
-UPDATE prod_4edicion SET musica = 'Ciaran Hope' WHERE id = 1;
-UPDATE prod_4edicion SET avatar = NULL WHERE id = 2;
-UPDATE prod_4edicion SET produccion = 'Coproducción Italia-Alemania', sinopsis = 'En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)' WHERE id = 3;
-UPDATE prod_4edicion SET musica = 'Marco Frisina', guion = 'Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D\'Ercole, Lea Tafuri, F. Panzarella' WHERE id = 4;
-UPDATE prod_4edicion SET nombre_original = 'Love Comes Softly', nombre_castellano = 'El amor llega suavemente', musica = 'Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon' WHERE id = 7;
+INSERT INTO prod_4edicion (id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en) VALUES
+(6,1,'1645481101308.jpg',1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19');
+INSERT INTO prod_4edicion (id, coleccion_id, avatar, nombre_original, nombre_castellano, musica, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES 
+(7,2,'1646276771102.jpg','Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',2,1,'VPC',10,4,15,10,'2022-03-16 23:25:22');
+INSERT INTO prod_4edicion (id, capitulo_id, nombre_original, personaje_id, editado_por_id, editado_en) VALUES
+(8,1,'Karol - Un uomo diventato Papa',24,10,'2022-04-13 19:20:21');
+INSERT INTO prod_4edicion (id, capitulo_id, produccion, personaje_id, editado_por_id, editado_en) VALUES
+(9,2,'TAO Film',24,10,'2022-04-13 19:20:21');
 
 /* LINKS */;
 CREATE TABLE links_proveedores (

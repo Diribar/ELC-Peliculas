@@ -217,10 +217,10 @@ module.exports = {
 				...edicion,
 				[producto_id]: prodID,
 				editado_por_id: userID,
-				entidad: "productos_edic",
+				entidad: "prods_edicion",
 			};
 			// Eliminar prodEditado (si existía) de la BD
-			if (prodEditado) await BD_genericas.eliminarRegistro("productos_edic", prodEditado.id);
+			if (prodEditado) await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
 			// Agregar 'edición' a la BD
 			await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 			// Eliminar req.session.edicion

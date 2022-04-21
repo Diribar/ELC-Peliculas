@@ -8,13 +8,13 @@ module.exports = {
 	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
 		let entidad_id = especificas.entidad_id(prodEntidad);
 		// Averiguar si ya exista la edición
-		let edicID = await BD_especificas.obtenerELC_id("productos_edic", {
+		let edicID = await BD_especificas.obtenerELC_id("prods_edicion", {
 			[entidad_id]: prodID,
 			editado_por_id: userID,
 		});
 		// Acciones en función de si existe o no
 		edicID
-			? await BD_genericas.actualizarPorId("productos_edic", edicID, datos)
-			: await BD_genericas.agregarRegistro("productos_edic", {[entidad_id]: prodID, ...datos});
+			? await BD_genericas.actualizarPorId("prods_edicion", edicID, datos)
+			: await BD_genericas.agregarRegistro("prods_edicion", {[entidad_id]: prodID, ...datos});
 	},
 };

@@ -6,6 +6,7 @@ const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
 
 module.exports = {
+	// Uso general
 	tableroControl: async (req, res) => {
 		// Tema y Código
 		let tema = "revision";
@@ -49,7 +50,6 @@ module.exports = {
 			status,
 		});
 	},
-
 	inactivarCaptura: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
@@ -73,7 +73,6 @@ module.exports = {
 		// Redireccionar a "Visión General"
 		return res.redirect("/revision/tablero-de-control");
 	},
-
 	redireccionar: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
@@ -98,7 +97,7 @@ module.exports = {
 				if (!edicID) edicID = await BD_especificas.obtenerEdicionAjena(producto_id, prodID, userID);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
-					let edicion = await BD_genericas.obtenerPorCampos("productos_edic", {
+					let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
 						[producto_id]: prodID,
 					});
 					let informacion = {
@@ -121,9 +120,10 @@ module.exports = {
 				}
 			}
 		}
+		// Redireccionar
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
 	},
-
+	// Productos
 	productoAlta: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
@@ -180,23 +180,19 @@ module.exports = {
 			prodNombre,
 		});
 	},
-
 	productoEdicion: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
-		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.lastIndexOf("/"));
+		let codigo = "producto/edicion";
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
-		//return res.send([189,edicID])
 		// VERIFICACION1: Si no existe edición --> redirecciona
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+		// Definir más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos;
-		let bloqueIzq,
-			bloqueDer = [[], []];
 		// 3. Obtener ambas versiones
 		let includes = [
 			"en_castellano",
@@ -213,7 +209,95 @@ module.exports = {
 			...includes,
 			"status_registro",
 		]);
-		let prodEditado = await BD_genericas.obtenerPorIdConInclude("productos_edic", edicID, includes);
+		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
+		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
+		let producto_id = especificas.entidad_id(entidad);
+		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// La consulta también tiene otros efectos:
+		// 1. Elimina el registro de edición si ya no tiene más datos
+		// 2. Actualiza el status del registro original, si corresponde
+		[quedanCampos, prodEditado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
+		if (!quedanCampos) {
+			let informacion = {
+				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
+				iconos: [
+					{
+						nombre: "fa-spell-check",
+						link: "/revision/tablero-de-control",
+						titulo: "Ir al 'Tablero de Control' de Revisiones",
+					},
+				],
+			};
+			return res.render("Errores", {informacion});
+		}
+		// 4. Acciones dependiendo de si está editado el avatar
+		if (prodEditado.avatar) {
+			// Vista 'Edición-Avatar'
+			vista = "2-Prod2-Edic1Avatar";
+			// Ruta y nombre del archivo 'avatar'
+			avatar = {
+				original: prodOriginal.avatar
+					? (prodOriginal.avatar.slice(0, 4) != "http"
+							? prodOriginal.status_registro.gr_pend_aprob
+								? "/imagenes/3-ProdRevisar/"
+								: "/imagenes/2-Productos/"
+							: "") + prodOriginal.avatar
+					: "/imagenes/8-Agregar/IM.jpg",
+				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
+			};
+			motivos = motivos.filter((m) => m.avatar);
+		} else {
+			// Obtener los ingresos y reemplazos
+			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
+			// Obtener el avatar
+			let imagen = prodOriginal.avatar;
+			avatar = imagen
+				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+				: "/imagenes/8-Agregar/IM.jpg";
+			// Variables
+			motivos = motivos.filter((m) => m.prod);
+			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
+			vista = "2-Prod2-Edic2Estruct";
+		}
+		// 7. Configurar el título de la vista
+		let prodNombre = especificas.entidadNombre(entidad);
+		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		// Ir a la vista
+		//return res.send([ingresos, reemplazos]);
+		return res.render(vista, {
+			tema,
+			codigo,
+			titulo,
+			prodOriginal,
+			prodEditado,
+			ingresos,
+			reemplazos,
+			avatar,
+			vista,
+			motivos,
+			entidad,
+			prodNombre,
+		});
+	},
+	// RCLV
+	RCLV: async (req, res) => {
+		// 1. Tema y Código
+		let tema = "revision";
+		let codigo = "RCLV";
+		// 2. Variables
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		// 3. Obtener ambas versiones
+		let includes = [];
+		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+			...includes,
+			"status_registro",
+		]);
+		let prodsEditados = await BD_genericas.obtenerEdicAjenasUnProd("prods_edicion", edicID, includes);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = especificas.entidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
@@ -287,10 +371,6 @@ module.exports = {
 			prodNombre,
 		});
 	},
-
-	RCLV:  async (req, res) => {
-		return res.send("RCLV")
-	}
 };
 
 // Funciones ------------------------------------------------------------------------------

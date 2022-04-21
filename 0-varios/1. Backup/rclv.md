@@ -43,7 +43,7 @@
 // 	// Definir variables
 // 	let entidadesRCLV = ["personajes", "hechos", "valores"];
 // 	let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];
-// 	let entidadesProd = ["peliculas", "colecciones", "capitulos", "productos_edic"];
+// 	let entidadesProd = ["peliculas", "colecciones", "capitulos", "prods_edicion"];
 // 	// Rutina por cada campo RCLV
 // 	for (let i = 0; i < RCLV_id.length; i++) {
 // 		campo = RCLV_id[i];
