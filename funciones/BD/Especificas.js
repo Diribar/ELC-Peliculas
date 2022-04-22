@@ -264,7 +264,7 @@ module.exports = {
 	obtenerRCLVsARevisar: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
-		let entidades = ["RCLV_valores", "RCLV_hechos", "RCLV_personajes"];
+		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
 		let resultados = [];
 		let indice = 0;
 		// Obtener el resultado por entidad
