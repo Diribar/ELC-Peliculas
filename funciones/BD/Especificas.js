@@ -294,7 +294,6 @@ module.exports = {
 			indice++;
 		}
 		resultados = await Promise.all([...resultados]);
-		console.log(resultados);
 		// Consolidarlos y ordenarlos
 		let acumulador = [];
 		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
