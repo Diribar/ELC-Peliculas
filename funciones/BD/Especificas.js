@@ -294,7 +294,7 @@ module.exports = {
 			indice++;
 		}
 		resultados = await Promise.all([...resultados]);
-		// Consolidarlos y ordenarlos
+		// Consolidar y ordenar los resultados
 		let acumulador = [];
 		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
 		acumulador.sort((a, b) => new Date(a.creado_en) - new Date(b.creado_en));
