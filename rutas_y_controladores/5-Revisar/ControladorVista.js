@@ -290,39 +290,31 @@ module.exports = {
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
-		// 3. Obtener ambas versiones
+		let userID = req.session.usuario.id;
 		let includes = [];
 		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		// Obtener la versión original
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 			...includes,
 			"status_registro",
 		]);
-		let prodsEditados = await BD_genericas.obtenerEdicsAjenasUnProd("prods_edicion", edicID, includes);
-		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
-		// La consulta también tiene otros efectos:
-		// 1. Elimina el registro de edición si ya no tiene más datos
-		// 2. Actualiza el status del registro original, si corresponde
-		// Obtener los ingresos y reemplazos
-		[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
-		// Variables
-		motivos = motivos.filter((m) => m.prod);
-		bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
-		vista = "2-Prod2-Edic2Estruct";
+		// Obtener todas las ediciones ajenas
+		let producto_id = especificas.entidad_id(entidad);
+		let prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
+
+		// Obtener los motivos de rechazo
+		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
 		//return res.send([ingresos, reemplazos]);
-		return res.render(vista, {
+		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo,
 			prodOriginal,
 			prodsEditados,
-			ingresos,
-			reemplazos,
-			vista,
 			motivos,
 			entidad,
 			prodNombre,

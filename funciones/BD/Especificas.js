@@ -209,7 +209,7 @@ module.exports = {
 					editado_por_id: {[Op.ne]: userID},
 				},
 			})
-			.then((n) => (n ? n.toJSON().id : ""));
+			.then((n) => n.map((m) => m.toJSON()));
 	},
 	quedanCampos: async function (prodOriginal, prodEditado) {
 		// Variables
