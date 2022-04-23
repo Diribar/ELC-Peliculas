@@ -231,7 +231,7 @@ window.addEventListener("load", async () => {
 	let funcionGenero = () => {
 		if (entidad != "RCLV_personajes") return;
 		// Definir variables
-		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
+		let generoElegido = genero[0].checked ? genero[0].value : genero[1].value;
 		let enProcCanElegido = enProcCan[0].checked;
 		// Cambiar el género de una leyenda, si corresponde
 		let letraActual = generoElegido == "V" ? "o" : "a";
