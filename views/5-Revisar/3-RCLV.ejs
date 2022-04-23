@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<!-- Nombre: Input -->
-			<input type="text" name="nombre" class="input" value="<%= prodOriginal.nombre %>" autofocus autocomplete="off">
+			<input type="text" name="nombre" class="input" value="<%= RCLV_original.nombre %>" autofocus autocomplete="off">
 			<!-- Fecha Representativa: Título, Ayuda y Error/OK -->
 			<div class="borderTop flex-row">
 				<div class="margenBottomTitulo relative">
@@ -54,17 +54,17 @@
 				<div class="flexRowAlign">
 					<label style="width: 40px;">Mes:</label>
 					<select name="mes_id" class="input">
-						<option value="" class="ocultar" <% if (!prodOriginal.mes_id) { %>selected<% } %>>Elegí</option>
+						<option value="" class="ocultar" <% if (!RCLV_original.mes_id) { %>selected<% } %>>Elegí</option>
 						<% for (let mes of meses) { %>
 							<option value="<%= mes.id %>" <% if (mes.id == mes_id) { %>selected<% } %>>
 								<%= mes.nombre %>
 							</option>
 						<% } %>
 					</select>
-					<a href="//es.wikipedia.org/wiki/<%= prodOriginal.nombre %>" id="wiki" target="blank" class="ocultar" tabindex="-1">
+					<a href="//es.wikipedia.org/wiki/<%= RCLV_original.nombre %>" id="wiki" target="blank" class="ocultar" tabindex="-1">
 						<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
 					</a>
-					<a href="//santopedia.com/buscar?q=<%= prodOriginal.nombre %>" id="santopedia" target="blank" class="ocultar" tabindex="-1">
+					<a href="//santopedia.com/buscar?q=<%= RCLV_original.nombre %>" id="santopedia" target="blank" class="ocultar" tabindex="-1">
 						<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
 					</a>
 				</div>
@@ -72,7 +72,7 @@
 				<div class="flexRowAlign">
 					<label style="width: 40px;">Día:</label>
 					<select name="dia" class="input">
-						<option value="" class="ocultar" <% if (!prodOriginal.dia) { %>selected<% } %>>Elegí</option>
+						<option value="" class="ocultar" <% if (!RCLV_original.dia) { %>selected<% } %>>Elegí</option>
 						<% for (let dia = 1; dia < 32; dia++) { %>
 							<option value="<%= dia %>" 
 								<% if (dia > 29) { %>class="ocultar"<% } %>
@@ -86,7 +86,7 @@
 				<!-- Fecha desconocida -->
 				<div class="flex-row align-center">
 					<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
-						<% if (!prodOriginal.dia_del_ano_id) { %>checked<% } %>
+						<% if (!RCLV_original.dia_del_ano_id) { %>checked<% } %>
 						tabindex="-1"
 					>
 					<label>Sin fecha representativa</label>
@@ -98,11 +98,11 @@
 					<div class="margenBottomTitulo relative flex-row align-center">
 						<!-- Título -->
 						<h3>Año de <%= entidad == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-						<input type="number" name="ano" class="input" value="<%= prodOriginal.ano %>" autofocus autocomplete="off">
+						<input type="number" name="ano" class="input" value="<%= RCLV_original.ano %>" autofocus autocomplete="off">
 						<!-- Ayuda -->
 						<i class="fa-solid fa-circle-question"></i>
 						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Nos ayuda a ubicar cronológicamente al <%= prodOriginal.producto_RCLV %>.</li>
+							<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
 							<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 							<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
 						</ul>
@@ -148,11 +148,11 @@
 				<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
 				<div id="opcionesIglesia" class="flex-row">
 					<div class="flexRowAlign">
-						<input type="radio" name="enProcCan" value="1" <% if (prodOriginal.proceso_canonizacion_id) { %>checked<% } %>>
+						<input type="radio" name="enProcCan" value="1" <% if (RCLV_original.proceso_canonizacion_id) { %>checked<% } %>>
 						<label>SI</label>
 					</div>
 					<div class="flexRowAlign">
-						<input type="radio" name="enProcCan" value="0" <% if (!prodOriginal.proceso_canonizacion_id) { %>checked<% } %>>
+						<input type="radio" name="enProcCan" value="0" <% if (!RCLV_original.proceso_canonizacion_id) { %>checked<% } %>>
 						<label>NO</label>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 				<div id="genero" class="flex-row oculta">
 					<h4>Género:</h4>
 					<div class="flex-row">
-						<% let rol_iglesia_id = prodOriginal.rol_iglesia_id ? prodOriginal.rol_iglesia_id.slice(-1) : "" %>
+						<% let rol_iglesia_id = RCLV_original.rol_iglesia_id ? RCLV_original.rol_iglesia_id.slice(-1) : "" %>
 						<div class="flexRowAlign">
 							<input type="radio" name="genero" value="V" <% if (rol_iglesia_id=="V") { %>checked<% } %>>
 							<label>Varón</label>
@@ -178,9 +178,9 @@
 				<div class="flexRowAlign">
 					<label>Status del proceso:</label>
 					<select name="proceso_canonizacion_id">
-						<option value="" <% if (prodOriginal.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
+						<option value="" <% if (RCLV_original.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
 						<% for (let proceso of procesos_canonizacion) { %>
-							<option value="<%= proceso.id %>" <% if (proceso.id == prodOriginal.proceso_canonizacion_id) { %> selected <% } %>><%= proceso.nombre %></option>
+							<option value="<%= proceso.id %>" <% if (proceso.id == RCLV_original.proceso_canonizacion_id) { %> selected <% } %>><%= proceso.nombre %></option>
 						<% } %> 
 					</select>
 				</div>
@@ -188,9 +188,9 @@
 				<div class="flexRowAlign">
 					<label>Rol en la Iglesia:</label>
 					<select name="rol_iglesia_id">
-						<option value="" <% if (prodOriginal.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
+						<option value="" <% if (RCLV_original.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
 						<% for (let rol_iglesia of roles_iglesia) { %>
-							<option value="<%= rol_iglesia.id %>" <% if (prodOriginal.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+							<option value="<%= rol_iglesia.id %>" <% if (RCLV_original.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 						<% } %> 
 					</select>
 				</div>
