@@ -294,33 +294,35 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let includes = [];
 		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
 		// Obtener la versión original
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 			...includes,
 			"status_registro",
 		]);
 		// Obtener todas las ediciones ajenas
 		let producto_id = especificas.entidad_id(entidad);
-		let prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
 		// PENDIENTE
 		// Obtener los motivos de rechazo
-		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		if (RCLV_original.status_registro.gr_aprobados) {
+			motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+			prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
+		}
 		// Obtener el título de canonización
-		let tituloCanoniz = especificas.tituloCanonizacion({...prodOriginal, entidad});
+		let tituloCanoniz = especificas.tituloCanonizacion({...RCLV_original, entidad});
 		// Datos para la vista
-		let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia;
 		// Títulos
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar el " + prodNombre;
 		// Mes y día del año
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		if (prodOriginal.dia_del_ano_id) {
-			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", prodOriginal.dia_del_ano_id);
+		if (RCLV_original.dia_del_ano_id) {
+			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", RCLV_original.dia_del_ano_id);
 			mes_id = dia_del_ano.mes_id;
 			diaOriginal = dia_del_ano.dia;
 		}
 		// Otros
-		if (prodOriginal.rol_iglesia_id) {
+		if (RCLV_original.rol_iglesia_id) {
 			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
 			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
 			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
@@ -328,13 +330,12 @@ module.exports = {
 		}
 
 		// Ir a la vista
-		//return res.send(prodOriginal);
+		//return res.send(RCLV_original);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo,
-			link: req.originalUrl,
-			prodOriginal,
+			RCLV_original,
 			prodsEditados,
 			motivos,
 			entidad,
