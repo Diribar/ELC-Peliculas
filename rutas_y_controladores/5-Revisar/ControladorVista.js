@@ -316,8 +316,8 @@ module.exports = {
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
 		if (prodOriginal.dia_del_ano_id) {
 			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", prodOriginal.dia_del_ano_id);
-			mes_id = prodOriginal.dia_del_ano_id ? dia_del_ano.mes_id : "";
-			diaOriginal = prodOriginal.dia_del_ano_id ? dia_del_ano.dia : "";
+			mes_id = dia_del_ano.mes_id;
+			diaOriginal = dia_del_ano.dia;
 		}
 		// Otros
 		if (prodOriginal.rol_iglesia_id) {
