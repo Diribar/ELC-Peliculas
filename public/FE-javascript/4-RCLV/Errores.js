@@ -240,7 +240,7 @@ window.addEventListener("load", async () => {
 		if (cambiarGenero)
 			santosanta.innerHTML = santosanta.innerHTML.replace("sant" + letraAnterior, "sant" + letraActual);
 		// Detectar si no se debe usar la función
-		if (!enProcCanElegido || !generoElegido) return;
+		if (!enProcCanElegido) return;
 		// Filtrar y dejar solamente los ID alineados con el género
 		let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
 		opciones_proc.forEach((n) =>
