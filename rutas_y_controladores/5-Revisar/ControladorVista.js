@@ -4,7 +4,6 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
-const {infoTMDBparaAgregarCapitulosDeTV} = require("../../funciones/Prod-Agregar/2-Procesar");
 
 module.exports = {
 	// Uso general

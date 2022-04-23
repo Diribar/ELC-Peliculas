@@ -165,7 +165,7 @@ module.exports = {
 			datos.entidad
 		)
 			if (await especificas.validarRepetidos("nombre_original", datos))
-				errores.nombre_original=cartelRepetido(datos)
+				errores.nombre_original = cartelRepetido(datos);
 		// Nombre Castellano y Año de Estreno
 		if (
 			datos.nombre_castellano &&
@@ -175,7 +175,7 @@ module.exports = {
 			datos.entidad
 		)
 			if (await especificas.validarRepetidos("nombre_castellano", datos))
-				errores.nombre_castellano=cartelRepetido(datos)
+				errores.nombre_castellano = cartelRepetido(datos);
 		// Año de Estreno y Año Fin
 		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
 			if (datos.ano_estreno > datos.ano_fin)
