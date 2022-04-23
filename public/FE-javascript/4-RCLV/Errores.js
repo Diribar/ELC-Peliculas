@@ -33,7 +33,7 @@ window.addEventListener("load", async () => {
 	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
 	// Campos de RCLI
 	let santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
-	let ocultar = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultar") : "";
+	let ocultar = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultarEnProcCan") : "";
 	let enProcCan = entidad == "RCLV_personajes" ? document.querySelectorAll("input[name='enProcCan']") : "";
 	let proceso_canonizacion_id =
 		entidad == "RCLV_personajes" ? document.querySelector("select[name='proceso_canonizacion_id']") : "";
@@ -336,8 +336,10 @@ window.addEventListener("load", async () => {
 	}
 	if (ano.value) funcionAno();
 	if (entidad == "RCLV_personajes") {
-		funcionGenero();
-		if (enProcCan[0].checked) ocultar.classList.remove("invisible");
+		if (enProcCan[0].checked) {
+			funcionGenero();
+			ocultar.classList.remove("invisible");
+		}
 		[OK, errores] = await funcionRCLI();
 	}
 	feedback(OK, errores);
