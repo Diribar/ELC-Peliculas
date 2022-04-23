@@ -266,13 +266,15 @@ module.exports = {
 		// Declarar las variables
 		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
 		let resultados = [];
+		let indice = 0;
 		// Obtener el resultado por entidad
-		for (let i = 0; i < entidades.length; i++) {
-			resultados[i] = db[entidades[i]]
+		for (let entidad of entidades) {
+			resultados[indice] = db[entidad]
 				.findAll({
 					where: {
 						// Con status de 'revisar'
 						status_registro_id: revisar,
+						// Que cumpla alguno de los siguientes:
 						[Op.or]: [
 							// Que no esté capturado
 							{capturado_en: null},
@@ -286,24 +288,18 @@ module.exports = {
 						// Que esté creado por otro usuario
 						creado_por_id: {[Op.ne]: userID},
 					},
-					include: "status_registro",
+					include: ["status_registro", "peliculas", "colecciones", "capitulos"],
 				})
-				.then((n) =>
-					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
-				);
+				.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
+			indice++;
 		}
+		resultados = await Promise.all([...resultados]);
 		// Consolidar y ordenar los resultados
-		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
-			// Consolidarlos
-			let casos = [...a, ...b];
-			// Ordenarlos
-			casos.sort((a, b) => {
-				return new Date(a.creado_en) - new Date(b.creado_en);
-			});
-			return casos;
-		});
+		let acumulador = [];
+		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
+		acumulador.sort((a, b) => new Date(a.creado_en) - new Date(b.creado_en));
 		// Fin
-		return resultado;
+		return acumulador;
 	},
 
 	// LINKS -------------------------------------------------------------

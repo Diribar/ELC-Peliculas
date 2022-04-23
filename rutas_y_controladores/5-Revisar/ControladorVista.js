@@ -4,6 +4,7 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
+const {infoTMDBparaAgregarCapitulosDeTV} = require("../../funciones/Prod-Agregar/2-Procesar");
 
 module.exports = {
 	// Uso general
@@ -21,6 +22,7 @@ module.exports = {
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
+		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = especificas.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
 		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
@@ -31,15 +33,15 @@ module.exports = {
 		productos = procesarProd(productos);
 		// Obtener RCLV -----------------------------------------------------------------
 		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
-		RCLVs = procesarRCLVs(RCLVs);
-		//return res.send(RCLVs)
+		//return res.send(RCLVs);
+		if (RCLVs.length) RCLVs = procesarRCLVs(RCLVs, aprobados);
 		// Obtener Links ----------------------------------------------------------------
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
 		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
 		let prodsLinks = productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
-		//return res.send(productos);
+		//return res.send(RCLVs);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
@@ -301,14 +303,16 @@ module.exports = {
 		// Obtener todas las ediciones ajenas
 		let producto_id = especificas.entidad_id(entidad);
 		let prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
-
+		// PENDIENTE
 		// Obtener los motivos de rechazo
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		// Obtener el título de canonización
+		let tituloCanoniz = especificas.tituloCanonizacion({...prodOriginal, entidad});
 		// 7. Configurar el título de la vista
 		let prodNombre = especificas.entidadNombre(entidad);
-		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let titulo = "Revisar el " + prodNombre;
 		// Ir a la vista
-		//return res.send([ingresos, reemplazos]);
+		return res.send(prodOriginal);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
@@ -318,6 +322,7 @@ module.exports = {
 			motivos,
 			entidad,
 			prodNombre,
+			tituloCanoniz,
 		});
 	},
 };
@@ -348,9 +353,28 @@ let procesarProd = (productos) => {
 	// Fin
 	return productos;
 };
-let procesarRCLVs = (RCLVs) => {
-	// Procesar los registros
+let procesarRCLVs = (RCLVs, aprobados) => {
+	// Definir algunas variables
 	let anchoMax = 30;
+	let resultados = [];
+	let campos = ["peliculas", "colecciones", "capitulos"];
+	// Descartar los RCLVs que no tengan productos aprobados
+	RCLVs.map((n) => {
+		for (let campo of campos) {
+			if (n[campo].length)
+				for (let registro of n[campo]) {
+					if (
+						registro.status_registro_id == aprobados[0] ||
+						registro.status_registro_id == aprobados[1]
+					) {
+						resultados.push(n);
+						break;
+					}
+				}
+			if (resultados.length && resultados.slice(-1) == n) break;
+		}
+	});
+	RCLVs = resultados;
 	// Reconvertir los elementos
 	RCLVs = RCLVs.map((n) => {
 		let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
