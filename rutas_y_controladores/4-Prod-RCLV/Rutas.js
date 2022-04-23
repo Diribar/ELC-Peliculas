@@ -15,12 +15,8 @@ router.get("/api/validar/", API.validarRCLV);
 
 // Rutas de vistas - Relación con la vida
 router.get("/redireccionar", soloAutInput, vista.redireccionar);
-router.get("/personajes", soloAutInput, vista.RCLV_Form);
-router.get("/hechos", soloAutInput, vista.RCLV_Form);
-router.get("/valores", soloAutInput, vista.RCLV_Form);
-router.post("/personajes", soloAutInput, vista.RCLV_Grabar);
-router.post("/hechos", soloAutInput, vista.RCLV_Grabar);
-router.post("/valores", soloAutInput, vista.RCLV_Grabar);
+router.get("/agregar", soloAutInput, vista.RCLV_Form);
+router.post("/agregar", soloAutInput, vista.RCLV_Grabar);
 
 // Exportarlo **********************************************
 module.exports = router;

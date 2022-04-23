@@ -164,7 +164,8 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			errores.nombre_original = await validarRepetidos("nombre_original", datos);
+			if (await especificas.validarRepetidos("nombre_original", datos))
+				errores.nombre_original=cartelRepetido(datos)
 		// Nombre Castellano y Año de Estreno
 		if (
 			datos.nombre_castellano &&
@@ -173,7 +174,8 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			errores.nombre_castellano = await validarRepetidos("nombre_castellano", datos);
+			if (await especificas.validarRepetidos("nombre_castellano", datos))
+				errores.nombre_castellano=cartelRepetido(datos)
 		// Año de Estreno y Año Fin
 		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
 			if (datos.ano_estreno > datos.ano_fin)
@@ -253,28 +255,17 @@ let extensiones = (nombre) => {
 	let ext = nombre.slice(nombre.length - 4);
 	return ![".jpg", ".png"].includes(ext);
 };
-let validarRepetidos = async (campo, datos) => {
-	// Averiguar si existe algún caso en la BD
-	let averiguar = await BD_genericas.obtenerPorCampos(datos.entidad, {
-		[campo]: datos[campo],
-		ano_estreno: datos.ano_estreno,
-	});
-	// Si se encontró algún caso, compara las ID
-	let repetido = averiguar ? averiguar.id != datos.id : false;
-	// Si hay casos --> mensaje de error con la entidad y el id
-	let mensaje = "";
-	if (repetido) {
-		let prodNombre = especificas.entidadNombre(datos.entidad);
-		mensaje =
-			"Esta " +
-			"<a href='/producto/detalle/?entidad=" +
-			datos.entidad +
-			"&id=" +
-			averiguar.id +
-			"' target='_blank'><u><strong>" +
-			prodNombre.toLowerCase() +
-			"</strong></u></a>" +
-			" ya se encuentra en nuestra base de datos";
-	}
-	return mensaje;
+let cartelRepetido = (datos) => {
+	let prodNombre = especificas.entidadNombre(datos.entidad);
+	return (
+		"Este/a " +
+		"<a href='/producto/detalle/?entidad=" +
+		datos.entidad +
+		"&id=" +
+		averiguar.id +
+		"' target='_blank'><u><strong>" +
+		prodNombre.toLowerCase() +
+		"</strong></u></a>" +
+		" ya se encuentra en nuestra base de datos"
+	);
 };

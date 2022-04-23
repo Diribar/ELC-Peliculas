@@ -308,21 +308,45 @@ module.exports = {
 		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
 		// Obtener el título de canonización
 		let tituloCanoniz = especificas.tituloCanonizacion({...prodOriginal, entidad});
-		// 7. Configurar el título de la vista
+		// Datos para la vista
+		let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia;
+		// Títulos
 		let prodNombre = especificas.entidadNombre(entidad);
 		let titulo = "Revisar el " + prodNombre;
+		// Mes y día del año
+		let meses = await BD_genericas.obtenerTodos("meses", "id");
+		if (prodOriginal.dia_del_ano_id) {
+			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", prodOriginal.dia_del_ano_id);
+			mes_id = prodOriginal.dia_del_ano_id ? dia_del_ano.mes_id : "";
+			diaOriginal = prodOriginal.dia_del_ano_id ? dia_del_ano.dia : "";
+		}
+		// Otros
+		if (prodOriginal.rol_iglesia_id) {
+			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
+			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
+			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
+			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
+		}
+
 		// Ir a la vista
-		return res.send(prodOriginal);
+		//return res.send(prodOriginal);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
 			titulo,
+			link: req.originalUrl,
 			prodOriginal,
 			prodsEditados,
 			motivos,
 			entidad,
 			prodNombre,
 			tituloCanoniz,
+			errores: {},
+			meses,
+			mes_id,
+			diaOriginal,
+			roles_iglesia,
+			procesos_canonizacion,
 		});
 	},
 };

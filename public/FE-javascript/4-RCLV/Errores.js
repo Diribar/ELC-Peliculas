@@ -1,10 +1,10 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let entidad = window.location.href;
-	entidad = "RCLV_" + entidad.slice(entidad.lastIndexOf("/") + 1);
+	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let id = new URL(window.location.href).searchParams.get("id");
 	let form = document.querySelector("#dataEntry");
-	let button = document.querySelector("#dataEntry button[type='submit']");
+	let botonSubmit = document.querySelector("#flechas button");
 	let ruta = "/producto/rclv/api/validar/?RCLV=";
 
 	// Links a otros sitios
@@ -49,24 +49,13 @@ window.addEventListener("load", async () => {
 	form.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Situaciones particulares
-		if (campo == "genero" || campo == "enProcCan") funcionGenero();
 		if (campo == "mes_id") diasDelMes();
+		if (campo == "genero") funcionGenero();
 
 		// NOMBRE ***********************************************
-		if (campo == "nombre" || campo == "genero") {
+		if (campo == "nombre") {
 			// Llamar a la función
 			[OK, errores] = await funcionNombre();
-			// Logos de Wikipedia y Santopedia
-			if (campo == "nombre") {
-				if (nombre.value && !errores.nombre) {
-					wiki.classList.remove("ocultar");
-					if (entidad == "RCLV_personajes" && enProcCan[0].checked)
-						santopedia.classList.remove("ocultar");
-				} else {
-					wiki.classList.add("ocultar");
-					santopedia.classList.add("ocultar");
-				}
-			}
 		}
 
 		// FECHAS ***********************************************
@@ -102,19 +91,23 @@ window.addEventListener("load", async () => {
 	});
 
 	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("inactivo")) e.preventDefault();
+		if (botonSubmit.classList.contains("inactivo")) e.preventDefault();
+	});
 
-		// No logré hacer funcionar lo siguiente, para hacer un API
-		const data = new FormData(form);
+	botonSubmit.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (window.location.pathname == "/revision/rclv/" && !botonSubmit.classList.contains("inactivo")) {
+			console.log(99);
+		}
 	});
 
 	// Funciones ************************
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "duplicados"];
-		if (entidad != "RCLV_valores") bloques.push("ano")
+		let bloques = ["nombre", "fecha"];
+		if (entidad != "RCLV_valores") bloques.push("ano");
+		bloques.push("duplicados");
 		if (entidad == "RCLV_personajes") bloques.push("RCLI");
-
 		// Rutina
 		for (let i = 0; i < bloques.length; i++) {
 			// Ícono de OK
@@ -124,9 +117,15 @@ window.addEventListener("load", async () => {
 				? iconoError[i].classList.remove("ocultar")
 				: iconoError[i].classList.add("ocultar");
 			// Mensaje de error
-			errores[bloques[i]]
-				? (mensajeError[i].innerHTML = errores[bloques[i]])
-				: (mensajeError[i].innerHTML = "");
+			mensajeError[i].innerHTML = errores[bloques[i]] ? errores[bloques[i]] : "";
+		}
+		// Mostrar logo de Wikipedia
+		if (OK.nombre) {
+			wiki.classList.remove("ocultar");
+			if (entidad == "RCLV_personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
+		} else {
+			wiki.classList.add("ocultar");
+			santopedia.classList.add("ocultar");
 		}
 
 		// Conclusiones
@@ -139,23 +138,18 @@ window.addEventListener("load", async () => {
 
 		// Alterar el botón submit
 		resultadoTrue && resultado.length == bloques.length
-			? button.classList.remove("inactivo")
-			: button.classList.add("inactivo");
+			? botonSubmit.classList.remove("inactivo")
+			: botonSubmit.classList.add("inactivo");
 	};
 
 	let funcionNombre = async () => {
 		// Verificar errores en el nombre
 		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
+		if (id) url += "&id=" + id;
 		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
-		// Verificar errores en el genero
-		if (entidad == "RCLV_personajes" && !errores.nombre) {
-			url = "&genero=" + (genero[0].checked ? "V" : genero[1].checked ? "M" : "");
-			errores.genero = await fetch(ruta + "genero" + url).then((n) => n.json());
-		}
 		// Consolidar la info
-		OK.nombre = !errores.nombre && !errores.genero;
-		errores.genero = "";
-		// Eliminar los errores del nombre si  el campo se vació
+		OK.nombre = !errores.nombre;
+		// Eliminar los errores del nombre si el campo se vació
 		if (!nombre.value) errores.nombre = "";
 		// Fin
 		return [OK, errores];
@@ -205,7 +199,7 @@ window.addEventListener("load", async () => {
 	};
 
 	let funcionRepetido = () => {
-		casos = document.querySelectorAll("#posiblesDuplicados li input");
+		let casos = document.querySelectorAll("#posiblesDuplicados li input");
 		errores.duplicados = "";
 		for (let caso of casos) {
 			if (caso.checked) errores.duplicados = cartelDuplicado;
@@ -238,24 +232,15 @@ window.addEventListener("load", async () => {
 		if (entidad != "RCLV_personajes") return;
 		// Definir variables
 		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
-
 		let enProcCanElegido = enProcCan[0].checked;
-
 		// Cambiar el género de una leyenda, si corresponde
-		if (generoElegido) {
-			let letraActual = generoElegido == "V" ? "o" : "a";
-			let letraAnterior = generoElegido == "V" ? "a" : "o";
-			let cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
-			if (cambiarGenero)
-				santosanta.innerHTML = santosanta.innerHTML.replace(
-					"sant" + letraAnterior,
-					"sant" + letraActual
-				);
-		}
-
+		let letraActual = generoElegido == "V" ? "o" : "a";
+		let letraAnterior = generoElegido == "V" ? "a" : "o";
+		let cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
+		if (cambiarGenero)
+			santosanta.innerHTML = santosanta.innerHTML.replace("sant" + letraAnterior, "sant" + letraActual);
 		// Detectar si no se debe usar la función
 		if (!generoElegido || !enProcCanElegido) return;
-
 		// Filtrar y dejar solamente los ID alineados con el género
 		let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
 		opciones_proc.forEach((n) =>
@@ -266,8 +251,7 @@ window.addEventListener("load", async () => {
 			proceso_canonizacion_id.value.length != 2 &&
 			proceso_canonizacion_id.value[2] != generoElegido
 		)
-			proceso_canonizacion_id.value = "";
-
+			proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
 		// Filtrar y dejar solamente los ID alineados con el género
 		let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
 		opciones_rol.forEach((n) =>
@@ -278,7 +262,7 @@ window.addEventListener("load", async () => {
 			rol_iglesia_id.value.length != 2 &&
 			rol_iglesia_id.value[2] != generoElegido
 		)
-			rol_iglesia_id.value = "";
+			rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
 	};
 
 	// Aplicar cambios en los días 30 y 31
@@ -312,6 +296,7 @@ window.addEventListener("load", async () => {
 			dia.value +
 			"&entidad=" +
 			entidad;
+		if (id) url += "&id=" + id;
 		let casos = await fetch(url).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
@@ -343,16 +328,19 @@ window.addEventListener("load", async () => {
 	};
 
 	// Status inicial
-	if (entidad == "RCLV_personajes") {
-		funcionGenero();
-		if (enProcCan[0].checked) ocultar.classList.remove("invisible");
-		[OK, errores] = await funcionRCLI();
-	}
 	if (nombre.value) [OK, errores] = await funcionNombre();
 	if (mes_id.value != "") diasDelMes(mes_id, dia);
 	if (mes_id.value && dia.value) {
 		[OK, errores] = await funcionFechas();
 		[OK, errores] = funcionRepetido();
 	}
+	if (ano.value) funcionAno();
+	if (entidad == "RCLV_personajes") {
+		funcionGenero();
+		if (enProcCan[0].checked) ocultar.classList.remove("invisible");
+		[OK, errores] = await funcionRCLI();
+	}
 	feedback(OK, errores);
 });
+
+let cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";

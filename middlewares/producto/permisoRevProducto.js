@@ -127,11 +127,13 @@ module.exports = async (req, res, next) => {
 					)
 						informacion = {
 							mensajes: [
-								"Tu revisión de este producto quedó inconclusa desde un poco antes del " +
+								"Esta revisión quedó inconclusa desde un poco antes del " +
 									horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
 									" a las " +
 									horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
-									"hs.. Podrás volver a revisarlo luego de transcurridas 2 horas desde ese horario.",
+									"hs.. ",
+								"Quedó a disposición de que lo continúe revisando otra persona.",
+								"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
 							],
 							iconos: [
 								{
