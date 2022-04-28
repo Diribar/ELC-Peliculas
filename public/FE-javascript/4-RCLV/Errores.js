@@ -329,8 +329,8 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (nombre.value) [OK, errores] = await funcionNombre();
-	if (mes_id.value != "") diasDelMes(mes_id, dia);
-	if (mes_id.value && dia.value) {
+	if (mes_id.value) diasDelMes(mes_id, dia);
+	if ((mes_id.value && dia.value) || desconocida.value) {
 		[OK, errores] = await funcionFechas();
 		[OK, errores] = funcionRepetido();
 	}
