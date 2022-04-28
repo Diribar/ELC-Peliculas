@@ -1,6 +1,7 @@
 "use strict";
 // Definir variables
 const procesarProd = require("./2-Procesar");
+const BD_especificas = require("../BD/Especificas2");
 const BD_genericas = require("../BD/Genericas");
 const especificas = require("../Varias/Especificas");
 
@@ -85,7 +86,7 @@ module.exports = {
 			{nombre: "produccion", corto: 2, largo: 100},
 			{nombre: "sinopsis", corto: 15, largo: 800},
 		];
-		// ***** CAMPOS INDIVIDUALES *******
+		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
 			if (campos.includes(campo.nombre))
 				errores[campo.nombre] = !datos[campo.nombre]
@@ -96,6 +97,7 @@ module.exports = {
 					? cartelCastellano
 					: "";
 		}
+		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
 		if (campos.includes("ano_estreno"))
 			errores.ano_estreno = !datos.ano_estreno
 				? cartelCampoVacio
@@ -128,7 +130,7 @@ module.exports = {
 			errores.paises_id = !datos.paises_id
 				? cartelCampoVacio
 				: datos.paises_id.length > 2 * 1 + 4 * 3
-				? "Se aceptan hasta 4 países. Seleccioná algún país elegido para borrarlo"
+				? "Se aceptan hasta 4 países."
 				: "";
 		if (campos.includes("idioma_original_id"))
 			errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "";
@@ -164,7 +166,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			if (await especificas.validarRepetidos("nombre_original", datos))
+			if (await BD_especificas.validarRepetidos(["nombre_original", "ano_estreno"], datos))
 				errores.nombre_original = cartelRepetido(datos);
 		// Nombre Castellano y Año de Estreno
 		if (
@@ -174,7 +176,7 @@ module.exports = {
 			!errores.ano_estreno &&
 			datos.entidad
 		)
-			if (await especificas.validarRepetidos("nombre_castellano", datos))
+			if (await BD_especificas.validarRepetidos(["nombre_castellano", "ano_estreno"], datos))
 				errores.nombre_castellano = cartelRepetido(datos);
 		// Año de Estreno y Año Fin
 		if (datos.ano_estreno && !errores.ano_estreno && datos.ano_fin && !errores.ano_fin) {
@@ -207,9 +209,7 @@ module.exports = {
 		// RCLV - Combinados
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
-			let subcategoria = await BD_genericas.obtenerPorCampos("subcategorias", {
-				id: datos.subcategoria_id,
-			});
+			let subcategoria = await BD_genericas.obtenerPorId("subcategorias", datos.subcategoria_id);
 			// Relación con la vida
 			if (subcategoria.personaje)
 				errores.personaje_id =

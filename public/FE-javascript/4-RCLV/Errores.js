@@ -334,7 +334,7 @@ window.addEventListener("load", async () => {
 		[OK, errores] = await funcionFechas();
 		[OK, errores] = funcionRepetido();
 	}
-	if (ano.value) funcionAno();
+	if (ano && ano.value) funcionAno();
 	if (entidad == "RCLV_personajes") {
 		if (enProcCan[0].checked) {
 			funcionGenero();

@@ -43,14 +43,15 @@ window.addEventListener("load", async () => {
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
 		// Horario de captura
-		var horarioCaptura =
-			horarioCaptura.getDate() +
+		let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+		let horarioCaptura =
+			horarioInicial.getDate() +
 			"/" +
-			meses[horarioCaptura.getMonth()] +
+			meses[horarioInicial.getMonth()] +
 			" " +
-			horarioCaptura.getHours() +
+			horarioInicial.getHours() +
 			":" +
-			String(horarioCaptura.getMinutes() + 1).padStart(2, "0");
+			String(horarioInicial.getMinutes() + 1).padStart(2, "0");
 		// Mensajes
 		let arrayMensajes =
 			codigo == "/producto/edicion/"

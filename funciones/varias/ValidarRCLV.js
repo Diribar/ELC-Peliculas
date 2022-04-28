@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../BD/Especificas");
+const BD_especificas = require("../BD/Especificas2");
 const especificas = require("./Especificas");
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 
 	RCLV_nombre: async (datos) => {
 		let {nombre} = datos;
-		let repetido = await BD_especificas.validarRepetidos("nombre", datos);
+		let repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		return !nombre
 			? cartelCampoVacio
 			: longitud(nombre, 2, 30)
