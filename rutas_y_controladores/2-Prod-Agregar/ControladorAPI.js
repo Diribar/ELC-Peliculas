@@ -9,7 +9,7 @@ const BD_especificas = require("../../funciones/BD/Especificas");
 module.exports = {
 	// Vista (palabrasClave)
 	cantProductos: async (req, res) => {
-		let {palabrasClave} = req.query;
+		let palabrasClave = req.query.palabrasClave;
 		// Obtener la cantidad de productos encontrados que coinciden con las palabras clave
 		let lectura = await buscar_x_PC.search(palabrasClave, false);
 		return res.json(lectura);

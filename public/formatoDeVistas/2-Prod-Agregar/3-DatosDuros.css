@@ -7,8 +7,8 @@
 #dataEntry #titulos #links nav a.logos img {width: 100%; height: 100%; position: absolute; object-fit: cover; border-radius: 8px;}
 
 /* Cuerpo del formulario */
-#dataEntry #cuerpo {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #cuerpo #primeraColumna {margin-right: 50px; display: flex; flex-direction: column;}
+#dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
+#dataEntry #datos #primeraColumna {margin-right: 50px; display: flex; flex-direction: column;}
 #dataEntry .label-input, #dataEntry #paises_id {display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 4px;}
 
 /* Partes específicas del formulario */

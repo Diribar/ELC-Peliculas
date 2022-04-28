@@ -248,7 +248,6 @@ module.exports = {
 	borrarSessionCookies: (req, res, paso) => {
 		let pasos = [
 			"borrarTodo",
-			"datosTerminaste",
 			"palabrasClave",
 			"desambiguar",
 			"tipoProducto",

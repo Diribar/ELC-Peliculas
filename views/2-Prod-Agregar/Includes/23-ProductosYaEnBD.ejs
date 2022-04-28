@@ -9,11 +9,13 @@
 			<img id="imagenChica" src="https://image.tmdb.org/t/p/original<%= prod_enBD.avatar %>" alt="<%= prod_enBD.nombre_original %>" title="<%= prod_enBD.nombre_original %>">
 			<div id="infoPeli" class="flex-col">
 				<p><strong><%= prod_enBD.nombre_original %></strong></p>
-				<p class="interlineadoChico"></p>
-				<p><%= prod_enBD.lanzamiento + " - " + prod_enBD.prodNombre %></p>
-				<p class="interlineadoChico"></p>
-				<p><em><%= prod_enBD.nombre_castellano %></em></p>
-			</div>
+				<p class="interlineadoChico"><em><%= prod_enBD.nombre_castellano %></em></p>	
+				<br>
+				<p class="interlineadoChico"><%= prod_enBD.lanzamiento + " - " + prod_enBD.prodNombre %></p>
+				<% if (prod_enBD.capitulos) { %>
+					<p class="interlineadoChico"><%= prod_enBD.capitulos %> capitulos</p>
+				<% } %>
+		</div>
 		</button>
 	</a>
 </li>
