@@ -4,25 +4,23 @@ const BD_especificas = require("../BD/Especificas2");
 const especificas = require("../Varias/Especificas");
 
 module.exports = {
-	RCLV_consolidado: async function (datos) {
+	consolidado: async function (datos) {
+		// Campos  que siempre están
 		let errores = {
-			fecha: this.RCLV_fecha(datos),
-			ano: this.RCLV_ano(datos),
+			nombre: await this.nombre(datos),
+			fecha: this.fecha(datos),
 		};
-		// Errores "nombre"
-		let nombre = await this.RCLV_nombre(datos);
-		let genero = datos.entidad == "RCLV_personajes" ? await this.RCLV_genero(datos) : "";
-		errores.nombre = nombre ? nombre : genero;
-		// Errores "datos repetidos"
-		if (datos.repetido) errores.duplicados = cartelDuplicado;
-		// Errores "RCLI"
-		if (datos.entidad == "RCLV_personajes") errores.RCLI = this.RCLV_RCLI(datos);
+		if (datos.repetido) errores.repetidos = cartelDuplicado;
+		// Campos cuando la entidad difiere de 'valores'
+		if (datos.entidad != "RCLV_valores") errores.ano = this.ano(datos);
+		// Campos exclusivos de 'personajes'
+		if (datos.entidad == "RCLV_personajes") errores.RCLI = this.RCLI(datos);
 		// Completar con 'hay errores'
 		errores.hay = hayErrores(errores);
 		return errores;
 	},
 
-	RCLV_nombre: async (datos) => {
+	nombre: async (datos) => {
 		let {nombre} = datos;
 		let repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		return !nombre
@@ -38,11 +36,7 @@ module.exports = {
 			: "";
 	},
 
-	RCLV_genero: (datos) => {
-		return !datos.genero ? "Necesitamos que respondas el genero de la persona" : "";
-	},
-
-	RCLV_fecha: (datos) => {
+	fecha: (datos) => {
 		let error = "";
 		if (datos.desconocida == "false" || datos.desconocida == undefined) {
 			if (!datos.mes_id || !datos.dia) error = cartelFechaIncompleta;
@@ -56,7 +50,7 @@ module.exports = {
 		return error;
 	},
 
-	RCLV_ano: (datos) => {
+	ano: (datos) => {
 		let error;
 		if (!datos.ano) error = cartelCampoVacio;
 		else {
@@ -73,15 +67,15 @@ module.exports = {
 		return error;
 	},
 
-	RCLV_RCLI: (datos) => {
+	RCLI: (datos) => {
 		return !datos.enProcCan
 			? "Necesitamos que respondas si está en Proceso de Canonización"
-			: datos.enProcCan == "1"
-			? !datos.proceso_canonizacion_id
-				? "Necesitamos que respondas sobre el Status del Proceso de Canonización"
-				: !datos.rol_iglesia_id
-				? "Necesitamos que respondas el rol de la persona en la Iglesia"
-				: ""
+			: datos.enProcCan == "1" && !datos.genero
+			? "Necesitamos que respondas el genero de la persona"
+			: datos.enProcCan == "1" && !datos.proceso_canonizacion_id
+			? "Necesitamos que respondas sobre el Status del Proceso de Canonización"
+			: datos.enProcCan == "1" && !datos.rol_iglesia_id
+			? "Necesitamos que respondas el rol de la persona en la Iglesia"
 			: "";
 	},
 };

@@ -11,7 +11,8 @@ const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 // Rutas *******************************************
 // Rutas de APIs
 router.get("/api/otros-casos/", API.buscarOtrosCasos);
-router.get("/api/validar/", API.validarRCLV);
+router.get("/api/validar-campo/", API.validarCampo);
+router.get("/api/validar-consolidado/", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
 router.get("/redireccionar", soloAutInput, vista.redireccionar);
