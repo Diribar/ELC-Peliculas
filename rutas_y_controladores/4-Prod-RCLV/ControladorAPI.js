@@ -1,6 +1,6 @@
 "use strict";
 // ************ Requires ************
-const validarRCLV = require("../../funciones/Validaciones/RCLV");
+const validarRCLV = require("../../funciones/Validar/RCLV");
 const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = {

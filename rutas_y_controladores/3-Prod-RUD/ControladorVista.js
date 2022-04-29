@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
 const variables = require("../../funciones/Varias/Variables");
-const validar = require("../../funciones/Validaciones/RUD");
+const validar = require("../../funciones/Validar/RUD");
 
 // *********** Controlador ***********
 module.exports = {

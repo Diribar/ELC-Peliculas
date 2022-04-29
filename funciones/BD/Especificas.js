@@ -4,7 +4,7 @@ const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
 const especificas = require("../Varias/Especificas");
-const validar = require("../Validaciones/RUD");
+const validar = require("../Validar/RUD");
 
 module.exports = {
 	// Varios
