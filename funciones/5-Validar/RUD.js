@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../BD/Genericas");
-const variables = require("../Varias/Variables");
+const BD_genericas = require("../2-BD/Genericas");
+const variables = require("../4-Compartidas/Variables");
 const validar = require("./Agregar");
 
 module.exports = {

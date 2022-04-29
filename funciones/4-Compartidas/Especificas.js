@@ -1,11 +1,10 @@
 "use strict";
 // Definir variables
 const nodemailer = require("nodemailer");
-const BD_genericas = require("../BD/Genericas");
+const BD_genericas = require("../2-BD/Genericas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -246,24 +245,6 @@ module.exports = {
 	},
 
 	// Varios
-	borrarSessionCookies: (req, res, paso) => {
-		let pasos = [
-			"borrarTodo",
-			"palabrasClave",
-			"desambiguar",
-			"tipoProducto",
-			"datosOriginales",
-			"copiarFA",
-			"datosDuros",
-			"datosPers",
-			"confirma",
-		];
-		let indice = pasos.indexOf(paso) + 1;
-		for (indice; indice < pasos.length; indice++) {
-			if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
-			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
-		}
-	},
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({
@@ -284,34 +265,6 @@ module.exports = {
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		await transporter.sendMail(datos);
-	},
-	statusResumido: function (status, capturado_en, captura_activa) {
-		let id =
-			captura_activa && capturado_en > this.haceUnaHora()
-				? 2
-				: status.gr_pend_aprob
-				? 1
-				: status.aprobado
-				? 3
-				: 4;
-		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
-		return {id, nombre: nombres[id - 1]};
-	},
-	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
-		return objeto;
-	},
-	quitarLosCamposQueNoSeComparan: (edicion) => {
-		let noSeComparan = {};
-		// Obtener los campos a comparar
-		let camposAComparar = variables.camposRevisarEdic().map((n) => n.nombreDelCampo);
-		// Quitar de edicion los campos que no se comparan
-		for (let campo in edicion)
-			if (!camposAComparar.includes(campo)) {
-				noSeComparan[campo] = edicion[campo];
-				delete edicion[campo];
-			}
-		return [edicion, noSeComparan];
 	},
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
 		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];

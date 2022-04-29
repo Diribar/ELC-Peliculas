@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../BD/Genericas");
+const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
 	camposDD: () => {

@@ -3,13 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 const requestPromise = require("request-promise");
-const buscar_x_PC = require("../../funciones/Varias/1-Buscar_x_PC");
-const procesar = require("../../funciones/Procesar/Agregar");
-const validar = require("../../funciones/Validar/Agregar");
-const variables = require("../../funciones/Varias/Variables");
-const BD_genericas = require("../../funciones/BD/Genericas");
-const BD_especificas = require("../../funciones/BD/Especificas");
-const especificas = require("../../funciones/Varias/Especificas");
+const buscar_x_PC = require("../../funciones/3-Procesar/1-Buscar_x_PC");
+const procesar = require("../../funciones/3-Procesar/2-Agregar");
+const validar = require("../../funciones/5-Validar/Agregar");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const especificas = require("../../funciones/4-Compartidas/Especificas");
+const variables = require("../../funciones/4-Compartidas/Variables");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = {
 			? await validar.palabrasClave(palabrasClave)
 			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
-		especificas.borrarSessionCookies(req, res, "palabrasClave");
+		procesar.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
 		return res.render("0-VistaEstandar", {
 			tema,
@@ -57,7 +57,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
-		especificas.borrarSessionCookies(req, res, "desambiguar");
+		procesar.borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
@@ -113,7 +113,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
-		especificas.borrarSessionCookies(req, res, "tipoProducto");
+		procesar.borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 4. Obtener los errores
@@ -157,7 +157,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		especificas.borrarSessionCookies(req, res, "copiarFA");
+		procesar.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
 			req.body.prodNombre = especificas.entidadNombre(req.body.entidad);
@@ -231,7 +231,7 @@ module.exports = {
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
 			especificas.borrarArchivo("./public/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
 		}
-		especificas.borrarSessionCookies(req, res, "datosDuros");
+		procesar.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
@@ -366,7 +366,7 @@ module.exports = {
 		let tema = "agregar";
 		let codigo = "datosPers";
 		// 2. Eliminar session y cookie posteriores, si existen
-		especificas.borrarSessionCookies(req, res, "datosPers");
+		procesar.borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
@@ -495,7 +495,7 @@ module.exports = {
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
 		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
-		especificas.borrarSessionCookies(req, res, "borrarTodo");
+		procesar.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Redireccionar
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id

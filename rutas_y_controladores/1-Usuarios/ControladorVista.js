@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/BD/Especificas");
-const BD_genericas = require("../../funciones/BD/Genericas");
-const especificas = require("../../funciones/Varias/Especificas");
-const validarUsuarios = require("../../funciones/Validar/Usuarios");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const especificas = require("../../funciones/4-Compartidas/Especificas");
+const validarUsuarios = require("../../funciones/5-Validar/Usuarios");
 const bcryptjs = require("bcryptjs");
 
 module.exports = {

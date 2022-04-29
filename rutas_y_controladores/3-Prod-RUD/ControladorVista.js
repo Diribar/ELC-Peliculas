@@ -1,10 +1,11 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/BD/Genericas");
-const BD_especificas = require("../../funciones/BD/Especificas");
-const especificas = require("../../funciones/Varias/Especificas");
-const variables = require("../../funciones/Varias/Variables");
-const validar = require("../../funciones/Validar/RUD");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const procesar = require("../../funciones/3-Procesar/3-RUD");
+const especificas = require("../../funciones/4-Compartidas/Especificas");
+const variables = require("../../funciones/4-Compartidas/Variables");
+const validar = require("../../funciones/5-Validar/RUD");
 
 // *********** Controlador ***********
 module.exports = {
@@ -67,7 +68,7 @@ module.exports = {
 			camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
-			let statusResumido = especificas.statusResumido(
+			let statusResumido = procesar.statusResumido(
 				prodCombinado.status_registro,
 				prodCombinado.capturado_en,
 				prodCombinado.captura_activa
@@ -209,7 +210,7 @@ module.exports = {
 			let edicion = {...prodEditado, ...req.body, avatar};
 			// Quitar de 'edicion' los campos innecesarios
 			delete edicion.id;
-			edicion = especificas.quitarLosCamposSinContenido(edicion);
+			edicion = procesar.quitarLosCamposSinContenido(edicion);
 			edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
 			let producto_id = especificas.entidad_id(entidad);
@@ -359,7 +360,7 @@ let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 			delete linkEditado.id;
 			linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
 		}
-		linksCombinados[i] = especificas.quitarLosCamposSinContenido(linksCombinados[i]);
+		linksCombinados[i] = procesar.quitarLosCamposSinContenido(linksCombinados[i]);
 	}
 	// Fin
 	return linksCombinados;
@@ -516,7 +517,7 @@ let limpiarLosDatos = (datos) => {
 		if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
 	}
 	// Quitar campos innecesarios
-	datos = especificas.quitarLosCamposSinContenido(datos);
+	datos = procesar.quitarLosCamposSinContenido(datos);
 	// Fin
 	return datos;
 };

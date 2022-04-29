@@ -3,8 +3,9 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
-const especificas = require("../Varias/Especificas");
-const validar = require("../Validar/RUD");
+const procesarRUD = require("../3-Procesar/3-RUD");
+const especificas = require("../4-Compartidas/Especificas");
+const validar = require("../5-Validar/RUD");
 
 module.exports = {
 	// Varios
@@ -115,7 +116,7 @@ module.exports = {
 		let producto_id = especificas.entidad_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			prodOriginal = especificas.quitarLosCamposSinContenido(prodOriginal);
+			prodOriginal = procesarRUD.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			if (entidad == "capitulos") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
@@ -125,7 +126,7 @@ module.exports = {
 			);
 			if (prodEditado) {
 				// Quitarle los campos 'null'
-				prodEditado = especificas.quitarLosCamposSinContenido(prodEditado);
+				prodEditado = procesarRUD.quitarLosCamposSinContenido(prodEditado);
 			}
 			// prodEditado = {...prodOriginal, ...prodEditado};
 		}
@@ -218,8 +219,8 @@ module.exports = {
 		let entidad = especificas.obtenerEntidad(prodEditado);
 		let statusAprobado = false;
 		// Pulir la información a tener en cuenta
-		edicion = especificas.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = especificas.quitarLosCamposQueNoSeComparan(edicion);
+		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
+		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
 		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 		// Averiguar si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;

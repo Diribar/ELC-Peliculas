@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires ************
-const validar = require("../../funciones/Validar/RCLV");
-const BD_genericas = require("../../funciones/BD/Genericas");
+const validar = require("../../funciones/5-Validar/RCLV");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = {
 	buscarOtrosCasos: async (req, res) => {

@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let personajes = entidad == "RCLV_personajes";
 	let valores = entidad == "RCLV_valores";
 	let id = new URL(window.location.href).searchParams.get("id");
-	let form = document.querySelector("#dataEntry");
+	let dataEntry = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
 	let ruta = "/rclv/api/validar-campo/?RCLV=";
 
@@ -41,12 +41,21 @@ window.addEventListener("load", async () => {
 	}
 
 	// Add Event Listeners **************
-	nombre.addEventListener("input", () => {
-		wiki.href = url_wiki + nombre.value;
-		santopedia.href = url_santopedia + nombre.value;
+	dataEntry.addEventListener("input", (e) => {
+		let campo = e.target.name;
+		// Campos para todos los RCLV
+		if (campo == "nombre") {
+			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
+			wiki.href = url_wiki + nombre.value;
+			santopedia.href = url_santopedia + nombre.value;
+		}
+		if (campo == "ano") {
+			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear()
+			if (ano.value < -32768) ano.value = -32768
+		}
 	});
 
-	form.addEventListener("change", async (e) => {
+	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
 		if (campo == "nombre") [OK, errores] = await funcionNombre();

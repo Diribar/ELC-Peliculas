@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const buscar_x_PC = require("../../funciones/Varias/1-Buscar_x_PC");
-const procesar = require("../../funciones/Procesar/Agregar");
-const validar = require("../../funciones/Validar/Agregar");
-const BD_genericas = require("../../funciones/BD/Genericas");
-const BD_especificas = require("../../funciones/BD/Especificas");
+const buscar_x_PC = require("../../funciones/3-Procesar/1-Buscar_x_PC");
+const procesar = require("../../funciones/3-Procesar/2-Agregar");
+const validar = require("../../funciones/5-Validar/Agregar");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 
 module.exports = {
 	// Vista (palabrasClave)

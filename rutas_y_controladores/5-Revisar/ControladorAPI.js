@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/BD/Genericas");
-const BD_especificas = require("../../funciones/BD/Especificas");
-const variables = require("../../funciones/Varias/Variables");
-const especificas = require("../../funciones/Varias/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const variables = require("../../funciones/4-Compartidas/Variables");
+const especificas = require("../../funciones/4-Compartidas/Especificas");
 const path = require("path");
 
 // *********** Controlador ***********
@@ -186,6 +186,6 @@ module.exports = {
 	// RCLV
 	// Aprobar el alta
 	aprobarAltaRCLV: async (req, res) => {
-		
+		console.log(req.query);
 	}
 };

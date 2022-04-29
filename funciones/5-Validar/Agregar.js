@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const procesarProd = require("../Procesar/Agregar");
-const BD_especificas = require("../BD/Especificas2");
-const BD_genericas = require("../BD/Genericas");
-const especificas = require("../Varias/Especificas");
+const procesarProd = require("../3-Procesar/2-Agregar");
+const BD_especificas = require("../2-BD/Especificas2");
+const BD_genericas = require("../2-BD/Genericas");
+const especificas = require("../4-Compartidas/Especificas");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
