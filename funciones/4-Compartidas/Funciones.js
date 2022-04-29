@@ -41,8 +41,8 @@ module.exports = {
 	},
 
 	// Temas de idioma
-	convertirLetrasAlIngles: (palabra) => {
-		return palabra
+	convertirLetrasAlIngles: (resultado) => {
+		return resultado
 			.toLowerCase()
 			.replace(/-/g, " ")
 			.replace(/á/g, "a")
