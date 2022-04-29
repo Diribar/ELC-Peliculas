@@ -165,7 +165,6 @@ window.addEventListener("load", async () => {
 		return [OK, errores];
 	};
 	let funcionRCLI = async () => {
-		console.log(enProcCan[0].checked);
 		if (enProcCan[0].checked) {
 			// Armar la url
 			let url = "";
