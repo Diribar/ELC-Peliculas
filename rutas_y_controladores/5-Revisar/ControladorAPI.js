@@ -8,7 +8,7 @@ const path = require("path");
 
 // *********** Controlador ***********
 module.exports = {
-	// Todas las vistas de Revisar
+	// USO COMPARTIDO
 	liberarSalir: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Liberar y salir
@@ -17,7 +17,8 @@ module.exports = {
 		return res.json();
 	},
 
-	// Revisar el alta de productos
+	// PRODUCTOS - 
+	// Revisar el alta - Aprobar
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Averiguar el id del status
@@ -34,6 +35,7 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+	// Revisar el alta - Rechazar
 	rechazarAlta: async (req, res) => {
 		// Obtener las variables
 		let {entidad, id, motivo_id} = req.query;
@@ -68,8 +70,7 @@ module.exports = {
 		BD_genericas.agregarRegistro("altas_rech", datos);
 		return res.json();
 	},
-
-	// Revisar la edición de productos
+	// Revisar la edición
 	aprobRechCampo: async (req, res) => {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
@@ -181,4 +182,10 @@ module.exports = {
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
+
+	// RCLV
+	// Aprobar el alta
+	aprobarAltaRCLV: async (req, res) => {
+		
+	}
 };

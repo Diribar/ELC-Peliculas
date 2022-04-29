@@ -1,11 +1,11 @@
 "use strict";
-// Requires ************************************************
+// Requires **************************************************
 const express = require("express");
 const router = express.Router();
 const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
 
-//************************ Middlewares ******************************
+// Middlewares ***********************************************
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
 const entidadId = require("../../middlewares/producto/validarEntidadId");
 const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
@@ -24,14 +24,7 @@ router.get(
 	vista.redireccionar
 );
 // Vistas de productos
-router.get(
-	"/producto/alta",
-	soloGestionProd,
-	entidadId,
-	permisoUsuario,
-	permisoProducto,
-	vista.productoAlta
-);
+router.get("/producto/alta", soloGestionProd, entidadId, permisoUsuario, permisoProducto, vista.productoAlta);
 router.get(
 	"/producto/edicion",
 	soloGestionProd,
@@ -47,13 +40,15 @@ router.get("/rclv", soloGestionProd, vista.RCLV);
 // router.get("/links", soloGestionProd, vista.tableroControl);
 
 // Rutas de APIs *******************************************
-// Entidades
+// Uso compartido
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto-Alta
-router.get("/producto/alta/api/aprobar", soloGestionProd, API.aprobarAlta);
-router.get("/producto/alta/api/rechazar", soloGestionProd, API.rechazarAlta);
+router.get("/api/producto-alta/aprobar", soloGestionProd, API.aprobarAlta);
+router.get("/api/producto-alta/rechazar", soloGestionProd, API.rechazarAlta);
 // Producto-Edición
-router.get("/producto/edicion/api/editar-campo", soloGestionProd, API.aprobRechCampo);
+router.get("/api/producto-edicion/campo", soloGestionProd, API.aprobRechCampo);
+// RCLV-Alta
+router.get("/api/rclv-alta/aprobar", soloGestionProd, API.aprobarAltaRCLV);
 
 // Exportarlo **********************************************
 module.exports = router;
