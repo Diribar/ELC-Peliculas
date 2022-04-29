@@ -26,10 +26,12 @@ window.addEventListener("load", async () => {
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
 		// Para que incluya los datos de la subcategoría, por si necesitan para validar RCLV
-		let aux = subcategoria.value ? "&subcategoria_id=" + subcategoria.value : "";
-
+		let adicSubcategoria =
+			subcategoria.value && !campo.includes("subcategoria_id")
+				? "&subcategoria_id=" + subcategoria.value
+				: "";
 		// Averiguar si hay algún error
-		let errores = await fetch(ruta + campo + "=" + valor + aux).then((n) => n.json());
+		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
 		mensajesError[indice].innerHTML = errores[campo];
 		errores[campo]
 			? iconoOK[indice].classList.add("ocultar")

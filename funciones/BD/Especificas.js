@@ -4,19 +4,12 @@ const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
 const especificas = require("../Varias/Especificas");
-const validar = require("../../funciones/Prod-RUD/2-Validar");
+const validar = require("../Prod-RUD/2-Validar");
 
 module.exports = {
 	// Varios
 	obtenerELC_id: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
-	},
-	validarRepetidos: (campo, datos) => {
-		// El mismo valor para el campo
-		let objeto = {[campo]: datos[campo]};
-		// Distinto ID
-		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
-		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
 
 	// PRODUCTOS ------------------------------------------------------------------
