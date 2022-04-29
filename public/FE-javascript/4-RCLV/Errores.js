@@ -94,9 +94,11 @@ window.addEventListener("load", async () => {
 		e.preventDefault();
 		if (!botonSubmit.classList.contains("inactivo")) {
 			if (window.location.pathname == "/revision/rclv/") {
-				// Acciones para autorizar el nuevo RCLV
+				// Acciones para editar y cambiar el status del nuevo RCLV
 				console.log(99);
-			} //else
+			} else {
+				// Acciones para agregar el nuevo RCLV
+			}
 		} else {
 			[OK, errores] = await funcionNombre();
 			[OK, errores] = await funcionFechas();

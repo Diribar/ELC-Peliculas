@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const procesarProd = require("./2-Procesar");
+const procesarProd = require("../Procesar/Agregar");
 const BD_especificas = require("../BD/Especificas2");
 const BD_genericas = require("../BD/Genericas");
 const especificas = require("../Varias/Especificas");

@@ -1,8 +1,8 @@
 "use strict";
 // Definir variables
-const buscar_x_PC = require("../../funciones/Prod-Agregar/1-Buscar_x_PC");
-const procesar = require("../../funciones/Prod-Agregar/2-Procesar");
-const validar = require("../../funciones/Prod-Agregar/3-Validar");
+const buscar_x_PC = require("../../funciones/Varias/1-Buscar_x_PC");
+const procesar = require("../../funciones/Procesar/Agregar");
+const validar = require("../../funciones/Validaciones/Agregar");
 const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 
