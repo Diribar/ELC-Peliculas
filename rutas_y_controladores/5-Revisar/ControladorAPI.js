@@ -17,7 +17,7 @@ module.exports = {
 		return res.json();
 	},
 
-	// Revisar el alta
+	// Revisar el alta de productos
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
 		// Averiguar el id del status
@@ -69,7 +69,7 @@ module.exports = {
 		return res.json();
 	},
 
-	// Revisar la edición
+	// Revisar la edición de productos
 	aprobRechCampo: async (req, res) => {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;

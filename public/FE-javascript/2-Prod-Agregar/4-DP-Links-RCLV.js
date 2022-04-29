@@ -27,8 +27,7 @@ window.addEventListener("load", async () => {
 			// Para preservar los valores ingresados hasta el momento
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
-			window.location.href =
-				"/producto/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url;
+			window.location.href = "/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url;
 		});
 	}
 });

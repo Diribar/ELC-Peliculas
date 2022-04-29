@@ -1,6 +1,6 @@
 "use strict";
 // ************ Requires ************
-const validarRCLV = require("../../funciones/Validar/RCLV");
+const validar = require("../../funciones/Validar/RCLV");
 const BD_genericas = require("../../funciones/BD/Genericas");
 const especificas = require("../../funciones/Varias/Especificas");
 const procesar = require("../../funciones/Procesar/RUD");
@@ -39,7 +39,7 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		return res.redirect("/producto/rclv/agregar/?entidad=" + RCLV.RCLV_entidad);
+		return res.redirect("/rclv/agregar/?entidad=" + RCLV.RCLV_entidad);
 	},
 
 	RCLV_Form: async (req, res) => {
@@ -158,7 +158,7 @@ module.exports = {
 		}
 		RCLV = {...req.body, ...RCLV};
 		// 3. Averiguar si hay errores de validación
-		let errores = await validarRCLV.RCLV_consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
+		let errores = await validar.RCLV_consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
 		// 4. Acciones si hay errores
 		if (errores.hay) {
 			req.session.RCLV = RCLV;

@@ -64,7 +64,7 @@ const rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto/agregar", rutaProd_Agregar);
-app.use("/producto/rclv", rutaProd_RCLV);
+app.use("/rclv", rutaProd_RCLV);
 app.use("/producto", rutaProd_RUD);
 app.use("/revision", rutaRevisar);
 app.use("/productos", rutaProductos);

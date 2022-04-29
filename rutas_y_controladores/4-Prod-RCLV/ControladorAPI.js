@@ -1,10 +1,9 @@
 "use strict";
 // ************ Requires ************
-const validarRCLV = require("../../funciones/Validar/RCLV");
+const validar = require("../../funciones/Validar/RCLV");
 const BD_genericas = require("../../funciones/BD/Genericas");
 
 module.exports = {
-	// RCLV
 	buscarOtrosCasos: async (req, res) => {
 		let {entidad, mes_id, dia, id} = req.query;
 		let objeto = {mes_id, dia};
@@ -14,10 +13,12 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-
-	// RCLV
-	validarRCLV: async (req, res) => {
-		let errores = await validarRCLV["RCLV_" + req.query.RCLV](req.query);
+	validarCampo: async (req, res) => {
+		let errores = await validar[req.query.RCLV](req.query);
+		return res.json(errores);
+	},
+	validarConsolidado: async (req, res) => {
+		let errores = await validar.consolidado(req.query);
 		return res.json(errores);
 	},
 };

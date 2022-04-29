@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let id = new URL(window.location.href).searchParams.get("id");
 	let form = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
-	let ruta = "/producto/rclv/api/validar/?RCLV=";
+	let ruta = "/rclv/api/validar-campo/?RCLV=";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -29,7 +29,7 @@ window.addEventListener("load", async () => {
 	// Campos de AÑO
 	let ano = document.querySelector("#dataEntry input[name='ano']");
 	// Campos de POSIBLES DUPLICADOS
-	let posiblesDuplicados = document.querySelector("#dataEntry #posiblesDuplicados");
+	let posiblesRepetidos = document.querySelector("#dataEntry #posiblesRepetidos");
 	// Campos de RCLI
 	let santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
 	let genero = document.querySelectorAll("input[name='genero']");
@@ -102,11 +102,36 @@ window.addEventListener("load", async () => {
 			feedback(OK, errores);
 		} else if (window.location.pathname == "/revision/rclv/") {
 			// Acciones para editar y cambiar el status del nuevo RCLV
+			// Obtener todos los valores
+			let url = "";
+			// Campos de identificación
+			url += "?entidad=" + entidad;
+			url += "&id=" + id;
+			// Campos  que siempre están
+			url += "&nombre=" + nombre.value;
+			url += "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+			url += "&desconocida=" + desconocida.checked;
+			let casos = document.querySelectorAll("#posiblesRepetidos li input");
+			if (Array.from(casos).filter((n) => n.checked).length) url += "&repetido=SI";
+			// Campos cuando la entidad difiere de 'valores'
+			if (entidad != "RCLV_valores") url += "&ano=" + ano.value;
+			// Campos exclusivos de 'personajes'
+			if (entidad == "RCLV_personajes")
+				url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
+			if (entidad == "RCLV_personajes" && enProcCan[0].checked) {
+				let generoElegido = genero[0].checked ? "V" : genero[1].checked ? "M" : "";
+				url += "&genero=" + generoElegido;
+				url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
+				url += "&rol_iglesia_id=" + rol_iglesia_id.value;
+			}
 			// Validar todos los campos una vez más
-			let url 
-			// url+= "&nombre=" + nombre.value + "&entidad=" + entidad;
-			// if (id) url += "&id=" + id;
-			// errores.nombre = await fetch(ruta + url).then((n) => n.json());
+			let ruta = "/rclv/api/validar-consolidado/";
+			errores = await fetch(ruta + url).then((n) => n.json());
+			// Si hay errores y el botón 'submit' estaba activo, recargar la página
+			if (errores.hay) console.log(errores);
+			//if (errores.hay) location.reload();
+			// Editar y cambiar el status del nuevo RCLV
+
 		}
 	});
 
@@ -115,7 +140,7 @@ window.addEventListener("load", async () => {
 		// Definir las variables
 		let bloques = ["nombre", "fecha"];
 		if (entidad != "RCLV_valores") bloques.push("ano");
-		bloques.push("duplicados");
+		bloques.push("repetidos");
 		if (entidad == "RCLV_personajes") bloques.push("RCLI");
 		// Rutina
 		for (let i = 0; i < bloques.length; i++) {
@@ -136,7 +161,6 @@ window.addEventListener("load", async () => {
 			wiki.classList.add("ocultar");
 			santopedia.classList.add("ocultar");
 		}
-
 		// Conclusiones
 		let resultado = Object.values(OK);
 		let resultadoTrue = resultado.length
@@ -144,13 +168,11 @@ window.addEventListener("load", async () => {
 					return !!a && !!b;
 			  })
 			: false;
-
 		// Alterar el botón submit
 		resultadoTrue && resultado.length == bloques.length
 			? botonSubmit.classList.remove("inactivo")
 			: botonSubmit.classList.add("inactivo");
 	};
-
 	let funcionNombre = async () => {
 		// Verificar errores en el nombre
 		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
@@ -162,19 +184,18 @@ window.addEventListener("load", async () => {
 		// Fin
 		return [OK, errores];
 	};
-
 	let funcionFechas = async () => {
 		// Si se desconoce la fecha...
 		if (desconocida.checked) {
 			// OK y Errores
 			errores.fecha = "";
-			errores.duplicados = "";
+			errores.repetidos = "";
 			OK.fecha = true;
-			OK.duplicados = true;
+			OK.repetidos = true;
 			// Limpia los valores de campos relacionados
 			mes_id.value = "";
 			dia.value = "";
-			posiblesDuplicados.innerHTML = "";
+			posiblesRepetidos.innerHTML = "";
 		} else {
 			// Se averigua si hay un error con la fecha
 			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
@@ -183,13 +204,12 @@ window.addEventListener("load", async () => {
 			OK.fecha = !errores.fecha;
 			// Agregar los registros que tengan esa fecha
 			if (OK.fecha) {
-				errores.duplicados = await registrosConEsaFecha(mes_id.value, dia.value);
-				OK.duplicados = !errores.duplicados;
-			} else OK.duplicados = false;
+				errores.repetidos = await registrosConEsaFecha(mes_id.value, dia.value);
+				OK.repetidos = !errores.repetidos;
+			} else OK.repetidos = false;
 		}
 		return [OK, errores];
 	};
-
 	let funcionAno = async () => {
 		// Se averigua si hay un error con el año
 		let url = "&ano=" + ano.value;
@@ -197,14 +217,12 @@ window.addEventListener("load", async () => {
 		OK.ano = !errores.ano;
 		return [OK, errores];
 	};
-
 	let funcionRepetido = () => {
-		let casos = document.querySelectorAll("#posiblesDuplicados li input");
-		errores.duplicados = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-		OK.duplicados = !errores.duplicados;
+		let casos = document.querySelectorAll("#posiblesRepetidos li input");
+		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+		OK.repetidos = !errores.repetidos;
 		return [OK, errores];
 	};
-
 	let funcionRCLI = async () => {
 		if (entidad != "RCLV_personajes") return;
 		// Ocultar / mostrar lo referido al status y género
@@ -215,6 +233,9 @@ window.addEventListener("load", async () => {
 		let url = "";
 		// En proceso de canonización
 		url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
+		// Género
+		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
+		url += "&genero=" + generoElegido;
 		// Status del proceso de canonización
 		url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
 		// Rol en la Iglesia
@@ -224,11 +245,10 @@ window.addEventListener("load", async () => {
 		OK.RCLI = !errores.RCLI;
 		return [OK, errores];
 	};
-
 	let funcionGenero = () => {
 		if (entidad != "RCLV_personajes") return;
 		// Definir variables
-		let generoElegido = genero[0].checked ? genero[0].value : genero[1].value;
+		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
 		let enProcCanElegido = enProcCan[0].checked;
 		// Cambiar el género de una leyenda, si corresponde
 		let letraActual = generoElegido == "V" ? "o" : "a";
@@ -261,9 +281,8 @@ window.addEventListener("load", async () => {
 		)
 			rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
 	};
-
-	// Aplicar cambios en los días 30 y 31
 	let diasDelMes = () => {
+		// Aplicar cambios en los días 30 y 31
 		// Variables
 		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
 		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
@@ -282,28 +301,22 @@ window.addEventListener("load", async () => {
 			} else dia31.classList.remove("ocultar");
 		}
 	};
-
-	// Buscar otros casos en esa fecha
 	let registrosConEsaFecha = async () => {
+		// Buscar otros casos en esa fecha
 		// Obtener los casos
 		let url =
-			"/producto/rclv/api/otros-casos/?mes_id=" +
-			mes_id.value +
-			"&dia=" +
-			dia.value +
-			"&entidad=" +
-			entidad;
+			"/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
 		if (id) url += "&id=" + id;
 		let casos = await fetch(url).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
-			posiblesDuplicados.innerHTML = "¡No hay otros casos!";
-			posiblesDuplicados.classList.add("sinCasos");
+			posiblesRepetidos.innerHTML = "¡No hay otros casos!";
+			posiblesRepetidos.classList.add("sinCasos");
 			return "";
 		} else {
 			// Si hay, mostrarlos
-			posiblesDuplicados.innerHTML = "";
-			posiblesDuplicados.classList.remove("sinCasos");
+			posiblesRepetidos.innerHTML = "";
+			posiblesRepetidos.classList.remove("sinCasos");
 			for (let caso of casos) {
 				// Crear el input
 				let input = document.createElement("input");
@@ -318,27 +331,30 @@ window.addEventListener("load", async () => {
 				let li = document.createElement("li");
 				li.appendChild(input);
 				li.appendChild(label);
-				posiblesDuplicados.appendChild(li);
+				posiblesRepetidos.appendChild(li);
 			}
 			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 		}
 	};
+	let startUp = async () => {
+		if (nombre.value) [OK, errores] = await funcionNombre();
+		if (mes_id.value) diasDelMes(mes_id, dia);
+		if ((mes_id.value && dia.value) || desconocida.checked) {
+			[OK, errores] = await funcionFechas();
+			[OK, errores] = funcionRepetido();
+		}
+		if (ano && ano.value) await funcionAno();
+		if (entidad == "RCLV_personajes") {
+			if (enProcCan[0].checked) {
+				funcionGenero();
+				ocultarEnProcCan.classList.remove("invisible");
+			}
+			if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
+		}
+	};
 
 	// Status inicial
-	if (nombre.value) [OK, errores] = await funcionNombre();
-	if (mes_id.value) diasDelMes(mes_id, dia);
-	if ((mes_id.value && dia.value) || desconocida.checked) {
-		[OK, errores] = await funcionFechas();
-		[OK, errores] = funcionRepetido();
-	}
-	if (ano && ano.value) await funcionAno();
-	if (entidad == "RCLV_personajes") {
-		if (enProcCan[0].checked) {
-			funcionGenero();
-			ocultarEnProcCan.classList.remove("invisible");
-		}
-		if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
-	}
+	await startUp();
 	feedback(OK, errores);
 });
 

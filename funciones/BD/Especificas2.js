@@ -9,7 +9,6 @@ module.exports = {
 		// El mismo valor para los campos
 		let objeto = {};
 		for (let campo of campos) objeto[campo] = datos[campo];
-
 		// Distinto ID
 		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
