@@ -57,48 +57,47 @@ let infoQueQueda = (datos) => {
 
 let estandarizarNombres = (dato, TMDB_entidad) => {
 	let resultados = dato.resultados.map((m) => {
+		let prodNombre, entidad, ano, nombre_original, nombre_castellano, desempate3;
 		// Estandarizar los nombres
-		if (TMDB_entidad == "collection") {
-			if (typeof m.poster_path == "undefined" || m.poster_path == null) return;
-			var prodNombre = "Colección";
-			var entidad = "colecciones";
-			var ano = "-";
-			var nombre_original = m.original_name;
-			var nombre_castellano = m.name;
-			var desempate3 = "-";
-		}
-		if (TMDB_entidad == "tv") {
+		if (TMDB_entidad == "collection")
+			if (typeof m.poster_path != "undefined" && m.poster_path != null) {
+				prodNombre = "Colección";
+				entidad = "colecciones";
+				ano = "-";
+				nombre_original = m.original_name;
+				nombre_castellano = m.name;
+				desempate3 = "-";
+			} else return;
+		if (TMDB_entidad == "tv")
 			if (
-				typeof m.first_air_date == "undefined" ||
-				typeof m.poster_path == "undefined" ||
-				m.first_air_date == "" ||
-				m.first_air_date < "1900" ||
-				m.poster_path == null
-			)
-				return;
-			var prodNombre = "Colección";
-			var entidad = "colecciones";
-			var ano = parseInt(m.first_air_date.slice(0, 4));
-			var nombre_original = m.original_name;
-			var nombre_castellano = m.name;
-			var desempate3 = m.first_air_date;
-		}
-		if (TMDB_entidad == "movie") {
+				typeof m.first_air_date != "undefined" &&
+				typeof m.poster_path != "undefined" &&
+				m.first_air_date &&
+				m.first_air_date > "1900" &&
+				m.poster_path
+			) {
+				prodNombre = "Colección";
+				entidad = "colecciones";
+				ano = parseInt(m.first_air_date.slice(0, 4));
+				nombre_original = m.original_name;
+				nombre_castellano = m.name;
+				desempate3 = m.first_air_date;
+			} else return;
+		if (TMDB_entidad == "movie")
 			if (
-				typeof m.release_date == "undefined" ||
-				typeof m.poster_path == "undefined" ||
-				m.release_date == "" ||
-				m.release_date < "1900" ||
-				m.poster_path == null
-			)
-				return;
-			var prodNombre = "Película";
-			var entidad = "peliculas";
-			var ano = parseInt(m.release_date.slice(0, 4));
-			var nombre_original = m.original_title;
-			var nombre_castellano = m.title;
-			var desempate3 = m.release_date;
-		}
+				typeof m.release_date != "undefined" &&
+				typeof m.poster_path != "undefined" &&
+				m.release_date &&
+				m.release_date > "1900" &&
+				m.poster_path
+			) {
+				prodNombre = "Película";
+				entidad = "peliculas";
+				ano = parseInt(m.release_date.slice(0, 4));
+				nombre_original = m.original_title;
+				nombre_castellano = m.title;
+				desempate3 = m.release_date;
+			} else return;
 		// Definir el título sin "distractores", para encontrar duplicados
 		let desempate1 = especificas
 			.convertirLetrasAlIngles(nombre_original)
@@ -159,23 +158,16 @@ let eliminarIncompletos = (dato) => {
 };
 
 let agregarLanzamiento = async (dato) => {
-	for (let j = 0; j < dato.length; j++) {
+	for (let i = 0; i < dato.length; i++) {
 		// Obtener todas las fechas de lanzamiento
-		let TMDB_id = dato[j].TMDB_id;
+		let TMDB_id = dato[i].TMDB_id;
 		let detalles = await detailsTMDB("collection", TMDB_id)
 			.then((n) => n.parts)
-			.then((n) =>
-				n.map((m) => {
-					if (m.release_date) return m.release_date;
-				})
-			);
+			.then((n) => n.map((m) => (m.release_date ? m.release_date : "-")));
 		// Obtener el año de lanzamiento
-		let ano;
-		if (detalles.length > 1)
-			for (let detalle of detalles) {
-				if (detalle < ano || !ano) ano = detalle;
-			}
-		dato[j].lanzamiento = dato[j].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
+		let ano = detalles.reduce((a, b) => (a < b ? a : b));
+		dato[i].lanzamiento = dato[i].desempate3 = ano != "-" ? parseInt(ano.slice(0, 4)) : "-";
+		dato[i].capitulos = detalles.length;
 	}
 	return dato;
 };
@@ -249,12 +241,12 @@ let hayMas = (datos, page, entidadesTMDB) => {
 
 let ordenarDatos = (datos) => {
 	if (datos.resultados.length > 1) {
-		datos.resultados.sort((a, b) => {
-			return b.desempate3 < a.desempate3 ? -1 : b.desempate3 > a.desempate3 ? 1 : 0;
-		});
-		datos.resultados.sort((a, b) => {
-			return a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0;
-		});
+		// Ordenar desde la más reciente hacia la más antigua
+		datos.resultados.sort((a, b) =>
+			a.desempate3 > b.desempate3 ? -1 : a.desempate3 < b.desempate3 ? 1 : 0
+		);
+		// Ordenar primero por colecciones y luego por películas
+		datos.resultados.sort((a, b) => (a.entidad < b.entidad ? -1 : a.entidad > b.entidad ? 1 : 0));
 	}
 	return datos;
 };

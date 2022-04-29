@@ -61,6 +61,7 @@ module.exports = {
 		for (let i = 0; i < campos.length; i++) {
 			if (typeof valores[i] == "string") {
 				resultado[campos[i]] = valores[i]
+					.replace(/  /g, " ")
 					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
 					.replace(/[àâãäåāăą]/g, "a")
 					.replace(/Æ/g, "Ae")
@@ -248,7 +249,6 @@ module.exports = {
 	borrarSessionCookies: (req, res, paso) => {
 		let pasos = [
 			"borrarTodo",
-			"datosTerminaste",
 			"palabrasClave",
 			"desambiguar",
 			"tipoProducto",

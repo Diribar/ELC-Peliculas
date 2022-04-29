@@ -90,14 +90,20 @@ window.addEventListener("load", async () => {
 		feedback(OK, errores);
 	});
 
-	form.addEventListener("submit", (e) => {
-		if (botonSubmit.classList.contains("inactivo")) e.preventDefault();
-	});
-
 	botonSubmit.addEventListener("click", (e) => {
 		e.preventDefault();
-		if (window.location.pathname == "/revision/rclv/" && !botonSubmit.classList.contains("inactivo")) {
-			console.log(99);
+		if (!botonSubmit.classList.contains("inactivo")) {
+			if (window.location.pathname == "/revision/rclv/") {
+				// Acciones para autorizar el nuevo RCLV
+				console.log(99);
+			} //else
+		} else {
+			[OK, errores] = await funcionNombre();
+			[OK, errores] = await funcionFechas();
+			[OK, errores] = funcionRepetido();
+			funcionAno();
+			if (entidad == "RCLV_personajes") [OK, errores] = await funcionRCLI();
+			feedback(OK, errores);
 		}
 	});
 
@@ -150,7 +156,6 @@ window.addEventListener("load", async () => {
 		// Consolidar la info
 		OK.nombre = !errores.nombre;
 		// Eliminar los errores del nombre si el campo se vació
-		if (!nombre.value) errores.nombre = "";
 		// Fin
 		return [OK, errores];
 	};
@@ -158,53 +163,43 @@ window.addEventListener("load", async () => {
 	let funcionFechas = async () => {
 		// Si se desconoce la fecha...
 		if (desconocida.checked) {
+			// OK y Errores
 			errores.fecha = "";
 			errores.duplicados = "";
 			OK.fecha = true;
 			OK.duplicados = true;
+			// Limpia los valores de campos relacionados
 			mes_id.value = "";
 			dia.value = "";
 			posiblesDuplicados.innerHTML = "";
 		} else {
 			// Se averigua si hay un error con la fecha
-			if (mes_id.value && dia.value) {
-				let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-				url += "&desconocida=" + desconocida.checked;
-				errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
-				OK.fecha = !errores.fecha;
-				// Agregar los registros que tengan esa fecha
-				if (OK.fecha) {
-					errores.duplicados = await registrosConEsaFecha(mes_id.value, dia.value);
-					OK.duplicados = !errores.duplicados;
-				} else {
-					errores.duplicados = "";
-					OK.duplicados = false;
-				}
-			} else {
-				OK.fecha = false;
-				OK.duplicados = false;
-			}
+			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+			url += "&desconocida=" + desconocida.checked;
+			errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
+			OK.fecha = !errores.fecha;
+			// Agregar los registros que tengan esa fecha
+			if (OK.fecha) {
+				errores.duplicados = await registrosConEsaFecha(mes_id.value, dia.value);
+				OK.duplicados = !errores.duplicados;
+			} else OK.duplicados = false;
 		}
 		return [OK, errores];
 	};
 
 	let funcionAno = async () => {
 		// Se averigua si hay un error con el año
-		if (ano.value) {
-			let url = "&ano=" + ano.value;
-			errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
-			OK.ano = !errores.ano;
-		} else OK.ano = false;
+		let url = "&ano=" + ano.value;
+		errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
+		OK.ano = !errores.ano;
 		return [OK, errores];
 	};
 
 	let funcionRepetido = () => {
 		let casos = document.querySelectorAll("#posiblesDuplicados li input");
-		errores.duplicados = "";
-		for (let caso of casos) {
-			if (caso.checked) errores.duplicados = cartelDuplicado;
-			break;
-		}
+		errores.duplicados = Array.from(casos).some((n) => n.checked)
+			? cartelDuplicado
+			: "";
 		OK.duplicados = !errores.duplicados;
 		return [OK, errores];
 	};
@@ -216,7 +211,7 @@ window.addEventListener("load", async () => {
 		// Armar la url
 		let url = "";
 		// En proceso de canonización
-		url += enProcCan[0].checked ? "&enProcCan=1" : enProcCan[1].checked ? "&enProcCan=0" : "";
+		url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
 		// Status del proceso de canonización
 		url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
 		// Rol en la Iglesia
@@ -224,7 +219,6 @@ window.addEventListener("load", async () => {
 		// Obtener los errores
 		errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
 		OK.RCLI = !errores.RCLI;
-		errores.RCLI = "";
 		return [OK, errores];
 	};
 
@@ -329,18 +323,18 @@ window.addEventListener("load", async () => {
 
 	// Status inicial
 	if (nombre.value) [OK, errores] = await funcionNombre();
-	if (mes_id.value != "") diasDelMes(mes_id, dia);
-	if (mes_id.value && dia.value) {
+	if (mes_id.value) diasDelMes(mes_id, dia);
+	if ((mes_id.value && dia.value) || desconocida.checked) {
 		[OK, errores] = await funcionFechas();
 		[OK, errores] = funcionRepetido();
 	}
-	if (ano && ano.value) funcionAno();
+	if (ano && ano.value) await funcionAno();
 	if (entidad == "RCLV_personajes") {
 		if (enProcCan[0].checked) {
 			funcionGenero();
 			ocultar.classList.remove("invisible");
 		}
-		[OK, errores] = await funcionRCLI();
+		if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
 	}
 	feedback(OK, errores);
 });
