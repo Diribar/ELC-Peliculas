@@ -1,0 +1,38 @@
+<%- include('TimerContador') %>
+<%- include('Cartel') %>
+<h1 id="titulo"><%= titulo %></h1>
+<section id="datos">
+	<div id="encabCont">
+		<!-- Encabezado y Contenido -->
+		<div id="encabezado">
+			<h1><%= tituloCanoniz %> <%= prodOriginal.nombre %></h1>
+			<div id="iconos">
+				<a href="//es.wikipedia.org/wiki/<%= prodOriginal.nombre %>" target="_blank" tabindex="-1">
+					<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
+				</a>
+				<a href="//santopedia.com/buscar?q=<%= prodOriginal.nombre %>" target="blank" tabindex="-1">
+					<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
+				</a>
+				<a href="">
+					<i class="fa-solid fa-pencil" tabindex="-1" title='Edición'></i>
+				</a>
+			</div>
+		</div>
+		<!-- Contenido -->
+		<div id="contenido">
+			<table>
+				<tbody>
+				<% for (campo of ingresos) { %>
+					<tr class="fila">
+						<%- include("21-ProdEdic-Ingresos", {campo}) %> 
+					</tr>
+				<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Botones -->
+	<div id="flechas">
+		<i id="liberarSalir" class="fa-solid fa-circle-left" tabindex="-1" title="Liberar y salir"></i>
+	</div>
+</section>

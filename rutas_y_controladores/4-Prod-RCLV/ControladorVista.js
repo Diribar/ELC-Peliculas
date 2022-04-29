@@ -12,6 +12,7 @@ module.exports = {
 			origen: req.query.origen,
 			RCLV_entidad: req.query.RCLV_entidad,
 		};
+		//return res.send(RCLV)
 		if (RCLV.origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
@@ -38,7 +39,7 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		return res.redirect("/producto/rclv/" + RCLV.RCLV_entidad.slice(5));
+		return res.redirect("/producto/rclv/agregar/?entidad=" + RCLV.RCLV_entidad);
 	},
 
 	RCLV_Form: async (req, res) => {

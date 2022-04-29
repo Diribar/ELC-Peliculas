@@ -7,6 +7,18 @@ const especificas = require("../Varias/Especificas");
 const validar = require("../../funciones/Prod-RUD/2-Validar");
 
 module.exports = {
+	// Varios
+	obtenerELC_id: (entidad, objeto) => {
+		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
+	},
+	validarRepetidos: (campo, datos) => {
+		// El mismo valor para el campo
+		let objeto = {[campo]: datos[campo]};
+		// Distinto ID
+		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
+		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
+	},
+
 	// PRODUCTOS ------------------------------------------------------------------
 	// Header
 	quickSearchCondiciones: (palabras) => {
@@ -83,11 +95,6 @@ module.exports = {
 			})
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
-	},
-	obtenerELC_id: (entidad, objeto) => {
-		return db[entidad].findOne({where: objeto}).then((n) => {
-			return n ? n.id : "";
-		});
 	},
 	// API-RUD
 	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
@@ -335,10 +342,12 @@ module.exports = {
 	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {
-		return db.usuarios.findOne({
-			where: {email: email},
-			include: ["rol_usuario", "status_registro"],
-		});
+		return db.usuarios
+			.findOne({
+				where: {email: email},
+				include: ["rol_usuario", "status_registro"],
+			})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 	// Middleware/Usuario/autorizadoFA
 	obtenerAutorizadoFA: (id) => {

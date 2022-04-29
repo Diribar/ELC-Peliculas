@@ -42,18 +42,35 @@ window.addEventListener("load", async () => {
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
-
+		// Horario de captura
+		var horarioCaptura =
+			horarioCaptura.getDate() +
+			"/" +
+			meses[horarioCaptura.getMonth()] +
+			" " +
+			horarioCaptura.getHours() +
+			":" +
+			String(horarioCaptura.getMinutes() + 1).padStart(2, "0");
 		// Mensajes
 		let arrayMensajes =
 			codigo == "/producto/edicion/"
 				? [
-						"Se acabó el tiempo de 1 hora para continuar con esta edición.",
-						"Quedó a disposición de nuestro equipo para analizar tu trabajo.",
+						"Tu edición de este producto comenzó un poco antes del " +
+							horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+							" a las " +
+							horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+							"hs..",
+						"Transcurrida 1 hora, quedó a disposición de nuestro equipo para analizar tu trabajo.",
 				  ]
 				: codigo.startsWith("/revision/")
 				? [
-						"Se acabó el tiempo de 1 hora para continuar con esta revisión.",
+						"Esta revisión quedó inconclusa desde un poco antes del " +
+							horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+							" a las " +
+							horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+							"hs.. ",
 						"Quedó a disposición de que lo continúe revisando otra persona.",
+						"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
 				  ]
 				: [];
 		mensajes.innerHTML = "";
@@ -73,7 +90,7 @@ window.addEventListener("load", async () => {
 				  }
 				: {};
 		flechas.innerHTML = "";
-		for (let icono of iconos) flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
+		flechas.innerHTML += "<a href='" + iconos.link + "'>" + iconos.HTML + "</a>";
 
 		// Mostrar el cartel
 		taparElFondo.classList.remove("ocultar");
@@ -89,4 +106,5 @@ window.addEventListener("load", async () => {
 	formatoTimer(minutos);
 	funcionTimer();
 	timer.classList.remove("ocultar");
+	if (minutos == 0) funcionCartel();
 });

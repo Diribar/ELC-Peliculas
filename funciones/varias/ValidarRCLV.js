@@ -1,6 +1,7 @@
 "use strict";
 // Definir variables
 const BD_especificas = require("../BD/Especificas");
+const especificas = require("./Especificas");
 
 module.exports = {
 	RCLV_consolidado: async function (datos) {
@@ -22,7 +23,8 @@ module.exports = {
 	},
 
 	RCLV_nombre: async (datos) => {
-		let {entidad, nombre} = datos;
+		let {nombre} = datos;
+		let repetido = await BD_especificas.validarRepetidos("nombre", datos);
 		return !nombre
 			? cartelCampoVacio
 			: longitud(nombre, 2, 30)
@@ -31,8 +33,8 @@ module.exports = {
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
-			: (await BD_especificas.obtenerELC_id(entidad, {nombre: nombre}))
-			? cartelRepetido
+			: repetido
+			? cartelRepetido({entidad: datos.entidad, id: repetido})
 			: "";
 	},
 
@@ -83,7 +85,6 @@ module.exports = {
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelCampoVacio = "Necesitamos que completes este campo";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
-const cartelRepetido = "Ya tenemos un registro con ese nombre";
 const cartelCastellano =
 	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
@@ -127,4 +128,19 @@ let hayErrores = (errores) => {
 		if (valor) return true;
 	}
 	return false;
+};
+
+let cartelRepetido = (datos) => {
+	let prodNombre = especificas.entidadNombre(datos.entidad);
+	return (
+		"Este " +
+		"<a href='/RCLV/detalle/?entidad=" +
+		datos.entidad +
+		"&id=" +
+		datos.id +
+		"' target='_blank'><u><strong>" +
+		prodNombre.toLowerCase() +
+		"</strong></u></a>" +
+		" ya se encuentra en nuestra base de datos"
+	);
 };

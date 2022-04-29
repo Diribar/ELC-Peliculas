@@ -44,8 +44,8 @@
 /* RCLI */
 #RCLI h4 {margin-bottom: 5px; width: 145px; text-align: center;}
 #RCLI #opcionesIglesia {justify-content: space-evenly;}
-#RCLI #ocultar {align-items: flex-end; padding: 8px 0;}
-#RCLI #ocultar label {margin-right: 5px;}
+#RCLI #ocultarEnProcCan {align-items: flex-end; padding: 8px 0;}
+#RCLI #ocultarEnProcCan label {margin-right: 5px;}
 
 /* Todos los mensajes */
 #datos .mensajeError, #datos .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
