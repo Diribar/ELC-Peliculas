@@ -2,7 +2,7 @@
 // Definir variables
 const buscar_x_PC = require("../../funciones/3-Procesos/1-Buscar_x_PC");
 const procesar = require("../../funciones/3-Procesos/2-Agregar");
-const validar = require("../../funciones/5-Validaciones/Agregar");
+const validar = require("../../funciones/4-Validaciones/Agregar");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 

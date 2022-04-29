@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../2-BD/Especificas2");
-const funciones = require("../4-Compartidas/Funciones");
+const BD_especificas = require("../2-BD/Especificas");
+const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
 	consolidado: async function (datos) {

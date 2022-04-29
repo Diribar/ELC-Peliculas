@@ -5,11 +5,11 @@ const path = require("path");
 const requestPromise = require("request-promise");
 const buscar_x_PC = require("../../funciones/3-Procesos/1-Buscar_x_PC");
 const procesar = require("../../funciones/3-Procesos/2-Agregar");
-const validar = require("../../funciones/5-Validaciones/Agregar");
+const validar = require("../../funciones/4-Validaciones/Agregar");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/4-Compartidas/Funciones");
-const variables = require("../../funciones/4-Compartidas/Variables");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {

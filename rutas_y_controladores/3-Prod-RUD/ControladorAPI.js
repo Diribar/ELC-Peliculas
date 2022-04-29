@@ -2,8 +2,8 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/4-Compartidas/Funciones");
-const validar = require("../../funciones/5-Validaciones/RUD");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const validar = require("../../funciones/4-Validaciones/RUD");
 
 // *********** Controlador ***********
 module.exports = {

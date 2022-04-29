@@ -2,8 +2,8 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const variables = require("../../funciones/4-Compartidas/Variables");
-const funciones = require("../../funciones/4-Compartidas/Funciones");
+const variables = require("../../funciones/3-Procesos/Variables");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 const path = require("path");
 
 // *********** Controlador ***********

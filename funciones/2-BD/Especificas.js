@@ -3,15 +3,20 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
-const procesarRUD = require("../3-Procesos/3-RUD");
-const funciones = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// Varios
 	obtenerELC_id: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
 	},
-
+	validarRepetidos: (campos, datos) => {
+		// El mismo valor para los campos
+		let objeto = {};
+		for (let campo of campos) objeto[campo] = datos[campo];
+		// Distinto ID
+		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
+		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
+	},
 	// PRODUCTOS ------------------------------------------------------------------
 	// Header
 	quickSearchCondiciones: (palabras) => {
@@ -89,48 +94,6 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
-	// API-RUD
-	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
-		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-			"editado_por",
-			// A partir de acá, van los campos exclusivos de 'Original'
-			"creado_por",
-			"status_registro",
-		];
-		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-		// Obtener el producto EDITADO
-		let prodEditado = "";
-		let producto_id = funciones.entidad_id(entidad);
-		if (prodOriginal) {
-			// Quitarle los campos 'null'
-			prodOriginal = procesarRUD.quitarLosCamposSinContenido(prodOriginal);
-			// Obtener los datos EDITADOS del producto
-			if (entidad == "capitulos") includes.pop();
-			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
-				"prods_edicion",
-				{[producto_id]: prodID, editado_por_id: userID},
-				includes.slice(0, -2)
-			);
-			if (prodEditado) {
-				// Quitarle los campos 'null'
-				prodEditado = procesarRUD.quitarLosCamposSinContenido(prodEditado);
-			}
-			// prodEditado = {...prodOriginal, ...prodEditado};
-		}
-		return [prodOriginal, prodEditado];
-	},
 	// Controlador-Revisar (Producto)
 	obtenerProductosARevisar: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
@@ -176,9 +139,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
-		// Definir variables
-		let haceUnaHora = funciones.haceUnaHora();
+	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener un registro que cumpla ciertas condiciones
 		return db.prods_edicion
 			.findOne({
@@ -194,9 +155,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Controlador-Revisar (RCLV)
-	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID) => {
-		// Definir variables
-		let haceUnaHora = funciones.haceUnaHora();
+	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener los registros que cumplan ciertas condiciones
 		return db.prods_edicion
 			.findAll({
@@ -299,9 +258,8 @@ module.exports = {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	// Middleware/RevisarUsuario
-	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
+	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID, haceUnaHora) => {
 		// Variables
-		let haceUnaHora = funciones.haceUnaHora();
 		let entidades = [
 			"peliculas",
 			"colecciones",
@@ -334,13 +292,12 @@ module.exports = {
 		return lectura ? {...lectura, entidad} : lectura;
 	},
 	// Controladora/Revisar/Productos
-	fichaDelUsuario: async function (userID) {
+	fichaDelUsuario: async function (userID, ahora) {
 		// Obtener los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Variables
 		let anos = 1000 * 60 * 60 * 24 * 365;
-		let ahora = funciones.ahora().getTime();
 		// Edad
 		if (usuario.fecha_nacimiento) {
 			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";
@@ -436,8 +393,7 @@ module.exports = {
 		return enviar;
 	},
 	// Controladora/Usuario/Login
-	actualizarElContadorDeLogins: (usuario) => {
-		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
+	actualizarElContadorDeLogins: (usuario, hoyAhora) => {
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
 		if (hoyAhora != hoyUsuario) {

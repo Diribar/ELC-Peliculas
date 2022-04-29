@@ -2,7 +2,7 @@
 // Definir variables
 const BD_especificas = require("../2-BD/Especificas");
 const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("../4-Compartidas/Funciones");
+const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
 	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
@@ -44,5 +44,46 @@ module.exports = {
 				delete edicion[campo];
 			}
 		return [edicion, noSeComparan];
+	},
+	obtenerVersionesDeProducto: async function (entidad, prodID, userID) {
+		// Definir los campos include
+		let includes = [
+			"idioma_original",
+			"en_castellano",
+			"en_color",
+			"categoria",
+			"subcategoria",
+			"publico_sugerido",
+			"personaje",
+			"hecho",
+			"valor",
+			"editado_por",
+			// A partir de acá, van los campos exclusivos de 'Original'
+			"creado_por",
+			"status_registro",
+		];
+		if (entidad == "capitulos") includes.push("coleccion");
+		// Obtener el producto ORIGINAL
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		// Obtener el producto EDITADO
+		let prodEditado = "";
+		let producto_id = funciones.entidad_id(entidad);
+		if (prodOriginal) {
+			// Quitarle los campos 'null'
+			prodOriginal = this.quitarLosCamposSinContenido(prodOriginal);
+			// Obtener los datos EDITADOS del producto
+			if (entidad == "capitulos") includes.pop();
+			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
+				"prods_edicion",
+				{[producto_id]: prodID, editado_por_id: userID},
+				includes.slice(0, -2)
+			);
+			if (prodEditado) {
+				// Quitarle los campos 'null'
+				prodEditado = this.quitarLosCamposSinContenido(prodEditado);
+			}
+			// prodEditado = {...prodOriginal, ...prodEditado};
+		}
+		return [prodOriginal, prodEditado];
 	},
 };
