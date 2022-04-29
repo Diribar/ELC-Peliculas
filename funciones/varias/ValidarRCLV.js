@@ -57,15 +57,19 @@ module.exports = {
 	},
 
 	RCLV_ano: (datos) => {
-		let ano = parseInt(datos.ano);
-		let error =
-			typeof ano != "number"
-				? "No es un número válido"
-				: ano > new Date().getFullYear()
-				? "El año no debe superar el año actual"
-				: ano < -32768
-				? "El año no debe ser inferior a -32.768"
-				: "";
+		let error;
+		if (!datos.ano) error = cartelCampoVacio;
+		else {
+			let ano = parseInt(datos.ano);
+			error =
+				typeof ano != "number"
+					? "No es un número válido"
+					: ano > new Date().getFullYear()
+					? "El año no debe superar el año actual"
+					: ano < -32768
+					? "El año no debe ser inferior a -32.768"
+					: "";
+		}
 		return error;
 	},
 
