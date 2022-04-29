@@ -67,7 +67,7 @@ module.exports = {
 					: ano > new Date().getFullYear()
 					? "El año no debe superar el año actual"
 					: ano < -32768
-					? "El año no debe ser mayor"
+					? "El año debe ser mayor"
 					: "";
 		}
 		return error;
