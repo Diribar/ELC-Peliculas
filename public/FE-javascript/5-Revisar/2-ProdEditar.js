@@ -38,7 +38,7 @@ window.addEventListener("load", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=true&entidad=";
+			let ruta = "/revision/api/producto-edicion/campo/?aprob=true&entidad=";
 			let [quedanCampos, statusAprobado] = await fetch(
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
 			).then((n) => n.json());
@@ -59,7 +59,7 @@ window.addEventListener("load", () => {
 				// Ocultar la fila
 				filas[i].classList.add("ocultar");
 				// Actualizar el campo del producto
-				let ruta = "/revision/producto/edicion/api/editar-campo/?aprob=false&entidad=";
+				let ruta = "/revision/api/producto-edicion/campo/?aprob=false&entidad=";
 				let [quedanCampos, statusAprobado] = await fetch(
 					ruta +
 						entidad +

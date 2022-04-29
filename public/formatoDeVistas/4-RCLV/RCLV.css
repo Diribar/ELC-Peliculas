@@ -35,10 +35,10 @@
 /* Quitar flechas del input - Firefox */
 #datos #primeraCol input[type=number] {-moz-appearance: textfield;}
 
-#datos input, #datos #posiblesDuplicados {border-width: .7px; border-radius: 5px; background-color: white;}
-#datos #posiblesDuplicados {height: 100%; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
-#datos #posiblesDuplicados li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
-#datos #posiblesDuplicados li input {margin-right: 5px;}
+#datos input, #datos #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
+#datos #posiblesRepetidos {height: 100%; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}
+#datos #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
+#datos #posiblesRepetidos li input {margin-right: 5px;}
 #datos .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
 /* RCLI */
