@@ -194,7 +194,7 @@ window.addEventListener("load", async () => {
 			// OK y Errores
 			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
 			OK.RCLI = !errores.RCLI;
-			// Mostrar las opciones 'enProcCan'
+			// Ocultar las opciones 'enProcCan'
 			ocultarEnProcCan.classList.add("invisible");
 			// Logo de Santopedia
 			santopedia.classList.add("ocultar");
