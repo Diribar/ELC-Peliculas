@@ -92,7 +92,6 @@ window.addEventListener("load", async () => {
 	});
 
 	botonSubmit.addEventListener("click", async (e) => {
-		console.log(95);
 		if (botonSubmit.classList.contains("inactivo")) {
 			e.preventDefault();
 			[OK, errores] = await funcionNombre();
@@ -102,7 +101,6 @@ window.addEventListener("load", async () => {
 			if (entidad == "RCLV_personajes") [OK, errores] = await funcionRCLI();
 			feedback(OK, errores);
 		} else if (window.location.pathname == "/revision/rclv/") {
-			console.log(105);
 			// Acciones para editar y cambiar el status del nuevo RCLV
 			// Obtener todos los valores
 			let url = "";
@@ -128,14 +126,12 @@ window.addEventListener("load", async () => {
 			}
 			// Validar todos los campos una vez más
 			let ruta = "/rclv/api/validar-consolidado/";
-			console.log(url);
 			errores = await fetch(ruta + url).then((n) => n.json());
-			console.log(errores);
 			// Si hay errores y el botón 'submit' estaba activo, recargar la página
 			if (errores.hay) console.log(errores);
 			//if (errores.hay) location.reload();
 			// Editar y cambiar el status del nuevo RCLV
-			
+
 		}
 	});
 
