@@ -55,13 +55,11 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionFechas();
 		if (campo == "repetido") [OK, errores] = funcionRepetido();
 		// Campos para entidad != 'valores'
-		if (!valores && campo == "ano") [OK, errores] = await funcionAno();
+		if (campo == "ano") [OK, errores] = await funcionAno();
 		// Campos para entidad == 'personajes'
+		if (campo == "genero") funcionGenero();
 		let camposRCLI = ["enProcCan", "genero", "proceso_canonizacion_id", "rol_iglesia_id"].includes(campo);
-		if (personajes) {
-			if (campo == "genero") funcionGenero();
-			if (camposRCLI) [OK, errores] = await funcionRCLI();
-		}
+		if (camposRCLI) [OK, errores] = await funcionRCLI();
 		// Final de la rutina
 		feedback(OK, errores);
 	});
