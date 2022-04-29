@@ -22,7 +22,6 @@ window.addEventListener("load", async () => {
 
 	// Campos de NOMBRE
 	let nombre = document.querySelector("#dataEntry input[name='nombre']");
-	let genero = document.querySelectorAll("input[name='genero']");
 	// Campos de FECHAS
 	let mes_id = document.querySelector("#dataEntry select[name='mes_id']");
 	let dia = document.querySelector("#dataEntry select[name='dia']");
@@ -30,10 +29,12 @@ window.addEventListener("load", async () => {
 	// Campos de AÑO
 	let ano = document.querySelector("#dataEntry input[name='ano']");
 	// Campos de POSIBLES DUPLICADOS
-	let posiblesDuplicados = document.querySelector("form #posiblesDuplicados");
+	let posiblesDuplicados = document.querySelector("#dataEntry #posiblesDuplicados");
 	// Campos de RCLI
 	let santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
-	let ocultar = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultarEnProcCan") : "";
+	let genero = document.querySelectorAll("input[name='genero']");
+	let ocultarEnProcCan =
+		entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultarEnProcCan") : "";
 	let enProcCan = entidad == "RCLV_personajes" ? document.querySelectorAll("input[name='enProcCan']") : "";
 	let proceso_canonizacion_id =
 		entidad == "RCLV_personajes" ? document.querySelector("select[name='proceso_canonizacion_id']") : "";
@@ -90,22 +91,22 @@ window.addEventListener("load", async () => {
 		feedback(OK, errores);
 	});
 
-	botonSubmit.addEventListener("click", (e) => {
-		e.preventDefault();
-		if (!botonSubmit.classList.contains("inactivo")) {
-			if (window.location.pathname == "/revision/rclv/") {
-				// Acciones para editar y cambiar el status del nuevo RCLV
-				console.log(99);
-			} else {
-				// Acciones para agregar el nuevo RCLV
-			}
-		} else {
+	botonSubmit.addEventListener("click", async (e) => {
+		if (botonSubmit.classList.contains("inactivo")) {
+			e.preventDefault();
 			[OK, errores] = await funcionNombre();
 			[OK, errores] = await funcionFechas();
 			[OK, errores] = funcionRepetido();
 			funcionAno();
 			if (entidad == "RCLV_personajes") [OK, errores] = await funcionRCLI();
 			feedback(OK, errores);
+		} else if (window.location.pathname == "/revision/rclv/") {
+			// Acciones para editar y cambiar el status del nuevo RCLV
+			// Validar todos los campos una vez más
+			let url 
+			// url+= "&nombre=" + nombre.value + "&entidad=" + entidad;
+			// if (id) url += "&id=" + id;
+			// errores.nombre = await fetch(ruta + url).then((n) => n.json());
 		}
 	});
 
@@ -199,9 +200,7 @@ window.addEventListener("load", async () => {
 
 	let funcionRepetido = () => {
 		let casos = document.querySelectorAll("#posiblesDuplicados li input");
-		errores.duplicados = Array.from(casos).some((n) => n.checked)
-			? cartelDuplicado
-			: "";
+		errores.duplicados = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 		OK.duplicados = !errores.duplicados;
 		return [OK, errores];
 	};
@@ -209,7 +208,9 @@ window.addEventListener("load", async () => {
 	let funcionRCLI = async () => {
 		if (entidad != "RCLV_personajes") return;
 		// Ocultar / mostrar lo referido al status y género
-		enProcCan[0].checked ? ocultar.classList.remove("invisible") : ocultar.classList.add("invisible");
+		enProcCan[0].checked
+			? ocultarEnProcCan.classList.remove("invisible")
+			: ocultarEnProcCan.classList.add("invisible");
 		// Armar la url
 		let url = "";
 		// En proceso de canonización
@@ -334,7 +335,7 @@ window.addEventListener("load", async () => {
 	if (entidad == "RCLV_personajes") {
 		if (enProcCan[0].checked) {
 			funcionGenero();
-			ocultar.classList.remove("invisible");
+			ocultarEnProcCan.classList.remove("invisible");
 		}
 		if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
 	}

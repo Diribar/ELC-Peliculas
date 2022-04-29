@@ -3,7 +3,7 @@
 const BD_especificas = require("../../funciones/BD/Especificas");
 const BD_genericas = require("../../funciones/BD/Genericas");
 const especificas = require("../../funciones/Varias/Especificas");
-const validarUsuarios = require("../../funciones/Validaciones/Usuarios");
+const validarUsuarios = require("../../funciones/Validar/Usuarios");
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
