@@ -4,7 +4,7 @@ const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
 const procesarRUD = require("../3-Procesos/3-RUD");
-const especificas = require("../4-Compartidas/Funciones");
+const funciones = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// Varios
@@ -112,7 +112,7 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
 		let prodEditado = "";
-		let producto_id = especificas.entidad_id(entidad);
+		let producto_id = funciones.entidad_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
 			prodOriginal = procesarRUD.quitarLosCamposSinContenido(prodOriginal);
@@ -178,7 +178,7 @@ module.exports = {
 	},
 	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
 		// Definir variables
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener un registro que cumpla ciertas condiciones
 		return db.prods_edicion
 			.findOne({
@@ -196,7 +196,7 @@ module.exports = {
 	// Controlador-Revisar (RCLV)
 	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID) => {
 		// Definir variables
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener los registros que cumplan ciertas condiciones
 		return db.prods_edicion
 			.findAll({
@@ -301,7 +301,7 @@ module.exports = {
 	// Middleware/RevisarUsuario
 	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
 		// Variables
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		let entidades = [
 			"peliculas",
 			"colecciones",
@@ -340,7 +340,7 @@ module.exports = {
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Variables
 		let anos = 1000 * 60 * 60 * 24 * 365;
-		let ahora = especificas.ahora().getTime();
+		let ahora = funciones.ahora().getTime();
 		// Edad
 		if (usuario.fecha_nacimiento) {
 			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";
@@ -437,7 +437,7 @@ module.exports = {
 	},
 	// Controladora/Usuario/Login
 	actualizarElContadorDeLogins: (usuario) => {
-		let hoyAhora = especificas.ahora().toISOString().slice(0, 10);
+		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
 		let hoyUsuario = usuario.fecha_ultimo_login;
 		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
 		if (hoyAhora != hoyUsuario) {

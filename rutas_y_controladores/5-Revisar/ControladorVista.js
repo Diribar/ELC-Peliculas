@@ -2,7 +2,8 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const procesosRevisar = require("../../funciones/3-Procesos/5-Revisar");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const variables = require("../../funciones/4-Compartidas/Variables");
 
 module.exports = {
@@ -22,7 +23,7 @@ module.exports = {
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
 		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
 		//return res.send(productos.map(n=> {return [n.nombre_castellano,n.status_registro]}));
@@ -56,7 +57,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener producto
 		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
 		if (producto) {
@@ -80,7 +81,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
-		let destino = especificas.familiaEnSingular(entidad);
+		let destino = funciones.familiaEnSingular(entidad);
 		let datosEdicion = "";
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
@@ -93,7 +94,7 @@ module.exports = {
 				: "/edicion";
 			destino += subDestino;
 			if (subDestino == "/edicion") {
-				let producto_id = especificas.entidad_id(entidad);
+				let producto_id = funciones.entidad_id(entidad);
 				// Obtener el id de la edición
 				if (!edicID) edicID = await BD_especificas.obtenerEdicionAjena(producto_id, prodID, userID);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
@@ -155,11 +156,11 @@ module.exports = {
 			  prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
 		let paises = prodOriginal.paises_id
-			? await especificas.paises_idToNombre(prodOriginal.paises_id)
+			? await funciones.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await bloquesAltaProd(prodOriginal, paises);
@@ -212,7 +213,7 @@ module.exports = {
 		]);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
-		let producto_id = especificas.entidad_id(entidad);
+		let producto_id = funciones.entidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
@@ -263,7 +264,7 @@ module.exports = {
 			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
 		//return res.send([ingresos, reemplazos]);
@@ -301,7 +302,7 @@ module.exports = {
 			"status_registro",
 		]);
 		// Obtener todas las ediciones ajenas
-		let producto_id = especificas.entidad_id(entidad);
+		let producto_id = funciones.entidad_id(entidad);
 		// PENDIENTE
 		// Obtener los motivos de rechazo
 		if (RCLV_original.status_registro.gr_aprobados) {
@@ -309,10 +310,10 @@ module.exports = {
 			prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(producto_id, prodID, userID);
 		}
 		// Obtener el título de canonización
-		let tituloCanoniz = especificas.tituloCanonizacion({...RCLV_original, entidad});
+		let tituloCanoniz = funciones.tituloCanonizacion({...RCLV_original, entidad});
 		// Datos para la vista
 		// Títulos
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar el " + prodNombre;
 		// Mes y día del año
 		let meses = await BD_genericas.obtenerTodos("meses", "id");

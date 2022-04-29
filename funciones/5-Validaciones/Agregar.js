@@ -3,7 +3,7 @@
 const procesarProd = require("../3-Procesos/2-Agregar");
 const BD_especificas = require("../2-BD/Especificas2");
 const BD_genericas = require("../2-BD/Genericas");
-const especificas = require("../4-Compartidas/Funciones");
+const funciones = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -93,7 +93,7 @@ module.exports = {
 					? cartelCampoVacio
 					: longitud(datos[campo.nombre], campo.corto, campo.largo)
 					? longitud(datos[campo.nombre], campo.corto, campo.largo)
-					: especificas.letrasValidasCastellano(datos[campo.nombre])
+					: funciones.letrasValidasCastellano(datos[campo.nombre])
 					? cartelCastellano
 					: "";
 		}
@@ -140,7 +140,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 2, 100)
 				? longitud(datos.musica, 2, 100)
-				: especificas.letrasValidasCastellano(datos.musica)
+				: funciones.letrasValidasCastellano(datos.musica)
 				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
@@ -148,7 +148,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 2, 500)
 				? longitud(datos.actuacion, 2, 500)
-				: especificas.letrasValidasCastellano(datos.actuacion)
+				: funciones.letrasValidasCastellano(datos.actuacion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("avatar"))
@@ -256,7 +256,7 @@ let extensiones = (nombre) => {
 	return ![".jpg", ".png"].includes(ext);
 };
 let cartelRepetido = (datos) => {
-	let prodNombre = especificas.entidadNombre(datos.entidad);
+	let prodNombre = funciones.entidadNombre(datos.entidad);
 	return (
 		"Este/a " +
 		"<a href='/producto/detalle/?entidad=" +

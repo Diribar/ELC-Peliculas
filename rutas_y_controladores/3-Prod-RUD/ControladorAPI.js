@@ -2,7 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const validar = require("../../funciones/5-Validaciones/RUD");
 
 // *********** Controlador ***********
@@ -114,7 +114,7 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let producto_id = especificas.entidad_id(entidad);
+			let producto_id = funciones.entidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
 				usuario_id: req.session.usuario.id,
 				[producto_id]: id,
@@ -187,7 +187,7 @@ module.exports = {
 		// Definir las variables
 		let respuesta = {};
 		let {link_id, motivo_id} = req.query;
-		let haceUnaHora = especificas.haceUnaHora();
+		let haceUnaHora = funciones.haceUnaHora();
 		let usuario = req.session.usuario;
 		// Descartar que no hayan errores con el 'link_id'
 		if (!link_id) respuesta.mensaje = "Faltan datos";
@@ -287,6 +287,6 @@ let funcionInactivar = async (motivo_id, usuario, link) => {
 // 		link_original = {...link_original, ...link_edicion};
 // 	}
 // 	// Quitarle los campos 'null'
-// 	link_original = especificas.quitarLosCamposSinContenido(link_original);
+// 	link_original = funciones.quitarLosCamposSinContenido(link_original);
 // 	return link_original;
 // };

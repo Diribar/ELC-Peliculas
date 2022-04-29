@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const variables = require("../../funciones/4-Compartidas/Variables");
 
@@ -9,8 +9,8 @@ module.exports = async (req, res, next) => {
 	const entidad = req.query.entidad;
 	const prodID = req.query.id;
 	const userID = req.session.usuario.id;
-	const haceUnaHora = especificas.haceUnaHora();
-	const haceDosHoras = especificas.haceDosHoras();
+	const haceUnaHora = funciones.haceUnaHora();
+	const haceDosHoras = funciones.haceDosHoras();
 	let informacion;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	let includes = ["status_registro", "capturado_por"];
@@ -158,7 +158,7 @@ module.exports = async (req, res, next) => {
 							prodOriginal.capturado_por_id != userID ||
 							prodOriginal.capturado_en < haceDosHoras
 						)
-							datos.capturado_en = especificas.ahora();
+							datos.capturado_en = funciones.ahora();
 						// CAPTURA DEL PRODUCTO
 						BD_genericas.actualizarPorId(entidad, prodID, datos);
 					}

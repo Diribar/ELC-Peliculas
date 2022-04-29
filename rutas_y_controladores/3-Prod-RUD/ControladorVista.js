@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const procesar = require("../../funciones/3-Procesos/3-RUD");
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const variables = require("../../funciones/4-Compartidas/Variables");
 const validar = require("../../funciones/5-Validaciones/RUD");
 
@@ -40,7 +40,7 @@ module.exports = {
 				: "";
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -48,7 +48,7 @@ module.exports = {
 			prodNombre;
 		// 6. Obtener los países
 		let paises = prodOriginal.paises_id
-			? await especificas.paises_idToNombre(prodOriginal.paises_id)
+			? await funciones.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
@@ -189,21 +189,21 @@ module.exports = {
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) delete prodCombinado.avatar;
-			if (req.file) especificas.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
 			req.session.edicion = prodCombinado;
 		} else {
 			// Si no hubieron errores de validación...
 			// Actualizar los archivos avatar
 			if (req.file) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				especificas.moverImagenCarpetaDefinitiva(
+				funciones.moverImagenCarpetaDefinitiva(
 					prodCombinado.avatar,
 					"9-Provisorio",
 					"3-ProdRevisar"
 				);
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
+					funciones.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
 			}
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición
@@ -211,9 +211,9 @@ module.exports = {
 			// Quitar de 'edicion' los campos innecesarios
 			delete edicion.id;
 			edicion = procesar.quitarLosCamposSinContenido(edicion);
-			edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Completar los datos de edicion
-			let producto_id = especificas.entidad_id(entidad);
+			let producto_id = funciones.entidad_id(entidad);
 			edicion = {
 				...edicion,
 				[producto_id]: prodID,
@@ -270,7 +270,7 @@ module.exports = {
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		let [linksActivos, linksInactivos] = await separarActivos_e_Inactivos(linksCombinados);
 		// Configurar el producto, el título
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
@@ -305,7 +305,7 @@ module.exports = {
 			avatar,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
-			haceUnaHora: especificas.haceUnaHora(),
+			haceUnaHora: funciones.haceUnaHora(),
 		});
 	},
 	linksAltasEditar: async (req, res) => {
@@ -336,7 +336,7 @@ module.exports = {
 // FUNCIONES --------------------------------------------------
 let obtenerLinksCombinados = async (entidad, prodID, userID) => {
 	// Definir valores necesarios
-	let producto_id = especificas.entidad_id(entidad);
+	let producto_id = funciones.entidad_id(entidad);
 	let includes = ["link_tipo", "link_prov", "status_registro"];
 	// Obtener los linksOriginales
 	let linksOriginales = await BD_genericas.obtenerTodosPorCamposConInclude(
@@ -387,7 +387,7 @@ let altaDeLink = async (req, datos) => {
 	if (!datos.parte) datos.parte = "-";
 	// Generar información para el nuevo registro
 	let userID = req.session.usuario.id;
-	let producto_id = especificas.entidad_id(datos.prodEntidad);
+	let producto_id = funciones.entidad_id(datos.prodEntidad);
 	datos = {
 		...datos,
 		[producto_id]: datos.prodID,
@@ -412,7 +412,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 		"links_originales",
-		{[especificas.entidad_id(entidad)]: prodID},
+		{[funciones.entidad_id(entidad)]: prodID},
 		["status_registro", "link_tipo"]
 	)
 		.then((n) => n.filter((n) => n.gratuito))
@@ -478,7 +478,7 @@ let edicionDeLink = async (req, datos) => {
 		// 1.3. Obtener el link 'Edición Nueva'
 		var linkEdicionNueva = {...linkCombinado, ...datos};
 		// 1.4. Quitar los coincidencias con el original
-		linkEdicionNueva = especificas.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicionNueva);
+		linkEdicionNueva = funciones.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicionNueva);
 		// 2. Temas de 'id'...
 		// 2.1. Elimina el id de la edición nueva, porque no se necesita y puede entorpecer
 		delete linkEdicionNueva.id;
@@ -523,7 +523,7 @@ let limpiarLosDatos = (datos) => {
 };
 let estandarizarFechaRef = async (entidad, prodID) => {
 	// Actualizar todos los originales
-	let producto_id = especificas.entidad_id(entidad);
+	let producto_id = funciones.entidad_id(entidad);
 	let fecha_referencia = new Date();
 	// Actualizar linksOriginales
 	BD_genericas.actualizarPorCampos("links_originales", {[producto_id]: prodID}, {fecha_referencia});

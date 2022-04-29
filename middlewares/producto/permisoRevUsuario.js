@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 
@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	if (prodCapturado) {
 		// Datos para el mensaje
 		let entidad = prodCapturado.entidad;
-		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
+		let entidadNombre = funciones.entidadNombre(prodCapturado.entidad);
 		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
 		let horario =
 			prodCapturado.capturado_en.getHours() +

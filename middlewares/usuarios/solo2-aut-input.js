@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 
 module.exports = (req, res, next) => {
 	let usuario = req.session.usuario;

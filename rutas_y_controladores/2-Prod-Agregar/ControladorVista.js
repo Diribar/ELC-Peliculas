@@ -8,7 +8,7 @@ const procesar = require("../../funciones/3-Procesos/2-Agregar");
 const validar = require("../../funciones/5-Validaciones/Agregar");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const variables = require("../../funciones/4-Compartidas/Variables");
 
 module.exports = {
@@ -136,7 +136,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			prodNombre: especificas.entidadNombre(req.body.entidad),
+			prodNombre: funciones.entidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -160,7 +160,7 @@ module.exports = {
 		procesar.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.prodNombre = especificas.entidadNombre(req.body.entidad);
+			req.body.prodNombre = funciones.entidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -229,7 +229,7 @@ module.exports = {
 		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			especificas.borrarArchivo("./public/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
+			funciones.borrarArchivo("./public/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
 		}
 		procesar.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -253,7 +253,7 @@ module.exports = {
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
-			? await especificas.paises_idToNombre(datosDuros.paises_id)
+			? await funciones.paises_idToNombre(datosDuros.paises_id)
 			: await BD_genericas.obtenerTodos("paises", "nombre");
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
@@ -324,13 +324,13 @@ module.exports = {
 				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
 			}
 			// Revisar errores nuevamente
-			errores.avatar = especificas.revisarImagen(tipo, tamano);
+			errores.avatar = funciones.revisarImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			especificas.borrarArchivo("./public/imagenes/9-Provisorio/", nombre);
+			funciones.borrarArchivo("./public/imagenes/9-Provisorio/", nombre);
 			// Guardar los errores en session
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -341,7 +341,7 @@ module.exports = {
 		let avatarBD = nombre;
 		// 8. Si la imagen venía de TMDB, entonces grabarla
 		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
-			especificas.descargar(datosDuros.avatar, rutaYnombre);
+			funciones.descargar(datosDuros.avatar, rutaYnombre);
 			avatarDP = datosDuros.avatar;
 		}
 		// 9. Generar la session para la siguiente instancia
@@ -473,7 +473,7 @@ module.exports = {
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
 		// 4. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto_id = especificas.entidad_id(confirma.entidad);
+		let producto_id = funciones.entidad_id(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -482,7 +482,7 @@ module.exports = {
 			entidad: "prods_edicion",
 			[producto_id]: registro.id,
 		};
-		edicion = especificas.quitarLasCoincidenciasConOriginal(original, edicion);
+		edicion = funciones.quitarLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
@@ -493,7 +493,7 @@ module.exports = {
 		// 6. Guarda las calificaciones
 		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		especificas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
+		funciones.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesar.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Redireccionar
@@ -529,7 +529,7 @@ module.exports = {
 		if (!registroProd.status_registro.gr_pend_aprob)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
@@ -558,7 +558,7 @@ module.exports = {
 };
 
 let guardar_cal_registros = (confirma, registro) => {
-	let producto_id = especificas.entidad_id(confirma.entidad);
+	let producto_id = funciones.entidad_id(confirma.entidad);
 	let datos = {
 		entidad: "cal_registros",
 		usuario_id: registro.creado_por_id,

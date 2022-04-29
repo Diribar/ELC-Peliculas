@@ -270,19 +270,4 @@ module.exports = {
 		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
 		return edicion;
 	},
-	tituloCanonizacion: (datos) => {
-		let tituloCanoniz = "";
-		if (datos.entidad == "RCLV_personajes") {
-			tituloCanoniz = datos.proceso_canonizacion.nombre;
-			if (
-				datos.proceso_canonizacion.nombre == "Santo" &&
-				!datos.nombre.startsWith("Domingo") &&
-				!datos.nombre.startsWith("Tomás") &&
-				!datos.nombre.startsWith("Tomé") &&
-				!datos.nombre.startsWith("Toribio")
-			)
-				tituloCanoniz = "San";
-		}
-		return tituloCanoniz;
-	},
 };

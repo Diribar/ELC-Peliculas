@@ -2,7 +2,7 @@
 // ************ Requires ************
 const validar = require("../../funciones/5-Validaciones/RCLV");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const especificas = require("../../funciones/4-Compartidas/Funciones");
+const funciones = require("../../funciones/4-Compartidas/Funciones");
 const procesar = require("../../funciones/3-Procesos/3-RUD");
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
 			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
-		RCLV.RCLV_nombre = especificas.entidadNombre(RCLV.RCLV_entidad);
+		RCLV.RCLV_nombre = funciones.entidadNombre(RCLV.RCLV_entidad);
 		// Session y Cookie para RCLV
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
@@ -182,7 +182,7 @@ module.exports = {
 		// 6. Crear el registro en la BD
 		let {id} = await BD_genericas.agregarRegistro(RCLV.RCLV_entidad, datos);
 		// Averiguar el campo para el RCLV-ID
-		let RCLVentidad_id = especificas.entidad_id(RCLV.RCLV_entidad);
+		let RCLVentidad_id = funciones.entidad_id(RCLV.RCLV_entidad);
 		// Agregar el RCLVentidad_id al origen
 		if (RCLV.origen == "datosPers") {
 			req.session.datosPers[RCLVentidad_id] = id;

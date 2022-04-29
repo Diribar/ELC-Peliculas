@@ -2,11 +2,11 @@
 // Definir variables
 const BD_especificas = require("../2-BD/Especificas");
 const BD_genericas = require("../2-BD/Genericas");
-const especificas = require("../4-Compartidas/Funciones");
+const funciones = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
-		let entidad_id = especificas.entidad_id(prodEntidad);
+		let entidad_id = funciones.entidad_id(prodEntidad);
 		// Averiguar si ya exista la edición
 		let edicID = await BD_especificas.obtenerELC_id("prods_edicion", {
 			[entidad_id]: prodID,

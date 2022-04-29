@@ -1,21 +1,21 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("./Genericas");
-const procesarRUD = require("./3-RUD");
-const especificas = require("../4-Compartidas/Funciones");
+const BD_genericas = require("../2-BD/Genericas");
+const funciones = require("../4-Compartidas/Funciones");
 const validar = require("../5-Validaciones/RUD");
+const procesarRUD = require("./3-RUD");
 
 module.exports = {
 	quedanCampos: async function (prodOriginal, prodEditado) {
 		// Variables
 		let edicion = {...prodEditado};
 		let noSeComparan;
-		let entidad = especificas.obtenerEntidad(prodEditado);
+		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = false;
 		// Pulir la información a tener en cuenta
 		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
 		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
-		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 		// Averiguar si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
 		// Si no quedan, eliminar el registro
@@ -32,8 +32,8 @@ module.exports = {
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
 				// Averiguar el Lead Time de creación en horas
-				let ahora = especificas.ahora();
-				let leadTime = especificas.obtenerHoras(prodOriginal.creado_en, ahora);
+				let ahora = funciones.ahora();
+				let leadTime = funciones.obtenerHoras(prodOriginal.creado_en, ahora);
 				// Cambiarle el status al producto y liberarlo
 				let datos = {
 					alta_terminada_en: ahora,
@@ -53,5 +53,19 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprobado];
 	},
-
+	tituloCanonizacion: (datos) => {
+		let tituloCanoniz = "";
+		if (datos.entidad == "RCLV_personajes") {
+			tituloCanoniz = datos.proceso_canonizacion.nombre;
+			if (
+				datos.proceso_canonizacion.nombre == "Santo" &&
+				!datos.nombre.startsWith("Domingo") &&
+				!datos.nombre.startsWith("Tomás") &&
+				!datos.nombre.startsWith("Tomé") &&
+				!datos.nombre.startsWith("Toribio")
+			)
+				tituloCanoniz = "San";
+		}
+		return tituloCanoniz;
+	},
 }

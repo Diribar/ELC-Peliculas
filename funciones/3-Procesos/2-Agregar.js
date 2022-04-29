@@ -5,7 +5,7 @@ const detailsTMDB = require("../1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const especificas = require("../4-Compartidas/Funciones");
+const funciones = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -92,7 +92,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return especificas.convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -149,11 +149,11 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id (sólo se consigue desde SEARCH)
-		let palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
+		let palabrasClave = funciones.convertirLetrasAlIngles(datos.nombre_castellano);
 		let buscar = await searchTMDB(palabrasClave, "collection", 1);
 		let exportar;
 		if (buscar.results.length) {
@@ -310,7 +310,7 @@ module.exports = {
 				});
 		}
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -379,11 +379,11 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			contenido.paises_id = await especificas.paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = await funciones.paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -397,7 +397,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
