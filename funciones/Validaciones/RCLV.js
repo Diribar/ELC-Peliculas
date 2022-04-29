@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const BD_especificas = require("../BD/Especificas2");
-const especificas = require("./Especificas");
+const especificas = require("../Varias/Especificas");
 
 module.exports = {
 	RCLV_consolidado: async function (datos) {

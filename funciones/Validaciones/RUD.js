@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../BD/Genericas");
 const variables = require("../Varias/Variables");
-const validar_PA = require("../Prod-Agregar/3-Validar");
+const validar = require("./Agregar");
 
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
@@ -17,8 +17,8 @@ module.exports = {
 			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}
 		// Averiguar si hay errores de validación DD y DP
-		let erroresDD = await validar_PA.datosDuros(campos, datos);
-		let erroresDP = await validar_PA.datosPers(campos, datos);
+		let erroresDD = await validar.datosDuros(campos, datos);
+		let erroresDP = await validar.datosPers(campos, datos);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDP};
 		errores.hay = erroresDD.hay || erroresDP.hay;

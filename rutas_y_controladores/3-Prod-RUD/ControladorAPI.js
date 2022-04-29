@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/BD/Genericas");
 const BD_especificas = require("../../funciones/BD/Especificas");
 const especificas = require("../../funciones/Varias/Especificas");
-const validar = require("../../funciones/Prod-RUD/2-Validar");
+const validar = require("../../funciones/Validaciones/RUD");
 
 // *********** Controlador ***********
 module.exports = {
