@@ -2,6 +2,8 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let personajes = entidad == "RCLV_personajes";
+	let valores = entidad == "RCLV_valores";
 	let id = new URL(window.location.href).searchParams.get("id");
 	let form = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
@@ -20,26 +22,23 @@ window.addEventListener("load", async () => {
 	let OK = {};
 	let errores = {};
 
-	// Campos de NOMBRE
+	// Campos para todos los RCLV
 	let nombre = document.querySelector("#dataEntry input[name='nombre']");
-	// Campos de FECHAS
 	let mes_id = document.querySelector("#dataEntry select[name='mes_id']");
 	let dia = document.querySelector("#dataEntry select[name='dia']");
 	let desconocida = document.querySelector("#dataEntry input[name='desconocida']");
-	// Campos de AÑO
-	let ano = document.querySelector("#dataEntry input[name='ano']");
-	// Campos de POSIBLES DUPLICADOS
 	let posiblesRepetidos = document.querySelector("#dataEntry #posiblesRepetidos");
-	// Campos de RCLI
-	let santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
-	let genero = document.querySelectorAll("input[name='genero']");
-	let ocultarEnProcCan =
-		entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #ocultarEnProcCan") : "";
-	let enProcCan = entidad == "RCLV_personajes" ? document.querySelectorAll("input[name='enProcCan']") : "";
-	let proceso_canonizacion_id =
-		entidad == "RCLV_personajes" ? document.querySelector("select[name='proceso_canonizacion_id']") : "";
-	let rol_iglesia_id =
-		entidad == "RCLV_personajes" ? document.querySelector("select[name='rol_iglesia_id']") : "";
+	// Campos para entidad != 'valores'
+	if (!valores) var ano = document.querySelector("#dataEntry input[name='ano']");
+	// Campos para entidad == 'personajes'
+	if (personajes) {
+		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
+		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
+		var genero = document.querySelectorAll("input[name='genero']");
+		var santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
+		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
+	}
 
 	// Add Event Listeners **************
 	nombre.addEventListener("input", () => {
@@ -49,44 +48,20 @@ window.addEventListener("load", async () => {
 
 	form.addEventListener("change", async (e) => {
 		let campo = e.target.name;
-		// Situaciones particulares
+		// Campos para todos los RCLV
+		if (campo == "nombre") [OK, errores] = await funcionNombre();
 		if (campo == "mes_id") diasDelMes();
-		if (campo == "genero") funcionGenero();
-
-		// NOMBRE ***********************************************
-		if (campo == "nombre") {
-			// Llamar a la función
-			[OK, errores] = await funcionNombre();
-		}
-
-		// FECHAS ***********************************************
-		if (campo == "mes_id" || campo == "dia" || campo == "desconocida") {
+		if (campo == "mes_id" || campo == "dia" || campo == "desconocida")
 			[OK, errores] = await funcionFechas();
+		if (campo == "repetido") [OK, errores] = funcionRepetido();
+		// Campos para entidad != 'valores'
+		if (!valores && campo == "ano") [OK, errores] = await funcionAno();
+		// Campos para entidad == 'personajes'
+		let camposRCLI = ["enProcCan", "genero", "proceso_canonizacion_id", "rol_iglesia_id"].includes(campo);
+		if (personajes) {
+			if (campo == "genero") funcionGenero();
+			if (camposRCLI) [OK, errores] = await funcionRCLI();
 		}
-
-		// AÑO DE NACIMIENTO ************************************
-		if (campo == "ano") {
-			[OK, errores] = await funcionAno();
-		}
-
-		// REGISTROS DUPLICADOS **********************************
-		if (campo == "repetido") {
-			[OK, errores] = funcionRepetido();
-		}
-
-		// RCLI ******************************************
-		if (
-			entidad == "RCLV_personajes" &&
-			(campo == "enProcCan" || campo == "proceso_canonizacion_id" || campo == "rol_iglesia_id")
-		) {
-			[OK, errores] = await funcionRCLI();
-			// Logo de Santopedia
-			if (campo == "enProcCan" && nombre.value && !errores.nombre)
-				enProcCan[0].checked
-					? santopedia.classList.remove("ocultar")
-					: santopedia.classList.add("ocultar");
-		}
-
 		// Final de la rutina
 		feedback(OK, errores);
 	});
@@ -100,38 +75,6 @@ window.addEventListener("load", async () => {
 			funcionAno();
 			if (entidad == "RCLV_personajes") [OK, errores] = await funcionRCLI();
 			feedback(OK, errores);
-		} else if (window.location.pathname == "/revision/rclv/") {
-			// Acciones para editar y cambiar el status del nuevo RCLV
-			// Obtener todos los valores
-			let url = "";
-			// Campos de identificación
-			url += "?entidad=" + entidad;
-			url += "&id=" + id;
-			// Campos  que siempre están
-			url += "&nombre=" + nombre.value;
-			url += "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-			url += "&desconocida=" + desconocida.checked;
-			let casos = document.querySelectorAll("#posiblesRepetidos li input");
-			if (Array.from(casos).filter((n) => n.checked).length) url += "&repetido=SI";
-			// Campos cuando la entidad difiere de 'valores'
-			if (entidad != "RCLV_valores") url += "&ano=" + ano.value;
-			// Campos exclusivos de 'personajes'
-			if (entidad == "RCLV_personajes")
-				url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
-			if (entidad == "RCLV_personajes" && enProcCan[0].checked) {
-				let generoElegido = genero[0].checked ? "V" : genero[1].checked ? "M" : "";
-				url += "&genero=" + generoElegido;
-				url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
-				url += "&rol_iglesia_id=" + rol_iglesia_id.value;
-			}
-			// Validar todos los campos una vez más
-			let ruta = "/rclv/api/validar-consolidado/";
-			errores = await fetch(ruta + url).then((n) => n.json());
-			// Si hay errores y el botón 'submit' estaba activo, recargar la página
-			if (errores.hay) console.log(errores);
-			//if (errores.hay) location.reload();
-			// Editar y cambiar el status del nuevo RCLV
-
 		}
 	});
 
@@ -224,62 +167,85 @@ window.addEventListener("load", async () => {
 		return [OK, errores];
 	};
 	let funcionRCLI = async () => {
-		if (entidad != "RCLV_personajes") return;
-		// Ocultar / mostrar lo referido al status y género
-		enProcCan[0].checked
-			? ocultarEnProcCan.classList.remove("invisible")
-			: ocultarEnProcCan.classList.add("invisible");
-		// Armar la url
-		let url = "";
-		// En proceso de canonización
-		url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
-		// Género
-		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
-		url += "&genero=" + generoElegido;
-		// Status del proceso de canonización
-		url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
-		// Rol en la Iglesia
-		url += "&rol_iglesia_id=" + rol_iglesia_id.value;
-		// Obtener los errores
-		errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
-		OK.RCLI = !errores.RCLI;
+		console.log(enProcCan[0].checked);
+		if (enProcCan[0].checked) {
+			// Armar la url
+			let url = "";
+			// En proceso de canonización
+			url += "&enProcCan=1";
+			// Género
+			let generoElegido = genero[0].checked
+				? genero[0].value
+				: genero[1].checked
+				? genero[1].value
+				: "";
+			console.log(generoElegido, genero);
+			url += "&genero=" + generoElegido;
+			// Status del proceso de canonización
+			url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
+			// Rol en la Iglesia
+			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
+			// OK y Errores
+			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
+			OK.RCLI = !errores.RCLI;
+			// Mostrar las opciones 'enProcCan'
+			ocultarEnProcCan.classList.remove("invisible");
+			// Logo de Santopedia
+			if (nombre.value && !errores.nombre) santopedia.classList.remove("ocultar");
+		} else {
+			// Armar la url con 'enProcCan'
+			let url = "&enProcCan=" + (enProcCan[1].checked ? "0" : "");
+			// OK y Errores
+			console.log(ruta + "RCLI" + url);
+			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
+			OK.RCLI = !errores.RCLI;
+			// Mostrar las opciones 'enProcCan'
+			ocultarEnProcCan.classList.add("invisible");
+			// Logo de Santopedia
+			santopedia.classList.add("ocultar");
+		}
+
+		// Fin
 		return [OK, errores];
 	};
 	let funcionGenero = () => {
-		if (entidad != "RCLV_personajes") return;
 		// Definir variables
 		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
-		let enProcCanElegido = enProcCan[0].checked;
-		// Cambiar el género de una leyenda, si corresponde
-		let letraActual = generoElegido == "V" ? "o" : "a";
-		let letraAnterior = generoElegido == "V" ? "a" : "o";
-		let cambiarGenero = !santosanta.innerHTML.includes("sant" + letraActual);
-		if (cambiarGenero)
-			santosanta.innerHTML = santosanta.innerHTML.replace("sant" + letraAnterior, "sant" + letraActual);
-		// Detectar si no se debe usar la función
-		if (!enProcCanElegido) return;
-		// Filtrar y dejar solamente los ID alineados con el género
-		let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
-		opciones_proc.forEach((n) =>
-			n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
-		);
-		if (
-			proceso_canonizacion_id.value &&
-			proceso_canonizacion_id.value.length != 2 &&
-			proceso_canonizacion_id.value[2] != generoElegido
-		)
-			proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
-		// Filtrar y dejar solamente los ID alineados con el género
-		let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-		opciones_rol.forEach((n) =>
-			n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
-		);
-		if (
-			rol_iglesia_id.value &&
-			rol_iglesia_id.value.length != 2 &&
-			rol_iglesia_id.value[2] != generoElegido
-		)
-			rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
+		if (generoElegido) {
+			// Cambiar el género de una leyenda, si corresponde
+			let letraActual = generoElegido == "V" ? "o" : "a";
+			let letraAnterior = generoElegido == "V" ? "a" : "o";
+			if (santosanta.innerHTML.includes("sant" + letraAnterior))
+				santosanta.innerHTML = santosanta.innerHTML.replace(
+					"sant" + letraAnterior,
+					"sant" + letraActual
+				);
+			// Dejar solamente las opciones alineadas con el género
+			let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
+			opciones_proc.forEach((n) =>
+				n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
+			);
+			let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+			opciones_rol.forEach((n) =>
+				n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
+			);
+			// Cambiar la opción anterior por el nuevo genero
+			if (
+				proceso_canonizacion_id.value &&
+				proceso_canonizacion_id.value.length != 2 &&
+				proceso_canonizacion_id.value[2] != generoElegido
+			)
+				proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
+			if (
+				rol_iglesia_id.value &&
+				rol_iglesia_id.value.length != 2 &&
+				rol_iglesia_id.value[2] != generoElegido
+			)
+				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
+			// Quitar la clase 'invisible' de enProcCan
+			proceso_canonizacion_id.classList.remove("invisible");
+			rol_iglesia_id.classList.remove("invisible");
+		}
 	};
 	let diasDelMes = () => {
 		// Aplicar cambios en los días 30 y 31
@@ -344,7 +310,7 @@ window.addEventListener("load", async () => {
 			[OK, errores] = funcionRepetido();
 		}
 		if (ano && ano.value) await funcionAno();
-		if (entidad == "RCLV_personajes") {
+		if (personajes) {
 			if (enProcCan[0].checked) {
 				funcionGenero();
 				ocultarEnProcCan.classList.remove("invisible");
