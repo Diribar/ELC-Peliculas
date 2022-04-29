@@ -90,7 +90,7 @@ window.addEventListener("load", async () => {
 		feedback(OK, errores);
 	});
 
-	form.addEventListener("submit", async (e) => {
+	botonSubmit.addEventListener("click", (e) => {
 		e.preventDefault();
 		if (!botonSubmit.classList.contains("inactivo")) {
 			if (window.location.pathname == "/revision/rclv/") {
