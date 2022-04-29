@@ -70,8 +70,8 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionNombre();
 			[OK, errores] = await funcionFechas();
 			[OK, errores] = funcionRepetido();
-			funcionAno();
-			if (entidad == "RCLV_personajes") [OK, errores] = await funcionRCLI();
+			if (!valores) await funcionAno();
+			if (personajes) [OK, errores] = await funcionRCLI();
 			feedback(OK, errores);
 		}
 	});
