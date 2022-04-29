@@ -176,7 +176,6 @@ window.addEventListener("load", async () => {
 				: genero[1].checked
 				? genero[1].value
 				: "";
-			console.log(generoElegido, genero);
 			url += "&genero=" + generoElegido;
 			// Status del proceso de canonización
 			url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
@@ -193,7 +192,6 @@ window.addEventListener("load", async () => {
 			// Armar la url con 'enProcCan'
 			let url = "&enProcCan=" + (enProcCan[1].checked ? "0" : "");
 			// OK y Errores
-			console.log(ruta + "RCLI" + url);
 			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
 			OK.RCLI = !errores.RCLI;
 			// Mostrar las opciones 'enProcCan'
