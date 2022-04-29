@@ -3,12 +3,12 @@
 const fs = require("fs");
 const path = require("path");
 const requestPromise = require("request-promise");
-const buscar_x_PC = require("../../funciones/3-Procesar/1-Buscar_x_PC");
-const procesar = require("../../funciones/3-Procesar/2-Agregar");
-const validar = require("../../funciones/5-Validar/Agregar");
+const buscar_x_PC = require("../../funciones/3-Procesos/1-Buscar_x_PC");
+const procesar = require("../../funciones/3-Procesos/2-Agregar");
+const validar = require("../../funciones/5-Validaciones/Agregar");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const especificas = require("../../funciones/4-Compartidas/Especificas");
+const especificas = require("../../funciones/4-Compartidas/Funciones");
 const variables = require("../../funciones/4-Compartidas/Variables");
 
 module.exports = {

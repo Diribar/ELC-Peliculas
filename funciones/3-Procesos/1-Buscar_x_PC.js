@@ -4,7 +4,7 @@ const searchTMDB = require("../1-APIs_TMDB/1-Search");
 const detailsTMDB = require("../1-APIs_TMDB/2-Details");
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const especificas = require("../4-Compartidas/Especificas");
+const especificas = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// ControllerAPI (cantProductos)

@@ -2,8 +2,8 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const especificas = require("../../funciones/4-Compartidas/Especificas");
-const validarUsuarios = require("../../funciones/5-Validar/Usuarios");
+const especificas = require("../../funciones/4-Compartidas/Funciones");
+const validarUsuarios = require("../../funciones/5-Validaciones/Usuarios");
 const bcryptjs = require("bcryptjs");
 
 module.exports = {

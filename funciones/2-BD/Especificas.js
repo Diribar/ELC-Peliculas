@@ -3,9 +3,8 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
-const procesarRUD = require("../3-Procesar/3-RUD");
-const especificas = require("../4-Compartidas/Especificas");
-const validar = require("../5-Validar/RUD");
+const procesarRUD = require("../3-Procesos/3-RUD");
+const especificas = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// Varios
@@ -212,54 +211,6 @@ module.exports = {
 			})
 			.then((n) => n.map((m) => m.toJSON()));
 	},
-	quedanCampos: async function (prodOriginal, prodEditado) {
-		// Variables
-		let edicion = {...prodEditado};
-		let noSeComparan;
-		let entidad = especificas.obtenerEntidad(prodEditado);
-		let statusAprobado = false;
-		// Pulir la información a tener en cuenta
-		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
-		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(edicion).length;
-		// Si no quedan, eliminar el registro
-		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
-			// Averiguar si el original no tiene errores
-			let errores = await validar.edicion(null, {...prodOriginal, entidad});
-			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
-			// 1. Que no tenga errores
-			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
-				statusAprobado = true;
-				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
-				// Averiguar el Lead Time de creación en horas
-				let ahora = especificas.ahora();
-				let leadTime = especificas.obtenerHoras(prodOriginal.creado_en, ahora);
-				// Cambiarle el status al producto y liberarlo
-				let datos = {
-					alta_terminada_en: ahora,
-					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
-				};
-				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
-				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidad == "colecciones") {
-					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOriginal.id};
-					// Actualizar el status de los capitulos
-					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
-				}
-			}
-		} else edicion = {...noSeComparan, ...edicion};
-		// Fin
-		return [quedanCampos, edicion, statusAprobado];
-	},
-
 	// RCLVs -------------------------------------------------------------
 	// Controlador-Revisar
 	obtenerRCLVsARevisar: async (haceUnaHora, revisar, userID) => {

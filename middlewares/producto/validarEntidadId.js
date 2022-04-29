@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/4-Compartidas/Especificas");
+const especificas = require("../../funciones/4-Compartidas/Funciones");
 
 module.exports = (req, res, next) => {
 	// Obtener los datos identificatorios del producto

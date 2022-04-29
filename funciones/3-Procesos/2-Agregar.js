@@ -5,7 +5,7 @@ const detailsTMDB = require("../1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const especificas = require("../4-Compartidas/Especificas");
+const especificas = require("../4-Compartidas/Funciones");
 
 module.exports = {
 	// USO COMPARTIDO *********************

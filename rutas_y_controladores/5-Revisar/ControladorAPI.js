@@ -3,7 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const variables = require("../../funciones/4-Compartidas/Variables");
-const especificas = require("../../funciones/4-Compartidas/Especificas");
+const especificas = require("../../funciones/4-Compartidas/Funciones");
 const path = require("path");
 
 // *********** Controlador ***********
