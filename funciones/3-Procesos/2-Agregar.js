@@ -46,8 +46,8 @@ module.exports = {
 			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
 			" en nuestra BD.";
 		return [prod_nuevos, prod_yaEnBD, mensaje];
-	},	
-	
+	},
+
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
@@ -491,7 +491,6 @@ module.exports = {
 		};
 		BD_genericas.agregarRegistro(datos.entidad, datos);
 	},
-
 };
 
 // Funciones *********************
@@ -583,7 +582,7 @@ let paisNombreToId = async (pais_nombre) => {
 	resultado = resultado.length ? resultado.join(", ") : "";
 	return resultado;
 };
-let convertirLetrasAlCastellano= (resultado) => {
+let convertirLetrasAlCastellano = (resultado) => {
 	let campos = Object.keys(resultado);
 	let valores = Object.values(resultado);
 	for (let i = 0; i < campos.length; i++) {
@@ -640,4 +639,4 @@ let convertirLetrasAlCastellano= (resultado) => {
 		}
 	}
 	return resultado;
-}
+};
