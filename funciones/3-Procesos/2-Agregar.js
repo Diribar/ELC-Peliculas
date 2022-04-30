@@ -27,7 +27,27 @@ module.exports = {
 			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
 		}
 	},
-
+	// ControllerVista (desambiguarForm)
+	prepararMensaje: (desambiguar) => {
+		let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
+		let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+		let coincidencias = desambiguar.resultados.length;
+		let nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+		let hayMas = desambiguar.hayMas;
+		let mensaje =
+			"Encontramos " +
+			(coincidencias == 1
+				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+				: (hayMas ? "muchas" : coincidencias) +
+				  " coincidencias" +
+				  (hayMas ? ". Te mostramos " + coincidencias : "") +
+				  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
+			" está" +
+			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
+			" en nuestra BD.";
+		return [prod_nuevos, prod_yaEnBD, mensaje];
+	},	
+	
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
@@ -456,6 +476,22 @@ module.exports = {
 		let FA_id = url.slice(0, aux);
 		return FA_id;
 	},
+
+	// ConfirmarGuardar
+	guardar_cal_registros: (confirma, registro) => {
+		let producto_id = funciones.entidad_id(confirma.entidad);
+		let datos = {
+			entidad: "cal_registros",
+			usuario_id: registro.creado_por_id,
+			[producto_id]: registro.id,
+			fe_valores: confirma.fe_valores,
+			entretiene: confirma.entretiene,
+			calidad_tecnica: confirma.calidad_tecnica,
+			resultado: confirma.calificacion,
+		};
+		BD_genericas.agregarRegistro(datos.entidad, datos);
+	},
+
 };
 
 // Funciones *********************

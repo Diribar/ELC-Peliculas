@@ -2,9 +2,8 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procesosRevisar = require("../../funciones/3-Procesos/5-Revisar");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
+const procesar = require("../../funciones/3-Procesos/5-Revisar");
 
 module.exports = {
 	// Uso general
@@ -30,16 +29,16 @@ module.exports = {
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// let ediciones=await BD_especificas.obtenerEdicionesARevisar();
 		// Consolidar productos y ordenar
-		productos = procesarProd(productos);
+		productos = procesar.procesarProd(productos);
 		// Obtener RCLV -----------------------------------------------------------------
 		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
 		//return res.send(RCLVs);
-		if (RCLVs.length) RCLVs = procesarRCLVs(RCLVs, aprobados);
+		if (RCLVs.length) RCLVs = procesar.procesarRCLVs(RCLVs, aprobados);
 		// Obtener Links ----------------------------------------------------------------
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
 		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
-		let prodsLinks = productosLinks(links, aprobado);
+		let prodsLinks = procesar.productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(RCLVs);
 		return res.render("0-VistaEstandar", {
@@ -168,7 +167,7 @@ module.exports = {
 		// 7. Obtener los países
 		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await bloquesAltaProd(prodOriginal, paises);
+		let [bloqueIzq, bloqueDer] = await procesar.bloquesAltaProd(prodOriginal, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -257,7 +256,7 @@ module.exports = {
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = armarComparacion(prodOriginal, prodEditado);
+			[ingresos, reemplazos] = procesar.armarComparacion(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -265,7 +264,7 @@ module.exports = {
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await bloqueDerEdicProd(prodOriginal, prodEditado);
+			bloqueDer = await procesar.bloqueDerEdicProd(prodOriginal, prodEditado);
 			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
@@ -361,193 +360,4 @@ module.exports = {
 			procesos_canonizacion,
 		});
 	},
-};
-
-// Funciones ------------------------------------------------------------------------------
-let procesarProd = (productos) => {
-	// Procesar los registros
-	let anchoMax = 30;
-	// Reconvertir los elementos
-	productos = productos.map((n) => {
-		let nombre =
-			(n.nombre_castellano.length > anchoMax
-				? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
-				: n.nombre_castellano) +
-			" (" +
-			n.ano_estreno +
-			")";
-		return {
-			id: n.id,
-			entidad: n.entidad,
-			nombre,
-			ano_estreno: n.ano_estreno,
-			abrev: n.entidad.slice(0, 3).toUpperCase(),
-			status_registro_id: n.status_registro_id,
-			fecha: n.creado_en,
-		};
-	});
-	// Fin
-	return productos;
-};
-let procesarRCLVs = (RCLVs, aprobados) => {
-	// Definir algunas variables
-	let anchoMax = 30;
-	let resultados = [];
-	let campos = ["peliculas", "colecciones", "capitulos"];
-	// Descartar los RCLVs que no tengan productos aprobados
-	RCLVs.map((n) => {
-		for (let campo of campos) {
-			if (n[campo].length)
-				for (let registro of n[campo]) {
-					if (
-						registro.status_registro_id == aprobados[0] ||
-						registro.status_registro_id == aprobados[1]
-					) {
-						resultados.push(n);
-						break;
-					}
-				}
-			if (resultados.length && resultados.slice(-1) == n) break;
-		}
-	});
-	RCLVs = resultados;
-	// Reconvertir los elementos
-	RCLVs = RCLVs.map((n) => {
-		let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-		return {
-			id: n.id,
-			entidad: n.entidad,
-			nombre,
-			abrev: n.entidad.slice(5, 8).toUpperCase(),
-			status_registro_id: n.status_registro_id,
-			fecha: n.creado_en,
-		};
-	});
-	// Fin
-	return RCLVs;
-};
-
-let productosLinks = (links, aprobado) => {
-	// Resultado esperado:
-	//	- Solo productos aprobados
-	//	- Campos: {abrev, entidad, id, ano_estreno,}
-
-	// Definir las  variables
-	let prods = [];
-	let auxs = [
-		{nombre: "pelicula", entidad: "peliculas"},
-		{nombre: "coleccion", entidad: "colecciones"},
-		{nombre: "capitulo", entidad: "capitulos"},
-	];
-	// Rutina para cada link
-	for (let link of links) {
-		// Verificación para cada Producto
-		for (let aux of auxs) {
-			if (
-				link[aux.nombre] &&
-				aprobado.includes(link[aux.nombre].status_registro_id) &&
-				prods.findIndex((n) => n.entidad == aux.entidad && n.id == link[aux.nombre].id) < 0
-			)
-				prods.push({
-					entidad: aux.entidad,
-					id: link[aux.nombre].id,
-					nombre: link[aux.nombre].nombre_castellano,
-					ano_estreno: link[aux.nombre].ano_estreno,
-					abrev: aux.nombre.slice(0, 3).toUpperCase(),
-				});
-		}
-	}
-	return prods;
-};
-let bloquesAltaProd = async (prodOriginal, paises) => {
-	// Definir el 'ahora'
-	let ahora = funciones.ahora().getTime();
-	// Bloque izquierdo
-	let [bloque1, bloque2, bloque3] = [[], [], []];
-	// Bloque 1
-	if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-	if (prodOriginal.idioma_original)
-		bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
-	// Bloque 2
-	if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
-	if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
-	if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
-	if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
-	// Bloque 3
-	if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
-	// Bloque izquierdo consolidado
-	let izquierda = [bloque1, bloque2, bloque3];
-	// Bloque derecho
-	[bloque1, bloque2] = [[], []];
-	// Bloque 1
-	if (prodOriginal.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-	if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-	if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-	// Obtener la fecha de alta
-	let fecha = obtenerLaFecha(prodOriginal.creado_en);
-	bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-	// 5. Obtener los datos del usuario
-	let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodOriginal.creado_por_id, ahora);
-	// 6. Obtener la calidad de las altas
-	let calidadAltas = await BD_especificas.calidadAltas(prodOriginal.creado_por_id);
-	// Bloque derecho consolidado
-	let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
-	return [izquierda, derecha];
-};
-let bloqueDerEdicProd = async (prodOriginal, prodEditado) => {
-	// Definir el 'ahora'
-	let ahora = funciones.ahora().getTime();
-	// Bloque derecho
-	let [bloque1, bloque2] = [[], []],
-		fecha;
-	// Bloque 1
-	if (prodOriginal.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-	if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-	if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-	// Obtener la fecha de alta
-	fecha = obtenerLaFecha(prodOriginal.creado_en);
-	bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-	// Obtener la fecha de edicion
-	fecha = obtenerLaFecha(prodEditado.editado_en);
-	bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-	// 5. Obtener los datos del usuario
-	let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodEditado.editado_por_id, ahora);
-	// 6. Obtener la calidad de las altas
-	let calidadEdic = await BD_especificas.calidadEdic(prodEditado.editado_por_id);
-	// Bloque derecho consolidado
-	let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-	return derecha;
-};
-let obtenerLaFecha = (fecha) => {
-	let dia = fecha.getDate();
-	let mes = variables.meses()[fecha.getMonth()];
-	let ano = fecha.getFullYear().toString().slice(-2);
-	fecha = dia + "/" + mes + "/" + ano;
-	return fecha;
-};
-let armarComparacion = (prodOriginal, prodEditado) => {
-	let camposAComparar = variables.camposRevisarEdic();
-	for (let i = camposAComparar.length - 1; i >= 0; i--) {
-		let campo = camposAComparar[i].nombreDelCampo;
-		if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
-		else {
-			// Variables
-			let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;
-			let asoc1 = camposAComparar[i].asociacion1;
-			let asoc2 = camposAComparar[i].asociacion2;
-			// Valores originales
-			camposAComparar[i].valorOrig = verificar ? prodOriginal[campo] : null;
-			camposAComparar[i].mostrarOrig =
-				camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
-					? prodOriginal[asoc1][asoc2]
-					: camposAComparar[i].valorOrig;
-			// Valores editados
-			camposAComparar[i].valorEdic = prodEditado[campo];
-			camposAComparar[i].mostrarEdic = asoc1 ? prodEditado[asoc1][asoc2] : prodEditado[campo];
-		}
-	}
-	// Ingresos de edición, sin valor en la versión original
-	let ingresos = camposAComparar.filter((n) => !n.valorOrig);
-	let reemplazos = camposAComparar.filter((n) => n.valorOrig);
-	return [ingresos, reemplazos];
 };

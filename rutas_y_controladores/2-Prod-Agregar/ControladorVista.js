@@ -67,7 +67,7 @@ module.exports = {
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: await buscar_x_PC.search(palabrasClave, true);
-		let [prod_nuevos, prod_yaEnBD, mensaje] = prepararMensaje(desambiguar);
+		let [prod_nuevos, prod_yaEnBD, mensaje] = procesar.prepararMensaje(desambiguar);
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
@@ -491,7 +491,7 @@ module.exports = {
 				: procesar.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
-		guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
+		procesar.guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
 		funciones.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
@@ -555,38 +555,4 @@ module.exports = {
 		let titulo = "Agregar - Responsabilidad";
 		return res.render("0-VistaEstandar", {tema, codigo, titulo});
 	},
-};
-
-let guardar_cal_registros = (confirma, registro) => {
-	let producto_id = funciones.entidad_id(confirma.entidad);
-	let datos = {
-		entidad: "cal_registros",
-		usuario_id: registro.creado_por_id,
-		[producto_id]: registro.id,
-		fe_valores: confirma.fe_valores,
-		entretiene: confirma.entretiene,
-		calidad_tecnica: confirma.calidad_tecnica,
-		resultado: confirma.calificacion,
-	};
-	BD_genericas.agregarRegistro(datos.entidad, datos);
-};
-
-let prepararMensaje = (desambiguar) => {
-	let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
-	let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
-	let coincidencias = desambiguar.resultados.length;
-	let nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
-	let hayMas = desambiguar.hayMas;
-	let mensaje =
-		"Encontramos " +
-		(coincidencias == 1
-			? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
-			: (hayMas ? "muchas" : coincidencias) +
-			  " coincidencias" +
-			  (hayMas ? ". Te mostramos " + coincidencias : "") +
-			  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
-		" está" +
-		(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
-		" en nuestra BD.";
-	return [prod_nuevos, prod_yaEnBD, mensaje];
 };

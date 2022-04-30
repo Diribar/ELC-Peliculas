@@ -2,6 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const procesar = require("../../funciones/3-Procesos/3-RUD");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 const validar = require("../../funciones/4-Validaciones/RUD");
 
@@ -222,7 +223,7 @@ module.exports = {
 				// Sin "captura válida" y con status 'aprobado'
 				if (motivo_id) {
 					// Si explica el motivo, se inactiva
-					funcionInactivar(motivo_id, usuario, link);
+					procesar.inactivar(motivo_id, usuario, link);
 					respuesta.mensaje = "El link fue inactivado con éxito";
 					respuesta.resultado = true;
 				} else {
@@ -240,36 +241,6 @@ module.exports = {
 	},
 };
 
-let funcionInactivar = async (motivo_id, usuario, link) => {
-	// Obtener la duración
-	let duracion = await BD_genericas.obtenerPorId("altas_rech_motivos", motivo_id).then((n) => n.duracion);
-	// Obtener el status_id de 'inactivar'
-	let statusInactivar_id = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: 1}).then(
-		(n) => n.id
-	);
-	// Preparar los datos
-	let datosParaLink = {
-		editado_por_id: usuario.id,
-		editado_en: new Date(),
-		status_registro_id: statusInactivar_id,
-	};
-	// Actualiza el registro 'original' en la BD
-	BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
-	// 3. Crea un registro en la BD de 'altas_rech'
-	let datosParaBorrados = {
-		entidad: "links_originales",
-		entidad_id: link.id,
-		motivo_id: motivo_id,
-		duracion: 0, // porque todavía lo tiene que evaluar un revisor
-
-		input_por_id: link.creado_por_id,
-		input_en: link.creado_en,
-		evaluado_por_id: datosParaLink.editado_por_id,
-		evaluado_en: datosParaLink.editado_en,
-		status_registro_id: datosParaLink.status_registro_id,
-	};
-	BD_genericas.agregarRegistro("altas_rech", datosParaBorrados);
-};
 
 // let obtenerLinksFusionados = async (link_id, usuario) => {
 // 	let link_original = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
