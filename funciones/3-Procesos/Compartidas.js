@@ -8,118 +8,6 @@ const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Países
-	paises_idToNombre: async (paises_id) => {
-		// Función para convertir 'string de ID' en  'string de nombres'
-		let resultado = [];
-		if (paises_id.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(", ");
-			// Convertir 'array de ID' en 'string de nombres'
-			for (let pais_id of paises_idArray) {
-				let aux = BD_paises.find((n) => n.id == pais_id);
-				if (aux) resultado.push(aux.nombre);
-			}
-		}
-		resultado = resultado.length ? resultado.join(", ") : "";
-		return resultado;
-	},
-	paisNombreToId: async function (pais_nombre) {
-		// Función para convertir 'string de nombre' en  'string de ID'
-		let resultado = [];
-		if (pais_nombre.length) {
-			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			pais_nombreArray = pais_nombre.split(", ");
-			// Convertir 'array de nombres' en 'string de ID"
-			for (let pais_nombre of pais_nombreArray) {
-				let aux = BD_paises.find((n) => n.nombre == pais_nombre);
-				aux ? resultado.push(aux.id) : "";
-			}
-		}
-		resultado = resultado.length ? resultado.join(", ") : "";
-		return resultado;
-	},
-
-	// Temas de idioma
-	convertirLetrasAlIngles: (resultado) => {
-		return resultado
-			.toLowerCase()
-			.replace(/-/g, " ")
-			.replace(/á/g, "a")
-			.replace(/é/g, "e")
-			.replace(/í/g, "i")
-			.replace(/ó/g, "o")
-			.replace(/úü/g, "u")
-			.replace(/ñ/g, "n")
-			.replace(/:¿![.][?]/g, "")
-			.replace(/ +/g, " ");
-	},
-	convertirLetrasAlCastellano: (resultado) => {
-		let campos = Object.keys(resultado);
-		let valores = Object.values(resultado);
-		for (let i = 0; i < campos.length; i++) {
-			if (typeof valores[i] == "string") {
-				resultado[campos[i]] = valores[i]
-					.replace(/  /g, " ")
-					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
-					.replace(/[àâãäåāăą]/g, "a")
-					.replace(/Æ/g, "Ae")
-					.replace(/æ/g, "ae")
-					.replace(/[ÇĆĈĊČ]/g, "C")
-					.replace(/[çćĉċč]/g, "c")
-					.replace(/[ÐĎ]/g, "D")
-					.replace(/[đď]/g, "d")
-					.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-					.replace(/[èêëēĕėęě]/g, "e")
-					.replace(/[ĜĞĠĢ]/g, "G")
-					.replace(/[ĝğġģ]/g, "g")
-					.replace(/[ĦĤ]/g, "H")
-					.replace(/[ħĥ]/g, "h")
-					.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
-					.replace(/[ìîïĩīĭįı]/g, "i")
-					.replace(/Ĳ/g, "Ij")
-					.replace(/ĳ/g, "ij")
-					.replace(/Ĵ/g, "J")
-					.replace(/ĵ/g, "j")
-					.replace(/Ķ/g, "K")
-					.replace(/[ķĸ]/g, "k")
-					.replace(/[ĹĻĽĿŁ]/g, "L")
-					.replace(/[ĺļľŀł]/g, "l")
-					.replace(/[ŃŅŇ]/g, "N")
-					.replace(/[ńņňŉ]/g, "n")
-					.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-					.replace(/[òôõōðōŏő]/g, "o")
-					.replace(/[ÖŒ]/g, "Oe")
-					.replace(/[ö]/g, "o")
-					.replace(/[œ]/g, "oe")
-					.replace(/[ŔŖŘ]/g, "R")
-					.replace(/[ŕŗř]/g, "r")
-					.replace(/[ŚŜŞŠ]/g, "S")
-					.replace(/[śŝşš]/g, "s")
-					.replace(/[ŢŤŦ]/g, "T")
-					.replace(/[ţťŧ]/g, "t")
-					.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
-					.replace(/[ùûũūŭůűų]/g, "u")
-					.replace(/Ŵ/g, "W")
-					.replace(/ŵ/g, "w")
-					.replace(/[ÝŶŸ]/g, "Y")
-					.replace(/[ýŷÿ]/g, "y")
-					.replace(/[ŽŹŻŽ]/g, "Z")
-					.replace(/[žźżž]/g, "z")
-					.replace(/[”“«»]/g, '"')
-					.replace(/[º]/g, "°");
-			}
-		}
-		return resultado;
-	},
-	letrasValidasCastellano: (dato) => {
-		let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
-		// \d: any decimal
-		// \r: carriage return
-		// \n: new line
-		return !formato.test(dato);
-	},
-
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
 		let archivoOrigen = "./public/imagenes/" + origen + "/" + nombre;
@@ -269,5 +157,33 @@ module.exports = {
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
 		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
 		return edicion;
+	},
+	paises_idToNombre: async (paises_id) => {
+		// Función para convertir 'string de ID' en  'string de nombres'
+		let resultado = [];
+		if (paises_id.length) {
+			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			let paises_idArray = paises_id.split(", ");
+			// Convertir 'array de ID' en 'string de nombres'
+			for (let pais_id of paises_idArray) {
+				let aux = BD_paises.find((n) => n.id == pais_id);
+				if (aux) resultado.push(aux.nombre);
+			}
+		}
+		resultado = resultado.length ? resultado.join(", ") : "";
+		return resultado;
+	},
+	convertirLetrasAlIngles: (resultado) => {
+		return resultado
+			.toLowerCase()
+			.replace(/-/g, " ")
+			.replace(/á/g, "a")
+			.replace(/é/g, "e")
+			.replace(/í/g, "i")
+			.replace(/ó/g, "o")
+			.replace(/úü/g, "u")
+			.replace(/ñ/g, "n")
+			.replace(/:¿![.][?]/g, "")
+			.replace(/ +/g, " ");
 	},
 };

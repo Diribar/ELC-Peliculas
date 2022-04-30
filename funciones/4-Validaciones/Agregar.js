@@ -93,7 +93,7 @@ module.exports = {
 					? cartelCampoVacio
 					: longitud(datos[campo.nombre], campo.corto, campo.largo)
 					? longitud(datos[campo.nombre], campo.corto, campo.largo)
-					: funciones.letrasValidasCastellano(datos[campo.nombre])
+					: letrasValidasCastellano(datos[campo.nombre])
 					? cartelCastellano
 					: "";
 		}
@@ -140,7 +140,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 2, 100)
 				? longitud(datos.musica, 2, 100)
-				: funciones.letrasValidasCastellano(datos.musica)
+				: letrasValidasCastellano(datos.musica)
 				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
@@ -148,7 +148,7 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 2, 500)
 				? longitud(datos.actuacion, 2, 500)
-				: funciones.letrasValidasCastellano(datos.actuacion)
+				: letrasValidasCastellano(datos.actuacion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("avatar"))
@@ -268,4 +268,11 @@ let cartelRepetido = (datos) => {
 		"</strong></u></a>" +
 		" ya se encuentra en nuestra base de datos"
 	);
+};
+let letrasValidasCastellano = (dato) => {
+	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+	// \d: any decimal
+	// \r: carriage return
+	// \n: new line
+	return !formato.test(dato);
 };

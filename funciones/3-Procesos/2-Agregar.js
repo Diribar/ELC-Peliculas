@@ -92,7 +92,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return funciones.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -149,7 +149,7 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id (sólo se consigue desde SEARCH)
@@ -310,7 +310,7 @@ module.exports = {
 				});
 		}
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -348,7 +348,11 @@ module.exports = {
 		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
 		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+		let avatar = datosCap.still_path
+			? datosCap.still_path
+			: datosCap.poster_path
+			? datosCap.poster_path
+			: "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
@@ -383,7 +387,7 @@ module.exports = {
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			contenido.paises_id = await funciones.paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -397,7 +401,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
@@ -528,3 +532,76 @@ let funcionCast = (dato) => {
 	}
 	return actuacion;
 };
+let paisNombreToId = async (pais_nombre) => {
+	// Función para convertir 'string de nombre' en  'string de ID'
+	let resultado = [];
+	if (pais_nombre.length) {
+		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		pais_nombreArray = pais_nombre.split(", ");
+		// Convertir 'array de nombres' en 'string de ID"
+		for (let pais_nombre of pais_nombreArray) {
+			let aux = BD_paises.find((n) => n.nombre == pais_nombre);
+			aux ? resultado.push(aux.id) : "";
+		}
+	}
+	resultado = resultado.length ? resultado.join(", ") : "";
+	return resultado;
+};
+let convertirLetrasAlCastellano= (resultado) => {
+	let campos = Object.keys(resultado);
+	let valores = Object.values(resultado);
+	for (let i = 0; i < campos.length; i++) {
+		if (typeof valores[i] == "string") {
+			resultado[campos[i]] = valores[i]
+				.replace(/  /g, " ")
+				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+				.replace(/[àâãäåāăą]/g, "a")
+				.replace(/Æ/g, "Ae")
+				.replace(/æ/g, "ae")
+				.replace(/[ÇĆĈĊČ]/g, "C")
+				.replace(/[çćĉċč]/g, "c")
+				.replace(/[ÐĎ]/g, "D")
+				.replace(/[đď]/g, "d")
+				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+				.replace(/[èêëēĕėęě]/g, "e")
+				.replace(/[ĜĞĠĢ]/g, "G")
+				.replace(/[ĝğġģ]/g, "g")
+				.replace(/[ĦĤ]/g, "H")
+				.replace(/[ħĥ]/g, "h")
+				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+				.replace(/[ìîïĩīĭįı]/g, "i")
+				.replace(/Ĳ/g, "Ij")
+				.replace(/ĳ/g, "ij")
+				.replace(/Ĵ/g, "J")
+				.replace(/ĵ/g, "j")
+				.replace(/Ķ/g, "K")
+				.replace(/[ķĸ]/g, "k")
+				.replace(/[ĹĻĽĿŁ]/g, "L")
+				.replace(/[ĺļľŀł]/g, "l")
+				.replace(/[ŃŅŇ]/g, "N")
+				.replace(/[ńņňŉ]/g, "n")
+				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+				.replace(/[òôõōðōŏő]/g, "o")
+				.replace(/[ÖŒ]/g, "Oe")
+				.replace(/[ö]/g, "o")
+				.replace(/[œ]/g, "oe")
+				.replace(/[ŔŖŘ]/g, "R")
+				.replace(/[ŕŗř]/g, "r")
+				.replace(/[ŚŜŞŠ]/g, "S")
+				.replace(/[śŝşš]/g, "s")
+				.replace(/[ŢŤŦ]/g, "T")
+				.replace(/[ţťŧ]/g, "t")
+				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+				.replace(/[ùûũūŭůűų]/g, "u")
+				.replace(/Ŵ/g, "W")
+				.replace(/ŵ/g, "w")
+				.replace(/[ÝŶŸ]/g, "Y")
+				.replace(/[ýŷÿ]/g, "y")
+				.replace(/[ŽŹŻŽ]/g, "Z")
+				.replace(/[žźżž]/g, "z")
+				.replace(/[”“«»]/g, '"')
+				.replace(/[º]/g, "°");
+		}
+	}
+	return resultado;
+}
