@@ -320,7 +320,7 @@ module.exports = {
 			);
 		}
 		// Obtener el título de canonización
-		let tituloCanoniz = funciones.tituloCanonizacion({...RCLV_original, entidad});
+		let tituloCanoniz = procesar.tituloCanonizacion({...RCLV_original, entidad});
 		// Datos para la vista
 		// Títulos
 		let prodNombre = funciones.entidadNombre(entidad);
