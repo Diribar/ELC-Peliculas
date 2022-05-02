@@ -358,4 +358,13 @@ module.exports = {
 		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
 		return [ingresos, reemplazos];
 	},
+	aprobarAltaRCLV:async(datos)=>{
+		// Verificar que existe la entidad+id, y que está en status 'creado'
+
+		// Si no existe => error
+
+		// Si concuerda, actualizar con el status 'creado'
+
+		// Retorno con el status de errores
+	}
 };
