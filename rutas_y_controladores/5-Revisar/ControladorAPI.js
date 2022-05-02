@@ -17,7 +17,7 @@ module.exports = {
 		return res.json();
 	},
 
-	// PRODUCTOS - 
+	// PRODUCTOS -
 	// Revisar el alta - Aprobar
 	aprobarAlta: async (req, res) => {
 		let {entidad, id} = req.query;
@@ -186,6 +186,15 @@ module.exports = {
 	// RCLV
 	// Aprobar el alta
 	aprobarAltaRCLV: async (req, res) => {
+		// Variables
+		let datos = req.query;
 		console.log(req.query);
-	}
+		return res.json();
+		// Actualizar la versión original
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		let aprobado = status.find((n) => n.aprobado).id;
+		datos = {...datos, status_registro_id: aprobado};
+
+		let resultado;
+	},
 };

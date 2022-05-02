@@ -37,7 +37,7 @@ module.exports = {
 		// Obtener Links ----------------------------------------------------------------
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
-		let aprobado = status.filter((n) => n.aprobado).map((n) => n.id);
+		let aprobado = status.find((n) => n.aprobado).id
 		let prodsLinks = procesar.productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(RCLVs);
