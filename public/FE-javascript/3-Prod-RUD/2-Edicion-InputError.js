@@ -276,7 +276,6 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconosError.length;
-		console.log(OK,!error);
 		OK && !error
 			? botonGuardarSession.classList.remove("inactivoErrores")
 			: botonGuardarSession.classList.add("inactivoErrores");
