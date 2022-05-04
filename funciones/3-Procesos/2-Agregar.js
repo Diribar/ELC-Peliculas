@@ -1,13 +1,53 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../APIs_TMDB/1-Search");
-const detailsTMDB = require("../APIs_TMDB/2-Details");
-const creditsTMDB = require("../APIs_TMDB/3-Credits");
-const BD_genericas = require("../BD/Genericas");
-const BD_especificas = require("../BD/Especificas");
-const especificas = require("../Varias/Especificas");
+const searchTMDB = require("../1-APIs_TMDB/1-Search");
+const detailsTMDB = require("../1-APIs_TMDB/2-Details");
+const creditsTMDB = require("../1-APIs_TMDB/3-Credits");
+const BD_genericas = require("../2-BD/Genericas");
+const BD_especificas = require("../2-BD/Especificas");
+const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
+	// USO COMPARTIDO *********************
+	borrarSessionCookies: (req, res, paso) => {
+		let pasos = [
+			"borrarTodo",
+			"palabrasClave",
+			"desambiguar",
+			"tipoProducto",
+			"datosOriginales",
+			"copiarFA",
+			"datosDuros",
+			"datosPers",
+			"confirma",
+		];
+		let indice = pasos.indexOf(paso) + 1;
+		for (indice; indice < pasos.length; indice++) {
+			if (req.session && req.session[pasos[indice]]) delete req.session[pasos[indice]];
+			if (req.cookies && req.cookies[pasos[indice]]) res.clearCookie(pasos[indice]);
+		}
+	},
+	// ControllerVista (desambiguarForm)
+	prepararMensaje: (desambiguar) => {
+		let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
+		let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
+		let coincidencias = desambiguar.resultados.length;
+		let nuevos = prod_nuevos && prod_nuevos.length ? prod_nuevos.length : 0;
+		let hayMas = desambiguar.hayMas;
+		let mensaje =
+			"Encontramos " +
+			(coincidencias == 1
+				? "una sola coincidencia, que " + (nuevos == 1 ? "no" : "ya")
+				: (hayMas ? "muchas" : coincidencias) +
+				  " coincidencias" +
+				  (hayMas ? ". Te mostramos " + coincidencias : "") +
+				  (nuevos == coincidencias ? ", ninguna" : nuevos ? ", " + nuevos + " no" : ", todas ya")) +
+			" está" +
+			(nuevos > 1 && nuevos < coincidencias ? "n" : "") +
+			" en nuestra BD.";
+		return [prod_nuevos, prod_yaEnBD, mensaje];
+	},
+
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
 	infoTMDBparaDD_movie: async (datos) => {
@@ -72,7 +112,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return especificas.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -129,11 +169,11 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Obtener nombre_original y idioma_original_id (sólo se consigue desde SEARCH)
-		let palabrasClave = especificas.convertirLetrasAlIngles(datos.nombre_castellano);
+		let palabrasClave = funciones.convertirLetrasAlIngles(datos.nombre_castellano);
 		let buscar = await searchTMDB(palabrasClave, "collection", 1);
 		let exportar;
 		if (buscar.results.length) {
@@ -290,7 +330,7 @@ module.exports = {
 				});
 		}
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -328,7 +368,11 @@ module.exports = {
 		if (datosCap.guest_stars.length) actuacion.push(...datosCap.guest_stars);
 		if (actuacion.length) datos.actuacion = funcionCast(actuacion);
 		if (datosCap.overview) datos.sinopsis = datosCap.overview;
-		let avatar = datosCap.still_path ? datosCap.still_path : datosCap.poster_path ? datosCap.poster_path : "";
+		let avatar = datosCap.still_path
+			? datosCap.still_path
+			: datosCap.poster_path
+			? datosCap.poster_path
+			: "";
 		if (avatar) datos.avatar = "https://image.tmdb.org/t/p/original" + avatar;
 		return datos;
 	},
@@ -359,11 +403,11 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
-			contenido.paises_id = await especificas.paisNombreToId(contenido.pais_nombre);
+			contenido.paises_id = await paisNombreToId(contenido.pais_nombre);
 			delete contenido.pais_nombre;
 		}
 		// Generar el resultado
@@ -377,7 +421,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return especificas.convertirLetrasAlCastellano(datos);
+		return convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
@@ -431,6 +475,21 @@ module.exports = {
 		aux = url.indexOf(".html");
 		let FA_id = url.slice(0, aux);
 		return FA_id;
+	},
+
+	// ConfirmarGuardar
+	guardar_cal_registros: (confirma, registro) => {
+		let producto_id = funciones.entidad_id(confirma.entidad);
+		let datos = {
+			entidad: "cal_registros",
+			usuario_id: registro.creado_por_id,
+			[producto_id]: registro.id,
+			fe_valores: confirma.fe_valores,
+			entretiene: confirma.entretiene,
+			calidad_tecnica: confirma.calidad_tecnica,
+			resultado: confirma.calificacion,
+		};
+		BD_genericas.agregarRegistro(datos.entidad, datos);
 	},
 };
 
@@ -507,4 +566,77 @@ let funcionCast = (dato) => {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
 	return actuacion;
+};
+let paisNombreToId = async (pais_nombre) => {
+	// Función para convertir 'string de nombre' en  'string de ID'
+	let resultado = [];
+	if (pais_nombre.length) {
+		let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		pais_nombreArray = pais_nombre.split(", ");
+		// Convertir 'array de nombres' en 'string de ID"
+		for (let pais_nombre of pais_nombreArray) {
+			let aux = BD_paises.find((n) => n.nombre == pais_nombre);
+			aux ? resultado.push(aux.id) : "";
+		}
+	}
+	resultado = resultado.length ? resultado.join(", ") : "";
+	return resultado;
+};
+let convertirLetrasAlCastellano = (resultado) => {
+	let campos = Object.keys(resultado);
+	let valores = Object.values(resultado);
+	for (let i = 0; i < campos.length; i++) {
+		if (typeof valores[i] == "string") {
+			resultado[campos[i]] = valores[i]
+				.replace(/  /g, " ")
+				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+				.replace(/[àâãäåāăą]/g, "a")
+				.replace(/Æ/g, "Ae")
+				.replace(/æ/g, "ae")
+				.replace(/[ÇĆĈĊČ]/g, "C")
+				.replace(/[çćĉċč]/g, "c")
+				.replace(/[ÐĎ]/g, "D")
+				.replace(/[đď]/g, "d")
+				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+				.replace(/[èêëēĕėęě]/g, "e")
+				.replace(/[ĜĞĠĢ]/g, "G")
+				.replace(/[ĝğġģ]/g, "g")
+				.replace(/[ĦĤ]/g, "H")
+				.replace(/[ħĥ]/g, "h")
+				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+				.replace(/[ìîïĩīĭįı]/g, "i")
+				.replace(/Ĳ/g, "Ij")
+				.replace(/ĳ/g, "ij")
+				.replace(/Ĵ/g, "J")
+				.replace(/ĵ/g, "j")
+				.replace(/Ķ/g, "K")
+				.replace(/[ķĸ]/g, "k")
+				.replace(/[ĹĻĽĿŁ]/g, "L")
+				.replace(/[ĺļľŀł]/g, "l")
+				.replace(/[ŃŅŇ]/g, "N")
+				.replace(/[ńņňŉ]/g, "n")
+				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+				.replace(/[òôõōðōŏő]/g, "o")
+				.replace(/[ÖŒ]/g, "Oe")
+				.replace(/[ö]/g, "o")
+				.replace(/[œ]/g, "oe")
+				.replace(/[ŔŖŘ]/g, "R")
+				.replace(/[ŕŗř]/g, "r")
+				.replace(/[ŚŜŞŠ]/g, "S")
+				.replace(/[śŝşš]/g, "s")
+				.replace(/[ŢŤŦ]/g, "T")
+				.replace(/[ţťŧ]/g, "t")
+				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+				.replace(/[ùûũūŭůűų]/g, "u")
+				.replace(/Ŵ/g, "W")
+				.replace(/ŵ/g, "w")
+				.replace(/[ÝŶŸ]/g, "Y")
+				.replace(/[ýŷÿ]/g, "y")
+				.replace(/[ŽŹŻŽ]/g, "Z")
+				.replace(/[žźżž]/g, "z")
+				.replace(/[”“«»]/g, '"')
+				.replace(/[º]/g, "°");
+		}
+	}
+	return resultado;
 };

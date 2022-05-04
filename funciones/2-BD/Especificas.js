@@ -3,15 +3,20 @@
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
 const BD_genericas = require("./Genericas");
-const especificas = require("../Varias/Especificas");
-const validar = require("../Validar/RUD");
 
 module.exports = {
 	// Varios
 	obtenerELC_id: (entidad, objeto) => {
 		return db[entidad].findOne({where: objeto}).then((n) => (n ? n.id : ""));
 	},
-
+	validarRepetidos: (campos, datos) => {
+		// El mismo valor para los campos
+		let objeto = {};
+		for (let campo of campos) objeto[campo] = datos[campo];
+		// Distinto ID
+		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
+		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
+	},
 	// PRODUCTOS ------------------------------------------------------------------
 	// Header
 	quickSearchCondiciones: (palabras) => {
@@ -89,48 +94,6 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
-	// API-RUD
-	obtenerVersionesDeProducto: async (entidad, prodID, userID) => {
-		// Definir los campos include
-		let includes = [
-			"idioma_original",
-			"en_castellano",
-			"en_color",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-			"editado_por",
-			// A partir de acá, van los campos exclusivos de 'Original'
-			"creado_por",
-			"status_registro",
-		];
-		if (entidad == "capitulos") includes.push("coleccion");
-		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-		// Obtener el producto EDITADO
-		let prodEditado = "";
-		let producto_id = especificas.entidad_id(entidad);
-		if (prodOriginal) {
-			// Quitarle los campos 'null'
-			prodOriginal = especificas.quitarLosCamposSinContenido(prodOriginal);
-			// Obtener los datos EDITADOS del producto
-			if (entidad == "capitulos") includes.pop();
-			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
-				"prods_edicion",
-				{[producto_id]: prodID, editado_por_id: userID},
-				includes.slice(0, -2)
-			);
-			if (prodEditado) {
-				// Quitarle los campos 'null'
-				prodEditado = especificas.quitarLosCamposSinContenido(prodEditado);
-			}
-			// prodEditado = {...prodOriginal, ...prodEditado};
-		}
-		return [prodOriginal, prodEditado];
-	},
 	// Controlador-Revisar (Producto)
 	obtenerProductosARevisar: async (haceUnaHora, revisar, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
@@ -176,9 +139,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	obtenerEdicionAjena: async (producto_id, prodID, userID) => {
-		// Definir variables
-		let haceUnaHora = especificas.haceUnaHora();
+	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener un registro que cumpla ciertas condiciones
 		return db.prods_edicion
 			.findOne({
@@ -194,9 +155,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Controlador-Revisar (RCLV)
-	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID) => {
-		// Definir variables
-		let haceUnaHora = especificas.haceUnaHora();
+	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener los registros que cumplan ciertas condiciones
 		return db.prods_edicion
 			.findAll({
@@ -211,54 +170,6 @@ module.exports = {
 			})
 			.then((n) => n.map((m) => m.toJSON()));
 	},
-	quedanCampos: async function (prodOriginal, prodEditado) {
-		// Variables
-		let edicion = {...prodEditado};
-		let noSeComparan;
-		let entidad = especificas.obtenerEntidad(prodEditado);
-		let statusAprobado = false;
-		// Pulir la información a tener en cuenta
-		edicion = especificas.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = especificas.quitarLosCamposQueNoSeComparan(edicion);
-		edicion = especificas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(edicion).length;
-		// Si no quedan, eliminar el registro
-		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
-			// Averiguar si el original no tiene errores
-			let errores = await validar.edicion(null, {...prodOriginal, entidad});
-			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
-			// 1. Que no tenga errores
-			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
-				statusAprobado = true;
-				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
-				// Averiguar el Lead Time de creación en horas
-				let ahora = especificas.ahora();
-				let leadTime = especificas.obtenerHoras(prodOriginal.creado_en, ahora);
-				// Cambiarle el status al producto y liberarlo
-				let datos = {
-					alta_terminada_en: ahora,
-					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
-				};
-				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
-				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidad == "colecciones") {
-					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOriginal.id};
-					// Actualizar el status de los capitulos
-					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
-				}
-			}
-		} else edicion = {...noSeComparan, ...edicion};
-		// Fin
-		return [quedanCampos, edicion, statusAprobado];
-	},
-
 	// RCLVs -------------------------------------------------------------
 	// Controlador-Revisar
 	obtenerRCLVsARevisar: async (haceUnaHora, revisar, userID) => {
@@ -347,9 +258,8 @@ module.exports = {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
 	// Middleware/RevisarUsuario
-	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
+	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID, haceUnaHora) => {
 		// Variables
-		let haceUnaHora = especificas.haceUnaHora();
 		let entidades = [
 			"peliculas",
 			"colecciones",
@@ -380,118 +290,5 @@ module.exports = {
 		}
 		// Fin
 		return lectura ? {...lectura, entidad} : lectura;
-	},
-	// Controladora/Revisar/Productos
-	fichaDelUsuario: async function (userID) {
-		// Obtener los datos del usuario
-		let includes = "rol_iglesia";
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
-		// Variables
-		let anos = 1000 * 60 * 60 * 24 * 365;
-		let ahora = especificas.ahora().getTime();
-		// Edad
-		if (usuario.fecha_nacimiento) {
-			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";
-		}
-		// Antigüedad
-		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / anos) * 10) / 10)
-				.toFixed(1)
-				.replace(".", ",") + " años";
-		// Datos a enviar
-		let enviar = {};
-		enviar.apodo = ["Apodo", usuario.apodo];
-		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-		if (usuario.fecha_nacimiento) enviar.edad = ["Edad", edad];
-		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-		// Fin
-		return enviar;
-	},
-	calidadAltas: async function (userID) {
-		// Obtener los datos del usuario
-		let includes = ["status_registro", "peliculas", "colecciones"];
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
-		// 1. Obtener los status
-		let altaAprobId = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: 1}).then(
-			(n) => n.id
-		);
-		let aprobadoId = await BD_genericas.obtenerPorCampos("status_registro", {aprobado: 1}).then(
-			(n) => n.id
-		);
-		let editadoId = await BD_genericas.obtenerPorCampos("status_registro", {editado: 1}).then(
-			(n) => n.id
-		);
-		let inactivadoId = await BD_genericas.obtenerPorCampos("status_registro", {inactivado: 1}).then(
-			(n) => n.id
-		);
-		// 2. Contar los casos aprobados
-		let cantAprob = usuario.peliculas.length
-			? usuario.peliculas.filter(
-					(n) =>
-						n.status_registro_id == altaAprobId ||
-						n.status_registro_id == aprobadoId ||
-						n.status_registro_id == editadoId
-			  ).length
-			: 0;
-		cantAprob += usuario.colecciones.length
-			? usuario.colecciones.filter(
-					(n) =>
-						n.status_registro_id == altaAprobId ||
-						n.status_registro_id == aprobadoId ||
-						n.status_registro_id == editadoId
-			  ).length
-			: 0;
-		// 3. Contar los casos rechazados
-		let cantRech = usuario.peliculas.length
-			? usuario.peliculas.filter((n) => n.status_registro_id == inactivadoId).length
-			: 0;
-		cantRech += usuario.colecciones.length
-			? usuario.colecciones.filter((n) => n.status_registro_id == inactivadoId).length
-			: 0;
-		// 4. Precisión de altas
-		let cantAltas = cantAprob + cantRech;
-		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", {id: userID}, "duracion");
-		// Datos a enviar
-		let enviar = {
-			calidadAltas: ["Calidad Altas", calidadInputs],
-			cantAltas: ["Cant. Alta Productos", cantAltas],
-			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-		};
-		// Fin
-		return enviar;
-	},
-	calidadEdic: async function (userID) {
-		// Obtener la cantidad de aprobaciones y de rechazos
-		let cantAprob = await BD_genericas.contarCasos("edic_aprob", {input_por_id: userID});
-		let rechazados = await BD_genericas.obtenerTodosPorCampos("edic_rech", {input_por_id: userID});
-		let cantRech = rechazados.length ? rechazados.length : 0;
-		// Obtener la calidad de las ediciones
-		let cantEdics = cantAprob + cantRech;
-		let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-		// Obtener la cantidad de penalizaciones con días
-		let cantPenalizConDias = rechazados.length ? rechazados.filter((n) => n.duracion).length : "-";
-		// Obtener la cantidad de días penalizados
-		let diasPenalizacion = rechazados.length ? rechazados.reduce((suma, n) => suma + n.duracion, 0) : "-";
-		// Datos a enviar
-		let enviar = {
-			calidadEdiciones: ["Calidad Edición", calidadInputs],
-			cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-			cantPenalizConDias: ["Cant. Penaliz. c/Días", cantPenalizConDias],
-			diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-		};
-		// Fin
-		return enviar;
-	},
-	// Controladora/Usuario/Login
-	actualizarElContadorDeLogins: (usuario) => {
-		let hoyAhora = especificas.ahora().toISOString().slice(0, 10);
-		let hoyUsuario = usuario.fecha_ultimo_login;
-		//new Date(usuario.fecha_ultimo_login).toISOString().slice(0, 10);
-		if (hoyAhora != hoyUsuario) {
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", usuario.id, "dias_login");
-			BD_genericas.actualizarPorId("usuarios", usuario.id, {fecha_ultimo_login: hoyAhora});
-		}
-		return;
 	},
 };

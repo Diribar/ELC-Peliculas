@@ -1,25 +1,26 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/Varias/Especificas");
-const BD_especificas = require("../../funciones/BD/Especificas");
-const BD_genericas = require("../../funciones/BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
 	let entidadActual = req.query.entidad;
 	let prodID = req.query.id;
 	let userID = req.session.usuario.id;
+	let haceUnaHora = funciones.haceUnaHora();
 	// CONTROLES PARA PRODUCTO *******************************************************
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
 	let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario(
 		entidadActual,
 		prodID,
-		userID
+		userID,
+		haceUnaHora,
 	);
 	if (prodCapturado) {
 		// Datos para el mensaje
 		let entidad = prodCapturado.entidad;
-		let entidadNombre = especificas.entidadNombre(prodCapturado.entidad);
+		let entidadNombre = funciones.entidadNombre(prodCapturado.entidad);
 		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
 		let horario =
 			prodCapturado.capturado_en.getHours() +

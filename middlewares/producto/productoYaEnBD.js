@@ -1,7 +1,7 @@
 "use strict";
 // Requires
-const BD_especificas = require("../../funciones/BD/Especificas");
-const especificas = require("../../funciones/Varias/Especificas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const procesar = require("../../funciones/3-Procesos/2-Agregar");
 
 module.exports = async (req, res, next) => {
 	// Variables
@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 		}
 	}
 	if (informacion) {
-		especificas.borrarSessionCookies(req, res, "borrarTodo");
+		procesar.borrarSessionCookies(req, res, "borrarTodo");
 		return res.render("Errores", {informacion});
 	}
 	next();

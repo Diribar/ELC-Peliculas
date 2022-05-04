@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/BD/Genericas");
-const BD_especificas = require("../../funciones/BD/Especificas");
-const variables = require("../../funciones/Varias/Variables");
-const especificas = require("../../funciones/Varias/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const variables = require("../../funciones/3-Procesos/Variables");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 const path = require("path");
 
 // *********** Controlador ***********
@@ -29,7 +29,7 @@ module.exports = {
 		let datos = {
 			status_registro_id: statusAltaAprob,
 			alta_analizada_por_id: req.session.usuario.id,
-			alta_analizada_en: especificas.ahora(),
+			alta_analizada_en: funciones.ahora(),
 		};
 		await BD_genericas.actualizarPorId(entidad, id, datos);
 		// Fin
@@ -50,7 +50,7 @@ module.exports = {
 		datos = {
 			status_registro_id: statusInactivar,
 			alta_analizada_por_id: req.session.usuario.id,
-			alta_analizada_en: especificas.ahora(),
+			alta_analizada_en: funciones.ahora(),
 			captura_activa: 0,
 		};
 		BD_genericas.actualizarPorId(entidad, id, datos);
@@ -79,7 +79,7 @@ module.exports = {
 		let prodEditado = await BD_genericas.obtenerPorId("prods_edicion", edicID);
 		let userID = req.session.usuario.id;
 		let datos;
-		let ahora = especificas.ahora();
+		let ahora = funciones.ahora();
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
 		// Detectar un eventual error
@@ -93,13 +93,13 @@ module.exports = {
 					let ruta = prodOriginal.status_registro.alta_aprob
 						? "/imagenes/3-ProdRevisar/"
 						: "/imagenes/2-Productos/";
-					especificas.borrarArchivo(ruta, avatar);
+					funciones.borrarArchivo(ruta, avatar);
 				}
 				// Mover el nuevo avatar a la carpeta definitiva
-				especificas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
+				funciones.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 			} else {
 				// Eliminar el avatar editado
-				especificas.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
+				funciones.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
 				// Acciones si el status es 'alta-aprobada'
 				if (prodOriginal.status_registro.alta_aprob) {
 					let avatar = prodOriginal.avatar;
@@ -110,12 +110,12 @@ module.exports = {
 						// Obtener la ruta con el nombre
 						let rutaYnombre = "./public/imagenes/2-Productos/" + nombre;
 						// Convertir el url en un archivo
-						await especificas.descargar(prodOriginal.avatar, rutaYnombre);
+						await funciones.descargar(prodOriginal.avatar, rutaYnombre);
 						// Actualizar el nombre del avatar en la BD
 						await BD_genericas.actualizarPorId(entidad, prodID, {avatar: nombre});
 					} else if (avatar)
 						// Mover el archivo avatar a la carpeta definitiva
-						especificas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
+						funciones.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
 				}
 			}
 		}
@@ -186,6 +186,6 @@ module.exports = {
 	// RCLV
 	// Aprobar el alta
 	aprobarAltaRCLV: async (req, res) => {
-		
+		console.log(req.query);
 	}
 };

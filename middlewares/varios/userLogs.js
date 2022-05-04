@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/Varias/Especificas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
 	if (!req.session.urlAnterior) req.session.urlAnterior = "/";

@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/BD/Especificas");
-const BD_genericas = require("../../funciones/BD/Genericas");
-const especificas = require("../../funciones/Varias/Especificas");
-const validarUsuarios = require("../../funciones/Validar/Usuarios");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const validarUsuarios = require("../../funciones/4-Validaciones/Usuarios");
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
 		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
 		comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		especificas.enviarMail(asunto, email, comentario).catch(console.error);
+		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		await BD_genericas.agregarRegistro("usuarios", {email, contrasena});
@@ -123,7 +123,8 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session["email"];
 		// 6. Notificar al contador de logins
-		BD_especificas.actualizarElContadorDeLogins(req.session.usuario);
+		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
+		BD_especificas.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
@@ -211,7 +212,7 @@ module.exports = {
 		let errores = await validarUsuarios.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) especificas.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/altaredireccionar");
@@ -223,7 +224,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.file) especificas.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		if (req.file) funciones.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},

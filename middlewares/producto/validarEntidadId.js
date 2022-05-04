@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/Varias/Especificas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = (req, res, next) => {
 	// Obtener los datos identificatorios del producto
@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
 		};
 	else {
 		// Entidad inexistente
-		let prodNombre = especificas.entidadNombre(entidad);
+		let prodNombre = funciones.entidadNombre(entidad);
 		if (!prodNombre)
 			informacion = {
 				mensajes: ["La entidad ingresada no es válida"],

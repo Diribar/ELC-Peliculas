@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../BD/Especificas2");
-const especificas = require("../Varias/Especificas");
+const BD_especificas = require("../2-BD/Especificas");
+const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -129,7 +129,7 @@ let hayErrores = (errores) => {
 };
 
 let cartelRepetido = (datos) => {
-	let prodNombre = especificas.entidadNombre(datos.entidad);
+	let prodNombre = funciones.entidadNombre(datos.entidad);
 	return (
 		"Este " +
 		"<a href='/RCLV/detalle/?entidad=" +

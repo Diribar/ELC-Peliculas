@@ -1,7 +1,7 @@
 "use strict";
 // Requires
-const especificas = require("../../funciones/Varias/Especificas");
-const BD_genericas = require("../../funciones/BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 	let userID = usuario.id;
 	let url = req.url.slice(1);
 	let codigo = url.slice(0, url.indexOf("/"));
-	let haceUnaHora = especificas.haceUnaHora();
+	let haceUnaHora = funciones.haceUnaHora();
 	let informacion;
 	let linkDetalle = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
 	// CONTROLES PARA PRODUCTO *******************************************************
@@ -61,7 +61,7 @@ module.exports = async (req, res, next) => {
 					// ¿Producto capturado?
 					// Problema3: PRODUCTO CAPTURADO Y APTO PARA SER REVISADO ------
 					if (prodOriginal.capturado_en > haceUnaHora) {
-						let producto_id = especificas.entidad_id(entidad);
+						let producto_id = funciones.entidad_id(entidad);
 						let links = await BD_genericas.obtenerTodosPorCampos("links_originales", {
 							[producto_id]: prodID,
 						});
