@@ -1,12 +1,74 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("../3-Procesos/Compartidas");
 const validar = require("../4-Validaciones/RUD");
 const procesarRUD = require("./3-RUD");
-const variables = require("../../funciones/3-Procesos/Variables");
+const funciones = require("./Compartidas");
+const variables = require("./Variables");
 
 module.exports = {
+	// Revisar - Producto
+	bloquesAltaProd: async function (prodOriginal, paises) {
+		// Definir el 'ahora'
+		let ahora = funciones.ahora().getTime();
+		// Bloque izquierdo
+		let [bloque1, bloque2, bloque3] = [[], [], []];
+		// Bloque 1
+		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
+		if (prodOriginal.idioma_original)
+			bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
+		// Bloque 2
+		if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
+		if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
+		if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
+		if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
+		// Bloque 3
+		if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
+		// Bloque izquierdo consolidado
+		let izquierda = [bloque1, bloque2, bloque3];
+		// Bloque derecho
+		[bloque1, bloque2] = [[], []];
+		// Bloque 1
+		if (prodOriginal.ano_estreno)
+			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
+		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
+		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		// Obtener la fecha de alta
+		let fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+		// 5. Obtener los datos del usuario
+		let fichaDelUsuario = await this.fichaDelUsuario(prodOriginal.creado_por_id, ahora);
+		// 6. Obtener la calidad de las altas
+		let calidadAltas = await this.calidadAltas(prodOriginal.creado_por_id);
+		// Bloque derecho consolidado
+		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
+		return [izquierda, derecha];
+	},
+	bloqueDerEdicProd: async function (prodOriginal, prodEditado) {
+		// Definir el 'ahora'
+		let ahora = funciones.ahora().getTime();
+		// Bloque derecho
+		let [bloque1, bloque2] = [[], []],
+			fecha;
+		// Bloque 1
+		if (prodOriginal.ano_estreno)
+			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
+		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
+		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		// Obtener la fecha de alta
+		fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+		// Obtener la fecha de edicion
+		fecha = this.obtenerLaFecha(prodEditado.editado_en);
+		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
+		// 5. Obtener los datos del usuario
+		let fichaDelUsuario = await this.fichaDelUsuario(prodEditado.editado_por_id, ahora);
+		// 6. Obtener la calidad de las altas
+		let calidadEdic = await this.calidadEdic(prodEditado.editado_por_id);
+		// Bloque derecho consolidado
+		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
+		return derecha;
+	},
 	quedanCampos: async function (prodOriginal, prodEditado) {
 		// Variables
 		let edicion = {...prodEditado};
@@ -54,21 +116,7 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprobado];
 	},
-	tituloCanonizacion: (datos) => {
-		let tituloCanoniz = "";
-		if (datos.entidad == "RCLV_personajes") {
-			tituloCanoniz = datos.proceso_canonizacion.nombre;
-			if (
-				datos.proceso_canonizacion.nombre == "Santo" &&
-				!datos.nombre.startsWith("Domingo") &&
-				!datos.nombre.startsWith("Tomás") &&
-				!datos.nombre.startsWith("Tomé") &&
-				!datos.nombre.startsWith("Toribio")
-			)
-				tituloCanoniz = "San";
-		}
-		return tituloCanoniz;
-	},
+	// Revisar - Usuario
 	fichaDelUsuario: async function (userID, ahora) {
 		// Obtener los datos del usuario
 		let includes = "rol_iglesia";
@@ -137,7 +185,11 @@ module.exports = {
 		// 4. Precisión de altas
 		let cantAltas = cantAprob + cantRech;
 		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-		let diasPenalizacion = await BD_genericas.sumarValores("altas_rech", {id: userID}, "duracion");
+		let diasPenalizacion = await BD_genericas.sumarValores(
+			"altas_registros_rech",
+			{id: userID},
+			"duracion"
+		);
 		// Datos a enviar
 		let enviar = {
 			calidadAltas: ["Calidad Altas", calidadInputs],
@@ -149,8 +201,10 @@ module.exports = {
 	},
 	calidadEdic: async function (userID) {
 		// Obtener la cantidad de aprobaciones y de rechazos
-		let cantAprob = await BD_genericas.contarCasos("edic_aprob", {input_por_id: userID});
-		let rechazados = await BD_genericas.obtenerTodosPorCampos("edic_rech", {input_por_id: userID});
+		let cantAprob = await BD_genericas.contarCasos("edic_registros_aprob", {input_por_id: userID});
+		let rechazados = await BD_genericas.obtenerTodosPorCampos("edic_registros_rech", {
+			input_por_id: userID,
+		});
 		let cantRech = rechazados.length ? rechazados.length : 0;
 		// Obtener la calidad de las ediciones
 		let cantEdics = cantAprob + cantRech;
@@ -169,7 +223,23 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
-	// Funciones -----------------------------------------------------------------------------
+	// Revisar - RCLV
+	tituloCanonizacion: (datos) => {
+		let tituloCanoniz = "";
+		if (datos.entidad == "RCLV_personajes") {
+			tituloCanoniz = datos.proceso_canonizacion.nombre;
+			if (
+				datos.proceso_canonizacion.nombre == "Santo" &&
+				!datos.nombre.startsWith("Domingo") &&
+				!datos.nombre.startsWith("Tomás") &&
+				!datos.nombre.startsWith("Tomé") &&
+				!datos.nombre.startsWith("Toribio")
+			)
+				tituloCanoniz = "San";
+		}
+		return tituloCanoniz;
+	},
+
 	procesarProd: (productos) => {
 		// Procesar los registros
 		let anchoMax = 30;
@@ -194,6 +264,37 @@ module.exports = {
 		});
 		// Fin
 		return productos;
+	},
+	prodEdicAprobRechValores: (aprobado, prodOriginal, prodEditado, campo) => {
+		// Definir los campos 'complicados'
+		let camposConVinculo = [
+			{campo: "en_castellano_id", vinculo: "en_castellano"},
+			{campo: "en_color_id", vinculo: "en_color"},
+			{campo: "idioma_original_id", vinculo: "idioma_original"},
+			{campo: "categoria_id", vinculo: "categoria"},
+			{campo: "subcategoria_id", vinculo: "subcategoria"},
+			{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
+			{campo: "personaje_id", vinculo: "personaje"},
+			{campo: "hecho_id", vinculo: "hecho"},
+			{campo: "valor_id", vinculo: "valor"},
+		];
+		// Obtener el array de campos
+		let campos = camposConVinculo.map((n) => n.campo);
+		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
+		let indice = campos.indexOf(campo);
+		// Obtener los valores a agregar a la BD
+		let valorOrig = !aprobado
+			? indice + 1
+				? prodValorVinculo(prodOriginal, camposConVinculo[indice])
+				: prodOriginal[campo]
+			: null;
+		let valorEdic =
+			indice + 1 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
+		// Obtener los valores 'aceptado' y 'rechazado'
+		let valor_aceptado = aprobado ? valorEdic : valorOrig;
+		let valor_rechazado = aprobado ? null : valorEdic;
+		// Fin
+		return {valor_aceptado, valor_rechazado};
 	},
 	procesarRCLVs: (RCLVs, aprobados) => {
 		// Definir algunas variables
@@ -232,6 +333,63 @@ module.exports = {
 		// Fin
 		return RCLVs;
 	},
+	RCLV_actualizarAprobRech: async (entidad, RCLV_original, includes, userID) => {
+		// Variables
+		let RCLV_final = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_original.id, includes);
+		let camposComparar = [
+			{campo: "nombre", titulo: "Nombre"},
+			{campo: "dia_del_ano_id", titulo: "Día del año"},
+		];
+		if (entidad != "RCLV_valores") camposComparar.push({campo: "ano", titulo: "Año de referencia"});
+		if (entidad == "RCLV_personajes")
+			camposComparar.push(
+				{campo: "proceso_canonizacion_id", titulo: "Proceso de Canonización"},
+				{campo: "rol_iglesia_id", titulo: "Rol en la Iglesia"}
+			);
+
+		let ahora = funciones.ahora();
+		let motivoGenerico = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1});
+		// Rutina para comparar los campos
+		for (let campo of camposComparar) {
+			// Generar la información
+			let datos = {
+				entidad,
+				entidad_id: RCLV_original.id,
+				campo: campo.campo,
+				titulo: campo.titulo,
+				valor_aceptado: RCLV_valorVinculo(RCLV_final, campo.campo),
+				input_por_id: RCLV_original.creado_por_id,
+				input_en: RCLV_original.creado_en,
+				evaluado_por_id: userID,
+				evaluado_en: ahora,
+			};
+			if (RCLV_original[campo] != RCLV_final[campo]) {
+				datos.valor_rechazado = RCLV_valorVinculo(RCLV_original, campo.campo);
+				datos.motivo_id = motivoGenerico;
+			}
+
+			// Guardar los registros
+			let RCLV_entidad =
+				RCLV_original[campo.campo] == RCLV_final[campo.campo]
+					? "edic_registros_aprob"
+					: "edic_registros_rech";
+			//await BD_genericas.agregarRegistro(RCLV_entidad, datos);
+		}
+		return;
+	},
+	cant_prod_aprobados: async (RCLV, aprobado, campos) => {
+		// Variables
+		let cant_prod_aprobados = 0;
+		// Obtener el registro
+		// Averiguar cuántos casos tiene
+		for (let campo of campos) {
+			if (RCLV[campo].length)
+				RCLV[campo].forEach((n) => {
+					if (n.status_registro_id == aprobado) cant_prod_aprobados++;
+				});
+		}
+		return cant_prod_aprobados;
+	},
 	productosLinks: (links, aprobado) => {
 		// Resultado esperado:
 		//	- Solo productos aprobados
@@ -250,7 +408,7 @@ module.exports = {
 			for (let aux of auxs) {
 				if (
 					link[aux.nombre] &&
-					aprobado.includes(link[aux.nombre].status_registro_id) &&
+					link[aux.nombre].status_registro_id == aprobado &&
 					prods.findIndex((n) => n.entidad == aux.entidad && n.id == link[aux.nombre].id) < 0
 				)
 					prods.push({
@@ -263,67 +421,6 @@ module.exports = {
 			}
 		}
 		return prods;
-	},
-	bloquesAltaProd: async function (prodOriginal, paises) {
-		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
-		// Bloque izquierdo
-		let [bloque1, bloque2, bloque3] = [[], [], []];
-		// Bloque 1
-		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOriginal.idioma_original)
-			bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
-		// Bloque 2
-		if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
-		if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
-		if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
-		if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
-		// Bloque 3
-		if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
-		// Bloque izquierdo consolidado
-		let izquierda = [bloque1, bloque2, bloque3];
-		// Bloque derecho
-		[bloque1, bloque2] = [[], []];
-		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-		// Obtener la fecha de alta
-		let fecha = this.obtenerLaFecha(prodOriginal.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodOriginal.creado_por_id, ahora);
-		// 6. Obtener la calidad de las altas
-		let calidadAltas = await BD_especificas.calidadAltas(prodOriginal.creado_por_id);
-		// Bloque derecho consolidado
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
-		return [izquierda, derecha];
-	},
-	bloqueDerEdicProd: async function (prodOriginal, prodEditado) {
-		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
-		// Bloque derecho
-		let [bloque1, bloque2] = [[], []],
-			fecha;
-		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-		// Obtener la fecha de alta
-		fecha = this.obtenerLaFecha(prodOriginal.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// Obtener la fecha de edicion
-		fecha = this.obtenerLaFecha(prodEditado.editado_en);
-		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await BD_especificas.fichaDelUsuario(prodEditado.editado_por_id, ahora);
-		// 6. Obtener la calidad de las altas
-		let calidadEdic = await BD_especificas.calidadEdic(prodEditado.editado_por_id);
-		// Bloque derecho consolidado
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-		return derecha;
 	},
 	obtenerLaFecha: (fecha) => {
 		let dia = fecha.getDate();
@@ -358,13 +455,26 @@ module.exports = {
 		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
 		return [ingresos, reemplazos];
 	},
-	aprobarAltaRCLV:async(datos)=>{
-		// Verificar que existe la entidad+id, y que está en status 'creado'
-
-		// Si no existe => error
-
-		// Si concuerda, actualizar con el status 'creado'
-
-		// Retorno con el status de errores
-	}
+};
+let prodValorVinculo = (producto, objeto) => {
+	console.log(459, objeto.vinculo, !!producto[objeto.vinculo]);
+	let aux = producto[objeto.vinculo]
+		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
+			? producto[objeto.vinculo].producto
+			: producto[objeto.vinculo].nombre
+		: null;
+	console.log(462, aux);
+	return aux;
+};
+let RCLV_valorVinculo = (RCLV, campo) => {
+	let meses = variables.meses();
+	let aux =
+		campo == "dia_del_ano_id"
+			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
+			: campo == "proceso_canonizacion_id"
+			? RCLV.proceso_canonizacion.nombre
+			: campo == "rol_iglesia_id"
+			? RCLV.rol_iglesia.nombre
+			: RCLV[campo];
+	return aux;
 };

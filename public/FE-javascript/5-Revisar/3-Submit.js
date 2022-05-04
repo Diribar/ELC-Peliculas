@@ -28,8 +28,8 @@ window.addEventListener("load", async () => {
 		// Detener el submit si corresponde
 		if (botonSubmit.classList.contains("inactivo")) e.preventDefault();
 		// Obtener todos los valores del formulario
-		let url =() =>{
-			let url="";
+		let url = () => {
+			let url = "";
 			// Campos de identificación
 			url += "?entidad=" + entidad;
 			url += "&id=" + id;
@@ -50,8 +50,8 @@ window.addEventListener("load", async () => {
 				url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
 				url += "&rol_iglesia_id=" + rol_iglesia_id.value;
 			}
-			return url
-		} 
+			return url;
+		};
 		// Validar todos los campos una vez más
 		let rutaValidar = "/rclv/api/validar-consolidado/";
 		errores = await fetch(rutaValidar + url()).then((n) => n.json());
@@ -60,8 +60,8 @@ window.addEventListener("load", async () => {
 		//if (errores.hay) location.reload();
 		// Editar y cambiar el status del nuevo RCLV
 		let rutaStatus = "/revision/api/rclv-alta/aprobar/";
-		let resultado=await fetch(rutaStatus+url()).then((n) => n.json());
-		
+		let resultado = await fetch(rutaStatus + url()).then((n) => n.json());
+		console.log(resultado);
 		// Cartel de 'OK'
 	});
 

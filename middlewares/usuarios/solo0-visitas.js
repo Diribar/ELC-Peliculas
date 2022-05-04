@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
 				{nombre: "fa-circle-left", link: req.session.urlReferencia, titulo: "Cancelar"},
 				{nombre: "fa-circle-check", link: "/usuarios/logout", titulo: "Logout"},
 			],
+			titulo: "Logout",
 			logout: true,
 		};
 		return res.render("Errores", {informacion});

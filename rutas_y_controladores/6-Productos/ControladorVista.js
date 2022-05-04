@@ -76,7 +76,7 @@ module.exports = {
 let datosVista = async (opcion) => {
 	// Obtener los Tipos de la opción elegida
 	let tipos =
-		opcion == "listado"
+		opcion == "listado"||opcion == "sugeridas"
 			? tiposListado
 			: await BD_genericas.obtenerTodos("subcategorias", "orden", opcion)
 					.then((n) => n.filter((m) => m.categoria_id == opcion.toUpperCase()))
@@ -94,7 +94,14 @@ let datosVista = async (opcion) => {
 // Variables
 let opciones = [
 	{
-		nombre: "Listado de Películas",
+		nombre: "Sugeridas para el momento del año",
+		opcion: "sugeridas",
+		titulo: "Sugeridas",
+		vista: "1-Listado",
+		comentario: "Las películas más afines con la época del año",
+	},
+	{
+		nombre: "Todas las Películas",
 		opcion: "listado",
 		titulo: "Listado",
 		vista: "1-Listado",
@@ -117,9 +124,8 @@ let opciones = [
 ];
 
 let tiposListado = [
-	{nombre: "Sugeridas para el momento del año", url: "listado/sugeridas"},
-	{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
-	{nombre: "Por año de estreno", url: "listado/estreno"},
-	{nombre: "Por orden de incorporación a nuestra BD", url: "listado/incorporacion"},
-	{nombre: "Por orden de visita", url: "listado/visita"},
+	{nombre: "Por mejor calificación", url: "listado/calificacion"},
+	{nombre: "Por año de estreno más reciente", url: "listado/estreno"},
+	{nombre: "Por incorporación más reciente", url: "listado/incorporacion"},
+	{nombre: "Por orden de visita más reciente", url: "listado/visita"},
 ];

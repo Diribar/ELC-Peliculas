@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 	<!-- Head -->
-	<%- include('1-Head', {titulo: "Error"}) %>
+	<% let titulo = informacion.titulo ? informacion.titulo: "Error" %>
+	<%- include('1-Head', {titulo}) %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 </head>
 <body>

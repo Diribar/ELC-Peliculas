@@ -2,6 +2,7 @@
 require("dotenv").config(); // Para usar el archivo '.env'
 const path = require("path");
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
+global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 
 // ************** Middlewares de Aplicación ***********************
 // Para usar propiedades de express

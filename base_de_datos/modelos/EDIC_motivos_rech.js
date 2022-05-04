@@ -1,15 +1,18 @@
 module.exports = (sequelize, dt) => {
-	const alias = "altas_rech_motivos";
+	const alias = "edic_motivos_rech";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},
+		avatar: {type: dt.BOOLEAN},
 		prod: {type: dt.BOOLEAN},
 		rclv: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
 		duracion: {type: dt.INTEGER},
+		info_erronea: {type: dt.BOOLEAN},
+		generico: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "altas_rech_motivos",
+		tableName: "edic_motivos_rech",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

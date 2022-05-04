@@ -2,7 +2,8 @@
 // Definir variables
 const BD_especificas = require("../2-BD/Especificas");
 const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("../3-Procesos/Compartidas");
+const funciones = require("./Compartidas");
+const variables = require("./Variables");
 
 module.exports = {
 	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
@@ -88,7 +89,7 @@ module.exports = {
 	},
 	inactivar: async (motivo_id, usuario, link) => {
 		// Obtener la duración
-		let duracion = await BD_genericas.obtenerPorId("altas_rech_motivos", motivo_id).then(
+		let duracion = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id).then(
 			(n) => n.duracion
 		);
 		// Obtener el status_id de 'inactivar'
@@ -103,7 +104,7 @@ module.exports = {
 		};
 		// Actualiza el registro 'original' en la BD
 		BD_genericas.actualizarPorId("links_originales", link.id, datosParaLink);
-		// 3. Crea un registro en la BD de 'altas_rech'
+		// 3. Crea un registro en la BD de 'altas_registros_rech'
 		let datosParaBorrados = {
 			entidad: "links_originales",
 			entidad_id: link.id,
@@ -116,7 +117,7 @@ module.exports = {
 			evaluado_en: datosParaLink.editado_en,
 			status_registro_id: datosParaLink.status_registro_id,
 		};
-		BD_genericas.agregarRegistro("altas_rech", datosParaBorrados);
+		BD_genericas.agregarRegistro("altas_registros_rech", datosParaBorrados);
 	},
 	// FUNCIONES --------------------------------------------------
 	obtenerLinksCombinados: async (entidad, prodID, userID) => {
@@ -159,7 +160,7 @@ module.exports = {
 		// A los Inactivos, agregarles el motivo
 		for (let i = 0; i < linksInactivos.length; i++) {
 			let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
-				"altas_rech",
+				"altas_registros_rech",
 				{entidad: "links_originales", entidad_id: linksInactivos[i].id},
 				"motivo"
 			);
