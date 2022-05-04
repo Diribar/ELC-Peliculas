@@ -21,11 +21,11 @@ module.exports = {
 		let objeto = {id: id};
 		if (codigo == "/producto/edicion/") {
 			let entidad_id = funciones.entidad_id(entidad);
+			entidad = "prods_edicion";
 			objeto = {
 				[entidad_id]: id,
 				editado_por_id: req.session.usuario.id,
 			};
-			entidad = "prods_edicion";
 		}
 
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
