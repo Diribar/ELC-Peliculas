@@ -2,7 +2,6 @@
 // Definir variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
-const BD_genericas = require("./Genericas");
 
 module.exports = {
 	// Varios

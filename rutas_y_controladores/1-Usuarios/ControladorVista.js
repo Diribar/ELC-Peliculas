@@ -2,6 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const usuarios = require("../../funciones/3-Procesos/8-Usuarios");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 const validarUsuarios = require("../../funciones/4-Validaciones/Usuarios");
 const bcryptjs = require("bcryptjs");
@@ -124,7 +125,7 @@ module.exports = {
 		delete req.session["email"];
 		// 6. Notificar al contador de logins
 		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
-		BD_especificas.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
+		usuarios.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
