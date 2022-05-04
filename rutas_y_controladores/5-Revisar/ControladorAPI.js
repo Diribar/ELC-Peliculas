@@ -2,8 +2,9 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const variables = require("../../funciones/3-Procesos/Variables");
+const procesar = require("../../funciones/3-Procesos/5-Revisar");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const path = require("path");
 
 // *********** Controlador ***********
@@ -67,7 +68,7 @@ module.exports = {
 			evaluado_en: datos.alta_analizada_en,
 			status_registro_id: datos.status_registro_id,
 		};
-		BD_genericas.agregarRegistro("altas_rech", datos);
+		BD_genericas.agregarRegistro("altas_registros_rech", datos);
 		return res.json();
 	},
 	// Revisar la edición
@@ -75,8 +76,22 @@ module.exports = {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		let prodEditado = await BD_genericas.obtenerPorId("prods_edicion", edicID);
+		let archivo = aprobado ? "edic_registros_aprob" : "edic_registros_rech";
+		let includes = [
+			"en_castellano",
+			"en_color",
+			"idioma_original",
+			"categoria",
+			"subcategoria",
+			"publico_sugerido",
+			"personaje",
+			"hecho",
+			"valor",
+			"status_registro",
+		];
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		includes.splice(-1);
+		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
 		let userID = req.session.usuario.id;
 		let datos;
 		let ahora = funciones.ahora();
@@ -134,8 +149,8 @@ module.exports = {
 					edic_analizada_por_id: userID,
 					edic_analizada_en: ahora,
 				};
-			// Actualiza el registro en la BD
-			await BD_genericas.actualizarPorId(entidad, prodID, datos);
+			// Actualiza el registro en la BD original
+			//await BD_genericas.actualizarPorId(entidad, prodID, datos);
 			// Actualiza la variable 'prodOriginal'
 			prodOriginal = {...prodOriginal, ...datos};
 		}
@@ -148,37 +163,39 @@ module.exports = {
 			campo: campo,
 			input_por_id: prodEditado.editado_por_id,
 		};
-		let averiguar = await BD_genericas.obtenerPorCampos("edic_aprob", datos);
-		// Si no lo había, agregar un registro en 'edic_aprob' / 'edicion_rech'
+		let averiguar = await BD_genericas.obtenerPorCampos(archivo, datos);
+		// Si no lo había, agregar un registro en 'edic_registros_aprob' / 'edicion_rech'
 		if (!averiguar) {
+			// Obtener el título
 			let titulo =
 				campo == "avatar"
 					? "Avatar"
 					: variables.camposRevisarEdic().find((n) => n.nombreDelCampo == campo).titulo;
+			// Completar los datos
 			datos = {
 				...datos,
 				titulo,
-				valor: prodEditado[campo],
 				input_en: prodEditado.editado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
 			};
-			if (aprobado) BD_genericas.agregarRegistro("edic_aprob", datos);
-			else {
-				let duracion = await BD_genericas.obtenerPorId("edic_rech_motivos", motivo_id).then(
-					(n) => n.duracion
-				);
+			// Agregar campos si fue rechazado
+			if (!aprobado) {
+				let aux = await BD_genericas.obtenerPorId("edic_motivos_rech", motivo_id);
+				let duracion = aux.duracion;
 				datos = {...datos, duracion, motivo_id};
-				BD_genericas.agregarRegistro("edic_rech", datos);
 			}
+			let valores = await procesar.prodEdicAprobRechValores(aprobado, prodOriginal, prodEditado, campo);
+			console.log(189,valores);
+			datos = {...datos, ...valores};
+			console.log(191,datos);
+			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
+			BD_genericas.agregarRegistro(archivo, datos);
 		}
 		// Actualiza la variable de 'edicion' quitándole el valor al campo
 		prodEditado[campo] = null;
-		// Averiguar si quedan campos por procesar
-		// La consulta también tiene otros efectos:
-		// 1. Elimina el registro de edición si ya no tiene más datos
-		// 2. Actualiza el status del registro original, si corresponde
-		let [quedanCampos, , statusAprobado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
+		// Averiguar si quedan campos por procesar, elimina el registro de edición si ya no tiene más datos, actualiza el status del registro original, si corresponde
+		let [quedanCampos, , statusAprobado] = await procesar.quedanCampos(prodOriginal, prodEditado);
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
@@ -188,13 +205,48 @@ module.exports = {
 	aprobarAltaRCLV: async (req, res) => {
 		// Variables
 		let datos = req.query;
-		console.log(req.query);
-		return res.json();
-		// Actualizar la versión original
+		let campos = ["peliculas", "colecciones", "capitulos"];
+		let includes = ["dia_del_ano"];
+		if (datos.entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(datos.entidad, datos.id, [
+			...campos,
+			...includes,
+		]);
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		let creado = status.find((n) => n.creado).id;
 		let aprobado = status.find((n) => n.aprobado).id;
-		datos = {...datos, status_registro_id: aprobado};
+		// Revisión de errores
+		if (!RCLV_original) return res.json("Registro no encontrado");
+		if (RCLV_original.status_registro_id != creado)
+			return res.json("El registro no está en status creado");
+		// Preparar el campo 'dia_del_ano_id'
+		if (!datos.desconocida && datos.mes_id && datos.dia) {
+			let objeto = {mes_id: datos.mes_id, dia: datos.dia};
+			let dia_del_ano = await BD_genericas.obtenerPorCampos("dias_del_ano", objeto);
+			datos.dia_del_ano_id = dia_del_ano.id;
+		} else if (datos.desconocida) datos.dia_del_ano_id = null;
+		// Preparar el campo 'cant_prod_aprobados'
+		let cant_prod_aprobados = await procesar.cant_prod_aprobados(RCLV_original, aprobado, campos);
+		// Preparar lead_time_creacion
+		let alta_analizada_en = funciones.ahora();
+		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
+		// Preparar la información a ingresar
+		datos = {
+			...datos,
+			cant_prod_aprobados,
+			alta_analizada_por_id: req.session.usuario.id,
+			alta_analizada_en,
+			lead_time_creacion,
+			status_registro_id: aprobado,
+		};
+		// Actualizar la versión original
+		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
+		// Actualizar la info de aprobados/rechazados
+		procesar.RCLV_actualizarAprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
+		//
+		// Actualizar la cantidad de productos en RCLV_dias
 
-		let resultado;
+		// Fin
+		return res.json("Resultado exitoso");
 	},
 };

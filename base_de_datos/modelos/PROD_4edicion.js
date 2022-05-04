@@ -23,6 +23,7 @@ module.exports = (sequelize, dt) => {
 		categoria_id: {type: dt.STRING(3)},
 		subcategoria_id: {type: dt.INTEGER},
 		publico_sugerido_id: {type: dt.INTEGER},
+
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
@@ -39,12 +40,14 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.peliculas, {as: "pelicula_original", foreignKey: "pelicula_id"});
 		entidad.belongsTo(n.colecciones, {as: "coleccion_original", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo_original", foreignKey: "capitulo_id"});
-		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
+
 		entidad.belongsTo(n.si_no_parcial, {as: "en_castellano", foreignKey: "en_castellano_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "en_color", foreignKey: "en_color_id"});
+		entidad.belongsTo(n.idiomas, {as: "idioma_original", foreignKey: "idioma_original_id"});
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
+
 		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});

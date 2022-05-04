@@ -34,7 +34,7 @@ router.get(
 	vista.productoEdicion
 );
 // Vistas de RCLVs
-router.get("/rclv", soloGestionProd, vista.RCLV);
+router.get("/rclv", soloGestionProd, vista.RCLVform);
 
 // Vistas de Links
 // router.get("/links", soloGestionProd, vista.tableroControl);

@@ -1,11 +1,11 @@
 module.exports = (sequelize, dt) => {
-	const alias = "edic_aprob";
+	const alias = "edic_registros_aprob";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
 		titulo: {type: dt.STRING(21)},
-		valor: {type: dt.STRING(20)},
+		valor_aceptado: {type: dt.STRING(20)},
 
 		input_por_id: {type: dt.INTEGER},
 		input_en: {type: dt.DATE},
@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		comunicado: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "edic_aprob",
+		tableName: "edic_registros_aprob",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

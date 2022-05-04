@@ -273,7 +273,7 @@ module.exports = {
 				prodEditado.temporada
 			);
 		let dataEntry = req.session.links ? req.session.links : "";
-		let motivos = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden")
+		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
 				n.map((m) => {

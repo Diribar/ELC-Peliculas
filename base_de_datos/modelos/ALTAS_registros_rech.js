@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "altas_rech";
+	const alias = "altas_registros_rech";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
@@ -15,12 +15,12 @@ module.exports = (sequelize, dt) => {
 		comunicado: {type: dt.BOOLEAN},
 	};
 	const config = {
-		tableName: "altas_rech",
+		tableName: "altas_registros_rech",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.altas_rech_motivos, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "input_por", foreignKey: "input_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "evaluado_por", foreignKey: "evaluado_por_id"});
 		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});

@@ -264,7 +264,7 @@ CREATE TABLE rclv_1personajes (
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
@@ -314,7 +314,7 @@ CREATE TABLE rclv_2hechos (
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
@@ -358,7 +358,7 @@ CREATE TABLE rclv_3valores (
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME DEFAULT UTC_TIMESTAMP,
+	alta_analizada_en DATETIME NULL,
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 

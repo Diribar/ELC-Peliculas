@@ -38,6 +38,7 @@ module.exports = {
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
 		let aprobado = status.find((n) => n.aprobado).id
+		//return res.send([links, aprobado])
 		let prodsLinks = procesar.productosLinks(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(RCLVs);
@@ -168,7 +169,7 @@ module.exports = {
 		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesar.bloquesAltaProd(prodOriginal, paises);
-		let motivosRechazo = await BD_genericas.obtenerTodos("altas_rech_motivos", "orden").then((n) =>
+		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// Ir a la vista
@@ -197,7 +198,7 @@ module.exports = {
 		// VERIFICACION1: Si no existe edición --> redirecciona
 		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// Definir más variables
-		let motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
 		// 3. Obtener ambas versiones
 		let includes = [
@@ -224,7 +225,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await BD_especificas.quedanCampos(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesar.quedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
 				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
@@ -289,7 +290,7 @@ module.exports = {
 		});
 	},
 	// RCLV
-	RCLV: async (req, res) => {
+	RCLVform: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
 		let codigo = "RCLV";
@@ -305,13 +306,15 @@ module.exports = {
 		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 			...includes,
 			"status_registro",
+			"peliculas",
+			"colecciones",
 		]);
 		// Obtener todas las ediciones ajenas
 		let producto_id = funciones.entidad_id(entidad);
 		// PENDIENTE
 		// Obtener los motivos de rechazo
 		if (RCLV_original.status_registro.gr_aprobados) {
-			motivos = await BD_genericas.obtenerTodos("edic_rech_motivos", "orden");
+			motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 			prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(
 				producto_id,
 				prodID,
