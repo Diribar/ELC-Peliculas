@@ -4,19 +4,20 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
+	let ahora = new Date(new Date().toUTCString());
 	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
 	// Horario Inicial
 	let codigoEnc = encodeURIComponent(codigo);
-	let horarioInicial = new Date(
-		await fetch(
-			"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
-		).then((n) => n.json())
-	);
+	let horarioInicial = await fetch(
+		"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
+	).then((n) => n.json());
+	if (horarioInicial) horarioInicial = new Date(horarioInicial);
 	// Tiempo restante
-	let ahora = new Date(new Date().toUTCString());
-	let tiempoRestante = horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime();
+	let tiempoRestante = horarioInicial
+		? horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime()
+		: 60 * 60 * 1000;
 	let minutos = Math.min(60, Math.max(0, parseInt(tiempoRestante / 1000 / 60)));
 
 	// FUNCIONES -------------------------------------------------------------
@@ -38,7 +39,7 @@ window.addEventListener("load", async () => {
 		let cartel = document.querySelector("#cartel");
 		let gracias = document.querySelector("#gracias");
 		let mensajes = document.querySelector("#cartel #mensajes");
-		let flechas = document.querySelector("#cartel #flechas");
+		let flechas = document.querySelector("#cartel #flechasCartel");
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
@@ -103,9 +104,11 @@ window.addEventListener("load", async () => {
 	};
 
 	// STARTUP -------------------------------------------------------------
-	timer.innerHTML = minutos + " min.";
-	formatoTimer(minutos);
-	funcionTimer();
-	timer.classList.remove("ocultar");
-	if (minutos == 0) funcionCartel();
+	if (horarioInicial) {
+		timer.innerHTML = minutos + " min.";
+		formatoTimer(minutos);
+		funcionTimer();
+		timer.classList.remove("ocultar");
+		if (minutos == 0) funcionCartel();
+	}
 });

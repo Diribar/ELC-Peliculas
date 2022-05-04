@@ -2,6 +2,7 @@
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 // Controlador
 module.exports = {
@@ -17,13 +18,26 @@ module.exports = {
 
 	horarioInicial: async (req, res) => {
 		let {entidad, id, codigo} = req.query;
-		let campo =
-			codigo == "/producto/edicion/"
-				? "creado_en"
-				: codigo.startsWith("/revision/")
-				? "capturado_en"
-				: "";
-		let horarioInicial = await BD_genericas.obtenerPorId(entidad, id).then((n) => n[campo]);
+		let objeto = {id: id};
+		if (codigo == "/producto/edicion/") {
+			let entidad_id = funciones.entidad_id(entidad);
+			objeto = {
+				[entidad_id]: id,
+				editado_por_id: req.session.usuario.id,
+			};
+			entidad = "prods_edicion";
+		}
+
+		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
+		if (horarioInicial) {
+			let campo =
+				codigo == "/producto/edicion/"
+					? "editado_en"
+					: codigo.startsWith("/revision/")
+					? "capturado_en"
+					: "";
+			horarioInicial = horarioInicial[campo];
+		}
 		return res.json(horarioInicial);
 	},
 };

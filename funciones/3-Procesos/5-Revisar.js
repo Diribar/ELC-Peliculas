@@ -1,6 +1,7 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../2-BD/Genericas");
+const BD_especificas = require("../2-BD/Especificas");
 const validar = require("../4-Validaciones/RUD");
 const procesarRUD = require("./3-RUD");
 const funciones = require("./Compartidas");
@@ -69,7 +70,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	quedanCampos: async function (prodOriginal, prodEditado) {
+	quedanCampos: async (prodOriginal, prodEditado) => {
 		// Variables
 		let edicion = {...prodEditado};
 		let noSeComparan;
@@ -93,7 +94,7 @@ module.exports = {
 			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
 				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await this.obtenerELC_id("status_registro", {aprobado: 1});
+				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = funciones.ahora();
 				let leadTime = funciones.obtenerHoras(prodOriginal.creado_en, ahora);
@@ -288,6 +289,7 @@ module.exports = {
 				? prodValorVinculo(prodOriginal, camposConVinculo[indice])
 				: prodOriginal[campo]
 			: null;
+		if (valorOrig == null) valorOrig = "Campo sin datos";
 		let valorEdic =
 			indice + 1 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
 		// Obtener los valores 'aceptado' y 'rechazado'
@@ -457,13 +459,12 @@ module.exports = {
 	},
 };
 let prodValorVinculo = (producto, objeto) => {
-	console.log(459, objeto.vinculo, !!producto[objeto.vinculo]);
+	//console.log(459, objeto.vinculo, objeto.campo, producto[objeto.vinculo]);
 	let aux = producto[objeto.vinculo]
 		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
-			? producto[objeto.vinculo].producto
+			? producto[objeto.vinculo].productos
 			: producto[objeto.vinculo].nombre
 		: null;
-	console.log(462, aux);
 	return aux;
 };
 let RCLV_valorVinculo = (RCLV, campo) => {

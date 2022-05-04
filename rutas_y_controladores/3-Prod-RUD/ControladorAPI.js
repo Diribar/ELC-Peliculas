@@ -145,7 +145,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID

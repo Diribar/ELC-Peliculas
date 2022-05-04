@@ -66,7 +66,6 @@ window.addEventListener("load", async () => {
 		// 2. Averiguar si hay algún error y aplicar las consecuencias
 		let error = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
 		formInputChange_consecuenciaError(error, campo);
-
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			// Cambiar los valores que se pueden mostrar en la subcategoría
@@ -80,7 +79,6 @@ window.addEventListener("load", async () => {
 			iconosOK[indiceSC].classList.add("ocultar");
 			iconosError[indiceSC].classList.remove("ocultar");
 		}
-
 		// Tareas varias
 		if (campo == "avatar" && !error.hay) avatar_nuevoIngresado(e); // Cambia el avatar
 		formInputChange_botonGuardar(); // Activa/Desactiva el botón 'Guardar'
@@ -137,9 +135,7 @@ window.addEventListener("load", async () => {
 	});
 	botonGuardarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonGuardarSession.classList).join(" ").includes("inactivo")) {
-			e.preventDefault();
-		}
+		if (Array.from(botonGuardarSession.classList).join(" ").includes("inactivo")) e.preventDefault();
 	});
 	// Edición Guardada
 	botonVerGuardada.addEventListener("click", () => {
@@ -280,6 +276,7 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar < iconosError.length;
+		console.log(OK,!error);
 		OK && !error
 			? botonGuardarSession.classList.remove("inactivoErrores")
 			: botonGuardarSession.classList.add("inactivoErrores");

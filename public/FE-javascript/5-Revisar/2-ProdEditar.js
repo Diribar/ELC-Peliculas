@@ -109,7 +109,7 @@ window.addEventListener("load", () => {
 		let cartel = document.querySelector("#cartel");
 		let error = document.querySelector("#error");
 		let mensajes = document.querySelector("ul#mensajes");
-		let flechas = document.querySelector("#cartel #flechas");
+		let flechas = document.querySelector("#cartel #flechasCartel");
 
 		// Formatos
 		cartel.style.backgroundColor = "var(--verde-oscuro)";

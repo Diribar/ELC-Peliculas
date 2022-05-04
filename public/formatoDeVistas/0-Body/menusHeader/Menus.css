@@ -10,5 +10,4 @@ header .menuOpciones .icono i, header .menuOpciones .icono#ELC {font-weight: bol
 header .menuOpciones .icono#ELC {background-color: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
 
 /* Específico del Menú de Usuario */
-header #menu-usuario .fa-solid.fa-right-from-bracket {transform: rotate(180deg);}
 header #menu-usuario {right: 30px;}
