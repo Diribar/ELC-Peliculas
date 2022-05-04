@@ -124,8 +124,8 @@ let opciones = [
 ];
 
 let tiposListado = [
-	{nombre: "Por orden de calificación en nuestra página", url: "listado/calificacion"},
-	{nombre: "Por año de estreno", url: "listado/estreno"},
-	{nombre: "Por orden de incorporación a nuestra página", url: "listado/incorporacion"},
-	{nombre: "Por orden de visita", url: "listado/visita"},
+	{nombre: "Por mejor calificación", url: "listado/calificacion"},
+	{nombre: "Por año de estreno más reciente", url: "listado/estreno"},
+	{nombre: "Por incorporación más reciente", url: "listado/incorporacion"},
+	{nombre: "Por orden de visita más reciente", url: "listado/visita"},
 ];
