@@ -27,7 +27,6 @@ module.exports = {
 				editado_por_id: req.session.usuario.id,
 			};
 		}
-
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
 		if (horarioInicial) {
 			let campo =
