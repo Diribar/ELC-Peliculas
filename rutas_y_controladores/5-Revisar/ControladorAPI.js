@@ -150,7 +150,7 @@ module.exports = {
 					edic_analizada_en: ahora,
 				};
 			// Actualiza el registro en la BD original
-			//await BD_genericas.actualizarPorId(entidad, prodID, datos);
+			await BD_genericas.actualizarPorId(entidad, prodID, datos);
 			// Actualiza la variable 'prodOriginal'
 			prodOriginal = {...prodOriginal, ...datos};
 		}
