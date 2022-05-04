@@ -4,7 +4,6 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let ahora = new Date(new Date().toUTCString());
 	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
@@ -15,6 +14,7 @@ window.addEventListener("load", async () => {
 	).then((n) => n.json());
 	if (horarioInicial) horarioInicial = new Date(horarioInicial);
 	// Tiempo restante
+	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial
 		? horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime()
 		: 60 * 60 * 1000;
