@@ -2,6 +2,7 @@ USE ELC_Peliculas;
 
 /* MOTIVOS DE RECHAZO DE ALTAS */;
 DROP TABLE IF EXISTS altas_motivos_rech;
+DROP TABLE IF EXISTS altas_registros_rech;
 CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -36,7 +37,6 @@ VALUES
 (32, 2, 10, 'Spam', 1)
 ;
 /* RECHAZO DE ALTAS */;
-DROP TABLE IF EXISTS altas_registros_rech;
 CREATE TABLE altas_registros_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
@@ -61,6 +61,8 @@ CREATE TABLE altas_registros_rech (
 
 /* MOTIVOS DE RECHAZO DE EDICIONES */;
 DROP TABLE IF EXISTS edic_motivos_rech;
+DROP TABLE IF EXISTS edic_registros_aprob;
+DROP TABLE IF EXISTS edic_registros_rech;
 CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -71,29 +73,27 @@ CREATE TABLE edic_motivos_rech (
 	links BOOLEAN DEFAULT 0,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	info_erronea BOOLEAN DEFAULT 0,
-	otros BOOLEAN DEFAULT 0,
+	generico BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, otros)
-VALUES (100, 100, 0, 'Otro motivo', 1, 1, 1, 1, 1);
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
+VALUES (1, 1, 0, 'Es mejor la versión actual', 1, 1, 1, 1, 1);
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, prod, rclv, links,info_erronea)
 VALUES
-(1, 1, 0, 'Es mejor la versión actual', 1, 1, 1, 0),
-(2, 2, 0, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
-(3, 3, 0, 'Información errónea', 1, 1, 1, 1),
-(4, 4, 10, 'Spam', 1, 1, 0, 0)
+(11, 11, 0, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
+(12, 12, 0, 'Información errónea', 1, 1, 1, 1),
+(13, 13, 10, 'Spam', 1, 0, 0, 0)
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar)
 VALUES
-(11, 11, 0, 'La imagen original es más adecuada', 1),
-(12, 12, 10, 'La imagen no corresponde al producto', 1),
-(13, 13, 0, 'Imagen de poca nitidez', 1),
-(14, 14, 1, 'No es un archivo válido de imagen', 1)
+(21, 21, 0, 'La imagen original es más adecuada', 1),
+(22, 22, 10, 'La imagen no corresponde al producto', 1),
+(23, 23, 0, 'Imagen de poca nitidez', 1),
+(24, 24, 1, 'No es un archivo válido de imagen', 1)
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
-VALUES (21, 21, 5, 'Datos fáciles sin completar', 1);
+VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
 /* APROBACION DE EDICIONES */;
-DROP TABLE IF EXISTS edic_registros_aprob;
 CREATE TABLE edic_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
@@ -114,7 +114,6 @@ CREATE TABLE edic_registros_aprob (
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* RECHAZO DE EDICIONES */;
-DROP TABLE IF EXISTS edic_registros_rech;
 CREATE TABLE edic_registros_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,

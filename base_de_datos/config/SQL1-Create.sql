@@ -254,8 +254,8 @@ VALUES
 CREATE TABLE rclv_1personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	ano SMALLINT NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
+	ano SMALLINT NULL,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
@@ -306,8 +306,8 @@ VALUES
 CREATE TABLE rclv_2hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	ano SMALLINT NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
+	ano SMALLINT NULL,
 	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
 	cant_prod_aprobados TINYINT UNSIGNED DEFAULT 0,
 
@@ -371,6 +371,7 @@ CREATE TABLE rclv_3valores (
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
@@ -762,6 +763,7 @@ CREATE TABLE prod_4edicion (
 	categoria_id VARCHAR(3) NULL,
 	subcategoria_id TINYINT UNSIGNED NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
+
 	personaje_id SMALLINT UNSIGNED NULL,
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
