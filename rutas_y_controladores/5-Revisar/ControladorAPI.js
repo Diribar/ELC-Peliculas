@@ -213,11 +213,11 @@ module.exports = {
 			...includes,
 		]);
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
-		let creado = status.find((n) => n.creado).id;
-		let aprobado = status.find((n) => n.aprobado).id;
+		let creado_id = status.find((n) => n.creado).id;
+		let aprobado_id = status.find((n) => n.aprobado).id;
 		// Revisión de errores
 		if (!RCLV_original) return res.json("Registro no encontrado");
-		if (RCLV_original.status_registro_id != creado)
+		if (RCLV_original.status_registro_id != creado_id)
 			return res.json("El registro no está en status creado");
 		// Preparar el campo 'dia_del_ano_id'
 		if (!datos.desconocida && datos.mes_id && datos.dia) {
@@ -226,7 +226,7 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
 		// Preparar el campo 'cant_prod_aprobados'
-		let cant_prod_aprobados = await procesar.cant_prod_aprobados(RCLV_original, aprobado, campos);
+		let cant_prod_aprobados = await procesar.cant_prod_aprobados(RCLV_original, aprobado_id, campos);
 		// Preparar lead_time_creacion
 		let alta_analizada_en = funciones.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
@@ -237,7 +237,7 @@ module.exports = {
 			alta_analizada_por_id: req.session.usuario.id,
 			alta_analizada_en,
 			lead_time_creacion,
-			status_registro_id: aprobado,
+			status_registro_id: aprobado_id,
 		};
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
