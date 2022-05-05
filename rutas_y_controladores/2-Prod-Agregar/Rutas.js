@@ -9,7 +9,8 @@ const vista = require("./ControladorVista");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
-const entidadId = require("../../middlewares/producto/validarEntidadId");
+const entidad = require("../../middlewares/producto/entidadNombre");
+const id = require("../../middlewares/producto/entidadID");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -51,7 +52,7 @@ router.post("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersGu
 router.get("/confirma", soloAutInput, prodYaEnBD, vista.confirmaForm);
 router.post("/confirma", soloAutInput, prodYaEnBD, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", soloAutInput, entidadId, vista.terminasteForm);
+router.get("/terminaste", soloAutInput, entidad, id, vista.terminasteForm);
 
 // Rutas de vistas auxiliares
 router.get("/responsabilidad", vista.responsabilidad);

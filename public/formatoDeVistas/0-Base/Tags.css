@@ -6,4 +6,4 @@ select, option, a, button[type="submit"] {cursor: pointer;}
 /* Formato para elementos */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 i {font-style: normal;}
-a {text-decoration: none;}
+a {text-decoration: none; color: inherit;}

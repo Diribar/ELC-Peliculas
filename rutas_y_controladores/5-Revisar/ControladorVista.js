@@ -23,13 +23,16 @@ module.exports = {
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = funciones.haceUnaHora();
-		// Obtener productos ------------------------------------------------------------
+		// Productos ------------------------------------------------------------
+		// Obtener productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
-		//return res.send(productos);
-		// Obtener las ediciones con producto en status 'aprobado'
-		// let ediciones=await procesar.obtenerEdicionesARevisar();
-		// Consolidar productos y ordenar
-		productos = procesar.prod_Procesar(productos);
+		// Procesar campos
+		productos = procesar.prod_ProcesarCampos(productos);
+		// Ediciones ------------------------------------------------------------
+		// Obtener ediciones
+		let ediciones = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
+		// Procesar campos
+		let prodsConEdicion = procesar.prod_ProcesarCampos(ediciones);
 		// Obtener RCLV -----------------------------------------------------------------
 		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
 		//return res.send(RCLVs);
@@ -37,7 +40,7 @@ module.exports = {
 		// Obtener Links ----------------------------------------------------------------
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
-		let aprobado = status.find((n) => n.aprobado).id
+		let aprobado = status.find((n) => n.aprobado).id;
 		//return res.send([links, aprobado])
 		let prodsLinks = procesar.links_Productos(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
@@ -47,31 +50,31 @@ module.exports = {
 			codigo,
 			titulo: "Revisar - Tablero de Control",
 			productos,
+			prodsConEdicion,
 			RCLVs,
 			prodsLinks,
 			status,
+			aprobados,
 		});
 	},
 	inactivarCaptura: async (req, res) => {
 		// Variables
-		let entidad = req.query.entidad;
-		let prodID = req.query.id;
+		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener producto
-		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
-		if (producto) {
-			// Verificar que tenga una captura activa del usuario
-			if (
-				producto.capturado_en &&
-				producto.capturado_por_id &&
-				producto.captura_activa &&
-				producto.capturado_en > haceUnaHora &&
-				producto.capturado_por_id == userID
-			)
-				// En caso afirmativo, actualizarlo inactivando la captura
-				await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
-		}
+		let registro = await BD_genericas.obtenerPorId(entidad, prodID);
+		// Verificar que tenga una captura activa del usuario
+		if (
+			registro &&
+			registro.capturado_en &&
+			registro.capturado_por_id &&
+			registro.captura_activa &&
+			registro.capturado_en > haceUnaHora &&
+			registro.capturado_por_id == userID
+		)
+			// En caso afirmativo, actualizarlo inactivando la captura
+			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
 		// Redireccionar a "Visión General"
 		return res.redirect("/revision/tablero-de-control");
 	},
@@ -201,7 +204,7 @@ module.exports = {
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
 		// 3. Obtener ambas versiones
-		let includes = [
+		let includesEdic = [
 			"en_castellano",
 			"en_color",
 			"idioma_original",
@@ -212,11 +215,10 @@ module.exports = {
 			"hecho",
 			"valor",
 		];
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
-			...includes,
-			"status_registro",
-		]);
-		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
+		let includesOrig = [...includesEdic, "status_registro"];
+		if (entidad == "capitulos") includesOrig.push("coleccion");
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
+		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		let producto_id = funciones.entidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
@@ -272,7 +274,7 @@ module.exports = {
 		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
-		//return res.send([ingresos, reemplazos]);
+		//return res.send([prodOriginal, prodEditado]);
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -308,6 +310,7 @@ module.exports = {
 			"status_registro",
 			"peliculas",
 			"colecciones",
+			"capitulos",
 		]);
 		// Obtener todas las ediciones ajenas
 		let producto_id = funciones.entidad_id(entidad);

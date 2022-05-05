@@ -9,18 +9,18 @@
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
-#cuerpo #encabezado #nombres a {color: inherit;}
 #cuerpo #encabezado #nombres a h1 {margin: 0;}
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap #colecciones {display: flex; flex-direction: column; justify-content: center; align-items: flex-end; line-height: 1;}
 #cuerpo #encabezado #colCap #tempCapI,
 #cuerpo #encabezado #colCap #tempCapS {display: flex; flex-direction: row; justify-content: flex-end; align-items: center; line-height: 1;}
 #cuerpo #encabezado #colCap #tempCapI {margin-bottom: 2px;}
+#cuerpo #encabezado #colCap #tempCapI strong {margin-right: 5px;}
+#cuerpo #encabezado #colCap #tempCapS #capitulo {margin-left: 5px;}
 
 /* Imagen */
-#imagen {display: flex; flex-direction: column; justify-content: center; background-color: var(--gris-claro);}
-#imagenProducto img {max-height: 90.5vh;}
-#imagenProducto img {width: 30vw;}
+#imagen-derecha {width: 28vw; height: 100%; position: relative; background-color: var(--gris-claro);}
+#imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}

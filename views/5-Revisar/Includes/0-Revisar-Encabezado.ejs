@@ -18,11 +18,11 @@
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
 			<p id="tempCapI">
-				<strong>De la colección:</strong> <a href="/prodOriginal/detalle/?entidad=colecciones&id=<%= prodOriginal.coleccion_id %>"><%= prodOriginal.coleccion.nombre_castellano %></a>
+				<strong>De la colección:</strong><span><%= prodOriginal.coleccion.nombre_castellano %></span>
 			</p>
 			<div id="tempCapS">
-				<p id="temporada">Temporada <%= prodOriginal.temporada %></p>
-				<p id="capitulo">Capítulo <%= prodOriginal.capitulo %></p>
+				<p id="temporada">Temporada: <%= prodOriginal.temporada %></p>
+				<p id="capitulo">Capítulo: <%= prodOriginal.capitulo %></p>
 			</div>
 		<% } %>
 	</div>

@@ -2,10 +2,10 @@
 // Definir variables
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const validar = require("../4-Validaciones/RUD");
 const procesarRUD = require("./3-RUD");
 const funciones = require("./Compartidas");
 const variables = require("./Variables");
+const validar = require("../4-Validaciones/RUD");
 
 module.exports = {
 	// Producto - ControladorVista
@@ -46,7 +46,7 @@ module.exports = {
 		// Fin
 		return resultado;
 	},
-	prod_Procesar: (productos) => {
+	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
 		let anchoMax = 30;
 		// Reconvertir los elementos
@@ -68,6 +68,37 @@ module.exports = {
 				fecha: n.creado_en,
 			};
 		});
+		// Fin
+		return productos;
+	},
+	prod_ObtenerEdicARevisar: async (haceUnaHora, status, userID) => {
+		// Obtener todas las ediciones de usuarios ajenos, con asociación a películas, colecciones y capítulos
+		// Declarar las variables
+		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
+		// Obtener todas las ediciones de usuarios ajenos y de hace más de una hora
+		let ediciones = await BD_especificas.condicEdicionesProdARevisar(haceUnaHora, userID);
+		// Obtener los productos
+		let productos = ediciones.map((n) => {
+			return n.pelicula_id
+				? {...n.pelicula, entidad: "peliculas"}
+				: n.coleccion_id
+				? {...n.coleccion, entidad: "colecciones"}
+				: {...n.capitulo, entidad: "capitulos"};
+		});
+		// Dejar solamente los productos aprobados
+		productos = productos.filter((n) => aprobados.includes(n.status_registro_id));
+		// Dejar solamente los productos generados por otros usuarios
+		productos = productos.filter((n) => n.creado_por_id != userID);
+		// Dejar solamente los productos que estén creados hace más de una hora
+		productos = productos.filter((n) => n.creado_en < haceUnaHora);
+		// Dejar solamente los productos que no tengan problemas de captura
+		productos = productos.filter(
+			(n) =>
+				!n.capturado_en ||
+				n.capturado_en < haceUnaHora ||
+				!n.captura_activa ||
+				n.capturado_por_id == userID
+		);
 		// Fin
 		return productos;
 	},

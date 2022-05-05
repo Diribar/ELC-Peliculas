@@ -5,9 +5,9 @@ main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-rever
 main #zona-de-vitreaux {padding-left: 30px; width: 220px; height: 100%; display: flex; flex-direction: column; justify-content: center;}
 
 /* CONFIGURAR IMAGEN */
-/* #imagen-derecha {height: 100%; width: 150vw; position: relative;} */
-/* #imagen-derecha img {height: 100%; width: 100%; object-fit: cover; position: absolute;} */
-#imagen-derecha img {height: 100%; max-width: 30vw;}
+#imagen-derecha {width: 30vw; height: 100%; position: relative;}
+#imagen-derecha img {height: 100%; width: 100%; object-fit: cover; position: absolute;}
+/* #imagen-derecha img {max-width: 30vw;} */
 
 /* ESTILOS Y CLASES */
 main h1 {font-size: 1.25rem;}

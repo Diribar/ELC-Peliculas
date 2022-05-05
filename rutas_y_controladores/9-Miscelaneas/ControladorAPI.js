@@ -17,24 +17,31 @@ module.exports = {
 	},
 
 	horarioInicial: async (req, res) => {
+		// Variables
 		let {entidad, id, codigo} = req.query;
-		let objeto = {id: id};
+		let objeto;
+		let userID = req.session.usuario.id;
+
+		// En caso que sea 'RUD-edición'
 		if (codigo == "/producto/edicion/") {
 			let entidad_id = funciones.entidad_id(entidad);
 			entidad = "prods_edicion";
-			objeto = {
-				[entidad_id]: id,
-				editado_por_id: req.session.usuario.id,
-			};
+			objeto = {[entidad_id]: id, editado_por_id: userID};
 		}
+
+		// En caso que sea 'Revisar'
+		if (codigo.startsWith("/revision/")) objeto = {id: id, capturado_por_id: userID};
+
+		// Obtener el registro
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
+		console.log(horarioInicial);
 		if (horarioInicial) {
 			let campo =
 				codigo == "/producto/edicion/"
 					? "editado_en"
 					: codigo.startsWith("/revision/")
 					? "capturado_en"
-					: "";
+					: "error";
 			horarioInicial = horarioInicial[campo];
 		}
 		return res.json(horarioInicial);

@@ -4,5 +4,3 @@ main #entidades h2 {padding: 2px 6px; border-radius: 10px; text-align: center; m
 main #entidades h2 {background-color: var(--verde-oscuro); color: var(--gris-claro);}
 
 main #entidades h3 {margin-top: 12px;}
-
-/* main #entidades #primeraColumna .nombre {width: 225px;} */
