@@ -94,49 +94,28 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 	// Controlador-Revisar (Producto)
-	obtenerProductosARevisar: async (haceUnaHora, revisar, userID) => {
-		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		// Declarar las variables
-		let entidades = ["peliculas", "colecciones"];
-		let resultados = [];
-		// Obtener el resultado por entidad
-		for (let i = 0; i < entidades.length; i++) {
-			resultados[i] = db[entidades[i]]
-				.findAll({
-					where: {
-						// Con status de 'revisar'
-						status_registro_id: revisar,
-						[Op.or]: [
-							// Que no esté capturado
-							{capturado_en: null},
-							// Que la captura haya sido hace más de una hora
-							{capturado_en: {[Op.lt]: haceUnaHora}},
-							// Que esté capturado por este usuario
-							{capturado_por_id: userID},
-						],
-						// Que esté en condiciones de ser capturado
-						creado_en: {[Op.lt]: haceUnaHora},
-						// Que esté creado por otro usuario
-						creado_por_id: {[Op.ne]: userID},
-					},
-					include: "status_registro",
-				})
-				.then((n) =>
-					n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidades[i]})) : []
-				);
-		}
-		// Consolidar y ordenar los resultados
-		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
-			// Consolidarlos
-			let casos = [...a, ...b];
-			// Ordenarlos
-			casos.sort((a, b) => {
-				return new Date(a.creado_en) - new Date(b.creado_en);
-			});
-			return casos;
-		});
-		// Fin
-		return resultado;
+	condicionesProductosARevisar: (entidad, haceUnaHora, revisar, userID) => {
+		return db[entidad]
+			.findAll({
+				where: {
+					// Con status de 'revisar'
+					status_registro_id: revisar,
+					[Op.or]: [
+						// Que no esté capturado
+						{capturado_en: null},
+						// Que la captura haya sido hace más de una hora
+						{capturado_en: {[Op.lt]: haceUnaHora}},
+						// Que esté capturado por este usuario
+						{capturado_por_id: userID},
+					],
+					// Que esté en condiciones de ser capturado
+					creado_en: {[Op.lt]: haceUnaHora},
+					// Que esté creado por otro usuario
+					creado_por_id: {[Op.ne]: userID},
+				},
+				include: ["status_registro", "ediciones"],
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
 	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener un registro que cumpla ciertas condiciones

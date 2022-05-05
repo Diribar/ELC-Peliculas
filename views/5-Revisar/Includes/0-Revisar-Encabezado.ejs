@@ -1,6 +1,8 @@
 <section id="encabezado">
 	<div id="nombres">
-		<h1><%= prodOriginal.nombre_castellano %></h1>
+		<a href="/producto/edicion/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
+			<h1><%= prodOriginal.nombre_castellano %></h1>
+		</a>
 		<% if (prodOriginal.nombre_original) { %>
 			<h2><em><%= prodOriginal.nombre_original %></em></h2>
 		<% } %>

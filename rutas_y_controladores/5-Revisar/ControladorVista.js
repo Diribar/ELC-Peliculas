@@ -24,8 +24,8 @@ module.exports = {
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
-		let productos = await BD_especificas.obtenerProductosARevisar(haceUnaHora, revisar, userID);
-		//return res.send(productos.map(n=> {return [n.nombre_castellano,n.status_registro]}));
+		let productos = await procesar.obtenerProductosARevisar(haceUnaHora, status, userID);
+		//return res.send(productos);
 		// Obtener las ediciones en status 'edicion' --> PENDIENTE
 		// let ediciones=await BD_especificas.obtenerEdicionesARevisar();
 		// Consolidar productos y ordenar
