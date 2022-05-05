@@ -6,15 +6,15 @@
 		<div id="primeraColumna">
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
-			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
+			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.filter(n => n.inactivar).map(n => n.id), registros: productos}) %>
 			<!-- Aprobar la edición de aprobados -->
-			<!-- titulo: "Ediciones" -->
+			<%- include("11-Vision-Registros", {titulo: "Aprobados c/Edición", estado: aprobados, registros: prodsConEdicion}) %>
 			<!-- Aprobar la edición de altas -->
-			<%- include("11-Vision-Registros", {titulo: "Edición de Altas", estado: status.find(n => n.alta_aprob).id, registros: productos}) %>
+			<%- include("11-Vision-Registros", {titulo: "Edición de Altas", estado: status.filter(n => n.alta_aprob).map(n => n.id), registros: productos}) %>
 			<!-- Aprobar el Alta -->
-			<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: productos}) %>
+			<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.filter(n => n.creado).map(n => n.id), registros: productos}) %>
 			<!-- Recuperar -->
-			<%- include("11-Vision-Registros", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id, registros: productos}) %>
+			<%- include("11-Vision-Registros", {titulo: "Recuperar", estado: status.filter(n => n.recuperar).map(n => n.id), registros: productos}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
@@ -23,7 +23,7 @@
 				<!-- Aprobar la edición de aprobados -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
-				<%- include("11-Vision-Registros", {titulo: "Altas Pendientes de Aprobar", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
+				<%- include("11-Vision-Registros", {titulo: "Altas Pendientes de Aprobar", estado: status.filter(n => n.creado).map(n => n.id), registros: RCLVs}) %>
 			</div>
 			<div>
 				<h2>Links</h2>

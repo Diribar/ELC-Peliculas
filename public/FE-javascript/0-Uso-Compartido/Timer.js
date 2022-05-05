@@ -13,24 +13,25 @@ window.addEventListener("load", async () => {
 		"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
 	).then((n) => n.json());
 	if (horarioInicial) horarioInicial = new Date(horarioInicial);
+	console.log(horarioInicial);
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial
-		? horarioInicial.getTime() + 1 * 60 * 60 * 1000 - ahora.getTime()
-		: 60 * 60 * 1000;
-	let minutos = Math.min(60, Math.max(0, parseInt(tiempoRestante / 1000 / 60)));
+		? parseInt(horarioInicial.getTime() / 1000 / 60 + 60 - ahora.getTime() / 1000 / 60)
+		: 60;
+	let minutosDispon = Math.min(60, Math.max(0, tiempoRestante));
 
 	// FUNCIONES -------------------------------------------------------------
 	let funcionTimer = () => {
 		let actualizarTimer = setInterval(() => {
-			minutos--;
-			if (minutos < 0) minutos = 0;
-			timer.innerHTML = minutos + " min.";
-			if (minutos == 0) {
+			minutosDispon--;
+			if (minutosDispon < 0) minutosDispon = 0;
+			timer.innerHTML = minutosDispon + " min.";
+			if (minutosDispon == 0) {
 				clearInterval(actualizarTimer);
 				// Cartel de "time out"
 				funcionCartel();
-			} else formatoTimer(minutos);
+			} else formatoTimer(minutosDispon);
 		}, 1000 * 60);
 	};
 	let funcionCartel = () => {
@@ -98,17 +99,17 @@ window.addEventListener("load", async () => {
 		taparElFondo.classList.remove("ocultar");
 		cartel.classList.remove("ocultar");
 	};
-	let formatoTimer = (minutos) => {
-		if (minutos <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
-		else if (minutos <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
+	let formatoTimer = (minutosDispon) => {
+		if (minutosDispon <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
+		else if (minutosDispon <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
 
 	// STARTUP -------------------------------------------------------------
 	if (horarioInicial) {
-		timer.innerHTML = minutos + " min.";
-		formatoTimer(minutos);
+		timer.innerHTML = minutosDispon + " min.";
+		formatoTimer(minutosDispon);
 		funcionTimer();
 		timer.classList.remove("ocultar");
-		if (minutos == 0) funcionCartel();
+		if (minutosDispon == 0) funcionCartel();
 	}
 });

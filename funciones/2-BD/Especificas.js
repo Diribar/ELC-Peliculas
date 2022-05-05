@@ -16,7 +16,6 @@ module.exports = {
 		if (datos.id) objeto = {...objeto, id: {[Op.ne]: datos.id}};
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
-	// PRODUCTOS ------------------------------------------------------------------
 	// Header
 	quickSearchCondiciones: (palabras) => {
 		palabras = palabras.split(" ");
@@ -84,7 +83,8 @@ module.exports = {
 		// Enviar el resultado
 		return resultado;
 	},
-	// API-Agregar
+
+	// AgregarProductos - ControladorAPI
 	obtenerCapitulos: (coleccion_id, temporada) => {
 		return db.capitulos
 			.findAll({
@@ -93,7 +93,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.toJSON()))
 			.then((n) => n.map((m) => m.capitulo));
 	},
-	// Controlador-Revisar (Producto)
+
+	// Revisar - Procesar Producto
 	condicionesProductosARevisar: (entidad, haceUnaHora, revisar, userID) => {
 		return db[entidad]
 			.findAll({
@@ -105,6 +106,8 @@ module.exports = {
 						{capturado_en: null},
 						// Que la captura haya sido hace más de una hora
 						{capturado_en: {[Op.lt]: haceUnaHora}},
+						// Que la captura esté inactiva
+						{captura_activa: {[Op.ne]: 1}},
 						// Que esté capturado por este usuario
 						{capturado_por_id: userID},
 					],
@@ -117,6 +120,21 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
+	// Revisar - Procesar Producto
+	condicEdicionesProdARevisar: (haceUnaHora, userID) => {
+		return db.prods_edicion
+			.findAll({
+				where: {
+					// Que esté creado por otro usuario
+					editado_por_id: {[Op.ne]: userID},
+					// Que esté creada hace más de una hora
+					editado_en: {[Op.lt]: haceUnaHora},
+				},
+				include: ["pelicula", "coleccion", "capitulo"],
+			})
+			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
+	},
+	// Revisar - ControladorVista Redireccionar
 	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener un registro que cumpla ciertas condiciones
 		return db.prods_edicion

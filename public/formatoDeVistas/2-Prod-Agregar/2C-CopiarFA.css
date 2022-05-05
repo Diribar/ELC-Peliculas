@@ -9,7 +9,6 @@
 #dataEntry .input-error {position: relative; display: flex;}
 #dataEntry .mensajeAyuda {max-width: 300px;}
 #dataEntry .mensajeError {max-width: 300px;}
-#dataEntry .mensajeError a {color: inherit;}
 
 /* Mensajes de ayuda */
 #dataEntry .fa-circle-question {align-self: center; transform: translateY(0); margin-left: 10px; position: static;}
