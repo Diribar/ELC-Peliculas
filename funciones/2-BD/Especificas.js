@@ -120,7 +120,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	// Desuso
+	// Revisar - Procesar Producto
 	condicEdicionesProdARevisar: (haceUnaHora, userID) => {
 		return db.prods_edicion
 			.findAll({
