@@ -8,115 +8,7 @@ const funciones = require("./Compartidas");
 const variables = require("./Variables");
 
 module.exports = {
-	// Producto
-	prod_BloquesAlta: async function (prodOriginal, paises) {
-		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
-		// Bloque izquierdo
-		let [bloque1, bloque2, bloque3] = [[], [], []];
-		// Bloque 1
-		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOriginal.idioma_original)
-			bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
-		// Bloque 2
-		if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
-		if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
-		if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
-		if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
-		// Bloque 3
-		if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
-		// Bloque izquierdo consolidado
-		let izquierda = [bloque1, bloque2, bloque3];
-		// Bloque derecho
-		[bloque1, bloque2] = [[], []];
-		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-		// Obtener la fecha de alta
-		let fecha = this.obtenerLaFecha(prodOriginal.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await this.usuario_Ficha(prodOriginal.creado_por_id, ahora);
-		// 6. Obtener la calidad de las altas
-		let calidadAltas = await this.usuario_CalidadAltas(prodOriginal.creado_por_id);
-		// Bloque derecho consolidado
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
-		return [izquierda, derecha];
-	},
-	prod_BloqueEdic: async function (prodOriginal, prodEditado) {
-		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
-		// Bloque derecho
-		let [bloque1, bloque2] = [[], []],
-			fecha;
-		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
-		// Obtener la fecha de alta
-		fecha = this.obtenerLaFecha(prodOriginal.creado_en);
-		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
-		// Obtener la fecha de edicion
-		fecha = this.obtenerLaFecha(prodEditado.editado_en);
-		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
-		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await this.usuario_Ficha(prodEditado.editado_por_id, ahora);
-		// 6. Obtener la calidad de las altas
-		let calidadEdic = await this.usuario_CalidadEdic(prodEditado.editado_por_id);
-		// Bloque derecho consolidado
-		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
-		return derecha;
-	},
-	prod_QuedanCampos: async (prodOriginal, prodEditado) => {
-		// Variables
-		let edicion = {...prodEditado};
-		let noSeComparan;
-		let entidad = funciones.obtenerEntidad(prodEditado);
-		let statusAprobado = false;
-		// Pulir la información a tener en cuenta
-		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
-		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(edicion).length;
-		// Si no quedan, eliminar el registro
-		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
-			// Averiguar si el original no tiene errores
-			let errores = await validar.edicion(null, {...prodOriginal, entidad});
-			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
-			// 1. Que no tenga errores
-			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
-				statusAprobado = true;
-				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1});
-				// Averiguar el Lead Time de creación en horas
-				let ahora = funciones.ahora();
-				let leadTime = funciones.obtenerHoras(prodOriginal.creado_en, ahora);
-				// Cambiarle el status al producto y liberarlo
-				let datos = {
-					alta_terminada_en: ahora,
-					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
-				};
-				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
-				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidad == "colecciones") {
-					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOriginal.id};
-					// Actualizar el status de los capitulos
-					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
-				}
-			}
-		} else edicion = {...noSeComparan, ...edicion};
-		// Fin
-		return [quedanCampos, edicion, statusAprobado];
-	},
+	// Producto - ControladorVista
 	prod_ObtenerARevisar: async (haceUnaHora, status, userID) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
@@ -179,6 +71,141 @@ module.exports = {
 		// Fin
 		return productos;
 	},
+	prod_BloquesAlta: async function (prodOriginal, paises) {
+		// Definir el 'ahora'
+		let ahora = funciones.ahora().getTime();
+		// Bloque izquierdo
+		let [bloque1, bloque2, bloque3] = [[], [], []];
+		// Bloque 1
+		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
+		if (prodOriginal.idioma_original)
+			bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
+		// Bloque 2
+		if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
+		if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
+		if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
+		if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
+		// Bloque 3
+		if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
+		// Bloque izquierdo consolidado
+		let izquierda = [bloque1, bloque2, bloque3];
+		// Bloque derecho
+		[bloque1, bloque2] = [[], []];
+		// Bloque 1
+		if (prodOriginal.ano_estreno)
+			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
+		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
+		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		// Obtener la fecha de alta
+		let fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+		// 5. Obtener los datos del usuario
+		let fichaDelUsuario = await this.usuario_Ficha(prodOriginal.creado_por_id, ahora);
+		// 6. Obtener la calidad de las altas
+		let calidadAltas = await this.usuario_CalidadAltas(prodOriginal.creado_por_id);
+		// Bloque derecho consolidado
+		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
+		return [izquierda, derecha];
+	},
+	prod_QuedanCampos: async (prodOriginal, prodEditado) => {
+		// Variables
+		let edicion = {...prodEditado};
+		let noSeComparan;
+		let entidad = funciones.obtenerEntidad(prodEditado);
+		let statusAprobado = false;
+		// Pulir la información a tener en cuenta
+		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
+		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
+		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+		// Averiguar si queda algún campo
+		let quedanCampos = !!Object.keys(edicion).length;
+		// Si no quedan, eliminar el registro
+		if (!quedanCampos) {
+			// Eliminar el registro de la edición
+			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
+			// Averiguar si el original no tiene errores
+			let errores = await validar.edicion(null, {...prodOriginal, entidad});
+			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
+			// 1. Que no tenga errores
+			// 2. Que el status del original sea 'alta_aprob'
+			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
+				statusAprobado = true;
+				// Obtener el 'id' del status 'aprobado'
+				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1});
+				// Averiguar el Lead Time de creación en horas
+				let ahora = funciones.ahora();
+				let leadTime = funciones.obtenerHoras(prodOriginal.creado_en, ahora);
+				// Cambiarle el status al producto y liberarlo
+				let datos = {
+					alta_terminada_en: ahora,
+					lead_time_creacion: leadTime,
+					status_registro_id: aprobado_id,
+				};
+				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
+				// Si es una colección, cambiarle el status también a los capítulos
+				if (entidad == "colecciones") {
+					// Generar el objeto para filtrar
+					let objeto = {coleccion_id: prodOriginal.id};
+					// Actualizar el status de los capitulos
+					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
+				}
+			}
+		} else edicion = {...noSeComparan, ...edicion};
+		// Fin
+		return [quedanCampos, edicion, statusAprobado];
+	},
+	prod_ArmarComparac: (prodOriginal, prodEditado) => {
+		let camposAComparar = variables.camposRevisarEdic();
+		for (let i = camposAComparar.length - 1; i >= 0; i--) {
+			let campo = camposAComparar[i].nombreDelCampo;
+			if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
+			else {
+				// Variables
+				let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;
+				let asoc1 = camposAComparar[i].asociacion1;
+				let asoc2 = camposAComparar[i].asociacion2;
+				// Valores originales
+				camposAComparar[i].valorOrig = verificar ? prodOriginal[campo] : null;
+				camposAComparar[i].mostrarOrig =
+					camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
+						? prodOriginal[asoc1][asoc2]
+						: camposAComparar[i].valorOrig;
+				// Valores editados
+				camposAComparar[i].valorEdic = prodEditado[campo];
+				camposAComparar[i].mostrarEdic = asoc1 ? prodEditado[asoc1][asoc2] : prodEditado[campo];
+			}
+		}
+		// Ingresos de edición, sin valor en la versión original
+		let ingresos = camposAComparar.filter((n) => !n.valorOrig);
+		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
+		return [ingresos, reemplazos];
+	},
+	prod_BloqueEdic: async function (prodOriginal, prodEditado) {
+		// Definir el 'ahora'
+		let ahora = funciones.ahora().getTime();
+		// Bloque derecho
+		let [bloque1, bloque2] = [[], []],
+			fecha;
+		// Bloque 1
+		if (prodOriginal.ano_estreno)
+			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
+		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
+		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		// Obtener la fecha de alta
+		fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
+		// Obtener la fecha de edicion
+		fecha = this.obtenerLaFecha(prodEditado.editado_en);
+		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
+		// 5. Obtener los datos del usuario
+		let fichaDelUsuario = await this.usuario_Ficha(prodEditado.editado_por_id, ahora);
+		// 6. Obtener la calidad de las altas
+		let calidadEdic = await this.usuario_CalidadEdic(prodEditado.editado_por_id);
+		// Bloque derecho consolidado
+		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
+		return derecha;
+	},
+	// Producto - ControladorAPI
 	prod_EdicValores: (aprobado, prodOriginal, prodEditado, campo) => {
 		// Definir los campos 'complicados'
 		let camposConVinculo = [
@@ -210,32 +237,6 @@ module.exports = {
 		let valor_rechazado = aprobado ? null : valorEdic;
 		// Fin
 		return {valor_aceptado, valor_rechazado};
-	},
-	prod_ArmarComparac: (prodOriginal, prodEditado) => {
-		let camposAComparar = variables.camposRevisarEdic();
-		for (let i = camposAComparar.length - 1; i >= 0; i--) {
-			let campo = camposAComparar[i].nombreDelCampo;
-			if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
-			else {
-				// Variables
-				let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;
-				let asoc1 = camposAComparar[i].asociacion1;
-				let asoc2 = camposAComparar[i].asociacion2;
-				// Valores originales
-				camposAComparar[i].valorOrig = verificar ? prodOriginal[campo] : null;
-				camposAComparar[i].mostrarOrig =
-					camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
-						? prodOriginal[asoc1][asoc2]
-						: camposAComparar[i].valorOrig;
-				// Valores editados
-				camposAComparar[i].valorEdic = prodEditado[campo];
-				camposAComparar[i].mostrarEdic = asoc1 ? prodEditado[asoc1][asoc2] : prodEditado[campo];
-			}
-		}
-		// Ingresos de edición, sin valor en la versión original
-		let ingresos = camposAComparar.filter((n) => !n.valorOrig);
-		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
-		return [ingresos, reemplazos];
 	},
 
 	// RCLV
