@@ -186,9 +186,7 @@ module.exports = {
 				datos = {...datos, duracion, motivo_id};
 			}
 			let valores = await procesar.prodEdicAprobRechValores(aprobado, prodOriginal, prodEditado, campo);
-			console.log(189,valores);
 			datos = {...datos, ...valores};
-			console.log(191,datos);
 			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
 		}

@@ -58,7 +58,6 @@ module.exports = {
 			"personaje",
 			"hecho",
 			"valor",
-			"editado_por",
 			// A partir de acá, van los campos exclusivos de 'Original'
 			"creado_por",
 			"status_registro",

@@ -25,7 +25,7 @@
 				<% } else { %>
 					<p id="mensajes"><%= informacion.mensajes[0] %> </p>
 				<% } %>
-				<div id="flechas">
+				<div id="flechasCartel">
 					<% for (icono of informacion.iconos) { %>
 						<a href="<%= icono.link %>" autofocus><i class="fa-solid <%= icono.nombre %>" title="<%= icono.titulo %>"></i></a>
 					<% } %>

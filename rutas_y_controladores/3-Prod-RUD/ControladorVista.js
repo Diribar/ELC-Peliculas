@@ -20,7 +20,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// 3. Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
@@ -170,7 +170,7 @@ module.exports = {
 		// Obtener el userID
 		let userID = req.session.usuario.id;
 		// Obtener el producto 'Original'
-		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
@@ -242,7 +242,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await BD_especificas.obtenerVersionesDeProducto(
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
 			entidad,
 			prodID,
 			userID
