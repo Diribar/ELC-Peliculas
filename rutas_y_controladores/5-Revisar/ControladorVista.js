@@ -22,18 +22,18 @@ module.exports = {
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = funciones.haceUnaHora();
-		// Productos ------------------------------------------------------------
+		// Productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
 		if (productos.length) productos = procesar.prod_ProcesarCampos(productos);
-		// Ediciones ------------------------------------------------------------
+		// Ediciones
 		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
 		if (prodsConEdicion.length) prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
-		// RCLV -----------------------------------------------------------------
+		// RCLV
 		let RCLVs = await procesar.RCLV_ObtenerARevisar(haceUnaHora, status, userID);
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
-		// Obtener Links ----------------------------------------------------------------
+		// Obtener Links
 		let prodsConLinks = await procesar.links_ObtenerARevisar(haceUnaHora, status, userID);
-		// Ir a la vista ----------------------------------------------------------------
+		// Ir a la vista
 		//return res.send(RCLVs);
 		return res.render("0-VistaEstandar", {
 			tema,
