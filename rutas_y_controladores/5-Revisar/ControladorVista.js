@@ -20,29 +20,19 @@ module.exports = {
 			);
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
-		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = funciones.haceUnaHora();
 		// Productos ------------------------------------------------------------
-		// Obtener productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
-		// Procesar campos
-		productos = procesar.prod_ProcesarCampos(productos);
+		if (productos.length) productos = procesar.prod_ProcesarCampos(productos);
 		// Ediciones ------------------------------------------------------------
-		// Obtener ediciones
 		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
-		// Procesar campos
-		prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
-		// Obtener RCLV -----------------------------------------------------------------
-		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
-		//return res.send(RCLVs);
-		if (RCLVs.length) RCLVs = procesar.RCLV_procesar(RCLVs, aprobados);
+		if (prodsConEdicion.length) prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
+		// RCLV -----------------------------------------------------------------
+		let RCLVs = await procesar.RCLV_ObtenerARevisar(haceUnaHora, status, userID);
+		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Obtener Links ----------------------------------------------------------------
-		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
-		// Obtener los productos de los links
-		let aprobado = status.find((n) => n.aprobado).id;
-		//return res.send([links, aprobado])
-		let prodsLinks = procesar.links_Productos(links, aprobado);
+		let prodsConLinks = await procesar.links_ObtenerARevisar(haceUnaHora, status, userID);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(RCLVs);
 		return res.render("0-VistaEstandar", {
@@ -52,7 +42,7 @@ module.exports = {
 			productos,
 			prodsConEdicion,
 			RCLVs,
-			prodsLinks,
+			prodsConLinks,
 			status,
 			aprobados,
 		});

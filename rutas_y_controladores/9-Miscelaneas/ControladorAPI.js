@@ -34,7 +34,6 @@ module.exports = {
 
 		// Obtener el registro
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
-		console.log(horarioInicial);
 		if (horarioInicial) {
 			let campo =
 				codigo == "/producto/edicion/"
