@@ -30,9 +30,9 @@ module.exports = {
 		productos = procesar.prod_ProcesarCampos(productos);
 		// Ediciones ------------------------------------------------------------
 		// Obtener ediciones
-		let ediciones = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
+		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
 		// Procesar campos
-		let prodsConEdicion = procesar.prod_ProcesarCampos(ediciones);
+		prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
 		// Obtener RCLV -----------------------------------------------------------------
 		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
 		//return res.send(RCLVs);
