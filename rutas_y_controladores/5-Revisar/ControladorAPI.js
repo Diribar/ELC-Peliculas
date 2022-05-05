@@ -185,7 +185,7 @@ module.exports = {
 				let duracion = aux.duracion;
 				datos = {...datos, duracion, motivo_id};
 			}
-			let valores = await procesar.prodEdicAprobRechValores(aprobado, prodOriginal, prodEditado, campo);
+			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
@@ -193,7 +193,7 @@ module.exports = {
 		// Actualiza la variable de 'edicion' quitándole el valor al campo
 		prodEditado[campo] = null;
 		// Averiguar si quedan campos por procesar, elimina el registro de edición si ya no tiene más datos, actualiza el status del registro original, si corresponde
-		let [quedanCampos, , statusAprobado] = await procesar.quedanCampos(prodOriginal, prodEditado);
+		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(prodOriginal, prodEditado);
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
@@ -224,7 +224,7 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
 		// Preparar el campo 'cant_prod_aprobados'
-		let cant_prod_aprobados = await procesar.cant_prod_aprobados(RCLV_original, aprobado_id, campos);
+		let cant_prod_aprobados = await procesar.RCLV_cant_prod_aprob(RCLV_original, aprobado_id, campos);
 		// Preparar lead_time_creacion
 		let alta_analizada_en = funciones.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
@@ -240,7 +240,7 @@ module.exports = {
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
 		// Actualizar la info de aprobados/rechazados
-		procesar.RCLV_actualizarAprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
+		procesar.RCLV_BD_Edicion(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 		//
 		// Actualizar la cantidad de productos en RCLV_dias
 

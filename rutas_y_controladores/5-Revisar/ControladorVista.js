@@ -24,22 +24,22 @@ module.exports = {
 		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
 		let haceUnaHora = funciones.haceUnaHora();
 		// Obtener productos ------------------------------------------------------------
-		let productos = await procesar.obtenerProductosARevisar(haceUnaHora, status, userID);
+		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
 		//return res.send(productos);
-		// Obtener las ediciones en status 'edicion' --> PENDIENTE
-		// let ediciones=await BD_especificas.obtenerEdicionesARevisar();
+		// Obtener las ediciones con producto en status 'aprobado'
+		// let ediciones=await procesar.obtenerEdicionesARevisar();
 		// Consolidar productos y ordenar
-		productos = procesar.procesarProd(productos);
+		productos = procesar.prod_Procesar(productos);
 		// Obtener RCLV -----------------------------------------------------------------
 		let RCLVs = await BD_especificas.obtenerRCLVsARevisar(haceUnaHora, revisar, userID);
 		//return res.send(RCLVs);
-		if (RCLVs.length) RCLVs = procesar.procesarRCLVs(RCLVs, aprobados);
+		if (RCLVs.length) RCLVs = procesar.RCLV_procesar(RCLVs, aprobados);
 		// Obtener Links ----------------------------------------------------------------
 		let links = await BD_especificas.obtenerLinksARevisar(haceUnaHora, revisar, userID);
 		// Obtener los productos de los links
 		let aprobado = status.find((n) => n.aprobado).id
 		//return res.send([links, aprobado])
-		let prodsLinks = procesar.productosLinks(links, aprobado);
+		let prodsLinks = procesar.links_Productos(links, aprobado);
 		// Ir a la vista ----------------------------------------------------------------
 		//return res.send(RCLVs);
 		return res.render("0-VistaEstandar", {
@@ -168,7 +168,7 @@ module.exports = {
 		// 7. Obtener los países
 		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesar.bloquesAltaProd(prodOriginal, paises);
+		let [bloqueIzq, bloqueDer] = await procesar.prod_BloquesAlta(prodOriginal, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -225,7 +225,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await procesar.quedanCampos(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesar.prod_QuedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
 				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
@@ -257,7 +257,7 @@ module.exports = {
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = procesar.armarComparacion(prodOriginal, prodEditado);
+			[ingresos, reemplazos] = procesar.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -265,7 +265,7 @@ module.exports = {
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await procesar.bloqueDerEdicProd(prodOriginal, prodEditado);
+			bloqueDer = await procesar.prod_BloqueEdic(prodOriginal, prodEditado);
 			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
@@ -323,7 +323,7 @@ module.exports = {
 			);
 		}
 		// Obtener el título de canonización
-		let tituloCanoniz = procesar.tituloCanonizacion({...RCLV_original, entidad});
+		let tituloCanoniz = procesar.RCLV_tituloCanoniz({...RCLV_original, entidad});
 		// Datos para la vista
 		// Títulos
 		let prodNombre = funciones.entidadNombre(entidad);
