@@ -80,6 +80,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
+		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "pelicula_id"});
 		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "pelicula_id"});
 	};
 	return entidad;

@@ -9,7 +9,8 @@
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
-#cuerpo #encabezado #nombres h1 {margin: 0;}
+#cuerpo #encabezado #nombres a {color: inherit;}
+#cuerpo #encabezado #nombres a h1 {margin: 0;}
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap #colecciones {display: flex; flex-direction: column; justify-content: center; align-items: flex-end; line-height: 1;}
 #cuerpo #encabezado #colCap #tempCapI,

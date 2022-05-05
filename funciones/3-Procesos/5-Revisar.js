@@ -117,6 +117,44 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprobado];
 	},
+	obtenerProductosARevisar: async (haceUnaHora, status, userID) => {
+		// Obtener los registros del Producto, que cumplan ciertas condiciones
+		// Declarar las variables
+		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
+		let alta_aprob = status.find((n) => n.alta_aprob).id;
+		let entidades = ["peliculas", "colecciones"];
+		let resultados = [];
+		// Obtener el resultado por entidad
+		for (let i = 0; i < entidades.length; i++)
+			resultados[i] = BD_especificas.condicionesProductosARevisar(
+				entidades[i],
+				haceUnaHora,
+				revisar,
+				userID
+			);
+		// Consolidar y ordenar los resultados
+		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
+			// Consolidarlos
+			let casos = [...a, ...b];
+			// Ordenarlos
+			casos.sort((a, b) => {
+				return new Date(a.creado_en) - new Date(b.creado_en);
+			});
+			return casos;
+		});
+		// Eliminar los resultados que estén en status 'alta-aprobada' y tengan una sola edición y pertenezca al usuario
+		for (let i = resultado.length - 1; i >= 0; i--) {
+			if (
+				resultado[i].status_registro.id == alta_aprob &&
+				resultado[i].ediciones.length &&
+				resultado[i].ediciones[0].editado_por_id == userID
+			)
+				resultado.splice(i, 1);
+		}
+		// Fin
+		return resultado;
+	},
+
 	// Revisar - Usuario
 	fichaDelUsuario: async function (userID, ahora) {
 		// Obtener los datos del usuario
@@ -289,7 +327,7 @@ module.exports = {
 				? prodValorVinculo(prodOriginal, camposConVinculo[indice])
 				: prodOriginal[campo]
 			: null;
-		if (valorOrig == null) valorOrig = "Campo sin datos";
+		if (valorOrig == null) valorOrig = "-";
 		let valorEdic =
 			indice + 1 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
 		// Obtener los valores 'aceptado' y 'rechazado'
