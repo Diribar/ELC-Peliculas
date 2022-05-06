@@ -407,7 +407,7 @@ module.exports = {
 		];
 		
 	},	
-	menuSubOpciones: () => {
+	subMenuOpciones: () => {
 		return [
 			{nombre: "Por mejor calificación", url: "calificacion"},
 			{nombre: "Por año de estreno más reciente", url: "estreno"},

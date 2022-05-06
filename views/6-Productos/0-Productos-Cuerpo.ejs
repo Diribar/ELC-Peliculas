@@ -25,7 +25,7 @@
 				<option style="font-style: italic" class="ocultar" selected>Elegí una opción</option>
 			<% } %>
 			<% for (let menuSubOpcion of menuSubOpciones) { %>
-				<option value="/productos/<%= opcionElegida_campos.url + "/" + menuSubOpcion.url %>" <% if (subOpcion && menuSubOpcion.url == subOpcionElegida_campos.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
+				<option value="/productos/<%= menuSubOpcion.url %>" <% if (subOpcion && menuSubOpcion.url == subOpcionElegida_campos.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
 			<% } %>
 			</select>
 		<% } %>

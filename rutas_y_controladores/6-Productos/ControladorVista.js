@@ -18,18 +18,19 @@ module.exports = {
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
 		// Obtener datos en función de la opción elegida
-		let [opcionElegida_campos, opcionElegida_titulo] = await procesar.datosVista(opcion);
+		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
+		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
 		// Ir a la vista
 		// return res.send([tema, opcion, titulo, opciones, tipos, opcionCampos]);
 		res.render("0-VistaEstandar", {
 			tema: "productos",
 			opcion,
+			titulo: opcionElegida_titulo,
+			menuOpciones: req.session.menuOpciones,
 			subOpcion: null,
 			opcionElegida_campos,
-			titulo: opcionElegida_titulo,
 			subOpcionElegida_campos: null,
-			menuOpciones: variables.menuOpciones(),
-			menuSubOpciones: req.session.menuSubOpciones,
+			menuSubOpciones: req.session.menuSubOpciones_algunas,
 		});
 	},
 
@@ -37,23 +38,24 @@ module.exports = {
 		// Averiguar la sub-opción elegida
 		let url = req.url.slice(1);
 		let opcion = url.slice(0, url.indexOf("/"));
-		let subOpcion = url.slice(opcion.length + 1);
-
-		return res.send(subOpcion);
+		let opcionSubOpcion = req.url.slice(1);
 		// Obtener datos en función de la opción elegida
-		let [opcionCampos, titulo, menuSubOpciones] = await procesar.datosVista(opcion);
-		// Obtener la Opción Elegida y el Tipo Elegido
-		let subOpcionCampos = menuSubOpciones.find((n) => n.url == url);
+		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
+		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
+		let subOpcionElegida_campos = req.session.menuSubOpciones_algunas.find(
+			(n) => n.url == opcionSubOpcion
+		);
 		// Ir a la vista
 		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
 		res.render("0-VistaEstandar", {
 			tema: "productos",
 			opcion,
-			titulo,
-			opciones,
-			tipos,
-			opcionElegida,
-			tipoElegido,
+			titulo: opcionElegida_titulo,
+			menuOpciones: req.session.menuOpciones,
+			subOpcion: opcionSubOpcion,
+			opcionElegida_campos,
+			subOpcionElegida_campos,
+			menuSubOpciones: req.session.menuSubOpciones_algunas,
 		});
 	},
 

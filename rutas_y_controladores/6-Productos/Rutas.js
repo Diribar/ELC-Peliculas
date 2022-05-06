@@ -6,14 +6,14 @@ const vista = require("./ControladorVista");
 
 // Middlewares
 let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-let vistasProductos = require("../../middlewares/varios/vistasProductos");
+let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
 
 // Home
 router.get("/", vista.home);
 
 // Vistas de Opciones
-router.get("/:id", vistasProductos, vista.opcion);
-router.get("/:id/:id", vistasProductos, vista.subOpcion);
+router.get("/:id", urlAceptadas, vista.opcion);
+router.get("/:id/:id", urlAceptadas, vista.subOpcion);
 // router.post("/:id/:id", soloUsuarios, vista.filtros);
 
 // Fin
