@@ -8,43 +8,86 @@ const variables = require("./Variables");
 const validar = require("../4-Validaciones/RUD");
 
 module.exports = {
-	// Producto - ControladorVista
-	prod_ObtenerARevisar: async (haceUnaHora, status, userID) => {
+	// Uso compartido
+	registros_ObtenerARevisar: async (haceUnaHora, status, userID, entidades, includes) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
-		let alta_aprob = status.find((n) => n.alta_aprob).id;
-		let entidades = ["peliculas", "colecciones"];
 		let resultados = [];
 		// Obtener el resultado por entidad
 		for (let i = 0; i < entidades.length; i++)
-			resultados[i] = BD_especificas.condicionesProductosARevisar(
+			resultados[i] = BD_especificas.condicRegistro_ARevisar(
 				entidades[i],
 				haceUnaHora,
 				revisar,
-				userID
+				userID,
+				includes
 			);
+		resultados = await Promise.all([...resultados]);
 		// Consolidar y ordenar los resultados
-		let resultado = await Promise.all([...resultados]).then(([a, b]) => {
-			// Consolidarlos
-			let casos = [...a, ...b];
-			// Ordenarlos
-			casos.sort((a, b) => {
-				return new Date(a.creado_en) - new Date(b.creado_en);
-			});
-			return casos;
-		});
+		let acumulador = [];
+		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
+		if (acumulador.length > 1) acumulador.sort((a, b) => new Date(a.creado_en) - new Date(b.creado_en));
+		// Fin
+		return acumulador;
+	},
+	// Producto - ControladorVista
+	prod_ObtenerARevisar: async function (haceUnaHora, status, userID) {
+		// Obtener los registros que cumplan ciertas condiciones
+		// Declarar las variables
+		let entidades = ["peliculas", "colecciones"];
+		let includes = ["status_registro", "ediciones"];
+		// Obtener los resultados
+		let resultados = await this.registros_ObtenerARevisar(
+			haceUnaHora,
+			status,
+			userID,
+			entidades,
+			includes
+		);
 		// Eliminar los resultados que estén en status 'alta-aprobada' y tengan una sola edición y pertenezca al usuario
-		for (let i = resultado.length - 1; i >= 0; i--) {
+		let alta_aprob = status.find((n) => n.alta_aprob).id;
+		for (let i = resultados.length - 1; i >= 0; i--) {
 			if (
-				resultado[i].status_registro.id == alta_aprob &&
-				resultado[i].ediciones.length &&
-				resultado[i].ediciones[0].editado_por_id == userID
+				resultados[i].status_registro.id == alta_aprob &&
+				resultados[i].ediciones.length == 1 &&
+				resultados[i].ediciones[0].editado_por_id == userID
 			)
-				resultado.splice(i, 1);
+				resultados.splice(i, 1);
 		}
 		// Fin
-		return resultado;
+		return resultados;
+	},
+	prod_ObtenerEdicARevisar: async (haceUnaHora, status, userID) => {
+		// Obtener todas las ediciones de usuarios ajenos, con asociación a películas, colecciones y capítulos
+		// Declarar las variables
+		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
+		// Obtener todas las ediciones de usuarios ajenos y de hace más de una hora
+		let ediciones = await BD_especificas.condicEdicProd_ARevisar(haceUnaHora, userID);
+		// Obtener los productos
+		let productos = ediciones.map((n) => {
+			return n.pelicula_id
+				? {...n.pelicula, entidad: "peliculas"}
+				: n.coleccion_id
+				? {...n.coleccion, entidad: "colecciones"}
+				: {...n.capitulo, entidad: "capitulos"};
+		});
+		// Dejar solamente los productos aprobados
+		productos = productos.filter((n) => aprobados.includes(n.status_registro_id));
+		// Dejar solamente los productos generados por otros usuarios
+		productos = productos.filter((n) => n.creado_por_id != userID);
+		// Dejar solamente los productos que estén creados hace más de una hora
+		productos = productos.filter((n) => n.creado_en < haceUnaHora);
+		// Dejar solamente los productos que no tengan problemas de captura
+		productos = productos.filter(
+			(n) =>
+				!n.capturado_en ||
+				n.capturado_en < haceUnaHora ||
+				!n.captura_activa ||
+				n.capturado_por_id == userID
+		);
+		// Fin
+		return productos;
 	},
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
@@ -68,37 +111,6 @@ module.exports = {
 				fecha: n.creado_en,
 			};
 		});
-		// Fin
-		return productos;
-	},
-	prod_ObtenerEdicARevisar: async (haceUnaHora, status, userID) => {
-		// Obtener todas las ediciones de usuarios ajenos, con asociación a películas, colecciones y capítulos
-		// Declarar las variables
-		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
-		// Obtener todas las ediciones de usuarios ajenos y de hace más de una hora
-		let ediciones = await BD_especificas.condicEdicionesProdARevisar(haceUnaHora, userID);
-		// Obtener los productos
-		let productos = ediciones.map((n) => {
-			return n.pelicula_id
-				? {...n.pelicula, entidad: "peliculas"}
-				: n.coleccion_id
-				? {...n.coleccion, entidad: "colecciones"}
-				: {...n.capitulo, entidad: "capitulos"};
-		});
-		// Dejar solamente los productos aprobados
-		productos = productos.filter((n) => aprobados.includes(n.status_registro_id));
-		// Dejar solamente los productos generados por otros usuarios
-		productos = productos.filter((n) => n.creado_por_id != userID);
-		// Dejar solamente los productos que estén creados hace más de una hora
-		productos = productos.filter((n) => n.creado_en < haceUnaHora);
-		// Dejar solamente los productos que no tengan problemas de captura
-		productos = productos.filter(
-			(n) =>
-				!n.capturado_en ||
-				n.capturado_en < haceUnaHora ||
-				!n.captura_activa ||
-				n.capturado_por_id == userID
-		);
 		// Fin
 		return productos;
 	},
@@ -271,43 +283,51 @@ module.exports = {
 	},
 
 	// RCLV
-	RCLV_tituloCanoniz: (datos) => {
-		let tituloCanoniz = "";
-		if (datos.entidad == "RCLV_personajes") {
-			tituloCanoniz = datos.proceso_canonizacion.nombre;
-			if (
-				datos.proceso_canonizacion.nombre == "Santo" &&
-				!datos.nombre.startsWith("Domingo") &&
-				!datos.nombre.startsWith("Tomás") &&
-				!datos.nombre.startsWith("Tomé") &&
-				!datos.nombre.startsWith("Toribio")
-			)
-				tituloCanoniz = "San";
-		}
-		return tituloCanoniz;
-	},
-	RCLV_procesar: (RCLVs, aprobados) => {
-		// Definir algunas variables
-		let anchoMax = 30;
-		let resultados = [];
+	RCLV_ObtenerARevisar: async function (haceUnaHora, status, userID) {
+		// Obtener los registros que cumplan ciertas condiciones
+		// Declarar las variables
+		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		let includes = ["status_registro", "peliculas", "colecciones", "capitulos"];
+		// Obtener los resultados
+		let resultados = await this.registros_ObtenerARevisar(
+			haceUnaHora,
+			status,
+			userID,
+			entidades,
+			includes
+		);
+		// Dejar solamente RCLVs con productos aprobados
+		let aprobado = status.find((n) => n.aprobado).id;
+		let editado = status.find((n) => n.editado).id;
 		let campos = ["peliculas", "colecciones", "capitulos"];
-		// Descartar los RCLVs que no tengan productos aprobados
-		RCLVs.map((n) => {
+		let aux = [];
+		// Rutina para cada RCLV
+		resultados.map((n) => {
+			// Verificación si tiene algún Producto
 			for (let campo of campos) {
 				if (n[campo].length)
-					for (let registro of n[campo]) {
+					for (let reg of n[campo]) {
+						// Averiguar el status_registro_id del producto
 						if (
-							registro.status_registro_id == aprobados[0] ||
-							registro.status_registro_id == aprobados[1]
+							// El producto está aprobado o editado
+							(reg.status_registro_id == aprobado || reg.status_registro_id == editado) &&
+							// El RCLV todavía no está incluido en la variable 'auxiliar'
+							aux.findIndex((m) => m.entidad == n.entidad && m.id == n.id) < 0
 						) {
-							resultados.push(n);
+							aux.push(n);
 							break;
 						}
 					}
-				if (resultados.length && resultados.slice(-1) == n) break;
+				if (aux.length && aux.slice(-1) == n) break;
 			}
 		});
-		RCLVs = resultados;
+		resultados = aux;
+		// Fin
+		return resultados;
+	},
+	RCLV_ProcesarCampos: (RCLVs) => {
+		// Definir algunas variables
+		let anchoMax = 30;
 		// Reconvertir los elementos
 		RCLVs = RCLVs.map((n) => {
 			let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
@@ -322,6 +342,21 @@ module.exports = {
 		});
 		// Fin
 		return RCLVs;
+	},
+	RCLV_tituloCanoniz: (datos) => {
+		let tituloCanoniz = "";
+		if (datos.entidad == "RCLV_personajes") {
+			tituloCanoniz = datos.proceso_canonizacion.nombre;
+			if (
+				datos.proceso_canonizacion.nombre == "Santo" &&
+				!datos.nombre.startsWith("Domingo") &&
+				!datos.nombre.startsWith("Tomás") &&
+				!datos.nombre.startsWith("Tomé") &&
+				!datos.nombre.startsWith("Toribio")
+			)
+				tituloCanoniz = "San";
+		}
+		return tituloCanoniz;
 	},
 	RCLV_BD_Edicion: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
@@ -382,37 +417,55 @@ module.exports = {
 	},
 
 	// Links
-	links_Productos: (links, aprobado) => {
-		// Resultado esperado:
-		//	- Solo productos aprobados
-		//	- Campos: {abrev, entidad, id, ano_estreno,}
-
-		// Definir las  variables
-		let prods = [];
-		let auxs = [
+	links_ObtenerARevisar: async function (haceUnaHora, status, userID) {
+		// Obtener todos los registros de links, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
+		// Declarar las variables
+		let entidades = ["links_originales"];
+		let includes = ["pelicula", "coleccion", "capitulo"];
+		// Obtener el resultado por entidad
+		let resultados = await this.registros_ObtenerARevisar(
+			haceUnaHora,
+			status,
+			userID,
+			entidades,
+			includes
+		);
+		// Dejar solamente links con productos aprobados
+		let aprobado = status.find((n) => n.aprobado).id;
+		let editado = status.find((n) => n.editado).id;
+		let campos = [
 			{nombre: "pelicula", entidad: "peliculas"},
 			{nombre: "coleccion", entidad: "colecciones"},
 			{nombre: "capitulo", entidad: "capitulos"},
 		];
+		let aux = [];
 		// Rutina para cada link
-		for (let link of links) {
+		resultados.map((n) => {
 			// Verificación para cada Producto
-			for (let aux of auxs) {
+			for (let campo of campos) {
+				// Averiguar el status_registro_id del producto
 				if (
-					link[aux.nombre] &&
-					link[aux.nombre].status_registro_id == aprobado &&
-					prods.findIndex((n) => n.entidad == aux.entidad && n.id == link[aux.nombre].id) < 0
+					// El link tiene asociado este producto
+					n[campo.nombre] &&
+					// El producto está aprobado o editado
+					(n[campo.nombre].status_registro_id == aprobado ||
+						n[campo.nombre].status_registro_id == editado) &&
+					// El producto todavía no está incluido en la variable 'auxiliar'
+					aux.findIndex((m) => m.entidad == campo.entidad && m.id == n[campo.nombre].id) < 0
 				)
-					prods.push({
-						entidad: aux.entidad,
-						id: link[aux.nombre].id,
-						nombre: link[aux.nombre].nombre_castellano,
-						ano_estreno: link[aux.nombre].ano_estreno,
-						abrev: aux.nombre.slice(0, 3).toUpperCase(),
+					// Si se cumple todo lo anterior, agregar el link
+					aux.push({
+						entidad: campo.entidad,
+						id: n[campo.nombre].id,
+						nombre: n[campo.nombre].nombre_castellano,
+						ano_estreno: n[campo.nombre].ano_estreno,
+						abrev: campo.nombre.slice(0, 3).toUpperCase(),
 					});
 			}
-		}
-		return prods;
+		});
+		resultados = aux;
+		// Fin
+		return resultados;
 	},
 
 	// Usuario
@@ -533,7 +586,6 @@ module.exports = {
 	},
 };
 let prodValorVinculo = (producto, objeto) => {
-	//console.log(459, objeto.vinculo, objeto.campo, producto[objeto.vinculo]);
 	let aux = producto[objeto.vinculo]
 		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
 			? producto[objeto.vinculo].productos

@@ -13,7 +13,6 @@ window.addEventListener("load", async () => {
 		"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
 	).then((n) => n.json());
 	if (horarioInicial) horarioInicial = new Date(horarioInicial);
-	console.log(horarioInicial);
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = horarioInicial

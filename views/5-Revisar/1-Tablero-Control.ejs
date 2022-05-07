@@ -29,14 +29,14 @@
 				<h2>Links</h2>
 				<table>
 					<tbody>
-					<% for (let prodLinks of prodsLinks) { %>
+					<% for (let prodConLinks of prodsConLinks) { %>
 						<tr>
 							<td>
-								<a href="/revision/links/?entidad=<%= prodLinks.entidad %>&id=<%= prodLinks.id %>">
-									<%= prodLinks.nombre %>
+								<a href="/revision/links/?entidad=<%= prodConLinks.entidad %>&id=<%= prodConLinks.id %>">
+									<%= prodConLinks.nombre %>
 								</a>
 							</td>
-							<td><%= prodLinks.entidad.slice(0,3).toUpperCase() %></td>
+							<td><%= prodConLinks.entidad.slice(0,3).toUpperCase() %></td>
 						</tr>
 					<% } %>
 					</tbody>

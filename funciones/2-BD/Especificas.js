@@ -94,13 +94,14 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 
-	// Revisar - Procesar Producto
-	condicionesProductosARevisar: (entidad, haceUnaHora, revisar, userID) => {
+	// Revisar - Procesar Compartido (Producto/RCLV)
+	condicRegistro_ARevisar: (entidad, haceUnaHora, revisar, userID, includes) => {
 		return db[entidad]
 			.findAll({
 				where: {
 					// Con status de 'revisar'
 					status_registro_id: revisar,
+					// Que cumpla alguno de los siguientes:
 					[Op.or]: [
 						// Que no esté capturado
 						{capturado_en: null},
@@ -111,23 +112,23 @@ module.exports = {
 						// Que esté capturado por este usuario
 						{capturado_por_id: userID},
 					],
-					// Que esté en condiciones de ser capturado
+					// Que esté creado hace más de una hora
 					creado_en: {[Op.lt]: haceUnaHora},
 					// Que esté creado por otro usuario
 					creado_por_id: {[Op.ne]: userID},
 				},
-				include: ["status_registro", "ediciones"],
+				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
 	// Revisar - Procesar Producto
-	condicEdicionesProdARevisar: (haceUnaHora, userID) => {
+	condicEdicProd_ARevisar: (haceUnaHora, userID) => {
 		return db.prods_edicion
 			.findAll({
 				where: {
 					// Que esté creado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
-					// Que esté creada hace más de una hora
+					// Que esté creado hace más de una hora
 					editado_en: {[Op.lt]: haceUnaHora},
 				},
 				include: ["pelicula", "coleccion", "capitulo"],
@@ -165,72 +166,6 @@ module.exports = {
 				},
 			})
 			.then((n) => n.map((m) => m.toJSON()));
-	},
-	// RCLVs -------------------------------------------------------------
-	// Controlador-Revisar
-	obtenerRCLVsARevisar: async (haceUnaHora, revisar, userID) => {
-		// Obtener los registros del Producto, que cumplan ciertas condiciones
-		// Declarar las variables
-		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
-		let resultados = [];
-		let indice = 0;
-		// Obtener el resultado por entidad
-		for (let entidad of entidades) {
-			resultados[indice] = db[entidad]
-				.findAll({
-					where: {
-						// Con status de 'revisar'
-						status_registro_id: revisar,
-						// Que cumpla alguno de los siguientes:
-						[Op.or]: [
-							// Que no esté capturado
-							{capturado_en: null},
-							// Que la captura haya sido hace más de una hora
-							{capturado_en: {[Op.lt]: haceUnaHora}},
-							// Que esté capturado por este usuario
-							{capturado_por_id: userID},
-						],
-						// Que esté en condiciones de ser capturado
-						creado_en: {[Op.lt]: haceUnaHora},
-						// Que esté creado por otro usuario
-						creado_por_id: {[Op.ne]: userID},
-					},
-					include: ["status_registro", "peliculas", "colecciones", "capitulos"],
-				})
-				.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
-			indice++;
-		}
-		resultados = await Promise.all([...resultados]);
-		// Consolidar y ordenar los resultados
-		let acumulador = [];
-		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
-		acumulador.sort((a, b) => new Date(a.creado_en) - new Date(b.creado_en));
-		// Fin
-		return acumulador;
-	},
-
-	// LINKS -------------------------------------------------------------
-	// Controlador-Revisar
-	obtenerLinksARevisar: (haceUnaHora, revisar, userID) => {
-		// Obtener todos los registros de links, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
-		// Declarar las variables
-		let includes = ["pelicula", "coleccion", "capitulo"];
-		// Obtener el resultado por entidad
-		return db.links_originales
-			.findAll({
-				where: {
-					// Con status de 'revisar'
-					status_registro_id: revisar,
-					// Que no esté capturado
-					[Op.or]: [{capturado_en: null}, {capturado_en: {[Op.lt]: haceUnaHora}}],
-					// Que esté en condiciones de ser capturado
-					fecha_referencia: {[Op.lt]: haceUnaHora},
-					// Que esté creado por otro usuario
-					creado_por_id: {[Op.ne]: userID},
-				},
-				include: includes,
-			})
-			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
 
 	// USUARIOS ---------------------------------------------------------
