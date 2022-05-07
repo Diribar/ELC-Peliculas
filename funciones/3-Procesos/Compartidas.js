@@ -140,8 +140,8 @@ module.exports = {
 			port: 465,
 			secure: true, // true for 465, false for other ports
 			auth: {
-				user: "mensaje.web.01@gmail.com", // generated mail address
-				pass: "rudhfurovpjsjjzp", // generated  password
+				user: process.env.direccMail, // dirección de gmail
+				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
 			},
 		});
 		let datos = {

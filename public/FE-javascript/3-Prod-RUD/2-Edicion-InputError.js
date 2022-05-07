@@ -54,6 +54,8 @@ window.addEventListener("load", async () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
+	// Otras
+	let avatar
 
 	// EVENT LISTENERS ---------------------------------------
 	// Revisar campos en forma INDIVIDUAL
@@ -200,7 +202,7 @@ window.addEventListener("load", async () => {
 			}
 		} else {
 			// Actualizar el avatar
-			let avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
+			avatar = actualizarInput_AvatarDeLaNuevaVersion(botonVersion);
 			avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
 			let imgAvatar = document.querySelector(".input-error #imagenProducto img");
 			trueFalse ? imgAvatar.classList.remove("pointer") : imgAvatar.classList.add("pointer");
@@ -406,15 +408,15 @@ let avatar_nuevoIngresado = async (e) => {
 	reader.readAsDataURL(e.target.files[0]);
 	// Le decimos que cuando esté listo ejecute el código interno
 	reader.onload = () => {
-		avatar = reader.result;
+		let avatar = reader.result;
 		avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
 		avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto2");
 	};
 };
 let avatar_cambiarEnLaVista = (avatar, identificadorElemento) => {
 	// Crear elementos
-	let image = document.createElement("img");
 	let preview = document.querySelector(identificadorElemento);
+	let image = document.createElement("img");
 	preview.innerHTML = "";
 	image.src = avatar;
 	// Cambiar el avatar visible

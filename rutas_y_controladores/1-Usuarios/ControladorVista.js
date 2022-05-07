@@ -40,7 +40,7 @@ module.exports = {
 		let contrasena = "123456789";
 		//let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		//console.log(contrasena);
-		comentario = "La contraseña del mail " + email + " es: " + contrasena;
+		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		funciones.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);

@@ -24,7 +24,10 @@
 	<script src="/FE-javascript/2-Prod-Agregar/3-DD-Ayuda.js"></script>
 	<script src="/FE-javascript/2-Prod-Agregar/3-DD-Errores.js"></script>
 	<% if (dataEntry) { %>
-		<% if (!dataEntry.avatar || dataEntry.fuente != "TMDB") { %><script src="/FE-javascript/2-Prod-Agregar/3-DD-Imagen.js"></script><% } %>
+		<% if (!dataEntry.avatar || dataEntry.fuente != "TMDB") { %>
+			<script src="/FE-javascript/0-Uso-Compartido/Mostrar-imagen.js"></script>
+			<script src="/FE-javascript/2-Prod-Agregar/3-DD-Imagen.js"></script>
+		<% } %>
 	<% } %>
 <% } else %>
 <% if (codigo == "datosPers") { %>
