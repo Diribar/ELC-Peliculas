@@ -10,8 +10,8 @@ module.exports = (sequelize, dt) => {
 		alta_aprob: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
 		inactivar: {type: dt.BOOLEAN},
-		recuperar: {type: dt.BOOLEAN},
 		inactivado: {type: dt.BOOLEAN},
+		recuperar: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_status_registro",
