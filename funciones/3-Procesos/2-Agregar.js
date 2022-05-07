@@ -496,7 +496,7 @@ let funcionParentesis = (dato) => {
 let datosColeccion = (datos, cantCapitulos) => {
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
-	if (datos.slice(-2) == ", ") datos=datos.slice(0,-2);
+	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
 	// Convertir los valores en un array
 	datos = datos.split(", ");
 	// Crear un objeto literal para el campo
@@ -551,7 +551,9 @@ let consolidarValores = (datos) => {
 	return valores;
 };
 let funcionCast = (dato) => {
-	let actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
+	let actuacion = dato
+		.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : ""))
+		.join(", ");
 	while (dato.length > 0 && actuacion.length > 500) {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
