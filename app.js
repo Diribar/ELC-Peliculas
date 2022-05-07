@@ -1,10 +1,10 @@
-// *********************** Startup ********************************
-require("dotenv").config(); // Para usar el archivo '.env'
-const path = require("path");
+// VARIABLES GLOBALES -------------------------------------------------
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 
-// ************** Middlewares de Aplicación ***********************
+// REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
+require("dotenv").config(); // Para usar el archivo '.env'
+const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
 const app = express();

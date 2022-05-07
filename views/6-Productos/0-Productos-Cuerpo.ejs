@@ -1,52 +1,37 @@
 <section id="cuerpo">
-	<!--********************** CONTADOR ****************************-->
-	<% if (opcionElegida && tipoElegido) { %>
-		<button type="text" id="contador-de-peliculas">Contador</button>
-	<% } %>
-	<!--*********************** FILTROS ****************************-->
+	<!-- Contador -->
+	<% if (opcion && subOpcion) { %><button type="text" id="contador-de-peliculas">Contador</button><% } %>
+	<!-- Filtros o Vitreaux -->
 	<div id="zona-de-vitreaux">
-		<% if (opcionElegida && tipoElegido) { %>
-			<%- include('Filtros') %>
-		<% } else { %>
-			<img alt="Vitreaux" src="/imagenes/0-Base/Vitraux.jpg" title="Vitreaux">
-		<% } %>
+		<% if (opcion && subOpcion) { %><%- include('Filtros') %>
+		<% } else { %><img alt="Vitreaux" src="/imagenes/0-Base/Vitraux.jpg" title="Vitreaux"><% } %>
 	</div>
-	<!--******************* ZONA DE PELÍCULAS **********************-->
+
+	<!-- ZONA DE PELÍCULAS -->
 	<div id="zona-de-pelis" class="flex-col grow">
-		<!-- Opción -->
-		<select name="" onchange="location = this.value;" id="menu-opciones">
-			<% if (!opcionElegida) { %>
-				<option class="ocultar" selected>
-					Elegí una opción
-				</option>
-			<% } %> 
-			<% for (let opcion of opciones) { %>
-				<option value="/productos/<%= opcion.opcion %>" <% if (opcionElegida && opcionElegida.opcion == opcion.opcion) { %>selected<% } %>>
-					<%= opcion.nombre %>
-				</option>
+		<!-- OPCIONES -->
+		<select onchange="location = this.value;" id="menuOpciones">
+			<!-- Elegí una opción -->
+			<% if (!opcion) { %><option class="ocultar" selected>Elegí una opción</option><% } %>
+			<!-- Demás opciones -->
+			<% for (let menuOpcion of menuOpciones) { %>
+				<option value="/productos/<%= menuOpcion.url %>" <% if (opcionElegida_campos && menuOpcion.url == opcionElegida_campos.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
 			<% } %>
 		</select>
-		<!-- Tipo -->
-		<% if (opcionElegida) { %>
-			<select name="" onchange="location = this.value;" id="menu-tipos">
-			<% if (!tipoElegido) { %>
-				<option style="font-style: italic" class="ocultar" selected>
-					Elegí una opción
-				</option>
+		<!-- SUB-OPCIONES -->
+		<% if (opcion) { %>
+			<select onchange="location = this.value;" id = "menuSubopciones">
+			<% if (!subOpcion) { %>
+				<option style="font-style: italic" class="ocultar" selected>Elegí una opción</option>
 			<% } %>
-			<% for (let tipo of tipos) { %>
-				<option
-					value="/productos/<%= tipo.url %>"
-					<% if (tipoElegido && tipoElegido.url == tipo.url) { %>selected<% } %>
-				>
-					<%= tipo.nombre %>
-				</option>
+			<% for (let menuSubOpcion of menuSubOpciones) { %>
+				<option value="/productos/<%= menuSubOpcion.url %>" <% if (subOpcion && menuSubOpcion.url == subOpcionElegida_campos.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
 			<% } %>
 			</select>
 		<% } %>
-		<!--///////////////////// Redireccionar ///////////////////-->
+		<!-- Sector de películas -->
 		<div id="vistaPelis">
-			<% if (opcionElegida && tipoElegido) { %><%- include(opcionElegida.vista) %><% } %>
+			<% if (opcion && subOpcion) { %><%- include(opcionElegida_campos.vista) %><% } %>
 		</div>
 	</div>
 </section>

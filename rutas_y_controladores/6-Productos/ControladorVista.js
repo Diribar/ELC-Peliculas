@@ -1,12 +1,12 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../../funciones/2-BD/Genericas");
+const procesar = require("../../funciones/3-Procesos/9-Miscelaneas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	home: async (req, res) => {
-		let tema = "productos";
 		res.render("0-VistaEstandar", {
-			tema,
+			tema: "productos",
 			opcion: null,
 			titulo: "ELC-Películas",
 			opciones,
@@ -15,45 +15,47 @@ module.exports = {
 	},
 
 	opcion: async (req, res) => {
-		let tema = "productos";
 		// Averiguar la opción elegida
 		let opcion = req.url.slice(1);
-		let opcionElegida = opciones.find((n) => n.opcion == opcion);
-		// Obtener los tipos para la opción elegida y el título
-		let [tipos, titulo] = await datosVista(opcion);
+		// Obtener datos en función de la opción elegida
+		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
+		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
 		// Ir a la vista
-		// return res.send([tema, opcion, titulo, opciones, tipos, opcionElegida]);
+		// return res.send([tema, opcion, titulo, opciones, tipos, opcionCampos]);
 		res.render("0-VistaEstandar", {
-			tema,
+			tema: "productos",
 			opcion,
-			titulo,
-			opciones,
-			tipos,
-			opcionElegida,
-			tipoElegido: null,
+			titulo: opcionElegida_titulo,
+			menuOpciones: req.session.menuOpciones,
+			subOpcion: null,
+			opcionElegida_campos,
+			subOpcionElegida_campos: null,
+			menuSubOpciones: req.session.menuSubOpciones_algunas,
 		});
 	},
 
-	tipo: async (req, res) => {
-		let tema = "productos";
-		// Obtener el código de Opción y Tipo
+	subOpcion: async (req, res) => {
+		// Averiguar la sub-opción elegida
 		let url = req.url.slice(1);
-		// Obtener la opción, los tipos para la opción elegida y el título
 		let opcion = url.slice(0, url.indexOf("/"));
-		let [tipos, titulo] = await datosVista(opcion);
-		// Obtener la Opción Elegida y el Tipo Elegido
-		let opcionElegida = opciones.find((n) => n.opcion == opcion);
-		let tipoElegido = tipos.find((n) => n.url == url);
+		let opcionSubOpcion = req.url.slice(1);
+		// Obtener datos en función de la opción elegida
+		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
+		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
+		let subOpcionElegida_campos = req.session.menuSubOpciones_algunas.find(
+			(n) => n.url == opcionSubOpcion
+		);
 		// Ir a la vista
 		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
 		res.render("0-VistaEstandar", {
-			tema,
+			tema: "productos",
 			opcion,
-			titulo,
-			opciones,
-			tipos,
-			opcionElegida,
-			tipoElegido,
+			titulo: opcionElegida_titulo,
+			menuOpciones: req.session.menuOpciones,
+			subOpcion: opcionSubOpcion,
+			opcionElegida_campos,
+			subOpcionElegida_campos,
+			menuSubOpciones: req.session.menuSubOpciones_algunas,
 		});
 	},
 
@@ -71,61 +73,3 @@ module.exports = {
 		//	res.render('pagina-de-resultados', results);
 	},
 };
-
-// Obtener info para la vista
-let datosVista = async (opcion) => {
-	// Obtener los Tipos de la opción elegida
-	let tipos =
-		opcion == "listado"||opcion == "sugeridas"
-			? tiposListado
-			: await BD_genericas.obtenerTodos("subcategorias", "orden", opcion)
-					.then((n) => n.filter((m) => m.categoria_id == opcion.toUpperCase()))
-					.then((n) =>
-						n.map((m) => {
-							return {nombre: m.nombre, url: m.url};
-						})
-					);
-	// obtener el Título de la opción elegida
-	let titulo = "Películas - " + opciones.find((n) => n.opcion == opcion).titulo;
-	// Exportar los datos
-	return [tipos, titulo];
-};
-
-// Variables
-let opciones = [
-	{
-		nombre: "Sugeridas para el momento del año",
-		opcion: "sugeridas",
-		titulo: "Sugeridas",
-		vista: "1-Listado",
-		comentario: "Las películas más afines con la época del año",
-	},
-	{
-		nombre: "Todas las Películas",
-		opcion: "listado",
-		titulo: "Listado",
-		vista: "1-Listado",
-		comentario: "Todas las películas de nuestra Base de Datos",
-	},
-	{
-		nombre: "Un paseo por CFC",
-		opcion: "cfc",
-		titulo: "CFC",
-		vista: "2-CFC",
-		comentario: "Películas Centradas en la Fe Católica (CFC)",
-	},
-	{
-		nombre: "Un paseo por VPC",
-		opcion: "vpc",
-		titulo: "VPC",
-		vista: "3-VPC",
-		comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
-	},
-];
-
-let tiposListado = [
-	{nombre: "Por mejor calificación", url: "listado/calificacion"},
-	{nombre: "Por año de estreno más reciente", url: "listado/estreno"},
-	{nombre: "Por incorporación más reciente", url: "listado/incorporacion"},
-	{nombre: "Por orden de visita más reciente", url: "listado/visita"},
-];

@@ -4,14 +4,17 @@ const express = require("express");
 const router = express.Router();
 const vista = require("./ControladorVista");
 
-//************************ Middlewares ******************************
+// Middlewares
 let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
+
+// Home
+router.get("/", vista.home);
 
 // Vistas de Opciones
-router.get("/:id", vista.opcion);
-router.get("/:id/:id", vista.tipo);
+router.get("/:id", urlAceptadas, vista.opcion);
+router.get("/:id/:id", urlAceptadas, vista.subOpcion);
 // router.post("/:id/:id", soloUsuarios, vista.filtros);
-router.get("/", vista.home);
 
 // Fin
 module.exports = router;

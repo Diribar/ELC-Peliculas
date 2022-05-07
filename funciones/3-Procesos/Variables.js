@@ -369,7 +369,50 @@ module.exports = {
 	provsListaNegra: () => {
 		return ["youporn", "pornhub"];
 	},
+
 	meses: () => {
 		return ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+	},
+
+	menuOpciones:() => {
+		return [
+			{
+				nombre: "Sugeridas para el momento del año",
+				url: "sugeridas",
+				titulo: "Sugeridas",
+				vista: "1-Listado",
+				comentario: "Las películas más afines con la época del año",
+			},
+			{
+				nombre: "Todas las Películas",
+				url: "listado",
+				titulo: "Listado",
+				vista: "1-Listado",
+				comentario: "Todas las películas de nuestra Base de Datos",
+			},
+			{
+				nombre: "Un paseo por CFC",
+				url: "cfc",
+				titulo: "CFC",
+				vista: "2-CFC",
+				comentario: "Películas Centradas en la Fe Católica (CFC)",
+			},
+			{
+				nombre: "Un paseo por VPC",
+				url: "vpc",
+				titulo: "VPC",
+				vista: "3-VPC",
+				comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
+			},
+		];
+		
+	},	
+	subMenuOpciones: () => {
+		return [
+			{nombre: "Por mejor calificación", url: "calificacion"},
+			{nombre: "Por año de estreno más reciente", url: "estreno"},
+			{nombre: "Por incorporación más reciente", url: "incorporacion"},
+			{nombre: "Por orden de visita más reciente", url: "visita"},
+		];
 	},
 };

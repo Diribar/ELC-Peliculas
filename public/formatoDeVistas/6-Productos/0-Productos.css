@@ -13,10 +13,10 @@
 #cuerpo #zona-de-pelis {align-items: flex-start; margin-left: 40px; height: 100%;}
 
 /* Menú de Opciones */
-#zona-de-pelis #menu-opciones,
-#zona-de-pelis #menu-tipos {margin-top: 30px; padding: 8px 16px; font-size: 1.25rem; font-weight: bold;}
-#zona-de-pelis #menu-opciones,
-#zona-de-pelis #menu-tipos {border-radius: 10px; background-color: var(--gris-claro);}
+#zona-de-pelis #menuOpciones,
+#zona-de-pelis #menuSubopciones {margin-top: 30px; padding: 8px 16px; font-size: 1.25rem; font-weight: bold;}
+#zona-de-pelis #menuOpciones,
+#zona-de-pelis #menuSubopciones {border-radius: 10px; background-color: var(--gris-claro);}
 
 /* Películas */
 #zona-de-pelis #vistaPelis {display: flex; flex-direction: row; align-self: center; justify-content: center; align-items: center; flex-grow: 1;}
