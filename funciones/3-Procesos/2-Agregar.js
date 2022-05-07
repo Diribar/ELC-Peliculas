@@ -1,6 +1,5 @@
 "use strict";
 // Definir variables
-const searchTMDB = require("../1-APIs_TMDB/1-Search");
 const detailsTMDB = require("../1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../2-BD/Genericas");
@@ -112,7 +111,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -169,23 +168,13 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
-		// Obtener nombre_original y idioma_original_id (sólo se consigue desde SEARCH)
-		let palabrasClave = funciones.convertirLetrasAlIngles(datos.nombre_castellano);
-		let buscar = await searchTMDB(palabrasClave, "collection", 1);
-		let exportar;
-		if (buscar.results.length) {
-			buscar = buscar.results.find((n) => n.id == datos.TMDB_id);
-			exportar = {
-				nombre_original: buscar.original_name,
-				idioma_original_id: buscar.original_language,
-			};
-		}
 		// Definir variables
 		let paises_id, produccion, direccion, guion, musica, actuacion;
 		paises_id = produccion = direccion = guion = musica = actuacion = "";
+		let exportar = {};
 		// Rutina por cada capítulo
 		for (let capTMDB_id of datos.capitulosTMDB_id) {
 			// Obtener las API
@@ -201,15 +190,16 @@ module.exports = {
 				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
-				produccion += consolidarValores(datosAPI.production_companies);
+				produccion += consolidarValores(datosAPI.production_companies) + ", ";
 			// Crew
 			if (datosAPI.crew.length > 0) {
-				direccion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing"));
-				guion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing"));
-				musica += consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound"));
+				direccion +=
+					consolidarValores(datosAPI.crew.filter((n) => n.department == "Directing")) + ", ";
+				guion += consolidarValores(datosAPI.crew.filter((n) => n.department == "Writing")) + ", ";
+				musica += consolidarValores(datosAPI.crew.filter((n) => n.department == "Sound")) + ", ";
 			}
 			// Cast
-			if (datosAPI.cast.length > 0) actuacion += funcionCast(datosAPI.cast);
+			if (datosAPI.cast.length > 0) actuacion += funcionCast(datosAPI.cast) + ", ";
 		}
 		// Procesar los resultados
 		let cantCapitulos = datos.capitulosTMDB_id.length;
@@ -330,7 +320,7 @@ module.exports = {
 				});
 		}
 		// Fin
-		return convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -421,7 +411,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return convertirLetrasAlCastellano(datos);
+		return funciones.convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
@@ -506,7 +496,7 @@ let funcionParentesis = (dato) => {
 let datosColeccion = (datos, cantCapitulos) => {
 	datos = datos.replace(/(, )+/g, ", ");
 	// Quitar el último ', '
-	if (datos.slice(-2) == ", ") datos = datos.slice(0, -2);
+	if (datos.slice(-2) == ", ") datos=datos.slice(0,-2);
 	// Convertir los valores en un array
 	datos = datos.split(", ");
 	// Crear un objeto literal para el campo
@@ -561,7 +551,7 @@ let consolidarValores = (datos) => {
 	return valores;
 };
 let funcionCast = (dato) => {
-	let actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character + ")" : "")).join(", ");
+	let actuacion = dato.map((n) => n.name + (n.character ? " (" + n.character.replace(",", " -") + ")" : "")).join(", ");
 	while (dato.length > 0 && actuacion.length > 500) {
 		actuacion = actuacion.slice(0, actuacion.lastIndexOf(","));
 	}
@@ -580,63 +570,5 @@ let paisNombreToId = async (pais_nombre) => {
 		}
 	}
 	resultado = resultado.length ? resultado.join(", ") : "";
-	return resultado;
-};
-let convertirLetrasAlCastellano = (resultado) => {
-	let campos = Object.keys(resultado);
-	let valores = Object.values(resultado);
-	for (let i = 0; i < campos.length; i++) {
-		if (typeof valores[i] == "string") {
-			resultado[campos[i]] = valores[i]
-				.replace(/  /g, " ")
-				.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
-				.replace(/[àâãäåāăą]/g, "a")
-				.replace(/Æ/g, "Ae")
-				.replace(/æ/g, "ae")
-				.replace(/[ÇĆĈĊČ]/g, "C")
-				.replace(/[çćĉċč]/g, "c")
-				.replace(/[ÐĎ]/g, "D")
-				.replace(/[đď]/g, "d")
-				.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
-				.replace(/[èêëēĕėęě]/g, "e")
-				.replace(/[ĜĞĠĢ]/g, "G")
-				.replace(/[ĝğġģ]/g, "g")
-				.replace(/[ĦĤ]/g, "H")
-				.replace(/[ħĥ]/g, "h")
-				.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
-				.replace(/[ìîïĩīĭįı]/g, "i")
-				.replace(/Ĳ/g, "Ij")
-				.replace(/ĳ/g, "ij")
-				.replace(/Ĵ/g, "J")
-				.replace(/ĵ/g, "j")
-				.replace(/Ķ/g, "K")
-				.replace(/[ķĸ]/g, "k")
-				.replace(/[ĹĻĽĿŁ]/g, "L")
-				.replace(/[ĺļľŀł]/g, "l")
-				.replace(/[ŃŅŇ]/g, "N")
-				.replace(/[ńņňŉ]/g, "n")
-				.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
-				.replace(/[òôõōðōŏő]/g, "o")
-				.replace(/[ÖŒ]/g, "Oe")
-				.replace(/[ö]/g, "o")
-				.replace(/[œ]/g, "oe")
-				.replace(/[ŔŖŘ]/g, "R")
-				.replace(/[ŕŗř]/g, "r")
-				.replace(/[ŚŜŞŠ]/g, "S")
-				.replace(/[śŝşš]/g, "s")
-				.replace(/[ŢŤŦ]/g, "T")
-				.replace(/[ţťŧ]/g, "t")
-				.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
-				.replace(/[ùûũūŭůűų]/g, "u")
-				.replace(/Ŵ/g, "W")
-				.replace(/ŵ/g, "w")
-				.replace(/[ÝŶŸ]/g, "Y")
-				.replace(/[ýŷÿ]/g, "y")
-				.replace(/[ŽŹŻŽ]/g, "Z")
-				.replace(/[žźżž]/g, "z")
-				.replace(/[”“«»]/g, '"')
-				.replace(/[º]/g, "°");
-		}
-	}
 	return resultado;
 };

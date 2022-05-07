@@ -61,7 +61,7 @@ module.exports = {
 	prod_ObtenerEdicARevisar: async (haceUnaHora, status, userID) => {
 		// Obtener todas las ediciones de usuarios ajenos, con asociación a películas, colecciones y capítulos
 		// Declarar las variables
-		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
+		let aprobados = status.find((n) => n.aprobado).id;
 		// Obtener todas las ediciones de usuarios ajenos y de hace más de una hora
 		let ediciones = await BD_especificas.condicEdicProd_ARevisar(haceUnaHora, userID);
 		// Obtener los productos
@@ -73,7 +73,7 @@ module.exports = {
 				: {...n.capitulo, entidad: "capitulos"};
 		});
 		// Dejar solamente los productos aprobados
-		productos = productos.filter((n) => aprobados.includes(n.status_registro_id));
+		productos = productos.filter((n) => n.status_registro_id == aprobados);
 		// Dejar solamente los productos generados por otros usuarios
 		productos = productos.filter((n) => n.creado_por_id != userID);
 		// Dejar solamente los productos que estén creados hace más de una hora
@@ -298,7 +298,6 @@ module.exports = {
 		);
 		// Dejar solamente RCLVs con productos aprobados
 		let aprobado = status.find((n) => n.aprobado).id;
-		let editado = status.find((n) => n.editado).id;
 		let campos = ["peliculas", "colecciones", "capitulos"];
 		let aux = [];
 		// Rutina para cada RCLV
@@ -309,8 +308,8 @@ module.exports = {
 					for (let reg of n[campo]) {
 						// Averiguar el status_registro_id del producto
 						if (
-							// El producto está aprobado o editado
-							(reg.status_registro_id == aprobado || reg.status_registro_id == editado) &&
+							// El producto está aprobado
+							reg.status_registro_id == aprobado &&
 							// El RCLV todavía no está incluido en la variable 'auxiliar'
 							aux.findIndex((m) => m.entidad == n.entidad && m.id == n.id) < 0
 						) {
@@ -418,7 +417,7 @@ module.exports = {
 
 	// Links
 	links_ObtenerARevisar: async function (haceUnaHora, status, userID) {
-		// Obtener todos los registros de links, excepto los que tengan status 'gr_aprobados' con 'cant_productos'
+		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' con 'cant_productos'
 		// Declarar las variables
 		let entidades = ["links_originales"];
 		let includes = ["pelicula", "coleccion", "capitulo"];
@@ -432,7 +431,6 @@ module.exports = {
 		);
 		// Dejar solamente links con productos aprobados
 		let aprobado = status.find((n) => n.aprobado).id;
-		let editado = status.find((n) => n.editado).id;
 		let campos = [
 			{nombre: "pelicula", entidad: "peliculas"},
 			{nombre: "coleccion", entidad: "colecciones"},
@@ -447,9 +445,8 @@ module.exports = {
 				if (
 					// El link tiene asociado este producto
 					n[campo.nombre] &&
-					// El producto está aprobado o editado
-					(n[campo.nombre].status_registro_id == aprobado ||
-						n[campo.nombre].status_registro_id == editado) &&
+					// El producto está aprobado
+					n[campo.nombre].status_registro_id == aprobado &&
 					// El producto todavía no está incluido en la variable 'auxiliar'
 					aux.findIndex((m) => m.entidad == campo.entidad && m.id == n[campo.nombre].id) < 0
 				)
@@ -498,34 +495,15 @@ module.exports = {
 		let includes = ["status_registro", "peliculas", "colecciones"];
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// 1. Obtener los status
-		let altaAprobId = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: 1}).then(
-			(n) => n.id
-		);
-		let aprobadoId = await BD_genericas.obtenerPorCampos("status_registro", {aprobado: 1}).then(
-			(n) => n.id
-		);
-		let editadoId = await BD_genericas.obtenerPorCampos("status_registro", {editado: 1}).then(
-			(n) => n.id
-		);
-		let inactivadoId = await BD_genericas.obtenerPorCampos("status_registro", {inactivado: 1}).then(
-			(n) => n.id
-		);
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		let aprobadoId = status.find((n) => n.aprobado);
+		let inactivadoId = status.find((n) => n.inactivado);
 		// 2. Contar los casos aprobados
 		let cantAprob = usuario.peliculas.length
-			? usuario.peliculas.filter(
-					(n) =>
-						n.status_registro_id == altaAprobId ||
-						n.status_registro_id == aprobadoId ||
-						n.status_registro_id == editadoId
-			  ).length
+			? usuario.peliculas.filter((n) => n.status_registro_id == aprobadoId).length
 			: 0;
 		cantAprob += usuario.colecciones.length
-			? usuario.colecciones.filter(
-					(n) =>
-						n.status_registro_id == altaAprobId ||
-						n.status_registro_id == aprobadoId ||
-						n.status_registro_id == editadoId
-			  ).length
+			? usuario.colecciones.filter((n) => n.status_registro_id == aprobadoId).length
 			: 0;
 		// 3. Contar los casos rechazados
 		let cantRech = usuario.peliculas.length

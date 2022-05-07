@@ -211,8 +211,6 @@ CREATE TABLE rclv_meses (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
 	abrev VARCHAR(3) NOT NULL,
-	cant_peliculas TINYINT UNSIGNED NULL,
-	cant_colecciones TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_meses (nombre, abrev)
@@ -221,8 +219,6 @@ CREATE TABLE rclv_dias (
 	id SMALLINT UNSIGNED NOT NULL,
 	dia TINYINT UNSIGNED NOT NULL,
 	mes_id TINYINT UNSIGNED NOT NULL,
-	cant_peliculas TINYINT UNSIGNED NULL,
-	cant_colecciones TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (mes_id) REFERENCES rclv_meses(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -498,7 +494,7 @@ CREATE TABLE prod_1peliculas (
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
-	
+
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
@@ -871,6 +867,7 @@ CREATE TABLE links_1originales (
 	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT NULL,
+	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
