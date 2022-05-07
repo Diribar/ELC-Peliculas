@@ -10,6 +10,7 @@
   "author": "Diego Iribarren",
   "license": "ISC",
   "dependencies": {
+    "async": ">=2.6.4",
     "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
@@ -29,6 +30,7 @@
     "sequelize": "^6.9.0"
   },
   "devDependencies": {
+    "async": ">=2.6.4",
     "nodemon": "^2.0.7",
     "sequelize-cli": "^6.3.0"
   }
