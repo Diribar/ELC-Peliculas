@@ -29,6 +29,7 @@ module.exports = (sequelize, dt) => {
 		fecha_referencia: {type: dt.DATE},
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
+		captura_activa: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "links_1originales",

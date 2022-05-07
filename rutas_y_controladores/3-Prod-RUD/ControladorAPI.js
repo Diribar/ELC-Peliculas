@@ -219,7 +219,7 @@ module.exports = {
 					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
 					respuesta.resultado = false;
 				}
-			} else if (link.status_registro.gr_aprobados) {
+			} else if (link.status_registro.aprobado) {
 				// Sin "captura válida" y con status 'aprobado'
 				if (motivo_id) {
 					// Si explica el motivo, se inactiva

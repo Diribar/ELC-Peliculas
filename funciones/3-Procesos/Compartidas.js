@@ -186,4 +186,63 @@ module.exports = {
 			.replace(/:¿![.][?]/g, "")
 			.replace(/ +/g, " ");
 	},
+	convertirLetrasAlCastellano: (resultado) => {
+		let campos = Object.keys(resultado);
+		let valores = Object.values(resultado);
+		for (let i = 0; i < campos.length; i++) {
+			if (typeof valores[i] == "string") {
+				resultado[campos[i]] = valores[i]
+					.replace(/  /g, " ")
+					.replace(/[ÀÂÃÄÅĀĂĄ]/g, "A")
+					.replace(/[àâãäåāăą]/g, "a")
+					.replace(/Æ/g, "Ae")
+					.replace(/æ/g, "ae")
+					.replace(/[ÇĆĈĊČ]/g, "C")
+					.replace(/[çćĉċč]/g, "c")
+					.replace(/[ÐĎ]/g, "D")
+					.replace(/[đď]/g, "d")
+					.replace(/[ÈÊËĒĔĖĘĚ]/g, "E")
+					.replace(/[èêëēĕėęě]/g, "e")
+					.replace(/[ĜĞĠĢ]/g, "G")
+					.replace(/[ĝğġģ]/g, "g")
+					.replace(/[ĦĤ]/g, "H")
+					.replace(/[ħĥ]/g, "h")
+					.replace(/[ÌÎÏĨĪĬĮİ]/g, "I")
+					.replace(/[ìîïĩīĭįı]/g, "i")
+					.replace(/Ĳ/g, "Ij")
+					.replace(/ĳ/g, "ij")
+					.replace(/Ĵ/g, "J")
+					.replace(/ĵ/g, "j")
+					.replace(/Ķ/g, "K")
+					.replace(/[ķĸ]/g, "k")
+					.replace(/[ĹĻĽĿŁ]/g, "L")
+					.replace(/[ĺļľŀł]/g, "l")
+					.replace(/[ŃŅŇ]/g, "N")
+					.replace(/[ńņňŉ]/g, "n")
+					.replace(/[ÒÔÕŌŌŎŐ]/g, "O")
+					.replace(/[òôõōðōŏő]/g, "o")
+					.replace(/[ÖŒ]/g, "Oe")
+					.replace(/[ö]/g, "o")
+					.replace(/[œ]/g, "oe")
+					.replace(/[ŔŖŘ]/g, "R")
+					.replace(/[ŕŗř]/g, "r")
+					.replace(/[ŚŜŞŠ]/g, "S")
+					.replace(/[śŝşš]/g, "s")
+					.replace(/[ŢŤŦ]/g, "T")
+					.replace(/[ţťŧ]/g, "t")
+					.replace(/[ÙÛŨŪŬŮŰŲ]/g, "U")
+					.replace(/[ùûũūŭůűų]/g, "u")
+					.replace(/Ŵ/g, "W")
+					.replace(/ŵ/g, "w")
+					.replace(/[ÝŶŸ]/g, "Y")
+					.replace(/[ýŷÿ]/g, "y")
+					.replace(/[ŽŹŻŽ]/g, "Z")
+					.replace(/[žźżž]/g, "z")
+					.replace(/[”“«»]/g, '"')
+					.replace(/[º]/g, "°");
+			}
+		}
+		return resultado;
+	},
+	
 };

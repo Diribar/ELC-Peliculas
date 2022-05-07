@@ -20,7 +20,7 @@ module.exports = {
 			);
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
-		let aprobados = status.filter((n) => n.gr_aprobados).map((n) => n.id);
+		let aprobados = status.find((n) => n.aprobado).id;
 		let haceUnaHora = funciones.haceUnaHora();
 		// Productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
@@ -306,7 +306,7 @@ module.exports = {
 		let producto_id = funciones.entidad_id(entidad);
 		// PENDIENTE
 		// Obtener los motivos de rechazo
-		if (RCLV_original.status_registro.gr_aprobados) {
+		if (RCLV_original.status_registro.aprobado) {
 			motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 			prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(
 				producto_id,

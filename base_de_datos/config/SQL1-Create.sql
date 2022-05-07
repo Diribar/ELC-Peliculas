@@ -186,33 +186,28 @@ CREATE TABLE aux_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
 	gr_pend_aprob BOOLEAN DEFAULT 0,
-	gr_aprobados BOOLEAN DEFAULT 0,
 	gr_revisados BOOLEAN DEFAULT 0,
 	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
 	alta_aprob BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
-	editado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
-	recuperar BOOLEAN DEFAULT 0,
 	inactivado BOOLEAN DEFAULT 0,
+	recuperar BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_aprobados, gr_revisados) VALUES (3, 3, 'Aprobado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, editado, gr_aprobados, gr_revisados) VALUES (4, 4, 'Editado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_revisados) VALUES (3, 3, 'Aprobado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos) VALUES (5, 5, 'Inactivar',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_inactivos) VALUES (6, 6, 'Recuperar',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (7, 7, 'Inactivado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (6, 6, 'Inactivado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_inactivos) VALUES (7, 7, 'Recuperar',1,1);
 
 /* TABLAS AUXILIARES PARA RCLV */;
 CREATE TABLE rclv_meses (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(10) NOT NULL,
 	abrev VARCHAR(3) NOT NULL,
-	cant_peliculas TINYINT UNSIGNED NULL,
-	cant_colecciones TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_meses (nombre, abrev)
@@ -221,8 +216,6 @@ CREATE TABLE rclv_dias (
 	id SMALLINT UNSIGNED NOT NULL,
 	dia TINYINT UNSIGNED NOT NULL,
 	mes_id TINYINT UNSIGNED NOT NULL,
-	cant_peliculas TINYINT UNSIGNED NULL,
-	cant_colecciones TINYINT UNSIGNED NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (mes_id) REFERENCES rclv_meses(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -258,8 +251,7 @@ CREATE TABLE rclv_1personajes (
 	ano SMALLINT NULL,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
-	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
-	cant_prod_aprobados TINYINT UNSIGNED DEFAULT 0,
+	prod_aprobados BOOLEAN NULL,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -308,8 +300,7 @@ CREATE TABLE rclv_2hechos (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	ano SMALLINT NULL,
-	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
-	cant_prod_aprobados TINYINT UNSIGNED DEFAULT 0,
+	prod_aprobados BOOLEAN NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -352,8 +343,7 @@ CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	cant_prod_creados TINYINT UNSIGNED DEFAULT 0,
-	cant_prod_aprobados TINYINT UNSIGNED DEFAULT 0,
+	prod_aprobados BOOLEAN NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -498,7 +488,7 @@ CREATE TABLE prod_1peliculas (
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(800) NULL,
 	avatar VARCHAR(100) NULL,
-	
+
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
@@ -871,6 +861,7 @@ CREATE TABLE links_1originales (
 	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT NULL,
+	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),

@@ -1,7 +1,5 @@
 "use strict";
 // Definir variables
-const procesar = require("../../funciones/3-Procesos/9-Miscelaneas");
-const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	home: async (req, res) => {

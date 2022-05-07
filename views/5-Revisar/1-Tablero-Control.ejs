@@ -7,7 +7,7 @@
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
 			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.filter(n => n.inactivar).map(n => n.id), registros: productos}) %>
-			<!-- Aprobar la edición de aprobados -->
+			<!-- Aprobados c/edición -->
 			<%- include("11-Vision-Registros", {titulo: "Aprobados c/Edición", estado: aprobados, registros: prodsConEdicion}) %>
 			<!-- Aprobar la edición de altas -->
 			<%- include("11-Vision-Registros", {titulo: "Edición de Altas", estado: status.filter(n => n.alta_aprob).map(n => n.id), registros: productos}) %>
@@ -20,10 +20,10 @@
 			<!-- Personas -->
 			<div>
 				<h2>Relación con la Vida (RCLV)</h2>
-				<!-- Aprobar la edición de aprobados -->
+				<!-- Aprobados c/edición -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
-				<%- include("11-Vision-Registros", {titulo: "Altas Pendientes de Aprobar", estado: status.filter(n => n.creado).map(n => n.id), registros: RCLVs}) %>
+				<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.filter(n => n.creado).map(n => n.id), registros: RCLVs}) %>
 			</div>
 			<div>
 				<h2>Links</h2>

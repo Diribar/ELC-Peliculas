@@ -158,8 +158,8 @@ module.exports = async (req, res, next) => {
 			}
 		}
 
-		// Problema 3: ¿Registro en alguno de los estados 'gr_aprobados'?
-		if (registro.status_registro.gr_aprobados) {
+		// Problema 3: ¿Registro en status 'aprobado'?
+		if (registro.status_registro.aprobado) {
 			// Problema 3.1: EL REVISOR NO DEBE REVISAR UN REGISTRO AGREGADO O EDITADO POR ÉL
 		}
 	}
