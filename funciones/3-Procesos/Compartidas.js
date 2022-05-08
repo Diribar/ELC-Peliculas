@@ -245,5 +245,4 @@ module.exports = {
 		}
 		return resultado;
 	},
-	
 };
