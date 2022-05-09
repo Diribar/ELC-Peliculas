@@ -36,11 +36,32 @@ VALUES
 (31, 1, 0, 'Registro duplicado', 1),
 (32, 2, 10, 'Spam', 1)
 ;
+/* APROBACION DE ALTAS */;
+CREATE TABLE altas_registros_aprob (
+	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
+	entidad VARCHAR(20) NOT NULL,
+	entidad_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(50) NULL,
+	
+	input_por_id INT UNSIGNED NOT NULL,
+	input_en DATETIME NULL,
+	evaluado_por_id INT UNSIGNED NOT NULL,
+	evaluado_en DATETIME NULL,
+	
+	comunicado_en DATETIME NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
+	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* RECHAZO DE ALTAS */;
 CREATE TABLE altas_registros_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
+	nombre VARCHAR(50) NULL,
+
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
 	
@@ -48,13 +69,13 @@ CREATE TABLE altas_registros_rech (
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
+	
+	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)	
+	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* MOTIVOS DE RECHAZO DE EDICIONES */;
@@ -98,13 +119,15 @@ CREATE TABLE edic_registros_aprob (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_aceptado VARCHAR(20) NOT NULL,
+	valor_aceptado VARCHAR(50) NOT NULL,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
 
+	comunicado_en DATETIME NULL,
+	
 	PRIMARY KEY (id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
@@ -116,8 +139,8 @@ CREATE TABLE edic_registros_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rechazado VARCHAR(20) NOT NULL,
-	valor_aceptado VARCHAR(20) NOT NULL,
+	valor_rechazado VARCHAR(50) NOT NULL,
+	valor_aceptado VARCHAR(50) NOT NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
@@ -126,6 +149,8 @@ CREATE TABLE edic_registros_rech (
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
+	
+	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES edic_motivos_rech(id),
