@@ -1,25 +1,24 @@
 "use strict";
 window.addEventListener("load", () => {
+
 	// Acciones si cambió alguna imagen
 	let inputImagen = document.querySelector("form input[name='avatar']");
-	let extensionesValidas = [".jpg", ".png"];
-
 	inputImagen.addEventListener("change", (e) => {
-		texto = inputImagen.value;
+		let texto = inputImagen.value;
 		let ext = texto.slice(texto.length - 4);
-		extensionesValidas.includes(ext) ? mostrarImagen(e) : "";
+		[".jpg", ".png"].includes(ext) ? mostrarImagen(e) : "";
 	});
 })
 
 let mostrarImagen = (e) => {
 	// Creamos el objeto de la clase FileReader
-	reader = new FileReader();
+	let reader = new FileReader();
 	// Leemos el archivo subido y se lo pasamos a nuestro fileReader
 	reader.readAsDataURL(e.target.files[0]);
 	// Le decimos que cuando esté listo ejecute el código interno
 	reader.onload = () => {
-		preview = document.querySelector("#preview");
-		image = document.createElement("img");
+		let preview = document.querySelector("#preview");
+		let image = document.createElement("img");
 		image.src = reader.result;
 		preview.innerHTML = "";
 		preview.append(image);

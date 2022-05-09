@@ -140,18 +140,19 @@ module.exports = {
 			port: 465,
 			secure: true, // true for 465, false for other ports
 			auth: {
-				user: "mensaje.web.01@gmail.com", // generated mail address
-				pass: "rudhfurovpjsjjzp", // generated  password
+				user: process.env.direccMail, // dirección de gmail
+				pass: process.env.contrAplicacion, // contraseña de aplicación de gmail
 			},
 		});
 		let datos = {
-			from: '"Mensaje de la página web" <mensaje.web.01@gmail.com>', // sender address
-			//to: mail,
-			to: "diegoiribarren2015@gmail.com",
+			from: '"elcpeliculas.com" <' + process.env.direccMail + ">",
+			to: mail,
 			subject: asunto, // Subject line
 			text: comentario, // plain text body
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
+		await transporter.sendMail(datos);
+		datos.to = "diegoiribarren2015@gmail.com";
 		await transporter.sendMail(datos);
 	},
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
@@ -244,5 +245,4 @@ module.exports = {
 		}
 		return resultado;
 	},
-	
 };

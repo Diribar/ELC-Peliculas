@@ -406,15 +406,15 @@ let avatar_nuevoIngresado = async (e) => {
 	reader.readAsDataURL(e.target.files[0]);
 	// Le decimos que cuando esté listo ejecute el código interno
 	reader.onload = () => {
-		avatar = reader.result;
+		let avatar = reader.result;
 		avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto");
 		avatar_cambiarEnLaVista(avatar, "#imagen #imagenProducto2");
 	};
 };
 let avatar_cambiarEnLaVista = (avatar, identificadorElemento) => {
 	// Crear elementos
-	let image = document.createElement("img");
 	let preview = document.querySelector(identificadorElemento);
+	let image = document.createElement("img");
 	preview.innerHTML = "";
 	image.src = avatar;
 	// Cambiar el avatar visible
