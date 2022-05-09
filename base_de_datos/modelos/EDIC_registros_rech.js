@@ -15,7 +15,9 @@ module.exports = (sequelize, dt) => {
 		input_en: {type: dt.DATE},
 		evaluado_por_id: {type: dt.INTEGER},
 		evaluado_en: {type: dt.DATE},
-		};
+
+		comunicado_en: {type: dt.DATE},
+	};
 	const config = {
 		tableName: "edic_registros_rech",
 		timestamps: false,

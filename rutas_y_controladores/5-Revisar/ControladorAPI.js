@@ -22,7 +22,7 @@ module.exports = {
 	aprobarAlta: async (req, res) => {
 		// Definir variables
 		let {entidad, id} = req.query;
-		let userID=req.session.usuario.id
+		let userID = req.session.usuario.id;
 		// Averiguar el id del status
 		let statusAltaAprob = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: true}).then(
 			(n) => n.id
@@ -44,7 +44,7 @@ module.exports = {
 		// Definir variables
 		let {entidad, id, motivo_id} = req.query;
 		let datos;
-		let userID=req.session.usuario.id
+		let userID = req.session.usuario.id;
 		// Detectar un eventual error
 		if (!motivo_id) return res.json();
 		// Averiguar el id del status

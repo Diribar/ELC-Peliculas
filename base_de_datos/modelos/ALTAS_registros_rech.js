@@ -3,6 +3,8 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
+		nombre: {type: dt.STRING(50)},
+
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
 
@@ -10,7 +12,8 @@ module.exports = (sequelize, dt) => {
 		input_en: {type: dt.DATE},
 		evaluado_por_id: {type: dt.INTEGER},
 		evaluado_en: {type: dt.DATE},
-		status_registro_id: {type: dt.INTEGER},
+
+		comunicado_en: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "altas_registros_rech",
@@ -21,7 +24,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "input_por", foreignKey: "input_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "evaluado_por", foreignKey: "evaluado_por_id"});
-		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
 	};
 	return entidad;
 };
