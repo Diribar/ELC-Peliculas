@@ -11,8 +11,6 @@ module.exports = (sequelize, dt) => {
 		evaluado_por_id: {type: dt.INTEGER},
 		evaluado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
-
-		comunicado: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "altas_registros_rech",

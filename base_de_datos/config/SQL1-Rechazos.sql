@@ -50,8 +50,6 @@ CREATE TABLE altas_registros_rech (
 	evaluado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED NOT NULL,
 
-	comunicado BOOLEAN DEFAULT 0,
-
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
@@ -107,8 +105,6 @@ CREATE TABLE edic_registros_aprob (
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
 
-	comunicado BOOLEAN DEFAULT 0,
-
 	PRIMARY KEY (id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
@@ -130,8 +126,6 @@ CREATE TABLE edic_registros_rech (
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
 	evaluado_en DATETIME NULL,
-
-	comunicado BOOLEAN DEFAULT 0,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (motivo_id) REFERENCES edic_motivos_rech(id),
