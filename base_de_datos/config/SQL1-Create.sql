@@ -246,8 +246,8 @@ VALUES
 /* RCLV */;
 CREATE TABLE rclv_1personajes (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
@@ -288,11 +288,11 @@ VALUES
 (12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
 (13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
 ;
-INSERT INTO rclv_1personajes (id, cant_prod_creados, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en)
+INSERT INTO rclv_1personajes (id, prod_aprobados, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en)
 VALUES 
 (21, 1, 249, 1910,'Teresa de Calcuta','STM','RCM',10,'2022-03-16 23:25:20'),
-(22, 2, 285, 1958,'Juan XXIII','STV','PPV',11,'2022-03-16 23:25:20'),
-(23, 2, 31, 1815,'Juan Bosco','STV','RCV',10,'2022-03-16 23:25:20'),
+(22, 1, 285, 1958,'Juan XXIII','STV','PPV',11,'2022-03-16 23:25:20'),
+(23, 1, 31, 1815,'Juan Bosco','STV','RCV',10,'2022-03-16 23:25:20'),
 (24, 1, 296, 1920,'Juan Pablo II','STV','PPV',10,'2022-03-16 23:25:20')
 ;
 CREATE TABLE rclv_2hechos (
@@ -384,9 +384,9 @@ CREATE TABLE rclv_4edicion (
 	pelicula_id INT UNSIGNED DEFAULT NULL,
 	coleccion_id INT UNSIGNED DEFAULT NULL,
 	capitulo_id INT UNSIGNED DEFAULT NULL,
+	nombre VARCHAR(30) NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
-	nombre VARCHAR(30) NULL UNIQUE,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 

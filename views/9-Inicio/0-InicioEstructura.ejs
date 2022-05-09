@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<!-- Head -->
+	<%- include('1-Head') %>
+	<link rel="stylesheet" href="/formatoDeVistas/9-Inicio/Inicio.css">
+</head>
+<body>
+	<%- include('21-Header') %>
+	<main class="flex-row">
+		<%- include('ImagenDerecha', {url: '/imagenes/8-Inicio/Inicio.jpg'}) %>
+		<section id="cuerpo-y-footer">
+			<%- include('23-Footer') %>
+			<!-- Inicio -->
+			<div id="cuerpo" class="flex-row">
+				<%- include("1-InicioCuerpo") %>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

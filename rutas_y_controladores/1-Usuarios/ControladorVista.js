@@ -8,6 +8,7 @@ const validarUsuarios = require("../../funciones/4-Validaciones/Usuarios");
 const bcryptjs = require("bcryptjs");
 
 module.exports = {
+	// Circuito de alta de usuario
 	altaMailForm: (req, res) => {
 		let tema = "usuario";
 		let codigo = "mail";
@@ -22,7 +23,6 @@ module.exports = {
 			errores,
 		});
 	},
-
 	altaMailGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let datos = req.body;
@@ -50,7 +50,6 @@ module.exports = {
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
-
 	altaRedireccionar: async (req, res) => {
 		let status_registro = req.session.usuario.status_registro;
 		// Redireccionar
@@ -76,7 +75,97 @@ module.exports = {
 		// 		: res.redirect("/")
 		// 	: null
 	},
+	altaPerennesForm: async (req, res) => {
+		let tema = "usuario";
+		let codigo = "perennes";
+		// Preparar datos para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
+		let errores = req.session.errores ? req.session.errores : "";
+		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
+		return res.render("0-VistaEstandar", {
+			tema,
+			codigo,
+			titulo: "Registro de Datos Perennes",
+			link: req.originalUrl,
+			dataEntry,
+			errores,
+			sexos,
+		});
+	},
+	altaPerennesGuardar: async (req, res) => {
+		!req.session.usuario ? res.redirect("/usuarios/login") : "";
+		let usuario = req.session.usuario;
+		// Averiguar si hay errores de validación
+		let datos = req.body;
+		let errores = await validarUsuarios.perennes(datos);
+		// Redireccionar si hubo algún error de validación
+		if (errores.hay) {
+			req.session.dataEntry = req.body;
+			req.session.errores = errores;
+			return res.redirect("/usuarios/altaredireccionar");
+		}
+		// Si no hubieron errores de validación...
+		// Actualizar el registro
+		req.body.status_registro_id = 3;
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
+		// Redireccionar
+		return res.redirect("/usuarios/altaredireccionar");
+	},
+	altaEditablesForm: async (req, res) => {
+		let tema = "usuario";
+		let codigo = "editables";
+		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+		let roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
+			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
+		);
+		let errores = req.session.errores ? req.session.errores : false;
+		// Generar la info para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		let avatar = dataEntry.avatar
+			? "/imagenes/9-Provisorio/" + dataEntry.avatar
+			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
+		// Ir a la vista
+		return res.render("0-VistaEstandar", {
+			tema,
+			codigo,
+			titulo: "Registro de Datos Editables",
+			link: req.originalUrl,
+			dataEntry,
+			errores,
+			hablaHispana,
+			hablaNoHispana,
+			roles_iglesia,
+			avatar,
+		});
+	},
+	altaEditablesGuardar: async (req, res) => {
+		let usuario = req.session.usuario;
+		if (req.file) req.body.avatar = req.file.filename;
+		// Averiguar si hay errores de validación
+		let errores = await validarUsuarios.editables(req.body);
+		if (errores.hay) {
+			if (req.file) delete req.body.avatar;
+			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
+			req.session.dataEntry = req.body;
+			req.session.errores = errores;
+			return res.redirect("/usuarios/altaredireccionar");
+		}
+		// Si no hubieron errores de validación...
+		// Grabar novedades en el usuario
+		req.body.status_registro_id = 4;
+		req.body.avatar = req.file ? req.file.filename : "-";
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
+		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
+		// Mover el archivo a la carpeta definitiva
+		if (req.file) funciones.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		// Redireccionar
+		return res.redirect("/usuarios/altaredireccionar");
+	},
 
+	// Login
 	loginForm: (req, res) => {
 		// 1. Tema y Código
 		let tema = "usuario";
@@ -96,7 +185,6 @@ module.exports = {
 			errores,
 		});
 	},
-
 	loginGuardar: async (req, res) => {
 		// 1. Obtener los datos del usuario
 		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
@@ -129,7 +217,6 @@ module.exports = {
 		// Redireccionar
 		return res.redirect("/usuarios/altaredireccionar");
 	},
-
 	logout: (req, res) => {
 		let url = req.session.urlReferencia ? req.session.urlReferencia : "/";
 		res.clearCookie("email");
@@ -137,99 +224,7 @@ module.exports = {
 		return res.redirect(url);
 	},
 
-	altaPerennesForm: async (req, res) => {
-		let tema = "usuario";
-		let codigo = "perennes";
-		// Preparar datos para la vista
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
-		let errores = req.session.errores ? req.session.errores : "";
-		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
-		return res.render("0-VistaEstandar", {
-			tema,
-			codigo,
-			titulo: "Registro de Datos Perennes",
-			link: req.originalUrl,
-			dataEntry,
-			errores,
-			sexos,
-		});
-	},
-
-	altaPerennesGuardar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
-		let usuario = req.session.usuario;
-		// Averiguar si hay errores de validación
-		let datos = req.body;
-		let errores = await validarUsuarios.perennes(datos);
-		// Redireccionar si hubo algún error de validación
-		if (errores.hay) {
-			req.session.dataEntry = req.body;
-			req.session.errores = errores;
-			return res.redirect("/usuarios/altaredireccionar");
-		}
-		// Si no hubieron errores de validación...
-		// Actualizar el registro
-		req.body.status_registro_id = 3;
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
-	},
-
-	altaEditablesForm: async (req, res) => {
-		let tema = "usuario";
-		let codigo = "editables";
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
-		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
-		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
-			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
-		);
-		let errores = req.session.errores ? req.session.errores : false;
-		// Generar la info para la vista
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		let avatar = dataEntry.avatar
-			? "/imagenes/9-Provisorio/" + dataEntry.avatar
-			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
-		// Ir a la vista
-		return res.render("0-VistaEstandar", {
-			tema,
-			codigo,
-			titulo: "Registro de Datos Editables",
-			link: req.originalUrl,
-			dataEntry,
-			errores,
-			hablaHispana,
-			hablaNoHispana,
-			roles_iglesia,
-			avatar,
-		});
-	},
-
-	altaEG: async (req, res) => {
-		let usuario = req.session.usuario;
-		if (req.file) req.body.avatar = req.file.filename;
-		// Averiguar si hay errores de validación
-		let errores = await validarUsuarios.editables(req.body);
-		if (errores.hay) {
-			if (req.file) delete req.body.avatar;
-			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
-			req.session.dataEntry = req.body;
-			req.session.errores = errores;
-			return res.redirect("/usuarios/altaredireccionar");
-		}
-		// Si no hubieron errores de validación...
-		// Grabar novedades en el usuario
-		req.body.status_registro_id = 4;
-		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Mover el archivo a la carpeta definitiva
-		if (req.file) funciones.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
-		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
-	},
-
+	// Detalle y Edición
 	detalle: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "detalle";
@@ -240,7 +235,6 @@ module.exports = {
 			usuario: req.session.usuario,
 		});
 	},
-
 	editarForm: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "edicion";
@@ -250,14 +244,27 @@ module.exports = {
 			usuario: req.session.usuario,
 		});
 	},
-
 	editarGuardar: (req, res) => {
 		res.send("/edicion/guardar");
 	},
 
+	// Baja
 	baja: (req, res) => {
 		req.session.destroy();
 		guardar(ruta_nombre, nuevaBD);
 		res.redirect("/");
+	},
+
+	// Actualización de roles
+	autInput_solicitudForm: (req, res) => {
+		let informacion = {
+			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+				{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
+			],
+		};
+	
+		return res.render("Errores", {informacion})
 	},
 };

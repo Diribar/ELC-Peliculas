@@ -1,12 +1,12 @@
 /* CONFIGURAR SECCIONES */
-main {height:90.4vh;}
+main {height:91vh;}
 main.flex-row {flex-direction: row-reverse;}
 main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse; justify-content: space-between;}
 main #zona-de-vitreaux {padding-left: 30px; width: 220px; height: 100%; display: flex; flex-direction: column; justify-content: center;}
 
 /* CONFIGURAR IMAGEN */
 #imagen-derecha {width: 30vw; height: 100%; position: relative;}
-#imagen-derecha img {height: 100%; width: 100%; object-fit: cover; position: absolute;}
+#imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
 /* #imagen-derecha img {max-width: 30vw;} */
 
 /* ESTILOS Y CLASES */
