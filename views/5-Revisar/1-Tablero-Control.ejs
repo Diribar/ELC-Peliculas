@@ -6,15 +6,17 @@
 		<div id="primeraColumna">
 			<h2>Productos</h2>
 			<!-- Para inactivar -->
-			<%- include("11-Vision-Registros", {titulo: "Inactivar", estado: status.filter(n => n.inactivar).map(n => n.id), registros: productos}) %>
+			<%- include("11-Tablero-Registros", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
 			<!-- Aprobados c/edición -->
-			<%- include("11-Vision-Registros", {titulo: "Aprobados c/Edición", estado: aprobados, registros: prodsConEdicion}) %>
-			<!-- Aprobar la edición de altas -->
-			<%- include("11-Vision-Registros", {titulo: "Edición de Altas", estado: status.filter(n => n.alta_aprob).map(n => n.id), registros: productos}) %>
+			<%- include("11-Tablero-Registros", {titulo: "Revisar Edición de Aprobados", estado: aprobados, registros: prodsConEdicion}) %>
+			<!-- Editar altas (altas sin edición) -->
+			<%- include("11-Tablero-Registros", {titulo: "Altas sin Edición", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length)}) %>
+			<!-- Aprobar ediciones AJENAS de altas -->
+			<%- include("11-Tablero-Registros", {titulo: "Revisar Edición de Altas", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora )}) %>
 			<!-- Aprobar el Alta -->
-			<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.filter(n => n.creado).map(n => n.id), registros: productos}) %>
+			<%- include("11-Tablero-Registros", {titulo: "Revisar Altas", estado: status.find(n => n.creado).id, registros: productos}) %>
 			<!-- Recuperar -->
-			<%- include("11-Vision-Registros", {titulo: "Recuperar", estado: status.filter(n => n.recuperar).map(n => n.id), registros: productos}) %>
+			<%- include("11-Tablero-Registros", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id, registros: productos}) %>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
@@ -23,7 +25,7 @@
 				<!-- Aprobados c/edición -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
-				<%- include("11-Vision-Registros", {titulo: "Altas", estado: status.filter(n => n.creado).map(n => n.id), registros: RCLVs}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
 			</div>
 			<div>
 				<h2>Links</h2>

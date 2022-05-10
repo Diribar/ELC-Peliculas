@@ -13,9 +13,9 @@ window.addEventListener("load", async () => {
 	// Variables de país
 	let paisesSelect = document.querySelector("#paises_id select");
 	if (paisesSelect) {
-		paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
-		paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
-		paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
+		var paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
+		var paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
+		var paisesListado = Array.from(document.querySelectorAll("#paises_id select option")).map(
 			(n) => {
 				return {id: n.value, nombre: n.innerHTML};
 			}
@@ -92,9 +92,9 @@ window.addEventListener("load", async () => {
 			paisesID.value = paises_idArray.join(", ");
 		}
 		// Agregar los países a mostrar
-		paisesNombre = "";
+		let paisesNombre = "";
 		if (paisesID.value) {
-			paises_idArray = paisesID.value.split(", ");
+			let paises_idArray = paisesID.value.split(", ");
 			for (let pais_id of paises_idArray) {
 				let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 				paisesNombre += (paisesNombre ? ", " : "") + paisNombre;

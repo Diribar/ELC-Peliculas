@@ -45,6 +45,8 @@ module.exports = {
 			prodsConLinks,
 			status,
 			aprobados,
+			userID,
+			haceUnaHora,
 		});
 	},
 	inactivarCaptura: async (req, res) => {
@@ -99,9 +101,13 @@ module.exports = {
 					);
 				if (edicID) datosEdicion = "&edicion_id=" + edicID;
 				else {
+					// Averiguar sobre la edición
 					let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
 						[producto_id]: prodID,
 					});
+					// Liberar el producto original
+					BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
+					// Generar la info del error
 					let informacion = {
 						mensajes:
 							edicion && edicion.editado_por_id == userID
@@ -109,12 +115,20 @@ module.exports = {
 										"Sólo encontramos una edición, realizada por vos.",
 										"Necesitamos que la revise otra persona.",
 								  ]
-								: ["No encontramos ninguna edición para revisar"],
+								: [
+										"No encontramos ninguna edición para revisar",
+										"¿Querés hacerle vos una edición?",
+								  ],
 						iconos: [
 							{
-								nombre: "fa-thumbs-up",
+								nombre: "fa-spell-check ",
 								link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
-								titulo: "Ir a la vista de inicio de revision",
+								titulo: "Regresar al Tablero de Control de Revisiones",
+							},
+							{
+								nombre: "fa-pencil",
+								link: "/producto/edicion/?entidad=" + entidad + "&id=" + prodID,
+								titulo: "Ir a la vista de edición",
 							},
 						],
 					};

@@ -317,7 +317,7 @@ window.addEventListener("load", async () => {
 		// Agregar los países a mostrar
 		let paisesNombre = "";
 		if (paisesID.value) {
-			paises_idArray = paisesID.value.split(", ");
+			let paises_idArray = paisesID.value.split(", ");
 			for (let pais_id of paises_idArray) {
 				let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 				paisesNombre += (paisesNombre ? ", " : "") + paisNombre;

@@ -45,15 +45,7 @@ router.get(
 	vista.productoEdicion
 );
 // Vistas de RCLVs
-router.get(
-	"/rclv",
-	soloGestionProd,
-	entidad,
-	id,
-	permisoUsuario,
-	permisoProducto,
-	vista.RCLVform
-);
+router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLVform);
 
 // Vistas de Links
 // router.get("/links", soloGestionProd, vista.tableroControl);
@@ -61,11 +53,9 @@ router.get(
 // Rutas de APIs *******************************************
 // Uso compartido
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
-// Producto-Alta
-router.get("/api/producto-alta/aprobar", soloGestionProd, API.aprobarAlta);
-router.get("/api/producto-alta/rechazar", soloGestionProd, API.rechazarAlta);
-// Producto-Edición
-router.get("/api/producto-edicion/campo", soloGestionProd, API.aprobRechCampo);
+// Producto
+router.get("/api/producto-alta", soloGestionProd, API.prodAltas);
+router.get("/api/producto-edicion", soloGestionProd, API.prodEdics);
 // RCLV-Alta
 router.get("/api/rclv-alta/aprobar", soloGestionProd, API.aprobarAltaRCLV);
 

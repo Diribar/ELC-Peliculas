@@ -256,7 +256,18 @@ module.exports = {
 	},
 
 	// Actualización de roles
-	autInput_solicitudForm: (req, res) => {
+	autInputForm: (req, res) => {
+		let informacion = {
+			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+				{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
+			],
+		};
+	
+		return res.render("Errores", {informacion})
+	},
+	autRevisionForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
 			iconos: [
