@@ -1,6 +1,7 @@
 // VARIABLES GLOBALES -------------------------------------------------
 global.unDia = 24 * 60 * 60 * 1000; // Para usar la variable en todo el proyecto
 global.unaHora = 60 * 60 * 1000; // Para usar la variable en todo el proyecto
+global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
@@ -12,17 +13,17 @@ app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a 
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 // Para usar PUT y DELETE
-const methodOverride = require("method-override"); 
+const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 // Para usar la propiedad "session"
-const session = require("express-session"); 
-app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false})); 
+const session = require("express-session");
+app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false}));
 // Para usar cookies
-const cookies = require("cookie-parser"); 
+const cookies = require("cookie-parser");
 app.use(cookies());
 // Para usar el middleware de Login mediante Cookie
 const usuario = require("./middlewares/usuarios/loginConCookie");
-app.use(usuario); 
+app.use(usuario);
 // Para usar el middleware de userLogs
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs);
@@ -52,7 +53,7 @@ app.set("views", [
 	path.resolve(__dirname, "./views/5-Revisar"),
 	path.resolve(__dirname, "./views/5-Revisar/Includes"),
 	path.resolve(__dirname, "./views/6-Productos"),
-	path.resolve(__dirname, "./views/9-Inicio"),	
+	path.resolve(__dirname, "./views/9-Inicio"),
 	path.resolve(__dirname, "./views/9-Miscelaneas"),
 ]);
 

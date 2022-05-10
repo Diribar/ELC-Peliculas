@@ -73,7 +73,6 @@ module.exports = async (req, res, next) => {
 			else {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// Definir nuevas variables
-				let meses = variables.meses();
 				if (registro.capturado_en)
 					var horarioCaptura =
 						registro.capturado_en.getDate() +

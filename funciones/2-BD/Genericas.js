@@ -60,7 +60,4 @@ module.exports = {
 	contarCasos: (entidad, objeto) => {
 		return db[entidad].count({where: objeto});
 	},
-	sumarValores: (entidad, objeto, campoASumar) => {
-		return db[entidad].sum(campoASumar, {where: objeto});
-	},
 };

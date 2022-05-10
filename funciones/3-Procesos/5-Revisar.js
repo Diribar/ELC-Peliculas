@@ -228,8 +228,8 @@ module.exports = {
 		// Definir el 'ahora'
 		let ahora = funciones.ahora().getTime();
 		// Bloque derecho
-		let [bloque1, bloque2] = [[], []],
-			fecha;
+		let bloque1 = [];
+		let fecha;
 		// Bloque 1
 		if (prodOriginal.ano_estreno)
 			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
@@ -467,36 +467,35 @@ module.exports = {
 	},
 
 	// Usuario
-	usuario_Ficha: async function (userID, ahora) {
+	usuario_Ficha: async (userID, ahora) => {
 		// Obtener los datos del usuario
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Variables
-		let anos = unDia * 365;
+		let unAno = unDia * 365;
+		let enviar = {apodo: ["Apodo", usuario.apodo]};
 		// Edad
 		if (usuario.fecha_nacimiento) {
-			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";
+			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+			enviar.edad = ["Edad", edad];
 		}
 		// Antigüedad
 		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / anos) * 10) / 10)
+			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
 				.toFixed(1)
 				.replace(".", ",") + " años";
-		// Datos a enviar
-		let enviar = {};
-		enviar.apodo = ["Apodo", usuario.apodo];
-		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-		if (usuario.fecha_nacimiento) enviar.edad = ["Edad", edad];
 		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+		// Rol en la iglesia
+		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
 		// Fin
 		return enviar;
 	},
-	usuario_CalidadAltas: async function (userID) {
+	usuario_CalidadAltas: async (userID) => {
 		// 1. Obtener los datos del usuario
 		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 		// 2. Contar los casos aprobados y rechazados
 		let cantAprob = usuario.cant_altas_aprob;
-		let cantRech = usuario.cant_altas_rech
+		let cantRech = usuario.cant_altas_rech;
 		// 3. Precisión de altas
 		let cantAltas = cantAprob + cantRech;
 		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
@@ -504,18 +503,18 @@ module.exports = {
 		// Datos a enviar
 		let enviar = {
 			calidadAltas: ["Calidad Altas", calidadInputs],
-			cantAltas: ["Cant. Alta Productos", cantAltas],
+			cantAltas: ["Cant. Prod. Agregados", cantAltas],
 			// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
 		};
 		// Fin
 		return enviar;
 	},
-	usuario_CalidadEdic: async function (userID) {
+	usuario_CalidadEdic: async (userID) => {
 		// 1. Obtener los datos del usuario
 		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 		// 2. Contar los casos aprobados y rechazados
 		let cantAprob = usuario.cant_edic_aprob;
-		let cantRech = usuario.cant_edic_rech
+		let cantRech = usuario.cant_edic_rech;
 		// 3. Precisión de ediciones
 		let cantEdics = cantAprob + cantRech;
 		let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
@@ -529,11 +528,32 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
+	usuario_Penalizar: async (penalizarUsuario) => {
+		// Obtener los datos del usuario
+		let usuario = await BD_genericas.obtenerPorId("usuarios", penalizarUsuario.id);
+		// Averiguar el mayor entre 'hoy' y 'penalizado_hasta'
+		let hoy = funciones.ahora().getTime();
+		let penalizado_hasta = usuario.penalizado_hasta ? usuario.penalizado_hasta.getTime() : 0;
+		let fechaActual = Math.max(hoy, penalizado_hasta);
+		// Sumarle la duración
+		let nuevaFecha = new Date(fechaActual);
+		nuevaFecha.setDate(nuevaFecha.getDate() + penalizarUsuario.duracion);
+		// Preparar la información
+		let datos = {
+			penalizado_en: penalizarUsuario.penalizado_en,
+			penalizado_hasta: nuevaFecha,
+			penalizado_por_id: penalizarUsuario.penalizado_por_id,
+		};
+		// Actualizar el registro
+		BD_genericas.actualizarPorId("usuarios",usuario.id,datos)
+		// Fin
+		return;
+	},
 
 	// Varios
 	obtenerLaFecha: (fecha) => {
 		let dia = fecha.getDate();
-		let mes = variables.meses()[fecha.getMonth()];
+		let mes = meses[fecha.getMonth()];
 		let ano = fecha.getFullYear().toString().slice(-2);
 		fecha = dia + "/" + mes + "/" + ano;
 		return fecha;
@@ -548,7 +568,6 @@ let prodValorVinculo = (producto, objeto) => {
 	return aux;
 };
 let RCLV_valorVinculo = (RCLV, campo) => {
-	let meses = variables.meses();
 	let aux =
 		campo == "dia_del_ano_id"
 			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
