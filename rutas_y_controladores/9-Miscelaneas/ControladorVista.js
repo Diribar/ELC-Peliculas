@@ -5,7 +5,7 @@ module.exports = {
 	home: (req, res) => {
 		let tema = "miscelaneas";
 		let codigo = "inicio";
-		return res.render("0-VistaEstandar", {
+		return res.render("0-InicioEstructura", {
 			tema,
 			codigo,
 			titulo: "Inicio",

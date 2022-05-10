@@ -24,7 +24,7 @@
 #datos #primeraCol #genero input {margin-left: 12px;}
 #datos #primeraCol #valoresFecha {height: 80px;}
 #datos #primeraCol #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
-#datos #primeraCol #valoresFecha a img {position: absolute; object-fit: cover; height: 100%; width: 100%;}
+#datos #primeraCol #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 #datos #primeraCol .input[name='ano'] {width: 65px; margin-left: 10px; padding-left: 5px; text-align: center;}
 
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
