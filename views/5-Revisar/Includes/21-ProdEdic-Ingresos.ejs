@@ -5,17 +5,6 @@
 	<%= campo.mostrarEdic %>
 	<!-- Aprobar y Rechazar -->
 	<i class="fa-solid fa-circle-check"></i>
-	<i class="fa-solid fa-circle-xmark"></i>
+	<i class="fa-solid fa-circle-xmark rechazar"></i>
 </td>
 <td class="ocultar campoValor"><%= campo.valorEdic %></td>
-
-<!-- Motivo -->
-<td class="motivos ocultar">
-	<i class="fa-solid fa-trash-can" tabindex="-1" title='Rechazar'></i>
-	<select name="motivo_id">
-		<% motivos = campo.input ? motivos : motivos.filter(n => n.info_erronea || n.otros) %>
-		<% for (motivo of motivos) { %>
-			<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
-		<% } %>
-	</select>
-</td>

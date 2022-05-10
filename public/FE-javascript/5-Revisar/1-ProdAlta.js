@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 	aprobar.addEventListener("click", async () => {
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
-		let ruta = "/revision/api/producto-alta/aprobar/?entidad=";
+		let ruta = "/revision/api/producto-alta/?aprob=true&entidad=";
 		await fetch(ruta + prodEntidad + "&id=" + prodID);
 		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
 	});
@@ -42,7 +42,7 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			// rechazar.style.transform = "scale(1)";
 			// rechazar.style.cursor = "wait";
-			let ruta = "/revision/api/producto-alta/rechazar/?entidad=";
+			let ruta = "/revision/api/producto-alta/?aprob=false&entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
 			window.location.href = "/revision/tablero-de-control";
 		}

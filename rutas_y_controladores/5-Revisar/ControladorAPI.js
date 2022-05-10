@@ -17,68 +17,56 @@ module.exports = {
 		return res.json();
 	},
 
-	// PRODUCTOS -
-	// Revisar el alta - Aprobar
-	aprobarAlta: async (req, res) => {
+	// PRODUCTOS
+	prodAltas: async (req, res) => {
 		// Definir variables
-		let {entidad, id} = req.query;
+		let {entidad, id: prodID} = req.query;
+		let aprobado = req.query.aprob == "true";
+		let archivo = aprobado ? "altas_registros_aprob" : "altas_registros_rech";
 		let userID = req.session.usuario.id;
-		// Averiguar el id del status
-		let statusAltaAprob = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: true}).then(
-			(n) => n.id
-		);
-		// Cambiar el status, dejar la marca del usuario y fecha en que esto se realizó
+		let ahora = funciones.ahora();
+		// Obtener el nuevo status_id
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		let nuevoStatusID = aprobado
+			? status.find((n) => n.alta_aprob).id
+			: status.find((n) => n.inactivado).id;
+		// Obtener el motivo si es un rechazo
+		if (!aprobado) var {motivo_id} = req.query;
+		if (!aprobado && !motivo_id) return res.json("false");
+		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
 		let datos = {
-			status_registro_id: statusAltaAprob,
-			alta_analizada_por_id: req.session.usuario.id,
-			alta_analizada_en: funciones.ahora(),
+			status_registro_id: nuevoStatusID,
+			alta_analizada_por_id: userID,
+			alta_analizada_en: ahora,
 		};
-		await BD_genericas.actualizarPorId(entidad, id, datos);
-		// Asienta la aprobación en el registro del usuario
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_altas_aprob");
+		// Liberar de la captura
+		if (!aprobado) datos.captura_activa = 0;
+		await BD_genericas.actualizarPorId(entidad, prodID, datos);
+		// Agrega el registro en altas-aprob/rech
+		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
+		datos = {
+			entidad: entidad,
+			entidad_id: prodID,
+			input_por_id: producto.creado_por_id,
+			input_en: producto.creado_en,
+			evaluado_por_id: userID,
+			evaluado_en: ahora,
+		};
+		if (!aprobado) {
+			datos.duracion = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id).then(
+				(n) => n.duracion
+			);
+			datos.motivo_id = motivo_id;
+		}
+		BD_genericas.agregarRegistro(archivo, datos);
+		// Asienta la aprob/rech en el registro del usuario
+		let campo = aprobado ? "cant_altas_aprob" : "cant_altas_rech";
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, campo);
 		// Fin
 		return res.json();
 	},
-	// Revisar el alta - Rechazar
-	rechazarAlta: async (req, res) => {
-		// Definir variables
-		let {entidad, id, motivo_id} = req.query;
-		let datos;
-		let userID = req.session.usuario.id;
-		// Detectar un eventual error
-		if (!motivo_id) return res.json();
-		// Averiguar el id del status
-		let statusInactivar = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
-			(n) => n.id
-		);
-		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
-		datos = {
-			status_registro_id: statusInactivar,
-			alta_analizada_por_id: req.session.usuario.id,
-			alta_analizada_en: funciones.ahora(),
-			captura_activa: 0,
-		};
-		BD_genericas.actualizarPorId(entidad, id, datos);
-		// Agregar el registro de borrados
-		let producto = await BD_genericas.obtenerPorId(entidad, id);
-		datos = {
-			entidad: entidad,
-			entidad_id: id,
-			motivo_id: motivo_id,
-			duracion: 0, // porque todavía lo tiene que analizar un segundo revisor
-			input_por_id: producto.creado_por_id,
-			input_en: producto.creado_en,
-			evaluado_por_id: datos.alta_analizada_por_id,
-			evaluado_en: datos.alta_analizada_en,
-			status_registro_id: datos.status_registro_id,
-		};
-		BD_genericas.agregarRegistro("altas_registros_rech", datos);
-		// Asienta el rechazo en el registro del usuario
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_altas_rech");
-		return res.json();
-	},
 	// Revisar la edición
-	aprobRechCampo: async (req, res) => {
+	prodEdics: async (req, res) => {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
@@ -103,8 +91,12 @@ module.exports = {
 		let ahora = funciones.ahora();
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
+		if (!aprobado && !motivo_id)
+			motivo_id = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1}).then(
+				(n) => n.id
+			);
 		// Detectar un eventual error
-		if (!prodEditado || !prodEditado[campo] || (!aprobado && !motivo_id)) return res.json("false");
+		if (!prodEditado || !prodEditado[campo]) return res.json("false");
 		// Particularidades para el campo 'avatar'
 		if (campo == "avatar") {
 			if (aprobado) {

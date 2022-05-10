@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
 	aprobar.addEventListener("click", async () => {
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
-		let ruta = "/revision/api/producto-edicion/campo/?aprob=true&entidad=";
+		let ruta = "/revision/api/producto-edicion/?aprob=true&entidad=";
 		await fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar");
 		window.location.href =
 			"/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			rechazar.style.transform = "scale(1)";
 			menuMotivosBorrar.style.cursor = "wait";
-			let ruta = "/revision/api/producto-edicion/campo/?aprob=false&entidad=";
+			let ruta = "/revision/api/producto-edicion/?aprob=false&entidad=";
 			await fetch(
 				ruta +
 					entidad +

@@ -13,7 +13,8 @@ window.addEventListener("load", () => {
 	let infoMostrar = document.querySelectorAll("#contenido .infoMostrar");
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
-	let rechazar = document.querySelectorAll("#contenido .motivos .fa-trash-can");
+	let rechazar = document.querySelectorAll("#contenido .rechazar");
+	let sinMotivo = rechazar.length - motivoRechazos.length;
 
 	// Bloque Ingresos
 	let bloqueIngrs = document.querySelector("#contenido #ingrs");
@@ -38,7 +39,7 @@ window.addEventListener("load", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let ruta = "/revision/api/producto-edicion/campo/?aprob=true&entidad=";
+			let ruta = "/revision/api/producto-edicion/?aprob=true&entidad=";
 			let [quedanCampos, statusAprobado] = await fetch(
 				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
 			).then((n) => n.json());
@@ -47,34 +48,34 @@ window.addEventListener("load", () => {
 		});
 
 		// Menú inactivar
-		mostrarMotivos[i].addEventListener("click", () => {
-			infoMostrar[i].classList.add("ocultar");
-			menuMotivos[i].classList.remove("ocultar");
-		});
+		if (i + 1 > sinMotivo) {
+			mostrarMotivos[i].addEventListener("click", () => {
+				infoMostrar[i].classList.add("ocultar");
+				menuMotivos[i].classList.remove("ocultar");
+			});
+		}
 
 		// Rechazar el nuevo valor
 		rechazar[i].addEventListener("click", async () => {
-			let motivo = motivoRechazos[i].value;
-			if (motivo) {
-				// Ocultar la fila
-				filas[i].classList.add("ocultar");
-				// Actualizar el campo del producto
-				let ruta = "/revision/api/producto-edicion/campo/?aprob=false&entidad=";
-				let [quedanCampos, statusAprobado] = await fetch(
-					ruta +
-						entidad +
-						"&id=" +
-						prodID +
-						"&edicion_id=" +
-						edicID +
-						"&campo=" +
-						campoNombres[i] +
-						"&motivo_id=" +
-						motivo
-				).then((n) => n.json());
-				// Revisar el status
-				consecuenciasQC(quedanCampos, statusAprobado);
-			}
+			let motivo = i + 1 > sinMotivo ? motivoRechazos[i].value : "";
+			// Ocultar la fila
+			filas[i].classList.add("ocultar");
+			// Actualizar el campo del producto
+			let ruta = "/revision/api/producto-edicion/?aprob=false&entidad=";
+			let [quedanCampos, statusAprobado] = await fetch(
+				ruta +
+					entidad +
+					"&id=" +
+					prodID +
+					"&edicion_id=" +
+					edicID +
+					"&campo=" +
+					campoNombres[i] +
+					"&motivo_id=" +
+					motivo
+			).then((n) => n.json());
+			// Revisar el status
+			consecuenciasQC(quedanCampos, statusAprobado);
 		});
 	}
 
