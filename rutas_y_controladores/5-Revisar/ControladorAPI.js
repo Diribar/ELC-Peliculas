@@ -1,7 +1,6 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const procesar = require("../../funciones/3-Procesos/5-Revisar");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
@@ -21,7 +20,9 @@ module.exports = {
 	// PRODUCTOS -
 	// Revisar el alta - Aprobar
 	aprobarAlta: async (req, res) => {
+		// Definir variables
 		let {entidad, id} = req.query;
+		let userID = req.session.usuario.id;
 		// Averiguar el id del status
 		let statusAltaAprob = await BD_genericas.obtenerPorCampos("status_registro", {alta_aprob: true}).then(
 			(n) => n.id
@@ -33,14 +34,17 @@ module.exports = {
 			alta_analizada_en: funciones.ahora(),
 		};
 		await BD_genericas.actualizarPorId(entidad, id, datos);
+		// Asienta la aprobación en el registro del usuario
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_altas_aprob");
 		// Fin
 		return res.json();
 	},
 	// Revisar el alta - Rechazar
 	rechazarAlta: async (req, res) => {
-		// Obtener las variables
+		// Definir variables
 		let {entidad, id, motivo_id} = req.query;
 		let datos;
+		let userID = req.session.usuario.id;
 		// Detectar un eventual error
 		if (!motivo_id) return res.json();
 		// Averiguar el id del status
@@ -69,6 +73,8 @@ module.exports = {
 			status_registro_id: datos.status_registro_id,
 		};
 		BD_genericas.agregarRegistro("altas_registros_rech", datos);
+		// Asienta el rechazo en el registro del usuario
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_altas_rech");
 		return res.json();
 	},
 	// Revisar la edición
@@ -138,22 +144,27 @@ module.exports = {
 		if (aprobado) {
 			// El nuevo valor
 			datos = {[campo]: prodEditado[campo]};
-			// Si el producto está en status 'aprobado', agregarle los datos de la 'edición'
-			if (!prodOriginal.status_registro.aprobado)
-				datos = {
-					...datos,
-					// Los datos de la edición (fecha, usuario)
-					editado_por_id: prodEditado.editado_por_id,
-					editado_en: prodEditado.editado_en,
-					// Los datos de la revisión (fecha, usuario)
-					edic_analizada_por_id: userID,
-					edic_analizada_en: ahora,
-				};
+			// Obtener el Lead Time de Edición
+			let leadTime = (ahora.getTime() - prodEditado.editado_en) / unaHora;
+			// Agregarle datos de la 'edición'
+			datos = {
+				...datos,
+				// Los datos de la edición (fecha, usuario)
+				//editado_por_id: prodEditado.editado_por_id,
+				editado_en: prodEditado.editado_en,
+				// Los datos de la revisión (fecha, usuario)
+				//edic_analizada_por_id: userID,
+				edic_analizada_en: ahora,
+				lead_time_edicion: leadTime,
+			};
 			// Actualiza el registro en la BD original
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
 			// Actualiza la variable 'prodOriginal'
 			prodOriginal = {...prodOriginal, ...datos};
-		}
+			// Asienta la aprobación en el registro del usuario
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_edic_aprob");
+			// Asienta el rechazo en el registro del usuario
+		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_edic_rech");
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("prods_edicion", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto

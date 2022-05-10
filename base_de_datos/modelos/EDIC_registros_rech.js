@@ -5,8 +5,8 @@ module.exports = (sequelize, dt) => {
 		entidad_id: {type: dt.INTEGER},
 		campo: {type: dt.STRING(20)},
 		titulo: {type: dt.STRING(21)},
-		valor_rechazado: {type: dt.STRING(20)},
-		valor_aceptado: {type: dt.STRING(20)},
+		valor_rechazado: {type: dt.STRING(50)},
+		valor_aceptado: {type: dt.STRING(50)},
 
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.INTEGER},
@@ -16,8 +16,8 @@ module.exports = (sequelize, dt) => {
 		evaluado_por_id: {type: dt.INTEGER},
 		evaluado_en: {type: dt.DATE},
 
-		comunicado: {type: dt.BOOLEAN},
-		};
+		comunicado_en: {type: dt.DATE},
+	};
 	const config = {
 		tableName: "edic_registros_rech",
 		timestamps: false,

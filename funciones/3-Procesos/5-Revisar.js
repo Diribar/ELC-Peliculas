@@ -471,7 +471,7 @@ module.exports = {
 		let includes = "rol_iglesia";
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
 		// Variables
-		let anos = 1000 * 60 * 60 * 24 * 365;
+		let anos = unDia * 365;
 		// Edad
 		if (usuario.fecha_nacimiento) {
 			var edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / anos) + " años";

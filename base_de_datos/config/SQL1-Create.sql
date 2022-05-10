@@ -135,7 +135,12 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	documento_validado_por_id INT UNSIGNED NULL,
+	cant_altas_aprob SMALLINT DEFAULT 0,
+	cant_altas_rech SMALLINT DEFAULT 0,
+	cant_edic_aprob SMALLINT DEFAULT 0,
+	cant_edic_rech SMALLINT DEFAULT 0,
+	
+	dni_validado_por_id INT UNSIGNED NULL,
 	
 	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME NULL,
@@ -147,7 +152,7 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
-	FOREIGN KEY (documento_validado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (dni_validado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
@@ -627,10 +632,10 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en)
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en)
 VALUES
-(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/os06a6E5MvC4qyqmB7fkaKUJ7Jx.jpg',75,75,100,80,10,'2022-03-16 23:25:19'),
-(2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/agSYE5U98pz8OLNI6C6d2NQvn6h.jpg',75,75,100,80,10,'2022-03-16 23:25:22')
+(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','1645481101308.jpg',75,75,100,80,10,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57'),
+(2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg',75,75,100,80,10,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57')
 ;
 CREATE TABLE prod_3capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -776,10 +781,10 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_4edicion (id, coleccion_id, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en) VALUES
-(6,1,'1645481101308.jpg',1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19');
-INSERT INTO prod_4edicion (id, coleccion_id, avatar, nombre_original, nombre_castellano, musica, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES 
-(7,2,'1646276771102.jpg','Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',2,1,'VPC',10,4,11,10,'2022-03-16 23:25:22');
+INSERT INTO prod_4edicion (id, coleccion_id, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, personaje_id, editado_por_id, editado_en) VALUES
+(6,1,1,1,'CFC',4,5,24,10,'2022-03-16 23:25:19');
+INSERT INTO prod_4edicion (id, coleccion_id, nombre_original, nombre_castellano, musica, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES 
+(7,2,'Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',2,1,'VPC',10,4,11,10,'2022-03-16 23:25:22');
 INSERT INTO prod_4edicion (id, capitulo_id, nombre_original, personaje_id, editado_por_id, editado_en) VALUES
 (8,1,'Karol - Un uomo diventato Papa',24,10,'2022-04-13 19:20:21');
 INSERT INTO prod_4edicion (id, capitulo_id, produccion, personaje_id, editado_por_id, editado_en) VALUES

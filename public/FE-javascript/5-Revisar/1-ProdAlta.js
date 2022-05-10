@@ -40,8 +40,8 @@ window.addEventListener("load", () => {
 	inactivar.addEventListener("click", async () => {
 		let motivo = motivosRechazo.value;
 		if (motivo) {
-			rechazar.style.transform = "scale(1)";
-			rechazar.style.cursor = "wait";
+			// rechazar.style.transform = "scale(1)";
+			// rechazar.style.cursor = "wait";
 			let ruta = "/revision/api/producto-alta/rechazar/?entidad=";
 			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
 			window.location.href = "/revision/tablero-de-control";
