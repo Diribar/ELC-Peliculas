@@ -92,14 +92,12 @@ window.addEventListener("load", () => {
 		return;
 	};
 	let verificarBloques = (filas, bloque) => {
-		console.log(100, filas);
 		// Averiguar el status
 		let ocultarBloque = Array.from(filas)
 			.map((n) => n.classList)
 			.map((n) => n.value)
 			.every((n) => n.includes("ocultar"));
 		// Ocultar el bloque si corresponde
-		console.log(ocultarBloque);
 		if (ocultarBloque) bloque.classList.add("ocultar");
 		// Fin
 		return ocultarBloque;
