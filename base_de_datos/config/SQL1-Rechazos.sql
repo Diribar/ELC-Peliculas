@@ -1,8 +1,9 @@
 USE ELC_Peliculas;
 
 /* MOTIVOS DE RECHAZO DE ALTAS */;
-DROP TABLE IF EXISTS altas_motivos_rech;
+DROP TABLE IF EXISTS altas_registros_aprob;
 DROP TABLE IF EXISTS altas_registros_rech;
+DROP TABLE IF EXISTS altas_motivos_rech;
 CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -41,7 +42,6 @@ CREATE TABLE altas_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NULL,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
@@ -51,7 +51,6 @@ CREATE TABLE altas_registros_aprob (
 	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -60,7 +59,6 @@ CREATE TABLE altas_registros_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NULL,
 
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,
@@ -79,9 +77,9 @@ CREATE TABLE altas_registros_rech (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* MOTIVOS DE RECHAZO DE EDICIONES */;
-DROP TABLE IF EXISTS edic_motivos_rech;
 DROP TABLE IF EXISTS edic_registros_aprob;
 DROP TABLE IF EXISTS edic_registros_rech;
+DROP TABLE IF EXISTS edic_motivos_rech;
 CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,

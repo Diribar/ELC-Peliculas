@@ -139,11 +139,11 @@ CREATE TABLE USUARIOS (
 	cant_altas_rech SMALLINT DEFAULT 0,
 	cant_edic_aprob SMALLINT DEFAULT 0,
 	cant_edic_rech SMALLINT DEFAULT 0,
-	
+
 	dni_validado_por_id INT UNSIGNED NULL,
 	
 	penalizado_en DATETIME NULL,
-	penalizado_hasta DATETIME NULL,
+	penalizado_hasta DATETIME DEFAULT NULL,
 	penalizado_por_id INT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
