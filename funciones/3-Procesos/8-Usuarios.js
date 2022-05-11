@@ -16,8 +16,8 @@ module.exports = {
 	},
 
 	// Middlewares
-	detectarUsuarioPenalizado:(usuario)=>{
-		let informacion
+	detectarUsuarioPenalizado: (usuario) => {
+		let informacion;
 		if (usuario.penalizado_hasta && new Date(usuario.penalizado_hasta) > new Date(funciones.ahora())) {
 			let hasta = new Date(usuario.penalizado_hasta);
 			let fecha =
@@ -29,11 +29,33 @@ module.exports = {
 					"Podrás volver a ingresar información el día " + fecha + ", a las " + hora + "hs.",
 				],
 				iconos: [
-					{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
+					{
+						nombre: "fa-circle-left",
+						link: req.session.urlAnterior,
+						titulo: "Ir a la vista anterior",
+					},
 					{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
 				],
 			};
 		}
-		return informacion
-	}
-}
+		return informacion;
+	},
+	productosCreadosPorUnUsuario: async (userID) => {
+		// Variables
+		let objeto = {creado_por_id: userID};
+		// Obtener todos los productos creados por el usuario
+		let peliculas = BD_genericas.obtenerTodosPorCamposConInclude("peliculas", objeto, "status_registro");
+		let colecciones = BD_genericas.obtenerTodosPorCamposConInclude(
+			"colecciones",
+			objeto,
+			"status_registro"
+		);
+		let capitulos = BD_genericas.obtenerTodosPorCamposConInclude("capitulos", objeto, "status_registro");
+		// Unirlos
+		let productos = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
+			return [...a, ...b, ...c]
+		});
+		// Fin
+		return productos;
+	},
+};

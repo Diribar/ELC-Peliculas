@@ -23,7 +23,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let aprobado = req.query.aprob == "true";
 		let archivo = aprobado ? "altas_registros_aprob" : "altas_registros_rech";
-		let userID = req.session.usuario.id;
+		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
@@ -36,7 +36,7 @@ module.exports = {
 		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
 		let datos = {
 			status_registro_id: nuevoStatusID,
-			alta_analizada_por_id: userID,
+			alta_analizada_por_id: revisor_ID,
 			alta_analizada_en: ahora,
 		};
 		// Liberar la captura
@@ -45,12 +45,13 @@ module.exports = {
 		await BD_genericas.actualizarPorId(entidad, prodID, datos);
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
+		let creador_ID = producto.creado_por_id;
 		datos = {
 			entidad: entidad,
 			entidad_id: prodID,
-			input_por_id: producto.creado_por_id,
+			input_por_id: creador_ID,
 			input_en: producto.creado_en,
-			evaluado_por_id: userID,
+			evaluado_por_id: revisor_ID,
 			evaluado_en: ahora,
 		};
 		if (!aprobado) {
@@ -62,17 +63,19 @@ module.exports = {
 		BD_genericas.agregarRegistro(archivo, datos);
 		// Asienta la aprob/rech en el registro del usuario
 		let campo = aprobado ? "cant_altas_aprob" : "cant_altas_rech";
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, campo);
-		// Penalizar al usuario si corresponde
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo);
+		// Penaliza al usuario si corresponde
 		if (!aprobado && datos.duracion) {
 			let penalizarUsuario = {
-				id: producto.creado_por_id,
+				usuario_ID: creador_ID,
 				duracion: datos.duracion,
 				penalizado_en: ahora,
-				penalizado_por_id: userID,
+				penalizado_por_id: revisor_ID,
 			};
 			procesar.usuario_Penalizar(penalizarUsuario);
 		}
+		// Actualizar en RCLVs la cant_aprobados
+		procesar.RCLV_actualizarCantProd(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -82,6 +85,11 @@ module.exports = {
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
 		let archivo = aprobado ? "edic_registros_aprob" : "edic_registros_rech";
+		let revisor_ID = req.session.usuario.id;
+		let ahora = funciones.ahora();
+		let datos;
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		// Obtener registros original
 		let includes = [
 			"en_castellano",
 			"en_color",
@@ -95,11 +103,11 @@ module.exports = {
 			"status_registro",
 		];
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		let producto = {...prodOriginal};
+		// Obtener el registro editado
 		includes.splice(-1);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
-		let userID = req.session.usuario.id;
-		let datos;
-		let ahora = funciones.ahora();
+		let editor_ID = prodEditado.editado_por_id;
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
 		if (!aprobado && !motivo_id)
@@ -143,31 +151,24 @@ module.exports = {
 				}
 			}
 		}
-		// Si la edición fue aprobada, actualiza el registro de 'original'
+		// Si la edición fue aprobada, actualiza el registro de 'original' *******************
 		if (aprobado) {
 			// El nuevo valor
 			datos = {[campo]: prodEditado[campo]};
 			// Obtener el Lead Time de Edición
 			let leadTime = (ahora.getTime() - prodEditado.editado_en) / unaHora;
 			// Agregarle datos de la 'edición'
-			datos = {
-				...datos,
-				// Los datos de la edición (fecha, usuario)
-				//editado_por_id: prodEditado.editado_por_id,
-				editado_en: prodEditado.editado_en,
-				// Los datos de la revisión (fecha, usuario)
-				//edic_analizada_por_id: userID,
-				edic_analizada_en: ahora,
-				lead_time_edicion: leadTime,
-			};
-			// Actualiza el registro en la BD original
+			datos.editado_en = prodEditado.editado_en;
+			datos.edic_analizada_en = ahora;
+			datos.lead_time_edicion = leadTime;
+			// Actualiza el registro en la BD original ***************************************
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
 			// Actualiza la variable 'prodOriginal'
-			prodOriginal = {...prodOriginal, ...datos};
+			producto = {...prodOriginal, ...datos};
 			// Asienta la aprobación en el registro del usuario
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_edic_aprob");
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_aprob");
 			// Asienta el rechazo en el registro del usuario
-		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, "cant_edic_rech");
+		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_rech");
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("prods_edicion", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
@@ -190,33 +191,44 @@ module.exports = {
 				...datos,
 				titulo,
 				input_en: prodEditado.editado_en,
-				evaluado_por_id: userID,
+				evaluado_por_id: revisor_ID,
 				evaluado_en: ahora,
 			};
-			// Agregar campos si fue rechazado
+			// Si fue rechazado, agregar campos
 			if (!aprobado) {
 				let aux = await BD_genericas.obtenerPorId("edic_motivos_rech", motivo_id);
 				datos.duracion = aux.duracion;
 				datos.motivo_id = motivo_id;
 			}
-			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
+			// Obtener el valor de edición, cuando es un ID
+			let valores = await procesar.prod_EdicValores(aprobado, producto, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
 		}
 		// Actualiza la variable de 'edicion' quitándole el valor al campo
 		prodEditado[campo] = null;
-		// Averiguar si quedan campos por procesar, elimina el registro de edición si ya no tiene más datos, actualiza el status del registro original, si corresponde
-		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(prodOriginal, prodEditado);
+		// Averiguar si quedan campos por procesar
+		// Elimina el registro de edición si ya no tiene más datos
+		// Actualiza el status del registro original, si corresponde
+		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(producto, prodEditado);
 		// Penalizar al usuario si corresponde
 		if (!aprobado && datos.duracion) {
 			let penalizarUsuario = {
-				id: prodEditado.editado_por_id,
+				usuario_ID: editor_ID,
 				duracion: datos.duracion,
 				penalizado_en: ahora,
-				penalizado_por_id: userID,
+				penalizado_por_id: revisor_ID,
 			};
 			procesar.usuario_Penalizar(penalizarUsuario);
+		}
+		// Particularidades para el campo RCLV
+		if (campo.startsWith("RCLV") && aprobado && statusAprobado) {
+			// Actualizar en el producto, el campo 'dia_del_ano_id'
+			procesar.prod_DiaDelAno(entidad, producto, status);
+			// Actualizar en RCLVs la cant_aprobados
+			procesar.RCLV_actualizarCantProd(prodOriginal, status);
+			procesar.RCLV_actualizarCantProd(producto, status);
 		}
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);

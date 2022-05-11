@@ -84,14 +84,20 @@ module.exports = {
 			? "valor_id"
 			: "";
 	},
-	obtenerEntidad: (edicion) => {
-		return edicion.pelicula_id
+	obtenerEntidad: (entidad) => {
+		return entidad.pelicula_id
 			? "peliculas"
-			: edicion.coleccion_id
+			: entidad.coleccion_id
 			? "colecciones"
-			: edicion.capitulo_id
+			: entidad.capitulo_id
 			? "capitulos"
-			: "";
+			: entidad.personaje_id
+			? "RCLV_personajes"
+			: entidad.hecho_id
+			? "RCLV_hechos"
+			: entidad.valor_id
+			? "RCLV_valores"
+			:"";
 	},
 
 	// Fecha y Hora
