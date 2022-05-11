@@ -157,7 +157,6 @@ module.exports = {
 		let noSeComparan;
 		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
-		console.log(160, statusAprobado, prodOriginal.status_registro_id);
 		// Pulir la información a tener en cuenta
 		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
 		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
