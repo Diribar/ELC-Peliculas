@@ -74,9 +74,8 @@ module.exports = async (req, res, next) => {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// Definir nuevas variables
 				let horarioString;
-				let horarioCaptura
 				if (registro.capturado_en) {
-					horarioCaptura = registro.capturado_en;
+					let horarioCaptura = registro.capturado_en;
 					horarioCaptura.setMinutes(horarioCaptura.getMinutes() + 1);
 					horarioString =
 						horarioCaptura.getDate() +
@@ -89,7 +88,7 @@ module.exports = async (req, res, next) => {
 				}
 				// PROBLEMA 4: El registro está capturado por otro usuario en forma 'activa'
 				if (
-					horarioCaptura > haceUnaHora &&
+					registro.capturado_en > haceUnaHora &&
 					registro.capturado_por_id != userID &&
 					registro.captura_activa
 				)
@@ -119,8 +118,8 @@ module.exports = async (req, res, next) => {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
 				// PROBLEMA 5: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
 				else if (
-					horarioCaptura < haceUnaHora &&
-					horarioCaptura > haceDosHoras &&
+					registro.capturado_en < haceUnaHora &&
+					registro.capturado_en > haceDosHoras &&
 					registro.capturado_por_id == userID
 				)
 					informacion = {
@@ -147,13 +146,13 @@ module.exports = async (req, res, next) => {
 				else if (
 					!registro.captura_activa ||
 					registro.capturado_por_id != userID ||
-					horarioCaptura < haceDosHoras
+					registro.capturado_en < haceDosHoras
 				) {
 					let datos = {captura_activa: 1};
 					// 2. Cambiar de usuario si estaba capturado por otro
 					if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
 					// 3. Fijarle la nueva hora de captura si corresponde
-					if (registro.capturado_por_id != userID || horarioCaptura < haceDosHoras)
+					if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
 						datos.capturado_en = funciones.ahora();
 					// CAPTURA DEL REGISTRO
 					BD_genericas.actualizarPorId(entidad, prodID, datos);
