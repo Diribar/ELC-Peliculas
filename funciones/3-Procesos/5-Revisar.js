@@ -287,17 +287,11 @@ module.exports = {
 		let aprobado = status.find((n) => n.aprobado).id;
 		// Obtener el dia_del_ano_id, con la condición de que esté aprobado
 		let dia_del_ano_id =
-			producto.personaje &&
-			producto.personaje.dia_del_ano_id &&
-			producto.personaje.status_registro_id == aprobado
+			producto.personaje.dia_del_ano_id && producto.personaje.status_registro_id == aprobado
 				? producto.personaje.dia_del_ano_id
-				: producto.hecho &&
-				  producto.hecho.dia_del_ano_id &&
-				  producto.hecho.status_registro_id == aprobado
+				: producto.hecho.dia_del_ano_id && producto.hecho.status_registro_id == aprobado
 				? producto.hecho.dia_del_ano_id
-				: producto.valor &&
-				  producto.valor.dia_del_ano_id &&
-				  producto.valor.status_registro_id == aprobado
+				: producto.valor.dia_del_ano_id && producto.valor.status_registro_id == aprobado
 				? producto.valor.dia_del_ano_id
 				: "";
 		// Si existe el día, actualizar el producto
@@ -443,10 +437,11 @@ module.exports = {
 			if (RCLV.status_registro_id == aprobado) {
 				// Calcular la cantidad de casos
 				let cantCasos = 0;
-				for (producto of includes)
-					RCLV[producto].forEach((n) => {
+				for (let include of includes) {
+					RCLV[include].forEach((n) => {
 						if (n.status_registro_id == aprobado) cantCasos++;
 					});
+				}
 				// Actualizar la cantidad de casos
 				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprobados: cantCasos});
 			}
