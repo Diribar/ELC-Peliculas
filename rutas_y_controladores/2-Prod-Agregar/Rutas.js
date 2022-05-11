@@ -8,6 +8,7 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
+const creditoAltas = require("../../middlewares/usuarios/creditoAltas");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
@@ -35,7 +36,7 @@ router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
 
 // Rutas de vistas de "Agregar Productos"
-router.get("/palabras-clave", soloAutInput, vista.palabrasClaveForm);
+router.get("/palabras-clave", soloAutInput, creditoAltas, vista.palabrasClaveForm);
 router.post("/palabras-clave", soloAutInput, vista.palabrasClaveGuardar);
 router.get("/desambiguar", soloAutInput, vista.desambiguarForm);
 router.post("/desambiguar", soloAutInput, vista.desambiguarGuardar);
@@ -50,7 +51,7 @@ router.post("/datos-duros", soloAutInput, prodYaEnBD, multer.single("avatar"), v
 router.get("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersForm);
 router.post("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersGuardar);
 router.get("/confirma", soloAutInput, prodYaEnBD, vista.confirmaForm);
-router.post("/confirma", soloAutInput, prodYaEnBD, vista.confirmaGuardar);
+router.post("/confirma", soloAutInput, creditoAltas, prodYaEnBD, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", soloAutInput, entidad, id, vista.terminasteForm);
 

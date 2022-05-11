@@ -282,6 +282,29 @@ module.exports = {
 		// Fin
 		return {valor_aceptado, valor_rechazado};
 	},
+	prod_DiaDelAno: async (prod_entidad, producto, status) => {
+		// Variables
+		let aprobado = status.find((n) => n.aprobado).id;
+		// Obtener el dia_del_ano_id, con la condición de que esté aprobado
+		let dia_del_ano_id =
+			producto.personaje &&
+			producto.personaje.dia_del_ano_id &&
+			producto.personaje.status_registro_id == aprobado
+				? producto.personaje.dia_del_ano_id
+				: producto.hecho &&
+				  producto.hecho.dia_del_ano_id &&
+				  producto.hecho.status_registro_id == aprobado
+				? producto.hecho.dia_del_ano_id
+				: producto.valor &&
+				  producto.valor.dia_del_ano_id &&
+				  producto.valor.status_registro_id == aprobado
+				? producto.valor.dia_del_ano_id
+				: "";
+		// Si existe el día, actualizar el producto
+		if (dia_del_ano_id) BD_genericas.actualizarPorId(prod_entidad, producto.id, {dia_del_ano_id});
+		// Fin
+		return;
+	},
 
 	// RCLV
 	RCLV_ObtenerARevisar: async function (haceUnaHora, status, userID) {
@@ -402,18 +425,34 @@ module.exports = {
 		}
 		return;
 	},
-	RCLV_cant_prod_aprob: async (RCLV, aprobado, campos) => {
+	RCLV_actualizarCantProd: async (producto, status) => {
 		// Variables
-		let cant_prod_aprobados = 0;
-		// Obtener el registro
-		// Averiguar cuántos casos tiene
-		for (let campo of campos) {
-			if (RCLV[campo].length)
-				RCLV[campo].forEach((n) => {
-					if (n.status_registro_id == aprobado) cant_prod_aprobados++;
-				});
+		let aprobado = status.find((n) => n.aprobado).id;
+		let includes = ["peliculas", "colecciones", "capitulos"];
+		let RCLV_entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		// Obtener RCLV_entidad y RCLV_id
+		for (let RCLV_entidad of RCLV_entidades) {
+			// Obtener el RCLV_id o salir de la rutina
+			let campo = funciones.entidad_id(RCLV_entidad);
+			let RCLV_id = producto[campo];
+			if (!RCLV_id) continue;
+			// Obtener el RCLV
+			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
+			// Averiguar si el RCLV está aprobado
+			if (RCLV.status_registro_id == aprobado) {
+				// En caso afirmativo, averiguar la cantidad de casos
+				let cantCasos = 0;
+				for (producto of includes)
+					RCLV[producto].forEach((n) => {
+						if (n.status_registro_id == aprobado) cantCasos++;
+					});
+				// Actualizar la cantidad de casos
+				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprobados: cantCasos});
+
+				console.log(cantCasos);
+			}
 		}
-		return cant_prod_aprobados;
+		return;
 	},
 
 	// Links
@@ -530,7 +569,7 @@ module.exports = {
 	},
 	usuario_Penalizar: async (penalizarUsuario) => {
 		// Obtener los datos del usuario
-		let usuario = await BD_genericas.obtenerPorId("usuarios", penalizarUsuario.id);
+		let usuario = await BD_genericas.obtenerPorId("usuarios", penalizarUsuario.usuario_ID);
 		// Averiguar el mayor entre 'hoy' y 'penalizado_hasta'
 		let hoy = funciones.ahora().getTime();
 		let penalizado_hasta = usuario.penalizado_hasta ? usuario.penalizado_hasta.getTime() : 0;
@@ -545,7 +584,7 @@ module.exports = {
 			penalizado_por_id: penalizarUsuario.penalizado_por_id,
 		};
 		// Actualizar el registro
-		BD_genericas.actualizarPorId("usuarios",usuario.id,datos)
+		BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
 		// Fin
 		return;
 	},

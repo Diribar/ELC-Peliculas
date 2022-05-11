@@ -11,8 +11,9 @@ module.exports = (req, res, next) => {
 	if (!usuario.rol_usuario.aut_gestion_prod) {
 		let linkUsuarioAutProductos = "/usuarios/autorizado-revision/solicitud";
 		informacion = {
-			mensajes:
-				["Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha."],
+			mensajes: [
+				"Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha.",
+			],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 				{nombre: "fa-circle-right", link: linkUsuarioAutProductos, titulo: "Solicitar el permiso"},
