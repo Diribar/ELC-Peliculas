@@ -7,10 +7,9 @@ window.addEventListener("load", () => {
 
 	// Opciones
 	let aprobar = document.querySelectorAll("#contenido .fa-circle-check");
-	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark");
+	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos");
 
 	// Motivos para borrar
-	let infoMostrar = document.querySelectorAll("#contenido .infoMostrar");
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
 	let rechazar = document.querySelectorAll("#contenido .rechazar");
@@ -48,16 +47,15 @@ window.addEventListener("load", () => {
 		});
 
 		// Menú inactivar
-		if (i + 1 > sinMotivo) {
-			mostrarMotivos[i].addEventListener("click", () => {
-				infoMostrar[i].classList.add("ocultar");
-				menuMotivos[i].classList.remove("ocultar");
+		if (i >= sinMotivo) {
+			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
+				menuMotivos[i - sinMotivo].classList.remove("ocultar");
 			});
 		}
 
 		// Rechazar el nuevo valor
 		rechazar[i].addEventListener("click", async () => {
-			let motivo = i + 1 > sinMotivo ? motivoRechazos[i].value : "";
+			let motivo = i >= sinMotivo ? motivoRechazos[i - sinMotivo].value : "";
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto

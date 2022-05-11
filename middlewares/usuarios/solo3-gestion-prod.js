@@ -1,13 +1,16 @@
 "use strict";
 // Requires
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const usuarios = require("../../funciones/3-Procesos/8-Usuarios");
 
 module.exports = (req, res, next) => {
 	let usuario = req.session.usuario;
+	let informacion;
+	// Redireccionar si el usuario no está logueado
 	if (!usuario) return res.redirect("/usuarios/login");
+	// Redireccionar si el usuario no tiene el permiso necesario
 	if (!usuario.rol_usuario.aut_gestion_prod) {
 		let linkUsuarioAutProductos = "/usuarios/autorizado-revision/solicitud";
-		let informacion = {
+		informacion = {
 			mensajes:
 				["Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha."],
 			iconos: [
@@ -17,5 +20,10 @@ module.exports = (req, res, next) => {
 		};
 		return res.render("Errores", {informacion});
 	}
+	// Detectar si el usuario está penalizado
+	if (!informacion) informacion = usuarios.detectarUsuarioPenalizado(usuario);
+	// Si corresponde, mostrar el mensaje de error
+	if (informacion) return res.render("Errores", {informacion});
+	// Fin
 	next();
 };

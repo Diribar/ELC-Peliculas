@@ -39,8 +39,9 @@ module.exports = {
 			alta_analizada_por_id: userID,
 			alta_analizada_en: ahora,
 		};
-		// Liberar de la captura
+		// Liberar la captura
 		if (!aprobado) datos.captura_activa = 0;
+		// Actualizar el status
 		await BD_genericas.actualizarPorId(entidad, prodID, datos);
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
@@ -62,6 +63,16 @@ module.exports = {
 		// Asienta la aprob/rech en el registro del usuario
 		let campo = aprobado ? "cant_altas_aprob" : "cant_altas_rech";
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", userID, campo);
+		// Penalizar al usuario si corresponde
+		if (!aprobado && datos.duracion) {
+			let penalizarUsuario = {
+				id: producto.creado_por_id,
+				duracion: datos.duracion,
+				penalizado_en: ahora,
+				penalizado_por_id: userID,
+			};
+			procesar.usuario_Penalizar(penalizarUsuario);
+		}
 		// Fin
 		return res.json();
 	},
@@ -185,8 +196,8 @@ module.exports = {
 			// Agregar campos si fue rechazado
 			if (!aprobado) {
 				let aux = await BD_genericas.obtenerPorId("edic_motivos_rech", motivo_id);
-				let duracion = aux.duracion;
-				datos = {...datos, duracion, motivo_id};
+				datos.duracion = aux.duracion;
+				datos.motivo_id = motivo_id;
 			}
 			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
@@ -197,6 +208,16 @@ module.exports = {
 		prodEditado[campo] = null;
 		// Averiguar si quedan campos por procesar, elimina el registro de edición si ya no tiene más datos, actualiza el status del registro original, si corresponde
 		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(prodOriginal, prodEditado);
+		// Penalizar al usuario si corresponde
+		if (!aprobado && datos.duracion) {
+			let penalizarUsuario = {
+				id: prodEditado.editado_por_id,
+				duracion: datos.duracion,
+				penalizado_en: ahora,
+				penalizado_por_id: userID,
+			};
+			procesar.usuario_Penalizar(penalizarUsuario);
+		}
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
