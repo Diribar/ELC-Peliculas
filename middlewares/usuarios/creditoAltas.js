@@ -10,9 +10,7 @@ module.exports = async (req, res, next) => {
 	// Variables
 	let productos = await usuarios.productosCreadosPorUnUsuario(usuario.id);
 	// Averiguar cuántos productos tiene en cada status
-	console.log(productos.map((n) => n.status_registro_id));
 	let creado = productos.filter((n) => n.status_registro.creado).length;
-	console.log(creado, usuario.cant_altas_aprob, usuario.cant_altas_rech);
 	//console.log(usuario);
 	// Redireccionar si corresponde
 	if (creado > Math.max(0, usuario.cant_altas_aprob - usuario.cant_altas_rech + 1)) {
