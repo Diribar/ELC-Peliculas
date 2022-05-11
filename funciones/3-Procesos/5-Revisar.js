@@ -437,11 +437,10 @@ module.exports = {
 			if (RCLV.status_registro_id == aprobado) {
 				// Calcular la cantidad de casos
 				let cantCasos = 0;
-				for (let include of includes) {
+				for (let include of includes)
 					RCLV[include].forEach((n) => {
 						if (n.status_registro_id == aprobado) cantCasos++;
 					});
-				}
 				// Actualizar la cantidad de casos
 				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprobados: cantCasos});
 			}
