@@ -156,7 +156,8 @@ module.exports = {
 		let edicion = {...prodEditado};
 		let noSeComparan;
 		let entidad = funciones.obtenerEntidad(prodEditado);
-		let statusAprobado = false;
+		let statusAprobado = prodOriginal.status_registro.aprobado;
+		console.log(160, statusAprobado, prodOriginal.status_registro_id);
 		// Pulir la información a tener en cuenta
 		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
 		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
@@ -432,15 +433,16 @@ module.exports = {
 		let RCLV_entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
 		// Obtener RCLV_entidad y RCLV_id
 		for (let RCLV_entidad of RCLV_entidades) {
-			// Obtener el RCLV_id o salir de la rutina
+			// Obtener el campo a analizar y su valor en el producto
 			let campo = funciones.entidad_id(RCLV_entidad);
 			let RCLV_id = producto[campo];
-			if (!RCLV_id) continue;
+			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
+			if (!RCLV_id || RCLV_id == 1) continue;
 			// Obtener el RCLV
 			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
-			// Averiguar si el RCLV está aprobado
+			// Rutina sólo si el RCLV está aprobado
 			if (RCLV.status_registro_id == aprobado) {
-				// En caso afirmativo, averiguar la cantidad de casos
+				// Calcular la cantidad de casos
 				let cantCasos = 0;
 				for (producto of includes)
 					RCLV[producto].forEach((n) => {
@@ -448,8 +450,6 @@ module.exports = {
 					});
 				// Actualizar la cantidad de casos
 				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprobados: cantCasos});
-
-				console.log(cantCasos);
 			}
 		}
 		return;

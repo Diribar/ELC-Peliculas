@@ -16,10 +16,10 @@ module.exports = {
 	},
 
 	// Middlewares
-	detectarUsuarioPenalizado: (usuario) => {
+	detectarUsuarioPenalizado: (usuario, urlAnterior) => {
 		let informacion;
-		if (usuario.penalizado_hasta && new Date(usuario.penalizado_hasta) > new Date(funciones.ahora())) {
-			let hasta = new Date(usuario.penalizado_hasta);
+		let hasta = new Date(usuario.penalizado_hasta);
+		if (usuario.penalizado_hasta && hasta > new Date(funciones.ahora())) {
 			let fecha =
 				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
 			let hora = hasta.getHours() + ":" + String(hasta.getMinutes() + 1).padStart(2, "0");
@@ -31,7 +31,7 @@ module.exports = {
 				iconos: [
 					{
 						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
+						link: urlAnterior,
 						titulo: "Ir a la vista anterior",
 					},
 					{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
@@ -53,7 +53,7 @@ module.exports = {
 		let capitulos = BD_genericas.obtenerTodosPorCamposConInclude("capitulos", objeto, "status_registro");
 		// Unirlos
 		let productos = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
-			return [...a, ...b, ...c]
+			return [...a, ...b, ...c];
 		});
 		// Fin
 		return productos;
