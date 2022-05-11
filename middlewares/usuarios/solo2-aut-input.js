@@ -22,8 +22,6 @@ module.exports = (req, res, next) => {
 	}
 	// Detectar si el usuario está penalizado
 	if (!informacion) informacion = usuarios.detectarUsuarioPenalizado(usuario);
-	// Detectar si el usuario tiene crédito para dar de alta
-	
 	// Si corresponde, mostrar el mensaje de error
 	if (informacion) return res.render("Errores", {informacion});
 	// Fin
