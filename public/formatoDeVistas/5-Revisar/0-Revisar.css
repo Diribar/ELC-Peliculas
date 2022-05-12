@@ -1,11 +1,13 @@
 /* Cuerpo */
 #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {position: relative;}
 
 /* Título */
 #cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
 #cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
 
 /* Ayuda */
+#cuerpo .mensajeAyuda {max-width: 350px;}
 #cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
 #cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
 #cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}

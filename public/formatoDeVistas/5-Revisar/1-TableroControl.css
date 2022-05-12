@@ -1,6 +1,3 @@
-/* Título */
-main .mensajeAyuda {max-width: 350px;}
-
 /* Entidades */
 main #familias {display: flex; flex-direction: row; justify-content: space-between; padding: 40px 70px 20px 50px;}
 main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
