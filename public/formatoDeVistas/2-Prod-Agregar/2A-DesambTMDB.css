@@ -7,7 +7,7 @@
 
 /* Resultados */
 #dataEntry button {padding: 0; border-radius: 15px; overflow: hidden; height: 200px;}
-#dataEntry button {margin: 30px 20px 20px; padding: 0; border: none; text-align: left; width:290px;}
+#dataEntry button {margin: 30px 20px 20px; border: none; text-align: left; width:290px;}
 #dataEntry #prod_nuevo {background-color: var(--verde-intermedio);}
 #dataEntry #ingr_manual {background-color: var(--rojo-claro);}
 #dataEntry #prod_yaEnBD {background-color: var(--celeste-oscuro);}
@@ -24,7 +24,7 @@
 #dataEntry #prod_nuevo:hover #coleccion {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
 #dataEntry #coleccion #colec_nombre {font-weight: bold; font-style: italic}
 #dataEntry .interlineadoChico {margin-top: 5px;}
-#dataEntry .fa-circle-xmark {top: 15px; left: 0px; transform: none;}
+#dataEntry .fa-circle-xmark {top: 15px; transform: translateX(-5px);}
 #dataEntry .fa-circle-xmark .mensajeError {max-width: 300px;}
 
 /* Barra de desplazamiento */

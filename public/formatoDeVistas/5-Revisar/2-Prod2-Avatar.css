@@ -3,7 +3,7 @@
 
 /* Imágenes */
 #cuerpo #imagenes {display: flex; flex-direction: row; align-self: center; justify-content: space-around;}
-#cuerpo #imagenes {height: 100%; padding-top: 20px; padding-bottom: 30px; width: 100%;}
+#cuerpo #imagenes {height: 100%; padding-top: 20px; padding-bottom: 40px; width: 100%;}
 #cuerpo #imagenes #editada, #cuerpo #imagenes #original {position: relative;}
 
 #cuerpo #imagenes i#liberarSalir {position: absolute; bottom: 5%;}
