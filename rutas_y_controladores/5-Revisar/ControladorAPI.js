@@ -79,7 +79,7 @@ module.exports = {
 			nuevoStatusID == status.find((n) => n.aprobado).id ||
 			nuevoStatusID == status.find((n) => n.inactivado).id
 		)
-			procesar.RCLV_actualizarCantProd(producto, status);
+			procesar.RCLV_prodAprob(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -168,8 +168,10 @@ module.exports = {
 			datos.lead_time_edicion = leadTime;
 			// Actualiza el registro en la BD original ***************************************
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
+			producto = RCLV_ids.includes(campo)
+				? await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [...includes, "status_registro"])
+				: {...prodOriginal, ...datos};
 			// Actualiza la variable 'prodOriginal'
-			producto = {...prodOriginal, ...datos};
 			// Asienta la aprobación en el registro del usuario
 			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_aprob");
 			// Asienta el rechazo en el registro del usuario
@@ -227,11 +229,14 @@ module.exports = {
 			};
 			procesar.usuario_Penalizar(penalizarUsuario);
 		}
-
 		// Si el producto estaba aprobado y se cambió un campo RCLV, actualizar en el RCLV descartado la 'cant_aprobados'
-		if (RCLV_ids.includes(campo) && aprobado && prodOriginal.status_registro.aprobado)
-			procesar.RCLV_actualizarCantProd(prodOriginal, status);
-
+		if (
+			RCLV_ids.includes(campo) &&
+			aprobado &&
+			prodOriginal.status_registro.aprobado &&
+			prodOriginal[campo] != 1
+		)
+			procesar.RCLV_prodAprob(prodOriginal, status);
 		// Otras particularidades para el campo RCLV
 		if (
 			// Se cambió el campo RCLV, y el status está aprobado
@@ -239,11 +244,10 @@ module.exports = {
 			// El registro no estaba aprobado y ahora sí lo está
 			(!prodOriginal.status_registro.aprobado && statusAprobado)
 		) {
-			console.log(242);
 			// Actualizar en el producto, el campo 'dia_del_ano_id'
 			procesar.prod_DiaDelAno(entidad, producto, status);
 			// Actualizar en RCLVs la cant_aprobados
-			procesar.RCLV_actualizarCantProd(producto, status);
+			procesar.RCLV_prodAprob(producto, status);
 		}
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);

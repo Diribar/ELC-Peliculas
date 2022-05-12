@@ -73,15 +73,19 @@ module.exports = async (req, res, next) => {
 			else {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// Definir nuevas variables
-				if (registro.capturado_en)
-					var horarioCaptura =
-						registro.capturado_en.getDate() +
+				let horarioString;
+				if (registro.capturado_en) {
+					let horarioCaptura = registro.capturado_en;
+					horarioCaptura.setMinutes(horarioCaptura.getMinutes() + 1);
+					horarioString =
+						horarioCaptura.getDate() +
 						"/" +
-						meses[registro.capturado_en.getMonth()] +
+						meses[horarioCaptura.getMonth()] +
 						" " +
-						registro.capturado_en.getHours() +
+						horarioCaptura.getHours() +
 						":" +
-						String(registro.capturado_en.getMinutes() + 1).padStart(2, "0");
+						String(horarioCaptura.getMinutes()).padStart(2, "0");
+				}
 				// PROBLEMA 4: El registro está capturado por otro usuario en forma 'activa'
 				if (
 					registro.capturado_en > haceUnaHora &&
@@ -93,9 +97,9 @@ module.exports = async (req, res, next) => {
 							"El registro está en revisión por el usuario " +
 								registro.capturado_por.apodo +
 								", desde el " +
-								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+								horarioString.slice(0, horarioString.indexOf(" ")) +
 								" a las " +
-								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+								horarioString.slice(horarioString.indexOf(" ")) +
 								"hs",
 						],
 						iconos: [
@@ -111,7 +115,6 @@ module.exports = async (req, res, next) => {
 							},
 						],
 					};
-				
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
 				// PROBLEMA 5: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
 				else if (
@@ -122,9 +125,9 @@ module.exports = async (req, res, next) => {
 					informacion = {
 						mensajes: [
 							"Esta revisión quedó inconclusa desde un poco antes del " +
-								horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+								horarioString.slice(0, horarioString.indexOf(" ")) +
 								" a las " +
-								horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+								horarioString.slice(horarioString.indexOf(" ")) +
 								"hs.. ",
 							"Quedó a disposición de que lo continúe revisando otra persona.",
 							"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
