@@ -1,34 +1,75 @@
-<div id="cuerpo">
-	<h1 id="titulo"><%= titulo %></h1>
+<section id="cuerpo">
+	<div id="tituloConAyuda">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>En este tablero encontrás todas las entidades a revisar.</li>
+			<li>Idealmente, debería estar vacío al terminar la sesión.</li>
+			<li>Están ordenados por orden de criticidad.</li>
+		</ul>	
+	</div>
 	<!-- Datos -->
-	<section id="entidades">
+	<section id="familias">
 		<!-- Datos generales -->
 		<div id="primeraColumna">
-			<h2>Productos</h2>
-			<!-- Para inactivar -->
-			<%- include("11-Tablero-Registros", {titulo: "Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
-			<!-- Aprobados c/edición -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar Edición de Aprobados", estado: aprobados, registros: prodsConEdicion}) %>
-			<!-- Editar altas (altas sin edición) -->
-			<%- include("11-Tablero-Registros", {titulo: "Altas sin Edición", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length)}) %>
-			<!-- Aprobar ediciones AJENAS de altas -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar Edición de Altas", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora )}) %>
-			<!-- Aprobar el Alta -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar Altas", estado: status.find(n => n.creado).id, registros: productos}) %>
-			<!-- Recuperar -->
-			<%- include("11-Tablero-Registros", {titulo: "Recuperar", estado: status.find(n => n.recuperar).id, registros: productos}) %>
+			<div class="bloques">
+				<div id="datos">
+					<h2>PRODUCTOS</h2>
+					<!-- Ayuda -->
+					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+					<ol class="mensajeAyuda ocultar" type="dots">
+						<p>Tanto el <u><strong>PRODUCTO</strong></u> como la <u><strong>EDICION</strong></u> deben cumplir con estas condiciones:</p>
+						<li>Que no hayan sido creados por vos.</li>
+						<li>Que estén creados hace más de una hora</li>
+						<li>Que no estén siendo analizados por otro revisor</li>
+					</ol>
+				</div>
+				<!-- Para inactivar -->
+				<%- include("11-Tablero-Registros", {titulo: "Prod. Sugeridos para Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
+				<!-- Aprobados c/edición -->
+				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Aprobados", estado: aprobados, registros: prodsConEdicion}) %>
+				<!-- Editar altas (altas sin edición) -->
+				<%- include("11-Tablero-Registros", {titulo: "Edición Pendiente para Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length)}) %>
+				<!-- Aprobar ediciones AJENAS de altas -->
+				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora )}) %>
+				<!-- Aprobar el Alta -->
+				<%- include("11-Tablero-Registros", {titulo: "Revisar el Alta de Prod. Nuevos", estado: status.find(n => n.creado).id, registros: productos}) %>
+				<!-- Recuperar -->
+				<%- include("11-Tablero-Registros", {titulo: "Recuperar Prod. Inactivados", estado: status.find(n => n.recuperar).id, registros: productos}) %>
+			</div>
 		</div>
 		<div id="segundaColumna">
 			<!-- Personas -->
-			<div>
-				<h2>Relación con la Vida (RCLV)</h2>
-				<!-- Aprobados c/edición -->
+			<div class="bloques">
+				<div id="datos">
+					<h2>RCLV</h2>
+					<!-- Ayuda -->
+					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+					<ol class="mensajeAyuda ocultar" type="dots">
+						<p>Tanto el <u><strong>PRODUCTO</strong></u> como la <u><strong>EDICION</strong></u> deben cumplir con estas condiciones:</p>
+						<li>Que no hayan sido creados por vos.</li>
+						<li>Que estén creados hace más de una hora</li>
+						<li>Que no estén siendo analizados por otro revisor</li>
+					</ol>
+				</div>
+					<!-- Aprobados c/edición -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
 				<%- include("11-Tablero-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
 			</div>
-			<div>
-				<h2>Links</h2>
+			<div class="bloques">
+				<div id="datos">
+					<h2>LINKS</h2>
+					<!-- Ayuda -->
+					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+					<ol class="mensajeAyuda ocultar" type="dots">
+						<p>Tanto el <u><strong>PRODUCTO</strong></u> como la <u><strong>EDICION</strong></u> deben cumplir con estas condiciones:</p>
+						<li>Que no hayan sido creados por vos.</li>
+						<li>Que estén creados hace más de una hora</li>
+						<li>Que no estén siendo analizados por otro revisor</li>
+					</ol>
+				</div>
 				<table>
 					<tbody>
 					<% for (let prodConLinks of prodsConLinks) { %>
@@ -43,8 +84,7 @@
 					<% } %>
 					</tbody>
 				</table>
-	
 			</div>
 		</div>
 	</section>
-</div>
+</section>

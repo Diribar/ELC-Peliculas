@@ -101,7 +101,7 @@ module.exports = {
 				where: {
 					// Con status de 'revisar'
 					status_registro_id: revisar,
-					// Que cumpla alguno de los siguientes:
+					// Que cumpla alguno de los siguientes sobre la 'captura':
 					[Op.or]: [
 						// Que no esté capturado
 						{capturado_en: null},

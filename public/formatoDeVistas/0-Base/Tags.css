@@ -7,3 +7,4 @@ select, option, a, button[type="submit"] {cursor: pointer;}
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}
 i {font-style: normal;}
 a {text-decoration: none; color: inherit;}
+i, a, em, strong {font-size: inherit;}
