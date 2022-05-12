@@ -257,7 +257,6 @@ module.exports = {
 	RCLV_Altas: async (req, res) => {
 		// Variables
 		let datos = req.query;
-		console.log(260, datos);
 		let asociaciones = ["peliculas", "colecciones", "capitulos"];
 		// Campos en el Include
 		let includes = ["dia_del_ano"];
@@ -276,20 +275,16 @@ module.exports = {
 		// if (RCLV_original.status_registro_id != creado_id)
 		// 	return res.json("El registro no está en status creado");
 		// Preparar el campo 'dia_del_ano_id'
-		console.log(278, datos.desconocida == "false", datos.mes_id, datos.dia);
 		if (datos.desconocida == "false" && datos.mes_id && datos.dia) {
 			let objeto = {mes_id: datos.mes_id, dia: datos.dia};
-			console.log(280, objeto);
 			let dia_del_ano = await BD_genericas.obtenerPorCampos("dias_del_ano", objeto);
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
-		console.log(283, datos.dia_del_ano_id);
 		// Obtener el campo 'prod_aprob'
 		let prod_aprob = await procesar.RCLV_averiguarSiTieneProdAprob(
 			{...RCLV_original, status_registro_id: aprobado_id},
 			status
 		);
-		console.log(289, prod_aprob);
 		// Preparar lead_time_creacion
 		let alta_analizada_en = funciones.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
@@ -306,7 +301,6 @@ module.exports = {
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
 		// Si 'datos.dia_del_ano_id' tiene un valor, actualizar el dato en 'productos'
 		if (datos.dia_del_ano_id) {
-			console.log(306);
 			let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
 			procesar.prods_DiaDelAno(RCLV);
 		}

@@ -300,13 +300,11 @@ module.exports = {
 		return;
 	},
 	prods_DiaDelAno: (RCLV) => {
-		console.log(303, RCLV);
 		// Obtener cada producto
 		let asociaciones = ["peliculas", "colecciones", "capitulos"];
 		// Actualizarle el valor 'dia_del_ano_id' a los productos
 		asociaciones.forEach((asociacion) => {
 			let entidad = asociacion;
-			console.log(309, asociacion);
 			RCLV[asociacion].forEach((producto) =>
 				BD_genericas.actualizarPorId(entidad, producto.id, {dia_del_ano_id: RCLV.dia_del_ano_id})
 			);
@@ -428,17 +426,10 @@ module.exports = {
 			}
 
 			// Guardar los registros
-			console.log(
-				431,
-				campoComparar.campo,
-				RCLV_original[campoComparar.campo],
-				RCLV_actual[campoComparar.campo]
-			);
 			let RCLV_entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
 					? "edic_registros_aprob"
 					: "edic_registros_rech";
-			// console.log(433, RCLV_entidad, datos);
 			await BD_genericas.agregarRegistro(RCLV_entidad, datos);
 		}
 		return;
