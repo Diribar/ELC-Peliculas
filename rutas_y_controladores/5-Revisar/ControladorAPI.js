@@ -74,12 +74,11 @@ module.exports = {
 			};
 			procesar.usuario_Penalizar(penalizarUsuario);
 		}
-		// Actualizar en RCLVs la cant_aprobados
-		if (
-			nuevoStatusID == status.find((n) => n.aprobado).id ||
-			nuevoStatusID == status.find((n) => n.inactivado).id
-		)
-			procesar.RCLV_prodAprob(producto, status);
+		// Actualizar en RCLVs el campo 'prod_aprob'
+		if (nuevoStatusID == status.find((n) => n.aprobado).id)
+			procesar.RCLV_actualizarProdAprob(producto, status, true);
+		if (nuevoStatusID == status.find((n) => n.inactivado).id)
+			procesar.RCLV_actualizarProdAprob(producto, status, false);
 		// Fin
 		return res.json();
 	},
@@ -229,14 +228,14 @@ module.exports = {
 			};
 			procesar.usuario_Penalizar(penalizarUsuario);
 		}
-		// Si el producto estaba aprobado y se cambió un campo RCLV, actualizar en el RCLV descartado la 'cant_aprobados'
+		// Si el producto estaba aprobado y se cambió un campo RCLV, actualizar en el RCLV descartado el campo 'prod_aprob'
 		if (
 			RCLV_ids.includes(campo) &&
 			aprobado &&
 			prodOriginal.status_registro.aprobado &&
 			prodOriginal[campo] != 1
 		)
-			procesar.RCLV_prodAprob(prodOriginal, status);
+			procesar.RCLV_actualizarProdAprob(prodOriginal, status, false);
 		// Otras particularidades para el campo RCLV
 		if (
 			// Se cambió el campo RCLV, y el status está aprobado
@@ -246,8 +245,8 @@ module.exports = {
 		) {
 			// Actualizar en el producto, el campo 'dia_del_ano_id'
 			procesar.prod_DiaDelAno(entidad, producto, status);
-			// Actualizar en RCLVs la cant_aprobados
-			procesar.RCLV_prodAprob(producto, status);
+			// Actualizar en RCLVs el campo 'prod_aprob'
+			procesar.RCLV_actualizarProdAprob(producto, status, true);
 		}
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
@@ -255,38 +254,49 @@ module.exports = {
 
 	// RCLV
 	// Aprobar el alta
-	aprobarAltaRCLV: async (req, res) => {
+	RCLV_Altas: async (req, res) => {
 		// Variables
 		let datos = req.query;
-		let campos = ["peliculas", "colecciones", "capitulos"];
+		console.log(260, datos);
+		let asociaciones = ["peliculas", "colecciones", "capitulos"];
+		// Campos en el Include
 		let includes = ["dia_del_ano"];
 		if (datos.entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		// Obtener el RCLV_original
 		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(datos.entidad, datos.id, [
-			...campos,
+			...asociaciones,
 			...includes,
 		]);
+		// Obtener los status
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let creado_id = status.find((n) => n.creado).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// Revisión de errores
 		if (!RCLV_original) return res.json("Registro no encontrado");
-		if (RCLV_original.status_registro_id != creado_id)
-			return res.json("El registro no está en status creado");
+		// if (RCLV_original.status_registro_id != creado_id)
+		// 	return res.json("El registro no está en status creado");
 		// Preparar el campo 'dia_del_ano_id'
-		if (!datos.desconocida && datos.mes_id && datos.dia) {
+		console.log(278, datos.desconocida == "false", datos.mes_id, datos.dia);
+		if (datos.desconocida == "false" && datos.mes_id && datos.dia) {
 			let objeto = {mes_id: datos.mes_id, dia: datos.dia};
+			console.log(280, objeto);
 			let dia_del_ano = await BD_genericas.obtenerPorCampos("dias_del_ano", objeto);
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
-		// Preparar el campo 'cant_prod_aprobados'
-		let cant_prod_aprobados = await procesar.RCLV_cant_prod_aprob(RCLV_original, aprobado_id, campos);
+		console.log(283, datos.dia_del_ano_id);
+		// Obtener el campo 'prod_aprob'
+		let prod_aprob = await procesar.RCLV_averiguarSiTieneProdAprob(
+			{...RCLV_original, status_registro_id: aprobado_id},
+			status
+		);
+		console.log(289, prod_aprob);
 		// Preparar lead_time_creacion
 		let alta_analizada_en = funciones.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
 		// Preparar la información a ingresar
 		datos = {
 			...datos,
-			cant_prod_aprobados,
+			prod_aprob,
 			alta_analizada_por_id: req.session.usuario.id,
 			alta_analizada_en,
 			lead_time_creacion,
@@ -294,10 +304,14 @@ module.exports = {
 		};
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
+		// Si 'datos.dia_del_ano_id' tiene un valor, actualizar el dato en 'productos'
+		if (datos.dia_del_ano_id) {
+			console.log(306);
+			let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
+			procesar.prods_DiaDelAno(RCLV);
+		}
 		// Actualizar la info de aprobados/rechazados
-		procesar.RCLV_BD_Edicion(datos.entidad, RCLV_original, includes, req.session.usuario.id);
-		//
-		// Actualizar la cantidad de productos en RCLV_dias
+		procesar.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 
 		// Fin
 		return res.json("Resultado exitoso");

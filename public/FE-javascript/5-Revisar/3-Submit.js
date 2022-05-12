@@ -59,7 +59,7 @@ window.addEventListener("load", async () => {
 		if (errores.hay) return;
 		//if (errores.hay) location.reload();
 		// Editar y cambiar el status del nuevo RCLV
-		let rutaStatus = "/revision/api/rclv-alta/aprobar/";
+		let rutaStatus = "/revision/api/rclv-alta/";
 		let resultado = await fetch(rutaStatus + url()).then((n) => n.json());
 		console.log(resultado);
 		// Cartel de 'OK'
