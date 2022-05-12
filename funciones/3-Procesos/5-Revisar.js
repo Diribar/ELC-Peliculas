@@ -299,15 +299,21 @@ module.exports = {
 		// Fin
 		return;
 	},
-	prods_DiaDelAno: (RCLV) => {
+	prods_DiaDelAno: function (RCLV, status) {
 		// Obtener cada producto
 		let asociaciones = ["peliculas", "colecciones", "capitulos"];
 		// Actualizarle el valor 'dia_del_ano_id' a los productos
 		asociaciones.forEach((asociacion) => {
 			let entidad = asociacion;
-			RCLV[asociacion].forEach((producto) =>
-				BD_genericas.actualizarPorId(entidad, producto.id, {dia_del_ano_id: RCLV.dia_del_ano_id})
-			);
+			RCLV[asociacion].forEach(async (producto) => {
+				if (RCLV.dia_del_ano_id)
+					BD_genericas.actualizarPorId(entidad, producto.id, {dia_del_ano_id: RCLV.dia_del_ano_id});
+				else {
+					let includes = ["personaje", "hecho", "valor"];
+					let prod = await BD_genericas.obtenerPorIdConInclude(entidad, producto.id, includes);
+					this.prod_DiaDelAno(entidad, prod, status);
+				}
+			});
 		});
 	},
 
