@@ -1,2 +1,8 @@
-/* Formato del título */
-#cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+/* Aspectos a quitar */
+#cuerpo {flex-grow: 0; padding-top: 0;}
+
+/* Título */
+#cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
+
+/* Varios */
+#zonaDeGrow {flex-grow: 1;}
