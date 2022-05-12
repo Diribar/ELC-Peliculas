@@ -300,10 +300,8 @@ module.exports = {
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
 		// Si 'datos.dia_del_ano_id' tiene un valor, actualizar el dato en 'productos'
-		if (datos.dia_del_ano_id) {
-			let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
-			procesar.prods_DiaDelAno(RCLV, status);
-		}
+		let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
+		procesar.prods_DiaDelAno(RCLV, status);
 		// Actualizar la info de aprobados/rechazados
 		procesar.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 
