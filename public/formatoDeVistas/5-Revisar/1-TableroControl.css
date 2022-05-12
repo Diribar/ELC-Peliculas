@@ -2,7 +2,6 @@
 main #familias {display: flex; flex-direction: row; justify-content: space-between; padding: 40px 70px 20px 50px;}
 main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
 
-
 main #familias .bloques #datos {position: relative; min-width: 270px;}
 
 main #familias .bloques  #datos h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background-color: var(--verde-oscuro); color: var(--gris-claro);}

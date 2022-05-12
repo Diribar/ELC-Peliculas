@@ -42,7 +42,7 @@
 #dataEntry #paises_id .input-error select {width: 100%; padding: 0;}
 
 /* Mensajes */
-#dataEntry .mensajeAyuda {max-width: 270px; right: -5px}
+#dataEntry #datos .mensajeAyuda {right: -5px; max-width: 270px;}
 #dataEntry .mensajeError {max-width: 200px;}
 
 /* Imagen de la película */

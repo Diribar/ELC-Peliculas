@@ -1,7 +1,15 @@
 <h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 <div class="flex-col" id="dataEntry">
 	<div id="encabezado">
-		<h2>Paso 2 de 5: Hacé click sobre tu opción</h2>
+		<div id="tituloConAyuda">
+			<h2>Paso 2 de 5: Hacé click sobre tu opción</h2>
+			<!-- Ayuda -->
+			<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+			<ul class="mensajeAyuda ocultar" type="dots">
+				<li>Primero te mostramos las colecciones, y a continuación las películas.</li>
+				<li>Están ordenadas desde la más reciente a las más antigua.</li>
+			</ul>	
+		</div>
 		<p class="flex-row"><%= mensaje %></p>
 		<p><u>Palabra/s clave</u>: <strong><%= palabrasClave %></strong></p>
 	</div>

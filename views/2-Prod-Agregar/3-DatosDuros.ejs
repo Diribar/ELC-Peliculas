@@ -2,9 +2,17 @@
 	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
 </h1>
 <form action="<%= link %>" method="POST" enctype = "multipart/form-data" id="dataEntry" class="flex-col" >
-	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
+	<!-- Título y Ayuda -->
 	<section id="titulos">
-		<h2>Paso 3 de 5: Completá los Datos Duros</h2>
+		<div id="tituloConAyuda">
+			<h2>Paso 3 de 5: Completá los Datos Duros</h2>
+			<!-- Ayuda -->
+			<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+			<ul class="mensajeAyuda ocultar" type="dots">
+				<li>Necesitamos que nos des la información que no disponemos.</li>
+				<li>Arriba de la imagen, disponés de links útiles para conseguir la información.</li>
+			</ul>	
+		</div>
 		<!-- Links a otras páginas de consulta -->
 		<div class="flex-col" id="links">
 			<p>Si necesitás consultar algún dato</p>
@@ -73,4 +81,5 @@
 		<a href="/producto/agregar/<%= origen %>" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
 		<button type="submit" autofocus title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
 	</section>
+	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
 </form>
