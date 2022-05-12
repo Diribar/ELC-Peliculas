@@ -117,7 +117,7 @@ CREATE TABLE edic_registros_aprob (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_aceptado VARCHAR(50) NOT NULL,
+	valor_aceptado VARCHAR(50) NULL,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
@@ -137,8 +137,8 @@ CREATE TABLE edic_registros_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rechazado VARCHAR(50) NOT NULL,
-	valor_aceptado VARCHAR(50) NOT NULL,
+	valor_rechazado VARCHAR(50) NULL,
+	valor_aceptado VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion SMALLINT UNSIGNED NOT NULL,

@@ -256,7 +256,7 @@ CREATE TABLE rclv_1personajes (
 	ano SMALLINT NULL,
 	proceso_canonizacion_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
-	prod_aprobados BOOLEAN NULL,
+	prod_aprob BOOLEAN NULL,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -305,7 +305,7 @@ CREATE TABLE rclv_2hechos (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	ano SMALLINT NULL,
-	prod_aprobados BOOLEAN NULL,
+	prod_aprob BOOLEAN NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -348,7 +348,7 @@ CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
-	prod_aprobados BOOLEAN NULL,
+	prod_aprob BOOLEAN NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,

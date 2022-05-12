@@ -299,6 +299,17 @@ module.exports = {
 		// Fin
 		return;
 	},
+	prods_DiaDelAno: (RCLV) => {
+		// Obtener cada producto
+		let asociaciones = ["peliculas", "colecciones", "capitulos"];
+		// Actualizarle el valor 'dia_del_ano_id' a los productos
+		asociaciones.forEach((asociacion) => {
+			let entidad = asociacion;
+			RCLV[asociacion].forEach((producto) =>
+				BD_genericas.actualizarPorId(entidad, producto.id, {dia_del_ano_id: RCLV.dia_del_ano_id})
+			);
+		});
+	},
 
 	// RCLV
 	RCLV_ObtenerARevisar: async function (haceUnaHora, status, userID) {
@@ -375,9 +386,10 @@ module.exports = {
 		}
 		return tituloCanoniz;
 	},
-	RCLV_BD_Edicion: async (entidad, RCLV_original, includes, userID) => {
+	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
-		let RCLV_final = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_original.id, includes);
+		let ahora = funciones.ahora();
+		// Campos a comparar
 		let camposComparar = [
 			{campo: "nombre", titulo: "Nombre"},
 			{campo: "dia_del_ano_id", titulo: "Día del año"},
@@ -388,64 +400,80 @@ module.exports = {
 				{campo: "proceso_canonizacion_id", titulo: "Proceso de Canonización"},
 				{campo: "rol_iglesia_id", titulo: "Rol en la Iglesia"}
 			);
-
-		let ahora = funciones.ahora();
-		let motivoGenerico = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1});
+		// Obtener RCLV actual
+		let RCLV_actual = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_original.id, includes);
+		// Obtener el motivo genérico
+		let motivoGenericoID = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1}).then(
+			(n) => n.id
+		);
 		// Rutina para comparar los campos
-		for (let campo of camposComparar) {
+		for (let campoComparar of camposComparar) {
 			// Generar la información
 			let datos = {
 				entidad,
 				entidad_id: RCLV_original.id,
-				campo: campo.campo,
-				titulo: campo.titulo,
-				valor_aceptado: RCLV_valorVinculo(RCLV_final, campo.campo),
+				campo: campoComparar.campo,
+				titulo: campoComparar.titulo,
+				valor_aceptado: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
 				input_por_id: RCLV_original.creado_por_id,
 				input_en: RCLV_original.creado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
 			};
-			if (RCLV_original[campo] != RCLV_final[campo]) {
-				datos.valor_rechazado = RCLV_valorVinculo(RCLV_original, campo.campo);
-				datos.motivo_id = motivoGenerico;
+			if (RCLV_original[campoComparar.campo] != RCLV_actual[campoComparar.campo]) {
+				datos.valor_rechazado = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
+				datos.motivo_id = motivoGenericoID;
 			}
 
 			// Guardar los registros
 			let RCLV_entidad =
-				RCLV_original[campo.campo] == RCLV_final[campo.campo]
+				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
 					? "edic_registros_aprob"
 					: "edic_registros_rech";
 			await BD_genericas.agregarRegistro(RCLV_entidad, datos);
 		}
 		return;
 	},
-	RCLV_prodAprob: async (producto, status) => {
+	RCLV_actualizarProdAprob: async function (producto, status, certeza) {
 		// Variables
 		let aprobado = status.find((n) => n.aprobado).id;
 		let includes = ["peliculas", "colecciones", "capitulos"];
 		let RCLV_entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
-		// Obtener RCLV_entidad y RCLV_id
+		// Rutina para cada entidad
 		for (let RCLV_entidad of RCLV_entidades) {
-			// Obtener el campo a analizar y su valor en el producto
+			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let campo = funciones.entidad_id(RCLV_entidad);
+			// Obtener el RCLV_id
 			let RCLV_id = producto[campo];
 			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
 			if (!RCLV_id || RCLV_id == 1) continue;
-			// Obtener el RCLV
-			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
-			// Rutina sólo si el RCLV está aprobado
-			if (RCLV.status_registro_id == aprobado) {
-				// Calcular la cantidad de casos
-				let prod_aprobados;
-				for (let include of includes) {
-					prod_aprobados = RCLV[include].some((n) => n.status_registro_id == aprobado)
-					if (prod_aprobados) break
+			// Actualizar 'prod_aprob' en RCLV
+			if (certeza) BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob: true});
+			else {
+				// Si no hay certeza de que tenga prod_aprob, hay que averiguarlo...
+				// Obtener el RCLV
+				let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
+				// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
+				if (RCLV.status_registro_id == aprobado) {
+					let prod_aprob = this.RCLV_averiguarSiTieneProdAprob(RCLV, status);
+					// Actualizar
+					BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
 				}
-				// Actualizar la cantidad de casos
-				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprobados});
 			}
 		}
 		return;
+	},
+	RCLV_averiguarSiTieneProdAprob: (RCLV, status) => {
+		// Variables
+		let aprobado = status.find((n) => n.aprobado).id;
+		let entidades = ["peliculas", "colecciones", "capitulos"];
+		// Calcular la cantidad de casos
+		let prod_aprob;
+		for (let entidad of entidades) {
+			prod_aprob = RCLV[entidad].some((n) => n.status_registro_id == aprobado);
+			if (prod_aprob) break;
+		}
+		return prod_aprob;
 	},
 
 	// Links
@@ -602,7 +630,9 @@ let prodValorVinculo = (producto, objeto) => {
 let RCLV_valorVinculo = (RCLV, campo) => {
 	let aux =
 		campo == "dia_del_ano_id"
-			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
+			? RCLV.dia_del_ano
+				? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
+				: RCLV.dia_del_ano
 			: campo == "proceso_canonizacion_id"
 			? RCLV.proceso_canonizacion.nombre
 			: campo == "rol_iglesia_id"

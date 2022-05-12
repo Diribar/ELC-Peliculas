@@ -57,7 +57,7 @@ router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 router.get("/api/producto-alta", soloGestionProd, API.prodAltas);
 router.get("/api/producto-edicion", soloGestionProd, API.prodEdics);
 // RCLV-Alta
-router.get("/api/rclv-alta/aprobar", soloGestionProd, API.aprobarAltaRCLV);
+router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Altas);
 
 // Exportarlo **********************************************
 module.exports = router;
