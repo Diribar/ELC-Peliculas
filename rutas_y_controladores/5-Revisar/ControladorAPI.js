@@ -272,8 +272,8 @@ module.exports = {
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// Revisión de errores
 		if (!RCLV_original) return res.json("Registro no encontrado");
-		// if (RCLV_original.status_registro_id != creado_id)
-		// 	return res.json("El registro no está en status creado");
+		if (RCLV_original.status_registro_id != creado_id)
+			return res.json("El registro no está en status creado");
 		// Preparar el campo 'dia_del_ano_id'
 		if (datos.desconocida == "false" && datos.mes_id && datos.dia) {
 			let objeto = {mes_id: datos.mes_id, dia: datos.dia};
@@ -300,10 +300,8 @@ module.exports = {
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
 		// Si 'datos.dia_del_ano_id' tiene un valor, actualizar el dato en 'productos'
-		if (datos.dia_del_ano_id) {
-			let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
-			procesar.prods_DiaDelAno(RCLV);
-		}
+		let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
+		procesar.prods_DiaDelAno(RCLV, status);
 		// Actualizar la info de aprobados/rechazados
 		procesar.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 
