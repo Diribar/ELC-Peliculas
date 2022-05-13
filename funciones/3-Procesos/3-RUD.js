@@ -18,9 +18,9 @@ module.exports = {
 			? await BD_genericas.actualizarPorId("prods_edicion", edicID, datos)
 			: await BD_genericas.agregarRegistro("prods_edicion", {[entidad_id]: prodID, ...datos});
 	},
-	statusResumido: function (status, capturado_en, captura_activa) {
+	statusResumido: (status, capturado_en, captura_activa) => {
 		let id =
-			captura_activa && capturado_en > this.haceUnaHora()
+			captura_activa && capturado_en > funciones.haceUnaHora()
 				? 2
 				: status.gr_pend_aprob
 				? 1

@@ -479,11 +479,9 @@ module.exports = {
 		// Declarar las variables
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		// Obtener los links creados y editados por ajenos y que no estén aprobados ni inactivos
-		let linksOrig = await BD_especificas.obtenerLinksOrigAjenos(revisar, userID);
-		let linksEdic = await BD_especificas.obtenerLinksEdicAjenos(userID);
-		// Consolidarlos
-		let links = [...linksOrig, ...linksEdic];
+		// Obtener los links 'a revisar'
+		let links = await BD_especificas.obtenerLinksARevisar(revisar, userID);
+		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtener los productos
 		let productos = obtenerProductos(links);
