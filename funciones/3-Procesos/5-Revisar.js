@@ -486,8 +486,6 @@ module.exports = {
 		// Separalos en 2 grupos (Propios y Ajenos)
 		let linksPropios = links.filter((n) => n.creado_por_id == userID || n.editado_por_id == userID);
 		let linksAjenos = links.filter((n) => n.creado_por_id != userID && n.editado_por_id != userID);
-		//return [propios,ajenos]
-
 		// Obtener los productos
 		let prodPropios = obtenerProductos(linksPropios, aprobado_id, haceUnaHora);
 		let prodAjenos = obtenerProductos(linksAjenos, aprobado_id, haceUnaHora);
