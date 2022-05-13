@@ -75,10 +75,11 @@ module.exports = {
 			procesar.usuario_Penalizar(penalizarUsuario);
 		}
 		// Actualizar en RCLVs el campo 'prod_aprob'
-		if (nuevoStatusID == status.find((n) => n.aprobado).id)
-			procesar.RCLV_actualizarProdAprob(producto, status, true);
-		if (nuevoStatusID == status.find((n) => n.inactivado).id)
-			procesar.RCLV_actualizarProdAprob(producto, status, false);
+		if (
+			nuevoStatusID == status.find((n) => n.aprobado).id ||
+			nuevoStatusID == status.find((n) => n.inactivado).id
+		)
+			procesar.RCLV_actualizarProdAprob(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -235,7 +236,7 @@ module.exports = {
 			prodOriginal.status_registro.aprobado &&
 			prodOriginal[campo] != 1
 		)
-			procesar.RCLV_actualizarProdAprob(prodOriginal, status, false);
+			procesar.RCLV_actualizarProdAprob(prodOriginal, status);
 		// Otras particularidades para el campo RCLV
 		if (
 			// Se cambió el campo RCLV, y el status está aprobado
@@ -246,7 +247,7 @@ module.exports = {
 			// Actualizar en el producto, el campo 'dia_del_ano_id'
 			procesar.prod_DiaDelAno(entidad, producto, status);
 			// Actualizar en RCLVs el campo 'prod_aprob'
-			procesar.RCLV_actualizarProdAprob(producto, status, true);
+			procesar.RCLV_actualizarProdAprob(producto, status);
 		}
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);

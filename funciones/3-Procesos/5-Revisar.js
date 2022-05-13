@@ -441,7 +441,7 @@ module.exports = {
 		}
 		return;
 	},
-	RCLV_actualizarProdAprob: async function (producto, status, certeza) {
+	RCLV_actualizarProdAprob: async function (producto, status) {
 		// Variables
 		let aprobado = status.find((n) => n.aprobado).id;
 		let includes = ["peliculas", "colecciones", "capitulos"];
@@ -454,18 +454,14 @@ module.exports = {
 			let RCLV_id = producto[campo];
 			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
 			if (!RCLV_id || RCLV_id == 1) continue;
-			// Actualizar 'prod_aprob' en RCLV
-			if (certeza) BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob: true});
-			else {
-				// Si no hay certeza de que tenga prod_aprob, hay que averiguarlo...
-				// Obtener el RCLV
-				let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
-				// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
-				if (RCLV.status_registro_id == aprobado) {
-					let prod_aprob = this.RCLV_averiguarSiTieneProdAprob(RCLV, status);
-					// Actualizar
-					BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
-				}
+			// Actualizar 'prod_aprob' en RCLV si corresponde
+			// Obtener el RCLV
+			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
+			// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
+			if (RCLV.status_registro_id == aprobado) {
+				let prod_aprob = this.RCLV_averiguarSiTieneProdAprob(RCLV, status);
+				// Actualizar el RCLV
+				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
 			}
 		}
 		return;
