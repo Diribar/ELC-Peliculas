@@ -94,7 +94,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 
-	// Revisar - Procesar Compartido (Producto/RCLV)
+	// Revisar - Procesar Producto
+	// Revisar - Procesar RCLV
 	condicRegistro_ARevisar: (entidad, haceUnaHora, revisar, userID, includes) => {
 		return db[entidad]
 			.findAll({
@@ -121,7 +122,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	// Revisar - Procesar Producto
+	// Revisar - Procesar Producto (Edición)
 	condicEdicProd_ARevisar: (haceUnaHora, userID) => {
 		return db.prods_edicion
 			.findAll({
@@ -135,7 +136,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	// Revisar - ControladorVista Redireccionar
+	// Revisar - ControladorVista => redireccionar
 	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
 		// Obtener un registro que cumpla ciertas condiciones
 		return db.prods_edicion
@@ -151,19 +152,27 @@ module.exports = {
 			})
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
-	// Controlador-Revisar (RCLV)
-	obtenerEdicsAjenasUnProd: async (producto_id, prodID, userID, haceUnaHora) => {
-		// Obtener los registros que cumplan ciertas condiciones
-		return db.prods_edicion
+	// Revisar - Procesar => links_ObtenerARevisar
+	obtenerLinksOrigAjenos: async (revisar, userID) => {
+		// Obtener los links ajenos y que no estén aprobados ni inactivos
+		return db.links_originales
 			.findAll({
 				where: {
-					// Que pertenezca al producto que nos interesa
-					[producto_id]: prodID,
-					// Que esté en condiciones de ser capturado
-					editado_en: {[Op.lt]: haceUnaHora},
-					// Que esté editado por otro usuario
-					editado_por_id: {[Op.ne]: userID},
+					// Con status de 'revisar'
+					status_registro_id: revisar,
+					// Que esté creado/editado por otro usuario
+					creado_por_id: {[Op.ne]: userID},
 				},
+				include: ["pelicula", "coleccion", "capitulo"],
+			})
+			.then((n) => n.map((m) => m.toJSON()));
+	},
+	obtenerLinksEdicAjenos: async (userID) => {
+		// Obtener los links ajenos y que no estén aprobados ni inactivos
+		return db.links_edicion
+			.findAll({
+				where: {editado_por_id: {[Op.ne]: userID},},
+				include: ["pelicula", "coleccion", "capitulo"],
 			})
 			.then((n) => n.map((m) => m.toJSON()));
 	},

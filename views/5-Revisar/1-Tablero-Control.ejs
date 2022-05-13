@@ -11,7 +11,7 @@
 	</div>
 	<!-- Datos -->
 	<section id="familias">
-		<!-- Datos generales -->
+		<!-- Productos -->
 		<div id="primeraColumna">
 			<div class="bloques">
 				<div id="datos">
@@ -26,21 +26,21 @@
 					</ol>
 				</div>
 				<!-- Para inactivar -->
-				<%- include("11-Tablero-Registros", {titulo: "Prod. Sugeridos para Inactivar", estado: status.find(n => n.inactivar).id, registros: productos}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Prod. Sugeridos para Inactivar", estado: status.find(n => n.inactivar).id, registros: productos, url: "redireccionar"}) %>
 				<!-- Aprobados c/edición -->
-				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Aprobados", estado: aprobados, registros: prodsConEdicion}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Aprobados", estado: aprobado_id, registros: prodsConEdicion, url: "redireccionar"}) %>
 				<!-- Editar altas (altas sin edición) -->
-				<%- include("11-Tablero-Registros", {titulo: "Edición Pendiente para Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length)}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Edición Pendiente para Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length), url: "redireccionar"}) %>
 				<!-- Aprobar ediciones AJENAS de altas -->
-				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora )}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora ), url: "redireccionar"}) %>
 				<!-- Aprobar el Alta -->
-				<%- include("11-Tablero-Registros", {titulo: "Revisar el Alta de Prod. Nuevos", estado: status.find(n => n.creado).id, registros: productos}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Revisar el Alta de Prod. Nuevos", estado: status.find(n => n.creado).id, registros: productos, url: "redireccionar"}) %>
 				<!-- Recuperar -->
-				<%- include("11-Tablero-Registros", {titulo: "Recuperar Prod. Inactivados", estado: status.find(n => n.recuperar).id, registros: productos}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Recuperar Prod. Inactivados", estado: status.find(n => n.recuperar).id, registros: productos, url: "redireccionar"}) %>
 			</div>
 		</div>
 		<div id="segundaColumna">
-			<!-- Personas -->
+			<!-- RCLV -->
 			<div class="bloques">
 				<div id="datos">
 					<h2>RCLV</h2>
@@ -55,11 +55,12 @@
 						<li>Están relacionados con algún producto aprobado.</li>
 					</ol>
 				</div>
-					<!-- Aprobados c/edición -->
+				<!-- Aprobados c/edición -->
 				<!-- titulo: "Ediciones" -->
 				<!-- Aprobar el Alta -->
-				<%- include("11-Tablero-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: RCLVs}) %>
+				<%- include("11-Tablero-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: RCLVs, url: "redireccionar"}) %>
 			</div>
+			<!-- Links -->
 			<div class="bloques">
 				<div id="datos">
 					<h2>LINKS</h2>
@@ -67,26 +68,13 @@
 					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 					<ol class="mensajeAyuda ocultar" type="dots">
 						<p>Los productos cumplen <u>todas</u> estas condiciones:</p>
-						<li>Ninguno de sus links ha sido creados por vos.</li>
-						<li>Todos sus links están creados hace más de una hora.</li>
-						<li>No está siendo analizados por otro revisor.</li>
+						<li>Sus links a revisar no han sido creados ni editados por vos.</li>
+						<li>No están siendo analizados por otro revisor.</li>
 						<li>El producto tiene que estar aprobado</li>
 					</ol>
 				</div>
-				<table>
-					<tbody>
-					<% for (let prodConLinks of prodsConLinks) { %>
-						<tr>
-							<td>
-								<a href="/revision/links/?entidad=<%= prodConLinks.entidad %>&id=<%= prodConLinks.id %>">
-									<%= prodConLinks.nombre %>
-								</a>
-							</td>
-							<td><%= prodConLinks.entidad.slice(0,3).toUpperCase() %></td>
-						</tr>
-					<% } %>
-					</tbody>
-				</table>
+				
+				<%- include("11-Tablero-Registros", {titulo: "Producto con Links a Revisar", estado: aprobado_id, registros: prodsConLinks, url: "links"}) %>
 			</div>
 		</div>
 	</section>

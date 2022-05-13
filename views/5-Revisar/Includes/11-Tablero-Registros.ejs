@@ -4,7 +4,7 @@
 		<h3><%= titulo %> </h3>
 		<% for (let registro of regs) { %>
 			<p>
-				<a href="/revision/redireccionar/?entidad=<%= registro.entidad %>&id=<%= registro.id %>">
+				<a href="/revision/<%= url %>/?entidad=<%= registro.entidad %>&id=<%= registro.id %>">
 					<%= registro.abrev %> - <%= registro.nombre %>
 				</a>
 			</p>
