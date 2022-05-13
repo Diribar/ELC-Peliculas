@@ -141,7 +141,7 @@ module.exports = {
 		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
 	},
 	// Productos
-	productoAlta: async (req, res) => {
+	prod_Alta: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
 		let url = req.url.slice(1);
@@ -195,7 +195,7 @@ module.exports = {
 			prodNombre,
 		});
 	},
-	productoEdicion: async (req, res) => {
+	prod_Edicion: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
 		let codigo = "producto/edicion";
@@ -297,7 +297,60 @@ module.exports = {
 		});
 	},
 	// RCLV
-	RCLVform: async (req, res) => {
+	RCLV_Alta: async (req, res) => {
+		// 1. Tema y Código
+		let tema = "revision";
+		let codigo = "RCLV";
+		// 2. Variables
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		let includes = [];
+		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		let mes_id, dia_id, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
+		// Obtener la versión original
+		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+			...includes,
+			"status_registro",
+			"peliculas",
+			"colecciones",
+			"capitulos",
+		]);
+		// Datos para la vista
+		// Títulos
+		let prodNombre = funciones.entidadNombre(entidad);
+		let titulo = "Revisar el " + prodNombre;
+		// Valores del registro para el mes y día del año
+		let meses = await BD_genericas.obtenerTodos("meses", "id");
+		if (RCLV_original.dia_del_ano_id) {
+			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", RCLV_original.dia_del_ano_id);
+			mes_id = dia_del_ano.mes_id;
+			dia_id = dia_del_ano.dia;
+		}
+		// Otros
+		if (entidad == "RCLV_personajes") {
+			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
+			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
+			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
+			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
+		}
+
+		// Ir a la vista
+		//return res.send(RCLV_original);
+		return res.render("0-VistaEstandar", {
+			tema,
+			codigo,
+			titulo,
+			RCLV_original,
+			entidad,
+			errores: {},
+			meses,
+			mes_id,
+			dia_id,
+			roles_iglesia,
+			procesos_canonizacion,
+		});
+	},
+	RCLVform2: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "revision";
 		let codigo = "RCLV";
@@ -371,4 +424,5 @@ module.exports = {
 			procesos_canonizacion,
 		});
 	},
+
 };

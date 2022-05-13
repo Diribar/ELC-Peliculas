@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let personajes = entidad == "RCLV_personajes";
 	let valores = entidad == "RCLV_valores";
-	let id = new URL(window.location.href).searchParams.get("id");
+	let RCLV_id = new URL(window.location.href).searchParams.get("id");
 	let botonSubmit = document.querySelector("#flechas button");
 	let errores = {};
 
@@ -56,24 +56,26 @@ window.addEventListener("load", async () => {
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
 		let error = document.querySelector("#error");
-		let mensajes = document.querySelector("ul#mensajes");
-		let flechas = document.querySelector("#cartel #flechas");
+		let gracias = document.querySelector("#gracias");
+		let mensajes = document.querySelector("#mensajes");
+		let flechas = document.querySelector("#cartel #flechasCartel");
 
 		// Formatos
 		cartel.style.backgroundColor = exito ? "var(--verde-oscuro)" : "var(--rojo-oscuro)";
-		error.classList.add("ocultar");
+		exito ? error.classList.add("ocultar") : error.classList.remove("ocultar");
+		exito ? gracias.classList.remove("ocultar") : gracias.classList.add("ocultar");
 
 		// Mensajes
 		let arrayMensajes = [resultado];
 		// Cambiar el contenido del mensaje
 		mensajes.innerHTML = "";
-		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
+		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<p>" + mensaje + "</p>";
 
 		// Flechas
 		let icono = {HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>'};
 		icono.link = exito
-			? "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID
-			: "/revision/rclv/?entidad=" + entidad + "&id=" + prodID;
+			? "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + RCLV_id
+			: "/revision/rclv/?entidad=" + entidad + "&id=" + RCLV_id;
 		flechas.innerHTML = "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
@@ -88,7 +90,7 @@ window.addEventListener("load", async () => {
 		let url = "";
 		// Campos de identificación
 		url += "?entidad=" + entidad;
-		url += "&id=" + id;
+		url += "&id=" + RCLV_id;
 		// Campos  que siempre están
 		url += "&nombre=" + nombre.value;
 		url += "&mes_id=" + mes_id.value + "&dia=" + dia.value;

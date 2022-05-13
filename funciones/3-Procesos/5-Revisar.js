@@ -86,7 +86,6 @@ module.exports = {
 				!n.captura_activa ||
 				n.capturado_por_id == userID
 		);
-		// console.log(productos);
 		// Fin
 		return productos;
 	},
@@ -268,18 +267,14 @@ module.exports = {
 		let campos = camposConVinculo.map((n) => n.campo);
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let indice = campos.indexOf(campo);
-		// Obtener los valores a agregar a la BD
-		let valorOrig = !aprobado
-			? indice + 1
-				? prodValorVinculo(prodOriginal, camposConVinculo[indice])
-				: prodOriginal[campo]
-			: null;
-		if (valorOrig == null) valorOrig = "-";
+		let valorOrig =
+			indice >= 0 ? prodValorVinculo(prodOriginal, camposConVinculo[indice]) : prodOriginal[campo];
 		let valorEdic =
-			indice + 1 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
+			indice >= 0 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
+		if (valorOrig === null) valorOrig = "-";
 		// Obtener los valores 'aceptado' y 'rechazado'
 		let valor_aceptado = aprobado ? valorEdic : valorOrig;
-		let valor_rechazado = aprobado ? null : valorEdic;
+		let valor_rechazado = !aprobado ? valorEdic : valorOrig;
 		// Fin
 		return {valor_aceptado, valor_rechazado};
 	},
@@ -379,7 +374,7 @@ module.exports = {
 		return RCLVs;
 	},
 	RCLV_tituloCanoniz: (datos) => {
-		let tituloCanoniz = "";
+		let tituloCanoniz;
 		if (datos.entidad == "RCLV_personajes") {
 			tituloCanoniz = datos.proceso_canonizacion.nombre;
 			if (
@@ -431,7 +426,6 @@ module.exports = {
 				datos.valor_rechazado = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
 				datos.motivo_id = motivoGenericoID;
 			}
-
 			// Guardar los registros
 			let RCLV_entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
@@ -631,15 +625,17 @@ let prodValorVinculo = (producto, objeto) => {
 	return aux;
 };
 let RCLV_valorVinculo = (RCLV, campo) => {
-	let aux =
-		campo == "dia_del_ano_id"
-			? RCLV.dia_del_ano
-				? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
-				: RCLV.dia_del_ano
-			: campo == "proceso_canonizacion_id"
+	return campo == "dia_del_ano_id"
+		? RCLV.dia_del_ano
+			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
+			: RCLV.dia_del_ano
+		: campo == "proceso_canonizacion_id"
+		? RCLV.proceso_canonizacion
 			? RCLV.proceso_canonizacion.nombre
-			: campo == "rol_iglesia_id"
+			: ""
+		: campo == "rol_iglesia_id"
+		? RCLV.rol_iglesia
 			? RCLV.rol_iglesia.nombre
-			: RCLV[campo];
-	return aux;
+			: ""
+		: RCLV[campo];
 };

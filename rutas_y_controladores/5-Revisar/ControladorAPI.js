@@ -208,7 +208,7 @@ module.exports = {
 				datos.motivo_id = motivo_id;
 			}
 			// Obtener el valor de edición, cuando es un ID
-			let valores = await procesar.prod_EdicValores(aprobado, producto, prodEditado, campo);
+			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);

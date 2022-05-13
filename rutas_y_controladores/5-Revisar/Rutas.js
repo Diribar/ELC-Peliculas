@@ -33,7 +33,7 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
-	vista.productoAlta
+	vista.prod_Alta
 );
 router.get(
 	"/producto/edicion",
@@ -42,10 +42,10 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
-	vista.productoEdicion
+	vista.prod_Edicion
 );
 // Vistas de RCLVs
-router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLVform);
+router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLV_Alta);
 
 // Vistas de Links
 // router.get("/links", soloGestionProd, vista.tableroControl);
