@@ -304,7 +304,6 @@ module.exports = {
 	},
 	linksAltasEditar: async (req, res) => {
 		let datos = procesar.limpiarLosDatos(req.body);
-		console.log(datos);
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);
 		if (errores.hay) req.session.links = datos;
