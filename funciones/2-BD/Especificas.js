@@ -153,28 +153,22 @@ module.exports = {
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Revisar - Procesar => links_ObtenerARevisar
-	obtenerLinksOrigAjenos: async (revisar, userID) => {
-		// Obtener los links ajenos y que no estén aprobados ni inactivos
-		return db.links_originales
-			.findAll({
-				where: {
-					// Con status de 'revisar'
-					status_registro_id: revisar,
-					// Que esté creado/editado por otro usuario
-					creado_por_id: {[Op.ne]: userID},
-				},
-				include: ["pelicula", "coleccion", "capitulo"],
-			})
+	obtenerLinksARevisar: async (revisar, userID) => {
+		// Variables
+		let includes = ["pelicula", "coleccion", "capitulo"];
+		// Obtener los links en status 'a revisar'
+		let originales = db.links_originales
+			.findAll({where: {status_registro_id: revisar}, include: includes})
 			.then((n) => n.map((m) => m.toJSON()));
-	},
-	obtenerLinksEdicAjenos: async (userID) => {
-		// Obtener los links ajenos y que no estén aprobados ni inactivos
-		return db.links_edicion
-			.findAll({
-				where: {editado_por_id: {[Op.ne]: userID},},
-				include: ["pelicula", "coleccion", "capitulo"],
-			})
+		// Obtener todas las ediciones
+		let ediciones = db.links_edicion
+			.findAll({include: ["pelicula", "coleccion", "capitulo"]})
 			.then((n) => n.map((m) => m.toJSON()));
+		// Consolidarlos
+		let links = await Promise.all([originales, ediciones]).then(([a, b]) => {
+			return [...a, ...b];
+		});
+		return links;
 	},
 
 	// USUARIOS ---------------------------------------------------------
