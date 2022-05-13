@@ -208,7 +208,7 @@ module.exports = {
 				datos.motivo_id = motivo_id;
 			}
 			// Obtener el valor de edición, cuando es un ID
-			let valores = await procesar.prod_EdicValores(aprobado, producto, prodEditado, campo);
+			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
@@ -271,8 +271,9 @@ module.exports = {
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 		let creado_id = status.find((n) => n.creado).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		// Revisión de errores
+		// PROBLEMA 1: Registro no encontrado
 		if (!RCLV_original) return res.json("Registro no encontrado");
+		// PROBLEMA 2: El registro no está en status creado
 		if (RCLV_original.status_registro_id != creado_id)
 			return res.json("El registro no está en status creado");
 		// Preparar el campo 'dia_del_ano_id'
