@@ -2,7 +2,7 @@
 window.addEventListener("load", () => {
 	// Variables
 	let inputs = document.querySelectorAll(".input[disabled]");
-	let mensajesAyuda = document.querySelectorAll(".mensajeAyuda");
+	let mensajesAyuda = document.querySelectorAll("#datos .mensajeAyuda");
 
 	// Acciones si se detecta un click en un input
 	window.addEventListener("click", (e) => {

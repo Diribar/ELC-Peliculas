@@ -28,6 +28,7 @@ module.exports = {
 		// Ediciones
 		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
 		if (prodsConEdicion.length) prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
+		//return res.send(prodsConEdicion)
 		// RCLV
 		let RCLVs = await procesar.RCLV_ObtenerARevisar(haceUnaHora, status, userID);
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);

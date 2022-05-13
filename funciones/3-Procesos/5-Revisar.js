@@ -86,6 +86,7 @@ module.exports = {
 				!n.captura_activa ||
 				n.capturado_por_id == userID
 		);
+		// console.log(productos);
 		// Fin
 		return productos;
 	},

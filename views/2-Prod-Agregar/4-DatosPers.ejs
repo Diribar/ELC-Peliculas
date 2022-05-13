@@ -2,8 +2,15 @@
 	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
 </h1>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col" >
-	<section id="titulos">
+	<!-- Título y Ayuda -->
+	<section id="tituloConAyuda">
 		<h2>Paso 4 de 5: Datos Personalizados</h2>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>Necesitamos que nos des la información que no disponemos.</li>
+			<li>Para la información 'subjetiva', te pedimos que te guíes por las ayudas.</li>
+		</ul>	
 	</section>
 	<!-- Datos -->
 	<section id="datos">

@@ -1,6 +1,14 @@
 <%- include('TimerContador') %>
 <%- include('Cartel') %>
-<h1 id="titulo"><%= titulo %></h1>
+<div id="tituloConAyuda">
+	<h1 id="titulo"><%= titulo %></h1>
+	<!-- Ayuda -->
+	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+	<ul class="mensajeAyuda ocultar" type="dots">
+		<li>Necesitamos que nos digas si estás de acuerdo en que está alineado con nuestro perfil.</li>
+		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+	</ul>	
+</div>
 <div id="datos">
 	<section id="datosLargos">
 		<div id="contenido">

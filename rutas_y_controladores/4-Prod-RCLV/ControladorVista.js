@@ -158,7 +158,7 @@ module.exports = {
 		}
 		RCLV = {...req.body, ...RCLV};
 		// 3. Averiguar si hay errores de validación
-		let errores = await validar.RCLV_consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
+		let errores = await validar.consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
 		// 4. Acciones si hay errores
 		if (errores.hay) {
 			req.session.RCLV = RCLV;
