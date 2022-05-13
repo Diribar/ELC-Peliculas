@@ -82,6 +82,7 @@ module.exports = (sequelize, dt) => {
 
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "pelicula_id"});
 		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "pelicula_id"});
+		entidad.hasMany(n.links_edicion, {as: "links_edic", foreignKey: "pelicula_id"});
 	};
 	return entidad;
 };

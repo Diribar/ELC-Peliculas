@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
 		capitulo_id: {type: dt.INTEGER},
+
 		url: {type: dt.STRING(100)},
 
 		calidad: {type: dt.INTEGER},
@@ -20,16 +21,9 @@ module.exports = (sequelize, dt) => {
 		lead_time_creacion: {type: dt.INTEGER},
 		status_registro_id: {type: dt.INTEGER},
 
-		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-		edic_analizada_por_id: {type: dt.INTEGER},
 		edic_analizada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.INTEGER},
-
-		fecha_referencia: {type: dt.DATE},
-		capturado_por_id: {type: dt.INTEGER},
-		capturado_en: {type: dt.DATE},
-		captura_activa: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "links_1originales",
@@ -45,9 +39,6 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
 	};
 	return entidad;

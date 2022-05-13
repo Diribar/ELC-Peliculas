@@ -91,7 +91,7 @@ module.exports = {
 	},
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
-		let anchoMax = 30;
+		let anchoMax = 40;
 		// Reconvertir los elementos
 		productos = productos.map((n) => {
 			let nombre =
@@ -474,53 +474,38 @@ module.exports = {
 	},
 
 	// Links
-	links_ObtenerARevisar: async function (haceUnaHora, status, userID) {
-		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' con 'cant_productos'
+	links_ObtenerARevisar: async (haceUnaHora, status, userID) => {
+		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' o 'inactivado'
 		// Declarar las variables
-		let entidades = ["links_originales"];
-		let includes = ["pelicula", "coleccion", "capitulo"];
-		// Obtener el resultado por entidad
-		let resultados = await this.registros_ObtenerARevisar(
-			haceUnaHora,
-			status,
-			userID,
-			entidades,
-			includes
+		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
+		let aprobado_id = status.find((n) => n.aprobado).id;
+		// Obtener los links creados y editados por ajenos y que no estén aprobados ni inactivos
+		let linksOrig = await BD_especificas.obtenerLinksOrigAjenos(revisar, userID);
+		let linksEdic = await BD_especificas.obtenerLinksEdicAjenos(userID);
+		// Consolidarlos
+		let links = [...linksOrig, ...linksEdic];
+		if (!links.length) return [];
+		// Obtener los productos
+		let productos = obtenerProductos(links);
+		// Limpieza
+		// Dejar solamente los productos aprobados
+		productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+		// Dejar solamente los productos que estén creados hace más de una hora
+		productos = productos.filter((n) => n.creado_en < haceUnaHora);
+		// Dejar solamente los productos que no tengan problemas de captura
+		productos = productos.filter(
+			(n) =>
+				!n.capturado_en ||
+				n.capturado_en < haceUnaHora ||
+				!n.captura_activa ||
+				n.capturado_por_id == userID
 		);
-		// Dejar solamente links con productos aprobados
-		let aprobado = status.find((n) => n.aprobado).id;
-		let campos = [
-			{nombre: "pelicula", entidad: "peliculas"},
-			{nombre: "coleccion", entidad: "colecciones"},
-			{nombre: "capitulo", entidad: "capitulos"},
-		];
-		let aux = [];
-		// Rutina para cada link
-		resultados.map((n) => {
-			// Verificación para cada Producto
-			for (let campo of campos) {
-				// Averiguar el status_registro_id del producto
-				if (
-					// El link tiene asociado este producto
-					n[campo.nombre] &&
-					// El producto está aprobado
-					n[campo.nombre].status_registro_id == aprobado &&
-					// El producto todavía no está incluido en la variable 'auxiliar'
-					aux.findIndex((m) => m.entidad == campo.entidad && m.id == n[campo.nombre].id) < 0
-				)
-					// Si se cumple todo lo anterior, agregar el link
-					aux.push({
-						entidad: campo.entidad,
-						id: n[campo.nombre].id,
-						nombre: n[campo.nombre].nombre_castellano,
-						ano_estreno: n[campo.nombre].ano_estreno,
-						abrev: campo.nombre.slice(0, 3).toUpperCase(),
-					});
-			}
-		});
-		resultados = aux;
+		// Dejar los productos sin:
+		// 	- linksOriginales propios en status 'a revisar'
+		// 	- linksEditados propios
+
 		// Fin
-		return resultados;
+		return productos;
 	},
 
 	// Usuario
@@ -638,4 +623,35 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 			? RCLV.rol_iglesia.nombre
 			: ""
 		: RCLV[campo];
+};
+let obtenerProductos = (links) => {
+	// Variables
+	let peliculas = [];
+	let colecciones = [];
+	let capitulos = [];
+	// Abrir los productos por entidad
+	links.forEach((producto) => {
+		if (producto.pelicula) peliculas.push({entidad: "peliculas", ...producto.pelicula});
+		if (producto.coleccion) colecciones.push({entidad: "colecciones", ...producto.coleccion});
+		if (producto.capitulo) capitulos.push({entidad: "capitulos", ...producto.capitulo});
+	});
+	// Eliminar repetidos
+	if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
+	if (colecciones.length) colecciones = eliminarRepetidos(colecciones);
+	if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
+	// Volver a consolidar
+	let productos = [...peliculas, ...colecciones, ...capitulos];
+	// Fin
+	return productos;
+};
+let eliminarRepetidos = (productos) => {
+	let aux1 = [];
+	for (let i = productos.length - 1; i >= 0; i--) {
+		let aux2 = productos[i].id;
+		if (aux1.includes(aux2)) productos.splice(i, 1);
+		else aux1.push(aux2);
+		// if (productos.filter((n) => n.id == productos[i].id && n.entidad == productos[i].entidad).length>1)
+		// 	productos.splice(i, 1);
+	}
+	return productos;
 };

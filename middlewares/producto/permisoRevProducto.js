@@ -121,7 +121,7 @@ module.exports = async (req, res, next) => {
 					registro.capturado_en < haceUnaHora &&
 					registro.capturado_en > haceDosHoras &&
 					registro.capturado_por_id == userID
-				)
+				) {
 					informacion = {
 						mensajes: [
 							"Esta revisión quedó inconclusa desde un poco antes del " +
@@ -140,6 +140,7 @@ module.exports = async (req, res, next) => {
 							},
 						],
 					};
+				}
 				// EL USUARIO PUEDE CAPTURAR EL REGISTRO
 				// SOLUCIONES
 				// 1. Activar si no lo está, de lo contrario no hace nada

@@ -20,7 +20,7 @@ module.exports = {
 			);
 		// Definir variables
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
-		let aprobados = status.find((n) => n.aprobado).id;
+		let aprobado_id = status.find((n) => n.aprobado).id;
 		let haceUnaHora = funciones.haceUnaHora();
 		// Productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
@@ -34,8 +34,9 @@ module.exports = {
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Obtener Links
 		let prodsConLinks = await procesar.links_ObtenerARevisar(haceUnaHora, status, userID);
+		if (prodsConLinks.length) prodsConLinks = procesar.prod_ProcesarCampos(prodsConLinks);
 		// Ir a la vista
-		//return res.send(RCLVs);
+		//return res.send(prodsConLinks);
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,
@@ -45,7 +46,7 @@ module.exports = {
 			RCLVs,
 			prodsConLinks,
 			status,
-			aprobados,
+			aprobado_id,
 			userID,
 			haceUnaHora,
 		});
@@ -350,79 +351,80 @@ module.exports = {
 			procesos_canonizacion,
 		});
 	},
-	RCLVform2: async (req, res) => {
-		// 1. Tema y Código
-		let tema = "revision";
-		let codigo = "RCLV";
-		// 2. Variables
-		let entidad = req.query.entidad;
-		let prodID = req.query.id;
-		let userID = req.session.usuario.id;
-		let haceUnaHora = funciones.haceUnaHora();
-		let includes = [];
-		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
-		let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
-		// Obtener la versión original
-		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
-			...includes,
-			"status_registro",
-			"peliculas",
-			"colecciones",
-			"capitulos",
-		]);
-		// Obtener todas las ediciones ajenas
-		let producto_id = funciones.entidad_id(entidad);
-		// PENDIENTE
-		// Obtener los motivos de rechazo
-		if (RCLV_original.status_registro.aprobado) {
-			motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
-			prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(
-				producto_id,
-				prodID,
-				userID,
-				haceUnaHora
-			);
-		}
-		// Obtener el título de canonización
-		let tituloCanoniz = procesar.RCLV_tituloCanoniz({...RCLV_original, entidad});
-		// Datos para la vista
-		// Títulos
-		let prodNombre = funciones.entidadNombre(entidad);
-		let titulo = "Revisar el " + prodNombre;
-		// Mes y día del año
-		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		if (RCLV_original.dia_del_ano_id) {
-			let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", RCLV_original.dia_del_ano_id);
-			mes_id = dia_del_ano.mes_id;
-			diaOriginal = dia_del_ano.dia;
-		}
-		// Otros
-		if (RCLV_original.rol_iglesia_id) {
-			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
-			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
-			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
-			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-		}
-
-		// Ir a la vista
-		//return res.send(RCLV_original);
-		return res.render("0-VistaEstandar", {
-			tema,
-			codigo,
-			titulo,
-			RCLV_original,
-			prodsEditados,
-			motivos,
-			entidad,
-			prodNombre,
-			tituloCanoniz,
-			errores: {},
-			meses,
-			mes_id,
-			diaOriginal,
-			roles_iglesia,
-			procesos_canonizacion,
-		});
-	},
 
 };
+
+// RCLVform2: async (req, res) => {
+// 	// 1. Tema y Código
+// 	let tema = "revision";
+// 	let codigo = "RCLV";
+// 	// 2. Variables
+// 	let entidad = req.query.entidad;
+// 	let prodID = req.query.id;
+// 	let userID = req.session.usuario.id;
+// 	let haceUnaHora = funciones.haceUnaHora();
+// 	let includes = [];
+// 	if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+// 	let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
+// 	// Obtener la versión original
+// 	let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+// 		...includes,
+// 		"status_registro",
+// 		"peliculas",
+// 		"colecciones",
+// 		"capitulos",
+// 	]);
+// 	// Obtener todas las ediciones ajenas
+// 	let producto_id = funciones.entidad_id(entidad);
+// 	// PENDIENTE
+// 	// Obtener los motivos de rechazo
+// 	if (RCLV_original.status_registro.aprobado) {
+// 		motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
+// 		prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(
+// 			producto_id,
+// 			prodID,
+// 			userID,
+// 			haceUnaHora
+// 		);
+// 	}
+// 	// Obtener el título de canonización
+// 	let tituloCanoniz = procesar.RCLV_tituloCanoniz({...RCLV_original, entidad});
+// 	// Datos para la vista
+// 	// Títulos
+// 	let prodNombre = funciones.entidadNombre(entidad);
+// 	let titulo = "Revisar el " + prodNombre;
+// 	// Mes y día del año
+// 	let meses = await BD_genericas.obtenerTodos("meses", "id");
+// 	if (RCLV_original.dia_del_ano_id) {
+// 		let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", RCLV_original.dia_del_ano_id);
+// 		mes_id = dia_del_ano.mes_id;
+// 		diaOriginal = dia_del_ano.dia;
+// 	}
+// 	// Otros
+// 	if (RCLV_original.rol_iglesia_id) {
+// 		procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
+// 		procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
+// 		roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
+// 		roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
+// 	}
+
+// 	// Ir a la vista
+// 	//return res.send(RCLV_original);
+// 	return res.render("0-VistaEstandar", {
+// 		tema,
+// 		codigo,
+// 		titulo,
+// 		RCLV_original,
+// 		prodsEditados,
+// 		motivos,
+// 		entidad,
+// 		prodNombre,
+// 		tituloCanoniz,
+// 		errores: {},
+// 		meses,
+// 		mes_id,
+// 		diaOriginal,
+// 		roles_iglesia,
+// 		procesos_canonizacion,
+// 	});
+// },
