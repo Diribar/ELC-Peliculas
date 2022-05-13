@@ -111,7 +111,7 @@ window.addEventListener("load", async () => {
 		// Si es FORMED-LAT, quitarle el nombre repetido del producto
 		if (url.slice(0, "ver.formed.lat".length) == "ver.formed.lat") {
 			let producto = url.slice(url.lastIndexOf("/"));
-			nuevaUrl = url.split(producto);
+			let nuevaUrl = url.split(producto);
 			nuevaUrl.pop();
 			url = nuevaUrl.join("") + producto;
 		}

@@ -304,14 +304,13 @@ module.exports = {
 	},
 	linksAltasEditar: async (req, res) => {
 		let datos = procesar.limpiarLosDatos(req.body);
+		console.log(datos);
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);
 		if (errores.hay) req.session.links = datos;
 		else {
 			// Procesar los datos en la operación que corresponda
 			datos.alta ? await procesar.altaDeLink(req, datos) : await procesar.edicionDeLink(req, datos);
-			// Estandarizar fechaRef en originales y editados del mismo "entidad" y "prodId"
-			procesar.estandarizarFechaRef(datos.prodEntidad, datos.prodID);
 			delete req.session.links;
 		}
 		// Redireccionar
