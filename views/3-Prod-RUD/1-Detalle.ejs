@@ -1,13 +1,13 @@
-<section id="tituloConAyuda">
-	<h1 id="titulo"><%= titulo %></h1>
-	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
-		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
-	</ul>	
-</section>
 <div id="datos">
+	<section id="tituloConAyuda">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
+			<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+		</ul>	
+	</section>
 	<section id="datosLargos">
 		<div id="contenido">
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
@@ -43,19 +43,19 @@
 		<!-- Botones -->
 		<%- include("0-RUD-Flechas") %>
 	</section>
-	<section id="datosBreves">
-		<div>
-			<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
-			<!-- <p>General: <span>77%</span> / Tuya: <span>78%</span></p> -->
-			<p id="calificacionesResultados"></p>
-		</div>
-		<div id="calificacionesGrafico"></div>
-		<div id="texto">
-			<% for (bloque of bloquesDerecha) { %>
-				<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
-					<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
-				</p>
-			<% } %>
-		</div>
-	</section>
 </div>
+<section id="datosBreves">
+	<div>
+		<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
+		<!-- <p>General: <span>77%</span> / Tuya: <span>78%</span></p> -->
+		<p id="calificacionesResultados"></p>
+	</div>
+	<div id="calificacionesGrafico"></div>
+	<div id="texto">
+		<% for (bloque of bloquesDerecha) { %>
+			<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
+				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+			</p>
+		<% } %>
+	</div>
+</section>

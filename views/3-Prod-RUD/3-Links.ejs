@@ -9,62 +9,64 @@
 		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
 	</ul>	
 </section>
-<section id="datos">
-	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-	<%- include("0-RUD-Encabezado") %>
-	<select id="tipoLink">
-		<option value="TR">Trailer</option>
-		<option value="PL">Película</option>
-		<option value="TD" selected>Todos</option>
-	</select>
-	<form action="<%= vista %>altas-editar" method="POST">
-		<table>
-			<thead>
-				<tr>
-					<th>Url</th>
-					<th>Calidad (px)</th>
-					<th>Tipo</th>
-					<th>Completo</th>
-					<th>Parte</th>
-					<th>Gratuito</th>
-					<th>Status</th>
-					<th>Acción</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- Filas para links existentes -->
-				<% let fila = 0 %> 
-				<% for (let link of linksActivos) { %>
-					<%- include("31-Links-Datos", {link}) %>
-					<%- include("32-Links-Edicion", {fila, link}) %>
-					<% fila++ %> 
-				<% } %>
-				<!-- Fila para nuevo link -->
-				<%- include("33-Links-Altas", {fila}) %>
-			</tbody>
-		</table>
-		<!-- Entidad e ID -->
-		<input type="text" name="prodEntidad" value="<%= entidad %>" class="ocultar">
-		<input type="text" name="prodID" value="<%= prodID %>" class="ocultar">
-		<input type="number" name="numeroFila" value="" class="ocultar">
-	</form>
-	<ul>
-		Comentarios
-		<li>Por favor intentá incluir por lo menos un link gratuito</li>
-		<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-	</ul>
+<section id="contenido">
+	<div id="datos">
+		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+		<%- include("0-RUD-Encabezado") %>
+		<select id="tipoLink">
+			<option value="TR">Trailer</option>
+			<option value="PL">Película</option>
+			<option value="TD" selected>Todos</option>
+		</select>
+		<form action="<%= vista %>altas-editar" method="POST">
+			<table>
+				<thead>
+					<tr>
+						<th>Url</th>
+						<th>Calidad (px)</th>
+						<th>Tipo</th>
+						<th>Completo</th>
+						<th>Parte</th>
+						<th>Gratuito</th>
+						<th>Status</th>
+						<th>Acción</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Filas para links existentes -->
+					<% let fila = 0 %> 
+					<% for (let link of linksActivos) { %>
+						<%- include("31-Links-Datos", {link}) %>
+						<%- include("32-Links-Edicion", {fila, link}) %>
+						<% fila++ %> 
+					<% } %>
+					<!-- Fila para nuevo link -->
+					<%- include("33-Links-Altas", {fila}) %>
+				</tbody>
+			</table>
+			<!-- Entidad e ID -->
+			<input type="text" name="prodEntidad" value="<%= entidad %>" class="ocultar">
+			<input type="text" name="prodID" value="<%= prodID %>" class="ocultar">
+			<input type="number" name="numeroFila" value="" class="ocultar">
+		</form>
+		<ul>
+			Comentarios
+			<li>Por favor intentá incluir por lo menos un link gratuito</li>
+			<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
+		</ul>
+	</div>
+	<!-- Comandos -->
+	<div id="comandos">
+		<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
+			<a 
+				href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+				target="_blank"
+				tabindex="-1"
+			>
+				<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
+			</a>
+		<% } %>
+	</div>
+	<!-- Botones -->
+	<%- include("0-RUD-Flechas") %>
 </section>
-<!-- Comandos -->
-<section id="comandos">
-	<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
-		<a 
-			href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
-			target="_blank"
-			tabindex="-1"
-		>
-			<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
-		</a>
-	<% } %>
-</section>
-<!-- Botones -->
-<%- include("0-RUD-Flechas") %>

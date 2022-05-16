@@ -265,7 +265,7 @@ module.exports = {
 		let [linksActivos, linksInactivos] = await procesar.separarActivos_e_Inactivos(linksCombinados);
 		// Configurar el producto, el título
 		let prodNombre = funciones.entidadNombre(entidad);
-		let titulo = "ABM Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodEditado.capitulos = await BD_especificas.obtenerCapitulos(
