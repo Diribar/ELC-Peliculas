@@ -64,27 +64,27 @@ window.addEventListener("load", async () => {
 							"hs..",
 						"Transcurrida 1 hora, quedó a disposición de nuestro equipo para analizar tu trabajo.",
 				  ]
-				  : codigo == "/producto/links/"
-				  ? [
-						  "Esta edición quedó inconclusa desde el " +
-							  horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
-							  " a las " +
-							  horarioFinal.slice(horarioFinal.indexOf(" ")) +
-							  "hs.. ",
-						  "Quedó a disposición del equipo de revisores.",
-						  "Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
-					]
-					: codigo.startsWith("/revision/")
-					? [
-							"Esta revisión quedó inconclusa desde el " +
-								horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
-								" a las " +
-								horarioFinal.slice(horarioFinal.indexOf(" ")) +
-								"hs.. ",
-							"Quedó a disposición de que lo revise otra persona.",
-							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volverlo a revisar.",
-					  ]
-					  : [];
+				: codigo == "/producto/links/"
+				? [
+						"Esta edición quedó inconclusa desde el " +
+							horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
+							" a las " +
+							horarioFinal.slice(horarioFinal.indexOf(" ")) +
+							"hs.. ",
+						"Quedó a disposición del equipo de revisores.",
+						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
+				  ]
+				: codigo.startsWith("/revision/")
+				? [
+						"Esta revisión quedó inconclusa desde el " +
+							horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
+							" a las " +
+							horarioFinal.slice(horarioFinal.indexOf(" ")) +
+							"hs.. ",
+						"Quedó a disposición de que lo revise otra persona.",
+						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volverlo a revisar.",
+				  ]
+				: [];
 		console.log();
 		mensajes.innerHTML = "";
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
