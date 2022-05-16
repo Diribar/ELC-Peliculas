@@ -18,9 +18,7 @@ module.exports = async (req, res, next) => {
 	const includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = producto.capturado_en;
-
 	if (capturado_en) capturado_en.setSeconds(0);
-
 	let informacion, horarioInicial, horarioFinal;
 
 	// Funciones --------------------------------------------------------
