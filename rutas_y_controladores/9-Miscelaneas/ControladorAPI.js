@@ -30,7 +30,8 @@ module.exports = {
 		}
 
 		// En caso que sea 'Revisar'
-		if (codigo.startsWith("/revision/")) objeto = {id: id, capturado_por_id: userID};
+		if (codigo.startsWith("/revision/") || codigo == "/producto/links/")
+			objeto = {id: id, capturado_por_id: userID};
 
 		// Obtener el registro
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
@@ -38,7 +39,7 @@ module.exports = {
 			let campo =
 				codigo == "/producto/edicion/"
 					? "editado_en"
-					: codigo.startsWith("/revision/")
+					: codigo.startsWith("/revision/") || codigo == "/producto/links/"
 					? "capturado_en"
 					: "error";
 			horarioInicial = horarioInicial[campo];

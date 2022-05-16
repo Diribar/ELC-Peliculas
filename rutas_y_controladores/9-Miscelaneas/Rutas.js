@@ -15,7 +15,7 @@ router.get("/api/horario-inicial/", API.horarioInicial);
 
 // Vistas de vistas - Institucional
 router.get("/", vista.home);
-router.get("/nosotros", vista.nosotros);
+router.get("/quienes-somos", vista.quienesSomos);
 
 // Miscelaneas
 router.get("/session", vista.session);

@@ -46,9 +46,8 @@ router.get(
 );
 // Vistas de RCLVs
 router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLV_Alta);
-
 // Vistas de Links
-// router.get("/links", soloGestionProd, vista.tableroControl);
+router.get("/links", soloGestionProd, vista.links);
 
 // Rutas de APIs *******************************************
 // Uso compartido

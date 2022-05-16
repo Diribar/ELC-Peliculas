@@ -1,7 +1,10 @@
 /* Temas generales */
 main form {display: flex; flex-direction: row-reverse; flex-grow: 1; position: relative;}
 main form .input-error {position: relative; display: flex; flex-direction: row;}
-main form #cuerpo {justify-content: space-between; padding: 40px 70px 20px 50px;}
+
+/* Zona del formulario */
+main form #cuerpo #edicionForm {display: flex; flex-direction: column; flex-grow: 1;}
+main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70px 10px 50px;}
 
 /* Imagen */
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .mensajeAyuda {left: 50%; }

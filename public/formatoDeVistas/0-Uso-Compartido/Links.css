@@ -1,7 +1,7 @@
 /* Temas generales */
-main #cuerpo {justify-content: space-around; padding: 40px 40px 20px;}
 main #cuerpo h1 {margin: 0;}
 main #cuerpo #datos {display: flex; flex-direction: column;}
+main #cuerpo #datos {justify-content: space-around; padding: 40px 40px 20px;}
 main #cuerpo #datos #tipoLink {align-self: flex-start;}
 
 /* Temas generales de las tablas */
