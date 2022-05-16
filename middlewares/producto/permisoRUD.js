@@ -73,7 +73,7 @@ module.exports = async (req, res, next) => {
 				],
 			};
 		}
-		// PROBLEMA 2: El usuario dejó inconclusa la operación luego de la hora y no transcurrieron aún las 2 horas
+		// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
 		else if (
 			capturado_en &&
 			capturado_en < haceUnaHora &&
