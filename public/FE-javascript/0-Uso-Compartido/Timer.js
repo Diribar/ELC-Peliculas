@@ -7,20 +7,30 @@ window.addEventListener("load", async () => {
 	// Otras variables
 	let codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
+	// Temas de horario y fechas
+	let minutosDispon, horarioFinal;
+	let unMinuto = 60 * 1000;
+	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
 	// Horario Inicial
 	let codigoEnc = encodeURIComponent(codigo);
 	let horarioInicial = await fetch(
 		"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
 	).then((n) => n.json());
-	if (horarioInicial) horarioInicial = new Date(horarioInicial);
-	// Tiempo restante
-	let ahora = new Date(new Date().toUTCString());
-	let tiempoRestante = horarioInicial
-		? parseInt(horarioInicial.getTime() / 1000 / 60 + 60 - ahora.getTime() / 1000 / 60)
-		: 60;
-	let minutosDispon = Math.min(60, Math.max(0, tiempoRestante));
 
 	// FUNCIONES -------------------------------------------------------------
+	let horarioTexto = (horario) => {
+		return (
+			horario.getDate() +
+			"/" +
+			meses[horario.getMonth()] +
+			" " +
+			horario.getHours() +
+			":" +
+			String(horario.getMinutes()).padStart(2, "0")
+		);
+	};
+
 	let funcionTimer = () => {
 		let actualizarTimer = setInterval(() => {
 			minutosDispon--;
@@ -31,7 +41,7 @@ window.addEventListener("load", async () => {
 				// Cartel de "time out"
 				funcionCartel();
 			} else formatoTimer(minutosDispon);
-		}, 1000 * 60);
+		}, unMinuto);
 	};
 	let funcionCartel = () => {
 		// Partes del cartel
@@ -43,38 +53,39 @@ window.addEventListener("load", async () => {
 		// Formatos
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
-		// Horario de captura
-		let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-		let horarioCaptura =
-			horarioInicial.getDate() +
-			"/" +
-			meses[horarioInicial.getMonth()] +
-			" " +
-			horarioInicial.getHours() +
-			":" +
-			String(horarioInicial.getMinutes() + 1).padStart(2, "0");
 		// Mensajes
 		let arrayMensajes =
 			codigo == "/producto/edicion/"
 				? [
-						"Tu edición de este producto comenzó un poco antes del " +
-							horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
+						"Tu edición de este producto comenzó el " +
+							horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
 							" a las " +
-							horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
+							horarioInicial.slice(horarioInicial.indexOf(" ")) +
 							"hs..",
 						"Transcurrida 1 hora, quedó a disposición de nuestro equipo para analizar tu trabajo.",
 				  ]
-				: codigo.startsWith("/revision/")
-				? [
-						"Esta revisión quedó inconclusa desde un poco antes del " +
-							horarioCaptura.slice(0, horarioCaptura.indexOf(" ")) +
-							" a las " +
-							horarioCaptura.slice(horarioCaptura.indexOf(" ")) +
-							"hs.. ",
-						"Quedó a disposición de que lo continúe revisando otra persona.",
-						"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
-				  ]
-				: [];
+				  : codigo == "/producto/links/"
+				  ? [
+						  "Esta edición quedó inconclusa desde el " +
+							  horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
+							  " a las " +
+							  horarioFinal.slice(horarioFinal.indexOf(" ")) +
+							  "hs.. ",
+						  "Quedó a disposición del equipo de revisores.",
+						  "Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
+					]
+					: codigo.startsWith("/revision/")
+					? [
+							"Esta revisión quedó inconclusa desde el " +
+								horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
+								" a las " +
+								horarioFinal.slice(horarioFinal.indexOf(" ")) +
+								"hs.. ",
+							"Quedó a disposición de que lo revise otra persona.",
+							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volverlo a revisar.",
+					  ]
+					  : [];
+		console.log();
 		mensajes.innerHTML = "";
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
@@ -102,6 +113,24 @@ window.addEventListener("load", async () => {
 		if (minutosDispon <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
 		else if (minutosDispon <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
+
+	// Variables con funciones
+	if (horarioInicial) {
+		// Pulir el horario inicial
+		horarioInicial = new Date(horarioInicial);
+		horarioInicial.setSeconds(0);
+		// Configurar el horario final
+		horarioFinal = horarioInicial;
+		horarioFinal.setHours(horarioInicial.getHours() + 1);
+		// Tiempo restante
+		let ahora = new Date(new Date().toUTCString());
+		ahora.setSeconds(0);
+		let tiempoRestante = parseInt((horarioFinal.getTime() - ahora.getTime()) / unMinuto);
+		minutosDispon = tiempoRestante > 0 ? Math.min(60, tiempoRestante) : tiempoRestante <= -60 ? 60 : 0;
+		// Horario en formato texto
+		horarioInicial = horarioTexto(horarioInicial);
+		horarioFinal = horarioTexto(horarioFinal);
+	}
 
 	// STARTUP -------------------------------------------------------------
 	if (horarioInicial) {

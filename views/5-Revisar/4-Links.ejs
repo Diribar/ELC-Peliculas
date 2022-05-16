@@ -9,36 +9,38 @@
 		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
 	</ul>	
 </section>
-<section id="datos">
-	<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-	<%- include("0-RUD-Encabezado") %>
-	<select id="tipoLink">
-		<option value="TR">Trailer</option>
-		<option value="PL">Película</option>
-		<option value="TD" selected>Todos</option>
-	</select>
-	<div>
-	</div>
-	<!-- Comentarios -->
-	<ul>
-		Comentarios
-		<li>Por favor intentá incluir por lo menos un link gratuito</li>
-		<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-	</ul>
-	<!-- Comandos -->
-	<div id="comandos">
-		<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
-			<a 
-				href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
-				target="_blank"
-				tabindex="-1"
-			>
-				<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
-			</a>
-		<% } %>
-	</div>
-</section>
-<!-- Flechas -->
-<section id="flechas">
-	<i id="liberarSalir" class="fa-solid fa-circle-left"></i>
+<section id="contenido">
+	<section id="datos">
+		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+		<%- include("0-RUD-Encabezado") %>
+		<select id="tipoLink">
+			<option value="TR">Trailer</option>
+			<option value="PL">Película</option>
+			<option value="TD" selected>Todos</option>
+		</select>
+		<div>
+		</div>
+		<!-- Comentarios -->
+		<ul>
+			Comentarios
+			<li>Por favor intentá incluir por lo menos un link gratuito</li>
+			<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
+		</ul>
+		<!-- Comandos -->
+		<div id="comandos">
+			<% for (let prov of provs.filter(n => n.buscador_automatico)) { %>
+				<a 
+					href="//<%= prov.url_distintivo + prov.url_buscar_pre + producto.nombre_castellano %><% if (prov.url_buscar_post) { %>&<%= prov.url_buscar_post %><% } %>" 
+					target="_blank"
+					tabindex="-1"
+				>
+					<img src="/imagenes/0-Logos/<%= prov.avatar %>" tabindex="-1">
+				</a>
+			<% } %>
+		</div>
+	</section>
+	<!-- Flechas -->
+	<section id="flechas">
+		<i id="liberarSalir" class="fa-solid fa-circle-left"></i>
+	</section>
 </section>

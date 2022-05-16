@@ -15,7 +15,24 @@ module.exports = async (req, res, next) => {
 	let includes = ["status_registro", "capturado_por"];
 	if (entidad == "capitulos") includes.push("coleccion");
 	let registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+	let capturado_en = registro.capturado_en;
+	if (capturado_en) capturado_en.setSeconds(0);
 
+	// Funciones
+	let horarioInicio, horarioFinal;
+	let horarioTexto = (horario) => {
+		return (
+			horario.getDate() +
+			"/" +
+			meses[horario.getMonth()] +
+			" " +
+			horario.getHours() +
+			":" +
+			String(horario.getMinutes()).padStart(2, "0")
+		);
+	};
+
+	// Detectar los problemas
 	// PROBLEMA 1: Registro no encontrado ----------------------------------------------
 	if (!registro)
 		informacion = {
@@ -73,22 +90,18 @@ module.exports = async (req, res, next) => {
 			else {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// Definir nuevas variables
-				let horarioString;
-				if (registro.capturado_en) {
-					let horarioCaptura = registro.capturado_en;
-					horarioCaptura.setMinutes(horarioCaptura.getMinutes() + 1);
-					horarioString =
-						horarioCaptura.getDate() +
-						"/" +
-						meses[horarioCaptura.getMonth()] +
-						" " +
-						horarioCaptura.getHours() +
-						":" +
-						String(horarioCaptura.getMinutes()).padStart(2, "0");
+				if (capturado_en) {
+					horarioInicial = new Date(capturado_en)
+					// Configurar el horario final
+					horarioFinal = horarioInicial;
+					horarioFinal.setHours(horarioInicio.getHours() + 1);
+					// Convertir a string
+					horarioInicio = horarioTexto(horarioInicio);
+					horarioFinal = horarioTexto(horarioFinal);
 				}
 				// PROBLEMA 4: El registro está capturado por otro usuario en forma 'activa'
 				if (
-					registro.capturado_en > haceUnaHora &&
+					capturado_en > haceUnaHora &&
 					registro.capturado_por_id != userID &&
 					registro.captura_activa
 				)
@@ -97,9 +110,9 @@ module.exports = async (req, res, next) => {
 							"El registro está en revisión por el usuario " +
 								registro.capturado_por.apodo +
 								", desde el " +
-								horarioString.slice(0, horarioString.indexOf(" ")) +
+								horarioInicio.slice(0, horarioInicio.indexOf(" ")) +
 								" a las " +
-								horarioString.slice(horarioString.indexOf(" ")) +
+								horarioInicio.slice(horarioInicio.indexOf(" ")) +
 								"hs",
 						],
 						iconos: [
@@ -118,19 +131,19 @@ module.exports = async (req, res, next) => {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
 				// PROBLEMA 5: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
 				else if (
-					registro.capturado_en < haceUnaHora &&
-					registro.capturado_en > haceDosHoras &&
+					capturado_en < haceUnaHora &&
+					capturado_en > haceDosHoras &&
 					registro.capturado_por_id == userID
 				) {
 					informacion = {
 						mensajes: [
-							"Esta revisión quedó inconclusa desde un poco antes del " +
-								horarioString.slice(0, horarioString.indexOf(" ")) +
+							"Esta revisión quedó inconclusa desde el " +
+								horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
 								" a las " +
-								horarioString.slice(horarioString.indexOf(" ")) +
+								horarioFinal.slice(horarioFinal.indexOf(" ")) +
 								"hs.. ",
 							"Quedó a disposición de que lo continúe revisando otra persona.",
-							"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
+							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
 						],
 						iconos: [
 							{
@@ -147,13 +160,13 @@ module.exports = async (req, res, next) => {
 				else if (
 					!registro.captura_activa ||
 					registro.capturado_por_id != userID ||
-					registro.capturado_en < haceDosHoras
+					capturado_en < haceDosHoras
 				) {
 					let datos = {captura_activa: 1};
 					// 2. Cambiar de usuario si estaba capturado por otro
 					if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
 					// 3. Fijarle la nueva hora de captura si corresponde
-					if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
+					if (registro.capturado_por_id != userID || capturado_en < haceDosHoras)
 						datos.capturado_en = funciones.ahora();
 					// CAPTURA DEL REGISTRO
 					BD_genericas.actualizarPorId(entidad, prodID, datos);

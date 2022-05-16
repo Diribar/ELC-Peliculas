@@ -17,41 +17,48 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = req.session.urlAnterior;
 	const includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-	let informacion;
+	let capturado_en = producto.capturado_en;
+
+	if (capturado_en) capturado_en.setSeconds(0);
+
+	let informacion, horarioInicial, horarioFinal;
 
 	// Funciones --------------------------------------------------------
+	let horarioTexto = (horario) => {
+		return (
+			horario.getDate() +
+			"/" +
+			meses[horario.getMonth()] +
+			" " +
+			horario.getHours() +
+			":" +
+			String(horario.getMinutes()).padStart(2, "0")
+		);
+	};
 	let problemasDeCaptura = () => {
-		// Variables
-		let informacion;
-		// HorarioString
-		let horarioString;
-		if (producto.capturado_en) {
-			let horarioCaptura = producto.capturado_en;
-			horarioCaptura.setMinutes(horarioCaptura.getMinutes() + 1);
-			horarioString =
-				horarioCaptura.getDate() +
-				"/" +
-				meses[horarioCaptura.getMonth()] +
-				" " +
-				horarioCaptura.getHours() +
-				":" +
-				String(horarioCaptura.getMinutes()).padStart(2, "0");
+		// Horario de Inicio y Fin
+		if (capturado_en) {
+			horarioInicial = new Date(capturado_en)
+			// Configurar el horario final
+			horarioFinal = horarioInicial;
+			horarioFinal.setHours(horarioInicial.getHours() + 1);
+			// Convertir a string
+			horarioInicial = horarioTexto(horarioInicial);
+			horarioFinal = horarioTexto(horarioFinal);
 		}
 		// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
 		if (
-			producto.capturado_en &&
-			producto.capturado_en > haceUnaHora &&
+			capturado_en &&
+			capturado_en > haceUnaHora &&
 			producto.capturado_por_id != userID &&
 			producto.captura_activa
 		) {
 			informacion = {
 				mensajes: [
-					"El producto está en revisión por el usuario " +
-						producto.capturado_por.apodo +
-						", desde el " +
-						horarioString.slice(0, horarioString.indexOf(" ")) +
+					"El producto está siendo revisado desde el " +
+						horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
 						" a las " +
-						horarioString.slice(horarioString.indexOf(" ")) +
+						horarioInicial.slice(horarioInicial.indexOf(" ")) +
 						"hs",
 				],
 				iconos: [
@@ -68,22 +75,23 @@ module.exports = async (req, res, next) => {
 				],
 			};
 		}
-		// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+		// PROBLEMA 2: El usuario dejó inconclusa la operación luego de la hora y no transcurrieron aún las 2 horas
 		else if (
-			producto.capturado_en &&
-			producto.capturado_en < haceUnaHora &&
-			producto.capturado_en > haceDosHoras &&
+			capturado_en &&
+			capturado_en < haceUnaHora &&
+			capturado_en > haceDosHoras &&
 			producto.capturado_por_id == userID
 		) {
+			console.log(capturado_en , haceUnaHora , haceDosHoras);
 			informacion = {
 				mensajes: [
-					"Esta revisión quedó inconclusa desde un poco antes del " +
-						horarioString.slice(0, horarioString.indexOf(" ")) +
+					"Esta edición quedó inconclusa desde Rel " +
+						horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
 						" a las " +
-						horarioString.slice(horarioString.indexOf(" ")) +
+						horarioFinal.slice(horarioFinal.indexOf(" ")) +
 						"hs.. ",
-					"Quedó a disposición de que lo continúe revisando otra persona.",
-					"Si nadie lo revisa hasta 2 horas después de ese horario, podrás volver a revisarlo.",
+					"Quedó a disposición del equipo de revisores.",
+					"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
 				],
 				iconos: [
 					{
@@ -97,16 +105,16 @@ module.exports = async (req, res, next) => {
 		// EL USUARIO PUEDE CAPTURAR EL REGISTRO --> SOLUCIONES
 		// 1. Activar si no lo está, de lo contrario no hace nada
 		else if (
-			!producto.capturado_en ||
+			!capturado_en ||
 			!producto.captura_activa ||
 			producto.capturado_por_id != userID ||
-			producto.capturado_en < haceDosHoras
+			capturado_en < haceDosHoras
 		) {
 			let datos = {captura_activa: 1};
 			// 2. Cambiar de usuario si estaba capturado por otro
 			if (producto.capturado_por_id != userID) datos.capturado_por_id = userID;
 			// 3. Fijarle la nueva hora de captura si corresponde
-			if (producto.capturado_por_id != userID || producto.capturado_en < haceDosHoras)
+			if (producto.capturado_por_id != userID || capturado_en < haceDosHoras)
 				datos.capturado_en = funciones.ahora();
 			// CAPTURA DEL REGISTRO
 			BD_genericas.actualizarPorId(entidad, prodID, datos);
@@ -170,7 +178,7 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 	let alta_aprobada = () => {
-		let informacion
+		let informacion;
 		if (codigo == "links") {
 			// No se puede acceder en este status
 			informacion = {
@@ -192,8 +200,7 @@ module.exports = async (req, res, next) => {
 					},
 				],
 			};
-		}
-		else if (codigo == "edicion") {
+		} else if (codigo == "edicion") {
 			// FOCO EN NO REVISORES
 			// PROBLEMA 5: en este status, sólo los revisores pueden acceder
 			if (!usuario.rol_usuario.aut_gestion_prod) {
