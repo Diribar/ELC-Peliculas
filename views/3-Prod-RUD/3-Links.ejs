@@ -36,7 +36,6 @@
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
 					<% for (let link of linksActivos) { %>
-						<% console.log(link) %> 
 						<%- include("31-Links-Datos", {link}) %>
 						<%- include("32-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
