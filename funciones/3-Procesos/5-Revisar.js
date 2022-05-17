@@ -480,30 +480,22 @@ module.exports = {
 		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// Obtener los links 'a revisar'
-		let links = await BD_especificas.obtenerLinksARevisar(revisar, userID);
+		let links = await BD_especificas.obtenerLinksARevisar(revisar);
 		// Si no hay => salir
 		if (!links.length) return [];
+		// Separalos en 2 grupos (Propios y Ajenos)
+		let linksPropios = links.filter((n) => n.creado_por_id == userID || n.editado_por_id == userID);
+		let linksAjenos = links.filter((n) => n.creado_por_id != userID && n.editado_por_id != userID);
 		// Obtener los productos
-		let productos = obtenerProductos(links);
-		// Limpieza
-		// Dejar solamente los productos aprobados
-		productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-		// Dejar solamente los productos que estén creados hace más de una hora
-		productos = productos.filter((n) => n.creado_en < haceUnaHora);
-		// Dejar solamente los productos que no tengan problemas de captura
-		productos = productos.filter(
-			(n) =>
-				!n.capturado_en ||
-				n.capturado_en < haceUnaHora ||
-				!n.captura_activa ||
-				n.capturado_por_id == userID
-		);
-		// Dejar los productos sin:
-		// 	- linksOriginales propios en status 'a revisar'
-		// 	- linksEditados propios
-
+		let prodPropios = obtenerProductos(linksPropios, aprobado_id, haceUnaHora);
+		let prodAjenos = obtenerProductos(linksAjenos, aprobado_id, haceUnaHora);
+		// Eliminar los productos Ajenos que estén presentes en Propios
+		prodAjenos =
+			prodAjenos.length && prodPropios.length
+				? eliminarSiEstanEnPropios(prodAjenos, prodPropios)
+				: prodAjenos;
 		// Fin
-		return productos;
+		return prodAjenos;
 	},
 
 	// Usuario
@@ -622,7 +614,18 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 			: ""
 		: RCLV[campo];
 };
-let obtenerProductos = (links) => {
+let eliminarRepetidos = (productos) => {
+	let aux1 = [];
+	for (let i = productos.length - 1; i >= 0; i--) {
+		let aux2 = productos[i].id;
+		if (aux1.includes(aux2)) productos.splice(i, 1);
+		else aux1.push(aux2);
+		// if (productos.filter((n) => n.id == productos[i].id && n.entidad == productos[i].entidad).length>1)
+		// 	productos.splice(i, 1);
+	}
+	return productos;
+};
+let obtenerProductos = (links, aprobado_id, haceUnaHora, userID) => {
 	// Variables
 	let peliculas = [];
 	let colecciones = [];
@@ -639,17 +642,34 @@ let obtenerProductos = (links) => {
 	if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
 	// Volver a consolidar
 	let productos = [...peliculas, ...colecciones, ...capitulos];
+	// Depurar los productos que no cumplen ciertas condiciones
+	productos = limpieza(productos, aprobado_id, haceUnaHora, userID);
 	// Fin
 	return productos;
 };
-let eliminarRepetidos = (productos) => {
-	let aux1 = [];
-	for (let i = productos.length - 1; i >= 0; i--) {
-		let aux2 = productos[i].id;
-		if (aux1.includes(aux2)) productos.splice(i, 1);
-		else aux1.push(aux2);
-		// if (productos.filter((n) => n.id == productos[i].id && n.entidad == productos[i].entidad).length>1)
-		// 	productos.splice(i, 1);
-	}
+let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
+	// Dejar solamente los productos aprobados
+	productos = productos.filter((n) => n.status_registro_id == aprobado_id);
+	// Dejar solamente los productos que estén creados hace más de una hora
+	productos = productos.filter((n) => n.creado_en < haceUnaHora);
+	// Dejar solamente los productos que no tengan problemas de captura
+	productos = productos.filter(
+		(n) =>
+			!n.capturado_en ||
+			n.capturado_en < haceUnaHora ||
+			!n.captura_activa ||
+			n.capturado_por_id == userID
+	);
 	return productos;
+};
+let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
+	for (let i = prodAjenos.length - 1; i >= 0; i--) {
+		for (let prodPropio of prodPropios) {
+			if (prodAjenos[i].id == prodPropio.id && prodAjenos[i].entidad == prodPropio.entidad) {
+				prodAjenos.splice(i, 1);
+				break;
+			}
+		}
+	}
+	return prodAjenos;
 };

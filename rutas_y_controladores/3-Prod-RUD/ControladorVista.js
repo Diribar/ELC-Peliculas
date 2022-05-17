@@ -310,8 +310,6 @@ module.exports = {
 		else {
 			// Procesar los datos en la operación que corresponda
 			datos.alta ? await procesar.altaDeLink(req, datos) : await procesar.edicionDeLink(req, datos);
-			// Estandarizar fechaRef en originales y editados del mismo "entidad" y "prodId"
-			procesar.estandarizarFechaRef(datos.prodEntidad, datos.prodID);
 			delete req.session.links;
 		}
 		// Redireccionar

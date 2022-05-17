@@ -119,7 +119,7 @@ module.exports = {
 		BD_genericas.agregarRegistro("altas_registros_rech", datosParaBorrados);
 	},
 	// FUNCIONES --------------------------------------------------
-	obtenerLinksCombinados: async (entidad, prodID, userID) => {
+	obtenerLinksCombinados: async function (entidad, prodID, userID) {
 		// Definir valores necesarios
 		let producto_id = funciones.entidad_id(entidad);
 		let includes = ["link_tipo", "link_prov", "status_registro"];
@@ -145,7 +145,7 @@ module.exports = {
 				delete linkEditado.id;
 				linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
 			}
-			linksCombinados[i] = procesar.quitarLosCamposSinContenido(linksCombinados[i]);
+			linksCombinados[i] = this.quitarLosCamposSinContenido(linksCombinados[i]);
 		}
 		// Fin
 		return linksCombinados;
@@ -292,7 +292,7 @@ module.exports = {
 		// Fin
 		return linkCombinado;
 	},
-	limpiarLosDatos: (datos) => {
+	limpiarLosDatos: function (datos) {
 		// Adecuaciones iniciales al objeto 'datos'
 		datos.alta = datos.numeroFila == datos.calidad.length - 1 || typeof datos.calidad == "string";
 		if (datos.alta) delete datos.id;
@@ -302,21 +302,8 @@ module.exports = {
 			if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
 		}
 		// Quitar campos innecesarios
-		datos = procesar.quitarLosCamposSinContenido(datos);
+		datos = this.quitarLosCamposSinContenido(datos);
 		// Fin
 		return datos;
-	},
-	estandarizarFechaRef: async (entidad, prodID) => {
-		// Actualizar todos los originales
-		let producto_id = funciones.entidad_id(entidad);
-		let fecha_referencia = new Date();
-		// Actualizar linksOriginales
-		BD_genericas.actualizarPorCampos("links_originales", {[producto_id]: prodID}, {fecha_referencia});
-		// Actualizar linksEdicion
-		BD_genericas.obtenerTodosPorCampos("links_originales", {[producto_id]: prodID}).then((n) =>
-			n.map((m) =>
-				BD_genericas.actualizarPorCampos("links_edicion", {link_id: m.id}, {fecha_referencia})
-			)
-		);
 	},
 };

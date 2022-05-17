@@ -70,11 +70,11 @@
 						<p>Los productos cumplen <u>todas</u> estas condiciones:</p>
 						<li>Sus links a revisar no han sido creados ni editados por vos.</li>
 						<li>No están siendo analizados por otro revisor.</li>
-						<li>El producto tiene que estar aprobado</li>
+						<li>Tiene que estar aprobado.</li>
+						<li>Sin captura activa por otro revisor.</li>
 					</ol>
-				</div>
-				
-				<%- include("11-Tablero-Registros", {titulo: "Producto con Links a Revisar", estado: aprobado_id, registros: prodsConLinks, url: "links"}) %>
+				</div>				
+				<%- include("11-Tablero-Registros", {titulo: "Productos con Links a Revisar", estado: aprobado_id, registros: prodsConLinks, url: "links"}) %>
 			</div>
 		</div>
 	</section>
