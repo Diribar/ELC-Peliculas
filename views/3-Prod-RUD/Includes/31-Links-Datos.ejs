@@ -1,13 +1,13 @@
 <tr class="yaExistentes">
 	<!-- Url -->
-	<td class="logoProv">
+	<td class="url">
 		<a href="//<%= link.url %>" target="_blank">
 			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>" title="<%= link.url %>">
 		</a>
-		<div class="ocultar" id="link_id"><%= link.id %></div>
+		<div class="ocultar link_id"><%= link.id %></div>
 	</td>
 	<!-- Motivo -->
-	<td colspan="6" id="motivo" class="ocultar">
+	<td colspan="6" class="motivo ocultar">
 		<strong>Motivo: </strong>
 		<select name="motivo_id">
 			<option value="" class="ocultar" selected>Elejí el motivo</option>
@@ -17,21 +17,19 @@
 		</select>
 	</td>
 	<!-- Calidad -->
-	<td class="taparMotivo"><%= link.calidad %></td>
+	<td class=" taparMotivo"><%= link.calidad %></td>
 	<!-- Tipo -->
-	<td class="taparMotivo"><%= link.link_tipo.nombre %></td>
+	<td class=" taparMotivo"><%= link.link_tipo.nombre %></td>
 	<!-- Completo -->
-	<td class="taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
+	<td class=" taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
 	<!-- Parte -->
-	<td class="taparMotivo <%- link.completo ? 'desperdicio' : '' %>">
-		<%- !link.completo ? link.parte : '' %>
-	</td>
+	<td class=" taparMotivo <%- link.completo ? 'desperdicio' : '' %>"><%- !link.completo ? link.parte : '' %></td>
 	<!-- Gratuito -->
-	<td class="taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
+	<td class=" taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
-	<td class="taparMotivo"><%- link.capturado_en > haceUnaHora ? "En Revisión" : link.status_registro.nombre %> </td>
+	<td class=" taparMotivo"><%- link.capturado_en > haceUnaHora ? "En Revisión" : link.status_registro.nombre %> </td>
 	<!-- Acción -->
-	<td>
+	<td class="">
 		<% if (link.capturado_en > haceUnaHora) { %>
 			<!-- Los links con captura 'válida' no se pueden 'tocar' -->
 			<i class="fa-solid fa-circle-question editar out" tabindex="-1" ></i>

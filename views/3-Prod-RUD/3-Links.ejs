@@ -5,8 +5,8 @@
 	<!-- Ayuda -->
 	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
-		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+		<li>Por favor intentá incluir por lo menos un link gratuito</li>
+		<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
 	</ul>	
 </section>
 <section id="contenido">
@@ -22,20 +22,21 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Url</th>
-						<th>Calidad (px)</th>
-						<th>Tipo</th>
-						<th>Completo</th>
-						<th>Parte</th>
-						<th>Gratuito</th>
-						<th>Status</th>
-						<th>Acción</th>
+						<th class="url">Url</th>
+						<th class="calidad">Calidad (px)</th>
+						<th class="tipo">Tipo</th>
+						<th class="completo">Completo</th>
+						<th class="parte">Parte</th>
+						<th class="gratuito">Gratuito</th>
+						<th class="status">Status</th>
+						<th class="accion">Acción</th>
 					</tr>
 				</thead>
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
 					<% for (let link of linksActivos) { %>
+						<% console.log(link) %> 
 						<%- include("31-Links-Datos", {link}) %>
 						<%- include("32-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
@@ -49,11 +50,6 @@
 			<input type="text" name="prodID" value="<%= prodID %>" class="ocultar">
 			<input type="number" name="numeroFila" value="" class="ocultar">
 		</form>
-		<ul>
-			Comentarios
-			<li>Por favor intentá incluir por lo menos un link gratuito</li>
-			<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-		</ul>
 	</div>
 	<!-- Comandos -->
 	<div id="comandos">

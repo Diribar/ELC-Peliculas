@@ -1,17 +1,17 @@
-<tr id="altas">
+<tr class="altas">
 	<!-- Url y Proveedor_id-->
-	<td id="url">
+	<td class="url">
 		<div class="inputError">
 			<input name="url" type="text" autofocus class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.url) ? dataEntry.url : "" %>" autocomplete="off">
 			<input name="link_prov_id" class="ocultar" value="<%- (dataEntry.numeroFila == fila && dataEntry.link_prov_id) ? dataEntry.link_prov_id : "" %>">
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check prov_id"></i>
 			<i class="fa-solid fa-circle-question prov_id"></i>
 		</div>
 	</td>
 	<!-- Calidad -->
-	<td id="calidad">
+	<td class="calidad">
 		<div class="inputError">
 			<select name="calidad" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && !dataEntry.calidad) ? "selected" : "" %>>Elejí</option>
@@ -21,12 +21,12 @@
 				<option value="1081" <%- (dataEntry.numeroFila == fila && dataEntry.calidad == "1081") ? "selected" : "" %>>>1080</option>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 9"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 9"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td id="tipo">
+	<td class="tipo">
 		<div class="inputError">
 			<select name="link_tipo_id" class="input">
 				<option value="" class="ocultar">Elejí</option>
@@ -36,12 +36,12 @@
 				<% } %>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
 	<!-- Completo -->
-	<td id="completo">
+	<td class="completo">
 		<div class="inputError">
 			<select name="completo" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "") ? "selected" : "" %>>Elejí</option>
@@ -49,12 +49,12 @@
 				<option value="0" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "0") ? "selected" : "" %>>NO</option>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 7"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 7"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
 	<!-- Parte -->
-	<td id="parte">
+	<td class="parte">
 		<div class="inputError">
 			<input name="parte" type="number" class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte != "-") ? dataEntry.parte : '' %>">
 			<!-- Errores -->
@@ -63,7 +63,7 @@
 		</div>
 	</td>
 	<!-- Gratuito -->
-	<td id="gratuito">
+	<td class="gratuito">
 		<div class="inputError">
 			<select name="gratuito" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.gratuito == "") ? "selected" : "" %>>?</option>
@@ -78,7 +78,7 @@
 	<!-- Status -->
 	<td class="desperdicio"></td>
 	<!-- Acción -->
-	<td>
+	<td class="accion">
 		<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
 	</td>
 </tr>

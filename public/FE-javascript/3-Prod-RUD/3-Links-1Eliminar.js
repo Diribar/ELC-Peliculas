@@ -4,10 +4,10 @@ window.addEventListener("load", () => {
 	let filas_yaExistentes = document.querySelectorAll(".yaExistentes");
 	let botonesOut = document.querySelectorAll(".yaExistentes .out");
 	let botonesEditar = document.querySelectorAll(".yaExistentes .editar");
-	let links_id = document.querySelectorAll(".yaExistentes #link_id");
+	let links_id = document.querySelectorAll(".yaExistentes .link_id");
 	let taparMotivo = document.querySelectorAll(".yaExistentes .taparMotivo");
-	let motivosFila = document.querySelectorAll(".yaExistentes #motivo");
-	let motivosSelect = document.querySelectorAll(".yaExistentes #motivo select");
+	let motivosFila = document.querySelectorAll(".yaExistentes .motivo");
+	let motivosSelect = document.querySelectorAll(".yaExistentes .motivo select");
 
 	// Listener de 'edición'
 	for (let i = 0; i < botonesOut.length; i++) {
