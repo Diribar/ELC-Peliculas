@@ -82,7 +82,6 @@ module.exports = {
 				// Quitarle los campos 'null'
 				prodEditado = this.quitarLosCamposSinContenido(prodEditado);
 			}
-			// prodEditado = {...prodOriginal, ...prodEditado};
 		}
 		return [prodOriginal, prodEditado];
 	},

@@ -2,11 +2,17 @@
 
 /* Cuerpo */
 #cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {position: relative;}
 
 /* Título */
-#cuerpo {position: relative;}
-#cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
-#cuerpo #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro)}
+#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
+#cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
+/* Título - Ayuda */
+#cuerpo .mensajeAyuda {max-width: 350px;}
+#cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
+#cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
+#cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
+#cuerpo .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}

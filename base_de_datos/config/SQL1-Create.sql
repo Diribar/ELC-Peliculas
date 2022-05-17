@@ -129,6 +129,7 @@ CREATE TABLE USUARIOS (
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	fecha_ultimo_login DATE DEFAULT UTC_DATE,
+	version_ultimo_login VARCHAR(4) DEFAULT '1.0',
 
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
@@ -158,13 +159,13 @@ CREATE TABLE USUARIOS (
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
 (1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, 4, '2021-01-01','2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02'),
-(3, 'sp2015w@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Usuario Sin Privilegios', 1, 1, 4, '2021-01-01', '2021-01-02')
+(2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO USUARIOS (id, email, contrasena, nombre, apellido, apodo, numero_documento, avatar, fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,                apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_ultimo_login)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Startup', 'Diego', '0', '1617370359746.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, 4, '2021-01-01','2021-01-02'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego', 'Iribarren', 'Diego', '21072001', '1632959816163.jpg', '1969-08-16', 'V', 'AR', 5, 'LCV', 1, 4, '2021-01-01','2021-01-02')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Autorizado p/Inputs', 'Startup',   'Startup',   '0',        '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',               'Iribarren', 'Diego',     '21072001', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas',           '-',         'Consultas', '1',        '',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;
@@ -837,6 +838,7 @@ VALUES
 ;
 CREATE TABLE links_1originales (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
@@ -857,16 +859,9 @@ CREATE TABLE links_1originales (
 	lead_time_creacion SMALLINT UNSIGNED NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion SMALLINT UNSIGNED NULL,
-	
-	fecha_referencia DATETIME DEFAULT UTC_TIMESTAMP,
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT NULL,
-	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
@@ -876,25 +871,27 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (link_prov_id) REFERENCES links_proveedores(id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id, creado_en, fecha_referencia)
+INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id, creado_en)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,10,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,1,2,11,1,10,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,2,2,11,1,1,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,3,2,11,1,10,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,4,2,11,1,10,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(6,NULL,NULL,1,'www/fefe',144,1,"-",1,1,0,1,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(7,NULL,NULL,1,'weww/fefe',144,1,"-",1,1,0,10,'2022-03-16 23:25:20','2022-03-17 13:25:20'),
-(8,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:20','2022-03-17 13:25:20')
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,10,'2022-03-16 23:25:20'),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,10,'2022-03-16 23:25:20'),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,1,'2022-03-16 23:25:20'),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,10,'2022-03-16 23:25:20'),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,10,'2022-03-16 23:25:20'),
+(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:20'),
+(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20'),
+(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45');
+
 ;
 CREATE TABLE links_2edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	link_id INT UNSIGNED NOT NULL,
+
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 
 	calidad SMALLINT NULL,
 	link_tipo_id TINYINT UNSIGNED NULL,
@@ -909,6 +906,11 @@ CREATE TABLE links_2edicion (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (link_id) REFERENCES links_1originales(id),
+
+	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
+	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
+
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

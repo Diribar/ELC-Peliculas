@@ -259,13 +259,13 @@ module.exports = {
 		prodEditado = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
 		let linksCombinados = await procesar.obtenerLinksCombinados(entidad, prodID, userID);
-		let linksProveedores = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		let [linksActivos, linksInactivos] = await procesar.separarActivos_e_Inactivos(linksCombinados);
 		// Configurar el producto, el título
 		let prodNombre = funciones.entidadNombre(entidad);
-		let titulo = "Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodEditado.capitulos = await BD_especificas.obtenerCapitulos(
@@ -285,14 +285,14 @@ module.exports = {
 		return res.render("0-RUD", {
 			tema,
 			codigo,
-			titulo,
-			linksActivos,
-			linksInactivos,
-			provs: linksProveedores,
-			producto: prodEditado,
 			entidad,
 			prodID,
 			userID,
+			titulo,
+			linksActivos,
+			linksInactivos,
+			provs,
+			producto: prodEditado,
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			dataEntry,

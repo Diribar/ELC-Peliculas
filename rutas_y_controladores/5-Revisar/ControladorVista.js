@@ -351,7 +351,103 @@ module.exports = {
 			procesos_canonizacion,
 		});
 	},
+	// Links
+	links: async (req, res) => {
+		// 1. Tema y Código
+		let tema = "revision";
+		let codigo = "links";
+		// Otras variables
+		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
 
+		// Obtener los datos identificatorios del producto y del usuario
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		// Configurar el título
+		let prodNombre = funciones.entidadNombre(entidad);
+		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		// Obtener el producto con sus links
+		let includes = ["links", "status_registro"];
+		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		// PROBLEMAS
+		let informacion = problemasLinks(producto, req.session.urlAnterior);
+		if (informacion) return res.render("Errores", {informacion});
+		// Obtener todos los links 'no inactivos'
+		let entidad_id = funciones.entidad_id(entidad);
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
+			"links_originales",
+			{[entidad_id]: prodID},
+			["status_registro", "link_ediciones"]
+		);
+		let inactivado_id = status.find((n) => n.inactivado).id;
+		links = links.filter((n) => n.status_registro_id != inactivado_id);
+		// Obtener información de BD
+		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		// Ir a la vista
+		//return res.send(RCLV_original);
+		return res.render("0-VistaEstandar", {
+			tema,
+			codigo,
+			titulo,
+			entidad,
+			producto,
+			links,
+			provs,
+			linksTipos,
+		});
+	},
+};
+
+let problemasLinks = (producto, urlAnterior) => {
+	// Variables
+	let informacion;
+	// No tenemos un producto con ese ID
+	if (!informacion && !producto)
+		informacion = {
+			mensajes: ["Ese producto no existe en nuestra Base de Datos"],
+			iconos: [
+				{
+					nombre: "fa-circle-left",
+					link: urlAnterior,
+					titulo: "Ir a la vista anterior",
+				},
+				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
+			],
+		};
+
+	// El producto no está en status 'aprobado'
+	if (!informacion && !producto.status_registro.aprobado)
+		informacion = {
+			mensajes: [
+				"El producto no está en status 'Aprobado'",
+				"Su status es " + producto.status_registro.nombre,
+			],
+			iconos: [
+				{
+					nombre: "fa-circle-left",
+					link: urlAnterior,
+					titulo: "Ir a la vista anterior",
+				},
+				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
+			],
+		};
+
+	// El producto no posee links
+	if (!informacion && !producto.links.length)
+		informacion = {
+			mensajes: ["Este producto no tiene links en nuestra Base de Datos"],
+			iconos: [
+				{
+					nombre: "fa-circle-left",
+					link: urlAnterior,
+					titulo: "Ir a la vista anterior",
+				},
+				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
+			],
+		};
+
+	// Fin
+	return informacion;
 };
 
 // RCLVform2: async (req, res) => {

@@ -5,8 +5,7 @@
 /* Título */
 #cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
 #cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
-
-/* Ayuda */
+/* Título - Ayuda */
 #cuerpo .mensajeAyuda {max-width: 350px;}
 #cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
 #cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}

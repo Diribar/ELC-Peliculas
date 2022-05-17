@@ -12,9 +12,9 @@ module.exports = {
 		});
 	},
 
-	nosotros: (req, res) => {
+	quienesSomos: (req, res) => {
 		let tema = "miscelaneas";
-		let codigo = "nosotros";
+		let codigo = "quienes-somos";
 		return res.render("0-VistaEstandar", {
 			tema,
 			codigo,

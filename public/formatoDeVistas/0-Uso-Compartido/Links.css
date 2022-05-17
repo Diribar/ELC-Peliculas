@@ -1,8 +1,8 @@
 /* Temas generales */
-main #cuerpo {justify-content: space-around; padding: 40px 40px 20px;}
-main #cuerpo h1 {margin: 0;}
-main #cuerpo #datos {display: flex; flex-direction: column;}
-main #cuerpo #datos #tipoLink {align-self: flex-start;}
+#contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-around; flex-grow: 1;}
+#contenido {padding: 20px 40px 20px;}
+#datos {display: flex; flex-direction: column; }
+#datos #tipoLink {align-self: flex-start;}
 
 /* Temas generales de las tablas */
 #datos form {align-self: center;}
