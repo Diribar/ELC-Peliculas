@@ -78,7 +78,7 @@ window.addEventListener("load", async () => {
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async (fila) => {
 		// Variables
-		let error
+		let error;
 		// 1. Impacto en errores
 		if (fila == filaUrlAlta) {
 			// Depurar el url
@@ -203,7 +203,12 @@ window.addEventListener("load", async () => {
 			completoInputs[fila].disabled = false;
 		}
 		// Cambios en el campo 'parte'
-		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones||completoInputs[fila].value=="1") {
+		if (
+			(proveedor.trailer && !proveedor.pelicula) ||
+			proveedor.peli_siempre_completa ||
+			colecciones ||
+			completoInputs[fila].value == "1"
+		) {
 			parte[fila].classList.add("desperdicio");
 			parteInputs[fila].classList.add("ocultar");
 			parteInputs[fila].disabled = true;
@@ -336,9 +341,9 @@ window.addEventListener("load", async () => {
 			// Submit
 			// 	botonGuardar(fila);
 		} else {
-				let filaInput = filasInput - 1;
-				impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
-				impactosPorTipoLink(filaInput);
+			let filaInput = filasInput - 1;
+			impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
+			impactosPorTipoLink(filaInput);
 		}
 	}
 });
