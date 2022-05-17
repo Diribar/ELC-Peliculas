@@ -19,7 +19,6 @@ window.addEventListener("load", async () => {
 	let tipo = document.querySelectorAll("tbody .tipo");
 	let completo = document.querySelectorAll("tbody .completo");
 	let parte = document.querySelectorAll("tbody .parte");
-	console.log(tipo.length,parte.length);
 	let gratuito = document.querySelectorAll("tbody .gratuito");
 	let guardar = document.querySelectorAll("tbody .fa-floppy-disk");
 
@@ -29,7 +28,6 @@ window.addEventListener("load", async () => {
 	let tipoInputs = document.querySelectorAll(".tipo .inputError .input");
 	let completoInputs = document.querySelectorAll(".completo .inputError .input");
 	let parteInputs = document.querySelectorAll(".parte .inputError .input");
-	console.log(parteInputs.length);
 	let gratuitoInputs = document.querySelectorAll(".gratuito .inputError .input");
 
 	// OK/Errores
@@ -191,7 +189,6 @@ window.addEventListener("load", async () => {
 	};
 	// 4. Impacto en 'completo' y 'parte'
 	let impactosEnCompletoParte = (proveedor, fila) => {
-		console.log(fila,completoInputs[fila].value);
 		// Cambios en el campo 'completo'
 		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
 			completo[fila].classList.add("desperdicio");
@@ -207,7 +204,6 @@ window.addEventListener("load", async () => {
 		}
 		// Cambios en el campo 'parte'
 		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones||completoInputs[fila].value=="1") {
-			console.log(210,fila);
 			parte[fila].classList.add("desperdicio");
 			parteInputs[fila].classList.add("ocultar");
 			parteInputs[fila].disabled = true;
@@ -246,7 +242,6 @@ window.addEventListener("load", async () => {
 			completo[fila].classList.add("desperdicio");
 			completoInputs[fila].classList.add("ocultar");
 			completoInputs[fila].disabled = true;
-			console.log(247);
 			parte[fila].classList.add("desperdicio");
 			parteInputs[fila].classList.add("ocultar");
 			parteInputs[fila].disabled = true;
@@ -267,7 +262,6 @@ window.addEventListener("load", async () => {
 		let valor = completoInputs[fila].value;
 		// Consecuencias
 		if (valor == 1) {
-			console.log(267);
 			parte[fila].classList.add("desperdicio");
 			parteInputs[fila].classList.add("ocultar");
 			parteInputs[fila].disabled = true;
