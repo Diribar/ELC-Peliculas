@@ -335,11 +335,11 @@ window.addEventListener("load", async () => {
 			// Funciones derivadas del url
 			await funcionesDerivadasDelUrl(fila);
 			// Funciones derivadas del Data Entry
-			// 	funcionesDerivadasDeOtrosDataEntry(fila);
+			funcionesDerivadasDeOtrosDataEntry(fila);
 			// Actualizar los errores de todo el form
-			// 	await consecuenciasErrores(fila);
+			await consecuenciasErrores(fila);
 			// Submit
-			// 	botonGuardar(fila);
+			botonGuardar(fila);
 		} else {
 			let filaInput = filasInput - 1;
 			impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
