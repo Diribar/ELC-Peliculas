@@ -493,7 +493,6 @@ module.exports = {
 		let prodAjenos = linksAjenos.length
 			? obtenerProductos(linksAjenos, aprobado_id, haceUnaHora, userID)
 			: "";
-		return prodAjenos;
 		// Eliminar los productos Ajenos que estén presentes en Propios
 		prodAjenos =
 			prodAjenos.length && prodPropios.length
