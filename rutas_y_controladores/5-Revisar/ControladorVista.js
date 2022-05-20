@@ -382,11 +382,11 @@ module.exports = {
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
-			["status_registro", "link_ediciones","link_prov","link_tipo"]
+			["status_registro", "link_ediciones", "link_prov", "link_tipo"]
 		);
 		let inactivado_id = status.find((n) => n.inactivado).id;
 		let linksAnalizar = links.filter((n) => n.status_registro_id != inactivado_id);
-		let linksInactivos= links.filter((n) => n.status_registro_id == inactivado_id);
+		let linksInactivos = links.filter((n) => n.status_registro_id == inactivado_id);
 		// Información para la vista
 		let imagen = producto.avatar;
 		let avatar = imagen
