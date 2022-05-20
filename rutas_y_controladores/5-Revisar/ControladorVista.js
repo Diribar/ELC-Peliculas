@@ -268,13 +268,13 @@ module.exports = {
 			[ingresos, reemplazos] = procesar.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
-			vista = "0-Revisar";
 			avatar = imagen
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesar.prod_BloqueEdic(prodOriginal, prodEditado);
+			vista = "0-Revisar";
 		}
 		// 7. Configurar el título de la vista
 		let prodNombre = funciones.entidadNombre(entidad);
