@@ -181,7 +181,6 @@ module.exports = {
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
-		let nombre_castellano = prodOriginal.nombre_castellano;
 		// Ir a la vista
 		//return res.send(prodOriginal)
 		return res.render("0-Revisar", {
@@ -195,7 +194,6 @@ module.exports = {
 			bloqueDer,
 			motivosRechazo,
 			prodNombre,
-			nombre_castellano,
 		});
 	},
 	prod_Edicion: async (req, res) => {
@@ -281,7 +279,6 @@ module.exports = {
 		// 7. Configurar el título de la vista
 		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		let nombre_castellano = prodOriginal.nombre_castellano;
 		// Ir a la vista
 		//return res.send([prodOriginal, prodEditado]);
 		return res.render(vista, {
@@ -297,7 +294,6 @@ module.exports = {
 			entidad,
 			bloqueDer,
 			prodNombre,
-			nombre_castellano,
 		});
 	},
 	// RCLV
@@ -398,7 +394,7 @@ module.exports = {
 		let avatar = imagen
 			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
-		let nombre_castellano = producto.nombre_castellano;
+		let prodOriginal = producto;
 		// Ir a la vista
 		//return res.send(RCLV_original);
 		return res.render("0-Revisar", {
@@ -411,7 +407,7 @@ module.exports = {
 			provs,
 			linksTipos,
 			avatar,
-			nombre_castellano,
+			prodOriginal,
 		});
 	},
 };
