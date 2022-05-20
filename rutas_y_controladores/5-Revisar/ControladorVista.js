@@ -377,24 +377,31 @@ module.exports = {
 		// PROBLEMAS
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("Errores", {informacion});
-		// Obtener todos los links 'no inactivos'
+		// Obtener todos los links
 		let entidad_id = funciones.entidad_id(entidad);
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
-			["status_registro", "link_ediciones"]
+			["status_registro", "link_ediciones","link_prov","link_tipo"]
 		);
 		let inactivado_id = status.find((n) => n.inactivado).id;
-		links = links.filter((n) => n.status_registro_id != inactivado_id);
-		// Obtener información de BD
-		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
-		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		let linksAnalizar = links.filter((n) => n.status_registro_id != inactivado_id);
+		let linksInactivos= links.filter((n) => n.status_registro_id == inactivado_id);
 		// Información para la vista
 		let imagen = producto.avatar;
 		let avatar = imagen
 			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
 		let prodOriginal = producto;
+		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
+			.then((n) => n.filter((m) => m.links))
+			.then((n) =>
+				n.map((m) => {
+					return {id: m.id, comentario: m.comentario};
+				})
+			);
 		// Ir a la vista
 		//return res.send(RCLV_original);
 		return res.render("0-Revisar", {
@@ -403,11 +410,14 @@ module.exports = {
 			titulo,
 			entidad,
 			producto,
-			links,
+			linksAnalizar,
+			linksInactivos,
 			provs,
-			linksTipos,
+			links_tipos: linksTipos,
 			avatar,
 			prodOriginal,
+			motivos,
+			calidades: [144, 240, 360, 480, 720, 1080],
 		});
 	},
 };
