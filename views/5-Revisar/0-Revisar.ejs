@@ -12,11 +12,11 @@
 		</section>
 		<section id="cuerpo-y-footer">
 			<%- include('23-Footer') %>
-			<section id="cuerpo">
+			<div id="cuerpo">
 				<%- codigo == "producto/alta" ? include("2-Prod-Alta") : "" %>
 				<%- codigo == "producto/edicion" ? include("2-Prod-EdicDemas") : "" %>
 				<%- codigo == "links" ? include("4-Links") : "" %>
-			</section>
+			</div>
 		</section>
 	</main>
 </body>
