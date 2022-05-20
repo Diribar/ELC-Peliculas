@@ -8,13 +8,16 @@
 	<%- include('21-Header') %>
 	<main class="flex-row">
 		<section id="imagen-derecha">
-			<img src="<%= avatar %>" title="<%= prodOriginal.nombre_castellano %>">
+			<img src="<%= avatar %>" title="<%= nombre_castellano %>">
 		</section>
 		<section id="cuerpo-y-footer">
 			<%- include('23-Footer') %>
 			<section id="cuerpo">
-				<%- codigo == "producto/alta" ? include("2-Prod1-Alta") : "" %>
+				<%- codigo == "producto/alta" ? include("2-Prod-Alta") : "" %>
+				<%- codigo == "producto/edicion" ? include("2-Prod-EdicDemas") : "" %>
+				<%- codigo == "links" ? include("4-Links") : "" %>
 			</section>
+		</section>
 	</main>
 </body>
 </html>

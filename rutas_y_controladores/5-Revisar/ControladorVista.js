@@ -181,6 +181,7 @@ module.exports = {
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
+		let nombre_castellano=prodOriginal.nombre_castellano
 		// Ir a la vista
 		//return res.send(prodOriginal)
 		return res.render("0-Revisar", {
@@ -194,6 +195,7 @@ module.exports = {
 			bloqueDer,
 			motivosRechazo,
 			prodNombre,
+			nombre_castellano,
 		});
 	},
 	prod_Edicion: async (req, res) => {
@@ -250,7 +252,7 @@ module.exports = {
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
-			vista = "2-Prod2-Edic1Avatar";
+			vista = "2-Prod-EdicAvatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
@@ -268,17 +270,18 @@ module.exports = {
 			[ingresos, reemplazos] = procesar.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
+			vista = "0-Revisar";
 			avatar = imagen
 				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesar.prod_BloqueEdic(prodOriginal, prodEditado);
-			vista = "2-Prod2-Edic2Estruct";
 		}
 		// 7. Configurar el título de la vista
 		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let nombre_castellano=prodOriginal.nombre_castellano
 		// Ir a la vista
 		//return res.send([prodOriginal, prodEditado]);
 		return res.render(vista, {
@@ -290,11 +293,11 @@ module.exports = {
 			ingresos,
 			reemplazos,
 			avatar,
-			vista,
 			motivos,
 			entidad,
 			bloqueDer,
 			prodNombre,
+			nombre_castellano,
 		});
 	},
 	// RCLV
@@ -390,9 +393,15 @@ module.exports = {
 		// Obtener información de BD
 		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
+		// Información para la vista
+		let imagen = producto.avatar;
+		let avatar = imagen
+			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+			: "/imagenes/8-Agregar/IM.jpg";
+		let nombre_castellano=producto.nombre_castellano
 		// Ir a la vista
 		//return res.send(RCLV_original);
-		return res.render("0-VistaEstandar", {
+		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
@@ -401,6 +410,8 @@ module.exports = {
 			links,
 			provs,
 			linksTipos,
+			avatar,
+			nombre_castellano,
 		});
 	},
 };

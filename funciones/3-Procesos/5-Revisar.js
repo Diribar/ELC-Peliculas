@@ -487,8 +487,13 @@ module.exports = {
 		let linksPropios = links.filter((n) => n.creado_por_id == userID || n.editado_por_id == userID);
 		let linksAjenos = links.filter((n) => n.creado_por_id != userID && n.editado_por_id != userID);
 		// Obtener los productos
-		let prodPropios = obtenerProductos(linksPropios, aprobado_id, haceUnaHora);
-		let prodAjenos = obtenerProductos(linksAjenos, aprobado_id, haceUnaHora);
+		let prodPropios = linksPropios.length
+			? obtenerProductos(linksPropios, aprobado_id, haceUnaHora, userID)
+			: "";
+		let prodAjenos = linksAjenos.length
+			? obtenerProductos(linksAjenos, aprobado_id, haceUnaHora, userID)
+			: "";
+		return prodAjenos;
 		// Eliminar los productos Ajenos que estén presentes en Propios
 		prodAjenos =
 			prodAjenos.length && prodPropios.length
