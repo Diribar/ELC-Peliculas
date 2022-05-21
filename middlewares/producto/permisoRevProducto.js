@@ -17,6 +17,16 @@ module.exports = async (req, res, next) => {
 	let registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = registro.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
+	const vistaTablero = {
+		nombre: "fa-spell-check",
+		link: "/revision/tablero-de-control",
+		titulo: "Ir al 'Tablero de Control' de Revisiones",
+	};
+	const vistaAnterior = {
+		nombre: "fa-circle-left",
+		link: req.session.urlAnterior,
+		titulo: "Ir a la vista anterior",
+	};
 
 	// Funciones
 	let horarioInicio, horarioFinal;
@@ -37,9 +47,7 @@ module.exports = async (req, res, next) => {
 	if (!registro)
 		informacion = {
 			mensajes: ["Registro no encontrado"],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			],
+			iconos: [vistaAnterior],
 		};
 	else {
 		// REGISTRO ENCONTRADO
@@ -50,18 +58,7 @@ module.exports = async (req, res, next) => {
 		if (creadoPorElUsuario1 || creadoPorElUsuario2)
 			informacion = {
 				mensajes: ["El registro debe ser analizado por otro revisor, no por su creador"],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-spell-check",
-						link: "/revision/tablero-de-control",
-						titulo: "Ir al 'Tablero de Control' de Revisiones",
-					},
-				],
+				iconos: [vistaAnterior, vistaTablero],
 			};
 		else {
 			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO
@@ -73,25 +70,14 @@ module.exports = async (req, res, next) => {
 			if (espera > 0)
 				informacion = {
 					mensajes: ["El registro estará disponible para su revisión en " + espera + " " + unidad],
-					iconos: [
-						{
-							nombre: "fa-circle-left",
-							link: req.session.urlAnterior,
-							titulo: "Ir a la vista anterior",
-						},
-						{
-							nombre: "fa-spell-check",
-							link: "/revision/tablero-de-control",
-							titulo: "Ir al 'Tablero de Control' de Revisiones",
-						},
-					],
+					iconos: [vistaAnterior, vistaTablero],
 				};
 			// --------------------------------------------------------------------
 			else {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// Definir nuevas variables
 				if (capturado_en) {
-					horarioInicial = new Date(capturado_en)
+					horarioInicial = new Date(capturado_en);
 					// Configurar el horario final
 					horarioFinal = horarioInicial;
 					horarioFinal.setHours(horarioInicio.getHours() + 1);
@@ -115,18 +101,7 @@ module.exports = async (req, res, next) => {
 								horarioInicio.slice(horarioInicio.indexOf(" ")) +
 								"hs",
 						],
-						iconos: [
-							{
-								nombre: "fa-circle-left",
-								link: req.session.urlAnterior,
-								titulo: "Ir a la vista anterior",
-							},
-							{
-								nombre: "fa-spell-check",
-								link: "/revision/tablero-de-control",
-								titulo: "Ir al 'Tablero de Control' de Revisiones",
-							},
-						],
+						iconos: [vistaAnterior, vistaTablero],
 					};
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
 				// PROBLEMA 5: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
@@ -145,13 +120,7 @@ module.exports = async (req, res, next) => {
 							"Quedó a disposición de que lo continúe revisando otra persona.",
 							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
 						],
-						iconos: [
-							{
-								nombre: "fa-spell-check",
-								link: "/revision/tablero-de-control",
-								titulo: "Ir al 'Tablero de Control' de Revisiones",
-							},
-						],
+						iconos: [vistaTablero],
 					};
 				}
 				// EL USUARIO PUEDE CAPTURAR EL REGISTRO

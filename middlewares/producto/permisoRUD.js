@@ -13,8 +13,17 @@ module.exports = async (req, res, next) => {
 	const codigo = url.slice(0, url.indexOf("/"));
 	const haceUnaHora = funciones.haceUnaHora();
 	const haceDosHoras = funciones.haceDosHoras();
-	const linkDetalle = "/producto/detalle/?entidad=" + entidad + "&id=" + prodID;
-	const vistaAnterior = req.session.urlAnterior;
+	const vistaDetalle = {
+		nombre: "fa-circle-info",
+		link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+		titulo: "Ir a la vista Detalle",
+	};
+	const vistaAnterior = {
+		nombre: "fa-circle-left",
+		link: req.session.urlAnterior,
+		titulo: "Ir a la vista anterior",
+	};
+	const vistaInicio = {nombre: "fa-house", link: "/", titulo: "Ir al 'Inicio'"};
 	const includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = producto.capturado_en;
@@ -36,7 +45,7 @@ module.exports = async (req, res, next) => {
 	let problemasDeCaptura = () => {
 		// Horario de Inicio y Fin
 		if (capturado_en) {
-			horarioInicial = new Date(capturado_en)
+			horarioInicial = new Date(capturado_en);
 			// Configurar el horario final
 			horarioFinal = horarioInicial;
 			horarioFinal.setHours(horarioInicial.getHours() + 1);
@@ -59,18 +68,7 @@ module.exports = async (req, res, next) => {
 						horarioInicial.slice(horarioInicial.indexOf(" ")) +
 						"hs",
 				],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-house",
-						link: "/",
-						titulo: "Ir al 'Inicio'",
-					},
-				],
+				iconos: [vistaAnterior, vistaDetalle],
 			};
 		}
 		// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
@@ -80,10 +78,10 @@ module.exports = async (req, res, next) => {
 			capturado_en > haceDosHoras &&
 			producto.capturado_por_id == userID
 		) {
-			console.log(capturado_en , haceUnaHora , haceDosHoras);
+			console.log(capturado_en, haceUnaHora, haceDosHoras);
 			informacion = {
 				mensajes: [
-					"Esta edición quedó inconclusa desde Rel " +
+					"Esta edición quedó inconclusa desde el " +
 						horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
 						" a las " +
 						horarioFinal.slice(horarioFinal.indexOf(" ")) +
@@ -91,13 +89,7 @@ module.exports = async (req, res, next) => {
 					"Quedó a disposición del equipo de revisores.",
 					"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
 				],
-				iconos: [
-					{
-						nombre: "fa-spell-check",
-						link: "/revision/tablero-de-control",
-						titulo: "Ir al 'Tablero de Control' de Revisiones",
-					},
-				],
+				iconos: [vistaAnterior, vistaDetalle],
 			};
 		}
 		// EL USUARIO PUEDE CAPTURAR EL REGISTRO --> SOLUCIONES
@@ -135,18 +127,7 @@ module.exports = async (req, res, next) => {
 						"Expiró el tiempo de edición.",
 						"Está a disposición de nuestro equipo para su revisión.",
 					],
-					iconos: [
-						{
-							nombre: "fa-circle-left",
-							link: vistaAnterior,
-							titulo: "Ir a la vista anterior",
-						},
-						{
-							nombre: "fa-circle-info",
-							link: linkDetalle,
-							titulo: "Ir a la vista Detalle",
-						},
-					],
+					iconos: [vistaAnterior, vistaDetalle],
 				};
 		}
 		// FOCO EN OTRA PERSONA
@@ -159,18 +140,7 @@ module.exports = async (req, res, next) => {
 					"Está a disposición de nuestro equipo para su revisión.",
 					"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
 				],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-circle-info",
-						link: linkDetalle,
-						titulo: "Ir a la vista Detalle",
-					},
-				],
+				iconos: [vistaAnterior, vistaDetalle],
 			};
 		}
 		return informacion;
@@ -185,18 +155,7 @@ module.exports = async (req, res, next) => {
 					"Está a disposición de nuestro equipo para su revisión.",
 					"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
 				],
-				iconos: [
-					{
-						nombre: "fa-circle-left",
-						link: req.session.urlAnterior,
-						titulo: "Ir a la vista anterior",
-					},
-					{
-						nombre: "fa-circle-info",
-						link: linkDetalle,
-						titulo: "Ir a la vista Detalle",
-					},
-				],
+				iconos: [vistaAnterior, vistaDetalle],
 			};
 		} else if (codigo == "edicion") {
 			// FOCO EN NO REVISORES
@@ -209,18 +168,7 @@ module.exports = async (req, res, next) => {
 						"Está a disposición de nuestro equipo para su revisión.",
 						"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
 					],
-					iconos: [
-						{
-							nombre: "fa-circle-left",
-							link: req.session.urlAnterior,
-							titulo: "Ir a la vista anterior",
-						},
-						{
-							nombre: "fa-circle-info",
-							link: linkDetalle,
-							titulo: "Ir a la vista Detalle",
-						},
-					],
+					iconos: [vistaAnterior, vistaDetalle],
 				};
 			}
 			// FOCO EN REVISORES
@@ -235,9 +183,7 @@ module.exports = async (req, res, next) => {
 	if (!producto) {
 		informacion = {
 			mensajes: ["Producto no encontrado"],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			],
+			iconos: [vistaAnterior],
 		};
 	} else {
 		// REGISTRO ENCONTRADO

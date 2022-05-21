@@ -68,14 +68,14 @@ module.exports = {
 			errores.completo = datos.completo == "" ? cartelCampoVacio : "";
 		// parte
 		if (campos.includes("parte") && datos.completo != 1 && datos.link_tipo_id != 1)
-			errores.parte = datos.parte == "" ? cartelCampoVacio : "";
+			errores.parte = datos.parte == "" ? "Completalo" : "";
 		// gratuito
 		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
-					? cartelCampoVacio
+					? "Completalo"
 					: datos.gratuito < "0" && datos.gratuito > "1"
-					? "Por favor elegí una opción válida"
+					? "Inválido"
 					: "";
 		}
 		// ***** RESUMEN *******

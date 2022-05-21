@@ -6,8 +6,8 @@ window.addEventListener("load", async () => {
 	let prov_idInput = document.querySelector(".inputError input[name='link_prov_id'");
 
 	// Form - Campos en general
-	let inputs = document.querySelectorAll("form .input");
-	let columnasInput = document.querySelectorAll("form #altas .input").length;
+	let inputs = document.querySelectorAll("tbody .input");
+	let columnasInput = document.querySelectorAll("tbody .altas .input").length;
 	let camposInput = Array.from(inputs)
 		.map((n) => n.name)
 		.slice(0, columnasInput);
@@ -15,24 +15,24 @@ window.addEventListener("load", async () => {
 	let filaUrlAlta = filasInput - 1;
 
 	// Sectores particulares
-	let calidad = document.querySelectorAll("form #calidad");
-	let tipo = document.querySelectorAll("form #tipo");
-	let completo = document.querySelectorAll("form #completo");
-	let parte = document.querySelectorAll("form #parte");
-	let gratuito = document.querySelectorAll("form #gratuito");
-	let guardar = document.querySelectorAll("form .fa-floppy-disk");
+	let calidad = document.querySelectorAll("tbody .calidad");
+	let tipo = document.querySelectorAll("tbody .tipo");
+	let completo = document.querySelectorAll("tbody .completo");
+	let parte = document.querySelectorAll("tbody .parte");
+	let gratuito = document.querySelectorAll("tbody .gratuito");
+	let guardar = document.querySelectorAll("tbody .fa-floppy-disk");
 
 	// Inputs particulares
 	let urlInputs = document.querySelectorAll(".inputError input[name='url'");
-	let calidadInputs = document.querySelectorAll("#calidad .inputError .input");
-	let tipoInputs = document.querySelectorAll("#tipo .inputError .input");
-	let completoInputs = document.querySelectorAll("#completo .inputError .input");
-	let parteInputs = document.querySelectorAll("#parte .inputError .input");
-	let gratuitoInputs = document.querySelectorAll("#gratuito .inputError .input");
+	let calidadInputs = document.querySelectorAll(".calidad .inputError .input");
+	let tipoInputs = document.querySelectorAll(".tipo .inputError .input");
+	let completoInputs = document.querySelectorAll(".completo .inputError .input");
+	let parteInputs = document.querySelectorAll(".parte .inputError .input");
+	let gratuitoInputs = document.querySelectorAll(".gratuito .inputError .input");
 
 	// OK/Errores
-	let provsDesconocido = document.querySelectorAll("#url .inputError .fa-circle-question");
-	let provsConocido = document.querySelectorAll("#url .inputError .fa-circle-check");
+	let provsDesconocido = document.querySelectorAll(".url .inputError .fa-circle-question");
+	let provsConocido = document.querySelectorAll(".url .inputError .fa-circle-check");
 	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
 	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
@@ -77,14 +77,16 @@ window.addEventListener("load", async () => {
 	};
 	// DERIVADAS DEL URL -------------------------------------------------------
 	let funcionesDerivadasDelUrl = async (fila) => {
+		// Variables
+		let error;
 		// 1. Impacto en errores
 		if (fila == filaUrlAlta) {
 			// Depurar el url
 			// let url = encodeURIComponent(depurarUrl())
 			let url = depurarUrl();
 			// 2. Averiguar si hay algún error y aplicar las consecuencias
-			var error = await fetch(rutaValidar + "url=" + url).then((n) => n.json());
-		} else var error = {hay: false};
+			error = await fetch(rutaValidar + "url=" + url).then((n) => n.json());
+		} else error = {hay: false};
 		let proveedor = await consecuenciaErrorUrl(error, fila);
 		if (error.url) return;
 		// 2. Impacto en 'calidad'
@@ -147,11 +149,11 @@ window.addEventListener("load", async () => {
 		// Obtener el url
 		let url = urlInputs[fila].value;
 		// Obtener todos los proveedores
-		let proveedores = await fetch(rutaObtenerProv).then((n) => n.json());
+		let provs = await fetch(rutaObtenerProv).then((n) => n.json());
 		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-		let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
-		// Si no se reconoce el proveedor, se asume el 'desconocido'
-		return proveedor ? proveedor : proveedores.find((n) => n.generico);
+		let prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
+		// Si no se reconoce el , se asume el 'desconocido'
+		return prov ? prov : provs.find((n) => n.generico);
 	};
 	let actualizarIconoProv = (proveedor, fila) => {
 		// Acciones en función de si el proveedor es genérico
@@ -201,7 +203,12 @@ window.addEventListener("load", async () => {
 			completoInputs[fila].disabled = false;
 		}
 		// Cambios en el campo 'parte'
-		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
+		if (
+			(proveedor.trailer && !proveedor.pelicula) ||
+			proveedor.peli_siempre_completa ||
+			colecciones ||
+			completoInputs[fila].value == "1"
+		) {
 			parte[fila].classList.add("desperdicio");
 			parteInputs[fila].classList.add("ocultar");
 			parteInputs[fila].disabled = true;
@@ -327,7 +334,7 @@ window.addEventListener("load", async () => {
 		if (urlInputs[fila].value) {
 			// Funciones derivadas del url
 			await funcionesDerivadasDelUrl(fila);
-			// Funciones derivadas del Dara Entry
+			// Funciones derivadas del Data Entry
 			funcionesDerivadasDeOtrosDataEntry(fila);
 			// Actualizar los errores de todo el form
 			await consecuenciasErrores(fila);

@@ -367,7 +367,14 @@ module.exports = {
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links
 		let includes = ["links", "status_registro"];
+		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		if (entidad == "capitulos")
+			producto.capitulos = await BD_especificas.obtenerCapitulos(
+				producto.coleccion_id,
+				producto.temporada
+			);
+
 		// PROBLEMAS
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("Errores", {informacion});

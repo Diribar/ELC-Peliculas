@@ -91,7 +91,7 @@ window.addEventListener("load", async () => {
 
 		// Flechas
 		let iconos =
-			codigo == "/producto/edicion/"
+			codigo == "/producto/edicion/" || codigo == "/producto/links/"
 				? {
 						HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 						link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
