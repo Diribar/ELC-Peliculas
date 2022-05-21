@@ -2,10 +2,10 @@
 window.addEventListener("load", async () => {
 	// Variables
 	let form = document.querySelector("#datos form");
-	let filasDatos = document.querySelectorAll("form .yaExistentes");
-	let filasEditar = document.querySelectorAll("form .edicion");
-	let botonesEditar = document.querySelectorAll("form .yaExistentes .editar");
-	let botonesGuardar = document.querySelectorAll("form .fa-floppy-disk");
+	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
+	let filasEditar = document.querySelectorAll("tbody .edicion");
+	let botonesEditar = document.querySelectorAll("tbody .yaExistentes .editar");
+	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
 	let numeroFila = document.querySelector("form input[name='numeroFila']");
 
 	// Acciones si se elije botonEditar
