@@ -115,6 +115,7 @@ module.exports = {
 			// En caso afirmativo, actualizarlo inactivando la captura
 			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: false});
 		}
+		return;
 	},
 
 	// Fecha y Hora
