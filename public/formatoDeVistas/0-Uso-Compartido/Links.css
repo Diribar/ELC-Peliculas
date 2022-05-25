@@ -3,9 +3,13 @@
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column; }
 #datos #tipoLink {align-self: flex-start;}
+#datos #tags div {padding: 3px 15px; background-color: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
+#datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
+#datos #tags div#activo {cursor: context-menu;}
+#datos #tags div#inactivo {opacity: 0.4; cursor: pointer;}
 
 /* Tablas - Temas generales */
-#datos table {margin-top: 20px;}
+/* #datos table {margin-top: 20px;} */
 #datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos table * {font-size: 1.1rem;}
 #datos table thead tr th, #datos table tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
@@ -20,7 +24,7 @@
 #datos table thead {padding-right: 18px;}
 #datos table thead, #datos table tbody {display: block;}
 #datos table tbody {max-height: 200px; overflow-y: auto; overflow-x: clip;}
-#datos table tbody {padding-bottom: 15px;}
+#datos table tbody {padding-top: 15px; padding-bottom: 15px;}
 
 /* Temas de edición */
 #datos table tbody tr {height: 30px;}
@@ -29,14 +33,14 @@
     {height: 22px; border-radius: 5px; border-width: 1px; text-align: center; padding: 0 5px 2px; line-height: 1;}
 
 /* Tablas - Anchos */
-#datos table .url {width: 140px;}
-#datos table .calidad {width: 86px;}
-#datos table .tipo {width: 90px;}
-#datos table .completo {width: 73px;}
-#datos table .parte {width: 60px;}
-#datos table .gratuito {width: 64px;}
-#datos table .status {width: 55px;}
-#datos table .accion {width: 70px;}
+#datos table .ancho_url {width: 140px;}
+#datos table .ancho_calidad {width: 86px;}
+#datos table .ancho_tipo {width: 90px;}
+#datos table .ancho_completo {width: 73px;}
+#datos table .ancho_parte {width: 60px;}
+#datos table .ancho_gratuito {width: 64px;}
+#datos table .ancho_status {width: 55px;}
+#datos table .ancho_accion {width: 70px;}
 
 /* Tablas - URL */
 #datos table tbody tr td.url img {max-width: 100%; max-height: 20px;}
@@ -58,7 +62,7 @@
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td .fa-solid {font-size: 1.2rem; cursor: pointer;}
+#datos tbody tr td .fa-solid {cursor: pointer;}
 #datos tbody tr td .fa-solid.inactivo {cursor: default;}
 
 /* Errores */

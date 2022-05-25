@@ -14,8 +14,6 @@ module.exports = (sequelize, dt) => {
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
-
-		fecha_referencia: {type: dt.DATE},
 	};
 	const config = {
 		tableName: "links_2edicion",

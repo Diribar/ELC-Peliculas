@@ -10,12 +10,21 @@ module.exports = (sequelize, dt) => {
 		creado_en: {type: dt.DATE},
 		alta_analizada_por_id: {type: dt.INTEGER},
 		alta_analizada_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.INTEGER},
-		status_registro_id: {type: dt.INTEGER},
+		lead_time_creacion: {type: dt.DECIMAL},
 
+		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
+		edic_analizada_por_id: {type: dt.INTEGER},
 		edic_analizada_en: {type: dt.DATE},
-		lead_time_edicion: {type: dt.INTEGER},
+		lead_time_edicion: {type: dt.DECIMAL},
+
+		cambio_status_propuesto_por_id: {type: dt.INTEGER},
+		cambio_status_propuesto_en: {type: dt.DATE},
+		cambio_status_analizado_por_id: {type: dt.INTEGER},
+		cambio_status_analizado_en: {type: dt.DATE},
+		motivo_id: {type: dt.INTEGER},
+
+		status_registro_id: {type: dt.INTEGER},
 
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
@@ -31,8 +40,13 @@ module.exports = (sequelize, dt) => {
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "cambio_status_propuesto_por", foreignKey: "cambio_status_propuesto_por_id"});
+		entidad.belongsTo(n.usuarios, {as: "cambio_status_analizado_por", foreignKey: "cambio_status_analizado_por_id"});
+		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "hecho_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "hecho_id"});
