@@ -977,7 +977,6 @@ CREATE TABLE links_1originales (
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
 
-
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME NULL,
 	edic_analizada_por_id INT UNSIGNED NOT NULL,
