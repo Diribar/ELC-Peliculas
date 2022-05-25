@@ -24,7 +24,7 @@ router.get("/session", vista.session);
 router.get("/cookies", vista.cookies);
 
 // Miscelaneas
-router.get("/inactivar", soloAutInput,  vista.inactivar);
+router.get("/inactivar", soloAutInput, entidad, id, vista.inactivar);
 
 // Exportarlo **********************************************
 module.exports = router;
