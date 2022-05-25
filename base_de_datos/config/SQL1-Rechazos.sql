@@ -3,40 +3,6 @@ USE ELC_Peliculas;
 /* MOTIVOS DE RECHAZO DE ALTAS */;
 DROP TABLE IF EXISTS altas_registros_aprob;
 DROP TABLE IF EXISTS altas_registros_rech;
-DROP TABLE IF EXISTS altas_motivos_rech;
-CREATE TABLE altas_motivos_rech (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	orden TINYINT UNSIGNED NOT NULL,
-	comentario VARCHAR(41) NOT NULL,
-	prod BOOLEAN DEFAULT 0,
-	rclv BOOLEAN DEFAULT 0,
-	links BOOLEAN DEFAULT 0,
-	duracion SMALLINT UNSIGNED NOT NULL,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, rclv, links)
-VALUES
-(100, 100, 0, 'Otro motivo', 1, 1, 1)
-;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod)
-VALUES
-(11, 1, 0, 'Producto duplicado', 1),
-(12, 2, 1, 'Producto ajeno a nuestro perfil', 1),
-(13, 3, 90, 'Producto ofensivo a nuestro perfil', 1),
-(14, 4, 180, 'Producto ofensivo con pornografía', 1)
-;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links)
-VALUES
-(21, 1, 0, 'Link reemplazado por otro más acorde', 1),
-(22, 2, 0, 'Link a video no disponible', 1),
-(23, 3, 10, 'Link a video sin relación con el producto', 1),
-(24, 4, 10, 'Link a sitio inexistente', 1)
-;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, rclv)
-VALUES
-(31, 1, 0, 'Registro duplicado', 1),
-(32, 2, 10, 'Spam', 1)
-;
 /* APROBACION DE ALTAS */;
 CREATE TABLE altas_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
