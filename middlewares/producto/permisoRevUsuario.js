@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 		let entidadCodigo = prodCapturado.entidad;
 		let entidadNombre = funciones.entidadNombre(entidadCodigo);
 		let entidadID = prodCapturado.id;
-		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidadCodigo + "&id=" + entidadID;
+		let linkRedireccionar = "/revision/redireccionar/?entidad=" + entidadCodigo + "&id=" + entidadID;
 		let url = encodeURIComponent(req.originalUrl);
 		let linkInactivar = "/inactivar/?entidad=" + entidadCodigo + "&id=" + entidadID + "&url=" + url;
 		let horario =
@@ -54,7 +54,7 @@ module.exports = async (req, res, next) => {
 			],
 			iconos: [
 				{nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar esa entidad"},
-				{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"},
+				{nombre: "fa-circle-right", link: linkRedireccionar, titulo: "Ir a esa vista"},
 			],
 		};
 
