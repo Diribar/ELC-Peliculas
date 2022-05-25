@@ -85,7 +85,6 @@ window.addEventListener("load", async () => {
 						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volverlo a revisar.",
 				  ]
 				: [];
-		console.log();
 		mensajes.innerHTML = "";
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 

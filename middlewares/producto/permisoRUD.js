@@ -23,7 +23,6 @@ module.exports = async (req, res, next) => {
 		link: req.session.urlAnterior,
 		titulo: "Ir a la vista anterior",
 	};
-	const vistaInicio = {nombre: "fa-house", link: "/", titulo: "Ir al 'Inicio'"};
 	const includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = producto.capturado_en;
@@ -78,7 +77,6 @@ module.exports = async (req, res, next) => {
 			capturado_en > haceDosHoras &&
 			producto.capturado_por_id == userID
 		) {
-			console.log(capturado_en, haceUnaHora, haceDosHoras);
 			informacion = {
 				mensajes: [
 					"Esta edición quedó inconclusa desde el " +

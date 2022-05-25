@@ -15,7 +15,7 @@ const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
 // Rutas de Vistas *******************************************
 // Vistas Generales
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
-router.get("/inactivar-captura", soloGestionProd, vista.inactivarCaptura);
+router.get("/inactivar-captura", soloGestionProd, entidad, id, vista.inactivarCaptura);
 router.get(
 	"/redireccionar",
 	soloGestionProd,

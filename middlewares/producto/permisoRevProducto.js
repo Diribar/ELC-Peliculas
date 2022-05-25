@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
 	};
 
 	// Funciones
-	let horarioInicio, horarioFinal;
+	let horarioInicial, horarioFinal;
 	let horarioTexto = (horario) => {
 		return (
 			horario.getDate() +
@@ -80,9 +80,9 @@ module.exports = async (req, res, next) => {
 					horarioInicial = new Date(capturado_en);
 					// Configurar el horario final
 					horarioFinal = horarioInicial;
-					horarioFinal.setHours(horarioInicio.getHours() + 1);
+					horarioFinal.setHours(horarioInicial.getHours() + 1);
 					// Convertir a string
-					horarioInicio = horarioTexto(horarioInicio);
+					horarioInicial = horarioTexto(horarioInicial);
 					horarioFinal = horarioTexto(horarioFinal);
 				}
 				// PROBLEMA 4: El registro está capturado por otro usuario en forma 'activa'
@@ -96,9 +96,9 @@ module.exports = async (req, res, next) => {
 							"El registro está en revisión por el usuario " +
 								registro.capturado_por.apodo +
 								", desde el " +
-								horarioInicio.slice(0, horarioInicio.indexOf(" ")) +
+								horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
 								" a las " +
-								horarioInicio.slice(horarioInicio.indexOf(" ")) +
+								horarioInicial.slice(horarioInicial.indexOf(" ")) +
 								"hs",
 						],
 						iconos: [vistaAnterior, vistaTablero],

@@ -38,7 +38,6 @@ window.addEventListener("load", async () => {
 		// Editar y cambiar el status del nuevo RCLV
 		let rutaStatus = "/revision/api/rclv-alta/";
 		let resultado = await fetch(rutaStatus + URL).then((n) => n.json());
-		console.log(resultado);
 		// Acciones en función del resultado
 		if (resultado != "Resultado exitoso") {
 			// Reportar el error

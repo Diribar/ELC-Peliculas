@@ -97,7 +97,24 @@ module.exports = {
 			? "RCLV_hechos"
 			: entidad.valor_id
 			? "RCLV_valores"
-			:"";
+			: "";
+	},
+
+	// Entidades
+	inactivarCaptura: async (entidad, prodID, userID) => {
+		// Obtener producto
+		let registro = await BD_genericas.obtenerPorId(entidad, prodID);
+		// Verificar que tenga una captura activa del usuario
+		if (
+			registro &&
+			registro.capturado_en &&
+			registro.capturado_por_id &&
+			registro.captura_activa &&
+			registro.capturado_por_id == userID
+		) {
+			// En caso afirmativo, actualizarlo inactivando la captura
+			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: false});
+		}
 	},
 
 	// Fecha y Hora

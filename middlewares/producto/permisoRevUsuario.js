@@ -15,13 +15,16 @@ module.exports = async (req, res, next) => {
 		entidadActual,
 		prodID,
 		userID,
-		haceUnaHora,
+		haceUnaHora
 	);
 	if (prodCapturado) {
 		// Datos para el mensaje
-		let entidad = prodCapturado.entidad;
-		let entidadNombre = funciones.entidadNombre(prodCapturado.entidad);
-		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidad + "&id=" + prodCapturado.id;
+		let entidadCodigo = prodCapturado.entidad;
+		let entidadNombre = funciones.entidadNombre(entidadCodigo);
+		let entidadID = prodCapturado.id;
+		let linkEntidadCapturada = "/revision/redireccionar/?entidad=" + entidadCodigo + "&id=" + entidadID;
+		let url = encodeURIComponent(req.originalUrl);
+		let linkInactivar = "/inactivar/?entidad=" + entidadCodigo + "&id=" + entidadID + "&url=" + url;
 		let horario =
 			prodCapturado.capturado_en.getHours() +
 			":" +
@@ -29,10 +32,10 @@ module.exports = async (req, res, next) => {
 			"hs.";
 		// Preparar la información
 		let terminacion =
-			prodCapturado.entidad != "capitulos" && !prodCapturado.entidad.includes("RCLV")
+			entidadCodigo != "capitulos" && !entidadCodigo.includes("RCLV")
 				? {entidad: "la ", reservado: "a"}
 				: {entidad: "el ", reservado: "o"};
-		let nombre = prodCapturado.entidad.includes("RCLV")
+		let nombre = entidadCodigo.includes("RCLV")
 			? "nombre"
 			: prodCapturado.nombre_castellano
 			? "nombre_castellano"
@@ -49,7 +52,10 @@ module.exports = async (req, res, next) => {
 					" desde las " +
 					horario,
 			],
-			iconos: [{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"}],
+			iconos: [
+				{nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar esa entidad"},
+				{nombre: "fa-circle-right", link: linkEntidadCapturada, titulo: "Ir a esa vista"},
+			],
 		};
 
 		return res.render("Errores", {informacion});

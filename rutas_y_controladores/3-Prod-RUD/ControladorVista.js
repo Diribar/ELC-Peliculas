@@ -258,11 +258,10 @@ module.exports = {
 		// Combinar los datos Editados con la versión Original
 		prodEditado = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
-		let linksCombinados = await procesar.obtenerLinksCombinados(entidad, prodID, userID);
+		let links = await procesar.obtenerLinksActualizados(entidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
-		let [linksActivos, linksInactivos] = await procesar.separarActivos_e_Inactivos(linksCombinados);
 		// Configurar el producto, el título
 		let prodNombre = funciones.entidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -289,8 +288,7 @@ module.exports = {
 			prodID,
 			userID,
 			titulo,
-			linksActivos,
-			linksInactivos,
+			links,
 			provs,
 			producto: prodEditado,
 			links_tipos: linksTipos,

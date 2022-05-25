@@ -1,6 +1,6 @@
 <tr class="yaExistentes">
 	<!-- Url -->
-	<td class="url">
+	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
 			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>" title="<%= link.url %>">
 		</a>
@@ -17,19 +17,19 @@
 		</select>
 	</td>
 	<!-- Calidad -->
-	<td class="taparMotivo"><%= link.calidad %></td>
+	<td class="ancho_calidad taparMotivo"><%= link.calidad %></td>
 	<!-- Tipo -->
-	<td class="taparMotivo"><%= link.link_tipo.nombre %></td>
+	<td class="ancho_tipo taparMotivo"><%= link.link_tipo.nombre %></td>
 	<!-- Completo -->
-	<td class="taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
+	<td class="ancho_completo taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
 	<!-- Parte -->
-	<td class="taparMotivo <%- link.completo ? 'desperdicio' : '' %>"><%- !link.completo ? link.parte : '' %></td>
+	<td class="ancho_parte taparMotivo <%- link.completo ? 'desperdicio' : '' %>"><%- !link.completo ? link.parte : '' %></td>
 	<!-- Gratuito -->
-	<td class="taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
+	<td class="ancho_gratuito taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
-	<td class="taparMotivo"><%- link.status_registro.nombre %> </td>
+	<td class="ancho_status taparMotivo"><%- link.status_registro.nombre %> </td>
 	<!-- Acción -->
-	<td class="">
+	<td class="ancho_accion">
 		<!-- Los demás links se pueden editar siempre -->
 		<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
 		<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
