@@ -8,6 +8,13 @@ const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
+	// Usadas en este archivo
+	ahora: () => {
+		// Instante actual en horario local
+		let ahora = new Date(new Date().toUTCString());
+		return ahora;
+	},
+
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
 		let archivoOrigen = "./public/imagenes/" + origen + "/" + nombre;
@@ -117,13 +124,27 @@ module.exports = {
 		}
 		return;
 	},
+	activarCapturaSiNoLoEsta: async function (registro) {
+		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
+		if (
+			!registro.capturado_en ||
+			!registro.captura_activa ||
+			registro.capturado_por_id != userID ||
+			registro.capturado_en < haceDosHoras
+		) {
+			let datos = {captura_activa: true};
+			// SOLUCIÓN 2: cambia de usuario si estaba capturado por otro
+			if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
+			// SOLUCIÓN 3: fija la nueva hora de captura si corresponde
+			if (registro.capturado_por_id != userID || capturado_en < haceDosHoras)
+				datos.capturado_en = this.ahora();
+			// CAPTURA DEL REGISTRO
+			await BD_genericas.actualizarPorId(entidad, prodID, datos);
+		}
+		return
+	},
 
 	// Fecha y Hora
-	ahora: () => {
-		// Instante actual en horario local
-		let ahora = new Date(new Date().toUTCString());
-		return ahora;
-	},
 	haceUnaHora: function () {
 		let horario = this.ahora();
 		horario.setHours(horario.getHours() - 1);
@@ -154,6 +175,18 @@ module.exports = {
 		leadTime = Math.min(96, leadTime);
 		// Fin
 		return leadTime;
+	},
+	horarioTexto: (horario) => {
+		return (
+			horario.getDate() +
+			"/" +
+			meses[horario.getMonth()] +
+			" a las " +
+			horario.getHours() +
+			":" +
+			String(horario.getMinutes()).padStart(2, "0") +
+			"hs"
+		);
 	},
 
 	// Varios
