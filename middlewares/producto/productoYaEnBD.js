@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		? req.cookies.datosOriginales
 		: "";
 	// Controles
-	if (!datos) return res.redirect("/producto_rud/agregar/palabras-clave");
+	if (!datos) return res.redirect("/producto_agregar/palabras-clave");
 	else if (datos.fuente != "IM") {
 		let fuente_id = datos.fuente + "_id";
 		let elc_id = await BD_especificas.obtenerELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
