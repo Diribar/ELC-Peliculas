@@ -1,6 +1,6 @@
 <tr class="altas">
 	<!-- Url y Proveedor_id-->
-	<td class="url">
+	<td class="ancho_url url">
 		<div class="inputError">
 			<input name="url" type="text" autofocus class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.url) ? dataEntry.url : "" %>" autocomplete="off">
 			<input name="link_prov_id" class="ocultar" value="<%- (dataEntry.numeroFila == fila && dataEntry.link_prov_id) ? dataEntry.link_prov_id : "" %>">
@@ -11,7 +11,7 @@
 		</div>
 	</td>
 	<!-- Calidad -->
-	<td class="calidad">
+	<td class="ancho_calidad calidad">
 		<div class="inputError">
 			<select name="calidad" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && !dataEntry.calidad) ? "selected" : "" %>>Elejí</option>
@@ -26,7 +26,7 @@
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td class="tipo">
+	<td class="ancho_tipo tipo">
 		<div class="inputError">
 			<select name="link_tipo_id" class="input">
 				<option value="" class="ocultar">Elejí</option>
@@ -41,7 +41,7 @@
 		</div>
 	</td>
 	<!-- Completo -->
-	<td class="completo">
+	<td class="ancho_completo completo">
 		<div class="inputError">
 			<select name="completo" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "") ? "selected" : "" %>>Elejí</option>
@@ -54,7 +54,7 @@
 		</div>
 	</td>
 	<!-- Parte -->
-	<td class="parte">
+	<td class="ancho_parte parte">
 		<div class="inputError">
 			<input name="parte" type="number" class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte != "-") ? dataEntry.parte : '' %>">
 			<!-- Errores -->
@@ -63,7 +63,7 @@
 		</div>
 	</td>
 	<!-- Gratuito -->
-	<td class="gratuito">
+	<td class="ancho_gratuito gratuito">
 		<div class="inputError">
 			<select name="gratuito" class="input">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.gratuito == "") ? "selected" : "" %>>?</option>
@@ -76,9 +76,10 @@
 		</div>
 	</td>
 	<!-- Status -->
-	<td class="desperdicio"></td>
+	<td class="ancho_status status desperdicio">
+	</td>
 	<!-- Acción -->
-	<td class="accion">
+	<td class="ancho_accion accion">
 		<i class="fa-solid fa-floppy-disk inactivo" title='Guardar'></i>
 	</td>
 </tr>

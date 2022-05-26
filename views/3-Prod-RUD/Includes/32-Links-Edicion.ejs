@@ -1,6 +1,6 @@
 <tr class="edicion ocultar">
 	<!-- Url -->
-	<td class="url" title="<%= link.url %>">
+	<td class="ancho_url url" title="<%= link.url %>">
 		<div class="inputError">
 			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
 			<input name="url" type="text" class="input ocultar" value="<%= link.url %>">
@@ -11,7 +11,7 @@
 		</div>
 	</td>
 	<!-- Calidad -->
-	<td class="calidad">
+	<td class="ancho_calidad calidad">
 		<div class="inputError">
 			<select name="calidad" class="input">
 				<% for (let calidad of calidades) { %>
@@ -25,7 +25,7 @@
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td class="tipo">
+	<td class="ancho_tipo tipo">
 		<div class="inputError">
 			<select name="link_tipo_id" class="input">
 				<option value="<%= links_tipos[0].id %>" <%- link.link_tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
@@ -39,7 +39,7 @@
 		</div>
 	</td>
 	<!-- Completo -->
-	<td class="completo">
+	<td class="ancho_completo completo">
 		<div class="inputError">
 			<select name="completo" class="input">
 				<option value="1" <%- link.completo=="1" ? "selected" : "" %>>SI</option>
@@ -51,7 +51,7 @@
 		</div>
 	</td>
 	<!-- Parte -->
-	<td class="parte">
+	<td class="ancho_parte parte">
 		<div class="inputError">
 			<input name="parte" type="number" class="input" value="<%- link.parte != "-" ? link.parte : '' %>">
 			<!-- Errores -->
@@ -60,7 +60,7 @@
 		</div>
 	</td>
 	<!-- Gratuito -->
-	<td class="gratuito">
+	<td class="ancho_gratuito gratuito">
 		<div class="inputError">
 			<select name="gratuito" class="input">
 				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
@@ -72,9 +72,9 @@
 		</div>
 	</td>
 	<!-- Status -->
-	<td class="status taparMotivo"><%= link.status_registro.nombre %> </td>
+	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %> </td>
 	<!-- Acción -->
-	<td class="accion">
+	<td class="ancho_accion accion">
 		<i class="fa-solid fa-floppy-disk" title='Guardar'></i>
 	</td>
 </tr>
