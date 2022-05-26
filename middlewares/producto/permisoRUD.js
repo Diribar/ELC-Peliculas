@@ -23,97 +23,49 @@ module.exports = async (req, res, next) => {
 		link: req.session.urlAnterior,
 		titulo: "Ir a la vista anterior",
 	};
+	const prohibidoAccederEnEseStatus = [
+		"El producto todavía no está aprobado.",
+		"Está a disposición de nuestro equipo para su revisión.",
+		"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
+	];
 	const includes = entidad == "capitulos" ? ["status_registro", "coleccion"] : "status_registro";
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = producto.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
-	let informacion, horarioInicial, horarioFinal;
+	let informacion;
 
 	// Funciones --------------------------------------------------------
-	let horarioTexto = (horario) => {
-		return (
-			horario.getDate() +
-			"/" +
-			meses[horario.getMonth()] +
-			" " +
-			horario.getHours() +
-			":" +
-			String(horario.getMinutes()).padStart(2, "0")
-		);
-	};
-	let problemasDeCaptura = () => {
-		// Horario de Inicio y Fin
-		if (capturado_en) {
-			horarioInicial = new Date(capturado_en);
-			// Configurar el horario final
-			horarioFinal = horarioInicial;
-			horarioFinal.setHours(horarioInicial.getHours() + 1);
-			// Convertir a string
-			horarioInicial = horarioTexto(horarioInicial);
-			horarioFinal = horarioTexto(horarioFinal);
-		}
-		// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
-		if (
-			capturado_en &&
-			capturado_en > haceUnaHora &&
-			producto.capturado_por_id != userID &&
-			producto.captura_activa
-		) {
-			informacion = {
-				mensajes: [
-					"El producto está siendo revisado desde el " +
-						horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
-						" a las " +
-						horarioInicial.slice(horarioInicial.indexOf(" ")) +
-						"hs",
-				],
-				iconos: [vistaAnterior, vistaDetalle],
-			};
-		}
-		// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
-		else if (
-			capturado_en &&
-			capturado_en < haceUnaHora &&
-			capturado_en > haceDosHoras &&
-			producto.capturado_por_id == userID
-		) {
-			informacion = {
-				mensajes: [
-					"Esta edición quedó inconclusa desde el " +
-						horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
-						" a las " +
-						horarioFinal.slice(horarioFinal.indexOf(" ")) +
-						"hs.. ",
-					"Quedó a disposición del equipo de revisores.",
-					"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
-				],
-				iconos: [vistaAnterior, vistaDetalle],
-			};
-		}
-		// EL USUARIO PUEDE CAPTURAR EL REGISTRO --> SOLUCIONES
-		// 1. Activar si no lo está, de lo contrario no hace nada
-		else if (
-			!capturado_en ||
-			!producto.captura_activa ||
-			producto.capturado_por_id != userID ||
-			capturado_en < haceDosHoras
-		) {
-			let datos = {captura_activa: 1};
-			// 2. Cambiar de usuario si estaba capturado por otro
-			if (producto.capturado_por_id != userID) datos.capturado_por_id = userID;
-			// 3. Fijarle la nueva hora de captura si corresponde
-			if (producto.capturado_por_id != userID || capturado_en < haceDosHoras)
-				datos.capturado_en = funciones.ahora();
-			// CAPTURA DEL REGISTRO
-			BD_genericas.actualizarPorId(entidad, prodID, datos);
-		}
-		return informacion;
+	let horarioTexto = () => {
+		// Funciones
+		let texto = (horario) => {
+			return (
+				horario.getDate() +
+				"/" +
+				meses[horario.getMonth()] +
+				" " +
+				horario.getHours() +
+				":" +
+				String(horario.getMinutes()).padStart(2, "0")
+			);
+		};
+		// Configurar el horario inicial
+		let horarioInicial = new Date(capturado_en);
+		// Configurar el horario final
+		let horarioFinal = horarioInicial;
+		horarioFinal.setHours(horarioInicial.getHours() + 1);
+		// Convertir a string
+		horarioInicial = texto(horarioInicial);
+		horarioFinal = texto(horarioFinal);
+		// Límite entre la fecha y la hora
+		let limiteInicial = horarioInicial.indexOf(" ");
+		let limiteFinal = horarioInicial.indexOf(" ");
+		// Fin
+		return [horarioInicial, horarioFinal, limiteInicial, limiteFinal];
 	};
 	let statusCreado = () => {
 		// Variables
 		let informacion;
-		// FOCO EN SU CREADOR
-		// PROBLEMA 2: expiró la ventana de 1 hora
+		// FOCO EN SU CREADOR	--> PROBLEMA 2: expiró la ventana de 1 hora
 		// ¿Creado por el usuario actual?
 		let creadoPorElUsuario1 = producto.creado_por_id == userID;
 		let creadoPorElUsuario2 = entidad == "capitulos" && producto.coleccion.creado_por_id == userID;
@@ -128,16 +80,11 @@ module.exports = async (req, res, next) => {
 					iconos: [vistaAnterior, vistaDetalle],
 				};
 		}
-		// FOCO EN OTRA PERSONA
-		// PROBLEMA 3: en este status, un usuario que no sea su creador no tiene permiso para acceder
+		// FOCO EN OTRA PERSONA	--> PROBLEMA 3: en este status, un usuario que no sea su creador no tiene permiso para acceder
 		else {
 			// No se puede acceder en este status
 			informacion = {
-				mensajes: [
-					"El producto todavía no está aprobado.",
-					"Está a disposición de nuestro equipo para su revisión.",
-					"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
-				],
+				mensajes: prohibidoAccederEnEseStatus,
 				iconos: [vistaAnterior, vistaDetalle],
 			};
 		}
@@ -146,32 +93,83 @@ module.exports = async (req, res, next) => {
 	let alta_aprobada = () => {
 		let informacion;
 		if (codigo == "links") {
-			// No se puede acceder en este status
+			// FOCO EN LINKS	--> PROBLEMA 4: en este status, nadie tiene permiso para acceder
 			informacion = {
-				mensajes: [
-					"El producto todavía no está aprobado.",
-					"Está a disposición de nuestro equipo para su revisión.",
-					"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
-				],
+				mensajes: prohibidoAccederEnEseStatus,
 				iconos: [vistaAnterior, vistaDetalle],
 			};
 		} else if (codigo == "edicion") {
-			// FOCO EN NO REVISORES
-			// PROBLEMA 5: en este status, sólo los revisores pueden acceder
+			// FOCO EN EDICIÓN	--> PROBLEMA 5: en este status, sólo los revisores pueden acceder
 			if (!usuario.rol_usuario.aut_gestion_prod) {
 				// No se puede acceder en este status
 				informacion = {
-					mensajes: [
-						"El producto todavía no está aprobado.",
-						"Está a disposición de nuestro equipo para su revisión.",
-						"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
-					],
+					mensajes: prohibidoAccederEnEseStatus,
 					iconos: [vistaAnterior, vistaDetalle],
 				};
 			}
 			// FOCO EN REVISORES
 			// PROBLEMAS DE CAPTURA
 			else informacion = problemasDeCaptura(informacion);
+		}
+		return informacion;
+	};
+	let problemasDeCaptura = () => {
+		// PROBLEMAS DE CAPTURA
+		if (capturado_en) {
+			let [horarioInicial, horarioFinal, limiteInicial, limiteFinal] = horarioTexto();
+			// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
+			if (
+				capturado_en > haceUnaHora &&
+				producto.capturado_por_id != userID &&
+				producto.captura_activa
+			) {
+				informacion = {
+					mensajes: [
+						"El producto está siendo revisado por otro usuario desde el " +
+							horarioInicial.slice(0, limiteInicial) +
+							" a las " +
+							horarioInicial.slice(limiteInicial) +
+							"hs",
+					],
+					iconos: [vistaAnterior, vistaDetalle],
+				};
+			}
+			// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
+			else if (
+				capturado_en < haceUnaHora &&
+				capturado_en > haceDosHoras &&
+				producto.capturado_por_id == userID
+			) {
+				informacion = {
+					mensajes: [
+						"Esta edición quedó inconclusa desde el " +
+							horarioFinal.slice(0, limiteFinal) +
+							" a las " +
+							horarioFinal.slice(limiteFinal) +
+							"hs.. ",
+						"Quedó a disposición del equipo de revisores.",
+						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
+					],
+					iconos: [vistaAnterior, vistaDetalle],
+				};
+			}
+		}
+		// CAPTURA DEL REGISTRO
+		// 1. Activar si no lo está, de lo contrario no hace nada
+		if (
+			!capturado_en ||
+			!producto.captura_activa ||
+			producto.capturado_por_id != userID ||
+			capturado_en < haceDosHoras
+		) {
+			let datos = {captura_activa: true};
+			// 2. Cambiar de usuario si estaba capturado por otro
+			if (producto.capturado_por_id != userID) datos.capturado_por_id = userID;
+			// 3. Fijarle la nueva hora de captura si corresponde
+			if (producto.capturado_por_id != userID || capturado_en < haceDosHoras)
+				datos.capturado_en = funciones.ahora();
+			// CAPTURA DEL REGISTRO
+			BD_genericas.actualizarPorId(entidad, prodID, datos);
 		}
 		return informacion;
 	};
@@ -187,13 +185,8 @@ module.exports = async (req, res, next) => {
 		// REGISTRO ENCONTRADO
 		// FOCO SOLAMENTE EN 'EDICIÓN' Y 'LINKS'
 		if (codigo == "edicion" || codigo == "links") {
-			// FOCO EN STATUS APROBADO
-			if (producto.status_registro.aprobado) {
-				// PROBLEMA 2: solamente puede tener problemas de captura
-				informacion = problemasDeCaptura(informacion);
-			}
 			// FOCO EN STATUS CREADO
-			else if (producto.status_registro.creado) {
+			if (producto.status_registro.creado) {
 				// FOCO EN SU CREADOR	--> PROBLEMA 2: expiró la ventana de 1 hora
 				// FOCO EN OTRA PERSONA	--> PROBLEMA 3: en este status, un usuario que no sea su creador no tiene permiso para acceder
 				informacion = statusCreado(informacion);
@@ -203,6 +196,11 @@ module.exports = async (req, res, next) => {
 				// FOCO EN LINKS	--> PROBLEMA 4: en este status, nadie tiene permiso para acceder
 				// FOCO EN EDICIÓN	--> PROBLEMA 5: en este status, sólo los revisores pueden acceder
 				informacion = alta_aprobada(informacion);
+			}
+			// FOCO EN STATUS APROBADO
+			else if (producto.status_registro.aprobado) {
+				// PROBLEMA 6: solamente puede tener problemas de captura
+				informacion = problemasDeCaptura(informacion);
 			} else {
 				// Mensaje para Inactivos
 			}
