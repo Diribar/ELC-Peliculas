@@ -3,14 +3,13 @@
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column; }
 #datos #tipoLink {align-self: flex-start;}
-#datos form {align-self: center;}
 
 /* Tablas - Temas generales */
 #datos table {margin-top: 20px;}
 #datos table {border-collapse: collapse; border: 2px solid var(--verde-ingles);}
 #datos table * {font-size: 1.1rem;}
-#datos table thead tr th, #datos table tbody tr td {text-align: center; padding: 5px; vertical-align: middle; line-height: 1;}
-#datos table thead tr th {background-color: var(--verde-ingles); color: var(--amarillo-claro);}
+#datos table thead tr th, #datos table tbody tr td {text-align: center; vertical-align: middle; line-height: 1;}
+#datos table thead tr th {padding: 5px; background-color: var(--verde-ingles); color: var(--amarillo-claro);}
 #datos table tbody tr td.motivo {background-color: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
 #datos table tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
 
@@ -44,17 +43,17 @@
 #datos table tbody tr td.url .inputError .prov_id {display: none;}
 
 /* Formato del desperdicio */
-#datos form .desperdicio {background-color: var(--verde-intermedio);}
-#datos form .desperdicio .inputError .fa-circle-check {display: none;}
+#datos table .desperdicio {background-color: var(--verde-intermedio);}
+#datos table .desperdicio .inputError .fa-circle-check {display: none;}
 
 /* Quitar la flecha de los select */
-#datos form .altas select::-ms-expand, #datos form .edicion select::-ms-expand {display: none;}
-#datos form .altas select, #datos form .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+#datos table .altas select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
+#datos table .altas select, #datos table .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
-#datos form .inputError input[type='number']::-webkit-outer-spin-button, #datos form .inputError input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
+#datos table .inputError input[type='number']::-webkit-outer-spin-button, #datos table .inputError input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
 /* Quitar flechas del input - Firefox */
-#datos form .inputError input[type=number] {-moz-appearance: textfield;}
+#datos table .inputError input[type=number] {-moz-appearance: textfield;}
 
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}

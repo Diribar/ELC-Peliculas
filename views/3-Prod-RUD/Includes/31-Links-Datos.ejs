@@ -27,25 +27,17 @@
 	<!-- Gratuito -->
 	<td class="taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
-	<td class="taparMotivo"><%- link.capturado_en > haceUnaHora ? "En Revisión" : link.status_registro.nombre %> </td>
+	<td class="taparMotivo"><%- link.status_registro.nombre %> </td>
 	<!-- Acción -->
 	<td class="">
-		<% if (link.capturado_en > haceUnaHora) { %>
-			<!-- Los links con captura 'válida' no se pueden 'tocar' -->
-			<i class="fa-solid fa-circle-question editar out" tabindex="-1" ></i>
-			<span class="mensajeAyuda ocultar">
-				Este link está siendo analizado por el equipo de revisores. A más tardar, debería terminarse de revisar a las <%= new Date() %>
-			</span>
+		<!-- Los demás links se pueden editar siempre -->
+		<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
+		<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
+			<!-- Los links en status 'creado' y creados por el usuario, se pueden eliminar definitivamente -->
+			<i class="fa-solid fa-trash-can out" tabindex="-1" title='Eliminar'></i>
 		<% } else { %>
-			<!-- Los demás links se pueden editar siempre -->
-			<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
-			<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
-				<!-- Los links en status 'creado' y creados por el usuario, se pueden eliminar definitivamente -->
-				<i class="fa-solid fa-trash-can out" tabindex="-1" title='Eliminar'></i>
-			<% } else { %>
-				<!-- Los demás links se pueden 'inactivar' -->
-				<i class="fa-solid fa-circle-xmark out" tabindex="-1" title='Inactivar'></i>
-			<% } %>				
-		<% } %>
+			<!-- Los demás links se pueden 'inactivar' -->
+			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title='Inactivar'></i>
+		<% } %>				
 	</td>
 </tr>
