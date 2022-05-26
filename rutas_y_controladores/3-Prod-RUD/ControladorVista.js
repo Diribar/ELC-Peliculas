@@ -194,8 +194,7 @@ module.exports = {
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición
 			let edicion = {...prodEditado, ...req.body, avatar};
-
-			// 3. Quitar los coincidencias con el original
+			// Quitar los coincidencias con el original
 			let edicion_id = edicion.id;
 			if (edicion_id) delete edicion.id;
 			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
