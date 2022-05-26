@@ -257,11 +257,15 @@ module.exports = {
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
-		if (entidad == "capitulos")
-			producto.capitulos = await BD_especificas.obtenerCapitulos(
-				prodEditado.coleccion_id,
-				prodEditado.temporada
-			);
+		if (entidad == "capitulos") {
+			let coleccion_id =
+				prodEditado && prodEditado.coleccion_id
+					? prodEditado.coleccion_id
+					: prodOriginal.coleccion_id;
+			let temporada =
+				prodEditado && prodEditado.temporada ? prodEditado.temporada : prodOriginal.temporada;
+			producto.capitulos = await BD_especificas.obtenerCapitulos(coleccion_id, temporada);
+		}
 		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))

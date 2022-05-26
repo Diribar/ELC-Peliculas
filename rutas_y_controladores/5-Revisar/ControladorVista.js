@@ -56,7 +56,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Inactivar
-		await funciones.inactivarCaptura(entidad, prodID, userID)
+		await funciones.inactivarCaptura(entidad, prodID, userID);
 		// Redireccionar al "Tablero"
 		return res.redirect("/revision/tablero-de-control");
 	},
@@ -346,7 +346,6 @@ module.exports = {
 		let codigo = "links";
 		// Otras variables
 		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
-
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
@@ -407,6 +406,8 @@ module.exports = {
 			prodOriginal,
 			motivos,
 			calidades: [144, 240, 360, 480, 720, 1080],
+			mostrar: null,
+			userID: null,
 		});
 	},
 };
