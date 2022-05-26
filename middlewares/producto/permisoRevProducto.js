@@ -15,6 +15,8 @@ module.exports = async (req, res, next) => {
 	let includes = ["status_registro", "capturado_por"];
 	if (entidad == "capitulos") includes.push("coleccion");
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+	let creado_en = registro.creado_en;
+	if (creado_en) creado_en.setSeconds(0);
 	let capturado_en = registro.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
@@ -51,13 +53,12 @@ module.exports = async (req, res, next) => {
 			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO
 			// PROBLEMA 3: El registro todavía está en manos de su creador
 			// ¿Creado > haceUnaHora?
-			if (registro.creado_en > haceUnaHora) {
+			if (creado_en > haceUnaHora) {
 				// Obtener el horario de creación
-				let horarioCreacion = new Date(registro.creado_en);
+				let horarioCreacion = new Date(creado_en);
 				// Obtener el horario en que estará disponible para revisar
 				let horarioDisponible = horarioCreacion;
 				horarioDisponible.setHours(horarioCreacion.getHours() + 1);
-				horarioDisponible.getMinutes(horarioCreacion.getMinutes() + 1);
 				// Configurar los horarios con formato texto
 				horarioDisponible = funciones.horarioTexto(horarioDisponible);
 				// Información
