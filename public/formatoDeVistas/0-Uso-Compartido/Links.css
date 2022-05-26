@@ -76,6 +76,3 @@
 #cuerpo #comandos {align-items: center;}
 #cuerpo #comandos a {display: flex; flex-direction: row; margin: 0 10px;}
 #cuerpo #comandos a img {max-width: 70px; max-height: 70px; border-radius: 20px;}
-
-/* Ocultar Trailer o Película */
-.ocultarTipo {display: none}

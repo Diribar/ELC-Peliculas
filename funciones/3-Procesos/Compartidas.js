@@ -315,6 +315,7 @@ let funcionAhora = () => {
 	return new Date(new Date().toUTCString());
 };
 let funcionHaceDosHoras = (horario) => {
-	horario.setHours(horario.getHours() - 2);
-	return horario;
+	let haceDosHoras = new Date(horario);
+	haceDosHoras.setHours(haceDosHoras.getHours() - 2);
+	return haceDosHoras;
 };
