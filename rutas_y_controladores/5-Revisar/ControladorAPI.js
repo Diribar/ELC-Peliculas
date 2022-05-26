@@ -161,9 +161,12 @@ module.exports = {
 			// El nuevo valor
 			datos = {[campo]: prodEditado[campo]};
 			// Obtener el Lead Time de Edición
-			let leadTime = (ahora.getTime() - prodEditado.editado_en) / unaHora;
+			let leadTime = funciones.obtenerLeadTime(prodEditado.editado_en, ahora);
+
 			// Agregarle datos de la 'edición'
+			datos.editado_por_id = prodEditado.editado_por_id;
 			datos.editado_en = prodEditado.editado_en;
+			datos.edic_analizada_por_id = revisor_ID;
 			datos.edic_analizada_en = ahora;
 			datos.lead_time_edicion = leadTime;
 			// Actualiza el registro en la BD original ***************************************

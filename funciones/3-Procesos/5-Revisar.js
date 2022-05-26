@@ -187,6 +187,8 @@ module.exports = {
 				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
 				if (entidad == "colecciones") {
+					// Ampliar los datos
+					datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora};
 					// Generar el objeto para filtrar
 					let objeto = {coleccion_id: prodOriginal.id};
 					// Actualizar el status de los capitulos
