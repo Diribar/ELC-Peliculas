@@ -65,7 +65,7 @@ module.exports = async (req, res, next) => {
 	let statusCreado = () => {
 		// Variables
 		let informacion;
-		// FOCO EN SU CREADOR	--> PROBLEMA 2: expiró la ventana de 1 hora
+		// FOCO EN SU CREADOR --> PROBLEMA 1: expiró la ventana de 1 hora
 		// ¿Creado por el usuario actual?
 		let creadoPorElUsuario1 = producto.creado_por_id == userID;
 		let creadoPorElUsuario2 = entidad == "capitulos" && producto.coleccion.creado_por_id == userID;
@@ -80,36 +80,13 @@ module.exports = async (req, res, next) => {
 					iconos: [vistaAnterior, vistaDetalle],
 				};
 		}
-		// FOCO EN OTRA PERSONA	--> PROBLEMA 3: en este status, un usuario que no sea su creador no tiene permiso para acceder
+		// FOCO EN OTRA PERSONA --> PROBLEMA 2: en este status, nadie más tiene permiso para acceder
 		else {
 			// No se puede acceder en este status
 			informacion = {
 				mensajes: prohibidoAccederEnEseStatus,
 				iconos: [vistaAnterior, vistaDetalle],
 			};
-		}
-		return informacion;
-	};
-	let alta_aprobada = () => {
-		let informacion;
-		if (codigo == "links") {
-			// FOCO EN LINKS	--> PROBLEMA 4: en este status, nadie tiene permiso para acceder
-			informacion = {
-				mensajes: prohibidoAccederEnEseStatus,
-				iconos: [vistaAnterior, vistaDetalle],
-			};
-		} else if (codigo == "edicion") {
-			// FOCO EN EDICIÓN	--> PROBLEMA 5: en este status, sólo los revisores pueden acceder
-			if (!usuario.rol_usuario.aut_gestion_prod) {
-				// No se puede acceder en este status
-				informacion = {
-					mensajes: prohibidoAccederEnEseStatus,
-					iconos: [vistaAnterior, vistaDetalle],
-				};
-			}
-			// FOCO EN REVISORES
-			// PROBLEMAS DE CAPTURA
-			else informacion = problemasDeCaptura(informacion);
 		}
 		return informacion;
 	};
@@ -155,7 +132,7 @@ module.exports = async (req, res, next) => {
 			}
 		}
 		// CAPTURA DEL REGISTRO
-		// 1. Activar si no lo está, de lo contrario no hace nada
+		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
 		if (
 			!capturado_en ||
 			!producto.captura_activa ||
@@ -163,9 +140,9 @@ module.exports = async (req, res, next) => {
 			capturado_en < haceDosHoras
 		) {
 			let datos = {captura_activa: true};
-			// 2. Cambiar de usuario si estaba capturado por otro
+			// SOLUCIÓN 2:.cambia de usuario si estaba capturado por otro
 			if (producto.capturado_por_id != userID) datos.capturado_por_id = userID;
-			// 3. Fijarle la nueva hora de captura si corresponde
+			// SOLUCIÓN 3: fijar la nueva hora de captura si corresponde
 			if (producto.capturado_por_id != userID || capturado_en < haceDosHoras)
 				datos.capturado_en = funciones.ahora();
 			// CAPTURA DEL REGISTRO
@@ -173,9 +150,32 @@ module.exports = async (req, res, next) => {
 		}
 		return informacion;
 	};
+	let alta_aprobada = () => {
+		let informacion;
+		if (codigo == "links") {
+			// FOCO EN LINKS --> PROBLEMA 1: en este status, nadie tiene permiso para acceder
+			informacion = {
+				mensajes: prohibidoAccederEnEseStatus,
+				iconos: [vistaAnterior, vistaDetalle],
+			};
+		} else if (codigo == "edicion") {
+			// FOCO EN EDICIÓN --> PROBLEMA 2: en este status, sólo los revisores pueden acceder
+			if (!usuario.rol_usuario.aut_gestion_prod) {
+				// No se puede acceder en este status
+				informacion = {
+					mensajes: prohibidoAccederEnEseStatus,
+					iconos: [vistaAnterior, vistaDetalle],
+				};
+			}
+			// FOCO EN REVISORES
+			// PROBLEMAS DE CAPTURA
+			else informacion = problemasDeCaptura();
+		}
+		return informacion;
+	};
 
 	// PROBLEMAS -----------------------------------------------------------
-	// PROBLEMA 1: Registro no encontrado
+	// PROBLEMA: Registro no encontrado
 	if (!producto) {
 		informacion = {
 			mensajes: ["Producto no encontrado"],
@@ -187,19 +187,19 @@ module.exports = async (req, res, next) => {
 		if (codigo == "edicion" || codigo == "links") {
 			// FOCO EN STATUS CREADO
 			if (producto.status_registro.creado) {
-				// FOCO EN SU CREADOR	--> PROBLEMA 2: expiró la ventana de 1 hora
-				// FOCO EN OTRA PERSONA	--> PROBLEMA 3: en este status, un usuario que no sea su creador no tiene permiso para acceder
+				// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
+				// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
 				informacion = statusCreado(informacion);
 			}
 			// FOCO EN STATUS ALTA-APROBADA
 			else if (producto.status_registro.alta_aprob) {
-				// FOCO EN LINKS	--> PROBLEMA 4: en este status, nadie tiene permiso para acceder
-				// FOCO EN EDICIÓN	--> PROBLEMA 5: en este status, sólo los revisores pueden acceder
+				// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
+				// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
 				informacion = alta_aprobada(informacion);
 			}
 			// FOCO EN STATUS APROBADO
 			else if (producto.status_registro.aprobado) {
-				// PROBLEMA 6: solamente puede tener problemas de captura
+				// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
 				informacion = problemasDeCaptura(informacion);
 			} else {
 				// Mensaje para Inactivos
