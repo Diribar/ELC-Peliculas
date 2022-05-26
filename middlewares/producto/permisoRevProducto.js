@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 	let includes = ["status_registro", "capturado_por"];
 	if (entidad == "capitulos") includes.push("coleccion");
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-	let capturado_en = producto.capturado_en;
+	let capturado_en = registro.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
 	const vistaAnterior = {
