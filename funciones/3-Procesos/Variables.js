@@ -3,7 +3,7 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
-	// Circuito Agregar Productos
+	// Entorno Agregar Productos
 	camposDD: () => {
 		return [
 			{
@@ -226,7 +226,7 @@ module.exports = {
 		];
 	},
 
-	// Circuito ABM Links
+	// Entorno RUD - Links
 	provsQueNoRespetanCopyright: () => {
 		return [
 			{nombre: "Gloria TV", url: "gloria.tv"},
