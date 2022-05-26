@@ -14,6 +14,11 @@ module.exports = {
 		let ahora = new Date(new Date().toUTCString());
 		return ahora;
 	},
+	haceDosHoras: function () {
+		let horario = this.ahora();
+		horario.setHours(horario.getHours() - 2);
+		return horario;
+	},
 
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
@@ -124,7 +129,10 @@ module.exports = {
 		}
 		return;
 	},
-	activarCapturaSiNoLoEsta: async function (registro) {
+	activarCapturaSiNoLoEsta: async function (registro, userID, entidad, prodID) {
+		// Variables
+		let ahora = this.ahora();
+		let haceDosHoras = this.haceDosHoras();
 		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
 		if (
 			!registro.capturado_en ||
@@ -136,23 +144,18 @@ module.exports = {
 			// SOLUCIÓN 2: cambia de usuario si estaba capturado por otro
 			if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
 			// SOLUCIÓN 3: fija la nueva hora de captura si corresponde
-			if (registro.capturado_por_id != userID || capturado_en < haceDosHoras)
-				datos.capturado_en = this.ahora();
+			if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
+				datos.capturado_en = ahora;
 			// CAPTURA DEL REGISTRO
 			await BD_genericas.actualizarPorId(entidad, prodID, datos);
 		}
-		return
+		return;
 	},
 
 	// Fecha y Hora
 	haceUnaHora: function () {
 		let horario = this.ahora();
 		horario.setHours(horario.getHours() - 1);
-		return horario;
-	},
-	haceDosHoras: function () {
-		let horario = this.ahora();
-		horario.setHours(horario.getHours() - 2);
 		return horario;
 	},
 	obtenerHoras: function (desde, hasta) {

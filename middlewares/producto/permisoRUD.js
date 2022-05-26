@@ -108,7 +108,7 @@ module.exports = async (req, res, next) => {
 			}
 		}
 		// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL PRODUCTO
-		if (!informacion) await funciones.activarCapturaSiNoLoEsta(producto);
+		if (!informacion) await funciones.activarCapturaSiNoLoEsta(producto, userID, entidad, prodID);
 		// Fin
 		return informacion;
 	};

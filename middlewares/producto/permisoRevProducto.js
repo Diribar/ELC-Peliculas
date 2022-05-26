@@ -118,7 +118,7 @@ module.exports = async (req, res, next) => {
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
 	// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL REGISTRO
-	else if (!informacion) await funciones.activarCapturaSiNoLoEsta(registro);
+	else if (!informacion) await funciones.activarCapturaSiNoLoEsta(registro, userID, entidad, prodID);
 
 	next();
 };
