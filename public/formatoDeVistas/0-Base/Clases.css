@@ -32,7 +32,7 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 .relative {position: relative;}
 .pointer {cursor: pointer;}
 .border {border: red 1px solid}
-.ocultar {display: none;}
+.ocultar, .inactivo_ocultar, .ocultarTipo {display: none}
 .invisible {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
 .inactivo {opacity: .5; border-color: transparent; cursor: default;}

@@ -42,7 +42,7 @@
 					<% let fila = 0 %> 
 					<% for (let link of links) { %>
 						<!-- No se pueden 'tocar' los links pendientes de aprobar y creados por otro usuario -->
-						<% let mostrar = link.status_registro.creado && link.creado_por_id != userID ? 'ocultar' : '' %>
+						<% let mostrar = link.status_registro.creado && link.creado_por_id != userID || link.status_registro.gr_inactivos ? 'ocultar' : '' %>
 						<%- include("31-Links-Datos", {link, mostrar}) %>
 						<%- include("32-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
