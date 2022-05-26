@@ -119,13 +119,13 @@ module.exports = async (req, res, next) => {
 			) {
 				informacion = {
 					mensajes: [
-						"Esta edición quedó inconclusa desde el " +
+						"Dejaste capturada esta entidad desde el "+
 							horarioFinal.slice(0, limiteFinal) +
 							" a las " +
 							horarioFinal.slice(limiteFinal) +
 							"hs.. ",
 						"Quedó a disposición del equipo de revisores.",
-						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
+						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar esta tarea.",
 					],
 					iconos: [vistaAnterior, vistaDetalle],
 				};
