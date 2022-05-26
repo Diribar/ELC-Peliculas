@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 		);
 	}
 	// Otras variables
-	let ruta = "/producto/agregar/api/validar-datos-duros/?";
+	let ruta = "/producto_agregar/api/validar-datos-duros/?";
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {

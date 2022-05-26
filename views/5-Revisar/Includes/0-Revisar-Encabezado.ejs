@@ -1,6 +1,6 @@
 <section id="encabezado">
 	<div id="nombres">
-		<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
+		<a href="/producto_rud/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
 			<h1><%= prodOriginal.nombre_castellano %></h1>
 		</a>
 		<% if (prodOriginal.nombre_original) { %>
@@ -19,7 +19,7 @@
 		<% if (entidad == "capitulos") { %>
 			<p id="tempCapI">
 				<strong>De la colección:</strong>
-				<a href="/producto/detalle/?entidad=colecciones&id=<%= prodOriginal.coleccion.id %>" target="_blank">
+				<a href="/producto_rud/detalle/?entidad=colecciones&id=<%= prodOriginal.coleccion.id %>" target="_blank">
 					<span><%= prodOriginal.coleccion.nombre_castellano %></span>
 				</a>
 			</p>

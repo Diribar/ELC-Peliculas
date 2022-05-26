@@ -12,12 +12,12 @@ module.exports = async (req, res, next) => {
 		? req.cookies.datosOriginales
 		: "";
 	// Controles
-	if (!datos) return res.redirect("/producto/agregar/palabras-clave");
+	if (!datos) return res.redirect("/producto_rud/agregar/palabras-clave");
 	else if (datos.fuente != "IM") {
 		let fuente_id = datos.fuente + "_id";
 		let elc_id = await BD_especificas.obtenerELC_id(datos.entidad, {[fuente_id]: datos[fuente_id]});
 		if (elc_id) {
-			let linkDetalle = "/producto/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
+			let linkDetalle = "/producto_rud/detalle/?entidad=" + datos.entidad + "&id=" + elc_id;
 			informacion = {
 				mensajes: [
 					"La Película / Colección ya está en nuestra BD. Podés ver el detalle haciendo click abajo, en el ícono de 'información'",
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 				iconos: [
 					{
 						nombre: "fa-circle-left",
-						link: "/producto/agregar/palabras-clave",
+						link: "/producto_agregar/palabras-clave",
 						titulo: "Regresar a 'Palabra Clave'",
 					},
 					{nombre: "fa-circle-info", link: linkDetalle, titulo: "Ir a la vista Detalle"},

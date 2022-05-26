@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
 		botonOut.addEventListener("click", async () => {
 			if (botonOut.classList.contains("fa-trash-can")) {
 				let respuesta = await fetch(
-					"/producto/api/links/eliminar/?link_id=" +
+					"/producto_rud/api/links/eliminar/?link_id=" +
 						links_id[i].innerHTML +
 						"&motivo_id=" +
 						motivosSelect[i].value
