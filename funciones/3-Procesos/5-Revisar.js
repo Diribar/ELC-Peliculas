@@ -174,7 +174,7 @@ module.exports = {
 			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
 				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1});
+				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = funciones.ahora();
 				let leadTime = funciones.obtenerLeadTime(prodOriginal.creado_en, ahora);
@@ -594,6 +594,8 @@ module.exports = {
 		return fecha;
 	},
 };
+
+// Funciones ----------------------------
 let prodValorVinculo = (producto, objeto) => {
 	let aux = producto[objeto.vinculo]
 		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
@@ -665,7 +667,6 @@ let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
 	);
 	return productos;
 };
-// Funciones ----------------------------
 let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
 	for (let i = prodAjenos.length - 1; i >= 0; i--) {
 		for (let prodPropio of prodPropios) {

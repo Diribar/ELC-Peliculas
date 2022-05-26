@@ -54,7 +54,6 @@ let infoQueQueda = (datos) => {
 		cantPaginasAPI: Math.min(datos.total_pages, datos.total_results),
 	};
 };
-
 let estandarizarNombres = (dato, TMDB_entidad) => {
 	let resultados = dato.resultados.map((m) => {
 		let prodNombre, entidad, ano, nombre_original, nombre_castellano, desempate3;
@@ -129,7 +128,6 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
-
 let eliminarSiPCinexistente = (dato, palabrasClave) => {
 	let palabras = palabrasClave.split(" ");
 	let resultados = dato.resultados.map((m) => {
@@ -149,14 +147,12 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 		cantPaginasAPI: dato.cantPaginasAPI,
 	};
 };
-
 let eliminarIncompletos = (dato) => {
 	for (let indice = dato.resultados.length - 1; indice >= 0; indice--) {
 		if (dato.resultados[indice] == null) dato.resultados.splice(indice, 1);
 	}
 	return dato;
 };
-
 let agregarLanzamiento = async (dato) => {
 	for (let i = 0; i < dato.length; i++) {
 		// Obtener todas las fechas de lanzamiento
@@ -171,7 +167,6 @@ let agregarLanzamiento = async (dato) => {
 	}
 	return dato;
 };
-
 let unificarResultados = (lectura, TMDB_entidad, datos, page) => {
 	if (page == 1) {
 		datos.cantPaginasAPI = {
@@ -187,7 +182,6 @@ let unificarResultados = (lectura, TMDB_entidad, datos, page) => {
 	};
 	return datos;
 };
-
 let eliminarDuplicados = (datos) => {
 	datos.resultados.map((n) => {
 		let contar = datos.resultados.filter(
@@ -206,7 +200,6 @@ let eliminarDuplicados = (datos) => {
 	});
 	return datos;
 };
-
 let averiguarSiYaEnBD = async (datos) => {
 	for (let i = 0; i < datos.resultados.length; i++) {
 		let TMDB_entidad = datos.resultados[i].TMDB_entidad;
@@ -230,7 +223,6 @@ let averiguarSiYaEnBD = async (datos) => {
 	}
 	return datos;
 };
-
 let hayMas = (datos, page, entidadesTMDB) => {
 	return (
 		page < datos.cantPaginasAPI[entidadesTMDB[0]] ||
@@ -238,7 +230,6 @@ let hayMas = (datos, page, entidadesTMDB) => {
 		page < datos.cantPaginasAPI[entidadesTMDB[2]]
 	);
 };
-
 let ordenarDatos = (datos) => {
 	if (datos.resultados.length > 1) {
 		// Ordenar desde la más reciente hacia la más antigua

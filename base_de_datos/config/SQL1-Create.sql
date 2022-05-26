@@ -142,7 +142,7 @@ CREATE TABLE USUARIOS (
 	cant_edic_rech SMALLINT DEFAULT 0,
 
 	penalizado_en DATETIME NULL,
-	penalizado_hasta DATETIME DEFAULT NULL,
+	penalizado_hasta DATETIME NULL,
 	penalizado_por_id INT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
@@ -158,7 +158,7 @@ VALUES
 (1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,                apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_ultimo_login)
+INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,                apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
 (10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Autorizado p/Inputs', 'Startup',   'Startup',   '0',        '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',               'Iribarren', 'Diego',     '21072001', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
@@ -573,9 +573,9 @@ VALUES
 ;
 CREATE TABLE rclv_4edicion (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	pelicula_id INT UNSIGNED DEFAULT NULL,
-	coleccion_id INT UNSIGNED DEFAULT NULL,
-	capitulo_id INT UNSIGNED DEFAULT NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 	nombre VARCHAR(30) NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -702,6 +702,7 @@ CREATE TABLE prod_1peliculas (
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
+	alta_terminada_en DATETIME NULL,
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -800,6 +801,7 @@ CREATE TABLE prod_2colecciones (
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
+	alta_terminada_en DATETIME NULL,
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -855,7 +857,7 @@ VALUES
 CREATE TABLE prod_3capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
-	temporada TINYINT UNSIGNED DEFAULT NULL,
+	temporada TINYINT UNSIGNED NULL,
 	capitulo TINYINT UNSIGNED NOT NULL,
 	TMDB_id VARCHAR(10) NULL UNIQUE,
 	FA_id VARCHAR(10) NULL UNIQUE,
@@ -895,7 +897,7 @@ CREATE TABLE prod_3capitulos (
 	alta_analizada_por_id INT UNSIGNED NULL,
 	alta_analizada_en DATETIME NULL,
 	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
-	
+	alta_terminada_en DATETIME NULL,	
 
 	editado_por_id INT UNSIGNED NULL,
 	editado_en DATETIME NULL,
@@ -966,9 +968,9 @@ VALUES
 ;
 CREATE TABLE prod_4edicion (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	pelicula_id INT UNSIGNED DEFAULT NULL,
-	coleccion_id INT UNSIGNED DEFAULT NULL,
-	capitulo_id INT UNSIGNED DEFAULT NULL,
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
 	nombre_original VARCHAR(50) NULL,
 	nombre_castellano VARCHAR(50) NULL,
 	duracion SMALLINT UNSIGNED NULL,
