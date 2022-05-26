@@ -66,7 +66,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
-		let destino = funciones.familiaEnSingular(entidad);
+		let destino = funciones.obtenerFamiliaEnSingular(entidad);
 		let haceUnaHora = funciones.haceUnaHora();
 		let datosEdicion = "";
 		// Obtener el producto
@@ -80,7 +80,7 @@ module.exports = {
 				: "/edicion";
 			destino += subDestino;
 			if (subDestino == "/edicion") {
-				let producto_id = funciones.entidad_id(entidad);
+				let producto_id = funciones.obtenerEntidad_id(entidad);
 				// Obtener el id de la edición
 				if (!edicID)
 					edicID = await BD_especificas.obtenerEdicionAjena(
@@ -160,7 +160,7 @@ module.exports = {
 			  prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
 		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
@@ -214,7 +214,7 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
-		let producto_id = funciones.entidad_id(entidad);
+		let producto_id = funciones.obtenerEntidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
@@ -265,7 +265,7 @@ module.exports = {
 			vista = "0-Revisar";
 		}
 		// 7. Configurar el título de la vista
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
 		//return res.send([prodOriginal, prodEditado]);
@@ -306,7 +306,7 @@ module.exports = {
 		]);
 		// Datos para la vista
 		// Títulos
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el " + prodNombre;
 		// Valores del registro para el mes y día del año
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
@@ -351,7 +351,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		// Configurar el título
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links
 		let includes = ["links", "status_registro"];
@@ -367,7 +367,7 @@ module.exports = {
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("Errores", {informacion});
 		// Obtener todos los links
-		let entidad_id = funciones.entidad_id(entidad);
+		let entidad_id = funciones.obtenerEntidad_id(entidad);
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
@@ -484,7 +484,7 @@ let problemasLinks = (producto, urlAnterior) => {
 // 		"capitulos",
 // 	]);
 // 	// Obtener todas las ediciones ajenas
-// 	let producto_id = funciones.entidad_id(entidad);
+// 	let producto_id = funciones.obtenerEntidad_id(entidad);
 // 	// PENDIENTE
 // 	// Obtener los motivos de rechazo
 // 	if (RCLV_original.status_registro.aprobado) {
@@ -500,7 +500,7 @@ let problemasLinks = (producto, urlAnterior) => {
 // 	let tituloCanoniz = procesar.RCLV_tituloCanoniz({...RCLV_original, entidad});
 // 	// Datos para la vista
 // 	// Títulos
-// 	let prodNombre = funciones.entidadNombre(entidad);
+// 	let prodNombre = funciones.obtenerEntidadNombre(entidad);
 // 	let titulo = "Revisar el " + prodNombre;
 // 	// Mes y día del año
 // 	let meses = await BD_genericas.obtenerTodos("meses", "id");

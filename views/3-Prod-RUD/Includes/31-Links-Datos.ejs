@@ -30,14 +30,15 @@
 	<td class="ancho_status taparMotivo"><%- link.status_registro.nombre %> </td>
 	<!-- Acción -->
 	<td class="ancho_accion">
-		<!-- Los demás links se pueden editar siempre -->
-		<i class="fa-solid fa-pen editar" tabindex="-1" title="Editar"></i>
-		<% if (link.status_registro.creado && link.creado_por_id == usuario.id) { %>				
-			<!-- Los links en status 'creado' y creados por el usuario, se pueden eliminar definitivamente -->
+		<!-- Ícono editar -->
+		<i class="fa-solid fa-pen editar <%= mostrar %>" tabindex="-1" title="Editar"></i>
+		<!-- Íconos borrar -->
+		<% if (link.status_registro.creado && link.creado_por_id == userID) { %>
+			<!-- Los links en status 'creado' y propios, se pueden eliminar -->
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title='Eliminar'></i>
 		<% } else { %>
-			<!-- Los demás links se pueden 'inactivar' -->
-			<i class="fa-solid fa-circle-xmark out" tabindex="-1" title='Inactivar'></i>
-		<% } %>				
+			<!-- Los demás links sólo se pueden 'inactivar' -->
+			<i class="fa-solid fa-circle-xmark out <%= mostrar %>" tabindex="-1" title='Inactivar'></i>
+		<% } %>
 	</td>
 </tr>

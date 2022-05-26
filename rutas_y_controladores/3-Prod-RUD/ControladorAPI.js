@@ -115,7 +115,7 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let producto_id = funciones.entidad_id(entidad);
+			let producto_id = funciones.obtenerEntidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
 				usuario_id: req.session.usuario.id,
 				[producto_id]: id,
@@ -145,11 +145,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
-			entidad,
-			prodID,
-			userID
-		);
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOriginal, prodEditado]);
 	},
@@ -180,59 +176,34 @@ module.exports = {
 	},
 	linksEliminar: async (req, res) => {
 		// Proceso
-		// - Con "captura válida", no se pueden tocar (borrar)
-		//		- Sin "captura válida", links creados por el usuario y con status 'creado' --> se eliminan definitivamente
-		// 			- Los links con status 'aprobado' --> se inactivan (motivo)
-		//			- Sin "captura válida", links creados por otro autor --> se inactivan (motivo)
-
+		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
+		// - Los demás --> se inactivan
 		// Definir las variables
 		let respuesta = {};
-		let {link_id, motivo_id} = req.query;
-		let haceUnaHora = funciones.haceUnaHora();
-		let usuario = req.session.usuario;
-		// Descartar que no hayan errores con el 'link_id'
-		if (!link_id) respuesta.mensaje = "Faltan datos";
+		let {link_id: linkID, motivo_id} = req.query;
+		let userID = req.session.usuario.id;
+		let entidad = "links_originales";
+		// Descartar que no hayan errores
+		if (!linkID || !motivo_id) respuesta.mensaje = "Faltan datos";
 		else {
-			// El link_id existe
-			let link = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
-				"status_registro",
-			]);
+			// El linkID existe
+			let link = await BD_genericas.obtenerPorIdConInclude(entidad, linkID, ["status_registro"]);
 			if (!link) {
 				// Consecuencias si el link no existe en la BD
 				respuesta.mensaje = "El link no existe en la base de datos";
-				respuesta.resultado = false;
 				respuesta.reload = true;
-			} else if (link.capturado_en > haceUnaHora) {
-				// Con "captura válida", no se pueden tocar (borrar)
-				respuesta.mensaje = "El link está en revisión, no se puede eliminar";
-				respuesta.resultado = false;
-				respuesta.reload = true;
-			} else if (link.status_registro.gr_pend_aprob) {
-				// Sin "captura válida" y con status 'gr_pend_aprob'
-				if (link.creado_por_id == usuario.id) {
-					// Creados por el usuario --> se eliminan definitivamente
-					BD_genericas.eliminarRegistro("links_originales", link_id);
-					respuesta.mensaje = "El link fue eliminado con éxito";
-					respuesta.resultado = true;
-				} else {
-					// Creados por otro usuario --> no se pueden inactivar
-					respuesta.mensaje = "El link debe ser revisado, aún no se puede inactivar";
-					respuesta.resultado = false;
-				}
+			} else if (link.status_registro.creado && link.creado_por_id == userID) {
+				// En status 'creado" y por el usuario --> se eliminan definitivamente
+				BD_genericas.eliminarRegistro(entidad, linkID);
+				respuesta.mensaje = "El link fue eliminado con éxito";
+				respuesta.resultado = true;
 			} else if (link.status_registro.aprobado) {
-				// Sin "captura válida" y con status 'aprobado'
-				if (motivo_id) {
-					// Si explica el motivo, se inactiva
-					procesar.inactivar(motivo_id, usuario, link);
-					respuesta.mensaje = "El link fue inactivado con éxito";
-					respuesta.resultado = true;
-				} else {
-					// Si no figura el motivo --> Abortar con mensaje de error
-					respuesta.mensaje = "Falta especificar el motivo";
-					respuesta.resultado = false;
-				}
-			} else {
-				// Sin "captura válida" y con status 'gr_inactivos'
+				// El link existe y tiene status 'aprobado'
+				procesar.inactivar(entidad, linkID, userID, motivo_id);
+				respuesta.mensaje = "El link fue inactivado con éxito";
+				respuesta.resultado = true;
+			} else if (link.status_registro.gr_inactivos) {
+				// El link existe y tiene status 'gr_inactivos'
 				respuesta.mensaje = "El link está en status inactivo";
 				respuesta.resultado = false;
 			}
@@ -240,24 +211,3 @@ module.exports = {
 		return res.json(respuesta);
 	},
 };
-
-
-// let obtenerLinksFusionados = async (link_id, usuario) => {
-// 	let link_original = await BD_genericas.obtenerPorIdConInclude("links_originales", link_id, [
-// 		"status_registro",
-// 	]);
-// 	link_edicion = await BD_genericas.obtenerPorCamposConInclude(
-// 		"links_edicion",
-// 		"elc_id",
-// 		link_id,
-// 		"editado_por_id",
-// 		usuario.id,
-// 	);
-// 	if (link_edicion) {
-// 		delete link_edicion.id;
-// 		link_original = {...link_original, ...link_edicion};
-// 	}
-// 	// Quitarle los campos 'null'
-// 	link_original = funciones.quitarLosCamposSinContenido(link_original);
-// 	return link_original;
-// };

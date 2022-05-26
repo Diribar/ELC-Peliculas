@@ -2,7 +2,6 @@
 // Definir variables
 const BD_genericas = require("../2-BD/Genericas");
 const BD_especificas = require("../2-BD/Especificas");
-const procesarRUD = require("./3-RUD");
 const funciones = require("./Compartidas");
 const variables = require("./Variables");
 const validar = require("../4-Validaciones/RUD");
@@ -158,8 +157,8 @@ module.exports = {
 		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
-		edicion = procesarRUD.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = procesarRUD.quitarLosCamposQueNoSeComparan(edicion);
+		edicion = funciones.quitarLosCamposSinContenido(edicion);
+		[edicion, noSeComparan] = quitarLosCamposQueNoSeComparan(edicion);
 		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 		// Averiguar si queda algún campo
 		let quedanCampos = !!Object.keys(edicion).length;
@@ -178,7 +177,7 @@ module.exports = {
 				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = funciones.ahora();
-				let leadTime = funciones.obtenerHoras(prodOriginal.creado_en, ahora);
+				let leadTime = funciones.obtenerLeadTime(prodOriginal.creado_en, ahora);
 				// Cambiarle el status al producto y liberarlo
 				let datos = {
 					alta_terminada_en: ahora,
@@ -443,7 +442,7 @@ module.exports = {
 		// Rutina para cada entidad
 		for (let RCLV_entidad of RCLV_entidades) {
 			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
-			let campo = funciones.entidad_id(RCLV_entidad);
+			let campo = funciones.obtenerEntidad_id(RCLV_entidad);
 			// Obtener el RCLV_id
 			let RCLV_id = producto[campo];
 			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
@@ -666,6 +665,7 @@ let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
 	);
 	return productos;
 };
+// Funciones ----------------------------
 let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
 	for (let i = prodAjenos.length - 1; i >= 0; i--) {
 		for (let prodPropio of prodPropios) {
@@ -676,4 +676,17 @@ let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
 		}
 	}
 	return prodAjenos;
+};
+let quitarLosCamposQueNoSeComparan = (edicion) => {
+	let noSeComparan = {};
+	// Obtener los campos a comparar
+	let camposAComparar = variables.camposRevisarEdic().map((n) => n.nombreDelCampo);
+	// Quitar de edicion los campos que no se comparan
+	for (let campo in edicion)
+		if (!camposAComparar.includes(campo)) {
+			noSeComparan[campo] = edicion[campo];
+			delete edicion[campo];
+		}
+	// Fin
+	return [edicion, noSeComparan];
 };

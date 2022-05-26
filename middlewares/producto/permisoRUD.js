@@ -1,7 +1,8 @@
 "use strict";
 // Requires
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
@@ -21,11 +22,7 @@ module.exports = async (req, res, next) => {
 	let capturado_en = producto.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
-	const vistaAnterior = {
-		nombre: "fa-circle-left",
-		link: req.session.urlAnterior,
-		titulo: "Ir a la vista anterior",
-	};
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
 	const vistaDetalle = {
 		nombre: "fa-circle-info",
 		link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
@@ -99,8 +96,7 @@ module.exports = async (req, res, next) => {
 			) {
 				informacion = {
 					mensajes: [
-						"Dejaste capturada esta entidad desde el " + horarioFinal,
-						"Quedó a disposición del equipo de revisores.",
+						"Este registro quedó a disposición del equipo de revisores, desde el " + horarioFinal,
 						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar esta tarea.",
 					],
 					iconos: [vistaAnterior, vistaDetalle],
@@ -166,7 +162,7 @@ module.exports = async (req, res, next) => {
 			} else {
 				// Mensaje para Inactivos
 			}
-		}
+		} else if (codigo == "detalle") await funciones.inactivarCaptura(entidad, prodID, userID);
 	}
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});

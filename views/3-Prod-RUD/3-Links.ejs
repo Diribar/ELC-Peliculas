@@ -7,7 +7,8 @@
 	<ul class="mensajeAyuda ocultar" type="dots">
 		<li>Por favor intentá incluir por lo menos un link gratuito</li>
 		<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-	</ul>	
+		<li>Al terminar, es importante que salgas de esta vista y vayas a la de 'Detalle' para liberar el producto</li>
+	</ul>
 </section>
 <section id="contenido">
 	<div id="datos">
@@ -18,7 +19,7 @@
 			<option value="2">Película</option>
 			<option value="TD" selected>Todos</option>
 		</select>
-		<form action="<%= vista %>altas-editar" method="POST">
+		<form action="<%= vista %>guardar" method="POST">
 			<div id="tags" class="flex-row">
 				<div id="activo">Activos</div>
 				<div id="inactivo">Inactivos</div>
@@ -38,9 +39,11 @@
 				</thead>
 				<tbody>
 					<!-- Filas para links existentes -->
-					<% let fila=0 %> 
+					<% let fila = 0 %> 
 					<% for (let link of links) { %>
-						<%- include("31-Links-Datos", {link}) %>
+						<!-- No se pueden 'tocar' los links pendientes de aprobar y creados por otro usuario -->
+						<% let mostrar = link.status_registro.creado && link.creado_por_id != userID ? 'ocultar' : '' %>
+						<%- include("31-Links-Datos", {link, mostrar}) %>
 						<%- include("32-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
 					<% } %>

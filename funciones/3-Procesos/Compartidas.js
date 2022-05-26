@@ -8,18 +8,6 @@ const axios = require("axios");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Usadas en este archivo
-	ahora: () => {
-		// Instante actual en horario local
-		let ahora = new Date(new Date().toUTCString());
-		return ahora;
-	},
-	haceDosHoras: function () {
-		let horario = this.ahora();
-		horario.setHours(horario.getHours() - 2);
-		return horario;
-	},
-
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
 		let archivoOrigen = "./public/imagenes/" + origen + "/" + nombre;
@@ -57,14 +45,14 @@ module.exports = {
 	},
 
 	// Conversión de nombres
-	familiaEnSingular: (entidad) => {
+	obtenerFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
 			: entidad.includes("RCLV_")
 			? "rclv"
 			: "";
 	},
-	entidadNombre: (entidad) => {
+	obtenerEntidadNombre: (entidad) => {
 		return entidad == "peliculas"
 			? "Película"
 			: entidad == "colecciones"
@@ -81,7 +69,7 @@ module.exports = {
 			? "Links"
 			: "";
 	},
-	entidad_id: (entidad) => {
+	obtenerEntidad_id: (entidad) => {
 		return entidad == "peliculas"
 			? "pelicula_id"
 			: entidad == "colecciones"
@@ -129,10 +117,10 @@ module.exports = {
 		}
 		return;
 	},
-	activarCapturaSiNoLoEsta: async function (registro, userID, entidad, prodID) {
+	activarCapturaSiNoLoEsta: async (registro, userID, entidad, prodID) => {
 		// Variables
-		let ahora = this.ahora();
-		let haceDosHoras = this.haceDosHoras();
+		let ahora = ahora();
+		let haceDosHoras = haceDosHoras(ahora);
 		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
 		if (
 			!registro.capturado_en ||
@@ -151,33 +139,27 @@ module.exports = {
 		}
 		return;
 	},
+	quitarLasCoincidenciasConOriginal: (original, edicion) => {
+		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
+		return edicion;
+	},
+	quitarLosCamposSinContenido: (objeto) => {
+		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
+		return objeto;
+	},
 
 	// Fecha y Hora
-	haceUnaHora: function () {
-		let horario = this.ahora();
+	ahora: () => {
+		return ahora();
+	},
+	haceUnaHora: () => {
+		let horario = ahora();
 		horario.setHours(horario.getHours() - 1);
 		return horario;
 	},
-	obtenerHoras: function (desde, hasta) {
-		// Corregir fechas
-		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
-		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
-		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
-		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
-		// Calcular la cantidad de horas
-		let diferencia = hasta - desde;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / 60 / 60 / 1000;
-		// Averiguar la cantidad de horas por fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desde.getDay() > hasta.getDay() ? 2 * 24 : 0;
-		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
-		// Resultado
-		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
-		leadTime = Math.min(96, leadTime);
-		// Fin
-		return leadTime;
+	haceDosHoras: () => {
+		let horario = ahora();
+		return haceDosHoras(horario);
 	},
 	horarioTexto: (horario) => {
 		return (
@@ -190,6 +172,28 @@ module.exports = {
 			String(horario.getMinutes()).padStart(2, "0") +
 			"hs"
 		);
+	},
+	obtenerLeadTime: (desde, hasta) => {
+		// Corregir domingo
+		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
+		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
+		// Corregir sábado
+		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
+		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
+		// Calcular la cantidad de horas
+		let diferencia = hasta - desde;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+		// Averiguar la cantidad de horas por fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		let horasFDS_por_semanas = semanas * 2 * 24;
+		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
+		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
+		// Resultado
+		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
+		leadTime = Math.min(96, leadTime);
+		// Fin
+		return leadTime;
 	},
 
 	// Varios
@@ -215,10 +219,6 @@ module.exports = {
 		datos.to = "diegoiribarren2015@gmail.com";
 		await transporter.sendMail(datos);
 	},
-	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
-		return edicion;
-	},
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en  'string de nombres'
 		let resultado = [];
@@ -234,6 +234,8 @@ module.exports = {
 		resultado = resultado.length ? resultado.join(", ") : "";
 		return resultado;
 	},
+
+	// Convertir letras
 	convertirLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()
@@ -305,4 +307,14 @@ module.exports = {
 		}
 		return resultado;
 	},
+};
+
+let ahora = () => {
+	// Instante actual en horario local
+	let ahora = new Date(new Date().toUTCString());
+	return ahora;
+};
+let haceDosHoras = (horario) => {
+	horario.setHours(horario.getHours() - 2);
+	return horario;
 };

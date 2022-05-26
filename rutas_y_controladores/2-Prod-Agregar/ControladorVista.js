@@ -136,7 +136,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			prodNombre: funciones.entidadNombre(req.body.entidad),
+			prodNombre: funciones.obtenerEntidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -160,7 +160,7 @@ module.exports = {
 		procesar.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.prodNombre = funciones.entidadNombre(req.body.entidad);
+			req.body.prodNombre = funciones.obtenerEntidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -473,7 +473,7 @@ module.exports = {
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
 		// 4. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto_id = funciones.entidad_id(confirma.entidad);
+		let producto_id = funciones.obtenerEntidad_id(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -529,7 +529,7 @@ module.exports = {
 		if (!registroProd.status_registro.gr_pend_aprob)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
 		// 5. Obtener el producto
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

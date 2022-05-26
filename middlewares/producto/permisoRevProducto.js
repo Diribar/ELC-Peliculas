@@ -1,7 +1,8 @@
 "use strict";
 // Requires
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
@@ -20,11 +21,7 @@ module.exports = async (req, res, next) => {
 	let capturado_en = registro.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
-	const vistaAnterior = {
-		nombre: "fa-circle-left",
-		link: req.session.urlAnterior,
-		titulo: "Ir a la vista anterior",
-	};
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
 	const vistaTablero = {
 		nombre: "fa-spell-check",
 		link: "/revision/tablero-de-control",
