@@ -148,18 +148,17 @@ module.exports = {
 			linkEdicion = funciones.quitarLosCamposSinContenido(linkEdicion);
 			// 2. Actualizarlo
 			linkEdicion = {...linkEdicion, ...datos};
-
 			// 3. Quitar los coincidencias con el original
 			let linkEdicion_id = linkEdicion.id;
 			if (linkEdicion_id) delete linkEdicion.id;
 			linkEdicion = funciones.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicion);
-			// Actualización de la tabla
-			// Si el linkEdicion existía => se lo actualiza
+			// 4. Actualización de la tabla
+			// 4.1. Si el linkEdicion existía => se lo actualiza
 			if (linkEdicion_id)
 				await BD_genericas.actualizarPorId("links_edicion", linkEdicion_id, linkEdicion);
 			else {
-				// De lo contrario, se lo agrega
-				// 1. Completa la información
+				// 4.2. De lo contrario, se lo agrega
+				// 4.2.1. Completa la información
 				let producto_id = funciones.obtenerEntidad_id(linkOriginal);
 				linkEdicion = {
 					...linkEdicion,
@@ -167,7 +166,7 @@ module.exports = {
 					[producto_id]: linkOriginal[producto_id],
 					editado_por_id: userID,
 				};
-				// 2. Agrega el registro a la tabla de 'Edición'
+				// 4.2.2. Agrega el registro a la tabla de 'Edición'
 				await BD_genericas.agregarRegistro("links_edicion", linkEdicion);
 			}
 		}
