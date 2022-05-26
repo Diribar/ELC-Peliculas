@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
 	if (prodCapturado) {
 		// Datos para el mensaje
 		let entidadCodigo = prodCapturado.entidad;
-		let entidadNombre = funciones.entidadNombre(entidadCodigo);
+		let entidadNombre = funciones.obtenerEntidadNombre(entidadCodigo);
 		let entidadID = prodCapturado.id;
 		let linkRedireccionar = "/revision/redireccionar/?entidad=" + entidadCodigo + "&id=" + entidadID;
 		let url = encodeURIComponent(req.originalUrl);
@@ -53,8 +53,8 @@ module.exports = async (req, res, next) => {
 					horario,
 			],
 			iconos: [
-				{nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar esa entidad"},
-				{nombre: "fa-circle-right", link: linkRedireccionar, titulo: "Ir a esa vista"},
+				{nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar automáticamente"},
+				{nombre: "fa-circle-right", link: linkRedireccionar, titulo: "Liberar manualmente"},
 			],
 		};
 

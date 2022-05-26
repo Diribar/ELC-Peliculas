@@ -256,7 +256,7 @@ let extensiones = (nombre) => {
 	return ![".jpg", ".png"].includes(ext);
 };
 let cartelRepetido = (datos) => {
-	let prodNombre = funciones.entidadNombre(datos.entidad);
+	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este/a " +
 		"<a href='/producto/detalle/?entidad=" +

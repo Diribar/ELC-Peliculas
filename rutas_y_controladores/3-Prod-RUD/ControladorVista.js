@@ -9,7 +9,7 @@ const validar = require("../../funciones/4-Validaciones/RUD");
 
 // *********** Controlador ***********
 module.exports = {
-	detalleEdicionForm: async (req, res) => {
+	prod_Form: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
 		let tema = "producto";
@@ -19,12 +19,8 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// 3. Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
-			entidad,
-			prodID,
-			userID
-		);
+		// 3. Obtener el producto 'Original' y 'Editado'
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtener avatar
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
@@ -40,7 +36,7 @@ module.exports = {
 				: "";
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
@@ -163,18 +159,14 @@ module.exports = {
 			prodNombre,
 		});
 	},
-	edicionGuardar: async (req, res) => {
+	prod_GuardarEdic: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.body.entidad;
 		let prodID = req.body.id;
 		// Obtener el userID
 		let userID = req.session.usuario.id;
-		// Obtener el producto 'Original'
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
-			entidad,
-			prodID,
-			userID
-		);
+		// Obtener el producto 'Original' y 'Editado'
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
@@ -202,28 +194,32 @@ module.exports = {
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición
 			let edicion = {...prodEditado, ...req.body, avatar};
-			// Quitar de 'edicion' los campos innecesarios
-			delete edicion.id;
-			edicion = procesar.quitarLosCamposSinContenido(edicion);
+
+			// 3. Quitar los coincidencias con el original
+			let edicion_id = edicion.id;
+			if (edicion_id) delete edicion.id;
 			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-			// Completar los datos de edicion
-			let producto_id = funciones.entidad_id(entidad);
-			edicion = {
-				...edicion,
-				[producto_id]: prodID,
-				editado_por_id: userID,
-				entidad: "prods_edicion",
-			};
-			// Eliminar prodEditado (si existía) de la BD
-			if (prodEditado) await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
-			// Agregar 'edición' a la BD
-			await BD_genericas.agregarRegistro(edicion.entidad, edicion);
-			// Eliminar req.session.edicion
+			// Actualización de la tabla
+			// Si la edicion existía => se la actualiza
+			if (edicion_id) await BD_genericas.actualizarPorId("prods_edicion", edicion_id, edicion);
+			else {
+				// De lo contrario, se lo agrega
+				// 1. Completa la información
+				let producto_id = funciones.obtenerEntidad_id(entidad);
+				edicion = {
+					...edicion,
+					[producto_id]: prodID,
+					editado_por_id: userID,
+				};
+				// 2. Agrega el registro a la tabla de 'Edición'
+				await BD_genericas.agregarRegistro(edicion.entidad, edicion);
+			}
+			// Elimina req.session.edicion
 			req.session.edicion = {};
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
-	edicionEliminar: async (req, res) => {
+	prod_EliminarEdic: async (req, res) => {
 		// Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let ID = req.query.id;
@@ -242,11 +238,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDeProducto(
-			entidad,
-			prodID,
-			userID
-		);
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Obtener el avatar
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
@@ -256,18 +248,18 @@ module.exports = {
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Combinar los datos Editados con la versión Original
-		prodEditado = {...prodOriginal, ...prodEditado};
+		let producto = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
 		let links = await procesar.obtenerLinksActualizados(entidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
-			prodEditado.capitulos = await BD_especificas.obtenerCapitulos(
+			producto.capitulos = await BD_especificas.obtenerCapitulos(
 				prodEditado.coleccion_id,
 				prodEditado.temporada
 			);
@@ -280,7 +272,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		//return res.send();
+		//return res.send(links);
 		return res.render("0-RUD", {
 			tema,
 			codigo,
@@ -290,7 +282,7 @@ module.exports = {
 			titulo,
 			links,
 			provs,
-			producto: prodEditado,
+			producto,
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			dataEntry,
@@ -300,14 +292,18 @@ module.exports = {
 			haceUnaHora: funciones.haceUnaHora(),
 		});
 	},
-	linksAltasEditar: async (req, res) => {
-		let datos = procesar.limpiarLosDatos(req.body);
+	linksGuardar: async (req, res) => {
+		// Variables
+		let datos = procesar.despejarLinkConNovedad(req.body);
+		let userID = req.session.usuario.id;
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);
 		if (errores.hay) req.session.links = datos;
 		else {
 			// Procesar los datos en la operación que corresponda
-			datos.alta ? await procesar.altaDeLink(req, datos) : await procesar.edicionDeLink(req, datos);
+			datos.alta
+				? await procesar.altaDeLink(req, datos)
+				: await procesar.guardarEdicionDeLink(userID, datos);
 			delete req.session.links;
 		}
 		// Redireccionar

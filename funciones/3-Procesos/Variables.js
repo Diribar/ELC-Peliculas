@@ -3,6 +3,7 @@
 const BD_genericas = require("../2-BD/Genericas");
 
 module.exports = {
+	// Circuito Agregar Productos
 	camposDD: () => {
 		return [
 			{
@@ -113,7 +114,6 @@ module.exports = {
 			},
 		];
 	},
-
 	camposDP: async () => {
 		return [
 			{
@@ -226,76 +226,38 @@ module.exports = {
 		];
 	},
 
+	// Circuito ABM Links
+	provsQueNoRespetanCopyright: () => {
+		return [
+			{nombre: "Gloria TV", url: "gloria.tv"},
+			{nombre: "Cuevana", url: "cuevana"},
+		];
+	},
+	provsListaNegra: () => {
+		return ["youporn", "pornhub"];
+	},
+
+	// Entorno Revisiones
 	camposRevisarEdic: () => {
 		return [
-			{
-				titulo: "Título original",
-				nombreDelCampo: "nombre_original",
-				input: true,
-			},
-			{
-				titulo: "Título en castellano",
-				nombreDelCampo: "nombre_castellano",
-				input: true,
-			},
-			{
-				titulo: "Año de estreno",
-				nombreDelCampo: "ano_estreno",
-				angosto: true,
-				input: true,
-			},
-			{
-				titulo: "Año de finalización",
-				nombreDelCampo: "ano_fin",
-				angosto: true,
-				input: true,
-			},
-			{
-				titulo: "Duración",
-				nombreDelCampo: "duracion",
-				angosto: true,
-				input: true,
-			},
-			{
-				titulo: "País/es",
-				nombreDelCampo: "paises_id",
-			},
+			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
+			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
+			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},
+			{titulo: "Año de finalización", nombreDelCampo: "ano_fin", angosto: true, input: true},
+			{titulo: "Duración", nombreDelCampo: "duracion", angosto: true, input: true},
+			{titulo: "País/es", nombreDelCampo: "paises_id"},
 			{
 				titulo: "Idioma Original",
 				nombreDelCampo: "idioma_original_id",
 				asociacion1: "idioma_original.nombre",
 				asociacion2: "nombre",
 			},
-			{
-				titulo: "Dirección",
-				nombreDelCampo: "direccion",
-				input: true,
-			},
-			{
-				titulo: "Guión",
-				nombreDelCampo: "guion",
-				input: true,
-			},
-			{
-				titulo: "Música",
-				nombreDelCampo: "musica",
-				input: true,
-			},
-			{
-				titulo: "Actuación",
-				nombreDelCampo: "actuacion",
-				input: true,
-			},
-			{
-				titulo: "Producción",
-				nombreDelCampo: "produccion",
-				input: true,
-			},
-			{
-				titulo: "Sinopsis",
-				nombreDelCampo: "sinopsis",
-				input: true,
-			},
+			{titulo: "Dirección", nombreDelCampo: "direccion", input: true},
+			{titulo: "Guión", nombreDelCampo: "guion", input: true},
+			{titulo: "Música", nombreDelCampo: "musica", input: true},
+			{titulo: "Actuación", nombreDelCampo: "actuacion", input: true},
+			{titulo: "Producción", nombreDelCampo: "produccion", input: true},
+			{titulo: "Sinopsis", nombreDelCampo: "sinopsis", input: true},
 			{
 				titulo: "Versión en castellano",
 				nombreDelCampo: "en_castellano_id",
@@ -353,24 +315,8 @@ module.exports = {
 		];
 	},
 
-	provsQueNoRespetanCopyright: () => {
-		return [
-			{
-				nombre: "Gloria TV",
-				url: "gloria.tv",
-			},
-			{
-				nombre: "Cuevana",
-				url: "cuevana",
-			},
-		];
-	},
-
-	provsListaNegra: () => {
-		return ["youporn", "pornhub"];
-	},
-
-	menuOpciones:() => {
+	// Entorno Mostrar Productos
+	menuOpciones: () => {
 		return [
 			{
 				nombre: "Sugeridas para el momento del año",
@@ -401,8 +347,7 @@ module.exports = {
 				comentario: "Películas con Valores Presentes en nuestra Cultura (VPC)",
 			},
 		];
-		
-	},	
+	},
 	subMenuOpciones: () => {
 		return [
 			{nombre: "Por mejor calificación", url: "calificacion"},
@@ -410,5 +355,14 @@ module.exports = {
 			{nombre: "Por incorporación más reciente", url: "incorporacion"},
 			{nombre: "Por orden de visita más reciente", url: "visita"},
 		];
+	},
+
+	// Varios
+	vistaAnterior: (urlAnterior) => {
+		return {
+			nombre: "fa-circle-left",
+			link: urlAnterior ? urlAnterior : "/",
+			titulo: "Ir a la vista anterior",
+		};
 	},
 };

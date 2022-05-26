@@ -24,7 +24,7 @@ module.exports = {
 
 		// En caso que sea 'RUD-edición'
 		if (codigo == "/producto/edicion/") {
-			let entidad_id = funciones.entidad_id(entidad);
+			let entidad_id = funciones.obtenerEntidad_id(entidad);
 			entidad = "prods_edicion";
 			objeto = {[entidad_id]: id, editado_por_id: userID};
 		}

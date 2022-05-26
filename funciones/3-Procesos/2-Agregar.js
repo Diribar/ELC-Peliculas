@@ -393,7 +393,7 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = funciones.entidadNombre(entidad);
+		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
@@ -469,7 +469,7 @@ module.exports = {
 
 	// ConfirmarGuardar
 	guardar_cal_registros: (confirma, registro) => {
-		let producto_id = funciones.entidad_id(confirma.entidad);
+		let producto_id = funciones.obtenerEntidad_id(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
 			usuario_id: registro.creado_por_id,

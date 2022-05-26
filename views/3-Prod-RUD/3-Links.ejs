@@ -18,7 +18,7 @@
 			<option value="2">Película</option>
 			<option value="TD" selected>Todos</option>
 		</select>
-		<form action="<%= vista %>altas-editar" method="POST">
+		<form action="<%= vista %>guardar" method="POST">
 			<div id="tags" class="flex-row">
 				<div id="activo">Activos</div>
 				<div id="inactivo">Inactivos</div>
@@ -38,9 +38,11 @@
 				</thead>
 				<tbody>
 					<!-- Filas para links existentes -->
-					<% let fila=0 %> 
+					<% let fila = 0 %> 
 					<% for (let link of links) { %>
-						<%- include("31-Links-Datos", {link}) %>
+						<!-- No se pueden 'tocar' los links pendientes de aprobar, salvo que fueran creados por el usuario -->
+						<% let mostrar = link.status_registro.gr_pend_aprob && link.creado_por_id != userID ? 'ocultar' : '' %>
+						<%- include("31-Links-Datos", {link, mostrar}) %>
 						<%- include("32-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
 					<% } %>

@@ -129,7 +129,7 @@ let hayErrores = (errores) => {
 };
 
 let cartelRepetido = (datos) => {
-	let prodNombre = funciones.entidadNombre(datos.entidad);
+	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este " +
 		"<a href='/RCLV/detalle/?entidad=" +

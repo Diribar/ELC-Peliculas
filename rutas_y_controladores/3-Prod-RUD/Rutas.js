@@ -15,15 +15,14 @@ const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
 // Rutas de vistas
-router.get("/detalle", soloUsuarios, entidad, id, permisoRUD, vista.detalleEdicionForm);
+router.get("/detalle", soloUsuarios, entidad, id, permisoRUD, vista.prod_Form);
 router.get("/calificala", soloAutInput, entidad, id, permisoRUD, vista.calificala);
 
-router.get("/edicion", soloAutInput, entidad, id, permisoRUD, vista.detalleEdicionForm);
-router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.edicionGuardar);
-router.get("/edicion/eliminar", soloAutInput, entidad, id, permisoRUD, vista.edicionEliminar);
+router.get("/edicion", soloAutInput, entidad, id, permisoRUD, vista.prod_Form);
+router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
+router.get("/edicion/eliminar", soloAutInput, entidad, id, permisoRUD, vista.prod_EliminarEdic);
 router.get("/links", soloAutInput, entidad, id, permisoRUD, vista.linksForm);
-
-router.post("/links/altas-editar", soloAutInput, vista.linksAltasEditar);
+router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links

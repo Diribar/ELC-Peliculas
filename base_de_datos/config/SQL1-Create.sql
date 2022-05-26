@@ -129,7 +129,7 @@ CREATE TABLE USUARIOS (
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	fecha_ultimo_login DATE DEFAULT UTC_DATE,
-	version_ultimo_login VARCHAR(4) DEFAULT '1.0',
+	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
 
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
@@ -141,8 +141,6 @@ CREATE TABLE USUARIOS (
 	cant_edic_aprob SMALLINT DEFAULT 0,
 	cant_edic_rech SMALLINT DEFAULT 0,
 
-	dni_validado_por_id INT UNSIGNED NULL,
-	
 	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME DEFAULT NULL,
 	penalizado_por_id INT UNSIGNED NULL,
@@ -153,7 +151,6 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
-	FOREIGN KEY (dni_validado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
