@@ -55,21 +55,9 @@ module.exports = {
 		// Variables
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
-		let haceUnaHora = funciones.haceUnaHora();
-		// Obtener producto
-		let registro = await BD_genericas.obtenerPorId(entidad, prodID);
-		// Verificar que tenga una captura activa del usuario
-		if (
-			registro &&
-			registro.capturado_en &&
-			registro.capturado_por_id &&
-			registro.captura_activa &&
-			registro.capturado_en > haceUnaHora &&
-			registro.capturado_por_id == userID
-		)
-			// En caso afirmativo, actualizarlo inactivando la captura
-			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
-		// Redireccionar a "Visión General"
+		// Inactivar
+		await funciones.inactivarCaptura(entidad, prodID, userID)
+		// Redireccionar al "Tablero"
 		return res.redirect("/revision/tablero-de-control");
 	},
 	redireccionar: async (req, res) => {
@@ -294,6 +282,7 @@ module.exports = {
 			entidad,
 			bloqueDer,
 			prodNombre,
+			vista,
 		});
 	},
 	// RCLV

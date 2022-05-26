@@ -6,6 +6,12 @@ const funciones = require("./Compartidas");
 const variables = require("./Variables");
 
 module.exports = {
+	// Compartidos
+	quitarLosCamposSinContenido: (objeto) => {
+		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
+		return objeto;
+	},
+	// Sin compartir
 	guardar_o_actualizar_Edicion: async (prodEntidad, prodID, userID, datos) => {
 		let entidad_id = funciones.entidad_id(prodEntidad);
 		// Averiguar si ya exista la edición
@@ -29,10 +35,6 @@ module.exports = {
 				: 4;
 		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
 		return {id, nombre: nombres[id - 1]};
-	},
-	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
-		return objeto;
 	},
 	quitarLosCamposQueNoSeComparan: (edicion) => {
 		let noSeComparan = {};
@@ -118,54 +120,34 @@ module.exports = {
 		BD_genericas.agregarRegistro("altas_registros_rech", datosParaBorrados);
 	},
 	// FUNCIONES --------------------------------------------------
-	obtenerLinksCombinados: async function (entidad, prodID, userID) {
+	obtenerLinksActualizados: async function (entidad, prodID, userID) {
+		// Obtiene los links fusionados entre el original y el editado por el usuario
 		// Definir valores necesarios
 		let producto_id = funciones.entidad_id(entidad);
-		let includes = ["link_tipo", "link_prov", "status_registro"];
+		let includes = ["link_tipo", "link_prov", "status_registro", "motivo", "link_ediciones"];
 		// Obtener los linksOriginales
-		let linksOriginales = await BD_genericas.obtenerTodosPorCamposConInclude(
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[producto_id]: prodID},
 			includes
 		);
 		// Combinarlos con la edición, si existe
-		includes.splice(includes.indexOf("link_prov"), 1);
-		let linksCombinados = linksOriginales;
-		// Rutina de combinación
-		for (let i = 0; i < linksOriginales.length; i++) {
-			// Obtener la edición
-			let linkEditado = await BD_genericas.obtenerPorCamposConInclude(
-				"links_edicion",
-				{link_id: linksOriginales[i].id, editado_por_id: userID},
-				includes.slice(0, -1)
-			);
-			// Hacer la combinación
-			if (linkEditado) {
-				delete linkEditado.id;
-				linksCombinados[i] = {...linksOriginales[i], ...linkEditado};
+		links.forEach((link, i) => {
+			if (link.link_ediciones.length) {
+				let edicion = link.link_ediciones.find((n) => n.editado_por_id == userID);
+				console.log(edicion);
+				if (edicion) {
+					if (edicion.calidad) links[i].calidad = edicion.calidad;
+					if (edicion.link_tipo_id) links[i].link_tipo_id = edicion.link_tipo_id;
+					if (edicion.completo) links[i].completo = edicion.completo;
+					if (edicion.parte) links[i].parte = edicion.parte;
+					if (edicion.gratuito) links[i].gratuito = edicion.gratuito;
+				}
 			}
-			linksCombinados[i] = this.quitarLosCamposSinContenido(linksCombinados[i]);
-		}
+			links[i] = this.quitarLosCamposSinContenido(linksCombinados[i]);
+		});
 		// Fin
-		return linksCombinados;
-	},
-	separarActivos_e_Inactivos: async (linksOriginales) => {
-		if (!linksOriginales.length) return [[], []];
-		// linksActivos
-		let linksActivos = linksOriginales.filter((n) => !n.status_registro.gr_inactivos);
-		// linksInactivos
-		let linksInactivos = linksOriginales.filter((n) => n.status_registro.gr_inactivos);
-		// A los Inactivos, agregarles el motivo
-		for (let i = 0; i < linksInactivos.length; i++) {
-			let registro_borrado = await BD_genericas.obtenerPorCamposConInclude(
-				"altas_registros_rech",
-				{entidad: "links_originales", entidad_id: linksInactivos[i].id},
-				"motivo"
-			);
-			linksInactivos[i].motivo = registro_borrado.motivo.nombre;
-		}
-		// Fin
-		return [linksActivos, linksInactivos];
+		return links;
 	},
 	altaDeLink: async function (req, datos) {
 		if (!datos.parte) datos.parte = "-";

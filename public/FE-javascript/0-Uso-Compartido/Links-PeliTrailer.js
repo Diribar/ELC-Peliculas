@@ -27,7 +27,6 @@ window.addEventListener("load", () => {
 			if (valor != "TD") {
 				tipoAltas.value = valor;
 				tipoAltas.disabled = true;
-				console.log(tipoAltas.value);
 			} else {
 				tipoAltas.value = "";
 				tipoAltas.disabled = false;

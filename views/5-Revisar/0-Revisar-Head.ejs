@@ -9,15 +9,15 @@
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 	<% if (codigo == "producto/alta") { %>
 		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/0-MotivosRechazar.css">
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod1-Alta.css">
+		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-Alta.css">
 		<script src="/FE-javascript/5-Revisar/1-ProdAlta.js"></script>
 	<% } else if (codigo == "producto/edicion") { %>
 		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/0-MotivosRechazar.css">
 		<% if (vista.includes("Avatar")) { %>
-			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod2-Avatar.css">
+			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-EdicAvatar.css">
 			<script src="/FE-javascript/5-Revisar/2-ProdAvatar.js"></script>
 		<% } else { %>
-			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod2-Edicion.css">
+			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-EdicDemas.css">
 			<script src="/FE-javascript/5-Revisar/2-ProdEditar.js"></script>
 		<% } %>
 	<% } else if (codigo == "RCLV") { %>
