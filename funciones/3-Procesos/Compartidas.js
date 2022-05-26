@@ -119,8 +119,8 @@ module.exports = {
 	},
 	activarCapturaSiNoLoEsta: async (registro, userID, entidad, prodID) => {
 		// Variables
-		let ahora = ahora();
-		let haceDosHoras = haceDosHoras(ahora);
+		let ahora = funcionAhora();
+		let haceDosHoras = funcionHaceDosHoras(ahora);
 		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
 		if (
 			!registro.capturado_en ||
@@ -150,16 +150,16 @@ module.exports = {
 
 	// Fecha y Hora
 	ahora: () => {
-		return ahora();
+		return funcionAhora();
 	},
 	haceUnaHora: () => {
-		let horario = ahora();
+		let horario = funcionAhora();
 		horario.setHours(horario.getHours() - 1);
 		return horario;
 	},
 	haceDosHoras: () => {
-		let horario = ahora();
-		return haceDosHoras(horario);
+		let horario = funcionAhora();
+		return funcionHaceDosHoras(horario);
 	},
 	horarioTexto: (horario) => {
 		return (
@@ -309,12 +309,12 @@ module.exports = {
 	},
 };
 
-let ahora = () => {
+// Funciones
+let funcionAhora = () => {
 	// Instante actual en horario local
-	let ahora = new Date(new Date().toUTCString());
-	return ahora;
+	return new Date(new Date().toUTCString());
 };
-let haceDosHoras = (horario) => {
+let funcionHaceDosHoras = (horario) => {
 	horario.setHours(horario.getHours() - 2);
 	return horario;
 };

@@ -594,6 +594,8 @@ module.exports = {
 		return fecha;
 	},
 };
+
+// Funciones ----------------------------
 let prodValorVinculo = (producto, objeto) => {
 	let aux = producto[objeto.vinculo]
 		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
@@ -665,7 +667,6 @@ let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
 	);
 	return productos;
 };
-// Funciones ----------------------------
 let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
 	for (let i = prodAjenos.length - 1; i >= 0; i--) {
 		for (let prodPropio of prodPropios) {
