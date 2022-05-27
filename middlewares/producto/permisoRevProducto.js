@@ -107,7 +107,8 @@ module.exports = async (req, res, next) => {
 						};
 					}
 				}
-			} 
+			}
+		}
 	}
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
