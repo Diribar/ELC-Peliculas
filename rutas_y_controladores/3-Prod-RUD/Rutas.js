@@ -12,8 +12,10 @@ const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
+// Temas de captura
 const permisoRUD = require("../../middlewares/producto/permisoRUD");
 const captura = require("../../middlewares/producto/captura");
+// Varios
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
