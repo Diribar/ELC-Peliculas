@@ -18,8 +18,10 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
+	// Variables - Captura
 	let capturado_en = registro.capturado_en;
 	capturado_en.setSeconds(0);
+	const [horarioInicial, horarioFinal] = horarios(capturado_en);
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaTablero = variables.vistaTablero();
@@ -44,16 +46,18 @@ module.exports = async (req, res, next) => {
 			};
 		else {
 			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO
-			// DETECTAR PROBLEMAS DE CAPTURA
-			// Configurar el horario inicial
-			let horarioInicial = new Date(capturado_en);
-			// Configurar el horario final
-			let horarioFinal = horarioInicial;
-			horarioFinal.setHours(horarioInicial.getHours() + 1);
-			// Configurar los horarios con formato texto
-			horarioInicial = funciones.horarioTexto(horarioInicial);
-			horarioFinal = funciones.horarioTexto(horarioFinal);
-			// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
+			// PROBLEMA 3: El registro todavía está en manos de su creador
+			// ¿Creado > haceUnaHora?
+			if (creado_en > haceUnaHora) {
+				// Obtener el horario de creación
+				let horarioCreacion = new Date(creado_en);
+				// Obtener el horario en que estará disponible para revisar
+				let horarioDisponible = horarioCreacion;
+				horarioDisponible.setHours(horarioCreacion.getHours() + 1);
+				// Configurar los horarios con formato texto
+				horarioDisponible = funciones.horarioTexto(horarioDisponible);
+				// Información			
+			// PROBLEMA 3: El registro está capturado por otro usuario en forma 'activa'
 			if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
 				informacion = {
 					mensajes: [
@@ -64,7 +68,7 @@ module.exports = async (req, res, next) => {
 					],
 					iconos: [vistaAnterior, vistaTablero],
 				};
-			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
+			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + NO CAPTURADO POR OTRO USUARIO
 			// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
 			else if (
 				capturado_en < haceUnaHora &&
@@ -89,4 +93,16 @@ module.exports = async (req, res, next) => {
 
 	// Continuar
 	next();
+};
+
+let horarios = (capturado_en) => {
+	// Configurar el horario inicial
+	let horarioInicial = new Date(capturado_en);
+	// Configurar el horario final
+	let horarioFinal = new Date(horarioInicial);
+	horarioFinal.setHours(horarioInicial.getHours() + 1);
+	// Configurar los horarios con formato texto
+	horarioInicial = funciones.horarioTexto(horarioInicial);
+	horarioFinal = funciones.horarioTexto(horarioFinal);
+	return [horarioInicial, horarioFinal];
 };
