@@ -131,28 +131,25 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 
-	// FOCO SOLAMENTE EN 'EDICIÓN' Y 'LINKS'
-	if (codigo == "edicion" || codigo == "links") {
-		// FOCO EN STATUS CREADO
-		if (producto.status_registro.creado) {
-			// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
-			// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
-			informacion = statusCreado(informacion);
-		}
-		// FOCO EN STATUS ALTA-APROBADA
-		else if (producto.status_registro.alta_aprob) {
-			// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
-			// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
-			informacion = await alta_aprobada(informacion);
-		}
-		// FOCO EN STATUS APROBADO
-		else if (producto.status_registro.aprobado) {
-			// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
-			informacion = await problemasDeCaptura(informacion);
-		} else {
-			// Mensaje para Inactivos
-		}
-	} else if (codigo == "detalle") await funciones.inactivarCaptura(entidad, prodID, userID);
+	// FOCO EN STATUS CREADO
+	if (producto.status_registro.creado) {
+		// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
+		// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
+		informacion = statusCreado(informacion);
+	}
+	// FOCO EN STATUS ALTA-APROBADA
+	else if (producto.status_registro.alta_aprob) {
+		// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
+		// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
+		informacion = await alta_aprobada(informacion);
+	}
+	// FOCO EN STATUS APROBADO
+	else if (producto.status_registro.aprobado) {
+		// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
+		informacion = await problemasDeCaptura(informacion);
+	} else {
+		// Mensaje para Inactivos
+	}
 
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
