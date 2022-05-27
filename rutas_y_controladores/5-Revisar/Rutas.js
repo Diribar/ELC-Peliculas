@@ -9,9 +9,10 @@ const vista = require("./ControladorVista");
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
-const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
 const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
-const permisoLinks= require("../../middlewares/producto/permisoRevLinks");
+const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
+const permisoLinks = require("../../middlewares/producto/permisoRevLinks");
+const captura = require("../../middlewares/producto/captura");
 
 // Rutas de Vistas *******************************************
 // Vistas Generales
@@ -24,10 +25,20 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
+	captura,
 	vista.redireccionar
 );
 // Vistas de productos
-router.get("/producto/alta", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.prod_Alta);
+router.get(
+	"/producto/alta",
+	soloGestionProd,
+	entidad,
+	id,
+	permisoUsuario,
+	permisoProducto,
+	captura,
+	vista.prod_Alta
+);
 router.get(
 	"/producto/edicion",
 	soloGestionProd,
@@ -35,10 +46,11 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
+	captura,
 	vista.prod_Edicion
 );
 // Vistas de RCLVs
-router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLV_Alta);
+router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, captura, vista.RCLV_Alta);
 // Vistas de Links
 router.get(
 	"/links",
@@ -46,8 +58,9 @@ router.get(
 	entidad,
 	id,
 	permisoUsuario,
-	permisoLinks,
 	permisoProducto,
+	permisoLinks,
+	captura,
 	vista.links
 );
 

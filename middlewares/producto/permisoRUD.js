@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 	let capturado_en = producto.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
-	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaDetalle = {
 		nombre: "fa-circle-info",
 		link: "/producto_rud/detalle/?entidad=" + entidad + "&id=" + prodID,
@@ -103,8 +103,7 @@ module.exports = async (req, res, next) => {
 				};
 			}
 		}
-		// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL PRODUCTO
-		if (!informacion) await funciones.activarCapturaSiNoLoEsta(producto, userID, entidad, prodID);
+
 		// Fin
 		return informacion;
 	};
@@ -132,38 +131,29 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 
-	// PROBLEMAS -----------------------------------------------------------
-	// PROBLEMA: Registro no encontrado
-	if (!producto) {
-		informacion = {
-			mensajes: ["Producto no encontrado"],
-			iconos: [vistaAnterior],
-		};
-	} else {
-		// REGISTRO ENCONTRADO
-		// FOCO SOLAMENTE EN 'EDICIÓN' Y 'LINKS'
-		if (codigo == "edicion" || codigo == "links") {
-			// FOCO EN STATUS CREADO
-			if (producto.status_registro.creado) {
-				// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
-				// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
-				informacion = statusCreado(informacion);
-			}
-			// FOCO EN STATUS ALTA-APROBADA
-			else if (producto.status_registro.alta_aprob) {
-				// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
-				// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
-				informacion = await alta_aprobada(informacion);
-			}
-			// FOCO EN STATUS APROBADO
-			else if (producto.status_registro.aprobado) {
-				// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
-				informacion = await problemasDeCaptura(informacion);
-			} else {
-				// Mensaje para Inactivos
-			}
-		} else if (codigo == "detalle") await funciones.inactivarCaptura(entidad, prodID, userID);
-	}
+	// FOCO SOLAMENTE EN 'EDICIÓN' Y 'LINKS'
+	if (codigo == "edicion" || codigo == "links") {
+		// FOCO EN STATUS CREADO
+		if (producto.status_registro.creado) {
+			// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
+			// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
+			informacion = statusCreado(informacion);
+		}
+		// FOCO EN STATUS ALTA-APROBADA
+		else if (producto.status_registro.alta_aprob) {
+			// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
+			// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
+			informacion = await alta_aprobada(informacion);
+		}
+		// FOCO EN STATUS APROBADO
+		else if (producto.status_registro.aprobado) {
+			// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
+			informacion = await problemasDeCaptura(informacion);
+		} else {
+			// Mensaje para Inactivos
+		}
+	} else if (codigo == "detalle") await funciones.inactivarCaptura(entidad, prodID, userID);
+
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
 	else next();
