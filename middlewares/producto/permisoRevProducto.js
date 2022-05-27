@@ -67,14 +67,7 @@ module.exports = async (req, res, next) => {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// DETECTAR PROBLEMAS DE CAPTURA
 				if (capturado_en) {
-					// Configurar el horario inicial
-					let horarioInicial = new Date(capturado_en);
-					// Configurar el horario final
-					let horarioFinal = horarioInicial;
-					horarioFinal.setHours(horarioInicial.getHours() + 1);
-					// Configurar los horarios con formato texto
-					horarioInicial = funciones.horarioTexto(horarioInicial);
-					horarioFinal = funciones.horarioTexto(horarioFinal);
+					const [horarioInicial, horarioFinal] = horarios(capturado_en);
 					// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
 					if (
 						capturado_en > haceUnaHora &&
