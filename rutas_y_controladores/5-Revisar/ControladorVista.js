@@ -19,7 +19,7 @@ module.exports = {
 				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
 			);
 		// Definir variables
-		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		const status = req.session.status_registro
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		let haceUnaHora = funciones.haceUnaHora();
 		// Productos
@@ -28,7 +28,6 @@ module.exports = {
 		// Ediciones
 		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
 		if (prodsConEdicion.length) prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
-		//return res.send(prodsConEdicion)
 		// RCLV
 		let RCLVs = await procesar.RCLV_ObtenerARevisar(haceUnaHora, status, userID);
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
@@ -345,7 +344,7 @@ module.exports = {
 		let tema = "revision";
 		let codigo = "links";
 		// Otras variables
-		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		const status = req.session.status_registro
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;

@@ -21,12 +21,15 @@ app.use(session({secret: "keyboard cat", resave: false, saveUninitialized: false
 // Para usar cookies
 const cookies = require("cookie-parser");
 app.use(cookies());
-// Para usar el middleware de Login mediante Cookie
+// Para estar siempre logueado, si existe el cookie
 const usuario = require("./middlewares/usuarios/loginConCookie");
 app.use(usuario);
-// Para usar el middleware de userLogs
+// Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs);
+// Para tener siempre a mano las opciones de status_registro
+const status_registro = require("./middlewares/varios/status_registro");
+app.use(status_registro);
 
 // Para saber el recorrido del proyecto
 // var logger = require('morgan');

@@ -26,7 +26,7 @@ module.exports = {
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
-		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		const status = req.session.status_registro
 		let nuevoStatusID = aprobado
 			? status.find((n) => n.alta_aprob).id
 			: status.find((n) => n.inactivado).id;
@@ -92,7 +92,7 @@ module.exports = {
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		let datos;
-		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		const status = req.session.status_registro
 		let RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
 		// Obtener registros original
 		let includes = [
@@ -271,7 +271,7 @@ module.exports = {
 			...includes,
 		]);
 		// Obtener los status
-		let status = await BD_genericas.obtenerTodos("status_registro", "orden");
+		const status = req.session.status_registro
 		let creado_id = status.find((n) => n.creado).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// PROBLEMA 1: Registro no encontrado

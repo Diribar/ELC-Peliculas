@@ -59,5 +59,8 @@ module.exports = async (req, res, next) => {
 		};
 
 		return res.render("Errores", {informacion});
-	} else next();
+	}
+
+	// Continuar
+	next();
 };

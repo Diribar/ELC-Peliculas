@@ -22,11 +22,7 @@ module.exports = async (req, res, next) => {
 	if (capturado_en) capturado_en.setSeconds(0);
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
-	const vistaTablero = {
-		nombre: "fa-spell-check",
-		link: "/revision/tablero-de-control",
-		titulo: "Ir al 'Tablero de Control' de Revisiones",
-	};
+	const vistaTablero = variables.vistaTablero()
 
 	// Detectar los problemas
 	// PROBLEMA 1: Registro no encontrado ----------------------------------------------
@@ -117,5 +113,6 @@ module.exports = async (req, res, next) => {
 	// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL REGISTRO
 	else if (!informacion) await funciones.activarCapturaSiNoLoEsta(registro, userID, entidad, prodID);
 
+	// Continuar
 	next();
 };

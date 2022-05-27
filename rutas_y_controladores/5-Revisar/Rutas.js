@@ -11,6 +11,7 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
 const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
+const permisoLinks= require("../../middlewares/producto/permisoRevLinks");
 
 // Rutas de Vistas *******************************************
 // Vistas Generales
@@ -26,15 +27,7 @@ router.get(
 	vista.redireccionar
 );
 // Vistas de productos
-router.get(
-	"/producto/alta",
-	soloGestionProd,
-	entidad,
-	id,
-	permisoUsuario,
-	permisoProducto,
-	vista.prod_Alta
-);
+router.get("/producto/alta", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.prod_Alta);
 router.get(
 	"/producto/edicion",
 	soloGestionProd,
@@ -47,7 +40,16 @@ router.get(
 // Vistas de RCLVs
 router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, vista.RCLV_Alta);
 // Vistas de Links
-router.get("/links", soloGestionProd, vista.links);
+router.get(
+	"/links",
+	soloGestionProd,
+	entidad,
+	id,
+	permisoUsuario,
+	permisoLinks,
+	permisoProducto,
+	vista.links
+);
 
 // Rutas de APIs *******************************************
 // Uso compartido
