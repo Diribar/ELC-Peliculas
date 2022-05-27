@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 	const status = req.session.status_registro;
 	let informacion;
 	// Variables - Registro
-	let includes = ["links", "links_edic"];
+	const includes = ["links", "links_edic"];
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
