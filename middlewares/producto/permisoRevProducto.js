@@ -106,7 +106,8 @@ module.exports = async (req, res, next) => {
 							iconos: [vistaAnterior, vistaTablero],
 						};
 					}
-				}			} 
+				}
+			} 
 	}
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
