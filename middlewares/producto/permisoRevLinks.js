@@ -25,14 +25,15 @@ module.exports = async (req, res, next) => {
 
 	// Averiguar si alguno de los links es del usuario revisor
 	if (registro.links.length)
-		// PROBLEMA: creado o editado o cambio_status_propuesto por el usuario
-		for (let link of registro.links) {
+	for (let link of registro.links) {
+			// PROBLEMA 1: creado por el usuario
 			if (link.creado_por_id == userID) {
 				informacion = {
 					mensajes: ["El producto tiene por lo menos algún link 'creado' por vos."],
 				};
 			}
 
+			// PROBLEMA 2: editado por el usuario
 			if (link.cambio_status_propuesto_por_id == userID)
 				informacion = {
 					mensajes: [
@@ -45,6 +46,7 @@ module.exports = async (req, res, next) => {
 		}
 	if (!informacion && registro.links_edic.length)
 		for (let link of registro.links_edic)
+			// PROBLEMA 3: cambio_status_propuesto por el usuario
 			if (link.editado_por_id == userID) {
 				informacion = {
 					mensajes: ["El producto tiene por lo menos algún link 'editado' por vos."],
@@ -52,7 +54,6 @@ module.exports = async (req, res, next) => {
 				break;
 			}
 	// Si hay errores, los informa
-
 	if (informacion) {
 		informacion.mensajes.push(
 			"En estas condiciones, necesitamos que otra persona revise los links de este producto."
