@@ -56,33 +56,43 @@ module.exports = async (req, res, next) => {
 				horarioDisponible.setHours(horarioCreacion.getHours() + 1);
 				// Configurar los horarios con formato texto
 				horarioDisponible = funciones.horarioTexto(horarioDisponible);
-				// Información			
-			// PROBLEMA 3: El registro está capturado por otro usuario en forma 'activa'
-			if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
+				// Información
 				informacion = {
-					mensajes: [
-						"El registro está en revisión por el usuario " +
-							registro.capturado_por.apodo +
-							", desde el " +
-							horarioInicial,
-					],
+					mensajes: ["El registro estará disponible para su revisión el " + horarioDisponible],
 					iconos: [vistaAnterior, vistaTablero],
 				};
-			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + NO CAPTURADO POR OTRO USUARIO
-			// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
-			else if (
-				capturado_en < haceUnaHora &&
-				capturado_en > haceDosHoras &&
-				registro.capturado_por_id == userID
-			) {
-				informacion = {
-					mensajes: [
-						"Esta revisión quedó inconclusa desde el " + horarioFinal,
-						"Quedó a disposición de que lo continúe revisando otra persona.",
-						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
-					],
-					iconos: [vistaAnterior, vistaTablero],
-				};
+			} else {
+				// PROBLEMA 3: El registro está capturado por otro usuario en forma 'activa'
+				if (
+					capturado_en > haceUnaHora &&
+					registro.capturado_por_id != userID &&
+					registro.captura_activa
+				)
+					informacion = {
+						mensajes: [
+							"El registro está en revisión por el usuario " +
+								registro.capturado_por.apodo +
+								", desde el " +
+								horarioInicial,
+						],
+						iconos: [vistaAnterior, vistaTablero],
+					};
+				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + NO CAPTURADO POR OTRO USUARIO
+				// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+				else if (
+					capturado_en < haceUnaHora &&
+					capturado_en > haceDosHoras &&
+					registro.capturado_por_id == userID
+				) {
+					informacion = {
+						mensajes: [
+							"Esta revisión quedó inconclusa desde el " + horarioFinal,
+							"Quedó a disposición de que lo continúe revisando otra persona.",
+							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
+						],
+						iconos: [vistaAnterior, vistaTablero],
+					};
+				}
 			}
 		}
 	}
