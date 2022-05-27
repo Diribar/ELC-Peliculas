@@ -19,10 +19,10 @@ module.exports = async (req, res, next) => {
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
 	let capturado_en = registro.capturado_en;
-	if (capturado_en) capturado_en.setSeconds(0);
+	capturado_en.setSeconds(0);
 	// Variables - Vistas
-	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
-	const vistaTablero = variables.vistaTablero()
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+	const vistaTablero = variables.vistaTablero();
 
 	// Detectar los problemas
 	// PROBLEMA 1: Registro no encontrado ----------------------------------------------
@@ -44,67 +44,41 @@ module.exports = async (req, res, next) => {
 			};
 		else {
 			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO
-			// PROBLEMA 3: El registro todavía está en manos de su creador
-			// ¿Creado > haceUnaHora?
-			if (creado_en > haceUnaHora) {
-				// Obtener el horario de creación
-				let horarioCreacion = new Date(creado_en);
-				// Obtener el horario en que estará disponible para revisar
-				let horarioDisponible = horarioCreacion;
-				horarioDisponible.setHours(horarioCreacion.getHours() + 1);
-				// Configurar los horarios con formato texto
-				horarioDisponible = funciones.horarioTexto(horarioDisponible);
-				// Información
+			// DETECTAR PROBLEMAS DE CAPTURA
+			// Configurar el horario inicial
+			let horarioInicial = new Date(capturado_en);
+			// Configurar el horario final
+			let horarioFinal = horarioInicial;
+			horarioFinal.setHours(horarioInicial.getHours() + 1);
+			// Configurar los horarios con formato texto
+			horarioInicial = funciones.horarioTexto(horarioInicial);
+			horarioFinal = funciones.horarioTexto(horarioFinal);
+			// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
+			if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
 				informacion = {
-					mensajes: ["El registro estará disponible para su revisión el " + horarioDisponible],
+					mensajes: [
+						"El registro está en revisión por el usuario " +
+							registro.capturado_por.apodo +
+							", desde el " +
+							horarioInicial,
+					],
 					iconos: [vistaAnterior, vistaTablero],
 				};
-			}
-			// --------------------------------------------------------------------
-			else {
-				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
-				// DETECTAR PROBLEMAS DE CAPTURA
-				if (capturado_en) {
-					// Configurar el horario inicial
-					let horarioInicial = new Date(capturado_en);
-					// Configurar el horario final
-					let horarioFinal = horarioInicial;
-					horarioFinal.setHours(horarioInicial.getHours() + 1);
-					// Configurar los horarios con formato texto
-					horarioInicial = funciones.horarioTexto(horarioInicial);
-					horarioFinal = funciones.horarioTexto(horarioFinal);
-					// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
-					if (
-						capturado_en > haceUnaHora &&
-						registro.capturado_por_id != userID &&
-						registro.captura_activa
-					)
-						informacion = {
-							mensajes: [
-								"El registro está en revisión por el usuario " +
-									registro.capturado_por.apodo +
-									", desde el " +
-									horarioInicial,
-							],
-							iconos: [vistaAnterior, vistaTablero],
-						};
-					// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
-					// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
-					else if (
-						capturado_en < haceUnaHora &&
-						capturado_en > haceDosHoras &&
-						registro.capturado_por_id == userID
-					) {
-						informacion = {
-							mensajes: [
-								"Esta revisión quedó inconclusa desde el " + horarioFinal,
-								"Quedó a disposición de que lo continúe revisando otra persona.",
-								"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
-							],
-							iconos: [vistaAnterior, vistaTablero],
-						};
-					}
-				}
+			// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
+			// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+			else if (
+				capturado_en < haceUnaHora &&
+				capturado_en > haceDosHoras &&
+				registro.capturado_por_id == userID
+			) {
+				informacion = {
+					mensajes: [
+						"Esta revisión quedó inconclusa desde el " + horarioFinal,
+						"Quedó a disposición de que lo continúe revisando otra persona.",
+						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
+					],
+					iconos: [vistaAnterior, vistaTablero],
+				};
 			}
 		}
 	}

@@ -1101,10 +1101,6 @@ CREATE TABLE links_1originales (
 
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	captura_activa BOOLEAN NULL,
-
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
@@ -1119,8 +1115,7 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id, creado_en)
 VALUES 
