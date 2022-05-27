@@ -172,6 +172,7 @@ module.exports = {
 		let datos = {
 			...RCLV,
 			creado_por_id: userID,
+			capturado_por_id: userID,
 		};
 		// Obtener el día del año
 		if (!RCLV.desconocida)
@@ -188,7 +189,9 @@ module.exports = {
 			req.session.datosPers[RCLVentidad_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (RCLV.origen == "edicion")
-			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {[RCLVentidad_id]: id});
+			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {
+				[RCLVentidad_id]: id,
+			});
 		// Obtener el destino a dónde redireccionar
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.RCLV) delete req.session.RCLV;

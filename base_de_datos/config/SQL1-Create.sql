@@ -423,7 +423,7 @@ CREATE TABLE rclv_1personajes (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -487,7 +487,7 @@ CREATE TABLE rclv_2hechos (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -544,7 +544,7 @@ CREATE TABLE rclv_3valores (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -719,7 +719,7 @@ CREATE TABLE prod_1peliculas (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -818,7 +818,7 @@ CREATE TABLE prod_2colecciones (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -855,7 +855,6 @@ VALUES
 (2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg',75,75,100,80,10,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57')
 ;
 UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id=4, publico_sugerido_id=5, personaje_id=24, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
-
 CREATE TABLE prod_3capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
@@ -916,7 +915,7 @@ CREATE TABLE prod_3capitulos (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -957,7 +956,6 @@ VALUES
 UPDATE prod_3capitulos SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id=4, publico_sugerido_id=5, personaje_id=24, alta_analizada_por_id=2, alta_analizada_en='2022-05-26 18:18:01', editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1 OR id=2;
 UPDATE prod_3capitulos SET nombre_original='Karol - Un uomo diventato Papa' WHERE id=1;
 UPDATE prod_3capitulos SET produccion='TAO Film' WHERE id=2;
-
 INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
 VALUES
 (3,2,1,1,'16250','tt0345591','TMDB','Love Comes Softly','El amor llega suavemente',2003,84,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','Ken Thorne, Michael Wetherwax, William Ashford','Katherine Heigl (Marty Claridge), Dale Midkiff (Clark Davis), Skye McCole Bartusiak (Missie Davis), Corbin Bernsen (Ben Graham), Theresa Russell (Sarah Graham), Oliver Macready (Aaron Claridge), Tiffany Amber Knight (Laura Graham), Nick Scoggin (Reverend Johnson), Rutanya Alda (Wanda Marshall), Jaimz Woolvett (Wagon Train Scout), Janet Rotblatt (Woman in Wagon), Adam Loeffler (Clint Graham), David Fine (Jed Larsen (uncredited)), Dani Goldman (Young Marty (uncredited))','Larry Levinson Productions, Hallmark Entertainment, Alpine Medien Productions','Estando de ruta hacia su nuevo hogar en las grandes llanuras del oeste, una joven se queda repentinamente viuda en medio del largo viaje en carreta. Con una dura temporada invernal acechando y sin recursos para regresar, la joven acepta el trato que le ofrece un granjero: casarse con él para ocuparse de su hija, a cambio de cobijo y de un pasaje de vuelta en primavera. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eDxmL7CCHWCcFpbdS6yVnspOjV1.jpg',NULL,1,'VPC',10,4,2),
@@ -1104,7 +1102,7 @@ CREATE TABLE links_1originales (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
