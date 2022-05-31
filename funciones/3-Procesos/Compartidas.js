@@ -153,7 +153,7 @@ module.exports = {
 		if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
 			informacion = infoProblema1;
 		// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
-		// PROBLEMA 2: El usuario capturó la entidad hace más de una hora y menos de 2 horas
+		// PROBLEMA 2: El usuario capturó la entidad hace más de una hora y menos de dos horas
 		else if (
 			capturado_en < haceUnaHora &&
 			capturado_en > haceDosHoras &&
