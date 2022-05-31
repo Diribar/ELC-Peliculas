@@ -13,13 +13,12 @@ module.exports = async (req, res, next) => {
 	const url = req.url.slice(1);
 	const codigo = url.slice(0, url.indexOf("/"));
 	const haceUnaHora = funciones.haceUnaHora();
-	const haceDosHoras = funciones.haceDosHoras();
 	let informacion;
 	// Variables - Producto
 	let includes = ["status_registro"];
 	if (entidad == "capitulos") includes.push("coleccion");
-	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-	let capturado_en = producto.capturado_en;
+	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+	let capturado_en = registro.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
 	const [horarioInicial, horarioFinal] = funciones.horariosCaptura(capturado_en);
 	// Variables - Vistas
@@ -30,7 +29,7 @@ module.exports = async (req, res, next) => {
 		titulo: "Ir a la vista Detalle",
 	};
 	const prohibidoAccederEnEseStatus = [
-		"El producto todavía no está aprobado.",
+		"El registro todavía no está aprobado.",
 		"Está a disposición de nuestro equipo para su revisión.",
 		"Una vez que esté revisado, si se aprueba podrás acceder a esta vista.",
 	];
@@ -41,11 +40,11 @@ module.exports = async (req, res, next) => {
 		let informacion;
 		// FOCO EN SU CREADOR --> PROBLEMA 1: expiró la ventana de 1 hora
 		// ¿Creado por el usuario actual?
-		let creadoPorElUsuario1 = producto.creado_por_id == userID;
-		let creadoPorElUsuario2 = entidad == "capitulos" && producto.coleccion.creado_por_id == userID;
+		let creadoPorElUsuario1 = registro.creado_por_id == userID;
+		let creadoPorElUsuario2 = entidad == "capitulos" && registro.coleccion.creado_por_id == userID;
 		if (creadoPorElUsuario1 || creadoPorElUsuario2) {
 			// ¿Creado < haceUnaHora?
-			if (producto.creado_en < haceUnaHora)
+			if (registro.creado_en < haceUnaHora)
 				informacion = {
 					mensajes: [
 						"Expiró el tiempo de edición.",
@@ -66,13 +65,13 @@ module.exports = async (req, res, next) => {
 	};
 	let problemasDeCaptura = async () => {
 		// DETECTAR PROBLEMAS DE CAPTURA
-		// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
-		let info1 = {
-			mensajes: ["El producto está siendo revisado por otro usuario desde el " + horarioInicial],
+		// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
+		let infoProblema1 = {
+			mensajes: ["El registro está siendo revisado por otro usuario desde el " + horarioInicial],
 			iconos: [vistaAnterior, vistaDetalle],
 		};
 		// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
-		let info2 = {
+		let infoProblema2 = {
 			mensajes: [
 				"Este registro quedó a disposición del equipo de revisores, desde el " + horarioFinal,
 				"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar esta tarea.",
@@ -80,7 +79,14 @@ module.exports = async (req, res, next) => {
 			iconos: [vistaAnterior, vistaDetalle],
 		};
 		// Conclusión
-		informacion = funciones.detectarProblemasDeCaptura(informacion, info1, info2);
+		informacion = funciones.detectarProblemasDeCaptura(
+			informacion,
+			infoProblema1,
+			infoProblema2,
+			capturado_en,
+			registro,
+			userID
+		);
 		// Fin
 		return informacion;
 	};
@@ -109,19 +115,19 @@ module.exports = async (req, res, next) => {
 	};
 
 	// FOCO EN STATUS CREADO
-	if (producto.status_registro.creado) {
+	if (registro.status_registro.creado) {
 		// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
 		// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, sólo su creador tiene permiso para acceder
 		informacion = statusCreado(informacion);
 	}
 	// FOCO EN STATUS ALTA-APROBADA
-	else if (producto.status_registro.alta_aprob) {
+	else if (registro.status_registro.alta_aprob) {
 		// FOCO EN LINKS	--> PROBLEMA 1: en este status, nadie tiene permiso para acceder
 		// FOCO EN EDICIÓN	--> PROBLEMA 2: en este status, sólo los revisores pueden acceder
 		informacion = await alta_aprobada(informacion);
 	}
 	// FOCO EN STATUS APROBADO
-	else if (producto.status_registro.aprobado) {
+	else if (registro.status_registro.aprobado) {
 		// PROBLEMA: solamente puede tener problemas de captura
 		informacion = await problemasDeCaptura(informacion);
 	} else {

@@ -191,38 +191,4 @@ module.exports = {
 	obtenerAutorizadoFA: (id) => {
 		return db.usuarios.findByPk(id).then((n) => n.autorizado_fa);
 	},
-	// Middleware/RevisarUsuario
-	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID, haceUnaHora) => {
-		// Variables
-		let entidades = [
-			"peliculas",
-			"colecciones",
-			"capitulos",
-			"RCLV_personajes",
-			"RCLV_hechos",
-			"RCLV_valores",
-		];
-		// Crear el objeto literal con las condiciones a cumplirse
-		let condiciones = {
-			capturado_por_id: userID, // Que esté capturado por este usuario
-			capturado_en: {[Op.gt]: haceUnaHora}, // Que esté capturado hace menos de una hora
-			captura_activa: 1, // Que la captura sea 'activa'
-		};
-		// Averiguar si tiene algún producto capturado
-		let lectura, entidad;
-		for (entidad of entidades) {
-			// Distinto al producto actual
-			if (entidad == entidadActual) condiciones.id = {[Op.ne]: prodID};
-			lectura = await db[entidad]
-				.findOne({
-					where: condiciones,
-					include: "status_registro",
-				})
-				.then((n) => (n ? n.toJSON() : ""));
-			if (condiciones.id) delete condiciones.id;
-			if (lectura) break;
-		}
-		// Fin
-		return lectura ? {...lectura, entidad} : lectura;
-	},
 };

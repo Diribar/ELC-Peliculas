@@ -1,30 +1,24 @@
 "use strict";
 // Requires
 const funciones = require("../../funciones/3-Procesos/Compartidas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
-	let entidadActual = req.query.entidad;
-	let prodID = req.query.id;
-	let userID = req.session.usuario.id;
-	let haceUnaHora = funciones.haceUnaHora();
+	const entidadActual = req.query.entidad ? req.query.entidad : "";
+	const prodID = req.query.id ? req.query.id : "";
+	const userID = req.session.usuario.id;
 	// CONTROLES PARA PRODUCTO *******************************************************
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
-	let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario(
-		entidadActual,
-		prodID,
-		userID,
-		haceUnaHora
-	);
+	let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(entidadActual, prodID, userID);
 	if (prodCapturado) {
 		// Datos para el mensaje
-		let entidadCodigo = prodCapturado.entidad;
-		let entidadNombre = funciones.obtenerEntidadNombre(entidadCodigo);
-		let entidadID = prodCapturado.id;
-		let linkRedireccionar = "/revision/redireccionar/?entidad=" + entidadCodigo + "&id=" + entidadID;
-		let url = encodeURIComponent(req.originalUrl);
-		let linkInactivar = "/inactivar/?entidad=" + entidadCodigo + "&id=" + entidadID + "&url=" + url;
+		const entidadCodigo = prodCapturado.entidad;
+		const entidadNombre = funciones.obtenerEntidadNombre(entidadCodigo);
+		const entidadID = prodCapturado.id;
+		const url = encodeURIComponent(req.originalUrl);
+		const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+		const linkInactivar = "/inactivar/?entidad=" + entidadCodigo + "&id=" + entidadID + "&url=" + url;
+		const liberar = {nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar automáticamente"};
 		let horario =
 			prodCapturado.capturado_en.getHours() +
 			":" +
@@ -52,10 +46,7 @@ module.exports = async (req, res, next) => {
 					" desde las " +
 					horario,
 			],
-			iconos: [
-				{nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar automáticamente"},
-				{nombre: "fa-circle-right", link: linkRedireccionar, titulo: "Liberar manualmente"},
-			],
+			iconos: [vistaAnterior, liberar],
 		};
 
 		return res.render("Errores", {informacion});
