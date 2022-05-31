@@ -1,20 +1,24 @@
 "use strict";
 // Requires
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
-module.exports = (req, res, next) => {
-	// Obtener el ID de la entidad
-	let prodID = req.query.id;
-	// Verificar los datos
+module.exports = async (req, res, next) => {
+	// Variables - Generales
+	const entidad = req.query.entidad;
+	const prodID = req.query.id;
 	let informacion;
-	if (!prodID)
-		informacion = {
-			mensajes: ["Falta el dato del 'ID'"],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			],
-		};
+	// Variables - Vistas
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+
+	// PROBLEMA 1: No existe el ID
+	// Verificar los datos
+	if (!prodID) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
+	// PROBLEMA 2: Registro no encontrado
+	const registro = await BD_genericas.obtenerPorId(entidad, prodID);
+	if (!registro) informacion = {mensajes: ["Producto no encontrado"], iconos: [vistaAnterior]};
+
 	// Conclusiones
-	if (informacion) res.render("Errores", {informacion});
+	if (informacion) return res.render("Errores", {informacion});
 	else next();
 };

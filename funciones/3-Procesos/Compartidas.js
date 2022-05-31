@@ -117,28 +117,6 @@ module.exports = {
 		}
 		return;
 	},
-	activarCapturaSiNoLoEsta: async (registro, userID, entidad, prodID) => {
-		// Variables
-		let ahora = funcionAhora();
-		let haceDosHoras = funcionHaceDosHoras(ahora);
-		// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
-		if (
-			!registro.capturado_en ||
-			!registro.captura_activa ||
-			registro.capturado_por_id != userID ||
-			registro.capturado_en < haceDosHoras
-		) {
-			let datos = {captura_activa: true};
-			// SOLUCIÓN 2: cambia de usuario si estaba capturado por otro
-			if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
-			// SOLUCIÓN 3: fija la nueva hora de captura si corresponde
-			if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
-				datos.capturado_en = ahora;
-			// CAPTURA DEL REGISTRO
-			await BD_genericas.actualizarPorId(entidad, prodID, datos);
-		}
-		return;
-	},
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
 		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
 		return edicion;

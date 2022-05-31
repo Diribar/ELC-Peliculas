@@ -36,11 +36,11 @@ module.exports = async (req, res, next) => {
 		};
 	else {
 		// REGISTRO ENCONTRADO
-		// PROBLEMA 2: El revisor no debe revisar un registro creado por sí mismo
+		// PROBLEMA 2: El revisor no debe revisar un registro creado por sí mismo y que no esté en status aprobado
 		// ¿Creado por el usuario actual?
 		let creadoPorElUsuario1 = registro.creado_por_id == userID;
 		let creadoPorElUsuario2 = entidad == "capitulos" && registro.coleccion.creado_por_id == userID;
-		if (creadoPorElUsuario1 || creadoPorElUsuario2)
+		if ((creadoPorElUsuario1 || creadoPorElUsuario2) && !registro.status_registro.aprobado)
 			informacion = {
 				mensajes: ["El registro debe ser analizado por otro revisor, no por su creador"],
 				iconos: [vistaAnterior, vistaTablero],
@@ -60,46 +60,41 @@ module.exports = async (req, res, next) => {
 			else {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// DETECTAR PROBLEMAS DE CAPTURA
-				if (capturado_en) {
-					// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
-					if (
-						capturado_en > haceUnaHora &&
-						registro.capturado_por_id != userID &&
-						registro.captura_activa
-					)
-						informacion = {
-							mensajes: [
-								"El registro está en revisión por el usuario " +
-									registro.capturado_por.apodo +
-									", desde el " +
-									horarioInicial,
-							],
-							iconos: [vistaAnterior, vistaTablero],
-						};
-					// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
-					// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
-					else if (
-						capturado_en < haceUnaHora &&
-						capturado_en > haceDosHoras &&
-						registro.capturado_por_id == userID
-					) {
-						informacion = {
-							mensajes: [
-								"Esta revisión quedó inconclusa desde el " + horarioFinal,
-								"Quedó a disposición de que lo continúe revisando otra persona.",
-								"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
-							],
-							iconos: [vistaAnterior, vistaTablero],
-						};
-					}
+				// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
+				if (
+					capturado_en > haceUnaHora &&
+					registro.capturado_por_id != userID &&
+					registro.captura_activa
+				)
+					informacion = {
+						mensajes: [
+							"El registro está en revisión por el usuario " +
+								registro.capturado_por.apodo +
+								", desde el " +
+								horarioInicial,
+						],
+						iconos: [vistaAnterior, vistaTablero],
+					};
+				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
+				// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+				else if (
+					capturado_en < haceUnaHora &&
+					capturado_en > haceDosHoras &&
+					registro.capturado_por_id == userID
+				) {
+					informacion = {
+						mensajes: [
+							"Esta revisión quedó inconclusa desde el " + horarioFinal,
+							"Quedó a disposición de que lo continúe revisando otra persona.",
+							"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volver a revisarlo.",
+						],
+						iconos: [vistaAnterior, vistaTablero],
+					};
 				}
 			}
 		}
 	}
-	// Fin
 	if (informacion) return res.render("Errores", {informacion});
-	// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL REGISTRO
-	else if (!informacion) await funciones.activarCapturaSiNoLoEsta(registro, userID, entidad, prodID);
 
 	// Continuar
 	next();

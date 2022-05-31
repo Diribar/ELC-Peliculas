@@ -6,22 +6,27 @@ const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
+// Login y Roles de Usuario
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+// Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
+// Temas de captura
 const permisoRUD = require("../../middlewares/producto/permisoRUD");
+const captura = require("../../middlewares/producto/captura");
+// Varios
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
 // Rutas de vistas
 // Producto
 router.get("/detalle", soloUsuarios, entidad, id, permisoRUD, vista.prod_Form);
-router.get("/edicion", soloAutInput, entidad, id, permisoRUD, vista.prod_Form);
+router.get("/edicion", soloAutInput, entidad, id, permisoRUD, captura, vista.prod_Form);
 router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
 router.get("/edicion/eliminar", soloAutInput, entidad, id, permisoRUD, vista.prod_EliminarEdic);
 // Links
-router.get("/links", soloAutInput, entidad, id, permisoRUD, vista.linksForm);
+router.get("/links", soloAutInput, entidad, id, permisoRUD, captura, vista.linksForm);
 router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, permisoRUD, vista.calificala);
