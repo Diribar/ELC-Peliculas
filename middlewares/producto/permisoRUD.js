@@ -21,6 +21,7 @@ module.exports = async (req, res, next) => {
 	const producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let capturado_en = producto.capturado_en;
 	if (capturado_en) capturado_en.setSeconds(0);
+	const [horarioInicial, horarioFinal] = funciones.horariosCaptura(capturado_en);
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaDetalle = {
@@ -65,45 +66,21 @@ module.exports = async (req, res, next) => {
 	};
 	let problemasDeCaptura = async () => {
 		// DETECTAR PROBLEMAS DE CAPTURA
-		if (capturado_en) {
-			// Configurar el horario inicial
-			let horarioInicial = new Date(capturado_en);
-			// Configurar el horario final
-			let horarioFinal = horarioInicial;
-			horarioFinal.setHours(horarioInicial.getHours() + 1);
-			// Configurar los horarios con formato texto
-			horarioInicial = funciones.horarioTexto(horarioInicial);
-			horarioFinal = funciones.horarioTexto(horarioFinal);
-			// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
-			if (
-				capturado_en > haceUnaHora &&
-				producto.capturado_por_id != userID &&
-				producto.captura_activa
-			) {
-				informacion = {
-					mensajes: [
-						"El producto está siendo revisado por otro usuario desde el " + horarioInicial,
-					],
-					iconos: [vistaAnterior, vistaDetalle],
-				};
-			}
-			// EL PRODUCTO NO ESTÁ CAPTURADO POR OTRO USUARIO EN FORMA ACTIVA
-			// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
-			else if (
-				capturado_en < haceUnaHora &&
-				capturado_en > haceDosHoras &&
-				producto.capturado_por_id == userID
-			) {
-				informacion = {
-					mensajes: [
-						"Este registro quedó a disposición del equipo de revisores, desde el " + horarioFinal,
-						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar esta tarea.",
-					],
-					iconos: [vistaAnterior, vistaDetalle],
-				};
-			}
-		}
-
+		// PROBLEMA 1: El producto está capturado por otro usuario en forma 'activa'
+		let info1 = {
+			mensajes: ["El producto está siendo revisado por otro usuario desde el " + horarioInicial],
+			iconos: [vistaAnterior, vistaDetalle],
+		};
+		// PROBLEMA 2: El usuario dejó inconclusa la edición luego de la hora de captura, y no transcurrieron aún las 2 horas
+		let info2 = {
+			mensajes: [
+				"Este registro quedó a disposición del equipo de revisores, desde el " + horarioFinal,
+				"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar esta tarea.",
+			],
+			iconos: [vistaAnterior, vistaDetalle],
+		};
+		// Conclusión
+		informacion = funciones.detectarProblemasDeCaptura(informacion, info1, info2);
 		// Fin
 		return informacion;
 	};
@@ -134,7 +111,7 @@ module.exports = async (req, res, next) => {
 	// FOCO EN STATUS CREADO
 	if (producto.status_registro.creado) {
 		// FOCO EN SU CREADOR	--> PROBLEMA 1: expiró la ventana de 1 hora
-		// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, un usuario que no sea su creador no tiene permiso para acceder
+		// FOCO EN OTRA PERSONA	--> PROBLEMA 2: en este status, sólo su creador tiene permiso para acceder
 		informacion = statusCreado(informacion);
 	}
 	// FOCO EN STATUS ALTA-APROBADA
@@ -145,7 +122,7 @@ module.exports = async (req, res, next) => {
 	}
 	// FOCO EN STATUS APROBADO
 	else if (producto.status_registro.aprobado) {
-		// PROBLEMA: solamente puede tener problemas de captura y si no los tiene, hace la captura
+		// PROBLEMA: solamente puede tener problemas de captura
 		informacion = await problemasDeCaptura(informacion);
 	} else {
 		// Mensaje para Inactivos
@@ -153,5 +130,7 @@ module.exports = async (req, res, next) => {
 
 	// Fin
 	if (informacion) return res.render("Errores", {informacion});
-	else next();
+
+	// Continuar
+	next();
 };

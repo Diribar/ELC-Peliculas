@@ -125,6 +125,33 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
+	horariosCaptura: (capturado_en) => {
+		// Configurar el horario inicial
+		let horarioInicial = new Date(capturado_en);
+		// Configurar el horario final
+		let horarioFinal = new Date(horarioInicial);
+		horarioFinal.setHours(horarioInicial.getHours() + 1);
+		// Configurar los horarios con formato texto
+		horarioInicial = funcionHorarioTexto(horarioInicial);
+		horarioFinal = funcionHorarioTexto(horarioFinal);
+		return [horarioInicial, horarioFinal];
+	},
+	detectarProblemasDeCaptura: (informacion, info1, info2) => {
+		// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
+		// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
+		if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
+			informacion = info1;
+		// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
+		// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+		else if (
+			capturado_en < haceUnaHora &&
+			capturado_en > haceDosHoras &&
+			registro.capturado_por_id == userID
+		)
+			informacion = info2;
+		// Fin
+		return informacion;
+	},
 
 	// Fecha y Hora
 	ahora: () => {
@@ -140,16 +167,7 @@ module.exports = {
 		return funcionHaceDosHoras(horario);
 	},
 	horarioTexto: (horario) => {
-		return (
-			horario.getDate() +
-			"/" +
-			meses[horario.getMonth()] +
-			" a las " +
-			horario.getHours() +
-			":" +
-			String(horario.getMinutes()).padStart(2, "0") +
-			"hs"
-		);
+		return funcionHorarioTexto(horario);
 	},
 	obtenerLeadTime: (desde, hasta) => {
 		// Corregir domingo
@@ -296,4 +314,16 @@ let funcionHaceDosHoras = (horario) => {
 	let haceDosHoras = new Date(horario);
 	haceDosHoras.setHours(haceDosHoras.getHours() - 2);
 	return haceDosHoras;
+};
+let funcionHorarioTexto = (horario) => {
+	return (
+		horario.getDate() +
+		"/" +
+		meses[horario.getMonth()] +
+		" a las " +
+		horario.getHours() +
+		":" +
+		String(horario.getMinutes()).padStart(2, "0") +
+		"hs"
+	);
 };
