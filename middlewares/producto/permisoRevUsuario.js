@@ -19,22 +19,22 @@ module.exports = async (req, res, next) => {
 		const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 		const linkInactivar = "/inactivar/?entidad=" + entidadCodigo + "&id=" + entidadID + "&url=" + url;
 		const liberar = {nombre: "fa-circle-check", link: linkInactivar, titulo: "Liberar automáticamente"};
-		let horario =
+		const horario =
 			prodCapturado.capturado_en.getHours() +
 			":" +
 			String(prodCapturado.capturado_en.getMinutes()).padStart(2, "0") +
 			"hs.";
 		// Preparar la información
-		let terminacion =
+		const terminacion =
 			entidadCodigo != "capitulos" && !entidadCodigo.includes("RCLV")
 				? {entidad: "la ", reservado: "a"}
 				: {entidad: "el ", reservado: "o"};
-		let nombre = entidadCodigo.includes("RCLV")
+		const nombre = entidadCodigo.includes("RCLV")
 			? "nombre"
 			: prodCapturado.nombre_castellano
 			? "nombre_castellano"
 			: "nombre_original";
-		let informacion = {
+		const informacion = {
 			mensajes: [
 				"Tenés que liberar " +
 					terminacion.entidad +
