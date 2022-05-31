@@ -31,14 +31,8 @@
 	<!-- Acción -->
 	<td class="ancho_accion">
 		<!-- Ícono editar -->
-		<i class="fa-solid fa-pen editar <%= mostrar %>" tabindex="-1" title="Editar"></i>
+		<i class="fa-solid fa-pen editar <%= ocultar %>" tabindex="-1" title="Editar"></i>
 		<!-- Íconos borrar -->
-		<% if (link.status_registro.creado && link.creado_por_id == userID) { %>
-			<!-- Los links en status 'creado' y propios, se pueden eliminar -->
-			<i class="fa-solid fa-trash-can out" tabindex="-1" title='Eliminar'></i>
-		<% } else { %>
-			<!-- Los demás links sólo se pueden 'inactivar', salvo que ya estén en ese status -->
-			<i class="fa-solid fa-circle-xmark out <%= mostrar %>" tabindex="-1" title='Inactivar'></i>
-		<% } %>
+		<i class="fa-solid <%- cond ? 'fa-trash-can' : ('fa-circle-xmark' + ocultar) %> out" tabindex="-1" title="<%- cond ? 'Eliminar' : 'Inactivar' %>"></i>
 	</td>
 </tr>

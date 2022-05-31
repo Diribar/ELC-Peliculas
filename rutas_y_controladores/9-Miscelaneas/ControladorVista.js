@@ -38,6 +38,7 @@ module.exports = {
 		let {entidad, id: prodID, url} = req.query;
 		let userID = req.session.usuario.id;
 		// Inactivar
+		console.log(entidad, prodID, userID);
 		await funciones.inactivarCaptura(entidad, prodID, userID);
 		// Redireccionar a la vista anterior
 		return res.redirect(url);

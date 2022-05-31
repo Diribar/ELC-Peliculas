@@ -13,7 +13,8 @@ const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
-const permisoRUD = require("../../middlewares/producto/permisoRUD");
+const permUser = require("../../middlewares/producto/permisoREV_User");
+const permProd = require("../../middlewares/producto/permisoRUD_Prod");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
 // Varios
@@ -23,14 +24,14 @@ const multer = require("../../middlewares/varios/multer");
 // Rutas de vistas
 // Producto
 router.get("/detalle", soloUsuarios, entidad, id, capturaInactivar, vista.prod_Form);
-router.get("/edicion", soloAutInput, entidad, id, permisoRUD, capturaActivar, vista.prod_Form);
+router.get("/edicion", soloAutInput, entidad, id, permUser, permProd, capturaActivar, vista.prod_Form);
 router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
-router.get("/edicion/eliminar", soloAutInput, entidad, id, permisoRUD, vista.prod_EliminarEdic);
+router.get("/edicion/eliminar", soloAutInput, entidad, id, permUser, permProd, vista.prod_EliminarEdic);
 // Links
-router.get("/links", soloAutInput, entidad, id, permisoRUD, capturaActivar, vista.linksForm);
+router.get("/links", soloAutInput, entidad, id, permUser, permProd, capturaActivar, vista.linksForm);
 router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 // Pendiente
-router.get("/calificala", soloAutInput, entidad, id, permisoRUD, vista.calificala);
+router.get("/calificala", soloAutInput, entidad, id, permUser, permProd, vista.calificala);
 
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links

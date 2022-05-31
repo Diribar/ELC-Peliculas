@@ -1,6 +1,7 @@
 "use strict";
 // Requires
 const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Definir variables
@@ -11,6 +12,7 @@ module.exports = async (req, res, next) => {
 	// Revisa si tiene capturas > haceUnaHora en alguno de: 3 Tipos de Producto, 3 Tipos de RCLV
 	let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(entidadActual, prodID, userID);
 	if (prodCapturado) {
+		console.log(15,prodCapturado);
 		// Datos para el mensaje
 		const entidadCodigo = prodCapturado.entidad;
 		const entidadNombre = funciones.obtenerEntidadNombre(entidadCodigo);
