@@ -36,8 +36,8 @@
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
 					<% for (let link of linksAnalizar) { %>
-						<%- include("31-Links-Datos", {link}) %>
-						<%- include("32-Links-Edicion", {fila, link}) %>	
+						<%- include("Links1-Datos", {link}) %>
+						<%- include("Links2-Edicion", {fila, link}) %>	
 						<% fila++ %> 
 					<% } %>
 				</tbody>

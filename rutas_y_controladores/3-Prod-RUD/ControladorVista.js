@@ -12,7 +12,7 @@ module.exports = {
 	prod_Form: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
-		let tema = "producto";
+		let tema = "prod_rud";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.lastIndexOf("/"));
 		// 2. Obtener los datos identificatorios del producto
@@ -230,7 +230,7 @@ module.exports = {
 	linksForm: async (req, res) => {
 		// DETALLE - ABM
 		// Tema y Código
-		let tema = "producto";
+		let tema = "prod_rud";
 		let codigo = "links";
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
