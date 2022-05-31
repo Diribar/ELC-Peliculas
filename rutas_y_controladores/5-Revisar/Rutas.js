@@ -12,7 +12,7 @@ const id = require("../../middlewares/producto/entidadID");
 const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
 const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
 const permisoLinks = require("../../middlewares/producto/permisoRevLinks");
-const captura = require("../../middlewares/producto/captura");
+const capturaActivar = require("../../middlewares/producto/capturaActivar");
 
 // Rutas de Vistas *******************************************
 // Vistas Generales
@@ -25,7 +25,7 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
-	captura,
+	capturaActivar,
 	vista.redireccionar
 );
 // Vistas de productos
@@ -36,7 +36,7 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
-	captura,
+	capturaActivar,
 	vista.prod_Alta
 );
 router.get(
@@ -46,11 +46,11 @@ router.get(
 	id,
 	permisoUsuario,
 	permisoProducto,
-	captura,
+	capturaActivar,
 	vista.prod_Edicion
 );
 // Vistas de RCLVs
-router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, captura, vista.RCLV_Alta);
+router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, capturaActivar, vista.RCLV_Alta);
 // Vistas de Links
 router.get(
 	"/links",
@@ -60,7 +60,7 @@ router.get(
 	permisoUsuario,
 	permisoProducto,
 	permisoLinks,
-	captura,
+	capturaActivar,
 	vista.links
 );
 
