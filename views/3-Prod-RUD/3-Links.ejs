@@ -42,7 +42,7 @@
 					<% let fila = 0 %> 
 					<% for (let link of links) { %>
 						<!-- Links pendientes de aprobar y creados por este usuario -->
-						<% let cond=link.status_registro.creado && link.creado_por_id == userID %> 
+						<% let cond = link.status_registro.creado && link.creado_por_id == userID %> 
 						<!-- Links pendientes de aprobar y creados por otro usuario -->
 						<!-- Links en status 'grupo_inactivo' -->
 						<% let ocultar = link.status_registro.creado && link.creado_por_id != userID || link.status_registro.gr_inactivos ? ' ocultar' : '' %>
