@@ -228,6 +228,7 @@ module.exports = {
 					temporada: 1,
 					capitulo: numCapitulo,
 					creado_por_id: 2,
+					capturado_por_id: 2,
 				};
 				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
 				if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
@@ -324,7 +325,7 @@ module.exports = {
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
-		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2};
+		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, capturado_por_id: 2};
 
 		// Datos de la colección
 		datos.coleccion_id = datosCol.id;

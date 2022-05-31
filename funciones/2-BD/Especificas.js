@@ -153,7 +153,7 @@ module.exports = {
 			.then((n) => (n ? n.toJSON().id : ""));
 	},
 	// Revisar - Procesar => links_ObtenerARevisar
-	obtenerLinksARevisar: async (revisar, userID) => {
+	obtenerLinksARevisar: async (revisar) => {
 		// Variables
 		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener los links en status 'a revisar'

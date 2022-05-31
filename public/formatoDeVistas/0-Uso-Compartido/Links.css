@@ -1,12 +1,12 @@
 /* Temas generales */
-#contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-around; flex-grow: 1;}
+#contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-between; flex-grow: 1;}
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column; }
 #datos #tipoLink {align-self: flex-start;}
 #datos #tags div {padding: 3px 15px; background-color: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
 #datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
-#datos #tags div#activo {cursor: context-menu;}
-#datos #tags div#inactivo {opacity: 0.4; cursor: pointer;}
+#datos #tags * {cursor: context-menu;}
+#datos #tags .traslucido {opacity: 50%; cursor: pointer;}
 
 /* Tablas - Temas generales */
 /* #datos table {margin-top: 20px;} */

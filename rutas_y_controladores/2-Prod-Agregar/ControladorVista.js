@@ -469,6 +469,7 @@ module.exports = {
 			...req.cookies.datosOriginales,
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
+			capturado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
 		// 4. Guardar los datos de 'Edición'

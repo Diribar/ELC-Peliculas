@@ -5,7 +5,6 @@ const router = express.Router();
 const vista = require("./ControladorVista");
 
 // Middlewares
-let soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 let urlAceptadas = require("../../middlewares/varios/urlAceptadas");
 
 // Home

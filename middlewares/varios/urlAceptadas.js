@@ -60,6 +60,6 @@ module.exports = async (req, res, next) => {
 		return res.render("Errores", {informacion});
 	}
 
-	// Si el url es correcto --> Fin
+	// Continuar
 	next();
 };

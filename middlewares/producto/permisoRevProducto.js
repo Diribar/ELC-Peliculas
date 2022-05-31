@@ -18,15 +18,14 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
+	const horarioDisponible = funcionHorarioCreacion(creado_en);
+	// Variables - Captura
 	let capturado_en = registro.capturado_en;
-	if (capturado_en) capturado_en.setSeconds(0);
+	capturado_en.setSeconds(0);
+	const [horarioInicial, horarioFinal] = funcionHorariosCaptura(capturado_en);
 	// Variables - Vistas
-	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
-	const vistaTablero = {
-		nombre: "fa-spell-check",
-		link: "/revision/tablero-de-control",
-		titulo: "Ir al 'Tablero de Control' de Revisiones",
-	};
+	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+	const vistaTablero = variables.vistaTablero();
 
 	// Detectar los problemas
 	// PROBLEMA 1: Registro no encontrado ----------------------------------------------
@@ -51,13 +50,6 @@ module.exports = async (req, res, next) => {
 			// PROBLEMA 3: El registro todavía está en manos de su creador
 			// ¿Creado > haceUnaHora?
 			if (creado_en > haceUnaHora) {
-				// Obtener el horario de creación
-				let horarioCreacion = new Date(creado_en);
-				// Obtener el horario en que estará disponible para revisar
-				let horarioDisponible = horarioCreacion;
-				horarioDisponible.setHours(horarioCreacion.getHours() + 1);
-				// Configurar los horarios con formato texto
-				horarioDisponible = funciones.horarioTexto(horarioDisponible);
 				// Información
 				informacion = {
 					mensajes: ["El registro estará disponible para su revisión el " + horarioDisponible],
@@ -69,14 +61,6 @@ module.exports = async (req, res, next) => {
 				// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 				// DETECTAR PROBLEMAS DE CAPTURA
 				if (capturado_en) {
-					// Configurar el horario inicial
-					let horarioInicial = new Date(capturado_en);
-					// Configurar el horario final
-					let horarioFinal = horarioInicial;
-					horarioFinal.setHours(horarioInicial.getHours() + 1);
-					// Configurar los horarios con formato texto
-					horarioInicial = funciones.horarioTexto(horarioInicial);
-					horarioFinal = funciones.horarioTexto(horarioFinal);
 					// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
 					if (
 						capturado_en > haceUnaHora &&
@@ -117,5 +101,28 @@ module.exports = async (req, res, next) => {
 	// SI NO HAY INFORMACIÓN, ENTONCES EL USUARIO PUEDE CAPTURAR EL REGISTRO
 	else if (!informacion) await funciones.activarCapturaSiNoLoEsta(registro, userID, entidad, prodID);
 
+	// Continuar
 	next();
+};
+
+let funcionHorariosCaptura = (capturado_en) => {
+	// Configurar el horario inicial
+	let horarioInicial = new Date(capturado_en);
+	// Configurar el horario final
+	let horarioFinal = new Date(horarioInicial);
+	horarioFinal.setHours(horarioInicial.getHours() + 1);
+	// Configurar los horarios con formato texto
+	horarioInicial = funciones.horarioTexto(horarioInicial);
+	horarioFinal = funciones.horarioTexto(horarioFinal);
+	return [horarioInicial, horarioFinal];
+};
+let funcionHorarioCreacion = (creado_en) => {
+	// Obtener el horario de creación
+	let horarioCreacion = new Date(creado_en);
+	// Obtener el horario en que estará disponible para revisar
+	let horarioDisponible = new Date(horarioCreacion);
+	horarioDisponible.setHours(horarioCreacion.getHours() + 1);
+	// Configurar los horarios con formato texto
+	horarioDisponible = funciones.horarioTexto(horarioDisponible);
+	return horarioDisponible;
 };

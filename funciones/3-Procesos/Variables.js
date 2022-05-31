@@ -365,4 +365,11 @@ module.exports = {
 			titulo: "Ir a la vista anterior",
 		};
 	},
+	vistaTablero: () => {
+		return {
+			nombre: "fa-spell-check",
+			link: "/revision/tablero-de-control",
+			titulo: "Ir al 'Tablero de Control' de Revisiones",
+		};
+	},
 };
