@@ -216,7 +216,7 @@ module.exports = {
 			// Elimina req.session.edicion
 			req.session.edicion = {};
 		}
-		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
+		return res.redirect("/producto_rud/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
 	prod_EliminarEdic: async (req, res) => {
 		// Obtener los datos identificatorios del producto
@@ -310,7 +310,7 @@ module.exports = {
 			delete req.session.links;
 		}
 		// Redireccionar
-		return res.redirect("/producto/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
+		return res.redirect("/producto_rud/links/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
 	},
 	calificala: (req, res) => {
 		return res.send("Estoy en calificala");

@@ -20,7 +20,7 @@
 		<% if (entidad == "capitulos") { %>
 			<div id="tempCapI">
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
-				<p><strong>De la colección:</strong> <a href="/producto/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></p>
+				<p><strong>De la colección:</strong> <a href="/producto_rud/detalle/?entidad=colecciones&id=<%= producto.coleccion_id %>"><%= producto.coleccion.nombre_castellano %></a></p>
 			</div>
 			<div id="tempCapS">
 				<div class="pack">

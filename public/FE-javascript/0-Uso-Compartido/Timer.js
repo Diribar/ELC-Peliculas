@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 		gracias.classList.add("ocultar");
 		// Mensajes
 		let arrayMensajes =
-			codigo == "/producto/edicion/"
+			codigo == "/producto_rud/edicion/"
 				? [
 						"Tu edición de este producto comenzó el " +
 							horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 							"hs..",
 						"Transcurrida 1 hora, quedó a disposición de nuestro equipo para analizar tu trabajo.",
 				  ]
-				: codigo == "/producto/links/"
+				: codigo == "/producto_rud/links/"
 				? [
 						"Esta edición quedó inconclusa desde el " +
 							horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
@@ -90,10 +90,10 @@ window.addEventListener("load", async () => {
 
 		// Flechas
 		let iconos =
-			codigo == "/producto/edicion/" || codigo == "/producto/links/"
+			codigo == "/producto_rud/edicion/" || codigo == "/producto_rud/links/"
 				? {
 						HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-						link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+						link: "/producto_rud/detalle/?entidad=" + entidad + "&id=" + prodID,
 				  }
 				: codigo.startsWith("/revision/")
 				? {

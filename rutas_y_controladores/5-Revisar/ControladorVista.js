@@ -117,7 +117,7 @@ module.exports = {
 							},
 							{
 								nombre: "fa-pencil",
-								link: "/producto/edicion/?entidad=" + entidad + "&id=" + prodID,
+								link: "/producto_rud/edicion/?entidad=" + entidad + "&id=" + prodID,
 								titulo: "Ir a la vista de edición",
 							},
 						],

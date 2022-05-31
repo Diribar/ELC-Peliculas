@@ -23,23 +23,23 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// En caso que sea 'RUD-edición'
-		if (codigo == "/producto/edicion/") {
+		if (codigo == "/producto_rud/edicion/") {
 			let entidad_id = funciones.obtenerEntidad_id(entidad);
 			entidad = "prods_edicion";
 			objeto = {[entidad_id]: id, editado_por_id: userID};
 		}
 
 		// En caso que sea 'Revisar'
-		if (codigo.startsWith("/revision/") || codigo == "/producto/links/")
+		if (codigo.startsWith("/revision/") || codigo == "/producto_rud/links/")
 			objeto = {id: id, capturado_por_id: userID};
 
 		// Obtener el registro
 		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
 		if (horarioInicial) {
 			let campo =
-				codigo == "/producto/edicion/"
+				codigo == "/producto_rud/edicion/"
 					? "editado_en"
-					: codigo.startsWith("/revision/") || codigo == "/producto/links/"
+					: codigo.startsWith("/revision/") || codigo == "/producto_rud/links/"
 					? "capturado_en"
 					: "error";
 			horarioInicial = horarioInicial[campo];

@@ -104,7 +104,7 @@ let validarLinkRepetidos = async (datos) => {
 	if (repetido) {
 		mensaje =
 			"Este " +
-			"<a href='/producto/links/?entidad=" +
+			"<a href='/producto_rud/links/?entidad=" +
 			(averiguar.pelicula_id
 				? "peliculas"
 				: averiguar.coleccion_id

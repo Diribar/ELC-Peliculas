@@ -15,10 +15,10 @@ window.addEventListener("load", async () => {
 
 	// VERSIONES DE DATOS -------------------------------------------------------------------------
 	let flechasAviso = document.querySelectorAll(".input-error .fa-arrow-right-long");
-	let rutaVE = "/producto/api/edicion/validar/?";
+	let rutaVE = "/producto_rud/api/edicion/validar/?";
 	// Obtener versiones EDICION GUARDADA y ORIGINAL
 	let rutaVersiones =
-		"/producto/api/edicion/obtener-original-y-edicion/?entidad=" + entidad + "&id=" + prodID;
+		"/producto_rud/api/edicion/obtener-original-y-edicion/?entidad=" + entidad + "&id=" + prodID;
 	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
 	let avatar_eg = avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion", datosOriginales.avatar);
 	datosEdicG = {...datosOriginales, ...datosEdicG};
@@ -37,10 +37,10 @@ window.addEventListener("load", async () => {
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
 	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
 	let botonGuardarSession = document.querySelector("#cuerpo #comandos .fa-floppy-disk");
-	let rutaSession = "/producto/api/edicion/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
+	let rutaSession = "/producto_rud/api/edicion/obtener-de-req-session/?entidad=" + entidad + "&id=" + prodID;
 	let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 	datosEdicS = datosEdicS ? datosEdicS : datosEdicG;
-	let rutaRQ = "/producto/api/edicion/enviar-a-req-session/?";
+	let rutaRQ = "/producto_rud/api/edicion/enviar-a-req-session/?";
 
 	// OTRAS VARIABLES --------------------------------------------------------------------------
 	// Variables de país

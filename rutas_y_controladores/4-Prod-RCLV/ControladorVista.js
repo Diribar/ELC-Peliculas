@@ -16,7 +16,7 @@ module.exports = {
 		if (RCLV.origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-			if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
+			if (!datosPers) return res.redirect("/producto_agregar/palabras-clave");
 			// Obtener los datos actualizados del formulario
 			let datosActualizados = {...req.query};
 			delete datosActualizados.origen;
@@ -26,12 +26,12 @@ module.exports = {
 			req.session.datosPers = datosPers;
 			res.cookie("datosPers", datosPers, {maxAge: unDia});
 			// Completar RCLV
-			RCLV.destino = "/producto/agregar/datos-personalizados";
+			RCLV.destino = "/producto_agregar/datos-personalizados";
 		} else if (RCLV.origen == "edicion") {
 			// Completar RCLV
 			RCLV.entidad = req.query.entidad;
 			RCLV.prodID = req.query.id;
-			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
+			RCLV.destino = "/producto_rud/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
 		RCLV.RCLV_nombre = funciones.obtenerEntidadNombre(RCLV.RCLV_entidad);
@@ -74,7 +74,7 @@ module.exports = {
 					iconos: [
 						{
 							nombre: "fa-thumbs-up",
-							link: "/producto/agregar/datos-duros",
+							link: "/producto_agregar/datos-duros",
 							titulo: "Regresar al entorno de Agregar Productos",
 						},
 					],
@@ -142,7 +142,7 @@ module.exports = {
 					iconos: [
 						{
 							nombre: "fa-thumbs-up",
-							link: "/producto/agregar/datos-duros",
+							link: "/producto_agregar/datos-duros",
 							titulo: "Regresar al entorno de Agregar Productos",
 						},
 					],

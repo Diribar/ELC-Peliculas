@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior)
 	const vistaDetalle = {
 		nombre: "fa-circle-info",
-		link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+		link: "/producto_rud/detalle/?entidad=" + entidad + "&id=" + prodID,
 		titulo: "Ir a la vista Detalle",
 	};
 	const prohibidoAccederEnEseStatus = [

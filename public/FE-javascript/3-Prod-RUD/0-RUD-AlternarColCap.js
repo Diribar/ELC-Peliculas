@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let vista = window.location.pathname;
-	let ruta = "/producto/api/tridente/obtener-col-cap/?entidad=";
+	let ruta = "/producto_rud/api/tridente/obtener-col-cap/?entidad=";
 	// Obtener el botón de 'alternancia'
 	let botonAlternancia = document.querySelector("#cuerpo #encabezado .fa-arrow-right-arrow-left");
 	
