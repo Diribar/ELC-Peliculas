@@ -4,7 +4,7 @@
 	<!-- Head -->
 	<%- include('1-Head') %>
 	<% if (tema == "usuario") { %><%- include('0-Usuarios-Head') %><% } %>
-	<% if (tema == "agregar") { %><%- include('0-Agregar-Head') %><% } %>
+	<% if (tema == "prod_agregar") { %><%- include('0-Agregar-Head') %><% } %>
 	<% if (tema == "rclv") { %><%- include('0-RCLV-Head') %><% } %>
 	<% if (tema == "revision") { %><%- include('0-Revisar-Head') %><% } %>
 	<% if (tema == "productos") { %><%- include('0-Productos-Head') %><% } %>
@@ -18,7 +18,7 @@
 			<%- include('23-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-Usuarios-Cuerpo') %><% } %>
-			<% if (tema == "agregar") { %><%- include('0-Agregar-Cuerpo') %><% } %>
+			<% if (tema == "prod_agregar") { %><%- include('0-Agregar-Cuerpo') %><% } %>
 			<% if (tema == "rclv") { %><%- include('0-RCLV-Cuerpo') %><% } %>
 			<% if (tema == "revision") { %><%- include('0-Revisar-Cuerpo') %><% } %>
 			<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>

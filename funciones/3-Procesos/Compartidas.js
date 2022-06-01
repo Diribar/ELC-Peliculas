@@ -109,8 +109,8 @@ module.exports = {
 			registro &&
 			registro.capturado_en &&
 			registro.capturado_por_id &&
-			registro.captura_activa &&
-			registro.capturado_por_id == userID
+			registro.capturado_por_id == userID &&
+			registro.captura_activa
 		) {
 			// En caso afirmativo, actualizarlo inactivando la captura
 			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: false});
@@ -136,34 +136,105 @@ module.exports = {
 		horarioFinal = funcionHorarioTexto(horarioFinal);
 		return [horarioInicial, horarioFinal];
 	},
-	detectarProblemasDeCaptura: (informacion, info1, info2) => {
+	detectarProblemasDeCaptura: (
+		informacion,
+		infoProblema1,
+		infoProblema2,
+		capturado_en,
+		registro,
+		userID
+	) => {
+		// Variables
+		let ahora = funcionAhora();
+		let haceUnaHora = funcionHaceUnaHora(ahora);
+		let haceDosHoras = funcionHaceDosHoras(ahora);
 		// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO
 		// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
 		if (capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa)
-			informacion = info1;
+			informacion = infoProblema1;
 		// REGISTRO ENCONTRADO + CREADO POR OTRO USUARIO + APTO PARA SER REVISADO + NO CAPTURADO POR OTRO USUARIO
-		// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
+		// PROBLEMA 2: El usuario capturó la entidad hace más de una hora y menos de dos horas
 		else if (
 			capturado_en < haceUnaHora &&
 			capturado_en > haceDosHoras &&
 			registro.capturado_por_id == userID
 		)
-			informacion = info2;
+			informacion = infoProblema2;
 		// Fin
 		return informacion;
+	},
+
+	// Middleware/RevisarUsuario
+	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
+		// Variables
+		let entidades = [
+			"peliculas",
+			"colecciones",
+			"capitulos",
+			"RCLV_personajes",
+			"RCLV_hechos",
+			"RCLV_valores",
+		];
+		let asociaciones = [
+			"captura_peliculas",
+			"captura_colecciones",
+			"captura_capitulos",
+			"captura_personajes",
+			"captura_hechos",
+			"captura_valores",
+		];
+		let ahora = funcionAhora();
+		let haceUnaHora = funcionHaceUnaHora(ahora);
+		let haceDosHoras = funcionHaceDosHoras(ahora);
+		let objeto = {capturado_en: null, capturado_por_id: null, captura_activa: null};
+		let resultado;
+		// Obtener el usuario con los includes
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
+		// Rutina por cada asociación
+		let i = 0;
+		for (let asociacion of asociaciones) {
+			if (usuario[asociacion].length) {
+				// Rutina por cada entidad dentro de la asociación
+				for (let registro of usuario[asociacion]) {
+					// Si fue capturado hace más de 2 horas, limpiar los tres campos
+					if (registro.capturado_en < haceDosHoras) {
+						BD_genericas.actualizarPorId(entidades[i], registro.id, objeto);
+						// Si fue capturado hace menos de 1 hora, informar el caso
+					} else if (
+						registro.capturado_en > haceUnaHora &&
+						registro.captura_activa &&
+						entidades[i] != entidadActual &&
+						registro.id != prodID
+					) {
+						resultado = {
+							entidad: entidadActual,
+							id: prodID,
+							capturado_en: registro.capturado_en,
+							nombre: registro.nombre,
+							nombre_castellano: registro.nombre_castellano,
+							nombre_original: registro.nombre_original,
+						};
+						break;
+					}
+				}
+			}
+			if (resultado) break;
+			else i++;
+		}
+		// Fin
+		return resultado;
 	},
 
 	// Fecha y Hora
 	ahora: () => {
 		return funcionAhora();
 	},
-	haceUnaHora: () => {
-		let horario = funcionAhora();
-		horario.setHours(horario.getHours() - 1);
-		return horario;
+	haceUnaHora: (horario) => {
+		horario = horario ? horario : funcionAhora();
+		return funcionHaceDosHoras(horario);
 	},
-	haceDosHoras: () => {
-		let horario = funcionAhora();
+	haceDosHoras: (horario) => {
+		horario = horario ? horario : funcionAhora();
 		return funcionHaceDosHoras(horario);
 	},
 	horarioTexto: (horario) => {
@@ -310,8 +381,13 @@ let funcionAhora = () => {
 	// Instante actual en horario local
 	return new Date(new Date().toUTCString());
 };
+let funcionHaceUnaHora = (horario) => {
+	let haceUnaHora = new Date(horario ? horario : funcionAhora());
+	haceUnaHora.setHours(haceUnaHora.getHours() - 1);
+	return haceUnaHora;
+};
 let funcionHaceDosHoras = (horario) => {
-	let haceDosHoras = new Date(horario);
+	let haceDosHoras = new Date(horario ? horario : funcionAhora());
 	haceDosHoras.setHours(haceDosHoras.getHours() - 2);
 	return haceDosHoras;
 };

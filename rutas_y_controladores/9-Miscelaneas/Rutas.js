@@ -13,7 +13,7 @@ const id = require("../../middlewares/producto/entidadID");
 // Vistas *******************************************
 // Vistas de APIs
 router.get("/api/quick-search/", API.quickSearch);
-router.get("/api/horario-inicial/", API.horarioInicial);
+router.get("/api/horario-inicial/", soloAutInput, API.horarioInicial);
 
 // Vistas de vistas - Institucional
 router.get("/", vista.home);

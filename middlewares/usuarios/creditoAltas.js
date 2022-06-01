@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	let creado = productos.filter((n) => n.status_registro.creado).length;
 	//console.log(usuario);
 	// Redireccionar si corresponde
-	if (creado > Math.max(0, usuario.cant_altas_aprob - usuario.cant_altas_rech + 1)) {
+	if (creado >= Math.max(1, usuario.cant_altas_aprob - usuario.cant_altas_rech + 2)) {
 		let informacion = {
 			mensajes: [
 				"Gracias por los registros agregados anteriormente.",

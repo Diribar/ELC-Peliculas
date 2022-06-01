@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
 	const prodID = req.query.id;
 	const userID = req.session.usuario.id;
 	const haceUnaHora = funciones.haceUnaHora();
-	const haceDosHoras = funciones.haceDosHoras();
 	let informacion;
 	// Variables - Registro
 	let includes = ["status_registro", "capturado_por"];
@@ -21,7 +20,7 @@ module.exports = async (req, res, next) => {
 	const horarioDisponible = funcionHorarioCreacion(creado_en);
 	// Variables - Captura
 	let capturado_en = registro.capturado_en;
-	capturado_en.setSeconds(0);
+	if (capturado_en) capturado_en.setSeconds(0);
 	const [horarioInicial, horarioFinal] = funciones.horariosCaptura(capturado_en);
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
@@ -52,17 +51,17 @@ module.exports = async (req, res, next) => {
 		else {
 			// DETECTAR PROBLEMAS DE CAPTURA
 			// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
-			let info1 = {
+			let infoProblema1 = {
 				mensajes: [
 					"El registro está en revisión por el usuario " +
-						registro.capturado_por.apodo +
+						(registro.capturado_por ? registro.capturado_por.apodo : "") +
 						", desde el " +
 						horarioInicial,
 				],
 				iconos: [vistaAnterior, vistaTablero],
 			};
 			// PROBLEMA 2: El usuario dejó inconclusa la revisión luego de la hora y no transcurrieron aún las 2 horas
-			let info2 = {
+			let infoProblema2 = {
 				mensajes: [
 					"Esta revisión quedó inconclusa desde el " + horarioFinal,
 					"Quedó a disposición de que lo continúe revisando otra persona.",
@@ -71,7 +70,14 @@ module.exports = async (req, res, next) => {
 				iconos: [vistaAnterior, vistaTablero],
 			};
 			// Conclusión
-			informacion = funciones.detectarProblemasDeCaptura(informacion, info1, info2);
+			informacion = funciones.detectarProblemasDeCaptura(
+				informacion,
+				infoProblema1,
+				infoProblema2,
+				capturado_en,
+				registro,
+				userID
+			);
 		}
 	}
 

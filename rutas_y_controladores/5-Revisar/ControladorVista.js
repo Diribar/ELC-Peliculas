@@ -11,13 +11,7 @@ module.exports = {
 		// Tema y Código
 		let tema = "revision";
 		let codigo = "tableroControl";
-		// Averiguar si el usuario tiene otras capturas y en ese caso redirigir
 		let userID = req.session.usuario.id;
-		let prodCapturado = await BD_especificas.buscaAlgunaCapturaVigenteDelUsuario("", "", userID);
-		if (prodCapturado)
-			return res.redirect(
-				"/revision/redireccionar/?entidad=" + prodCapturado.entidad + "&id=" + prodCapturado.id
-			);
 		// Definir variables
 		const status = req.session.status_registro
 		let aprobado_id = status.find((n) => n.aprobado).id;

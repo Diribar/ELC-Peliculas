@@ -43,12 +43,12 @@
 					<% for (let link of links) { %>
 						<!-- No se pueden 'tocar' los links pendientes de aprobar y creados por otro usuario -->
 						<% let mostrar = link.status_registro.creado && link.creado_por_id != userID || link.status_registro.gr_inactivos ? 'ocultar' : '' %>
-						<%- include("31-Links-Datos", {link, mostrar}) %>
-						<%- include("32-Links-Edicion", {fila, link}) %>
+						<%- include("Links1-Datos", {link, mostrar}) %>
+						<%- include("Links2-Edicion", {fila, link}) %>
 						<% fila++ %> 
 					<% } %>
 					<!-- Fila para nuevo link -->
-					<%- include("33-Links-Altas", {fila}) %>
+					<%- include("30-Links-Altas", {fila}) %>
 				</tbody>
 			</table>
 			<!-- Entidad e ID -->
