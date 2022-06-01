@@ -158,12 +158,10 @@ module.exports = {
 		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener los links en status 'a revisar'
 		let originales = db.links_originales
-			.findAll({where: {status_registro_id: revisar}, include: includes})
+			.findAll({where: {status_registro_id: revisar}, include: [...includes, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtener todas las ediciones
-		let ediciones = db.links_edicion
-			.findAll({include: ["pelicula", "coleccion", "capitulo"]})
-			.then((n) => n.map((m) => m.toJSON()));
+		let ediciones = db.links_edicion.findAll({include: includes}).then((n) => n.map((m) => m.toJSON()));
 		// Consolidarlos
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => {
 			return [...a, ...b];

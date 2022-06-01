@@ -485,8 +485,22 @@ module.exports = {
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Separalos en 2 grupos (Propios y Ajenos)
-		let linksPropios = links.filter((n) => n.creado_por_id == userID || n.editado_por_id == userID);
-		let linksAjenos = links.filter((n) => n.creado_por_id != userID && n.editado_por_id != userID);
+		let linksPropios = links.filter(
+			(n) =>
+				n.status_registro &&
+				((n.status_registro.creado && n.creado_por_id == userID) ||
+					((n.status_registro.inactivar || n.status_registro.recuperar) &&
+						n.cambio_status_propuesto_por_id == userID))
+		);
+
+		let linksAjenos = links.filter(
+			(n) =>
+				(n.status_registro &&
+					(!n.status_registro.creado || n.creado_por_id != userID) &&
+					((!n.status_registro.inactivar && !n.status_registro.recuperar) ||
+						n.cambio_status_propuesto_por_id != userID)) ||
+				(!n.status_registro && n.editado_por_id != userID)
+		);
 		// Obtener los productos
 		let prodPropios = linksPropios.length
 			? obtenerProductos(linksPropios, aprobado_id, haceUnaHora, userID)

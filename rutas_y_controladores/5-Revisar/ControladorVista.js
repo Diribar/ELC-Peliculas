@@ -3,6 +3,7 @@
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesar = require("../../funciones/3-Procesos/5-Revisar");
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
 		let codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
-		const status = req.session.status_registro
+		const status = req.session.status_registro;
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		let haceUnaHora = funciones.haceUnaHora();
 		// Productos
@@ -68,9 +69,9 @@ module.exports = {
 		if (destino == "producto") {
 			let subDestino = producto.status_registro.creado
 				? "/alta"
-				: producto.status_registro.gr_inactivos
-				? "/inactivos"
-				: "/edicion";
+				: producto.status_registro.alta_aprob || producto.status_registro.aprobado
+				? "/edicion"
+				: "/inactivos";
 			destino += subDestino;
 			if (subDestino == "/edicion") {
 				let producto_id = funciones.obtenerEntidad_id(entidad);
@@ -338,24 +339,18 @@ module.exports = {
 		let tema = "revision";
 		let codigo = "links";
 		// Otras variables
-		const status = req.session.status_registro
+		const status = req.session.status_registro;
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		// Configurar el título
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Obtener el producto con sus links
+		// Obtener el producto con sus links originales para verificar que los tenga
 		let includes = ["links", "status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-		if (entidad == "capitulos")
-			producto.capitulos = await BD_especificas.obtenerCapitulos(
-				producto.coleccion_id,
-				producto.temporada
-			);
-
-		// PROBLEMAS
+		// RESUMEN DE PROBLEMAS A VERIFICAR
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("Errores", {informacion});
 		// Obtener todos los links
@@ -363,17 +358,13 @@ module.exports = {
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
-			["status_registro", "link_ediciones", "link_prov", "link_tipo"]
+			["status_registro", "link_ediciones", "link_prov", "link_tipo", "motivo"]
 		);
-		let inactivado_id = status.find((n) => n.inactivado).id;
-		let linksAnalizar = links.filter((n) => n.status_registro_id != inactivado_id);
-		let linksInactivos = links.filter((n) => n.status_registro_id == inactivado_id);
 		// Información para la vista
 		let imagen = producto.avatar;
 		let avatar = imagen
 			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
-		let prodOriginal = producto;
 		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
@@ -384,19 +375,17 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		//return res.send(RCLV_original);
 		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
 			producto,
-			linksAnalizar,
-			linksInactivos,
+			links,
 			provs,
 			links_tipos: linksTipos,
 			avatar,
-			prodOriginal,
+			prodOriginal: producto,
 			motivos,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			mostrar: null,
@@ -408,19 +397,8 @@ module.exports = {
 let problemasLinks = (producto, urlAnterior) => {
 	// Variables
 	let informacion;
-	// No tenemos un producto con ese ID
-	if (!informacion && !producto)
-		informacion = {
-			mensajes: ["Ese producto no existe en nuestra Base de Datos"],
-			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: urlAnterior,
-					titulo: "Ir a la vista anterior",
-				},
-				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
-			],
-		};
+	const vistaAnterior = variables.vistaAnterior(urlAnterior);
+	const vistaTablero = variables.vistaTablero();
 
 	// El producto no está en status 'aprobado'
 	if (!informacion && !producto.status_registro.aprobado)
@@ -429,105 +407,16 @@ let problemasLinks = (producto, urlAnterior) => {
 				"El producto no está en status 'Aprobado'",
 				"Su status es " + producto.status_registro.nombre,
 			],
-			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: urlAnterior,
-					titulo: "Ir a la vista anterior",
-				},
-				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
-			],
+			iconos: [vistaAnterior, vistaTablero],
 		};
 
 	// El producto no posee links
 	if (!informacion && !producto.links.length)
 		informacion = {
 			mensajes: ["Este producto no tiene links en nuestra Base de Datos"],
-			iconos: [
-				{
-					nombre: "fa-circle-left",
-					link: urlAnterior,
-					titulo: "Ir a la vista anterior",
-				},
-				{nombre: "fa-spell-check ", link: "/revision", titulo: "Ir al Tablero de Revisiones"},
-			],
+			iconos: [vistaAnterior, vistaTablero],
 		};
 
 	// Fin
 	return informacion;
 };
-
-// RCLVform2: async (req, res) => {
-// 	// 1. Tema y Código
-// 	let tema = "revision";
-// 	let codigo = "RCLV";
-// 	// 2. Variables
-// 	let entidad = req.query.entidad;
-// 	let prodID = req.query.id;
-// 	let userID = req.session.usuario.id;
-// 	let haceUnaHora = funciones.haceUnaHora();
-// 	let includes = [];
-// 	if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
-// 	let mes_id, diaOriginal, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
-// 	// Obtener la versión original
-// 	let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
-// 		...includes,
-// 		"status_registro",
-// 		"peliculas",
-// 		"colecciones",
-// 		"capitulos",
-// 	]);
-// 	// Obtener todas las ediciones ajenas
-// 	let producto_id = funciones.obtenerEntidad_id(entidad);
-// 	// PENDIENTE
-// 	// Obtener los motivos de rechazo
-// 	if (RCLV_original.status_registro.aprobado) {
-// 		motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
-// 		prodsEditados = await BD_especificas.obtenerEdicsAjenasUnProd(
-// 			producto_id,
-// 			prodID,
-// 			userID,
-// 			haceUnaHora
-// 		);
-// 	}
-// 	// Obtener el título de canonización
-// 	let tituloCanoniz = procesar.RCLV_tituloCanoniz({...RCLV_original, entidad});
-// 	// Datos para la vista
-// 	// Títulos
-// 	let prodNombre = funciones.obtenerEntidadNombre(entidad);
-// 	let titulo = "Revisar el " + prodNombre;
-// 	// Mes y día del año
-// 	let meses = await BD_genericas.obtenerTodos("meses", "id");
-// 	if (RCLV_original.dia_del_ano_id) {
-// 		let dia_del_ano = await BD_genericas.obtenerPorId("dias_del_ano", RCLV_original.dia_del_ano_id);
-// 		mes_id = dia_del_ano.mes_id;
-// 		diaOriginal = dia_del_ano.dia;
-// 	}
-// 	// Otros
-// 	if (RCLV_original.rol_iglesia_id) {
-// 		procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
-// 		procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
-// 		roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
-// 		roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
-// 	}
-
-// 	// Ir a la vista
-// 	//return res.send(RCLV_original);
-// 	return res.render("0-VistaEstandar", {
-// 		tema,
-// 		codigo,
-// 		titulo,
-// 		RCLV_original,
-// 		prodsEditados,
-// 		motivos,
-// 		entidad,
-// 		prodNombre,
-// 		tituloCanoniz,
-// 		errores: {},
-// 		meses,
-// 		mes_id,
-// 		diaOriginal,
-// 		roles_iglesia,
-// 		procesos_canonizacion,
-// 	});
-// },

@@ -91,7 +91,6 @@ module.exports = {
 		links.forEach((link, i) => {
 			if (link.link_ediciones.length) {
 				let edicion = link.link_ediciones.find((n) => n.editado_por_id == userID);
-				console.log(edicion);
 				if (edicion) {
 					if (edicion.calidad) links[i].calidad = edicion.calidad;
 					if (edicion.link_tipo_id) links[i].link_tipo_id = edicion.link_tipo_id;

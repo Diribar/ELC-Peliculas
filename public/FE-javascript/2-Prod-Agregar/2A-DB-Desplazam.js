@@ -38,6 +38,5 @@ window.addEventListener("load", async () => {
 
 		boton[indiceFocus].focus();
 		resultado.scrollTo(posicion, 0);
-		// console.log(indiceFocus * anchoForm);
 	});
 });

@@ -1,0 +1,51 @@
+<tr class="yaExistentes inactivo_<%= cond.inactivo %> <%- cond.inactivo ? 'inactivo_ocultar' : '' %>">
+	<!-- Url -->
+	<td class="ancho_url url">
+		<a href="//<%= link.url %>" target="_blank">
+			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>" title="<%= link.url %>">
+		</a>
+		<div class="ocultar link_id"><%= link.id %></div>
+	</td>
+	<!-- Motivo -->
+	<td colspan="6" class="motivo ocultar">
+		<strong>Motivo: </strong>
+		<select name="motivo_id">
+			<option value="" class="ocultar" selected>Elejí el motivo</option>
+			<% for (let motivo of motivos) { %>
+				<option value="<%= motivo.id %>"><%= motivo.comentario %></option>
+			<% } %>
+		</select>
+	</td>
+	<!-- Calidad -->
+	<td class="ancho_calidad taparMotivo"><%= link.calidad %></td>
+	<!-- Tipo -->
+	<td class="ancho_tipo taparMotivo"><%= link.link_tipo.nombre %></td>
+	<!-- Completo -->
+	<td class="ancho_completo taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
+	<!-- Parte -->
+	<td class="ancho_parte taparMotivo <%- link.completo ? 'desperdicio' : '' %>"><%- !link.completo ? link.parte : '' %></td>
+	<!-- Gratuito -->
+	<td class="ancho_gratuito taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
+	<!-- Status -->
+	<td class="ancho_status taparMotivo"><%- link.status_registro.nombre %> </td>
+	<!-- Acción -->
+	<td class="ancho_accion">
+		<!-- Editar -->
+		<i class="fa-solid fa-pen editar <%- !cond.aprobado || !cond.rud ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+		<!-- Aprobar -->
+		<i class="fa-solid fa-circle-check in <%- !cond.inactivado && (!cond.revision || !cond.ajenos) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<!-- Deshacer -->
+		<i class="fa-solid fa-rotate-left <%- !cond.rud || !cond.inacRecupPropio ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivado' %>"></i>
+		<!-- Eliminar/Inactivar -->
+		<% if (cond.creadoPropio&&cond.rud || cond.inactivado&&cond.revision) { %>
+			<!-- Eliminar permanente -->
+			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
+		<% } else { %>
+			<!-- Inactivar -->
+			<i class="fa-solid fa-circle-xmark out <%- !cond.aprobado && (!cond.revision || !cond.ajenos) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivado' %>"></i>
+		<% } %>
+		<i class="fa-solid fa-circle-question relative <%- !cond.inacRecup && !cond.inactivado ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
+			<p class="mensajeAyuda ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </p>
+		</i>
+	</td>
+</tr>

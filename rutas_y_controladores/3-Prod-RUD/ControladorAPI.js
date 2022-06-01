@@ -184,7 +184,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let entidad = "links_originales";
 		// Descartar que no hayan errores
-		if (!linkID || !motivo_id) respuesta.mensaje = "Faltan datos";
+		if (!linkID) respuesta.mensaje = "Faltan el dato del ID del link";
 		else {
 			// El linkID existe
 			let link = await BD_genericas.obtenerPorIdConInclude(entidad, linkID, ["status_registro"]);
@@ -197,15 +197,17 @@ module.exports = {
 				BD_genericas.eliminarRegistro(entidad, linkID);
 				respuesta.mensaje = "El link fue eliminado con éxito";
 				respuesta.resultado = true;
-			} else if (link.status_registro.aprobado) {
-				// El link existe y tiene status 'aprobado'
-				procesar.inactivar(entidad, linkID, userID, motivo_id);
-				respuesta.mensaje = "El link fue inactivado con éxito";
-				respuesta.resultado = true;
 			} else if (link.status_registro.gr_inactivos) {
 				// El link existe y tiene status 'gr_inactivos'
 				respuesta.mensaje = "El link está en status inactivo";
-				respuesta.resultado = false;
+			} else if (link.status_registro.aprobado) {
+				// El link existe y tiene status 'aprobado'
+				if (!motivo_id) respuesta.mensaje = "Falta el motivo por el que se inactiva";
+				else {
+					procesar.inactivar(entidad, linkID, userID, motivo_id);
+					respuesta.mensaje = "El link fue inactivado con éxito";
+					respuesta.resultado = true;
+				}
 			}
 		}
 		return res.json(respuesta);

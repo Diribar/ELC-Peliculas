@@ -45,7 +45,6 @@ window.addEventListener("load", () => {
 			};
 		});
 		let datos = resultados.length ? resultados : "- No encontramos coincidencias -";
-		//console.log(resultados);
 		agregarHallazgos(datos);
 	});
 

@@ -6,7 +6,6 @@
 	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 	<ul class="mensajeAyuda ocultar" type="dots">
 		<li>Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor</li>
-
 	</ul>	
 </section>
 <section id="contenido">
@@ -19,6 +18,10 @@
 			<option value="TD" selected>Todos</option>
 		</select>
 		<div id="tabla">
+			<div id="tags" class="flex-row">
+				<div id="activo">Analizar</div>
+				<div id="inactivo" class="traslucido">Inactivos</div>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -35,9 +38,10 @@
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
-					<% for (let link of linksAnalizar) { %>
-						<%- include("Links1-Datos", {link}) %>
-						<%- include("Links2-Edicion", {fila, link}) %>	
+					<% for (let link of links) { %>
+						<% let cond = {} %>
+						<%- include("Links1-Condiciones", {link, cond}) %>
+						<%- include("Links2-Datos", {link, cond}) %>
 						<% fila++ %> 
 					<% } %>
 				</tbody>

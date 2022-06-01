@@ -16,7 +16,7 @@ const capturaActivar = require("../../middlewares/producto/capturaActivar");
 
 // Rutas de Vistas *******************************************
 // Vistas Generales
-router.get("/tablero-de-control", soloGestionProd, permUser, vista.tableroControl);
+router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
 router.get("/inactivar-captura", soloGestionProd, entidad, id, vista.inactivarCaptura);
 router.get(
 	"/redireccionar",
