@@ -496,9 +496,9 @@ module.exports = {
 		let linksAjenos = links.filter(
 			(n) =>
 				(n.status_registro &&
-					(n.status_registro.creado && n.creado_por_id != userID) ||
-					((n.status_registro.inactivar || !n.status_registro.recuperar) &&
-						n.cambio_status_propuesto_por_id != userID)) ||
+					((n.status_registro.creado && n.creado_por_id != userID) ||
+						((n.status_registro.inactivar || !n.status_registro.recuperar) &&
+							n.cambio_status_propuesto_por_id != userID))) ||
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtener los productos
