@@ -42,27 +42,12 @@ module.exports = async (req, res, next) => {
 		const contarRegistros = contar_registros(usuario, producto, rclv, links, edicion, status);
 
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
-		if (contarRegistros >= nivelDeConfianza) {
-			const mensajes =
-				producto || rclv
-					? [
-							"Gracias por los registros agregados anteriormente.",
-							"Queremos analizarlos, antes de que sigas agregando otros.",
-							"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
-							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-					  ]
-					: [
-							"Gracias por los ediciones sugeridas anteriormente.",
-							"Queremos analizarlas, antes de que sigas editando otros registros.",
-							"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
-							"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
-					  ];
-
+		if (contarRegistros >= nivelDeConfianza)
 			informacion = {
-				mensajes: mensajes,
+				mensajes: mensajes(edicion),
 				iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 			};
-		}
+		// Fin
 		return informacion;
 	};
 
@@ -125,4 +110,19 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
 	// Fin
 	return contarRegistros;
+};
+let mensajes = (edicion) => {
+	return edicion
+		? [
+				"Gracias por los ediciones sugeridas anteriormente.",
+				"Queremos analizarlas, antes de que sigas editando otros registros.",
+				"En cuanto los hayamos analizado, te habilitaremos para que edites más.",
+				"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+		  ]
+		: [
+				"Gracias por los registros agregados anteriormente.",
+				"Queremos analizarlos, antes de que sigas agregando otros.",
+				"En cuanto los hayamos analizado, te habilitaremos para que ingreses más.",
+				"La cantidad autorizada irá aumentando a medida que tus propuestas sean aprobadas.",
+		  ];
 };
