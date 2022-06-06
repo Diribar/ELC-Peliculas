@@ -9,7 +9,8 @@ module.exports = async (req, res, next) => {
 	const entidad_codigo = req.query.entidad;
 	const entidad_id = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
-	const userID = req.session.id;
+	const haceDosHoras = funciones.nuevoHorario(-2);
+	const userID = req.session.usuario.id;
 	let informacion;
 	// Obtener el urlBase
 	const urlBase = req.baseUrl;
@@ -18,7 +19,9 @@ module.exports = async (req, res, next) => {
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
 	if (entidad_codigo == "capitulos") includes.push("coleccion");
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, prodID, includes);
+	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, entidad_id, includes);
+	const creado_en = registro.creado_en;
+	const capturado_en = registro.capturado_en;
 	// Creado por el usuario
 	let creadoPorElUsuario1 = registro.creado_por_id == userID;
 	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;

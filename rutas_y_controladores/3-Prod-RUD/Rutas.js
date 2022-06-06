@@ -45,14 +45,14 @@ router.get(
 	entidad,
 	id,
 	aptoDE,
-	permUserProd,
 	permProd,
+	permUserProd,
 	capturaActivar,
 	vista.linksForm
 );
 router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 // Pendiente
-router.get("/calificala", soloAutInput, entidad, id, aptoDE, permProd, vista.calificala);
+router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
 
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links

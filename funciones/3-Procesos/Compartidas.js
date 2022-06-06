@@ -146,8 +146,8 @@ module.exports = {
 			"captura_valores",
 		];
 		let ahora = funcionAhora();
-		let haceUnaHora = funcionHaceUnaHora(ahora);
-		let haceDosHoras = funcionHaceDosHoras(ahora);
+		let haceUnaHora = nuevoHorario(-1, ahora);
+		let haceDosHoras = nuevoHorario(-2, ahora);
 		let objeto = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
 		// Obtener el usuario con los includes
@@ -191,10 +191,7 @@ module.exports = {
 		return funcionAhora();
 	},
 	nuevoHorario: (delay, horario) => {
-		horario = horario ? horario : funcionAhora();
-		let nuevoHorario = new Date(horario ? horario : funcionAhora());
-		nuevoHorario.setHours(nuevoHorario.getHours() + delay);
-		return nuevoHorario;
+		return nuevoHorario(delay, horario);
 	},
 	horarioTexto: (horario) => {
 		return (
@@ -348,4 +345,10 @@ module.exports = {
 let funcionAhora = () => {
 	// Instante actual en horario local
 	return new Date(new Date().toUTCString());
+};
+let nuevoHorario = (delay, horario) => {
+	horario = horario ? horario : funcionAhora();
+	let nuevoHorario = new Date(horario ? horario : funcionAhora());
+	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
+	return nuevoHorario;
 };
