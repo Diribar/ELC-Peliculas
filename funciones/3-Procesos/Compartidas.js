@@ -192,7 +192,9 @@ module.exports = {
 	},
 	nuevoHorario: (delay, horario) => {
 		horario = horario ? horario : funcionAhora();
-		return nuevoHorario(delay, horario);
+		let nuevoHorario = new Date(horario ? horario : funcionAhora());
+		nuevoHorario.setHours(nuevoHorario.getHours() + delay);
+		return nuevoHorario;
 	},
 	horarioTexto: (horario) => {
 		return (
@@ -346,9 +348,4 @@ module.exports = {
 let funcionAhora = () => {
 	// Instante actual en horario local
 	return new Date(new Date().toUTCString());
-};
-let nuevoHorario = (delay, horario) => {
-	let nuevoHorario = new Date(horario ? horario : funcionAhora());
-	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
-	return nuevoHorario;
 };
