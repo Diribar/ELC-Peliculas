@@ -348,7 +348,7 @@ let funcionAhora = () => {
 };
 let nuevoHorario = (delay, horario) => {
 	horario = horario ? horario : funcionAhora();
-	let nuevoHorario = new Date(horario ? horario : funcionAhora());
+	let nuevoHorario = new Date(horario);
 	nuevoHorario.setHours(nuevoHorario.getHours() + delay);
 	return nuevoHorario;
 };
