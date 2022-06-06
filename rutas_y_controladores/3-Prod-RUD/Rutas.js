@@ -15,7 +15,7 @@ const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/usuarios/aptoDE");
 const permReg = require("../../middlewares/producto/permReg");
-const permUserProd = require("../../middlewares/producto/permUserReg");
+const permUserReg = require("../../middlewares/producto/permUserReg");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
 // Varios
@@ -32,7 +32,7 @@ router.get(
 	id,
 	aptoDE,
 	permReg,
-	permUserProd,
+	permUserReg,
 	capturaActivar,
 	vista.prod_Form
 );
@@ -46,7 +46,7 @@ router.get(
 	id,
 	aptoDE,
 	permReg,
-	permUserProd,
+	permUserReg,
 	capturaActivar,
 	vista.linksForm
 );

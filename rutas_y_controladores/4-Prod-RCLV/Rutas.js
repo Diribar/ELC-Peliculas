@@ -9,7 +9,7 @@ const vista = require("./ControladorVista");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const aptoDE = require("../../middlewares/usuarios/aptoDE");
 const permReg = require("../../middlewares/producto/permReg");
-const permUserProd = require("../../middlewares/producto/permUserReg");
+const permUserReg = require("../../middlewares/producto/permUserReg");
 
 // Rutas *******************************************
 // Rutas de APIs
