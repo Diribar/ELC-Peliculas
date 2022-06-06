@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Fórmulas
-	let usuarioPenalizado = (usuario) => {
+	let usuarioPenalizado = () => {
 		let informacion;
 		if (usuario.penalizado_hasta && new Date(usuario.penalizado_hasta) > funciones.ahora())
 			informacion = {
@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
 			};
 		return informacion;
 	};
-	let compararRegistrosConNivelDeConfianza = async (usuario) => {
+	let compararRegistrosConNivelDeConfianza = async () => {
 		// Variables
 		let informacion;
 		// Obtener datos del url
@@ -52,9 +52,9 @@ module.exports = async (req, res, next) => {
 	};
 
 	// VERIFICACIÓN1: Usuario penalizado
-	if (!informacion) informacion = usuarioPenalizado(usuario);
+	if (!informacion) informacion = usuarioPenalizado();
 	// VERIFICACIÓN2: Registros a revisar >= Nivel de Confianza
-	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza(usuario);
+	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Continuar
 	if (informacion) return res.render("Errores", {informacion});
@@ -92,7 +92,6 @@ let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 	return nivelDeConfianza;
 };
 let contar_registros = async (usuario, producto, rclv, links, edicion, status) => {
-	console.log(usuario.id, producto, rclv, links, edicion);
 	// Contar registros
 	let contarRegistros = 0;
 	// Contar registros con status 'a revisar'
