@@ -24,10 +24,12 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
 
-		cant_altas_aprob: {type: dt.INTEGER},
-		cant_altas_rech: {type: dt.INTEGER},
-		cant_edic_aprob: {type: dt.INTEGER},
-		cant_edic_rech: {type: dt.INTEGER},
+		altas_prod_aprob: {type: dt.INTEGER},
+		altas_prod_rech: {type: dt.INTEGER},
+		altas_rclv_aprob: {type: dt.INTEGER},
+		altas_rclv_rech: {type: dt.INTEGER},
+		edic_aprob: {type: dt.INTEGER},
+		edic_rech: {type: dt.INTEGER},
 
 		penalizado_en: {type: dt.DATE},
 		penalizado_hasta: {type: dt.DATE},

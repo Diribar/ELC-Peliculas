@@ -124,7 +124,7 @@ CREATE TABLE USUARIOS (
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
-	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	rol_usuario_id TINYINT UNSIGNED DEFAULT 2,
 	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
@@ -136,10 +136,12 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	cant_altas_aprob SMALLINT DEFAULT 0,
-	cant_altas_rech SMALLINT DEFAULT 0,
-	cant_edic_aprob SMALLINT DEFAULT 0,
-	cant_edic_rech SMALLINT DEFAULT 0,
+	altas_prod_aprob SMALLINT DEFAULT 0,
+	altas_prod_rech SMALLINT DEFAULT 0,
+	altas_rclv_aprob SMALLINT DEFAULT 0,
+	altas_rclv_rech SMALLINT DEFAULT 0,
+	edic_aprob SMALLINT DEFAULT 0,
+	edic_rech SMALLINT DEFAULT 0,
 
 	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME NULL,
@@ -203,9 +205,9 @@ CREATE TABLE aux_status_registro (
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_revisados) VALUES (3, 3, 'Aprobado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos) VALUES (5, 5, 'Inactivar',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (6, 6, 'Inactivado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_inactivos) VALUES (7, 7, 'Recuperar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos) VALUES (4, 4, 'Inactivar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (5, 5, 'Inactivado',1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar) VALUES (6, 6, 'Recuperar',1);
 /* APROBACION DE ALTAS/EDICIONES */;
 CREATE TABLE altas_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
@@ -414,13 +416,8 @@ CREATE TABLE rclv_1personajes (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
-
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -435,10 +432,8 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_1personajes (id, nombre, creado_por_id, status_registro_id)
@@ -478,13 +473,8 @@ CREATE TABLE rclv_2hechos (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
-
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -496,10 +486,8 @@ CREATE TABLE rclv_2hechos (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
@@ -535,13 +523,8 @@ CREATE TABLE rclv_3valores (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
-
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -553,10 +536,8 @@ CREATE TABLE rclv_3valores (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_3valores (id, nombre, creado_por_id, status_registro_id)
@@ -573,9 +554,9 @@ VALUES
 ;
 CREATE TABLE rclv_4edicion (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	pelicula_id INT UNSIGNED NULL,
-	coleccion_id INT UNSIGNED NULL,
-	capitulo_id INT UNSIGNED NULL,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
 	nombre VARCHAR(30) NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
@@ -586,6 +567,9 @@ CREATE TABLE rclv_4edicion (
 	editado_en DATETIME NOT NULL,
 
 	PRIMARY KEY (id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
 	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
@@ -710,16 +694,11 @@ CREATE TABLE prod_1peliculas (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
-
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -742,10 +721,8 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -808,17 +785,12 @@ CREATE TABLE prod_2colecciones (
 	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-	
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
 
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -840,10 +812,8 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -905,17 +875,12 @@ CREATE TABLE prod_3capitulos (
 	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-	
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
 
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 	
 	links_gratuitos_cargados_id TINYINT UNSIGNED DEFAULT 3,
@@ -939,10 +904,8 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -1092,14 +1055,9 @@ CREATE TABLE links_1originales (
 	edic_analizada_por_id INT UNSIGNED NULL,
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-	
-	cambio_status_propuesto_por_id INT UNSIGNED NULL,
-	cambio_status_propuesto_en DATETIME NULL,
-	cambio_status_analizado_por_id INT UNSIGNED NULL,
-	cambio_status_analizado_en DATETIME NULL,
-	motivo_id TINYINT UNSIGNED NULL,
 
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	sugerido_por_id INT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
@@ -1112,9 +1070,6 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_propuesto_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (cambio_status_analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id, creado_en)
@@ -1155,6 +1110,42 @@ CREATE TABLE links_2edicion (
 	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
 
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/* HISTORIAL DE INACTIVAR Y RECUPERAR */;
+CREATE TABLE historial_inactivar_recuperar (
+	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+	pelicula_id INT UNSIGNED NULL,
+	coleccion_id INT UNSIGNED NULL,
+	capitulo_id INT UNSIGNED NULL,
+
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
+
+	link_id INT UNSIGNED NOT NULL,
+
+	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
+	analizado_por_id INT UNSIGNED NULL,
+	analizado_en DATETIME NULL,
+	motivo_id TINYINT UNSIGNED NULL,
+
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
+	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
+	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	FOREIGN KEY (link_id) REFERENCES links_1originales(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;

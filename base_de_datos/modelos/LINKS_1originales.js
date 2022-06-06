@@ -26,11 +26,8 @@ module.exports = (sequelize, dt) => {
 		edic_analizada_en: {type: dt.DATE},
 		lead_time_edicion: {type: dt.DECIMAL},
 
-		cambio_status_propuesto_por_id: {type: dt.INTEGER},
-		cambio_status_propuesto_en: {type: dt.DATE},
-		cambio_status_analizado_por_id: {type: dt.INTEGER},
-		cambio_status_analizado_en: {type: dt.DATE},
-		motivo_id: {type: dt.INTEGER},
+		status_registro_id: {type: dt.INTEGER},
+		sugerido_por_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "links_1originales",
@@ -48,10 +45,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "cambio_status_propuesto_por", foreignKey: "cambio_status_propuesto_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "cambio_status_analizado_por", foreignKey: "cambio_status_analizado_por_id"});
-		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.status_registro, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 
 		entidad.hasMany(n.links_edicion, {as: "link_ediciones", foreignKey: "link_id"});
 	};

@@ -94,6 +94,28 @@ module.exports = {
 			.then((n) => n.map((m) => m.capitulo));
 	},
 
+	// RUD - Usuario habilitado
+	productosConStatusARevisar: async (userID, status) => {
+		// Variables
+		const entidades = ["peliculas", "colecciones", "capitulos"];
+		const creado_id = status.find((n) => n.creado).id;
+		const inactivar_id = status.find((n) => n.inactivar).id;
+		const recuperar_id = status.find((n) => n.recuperar).id;
+		let contarRegistros = 0;
+		// Rutina para contar
+		let condiciones = {
+			[Op.or]: [
+				{[Op.and]: [{status_registro_id: creado_id}, {creado_por_id: userID}]},
+				{[Op.and]: [{status_registro_id: inactivar_id}, {sugerido_por_id: userID}]},
+				{[Op.and]: [{status_registro_id: recuperar_id}, {sugerido_por_id: userID}]},
+			],
+		};
+		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
+
+		// Fin
+		return contarRegistros;
+	},
+
 	// Revisar - Procesar Producto
 	// Revisar - Procesar RCLV
 	condicRegistro_ARevisar: (entidad, haceUnaHora, revisar, userID, includes) => {
@@ -172,9 +194,7 @@ module.exports = {
 	// USUARIOS ---------------------------------------------------------
 	// Controladora/Usuario/Login
 	obtenerUsuarioPorID: (id) => {
-		return db.usuarios.findByPk(id, {
-			include: ["rol_usuario", "status_registro"],
-		});
+		return db.usuarios.findByPk(id, {include: ["rol_usuario", "status_registro"]});
 	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {

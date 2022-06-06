@@ -372,4 +372,7 @@ module.exports = {
 			titulo: "Ir al 'Tablero de Control' de Revisiones",
 		};
 	},
+	vistaInicio: () => {
+		return {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"};
+	},
 };

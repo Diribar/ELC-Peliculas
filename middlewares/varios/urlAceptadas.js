@@ -52,10 +52,7 @@ module.exports = async (req, res, next) => {
 	) {
 		let informacion = {
 			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-				{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
-			],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 		};
 		return res.render("Errores", {informacion});
 	}

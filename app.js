@@ -70,20 +70,18 @@ const rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
 app.use("/producto_agregar", rutaProd_Agregar);
-app.use("/rclv", rutaProd_RCLV);
 app.use("/producto_rud/", rutaProd_RUD);
+app.use("/rclv", rutaProd_RCLV);
 app.use("/revision", rutaRevisar);
 app.use("/productos", rutaProductos);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************
+const variables = require("./funciones/3-Procesos/Variables");
 app.use((req, res) => {
 	let informacion = {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-		iconos: [
-			{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-			{nombre: "fa-house", link: "/", titulo: "Ir a la vista de inicio"},
-		],
+		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
 	};
 	res.status(404).render("Errores", {informacion});
 });
