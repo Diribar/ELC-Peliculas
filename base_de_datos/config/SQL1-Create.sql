@@ -193,6 +193,7 @@ CREATE TABLE aux_status_registro (
 	nombre VARCHAR(25) NOT NULL UNIQUE,
 	gr_pend_aprob BOOLEAN DEFAULT 0,
 	gr_revisados BOOLEAN DEFAULT 0,
+	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
 	alta_aprob BOOLEAN DEFAULT 0,
@@ -205,9 +206,9 @@ CREATE TABLE aux_status_registro (
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_revisados) VALUES (3, 3, 'Aprobado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos) VALUES (4, 4, 'Inactivar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios) VALUES (4, 4, 'Inactivar',1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (5, 5, 'Inactivado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, recuperar) VALUES (6, 6, 'Recuperar',1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios) VALUES (6, 6, 'Recuperar',1,1);
 /* APROBACION DE ALTAS/EDICIONES */;
 CREATE TABLE altas_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
