@@ -260,7 +260,7 @@ module.exports = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 		};
-
+		// Fin
 		return res.render("Errores", {informacion});
 	},
 	autRevisionForm: (req, res) => {
@@ -268,7 +268,7 @@ module.exports = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 		};
-
+		// Fin
 		return res.render("Errores", {informacion});
 	},
 };
