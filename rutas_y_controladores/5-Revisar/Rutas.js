@@ -9,22 +9,22 @@ const vista = require("./ControladorVista");
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
-const permisoUsuario = require("../../middlewares/producto/permisoRevUsuario");
-const permisoProducto = require("../../middlewares/producto/permisoRevProducto");
-const permisoLinks = require("../../middlewares/producto/permisoRevLinks");
+const permUser = require("../../middlewares/producto/permisoREV_User");
+const permProd = require("../../middlewares/producto/permisoREV_Prod");
+const permisoLinks = require("../../middlewares/producto/permisoREV_Links");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 
 // Rutas de Vistas *******************************************
 // Vistas Generales
-router.get("/tablero-de-control", soloGestionProd,permisoUsuario, vista.tableroControl);
+router.get("/tablero-de-control", soloGestionProd, permUser, vista.tableroControl);
 router.get("/inactivar-captura", soloGestionProd, entidad, id, vista.inactivarCaptura);
 router.get(
 	"/redireccionar",
 	soloGestionProd,
 	entidad,
 	id,
-	permisoUsuario,
-	permisoProducto,
+	permUser,
+	permProd,
 	capturaActivar,
 	vista.redireccionar
 );
@@ -34,8 +34,8 @@ router.get(
 	soloGestionProd,
 	entidad,
 	id,
-	permisoUsuario,
-	permisoProducto,
+	permUser,
+	permProd,
 	capturaActivar,
 	vista.prod_Alta
 );
@@ -44,21 +44,21 @@ router.get(
 	soloGestionProd,
 	entidad,
 	id,
-	permisoUsuario,
-	permisoProducto,
+	permUser,
+	permProd,
 	capturaActivar,
 	vista.prod_Edicion
 );
 // Vistas de RCLVs
-router.get("/rclv", soloGestionProd, entidad, id, permisoUsuario, permisoProducto, capturaActivar, vista.RCLV_Alta);
+router.get("/rclv", soloGestionProd, entidad, id, permUser, permProd, capturaActivar, vista.RCLV_Alta);
 // Vistas de Links
 router.get(
 	"/links",
 	soloGestionProd,
 	entidad,
 	id,
-	permisoUsuario,
-	permisoProducto,
+	permUser,
+	permProd,
 	permisoLinks,
 	capturaActivar,
 	vista.links

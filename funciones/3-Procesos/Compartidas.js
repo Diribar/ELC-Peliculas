@@ -203,12 +203,11 @@ module.exports = {
 					} else if (
 						registro.capturado_en > haceUnaHora &&
 						registro.captura_activa &&
-						entidades[i] != entidadActual &&
-						registro.id != prodID
+						(entidades[i] != entidadActual || registro.id != prodID)
 					) {
 						resultado = {
-							entidad: entidadActual,
-							id: prodID,
+							entidad: entidades[i],
+							id: registro.id,
 							capturado_en: registro.capturado_en,
 							nombre: registro.nombre,
 							nombre_castellano: registro.nombre_castellano,

@@ -64,7 +64,7 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 	let problemasDeCaptura = async () => {
-		// DETECTAR PROBLEMAS DE CAPTURA
+		// DETECTAR PROBLEMAS DE CAPTURA DEL REGISTRO
 		// PROBLEMA 1: El registro está capturado por otro usuario en forma 'activa'
 		let infoProblema1 = {
 			mensajes: ["El registro está siendo revisado por otro usuario desde el " + horarioInicial],

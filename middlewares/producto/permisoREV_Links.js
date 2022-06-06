@@ -1,7 +1,6 @@
 "use strict";
 // Requires
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
@@ -9,7 +8,6 @@ module.exports = async (req, res, next) => {
 	const entidad = req.query.entidad;
 	const prodID = req.query.id;
 	const userID = req.session.usuario.id;
-	const status = req.session.status_registro;
 	let informacion;
 	// Variables - Registro
 	const includes = ["links", "links_edic"];
