@@ -10,9 +10,10 @@ module.exports = {
 	statusResumido: (status_registro, capturado_en, captura_activa) => {
 		// Variables
 		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
+		let haceUnaHora = funciones.nuevoHorario(-1);
 		// Obtener el ID del 'status resumido'
 		let id =
-			captura_activa && capturado_en > funciones.haceUnaHora()
+			captura_activa && capturado_en > haceUnaHora
 				? 2
 				: status_registro.gr_pend_aprob
 				? 1

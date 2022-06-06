@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 
 let usuarioPenalizado = (usuario) => {
 	let informacion;
-	if (new Date(usuario.penalizado_hasta) > funciones.ahora())
+	if (usuario.penalizado_hasta && new Date(usuario.penalizado_hasta) > funciones.ahora())
 		informacion = {
 			mensajes: ["Según la información que tenemos, no estás habilitado aún para realizar esta tarea."],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
@@ -33,11 +33,11 @@ let usuarioPenalizado = (usuario) => {
 let compararRegistrosConNivelDeConfianza = async (req, usuario) => {
 	// Variables
 	let informacion;
+	// Obtener el urlBase
+	const urlBase = req.baseUrl;
 	// Obtener el url
 	let url = req.url.slice(1);
 	url = url.slice(0, url.indexOf("/"));
-	// Obtener el urlBase
-	const urlBase = req.baseUrl;
 	// Obtener la tarea
 	const producto = (urlBase == "producto_rud" && url == "links") || urlBase == "/producto_agregar";
 	const edicion = urlBase == "producto_rud" && url == "edicion";
