@@ -31,8 +31,8 @@ router.get(
 	entidad,
 	id,
 	aptoDE,
-	permUserProd,
 	permProd,
+	permUserProd,
 	capturaActivar,
 	vista.prod_Form
 );
