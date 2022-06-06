@@ -41,17 +41,14 @@
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
 					<% for (let link of links) { %>
-						<!-- Links pendientes de aprobar y creados por este usuario -->
-						<% let cond = link.status_registro.creado && link.creado_por_id == userID %> 
-						<!-- Links pendientes de aprobar y creados por otro usuario -->
-						<!-- Links en status 'grupo_inactivo' -->
-						<% let ocultar = link.status_registro.creado && link.creado_por_id != userID || link.status_registro.gr_inactivos ? ' ocultar' : '' %>
-						<%- include("Links1-Datos", {link, cond, ocultar}) %>
-						<%- include("Links2-Edicion", {fila, link}) %>
+						<% let cond = {} %>
+						<%- include("Links1-Condiciones", {link, cond}) %>
+						<%- include("Links2-Datos", {link, cond}) %>
+						<%- include("31-Links-Edicion", {fila, link}) %>
 						<% fila++ %> 
 					<% } %>
 					<!-- Fila para nuevo link -->
-					<%- include("30-Links-Altas", {fila}) %>
+					<%- include("32-Links-Altas", {fila}) %>
 				</tbody>
 			</table>
 			<!-- Entidad e ID -->

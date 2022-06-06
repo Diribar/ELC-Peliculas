@@ -1,0 +1,11 @@
+<!-- Condiciones -->
+<% cond.creadoPropio = link.status_registro.creado && link.creado_por_id == userID %> 
+<% cond.aprobado = link.status_registro.aprobado %>
+<% cond.inactivarPropio = link.status_registro.inactivar && link.cambio_status_propuesto_por_id == userID %>
+<% cond.inacRecup = link.status_registro.inactivar || link.status_registro.recuperar %>
+<% cond.inacRecupPropio = cond.inacRecup && link.cambio_status_propuesto_por_id == userID %>
+<% cond.inactivado = link.status_registro.inactivado %>
+<% cond.ajenos = (link.status_registro.creado&&link.creado_por_id != userID) || ((link.status_registro.recuperar||link.status_registro.inactivar)&&link.cambio_status_propuesto_por_id != userID) %>
+<% cond.rud = tema == "prod_rud" %>
+<% cond.revision = tema == "revision" %>
+<% cond.inactivo = link.status_registro.gr_inactivos&&cond.rud || cond.inactivado&&cond.revision %>

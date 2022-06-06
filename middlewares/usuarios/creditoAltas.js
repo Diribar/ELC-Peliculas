@@ -11,7 +11,6 @@ module.exports = async (req, res, next) => {
 	let productos = await usuarios.productosCreadosPorUnUsuario(usuario.id);
 	// Averiguar cuántos productos tiene en cada status
 	let creado = productos.filter((n) => n.status_registro.creado).length;
-	//console.log(usuario);
 	// Redireccionar si corresponde
 	if (creado >= Math.max(1, usuario.cant_altas_aprob - usuario.cant_altas_rech + 2)) {
 		let informacion = {

@@ -13,7 +13,6 @@ window.addEventListener("load", async () => {
 	).then((n) => n.json());
 
 	// Mostrar el gráfico solamente si existen calificaciones
-	//console.log(calificaciones);
 	if (calificaciones.length) {
 		// Resultados de la calificación
 		// General: <span>77%</span> / Tuya: <span>78%</span>

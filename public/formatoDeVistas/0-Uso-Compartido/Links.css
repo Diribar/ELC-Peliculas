@@ -39,7 +39,7 @@
 #datos table .ancho_completo {width: 73px;}
 #datos table .ancho_parte {width: 60px;}
 #datos table .ancho_gratuito {width: 64px;}
-#datos table .ancho_status {width: 55px;}
+#datos table .ancho_status {width: 75px;}
 #datos table .ancho_accion {width: 70px;}
 
 /* Tablas - URL */
@@ -71,6 +71,9 @@
 #datos .inputError .fa-solid {right: 10px;}
 #datos .inputError .mensajeError {max-width: 200px; right: -5px; line-height: 1.2rem; text-align: left; z-index: 100;}
 #datos .inputError .mensajeError::before {left: -22px;}
+
+/* Ayuda para la Acción */
+#datos .yaExistentes .mensajeAyuda {right: 20px; transform: translate(0%, -50%)}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}

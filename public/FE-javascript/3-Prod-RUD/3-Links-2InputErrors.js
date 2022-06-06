@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 	let gratuitoInputs = document.querySelectorAll(".gratuito .inputError .input");
 
 	// OK/Errores
-	let provsDesconocido = document.querySelectorAll(".url .inputError .fa-circle-question");
+	let provsDesconocido = document.querySelectorAll(".url .inputError .fa-question");
 	let provsConocido = document.querySelectorAll(".url .inputError .fa-circle-check");
 	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
 	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
