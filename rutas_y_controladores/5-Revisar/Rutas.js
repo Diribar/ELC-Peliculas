@@ -9,9 +9,8 @@ const vista = require("./ControladorVista");
 const soloGestionProd = require("../../middlewares/usuarios/solo3-gestion-prod");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
-const permUserProd = require("../../middlewares/producto/permProdREV");
-const permProd = require("../../middlewares/producto/permProdREV");
-const permisoLinks = require("../../middlewares/producto/permLinksREV");
+const permUserProd = require("../../middlewares/producto/permUserProd");
+const permProd = require("../../middlewares/producto/permProd");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 
 // Rutas de Vistas *******************************************
@@ -59,7 +58,6 @@ router.get(
 	id,
 	permUserProd,
 	permProd,
-	permisoLinks,
 	capturaActivar,
 	vista.links
 );

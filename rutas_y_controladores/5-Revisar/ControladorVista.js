@@ -16,7 +16,7 @@ module.exports = {
 		// Definir variables
 		const status = req.session.status_registro;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		let haceUnaHora = funciones.haceUnaHora();
+		let haceUnaHora = funciones.nuevoHorario(-1);
 		// Productos
 		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
 		if (productos.length) productos = procesar.prod_ProcesarCampos(productos);
@@ -61,7 +61,7 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
 		let destino = funciones.obtenerFamiliaEnSingular(entidad);
-		let haceUnaHora = funciones.haceUnaHora();
+		let haceUnaHora = funciones.nuevoHorario(-1);
 		let datosEdicion = "";
 		// Obtener el producto
 		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");

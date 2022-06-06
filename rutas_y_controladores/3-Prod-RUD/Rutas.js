@@ -14,8 +14,8 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/usuarios/aptoDE");
-const permUserProd = require("../../middlewares/producto/permProdREV");
-const permProd = require("../../middlewares/producto/permProdRUD");
+const permUserProd = require("../../middlewares/producto/permUserProd");
+const permProd = require("../../middlewares/producto/permProd");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
 // Varios
