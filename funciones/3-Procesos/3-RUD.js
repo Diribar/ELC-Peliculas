@@ -80,7 +80,7 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Definir valores necesarios
 		let producto_id = funciones.obtenerEntidad_id(entidad);
-		let includes = ["link_tipo", "link_prov", "status_registro", "motivo", "link_ediciones"];
+		let includes = ["link_tipo", "link_prov", "status_registro", "link_ediciones"];
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
@@ -177,7 +177,8 @@ module.exports = {
 		if (datos.alta) delete datos.id;
 		delete datos.motivo_id;
 		// Obtener los datos, de la fila que necesitamos
-		for (let campo in datos) if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
+		for (let campo in datos)
+			if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
 		// Quitar campos innecesarios
 		datos = funciones.quitarLosCamposSinContenido(datos);
 		// Fin
