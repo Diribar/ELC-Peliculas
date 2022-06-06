@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "Inactivar_recuperar";
+	const alias = "inactivarRecuperar";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
