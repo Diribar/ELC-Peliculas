@@ -21,7 +21,7 @@ module.exports = (sequelize, dt) => {
 		status_final_id: {type: dt.INTEGER},
 		};
 	const config = {
-		tableName: "aux_historial_inactivos",
+		tableName: "aux_historial_pasivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
