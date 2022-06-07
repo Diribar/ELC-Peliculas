@@ -48,9 +48,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 
-		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 	};

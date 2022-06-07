@@ -136,10 +136,12 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	altas_prod_aprob SMALLINT DEFAULT 0,
-	altas_prod_rech SMALLINT DEFAULT 0,
-	altas_rclv_aprob SMALLINT DEFAULT 0,
-	altas_rclv_rech SMALLINT DEFAULT 0,
+	prod_aprob SMALLINT DEFAULT 0,
+	prod_rech SMALLINT DEFAULT 0,
+	rclv_aprob SMALLINT DEFAULT 0,
+	rclv_rech SMALLINT DEFAULT 0,
+	link_aprob SMALLINT DEFAULT 0,
+	link_rech SMALLINT DEFAULT 0,
 	edic_aprob SMALLINT DEFAULT 0,
 	edic_rech SMALLINT DEFAULT 0,
 
@@ -192,8 +194,9 @@ CREATE TABLE aux_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
 	gr_pend_aprob BOOLEAN DEFAULT 0,
-	gr_revisados BOOLEAN DEFAULT 0,
+	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
+	gr_pasivos BOOLEAN DEFAULT 0,
 	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
 	alta_aprob BOOLEAN DEFAULT 0,
@@ -205,10 +208,10 @@ CREATE TABLE aux_status_registro (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_revisados) VALUES (3, 3, 'Aprobado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios) VALUES (4, 4, 'Inactivar',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_revisados, gr_inactivos) VALUES (5, 5, 'Inactivado',1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios) VALUES (6, 6, 'Recuperar',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
 /* APROBACION DE ALTAS/EDICIONES */;
 CREATE TABLE altas_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
@@ -226,7 +229,7 @@ CREATE TABLE altas_registros_aprob (
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE edic_registros_aprob (
+CREATE TABLE edic_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
@@ -330,7 +333,7 @@ VALUES
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
-CREATE TABLE edic_registros_rech (
+CREATE TABLE edic_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
@@ -1114,7 +1117,7 @@ CREATE TABLE links_2edicion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* HISTORIAL DE INACTIVAR Y RECUPERAR */;
-CREATE TABLE historial_inactivar_recuperar (
+CREATE TABLE aux_historial_inactivos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	pelicula_id INT UNSIGNED NULL,
@@ -1133,7 +1136,8 @@ CREATE TABLE historial_inactivar_recuperar (
 	analizado_en DATETIME NULL,
 	motivo_id TINYINT UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	status_original_id TINYINT UNSIGNED NULL,
+	status_final_id TINYINT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
@@ -1146,7 +1150,8 @@ CREATE TABLE historial_inactivar_recuperar (
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id)
+	FOREIGN KEY (status_original_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (status_final_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;

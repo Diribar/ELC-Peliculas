@@ -12,9 +12,9 @@ module.exports = {
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
 		// Campos cuando la entidad difiere de 'valores'
-		if (datos.entidad != "RCLV_valores") errores.ano = this.ano(datos);
+		if (datos.entidad != "valores") errores.ano = this.ano(datos);
 		// Campos exclusivos de 'personajes'
-		if (datos.entidad == "RCLV_personajes") errores.RCLI = this.RCLI(datos);
+		if (datos.entidad == "personajes") errores.RCLI = this.RCLI(datos);
 		// Completar con 'hay errores'
 		errores.hay = hayErrores(errores);
 		return errores;

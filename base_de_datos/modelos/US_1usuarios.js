@@ -24,10 +24,12 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
 
-		altas_prod_aprob: {type: dt.INTEGER},
-		altas_prod_rech: {type: dt.INTEGER},
-		altas_rclv_aprob: {type: dt.INTEGER},
-		altas_rclv_rech: {type: dt.INTEGER},
+		prod_aprob: {type: dt.INTEGER},
+		prod_rech: {type: dt.INTEGER},
+		rclv_aprob: {type: dt.INTEGER},
+		rclv_rech: {type: dt.INTEGER},
+		link_aprob: {type: dt.INTEGER},
+		link_rech: {type: dt.INTEGER},
 		edic_aprob: {type: dt.INTEGER},
 		edic_rech: {type: dt.INTEGER},
 
@@ -55,9 +57,9 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.peliculas, {as: "captura_peliculas", foreignKey: "capturado_por_id"});
 		entidad.hasMany(n.colecciones, {as: "captura_colecciones", foreignKey: "capturado_por_id"});
 		entidad.hasMany(n.capitulos, {as: "captura_capitulos", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.RCLV_personajes, {as: "captura_personajes", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.RCLV_hechos, {as: "captura_hechos", foreignKey: "capturado_por_id"});
-		entidad.hasMany(n.RCLV_valores, {as: "captura_valores", foreignKey: "capturado_por_id"});
+		entidad.hasMany(n.personajes, {as: "captura_personajes", foreignKey: "capturado_por_id"});
+		entidad.hasMany(n.hechos, {as: "captura_hechos", foreignKey: "capturado_por_id"});
+		entidad.hasMany(n.valores, {as: "captura_valores", foreignKey: "capturado_por_id"});
 
 		entidad.hasMany(n.cal_registros, {as: "calificaciones", foreignKey: "usuario_id"});
 		entidad.hasMany(n.interes_en_prod, {as: "interes_en_prod", foreignKey: "usuario_id"});

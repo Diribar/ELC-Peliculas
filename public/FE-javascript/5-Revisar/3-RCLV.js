@@ -2,8 +2,8 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let personajes = entidad == "RCLV_personajes";
-	let valores = entidad == "RCLV_valores";
+	let personajes = entidad == "personajes";
+	let valores = entidad == "valores";
 	let RCLV_id = new URL(window.location.href).searchParams.get("id");
 	let botonSubmit = document.querySelector("#flechas button");
 	let errores = {};
@@ -97,11 +97,11 @@ window.addEventListener("load", async () => {
 		let casos = document.querySelectorAll("#posiblesRepetidos li input");
 		if (Array.from(casos).filter((n) => n.checked).length) url += "&repetido=SI";
 		// Campos cuando la entidad difiere de 'valores'
-		if (entidad != "RCLV_valores") url += "&ano=" + ano.value;
+		if (entidad != "valores") url += "&ano=" + ano.value;
 		// Campos exclusivos de 'personajes'
-		if (entidad == "RCLV_personajes")
+		if (entidad == "personajes")
 			url += "&enProcCan=" + (enProcCan[0].checked ? "1" : enProcCan[1].checked ? "0" : "");
-		if (entidad == "RCLV_personajes" && enProcCan[0].checked) {
+		if (entidad == "personajes" && enProcCan[0].checked) {
 			let generoElegido = genero[0].checked ? "V" : genero[1].checked ? "M" : "";
 			url += "&genero=" + generoElegido;
 			url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;

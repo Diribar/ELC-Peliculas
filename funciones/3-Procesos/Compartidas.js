@@ -92,11 +92,11 @@ module.exports = {
 			: entidad.capitulo_id
 			? "capitulos"
 			: entidad.personaje_id
-			? "RCLV_personajes"
+			? "personajes"
 			: entidad.hecho_id
-			? "RCLV_hechos"
+			? "hechos"
 			: entidad.valor_id
-			? "RCLV_valores"
+			? "valores"
 			: "";
 	},
 
@@ -133,9 +133,9 @@ module.exports = {
 			"peliculas",
 			"colecciones",
 			"capitulos",
-			"RCLV_personajes",
-			"RCLV_hechos",
-			"RCLV_valores",
+			"personajes",
+			"hechos",
+			"valores",
 		];
 		let asociaciones = [
 			"captura_peliculas",

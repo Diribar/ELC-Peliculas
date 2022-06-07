@@ -99,7 +99,7 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 		const entidades = ["peliculas", "colecciones", "capitulos"];
 		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
 	} else if (rclv) {
-		const entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		const entidades = ["personajes", "hechos", "valores"];
 		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
 	} else if (links) {
 		const entidades = ["links_originales"];

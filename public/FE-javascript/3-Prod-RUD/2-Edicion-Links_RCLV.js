@@ -11,10 +11,10 @@ window.addEventListener("load", async () => {
 			if (!links[i].classList.contains("inactivo")) {
 				// Obtener la RCLV_entidad
 				let RCLV_entidad = links[i].className.includes("personaje")
-					? "RCLV_personajes"
+					? "personajes"
 					: links[i].className.includes("hecho")
-					? "RCLV_hechos"
-					: "RCLV_valores";
+					? "hechos"
+					: "valores";
 				// Para ir a la vista RCLV
 				window.location.href =
 					"/rclv/redireccionar/?origen=edicion&entidad=" +

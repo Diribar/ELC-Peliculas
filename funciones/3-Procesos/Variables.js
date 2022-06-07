@@ -194,29 +194,29 @@ module.exports = {
 			{
 				titulo: "Personaje histórico",
 				nombreDelCampo: "personaje_id",
-				valores: await BD_genericas.obtenerTodos("RCLV_personajes", "nombre"),
+				valores: await BD_genericas.obtenerTodos("personajes", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
-				link: "RCLV_personajes",
+				link: "personajes",
 				grupo: "RCLV",
 			},
 			{
 				titulo: "Hecho histórico",
 				nombreDelCampo: "hecho_id",
-				valores: await BD_genericas.obtenerTodos("RCLV_hechos", "nombre"),
+				valores: await BD_genericas.obtenerTodos("hechos", "nombre"),
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o 'varios' si es una colección y luego se especifica en los capítulos.",
 				],
-				link: "RCLV_hechos",
+				link: "hechos",
 				grupo: "RCLV",
 			},
 			{
 				titulo: "Valor principal",
 				nombreDelCampo: "valor_id",
-				valores: await BD_genericas.obtenerTodos("RCLV_valores", "nombre"),
+				valores: await BD_genericas.obtenerTodos("valores", "nombre"),
 				mensajes: [
 					"Poné el valor más representativo.",
 					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
