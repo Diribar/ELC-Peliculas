@@ -89,7 +89,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
-		entidad.hasMany(n.historial_inactivos, {as: "historial_inactivos", foreignKey: "coleccion_id"});
+		entidad.hasMany(n.historial_pasivos, {as: "historial_pasivos", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links_edicion, {as: "links_edic", foreignKey: "coleccion_id"});
