@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
 	const entidad_id = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
 	let ruta = req.baseUrl;
-	console.log(ruta);
 	let informacion;
 	// Variables - Registro
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, entidad_id, "status_registro");
