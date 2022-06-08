@@ -1,4 +1,4 @@
-<tr class="yaExistentes inactivo_<%= cond.inactivo %> <%- cond.inactivo ? 'inactivo_ocultar' : '' %>">
+<tr class="yaExistentes inactivo_<%= cond.inactivos %> <%- cond.inactivos ? 'inactivo_ocultar' : '' %>">
 	<!-- Url -->
 	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
@@ -36,7 +36,7 @@
 		<!-- Sólo en RUD para links creados y aprobados  -->
 		<i class="fa-solid fa-pen editar <%- !cond.creado && !cond.aprobado || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- Aprobar -->
-		<!-- Solo para RUD inactivo y Revisión !estable y sin edición -->
+		<!-- Solo para RUD inactivo y Revisión no propio, !estable y sin edición -->
 		<i class="fa-solid fa-circle-check in <%- cond.rud&&!cond.inactivo || cond.revision&&(cond.propio||cond.estable||link.ediciones.length ) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- Deshacer -->
 		<!-- Solo para provisorios propios en RUD -->
@@ -52,7 +52,7 @@
 			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!cond.aprobado || cond.propio ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
-		<i class="fa-solid fa-circle-question relative <%- !cond.provisorio && !cond.inactivo ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
+		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
 			<p class="mensajeAyuda ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </p>
 		</i>
 	</td>
