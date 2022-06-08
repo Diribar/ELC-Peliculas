@@ -5,6 +5,7 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(25)},
 		gr_pend_aprob: {type: dt.BOOLEAN},
 		gr_revisados: {type: dt.BOOLEAN},
+		gr_provisorios: {type: dt.BOOLEAN},
 		gr_inactivos: {type: dt.BOOLEAN},
 		creado: {type: dt.BOOLEAN},
 		alta_aprob: {type: dt.BOOLEAN},
