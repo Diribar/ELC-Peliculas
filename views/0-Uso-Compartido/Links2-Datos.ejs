@@ -37,7 +37,7 @@
 		<i class="fa-solid fa-pen editar <%- !cond.creado && !cond.aprobado || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- Aprobar -->
 		<!-- Solo para RUD inactivo y Revisión no propio, !estable y sin edición -->
-		<i class="fa-solid fa-circle-check in <%- cond.rud&&!cond.inactivo || cond.revision&&(cond.propio||cond.estable||link.ediciones.length ) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<i class="fa-solid fa-circle-check in <%- cond.rud && !cond.inactivo || cond.revision && (cond.propio||cond.estable||link.ediciones.length ) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- Deshacer -->
 		<!-- Solo para provisorios propios en RUD -->
 		<i class="fa-solid fa-rotate-left <%- !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
