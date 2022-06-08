@@ -3,15 +3,15 @@
 <head>
 	<!-- Head -->
 	<% let titulo = informacion.titulo ? informacion.titulo: "Error" %>
-	<%- include('1-Head', {titulo}) %>
+	<%- include('1-Head-Gral', {titulo}) %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 </head>
 <body>
-	<%- include('21-Header') %>
+	<%- include('2-Header-Gral') %>
 	<main class="flex-row">
 		<%- include('ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
 		<section id="cuerpo-y-footer">
-			<%- include('23-Footer') %>
+			<%- include('3-Footer-Gral') %>
 			<!--**************************** CUERPO ******************************-->
 			<section id="tapar-el-fondo"></section>
 			<section id="cartel" class="<% if (informacion.logout) { %><%= 'logout' %><% } %>">

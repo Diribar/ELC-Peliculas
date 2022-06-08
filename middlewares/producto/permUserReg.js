@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables - Generales
 	const entidad_codigo = req.query.entidad;
-	const registro_id = req.query.id;
+	const regID = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
 	const haceDosHoras = funciones.nuevoHorario(-2);
 	const userID = req.session.usuario.id;
@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
 	if (entidad_codigo == "capitulos") includes.push("coleccion");
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, registro_id, includes);
+	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, regID, includes);
 	const creado_en = registro.creado_en;
 	const capturado_en = registro.capturado_en;
 	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
@@ -71,7 +71,7 @@ module.exports = async (req, res, next) => {
 		let informacion;
 		let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(
 			entidad_codigo,
-			registro_id,
+			regID,
 			userID
 		);
 		if (prodCapturado) {

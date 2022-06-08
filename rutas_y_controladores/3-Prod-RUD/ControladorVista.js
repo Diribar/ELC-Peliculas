@@ -137,7 +137,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		return res.render("0-RUD", {
+		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
 			titulo,
@@ -230,7 +230,7 @@ module.exports = {
 	linksForm: async (req, res) => {
 		// DETALLE - ABM
 		// Tema y Código
-		let tema = "prod_rud";
+		let tema = "links_rud";
 		let codigo = "links";
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
@@ -276,7 +276,7 @@ module.exports = {
 			);
 		// Ir a la vista
 		//return res.send(links);
-		return res.render("0-RUD", {
+		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
 			entidad,

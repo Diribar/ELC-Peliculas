@@ -5,27 +5,25 @@
 	<!-- Ayuda -->
 	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>Por favor intentá incluir por lo menos un link gratuito</li>
-		<li>Sé muy cuidadoso de incluir links que respeten los derechos de autor</li>
-		<li>Al terminar, es importante que salgas de esta vista y vayas a la de 'Detalle' para liberar el producto</li>
-	</ul>
+		<li>Sé muy cuidadoso de aprobar sólo links que respeten los derechos de autor</li>
+	</ul>	
 </section>
 <section id="contenido">
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-		<%- include("0-RUD-Encabezado") %>
+		<%- include("0-Revisar-Encabezado") %>
 		<select id="tipoLink">
-			<option value="1">Trailer</option>
-			<option value="2">Película</option>
+			<option value="TR">Trailer</option>
+			<option value="PL">Película</option>
 			<option value="TD" selected>Todos</option>
 		</select>
-		<form action="<%= vista %>guardar" method="POST">
+		<div id="tabla">
 			<div id="tags" class="flex-row">
-				<div id="activo">Activos</div>
+				<div id="activo">Analizar</div>
 				<div id="inactivo" class="traslucido">Inactivos</div>
 			</div>
 			<table>
-				<%- include("Links-TableHead") %> 
+				<%- include("Links1-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 
@@ -33,18 +31,11 @@
 						<% let cond = {} %>
 						<%- include("Links1-Condiciones", {link, cond}) %>
 						<%- include("Links2-Datos", {link, cond}) %>
-						<%- include("31-Links-Edicion", {fila, link, cond}) %>
 						<% fila++ %> 
 					<% } %>
-					<!-- Fila para nuevo link -->
-					<%- include("32-Links-Altas", {fila}) %>
 				</tbody>
 			</table>
-			<!-- Entidad e ID -->
-			<input type="text" name="prodEntidad" value="<%= entidad %>" class="ocultar">
-			<input type="text" name="prodID" value="<%= prodID %>" class="ocultar">
-			<input type="number" name="numeroFila" value="" class="ocultar">
-		</form>
+		</div>
 	</div>
 	<!-- Comandos -->
 	<div id="comandos">
@@ -59,5 +50,7 @@
 		<% } %>
 	</div>
 	<!-- Flechas -->
-	<%- include("0-RUD-Flechas") %>
+	<div id="flechas">
+		<i id="liberarSalir" class="fa-solid fa-circle-left"></i>
+	</div>
 </section>

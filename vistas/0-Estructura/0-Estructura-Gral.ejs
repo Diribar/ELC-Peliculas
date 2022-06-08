@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<!-- Head -->
-	<%- include('1-Head') %>
+	<%- include('1-Head-Gral') %>
 	<% if (tema == "usuario") { %><%- include('0-Usuarios-Head') %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include('0-Agregar-Head') %><% } %>
 	<% if (tema == "rclv") { %><%- include('0-RCLV-Head') %><% } %>
@@ -11,11 +11,11 @@
 	<% if (tema == "miscelaneas") { %><%- include('0-Miscelaneas-Head') %><% } %>
 </head>
 <body>
-	<%- include('21-Header') %>
+	<%- include('2-Header-Gral') %>
 	<main class="flex-row">
 		<%- include('ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
 		<section id="cuerpo-y-footer">
-			<%- include('23-Footer') %>
+			<%- include('3-Footer-Gral') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-Usuarios-Cuerpo') %><% } %>
 			<% if (tema == "prod_agregar") { %><%- include('0-Agregar-Cuerpo') %><% } %>

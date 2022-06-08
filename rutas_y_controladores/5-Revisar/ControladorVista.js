@@ -31,7 +31,7 @@ module.exports = {
 		if (prodsConLinks.length) prodsConLinks = procesar.prod_ProcesarCampos(prodsConLinks);
 		// Ir a la vista
 		//return res.send(prodsConLinks);
-		return res.render("0-VistaEstandar", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Revisar - Tablero de Control",
@@ -319,7 +319,7 @@ module.exports = {
 
 		// Ir a la vista
 		//return res.send(RCLV_original);
-		return res.render("0-VistaEstandar", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo,
