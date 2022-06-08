@@ -50,6 +50,7 @@ module.exports = (sequelize, dt) => {
 		lead_time_edicion: {type: dt.DECIMAL},
 
 		status_registro_id: {type: dt.INTEGER},
+		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
 
 		capturado_por_id: {type: dt.INTEGER},

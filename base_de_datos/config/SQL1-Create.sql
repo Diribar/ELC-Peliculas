@@ -1139,7 +1139,7 @@ CREATE TABLE links_2edicion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* HISTORIAL DE INACTIVAR Y RECUPERAR */;
-CREATE TABLE aux_historial_pasivos (
+CREATE TABLE aux_historial_provisorios (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	pelicula_id INT UNSIGNED NULL,
