@@ -11,11 +11,11 @@
 	<% if (tema == "miscelaneas") { %><%- include('0-Miscelaneas-Head') %><% } %>
 </head>
 <body>
-	<%- include('21-Header') %>
+	<%- include('2-Header') %>
 	<main class="flex-row">
 		<%- include('ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
 		<section id="cuerpo-y-footer">
-			<%- include('23-Footer') %>
+			<%- include('3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include('0-Usuarios-Cuerpo') %><% } %>
 			<% if (tema == "prod_agregar") { %><%- include('0-Agregar-Cuerpo') %><% } %>
