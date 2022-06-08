@@ -137,7 +137,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		return res.render("RUD0-EstructuraPL", {
+		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
 			titulo,
@@ -276,7 +276,7 @@ module.exports = {
 			);
 		// Ir a la vista
 		//return res.send(links);
-		return res.render("RUD0-EstructuraPL", {
+		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
 			entidad,
