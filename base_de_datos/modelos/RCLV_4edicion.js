@@ -20,9 +20,9 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.RCLV_personaje, {as: "personajes", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.RCLV_hecho, {as: "hechos", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.RCLV_valor, {as: "valores", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personajes", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hechos", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valores", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
 		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});

@@ -1,4 +1,4 @@
-<tr class="edicion ocultar inactivo_<%= link.status_registro.gr_inactivos %> <%- link.status_registro.gr_inactivos ? 'inactivo_ocultar' : '' %>">
+<tr class="edicion ocultar inactivo_<%= link.status_registro.gr_pasivos %> <%- link.status_registro.gr_pasivos ? 'inactivo_ocultar' : '' %>">
 	<!-- Url -->
 	<td class="ancho_url url" title="<%= link.url %>">
 		<div class="inputError">
@@ -73,6 +73,8 @@
 	</td>
 	<!-- Status -->
 	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %> </td>
+	<!-- Propio -->
+	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion accion">
 		<i class="fa-solid fa-floppy-disk" title='Guardar'></i>

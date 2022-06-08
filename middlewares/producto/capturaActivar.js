@@ -19,18 +19,10 @@ module.exports = async (req, res, next) => {
 	horarioFinal = funciones.horarioTexto(horarioFinal);
 
 	// Captura
-	// SOLUCIÓN 1: activa la entidad si no lo está, de lo contrario no hace nada
-	if (
-		(!registro.capturado_en ||
-			!registro.captura_activa ||
-			registro.capturado_por_id != userID ||
-			registro.capturado_en < haceDosHoras) &&
-		(!registro.status_registro.gr_pend_aprob || urlBase != "/producto_rud")
-	) {
-		let datos = {captura_activa: true};
-		// SOLUCIÓN 2: cambia de usuario si estaba capturado por otro
-		if (registro.capturado_por_id != userID) datos.capturado_por_id = userID;
-		// SOLUCIÓN 3: fija la nueva hora de captura si corresponde
+	if (!registro.status_registro.gr_pend_aprob || urlBase != "/producto_rud") {
+		// Activa la entidad y el usuario
+		let datos = {captura_activa: true, capturado_por_id: userID};
+		// Fija la nueva hora de captura si corresponde
 		if (registro.capturado_por_id != userID || registro.capturado_en < haceDosHoras)
 			datos.capturado_en = ahora;
 		// CAPTURA DEL REGISTRO

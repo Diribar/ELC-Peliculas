@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "historial_pasivos";
+	const alias = "historial_provisorios";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
@@ -21,7 +21,7 @@ module.exports = (sequelize, dt) => {
 		status_final_id: {type: dt.INTEGER},
 		};
 	const config = {
-		tableName: "aux_historial_pasivos",
+		tableName: "aux_historial_provisorios",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
@@ -30,9 +30,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
-		entidad.belongsTo(n.RCLV_personaje, {as: "personajes", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.RCLV_hecho, {as: "hechos", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.RCLV_valor, {as: "valores", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personajes", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hechos", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valores", foreignKey: "valor_id"});
 
 		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "link_id"});
 

@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		alta_aprob: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},
 		inactivar: {type: dt.BOOLEAN},
-		inactivado: {type: dt.BOOLEAN},
+		inactivo: {type: dt.BOOLEAN},
 		recuperar: {type: dt.BOOLEAN},
 	};
 	const config = {
@@ -19,10 +19,5 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
-	entidad.associate = (n) => {
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "status_registro_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "status_registro_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "status_registro_id"});
-	};
 	return entidad;
 };

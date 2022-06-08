@@ -56,8 +56,8 @@ router.get(
 	soloGestionProd,
 	entidad,
 	id,
-	permUserReg,
 	permReg,
+	permUserReg,
 	capturaActivar,
 	vista.links
 );

@@ -81,7 +81,7 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Definir valores necesarios
 		let producto_id = funciones.obtenerEntidad_id(entidad);
-		let includes = ["link_tipo", "link_prov", "status_registro", "link_ediciones"];
+		let includes = ["link_tipo", "link_prov", "status_registro", "ediciones"];
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
@@ -90,8 +90,8 @@ module.exports = {
 		);
 		// Combinarlos con la edición, si existe
 		links.forEach((link, i) => {
-			if (link.link_ediciones.length) {
-				let edicion = link.link_ediciones.find((n) => n.editado_por_id == userID);
+			if (link.ediciones.length) {
+				let edicion = link.ediciones.find((n) => n.editado_por_id == userID);
 				if (edicion) {
 					if (edicion.calidad) links[i].calidad = edicion.calidad;
 					if (edicion.link_tipo_id) links[i].link_tipo_id = edicion.link_tipo_id;
@@ -194,8 +194,8 @@ module.exports = {
 		);
 		// Preparar los datos
 		let datos = {
-			cambio_status_propuesto_por_id: userID,
-			cambio_status_propuesto_en: new Date(),
+			sugerido_por_id: userID,
+			sugerido_en: new Date(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};
