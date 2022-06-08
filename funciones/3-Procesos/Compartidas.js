@@ -101,9 +101,9 @@ module.exports = {
 	},
 
 	// Entidades
-	inactivarCaptura: async (entidad, prodID, userID) => {
+	inactivarCaptura: async (entidad, regID, userID) => {
 		// Obtener producto
-		let registro = await BD_genericas.obtenerPorId(entidad, prodID);
+		let registro = await BD_genericas.obtenerPorId(entidad, regID);
 		// Verificar que tenga una captura activa del usuario
 		if (
 			registro &&
@@ -113,7 +113,7 @@ module.exports = {
 			registro.captura_activa
 		) {
 			// En caso afirmativo, actualizarlo inactivando la captura
-			await BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: false});
+			await BD_genericas.actualizarPorId(entidad, regID, {captura_activa: false});
 		}
 		return;
 	},
@@ -127,16 +127,9 @@ module.exports = {
 	},
 
 	// Middleware/RevisarUsuario
-	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, prodID, userID) => {
+	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, regID, userID) => {
 		// Variables
-		let entidades = [
-			"peliculas",
-			"colecciones",
-			"capitulos",
-			"personajes",
-			"hechos",
-			"valores",
-		];
+		let entidades = ["peliculas", "colecciones", "capitulos", "personajes", "hechos", "valores"];
 		let asociaciones = [
 			"captura_peliculas",
 			"captura_colecciones",
@@ -158,14 +151,14 @@ module.exports = {
 			if (usuario[asociacion].length) {
 				// Rutina por cada entidad dentro de la asociación
 				for (let registro of usuario[asociacion]) {
-					// Si fue capturado hace más de 2 horas, limpiar los tres campos
-					if (registro.capturado_en < haceDosHoras) {
+					// Si fue capturado hace más de 2 horas y no es el registro actual, limpiar los tres campos
+					if (registro.capturado_en < haceDosHoras && registro.id != regID) {
 						BD_genericas.actualizarPorId(entidades[i], registro.id, objeto);
 						// Si fue capturado hace menos de 1 hora, informar el caso
 					} else if (
 						registro.capturado_en > haceUnaHora &&
 						registro.captura_activa &&
-						(entidades[i] != entidadActual || registro.id != prodID)
+						(entidades[i] != entidadActual || registro.id != regID)
 					) {
 						resultado = {
 							entidad: entidades[i],
