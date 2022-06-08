@@ -43,21 +43,21 @@ app.set("view engine", "ejs");
 
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set("views", [
-	path.resolve(__dirname, "./views"),
-	path.resolve(__dirname, "./views/0-Estructura"),
-	path.resolve(__dirname, "./views/0-Estructura/menusHeader"),
-	path.resolve(__dirname, "./views/0-Uso-Compartido"),
-	path.resolve(__dirname, "./views/1-Usuarios"),
-	path.resolve(__dirname, "./views/2-Prod-Agregar"),
-	path.resolve(__dirname, "./views/2-Prod-Agregar/Includes"),
-	path.resolve(__dirname, "./views/3-Prod-RUD"),
-	path.resolve(__dirname, "./views/3-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./views/4-RCLV"),
-	path.resolve(__dirname, "./views/5-Revisar"),
-	path.resolve(__dirname, "./views/5-Revisar/Includes"),
-	path.resolve(__dirname, "./views/6-Productos"),
-	path.resolve(__dirname, "./views/9-Inicio"),
-	path.resolve(__dirname, "./views/9-Miscelaneas"),
+	path.resolve(__dirname, "./vistas"),
+	path.resolve(__dirname, "./vistas/0-Estructura"),
+	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
+	path.resolve(__dirname, "./vistas/0-Uso-Compartido"),
+	path.resolve(__dirname, "./vistas/1-Usuarios"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
+	path.resolve(__dirname, "./vistas/2.2-Prod-RUD"),
+	path.resolve(__dirname, "./vistas/2.2-Prod-RUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.3-RCLV"),
+	path.resolve(__dirname, "./vistas/5-Revisar"),
+	path.resolve(__dirname, "./vistas/5-Revisar/Includes"),
+	path.resolve(__dirname, "./vistas/6-Productos"),
+	path.resolve(__dirname, "./vistas/9-Inicio"),
+	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
 // ************************* Rutas ********************************

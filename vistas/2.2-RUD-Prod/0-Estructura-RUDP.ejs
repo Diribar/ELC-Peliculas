@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('1-Head') %>
+	<%- include('0.1-Head-RUD') %>
+</head>
+<body>
+	<%- include('21-Header') %>
+	<main class="flex-row">
+		<%- codigo != "edicion" ? include('0.2-Cuerpo-Detalle') : "" %>
+		<%- codigo == "edicion" ? include('0.3-Cuerpo-Edicion') : "" %>
+	</main>
+</body>
+</html>
