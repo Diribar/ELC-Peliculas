@@ -27,24 +27,32 @@
 	<!-- Gratuito -->
 	<td class="ancho_gratuito taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
-	<td class="ancho_status taparMotivo"><%- link.status_registro.nombre %> </td>
+	<td class="ancho_status taparMotivo"><%= link.status_registro.nombre %></td>
+	<!-- Propio -->
+	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion">
 		<!-- Editar -->
-		<i class="fa-solid fa-pen editar <%- !cond.aprobado || !cond.rud ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+		<!-- Sólo en RUD para links creados y aprobados  -->
+		<i class="fa-solid fa-pen editar <%- !cond.creado && !cond.aprobado || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- Aprobar -->
-		<i class="fa-solid fa-circle-check in <%- !cond.inactivado && (!cond.revision || !cond.ajenos) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<!-- Solo para RUD inactivo y Revisión !estable y sin edición -->
+		<i class="fa-solid fa-circle-check in <%- cond.rud&&!cond.inactivo || cond.revision&&(cond.propio||cond.estable||link.ediciones.length ) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- Deshacer -->
-		<i class="fa-solid fa-rotate-left <%- !cond.rud || !cond.inacRecupPropio ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivado' %>"></i>
+		<!-- Solo para provisorios propios en RUD -->
+		<i class="fa-solid fa-rotate-left <%- !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
 		<!-- Eliminar/Inactivar -->
-		<% if (cond.creadoPropio&&cond.rud || cond.inactivado&&cond.revision) { %>
+		<!-- Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
+		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.inactivo) { %>
 			<!-- Eliminar permanente -->
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 		<% } else { %>
 			<!-- Inactivar -->
-			<i class="fa-solid fa-circle-xmark out <%- !cond.aprobado && (!cond.revision || !cond.ajenos) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivado' %>"></i>
+			<!-- Sólo para (RUD y aprobado) o (Revisión ajeno) -->
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!cond.aprobado || cond.propio ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
-		<i class="fa-solid fa-circle-question relative <%- !cond.inacRecup && !cond.inactivado ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
+		<!-- Sólo para status provisorio o inactivo -->
+		<i class="fa-solid fa-circle-question relative <%- !cond.provisorio && !cond.inactivo ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
 			<p class="mensajeAyuda ocultar"><%= link.motivo ? link.motivo.comentario : "Motivo inexistente" %> </p>
 		</i>
 	</td>

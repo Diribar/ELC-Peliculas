@@ -23,18 +23,7 @@
 				<div id="inactivo" class="traslucido">Inactivos</div>
 			</div>
 			<table>
-				<thead>
-					<tr>
-						<th class="ancho_url url">Url</th>
-						<th class="ancho_calidad calidad">Calidad (px)</th>
-						<th class="ancho_tipo tipo">Tipo</th>
-						<th class="ancho_completo completo">Completo</th>
-						<th class="ancho_parte parte">Parte</th>
-						<th class="ancho_gratuito gratuito">Gratuito</th>
-						<th class="ancho_status status">Status</th>
-						<th class="ancho_accion accion">Acción</th>
-					</tr>
-				</thead>
+				<%- include("Links-TableHead") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% let fila = 0 %> 

@@ -343,6 +343,7 @@ module.exports = {
 		// Obtener los datos identificatorios del producto y del usuario
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
 		// Configurar el título
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
@@ -358,8 +359,9 @@ module.exports = {
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
-			["status_registro", "link_ediciones", "link_prov", "link_tipo", "motivo"]
+			["status_registro", "ediciones", "link_prov", "link_tipo", "motivo"]
 		);
+		// return res.send(links)
 		// Información para la vista
 		let imagen = producto.avatar;
 		let avatar = imagen
@@ -389,7 +391,7 @@ module.exports = {
 			motivos,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			mostrar: null,
-			userID: null,
+			userID,
 		});
 	},
 };

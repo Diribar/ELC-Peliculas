@@ -22,6 +22,7 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, registro_id, includes);
 	const creado_en = registro.creado_en;
 	const capturado_en = registro.capturado_en;
+	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
 	// Creado por el usuario
 	let creadoPorElUsuario1 = registro.creado_por_id == userID;
 	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;
@@ -137,7 +138,7 @@ module.exports = async (req, res, next) => {
 				registro.ediciones &&
 				registro.ediciones.length == 1 &&
 				registro.ediciones[0].editado_por_id == userID &&
-				!url.startsWith("/links")
+				!url.startsWith("links/")
 			) {
 				informacion = {
 					mensajes: [
