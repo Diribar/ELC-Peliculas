@@ -5,10 +5,10 @@
 	<%- include('0.1-Head-RUD') %>
 </head>
 <body>
-	<%- include('21-Header') %>
+	<%- include('2-Header') %>
 	<main class="flex-row">
-		<%- codigo != "edicion" ? include('0.2-Cuerpo-Detalle') : "" %>
-		<%- codigo == "edicion" ? include('0.3-Cuerpo-Edicion') : "" %>
+		<%- codigo != "edicion" ? include('1-DetalleP1') : "" %>
+		<%- codigo == "edicion" ? include('2-EdicionP1') : "" %>
 	</main>
 </body>
 </html>

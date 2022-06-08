@@ -44,9 +44,9 @@ app.set("view engine", "ejs");
 // ******** Todas las carpetas donde se almacenan vistas **********
 app.set("views", [
 	path.resolve(__dirname, "./vistas"),
-	path.resolve(__dirname, "./vistas/0-Estructura"),
-	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
-	path.resolve(__dirname, "./vistas/0-Uso-Compartido"),
+	path.resolve(__dirname, "./vistas/0.1-Estructura"),
+	path.resolve(__dirname, "./vistas/0.1-Estructura/menusHeader"),
+	path.resolve(__dirname, "./vistas/0.2-Compartido"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),

@@ -100,7 +100,7 @@ module.exports = {
 				  )
 				: "";
 		// 6. Render
-		return res.render("0-VistaEstandar", {
+		return res.render("0-General", {
 			tema,
 			codigo,
 			titulo: "Agregar - " + RCLV.RCLV_nombre,

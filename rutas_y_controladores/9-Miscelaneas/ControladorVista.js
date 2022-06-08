@@ -17,7 +17,7 @@ module.exports = {
 	quienesSomos: (req, res) => {
 		let tema = "miscelaneas";
 		let codigo = "quienes-somos";
-		return res.render("0-VistaEstandar", {
+		return res.render("0-General", {
 			tema,
 			codigo,
 			titulo: "Quiénes somos",
