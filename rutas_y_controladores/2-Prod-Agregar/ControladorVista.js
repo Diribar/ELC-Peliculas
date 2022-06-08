@@ -26,7 +26,7 @@ module.exports = {
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesar.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Palabras Clave",
@@ -71,7 +71,7 @@ module.exports = {
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
@@ -119,7 +119,7 @@ module.exports = {
 		// 4. Obtener los errores
 		let errores = req.session.erroresTP ? req.session.erroresTP : "";
 		// 5. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Tipo de Producto",
@@ -176,7 +176,7 @@ module.exports = {
 			? await validar.copiarFA(copiarFA)
 			: "";
 		// 6. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Copiar FA",
@@ -259,7 +259,7 @@ module.exports = {
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		//return res.send(datosDuros)
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Duros",
@@ -375,7 +375,7 @@ module.exports = {
 		// 4. Obtener los errores
 		let errores = await validar.datosPers(camposDP, datosPers);
 		// 6. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
@@ -434,7 +434,7 @@ module.exports = {
 		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
 		actuacion = actuacion.slice(0, indice);
 		// 5. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Confirma",
@@ -537,7 +537,7 @@ module.exports = {
 		if (indice == muchasGracias.length) indice--;
 		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
 		// 4. Render del formulario
-		return res.render("0-General", {
+		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Terminaste",
@@ -554,6 +554,6 @@ module.exports = {
 		let tema = "prod_agregar";
 		let codigo = "responsabilidad";
 		let titulo = "Agregar - Responsabilidad";
-		return res.render("0-General", {tema, codigo, titulo});
+		return res.render("0-Estructura-Gral", {tema, codigo, titulo});
 	},
 };
