@@ -91,14 +91,17 @@ module.exports = async (req, res, next) => {
 			const horario = funciones.horarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
-				pc_entidadCodigo != "capitulos" && !pc_entidadCodigo.includes("RCLV")
+				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"
 					? {entidad: "la ", reservado: "a"}
 					: {entidad: "el ", reservado: "o"};
-			const nombre = pc_entidadCodigo.includes("RCLV")
-				? "nombre"
-				: prodCapturado.nombre_castellano
-				? "nombre_castellano"
-				: "nombre_original";
+			const nombre =
+				pc_entidadCodigo == "personajes" ||
+				pc_entidadCodigo == "hechos" ||
+				pc_entidadCodigo == "valores"
+					? "nombre"
+					: prodCapturado.nombre_castellano
+					? "nombre_castellano"
+					: "nombre_original";
 			informacion = {
 				mensajes: [
 					"Tenés que liberar " +

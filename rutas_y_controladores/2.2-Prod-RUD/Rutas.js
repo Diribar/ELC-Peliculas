@@ -13,11 +13,11 @@ const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
-const aptoDE = require("../../middlewares/usuarios/aptoDE");
-const permReg = require("../../middlewares/producto/permReg");
-const permUserReg = require("../../middlewares/producto/permUserReg");
-const capturaActivar = require("../../middlewares/producto/capturaActivar");
-const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
+const aptoDE = require("../../middlewares/captura/aptoDE");
+const permReg = require("../../middlewares/captura/permReg");
+const permUserReg = require("../../middlewares/captura/permUserReg");
+const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
 

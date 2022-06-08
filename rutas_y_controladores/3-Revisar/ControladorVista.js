@@ -61,15 +61,16 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
 		let destino = funciones.obtenerFamiliaEnSingular(entidad);
+		console.log(64,entidad,destino);
 		let haceUnaHora = funciones.nuevoHorario(-1);
 		let datosEdicion = "";
 		// Obtener el producto
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+		let registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		// Obtener la sub-dirección de destino
 		if (destino == "producto") {
-			let subDestino = producto.status_registro.creado
+			let subDestino = registro.status_registro.creado
 				? "/alta"
-				: producto.status_registro.alta_aprob || producto.status_registro.aprobado
+				: registro.status_registro.alta_aprob || registro.status_registro.aprobado
 				? "/edicion"
 				: "/inactivos";
 			destino += subDestino;

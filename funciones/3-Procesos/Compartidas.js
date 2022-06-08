@@ -48,8 +48,10 @@ module.exports = {
 	obtenerFamiliaEnSingular: (entidad) => {
 		return entidad == "peliculas" || entidad == "colecciones" || entidad == "capitulos"
 			? "producto"
-			: entidad.includes("RCLV_")
+			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
+			: entidad == "links"
+			? "links"
 			: "";
 	},
 	obtenerEntidadNombre: (entidad) => {

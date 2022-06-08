@@ -7,9 +7,10 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-const aptoDE = require("../../middlewares/usuarios/aptoDE");
-const permReg = require("../../middlewares/producto/permReg");
-const permUserReg = require("../../middlewares/producto/permUserReg");
+const aptoDE = require("../../middlewares/captura/aptoDE");
+const permReg = require("../../middlewares/captura/permReg");
+const permUserReg = require("../../middlewares/captura/permUserReg");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 
 // Rutas *******************************************
 // Rutas de APIs

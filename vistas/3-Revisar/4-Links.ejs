@@ -29,8 +29,8 @@
 					<% let fila = 0 %> 
 					<% for (let link of links) { %>
 						<% let cond = {} %>
-						<%- include("Links1-Condiciones", {link, cond}) %>
-						<%- include("Links2-Datos", {link, cond}) %>
+						<%- include("Links2-Condiciones", {link, cond}) %>
+						<%- include("Links3-Datos", {link, cond}) %>
 						<% fila++ %> 
 					<% } %>
 				</tbody>

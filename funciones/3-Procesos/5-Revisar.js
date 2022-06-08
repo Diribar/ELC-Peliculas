@@ -366,7 +366,7 @@ module.exports = {
 				id: n.id,
 				entidad: n.entidad,
 				nombre,
-				abrev: n.entidad.slice(5, 8).toUpperCase(),
+				abrev: n.entidad.slice(0, 3).toUpperCase(),
 				status_registro_id: n.status_registro_id,
 				fecha: n.creado_en,
 			};
@@ -428,11 +428,11 @@ module.exports = {
 				datos.motivo_id = motivoGenericoID;
 			}
 			// Guardar los registros
-			let RCLV_entidad =
+			let entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
 					? "edic_aprob"
 					: "edic_rech";
-			await BD_genericas.agregarRegistro(RCLV_entidad, datos);
+			await BD_genericas.agregarRegistro(entidad, datos);
 		}
 		return;
 	},

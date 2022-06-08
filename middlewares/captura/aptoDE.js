@@ -94,16 +94,15 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 	// Contar registros
 	let contarRegistros = 0;
 	// Contar registros con status 'a revisar'
-	if (producto) {
-		const entidades = ["peliculas", "colecciones", "capitulos"];
+	const entidades = producto
+		? ["peliculas", "colecciones", "capitulos"]
+		: rclv
+		? ["personajes", "hechos", "valores"]
+		: links
+		? ["links_originales"]
+		: "";
+	if (entidades)
 		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	} else if (rclv) {
-		const entidades = ["personajes", "hechos", "valores"];
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	} else if (links) {
-		const entidades = ["links_originales"];
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	}
 	// Contar registros de edición
 	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
 	// Fin
