@@ -288,7 +288,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let includes = [];
-		if (entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		if (entidad == "personajes") includes.push("proceso_canonizacion", "rol_iglesia");
 		let mes_id, dia_id, procesos_canonizacion, roles_iglesia, motivos, prodsEditados;
 		// Obtener la versión original
 		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
@@ -310,7 +310,7 @@ module.exports = {
 			dia_id = dia_del_ano.dia;
 		}
 		// Otros
-		if (entidad == "RCLV_personajes") {
+		if (entidad == "personajes") {
 			procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
 			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
 			roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");

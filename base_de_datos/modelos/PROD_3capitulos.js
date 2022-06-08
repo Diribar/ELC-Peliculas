@@ -74,9 +74,9 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.publicos_sugeridos, {as: "publico_sugerido", foreignKey: "publico_sugerido_id"});
 
-		entidad.belongsTo(n.RCLV_personajes, {as: "personaje", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.RCLV_hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.RCLV_valores, {as: "valor", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
@@ -90,6 +90,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_cargados", foreignKey: "links_gratuitos_cargados_id"});
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
+		entidad.hasMany(n.historial_pasivos, {as: "historial", foreignKey: "capitulo_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "capitulo_id"});
 		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "capitulo_id"});
 		entidad.hasMany(n.links_edicion, {as: "links_edic", foreignKey: "capitulo_id"});

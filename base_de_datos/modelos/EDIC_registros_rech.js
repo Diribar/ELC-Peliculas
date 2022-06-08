@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "edic_registros_rech";
+	const alias = "edic_rech";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},

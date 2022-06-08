@@ -22,7 +22,7 @@ module.exports = {
 		// Definir variables
 		let {entidad, id: prodID} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let archivo = aprobado ? "altas_registros_aprob" : "altas_registros_rech";
+		let archivo = aprobado ? "altas_aprob" : "altas_rech";
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
@@ -88,7 +88,7 @@ module.exports = {
 		// Variables
 		let {entidad, id: prodID, edicion_id: edicID, campo} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let archivo = aprobado ? "edic_registros_aprob" : "edic_registros_rech";
+		let archivo = aprobado ? "edic_aprob" : "edic_rech";
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		let datos;
@@ -189,7 +189,7 @@ module.exports = {
 			input_por_id: prodEditado.editado_por_id,
 		};
 		let averiguar = await BD_genericas.obtenerPorCampos(archivo, datos);
-		// Si no lo había, agregar un registro en 'edic_registros_aprob' / 'edicion_rech'
+		// Si no lo había, agregar un registro en 'edic_aprob' / 'edicion_rech'
 		if (!averiguar) {
 			// Obtener el título
 			let titulo =
@@ -213,7 +213,7 @@ module.exports = {
 			// Obtener el valor de edición, cuando es un ID
 			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
-			// Actualizar la BD de 'edic_registros_aprob' / 'edicion_rech'
+			// Actualizar la BD de 'edic_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
 		}
 		// Actualiza la variable de 'edicion' quitándole el valor al campo
@@ -264,7 +264,7 @@ module.exports = {
 		let asociaciones = ["peliculas", "colecciones", "capitulos"];
 		// Campos en el Include
 		let includes = ["dia_del_ano"];
-		if (datos.entidad == "RCLV_personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		if (datos.entidad == "personajes") includes.push("proceso_canonizacion", "rol_iglesia");
 		// Obtener el RCLV_original
 		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(datos.entidad, datos.id, [
 			...asociaciones,

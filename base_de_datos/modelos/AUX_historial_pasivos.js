@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "inactivarRecuperar";
+	const alias = "historial_pasivos";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
@@ -17,10 +17,11 @@ module.exports = (sequelize, dt) => {
 		analizado_en: {type: dt.DATE},
 		motivo_id: {type: dt.INTEGER},
 
-		status_registro_id: {type: dt.INTEGER},
-	};
+		status_original_id: {type: dt.INTEGER},
+		status_final_id: {type: dt.INTEGER},
+		};
 	const config = {
-		tableName: "historial_inactivar_recuperar",
+		tableName: "aux_historial_pasivos",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
@@ -39,6 +40,8 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "analizado_por_id"});
 
 		entidad.belongsTo(n.altas_motivos_rech, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.status_registro, {as: "status_original", foreignKey: "status_original_id"});
+		entidad.belongsTo(n.status_registro, {as: "status_final", foreignKey: "status_final_id"});
 	}
 	return entidad;
 };

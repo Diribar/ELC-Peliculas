@@ -2,8 +2,8 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let personajes = entidad == "RCLV_personajes";
-	let valores = entidad == "RCLV_valores";
+	let personajes = entidad == "personajes";
+	let valores = entidad == "valores";
 	let id = new URL(window.location.href).searchParams.get("id");
 	let dataEntry = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
 		var genero = document.querySelectorAll("input[name='genero']");
-		var santosanta = entidad == "RCLV_personajes" ? document.querySelector("#dataEntry #santosanta") : "";
+		var santosanta = entidad == "personajes" ? document.querySelector("#dataEntry #santosanta") : "";
 		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
@@ -89,9 +89,9 @@ window.addEventListener("load", async () => {
 	let feedback = (OK, errores) => {
 		// Definir las variables
 		let bloques = ["nombre", "fecha"];
-		if (entidad != "RCLV_valores") bloques.push("ano");
+		if (entidad != "valores") bloques.push("ano");
 		bloques.push("repetidos");
-		if (entidad == "RCLV_personajes") bloques.push("RCLI");
+		if (entidad == "personajes") bloques.push("RCLI");
 		// Rutina
 		for (let i = 0; i < bloques.length; i++) {
 			// Ícono de OK
@@ -106,7 +106,7 @@ window.addEventListener("load", async () => {
 		// Mostrar logo de Wikipedia
 		if (OK.nombre) {
 			wiki.classList.remove("ocultar");
-			if (entidad == "RCLV_personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
+			if (entidad == "personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
 		} else {
 			wiki.classList.add("ocultar");
 			santopedia.classList.add("ocultar");

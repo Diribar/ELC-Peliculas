@@ -13,7 +13,7 @@
 						<!-- Ayuda -->
 						<i class="fa-solid fa-circle-question"></i>
 						<ul type="dots" class="mensajeAyuda ocultar">
-							<% if (codigo == "RCLV_personajes") { %>
+							<% if (codigo == "personajes") { %>
 								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 							<% } %>
@@ -92,11 +92,11 @@
 					</div>
 				</div>
 				<!-- Año de nacimiento u ocurrencia -->
-				<% if (codigo == "RCLV_personajes" || codigo == "RCLV_hechos") { %>
+				<% if (codigo == "personajes" || codigo == "hechos") { %>
 					<div class="borderTop flex-row">
 						<div class="margenBottomTitulo relative flex-row align-center">
 							<!-- Título -->
-							<h3>Año de <%= codigo == "RCLV_personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
+							<h3>Año de <%= codigo == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
@@ -129,7 +129,7 @@
 			</div>
 		</section>
 		<!-- Relación con la Iglesia (sólo para personajes históricos) -->
-		<% if (codigo == "RCLV_personajes") { %>
+		<% if (codigo == "personajes") { %>
 			<section id="RCLI" class="borderTop flex-row space-between OK">
 				<!-- Primera columna -->
 				<div class="flex-col">

@@ -88,13 +88,13 @@ module.exports = {
 		// 5. Bases de Datos para la vista
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
 		let procesos_canonizacion =
-			codigo == "RCLV_personajes"
+			codigo == "personajes"
 				? await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
 						n.filter((m) => m.id.length == 3)
 				  )
 				: "";
 		let roles_iglesia =
-			codigo == "RCLV_personajes"
+			codigo == "personajes"
 				? await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
 						n.filter((m) => m.id.length == 3)
 				  )
@@ -152,7 +152,7 @@ module.exports = {
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
 		// 2. Generar información
-		if (RCLV.RCLV_entidad == "RCLV_personajes" && req.body.enProcCan == "0") {
+		if (RCLV.RCLV_entidad == "personajes" && req.body.enProcCan == "0") {
 			delete req.body.proceso_canonizacion_id;
 			delete req.body.rol_iglesia_id;
 		}

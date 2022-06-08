@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "RCLV_hechos";
+	const alias = "hechos";
 	const columns = {
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
@@ -44,6 +44,8 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "hecho_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "hecho_id"});
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "hecho_id"});
+
+		entidad.hasMany(n.historial_pasivos, {as: "historial", foreignKey: "hecho_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "hecho_id"});
 	};
 	return entidad;

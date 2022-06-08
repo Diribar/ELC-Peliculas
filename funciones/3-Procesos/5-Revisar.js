@@ -11,7 +11,7 @@ module.exports = {
 	registros_ObtenerARevisar: async (haceUnaHora, status, userID, entidades, includes) => {
 		// Obtener los registros del Producto, que cumplan ciertas condiciones
 		// Declarar las variables
-		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
+		let revisar = status.filter((n) => !n.gr_estables).map((n) => n.id);
 		let resultados = [];
 		// Obtener el resultado por entidad
 		for (let i = 0; i < entidades.length; i++)
@@ -318,7 +318,7 @@ module.exports = {
 	RCLV_ObtenerARevisar: async function (haceUnaHora, status, userID) {
 		// Obtener los registros que cumplan ciertas condiciones
 		// Declarar las variables
-		let entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		let entidades = ["personajes", "hechos", "valores"];
 		let includes = ["status_registro", "peliculas", "colecciones", "capitulos"];
 		// Obtener los resultados
 		let resultados = await this.registros_ObtenerARevisar(
@@ -376,7 +376,7 @@ module.exports = {
 	},
 	RCLV_tituloCanoniz: (datos) => {
 		let tituloCanoniz;
-		if (datos.entidad == "RCLV_personajes") {
+		if (datos.entidad == "personajes") {
 			tituloCanoniz = datos.proceso_canonizacion.nombre;
 			if (
 				datos.proceso_canonizacion.nombre == "Santo" &&
@@ -397,8 +397,8 @@ module.exports = {
 			{campo: "nombre", titulo: "Nombre"},
 			{campo: "dia_del_ano_id", titulo: "Día del año"},
 		];
-		if (entidad != "RCLV_valores") camposComparar.push({campo: "ano", titulo: "Año de referencia"});
-		if (entidad == "RCLV_personajes")
+		if (entidad != "valores") camposComparar.push({campo: "ano", titulo: "Año de referencia"});
+		if (entidad == "personajes")
 			camposComparar.push(
 				{campo: "proceso_canonizacion_id", titulo: "Proceso de Canonización"},
 				{campo: "rol_iglesia_id", titulo: "Rol en la Iglesia"}
@@ -430,8 +430,8 @@ module.exports = {
 			// Guardar los registros
 			let RCLV_entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
-					? "edic_registros_aprob"
-					: "edic_registros_rech";
+					? "edic_aprob"
+					: "edic_rech";
 			await BD_genericas.agregarRegistro(RCLV_entidad, datos);
 		}
 		return;
@@ -440,7 +440,7 @@ module.exports = {
 		// Variables
 		let aprobado = status.find((n) => n.aprobado).id;
 		let includes = ["peliculas", "colecciones", "capitulos"];
-		let RCLV_entidades = ["RCLV_personajes", "RCLV_hechos", "RCLV_valores"];
+		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
 		for (let RCLV_entidad of RCLV_entidades) {
 			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
@@ -478,7 +478,7 @@ module.exports = {
 	links_ObtenerARevisar: async (haceUnaHora, status, userID) => {
 		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' o 'inactivado'
 		// Declarar las variables
-		let revisar = status.filter((n) => !n.gr_revisados).map((n) => n.id);
+		let revisar = status.filter((n) => !n.gr_estables).map((n) => n.id);
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// Obtener los links 'a revisar'
 		let links = await BD_especificas.obtenerLinksARevisar(revisar);
