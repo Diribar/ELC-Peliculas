@@ -476,7 +476,7 @@ module.exports = {
 
 	// Links
 	links_ObtenerARevisar: async (haceUnaHora, status, userID) => {
-		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' o 'inactivado'
+		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' o 'inactivo'
 		// Declarar las variables
 		let revisar = status.filter((n) => !n.gr_estables).map((n) => n.id);
 		let aprobado_id = status.find((n) => n.aprobado).id;
@@ -484,35 +484,19 @@ module.exports = {
 		let links = await BD_especificas.obtenerLinksARevisar(revisar);
 		// Si no hay => salir
 		if (!links.length) return [];
-		// Separalos en 2 grupos (Propios y Ajenos)
-		let linksPropios = links.filter(
-			(n) =>
-				n.status_registro &&
-				((n.status_registro.creado && n.creado_por_id == userID) ||
-					((n.status_registro.inactivar || n.status_registro.recuperar) &&
-						n.cambio_status_propuesto_por_id == userID))
-		);
-
+		// Obtener los links ajenos
 		let linksAjenos = links.filter(
 			(n) =>
 				(n.status_registro &&
 					((n.status_registro.creado && n.creado_por_id != userID) ||
 						((n.status_registro.inactivar || !n.status_registro.recuperar) &&
-							n.cambio_status_propuesto_por_id != userID))) ||
+							n.sugerido_por_id != userID))) ||
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtener los productos
-		let prodPropios = linksPropios.length
-			? obtenerProductos(linksPropios, aprobado_id, haceUnaHora, userID)
-			: "";
 		let prodAjenos = linksAjenos.length
 			? obtenerProductos(linksAjenos, aprobado_id, haceUnaHora, userID)
 			: "";
-		// Eliminar los productos Ajenos que estén presentes en Propios
-		prodAjenos =
-			prodAjenos.length && prodPropios.length
-				? eliminarSiEstanEnPropios(prodAjenos, prodPropios)
-				: prodAjenos;
 		// Fin
 		return prodAjenos;
 	},
@@ -636,13 +620,10 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 		: RCLV[campo];
 };
 let eliminarRepetidos = (productos) => {
-	let aux1 = [];
+	let aux = [];
 	for (let i = productos.length - 1; i >= 0; i--) {
-		let aux2 = productos[i].id;
-		if (aux1.includes(aux2)) productos.splice(i, 1);
-		else aux1.push(aux2);
-		// if (productos.filter((n) => n.id == productos[i].id && n.entidad == productos[i].entidad).length>1)
-		// 	productos.splice(i, 1);
+		if (aux.includes(productos[i].id)) productos.splice(i, 1);
+		else aux.push(productos[i].id);
 	}
 	return productos;
 };
@@ -652,10 +633,10 @@ let obtenerProductos = (links, aprobado_id, haceUnaHora, userID) => {
 	let colecciones = [];
 	let capitulos = [];
 	// Abrir los productos por entidad
-	links.forEach((producto) => {
-		if (producto.pelicula) peliculas.push({entidad: "peliculas", ...producto.pelicula});
-		if (producto.coleccion) colecciones.push({entidad: "colecciones", ...producto.coleccion});
-		if (producto.capitulo) capitulos.push({entidad: "capitulos", ...producto.capitulo});
+	links.forEach((link) => {
+		if (link.pelicula) peliculas.push({entidad: "peliculas", ...link.pelicula});
+		if (link.coleccion) colecciones.push({entidad: "colecciones", ...link.coleccion});
+		if (link.capitulo) capitulos.push({entidad: "capitulos", ...link.capitulo});
 	});
 	// Eliminar repetidos
 	if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
@@ -682,17 +663,6 @@ let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
 			n.capturado_por_id == userID
 	);
 	return productos;
-};
-let eliminarSiEstanEnPropios = (prodAjenos, prodPropios) => {
-	for (let i = prodAjenos.length - 1; i >= 0; i--) {
-		for (let prodPropio of prodPropios) {
-			if (prodAjenos[i].id == prodPropio.id && prodAjenos[i].entidad == prodPropio.entidad) {
-				prodAjenos.splice(i, 1);
-				break;
-			}
-		}
-	}
-	return prodAjenos;
 };
 let quitarLosCamposQueNoSeComparan = (edicion) => {
 	let noSeComparan = {};

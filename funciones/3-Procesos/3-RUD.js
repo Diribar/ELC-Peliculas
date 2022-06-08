@@ -194,8 +194,8 @@ module.exports = {
 		);
 		// Preparar los datos
 		let datos = {
-			cambio_status_propuesto_por_id: userID,
-			cambio_status_propuesto_en: new Date(),
+			sugerido_por_id: userID,
+			sugerido_en: new Date(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};

@@ -34,22 +34,21 @@
 	<td class="ancho_accion">
 		<!-- Editar -->
 		<!-- Sólo en RUD para links creados y aprobados  -->
-		<i class="fa-solid fa-pen editar <%- !cond.creado && !cond.aprobado || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
+		<i class="fa-solid fa-pen editar <%- cond.rud&&(!cond.creado && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- Aprobar -->
-		<!-- Solo para RUD inactivo y Revisión no propio, !estable y sin edición -->
-		<i class="fa-solid fa-circle-check in <%- cond.rud && !cond.inactivo || cond.revision && (cond.propio||cond.estable||link.ediciones.length ) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
+		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- Deshacer -->
 		<!-- Solo para provisorios propios en RUD -->
-		<i class="fa-solid fa-rotate-left <%- !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
-		<!-- Eliminar/Inactivar -->
+		<i class="fa-solid fa-rotate-left <%- cond.rud&&!cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
+		<!-- Eliminar permanente -->
 		<!-- Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
 		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.inactivo) { %>
-			<!-- Eliminar permanente -->
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 		<% } else { %>
 			<!-- Inactivar -->
 			<!-- Sólo para (RUD y aprobado) o (Revisión ajeno) -->
-			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!cond.aprobado || cond.propio ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!cond.aprobado || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">

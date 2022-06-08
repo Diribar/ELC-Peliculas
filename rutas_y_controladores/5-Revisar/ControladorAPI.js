@@ -29,7 +29,7 @@ module.exports = {
 		const status = req.session.status_registro
 		let nuevoStatusID = aprobado
 			? status.find((n) => n.alta_aprob).id
-			: status.find((n) => n.inactivado).id;
+			: status.find((n) => n.inactivo).id;
 		// Obtener el motivo si es un rechazo
 		if (!aprobado) var {motivo_id} = req.query;
 		if (!aprobado && !motivo_id) return res.json("false");
@@ -77,7 +77,7 @@ module.exports = {
 		// Actualizar en RCLVs el campo 'prod_aprob'
 		if (
 			nuevoStatusID == status.find((n) => n.aprobado).id ||
-			nuevoStatusID == status.find((n) => n.inactivado).id
+			nuevoStatusID == status.find((n) => n.inactivo).id
 		)
 			procesar.RCLV_actualizarProdAprob(producto, status);
 		// Fin
