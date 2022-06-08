@@ -11,5 +11,5 @@
 <% cond.ajeno = (cond.creado&&link.creado_por_id != userID) || (cond.provisorio&&link.sugerido_por_id != userID) %>
 <% cond.rud = tema == "prod_rud" %>
 <% cond.revision = tema == "revision" %>
-<% cond.inactivo = link.status_registro.gr_inactivos&&cond.rud || cond.inactivo&&cond.revision %>
+<% cond.inactivos = cond.rud&&link.status_registro.gr_inactivos || cond.revision&&cond.inactivo %>
 
