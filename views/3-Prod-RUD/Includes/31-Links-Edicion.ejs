@@ -74,7 +74,7 @@
 	<!-- Status -->
 	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %> </td>
 	<!-- Propio -->
-	<td class="ancho_propio propio taparMotivo"><%= link.propio ? "SI" : "NO" %></td>
+	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion accion">
 		<i class="fa-solid fa-floppy-disk" title='Guardar'></i>
