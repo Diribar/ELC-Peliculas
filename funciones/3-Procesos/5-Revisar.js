@@ -494,11 +494,11 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtener los productos
-		let prodAjenos = linksAjenos.length
+		let productos = linksAjenos.length
 			? obtenerProductos(linksAjenos, aprobado_id, haceUnaHora, userID)
 			: "";
 		// Fin
-		return prodAjenos;
+		return productos;
 	},
 
 	// Usuario
