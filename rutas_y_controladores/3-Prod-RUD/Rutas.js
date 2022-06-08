@@ -14,8 +14,8 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/usuarios/aptoDE");
-const permProd = require("../../middlewares/producto/permProd");
-const permUserProd = require("../../middlewares/producto/permUserProd");
+const permReg = require("../../middlewares/producto/permReg");
+const permUserReg = require("../../middlewares/producto/permUserReg");
 const capturaActivar = require("../../middlewares/producto/capturaActivar");
 const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
 // Varios
@@ -31,8 +31,8 @@ router.get(
 	entidad,
 	id,
 	aptoDE,
-	permUserProd,
-	permProd,
+	permReg,
+	permUserReg,
 	capturaActivar,
 	vista.prod_Form
 );
@@ -45,14 +45,14 @@ router.get(
 	entidad,
 	id,
 	aptoDE,
-	permUserProd,
-	permProd,
+	permReg,
+	permUserReg,
 	capturaActivar,
 	vista.linksForm
 );
 router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 // Pendiente
-router.get("/calificala", soloAutInput, entidad, id, aptoDE, permProd, vista.calificala);
+router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
 
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links

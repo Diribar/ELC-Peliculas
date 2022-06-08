@@ -7,6 +7,9 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+const aptoDE = require("../../middlewares/usuarios/aptoDE");
+const permReg = require("../../middlewares/producto/permReg");
+const permUserReg = require("../../middlewares/producto/permUserReg");
 
 // Rutas *******************************************
 // Rutas de APIs
@@ -16,7 +19,7 @@ router.get("/api/validar-consolidado/", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
 router.get("/redireccionar", soloAutInput, vista.redireccionar);
-router.get("/agregar", soloAutInput, vista.RCLV_Form);
+router.get("/agregar", soloAutInput, aptoDE, vista.RCLV_Form);
 router.post("/agregar", soloAutInput, vista.RCLV_Grabar);
 
 // Exportarlo **********************************************

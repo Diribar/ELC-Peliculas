@@ -95,9 +95,8 @@ module.exports = {
 	},
 
 	// RUD - Usuario habilitado
-	productosConStatusARevisar: async (userID, status) => {
+	registrosConStatusARevisar: async (userID, status, entidades) => {
 		// Variables
-		const entidades = ["peliculas", "colecciones", "capitulos"];
 		const creado_id = status.find((n) => n.creado).id;
 		const inactivar_id = status.find((n) => n.inactivar).id;
 		const recuperar_id = status.find((n) => n.recuperar).id;
@@ -111,6 +110,17 @@ module.exports = {
 			],
 		};
 		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condiciones});
+
+		// Fin
+		return contarRegistros;
+	},
+	registrosConEdicion: async (userID) => {
+		// Variables
+		const entidades = ["prods_edicion", "rclv_edicion", "links_edicion"];
+		let contarRegistros = 0;
+		// Rutina para contar
+		let condicion = {editado_por_id: userID};
+		for (let entidad of entidades) contarRegistros += await db[entidad].count({where: condicion});
 
 		// Fin
 		return contarRegistros;
@@ -194,7 +204,9 @@ module.exports = {
 	// USUARIOS ---------------------------------------------------------
 	// Controladora/Usuario/Login
 	obtenerUsuarioPorID: (id) => {
-		return db.usuarios.findByPk(id, {include: ["rol_usuario", "status_registro"]});
+		return db.usuarios
+			.findByPk(id, {include: ["rol_usuario", "status_registro"]})
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {
