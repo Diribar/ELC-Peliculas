@@ -49,7 +49,7 @@
 			<% if (entidad != "colecciones") { %>
 				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
 			<% } %>
-			<a href="/producto_rud/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
+			<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
 				<i class="fa-solid fa-circle-info" tabindex="-1" title="Ir a la vista Detalle"></i>
 			</a>
 		</div>

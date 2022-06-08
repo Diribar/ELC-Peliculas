@@ -67,7 +67,7 @@ window.addEventListener("load", () => {
 				let fila = document.createElement("tr");
 				let anchor = document.createElement("a");
 				let id = registro.id;
-				anchor.href = "/producto_rud/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
+				anchor.href = "/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
 
 				// Prepara las variables de la fila
 				let anchoMax = 30;

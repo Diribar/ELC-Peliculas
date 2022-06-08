@@ -37,8 +37,8 @@ window.addEventListener("load", async () => {
 	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	// Rutas
-	let rutaValidar = "/producto_rud/api/links/validar/?";
-	let rutaObtenerProv = "/producto_rud/api/links/obtener-provs-links";
+	let rutaValidar = "/links/api/validar/?";
+	let rutaObtenerProv = "/links/api/obtener-provs-links";
 
 	// Depurar el 'url' de alta
 	urlInputs[filaUrlAlta].addEventListener("input", () => {

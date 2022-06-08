@@ -1,6 +1,6 @@
 <% for (let prod_enBD of prod_yaEnBD) { %>
 <li>
-	<a href="/producto_rud/detalle/?entidad=<%= prod_enBD.entidad %>&id=<%= prod_enBD.YaEnBD %>">
+	<a href="/producto/detalle/?entidad=<%= prod_enBD.entidad %>&id=<%= prod_enBD.YaEnBD %>">
 		<!-- Campos para luego buscar los detalles -->
 		<input class="ocultar" type="text" name="entidad" value="<%= prod_enBD.entidad %>">
 		<input class="ocultar" type="text" name="id" value="<%= prod_enBD.YaEnBD %>">

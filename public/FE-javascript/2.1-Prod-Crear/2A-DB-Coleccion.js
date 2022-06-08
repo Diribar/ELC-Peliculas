@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let colecciones = document.querySelectorAll("#resultadoDesamb form #coleccion");
 	let colec_nombre = document.querySelectorAll("#resultadoDesamb form #coleccion #colec_nombre");
 	let mensaje = document.querySelectorAll("#resultadoDesamb form .fa-circle-xmark");
-	let ruta = "/producto_agregar/api/DS-averiguar-coleccion/?TMDB_id=";
+	let ruta = "/producto/agregar/api/DS-averiguar-coleccion/?TMDB_id=";
 
 	// Rutina para detectar si pertenece a una pelicula
 	for (let i = 0; i < forms.length; i++) {

@@ -28,14 +28,13 @@ module.exports = async (req, res, next) => {
 		// Variables
 		let informacion;
 		// Obtener datos del url
-		const urlBase = req.baseUrl;
 		const originalUrl = req.originalUrl;
 		const status = req.session.status_registro;
 		// Obtener la tarea
-		const producto = urlBase == "/producto_agregar";
-		const rclv = urlBase == "/rclv";
-		const links = originalUrl.startsWith("/producto_rud/links");
-		const edicion = originalUrl.startsWith("/producto_rud/edicion");
+		const producto = originalUrl.startsWith("/producto/agregar/");
+		const edicion = originalUrl.startsWith("/producto/edicion/");
+		const rclv = originalUrl.startsWith("/rclv/");
+		const links = originalUrl.startsWith("/links/abm/");
 		// Obtener su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros

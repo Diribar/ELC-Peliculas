@@ -15,7 +15,7 @@
 			<% if (!opcion) { %><option class="ocultar" selected>Elegí una opción</option><% } %>
 			<!-- Demás opciones -->
 			<% for (let menuOpcion of menuOpciones) { %>
-				<option value="/productos/<%= menuOpcion.url %>" <% if (opcionElegida_campos && menuOpcion.url == opcionElegida_campos.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
+				<option value="/consultas/<%= menuOpcion.url %>" <% if (opcionElegida_campos && menuOpcion.url == opcionElegida_campos.url) { %>selected<% } %>><%= menuOpcion.nombre %></option>
 			<% } %>
 		</select>
 		<!-- SUB-OPCIONES -->
@@ -25,7 +25,7 @@
 				<option style="font-style: italic" class="ocultar" selected>Elegí una opción</option>
 			<% } %>
 			<% for (let menuSubOpcion of menuSubOpciones) { %>
-				<option value="/productos/<%= menuSubOpcion.url %>" <% if (subOpcion && menuSubOpcion.url == subOpcionElegida_campos.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
+				<option value="/consultas/<%= menuSubOpcion.url %>" <% if (subOpcion && menuSubOpcion.url == subOpcionElegida_campos.url) { %>selected<% } %>><%= menuSubOpcion.nombre %></option>
 			<% } %>
 			</select>
 		<% } %>

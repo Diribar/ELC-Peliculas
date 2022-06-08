@@ -259,7 +259,7 @@ let cartelRepetido = (datos) => {
 	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este/a " +
-		"<a href='/producto_rud/detalle/?entidad=" +
+		"<a href='/producto/detalle/?entidad=" +
 		datos.entidad +
 		"&id=" +
 		averiguar.id +

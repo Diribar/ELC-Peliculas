@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	let RCLVs = document.querySelectorAll(".RCLV");
 	// Ruta
-	let ruta = "/producto_agregar/api/validar-datos-pers/?";
+	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
 	// ADD EVENT LISTENERS *********************************
 	// Averiguar si hubieron cambios
@@ -102,7 +102,7 @@ window.addEventListener("load", async () => {
 	let funcionRCLV = async () => {
 		if (!subcategoria.value) return;
 		// Averiguar qué RCLV corresponde
-		let ruta = "/producto_agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
+		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
 		let campos = ["personaje", "hecho", "valor"];
 		let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];

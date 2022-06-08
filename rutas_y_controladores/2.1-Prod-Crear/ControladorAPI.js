@@ -44,10 +44,6 @@ module.exports = {
 		);
 		return res.json(datos);
 	},
-	obtenerCapitulos: async (req, res) => {
-		let datos = await BD_especificas.obtenerCapitulos(req.query.coleccion_id, req.query.temporada);
-		return res.json(datos);
-	},
 
 	// Vista (copiarFA)
 	validarCopiarFA: (req, res) => {
