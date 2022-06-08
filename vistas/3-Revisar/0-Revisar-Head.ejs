@@ -1,28 +1,28 @@
-<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/0-Revisar.css">
+<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-Revisar.css">
 <script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
 <% if (codigo == "tableroControl") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/1-TableroControl.css">
+	<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-TableroControl.css">
 	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 <% } else { %>
 	<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
 	<script src="/FE-javascript/5-Revisar/0-Prod-LiberarSalir.js"></script>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/0-MotivosRechazar.css">
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-Alta.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/2-Prod-Alta.css">
 		<script src="/FE-javascript/5-Revisar/1-ProdAlta.js"></script>
 	<% } else if (codigo == "producto/edicion") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/0-MotivosRechazar.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
 		<% if (vista.includes("Avatar")) { %>
-			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-EdicAvatar.css">
+			<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/2-Prod-EdicAvatar.css">
 			<script src="/FE-javascript/5-Revisar/2-ProdAvatar.js"></script>
 		<% } else { %>
-			<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/2-Prod-EdicDemas.css">
+			<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/2-Prod-EdicDemas.css">
 			<script src="/FE-javascript/5-Revisar/2-ProdEditar.js"></script>
 		<% } %>
 	<% } else if (codigo == "RCLV") { %>
 		<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/RCLV.css">
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/3-RCLV.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/3-RCLV.css">
 		<script src="/FE-javascript/0-Uso-Compartido/RCLV-Errores.js"></script>
 		<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 		<script src="/FE-javascript/5-Revisar/3-RCLV.js"></script>
@@ -33,6 +33,6 @@
 		<script src="/FE-javascript/0-Uso-Compartido/Links-ActivosInactivos.js"></script>
 		<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 		<!-- Específico -->
-		<link rel="stylesheet" href="/formatoDeVistas/5-Revisar/4-Links.css">
+		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/4-Links.css">
 	<% } %>
 <% } %>
