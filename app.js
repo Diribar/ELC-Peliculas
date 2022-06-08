@@ -48,7 +48,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
 	path.resolve(__dirname, "./vistas/0-Compartido"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
-	path.resolve(__dirname, "./vistas/2.0-Compartido-CRUD"),	
+	path.resolve(__dirname, "./vistas/2.0-CRUD"),	
 	path.resolve(__dirname, "./vistas/2.1-Prod-C"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-C/Includes"),
 	path.resolve(__dirname, "./vistas/2.2-Prod-RUD"),
