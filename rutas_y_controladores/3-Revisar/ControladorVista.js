@@ -61,7 +61,6 @@ module.exports = {
 		let edicID = req.query.edicion_id;
 		let userID = req.session.usuario.id;
 		let destino = funciones.obtenerFamiliaEnSingular(entidad);
-		console.log(64,entidad,destino);
 		let haceUnaHora = funciones.nuevoHorario(-1);
 		let datosEdicion = "";
 		// Obtener el producto
