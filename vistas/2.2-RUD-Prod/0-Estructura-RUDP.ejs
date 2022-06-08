@@ -7,7 +7,7 @@
 <body>
 	<%- include('2-Header') %>
 	<main class="flex-row">
-		<%- codigo != "edicion" ? include('1-DetalleP1') : "" %>
+		<%- codigo == "detalle" ? include('1-DetalleP1') : "" %>
 		<%- codigo == "edicion" ? include('2-EdicionP1') : "" %>
 	</main>
 </body>
