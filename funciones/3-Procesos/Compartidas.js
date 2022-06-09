@@ -78,12 +78,14 @@ module.exports = {
 			? "coleccion_id"
 			: entidad == "capitulos"
 			? "capitulo_id"
-			: entidad.includes("personaje")
+			: entidad == "personajes"
 			? "personaje_id"
-			: entidad.includes("hecho")
+			: entidad == "hechos"
 			? "hecho_id"
-			: entidad.includes("valor")
+			: entidad == "valores"
 			? "valor_id"
+			: entidad == "links"
+			? "links"
 			: "";
 	},
 	obtenerEntidad: (entidad) => {
@@ -120,7 +122,9 @@ module.exports = {
 		return;
 	},
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
+		for (let campo in edicion)
+			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
+				delete edicion[campo];
 		return edicion;
 	},
 	quitarLosCamposSinContenido: (objeto) => {

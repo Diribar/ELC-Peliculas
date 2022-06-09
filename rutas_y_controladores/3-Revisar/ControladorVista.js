@@ -377,6 +377,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
+		return res.send(links)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,
