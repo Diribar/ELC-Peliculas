@@ -359,7 +359,7 @@ module.exports = {
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
 			{[entidad_id]: prodID},
-			["status_registro", "ediciones", "link_prov", "link_tipo", "motivo"]
+			["status_registro", "ediciones", "prov", "tipo", "motivo"]
 		);
 		// return res.send(links)
 		// Información para la vista

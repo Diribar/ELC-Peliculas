@@ -202,7 +202,7 @@ CREATE TABLE aux_status_registro (
 	alta_aprob BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
-	inactivado BOOLEAN DEFAULT 0,
+	inactivo BOOLEAN DEFAULT 0,
 	recuperar BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -210,7 +210,7 @@ INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUE
 INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, inactivado, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
 /* APROBACION DE ALTAS/EDICIONES */;
 CREATE TABLE altas_registros_aprob (
@@ -1062,8 +1062,8 @@ CREATE TABLE links_1originales (
 	completo BOOLEAN DEFAULT 1,
 	parte VARCHAR(3) NOT NULL,
 
-	link_tipo_id TINYINT UNSIGNED NOT NULL,
-	link_prov_id TINYINT UNSIGNED NOT NULL,
+	tipo_id TINYINT UNSIGNED NOT NULL,
+	prov_id TINYINT UNSIGNED NOT NULL,
 	gratuito BOOLEAN NOT NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
@@ -1086,8 +1086,8 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
-	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
-	FOREIGN KEY (link_prov_id) REFERENCES links_proveedores(id),
+	FOREIGN KEY (tipo_id) REFERENCES links_tipos(id),
+	FOREIGN KEY (prov_id) REFERENCES links_proveedores(id),
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -1098,7 +1098,7 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, link_tipo_id, link_prov_id, gratuito, creado_por_id, creado_en)
+INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en)
 VALUES 
 (1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,10,'2022-03-16 23:25:20'),
 (2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,10,'2022-03-16 23:25:20'),
@@ -1118,7 +1118,7 @@ CREATE TABLE links_2edicion (
 	capitulo_id INT UNSIGNED NULL,
 
 	calidad SMALLINT NULL,
-	link_tipo_id TINYINT UNSIGNED NULL,
+	tipo_id TINYINT UNSIGNED NULL,
 	completo BOOLEAN NULL,
 	parte VARCHAR(3) NULL,
 	gratuito BOOLEAN NULL,
@@ -1133,7 +1133,7 @@ CREATE TABLE links_2edicion (
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
 
-	FOREIGN KEY (link_tipo_id) REFERENCES links_tipos(id),
+	FOREIGN KEY (tipo_id) REFERENCES links_tipos(id),
 
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

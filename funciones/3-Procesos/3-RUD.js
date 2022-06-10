@@ -81,7 +81,7 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Definir valores necesarios
 		let producto_id = funciones.obtenerEntidad_id(entidad);
-		let includes = ["link_tipo", "link_prov", "status_registro", "ediciones"];
+		let includes = ["tipo", "prov", "status_registro", "ediciones"];
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links_originales",
@@ -94,7 +94,7 @@ module.exports = {
 				let edicion = link.ediciones.find((n) => n.editado_por_id == userID);
 				if (edicion) {
 					if (edicion.calidad) links[i].calidad = edicion.calidad;
-					if (edicion.link_tipo_id) links[i].link_tipo_id = edicion.link_tipo_id;
+					if (edicion.tipo_id) links[i].tipo_id = edicion.tipo_id;
 					if (edicion.completo) links[i].completo = edicion.completo;
 					if (edicion.parte) links[i].parte = edicion.parte;
 					if (edicion.gratuito) links[i].gratuito = edicion.gratuito;
@@ -221,10 +221,10 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 		"links_originales",
 		{[funciones.obtenerEntidad_id(entidad)]: prodID},
-		["status_registro", "link_tipo"]
+		["status_registro", "tipo"]
 	)
 		.then((n) => n.filter((n) => n.gratuito))
-		.then((n) => n.filter((n) => n.link_tipo.pelicula));
+		.then((n) => n.filter((n) => n.tipo.pelicula));
 
 	// Obtener los links 'Aprobados' y 'TalVez'
 	let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];

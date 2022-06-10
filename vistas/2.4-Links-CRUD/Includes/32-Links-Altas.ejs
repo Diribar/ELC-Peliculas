@@ -1,9 +1,10 @@
-<tr class="altas inactivo_false">
+<tr class="alta inactivo_false">
+	<form action="">
 	<!-- Url y Proveedor_id-->
-	<td class="ancho_url url">
+	<td class="ancho_url url campo">
 		<div class="inputError">
 			<input name="url" type="text" autofocus class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.url) ? dataEntry.url : "" %>" autocomplete="off">
-			<input name="link_prov_id" class="ocultar" value="<%- (dataEntry.numeroFila == fila && dataEntry.link_prov_id) ? dataEntry.link_prov_id : "" %>">
+			<input name="prov_id" class="ocultar" value="<%- (dataEntry.numeroFila == fila && dataEntry.prov_id) ? dataEntry.prov_id : "" %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 10"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check prov_id"></i>
@@ -11,9 +12,9 @@
 		</div>
 	</td>
 	<!-- Calidad -->
-	<td class="ancho_calidad calidad">
+	<td class="ancho_calidad calidad desperdicio campo">
 		<div class="inputError">
-			<select name="calidad" class="input">
+			<select name="calidad" class="input ocultar">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && !dataEntry.calidad) ? "selected" : "" %>>Elejí</option>
 				<% for (let calidad of calidades) { %>
 					<option value="<%= calidad %>" <%- (dataEntry.numeroFila == fila && dataEntry.calidad == calidad) ? "selected" : "" %>><%= calidad %></option>
@@ -26,13 +27,13 @@
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td class="ancho_tipo tipo">
+	<td class="ancho_tipo tipo desperdicio campo">
 		<div class="inputError">
-			<select name="link_tipo_id" class="input">
+			<select name="tipo_id" class="input ocultar">
 				<option value="" class="ocultar">Elejí</option>
-				<option value="<%= links_tipos[0].id %>" <%- (dataEntry.numeroFila == fila && dataEntry.link_tipo_id == links_tipos[0].id || entidad == "colecciones") ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
+				<option value="<%= links_tipos[0].id %>" <%- (dataEntry.numeroFila == fila && dataEntry.tipo_id == links_tipos[0].id || entidad == "colecciones") ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
-					<option value="<%= links_tipos[1].id %>" <%- (dataEntry.numeroFila == fila && dataEntry.link_tipo_id==links_tipos[1].id) ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
+					<option value="<%= links_tipos[1].id %>" <%- (dataEntry.numeroFila == fila && dataEntry.tipo_id==links_tipos[1].id) ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
 				<% } %>
 			</select>
 			<!-- Errores -->
@@ -41,9 +42,9 @@
 		</div>
 	</td>
 	<!-- Completo -->
-	<td class="ancho_completo completo">
+	<td class="ancho_completo completo desperdicio campo">
 		<div class="inputError">
-			<select name="completo" class="input">
+			<select name="completo" class="input ocultar">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "") ? "selected" : "" %>>Elejí</option>
 				<option value="1" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "1") ? "selected" : "" %>>SI</option>
 				<option value="0" <%- (dataEntry.numeroFila == fila && dataEntry.completo == "0") ? "selected" : "" %>>NO</option>
@@ -54,18 +55,18 @@
 		</div>
 	</td>
 	<!-- Parte -->
-	<td class="ancho_parte parte">
+	<td class="ancho_parte parte desperdicio campo">
 		<div class="inputError">
-			<input name="parte" type="number" class="input" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte != "-") ? dataEntry.parte : '' %>">
+			<input name="parte" type="text" class="input ocultar" value="<%- (dataEntry.numeroFila == fila && dataEntry.parte != "-") ? dataEntry.parte : '' %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
 	<!-- Gratuito -->
-	<td class="ancho_gratuito gratuito">
+	<td class="ancho_gratuito gratuito desperdicio campo">
 		<div class="inputError">
-			<select name="gratuito" class="input">
+			<select name="gratuito" class="input ocultar">
 				<option value="" class="ocultar" <%- (dataEntry.numeroFila == fila && dataEntry.gratuito == "") ? "selected" : "" %>>?</option>
 				<option value="1" <%- (dataEntry.numeroFila == fila && dataEntry.gratuito == "1") ? "selected" : "" %>>SI</option>
 				<option value="0" <%- (dataEntry.numeroFila == fila && dataEntry.gratuito == "0") ? "selected" : "" %>>NO</option>

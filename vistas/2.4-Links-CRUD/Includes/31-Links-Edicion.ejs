@@ -1,17 +1,17 @@
 <tr class="edicion ocultar inactivo_false">
 	<!-- Url -->
-	<td class="ancho_url url" title="<%= link.url %>">
+	<td class="ancho_url url campo" title="<%= link.url %>">
 		<div class="inputError">
-			<img src="/imagenes/0-Logos/<%= link.link_prov.avatar %>" alt="<%= link.link_prov.nombre %>">
+			<img src="/imagenes/0-Logos/<%= link.prov.avatar %>" alt="<%= link.prov.nombre %>">
 			<input name="url" type="text" class="input ocultar" value="<%= link.url %>">
-			<input name="id" type="text" class="ocultar" value="<%= link.id %>">
+			<input name="link_id" type="text" class="ocultar" value="<%= link.id %>">
 			<i class="fa-solid fa-circle-xmark ocultar" style="display: none"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check" style="display: none"></i>
 			<i class="fa-solid fa-question prov_id" style="display: none"></i>
 		</div>
 	</td>
 	<!-- Calidad -->
-	<td class="ancho_calidad calidad">
+	<td class="ancho_calidad calidad campo">
 		<div class="inputError">
 			<select name="calidad" class="input">
 				<% for (let calidad of calidades) { %>
@@ -25,12 +25,12 @@
 		</div>
 	</td>
 	<!-- Tipo -->
-	<td class="ancho_tipo tipo">
+	<td class="ancho_tipo tipo campo">
 		<div class="inputError">
-			<select name="link_tipo_id" class="input">
-				<option value="<%= links_tipos[0].id %>" <%- link.link_tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
+			<select name="tipo_id" class="input">
+				<option value="<%= links_tipos[0].id %>" <%- link.tipo_id==links_tipos[0].id ? "selected" : "" %>><%= links_tipos[0].nombre %></option>
 				<% if (entidad != "colecciones") { %>
-					<option value="<%= links_tipos[1].id %>" <%- link.link_tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
+					<option value="<%= links_tipos[1].id %>" <%- link.tipo_id==links_tipos[1].id ? "selected" : "" %>><%= links_tipos[1].nombre %></option>
 				<% } %>
 			</select>
 			<!-- Errores -->
@@ -39,7 +39,7 @@
 		</div>
 	</td>
 	<!-- Completo -->
-	<td class="ancho_completo completo">
+	<td class="ancho_completo completo campo">
 		<div class="inputError">
 			<select name="completo" class="input">
 				<option value="1" <%- link.completo=="1" ? "selected" : "" %>>SI</option>
@@ -51,16 +51,16 @@
 		</div>
 	</td>
 	<!-- Parte -->
-	<td class="ancho_parte parte">
+	<td class="ancho_parte parte campo">
 		<div class="inputError">
-			<input name="parte" type="number" class="input" value="<%- link.parte != "-" ? link.parte : '' %>">
+			<input name="parte" type="text" class="input" value="<%- link.parte != "-" ? link.parte : '' %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
 	<!-- Gratuito -->
-	<td class="ancho_gratuito gratuito">
+	<td class="ancho_gratuito gratuito campo">
 		<div class="inputError">
 			<select name="gratuito" class="input">
 				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
@@ -72,11 +72,9 @@
 		</div>
 	</td>
 	<!-- Status -->
-	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %> </td>
+	<td class="ancho_status status taparMotivo"><%= link.status_registro.nombre %></td>
 	<!-- Propio -->
 	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
-	<td class="ancho_accion accion">
-		<i class="fa-solid fa-floppy-disk" title='Guardar'></i>
-	</td>
-</tr>
+	<td class="ancho_accion accion"><i class="fa-solid fa-floppy-disk" title='Guardar'></i></td>
+</tr>	

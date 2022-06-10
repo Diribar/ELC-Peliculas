@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		capitulo_id: {type: dt.INTEGER},
 
 		calidad: {type: dt.INTEGER},
-		link_tipo_id: {type: dt.INTEGER},
+		tipo_id: {type: dt.INTEGER},
 		completo: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
 		gratuito: {type: dt.BOOLEAN},
@@ -27,7 +27,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
-		entidad.belongsTo(n.links_tipos, {as: "link_tipo", foreignKey: "link_tipo_id"});
+		entidad.belongsTo(n.links_tipos, {as: "tipo", foreignKey: "tipo_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 	};

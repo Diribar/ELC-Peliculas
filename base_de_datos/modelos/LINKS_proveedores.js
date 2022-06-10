@@ -5,7 +5,8 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(20)},
 		avatar: {type: dt.STRING(20)},
 		siempre_pago: {type: dt.BOOLEAN},
-		peli_siempre_completa: {type: dt.BOOLEAN},
+		siempre_gratuito: {type: dt.BOOLEAN},
+		siempre_completa: {type: dt.BOOLEAN},
 		calidad: {type: dt.INTEGER},
 		generico: {type: dt.BOOLEAN},
 		url_distintivo: {type: dt.STRING(20)},
@@ -22,7 +23,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "link_prov_id"});
+		entidad.hasMany(n.links_originales, {as: "links", foreignKey: "prov_id"});
 	};
 	return entidad;
 };
