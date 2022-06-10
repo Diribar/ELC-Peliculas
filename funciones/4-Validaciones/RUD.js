@@ -56,7 +56,7 @@ module.exports = {
 		if (campos.includes("tipo_id")) {
 			errores.tipo_id = !datos.tipo_id
 				? cartelCampoVacio
-				: datos.tipo_id < "1" && datos.tipo_id > "2"
+				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
 		}
