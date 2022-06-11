@@ -202,7 +202,6 @@ window.addEventListener("load", async () => {
 		// Sub-funciones ------------------------------------------------------------
 		let obtenerProveedor = (fila) => {
 			// Obtener el url
-			console.log(v.urlInputs, fila);
 			let url = v.urlInputs[fila].value;
 			// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 			let proveedor = v.proveedores
