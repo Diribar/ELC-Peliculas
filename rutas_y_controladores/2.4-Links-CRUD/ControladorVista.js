@@ -78,7 +78,7 @@ module.exports = {
 	},
 	linksGuardar: async (req, res) => {
 		// Variables
-		let datos = procesar.despejarLinkConNovedad(req.body);
+		let datos = req.body;
 		let userID = req.session.usuario.id;
 		// Averiguar si hay errores de validación
 		let errores = await validar.links(datos);

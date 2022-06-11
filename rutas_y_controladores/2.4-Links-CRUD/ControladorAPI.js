@@ -26,6 +26,7 @@ module.exports = {
 		// Definir las variables
 		let respuesta = {};
 		let {link_id: linkID, motivo_id} = req.query;
+		console.log(req.query);
 		let userID = req.session.usuario.id;
 		let entidad = "links_originales";
 		// Descartar que no hayan errores
