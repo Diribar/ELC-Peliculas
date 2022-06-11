@@ -97,7 +97,7 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 	let entidades;
 	if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
 	else if (rclv) entidades = ["personajes", "hechos", "valores"];
-	else if (links) entidades = ["links_originales"];
+	else if (links) entidades = ["links"];
 	if (entidades)
 		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
 	// Contar registros de edición

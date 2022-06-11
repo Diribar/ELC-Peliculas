@@ -76,24 +76,4 @@ module.exports = {
 			motivos,
 		});
 	},
-	linksGuardar: async (req, res) => {
-		// Variables
-		let datos = req.body;
-		let userID = req.session.usuario.id;
-		// Averiguar si hay errores de validación
-		let errores = await validar.links(datos);
-		if (errores.hay) req.session.links = datos;
-		else {
-			// Procesar los datos en la operación que corresponda
-			datos.alta
-				? await procesar.altaDeLink(req, datos)
-				: await procesar.guardarEdicionDeLink(userID, datos);
-			delete req.session.links;
-		}
-		// Redireccionar
-		return res.redirect("/links/abm/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
-	},
-	eliminar: (req, res) => {
-		return res.send("Estoy en eliminar");
-	},
 };

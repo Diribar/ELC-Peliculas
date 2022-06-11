@@ -84,7 +84,7 @@ module.exports = {
 		let includes = ["tipo", "prov", "status_registro", "ediciones"];
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
-			"links_originales",
+			"links",
 			{[producto_id]: prodID},
 			includes
 		);
@@ -116,7 +116,7 @@ module.exports = {
 			creado_por_id: userID,
 		};
 		// Agregar el 'link' a la BD
-		await BD_genericas.agregarRegistro("links_originales", datos);
+		await BD_genericas.agregarRegistro("links", datos);
 		// Eliminar req.session.edicion
 		delete req.session.links;
 		// Adecuar el producto respecto al link
@@ -128,7 +128,7 @@ module.exports = {
 		if (!datos.parte) datos.parte = "-";
 		// Obtener el linkOriginal
 		let linkOriginal = await BD_genericas.obtenerPorIdConInclude(
-			"links_originales",
+			"links",
 			datos.id,
 			"status_registro"
 		);
@@ -139,7 +139,7 @@ module.exports = {
 			// 1. Actualizar el link Original
 			linkOriginal = {...linkOriginal, ...datos};
 			// 2. Actualizarlo en la BD
-			await BD_genericas.actualizarPorId("links_originales", datos.id, linkOriginal);
+			await BD_genericas.actualizarPorId("links", datos.id, linkOriginal);
 		} else {
 			// Si el linkOriginal no está en status 'creado' o no fue creado por el usuario => la edición se guarda como edición
 			// 1. Obtener el link 'Edición'
@@ -204,7 +204,7 @@ let productoConLinksWeb = async (entidad, prodID) => {
 	]);
 	// Obtener los links gratuitos de películas del producto
 	let links = await BD_genericas.obtenerTodosPorCamposConInclude(
-		"links_originales",
+		"links",
 		{[funciones.obtenerEntidad_id(entidad)]: prodID},
 		["status_registro", "tipo"]
 	)

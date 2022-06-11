@@ -98,7 +98,7 @@ let longitud = (dato, corto, largo) => {
 };
 let validarLinkRepetidos = async (datos) => {
 	// Obtener casos
-	let averiguar = await BD_genericas.obtenerPorCampos("links_originales", {url: datos.url});
+	let averiguar = await BD_genericas.obtenerPorCampos("links", {url: datos.url});
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id

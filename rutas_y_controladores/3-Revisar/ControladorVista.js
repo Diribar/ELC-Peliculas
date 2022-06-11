@@ -357,7 +357,7 @@ module.exports = {
 		// Obtener todos los links
 		let entidad_id = funciones.obtenerEntidad_id(entidad);
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
-			"links_originales",
+			"links",
 			{[entidad_id]: prodID},
 			["status_registro", "ediciones", "prov", "tipo", "motivo"]
 		);

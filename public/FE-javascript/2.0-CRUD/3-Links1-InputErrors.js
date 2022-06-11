@@ -18,7 +18,6 @@ window.addEventListener("load", async () => {
 		campos: document.querySelectorAll("tbody .campo"),
 
 		// Variables de Alta
-		prov_id: document.querySelector("tbody .alta input[name='prov_id'"),
 		filaAlta: filas - 1,
 
 		// Inputs
@@ -210,8 +209,6 @@ window.addEventListener("load", async () => {
 			proveedor = proveedor ? proveedor : v.proveedores.find((n) => n.generico);
 			// Acciones si es la fila de altas
 			if (fila == v.filaAlta) {
-				// Agrega el prov_id en el form
-				v.prov_id.value = proveedor.id;
 				// Muestra el ícono de genérico o de OK
 				proveedor.generico
 					? v.provsDesconocido[v.filaAlta].classList.remove("prov_id")
@@ -265,14 +262,6 @@ window.addEventListener("load", async () => {
 		fn.actualizarFormato(fila, columna);
 		// Submit
 		fn.activarInactivarbotonGuardar(fila);
-	};
-	let obtenerDataEntry = (fila) => {
-		let objeto = "";
-		for (let columna = 0; columna < columnas; columna++) {
-			let indice = fila * columnas + columna;
-			objeto += "&" + inputs[indice].name + "=" + inputs[indice].value;
-		}
-		return objeto;
 	};
 
 	// Startup
