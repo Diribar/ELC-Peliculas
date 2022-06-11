@@ -28,14 +28,13 @@ module.exports = async (req, res, next) => {
 		// Variables
 		let informacion;
 		// Obtener datos del url
-		const urlBase = req.baseUrl;
 		const originalUrl = req.originalUrl;
 		const status = req.session.status_registro;
 		// Obtener la tarea
-		const producto = urlBase == "/producto_agregar";
-		const rclv = urlBase == "/rclv";
-		const links = originalUrl.startsWith("/producto_rud/links");
-		const edicion = originalUrl.startsWith("/producto_rud/edicion");
+		const producto = originalUrl.startsWith("/producto/agregar/");
+		const edicion = originalUrl.startsWith("/producto/edicion/");
+		const rclv = originalUrl.startsWith("/rclv/");
+		const links = originalUrl.startsWith("/links/abm/");
 		// Obtener su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros
@@ -95,16 +94,12 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 	// Contar registros
 	let contarRegistros = 0;
 	// Contar registros con status 'a revisar'
-	if (producto) {
-		const entidades = ["peliculas", "colecciones", "capitulos"];
+	let entidades;
+	if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
+	else if (rclv) entidades = ["personajes", "hechos", "valores"];
+	else if (links) entidades = ["links_originales"];
+	if (entidades)
 		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	} else if (rclv) {
-		const entidades = ["personajes", "hechos", "valores"];
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	} else if (links) {
-		const entidades = ["links_originales"];
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
-	}
 	// Contar registros de edición
 	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
 	// Fin

@@ -13,11 +13,11 @@ const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
-const aptoDE = require("../../middlewares/usuarios/aptoDE");
-const permReg = require("../../middlewares/producto/permReg");
-const permUserReg = require("../../middlewares/producto/permUserReg");
-const capturaActivar = require("../../middlewares/producto/capturaActivar");
-const capturaInactivar = require("../../middlewares/producto/capturaInactivar");
+const aptoDE = require("../../middlewares/captura/aptoDE");
+const permReg = require("../../middlewares/captura/permReg");
+const permUserReg = require("../../middlewares/captura/permUserReg");
+const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
 
@@ -38,27 +38,10 @@ router.get(
 );
 router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
 router.get("/edicion/eliminar", soloAutInput, entidad, id, vista.prod_EliminarEdic);
-// Links
-router.get(
-	"/links",
-	soloAutInput,
-	entidad,
-	id,
-	aptoDE,
-	permReg,
-	permUserReg,
-	capturaActivar,
-	vista.linksForm
-);
-router.post("/links/guardar", soloAutInput, vista.linksGuardar);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
 
 // Rutas de APIs
-// Tridente: Detalle, Edición, Links
-router.get("/api/tridente/obtener-col-cap", API.obtenerColCap);
-router.get("/api/tridente/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
-router.get("/api/tridente/obtener-cap-id", API.obtenerCapID);
 // Detalle
 router.get("/api/detalle/obtener-calificaciones", API.obtenerCalificaciones);
 // Edición
@@ -66,10 +49,6 @@ router.get("/api/edicion/validar", API.validarEdicion);
 router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
 router.get("/api/edicion/obtener-de-req-session", API.obtenerDeReqSession);
-// Links
-router.get("/api/links/validar", API.linksValidar);
-router.get("/api/links/obtener-provs-links", API.linksObtenerProvs);
-router.get("/api/links/eliminar", API.linksEliminar);
 
 // Fin
 module.exports = router;

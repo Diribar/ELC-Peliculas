@@ -123,15 +123,17 @@ module.exports = {
 		productoConLinksWeb(datos.prodEntidad, datos.prodID);
 	},
 	guardarEdicionDeLink: async (userID, datos) => {
+		console.log(126,datos);
 		// Adecuar la información del formulario
 		if (!datos.parte) datos.parte = "-";
-		// Averiguar si el link está en 'creado' y por este usuario
+		// Obtener el linkOriginal
 		let linkOriginal = await BD_genericas.obtenerPorIdConInclude(
 			"links_originales",
 			datos.id,
 			"status_registro"
 		);
-
+		// Eliminar el 'id' del link original para evitar confusiones
+		delete datos.id;
 		// Si el linkOriginal está en status 'creado' y fue creado por el usuario => la edición reemplaza el original
 		if (linkOriginal.status_registro.creado && linkOriginal.creado_por_id == userID) {
 			// 1. Actualizar el link Original
@@ -142,21 +144,22 @@ module.exports = {
 			// Si el linkOriginal no está en status 'creado' o no fue creado por el usuario => la edición se guarda como edición
 			// 1. Obtener el link 'Edición'
 			let linkEdicion = await BD_genericas.obtenerPorCampos("links_edicion", {
-				link_id: link_id,
+				link_id: linkOriginal.id,
 				editado_por_id: userID,
-			});
-			linkEdicion = funciones.quitarLosCamposSinContenido(linkEdicion);
+			}).then((n) => (n ? funciones.quitarLosCamposSinContenido(n) : ""));
 			// 2. Actualizarlo
 			linkEdicion = {...linkEdicion, ...datos};
 			// 3. Quitar los coincidencias con el original
 			let linkEdicion_id = linkEdicion.id;
 			if (linkEdicion_id) delete linkEdicion.id;
 			linkEdicion = funciones.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicion);
+			console.log(155, linkOriginal, linkEdicion);
 			// 4. Actualización de la tabla
 			// 4.1. Si el linkEdicion existía => se lo actualiza
 			if (linkEdicion_id)
 				await BD_genericas.actualizarPorId("links_edicion", linkEdicion_id, linkEdicion);
 			else {
+				console.log(158);
 				// 4.2. De lo contrario, se lo agrega
 				// 4.2.1. Completa la información
 				let producto_id = funciones.obtenerEntidad_id(linkOriginal);
@@ -173,7 +176,8 @@ module.exports = {
 	},
 	despejarLinkConNovedad: (datos) => {
 		// Averigua si se trata de la fila de 'altas', de lo contrario será una edición
-		datos.alta = datos.numeroFila == datos.calidad.length - 1;
+		datos.alta = datos.numeroFila == datos.url.length - 1;
+		console.log(180,datos);
 		// Borrar datos innecesarios
 		if (datos.alta) delete datos.id;
 		delete datos.motivo_id;

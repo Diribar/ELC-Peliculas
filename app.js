@@ -64,19 +64,25 @@ app.set("views", [
 ]);
 
 // ************************* Rutas ********************************
+// CRUD
+const rutaCRUD = require("./rutas_y_controladores/2.0-CRUD/Rutas");
+const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Crear/Rutas");
+const rutaProd_RUD = require("./rutas_y_controladores/2.2-Prod-RUD/Rutas");
+const rutaRCLV_CRUD = require("./rutas_y_controladores/2.3-RCLV-CRUD/Rutas");
+const rutaLinks_CRUD = require("./rutas_y_controladores/2.4-Links-CRUD/Rutas");
+app.use("/crud", rutaCRUD);
+app.use("/producto/agregar", rutaProd_Crear);
+app.use("/producto", rutaProd_RUD);
+app.use("/rclv", rutaRCLV_CRUD);
+app.use("/links", rutaLinks_CRUD);
+// Demás
 const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-const rutaProd_Agregar = require("./rutas_y_controladores/2-Prod-Agregar/Rutas");
-const rutaProd_RUD = require("./rutas_y_controladores/3-Prod-RUD/Rutas");
-const rutaProd_RCLV = require("./rutas_y_controladores/4-Prod-RCLV/Rutas");
-const rutaRevisar = require("./rutas_y_controladores/5-Revisar/Rutas");
-const rutaProductos = require("./rutas_y_controladores/6-Productos/Rutas");
+const rutaRevisar = require("./rutas_y_controladores/3-Revisar/Rutas");
+const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
-app.use("/producto_agregar", rutaProd_Agregar);
-app.use("/producto_rud/", rutaProd_RUD);
-app.use("/rclv", rutaProd_RCLV);
 app.use("/revision", rutaRevisar);
-app.use("/productos", rutaProductos);
+app.use("/consultas", rutaConsultas);
 app.use("/", rutaMiscelaneas);
 
 // ************************ Errores *******************************

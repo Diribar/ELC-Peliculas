@@ -64,12 +64,12 @@ module.exports = {
 		let haceUnaHora = funciones.nuevoHorario(-1);
 		let datosEdicion = "";
 		// Obtener el producto
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
+		let registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 		// Obtener la sub-dirección de destino
 		if (destino == "producto") {
-			let subDestino = producto.status_registro.creado
+			let subDestino = registro.status_registro.creado
 				? "/alta"
-				: producto.status_registro.alta_aprob || producto.status_registro.aprobado
+				: registro.status_registro.alta_aprob || registro.status_registro.aprobado
 				? "/edicion"
 				: "/inactivos";
 			destino += subDestino;
@@ -111,7 +111,7 @@ module.exports = {
 							},
 							{
 								nombre: "fa-pencil",
-								link: "/producto_rud/edicion/?entidad=" + entidad + "&id=" + prodID,
+								link: "/producto/edicion/?entidad=" + entidad + "&id=" + prodID,
 								titulo: "Ir a la vista de edición",
 							},
 						],
@@ -377,6 +377,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
+		return res.send(links)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,

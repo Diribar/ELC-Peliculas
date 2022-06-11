@@ -22,13 +22,13 @@ module.exports = async (req, res, next) => {
 	const vistaTablero = variables.vistaTablero();
 
 	// PROBLEMA: El registro todavía está en manos de su creador
-	if (ruta != "/producto_rud" && creado_en > haceUnaHora)
+	if (ruta == "/revision" && creado_en > haceUnaHora)
 		informacion = {
 			mensajes: ["El registro estará disponible para su revisión el " + horarioDisponible],
 			iconos: [vistaAnterior, vistaTablero],
 		};
 	// PROBLEMA: El registro ya no está en manos de su creador
-	else if (ruta == "/producto_rud" && creado_en < haceUnaHora && registro.status_registro.gr_pend_aprob)
+	else if (ruta == "/producto" && creado_en < haceUnaHora && registro.status_registro.gr_pend_aprob)
 		informacion = {
 			mensajes: ["El registro estará disponible luego de ser revisado, en caso de ser aprobado."],
 			iconos: [vistaAnterior, vistaTablero],

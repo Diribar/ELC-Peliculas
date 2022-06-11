@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 	horarioFinal = funciones.horarioTexto(horarioFinal);
 
 	// Captura
-	if (!registro.status_registro.gr_pend_aprob || urlBase != "/producto_rud") {
+	if (!registro.status_registro.gr_pend_aprob || urlBase == "/revision") {
 		// Activa la entidad y el usuario
 		let datos = {captura_activa: true, capturado_por_id: userID};
 		// Fija la nueva hora de captura si corresponde

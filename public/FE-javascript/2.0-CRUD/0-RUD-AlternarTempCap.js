@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let ruta
 
 	// Obtener el ID de la colección
-	ruta = "/producto_rud/api/tridente/obtener-col-cap/?entidad=capitulos&id=";
+	ruta = "/crud/api/obtener-col-cap/?entidad=capitulos&id=";
 	let colID = await fetch(ruta + prodID).then((n) => n.json());
 
 	// Obtener DOM de Temporada y Capítulos
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 		// Obtener la temporada
 		let tempNum = temporada.value.slice(10);
 		// Obtener los capítulos de la temporada
-		let ruta = "/producto_agregar/api/TP-averiguar-capitulos/";
+		let ruta = "/crud/api/averiguar-capitulos/";
 		let capitulos = await fetch(ruta + "?coleccion_id=" + colID + "&temporada=" + tempNum).then(
 			(n) => n.json()
 		);
@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		let tempNum = temporada.value.slice(10);
 		let capNum = capitulo.value.slice(9);
 		// Obtener el capID
-		let ruta = "/producto_rud/api/tridente/obtener-cap-id/?entidad=capitulos";
+		let ruta = "/crud/api/obtener-cap-id/?entidad=capitulos";
 		let capID = await fetch(
 			ruta + "&coleccion_id=" + colID + "&temporada=" + tempNum + "&capitulo=" + capNum
 		).then((n) => n.json());
@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
 	
 	// CAPÍTULOS ANTERIOR O POSTERIOR
 	// Obtener el ID del capítulo anterior y del posterior
-	ruta = "/producto_rud/api/tridente/obtener-cap-ant-y-post/?id=";
+	ruta = "/crud/api/obtener-cap-ant-y-post/?id=";
 	let [capAntID, capPostID] = await fetch(ruta + prodID).then((n) => n.json());
 	// Acción si se elije "capítulo anterior"
 	let botonCapAnt = document.querySelector("#cuerpo #encabezado .fa-circle-left");

@@ -8,7 +8,7 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-const aptoDE = require("../../middlewares/usuarios/aptoDE");
+const aptoDE = require("../../middlewares/captura/aptoDE");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
@@ -24,7 +24,6 @@ router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
 // Temas de Tipo de Producto
 router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
 router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
-router.get("/api/TP-averiguar-capitulos", API.obtenerCapitulos);
 // Temas de Copiar FA
 router.get("/api/FA-obtener-fa-id", API.obtenerFA_id);
 router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
