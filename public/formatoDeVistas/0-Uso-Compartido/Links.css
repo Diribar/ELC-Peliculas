@@ -3,6 +3,7 @@
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column; }
 #datos #tipoLink {align-self: flex-start;}
+#datos #tabla {align-self: center;}
 #datos #tags div {padding: 3px 15px; background-color: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
 #datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
 #datos #tags * {cursor: context-menu;}
@@ -52,8 +53,8 @@
 #datos table .desperdicio .inputError .fa-circle-check {display: none;}
 
 /* Quitar la flecha de los select */
-#datos table .altas select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
-#datos table .altas select, #datos table .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
+#datos table .alta select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
+#datos table .alta select, #datos table .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
 #datos table .inputError input[type='number']::-webkit-outer-spin-button, #datos table .inputError input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}

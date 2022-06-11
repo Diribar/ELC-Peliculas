@@ -29,9 +29,6 @@ module.exports = {
 	links: async (datos) => {
 		let campos = Object.keys(datos);
 		let errores = {};
-		// link_prov_id
-		if (campos.includes("link_prov_id"))
-			errores.link_prov_id = !datos.link_prov_id ? cartelCampoVacio : "";
 		// url
 		if (campos.includes("url")) {
 			errores.url = !datos.url
@@ -55,27 +52,32 @@ module.exports = {
 		}
 		// calidad
 		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? cartelCampoVacio : "";
-		// link_tipo_id
-		if (campos.includes("link_tipo_id")) {
-			errores.link_tipo_id = !datos.link_tipo_id
+		// tipo_id
+		if (campos.includes("tipo_id")) {
+			errores.tipo_id = !datos.tipo_id
 				? cartelCampoVacio
-				: datos.link_tipo_id < "1" && datos.link_tipo_id > "2"
+				: datos.tipo_id != "1" && datos.tipo_id != "2"
 				? "Por favor elegí una opción válida"
 				: "";
 		}
 		// completo
-		if (campos.includes("completo") && datos.link_tipo_id != 1)
-			errores.completo = datos.completo == "" ? cartelCampoVacio : "";
+		if (campos.includes("completo") && datos.tipo_id != "1")
+			errores.completo = !datos.completo ? cartelCampoVacio : "";
 		// parte
-		if (campos.includes("parte") && datos.completo != 1 && datos.link_tipo_id != 1)
-			errores.parte = datos.parte == "" ? "Completalo" : "";
+		if (campos.includes("parte") && datos.completo == "0") {
+			errores.parte = !datos.parte
+				? cartelCampoVacio
+				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
+				? "Necesitamos que ingreses un número positivo"
+				: "";
+		}
 		// gratuito
 		if (campos.includes("gratuito")) {
 			errores.gratuito =
 				datos.gratuito == ""
-					? "Completalo"
-					: datos.gratuito < "0" && datos.gratuito > "1"
-					? "Inválido"
+					? cartelCampoVacio
+					: datos.gratuito != "0" && datos.gratuito != "1"
+					? "Valor inválido"
 					: "";
 		}
 		// ***** RESUMEN *******
@@ -100,7 +102,7 @@ let validarLinkRepetidos = async (datos) => {
 	// Si se encontró algún caso, compara las ID
 	let repetido = averiguar ? averiguar.id != datos.id : false;
 	// Si hay casos --> mensaje de error con la entidad y el id
-	let mensaje
+	let mensaje;
 	if (repetido) {
 		mensaje =
 			"Este " +

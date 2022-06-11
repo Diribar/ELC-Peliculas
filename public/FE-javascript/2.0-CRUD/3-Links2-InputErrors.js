@@ -1,349 +1,276 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let colecciones = new URL(window.location.href).searchParams.get("entidad") == "colecciones";
-	let form = document.querySelector("#datos form");
-	let prov_idInput = document.querySelector(".inputError input[name='link_prov_id'");
+	let rutaObtenerProvs = "/links/api/obtener-provs-links";
+	let inputs = document.querySelectorAll("tbody .inputError .input");
+	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
+	let columnas = camposInput.length;
+	let filas = inputs.length / columnas;
 
-	// Form - Campos en general
-	let inputs = document.querySelectorAll("tbody .input");
-	let columnasInput = document.querySelectorAll("tbody .altas .input").length;
-	let camposInput = Array.from(inputs)
-		.map((n) => n.name)
-		.slice(0, columnasInput);
-	let filasInput = inputs.length / columnasInput;
-	let filaUrlAlta = filasInput - 1;
+	let v = {
+		// Generales
+		colecciones: new URL(window.location.href).searchParams.get("entidad") == "colecciones",
+		form: document.querySelector("#datos form"),
+		proveedores: await fetch(rutaObtenerProvs).then((n) => n.json()),
+		guardar: document.querySelectorAll("tbody .fa-floppy-disk"),
 
-	// Sectores particulares
-	let calidad = document.querySelectorAll("tbody .calidad");
-	let tipo = document.querySelectorAll("tbody .tipo");
-	let completo = document.querySelectorAll("tbody .completo");
-	let parte = document.querySelectorAll("tbody .parte");
-	let gratuito = document.querySelectorAll("tbody .gratuito");
-	let guardar = document.querySelectorAll("tbody .fa-floppy-disk");
+		// Variables de Edición y Alta
+		campos: document.querySelectorAll("tbody .campo"),
 
-	// Inputs particulares
-	let urlInputs = document.querySelectorAll(".inputError input[name='url'");
-	let calidadInputs = document.querySelectorAll(".calidad .inputError .input");
-	let tipoInputs = document.querySelectorAll(".tipo .inputError .input");
-	let completoInputs = document.querySelectorAll(".completo .inputError .input");
-	let parteInputs = document.querySelectorAll(".parte .inputError .input");
-	let gratuitoInputs = document.querySelectorAll(".gratuito .inputError .input");
+		// Variables de Alta
+		prov_id: document.querySelector("tbody .alta input[name='prov_id'"),
+		filaAlta: filas - 1,
 
-	// OK/Errores
-	let provsDesconocido = document.querySelectorAll(".url .inputError .fa-question");
-	let provsConocido = document.querySelectorAll(".url .inputError .fa-circle-check");
-	let iconosOK = document.querySelectorAll(".inputError .fa-circle-check");
-	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
-	// Rutas
-	let rutaValidar = "/links/api/validar/?";
-	let rutaObtenerProv = "/links/api/obtener-provs-links";
+		// Inputs
+		urlInputs: document.querySelectorAll(".inputError input[name='url'"),
+		calidadInputs: document.querySelectorAll(".calidad .inputError .input"),
+		tipoInputs: document.querySelectorAll(".tipo .inputError .input"),
+		completoInputs: document.querySelectorAll(".completo .inputError .input"),
+		parteInputs: document.querySelectorAll(".parte .inputError .input"),
+		gratuitoInputs: document.querySelectorAll(".gratuito .inputError .input"),
 
-	// Depurar el 'url' de alta
-	urlInputs[filaUrlAlta].addEventListener("input", () => {
-		depurarUrl();
-	});
+		// OK/Errores
+		provsDesconocido: document.querySelectorAll(".url .inputError .fa-question"),
+		provsConocido: document.querySelectorAll(".url .inputError .fa-circle-check"),
+		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
+		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
+		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+		// Rutas
+		rutaValidar: "/links/api/validar/?",
+	};
 
-	// Detectar 'changes' en el form
-	form.addEventListener("change", async (e) => {
-		// Obtener la fila del input, que puede ser una edición
-		let fila = funcionIndice(e);
-		rutinaFormChange(e, fila);
+	// Controles de los Data Entry
+	v.form.addEventListener("input", async (e) => {
+		let depurarUrl = () => {
+			// Quitar caracteres incompatibles con un 'url'
+			v.urlInputs[v.filaAlta].value = v.urlInputs[v.filaAlta].value.replace(
+				/[^A-Za-záéíóúüñ?=&./\d]/gi,
+				""
+			);
+			// Obtener el valor actual
+			let valor = v.urlInputs[v.filaAlta].value;
+			// Obtener ambos índices
+			let indice1 = valor.indexOf("www.");
+			let indice2 = valor.indexOf("//");
+			let url =
+				indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
+
+			// Si es YOUTUBE, quitarle el sufijo
+			if (url.startsWith("youtube.com") && url.includes("&"))
+				url = url.slice(0, url.lastIndexOf("&t="));
+
+			// Si es FORMED-LAT, quitarle el nombre repetido del producto
+			if (url.startsWith("ver.formed.lat")) {
+				let producto = url.slice(url.lastIndexOf("/"));
+				let nuevaUrl = url.split(producto);
+				nuevaUrl.pop();
+				url = nuevaUrl.join("") + producto;
+			}
+			// Conclusiones
+			v.urlInputs[v.filaAlta].value = url;
+			return url;
+		};
+		// Variables
+		let campo = e.target.name;
+		// Obtener la columna y fila del input
+		let columna = camposInput.indexOf(campo);
+		for (var fila = 0; fila < filas; fila++) if (e.target == inputs[fila * columnas + columna]) break;
+		// Prevenir errores en 'parte'
+		let indice = fila * columnas + columna;
+		if (campo == "parte") inputs[indice].value = inputs[indice].value.replace(/[^-\d]/g, "");
+		// Efecutar funciones
+		if (fila == v.filaAlta) depurarUrl();
+		controlesDataEntry(fila, columna);
 	});
 
 	// FUNCIONES ---------------------------------------------------------------
-	let funcionIndice = (e) => {
-		for (let fila = 0; fila < filasInput; fila++) {
-			for (let col = 0; col < camposInput.length; col++) {
-				if (e.target == inputs[fila * columnasInput + col]) return fila;
+	let controlesDataEntry = async (fila, columna) => {
+		let fn = {
+			controlesEnUrl: async (fila) => {
+				// Detectar errores y aplicar consecuencias
+				let error = fila == v.filaAlta ? await mensajeDeError(fila, 0) : "";
+				return !error || !error.url;
+			},
+			controlesEnCalidad: async (fila, proveedor) => {
+				// Si el resultado es conocido --> ponerlo
+				let condicion = !!proveedor.calidad;
+				if (condicion) v.calidadInputs[fila].value = proveedor.calidad;
+				v.calidadInputs[fila].disabled = condicion;
+				// Detectar errores y aplicar consecuencias
+				let error = await mensajeDeError(fila, 1);
+				// Fin
+				return !error || !error.calidad;
+			},
+			controlesEnTipo: async (fila, proveedor) => {
+				// Si el resultado es conocido --> ponerlo
+				let condicion = !proveedor.trailer || !proveedor.pelicula || v.colecciones;
+				if (condicion) v.tipoInputs[fila].value = !proveedor.pelicula ? 1 : 2;
+				v.tipoInputs[fila].disabled = condicion;
+				// Detectar errores y aplicar consecuencias
+				let error = await mensajeDeError(fila, 2);
+				// Fin
+				return !error || !error.tipo_id;
+			},
+			controlesEnCompleto: async (fila, proveedor) => {
+				// Si el resultado es conocido --> ponerlo
+				let condicion =
+					(proveedor.trailer && !proveedor.pelicula) ||
+					proveedor.siempre_completa ||
+					v.colecciones ||
+					v.tipoInputs[fila].value == 1;
+				if (condicion) v.completoInputs[fila].value = "1";
+				v.completoInputs[fila].disabled = condicion;
+				// Detectar errores y aplicar consecuencias
+				let error = await mensajeDeError(fila, 3);
+				// Fin
+				return !error || !error.completo;
+			},
+			controlesEnParte: async (fila) => {
+				// Si el resultado es conocido --> ponerlo
+				let condicion = v.completoInputs[fila].value == "1";
+				if (condicion) v.parteInputs[fila].value = "-";
+				v.parteInputs[fila].disabled = condicion;
+				// Detectar errores y aplicar consecuencias
+				let error = await mensajeDeError(fila, 4);
+				// Fin
+				return !error || !error.parte;
+			},
+			controlesEnGratuito: async (fila, proveedor) => {
+				// Si el resultado es conocido --> ponerlo
+				let condicion1 = proveedor.siempre_pago;
+				let condicion2 = proveedor.siempre_gratuito === 0;
+				if (condicion1) v.gratuitoInputs[fila].value = "1";
+				else if (condicion2) v.gratuitoInputs[fila].value = "0";
+				v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
+				// Detectar errores y aplicar consecuencias
+				let error = await mensajeDeError(fila, 5);
+				// Fin
+				return !error || !error.gratuito;
+			},
+			actualizarFormato: (fila, columna) => {
+				// Barrer el formato de izquierda a derecha
+				let indice;
+				for (let col = columna; col < columnas - 1; col++) {
+					// Obtener el índice
+					indice = fila * columnas + col;
+					// Acciones si el campo tiene un valor y está aprobado
+					if (inputs[indice].value && !v.iconosOK[indice].classList.contains("ocultar")) {
+						// Mostrar el campo siguiente
+						v.campos[indice + 1].classList.remove("desperdicio");
+						inputs[indice + 1].classList.remove("ocultar");
+					} else {
+						for (let nuevaCol = col; nuevaCol < columnas - 1; nuevaCol++) {
+							let nuevoIndice = fila * columnas + nuevaCol;
+							v.campos[nuevoIndice + 1].classList.add("desperdicio");
+							inputs[nuevoIndice + 1].classList.add("ocultar");
+							v.iconosError[nuevoIndice + 1].classList.add("ocultar");
+						}
+						break;
+					}
+				}
+				return;
+			},
+			activarInactivarbotonGuardar: (fila) => {
+				let OK =
+					Array.from(v.iconosOK)
+						.slice(fila * columnas, (fila + 1) * columnas)
+						.map((n) => n.classList.value)
+						.join(" ")
+						.split(" ")
+						.reduce((acumulador, b) => {
+							return acumulador[b] ? acumulador[b]++ : (acumulador[b] = 1), acumulador;
+						}, {}).ocultar == undefined;
+				let error =
+					Array.from(v.iconosError)
+						.slice(fila * columnas, (fila + 1) * columnas)
+						.map((n) => n.classList.value)
+						.join(" ")
+						.split(" ")
+						.reduce((acumulador, b) => {
+							return acumulador[b] ? acumulador[b]++ : (acumulador[b] = 1), acumulador;
+						}, {}).ocultar == columnas;
+				OK && error
+					? v.guardar[fila].classList.remove("inactivo")
+					: v.guardar[fila].classList.add("inactivo");
+			},
+		};
+		// Sub-funciones ------------------------------------------------------------
+		let obtenerProveedor = (fila) => {
+			// Obtener el url
+			let url = v.urlInputs[fila].value;
+			// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
+			let proveedor = v.proveedores
+				.filter((n) => !n.generico)
+				.find((n) => url.includes(n.url_distintivo));
+			// Si no se reconoce el proveedor, se asume el 'desconocido'
+			proveedor = proveedor ? proveedor : v.proveedores.find((n) => n.generico);
+			// Acciones si es la fila de altas
+			if (fila == v.filaAlta) {
+				// Agrega el prov_id en el form
+				v.prov_id.value = proveedor.id;
+				// Muestra el ícono de genérico o de OK
+				proveedor.generico
+					? v.provsDesconocido[v.filaAlta].classList.remove("prov_id")
+					: v.provsDesconocido[v.filaAlta].classList.add("prov_id");
+				!proveedor.generico
+					? v.provsConocido[v.filaAlta].classList.remove("prov_id")
+					: v.provsConocido[v.filaAlta].classList.add("prov_id");
 			}
-		}
-	};
-	let rutinaFormChange = async (e, fila) => {
-		// Definir los valores para 'campo'
-		let campo = e.target.name;
-		let valor = e.target.value;
-		// Si es url...
-		if (campo == "url") await funcionesDerivadasDelUrl(fila);
-		else if (campo == "link_tipo_id") impactosPorTipoLink(fila);
-		else if (campo == "completo") impactoPorCompleto(fila, valor);
-		else if (campo == "parte" && valor < 1 && valor != "") parteInputs[fila].value = 1;
-		// Actualizar los errores de toda la fila
-		if (campo != "motivo_id") {
-			if (campo != "url") await consecuenciasErrores(fila);
-			botonGuardar(fila);
-		}
-	};
-	// DERIVADAS DEL URL -------------------------------------------------------
-	let funcionesDerivadasDelUrl = async (fila) => {
-		// Variables
-		let error;
-		// 1. Impacto en errores
-		if (fila == filaUrlAlta) {
-			// Depurar el url
-			// let url = encodeURIComponent(depurarUrl())
-			let url = depurarUrl();
-			// 2. Averiguar si hay algún error y aplicar las consecuencias
-			error = await fetch(rutaValidar + "url=" + url).then((n) => n.json());
-		} else error = {hay: false};
-		let proveedor = await consecuenciaErrorUrl(error, fila);
-		if (error.url) return;
-		// 2. Impacto en 'calidad'
-		impactoEnCalidad(proveedor, fila);
-		// 3. Impacto en 'tipo'
-		impactoEnTipo(proveedor, fila);
-		// 4. Impacto en 'completo' y 'parte'
-		impactosEnCompletoParte(proveedor, fila);
-		// 5. Impacto en 'gratuito'
-		impactoEnGratuito(proveedor, fila);
-	};
-	// 1. Impacto en errores
-	let depurarUrl = () => {
-		// Obtener el valor actual
-		let valor = urlInputs[filaUrlAlta].value;
-		// Obtener ambos índices
-		let indice1 = valor.indexOf("www.");
-		let indice2 = valor.indexOf("//");
-		let url = indice1 != -1 ? valor.slice(indice1 + 4) : indice2 != -1 ? valor.slice(indice2 + 2) : valor;
-		// Si es YOUTUBE, quitarle el sufijo
-		if (url.slice(0, "youtube.com".length) == "youtube.com" && url.includes("&"))
-			url = url.slice(0, url.lastIndexOf("&t="));
-
-		// Si es FORMED-LAT, quitarle el nombre repetido del producto
-		if (url.slice(0, "ver.formed.lat".length) == "ver.formed.lat") {
-			let producto = url.slice(url.lastIndexOf("/"));
-			let nuevaUrl = url.split(producto);
-			nuevaUrl.pop();
-			url = nuevaUrl.join("") + producto;
-		}
-		// Conclusiones
-		urlInputs[filaUrlAlta].value = url;
-		return url;
-	};
-	let consecuenciaErrorUrl = async (error, fila) => {
-		// Guarda el mensaje de error
-		let mensaje = error.url;
-		// Reemplaza el mensaje
-		let indiceGral = fila * columnasInput;
-		mensajesError[indiceGral].innerHTML = mensaje;
-		// Acciones en función de si hay o no mensajes de error
-		mensaje
-			? iconosError[indiceGral].classList.remove("ocultar")
-			: iconosError[indiceGral].classList.add("ocultar");
-		!mensaje
-			? iconosOK[indiceGral].classList.remove("ocultar")
-			: iconosOK[indiceGral].classList.add("ocultar");
-		if (!mensaje) {
-			// 1. Obtiene el proveedor del url
-			let proveedor = await obtenerProvUrl(fila);
-			// 2. Agregar el prov_id en el form (sólo en la fila de 'altas')
-			prov_idInput.value = proveedor.id;
-			// 3. Actualizar el ícono OK del url
-			actualizarIconoProv(proveedor, fila);
 			return proveedor;
-		}
-		return null;
-	};
-	let obtenerProvUrl = async (fila) => {
-		// Obtener el url
-		let url = urlInputs[fila].value;
-		// Obtener todos los proveedores
-		let provs = await fetch(rutaObtenerProv).then((n) => n.json());
-		// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
-		let prov = provs.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
-		// Si no se reconoce el , se asume el 'desconocido'
-		return prov ? prov : provs.find((n) => n.generico);
-	};
-	let actualizarIconoProv = (proveedor, fila) => {
-		// Acciones en función de si el proveedor es genérico
-		proveedor.generico
-			? provsDesconocido[fila].classList.remove("prov_id")
-			: provsDesconocido[fila].classList.add("prov_id");
-		!proveedor.generico
-			? provsConocido[fila].classList.remove("prov_id")
-			: provsConocido[fila].classList.add("prov_id");
-	};
-	// 2. Impacto en 'calidad'
-	let impactoEnCalidad = (proveedor, fila) => {
-		// Adecuaciones
-		if (proveedor.calidad) {
-			calidad[fila].classList.add("desperdicio");
-			calidadInputs[fila].classList.add("ocultar");
-			calidadInputs[fila].value = proveedor.calidad;
-		} else {
-			calidad[fila].classList.remove("desperdicio");
-			calidadInputs[fila].classList.remove("ocultar");
-		}
-	};
-	// 3. Impacto en 'tipo'
-	let impactoEnTipo = (proveedor, fila) => {
-		if (!proveedor.trailer || !proveedor.pelicula || colecciones) {
-			tipo[fila].classList.add("desperdicio");
-			tipoInputs[fila].classList.add("ocultar");
-			tipoInputs[fila].value = proveedor.trailer || colecciones ? 1 : 2;
-		} else {
-			tipo[fila].classList.remove("desperdicio");
-			tipoInputs[fila].classList.remove("ocultar");
-		}
-	};
-	// 4. Impacto en 'completo' y 'parte'
-	let impactosEnCompletoParte = (proveedor, fila) => {
-		// Cambios en el campo 'completo'
-		if ((proveedor.trailer && !proveedor.pelicula) || proveedor.peli_siempre_completa || colecciones) {
-			completo[fila].classList.add("desperdicio");
-			completoInputs[fila].classList.add("ocultar");
-			!proveedor.pelicula
-				? (completoInputs[fila].disabled = true)
-				: (completoInputs[fila].disabled = false);
-			if (proveedor.peli_siempre_completa) completoInputs[fila].value = "1";
-		} else {
-			completo[fila].classList.remove("desperdicio");
-			completoInputs[fila].classList.remove("ocultar");
-			completoInputs[fila].disabled = false;
-		}
-		// Cambios en el campo 'parte'
-		if (
-			(proveedor.trailer && !proveedor.pelicula) ||
-			proveedor.peli_siempre_completa ||
-			colecciones ||
-			completoInputs[fila].value == "1"
-		) {
-			parte[fila].classList.add("desperdicio");
-			parteInputs[fila].classList.add("ocultar");
-			parteInputs[fila].disabled = true;
-		} else {
-			parte[fila].classList.remove("desperdicio");
-			parteInputs[fila].classList.remove("ocultar");
-			parteInputs[fila].disabled = false;
-		}
-	};
-	// 5. Impacto en 'gratuito'
-	let impactoEnGratuito = (proveedor, fila) => {
-		// Adecuaciones
-		if (proveedor.siempre_pago != null) {
-			gratuito[fila].classList.add("desperdicio");
-			gratuitoInputs[fila].classList.add("ocultar");
-			gratuitoInputs[fila].value = proveedor.siempre_pago ? 0 : 1;
-		} else {
-			gratuito[fila].classList.remove("desperdicio");
-			gratuitoInputs[fila].classList.remove("ocultar");
-		}
-	};
-	// DERIVADAS DE OTROS DATA-ENTRY -------------------------------------------
-	let funcionesDerivadasDeOtrosDataEntry = (fila) => {
-		// Impacto en 'completo' y 'parte'
-		impactosPorTipoLink(fila);
-		// Impacto en 'parte'
-		impactoPorCompleto(fila);
-		// Impacto en 'parte'
-		if (parteInputs[fila].value < 1 && parteInputs[fila].value != "") parteInputs[fila].value = 1;
-	};
-	let impactosPorTipoLink = (fila) => {
-		// Obtener el valor
-		let valor = tipoInputs[fila].value;
-		// Consecuencias
-		if (valor == 1) {
-			completo[fila].classList.add("desperdicio");
-			completoInputs[fila].classList.add("ocultar");
-			completoInputs[fila].disabled = true;
-			parte[fila].classList.add("desperdicio");
-			parteInputs[fila].classList.add("ocultar");
-			parteInputs[fila].disabled = true;
-		} else {
-			completo[fila].classList.remove("desperdicio");
-			completoInputs[fila].classList.remove("ocultar");
-			completoInputs[fila].disabled = false;
-
-			if (!completoInputs[fila].value) {
-				parte[fila].classList.remove("desperdicio");
-				parteInputs[fila].classList.remove("ocultar");
-				parteInputs[fila].disabled = false;
-			}
-		}
-	};
-	let impactoPorCompleto = (fila) => {
-		// Obtener el valor
-		let valor = completoInputs[fila].value;
-		// Consecuencias
-		if (valor == 1) {
-			parte[fila].classList.add("desperdicio");
-			parteInputs[fila].classList.add("ocultar");
-			parteInputs[fila].disabled = true;
-		} else {
-			if (completoInputs[fila].value == "0") {
-				parte[fila].classList.remove("desperdicio");
-				parteInputs[fila].classList.remove("ocultar");
-				parteInputs[fila].disabled = false;
-			}
-		}
-	};
-	// OTRAS FUNCIONES --------------------------------------------------------
-	let consecuenciasErrores = async (fila) => {
-		// Obtener la info de losdata-entry de la fila
-		let dataEntry = actualizarDataEntry(fila);
-		// Obtener los errores de la fila
-		let errores = await fetch(rutaValidar + dataEntry).then((n) => n.json());
-		// Consecuencias en cada celda
-		for (let campo of camposInput) {
+		};
+		let mensajeDeError = async (fila, columna) => {
+			// Obtener el índice
+			let indice = fila * columnas + columna;
+			// completo o parte
+			let [campoAnt, valorAnt] =
+				columna == 3 || columna == 4
+					? [inputs[indice - 1].name + "=", inputs[indice - 1].value + "&"]
+					: ["", ""];
+			// Obtener los datos de campo y valor
+			let campo = inputs[indice].name;
+			let valor = encodeURIComponent(inputs[indice].value);
+			// Consolidar la información
+			let condiciones = campoAnt + valorAnt + campo + "=" + valor;
+			// Averiguar si hay algún error
+			let error = await fetch(v.rutaValidar + condiciones).then((n) => n.json());
 			// Guarda el mensaje de error
-			let mensaje = fila == filaUrlAlta || campo != "url" ? errores[campo] : "";
-			// Reemplaza el mensaje de error
-			let columna = camposInput.indexOf(campo);
-			let celda = fila * columnasInput + columna;
-			mensajesError[celda].innerHTML = mensaje;
-			// Consecuencias de los errores
+			let mensaje = error[campo];
+			// Reemplaza el mensaje
+			v.mensajesError[indice].innerHTML = mensaje;
+			// Acciones en función de si hay o no mensajes de error
 			mensaje
-				? iconosError[celda].classList.remove("ocultar")
-				: iconosError[celda].classList.add("ocultar");
-			!mensaje ? iconosOK[celda].classList.remove("ocultar") : iconosOK[celda].classList.add("ocultar");
+				? v.iconosError[indice].classList.remove("ocultar")
+				: v.iconosError[indice].classList.add("ocultar");
+			!mensaje
+				? v.iconosOK[indice].classList.remove("ocultar")
+				: v.iconosOK[indice].classList.add("ocultar");
+			return error;
+		};
+		// Barrer el contenido de izquierda a derecha
+		let OK = true;
+		for (let col = columna; col < columnas; col++) {
+			if (col == 0 && OK) OK = await fn.controlesEnUrl(fila);
+			if (OK) var proveedor = obtenerProveedor(fila);
+			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, proveedor);
+			if (col == 2 && OK) OK = await fn.controlesEnTipo(fila, proveedor);
+			if (col == 3 && OK) OK = await fn.controlesEnCompleto(fila, proveedor);
+			if (col == 4 && OK) OK = await fn.controlesEnParte(fila);
+			if (col == 5 && OK) OK = await fn.controlesEnGratuito(fila, proveedor);
 		}
+		// Actualizar el formato
+		fn.actualizarFormato(fila, columna);
+		// Submit
+		fn.activarInactivarbotonGuardar(fila);
 	};
-	let actualizarDataEntry = (fila) => {
+	let obtenerDataEntry = (fila) => {
 		let objeto = "";
-		for (let i = 0; i < columnasInput; i++) {
-			let celda = fila * columnasInput + i;
-			objeto += "&" + inputs[celda].name + "=" + inputs[celda].value;
+		for (let columna = 0; columna < columnas; columna++) {
+			let indice = fila * columnas + columna;
+			objeto += "&" + inputs[indice].name + "=" + inputs[indice].value;
 		}
 		return objeto;
 	};
-	let botonGuardar = (fila) => {
-		let OK =
-			Array.from(iconosOK)
-				.slice(fila * columnasInput, (fila + 1) * columnasInput)
-				.map((n) => n.classList.value)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == undefined;
-		let error =
-			Array.from(iconosError)
-				.slice(fila * columnasInput, (fila + 1) * columnasInput)
-				.map((n) => n.classList.value)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == columnasInput;
-		OK && error ? guardar[fila].classList.remove("inactivo") : guardar[fila].classList.add("inactivo");
-	};
 
-	// START-UP ---------------------------------------------------------------------
-	for (let fila = 0; fila < filasInput; fila++) {
-		if (urlInputs[fila].value) {
-			// Funciones derivadas del url
-			await funcionesDerivadasDelUrl(fila);
-			// Funciones derivadas del Data Entry
-			funcionesDerivadasDeOtrosDataEntry(fila);
-			// Actualizar los errores de todo el form
-			await consecuenciasErrores(fila);
-			// Submit
-			botonGuardar(fila);
-		} else {
-			let filaInput = filasInput - 1;
-			impactoEnTipo({trailer: 1, pelicula: 1}, filaInput);
-			impactosPorTipoLink(filaInput);
-		}
-	}
+	// Startup
+	for (let fila = 0; fila < filas; fila++) controlesDataEntry(fila, 0);
 });
