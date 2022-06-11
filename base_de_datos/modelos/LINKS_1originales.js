@@ -31,7 +31,7 @@ module.exports = (sequelize, dt) => {
 		sugerido_por_id: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "links_1originales",
+		tableName: "links",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
