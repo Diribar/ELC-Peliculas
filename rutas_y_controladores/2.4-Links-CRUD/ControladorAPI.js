@@ -26,7 +26,6 @@ module.exports = {
 		// Definir las variables
 		let respuesta = {};
 		let {link_id: linkID, motivo_id} = req.query;
-		console.log(req.query);
 		let userID = req.session.usuario.id;
 		let entidad = "links_originales";
 		// Descartar que no hayan errores
@@ -46,7 +45,7 @@ module.exports = {
 			} else if (link.status_registro.gr_inactivos) {
 				// El link existe y tiene status 'gr_inactivos'
 				respuesta.mensaje = "El link está en status inactivo";
-			} else if (link.status_registro.aprobado) {
+			} else if (!link.status_registro.gr_pasivos) {
 				// El link existe y tiene status 'aprobado'
 				if (!motivo_id) respuesta.mensaje = "Falta el motivo por el que se inactiva";
 				else {
