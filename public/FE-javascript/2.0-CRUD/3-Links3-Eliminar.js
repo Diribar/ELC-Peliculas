@@ -10,7 +10,6 @@ window.addEventListener("load", () => {
 	let motivosSelect = document.querySelectorAll(".yaExistentes .motivo select");
 	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
 	let columnas = taparMotivo.length / filas_yaExistentes.length;
-	console.log(columnas);
 
 	// Listener de 'edición'
 	botonesOut.forEach((botonOut, fila) => {
