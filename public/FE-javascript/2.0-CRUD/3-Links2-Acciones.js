@@ -9,19 +9,19 @@ window.addEventListener("load", async () => {
 	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
 
 
-	botonesEditar.forEach((botonEditar, i) => {
+	botonesEditar.forEach((botonEditar, fila) => {
 		botonEditar.addEventListener("click", () => {
 			// Ocultar la fila de Datos y mostrar la fila de Edición
-			filasDatos[i].classList.add("ocultar");
-			filasEditar[i].classList.remove("ocultar");
+			filasDatos[fila].classList.add("ocultar");
+			filasEditar[fila].classList.remove("ocultar");
 		});
 	});
-	botonesGuardar.forEach((botonGuardar, i) => {
+	botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", () => {
 			// Averiguar si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
 			// Submit
-			console.log(i);
+			console.log(fila);
 		});
 	});
 	botonesRecuperar.forEach((botonRecuperar, i) => {

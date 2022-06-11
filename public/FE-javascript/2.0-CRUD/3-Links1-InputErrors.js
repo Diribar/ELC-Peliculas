@@ -129,8 +129,7 @@ window.addEventListener("load", async () => {
 			},
 			controlesEnParte: async (fila) => {
 				// Prevenir errores en 'parte'
-				if (campo == "parte")
-					v.parteInputs[fila].value = v.parteInputs[fila].value.replace(/[^-\d]/g, "");
+				v.parteInputs[fila].value = v.parteInputs[fila].value.replace(/[^-\d]/g, "");
 				// Si el resultado es conocido --> ponerlo
 				let condicion = v.completoInputs[fila].value == "1";
 				if (condicion) v.parteInputs[fila].value = "-";
