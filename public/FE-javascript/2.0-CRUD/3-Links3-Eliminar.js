@@ -28,10 +28,8 @@ window.addEventListener("load", () => {
 				botonOut.classList.remove("fa-circle-xmark");
 				botonOut.classList.add("fa-trash-can");
 				// Ocultar el botón de editar
-				console.log(botonesEditar[fila]);
 				botonesEditar[fila].classList.add("ocultar");
 				// Ocultar los 6 campos
-				console.log(fila);
 				for (let columna = 0; columna < columnas; columna++)
 					taparMotivo[fila * columnas + columna].classList.add("ocultar");
 				// Mostrar el select
