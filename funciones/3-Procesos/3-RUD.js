@@ -88,6 +88,8 @@ module.exports = {
 			{[producto_id]: prodID},
 			includes
 		);
+		// Ordenar por ID
+		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// Combinarlos con la edición, si existe
 		links.forEach((link, i) => {
 			if (link.ediciones.length) {
@@ -100,75 +102,9 @@ module.exports = {
 					if (edicion.gratuito) links[i].gratuito = edicion.gratuito;
 				}
 			}
-			links[i] = funciones.quitarLosCamposSinContenido(links[i]);
 		});
 		// Fin
 		return links;
-	},
-	altaDeLink: async (req, datos) => {
-		if (!datos.parte) datos.parte = "-";
-		// Generar información para el nuevo registro
-		let userID = req.session.usuario.id;
-		let producto_id = funciones.obtenerEntidad_id(datos.prodEntidad);
-		datos = {
-			...datos,
-			[producto_id]: datos.prodID,
-			creado_por_id: userID,
-		};
-		// Agregar el 'link' a la BD
-		await BD_genericas.agregarRegistro("links", datos);
-		// Eliminar req.session.edicion
-		delete req.session.links;
-		// Adecuar el producto respecto al link
-		productoConLinksWeb(datos.prodEntidad, datos.prodID);
-	},
-	guardarEdicionDeLink: async (userID, datos) => {
-		console.log(126, datos);
-		// Adecuar la información del formulario
-		if (!datos.parte) datos.parte = "-";
-		// Obtener el linkOriginal
-		let linkOriginal = await BD_genericas.obtenerPorIdConInclude("links", datos.id, "status_registro");
-		// Eliminar el 'id' del link original para evitar confusiones
-		delete datos.id;
-		// Si el linkOriginal está en status 'creado' y fue creado por el usuario => la edición reemplaza el original
-		if (linkOriginal.status_registro.creado && linkOriginal.creado_por_id == userID) {
-			// 1. Actualizar el link Original
-			linkOriginal = {...linkOriginal, ...datos};
-			// 2. Actualizarlo en la BD
-			await BD_genericas.actualizarPorId("links", datos.id, linkOriginal);
-		} else {
-			// Si el linkOriginal no está en status 'creado' o no fue creado por el usuario => la edición se guarda como edición
-			// 1. Obtener el link 'Edición'
-			let linkEdicion = await BD_genericas.obtenerPorCampos("links_edicion", {
-				link_id: linkOriginal.id,
-				editado_por_id: userID,
-			}).then((n) => (n ? funciones.quitarLosCamposSinContenido(n) : ""));
-			// 2. Actualizarlo
-			linkEdicion = {...linkEdicion, ...datos};
-			// 3. Quitar los coincidencias con el original
-			let linkEdicion_id = linkEdicion.id;
-			if (linkEdicion_id) delete linkEdicion.id;
-			linkEdicion = funciones.quitarLasCoincidenciasConOriginal(linkOriginal, linkEdicion);
-			console.log(155, linkOriginal, linkEdicion);
-			// 4. Actualización de la tabla
-			// 4.1. Si el linkEdicion existía => se lo actualiza
-			if (linkEdicion_id)
-				await BD_genericas.actualizarPorId("links_edicion", linkEdicion_id, linkEdicion);
-			else {
-				console.log(158);
-				// 4.2. De lo contrario, se lo agrega
-				// 4.2.1. Completa la información
-				let producto_id = funciones.obtenerEntidad_id(linkOriginal);
-				linkEdicion = {
-					...linkEdicion,
-					link_id: linkOriginal.id,
-					[producto_id]: linkOriginal[producto_id],
-					editado_por_id: userID,
-				};
-				// 4.2.2. Agrega el registro a la tabla de 'Edición'
-				await BD_genericas.agregarRegistro("links_edicion", linkEdicion);
-			}
-		}
 	},
 	actualizarProdConLinkGratuito: async (entidad, prodID) => {
 		// Variables

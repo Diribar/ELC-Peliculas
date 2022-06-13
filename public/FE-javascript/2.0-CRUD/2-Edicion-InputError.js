@@ -131,7 +131,7 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo, concluye la función
 		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
-		location.reload();
+		window.location.reload();
 	});
 	botonGuardarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
