@@ -16,12 +16,12 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "links_2edicion",
+		tableName: "links_edicion",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.links_originales, {as: "link_original", foreignKey: "link_id"});
+		entidad.belongsTo(n.links, {as: "link_original", foreignKey: "link_id"});
 
 		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});

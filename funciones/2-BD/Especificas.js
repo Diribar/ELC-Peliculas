@@ -189,7 +189,7 @@ module.exports = {
 		// Variables
 		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener los links en status 'a revisar'
-		let originales = db.links_originales
+		let originales = db.links
 			.findAll({where: {status_registro_id: revisar}, include: [...includes, "status_registro"]})
 			.then((n) => n.map((m) => m.toJSON()));
 		// Obtener todas las ediciones

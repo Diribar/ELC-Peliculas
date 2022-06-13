@@ -1051,7 +1051,7 @@ VALUES
 (1, 'Trailer', 0, 1),
 (2, 'Película', 1, 0)
 ;
-CREATE TABLE links_1originales (
+CREATE TABLE links (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	pelicula_id INT UNSIGNED NULL,
@@ -1099,18 +1099,18 @@ CREATE TABLE links_1originales (
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_1originales (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en)
+INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,10,'2022-03-16 23:25:20'),
-(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,10,'2022-03-16 23:25:20'),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,1,'2022-03-16 23:25:20'),
-(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,10,'2022-03-16 23:25:20'),
-(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,10,'2022-03-16 23:25:20'),
-(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:20'),
-(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20'),
-(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45')
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,11,'2022-03-16 23:25:20',1),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,11,'2022-03-16 23:25:20',3),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,11,'2022-03-16 23:25:20',4),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,11,'2022-03-16 23:25:20',5),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,11,'2022-03-16 23:25:20',6),
+(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:20',1),
+(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20',1),
+(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45',1)
 ;
-CREATE TABLE links_2edicion (
+CREATE TABLE links_edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	link_id INT UNSIGNED NOT NULL,
 
@@ -1128,7 +1128,7 @@ CREATE TABLE links_2edicion (
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (link_id) REFERENCES links_1originales(id),
+	FOREIGN KEY (link_id) REFERENCES links(id),
 
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
@@ -1169,7 +1169,7 @@ CREATE TABLE aux_historial_provisorios (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (link_id) REFERENCES links_1originales(id),
+	FOREIGN KEY (link_id) REFERENCES links(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),

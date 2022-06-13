@@ -33,7 +33,6 @@ router.get(
 	capturaActivar,
 	vista.linksForm
 );
-router.post("/abm", soloAutInput, vista.linksGuardar);
 
 // Rutas de APIs
 // Links

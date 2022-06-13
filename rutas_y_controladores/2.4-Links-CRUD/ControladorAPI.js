@@ -19,25 +19,50 @@ module.exports = {
 		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
 		return res.json(provs);
 	},
+	linksGuardar: async (req, res) => {
+		// Variables
+		let datos = req.query;
+		return res.json(datos);
+		let userID = req.session.usuario.id;
+		// Averiguar si hay errores de validación
+		let errores = await validar.links(datos);
+		if (errores.hay) req.session.links = datos;
+		else {
+			// Procesar los datos en la operación que corresponda
+			datos.alta
+				? await procesar.altaDeLink(req, datos)
+				: await procesar.guardarEdicionDeLink(userID, datos);
+			delete req.session.links;
+		}
+		// Redireccionar
+		return res.redirect("/links/abm/?entidad=" + datos.prodEntidad + "&id=" + datos.prodID);
+	},
+
 	linksEliminar: async (req, res) => {
 		// Proceso
 		// - Los links en status 'creado' y del usuario => se eliminan definitivamente
 		// - Los demás --> se inactivan
 		// Definir las variables
 		let respuesta = {};
-		let {link_id: linkID, motivo_id} = req.query;
+		let {url, motivo_id} = req.query;
 		let userID = req.session.usuario.id;
-		let entidad = "links_originales";
-		// Descartar que no hayan errores
-		if (!linkID) respuesta.mensaje = "Faltan el dato del ID del link";
+		let entidad = "links";
+		let link
+		// Averiguar si no existe el 'url'
+		if (!url) respuesta.mensaje = "Falta el 'url' del link";
 		else {
-			// El linkID existe
-			let link = await BD_genericas.obtenerPorIdConInclude(entidad, linkID, ["status_registro"]);
+			// Averiguar si el link no existe en la BD
+			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, [
+				"status_registro",
+			]);
 			if (!link) {
 				// Consecuencias si el link no existe en la BD
 				respuesta.mensaje = "El link no existe en la base de datos";
 				respuesta.reload = true;
-			} else if (link.status_registro.creado && link.creado_por_id == userID) {
+			}
+		}
+		if (!respuesta.mensaje) {
+			if (link.status_registro.creado && link.creado_por_id == userID) {
 				// En status 'creado" y por el usuario --> se eliminan definitivamente
 				BD_genericas.eliminarRegistro(entidad, linkID);
 				respuesta.mensaje = "El link fue eliminado con éxito";
