@@ -36,9 +36,10 @@ router.get(
 
 // Rutas de APIs
 // Links
-router.get("/api/validar", API.linksValidar);
-router.get("/api/obtener-provs-links", API.linksObtenerProvs);
-router.get("/api/eliminar", API.linksEliminar);
+router.get("/api/validar", API.validar);
+router.get("/api/obtener-provs-links", API.obtenerProvs);
+router.get("/api/eliminar", API.eliminar);
+router.get("/api/guardar", API.guardar);
 
 // Fin
 module.exports = router;

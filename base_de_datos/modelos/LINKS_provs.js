@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "links_proveedores";
+	const alias = "links_provs";
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
@@ -18,7 +18,7 @@ module.exports = (sequelize, dt) => {
 		url_buscar_post_pel: {type: dt.STRING(20)},	
 	};
 	const config = {
-		tableName: "links_proveedores",
+		tableName: "links_provs",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

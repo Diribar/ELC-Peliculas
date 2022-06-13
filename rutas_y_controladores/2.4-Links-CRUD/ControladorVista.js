@@ -32,7 +32,7 @@ module.exports = {
 		let producto = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
 		let links = await procesar.obtenerLinksActualizados(entidad, prodID, userID);
-		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
