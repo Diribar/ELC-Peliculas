@@ -70,15 +70,17 @@ window.addEventListener("load", async () => {
 			v.urlInputs[v.filaAlta].value = url;
 			return url;
 		};
-		// Variables
-		let campo = e.target.name;
-		// Obtener la columna y fila del input
-		let columna = camposInput.indexOf(campo);
-		for (var fila = 0; fila < filas; fila++) if (e.target == inputs[fila * columnas + columna]) break;
-		// Prevenir errores en 'parte'
-		let indice = fila * columnas + columna;
-		if (campo == "parte") inputs[indice].value = inputs[indice].value.replace(/[^-\d]/g, "");
-		// Efecutar funciones
+		let obtenerFilaColumna = () => {
+			// Obtener campo
+			let campo = e.target.name;
+			// Obtener la columna y fila del input
+			let columna = camposInput.indexOf(campo);
+			for (var fila = 0; fila < filas; fila++) if (e.target == inputs[fila * columnas + columna]) break;
+			return [fila, columna];
+		};
+		// Ejecutar funciones
+		let [fila, columna] = obtenerFilaColumna();
+		if (fila == filas) return;
 		if (fila == v.filaAlta) depurarUrl();
 		controlesDataEntry(fila, columna);
 	});
@@ -126,6 +128,8 @@ window.addEventListener("load", async () => {
 				return !error || !error.completo;
 			},
 			controlesEnParte: async (fila) => {
+				// Prevenir errores en 'parte'
+				v.parteInputs[fila].value = v.parteInputs[fila].value.replace(/[^-\d]/g, "");
 				// Si el resultado es conocido --> ponerlo
 				let condicion = v.completoInputs[fila].value == "1";
 				if (condicion) v.parteInputs[fila].value = "-";
@@ -272,5 +276,5 @@ window.addEventListener("load", async () => {
 	};
 
 	// Startup
-	for (let fila = 0; fila < filas; fila++) controlesDataEntry(fila, 0);
+	// for (let fila = 0; fila < filas; fila++) controlesDataEntry(fila, 0);
 });

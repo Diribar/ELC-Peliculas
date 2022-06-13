@@ -174,21 +174,6 @@ module.exports = {
 			}
 		}
 	},
-	despejarLinkConNovedad: (datos) => {
-		// Averigua si se trata de la fila de 'altas', de lo contrario será una edición
-		datos.alta = datos.numeroFila == datos.url.length - 1;
-		console.log(180,datos);
-		// Borrar datos innecesarios
-		if (datos.alta) delete datos.id;
-		delete datos.motivo_id;
-		// Obtener los datos, de la fila que necesitamos
-		for (let campo in datos)
-			if (typeof datos[campo] == "object") datos[campo] = datos[campo][datos.numeroFila];
-		// Quitar campos innecesarios
-		datos = funciones.quitarLosCamposSinContenido(datos);
-		// Fin
-		return datos;
-	},
 
 	// Las 3 familias de entidades
 	inactivar: async (entidad, entidad_id, userID, motivo_id) => {

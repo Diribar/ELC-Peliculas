@@ -29,7 +29,7 @@
 	<!-- Status -->
 	<td class="ancho_status taparMotivo"><%= link.status_registro.nombre %></td>
 	<!-- Propio -->
-	<td class="ancho_propio taparMotivo"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
+	<td class="ancho_propio"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion">
 		<!-- Editar -->
@@ -40,7 +40,7 @@
 		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- Deshacer -->
 		<!-- Solo para provisorios propios en RUD -->
-		<i class="fa-solid fa-rotate-left <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
+		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
 		<!-- Eliminar permanente -->
 		<!-- Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
 		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.inactivo) { %>
@@ -48,7 +48,7 @@
 		<% } else { %>
 			<!-- Inactivar -->
 			<!-- Sólo para (RUD y aprobado) o (Revisión ajeno) -->
-			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!cond.aprobado || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&link.status_registro.gr_pasivos || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">

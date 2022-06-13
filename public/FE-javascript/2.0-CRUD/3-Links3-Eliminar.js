@@ -8,29 +8,31 @@ window.addEventListener("load", () => {
 	let taparMotivo = document.querySelectorAll(".yaExistentes .taparMotivo");
 	let motivosFila = document.querySelectorAll(".yaExistentes .motivo");
 	let motivosSelect = document.querySelectorAll(".yaExistentes .motivo select");
+	let columnas = taparMotivo.length / filas_yaExistentes.length;
 
 	// Listener de 'edición'
-	botonesOut.forEach((botonOut, i) => {
+	botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
 			if (botonOut.classList.contains("fa-trash-can")) {
 				let respuesta = await fetch(
 					"/links/api/eliminar/?link_id=" +
-						links_id[i].innerHTML +
+						links_id[fila].innerHTML +
 						"&motivo_id=" +
-						motivosSelect[i].value
+						motivosSelect[fila].value
 				).then((n) => n.json());
 				console.log(respuesta);
-				if (respuesta.resultado == true) filas_yaExistentes[i].classList.add("ocultar");
+				if (respuesta.resultado == true) filas_yaExistentes[fila].classList.add("ocultar");
 			} else if (botonOut.classList.contains("fa-circle-xmark")) {
 				// Reemplazar por el tacho
 				botonOut.classList.remove("fa-circle-xmark");
 				botonOut.classList.add("fa-trash-can");
 				// Ocultar el botón de editar
-				botonesEditar[i].classList.add("ocultar");
+				botonesEditar[fila].classList.add("ocultar");
 				// Ocultar los 6 campos
-				for (let j = 0; j < 6; j++) taparMotivo[i * 6 + j].classList.add("ocultar");
+				for (let columna = 0; columna < columnas; columna++)
+					taparMotivo[fila * columnas + columna].classList.add("ocultar");
 				// Mostrar el select
-				motivosFila[i].classList.remove("ocultar");
+				motivosFila[fila].classList.remove("ocultar");
 			}
 		});
 	});
