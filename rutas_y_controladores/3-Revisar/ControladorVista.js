@@ -367,7 +367,7 @@ module.exports = {
 		let avatar = imagen
 			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
 			: "/imagenes/8-Agregar/IM.jpg";
-		let provs = await BD_genericas.obtenerTodos("links_proveedores", "orden");
+		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
