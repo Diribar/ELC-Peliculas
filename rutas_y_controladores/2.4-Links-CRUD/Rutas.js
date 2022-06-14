@@ -38,8 +38,10 @@ router.get(
 // Links
 router.get("/api/validar", API.validar);
 router.get("/api/obtener-provs-links", API.obtenerProvs);
-router.get("/api/eliminar", API.eliminar);
 router.get("/api/guardar", API.guardar);
+router.get("/api/eliminar", API.eliminar);
+router.get("/api/recuperar", API.recuperar);
+router.get("/api/deshacer", API.deshacer);
 
 // Fin
 module.exports = router;

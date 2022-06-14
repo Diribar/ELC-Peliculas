@@ -56,28 +56,97 @@ module.exports = {
 		else {
 			// Obtener el link
 			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, ["status_registro"]);
-			// Consecuencias si el link no existe en la BD
+			// El link no existe en la BD
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
-			// El link existe y tiene status 'gr_pasivos'
-			else if (link.status_registro.gr_pasivos)
-				respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
-			// El link existe y tiene status distinto a 'gr_pasivos'
-			// Consecuencias si el link está en status 'creado" y por el usuario
+			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
-				// Se elimina definitivamente
-				respuesta = {mensaje: "El link fue eliminado con éxito", reload: false};
+				respuesta = {mensaje: "El link fue eliminado con éxito", resultado: true};
 				await BD_genericas.eliminarPorId("links", link.id);
 				procesar.actualizarProdConLinkGratuito("links", prodID);
-			} else if (!motivo_id)
-				// Consecuencias si no existe el motivo
+			}
+			// El link existe y no tiene status 'aprobado'
+			else if (!link.status_registro.aprobado)
+				respuesta = {mensaje: "En este status no se puede inactivar", reload: true};
+			// El link existe y tiene status 'aprobado'
+			// No existe el motivo
+			else if (!motivo_id)
 				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
-				respuesta = {mensaje: "El link fue inactivado con éxito", resultado: true};
+				// Inactivar
 				await procesar.inactivar("links", link.id, userID, motivo_id);
 				procesar.actualizarProdConLinkGratuito(prodEntidad, prodID);
+				respuesta = {mensaje: "El link fue inactivado con éxito", resultado: true, reload: true};
 			}
 			return res.json(respuesta);
 		}
+	},
+	recuperar: async (req, res) => {
+		// Variables
+		let datos = req.query;
+		let userID = req.session.usuario.id;
+		// Completar la info
+		let recuperar_id = req.session.status_registro.find((n) => n.recuperar).id;
+		// Obtener el link
+		let link = await BD_genericas.obtenerPorCamposConInclude(
+			"links",
+			{url: datos.url},
+			"status_registro"
+		);
+		// Obtener el mensaje de la tarea realizada
+		let mensaje = !link // El link original no existe
+			? "El link no existe"
+			: link.status_registro.recuperar // El link ya estaba en status inactivar
+			? "El link ya estaba en status 'inactivar'"
+			: "";
+		if (!mensaje) {
+			await BD_genericas.actualizarPorId("links", link.id, {
+				status_registro_id: recuperar_id,
+				sugerido_por_id: userID,
+			});
+			mensaje = "Link recuperado";
+		}
+		// Fin
+		return res.json(mensaje);
+	},
+	deshacer: async (req, res) => {
+		// Variables
+		let datos = req.query;
+		let userID = req.session.usuario.id;
+		// Completar la info
+		let aprobado_id = req.session.status_registro.find((n) => n.aprobado).id;
+		let inactivo_id = req.session.status_registro.find((n) => n.inactivo).id;
+		// Obtener el link
+		let link = await BD_genericas.obtenerPorCamposConInclude(
+			"links",
+			{url: datos.url},
+			"status_registro"
+		);
+		// Obtener el mensaje de la tarea realizada
+		let mensaje = !link // El link original no existe
+			? "El link no existe"
+			: link.status_registro.aprobado
+			? "El link está en status aprobado"
+			: link.status_registro.inactivo
+			? "El link está en status inactivo"
+			: link.sugerido_por_id != userID
+			? "El último cambio de status fue sugerido por otra persona"
+			: "";
+		if (!mensaje) {
+			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
+			if (link.status_registro.inactivar)
+				await BD_genericas.actualizarPorId("links", link.id, {
+					...objeto,
+					status_registro_id: aprobado_id,
+				});
+			if (link.status_registro.recuperar)
+				await BD_genericas.actualizarPorId("links", link.id, {
+					...objeto,
+					status_registro_id: inactivo_id,
+				});
+			mensaje = "Link llevado a su status anterior";
+		}
+		// Fin
+		return res.json(mensaje);
 	},
 };
 

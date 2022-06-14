@@ -265,5 +265,5 @@ window.addEventListener("load", async () => {
 	};
 
 	// Startup
-	// for (let fila = 0; fila < filas; fila++) controlesDataEntry(fila, 0);
+	for (let fila = 0; fila < filas-1; fila++) controlesDataEntry(fila, 0);
 });

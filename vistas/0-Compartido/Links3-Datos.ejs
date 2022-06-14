@@ -22,7 +22,7 @@
 	<!-- Completo -->
 	<td class="ancho_completo taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
 	<!-- Parte -->
-	<td class="ancho_parte taparMotivo <%- link.completo ? 'desperdicio' : '' %>"><%- !link.completo ? link.parte : '' %></td>
+	<td class="ancho_parte taparMotivo"><%- link.parte %></td>
 	<!-- Gratuito -->
 	<td class="ancho_gratuito taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
 	<!-- Status -->
@@ -47,7 +47,7 @@
 		<% } else { %>
 			<!-- Inactivar -->
 			<!-- Sólo para (RUD y aprobado) o (Revisión ajeno) -->
-			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&link.status_registro.gr_pasivos || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
