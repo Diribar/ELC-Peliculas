@@ -4,6 +4,7 @@ window.addEventListener("load", async () => {
 	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
 	let filasEditar = document.querySelectorAll("tbody .edicion");
 	let inputs = document.querySelectorAll("tbody .input");
+	let urlInputs = document.querySelectorAll(".inputError input[name='url'");
 	let columnas = inputs.length / (filasEditar.length + 1);
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
@@ -24,6 +25,10 @@ window.addEventListener("load", async () => {
 	// Guardar - Hecho
 	botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", async () => {
+			// Averiguar si está inactivo --> return
+			if (botonGuardar.classList.contains("inactivo")) return;
+			botonGuardar.classList.add("inactivo");
+			// Obtener los datos editados
 			let obtenerDataEntry = (fila) => {
 				let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 				for (let columna = 0; columna < columnas; columna++) {
@@ -32,29 +37,37 @@ window.addEventListener("load", async () => {
 				}
 				return objeto;
 			};
-			// Averiguar si está inactivo --> return
-			if (botonGuardar.classList.contains("inactivo")) return;
-			else botonGuardar.classList.add("inactivo")
+			// Obtener los datos del link
+			let objeto = obtenerDataEntry(fila);
 			// Submit
-			let url = obtenerDataEntry(fila);
-			let respuesta = await fetch("/links/api/guardar/" + url).then((n) => n.json());
+			await fetch("/links/api/guardar/" + objeto);
 			window.location.reload();
 		});
 	});
-	botonesRecuperar.forEach((botonRecuperar, i) => {
-		botonRecuperar.addEventListener("click", () => {
+	botonesRecuperar.forEach((botonRecuperar, fila) => {
+		botonRecuperar.addEventListener("click", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonRecuperar.classList.contains("inactivo")) return;
+			botonRecuperar.classList.add("inactivo");
+			// Obtener los datos del link
+			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			console.log(i);
+			await fetch("/links/api/recuperar/" + objeto);
+			window.location.reload();
 		});
 	});
-	botonesDeshacer.forEach((botonDeshacer, i) => {
-		botonDeshacer.addEventListener("click", () => {
+	botonesDeshacer.forEach((botonDeshacer, fila) => {
+		botonDeshacer.addEventListener("click", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonDeshacer.classList.contains("inactivo")) return;
+			botonDeshacer.classList.add("inactivo");
+			// Obtener los datos del link
+			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			console.log(i);
+			await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());
+			window.location.reload();
 		});
 	});
 });

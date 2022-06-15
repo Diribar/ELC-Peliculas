@@ -33,11 +33,11 @@
 						<% let cond = {} %>
 						<%- include("Links2-Condiciones", {link, cond}) %>
 						<%- include("Links3-Datos", {link, cond}) %>
-						<%- include("31-Links-Edicion", {fila, link, cond}) %>
+						<%- include("Links1-Edicion", {fila, link, cond}) %>
 						<% fila++ %> 
 					<% } %>
 					<!-- Fila para nuevo link -->
-					<%- include("32-Links-Altas", {fila}) %>
+					<%- include("Links2-Altas", {fila}) %>
 				</tbody>
 			</table>
 		</form>
