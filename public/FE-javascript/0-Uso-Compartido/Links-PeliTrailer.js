@@ -1,28 +1,49 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let tipo = document.querySelector("select#tipoLink");
+	let selectTipo = document.querySelector("select#tipoLink");
 	let filasExistentes = document.querySelectorAll("tr.yaExistentes");
-	let filasEdicion = document.querySelectorAll("tr.edicion");
-	let selects = document.querySelectorAll("tr.edicion .tipo select[name='tipo_id']");
+	let filasEdicionesCRUD = document.querySelectorAll("tr.edicion.crud");
+	let filasEdicionesRevisar = document.querySelectorAll("tr.edicion.revisar");
 	let tipoAltas = document.querySelector("tr.alta .tipo select[name='tipo_id']");
 
 	// Add Event Listener
-	tipo.addEventListener("change", () => {
+	selectTipo.addEventListener("change", () => {
 		// Obtener el valor
-		let valor = tipo.value;
+		let valor = selectTipo.value;
 		// Ocultar y mostrar las filas que correspondan
-		if (selects.length)
-			selects.forEach((n, i) => {
-				if (n.value == valor || valor == "TD") {
-					filasExistentes[i].classList.remove("ocultarTipo");
-					filasEdicion[i].classList.remove("ocultarTipo");
+		if (filasExistentes.length)
+			filasExistentes.forEach((filaExistente, fila) => {
+				let filaDatos = Array.from(filaExistente.classList).find((n) => n.startsWith("fila"));
+				if (filaExistente.classList.contains(valor) || valor == "TD") {
+					// Mostrar filas de Datos
+					filasExistentes[fila].classList.remove("ocultarTipo");
+					// Mostrar filas de Edición - CRUD
+					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.remove("ocultarTipo");
+					// Mostrar filas de Edición - Revisión
+					if (filasEdicionesRevisar.length)
+						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
+							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
+								n.startsWith("fila")
+							);
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.remove("ocultarTipo");
+						});
 				} else {
-					filasExistentes[i].classList.add("ocultarTipo");
-					filasEdicion[i].classList.add("ocultarTipo");
+					// Ocultar filas de Datos
+					filasExistentes[fila].classList.add("ocultarTipo");
+					// Ocultar filas de Edición - CRUD
+					if (filasEdicionesCRUD.length) filasEdicionesCRUD[fila].classList.add("ocultarTipo");
+					// Ocultar filas de Edición - Revisión
+					if (filasEdicionesRevisar.length)
+						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
+							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
+								n.startsWith("fila")
+							);
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.add("ocultarTipo");
+						});
 				}
 			});
-		// Cambiar el valor del 'tipo' en el input
+		// Cambiar el valor del 'tipo' en el input (sólo para la vista CRUD)
 		if (tipoAltas)
 			if (valor != "TD") {
 				tipoAltas.value = valor;

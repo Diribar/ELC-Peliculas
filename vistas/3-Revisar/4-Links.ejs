@@ -26,13 +26,14 @@
 				<%- include("Links1-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
-					<% let fila = 0 %> 
-					<% for (let link of links) { %>
+					<% links.forEach((link, fila)=> { %>
 						<% let cond = {} %>
 						<%- include("Links2-Condiciones", {link, cond}) %>
-						<%- include("Links3-Datos", {link, cond}) %>
-						<% fila++ %> 
-					<% } %>
+						<%- include("Links3-Datos", {link, cond, fila}) %>
+						<% link.ediciones.forEach((edicion) => { %>
+							<%- cond.creado || cond.aprobado ? include("4-LinksEdicion", {link, cond, edicion, fila}) : "" %> 
+						<% }) %>
+					<% }) %>
 				</tbody>
 			</table>
 		</div>

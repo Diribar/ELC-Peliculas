@@ -81,7 +81,7 @@ module.exports = {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Definir valores necesarios
 		let producto_id = funciones.obtenerEntidad_id(entidad);
-		let includes = ["tipo", "prov", "status_registro", "ediciones"];
+		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		// Obtener los linksOriginales
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",
@@ -97,9 +97,9 @@ module.exports = {
 				if (edicion) {
 					if (edicion.calidad) links[i].calidad = edicion.calidad;
 					if (edicion.tipo_id) links[i].tipo_id = edicion.tipo_id;
-					if (edicion.completo) links[i].completo = edicion.completo;
+					if (edicion.completo !== null) links[i].completo = edicion.completo;
 					if (edicion.parte) links[i].parte = edicion.parte;
-					if (edicion.gratuito) links[i].gratuito = edicion.gratuito;
+					if (edicion.gratuito!== null) links[i].gratuito = edicion.gratuito;
 				}
 			}
 		});

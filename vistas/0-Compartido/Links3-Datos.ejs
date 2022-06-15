@@ -1,4 +1,10 @@
-<tr class="yaExistentes inactivo_<%= cond.inactivos %> <%- cond.inactivos ? 'inactivo_ocultar' : '' %>">
+<tr class="
+	yaExistentes 
+	inactivo_<%= cond.inactivos %> 
+	<%- cond.inactivos ? 'inactivo_ocultar' : '' %> 
+	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
+	fila<%= fila %>
+">
 	<!-- Url -->
 	<td class="ancho_url url">
 		<a href="//<%= link.url %>" target="_blank">
@@ -18,9 +24,9 @@
 	<!-- Calidad -->
 	<td class="ancho_calidad taparMotivo"><%= link.calidad %></td>
 	<!-- Tipo -->
-	<td class="ancho_tipo taparMotivo"><%= link.tipo.nombre %></td>
+	<td class="ancho_tipo taparMotivo"><%- link.tipo_id==1 ? "Trailer" : "Película" %></td>
 	<!-- Completo -->
-	<td class="ancho_completo taparMotivo"><%- link.completo ? "SI" : "NO" %></td>
+	<td class="ancho_completo taparMotivo"><%- link.completo==1 ? "SI" : "NO" %></td>
 	<!-- Parte -->
 	<td class="ancho_parte taparMotivo"><%- link.parte %></td>
 	<!-- Gratuito -->
@@ -31,23 +37,22 @@
 	<td class="ancho_propio"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
 	<td class="ancho_accion">
-		<!-- Editar -->
+		<!-- EDITAR -->
 		<!-- Sólo en RUD para links creados y aprobados  -->
 		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creado && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
-		<!-- Aprobar -->
+		<!-- APROBAR -->
 		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
 		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
-		<!-- Deshacer -->
+		<!-- DESHACER -->
 		<!-- Solo para provisorios propios en RUD -->
 		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
-		<!-- Eliminar permanente -->
-		<!-- Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
+		<!-- ELIMINAR -->
+		<!-- Eliminar permanente: Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
 		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.inactivo) { %>
 			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 		<% } else { %>
-			<!-- Inactivar -->
-			<!-- Sólo para (RUD y aprobado) o (Revisión ajeno) -->
-			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.propio||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<!-- Inactivar: Sólo para (RUD y aprobado) o (Revisión ajeno y sin edición) -->
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">

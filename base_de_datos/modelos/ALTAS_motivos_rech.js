@@ -13,5 +13,8 @@ module.exports = (sequelize, dt) => {
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
+	// entidad.associate = (n) => {
+	// 	entidad.hasMany(n.links, {as: "linksRechazados", foreignKey: "motivo_id"}); 
+	// };
 	return entidad;
 };
