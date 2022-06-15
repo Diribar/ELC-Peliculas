@@ -23,8 +23,10 @@ window.addEventListener("load", () => {
 					// Mostrar filas de Edición - Revisión
 					if (filasEdicionesRevisar.length)
 						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
-							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) => n.startsWith("fila"));
-							if (filaDatos==filaEdicion) filaEdicionRevisar.classList.remove("ocultarTipo");
+							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
+								n.startsWith("fila")
+							);
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.remove("ocultarTipo");
 						});
 				} else {
 					// Ocultar filas de Datos
@@ -34,8 +36,10 @@ window.addEventListener("load", () => {
 					// Ocultar filas de Edición - Revisión
 					if (filasEdicionesRevisar.length)
 						filasEdicionesRevisar.forEach((filaEdicionRevisar) => {
-							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) => n.startsWith("fila"));
-							if (filaDatos==filaEdicion) filaEdicionRevisar.classList.add("ocultarTipo");
+							let filaEdicion = Array.from(filaEdicionRevisar.classList).find((n) =>
+								n.startsWith("fila")
+							);
+							if (filaDatos == filaEdicion) filaEdicionRevisar.classList.add("ocultarTipo");
 						});
 				}
 			});
