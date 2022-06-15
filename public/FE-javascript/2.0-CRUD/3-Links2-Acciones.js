@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
 	let filasEditar = document.querySelectorAll("tbody .edicion");
 	let inputs = document.querySelectorAll("tbody .input");
-	let urlInputs = document.querySelectorAll(".inputError input[name='url'");
+	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
 	let columnas = inputs.length / (filasEditar.length + 1);
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");

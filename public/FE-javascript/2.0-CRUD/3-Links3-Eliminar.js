@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
 	let columnas = taparMotivo.length / filas_yaExistentes.length;
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let links_url = document.querySelectorAll(".edicion .inputError input[name='url'");
+	let links_url = document.querySelectorAll(".yaExistentes input[name='url'");
 	let pasivos = document.querySelector("#tabla #tags #inactivo");
 
 	// Listener de 'edición'

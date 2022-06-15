@@ -26,7 +26,7 @@ module.exports = {
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
-		const status = req.session.status_registro
+		const status = req.session.status_registro;
 		let nuevoStatusID = aprobado
 			? status.find((n) => n.alta_aprob).id
 			: status.find((n) => n.inactivo).id;
@@ -92,7 +92,7 @@ module.exports = {
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		let datos;
-		const status = req.session.status_registro
+		const status = req.session.status_registro;
 		let RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
 		// Obtener registros original
 		let includes = [
@@ -271,7 +271,7 @@ module.exports = {
 			...includes,
 		]);
 		// Obtener los status
-		const status = req.session.status_registro
+		const status = req.session.status_registro;
 		let creado_id = status.find((n) => n.creado).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		// PROBLEMA 1: Registro no encontrado
@@ -312,5 +312,44 @@ module.exports = {
 
 		// Fin
 		return res.json("Resultado exitoso");
+	},
+
+	// Links
+	inactivar: async (req, res) => {},
+
+	eliminar: async (req, res) => {
+		// Definir las variables
+		let {prodEntidad, prodID, url, motivo_id} = req.query;
+		let respuesta = {};
+		let link;
+		// Averiguar si no existe el 'url'
+		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
+		else {
+			// Obtener el link
+			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, [
+				"status_registro",
+				"ediciones",
+			]);
+			// El link no existe en la BD
+			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
+			// El link existe y no tiene status 'inactivo'
+			else if (!link.status_registro.inactivo)
+				respuesta = {mensaje: "En este status no se puede eliminar", reload: true};
+			else {
+				// El link está en status 'inactivo" --> se elimina definitivamente
+				// Eliminar las ediciones que tenga
+				if (link.ediciones)
+					link.ediciones.forEach(async (edicion) => {
+						await BD_genericas.eliminarPorId("links_edicion", edicion.id);
+					});
+				// Eliminar el link
+				await BD_genericas.eliminarPorId("links", link.id);
+				// Actualizar si el producto tiene links gratuitos
+				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+				// Preparar la respuesta
+				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
+			}
+			return res.json(respuesta);
+		}
 	},
 };
