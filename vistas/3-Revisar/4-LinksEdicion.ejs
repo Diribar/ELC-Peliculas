@@ -10,10 +10,9 @@
 	<td class="ancho_url url campo"></td>
 	<!-- Con valor agregado -->
 	<% let campos=["calidad", "tipo_id", "completo", "parte", "gratuito"] %>
-	<% let ocultar=false %> 
 	<% for (campo of campos) { %>
 		<td class="ancho_<%= campo %> <%= campo %>">
-			<% if (edicion[campo]!==null && !ocultar) { %>
+			<% if (edicion[campo]!==null) { %>
 				<div class="inputError">
 					<% let valor= campo=="tipo_id" ? (edicion[campo]==1?"Trailer":"Película") : (campo=="completo" || campo=="gratuito") ? (edicion[campo]?"SI":"NO") : edicion[campo] %> 
 					<input name="<%= campo %>" type="text" value="<%= valor %>" disabled>
@@ -21,7 +20,7 @@
 					<i class="fa-solid fa-circle-check <%- edicPropia ? 'ocultar' : '' %>"></i>
 					<i class="fa-solid fa-circle-xmark <%- edicPropia ? 'ocultar' : '' %>"></i>
 				</div>
-				<% ocultar=true %>
+				<% break %>
 			<% } %>
 		</td>
 	<% } %>
