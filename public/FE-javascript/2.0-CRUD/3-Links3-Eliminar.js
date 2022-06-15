@@ -11,6 +11,7 @@ window.addEventListener("load", () => {
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let links_url = document.querySelectorAll(".edicion .inputError input[name='url'");
+	let pasivos = document.querySelector("#tabla #tags #inactivo");
 
 	// Listener de 'edición'
 	botonesOut.forEach((botonOut, fila) => {
@@ -31,8 +32,9 @@ window.addEventListener("load", () => {
 				objeto += "&url=" + links_url[fila].value + "&motivo_id=" + motivosSelect[fila].value;
 				let respuesta = await fetch("/links/api/eliminar/" + objeto).then((n) => n.json());
 				console.log(respuesta);
-				if (respuesta.resultado) filas_yaExistentes[fila].classList.add("ocultar");
-				// if (respuesta.reload) window.location.reload();
+				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
+				if (respuesta.reload) window.location.reload();
+				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";
 			}
 		});
 	});
