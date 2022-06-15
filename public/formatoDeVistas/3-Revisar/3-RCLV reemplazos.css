@@ -24,7 +24,7 @@
 /* Ocultar la 'side-bar' */
 #datosLargos #contenido::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
 #datosLargos #contenido {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
-#datosLargos .fa-trash-can {color: var(--rojo-oscuro); cursor: pointer;}
+#datosLargos .fa-trash-can {color: var(--rojo-oscuro);}
 
 /* Datos Largos - Ingresos */
 #datosLargos #contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}

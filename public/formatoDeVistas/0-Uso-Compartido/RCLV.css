@@ -57,7 +57,7 @@
 /*  Mensajes de error*/
 #dataEntry .fa-circle-xmark, 
 #dataEntry .fa-circle-check {left: -20px;}
-#dataEntry .fa-circle-xmark {z-index: 1; cursor: pointer;}
+#dataEntry .fa-circle-xmark {z-index: 1;}
 #datos .mensajeError {max-width: 200px;}
 
 /* Submit button */
@@ -78,7 +78,7 @@
 .fa-circle-check {color: var(--verde-oscuro); cursor: default;}
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.fa-circle-question {color: var(--gris-oscuro); cursor: pointer;}
+.fa-circle-question {color: var(--gris-oscuro);}
 .link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
 .mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
