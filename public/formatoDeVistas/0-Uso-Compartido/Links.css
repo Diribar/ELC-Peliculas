@@ -17,6 +17,7 @@
 #datos table thead tr th {padding: 5px; background-color: var(--verde-ingles); color: var(--amarillo-claro);}
 #datos table tbody tr td.motivo {background-color: var(--celeste-oscuro); border-radius: 10px; padding: 3px 0;}
 #datos table tbody tr td.motivo * {text-align: left; color: var(--rojo-oscuro);}
+#datos table tbody tr.oscuro_true {background-color: var(--gris-intermedio);}
 
 /* Campos con input */
 #datos table tbody tr td .inputError input {width: 100%;}

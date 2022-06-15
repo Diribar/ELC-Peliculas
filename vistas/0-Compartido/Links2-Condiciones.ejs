@@ -2,11 +2,13 @@
 <% cond.creado = link.status_registro.creado %> 
 <% cond.creadoPropio = cond.creado && link.creado_por_id == userID %> 
 <% cond.aprobado = link.status_registro.aprobado %>
+<% cond.creadoAprob = cond.creado || cond.aprobado %> 
 <% cond.inactivo = link.status_registro.inactivo %>
 <% cond.estable = cond.aprobado || cond.inactivo %>
 <% cond.inactivarPropio = link.status_registro.inactivar && link.sugerido_por_id == userID %>
 <% cond.provisorio = link.status_registro.inactivar || link.status_registro.recuperar %>
 <% cond.provPropio = cond.provisorio && link.sugerido_por_id == userID %>
+<% cond.provAjeno = cond.provisorio && link.sugerido_por_id != userID %>
 <% cond.propio = cond.creadoPropio || cond.provPropio %>
 <% cond.ajeno = (cond.creado&&link.creado_por_id != userID) || (cond.provisorio&&link.sugerido_por_id != userID) %>
 <% cond.rud = tema == "links_rud" %>

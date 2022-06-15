@@ -3,7 +3,8 @@
 	inactivo_<%= cond.inactivos %> 
 	<%- cond.inactivos ? 'inactivo_ocultar' : '' %> 
 	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
-	fila<%= fila %>
+	fila<%= fila %> 
+	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob&&!!link.ediciones) : '' %>
 ">
 	<!-- Url -->
 	<td class="ancho_url url">
