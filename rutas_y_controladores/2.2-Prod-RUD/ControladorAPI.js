@@ -9,11 +9,12 @@ const validar = require("../../funciones/4-Validaciones/RUD");
 module.exports = {
 	// Detalle
 	obtenerCalificaciones: async (req, res) => {
-		let {entidad, id, detalle} = req.query;
+		let {entidad, id: prodID, detalle} = req.query;
+		let userID = req.session.usuario.id;
 		let datos;
 		let calificaciones = [];
 		// Datos generales
-		datos = await BD_genericas.obtenerPorId(entidad, id).then((n) =>
+		datos = await BD_genericas.obtenerPorId(entidad, prodID).then((n) =>
 			n.fe_valores != null
 				? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
 				: ""
@@ -26,8 +27,8 @@ module.exports = {
 		if (detalle) {
 			let producto_id = funciones.obtenerEntidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
-				usuario_id: req.session.usuario.id,
-				[producto_id]: id,
+				usuario_id: userID,
+				[producto_id]: prodID,
 			}).then((n) =>
 				n
 					? [n.fe_valores / 100, n.entretiene / 100, n.calidad_tecnica / 100, n.calificacion / 100]
