@@ -165,7 +165,7 @@ module.exports = {
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Eliminar el registro de la edición
-			await BD_genericas.eliminarRegistro("prods_edicion", prodEditado.id);
+			await BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);
 			// Averiguar si el original no tiene errores
 			let errores = await validar.edicion(null, {...prodOriginal, entidad});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'

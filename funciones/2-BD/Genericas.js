@@ -51,7 +51,7 @@ module.exports = {
 	actualizarPorCampos: (entidad, objeto, datos) => {
 		return db[entidad].update(datos, {where: objeto});
 	},
-	eliminarRegistro: (entidad, id) => {
+	eliminarPorId: (entidad, id) => {
 		return db[entidad].destroy({where: {id: id}});
 	},
 	aumentarElValorDeUnCampo: (entidad, id, campo) => {

@@ -12,8 +12,8 @@ window.addEventListener("load", async () => {
 	let botonesRecuperar = document.querySelectorAll("tbody .yaExistentes .in");
 	let botonesDeshacer = document.querySelectorAll("tbody .yaExistentes .deshacer");
 	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
-	console.log(inputs.length, botonesGuardar.length,columnas);
 
+	// Editar - Hecho
 	botonesEditar.forEach((botonEditar, fila) => {
 		botonEditar.addEventListener("click", () => {
 			// Ocultar la fila de Datos y mostrar la fila de Edición
@@ -21,24 +21,24 @@ window.addEventListener("load", async () => {
 			filasEditar[fila].classList.remove("ocultar");
 		});
 	});
+	// Guardar - Hecho
 	botonesGuardar.forEach((botonGuardar, fila) => {
 		botonGuardar.addEventListener("click", async () => {
 			let obtenerDataEntry = (fila) => {
 				let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 				for (let columna = 0; columna < columnas; columna++) {
 					let indice = fila * columnas + columna;
-					// console.log(indice, fila, columnas, columna, inputs[indice]);
 					objeto += "&" + inputs[indice].name + "=" + encodeURIComponent(inputs[indice].value);
 				}
 				return objeto;
 			};
 			// Averiguar si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
+			else botonGuardar.classList.add("inactivo")
 			// Submit
 			let url = obtenerDataEntry(fila);
-			// console.log(url);
 			let respuesta = await fetch("/links/api/guardar/" + url).then((n) => n.json());
-			console.log(respuesta);
+			window.location.reload();
 		});
 	});
 	botonesRecuperar.forEach((botonRecuperar, i) => {

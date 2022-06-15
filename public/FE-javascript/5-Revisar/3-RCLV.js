@@ -34,7 +34,6 @@ window.addEventListener("load", async () => {
 		errores = await fetch(rutaValidar + URL).then((n) => n.json());
 		// Si hay errores, recargar la página
 		if (errores.hay) return;
-		//if (errores.hay) location.reload();
 		// Editar y cambiar el status del nuevo RCLV
 		let rutaStatus = "/revision/api/rclv-alta/";
 		let resultado = await fetch(rutaStatus + URL).then((n) => n.json());

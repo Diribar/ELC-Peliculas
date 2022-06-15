@@ -23,39 +23,22 @@ module.exports = {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
-		let mensaje;
 		// Completar la info
-		let entidad_id = funciones.obtenerEntidad_id(datos.prodEntidad);
-		datos[entidad_id] = datos.prodID;
+		let producto_id = funciones.obtenerEntidad_id(datos.prodEntidad);
+		datos[producto_id] = datos.prodID;
 		datos.prov_id = await obtenerProveedorID(datos.url);
-		console.log(datos);
-		// Averiguar si es una edicion
-		let link_original = await BD_genericas.obtenerPorCampos("links", {url: datos.url});
-		//return res.json(link_original);
-		if (link_original) {
-			// Es una edicion
-			// Averiguar si es un link propio en status creado
-			if ((link_original.creado_por_id = userID && link_original.status_registro.creado)) {
-				// Es un link propio en status creado --> actualizarlo
-			} else {
-				// Se debe usar una edición
-				// Averiguar si ya existe una edición
-				link_edicion = BD_genericas.obtenerPorCampos("links_edicion", {
-					link_id: link_original.id,
-					editado_por_id: userID,
-				});
-			}
-			await procesar.guardarEdicionDeLink(userID, datos);
-		} else {
-			// Link nuevo
-			datos.creado_por_id = userID;
-			console.log(datos);
-			await BD_genericas.agregarRegistro("links", datos);
-			mensaje = "agregado";
-		}
-		// edición nueva
-		// await procesar.altaDeLink(req, datos);
-		procesar.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		// Obtener el link
+		let link = await BD_genericas.obtenerPorCamposConInclude(
+			"links",
+			{url: datos.url},
+			"status_registro"
+		);
+		// Obtener el mensaje de la tarea realizada
+		let mensaje = !link
+			? await crear_link(datos, userID) // El link original no existe --> se lo debe crear
+			: link.creado_por_id == userID && link.status_registro.creado // ¿Link propio en status creado?
+			? await actualizar_link(link, datos) // Actualizar el link original
+			: await edicion_link(link, datos, userID); // Edicion
 		// Fin
 		return res.json(mensaje);
 	},
@@ -83,7 +66,7 @@ module.exports = {
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				// Se elimina definitivamente
 				respuesta = {mensaje: "El link fue eliminado con éxito", reload: false};
-				await BD_genericas.eliminarRegistro("links", link.id);
+				await BD_genericas.eliminarPorId("links", link.id);
 				procesar.actualizarProdConLinkGratuito("links", prodID);
 			} else if (!motivo_id)
 				// Consecuencias si no existe el motivo
@@ -106,4 +89,36 @@ let obtenerProveedorID = async (url) => {
 	// Si no se reconoce el proveedor, se asume el 'desconocido'
 	proveedor = proveedor ? proveedor : proveedores.find((n) => n.generico);
 	return proveedor.id;
+};
+let crear_link = async (datos, userID) => {
+	datos.creado_por_id = userID;
+	await BD_genericas.agregarRegistro("links", datos);
+	procesar.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+	return "Link agregado";
+};
+let actualizar_link = async (link, datos) => {
+	await BD_genericas.actualizarPorId("links", link.id, datos);
+	procesar.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+	return "Link original actualizado";
+};
+let edicion_link = async (link, datos, userID) => {
+	// Depurar para dejar solamente las novedades de la edición
+	datos = funciones.quitarLasCoincidenciasConOriginal(link, datos);
+	// Obtener nuevamente el 'producto_id', que se pierde en el paso anterior
+	let producto_id = funciones.obtenerEntidad_id(datos.prodEntidad);
+	// Si existe una edición de ese link y de ese usuario --> eliminarlo
+	let objeto = {link_id: link.id, editado_por_id: userID};
+	let registro = await BD_genericas.obtenerPorCampos("links_edicion", objeto);
+	if (registro) await BD_genericas.eliminarPorId("links_edicion", registro.id);
+	// Preparar la información
+	datos = {
+		...datos,
+		link_id: link.id,
+		[producto_id]: link[producto_id],
+		editado_por_id: userID,
+	};
+	// Agregar la nueva edición
+	await BD_genericas.agregarRegistro("links_edicion", datos);
+	// Fin
+	return "Edición guardada";
 };
