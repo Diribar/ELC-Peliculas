@@ -8,6 +8,8 @@ window.addEventListener("load", async () => {
 	let columnas = inputs.length / (filasEditar.length + 1);
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
+	let activos = document.querySelector("#tabla #tags #activo");
+	let pasivos = document.querySelector("#tabla #tags #inactivo");
 	// Botones
 	let botonesEditar = document.querySelectorAll("tbody .yaExistentes .editar");
 	let botonesRecuperar = document.querySelectorAll("tbody .yaExistentes .in");
@@ -53,8 +55,11 @@ window.addEventListener("load", async () => {
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			await fetch("/links/api/recuperar/" + objeto);
-			window.location.reload();
+			let respuesta = await fetch("/links/api/recuperar/" + objeto).then((n) => n.json());
+			// window.location.reload();
+			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");
+			if (respuesta.activos) activos.innerHTML = "* Activos";
+			console.log(respuesta);
 		});
 	});
 	botonesDeshacer.forEach((botonDeshacer, fila) => {
@@ -66,8 +71,15 @@ window.addEventListener("load", async () => {
 			let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 			objeto += "&url=" + urlInputs[fila].value;
 			// Submit
-			await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());
-			window.location.reload();
+			let respuesta = await fetch("/links/api/deshacer/" + objeto).then((n) => n.json());
+			// window.location.reload();
+			if (respuesta.reload) window.location.reload();
+			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");
+			if (respuesta.activos && activos.classList.contains("traslucido"))
+				activos.innerHTML = "* Activos";
+			if (respuesta.pasivos && pasivos.classList.contains("traslucido"))
+				pasivos.innerHTML = "* Pasivos";
+			console.log(respuesta);
 		});
 	});
 });

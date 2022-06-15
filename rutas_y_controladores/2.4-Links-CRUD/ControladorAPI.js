@@ -60,7 +60,7 @@ module.exports = {
 			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
 			// El link está en status 'creado" y por el usuario --> se elimina definitivamente
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
-				respuesta = {mensaje: "El link fue eliminado con éxito", resultado: true};
+				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 				await BD_genericas.eliminarPorId("links", link.id);
 				procesar.actualizarProdConLinkGratuito("links", prodID);
 			}
@@ -75,7 +75,7 @@ module.exports = {
 				// Inactivar
 				await procesar.inactivar("links", link.id, userID, motivo_id);
 				procesar.actualizarProdConLinkGratuito(prodEntidad, prodID);
-				respuesta = {mensaje: "El link fue inactivado con éxito", resultado: true, reload: true};
+				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
 		}
@@ -84,6 +84,7 @@ module.exports = {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
+		let respuesta = {};
 		// Completar la info
 		let recuperar_id = req.session.status_registro.find((n) => n.recuperar).id;
 		// Obtener el link
@@ -93,25 +94,26 @@ module.exports = {
 			"status_registro"
 		);
 		// Obtener el mensaje de la tarea realizada
-		let mensaje = !link // El link original no existe
-			? "El link no existe"
-			: link.status_registro.recuperar // El link ya estaba en status inactivar
-			? "El link ya estaba en status 'inactivar'"
-			: "";
-		if (!mensaje) {
+		respuesta = !link // El link original no existe
+			? {mensaje: "El link no existe", reload: true}
+			: link.status_registro.recuperar // El link ya estaba en status recuperar
+			? {mensaje: "El link ya estaba en status 'recuperar'", reload: true}
+			: respuesta;
+		if (!respuesta.mensaje) {
 			await BD_genericas.actualizarPorId("links", link.id, {
 				status_registro_id: recuperar_id,
 				sugerido_por_id: userID,
 			});
-			mensaje = "Link recuperado";
+			respuesta = {mensaje: "Link recuperado", activos: true, ocultar: true};
 		}
 		// Fin
-		return res.json(mensaje);
+		return res.json(respuesta);
 	},
 	deshacer: async (req, res) => {
 		// Variables
 		let datos = req.query;
 		let userID = req.session.usuario.id;
+		let respuesta = {};
 		// Completar la info
 		let aprobado_id = req.session.status_registro.find((n) => n.aprobado).id;
 		let inactivo_id = req.session.status_registro.find((n) => n.inactivo).id;
@@ -122,16 +124,18 @@ module.exports = {
 			"status_registro"
 		);
 		// Obtener el mensaje de la tarea realizada
-		let mensaje = !link // El link original no existe
-			? "El link no existe"
+		respuesta = !link // El link original no existe
+			? {mensaje: "El link no existe", reload: true}
+			: link.status_registro.creado
+			? {mensaje: "El link está en status creado", reload: true}
 			: link.status_registro.aprobado
-			? "El link está en status aprobado"
+			? {mensaje: "El link está en status aprobado", reload: true}
 			: link.status_registro.inactivo
-			? "El link está en status inactivo"
+			? {mensaje: "El link está en status inactivo", reload: true}
 			: link.sugerido_por_id != userID
-			? "El último cambio de status fue sugerido por otra persona"
-			: "";
-		if (!mensaje) {
+			? {mensaje: "El último cambio de status fue sugerido por otra persona", reload: true}
+			: respuesta;
+		if (!respuesta.mensaje) {
 			let objeto = {sugerido_por_id: null, sugerido_en: null, motivo_id: null};
 			if (link.status_registro.inactivar)
 				await BD_genericas.actualizarPorId("links", link.id, {
@@ -143,10 +147,15 @@ module.exports = {
 					...objeto,
 					status_registro_id: inactivo_id,
 				});
-			mensaje = "Link llevado a su status anterior";
+			respuesta = {
+				mensaje: "Link llevado a su status anterior",
+				activos: true,
+				pasivos: true,
+				ocultar: true,
+			};
 		}
 		// Fin
-		return res.json(mensaje);
+		return res.json(respuesta);
 	},
 };
 
@@ -180,9 +189,9 @@ let edicion_link = async (link, datos, userID) => {
 	let registro = await BD_genericas.obtenerPorCampos("links_edicion", objeto);
 	if (registro) await BD_genericas.eliminarPorId("links_edicion", registro.id);
 	// Averiguar si hay algún campo con novedad
-	delete datos.prodEntidad
-	delete datos.prodID
-	if (!Object.keys(datos).length) return "Edición sin novedades respecto al original"
+	delete datos.prodEntidad;
+	delete datos.prodID;
+	if (!Object.keys(datos).length) return "Edición sin novedades respecto al original";
 	// Preparar la información
 	datos = {
 		...datos,
