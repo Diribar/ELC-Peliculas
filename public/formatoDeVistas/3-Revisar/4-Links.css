@@ -1,2 +1,6 @@
+#cuerpo #comandos {background-color: var(--verde-oscuro);}
 #cuerpo #flechas i {font-size: 2rem; transition: 300ms;}
 #cuerpo #flechas i:hover {transform: scale(1.3);}
+
+#datos .inputError .fa-solid.fa-circle-check{right: 5px;}
+#datos .inputError .fa-solid.fa-circle-xmark{right: -15px;}

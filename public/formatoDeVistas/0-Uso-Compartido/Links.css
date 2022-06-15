@@ -64,13 +64,11 @@
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td .fa-solid {cursor: pointer;}
 #datos tbody tr td .fa-solid.inactivo {cursor: default;}
 
 /* Errores */
 #datos .inputError {position: relative; padding-left: 10px; padding-right: 10px;}
 .mensajeError, .mensajeError::before, .inputError .fa-solid {position: absolute; transform: translate(100%,-50%); top: 50%;}
-#datos .inputError .fa-solid {right: 10px;}
 #datos .inputError .mensajeError {max-width: 200px; right: -5px; line-height: 1.2rem; text-align: left; z-index: 100;}
 #datos .inputError .mensajeError::before {left: -22px;}
 

@@ -179,6 +179,10 @@ let edicion_link = async (link, datos, userID) => {
 	let objeto = {link_id: link.id, editado_por_id: userID};
 	let registro = await BD_genericas.obtenerPorCampos("links_edicion", objeto);
 	if (registro) await BD_genericas.eliminarPorId("links_edicion", registro.id);
+	// Averiguar si hay algún campo con novedad
+	delete datos.prodEntidad
+	delete datos.prodID
+	if (!Object.keys(datos).length) return "Edición sin novedades respecto al original"
 	// Preparar la información
 	datos = {
 		...datos,

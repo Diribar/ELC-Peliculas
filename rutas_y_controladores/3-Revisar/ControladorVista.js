@@ -361,6 +361,7 @@ module.exports = {
 			{[entidad_id]: prodID},
 			["status_registro", "ediciones", "prov", "tipo", "motivo"]
 		);
+		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
 		let imagen = producto.avatar;
@@ -377,7 +378,7 @@ module.exports = {
 				})
 			);
 		// Ir a la vista
-		return res.send(links)
+		//return res.send(links)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,

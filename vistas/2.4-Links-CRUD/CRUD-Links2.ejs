@@ -22,7 +22,7 @@
 		<form id="tabla" action=""> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<div id="tags" class="flex-row">
 				<div id="activo">Activos</div>
-				<div id="inactivo" class="traslucido">Inactivos</div>
+				<div id="inactivo" class="traslucido">Pasivos</div>
 			</div>
 			<table>
 				<%- include("Links1-TituloTabla") %> 
@@ -32,7 +32,7 @@
 					<% for (let link of links) { %>
 						<% let cond = {} %>
 						<%- include("Links2-Condiciones", {link, cond}) %>
-						<%- include("Links3-Datos", {link, cond}) %>
+						<%- include("Links3-Datos", {link, cond, fila}) %>
 						<%- include("Links1-Edicion", {fila, link, cond}) %>
 						<% fila++ %> 
 					<% } %>
