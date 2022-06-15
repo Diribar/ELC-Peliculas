@@ -4,7 +4,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesar = require("../../funciones/3-Procesos/5-Revisar");
+const procesar = require("../../funciones/3-Procesos/4-Revisar");
 
 module.exports = {
 	// Uso general
