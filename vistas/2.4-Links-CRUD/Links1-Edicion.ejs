@@ -65,8 +65,8 @@
 	</td>
 	<!-- Gratuito -->
 	<td class="ancho_gratuito gratuito campo">
-		<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) %> 
 		<div class="inputError">
+			<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) %> 
 			<select name="gratuito" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
 				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
 				<option value="0" <%- link.gratuito == "0" ? "selected" : "" %>>NO</option>
