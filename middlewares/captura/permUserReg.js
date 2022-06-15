@@ -46,7 +46,7 @@ module.exports = async (req, res, next) => {
 					mensajes: [
 						"El registro está capturado por otro usuario " +
 							(registro.capturado_por ? "(" + registro.capturado_por.apodo + ")" : "") +
-							". Estará liberado a partir de las " +
+							". Estará liberado a más tardar, a partir de las " +
 							horarioFinal,
 					],
 					iconos: [vistaAnterior, vistaTablero],

@@ -7,21 +7,6 @@ const variables = require("./Variables");
 
 module.exports = {
 	// Producto
-	statusResumido: (status_registro, capturado_en, captura_activa) => {
-		// Variables
-		let nombres = ["Pend. Aprobac.", "En Revisión", "Aprobado", "Inactivado"];
-		let haceUnaHora = funciones.nuevoHorario(-1);
-		// Obtener el ID del 'status resumido'
-		let id =
-			captura_activa && capturado_en > haceUnaHora
-				? 2
-				: status_registro.gr_pend_aprob
-				? 1
-				: status_registro.aprobado
-				? 3
-				: 4;
-		return {id, nombre: nombres[id - 1]};
-	},
 	obtenerVersionesDelProducto: async (entidad, prodID, userID) => {
 		// Definir los campos include
 		let includes = [
@@ -99,7 +84,7 @@ module.exports = {
 					if (edicion.tipo_id) links[i].tipo_id = edicion.tipo_id;
 					if (edicion.completo !== null) links[i].completo = edicion.completo;
 					if (edicion.parte) links[i].parte = edicion.parte;
-					if (edicion.gratuito!== null) links[i].gratuito = edicion.gratuito;
+					if (edicion.gratuito !== null) links[i].gratuito = edicion.gratuito;
 				}
 			}
 		});

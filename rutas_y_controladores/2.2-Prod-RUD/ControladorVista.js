@@ -62,11 +62,11 @@ module.exports = {
 			camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
-			let statusResumido = procesar.statusResumido(
-				prodCombinado.status_registro,
-				prodCombinado.capturado_en,
-				prodCombinado.captura_activa
-			);
+			let statusResumido = prodCombinado.status_registro.gr_pend_aprob
+				? {id: 1, nombre: "Pend. Aprobac."}
+				: prodCombinado.status_registro.aprobado
+				? {id: 2, nombre: "Aprobado"}
+				: {id: 3, nombre: "Inactivado"};
 			let bloque1 = [
 				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
 				{
