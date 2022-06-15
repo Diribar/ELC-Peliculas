@@ -96,7 +96,7 @@ window.addEventListener("load", async () => {
 				// Si el resultado es conocido --> ponerlo
 				let condicion = !!proveedor.calidad;
 				if (condicion) v.calidadInputs[fila].value = proveedor.calidad;
-				v.calidadInputs[fila].disabled = condicion;
+				if (fila == v.filaAlta) v.calidadInputs[fila].disabled = condicion;
 				// Detectar errores y aplicar consecuencias
 				let error = await mensajeDeError(fila, 1);
 				// Fin
@@ -106,7 +106,7 @@ window.addEventListener("load", async () => {
 				// Si el resultado es conocido --> ponerlo
 				let condicion = !proveedor.trailer || !proveedor.pelicula || v.colecciones;
 				if (condicion) v.tipoInputs[fila].value = !proveedor.pelicula ? 1 : 2;
-				v.tipoInputs[fila].disabled = condicion;
+				if (fila == v.filaAlta) v.tipoInputs[fila].disabled = condicion;
 				// Detectar errores y aplicar consecuencias
 				let error = await mensajeDeError(fila, 2);
 				// Fin
@@ -127,7 +127,7 @@ window.addEventListener("load", async () => {
 				return !error || !error.completo;
 			},
 			controlesEnParte: async (fila) => {
-				// Prevenir errores en 'parte'
+				// Eliminar los caracteres que no sean '-' o un número
 				v.parteInputs[fila].value = v.parteInputs[fila].value.replace(/[^-\d]/g, "");
 				// Si el resultado es conocido --> ponerlo
 				let condicion = v.completoInputs[fila].value == "1";
@@ -140,11 +140,11 @@ window.addEventListener("load", async () => {
 			},
 			controlesEnGratuito: async (fila, proveedor) => {
 				// Si el resultado es conocido --> ponerlo
-				let condicion1 = proveedor.siempre_pago;
-				let condicion2 = proveedor.siempre_gratuito === 0;
+				let condicion1 = proveedor.siempre_gratuito == 1;
+				let condicion2 = proveedor.siempre_pago;
 				if (condicion1) v.gratuitoInputs[fila].value = "1";
 				else if (condicion2) v.gratuitoInputs[fila].value = "0";
-				v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
+				if (fila == v.filaAlta) v.gratuitoInputs[fila].disabled = condicion1 || condicion2;
 				// Detectar errores y aplicar consecuencias
 				let error = await mensajeDeError(fila, 5);
 				// Fin

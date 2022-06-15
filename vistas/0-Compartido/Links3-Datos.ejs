@@ -22,15 +22,25 @@
 		</select>
 	</td>
 	<!-- Calidad -->
-	<td class="ancho_calidad taparMotivo"><%= link.calidad %></td>
+	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n=>n.calidad&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%= link.calidad %>
+	</td>
 	<!-- Tipo -->
-	<td class="ancho_tipo taparMotivo"><%- link.tipo_id==1 ? "Trailer" : "Película" %></td>
+	<td class="ancho_tipo taparMotivo <%- link.ediciones.find(n=>n.tipo_id&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%- link.tipo_id==1 ? "Trailer" : "Película" %>
+	</td>
 	<!-- Completo -->
-	<td class="ancho_completo taparMotivo"><%- link.completo==1 ? "SI" : "NO" %></td>
+	<td class="ancho_completo taparMotivo <%- link.ediciones.find(n=>n.completo!==null&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%- link.completo==1 ? "SI" : "NO" %>
+	</td>
 	<!-- Parte -->
-	<td class="ancho_parte taparMotivo"><%- link.parte %></td>
+	<td class="ancho_parte taparMotivo <%- link.ediciones.find(n=>n.parte&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%- link.parte %>
+	</td>
 	<!-- Gratuito -->
-	<td class="ancho_gratuito taparMotivo"><%- link.gratuito ? "SI" :  "NO" %></td>
+	<td class="ancho_gratuito taparMotivo <%- link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%- link.gratuito ? "SI" :  "NO" %>
+	</td>
 	<!-- Status -->
 	<td class="ancho_status taparMotivo"><%= link.status_registro.nombre %></td>
 	<!-- Propio -->
