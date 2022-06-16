@@ -180,9 +180,7 @@ let actualizar_link = async (link, datos) => {
 };
 let edicion_link = async (link, datos, userID) => {
 	// Depurar para dejar solamente las novedades de la edición
-	console.log(datos);
 	datos = funciones.quitarLasCoincidenciasConOriginal(link, datos);
-	console.log(datos);
 	// Obtener nuevamente el 'producto_id', que se pierde en el paso anterior
 	let producto_id = funciones.obtenerEntidad_id(datos.prodEntidad);
 	// Si existe una edición de ese link y de ese usuario --> eliminarlo
