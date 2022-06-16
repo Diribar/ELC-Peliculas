@@ -5,6 +5,7 @@ const BD_genericas = require("../2-BD/Genericas");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -121,17 +122,30 @@ module.exports = {
 		}
 		return;
 	},
-	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		for (let campo in edicion)
-			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
-				delete edicion[campo];
-		return edicion;
-	},
 	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
+		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
 		return objeto;
 	},
-	actualizarProdConLinkGratuito: async function (prodEntidad, prodID)  {
+	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
+		// Obtener los campos a comparar
+		let camposAComparar = variables["camposRevisar" + ent]().map((n) => n.nombreDelCampo);
+		// Quitar de edicion los campos que no se comparan
+		for (let campo in edicion) if (!camposAComparar.includes(campo)) delete edicion[campo];
+		// Fin
+		return edicion;
+	},
+	quitarLasCoincidenciasConOriginal: (original, edicion) => {
+		for (let campo in edicion) if (edicion[campo] === original[campo]) delete edicion[campo];
+		return edicion;
+	},
+	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
+		// Averiguar si queda algún campo
+		let quedanCampos = !!Object.keys(datos).length;
+		// Eliminar el registro de la edición
+		if (!quedanCampos) await BD_genericas.eliminarPorId(entidadEdic, entidadEdic_id);
+		return quedanCampos;
+	},
+	actualizarProdConLinkGratuito: async function (prodEntidad, prodID) {
 		// Variables
 		let datos = {};
 		let entidad_id = this.obtenerEntidad_id(prodEntidad);

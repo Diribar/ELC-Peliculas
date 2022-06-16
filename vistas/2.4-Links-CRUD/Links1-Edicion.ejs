@@ -21,7 +21,33 @@
 				<option value="1081" <%- link.calidad=="1081" ? "selected" : "" %>>>1080</option>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 9"><span class="mensajeError"></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError"></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Castellano -->
+	<td class="ancho_castellano castellano campo">
+		<div class="inputError">
+			<% aux = link.ediciones.find(n=>n.castellano!==null&&n.editado_por_id!=userID) %> 
+			<select name="castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
+				<option value="1" <%- link.castellano == "1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.castellano == "0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-check ocultar"></i>
+		</div>
+	</td>
+	<!-- Gratuito -->
+	<td class="ancho_gratuito gratuito campo">
+		<div class="inputError">
+			<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) %> 
+			<select name="gratuito" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
+				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.gratuito == "0" ? "selected" : "" %>>NO</option>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 4"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
@@ -36,7 +62,7 @@
 				<% } %>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 8"><span class="mensajeError"></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 3"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
@@ -49,7 +75,7 @@
 				<option value="0" <%- link.completo=="0" ? "selected" : "" %>>NO</option>
 			</select>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 7"><span class="mensajeError"></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 2"><span class="mensajeError"></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>
@@ -59,20 +85,7 @@
 			<% aux = link.ediciones.find(n=>n.parte&&n.editado_por_id!=userID) %> 
 			<input name="parte" type="text" class="input <%- aux ? 'rojo' : '' %>" value="<%= link.parte %>" <% if (aux) { %>disabled<% } %>>
 			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 6"><span class="mensajeError "></span></i>
-			<i class="fa-solid fa-circle-check ocultar"></i>
-		</div>
-	</td>
-	<!-- Gratuito -->
-	<td class="ancho_gratuito gratuito campo">
-		<div class="inputError">
-			<% aux = link.ediciones.find(n=>n.gratuito!==null&&n.editado_por_id!=userID) %> 
-			<select name="gratuito" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.gratuito == "1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.gratuito == "0" ? "selected" : "" %>>NO</option>
-			</select>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
+			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 1"><span class="mensajeError "></span></i>
 			<i class="fa-solid fa-circle-check ocultar"></i>
 		</div>
 	</td>

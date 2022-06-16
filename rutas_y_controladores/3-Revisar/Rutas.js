@@ -62,7 +62,8 @@ router.get("/api/producto-edicion", soloGestionProd, API.prodEdics);
 // RCLV-Alta
 router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Altas);
 // Links
-router.get("/api/inactivar", soloGestionProd, API.inactivar);
+// router.get("/api/inactivar", soloGestionProd, API.inactivar);
+router.get("/api/edic_aprob", soloGestionProd, API.linkEdicAprob);
 router.get("/api/eliminar", soloGestionProd, API.eliminar);
 
 // Exportarlo **********************************************

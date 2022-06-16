@@ -15,10 +15,12 @@
 			<% if (edicion[campo]!==null) { %>
 				<div class="inputError">
 					<% let valor= campo=="tipo_id" ? (edicion[campo]==1?"Trailer":"Película") : (campo=="completo" || campo=="gratuito") ? (edicion[campo]?"SI":"NO") : edicion[campo] %> 
-					<input name="<%= campo %>" type="text" value="<%= valor %>" disabled>
+					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
 					<i class="fa-solid fa-circle-check <%- edicPropia ? 'ocultar' : '' %>"></i>
 					<i class="fa-solid fa-circle-xmark <%- edicPropia ? 'ocultar' : '' %>"></i>
+					<!-- Edición ID -->
+					<div class="edicion_id ocultar"><%= edicion.id %></div>
 				</div>
 				<% break %>
 			<% } %>

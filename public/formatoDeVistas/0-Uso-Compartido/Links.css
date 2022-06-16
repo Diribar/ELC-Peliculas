@@ -2,7 +2,7 @@
 #contenido {display: flex; flex-direction: column; align-content: center; justify-content: space-between; flex-grow: 1;}
 #contenido {padding: 20px 40px 20px;}
 #datos {display: flex; flex-direction: column; }
-#datos #tipoLink {align-self: flex-start;}
+#datos #tipoLink {align-self: flex-start; margin-bottom: 10px;}
 #datos #tabla {align-self: center;}
 #datos #tags div {padding: 3px 15px; background-color: var(--verde-ingles); color: var(--amarillo-claro); font-weight: bold;}
 #datos #tags div {clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); border-bottom: 1px solid var(--amarillo-claro);}
@@ -37,10 +37,12 @@
 /* Tablas - Anchos */
 #datos table .ancho_url {width: 140px;}
 #datos table .ancho_calidad {width: 86px;}
+#datos table .ancho_gratuito {width: 64px;}
+#datos table .ancho_castellano {width: 77px;}
+
 #datos table .ancho_tipo {width: 90px;}
 #datos table .ancho_completo {width: 73px;}
 #datos table .ancho_parte {width: 60px;}
-#datos table .ancho_gratuito {width: 64px;}
 #datos table .ancho_status {width: 75px;}
 #datos table .ancho_propio {width: 53px;}
 #datos table .ancho_accion {width: 70px;}

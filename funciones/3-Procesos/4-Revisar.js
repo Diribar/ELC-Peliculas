@@ -158,14 +158,11 @@ module.exports = {
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
 		edicion = funciones.quitarLosCamposSinContenido(edicion);
-		[edicion, noSeComparan] = quitarLosCamposQueNoSeComparan(edicion);
+		edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(edicion).length;
+		let quedanCampos = funciones.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);
 			// Averiguar si el original no tiene errores
 			let errores = await validar.edicion(null, {...prodOriginal, entidad});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
@@ -200,7 +197,7 @@ module.exports = {
 		return [quedanCampos, edicion, statusAprobado];
 	},
 	prod_ArmarComparac: (prodOriginal, prodEditado) => {
-		let camposAComparar = variables.camposRevisarEdic();
+		let camposAComparar = variables.camposRevisarProd();
 		for (let i = camposAComparar.length - 1; i >= 0; i--) {
 			let campo = camposAComparar[i].nombreDelCampo;
 			if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
@@ -663,17 +660,4 @@ let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
 			n.capturado_por_id == userID
 	);
 	return productos;
-};
-let quitarLosCamposQueNoSeComparan = (edicion) => {
-	let noSeComparan = {};
-	// Obtener los campos a comparar
-	let camposAComparar = variables.camposRevisarEdic().map((n) => n.nombreDelCampo);
-	// Quitar de edicion los campos que no se comparan
-	for (let campo in edicion)
-		if (!camposAComparar.includes(campo)) {
-			noSeComparan[campo] = edicion[campo];
-			delete edicion[campo];
-		}
-	// Fin
-	return [edicion, noSeComparan];
 };

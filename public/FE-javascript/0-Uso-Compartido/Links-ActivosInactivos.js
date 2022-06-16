@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
 	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
 	let filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
 	let pasivos = new URL(window.location.href).searchParams.get("pasivos");
+	let urlAlta = document.querySelectorAll("tbody .alta input[name='url'");
 
 	// Fórmulas
 	let mostrarPasivos = () => {
@@ -49,5 +50,5 @@ window.addEventListener("load", () => {
 	});
 	// Startup
 	if (pasivos !== null) mostrarPasivos();
-	tabla.classList.remove("invisible")
+
 });

@@ -6,13 +6,14 @@ module.exports = (sequelize, dt) => {
 		capitulo_id: {type: dt.INTEGER},
 
 		url: {type: dt.STRING(100)},
+		prov_id: {type: dt.INTEGER},
 
 		calidad: {type: dt.INTEGER},
+		castellano: {type: dt.BOOLEAN},
+		gratuito: {type: dt.BOOLEAN},
+		tipo_id: {type: dt.INTEGER},
 		completo: {type: dt.INTEGER},
 		parte: {type: dt.INTEGER},
-		tipo_id: {type: dt.INTEGER},
-		prov_id: {type: dt.INTEGER},
-		gratuito: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
