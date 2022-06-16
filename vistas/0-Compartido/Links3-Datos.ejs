@@ -7,7 +7,7 @@
 	<%- cond.inactivos ? 'inactivo_ocultar' : '' %> 
 	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
 	fila<%= fila %> 
-	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob&&link.ediciones.length) : '' %>
+	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob && link.ediciones.length) : '' %>
 ">
 	<!-- Url -->
 	<td class="ancho_url url">
@@ -27,11 +27,11 @@
 		</select>
 	</td>
 	<!-- Calidad -->
-	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n=>n.calidad&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_calidad taparMotivo <%- link.ediciones.find(n=>n.calidad && n.editado_por_id!=userID) ? 'rojo' : '' %>">
 		<%= link.calidad %>
 	</td>
 	<!-- Castellano -->
-	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n=>n.castellano!==null&&n.editado_por_id!=userID) ? 'rojo' : '' %>">
+	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n=>n.castellano!==null && n.editado_por_id!=userID) ? 'rojo' : '' %>">
 		<%- link.castellano ? "SI" :  "NO" %>
 	</td>
 	<!-- Gratuito -->
