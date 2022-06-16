@@ -356,11 +356,13 @@ module.exports = {
 		if (informacion) return res.render("Errores", {informacion});
 		// Obtener todos los links
 		let entidad_id = funciones.obtenerEntidad_id(entidad);
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
-			"links",
-			{[entidad_id]: prodID},
-			["status_registro", "ediciones", "prov", "tipo", "motivo"]
-		);
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
+			"status_registro",
+			"ediciones",
+			"prov",
+			"tipo",
+			"motivo",
+		]);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
@@ -377,6 +379,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
+		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Ir a la vista
 		//return res.send(links)
 		return res.render("0-Revisar", {
@@ -394,6 +397,7 @@ module.exports = {
 			calidades: [144, 240, 360, 480, 720, 1080],
 			mostrar: null,
 			userID,
+			camposARevisar,
 		});
 	},
 };

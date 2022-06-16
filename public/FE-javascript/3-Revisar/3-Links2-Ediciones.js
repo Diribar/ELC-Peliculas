@@ -25,7 +25,6 @@ window.addEventListener("load", async () => {
 	// Guardar - Hecho
 	edicsRech.forEach((edicRech, indice) => {
 		edicRech.addEventListener("click", async () => {
-			console.log(indice, ediciones_id[indice].innerHTML, inputs[indice].name);
 		});
 	});
 });

@@ -319,18 +319,12 @@ module.exports = {
 		// Variables
 		let api = req.query;
 		let campo = api.campo;
-		console.log(campo);
 		let userID = req.session.usuario.id;
 		let camposVacios = {};
 		variables.camposRevisarLinks().forEach((campo) => {
 			camposVacios[campo.nombreDelCampo] = null;
 		});
-		console.log(328, camposVacios);
 		let datos;
-		//	prodEntidad: 'capitulos',
-		//  prodID: '1',
-		//  edicion_id: '35',
-		//  campo: 'tipo_id'
 		// Obtener la edicion
 		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
 		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
@@ -338,6 +332,8 @@ module.exports = {
 		let link_id = edicion.link_id;
 		// Se actualizan los campos "consecuencia" que correspondan en el link original
 		datos = {[campo]: edicion[campo]};
+		if (campo == "tipo_id" && edicion.completo!==null) datos.completo = edicion.completo;
+		if (campo == "tipo_id" && edicion.parte!==null) datos.parte = edicion.parte;
 		await BD_genericas.actualizarPorId("links", link_id, datos);
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		// Se aumenta el registro de ediciones aprobadas en el usuario
@@ -356,15 +352,11 @@ module.exports = {
 		BD_genericas.agregarRegistro("edic_aprob", datos);
 		// Se revisan las ediciones y se eliminan los campos sin diferencias con el original
 		// Se eliminan los registros editados que quedan vacíos de campos útiles
-		console.log(link.ediciones.length);
 		link.ediciones.forEach(async (edicion) => {
 			let edicion_id = edicion.id;
-			console.log(357, edicion_id);
 			edicion = funciones.quitarLosCamposSinContenido(edicion);
 			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");
-			console.log(360, edicion);
 			edicion = funciones.quitarLasCoincidenciasConOriginal(link, edicion);
-			console.log(362, edicion);
 			let quedanCampos = await funciones.eliminarEdicionSiEstaVacio(
 				"links_edicion",
 				edicion_id,
@@ -377,7 +369,7 @@ module.exports = {
 				});
 		});
 		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Link actualizado", reload: true});
 	},
