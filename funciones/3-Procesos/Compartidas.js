@@ -135,11 +135,12 @@ module.exports = {
 		return edicion;
 	},
 	quitarLasCoincidenciasConOriginal: (original, edicion) => {
+		// Eliminar campo si:
+		// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+		// - edición es estrictamente igual al original
 		for (let campo in edicion)
-			// edición está siempre en texto mientras que original puede estar en número
-			// edición puede tener '0' y original puede ser 'null'
 			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
-			delete edicion[campo];
+				delete edicion[campo];
 		return edicion;
 	},
 	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
