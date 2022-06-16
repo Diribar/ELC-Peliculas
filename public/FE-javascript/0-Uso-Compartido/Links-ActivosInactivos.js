@@ -1,13 +1,11 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let tabla = document.querySelector("#tabla");
 	let botonActivo = document.querySelector("#datos #tags #activo");
 	let botonInactivo = document.querySelector("#datos #tags #inactivo");
 	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
 	let filasConStatusInActivo = document.querySelectorAll("#datos .inactivo_true");
 	let pasivos = new URL(window.location.href).searchParams.get("pasivos");
-	let urlAlta = document.querySelectorAll("tbody .alta input[name='url'");
 
 	// Fórmulas
 	let mostrarPasivos = () => {
