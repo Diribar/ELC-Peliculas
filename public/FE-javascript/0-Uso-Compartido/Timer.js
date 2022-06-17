@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 	// Tiempo restante
 	let ahora = new Date(new Date().toUTCString());
 	let tiempoRestante = (horarioFinal.getTime() - ahora.getTime()) / unMinuto;
-
+	// Minutos y Segundos disponibles
 	let tiempoMax = 60;
 	let minutosDispon = tiempoRestante > 0 ? tiempoRestante : tiempoRestante <= -60 ? tiempoMax : 0;
 	let segundosDispon = Math.round((minutosDispon % 1) * 60);
@@ -96,10 +96,6 @@ window.addEventListener("load", async () => {
 		if (minutosDispon <= 15) timer.style.backgroundColor = "var(--rojo-oscuro)";
 		else if (minutosDispon <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
-
-	console.log(horarioFinal);
-	console.log(ahora);
-	console.log(segundosDispon);
 
 	// STARTUP -------------------------------------------------------------
 	// Mostrar el tiempo inicial
