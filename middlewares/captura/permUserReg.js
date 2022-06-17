@@ -7,19 +7,19 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Variables - Generales
 	const entidad_codigo = req.query.entidad;
-	const regID = req.query.id;
+	const entidad_id = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
 	const haceDosHoras = funciones.nuevoHorario(-2);
 	const userID = req.session.usuario.id;
 	let informacion;
-	// Obtener el urlBase
+	// Variables de url
 	const urlBase = req.baseUrl;
 	// Obtener el url
-	const url = req.url.slice(1);
+	const url = req.url;
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
 	if (entidad_codigo == "capitulos") includes.push("coleccion");
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, regID, includes);
+	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, entidad_id, includes);
 	const creado_en = registro.creado_en;
 	const capturado_en = registro.capturado_en;
 	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
@@ -30,13 +30,14 @@ module.exports = async (req, res, next) => {
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaTablero = variables.vistaTablero();
+	const vistaInactivar = variables.vistaInactivar(req);
 
 	// Fórmulas
 	let creadoHaceMenosDeUnaHora = () => {
 		return creado_en > haceUnaHora && !creadoPorElUsuario
 			? {
 					mensajes: ["Por ahora, el registro sólo está accesible para su creador"],
-					iconos: [vistaAnterior, vistaTablero],
+					iconos: [vistaAnterior, vistaInactivar],
 			  }
 			: "";
 	};
@@ -44,16 +45,16 @@ module.exports = async (req, res, next) => {
 		return capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa
 			? {
 					mensajes: [
-						"El registro está capturado por otro usuario " +
-							(registro.capturado_por ? "(" + registro.capturado_por.apodo + ")" : "") +
-							". Estará liberado a más tardar, a partir de las " +
-							horarioFinal,
+						"El registro está capturado por " +
+							(registro.capturado_por ? registro.capturado_por.apodo : "") +
+							".",
+						"Estará liberado a más tardar el " + horarioFinal,
 					],
-					iconos: [vistaAnterior, vistaTablero],
+					iconos: [vistaAnterior, vistaInactivar],
 			  }
 			: "";
 	};
-	let capturaEnPausa = () => {
+	let capturaExcedida = () => {
 		return capturado_en < haceUnaHora &&
 			capturado_en > haceDosHoras &&
 			registro.capturado_por_id == userID
@@ -63,7 +64,7 @@ module.exports = async (req, res, next) => {
 						"Quedó a disposición de los demás usuarios.",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
-					iconos: [vistaAnterior, vistaTablero],
+					iconos: [vistaAnterior, vistaInactivar],
 			  }
 			: "";
 	};
@@ -71,7 +72,7 @@ module.exports = async (req, res, next) => {
 		let informacion;
 		let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(
 			entidad_codigo,
-			regID,
+			entidad_id,
 			userID
 		);
 		if (prodCapturado) {
@@ -79,10 +80,9 @@ module.exports = async (req, res, next) => {
 			const pc_entidadCodigo = prodCapturado.entidad;
 			const pc_entidadNombre = funciones.obtenerEntidadNombre(pc_entidadCodigo);
 			const pc_entidadID = prodCapturado.id;
-			const url = encodeURIComponent(req.originalUrl);
-			const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
-				"/inactivar/?entidad=" + pc_entidadCodigo + "&id=" + pc_entidadID + "&url=" + url;
+				"/inactivar/?entidad=" + pc_entidadCodigo + "&id=" + pc_entidadID + "&url=" + originalUrl;
 			const liberar = {
 				nombre: "fa-circle-check",
 				link: linkInactivar,
@@ -111,7 +111,7 @@ module.exports = async (req, res, next) => {
 						prodCapturado[nombre] +
 						", que está reservad" +
 						terminacion.reservado +
-						" desde las " +
+						" desde el " +
 						horario,
 				],
 				iconos: [vistaAnterior, liberar],
@@ -121,7 +121,7 @@ module.exports = async (req, res, next) => {
 	};
 	let verificacionesDeRevision = () => {
 		let informacion;
-		if (urlBase == "/revision" && url != "tablero-de-control") {
+		if (urlBase == "/revision" && !url.startsWith("/tablero-de-control")) {
 			// El registro está en un status gr_pend_aprob, creado por el Revisor
 			if (registro.status_registro.gr_pend_aprob && creadoPorElUsuario)
 				informacion = {
@@ -159,7 +159,7 @@ module.exports = async (req, res, next) => {
 	// 2. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();
 	// 3. El usuario capturó la entidad hace más de una hora y menos de dos horas
-	if (!informacion) informacion = capturaEnPausa();
+	if (!informacion) informacion = capturaExcedida();
 	// 4. El usuario tiene capturado otro registro en forma activa
 	if (!informacion) informacion = await otroRegistroCapturado();
 	// Verificaciones exclusivas de las vistas de Revisión

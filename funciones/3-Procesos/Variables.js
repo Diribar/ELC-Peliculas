@@ -368,6 +368,9 @@ module.exports = {
 	},
 
 	// Varios
+	vistaInicio: () => {
+		return {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"};
+	},
 	vistaAnterior: (urlAnterior) => {
 		return {
 			nombre: "fa-circle-left",
@@ -375,14 +378,26 @@ module.exports = {
 			titulo: "Ir a la vista anterior",
 		};
 	},
+	vistaInactivar: (req) => {
+		return req.originalUrl.startsWith("/revision/")
+			? {
+					nombre: "fa-spell-check",
+					link: "/revision/inactivar-captura/?entidad=" + req.query.entidad + "&id=" + req.query.id,
+					titulo: "Ir al 'Tablero de Control' de Revisiones",
+			  }
+			: req.originalUrl.startsWith("/producto/edicion/") || req.originalUrl.startsWith("/links/abm/")
+			? {
+					nombre: "fa-circle-info",
+					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
+					titulo: "Ir al 'Detalle de Información'",
+			  }
+			: {};
+	},
 	vistaTablero: () => {
 		return {
 			nombre: "fa-spell-check",
 			link: "/revision/tablero-de-control",
 			titulo: "Ir al 'Tablero de Control' de Revisiones",
 		};
-	},
-	vistaInicio: () => {
-		return {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"};
 	},
 };

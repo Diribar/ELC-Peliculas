@@ -7,7 +7,7 @@
 	<%- cond.inactivos ? 'inactivo_ocultar' : '' %> 
 	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
 	fila<%= fila %> 
-	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob && link.ediciones.length) : '' %>
+	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob && !!link.ediciones.length) : '' %>
 ">
 	<!-- Url -->
 	<td class="ancho_url url">

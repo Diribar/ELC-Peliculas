@@ -8,15 +8,22 @@ window.addEventListener("load", async () => {
 	let codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
 	// Temas de horario y fechas
-	let minutosDispon, horarioFinal;
 	let unMinuto = 60 * 1000;
 	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-
 	// Horario Inicial
-	let codigoEnc = encodeURIComponent(codigo);
-	let horarioInicial = await fetch(
-		"/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID + "&codigo=" + codigoEnc
-	).then((n) => n.json());
+	let horarioInicial = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID).then((n) =>
+		n.json()
+	);
+	// Configurar el horario final
+	let horarioFinal = new Date(horarioInicial);
+	horarioFinal.setHours(horarioFinal.getHours() + 1);
+	// Tiempo restante
+	let ahora = new Date(new Date().toUTCString());
+	let tiempoRestante = (horarioFinal.getTime() - ahora.getTime()) / unMinuto;
+
+	let tiempoMax = 60;
+	let minutosDispon = tiempoRestante > 0 ? tiempoRestante : tiempoRestante <= -60 ? tiempoMax : 0;
+	let segundosDispon = Math.round((minutosDispon % 1) * 60);
 
 	// FUNCIONES -------------------------------------------------------------
 	let horarioTexto = (horario) => {
@@ -30,7 +37,6 @@ window.addEventListener("load", async () => {
 			String(horario.getMinutes()).padStart(2, "0")
 		);
 	};
-
 	let funcionTimer = () => {
 		let actualizarTimer = setInterval(() => {
 			minutosDispon--;
@@ -38,8 +44,7 @@ window.addEventListener("load", async () => {
 			timer.innerHTML = minutosDispon + " min.";
 			if (minutosDispon == 0) {
 				clearInterval(actualizarTimer);
-				// Cartel de "time out"
-				funcionCartel();
+				return funcionCartel();
 			} else formatoTimer(minutosDispon);
 		}, unMinuto);
 	};
@@ -54,37 +59,16 @@ window.addEventListener("load", async () => {
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
 		// Mensajes
-		let arrayMensajes =
-			codigo == "/producto/edicion/"
-				? [
-						"Tu edición de este producto comenzó el " +
-							horarioInicial.slice(0, horarioInicial.indexOf(" ")) +
-							" a las " +
-							horarioInicial.slice(horarioInicial.indexOf(" ")) +
-							"hs..",
-						"Transcurrida 1 hora, quedó a disposición de nuestro equipo para analizar tu trabajo.",
-				  ]
-				: codigo == "/links/abm/"
-				? [
-						"Esta edición quedó inconclusa desde el " +
-							horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
-							" a las " +
-							horarioFinal.slice(horarioFinal.indexOf(" ")) +
-							"hs.. ",
-						"Quedó a disposición del equipo de revisores.",
-						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás retomar la edición.",
-				  ]
-				: codigo.startsWith("/revision/")
-				? [
-						"Esta revisión quedó inconclusa desde el " +
-							horarioFinal.slice(0, horarioFinal.indexOf(" ")) +
-							" a las " +
-							horarioFinal.slice(horarioFinal.indexOf(" ")) +
-							"hs.. ",
-						"Quedó a disposición de que lo revise otra persona.",
-						"Si nadie comienza a revisarlo hasta 1 hora después de ese horario, podrás volverlo a revisar.",
-				  ]
-				: [];
+		let horarioFinalTexto = horarioTexto(horarioFinal);
+		let arrayMensajes = [
+			"Esta captura terminó el " +
+				horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" ")) +
+				" a las " +
+				horarioFinalTexto.slice(horarioFinalTexto.indexOf(" ")) +
+				"hs.. ",
+			"Quedó a disposición de los demás usuarios.",
+			"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
+		];
 		mensajes.innerHTML = "";
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
@@ -92,13 +76,13 @@ window.addEventListener("load", async () => {
 		let iconos =
 			codigo == "/producto/edicion/" || codigo == "/links/abm/"
 				? {
-						HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 						link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+						HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 				  }
 				: codigo.startsWith("/revision/")
 				? {
-						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 						link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				  }
 				: {};
 		flechas.innerHTML = "";
@@ -113,30 +97,23 @@ window.addEventListener("load", async () => {
 		else if (minutosDispon <= 30) timer.style.backgroundColor = "var(--naranja-oscuro)";
 	};
 
-	// Variables con funciones
-	if (horarioInicial) {
-		// Pulir el horario inicial
-		horarioInicial = new Date(horarioInicial);
-		horarioInicial.setSeconds(0);
-		// Configurar el horario final
-		horarioFinal = horarioInicial;
-		horarioFinal.setHours(horarioInicial.getHours() + 1);
-		// Tiempo restante
-		let ahora = new Date(new Date().toUTCString());
-		ahora.setSeconds(0);
-		let tiempoRestante = parseInt((horarioFinal.getTime() - ahora.getTime()) / unMinuto);
-		minutosDispon = tiempoRestante > 0 ? Math.min(60, tiempoRestante) : tiempoRestante <= -60 ? 60 : 0;
-		// Horario en formato texto
-		horarioInicial = horarioTexto(horarioInicial);
-		horarioFinal = horarioTexto(horarioFinal);
-	}
+	console.log(horarioFinal);
+	console.log(ahora);
+	console.log(segundosDispon);
 
 	// STARTUP -------------------------------------------------------------
-	if (horarioInicial) {
+	// Mostrar el tiempo inicial
+	let minutosInicialesAMostrar = parseInt(minutosDispon) + (segundosDispon ? 1 : 0);
+	timer.innerHTML = minutosInicialesAMostrar + " min.";
+	formatoTimer(minutosDispon);
+	timer.classList.remove("ocultar");
+	// Pausa hasta que se acaben los segundos del minuto inicial
+	setTimeout(() => {
+		// Actualizar los minutos disponibles
+		minutosDispon = parseInt(minutosDispon);
 		timer.innerHTML = minutosDispon + " min.";
-		formatoTimer(minutosDispon);
+		if (minutosDispon == 0) return funcionCartel();
+		// Ejecutar la rutina
 		funcionTimer();
-		timer.classList.remove("ocultar");
-		if (minutosDispon == 0) funcionCartel();
-	}
+	}, segundosDispon * 1000);
 });
