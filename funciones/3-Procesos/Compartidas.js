@@ -131,6 +131,46 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
+	actualizarProdConLinkGratuito: async function (prodEntidad, prodID)  {
+		// Variables
+		let datos = {};
+		let entidad_id = this.obtenerEntidad_id(prodEntidad);
+		// Obtener el producto con include a links
+		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
+			"links_gratuitos_cargados",
+			"links_gratuitos_en_la_web",
+			"links",
+			"status_registro",
+		]);
+		// Obtener los links gratuitos de películas del producto
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
+			"status_registro",
+			"tipo",
+		])
+			.then((n) => (n.length ? n.filter((n) => n.gratuito) : ""))
+			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
+		// Obtener los links 'Aprobados' y 'TalVez'
+		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
+		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
+		if (linksActivos.length || linksTalVez.length) {
+			// Obtener los ID de si, no y TalVez
+			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si = si_no_parcial.find((n) => n.si).id;
+			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
+			let no = si_no_parcial.find((n) => n.no).id;
+			// Acciones para LINKS GRATUITOS EN LA WEB
+			datos.links_gratuitos_en_la_web_id = linksActivos.length
+				? si
+				: producto.links_gratuitos_en_la_web_id != no
+				? talVez
+				: no;
+			// Acciones para LINKS GRATUITOS CARGADOS
+			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
+			// Actualizar la BD
+			BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
+		}
+		return;
+	},
 
 	// Middleware/RevisarUsuario
 	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, regID, userID) => {

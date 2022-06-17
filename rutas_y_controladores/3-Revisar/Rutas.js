@@ -51,16 +51,7 @@ router.get(
 // Vistas de RCLVs
 router.get("/rclv", soloGestionProd, entidad, id, permUserReg, permReg, capturaActivar, vista.RCLV_Alta);
 // Vistas de Links
-router.get(
-	"/links",
-	soloGestionProd,
-	entidad,
-	id,
-	permReg,
-	permUserReg,
-	capturaActivar,
-	vista.links
-);
+router.get("/links", soloGestionProd, entidad, id, permReg, permUserReg, capturaActivar, vista.links);
 
 // Rutas de APIs *******************************************
 // Uso compartido
@@ -70,6 +61,9 @@ router.get("/api/producto-alta", soloGestionProd, API.prodAltas);
 router.get("/api/producto-edicion", soloGestionProd, API.prodEdics);
 // RCLV-Alta
 router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Altas);
+// Links
+router.get("/api/inactivar", soloGestionProd, API.inactivar);
+router.get("/api/eliminar", soloGestionProd, API.eliminar);
 
 // Exportarlo **********************************************
 module.exports = router;

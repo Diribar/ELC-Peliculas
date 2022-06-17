@@ -1,7 +1,6 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const procesar = require("../../funciones/3-Procesos/3-RUD");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
 const validar = require("../../funciones/4-Validaciones/RUD");
@@ -62,7 +61,7 @@ module.exports = {
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 				await BD_genericas.eliminarPorId("links", link.id);
-				procesar.actualizarProdConLinkGratuito("links", prodID);
+				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
 			}
 			// El link existe y no tiene status 'aprobado'
 			else if (!link.status_registro.aprobado)
@@ -74,7 +73,7 @@ module.exports = {
 			else {
 				// Inactivar
 				await procesar.inactivar("links", link.id, userID, motivo_id);
-				procesar.actualizarProdConLinkGratuito(prodEntidad, prodID);
+				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);
@@ -171,12 +170,12 @@ let obtenerProveedorID = async (url) => {
 let crear_link = async (datos, userID) => {
 	datos.creado_por_id = userID;
 	await BD_genericas.agregarRegistro("links", datos);
-	procesar.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+	funciones.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 	return "Link agregado";
 };
 let actualizar_link = async (link, datos) => {
 	await BD_genericas.actualizarPorId("links", link.id, datos);
-	procesar.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+	funciones.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 	return "Link original actualizado";
 };
 let edicion_link = async (link, datos, userID) => {
