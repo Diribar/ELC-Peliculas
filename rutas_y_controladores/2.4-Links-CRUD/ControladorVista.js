@@ -15,11 +15,11 @@ module.exports = {
 		let tema = "links_rud";
 		let codigo = "links";
 		// Obtener los datos identificatorios del producto y del usuario
-		let entidad = req.query.entidad;
+		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(prodEntidad, prodID, userID);
 		// Obtener el avatar
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
@@ -31,15 +31,15 @@ module.exports = {
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
-		let links = await procesar.obtenerLinksActualizados(entidad, prodID, userID);
+		let links = await procesar.obtenerLinksActualizados(prodEntidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
-		let titulo = "ABM de Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let prodNombre = funciones.obtenerEntidadNombre(prodEntidad);
+		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
-		if (entidad == "capitulos") {
+		if (prodEntidad == "capitulos") {
 			let coleccion_id =
 				prodEditado && prodEditado.coleccion_id
 					? prodEditado.coleccion_id
@@ -61,7 +61,7 @@ module.exports = {
 		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
-			entidad,
+			entidad:prodEntidad,
 			prodID,
 			userID,
 			titulo,

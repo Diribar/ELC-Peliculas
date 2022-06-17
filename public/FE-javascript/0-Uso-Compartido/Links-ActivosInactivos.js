@@ -1,7 +1,6 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let tabla = document.querySelector("#tabla");
 	let botonActivo = document.querySelector("#datos #tags #activo");
 	let botonInactivo = document.querySelector("#datos #tags #inactivo");
 	let filasConStatusActivo = document.querySelectorAll("#datos .inactivo_false");
@@ -49,5 +48,5 @@ window.addEventListener("load", () => {
 	});
 	// Startup
 	if (pasivos !== null) mostrarPasivos();
-	tabla.classList.remove("invisible")
+
 });

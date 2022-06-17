@@ -221,7 +221,7 @@ CREATE TABLE altas_registros_aprob (
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME NULL,
+	evaluado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	
 	comunicado_en DATETIME NULL,
 
@@ -240,7 +240,7 @@ CREATE TABLE edic_registros_aprob (
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
 	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME NULL,
+	evaluado_en DATETIME DEFAULT UTC_TIMESTAMP,
 
 	comunicado_en DATETIME NULL,
 
@@ -1006,7 +1006,7 @@ INSERT INTO prod_4edicion (id, coleccion_id, nombre_original, nombre_castellano,
 (7,2,'Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',2,1,'VPC',10,4,11,10,'2022-03-16 23:25:22');
 
 /* LINKS */;
-CREATE TABLE links_proveedores (
+CREATE TABLE links_provs (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL UNIQUE,
@@ -1025,7 +1025,7 @@ CREATE TABLE links_proveedores (
 	url_buscar_post_pel VARCHAR(20) NOT NULL,	
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links_proveedores (id, orden, nombre, avatar, siempre_gratuito, siempre_pago, siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
+INSERT INTO links_provs (id, orden, nombre, avatar, siempre_gratuito, siempre_pago, siempre_completa, calidad, url_distintivo, url_buscar_pre, url_buscar_post_tra, url_buscar_post_pel, buscador_automatico, trailer, pelicula)
 VALUES 
 (1, 0, 'Desconocido','PT-Desconocido.jpg', NULL, NULL, NULL, NULL, '', '', '', '', 0, 1, 1),
 (11, 1, 'YouTube', 'PT-YouTube.jpg', NULL, NULL, NULL, NULL, 'youtube.com', '/results?search_query=', '&sp=EgIYAQ%253D%253D', 'sp=EgIYAg%253D%253D', 1, 1, 1),
@@ -1037,7 +1037,7 @@ VALUES
 (17, 7, 'Goya Prod.', 'PT-Goya.jpg', NULL, 1, 1, 1081, 'goyaproducciones.com', '/?s=', '', '', 1, 1, 1),
 (18, 8, 'IMDb', 'PT-IMDB.jpg', 1, 0, NULL, NULL, 'imdb.com', '/find?q=', '', '', 0, 1, 0)
 ;
-UPDATE links_proveedores SET generico = 1 WHERE id = 1
+UPDATE links_provs SET generico = 1 WHERE id = 1
 ;
 CREATE TABLE links_tipos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1058,14 +1058,14 @@ CREATE TABLE links (
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
 	url VARCHAR(100) NOT NULL UNIQUE,
+	prov_id TINYINT UNSIGNED NOT NULL,
 
 	calidad SMALLINT NULL,
+	castellano BOOLEAN NOT NULL,
+	gratuito BOOLEAN NOT NULL,
+	tipo_id TINYINT UNSIGNED NOT NULL,
 	completo BOOLEAN DEFAULT 1,
 	parte VARCHAR(3) NOT NULL,
-
-	tipo_id TINYINT UNSIGNED NOT NULL,
-	prov_id TINYINT UNSIGNED NOT NULL,
-	gratuito BOOLEAN NOT NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -1088,7 +1088,7 @@ CREATE TABLE links (
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
 	FOREIGN KEY (tipo_id) REFERENCES links_tipos(id),
-	FOREIGN KEY (prov_id) REFERENCES links_proveedores(id),
+	FOREIGN KEY (prov_id) REFERENCES links_provs(id),
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -1119,10 +1119,11 @@ CREATE TABLE links_edicion (
 	capitulo_id INT UNSIGNED NULL,
 
 	calidad SMALLINT NULL,
-	tipo_id TINYINT UNSIGNED NULL,
-	completo BOOLEAN NULL,
-	parte VARCHAR(3) NULL,
-	gratuito BOOLEAN NULL,
+	castellano BOOLEAN NOT NULL,
+	gratuito BOOLEAN NOT NULL,
+	tipo_id TINYINT UNSIGNED NOT NULL,
+	completo BOOLEAN DEFAULT 1,
+	parte VARCHAR(3) NOT NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,

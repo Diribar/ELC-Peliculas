@@ -19,7 +19,7 @@
 			<option value="2">Película</option>
 			<option value="TD" selected>Todos</option>
 		</select>
-		<form id="tabla" class="invisible"> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
+		<form id="tabla" class=""> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
 			<div id="tags" class="flex-row">
 				<div id="activo">Activos</div>
 				<div id="inactivo" class="traslucido">Pasivos</div>
@@ -28,16 +28,14 @@
 				<%- include("Links1-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
-					<% let fila = 0 %> 
-					<% for (let link of links) { %>
+					<% links.forEach((link,fila)=> { %>
 						<% let cond = {} %>
 						<%- include("Links2-Condiciones", {link, cond}) %>
 						<%- include("Links3-Datos", {link, cond, fila}) %>
 						<%- include("Links1-Edicion", {fila, link, cond}) %>
-						<% fila++ %> 
-					<% } %>
+					<% }) %>
 					<!-- Fila para nuevo link -->
-					<%- include("Links2-Altas", {fila}) %>
+					<%- include("Links2-Altas", {fila: links.length}) %>
 				</tbody>
 			</table>
 		</form>

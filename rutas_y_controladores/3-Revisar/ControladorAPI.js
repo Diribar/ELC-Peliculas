@@ -195,7 +195,7 @@ module.exports = {
 			let titulo =
 				campo == "avatar"
 					? "Avatar"
-					: variables.camposRevisarEdic().find((n) => n.nombreDelCampo == campo).titulo;
+					: variables.camposRevisarProd().find((n) => n.nombreDelCampo == campo).titulo;
 			// Completar los datos
 			datos = {
 				...datos,
@@ -315,7 +315,80 @@ module.exports = {
 	},
 
 	// Links
-	inactivar: async (req, res) => {},
+	linkEdicAprob: async (req, res) => {
+		// Variables
+		let api = req.query;
+		let campo = api.campo;
+		console.log(campo);
+		let userID = req.session.usuario.id;
+		let camposVacios = {};
+		variables.camposRevisarLinks().forEach((campo) => {
+			camposVacios[campo.nombreDelCampo] = null;
+		});
+		console.log(328, camposVacios);
+		let datos;
+		//	prodEntidad: 'capitulos',
+		//  prodID: '1',
+		//  edicion_id: '35',
+		//  campo: 'tipo_id'
+		// Obtener la edicion
+		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
+		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
+		// Obtener el link_id
+		let link_id = edicion.link_id;
+		// Se actualizan los campos "consecuencia" que correspondan en el link original
+		datos = {[campo]: edicion[campo]};
+		await BD_genericas.actualizarPorId("links", link_id, datos);
+		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
+		// Se aumenta el registro de ediciones aprobadas en el usuario
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", edicion.editado_por_id, "edic_aprob");
+		// Se agrega el registro en la tabla de ediciones aprobadas
+		datos = {
+			entidad: "links",
+			entidad_id: link.id,
+			campo: campo,
+			titulo: campo,
+			valor_aceptado: edicion[campo],
+			input_por_id: edicion.editado_por_id,
+			input_en: edicion.editado_en,
+			evaluado_por_id: userID,
+		};
+		BD_genericas.agregarRegistro("edic_aprob", datos);
+		// Se revisan las ediciones y se eliminan los campos sin diferencias con el original
+		// Se eliminan los registros editados que quedan vacíos de campos útiles
+		console.log(link.ediciones.length);
+		link.ediciones.forEach(async (edicion) => {
+			let edicion_id = edicion.id;
+			console.log(357, edicion_id);
+			edicion = funciones.quitarLosCamposSinContenido(edicion);
+			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");
+			console.log(360, edicion);
+			edicion = funciones.quitarLasCoincidenciasConOriginal(link, edicion);
+			console.log(362, edicion);
+			let quedanCampos = await funciones.eliminarEdicionSiEstaVacio(
+				"links_edicion",
+				edicion_id,
+				edicion
+			);
+			if (quedanCampos)
+				await BD_genericas.actualizarPorId("links_edicion", edicion_id, {
+					...camposVacios,
+					...edicion,
+				});
+		});
+		// Actualizar si el producto tiene links gratuitos
+		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+		// Se recarga la vista
+		return res.json({mensaje: "Link actualizado", reload: true});
+	},
+
+	altaAprob: async (req, res) => {},
+
+	altaRech: async (req, res) => {},
+
+	cambiarA_aprobado: async (req, res) => {},
+
+	cambiarA_inactivo: async (req, res) => {},
 
 	eliminar: async (req, res) => {
 		// Definir las variables

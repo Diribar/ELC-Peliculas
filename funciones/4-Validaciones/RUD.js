@@ -52,6 +52,24 @@ module.exports = {
 		}
 		// calidad
 		if (campos.includes("calidad")) errores.calidad = !datos.calidad ? cartelCampoVacio : "";
+		// castellano
+		if (campos.includes("castellano")) {
+			errores.castellano =
+				datos.castellano == ""
+					? cartelCampoVacio
+					: datos.castellano != "0" && datos.castellano != "1"
+					? "Valor inválido"
+					: "";
+		}
+		// gratuito
+		if (campos.includes("gratuito")) {
+			errores.gratuito =
+				datos.gratuito == ""
+					? cartelCampoVacio
+					: datos.gratuito != "0" && datos.gratuito != "1"
+					? "Valor inválido"
+					: "";
+		}
 		// tipo_id
 		if (campos.includes("tipo_id")) {
 			errores.tipo_id = !datos.tipo_id
@@ -70,15 +88,6 @@ module.exports = {
 				: datos.parte != parseInt(datos.parte) || parseInt(datos.parte) <= 0
 				? "Necesitamos que ingreses un número positivo"
 				: "";
-		}
-		// gratuito
-		if (campos.includes("gratuito")) {
-			errores.gratuito =
-				datos.gratuito == ""
-					? cartelCampoVacio
-					: datos.gratuito != "0" && datos.gratuito != "1"
-					? "Valor inválido"
-					: "";
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);

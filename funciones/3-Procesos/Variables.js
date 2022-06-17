@@ -238,7 +238,7 @@ module.exports = {
 	},
 
 	// Entorno Revisiones
-	camposRevisarEdic: () => {
+	camposRevisarProd: () => {
 		return [
 			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
@@ -312,6 +312,15 @@ module.exports = {
 				rclv: true,
 				input: true,
 			},
+		];
+	},
+	camposRevisarLinks: () => {
+		return [
+			{nombreDelCampo: "calidad"},
+			{nombreDelCampo: "tipo_id"},
+			{nombreDelCampo: "completo"},
+			{nombreDelCampo: "parte"},
+			{nombreDelCampo: "gratuito"},
 		];
 	},
 
