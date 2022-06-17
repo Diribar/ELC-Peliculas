@@ -14,7 +14,6 @@ module.exports = async (req, res, next) => {
 	let informacion;
 	// Variables de url
 	const urlBase = req.baseUrl;
-	// Obtener el url
 	const url = req.url;
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
