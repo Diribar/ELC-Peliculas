@@ -317,10 +317,11 @@ module.exports = {
 	camposRevisarLinks: () => {
 		return [
 			{nombreDelCampo: "calidad"},
+			{nombreDelCampo: "castellano"},
+			{nombreDelCampo: "gratuito"},
 			{nombreDelCampo: "tipo_id"},
 			{nombreDelCampo: "completo"},
 			{nombreDelCampo: "parte"},
-			{nombreDelCampo: "gratuito"},
 		];
 	},
 

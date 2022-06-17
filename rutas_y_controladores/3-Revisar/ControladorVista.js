@@ -339,27 +339,27 @@ module.exports = {
 		let tema = "revision";
 		let codigo = "links";
 		// Otras variables
-		const status = req.session.status_registro;
-		// Obtener los datos identificatorios del producto y del usuario
-		let entidad = req.query.entidad;
+		let includes;
+		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Configurar el título
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
-		let titulo = "Revisar los Links de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
+		let prodNombre = funciones.obtenerEntidadNombre(prodEntidad);
+		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links originales para verificar que los tenga
-		let includes = ["links", "status_registro"];
-		if (entidad == "capitulos") includes.push("coleccion");
-		let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		includes = ["links", "status_registro"];
+		if (prodEntidad == "capitulos") includes.push("coleccion");
+		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("Errores", {informacion});
 		// Obtener todos los links
-		let entidad_id = funciones.obtenerEntidad_id(entidad);
+		let entidad_id = funciones.obtenerEntidad_id(prodEntidad);
+		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",
 			{[entidad_id]: prodID},
-			["status_registro", "ediciones", "prov", "tipo", "motivo"]
+			includes
 		);
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
@@ -377,13 +377,14 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
+		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Ir a la vista
 		//return res.send(links)
 		return res.render("0-Revisar", {
 			tema,
 			codigo,
 			titulo,
-			entidad,
+			entidad: prodEntidad,
 			producto,
 			links,
 			provs,
@@ -394,6 +395,7 @@ module.exports = {
 			calidades: [144, 240, 360, 480, 720, 1080],
 			mostrar: null,
 			userID,
+			camposARevisar,
 		});
 	},
 };

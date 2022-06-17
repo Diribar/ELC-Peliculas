@@ -16,6 +16,16 @@ window.addEventListener("load", async () => {
 	let botonesDeshacer = document.querySelectorAll("tbody .yaExistentes .deshacer");
 	let botonesGuardar = document.querySelectorAll("tbody .fa-floppy-disk");
 
+	// Formulas
+	let obtenerDataEntry = (fila) => {
+		let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+		for (let columna = 0; columna < columnas; columna++) {
+			let indice = fila * columnas + columna;
+			objeto += "&" + inputs[indice].name + "=" + encodeURIComponent(inputs[indice].value);
+		}
+		return objeto;
+	};
+
 	// Editar - Hecho
 	botonesEditar.forEach((botonEditar, fila) => {
 		botonEditar.addEventListener("click", () => {
@@ -31,14 +41,6 @@ window.addEventListener("load", async () => {
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
 			// Obtener los datos editados
-			let obtenerDataEntry = (fila) => {
-				let objeto = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
-				for (let columna = 0; columna < columnas; columna++) {
-					let indice = fila * columnas + columna;
-					objeto += "&" + inputs[indice].name + "=" + encodeURIComponent(inputs[indice].value);
-				}
-				return objeto;
-			};
 			// Obtener los datos del link
 			let objeto = obtenerDataEntry(fila);
 			// Submit
