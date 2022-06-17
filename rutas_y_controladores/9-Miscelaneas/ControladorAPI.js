@@ -23,6 +23,7 @@ module.exports = {
 		// Obtener el registro
 		let registro = await BD_genericas.obtenerPorId(prodEntidad, prodID);
 		let horarioInicial = registro.capturado_en;
+		horarioInicial = horarioInicial ? horarioInicial : 0;
 
 		// Fin
 		return res.json(horarioInicial);
