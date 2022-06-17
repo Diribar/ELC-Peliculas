@@ -108,6 +108,7 @@ window.addEventListener("load", async () => {
 		// Actualizar los minutos disponibles
 		minutosDispon = parseInt(minutosDispon);
 		timer.innerHTML = minutosDispon + " min.";
+		formatoTimer(minutosDispon);
 		if (minutosDispon == 0) return funcionCartel();
 		// Ejecutar la rutina
 		funcionTimer();
