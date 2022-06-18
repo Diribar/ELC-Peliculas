@@ -21,11 +21,11 @@ module.exports = async (req, res, next) => {
 			let hasta = new Date(usuario.penalizado_hasta);
 			let fecha =
 				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
-			let hora = hasta.getHours() + ":" + String(hasta.getMinutes() + 1).padStart(2, "0");
+			let hora = hasta.getHours() + ":" + String(hasta.getMinutes()).padStart(2, "0");
 			informacion = {
 				mensajes: [
 					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa",
-					"Podrás volver a ingresar información el día " + fecha + ", a las " + hora + "hs.",
+					"Podrás volver a ingresar información el día " + fecha + ".",
 				],
 				iconos: [vistaAnterior, vistaInicio],
 			};
