@@ -104,12 +104,6 @@ module.exports = {
 		includes.splice(-1);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
 		let editor_ID = prodEditado.editado_por_id;
-		// Obtener el motivo si es un rechazo
-		if (!aprobado) var {motivo_id} = req.query;
-		if (!aprobado && !motivo_id)
-			motivo_id = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {info_erronea: true}).then(
-				(n) => n.id
-			);
 		// Detectar un eventual error
 		if (!prodEditado || !prodEditado[campo]) return res.json("false");
 		// Particularidades para el campo 'avatar'
@@ -197,7 +191,9 @@ module.exports = {
 			};
 			// Si fue rechazado, agregar campos
 			if (!aprobado) {
-				var motivo = await BD_genericas.obtenerPorId("edic_motivos_rech", motivo_id);
+				let {motivo_id} = req.query;
+				let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
+				var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", condicion);
 				datos.duracion = motivo.duracion;
 				datos.motivo_id = motivo.id;
 			}
@@ -379,7 +375,7 @@ module.exports = {
 
 	eliminar: async (req, res) => {
 		// Definir las variables
-		let {prodEntidad, prodID, url, motivo_id} = req.query;
+		let {prodEntidad, prodID, url} = req.query;
 		let respuesta = {};
 		let link;
 		// Averiguar si no existe el 'url'
