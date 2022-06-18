@@ -18,32 +18,14 @@ module.exports = {
 
 	horarioInicial: async (req, res) => {
 		// Variables
-		let {entidad, id, codigo} = req.query;
-		let objeto;
-		let userID = req.session.usuario.id;
-
-		// En caso que sea 'RUD-edición'
-		if (codigo == "/producto/edicion/") {
-			let entidad_id = funciones.obtenerEntidad_id(entidad);
-			entidad = "prods_edicion";
-			objeto = {[entidad_id]: id, editado_por_id: userID};
-		}
-
-		// En caso que sea 'Revisar'
-		if (codigo.startsWith("/revision/") || codigo == "/links/abm/")
-			objeto = {id: id, capturado_por_id: userID};
+		let {entidad: prodEntidad, id: prodID} = req.query;
 
 		// Obtener el registro
-		let horarioInicial = await BD_genericas.obtenerPorCampos(entidad, objeto);
-		if (horarioInicial) {
-			let campo =
-				codigo == "/producto/edicion/"
-					? "editado_en"
-					: codigo.startsWith("/revision/") || codigo == "/links/abm/"
-					? "capturado_en"
-					: "error";
-			horarioInicial = horarioInicial[campo];
-		}
+		let registro = await BD_genericas.obtenerPorId(prodEntidad, prodID);
+		let horarioInicial = registro.capturado_en;
+		horarioInicial = horarioInicial ? horarioInicial : 0;
+
+		// Fin
 		return res.json(horarioInicial);
 	},
 };

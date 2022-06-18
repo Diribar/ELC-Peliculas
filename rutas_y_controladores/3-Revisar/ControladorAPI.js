@@ -332,8 +332,8 @@ module.exports = {
 		let link_id = edicion.link_id;
 		// Se actualizan los campos "consecuencia" que correspondan en el link original
 		datos = {[campo]: edicion[campo]};
-		if (campo == "tipo_id" && edicion.completo!==null) datos.completo = edicion.completo;
-		if (campo == "tipo_id" && edicion.parte!==null) datos.parte = edicion.parte;
+		if (campo == "tipo_id" && edicion.completo !== null) datos.completo = edicion.completo;
+		if (campo == "tipo_id" && edicion.parte !== null) datos.parte = edicion.parte;
 		await BD_genericas.actualizarPorId("links", link_id, datos);
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		// Se aumenta el registro de ediciones aprobadas en el usuario
@@ -350,7 +350,7 @@ module.exports = {
 			evaluado_por_id: userID,
 		};
 		BD_genericas.agregarRegistro("edic_aprob", datos);
-		// Se revisan las ediciones y se eliminan los campos sin diferencias con el original
+		// Se eliminan los campos editados sin diferencias con el original
 		// Se eliminan los registros editados que quedan vacíos de campos útiles
 		link.ediciones.forEach(async (edicion) => {
 			let edicion_id = edicion.id;
@@ -372,6 +372,79 @@ module.exports = {
 		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Link actualizado", reload: true});
+	},
+	linkEdic: async (req, res) => {
+		// Variables
+		let api = req.query;
+		let campo = api.campo;
+		let userID = req.session.usuario.id;
+		let camposVacios = {};
+		variables.camposRevisarLinks().forEach((campo) => {
+			camposVacios[campo.nombreDelCampo] = null;
+		});
+		let aprobado = api.aprobado == "SI";
+		let rechazado = !aprobado;
+		let datos;
+		// Obtener la edicion
+		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
+		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
+		let link_id = edicion.link_id;
+		let edicion_id = edicion.id;
+		// Se prepara el feedback a guardar
+		let feedback = {[campo]: edicion[campo]};
+		if (campo == "tipo_id" && edicion.completo !== null)
+			feedback.completo = aprobado ? edicion.completo : null;
+		if (campo == "tipo_id" && edicion.parte !== null) feedback.parte = aprobado ? edicion.parte : null;
+		// Se guarda el feedback en la tabla que corresponda
+		console.log(aprobado);
+		aprobado
+			? // Si fue aprobado => en el link original
+			  await BD_genericas.actualizarPorId("links", link_id, feedback)
+			: // Si fue rechazado => en el link editado
+			  await BD_genericas.actualizarPorId("links_edicion", edicion_id, feedback);
+		// Se aumenta el registro de ediciones aprob/rech en el usuario
+		let decision = aprobado ? "edic_aprob" : rechazado ? "edic_rech" : "";
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", edicion.editado_por_id, decision);
+		// Se prepara la información para agregar en la tabla de ediciones aprob/rech
+		datos = {
+			entidad: "links",
+			entidad_id: link_id,
+			campo: campo,
+			titulo: campo,
+			valor_aceptado: edicion[campo],
+			input_por_id: edicion.editado_por_id,
+			input_en: edicion.editado_en,
+			evaluado_por_id: userID,
+		};
+		if (rechazado)
+			datos.motivo_id = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: true}).then(
+				(n) => n.id
+			);
+		// Se agrega el registro en la tabla de ediciones aprob/rech
+		BD_genericas.agregarRegistro(decision, datos);
+		// Purgar las ediciones
+		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
+		link.ediciones.forEach(async (edicion) => {
+			// Se eliminan los campos sin contenido
+			edicion = funciones.quitarLosCamposSinContenido(edicion);
+			// Se eliminan los campos que no se comparan
+			let edicID = edicion.id;
+			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");
+			// Se eliminan los campos con el mismo valor que el original
+			if (aprobado) edicion = funciones.quitarLasCoincidenciasConOriginal(link, edicion);
+			// Se eliminan los registros editados que quedan vacíos
+			let quedanCampos = await funciones.eliminarEdicionSiEstaVacio("links_edicion", edicID, edicion);
+			// Si quedan campos, actualiza la edición
+			if (quedanCampos)
+				await BD_genericas.actualizarPorId("links_edicion", edicID, {
+					...camposVacios,
+					...edicion,
+				});
+		});
+		// Actualizar si el producto tiene links gratuitos
+		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
+		// Se recarga la vista
+		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
 
 	altaAprob: async (req, res) => {},

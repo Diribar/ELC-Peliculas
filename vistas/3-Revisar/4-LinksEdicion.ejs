@@ -16,8 +16,8 @@
 					<% let valor= campo=="tipo_id" ? (edicion[campo]==1?"Trailer":"Película") : (campo=="castellano" || campo=="gratuito" || campo=="completo") ? (edicion[campo]?"SI":"NO") : edicion[campo] %> 
 					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
-					<i class="fa-solid fa-circle-check <%- edicPropia ? 'ocultar' : '' %>"></i>
-					<i class="fa-solid fa-circle-xmark <%- edicPropia ? 'ocultar' : '' %>"></i>
+					<i class="fa-solid fa-circle-check decision <%- edicPropia ? 'ocultar' : '' %>"></i>
+					<i class="fa-solid fa-circle-xmark decision <%- edicPropia ? 'ocultar' : '' %>"></i>
 					<!-- Edición ID -->
 					<div class="edicion_id ocultar"><%= edicion.id %></div>
 				</div>

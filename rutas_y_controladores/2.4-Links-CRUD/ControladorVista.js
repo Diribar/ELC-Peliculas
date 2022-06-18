@@ -4,8 +4,6 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const procesar = require("../../funciones/3-Procesos/3-RUD");
 const funciones = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
-const validar = require("../../funciones/4-Validaciones/RUD");
 
 // *********** Controlador ***********
 module.exports = {
@@ -19,12 +17,16 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(prodEntidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(
+			prodEntidad,
+			prodID,
+			userID
+		);
 		// Obtener el avatar
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
 			: prodOriginal.avatar
-			? prodOriginal.avatar.slice(0, 4) != "http"
+			? !prodOriginal.avatar.startsWith("http")
 				? "/imagenes/2-Productos/" + prodOriginal.avatar
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
@@ -48,7 +50,6 @@ module.exports = {
 				prodEditado && prodEditado.temporada ? prodEditado.temporada : prodOriginal.temporada;
 			producto.capitulos = await BD_especificas.obtenerCapitulos(coleccion_id, temporada);
 		}
-		let dataEntry = req.session.links ? req.session.links : "";
 		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
 			.then((n) => n.filter((m) => m.links))
 			.then((n) =>
@@ -61,7 +62,7 @@ module.exports = {
 		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,
-			entidad:prodEntidad,
+			entidad: prodEntidad,
 			prodID,
 			userID,
 			titulo,
@@ -70,7 +71,6 @@ module.exports = {
 			producto,
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
-			dataEntry,
 			avatar,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
