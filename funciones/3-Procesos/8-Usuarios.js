@@ -15,23 +15,4 @@ module.exports = {
 		}
 		return;
 	},
-
-	// Middlewares
-	detectarUsuarioPenalizado: (usuario, urlAnterior) => {
-		let informacion;
-		let hasta = new Date(usuario.penalizado_hasta);
-		if (usuario.penalizado_hasta && hasta > new Date(funciones.ahora())) {
-			let fecha =
-				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
-			let hora = hasta.getHours() + ":" + String(hasta.getMinutes() + 1).padStart(2, "0");
-			informacion = {
-				mensajes: [
-					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa",
-					"Podrás volver a ingresar información el día " + fecha + ", a las " + hora + "hs.",
-				],
-				iconos: [variables.vistaAnterior(urlAnterior), variables.vistaInicio],
-			};
-		}
-		return informacion;
-	},
 };

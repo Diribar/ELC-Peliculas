@@ -5,7 +5,7 @@ module.exports = (sequelize, dt) => {
 		entidad_id: {type: dt.INTEGER},
 
 		motivo_id: {type: dt.INTEGER},
-		duracion: {type: dt.INTEGER},
+		duracion: {type: dt.DECIMAL},
 
 		input_por_id: {type: dt.INTEGER},
 		input_en: {type: dt.DATE},

@@ -560,22 +560,38 @@ module.exports = {
 		// Fin
 		return enviar;
 	},
-	usuario_Penalizar: async (penalizarUsuario) => {
+	usuario_Penalizar: async (userID, motivo, campo) => {
+		// Variables
+		let datos = {};
+		// Averiguar si el motivo amerita bloquear
+		if (motivo.bloquear_aut_input) {
+			// Obtener el rol de 'Consultas', sin permiso para Data Entry
+			rol_usuario_id = await BD_genericas.obtenerPorCampos("roles_usuarios", {aut_input: false}).then(
+				(n) => n.id
+			);
+			// Cambia el rol de usuario al de 'consultas' y le borra el historial de altas o ediciones
+			BD_genericas.actualizarPorId("usuarios", userID, {
+				rol_usuario_id,
+				[campo + "aprob"]: 0,
+				[campo + "rech"]: 0,
+			});
+		}
 		// Obtener los datos del usuario
-		let usuario = await BD_genericas.obtenerPorId("usuarios", penalizarUsuario.usuario_ID);
-		// Averiguar el mayor entre 'hoy' y 'penalizado_hasta'
-		let hoy = funciones.ahora().getTime();
-		let penalizado_hasta = usuario.penalizado_hasta ? usuario.penalizado_hasta.getTime() : 0;
-		let fechaActual = Math.max(hoy, penalizado_hasta);
-		// Sumarle la duración
-		let nuevaFecha = new Date(fechaActual);
-		nuevaFecha.setDate(nuevaFecha.getDate() + penalizarUsuario.duracion);
-		// Preparar la información
-		let datos = {
-			penalizado_en: penalizarUsuario.penalizado_en,
-			penalizado_hasta: nuevaFecha,
-			penalizado_por_id: penalizarUsuario.penalizado_por_id,
-		};
+		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
+		// Averiguar la nueva penalización acumulada y la duración
+		let duracion = Number(usuario.penalizac_acum) + Number(motivo.duracion);
+		datos.penalizac_acum = duracion % 1;
+		duracion = parseInt(duracion);
+		// Averiguar la nueva penalización_hasta
+		if (duracion) {
+			let ahora = funciones.ahora().setHours(0, 0, 0);
+			let penalizado_desde =
+				usuario.penalizado_hasta && usuario.penalizado_hasta > ahora
+					? usuario.penalizado_hasta
+					: ahora;
+			if (penalizado_desde == ahora) datos.penalizado_en = ahora;
+			datos.penalizado_hasta = penalizado_desde + duracion * unDia;
+		}
 		// Actualizar el registro
 		BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
 		// Fin
