@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 			// Obtener los datos del link
 			let objeto = obtenerDataEntry(fila);
 			// Submit
-			await fetch("/links/api/guardar/" + objeto).then(n=>n.json())
+			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
 			window.location.reload();
 		});
 	});
