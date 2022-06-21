@@ -363,7 +363,7 @@ module.exports = {
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
 		if (!aprobado) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
+		funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
