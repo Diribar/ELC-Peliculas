@@ -304,7 +304,7 @@ module.exports = {
 			camposVacios[campo.nombreDelCampo] = null;
 		});
 		let aprobado = api.aprobado == "SI";
-		let edic_decision = aprobado ? "edic_aprob" : "edic_rech";
+		let decision = aprobado ? "aprob" : "rech";
 		// Obtener la edicion
 		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
 		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
@@ -339,7 +339,7 @@ module.exports = {
 			datos.duracion = motivo.duracion;
 		}
 		// Se agrega el registro en EDICIONES APROB/RECH
-		BD_genericas.agregarRegistro(edic_decision, datos);
+		BD_genericas.agregarRegistro("edic" + decision, datos);
 		// Purgar las ediciones
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		link.ediciones.forEach(async (edicion) => {
@@ -360,7 +360,7 @@ module.exports = {
 				});
 		});
 		// Actualizaciones en el USUARIO
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, edic_decision, 1);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
 		if (!aprobado) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
 		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
@@ -420,8 +420,7 @@ module.exports = {
 			aprobado: (creado && aprobado) || (inactivar && !aprobado) || (recuperar && aprobado),
 		};
 		// Motivo_id
-		if (!creado || !aprobado)
-			datos.motivo_id = creado && !aprobado ? api.motivo_id : link.motivo_id;
+		if (!creado || !aprobado) datos.motivo_id = creado && !aprobado ? api.motivo_id : link.motivo_id;
 		BD_genericas.agregarRegistro("cambios_de_status", datos);
 		// Actualizaciones en el USUARIO
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, "link_" + decision, 1);
