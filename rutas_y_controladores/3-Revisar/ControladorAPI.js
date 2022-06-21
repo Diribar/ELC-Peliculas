@@ -430,7 +430,7 @@ module.exports = {
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
 		// Actualizar si el producto tiene links gratuitos
-		funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
+		if (aprobado) funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
