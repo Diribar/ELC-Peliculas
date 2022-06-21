@@ -52,6 +52,7 @@ module.exports = (sequelize, dt) => {
 		status_registro_id: {type: dt.INTEGER},
 		motivo_id: {type: dt.INTEGER},
 		sugerido_por_id: {type: dt.INTEGER},
+		sugerido_en: {type: dt.DATE},
 
 		capturado_por_id: {type: dt.INTEGER},
 		capturado_en: {type: dt.DATE},
@@ -92,7 +93,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.si_no_parcial, {as: "links_gratuitos_en_la_web", foreignKey: "links_gratuitos_en_la_web_id"});
 
 		entidad.hasMany(n.capitulos, {as: "capitulos",foreignKey: "coleccion_id"});
-		entidad.hasMany(n.historial_provisorios, {as: "historial", foreignKey: "coleccion_id"});
+		entidad.hasMany(n.cambios_de_status, {as: "historial", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links, {as: "links", foreignKey: "coleccion_id"});
 		entidad.hasMany(n.links_edicion, {as: "links_edic", foreignKey: "coleccion_id"});

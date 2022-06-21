@@ -1,13 +1,13 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
-	let filasEditar = document.querySelectorAll("tbody .edicion");
-	let inputs = document.querySelectorAll("tbody .input");
-	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
-	let columnas = inputs.length / (filasEditar.length + 1);
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
+	let inputs = document.querySelectorAll(".edicion .inputs");
+	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
+	let filasEditar = document.querySelectorAll("tbody .edicion");
+	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
+	let columnas = inputs.length / (filasEditar.length + 1);
 	let activos = document.querySelector("#tabla #tags #activo");
 	let pasivos = document.querySelector("#tabla #tags #inactivo");
 	// Botones
