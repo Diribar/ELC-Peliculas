@@ -393,8 +393,8 @@ module.exports = {
 		let gr_provisorios = inactivar || recuperar;
 		if (!creado && !gr_provisorios)
 			return res.json({mensaje: "En este status no se puede procesar", reload: true});
-		// Obtener si la decisión valida al sugerido
-		let decision = (!inactivar && aprobado) || (inactivar && !aprobado);
+		// Variables
+		let decision = (!inactivar && aprobado) || (inactivar && !aprobado); // Obtener si la decisión valida al sugerido
 		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
 		let motivo_id = !creado || !aprobado ? (creado ? api.motivo_id : link.motivo_id) : null;
 		// Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
@@ -403,7 +403,7 @@ module.exports = {
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
 		let duracion = motivo ? motivo.duracion : 0;
-		console.log(duracion,motivo);
+		console.log(duracion, motivo);
 		// Pasa el link a status aprobado/rechazado - CAMBIOS EN EL LINK
 		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
 		if (creado) {
