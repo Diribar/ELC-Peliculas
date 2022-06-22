@@ -1,13 +1,13 @@
 <!-- Oscuro si: -->
 <!-- RUD: provisorio y ajeno -->
-<!-- Revisión: propio o creadoAprob c/ediciones -->
+<!-- Revisión: propio o creado c/ediciones o aprobado/inactivo -->
 <tr class="
 	yaExistentes 
 	inactivo_<%= cond.inactivos %> 
 	<%- cond.inactivos ? 'inactivo_ocultar' : '' %> 
 	<%= link.tipo_id==1 ? 'TR' : 'PL' %> 
 	fila<%= fila %> 
-	oscuro_<%- cond.rud ? cond.provAjeno : cond.revision ? cond.propio || (cond.creadoAprob && !!link.ediciones.length) : '' %>
+	oscuro_<%- cond.rud ? cond.provAjeno : (cond.propio || (cond.creado && !!link.ediciones.length) || cond.estable) %>
 ">
 	<!-- Url -->
 	<td class="ancho_url url">
@@ -51,7 +51,7 @@
 		<%- link.parte %>
 	</td>
 	<!-- Status -->
-	<td class="ancho_status taparMotivo"><%= link.status_registro.nombre %></td>
+	<td class="ancho_status"><%= link.status_registro.nombre %></td>
 	<!-- Propio -->
 	<td class="ancho_propio"><%= cond.propio ? "SI" : cond.ajeno ? "NO" : "-" %></td>
 	<!-- Acción -->
@@ -61,17 +61,19 @@
 		<i class="fa-solid fa-pen editar <%- cond.rud && (!cond.creado && !cond.aprobado) || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Editarlo"></i>
 		<!-- APROBAR -->
 		<!-- Solo para RUD inactivo y Revisión (no propio y sin edición o inactivo) -->
-		<i class="fa-solid fa-circle-check in decision <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
+		<i class="fa-solid fa-circle-check in <%- (cond.rud && !cond.inactivo) || cond.revision && (cond.propio||link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="Cambiarlo a <%- cond.rud ? 'Recuperar' : 'Aprobado' %>"></i>
 		<!-- DESHACER -->
 		<!-- Solo para provisorios propios en RUD -->
 		<i class="fa-solid fa-rotate-left deshacer <%- cond.rud && !cond.provPropio || cond.revision ? 'ocultar' : '' %>" tabindex="-1" title="Regresarlo a <%- cond.inactivarPropio ? 'Aprobado' : 'Inactivo' %>"></i>
 		<!-- ELIMINAR -->
-		<!-- Eliminar permanente: Sólo para (RUD en status creado y propio) o (Revisión y status inactivo) -->
-		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.inactivo) { %>
-			<i class="fa-solid fa-trash-can out decision" tabindex="-1" title="Eliminarlo permanentemente"></i>
+		<!-- Eliminar permanente: Sólo para (RUD en status creado y propio) -->
+		<!-- Inactivar sin necesidad de especificar el motivo: sólo para (Revisión en status provisorio y ajeno) -->
+		<% if (cond.rud&&cond.creadoPropio || cond.revision&&cond.provAjeno) { %>
+			<i class="fa-solid fa-trash-can out" tabindex="-1" title="Eliminarlo permanentemente"></i>
 		<% } else { %>
-			<!-- Inactivar: Sólo para (RUD y aprobado) o (Revisión ajeno y sin edición) -->
-			<i class="fa-solid fa-circle-xmark out decision <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.propio||!!link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
+			<!-- Especificar el motivo de Inactivar: Sólo para (RUD y aprobado) o (Revisión en status creado, ajeno y sin edición) -->
+			<!-- No está permitido para (RUD creado y ajeno, para que pueda ser revisado) -->
+			<i class="fa-solid fa-circle-xmark out <%- cond.rud&&!link.status_registro.aprobado || cond.revision&&(cond.creadoPropio||!!link.ediciones.length||cond.estable) ? 'ocultar' : '' %>" tabindex="-1" title="<%- cond.rud ? 'Inactivarlo' : 'Cambiarlo a Inactivo' %>"></i>
 		<% } %>
 		<!-- Sólo para status provisorio o inactivo -->
 		<i class="fa-solid fa-circle-question relative <%- !link.status_registro.gr_pasivos ? 'ocultar' : '' %>" tabindex="-1" title="Motivo">
