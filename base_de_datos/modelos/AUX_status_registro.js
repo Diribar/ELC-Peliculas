@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 		gr_provisorios: {type: dt.BOOLEAN},
 		gr_pasivos: {type: dt.BOOLEAN},
 		gr_inactivos: {type: dt.BOOLEAN},
+		
 		creado: {type: dt.BOOLEAN},
 		alta_aprob: {type: dt.BOOLEAN},
 		aprobado: {type: dt.BOOLEAN},

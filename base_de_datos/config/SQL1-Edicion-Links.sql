@@ -1,2 +1,0 @@
-USE ELC_Peliculas;
-

@@ -12,6 +12,7 @@ window.addEventListener("load", () => {
 	// Decisión tomada
 	iconosDecision.forEach((iconoDecision, indice) => {
 		iconoDecision.addEventListener("click", async () => {
+			console.log("click");
 			// Variables
 			let aprobado = indice % 2 ? "NO" : "SI";
 			let indiceLink = parseInt(indice / 2);
@@ -20,7 +21,7 @@ window.addEventListener("load", () => {
 			url += "&url=" + links_url[indiceLink].value;
 			url += "&aprobado=" + aprobado;
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
-			// if (respuesta.reload) window.location.reload();
+			if (respuesta.reload) window.location.reload();
 		});
 	});
 });

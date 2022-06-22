@@ -22,7 +22,7 @@ module.exports = {
 		// Definir variables
 		let {entidad, id: prodID} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let archivo = "cambios_de_status";
+		let archivo = "historial_cambios_de_status";
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
@@ -373,10 +373,11 @@ module.exports = {
 		let api = req.query;
 		let userID = req.session.usuario.id;
 		let aprobado = api.aprobado == "SI";
-		let decision = aprobado ? "aprob" : "rech";
-		let status = req.session.status;
-		let st_aprobado = status.find((n) => n.aprobado);
-		let st_inactivado = status.find((n) => n.inactivado);
+		let status = req.session.status_registro;
+		let st_aprobado = status.find((n) => n.aprobado).id;
+		let st_inactivo = status.find((n) => n.inactivo).id;
+		let ahora = funciones.ahora();
+		let decision = (!inactivar && aprobado) || (inactivar && !aprobado);
 		let datos;
 		// Averiguar si no existe el 'url'
 		if (!api.url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
@@ -393,8 +394,8 @@ module.exports = {
 		let gr_provisorios = inactivar || recuperar;
 		if (!creado && !gr_provisorios)
 			return res.json({mensaje: "En este status no se puede procesar", reload: true});
-		// Pasa el link a status aprobado/rechazado
-		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivado};
+		// Pasa el link a status aprobado/rechazado - CAMBIOS EN EL LINK
+		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
@@ -402,31 +403,32 @@ module.exports = {
 			datos.lead_time_creacion = 1;
 			if (!aprobado) {
 				datos.sugerido_por_id = userID;
-				datos.sugerido_en = funciones.ahora();
+				datos.sugerido_en = ahora;
 				datos.motivo_id = api.motivo_id;
 			}
 		}
 		await BD_genericas.actualizarPorId("links", link.id, datos);
-		// Se agrega un registro al historial de 'cambios de status'
-		let entidad_id = funciones.entidad_id(api.prodEntidad);
+		// Se agrega un registro al historial de 'cambios de status' - CAMBIOS EN HISTORIAL DE CAMBIOS DE STATUS
 		datos = {
-			[entidad_id]: api.prodID,
+			link_id: link.id,
 			sugerido_por_id: creado ? link.creado_por_id : link.sugerido_por_id,
 			sugerido_en: creado ? link.creado_en : link.sugerido_en,
 			analizado_por_id: userID,
-			analizado_en: funciones.ahora(),
+			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: aprobado ? st_aprobado : st_inactivado,
-			aprobado: (creado && aprobado) || (inactivar && !aprobado) || (recuperar && aprobado),
+			status_final_id: aprobado ? st_aprobado : st_inactivo,
+			aprobado: decision,
 		};
 		// Motivo_id
-		if (!creado || !aprobado) datos.motivo_id = creado && !aprobado ? api.motivo_id : link.motivo_id;
-		BD_genericas.agregarRegistro("cambios_de_status", datos);
-		// Actualizaciones en el USUARIO
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, "link_" + decision, 1);
-		// Verifica penalidad
+		if (!creado || !aprobado) datos.motivo_id = creado ? api.motivo_id : link.motivo_id;
+		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
+		// Actualizaciones en el USUARIO - CAMBIOS EN EL USUARIO
+		let campo = "link_" + (decision ? "aprob" : "rech");
+		console.log(datos.sugerido_por_id, campo);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, campo, 1);
+		// Verifica la penalidad - sólo para sugeridos: 'aprobado'
 		if (!inactivar && !aprobado) {
-			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", datos.motivo_id);
+			let motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", datos.motivo_id);
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
 		// Actualizar si el producto tiene links gratuitos
@@ -438,7 +440,6 @@ module.exports = {
 	eliminar: async (req, res) => {
 		// Definir las variables
 		let {prodEntidad, prodID, url} = req.query;
-		let respuesta = {};
 		let link;
 		// Averiguar si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});

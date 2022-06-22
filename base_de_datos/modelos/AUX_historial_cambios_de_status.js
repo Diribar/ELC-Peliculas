@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cambios_de_status";
+	const alias = "historial_cambios_de_status";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
@@ -21,6 +21,7 @@ module.exports = (sequelize, dt) => {
 		status_final_id: {type: dt.INTEGER},
 
 		aprobado: {type: dt.BOOLEAN},
+		comunicado_en: {type: dt.DATE},
 		};
 	const config = {
 		tableName: "aux_historial_de_cambios_de_status",
@@ -32,11 +33,11 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
 		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
 
-		entidad.belongsTo(n.personajes, {as: "personajes", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.hechos, {as: "hechos", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.valores, {as: "valores", foreignKey: "valor_id"});
+		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
+		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
+		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
 
-		entidad.belongsTo(n.links, {as: "link_original", foreignKey: "link_id"});
+		entidad.belongsTo(n.links, {as: "link", foreignKey: "link_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "analizado_por_id"});
