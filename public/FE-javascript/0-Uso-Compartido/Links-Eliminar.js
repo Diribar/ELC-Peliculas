@@ -41,11 +41,10 @@ window.addEventListener("load", () => {
 				botonOut.classList.contains("fa-trash-can") &&
 				!botonOut.classList.contains("inactivo")
 			) {
-				console.log("Hola");
-				let motivo = motivosSelect[fila].value;
+				let motivo_id = motivosSelect[fila].value;
 				let url = condiciones;
 				url += "&url=" + encodeURIComponent(links_url[fila].value);
-				url += "&motivo_id=" + motivo;
+				url += "&motivo_id=" + motivo_id;
 				let respuesta = await fetch(ruta + url).then((n) => n.json());
 				console.log(respuesta);
 				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
