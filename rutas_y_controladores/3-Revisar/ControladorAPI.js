@@ -440,7 +440,6 @@ module.exports = {
 	eliminar: async (req, res) => {
 		// Definir las variables
 		let {prodEntidad, prodID, url} = req.query;
-		let respuesta = {};
 		let link;
 		// Averiguar si no existe el 'url'
 		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});

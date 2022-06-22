@@ -145,28 +145,27 @@ CREATE TABLE USUARIOS (
 	edic_aprob SMALLINT DEFAULT 0,
 	edic_rech SMALLINT DEFAULT 0,
 
+	penalizac_acum DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME NULL,
-	penalizado_por_id INT UNSIGNED NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (sexo_id) REFERENCES aux_sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES aux_paises(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
-	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id),
-	FOREIGN KEY (penalizado_por_id) REFERENCES usuarios(id)
+	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
 (1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,                apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
+INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Autorizado p/Inputs', 'Startup',   'Startup',   '0',        '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',               'Iribarren', 'Diego',     '21072001', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas',           '-',         'Consultas', '1',        '',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.',   '0',        '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '21072001', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', '1',        '',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;
@@ -213,22 +212,6 @@ INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
 /* APROBACION DE ALTAS/EDICIONES */;
-CREATE TABLE altas_registros_aprob (
-	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	entidad VARCHAR(20) NOT NULL,
-	entidad_id INT UNSIGNED NOT NULL,
-	
-	input_por_id INT UNSIGNED NOT NULL,
-	input_en DATETIME NULL,
-	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	
-	comunicado_en DATETIME NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE edic_registros_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
@@ -253,83 +236,65 @@ CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(41) NOT NULL,
+	bloquear_aut_input BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
-	duracion SMALLINT UNSIGNED NOT NULL,
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, rclv, links)
 VALUES
 (100, 100, 0, 'Otro motivo', 1, 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloquear_aut_input)
 VALUES
-(11, 1, 0, 'Producto duplicado', 1),
-(12, 2, 1, 'Producto ajeno a nuestro perfil', 1),
-(13, 3, 90, 'Producto ofensivo a nuestro perfil', 1),
-(14, 4, 180, 'Producto ofensivo con pornografía', 1)
+(11, 1, 0.2, 'Producto duplicado', 1, 0),
+(12, 2, 1, 'Producto ajeno a nuestro perfil', 1, 0),
+(13, 3, 90, 'Producto ofensivo a nuestro perfil', 1, 1),
+(14, 4, 180, 'Producto ofensivo con pornografía', 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloquear_aut_input)
 VALUES
-(21, 1, 0, 'Link reemplazado por otro más acorde', 1),
-(22, 2, 0, 'Link a video no disponible', 1),
-(23, 3, 10, 'Link a video sin relación con el producto', 1),
-(24, 4, 10, 'Link a sitio inexistente', 1)
+(21, 1, 0, 'Link reemplazado por otro más acorde', 1, 0),
+(22, 2, 0.2, 'Link a video no disponible', 1, 0),
+(23, 3, 10, 'Link a video sin relación con el producto', 1, 0),
+(24, 4, 90, 'Link a video sin relación y ofensivo', 1, 1)
 ;
 INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES
-(31, 1, 0, 'Registro duplicado', 1),
+(31, 1, 0.2, 'Registro duplicado', 1),
 (32, 2, 10, 'Spam', 1)
 ;
-CREATE TABLE altas_registros_rech (
-	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
-	entidad VARCHAR(20) NOT NULL,
-	entidad_id INT UNSIGNED NOT NULL,
-
-	motivo_id TINYINT UNSIGNED NOT NULL,
-	duracion SMALLINT UNSIGNED NOT NULL,
-	
-	input_por_id INT UNSIGNED NOT NULL,
-	input_en DATETIME NULL,
-	evaluado_por_id INT UNSIGNED NOT NULL,
-	evaluado_en DATETIME NULL,
-	
-	comunicado_en DATETIME NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* RECHAZO DE EDICIONES */;
 CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(40) NOT NULL,
+	bloquear_aut_input BOOLEAN DEFAULT 0,
 	avatar BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
-	duracion SMALLINT UNSIGNED NOT NULL,
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	info_erronea BOOLEAN DEFAULT 0,
 	generico BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
-VALUES (1, 1, 0, 'Es mejor la versión actual', 1, 1, 1, 1, 1);
-INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, prod, rclv, links,info_erronea)
+VALUES (1, 1, 0.2, 'Es mejor la versión actual', 1, 1, 1, 1, 1);
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, prod, rclv, links, info_erronea)
 VALUES
-(11, 11, 0, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
-(12, 12, 0, 'Información errónea', 1, 1, 1, 1),
+(11, 11, 0.2, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
+(12, 12, 0.2, 'Información errónea', 1, 1, 1, 1),
 (13, 13, 10, 'Spam', 1, 0, 0, 0)
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar)
 VALUES
-(21, 21, 0, 'La imagen original es más adecuada', 1),
+(21, 21, 0.1, 'La imagen original es más adecuada', 1),
 (22, 22, 10, 'La imagen no corresponde al producto', 1),
-(23, 23, 0, 'Imagen de poca nitidez', 1),
-(24, 24, 1, 'No es un archivo válido de imagen', 1)
+(23, 23, 0.1, 'Imagen de poca nitidez', 1),
+(24, 24, 10, 'No es un archivo válido de imagen', 1)
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
@@ -343,7 +308,7 @@ CREATE TABLE edic_registros_rech (
 	valor_aceptado VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
-	duracion SMALLINT UNSIGNED NOT NULL,
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
@@ -423,6 +388,7 @@ CREATE TABLE rclv_1personajes (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -483,6 +449,7 @@ CREATE TABLE rclv_2hechos (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -536,6 +503,7 @@ CREATE TABLE rclv_3valores (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -710,6 +678,7 @@ CREATE TABLE prod_1peliculas (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -805,6 +774,7 @@ CREATE TABLE prod_2colecciones (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -898,6 +868,7 @@ CREATE TABLE prod_3capitulos (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
 	capturado_en DATETIME NULL,
@@ -1082,6 +1053,7 @@ CREATE TABLE links (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
@@ -1099,17 +1071,20 @@ CREATE TABLE links (
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id)
+INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id, castellano)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,11,'2022-03-16 23:25:20',1),
-(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,11,'2022-03-16 23:25:20',3),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,11,'2022-03-16 23:25:20',4),
-(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,11,'2022-03-16 23:25:20',5),
-(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,11,'2022-03-16 23:25:20',6),
-(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:20',1),
-(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20',1),
-(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45',1)
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,11,'2022-03-16 23:25:21',1,1),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,11,'2022-03-16 23:25:22',3,1),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,11,'2022-03-16 23:25:23',4,1),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,11,'2022-03-16 23:25:24',5,1),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,11,'2022-03-16 23:25:25',6,1),
+(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:26',1,1),
+(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20',1,1),
+(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45',1,1)
 ;
+UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26' WHERE status_registro_id>3
+;
+
 CREATE TABLE links_edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	link_id INT UNSIGNED NOT NULL,
@@ -1119,11 +1094,11 @@ CREATE TABLE links_edicion (
 	capitulo_id INT UNSIGNED NULL,
 
 	calidad SMALLINT NULL,
-	castellano BOOLEAN NOT NULL,
-	gratuito BOOLEAN NOT NULL,
-	tipo_id TINYINT UNSIGNED NOT NULL,
-	completo BOOLEAN DEFAULT 1,
-	parte VARCHAR(3) NOT NULL,
+	castellano BOOLEAN NULL,
+	gratuito BOOLEAN NULL,
+	tipo_id TINYINT UNSIGNED NULL,
+	completo BOOLEAN NULL,
+	parte VARCHAR(3) NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
 	editado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -1141,7 +1116,7 @@ CREATE TABLE links_edicion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* HISTORIAL DE INACTIVAR Y RECUPERAR */;
-CREATE TABLE aux_historial_provisorios (
+CREATE TABLE aux_historial_de_cambios_de_status(
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	pelicula_id INT UNSIGNED NULL,
@@ -1152,16 +1127,19 @@ CREATE TABLE aux_historial_provisorios (
 	hecho_id SMALLINT UNSIGNED NULL,
 	valor_id SMALLINT UNSIGNED NULL,
 
-	link_id INT UNSIGNED NOT NULL,
+	link_id INT UNSIGNED NULL,
 
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
-	status_original_id TINYINT UNSIGNED NULL,
-
 	analizado_por_id INT UNSIGNED NULL,
-	analizado_en DATETIME NULL,
+	analizado_en DATETIME DEFAULT UTC_TIMESTAMP,
+
+	status_original_id TINYINT UNSIGNED NULL,
 	status_final_id TINYINT UNSIGNED NULL,
+	aprobado BOOLEAN NOT NULL,
+
+	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
