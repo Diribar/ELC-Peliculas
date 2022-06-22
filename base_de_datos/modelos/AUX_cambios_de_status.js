@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "historial_provisorios";
+	const alias = "cambios_de_status";
 	const columns = {
 		pelicula_id: {type: dt.INTEGER},
 		coleccion_id: {type: dt.INTEGER},
@@ -19,9 +19,11 @@ module.exports = (sequelize, dt) => {
 
 		status_original_id: {type: dt.INTEGER},
 		status_final_id: {type: dt.INTEGER},
+
+		aprobado: {type: dt.BOOLEAN},
 		};
 	const config = {
-		tableName: "aux_historial_provisorios",
+		tableName: "aux_historial_de_cambios_de_status",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

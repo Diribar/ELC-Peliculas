@@ -22,7 +22,7 @@ module.exports = {
 		// Definir variables
 		let {entidad, id: prodID} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let archivo = aprobado ? "altas_aprob" : "altas_rech";
+		let archivo = "cambios_de_status";
 		let revisor_ID = req.session.usuario.id;
 		let ahora = funciones.ahora();
 		// Obtener el nuevo status_id
@@ -304,8 +304,7 @@ module.exports = {
 			camposVacios[campo.nombreDelCampo] = null;
 		});
 		let aprobado = api.aprobado == "SI";
-		let decision = aprobado ? "edic_aprob" : "edic_rech";
-		let datos;
+		let decision = aprobado ? "aprob" : "rech";
 		// Obtener la edicion
 		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
 		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
@@ -324,7 +323,7 @@ module.exports = {
 			: // Si fue rechazado => en el link editado
 			  await BD_genericas.actualizarPorId("links_edicion", edicion_id, feedback);
 		// Se prepara la información para agregar en la tabla de ediciones aprob/rech
-		datos = {
+		let datos = {
 			entidad: "links",
 			entidad_id: link_id,
 			campo: campo,
@@ -340,7 +339,7 @@ module.exports = {
 			datos.duracion = motivo.duracion;
 		}
 		// Se agrega el registro en EDICIONES APROB/RECH
-		BD_genericas.agregarRegistro(decision, datos);
+		BD_genericas.agregarRegistro("edic" + decision, datos);
 		// Purgar las ediciones
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		link.ediciones.forEach(async (edicion) => {
@@ -361,17 +360,80 @@ module.exports = {
 				});
 		});
 		// Actualizaciones en el USUARIO
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, decision, 1);
-		if (datos.duracion) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
+		if (!aprobado) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
 		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
 
-	cambiarA_aprobado: async (req, res) => {},
-
-	cambiarA_inactivo: async (req, res) => {},
+	linkAltas: async (req, res) => {
+		// Variables
+		let api = req.query;
+		let userID = req.session.usuario.id;
+		let aprobado = api.aprobado == "SI";
+		let decision = aprobado ? "aprob" : "rech";
+		let status = req.session.status;
+		let st_aprobado = status.find((n) => n.aprobado);
+		let st_inactivado = status.find((n) => n.inactivado);
+		let datos;
+		// Averiguar si no existe el 'url'
+		if (!api.url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
+		// Se obtiene el status original del link
+		let link = await BD_genericas.obtenerPorCamposConInclude("links", {url: api.url}, [
+			"status_registro",
+		]);
+		// El link no existe en la BD
+		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
+		// El link existe y no tiene status 'creado' o 'provisorio'
+		let creado = link.status_registro.creado;
+		let inactivar = link.status_registro.inactivar;
+		let recuperar = link.status_registro.recuperar;
+		let gr_provisorios = inactivar || recuperar;
+		if (!creado && !gr_provisorios)
+			return res.json({mensaje: "En este status no se puede procesar", reload: true});
+		// Pasa el link a status aprobado/rechazado
+		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivado};
+		if (creado) {
+			// Datos para el link
+			datos.alta_analizada_por_id = userID;
+			datos.alta_analizada_en = funciones.ahora();
+			datos.lead_time_creacion = 1;
+			if (!aprobado) {
+				datos.sugerido_por_id = userID;
+				datos.sugerido_en = funciones.ahora();
+				datos.motivo_id = api.motivo_id;
+			}
+		}
+		await BD_genericas.actualizarPorId("links", link.id, datos);
+		// Se agrega un registro al historial de 'cambios de status'
+		let entidad_id = funciones.entidad_id(api.prodEntidad);
+		datos = {
+			[entidad_id]: api.prodID,
+			sugerido_por_id: creado ? link.creado_por_id : link.sugerido_por_id,
+			sugerido_en: creado ? link.creado_en : link.sugerido_en,
+			analizado_por_id: userID,
+			analizado_en: funciones.ahora(),
+			status_original_id: link.status_registro_id,
+			status_final_id: aprobado ? st_aprobado : st_inactivado,
+			aprobado: (creado && aprobado) || (inactivar && !aprobado) || (recuperar && aprobado),
+		};
+		// Motivo_id
+		if (!creado || !aprobado) datos.motivo_id = creado && !aprobado ? api.motivo_id : link.motivo_id;
+		BD_genericas.agregarRegistro("cambios_de_status", datos);
+		// Actualizaciones en el USUARIO
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, "link_" + decision, 1);
+		// Verifica penalidad
+		if (!inactivar && !aprobado) {
+			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", datos.motivo_id);
+			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
+		}
+		// Actualizar si el producto tiene links gratuitos
+		if (aprobado) funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
+		// Se recarga la vista
+		return res.json({mensaje: "Status actualizado", reload: true});
+	},
 
 	eliminar: async (req, res) => {
 		// Definir las variables
@@ -379,33 +441,28 @@ module.exports = {
 		let respuesta = {};
 		let link;
 		// Averiguar si no existe el 'url'
-		if (!url) respuesta = {mensaje: "Falta el 'url' del link", reload: true};
-		else {
-			// Obtener el link
-			link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, [
-				"status_registro",
-				"ediciones",
-			]);
-			// El link no existe en la BD
-			if (!link) respuesta = {mensaje: "El link no existe en la base de datos", reload: true};
-			// El link existe y no tiene status 'inactivo'
-			else if (!link.status_registro.inactivo)
-				respuesta = {mensaje: "En este status no se puede eliminar", reload: true};
-			else {
-				// El link está en status 'inactivo" --> se elimina definitivamente
-				// Eliminar las ediciones que tenga
-				if (link.ediciones)
-					link.ediciones.forEach(async (edicion) => {
-						await BD_genericas.eliminarPorId("links_edicion", edicion.id);
-					});
-				// Eliminar el link
-				await BD_genericas.eliminarPorId("links", link.id);
-				// Actualizar si el producto tiene links gratuitos
-				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
-				// Preparar la respuesta
-				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
-			}
-			return res.json(respuesta);
-		}
+		if (!url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
+		// Obtener el link
+		link = await BD_genericas.obtenerPorCamposConInclude("links", {url: url}, [
+			"status_registro",
+			"ediciones",
+		]);
+		// El link no existe en la BD
+		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
+		// El link existe y no tiene status 'inactivo'
+		if (!link.status_registro.inactivo)
+			return res.json({mensaje: "En este status no se puede eliminar", reload: true});
+		// El link está en status 'inactivo" --> se elimina definitivamente
+		// Eliminar las ediciones que tenga
+		if (link.ediciones)
+			link.ediciones.forEach(async (edicion) => {
+				await BD_genericas.eliminarPorId("links_edicion", edicion.id);
+			});
+		// Eliminar el link
+		await BD_genericas.eliminarPorId("links", link.id);
+		// Actualizar si el producto tiene links gratuitos
+		funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+		// Preparar la respuesta
+		return res.json({mensaje: "El link fue eliminado con éxito", ocultar: true});
 	},
 };

@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
 				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
 			informacion = {
 				mensajes: [
-					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa",
+					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa.",
 					"Podrás volver a ingresar información el día " + fecha + ".",
 				],
 				iconos: [vistaAnterior, vistaInicio],
