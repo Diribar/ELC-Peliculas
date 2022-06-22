@@ -30,8 +30,11 @@
 		"sequelize": "^6.9.0"
 	},
 	"devDependencies": {
-		"async": ">=2.6.4",
 		"nodemon": "^2.0.7",
 		"sequelize-cli": "^6.3.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "//github.com/Diribar/ELC-Peliculas"
 	}
 }
