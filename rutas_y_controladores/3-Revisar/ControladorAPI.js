@@ -377,6 +377,7 @@ module.exports = {
 		let st_aprobado = status.find((n) => n.aprobado).id;
 		let st_inactivo = status.find((n) => n.inactivo).id;
 		let ahora = funciones.ahora();
+		let decision = (!inactivar && aprobado) || (inactivar && !aprobado);
 		let datos;
 		// Averiguar si no existe el 'url'
 		if (!api.url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
@@ -416,19 +417,18 @@ module.exports = {
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
 			status_final_id: aprobado ? st_aprobado : st_inactivo,
-			aprobado: (creado && aprobado) || (inactivar && !aprobado) || (recuperar && aprobado),
+			aprobado: decision,
 		};
 		// Motivo_id
-		if (!creado || !aprobado) datos.motivo_id = creado && !aprobado ? api.motivo_id : link.motivo_id;
+		if (!creado || !aprobado) datos.motivo_id = creado ? api.motivo_id : link.motivo_id;
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// Actualizaciones en el USUARIO - CAMBIOS EN EL USUARIO
-		let decision =
-			(creado && aprobado) || (inactivar && !aprobado) || (recuperar && aprobado) ? "aprob" : "rech";
-		console.log(datos.sugerido_por_id,decision);
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, "link_" + decision, 1);
-		// Verifica penalidad
+		let campo = "link_" + (decision ? "aprob" : "rech");
+		console.log(datos.sugerido_por_id, campo);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.sugerido_por_id, campo, 1);
+		// Verifica la penalidad - sólo para sugeridos: 'aprobado'
 		if (!inactivar && !aprobado) {
-			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", datos.motivo_id);
+			let motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", datos.motivo_id);
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
 		// Actualizar si el producto tiene links gratuitos
