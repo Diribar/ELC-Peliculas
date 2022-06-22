@@ -397,14 +397,15 @@ module.exports = {
 		let decision = (!inactivar && aprobado) || (inactivar && !aprobado); // Obtener si la decisión valida al sugerido
 		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
 		let motivo_id = !creado || !aprobado ? (creado ? api.motivo_id : link.motivo_id) : null;
-		// Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
+		// USUARIO - Actualizaciones
+		let campo = "link_" + (decision ? "aprob" : "rech");
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
+		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
 		if (!inactivar && !aprobado) {
 			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
-		let duracion = motivo ? motivo.duracion : 0;
-		console.log(duracion, motivo);
-		// Pasa el link a status aprobado/rechazado - CAMBIOS EN EL LINK
+		// LINK - Pasa a status aprobado/rechazado - 
 		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
@@ -418,7 +419,8 @@ module.exports = {
 			}
 		}
 		await BD_genericas.actualizarPorId("links", link.id, datos);
-		// CAMBIOS EN HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
+		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
+		let duracion = motivo ? motivo.duracion : 0;
 		datos = {
 			link_id: link.id,
 			sugerido_por_id,
@@ -432,10 +434,7 @@ module.exports = {
 			duracion,
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
-		// Actualizaciones en el USUARIO - CAMBIOS EN EL USUARIO
-		let campo = "link_" + (decision ? "aprob" : "rech");
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
-		// Actualizar si el producto tiene links gratuitos
+		// PRODUCTO - Actualizar si tiene links gratuitos
 		if (aprobado) funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
