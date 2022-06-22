@@ -11,8 +11,7 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 	const urlBase = req.baseUrl;
 	// Variables - De tiempo
-	let ahora = funciones.ahora();
-	ahora.setSeconds(0); // Descarta los segundos en el horario de captura
+	let ahora = funciones.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
 	const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 	let capturado_en = registro.capturado_en;
 	capturado_en ? capturado_en.setSeconds(0) : (capturado_en = 0);

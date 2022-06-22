@@ -21,9 +21,6 @@ module.exports = (req, res, next) => {
 		};
 		return res.render("Errores", {informacion});
 	}
-	// Detectar si el usuario está penalizado
-	let urlAnterior = req.session.urlAnterior;
-	if (!informacion) informacion = usuarios.detectarUsuarioPenalizado(usuario, urlAnterior);
 	// Si corresponde, mostrar el mensaje de error
 	if (informacion) return res.render("Errores", {informacion});
 	// Fin

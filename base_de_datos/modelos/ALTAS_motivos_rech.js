@@ -3,10 +3,11 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		comentario: {type: dt.STRING(41)},
+		bloquear_aut_input: {type: dt.BOOLEAN},
 		prod: {type: dt.BOOLEAN},
 		rclv: {type: dt.BOOLEAN},
 		links: {type: dt.BOOLEAN},
-		duracion: {type: dt.INTEGER},
+		duracion: {type: dt.DECIMAL},
 		};
 	const config = {
 		tableName: "altas_motivos_rech",

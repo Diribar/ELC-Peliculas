@@ -55,25 +55,16 @@ module.exports = {
 			evaluado_en: ahora,
 		};
 		if (!aprobado) {
-			datos.duracion = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id).then(
-				(n) => n.duracion
-			);
-			datos.motivo_id = motivo_id;
+			var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {info_erronea: true});
+			datos.motivo_id = motivo.id;
+			datos.duracion = motivo.duracion;
 		}
 		BD_genericas.agregarRegistro(archivo, datos);
 		// Asienta la aprob/rech en el registro del usuario
 		let campo = aprobado ? "cant_altas_aprob" : "cant_altas_rech";
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo);
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo, 1);
 		// Penaliza al usuario si corresponde
-		if (!aprobado && datos.duracion) {
-			let penalizarUsuario = {
-				usuario_ID: creador_ID,
-				duracion: datos.duracion,
-				penalizado_en: ahora,
-				penalizado_por_id: revisor_ID,
-			};
-			procesar.usuario_Penalizar(penalizarUsuario);
-		}
+		if (datos.duracion) procesar.usuario_Penalizar(creador_ID, motivo, "prod_");
 		// Actualizar en RCLVs el campo 'prod_aprob'
 		if (
 			nuevoStatusID == status.find((n) => n.aprobado).id ||
@@ -113,12 +104,6 @@ module.exports = {
 		includes.splice(-1);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
 		let editor_ID = prodEditado.editado_por_id;
-		// Obtener el motivo si es un rechazo
-		if (!aprobado) var {motivo_id} = req.query;
-		if (!aprobado && !motivo_id)
-			motivo_id = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: 1}).then(
-				(n) => n.id
-			);
 		// Detectar un eventual error
 		if (!prodEditado || !prodEditado[campo]) return res.json("false");
 		// Particularidades para el campo 'avatar'
@@ -176,9 +161,9 @@ module.exports = {
 				: {...prodOriginal, ...datos};
 			// Actualiza la variable 'prodOriginal'
 			// Asienta la aprobación en el registro del usuario
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_aprob");
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_aprob", 1);
 			// Asienta el rechazo en el registro del usuario
-		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_rech");
+		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_rech", 1);
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("prods_edicion", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
@@ -206,9 +191,11 @@ module.exports = {
 			};
 			// Si fue rechazado, agregar campos
 			if (!aprobado) {
-				let aux = await BD_genericas.obtenerPorId("edic_motivos_rech", motivo_id);
-				datos.duracion = aux.duracion;
-				datos.motivo_id = motivo_id;
+				let {motivo_id} = req.query;
+				let condicion = motivo_id ? {id: motivo_id} : {info_erronea: true};
+				var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", condicion);
+				datos.duracion = motivo.duracion;
+				datos.motivo_id = motivo.id;
 			}
 			// Obtener el valor de edición, cuando es un ID
 			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
@@ -223,15 +210,7 @@ module.exports = {
 		// Actualiza el status del registro original, si corresponde
 		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(producto, prodEditado);
 		// Penalizar al usuario si corresponde
-		if (!aprobado && datos.duracion) {
-			let penalizarUsuario = {
-				usuario_ID: editor_ID,
-				duracion: datos.duracion,
-				penalizado_en: ahora,
-				penalizado_por_id: revisor_ID,
-			};
-			procesar.usuario_Penalizar(penalizarUsuario);
-		}
+		if (datos.duracion) procesar.usuario_Penalizar(editor_ID, motivo, "edic_");
 		// Si el producto estaba aprobado y se cambió un campo RCLV, actualizar en el RCLV descartado el campo 'prod_aprob'
 		if (
 			RCLV_ids.includes(campo) &&
@@ -315,64 +294,6 @@ module.exports = {
 	},
 
 	// Links
-	linkEdicAprob: async (req, res) => {
-		// Variables
-		let api = req.query;
-		let campo = api.campo;
-		let userID = req.session.usuario.id;
-		let camposVacios = {};
-		variables.camposRevisarLinks().forEach((campo) => {
-			camposVacios[campo.nombreDelCampo] = null;
-		});
-		let datos;
-		// Obtener la edicion
-		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
-		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
-		// Obtener el link_id
-		let link_id = edicion.link_id;
-		// Se actualizan los campos "consecuencia" que correspondan en el link original
-		datos = {[campo]: edicion[campo]};
-		if (campo == "tipo_id" && edicion.completo !== null) datos.completo = edicion.completo;
-		if (campo == "tipo_id" && edicion.parte !== null) datos.parte = edicion.parte;
-		await BD_genericas.actualizarPorId("links", link_id, datos);
-		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
-		// Se aumenta el registro de ediciones aprobadas en el usuario
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", edicion.editado_por_id, "edic_aprob");
-		// Se agrega el registro en la tabla de ediciones aprobadas
-		datos = {
-			entidad: "links",
-			entidad_id: link.id,
-			campo: campo,
-			titulo: campo,
-			valor_aceptado: edicion[campo],
-			input_por_id: edicion.editado_por_id,
-			input_en: edicion.editado_en,
-			evaluado_por_id: userID,
-		};
-		BD_genericas.agregarRegistro("edic_aprob", datos);
-		// Se eliminan los campos editados sin diferencias con el original
-		// Se eliminan los registros editados que quedan vacíos de campos útiles
-		link.ediciones.forEach(async (edicion) => {
-			let edicion_id = edicion.id;
-			edicion = funciones.quitarLosCamposSinContenido(edicion);
-			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");
-			edicion = funciones.quitarLasCoincidenciasConOriginal(link, edicion);
-			let quedanCampos = await funciones.eliminarEdicionSiEstaVacio(
-				"links_edicion",
-				edicion_id,
-				edicion
-			);
-			if (quedanCampos)
-				await BD_genericas.actualizarPorId("links_edicion", edicion_id, {
-					...camposVacios,
-					...edicion,
-				});
-		});
-		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
-		// Se recarga la vista
-		return res.json({mensaje: "Link actualizado", reload: true});
-	},
 	linkEdic: async (req, res) => {
 		// Variables
 		let api = req.query;
@@ -383,28 +304,25 @@ module.exports = {
 			camposVacios[campo.nombreDelCampo] = null;
 		});
 		let aprobado = api.aprobado == "SI";
-		let rechazado = !aprobado;
+		let decision = aprobado ? "edic_aprob" : "edic_rech";
 		let datos;
 		// Obtener la edicion
 		let edicion = await BD_genericas.obtenerPorId("links_edicion", api.edicion_id);
 		if (!edicion) return res.json({mensaje: "No se encuentra el registro de la edición", reload: true});
 		let link_id = edicion.link_id;
 		let edicion_id = edicion.id;
+		let sugerido_por_id = edicion.editado_por_id;
 		// Se prepara el feedback a guardar
-		let feedback = {[campo]: edicion[campo]};
+		let feedback = {[campo]: aprobado ? edicion[campo] : null};
 		if (campo == "tipo_id" && edicion.completo !== null)
 			feedback.completo = aprobado ? edicion.completo : null;
 		if (campo == "tipo_id" && edicion.parte !== null) feedback.parte = aprobado ? edicion.parte : null;
-		// Se guarda el feedback en la tabla que corresponda
-		console.log(aprobado);
+		// Se guarda el feedback en LINKS o LINKS_EDICIONES
 		aprobado
 			? // Si fue aprobado => en el link original
 			  await BD_genericas.actualizarPorId("links", link_id, feedback)
 			: // Si fue rechazado => en el link editado
 			  await BD_genericas.actualizarPorId("links_edicion", edicion_id, feedback);
-		// Se aumenta el registro de ediciones aprob/rech en el usuario
-		let decision = aprobado ? "edic_aprob" : rechazado ? "edic_rech" : "";
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", edicion.editado_por_id, decision);
 		// Se prepara la información para agregar en la tabla de ediciones aprob/rech
 		datos = {
 			entidad: "links",
@@ -412,15 +330,16 @@ module.exports = {
 			campo: campo,
 			titulo: campo,
 			valor_aceptado: edicion[campo],
-			input_por_id: edicion.editado_por_id,
+			input_por_id: sugerido_por_id,
 			input_en: edicion.editado_en,
 			evaluado_por_id: userID,
 		};
-		if (rechazado)
-			datos.motivo_id = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {generico: true}).then(
-				(n) => n.id
-			);
-		// Se agrega el registro en la tabla de ediciones aprob/rech
+		if (!aprobado) {
+			var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {info_erronea: true});
+			datos.motivo_id = motivo.id;
+			datos.duracion = motivo.duracion;
+		}
+		// Se agrega el registro en EDICIONES APROB/RECH
 		BD_genericas.agregarRegistro(decision, datos);
 		// Purgar las ediciones
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
@@ -441,15 +360,14 @@ module.exports = {
 					...edicion,
 				});
 		});
+		// Actualizaciones en el USUARIO
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, decision, 1);
+		if (datos.duracion) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
 		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
-
-	altaAprob: async (req, res) => {},
-
-	altaRech: async (req, res) => {},
 
 	cambiarA_aprobado: async (req, res) => {},
 
@@ -457,7 +375,7 @@ module.exports = {
 
 	eliminar: async (req, res) => {
 		// Definir las variables
-		let {prodEntidad, prodID, url, motivo_id} = req.query;
+		let {prodEntidad, prodID, url} = req.query;
 		let respuesta = {};
 		let link;
 		// Averiguar si no existe el 'url'

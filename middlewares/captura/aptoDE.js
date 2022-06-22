@@ -13,15 +13,22 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Fórmulas
-	let usuarioPenalizado = () => {
+	let detectarUsuarioPenalizado = () => {
+		// Variables
 		let informacion;
-		if (usuario.penalizado_hasta && new Date(usuario.penalizado_hasta) > funciones.ahora())
+		// Proceso
+		if (usuario.penalizado_hasta && usuario.penalizado_hasta > funciones.ahora()) {
+			let hasta = new Date(usuario.penalizado_hasta);
+			let fecha =
+				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
 			informacion = {
 				mensajes: [
-					"Según la información que tenemos, no estás habilitado aún para realizar esta tarea.",
+					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa",
+					"Podrás volver a ingresar información el día " + fecha + ".",
 				],
 				iconos: [vistaAnterior, vistaInicio],
 			};
+		}
 		return informacion;
 	};
 	let compararRegistrosConNivelDeConfianza = async () => {
@@ -51,7 +58,7 @@ module.exports = async (req, res, next) => {
 	};
 
 	// VERIFICACIÓN1: Usuario penalizado
-	if (!informacion) informacion = usuarioPenalizado();
+	if (!informacion) informacion = detectarUsuarioPenalizado();
 	// VERIFICACIÓN2: Registros a revisar >= Nivel de Confianza
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
