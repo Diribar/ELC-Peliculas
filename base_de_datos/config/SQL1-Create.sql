@@ -158,7 +158,7 @@ CREATE TABLE USUARIOS (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Startup', 2, 1, 4, '2021-01-01','2021-01-02'),
+(1, 'sinMail1', 'sinContraseña', 'Startup ELC', 2, 1, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02')
 ;
 INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
@@ -1082,7 +1082,7 @@ VALUES
 (7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20',1,1),
 (8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45',1,1)
 ;
-UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26' WHERE status_registro_id>3
+UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26', motivo_id=22 WHERE status_registro_id > 3
 ;
 
 CREATE TABLE links_edicion (
@@ -1117,7 +1117,7 @@ CREATE TABLE links_edicion (
 
 /* HISTORIAL DE INACTIVAR Y RECUPERAR */;
 CREATE TABLE aux_historial_de_cambios_de_status(
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 
 	pelicula_id INT UNSIGNED NULL,
 	coleccion_id INT UNSIGNED NULL,
@@ -1130,14 +1130,16 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	link_id INT UNSIGNED NULL,
 
 	motivo_id TINYINT UNSIGNED NULL,
-	sugerido_por_id INT UNSIGNED NULL,
-	sugerido_en DATETIME NULL,
-	analizado_por_id INT UNSIGNED NULL,
-	analizado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	sugerido_por_id INT UNSIGNED NOT NULL,
+	sugerido_en DATETIME NOT NULL,
+	analizado_por_id INT UNSIGNED NOT NULL,
+	analizado_en DATETIME NOT NULL,
 
-	status_original_id TINYINT UNSIGNED NULL,
-	status_final_id TINYINT UNSIGNED NULL,
+	status_original_id TINYINT UNSIGNED NOT NULL,
+	status_final_id TINYINT UNSIGNED NOT NULL,
+
 	aprobado BOOLEAN NOT NULL,
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 
 	comunicado_en DATETIME NULL,
 

@@ -57,14 +57,14 @@ router.get("/links", soloGestionProd, entidad, id, permReg, permUserReg, captura
 // Uso compartido
 router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto
-router.get("/api/producto-alta", soloGestionProd, API.prodAltas);
-router.get("/api/producto-edicion", soloGestionProd, API.prodEdics);
+router.get("/api/producto-alta", soloGestionProd, API.prodAlta);
+router.get("/api/producto-edicion", soloGestionProd, API.prodEdic);
 // RCLV-Alta
-router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Altas);
+router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Alta);
 // Links
-router.get("/api/altas", soloGestionProd, API.linkAltas);
-router.get("/api/edicion", soloGestionProd, API.linkEdic);
-router.get("/api/eliminar", soloGestionProd, API.eliminar);
+router.get("/api/link-edicion", soloGestionProd, API.linkEdic);
+router.get("/api/link-alta", soloGestionProd, API.linkAlta);
+router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // Exportarlo **********************************************
 module.exports = router;

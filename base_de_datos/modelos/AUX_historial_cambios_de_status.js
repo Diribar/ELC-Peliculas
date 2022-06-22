@@ -21,6 +21,8 @@ module.exports = (sequelize, dt) => {
 		status_final_id: {type: dt.INTEGER},
 
 		aprobado: {type: dt.BOOLEAN},
+		duracion: {type: dt.DECIMAL},
+
 		comunicado_en: {type: dt.DATE},
 		};
 	const config = {

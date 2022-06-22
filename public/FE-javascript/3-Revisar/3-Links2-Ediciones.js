@@ -6,7 +6,7 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".edicion .inputs");
 	let iconosDecision = document.querySelectorAll(".edicion .decision");
 	let ediciones_id = document.querySelectorAll(".edicion .edicion_id");
-	let ruta = "/revision/api/edicion/";
+	let ruta = "/revision/api/link-edicion/";
 	let condiciones = "?prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 
 	// Decisión tomada
