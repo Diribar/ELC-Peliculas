@@ -14,6 +14,19 @@ const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 
 // Rutas de Vistas *******************************************
+// Rutas de APIs
+// Uso compartido
+router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
+// Producto
+router.get("/api/producto-alta", soloGestionProd, API.prodAlta);
+router.get("/api/producto-edicion", soloGestionProd, API.prodEdic);
+// RCLV-Alta
+router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Alta);
+// Links
+router.get("/api/link-edicion", soloGestionProd, API.linkEdic);
+router.get("/api/link-alta", soloGestionProd, API.linkAlta);
+router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
+
 // Vistas Generales
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
 router.get("/inactivar-captura", soloGestionProd, entidad, id, vista.inactivarCaptura);
@@ -52,19 +65,6 @@ router.get(
 router.get("/rclv", soloGestionProd, entidad, id, permUserReg, permReg, capturaActivar, vista.RCLV_Alta);
 // Vistas de Links
 router.get("/links", soloGestionProd, entidad, id, permReg, permUserReg, capturaActivar, vista.links);
-
-// Rutas de APIs *******************************************
-// Uso compartido
-router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
-// Producto
-router.get("/api/producto-alta", soloGestionProd, API.prodAlta);
-router.get("/api/producto-edicion", soloGestionProd, API.prodEdic);
-// RCLV-Alta
-router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Alta);
-// Links
-router.get("/api/link-edicion", soloGestionProd, API.linkEdic);
-router.get("/api/link-alta", soloGestionProd, API.linkAlta);
-router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // Exportarlo **********************************************
 module.exports = router;

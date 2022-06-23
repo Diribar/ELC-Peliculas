@@ -22,6 +22,15 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
+// Rutas de APIs
+// Detalle
+router.get("/api/detalle/obtener-calificaciones", API.obtenerCalificaciones);
+// Edición
+router.get("/api/edicion/validar", API.validarEdicion);
+router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
+router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
+router.get("/api/edicion/obtener-de-req-session", API.obtenerDeReqSession);
+
 // Rutas de vistas
 // Producto
 router.get("/detalle", soloUsuarios, entidad, id, capturaInactivar, vista.prod_Form);
@@ -40,15 +49,6 @@ router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.pro
 router.get("/edicion/eliminar", soloAutInput, entidad, id, vista.prod_EliminarEdic);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
-
-// Rutas de APIs
-// Detalle
-router.get("/api/detalle/obtener-calificaciones", API.obtenerCalificaciones);
-// Edición
-router.get("/api/edicion/validar", API.validarEdicion);
-router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
-router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
-router.get("/api/edicion/obtener-de-req-session", API.obtenerDeReqSession);
 
 // Fin
 module.exports = router;
