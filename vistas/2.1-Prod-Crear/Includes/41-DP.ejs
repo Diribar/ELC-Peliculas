@@ -3,7 +3,7 @@
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" <% if (dataEntry[campo] && !errores[campo]) { %>disabled<% } else { %>autofocus<% } %>>
+		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %> <%- registro.grupo=="RCLV" ? 'RCLV' : '' %> " <% if (dataEntry[campo] && !errores[campo]) { %>disabled<% } else { %>autofocus<% } %>>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
@@ -32,7 +32,8 @@
 		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		<!-- Link a Relación con la vida -->
 		<% if (registro.grupo=="RCLV") { %>
-			<a class="link <%= campo %>" title='Link a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-circle-plus"></i></a>
+			<a id="alta" class="link <%= campo %>" title='Acceso a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-circle-plus"></i></a>
+			<a id="edicion" class="link <%= campo %>" title='Acceso a "Editar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-square-pen"></i></a>
 		<% } %>
 	</div>
 </section>

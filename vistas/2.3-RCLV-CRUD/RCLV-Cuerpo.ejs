@@ -17,7 +17,7 @@
 								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 							<% } %>
-							<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
+							<li>Primero el nombre, después el apellido.</li>
 						</ul>
 						<!-- Error/OK -->			
 						<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
@@ -197,8 +197,8 @@
 		<% } %>
 		<!-- Flechas y Botón -->
 		<section id="flechas">
-			<a href="<%= dataEntry.destino %> " tabindex="-1"><i class="fa-solid fa-circle-left"></i></a>
-			<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check"></i></button>
+			<a href="<%= dataEntry.destino %> " tabindex="-1" title="Salir sin guardar"><i class="fa-solid fa-circle-left"></i></a>
+			<button type="submit" class="inactivo" title="Guardar y Salir"><i class="fa-solid fa-circle-check"></i></button>
 		</section>
 	</form>
 </section>

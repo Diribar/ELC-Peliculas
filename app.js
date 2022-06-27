@@ -90,7 +90,7 @@ const variables = require("./funciones/3-Procesos/Variables");
 app.use((req, res) => {
 	let informacion = {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
-		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio],
+		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 	};
 	res.status(404).render("Errores", {informacion});
 });

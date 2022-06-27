@@ -12,7 +12,9 @@
 #dataEntry .label-input .input-error .input {align-self: center; width: 150px;}
 #dataEntry .label-input .input-error input {padding: 0px 5px;}
 #dataEntry .label-input .input-error select {padding: 0;}
-#dataEntry .label-input .input-error .link {right: -40px; font-size: .9rem; width: 15px;}
+#dataEntry .label-input .input-error .link {width: 15px;}
+#dataEntry .label-input .input-error #alta.link {right: -40px;}
+#dataEntry .label-input .input-error #edicion.link {right: -60px;}
 
 /* Mensajes */
 #dataEntry .mensajeAyuda {max-width: 400px;}

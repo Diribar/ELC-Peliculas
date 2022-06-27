@@ -12,6 +12,8 @@ module.exports = {
 			origen: req.query.origen,
 			RCLV_entidad: req.query.RCLV_entidad,
 		};
+		let vista = req.query.vista;
+		let RCLV_id = vista == "edicion" ? req.query.RCLV_id : "";
 		//return res.send(RCLV)
 		if (RCLV.origen == "datosPers") {
 			// 1. Si se perdió la info anterior, volver al circuito de 'Agregar Producto'
@@ -39,7 +41,9 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		return res.redirect("/rclv/agregar/?entidad=" + RCLV.RCLV_entidad);
+		let ruta = "/rclv/" + vista;
+		let url = "/?entidad=" + RCLV.RCLV_entidad + (RCLV_id ? "&id=" + RCLV_id : "");
+		return res.redirect(ruta + url);
 	},
 
 	altaForm: async (req, res) => {
