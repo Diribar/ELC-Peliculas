@@ -1,13 +1,13 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let inputs = document.querySelectorAll(".input-error .input");
 	let linksAlta = document.querySelectorAll(".input-error a.link#alta");
 	let linksEdicion = document.querySelectorAll(".input-error a.link#edicion");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
 
 	// Función para buscar todos los valores del formulario
 	let buscarTodosLosValores = () => {
+		let inputs = document.querySelectorAll(".input-error .input");
 		let url = "";
 		inputs.forEach((input) => {
 			url += "&" + input.name + "=";
@@ -39,6 +39,7 @@ window.addEventListener("load", async () => {
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", (e) => {
 			e.preventDefault();
+			if (link.classList.contains("inactivo")) return;
 			let vista = "&vista=edicion";
 			// Obtener la RCLV_entidad
 			let RCLV_entidad = link.className.includes("personaje")
