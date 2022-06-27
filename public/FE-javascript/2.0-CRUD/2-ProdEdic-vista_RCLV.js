@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
 			if (!link.classList.contains("inactivo")) {
-				let vista = "&vista=agregar";
+				let vistaRCLV = "&vistaRCLV=agregar";
 				// Obtener la RCLV_entidad
 				let RCLV_entidad = link.className.includes("personaje")
 					? "personajes"
@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 					prodID +
 					"&RCLV_entidad=" +
 					RCLV_entidad +
-					vista;
+					vistaRCLV;
 			}
 		});
 	});
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 	linksEdicion.forEach((link,i) => {
 		link.addEventListener("click", () => {
 			if (link.classList.contains("inactivo")) return;
-			let vista = "&vista=edicion";
+			let vistaRCLV = "&vistaRCLV=edicion";
 			// Obtener la RCLV_entidad
 			let RCLV_entidad = link.className.includes("personaje")
 				? "personajes"
@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 				prodID +
 				"&RCLV_entidad=" +
 				RCLV_entidad +
-				vista;
+				vistaRCLV;
 		});
 	});
 });

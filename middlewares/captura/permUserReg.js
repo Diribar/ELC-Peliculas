@@ -121,13 +121,13 @@ module.exports = async (req, res, next) => {
 	let verificacionesDeRevision = () => {
 		let informacion;
 		if (urlBase == "/revision" && !url.startsWith("/tablero-de-control")) {
-			// El registro está en un status gr_pend_aprob, creado por el Revisor
+			// 1. El registro está en un status gr_pend_aprob, creado por el Revisor
 			if (registro.status_registro.gr_pend_aprob && creadoPorElUsuario)
 				informacion = {
 					mensajes: ["El registro debe ser analizado por otro revisor, no por su creador"],
 					iconos: [vistaAnterior, vistaTablero],
 				};
-			// El registro está en un status provisorio, sugerido por el Revisor
+			// 2. El registro está en un status provisorio, sugerido por el Revisor
 			else if (registro.status_registro.gr_provisorios && registro.sugerido_por_id == userID)
 				informacion = {
 					mensajes: [
@@ -135,7 +135,7 @@ module.exports = async (req, res, next) => {
 					],
 					iconos: [vistaAnterior, vistaTablero],
 				};
-			// El registro sólo tiene una sola edición y es del Revisor
+			// 3. El registro sólo tiene una sola edición y es del Revisor
 			else if (
 				registro.ediciones &&
 				registro.ediciones.length == 1 &&

@@ -26,20 +26,21 @@ router.get("/api/validar-consolidado", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
 router.get("/redireccionar", soloAutInput, aptoDE, vista.redireccionar);
-// router.get("/agregar", soloAutInput, entidad, id, aptoDE, vista.RCLV_AltaForm);
-router.post("/agregar", soloAutInput, entidad, id, aptoDE, vista.RCLV_Grabar);
-router.get("/detalle", entidad, id, capturaInactivar, vista.RCLV_Form);
+router.get("/agregar", soloAutInput, aptoDE, entidad, vista.altaForm);
+router.post("/agregar", soloAutInput, aptoDE, vista.altaGrabar);
+router.get("/detalle", entidad, id, vista.detalle);
 router.get(
-	"/editar",
+	"/edicion",
 	soloAutInput,
+	aptoDE,
 	entidad,
 	id,
-	aptoDE,
 	permReg,
 	permUserReg,
 	capturaActivar,
-	vista.RCLV_Form
+	vista.edicion
 );
+
 // router.get("/eliminar", soloAutInput, entidad, id, aptoDE, permReg, permUserReg, vista.RCLV_Eliminar);
 
 // Exportarlo **********************************************

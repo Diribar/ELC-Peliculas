@@ -15,9 +15,9 @@ module.exports = {
 			origen: req.query.origen,
 			RCLV_entidad: req.query.RCLV_entidad,
 		};
-		let vista = req.query.vista;
-		let RCLV_id = vista == "edicion" ? req.query.RCLV_id : "";
-		//return res.send(RCLV)
+		let vistaRCLV = req.query.vistaRCLV;
+		let RCLV_id = vistaRCLV != "agregar" ? req.query.RCLV_id : "";
+		//return res.send(req.query)
 		if (RCLV.origen == "prodAgregar") {
 			// 1. Si se perdió la info anterior, volver al circuito de 'Agregar Producto'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
@@ -36,7 +36,8 @@ module.exports = {
 			// Completar RCLV
 			RCLV.prodEntidad = req.query.entidad;
 			RCLV.prodID = req.query.id;
-			RCLV.destino = "/producto/" + vista + "/?entidad=" + RCLV.prodEntidad + "&id=" + RCLV.prodID;
+			let origen = RCLV.origen.slice(4).toLowerCase();
+			RCLV.destino = "/producto/" + origen + "/?entidad=" + RCLV.prodEntidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
 		RCLV.RCLV_nombre = funciones.obtenerEntidadNombre(RCLV.RCLV_entidad);
@@ -44,7 +45,7 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		let ruta = "/rclv/" + vista;
+		let ruta = "/rclv/" + vistaRCLV;
 		let url = "/?entidad=" + RCLV.RCLV_entidad + (RCLV_id ? "&id=" + RCLV_id : "");
 		return res.redirect(ruta + url);
 	},
@@ -209,6 +210,10 @@ module.exports = {
 	},
 
 	detalle: async (req, res) => {
-		return res.send(req.query)
+		return res.send(req.query);
+	},
+
+	edicion: async (req, res) => {
+		return res.send(req.query);
 	},
 };
