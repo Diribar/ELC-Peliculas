@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 	if (!prodID) informacion = {mensajes: ["Falta el dato del 'ID'"], iconos: [vistaAnterior]};
 	// PROBLEMA 2: Registro no encontrado
 	const registro = await BD_genericas.obtenerPorId(entidad, prodID);
-	if (!registro) informacion = {mensajes: ["Producto no encontrado"], iconos: [vistaAnterior]};
+	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones
 	if (informacion) return res.render("Errores", {informacion});
