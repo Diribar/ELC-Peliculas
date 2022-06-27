@@ -1,13 +1,3 @@
-PRIMERA ETAPA
-- Revisiones
-	- SI/NO Productos creados / editados
-
-	- SI/NO Links creados / editados
-	- SI/NO RCLV creados / editados
-	- Vistas de inactivado
-	- Envío automático de un mail consolidado diario
-- Sugerir borrarla
-
 SEGUNDA ETAPA --> Desarrollo del Front End (enfocado en productos)
 - Carga y aprobación de 20 productos (de los rubros más pequeños)
 - Listados

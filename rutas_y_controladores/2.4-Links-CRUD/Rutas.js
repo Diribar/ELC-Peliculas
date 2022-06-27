@@ -16,10 +16,17 @@ const aptoDE = require("../../middlewares/captura/aptoDE");
 const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-// Varios
-const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
+// Rutas de APIs
+// Links
+router.get("/api/validar", API.validar);
+router.get("/api/obtener-provs-links", API.obtenerProvs);
+router.get("/api/guardar", API.guardar);
+router.get("/api/eliminar", API.eliminar);
+router.get("/api/recuperar", API.recuperar);
+router.get("/api/deshacer", API.deshacer);
+
 // Rutas de vistas
 // Links
 router.get(
@@ -33,15 +40,6 @@ router.get(
 	capturaActivar,
 	vista.linksForm
 );
-
-// Rutas de APIs
-// Links
-router.get("/api/validar", API.validar);
-router.get("/api/obtener-provs-links", API.obtenerProvs);
-router.get("/api/guardar", API.guardar);
-router.get("/api/eliminar", API.eliminar);
-router.get("/api/recuperar", API.recuperar);
-router.get("/api/deshacer", API.deshacer);
 
 // Fin
 module.exports = router;
