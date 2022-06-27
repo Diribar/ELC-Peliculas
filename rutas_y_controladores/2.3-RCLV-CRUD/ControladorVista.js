@@ -7,6 +7,9 @@ const procesar = require("../../funciones/3-Procesos/3-RUD");
 
 module.exports = {
 	redireccionar: (req, res) => {
+		// Se usa sobretodo para:
+		// 	1. Estandarizar la ruta entre 'Agregar' y 'Edición'
+		//	2. Guardar cookies
 		// Detectar el origen
 		let RCLV = {
 			origen: req.query.origen,
@@ -29,11 +32,11 @@ module.exports = {
 			res.cookie("datosPers", datosPers, {maxAge: unDia});
 			// Completar RCLV
 			RCLV.destino = "/producto/agregar/datos-personalizados";
-		} else if (RCLV.origen == "prodEdicion") {
+		} else {
 			// Completar RCLV
-			RCLV.entidad = req.query.entidad;
+			RCLV.prodEntidad = req.query.entidad;
 			RCLV.prodID = req.query.id;
-			RCLV.destino = "/producto/edicion/?entidad=" + RCLV.entidad + "&id=" + RCLV.prodID;
+			RCLV.destino = "/producto/" + vista + "/?entidad=" + RCLV.prodEntidad + "&id=" + RCLV.prodID;
 		}
 		// Producto a RCLV
 		RCLV.RCLV_nombre = funciones.obtenerEntidadNombre(RCLV.RCLV_entidad);
@@ -203,5 +206,9 @@ module.exports = {
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
 		return res.redirect(RCLV.destino);
+	},
+
+	detalle: async (req, res) => {
+		return res.send(req.query)
 	},
 };
