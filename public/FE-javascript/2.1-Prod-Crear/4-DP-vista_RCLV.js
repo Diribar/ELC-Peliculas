@@ -50,7 +50,6 @@ window.addEventListener("load", async () => {
 			let RCLV_id = inputsRCLV[i].value;
 			if (RCLV_id) RCLV_entidad += "&RCLV_id=" + RCLV_id;
 			else return;
-			console.log(RCLV_id);
 			// Para preservar los valores ingresados hasta el momento
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
