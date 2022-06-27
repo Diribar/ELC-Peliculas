@@ -31,7 +31,8 @@
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 		<!-- Link a Relación con la vida -->
 		<% if (campo.grupo=="RCLV") { %>
-			<i class="fa-solid fa-circle-plus linkRCLV <%= campo.nombreDelCampo %>" title='Link a "Agregar <%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+			<i id="alta" class="fa-solid fa-circle-plus linkRCLV <%= campo.nombreDelCampo %>" title='Agregar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+			<i id="edicion" class="fa-solid fa-square-pen linkRCLV <%= campo.nombreDelCampo %>" title='Editar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
 		<% } %>
 	</div>
 </section>

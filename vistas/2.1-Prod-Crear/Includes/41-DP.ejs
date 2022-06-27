@@ -32,8 +32,8 @@
 		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		<!-- Link a Relación con la vida -->
 		<% if (registro.grupo=="RCLV") { %>
-			<a id="alta" class="link <%= campo %>" title='Acceso a "Agregar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-circle-plus"></i></a>
-			<a id="edicion" class="link <%= campo %>" title='Acceso a "Editar <%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-square-pen"></i></a>
+			<a id="alta" class="link <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-circle-plus"></i></a>
+			<a id="edicion" class="link <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"' tabindex="-1"><i class="fa-solid fa-square-pen"></i></a>
 		<% } %>
 	</div>
 </section>

@@ -34,7 +34,6 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 #datos .label-input .input-error .input {align-self: center;}
 #datos .label-input .input-error input {padding: 0px 5px;}
 #datos .label-input .input-error select {padding: 0;}
-#datos .label-input .input-error .linkRCLV {right: -40px; width: 15px; cursor: pointer;}
 #datos .label-input .input-error .input:disabled, 
 #datos .label-input#paises_id input#mostrarPaises:disabled,
 #datos .label-input#paises_id select:disabled
@@ -47,6 +46,11 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 #datos #paises_id .input-error select {position: absolute; top:0; transform: translateY(-50%); height: 18px; border-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;}
 #datos #paises_id .input-error #mostrarPaises {width: 180px; z-index: 1; padding: 0 5px;}
 #datos #paises_id .input-error select {width: 100%; padding: 0;}
+
+/* RCLV */
+#datos .label-input .input-error .linkRCLV {width: 15px;}
+#datos .label-input .input-error #alta.linkRCLV {right: -40px;}
+#datos .label-input .input-error #edicion.linkRCLV {right: -60px;}
 
 /* Sinopsis */
 #datos .label-input#sinopsis .input-error {width: 100%; margin-left: 0;} 
