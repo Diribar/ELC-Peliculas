@@ -12,11 +12,13 @@ module.exports = {
 			origen: req.query.origen,
 			RCLV_entidad: req.query.RCLV_entidad,
 		};
+		let vista = req.query.vista;
+		let RCLV_id = vista == "edicion" ? req.query.RCLV_id : "";
 		//return res.send(RCLV)
 		if (RCLV.origen == "datosPers") {
-			// 1. Si se perdió la info anterior, volver a 'Palabra Clave'
+			// 1. Si se perdió la info anterior, volver al circuito de 'Agregar Producto'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
-			if (!datosPers) return res.redirect("/producto/agregar/palabras-clave");
+			if (!datosPers) return res.redirect("/producto/agregar/datos-personalizados");
 			// Obtener los datos actualizados del formulario
 			let datosActualizados = {...req.query};
 			delete datosActualizados.origen;
@@ -39,10 +41,12 @@ module.exports = {
 		req.session.RCLV = RCLV;
 		res.cookie("RCLV", RCLV, {maxAge: unDia});
 		// Redirigir
-		return res.redirect("/rclv/agregar/?entidad=" + RCLV.RCLV_entidad);
+		let ruta = "/rclv/" + vista;
+		let url = "/?entidad=" + RCLV.RCLV_entidad + (RCLV_id ? "&id=" + RCLV_id : "");
+		return res.redirect(ruta + url);
 	},
 
-	RCLV_Form: async (req, res) => {
+	altaForm: async (req, res) => {
 		// 1. Si se perdió la info anterior, ir a inicio
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV) {
@@ -113,7 +117,7 @@ module.exports = {
 		});
 	},
 
-	RCLV_Grabar: async (req, res) => {
+	altaGrabar: async (req, res) => {
 		// 1. Si se perdió la info anterior => error
 		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
 		if (!RCLV) {

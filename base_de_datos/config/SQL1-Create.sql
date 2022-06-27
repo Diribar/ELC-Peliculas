@@ -263,8 +263,10 @@ VALUES
 ;
 INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES
-(31, 1, 0.2, 'Registro duplicado', 1),
-(32, 2, 10, 'Spam', 1)
+(31, 1, 0.2, 'Nombre mal escrito', 1),
+(32, 2, 1, 'Nombre spam', 1),
+(33, 3, 5, 'Nombre spam c/saña', 1),
+(34, 4, 0, 'En desuso', 1)
 ;
 /* RECHAZO DE EDICIONES */;
 CREATE TABLE edic_motivos_rech (
@@ -385,7 +387,7 @@ CREATE TABLE rclv_1personajes (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
@@ -409,16 +411,16 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_1personajes (id, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_1personajes (id, nombre, creado_por_id)
 VALUES 
-(1, 'Ninguno', 1, 3),
-(2, 'Varios (colección)', 1, 3)
+(1, 'Ninguno', 1),
+(2, 'Varios (colección)', 1)
 ;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, status_registro_id)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
 VALUES 
-(11, NULL, 0, 'Jesús', 'STV', 'RCV', 1, 3),
-(12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1, 3),
-(13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1, 3)
+(11, NULL, 0, 'Jesús', 'STV', 'RCV', 1),
+(12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1),
+(13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1)
 ;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en)
 VALUES 
@@ -446,7 +448,7 @@ CREATE TABLE rclv_2hechos (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
@@ -467,20 +469,20 @@ CREATE TABLE rclv_2hechos (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
 VALUES
-(1, NULL, NULL, 'Ninguno', 1, 3),
-(2, NULL, NULL, 'Varios (colección)', 1, 3)
+(1, NULL, NULL, 'Ninguno', 1),
+(2, NULL, NULL, 'Varios (colección)', 1)
 ;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
 VALUES
-(11, 359, 0, 'Navidad', 1, 3),
-(12, 100, 33, 'Sem. Santa - 1. General', 1, 3),
-(13, 105, 33, 'Sem. Santa - 2. Viernes Santo', 1, 3),
-(14, 107, 33, 'Sem. Santa - 3. Resurrección', 1, 3),
-(15, 150, 33, 'Pentecostés', 1, 3),
-(16, 210, 1914, 'Guerra Mundial - 1a', 1, 3),
-(17, 245, 1942, 'Guerra Mundial - 2a', 1, 3)
+(11, 359, 0, 'Navidad', 1),
+(12, 100, 33, 'Sem. Santa - 1. General', 1),
+(13, 105, 33, 'Sem. Santa - 2. Viernes Santo', 1),
+(14, 107, 33, 'Sem. Santa - 3. Resurrección', 1),
+(15, 150, 33, 'Pentecostés', 1),
+(16, 210, 1914, 'Guerra Mundial - 1a', 1),
+(17, 245, 1942, 'Guerra Mundial - 2a', 1)
 ;
 CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -500,7 +502,7 @@ CREATE TABLE rclv_3valores (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
@@ -521,17 +523,17 @@ CREATE TABLE rclv_3valores (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_3valores (id, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_3valores (id, nombre, creado_por_id)
 VALUES
-(1, 'Ninguno', 1, 3),
-(2, 'Varios (colección)', 1, 3)
+(1, 'Ninguno', 1),
+(2, 'Varios (colección)', 1)
 ;
-INSERT INTO rclv_3valores (id, nombre, creado_por_id, status_registro_id)
+INSERT INTO rclv_3valores (id, nombre, creado_por_id)
 VALUES
-(11, 'Perseverancia', 1, 3),
-(12, 'Pacificar un país dividido', 1, 3),
-(13, 'Pasión por ayudar', 1, 3),
-(14, 'Superación personal', 1, 3)
+(11, 'Perseverancia', 1),
+(12, 'Pacificar un país dividido', 1),
+(13, 'Pasión por ayudar', 1),
+(14, 'Superación personal', 1)
 ;
 CREATE TABLE rclv_4edicion (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1123,10 +1125,6 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
 
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-
 	link_id INT UNSIGNED NULL,
 
 	motivo_id TINYINT UNSIGNED NULL,
@@ -1147,15 +1145,31 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
-	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (link_id) REFERENCES links(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_original_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (status_final_id) REFERENCES aux_status_registro(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE aux_historial_de_rclv_eliminados(
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	entidad VARCHAR(20) NOT NULL,
+	nombre_rech VARCHAR(50) NULL,
+
+	creado_por_id INT UNSIGNED NOT NULL,
+	creado_en DATETIME NOT NULL,
+	eliminado_por_id INT UNSIGNED NOT NULL,
+	eliminado_en DATETIME NOT NULL,
+	motivo_id TINYINT UNSIGNED NULL,
+
+	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
+	comunicado_en DATETIME NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (eliminado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;

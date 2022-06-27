@@ -6,13 +6,13 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 
 	// Links a Relación con la vida
-	for (let i = 0; i < links.length; i++) {
-		links[i].addEventListener("click", () => {
-			if (!links[i].classList.contains("inactivo")) {
+	links.forEach((link) => {
+		link.addEventListener("click", () => {
+			if (!link.classList.contains("inactivo")) {
 				// Obtener la RCLV_entidad
-				let RCLV_entidad = links[i].className.includes("personaje")
+				let RCLV_entidad = link.className.includes("personaje")
 					? "personajes"
-					: links[i].className.includes("hecho")
+					: link.className.includes("hecho")
 					? "hechos"
 					: "valores";
 				// Para ir a la vista RCLV
@@ -25,5 +25,5 @@ window.addEventListener("load", async () => {
 					RCLV_entidad;
 			}
 		});
-	}
+	});
 });

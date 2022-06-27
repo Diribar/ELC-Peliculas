@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
-	let RCLVs = document.querySelectorAll(".RCLV");
+	let RCLVs = document.querySelectorAll(".label-input.RCLV");
 	// Ruta
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
@@ -147,7 +147,7 @@ window.addEventListener("load", async () => {
 
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
-	categoria.value != "" ? funcionSubcat() : subcategoria.setAttribute("disabled", "disabled");
+	categoria.value ? funcionSubcat() : subcategoria.setAttribute("disabled", "disabled");
 	if (subcategoria.value) funcionRCLV();
 
 	// Errores y boton 'Submit'
