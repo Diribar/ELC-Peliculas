@@ -20,7 +20,7 @@ window.addEventListener("load", async () => {
 					: "valores";
 				// Para ir a la vista RCLV
 				window.location.href =
-					"/rclv/redireccionar/?origen=edicion&entidad=" +
+					"/rclv/redireccionar/?origen=prodEdicion&entidad=" +
 					prodEntidad +
 					"&id=" +
 					prodID +
@@ -48,7 +48,7 @@ window.addEventListener("load", async () => {
 			else return;
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/rclv/redireccionar/?origen=edicion&entidad=" +
+				"/rclv/redireccionar/?origen=prodEdicion&entidad=" +
 				prodEntidad +
 				"&id=" +
 				prodID +

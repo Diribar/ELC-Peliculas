@@ -31,7 +31,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url + vista;
+				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vista;
 		});
 	});
 
@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url + vista;
+				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vista;
 		});
 	});
 });

@@ -15,7 +15,7 @@ module.exports = {
 		let vista = req.query.vista;
 		let RCLV_id = vista == "edicion" ? req.query.RCLV_id : "";
 		//return res.send(RCLV)
-		if (RCLV.origen == "datosPers") {
+		if (RCLV.origen == "prodAgregar") {
 			// 1. Si se perdió la info anterior, volver al circuito de 'Agregar Producto'
 			let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 			if (!datosPers) return res.redirect("/producto/agregar/datos-personalizados");
@@ -29,7 +29,7 @@ module.exports = {
 			res.cookie("datosPers", datosPers, {maxAge: unDia});
 			// Completar RCLV
 			RCLV.destino = "/producto/agregar/datos-personalizados";
-		} else if (RCLV.origen == "edicion") {
+		} else if (RCLV.origen == "prodEdicion") {
 			// Completar RCLV
 			RCLV.entidad = req.query.entidad;
 			RCLV.prodID = req.query.id;
@@ -66,7 +66,7 @@ module.exports = {
 		let tema = "rclv";
 		let codigo = RCLV.RCLV_entidad;
 		// Pasos exclusivos para Datos Personalizados
-		if (RCLV.origen == "datosPers") {
+		if (RCLV.origen == "prodAgregar") {
 			let datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
@@ -134,7 +134,7 @@ module.exports = {
 			return res.render("Errores", {informacion});
 		}
 		// Pasos exclusivos para Datos Personalizados
-		if (RCLV.origen == "datosPers") {
+		if (RCLV.origen == "prodAgregar") {
 			let datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
@@ -189,10 +189,10 @@ module.exports = {
 		// Averiguar el campo para el RCLV-ID
 		let RCLVentidad_id = funciones.obtenerEntidad_id(RCLV.RCLV_entidad);
 		// Agregar el RCLVentidad_id al origen
-		if (RCLV.origen == "datosPers") {
+		if (RCLV.origen == "prodAgregar") {
 			req.session.datosPers[RCLVentidad_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
-		} else if (RCLV.origen == "edicion")
+		} else if (RCLV.origen == "prodEdicion")
 			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {
 				[RCLVentidad_id]: id,
 			});
