@@ -139,7 +139,7 @@ window.addEventListener("load", async () => {
 			}
 		});
 	};
-	let activarIconos  = (i) => {
+	let activarIconos = (i) => {
 		if (linksEdicion[i].classList.contains("esconder")) linksEdicion[i].classList.remove("esconder");
 		linksEdicion[i].classList.remove("ocultar");
 	};
@@ -191,8 +191,7 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == iconosError.length;
 
 		console.log(
-			Array.from(iconosOK)
-				.map((n) => n.classList.value),
+			Array.from(iconosOK).map((n) => n.classList.value),
 			RCLV_ocultos,
 			Array.from(iconosError)
 				.map((n) => n.classList.value)
