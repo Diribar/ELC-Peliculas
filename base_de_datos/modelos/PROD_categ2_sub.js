@@ -4,9 +4,9 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		categoria_id: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
-		personaje: {type: dt.BOOLEAN},
-		hecho: {type: dt.BOOLEAN},
-		valor: {type: dt.BOOLEAN},
+		personaje_id: {type: dt.BOOLEAN},
+		hecho_id: {type: dt.BOOLEAN},
+		valor_id: {type: dt.BOOLEAN},
 		url: {type: dt.STRING(20)},
 	};
 	const config = {

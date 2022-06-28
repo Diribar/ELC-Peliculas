@@ -11,6 +11,7 @@ module.exports = async (req, res, next) => {
 	const haceUnaHora = funciones.nuevoHorario(-1);
 	const haceDosHoras = funciones.nuevoHorario(-2);
 	const userID = req.session.usuario.id;
+	const familia = funciones.obtenerFamiliaEnSingular(entidad_codigo);
 	let informacion;
 	// Variables de url
 	const urlBase = req.baseUrl;
@@ -22,21 +23,22 @@ module.exports = async (req, res, next) => {
 	const creado_en = registro.creado_en;
 	const capturado_en = registro.capturado_en;
 	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
-	// Creado por el usuario
-	let creadoPorElUsuario1 = registro.creado_por_id == userID;
-	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;
-	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaTablero = variables.vistaTablero();
 	const vistaInactivar = variables.vistaInactivar(req);
+	// Creado por el usuario
+	let creadoPorElUsuario1 = registro.creado_por_id == userID;
+	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;
+	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmulas
 	let creadoHaceMenosDeUnaHora = () => {
-		return creado_en > haceUnaHora && !creadoPorElUsuario
+		// No rige para RCLV porque para ellos el status inicial es 'aprobado'
+		return creado_en > haceUnaHora && !creadoPorElUsuario && familia != "rclv"
 			? {
 					mensajes: ["Por ahora, el registro sólo está accesible para su creador"],
-					iconos: [vistaAnterior, vistaInactivar],
+					iconos: [vistaAnterior],
 			  }
 			: "";
 	};
