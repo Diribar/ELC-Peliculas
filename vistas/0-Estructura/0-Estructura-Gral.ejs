@@ -5,7 +5,7 @@
 	<%- include('1-Head-Gral') %>
 	<% if (tema == "usuario") { %><%- include('0-Usuarios-Head') %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include('0-Prod-Head-Agregar') %><% } %>
-	<% if (tema == "rclv_alta") { %><%- include('RCLV-0Head') %><% } %>
+	<% if (tema.slice(0,4) == "rclv") { %><%- include('RCLV-0Head') %><% } %>
 	<% if (tema == "revision") { %><%- include('0-Revisar-Head') %><% } %>
 	<% if (tema == "productos") { %><%- include('0-Productos-Head') %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include('0-Miscelaneas-Head') %><% } %>
