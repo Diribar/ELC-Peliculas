@@ -155,7 +155,7 @@ module.exports = {
 				valores: await BD_genericas.obtenerTodos("subcategorias", "orden"),
 				mensajes: [
 					"Elegí la subcategoría que mejor represente el tema.",
-					"Si querés agregar un 'personaje', 'hecho' o 'valor', y en esta vista no aparece esa posibilidad, lo podrás hacer al terminar el circuito de agregar, desde la opción de Edición",
+					"Si querés agregar un 'personaje', 'hecho' o 'valor', y en esta vista no aparece esa posibilidad, lo podrás hacer al terminar el circuito de agregar, desde la opción de Edición.",
 				],
 			},
 			{

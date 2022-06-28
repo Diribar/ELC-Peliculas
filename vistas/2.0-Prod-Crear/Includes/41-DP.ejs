@@ -21,13 +21,11 @@
 							<% } %>
 						<% } %>
 					"
+					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 				>
 					<%= valor[nombre] %>
 				</option>
-				<!-- Agregar como selected si el valor de la opción coincide con el data-entry -->
-				<!-- Agregar el valor de la categoría como clase -->
-				<!-- Ocultar casos de parcial para idioma y color de películas -->
 			<% } %>
 		</select>
 		<!-- Ayuda -->
@@ -44,7 +42,7 @@
 		<!-- Link a Relación con la vida -->
 		<% if (registro.grupo=="RCLV") { %>
 			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion inactivo <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion inactivo_ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
 		<% } %>
 	</div>
 </section>
