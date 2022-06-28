@@ -9,7 +9,9 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let indicePersonaje = Array.from(inputsRCLV).findIndex((n) => n.name == "personaje_id");
 	let camposRCLV = Array.from(inputsRCLV).map((n) => n.name);
+	let linksAlta = document.querySelectorAll(".input-error .linkRCLV.alta");
 	// OK/Errores
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
@@ -92,7 +94,7 @@ window.addEventListener("load", async () => {
 					mensaje
 						? iconosOK[indice].classList.add("ocultar")
 						: iconosOK[indice].classList.remove("ocultar");
-					if (camposRCLV.includes(campo)) {
+					if (camposRCLV.includes(campo) && (campo != "personaje_id" || input.value != 11)) {
 						let indiceRCLV = camposRCLV.indexOf(campo);
 						mensaje
 							? linksEdicion[indiceRCLV].classList.add("ocultar")
@@ -145,18 +147,20 @@ window.addEventListener("load", async () => {
 	};
 	let filtrarRCLVs = () => {
 		// Obtener el id de la sub-categoría
-		let categoria_id = subcategoria.value;
+		let subcategoria_id = subcategoria.value;
 		// Ocultar las opciones distintas al id y a cero
 		opcionesRCLV.forEach((opcion) => {
-			let cfc = opcion.classList.contains("cfc" + categoria_id) ;
-			let vpc = opcion.classList.contains("vpc" + categoria_id);
-			let todos = opcion.classList.contains("cfc0")|| opcion.classList.contains("vpc0")
+			let cfc = opcion.classList.contains("cfc" + subcategoria_id);
+			let vpc = opcion.classList.contains("vpc" + subcategoria_id);
+			let todos = opcion.classList.contains("cfc0") || opcion.classList.contains("vpc0");
 			if (!cfc && !vpc && !todos) opcion.classList.add("ocultar");
 			else opcion.classList.remove("ocultar");
 		});
 		// Si la categoría es 'Jesús', pone 'Jesús' como personaje
-		let indice = Array.from(inputsRCLV).findIndex((n) => n.name == "personaje_id");
-		if (categoria_id == 1) inputsRCLV[indice].value = 11;
+		if (subcategoria_id == 1) {
+			inputsRCLV[indicePersonaje].value = 11;
+			linksAlta[indicePersonaje].classList.add("ocultar");
+		} else linksAlta[indicePersonaje].classList.remove("ocultar");
 		// Fin
 		return;
 	};
@@ -185,6 +189,19 @@ window.addEventListener("load", async () => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar == iconosError.length;
 
+		console.log(
+			Array.from(iconosOK)
+				.map((n) => n.classList.value),
+			RCLV_ocultos,
+			Array.from(iconosError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar,
+			iconosError.length
+		);
 		// Consecuencias
 		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
