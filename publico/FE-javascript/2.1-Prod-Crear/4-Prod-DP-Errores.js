@@ -193,25 +193,6 @@ window.addEventListener("load", async () => {
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
 				}, {}).ocultar == iconosError.length;
-
-		console.log(
-			Array.from(iconosOK)
-				.map((n) => n.classList.value)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar,
-			RCLV_ocultos,
-			Array.from(iconosError)
-				.map((n) => n.classList.value)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar,
-			iconosError.length
-		);
 		// Consecuencias
 		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
