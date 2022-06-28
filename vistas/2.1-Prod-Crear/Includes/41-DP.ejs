@@ -7,10 +7,21 @@
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
+					class="
+						<% // Si es una sub-categoría, coloca la categoría_id en la clase %> 
+						<% if (campo == "subcategoria_id") { %><%= valor.categoria_id %>
+						<% // Si es una colección, quita el 'parcial' para las películas %>
+						<% } else if ((campo == "en_castellano_id" || campo == "en_color_id") && dataEntry.entidad == "peliculas"  && valor.id == 2) { %><%= 'ocultar' %>
+						<% // Si es un RCLV, toma acciones  %> 
+						<% } else if (registro.grupo == "RCLV") { %>
+							<%= 'RCLV ' %>
+							<% // Ocultar la opción de 'Ninguno', y si no es una colección 'Varios (colección)' %>
+							<% if (valor.id == 1 || (dataEntry.entidad != "colecciones" && valor.id == 2)) { %><%= "ocultar" %>
+							<% } else { %><%= 'cfc' + valor.subcat_cfc_id + ' vpc' + valor.subcat_vpc_id %>
+							<% } %>
+						<% } %>
+					"
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
-					<% if (campo == "subcategoria_id") { %>class="<%= valor.categoria_id %>"<% } %>
-					<% if (dataEntry.entidad == "peliculas" && (campo == "en_castellano_id" || campo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
-					<% if (registro.grupo == "RCLV" && (valor.id == 1 || dataEntry.entidad != "colecciones" && valor.id == 2)) { %>class="ocultar"<% } %>
 				>
 					<%= valor[nombre] %>
 				</option>

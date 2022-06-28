@@ -3,19 +3,25 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
 	let submit = document.querySelector("#dataEntry button[type='submit']");
+	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
+
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
+	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let camposRCLV = Array.from(inputsRCLV).map((n) => n.name);
 	// OK/Errores
-	let iconoOK = document.querySelectorAll(".fa-circle-check");
-	let iconoError = document.querySelectorAll(".input-error .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	let iconosOK_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-check");
+	let iconosError_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-xmark");
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	let RCLVs = document.querySelectorAll(".label-input.RCLV");
-	let camposRCLV = Array.from(document.querySelectorAll("select.RCLV")).map((n) => n.name);
+	let opcionesRCLV = document.querySelectorAll("option.RCLV");
 	// Ruta
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
@@ -35,11 +41,11 @@ window.addEventListener("load", async () => {
 		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
 		mensajesError[indice].innerHTML = errores[campo];
 		errores[campo]
-			? iconoOK[indice].classList.add("ocultar")
-			: iconoOK[indice].classList.remove("ocultar");
+			? iconosOK[indice].classList.add("ocultar")
+			: iconosOK[indice].classList.remove("ocultar");
 		errores[campo]
-			? iconoError[indice].classList.remove("ocultar")
-			: iconoError[indice].classList.add("ocultar");
+			? iconosError[indice].classList.remove("ocultar")
+			: iconosError[indice].classList.add("ocultar");
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			subcategoria.value = "";
@@ -47,6 +53,8 @@ window.addEventListener("load", async () => {
 		}
 		// Si se cambia la subcategoría --> actualiza RCLV
 		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV();
+		// Actualizar las opciones de RCLV
+		if (campo == "subcategoria_id") filtrarRCLVs();
 		// Fin
 		botonSubmit();
 	});
@@ -79,17 +87,16 @@ window.addEventListener("load", async () => {
 				// En caso de error
 				if (mensaje != undefined) {
 					mensaje
-						? iconoError[indice].classList.remove("ocultar")
-						: iconoError[indice].classList.add("ocultar");
+						? iconosError[indice].classList.remove("ocultar")
+						: iconosError[indice].classList.add("ocultar");
 					mensaje
-						? iconoOK[indice].classList.add("ocultar")
-						: iconoOK[indice].classList.remove("ocultar");
+						? iconosOK[indice].classList.add("ocultar")
+						: iconosOK[indice].classList.remove("ocultar");
 					if (camposRCLV.includes(campo)) {
 						let indiceRCLV = camposRCLV.indexOf(campo);
-						let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 						mensaje
-							? linksEdicion(indiceRCLV).classList.add("ocultar")
-							: linksEdicion(indiceRCLV).classList.remove("ocultar");
+							? linksEdicion[indiceRCLV].classList.add("ocultar")
+							: linksEdicion[indiceRCLV].classList.remove("ocultar");
 					}
 				}
 			}
@@ -113,6 +120,14 @@ window.addEventListener("load", async () => {
 
 		// Mostrar/Ocultar el campo RCLV
 		camposRCLV.forEach((campoRCLV, i) => {
+			// Borra el valor de cada RCLV
+			inputsRCLV[i].value = "";
+			// Ocultar los íconos OK y de error
+			iconosOK_RCLV[i].classList.add("ocultar");
+			iconosError_RCLV[i].classList.add("ocultar");
+			// Inactivar edición
+			inactivarIconos(i);
+			// Muestra el campo
 			if (registro && registro[campoRCLV]) RCLVs[i].classList.remove("ocultar");
 			else {
 				// Ocultar el campo
@@ -122,13 +137,38 @@ window.addEventListener("load", async () => {
 			}
 		});
 	};
+	let activarIconos = (i) => {
+		if (linksEdicion[i].classList.contains("inactivo")) linksEdicion[i].classList.remove("inactivo");
+		linksEdicion[i].classList.remove("ocultar");
+	};
+	let inactivarIconos = (i) => {
+		linksEdicion[i].classList.add("inactivo");
+	};
+	let filtrarRCLVs = () => {
+		// Obtener el id de la sub-categoría
+		let categoria_id = subcategoria.value;
+		// Ocultar las opciones distintas al id y a cero
+		opcionesRCLV.forEach((opcion) => {
+			let cfc = opcion.classList.contains("cfc" + categoria_id) ;
+			let vpc = opcion.classList.contains("vpc" + categoria_id);
+			let todos = opcion.classList.contains("cfc0")|| opcion.classList.contains("vpc0")
+			if (!cfc && !vpc && !todos) opcion.classList.add("ocultar");
+			else opcion.classList.remove("ocultar");
+		});
+		// Si la categoría es 'Jesús', pone 'Jesús' como personaje
+		let indice = Array.from(inputsRCLV).findIndex((n) => n.name == "personaje_id");
+		if (categoria_id == 1) inputsRCLV[indice].value = 11;
+		// Fin
+		return;
+	};
+	// Botón submit
 	let botonSubmit = () => {
-		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
+		// Detectar la cantidad de 'iconosOK' que no corresponden por motivos de RCLV
 		let RCLV_ocultos = document.querySelectorAll(".label-input.ocultar.RCLV").length;
 
 		// Detectar la cantidad de 'no aciertos'
 		let OK =
-			Array.from(iconoOK)
+			Array.from(iconosOK)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
@@ -138,17 +178,26 @@ window.addEventListener("load", async () => {
 
 		// Detectar la cantidad de 'no errores'
 		let error =
-			Array.from(iconoError)
+			Array.from(iconosError)
 				.map((n) => n.classList.value)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == iconoError.length;
+				}, {}).ocultar == iconosError.length;
 
 		// Consecuencias
 		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
+
+	// Activar links RCLV
+	inputsRCLV.forEach((input, i) => {
+		if (input.value) activarIconos(i);
+		input.addEventListener("input", () => {
+			if (input.value) activarIconos(i);
+			else inactivarIconos(i);
+		});
+	});
 
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
