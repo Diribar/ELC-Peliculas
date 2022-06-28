@@ -67,7 +67,7 @@ module.exports = {
 			return res.render("Errores", informacion);
 		}
 		// 2. Tema y Código
-		let tema = "rclv-alta";
+		let tema = "rclv_alta";
 		let codigo = RCLV.RCLV_entidad;
 		// Pasos exclusivos para Datos Personalizados
 		if (RCLV.origen == "prodAgregar") {
