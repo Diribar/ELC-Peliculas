@@ -30,12 +30,12 @@
 					<!-- Filas para links existentes -->
 					<% links.forEach((link,fila)=> { %>
 						<% let cond = {} %>
-						<%- include("Links2-Condiciones", {link, cond}) %>
-						<%- include("Links3-Datos", {link, cond, fila}) %>
-						<%- include("Links1-Edicion", {fila, link, cond}) %>
+						<%- include("Links-2Condiciones", {link, cond}) %>
+						<%- include("Links-3Datos", {link, cond, fila}) %>
+						<%- include("Links-Edicion", {fila, link, cond}) %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
-					<%- include("Links2-Altas", {fila: links.length}) %>
+					<%- include("Links-Alta", {fila: links.length}) %>
 				</tbody>
 			</table>
 		</form>
