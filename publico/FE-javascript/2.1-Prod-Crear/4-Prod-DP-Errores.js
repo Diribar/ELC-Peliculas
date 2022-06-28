@@ -140,7 +140,8 @@ window.addEventListener("load", async () => {
 		});
 	};
 	let activarIconos = (i) => {
-		if (linksEdicion[i].classList.contains("inactivo_ocultar")) linksEdicion[i].classList.remove("inactivo_ocultar");
+		if (linksEdicion[i].classList.contains("inactivo_ocultar"))
+			linksEdicion[i].classList.remove("inactivo_ocultar");
 		linksEdicion[i].classList.remove("ocultar");
 	};
 	let inactivarIconos = (i) => {
@@ -163,9 +164,8 @@ window.addEventListener("load", async () => {
 			linksAlta[indicePersonaje].classList.add("ocultar");
 			iconosOK_RCLV[indicePersonaje].classList.remove("ocultar");
 			iconosError_RCLV[indicePersonaje].classList.add("ocultar");
-		} else {
-			linksAlta[indicePersonaje].classList.remove("ocultar");
-		}
+		} else linksAlta[indicePersonaje].classList.remove("ocultar");
+
 		// Fin
 		return;
 	};
