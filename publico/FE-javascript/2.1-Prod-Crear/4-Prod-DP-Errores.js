@@ -128,7 +128,7 @@ window.addEventListener("load", async () => {
 			iconosOK_RCLV[i].classList.add("ocultar");
 			iconosError_RCLV[i].classList.add("ocultar");
 			// Inactivar edición
-			ocultarIconos(i);
+			inactivarIconos(i);
 			// Muestra el campo
 			if (registro && registro[campoRCLV]) RCLVs[i].classList.remove("ocultar");
 			else {
@@ -139,10 +139,11 @@ window.addEventListener("load", async () => {
 			}
 		});
 	};
-	let mostrarIconos = (i) => {
+	let activarIconos  = (i) => {
+		if (linksEdicion[i].classList.contains("esconder")) linksEdicion[i].classList.remove("esconder");
 		linksEdicion[i].classList.remove("ocultar");
 	};
-	let ocultarIconos = (i) => {
+	let esconderIconos = (i) => {
 		linksEdicion[i].classList.add("ocultar");
 	};
 	let filtrarRCLVs = () => {
@@ -211,7 +212,7 @@ window.addEventListener("load", async () => {
 		if (input.value) mostrarIconos(i);
 		input.addEventListener("input", () => {
 			if (input.value) mostrarIconos(i);
-			else ocultarIconos(i);
+			else esconderIconos(i);
 		});
 	});
 
