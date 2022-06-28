@@ -55,6 +55,14 @@
 		<% for (bloque of bloquesDerecha) { %>
 			<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
 				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+				<% if (bloque.RCLV_entidad) { %>
+					<% let origenVista = "origen=prodDetalle&vistaRCLV=detalle" %>
+					<% let datosRCLV = "RCLV_entidad=" + bloque.RCLV_entidad + "&RCLV_id=" + bloque.RCLV_id %>
+					<% let datosProd = "entidad=" + entidad + "&id=" + prodID %> 
+					<a href="/rclv/redireccionar/?<%= origenVista %>&<%= datosRCLV %>&<%= datosProd %>">
+						<i class="fa-solid fa-square-pen"></i>
+					</a>
+				<% } %>
 			</p>
 		<% } %>
 	</div>

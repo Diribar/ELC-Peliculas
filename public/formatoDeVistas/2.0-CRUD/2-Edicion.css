@@ -62,6 +62,7 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 .mensajeAyuda, .mensajeAyuda::before {z-index: 1; line-height: 1.2rem;}
 .mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before, .input-error .fa-solid, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+#edicion.linkRCLV {font-size: 1.15rem;}
 .mensajeError {max-width: 200px; left: 20px;}
 .mensajeAyuda {max-width: 300px;}
 .mensajeError::before {left: -12px;}

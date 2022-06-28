@@ -193,16 +193,16 @@ module.exports = {
 
 	// Middleware/RevisarUsuario
 	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, regID, userID) => {
+		// Se revisa solamente en la familia de entidades
+		// Asociaciones
+		let entidades = ["peliculas", "colecciones", "capitulos"].includes(entidadActual)
+			? ["peliculas", "colecciones", "capitulos"]
+			: ["personajes", "hechos", "valores"];
+		let asociaciones = [];
+		entidades.forEach((entidad) => {
+			asociaciones.push("captura_" + entidad);
+		});
 		// Variables
-		let entidades = ["peliculas", "colecciones", "capitulos", "personajes", "hechos", "valores"];
-		let asociaciones = [
-			"captura_peliculas",
-			"captura_colecciones",
-			"captura_capitulos",
-			"captura_personajes",
-			"captura_hechos",
-			"captura_valores",
-		];
 		let ahora = funcionAhora();
 		let haceUnaHora = nuevoHorario(-1, ahora);
 		let haceDosHoras = nuevoHorario(-2, ahora);

@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let linksAlta = document.querySelectorAll(".input-error a.link#alta");
-	let linksEdicion = document.querySelectorAll(".input-error a.link#edicion");
+	let linksAlta = document.querySelectorAll(".input-error .linkRCLV.alta");
+	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
 
 	// Función para buscar todos los valores del formulario
@@ -18,9 +18,8 @@ window.addEventListener("load", async () => {
 
 	// Links a RCLV - Alta
 	linksAlta.forEach((link) => {
-		link.addEventListener("click", (e) => {
-			e.preventDefault();
-			let vista = "&vista=agregar";
+		link.addEventListener("click", () => {
+			let vistaRCLV = "&vistaRCLV=agregar";
 			// Obtener la RCLV_entidad
 			let RCLV_entidad = link.className.includes("personaje")
 				? "personajes"
@@ -31,16 +30,15 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url + vista;
+				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vistaRCLV;
 		});
 	});
 
 	// Links a RCLV - Edición
 	linksEdicion.forEach((link, i) => {
-		link.addEventListener("click", (e) => {
-			e.preventDefault();
+		link.addEventListener("click", () => {
 			if (link.classList.contains("inactivo")) return;
-			let vista = "&vista=edicion";
+			let vistaRCLV = "&vistaRCLV=edicion";
 			// Obtener la RCLV_entidad
 			let RCLV_entidad = link.className.includes("personaje")
 				? "personajes"
@@ -55,7 +53,7 @@ window.addEventListener("load", async () => {
 			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
 			window.location.href =
-				"/rclv/redireccionar/?origen=datosPers&RCLV_entidad=" + RCLV_entidad + url + vista;
+				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vistaRCLV;
 		});
 	});
 });

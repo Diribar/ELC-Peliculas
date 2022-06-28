@@ -28,8 +28,6 @@
 
 /* Todos los mensajes */
 #dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
-#dataEntry .link {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem; line-height: 1;}
-#dataEntry .link i {color: var(--gris-oscuro);}
 
 /* Mensajes de ayuda */
 #dataEntry .fa-circle-question {right: -20px;}
