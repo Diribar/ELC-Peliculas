@@ -2,6 +2,7 @@
 
 *, body {margin: 0px;padding: 0;box-sizing: border-box;}
 select, option, a, button[type="submit"] {cursor: pointer;}
+select:disabled, input:disabled, textarea:disabled {cursor: default;}
 
 /* Formato para elementos */
 hr {margin: 2px 0; overflow: hidden; border-top: 1px solid rgba(0,0,0,.15)}

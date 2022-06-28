@@ -195,9 +195,9 @@ module.exports = {
 		let camposPosibles = [
 			"en_castellano_id",
 			"en_color_id",
+			"publico_sugerido_id",
 			"categoria_id",
 			"subcategoria_id",
-			"publico_sugerido_id",
 			"fe_valores_id",
 			"entretiene_id",
 			"calidad_tecnica_id",
@@ -211,12 +211,12 @@ module.exports = {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_genericas.obtenerPorId("subcategorias", datos.subcategoria_id);
 			// Relación con la vida
-			if (subcategoria.personaje)
+			if (subcategoria.personaje_id)
 				errores.personaje_id =
 					!datos.personaje_id || datos.personaje_id == 1 ? cartelSelectVacio : "";
-			if (subcategoria.hecho)
+			if (subcategoria.hecho_id)
 				errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? cartelSelectVacio : "";
-			if (subcategoria.valor)
+			if (subcategoria.valor_id)
 				errores.valor_id = !datos.valor_id || datos.valor_id == 1 ? cartelSelectVacio : "";
 		}
 		// ***** RESUMEN *******
