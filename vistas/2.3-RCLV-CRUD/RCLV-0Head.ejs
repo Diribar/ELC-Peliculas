@@ -3,14 +3,15 @@
 <script src="/FE-javascript/0-Uso-Compartido/RCLV-Errores.js"></script>
 <script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
 <script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
-<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
-<script src="/FE-javascript/3-Revisar/0-Prod-LiberarSalir.js"></script>
-
-<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 
 <!-- Uso específico -->
-<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/3-RCLV.css">
-
+<% if (codigo == "links_alta") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/3-RCLV-1Alta.css">
+<% } else if (codigo == "links_edicion") { %>
+<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
+<script src="/FE-javascript/0-Uso-Compartido/LiberarSalir.js"></script>
+<script src="/FE-javascript/3-Revisar/2-RCLV.js"></script>
+<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
 <link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-Revisar.css">
 <link rel="stylesheet" href="/formatoDeVistas/3-Revisar/3-RCLV.css">
-<script src="/FE-javascript/3-Revisar/2-RCLV.js"></script>
+<% } %>
