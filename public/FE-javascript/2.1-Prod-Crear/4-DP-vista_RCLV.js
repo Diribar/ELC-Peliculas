@@ -5,6 +5,7 @@ window.addEventListener("load", async () => {
 	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
 
+	// FUNCIONES
 	// Función para buscar todos los valores del formulario
 	let buscarTodosLosValores = () => {
 		let inputs = document.querySelectorAll(".input-error .input");
@@ -15,7 +16,11 @@ window.addEventListener("load", async () => {
 		});
 		return url;
 	};
+	let activarIconos = (i) => {
+		if (linksEdicion[i].classList.contains("inactivo")) linksEdicion[i].classList.remove("inactivo");
+	};
 
+	// Add Event-Listeners
 	// Links a RCLV - Alta
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
@@ -54,6 +59,14 @@ window.addEventListener("load", async () => {
 			// Para ir a la vista RCLV
 			window.location.href =
 				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vistaRCLV;
+		});
+	});
+
+	// Activar links RCLV
+	inputsRCLV.forEach((input, i) => {
+		if (input.value) activarIconos(i);
+		input.addEventListener("input", () => {
+			activarIconos(i);
 		});
 	});
 });

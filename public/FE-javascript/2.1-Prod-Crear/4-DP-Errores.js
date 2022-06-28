@@ -108,14 +108,14 @@ window.addEventListener("load", async () => {
 		let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];
 
 		// Mostrar/Ocultar el campo RCLV
-		for (let i = 0; i < campos.length; i++) {
-			if (registro[campos[i]]) RCLVs[i].classList.remove("ocultar");
+		campos.forEach((campo,i)=>{
+			if (registro[campo]) RCLVs[i].classList.remove("ocultar");
 			else {
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta
 				document.querySelector("select[name='" + RCLV_id[i] + "']").value = "";
 			}
-		}
+		})
 	};
 	let botonSubmit = () => {
 		// Detectar la cantidad de 'iconoOK' que no corresponden por motivos de RCLV
