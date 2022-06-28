@@ -54,6 +54,7 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.2-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.2-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD"),
+	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.4-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.4-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-Revisar"),
