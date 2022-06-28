@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 		// Si se cambia la subcategoría --> actualiza RCLV
 		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV();
 		// Actualizar las opciones de RCLV
-		if (campo == "subcategoria_id") await filtrarRCLVs();
+		if (campo == "subcategoria_id") filtrarRCLVs();
 		// Fin
 		botonSubmit();
 	});
