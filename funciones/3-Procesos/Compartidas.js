@@ -11,8 +11,8 @@ const variables = require("./Variables");
 module.exports = {
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
-		let archivoOrigen = "./public/imagenes/" + origen + "/" + nombre;
-		let archivoDestino = "./public/imagenes/" + destino + "/" + nombre;
+		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
+		let archivoDestino = "./publico/imagenes/" + destino + "/" + nombre;
 		if (fs.existsSync(archivoOrigen)) {
 			fs.rename(archivoOrigen, archivoDestino, (error) => {
 				if (error) throw error;

@@ -204,7 +204,7 @@ module.exports = {
 				funciones.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "9-Provisorio", "3-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					funciones.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
+					funciones.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
 			}
 			// Unir las 2 ediciones en una sola
 			// Se necesita para preservar la hora en la que se creó la edición

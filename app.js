@@ -9,7 +9,7 @@ const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
-app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a los archivos de la carpeta public
+app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 // Para usar PUT y DELETE
