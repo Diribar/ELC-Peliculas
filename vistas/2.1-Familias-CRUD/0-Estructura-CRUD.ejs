@@ -3,15 +3,15 @@
 <head>
 	<%- include('1-Head-Gral') %>
 	<%- include("1-Head-CRUD") %>
-	<%- tema == "prod_rud" ? include('0-Prod-HeadRUD') : "" %>
-	<%- tema == "links_rud" ? include('0-Links-0Head') : "" %>
+	<%- tema == "prod_rud" ? include('Prod-HeadRUD') : "" %>
+	<%- tema == "links_rud" ? include('Links-0Head') : "" %>
 </head>
 <body>
 	<%- include('2-Header-Gral') %>
 	<main class="flex-row">
-		<%- codigo == "detalle" ? include('1-Prod-Detalle') : "" %>
+		<%- codigo == "detalle" ? include('2-Cuerpo-CRUD') : "" %>
 		<%- codigo == "edicion" ? include('2-Prod-Edicion') : "" %>
-		<%- codigo == "links" ? include('0-Links-1Cuerpo') : "" %>
+		<%- codigo == "links" ? include('2-Cuerpo-CRUD') : "" %>
 	</main>
 </body>
 </html>
