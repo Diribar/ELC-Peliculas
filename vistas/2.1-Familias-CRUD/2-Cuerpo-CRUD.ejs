@@ -5,7 +5,8 @@
 	<%- include('3-Footer-Gral') %>
 	<!--**************************** CUERPO ************************-->
 	<div id="cuerpo">
-		<%- include('1-DetalleP2') %>
+		<%- codigo == "detalle" ? include('Prod-1Detalle') : "" %>
+		<%- codigo == "links" ? include('Links-1Cuerpo') : "" %>
 	</div>
 	<!--****************************** FIN *************************-->
 </section>

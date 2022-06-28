@@ -9,7 +9,7 @@ const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
 const app = express();
-app.use(express.static(path.resolve(__dirname, "./public"))); // Para acceder a los archivos de la carpeta public
+app.use(express.static(path.resolve(__dirname, "./publico"))); // Para acceder a los archivos de la carpeta publico
 app.use(express.urlencoded({extended: false})); // Para usar archivos en los formularios (Multer)
 app.use(express.json()); // ¿Para usar JSON con la lectura y guardado de archivos?
 // Para usar PUT y DELETE
@@ -48,12 +48,13 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
 	path.resolve(__dirname, "./vistas/0-Compartido"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
-	path.resolve(__dirname, "./vistas/2.0-CRUD"),	
-	path.resolve(__dirname, "./vistas/2.1-Prod-Crear"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Crear/Includes"),
+	path.resolve(__dirname, "./vistas/2.0-Prod-Crear"),
+	path.resolve(__dirname, "./vistas/2.0-Prod-Crear/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Familias-CRUD"),	
 	path.resolve(__dirname, "./vistas/2.2-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.2-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD"),
+	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.4-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.4-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-Revisar"),

@@ -121,7 +121,7 @@ module.exports = {
 				funciones.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 			} else {
 				// Eliminar el avatar editado
-				funciones.borrarArchivo("./public/imagenes/3-ProdRevisar", prodEditado.avatar);
+				funciones.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
 				// Acciones si el status es 'alta-aprobada'
 				if (prodOriginal.status_registro.alta_aprob) {
 					let avatar = prodOriginal.avatar;
@@ -130,7 +130,7 @@ module.exports = {
 						// Obtener el nombre
 						let nombre = Date.now() + path.extname(prodOriginal.avatar);
 						// Obtener la ruta con el nombre
-						let rutaYnombre = "./public/imagenes/2-Productos/" + nombre;
+						let rutaYnombre = "./publico/imagenes/2-Productos/" + nombre;
 						// Convertir el url en un archivo
 						await funciones.descargar(prodOriginal.avatar, rutaYnombre);
 						// Actualizar el nombre del avatar en la BD

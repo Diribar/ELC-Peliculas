@@ -229,7 +229,7 @@ module.exports = {
 		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			funciones.borrarArchivo("./public/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
+			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
 		}
 		procesar.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -321,7 +321,7 @@ module.exports = {
 				tipo = datos["content-type"];
 				tamano = datos["content-length"];
 				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "./public/imagenes/9-Provisorio/" + nombre;
+				rutaYnombre = "./publico/imagenes/9-Provisorio/" + nombre;
 			}
 			// Revisar errores nuevamente
 			errores.avatar = funciones.revisarImagen(tipo, tamano);
@@ -330,7 +330,7 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			funciones.borrarArchivo("./public/imagenes/9-Provisorio/", nombre);
+			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
 			// Guardar los errores en session
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -532,7 +532,7 @@ module.exports = {
 		// 5. Obtener el producto
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
-		let muchasGracias = fs.readdirSync("./public/imagenes/8-Agregar/Muchas-gracias/");
+		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);
 		if (indice == muchasGracias.length) indice--;
 		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
