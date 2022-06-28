@@ -21,13 +21,11 @@
 							<% } %>
 						<% } %>
 					"
+					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
 				>
 					<%= valor[nombre] %>
 				</option>
-				<!-- Agregar como selected si el valor de la opción coincide con el data-entry -->
-				<!-- Agregar el valor de la categoría como clase -->
-				<!-- Ocultar casos de parcial para idioma y color de películas -->
 			<% } %>
 		</select>
 		<!-- Ayuda -->

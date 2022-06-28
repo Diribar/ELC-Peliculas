@@ -161,7 +161,11 @@ window.addEventListener("load", async () => {
 		if (subcategoria_id == 1) {
 			inputsRCLV[indicePersonaje].value = 11;
 			linksAlta[indicePersonaje].classList.add("ocultar");
-		} else linksAlta[indicePersonaje].classList.remove("ocultar");
+			iconosOK_RCLV[indicePersonaje].classList.remove("ocultar");
+			iconosError_RCLV[indicePersonaje].classList.add("ocultar");
+		} else {
+			linksAlta[indicePersonaje].classList.remove("ocultar");
+		}
 		// Fin
 		return;
 	};
@@ -191,7 +195,13 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == iconosError.length;
 
 		console.log(
-			Array.from(iconosOK).map((n) => n.classList.value),
+			Array.from(iconosOK)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar,
 			RCLV_ocultos,
 			Array.from(iconosError)
 				.map((n) => n.classList.value)
