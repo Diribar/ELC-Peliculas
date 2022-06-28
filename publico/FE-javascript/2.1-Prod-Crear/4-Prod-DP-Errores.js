@@ -143,8 +143,8 @@ window.addEventListener("load", async () => {
 		if (linksEdicion[i].classList.contains("inactivo_ocultar")) linksEdicion[i].classList.remove("inactivo_ocultar");
 		linksEdicion[i].classList.remove("ocultar");
 	};
-	let esconderIconos = (i) => {
-		linksEdicion[i].classList.add("ocultar");
+	let inactivarIconos = (i) => {
+		linksEdicion[i].classList.add("inactivo_ocultar");
 	};
 	let filtrarRCLVs = () => {
 		// Obtener el id de la sub-categoría
@@ -208,10 +208,10 @@ window.addEventListener("load", async () => {
 
 	// Activar links RCLV
 	inputsRCLV.forEach((input, i) => {
-		if (input.value) mostrarIconos(i);
+		if (input.value) activarIconos(i);
 		input.addEventListener("input", () => {
-			if (input.value) mostrarIconos(i);
-			else esconderIconos(i);
+			if (input.value) activarIconos(i);
+			else inactivarIconos(i);
 		});
 	});
 
