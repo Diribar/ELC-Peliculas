@@ -1,0 +1,49 @@
+<!-- Uso compartido -->
+<script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
+<% if (codigo == "palabrasClave" || codigo == "tipoProducto" || codigo == "copiarFA" || codigo == "datosPers" || codigo == "confirma" || codigo == "terminaste") { %>
+	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
+<% } %>
+<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/0-Prod-Agregar.css">
+
+<!-- Uso particular formato -->
+<% if (codigo == "palabrasClave") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/1-Prod-PalabrasClave.css">
+<% } else if (codigo == "desambiguar") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/2-Prod-1DesambTMDB.css">
+<% } else if (codigo == "tipoProducto") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/2-Prod-2TipoProducto.css">
+<% } else if (codigo == "copiarFA") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/2-Prod-3CopiarFA.css">
+<% } else if (codigo == "datosDuros") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/3-Prod-DatosDuros.css">
+<% } else if (codigo == "datosPers") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/4-Prod-DatosPers.css">
+<% } else if (codigo == "confirma") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/5-Prod-Confirma.css">
+<% } else if (codigo == "terminaste") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/6-Prod-Terminaste.css">
+<% } else if (codigo == "responsabilidad") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/9-Prod-Responsab.css">
+<% } %>
+
+<!-- Uso particular scripts -->
+<% if (codigo == "palabrasClave") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/1-Prod-PalabrasClave.js"></script>
+<% } else if (codigo == "desambiguar") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/2-Prod-1A-Coleccion.js"></script>
+	<script src="/FE-javascript/2.1-Prod-Crear/2-Prod-1B-Desplazam.js"></script>
+<% } else if (codigo == "tipoProducto") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/2-Prod-2TipoProducto.js"></script>
+<% } else if (codigo == "copiarFA") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/2-Prod-3CopiarFA.js"></script>
+<% } else if (codigo == "datosDuros") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Ayuda.js"></script>
+	<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Errores.js"></script>
+	<% if (dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
+		<script src="/FE-javascript/0-Uso-Compartido/Mostrar-imagen.js"></script>
+		<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Imagen.js"></script>
+	<% } %>
+<% } else if (codigo == "datosPers") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/4-Prod-DP-Errores.js"></script>
+	<script src="/FE-javascript/2.1-Prod-Crear/4-Prod-DP-vista_RCLV.js"></script>
+<% } %>
