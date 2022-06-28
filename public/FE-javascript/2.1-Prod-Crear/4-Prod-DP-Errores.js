@@ -15,6 +15,7 @@ window.addEventListener("load", async () => {
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	let RCLVs = document.querySelectorAll(".label-input.RCLV");
+	let camposRCLV = Array.from(document.querySelectorAll("select.RCLV")).map((n) => n.name);
 	// Ruta
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
@@ -25,7 +26,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
-		// Para que incluya los datos de la subcategoría, por si necesitan para validar RCLV
+		// Para que incluya los datos de la subcategoría, por si se necesitan para validar RCLV
 		let adicSubcategoria =
 			subcategoria.value && !campo.includes("subcategoria_id")
 				? "&subcategoria_id=" + subcategoria.value
@@ -45,7 +46,7 @@ window.addEventListener("load", async () => {
 			funcionSubcat();
 		}
 		// Si se cambia la subcategoría --> actualiza RCLV
-		if (campo == "subcategoria_id") await funcionRCLV();
+		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV();
 		// Fin
 		botonSubmit();
 	});
@@ -69,11 +70,10 @@ window.addEventListener("load", async () => {
 			url += encodeURIComponent(input.value);
 		}
 		let errores = await fetch(ruta + url).then((n) => n.json());
-		for (let input of inputs) {
+		inputs.forEach((input, indice) => {
 			if (inputValue ? input.value : true) {
 				// Averiguar si hay un error
 				let campo = input.name;
-				let indice = campos.indexOf(campo);
 				let mensaje = errores[campo];
 				mensajesError[indice].innerHTML = mensaje;
 				// En caso de error
@@ -84,9 +84,16 @@ window.addEventListener("load", async () => {
 					mensaje
 						? iconoOK[indice].classList.add("ocultar")
 						: iconoOK[indice].classList.remove("ocultar");
+					if (camposRCLV.includes(campo)) {
+						let indiceRCLV = camposRCLV.indexOf(campo);
+						let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
+						mensaje
+							? linksEdicion(indiceRCLV).classList.add("ocultar")
+							: linksEdicion(indiceRCLV).classList.remove("ocultar");
+					}
 				}
 			}
-		}
+		});
 		botonSubmit();
 	};
 	// Aplicar cambios en la subcategoría
@@ -100,20 +107,18 @@ window.addEventListener("load", async () => {
 	};
 	// Aplicar cambios en RCLV
 	let funcionRCLV = async () => {
-		if (!subcategoria.value) return;
 		// Averiguar qué RCLV corresponde
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
-		let campos = ["personaje", "hecho", "valor"];
-		let RCLV_id = ["personaje_id", "hecho_id", "valor_id"];
 
 		// Mostrar/Ocultar el campo RCLV
-		campos.forEach((campo, i) => {
-			if (registro[campo]) RCLVs[i].classList.remove("ocultar");
+		camposRCLV.forEach((campoRCLV, i) => {
+			if (registro && registro[campoRCLV]) RCLVs[i].classList.remove("ocultar");
 			else {
+				// Ocultar el campo
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta
-				document.querySelector("select[name='" + RCLV_id[i] + "']").value = "";
+				document.querySelector("select[name='" + campoRCLV + "']").value = "";
 			}
 		});
 	};

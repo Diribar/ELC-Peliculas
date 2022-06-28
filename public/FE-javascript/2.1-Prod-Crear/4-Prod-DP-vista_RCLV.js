@@ -16,9 +16,6 @@ window.addEventListener("load", async () => {
 		});
 		return url;
 	};
-	let activarIconos = (i) => {
-		if (linksEdicion[i].classList.contains("inactivo")) linksEdicion[i].classList.remove("inactivo");
-	};
 
 	// Add Event-Listeners
 	// Links a RCLV - Alta
@@ -62,11 +59,4 @@ window.addEventListener("load", async () => {
 		});
 	});
 
-	// Activar links RCLV
-	inputsRCLV.forEach((input, i) => {
-		if (input.value) activarIconos(i);
-		input.addEventListener("input", () => {
-			activarIconos(i);
-		});
-	});
 });

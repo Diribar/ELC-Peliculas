@@ -1,6 +1,6 @@
 /* Cuerpo del formulario */
 #dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
-#dataEntry #primeraColumna {min-width: 281px; min-height: 326px; margin-right: 70px;}
+#dataEntry #primeraColumna {min-width: 281px; min-height: 326px; margin-right: 70px; display: flex; flex-direction: column; justify-content: center;}
 #dataEntry .label-input {display: flex; flex-direction: row; justify-content: space-between; margin-top: 3px;}
 #dataEntry .label-input.ocultar {display: none;}
 
@@ -15,6 +15,7 @@
 #dataEntry .label-input .input-error .linkRCLV {width: 15px; position: absolute; transform: translateY(-50%); top: 50%; line-height: 1; color: var(--gris-oscuro);}
 #dataEntry .label-input .input-error .linkRCLV.alta {right: -40px; font-size: 1rem;}
 #dataEntry .label-input .input-error .linkRCLV.edicion {right: -60px; font-size: 1.15rem;}
+#dataEntry #bloqueRCLV {min-height: 104px;}
 
 /* Mensajes */
 #dataEntry .mensajeAyuda {max-width: 400px;}

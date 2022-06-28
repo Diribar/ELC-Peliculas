@@ -6,13 +6,12 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(30)},
 		proceso_canonizacion_id: {type: dt.STRING(3)},
 		rol_iglesia_id: {type: dt.STRING(3)},
+		subcat_cfc_id: {type: dt.INTEGER},
+		subcat_vpc_id: {type: dt.INTEGER},
 		prod_aprob: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
-		alta_analizada_por_id: {type: dt.INTEGER},
-		alta_analizada_en: {type: dt.DATE},
-		lead_time_creacion: {type: dt.DECIMAL},
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
@@ -38,9 +37,10 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
+		entidad.belongsTo(n.subcategorias, {as: "subcat_cfc", foreignKey: "subcat_cfc_id"});
+		entidad.belongsTo(n.subcategorias, {as: "subcat_vpc", foreignKey: "subcat_vpc_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
-		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "edic_analizada_por", foreignKey: "edic_analizada_por_id"});
 

@@ -36,8 +36,7 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 #datos .label-input .input-error select {padding: 0;}
 #datos .label-input .input-error .input:disabled, 
 #datos .label-input#paises_id input#mostrarPaises:disabled,
-#datos .label-input#paises_id select:disabled
-	{background-color: var(--amarillo-claro); opacity: 1; color: inherit; cursor: default;}
+#datos .label-input#paises_id select:disabled {background-color: var(--amarillo-claro); opacity: 1; color: inherit;}
 
 /* País */
 #datos #paises_id {align-items: center;}

@@ -15,7 +15,7 @@
 	<!-- Datos -->
 	<section id="datos">
 		<!--Primera columna-->
-		<div id="primeraColumna" class="flex-col">
+		<div id="primeraColumna">
 			<!-- Datos generales -->
 			<div class="flex-col">
 				<h3 style="margin-top: 0;">Datos generales</h3>
@@ -23,12 +23,22 @@
 				<%- include("41-DP", {campo: "en_castellano_id", nombre: "productos"}) %>
 				<!--Es a Color-->
 				<%- include("41-DP", {campo: "en_color_id", nombre: "productos"}) %>
+				<!--Público sugerido-->
+				<%- include("41-DP", {campo: "publico_sugerido_id", nombre: "nombre"}) %>
+			</div>
+			<!-- Relación con la vida -->
+			<div id="bloqueRCLV" class="flex-col">
+				<h3>Relación con la vida</h3>
 				<!--Categoría-->
 				<%- include("41-DP", {campo: "categoria_id", nombre: "nombre"}) %>
 				<!--Sub-categoría-->
 				<%- include("41-DP", {campo: "subcategoria_id", nombre: "nombre"}) %>
-				<!--Público sugerido-->
-				<%- include("41-DP", {campo: "publico_sugerido_id", nombre: "nombre"}) %>
+				<!--Personaje histórico-->
+				<%- include("41-DP", {campo: "personaje_id", nombre: "nombre"}) %>
+				<!--Hecho histórico-->
+				<%- include("41-DP", {campo: "hecho_id", nombre: "nombre"}) %>
+				<!--Valor-->
+				<%- include("41-DP", {campo: "valor_id", nombre: "nombre"}) %>
 			</div>
 			<!-- Tu calificación -->
 			<div class="flex-col">
@@ -39,16 +49,6 @@
 				<%- include("41-DP", {campo: "entretiene_id", nombre: "nombre"}) %>
 				<!--Calidad Técnica-->
 				<%- include("41-DP", {campo: "calidad_tecnica_id", nombre: "nombre"}) %>
-			</div>
-			<!-- Relación con la vida -->
-			<div class="flex-col">
-				<h3>Relación con la vida</h3>
-				<!--Personaje histórico-->
-				<%- include("41-DP", {campo: "personaje_id", nombre: "nombre"}) %>
-				<!--Hecho histórico-->
-				<%- include("41-DP", {campo: "hecho_id", nombre: "nombre"}) %>
-				<!--Valor-->
-				<%- include("41-DP", {campo: "valor_id", nombre: "nombre"}) %>
 			</div>
 		</div>
 		<!--Segunda columna (Avatar)-->
