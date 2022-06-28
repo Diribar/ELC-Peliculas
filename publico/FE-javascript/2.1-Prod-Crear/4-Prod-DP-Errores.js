@@ -147,6 +147,8 @@ window.addEventListener("load", async () => {
 			// Mostrar el link a RCLV
 			linksAlta[indicePersonaje].classList.remove("ocultar");
 		}
+		// Fin
+		return;
 	};
 	// Botón submit
 	let botonSubmit = () => {
