@@ -25,7 +25,7 @@ window.addEventListener("load", async () => {
 		let campo = e.target.name;
 		let valor = e.target.value;
 		let indice = campos.indexOf(campo);
-		// Para que incluya los datos de la subcategoría, por si necesitan para validar RCLV
+		// Para que incluya los datos de la subcategoría, por si se necesitan para validar RCLV
 		let adicSubcategoria =
 			subcategoria.value && !campo.includes("subcategoria_id")
 				? "&subcategoria_id=" + subcategoria.value
@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 			funcionSubcat();
 		}
 		// Si se cambia la subcategoría --> actualiza RCLV
-		if (campo == "subcategoria_id") await funcionRCLV();
+		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV();
 		// Fin
 		botonSubmit();
 	});
@@ -100,7 +100,6 @@ window.addEventListener("load", async () => {
 	};
 	// Aplicar cambios en RCLV
 	let funcionRCLV = async () => {
-		if (!subcategoria.value) return;
 		// Averiguar qué RCLV corresponde
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
@@ -109,7 +108,7 @@ window.addEventListener("load", async () => {
 
 		// Mostrar/Ocultar el campo RCLV
 		campos.forEach((campo, i) => {
-			if (registro[campo]) RCLVs[i].classList.remove("ocultar");
+			if (registro && registro[campo]) RCLVs[i].classList.remove("ocultar");
 			else {
 				RCLVs[i].classList.add("ocultar");
 				// Eliminar el valor del campo que se oculta

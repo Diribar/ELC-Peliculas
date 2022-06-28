@@ -4,7 +4,7 @@
 	<div class="input-error">
 		<!-- Input -->
 		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %> <%- registro.grupo=="RCLV" ? 'RCLV' : '' %>" <% if (dataEntry[campo] && !errores[campo]) { %>disabled<% } else { %>autofocus<% } %>>
-			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí una opción</option>
+			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
