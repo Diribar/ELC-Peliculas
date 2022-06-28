@@ -126,7 +126,7 @@ window.addEventListener("load", async () => {
 			iconosOK_RCLV[i].classList.add("ocultar");
 			iconosError_RCLV[i].classList.add("ocultar");
 			// Inactivar edición
-			inactivarIconos(i);
+			ocultarIconos(i);
 			// Muestra el campo
 			if (registro && registro[campoRCLV]) RCLVs[i].classList.remove("ocultar");
 			else {
@@ -137,12 +137,11 @@ window.addEventListener("load", async () => {
 			}
 		});
 	};
-	let activarIconos = (i) => {
-		if (linksEdicion[i].classList.contains("inactivo")) linksEdicion[i].classList.remove("inactivo");
+	let mostrarIconos = (i) => {
 		linksEdicion[i].classList.remove("ocultar");
 	};
-	let inactivarIconos = (i) => {
-		linksEdicion[i].classList.add("inactivo");
+	let ocultarIconos = (i) => {
+		linksEdicion[i].classList.add("ocultar");
 	};
 	let filtrarRCLVs = () => {
 		// Obtener el id de la sub-categoría
@@ -192,10 +191,10 @@ window.addEventListener("load", async () => {
 
 	// Activar links RCLV
 	inputsRCLV.forEach((input, i) => {
-		if (input.value) activarIconos(i);
+		if (input.value) mostrarIconos(i);
 		input.addEventListener("input", () => {
-			if (input.value) activarIconos(i);
-			else inactivarIconos(i);
+			if (input.value) mostrarIconos(i);
+			else ocultarIconos(i);
 		});
 	});
 
