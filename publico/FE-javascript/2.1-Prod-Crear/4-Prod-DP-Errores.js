@@ -76,7 +76,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	// Aplicar cambios en RCLV
-	let activarIconos = (i) => {
+	let activarIconosEdicion = (i) => {
 		linksEdicion[i].classList.remove("inactivo_ocultar");
 		linksEdicion[i].classList.remove("ocultar");
 	};
@@ -178,9 +178,9 @@ window.addEventListener("load", async () => {
 
 	// Activar links RCLV
 	inputsRCLV.forEach((input, i) => {
-		if (input.value) activarIconos(i);
+		if (input.value) activarIconosEdicion(i);
 		input.addEventListener("input", () => {
-			if (input.value) activarIconos(i);
+			if (input.value) activarIconosEdicion(i);
 			else inactivarIconosEdicion(i);
 		});
 	});
