@@ -140,7 +140,7 @@ window.addEventListener("load", async () => {
 		});
 	};
 	let activarIconos = (i) => {
-		if (linksEdicion[i].classList.contains("esconder")) linksEdicion[i].classList.remove("esconder");
+		if (linksEdicion[i].classList.contains("inactivo_ocultar")) linksEdicion[i].classList.remove("inactivo_ocultar");
 		linksEdicion[i].classList.remove("ocultar");
 	};
 	let esconderIconos = (i) => {

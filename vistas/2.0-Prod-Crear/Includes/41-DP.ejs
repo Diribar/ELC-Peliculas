@@ -44,7 +44,7 @@
 		<!-- Link a Relación con la vida -->
 		<% if (registro.grupo=="RCLV") { %>
 			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion inactivo_ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
 		<% } %>
 	</div>
 </section>
