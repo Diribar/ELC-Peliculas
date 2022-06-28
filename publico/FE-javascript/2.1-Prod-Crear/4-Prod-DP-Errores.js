@@ -70,7 +70,6 @@ window.addEventListener("load", async () => {
 				? opcion.classList.remove("ocultar")
 				: opcion.classList.add("ocultar");
 		}
-		console.log(subcategoria.value);
 		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
 
 		// Fin
