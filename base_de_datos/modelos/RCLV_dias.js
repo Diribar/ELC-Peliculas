@@ -12,9 +12,9 @@ module.exports = (sequelize, dt) => {
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.meses, {as: "mes", foreignKey: "mes_id"});
 
-		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "dia_del_ano_id"});
-		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "dia_del_ano_id"});
-		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "dia_del_ano_id"});
+		entidad.hasMany(n.personajes, {as: "personajes", foreignKey: "dia_del_ano_id"});
+		entidad.hasMany(n.hechos, {as: "hechos", foreignKey: "dia_del_ano_id"});
+		entidad.hasMany(n.valores, {as: "valores", foreignKey: "dia_del_ano_id"});
 
 	};
 	return entidad;

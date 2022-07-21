@@ -1,13 +1,19 @@
 module.exports = (sequelize, dt) => {
 	const alias = "personajes";
 	const columns = {
+		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(30)},
+		perenne: {type: dt.BOOLEAN},
+
+		categoria_id: {type: dt.STRING(3)},
+		subcategoria_id: {type: dt.STRING(3)},
+		ap_mar_id: {type: dt.INTEGER},
+
 		proceso_canonizacion_id: {type: dt.STRING(3)},
+		santo_beato: {type: dt.BOOLEAN},
 		rol_iglesia_id: {type: dt.STRING(3)},
-		subcat_cfc_id: {type: dt.INTEGER},
-		subcat_vpc_id: {type: dt.INTEGER},
+
 		prod_aprob: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
@@ -35,6 +41,10 @@ module.exports = (sequelize, dt) => {
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
 		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
+
+		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
+		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
+		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "ap_mar_id"});
 		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 

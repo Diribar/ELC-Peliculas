@@ -365,200 +365,6 @@ VALUES
 ('SDM', 4, 'Sierva de Dios')
 ;
 
-/* RCLV */;
-CREATE TABLE rclv_1personajes (
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(30) NOT NULL UNIQUE,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	ano SMALLINT NULL,
-	proceso_canonizacion_id VARCHAR(3) NULL,
-	rol_iglesia_id VARCHAR(3) NULL,
-	prod_aprob BOOLEAN NULL,
-	
-	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
-	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NULL,
-	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
-	edic_analizada_en DATETIME NULL,
-	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
-	motivo_id TINYINT UNSIGNED NULL,
-	sugerido_por_id INT UNSIGNED NULL,
-	sugerido_en DATETIME NULL,
-
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	captura_activa BOOLEAN NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
-	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
-
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
-	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_1personajes (id, nombre, creado_por_id)
-VALUES 
-(1, 'Ninguno', 1),
-(2, 'Varios (colección)', 1)
-;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id)
-VALUES 
-(11, NULL, 0, 'Jesús', 'STV', 'RCV', 1),
-(12, 1, -15, 'María, madre de Jesús', 'STM', 'LCM', 1),
-(13, 79, -20,'José, padre de Jesús', 'STV', 'LCV', 1)
-;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, nombre, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en)
-VALUES 
-(21, 249, 1910,'Teresa de Calcuta','STM','RCM',10,'2022-03-16 23:25:20'),
-(22, 285, 1958,'Juan XXIII','STV','PPV',11,'2022-03-16 23:25:20'),
-(23, 31, 1815,'Juan Bosco','STV','RCV',10,'2022-03-16 23:25:20'),
-(24, 296, 1920,'Juan Pablo II','STV','PPV',10,'2022-03-16 23:25:20')
-;
-CREATE TABLE rclv_2hechos (
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	nombre VARCHAR(30) NOT NULL UNIQUE,
-	ano SMALLINT NULL,
-	prod_aprob BOOLEAN NULL,
-
-	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
-	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NULL,
-	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
-	edic_analizada_en DATETIME NULL,
-	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
-	motivo_id TINYINT UNSIGNED NULL,
-	sugerido_por_id INT UNSIGNED NULL,
-	sugerido_en DATETIME NULL,
-
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	captura_activa BOOLEAN NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
-	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
-VALUES
-(1, NULL, NULL, 'Ninguno', 1),
-(2, NULL, NULL, 'Varios (colección)', 1)
-;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, nombre, creado_por_id)
-VALUES
-(11, 359, 0, 'Navidad', 1),
-(12, 100, 33, 'Sem. Santa - 1. General', 1),
-(13, 105, 33, 'Sem. Santa - 2. Viernes Santo', 1),
-(14, 107, 33, 'Sem. Santa - 3. Resurrección', 1),
-(15, 150, 33, 'Pentecostés', 1),
-(16, 210, 1914, 'Guerra Mundial - 1a', 1),
-(17, 245, 1942, 'Guerra Mundial - 2a', 1)
-;
-CREATE TABLE rclv_3valores (
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	nombre VARCHAR(30) NOT NULL UNIQUE,
-	prod_aprob BOOLEAN NULL,
-
-	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	alta_analizada_por_id INT UNSIGNED NULL,
-	alta_analizada_en DATETIME NULL,
-	lead_time_creacion DECIMAL(4,2) UNSIGNED NULL,
-
-	editado_por_id INT UNSIGNED NULL,
-	editado_en DATETIME NULL,
-	edic_analizada_por_id INT UNSIGNED NULL,
-	edic_analizada_en DATETIME NULL,
-	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
-
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
-	motivo_id TINYINT UNSIGNED NULL,
-	sugerido_por_id INT UNSIGNED NULL,
-	sugerido_en DATETIME NULL,
-
-	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
-	captura_activa BOOLEAN NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
-
-	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
-	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
-	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)	
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_3valores (id, nombre, creado_por_id)
-VALUES
-(1, 'Ninguno', 1),
-(2, 'Varios (colección)', 1)
-;
-INSERT INTO rclv_3valores (id, nombre, creado_por_id)
-VALUES
-(11, 'Perseverancia', 1),
-(12, 'Pacificar un país dividido', 1),
-(13, 'Pasión por ayudar', 1),
-(14, 'Superación personal', 1)
-;
-CREATE TABLE rclv_4edicion (
-	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	personaje_id SMALLINT UNSIGNED NULL,
-	hecho_id SMALLINT UNSIGNED NULL,
-	valor_id SMALLINT UNSIGNED NULL,
-	nombre VARCHAR(30) NULL UNIQUE,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	ano SMALLINT NULL,
-	proceso_canonizacion_id VARCHAR(3) NULL,
-	rol_iglesia_id VARCHAR(3) NULL,
-
-	editado_por_id INT UNSIGNED NOT NULL,
-	editado_en DATETIME NOT NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
-	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
-	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
-	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
-	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 /* TABLAS AUXILIARES PARA PRODUCTOS */;
 CREATE TABLE prod_categ1 (
 	id VARCHAR(3) NOT NULL,
@@ -572,32 +378,38 @@ VALUES
 ('VPC', 2, 'Valores Presentes en la Cultura')
 ;
 CREATE TABLE prod_categ2_sub (
-	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id VARCHAR(3) NOT NULL,
 	orden TINYINT UNSIGNED NOT NULL,
-	categoria_id VARCHAR(3) NOT NULL,
 	nombre VARCHAR(50) NOT NULL,
-	personaje BOOLEAN DEFAULT 0,
-	hecho BOOLEAN DEFAULT 0,
-	valor BOOLEAN DEFAULT 0,
-	url VARCHAR(20) NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id)
+
+	cfc BOOLEAN NULL,
+	vpc BOOLEAN NULL,
+	rclv_necesario VARCHAR(10) NULL, /* Jesús, Contemp., Hagio, Bio --> PER */ /* Ap.Mar., Historias --> HECH*/
+	ap_mar BOOLEAN DEFAULT 0, /* Apariciones Marianas --> true */
+	pers_excluyente BOOLEAN DEFAULT 0, /* Jesús, Contemp., Hagio --> true */
+	hechos_codigo VARCHAR(3) NULL, /* Jesús:JSS, Contemp:CNT, Hagio:EXC, Ap.Mar.:AM, Historias:EXC */
+	desde TINYINT NULL, /* Aparición Mariana:33 */
+	hasta TINYINT NULL, /* Jesús:33, Contemp.:100 */
+
+	url VARCHAR(20) NOT NULL, /* sólo el de la subcategoría */
+	PRIMARY KEY (id)
+	/* FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id) */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_categ2_sub (id, orden, categoria_id, nombre, personaje, hecho, valor, url)
+INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, ap_mar, pers_excluyente, desde, hasta, nombre, hechos_codigo, url)
 VALUES 
-(1, 1, 'CFC', 'Jesús', 1, 0, 0, 'cfc/jesus'), 
-(2, 2, 'CFC', 'Contemporáneos de Jesús', 1, 0, 0, 'cfc/contemporaneos'), 
-(3, 3, 'CFC', 'Apariciones Marianas', 0, 1, 0, 'cfc/marianas'), 
-(4, 4, 'CFC', 'Hagiografías', 1, 0, 0, 'cfc/hagiografias'), 
-(5, 5, 'CFC', 'Historias de la Iglesia', 0, 1, 0, 'cfc/historias'), 
-(6, 6, 'CFC', 'Novelas centradas en la fe', 0, 0, 1, 'cfc/novelas'), 
-(7, 7, 'CFC', 'Documentales', 0, 0, 0, 'cfc/documentales'), 
-(8, 8, 'VPC', 'Biografías', 1, 0, 1, 'vpc/bios_historias'), 
-(12, 9, 'VPC', 'Historias', 0, 1, 1, 'vpc/bios_historias'),
-(9, 10, 'VPC', 'Matrimonio y Familia', 0, 0, 1, 'vpc/matrimonio'), 
-(10, 11, 'VPC', 'Novelas', 0, 0, 1, 'vpc/novelas'), 
-(11, 12, 'VPC', 'Musicales', 0, 0, 1, 'vpc/musicales')
+('JSS', 1, 1, 0, 0, 1, null,   33, 'Jesús', 'JSS', 'jesus'), 
+('CNT', 2, 1, 0, 0, 1,  -50,  100, 'Contemporáneos de Jesús', 'CNT', 'contemporaneos'), 
+('HAG', 3, 1, 0, 0, 1, null, null, 'Hagiografías', 'EXC', 'hagiografias'), 
+('AMA', 4, 1, 0, 1, 0,   34, null, 'Apariciones Marianas', 'AMA', 'ap_marianas'), 
+('HIG', 5, 1, 0, 0, 0, null, null, 'Historias de la Iglesia', 'EXC', 'historias'), 
+('NOV', 6, 1, 1, 0, 0, null, null, 'Novelas', null, 'novelas'), 
+('MUS', 7, 1, 1, 0, 0, null, null, 'Musicales', null, 'musicales'),
+('DOC', 8, 1, 1, 0, 0, null, null, 'Documentales', null, 'documentales'), 
+('BIO', 1, 0, 1, 0, 0, null, null, 'Biografías', null, 'bios'), 
+('HIS', 2, 0, 1, 0, 0, null, null, 'Historias', null, 'historias') 
 ;
+UPDATE prod_categ2_sub SET rclv_necesario='personajes' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
+UPDATE prod_categ2_sub SET rclv_necesario='hechos' WHERE id='AMA' OR id='HIS';
 CREATE TABLE prod_publicos_sugeridos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,	
@@ -627,6 +439,227 @@ VALUES
 (3, 'NO', 'NO', 0, 1)
 ;
 
+/* RCLV */;
+CREATE TABLE rclv_1personajes (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(30) NOT NULL UNIQUE,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
+	perenne BOOLEAN NULL,
+
+	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
+	subcategoria_id VARCHAR(3) NULL,  /* Jesús,Contemp, Hagio => ID de la sub-categoría */
+	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
+
+	proceso_canonizacion_id VARCHAR(3) NULL,
+	santo_beato BOOLEAN NULL,
+	rol_iglesia_id VARCHAR(3) NULL,
+
+	prod_aprob BOOLEAN NULL,
+	
+	creado_por_id INT UNSIGNED NOT NULL,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+
+	editado_por_id INT UNSIGNED NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NULL,
+	edic_analizada_en DATETIME NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
+
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	motivo_id TINYINT UNSIGNED NULL,
+	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
+
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	captura_activa BOOLEAN NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
+
+	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
+	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
+	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
+
+	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
+
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO rclv_1personajes (id, creado_por_id, nombre) 
+VALUES (1, 1, 'Ninguno');
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, nombre)
+VALUES 
+(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 1, 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 1, 'María, madre de Jesús'),
+(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 1, 'José, padre de Jesús')
+;
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en, nombre)
+VALUES 
+(21, 249, 1910, 'CFC', 'HAG', 'STM', 'RCM', 10, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
+(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 11, '2022-03-16 23:25:20', 'Juan XXIII'),
+(23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 10, '2022-03-16 23:25:20', 'Juan Bosco'),
+(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Juan Pablo II'),
+(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Bernadette Soubirous')
+;
+UPDATE rclv_1personajes SET ap_mar = true, ap_mar_id=16 WHERE id=25;
+UPDATE rclv_1personajes SET perenne = true;
+CREATE TABLE rclv_2hechos (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(30) NOT NULL UNIQUE,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
+	perenne BOOLEAN NULL,
+	
+	solo_cfc BOOLEAN NULL, /* ¿A mostrar solamente en CFC? */
+	jss BOOLEAN NULL, /* Jesús: true */
+	cnt BOOLEAN NULL, /* Jesús y Contemp: true */
+	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true o false, según corresponda  */
+	ap_mar BOOLEAN NULL, /* true sólo para Aparición Mariana */
+
+	prod_aprob BOOLEAN NULL,
+
+	creado_por_id INT UNSIGNED NOT NULL,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+
+	editado_por_id INT UNSIGNED NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NULL,
+	edic_analizada_en DATETIME NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
+
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	motivo_id TINYINT UNSIGNED NULL,
+	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
+
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	captura_activa BOOLEAN NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
+
+	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
+
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, nombre)
+VALUES (1, 1, 1, 1, 'Ninguno');
+INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, creado_por_id, nombre)
+VALUES
+(11, 1, 1, 1, 1, 359,  0, 1, 'Navidad'),
+(12, 1, 1, 1, 1, 100, 33, 1, 'Semana Santa'),
+(13, 1, 1, 1, 1, 105, 33, 1, 'Sem. Santa - Pasión del Señor'),
+(14, 1, 1, 1, 1, 107, 33, 1, 'Sem. Santa - Resurrección'),
+(15, 1, 0, 1, 1, 150, 33, 1, 'Pentecostés')
+;
+INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, nombre)
+VALUES
+(16, 1, 1, 42, 1858, 1, 'Apar. Mariana - Lourdes (1858)');
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, nombre)
+VALUES
+(21, 210, 1914, 1, 'Guerra Mundial - 1a'),
+(22, 245, 1942, 1, 'Guerra Mundial - 2a')
+;
+UPDATE rclv_2hechos SET perenne = true;
+ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
+/*UPDATE rclv_1personajes SET 	FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id) WHERE id=;*/;
+CREATE TABLE rclv_3valores (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(30) NOT NULL UNIQUE,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	perenne BOOLEAN NULL,
+
+	prod_aprob BOOLEAN NULL,
+
+	creado_por_id INT UNSIGNED NOT NULL,
+	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
+
+	editado_por_id INT UNSIGNED NULL,
+	editado_en DATETIME NULL,
+	edic_analizada_por_id INT UNSIGNED NULL,
+	edic_analizada_en DATETIME NULL,
+	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
+
+	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	motivo_id TINYINT UNSIGNED NULL,
+	sugerido_por_id INT UNSIGNED NULL,
+	sugerido_en DATETIME NULL,
+
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	captura_activa BOOLEAN NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
+	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (edic_analizada_por_id) REFERENCES usuarios(id),
+
+	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
+	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO rclv_3valores (id, nombre, creado_por_id)
+VALUES 
+(1, 'Ninguno', 1),
+(11, 'Matrimonio y familia', 1),
+(12, 'Servicio al prójimo', 1),
+(13, 'Pacificar un país dividido', 1),
+(14, 'Amistad', 1),
+(15, 'Superación personal', 1),
+(16, 'Valores en el deporte', 1)
+;
+UPDATE rclv_3valores SET perenne = true;
+CREATE TABLE rclv_4edicion (
+	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
+
+	nombre VARCHAR(30) NULL UNIQUE,
+	dia_del_ano_id SMALLINT UNSIGNED NULL,
+	ano SMALLINT NULL,
+	ap_mar BOOLEAN NULL,
+
+	/* Campos para PERSONAJES */
+	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
+	subcategoria_id VARCHAR(3) NULL,   /* Jesús,Contemp, Hagio => ID de la sub-categoría */
+	ap_mar_id SMALLINT UNSIGNED NULL,  /* Para Aparición Mariana, va el ID de la aparición */
+	proceso_canonizacion_id VARCHAR(3) NULL,
+	santo_beato BOOLEAN NULL,
+	rol_iglesia_id VARCHAR(3) NULL,
+
+	/* Campos para HECHOS */
+	solo_cfc BOOLEAN NULL, /* ¿A mostrar solamente en CFC? => true/false */
+	jss BOOLEAN NULL, /* Jesús: true */
+	cnt BOOLEAN NULL, /* Jesús y Contemp: true */
+	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true/false */
+
+	editado_por_id INT UNSIGNED NOT NULL,
+	editado_en DATETIME NOT NULL,
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+
+	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 /* PRODUCTOS */;
 CREATE TABLE prod_1peliculas (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -651,13 +684,12 @@ CREATE TABLE prod_1peliculas (
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
+	subcategoria_id VARCHAR(3) NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
 
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
@@ -700,7 +732,6 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -715,13 +746,19 @@ CREATE TABLE prod_1peliculas (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_1peliculas (id,TMDB_id,IMDB_id,fuente,ano_estreno,duracion,paises_id,idioma_original_id,nombre_original,nombre_castellano,direccion,guion,musica,actuacion,produccion,sinopsis,avatar,en_castellano_id,en_color_id,categoria_id,subcategoria_id,publico_sugerido_id,personaje_id,hecho_id,valor_id,dia_del_ano_id,fe_valores,entretiene,calidad_tecnica,calificacion,creado_por_id,creado_en,alta_analizada_por_id,alta_analizada_en,lead_time_creacion,status_registro_id,editado_en,edic_analizada_en,lead_time_edicion,capturado_por_id,capturado_en,captura_activa,links_gratuitos_cargados_id,links_gratuitos_en_la_web_id)
+INSERT INTO prod_1peliculas (id,TMDB_id,IMDB_id,fuente,ano_estreno,duracion,paises_id,idioma_original_id,en_castellano_id,en_color_id,categoria_id,subcategoria_id,publico_sugerido_id,personaje_id,hecho_id,valor_id,fe_valores,entretiene,calidad_tecnica,calificacion,creado_por_id,creado_en,alta_analizada_por_id,alta_analizada_en,lead_time_creacion,status_registro_id,editado_en,edic_analizada_en,lead_time_edicion,capturado_por_id,capturado_en,captura_activa,links_gratuitos_cargados_id,links_gratuitos_en_la_web_id,
+nombre_original,nombre_castellano,direccion,guion,musica,actuacion,produccion,sinopsis,avatar)
 VALUES
-(1,'218275','tt1445208','TMDB',2015,125,'US','en','The Letters','Cartas de la Madre Teresa','William Riead','William Riead','Ciaran Hope','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','1645444885482.jpg',3,1,'CFC',4,4,21,1,1,NULL,100,75,100,92,11,'2022-03-16 23:25:20',10,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,10,'2022-04-13 21:31:29',0,3,2),
-(2,'109429','tt0327086','TMDB',2003,180,'IT','en','Il Papa buono','El Santo Padre Juan XXIII','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','1645458510332.jpg',1,1,'CFC',4,4,22,1,1,NULL,100,75,100,92,10,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,'2022-03-16 23:25:21','2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2),
-(3,'108672','tt0317009','TMDB',2002,208,'IT','it','Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich','Coproducción Italia-Alemania','En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)','1645458705918.jpg',1,1,'CFC',4,4,22,1,1,NULL,100,100,100,100,10,'2022-03-16 23:25:22',11,'2022-04-13 19:21:09',NULL,3,'2022-03-16 23:25:23','2022-04-13 21:28:57',NULL,11,'2022-04-13 21:28:51',0,3,2),
-(4,'122977','tt0416694','TMDB',2004,146,'IT','it','Don Bosco','Don Bosco','Lodovico Gasparini',"Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D'Ercole, Lea Tafuri, F. Panzarella",'Marco Frisina','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','1645459542226.jpg',1,1,'CFC',4,4,23,1,1,NULL,100,100,100,100,10,'2022-03-16 23:25:23',11,'2022-04-13 19:21:15',NULL,3,'2022-03-16 23:25:24','2022-04-13 21:29:05',NULL,11,'2022-04-13 21:29:00',0,3,2),
-(5,'254489','tt0095051','TMDB',1988,150,'IT','it','Don Bosco','Don Bosco','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','1645459996491.jpg',1,1,'CFC',4,4,23,1,1,NULL,100,75,100,92,10,'2022-03-16 23:25:24',11,'2022-04-13 19:21:22',NULL,3,'2022-03-16 23:25:25','2022-04-13 21:29:11',NULL,11,'2022-04-13 21:29:07',0,3,2)
+(1,'218275','tt1445208','TMDB',2015,125,'US','en', 3,1,'CFC','HAG',4,21,1,1,100,75,100,92,11,'2022-03-16 23:25:20',10,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,10,'2022-04-13 21:31:29',0,3,2,
+'The Letters','Cartas de la Madre Teresa','William Riead','William Riead','Ciaran Hope','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','1645444885482.jpg'),
+(2,'109429','tt0327086','TMDB',2003,180,'IT','en', 1,1,'CFC','HAG',4,22,1,1,100,75,100,92,10,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,'2022-03-16 23:25:21','2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2,
+'Il Papa buono','El Santo Padre Juan XXIII','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','1645458510332.jpg'),
+(3,'108672','tt0317009','TMDB',2002,208,'IT','it', 1,1,'CFC','HAG',4,22,1,1,100,100,100,100,10,'2022-03-16 23:25:22',11,'2022-04-13 19:21:09',NULL,3,'2022-03-16 23:25:23','2022-04-13 21:28:57',NULL,11,'2022-04-13 21:28:51',0,3,2,
+'Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich','Coproducción Italia-Alemania','En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)','1645458705918.jpg'),
+(4,'122977','tt0416694','TMDB',2004,146,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,100,100,100,10,'2022-03-16 23:25:23',11,'2022-04-13 19:21:15',NULL,3,'2022-03-16 23:25:24','2022-04-13 21:29:05',NULL,11,'2022-04-13 21:29:00',0,3,2,
+'Don Bosco','Don Bosco','Lodovico Gasparini',"Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D'Ercole, Lea Tafuri, F. Panzarella",'Marco Frisina','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','1645459542226.jpg'),
+(5,'254489','tt0095051','TMDB',1988,150,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,75,100,92,10,'2022-03-16 23:25:24',11,'2022-04-13 19:21:22',NULL,3,'2022-03-16 23:25:25','2022-04-13 21:29:11',NULL,11,'2022-04-13 21:29:07',0,3,2,
+'Don Bosco','Don Bosco','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','1645459996491.jpg')
 ;
 CREATE TABLE prod_2colecciones (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -747,13 +784,12 @@ CREATE TABLE prod_2colecciones (
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
+	subcategoria_id VARCHAR(3) NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
 
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NOT NULL,
 	entretiene TINYINT UNSIGNED NOT NULL,
@@ -795,7 +831,6 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -810,12 +845,16 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, nombre_original, nombre_castellano, ano_estreno, ano_fin, paises_id, idioma_original_id, cant_temporadas, cant_capitulos, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en)
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, ano_estreno, ano_fin, idioma_original_id, cant_temporadas, cant_capitulos,fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en,
+nombre_original, nombre_castellano, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, paises_id)
 VALUES
-(1,'855456',NULL,'collection','TMDB','Karol','Karol',2005,2006,'PL, IT, CA','es',1,2,'Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','1645481101308.jpg',75,75,100,80,10,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57'),
-(2,'97919',NULL,'collection','TMDB','Love Comes Softly Collection','El amor llega suavemente - Colección',2003,2011,'US','en',1,11,'Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg',75,75,100,80,10,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57')
+(1,'855456',NULL,'collection','TMDB',2005,2006,'es',1,10,75,75,100,80,10,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+'Karol','Karol','Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','1645481101308.jpg','PL, IT, CA'),
+(2, '97919',NULL,'collection','TMDB',2003,2011,'en',1,11,75,75,100,80,10,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+'Love Comes Softly Collection','El amor llega suavemente - Colección','Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg','US')
 ;
-UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id=4, publico_sugerido_id=5, personaje_id=24, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
+UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id='HAG', publico_sugerido_id=5, personaje_id=24, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
+UPDATE prod_2colecciones SET en_castellano_id=2, en_color_id=1, categoria_id='VPC', subcategoria_id='NOV', publico_sugerido_id=5, valor_id=11, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=2;
 CREATE TABLE prod_3capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
@@ -841,13 +880,12 @@ CREATE TABLE prod_3capitulos (
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
+	subcategoria_id VARCHAR(3) NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
 
 	personaje_id SMALLINT UNSIGNED DEFAULT 1,
 	hecho_id SMALLINT UNSIGNED DEFAULT 1,
 	valor_id SMALLINT UNSIGNED DEFAULT 1,
-	dia_del_ano_id SMALLINT UNSIGNED NULL,
 
 	fe_valores TINYINT UNSIGNED NULL,
 	entretiene TINYINT UNSIGNED NULL,
@@ -891,7 +929,6 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),	
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (alta_analizada_por_id) REFERENCES usuarios(id),
@@ -906,27 +943,42 @@ CREATE TABLE prod_3capitulos (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id, status_registro_id, creado_en)
+INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, ano_estreno, duracion, idioma_original_id, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id, status_registro_id, creado_en,
+nombre_original, nombre_castellano, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, paises_id)
 VALUES
-(1,1,1,1,'38516','tt0435100','TMDB','Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa',2005,195,'PL, IT','it','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg',1,1,'CFC',4,5,2,3,'2022-03-16 23:25:20'),
-(2,1,1,2,'75470','tt0495039','TMDB','Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre',2006,184,'IT, PL, CA','it','Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg',1,1,'CFC',4,5,2,3,'2022-03-16 23:25:20')
+(1,1,1,1,'38516','tt0435100','TMDB', 2005,195, 'it', 1,1,'CFC','HAG',5,2,3,'2022-03-16 23:25:20',
+'Karol – Un uomo diventato Papa','Karol, el hombre que llegó a ser Papa','Giacomo Battiato','Giacomo Battiato','Ennio Morricone','Piotr Adamczyk (Karol Wojtyla), Malgorzata Bela (Hanna Tuszynska), Ken Duken (Adam Zielinski), Hristo Shopov (Julian Kordek), Ennio Fantastichini (Maciej Nowak), Violante Placido (Maria Pomorska), Matt Craven (Hans Frank), Raoul Bova (padre Tomasz Zaleski), Lech Mackiewicz (card. Stefan Wyszynski), Patrycja Soliman (Wislawa), Olgierd Lukaszewicz (Karol Wojtyla padre), Szymon Bobrowski (capitano Macke), Kenneth Welsh (professor Wójcik), Mateusz Damiecki (Wiktor), Adrian Ochalik (Jerzy Kluger)','TAO Film','Miniserie biográfica sobre Juan Pablo II. En su juventud, en Polonia bajo la ocupación nazi, Karol Wojtyla trabajó en una cantera de caliza para poder sobrevivir. La represión nazi causó numerosas víctimas no sólo entre los judíos, sino también entre los católicos. Es entonces cuando Karol decide responder a la llamada divina. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xVqMG4KcTXhkhL65yohBpjbkY65.jpg','PL, IT'),
+(2,1,1,2,'75470','tt0495039','TMDB', 2006,184, 'it', 1,1,'CFC','HAG',5,2,3,'2022-03-16 23:25:20',
+'Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre', 'Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg','IT, PL, CA')
 ;
-UPDATE prod_3capitulos SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id=4, publico_sugerido_id=5, personaje_id=24, alta_analizada_por_id=2, alta_analizada_en='2022-05-26 18:18:01', editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1 OR id=2;
+UPDATE prod_3capitulos SET personaje_id=24, alta_analizada_por_id=2, alta_analizada_en='2022-05-26 18:18:01', editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1 OR id=2;
 UPDATE prod_3capitulos SET nombre_original='Karol - Un uomo diventato Papa' WHERE id=1;
 UPDATE prod_3capitulos SET produccion='TAO Film' WHERE id=2;
-INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, nombre_original, nombre_castellano, ano_estreno, duracion, paises_id, idioma_original_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id)
+INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, ano_estreno, duracion, idioma_original_id, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id,
+nombre_original, nombre_castellano, paises_id, direccion, guion, musica, actuacion, produccion, sinopsis, avatar)
 VALUES
-(3,2,1,1,'16250','tt0345591','TMDB','Love Comes Softly','El amor llega suavemente',2003,84,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','Ken Thorne, Michael Wetherwax, William Ashford','Katherine Heigl (Marty Claridge), Dale Midkiff (Clark Davis), Skye McCole Bartusiak (Missie Davis), Corbin Bernsen (Ben Graham), Theresa Russell (Sarah Graham), Oliver Macready (Aaron Claridge), Tiffany Amber Knight (Laura Graham), Nick Scoggin (Reverend Johnson), Rutanya Alda (Wanda Marshall), Jaimz Woolvett (Wagon Train Scout), Janet Rotblatt (Woman in Wagon), Adam Loeffler (Clint Graham), David Fine (Jed Larsen (uncredited)), Dani Goldman (Young Marty (uncredited))','Larry Levinson Productions, Hallmark Entertainment, Alpine Medien Productions','Estando de ruta hacia su nuevo hogar en las grandes llanuras del oeste, una joven se queda repentinamente viuda en medio del largo viaje en carreta. Con una dura temporada invernal acechando y sin recursos para regresar, la joven acepta el trato que le ofrece un granjero: casarse con él para ocuparse de su hija, a cambio de cobijo y de un pasaje de vuelta en primavera. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eDxmL7CCHWCcFpbdS6yVnspOjV1.jpg',NULL,1,'VPC',10,4,2),
-(4,2,1,2,'20641','tt0402348','TMDB','Love\'s Enduring Promise','El amor lo puede todo',2004,95,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','','January Jones (Missie Davis), Logan Bartholomew (Willie / Nate), Dale Midkiff (Clark Davis), Katherine Heigl (Marty Claridge), Kesun Loder (Aaron Davis), Logan Arens (Arnie Davis), Mackenzie Astin (Grant Thomas), Cliff DeYoung (Zeke), Matthew Peters (Brian Murphy), Michael Bartel (Willie at 15), Dominic Scott Kay (Mattie), Blaine Pate (Sam), Cara DeLizia (Annie Walker), Robert F. Lyons (Doc Watkins), Douglas Fisher (Edward Trumball), E.J. Callahan (Asa), Katia Coe (Clara), Gary Sievers (Ranxher)',NULL,'Una familia de granjeros del Oeste, cuya subsistencia depende de sus cosechas, ve cómo un accidente del cabeza de familia, que se verá obligado a guardar cama, pone en grave peligro su situación económica. Su hija, una maestra de escuela, se ve obligada a realizar las duras labores de la granja, hasta que un forastero se ofrece a ayudarles y a curar al herido... (Fuente: TMDB)','https://image.tmdb.org/t/p/original/lwbeyOtRpn1izaRnVVhDSJGwHRu.jpg',NULL,1,'VPC',10,4,2),
-(5,2,1,3,'22488','tt0785025','TMDB','Love\'s Abiding Joy','El largo camino del amor',2006,88,'US','en','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Douglas Lloyd McIntosh, Bridget Terry','','Erin Cottrell (Missie), Logan Bartholomew (Willie), William Morgan Sheppard (Scottie), James Tupper (Henry), Irene Bedard (Miriam Red Hawk McClain), Dale Midkiff (Clark Davis), Frank McRae (Cookie), Drew Tyler Bell (Jeff LaHaye), Brett Coker (Mattie LaHaye), Mae Whitman (Colette Doros), John Laughlin (Smuel Doros), Kevin Gage (John Abel), Brianna Brown (Melinda Klein), Stephen Bridgewater (Frank Taylorson), Blake Gibbons (Joe Paxson), Madison Leisle (Annie), Thomas Stanley (Mark)',NULL,'Tras un peligroso viaje al Oeste, Missie (Erin Cottrell) y su marido (Logan Bartholomew) se establecen en unas tierras con la intención de formar una familia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/rNQCuECnv6ubGJzHqqdFB2O1bV7.jpg',NULL,1,'VPC',10,4,2),
-(6,2,1,4,'20583','tt0486420','TMDB','Love\'s Long Journey','El amor dura eternamente',2005,87,'US','en','Michael Landon Jr.','','','Erin Cottrell (Missie LaHaye), Dale Midkiff (Clark Davis), Logan Bartholomew (Willie LaHaye), Frank McRae (Cookie), Drew Tyler Bell (Jeff LaHaye), William Morgan Sheppard (Scottie), Richard Lee Jackson (Sonny Huff)',NULL,'Adaptación televisiva de la novela de Janette Oke sobre una joven pareja, Missie (Erin Cottrell) y Willie (Logan Bartholomew), que abandonan sus hogares para comenzar una nueva vida en el Oeste. Durante el camino, su amor y su Fe en Dios serán puestos a prueba por la adversidades del trayecto. Willie y Missie La Haye emprenden una nueva vida como colonos en el Oeste americano. Adquieren un rancho y un buen número de cabezas de ganado y, una vez instalados, Missie confiesa a su marido que espera un hijo. Su padre, desde la distancia, le recuerda que sus corazones están unidos por el amor, y que pronto se reencontrarán. Mientras tanto, Missie trabaja como maestra ganándose el afecto de la comunidad india. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eIrxGoq68iH16NWFF1XKCKXRmaE.jpg',NULL,1,'VPC',10,4,2),
-(7,2,1,5,'30975','tt0929864','TMDB','Love\'s Unending Legacy','El legado de un amor infinito',2007,84,'US','en','Mark Griffiths','Janette Oke, Pamela Wallace','Kevin Kiner','Erin Cottrell (Missie LaHaye), Holliston Coleman (Belinda Marshall-LaHaye), Victor Browne (Sherrif Zack Tyler), Hank Stratton (Pastor Joe), Braeden Lemasters (Jacob Marshall-LaHaye), Dave Florek (Hank Pettis), Stephanie Nash (Mrs. Pettis), Bret Loehr (Calvin), Dale Midkiff (Clark Davis)',NULL,'Tres años después de la muerte de su marido, Missie decide regresar junto a su hijo a casa de sus padres. Allí recupera su trabajo como maestra y adopta a Belinda, una huérfana algo rebelde que oculta un secreto: tiene un hermano menor que está siendo maltratado por sus nuevos padres adoptivos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xi57bQTg33RpduDphkvtdWkEI7b.jpg',NULL,1,'VPC',10,4,2),
-(8,2,1,6,'49857','tt0960143','TMDB','Love\'s Unfolding Dream','La doble cara del amor',2007,87,'US','en','Harvey Frost','','','Erin Cottrell (Missy Tyler), Scout Taylor-Compton (Belinda Tyler), Dale Midkiff (Clark Davis), Robert Pine (Dr. Micah Jackson), Victor Browne (Sheriff Zach Taylor), Samantha Smith (Mart Davis), Patrick Levis (Drew Simpson), Nancy Linehan Charles (Virginia Stafford-Smith)','Larry Levinson Productions, RHI Entertainment, Alpine Medien Productions','Belinda quiere ser doctora, pero vive en una época en la que su condición de mujer pone muchas trabas a su camino. Se debate entre su vocación y el amor por un abogado de costumbres tradicionales. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/7OCcCfioaoUS1q5nemO8uSciKRj.jpg',NULL,1,'VPC',10,4,2),
-(9,2,1,7,'21636','tt1269560','TMDB','Love Takes Wing','Y el amor volvió a nosotros',2009,88,'US','en','Lou Diamond Phillips','Rachel Stuhler','','Sarah Jones (Belinda Simpson), Haylie Duff (Annie Nelson), Jordan Bridges (Lee Owens), Patrick Duffy (Mayor Evans), Cloris Leachman (Hattie Clarence), John Bishop (John Pine), Lou Diamond Phillips (Ray Russell), Erin Cottrell (Missy), Annalise Basso (Lillian), Time Winters (Gus), Bonnie Root (Mrs. Pine), Craig K. Bodkin (Sheriff), Dave Rodgers (Stage Coach Driver)',NULL,'Tras la muerte de su marido, la doctora Belinda Simpson llega a la ciudad de Sikeston. Pronto descubre que su población está enfermando y muriendo de cólera, brote que proviene de un orfanato cercano. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/b6bM8dmSbEHDv9hHIJCZjbgIkbV.jpg',NULL,1,'VPC',10,4,2),
-(10,2,1,8,'25182','tt1307064','TMDB','Love Finds A Home','Y el amor llegó al hogar',2009,88,'US','en','David S. Cass Sr.','Janette Oke, Donald Davenport','Stephen Graziano','Sarah Jones (Belinda Simpson), Haylie Duff (Annie), Jordan Bridges (Lee Owens), Patty Duke (Mary), Courtney Halverson (Lillian), Michael Trevino (Joshua), Jeffrey Muller (Peter), Dahlia Salem (Mabel McQueen), Thomas Kopache (Reverend Davis), Chad W. Smathers (Danny Travis), Daniel Beer (Lloyd McQueen), Jeff Clarke (Mr. Travis), Jennifer M. Gentile (Mrs. Travis), Matthew Florida (Young Cowboy), Michelle Josette (Young Mother), Time Winters (Gus), Grace Levinson (Grace), Shannon Levinson (Shannon)','RHI Entertainment, Larry Levinson Productions, LG Films, Faith & Family Entertainment','La doctora Annie Watson va a casa de su mejor amiga, la también facultativa Belinda Owens. Allí, la chica tendrá que convivir con Mary, una mujer a la que le gustan los remedios naturales, y con un matrimonio en crisis, por la imposibilidad de Belinda por quedarse embarazada. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/zgFi7OtOeMmvH3stWJSpazJGaSJ.jpg',NULL,1,'VPC',10,4,2),
-(11,2,1,9,'81450','tt1684907','TMDB','Love Begins','Cuando nace el amor',2011,0,'US, IE','en','David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Moran','Stephen McKeon','Wes Brown (Clark Davis), Julie Mond (Ellen Louise Barlow), Abigail Mavity (Cassandra Mae \'Cassie\' Barlow), Jere Burns (Sheriff Holden), Nancy McKeon (Millie), David Tom (Daniel Whittaker), Steffani Brass (Rose), Daniel Buran (Samuel)','RHI Entertainment, Faith & Family Entertainment, MNG Films, Larry Levinson Productions','Tras una pelea en una cafetería, Clark Davis es condenado a ir a la cárcel. Gracias a un acuerdo entre el sheriff y la propietaria del local, se le conmuta la pena. Entonces tendrá que trabajar como peón para las hermanas Ellen y Cassie Barlow. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/b0JiPlWEZ8cnhhgVOWo0rnbGuvh.jpg',NULL,1,'VPC',10,4,2),
-(12,2,1,10,'87311','tt1672621','TMDB','Love\'s Everlasting Courage','Love\'s Everlasting Courage',2011,89,'US','en','Bradford May, Dora Hopkins','Kevin Bocarde','Brian Byrne','Wes Brown (Clark), Julie Mond (Ellen), Bruce Boxleitner (Lloyd), Cheryl Ladd (Irene), Morgan Lily (Missy), Willow Geer (Sarah), Tyler Jacob Moore (Ben), Kirk B.R. Woller (Bruce), James Eckhouse (Mr. Harris), Courtney Marmo (Laura)','RHI Entertainment, Faith & Family Entertainment, MNG Films, Larry Levinson Productions','Una familia joven lucha por una frontera en el oeste que permita a la mujer trabajar en un taller de costura. Cuando la situación económica mejora, la esposa enferma y muere. Con la ayuda de sus padres, el joven viudo tendrá que aprender a lidiar con la trágica pérdida. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/aIZoXDvpmwF70KsY8lByku5SwgF.jpg',NULL,1,'VPC',10,4,2),
-(13,2,1,11,'87313','tt2078672','TMDB','Love\'s Christmas Journey','Y el amor llegó en Navidad',2011,172,'US','en','David S. Cass Sr., Dora Hopkins','Janette Oke, George Tierne','','Natalie Hall (Ellie Davis), JoBeth Williams (Beatrice), Greg Vaughan (Aaron Davis), Dylan Bruce (Michael), Ernest Borgnine (Nicholas), Teddy Vincent (Mrs. Price), Annika Noelle (Suzanna), Bobby Campo (Erik Johnson), Charles Shaughnessy (Alex Weaver), Sean Astin (Mayor Wayne), Ryan Wynott (Christopher), Jada Facer (Annabelle), Amanda Foreman (Adrienne), Dannika Liddell (Jessica), Brian Thompson (Cass), Richard Tyson (Charley)',NULL,'Tras la muerte de su marido y su hija, Eli decide pasar la temporada de Navidad con su hermano, el sheriff de una pequeña ciudad respetado por todos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/jYqWZG3f5FRy8oUwZYOn77h9I59.jpg',NULL,1,'VPC',10,4,2)
+( 3,2,1, 1,'16250','tt0345591','TMDB',2003,84,'en',1,1,'VPC','NOV',4,2,
+'Love Comes Softly','El amor llega suavemente','US','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','Ken Thorne, Michael Wetherwax, William Ashford','Katherine Heigl (Marty Claridge), Dale Midkiff (Clark Davis), Skye McCole Bartusiak (Missie Davis), Corbin Bernsen (Ben Graham), Theresa Russell (Sarah Graham), Oliver Macready (Aaron Claridge), Tiffany Amber Knight (Laura Graham), Nick Scoggin (Reverend Johnson), Rutanya Alda (Wanda Marshall), Jaimz Woolvett (Wagon Train Scout), Janet Rotblatt (Woman in Wagon), Adam Loeffler (Clint Graham), David Fine (Jed Larsen (uncredited)), Dani Goldman (Young Marty (uncredited))','Larry Levinson Productions, Hallmark Entertainment, Alpine Medien Productions','Estando de ruta hacia su nuevo hogar en las grandes llanuras del oeste, una joven se queda repentinamente viuda en medio del largo viaje en carreta. Con una dura temporada invernal acechando y sin recursos para regresar, la joven acepta el trato que le ofrece un granjero: casarse con él para ocuparse de su hija, a cambio de cobijo y de un pasaje de vuelta en primavera. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eDxmL7CCHWCcFpbdS6yVnspOjV1.jpg'),
+( 4,2,1, 2,'20641','tt0402348','TMDB',2004,95,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Enduring Promise','El amor lo puede todo','US','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Cindy Kelley','','January Jones (Missie Davis), Logan Bartholomew (Willie / Nate), Dale Midkiff (Clark Davis), Katherine Heigl (Marty Claridge), Kesun Loder (Aaron Davis), Logan Arens (Arnie Davis), Mackenzie Astin (Grant Thomas), Cliff DeYoung (Zeke), Matthew Peters (Brian Murphy), Michael Bartel (Willie at 15), Dominic Scott Kay (Mattie), Blaine Pate (Sam), Cara DeLizia (Annie Walker), Robert F. Lyons (Doc Watkins), Douglas Fisher (Edward Trumball), E.J. Callahan (Asa), Katia Coe (Clara), Gary Sievers (Ranxher)',NULL,'Una familia de granjeros del Oeste, cuya subsistencia depende de sus cosechas, ve cómo un accidente del cabeza de familia, que se verá obligado a guardar cama, pone en grave peligro su situación económica. Su hija, una maestra de escuela, se ve obligada a realizar las duras labores de la granja, hasta que un forastero se ofrece a ayudarles y a curar al herido... (Fuente: TMDB)','https://image.tmdb.org/t/p/original/lwbeyOtRpn1izaRnVVhDSJGwHRu.jpg'),
+( 5,2,1, 3,'22488','tt0785025','TMDB',2006,88,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Abiding Joy','El largo camino del amor','US','Michael Landon Jr.','Michael Landon Jr., Janette Oke, Douglas Lloyd McIntosh, Bridget Terry','','Erin Cottrell (Missie), Logan Bartholomew (Willie), William Morgan Sheppard (Scottie), James Tupper (Henry), Irene Bedard (Miriam Red Hawk McClain), Dale Midkiff (Clark Davis), Frank McRae (Cookie), Drew Tyler Bell (Jeff LaHaye), Brett Coker (Mattie LaHaye), Mae Whitman (Colette Doros), John Laughlin (Smuel Doros), Kevin Gage (John Abel), Brianna Brown (Melinda Klein), Stephen Bridgewater (Frank Taylorson), Blake Gibbons (Joe Paxson), Madison Leisle (Annie), Thomas Stanley (Mark)',NULL,'Tras un peligroso viaje al Oeste, Missie (Erin Cottrell) y su marido (Logan Bartholomew) se establecen en unas tierras con la intención de formar una familia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/rNQCuECnv6ubGJzHqqdFB2O1bV7.jpg'),
+( 6,2,1, 4,'20583','tt0486420','TMDB',2005,87,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Long Journey','El amor dura eternamente','US','Michael Landon Jr.','','','Erin Cottrell (Missie LaHaye), Dale Midkiff (Clark Davis), Logan Bartholomew (Willie LaHaye), Frank McRae (Cookie), Drew Tyler Bell (Jeff LaHaye), William Morgan Sheppard (Scottie), Richard Lee Jackson (Sonny Huff)',NULL,'Adaptación televisiva de la novela de Janette Oke sobre una joven pareja, Missie (Erin Cottrell) y Willie (Logan Bartholomew), que abandonan sus hogares para comenzar una nueva vida en el Oeste. Durante el camino, su amor y su Fe en Dios serán puestos a prueba por la adversidades del trayecto. Willie y Missie La Haye emprenden una nueva vida como colonos en el Oeste americano. Adquieren un rancho y un buen número de cabezas de ganado y, una vez instalados, Missie confiesa a su marido que espera un hijo. Su padre, desde la distancia, le recuerda que sus corazones están unidos por el amor, y que pronto se reencontrarán. Mientras tanto, Missie trabaja como maestra ganándose el afecto de la comunidad india. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/eIrxGoq68iH16NWFF1XKCKXRmaE.jpg'),
+( 7,2,1, 5,'30975','tt0929864','TMDB',2007,84,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Unending Legacy','El legado de un amor infinito','US','Mark Griffiths','Janette Oke, Pamela Wallace','Kevin Kiner','Erin Cottrell (Missie LaHaye), Holliston Coleman (Belinda Marshall-LaHaye), Victor Browne (Sherrif Zack Tyler), Hank Stratton (Pastor Joe), Braeden Lemasters (Jacob Marshall-LaHaye), Dave Florek (Hank Pettis), Stephanie Nash (Mrs. Pettis), Bret Loehr (Calvin), Dale Midkiff (Clark Davis)',NULL,'Tres años después de la muerte de su marido, Missie decide regresar junto a su hijo a casa de sus padres. Allí recupera su trabajo como maestra y adopta a Belinda, una huérfana algo rebelde que oculta un secreto: tiene un hermano menor que está siendo maltratado por sus nuevos padres adoptivos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/xi57bQTg33RpduDphkvtdWkEI7b.jpg'),
+( 8,2,1, 6,'49857','tt0960143','TMDB',2007,87,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Unfolding Dream','La doble cara del amor','US','Harvey Frost','','','Erin Cottrell (Missy Tyler), Scout Taylor-Compton (Belinda Tyler), Dale Midkiff (Clark Davis), Robert Pine (Dr. Micah Jackson), Victor Browne (Sheriff Zach Taylor), Samantha Smith (Mart Davis), Patrick Levis (Drew Simpson), Nancy Linehan Charles (Virginia Stafford-Smith)','Larry Levinson Productions, RHI Entertainment, Alpine Medien Productions','Belinda quiere ser doctora, pero vive en una época en la que su condición de mujer pone muchas trabas a su camino. Se debate entre su vocación y el amor por un abogado de costumbres tradicionales. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/7OCcCfioaoUS1q5nemO8uSciKRj.jpg'),
+( 9,2,1, 7,'21636','tt1269560','TMDB',2009,88,'en',1,1,'VPC','NOV',4,2,
+'Love Takes Wing','Y el amor volvió a nosotros','US','Lou Diamond Phillips','Rachel Stuhler','','Sarah Jones (Belinda Simpson), Haylie Duff (Annie Nelson), Jordan Bridges (Lee Owens), Patrick Duffy (Mayor Evans), Cloris Leachman (Hattie Clarence), John Bishop (John Pine), Lou Diamond Phillips (Ray Russell), Erin Cottrell (Missy), Annalise Basso (Lillian), Time Winters (Gus), Bonnie Root (Mrs. Pine), Craig K. Bodkin (Sheriff), Dave Rodgers (Stage Coach Driver)',NULL,'Tras la muerte de su marido, la doctora Belinda Simpson llega a la ciudad de Sikeston. Pronto descubre que su población está enfermando y muriendo de cólera, brote que proviene de un orfanato cercano. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/b6bM8dmSbEHDv9hHIJCZjbgIkbV.jpg'),
+(10,2,1, 8,'25182','tt1307064','TMDB',2009,88,'en',1,1,'VPC','NOV',4,2,
+'Love Finds A Home','Y el amor llegó al hogar','US','David S. Cass Sr.','Janette Oke, Donald Davenport','Stephen Graziano','Sarah Jones (Belinda Simpson), Haylie Duff (Annie), Jordan Bridges (Lee Owens), Patty Duke (Mary), Courtney Halverson (Lillian), Michael Trevino (Joshua), Jeffrey Muller (Peter), Dahlia Salem (Mabel McQueen), Thomas Kopache (Reverend Davis), Chad W. Smathers (Danny Travis), Daniel Beer (Lloyd McQueen), Jeff Clarke (Mr. Travis), Jennifer M. Gentile (Mrs. Travis), Matthew Florida (Young Cowboy), Michelle Josette (Young Mother), Time Winters (Gus), Grace Levinson (Grace), Shannon Levinson (Shannon)','RHI Entertainment, Larry Levinson Productions, LG Films, Faith & Family Entertainment','La doctora Annie Watson va a casa de su mejor amiga, la también facultativa Belinda Owens. Allí, la chica tendrá que convivir con Mary, una mujer a la que le gustan los remedios naturales, y con un matrimonio en crisis, por la imposibilidad de Belinda por quedarse embarazada. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/zgFi7OtOeMmvH3stWJSpazJGaSJ.jpg'),
+(11,2,1, 9,'81450','tt1684907','TMDB',2011,0,'en',1,1,'VPC','NOV',4,2,
+'Love Begins','Cuando nace el amor','US, IE','David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Moran','Stephen McKeon','Wes Brown (Clark Davis), Julie Mond (Ellen Louise Barlow), Abigail Mavity (Cassandra Mae \'Cassie\' Barlow), Jere Burns (Sheriff Holden), Nancy McKeon (Millie), David Tom (Daniel Whittaker), Steffani Brass (Rose), Daniel Buran (Samuel)','RHI Entertainment, Faith & Family Entertainment, MNG Films, Larry Levinson Productions','Tras una pelea en una cafetería, Clark Davis es condenado a ir a la cárcel. Gracias a un acuerdo entre el sheriff y la propietaria del local, se le conmuta la pena. Entonces tendrá que trabajar como peón para las hermanas Ellen y Cassie Barlow. (FILMAFFINITY)','https://image.tmdb.org/t/p/original/b0JiPlWEZ8cnhhgVOWo0rnbGuvh.jpg'),
+(12,2,1,10,'87311','tt1672621','TMDB',2011,89,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Everlasting Courage','Love\'s Everlasting Courage','US','Bradford May, Dora Hopkins','Kevin Bocarde','Brian Byrne','Wes Brown (Clark), Julie Mond (Ellen), Bruce Boxleitner (Lloyd), Cheryl Ladd (Irene), Morgan Lily (Missy), Willow Geer (Sarah), Tyler Jacob Moore (Ben), Kirk B.R. Woller (Bruce), James Eckhouse (Mr. Harris), Courtney Marmo (Laura)','RHI Entertainment, Faith & Family Entertainment, MNG Films, Larry Levinson Productions','Una familia joven lucha por una frontera en el oeste que permita a la mujer trabajar en un taller de costura. Cuando la situación económica mejora, la esposa enferma y muere. Con la ayuda de sus padres, el joven viudo tendrá que aprender a lidiar con la trágica pérdida. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/aIZoXDvpmwF70KsY8lByku5SwgF.jpg'),
+(13,2,1,11,'87313','tt2078672','TMDB',2011,172,'en',1,1,'VPC','NOV',4,2,
+'Love\'s Christmas Journey','Y el amor llegó en Navidad','US','David S. Cass Sr., Dora Hopkins','Janette Oke, George Tierne','','Natalie Hall (Ellie Davis), JoBeth Williams (Beatrice), Greg Vaughan (Aaron Davis), Dylan Bruce (Michael), Ernest Borgnine (Nicholas), Teddy Vincent (Mrs. Price), Annika Noelle (Suzanna), Bobby Campo (Erik Johnson), Charles Shaughnessy (Alex Weaver), Sean Astin (Mayor Wayne), Ryan Wynott (Christopher), Jada Facer (Annabelle), Amanda Foreman (Adrienne), Dannika Liddell (Jessica), Brian Thompson (Cass), Richard Tyson (Charley)',NULL,'Tras la muerte de su marido y su hija, Eli decide pasar la temporada de Navidad con su hermano, el sheriff de una pequeña ciudad respetado por todos. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/jYqWZG3f5FRy8oUwZYOn77h9I59.jpg')
 ;
 CREATE TABLE prod_4edicion (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
@@ -950,7 +1002,7 @@ CREATE TABLE prod_4edicion (
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
-	subcategoria_id TINYINT UNSIGNED NULL,
+	subcategoria_id VARCHAR(3) NULL,
 	publico_sugerido_id TINYINT UNSIGNED NULL,
 
 	personaje_id SMALLINT UNSIGNED NULL,
@@ -975,8 +1027,8 @@ CREATE TABLE prod_4edicion (
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_4edicion (id, coleccion_id, nombre_original, nombre_castellano, musica, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, valor_id, editado_por_id, editado_en) VALUES 
-(7,2,'Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',2,1,'VPC',10,4,11,10,'2022-03-16 23:25:22');
+INSERT INTO prod_4edicion (id, coleccion_id, nombre_original, nombre_castellano, musica, editado_por_id, editado_en) VALUES 
+(7,2,'Love Comes Softly','El amor llega suavemente','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon',10,'2022-03-16 23:25:22');
 
 /* LINKS */;
 CREATE TABLE links_provs (

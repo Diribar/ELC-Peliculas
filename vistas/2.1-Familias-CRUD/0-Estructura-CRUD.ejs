@@ -4,14 +4,14 @@
 	<%- include('1-Head-Gral') %>
 	<%- include("1-Head-CRUD") %>
 	<%- tema == "prod_rud" ? include('Prod-0HeadRUD') : "" %>
-	<%- tema == "links_rud" ? include('Links-0Head') : "" %>
+	<%- tema == "links_crud" ? include('Links-0Head') : "" %>
 </head>
 <body>
 	<%- include('2-Header-Gral') %>
 	<main class="flex-row">
 		<%- (tema == "prod_rud" && codigo == "detalle") ? include('2-Cuerpo-CRUD') : "" %>
 		<%- (tema == "prod_rud" && codigo == "edicion") ? include('Prod-2Edicion1') : "" %>
-		<%- (tema == "links_rud" && codigo == "links_alta") ? include('2-Cuerpo-CRUD') : "" %>
+		<%- tema == "links_crud" ? include('2-Cuerpo-CRUD') : "" %>
 	</main>
 </body>
 </html>
