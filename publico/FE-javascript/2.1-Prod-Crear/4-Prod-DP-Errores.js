@@ -237,7 +237,7 @@ window.addEventListener("load", async () => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
 			}, {}).ocultar == iconosError.length;
 		// Consecuencias
-		console.log(OK_ocultos,error,iconosError.length);
+		//console.log(OK_ocultos,error,iconosError.length);
 		OK_ocultos && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
 	let funcionErrores = (errores) => {
