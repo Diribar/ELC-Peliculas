@@ -198,11 +198,8 @@ window.addEventListener("load", async () => {
 		let opHec = Array.from(opcionesHecho).filter((n) => !n.classList.contains("ocultar"));
 		// Cambios en personaje
 		if (opPer.length == 1) inputsRCLV[0].value = opPer[0].value;
-
 		// Cambios en hechos
 		if (opHec.length == 1) inputsRCLV[1].value = opHec[0].value;
-
-		//
 		// Fin
 		return;
 	};
