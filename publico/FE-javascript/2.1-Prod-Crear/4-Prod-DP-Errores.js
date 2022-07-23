@@ -40,30 +40,22 @@ window.addEventListener("load", async () => {
 			url += encodeURIComponent(input.value);
 		}
 		let errores = await fetch(ruta + url).then((n) => n.json());
-		inputs.forEach((input, indice) => {
-			if (inputValue ? input.value : true) {
-				// Averiguar si hay un error
-				let campo = input.name;
-				let mensaje = errores[campo];
-				mensajesError[indice].innerHTML = mensaje;
-				// En caso de error
-				if (mensaje != undefined) {
-					mensaje
-						? iconosError[indice].classList.remove("ocultar")
-						: iconosError[indice].classList.add("ocultar");
-					mensaje
-						? iconosOK[indice].classList.add("ocultar")
-						: iconosOK[indice].classList.remove("ocultar");
-					if (camposRCLV.includes(campo) && (campo != "personaje_id" || input.value != 11)) {
-						let indiceRCLV = camposRCLV.indexOf(campo);
-						mensaje
-							? linksEdicion[indiceRCLV].classList.add("ocultar")
-							: linksEdicion[indiceRCLV].classList.remove("ocultar");
-					}
-				}
+		// Consecuencias de las validaciones de errores
+		funcionErrores(errores)
+		botonSubmit();
+	};
+	let funcionErrores = (errores) => {
+		campos.forEach((campo, indice) => {
+			if (errores[campo] !== undefined) {
+				mensajesError[indice].innerHTML = errores[campo];
+				errores[campo]
+					? iconosOK[indice].classList.add("ocultar")
+					: iconosOK[indice].classList.remove("ocultar");
+				errores[campo]
+					? iconosError[indice].classList.remove("ocultar")
+					: iconosError[indice].classList.add("ocultar");
 			}
 		});
-		botonSubmit();
 	};
 	// Actualizar la subcategoría
 	let actualizaOpsSubcat = () => {
@@ -83,7 +75,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	// RCLV
-	let limpiaSelectsRCLV = () => {
+	let limpiaInputsRCLV = () => {
 		// Borra el valor de los inputsRCLV
 		inputsRCLV.forEach((input, i) => {
 			input.value = "";
@@ -240,19 +232,6 @@ window.addEventListener("load", async () => {
 		//console.log(OK_ocultos,error,iconosError.length);
 		OK_ocultos && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
-	let funcionErrores = (errores) => {
-		campos.forEach((campo, indice) => {
-			if (errores[campo] !== undefined) {
-				mensajesError[indice].innerHTML = errores[campo];
-				errores[campo]
-					? iconosOK[indice].classList.add("ocultar")
-					: iconosOK[indice].classList.remove("ocultar");
-				errores[campo]
-					? iconosError[indice].classList.remove("ocultar")
-					: iconosError[indice].classList.add("ocultar");
-			}
-		});
-	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averiguar si hubieron cambios
@@ -265,12 +244,12 @@ window.addEventListener("load", async () => {
 		if (campo == "categoria_id") {
 			subcategoriaSelect.value = "";
 			actualizaOpsSubcat();
-			limpiaSelectsRCLV();
+			limpiaInputsRCLV();
 			actualizaOpsRCLV();
 		}
 		// Si se cambia la subcategoría --> actualiza RCLV
 		if (campo == "subcategoria_id") {
-			limpiaSelectsRCLV();
+			limpiaInputsRCLV();
 			actualizaOpsRCLV();
 			verificaUnaSolaOpcionRCLV();
 			iconosEdicionRCLVs();
