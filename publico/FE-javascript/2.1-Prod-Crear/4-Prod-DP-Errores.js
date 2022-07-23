@@ -85,11 +85,11 @@ window.addEventListener("load", async () => {
 	// RCLV
 	let limpiaSelectsRCLV = () => {
 		// Borra el valor de los inputsRCLV
-		inputsRCLV.forEach((input,i)=>{
+		inputsRCLV.forEach((input, i) => {
 			input.value = "";
 			iconosOK_RCLV[i].classList.add("ocultar");
 			iconosError_RCLV[1].classList.add("ocultar");
-		})
+		});
 		// Fin
 		return;
 	};
@@ -204,25 +204,12 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	let iconosEdicionRCLVs = () => {
-		if (subcategoria)
-			var j =
-				subcategoria.rclv_necesario == "personaje"
-					? 0
-					: subcategoria.rclv_necesario == "hecho"
-					? 1
-					: null;
-		let comienzo = true;
+		// Revisar todas las entidades RCLV
 		linksEdicion.forEach((link, i) => {
+			// Para las entidades completadas, se muestra el ícono de editar el registro
 			if (inputsRCLV[i].value && inputsRCLV[i].value != 1) {
 				link.classList.remove("inactivo_ocultar");
 				link.classList.remove("ocultar");
-			}
-			if ((inputsRCLV[i].value && inputsRCLV[i].value != 1) || !comienzo) {
-				iconosError_RCLV[i].classList.add("ocultar");
-				if (j === i || (j === null && comienzo)) {
-					iconosOK_RCLV[i].classList.remove("ocultar");
-					comienzo = false;
-				}
 			} else link.classList.add("inactivo_ocultar");
 		});
 	};
@@ -250,6 +237,7 @@ window.addEventListener("load", async () => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
 			}, {}).ocultar; // == iconosError.length;
 		// Consecuencias
+		console.log(OK_ocultos,error,iconosError.length);
 		OK_ocultos === 0 && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
 	let funcionErrores = (errores) => {
