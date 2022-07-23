@@ -23,7 +23,6 @@ window.addEventListener("load", async () => {
 			let indice = fila * columnas + columna;
 			objeto += "&" + inputs[indice].name + "=" + encodeURIComponent(inputs[indice].value);
 		}
-		console.log(objeto,columnas);
 		return objeto;
 	};
 
