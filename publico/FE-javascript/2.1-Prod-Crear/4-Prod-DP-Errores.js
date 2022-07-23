@@ -240,7 +240,6 @@ window.addEventListener("load", async () => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = e.target.value;
-		let indice = campos.indexOf(campo);
 		// Si se cambia la categoría --> actualiza subcategoría
 		if (campo == "categoria_id") {
 			subcategoriaSelect.value = "";
@@ -275,7 +274,6 @@ window.addEventListener("load", async () => {
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
 		funcionErrores(errores);
-
 		// Fin
 		botonSubmit();
 	});
