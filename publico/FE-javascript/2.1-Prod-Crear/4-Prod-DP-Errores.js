@@ -84,12 +84,12 @@ window.addEventListener("load", async () => {
 	};
 	// RCLV
 	let limpiaSelectsRCLV = () => {
-		// Borra el valor de los selectsRCLV
-		for (let i = 0; i < inputsRCLV.length; i++) {
-			inputsRCLV[i].value = "";
+		// Borra el valor de los inputsRCLV
+		inputsRCLV.forEach((input,i)=>{
+			input.value = "";
 			iconosOK_RCLV[i].classList.add("ocultar");
 			iconosError_RCLV[1].classList.add("ocultar");
-		}
+		})
 		// Fin
 		return;
 	};
@@ -253,7 +253,6 @@ window.addEventListener("load", async () => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
 			}, {}).ocultar; // == iconosError.length;
 		// Consecuencias
-		console.log(OK_ocultos, error, iconosError.length);
 		OK_ocultos === 0 && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
 	let funcionErrores = (errores) => {
@@ -307,7 +306,6 @@ window.addEventListener("load", async () => {
 		}
 		// Averiguar si hay algún error
 		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
-		console.log(errores);
 		funcionErrores(errores);
 
 		// Fin
