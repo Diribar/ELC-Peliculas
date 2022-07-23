@@ -101,7 +101,6 @@ window.addEventListener("load", async () => {
 			let subcategoria = subcategorias.find((n) => n.id == subcategoriaSelect.value);
 			// Acciones si es una aparición mariana
 			if (subcategoria.hechos_codigo == "AMA") {
-				console.log("Acciones si es una aparición mariana");
 				opcionesPersonaje.forEach((opcion) => {
 					opcion.classList.contains("AM")
 						? opcion.classList.remove("ocultar")
@@ -163,7 +162,7 @@ window.addEventListener("load", async () => {
 	let interaccionesApMar = (campo) => {
 		// Cambia el contenido del Personaje o Hecho
 		// Acciones si se cambia el personaje
-		if ((campo = "personaje_id")) {
+		if (campo == "personaje_id") {
 			// Obtener del personaje, el 'id' de la Aparición Mariana
 			let clases = Array.from(opcionesPersonaje).find((n) => n.value == inputsRCLV[0].value).classList;
 			clases = Array.from(clases);
@@ -174,8 +173,8 @@ window.addEventListener("load", async () => {
 		}
 		// Acciones si se cambia el hecho
 		if (campo == "hecho_id") {
-			let id = Array.from(opcionesHecho).find((n) =>
-			n.classList.contains("AM" + inputsRCLV[1].value)
+			let id = Array.from(opcionesPersonaje).find((n) =>
+				n.classList.contains("AM" + inputsRCLV[1].value)
 			).value;
 			// Cambia el contenido del Personaje
 			inputsRCLV[0].value = id;
