@@ -666,13 +666,6 @@ CREATE TABLE rclv_4edicion (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
-	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-
-	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
-	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
-	FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id),	
-	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
-	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
