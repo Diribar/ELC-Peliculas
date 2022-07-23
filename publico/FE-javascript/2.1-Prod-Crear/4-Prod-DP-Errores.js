@@ -3,7 +3,6 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
 	let submit = document.querySelector("#dataEntry button[type='submit']");
-	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
@@ -12,6 +11,7 @@ window.addEventListener("load", async () => {
 	let indicePersonaje = Array.from(inputsRCLV).findIndex((n) => n.name == "personaje_id");
 	let camposRCLV = Array.from(inputsRCLV).map((n) => n.name);
 	let linksAlta = document.querySelectorAll(".input-error .linkRCLV.alta");
+	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 	// OK/Errores
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
@@ -26,48 +26,6 @@ window.addEventListener("load", async () => {
 	let opcionesRCLV = document.querySelectorAll("option.RCLV");
 	// Ruta
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
-
-	// ADD EVENT LISTENERS *********************************
-	// Averiguar si hubieron cambios
-	form.addEventListener("input", async (e) => {
-		// Definir los valores para 'campo' y 'valor'
-		let campo = e.target.name;
-		let valor = e.target.value;
-		let indice = campos.indexOf(campo);
-		// Para que incluya los datos de la subcategoría, por si se necesitan para validar RCLV
-		let adicSubcategoria =
-			subcategoria.value && !campo.includes("subcategoria_id")
-				? "&subcategoria_id=" + subcategoria.value
-				: "";
-		// Averiguar si hay algún error
-		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
-		mensajesError[indice].innerHTML = errores[campo];
-		errores[campo]
-			? iconosOK[indice].classList.add("ocultar")
-			: iconosOK[indice].classList.remove("ocultar");
-		errores[campo]
-			? iconosError[indice].classList.remove("ocultar")
-			: iconosError[indice].classList.add("ocultar");
-		// Si se cambia la categoría --> actualiza subcategoría
-		if (campo == "categoria_id") {
-			subcategoria.value = "";
-			funcionSubcat();
-		}
-		// Si se cambia la subcategoría --> actualiza RCLV
-		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV();
-		// Actualizar las opciones de RCLV
-		if (campo == "subcategoria_id") filtrarRCLVs();
-		// Fin
-		botonSubmit();
-	});
-
-	// Submit
-	form.addEventListener("submit", async (e) => {
-		if (submit.classList.contains("inactivo")) {
-			e.preventDefault();
-			statusInicial(false);
-		}
-	});
 
 	// FUNCIONES *******************************************
 	// Funciones
@@ -113,22 +71,34 @@ window.addEventListener("load", async () => {
 				: opcion.classList.add("ocultar");
 		}
 		if (!subcategoria.value) subcategoria.removeAttribute("disabled");
+
+		// Fin
+		return;
 	};
 	// Aplicar cambios en RCLV
-	let funcionRCLV = async () => {
+	let activarIconosEdicion = (i) => {
+		linksEdicion[i].classList.remove("inactivo_ocultar");
+		linksEdicion[i].classList.remove("ocultar");
+	};
+	let inactivarIconosEdicion = (i) => {
+		linksEdicion[i].classList.add("inactivo_ocultar");
+	};
+	let funcionRCLV = async (borrar) => {
 		// Averiguar qué RCLV corresponde
 		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoria.value;
 		let registro = await fetch(ruta).then((n) => n.json());
 
 		// Mostrar/Ocultar el campo RCLV
 		camposRCLV.forEach((campoRCLV, i) => {
-			// Borra el valor de cada RCLV
-			inputsRCLV[i].value = "";
-			// Ocultar los íconos OK y de error
-			iconosOK_RCLV[i].classList.add("ocultar");
-			iconosError_RCLV[i].classList.add("ocultar");
-			// Inactivar edición
-			inactivarIconos(i);
+			if (borrar) {
+				// Borra el valor de cada RCLV
+				inputsRCLV[i].value = "";
+				// Ocultar los íconos OK y de error
+				iconosOK_RCLV[i].classList.add("ocultar");
+				iconosError_RCLV[i].classList.add("ocultar");
+				// Inactivar edición
+				inactivarIconosEdicion(i);
+			}
 			// Muestra el campo
 			if (registro && registro[campoRCLV]) RCLVs[i].classList.remove("ocultar");
 			else {
@@ -137,14 +107,10 @@ window.addEventListener("load", async () => {
 				// Eliminar el valor del campo que se oculta
 				document.querySelector("select[name='" + campoRCLV + "']").value = "";
 			}
+
+			// Si la categoría es 'Jesús', pone 'Jesús' como personaje
+			personajeJesus();
 		});
-	};
-	let activarIconos = (i) => {
-		if (linksEdicion[i].classList.contains("inactivo_ocultar")) linksEdicion[i].classList.remove("inactivo_ocultar");
-		linksEdicion[i].classList.remove("ocultar");
-	};
-	let inactivarIconos = (i) => {
-		linksEdicion[i].classList.add("inactivo_ocultar");
 	};
 	let filtrarRCLVs = () => {
 		// Obtener el id de la sub-categoría
@@ -157,13 +123,28 @@ window.addEventListener("load", async () => {
 			if (!cfc && !vpc && !todos) opcion.classList.add("ocultar");
 			else opcion.classList.remove("ocultar");
 		});
+
+		// Si la categoría es 'Jesús', pone 'Jesús' como personaje
+		personajeJesus();
+
+		// Fin
+		return;
+	};
+	let personajeJesus = () => {
+		// Obtener el id de la sub-categoría
+		let subcategoria_id = subcategoria.value;
 		// Si la categoría es 'Jesús', pone 'Jesús' como personaje
 		if (subcategoria_id == 1) {
+			// Poner el personaje de Jesús
 			inputsRCLV[indicePersonaje].value = 11;
+			// Ocultar los links a RCLV
 			linksAlta[indicePersonaje].classList.add("ocultar");
+			linksEdicion[indicePersonaje].classList.add("ocultar");
+			// Actualizar los links de OK y Error
 			iconosOK_RCLV[indicePersonaje].classList.remove("ocultar");
 			iconosError_RCLV[indicePersonaje].classList.add("ocultar");
 		} else {
+			// Mostrar el link a RCLV
 			linksAlta[indicePersonaje].classList.remove("ocultar");
 		}
 		// Fin
@@ -199,11 +180,52 @@ window.addEventListener("load", async () => {
 
 	// Activar links RCLV
 	inputsRCLV.forEach((input, i) => {
-		if (input.value) activarIconos(i);
+		if (input.value) activarIconosEdicion(i);
 		input.addEventListener("input", () => {
-			if (input.value) activarIconos(i);
-			else inactivarIconos(i);
+			if (input.value) activarIconosEdicion(i);
+			else inactivarIconosEdicion(i);
 		});
+	});
+
+	// ADD EVENT LISTENERS *********************************
+	// Averiguar si hubieron cambios
+	form.addEventListener("input", async (e) => {
+		// Definir los valores para 'campo' y 'valor'
+		let campo = e.target.name;
+		let valor = e.target.value;
+		let indice = campos.indexOf(campo);
+		// Para que incluya los datos de la subcategoría, por si se necesitan para validar RCLV
+		let adicSubcategoria =
+			subcategoria.value && !campo.includes("subcategoria_id")
+				? "&subcategoria_id=" + subcategoria.value
+				: "";
+		// Averiguar si hay algún error
+		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
+		mensajesError[indice].innerHTML = errores[campo];
+		errores[campo]
+			? iconosOK[indice].classList.add("ocultar")
+			: iconosOK[indice].classList.remove("ocultar");
+		errores[campo]
+			? iconosError[indice].classList.remove("ocultar")
+			: iconosError[indice].classList.add("ocultar");
+		// Si se cambia la categoría --> actualiza subcategoría
+		if (campo == "categoria_id") {
+			subcategoria.value = "";
+			funcionSubcat();
+		}
+		// Si se cambia la subcategoría --> actualiza RCLV
+		if (campo == "categoria_id" || campo == "subcategoria_id") await funcionRCLV(true);
+		// Actualizar las opciones de RCLV
+		if (campo == "subcategoria_id") filtrarRCLVs();
+		// Fin
+		botonSubmit();
+	});
+	// Submit
+	form.addEventListener("submit", async (e) => {
+		if (submit.classList.contains("inactivo")) {
+			e.preventDefault();
+			statusInicial(false);
+		}
 	});
 
 	// STATUS INICIAL *************************************
