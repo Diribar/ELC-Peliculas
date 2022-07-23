@@ -191,37 +191,12 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	// Revisar
 	let iconosEdicionRCLVs = () => {
 		linksEdicion.forEach((link, i) => {
 			if (inputsRCLV[i].value) {
-				linksEdicion[i].classList.remove("inactivo_ocultar");
-				linksEdicion[i].classList.remove("ocultar");
-			} else linksEdicion[i].classList.add("inactivo_ocultar");
-		});
-	};
-	let funcionRCLV = async (borrar) => {
-		// Averiguar qué RCLV es necesario
-		let ruta = "/producto/agregar/api/obtener-RCLV-subcategoria/?id=" + subcategoriaSelect.value;
-		let registro = await fetch(ruta).then((n) => n.json());
-
-		// Mostrar/Ocultar el campo RCLV
-		camposRCLV.forEach((campoRCLV, i) => {
-			if (borrar) {
-				// Borra el valor de cada RCLV
-				inputsRCLV[i].value = "";
-				// Ocultar los íconos OK y de error
-				iconosOK_RCLV[i].classList.add("ocultar");
-				iconosError_RCLV[i].classList.add("ocultar");
-			}
-			// Muestra el campo
-			if (registro && registro[campoRCLV]) etiquetasRCLV[i].classList.remove("ocultar");
-			else {
-				// Ocultar el campo
-				etiquetasRCLV[i].classList.add("ocultar");
-				// Eliminar el valor del campo que se oculta
-				document.querySelector("select[name='" + campoRCLV + "']").value = "";
-			}
+				link.classList.remove("inactivo_ocultar");
+				link.classList.remove("ocultar");
+			} else link.classList.add("inactivo_ocultar");
 		});
 	};
 	// Botón submit
@@ -306,7 +281,7 @@ window.addEventListener("load", async () => {
 	// STATUS INICIAL *************************************
 	// Rutinas de categoría / subcategoría
 	actualizaOpsSubcat();
-	if (subcategoriaSelect.value) funcionRCLV();
+	if (subcategoriaSelect.value) actualizaOpsRCLV();
 
 	// Activar links RCLV
 	iconosEdicionRCLVs();
