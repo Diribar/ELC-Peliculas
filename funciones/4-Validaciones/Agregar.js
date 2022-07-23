@@ -210,14 +210,20 @@ module.exports = {
 		if (datos.subcategoria_id) {
 			// Obtener el registro de la subcategoría
 			let subcategoria = await BD_genericas.obtenerPorId("subcategorias", datos.subcategoria_id);
+			let rclv_necesario = subcategoria.rclv_necesario;
 			// Relación con la vida
-			if (subcategoria.personaje_id)
+			if (rclv_necesario == "personaje")
 				errores.personaje_id =
 					!datos.personaje_id || datos.personaje_id == 1 ? cartelSelectVacio : "";
-			if (subcategoria.hecho_id)
+			else if (rclv_necesario == "hecho")
 				errores.hecho_id = !datos.hecho_id || datos.hecho_id == 1 ? cartelSelectVacio : "";
-			if (subcategoria.valor_id)
-				errores.valor_id = !datos.valor_id || datos.valor_id == 1 ? cartelSelectVacio : "";
+			else {
+				let alguno =
+					(!datos.personaje_id || datos.personaje_id == 1) &&
+					(!datos.hecho_id || datos.hecho_id == 1) &&
+					(!datos.valor_id || datos.valor_id == 1);
+				errores.valor_id = alguno ? "Se debe completar alguno de estos 3 campos" : "";
+			}
 		}
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
