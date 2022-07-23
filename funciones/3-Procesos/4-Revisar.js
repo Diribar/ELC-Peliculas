@@ -153,7 +153,10 @@ module.exports = {
 	prod_QuedanCampos: async (prodOriginal, prodEditado) => {
 		// Variables
 		let edicion = {...prodEditado};
-		let noSeComparan;
+		let noSeComparan = {
+			editado_por_id: prodEditado.editado_por_id,
+			editado_en: prodEditado.editado_en,
+		};
 		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
@@ -192,7 +195,7 @@ module.exports = {
 					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
 				}
 			}
-		} else edicion = {...noSeComparan, ...edicion};
+		} else edicion = {...edicion, ...noSeComparan};
 		// Fin
 		return [quedanCampos, edicion, statusAprobado];
 	},

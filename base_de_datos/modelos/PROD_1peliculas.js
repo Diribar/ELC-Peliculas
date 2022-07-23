@@ -21,13 +21,12 @@ module.exports = (sequelize, dt) => {
 		en_castellano_id: {type: dt.INTEGER},
 		en_color_id: {type: dt.INTEGER},
 		categoria_id: {type: dt.STRING(3)},
-		subcategoria_id: {type: dt.INTEGER},
+		subcategoria_id: {type: dt.STRING(3)},
 		publico_sugerido_id: {type: dt.INTEGER},
 
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
-		dia_del_ano_id: {type: dt.INTEGER},
 
 		fe_valores: {type: dt.INTEGER},
 		entretiene: {type: dt.INTEGER},
@@ -75,7 +74,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
-		entidad.belongsTo(n.dias_del_ano, {as: "dia_del_ano", foreignKey: "dia_del_ano_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "alta_analizada_por", foreignKey: "alta_analizada_por_id"});

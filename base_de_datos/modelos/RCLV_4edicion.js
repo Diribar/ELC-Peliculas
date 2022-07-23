@@ -5,11 +5,24 @@ module.exports = (sequelize, dt) => {
 		hecho_id: {type: dt.INTEGER},
 		valor_id: {type: dt.INTEGER},
 	
+		nombre: {type: dt.STRING(30)},
 		dia_del_ano_id: {type: dt.INTEGER},
 		ano: {type: dt.INTEGER},
-		nombre: {type: dt.STRING(30)},
+		ap_mar: {type: dt.BOOLEAN},
+
+		// Campos para PERSONAJES
+		categoria_id: {type: dt.STRING(3)},
+		subcategoria_id: {type: dt.STRING(3)},
+		ap_mar_id: {type: dt.INTEGER},
 		proceso_canonizacion_id: {type: dt.STRING(3)},
+		santo_beato: {type: dt.BOOLEAN},
 		rol_iglesia_id: {type: dt.STRING(3)},
+
+		// Campos para HECHOS
+		solo_cfc: {type: dt.BOOLEAN},
+		jss: {type: dt.BOOLEAN},
+		cnt: {type: dt.BOOLEAN},
+		exclusivo: {type: dt.BOOLEAN},
 
 		editado_por_id: {type: dt.INTEGER},
 		editado_en: {type: dt.DATE},
@@ -23,10 +36,6 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.personajes, {as: "personajes", foreignKey: "personaje_id"});
 		entidad.belongsTo(n.hechos, {as: "hechos", foreignKey: "hecho_id"});
 		entidad.belongsTo(n.valores, {as: "valores", foreignKey: "valor_id"});
-
-		entidad.belongsTo(n.dias_del_ano, {as: "fecha", foreignKey: "dia_del_ano_id"});
-		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});
-		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "editado_por", foreignKey: "editado_por_id"});
 
