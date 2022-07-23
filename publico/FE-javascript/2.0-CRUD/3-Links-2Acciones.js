@@ -3,7 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let inputs = document.querySelectorAll(".edicion .inputs");
+	let inputs = document.querySelectorAll(".edicion .input");
 	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
 	let filasEditar = document.querySelectorAll("tbody .edicion");
 	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
@@ -23,6 +23,7 @@ window.addEventListener("load", async () => {
 			let indice = fila * columnas + columna;
 			objeto += "&" + inputs[indice].name + "=" + encodeURIComponent(inputs[indice].value);
 		}
+		console.log(objeto,columnas);
 		return objeto;
 	};
 

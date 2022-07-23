@@ -31,8 +31,10 @@ router.get("/api/validar-copiar-fa", API.validarCopiarFA);
 // Temas de Datos Duros
 router.get("/api/validar-datos-duros", API.validarDatosDuros);
 // Temas de Datos Personalizados
-router.get("/api/obtener-RCLV-subcategoria", API.obtenerDatosSubcategoria);
+router.get("/api/obtener-subcategorias", API.obtenerSubcategorias);
 router.get("/api/validar-datos-pers", API.validarDatosPers);
+//router.get("/api/obtener-opciones-rclv", API.obtenerOpcionesRCLV);
+
 
 // Rutas de vistas de "Agregar Productos"
 router.get("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveForm);

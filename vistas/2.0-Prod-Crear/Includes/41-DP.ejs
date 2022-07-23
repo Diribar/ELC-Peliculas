@@ -1,25 +1,17 @@
 <% registro = camposDP.find(n => n.nombreDelCampo == campo) %>
-<section class="label-input<% if (registro.grupo=="RCLV") { %> ocultar RCLV<% } %>">
+<section class="label-input">
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %> <%- registro.grupo=="RCLV" ? 'RCLV' : '' %>" autofocus>
+		<select name="<%= campo %>" class="input <%- registro.angosto ? 'angosto' : '' %>" autofocus>
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
 					class="
 						<% // Si es una sub-categoría, coloca la categoría_id en la clase %> 
-						<% if (campo == "subcategoria_id") { %><%= valor.categoria_id %>
+						<% if (campo == "subcategoria_id") { %><%= (valor.cfc ? 'CFC ' : '') + (valor.vpc ? 'VPC ' : '')  %><% } %>
 						<% // Si es una colección, quita el 'parcial' para las películas %>
-						<% } else if ((campo == "en_castellano_id" || campo == "en_color_id") && dataEntry.entidad == "peliculas"  && valor.id == 2) { %><%= 'ocultar' %>
-						<% // Si es un RCLV, toma acciones  %> 
-						<% } else if (registro.grupo == "RCLV") { %>
-							<%= 'RCLV ' %>
-							<% // Ocultar la opción de 'Ninguno', y si no es una colección 'Varios (colección)' %>
-							<% if (valor.id == 1 || (dataEntry.entidad != "colecciones" && valor.id == 2)) { %><%= "ocultar" %>
-							<% } else { %><%= 'cfc' + valor.subcat_cfc_id + ' vpc' + valor.subcat_vpc_id %>
-							<% } %>
-						<% } %>
+						<% if ((campo == "en_castellano_id" || campo == "en_color_id") && dataEntry.entidad == "peliculas"  && valor.id == 2) { %><%= 'ocultar' %><% } %>
 					"
 					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
 					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
@@ -31,7 +23,7 @@
 		<!-- Ayuda -->
 		<i class="fa-solid fa-circle-question"></i>
 		<ul type="dots" class="mensajeAyuda ocultar">
-			<% if (registro.mensajePeli) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
 			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 		<!-- Errores -->
@@ -39,10 +31,5 @@
 			<span class="mensajeError"><%= errores[campo] %></span>
 		</i>
 		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
-		<!-- Link a Relación con la vida -->
-		<% if (registro.grupo=="RCLV") { %>
-			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
-			<i class="linkRCLV fa-solid fa-square-pen edicion inactivo_ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
-		<% } %>
 	</div>
 </section>
