@@ -226,7 +226,7 @@ window.addEventListener("load", async () => {
 				.split(" ")
 				.reduce((a, b) => {
 					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar - RCLV_innecesarios;
+				}, {}).ocultar == RCLV_innecesarios;
 
 		// Detectar la cantidad de 'no errores'
 		let error = Array.from(iconosError)
@@ -235,10 +235,10 @@ window.addEventListener("load", async () => {
 			.split(" ")
 			.reduce((a, b) => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
-			}, {}).ocultar; // == iconosError.length;
+			}, {}).ocultar == iconosError.length;
 		// Consecuencias
 		console.log(OK_ocultos,error,iconosError.length);
-		OK_ocultos === 0 && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
+		OK_ocultos && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 	};
 	let funcionErrores = (errores) => {
 		campos.forEach((campo, indice) => {
