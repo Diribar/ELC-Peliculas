@@ -57,7 +57,10 @@ VALUES
 ('SC', 4, 'Sacerdote', 0, 1, '-'),
 ('SCV', 4, 'Sacerdote', 1, 1, 'V'),
 ('PP', 5, 'Papa', 0, 1, '-'),
-('PPV', 5, 'Papa', 0, 1, 'V')
+('PPV', 5, 'Papa', 0, 1, 'V'),
+('AP', 6, 'Apóstata', 0, 1, '-'),
+('APV', 6, 'Apóstata', 1, 1, 'V'),
+('APM', 6, 'Apóstata', 1, 1, 'M')
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -362,7 +365,10 @@ VALUES
 ('VNM', 3, 'Venerable'),
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
-('SDM', 4, 'Sierva de Dios')
+('SDM', 4, 'Sierva de Dios'),
+('NN', 4, 'Ninguno'),
+('NNV', 4, 'Ninguno'),
+('NNM', 4, 'Ninguno')
 ;
 
 /* TABLAS AUXILIARES PARA PRODUCTOS */;
@@ -385,7 +391,6 @@ CREATE TABLE prod_categ2_sub (
 	cfc BOOLEAN NULL,
 	vpc BOOLEAN NULL,
 	rclv_necesario VARCHAR(10) NULL, /* Jesús, Contemp., Hagio, Bio --> PER */ /* Ap.Mar., Historias --> HECH*/
-	ap_mar BOOLEAN DEFAULT 0, /* Apariciones Marianas --> true */
 	pers_excluyente BOOLEAN DEFAULT 0, /* Jesús, Contemp., Hagio --> true */
 	hechos_codigo VARCHAR(3) NULL, /* Jesús:JSS, Contemp:CNT, Hagio:EXC, Ap.Mar.:AM, Historias:EXC */
 	desde TINYINT NULL, /* Aparición Mariana:33 */
@@ -395,18 +400,18 @@ CREATE TABLE prod_categ2_sub (
 	PRIMARY KEY (id)
 	/* FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id) */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, ap_mar, pers_excluyente, desde, hasta, nombre, hechos_codigo, url)
+INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, pers_excluyente, hechos_codigo, desde, hasta, nombre, url)
 VALUES 
-('JSS', 1, 1, 0, 0, 1, null,   33, 'Jesús', 'JSS', 'jesus'), 
-('CNT', 2, 1, 0, 0, 1,  -50,  100, 'Contemporáneos de Jesús', 'CNT', 'contemporaneos'), 
-('HAG', 3, 1, 0, 0, 1, null, null, 'Hagiografías', 'EXC', 'hagiografias'), 
-('AMA', 4, 1, 0, 1, 0,   34, null, 'Apariciones Marianas', 'AMA', 'ap_marianas'), 
-('HIG', 5, 1, 0, 0, 0, null, null, 'Historias de la Iglesia', 'EXC', 'historias'), 
-('NOV', 6, 1, 1, 0, 0, null, null, 'Novelas', null, 'novelas'), 
-('MUS', 7, 1, 1, 0, 0, null, null, 'Musicales', null, 'musicales'),
-('DOC', 8, 1, 1, 0, 0, null, null, 'Documentales', null, 'documentales'), 
-('BIO', 1, 0, 1, 0, 0, null, null, 'Biografías', null, 'bios'), 
-('HIS', 2, 0, 1, 0, 0, null, null, 'Historias', null, 'historias') 
+('JSS', 1, 1, 0, 1, 'JSS', null,   33, 'Jesús', 'jesus'), 
+('CNT', 2, 1, 0, 1, 'CNT',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
+('HAG', 3, 1, 0, 1, 'EXC', null, null, 'Hagiografías', 'hagiografias'), 
+('AMA', 4, 1, 0, 0, 'AMA',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
+('HIG', 5, 1, 0, 0, 'EXC', null, null, 'Historias de la Iglesia', 'historias'), 
+('NOV', 6, 1, 1, 0,  null, null, null, 'Novelas', 'novelas'), 
+('MUS', 7, 1, 1, 0,  null, null, null, 'Musicales', 'musicales'),
+('DOC', 8, 1, 1, 0,  null, null, null, 'Documentales', 'documentales'), 
+('BIO', 1, 0, 1, 0,  null, null, null, 'Biografías', 'bios'), 
+('HIS', 2, 0, 1, 0,  null, null, null, 'Historias', 'historias') 
 ;
 UPDATE prod_categ2_sub SET rclv_necesario='personajes' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
 UPDATE prod_categ2_sub SET rclv_necesario='hechos' WHERE id='AMA' OR id='HIS';
@@ -506,9 +511,12 @@ VALUES
 (22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 11, '2022-03-16 23:25:20', 'Juan XXIII'),
 (23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 10, '2022-03-16 23:25:20', 'Juan Bosco'),
 (24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Juan Pablo II'),
-(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Bernadette Soubirous')
+(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
+(26, 305, 1483, 'CFC', 'HIG', 'NNV', 'APV', 10, '2022-03-16 23:25:20', 'Martín Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'STV', 'APV', 10, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
 ;
-UPDATE rclv_1personajes SET ap_mar = true, ap_mar_id=16 WHERE id=25;
+UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
+UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
 UPDATE rclv_1personajes SET perenne = true;
 CREATE TABLE rclv_2hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -567,7 +575,9 @@ VALUES
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1, 'Apar. Mariana - Lourdes (1858)');
+(16, 1, 1, 42, 1858, 1, 'Apar. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 1, 'Apar. Mariana - Fátima')
+;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
 (21, 210, 1914, 1, 'Guerra Mundial - 1a'),
@@ -656,6 +666,13 @@ CREATE TABLE rclv_4edicion (
 	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
 	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
 	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
+
+	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
+	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
+	FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id),	
+	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
+	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1138,7 +1155,6 @@ VALUES
 ;
 UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26', motivo_id=22 WHERE status_registro_id > 3
 ;
-
 CREATE TABLE links_edicion (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	link_id INT UNSIGNED NOT NULL,
