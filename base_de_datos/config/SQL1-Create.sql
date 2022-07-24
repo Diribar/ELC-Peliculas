@@ -162,10 +162,10 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 1, 4, '2021-01-01','2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 1, 4, '2021-01-01','2021-01-02')
+(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
+(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
 INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
@@ -767,7 +767,7 @@ CREATE TABLE prod_1peliculas (
 INSERT INTO prod_1peliculas (id,TMDB_id,IMDB_id,fuente,ano_estreno,duracion,paises_id,idioma_original_id,en_castellano_id,en_color_id,categoria_id,subcategoria_id,publico_sugerido_id,personaje_id,hecho_id,valor_id,fe_valores,entretiene,calidad_tecnica,calificacion,creado_por_id,creado_en,alta_analizada_por_id,alta_analizada_en,lead_time_creacion,status_registro_id,editado_en,edic_analizada_en,lead_time_edicion,capturado_por_id,capturado_en,captura_activa,links_gratuitos_cargados_id,links_gratuitos_en_la_web_id,
 nombre_original,nombre_castellano,direccion,guion,musica,actuacion,produccion,sinopsis,avatar)
 VALUES
-(1,'218275','tt1445208','TMDB',2015,125,'US','en', 3,1,'CFC','HAG',4,21,1,1,100,75,100,92,2,'2022-03-16 23:25:20',2,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,2,'2022-04-13 21:31:29',0,3,2,
+(1,'218275','tt1445208','TMDB',2015,125,'US','en', 3,1,'CFC','HAG',4,21,1,1,100,75,100,92,2,'2022-03-16 23:25:20',11,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,2,'2022-04-13 21:31:29',0,3,2,
 'The Letters','Cartas de la Madre Teresa','William Riead','William Riead','Ciaran Hope','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','1645444885482.jpg'),
 (2,'109429','tt0327086','TMDB',2003,180,'IT','en', 1,1,'CFC','HAG',4,22,1,1,100,75,100,92,2,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,'2022-03-16 23:25:21','2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2,
 'Il Papa buono','El Santo Padre Juan XXIII','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','1645458510332.jpg'),
@@ -791,7 +791,6 @@ CREATE TABLE prod_2colecciones (
 	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
-	cant_capitulos SMALLINT UNSIGNED NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
 	musica VARCHAR(100) NULL,
@@ -863,12 +862,12 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, ano_estreno, ano_fin, idioma_original_id, cant_temporadas, cant_capitulos,fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en,
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, ano_estreno, ano_fin, idioma_original_id, cant_temporadas,fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en,
 nombre_original, nombre_castellano, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, paises_id)
 VALUES
-(1,'855456',NULL,'collection','TMDB',2005,2006,'es',1,10,75,75,100,80,2,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+(1,'855456',NULL,'collection','TMDB',2005,2006,'es',1,75,75,100,80,2,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
 'Karol','Karol','Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','1645481101308.jpg','PL, IT, CA'),
-(2, '97919',NULL,'collection','TMDB',2003,2011,'en',1,2,75,75,100,80,2,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+(2, '97919',NULL,'collection','TMDB',2003,2011,'en',1,75,75,100,80,2,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
 'Love Comes Softly Collection','El amor llega suavemente - Colección','Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg','US')
 ;
 UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id='HAG', publico_sugerido_id=5, personaje_id=24, editado_por_id=2, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
