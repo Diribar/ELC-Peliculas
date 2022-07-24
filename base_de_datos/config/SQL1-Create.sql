@@ -61,9 +61,9 @@ VALUES
 ('AP', 6, 'Apóstata', 0, 1, '-'),
 ('APV', 6, 'Apóstata', 0, 1, 'V'),
 ('APM', 6, 'Apóstata', 0, 1, 'M'),
-('CI', 7, 'Civil', 0, 1, '-'),
-('CIV', 7, 'Civil', 0, 1, 'V'),
-('CIM', 7, 'Civil', 0, 1, 'M')
+('CI', 7, 'Ninguno', 0, 1, '-'),
+('CIV', 7, 'Ninguno', 0, 1, 'V'),
+('CIM', 7, 'Ninguno', 0, 1, 'M')
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
