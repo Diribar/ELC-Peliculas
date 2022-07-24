@@ -154,8 +154,14 @@ module.exports = {
 				nombreDelCampo: "subcategoria_id",
 				valores: await BD_genericas.obtenerTodos("subcategorias", "orden"),
 				mensajes: [
-					"Elegí la subcategoría que mejor represente el tema.",
-					"Si querés agregar un 'personaje', 'hecho' o 'valor', y en esta vista no aparece esa posibilidad, lo podrás hacer al terminar el circuito de agregar, desde la opción de Edición.",
+					"Es un musical",
+					"Es una novela",
+					"Es un documental",
+					"El protagonista es Jesús",
+					"El protagonista es contemporáneos de Jesús o de los Apóstoles",
+					"Película centrada en una aparición mariana",
+					"Película centrada en la vida de un beato o santo no contemporáneo de Jesús",
+					"Ninguno de los anteriores",					
 				],
 			},
 			{

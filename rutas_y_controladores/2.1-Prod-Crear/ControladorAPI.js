@@ -71,11 +71,9 @@ module.exports = {
 	},
 
 	// Vista (datosPers)
-	obtenerDatosSubcategoria: async (req, res) => {
-		let subcategoria = req.query.id
-			? await BD_genericas.obtenerPorCampos("subcategorias", {id: req.query.id})
-			: "";
-		return res.json(subcategoria);
+	obtenerSubcategorias: async (req, res) => {
+		let subcategorias = await BD_genericas.obtenerTodos("subcategorias", "orden")
+		return res.json(subcategorias);
 	},
 	validarDatosPers: async (req, res) => {
 		// Obtiene los campos
