@@ -12,7 +12,7 @@
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
 				<p><strong>Cant. de Temporadas:</strong> <%= prodOriginal.cant_temporadas ? prodOriginal.cant_temporadas : "Sin temporada" %></p>
-				<p><strong>Cant. de Capítulos:</strong> <%= prodOriginal.cant_capitulos %></p>
+				<p><strong>Cant. de Capítulos:</strong> <%= prodOriginal.capitulos.length %></p>
 			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->

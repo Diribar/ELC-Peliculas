@@ -12,7 +12,6 @@ module.exports = (sequelize, dt) => {
 		ano_estreno: {type: dt.INTEGER},
 		ano_fin: {type: dt.INTEGER},
 		cant_temporadas: {type: dt.INTEGER},
-		cant_capitulos: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
 		musica: {type: dt.STRING(100)},
