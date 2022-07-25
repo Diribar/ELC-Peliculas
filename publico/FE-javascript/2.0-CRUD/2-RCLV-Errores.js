@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 	// Campos para entidad == 'personajes'
 	if (personajes) {
 		// Inputs
-		var contemp = document.querySelectorAll("input[name='contemp']");
+		var cnt = document.querySelectorAll("input[name='cnt']");
 		var categoria_id = document.querySelectorAll("input[name='categoria_id']");
 		var genero = document.querySelectorAll("input[name='genero']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
@@ -45,7 +45,14 @@ window.addEventListener("load", async () => {
 		var ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		var santosanta = document.querySelector("#dataEntry #santosanta");
 		// Para ocultar
-		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
+		var sectorGeneroRol = document.querySelector("#preguntas #generoRol");
+		var sectorRol_iglesia = document.querySelector("#preguntas #rol_iglesia");
+		var sectorEnProcesoCanonizacion = document.querySelector("#preguntas #enProcesoCanonizacion");
+		// proceso_canonizacion_id
+		var sectorContemp = document.querySelector("#preguntas #contemp");
+		var sectorAp_mar = document.querySelector("#preguntas #ap_mar");
+		// ap_mar_id
+		var cfc = document.querySelectorAll("#preguntas .cfc");
 	}
 
 	// Funciones ************************
@@ -157,44 +164,64 @@ window.addEventListener("load", async () => {
 	// Preguntas
 	let funcionRCLI_personaje = async (mostrarErrores) => {
 		let url = "";
-		// Contemporáneo
-		let contempElegido = contemp[0].checked
-			? contemp[0].value
-			: contemp[1].checked
-			? contemp[1].value
-			: "";
-		url += "&contemp=" + contempElegido;
 		// categoria_id
-		let categoria_idElegido = categoria_id[0].checked ? categoria_id[0].value : categoria_id[1].checked ? categoria_id[1].value : "";
+		let categoria_idElegido = categoria_id[0].checked
+			? categoria_id[0].value
+			: categoria_id[1].checked
+			? categoria_id[1].value
+			: "";
 		url += "&categoria_id=" + categoria_idElegido;
 		// Resto de RCLI
 		if (categoria_id[0].checked) {
-			// Género
+			// Género - visible
+			sectorRol_iglesia.classList.add("ocultar");
+			sectorGeneroRol.classList.remove("ocultar");
+			// Género - valor
 			let generoElegido = genero[0].checked
 				? genero[0].value
 				: genero[1].checked
 				? genero[1].value
 				: "";
 			url += "&genero=" + generoElegido;
-			// Rol en la Iglesia
+			// Rol en la Iglesia - visible
+			if (generoElegido) sectorRol_iglesia.classList.remove("ocultar");
+			// Rol en la Iglesia - valor
 			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
-			// Proceso de canonización
+			// Proceso de canonización - visible
+			if (rol_iglesia_id.value) sectorEnProcesoCanonizacion.classList.remove("ocultar");
+			else sectorEnProcesoCanonizacion.classList.add("ocultar");
+			// Proceso de canonización - valor
 			let procCanElegido = enProcCan[0].checked
 				? enProcCan[0].value
 				: enProcCan[1].checked
 				? enProcCan[1].value
 				: "";
 			url += "&enProcCan=" + procCanElegido;
-			if (procCanElegido == "1") url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
-			// Aparición mariana
+			if (procCanElegido == "1") {
+				url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
+				proceso_canonizacion_id.classList.remove("ocultar");
+			} else proceso_canonizacion_id.classList.add("ocultar");
+			// Contemporáneo - visible
+			if (procCanElegido == "0" || proceso_canonizacion_id.value)
+				sectorContemp.classList.remove("ocultar");
+			else sectorContemp.classList.add("ocultar");
+			// Contemporáneo - valor
+			let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
+			url += "&cnt=" + cntElegido;
+			// Aparición mariana - visible
+			if (cntElegido) sectorAp_mar.classList.remove("ocultar");
+			// Aparición mariana - valor
 			let apMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
 			url += "&ap_mar=" + apMarElegido;
-			if (apMarElegido == "1") url += "&ap_mar_id=" + ap_mar_id.value;
+			if (apMarElegido == "1") {
+				url += "&ap_mar_id=" + ap_mar_id.value;
+				ap_mar_id.classList.remove("ocultar");
+			} else ap_mar_id.classList.add("ocultar");
 			// Logo de Santopedia
 			// if (nombre.value && !errores.nombre) santopedia.classList.remove("ocultar");
 		} else {
-			// Ocultar las opciones 'enProcCan'
-			// ocultarEnProcCan.classList.add("invisible");
+			// Ocultar las opciones 'cfc'
+			for (let pregunta of cfc) pregunta.classList.add("ocultar");
 			// Logo de Santopedia
 			// santopedia.classList.add("ocultar");
 		}
@@ -210,7 +237,7 @@ window.addEventListener("load", async () => {
 		// Definir variables
 		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
 		if (generoElegido) {
-			// Actualizar el género de la leyenda
+			// Actualizar el género de la leyenda 'Santo o en proceso de canonización'
 			let letraActual = generoElegido == "V" ? "o" : "a";
 			let letraAnterior = generoElegido == "V" ? "a" : "o";
 			if (santosanta.innerHTML.includes("ant" + letraAnterior))
@@ -232,24 +259,26 @@ window.addEventListener("load", async () => {
 					: n.classList.remove("ocultar")
 			);
 			// Cambiar la opción anterior por el nuevo genero
+			// Proceso de canonización
 			if (
 				proceso_canonizacion_id.value &&
 				proceso_canonizacion_id.value.length != 2 &&
 				proceso_canonizacion_id.value[2] != generoElegido
 			)
 				proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
+			// Rol en la Iglesia
 			if (
 				rol_iglesia_id.value &&
 				rol_iglesia_id.value.length != 2 &&
 				rol_iglesia_id.value[2] != generoElegido
-			)
+			) {
 				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
+				if(rol_iglesia_id.value=="") rol_iglesia_id.value="";
+			}
 		}
-		return
+		return;
 	};
-	let esconderMostrarRCLI=()=>{
-
-	}
+	let esconderMostrarRCLI = () => {};
 	// Consolidado
 	let startUp = async () => {
 		if (nombre.value) [OK, errores] = await funcionNombre();
@@ -337,12 +366,12 @@ window.addEventListener("load", async () => {
 				"rol_iglesia_id",
 				"enProcCan",
 				"proceso_canonizacion_id",
-				"contemp",
+				"cnt",
 				"ap_mar",
 				"ap_mar_id",
 			].includes(campo);
 			if (campo == "genero") funcionGenero();
-			if (camposRCLI) esconderMostrarRCLI()
+			if (camposRCLI) esconderMostrarRCLI();
 			if (camposRCLI) [OK, errores] = await funcionRCLI_personaje(false);
 		}
 		// Final de la rutina

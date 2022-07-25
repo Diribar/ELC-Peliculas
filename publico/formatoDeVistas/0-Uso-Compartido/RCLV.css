@@ -43,6 +43,7 @@
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas #genero div {margin-right: 12px;}
 #dataEntry #preguntas .ocultar {display: none;}
+#dataEntry #preguntas .cfc {height: 21px;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
 #dataEntry #posiblesRepetidos {height: 70px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}

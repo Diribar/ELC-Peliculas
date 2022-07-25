@@ -156,7 +156,7 @@
 				</div>
 				<% if (codigo == "personajes") { %>
 					<!-- CFC/VPC -->
-					<div id="categoria_id" class="flexRowAlign margenBottomTitulo space-between">
+					<div id="categoria" class="flexRowAlign margenBottomTitulo space-between">
 						<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
@@ -170,7 +170,7 @@
 						</div>
 					</div>
 					<!-- Género y Rol en la Iglesia -->
-					<div id="generoRol" class="flexRowAlign margenBottomTitulo space-between ocultar">
+					<div id="generoRol" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
 						<!-- Genero -->
 						<div id="genero" class="flexRowAlign">
 							<label class="izquierda">Género:</label>
@@ -184,9 +184,9 @@
 							</div>
 						</div>						
 						<!-- Rol en la Iglesia -->
-						<div class="flexRowAlign">
+						<div id="rol_iglesia" class="flexRowAlign">
 							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
-							<select name="rol_iglesia_id" id="rol_iglesia_id" class="ocultar">
+							<select name="rol_iglesia_id">
 								<option value="" selected class="ocultar">Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
 									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
@@ -195,7 +195,7 @@
 						</div>
 					</div>
 					<!-- ¿En proceso de canonización? y status -->
-					<div id="enProcesoCanonizacion" class="flexRowAlign margenBottomTitulo space-between ocultar">
+					<div id="enProcesoCanonizacion" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
 						<!-- ¿En proceso de canonización? -->
 						<div class="flexRowAlign">
 							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
@@ -219,21 +219,21 @@
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
-					<div id="contemp" class="flexRowAlign margenBottomTitulo space-between ocultar">
+					<div id="contemp" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
 						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %>>
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %>>
 								<label>NO</label>
 							</div>
 						</div>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="ap_mar" class="flexRowAlign margenBottomTitulo space-between ocultar">
+					<div id="ap_mar" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
 						<div class="flexRowAlign">
 							<label class="izquierda">¿Participó en una aparición mariana?</label>
 							<div class="flexRowAlign siNo">
@@ -247,7 +247,7 @@
 								</div>
 							</div>
 						</div>
-						<select name="ap_mar_id" id="ap_mar_id">
+						<select name="ap_mar_id" id="ap_mar_id"  class="ocultar">
 							<option value="" selected class="ocultar">Elejí una opción</option>
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
