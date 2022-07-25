@@ -73,11 +73,10 @@ module.exports = {
 		let respuesta;
 		if (false) {
 		}
-
-		// Respuesta generales
+		// Respuesta
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (datos.categoria_id == "0") respuesta = "";
-		// Respuesta sólo si CFC
+		// Respuestas sólo si CFC
 		else if (!datos.genero) respuesta = "Necesitamos saber el género de la persona";
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
 		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
@@ -97,8 +96,10 @@ module.exports = {
 		let respuesta;
 		if (false) {
 		}
-
-		// Respuesta generales
+		// Respuestas
+		else if (!datos.solo_cfc) respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
+		else if (datos.solo_cfc == "0") respuesta = "";
+		// Respuestas sólo si CFC
 		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
 		else if (datos.jss == "0" && !datos.cnt)
 			respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
