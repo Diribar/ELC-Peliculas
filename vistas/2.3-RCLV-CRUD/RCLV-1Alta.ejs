@@ -56,7 +56,7 @@
 					<div id="valoresFecha" class="flex-col space-between">
 						<!-- Meses -->
 						<div class="flexRowAlign">
-							<label style="width: 30px;">Mes:</label>
+							<label style="width: 35px;">Mes:</label>
 							<select name="mes_id" class="input">
 								<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
 								<% for (let mes of meses) { %>
@@ -74,7 +74,7 @@
 						</div>
 						<!-- Días -->
 						<div class="flexRowAlign">
-							<label style="width: 30px;">Día:</label>
+							<label style="width: 35px;">Día:</label>
 							<select name="dia" class="input">
 								<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
 								<% for (let dia = 1; dia < 32; dia++) { %>
@@ -169,7 +169,7 @@
 						</div>						
 						<!-- Rol en la Iglesia -->
 						<div class="flexRowAlign">
-							<label for="rol_iglesia_id">Rol en la Iglesia:</label>
+							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
 							<select name="rol_iglesia_id" id="rol_iglesia_id" class="invisibl">
 								<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
 								<% for (let rol_iglesia of roles_iglesia) { %>
@@ -182,7 +182,7 @@
 					<div class="flexRowAlign margenBottomTitulo space-between">
 						<!-- ¿En proceso de canonización? -->
 						<div id="enProcesoCanonizacion" class="flexRowAlign">
-							<h4 id="santosanta" class="izquierda">¿Es santo/a o está en proceso de canonización?</h4>
+							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
 									<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
