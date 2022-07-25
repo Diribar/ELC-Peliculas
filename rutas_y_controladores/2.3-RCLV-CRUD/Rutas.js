@@ -21,7 +21,7 @@ const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Rutas *******************************************
 // Rutas de APIs
 router.get("/api/otros-casos", API.buscarOtrosCasos);
-router.get("/api/validar-campo", API.validarCampo);
+router.get("/api/validar-sector", API.validarSector);
 router.get("/api/validar-consolidado", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
