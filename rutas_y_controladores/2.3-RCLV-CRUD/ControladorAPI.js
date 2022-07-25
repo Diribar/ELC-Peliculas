@@ -14,7 +14,7 @@ module.exports = {
 		return res.json(casos);
 	},
 	validarCampo: async (req, res) => {
-		let errores = await validar[req.query.RCLV](req.query);
+		let errores = await validar[req.query.campo](req.query);
 		return res.json(errores);
 	},
 	validarConsolidado: async (req, res) => {

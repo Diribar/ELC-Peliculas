@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let id = new URL(window.location.href).searchParams.get("id");
 	let dataEntry = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
-	let ruta = "/rclv/api/validar-campo/?RCLV=";
+	let ruta = "/rclv/api/validar-campo/?campo=";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -34,12 +34,17 @@ window.addEventListener("load", async () => {
 
 	// Campos para entidad == 'personajes'
 	if (personajes) {
-		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
-		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
+		var rcli = document.querySelectorAll("input[name='rcli']");
 		var genero = document.querySelectorAll("input[name='genero']");
-		var santosanta = entidad == "personajes" ? document.querySelector("#dataEntry #santosanta") : "";
-		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
+		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
+		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var contemp = document.querySelectorAll("input[name='contemp']");
+		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
+		var ap_mar_id = document.querySelectorAll("input[name='ap_mar_id']");
+
+		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
+		var santosanta = document.querySelector("#dataEntry #santosanta");
 	}
 
 	// Funciones ************************
@@ -105,7 +110,6 @@ window.addEventListener("load", async () => {
 		} else {
 			// Se averigua si hay un error con la fecha
 			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-			url += "&desconocida=" + desconocida.checked;
 			errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
 			OK.fecha = !errores.fecha;
 			// Agregar los registros que tengan esa fecha
@@ -130,7 +134,7 @@ window.addEventListener("load", async () => {
 		return [OK, errores];
 	};
 	let funcionRCLI = async () => {
-		if (enProcCan[0].checked) {
+		if (rcli[0].checked) {
 			// Armar la url
 			let url = "";
 			// En proceso de canonización

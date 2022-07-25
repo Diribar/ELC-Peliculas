@@ -68,12 +68,14 @@ module.exports = {
 	},
 
 	RCLI: (datos) => {
-		let respuesta=[]
-		if (!datos.enProcCan) respuesta.push("Necesitamos que respondas si está en Proceso de Canonización")
+		let respuesta = [];
+		if (!datos.enProcCan) respuesta.push("Necesitamos que respondas si está en Proceso de Canonización");
 		else {
-			if (!datos.genero) respuesta.push("Necesitamos que respondas el genero de la persona")
-			if (!datos.proceso_canonizacion_id) respuesta.push("Necesitamos que respondas sobre el Status del Proceso de Canonización")
-			if (!datos.rol_iglesia_id) respuesta.push("Necesitamos que respondas el rol de la persona en la Iglesia")
+			if (!datos.genero) respuesta.push("Necesitamos que respondas el genero de la persona");
+			if (!datos.proceso_canonizacion_id)
+				respuesta.push("Necesitamos que respondas sobre el Status del Proceso de Canonización");
+			if (!datos.rol_iglesia_id)
+				respuesta.push("Necesitamos que respondas el rol de la persona en la Iglesia");
 		}
 		return respuesta;
 	},

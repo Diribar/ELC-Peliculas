@@ -1,13 +1,22 @@
 /* Formato del cuerpo */
-#cuerpo {align-items: center; justify-content: center; position: relative;}
-#cuerpo {display: flex; flex-grow: 1; padding-top: 20px;}
+#cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
 
 /* Formato del título */
-#cuerpo #titulo {position: absolute; top: 0; left: 0; border-bottom-right-radius: 10px;}
+#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
+#cuerpo #tituloConAyuda #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
+
+/* Título - Ayuda */
+#cuerpo #tituloConAyuda #iconoAyuda, #cuerpo #tituloConAyuda .mensajeAyuda {position: absolute;}
+#cuerpo #tituloConAyuda #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%); color: var(--amarillo-claro); background-color: var(--gris-oscuro); border-radius: 50%; display: none;}
+#cuerpo #tituloConAyuda .mensajeAyuda {max-width: 350px;}
+#cuerpo #tituloConAyuda .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
+#cuerpo #tituloConAyuda .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+
 
 /* Temas generales del formulario */
-#dataEntry {margin-top: 15px; padding: 30px 40px; border-radius: 20px;}
-#dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#cuerpo #dataEntry {margin: auto;}
+#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
+#cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Temas generales de dataEntry */
 #dataEntry #primeraCol {margin-right: 50px; width: 193px;}
@@ -45,7 +54,7 @@
 #dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
 
 /* Mensajes de ayuda */
-#dataEntry .fa-circle-question {right: -20px;}
+#dataEntry .fa-circle-question {right: -20px; color: var(--gris-oscuro);}
 #dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); max-width: 350px;}
 #dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
@@ -72,8 +81,6 @@
 /* Exito */
 .fa-circle-check {color: var(--verde-oscuro); cursor: default;}
 /* Neutro */
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-.fa-circle-question {color: var(--gris-oscuro);}
 .link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
 .mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
