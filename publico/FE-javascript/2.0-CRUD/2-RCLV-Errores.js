@@ -174,7 +174,6 @@ window.addEventListener("load", async () => {
 		// Resto de RCLI
 		if (categoria_id[0].checked) {
 			// Género - visible
-			sectorRol_iglesia.classList.add("ocultar");
 			sectorGeneroRol.classList.remove("ocultar");
 			// Género - valor
 			let generoElegido = genero[0].checked
@@ -185,6 +184,7 @@ window.addEventListener("load", async () => {
 			url += "&genero=" + generoElegido;
 			// Rol en la Iglesia - visible
 			if (generoElegido) sectorRol_iglesia.classList.remove("ocultar");
+			else sectorRol_iglesia.classList.add("ocultar");
 			// Rol en la Iglesia - valor
 			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
 			// Proceso de canonización - visible
