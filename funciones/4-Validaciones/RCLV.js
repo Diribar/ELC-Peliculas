@@ -37,8 +37,8 @@ module.exports = {
 	},
 
 	fecha: (datos) => {
-		let error;
-		if (datos.desconocida == "false" || datos.desconocida == undefined) {
+		let error = "";
+		if (datos.desconocida == "false" || !datos.desconocida) {
 			if (!datos.mes_id || !datos.dia) error = cartelFechaIncompleta;
 			else {
 				let mes = datos.mes_id;
@@ -68,15 +68,25 @@ module.exports = {
 	},
 
 	RCLI: (datos) => {
-		let respuesta = [];
-		if (!datos.enProcCan) respuesta.push("Necesitamos que respondas si está en Proceso de Canonización");
-		else {
-			if (!datos.genero) respuesta.push("Necesitamos que respondas el genero de la persona");
-			if (!datos.proceso_canonizacion_id)
-				respuesta.push("Necesitamos que respondas sobre el Status del Proceso de Canonización");
-			if (!datos.rol_iglesia_id)
-				respuesta.push("Necesitamos que respondas el rol de la persona en la Iglesia");
-		}
+		let respuesta;
+		if (false) {}
+		
+		// Respuesta generales
+		else if (!datos.contemp) respuesta = "Necesitamos saber si fue contemporáneo";
+		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
+		else if (datos.categoria_id == "0") respuesta = "";
+		
+		// Respuesta sólo si tuvo estrecha relación con la Iglesia
+		else if (!datos.genero) respuesta = "Necesitamos saber el género de la persona";
+		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
+		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
+		else if (datos.enProcCan == "1" && !datos.proceso_canonizacion_id)
+			respuesta = "Necesitamos saber el status del Proceso de Canonización";
+		else if (!datos.ap_mar) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
+		else if (datos.ap_mar == "1" && !datos.ap_mar_id) respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
+		else respuesta=""
+
+		// Fin
 		return respuesta;
 	},
 };
