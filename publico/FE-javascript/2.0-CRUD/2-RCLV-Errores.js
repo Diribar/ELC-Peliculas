@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	// Variables generales
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let personajes = entidad == "personajes";
+	let hechos = entidad == "hechos";
 	let valores = entidad == "valores";
 	let id = new URL(window.location.href).searchParams.get("id");
 	let dataEntry = document.querySelector("#dataEntry");
@@ -23,6 +24,10 @@ window.addEventListener("load", async () => {
 	let errores = {};
 
 	// Campos para todos los RCLV
+	let camposRCLI = document.querySelectorAll("#dataEntry #preguntas .RCLI");
+	camposRCLI = Array.from(camposRCLI).map((n) => n.name);
+	for (let i = camposRCLI.length - 1; i > 0; i--)
+		if (i > camposRCLI.indexOf(camposRCLI[i])) camposRCLI.splice(i, 1);
 	let nombre = document.querySelector("#dataEntry input[name='nombre']");
 	let mes_id = document.querySelector("#dataEntry select[name='mes_id']");
 	let dia = document.querySelector("#dataEntry select[name='dia']");
@@ -35,28 +40,39 @@ window.addEventListener("load", async () => {
 	// Campos para entidad == 'personajes'
 	if (personajes) {
 		// Inputs
-		var cnt = document.querySelectorAll("input[name='cnt']");
 		var categoria_id = document.querySelectorAll("input[name='categoria_id']");
 		var genero = document.querySelectorAll("input[name='genero']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var cnt = document.querySelectorAll("input[name='cnt']");
 		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
 		var ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		var santosanta = document.querySelector("#dataEntry #santosanta");
 		// Para ocultar
-		var sectorGeneroRol = document.querySelector("#preguntas #generoRol");
-		var sectorRol_iglesia = document.querySelector("#preguntas #rol_iglesia");
-		var sectorEnProcesoCanonizacion = document.querySelector("#preguntas #enProcesoCanonizacion");
-		// proceso_canonizacion_id
-		var sectorContemp = document.querySelector("#preguntas #contemp");
-		var sectorAp_mar = document.querySelector("#preguntas #ap_mar");
-		// ap_mar_id
+		var sectorGeneroRol = document.querySelector("#preguntas #sectorGeneroRol");
+		var sectorRol_iglesia = document.querySelector("#preguntas #sectorRol_iglesia");
+		var sectorEnProceso = document.querySelector("#preguntas #sectorEnProceso");
+		var sectorContemp = document.querySelector("#preguntas #sectorContemp");
+		var sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 		var cfc = document.querySelectorAll("#preguntas .cfc");
 	}
 
+	// Campos para entidad == 'hechos'
+	if (hechos) {
+		// Inputs
+		var jss = document.querySelectorAll("input[name='jss']");
+		var cnt = document.querySelectorAll("input[name='cnt']");
+		var exclusivo = document.querySelectorAll("input[name='exclusivo']");
+		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
+		// Para ocultar
+		var sectorContemp = document.querySelector("#preguntas #sectorContemp");
+		var sectorExclusivo = document.querySelector("#preguntas #sectorExclusivo");
+		var sectorApMar = document.querySelector("#preguntas #sectorApMar");
+	}
+
 	// Funciones ************************
-	// Primera columna
+	// Primera columna - compatible RCLV x 3
 	let funcionNombre = async () => {
 		// Verificar errores en el nombre
 		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
@@ -112,7 +128,7 @@ window.addEventListener("load", async () => {
 		}
 		return [OK, errores];
 	};
-	// Segunda columna
+	// Segunda columna - compatible RCLV x 3
 	let funcionRepetido = () => {
 		let casos = document.querySelectorAll("#posiblesRepetidos li input");
 		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
@@ -161,9 +177,9 @@ window.addEventListener("load", async () => {
 		OK.ano = !errores.ano;
 		return [OK, errores];
 	};
-	// Preguntas
+	// Preguntas para Personaje
 	let funcionRCLI_personaje = async (mostrarErrores) => {
-		let url = "";
+		let url = "&entidad=" + entidad;
 		// categoria_id
 		let categoria_idElegido = categoria_id[0].checked
 			? categoria_id[0].value
@@ -188,8 +204,8 @@ window.addEventListener("load", async () => {
 			// Rol en la Iglesia - valor
 			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
 			// Proceso de canonización - visible
-			if (rol_iglesia_id.value) sectorEnProcesoCanonizacion.classList.remove("ocultar");
-			else sectorEnProcesoCanonizacion.classList.add("ocultar");
+			if (rol_iglesia_id.value) sectorEnProceso.classList.remove("ocultar");
+			else sectorEnProceso.classList.add("ocultar");
 			// Proceso de canonización - valor
 			let procCanElegido = enProcCan[0].checked
 				? enProcCan[0].value
@@ -227,7 +243,7 @@ window.addEventListener("load", async () => {
 			// santopedia.classList.add("ocultar");
 		}
 		// OK y Errores
-		errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
+		errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
 		OK.RCLI = !errores.RCLI;
 		if (!mostrarErrores) errores.RCLI = "";
 
@@ -274,13 +290,48 @@ window.addEventListener("load", async () => {
 				rol_iglesia_id.value[2] != generoElegido
 			) {
 				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
-				if(rol_iglesia_id.value=="") rol_iglesia_id.value="";
+				if (rol_iglesia_id.value == "") rol_iglesia_id.value = "";
 			}
 		}
 		return;
 	};
-	let esconderMostrarRCLI = () => {};
-	// Consolidado
+	// Preguntas para Hechos
+	let funcionRCLI_hecho = async (mostrarErrores) => {
+		let url = "&entidad=" + entidad;
+		// Jesús
+		let jssElegido = jss[0].checked ? jss[0].value : jss[1].checked ? jss[1].value : "";
+		url += "&jss=" + jssElegido;
+		// Contemporaneos - visible
+		if (jssElegido == "0") sectorContemp.classList.remove("ocultar");
+		else sectorContemp.classList.add("ocultar");
+		// Contemporaneos - valor
+		let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
+		url += "&cnt=" + cntElegido;
+		// Exclusivo - visible
+		if (jssElegido == "1" || cntElegido == "1") sectorExclusivo.classList.remove("ocultar");
+		else sectorExclusivo.classList.add("ocultar");
+		// Exclusivo - valor
+		let excElegido = exclusivo[0].checked
+			? exclusivo[0].value
+			: exclusivo[1].checked
+			? exclusivo[1].value
+			: "";
+		url += "&exclusivo=" + excElegido;
+		// Aparición Mariana - visible
+		if (jssElegido == "0" && cntElegido == "0") sectorApMar.classList.remove("ocultar");
+		else sectorApMar.classList.add("ocultar");
+		// Aparición Mariana - valor
+		let ApMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
+		url += "&ap_mar=" + ApMarElegido;
+		// OK y Errores
+		errores.RCLI = await fetch(ruta + "RCLI_hecho" + url).then((n) => n.json());
+		OK.RCLI = !errores.RCLI;
+		if (!mostrarErrores) errores.RCLI = "";
+
+		// Fin
+		return [OK, errores];
+	};
+	// Consolidado - compatible RCLV x 3
 	let startUp = async () => {
 		if (nombre.value) [OK, errores] = await funcionNombre();
 		if (mes_id.value) diasDelMes(mes_id, dia);
@@ -330,10 +381,9 @@ window.addEventListener("load", async () => {
 			: botonSubmit.classList.add("inactivo");
 	};
 
-	// Add Event Listeners **************
+	// Add Event Listeners - compatible RCLV x 3
 	dataEntry.addEventListener("input", (e) => {
 		let campo = e.target.name;
-		// Campos para todos los RCLV
 		if (campo == "nombre") {
 			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
 			wiki.href = url_wiki + nombre.value;
@@ -344,10 +394,8 @@ window.addEventListener("load", async () => {
 			if (ano.value < -32768) ano.value = -32768;
 		}
 	});
-
 	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
-		//console.log(campo);
 		// Campos para todos los RCLV
 		if (campo == "nombre") [OK, errores] = await funcionNombre();
 		if (campo == "mes_id") diasDelMes();
@@ -360,25 +408,12 @@ window.addEventListener("load", async () => {
 		// Campos para entidad != 'valores'
 		if (campo == "ano") [OK, errores] = await funcionAno();
 		// Campos para entidad == 'personajes'
-		if (entidad == "personajes") {
-			let camposRCLI = [
-				"categoria_id",
-				"genero",
-				"rol_iglesia_id",
-				"enProcCan",
-				"proceso_canonizacion_id",
-				"cnt",
-				"ap_mar",
-				"ap_mar_id",
-			].includes(campo);
-			if (campo == "genero") funcionGenero();
-			if (camposRCLI) esconderMostrarRCLI();
-			if (camposRCLI) [OK, errores] = await funcionRCLI_personaje(false);
-		}
+		if (personajes && campo == "genero") funcionGenero();
+		if (entidad != "valores" && camposRCLI.includes(campo))
+			[OK, errores] = personajes ? await funcionRCLI_personaje(false) : await funcionRCLI_hecho(false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
-
 	botonSubmit.addEventListener("click", async (e) => {
 		if (botonSubmit.classList.contains("inactivo")) {
 			e.preventDefault();
@@ -387,6 +422,7 @@ window.addEventListener("load", async () => {
 			[OK, errores] = funcionRepetido();
 			if (!valores) await funcionAno();
 			if (personajes) [OK, errores] = await funcionRCLI_personaje(true);
+			if (hechos) [OK, errores] = await funcionRCLI_hecho(true);
 			feedback(OK, errores);
 		}
 	});
