@@ -7,7 +7,7 @@ window.addEventListener("load", async () => {
 	let id = new URL(window.location.href).searchParams.get("id");
 	let dataEntry = document.querySelector("#dataEntry");
 	let botonSubmit = document.querySelector("#flechas button");
-	let ruta = "/rclv/api/validar-campo/?campo=";
+	let ruta = "/rclv/api/validar-sector/?sector=";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -164,9 +164,10 @@ window.addEventListener("load", async () => {
 			? contemp[1].value
 			: "";
 		url += "&contemp=" + contempElegido;
-		// RCLI
+		// categoria_id
 		let categoria_idElegido = categoria_id[0].checked ? categoria_id[0].value : categoria_id[1].checked ? categoria_id[1].value : "";
 		url += "&categoria_id=" + categoria_idElegido;
+		// Resto de RCLI
 		if (categoria_id[0].checked) {
 			// Género
 			let generoElegido = genero[0].checked
@@ -265,18 +266,18 @@ window.addEventListener("load", async () => {
 	};
 	let feedback = (OK, errores) => {
 		// Definir las variables
-		let bloques = ["nombre", "fecha", "repetidos"];
-		if (entidad != "valores") bloques.push("ano", "RCLI");
+		let sectores = ["nombre", "fecha", "repetidos"];
+		if (entidad != "valores") sectores.push("ano", "RCLI");
 		// Rutina
-		bloques.forEach((bloque, i) => {
+		sectores.forEach((sector, i) => {
 			// Ícono de OK
-			OK[bloque] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
+			OK[sector] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
 			// Ícono de error
-			errores[bloque]
+			errores[sector]
 				? iconoError[i].classList.remove("ocultar")
 				: iconoError[i].classList.add("ocultar");
 			// Mensaje de error
-			mensajeError[i].innerHTML = errores[bloque] ? errores[bloque] : "";
+			mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
 		});
 		// Mostrar logo de Wikipedia
 		if (OK.nombre) {
@@ -294,7 +295,7 @@ window.addEventListener("load", async () => {
 			  })
 			: false;
 		// Alterar el botón submit
-		resultadoTrue && resultado.length == bloques.length
+		resultadoTrue && resultado.length == sectores.length
 			? botonSubmit.classList.remove("inactivo")
 			: botonSubmit.classList.add("inactivo");
 	};

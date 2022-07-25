@@ -13,8 +13,8 @@ module.exports = {
 			.then((n) => n.map((m) => m.nombre));
 		return res.json(casos);
 	},
-	validarCampo: async (req, res) => {
-		let errores = await validar[req.query.campo](req.query);
+	validarSector: async (req, res) => {
+		let errores = await validar[req.query.sector](req.query);
 		return res.json(errores);
 	},
 	validarConsolidado: async (req, res) => {
