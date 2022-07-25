@@ -149,9 +149,18 @@
 				</div>
 				<% if (codigo == "personajes") { %>
 					<!-- RCLI -->
-					<div class="flexRowAlign margenBottomTitulo">
-						<input id="rcli" type="checkbox" name="rcli" value="1" <% if (dataEntry.ap_mar_id) { %>checked<% } %>>
-						<label class="derecha" for="rcli">Fue miembro de la Iglesia Católica o es conocido por su relación con ella</label>
+					<div id="rcli" class="flexRowAlign margenBottomTitulo">
+						<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
+						<div class="flexRowAlign siNo">
+							<div class="flexRowAlign">
+								<input type="radio" name="rcli" value="1" <% if (dataEntry.rcli=="1") { %>checked<% } %>>
+								<label>SI</label>
+							</div>
+							<div class="flexRowAlign">
+								<input type="radio" name="rcli" value="0" <% if (dataEntry.rcli=="0") { %>checked<% } %>>
+								<label>NO</label>
+							</div>
+						</div>
 					</div>
 					<!-- Género y Rol en la Iglesia -->
 					<div id="generoRol" class="flexRowAlign margenBottomTitulo space-between">

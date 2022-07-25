@@ -37,10 +37,10 @@ module.exports = {
 	},
 
 	fecha: (datos) => {
-		let error = "";
+		let error;
 		if (datos.desconocida == "false" || datos.desconocida == undefined) {
 			if (!datos.mes_id || !datos.dia) error = cartelFechaIncompleta;
-			if (!error) {
+			else {
 				let mes = datos.mes_id;
 				let dia = datos.dia;
 				if ((mes == 2 && dia > 29) || ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30))
@@ -68,15 +68,14 @@ module.exports = {
 	},
 
 	RCLI: (datos) => {
-		return !datos.enProcCan
-			? "Necesitamos que respondas si está en Proceso de Canonización"
-			: datos.enProcCan == "1" && !datos.genero
-			? "Necesitamos que respondas el genero de la persona"
-			: datos.enProcCan == "1" && !datos.proceso_canonizacion_id
-			? "Necesitamos que respondas sobre el Status del Proceso de Canonización"
-			: datos.enProcCan == "1" && !datos.rol_iglesia_id
-			? "Necesitamos que respondas el rol de la persona en la Iglesia"
-			: "";
+		let respuesta=[]
+		if (!datos.enProcCan) respuesta.push("Necesitamos que respondas si está en Proceso de Canonización")
+		else {
+			if (!datos.genero) respuesta.push("Necesitamos que respondas el genero de la persona")
+			if (!datos.proceso_canonizacion_id) respuesta.push("Necesitamos que respondas sobre el Status del Proceso de Canonización")
+			if (!datos.rol_iglesia_id) respuesta.push("Necesitamos que respondas el rol de la persona en la Iglesia")
+		}
+		return respuesta;
 	},
 };
 
