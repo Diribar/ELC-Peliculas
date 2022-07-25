@@ -1,6 +1,13 @@
-<section id="cuerpo" class="flex-col">
-	<h1 id="titulo">Agregá un <%= dataEntry.RCLV_nombre %> a nuestra Base de Datos</h1>
-	<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
+<section id="cuerpo">
+	<div id="tituloConAyuda">
+		<h1 id="titulo">Agregá un <%= dataEntry.RCLV_nombre %> a nuestra Base de Datos</h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>.</li>
+		</ul>	
+	</div>
+	<form action="<%= link %>" method="POST" id="dataEntry">
 		<!-- Nombre y Fechas -->
 		<section class="flex-row OK">
 			<!--Primera columna-->
@@ -212,7 +219,7 @@
 						</select>
 					</div>
 					<!-- Contemporáneo de Jesús -->
-					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+					<div id="contemp" class="flexRowAlign margenBottomTitulo">
 						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
