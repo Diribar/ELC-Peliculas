@@ -307,7 +307,7 @@ window.addEventListener("load", async () => {
 		// Campos para entidad == 'personajes'
 		if (entidad == "personajes") {
 			let camposRCLI = [
-				"rcli",
+				"categoria_id",
 				"genero",
 				"rol_iglesia_id",
 				"enProcCan",

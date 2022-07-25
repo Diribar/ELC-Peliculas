@@ -12,7 +12,6 @@
 #cuerpo #tituloConAyuda .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
 #cuerpo #tituloConAyuda .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
-
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto;}
 #cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
@@ -35,14 +34,15 @@
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Temas específicos de dataEntry */
-#dataEntry select {max-width: 144px;}
 #dataEntry .input[name="nombre"] {width: 100%; padding-left: 5px;}
-#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between; margin-right: 10px;}
-#dataEntry #genero div {margin-right: 12px;}
 #dataEntry #valoresFecha {height: 80px;}
 #dataEntry #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
 #dataEntry .input[name='ano'] {width: 50px; margin-left: 10px; text-align: center;}
+#dataEntry #preguntas select {width: 144px;}
+#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
+#dataEntry #preguntas #genero div {margin-right: 12px;}
+#dataEntry #preguntas .ocultar {display: none;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
 #dataEntry #posiblesRepetidos {height: 70px; border: 1px var(--azul-oscuro) solid; margin-top: 5px; display: flex; flex-direction: column; padding: 5px; overflow-y: auto; overflow-x: hidden;}

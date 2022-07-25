@@ -34,57 +34,22 @@ window.addEventListener("load", async () => {
 
 	// Campos para entidad == 'personajes'
 	if (personajes) {
-		var rcli = document.querySelectorAll("input[name='rcli']");
+		// Inputs
+		var contemp = document.querySelectorAll("input[name='contemp']");
+		var categoria_id = document.querySelectorAll("input[name='categoria_id']");
 		var genero = document.querySelectorAll("input[name='genero']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
-		var contemp = document.querySelectorAll("input[name='contemp']");
 		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
-		var ap_mar_id = document.querySelectorAll("input[name='ap_mar_id']");
-
-		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
+		var ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		var santosanta = document.querySelector("#dataEntry #santosanta");
+		// Para ocultar
+		var ocultarEnProcCan = document.querySelector("#dataEntry #ocultarEnProcCan");
 	}
 
 	// Funciones ************************
-	let feedback = (OK, errores) => {
-		// Definir las variables
-		let bloques = ["nombre", "fecha"];
-		if (entidad != "valores") bloques.push("ano");
-		bloques.push("repetidos");
-		if (entidad == "personajes") bloques.push("RCLI");
-		// Rutina
-		for (let i = 0; i < bloques.length; i++) {
-			// Ícono de OK
-			OK[bloques[i]] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
-			// Ícono de error
-			errores[bloques[i]]
-				? iconoError[i].classList.remove("ocultar")
-				: iconoError[i].classList.add("ocultar");
-			// Mensaje de error
-			mensajeError[i].innerHTML = errores[bloques[i]] ? errores[bloques[i]] : "";
-		}
-		// Mostrar logo de Wikipedia
-		if (OK.nombre) {
-			wiki.classList.remove("ocultar");
-			if (entidad == "personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
-		} else {
-			wiki.classList.add("ocultar");
-			santopedia.classList.add("ocultar");
-		}
-		// Conclusiones
-		let resultado = Object.values(OK);
-		let resultadoTrue = resultado.length
-			? resultado.reduce((a, b) => {
-					return !!a && !!b;
-			  })
-			: false;
-		// Alterar el botón submit
-		resultadoTrue && resultado.length == bloques.length
-			? botonSubmit.classList.remove("inactivo")
-			: botonSubmit.classList.add("inactivo");
-	};
+	// Primera columna
 	let funcionNombre = async () => {
 		// Verificar errores en el nombre
 		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
@@ -94,122 +59,6 @@ window.addEventListener("load", async () => {
 		OK.nombre = !errores.nombre;
 		// Fin
 		return [OK, errores];
-	};
-	let funcionFechas = async () => {
-		// Si se desconoce la fecha...
-		if (desconocida.checked) {
-			// OK y Errores
-			errores.fecha = "";
-			errores.repetidos = "";
-			OK.fecha = true;
-			OK.repetidos = true;
-			// Limpia los valores de campos relacionados
-			mes_id.value = "";
-			dia.value = "";
-			posiblesRepetidos.innerHTML = "";
-		} else {
-			// Se averigua si hay un error con la fecha
-			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-			errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
-			OK.fecha = !errores.fecha;
-			// Agregar los registros que tengan esa fecha
-			if (OK.fecha) {
-				errores.repetidos = await registrosConEsaFecha(mes_id.value, dia.value);
-				OK.repetidos = !errores.repetidos;
-			} else OK.repetidos = false;
-		}
-		return [OK, errores];
-	};
-	let funcionAno = async () => {
-		// Se averigua si hay un error con el año
-		let url = "&ano=" + ano.value;
-		errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
-		OK.ano = !errores.ano;
-		return [OK, errores];
-	};
-	let funcionRepetido = () => {
-		let casos = document.querySelectorAll("#posiblesRepetidos li input");
-		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-		OK.repetidos = !errores.repetidos;
-		return [OK, errores];
-	};
-	let funcionRCLI = async () => {
-		if (rcli[0].checked) {
-			// Armar la url
-			let url = "";
-			// En proceso de canonización
-			url += "&enProcCan=1";
-			// Género
-			let generoElegido = genero[0].checked
-				? genero[0].value
-				: genero[1].checked
-				? genero[1].value
-				: "";
-			url += "&genero=" + generoElegido;
-			// Status del proceso de canonización
-			url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
-			// Rol en la Iglesia
-			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
-			// OK y Errores
-			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
-			OK.RCLI = !errores.RCLI;
-			// Mostrar las opciones 'enProcCan'
-			ocultarEnProcCan.classList.remove("invisible");
-			// Logo de Santopedia
-			if (nombre.value && !errores.nombre) santopedia.classList.remove("ocultar");
-		} else {
-			// Armar la url con 'enProcCan'
-			let url = "&enProcCan=" + (enProcCan[1].checked ? "0" : "");
-			// OK y Errores
-			errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
-			OK.RCLI = !errores.RCLI;
-			// Ocultar las opciones 'enProcCan'
-			ocultarEnProcCan.classList.add("invisible");
-			// Logo de Santopedia
-			santopedia.classList.add("ocultar");
-		}
-
-		// Fin
-		return [OK, errores];
-	};
-	let funcionGenero = () => {
-		// Definir variables
-		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
-		if (generoElegido) {
-			// Cambiar el género de una leyenda, si corresponde
-			let letraActual = generoElegido == "V" ? "o" : "a";
-			let letraAnterior = generoElegido == "V" ? "a" : "o";
-			if (santosanta.innerHTML.includes("sant" + letraAnterior))
-				santosanta.innerHTML = santosanta.innerHTML.replace(
-					"sant" + letraAnterior,
-					"sant" + letraActual
-				);
-			// Dejar solamente las opciones alineadas con el género
-			let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
-			opciones_proc.forEach((n) =>
-				n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
-			);
-			let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
-			opciones_rol.forEach((n) =>
-				n.value[2] != generoElegido ? n.classList.add("ocultar") : n.classList.remove("ocultar")
-			);
-			// Cambiar la opción anterior por el nuevo genero
-			if (
-				proceso_canonizacion_id.value &&
-				proceso_canonizacion_id.value.length != 2 &&
-				proceso_canonizacion_id.value[2] != generoElegido
-			)
-				proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
-			if (
-				rol_iglesia_id.value &&
-				rol_iglesia_id.value.length != 2 &&
-				rol_iglesia_id.value[2] != generoElegido
-			)
-				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
-			// Quitar la clase 'invisible' de enProcCan
-			proceso_canonizacion_id.classList.remove("invisible");
-			rol_iglesia_id.classList.remove("invisible");
-		}
 	};
 	let diasDelMes = () => {
 		// Aplicar cambios en los días 30 y 31
@@ -230,6 +79,38 @@ window.addEventListener("load", async () => {
 				if (dia.value > 30) dia.value = "";
 			} else dia31.classList.remove("ocultar");
 		}
+	};
+	let funcionFechas = async () => {
+		// Si se conoce la fecha...
+		if (!desconocida.checked) {
+			// Se averigua si hay un error con la fecha
+			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+			errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
+			OK.fecha = !errores.fecha;
+			// Agregar los registros que tengan esa fecha
+			if (OK.fecha) {
+				errores.repetidos = await registrosConEsaFecha(mes_id.value, dia.value);
+				OK.repetidos = !errores.repetidos;
+			} else OK.repetidos = false;
+		} else {
+			// OK y Errores
+			errores.fecha = "";
+			errores.repetidos = "";
+			OK.fecha = true;
+			OK.repetidos = true;
+			// Limpia los valores de campos relacionados
+			mes_id.value = "";
+			dia.value = "";
+			posiblesRepetidos.innerHTML = "";
+		}
+		return [OK, errores];
+	};
+	// Segunda columna
+	let funcionRepetido = () => {
+		let casos = document.querySelectorAll("#posiblesRepetidos li input");
+		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+		OK.repetidos = !errores.repetidos;
+		return [OK, errores];
 	};
 	let registrosConEsaFecha = async () => {
 		// Buscar otros casos en esa fecha
@@ -266,6 +147,109 @@ window.addEventListener("load", async () => {
 			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 		}
 	};
+	let funcionAno = async () => {
+		// Se averigua si hay un error con el año
+		let url = "&ano=" + ano.value;
+		errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
+		OK.ano = !errores.ano;
+		return [OK, errores];
+	};
+	// Preguntas
+	let funcionRCLI_personaje = async (mostrarErrores) => {
+		let url = "";
+		// Contemporáneo
+		let contempElegido = contemp[0].checked
+			? contemp[0].value
+			: contemp[1].checked
+			? contemp[1].value
+			: "";
+		url += "&contemp=" + contempElegido;
+		// RCLI
+		let categoria_idElegido = categoria_id[0].checked ? categoria_id[0].value : categoria_id[1].checked ? categoria_id[1].value : "";
+		url += "&categoria_id=" + categoria_idElegido;
+		if (categoria_id[0].checked) {
+			// Género
+			let generoElegido = genero[0].checked
+				? genero[0].value
+				: genero[1].checked
+				? genero[1].value
+				: "";
+			url += "&genero=" + generoElegido;
+			// Rol en la Iglesia
+			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
+			// Proceso de canonización
+			let procCanElegido = enProcCan[0].checked
+				? enProcCan[0].value
+				: enProcCan[1].checked
+				? enProcCan[1].value
+				: "";
+			url += "&enProcCan=" + procCanElegido;
+			if (procCanElegido == "1") url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
+			// Aparición mariana
+			let apMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
+			url += "&ap_mar=" + apMarElegido;
+			if (apMarElegido == "1") url += "&ap_mar_id=" + ap_mar_id.value;
+			// Logo de Santopedia
+			// if (nombre.value && !errores.nombre) santopedia.classList.remove("ocultar");
+		} else {
+			// Ocultar las opciones 'enProcCan'
+			// ocultarEnProcCan.classList.add("invisible");
+			// Logo de Santopedia
+			// santopedia.classList.add("ocultar");
+		}
+		// OK y Errores
+		errores.RCLI = await fetch(ruta + "RCLI" + url).then((n) => n.json());
+		OK.RCLI = !errores.RCLI;
+		if (!mostrarErrores) errores.RCLI = "";
+
+		// Fin
+		return [OK, errores];
+	};
+	let funcionGenero = () => {
+		// Definir variables
+		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
+		if (generoElegido) {
+			// Actualizar el género de la leyenda
+			let letraActual = generoElegido == "V" ? "o" : "a";
+			let letraAnterior = generoElegido == "V" ? "a" : "o";
+			if (santosanta.innerHTML.includes("ant" + letraAnterior))
+				santosanta.innerHTML = santosanta.innerHTML.replace(
+					"ant" + letraAnterior,
+					"ant" + letraActual
+				);
+			// Dejar solamente las opciones alineadas con el género
+			let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
+			opciones_proc.forEach((n) =>
+				n.value.length < 2 || n.value[2] != generoElegido
+					? n.classList.add("ocultar")
+					: n.classList.remove("ocultar")
+			);
+			let opciones_rol = document.querySelectorAll("select[name='rol_iglesia_id'] option");
+			opciones_rol.forEach((n) =>
+				n.value.length < 2 || n.value[2] != generoElegido
+					? n.classList.add("ocultar")
+					: n.classList.remove("ocultar")
+			);
+			// Cambiar la opción anterior por el nuevo genero
+			if (
+				proceso_canonizacion_id.value &&
+				proceso_canonizacion_id.value.length != 2 &&
+				proceso_canonizacion_id.value[2] != generoElegido
+			)
+				proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
+			if (
+				rol_iglesia_id.value &&
+				rol_iglesia_id.value.length != 2 &&
+				rol_iglesia_id.value[2] != generoElegido
+			)
+				rol_iglesia_id.value = rol_iglesia_id.value.slice(0, 2) + generoElegido;
+		}
+		return
+	};
+	let esconderMostrarRCLI=()=>{
+
+	}
+	// Consolidado
 	let startUp = async () => {
 		if (nombre.value) [OK, errores] = await funcionNombre();
 		if (mes_id.value) diasDelMes(mes_id, dia);
@@ -275,12 +259,44 @@ window.addEventListener("load", async () => {
 		}
 		if (ano && ano.value) await funcionAno();
 		if (personajes) {
-			if (enProcCan[0].checked) {
-				funcionGenero();
-				ocultarEnProcCan.classList.remove("invisible");
-			}
-			if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
+			if (categoria_id[0].checked) funcionGenero();
+			[OK, errores] = await funcionRCLI_personaje(false);
 		}
+	};
+	let feedback = (OK, errores) => {
+		// Definir las variables
+		let bloques = ["nombre", "fecha", "repetidos"];
+		if (entidad != "valores") bloques.push("ano", "RCLI");
+		// Rutina
+		bloques.forEach((bloque, i) => {
+			// Ícono de OK
+			OK[bloque] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
+			// Ícono de error
+			errores[bloque]
+				? iconoError[i].classList.remove("ocultar")
+				: iconoError[i].classList.add("ocultar");
+			// Mensaje de error
+			mensajeError[i].innerHTML = errores[bloque] ? errores[bloque] : "";
+		});
+		// Mostrar logo de Wikipedia
+		if (OK.nombre) {
+			wiki.classList.remove("ocultar");
+			if (entidad == "personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
+		} else {
+			wiki.classList.add("ocultar");
+			santopedia.classList.add("ocultar");
+		}
+		// Conclusiones
+		let resultado = Object.values(OK);
+		let resultadoTrue = resultado.length
+			? resultado.reduce((a, b) => {
+					return !!a && !!b;
+			  })
+			: false;
+		// Alterar el botón submit
+		resultadoTrue && resultado.length == bloques.length
+			? botonSubmit.classList.remove("inactivo")
+			: botonSubmit.classList.add("inactivo");
 	};
 
 	// Add Event Listeners **************
@@ -300,10 +316,14 @@ window.addEventListener("load", async () => {
 
 	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
+		//console.log(campo);
 		// Campos para todos los RCLV
 		if (campo == "nombre") [OK, errores] = await funcionNombre();
 		if (campo == "mes_id") diasDelMes();
-		if (campo == "mes_id" || campo == "dia" || campo == "desconocida")
+		if (
+			(campo == "mes_id" || campo == "dia" || campo == "desconocida") &&
+			((mes_id.value && dia.value) || desconocida.checked)
+		)
 			[OK, errores] = await funcionFechas();
 		if (campo == "repetido") [OK, errores] = funcionRepetido();
 		// Campos para entidad != 'valores'
@@ -311,7 +331,7 @@ window.addEventListener("load", async () => {
 		// Campos para entidad == 'personajes'
 		if (entidad == "personajes") {
 			let camposRCLI = [
-				"rcli",
+				"categoria_id",
 				"genero",
 				"rol_iglesia_id",
 				"enProcCan",
@@ -320,8 +340,9 @@ window.addEventListener("load", async () => {
 				"ap_mar",
 				"ap_mar_id",
 			].includes(campo);
-			if (camposRCLI) [OK, errores] = await funcionRCLI();
 			if (campo == "genero") funcionGenero();
+			if (camposRCLI) esconderMostrarRCLI()
+			if (camposRCLI) [OK, errores] = await funcionRCLI_personaje(false);
 		}
 		// Final de la rutina
 		feedback(OK, errores);
@@ -334,7 +355,7 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionFechas();
 			[OK, errores] = funcionRepetido();
 			if (!valores) await funcionAno();
-			if (personajes) [OK, errores] = await funcionRCLI();
+			if (personajes) [OK, errores] = await funcionRCLI_personaje(true);
 			feedback(OK, errores);
 		}
 	});
