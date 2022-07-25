@@ -210,6 +210,7 @@ window.addEventListener("load", async () => {
 			url += "&cnt=" + cntElegido;
 			// Aparición mariana - visible
 			if (cntElegido) sectorAp_mar.classList.remove("ocultar");
+			else sectorAp_mar.classList.add("ocultar");
 			// Aparición mariana - valor
 			let apMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
 			url += "&ap_mar=" + apMarElegido;
