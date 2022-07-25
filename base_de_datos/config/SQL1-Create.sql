@@ -59,8 +59,11 @@ VALUES
 ('PP', 5, 'Papa', 0, 1, '-'),
 ('PPV', 5, 'Papa', 0, 1, 'V'),
 ('AP', 6, 'Apóstata', 0, 1, '-'),
-('APV', 6, 'Apóstata', 1, 1, 'V'),
-('APM', 6, 'Apóstata', 1, 1, 'M')
+('APV', 6, 'Apóstata', 0, 1, 'V'),
+('APM', 6, 'Apóstata', 0, 1, 'M'),
+('CI', 7, 'Ninguno', 0, 1, '-'),
+('CIV', 7, 'Ninguno', 0, 1, 'V'),
+('CIM', 7, 'Ninguno', 0, 1, 'M')
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -159,10 +162,10 @@ CREATE TABLE USUARIOS (
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, autorizado_fa, status_registro_id, creado_en, completado_en)
+INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Startup ELC', 2, 1, 4, '2021-01-01','2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Automatizado', 2, 1, 4, '2021-01-01','2021-01-02')
+(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
+(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
 INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
@@ -366,9 +369,9 @@ VALUES
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
 ('SDM', 4, 'Sierva de Dios'),
-('NN', 4, 'Ninguno'),
-('NNV', 4, 'Ninguno'),
-('NNM', 4, 'Ninguno')
+('NN', 5, 'Ninguno'),
+('NNV', 5, 'Ninguno'),
+('NNM', 5, 'Ninguno')
 ;
 
 /* TABLAS AUXILIARES PARA PRODUCTOS */;
@@ -413,8 +416,8 @@ VALUES
 ('BIO', 1, 0, 1, 0,  null, null, null, 'Biografías', 'bios'), 
 ('HIS', 2, 0, 1, 0,  null, null, null, 'Historias', 'historias') 
 ;
-UPDATE prod_categ2_sub SET rclv_necesario='personajes' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
-UPDATE prod_categ2_sub SET rclv_necesario='hechos' WHERE id='AMA' OR id='HIS';
+UPDATE prod_categ2_sub SET rclv_necesario='personaje' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
+UPDATE prod_categ2_sub SET rclv_necesario='hecho' WHERE id='AMA' OR id='HIS';
 CREATE TABLE prod_publicos_sugeridos (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,	
@@ -507,16 +510,21 @@ VALUES
 ;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en, nombre)
 VALUES 
-(21, 249, 1910, 'CFC', 'HAG', 'STM', 'RCM', 10, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
-(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 11, '2022-03-16 23:25:20', 'Juan XXIII'),
-(23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 10, '2022-03-16 23:25:20', 'Juan Bosco'),
-(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Juan Pablo II'),
-(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 10, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
-(26, 305, 1483, 'CFC', 'HIG', 'NNV', 'APV', 10, '2022-03-16 23:25:20', 'Martín Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'STV', 'APV', 10, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
+(21, 249, 1910, 'CFC', 'HAG', 'STM', 'RCM', 2, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
+(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Juan XXIII'),
+(23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 2, '2022-03-16 23:25:20', 'Juan Bosco'),
+(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Juan Pablo II'),
+(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
+(26, 305, 1483, 'CFC', 'HIG', 'NNV', 'APV', 2, '2022-03-16 23:25:20', 'Martín Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'STV', 'APV', 2, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, creado_en, nombre)
+VALUES 
+(51,  30, 1869, 'VPC', 2, '2022-03-16 23:25:20', 'Mahatma Gandhi'),
+(52, 340, 1918, 'VPC', 2, '2022-03-16 23:25:20', 'Nelson Mandela')
+;
 UPDATE rclv_1personajes SET perenne = true;
 CREATE TABLE rclv_2hechos (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -759,15 +767,15 @@ CREATE TABLE prod_1peliculas (
 INSERT INTO prod_1peliculas (id,TMDB_id,IMDB_id,fuente,ano_estreno,duracion,paises_id,idioma_original_id,en_castellano_id,en_color_id,categoria_id,subcategoria_id,publico_sugerido_id,personaje_id,hecho_id,valor_id,fe_valores,entretiene,calidad_tecnica,calificacion,creado_por_id,creado_en,alta_analizada_por_id,alta_analizada_en,lead_time_creacion,status_registro_id,editado_en,edic_analizada_en,lead_time_edicion,capturado_por_id,capturado_en,captura_activa,links_gratuitos_cargados_id,links_gratuitos_en_la_web_id,
 nombre_original,nombre_castellano,direccion,guion,musica,actuacion,produccion,sinopsis,avatar)
 VALUES
-(1,'218275','tt1445208','TMDB',2015,125,'US','en', 3,1,'CFC','HAG',4,21,1,1,100,75,100,92,11,'2022-03-16 23:25:20',10,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,10,'2022-04-13 21:31:29',0,3,2,
+(1,'218275','tt1445208','TMDB',2015,125,'US','en', 3,1,'CFC','HAG',4,21,1,1,100,75,100,92,2,'2022-03-16 23:25:20',11,'2022-04-13 21:31:31',NULL,3,'2022-03-16 23:25:20','2022-04-13 21:31:40',NULL,2,'2022-04-13 21:31:29',0,3,2,
 'The Letters','Cartas de la Madre Teresa','William Riead','William Riead','Ciaran Hope','Rutger Hauer (Benjamin Praagh), Juliet Stevenson (Mother Teresa), Max von Sydow (Celeste van Exem), Priya Darshani (Shubashini Das), Kranti Redkar (Deepa Ambereesh), Mahabanoo Mody-Kotwal (Mother General), Tillotama Shome (Kavitha Singh), Vijay Maurya (Maharaj Singh), Vivek Gomber (Ashwani Sharma)','Cinema West Films, Big Screen Productions, Freestyle Releasing','\"The Letters\" narra de manera muy personal la historia de esta religiosa, quien encontró el valor para entrar en los paupérrimos barrios de Calcuta, India, con sólo cinco rupias en el bolsillo y enseñarle al mundo entero una de las lecciones de bondad más importantes de la historia. (Fuente: TMDB)','1645444885482.jpg'),
-(2,'109429','tt0327086','TMDB',2003,180,'IT','en', 1,1,'CFC','HAG',4,22,1,1,100,75,100,92,10,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,'2022-03-16 23:25:21','2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2,
+(2,'109429','tt0327086','TMDB',2003,180,'IT','en', 1,1,'CFC','HAG',4,22,1,1,100,75,100,92,2,'2022-03-16 23:25:21',11,'2022-03-28 20:04:55',NULL,3,'2022-03-16 23:25:21','2022-04-13 21:28:46',NULL,11,'2022-04-13 21:28:38',0,3,2,
 'Il Papa buono','El Santo Padre Juan XXIII','Ricky Tognazzi','Fabrizio Bettelli, Simona Izzo, Marco Roncalli','Ennio Morricone','Bob Hoskins (Angelo Roncalli / Pope John XXIII), Carlo Cecchi (Cardinal Mattia Carcano), Roberto Citran (Monsignor Loris Capovilla), Fabrizio Vidale (Angelo Roncalli (young)), Sergio Bini Bustric (Guido Gusso), Francesco Venditti (Nicola Catania (young)), Rolando Ravello (Cannava), John Light (Mattia Carcano (young)), Francesco Carnelutti (Nicola Catania), Lena Lessing (Marta Von Papen), Joan Giammarco, Gianluca Ramazzotti, Monica Piseddu, Pietro Delle Piane','MediaTrade','Juan XXIII fue Papa sólo 4 años (1959-1963), pero promovió profundos cambios y lanzó al mundo un contundente mensaje de paz. Era la época de la Guerra Fría, y las relaciones internacionales eran muy tensas. Convocó el Concilio Vaticano II, que supuso una auténtica revolución en el seno de la Iglesia Católica, que tuvo que reconocer que se había ido alejando cada vez más del mensaje de Cristo y que era necesario reflexionar sobre las necesidades del hombre moderno. (Fuente: TMDB)','1645458510332.jpg'),
-(3,'108672','tt0317009','TMDB',2002,208,'IT','it', 1,1,'CFC','HAG',4,22,1,1,100,100,100,100,10,'2022-03-16 23:25:22',11,'2022-04-13 19:21:09',NULL,3,'2022-03-16 23:25:23','2022-04-13 21:28:57',NULL,11,'2022-04-13 21:28:51',0,3,2,
+(3,'108672','tt0317009','TMDB',2002,208,'IT','it', 1,1,'CFC','HAG',4,22,1,1,100,100,100,100,2,'2022-03-16 23:25:22',11,'2022-04-13 19:21:09',NULL,3,'2022-03-16 23:25:23','2022-04-13 21:28:57',NULL,11,'2022-04-13 21:28:51',0,3,2,
 'Papa Giovanni - Ioannes XXIII','Juan XXIII: El Papa de la paz','Giorgio Capitani','Francesco Scardamaglia, Massimo Cerofolini','Marco Frisina','Ed Asner (Angelo Roncalli), Massimo Ghini (Angelo Roncalli giovane), Claude Rich (Cardinal Ottaviani), Michael Mendl (Tardini), Franco Interlenghi (Radini Tedeschi), Sydne Rome (Rada Krusciova), Jacques Sernas (Cardinale Feltin), Leonardo Ruta (Remo Roncalli), Paolo Gasparini (Monsignor Loris Capovilla), Sergio Fiorentini (Don Rebuzzini), Roberto Accornero, Heinz Trixner (Von Papen), Ivan Bacchi, Bianca Guaccero, Emilio De Marchi, Guido Roncalli, Giorgia Bongianni, Enzo Marino Bellanich','Coproducción Italia-Alemania','En 1958, tras la muerte de Pío XII, el anciano Cardenal Angelo Roncalli, Patriarca de Venecia, viaja a Roma para participar en el cónclave que debe elegir al nuevo Papa, cónclave dominado por toda clase de maniobras políticas. En efecto, una vez en el Vaticano, Roncalli asiste atónito al enconado enfrentamiento entre las distintas facciones eclesiásticas. Durante el cónclave se van desvelando aspectos extraordinarios del pasado del cardenal: su apoyo espiritual y económico a un grupo de trabajadores en huelga, cuando todavía era un joven sacerdote; su ayuda a los cristianos ortodoxos de Bulgaria, cuando estuvo destinado en ese país; sus negociaciones con el embajador nazi de Estambul para salvar un tren de prisioneros judíos, cuando era diplomático del Vaticano en Turquía. (Fuente: TMDB)','1645458705918.jpg'),
-(4,'122977','tt0416694','TMDB',2004,146,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,100,100,100,10,'2022-03-16 23:25:23',11,'2022-04-13 19:21:15',NULL,3,'2022-03-16 23:25:24','2022-04-13 21:29:05',NULL,11,'2022-04-13 21:29:00',0,3,2,
+(4,'122977','tt0416694','TMDB',2004,146,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,100,100,100,2,'2022-03-16 23:25:23',11,'2022-04-13 19:21:15',NULL,3,'2022-03-16 23:25:24','2022-04-13 21:29:05',NULL,11,'2022-04-13 21:29:00',0,3,2,
 'Don Bosco','Don Bosco','Lodovico Gasparini',"Carlo Mazzotta, Graziano Diana, Lodovico Gasparini, Saverio D'Ercole, Lea Tafuri, F. Panzarella",'Marco Frisina','Flavio Insinna (Don Bosco), Lina Sastri (Margherita Bosco), Charles Dance (Marchese Clementi), Daniel Tschirley (Michele Rua), Fabrizio Bucci (Bruno), Lewis Crutch (Domenico Savio), Brock Everitt-Elwick (Don Bosco as a child), Alessandra Martines (Marchesa Barolo)','RAI','El Piamonte (Italia), siglo XIX. En Turín, el sacerdote Don Bosco, un hombre procedente de una humilde familia campesina, se entregó total y apasionadamente a la tarea de recoger de las calles a los chicos marginados y cuidar de ellos. No sólo los sacó de la pobreza, de la ignorancia y del desamparo social, sino que consiguió que, por primera vez, se sintieran amados. Luchó con una fe y un tesón extraordinarios para vencer los obstáculos e insidias que, tanto las autoridades civiles como las eclesiásticas, pusieron en su camino para impedirle culminar su objetivo: la fundación de la Congregación de los salesianos, que garantizaría el futuro de sus chicos. (Fuente: TMDB)','1645459542226.jpg'),
-(5,'254489','tt0095051','TMDB',1988,150,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,75,100,92,10,'2022-03-16 23:25:24',11,'2022-04-13 19:21:22',NULL,3,'2022-03-16 23:25:25','2022-04-13 21:29:11',NULL,11,'2022-04-13 21:29:07',0,3,2,
+(5,'254489','tt0095051','TMDB',1988,150,'IT','it', 1,1,'CFC','HAG',4,23,1,1,100,75,100,92,2,'2022-03-16 23:25:24',11,'2022-04-13 19:21:22',NULL,3,'2022-03-16 23:25:25','2022-04-13 21:29:11',NULL,11,'2022-04-13 21:29:07',0,3,2,
 'Don Bosco','Don Bosco','Leandro Castellani','Ennio De Concini','Stelvio Cipriani','Ben Gazzara (Don Giovanni Bosco), Patsy Kensit (Lina), Karl Zinny (Giuseppe), Piera Degli Esposti (La madre di Lina), Philippe Leroy (Papa Leone XIII), Leopoldo Trieste (Don Borel), Raymond Pellegrin (Papa Pio IX), Laurent Therzieff (Monsignor Gastaldi), Edmund Purdom (Urbano Rattazzi), Rik Battaglia (Marchese Michele Cavour)','RAI, ELLE DI.CI., TIBER CINEMATOGRAFICA','Piamonte (Italia), siglo XIX. Don Bosco, un sacerdote piamontés de humilde origen campesino, se entregó apasionadamente a la tarea de recoger de las calles de Turín a los muchachos abandonados y carentes de toda protección social. Tuvo que vencer mil obstáculos e insidias para crear albergues, escuelas y talleres, donde pudieran recibir una educación cristiana y cívica. La culminación de su obra fue la fundación de la Congregación Salesiana. (Fuente: TMDB)','1645459996491.jpg')
 ;
 CREATE TABLE prod_2colecciones (
@@ -783,7 +791,6 @@ CREATE TABLE prod_2colecciones (
 	paises_id VARCHAR(18) NULL,
 	idioma_original_id VARCHAR(2) NULL,
 	cant_temporadas TINYINT UNSIGNED NULL,
-	cant_capitulos SMALLINT UNSIGNED NULL,
 	direccion VARCHAR(100) NULL,
 	guion VARCHAR(100) NULL,
 	musica VARCHAR(100) NULL,
@@ -855,16 +862,16 @@ CREATE TABLE prod_2colecciones (
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
 	FOREIGN KEY (links_gratuitos_en_la_web_id) REFERENCES prod_si_no_parcial(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, ano_estreno, ano_fin, idioma_original_id, cant_temporadas, cant_capitulos,fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en,
+INSERT INTO prod_2colecciones (id, TMDB_id, FA_id, TMDB_entidad, fuente, ano_estreno, ano_fin, idioma_original_id, cant_temporadas,fe_valores, entretiene, calidad_tecnica, calificacion, creado_por_id, creado_en, alta_analizada_por_id, alta_analizada_en, status_registro_id, editado_en, edic_analizada_en,
 nombre_original, nombre_castellano, direccion, guion, musica, actuacion, produccion, sinopsis, avatar, paises_id)
 VALUES
-(1,'855456',NULL,'collection','TMDB',2005,2006,'es',1,10,75,75,100,80,10,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+(1,'855456',NULL,'collection','TMDB',2005,2006,'es',1,75,75,100,80,2,'2022-03-16 23:25:19',11,'2022-05-09 17:10:31',3,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
 'Karol','Karol','Giacomo Battiato','Giacomo Battiato, Gianmario Pagano, Monica Zapelli','Ennio Morricone','Piotr Adamczyk, Malgorzata Bela, Raoul Bova, Lech Mackiewicz, Dariusz Kwasnik','TAO Film','Es una colección de 2 películas, que narra la vida de Karol Wojtyla (Juan Pablo II). La primera película transcurre durante su vida anterior al papado: la II Guerra Mundial, el comunismo, su seminario en forma clandestino porque estaba prohibido por los nazis, su nombramiento como obispo y cardenal, su formación de la juventud de su pueblo, su intención de preservar la cultura polaca durante el sometimiento alemán y luego ruso. La segunda película muestra su vida durante el papado. El atentado contra su vida, sus viajes apostólicos, el reencuentro con sus seres queridos. (Fuente: TMDB)','1645481101308.jpg','PL, IT, CA'),
-(2, '97919',NULL,'collection','TMDB',2003,2011,'en',1,11,75,75,100,80,10,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
+(2, '97919',NULL,'collection','TMDB',2003,2011,'en',1,75,75,100,80,2,'2022-03-16 23:25:22',11,'2022-05-09 17:10:31',2,'2022-03-16 23:25:19', '2022-05-09 17:10:57',
 'Love Comes Softly Collection','El amor llega suavemente - Colección','Michael Landon Jr., David S. Cass Sr., Dora Hopkins','Janette Oke, Michael Landon Jr.','Ken Thorne, Michael Wetherwax, William Ashford, Kevin Kiner, Stephen Graziano, Stephen McKeon, Brian','Dale Midkiff, Erin Cottrell','Larry Levinson Productions, RHI Entertainment','Secuela de la vida de las sucesivas descendientes femeninas de una familia. (Fuente: TMDB)','1646276771102.jpg','US')
 ;
-UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id='HAG', publico_sugerido_id=5, personaje_id=24, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
-UPDATE prod_2colecciones SET en_castellano_id=2, en_color_id=1, categoria_id='VPC', subcategoria_id='NOV', publico_sugerido_id=5, valor_id=11, editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=2;
+UPDATE prod_2colecciones SET en_castellano_id=1, en_color_id=1, categoria_id='CFC', subcategoria_id='HAG', publico_sugerido_id=5, personaje_id=24, editado_por_id=2, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1;
+UPDATE prod_2colecciones SET en_castellano_id=2, en_color_id=1, categoria_id='VPC', subcategoria_id='NOV', publico_sugerido_id=5, valor_id=11, editado_por_id=2, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=2;
 CREATE TABLE prod_3capitulos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	coleccion_id INT UNSIGNED NOT NULL,
@@ -961,7 +968,7 @@ VALUES
 (2,1,1,2,'75470','tt0495039','TMDB', 2006,184, 'it', 1,1,'CFC','HAG',5,2,3,'2022-03-16 23:25:20',
 'Karol, un Papa rimasto uomo','Karol, el Papa que siguió siendo hombre', 'Giacomo Battiato','Gianmario Pagano, Giacomo Battiato, Monica Zapelli','Ennio Morricone','Piotr Adamczyk (John Paul II), Dariusz Kwasnik (Dr. Renato Buzzonetti), Michele Placido (Dr. Renato Buzzonetti), Dariusz Kwasnik (Stanislaw Dziwisz), Alberto Cracco (Agostino Casaroli), Adriana Asti (Madre Teresa di Calcutta), Raoul Bova (Padre Thomas), Leslie Hope (Julia Ritter), Alkis Zanis (Ali Agca), Carlos Kaniowsky (Oscar Arnulfo Romero Goldamez), Fabrice Scott (Jerzy Popieluszko), Paolo Maria Scalondro (Wojciech Jaruzelski), Daniela Giordano (Tobiana Sobótka)',NULL,'Es la continuación de la miniserie Karol, el hombre que se convirtió en Papa. Narra la historia, desde 1978 en adelante, del primer hombre de un país del este elegido Papa y el papel que tomó en el final del Comunismo, a pesar de sufrir un intento de asesinato que trató de hacerlo callar. La historia narra cómo continuó su pontificado con valor a pesar de la enfermedad que poco a poco iba minando su vida. Él nunca ocultó su sufrimiento físico, pero luchó hasta el final contra la guerra y la violencia. (Fuente: TMDB)','https://image.tmdb.org/t/p/original/pTZZSSjJvKohXJmBdAT5CO5lXnK.jpg','IT, PL, CA')
 ;
-UPDATE prod_3capitulos SET personaje_id=24, alta_analizada_por_id=2, alta_analizada_en='2022-05-26 18:18:01', editado_por_id=10, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1 OR id=2;
+UPDATE prod_3capitulos SET personaje_id=24, alta_analizada_por_id=2, alta_analizada_en='2022-05-26 18:18:01', editado_por_id=2, editado_en='2022-03-16 23:25:19', edic_analizada_en='2022-05-26 18:18:23', alta_terminada_en='2022-05-26 18:18:01', lead_time_creacion=96, lead_time_edicion=96, edic_analizada_por_id=11 WHERE id=1 OR id=2;
 UPDATE prod_3capitulos SET nombre_original='Karol - Un uomo diventato Papa' WHERE id=1;
 UPDATE prod_3capitulos SET produccion='TAO Film' WHERE id=2;
 INSERT INTO prod_3capitulos (id, coleccion_id, temporada, capitulo, TMDB_id, IMDB_id, fuente, ano_estreno, duracion, idioma_original_id, en_castellano_id, en_color_id, categoria_id, subcategoria_id, publico_sugerido_id, creado_por_id,
@@ -1137,14 +1144,14 @@ CREATE TABLE links (
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id, castellano)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,11,'2022-03-16 23:25:21',1,1),
-(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,11,'2022-03-16 23:25:22',3,1),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,11,'2022-03-16 23:25:23',4,1),
-(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,11,'2022-03-16 23:25:24',5,1),
-(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,11,'2022-03-16 23:25:25',6,1),
-(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,10,'2022-03-16 23:25:26',1,1),
-(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,10,'2022-05-13 21:17:20',1,1),
-(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,10,'2022-05-13 22:21:45',1,1)
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,2,'2022-03-16 23:25:21',1,1),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,2,'2022-03-16 23:25:22',3,1),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,2,'2022-03-16 23:25:23',4,1),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,2,'2022-03-16 23:25:24',5,1),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,2,'2022-03-16 23:25:25',6,1),
+(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,2,'2022-03-16 23:25:26',1,1),
+(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,2,'2022-05-13 21:17:20',1,1),
+(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,2,'2022-05-13 22:21:45',1,1)
 ;
 UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26', motivo_id=22 WHERE status_registro_id > 3
 ;
@@ -1296,13 +1303,13 @@ CREATE TABLE cal_1registros (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO cal_1registros (id, usuario_id, pelicula_id, coleccion_id, capitulo_id, fe_valores, entretiene, calidad_tecnica, calificacion)
 VALUES
-(1,10,1,NULL,NULL,100,75,100,92),
-(2,10,2,NULL,NULL,100,75,100,92),
-(3,10,3,NULL,NULL,100,100,100,100),
-(4,10,4,NULL,NULL,100,100,100,100),
-(5,10,5,NULL,NULL,100,75,100,92),
-(6,10,NULL,1,NULL,75,75,100,80),
-(7,10,NULL,2,NULL,75,75,100,80)
+(1,2,1,NULL,NULL,100,75,100,92),
+(2,2,2,NULL,NULL,100,75,100,92),
+(3,2,3,NULL,NULL,100,100,100,100),
+(4,2,4,NULL,NULL,100,100,100,100),
+(5,2,5,NULL,NULL,100,75,100,92),
+(6,2,NULL,1,NULL,75,75,100,80),
+(7,2,NULL,2,NULL,75,75,100,80)
 ;
 
 /* ENTORNO DE INTERÉS EN PRODUCTO */;

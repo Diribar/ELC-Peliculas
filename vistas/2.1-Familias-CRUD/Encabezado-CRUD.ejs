@@ -12,7 +12,7 @@
 				<i class="fa-solid fa-arrow-right-arrow-left" tabindex="-1" title="Ver el Detalle de un<%= entidad == "colecciones" ? " Capítulo" : "a Colección" %>"></i>
 				<div>
 					<p><strong>Cantidad de Temporadas:</strong> <%= producto.cant_temporadas ? producto.cant_temporadas : "Sin temporada" %></p>
-					<p><strong>Cantidad de Capítulos:</strong> <%= producto.cant_capitulos %></p>
+					<p><strong>Cantidad de Capítulos:</strong> <%= producto.capitulos.length %></p>
 				</div>
 			</div>
 			<% } %>

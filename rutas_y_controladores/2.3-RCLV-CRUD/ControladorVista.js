@@ -95,18 +95,15 @@ module.exports = {
 		let errores = req.session.erroresRCLV ? req.session.erroresRCLV : "";
 		// 5. Bases de Datos para la vista
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		let procesos_canonizacion =
-			codigo == "personajes"
-				? await BD_genericas.obtenerTodos("procesos_canonizacion", "orden").then((n) =>
-						n.filter((m) => m.id.length == 3)
-				  )
-				: "";
-		let roles_iglesia =
-			codigo == "personajes"
-				? await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
-						n.filter((m) => m.id.length == 3)
-				  )
-				: "";
+		if (codigo == "personajes") {
+			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
+			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
+			var roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
+			roles_iglesia = roles_iglesia.filter((m) => m.id.length == 3);
+			var apariciones_marianas = await BD_genericas.obtenerTodos("hechos", "nombre");
+			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
+		}
+
 		// 6. Render
 		return res.render("0-Estructura-Gral", {
 			tema,
@@ -118,6 +115,7 @@ module.exports = {
 			meses,
 			roles_iglesia,
 			procesos_canonizacion,
+			apariciones_marianas,
 		});
 	},
 

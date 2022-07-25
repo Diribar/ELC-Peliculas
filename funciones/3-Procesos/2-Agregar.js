@@ -162,7 +162,6 @@ module.exports = {
 				datos.avatar = "https://image.tmdb.org/t/p/original" + datosAPI.poster_path;
 			// ID de los capitulos
 			datos.capitulosTMDB_id = datosAPI.parts.map((n) => n.id);
-			datos.cant_capitulos = datosAPI.parts.length;
 		}
 		// Datos de los capítulos para completar la colección
 		let otrosDatos = await this.completarColeccion(datos);
@@ -314,11 +313,6 @@ module.exports = {
 			// Temporadas
 			datosAPI.seasons = datosAPI.seasons.filter((n) => n.season_number > 0);
 			datos.cant_temporadas = datosAPI.seasons.length;
-			datos.cant_capitulos = datosAPI.seasons
-				.map((n) => n.episode_count)
-				.reduce((a, b) => {
-					return a + b;
-				});
 		}
 		// Fin
 		return funciones.convertirLetrasAlCastellano(datos);

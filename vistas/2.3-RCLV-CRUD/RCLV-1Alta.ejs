@@ -1,102 +1,123 @@
 <section id="cuerpo" class="flex-col">
 	<h1 id="titulo">Agregá un <%= dataEntry.RCLV_nombre %> a nuestra Base de Datos</h1>
 	<form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
-		<!-- Datos -->
-		<section id="datos" class="flex-row OK">
+		<!-- Nombre y Fechas -->
+		<section class="flex-row OK">
 			<!--Primera columna-->
 			<div id="primeraCol">
-				<!-- Nombre: Título, Ayuda y Error/OK -->
-				<div class="flex-row">
-					<div class="margenBottomTitulo relative">
-						<!-- Título -->
-						<h3>Nombre</h3>
-						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<% if (codigo == "personajes") { %>
-								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-							<% } %>
-							<li>Primero el nombre, después el apellido.</li>
-						</ul>
+				<!-- Nombre -->
+				<div>
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Nombre</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<% if (codigo == "personajes") { %>
+									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+								<% } %>
+								<li>Primero el nombre, después el apellido.</li>
+							</ul>
+							<!-- Error/OK -->			
+							<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
+								<span class="mensajeError"><%= errores.nombre %></span>
+							</i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+				</div>
+				<!-- Fecha Representativa -->
+				<div class="borderTop flex-col">
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Fecha más representativa</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<li>Usamos la fecha en que se lo recuerda.</li>
+								<li>Para los santos o beatos, es la fecha en el santoral.</li>
+								<li>Para los demás, suele ser la fecha de su muerte.</li>
+							</ul>
+							<!-- Error -->			
+							<i class="fa-solid fa-circle-xmark<%- !errores.fecha ? ' ocultar' : '' %>">
+								<span class="mensajeError"><%= errores.dia %></span>
+							</i>
+							<!-- OK -->
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+					<!-- Valores -->
+					<div id="valoresFecha" class="flex-col space-between">
+						<!-- Meses -->
+						<div class="flexRowAlign">
+							<label style="width: 30px;">Mes:</label>
+							<select name="mes_id" class="input">
+								<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
+								<% for (let mes of meses) { %>
+									<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+										<%= mes.nombre %>
+									</option>
+								<% } %>
+							</select>
+							<a id="wiki" target="blank" class="ocultar" tabindex="-1">
+								<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
+							</a>
+							<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
+								<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
+							</a>
+						</div>
+						<!-- Días -->
+						<div class="flexRowAlign">
+							<label style="width: 30px;">Día:</label>
+							<select name="dia" class="input">
+								<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
+								<% for (let dia = 1; dia < 32; dia++) { %>
+									<option value="<%= dia %>" 
+										<% if (dia > 29) { %>class="ocultar"<% } %>
+										<% if (dataEntry.dia == dia) { %>selected<% } %>
+									>
+										<%= dia %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Fecha desconocida -->
+						<div class="flexRowAlign">
+							<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
+								<% if (dataEntry.desconocida=="on") { %>checked<% } %>
+								tabindex="-1"
+							>
+							<label>Sin fecha representativa</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--Segunda columna-->
+			<div id="segundaCol">
+				<div>
+					<div class="relative">
+						<h3>Nombres con esa fecha</h3>
 						<!-- Error/OK -->			
-						<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.nombre %></span>
+						<i class="fa-solid fa-circle-xmark<%- !errores.duplicados ? ' ocultar' : '' %>">
+							<span class="mensajeError"><%= errores.duplicados %></span>
 						</i>
 						<i class="fa-solid fa-circle-check ocultar"></i>
 					</div>
-				</div>
-				<!-- Nombre: Input -->
-				<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
-				<!-- Fecha Representativa: Título, Ayuda y Error/OK -->
-				<div class="borderTop flex-row">
-					<div class="margenBottomTitulo relative">
-						<!-- Título -->
-						<h3>Fecha más representativa</h3>
-						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Usamos la fecha en que se lo recuerda.</li>
-							<li>Para los santos o beatos, es la fecha en el santoral.</li>
-							<li>Para los demás, suele ser la fecha de su muerte.</li>
-						</ul>
-						<!-- Error/OK -->			
-						<i class="fa-solid fa-circle-xmark<%- !errores.fecha ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.dia %></span>
-						</i>
-						<i class="fa-solid fa-circle-check ocultar"></i>
-					</div>
-				</div>
-				<!-- Fecha Representativa: Valores -->
-				<div id="valoresFecha" class="flex-col space-between">
-					<!-- Meses -->
-					<div class="flexRowAlign">
-						<label style="width: 40px;">Mes:</label>
-						<select name="mes_id" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
-							<% for (let mes of meses) { %>
-								<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
-									<%= mes.nombre %>
-								</option>
-							<% } %>
-						</select>
-						<a id="wiki" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
-						</a>
-						<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
-							<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
-						</a>
-					</div>
-					<!-- Días -->
-					<div class="flexRowAlign">
-						<label style="width: 40px;">Día:</label>
-						<select name="dia" class="input">
-							<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
-							<% for (let dia = 1; dia < 32; dia++) { %>
-								<option value="<%= dia %>" 
-									<% if (dia > 29) { %>class="ocultar"<% } %>
-									<% if (dataEntry.dia == dia) { %>selected<% } %>
-								>
-									<%= dia %>
-								</option>
-							<% } %>
-						</select>
-					</div>
-					<!-- Fecha desconocida -->
-					<div class="flex-row align-center">
-						<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
-							<% if (dataEntry.desconocida=="on") { %>checked<% } %>
-							tabindex="-1"
-						>
-						<label>Sin fecha representativa</label>
-					</div>
+					<p>Destildalos para controlar si no está ya en nuestra BD</p>
+					<ul type="none" id="posiblesRepetidos"></ul>
 				</div>
 				<!-- Año de nacimiento u ocurrencia -->
 				<% if (codigo == "personajes" || codigo == "hechos") { %>
 					<div class="borderTop flex-row">
-						<div class="margenBottomTitulo relative flex-row align-center">
+						<div class="relative flex-row align-center">
 							<!-- Título -->
-							<h3>Año de <%= codigo == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
+							<h3 class="margenBottomTitulo">Año de <%= codigo == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
@@ -114,68 +135,85 @@
 					</div>
 				<% } %>
 			</div>
-			<!--Segunda columna-->
-			<div id="segundaCol">
-				<div class="relative">
-					<h3>Nombres con esa fecha</h3>
-					<!-- Error/OK -->			
-					<i class="fa-solid fa-circle-xmark<%- !errores.duplicados ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.duplicados %></span>
+		</section>
+		<% if (codigo == "personajes" || codigo == "hechos") { %>
+			<!-- Preguntas de contexto -->
+			<section id="preguntas" class="borderTop flex-col OK">
+				<!-- Título y Error/OK -->
+				<div class="flex-row margenBottomTitulo relative">
+					<!-- Título -->
+					<h3 class="">Preguntas de contexto</h3>
+					<!-- Error -->
+					<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.RCLI %></span>
 					</i>
+					<!-- OK -->
 					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
-				<p>Destildalos para controlar si no está ya en nuestra BD</p>
-				<ul type="none" id="posiblesRepetidos"></ul>
-			</div>
-		</section>
-		<!-- Relación con la Iglesia (sólo para personajes históricos) -->
-		<% if (codigo == "personajes") { %>
-			<section id="RCLI" class="borderTop flex-row space-between OK">
-				<!-- Primera columna -->
-				<div class="flex-col">
-					<!-- En proceso de canonización: Título y Error/OK -->
-					<div class="margenBottomTitulo relative">
-						<!-- Título -->
-						<h3 class="">Relación con la Iglesia</h3>
-						<!-- Error/OK -->
-						<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.RCLI %></span>
-						</i>
-						<i class="fa-solid fa-circle-check ocultar"></i>
+				<% if (codigo == "personajes") { %>
+					<!-- Contemporáneo de Jesús -->
+					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+						<div id="opcionesContemp" class="flexRowAlign space-between">
+							<div class="flexRowAlign">
+								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<label>SI</label>
+							</div>
+							<div class="flexRowAlign">
+								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<label>NO</label>
+							</div>
+						</div>
+						<h4>¿Es contemporáneos de Jesús o de los Apóstoles?</h4>
 					</div>
+					<!-- Aparición Mariana -->
+					<div id="ap_mar" class="flexRowAlign">
+						<input type="checkbox" name="ap_mar" value="1" <% if (dataEntry.ap_mar_id) { %>checked<% } %>>
+						<h4>¿Participó en una aparición mariana?</h4>
+						<select name="ap_mar_id" id="ap_mar_id">
+							<% apariciones_marianas.forEach(aparicion => { %>
+								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
+							<% }) %> 
+						</select>
+					</div>
+				<% } %>
+			</section>
+			<section id="RCLI" class="borderTop flex-col OK">
+				<!-- Título y Error/OK -->
+				<div class="margenBottomTitulo relative">
+					<!-- Título -->
+					<h3 class="">Relación con la Iglesia</h3>
+					<!-- Error -->
+					<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
+						<span class="mensajeError"><%= errores.RCLI %></span>
+					</i>
+					<!-- OK -->
+					<i class="fa-solid fa-circle-check ocultar"></i>
+				</div>
+				<!-- Primera fila: ¿En proceso de canonización? y ¿Genero? -->
+				<div class="flexRowAlign space-between">
 					<!-- ¿En proceso de canonización? -->
-					<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
-					<div id="opcionesIglesia" class="flex-row">
+					<div id="enProcesoCanonizacion" class="flexRowAlign">
+						<input type="checkbox" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
+						<h4 id="santosanta">¿Es santo/a o está en proceso de canonización?</h4>
+					</div>
+					<!-- Genero -->
+					<div id="genero" class="flexRowAlign">
 						<div class="flexRowAlign">
-							<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
-							<label>SI</label>
+							<input type="radio" name="genero" value="V" <% if (dataEntry.genero=="V") { %>checked<% } %>>
+							<label>Varón</label>
 						</div>
 						<div class="flexRowAlign">
-							<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %>>
-							<label>NO</label>
+							<input type="radio" name="genero" value="M" <% if (dataEntry.genero=="M") { %>checked<% } %>>
+							<label>Mujer</label>
 						</div>
 					</div>
 				</div>
-				<!-- Sectores ocultos salvo que esté en proceso de canonización -->
-				<div id="ocultarEnProcCan" class="invisible flex-col space-between">
-					<!-- Genero -->
-					<div id="genero" class="flex-row">
-						<h4>Género:</h4>
-						<div class="flex-row">
-							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="V" <% if (dataEntry.genero=="V") { %>checked<% } %>>
-								<label>Varón</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="M" <% if (dataEntry.genero=="M") { %>checked<% } %>>
-								<label>Mujer</label>
-							</div>
-						</div>
-					</div>
+				<!-- Segunda fila: Status del proceso de canonización y Rol en la Iglesia -->
+				<div id="ocultarEnProcCan" class="invisibl flexRowAlign space-between">
 					<!-- Status del proceso de canonización -->
 					<div class="flexRowAlign">
-						<label>Status del proceso:</label>
-						<select name="proceso_canonizacion_id" class="invisible">
+						<label>Status actual</label>
+						<select name="proceso_canonizacion_id" class="invisibl">
 							<option value="" <% if (dataEntry.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
 							<% for (let proceso of procesos_canonizacion) { %>
 								<option value="<%= proceso.id %>" <% if (dataEntry.proceso_canonizacion_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
@@ -185,7 +223,7 @@
 					<!-- Rol en la Iglesia -->
 					<div class="flexRowAlign">
 						<label>Rol en la Iglesia:</label>
-						<select name="rol_iglesia_id" class="invisible">
+						<select name="rol_iglesia_id" class="invisibl">
 							<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
 							<% for (let rol_iglesia of roles_iglesia) { %>
 								<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
