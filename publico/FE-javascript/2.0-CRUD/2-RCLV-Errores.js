@@ -65,7 +65,6 @@ window.addEventListener("load", async () => {
 		// Inputs
 		var solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
 		var jss = document.querySelectorAll("input[name='jss']");
-		var jss = document.querySelectorAll("input[name='jss']");
 		var cnt = document.querySelectorAll("input[name='cnt']");
 		var exclusivo = document.querySelectorAll("input[name='exclusivo']");
 		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
