@@ -89,11 +89,8 @@
 						</div>
 						<!-- Fecha desconocida -->
 						<div class="flexRowAlign">
-							<input class="input" type="checkbox" name="desconocida" style="margin-right: 5px;" 
-								<% if (dataEntry.desconocida=="on") { %>checked<% } %>
-								tabindex="-1"
-							>
-							<label>Sin fecha representativa</label>
+							<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (dataEntry.desconocida=="on") { %>checked<% } %>>
+							<label for="desconocida" class="derecha">Sin fecha representativa</label>
 						</div>
 					</div>
 				</div>
@@ -151,9 +148,64 @@
 					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 				<% if (codigo == "personajes") { %>
+					<!-- RCLI -->
+					<div class="flexRowAlign margenBottomTitulo">
+						<input id="rcli" type="checkbox" name="rcli" value="1" <% if (dataEntry.ap_mar_id) { %>checked<% } %>>
+						<label class="derecha" for="rcli">Fue miembro de la Iglesia Católica o es conocido por su relación con ella</label>
+					</div>
+					<!-- Género y Rol en la Iglesia -->
+					<div id="generoRol" class="flexRowAlign margenBottomTitulo space-between">
+						<!-- Genero -->
+						<div id="genero" class="flexRowAlign">
+							<label class="izquierda">Género:</label>
+							<div class="flexRowAlign">
+								<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V") { %>checked<% } %>>
+								<label for="V">Varón</label>
+							</div>
+							<div class="flexRowAlign">
+								<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M") { %>checked<% } %>>
+								<label for="M">Mujer</label>
+							</div>
+						</div>						
+						<!-- Rol en la Iglesia -->
+						<div class="flexRowAlign">
+							<label for="rol_iglesia_id">Rol en la Iglesia:</label>
+							<select name="rol_iglesia_id" id="rol_iglesia_id" class="invisibl">
+								<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
+								<% for (let rol_iglesia of roles_iglesia) { %>
+									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+								<% } %> 
+							</select>
+						</div>
+					</div>
+					<!-- ¿En proceso de canonización? y status -->
+					<div class="flexRowAlign margenBottomTitulo space-between">
+						<!-- ¿En proceso de canonización? -->
+						<div id="enProcesoCanonizacion" class="flexRowAlign">
+							<h4 id="santosanta" class="izquierda">¿Es santo/a o está en proceso de canonización?</h4>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %>>
+									<label>NO</label>
+								</div>
+							</div>
+						</div>
+						<!-- Status del proceso de canonización -->
+						<select name="proceso_canonizacion_id" class="invisibl">
+								<option value="" <% if (dataEntry.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
+								<% for (let proceso of procesos_canonizacion) { %>
+									<option value="<%= proceso.id %>" <% if (dataEntry.proceso_canonizacion_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+								<% } %> 
+						</select>
+					</div>
 					<!-- Contemporáneo de Jesús -->
 					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
-						<div id="opcionesContemp" class="flexRowAlign space-between">
+						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
+						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
 								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
 								<label>SI</label>
@@ -163,12 +215,22 @@
 								<label>NO</label>
 							</div>
 						</div>
-						<h4>¿Es contemporáneos de Jesús o de los Apóstoles?</h4>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="ap_mar" class="flexRowAlign">
-						<input type="checkbox" name="ap_mar" value="1" <% if (dataEntry.ap_mar_id) { %>checked<% } %>>
-						<h4>¿Participó en una aparición mariana?</h4>
+					<div id="ap_mar" class="flexRowAlign margenBottomTitulo space-between">
+						<div class="flexRowAlign">
+							<label class="izquierda">¿Participó en una aparición mariana?</label>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %>>
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %>>
+									<label>NO</label>
+								</div>
+							</div>
+						</div>
 						<select name="ap_mar_id" id="ap_mar_id">
 							<% apariciones_marianas.forEach(aparicion => { %>
 								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
@@ -176,61 +238,6 @@
 						</select>
 					</div>
 				<% } %>
-			</section>
-			<section id="RCLI" class="borderTop flex-col OK">
-				<!-- Título y Error/OK -->
-				<div class="margenBottomTitulo relative">
-					<!-- Título -->
-					<h3 class="">Relación con la Iglesia</h3>
-					<!-- Error -->
-					<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.RCLI %></span>
-					</i>
-					<!-- OK -->
-					<i class="fa-solid fa-circle-check ocultar"></i>
-				</div>
-				<!-- Primera fila: ¿En proceso de canonización? y ¿Genero? -->
-				<div class="flexRowAlign space-between">
-					<!-- ¿En proceso de canonización? -->
-					<div id="enProcesoCanonizacion" class="flexRowAlign">
-						<input type="checkbox" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %>>
-						<h4 id="santosanta">¿Es santo/a o está en proceso de canonización?</h4>
-					</div>
-					<!-- Genero -->
-					<div id="genero" class="flexRowAlign">
-						<div class="flexRowAlign">
-							<input type="radio" name="genero" value="V" <% if (dataEntry.genero=="V") { %>checked<% } %>>
-							<label>Varón</label>
-						</div>
-						<div class="flexRowAlign">
-							<input type="radio" name="genero" value="M" <% if (dataEntry.genero=="M") { %>checked<% } %>>
-							<label>Mujer</label>
-						</div>
-					</div>
-				</div>
-				<!-- Segunda fila: Status del proceso de canonización y Rol en la Iglesia -->
-				<div id="ocultarEnProcCan" class="invisibl flexRowAlign space-between">
-					<!-- Status del proceso de canonización -->
-					<div class="flexRowAlign">
-						<label>Status actual</label>
-						<select name="proceso_canonizacion_id" class="invisibl">
-							<option value="" <% if (dataEntry.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
-							<% for (let proceso of procesos_canonizacion) { %>
-								<option value="<%= proceso.id %>" <% if (dataEntry.proceso_canonizacion_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
-							<% } %> 
-						</select>
-					</div>
-					<!-- Rol en la Iglesia -->
-					<div class="flexRowAlign">
-						<label>Rol en la Iglesia:</label>
-						<select name="rol_iglesia_id" class="invisibl">
-							<option value="" <% if (dataEntry.rol_iglesia_id=="") { %> selected <% } %> class="ocultar">Elejí una opción</option>
-							<% for (let rol_iglesia of roles_iglesia) { %>
-								<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
-							<% } %> 
-						</select>
-					</div>
-				</div>
 			</section>	
 		<% } %>
 		<!-- Flechas y Botón -->

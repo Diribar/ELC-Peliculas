@@ -368,10 +368,7 @@ VALUES
 ('VNM', 3, 'Venerable'),
 ('SD', 4, 'Siervo de Dios'),
 ('SDV', 4, 'Siervo de Dios'),
-('SDM', 4, 'Sierva de Dios'),
-('NN', 5, 'Ninguno'),
-('NNV', 5, 'Ninguno'),
-('NNM', 5, 'Ninguno')
+('SDM', 4, 'Sierva de Dios')
 ;
 
 /* TABLAS AUXILIARES PARA PRODUCTOS */;
@@ -515,8 +512,8 @@ VALUES
 (23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 2, '2022-03-16 23:25:20', 'Juan Bosco'),
 (24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Juan Pablo II'),
 (25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
-(26, 305, 1483, 'CFC', 'HIG', 'NNV', 'APV', 2, '2022-03-16 23:25:20', 'Martín Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'STV', 'APV', 2, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
+(26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, '2022-03-16 23:25:20', 'Martín Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'STV', 'LSV', 2, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
