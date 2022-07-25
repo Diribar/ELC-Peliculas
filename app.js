@@ -32,9 +32,9 @@ const status_registro = require("./middlewares/varios/status_registro");
 app.use(status_registro);
 
 // Para saber el recorrido del proyecto
-let morgan = require('morgan');
-morgan.token("custom", ":method :url => Tiempo: :total-time[0]ms / :response-time[0]ms (:status)") //Create a new named format
-app.use(morgan("custom")) //use the new format by name
+// let morgan = require('morgan');
+// morgan.token("custom", ":method :url => Tiempo: :total-time[0]ms / :response-time[0]ms (:status)") //Create a new named format
+// app.use(morgan("custom")) //use the new format by name
 
 // *********** Para conectarse con el servidor ********************
 app.listen(80, () => console.log("Servidor funcionando..."));

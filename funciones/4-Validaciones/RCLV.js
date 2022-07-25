@@ -72,9 +72,9 @@ module.exports = {
 		if (false) {}
 		
 		// Respuesta generales
-		else if (!datos.contemp) respuesta = "Necesitamos saber si fue contemporáneo";
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
 		else if (datos.categoria_id == "0") respuesta = "";
+		else if (!datos.contemp) respuesta = "Necesitamos saber si fue contemporáneo";
 		
 		// Respuesta sólo si tuvo estrecha relación con la Iglesia
 		else if (!datos.genero) respuesta = "Necesitamos saber el género de la persona";
