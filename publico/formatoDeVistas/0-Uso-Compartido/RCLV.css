@@ -14,7 +14,10 @@
 #dataEntry #segundaCol {display: flex; flex-direction: column; width: 206px;}
 #dataEntry h4 {line-height: 1; font-weight: normal;}
 #dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
-#dataEntry .flexRowAlign label {margin-left: 3px; line-height: .8;}
+#dataEntry .flexRowAlign .derecha {margin-left: 5px;}
+#dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
+#dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {transform: scale(.8);}
+#dataEntry input[type="radio"] {margin-right: 3px;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
 #dataEntry .borderTop {margin-top: 15px; padding-top: 10px; border-top: solid 1px gray;}
 #dataEntry .margenBottomTitulo {margin-bottom: 5px;}
@@ -23,10 +26,10 @@
 #dataEntry input, #dataEntry #posiblesRepetidos {border-width: .7px; border-radius: 5px; background-color: white;}
 
 /* Temas específicos de dataEntry */
-#dataEntry h4, #dataEntry select {margin-left: 10px;}
-#dataEntry #preguntas #opcionesContemp {width: 70px;}
+#dataEntry select {max-width: 144px;}
 #dataEntry .input[name="nombre"] {width: 100%; padding-left: 5px;}
-#dataEntry #genero div {margin-left: 12px;}
+#dataEntry #preguntas .siNo {width: 70px; justify-content: space-between; margin-right: 10px;}
+#dataEntry #genero div {margin-right: 12px;}
 #dataEntry #valoresFecha {height: 80px;}
 #dataEntry #valoresFecha a {margin-left: 10px; border-radius: 50%; position: relative; width: 20px; height: 20px; overflow: hidden; border: 1px dotted var(--gris-oscuro);}
 #dataEntry #valoresFecha a img {position: absolute; object-fit: contain; height: 100%; width: 100%;}
@@ -37,9 +40,6 @@
 #dataEntry #posiblesRepetidos li {list-style-position: outside; padding: 3px 0; display: flex; flex-direction: row;}
 #dataEntry #posiblesRepetidos li input {margin-right: 5px;}
 #dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
-
-/* Temas específicos de dataEntry - RCLI */
-#RCLI #ocultarEnProcCan {align-items: flex-end; padding: 8px 0;}
 
 /* Todos los mensajes */
 #dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
