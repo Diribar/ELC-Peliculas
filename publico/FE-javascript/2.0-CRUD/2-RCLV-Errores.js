@@ -28,8 +28,10 @@ window.addEventListener("load", async () => {
 	let dia = document.querySelector("#dataEntry select[name='dia']");
 	let desconocida = document.querySelector("#dataEntry input[name='desconocida']");
 	let posiblesRepetidos = document.querySelector("#dataEntry #posiblesRepetidos");
+
 	// Campos para entidad != 'valores'
 	if (!valores) var ano = document.querySelector("#dataEntry input[name='ano']");
+
 	// Campos para entidad == 'personajes'
 	if (personajes) {
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
@@ -39,51 +41,6 @@ window.addEventListener("load", async () => {
 		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
-
-	// Add Event Listeners **************
-	dataEntry.addEventListener("input", (e) => {
-		let campo = e.target.name;
-		// Campos para todos los RCLV
-		if (campo == "nombre") {
-			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
-			wiki.href = url_wiki + nombre.value;
-			santopedia.href = url_santopedia + nombre.value;
-		}
-		if (campo == "ano") {
-			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear()
-			if (ano.value < -32768) ano.value = -32768
-		}
-	});
-
-	dataEntry.addEventListener("change", async (e) => {
-		let campo = e.target.name;
-		// Campos para todos los RCLV
-		if (campo == "nombre") [OK, errores] = await funcionNombre();
-		if (campo == "mes_id") diasDelMes();
-		if (campo == "mes_id" || campo == "dia" || campo == "desconocida")
-			[OK, errores] = await funcionFechas();
-		if (campo == "repetido") [OK, errores] = funcionRepetido();
-		// Campos para entidad != 'valores'
-		if (campo == "ano") [OK, errores] = await funcionAno();
-		// Campos para entidad == 'personajes'
-		if (campo == "genero") funcionGenero();
-		let camposRCLI = ["enProcCan", "genero", "proceso_canonizacion_id", "rol_iglesia_id"].includes(campo);
-		if (camposRCLI) [OK, errores] = await funcionRCLI();
-		// Final de la rutina
-		feedback(OK, errores);
-	});
-
-	botonSubmit.addEventListener("click", async (e) => {
-		if (botonSubmit.classList.contains("inactivo")) {
-			e.preventDefault();
-			[OK, errores] = await funcionNombre();
-			[OK, errores] = await funcionFechas();
-			[OK, errores] = funcionRepetido();
-			if (!valores) await funcionAno();
-			if (personajes) [OK, errores] = await funcionRCLI();
-			feedback(OK, errores);
-		}
-	});
 
 	// Funciones ************************
 	let feedback = (OK, errores) => {
@@ -322,6 +279,51 @@ window.addEventListener("load", async () => {
 			if (Array.from(enProcCan).some((n) => n.checked)) [OK, errores] = await funcionRCLI();
 		}
 	};
+
+	// Add Event Listeners **************
+	dataEntry.addEventListener("input", (e) => {
+		let campo = e.target.name;
+		// Campos para todos los RCLV
+		if (campo == "nombre") {
+			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
+			wiki.href = url_wiki + nombre.value;
+			santopedia.href = url_santopedia + nombre.value;
+		}
+		if (campo == "ano") {
+			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear()
+			if (ano.value < -32768) ano.value = -32768
+		}
+	});
+
+	dataEntry.addEventListener("change", async (e) => {
+		let campo = e.target.name;
+		// Campos para todos los RCLV
+		if (campo == "nombre") [OK, errores] = await funcionNombre();
+		if (campo == "mes_id") diasDelMes();
+		if (campo == "mes_id" || campo == "dia" || campo == "desconocida")
+			[OK, errores] = await funcionFechas();
+		if (campo == "repetido") [OK, errores] = funcionRepetido();
+		// Campos para entidad != 'valores'
+		if (campo == "ano") [OK, errores] = await funcionAno();
+		// Campos para entidad == 'personajes'
+		if (campo == "genero") funcionGenero();
+		let camposRCLI = ["enProcCan", "genero", "proceso_canonizacion_id", "rol_iglesia_id"].includes(campo);
+		if (camposRCLI) [OK, errores] = await funcionRCLI();
+		// Final de la rutina
+		feedback(OK, errores);
+	});
+
+	botonSubmit.addEventListener("click", async (e) => {
+		if (botonSubmit.classList.contains("inactivo")) {
+			e.preventDefault();
+			[OK, errores] = await funcionNombre();
+			[OK, errores] = await funcionFechas();
+			[OK, errores] = funcionRepetido();
+			if (!valores) await funcionAno();
+			if (personajes) [OK, errores] = await funcionRCLI();
+			feedback(OK, errores);
+		}
+	});
 
 	// Status inicial
 	await startUp();

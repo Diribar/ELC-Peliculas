@@ -240,62 +240,61 @@
 				<% } %>
 				<% if (codigo == "hechos") { %>
 					<!-- ¿Ocurrió durante la vida de Jesús? -->
-					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+					<div class="flexRowAlign margenBottomTitulo">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<input type="radio" name="jss" value="1" <% if (dataEntry.jss=="1") { %>checked<% } %>>
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<input type="radio" name="jss" value="0" <% if (dataEntry.jss=="0") { %>checked<% } %>>
 								<label>NO</label>
 							</div>
 						</div>
 						<label class="izquierda">¿Ocurrió durante la vida de Jesús?</label>
 					</div>
 					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
-					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+					<div class="flexRowAlign margenBottomTitulo">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %>>
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %>>
 								<label>NO</label>
 							</div>
 						</div>
 						<label class="izquierda">¿Ocurrió durante la vida de los Apóstoles?</label>
 					</div>
 					<!-- Exclusivo -->
-					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+					<div class="flexRowAlign margenBottomTitulo">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo=="1") { %>checked<% } %>>
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo=="0") { %>checked<% } %>>
 								<label>NO</label>
 							</div>
 						</div>
-						<label class="izquierda">¿Ocurrió solamente en ese período de tiempo?</label>
+						<label class="izquierda">¿Ocurrió solamente durante ese período de tiempo?</label>
 					</div>
 					<!-- Aparición Mariana -->
-					<div id="contempJesus" class="flexRowAlign margenBottomTitulo">
+					<div class="flexRowAlign margenBottomTitulo">
 						<div class="flexRowAlign siNo">
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="1" <% if (dataEntry.contemp=="1") { %>checked<% } %>>
+								<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %>>
 								<label>SI</label>
 							</div>
 							<div class="flexRowAlign">
-								<input type="radio" name="contemp" value="0" <% if (dataEntry.contemp=="0") { %>checked<% } %>>
+								<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %>>
 								<label>NO</label>
 							</div>
 						</div>
 						<label class="izquierda">¿Es una aparición mariana?</label>
 					</div>
-
 				<% } %>
 			</section>	
 		<% } %>
