@@ -22,8 +22,10 @@
 #dataEntry #segundaCol {display: flex; flex-direction: column; width: 206px;}
 #dataEntry h4 {line-height: 1; font-weight: normal;}
 #dataEntry .flexRowAlign {display: flex; flex-direction: row; align-items: center;}
-#dataEntry .flexRowAlign .derecha {margin-left: 5px;}
+#dataEntry .flexRowAlign input[type='checkbox'] {margin-right: 5px;}
 #dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
+#dataEntry .flexRowAlign .derecha {margin-left: 15px;}
+
 #dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {transform: scale(.8);}
 #dataEntry input[type="radio"] {margin-right: 3px;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}

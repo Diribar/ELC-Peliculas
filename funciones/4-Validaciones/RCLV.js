@@ -14,7 +14,9 @@ module.exports = {
 		// Campos cuando la entidad difiere de 'valores'
 		if (datos.entidad != "valores") errores.ano = this.ano(datos);
 		// Campos exclusivos de 'personajes'
-		if (datos.entidad == "personajes") errores.RCLI = this.RCLI(datos);
+		if (datos.entidad == "personajes") errores.RCLI = this.RCLI_personaje(datos);
+		// Campos exclusivos de 'hechos'
+		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
 		// Completar con 'hay errores'
 		errores.hay = hayErrores(errores);
 		return errores;
@@ -67,7 +69,7 @@ module.exports = {
 		return error;
 	},
 
-	RCLI: (datos) => {
+	RCLI_personaje: (datos) => {
 		let respuesta;
 		if (false) {
 		}
@@ -85,6 +87,25 @@ module.exports = {
 		else if (!datos.ap_mar) respuesta = "Necesitamos saber si participó de una Aparición Mariana";
 		else if (datos.ap_mar == "1" && !datos.ap_mar_id)
 			respuesta = "Necesitamos saber dónde fue la aparición en la que participó";
+		else respuesta = "";
+
+		// Fin
+		return respuesta;
+	},
+
+	RCLI_hecho: (datos) => {
+		let respuesta;
+		if (false) {
+		}
+
+		// Respuesta generales
+		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
+		else if (datos.jss == "0" && !datos.cnt)
+			respuesta = "Necesitamos saber si ocurrió durante la vida de los Apóstoles";
+		else if ((datos.jss == "1" || datos.cnt == "1") && !datos.exclusivo)
+			respuesta = "Necesitamos saber si ocurrió solamente durante su vida";
+		else if (datos.jss == "0" && datos.cnt == "0" && !datos.ap_mar)
+			respuesta = "Necesitamos saber si es una aparición mariana";
 		else respuesta = "";
 
 		// Fin
