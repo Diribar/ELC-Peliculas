@@ -60,10 +60,7 @@ VALUES
 ('PPV', 5, 'Papa', 0, 1, 'V'),
 ('AP', 6, 'Apóstata', 0, 1, '-'),
 ('APV', 6, 'Apóstata', 0, 1, 'V'),
-('APM', 6, 'Apóstata', 0, 1, 'M'),
-('CI', 7, 'Ninguno', 0, 1, '-'),
-('CIV', 7, 'Ninguno', 0, 1, 'V'),
-('CIM', 7, 'Ninguno', 0, 1, 'M')
+('APM', 6, 'Apóstata', 0, 1, 'M')
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -580,8 +577,8 @@ VALUES
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1, 'Apar. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1, 'Apar. Mariana - Fátima')
+(16, 1, 1, 42, 1858, 1, 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 1, 'Ap. Mariana - Fátima')
 ;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
