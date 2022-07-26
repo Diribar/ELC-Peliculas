@@ -187,17 +187,21 @@ window.addEventListener("load", async () => {
 				if (ano.value < -50 || ano.value > 100) {
 					cnt[1].checked = true;
 					cnt[0].disabled = true;
+					sector_cnt.classList.add("ocultarSector");
 				} else {
 					cnt[1].checked = false;
 					cnt[0].disabled = false;
+					sector_cnt.classList.remove("ocultarSector");
 				}
 				// Aparición Mariana
 				if (ano.value < 0) {
 					ap_mar[1].checked = true;
 					ap_mar[0].disabled = true;
+					sectorAp_mar.classList.add("ocultarSector");
 				} else {
 					ap_mar[1].checked = false;
 					ap_mar[0].disabled = false;
+					sectorAp_mar.classList.remove("ocultarSector");
 				}
 			}
 			if (hechos) {
@@ -325,8 +329,8 @@ window.addEventListener("load", async () => {
 			}
 			// OK y Errores
 			errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
-			console.log(url);
-			console.log(errores.RCLI);
+			// console.log(url);
+			// console.log(errores.RCLI);
 			OK.RCLI = !errores.RCLI;
 			if (!mostrarErrores) errores.RCLI = "";
 
