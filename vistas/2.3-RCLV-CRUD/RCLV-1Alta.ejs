@@ -9,7 +9,7 @@
 	</div>
 	<form action="<%= link %>" method="POST" id="dataEntry">
 		<!-- Nombre y Fechas -->
-		<section class="flex-row space-between OK">
+		<section id="datos" class="flex-row space-between OK">
 			<!--Primera columna-->
 			<div id="primeraCol">
 				<!-- Nombre -->
@@ -105,7 +105,7 @@
 			<!--Segunda columna-->
 			<div id="segundaCol">
 				<div>
-					<div class="relative">
+					<div class="margenBottomTitulo relative">
 						<h3>Nombres con esa fecha</h3>
 						<!-- Error/OK -->			
 						<i class="fa-solid fa-circle-xmark<%- !errores.duplicados ? ' ocultar' : '' %>">
@@ -155,87 +155,168 @@
 					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
 				<% if (codigo == "personajes") { %>
-					<!-- CFC/VPC -->
-					<div class="flexRowAlign margenBottomTitulo">
-						<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-					</div>
-					<!-- Género y Rol en la Iglesia -->
-					<div id="sectorGeneroRol" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
-						<!-- Genero -->
-						<div id="genero" class="flexRowAlign">
-							<label class="izquierda">Género:</label>
-							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V") { %>checked<% } %> class="RCLI">
-								<label for="V">Varón</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M") { %>checked<% } %> class="RCLI">
-								<label for="M">Mujer</label>
-							</div>
-						</div>						
-						<!-- Rol en la Iglesia -->
-						<div id="sectorRol_iglesia" class="flexRowAlign cfc">
-							<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
-							<select name="rol_iglesia_id" class="RCLI">
-								<option value="" selected class="ocultar">Elejí una opción</option>
-								<% for (let rol_iglesia of roles_iglesia) { %>
-									<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
-								<% } %> 
-							</select>
-						</div>
-					</div>
-					<!-- ¿En proceso de canonización? y status -->
-					<div id="sectorEnProceso" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
-						<!-- ¿En proceso de canonización? -->
-						<div class="flexRowAlign">
-							<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
+					<div id="personajes">
+						<!-- CFC/VPC -->
+						<div class="flexRowAlign altoFila">
+							<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
 						</div>
-						<!-- Status del proceso de canonización -->
-						<select name="proceso_id" class="ocultar RCLI cfc">
-								<option value="" selected class="ocultar">Elejí una opción</option>
-								<% for (let proceso of procesos_canonizacion) { %>
-									<option value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
-								<% } %> 
-						</select>
-					</div>
-					<!-- Contemporáneo de Jesús -->
-					<div id="sector_cnt" class="flexRowAlign margenBottomTitulo ocultar cfc">
-						<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
+						<!-- Género y Rol en la Iglesia -->
+						<div id="sectorGeneroRol" class="flexRowAlign altoFila space-between ocultar cfc">
+							<!-- Genero -->
+							<div id="genero" class="flexRowAlign">
+								<label class="izquierda">Género:</label>
+								<div class="flexRowAlign">
+									<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V") { %>checked<% } %> class="RCLI">
+									<label for="V">Varón</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M") { %>checked<% } %> class="RCLI">
+									<label for="M">Mujer</label>
+								</div>
+							</div>						
+							<!-- Rol en la Iglesia -->
+							<div id="sectorRol_iglesia" class="flexRowAlign cfc">
+								<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
+								<select name="rol_iglesia_id" class="RCLI">
+									<option value="" selected class="ocultar">Elejí una opción</option>
+									<% for (let rol_iglesia of roles_iglesia) { %>
+										<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+									<% } %> 
+								</select>
 							</div>
 						</div>
+						<!-- ¿En proceso de canonización? y status -->
+						<div id="sectorEnProceso" class="flexRowAlign altoFila space-between ocultar cfc">
+							<!-- ¿En proceso de canonización? -->
+							<div class="flexRowAlign">
+								<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
+								<div class="flexRowAlign siNo">
+									<div class="flexRowAlign">
+										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %> class="RCLI">
+										<label>SI</label>
+									</div>
+									<div class="flexRowAlign">
+										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %> class="RCLI">
+										<label>NO</label>
+									</div>
+								</div>
+							</div>
+							<!-- Status del proceso de canonización -->
+							<select name="proceso_id" class="ocultar RCLI cfc">
+									<option value="" selected class="ocultar">Elejí una opción</option>
+									<% for (let proceso of procesos_canonizacion) { %>
+										<option value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+									<% } %> 
+							</select>
+						</div>
+						<!-- Contemporáneo de Jesús -->
+						<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
+							<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+						</div>
+						<!-- Aparición Mariana -->
+						<div id="sectorApMar" class="flexRowAlign altoFila space-between ocultar cfc">
+							<div class="flexRowAlign">
+								<label class="izquierda">¿Participó en una aparición mariana?</label>
+								<div class="flexRowAlign siNo">
+									<div class="flexRowAlign">
+										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %> class="RCLI">
+										<label>SI</label>
+									</div>
+									<div class="flexRowAlign">
+										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %> class="RCLI">
+										<label>NO</label>
+									</div>
+								</div>
+							</div>
+							<select name="ap_mar_id" id="ap_mar_id"  class="ocultar RCLI cfc">
+								<option value="" selected class="ocultar">Elejí una opción</option>
+								<% apariciones_marianas.forEach(aparicion => { %>
+									<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
+								<% }) %> 
+							</select>
+						</div>
 					</div>
-					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign margenBottomTitulo space-between ocultar cfc">
-						<div class="flexRowAlign">
-							<label class="izquierda">¿Participó en una aparición mariana?</label>
+				<% } %>
+				<% if (codigo == "hechos") { %>
+					<div id="hechos">
+						<!-- CFC/VPC -->
+						<div class="flexRowAlign altoFila">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc=="0") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
+						</div>
+						<!-- ¿Ocurrió durante la vida de Jesús? -->
+						<div id="sector_jss" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="jss" value="1" <% if (dataEntry.jss=="1") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="jss" value="0" <% if (dataEntry.jss=="0") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">Por favor confirmanos que ocurrió durante la vida terrenal de Jesús</label>
+						</div>
+						<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
+						<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">Por favor confirmanos que ocurrió durante la vida de los Apóstoles</label>
+						</div>
+						<!-- Exclusivo -->
+						<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo=="1") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo=="0") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">¿Terminó en ese período de tiempo?</label>
+						</div>
+						<!-- Aparición Mariana -->
+						<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
 									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %> class="RCLI">
@@ -246,85 +327,8 @@
 									<label>NO</label>
 								</div>
 							</div>
+							<label class="derecha">¿Es una aparición mariana?</label>
 						</div>
-						<select name="ap_mar_id" id="ap_mar_id"  class="ocultar RCLI cfc">
-							<option value="" selected class="ocultar">Elejí una opción</option>
-							<% apariciones_marianas.forEach(aparicion => { %>
-								<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
-							<% }) %> 
-						</select>
-					</div>
-				<% } %>
-				<% if (codigo == "hechos") { %>
-					<!-- CFC/VPC -->
-					<div class="flexRowAlign margenBottomTitulo">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de Jesús? -->
-					<div id="sector_jss" class="flexRowAlign margenBottomTitulo ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="jss" value="1" <% if (dataEntry.jss=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="jss" value="0" <% if (dataEntry.jss=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida de Jesús?</label>
-					</div>
-					<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
-					<div id="sector_cnt" class="flexRowAlign margenBottomTitulo ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió durante la vida de los Apóstoles?</label>
-					</div>
-					<!-- Exclusivo -->
-					<div id="sectorExclusivo" class="flexRowAlign margenBottomTitulo ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Ocurrió solamente durante ese período de tiempo?</label>
-					</div>
-					<!-- Aparición Mariana -->
-					<div id="sectorApMar" class="flexRowAlign margenBottomTitulo ocultar cfc">
-						<div class="flexRowAlign siNo">
-							<div class="flexRowAlign">
-								<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %> class="RCLI">
-								<label>SI</label>
-							</div>
-							<div class="flexRowAlign">
-								<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %> class="RCLI">
-								<label>NO</label>
-							</div>
-						</div>
-						<label class="derecha">¿Es una aparición mariana?</label>
 					</div>
 				<% } %>
 			</section>	
