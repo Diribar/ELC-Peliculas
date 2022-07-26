@@ -75,12 +75,12 @@ module.exports = {
 		}
 		// Respuesta
 		else if (!datos.categoria_id) respuesta = "Necesitamos saber sobre su relación con la Iglesia";
-		else if (datos.categoria_id == "0") respuesta = "";
+		else if (datos.categoria_id == "VPC") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.genero) respuesta = "Necesitamos saber el género de la persona";
 		else if (!datos.rol_iglesia_id) respuesta = "Necesitamos saber el rol de la persona en la Iglesia";
 		else if (!datos.enProcCan) respuesta = "Necesitamos saber si está en Proceso de Canonización";
-		else if (datos.enProcCan == "1" && !datos.proceso_canonizacion_id)
+		else if (datos.enProcCan == "1" && !datos.proceso_id)
 			respuesta = "Necesitamos saber el status del Proceso de Canonización";
 		else if (!datos.cnt) respuesta = "Necesitamos saber si fue contemporáneo";
 		else if (!datos.ap_mar) respuesta = "Necesitamos saber si participó de una Aparición Mariana";

@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		subcategoria_id: {type: dt.STRING(3)},
 		ap_mar_id: {type: dt.INTEGER},
 
-		proceso_canonizacion_id: {type: dt.STRING(3)},
+		proceso_id: {type: dt.STRING(3)},
 		santo_beato: {type: dt.BOOLEAN},
 		rol_iglesia_id: {type: dt.STRING(3)},
 
@@ -45,7 +45,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.categorias, {as: "categoria", foreignKey: "categoria_id"});
 		entidad.belongsTo(n.subcategorias, {as: "subcategoria", foreignKey: "subcategoria_id"});
 		entidad.belongsTo(n.hechos, {as: "ap_mar", foreignKey: "ap_mar_id"});
-		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_canonizacion_id",});
+		entidad.belongsTo(n.procesos_canonizacion, {as: "proceso_canonizacion",	foreignKey: "proceso_id",});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 
 		entidad.belongsTo(n.usuarios, {as: "creado_por", foreignKey: "creado_por_id"});

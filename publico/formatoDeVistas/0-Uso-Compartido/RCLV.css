@@ -25,7 +25,6 @@
 #dataEntry .flexRowAlign input[type='checkbox'] {margin-right: 5px;}
 #dataEntry .flexRowAlign .izquierda {margin-right: 5px;}
 #dataEntry .flexRowAlign .derecha {margin-left: 15px;}
-
 #dataEntry input[type="radio"], #dataEntry input[type="checkbox"] {transform: scale(.8);}
 #dataEntry input[type="radio"] {margin-right: 3px;}
 #dataEntry select {border-width: .7px; border-radius: 5px; background-color: white;}
@@ -44,7 +43,7 @@
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas #genero div {margin-right: 12px;}
-#dataEntry #preguntas .ocultar {display: none;}
+#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarSector {display: none;}
 #dataEntry #preguntas .cfc {height: 21px;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */

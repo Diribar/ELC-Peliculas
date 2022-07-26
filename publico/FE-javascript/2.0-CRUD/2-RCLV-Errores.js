@@ -34,20 +34,21 @@ window.addEventListener("load", async () => {
 	let desconocida = document.querySelector("#dataEntry input[name='desconocida']");
 	let posiblesRepetidos = document.querySelector("#dataEntry #posiblesRepetidos");
 
-	// Campos para entidad != 'valores'
+	// Campos para !valores
 	if (!valores) {
 		var ano = document.querySelector("#dataEntry input[name='ano']");
 		var cfc = document.querySelectorAll("#preguntas .cfc");
+		var preguntas = document.querySelector("#dataEntry #preguntas");
 	}
 
-	// Campos para entidad == 'personajes'
+	// Campos para personajes
 	if (personajes) {
 		// Inputs
 		var categoria_id = document.querySelectorAll("input[name='categoria_id']");
 		var genero = document.querySelectorAll("input[name='genero']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
-		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var proceso_id = document.querySelector("select[name='proceso_id']");
 		var cnt = document.querySelectorAll("input[name='cnt']");
 		var ap_mar = document.querySelectorAll("input[name='ap_mar']");
 		var ap_mar_id = document.querySelector("select[name='ap_mar_id']");
@@ -60,7 +61,7 @@ window.addEventListener("load", async () => {
 		var sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 	}
 
-	// Campos para entidad == 'hechos'
+	// Campos para hechos
 	if (hechos) {
 		// Inputs
 		var solo_cfc = document.querySelectorAll("input[name='solo_cfc']");
@@ -179,6 +180,59 @@ window.addEventListener("load", async () => {
 		let url = "&ano=" + ano.value;
 		errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
 		OK.ano = !errores.ano;
+		//
+		if (OK.ano) {
+			if (personajes) {
+				// Contemporáneo de Jesús
+				if (ano.value < -50 || ano.value > 100) {
+					cnt[1].checked = true;
+					cnt[0].disabled = true;
+					sector_cnt.classList.add("ocultarSector");
+				} else {
+					cnt[1].checked = false;
+					cnt[0].disabled = false;
+					sector_cnt.classList.remove("ocultarSector");
+				}
+				// Aparición Mariana
+				if (ano.value < 0) {
+					ap_mar[1].checked = true;
+					ap_mar[0].disabled = true;
+					sectorAp_mar.classList.add("ocultarSector");
+				} else {
+					ap_mar[1].checked = false;
+					ap_mar[0].disabled = false;
+					sectorAp_mar.classList.remove("ocultarSector");
+				}
+			}
+			if (hechos) {
+				// Vida de Jesús
+				if (ano.value > 33) {
+					jss[1].checked = true;
+					jss[0].disabled = true;
+				} else {
+					jss[1].checked = false;
+					jss[0].disabled = false;
+				}
+				// Contemp. Jesús
+				if (ano.value > 100) {
+					cnt[1].checked = true;
+					cnt[0].disabled = true;
+				} else {
+					cnt[1].checked = false;
+					cnt[0].disabled = false;
+				}
+				// Aparición Mariana
+				if (ano.value < 33) {
+					ap_mar[1].checked = true;
+					ap_mar[0].disabled = true;
+				} else {
+					ap_mar[1].checked = false;
+					ap_mar[0].disabled = false;
+				}
+			}
+			preguntas.classList.remove("ocultar");
+		} else preguntas.classList.add("ocultar");
+		// Fin
 		return [OK, errores];
 	};
 	// Preguntas para Personaje
@@ -195,7 +249,7 @@ window.addEventListener("load", async () => {
 					"ant" + letraActual
 				);
 			// Dejar solamente las opciones alineadas con el género
-			let opciones_proc = document.querySelectorAll("select[name='proceso_canonizacion_id'] option");
+			let opciones_proc = document.querySelectorAll("select[name='proceso_id'] option");
 			opciones_proc.forEach((n) =>
 				n.value.length < 2 || n.value[2] != generoElegido
 					? n.classList.add("ocultar")
@@ -209,12 +263,8 @@ window.addEventListener("load", async () => {
 			);
 			// Cambiar la opción anterior por el nuevo genero
 			// Proceso de canonización
-			if (
-				proceso_canonizacion_id.value &&
-				proceso_canonizacion_id.value.length != 2 &&
-				proceso_canonizacion_id.value[2] != generoElegido
-			)
-				proceso_canonizacion_id.value = proceso_canonizacion_id.value.slice(0, 2) + generoElegido;
+			if (proceso_id.value && proceso_id.value.length != 2 && proceso_id.value[2] != generoElegido)
+				proceso_id.value = proceso_id.value.slice(0, 2) + generoElegido;
 			// Rol en la Iglesia
 			if (
 				rol_iglesia_id.value &&
@@ -227,127 +277,134 @@ window.addEventListener("load", async () => {
 		}
 		return;
 	};
-	let funcionRCLI_personaje = async (mostrarErrores) => {
-		let url = "&entidad=" + entidad;
-		// categoria_id
-		let categoria_idElegido = categoria_id[0].checked
-			? categoria_id[0].value
-			: categoria_id[1].checked
-			? categoria_id[1].value
-			: "";
-		url += "&categoria_id=" + categoria_idElegido;
-		// Resto de RCLI
-		if (categoria_id[0].checked) {
-			// Género - visible
-			sectorGeneroRol.classList.remove("ocultar");
-			// Género - valor
-			let generoElegido = genero[0].checked
-				? genero[0].value
-				: genero[1].checked
-				? genero[1].value
-				: "";
-			url += "&genero=" + generoElegido;
-			// Rol en la Iglesia - visible
-			if (generoElegido) sectorRol_iglesia.classList.remove("ocultar");
-			else sectorRol_iglesia.classList.add("ocultar");
-			// Rol en la Iglesia - valor
-			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
-			// Proceso de canonización - visible
-			if (rol_iglesia_id.value) sectorEnProceso.classList.remove("ocultar");
-			else sectorEnProceso.classList.add("ocultar");
-			// Proceso de canonización - valor
-			let procCanElegido = enProcCan[0].checked
-				? enProcCan[0].value
-				: enProcCan[1].checked
-				? enProcCan[1].value
-				: "";
-			url += "&enProcCan=" + procCanElegido;
-			if (procCanElegido == "1") {
-				url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
-				proceso_canonizacion_id.classList.remove("ocultar");
-			} else proceso_canonizacion_id.classList.add("ocultar");
-			// Contemporáneo - visible
-			if (procCanElegido == "0" || proceso_canonizacion_id.value)
-				sector_cnt.classList.remove("ocultar");
-			else sector_cnt.classList.add("ocultar");
-			// Contemporáneo - valor
-			let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
-			url += "&cnt=" + cntElegido;
-			// Aparición mariana - visible
-			if (cntElegido) sectorAp_mar.classList.remove("ocultar");
-			else sectorAp_mar.classList.add("ocultar");
-			// Aparición mariana - valor
-			let apMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
-			url += "&ap_mar=" + apMarElegido;
-			if (apMarElegido == "1") {
-				url += "&ap_mar_id=" + ap_mar_id.value;
-				ap_mar_id.classList.remove("ocultar");
-			} else ap_mar_id.classList.add("ocultar");
-			// Logo de Santopedia
-			// if (nombre.value && !errores.nombre) santopedia.classList.remove("ocultar");
-		} else {
-			// Ocultar las opciones 'cfc'
-			for (let pregunta of cfc) pregunta.classList.add("ocultar");
-			// Logo de Santopedia
-			// santopedia.classList.add("ocultar");
-		}
-		// OK y Errores
-		errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
-		OK.RCLI = !errores.RCLI;
-		if (!mostrarErrores) errores.RCLI = "";
+	// Preguntas para Personajes y Hechos
+	let funcionRCLI = {
+		personajes: async function (mostrarErrores) {
+			let num = -1;
+			let url = "&entidad=" + entidad;
+			let inputCategID, inputGenero, inputRol, inputProcCan, inputProcID, inputCnt, inputAM, AM_id;
+			// categoria_id
+			[url, inputCategID] = this.inputRadio(url, num, "categoria_id", categoria_id);
+			// Género
+			num++;
+			if (inputCategID != "CFC") this.limpiar(num);
+			else {
+				[url, inputGenero] = this.inputRadio(url, num, "genero", genero);
+				// Rol en la Iglesia
+				num++;
+				if (!inputGenero) this.limpiar(num);
+				else {
+					[url, inputRol] = this.inputSelect(url, num, "rol_iglesia_id", rol_iglesia_id);
+					// En proceso de canonización
+					num++;
+					if (!inputRol) this.limpiar(num);
+					else {
+						[url, inputProcCan] = this.inputRadio(url, num, "enProcCan", enProcCan);
+						// Proceso de canonizacion ID
+						num++;
+						if (!inputProcCan) this.limpiar(num);
+						else {
+							if (inputProcCan == "1") {
+								[url, inputProcID] = this.inputSelect(url, num, "proceso_id", proceso_id);
+							} else cfc[num].classList.add("ocultar");
+							// Contemporáneo
+							num++;
+							if (inputProcCan != "0" && !inputProcID) this.limpiar(num);
+							else {
+								[url, inputCnt] = this.inputRadio(url, num, "cnt", cnt);
+								// Aparición mariana - SI/NO
+								num++;
+								if (!inputCnt) this.limpiar(num);
+								else {
+									[url, inputAM] = this.inputRadio(url, num, "ap_mar", ap_mar);
+									// Aparición mariana - Cuál
+									num++;
+									if (inputAM != "1") this.limpiar(num);
+									else [url, AM_id] = this.inputSelect(url, num, "ap_mar_id", ap_mar_id);
+								}
+							}
+						}
+					}
+				}
+			}
+			// OK y Errores
+			errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
+			// console.log(url);
+			// console.log(errores.RCLI);
+			OK.RCLI = !errores.RCLI;
+			if (!mostrarErrores) errores.RCLI = "";
 
-		// Fin
-		return [OK, errores];
-	};
-	// Preguntas para Hechos
-	let funcionRCLI_hecho = async (mostrarErrores) => {
-		let url = "&entidad=" + entidad;
-		// Sólo CFC
-		let solo_cfcElegido = solo_cfc[0].checked
-			? solo_cfc[0].value
-			: solo_cfc[1].checked
-			? solo_cfc[1].value
-			: "";
-		url += "&solo_cfc=" + solo_cfcElegido;
-		if (solo_cfc[0].checked) {
-			// Jesús - visible
-			sector_jss.classList.remove("ocultar");
-			// Jesús - valor
-			let jssElegido = jss[0].checked ? jss[0].value : jss[1].checked ? jss[1].value : "";
-			url += "&jss=" + jssElegido;
-			// Contemporaneos - visible
-			if (jssElegido == "0") sector_cnt.classList.remove("ocultar");
-			else sector_cnt.classList.add("ocultar");
-			// Contemporaneos - valor
-			let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
-			url += "&cnt=" + cntElegido;
-			// Exclusivo - visible
-			if (jssElegido == "1" || cntElegido == "1") sectorExclusivo.classList.remove("ocultar");
-			else sectorExclusivo.classList.add("ocultar");
-			// Exclusivo - valor
-			let excElegido = exclusivo[0].checked
-				? exclusivo[0].value
-				: exclusivo[1].checked
-				? exclusivo[1].value
+			// Fin
+			return [OK, errores];
+		},
+		hechos: async function (mostrarErrores) {
+			let url = "&entidad=" + entidad;
+			// Sólo CFC
+			let solo_cfcElegido = solo_cfc[0].checked
+				? solo_cfc[0].value
+				: solo_cfc[1].checked
+				? solo_cfc[1].value
 				: "";
-			url += "&exclusivo=" + excElegido;
-			// Aparición Mariana - visible
-			if (jssElegido == "0" && cntElegido == "0") sectorApMar.classList.remove("ocultar");
-			else sectorApMar.classList.add("ocultar");
-			// Aparición Mariana - valor
-			let ApMarElegido = ap_mar[0].checked ? ap_mar[0].value : ap_mar[1].checked ? ap_mar[1].value : "";
-			url += "&ap_mar=" + ApMarElegido;
-		} else {
-			// Ocultar las opciones 'cfc'
-			for (let pregunta of cfc) pregunta.classList.add("ocultar");
-		}
-		// OK y Errores
-		errores.RCLI = await fetch(ruta + "RCLI_hecho" + url).then((n) => n.json());
-		OK.RCLI = !errores.RCLI;
-		if (!mostrarErrores) errores.RCLI = "";
+			url += "&solo_cfc=" + solo_cfcElegido;
+			if (solo_cfc[0].checked) {
+				// Jesús - visible
+				sector_jss.classList.remove("ocultar");
+				// Jesús - valor
+				let jssElegido = jss[0].checked ? jss[0].value : jss[1].checked ? jss[1].value : "";
+				url += "&jss=" + jssElegido;
+				// Contemporaneos - visible
+				if (jssElegido == "0") sector_cnt.classList.remove("ocultar");
+				else sector_cnt.classList.add("ocultar");
+				// Contemporaneos - valor
+				let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
+				url += "&cnt=" + cntElegido;
+				// Exclusivo - visible
+				if (jssElegido == "1" || cntElegido == "1") sectorExclusivo.classList.remove("ocultar");
+				else sectorExclusivo.classList.add("ocultar");
+				// Exclusivo - valor
+				let excElegido = exclusivo[0].checked
+					? exclusivo[0].value
+					: exclusivo[1].checked
+					? exclusivo[1].value
+					: "";
+				url += "&exclusivo=" + excElegido;
+				// Aparición Mariana - visible
+				if (jssElegido == "0" && cntElegido == "0") sectorApMar.classList.remove("ocultar");
+				else sectorApMar.classList.add("ocultar");
+				// Aparición Mariana - valor
+				let ApMarElegido = ap_mar[0].checked
+					? ap_mar[0].value
+					: ap_mar[1].checked
+					? ap_mar[1].value
+					: "";
+				url += "&ap_mar=" + ApMarElegido;
+			} else {
+				// Ocultar las opciones 'cfc'
+				for (let pregunta of cfc) pregunta.classList.add("ocultar");
+			}
+			// OK y Errores
+			errores.RCLI = await fetch(ruta + "RCLI_hecho" + url).then((n) => n.json());
+			OK.RCLI = !errores.RCLI;
+			if (!mostrarErrores) errores.RCLI = "";
 
-		// Fin
-		return [OK, errores];
+			// Fin
+			return [OK, errores];
+		},
+		limpiar: (num) => {
+			for (let i = num; i < cfc.length; i++) cfc[i].classList.add("ocultar");
+			return;
+		},
+		inputRadio: (url, num, campo, input) => {
+			if (num >= 0) cfc[num].classList.remove("ocultar");
+			let inputElegido = input[0].checked ? input[0].value : input[1].checked ? input[1].value : "";
+			url += "&" + campo + "=" + inputElegido;
+			return [url, inputElegido];
+		},
+		inputSelect: (url, num, campo, input) => {
+			cfc[num].classList.remove("ocultar");
+			url += "&" + campo + "=" + input.value;
+			return [url, input.value];
+		},
 	};
 	// Consolidado - compatible RCLV x 3
 	let startUp = async () => {
@@ -358,15 +415,15 @@ window.addEventListener("load", async () => {
 			[OK, errores] = funcionRepetido();
 		}
 		if (ano && ano.value) await funcionAno();
-		if (personajes) {
-			if (categoria_id[0].checked) funcionGenero();
-			[OK, errores] = await funcionRCLI_personaje(false);
+		if (!valores) {
+			if (personajes && categoria_id[0].checked) funcionGenero();
+			[OK, errores] = await funcionRCLI[entidad](false);
 		}
 	};
 	let feedback = (OK, errores) => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
-		if (entidad != "valores") sectores.push("ano", "RCLI");
+		if (!valores) sectores.push("ano", "RCLI");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
@@ -379,13 +436,8 @@ window.addEventListener("load", async () => {
 			mensajeError[i].innerHTML = errores[sector] ? errores[sector] : "";
 		});
 		// Mostrar logo de Wikipedia
-		if (OK.nombre) {
-			wiki.classList.remove("ocultar");
-			if (entidad == "personajes" && enProcCan[0].checked) santopedia.classList.remove("ocultar");
-		} else {
-			wiki.classList.add("ocultar");
-			santopedia.classList.add("ocultar");
-		}
+		if (OK.nombre) wiki.classList.remove("ocultar");
+		else wiki.classList.add("ocultar");
 		// Conclusiones
 		let resultado = Object.values(OK);
 		let resultadoTrue = resultado.length
@@ -423,12 +475,11 @@ window.addEventListener("load", async () => {
 		)
 			[OK, errores] = await funcionFechas();
 		if (campo == "repetido") [OK, errores] = funcionRepetido();
-		// Campos para entidad != 'valores'
+		// Campos para !valores
 		if (campo == "ano") [OK, errores] = await funcionAno();
-		// Campos para entidad == 'personajes'
+		// Campos RCLI
 		if (personajes && campo == "genero") funcionGenero();
-		if (entidad != "valores" && camposRCLI.includes(campo))
-			[OK, errores] = personajes ? await funcionRCLI_personaje(false) : await funcionRCLI_hecho(false);
+		if (!valores && camposRCLI.includes(campo)) [OK, errores] = await funcionRCLI[entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
@@ -438,9 +489,10 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionNombre();
 			[OK, errores] = await funcionFechas();
 			[OK, errores] = funcionRepetido();
-			if (!valores) await funcionAno();
-			if (personajes) [OK, errores] = await funcionRCLI_personaje(true);
-			if (hechos) [OK, errores] = await funcionRCLI_hecho(true);
+			if (!valores) {
+				await funcionAno();
+				[OK, errores] = await funcionRCLI[entidad](true);
+			}
 			feedback(OK, errores);
 		}
 	});

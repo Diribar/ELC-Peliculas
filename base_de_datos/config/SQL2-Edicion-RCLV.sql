@@ -10,7 +10,7 @@ CREATE TABLE rclv_4edicion (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
 	nombre VARCHAR(30) NULL UNIQUE,
-	proceso_canonizacion_id VARCHAR(3) NULL,
+	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
 	editado_por_id INT UNSIGNED NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE rclv_4edicion (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (dia_del_ano_id) REFERENCES rclv_dias(id),
-	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
+	FOREIGN KEY (proceso_id) REFERENCES rclv_proc_canoniz(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (editado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

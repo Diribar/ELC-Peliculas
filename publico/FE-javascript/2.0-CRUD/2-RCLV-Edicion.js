@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 	if (personajes) {
 		var enProcCan = document.querySelectorAll("input[name='enProcCan']");
 		var genero = document.querySelectorAll("input[name='genero']");
-		var proceso_canonizacion_id = document.querySelector("select[name='proceso_canonizacion_id']");
+		var proceso_id = document.querySelector("select[name='proceso_id']");
 		var rol_iglesia_id = document.querySelector("select[name='rol_iglesia_id']");
 	}
 
@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 		if (entidad == "personajes" && enProcCan[0].checked) {
 			let generoElegido = genero[0].checked ? "V" : genero[1].checked ? "M" : "";
 			url += "&genero=" + generoElegido;
-			url += "&proceso_canonizacion_id=" + proceso_canonizacion_id.value;
+			url += "&proceso_id=" + proceso_id.value;
 			url += "&rol_iglesia_id=" + rol_iglesia_id.value;
 		}
 		return url;

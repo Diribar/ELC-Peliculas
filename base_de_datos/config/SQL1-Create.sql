@@ -60,10 +60,7 @@ VALUES
 ('PPV', 5, 'Papa', 0, 1, 'V'),
 ('AP', 6, 'Apóstata', 0, 1, '-'),
 ('APV', 6, 'Apóstata', 0, 1, 'V'),
-('APM', 6, 'Apóstata', 0, 1, 'M'),
-('CI', 7, 'Ninguno', 0, 1, '-'),
-('CIV', 7, 'Ninguno', 0, 1, 'V'),
-('CIM', 7, 'Ninguno', 0, 1, 'M')
+('APM', 6, 'Apóstata', 0, 1, 'M')
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -456,7 +453,7 @@ CREATE TABLE rclv_1personajes (
 	subcategoria_id VARCHAR(3) NULL,  /* Jesús,Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
 
-	proceso_canonizacion_id VARCHAR(3) NULL,
+	proceso_id VARCHAR(3) NULL,
 	santo_beato BOOLEAN NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
@@ -485,7 +482,7 @@ CREATE TABLE rclv_1personajes (
 
 	FOREIGN KEY (categoria_id) REFERENCES prod_categ1(id),
 	FOREIGN KEY (subcategoria_id) REFERENCES prod_categ2_sub(id),
-	FOREIGN KEY (proceso_canonizacion_id) REFERENCES rclv_proc_canoniz(id),
+	FOREIGN KEY (proceso_id) REFERENCES rclv_proc_canoniz(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
@@ -499,13 +496,13 @@ CREATE TABLE rclv_1personajes (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_1personajes (id, creado_por_id, nombre) 
 VALUES (1, 1, 'Ninguno');
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, nombre)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, nombre)
 VALUES 
 (11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 1, 'Jesús'),
 (12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 1, 'María, madre de Jesús'),
 (13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 1, 'José, padre de Jesús')
 ;
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_canonizacion_id, rol_iglesia_id, creado_por_id, creado_en, nombre)
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, creado_en, nombre)
 VALUES 
 (21, 249, 1910, 'CFC', 'HAG', 'STM', 'RCM', 2, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
 (22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, '2022-03-16 23:25:20', 'Juan XXIII'),
@@ -580,8 +577,8 @@ VALUES
 ;
 INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1, 'Apar. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1, 'Apar. Mariana - Fátima')
+(16, 1, 1, 42, 1858, 1, 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 1, 'Ap. Mariana - Fátima')
 ;
 INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, nombre)
 VALUES
@@ -654,7 +651,7 @@ CREATE TABLE rclv_4edicion (
 	categoria_id VARCHAR(3) NULL,      /* El ID de la categoría */
 	subcategoria_id VARCHAR(3) NULL,   /* Jesús,Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Para Aparición Mariana, va el ID de la aparición */
-	proceso_canonizacion_id VARCHAR(3) NULL,
+	proceso_id VARCHAR(3) NULL,
 	santo_beato BOOLEAN NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 

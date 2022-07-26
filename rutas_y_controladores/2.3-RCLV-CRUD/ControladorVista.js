@@ -159,7 +159,7 @@ module.exports = {
 		}
 		// 2. Generar información
 		if (RCLV.RCLV_entidad == "personajes" && req.body.enProcCan == "0") {
-			delete req.body.proceso_canonizacion_id;
+			delete req.body.proceso_id;
 			delete req.body.rol_iglesia_id;
 		}
 		RCLV = {...req.body, ...RCLV};
