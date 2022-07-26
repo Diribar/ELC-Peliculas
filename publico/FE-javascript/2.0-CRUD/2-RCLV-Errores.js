@@ -186,53 +186,66 @@ window.addEventListener("load", async () => {
 				// Contemporáneo de Jesús
 				if (ano.value < -50 || ano.value > 100) {
 					cnt[1].checked = true;
+					cnt[1].disabled = false;
 					cnt[0].disabled = true;
-					sector_cnt.classList.add("ocultarSector");
+					sector_cnt.classList.add("ocultarPorAno");
 				} else {
 					cnt[1].checked = false;
 					cnt[0].disabled = false;
-					sector_cnt.classList.remove("ocultarSector");
+					sector_cnt.classList.remove("ocultarPorAno");
 				}
 				// Aparición Mariana
 				if (ano.value < 0) {
 					ap_mar[1].checked = true;
+					ap_mar[1].disabled = false;
 					ap_mar[0].disabled = true;
-					sectorAp_mar.classList.add("ocultarSector");
+					sectorAp_mar.classList.add("ocultarPorAno");
 				} else {
 					ap_mar[1].checked = false;
 					ap_mar[0].disabled = false;
-					sectorAp_mar.classList.remove("ocultarSector");
+					sectorAp_mar.classList.remove("ocultarPorAno");
 				}
 			}
 			if (hechos) {
 				// Vida de Jesús
 				if (ano.value > 33) {
 					jss[1].checked = true;
+					jss[1].disabled = false;
 					jss[0].disabled = true;
+					sector_jss.classList.add("ocultarPorAno");
 				} else {
 					jss[1].checked = false;
 					jss[0].disabled = false;
+					sector_jss.classList.remove("ocultarPorAno");
 				}
 				// Contemp. Jesús
 				if (ano.value > 100) {
 					cnt[1].checked = true;
+					cnt[1].disabled = false;
 					cnt[0].disabled = true;
+					sector_cnt.classList.add("ocultarPorAno");
 				} else {
 					cnt[1].checked = false;
 					cnt[0].disabled = false;
+					sector_cnt.classList.remove("ocultarPorAno");
 				}
 				// Aparición Mariana
 				if (ano.value < 33) {
 					ap_mar[1].checked = true;
+					ap_mar[1].disabled = false;
 					ap_mar[0].disabled = true;
+					sectorApMar.classList.add("ocultarPorAno");
 				} else {
 					ap_mar[1].checked = false;
 					ap_mar[0].disabled = false;
+					sectorApMar.classList.remove("ocultarPorAno");
 				}
 			}
 			preguntas.classList.remove("ocultar");
 		} else preguntas.classList.add("ocultar");
+
 		// Fin
+		[OK, errores] = await funcionRCLI[entidad](false)
 		return [OK, errores];
 	};
 	// Preguntas para Personaje
@@ -329,8 +342,6 @@ window.addEventListener("load", async () => {
 			}
 			// OK y Errores
 			errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
-			// console.log(url);
-			// console.log(errores.RCLI);
 			OK.RCLI = !errores.RCLI;
 			if (!mostrarErrores) errores.RCLI = "";
 
@@ -338,49 +349,39 @@ window.addEventListener("load", async () => {
 			return [OK, errores];
 		},
 		hechos: async function (mostrarErrores) {
+			let num = -1;
 			let url = "&entidad=" + entidad;
+			let inputCFC, inputJSS, inputCNT, inputEXC, inputAM;
 			// Sólo CFC
-			let solo_cfcElegido = solo_cfc[0].checked
-				? solo_cfc[0].value
-				: solo_cfc[1].checked
-				? solo_cfc[1].value
-				: "";
-			url += "&solo_cfc=" + solo_cfcElegido;
-			if (solo_cfc[0].checked) {
-				// Jesús - visible
-				sector_jss.classList.remove("ocultar");
-				// Jesús - valor
-				let jssElegido = jss[0].checked ? jss[0].value : jss[1].checked ? jss[1].value : "";
-				url += "&jss=" + jssElegido;
-				// Contemporaneos - visible
-				if (jssElegido == "0") sector_cnt.classList.remove("ocultar");
-				else sector_cnt.classList.add("ocultar");
-				// Contemporaneos - valor
-				let cntElegido = cnt[0].checked ? cnt[0].value : cnt[1].checked ? cnt[1].value : "";
-				url += "&cnt=" + cntElegido;
-				// Exclusivo - visible
-				if (jssElegido == "1" || cntElegido == "1") sectorExclusivo.classList.remove("ocultar");
-				else sectorExclusivo.classList.add("ocultar");
-				// Exclusivo - valor
-				let excElegido = exclusivo[0].checked
-					? exclusivo[0].value
-					: exclusivo[1].checked
-					? exclusivo[1].value
-					: "";
-				url += "&exclusivo=" + excElegido;
-				// Aparición Mariana - visible
-				if (jssElegido == "0" && cntElegido == "0") sectorApMar.classList.remove("ocultar");
-				else sectorApMar.classList.add("ocultar");
-				// Aparición Mariana - valor
-				let ApMarElegido = ap_mar[0].checked
-					? ap_mar[0].value
-					: ap_mar[1].checked
-					? ap_mar[1].value
-					: "";
-				url += "&ap_mar=" + ApMarElegido;
-			} else {
-				// Ocultar las opciones 'cfc'
-				for (let pregunta of cfc) pregunta.classList.add("ocultar");
+			[url, inputCFC] = this.inputRadio(url, num, "solo_cfc", solo_cfc);
+			// Jesús
+			num++;
+			if (inputCFC != "1") this.limpiar(num);
+			else {
+				[url, inputJSS] = this.inputRadio(url, num, "jss", jss);
+				// Contemporaneos
+				num++;
+				if (!inputJSS) this.limpiar(num);
+				else {
+					if (inputJSS == "1") {
+						cnt[0].checked = true;
+						cnt[0].disabled = false;
+						cnt[1].disabled = true;
+						sector_cnt.classList.add("ocultarPorRCLI");
+					} else {
+						cnt[1].disabled = false;
+						sector_cnt.classList.remove("ocultarPorRCLI");
+					}
+					[url, inputCNT] = this.inputRadio(url, num, "cnt", cnt);
+					// Exclusivo
+					num++;
+					if (inputJSS != "1" && inputCNT != "1") this.limpiar(num);
+					else [url, inputEXC] = this.inputRadio(url, num, "exclusivo", exclusivo);
+					// Aparición Mariana
+					num++;
+					if (inputJSS != "0" || inputCNT != "0") this.limpiar(num);
+					else [url, inputAM] = this.inputRadio(url, num, "ap_mar", ap_mar);
+				}
 			}
 			// OK y Errores
 			errores.RCLI = await fetch(ruta + "RCLI_hecho" + url).then((n) => n.json());
@@ -476,7 +477,7 @@ window.addEventListener("load", async () => {
 			[OK, errores] = await funcionFechas();
 		if (campo == "repetido") [OK, errores] = funcionRepetido();
 		// Campos para !valores
-		if (campo == "ano") [OK, errores] = await funcionAno();
+		if (!valores && campo == "ano") [OK, errores] = await funcionAno();
 		// Campos RCLI
 		if (personajes && campo == "genero") funcionGenero();
 		if (!valores && camposRCLI.includes(campo)) [OK, errores] = await funcionRCLI[entidad](false);

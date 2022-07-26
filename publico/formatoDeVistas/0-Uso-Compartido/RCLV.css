@@ -43,7 +43,7 @@
 #dataEntry #preguntas select {width: 144px;}
 #dataEntry #preguntas .siNo {width: 70px; justify-content: space-between;}
 #dataEntry #preguntas #genero div {margin-right: 12px;}
-#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarSector {display: none;}
+#dataEntry #preguntas .ocultar, #dataEntry #preguntas .ocultarPorAno, #dataEntry #preguntas .ocultarPorRCLI {display: none;}
 #dataEntry #preguntas .cfc {height: 21px;}
 
 /* Temas específicos de dataEntry - Posibles Repetidos */
