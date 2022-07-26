@@ -157,11 +157,11 @@
 					<h4 id="santosanta">Es santo o está en proceso de canonización:</h4>
 					<div id="opcionesIglesia" class="flex-row">
 						<div class="flexRowAlign">
-							<input type="radio" name="enProcCan" value="1" <% if (RCLV_original.proceso_canonizacion_id) { %>checked<% } %>>
+							<input type="radio" name="enProcCan" value="1" <% if (RCLV_original.proceso_id) { %>checked<% } %>>
 							<label>SI</label>
 						</div>
 						<div class="flexRowAlign">
-							<input type="radio" name="enProcCan" value="0" <% if (!RCLV_original.proceso_canonizacion_id) { %>checked<% } %>>
+							<input type="radio" name="enProcCan" value="0" <% if (!RCLV_original.proceso_id) { %>checked<% } %>>
 							<label>NO</label>
 						</div>
 					</div>
@@ -186,10 +186,10 @@
 					<!-- Status del proceso de canonización -->
 					<div class="flexRowAlign">
 						<label>Status del proceso:</label>
-						<select name="proceso_canonizacion_id">
-							<option value="" <% if (RCLV_original.proceso_canonizacion_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
+						<select name="proceso_id">
+							<option value="" <% if (RCLV_original.proceso_id=="") { %> selected <% } %> class="ocultar">Elejí</option>
 							<% for (let proceso of procesos_canonizacion) { %>
-								<option value="<%= proceso.id %>" <% if (proceso.id == RCLV_original.proceso_canonizacion_id) { %> selected <% } %>><%= proceso.nombre %></option>
+								<option value="<%= proceso.id %>" <% if (proceso.id == RCLV_original.proceso_id) { %> selected <% } %>><%= proceso.nombre %></option>
 							<% } %> 
 						</select>
 					</div>

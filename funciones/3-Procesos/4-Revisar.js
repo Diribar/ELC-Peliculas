@@ -400,7 +400,7 @@ module.exports = {
 		if (entidad != "valores") camposComparar.push({campo: "ano", titulo: "Año de referencia"});
 		if (entidad == "personajes")
 			camposComparar.push(
-				{campo: "proceso_canonizacion_id", titulo: "Proceso de Canonización"},
+				{campo: "proceso_id", titulo: "Proceso de Canonización"},
 				{campo: "rol_iglesia_id", titulo: "Rol en la Iglesia"}
 			);
 		// Obtener RCLV actual
@@ -625,7 +625,7 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 		? RCLV.dia_del_ano
 			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
 			: RCLV.dia_del_ano
-		: campo == "proceso_canonizacion_id"
+		: campo == "proceso_id"
 		? RCLV.proceso_canonizacion
 			? RCLV.proceso_canonizacion.nombre
 			: ""
