@@ -12,9 +12,9 @@ module.exports = (req, res, next) => {
 	let actual = req.originalUrl;
 	// Condición
 	if (
-		!actual.includes("/usuarios/") &&
-		!actual.includes("/api/") &&
-		!actual.includes("/redireccionar/") &&
+		!actual.startsWith("/usuarios/") &&
+		!actual.startsWith("/api/") &&
+		!actual.startsWith("/redireccionar/") &&
 		anterior != actual
 	) {
 		// Nuevas url en session y cookie
