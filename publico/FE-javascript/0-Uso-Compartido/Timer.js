@@ -73,7 +73,6 @@ window.addEventListener("load", async () => {
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
-		console.log(codigo);
 		let iconos =
 			codigo == "/producto/edicion/" || codigo == "/links/abm/"
 				? {
