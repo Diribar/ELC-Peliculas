@@ -274,8 +274,9 @@ module.exports = {
 			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
-		datosRCLV = {...datosRCLV, ...req.body, RCLV_entidad, RCLV_id};
+		datosRCLV = {...datosRCLV, ...req.body, entidad: RCLV_entidad, id: RCLV_id};
 		// 3. Averiguar si hay errores de validación y tomar acciones
+		//return res.send(datosRCLV);
 		let errores = await validar.consolidado(datosRCLV);
 		if (errores.hay) {
 			req.session.datosRCLV = datosRCLV;
@@ -288,7 +289,7 @@ module.exports = {
 			editado_por_id: req.session.usuario.id,
 			editado_en: funciones.ahora(),
 		};
-		if (datosRCLV.RCLV_entidad == "personajes") {
+		if (RCLV_entidad == "personajes") {
 			let santo_beato = datosRCLV.proceso_id.slice(0, 2);
 			santo_beato = santo_beato == "ST" || santo_beato == "BT";
 			datos = {
@@ -307,7 +308,7 @@ module.exports = {
 
 		//return res.send([datosRCLV, datos]);
 		// 6. Actualizar el registro RCLV en la BD
-		await BD_genericas.actualizarPorId(datos.RCLV_entidad, datos.RCLV_id, datos);
+		await BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, datos);
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.datosRCLV) delete req.session.datosRCLV;
 		if (req.cookies && req.cookies.datosRCLV) res.clearCookie("datosRCLV");
