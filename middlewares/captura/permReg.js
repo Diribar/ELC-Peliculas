@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 		];
 
 	// Agregar el icono y continuar
-	if (informacion) {
+	if (informacion.mensajes) {
 		informacion.iconos = [vistaAnterior];
 		let usuario = req.session.usuario;
 		if (usuario.rol_usuario.aut_gestion_prod && registro.creado_por_id != usuario.id)
