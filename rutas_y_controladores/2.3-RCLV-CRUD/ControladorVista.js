@@ -307,7 +307,7 @@ module.exports = {
 
 		//return res.send([datosRCLV, datos]);
 		// 6. Actualizar el registro RCLV en la BD
-		await BD_genericas.actualizarRegistro(datosRCLV.RCLV_entidad, datos);
+		await BD_genericas.actualizarPorId(datos.RCLV_entidad, datos.RCLV_id, datos);
 		// Averiguar el campo para el RCLV-ID
 		let RCLVentidad_id = funciones.obtenerEntidad_id(datosRCLV.RCLV_entidad);
 		// Obtener el destino a dónde redireccionar
