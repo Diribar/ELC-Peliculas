@@ -7,7 +7,7 @@ const procesar = require("../../funciones/3-Procesos/3-RUD");
 
 module.exports = {
 	redireccionar: (req, res) => {
-		// return res.send(req.query)
+		//return res.send(req.query)
 		// Se usa sobretodo para:
 		// 	1. Estandarizar la ruta entre 'Agregar' y 'Edición'
 		//	2. Guardar cookies
@@ -50,6 +50,7 @@ module.exports = {
 	},
 
 	altaEdicForm: async (req, res) => {
+		//return res.send(req.query)
 		// ALTA - EDICIÓN / Puede venir de agregarProd o edicionProd
 		// 1. Si se perdió la info anterior, ir a inicio
 		let datosRCLV = req.session.datosRCLV ? req.session.datosRCLV : req.cookies.datosRCLV;
@@ -70,7 +71,7 @@ module.exports = {
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));
 		let tema = "rclv_" + agregar_edicion;
-		let entidad = req.query.entidad;
+		let RCLV_entidad = req.query.entidad;
 		let dataEntry = datosRCLV;
 		// 3. Pasos exclusivos para Datos Personalizados
 		if (datosRCLV.origen == "prodAgregar") {
@@ -96,7 +97,7 @@ module.exports = {
 		}
 		// 4. Variables para la vista
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		if (entidad == "personajes") {
+		if (RCLV_entidad == "personajes") {
 			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
 			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
 			var roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden");
@@ -111,9 +112,9 @@ module.exports = {
 				: "Editá el " + dataEntry.RCLV_nombre + " de") + " nuestra Base de Datos";
 		// 6. Pasos exclusivos para edición
 		if (agregar_edicion == "edicion") {
-			let id = req.query.id;
+			let RCLV_id = req.query.id;
 			dataEntry = {
-				...(await BD_genericas.obtenerPorId(entidad, id)),
+				...(await BD_genericas.obtenerPorId(RCLV_entidad, RCLV_id)),
 				...dataEntry,
 			};
 			if (dataEntry.dia_del_ano_id) {
@@ -128,7 +129,7 @@ module.exports = {
 		// 7. Render
 		return res.render("0-Estructura-Gral", {
 			tema,
-			entidad,
+			entidad: RCLV_entidad,
 			titulo,
 			tituloCuerpo,
 			link: req.originalUrl,
@@ -212,16 +213,16 @@ module.exports = {
 
 		//return res.send([datosRCLV, datos]);
 		// 6. Crear el registro en la BD
-		let {id} = await BD_genericas.agregarRegistro(datosRCLV.RCLV_entidad, datos);
+		let {id: RCLV_id} = await BD_genericas.agregarRegistro(datosRCLV.RCLV_entidad, datos);
 		// Averiguar el campo para el RCLV-ID
-		let RCLVentidad_id = funciones.obtenerEntidad_id(datosRCLV.RCLV_entidad);
-		// Agregar el RCLVentidad_id al origen
+		let RCLV_entidad_id = funciones.obtenerEntidad_id(datosRCLV.RCLV_entidad);
+		// Agregar el RCLV_entidad_id al origen
 		if (datosRCLV.origen == "prodAgregar") {
-			req.session.datosPers[RCLVentidad_id] = id;
+			req.session.datosPers[RCLV_entidad_id] = RCLV_id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		} else if (datosRCLV.origen == "prodEdicion")
 			await procesar.guardar_o_actualizar_Edicion(datosRCLV.entidad, datosRCLV.prodID, userID, {
-				[RCLVentidad_id]: id,
+				[RCLV_entidad_id]: RCLV_id,
 			});
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.datosRCLV) delete req.session.datosRCLV;
@@ -250,7 +251,7 @@ module.exports = {
 		}
 		// Obtener los datos identificatorios del RCLV
 		let RCLV_entidad = req.query.entidad;
-		let RCLV_ID = req.query.id;
+		let RCLV_id = req.query.id;
 		// 2. Pasos exclusivos para Datos Personalizados
 		if (datosRCLV.origen == "prodAgregar") {
 			let datosPers = req.session.datosPers
@@ -273,7 +274,7 @@ module.exports = {
 			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
-		datosRCLV = {...datosRCLV, ...req.body, RCLV_entidad, RCLV_ID};
+		datosRCLV = {...datosRCLV, ...req.body, RCLV_entidad, RCLV_id};
 		// 3. Averiguar si hay errores de validación y tomar acciones
 		let errores = await validar.consolidado(datosRCLV);
 		if (errores.hay) {

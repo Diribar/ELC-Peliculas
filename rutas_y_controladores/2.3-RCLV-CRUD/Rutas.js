@@ -15,8 +15,8 @@ const id = require("../../middlewares/producto/entidadID");
 const aptoDE = require("../../middlewares/captura/aptoDE");
 const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
-const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 
 // Rutas *******************************************
 // Rutas de APIs
@@ -39,7 +39,7 @@ router.get(
 	capturaActivar,
 	vista.altaEdicForm
 );
-router.post("/edicion", soloAutInput, aptoDE, vista.edicionGrabar);
+router.post("/edicion", soloAutInput, aptoDE, capturaInactivar, vista.edicionGrabar);
 router.get("/detalle", entidad, id, vista.detalle);
 
 // router.get("/eliminar", soloAutInput, entidad, id, aptoDE, permReg, permUserReg, vista.RCLV_Eliminar);
