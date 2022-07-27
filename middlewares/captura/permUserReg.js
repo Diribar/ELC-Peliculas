@@ -25,8 +25,20 @@ module.exports = async (req, res, next) => {
 	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	const vistaTablero = variables.vistaTablero();
 	const vistaInactivar = variables.vistaInactivar(req);
+	const vistaAnteriorInactivar = () => {
+		let vista = [vistaAnterior];
+		if (urlBase != "/rclv") vista.push(vistaInactivar);
+		return vista;
+	};
+	const vistaTablero = variables.vistaTablero();
+	const vistaAnteriorTablero = () => {
+		let vista = [vistaAnterior];
+		let usuario = req.session.usuario;
+		if (usuario.rol_usuario.aut_gestion_prod) vista.push(vistaTablero);
+		return vista;
+	};
+
 	// Creado por el usuario
 	let creadoPorElUsuario1 = registro.creado_por_id == userID;
 	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;
@@ -51,7 +63,7 @@ module.exports = async (req, res, next) => {
 							".",
 						"Estará liberado a más tardar el " + horarioFinal,
 					],
-					iconos: [vistaAnterior, vistaInactivar],
+					iconos: vistaAnteriorInactivar(),
 			  }
 			: "";
 	};
@@ -65,7 +77,7 @@ module.exports = async (req, res, next) => {
 						"Quedó a disposición de los demás usuarios.",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
-					iconos: [vistaAnterior, vistaInactivar],
+					iconos: vistaAnteriorInactivar(),
 			  }
 			: "";
 	};
@@ -126,16 +138,16 @@ module.exports = async (req, res, next) => {
 			// 1. El registro está en un status gr_pend_aprob, creado por el Revisor
 			if (registro.status_registro.gr_pend_aprob && creadoPorElUsuario)
 				informacion = {
-					mensajes: ["El registro debe ser analizado por otro revisor, no por su creador"],
-					iconos: [vistaAnterior, vistaTablero],
+					mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
+					iconos: vistaAnteriorTablero(),
 				};
 			// 2. El registro está en un status provisorio, sugerido por el Revisor
 			else if (registro.status_registro.gr_provisorios && registro.sugerido_por_id == userID)
 				informacion = {
 					mensajes: [
-						"El registro debe ser analizado por otro revisor, no por quien propuso el cambio de status",
+						"El registro debe ser revisado por otro revisor, no por quien propuso el cambio de status",
 					],
-					iconos: [vistaAnterior, vistaTablero],
+					iconos: vistaAnteriorTablero(),
 				};
 			// 3. El registro sólo tiene una sola edición y es del Revisor
 			else if (
@@ -149,7 +161,7 @@ module.exports = async (req, res, next) => {
 						"El registro tiene una sola edición y fue realizada por vos.",
 						"La tiene que revisar otra persona",
 					],
-					iconos: [vistaAnterior, vistaTablero],
+					iconos: vistaAnteriorTablero(),
 				};
 			}
 		}
