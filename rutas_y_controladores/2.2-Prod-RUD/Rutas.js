@@ -45,7 +45,7 @@ router.get(
 	capturaActivar,
 	vista.prod_Form
 );
-router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
+router.post("/edicion", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
 router.get("/edicion/eliminar", soloAutInput, entidad, id, vista.prod_EliminarEdic);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, vista.calificala);

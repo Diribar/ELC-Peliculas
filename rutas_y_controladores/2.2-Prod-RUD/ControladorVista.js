@@ -170,6 +170,7 @@ module.exports = {
 			camposDP,
 			errores,
 			vista: req.baseUrl + req.path,
+			link: req.originalUrl,
 			paises,
 			prodNombre,
 		});
