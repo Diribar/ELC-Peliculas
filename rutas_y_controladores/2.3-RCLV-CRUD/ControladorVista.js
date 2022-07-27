@@ -308,12 +308,9 @@ module.exports = {
 		//return res.send([datosRCLV, datos]);
 		// 6. Actualizar el registro RCLV en la BD
 		await BD_genericas.actualizarPorId(datos.RCLV_entidad, datos.RCLV_id, datos);
-		// Averiguar el campo para el RCLV-ID
-		let RCLVentidad_id = funciones.obtenerEntidad_id(datosRCLV.RCLV_entidad);
-		// Obtener el destino a dónde redireccionar
 		// 8. Borrar session y cookies de RCLV
 		if (req.session && req.session.datosRCLV) delete req.session.datosRCLV;
-		if (req.cookies && req.cookies.datosRCLV) res.clearCookie("RCLV");
+		if (req.cookies && req.cookies.datosRCLV) res.clearCookie("datosRCLV");
 		// 9. Redireccionar a la siguiente instancia
 		return res.redirect(datosRCLV.destino);
 	},
