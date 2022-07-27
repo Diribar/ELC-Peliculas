@@ -120,9 +120,10 @@ module.exports = {
 	},
 
 	altaGrabar: async (req, res) => {
+		//return res.send(["línea 123", req.body])
 		// 1. Si se perdió la info anterior => error
-		let RCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
-		if (!RCLV) {
+		let datosRCLV = req.session.RCLV ? req.session.RCLV : req.cookies.RCLV;
+		if (!datosRCLV) {
 			let informacion = {
 				mensajes: ["Se perdió información crítica. Reiniciá este proceso."],
 				iconos: [
@@ -135,8 +136,8 @@ module.exports = {
 			};
 			return res.render("Errores", {informacion});
 		}
-		// Pasos exclusivos para Datos Personalizados
-		if (RCLV.origen == "prodAgregar") {
+		// 2. Pasos exclusivos para Datos Personalizados
+		if (datosRCLV.origen == "prodAgregar") {
 			let datosPers = req.session.datosPers
 				? req.session.datosPers
 				: req.cookies.datosPers
@@ -157,45 +158,48 @@ module.exports = {
 			}
 			if (!req.session.datosPers) req.session.datosPers = datosPers;
 		}
-		// 2. Generar información
-		if (RCLV.RCLV_entidad == "personajes" && req.body.enProcCan == "0") {
-			delete req.body.proceso_id;
-			delete req.body.rol_iglesia_id;
-		}
-		RCLV = {...req.body, ...RCLV};
-		// 3. Averiguar si hay errores de validación
-		let errores = await validar.consolidado({...RCLV, entidad: RCLV.RCLV_entidad});
-		// 4. Acciones si hay errores
+		datosRCLV = {...req.body, ...datosRCLV, entidad: datosRCLV.RCLV_entidad};
+		// 3. Averiguar si hay errores de validación y tomar acciones
+		let errores = await validar.consolidado(datosRCLV);
 		if (errores.hay) {
 			req.session.RCLV = RCLV;
 			res.cookie(RCLV, RCLV, {maxAge: unDia});
 			req.session.erroresRCLV = errores;
 			return res.redirect(req.url);
 		}
-		// Si no hay errores...
-		let userID = req.session.usuario.id;
-		// 5. Preparar la info a guardar
+		// 4. Preparar la información a guardar
 		let datos = {
-			...RCLV,
-			creado_por_id: userID,
-			capturado_por_id: userID,
+			...datosRCLV,
+			creado_por_id: req.session.usuario.id,
 		};
-		// Obtener el día del año
-		if (!RCLV.desconocida)
+		if (datosRCLV.RCLV_entidad == "personajes") {
+			let santo_beato = datosRCLV.proceso_id.slice(0, 2);
+			santo_beato = santo_beato == "ST" || santo_beato == "BT";
+			datos = {
+				...datos,
+				subcategoria_id:
+					datosRCLV.jss == "1" ? "JSS" : datosRCLV.cnt == "1" ? "CNT" : santo_beato ? "HAG" : null,
+				santo_beato,
+				ap_mar_id: datosRCLV.ap_mar_id != "" ? datosRCLV.ap_mar_id : null,
+			};
+		}
+		// 5. Obtener el día del año
+		if (!datosRCLV.desconocida)
 			datos.dia_del_ano_id = await BD_genericas.obtenerTodos("dias_del_ano", "id")
-				.then((n) => n.find((m) => m.mes_id == RCLV.mes_id && m.dia == RCLV.dia))
+				.then((n) => n.find((m) => m.mes_id == datosRCLV.mes_id && m.dia == datosRCLV.dia))
 				.then((n) => n.id);
 
+		//return res.send([datosRCLV, datos]);
 		// 6. Crear el registro en la BD
-		let {id} = await BD_genericas.agregarRegistro(RCLV.RCLV_entidad, datos);
+		let {id} = await BD_genericas.agregarRegistro(datosRCLV.RCLV_entidad, datos);
 		// Averiguar el campo para el RCLV-ID
-		let RCLVentidad_id = funciones.obtenerEntidad_id(RCLV.RCLV_entidad);
+		let RCLVentidad_id = funciones.obtenerEntidad_id(datosRCLV.RCLV_entidad);
 		// Agregar el RCLVentidad_id al origen
-		if (RCLV.origen == "prodAgregar") {
+		if (datosRCLV.origen == "prodAgregar") {
 			req.session.datosPers[RCLVentidad_id] = id;
 			res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
-		} else if (RCLV.origen == "prodEdicion")
-			await procesar.guardar_o_actualizar_Edicion(RCLV.entidad, RCLV.prodID, userID, {
+		} else if (datosRCLV.origen == "prodEdicion")
+			await procesar.guardar_o_actualizar_Edicion(datosRCLV.entidad, datosRCLV.prodID, userID, {
 				[RCLVentidad_id]: id,
 			});
 		// Obtener el destino a dónde redireccionar
@@ -204,7 +208,7 @@ module.exports = {
 		if (req.cookies && req.cookies.RCLV) res.clearCookie("RCLV");
 		// 9. Redireccionar a la siguiente instancia
 		req.session.errores = false;
-		return res.redirect(RCLV.destino);
+		return res.redirect(datosRCLV.destino);
 	},
 
 	detalle: async (req, res) => {
