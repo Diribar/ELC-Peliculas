@@ -28,7 +28,7 @@ module.exports = async (req, res, next) => {
 			iconos: [vistaAnterior, vistaTablero],
 		};
 	// PROBLEMA: El registro ya no está en manos de su creador
-	else if (ruta == "/producto" && creado_en < haceUnaHora && registro.status_registro.gr_pend_aprob)
+	else if ((ruta == "/producto"||ruta=="/rclv") && creado_en < haceUnaHora && registro.status_registro.gr_pend_aprob)
 		informacion = {
 			mensajes: ["El registro estará disponible luego de ser revisado, en caso de ser aprobado."],
 			iconos: [vistaAnterior, vistaTablero],

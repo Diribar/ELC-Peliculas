@@ -73,6 +73,7 @@ window.addEventListener("load", async () => {
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
+		console.log(codigo);
 		let iconos =
 			codigo == "/producto/edicion/" || codigo == "/links/abm/"
 				? {
@@ -84,6 +85,8 @@ window.addEventListener("load", async () => {
 						link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
 						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				  }
+				// :codigo.startsWith("/revision/")
+				// ?
 				: {};
 		flechas.innerHTML = "";
 		flechas.innerHTML += "<a href='" + iconos.link + "'>" + iconos.HTML + "</a>";

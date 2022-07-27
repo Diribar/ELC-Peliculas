@@ -1,5 +1,5 @@
 /* Formato del cuerpo */
-#cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {display: flex; flex-direction: column; flex-grow: 1; position: relative;}
 
 /* Formato del título */
 #cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}

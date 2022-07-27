@@ -10,6 +10,7 @@ module.exports = async (req, res, next) => {
 	const userID = req.session.usuario.id;
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
 	const urlBase = req.baseUrl;
+	console.log(urlBase);
 	// Variables - De tiempo
 	let ahora = funciones.ahora().setSeconds(0); // Descarta los segundos en el horario de captura
 	const haceDosHoras = funciones.nuevoHorario(-2, ahora);

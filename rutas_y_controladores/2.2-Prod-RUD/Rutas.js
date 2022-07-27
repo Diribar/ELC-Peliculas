@@ -37,9 +37,9 @@ router.get("/detalle", soloUsuarios, entidad, id, capturaInactivar, vista.prod_F
 router.get(
 	"/edicion",
 	soloAutInput,
+	aptoDE,
 	entidad,
 	id,
-	aptoDE,
 	permReg,
 	permUserReg,
 	capturaActivar,
