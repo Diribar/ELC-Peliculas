@@ -33,13 +33,12 @@ module.exports = {
 	},
 
 	// Miscelaneas
-	inactivar: async (req, res) => {
+	redireccionar: async (req, res) => {
 		// Variables
-		let {entidad, id: prodID, url} = req.query;
-		let userID = req.session.usuario.id;
-		// Inactivar
-		await funciones.inactivarCaptura(entidad, prodID, userID);
-		// Redireccionar a la vista anterior
-		return res.redirect(url);
+		let {destino} = req.query;
+		// Si es 'tablero', ir a tablero
+		if (destino == "tablero") destino = "/revision/tablero-de-control";
+		// Redireccionar a la vista que corresponda
+		return res.redirect(destino);
 	},
 };

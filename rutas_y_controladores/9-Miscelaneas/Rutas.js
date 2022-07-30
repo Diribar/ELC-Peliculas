@@ -6,9 +6,10 @@ const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
 
 // Middlewares ***********************************************
-let soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
+const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 
 // Vistas *******************************************
 // Vistas de APIs
@@ -24,7 +25,7 @@ router.get("/session", vista.session);
 router.get("/cookies", vista.cookies);
 
 // Miscelaneas
-router.get("/inactivar", soloAutInput, entidad, id, vista.inactivar);
+router.get("/inactivar-captura", entidad, id, capturaInactivar, vista.redireccionar);
 
 // Exportarlo **********************************************
 module.exports = router;

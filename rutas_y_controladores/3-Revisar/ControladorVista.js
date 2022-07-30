@@ -45,15 +45,6 @@ module.exports = {
 			haceUnaHora,
 		});
 	},
-	inactivarCaptura: async (req, res) => {
-		// Variables
-		let {entidad, id: prodID} = req.query;
-		let userID = req.session.usuario.id;
-		// Inactivar
-		await funciones.inactivarCaptura(entidad, prodID, userID);
-		// Redireccionar al "Tablero"
-		return res.redirect("/revision/tablero-de-control");
-	},
 	redireccionar: async (req, res) => {
 		// Variables
 		let entidad = req.query.entidad;
@@ -106,7 +97,12 @@ module.exports = {
 						iconos: [
 							{
 								nombre: "fa-spell-check ",
-								link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+								link:
+									"/inactivar-captura/?entidad=" +
+									entidad +
+									"&id=" +
+									prodID +
+									"destino=tablero",
 								titulo: "Regresar al Tablero de Control de Revisiones",
 							},
 							{

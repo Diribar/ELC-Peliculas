@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
 	// Condición
 	if (
 		!actual.startsWith("/usuarios/") &&
+		!actual.startsWith("/inactivar-captura/") &&
 		!actual.includes("/api/") &&
 		!actual.includes("/redireccionar/") &&
 		anterior != actual
