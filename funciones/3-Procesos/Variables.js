@@ -161,7 +161,7 @@ module.exports = {
 					"El protagonista es contemporáneos de Jesús o de los Apóstoles",
 					"Película centrada en una aparición mariana",
 					"Película centrada en la vida de un beato o santo no contemporáneo de Jesús",
-					"Ninguno de los anteriores",					
+					"Ninguno de los anteriores",
 				],
 			},
 			{

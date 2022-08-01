@@ -84,6 +84,11 @@ window.addEventListener("load", async () => {
 						link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
 						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				  }
+				: codigo == "/rclv/edicion/"
+				? {
+						link: "javascript:history.go(-1)",
+						HTML: '<i class="fa-solid fa-circle-left" title="Ir a la vista Anterior"></i>',
+				  }
 				: {};
 		flechas.innerHTML = "";
 		flechas.innerHTML += "<a href='" + iconos.link + "'>" + iconos.HTML + "</a>";

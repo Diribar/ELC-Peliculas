@@ -170,14 +170,15 @@ module.exports = {
 			camposDP,
 			errores,
 			vista: req.baseUrl + req.path,
+			link: req.originalUrl,
 			paises,
 			prodNombre,
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {
 		// Obtener los datos identificatorios del producto
-		let entidad = req.body.entidad;
-		let prodID = req.body.id;
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
 		// Obtener el userID
 		let userID = req.session.usuario.id;
 		// Obtener el producto 'Original' y 'Editado'

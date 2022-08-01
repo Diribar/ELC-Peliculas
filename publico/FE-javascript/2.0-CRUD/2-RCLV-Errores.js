@@ -190,7 +190,6 @@ window.addEventListener("load", async () => {
 					cnt[0].disabled = true;
 					sector_cnt.classList.add("ocultarPorAno");
 				} else {
-					cnt[1].checked = false;
 					cnt[0].disabled = false;
 					sector_cnt.classList.remove("ocultarPorAno");
 				}
@@ -201,7 +200,6 @@ window.addEventListener("load", async () => {
 					ap_mar[0].disabled = true;
 					sectorAp_mar.classList.add("ocultarPorAno");
 				} else {
-					ap_mar[1].checked = false;
 					ap_mar[0].disabled = false;
 					sectorAp_mar.classList.remove("ocultarPorAno");
 				}
@@ -214,7 +212,6 @@ window.addEventListener("load", async () => {
 					jss[0].disabled = true;
 					sector_jss.classList.add("ocultarPorAno");
 				} else {
-					jss[1].checked = false;
 					jss[0].disabled = false;
 					sector_jss.classList.remove("ocultarPorAno");
 				}
@@ -225,7 +222,6 @@ window.addEventListener("load", async () => {
 					cnt[0].disabled = true;
 					sector_cnt.classList.add("ocultarPorAno");
 				} else {
-					cnt[1].checked = false;
 					cnt[0].disabled = false;
 					sector_cnt.classList.remove("ocultarPorAno");
 				}
@@ -236,7 +232,6 @@ window.addEventListener("load", async () => {
 					ap_mar[0].disabled = true;
 					sectorApMar.classList.add("ocultarPorAno");
 				} else {
-					ap_mar[1].checked = false;
 					ap_mar[0].disabled = false;
 					sectorApMar.classList.remove("ocultarPorAno");
 				}

@@ -1,6 +1,10 @@
 <section id="cuerpo">
+	<% if (agregar_edicion=="edicion") { %>
+		<%- include('TimerContador') %>
+		<%- include('Cartel') %>
+	<% } %>
 	<div id="tituloConAyuda">
-		<h1 id="titulo">Agregá un <%= dataEntry.RCLV_nombre %> a nuestra Base de Datos</h1>
+		<h1 id="titulo"><%= tituloCuerpo %> </h1>
 		<!-- Ayuda -->
 		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 		<ul class="mensajeAyuda ocultar" type="dots">
@@ -22,15 +26,15 @@
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
 							<ul type="dots" class="mensajeAyuda ocultar">
-								<% if (codigo == "personajes") { %>
+								<% if (entidad == "personajes") { %>
 									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
 								<% } %>
 								<li>Primero el nombre, después el apellido.</li>
 							</ul>
 							<!-- Error/OK -->			
-							<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
-								<span class="mensajeError"><%= errores.nombre %></span>
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
 							</i>
 							<i class="fa-solid fa-circle-check ocultar"></i>
 						</div>
@@ -52,8 +56,8 @@
 								<li>Para los demás, suele ser la fecha de su muerte.</li>
 							</ul>
 							<!-- Error -->			
-							<i class="fa-solid fa-circle-xmark<%- !errores.fecha ? ' ocultar' : '' %>">
-								<span class="mensajeError"><%= errores.dia %></span>
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
 							</i>
 							<!-- OK -->
 							<i class="fa-solid fa-circle-check ocultar"></i>
@@ -96,7 +100,7 @@
 						</div>
 						<!-- Fecha desconocida -->
 						<div class="flexRowAlign">
-							<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (dataEntry.desconocida=="on") { %>checked<% } %>>
+							<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (dataEntry.dia_del_ano_id===null) { %>checked<% } %>>
 							<label for="desconocida">Sin fecha representativa</label>
 						</div>
 					</div>
@@ -104,12 +108,13 @@
 			</div>
 			<!--Segunda columna-->
 			<div id="segundaCol">
+				<!-- Nombres con esa fecha -->
 				<div>
 					<div class="margenBottomTitulo relative">
 						<h3>Nombres con esa fecha</h3>
 						<!-- Error/OK -->			
-						<i class="fa-solid fa-circle-xmark<%- !errores.duplicados ? ' ocultar' : '' %>">
-							<span class="mensajeError"><%= errores.duplicados %></span>
+						<i class="fa-solid fa-circle-xmark ocultar">
+							<span class="mensajeError"></span>
 						</i>
 						<i class="fa-solid fa-circle-check ocultar"></i>
 					</div>
@@ -117,12 +122,12 @@
 					<ul type="none" id="posiblesRepetidos"></ul>
 				</div>
 				<!-- Año de nacimiento u ocurrencia -->
-				<% if (codigo != "valores") { %>
+				<% if (entidad != "valores") { %>
 					<div class="borderTop flex-row">
 						<div class="relative flex-row align-center">
 							<!-- Título -->
-							<h3>Año de <%= codigo == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-							<input type="number" name="ano" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
+							<input type="number" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
 							<ul type="dots" class="mensajeAyuda ocultar">
@@ -131,8 +136,8 @@
 								<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
 							</ul>
 							<!-- Error/OK -->			
-							<i class="fa-solid fa-circle-xmark<%- !errores.nombre ? ' ocultar' : '' %>">
-								<span class="mensajeError"><%= errores.nombre %></span>
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
 							</i>
 							<i class="fa-solid fa-circle-check ocultar"></i>
 						</div>
@@ -140,7 +145,7 @@
 				<% } %>
 			</div>
 		</section>
-		<% if (codigo != "valores") { %>
+		<% if (entidad != "valores") { %>
 			<!-- Preguntas de contexto -->
 			<section id="preguntas" class="borderTop flex-col OK ocultar">
 				<!-- Título y Error/OK -->
@@ -148,13 +153,13 @@
 					<!-- Título -->
 					<h3 class="">Preguntas de contexto</h3>
 					<!-- Error -->
-					<i class="fa-solid fa-circle-xmark<%- !errores.RCLI ? ' ocultar' : '' %>">
-						<span class="mensajeError"><%= errores.RCLI %></span>
+					<i class="fa-solid fa-circle-xmark ocultar">
+						<span class="mensajeError"></span>
 					</i>
 					<!-- OK -->
 					<i class="fa-solid fa-circle-check ocultar"></i>
 				</div>
-				<% if (codigo == "personajes") { %>
+				<% if (entidad == "personajes") { %>
 					<div id="personajes">
 						<!-- CFC/VPC -->
 						<div class="flexRowAlign altoFila">
@@ -202,11 +207,11 @@
 								<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
 								<div class="flexRowAlign siNo">
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan=="1") { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1) { %>checked<% } %> class="RCLI">
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan=="0") { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>
@@ -224,11 +229,11 @@
 							<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -239,11 +244,11 @@
 								<label class="izquierda">¿Participó en una aparición mariana?</label>
 								<div class="flexRowAlign siNo">
 									<div class="flexRowAlign">
-										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %> class="RCLI">
+										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %> class="RCLI">
+										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>
@@ -257,17 +262,17 @@
 						</div>
 					</div>
 				<% } %>
-				<% if (codigo == "hechos") { %>
+				<% if (entidad == "hechos") { %>
 					<div id="hechos">
 						<!-- Sólo CFC -->
 						<div class="flexRowAlign altoFila">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -277,11 +282,11 @@
 						<div id="sector_jss" class="flexRowAlign altoFila ocultar cfc">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="jss" value="1" <% if (dataEntry.jss=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="jss" value="0" <% if (dataEntry.jss=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="jss" value="0" <% if (dataEntry.jss==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -291,11 +296,11 @@
 						<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -305,11 +310,11 @@
 						<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -319,11 +324,11 @@
 						<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar=="1") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar=="0") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -335,7 +340,9 @@
 		<% } %>
 		<!-- Flechas y Botón -->
 		<section id="flechas">
-			<a href="<%= dataEntry.destino %> " tabindex="-1" title="Salir sin guardar"><i class="fa-solid fa-circle-left"></i></a>
+			<a href="<%= dataEntry.destino %> " tabindex="-1" title="Salir sin guardar">
+				<i id="liberarSalir" class="fa-solid fa-circle-left"></i>
+			</a>
 			<button type="submit" class="inactivo" title="Guardar y Salir"><i class="fa-solid fa-circle-check"></i></button>
 		</section>
 	</form>

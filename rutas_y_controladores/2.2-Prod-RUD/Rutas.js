@@ -37,15 +37,15 @@ router.get("/detalle", soloUsuarios, entidad, id, capturaInactivar, vista.prod_F
 router.get(
 	"/edicion",
 	soloAutInput,
+	aptoDE,
 	entidad,
 	id,
-	aptoDE,
 	permReg,
 	permUserReg,
 	capturaActivar,
 	vista.prod_Form
 );
-router.post("/edicion/guardar", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
+router.post("/edicion", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
 router.get("/edicion/eliminar", soloAutInput, entidad, id, vista.prod_EliminarEdic);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, vista.calificala);

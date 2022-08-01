@@ -2,18 +2,26 @@
 // Requires
 
 module.exports = (req, res, next) => {
-	if (!req.session.urlAnterior) req.session.urlAnterior = "/";
-	let aux = req.session.urlReferencia;
-	let url = req.originalUrl;
+	// Datos originales
+	if (!req.session.urlAnterior)
+		req.session.urlAnterior = req.cookies && req.cookies.urlAnterior ? req.cookies.urlAnterior : "/";
+	if (!req.session.urlActual)
+		req.session.urlActual = req.cookies && req.cookies.urlActual ? req.cookies.urlActual : "/";
+	// Variables
+	let anterior = req.session.urlActual;
+	let actual = req.originalUrl;
+	// Condición
 	if (
-		!url.includes("/usuarios/") &&
-		!url.includes("/api/") &&
-		!url.includes("/redireccionar/") &&
-		url != req.session.urlReferencia
+		!actual.startsWith("/usuarios/") &&
+		!actual.includes("/api/") &&
+		!actual.includes("/redireccionar/") &&
+		anterior != actual
 	) {
-		req.session.urlReferencia = url;
-		if (aux != req.session.urlReferencia) req.session.urlAnterior = aux;
+		// Nuevas url en session y cookie
+		req.session.urlAnterior = anterior;
+		res.cookie("urlAnterior", anterior, {maxAge: unDia});
+		req.session.urlActual = actual;
+		res.cookie("urlActual", actual, {maxAge: unDia});
 	}
-	if (!req.session.urlReferencia) req.session.urlReferencia="/"
 	next();
 };

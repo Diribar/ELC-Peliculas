@@ -5,7 +5,6 @@ const funciones = require("../../funciones/3-Procesos/Compartidas");
 module.exports = (req, res, next) => {
 	// Obtener la entidad
 	let entidad = req.query.entidad;
-	let prodID = req.query.id;
 	// Verificar los datos
 	let informacion;
 	if (!entidad)
