@@ -103,7 +103,7 @@ module.exports = {
 									"&id=" +
 									prodID +
 									"destino=tablero",
-								titulo: "Regresar al Tablero de Control de Revisiones",
+								titulo: "Regresar al Tablero de Control",
 							},
 							{
 								nombre: "fa-pencil",
@@ -166,6 +166,7 @@ module.exports = {
 			codigo,
 			titulo,
 			entidad,
+			id: prodID,
 			prodOriginal,
 			avatar,
 			bloqueIzq,
@@ -201,6 +202,7 @@ module.exports = {
 		];
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
+		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
@@ -270,6 +272,7 @@ module.exports = {
 			avatar,
 			motivos,
 			entidad,
+			id: prodID,
 			bloqueDer,
 			prodNombre,
 			vista,
@@ -381,6 +384,7 @@ module.exports = {
 			codigo,
 			titulo,
 			entidad: prodEntidad,
+			id: prodID,
 			producto,
 			links,
 			provs,

@@ -27,9 +27,7 @@ module.exports = async (req, res, next) => {
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaInactivar = variables.vistaInactivar(req);
 	const vistaAnteriorInactivar = () => {
-		let vista = [vistaAnterior];
-		if (urlBase != "/rclv") vista.push(vistaInactivar);
-		return vista;
+		return [vistaAnterior, vistaInactivar];
 	};
 	const vistaTablero = variables.vistaTablero();
 	const vistaAnteriorTablero = () => {

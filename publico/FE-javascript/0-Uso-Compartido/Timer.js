@@ -73,25 +73,24 @@ window.addEventListener("load", async () => {
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
-		let iconos =
-			codigo == "/producto/edicion/" || codigo == "/links/abm/"
-				? {
-						link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
-						HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-				  }
-				: codigo.startsWith("/revision/")
-				? {
-						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&destino=tablero",
-						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-				  }
-				: codigo == "/rclv/edicion/"
-				? {
-						link: "javascript:history.go(-1)",
-						HTML: '<i class="fa-solid fa-circle-left" title="Ir a la vista Anterior"></i>',
-				  }
-				: {};
+		let icono = codigo.startsWith("/revision/")
+			? {
+					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&destino=tablero",
+					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+			  }
+			: codigo.startsWith("/producto/edicion/") || codigo.startsWith("/links/abm/")
+			? {
+					link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
+			  }
+			: codigo.startsWith("/rclv/edicion/")
+			? {
+				link: "/rclv/detalle/?entidad=" + entidad + "&id=" + prodID,
+				HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
+		  }
+			: {};
 		flechas.innerHTML = "";
-		flechas.innerHTML += "<a href='" + iconos.link + "'>" + iconos.HTML + "</a>";
+		flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";
 
 		// Mostrar el cartel
 		taparElFondo.classList.remove("ocultar");

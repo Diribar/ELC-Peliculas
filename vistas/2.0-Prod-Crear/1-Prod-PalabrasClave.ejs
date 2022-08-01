@@ -1,4 +1,7 @@
-<h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+<div id="tituloConAyuda">
+	<h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
+</div>
+
 <form action="<%= link %>" method="POST" class="flex-col" id="dataEntry">
 	<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
 	<h3>Ingresá palabras del Título de la Película</h3>
@@ -21,7 +24,7 @@
 				<span class="mensajeError"><%= errores.palabrasClave %></span>
 			</i>
 		</div>
-		<button type="submit" class="inactivo">Verificar</button>
+		<i id="submit" class="fa-solid fa-circle-question naranja" title="Verificar"></i>
 	</section>
 	<!-- Comentarios generales -->
 	<section>
