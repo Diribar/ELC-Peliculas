@@ -91,7 +91,6 @@ module.exports = {
 		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: unDia});
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// 6. Redireccionar a la siguiente instancia
-		req.session.erroresDES = false;
 		res.redirect("/producto/agregar/datos-duros");
 	},
 
