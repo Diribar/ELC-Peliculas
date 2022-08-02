@@ -194,7 +194,6 @@ module.exports = {
 		cookie.FA_id = req.session.datosDuros.FA_id;
 		res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		// 4. Redireccionar a la siguiente instancia
-		req.session.erroresFA = false;
 		return res.redirect("/producto/agregar/datos-duros");
 	},
 
@@ -326,7 +325,6 @@ module.exports = {
 		if (datosDuros.fuente == "IM") cookie.nombre_castellano = datosDuros.nombre_castellano;
 		res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		// 11. Redireccionar a la siguiente instancia
-		req.session.erroresDD = false;
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 
@@ -379,7 +377,6 @@ module.exports = {
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 8. Redireccionar a la siguiente instancia
-		req.session.erroresDP = false;
 		return res.redirect("/producto/agregar/confirma");
 	},
 
