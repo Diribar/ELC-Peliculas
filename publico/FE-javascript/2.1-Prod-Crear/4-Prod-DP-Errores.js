@@ -20,8 +20,8 @@ window.addEventListener("load", async () => {
 	// Datos RCLV
 	let etiquetasRCLV = document.querySelectorAll(".label-input.RCLV");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let linkAltaJSS = document.querySelector(".input-error .linkRCLV.alta");
 	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
-	let linkAlta = document.querySelector(".input-error .linkRCLV.alta");
 	let iconosOK_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-check");
 	let iconosError_RCLV = document.querySelectorAll(".RCLV .input-error .fa-circle-xmark");
 	let opcionesPersonaje = document.querySelectorAll("select[name='personaje_id'] option.RCLV");
@@ -198,12 +198,11 @@ window.addEventListener("load", async () => {
 	let iconosEdicionRCLVs = () => {
 		// Revisar todas las entidades RCLV
 		linksEdicion.forEach((link, i) => {
-			// Acciones para las entidades completadas (no aplica para el personaje 'Jesús')
+			// Se muestra/oculta el ícono de editar el registro
+			// Para los registros de 'Jesús' y Ninguno, permanecen ocultos
 			if (inputsRCLV[i].value && inputsRCLV[i].value != 1 && inputsRCLV[i].value != 11) {
-				// Se muestra el ícono de editar el registro
-				link.classList.remove("inactivo_ocultar");
 				link.classList.remove("ocultar");
-			} else link.classList.add("inactivo_ocultar");
+			} else link.classList.add("ocultar");
 		});
 	};
 	// Botón submit
@@ -254,8 +253,8 @@ window.addEventListener("load", async () => {
 			verificaUnaSolaOpcionRCLV();
 			iconosEdicionRCLVs();
 			subcategoriaSelect.value=="JSS"
-				? linkAlta.classList.add("ocultar")
-				: linkAlta.classList.remove("ocultar")
+				? linkAltaJSS.classList.add("ocultar")
+				: linkAltaJSS.classList.remove("ocultar")
 		}
 		// Verificar interacción para RCLV
 		if (Array.from(e.target.classList).includes("RCLV")) {
