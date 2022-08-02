@@ -131,7 +131,6 @@ module.exports = {
 		res.cookie("datosDuros", tipoProd, {maxAge: unDia});
 		res.cookie("datosOriginales", tipoProd, {maxAge: unDia});
 		// 6. Redireccionar a la siguiente instancia
-		req.session.erroresTP = false;
 		res.redirect("/producto/agregar/datos-duros");
 	},
 
