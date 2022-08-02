@@ -391,7 +391,12 @@ module.exports = {
 		return req.originalUrl.startsWith("/revision/")
 			? {
 					nombre: "fa-spell-check",
-					link: "/revision/inactivar-captura/?entidad=" + req.query.entidad + "&id=" + req.query.id,
+					link:
+						"/inactivar-captura/?entidad=" +
+						req.query.entidad +
+						"&id=" +
+						req.query.id +
+						"&destino=tablero",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 			  }
 			: req.originalUrl.startsWith("/producto/edicion/") || req.originalUrl.startsWith("/links/abm/")

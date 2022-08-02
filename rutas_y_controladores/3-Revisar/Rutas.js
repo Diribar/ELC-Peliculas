@@ -14,8 +14,6 @@ const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 
 // APIs -------------------------------------------------
-// Uso compartido
-router.get("/api/liberar-y-salir", soloGestionProd, API.liberarSalir);
 // Producto
 router.get("/api/producto-alta", soloGestionProd, API.prodAlta);
 router.get("/api/producto-edicion", soloGestionProd, API.prodEdic);
@@ -28,7 +26,6 @@ router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
-router.get("/inactivar-captura", soloGestionProd, entidad, id, vista.inactivarCaptura);
 router.get(
 	"/redireccionar",
 	soloGestionProd,

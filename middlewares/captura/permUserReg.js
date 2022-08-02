@@ -95,7 +95,12 @@ module.exports = async (req, res, next) => {
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
-				"/inactivar/?entidad=" + pc_entidadCodigo + "&id=" + pc_entidadID + "&url=" + originalUrl;
+				"/inactivar-captura/?entidad=" +
+				pc_entidadCodigo +
+				"&id=" +
+				pc_entidadID +
+				"&destino=" +
+				originalUrl;
 			const liberar = {
 				nombre: "fa-circle-check",
 				link: linkInactivar,

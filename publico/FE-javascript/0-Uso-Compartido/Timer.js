@@ -81,7 +81,7 @@ window.addEventListener("load", async () => {
 				  }
 				: codigo.startsWith("/revision/")
 				? {
-						link: "/revision/inactivar-captura/?entidad=" + entidad + "&id=" + prodID,
+						link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&destino=tablero",
 						HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 				  }
 				: codigo == "/rclv/edicion/"

@@ -25,7 +25,7 @@ router.get("/api/validar-sector", API.validarSector);
 router.get("/api/validar-consolidado", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
-router.get("/redireccionar", soloAutInput, aptoDE, vista.redireccionar);
+router.get("/redireccionar/alta-edicion", soloAutInput, aptoDE, vista.redireccionar);
 router.get("/agregar", soloAutInput, aptoDE, entidad, vista.altaEdicForm);
 router.post("/agregar", soloAutInput, aptoDE, vista.altaGrabar);
 router.get(
@@ -39,8 +39,8 @@ router.get(
 	capturaActivar,
 	vista.altaEdicForm
 );
-router.post("/edicion", soloAutInput, aptoDE, capturaInactivar, vista.edicionGrabar);
-router.get("/detalle", entidad, id, vista.detalle);
+router.post("/edicion", soloAutInput, aptoDE, vista.edicionGrabar);
+router.get("/detalle", entidad, id, capturaInactivar, vista.detalle);
 
 // router.get("/eliminar", soloAutInput, entidad, id, aptoDE, permReg, permUserReg, vista.RCLV_Eliminar);
 

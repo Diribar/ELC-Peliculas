@@ -106,22 +106,6 @@ module.exports = {
 	},
 
 	// Entidades
-	inactivarCaptura: async (entidad, regID, userID) => {
-		// Obtener producto
-		let registro = await BD_genericas.obtenerPorId(entidad, regID);
-		// Verificar que tenga una captura activa del usuario
-		if (
-			registro &&
-			registro.capturado_en &&
-			registro.capturado_por_id &&
-			registro.capturado_por_id == userID &&
-			registro.captura_activa
-		) {
-			// En caso afirmativo, actualizarlo inactivando la captura
-			await BD_genericas.actualizarPorId(entidad, regID, {captura_activa: false});
-		}
-		return;
-	},
 	quitarLosCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
 		return objeto;
