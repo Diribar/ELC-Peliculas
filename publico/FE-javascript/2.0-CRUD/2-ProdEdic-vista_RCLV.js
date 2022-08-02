@@ -11,15 +11,14 @@ window.addEventListener("load", async () => {
 	// FUNCIONES
 	let mostrarOcultarIconos = (input, i) => {
 		// Excepciones para: Ninguno y Jesús
-		if (input.value == "1" || (input.value == "11" && i === 0)) {
+		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) {
 			linksAlta[i].classList.add("ocultar");
 			linksEdicion[i].classList.add("ocultar");
-		}
-		else {
+		} else {
 			linksAlta[i].classList.remove("ocultar");
 			linksEdicion[i].classList.remove("ocultar");
 		}
-		return
+		return;
 	};
 
 	// ADD EVENT LISTENERS

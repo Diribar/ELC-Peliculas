@@ -3,11 +3,11 @@
 const usuarios = require("../../funciones/3-Procesos/8-Usuarios");
 
 module.exports = (req, res, next) => {
-	let usuario = req.session.usuario;
-	let informacion;
 	// Redireccionar si el usuario no está logueado
+	let usuario = req.session.usuario;
 	if (!usuario) return res.redirect("/usuarios/login");
 	// Redireccionar si el usuario no tiene el permiso necesario
+	let informacion;
 	if (!usuario.rol_usuario.aut_input) {
 		let linkUsuarioAutInput = "/usuarios/autorizado-input/solicitud";
 		informacion = {
