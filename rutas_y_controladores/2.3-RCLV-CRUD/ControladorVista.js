@@ -7,7 +7,7 @@ const procesar = require("../../funciones/3-Procesos/3-RUD");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
-		// ALTA - EDICIÓN / Puede venir de agregarProd o edicionProd
+		// ALTA - EDICIÓN / Puede venir de agregarProd-DP o edicionProd
 		// 1. Variables
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));
@@ -36,7 +36,7 @@ module.exports = {
 		// 3. Pasos exclusivos para edición
 		if (agregar_edicion == "edicion") {
 			let id = req.query.id;
-			dataEntry = await BD_genericas.obtenerPorId(entidad, id);
+			dataEntry = await BD_genericas.obtenerPorId(entidad, id); // Pisa el data entry de session
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
@@ -64,8 +64,7 @@ module.exports = {
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Obtener los datos
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// return res.send(datos)
 		// 2. Averiguar si hay errores de validación y tomar acciones
@@ -117,7 +116,13 @@ module.exports = {
 		if (req.session && req.session.datosRCLV) delete req.session.datosRCLV;
 		if (req.cookies && req.cookies.datosRCLV) res.clearCookie("datosRCLV");
 		// 9. Redireccionar a la siguiente instancia
-		return res.redirect("/rclv/detalle/?entidad=" + entidad + "&id=" + id);
+		let destino =
+			origen == "DP"
+				? "/producto/agregar/datos-personalizados"
+				: origen == "ED"
+				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
+				: "";
+		return res.redirect(destino);
 	},
 
 	detalle: async (req, res) => {
