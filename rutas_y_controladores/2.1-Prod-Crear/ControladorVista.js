@@ -182,10 +182,7 @@ module.exports = {
 			}
 		}
 		// 2.3. Si hay errores de validación, redireccionar
-		if (errores.hay) {
-			req.session.erroresFA = errores;
-			return res.redirect("/producto/agregar/copiar-fa");
-		}
+		if (errores.hay) return res.redirect("/producto/agregar/copiar-fa");
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
 		req.session.datosDuros = await procesar.infoFAparaDD(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
@@ -299,8 +296,6 @@ module.exports = {
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
 			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
-			// Guardar los errores en session
-			req.session.erroresDD = errores;
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
