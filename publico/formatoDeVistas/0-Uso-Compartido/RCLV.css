@@ -72,7 +72,7 @@
 #dataEntry #flechas button {background-color: transparent; border: none; padding: 0; border-radius: 50%;}
 #dataEntry #flechas button .fa-circle-check {position: static; transform: none;}
 #dataEntry #flechas i {font-size: 2rem;}
-#dataEntry #flechas a i {color: var(--gris-oscuro)}
+#dataEntry #flechas i {color: var(--gris-oscuro)}
 
 /* Resultados */
 /* Todos */

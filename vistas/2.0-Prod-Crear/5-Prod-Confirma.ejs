@@ -1,6 +1,8 @@
-<h1 id="titulo">
-	Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
-</h1>
+<div id="tituloConAyuda">
+	<h1 id="titulo">
+		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
+	</h1>
+</div>
 <form action="<%= link %>" method="POST" id="dataEntry" class="flex-col">
 	<section class="flex-col">
 		<!-- Título y Ayuda -->

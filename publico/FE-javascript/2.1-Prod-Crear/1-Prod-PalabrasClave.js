@@ -2,7 +2,7 @@
 window.addEventListener("load", () => {
 	// Declarar las variables
 	let form = document.querySelector("#dataEntry");
-	let button = document.querySelector("#dataEntry button");
+	let submit = document.querySelector("#dataEntry #submit");
 	let input = document.querySelector("#dataEntry input");
 	let iconoError = document.querySelector("#dataEntry .fa-circle-xmark");
 	let mensajeError = document.querySelector("#dataEntry .mensajeError");
@@ -16,24 +16,22 @@ window.addEventListener("load", () => {
 		if (respuesta) {
 			// Mostrar errores
 			iconoError.classList.remove("ocultar");
-			button.classList.add("inactivo");
+			submit.classList.add("inactivo");
 			mensajeError.innerHTML = respuesta;
 		} else {
 			// Ocultar errores
 			iconoError.classList.add("ocultar");
-			button.classList.remove("inactivo");
+			submit.classList.remove("inactivo");
 			mensajeError.innerHTML = "";
 		}
 	};
 
 	// Status inicial
-	iconoError.classList.contains("ocultar") && input.value != ""
-		? accionesSiHayErrores(input.value)
-		: "";
+	if (iconoError.classList.contains("ocultar") && input.value) accionesSiHayErrores(input.value);
 
 	// Revisar el data-entry y comunicar los aciertos y errores
 	input.addEventListener("input", async () => {
-		button.innerHTML = "Verificar";
+		verificar();
 		resultado.innerHTML = "<br>";
 		resultado.classList.remove(...resultado.classList);
 		resultado.classList.add("sinResultado");
@@ -41,19 +39,37 @@ window.addEventListener("load", () => {
 	});
 
 	// Submit
-	form.addEventListener("submit", async (e) => {
-		if (button.innerHTML == "Verificar") {
-			e.preventDefault();
-			if (!button.classList.contains("inactivo")) {
-				button.classList.add("inactivo");
+	submit.addEventListener("click", async () => {
+		if (submit.classList.contains("fa-circle-question")) {
+			if (!submit.classList.contains("inactivo")) {
+				submit.classList.add("inactivo");
 				let link = api_pre(input.value);
 				let lectura = await fetch(link).then((n) => n.json());
 				api_post(lectura);
-				button.classList.remove("inactivo");
-				button.innerHTML = "Avanzar";
+				submit.classList.remove("inactivo");
+				avanzar();
 			}
-		}
+		} else form.submit();
 	});
+
+	let verificar = () => {
+		submit.classList.remove("fa-circle-check");
+		submit.classList.add("fa-circle-question");
+		submit.classList.remove("verde");
+		submit.classList.add("naranja");
+		submit.title = "Verificar";
+		submit.style = "background";
+		return;
+	};
+
+	let avanzar = () => {
+		submit.classList.remove("fa-circle-question");
+		submit.classList.add("fa-circle-check");
+		submit.classList.remove("naranja");
+		submit.classList.add("verde");
+		submit.title = "Avanzar";
+		return;
+	};
 
 	let api_pre = (input) => {
 		let palabrasClave = input.trim();
@@ -71,9 +87,9 @@ window.addEventListener("load", () => {
 		let cantResultados = lectura.cantResultados;
 		let hayMas = lectura.hayMas;
 		// Determinar oracion y formato
-		let formatoAnterior
-		let formatoVigente
-		let oracion
+		let formatoAnterior;
+		let formatoVigente;
+		let oracion;
 		// Resultado exitoso
 		if (cantResultados > 0 && !hayMas) {
 			oracion =
@@ -98,9 +114,7 @@ window.addEventListener("load", () => {
 			formatoAnterior = "resultadoExitoso";
 			if (hayMas) {
 				oracion =
-					"Hay demasiadas coincidencias (+" +
-					cantResultados +
-					"), intentá ser más específico";
+					"Hay demasiadas coincidencias (+" + cantResultados + "), intentá ser más específico";
 			} else {
 				if (cantResultados == 0) {
 					oracion = "No encontramos coincidencias con estas palabras";

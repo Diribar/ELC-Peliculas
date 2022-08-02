@@ -403,7 +403,13 @@ module.exports = {
 			? {
 					nombre: "fa-circle-info",
 					link: "/producto/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
-					titulo: "Ir al 'Detalle de Información'",
+					titulo: "Ir al 'Detalle de Producto'",
+			  }
+			: req.originalUrl.startsWith("/rclv/edicion/")
+			? {
+					nombre: "fa-circle-info",
+					link: "/rclv/detalle/?entidad=" + req.query.entidad + "&id=" + req.query.id,
+					titulo: "Ir al 'Detalle de RCLV'",
 			  }
 			: {};
 	},

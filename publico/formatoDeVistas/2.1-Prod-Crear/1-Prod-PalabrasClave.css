@@ -8,4 +8,7 @@
 #dataEntry .mensajeError {max-width: 300px;}
 
 /* Submit button */
-#dataEntry button {align-self: center; margin-left: 30px;}
+#dataEntry #submit {position: static; transform: none;}
+#dataEntry #submit {align-self: center; font-size: 2rem; font-weight: bold;}
+#dataEntry #submit.verde {color: var(--verde-oscuro)}
+#dataEntry #submit.naranja {color: var(--naranja-oscuro)}

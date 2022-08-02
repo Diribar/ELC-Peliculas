@@ -1,21 +1,14 @@
 /* Formato del cuerpo */
-#cuerpo {align-items: center; justify-content: center; position: relative; padding-top: 35px;}
 #cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
 
-/* Formato del titulo principal */
-#cuerpo #titulo {position: absolute; top: 0; left: 0;}
-#cuerpo #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
+/* Formato del título principal y ayuda */
+#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
+#cuerpo #tituloConAyuda #titulo {background-color: var(--amarillo-claro); border-bottom-right-radius: 10px;}
 
 /* Formato del formulario */
-#dataEntry {padding: 30px 40px; border-radius: 20px;}
-#dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; 
-	box-shadow: 0px 0px 10px rgb(100, 100, 100);}
-
-/* Título y ayuda del formulario */
-#dataEntry #tituloConAyuda {align-self: flex-start; position: relative;}
-#dataEntry #tituloConAyuda h2 {margin-top: 0;}
-#dataEntry #tituloConAyuda .mensajeAyuda {max-width: 350px;}
-#dataEntry #tituloConAyuda .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
+#cuerpo #dataEntry {margin: auto;}
+#cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
+#cuerpo #dataEntry {background-color: var(--gris-claro);border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
 
 /* Partes específicas del formulario */
 #dataEntry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 

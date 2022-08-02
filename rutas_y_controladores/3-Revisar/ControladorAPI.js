@@ -8,15 +8,6 @@ const path = require("path");
 
 // *********** Controlador ***********
 module.exports = {
-	// USO COMPARTIDO
-	liberarSalir: async (req, res) => {
-		let {entidad, id} = req.query;
-		// Liberar y salir
-		let datos = {captura_activa: 0};
-		await BD_genericas.actualizarPorId(entidad, id, datos);
-		return res.json();
-	},
-
 	// PRODUCTOS
 	prodAlta: async (req, res) => {
 		// Definir variables

@@ -43,7 +43,7 @@ module.exports = {
 
 	// Otras
 	agregarRegistro: (entidad, datos) => {
-		return db[entidad].create(datos);
+		return db[entidad].create(datos).then((n) => n.toJSON());
 	},
 	actualizarPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});

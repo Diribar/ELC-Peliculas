@@ -20,8 +20,8 @@ router.get("/api/producto-edicion", soloGestionProd, API.prodEdic);
 // RCLV-Alta
 router.get("/api/rclv-alta", soloGestionProd, API.RCLV_Alta);
 // Links
-router.get("/api/link-edicion", soloGestionProd, API.linkEdic);
 router.get("/api/link-alta", soloGestionProd, API.linkAlta);
+router.get("/api/link-edicion", soloGestionProd, API.linkEdic);
 router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // VISTAS --------------------------------------------------
@@ -37,6 +37,7 @@ router.get(
 	vista.redireccionar
 );
 // Vistas de productos
+// Producto alta
 router.get(
 	"/producto/alta",
 	soloGestionProd,
@@ -47,6 +48,7 @@ router.get(
 	capturaActivar,
 	vista.prod_Alta
 );
+// Producto edición
 router.get(
 	"/producto/edicion",
 	soloGestionProd,
