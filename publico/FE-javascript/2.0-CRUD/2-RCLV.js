@@ -7,7 +7,8 @@ window.addEventListener("load", async () => {
 	let valores = entidad == "valores";
 	let id = new URL(window.location.href).searchParams.get("id");
 	let dataEntry = document.querySelector("#dataEntry");
-	let botonSubmit = document.querySelector("#flechas button");
+	let botonSalir = document.querySelector("#flechas #salir");
+	let botonSubmit = document.querySelector("#flechas #submit");
 	let ruta = "/rclv/api/validar-sector/?sector=";
 
 	// Links a otros sitios
@@ -240,7 +241,7 @@ window.addEventListener("load", async () => {
 		} else preguntas.classList.add("ocultar");
 
 		// Fin
-		[OK, errores] = await funcionRCLI[entidad](false)
+		[OK, errores] = await funcionRCLI[entidad](false);
 		return [OK, errores];
 	};
 	// Preguntas para Personaje
@@ -491,6 +492,9 @@ window.addEventListener("load", async () => {
 			}
 			feedback(OK, errores);
 		}
+	});
+	botonSalir.addEventListener("click", () => {
+		window.close();
 	});
 
 	// Status inicial
