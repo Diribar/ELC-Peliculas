@@ -482,7 +482,6 @@ window.addEventListener("load", async () => {
 	});
 	botonSubmit.addEventListener("click", async (e) => {
 		if (botonSubmit.classList.contains("inactivo")) {
-			e.preventDefault();
 			[OK, errores] = await funcionNombre();
 			[OK, errores] = await funcionFechas();
 			[OK, errores] = funcionRepetido();
@@ -491,10 +490,13 @@ window.addEventListener("load", async () => {
 				[OK, errores] = await funcionRCLI[entidad](true);
 			}
 			feedback(OK, errores);
+		} else {
+			// Grabar cambios
+			// Ir a la vista de origen
 		}
 	});
 	botonSalir.addEventListener("click", () => {
-		window.close();
+		// Ir a la vista de origen sin guardar cambios
 	});
 
 	// Status inicial
