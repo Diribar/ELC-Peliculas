@@ -39,8 +39,8 @@
 			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark<%- !errores[campo] ? ' ocultar' : '' %>">
-			<span class="mensajeError"><%= errores[campo] %></span>
+		<i class="fa-solid fa-circle-xmark ocultar">
+			<span class="mensajeError"></span>
 		</i>
 		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		<!-- Link a Relación con la vida -->

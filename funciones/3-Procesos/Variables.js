@@ -114,12 +114,28 @@ module.exports = {
 			},
 		];
 	},
-	camposDP: async () => {
+	camposDP: async (userID) => {
+		// Variables
+		let camposRCLV = ["personajes", "hechos", "valores"];
+		let registrosRCLV = {};
+		// Obtener los registros en status 'aprobado' y 'creado' (del usuario)
+		if (userID)
+			camposRCLV.forEach(async (campo) => {
+				let aux = await BD_genericas.obtenerTodosConInclude(campo, "status_registro").then((n) =>
+					n.filter(
+						(n) =>
+							n.status_registro.aprobado ||
+							(n.status_registro.creado && n.creado_por_id == userID)
+					)
+				);
+				aux.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
+				registrosRCLV[campo] = aux;
+			});
 		return [
 			{
 				titulo: "Existe una versión en castellano",
 				nombreDelCampo: "en_castellano_id",
-				valores: await BD_genericas.obtenerTodos("si_no_parcial", "id"),
+				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : "",
 				mensajePeli: [
 					"Para poner 'SI', escuchá la película entera y asegurate de que sea el idioma principal.",
 					"Si la película es subtitulada en castellano, a los fines de preservar la sencillez, corresponde decir 'SI'. Luego en los links, se podrá especificar que es subtitulada.",
@@ -134,7 +150,7 @@ module.exports = {
 			{
 				titulo: "Es a Color",
 				nombreDelCampo: "en_color_id",
-				valores: await BD_genericas.obtenerTodos("si_no_parcial", "id"),
+				valores: userID ? await BD_genericas.obtenerTodos("si_no_parcial", "id") : "",
 				mensajePeli: ["SI: es a color.", "NO: es en blanco y negro."],
 				mensajeColec: ['En caso de que algunos capítulos sean a color y otros no, elegí "Parcial"'],
 				angosto: true,
@@ -142,7 +158,7 @@ module.exports = {
 			{
 				titulo: "Categoría",
 				nombreDelCampo: "categoria_id",
-				valores: await BD_genericas.obtenerTodos("categorias", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("categorias", "orden") : "",
 				mensajes: [
 					'"Centradas en la Fe Católica", significa que el rol de la Fe Católica es protagónico.',
 					'Si es cristiana pero no católica, se pone como "Valores Presentes en la Cultura".',
@@ -152,7 +168,7 @@ module.exports = {
 			{
 				titulo: "Sub-categoría",
 				nombreDelCampo: "subcategoria_id",
-				valores: await BD_genericas.obtenerTodos("subcategorias", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("subcategorias", "orden") : "",
 				mensajes: [
 					"Es un musical",
 					"Es una novela",
@@ -167,7 +183,7 @@ module.exports = {
 			{
 				titulo: "Público sugerido",
 				nombreDelCampo: "publico_sugerido_id",
-				valores: await BD_genericas.obtenerTodos("publicos_sugeridos", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("publicos_sugeridos", "orden") : "",
 				mensajes: [
 					"Mayores solamente: violencia o sensualidad, que pueden dañar la sensibilidad de un niño de 12 años.",
 					"Mayores apto familia: para mayores, y niños si están acompañados por sus padres.",
@@ -179,7 +195,7 @@ module.exports = {
 			{
 				titulo: "Inspira fe y/o valores",
 				nombreDelCampo: "fe_valores_id",
-				valores: await BD_genericas.obtenerTodos("fe_valores", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("fe_valores", "orden") : "",
 				mensajes: ["¿Considerás que deja una huella positiva en el corazón?"],
 				angosto: true,
 				grupo: "calificala",
@@ -187,7 +203,7 @@ module.exports = {
 			{
 				titulo: "Entretiene",
 				nombreDelCampo: "entretiene_id",
-				valores: await BD_genericas.obtenerTodos("entretiene", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("entretiene", "orden") : "",
 				mensajes: ["Se disfruta el rato viéndola"],
 				angosto: true,
 				grupo: "calificala",
@@ -195,7 +211,7 @@ module.exports = {
 			{
 				titulo: "Calidad sonora y visual",
 				nombreDelCampo: "calidad_tecnica_id",
-				valores: await BD_genericas.obtenerTodos("calidad_tecnica", "orden"),
+				valores: userID ? await BD_genericas.obtenerTodos("calidad_tecnica", "orden") : "",
 				mensajes: ["Tené en cuenta la calidad del audio y de la imagen"],
 				angosto: true,
 				grupo: "calificala",
@@ -203,7 +219,7 @@ module.exports = {
 			{
 				titulo: "Personaje histórico",
 				nombreDelCampo: "personaje_id",
-				valores: await BD_genericas.obtenerTodos("personajes", "nombre"),
+				valores: userID ? registrosRCLV.personajes : "",
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varias las personas, podés poner la más representativa, o 'varios' si es una colección y luego se especifica en los capítulos.",
@@ -214,7 +230,7 @@ module.exports = {
 			{
 				titulo: "Hecho histórico",
 				nombreDelCampo: "hecho_id",
-				valores: await BD_genericas.obtenerTodos("hechos", "nombre"),
+				valores: userID ? registrosRCLV.hechos : "",
 				mensajes: [
 					"Podés ingresar un registro nuevo, haciendo click en el ícono de al lado.",
 					"Si son varios los hechos, podés poner el más representativo, o 'varios' si es una colección y luego se especifica en los capítulos.",
@@ -225,7 +241,7 @@ module.exports = {
 			{
 				titulo: "Valor principal",
 				nombreDelCampo: "valor_id",
-				valores: await BD_genericas.obtenerTodos("valores", "nombre"),
+				valores: userID ? registrosRCLV.valores : "",
 				mensajes: [
 					"Poné el valor más representativo.",
 					"Si no lo encontrás en el listado, elegí la primera opción y lo podrás sugerir en 'edición'.",
