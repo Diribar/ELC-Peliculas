@@ -325,14 +325,14 @@ window.addEventListener("load", async () => {
 						num++;
 						if (!inputProcCan) this.limpiar(num);
 						else {
-							if (inputProcCan == "1") {
+							if (inputProcCan == "1")
 								[params, inputProcID] = this.inputSelect(
 									params,
 									num,
 									"proceso_id",
 									proceso_id
 								);
-							} else cfc[num].classList.add("ocultar");
+							else cfc[num].classList.add("ocultar");
 							// Contemporáneo
 							num++;
 							if (inputProcCan != "0" && !inputProcID) this.limpiar(num);
@@ -515,7 +515,7 @@ window.addEventListener("load", async () => {
 			feedback(OK, errores);
 		} else {
 			// Grabar cambios e ir a la vista de origen
-			dataEntry.submit()
+			dataEntry.submit();
 		}
 	});
 	botonSalir.addEventListener("click", () => {
