@@ -1,7 +1,5 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	let url;
 	// Varieables que se obtienen del url
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let id = new URL(window.location.href).searchParams.get("id");
