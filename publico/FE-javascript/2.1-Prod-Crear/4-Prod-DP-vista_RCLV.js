@@ -7,13 +7,15 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES
 	// Función para buscar todos los valores del formulario
-	let buscarTodosLosValores = () => {
+	let guardarLosValoresEnSessionCookies = () => {
 		let inputs = document.querySelectorAll(".input-error .input");
 		let url = "";
 		inputs.forEach((input) => {
 			url += "&" + input.name + "=";
 			url += encodeURIComponent(input.value);
 		});
+		// Guardar los valores en session y cookies
+		
 		return url;
 	};
 
@@ -21,42 +23,34 @@ window.addEventListener("load", async () => {
 	// Links a RCLV - Alta
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
-			let vistaRCLV = "&vistaRCLV=agregar";
+			// Guardar los valores en Session y Cookies
+			guardarLosValoresEnSessionCookies()
 			// Obtener la RCLV_entidad
-			let RCLV_entidad = link.className.includes("personaje")
+			let entidad = link.className.includes("personaje")
 				? "personajes"
 				: link.className.includes("hecho")
 				? "hechos"
 				: "valores";
-			// Para preservar los valores ingresados hasta el momento
-			let url = buscarTodosLosValores();
 			// Para ir a la vista RCLV
-			window.location.href =
-				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vistaRCLV;
+			window.location.href = "/rclv/agregar/?entidad=" + entidad + "origen=DP"
 		});
 	});
 
 	// Links a RCLV - Edición
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
-			if (link.classList.contains("inactivo")) return;
-			let vistaRCLV = "&vistaRCLV=edicion";
+			// Guardar los valores en Session y Cookies
+			guardarLosValoresEnSessionCookies()
 			// Obtener la RCLV_entidad
-			let RCLV_entidad = link.className.includes("personaje")
+			let entidad = link.className.includes("personaje")
 				? "personajes"
 				: link.className.includes("hecho")
 				? "hechos"
 				: "valores";
 			// Obtener el RCLV_id
-			let RCLV_id = inputsRCLV[i].value;
-			if (RCLV_id) RCLV_entidad += "&RCLV_id=" + RCLV_id;
-			else return;
-			// Para preservar los valores ingresados hasta el momento
-			let url = buscarTodosLosValores();
+			let id = inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			window.location.href =
-				"/rclv/redireccionar/?origen=prodAgregar&RCLV_entidad=" + RCLV_entidad + url + vistaRCLV;
+			window.location.href = "/rclv/edicion/?entidad=" + entidad + "&id=" + id + "origen=DP"
 		});
 	});
-
 });
