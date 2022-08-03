@@ -18,11 +18,6 @@ module.exports = {
 		let codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
-		let errores = req.session.erroresPC
-			? req.session.erroresPC
-			: palabrasClave
-			? await validar.palabrasClave(palabrasClave)
-			: "";
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesar.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
@@ -32,7 +27,6 @@ module.exports = {
 			titulo: "Agregar - Palabras Clave",
 			link: req.originalUrl,
 			palabrasClave,
-			errores,
 		});
 	},
 
@@ -43,12 +37,8 @@ module.exports = {
 		res.cookie("palabrasClave", palabrasClave, {maxAge: unDia});
 		// 2. Si hay errores de validación, redireccionar
 		let errores = await validar.palabrasClave(palabrasClave);
-		if (errores.palabrasClave) {
-			req.session.erroresPC = errores;
-			return res.redirect("/producto/agregar/palabras-clave");
-		}
+		if (errores.palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
 		// 3. Redireccionar a la siguiente instancia
-		req.session.erroresPC = false;
 		return res.redirect("/producto/agregar/desambiguar");
 	},
 
@@ -61,8 +51,6 @@ module.exports = {
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
-		// 3. Errores
-		let errores = req.session.erroresDES ? req.session.erroresDES : "";
 		// 4. Preparar los datos
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
@@ -80,7 +68,6 @@ module.exports = {
 			prod_yaEnBD,
 			mensaje,
 			palabrasClave: desambiguar.palabrasClave,
-			errores,
 		});
 	},
 
@@ -104,7 +91,6 @@ module.exports = {
 		res.cookie("datosDuros", infoTMDBparaDD, {maxAge: unDia});
 		res.cookie("datosOriginales", infoTMDBparaDD, {maxAge: unDia});
 		// 6. Redireccionar a la siguiente instancia
-		req.session.erroresDES = false;
 		res.redirect("/producto/agregar/datos-duros");
 	},
 
@@ -116,8 +102,6 @@ module.exports = {
 		procesar.borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
-		// 4. Obtener los errores
-		let errores = req.session.erroresTP ? req.session.erroresTP : "";
 		// 5. Render del formulario
 		return res.render("0-Estructura-Gral", {
 			tema,
@@ -126,7 +110,6 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry: tipoProd,
 			autorizado_fa: req.session.usuario.autorizado_fa,
-			errores,
 		});
 	},
 
@@ -148,7 +131,6 @@ module.exports = {
 		res.cookie("datosDuros", tipoProd, {maxAge: unDia});
 		res.cookie("datosOriginales", tipoProd, {maxAge: unDia});
 		// 6. Redireccionar a la siguiente instancia
-		req.session.erroresTP = false;
 		res.redirect("/producto/agregar/datos-duros");
 	},
 
@@ -169,20 +151,13 @@ module.exports = {
 		// 4. Si se perdió la info anterior, volver a esa instancia
 		let copiarFA = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
 		if (!copiarFA) return res.redirect("/producto/agregar/tipo-producto");
-		// 5. Detectar errores
-		let errores = req.session.erroresFA
-			? req.session.erroresFA
-			: copiarFA
-			? await validar.copiarFA(copiarFA)
-			: "";
-		// 6. Render del formulario
+		// 5. Render del formulario
 		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Agregar - Copiar FA",
 			link: "/producto/agregar/copiar-fa",
 			dataEntry: copiarFA,
-			errores,
 		});
 	},
 
@@ -207,10 +182,7 @@ module.exports = {
 			}
 		}
 		// 2.3. Si hay errores de validación, redireccionar
-		if (errores.hay) {
-			req.session.erroresFA = errores;
-			return res.redirect("/producto/agregar/copiar-fa");
-		}
+		if (errores.hay) return res.redirect("/producto/agregar/copiar-fa");
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
 		req.session.datosDuros = await procesar.infoFAparaDD(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
@@ -219,7 +191,6 @@ module.exports = {
 		cookie.FA_id = req.session.datosDuros.FA_id;
 		res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		// 4. Redireccionar a la siguiente instancia
-		req.session.erroresFA = false;
 		return res.redirect("/producto/agregar/datos-duros");
 	},
 
@@ -246,11 +217,6 @@ module.exports = {
 				: "palabras-clave";
 		// 4. Obtiene los campos que corresponden para la 'entidad'
 		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
-		// 5. Obtiene los errores
-		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
-		let errores = req.session.erroresDD
-			? req.session.erroresDD
-			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await funciones.paises_idToNombre(datosDuros.paises_id)
@@ -265,7 +231,6 @@ module.exports = {
 			titulo: "Agregar - Datos Duros",
 			link: req.originalUrl,
 			dataEntry: datosDuros,
-			errores,
 			camposDD1: camposDD_vista.filter((n) => n.antesDePais),
 			camposDD2: camposDD_vista.filter((n) => !n.antesDePais),
 			paises,
@@ -331,8 +296,6 @@ module.exports = {
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
 			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
-			// Guardar los errores en session
-			req.session.erroresDD = errores;
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
@@ -357,7 +320,6 @@ module.exports = {
 		if (datosDuros.fuente == "IM") cookie.nombre_castellano = datosDuros.nombre_castellano;
 		res.cookie("datosOriginales", cookie, {maxAge: unDia});
 		// 11. Redireccionar a la siguiente instancia
-		req.session.erroresDD = false;
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
 
@@ -365,15 +327,14 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
 		let codigo = "datosPers";
+		let userID = req.session.usuario.id;
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesar.borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 5. Preparar variables para la vista
-		let camposDP = await variables.camposDP();
-		// 4. Obtener los errores
-		let errores = await validar.datosPers(camposDP, datosPers);
+		let camposDP = await variables.camposDP(userID);
 		// 6. Render del formulario
 		return res.render("0-Estructura-Gral", {
 			tema,
@@ -381,7 +342,6 @@ module.exports = {
 			titulo: "Agregar - Datos Personalizados",
 			link: req.originalUrl,
 			dataEntry: datosPers,
-			errores,
 			camposDP,
 		});
 	},
@@ -411,7 +371,6 @@ module.exports = {
 		res.cookie("confirma", req.session.confirma, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
 		// 8. Redireccionar a la siguiente instancia
-		req.session.erroresDP = false;
 		return res.redirect("/producto/agregar/confirma");
 	},
 

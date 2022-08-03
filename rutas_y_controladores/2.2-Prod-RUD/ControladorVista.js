@@ -59,7 +59,7 @@ module.exports = {
 			camposDD3 = camposDD.filter((n) => n.nombreDelCampo == "produccion");
 			BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
 			BD_idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
-			camposDP = await variables.camposDP().then((n) => n.filter((m) => m.grupo != "calificala"));
+			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
 			let statusResumido = prodCombinado.status_registro.gr_pend_aprob
