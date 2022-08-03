@@ -4,19 +4,21 @@ window.addEventListener("load", async () => {
 	let linksAlta = document.querySelectorAll(".input-error .linkRCLV.alta");
 	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let rutaGuardarDatosPers = "/producto/agregar/api/guardar-datos-pers/";
 
 	// FUNCIONES
-	// Función para buscar todos los valores del formulario
+	// Función para guardar los valores del formulario
 	let guardarLosValoresEnSessionCookies = () => {
 		let inputs = document.querySelectorAll(".input-error .input");
-		let url = "";
+		let params = "";
 		inputs.forEach((input) => {
-			url += "&" + input.name + "=";
-			url += encodeURIComponent(input.value);
+			if (input.value) params += "&" + input.name + "=" + encodeURIComponent(input.value);
 		});
+		params = params.replace("&", "?");
 		// Guardar los valores en session y cookies
-		
-		return url;
+		if (params.length) fetch(rutaGuardarDatosPers + params);
+		// Fin
+		return;
 	};
 
 	// Add Event-Listeners
@@ -24,15 +26,11 @@ window.addEventListener("load", async () => {
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
-			guardarLosValoresEnSessionCookies()
+			guardarLosValoresEnSessionCookies();
 			// Obtener la RCLV_entidad
-			let entidad = link.className.includes("personaje")
-				? "personajes"
-				: link.className.includes("hecho")
-				? "hechos"
-				: "valores";
+			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/agregar/?entidad=" + entidad + "&origen=DP"
+			window.location.href = "/rclv/agregar/" + entidad + "&origen=DP";
 		});
 	});
 
@@ -40,17 +38,21 @@ window.addEventListener("load", async () => {
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
-			guardarLosValoresEnSessionCookies()
+			guardarLosValoresEnSessionCookies();
 			// Obtener la RCLV_entidad
-			let entidad = link.className.includes("personaje")
-				? "personajes"
-				: link.className.includes("hecho")
-				? "hechos"
-				: "valores";
+			let entidad = "?entidad=" + entidades(link);
 			// Obtener el RCLV_id
-			let id = inputsRCLV[i].value;
+			let id = "&id=" + inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/edicion/?entidad=" + entidad + "&id=" + id + "&origen=DP"
+			window.location.href = "/rclv/edicion/" + entidad + id + "&origen=DP";
 		});
 	});
 });
+
+let entidades = (link) => {
+	return link.className.includes("personaje")
+		? "personajes"
+		: link.className.includes("hecho")
+		? "hechos"
+		: "valores";
+};

@@ -129,30 +129,30 @@ window.addEventListener("load", async () => {
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonEliminarSession.classList).join(" ").includes("inactivo")) return;
+		if (Array.from(botonEliminarSession.classList).contains("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
 		window.location.reload();
 	});
 	botonGuardarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonGuardarSession.classList).join(" ").includes("inactivo")) e.preventDefault();
+		if (Array.from(botonGuardarSession.classList).contains("inactivo")) e.preventDefault();
 	});
 	// Edición Guardada
 	botonVerGuardada.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVerGuardada.classList).join(" ").includes("inactivo") || !datosEdicG) return;
+		if (Array.from(botonVerGuardada.classList).contains("inactivo") || !datosEdicG) return;
 		// Ejecuta la función 'Input'
 		comandos_ActualizarInput(botonVerGuardada, datosEdicG, true);
 	});
 	botonEliminarGuardada.addEventListener("click", (e) => {
-		if (Array.from(botonEliminarGuardada.classList).join(" ").includes("inactivo")) {
+		if (Array.from(botonEliminarGuardada.classList).contains("inactivo")) {
 			e.preventDefault();
 		}
 	});
 	// Original
 	botonOriginal.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonOriginal.classList).join(" ").includes("inactivo") || !datosOriginales) return;
+		if (Array.from(botonOriginal.classList).contains("inactivo") || !datosOriginales) return;
 		// Ejecuta la función 'Input'
 		comandos_ActualizarInput(botonOriginal, datosOriginales, true);
 	});

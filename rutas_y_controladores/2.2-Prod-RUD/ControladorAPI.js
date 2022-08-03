@@ -62,14 +62,19 @@ module.exports = {
 	enviarAReqSession: async (req, res) => {
 		if (req.query.avatar) delete req.query.avatar;
 		req.session.edicion = req.query;
+		res.cookie("edicion", req.query, {maxAge: unDia});
 		return res.json();
 	},
 	obtenerDeReqSession: async (req, res) => {
-		let {entidad, id: prodID} = req.query;
-		let prodSession =
-			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
+		let {entidad, id} = req.query;
+		let edicion =
+			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == id
 				? req.session.edicion
+				: req.cookies.edicion &&
+				  req.cookies.edicion.entidad == entidad &&
+				  req.cookies.edicion.id == id
+				? req.cookies.edicion
 				: "";
-		return res.json(prodSession);
+		return res.json(edicion);
 	},
 };

@@ -4,20 +4,35 @@ window.addEventListener("load", async () => {
 	let linksAlta = document.querySelectorAll(".input-error i.linkRCLV#alta");
 	let linksEdicion = document.querySelectorAll(".input-error i.linkRCLV#edicion");
 	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	// Variables para el ruteo del origen
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let url = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	let paramsOrigen = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+	// Variables para guardar los datos
+	let inputs = document.querySelectorAll(".input-error .input");
+	let rutaRQ = "/producto/api/edicion/enviar-a-req-session/";
 
 	// FUNCIONES
+	// Mostrar u ocultar los íconos de alta/edición de RCLV
 	let mostrarOcultarIconos = (input, i) => {
 		// Excepciones para: Ninguno y Jesús
-		if (!input.value || input.value == "1" || (input.value == "11" && i === 0)) {
-			linksAlta[i].classList.add("ocultar");
+		if (input.value == "11" && i === 0) linksAlta[i].classList.add("ocultar");
+		else linksAlta[i].classList.remove("ocultar");
+		if (!input.value || input.value == "1" || (input.value == "11" && i === 0))
 			linksEdicion[i].classList.add("ocultar");
-		} else {
-			linksAlta[i].classList.remove("ocultar");
-			linksEdicion[i].classList.remove("ocultar");
+		else linksEdicion[i].classList.remove("ocultar");
+		return;
+	};
+	//
+	// Guardar los valores del formulario
+	let guardarLosValoresEnSession = () => {
+		let objeto = "?entidad=" + prodEntidad + "&id=" + prodID;
+		for (let input of inputs) {
+			if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 		}
+		// Guardar los valores en session
+		fetch(rutaRQ + objeto); // Guarda el Data-Entry en session
+		// Fin
 		return;
 	};
 
@@ -25,22 +40,26 @@ window.addEventListener("load", async () => {
 	// Links a RCLV - Alta
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
+			// Guardar los valores en Session y Cookies
+			guardarLosValoresEnSession();
 			// Obtener la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/agregar/" + entidad + url;
+			window.location.href = "/rclv/agregar/" + entidad + paramsOrigen;
 		});
 	});
 
 	// Links a RCLV - Edición
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
+			// Guardar los valores en Session y Cookies
+			guardarLosValoresEnSession();
 			// Obtener la RCLV_entidad
 			let entidad = "?entidad=" + entidades(link);
 			// Obtener el RCLV_id
 			let id = "&id=" + inputsRCLV[i].value;
 			// Para ir a la vista RCLV
-			window.location.href = "/rclv/edicion/" + entidad + id + url;
+			window.location.href = "/rclv/edicion/" + entidad + id + paramsOrigen;
 		});
 	});
 
