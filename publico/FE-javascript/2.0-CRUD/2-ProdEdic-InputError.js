@@ -88,7 +88,6 @@ window.addEventListener("load", async () => {
 		// Le pone la flecha al campo cambiado
 		let indice = campos.indexOf(campo);
 		actualizarInput_flechas(botonVerSession, indice);
-
 	});
 	// Revisar campos COMBINADOS
 	form.addEventListener("change", async (e) => {
@@ -386,10 +385,7 @@ window.addEventListener("load", async () => {
 	// Actualiza 'subcategoría' si existe una categoría
 	if (categoria.value) formInput_mostrarValoresSubcat();
 	// Actualizar las flechas
-	for (let i = 0; i < inputs.length; i++) {
-		actualizarInput_flechas(botonVerSession, i);
-	}
-
+	for (let i = 0; i < inputs.length; i++) actualizarInput_flechas(botonVerSession, i);
 });
 
 // FUNCIONES QUE SE PUEDEN CARGAR ANTES DEL ON-LOAD
