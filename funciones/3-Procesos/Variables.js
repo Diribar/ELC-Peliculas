@@ -251,6 +251,25 @@ module.exports = {
 		];
 	},
 
+	// Entorno RCLV
+	camposRCLV: () => {
+		return {
+			personajes: [
+				"nombre",
+				"dia_del_ano_id",
+				"ano",
+				"categoria_id",
+				"subcategoria_id",
+				"ap_mar_id",
+				"proceso_id",
+				"santo_beato",
+				"rol_iglesia_id",
+			],
+			hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"],
+			valores: ["nombre", "dia_del_ano_id"],
+		};
+	},
+
 	// Entorno RUD - Links
 	provsQueNoRespetanCopyright: () => {
 		return [
@@ -392,7 +411,7 @@ module.exports = {
 		];
 	},
 
-	// Varios
+	// Vistas
 	vistaInicio: () => {
 		return {nombre: "fa-house", link: "/", titulo: "Ir a 'Inicio'"};
 	},

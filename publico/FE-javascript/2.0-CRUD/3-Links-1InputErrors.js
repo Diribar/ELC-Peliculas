@@ -4,6 +4,7 @@ window.addEventListener("load", async () => {
 	let rutaObtenerProvs = "/links/api/obtener-provs-links";
 	let inputs = document.querySelectorAll("tbody .inputError .input");
 	let camposInput = Array.from(document.querySelectorAll("tbody .alta .input")).map((n) => n.name);
+	console.log(camposInput);
 	let columnas = camposInput.length;
 	let filas = inputs.length / columnas;
 

@@ -3,9 +3,9 @@ window.addEventListener("load", async () => {
 	// Variables
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
-	let inputs = document.querySelectorAll(".edicion .input");
 	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
 	let filasEditar = document.querySelectorAll("tbody .edicion");
+	let inputs = document.querySelectorAll(".edicion .input");
 	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
 	let columnas = inputs.length / (filasEditar.length + 1);
 	let activos = document.querySelector("#tabla #tags #activo");
