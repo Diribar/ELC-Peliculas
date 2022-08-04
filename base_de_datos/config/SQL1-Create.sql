@@ -447,17 +447,16 @@ CREATE TABLE rclv_1personajes (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
-	perenne BOOLEAN NULL,
+	perenne BOOLEAN DEFAULT 0,
 
 	categoria_id VARCHAR(3) NULL, /* El ID de la categoría */
 	subcategoria_id VARCHAR(3) NULL,  /* Jesús,Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Si es un vidente => ID de la aparición */
 
 	proceso_id VARCHAR(3) NULL,
-	santo_beato BOOLEAN NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
-	prod_aprob BOOLEAN NULL,
+	prod_aprob BOOLEAN DEFAULT 0,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -468,13 +467,13 @@ CREATE TABLE rclv_1personajes (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -494,13 +493,13 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_1personajes (id, creado_por_id, nombre) 
-VALUES (1, 1, 'Ninguno');
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, nombre)
+INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, nombre) 
+VALUES (1, 1, 3, 'Ninguno');
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, nombre)
 VALUES 
-(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 1, 'Jesús'),
-(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 1, 'María, madre de Jesús'),
-(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 1, 'José, padre de Jesús')
+(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, 'María, madre de Jesús'),
+(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, 'José, padre de Jesús')
 ;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, creado_en, nombre)
 VALUES 
@@ -512,6 +511,7 @@ VALUES
 (26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, '2022-03-16 23:25:20', 'Martín Lutero'),
 (27,  51, 1844, 'CFC', 'HAG', 'STV', 'LSV', 2, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
 ;
+UPDATE rclv_1personajes SET status_registro_id=3 WHERE id=21;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, creado_por_id, creado_en, nombre)
@@ -525,15 +525,15 @@ CREATE TABLE rclv_2hechos (
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	ano SMALLINT NULL,
-	perenne BOOLEAN NULL,
+	perenne BOOLEAN DEFAULT 0,
 	
-	solo_cfc BOOLEAN NULL, /* ¿A mostrar solamente en CFC? */
-	jss BOOLEAN NULL, /* Jesús: true */
-	cnt BOOLEAN NULL, /* Jesús y Contemp: true */
-	exclusivo BOOLEAN NULL, /* Jesús y Contemp: true o false, según corresponda  */
-	ap_mar BOOLEAN NULL, /* true sólo para Aparición Mariana */
+	solo_cfc BOOLEAN DEFAULT 0, /* ¿A mostrar solamente en CFC? */
+	jss BOOLEAN DEFAULT 0, /* Jesús: true */
+	cnt BOOLEAN DEFAULT 0, /* Jesús y Contemp: true */
+	exclusivo BOOLEAN DEFAULT 0, /* Jesús y Contemp: true o false, según corresponda  */
+	ap_mar BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
 
-	prod_aprob BOOLEAN NULL,
+	prod_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -544,13 +544,13 @@ CREATE TABLE rclv_2hechos (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -587,14 +587,13 @@ VALUES
 ;
 UPDATE rclv_2hechos SET perenne = true;
 ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
-/*UPDATE rclv_1personajes SET 	FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id) WHERE id=;*/;
 CREATE TABLE rclv_3valores (
 	id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(30) NOT NULL UNIQUE,
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
-	perenne BOOLEAN NULL,
+	perenne BOOLEAN DEFAULT 0,
 
-	prod_aprob BOOLEAN NULL,
+	prod_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -605,13 +604,13 @@ CREATE TABLE rclv_3valores (
 	edic_analizada_en DATETIME NULL,
 	lead_time_edicion DECIMAL(4,2) UNSIGNED NULL,
 
-	status_registro_id TINYINT UNSIGNED DEFAULT 3,
+	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	motivo_id TINYINT UNSIGNED NULL,
 	sugerido_por_id INT UNSIGNED NULL,
 	sugerido_en DATETIME NULL,
 
 	capturado_por_id INT UNSIGNED NULL,
-	capturado_en DATETIME DEFAULT UTC_TIMESTAMP,
+	capturado_en DATETIME NULL,
 	captura_activa BOOLEAN NULL,
 
 	PRIMARY KEY (id),
@@ -652,7 +651,6 @@ CREATE TABLE rclv_4edicion (
 	subcategoria_id VARCHAR(3) NULL,   /* Jesús,Contemp, Hagio => ID de la sub-categoría */
 	ap_mar_id SMALLINT UNSIGNED NULL,  /* Para Aparición Mariana, va el ID de la aparición */
 	proceso_id VARCHAR(3) NULL,
-	santo_beato BOOLEAN NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
 	/* Campos para HECHOS */
