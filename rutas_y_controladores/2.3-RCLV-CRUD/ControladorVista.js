@@ -88,7 +88,6 @@ module.exports = {
 				...datos,
 				subcategoria_id:
 					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : null,
-				santo_beato,
 				ap_mar_id: datos.ap_mar_id != "" ? datos.ap_mar_id : null,
 			};
 			if (datos.proceso_id === "") datos.proceso_id = null;

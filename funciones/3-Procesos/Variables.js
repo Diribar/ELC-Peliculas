@@ -262,7 +262,6 @@ module.exports = {
 				"subcategoria_id",
 				"ap_mar_id",
 				"proceso_id",
-				"santo_beato",
 				"rol_iglesia_id",
 			],
 			hechos: ["nombre", "dia_del_ano_id", "ano", "solo_cfc", "jss", "cnt", "exclusivo", "ap_mar"],
