@@ -33,11 +33,12 @@ module.exports = {
 			"status_registro"
 		);
 		// Obtiene el mensaje de la tarea realizada
+		let link_edicion = datos;
 		let mensaje = !link_original
 			? await procesar.crear_original("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await procesar.actualizar_original("links", link_original.id, datos) // Actualizar el link_original
-			: await procesar.guardar_edicion("links", "links_edicion", link_original, datos, userID); // Guardar o actualizar la edición
+			? await procesar.actualizar_original("links", link_original.id, link_edicion) // Actualizar el link_original
+			: await procesar.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar o actualizar la edición
 		// Fin
 		return res.json(mensaje);
 	},
