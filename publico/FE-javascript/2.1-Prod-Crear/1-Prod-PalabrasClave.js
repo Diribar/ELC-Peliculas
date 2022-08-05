@@ -39,8 +39,19 @@ window.addEventListener("load", () => {
 	});
 
 	// Submit
-	submit.addEventListener("click", async () => {
+	submit.addEventListener("click", async (e) => {
+		funcionSubmit(e);
+	});
+	submit.addEventListener("keydown", async (e) => {
+		if (e.key == "Enter" || e.key == "Space") funcionSubmit(e);
+	});
+	form.addEventListener("submit", (e) => {
+		funcionSubmit(e);
+	});
+
+	let funcionSubmit = async (e) => {
 		if (submit.classList.contains("fa-circle-question")) {
+			e.preventDefault();
 			if (!submit.classList.contains("inactivo")) {
 				submit.classList.add("inactivo");
 				let link = api_pre(input.value);
@@ -50,7 +61,7 @@ window.addEventListener("load", () => {
 				avanzar();
 			}
 		} else form.submit();
-	});
+	};
 
 	let verificar = () => {
 		submit.classList.remove("fa-circle-check");

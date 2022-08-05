@@ -18,6 +18,9 @@
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #cuerpo #encabezado {border-bottom: solid 1px var(--azul-oscuro); padding: 5px 10px; background-color: var(--celeste-claro);}
 #cuerpo #encabezado #nombres h1 {margin: 0; }
+#cuerpo #encabezado #nombres h1 {font-size: 1.5rem; padding-bottom: 3px;}
+/* #cuerpo #encabezado #nombres h1 em {font-size: 1.1rem;} */
+#cuerpo #encabezado #nombres h2 {color: var(--gris-oscuro); font-weight: normal; font-size: 1rem;}
 #cuerpo #encabezado #colCap {text-align: right;}
 #cuerpo #encabezado #colCap #colecciones,
 #cuerpo #encabezado #colCap #tempCapI,

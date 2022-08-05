@@ -3,9 +3,9 @@
 	<!-- Ayuda -->
 	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>En este tablero encontrás todas las entidades a revisar.</li>
-		<li>Idealmente, debería estar vacío al terminar la sesión.</li>
-		<li>Están ordenados por orden de criticidad.</li>
+		<li>Estos registros están pendientes de revisar.</li>
+		<li>Se necesita revisarlos a todos.</li>
+		<li>Las tareas figuran por orden de criticidad.</li>
 	</ul>	
 </div>
 <!-- Datos -->
@@ -18,10 +18,7 @@
 				<!-- Ayuda -->
 				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 				<ol class="mensajeAyuda ocultar" type="dots">
-					<p>Para figurar en el listado, tanto el <u><strong>PRODUCTO</strong></u> como la <u><strong>EDICION</strong></u> cumplen <u>todas</u> con estas condiciones:</p>
-					<li>Que no hayan sido creados por vos.</li>
-					<li>Que estén creados hace más de una hora.</li>
-					<li>Que no estén siendo analizados por otro revisor.</li>
+					<p>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</p>
 				</ol>
 			</div>
 			<!-- Para inactivar -->
@@ -46,12 +43,10 @@
 				<!-- Ayuda -->
 				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 				<ol class="mensajeAyuda ocultar" type="dots">
-					<p><u>RCLV</u>: Relación con la Vida</p>
-					<p>Los registros cumplen <u>todas</u> estas condiciones:</p>
-					<li>No han sido creados por vos.</li>
-					<li>Están creados hace más de una hora.</li>
-					<li>No están siendo analizados por otro revisor.</li>
-					<li>Están relacionados con algún producto aprobado.</li>
+					<p>Los <u>RCLV</u> cumplen estas condiciones:</p>
+					<li>Las <u>altas</u> a analizar, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
+					<li>Las <u>ediciones</u> a revisar son de algún RCLV aprobado.</li>
+					<li>Los registros a <u>inactivar</u> no tienen asociado ningún producto creado o aprobado.</li>
 				</ol>
 			</div>
 			<!-- Aprobados c/edición -->
@@ -66,11 +61,9 @@
 				<!-- Ayuda -->
 				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 				<ol class="mensajeAyuda ocultar" type="dots">
-					<p>Los productos cumplen <u>todas</u> estas condiciones:</p>
-					<li>Sus links a revisar no han sido creados ni editados por vos.</li>
-					<li>No están siendo analizados por otro revisor.</li>
-					<li>Tiene que estar aprobado.</li>
-					<li>Sin captura activa por otro revisor.</li>
+					<p>Los <u>productos</u> cumplen todas estas condiciones:</p>
+					<li>Están aprobados.</li>
+					<li>Tienen algún link cuya novedad es ajena a vos.</li>
 				</ol>
 			</div>				
 			<%- include("11-Tablero-Registros", {titulo: "Productos con Links a Revisar", estado: aprobado_id, registros: prodsConLinks, url: "links"}) %>

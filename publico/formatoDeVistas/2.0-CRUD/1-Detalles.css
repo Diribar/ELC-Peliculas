@@ -6,8 +6,6 @@
 
 /* Datos Largos */
 #datosLargos {display: flex; flex-direction: column; justify-content: space-around; padding: 20px 40px 20px; flex-grow: 1;}
-#datosLargos #contenido h1 {font-size: 1.5rem;}
-#datosLargos #contenido h1 em {font-size: 1.1rem;}
 #datosLargos #contenido .datosAdicionales {margin-top: 10px;}
 
 /* Sinopsis - General y Texto*/
