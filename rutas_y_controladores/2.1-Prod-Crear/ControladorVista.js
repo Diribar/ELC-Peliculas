@@ -492,7 +492,7 @@ module.exports = {
 		}
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.gr_pend_aprob)
-			return res.redirect("/producto/detalle/?entidad=" + entidad + "&valor=" + id);
+			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
 		// 5. Obtener el producto
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS

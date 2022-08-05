@@ -1,4 +1,4 @@
-<div id="tituloConAyuda">
+<div id="tituloPrincipal">
 	<h1 id="titulo">
 		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
 	</h1>
@@ -11,7 +11,7 @@
 		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 		<ul class="mensajeAyuda ocultar" type="dots">
 			<li>Necesitamos que nos des la información que no disponemos.</li>
-			<li>Para la información 'subjetiva', te pedimos que te guíes por las ayudas.</li>
+			<li>Para cada dato, te sugerimos que CONSULTES las ayudas.</li>
 		</ul>	
 	</section>
 	<!-- Datos -->
@@ -34,13 +34,13 @@
 				<!--Categoría-->
 				<%- include("41-DP", {campo: "categoria_id", nombre: "nombre"}) %>
 				<!--Sub-categoría-->
-				<%- include("41-DP", {campo: "subcategoria_id", nombre: "nombre"}) %>
+				<%- include("42-DP_subcat", {campo: "subcategoria_id", nombre: "nombre"}) %>
 				<!--Personaje histórico-->
-				<%- include("42-DP_RCLV", {campo: "personaje_id"}) %>
+				<%- include("43-DP_RCLV", {campo: "personaje_id"}) %>
 				<!--Hecho histórico-->
-				<%- include("42-DP_RCLV", {campo: "hecho_id"}) %>
+				<%- include("43-DP_RCLV", {campo: "hecho_id"}) %>
 				<!--Valor-->
-				<%- include("42-DP_RCLV", {campo: "valor_id"}) %>
+				<%- include("43-DP_RCLV", {campo: "valor_id"}) %>
 			</div>
 			<!-- Tu calificación -->
 			<div class="flex-col">

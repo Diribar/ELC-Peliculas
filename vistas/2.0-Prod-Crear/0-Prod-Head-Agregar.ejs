@@ -1,7 +1,9 @@
 <!-- Uso compartido -->
 <link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/0-Prod-Agregar.css">
-<!-- <script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script> --><!-- Sin mensajes de ayuda en este circuito -->
-<% if (codigo == "palabrasClave" || codigo == "desambiguar" || codigo == "tipoProducto" || codigo =="copiarFA" || codigo == "datosPers" || codigo == "confirma" || codigo == "terminaste") { %>
+<% if (codigo != "palabrasClave" && codigo != "terminaste") { %>
+	<script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
+<% } %>
+<% if (codigo == "palabrasClave" || codigo == "tipoProducto" || codigo =="copiarFA" || codigo == "datosPers" || codigo == "confirma" || codigo == "terminaste") { %>
 	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 <% } %>
 

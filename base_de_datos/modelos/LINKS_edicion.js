@@ -8,6 +8,7 @@ module.exports = (sequelize, dt) => {
 
 		calidad: {type: dt.INTEGER},
 		castellano: {type: dt.BOOLEAN},
+		subtit_castellano: {type: dt.BOOLEAN},
 		gratuito: {type: dt.BOOLEAN},
 		tipo_id: {type: dt.INTEGER},
 		completo: {type: dt.INTEGER},

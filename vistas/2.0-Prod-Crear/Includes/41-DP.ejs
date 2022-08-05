@@ -7,14 +7,8 @@
 			<option value="" class="ocultar" <% if (!dataEntry[campo]) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
 			<% for (let valor of registro.valores) { %>
 				<option value="<%= valor.id %>" 
-					class="
-						<% // Si es una sub-categoría, coloca la categoría_id en la clase %> 
-						<% if (campo == "subcategoria_id") { %><%= (valor.cfc ? 'CFC ' : '') + (valor.vpc ? 'VPC ' : '')  %><% } %>
-						<% // Si es una colección, quita el 'parcial' para las películas %>
-						<% if ((campo == "en_castellano_id" || campo == "en_color_id") && dataEntry.entidad == "peliculas"  && valor.id == 2) { %><%= 'ocultar' %><% } %>
-					"
-					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
-					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
+					class="<% if ((campo == "en_color_id") && dataEntry.entidad == "peliculas"  && valor.id == 2) { %><%= 'ocultar' %><% } %>" <% // Para el campo color, quita el 'parcial' en las películas %>
+					<% if (dataEntry[campo] == valor.id) { %>selected<% } %> <% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
 				>
 					<%= valor[nombre] %>
 				</option>

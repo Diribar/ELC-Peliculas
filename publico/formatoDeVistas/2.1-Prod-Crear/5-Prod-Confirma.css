@@ -6,11 +6,14 @@
 #dataEntry #running {position: absolute; right: 30px; max-width: 150px; max-height: 80px}
 
 /* Texto */
-#dataEntry ul#datos {padding-left: 20px;}
-#dataEntry ul#datos li {margin: 3px 0; font-size: 1.2rem;}
-#dataEntry ul#datos li .fa-circle-question {position: relative; transform: none; margin-left: 5px; right: 0;}
-#dataEntry ul#datos li .fa-circle-question .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 350px;}
-#dataEntry ul#datos li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
+#dataEntry #datos {padding-left: 20px;}
+#dataEntry #datos .texto {margin: 3px 0; font-size: 1.2rem;}
+#dataEntry #datos #liConAyuda {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}
+#dataEntry #datos #liConAyuda .fa-circle-question {transform: none; top: initial; right: initial;}
+#dataEntry #datos #liConAyuda .fa-circle-question {margin-left: 10px; position: relative;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda {max-width: 350px; right: -10px; cursor: default;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos {margin-left: 20px; margin-bottom: 5px;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos li {padding-top: 0;}
 
 /* Datos del producto */
 #dataEntry #datosProd {margin-top: 15px; display: flex; flex-direction: row; width: 85%; align-self: center;}
