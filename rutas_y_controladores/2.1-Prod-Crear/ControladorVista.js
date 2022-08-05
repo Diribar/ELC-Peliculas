@@ -206,7 +206,7 @@ module.exports = {
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
-		// Averiguar el origen
+		// 4. Variables
 		let origen =
 			datosDuros.fuente == "TMDB"
 				? "desambiguar"
@@ -215,8 +215,12 @@ module.exports = {
 				: datosDuros.fuente == "IM"
 				? "tipo-producto"
 				: "palabras-clave";
-		// 4. Obtiene los campos que corresponden para la 'entidad'
 		let camposDD = variables.camposDD().filter((n) => n[datosDuros.entidad]);
+		// 5. Obtiene los errores
+		let camposDD_errores = camposDD.map((n) => n.nombreDelCampo);
+		let errores = req.session.erroresDD
+			? req.session.erroresDD
+			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id
 			? await funciones.paises_idToNombre(datosDuros.paises_id)
@@ -236,6 +240,7 @@ module.exports = {
 			paises,
 			idiomas,
 			origen,
+			errores,
 		});
 	},
 

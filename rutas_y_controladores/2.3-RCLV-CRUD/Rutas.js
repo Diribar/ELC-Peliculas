@@ -22,7 +22,6 @@ const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Rutas de APIs
 router.get("/api/otros-casos", API.buscarOtrosCasos);
 router.get("/api/validar-sector", API.validarSector);
-router.get("/api/validar-consolidado", API.validarConsolidado);
 
 // Rutas de vistas - Relación con la vida
 router.get("/agregar", soloAutInput, aptoDE, entidad, vista.altaEdicForm);

@@ -7,17 +7,17 @@ const procesar = require("../../funciones/3-Procesos/3-RUD");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
-		// ALTA - EDICIÓN / Puede venir de agregarProd o edicionProd
+		// Puede venir de agregarProd o edicionProd
 		// 1. Variables
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));
 		let tema = "rclv_" + agregar_edicion;
 		let entidad = req.query.entidad;
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		let dataEntry = req.session.datosRCLV
-			? req.session.datosRCLV
-			: req.cookies.datosRCLV
-			? req.cookies.datosRCLV
+		let dataEntry = req.session[entidad]
+			? req.session[entidad]
+			: req.cookies[entidad]
+			? req.cookies[entidad]
 			: {};
 		let nombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = (agregar_edicion == "agregar" ? "Agregar - " : "Edición - ") + nombre;
@@ -36,7 +36,7 @@ module.exports = {
 		// 3. Pasos exclusivos para edición
 		if (agregar_edicion == "edicion") {
 			let id = req.query.id;
-			dataEntry = await BD_genericas.obtenerPorId(entidad, id);
+			dataEntry = await BD_genericas.obtenerPorId(entidad, id); // Pisa el data entry de session
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)
@@ -64,16 +64,15 @@ module.exports = {
 	altaEdicGrabar: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Obtener los datos
-		let entidad = req.query.entidad;
-		let id = req.query.id;
+		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
 		// return res.send(datos)
 		// 2. Averiguar si hay errores de validación y tomar acciones
 		let errores = await validar.consolidado(datos);
 		if (errores.hay) {
-			req.session.datosRCLV = datos;
-			res.cookie("datosRCLV", datos, {maxAge: unDia});
-			return res.redirect(req.url);
+			req.session[entidad] = datos;
+			res.cookie(entidad, datos, {maxAge: unDia});
+			return res.redirect(req.originalUrl);
 		}
 		// 3. Obtener el día del año
 		if (!datos.desconocida)
@@ -97,11 +96,21 @@ module.exports = {
 		// 3. Preparar la información a guardar
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));
+		// 4. Guardar los cambios del RCLV
 		if (agregar_edicion == "agregar") {
 			datos.creado_por_id = req.session.usuario.id;
-			// 5. Crear el registro RCLV en la BD
+			// Crear el registro RCLV en la BD
 			id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-			console.log(id);
+			// Agregar el RCLV a DP/ED
+			let entidad_id = funciones.obtenerEntidad_id(entidad);
+			if (origen == "DP") {
+				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
+				res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
+			}
+			else if (origen=="ED") {
+				req.session.edicion = {...req.session.edicion, [entidad_id]: id};
+				res.cookie("edicion", req.session.edicion, {maxAge: unDia});
+			}
 		} else if (agregar_edicion == "edicion") {
 			datos = {...datos, editado_por_id: req.session.usuario.id, editado_en: funciones.ahora()};
 			//return res.send([datos, datos]);
@@ -114,17 +123,19 @@ module.exports = {
 			await BD_genericas.actualizarPorId(entidad, id, datos);
 		}
 		// 8. Borrar session y cookies de RCLV
-		if (req.session && req.session.datosRCLV) delete req.session.datosRCLV;
-		if (req.cookies && req.cookies.datosRCLV) res.clearCookie("datosRCLV");
+		if (req.session[entidad]) delete req.session[entidad];
+		if (req.cookies[entidad]) res.clearCookie(entidad);
 		// 9. Redireccionar a la siguiente instancia
-		return res.redirect("/rclv/detalle/?entidad=" + entidad + "&id=" + id);
+		let destino =
+			origen == "DP"
+				? "/producto/agregar/datos-personalizados"
+				: origen == "ED"
+				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
+				: "";
+		return res.redirect(destino);
 	},
 
 	detalle: async (req, res) => {
-		return res.send(req.query);
-	},
-
-	edicion: async (req, res) => {
 		return res.send(req.query);
 	},
 };

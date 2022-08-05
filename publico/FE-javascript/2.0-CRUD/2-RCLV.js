@@ -1,15 +1,28 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables generales
+	// Varieables que se obtienen del url
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
+	let id = new URL(window.location.href).searchParams.get("id");
+	let origen = new URL(window.location.href).searchParams.get("origen");
+	let prodEntidad = new URL(window.location.href).searchParams.get("prodEntidad");
+	let prodID = new URL(window.location.href).searchParams.get("prodID");
+	// Obtener la entidad en formato booleano
 	let personajes = entidad == "personajes";
 	let hechos = entidad == "hechos";
 	let valores = entidad == "valores";
-	let id = new URL(window.location.href).searchParams.get("id");
+	// Variables generales
 	let dataEntry = document.querySelector("#dataEntry");
 	let botonSalir = document.querySelector("#flechas #salir");
 	let botonSubmit = document.querySelector("#flechas #submit");
-	let ruta = "/rclv/api/validar-sector/?sector=";
+	// Rutas
+	let rutaValidacion = "/rclv/api/validar-sector/?sector=";
+	let rutaOtrosCasos = "/rclv/api/otros-casos/";
+	let rutaSalir =
+		origen == "DP"
+			? "/producto/agregar/datos-personalizados"
+			: origen == "ED"
+			? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
+			: "";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -81,9 +94,9 @@ window.addEventListener("load", async () => {
 	// Primera columna - compatible RCLV x 3
 	let funcionNombre = async () => {
 		// Verificar errores en el nombre
-		let url = "&nombre=" + nombre.value + "&entidad=" + entidad;
-		if (id) url += "&id=" + id;
-		errores.nombre = await fetch(ruta + "nombre" + url).then((n) => n.json());
+		let params = "&nombre=" + nombre.value + "&entidad=" + entidad;
+		if (id) params += "&id=" + id;
+		errores.nombre = await fetch(rutaValidacion + "nombre" + params).then((n) => n.json());
 		// Consolidar la info
 		OK.nombre = !errores.nombre;
 		// Fin
@@ -113,8 +126,8 @@ window.addEventListener("load", async () => {
 		// Si se conoce la fecha...
 		if (!desconocida.checked) {
 			// Se averigua si hay un error con la fecha
-			let url = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-			errores.fecha = await fetch(ruta + "fecha" + url).then((n) => n.json());
+			let params = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+			errores.fecha = await fetch(rutaValidacion + "fecha" + params).then((n) => n.json());
 			OK.fecha = !errores.fecha;
 			// Agregar los registros que tengan esa fecha
 			if (OK.fecha) {
@@ -144,10 +157,9 @@ window.addEventListener("load", async () => {
 	let registrosConEsaFecha = async () => {
 		// Buscar otros casos en esa fecha
 		// Obtener los casos
-		let url =
-			"/rclv/api/otros-casos/?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
-		if (id) url += "&id=" + id;
-		let casos = await fetch(url).then((n) => n.json());
+		let params = "?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
+		if (id) params += "&id=" + id;
+		let casos = await fetch(rutaOtrosCasos + params).then((n) => n.json());
 		// Si no hay, mensaje de "no hay casos"
 		if (!casos.length) {
 			posiblesRepetidos.innerHTML = "¡No hay otros casos!";
@@ -178,8 +190,8 @@ window.addEventListener("load", async () => {
 	};
 	let funcionAno = async () => {
 		// Se averigua si hay un error con el año
-		let url = "&ano=" + ano.value;
-		errores.ano = await fetch(ruta + "ano" + url).then((n) => n.json());
+		let params = "&ano=" + ano.value;
+		errores.ano = await fetch(rutaValidacion + "ano" + params).then((n) => n.json());
 		OK.ano = !errores.ano;
 		//
 		if (OK.ano) {
@@ -290,46 +302,57 @@ window.addEventListener("load", async () => {
 	let funcionRCLI = {
 		personajes: async function (mostrarErrores) {
 			let num = -1;
-			let url = "&entidad=" + entidad;
+			let params = "&entidad=" + entidad;
 			let inputCategID, inputGenero, inputRol, inputProcCan, inputProcID, inputCnt, inputAM, AM_id;
 			// categoria_id
-			[url, inputCategID] = this.inputRadio(url, num, "categoria_id", categoria_id);
+			[params, inputCategID] = this.inputRadio(params, num, "categoria_id", categoria_id);
 			// Género
 			num++;
 			if (inputCategID != "CFC") this.limpiar(num);
 			else {
-				[url, inputGenero] = this.inputRadio(url, num, "genero", genero);
+				[params, inputGenero] = this.inputRadio(params, num, "genero", genero);
 				// Rol en la Iglesia
 				num++;
 				if (!inputGenero) this.limpiar(num);
 				else {
-					[url, inputRol] = this.inputSelect(url, num, "rol_iglesia_id", rol_iglesia_id);
+					[params, inputRol] = this.inputSelect(params, num, "rol_iglesia_id", rol_iglesia_id);
 					// En proceso de canonización
 					num++;
 					if (!inputRol) this.limpiar(num);
 					else {
-						[url, inputProcCan] = this.inputRadio(url, num, "enProcCan", enProcCan);
+						[params, inputProcCan] = this.inputRadio(params, num, "enProcCan", enProcCan);
 						// Proceso de canonizacion ID
 						num++;
 						if (!inputProcCan) this.limpiar(num);
 						else {
-							if (inputProcCan == "1") {
-								[url, inputProcID] = this.inputSelect(url, num, "proceso_id", proceso_id);
-							} else cfc[num].classList.add("ocultar");
+							if (inputProcCan == "1")
+								[params, inputProcID] = this.inputSelect(
+									params,
+									num,
+									"proceso_id",
+									proceso_id
+								);
+							else cfc[num].classList.add("ocultar");
 							// Contemporáneo
 							num++;
 							if (inputProcCan != "0" && !inputProcID) this.limpiar(num);
 							else {
-								[url, inputCnt] = this.inputRadio(url, num, "cnt", cnt);
+								[params, inputCnt] = this.inputRadio(params, num, "cnt", cnt);
 								// Aparición mariana - SI/NO
 								num++;
 								if (!inputCnt) this.limpiar(num);
 								else {
-									[url, inputAM] = this.inputRadio(url, num, "ap_mar", ap_mar);
+									[params, inputAM] = this.inputRadio(params, num, "ap_mar", ap_mar);
 									// Aparición mariana - Cuál
 									num++;
 									if (inputAM != "1") this.limpiar(num);
-									else [url, AM_id] = this.inputSelect(url, num, "ap_mar_id", ap_mar_id);
+									else
+										[params, AM_id] = this.inputSelect(
+											params,
+											num,
+											"ap_mar_id",
+											ap_mar_id
+										);
 								}
 							}
 						}
@@ -337,7 +360,7 @@ window.addEventListener("load", async () => {
 				}
 			}
 			// OK y Errores
-			errores.RCLI = await fetch(ruta + "RCLI_personaje" + url).then((n) => n.json());
+			errores.RCLI = await fetch(rutaValidacion + "RCLI_personaje" + params).then((n) => n.json());
 			OK.RCLI = !errores.RCLI;
 			if (!mostrarErrores) errores.RCLI = "";
 
@@ -346,15 +369,15 @@ window.addEventListener("load", async () => {
 		},
 		hechos: async function (mostrarErrores) {
 			let num = -1;
-			let url = "&entidad=" + entidad;
+			let params = "&entidad=" + entidad;
 			let inputCFC, inputJSS, inputCNT, inputEXC, inputAM;
 			// Sólo CFC
-			[url, inputCFC] = this.inputRadio(url, num, "solo_cfc", solo_cfc);
+			[params, inputCFC] = this.inputRadio(params, num, "solo_cfc", solo_cfc);
 			// Jesús
 			num++;
 			if (inputCFC != "1") this.limpiar(num);
 			else {
-				[url, inputJSS] = this.inputRadio(url, num, "jss", jss);
+				[params, inputJSS] = this.inputRadio(params, num, "jss", jss);
 				// Contemporaneos
 				num++;
 				if (!inputJSS) this.limpiar(num);
@@ -368,19 +391,19 @@ window.addEventListener("load", async () => {
 						cnt[1].disabled = false;
 						sector_cnt.classList.remove("ocultarPorRCLI");
 					}
-					[url, inputCNT] = this.inputRadio(url, num, "cnt", cnt);
+					[params, inputCNT] = this.inputRadio(params, num, "cnt", cnt);
 					// Exclusivo
 					num++;
 					if (inputJSS != "1" && inputCNT != "1") this.limpiar(num);
-					else [url, inputEXC] = this.inputRadio(url, num, "exclusivo", exclusivo);
+					else [params, inputEXC] = this.inputRadio(params, num, "exclusivo", exclusivo);
 					// Aparición Mariana
 					num++;
 					if (inputJSS != "0" || inputCNT != "0") this.limpiar(num);
-					else [url, inputAM] = this.inputRadio(url, num, "ap_mar", ap_mar);
+					else [params, inputAM] = this.inputRadio(params, num, "ap_mar", ap_mar);
 				}
 			}
 			// OK y Errores
-			errores.RCLI = await fetch(ruta + "RCLI_hecho" + url).then((n) => n.json());
+			errores.RCLI = await fetch(rutaValidacion + "RCLI_hecho" + params).then((n) => n.json());
 			OK.RCLI = !errores.RCLI;
 			if (!mostrarErrores) errores.RCLI = "";
 
@@ -391,16 +414,16 @@ window.addEventListener("load", async () => {
 			for (let i = num; i < cfc.length; i++) cfc[i].classList.add("ocultar");
 			return;
 		},
-		inputRadio: (url, num, campo, input) => {
+		inputRadio: (params, num, campo, input) => {
 			if (num >= 0) cfc[num].classList.remove("ocultar");
 			let inputElegido = input[0].checked ? input[0].value : input[1].checked ? input[1].value : "";
-			url += "&" + campo + "=" + inputElegido;
-			return [url, inputElegido];
+			params += "&" + campo + "=" + inputElegido;
+			return [params, inputElegido];
 		},
-		inputSelect: (url, num, campo, input) => {
+		inputSelect: (params, num, campo, input) => {
 			cfc[num].classList.remove("ocultar");
-			url += "&" + campo + "=" + input.value;
-			return [url, input.value];
+			params += "&" + campo + "=" + input.value;
+			return [params, input.value];
 		},
 	};
 	// Consolidado - compatible RCLV x 3
@@ -491,12 +514,13 @@ window.addEventListener("load", async () => {
 			}
 			feedback(OK, errores);
 		} else {
-			// Grabar cambios
-			// Ir a la vista de origen
+			// Grabar cambios e ir a la vista de origen
+			dataEntry.submit();
 		}
 	});
 	botonSalir.addEventListener("click", () => {
 		// Ir a la vista de origen sin guardar cambios
+		window.location.href = rutaSalir;
 	});
 
 	// Status inicial

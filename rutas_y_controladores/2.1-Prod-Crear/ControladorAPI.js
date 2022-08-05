@@ -72,7 +72,7 @@ module.exports = {
 
 	// Vista (datosPers)
 	obtenerSubcategorias: async (req, res) => {
-		let subcategorias = await BD_genericas.obtenerTodos("subcategorias", "orden")
+		let subcategorias = await BD_genericas.obtenerTodos("subcategorias", "orden");
 		return res.json(subcategorias);
 	},
 	validarDatosPers: async (req, res) => {
@@ -80,5 +80,14 @@ module.exports = {
 		let campos = Object.keys(req.query);
 		let errores = await validar.datosPers(campos, req.query);
 		return res.json(errores);
+	},
+	guardarDatosPers: (req, res) => {
+		let datosPers = {
+			...(req.session.datosPers ? req.session.datosPers : req.cookies.datosPers),
+			...req.query,
+		};
+		req.session.datosPers = datosPers;
+		res.cookie("datosPers", datosPers, {maxAge: unDia});
+		return res.json()
 	},
 };
