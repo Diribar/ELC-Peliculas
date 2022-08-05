@@ -435,7 +435,7 @@ module.exports = {
 			creado_por_id: req.session.usuario.id,
 			capturado_por_id: req.session.usuario.id,
 		};
-		let registro = await BD_genericas.agregarRegistro(original.entidad, original).then((n) => n.toJSON());
+		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
 		let producto_id = funciones.obtenerEntidad_id(confirma.entidad);

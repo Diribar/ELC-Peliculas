@@ -7,20 +7,20 @@
 	<div class="flex-col">
 		<img id="gracias" src="<%= imagenMuchasGracias %>" alt="Muchas gracias">
 		<ul id="datos">
-			<li>La <%= prodNombre.toLowerCase() %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> ¡fue agregada con éxito!</li>
+			<li>La <%= prodNombre.toLowerCase() %> <strong style="font-size: inherit;"><em style="font-size: inherit;"><%= dataEntry.nombre_castellano %></em></strong> fue agregada a nuestra Base de Datos.</li>
 			<li>
-				Nuestro equipo de Revisores revisará los datos ingresados.
+				Nuestro equipo de Revisores analizará los datos ingresados.
 				<i class="fa-solid fa-circle-question">
 					<ol type="dots" class="mensajeAyuda ocultar">
 						<li>
-							El resultado puede ser:
+							En función de si el producto está alineado con nuestro perfil, el resultado puede ser:
 							<ul>
-								<li><strong><em>Aprobado</em></strong>, con o sin edición a cargo del administrador.</li>
-								<li><strong><em>Desaprobado</em></strong>, si no está alineada con nuestro perfil.</li>
+								<li><strong><em>Aprobado</em></strong>.</li>
+								<li><strong><em>Desaprobado</em></strong>.</li>
 							</ul>
 						</li>
 						<li>Enviamos un único mail con las novedades del día anterior.</li>
-						<p>Si el registro es aprobado, queda accesible para todo el público.</p>
+						<li>Si el registro queda aprobado, pasa a estar accesible en las consultas para todo el público.</li>
 					</ol>
 				</i>
 			</li>
@@ -50,7 +50,7 @@
 		<a href="<%= ruta + "edicion/?entidad=" + entidad + "&id=" + id %>">
 			<i class="fa-solid fa-pen" tabindex="-1" title="Ir a la vista 'Edición'"></i>
 		</a>
-		<a href="<%= ruta + "links/?entidad=" + entidad + "&id=" + id %>">
+		<a href="<%= "/links/abm/?entidad=" + entidad + "&id=" + id %>">
 			<i class="fa-solid fa-link" tabindex="-1" title="Ir a la vista 'Links'"></i>
 		</a>
 	</div>	

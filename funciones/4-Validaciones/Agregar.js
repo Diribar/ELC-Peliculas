@@ -10,7 +10,7 @@ module.exports = {
 	palabrasClave: (dato) => {
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
-		errores.palabrasClave = !dato ? cartelCampoVacio : longitud(dato, 2, 50) ? longitud(dato, 2, 50) : "";
+		errores.palabrasClave = !dato ? cartelCampoVacio : longitud(dato, 3, 50) ? longitud(dato, 3, 50) : "";
 		return errores;
 	},
 
