@@ -9,6 +9,6 @@
 
 /* Submit button */
 #dataEntry #submit {position: static; transform: none;}
-#dataEntry #submit {align-self: center; font-size: 2rem; font-weight: bold;}
+#dataEntry #submit {align-self: center; font-size: 2rem; font-weight: bold; border-radius: 50%;}
 #dataEntry #submit.verde {color: var(--verde-oscuro)}
 #dataEntry #submit.naranja {color: var(--naranja-oscuro)}
