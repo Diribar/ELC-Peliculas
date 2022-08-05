@@ -493,13 +493,13 @@ CREATE TABLE rclv_1personajes (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, nombre) 
-VALUES (1, 1, 3, 'Ninguno');
-INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, nombre)
+INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, creado_en, nombre) 
+VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
+INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
-(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, 'Jesús'),
-(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, 'María, madre de Jesús'),
-(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, 'José, padre de Jesús')
+(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús'),
+(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús')
 ;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
@@ -564,25 +564,25 @@ CREATE TABLE rclv_2hechos (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, nombre)
-VALUES (1, 1, 1, 1, 3, 'Ninguno');
-INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, creado_por_id, status_registro_id, nombre)
+INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, creado_en, nombre)
+VALUES (1, 1, 1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
+INSERT INTO rclv_2hechos (id, solo_cfc, jss, cnt, exclusivo, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(11, 1, 1, 1, 1, 359,  0, 1, 3, 'Navidad'),
-(12, 1, 1, 1, 1, 100, 33, 1, 3, 'Semana Santa'),
-(13, 1, 1, 1, 1, 105, 33, 1, 3, 'Sem. Santa - Pasión del Señor'),
-(14, 1, 1, 1, 1, 107, 33, 1, 3, 'Sem. Santa - Resurrección'),
-(15, 1, 0, 1, 1, 150, 33, 1, 3, 'Pentecostés')
+(11, 1, 1, 1, 1, 359,  0, 1, 3, '2022-03-16 23:25:20', 'Navidad'),
+(12, 1, 1, 1, 1, 100, 33, 1, 3, '2022-03-16 23:25:20', 'Semana Santa'),
+(13, 1, 1, 1, 1, 105, 33, 1, 3, '2022-03-16 23:25:20', 'Sem. Santa - Pasión del Señor'),
+(14, 1, 1, 1, 1, 107, 33, 1, 3, '2022-03-16 23:25:20', 'Sem. Santa - Resurrección'),
+(15, 1, 0, 1, 1, 150, 33, 1, 3, '2022-03-16 23:25:20', 'Pentecostés')
 ;
-INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, status_registro_id, nombre)
+INSERT INTO rclv_2hechos (id, solo_cfc, ap_mar, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(16, 1, 1, 42, 1858, 1, 3, 'Ap. Mariana - Lourdes'),
-(17, 1, 1, 42, 1917, 1, 3, 'Ap. Mariana - Fátima')
+(16, 1, 1, 42, 1858, 1, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Lourdes'),
+(17, 1, 1, 42, 1917, 1, 3, '2022-03-16 23:25:20', 'Ap. Mariana - Fátima')
 ;
-INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, status_registro_id, nombre)
+INSERT INTO rclv_2hechos (id, dia_del_ano_id, ano, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES
-(21, 210, 1914, 1, 3, 'Guerra Mundial - 1a'),
-(22, 245, 1942, 1, 3, 'Guerra Mundial - 2a')
+(21, 210, 1914, 1, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 1a'),
+(22, 245, 1942, 1, 3, '2022-03-16 23:25:20', 'Guerra Mundial - 2a')
 ;
 UPDATE rclv_2hechos SET perenne = true;
 ALTER TABLE rclv_1personajes ADD FOREIGN KEY (ap_mar_id) REFERENCES rclv_2hechos(id);
@@ -623,16 +623,16 @@ CREATE TABLE rclv_3valores (
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, nombre)
-VALUES (1, 1, 3, 'Ninguno');
-INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, nombre)
+INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, creado_en, nombre)
+VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
+INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
-(11, 1, 3, 'Matrimonio y familia'),
-(12, 1, 3, 'Servicio al prójimo'),
-(13, 1, 3, 'Pacificar un país dividido'),
-(14, 1, 3, 'Amistad'),
-(15, 1, 3, 'Superación personal'),
-(16, 1, 3, 'Valores en el deporte')
+(11, 1, 3, '2022-03-16 23:25:20', 'Matrimonio y familia'),
+(12, 1, 3, '2022-03-16 23:25:20', 'Servicio al prójimo'),
+(13, 1, 3, '2022-03-16 23:25:20', 'Pacificar un país dividido'),
+(14, 1, 3, '2022-03-16 23:25:20', 'Amistad'),
+(15, 1, 3, '2022-03-16 23:25:20', 'Superación personal'),
+(16, 1, 3, '2022-03-16 23:25:20', 'Valores en el deporte')
 ;
 UPDATE rclv_3valores SET perenne = true;
 CREATE TABLE rclv_4edicion (
