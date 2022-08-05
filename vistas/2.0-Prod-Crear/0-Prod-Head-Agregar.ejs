@@ -27,10 +27,11 @@
 <% } else if (codigo == "datosDuros") { %>
 	<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Ayuda.js"></script>
 	<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Errores.js"></script>
-<% if (dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
-	<script src="/FE-javascript/0-Uso-Compartido/Mostrar-imagen.js"></script>
-	<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Imagen.js"></script>
-<% } %> <% } else if (codigo == "datosPers") { %>
+	<% if (dataEntry && (!dataEntry.avatar || dataEntry.fuente != "TMDB")) { %>
+		<script src="/FE-javascript/0-Uso-Compartido/Mostrar-imagen.js"></script>
+		<script src="/FE-javascript/2.1-Prod-Crear/3-Prod-DD-Imagen.js"></script>
+	<% } %>
+<% } else if (codigo == "datosPers") { %>
 	<script src="/FE-javascript/2.1-Prod-Crear/4-Prod-DP-Errores.js"></script>
 	<script src="/FE-javascript/2.1-Prod-Crear/4-Prod-DP-vista_RCLV.js"></script>
 <% } %>
