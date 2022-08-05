@@ -1,3 +1,5 @@
+#dataEntry {width: 695px; height: 502px;}
+
 /* Cuerpo del formulario */
 #dataEntry #datos {display: flex; flex-direction: row; margin-top: 10px;}
 #dataEntry #primeraColumna {min-width: 281px; min-height: 326px; margin-right: 70px; display: flex; flex-direction: column; justify-content: center;}

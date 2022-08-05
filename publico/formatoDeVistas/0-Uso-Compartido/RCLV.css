@@ -10,7 +10,6 @@
 #cuerpo #tituloConAyuda #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%); color: var(--amarillo-claro); background-color: var(--gris-oscuro); border-radius: 50%; display: none;}
 #cuerpo #tituloConAyuda .mensajeAyuda {max-width: 350px;}
 #cuerpo #tituloConAyuda .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
-#cuerpo #tituloConAyuda .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto;}
@@ -58,7 +57,6 @@
 /* Mensajes de ayuda */
 #dataEntry .fa-circle-question {right: -20px; color: var(--gris-oscuro);}
 #dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); max-width: 350px;}
-#dataEntry .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /*  Mensajes de error*/
 #dataEntry .fa-circle-xmark, 

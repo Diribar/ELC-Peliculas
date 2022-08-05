@@ -66,7 +66,6 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 .mensajeAyuda {max-width: 300px;}
 .mensajeError::before {left: -12px;}
 .mensajeAyuda::before {left: -20px;}
-.mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Mensajes de ayuda */
 #datos .fa-circle-question {right: -20px;}

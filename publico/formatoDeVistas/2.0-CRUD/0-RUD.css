@@ -12,7 +12,6 @@
 #cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
 #cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
 #cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
-#cuerpo .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
