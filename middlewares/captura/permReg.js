@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 		informacion.mensajes = ["El registro estará disponible para su revisión el " + horarioDisponible];
 	// PROBLEMA: El registro ya no está en manos de su creador
 	else if (
-		(ruta.startsWith("/producto") || ruta.startsWith("/rclv") || ruta.startsWith("/links/abm")) &&
+		(ruta.startsWith("/producto/") || ruta.startsWith("/rclv/") || ruta.startsWith("/links/abm/")) &&
 		creado_en < haceUnaHora &&
 		registro.status_registro.gr_pend_aprob
 	)
