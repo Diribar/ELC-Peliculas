@@ -12,31 +12,35 @@ window.addEventListener("load", async () => {
 	window.addEventListener("keydown", (e) => {
 		// Comandos iniciales
 		let posicion = resultado.scrollLeft;
-		if (e.key == "ArrowLeft" || e.key == "ArrowRight") e.preventDefault();
+		let mover = true;
+		e.preventDefault();
 
 		// Home y End
 		if (e.key == "Home") indiceFocus = 0;
-		if (e.key == "End") indiceFocus = boton.length - 1;
-
+		else if (e.key == "End") indiceFocus = boton.length - 1;
 		// Page Up / Down
-		if (e.key == "PageUp") indiceFocus = indiceFocus - cantFormsVisibles;
-		if (e.key == "PageDown") indiceFocus = indiceFocus + cantFormsVisibles;
-
+		else if (e.key == "PageUp") indiceFocus = indiceFocus - cantFormsVisibles;
+		else if (e.key == "PageDown") indiceFocus = indiceFocus + cantFormsVisibles;
 		// Arrows
-		if (e.key == "ArrowUp" || e.key == "ArrowLeft") indiceFocus = indiceFocus - 1;
-		if (e.key == "ArrowDown" || e.key == "ArrowRight") indiceFocus = indiceFocus + 1;
+		else if (e.key == "ArrowUp" || e.key == "ArrowLeft") indiceFocus = indiceFocus - 1;
+		else if (e.key == "ArrowDown" || e.key == "ArrowRight") indiceFocus = indiceFocus + 1;
+		// No hacer nada
+		else mover = false;
 
 		// Asignar el nuevo 'focus'
-		indiceFocus =
-			indiceFocus < 0 ? 0 : indiceFocus > boton.length - 1 ? boton.length - 1 : indiceFocus;
+		if (mover) {
+			indiceFocus =
+				indiceFocus < 0 ? 0 : indiceFocus > boton.length - 1 ? boton.length - 1 : indiceFocus;
 
-		// si el indice x anchoForm < posición => posición=indice x anchoForm
-		if (indiceFocus * anchoForm < posicion) posicion = indiceFocus * anchoForm;
+			// si el indice x anchoForm < posición => posición=indice x anchoForm
+			if (indiceFocus * anchoForm < posicion) posicion = indiceFocus * anchoForm;
 
-		// si el (indice+1) x anchoForm > (posición+ventana) => posición=posicion - anchoForm
-		if ((indiceFocus + 1) * anchoForm > posicion + ventana) posicion = indiceFocus * anchoForm - anchoForm;
+			// si el (indice+1) x anchoForm > (posición+ventana) => posición=posicion - anchoForm
+			if ((indiceFocus + 1) * anchoForm > posicion + ventana)
+				posicion = indiceFocus * anchoForm - anchoForm;
 
-		boton[indiceFocus].focus();
-		resultado.scrollTo(posicion, 0);
+			boton[indiceFocus].focus();
+			resultado.scrollTo(posicion, 0);
+		}
 	});
 });
