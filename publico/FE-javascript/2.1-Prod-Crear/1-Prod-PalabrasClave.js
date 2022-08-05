@@ -25,30 +25,15 @@ window.addEventListener("load", () => {
 			mensajeError.innerHTML = "";
 		}
 	};
-
-	// Status inicial
-	if (iconoError.classList.contains("ocultar") && input.value) accionesSiHayErrores(input.value);
-
-	// Revisar el data-entry y comunicar los aciertos y errores
-	input.addEventListener("input", async () => {
-		verificar();
-		resultado.innerHTML = "<br>";
-		resultado.classList.remove(...resultado.classList);
-		resultado.classList.add("sinResultado");
-		accionesSiHayErrores(input.value);
-	});
-
-	// Submit
-	submit.addEventListener("click", async (e) => {
-		funcionSubmit(e);
-	});
-	submit.addEventListener("keydown", async (e) => {
-		if (e.key == "Enter" || e.key == "Space") funcionSubmit(e);
-	});
-	form.addEventListener("submit", (e) => {
-		funcionSubmit(e);
-	});
-
+	let verificar = () => {
+		submit.classList.remove("fa-circle-check");
+		submit.classList.add("fa-circle-question");
+		submit.classList.remove("verde");
+		submit.classList.add("naranja");
+		submit.title = "Verificar";
+		submit.style = "background";
+		return;
+	};
 	let funcionSubmit = async (e) => {
 		if (submit.classList.contains("fa-circle-question")) {
 			e.preventDefault();
@@ -62,17 +47,6 @@ window.addEventListener("load", () => {
 			}
 		} else form.submit();
 	};
-
-	let verificar = () => {
-		submit.classList.remove("fa-circle-check");
-		submit.classList.add("fa-circle-question");
-		submit.classList.remove("verde");
-		submit.classList.add("naranja");
-		submit.title = "Verificar";
-		submit.style = "background";
-		return;
-	};
-
 	let avanzar = () => {
 		submit.classList.remove("fa-circle-question");
 		submit.classList.add("fa-circle-check");
@@ -81,7 +55,6 @@ window.addEventListener("load", () => {
 		submit.title = "Avanzar";
 		return;
 	};
-
 	let api_pre = (input) => {
 		let palabrasClave = input.trim();
 		// Procesando la información
@@ -91,7 +64,6 @@ window.addEventListener("load", () => {
 		// Obtener el link
 		return "/producto/agregar/api/PC-cant-prod/?palabrasClave=" + palabrasClave;
 	};
-
 	let api_post = async (lectura) => {
 		// Averiguar cantidad de coincidencias
 		let prod_nuevos = lectura.resultados.filter((n) => n.YaEnBD == false).length;
@@ -136,4 +108,27 @@ window.addEventListener("load", () => {
 		resultado.classList.remove(...resultado.classList);
 		resultado.classList.add(formatoVigente);
 	};
+
+	// Revisar el data-entry y comunicar los aciertos y errores
+	input.addEventListener("input", async () => {
+		verificar();
+		resultado.innerHTML = "<br>";
+		resultado.classList.remove(...resultado.classList);
+		resultado.classList.add("sinResultado");
+		accionesSiHayErrores(input.value);
+	});
+
+	// Submit
+	submit.addEventListener("click", async (e) => {
+		funcionSubmit(e);
+	});
+	submit.addEventListener("keydown", async (e) => {
+		if (e.key == "Enter" || e.key == "Space") funcionSubmit(e);
+	});
+	form.addEventListener("submit", (e) => {
+		funcionSubmit(e);
+	});
+
+	// Status inicial
+	if (iconoError.classList.contains("ocultar") && input.value) accionesSiHayErrores(input.value);
 });
