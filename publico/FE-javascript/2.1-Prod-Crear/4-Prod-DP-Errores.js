@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	// Funciones
-	let statusInicial = async (inputValue) => {
+	let statusInicial = async (mostrarIconoError) => {
 		//Buscar todos los valores
 		let url = "";
 		for (let input of inputs) {
@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 		}
 		let errores = await fetch(ruta + url).then((n) => n.json());
 		// Consecuencias de las validaciones de errores
-		funcionErrores(errores);
+		if (mostrarIconoError) funcionErrores(errores);
 		botonSubmit();
 	};
 	let funcionErrores = (errores) => {
@@ -296,7 +296,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (submit.classList.contains("inactivo")) {
 			e.preventDefault();
-			statusInicial(false);
+			statusInicial(true);
 		}
 	});
 
@@ -309,5 +309,5 @@ window.addEventListener("load", async () => {
 	iconosEdicionRCLVs();
 
 	// Errores y boton 'Submit'
-	statusInicial(true);
+	statusInicial(false);
 });

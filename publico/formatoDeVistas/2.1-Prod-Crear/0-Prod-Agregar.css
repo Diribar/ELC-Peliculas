@@ -63,4 +63,5 @@
 
 /* Submit button */
 #dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}
-#dataEntry #submit.inactivo {cursor: not-allowed;}
+#dataEntry #submit.inactivo, .inactivo .fa-solid {cursor: not-allowed;}
+
