@@ -42,6 +42,9 @@ window.addEventListener("load", () => {
 	submit.addEventListener("click", async (e) => {
 		funcionSubmit(e);
 	});
+	submit.addEventListener("keydown", async (e) => {
+		if (e.key == "Enter" || e.key == "Space") funcionSubmit(e);
+	});
 	form.addEventListener("submit", (e) => {
 		funcionSubmit(e);
 	});
