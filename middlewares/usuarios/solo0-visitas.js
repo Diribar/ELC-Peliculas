@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 				"¿Estás segur" + (usuario.sexo_id == "M" ? "a" : "o") + " de que te querés desloguear?",
 			],
 			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlReferencia, titulo: "Cancelar"},
+				{nombre: "fa-circle-left", link: req.session.urlActual, titulo: "Cancelar"},
 				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
 			],
 			titulo: "Logout",

@@ -31,7 +31,7 @@ module.exports = {
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/altaredireccionar");
+			return res.redirect("/usuarios/redireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Enviar la contraseña por mail
@@ -47,32 +47,22 @@ module.exports = {
 		// Obtener los datos del usuario
 		req.session.email = email;
 		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
+		return res.redirect("/usuarios/redireccionar");
 	},
-	altaRedireccionar: async (req, res) => {
+	redireccionar: async (req, res) => {
 		let status_registro = req.session.usuario.status_registro;
 		// Redireccionar
 		status_registro.datos_editables
-			? req.session.urlReferencia
-				? res.redirect(req.session.urlReferencia)
+			? req.session.urlActual
+				? res.redirect(req.session.urlActual)
+				: req.session.urlAnterior
+				? res.redirect(req.session.urlAnterior)
 				: res.redirect("/")
 			: status_registro.datos_perennes
 			? res.redirect("/usuarios/datos-editables")
 			: status_registro.mail_validado
 			? res.redirect("/usuarios/datos-perennes")
 			: res.redirect("/usuarios/login");
-
-		// status_registro == 1
-		// 	? res.redirect("/usuarios/login")
-		// 	: status_registro == 2
-		// 	? res.redirect("/usuarios/datos-perennes")
-		// 	: status_registro == 3
-		// 	? res.redirect("/usuarios/datos-editables")
-		// 	: status_registro == 4
-		// 	? req.session.urlReferencia
-		// 		? res.redirect(req.session.urlReferencia)
-		// 		: res.redirect("/")
-		// 	: null
 	},
 	altaPerennesForm: async (req, res) => {
 		let tema = "usuario";
@@ -101,7 +91,7 @@ module.exports = {
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/altaredireccionar");
+			return res.redirect("/usuarios/redireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Actualizar el registro
@@ -109,7 +99,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
+		return res.redirect("/usuarios/redireccionar");
 	},
 	altaEditablesForm: async (req, res) => {
 		let tema = "usuario";
@@ -150,7 +140,7 @@ module.exports = {
 			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/altaredireccionar");
+			return res.redirect("/usuarios/redireccionar");
 		}
 		// Si no hubieron errores de validación...
 		// Grabar novedades en el usuario
@@ -161,7 +151,7 @@ module.exports = {
 		// Mover el archivo a la carpeta definitiva
 		if (req.file) funciones.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
+		return res.redirect("/usuarios/redireccionar");
 	},
 
 	// Login
@@ -214,10 +204,14 @@ module.exports = {
 		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
 		usuarios.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
 		// Redireccionar
-		return res.redirect("/usuarios/altaredireccionar");
+		return res.redirect("/usuarios/redireccionar");
 	},
 	logout: (req, res) => {
-		let url = req.session.urlReferencia ? req.session.urlReferencia : "/";
+		let url = req.session.urlActual
+			? req.session.urlActual
+			: req.session.urlAnterior
+			? req.session.urlAnterior
+			: "/";
 		res.clearCookie("email");
 		req.session.destroy();
 		return res.redirect(url);

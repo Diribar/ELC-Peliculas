@@ -14,6 +14,8 @@ module.exports = (req, res, next) => {
 	if (
 		!actual.startsWith("/usuarios/") &&
 		!actual.startsWith("/inactivar-captura/") &&
+		!actual.startsWith("/session") &&
+		!actual.startsWith("/cookies") &&
 		!actual.includes("/api/") &&
 		!actual.includes("/redireccionar/") &&
 		anterior != actual

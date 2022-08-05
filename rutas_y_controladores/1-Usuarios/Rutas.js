@@ -26,7 +26,7 @@ router.get("/logout", soloUsuarios, vista.logout);
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
 router.post("/mail", soloVisitas, vista.altaMailGuardar);
-router.get("/altaredireccionar", soloUsuarios, vista.altaRedireccionar);
+router.get("/redireccionar", soloUsuarios, vista.redireccionar);
 router.get("/datos-perennes", soloUsuarios, vista.altaPerennesForm);
 router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);

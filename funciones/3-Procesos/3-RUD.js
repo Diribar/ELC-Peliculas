@@ -106,6 +106,41 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
+
+	// RCLV y Links
+	crear_original: async (entidad, datos, userID) => {
+		datos.creado_por_id = userID;
+		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
+		if (entidad == "links") funciones.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		return id;
+	},
+	actualizar_original: async (entidad, id, datos) => {
+		await BD_genericas.actualizarPorId(entidad, id, datos);
+		if (entidad == "links") funciones.actualizarProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		return "Registro original actualizado";
+	},
+	guardar_edicion: async (entidad, entidad_edicion, original, edicion, userID) => {
+		// Depurar para dejar solamente las novedades de la edición
+		edicion = funciones.quitarLasCoincidenciasConOriginal(original, edicion);
+		// Obtener el campo 'entidad_id'
+		let entidad_id = funciones.obtenerEntidad_id(entidad);
+		// Si existe una edición de ese original y de ese usuario --> eliminarlo
+		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
+		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);
+		if (registroEdic) await BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
+		// Averiguar si hay algún campo con novedad
+		if (!Object.keys(edicion).length) return "Edición sin novedades respecto al original";
+		// Completar la información
+		edicion = {
+			...edicion,
+			[entidad_id]: original.id,
+			editado_por_id: userID,
+		};
+		// Agregar la nueva edición
+		await BD_genericas.agregarRegistro(entidad_edicion, edicion);
+		// Fin
+		return "Edición guardada";
+	},
 };
 
 // Funciones

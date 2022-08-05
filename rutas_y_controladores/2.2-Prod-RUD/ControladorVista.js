@@ -30,10 +30,15 @@ module.exports = {
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// Usar la versión 'session' (si existe) en vez de la edición guardada
-		let prodSession =
-			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
-				? {...prodOriginal, ...prodEditado, ...req.session.edicion}
-				: "";
+		let prodSession = req.session.edicion
+			? req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
+				? req.session.edicion
+				: ""
+			: req.cookies.edicion
+			? req.cookies.edicion.entidad == entidad && req.cookies.edicion.id == prodID
+				? req.cookies.edicion
+				: ""
+			: "";
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
 		// 5. Configurar el título de la vista
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
@@ -113,24 +118,24 @@ module.exports = {
 			];
 			if (prodCombinado.personaje_id != 1)
 				bloquesDerecha.push({
-					titulo: "Personaje Histórico", 
+					titulo: "Personaje Histórico",
 					valor: prodCombinado.personaje.nombre,
-					RCLV_entidad:"personajes",
-					RCLV_id:prodCombinado.personaje.id,
+					RCLV_entidad: "personajes",
+					RCLV_id: prodCombinado.personaje.id,
 				});
 			if (prodCombinado.hecho_id != 1)
 				bloquesDerecha.push({
-					titulo: "Hecho Histórico", 
+					titulo: "Hecho Histórico",
 					valor: prodCombinado.hecho.nombre,
-					RCLV_entidad:"hechos",
-					RCLV_id:prodCombinado.hecho.id,
+					RCLV_entidad: "hechos",
+					RCLV_id: prodCombinado.hecho.id,
 				});
 			if (prodCombinado.valor_id != 1)
 				bloquesDerecha.push({
-					titulo: "Valor", 
+					titulo: "Valor",
 					valor: prodCombinado.valor.nombre,
-					RCLV_entidad:"valores",
-					RCLV_id:prodCombinado.valor.id,
+					RCLV_entidad: "valores",
+					RCLV_id: prodCombinado.valor.id,
 				});
 			bloquesDerecha.push({titulo: "Año de estreno", valor: prodCombinado.ano_estreno});
 			if (entidad == "colecciones")

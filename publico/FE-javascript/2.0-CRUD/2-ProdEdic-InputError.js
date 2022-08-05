@@ -19,12 +19,12 @@ window.addEventListener("load", async () => {
 	// Obtener versiones EDICION GUARDADA y ORIGINAL
 	let rutaVersiones =
 		"/producto/api/edicion/obtener-original-y-edicion/?entidad=" + entidad + "&id=" + prodID;
-	let [datosOriginales, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
-	let avatar_eg = avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion", datosOriginales.avatar);
-	datosEdicG = {...datosOriginales, ...datosEdicG};
+	let [datosOrig, datosEdicG] = await fetch(rutaVersiones).then((n) => n.json());
+	let avatar_eg = avatar_obtenerRutaNombre(datosEdicG.avatar, "edicion", datosOrig.avatar);
+	datosEdicG = {...datosOrig, ...datosEdicG};
 	// Temas de la versión ORIGINAL
 	let botonOriginal = document.querySelector("#cuerpo #comandos .fa-house");
-	let avatar_or = avatar_obtenerRutaNombre(datosOriginales.avatar, "original");
+	let avatar_or = avatar_obtenerRutaNombre(datosOrig.avatar, "original");
 	// Temas de la version GUARDADA
 	let botonVerGuardada = document.querySelector("#cuerpo #comandos .fa-pencil");
 	let botonEliminarGuardada = document.querySelector("#cuerpo #comandos #guardada .fa-trash-can");
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 	let producto_id =
 		entidad == "peliculas" ? "pelicula_id" : entidad == "colecciones" ? "coleccion_id" : "capitulo_id";
 	let existeEdicG = !!datosEdicG[producto_id];
-	let statusPendAprobar = existeEdicG ? datosOriginales.status_registro.gr_pend_aprob : false;
+	let statusPendAprobar = existeEdicG ? datosOrig.status_registro.gr_pend_aprob : false;
 	// Temas de la versión SESSION
 	let botonVerSession = document.querySelector("#cuerpo #comandos .fa-pen-to-square");
 	let botonEliminarSession = document.querySelector("#cuerpo #comandos #session .fa-trash-can");
@@ -87,7 +87,7 @@ window.addEventListener("load", async () => {
 
 		// Le pone la flecha al campo cambiado
 		let indice = campos.indexOf(campo);
-		flechasAviso[indice].classList.remove("ocultar");
+		actualizarInput_flechas(botonVerSession, indice);
 	});
 	// Revisar campos COMBINADOS
 	form.addEventListener("change", async (e) => {
@@ -124,45 +124,45 @@ window.addEventListener("load", async () => {
 		// Obtener Data-Entry de session
 		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
 		// Fin
-		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOriginales;
+		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOrig;
 		comandos_ActualizarInput(botonVerSession, datosEdicS, false);
 	});
 	botonEliminarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonEliminarSession.classList).contains("inactivo")) return;
+		if (Array.from(botonEliminarSession.classList).includes("inactivo")) return;
 		fetch(rutaRQ); // Elimina el Data-Entry en session
 		window.location.reload();
 	});
 	botonGuardarSession.addEventListener("click", (e) => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonGuardarSession.classList).contains("inactivo")) e.preventDefault();
+		if (Array.from(botonGuardarSession.classList).includes("inactivo")) e.preventDefault();
 	});
 	// Edición Guardada
 	botonVerGuardada.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVerGuardada.classList).contains("inactivo") || !datosEdicG) return;
+		if (Array.from(botonVerGuardada.classList).includes("inactivo") || !datosEdicG) return;
 		// Ejecuta la función 'Input'
 		comandos_ActualizarInput(botonVerGuardada, datosEdicG, true);
 	});
 	botonEliminarGuardada.addEventListener("click", (e) => {
-		if (Array.from(botonEliminarGuardada.classList).contains("inactivo")) {
+		if (Array.from(botonEliminarGuardada.classList).includes("inactivo")) {
 			e.preventDefault();
 		}
 	});
 	// Original
 	botonOriginal.addEventListener("click", () => {
 		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonOriginal.classList).contains("inactivo") || !datosOriginales) return;
+		if (Array.from(botonOriginal.classList).includes("inactivo") || !datosOrig) return;
 		// Ejecuta la función 'Input'
-		comandos_ActualizarInput(botonOriginal, datosOriginales, true);
+		comandos_ActualizarInput(botonOriginal, datosOrig, true);
 	});
 
 	// FUNCIONES ---------------------------------------------
 	let comandos_ActualizarInput = async (botonVersion, datosVersion, disabled) => {
 		// Rutina para cada input
 		for (let i = 0; i < inputs.length; i++) {
-			actualizarInput_flechas(botonVersion, datosVersion, i);
 			actualizarInput_valores(botonVersion, datosVersion, i, disabled);
+			actualizarInput_flechas(botonVersion, i);
 		}
 		// Activar la botonera de comandos con la versión activa
 		actualizarInput_clasePlus(botonVersion);
@@ -172,10 +172,9 @@ window.addEventListener("load", async () => {
 		let errores = await fetch(rutaVE + actualizarInput_dataEntry()).then((n) => n.json());
 		actualizarInput_errores(errores, campos, false);
 	};
-	let actualizarInput_flechas = (botonVersion, datosVersion, i) => {
+	let actualizarInput_flechas = (botonVersion, i) => {
 		if (inputs[i].name != "avatar")
-			inputs[i].value != datosVersion[inputs[i].name] &&
-			(inputs[i].value || datosVersion[inputs[i].name])
+			inputs[i].value != datosOrig[inputs[i].name] && (inputs[i].value || datosOrig[inputs[i].name])
 				? flechasAviso[i].classList.remove("ocultar")
 				: flechasAviso[i].classList.add("ocultar");
 		else {
@@ -329,7 +328,7 @@ window.addEventListener("load", async () => {
 		// Quitar la clase 'inactivo_EdicSess'
 		let inactivo_EdicSess = document.querySelectorAll("#cuerpo #comandos .inactivo_EdicSess");
 		for (let inactivo of inactivo_EdicSess) {
-			if (inactivo.classList.contains("inactivo_EdicSess"))
+			if (Array.from(inactivo.classList).includes("inactivo_EdicSess"))
 				inactivo.classList.remove("inactivo_EdicSess");
 		}
 	};
@@ -385,6 +384,8 @@ window.addEventListener("load", async () => {
 	if (datosEdicS != datosEdicG) formInput_activarEdicionSession();
 	// Actualiza 'subcategoría' si existe una categoría
 	if (categoria.value) formInput_mostrarValoresSubcat();
+	// Actualizar las flechas
+	for (let i = 0; i < inputs.length; i++) actualizarInput_flechas(botonVerSession, i);
 });
 
 // FUNCIONES QUE SE PUEDEN CARGAR ANTES DEL ON-LOAD

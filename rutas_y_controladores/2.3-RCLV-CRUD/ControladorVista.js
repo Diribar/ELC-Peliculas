@@ -2,8 +2,9 @@
 // ************ Requires ************
 const validar = require("../../funciones/4-Validaciones/RCLV");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 const procesar = require("../../funciones/3-Procesos/3-RUD");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
@@ -66,6 +67,7 @@ module.exports = {
 		// 1. Obtener los datos
 		let {entidad, id, origen, prodEntidad, prodID} = req.query;
 		let datos = {...req.body, ...req.query};
+		let userID = req.session.usuario.id;
 		// return res.send(datos)
 		// 2. Averiguar si hay errores de validación y tomar acciones
 		let errores = await validar.consolidado(datos);
@@ -79,48 +81,53 @@ module.exports = {
 			datos.dia_del_ano_id = await BD_genericas.obtenerTodos("dias_del_ano", "id")
 				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 				.then((n) => n.id);
-		// 4. Datos para personjes
-		if (datos.entidad == "personajes" && datos.categoria_id == "CFC") {
+		// 4. Datos para personajes
+		if (entidad == "personajes" && datos.categoria_id == "CFC") {
 			let santo_beato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
 			datos = {
 				...datos,
 				subcategoria_id:
 					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : null,
-				santo_beato,
 				ap_mar_id: datos.ap_mar_id != "" ? datos.ap_mar_id : null,
 			};
+			if (datos.proceso_id === "") datos.proceso_id = null;
+			if (datos.rol_iglesia_id === "") datos.rol_iglesia_id = null;
+			if (datos.ap_mar_id === "") datos.ap_mar_id = null;
 		}
-		if (datos.proceso_id === "") datos.proceso_id = null;
-		if (datos.rol_iglesia_id === "") datos.rol_iglesia_id = null;
-		if (datos.ap_mar_id === "") datos.ap_mar_id = null;
-		// 3. Preparar la información a guardar
+		// Limpiar los datos de información irrelevante
+		let camposUtiles = await variables.camposRCLV().then((n) => n[entidad]);
+		for (campo in datos) if (!camposUtiles.includes(campo)) delete datos[campo];
+		// Preparar la información a guardar
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));
-		// 4. Guardar los cambios del RCLV
+		// Guardar los cambios del RCLV
 		if (agregar_edicion == "agregar") {
-			datos.creado_por_id = req.session.usuario.id;
-			// Crear el registro RCLV en la BD
-			id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
+			id = await procesar.crear_original(entidad, datos, userID);
 			// Agregar el RCLV a DP/ED
 			let entidad_id = funciones.obtenerEntidad_id(entidad);
 			if (origen == "DP") {
+				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
 				res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
-			}
-			else if (origen=="ED") {
+			} else if (origen == "ED") {
+				req.session.edicion = req.session.edicion ? req.session.edicion : req.cookies.edicion;
 				req.session.edicion = {...req.session.edicion, [entidad_id]: id};
 				res.cookie("edicion", req.session.edicion, {maxAge: unDia});
 			}
 		} else if (agregar_edicion == "edicion") {
-			datos = {...datos, editado_por_id: req.session.usuario.id, editado_en: funciones.ahora()};
-			//return res.send([datos, datos]);
-			// si es el mismo usuario y está recién creado, pisa
-			// de lo contrario, ídem productos
-			// guarda sólo las diferencias
-			// crea un registro de edición
-			// si está en status creado, no permite editarlo
-			// 6. Actualizar el registro RCLV en la BD
-			await BD_genericas.actualizarPorId(entidad, id, datos);
+			// Obtener el registro original
+			let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
+			let RCLV_editado = datos;
+			// Obtener el mensaje de la tarea realizada
+			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
+				? await procesar.actualizar_original(entidad, id, RCLV_editado) // Actualizar el registro original
+				: await procesar.guardar_edicion(
+						entidad,
+						"rclv_edicion",
+						RCLV_original,
+						RCLV_editado,
+						userID
+				  ); // Guardar o actualizar la edición
 		}
 		// 8. Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];

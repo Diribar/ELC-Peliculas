@@ -11,7 +11,6 @@ module.exports = (sequelize, dt) => {
 		ap_mar_id: {type: dt.INTEGER},
 
 		proceso_id: {type: dt.STRING(3)},
-		santo_beato: {type: dt.BOOLEAN},
 		rol_iglesia_id: {type: dt.STRING(3)},
 
 		prod_aprob: {type: dt.BOOLEAN},
@@ -62,7 +61,7 @@ module.exports = (sequelize, dt) => {
 		entidad.hasMany(n.capitulos, {as: "capitulos", foreignKey: "personaje_id"});
 
 		entidad.hasMany(n.historial_cambios_de_status, {as: "historial", foreignKey: "personaje_id"});
-		entidad.hasMany(n.prods_edicion, {as: "ediciones", foreignKey: "personaje_id"});
+		entidad.hasMany(n.rclv_edicion, {as: "ediciones", foreignKey: "personaje_id"});
 	};
 	return entidad;
 };

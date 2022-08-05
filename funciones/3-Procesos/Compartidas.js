@@ -86,7 +86,7 @@ module.exports = {
 			: entidad == "valores"
 			? "valor_id"
 			: entidad == "links"
-			? "links"
+			? "link_id"
 			: "";
 	},
 	obtenerEntidad: (entidad) => {
@@ -102,6 +102,8 @@ module.exports = {
 			? "hechos"
 			: entidad.valor_id
 			? "valores"
+			: entidad.link_id
+			? "links"
 			: "";
 	},
 
