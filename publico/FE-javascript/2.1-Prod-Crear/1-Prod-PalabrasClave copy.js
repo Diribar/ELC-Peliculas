@@ -1,5 +1,12 @@
 "use strict";
 window.addEventListener("load", () => {
+	// Declarar las variables
+	let form = document.querySelector("#dataEntry");
+	let submit = document.querySelector("#dataEntry #submit");
+	let input = document.querySelector("#dataEntry input");
+	let iconoError = document.querySelector("#dataEntry .fa-circle-xmark");
+	let mensajeError = document.querySelector("#dataEntry .mensajeError");
+	let resultado = document.querySelector("#dataEntry #resultado");
 
 	// Fórmula de revisar input
 	let accionesSegunErrores = async (dato) => {

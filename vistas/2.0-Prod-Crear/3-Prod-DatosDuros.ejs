@@ -76,12 +76,13 @@
 			<i class="fa-solid fa-circle-xmark <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"></span>
 			</i>
+			<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->
 	<section id="flechas">
 		<a href="/producto/agregar/<%= origen %>" tabindex="-1" title="Volver al paso anterior"><i class="fa-solid fa-circle-left"></i></a>
-		<button type="submit" autofocus title="Avanzar"><i class="fa-solid fa-circle-check"></i></button>
+		<i id="submit" class="fa-solid fa-circle-check inactivo" title="Avanzar" tabindex="0"></i>
 	</section>
 	<p id="entidad" class="ocultar"><%= dataEntry.entidad %></p>
 </form>

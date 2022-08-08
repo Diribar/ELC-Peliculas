@@ -2,26 +2,27 @@
 	<h1 id="titulo">Agregá una Película o Colección a nuestra Base de Datos</h1>
 </div>
 <form action="<%= link %>" method="POST" class="flex-col" id="dataEntry">
+	<!-- Título sin Ayuda -->
 	<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
 	<h3>Ingresá palabras del Título de la Película</h3>
-	<section class="flex-row space-between">
-		<div class="relative flex-col ">
-			<div id="datos">
-				<input type="text" name="palabrasClave" placeholder="Escribilo acá"
-					value="<%= palabrasClave %>"
-					autofocus autocomplete="off"
-				>
-				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar">
-					<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
-					<li>Escribí de manera precisa todas las palabras que sepas.</li>
-				</ul>
-			</div>
+	<!-- Datos -->
+	<section  id="datos" class="flex-row space-between">
+		<div class="input-error">
+			<input type="text" class="input" name="palabrasClave" placeholder="Escribilo acá"
+				value="<%= palabrasClave %>"
+				autofocus autocomplete="off"
+			>
+			<!-- Ayuda -->
+			<i class="fa-solid fa-circle-question"></i>
+			<ul class="mensajeAyuda ocultar">
+				<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
+				<li>Escribí de manera precisa todas las palabras que sepas.</li>
+			</ul>
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar">
 				<span class="mensajeError"></span>
 			</i>
+			<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		</div>
 		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar" tabindex="0"></i>
 	</section>

@@ -17,7 +17,7 @@
 #dataEntry h1 {margin-bottom: 15px;}
 #dataEntry label {margin-top: 3px; margin-right: 25px; font-weight: bold;}
 #dataEntry label {margin-top: 3px; font-weight: bold;}
-#dataEntry .input-error {position: relative; display: flex;}
+#dataEntry .input-error {display: flex;}
 #dataEntry .input-error input.input,
 #dataEntry .input-error select[name="idioma_original_id"],
 #dataEntry .input-error textarea {align-self: center; width: 200px;}

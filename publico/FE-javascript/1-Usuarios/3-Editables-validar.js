@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
 	let botonGuardar = () => {
 		let OK =
 			Array.from(iconosOK)
-				.map((n) => n.classList.value)
+				.map((n) => n.className)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
 		// < iconosOK.length;
 		let error =
 			Array.from(iconosError)
-				.map((n) => n.classList.value)
+				.map((n) => n.className)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
