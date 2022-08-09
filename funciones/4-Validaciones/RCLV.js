@@ -39,12 +39,13 @@ module.exports = {
 		let {nombre} = datos;
 		if (nombre) var repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		if (nombre) var nombreExpress = this.nombreExpress(datos);
+		if (nombre && nombreExpress) var longitud = funcionLongitud(nombre, 4, 30);
 		return !nombre
 			? cartelCampoVacio
 			: nombreExpress
 			? nombreExpress
-			: longitud(nombre, 4, 30)
-			? longitud(nombre, 4, 30)
+			: longitud
+			? longitud
 			: repetido
 			? cartelRepetido({entidad: datos.entidad, id: repetido})
 			: "";
@@ -135,7 +136,7 @@ const cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
-let longitud = (dato, corto, largo) => {
+let funcionLongitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El nombre debe ser más largo"
 		: dato.length > largo
