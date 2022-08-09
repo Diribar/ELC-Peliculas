@@ -91,8 +91,8 @@ window.addEventListener("load", async () => {
 	}
 
 	// Funciones ************************
-	// Primera columna - compatible RCLV x 3
-	let funcionNombre = async () => {
+	// Validaciones
+	let validarNombre = async () => {
 		// Verificar errores en el nombre
 		let params = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		if (id) params += "&id=" + id;
@@ -122,7 +122,7 @@ window.addEventListener("load", async () => {
 			} else dia31.classList.remove("ocultar");
 		}
 	};
-	let funcionFechas = async () => {
+	let validarFechas = async () => {
 		// Si se conoce la fecha...
 		if (!desconocida.checked) {
 			// Se averigua si hay un error con la fecha
@@ -148,7 +148,7 @@ window.addEventListener("load", async () => {
 		return [OK, errores];
 	};
 	// Segunda columna - compatible RCLV x 3
-	let funcionRepetido = () => {
+	let validarRepetido = () => {
 		let casos = document.querySelectorAll("#posiblesRepetidos li input");
 		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 		OK.repetidos = !errores.repetidos;
@@ -188,7 +188,7 @@ window.addEventListener("load", async () => {
 			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 		}
 	};
-	let funcionAno = async () => {
+	let validarAno = async () => {
 		// Se averigua si hay un error con el año
 		let params = "&ano=" + ano.value;
 		errores.ano = await fetch(rutaValidacion + "ano" + params).then((n) => n.json());
@@ -253,7 +253,7 @@ window.addEventListener("load", async () => {
 		} else preguntas.classList.add("ocultar");
 
 		// Fin
-		[OK, errores] = await funcionRCLI[entidad](false);
+		[OK, errores] = await mostrarRCLI[entidad](false);
 		return [OK, errores];
 	};
 	// Preguntas para Personaje
@@ -299,7 +299,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 	// Preguntas para Personajes y Hechos
-	let funcionRCLI = {
+	let mostrarRCLI = {
 		personajes: async function (mostrarErrores) {
 			let num = -1;
 			let params = "&entidad=" + entidad;
@@ -428,16 +428,16 @@ window.addEventListener("load", async () => {
 	};
 	// Consolidado - compatible RCLV x 3
 	let startUp = async () => {
-		if (nombre.value) [OK, errores] = await funcionNombre();
+		if (nombre.value) [OK, errores] = await validarNombre();
 		if (mes_id.value) diasDelMes(mes_id, dia);
 		if ((mes_id.value && dia.value) || desconocida.checked) {
-			[OK, errores] = await funcionFechas();
-			[OK, errores] = funcionRepetido();
+			[OK, errores] = await validarFechas();
+			[OK, errores] = validarRepetido();
 		}
-		if (ano && ano.value) await funcionAno();
+		if (ano && ano.value) await validarAno();
 		if (!valores) {
 			if (personajes && categoria_id[0].checked) funcionGenero();
-			[OK, errores] = await funcionRCLI[entidad](false);
+			[OK, errores] = await mostrarRCLI[entidad](false);
 		}
 	};
 	let feedback = (OK, errores) => {
@@ -487,30 +487,30 @@ window.addEventListener("load", async () => {
 	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if (campo == "nombre") [OK, errores] = await funcionNombre();
+		if (campo == "nombre") [OK, errores] = await validarNombre();
 		if (campo == "mes_id") diasDelMes();
 		if (
 			(campo == "mes_id" || campo == "dia" || campo == "desconocida") &&
 			((mes_id.value && dia.value) || desconocida.checked)
 		)
-			[OK, errores] = await funcionFechas();
-		if (campo == "repetido") [OK, errores] = funcionRepetido();
+			[OK, errores] = await validarFechas();
+		if (campo == "repetido") [OK, errores] = validarRepetido();
 		// Campos para !valores
-		if (!valores && campo == "ano") [OK, errores] = await funcionAno();
+		if (!valores && campo == "ano") [OK, errores] = await validarAno();
 		// Campos RCLI
 		if (personajes && campo == "genero") funcionGenero();
-		if (!valores && camposRCLI.includes(campo)) [OK, errores] = await funcionRCLI[entidad](false);
+		if (!valores && camposRCLI.includes(campo)) [OK, errores] = await mostrarRCLI[entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
 	botonSubmit.addEventListener("click", async (e) => {
 		if (botonSubmit.classList.contains("inactivo")) {
-			[OK, errores] = await funcionNombre();
-			[OK, errores] = await funcionFechas();
-			[OK, errores] = funcionRepetido();
+			[OK, errores] = await validarNombre();
+			[OK, errores] = await validarFechas();
+			[OK, errores] = validarRepetido();
 			if (!valores) {
-				await funcionAno();
-				[OK, errores] = await funcionRCLI[entidad](true);
+				await validarAno();
+				[OK, errores] = await mostrarRCLI[entidad](true);
 			}
 			feedback(OK, errores);
 		} else {
