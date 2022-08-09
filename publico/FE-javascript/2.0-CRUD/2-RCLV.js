@@ -99,7 +99,6 @@ window.addEventListener("load", async () => {
 		errores.nombre = await fetch(rutaValidacion + "nombre" + tipo + params).then((n) => n.json());
 		// Consolidar la info
 		OK.nombre = !errores.nombre;
-		console.log(errores);
 		// Fin
 		return;
 	};
