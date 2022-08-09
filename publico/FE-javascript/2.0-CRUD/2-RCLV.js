@@ -437,14 +437,16 @@ window.addEventListener("load", async () => {
 			await mostrarRCLI[entidad](false);
 		}
 	};
-	let feedback = (OK, errores) => {
+	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
 		if (!valores) sectores.push("ano", "RCLI");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
-			OK[sector] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
+			OK[sector] && (sector != "nombre" || !ocultarOK)
+				? iconoOK[i].classList.remove("ocultar")
+				: iconoOK[i].classList.add("ocultar");
 			// Ícono de error
 			errores[sector]
 				? iconoError[i].classList.remove("ocultar")
@@ -476,7 +478,7 @@ window.addEventListener("load", async () => {
 			wiki.href = url_wiki + nombre.value;
 			santopedia.href = url_santopedia + nombre.value;
 			await validarNombre("Express");
-			feedback(OK, errores);
+			feedback(OK, errores, true);
 		}
 		if (campo == "ano") {
 			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear();
