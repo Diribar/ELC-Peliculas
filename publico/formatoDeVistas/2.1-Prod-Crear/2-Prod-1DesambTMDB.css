@@ -2,8 +2,7 @@
 
 /* Partes particulares */
 #dataEntry #encabezado {display: flex; flex-direction: column;}
-#dataEntry #encabezado #datos {position: relative; align-self: flex-start;}
-#dataEntry #encabezado #datos h2 {margin-bottom: 5px;}
+#dataEntry #encabezado #tituloConAyuda h2 {margin-bottom: 5px;}
 #dataEntry #resultadoDesamb {width: 700px; overflow-x: auto; display: flex; flex-direction: row;}
 #dataEntry #resultadoDesamb li {list-style-type: none}
 #dataEntry form {position: relative;}

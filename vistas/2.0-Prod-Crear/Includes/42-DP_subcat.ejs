@@ -1,0 +1,29 @@
+<% registro = camposDP.find(n => n.nombreDelCampo == "subcategoria_id") %>
+<section class="label-input">
+	<label><%= registro.titulo %></label>
+	<div id="ayudaSubcat" class="input-error">
+		<!-- Input -->
+		<select name="subcategoria_id" class="input <%- registro.angosto ? 'angosto' : '' %>" autofocus>
+			<option value="" class="ocultar" <% if (!dataEntry.subcategoria_id) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>
+			<% for (let valor of registro.valores) { %>
+				<option value="<%= valor.id %>" 
+					class="<%= (valor.cfc ? 'CFC ' : '') + (valor.vpc ? 'VPC ' : '')  %>" <% // Coloca la categoría_id en la clase %>
+					<% if (valor.id == dataEntry.subcategoria_id) { %>selected<% } %> <% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
+				>
+					<%= valor[nombre] %>
+				</option>
+			<% } %>
+		</select>
+		<!-- Ayuda -->
+		<i class="fa-solid fa-circle-question inactivo"></i>
+		<ul type="dots" class="mensajeAyuda ocultar">
+			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+			<% for (let mensaje of registro.mensajes) { %><li class="<%= mensaje.categ %>"><%= mensaje.texto %></li><% } %> 
+		</ul>
+		<!-- Errores -->
+		<i class="fa-solid fa-circle-xmark ocultar">
+			<span class="mensajeError"></span>
+		</i>
+		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
+	</div>
+</section>

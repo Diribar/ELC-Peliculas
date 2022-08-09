@@ -11,6 +11,9 @@ window.addEventListener("load", async () => {
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	// Ayuda Sub-categoría
+	let iconoAyudaSubcat = document.querySelector("#ayudaSubcat .fa-circle-question");
+	let mensajesAyudaSubcat = document.querySelectorAll("#ayudaSubcat ul li");
 	// Categoría y subcategoría
 	let categoriaSelect = document.querySelector("select[name='categoria_id']");
 	let subcategoriaSelect = document.querySelector("select[name='subcategoria_id']");
@@ -31,7 +34,7 @@ window.addEventListener("load", async () => {
 
 	// FUNCIONES *******************************************
 	// Funciones
-	let statusInicial = async (inputValue) => {
+	let statusInicial = async (mostrarIconoError) => {
 		//Buscar todos los valores
 		let url = "";
 		for (let input of inputs) {
@@ -41,7 +44,7 @@ window.addEventListener("load", async () => {
 		}
 		let errores = await fetch(ruta + url).then((n) => n.json());
 		// Consecuencias de las validaciones de errores
-		funcionErrores(errores)
+		if (mostrarIconoError) funcionErrores(errores);
 		botonSubmit();
 	};
 	let funcionErrores = (errores) => {
@@ -60,16 +63,28 @@ window.addEventListener("load", async () => {
 	// Actualizar la subcategoría
 	let actualizaOpsSubcat = () => {
 		if (categoriaSelect.value) {
+			// Actualiza las opciones de sub-categoría
 			for (let opcion of subcategoriaOpciones) {
 				opcion.className.includes(categoriaSelect.value)
 					? opcion.classList.remove("ocultar")
 					: opcion.classList.add("ocultar");
 			}
-			// Si subcategoría no tiene valor, quitar 'disabled'
+			// La subcategoría puede tener un valor inicial
 			if (!subcategoriaSelect.value) subcategoriaSelect.removeAttribute("disabled");
+			// Habilita y actualiza el ayuda
+			iconoAyudaSubcat.classList.remove("inactivo");
+			// Deja visibles las ayudas correspondientes
+			mensajesAyudaSubcat.forEach((mensaje) => {
+				mensaje.className && !mensaje.className.includes(categoriaSelect.value)
+					? mensaje.classList.add("ocultar")
+					: mensaje.classList.remove("ocultar");
+			});
 		} else {
+			// Borra la sub-categoría y la deja inactivada
 			subcategoriaSelect.setAttribute("disabled", "disabled");
 			subcategoriaSelect.value = "";
+			// Inhabilita el ayuda
+			iconoAyudaSubcat.classList.add("inactivo");
 		}
 		// Fin
 		return;
@@ -221,13 +236,14 @@ window.addEventListener("load", async () => {
 				}, {}).ocultar == RCLV_innecesarios;
 
 		// Detectar la cantidad de 'no errores'
-		let error = Array.from(iconosError)
-			.map((n) => n.classList.value)
-			.join(" ")
-			.split(" ")
-			.reduce((a, b) => {
-				return a[b] ? ++a[b] : (a[b] = 1), a;
-			}, {}).ocultar == iconosError.length;
+		let error =
+			Array.from(iconosError)
+				.map((n) => n.classList.value)
+				.join(" ")
+				.split(" ")
+				.reduce((a, b) => {
+					return a[b] ? ++a[b] : (a[b] = 1), a;
+				}, {}).ocultar == iconosError.length;
 		// Consecuencias
 		//console.log(OK_ocultos,error,iconosError.length);
 		OK_ocultos && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
@@ -252,9 +268,9 @@ window.addEventListener("load", async () => {
 			actualizaOpsRCLV();
 			verificaUnaSolaOpcionRCLV();
 			iconosEdicionRCLVs();
-			subcategoriaSelect.value=="JSS"
+			subcategoriaSelect.value == "JSS"
 				? linkAltaJSS.classList.add("ocultar")
-				: linkAltaJSS.classList.remove("ocultar")
+				: linkAltaJSS.classList.remove("ocultar");
 		}
 		// Verificar interacción para RCLV
 		if (Array.from(e.target.classList).includes("RCLV")) {
@@ -280,7 +296,7 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", async (e) => {
 		if (submit.classList.contains("inactivo")) {
 			e.preventDefault();
-			statusInicial(false);
+			statusInicial(true);
 		}
 	});
 
@@ -293,5 +309,5 @@ window.addEventListener("load", async () => {
 	iconosEdicionRCLVs();
 
 	// Errores y boton 'Submit'
-	statusInicial(true);
+	statusInicial(false);
 });

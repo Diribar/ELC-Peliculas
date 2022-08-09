@@ -1,9 +1,10 @@
 /* Formato del cuerpo */
 #cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo #tituloPrincipal {align-self: flex-start;}
+#cuerpo #tituloPrincipal #titulo {background-color: var(--amarillo-claro); border-bottom-right-radius: 10px;}
 
 /* Formato del título principal y ayuda */
 #cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
-#cuerpo #tituloConAyuda #titulo {background-color: var(--amarillo-claro); border-bottom-right-radius: 10px;}
 
 /* Formato del formulario */
 #cuerpo #dataEntry {margin: auto;}
@@ -44,7 +45,6 @@
 /* Exito */
 /* Neutro */
 .resultadoEnEspera {background-color: var(--gris-oscuro);}
-.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
 .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
 /* Error */
 .mensajeError {left: 20px;}
@@ -63,3 +63,5 @@
 
 /* Submit button */
 #dataEntry button em {color: var(--amarillo-claro); background-color: inherit;}
+#dataEntry #submit.inactivo, .inactivo .fa-solid {cursor: not-allowed;}
+

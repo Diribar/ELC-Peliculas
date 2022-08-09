@@ -1,4 +1,4 @@
-<div id="tituloConAyuda">
+<div id="tituloPrincipal">
 	<h1 id="titulo">
 		Agregá un<%= dataEntry.entidad != "capitulos" ? "a" : "" %> <%= dataEntry.prodNombre %> a nuestra Base de Datos
 	</h1>
@@ -18,19 +18,21 @@
 		</div>
 		<img id="running" src="/imagenes/8-Agregar/Confirma.svg" alt="Confirma">
 		<ul id="datos">
-			<li>Estamos listos para agregar el producto a nuestra Base de Datos</li>
-			<li>
-				La calidad de tu trabajo, hace a la confianza que te vamos teniendo
+			<li class="texto">Estamos listos para agregar el producto a nuestra Base de Datos</li>
+			<div id="liConAyuda">
+				<li class="texto">La calidad de tu trabajo, hace a la confianza que te vamos teniendo</li>
 				<i class="fa-solid fa-circle-question">
-					<ol class="mensajeAyuda ocultar">
-						<p>Aspectos que consideramos:</p>
-						<li>Que el producto esté alineado con nuestro perfil.</li>
-						<li>La precisión de los datos personalizados aportados.</li>
-						<li>Los links de Trailer y de Película, que podrás agregar luego de este paso.</li>
-						<p>La confianza nos permite evaluarte como potencial <em>Revisor</em> de otros usuarios.</p>
-					</ol>
+					<ul class="mensajeAyuda ocultar" type="disc">
+						<li>Aspectos que consideramos:</li>
+						<ol id="subPuntos">
+							<li>Que el producto esté alineado con nuestro perfil.</li>
+							<li>La precisión de los datos personalizados aportados.</li>
+							<li>Los links de Trailer y de Película, que podrás agregar luego de este paso.</li>
+						</ol>
+						<li>La confianza nos permite evaluarte como potencial <em>Revisor</em> del trabajo de otros usuarios.</li>
+					</ul>
 				</i>
-			</li>
+			</div>
 		</ul>
 		<div id="datosProd">
 			<img id="afiche" src="<%= dataEntry.avatarDP %>" alt="afiche">

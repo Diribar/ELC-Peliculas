@@ -5,15 +5,16 @@
 #dataEntry #gracias {margin-bottom: 20px; height: 80px; border-radius: 10px; align-self: center;}
 
 /* Texto */
-#dataEntry ul {padding-left: 20px;}
-#dataEntry ul li {margin: 5px 0; font-size: 1.2rem;}
-#dataEntry ul li .fa-circle-question {position: relative; transform: none; margin-left: 5px; right: 0; color: inherit;}
-#dataEntry ul li .fa-circle-question .mensajeAyuda {right: -10px; font-size: 1rem; max-width: 400px; color: var(--gris-claro);}
-#dataEntry ul li .fa-circle-question .mensajeAyuda li {margin-left: 20px; font-size: 1rem;}
-#dataEntry ul li .fa-circle-question .mensajeAyuda li ul li {margin: 0px}
-
-#dataEntry ul li#partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
-#dataEntry ul li#partesAutomatico span {color: var(--verde-claro);}
+#dataEntry #datos {padding-left: 20px;}
+#dataEntry #datos .texto {margin: 5px 0; font-size: 1.2rem;}
+#dataEntry #datos #liConAyuda {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}
+#dataEntry #datos #liConAyuda .fa-circle-question {transform: none; top: initial; right: initial;}
+#dataEntry #datos #liConAyuda .fa-circle-question {margin-left: 10px; position: relative;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda {max-width: 430px; right: -10px; cursor: default;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos {margin-left: 20px; margin-bottom: 5px;}
+#dataEntry #datos #liConAyuda .fa-circle-question .mensajeAyuda #subPuntos li {padding-top: 0;}
+#dataEntry #datos #partesAutomatico {background-color: var(--verde-oscuro); width: fit-content; padding: 1px 5px; border-radius: 5px;}
+#dataEntry #datos #partesAutomatico span {color: var(--verde-claro);}
 
 /* Flechas */
 #dataEntry #flechas {margin: 30px auto 0; padding: 7px 15px; border-radius: 15px; display: flex; flex-direction: row; width: auto;}

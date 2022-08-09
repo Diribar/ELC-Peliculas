@@ -38,5 +38,5 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 .bloqueado {background-color: var(--celeste-oscuro);}
 .inactivo {opacity: .5; border-color: transparent; cursor: default;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}
-.mensajeAyuda {border: 1px var(--amarillo-claro) solid;}
+.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro); border: 1px var(--amarillo-claro) solid;}
 .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}

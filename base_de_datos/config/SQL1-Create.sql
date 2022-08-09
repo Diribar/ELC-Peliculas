@@ -399,16 +399,16 @@ CREATE TABLE prod_categ2_sub (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO prod_categ2_sub (id, orden, cfc, vpc, pers_excluyente, hechos_codigo, desde, hasta, nombre, url)
 VALUES 
-('JSS', 1, 1, 0, 1, 'JSS', null,   33, 'Jesús', 'jesus'), 
-('CNT', 2, 1, 0, 1, 'CNT',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
-('HAG', 3, 1, 0, 1, 'EXC', null, null, 'Hagiografías', 'hagiografias'), 
-('AMA', 4, 1, 0, 0, 'AMA',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
-('HIG', 5, 1, 0, 0, 'EXC', null, null, 'Historias de la Iglesia', 'historias'), 
-('NOV', 6, 1, 1, 0,  null, null, null, 'Novelas', 'novelas'), 
-('MUS', 7, 1, 1, 0,  null, null, null, 'Musicales', 'musicales'),
-('DOC', 8, 1, 1, 0,  null, null, null, 'Documentales', 'documentales'), 
-('BIO', 1, 0, 1, 0,  null, null, null, 'Biografías', 'bios'), 
-('HIS', 2, 0, 1, 0,  null, null, null, 'Historias', 'historias') 
+('MUS', 1, 1, 1, 0,  null, null, null, 'Musicales', 'musicales'),
+('NOV', 2, 1, 1, 0,  null, null, null, 'Novelas', 'novelas'), 
+('DOC', 3, 1, 1, 0,  null, null, null, 'Documentales', 'documentales'), 
+('JSS', 4, 1, 0, 1, 'JSS', null,   33, 'Jesús', 'jesus'), 
+('CNT', 5, 1, 0, 1, 'CNT',  -50,  100, 'Contemporáneos de Jesús', 'contemporaneos'), 
+('AMA', 6, 1, 0, 0, 'AMA',   34, null, 'Apariciones Marianas', 'ap_marianas'), 
+('HAG', 7, 1, 0, 1, 'EXC', null, null, 'Hagiografías', 'hagiografias'), 
+('HIG', 8, 1, 0, 0, 'EXC', null, null, 'Historias de la Iglesia', 'historias'), 
+('BIO', 7, 0, 1, 0,  null, null, null, 'Biografías', 'bios'), 
+('HIS', 8, 0, 1, 0,  null, null, null, 'Historias', 'historias') 
 ;
 UPDATE prod_categ2_sub SET rclv_necesario='personaje' WHERE id='JSS'OR id='CNT' OR id='HAG' OR id='BIO';
 UPDATE prod_categ2_sub SET rclv_necesario='hecho' WHERE id='AMA' OR id='HIS';
@@ -1096,6 +1096,7 @@ CREATE TABLE links (
 
 	calidad SMALLINT NULL,
 	castellano BOOLEAN NOT NULL,
+	subtit_castellano BOOLEAN NULL,
 	gratuito BOOLEAN NOT NULL,
 	tipo_id TINYINT UNSIGNED NOT NULL,
 	completo BOOLEAN DEFAULT 1,
@@ -1134,16 +1135,16 @@ CREATE TABLE links (
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id, castellano)
+INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, castellano, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id)
 VALUES 
-(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,"-",2,11,1,2,'2022-03-16 23:25:21',1,1),
-(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,0,  1,2,11,1,2,'2022-03-16 23:25:22',3,1),
-(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,0,  2,2,11,1,2,'2022-03-16 23:25:23',4,1),
-(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,0,  3,2,11,1,2,'2022-03-16 23:25:24',5,1),
-(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,0,  4,2,11,1,2,'2022-03-16 23:25:25',6,1),
-(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,"-",2,11,1,2,'2022-03-16 23:25:26',1,1),
-(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,'-',2,11,1,2,'2022-05-13 21:17:20',1,1),
-(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,'-',1,11,1,2,'2022-05-13 22:21:45',1,1)
+(1,NULL,NULL,1,'youtube.com/watch?v=g1vC9TXMkXk',360,1,1,"-",2,11,1,2,'2022-03-16 23:25:21',1),
+(2,NULL,NULL,1,'youtube.com/watch?v=0DcobZTPl0U',480,1,0,  1,2,11,1,2,'2022-03-16 23:25:22',3),
+(3,NULL,NULL,1,'youtube.com/watch?v=Ug31Sdb6GU4',480,1,0,  2,2,11,1,2,'2022-03-16 23:25:23',4),
+(4,NULL,NULL,1,'youtube.com/watch?v=vnLERiCT96M',480,1,0,  3,2,11,1,2,'2022-03-16 23:25:24',5),
+(5,NULL,NULL,1,'youtube.com/watch?v=dc4bkUqC9no',480,1,0,  4,2,11,1,2,'2022-03-16 23:25:25',6),
+(6,NULL,NULL,1,'youtube.com/watch?v=4o-V9Cfk4to',360,1,1,"-",2,11,1,2,'2022-03-16 23:25:26',1),
+(7,5,NULL,NULL,'youtube.com/watch?v=fkDBa-DSMn4',360,1,1,'-',2,11,1,2,'2022-05-13 21:17:20',1),
+(8,5,NULL,NULL,'ver.formed.lat/don-bosco',       144,1,1,'-',1,11,1,2,'2022-05-13 22:21:45',1)
 ;
 UPDATE links SET sugerido_por_id=10, sugerido_en='2022-06-16 23:25:26', motivo_id=22 WHERE status_registro_id > 3
 ;
@@ -1157,6 +1158,7 @@ CREATE TABLE links_edicion (
 
 	calidad SMALLINT NULL,
 	castellano BOOLEAN NULL,
+	subtit_castellano BOOLEAN NULL,
 	gratuito BOOLEAN NULL,
 	tipo_id TINYINT UNSIGNED NULL,
 	completo BOOLEAN NULL,
