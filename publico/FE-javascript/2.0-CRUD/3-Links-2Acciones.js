@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let filasDatos = document.querySelectorAll("tbody .yaExistentes");
 	let filasEditar = document.querySelectorAll("tbody .edicion");
-	let inputs = document.querySelectorAll(".edicion .input");
+	let inputs = document.querySelectorAll("tbody .input");
 	let urlInputs = document.querySelectorAll("tbody .inputError input[name='url'");
 	let columnas = inputs.length / (filasEditar.length + 1);
 	let activos = document.querySelector("#tabla #tags #activo");
@@ -40,8 +40,7 @@ window.addEventListener("load", async () => {
 			// Averiguar si está inactivo --> return
 			if (botonGuardar.classList.contains("inactivo")) return;
 			botonGuardar.classList.add("inactivo");
-			// Obtener los datos editados
-			// Obtener los datos del link
+			// Obtener los datos 
 			let objeto = obtenerDataEntry(fila);
 			// Submit
 			await fetch("/links/api/guardar/" + objeto).then((n) => n.json());
