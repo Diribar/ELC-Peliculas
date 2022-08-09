@@ -36,9 +36,8 @@
 
 /* Tablas - Anchos */
 #datos table .ancho_url {width: 140px;}
-#datos table .ancho_calidad {width: 86px;}
+#datos table .ancho_calidad, #datos table .ancho_castellano, #datos table .ancho_subtitulo {width: 70px;}
 #datos table .ancho_gratuito {width: 64px;}
-#datos table .ancho_castellano {width: 77px;}
 #datos table .ancho_tipo {width: 90px;}
 #datos table .ancho_completo {width: 73px;}
 #datos table .ancho_parte {width: 60px;}
