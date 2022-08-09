@@ -12,7 +12,6 @@ window.addEventListener("load", async () => {
 	// Datos
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
-	console.log(campos);
 	// OK/Errores
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
@@ -135,11 +134,10 @@ window.addEventListener("load", async () => {
 		await validarErrores(datosUrl, mostrarIconoError);
 		activarInactivarBotonSubmit();
 		// Fin
-		return
+		return;
 	};
 	let validarErrores = async (datosUrl, mostrarIconoError) => {
 		let errores = await fetch(rutaValidar + datosUrl).then((n) => n.json());
-		// console.log(errores);
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				mensajesError[indice].innerHTML = errores[campo];
@@ -182,8 +180,8 @@ window.addEventListener("load", async () => {
 		let error = errores_ocultos == iconosError.length || (!errores_ocultos && !iconosError.length);
 		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 		// Pruebas
-		console.log(OKs_ocultos, OKs_innec);
-		console.log(errores_ocultos, iconosError.length);
+		// console.log(OKs_ocultos, OKs_innec);
+		// console.log(errores_ocultos, iconosError.length);
 		// console.log(OK, error);
 	};
 	let submitForm = async (e) => {
@@ -460,7 +458,7 @@ window.addEventListener("load", async () => {
 			var datosUrl = campo + "=" + valor;
 		}
 		if (DD) {
-			if ((e.target == paisesSelect)) {
+			if (e.target == paisesSelect) {
 				// Convierte los ID de los países elegidos, en un texto
 				funcionPaises();
 				// Definir los valores para 'campo' y 'valor'

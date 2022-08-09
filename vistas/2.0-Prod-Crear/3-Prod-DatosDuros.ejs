@@ -61,23 +61,23 @@
 				<img src="<%= dataEntry.avatar %>" alt="afiche">
 			<% } else { %>
 				<label for="imagen" id="preview"></label>
+				<!-- Si existe una imagen que no viene de TMDB -->
+				<% if (dataEntry.avatar && dataEntry.fuente != "TMDB") { %>
+					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
+					<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
+				<% } %>
+				<!-- Si no existe una imagen -->
+				<% if (!dataEntry.avatar) { %>
+					<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
+				<% } %>
+				<!-- Rutina para todos los casos -->
+				<input name="avatar" id="imagen" type="file" accept="image/*" class="ocultar input">
+				<!-- Errores -->
+				<i class="fa-solid fa-circle-xmark">
+					<span class="mensajeError"></span>
+				</i>
+				<i class="fa-solid fa-circle-check ocultar" style="display: none"></i>
 			<% } %>
-			<!-- Si existe una imagen que no viene de TMDB -->
-			<% if (dataEntry.avatar && dataEntry.fuente != "TMDB") { %>
-				<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
-				<p id="url" class="ocultar"><%= dataEntry.avatar %></p>
-			<% } %>
-			<!-- Si no existe una imagen -->
-			<% if (!dataEntry.avatar) { %>
-				<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
-			<% } %>
-			<!-- Rutina para todos los casos -->
-			<% console.log(dataEntry.avatar) %> 
-			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar" value="<%= dataEntry.avatar %>">
-			<i class="fa-solid fa-circle-xmark <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
-				<span class="mensajeError"></span>
-			</i>
-			<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
 		</div>	
 	</section>
 	<!-- Flechas y Botón -->

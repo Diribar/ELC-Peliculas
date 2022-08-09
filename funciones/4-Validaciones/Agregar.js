@@ -82,11 +82,11 @@ module.exports = {
 		// Definir variables
 		let errores = {};
 		let camposPosibles = [
-			{nombre: "nombre_original", corto: 2, largo: 50},
-			{nombre: "nombre_castellano", corto: 2, largo: 50},
-			{nombre: "direccion", corto: 2, largo: 100},
-			{nombre: "guion", corto: 2, largo: 100},
-			{nombre: "produccion", corto: 2, largo: 100},
+			{nombre: "nombre_original", corto: 3, largo: 50},
+			{nombre: "nombre_castellano", corto: 3, largo: 50},
+			{nombre: "direccion", corto: 3, largo: 100},
+			{nombre: "guion", corto: 3, largo: 100},
+			{nombre: "produccion", corto: 3, largo: 100},
 			{nombre: "sinopsis", corto: 15, largo: 800},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
@@ -141,16 +141,16 @@ module.exports = {
 		if (campos.includes("musica"))
 			errores.musica = !datos.musica
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
-				: longitud(datos.musica, 2, 100)
-				? longitud(datos.musica, 2, 100)
+				: longitud(datos.musica, 3, 100)
+				? longitud(datos.musica, 3, 100)
 				: letrasValidasCastellano(datos.musica)
 				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
 			errores.actuacion = !datos.actuacion
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
-				: longitud(datos.actuacion, 2, 500)
-				? longitud(datos.actuacion, 2, 500)
+				: longitud(datos.actuacion, 3, 500)
+				? longitud(datos.actuacion, 3, 500)
 				: letrasValidasCastellano(datos.actuacion)
 				? cartelCastellano
 				: "";
