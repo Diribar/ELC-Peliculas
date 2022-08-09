@@ -12,13 +12,15 @@ module.exports = {
 	// Gestión de archivos
 	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-		let archivoDestino = "./publico/imagenes/" + destino + "/" + nombre;
-		if (fs.existsSync(archivoOrigen)) {
+		let carpetaDestino = "./publico/imagenes/" + destino + "/";
+		let archivoDestino = carpetaDestino + nombre;
+		if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+		if (!fs.existsSync(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen);
+		else
 			fs.rename(archivoOrigen, archivoDestino, (error) => {
-				if (error) throw error;
-				else console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+				else throw error;
 			});
-		} else console.log("No se encuentra el archivo " + archivoOrigen);
 	},
 	borrarArchivo: (ruta, archivo) => {
 		let archivoImagen = path.join(ruta, archivo);
@@ -36,6 +38,8 @@ module.exports = {
 			: "";
 	},
 	descargar: async (url, rutaYnombre) => {
+		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 		let writer = fs.createWriteStream(rutaYnombre);
 		let response = await axios({method: "GET", url: url, responseType: "stream"});
 		response.data.pipe(writer);

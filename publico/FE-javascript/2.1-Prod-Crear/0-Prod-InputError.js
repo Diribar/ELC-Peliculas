@@ -122,13 +122,11 @@ window.addEventListener("load", async () => {
 	let statusInicial = async (mostrarIconoError) => {
 		//Buscar todos los valores
 		let datosUrl = "";
-		let dato;
 		inputs.forEach((input, i) => {
 			if (i) datosUrl += "&";
 			if (DD && input.name == "avatar") return;
 			datosUrl += input.name + "=";
 			datosUrl += encodeURIComponent(input.value);
-			// if(i==4) console.log(input.name,input.value);
 		});
 		// Consecuencias de las validaciones de errores
 		await validarErrores(datosUrl, mostrarIconoError);
@@ -148,7 +146,6 @@ window.addEventListener("load", async () => {
 					? iconosError[indice].classList.remove("ocultar")
 					: iconosError[indice].classList.add("ocultar");
 			}
-			// if(indice==4) console.log(errores[campo]);
 		});
 		// Fin
 		return;
@@ -197,6 +194,8 @@ window.addEventListener("load", async () => {
 					avanzar();
 				} else statusInicial(true);
 			} else form.submit();
+		else if (submit.classList.contains("inactivo")) statusInicial(true);
+		else form.submit();
 	};
 	if (DD) {
 		var funcionDosCampos = async (datos, campo) => {
