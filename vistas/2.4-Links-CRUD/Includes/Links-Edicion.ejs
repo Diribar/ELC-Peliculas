@@ -43,8 +43,8 @@
 		<div class="inputError">
 			<% aux = link.ediciones.find(n=>n.subtit_castellano!==null&&n.editado_por_id!=userID) %> 
 			<select name="subtit_castellano" class="input <%- aux ? 'rojo' : '' %>" <% if (aux) { %>disabled<% } %>>
-				<option value="1" <%- link.subtit_castellano == "1" ? "selected" : "" %>>SI</option>
-				<option value="0" <%- link.subtit_castellano == "0" ? "selected" : "" %>>NO</option>
+				<option value="1" <%- link.subtit_castellano === "1" ? "selected" : "" %>>SI</option>
+				<option value="0" <%- link.subtit_castellano === "0" ? "selected" : "" %>>NO</option>
 			</select>
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark ocultar" style="z-index: 5"><span class="mensajeError "></span></i>
