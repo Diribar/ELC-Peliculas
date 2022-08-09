@@ -8,9 +8,12 @@ const funciones = require("../3-Procesos/Compartidas");
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	palabrasClave: (dato) => {
+		// Campo palabrasClave
 		cartelCampoVacio = "Necesitamos que completes este campo";
 		let errores = {};
 		errores.palabrasClave = !dato ? cartelCampoVacio : longitud(dato, 3, 50) ? longitud(dato, 3, 50) : "";
+		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 

@@ -1,13 +1,15 @@
 <!-- Uso compartido -->
 <link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/0-Prod-Agregar.css">
-<script src="/FE-javascript/2.1-Prod-Crear/0-Prod-InputError.js"></script>
-
+<% if (codigo == "palabrasClave" || codigo == "datosDuros"|| codigo == "datosPers") { %>
+	<script src="/FE-javascript/2.1-Prod-Crear/0-Prod-InputError.js"></script>
+<% } %>
 <% if (codigo != "palabrasClave" && codigo != "terminaste") { %>
 	<script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
 <% } %>
 <% if (codigo != "desambiguar" || codigo != "datosDuros") { %>
 	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 <% } %>
+<% console.log(codigo) %> 
 
 <!-- Uso particular formato -->
 <% if (codigo == "palabrasClave") { %><link rel="stylesheet" href="/formatoDeVistas/2.1-Prod-Crear/1-Prod-PalabrasClave.css">

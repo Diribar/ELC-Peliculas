@@ -33,18 +33,6 @@ window.addEventListener("load", async () => {
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
 	// FUNCIONES *******************************************
-	let statusInicial = async (mostrarIconoError) => {
-		//Buscar todos los valores
-		let url = "";
-		inputs.forEach((input, i) => {
-			if (i) url += "&";
-			url += input.name + "=";
-			url += encodeURIComponent(input.value);
-		});
-		// Consecuencias de las validaciones de errores
-		if (mostrarIconoError) await funcionErrores(url);
-		botonSubmit();
-	};
 	let funcionErrores = async (url) => {
 		let errores = await fetch(ruta + url).then((n) => n.json());
 		campos.forEach((campo, indice) => {

@@ -72,7 +72,8 @@
 				<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
 			<% } %>
 			<!-- Rutina para todos los casos -->
-			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar">
+			<% console.log(dataEntry.avatar) %> 
+			<input name="avatar" id="imagen" type="file" accept="image/*" class="input ocultar" value="<%= dataEntry.avatar %>">
 			<i class="fa-solid fa-circle-xmark <%- dataEntry.avatar && dataEntry.fuente=="TMDB" ? 'ocultar' : '' %>">
 				<span class="mensajeError"></span>
 			</i>
