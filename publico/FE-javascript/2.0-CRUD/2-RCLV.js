@@ -92,11 +92,11 @@ window.addEventListener("load", async () => {
 
 	// Funciones ************************
 	// Validaciones
-	let validarNombre = async () => {
+	let validarNombre = async (tipo) => {
 		// Verificar errores en el nombre
 		let params = "&nombre=" + nombre.value + "&entidad=" + entidad;
 		if (id) params += "&id=" + id;
-		errores.nombre = await fetch(rutaValidacion + "nombre" + params).then((n) => n.json());
+		errores.nombre = await fetch(rutaValidacion + "nombre" + tipo + params).then((n) => n.json());
 		// Consolidar la info
 		OK.nombre = !errores.nombre;
 		// Fin
@@ -425,7 +425,7 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (nombre.value) await validarNombre();
+		if (nombre.value) await validarNombre("Completo");
 		if (mes_id.value) diasDelMes(mes_id, dia);
 		if ((mes_id.value && dia.value) || desconocida.checked) {
 			await validarFechas();
@@ -437,14 +437,16 @@ window.addEventListener("load", async () => {
 			await mostrarRCLI[entidad](false);
 		}
 	};
-	let feedback = (OK, errores) => {
+	let feedback = (OK, errores, ocultarOK) => {
 		// Definir las variables
 		let sectores = ["nombre", "fecha", "repetidos"];
 		if (!valores) sectores.push("ano", "RCLI");
 		// Rutina
 		sectores.forEach((sector, i) => {
 			// Ícono de OK
-			OK[sector] ? iconoOK[i].classList.remove("ocultar") : iconoOK[i].classList.add("ocultar");
+			OK[sector] && (sector != "nombre" || !ocultarOK)
+				? iconoOK[i].classList.remove("ocultar")
+				: iconoOK[i].classList.add("ocultar");
 			// Ícono de error
 			errores[sector]
 				? iconoError[i].classList.remove("ocultar")
@@ -469,22 +471,27 @@ window.addEventListener("load", async () => {
 	};
 
 	// Add Event Listeners - compatible RCLV x 3
-	dataEntry.addEventListener("input", (e) => {
+	dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		if (campo == "nombre") {
+			nombre.value = nombre.value.replace(/[^a-záéíóúüñ\s]/gi, "").replace(/ +/g, " ");
 			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
 			wiki.href = url_wiki + nombre.value;
 			santopedia.href = url_santopedia + nombre.value;
+			await validarNombre("Express");
+			feedback(OK, errores, true);
 		}
 		if (campo == "ano") {
-			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear();
-			if (ano.value < -32768) ano.value = -32768;
+			ano.value = ano.value.replace(/[^-\d]/g, "");
+			if (ano.value.lastIndexOf("-") > 0) ano.value = ano.value.replace(/[-]/g, "");
+			if (parseInt(ano.value) > new Date().getFullYear()) ano.value = new Date().getFullYear();
+			if (parseInt(ano.value) < -32768) ano.value = -32768;
 		}
 	});
 	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if (campo == "nombre") await validarNombre();
+		if (campo == "nombre") await validarNombre("Completo");
 		if (campo == "mes_id") diasDelMes();
 		if (
 			(campo == "mes_id" || campo == "dia" || campo == "desconocida") &&
@@ -502,7 +509,7 @@ window.addEventListener("load", async () => {
 	});
 	botonSubmit.addEventListener("click", async (e) => {
 		if (botonSubmit.classList.contains("inactivo")) {
-			await validarNombre();
+			await validarNombre("Completo");
 			await validarFechas();
 			validarRepetido();
 			if (!valores) {

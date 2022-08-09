@@ -7,7 +7,7 @@ module.exports = {
 	consolidado: async function (datos) {
 		// Campos  que siempre están
 		let errores = {
-			nombre: await this.nombre(datos),
+			nombre: await this.nombreCompleto(datos),
 			fecha: this.fecha(datos),
 		};
 		if (datos.repetido) errores.repetidos = cartelDuplicado;
@@ -18,23 +18,39 @@ module.exports = {
 		// Campos exclusivos de 'hechos'
 		if (datos.entidad == "hechos") errores.RCLI = this.RCLI_hecho(datos);
 		// Completar con 'hay errores'
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
-	nombre: async (datos) => {
+	nombreExpress: (datos) => {
 		let {nombre} = datos;
-		let repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		return !nombre
-			? cartelCampoVacio
+			? ""
+			: inicialMayuscula(nombre)
+			? cartelMayuscula
 			: castellano(nombre)
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
-			: longitud(nombre, 4, 30)
-			? longitud(nombre, 4, 30)
+			: "";
+	},
+
+	nombreCompleto: async function (datos) {
+		let {nombre} = datos;
+		if (nombre) var nombreExpress = this.nombreExpress(datos);
+		if (nombre && !nombreExpress) var longitud = validarLongitud(nombre, 4, 30);
+		if (nombre && !nombreExpress && !longitud)
+			var repetido = (await BD_especificas.validarRepetidos(["nombre"], datos))
+				? cartelRepetido({entidad: datos.entidad, id: repetido})
+				: "";
+		return !nombre
+			? cartelCampoVacio
+			: nombreExpress
+			? nombreExpress
+			: longitud
+			? longitud
 			: repetido
-			? cartelRepetido({entidad: datos.entidad, id: repetido})
+			? repetido
 			: "";
 	},
 
@@ -97,7 +113,8 @@ module.exports = {
 		if (false) {
 		}
 		// Respuestas
-		else if (!datos.solo_cfc) respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
+		else if (!datos.solo_cfc)
+			respuesta = "Necesitamos saber sobre su relación con la historia de la Iglesia";
 		else if (datos.solo_cfc == "0") respuesta = "";
 		// Respuestas sólo si CFC
 		else if (!datos.jss) respuesta = "Necesitamos saber si ocurrió durante la vida de Jesús";
@@ -117,12 +134,12 @@ module.exports = {
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelCampoVacio = "Necesitamos que completes este campo";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
-const cartelCastellano =
-	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+const cartelMayuscula = "La primera letra debe ser en mayúscula";
+const cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
-let longitud = (dato, corto, largo) => {
+let validarLongitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El nombre debe ser más largo"
 		: dato.length > largo
@@ -130,8 +147,12 @@ let longitud = (dato, corto, largo) => {
 		: "";
 };
 
+let inicialMayuscula = (dato) => {
+	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
+	return !formato.test(dato);
+};
 let castellano = (dato) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\d+-]+$/;
+	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-]+$/;
 	return !formato.test(dato);
 };
 
@@ -152,14 +173,6 @@ let prefijo = (nombre) => {
 		nombre.startsWith("Doña ") ||
 		nombre.startsWith("Papa ")
 	);
-};
-
-let hayErrores = (errores) => {
-	let valores = Object.values(errores);
-	for (let valor of valores) {
-		if (valor) return true;
-	}
-	return false;
 };
 
 let cartelRepetido = (datos) => {

@@ -13,23 +13,19 @@ module.exports = {
 			: (await BD_especificas.obtenerELC_id("usuarios", {email: email}))
 			? "Esta dirección de email ya figura en nuestra base de datos"
 			: "";
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
 	login: (login) => {
 		let errores = {};
-		errores.email = !login.email
-			? cartelMailVacio
-			: formatoMail(login.email)
-			? cartelMailFormato
-			: "";
+		errores.email = !login.email ? cartelMailVacio : formatoMail(login.email) ? cartelMailFormato : "";
 		errores.contrasena = !login.contrasena
 			? cartelContrasenaVacia
 			: largoContrasena(login.contrasena)
 			? largoContrasena(login.contrasena)
 			: "";
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
@@ -55,7 +51,7 @@ module.exports = {
 			: fechaRazonable(datos.fecha_nacimiento)
 			? "¿Estás seguro de que introdujiste la fecha correcta?"
 			: "";
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 
@@ -81,7 +77,7 @@ module.exports = {
 			  parseInt(datos.tamano / 10000) / 100 +
 			  " MB. Necesitamos que no supere 1 MB"
 			: "";
-		errores.hay = hayErrores(errores);
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
 };
@@ -100,9 +96,7 @@ let formatoMail = (email) => {
 };
 
 let largoContrasena = (dato) => {
-	return dato.length < 6 || dato.length > 12
-		? "La contraseña debe tener de 6 a 12 caracteres"
-		: "";
+	return dato.length < 6 || dato.length > 12 ? "La contraseña debe tener de 6 a 12 caracteres" : "";
 };
 
 let longitud = (dato, corto, largo) => {
@@ -122,15 +116,6 @@ let extension = (nombre) => {
 	if (!nombre) return false;
 	let ext = path.extname(nombre);
 	return ![".jpg", ".png"].includes(ext) ? ext : false;
-};
-
-let hayErrores = (errores) => {
-	let resultado = false;
-	let valores = Object.values(errores);
-	for (let valor of valores) {
-		if (valor) resultado = true;
-	}
-	return resultado;
 };
 
 let fechaRazonable = (dato) => {
