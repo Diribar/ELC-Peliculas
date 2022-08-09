@@ -267,7 +267,7 @@ window.addEventListener("load", async () => {
 		return error;
 	};
 
-	// Controles de los Data Entry
+	// Event Listeners
 	v.form.addEventListener("input", async (e) => {
 		// Obtener la fila y columna
 		let [fila, columna] = fn.obtenerFilaColumna(e);
