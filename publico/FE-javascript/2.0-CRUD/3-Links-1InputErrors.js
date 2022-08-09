@@ -190,7 +190,7 @@ window.addEventListener("load", async () => {
 			let OK =
 				Array.from(v.iconosOK)
 					.slice(fila * columnas, (fila + 1) * columnas)
-					.map((n) => n.classList.value)
+					.map((n) => n.className)
 					.join(" ")
 					.split(" ")
 					.reduce((acumulador, b) => {
@@ -199,7 +199,7 @@ window.addEventListener("load", async () => {
 			let error =
 				Array.from(v.iconosError)
 					.slice(fila * columnas, (fila + 1) * columnas)
-					.map((n) => n.classList.value)
+					.map((n) => n.className)
 					.join(" ")
 					.split(" ")
 					.reduce((acumulador, b) => {

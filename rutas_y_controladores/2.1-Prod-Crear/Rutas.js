@@ -15,27 +15,23 @@ const id = require("../../middlewares/producto/entidadID");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
-// Rutas de APIs
-// Temas de Palabras Clave
+// APIs
+// Validar
+router.get("/api/validar/palabras-clave", API.validarPalabrasClave);
+router.get("/api/validar/copiar-fa", API.validarCopiarFA);
+router.get("/api/validar/datos-duros", API.validarDatosDuros);
+router.get("/api/validar/datos-personalizados", API.validarDatosPers);
+// Varias
 router.get("/api/PC-cant-prod", API.cantProductos);
-router.get("/api/validar-palabras-clave", API.validarPalabrasClave);
-// Temas de Desambiguar
 router.get("/api/DS-averiguar-coleccion", API.averiguarColeccion);
-// Temas de Tipo de Producto
 router.get("/api/TP-averiguar-colecciones", API.averiguarColecciones);
 router.get("/api/TP-averiguar-cant-temporadas", API.averiguarCantTemporadas);
-// Temas de Copiar FA
 router.get("/api/FA-obtener-fa-id", API.obtenerFA_id);
 router.get("/api/FA-obtener-elc-id", API.obtenerELC_id);
-router.get("/api/validar-copiar-fa", API.validarCopiarFA);
-// Temas de Datos Duros
-router.get("/api/validar-datos-duros", API.validarDatosDuros);
-// Temas de Datos Personalizados
 router.get("/api/obtener-subcategorias", API.obtenerSubcategorias);
-router.get("/api/validar-datos-pers", API.validarDatosPers);
 router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 
-// Rutas de vistas de "Agregar Productos"
+// VISTAS
 router.get("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveForm);
 router.post("/palabras-clave", soloAutInput, vista.palabrasClaveGuardar);
 router.get("/desambiguar", soloAutInput, aptoDE, vista.desambiguarForm);

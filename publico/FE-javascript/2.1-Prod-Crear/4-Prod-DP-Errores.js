@@ -33,21 +33,20 @@ window.addEventListener("load", async () => {
 	let ruta = "/producto/agregar/api/validar-datos-pers/?";
 
 	// FUNCIONES *******************************************
-	// Funciones
 	let statusInicial = async (mostrarIconoError) => {
 		//Buscar todos los valores
 		let url = "";
-		for (let input of inputs) {
-			if (input != inputs[0]) url += "&";
+		inputs.forEach((input, i) => {
+			if (i) url += "&";
 			url += input.name + "=";
 			url += encodeURIComponent(input.value);
-		}
-		let errores = await fetch(ruta + url).then((n) => n.json());
+		});
 		// Consecuencias de las validaciones de errores
-		if (mostrarIconoError) funcionErrores(errores);
+		if (mostrarIconoError) await funcionErrores(url);
 		botonSubmit();
 	};
-	let funcionErrores = (errores) => {
+	let funcionErrores = async (url) => {
+		let errores = await fetch(ruta + url).then((n) => n.json());
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				mensajesError[indice].innerHTML = errores[campo];
@@ -59,6 +58,8 @@ window.addEventListener("load", async () => {
 					: iconosError[indice].classList.add("ocultar");
 			}
 		});
+		// Fin
+		return;
 	};
 	// Actualizar la subcategoría
 	let actualizaOpsSubcat = () => {
@@ -228,7 +229,7 @@ window.addEventListener("load", async () => {
 		// Detectar la cantidad de 'no aciertos'
 		let OK_ocultos =
 			Array.from(iconosOK)
-				.map((n) => n.classList.value)
+				.map((n) => n.className)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
@@ -238,7 +239,7 @@ window.addEventListener("load", async () => {
 		// Detectar la cantidad de 'no errores'
 		let error =
 			Array.from(iconosError)
-				.map((n) => n.classList.value)
+				.map((n) => n.className)
 				.join(" ")
 				.split(" ")
 				.reduce((a, b) => {
@@ -287,8 +288,8 @@ window.addEventListener("load", async () => {
 			if (campo != "valor_id") adicSubcategoria += "&valor_id=" + inputsRCLV[2].value;
 		}
 		// Averiguar si hay algún error
-		let errores = await fetch(ruta + campo + "=" + valor + adicSubcategoria).then((n) => n.json());
-		funcionErrores(errores);
+		let url = campo + "=" + valor + adicSubcategoria;
+		await funcionErrores(url);
 		// Fin
 		botonSubmit();
 	});
