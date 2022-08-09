@@ -17,7 +17,7 @@ module.exports = {
 	validarPalabrasClave: (req, res) => {
 		let palabrasClave = req.query.palabrasClave;
 		let errores = validar.palabrasClave(palabrasClave);
-		return res.json(errores.palabrasClave);
+		return res.json(errores);
 	},
 
 	// Vista (desambiguar)

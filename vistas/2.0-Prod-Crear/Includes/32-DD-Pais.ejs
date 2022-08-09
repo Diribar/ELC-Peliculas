@@ -2,8 +2,10 @@
 	<label>País/es de origen</label>
 	<div class="input-error">
 		<% if (dataEntry.paises_id) { %>
+			<!-- Lugar donde almacenar los ID -->
+			<input name="paises_id" type="text" value="<%= dataEntry.paises_id %>" disabled class="input ocultar">
 			<!-- Lugar donde mostrar los nombres -->
-			<input type="text" value="<%= paises %>" disabled class="input">
+			<input id="mostrarPaisesDisabled" type="text" value="<%= paises %>" disabled>
 			<%- include("39-DD-Mensajes") %>
 		<% } else { %>
 			<!-- Lugar donde almacenar los ID -->
