@@ -68,7 +68,7 @@
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row; justify-content: space-evenly;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}
 #dataEntry #flechas i {font-size: 2rem;}
-#dataEntry #flechas i {color: var(--gris-oscuro)}
+/* #dataEntry #flechas i {color: var(--gris-oscuro)} */
 #dataEntry #flechas #submit {position: static; transform: none;}
 
 /* Resultados */

@@ -95,8 +95,8 @@ module.exports = {
 			if (datos.ap_mar_id === "") datos.ap_mar_id = null;
 		}
 		// Limpiar los datos de información irrelevante
-		let camposUtiles = await variables.camposRCLV().then((n) => n[entidad]);
-		for (campo in datos) if (!camposUtiles.includes(campo)) delete datos[campo];
+		let camposUtiles = variables.camposRCLV()[entidad];
+		for (let campo in datos) if (!camposUtiles.includes(campo)) delete datos[campo];
 		// Preparar la información a guardar
 		let url = req.url.slice(1);
 		let agregar_edicion = url.slice(0, url.indexOf("/"));

@@ -27,12 +27,12 @@ module.exports = {
 		let repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		return !nombre
 			? cartelCampoVacio
-			: longitud(nombre, 2, 30)
-			? longitud(nombre, 2, 30)
 			: castellano(nombre)
 			? cartelCastellano
 			: prefijo(nombre)
 			? cartelPrefijo
+			: longitud(nombre, 4, 30)
+			? longitud(nombre, 4, 30)
 			: repetido
 			? cartelRepetido({entidad: datos.entidad, id: repetido})
 			: "";
