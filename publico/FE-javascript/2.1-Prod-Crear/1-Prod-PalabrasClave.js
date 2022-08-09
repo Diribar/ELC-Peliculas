@@ -27,6 +27,7 @@ window.addEventListener("load", () => {
 		submit.style = "background";
 		return;
 	};
+
 	let funcionSubmit = async (e) => {
 		if (submit.classList.contains("fa-circle-question")) {
 			e.preventDefault();
