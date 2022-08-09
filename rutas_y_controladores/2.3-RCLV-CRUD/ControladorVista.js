@@ -37,7 +37,8 @@ module.exports = {
 		// 3. Pasos exclusivos para edición
 		if (agregar_edicion == "edicion") {
 			let id = req.query.id;
-			dataEntry = await BD_genericas.obtenerPorId(entidad, id); // Pisa el data entry de session
+			let includes = entidad == "personajes" ? "rol_iglesia" : "";
+			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes); // Pisa el data entry de session
 			if (dataEntry.dia_del_ano_id) {
 				let dia_del_ano = await BD_genericas.obtenerTodos("dias_del_ano", "id").then((n) =>
 					n.find((m) => m.id == dataEntry.dia_del_ano_id)

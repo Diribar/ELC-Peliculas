@@ -123,11 +123,12 @@
 				</div>
 				<!-- Año de nacimiento u ocurrencia -->
 				<% if (entidad != "valores") { %>
+					<!-- Año -->
 					<div class="borderTop flex-row">
 						<div class="relative flex-row align-center">
 							<!-- Título -->
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
-							<input type="number" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
 							<ul type="dots" class="mensajeAyuda ocultar">
@@ -181,11 +182,11 @@
 							<div id="genero" class="flexRowAlign">
 								<label class="izquierda">Género:</label>
 								<div class="flexRowAlign">
-									<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="V") { %>checked<% } %> class="RCLI">
 									<label for="V">Varón</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M") { %>checked<% } %> class="RCLI">
+									<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="M") { %>checked<% } %> class="RCLI">
 									<label for="M">Mujer</label>
 								</div>
 							</div>						
@@ -207,11 +208,11 @@
 								<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
 								<div class="flexRowAlign siNo">
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id===1) { %>checked<% } %> class="RCLI">
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0 || dataEntry.proceso_id===0) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>
@@ -229,11 +230,11 @@
 							<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
 							<div class="flexRowAlign siNo">
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
 									<label>SI</label>
 								</div>
 								<div class="flexRowAlign">
-									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT") { %>checked<% } %> class="RCLI">
 									<label>NO</label>
 								</div>
 							</div>
@@ -244,11 +245,11 @@
 								<label class="izquierda">¿Participó en una aparición mariana?</label>
 								<div class="flexRowAlign siNo">
 									<div class="flexRowAlign">
-										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0 || dataEntry.ap_mar_id===0) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>

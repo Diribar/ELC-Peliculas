@@ -474,6 +474,7 @@ window.addEventListener("load", async () => {
 	dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		if (campo == "nombre") {
+			nombre.value = nombre.value.replace(/[^a-záéíóúüñ\s]/gi, "").replace(/ +/g, " ");
 			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
 			wiki.href = url_wiki + nombre.value;
 			santopedia.href = url_santopedia + nombre.value;
@@ -481,8 +482,10 @@ window.addEventListener("load", async () => {
 			feedback(OK, errores, true);
 		}
 		if (campo == "ano") {
-			if (ano.value > new Date().getFullYear()) ano.value = new Date().getFullYear();
-			if (ano.value < -32768) ano.value = -32768;
+			ano.value = ano.value.replace(/[^-\d]/g, "");
+			if (ano.value.lastIndexOf("-") > 0) ano.value = ano.value.replace(/[-]/g, "");
+			if (parseInt(ano.value) > new Date().getFullYear()) ano.value = new Date().getFullYear();
+			if (parseInt(ano.value) < -32768) ano.value = -32768;
 		}
 	});
 	dataEntry.addEventListener("change", async (e) => {
