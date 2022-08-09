@@ -100,7 +100,7 @@ window.addEventListener("load", () => {
 			let parrafo = document.createElement("p");
 			parrafo.style.fontStyle = "italic";
 			parrafo.style.textAlign = "center";
-			parrafo.appendChild(document.createTextNode(datos));
+			parrafo.appendChild(document.createTextNode(registros));
 			display.appendChild(parrafo);
 		}
 	};
