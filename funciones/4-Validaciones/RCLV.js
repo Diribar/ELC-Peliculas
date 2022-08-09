@@ -37,9 +37,12 @@ module.exports = {
 
 	nombreCompleto: async function (datos) {
 		let {nombre} = datos;
-		if (nombre) var repetido = await BD_especificas.validarRepetidos(["nombre"], datos);
 		if (nombre) var nombreExpress = this.nombreExpress(datos);
-		if (nombre && nombreExpress) var longitud = funcionLongitud(nombre, 4, 30);
+		if (nombre && !nombreExpress) var longitud = funcionLongitud(nombre, 4, 30);
+		if (nombre && !nombreExpress && !longitud)
+			var repetido = (await BD_especificas.validarRepetidos(["nombre"], datos))
+				? cartelRepetido({entidad: datos.entidad, id: repetido})
+				: "";
 		return !nombre
 			? cartelCampoVacio
 			: nombreExpress
@@ -47,7 +50,7 @@ module.exports = {
 			: longitud
 			? longitud
 			: repetido
-			? cartelRepetido({entidad: datos.entidad, id: repetido})
+			? repetido
 			: "";
 	},
 
