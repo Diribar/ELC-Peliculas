@@ -102,26 +102,6 @@ window.addEventListener("load", async () => {
 		// Fin
 		return [OK, errores];
 	};
-	let diasDelMes = () => {
-		// Aplicar cambios en los días 30 y 31
-		// Variables
-		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
-		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
-
-		// Revisar para febrero
-		if (mes_id.value == 2) {
-			dia30.classList.add("ocultar");
-			dia31.classList.add("ocultar");
-			if (dia.value > 29) dia.value = "";
-		} else {
-			// Revisar para los demás meses de 30 días
-			dia30.classList.remove("ocultar");
-			if (mes_id.value == 4 || mes_id.value == 6 || mes_id.value == 9 || mes_id.value == 11) {
-				dia31.classList.add("ocultar");
-				if (dia.value > 30) dia.value = "";
-			} else dia31.classList.remove("ocultar");
-		}
-	};
 	let validarFechas = async () => {
 		// Si se conoce la fecha...
 		if (!desconocida.checked) {
@@ -147,46 +127,11 @@ window.addEventListener("load", async () => {
 		}
 		return [OK, errores];
 	};
-	// Segunda columna - compatible RCLV x 3
 	let validarRepetido = () => {
 		let casos = document.querySelectorAll("#posiblesRepetidos li input");
 		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
 		OK.repetidos = !errores.repetidos;
 		return [OK, errores];
-	};
-	let registrosConEsaFecha = async () => {
-		// Buscar otros casos en esa fecha
-		// Obtener los casos
-		let params = "?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
-		if (id) params += "&id=" + id;
-		let casos = await fetch(rutaOtrosCasos + params).then((n) => n.json());
-		// Si no hay, mensaje de "no hay casos"
-		if (!casos.length) {
-			posiblesRepetidos.innerHTML = "¡No hay otros casos!";
-			posiblesRepetidos.classList.add("sinCasos");
-			return "";
-		} else {
-			// Si hay, mostrarlos
-			posiblesRepetidos.innerHTML = "";
-			posiblesRepetidos.classList.remove("sinCasos");
-			for (let caso of casos) {
-				// Crear el input
-				let input = document.createElement("input");
-				input.type = "checkbox";
-				input.name = "repetido";
-				input.checked = true;
-				// Crear la label
-				let texto = document.createTextNode(caso);
-				let label = document.createElement("label");
-				label.appendChild(texto);
-				// Crear el 'li'
-				let li = document.createElement("li");
-				li.appendChild(input);
-				li.appendChild(label);
-				posiblesRepetidos.appendChild(li);
-			}
-			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
-		}
 	};
 	let validarAno = async () => {
 		// Se averigua si hay un error con el año
@@ -256,7 +201,61 @@ window.addEventListener("load", async () => {
 		[OK, errores] = await mostrarRCLI[entidad](false);
 		return [OK, errores];
 	};
-	// Preguntas para Personaje
+	// Auxiliares
+	let diasDelMes = () => {
+		// Aplicar cambios en los días 30 y 31
+		// Variables
+		let dia30 = document.querySelector("select[name='dia'] option[value='30']");
+		let dia31 = document.querySelector("select[name='dia'] option[value='31']");
+
+		// Revisar para febrero
+		if (mes_id.value == 2) {
+			dia30.classList.add("ocultar");
+			dia31.classList.add("ocultar");
+			if (dia.value > 29) dia.value = "";
+		} else {
+			// Revisar para los demás meses de 30 días
+			dia30.classList.remove("ocultar");
+			if (mes_id.value == 4 || mes_id.value == 6 || mes_id.value == 9 || mes_id.value == 11) {
+				dia31.classList.add("ocultar");
+				if (dia.value > 30) dia.value = "";
+			} else dia31.classList.remove("ocultar");
+		}
+	};
+	let registrosConEsaFecha = async () => {
+		// Buscar otros casos en esa fecha
+		// Obtener los casos
+		let params = "?mes_id=" + mes_id.value + "&dia=" + dia.value + "&entidad=" + entidad;
+		if (id) params += "&id=" + id;
+		let casos = await fetch(rutaOtrosCasos + params).then((n) => n.json());
+		// Si no hay, mensaje de "no hay casos"
+		if (!casos.length) {
+			posiblesRepetidos.innerHTML = "¡No hay otros casos!";
+			posiblesRepetidos.classList.add("sinCasos");
+			return "";
+		} else {
+			// Si hay, mostrarlos
+			posiblesRepetidos.innerHTML = "";
+			posiblesRepetidos.classList.remove("sinCasos");
+			for (let caso of casos) {
+				// Crear el input
+				let input = document.createElement("input");
+				input.type = "checkbox";
+				input.name = "repetido";
+				input.checked = true;
+				// Crear la label
+				let texto = document.createTextNode(caso);
+				let label = document.createElement("label");
+				label.appendChild(texto);
+				// Crear el 'li'
+				let li = document.createElement("li");
+				li.appendChild(input);
+				li.appendChild(label);
+				posiblesRepetidos.appendChild(li);
+			}
+			return "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
+		}
+	};
 	let funcionGenero = () => {
 		// Definir variables
 		let generoElegido = genero[0].checked ? genero[0].value : genero[1].checked ? genero[1].value : "";
@@ -298,7 +297,6 @@ window.addEventListener("load", async () => {
 		}
 		return;
 	};
-	// Preguntas para Personajes y Hechos
 	let mostrarRCLI = {
 		personajes: async function (mostrarErrores) {
 			let num = -1;
@@ -426,7 +424,6 @@ window.addEventListener("load", async () => {
 			return [params, input.value];
 		},
 	};
-	// Consolidado - compatible RCLV x 3
 	let startUp = async () => {
 		if (nombre.value) [OK, errores] = await validarNombre();
 		if (mes_id.value) diasDelMes(mes_id, dia);
