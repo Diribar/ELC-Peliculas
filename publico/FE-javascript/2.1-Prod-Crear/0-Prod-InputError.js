@@ -536,7 +536,6 @@ window.addEventListener("load", async () => {
 		// Activar links RCLV
 		iconosEdicionRCLVs();
 	}
-
 	// Errores y boton 'Submit'
 	let mostrarIconoError = DD;
 	statusInicial(mostrarIconoError);
