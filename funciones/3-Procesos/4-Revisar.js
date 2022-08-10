@@ -7,114 +7,202 @@ const variables = require("./Variables");
 const validar = require("../4-Validaciones/RUD");
 
 module.exports = {
-	// Uso compartido
-	registros_ObtenerARevisar: async (haceUnaHora, status, userID, entidades, includes) => {
-		// Obtener los registros del Producto, que cumplan ciertas condiciones
+	// ControladorVista (Tablero)
+	// Producto y Links
+	tablero_obtenerProds: async (ahora, status, userID) => {
+		// Obtener productos en status no estables
 		// Declarar las variables
-		let revisar = status.filter((n) => !n.gr_estables).map((n) => n.id);
-		let resultados = [];
-		// Obtener el resultado por entidad
-		for (let i = 0; i < entidades.length; i++)
-			resultados[i] = BD_especificas.condicRegistro_ARevisar(
-				entidades[i],
-				haceUnaHora,
-				revisar,
-				userID,
-				includes
-			);
-		resultados = await Promise.all([...resultados]);
-		// Consolidar y ordenar los resultados
-		let acumulador = [];
-		for (let resultado of resultados) if (resultado.length) acumulador.push(...resultado);
-		if (acumulador.length > 1) acumulador.sort((a, b) => new Date(a.creado_en) - new Date(b.creado_en));
+		let campos;
+		// - Obtener los resultados de status creado_id
+		let creado_id = status.find((n) => n.creado).id;
+		campos = [ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
+		let PA = await tablero_obtenerProds(...campos);
+		// - Obtener los resultados de status alta_aprob sin edición
+		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
+		campos = [ahora, alta_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+		let SE = await tablero_obtenerProds(...campos);
+		SE = SE.filter((n) => !n.ediciones.length);
+		// - Obtener los resultados de status inactivar_id
+		let inactivar_id = status.find((n) => n.inactivar).id;
+		campos = [ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+		let IN = await tablero_obtenerProds(...campos);
+		// - Obtener los resultados de status recuperar_id
+		let recuperar_id = status.find((n) => n.recuperar).id;
+		campos = [ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+		let RC = await tablero_obtenerProds(...campos);
+
 		// Fin
-		return acumulador;
+		return {PA, IN, RC, SE};
 	},
-	// Producto - ControladorVista
-	prod_ObtenerARevisar: async function (haceUnaHora, status, userID) {
-		// Obtener los registros que cumplan ciertas condiciones
+	tablero_obtenerProdEdics: async (ahora, status, userID) => {
+		// Obtener los productos que tengan alguna edición que cumpla con:
+		// - Ediciones ajenas
+		// - Sin RCLV no aprobados
+		// Y además los productos sean aptos p/captura y en status c/altaAprob o aprobados,
+
 		// Declarar las variables
-		let entidades = ["peliculas", "colecciones"];
-		let includes = ["status_registro", "ediciones"];
-		// Obtener los resultados
-		let resultados = await this.registros_ObtenerARevisar(
-			haceUnaHora,
-			status,
-			userID,
-			entidades,
-			includes
-		);
-		// Eliminar los resultados que estén en status 'alta-aprobada' y tengan una sola edición y pertenezca al usuario
-		let alta_aprob = status.find((n) => n.alta_aprob).id;
-		for (let i = resultados.length - 1; i >= 0; i--) {
-			if (
-				resultados[i].status_registro.id == alta_aprob &&
-				resultados[i].ediciones.length == 1 &&
-				resultados[i].ediciones[0].editado_por_id == userID
-			)
-				resultados.splice(i, 1);
+		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
+		let aprobado_id = status.find((n) => n.aprobado).id;
+		let gr_aprobado = [alta_aprob_id, aprobado_id];
+		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
+		let productos = [];
+		// Obtener todas las ediciones de usuarios ajenos
+		let ediciones = await BD_especificas.tablero_obtenerProdEdics(userID, includes);
+		// Eliminar las edicionesProd con RCLV no aprobado
+		if (ediciones.length)
+			for (let i = ediciones.length - 1; i >= 0; i--)
+				if (
+					(ediciones[i].personaje && ediciones[i].personaje.status_registro_id != aprobado_id) ||
+					(ediciones[i].hecho && ediciones[i].hecho.status_registro_id != aprobado_id) ||
+					(ediciones[i].valor && ediciones[i].valor.status_registro_id != aprobado_id)
+				)
+					ediciones.splice(i, 1);
+		// Obtener los productos
+		console.log(63, ediciones.length);
+		if (ediciones.length) {
+			// Variables
+			let peliculas = [];
+			let colecciones = [];
+			let capitulos = [];
+			// Obtener los productos
+			ediciones.map((n) => {
+				if (n.pelicula_id)
+					peliculas.push({...n.pelicula, entidad: "peliculas", editado_en: n.editado_en});
+				if (n.coleccion_id)
+					colecciones.push({...n.coleccion, entidad: "colecciones", editado_en: n.editado_en});
+				if (n.capitulo_id)
+					capitulos.push({...n.capitulo, entidad: "capitulos", editado_en: n.editado_en});
+			});
+			// Eliminar los repetidos
+			if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
+			if (colecciones.length) colecciones = eliminarRepetidos(colecciones);
+			if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
+			// Consolidar los productos
+			productos = [...peliculas, ...colecciones, ...capitulos];
+			// Dejar solamente los productos de gr_aprobado
+			// productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
+			// Dejar solamente los productos que no tengan problemas de captura
+			if (productos.length)
+				productos = productos.filter(
+					(n) =>
+						!n.capturado_en ||
+						n.capturado_en < haceUnaHora ||
+						!n.captura_activa ||
+						n.capturado_por_id == userID
+				);
+			// Ordenar por fecha de edición, y luego por status_registro
+			if (productos.length) {
+				productos.sort((a, b) => new Date(a.editado_en) - new Date(b.editado_en));
+				productos.sort((a, b) => new Date(a.status_registro_id) - new Date(b.status_registro_id));
+			}
 		}
+		// Fin
+		return productos;
+	},
+	tablero_obtenerLinks: async (ahora, status, userID) => {
+		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
+		// Obtener los links 'a revisar'
+		let links = await BD_especificas.tablero_obtenerLinks(status);
+		// Si no hay => salir
+		if (!links.length) return [];
+		// Obtener los links ajenos
+		let linksAjenos = links.filter(
+			(n) =>
+				(n.status_registro &&
+					((n.status_registro.creado && n.creado_por_id != userID) ||
+						((n.status_registro.inactivar || n.status_registro.recuperar) &&
+							n.sugerido_por_id != userID))) ||
+				(!n.status_registro && n.editado_por_id != userID)
+		);
+		// Obtener los productos
+		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
+		// Fin
+		return productos;
+	},
+	tablero_obtenerRCLVs: async (ahora, status, userID) => {
+		// Obtener los siguients RCLVs:
+		// 1. Pend aprob c/producto en edicion
+
+		// 1. Que estén en status pendiente de aprobar y creados ajeno
+		// 3. Que tengan alguna edición ajena.
+		// 2. Que no estén vinculados con ningún producto.
+
+		// Declarar las variables
+		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+		let entidades = ["personajes", "hechos", "valores"];
+		let includes;
+
+		// STATUS CREADO ---------------------------------------------
+		// Obtener los resultados de status creado_id
+		includes = ["status_registro", "peliculas", "colecciones", "capitulos", "edicion_producto"];
+		let creado_id = status.find((n) => n.creado).id;
+		let PA = await tablero_obtenerProds(ahora, creado_id, userID, entidades, includes);
+		// Eliminar los creados por el Revisor
+		if (PA.length) {
+			for (let i = PA.length - 1; i >= 0; i--)
+				if (PA[i].creado_en > haceUnaHora || PA[i].creado_por_id == userID) PA.splice(i, 1);
+		}
+
+		let aprobado = status.find((n) => n.aprobado).id;
+		let campos = ["peliculas", "colecciones", "capitulos", "edicion_producto"];
+		let aux = [];
+		// Rutina para cada RCLV
+		resultados.map((n) => {
+			// Verificación si tiene algún Producto
+			for (let campo of campos) {
+				if (n[campo].length)
+					for (let reg of n[campo]) {
+						// Averiguar el status_registro_id del producto
+						if (
+							// El producto está aprobado
+							reg.status_registro_id == aprobado &&
+							// El RCLV todavía no está incluido en la variable 'auxiliar'
+							aux.findIndex((m) => m.entidad == n.entidad && m.id == n.id) < 0
+						) {
+							aux.push(n);
+							break;
+						}
+					}
+				if (aux.length && aux.slice(-1) == n) break;
+			}
+		});
+		resultados = aux;
 		// Fin
 		return resultados;
 	},
-	prod_ObtenerEdicARevisar: async (haceUnaHora, status, userID) => {
-		// Obtener todas las ediciones de usuarios ajenos, con asociación a películas, colecciones y capítulos
-		// Declarar las variables
-		let aprobados = status.find((n) => n.aprobado).id;
-		// Obtener todas las ediciones de usuarios ajenos y de hace más de una hora
-		let ediciones = await BD_especificas.condicEdicProd_ARevisar(haceUnaHora, userID);
-		// Obtener los productos
-		let productos = ediciones.map((n) => {
-			return n.pelicula_id
-				? {...n.pelicula, entidad: "peliculas"}
-				: n.coleccion_id
-				? {...n.coleccion, entidad: "colecciones"}
-				: {...n.capitulo, entidad: "capitulos"};
-		});
-		// Dejar solamente los productos aprobados
-		productos = productos.filter((n) => n.status_registro_id == aprobados);
-		// Dejar solamente los productos generados por otros usuarios
-		productos = productos.filter((n) => n.creado_por_id != userID);
-		// Dejar solamente los productos que estén creados hace más de una hora
-		productos = productos.filter((n) => n.creado_en < haceUnaHora);
-		// Dejar solamente los productos que no tengan problemas de captura
-		productos = productos.filter(
-			(n) =>
-				!n.capturado_en ||
-				n.capturado_en < haceUnaHora ||
-				!n.captura_activa ||
-				n.capturado_por_id == userID
-		);
-		// Fin
-		return productos;
-	},
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
-		let anchoMax = 40;
+		// Variables
+		const anchoMax = 40;
+		const rubros = Object.keys(productos);
+
 		// Reconvertir los elementos
-		productos = productos.map((n) => {
-			let nombre =
-				(n.nombre_castellano.length > anchoMax
-					? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
-					: n.nombre_castellano) +
-				" (" +
-				n.ano_estreno +
-				")";
-			return {
-				id: n.id,
-				entidad: n.entidad,
-				nombre,
-				ano_estreno: n.ano_estreno,
-				abrev: n.entidad.slice(0, 3).toUpperCase(),
-				status_registro_id: n.status_registro_id,
-				fecha: n.creado_en,
-				ediciones: n.ediciones,
-			};
-		});
+		for (let rubro of rubros) {
+			productos[rubro] = productos[rubro].map((n) => {
+				let nombre =
+					(n.nombre_castellano.length > anchoMax
+						? n.nombre_castellano.slice(0, anchoMax - 1) + "…"
+						: n.nombre_castellano) +
+					" (" +
+					n.ano_estreno +
+					")";
+				return {
+					id: n.id,
+					entidad: n.entidad,
+					nombre,
+					ano_estreno: n.ano_estreno,
+					abrev: n.entidad.slice(0, 3).toUpperCase(),
+				};
+			});
+		}
+
 		// Fin
 		return productos;
 	},
-	prod_BloquesAlta: async function (prodOriginal, paises) {
+
+	// ControladorVista (Analizar)
+	prod_BloquesAlta: async (prodOriginal, paises) => {
 		// Definir el 'ahora'
 		let ahora = funciones.ahora().getTime();
 		// Bloque izquierdo
@@ -140,12 +228,12 @@ module.exports = {
 		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
 		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
 		// Obtener la fecha de alta
-		let fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		let fecha = obtenerLaFecha(prodOriginal.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await this.usuario_Ficha(prodOriginal.creado_por_id, ahora);
+		let fichaDelUsuario = await usuario_Ficha(prodOriginal.creado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
-		let calidadAltas = await this.usuario_CalidadAltas(prodOriginal.creado_por_id);
+		let calidadAltas = await usuario_CalidadAltas(prodOriginal.creado_por_id);
 		// Bloque derecho consolidado
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
@@ -225,7 +313,7 @@ module.exports = {
 		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
 		return [ingresos, reemplazos];
 	},
-	prod_BloqueEdic: async function (prodOriginal, prodEditado) {
+	prod_BloqueEdic: async (prodOriginal, prodEditado) => {
 		// Definir el 'ahora'
 		let ahora = funciones.ahora().getTime();
 		// Bloque derecho
@@ -237,18 +325,49 @@ module.exports = {
 		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
 		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
 		// Obtener la fecha de alta
-		fecha = this.obtenerLaFecha(prodOriginal.creado_en);
+		fecha = obtenerLaFecha(prodOriginal.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// Obtener la fecha de edicion
-		fecha = this.obtenerLaFecha(prodEditado.editado_en);
+		fecha = obtenerLaFecha(prodEditado.editado_en);
 		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await this.usuario_Ficha(prodEditado.editado_por_id, ahora);
+		let fichaDelUsuario = await usuario_Ficha(prodEditado.editado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
-		let calidadEdic = await this.usuario_CalidadEdic(prodEditado.editado_por_id);
+		let calidadEdic = await usuario_CalidadEdic(prodEditado.editado_por_id);
 		// Bloque derecho consolidado
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
+	},
+	prod_ActualizarRCLVs_ProdAprob: async (producto, status) => {
+		// Variables
+		let aprobado = status.find((n) => n.aprobado).id;
+		let includes = ["peliculas", "colecciones", "capitulos"];
+		let RCLV_entidades = ["personajes", "hechos", "valores"];
+		// Rutina para cada entidad
+		for (let RCLV_entidad of RCLV_entidades) {
+			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let campo = funciones.obtenerEntidad_id(RCLV_entidad);
+			// Obtener el RCLV_id
+			let RCLV_id = producto[campo];
+			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
+			if (!RCLV_id || RCLV_id == 1) continue;
+			// Actualizar 'prod_aprob' en RCLV si corresponde
+			// Obtener el RCLV
+			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
+			// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
+			if (RCLV.status_registro_id == aprobado) {
+				let prod_entidades = ["peliculas", "colecciones", "capitulos"];
+				// Calcular la cantidad de casos
+				let prod_aprob;
+				for (let entidad of prod_entidades) {
+					prod_aprob = RCLV[entidad].some((n) => n.status_registro_id == aprobado);
+					if (prod_aprob) break;
+				}
+				// Actualizar el RCLV
+				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
+			}
+		}
+		return;
 	},
 	// Producto - ControladorAPI
 	prod_EdicValores: (aprobado, prodOriginal, prodEditado, campo) => {
@@ -279,83 +398,8 @@ module.exports = {
 		// Fin
 		return {valor_aceptado, valor_rechazado};
 	},
-	prod_DiaDelAno: async (prod_entidad, producto, status) => {
-		// Variables
-		let aprobado = status.find((n) => n.aprobado).id;
-		// Obtener el dia_del_ano_id, con la condición de que esté aprobado
-		let dia_del_ano_id =
-			producto.personaje.dia_del_ano_id && producto.personaje.status_registro_id == aprobado
-				? producto.personaje.dia_del_ano_id
-				: producto.hecho.dia_del_ano_id && producto.hecho.status_registro_id == aprobado
-				? producto.hecho.dia_del_ano_id
-				: producto.valor.dia_del_ano_id && producto.valor.status_registro_id == aprobado
-				? producto.valor.dia_del_ano_id
-				: "";
-		// Si existe el día, actualizar el producto
-		if (dia_del_ano_id) BD_genericas.actualizarPorId(prod_entidad, producto.id, {dia_del_ano_id});
-		// Fin
-		return;
-	},
-	prods_DiaDelAno: function (RCLV, status) {
-		// Obtener cada producto
-		let asociaciones = ["peliculas", "colecciones", "capitulos"];
-		// Actualizarle el valor 'dia_del_ano_id' a los productos
-		asociaciones.forEach((asociacion) => {
-			let entidad = asociacion;
-			RCLV[asociacion].forEach(async (producto) => {
-				if (RCLV.dia_del_ano_id)
-					BD_genericas.actualizarPorId(entidad, producto.id, {dia_del_ano_id: RCLV.dia_del_ano_id});
-				else {
-					let includes = ["personaje", "hecho", "valor"];
-					let prod = await BD_genericas.obtenerPorIdConInclude(entidad, producto.id, includes);
-					this.prod_DiaDelAno(entidad, prod, status);
-				}
-			});
-		});
-	},
 
 	// RCLV
-	RCLV_ObtenerARevisar: async function (haceUnaHora, status, userID) {
-		// Obtener los registros que cumplan ciertas condiciones
-		// Declarar las variables
-		let entidades = ["personajes", "hechos", "valores"];
-		let includes = ["status_registro", "peliculas", "colecciones", "capitulos"];
-		// Obtener los resultados
-		let resultados = await this.registros_ObtenerARevisar(
-			haceUnaHora,
-			status,
-			userID,
-			entidades,
-			includes
-		);
-		// Dejar solamente RCLVs con productos aprobados
-		let aprobado = status.find((n) => n.aprobado).id;
-		let campos = ["peliculas", "colecciones", "capitulos"];
-		let aux = [];
-		// Rutina para cada RCLV
-		resultados.map((n) => {
-			// Verificación si tiene algún Producto
-			for (let campo of campos) {
-				if (n[campo].length)
-					for (let reg of n[campo]) {
-						// Averiguar el status_registro_id del producto
-						if (
-							// El producto está aprobado
-							reg.status_registro_id == aprobado &&
-							// El RCLV todavía no está incluido en la variable 'auxiliar'
-							aux.findIndex((m) => m.entidad == n.entidad && m.id == n.id) < 0
-						) {
-							aux.push(n);
-							break;
-						}
-					}
-				if (aux.length && aux.slice(-1) == n) break;
-			}
-		});
-		resultados = aux;
-		// Fin
-		return resultados;
-	},
 	RCLV_ProcesarCampos: (RCLVs) => {
 		// Definir algunas variables
 		let anchoMax = 30;
@@ -436,133 +480,8 @@ module.exports = {
 		}
 		return;
 	},
-	RCLV_actualizarProdAprob: async function (producto, status) {
-		// Variables
-		let aprobado = status.find((n) => n.aprobado).id;
-		let includes = ["peliculas", "colecciones", "capitulos"];
-		let RCLV_entidades = ["personajes", "hechos", "valores"];
-		// Rutina para cada entidad
-		for (let RCLV_entidad of RCLV_entidades) {
-			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
-			let campo = funciones.obtenerEntidad_id(RCLV_entidad);
-			// Obtener el RCLV_id
-			let RCLV_id = producto[campo];
-			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
-			if (!RCLV_id || RCLV_id == 1) continue;
-			// Actualizar 'prod_aprob' en RCLV si corresponde
-			// Obtener el RCLV
-			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
-			// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
-			if (RCLV.status_registro_id == aprobado) {
-				let prod_aprob = this.RCLV_averiguarSiTieneProdAprob(RCLV, status);
-				// Actualizar el RCLV
-				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
-			}
-		}
-		return;
-	},
-	RCLV_averiguarSiTieneProdAprob: (RCLV, status) => {
-		// Variables
-		let aprobado = status.find((n) => n.aprobado).id;
-		let entidades = ["peliculas", "colecciones", "capitulos"];
-		// Calcular la cantidad de casos
-		let prod_aprob;
-		for (let entidad of entidades) {
-			prod_aprob = RCLV[entidad].some((n) => n.status_registro_id == aprobado);
-			if (prod_aprob) break;
-		}
-		return prod_aprob;
-	},
-
-	// Links
-	links_ObtenerARevisar: async (haceUnaHora, status, userID) => {
-		// Obtener todos los registros de links, excepto los que tengan status 'aprobado' o 'inactivo'
-		// Declarar las variables
-		let revisar = status.filter((n) => !n.gr_estables).map((n) => n.id);
-		let aprobado_id = status.find((n) => n.aprobado).id;
-		// Obtener los links 'a revisar'
-		let links = await BD_especificas.obtenerLinksARevisar(revisar);
-		// Si no hay => salir
-		if (!links.length) return [];
-		// Obtener los links ajenos
-		let linksAjenos = links.filter(
-			(n) =>
-				(n.status_registro &&
-					((n.status_registro.creado && n.creado_por_id != userID) ||
-						((n.status_registro.inactivar || !n.status_registro.recuperar) &&
-							n.sugerido_por_id != userID))) ||
-				(!n.status_registro && n.editado_por_id != userID)
-		);
-		// Obtener los productos
-		let productos = linksAjenos.length
-			? obtenerProductos(linksAjenos, aprobado_id, haceUnaHora, userID)
-			: "";
-		// Fin
-		return productos;
-	},
 
 	// Usuario
-	usuario_Ficha: async (userID, ahora) => {
-		// Obtener los datos del usuario
-		let includes = "rol_iglesia";
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
-		// Variables
-		let unAno = unDia * 365;
-		let enviar = {apodo: ["Apodo", usuario.apodo]};
-		// Edad
-		if (usuario.fecha_nacimiento) {
-			let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
-			enviar.edad = ["Edad", edad];
-		}
-		// Antigüedad
-		let antiguedad =
-			(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
-				.toFixed(1)
-				.replace(".", ",") + " años";
-		enviar.antiguedad = ["Tiempo en ELC", antiguedad];
-		// Rol en la iglesia
-		if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
-		// Fin
-		return enviar;
-	},
-	usuario_CalidadAltas: async (userID) => {
-		// 1. Obtener los datos del usuario
-		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-		// 2. Contar los casos aprobados y rechazados
-		let cantAprob = usuario.cant_altas_aprob;
-		let cantRech = usuario.cant_altas_rech;
-		// 3. Precisión de altas
-		let cantAltas = cantAprob + cantRech;
-		let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
-		// let diasPenalizacion = usuario.dias_penalizacion
-		// Datos a enviar
-		let enviar = {
-			calidadAltas: ["Calidad Altas", calidadInputs],
-			cantAltas: ["Cant. Prod. Agregados", cantAltas],
-			// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-		};
-		// Fin
-		return enviar;
-	},
-	usuario_CalidadEdic: async (userID) => {
-		// 1. Obtener los datos del usuario
-		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-		// 2. Contar los casos aprobados y rechazados
-		let cantAprob = usuario.cant_edic_aprob;
-		let cantRech = usuario.cant_edic_rech;
-		// 3. Precisión de ediciones
-		let cantEdics = cantAprob + cantRech;
-		let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
-		// let diasPenalizacion = usuario.dias_penalizacion
-		// Datos a enviar
-		let enviar = {
-			calidadEdiciones: ["Calidad Edición", calidadInputs],
-			cantEdiciones: ["Cant. Campos Proces.", cantEdics],
-			// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
-		};
-		// Fin
-		return enviar;
-	},
 	usuario_Penalizar: async (userID, motivo, campo) => {
 		// Variables
 		let datos = {};
@@ -600,18 +519,16 @@ module.exports = {
 		// Fin
 		return;
 	},
-
-	// Varios
-	obtenerLaFecha: (fecha) => {
-		let dia = fecha.getDate();
-		let mes = meses[fecha.getMonth()];
-		let ano = fecha.getFullYear().toString().slice(-2);
-		fecha = dia + "/" + mes + "/" + ano;
-		return fecha;
-	},
 };
 
 // Funciones ----------------------------
+let obtenerLaFecha = (fecha) => {
+	let dia = fecha.getDate();
+	let mes = meses[fecha.getMonth()];
+	let ano = fecha.getFullYear().toString().slice(-2);
+	fecha = dia + "/" + mes + "/" + ano;
+	return fecha;
+};
 let prodValorVinculo = (producto, objeto) => {
 	let aux = producto[objeto.vinculo]
 		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
@@ -635,15 +552,7 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 			: ""
 		: RCLV[campo];
 };
-let eliminarRepetidos = (productos) => {
-	let aux = [];
-	for (let i = productos.length - 1; i >= 0; i--) {
-		if (aux.includes(productos[i].id)) productos.splice(i, 1);
-		else aux.push(productos[i].id);
-	}
-	return productos;
-};
-let obtenerProductos = (links, aprobado_id, haceUnaHora, userID) => {
+let obtenerProdsDeLinks = (links, status, ahora, userID) => {
 	// Variables
 	let peliculas = [];
 	let colecciones = [];
@@ -658,25 +567,126 @@ let obtenerProductos = (links, aprobado_id, haceUnaHora, userID) => {
 	if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
 	if (colecciones.length) colecciones = eliminarRepetidos(colecciones);
 	if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
-	// Volver a consolidar
+	// Consolidar
 	let productos = [...peliculas, ...colecciones, ...capitulos];
 	// Depurar los productos que no cumplen ciertas condiciones
-	productos = limpieza(productos, aprobado_id, haceUnaHora, userID);
+	productos = limpieza(productos, status, ahora, userID);
 	// Fin
 	return productos;
 };
-let limpieza = (productos, aprobado_id, haceUnaHora, userID) => {
+let eliminarRepetidos = (productos) => {
+	let aux = [];
+	for (let i = productos.length - 1; i >= 0; i--) {
+		if (aux.includes(productos[i].id)) productos.splice(i, 1);
+		else aux.push(productos[i].id);
+	}
+	return productos;
+};
+let limpieza = (productos, status, ahora, userID) => {
+	// Variables
+	// Declarar las variables
+	const aprobado_id = status.find((n) => n.aprobado).id;
+	const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+	const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 	// Dejar solamente los productos aprobados
 	productos = productos.filter((n) => n.status_registro_id == aprobado_id);
-	// Dejar solamente los productos que estén creados hace más de una hora
+	// Dejar solamente los productos creados hace más de una hora
 	productos = productos.filter((n) => n.creado_en < haceUnaHora);
 	// Dejar solamente los productos que no tengan problemas de captura
 	productos = productos.filter(
 		(n) =>
+			// Que no esté capturado
 			!n.capturado_en ||
-			n.capturado_en < haceUnaHora ||
-			!n.captura_activa ||
-			n.capturado_por_id == userID
+			// Que esté capturado hace más de dos horas
+			n.capturado_en < haceDosHoras ||
+			// Que la captura haya sido por otro usuario y hace más de una hora
+			(n.capturado_por_id != userID && n.capturado_en < haceUnaHora) ||
+			// Que la captura haya sido por otro usuario y esté inactiva
+			(n.capturado_por_id != userID && !n.captura_activa) ||
+			// Que esté capturado por este usuario hace menos de una hora
+			(n.capturado_por_id == userID && n.capturado_en > haceUnaHora)
 	);
 	return productos;
+};
+let tablero_obtenerProds = async (ahora, status, userID, orden, campoAutor, includes) => {
+	// Variables
+	let entidades = ["peliculas", "colecciones"];
+	let resultadosPorEntidad = [];
+	let campos = [ahora, status, userID, includes];
+	// Obtener el resultado por entidad
+	for (let i = 0; i < entidades.length; i++)
+		resultadosPorEntidad.push(BD_especificas.tablero_obtenerProds(entidades[i], ...campos));
+	// Consolidar los resultados
+	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
+	// Eliminar los propuestos por el Revisor
+	const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+	if (resultados.length)
+		for (let i = resultados.length - 1; i >= 0; i--)
+			if (resultados[i][orden] > haceUnaHora || resultados[i][campoAutor] == userID)
+				resultados.splice(i, 1);
+	// Ordenar los resultados
+	if (resultados.length) resultados.sort((a, b) => new Date(a[orden]) - new Date(b[orden]));
+	// Fin
+	return resultados;
+};
+let usuario_Ficha = async (userID, ahora) => {
+	// Obtener los datos del usuario
+	let includes = "rol_iglesia";
+	let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, includes);
+	// Variables
+	let unAno = unDia * 365;
+	let enviar = {apodo: ["Apodo", usuario.apodo]};
+	// Edad
+	if (usuario.fecha_nacimiento) {
+		let edad = parseInt((ahora - new Date(usuario.fecha_nacimiento).getTime()) / unAno) + " años";
+		enviar.edad = ["Edad", edad];
+	}
+	// Antigüedad
+	let antiguedad =
+		(parseInt(((ahora - new Date(usuario.creado_en).getTime()) / unAno) * 10) / 10)
+			.toFixed(1)
+			.replace(".", ",") + " años";
+	enviar.antiguedad = ["Tiempo en ELC", antiguedad];
+	// Rol en la iglesia
+	if (usuario.rol_iglesia) enviar.rolIglesia = ["Vocación", usuario.rol_iglesia.nombre];
+	// Fin
+	return enviar;
+};
+let usuario_CalidadAltas = async (userID) => {
+	// 1. Obtener los datos del usuario
+	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
+	// 2. Contar los casos aprobados y rechazados
+	let cantAprob = usuario.cant_altas_aprob;
+	let cantRech = usuario.cant_altas_rech;
+	// 3. Precisión de altas
+	let cantAltas = cantAprob + cantRech;
+	let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
+	// let diasPenalizacion = usuario.dias_penalizacion
+	// Datos a enviar
+	let enviar = {
+		calidadAltas: ["Calidad Altas", calidadInputs],
+		cantAltas: ["Cant. Prod. Agregados", cantAltas],
+		// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+	};
+	// Fin
+	return enviar;
+};
+let usuario_CalidadEdic = async (userID) => {
+	// 1. Obtener los datos del usuario
+	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
+	// 2. Contar los casos aprobados y rechazados
+	let cantAprob = usuario.cant_edic_aprob;
+	let cantRech = usuario.cant_edic_rech;
+	// 3. Precisión de ediciones
+	let cantEdics = cantAprob + cantRech;
+	let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";
+	// let diasPenalizacion = usuario.dias_penalizacion
+	// Datos a enviar
+	let enviar = {
+		calidadEdiciones: ["Calidad Edición", calidadInputs],
+		cantEdiciones: ["Cant. Campos Proces.", cantEdics],
+		// diasPenalizacion: ["Días Penalizado", diasPenalizacion],
+	};
+	// Fin
+	return enviar;
 };

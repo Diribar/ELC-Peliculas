@@ -9,7 +9,8 @@ module.exports = async (req, res, next) => {
 	const entidad_codigo = req.query.entidad;
 	const entidad_id = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
-	let ruta = req.originalUrl;
+	const usuario = req.session.usuario;
+	const ruta = req.originalUrl;
 	let informacion = {};
 	// Variables - Registro
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, entidad_id, "status_registro");
@@ -24,21 +25,29 @@ module.exports = async (req, res, next) => {
 	// PROBLEMA: El registro todavía está en manos de su creador
 	if (ruta.startsWith("/revision/") && creado_en > haceUnaHora)
 		informacion.mensajes = ["El registro estará disponible para su revisión el " + horarioDisponible];
-	// PROBLEMA: El registro ya no está en manos de su creador
+	// PROBLEMA: El registro no está en manos de su creador, quiere ser editado y no está revisado
 	else if (
-		(ruta.startsWith("/producto/") || ruta.startsWith("/rclv/") || ruta.startsWith("/links/abm/")) &&
+		(ruta.startsWith("/producto/edicion/") ||
+			ruta.startsWith("/rclv/edicion/") ||
+			ruta.startsWith("/links/abm/")) &&
 		creado_en < haceUnaHora &&
 		registro.status_registro.gr_pend_aprob
-	)
-		informacion.mensajes = [
-			"Se cumplió el plazo de 1 hora para editar el registro.",
-			"Estará disponible luego de ser revisado, en caso de ser aprobado.",
-		];
+	) {
+		informacion.mensajes =
+			registro.creado_por_id == usuario.id
+				? [
+						"Se cumplió el plazo de 1 hora para editar el registro.",
+						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+				  ]
+				: [
+						"El registro no se puede editar aún.",
+						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+				  ];
+	}
 
 	// Agregar el icono y continuar
 	if (informacion.mensajes) {
 		informacion.iconos = [vistaAnterior];
-		let usuario = req.session.usuario;
 		if (usuario.rol_usuario.aut_gestion_prod && registro.creado_por_id != usuario.id)
 			informacion.iconos.push(vistaTablero);
 		return res.render("Errores", {informacion});

@@ -474,7 +474,7 @@ window.addEventListener("load", async () => {
 	dataEntry.addEventListener("input", async (e) => {
 		let campo = e.target.name;
 		if (campo == "nombre") {
-			nombre.value = nombre.value.replace(/[^a-záéíóúüñ\s]/gi, "").replace(/ +/g, " ");
+			nombre.value = nombre.value.replace(/[^a-záéíóúüñ'\s]/gi, "").replace(/ +/g, " ");
 			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
 			wiki.href = url_wiki + nombre.value;
 			santopedia.href = url_santopedia + nombre.value;

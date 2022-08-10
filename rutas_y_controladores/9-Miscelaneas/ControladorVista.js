@@ -38,7 +38,7 @@ module.exports = {
 		let {destino} = req.query;
 		// Si es 'tablero', ir a tablero
 		if (destino == "tablero") destino = "/revision/tablero-de-control";
-		else destino = "/";
+		if (!destino) destino = "/";
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
 	},

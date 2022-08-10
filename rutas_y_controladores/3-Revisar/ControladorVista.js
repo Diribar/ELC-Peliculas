@@ -15,20 +15,18 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		// Definir variables
 		const status = req.session.status_registro;
-		let aprobado_id = status.find((n) => n.aprobado).id;
-		let haceUnaHora = funciones.nuevoHorario(-1);
-		// Productos
-		let productos = await procesar.prod_ObtenerARevisar(haceUnaHora, status, userID);
-		if (productos.length) productos = procesar.prod_ProcesarCampos(productos);
-		// Ediciones
-		let prodsConEdicion = await procesar.prod_ObtenerEdicARevisar(haceUnaHora, status, userID);
-		if (prodsConEdicion.length) prodsConEdicion = procesar.prod_ProcesarCampos(prodsConEdicion);
-		// RCLV
-		let RCLVs = await procesar.RCLV_ObtenerARevisar(haceUnaHora, status, userID);
-		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
+		const aprobado_id = status.find((n) => n.aprobado).id;
+		const ahora=funciones.ahora();
+		// Productos y Ediciones
+		let productos = await procesar.tablero_obtenerProds(ahora, status, userID);//
+		productos.ED = await procesar.tablero_obtenerProdEdics(ahora, status, userID);//
 		// Obtener Links
-		let prodsConLinks = await procesar.links_ObtenerARevisar(haceUnaHora, status, userID);
-		if (prodsConLinks.length) prodsConLinks = procesar.prod_ProcesarCampos(prodsConLinks);
+		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID);//
+		productos = procesar.prod_ProcesarCampos(productos);
+		// RCLV
+		return res.send(productos)
+		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID);//
+		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
 		//return res.send(prodsConLinks);
 		return res.render("0-Estructura-Gral", {
@@ -42,7 +40,7 @@ module.exports = {
 			status,
 			aprobado_id,
 			userID,
-			haceUnaHora,
+			//haceUnaHora,
 		});
 	},
 	redireccionar: async (req, res) => {
@@ -102,7 +100,7 @@ module.exports = {
 									entidad +
 									"&id=" +
 									prodID +
-									"destino=tablero",
+									"&destino=tablero",
 								titulo: "Regresar al Tablero de Control",
 							},
 							{

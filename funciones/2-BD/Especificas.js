@@ -2,6 +2,7 @@
 // Definir variables
 const db = require("../../base_de_datos/modelos");
 const Op = db.Sequelize.Op;
+const funciones = require("../3-Procesos/Compartidas");
 
 module.exports = {
 	// Varios
@@ -126,47 +127,54 @@ module.exports = {
 		return contarRegistros;
 	},
 
-	// Revisar - Procesar Producto
-	// Revisar - Procesar RCLV
-	condicRegistro_ARevisar: (entidad, haceUnaHora, revisar, userID, includes) => {
+	// Revisar - Tablero
+	tablero_obtenerProds: (entidad, ahora, status, userID, includes) => {
+		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 		return db[entidad]
 			.findAll({
 				where: {
-					// Con status de 'revisar'
-					status_registro_id: revisar,
+					// Con status según parámetro
+					status_registro_id: status,
 					// Que cumpla alguno de los siguientes sobre la 'captura':
 					[Op.or]: [
 						// Que no esté capturado
 						{capturado_en: null},
-						// Que la captura haya sido hace más de una hora
-						{capturado_en: {[Op.lt]: haceUnaHora}},
-						// Que la captura esté inactiva
-						{captura_activa: {[Op.ne]: 1}},
-						// Que esté capturado por este usuario
-						{capturado_por_id: userID},
+						// Que esté capturado hace más de dos horas
+						{capturado_en: {[Op.lt]: haceDosHoras}},
+						// Que la captura haya sido por otro usuario y hace más de una hora
+						{capturado_por_id: {[Op.ne]: userID}, capturado_en: {[Op.lt]: haceUnaHora}},
+						// Que la captura haya sido por otro usuario y esté inactiva
+						{capturado_por_id: {[Op.ne]: userID}, captura_activa: {[Op.ne]: 1}},
+						// Que esté capturado por este usuario hace menos de una hora
+						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 					],
-					// Que esté creado hace más de una hora
-					creado_en: {[Op.lt]: haceUnaHora},
-					// Que esté creado por otro usuario
-					creado_por_id: {[Op.ne]: userID},
 				},
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	// Revisar - Procesar Producto (Edición)
-	condicEdicProd_ARevisar: (haceUnaHora, userID) => {
+	tablero_obtenerProdEdics: (userID, includes) => {
 		return db.prods_edicion
 			.findAll({
-				where: {
-					// Que esté creado por otro usuario
-					editado_por_id: {[Op.ne]: userID},
-					// Que esté creado hace más de una hora
-					editado_en: {[Op.lt]: haceUnaHora},
-				},
-				include: ["pelicula", "coleccion", "capitulo"],
+				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creado por otro usuario
+				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
+	},
+	tablero_obtenerLinks: async (status) => {
+		// Variables
+		let gr_estables = status.filter((n) => !n.gr_estables).map((n) => n.id);
+		let includes = ["pelicula", "coleccion", "capitulo"];
+		// Obtener los links en status 'a revisar'
+		let originales = db.links
+			.findAll({where: {status_registro_id: gr_estables}, include: [...includes, "status_registro"]})
+			.then((n) => n.map((m) => m.toJSON()));
+		// Obtener todas las ediciones
+		let ediciones = db.links_edicion.findAll({include: includes}).then((n) => n.map((m) => m.toJSON()));
+		// Consolidarlos
+		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
+		return links;
 	},
 	// Revisar - ControladorVista => redireccionar
 	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
@@ -183,22 +191,6 @@ module.exports = {
 				},
 			})
 			.then((n) => (n ? n.toJSON().id : ""));
-	},
-	// Revisar - Procesar => links_ObtenerARevisar
-	obtenerLinksARevisar: async (revisar) => {
-		// Variables
-		let includes = ["pelicula", "coleccion", "capitulo"];
-		// Obtener los links en status 'a revisar'
-		let originales = db.links
-			.findAll({where: {status_registro_id: revisar}, include: [...includes, "status_registro"]})
-			.then((n) => n.map((m) => m.toJSON()));
-		// Obtener todas las ediciones
-		let ediciones = db.links_edicion.findAll({include: includes}).then((n) => n.map((m) => m.toJSON()));
-		// Consolidarlos
-		let links = await Promise.all([originales, ediciones]).then(([a, b]) => {
-			return [...a, ...b];
-		});
-		return links;
 	},
 
 	// USUARIOS ---------------------------------------------------------

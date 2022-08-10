@@ -19,4 +19,4 @@
 /* Botones 'Cancelar', 'Entendido' y 'Continuar' */
 #cartel #flechasCartel { width: 45%; display: flex; flex-direction: row; justify-content: space-around;}
 #cartel #flechasCartel a {border-radius: 50%; padding: 5px;}
-#cartel #flechasCartel a i {color: white; font-size: 3rem; border-radius: 50%; cursor: pointer; background-color: transparent; border: none; margin: 0;}
+#cartel #flechasCartel a i {color: white; font-size: 2rem; border-radius: 50%; cursor: pointer; background-color: transparent; border: none; margin: 0;}
