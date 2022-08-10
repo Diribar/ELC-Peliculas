@@ -12,24 +12,25 @@ module.exports = {
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
+		let entidades = ["peliculas", "colecciones"];
 		let campos;
 		// - Obtener los resultados de status creado_id
 		let creado_id = status.find((n) => n.creado).id;
-		campos = [ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
-		let PA = await tablero_obtenerProds(...campos);
+		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
+		let PA = await tablero_obtenerRegs(...campos);
 		// - Obtener los resultados de status alta_aprob sin edición
 		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
-		campos = [ahora, alta_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
-		let SE = await tablero_obtenerProds(...campos);
+		campos = [entidades, ahora, alta_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+		let SE = await tablero_obtenerRegs(...campos);
 		SE = SE.filter((n) => !n.ediciones.length);
 		// - Obtener los resultados de status inactivar_id
 		let inactivar_id = status.find((n) => n.inactivar).id;
-		campos = [ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let IN = await tablero_obtenerProds(...campos);
+		campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+		let IN = await tablero_obtenerRegs(...campos);
 		// - Obtener los resultados de status recuperar_id
 		let recuperar_id = status.find((n) => n.recuperar).id;
-		campos = [ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
-		let RC = await tablero_obtenerProds(...campos);
+		campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
+		let RC = await tablero_obtenerRegs(...campos);
 
 		// Fin
 		return {PA, IN, RC, SE};
@@ -59,7 +60,6 @@ module.exports = {
 				)
 					ediciones.splice(i, 1);
 		// Obtener los productos
-		console.log(63, ediciones.length);
 		if (ediciones.length) {
 			// Variables
 			let peliculas = [];
@@ -122,55 +122,44 @@ module.exports = {
 	},
 	tablero_obtenerRCLVs: async (ahora, status, userID) => {
 		// Obtener los siguients RCLVs:
-		// 1. Pend aprob c/producto en edicion
-
-		// 1. Que estén en status pendiente de aprobar y creados ajeno
-		// 3. Que tengan alguna edición ajena.
-		// 2. Que no estén vinculados con ningún producto.
+		// creado y creados ajeno,
+		//		PA: c/producto o edicProd
+		//		IN: s/producto o edicProd --> inactivarlo
+		// IP: inactivo c/prod --> a status altaAprob
+		// - SP: aprobado, s/producto o edicProd
 
 		// Declarar las variables
-		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 		let entidades = ["personajes", "hechos", "valores"];
-		let includes;
-
-		// STATUS CREADO ---------------------------------------------
-		// Obtener los resultados de status creado_id
-		includes = ["status_registro", "peliculas", "colecciones", "capitulos", "edicion_producto"];
+		let includes = ["peliculas", "colecciones", "capitulos", "ediciones_producto"];
+		let campos, regs;
+		let PA = [];
+		let IN = [];
+		let IP = [];
+		// - Obtener los resultados de status creado_id
 		let creado_id = status.find((n) => n.creado).id;
-		let PA = await tablero_obtenerProds(ahora, creado_id, userID, entidades, includes);
-		// Eliminar los creados por el Revisor
-		if (PA.length) {
-			for (let i = PA.length - 1; i >= 0; i--)
-				if (PA[i].creado_en > haceUnaHora || PA[i].creado_por_id == userID) PA.splice(i, 1);
+		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
+		regs = await tablero_obtenerRegs(...campos);
+		// Separar entre c/prod y s/prod
+		if (regs.length) {
+			regs.map((n) => {
+				n.peliculas || n.colecciones || n.capitulos || n.ediciones_producto ? PA.push(n) : IN.push(n);
+				return;
+			});
 		}
+		// - Obtener los resultados de status inactivo_id
+		let inactivo_id = status.find((n) => n.inactivo).id;
+		campos = [entidades, ahora, inactivo_id, userID, "sugerido_por_id", "sugerido_en", includes];
+		regs = await tablero_obtenerRegs(...campos);
+		// Filtrar por c/prod
+		IP = regs.filter((n) => n.peliculas || n.colecciones || n.capitulos || n.ediciones_producto);
 
-		let aprobado = status.find((n) => n.aprobado).id;
-		let campos = ["peliculas", "colecciones", "capitulos", "edicion_producto"];
-		let aux = [];
-		// Rutina para cada RCLV
-		resultados.map((n) => {
-			// Verificación si tiene algún Producto
-			for (let campo of campos) {
-				if (n[campo].length)
-					for (let reg of n[campo]) {
-						// Averiguar el status_registro_id del producto
-						if (
-							// El producto está aprobado
-							reg.status_registro_id == aprobado &&
-							// El RCLV todavía no está incluido en la variable 'auxiliar'
-							aux.findIndex((m) => m.entidad == n.entidad && m.id == n.id) < 0
-						) {
-							aux.push(n);
-							break;
-						}
-					}
-				if (aux.length && aux.slice(-1) == n) break;
-			}
-		});
-		resultados = aux;
 		// Fin
-		return resultados;
+		return {PA, IN, IP};
 	},
+	tablero_obtenerRCLVsEdics: async (ahora, status, userID) => {
+		// - edicRCLV ajena, pend. aprobar
+	},
+
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
 		// Variables
@@ -608,14 +597,13 @@ let limpieza = (productos, status, ahora, userID) => {
 	);
 	return productos;
 };
-let tablero_obtenerProds = async (ahora, status, userID, orden, campoAutor, includes) => {
+let tablero_obtenerRegs = async (entidades, ahora, status, userID, orden, campoAutor, includes) => {
 	// Variables
-	let entidades = ["peliculas", "colecciones"];
-	let resultadosPorEntidad = [];
 	let campos = [ahora, status, userID, includes];
+	let resultadosPorEntidad = [];
 	// Obtener el resultado por entidad
 	for (let i = 0; i < entidades.length; i++)
-		resultadosPorEntidad.push(BD_especificas.tablero_obtenerProds(entidades[i], ...campos));
+		resultadosPorEntidad.push(BD_especificas.tablero_obtenerRegs(entidades[i], ...campos));
 	// Consolidar los resultados
 	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
 	// Eliminar los propuestos por el Revisor

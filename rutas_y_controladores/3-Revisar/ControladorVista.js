@@ -24,8 +24,8 @@ module.exports = {
 		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID);//
 		productos = procesar.prod_ProcesarCampos(productos);
 		// RCLV
-		return res.send(productos)
 		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID);//
+		return res.send([RCLVs,productos])
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
 		//return res.send(prodsConLinks);

@@ -128,7 +128,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	tablero_obtenerProds: (entidad, ahora, status, userID, includes) => {
+	tablero_obtenerRegs: (entidad, ahora, status, userID, includes) => {
 		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 		return db[entidad]
