@@ -128,7 +128,7 @@ module.exports = {
 	},
 
 	// Revisar - Tablero
-	tablero_obtenerRegs: (entidad, ahora, status, userID, includes) => {
+	tablero_obtenerRegs: (entidad, ahora, status, userID, includes, fechaRef, autor_id) => {
 		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 		const haceDosHoras = funciones.nuevoHorario(-2, ahora);
 		return db[entidad]
@@ -149,6 +149,10 @@ module.exports = {
 						// Que esté capturado por este usuario hace menos de una hora
 						{capturado_por_id: userID, capturado_en: {[Op.gt]: haceUnaHora}},
 					],
+					// Que esté propuesto hace más de una hora
+					[fechaRef]: {[Op.lt]: haceUnaHora},
+					// Que esté propuesto por otro usuario
+					[autor_id]: {[Op.ne]: userID},
 				},
 				include: includes,
 			})

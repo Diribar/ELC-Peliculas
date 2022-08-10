@@ -597,9 +597,9 @@ let limpieza = (productos, status, ahora, userID) => {
 	);
 	return productos;
 };
-let tablero_obtenerRegs = async (entidades, ahora, status, userID, orden, campoAutor, includes) => {
+let tablero_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, autor_id, includes) => {
 	// Variables
-	let campos = [ahora, status, userID, includes];
+	let campos = [ahora, status, userID, includes, fechaRef, autor_id];
 	let resultadosPorEntidad = [];
 	// Obtener el resultado por entidad
 	for (let i = 0; i < entidades.length; i++)
@@ -610,10 +610,10 @@ let tablero_obtenerRegs = async (entidades, ahora, status, userID, orden, campoA
 	const haceUnaHora = funciones.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
-			if (resultados[i][orden] > haceUnaHora || resultados[i][campoAutor] == userID)
+			if (resultados[i][fechaRef] > haceUnaHora || resultados[i][autor_id] == userID)
 				resultados.splice(i, 1);
 	// Ordenar los resultados
-	if (resultados.length) resultados.sort((a, b) => new Date(a[orden]) - new Date(b[orden]));
+	if (resultados.length) resultados.sort((a, b) => new Date(a[fechaRef]) - new Date(b[fechaRef]));
 	// Fin
 	return resultados;
 };
