@@ -16,16 +16,16 @@ module.exports = {
 		// Definir variables
 		const status = req.session.status_registro;
 		const aprobado_id = status.find((n) => n.aprobado).id;
-		const ahora=funciones.ahora();
+		const ahora = funciones.ahora();
 		// Productos y Ediciones
-		let productos = await procesar.tablero_obtenerProds(ahora, status, userID);//
-		productos.ED = await procesar.tablero_obtenerProdEdics(ahora, status, userID);//
+		let productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
+		productos.ED = await procesar.tablero_obtenerProdEdics(ahora, status, userID); //
 		// Obtener Links
-		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID);//
+		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID); //
 		productos = procesar.prod_ProcesarCampos(productos);
 		// RCLV
-		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID);//
-		return res.send([RCLVs,productos])
+		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID); //
+		return res.send([RCLVs, productos]);
 		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
 		//return res.send(prodsConLinks);
