@@ -18,7 +18,8 @@ module.exports = {
 		const aprobado_id = status.find((n) => n.aprobado).id;
 		const ahora = funciones.ahora();
 		// Productos y Ediciones
-		let productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
+		let productos
+		productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
 		productos.ED = await procesar.tablero_obtenerProdEdics(ahora, status, userID); //
 		// Obtener Links
 		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID); //
