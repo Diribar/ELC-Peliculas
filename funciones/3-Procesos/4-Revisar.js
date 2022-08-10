@@ -81,7 +81,7 @@ module.exports = {
 			// Consolidar los productos
 			productos = [...peliculas, ...colecciones, ...capitulos];
 			// Dejar solamente los productos de gr_aprobado
-			// productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
+			productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
 			// Dejar solamente los productos que no tengan problemas de captura
 			if (productos.length)
 				productos = productos.filter(
@@ -159,7 +159,6 @@ module.exports = {
 	tablero_obtenerRCLVsEdics: async (ahora, status, userID) => {
 		// - edicRCLV ajena, pend. aprobar
 	},
-
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
 		// Variables
@@ -167,7 +166,7 @@ module.exports = {
 		const rubros = Object.keys(productos);
 
 		// Reconvertir los elementos
-		for (let rubro of rubros) {
+		for (let rubro of rubros)
 			productos[rubro] = productos[rubro].map((n) => {
 				let nombre =
 					(n.nombre_castellano.length > anchoMax
@@ -184,10 +183,31 @@ module.exports = {
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
 				};
 			});
-		}
 
 		// Fin
 		return productos;
+	},
+	RCLV_ProcesarCampos: (RCLVs) => {
+		// Procesar los registros
+		let anchoMax = 30;
+		const rubros = Object.keys(RCLVs);
+
+		// Reconvertir los elementos
+		for (let rubro of rubros)
+			RCLVs[rubro] = RCLVs[rubro].map((n) => {
+				let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
+				return {
+					id: n.id,
+					entidad: n.entidad,
+					nombre,
+					abrev: n.entidad.slice(0, 3).toUpperCase(),
+					status_registro_id: n.status_registro_id,
+					fecha: n.creado_en,
+				};
+			});
+
+		// Fin
+		return RCLVs;
 	},
 
 	// ControladorVista (Analizar)
@@ -389,24 +409,6 @@ module.exports = {
 	},
 
 	// RCLV
-	RCLV_ProcesarCampos: (RCLVs) => {
-		// Definir algunas variables
-		let anchoMax = 30;
-		// Reconvertir los elementos
-		RCLVs = RCLVs.map((n) => {
-			let nombre = n.nombre.length > anchoMax ? n.nombre.slice(0, anchoMax - 1) + "…" : n.nombre;
-			return {
-				id: n.id,
-				entidad: n.entidad,
-				nombre,
-				abrev: n.entidad.slice(0, 3).toUpperCase(),
-				status_registro_id: n.status_registro_id,
-				fecha: n.creado_en,
-			};
-		});
-		// Fin
-		return RCLVs;
-	},
 	RCLV_tituloCanoniz: (datos) => {
 		let tituloCanoniz;
 		if (datos.entidad == "personajes") {

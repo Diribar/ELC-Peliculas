@@ -26,18 +26,15 @@ module.exports = {
 		productos = procesar.prod_ProcesarCampos(productos);
 		// RCLV
 		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID); //
-		return res.send([RCLVs, productos]);
-		if (RCLVs.length) RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
+		RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
-		//return res.send(prodsConLinks);
+		// return res.send([productos,RCLVs]);
 		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
 			titulo: "Revisar - Tablero de Control",
 			productos,
-			prodsConEdicion,
 			RCLVs,
-			prodsConLinks,
 			status,
 			aprobado_id,
 			userID,
