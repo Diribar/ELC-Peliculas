@@ -24,6 +24,7 @@ module.exports = {
 			"status_registro",
 		];
 		if (entidad == "capitulos") includes.push("coleccion");
+		else if (entidad == "colecciones") includes.push("capitulos");
 		// Obtener el producto ORIGINAL
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		// Obtener el producto EDITADO
@@ -33,7 +34,7 @@ module.exports = {
 			// Quitarle los campos 'null'
 			prodOriginal = funciones.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-			if (entidad == "capitulos") includes.pop();
+			if (entidad != "peliculas") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"prods_edicion",
 				{[producto_id]: prodID, editado_por_id: userID},

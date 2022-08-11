@@ -61,7 +61,7 @@ module.exports = {
 			nuevoStatusID == status.find((n) => n.aprobado).id ||
 			nuevoStatusID == status.find((n) => n.inactivo).id
 		)
-			procesar.RCLV_actualizarProdAprob(producto, status);
+			procesar.prod_ActualizarRCLVs_ProdAprob(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -209,19 +209,16 @@ module.exports = {
 			prodOriginal.status_registro.aprobado &&
 			prodOriginal[campo] != 1
 		)
-			procesar.RCLV_actualizarProdAprob(prodOriginal, status);
+			procesar.prod_ActualizarRCLVs_ProdAprob(prodOriginal, status);
 		// Otras particularidades para el campo RCLV
 		if (
 			// Se cambió el campo RCLV, y el status está aprobado
 			(RCLV_ids.includes(campo) && aprobado && statusAprobado) ||
 			// El registro no estaba aprobado y ahora sí lo está
 			(!prodOriginal.status_registro.aprobado && statusAprobado)
-		) {
-			// Actualizar en el producto, el campo 'dia_del_ano_id'
-			procesar.prod_DiaDelAno(entidad, producto, status);
+		)
 			// Actualizar en RCLVs el campo 'prod_aprob'
-			procesar.RCLV_actualizarProdAprob(producto, status);
-		}
+			procesar.prod_ActualizarRCLVs_ProdAprob(producto, status);
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
@@ -274,9 +271,6 @@ module.exports = {
 		};
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
-		// Si 'datos.dia_del_ano_id' tiene un valor, actualizar el dato en 'productos'
-		let RCLV = {...RCLV_original, dia_del_ano_id: datos.dia_del_ano_id};
-		procesar.prods_DiaDelAno(RCLV, status);
 		// Actualizar la info de aprobados/rechazados
 		procesar.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 
@@ -396,7 +390,7 @@ module.exports = {
 			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
 			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
 		}
-		// LINK - Pasa a status aprobado/rechazado - 
+		// LINK - Pasa a status aprobado/rechazado -
 		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link

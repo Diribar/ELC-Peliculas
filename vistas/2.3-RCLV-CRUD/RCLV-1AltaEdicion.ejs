@@ -17,7 +17,7 @@
 			<!--Primera columna-->
 			<div id="primeraCol">
 				<!-- Nombre -->
-				<div>
+				<div class="input-error">
 					<!-- Título, Ayuda y Error/OK -->
 					<div class="flex-row">
 						<div class="margenBottomTitulo relative">
@@ -29,8 +29,9 @@
 								<% if (entidad == "personajes") { %>
 									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+									<li>Primero el nombre, después el apellido.</li>
 								<% } %>
-								<li>Primero el nombre, después el apellido.</li>
+								<li>La primera letra en mayúscula, sin puntos ni comas</li>
 							</ul>
 							<!-- Error/OK -->			
 							<i class="fa-solid fa-circle-xmark ocultar">
@@ -42,7 +43,7 @@
 					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 				</div>
 				<!-- Fecha Representativa -->
-				<div class="borderTop flex-col">
+				<div class="borderTop flex-col input-error">
 					<!-- Título, Ayuda y Error/OK -->
 					<div class="flex-row">
 						<div class="margenBottomTitulo relative">
@@ -108,23 +109,30 @@
 			</div>
 			<!--Segunda columna-->
 			<div id="segundaCol">
-				<!-- Nombres con esa fecha -->
-				<div>
-					<div class="margenBottomTitulo relative">
-						<h3>Nombres con esa fecha</h3>
-						<!-- Error/OK -->			
-						<i class="fa-solid fa-circle-xmark ocultar">
-							<span class="mensajeError"></span>
-						</i>
-						<i class="fa-solid fa-circle-check ocultar"></i>
+				<!-- Repetidos -->
+				<div class="input-error">
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Nombres con esa fecha</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<li>Destildalos para controlar si no está ya en nuestra BD</li>
+							</ul>
+							<!-- Error/OK -->			
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
+							</i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
 					</div>
-					<p>Destildalos para controlar si no está ya en nuestra BD</p>
 					<ul type="none" id="posiblesRepetidos"></ul>
 				</div>
-				<!-- Año de nacimiento u ocurrencia -->
 				<% if (entidad != "valores") { %>
-					<!-- Año -->
-					<div class="borderTop flex-row">
+					<!-- Año de nacimiento u ocurrencia -->
+					<div class="borderTop flex-row input-error">
 						<div class="relative flex-row align-center">
 							<!-- Título -->
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
@@ -132,7 +140,7 @@
 							<!-- Ayuda -->
 							<i class="fa-solid fa-circle-question"></i>
 							<ul type="dots" class="mensajeAyuda ocultar">
-								<li>Nos ayuda a ubicar cronológicamente al <%= dataEntry.producto_RCLV %>.</li>
+								<li>Nos ayuda a ubicarlo cronológicamente.</li>
 								<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 								<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
 							</ul>
@@ -208,11 +216,11 @@
 								<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
 								<div class="flexRowAlign siNo">
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id===1) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0 || dataEntry.proceso_id===0) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0 || !dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>
@@ -249,7 +257,7 @@
 										<label>SI</label>
 									</div>
 									<div class="flexRowAlign">
-										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0 || dataEntry.ap_mar_id===0) { %>checked<% } %> class="RCLI">
+										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0 || !dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
 										<label>NO</label>
 									</div>
 								</div>

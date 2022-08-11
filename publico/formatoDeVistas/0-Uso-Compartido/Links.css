@@ -20,7 +20,7 @@
 #datos table tbody tr.oscuro_true {background-color: var(--gris-intermedio);}
 
 /* Campos con input */
-#datos table tbody tr td .inputError input {width: 100%;}
+#datos table tbody tr td .inputError .input {width: 100%;}
 
 /* Tablas - Barra de desplazamiento vertical */
 #datos table thead {padding-right: 18px;}

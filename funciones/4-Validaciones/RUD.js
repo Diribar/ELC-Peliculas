@@ -61,6 +61,15 @@ module.exports = {
 					? "Valor inválido"
 					: "";
 		}
+		// subtitulos castellano
+		if (campos.includes("subtit_castellano")) {
+			errores.subtit_castellano =
+				datos.subtit_castellano == ""
+					? cartelCampoVacio
+					: datos.subtit_castellano != "0" && datos.subtit_castellano != "1"
+					? "Valor inválido"
+					: "";
+		}
 		// gratuito
 		if (campos.includes("gratuito")) {
 			errores.gratuito =

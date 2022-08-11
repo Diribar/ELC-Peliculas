@@ -104,6 +104,12 @@ window.addEventListener("load", async () => {
 			// Fin
 			return !error || !error.castellano;
 		},
+		controlesEnSubtitulosCastellano: async (fila) => {
+			// Detectar errores y aplicar consecuencias
+			let error = await mensajeDeError(fila, "subtit_castellano");
+			// Fin
+			return !error || !error.subtit_castellano;
+		},
 		controlesEnGratuito: async (fila, proveedor) => {
 			// Si el resultado es conocido --> ponerlo
 			let condicion1 = proveedor.siempre_gratuito == 1;
@@ -203,20 +209,30 @@ window.addEventListener("load", async () => {
 	let controlesDataEntry = async (fila, columna) => {
 		// Barrer el contenido de izquierda a derecha
 		let OK = true;
+		let autofocus = false;
+		let focoEnColumna;
 		for (let col = columna; col < columnas; col++) {
 			if (col == 0 && OK) OK = await fn.controlesEnUrl(fila);
 			if (OK) var proveedor = obtenerProveedor(fila);
 			if (col == 1 && OK) OK = await fn.controlesEnCalidad(fila, proveedor);
 			if (col == 2 && OK) OK = await fn.controlesEnCastellano(fila, proveedor);
-			if (col == 3 && OK) OK = await fn.controlesEnGratuito(fila, proveedor);
-			if (col == 4 && OK) OK = await fn.controlesEnTipo(fila, proveedor);
-			if (col == 5 && OK) OK = await fn.controlesEnCompleto(fila, proveedor);
-			if (col == 6 && OK) OK = await fn.controlesEnParte(fila);
+			if (col == 3 && OK) OK = await fn.controlesEnSubtitulosCastellano(fila);
+			if (col == 4 && OK) OK = await fn.controlesEnGratuito(fila, proveedor);
+			if (col == 5 && OK) OK = await fn.controlesEnTipo(fila, proveedor);
+			if (col == 6 && OK) OK = await fn.controlesEnCompleto(fila, proveedor);
+			if (col == 7 && OK) OK = await fn.controlesEnParte(fila);
+			if (!OK && !autofocus) {
+				autofocus = true;
+				focoEnColumna = col;
+			}
 		}
+
 		// Actualizar el formato
 		fn.actualizarFormato(fila, columna);
 		// Submit
 		fn.activarInactivarbotonGuardar(fila);
+		// Poner el foco en el input a resolver
+		if (focoEnColumna) inputs[focoEnColumna].focus();
 	};
 	let obtenerProveedor = (fila) => {
 		// Obtener el url
@@ -271,7 +287,7 @@ window.addEventListener("load", async () => {
 	v.form.addEventListener("input", async (e) => {
 		// Obtener la fila y columna
 		let [fila, columna] = fn.obtenerFilaColumna(e);
-		// Si hubo un error, interrumpir
+		// Si hubo un error (fila=filas), interrumpir
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo
 		if (fila == v.filaAlta && !columna) fn.depurarUrl();

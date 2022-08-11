@@ -161,7 +161,7 @@ module.exports = {
 
 let obtenerProveedorID = async (url) => {
 	// Obtener el proveedor
-	let proveedores = await BD_genericas.obtenerTodos("links_provs", "id");
+	let proveedores = await BD_genericas.obtenerTodos("links_provs", "nombre");
 	// Averigua si algún 'distintivo de proveedor' está incluido en el 'url'
 	let proveedor = proveedores.filter((n) => !n.generico).find((n) => url.includes(n.url_distintivo));
 	// Si no se reconoce el proveedor, se asume el 'desconocido'

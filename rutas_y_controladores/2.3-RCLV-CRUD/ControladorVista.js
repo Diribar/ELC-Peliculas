@@ -83,14 +83,16 @@ module.exports = {
 				.then((n) => n.find((m) => m.mes_id == datos.mes_id && m.dia == datos.dia))
 				.then((n) => n.id);
 		// 4. Datos para personajes
-		if (entidad == "personajes" && datos.categoria_id == "CFC") {
-			let santo_beato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
-			datos = {
-				...datos,
-				subcategoria_id:
-					datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : null,
-				ap_mar_id: datos.ap_mar_id != "" ? datos.ap_mar_id : null,
-			};
+		if (entidad == "personajes") {
+			if (datos.categoria_id == "CFC") {
+				let santo_beato = datos.proceso_id.startsWith("ST") || datos.proceso_id.startsWith("BT");
+				datos = {
+					...datos,
+					subcategoria_id:
+						datos.jss == "1" ? "JSS" : datos.cnt == "1" ? "CNT" : santo_beato ? "HAG" : null,
+					ap_mar_id: datos.ap_mar_id != "" ? datos.ap_mar_id : null,
+				};
+			}
 			if (datos.proceso_id === "") datos.proceso_id = null;
 			if (datos.rol_iglesia_id === "") datos.rol_iglesia_id = null;
 			if (datos.ap_mar_id === "") datos.ap_mar_id = null;

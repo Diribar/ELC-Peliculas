@@ -140,7 +140,7 @@ module.exports = {
 					"SI - cuando es el idioma de toda la película, o está subtitulada.",
 					"PARCIAL - cuando lo anterior se cumple parcialmente.",
 					"NO - cuando no se cumple lo anterior.",
-					"Cuando una película está subtitulada, se especifica en el link.",
+					"Si la película está subtitulada, se especificará luego en el link.",
 				],
 				mensajeColec: [
 					"SI - cuando es el idioma de todos los capítulos, o están subtitulados.",
@@ -177,7 +177,7 @@ module.exports = {
 				mensajes: [
 					"CENTRADAS EN LA FE CATÓLICA - significa que el rol de la Fe Católica es protagónico.",
 					"VALORES PRESENTES EN LA CULTURA - los buenos valores deben ser evidentes.",
-					"Si es cristiana pero no católica, se pone como Valores Presentes en la Cultura.",
+					"Si la fe es cristiana pero no católica, se pone como Valores Presentes en la Cultura.",
 				],
 			},
 			{

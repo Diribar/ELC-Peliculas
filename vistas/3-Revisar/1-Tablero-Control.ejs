@@ -18,21 +18,14 @@
 				<!-- Ayuda -->
 				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 				<ol class="mensajeAyuda ocultar" type="dots">
-					<p>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</p>
+					<ul>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</ul>
 				</ol>
 			</div>
-			<!-- Para inactivar -->
-			<%- include("11-Tablero-Registros", {titulo: "Prod. Sugeridos para Inactivar", estado: status.find(n => n.inactivar).id, registros: productos, url: "redireccionar"}) %>
-			<!-- Aprobados c/edición -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Aprobados", estado: aprobado_id, registros: prodsConEdicion, url: "redireccionar"}) %>
-			<!-- Editar altas (altas sin edición) -->
-			<%- include("11-Tablero-Registros", {titulo: "Edición Pendiente para Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n=> !n.ediciones.length), url: "redireccionar"}) %>
-			<!-- Aprobar ediciones AJENAS de altas -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar la Edición de Prod. Nuevos", estado: status.find(n => n.alta_aprob).id, registros: productos.filter(n => n.ediciones.length && n.ediciones[0].editado_por_id != userID && n.ediciones[0].editado_en < haceUnaHora ), url: "redireccionar"}) %>
-			<!-- Aprobar el Alta -->
-			<%- include("11-Tablero-Registros", {titulo: "Revisar el Alta de Prod. Nuevos", estado: status.find(n => n.creado).id, registros: productos, url: "redireccionar"}) %>
-			<!-- Recuperar -->
-			<%- include("11-Tablero-Registros", {titulo: "Recuperar Prod. Inactivados", estado: status.find(n => n.recuperar).id, registros: productos, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: "redireccionar"}) %>
 		</div>
 	</div>
 	<div id="segundaColumna">
@@ -52,7 +45,7 @@
 			<!-- Aprobados c/edición -->
 			<!-- titulo: "Ediciones" -->
 			<!-- Aprobar el Alta -->
-			<%- include("11-Tablero-Registros", {titulo: "Altas", estado: status.find(n => n.creado).id, registros: RCLVs, url: "redireccionar"}) %>
+			<%- include("11-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: "redireccionar"}) %>
 		</div>
 		<!-- Links -->
 		<div class="bloques">
@@ -66,7 +59,7 @@
 					<li>Tienen algún link cuya novedad es ajena a vos.</li>
 				</ol>
 			</div>				
-			<%- include("11-Tablero-Registros", {titulo: "Productos con Links a Revisar", estado: aprobado_id, registros: prodsConLinks, url: "links"}) %>
+			<%- include("11-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LK, url: "links"}) %>
 		</div>
 	</div>
 </section>
