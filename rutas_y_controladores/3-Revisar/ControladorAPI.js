@@ -52,7 +52,7 @@ module.exports = {
 		}
 		BD_genericas.agregarRegistro(archivo, datos);
 		// Asienta la aprob/rech en el registro del usuario
-		let campo = aprobado ? "cant_altas_aprob" : "cant_altas_rech";
+		let campo = aprobado ? "prod_aprob" : "prod_rech";
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo, 1);
 		// Penaliza al usuario si corresponde
 		if (datos.duracion) procesar.usuario_Penalizar(creador_ID, motivo, "prod_");
@@ -152,9 +152,9 @@ module.exports = {
 				: {...prodOriginal, ...datos};
 			// Actualiza la variable 'prodOriginal'
 			// Asienta la aprobación en el registro del usuario
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_aprob", 1);
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "edic_aprob", 1);
 			// Asienta el rechazo en el registro del usuario
-		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "cant_edic_rech", 1);
+		} else BD_genericas.aumentarElValorDeUnCampo("usuarios", editor_ID, "edic_rech", 1);
 		// Actualizar el registro de 'edicion' quitándole el valor al campo
 		await BD_genericas.actualizarPorId("prods_edicion", edicID, {[campo]: null});
 		// Verificar si no había ya un registro de ese usuario para ese campo en ese producto
@@ -329,7 +329,7 @@ module.exports = {
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		link.ediciones.forEach(async (edicion) => {
 			// Se eliminan los campos sin contenido
-			edicion = funciones.quitarLosCamposSinContenido(edicion);
+			edicion = funciones.eliminarCamposConValorNull(edicion);
 			// Se eliminan los campos que no se comparan
 			let edicID = edicion.id;
 			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");

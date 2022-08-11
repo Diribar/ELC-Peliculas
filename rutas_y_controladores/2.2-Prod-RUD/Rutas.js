@@ -30,6 +30,7 @@ router.get("/api/edicion/validar", API.validarEdicion);
 router.get("/api/edicion/obtener-original-y-edicion", API.obtenerVersionesDelProducto);
 router.get("/api/edicion/enviar-a-req-session", API.enviarAReqSession);
 router.get("/api/edicion/obtener-de-req-session", API.obtenerDeReqSession);
+router.get("/api/edicion/eliminar", API.prod_EliminarEdic);
 
 // Rutas de vistas
 // Producto
@@ -46,7 +47,6 @@ router.get(
 	vista.prod_Form
 );
 router.post("/edicion", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
-router.get("/edicion/eliminar", soloAutInput, entidad, id, vista.prod_EliminarEdic);
 // Pendiente
 router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
 

@@ -19,7 +19,7 @@ module.exports = {
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// 3. Obtener el producto 'Original' y 'Editado'
+		// 3. Obtener el producto 'Original' y 'Editado', y eliminar la versión Session
 		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtener avatar
 		let avatar = prodEditado.avatar
@@ -29,17 +29,8 @@ module.exports = {
 				? "/imagenes/2-Productos/" + prodOriginal.avatar
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Usar la versión 'session' (si existe) en vez de la edición guardada
-		let prodSession = req.session.edicion
-			? req.session.edicion.entidad == entidad && req.session.edicion.id == prodID
-				? req.session.edicion
-				: ""
-			: req.cookies.edicion
-			? req.cookies.edicion.entidad == entidad && req.cookies.edicion.id == prodID
-				? req.cookies.edicion
-				: ""
-			: "";
-		let prodCombinado = {...prodOriginal, ...prodEditado, ...prodSession, id: prodID};
+		// Matar la versión 'session' y crearla a partir de la edición guardada
+		let prodCombinado = {...prodOriginal, ...prodEditado, id: prodID};
 		// 5. Configurar el título de la vista
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo =
@@ -53,7 +44,6 @@ module.exports = {
 		let bloquesIzquierda, bloquesDerecha;
 		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
-			// Variables de 'Detalle'
 			// Variables de 'Edición'
 			let camposDD = variables
 				.camposDD()
@@ -200,11 +190,8 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
-			if (req.file) delete prodCombinado.avatar;
 			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
-			req.session.edicion = prodCombinado;
 		} else {
-			// Si no hubieron errores de validación...
 			// Actualizar los archivos avatar
 			if (req.file) {
 				// Mover el archivo actual a su ubicación para ser revisado
@@ -213,18 +200,15 @@ module.exports = {
 				if (prodEditado.avatar)
 					funciones.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
 			}
-			// Unir las 2 ediciones en una sola
-			// Se necesita para preservar la hora en la que se creó la edición
-			let edicion = {...prodEditado, ...req.body, avatar};
+			// Obtener la edición completa
+			let edicion = {...req.body, avatar};
 			// Quitar los coincidencias con el original
-			let edicion_id = edicion.id;
-			if (edicion_id) delete edicion.id;
 			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-			// Actualización de la tabla
 			// Si la edicion existía => se la actualiza
+			let edicion_id = prodEditado ? prodEditado.id : null;
 			if (edicion_id) await BD_genericas.actualizarPorId("prods_edicion", edicion_id, edicion);
+			// De lo contrario, se lo agrega
 			else {
-				// De lo contrario, se lo agrega
 				// 1. Completa la información
 				let producto_id = funciones.obtenerEntidad_id(entidad);
 				edicion = {
@@ -235,19 +219,8 @@ module.exports = {
 				// 2. Agrega el registro a la tabla de 'Edición'
 				await BD_genericas.agregarRegistro("prods_edicion", edicion);
 			}
-			// Elimina req.session.edicion
-			req.session.edicion = {};
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
-	},
-	prod_EliminarEdic: async (req, res) => {
-		// Obtener los datos identificatorios del producto
-		let entidad = req.query.entidad;
-		let ID = req.query.id;
-		// Pendiente...
-		// No se puede eliminar la edición de un status "gr_pend_aprob"
-		// Terminar
-		return res.send(["Eliminar", entidad, ID]);
 	},
 	calificala: (req, res) => {
 		return res.send("Estoy en calificala");

@@ -112,7 +112,7 @@ module.exports = {
 	},
 
 	// Entidades
-	quitarLosCamposSinContenido: (objeto) => {
+	eliminarCamposConValorNull: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
 		return objeto;
 	},

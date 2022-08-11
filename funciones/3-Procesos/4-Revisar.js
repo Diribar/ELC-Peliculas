@@ -8,7 +8,7 @@ const validar = require("../4-Validaciones/RUD");
 
 module.exports = {
 	// ControladorVista (Tablero)
-	// Producto y Links
+	// Producto, RCLVs, Links
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdEdics: async (ahora, status, userID) => {
+	tablero_obtenerProdsDeEdics: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -48,8 +48,8 @@ module.exports = {
 		let gr_aprobado = [alta_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
-		// Obtener todas las ediciones de usuarios ajenos
-		let ediciones = await BD_especificas.tablero_obtenerProdEdics(userID, includes);
+		// Obtener todas las ediciones ajenas
+		let ediciones = await BD_especificas.tablero_obtenerEdicsDeProds(userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -100,26 +100,6 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerLinks: async (ahora, status, userID) => {
-		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
-		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks(status);
-		// Si no hay => salir
-		if (!links.length) return [];
-		// Obtener los links ajenos
-		let linksAjenos = links.filter(
-			(n) =>
-				(n.status_registro &&
-					((n.status_registro.creado && n.creado_por_id != userID) ||
-						((n.status_registro.inactivar || n.status_registro.recuperar) &&
-							n.sugerido_por_id != userID))) ||
-				(!n.status_registro && n.editado_por_id != userID)
-		);
-		// Obtener los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
-		// Fin
-		return productos;
-	},
 	tablero_obtenerRCLVs: async (ahora, status, userID) => {
 		// Obtener los siguients RCLVs:
 		// creado y creados ajeno,
@@ -158,6 +138,26 @@ module.exports = {
 	},
 	tablero_obtenerRCLVsEdics: async (ahora, status, userID) => {
 		// - edicRCLV ajena, pend. aprobar
+	},
+	tablero_obtenerProdsDeLinks: async (ahora, status, userID) => {
+		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
+		// Obtener los links 'a revisar'
+		let links = await BD_especificas.tablero_obtenerLinks_y_Edics(status);
+		// Si no hay => salir
+		if (!links.length) return [];
+		// Obtener los links ajenos
+		let linksAjenos = links.filter(
+			(n) =>
+				(n.status_registro &&
+					((n.status_registro.creado && n.creado_por_id != userID) ||
+						((n.status_registro.inactivar || n.status_registro.recuperar) &&
+							n.sugerido_por_id != userID))) ||
+				(!n.status_registro && n.editado_por_id != userID)
+		);
+		// Obtener los productos
+		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
+		// Fin
+		return productos;
 	},
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
@@ -257,7 +257,7 @@ module.exports = {
 		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
-		edicion = funciones.quitarLosCamposSinContenido(edicion);
+		edicion = funciones.eliminarCamposConValorNull(edicion);
 		edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 		let quedanCampos = funciones.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
@@ -646,8 +646,8 @@ let usuario_CalidadAltas = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.cant_altas_aprob;
-	let cantRech = usuario.cant_altas_rech;
+	let cantAprob = usuario.prod_aprob;
+	let cantRech = usuario.prod_rech;
 	// 3. Precisión de altas
 	let cantAltas = cantAprob + cantRech;
 	let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
@@ -665,8 +665,8 @@ let usuario_CalidadEdic = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.cant_edic_aprob;
-	let cantRech = usuario.cant_edic_rech;
+	let cantAprob = usuario.edic_aprob;
+	let cantRech = usuario.edic_rech;
 	// 3. Precisión de ediciones
 	let cantEdics = cantAprob + cantRech;
 	let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";

@@ -85,7 +85,7 @@ form #imagen.input-error .fa-arrow-right-long {left: 5px; transform: translateY(
 #cuerpo #comandos .pack {margin: 0 20px;}
 #cuerpo #comandos .pack {display: flex; flex-direction: row; align-items: center;}
 #cuerpo #comandos .pack .fa-slash {transform: rotate(85deg); cursor: default;}
-#cuerpo #comandos .pack i.version {padding: 5px 0; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
-#cuerpo #comandos .pack i.version.plus {padding: 5px; border-color: var(--amarillo-oscuro);}
-.inactivoErrores, .inactivo_EdicGua, .inactivo_EdicSess  {opacity: .5; border-color: transparent; cursor: default;}
+#cuerpo #comandos .pack i.activar {padding: 5px 0; border-radius: 50%; border: 2px solid transparent; margin: 2px 0;}
+#cuerpo #comandos .pack i.activar.activo {padding: 5px; border-color: var(--amarillo-oscuro);}
+.inactivo, .inactivoErrores, .inactivoVersion {opacity: .5; border-color: transparent; cursor: default;}
 #cuerpo #comandos .pack i, #cuerpo #flechas i {font-size: 1rem;}
