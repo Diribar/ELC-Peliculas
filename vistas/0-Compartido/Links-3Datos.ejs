@@ -34,6 +34,10 @@
 	<td class="ancho_castellano taparMotivo <%- link.ediciones.find(n=>n.castellano!==null && n.editado_por_id!=userID) ? 'rojo' : '' %>">
 		<%- link.castellano ? "SI" :  "NO" %>
 	</td>
+	<!-- Subtitulos -->
+	<td class="ancho_subtitulo taparMotivo <%- link.ediciones.find(n=>n.subtit_castellano!==null && n.editado_por_id!=userID) ? 'rojo' : '' %>">
+		<%- link.subtit_castellano===null ? "-" : link.subtit_castellano ? "SI" :  "NO" %>
+	</td>
 	<!-- Gratuito -->
 	<td class="ancho_gratuito taparMotivo <%- link.ediciones.find(n=>n.gratuito!==null && n.editado_por_id!=userID) ? 'rojo' : '' %>">
 		<%- link.gratuito ? "SI" :  "NO" %>

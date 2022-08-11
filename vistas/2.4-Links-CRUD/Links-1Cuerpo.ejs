@@ -21,11 +21,14 @@
 			<option value="TD" selected>Todos</option>
 		</select>
 		<form id="tabla" class=""> <!-- Necesita ser un 'form' acá, porque no se acepta dentro de la tabla -->
+			<!-- Activo/Inactivo -->
 			<div id="tags" class="flex-row">
 				<div id="activo">Activos</div>
 				<div id="inactivo" class="traslucido">Pasivos</div>
 			</div>
+			<!-- Tabla -->
 			<table>
+				<!-- Títulos -->
 				<%- include("Links1-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->

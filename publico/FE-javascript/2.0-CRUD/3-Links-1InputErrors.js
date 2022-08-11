@@ -39,17 +39,6 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/links/api/validar/?",
 	};
 
-	// Controles de los Data Entry
-	v.form.addEventListener("input", async (e) => {
-		// Obtener la fila y columna
-		let [fila, columna] = fn.obtenerFilaColumna(e);
-		// Si hubo un error, interrumpir
-		if (fila == filas) return;
-		// Si se ingresó un url en el alta, depurarlo
-		if (fila == v.filaAlta && !columna) fn.depurarUrl();
-		controlesDataEntry(fila, columna);
-	});
-
 	// FUNCIONES ---------------------------------------------------------------
 	let fn = {
 		obtenerFilaColumna: (e) => {
@@ -277,6 +266,17 @@ window.addEventListener("load", async () => {
 			: v.iconosOK[indice].classList.add("ocultar");
 		return error;
 	};
+
+	// Event Listeners
+	v.form.addEventListener("input", async (e) => {
+		// Obtener la fila y columna
+		let [fila, columna] = fn.obtenerFilaColumna(e);
+		// Si hubo un error, interrumpir
+		if (fila == filas) return;
+		// Si se ingresó un url en el alta, depurarlo
+		if (fila == v.filaAlta && !columna) fn.depurarUrl();
+		controlesDataEntry(fila, columna);
+	});
 
 	// Startup
 	for (let fila = 0; fila < filas - 1; fila++) await controlesDataEntry(fila, 0);
