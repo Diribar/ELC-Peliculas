@@ -15,13 +15,16 @@ window.addEventListener("load", () => {
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let inactivar = document.querySelector("#comandosRechazar .fa-circle-right");
 
+	// ruta
+	let rutaAprobRech = "/revision/api/producto-alta/?entidad=" + prodEntidad + "&id=" + prodID + "&aprob=";
+	let rutaInactivarCaptura = "/inactivar-captura/?destino=tablero&entidad=" + prodEntidad + "&id=" + prodID;
+
 	// Aprobar el alta
 	aprobar.addEventListener("click", async () => {
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
-		let ruta = "/revision/api/producto-alta/?aprob=true&entidad=";
-		await fetch(ruta + prodEntidad + "&id=" + prodID);
-		window.location.href = "/revision/redireccionar/?entidad=" + prodEntidad + "&id=" + prodID;
+		await fetch(rutaAprobRech + "true");
+		window.location.href = rutaInactivarCaptura;
 	});
 
 	// Menú inactivar
@@ -42,9 +45,8 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			// rechazar.style.transform = "scale(1)";
 			// rechazar.style.cursor = "wait";
-			let ruta = "/revision/api/producto-alta/?aprob=false&entidad=";
-			await fetch(ruta + prodEntidad + "&id=" + prodID + "&motivo_id=" + motivo);
-			window.location.href = "/revision/tablero-de-control";
+			await fetch(rutaAprobRech + "false&motivo_id=" + motivo);
+			window.location.href = rutaInactivarCaptura;
 		}
 	});
 });

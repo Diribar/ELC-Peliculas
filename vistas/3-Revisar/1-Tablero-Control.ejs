@@ -21,11 +21,12 @@
 					<ul>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</ul>
 				</ol>
 			</div>
-			<%- include("11-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: "redireccionar"}) %>
-			<%- include("11-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: "redireccionar"}) %>
-			<%- include("11-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "redireccionar"}) %>
-			<%- include("11-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: "redireccionar"}) %>
-			<%- include("11-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: "redireccionar"}) %>
+			<% let rp = "revision/producto/" %>
+			<%- include("11-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
+			<%- include("11-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
+			<%- include("11-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
+			<%- include("11-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
+			<%- include("11-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
 		</div>
 	</div>
 	<div id="segundaColumna">

@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 	// PROBLEMA: El registro todavía está en manos de su creador
 	if (ruta.startsWith("/revision/") && creado_en > haceUnaHora)
 		informacion.mensajes = ["El registro estará disponible para su revisión el " + horarioDisponible];
-	// PROBLEMA: El registro no está en manos de su creador, quiere ser editado y no está revisado
+	// PROBLEMA: El registro quiere ser editado, no está en manos de su creador y no está revisado
 	else if (
 		(ruta.startsWith("/producto/edicion/") ||
 			ruta.startsWith("/rclv/edicion/") ||
@@ -39,10 +39,12 @@ module.exports = async (req, res, next) => {
 						"Se cumplió el plazo de 1 hora para editar el registro.",
 						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
 				  ]
-				: [
+				: !usuario.rol_usuario.aut_gestion_prod
+				? [
 						"El registro no se puede editar aún.",
 						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
-				  ];
+				  ]
+				: "";
 	}
 
 	// Agregar el icono y continuar

@@ -12,6 +12,7 @@ const id = require("../../middlewares/producto/entidadID");
 const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
+const todos = [soloGestionProd, entidad, id, permUserReg, permReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
@@ -26,43 +27,12 @@ router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
-router.get(
-	"/redireccionar",
-	soloGestionProd,
-	entidad,
-	id,
-	permUserReg,
-	permReg,
-	capturaActivar,
-	vista.redireccionar
-);
-// Vistas de productos
-// Producto alta
-router.get(
-	"/producto/alta",
-	soloGestionProd,
-	entidad,
-	id,
-	permUserReg,
-	permReg,
-	capturaActivar,
-	vista.prod_Alta
-);
-// Producto edición
-router.get(
-	"/producto/edicion",
-	soloGestionProd,
-	entidad,
-	id,
-	permUserReg,
-	permReg,
-	capturaActivar,
-	vista.prod_Edicion
-);
-// Vistas de RCLVs
-router.get("/rclv", soloGestionProd, entidad, id, permUserReg, permReg, capturaActivar, vista.RCLV_Alta);
-// Vistas de Links
-router.get("/links", soloGestionProd, entidad, id, permReg, permUserReg, capturaActivar, vista.links);
+router.get("/producto/alta", ...todos, vista.prod_Alta);
+router.get("/producto/edicion", ...todos, vista.prod_Edicion);
+router.get("/producto/inactivar");
+router.get("/producto/recuperar");
+router.get("/rclv", ...todos, vista.RCLV_Alta);
+router.get("/links", ...todos, vista.links);
 
 // Exportarlo **********************************************
 module.exports = router;

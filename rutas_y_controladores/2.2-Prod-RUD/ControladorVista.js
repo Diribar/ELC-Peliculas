@@ -233,7 +233,7 @@ module.exports = {
 					editado_por_id: userID,
 				};
 				// 2. Agrega el registro a la tabla de 'Edición'
-				await BD_genericas.agregarRegistro(edicion.entidad, edicion);
+				await BD_genericas.agregarRegistro("prods_edicion", edicion);
 			}
 			// Elimina req.session.edicion
 			req.session.edicion = {};
