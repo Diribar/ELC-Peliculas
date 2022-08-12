@@ -15,13 +15,13 @@ module.exports = {
 		let tema = "prod_rud";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.lastIndexOf("/"));
-		// 2. Obtener los datos identificatorios del producto
+		// 2. Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
-		// 3. Obtener el producto 'Original' y 'Editado', y eliminar la versión Session
+		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
-		// 4. Obtener avatar
+		// 4. Obtiene el avatar y la versión más completa posible del producto
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
 			: prodOriginal.avatar
@@ -29,22 +29,21 @@ module.exports = {
 				? "/imagenes/2-Productos/" + prodOriginal.avatar
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
-		// Matar la versión 'session' y crearla a partir de la edición guardada
-		let prodCombinado = {...prodOriginal, ...prodEditado, id: prodID};
-		// 5. Configurar el título de la vista
+		let prodCombinado = {...prodOriginal, ...prodEditado, avatar, id: prodID};
+		// 5. Configura el título de la vista
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
-		// 6. Obtener los países
+		// 6. Obtiene los países
 		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
 		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
-			// Obtener los datos de session/cookie
+			// Obtiene los datos de session/cookie y luego los elimina
 			let edicion =
 				req.session.edicProd &&
 				req.session.edicProd.entidad == entidad &&
@@ -55,11 +54,10 @@ module.exports = {
 					  req.cookies.edicProd.id == prodID
 					? req.cookies.edicProd
 					: "";
-			// Eliminar session y cookie
 			req.session.edicProd = "";
 			res.clearCookie("edicProd");
-			// Actualizar prodCombinado
-			prodCombinado = {...prodCombinado, ...edicion};
+			// Actualiza el producto prodCombinado
+			prodCombinado = {...prodCombinado, ...edicion, avatar};
 			// Variables de 'Edición'
 			let camposDD = variables
 				.camposDD()
@@ -154,8 +152,6 @@ module.exports = {
 			});
 			// Variables de 'Edición'
 		}
-		// Averiguar si hay errores de validación
-		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
 			prodCombinado.capitulos = await BD_especificas.obtenerCapitulos(
@@ -180,7 +176,6 @@ module.exports = {
 			BD_paises,
 			BD_idiomas,
 			camposDP,
-			errores,
 			vista: req.baseUrl + req.path,
 			link: req.originalUrl,
 			paises,
