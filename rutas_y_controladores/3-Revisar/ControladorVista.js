@@ -48,7 +48,6 @@ module.exports = {
 		let prodID = req.query.id;
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
-		if (entidad == "capitulos") includes.push("coleccion");
 		if (entidad == "colecciones") includes.push("capitulos");
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
 		if (!prodOriginal.status_registro.creado) return res.redirect("/revision/tablero-de-control");
