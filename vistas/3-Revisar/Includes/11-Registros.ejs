@@ -3,7 +3,7 @@
 		<h3><%= titulo %> </h3>
 		<% for (let reg of regs) { %>
 			<p>
-				<a href="/revision/<%= url %>/?entidad=<%= reg.entidad %>&id=<%= reg.id %>">
+				<a href="/<%= url %>/?entidad=<%= reg.entidad %>&id=<%= reg.id %>">
 					<%= reg.abrev %> - <%= reg.nombre %>
 				</a>
 			</p>

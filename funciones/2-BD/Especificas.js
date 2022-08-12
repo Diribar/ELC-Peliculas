@@ -158,7 +158,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	tablero_obtenerProdEdics: (userID, includes) => {
+	tablero_obtenerEdicsDeProds: (userID, includes) => {
 		return db.prods_edicion
 			.findAll({
 				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creado por otro usuario
@@ -166,7 +166,7 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	tablero_obtenerLinks: async (status) => {
+	tablero_obtenerLinks_y_Edics: async (status) => {
 		// Variables
 		let gr_estables = status.filter((n) => !n.gr_estables).map((n) => n.id);
 		let includes = ["pelicula", "coleccion", "capitulo"];
@@ -180,10 +180,11 @@ module.exports = {
 		let links = await Promise.all([originales, ediciones]).then(([a, b]) => [...a, ...b]);
 		return links;
 	},
-	// Revisar - ControladorVista => redireccionar
-	obtenerEdicionAjena: async (producto_id, prodID, userID, haceUnaHora) => {
+	// Revisar - producto/edicion
+	obtenerEdicionAjena: async (entidad, producto_id, prodID, userID) => {
+		const haceUnaHora = funciones.nuevoHorario(-1);
 		// Obtener un registro que cumpla ciertas condiciones
-		return db.prods_edicion
+		return db[entidad]
 			.findOne({
 				where: {
 					// Que pertenezca al producto que nos interesa

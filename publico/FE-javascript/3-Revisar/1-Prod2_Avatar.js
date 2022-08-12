@@ -15,15 +15,19 @@ window.addEventListener("load", () => {
 	let motivosRechazo = document.querySelector("#motivosRechazo select");
 	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
 	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
+	// Rutas
+	let rutaAprobRech = "/revision/api/producto-edicion/?entidad=";
+	rutaAprobRech += entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar";
+	let rutaReload = "/revision/producto/detalle/?entidad=";
+	rutaReload += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
 		let ruta = "/revision/api/producto-edicion/?aprob=true&entidad=";
-		await fetch(ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar");
-		window.location.href =
-			"/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
+		await fetch(rutaAprobRech + "&aprob=true");
+		window.location.href = rutaReload;
 	});
 
 	// Menú inactivar
@@ -44,20 +48,8 @@ window.addEventListener("load", () => {
 		if (motivo) {
 			rechazar.style.transform = "scale(1)";
 			menuMotivosBorrar.style.cursor = "wait";
-			let ruta = "/revision/api/producto-edicion/?aprob=false&entidad=";
-			await fetch(
-				ruta +
-					entidad +
-					"&id=" +
-					prodID +
-					"&edicion_id=" +
-					edicID +
-					"&campo=avatar" +
-					"&motivo_id=" +
-					motivo
-			);
-			window.location.href =
-				"/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
+			await fetch(rutaAprobRech + "&aprob=false&motivo_id=" + motivo);
+			window.location.href = rutaReload;
 		}
 	});
 });

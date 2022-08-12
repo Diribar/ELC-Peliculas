@@ -35,9 +35,10 @@ module.exports = {
 	// Miscelaneas
 	redireccionar: async (req, res) => {
 		// Variables
-		let {destino} = req.query;
+		let {destino, entidad, id} = req.query;
 		// Si es 'tablero', ir a tablero
 		if (destino == "tablero") destino = "/revision/tablero-de-control";
+		if (destino == "prodDetalle") destino = "/producto/detalle/?entidad=" + entidad + "&id=" + id;
 		if (!destino) destino = "/";
 		// Redireccionar a la vista que corresponda
 		return res.redirect(destino);
