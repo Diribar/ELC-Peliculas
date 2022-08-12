@@ -14,12 +14,12 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/captura/aptoDE");
-const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
+const todos = [soloAutInput, aptoDE, entidad, id, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -35,20 +35,10 @@ router.get("/api/edicion/eliminar", API.prod_EliminarEdic);
 // Rutas de vistas
 // Producto
 router.get("/detalle", soloUsuarios, entidad, id, capturaInactivar, vista.prod_Form);
-router.get(
-	"/edicion",
-	soloAutInput,
-	aptoDE,
-	entidad,
-	id,
-	permReg,
-	permUserReg,
-	capturaActivar,
-	vista.prod_Form
-);
-router.post("/edicion", soloAutInput, multer.single("avatar"), vista.prod_GuardarEdic);
+router.get("/edicion", ...todos, vista.prod_Form);
+router.post("/edicion", ...todos, multer.single("avatar"), vista.prod_GuardarEdic);
 // Pendiente
-router.get("/calificala", soloAutInput, entidad, id, vista.calificala);
+router.get("/calificala", ...todos, vista.calificala);
 
 // Fin
 module.exports = router;

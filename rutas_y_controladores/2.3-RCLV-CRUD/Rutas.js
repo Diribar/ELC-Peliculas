@@ -13,10 +13,12 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/captura/aptoDE");
-const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
+// Consolidado
+const todosAgregar = [soloAutInput, aptoDE, entidad];
+const todos = [soloAutInput, aptoDE, entidad, id, permUserReg, capturaActivar];
 
 // Rutas *******************************************
 // Rutas de APIs
@@ -24,22 +26,13 @@ router.get("/api/otros-casos", API.buscarOtrosCasos);
 router.get("/api/validar-sector", API.validarSector);
 
 // Rutas de vistas - Relación con la vida
-router.get("/agregar", soloAutInput, aptoDE, entidad, vista.altaEdicForm);
-router.get(
-	"/edicion",
-	soloAutInput,
-	aptoDE,
-	entidad,
-	id,
-	permReg,
-	permUserReg,
-	capturaActivar,
-	vista.altaEdicForm
-);
-router.post("/agregar", soloAutInput, aptoDE, entidad, vista.altaEdicGrabar);
-router.post("/edicion", soloAutInput, aptoDE, entidad, id, permReg, permUserReg, vista.altaEdicGrabar);
+router.get("/agregar", ...todosAgregar, vista.altaEdicForm);
+router.post("/agregar", ...todosAgregar, vista.altaEdicGrabar);
+router.get("/edicion", ...todos, vista.altaEdicForm);
+router.post("/edicion", ...todos, vista.altaEdicGrabar);
 router.get("/detalle", entidad, id, capturaInactivar, vista.detalle);
-// router.get("/eliminar", soloAutInput, entidad, id, aptoDE, permReg, permUserReg, vista.RCLV_Eliminar);
+// router.get("/inactivar", ...todos, vista.inactivar);
+// router.get("/recuperar", ...todos, vista.recuperar);
 
 // Exportarlo **********************************************
 module.exports = router;

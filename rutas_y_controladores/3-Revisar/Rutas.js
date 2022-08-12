@@ -12,7 +12,7 @@ const id = require("../../middlewares/producto/entidadID");
 const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const todos = [soloGestionProd, entidad, id, permUserReg, permReg, capturaActivar];
+const todos = [soloGestionProd, entidad, id, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
