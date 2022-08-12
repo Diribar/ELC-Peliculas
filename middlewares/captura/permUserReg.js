@@ -28,9 +28,8 @@ module.exports = async (req, res, next) => {
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaInactivar = variables.vistaInactivar(req);
-	const vistaAnteriorInactivar = () => {
-		return [vistaAnterior, vistaInactivar];
-	};
+	const vistaAnteriorInactivar = () => [vistaAnterior, vistaInactivar];
+
 	const vistaTablero = variables.vistaTablero();
 	const vistaAnteriorTablero = () => {
 		let vista = [vistaAnterior];
@@ -186,8 +185,8 @@ module.exports = async (req, res, next) => {
 	// 1. El registro fue creado hace menos de una hora por otro usuario
 	if (!informacion) informacion = creadoHaceMenosDeUnaHora();
 	// 2. El registro fue creado hace más de una hora
-	//    El registro está en status gr_pend_aprob
-	//    El usuario no tiene rol de revisor
+	//    El registro está en status creado y la vista no es de revisión
+	//    El registro está en status altaAprob y el usuario no es revisor
 	if (!informacion) informacion = creadoHaceMasDeUnaHora();
 	// 2. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();
