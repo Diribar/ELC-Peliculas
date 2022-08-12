@@ -329,7 +329,7 @@ module.exports = {
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		link.ediciones.forEach(async (edicion) => {
 			// Se eliminan los campos sin contenido
-			edicion = funciones.eliminarCamposConValorNull(edicion);
+			edicion = funciones.quitarLosCamposSinContenido(edicion);
 			// Se eliminan los campos que no se comparan
 			let edicID = edicion.id;
 			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");

@@ -33,7 +33,7 @@ module.exports = {
 		let producto_id = funciones.obtenerEntidad_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			prodOriginal = funciones.eliminarCamposConValorNull(prodOriginal);
+			prodOriginal = funciones.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"prods_edicion",
@@ -41,7 +41,7 @@ module.exports = {
 				includes
 			);
 			// Quitarle los campos 'null'
-			if (prodEditado) prodEditado = funciones.eliminarCamposConValorNull(prodEditado);
+			if (prodEditado) prodEditado = funciones.quitarLosCamposSinContenido(prodEditado);
 		}
 		return [prodOriginal, prodEditado];
 	},

@@ -257,7 +257,7 @@ module.exports = {
 		let entidad = funciones.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
-		edicion = funciones.eliminarCamposConValorNull(edicion);
+		edicion = funciones.quitarLosCamposSinContenido(edicion);
 		edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 		let quedanCampos = funciones.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
