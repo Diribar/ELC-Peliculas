@@ -44,6 +44,22 @@ module.exports = {
 		let bloquesIzquierda, bloquesDerecha;
 		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
+			// Obtener los datos de session/cookie
+			let edicion =
+				req.session.edicProd &&
+				req.session.edicProd.entidad == entidad &&
+				req.session.edicProd.id == prodID
+					? req.session.edicProd
+					: req.cookies.edicProd &&
+					  req.cookies.edicProd.entidad == entidad &&
+					  req.cookies.edicProd.id == prodID
+					? req.cookies.edicProd
+					: "";
+			// Eliminar session y cookie
+			req.session.edicProd = "";
+			res.clearCookie("edicProd");
+			// Actualizar prodCombinado
+			prodCombinado = {...prodCombinado, ...edicion};
 			// Variables de 'Edición'
 			let camposDD = variables
 				.camposDD()

@@ -80,17 +80,4 @@ module.exports = {
 		res.cookie("edicProd", req.query, {maxAge: unDia});
 		return res.json();
 	},
-	obtenerDeReqSession: async (req, res) => {
-		let {entidad, id} = req.query;
-		let edicion = {};
-		// req.session.edicProd && req.session.edicProd.entidad == entidad && req.session.edicProd.id == id
-		// 	? req.session.edicProd
-		// 	: req.cookies.edicProd &&
-		// 	  req.cookies.edicProd.entidad == entidad &&
-		// 	  req.cookies.edicProd.id == id
-		// 	? req.cookies.edicProd
-		// 	: {};
-		// console.log(78, edicion.sinopsis);
-		return res.json(edicion);
-	},
 };
