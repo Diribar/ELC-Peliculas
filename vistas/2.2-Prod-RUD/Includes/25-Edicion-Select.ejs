@@ -23,8 +23,8 @@
 			<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
 		</ul>
 		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark<%- !errores[campo.nombreDelCampo] ? ' ocultar' : '' %>">
-			<span class="mensajeError"><%= errores[campo.nombreDelCampo] %></span>
+		<i class="fa-solid fa-circle-xmark ocultar">
+			<span class="mensajeError"></span>
 		</i>
 		<i class="fa-solid fa-circle-check ocultar"></i>
 		<!-- Aviso de cambio en el data-entry -->
