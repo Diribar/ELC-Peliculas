@@ -28,7 +28,7 @@ module.exports = {
 		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID); //
 		RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
-		//return res.send([productos,RCLVs]);
+		// return res.send([productos,RCLVs]);
 		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
