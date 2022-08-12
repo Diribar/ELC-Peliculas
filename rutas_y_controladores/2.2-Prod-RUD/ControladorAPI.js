@@ -75,10 +75,9 @@ module.exports = {
 	},
 
 	enviarAReqSession: async (req, res) => {
-		// if (req.query.avatar) delete req.query.avatar;
-		// req.session.edicProd = req.query;
-		// res.cookie("edicProd", req.query, {maxAge: unDia});
-		// console.log(66, req.query.sinopsis);
+		if (req.query.avatar) delete req.query.avatar;
+		req.session.edicProd = req.query;
+		res.cookie("edicProd", req.query, {maxAge: unDia});
 		return res.json();
 	},
 	obtenerDeReqSession: async (req, res) => {

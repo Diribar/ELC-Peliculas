@@ -15,9 +15,10 @@ window.addEventListener("load", async () => {
 	// FUNCIONES
 	// Mostrar u ocultar los íconos de alta/edición de RCLV
 	let mostrarOcultarIconos = (input, i) => {
-		// Excepciones para: Ninguno y Jesús
+		// Oculta el link de alta para Jesús
 		if (input.value == "11" && i === 0) linksAlta[i].classList.add("ocultar");
 		else linksAlta[i].classList.remove("ocultar");
+		// Oculta el link de edición cuando el valor es 'nada', 'ninguno' o 'Jesús
 		if (!input.value || input.value == "1" || (input.value == "11" && i === 0))
 			linksEdicion[i].classList.add("ocultar");
 		else linksEdicion[i].classList.remove("ocultar");
@@ -40,6 +41,8 @@ window.addEventListener("load", async () => {
 	// Links a RCLV - Alta
 	linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
+			// Si el ícono está inactivo, aborta la operación
+			if (link.className.includes("inactivo")) return
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 			// Obtener la RCLV_entidad
@@ -52,6 +55,8 @@ window.addEventListener("load", async () => {
 	// Links a RCLV - Edición
 	linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
+			// Si el ícono está inactivo, aborta la operación
+			if (link.className.includes("inactivo")) return
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 			// Obtener la RCLV_entidad
