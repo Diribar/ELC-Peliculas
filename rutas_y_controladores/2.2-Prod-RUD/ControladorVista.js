@@ -215,21 +215,19 @@ module.exports = {
 			let edicion = {...req.body, avatar};
 			// Quitar los coincidencias con el original
 			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-			// Si la edicion existía => se la actualiza
+			// Si la edicion existía => se la elimina
 			let edicion_id = prodEditado ? prodEditado.id : null;
-			if (edicion_id) await BD_genericas.actualizarPorId("prods_edicion", edicion_id, edicion);
-			// De lo contrario, se lo agrega
-			else {
-				// 1. Completa la información
-				let producto_id = funciones.obtenerEntidad_id(entidad);
-				edicion = {
-					...edicion,
-					[producto_id]: prodID,
-					editado_por_id: userID,
-				};
-				// 2. Agrega el registro a la tabla de 'Edición'
-				await BD_genericas.agregarRegistro("prods_edicion", edicion);
-			}
+			if (edicion_id) await BD_genericas.eliminarPorId("prods_edicion", edicion_id);
+			// Luego se agrega la nueva
+			// 1. Completa la información
+			let producto_id = funciones.obtenerEntidad_id(entidad);
+			edicion = {
+				...edicion,
+				[producto_id]: prodID,
+				editado_por_id: userID,
+			};
+			// 2. Agrega el registro a la tabla de 'Edición'
+			await BD_genericas.agregarRegistro("prods_edicion", edicion);
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},
