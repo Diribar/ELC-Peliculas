@@ -46,17 +46,6 @@ module.exports = {
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		// 3. Redirigir hacia la colección
-		if (entidad == "capitulos") {
-			// Liberar la captura del capítulo
-			let datos = {capturado_por_id: null, capturado_en: null, captura_activa: null};
-			BD_genericas.actualizarPorId("capitulos", prodID, datos);
-			// Obtener el ID de la colección
-			let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "coleccion");
-			let colecID = producto.coleccion.id;
-			// Redireccionar a la colección
-			return res.redirect("/revision/producto/alta/?entidad=colecciones&id=" + colecID);
-		}
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		if (entidad == "capitulos") includes.push("coleccion");
