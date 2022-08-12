@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsConEdics: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdic: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -100,6 +100,26 @@ module.exports = {
 		// Fin
 		return productos;
 	},
+	tablero_obtenerProdsConLink: async (ahora, status, userID) => {
+		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
+		// Obtener los links 'a revisar'
+		let links = await BD_especificas.tablero_obtenerLinks_y_Edics(status);
+		// Si no hay => salir
+		if (!links.length) return [];
+		// Obtener los links ajenos
+		let linksAjenos = links.filter(
+			(n) =>
+				(n.status_registro &&
+					((n.status_registro.creado && n.creado_por_id != userID) ||
+						((n.status_registro.inactivar || n.status_registro.recuperar) &&
+							n.sugerido_por_id != userID))) ||
+				(!n.status_registro && n.editado_por_id != userID)
+		);
+		// Obtener los productos
+		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
+		// Fin
+		return productos;
+	},
 	tablero_obtenerRCLVs: async (ahora, status, userID) => {
 		// Obtener los siguients RCLVs:
 		// creado y creados ajeno,
@@ -136,28 +156,8 @@ module.exports = {
 		// Fin
 		return {PA, IN, IP};
 	},
-	tablero_obtenerRCLVsEdics: async (ahora, status, userID) => {
+	tablero_obtenerRCLVsConEdic: async (ahora, status, userID) => {
 		// - edicRCLV ajena, pend. aprobar
-	},
-	tablero_obtenerProdsDeLinks: async (ahora, status, userID) => {
-		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
-		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks_y_Edics(status);
-		// Si no hay => salir
-		if (!links.length) return [];
-		// Obtener los links ajenos
-		let linksAjenos = links.filter(
-			(n) =>
-				(n.status_registro &&
-					((n.status_registro.creado && n.creado_por_id != userID) ||
-						((n.status_registro.inactivar || n.status_registro.recuperar) &&
-							n.sugerido_por_id != userID))) ||
-				(!n.status_registro && n.editado_por_id != userID)
-		);
-		// Obtener los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
-		// Fin
-		return productos;
 	},
 	prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
