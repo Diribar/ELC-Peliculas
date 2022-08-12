@@ -55,108 +55,6 @@ window.addEventListener("load", async () => {
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 
-	// EVENT LISTENERS ---------------------------------------
-	// Revisar campos en forma INDIVIDUAL
-	form.addEventListener("input", async (e) => {
-		// Averiguar si hay ERRORES
-		// 1. Definir los valores para 'campo' y 'valor'
-		if (e.target == paisesSelect) formInput_paises();
-		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
-		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
-		// 2. Averiguar si hay algún error y aplicar las consecuencias
-		let error = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
-		formInputChange_consecuenciaError(error, campo);
-		// Si se cambia la categoría --> actualiza subcategoría
-		if (campo == "categoria_id") {
-			// Cambiar los valores que se pueden mostrar en la subcategoría
-			formInput_mostrarValoresSubcat();
-			// Borrar el valor anterior
-			subcategoria.value = "";
-			// Marcar que hay que elegir un valor
-			let indiceSC = campos.indexOf("subcategoria_id");
-			let erroresSC = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
-			mensajesError[indiceSC].innerHTML = erroresSC.subcategoria_id;
-			iconosOK[indiceSC].classList.add("ocultar");
-			iconosError[indiceSC].classList.remove("ocultar");
-		}
-		// Tareas varias
-		if (campo == "avatar" && !error.hay) avatar_nuevoIngresado(e); // Cambia el avatar
-		formInputChange_botonGuardar(); // Activa/Desactiva el botón 'Guardar'
-		fetch(rutaRQ + actualizarInput_dataEntry()); // Guarda el Data-Entry en session
-		formInput_activarEdicionSession(); // Activa las opciones de session
-
-		// Le pone la flecha al campo cambiado
-		let indice = campos.indexOf(campo);
-		actualizarInput_flechas(botonVerSession, indice);
-	});
-	// Revisar campos COMBINADOS
-	form.addEventListener("change", async (e) => {
-		// Obtener el valor para 'campo'
-		let campo = e.target.name;
-		let datos;
-		// (Título botonOriginal / castellano) + año lanzamiento
-		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
-			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
-			await formChange_dosCampos(datos, campo);
-			datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
-			await formChange_dosCampos(datos, campo);
-		}
-		// Año de lanzamiento + año de finalización
-		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
-			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
-			await formChange_dosCampos(datos, campo);
-		}
-		// Subcategoría + RCLV
-		if (
-			campo == "subcategoria_id" ||
-			campo == "personaje_id" ||
-			campo == "hecho_id" ||
-			campo == "valor_id"
-		)
-			await formChange_camposCombinados(["subcategoria_id", "personaje_id", "hecho_id", "valor_id"]);
-		// Fin
-		formInputChange_botonGuardar();
-	});
-
-	// BOTONERA DE COMANDOS ----------------------------------
-	// Edición Session
-	botonVerSession.addEventListener("click", async () => {
-		// Obtener Data-Entry de session
-		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
-		// Fin
-		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOrig;
-		comandos_ActualizarInput(botonVerSession, datosEdicS, false);
-	});
-	botonEliminarSession.addEventListener("click", (e) => {
-		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonEliminarSession.classList).includes("inactivo")) return;
-		fetch(rutaRQ); // Elimina el Data-Entry en session
-		window.location.reload();
-	});
-	botonGuardarSession.addEventListener("click", (e) => {
-		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonGuardarSession.classList).includes("inactivo")) e.preventDefault();
-	});
-	// Edición Guardada
-	botonVerGuardada.addEventListener("click", () => {
-		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonVerGuardada.classList).includes("inactivo") || !datosEdicG) return;
-		// Ejecuta la función 'Input'
-		comandos_ActualizarInput(botonVerGuardada, datosEdicG, true);
-	});
-	botonEliminarGuardada.addEventListener("click", (e) => {
-		if (Array.from(botonEliminarGuardada.classList).includes("inactivo")) {
-			e.preventDefault();
-		}
-	});
-	// Original
-	botonOriginal.addEventListener("click", () => {
-		// Si el botón está inactivo, concluye la función
-		if (Array.from(botonOriginal.classList).includes("inactivo") || !datosOrig) return;
-		// Ejecuta la función 'Input'
-		comandos_ActualizarInput(botonOriginal, datosOrig, true);
-	});
-
 	// FUNCIONES ---------------------------------------------
 	let comandos_ActualizarInput = async (botonVersion, datosVersion, disabled) => {
 		// Rutina para cada input
@@ -376,6 +274,108 @@ window.addEventListener("load", async () => {
 			}
 		}
 	};
+
+	// EVENT LISTENERS ---------------------------------------
+	// Revisar campos en forma INDIVIDUAL
+	form.addEventListener("input", async (e) => {
+		// Averiguar si hay ERRORES
+		// 1. Definir los valores para 'campo' y 'valor'
+		if (e.target == paisesSelect) formInput_paises();
+		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
+		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
+		// 2. Averiguar si hay algún error y aplicar las consecuencias
+		let error = await fetch(rutaVE + campo + "=" + valor).then((n) => n.json());
+		formInputChange_consecuenciaError(error, campo);
+		// Si se cambia la categoría --> actualiza subcategoría
+		if (campo == "categoria_id") {
+			// Cambiar los valores que se pueden mostrar en la subcategoría
+			formInput_mostrarValoresSubcat();
+			// Borrar el valor anterior
+			subcategoria.value = "";
+			// Marcar que hay que elegir un valor
+			let indiceSC = campos.indexOf("subcategoria_id");
+			let erroresSC = await fetch(rutaVE + "subcategoria_id=").then((n) => n.json());
+			mensajesError[indiceSC].innerHTML = erroresSC.subcategoria_id;
+			iconosOK[indiceSC].classList.add("ocultar");
+			iconosError[indiceSC].classList.remove("ocultar");
+		}
+		// Tareas varias
+		if (campo == "avatar" && !error.hay) avatar_nuevoIngresado(e); // Cambia el avatar
+		formInputChange_botonGuardar(); // Activa/Desactiva el botón 'Guardar'
+		fetch(rutaRQ + actualizarInput_dataEntry()); // Guarda el Data-Entry en session
+		formInput_activarEdicionSession(); // Activa las opciones de session
+
+		// Le pone la flecha al campo cambiado
+		let indice = campos.indexOf(campo);
+		actualizarInput_flechas(botonVerSession, indice);
+	});
+	// Revisar campos COMBINADOS
+	form.addEventListener("change", async (e) => {
+		// Obtener el valor para 'campo'
+		let campo = e.target.name;
+		let datos;
+		// (Título botonOriginal / castellano) + año lanzamiento
+		if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
+			datos = {campo1: "nombre_original", campo2: "ano_estreno"};
+			await formChange_dosCampos(datos, campo);
+			datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
+			await formChange_dosCampos(datos, campo);
+		}
+		// Año de lanzamiento + año de finalización
+		if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
+			datos = {campo1: "ano_estreno", campo2: "ano_fin"};
+			await formChange_dosCampos(datos, campo);
+		}
+		// Subcategoría + RCLV
+		if (
+			campo == "subcategoria_id" ||
+			campo == "personaje_id" ||
+			campo == "hecho_id" ||
+			campo == "valor_id"
+		)
+			await formChange_camposCombinados(["subcategoria_id", "personaje_id", "hecho_id", "valor_id"]);
+		// Fin
+		formInputChange_botonGuardar();
+	});
+
+	// BOTONERA DE COMANDOS ----------------------------------
+	// Edición Session
+	botonVerSession.addEventListener("click", async () => {
+		// Obtener Data-Entry de session
+		let datosEdicS = await fetch(rutaSession).then((n) => n.json());
+		// Fin
+		if (!datosEdicS) datosEdicS = existeEdicG ? datosEdicG : datosOrig;
+		comandos_ActualizarInput(botonVerSession, datosEdicS, false);
+	});
+	botonEliminarSession.addEventListener("click", (e) => {
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonEliminarSession.classList).includes("inactivo")) return;
+		fetch(rutaRQ); // Elimina el Data-Entry en session
+		window.location.reload();
+	});
+	botonGuardarSession.addEventListener("click", (e) => {
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonGuardarSession.classList).includes("inactivo")) e.preventDefault();
+	});
+	// Edición Guardada
+	botonVerGuardada.addEventListener("click", () => {
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonVerGuardada.classList).includes("inactivo") || !datosEdicG) return;
+		// Ejecuta la función 'Input'
+		comandos_ActualizarInput(botonVerGuardada, datosEdicG, true);
+	});
+	botonEliminarGuardada.addEventListener("click", (e) => {
+		if (Array.from(botonEliminarGuardada.classList).includes("inactivo")) {
+			e.preventDefault();
+		}
+	});
+	// Original
+	botonOriginal.addEventListener("click", () => {
+		// Si el botón está inactivo, concluye la función
+		if (Array.from(botonOriginal.classList).includes("inactivo") || !datosOrig) return;
+		// Ejecuta la función 'Input'
+		comandos_ActualizarInput(botonOriginal, datosOrig, true);
+	});
 
 	// STARTUP ------------------------------------------------------------------
 	// Activa "Edición Guardada' si existe esa versión
