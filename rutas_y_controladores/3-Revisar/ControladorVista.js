@@ -20,7 +20,7 @@ module.exports = {
 		// Productos y Ediciones
 		let productos;
 		productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
-		productos.ED = await procesar.tablero_obtenerProdsDeEdics(ahora, status, userID); //
+		productos.ED = await procesar.tablero_obtenerProdsConEdics(ahora, status, userID); //
 		// Obtener Links
 		productos.LK = await procesar.tablero_obtenerProdsDeLinks(ahora, status, userID); //
 		productos = procesar.prod_ProcesarCampos(productos);

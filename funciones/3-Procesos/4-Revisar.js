@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsDeEdics: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdics: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
