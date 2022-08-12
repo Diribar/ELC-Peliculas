@@ -57,7 +57,7 @@ module.exports = {
 			req.session.edicProd = "";
 			res.clearCookie("edicProd");
 			// Actualiza el producto prodCombinado
-			prodCombinado = {...prodCombinado, ...edicion, avatar};
+			prodCombinado = {...prodCombinado, ...edicion};
 			// Variables de 'Edición'
 			let camposDD = variables
 				.camposDD()
