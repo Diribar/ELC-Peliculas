@@ -8,9 +8,6 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("form");
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
-	let avatarVisible = document.querySelector(".input-error #avatarVisible");
-	let avatarNuevo = document.querySelector(".input-error #avatarNuevo");
-	let imgAvatar = document.querySelector(".input-error #avatarVisible img");
 	// OK/Errores
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
@@ -28,12 +25,18 @@ window.addEventListener("load", async () => {
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
+	// Varios
+	let avatarVisible = document.querySelector(".input-error #avatarVisible");
+	let avatarNuevo = document.querySelector(".input-error #avatarNuevo");
+	let imgAvatar = document.querySelector(".input-error #avatarVisible img");
+	let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------
 	// Variables
 	let versiones = ["edicN", "edicG", "orig"];
 	let versionActual = "edicN";
-	let versionAnt = versionActual;
+	let versionInput = versionActual;
+	let versionAnt;
 	let datos = {};
 	let flechasDiferencia = document.querySelectorAll(".input-error .fa-arrow-right-long");
 	let rutaVersiones = "/producto/api/edicion/obtener-original-y-edicion/";
@@ -45,11 +48,11 @@ window.addEventListener("load", async () => {
 	datos.orig.avatar = avatarAgregarLaRutaAlNombre(datos.orig.avatar, "original");
 	datos.edicG = {...datos.orig, ...datos.edicG};
 	datos.edicG.avatar = avatarAgregarLaRutaAlNombre(datos.edicG.avatar, "edicion", datos.orig.avatar);
-	datos.edicN = datos.edicG;
+	datos.edicN = {...datos.edicG};
 	datos.edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
-
 	let orig_PendAprobar = datos.orig.status_registro.gr_pend_aprob;
 	let edicG_existe = !!datos.edicG[producto_id];
+
 	// Botones
 	let botonesActivar = document.querySelectorAll("#cuerpo #comandos .activar");
 	let botonesDescartar = document.querySelectorAll("#cuerpo #comandos .descartar");
@@ -67,14 +70,39 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		reemplazaLosValores: function () {
+		accionesPorCambioDeVersion: function () {
+			// Variables
+			let estamosEnEdicNueva = versionActual == "edicN";
+			// Rutina para cada campo
 			campos.forEach((campo, i) => {
-				// Reemplazar los valores
+				// Reemplaza los valores
 				if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
-				// Reemplazar el avatar visible
-				AV.actualizaVisible(datos[versionActual].avatar, avatarVisible);
+				// Impide/permite que el usuario haga cambios en los datos de la versión
+				inputs[i].disabled = !estamosEnEdicNueva;
+				if (campo == "paises_id") {
+					paisesMostrar.disabled = !estamosEnEdicNueva;
+					paisesSelect.disabled = !estamosEnEdicNueva;
+				}
 			});
-			this.senalaLasDiferencias(versionActual);
+			// Activa/desactiva el mouse para el avatar
+			estamosEnEdicNueva
+				? avatarVisible.classList.add("pointer")
+				: avatarVisible.classList.remove("pointer");
+			// Reemplaza el avatar visible
+			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible);
+			// Señala las diferencias con la versión original
+			this.senalaLasDiferencias();
+			// Muestra/oculta los íconos para RCLV
+			let links = document.querySelectorAll(".input-error i.linkRCLV");
+			for (let link of links)
+				estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+			// Muestra/oculta los íconos de ayuda
+			for (let iconoAyuda of iconosAyuda)
+				estamosEnEdicNueva
+					? iconoAyuda.classList.remove("inactivo")
+					: iconoAyuda.classList.add("inactivo");
+			// Averiguar los errores
+			this.averiguarLosErrores();
 			// Fin
 			return;
 		},
@@ -87,6 +115,30 @@ window.addEventListener("load", async () => {
 					? flechasDiferencia[i].classList.remove("ocultar")
 					: flechasDiferencia[i].classList.add("ocultar");
 			});
+		},
+		averiguarLosErrores: async () => {
+			// Preparar la información
+			let objeto = "entidad=" + entidad + "&id=" + prodID;
+			for (let input of inputs)
+				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
+			// Averiguar los errores
+			let errores = await fetch(rutaValidar + objeto).then((n) => n.json());
+
+			campos.forEach((campo,i)=>{
+				// Guarda el mensaje de error
+				let mensaje = errores[campo];
+				// Reemplaza
+				let indice = campos.indexOf(campo);
+				mensajesError[indice].innerHTML = mensaje;
+				// Acciones en función de si hay o no mensajes de error
+				mensaje
+					? iconosError[indice].classList.remove("ocultar")
+					: iconosError[indice].classList.add("ocultar");
+				mensaje || !mostrarOK
+					? iconosOK[indice].classList.add("ocultar")
+					: iconosOK[indice].classList.remove("ocultar");
+			})
+			return
 		},
 	};
 	// Funciones Avatar
@@ -116,24 +168,18 @@ window.addEventListener("load", async () => {
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
-	// Revisar campos en forma INDIVIDUAL
-	form.addEventListener("input", async (e) => {
-		DE.obtieneLosValores();
-	});
-	// Revisar campos COMBINADOS
-	form.addEventListener("change", async (e) => {});
-
 	// Botones
 	botonesActivar.forEach((boton, indice) => {
 		boton.addEventListener("click", () => {
 			// Interrumpe si las versiones son iguales
-			versionAnt = versionActual;
-			versionActual = versiones[indice];
-			if (versionAnt == versionActual) return;
+			if (versionActual == versiones[indice]) return;
 			// Interrumpe si el botón está inactivo
 			if (boton.className.includes("inactivoVersion")) return;
-			// Cambia los valores si cambia la versión
-			DE.reemplazaLosValores();
+			// Cambia la versión
+			versionAnt = versionActual;
+			versionActual = versiones[indice];
+			// Cambia los valores
+			DE.accionesPorCambioDeVersion();
 			// Cambia el boton activo
 			botonesActivar.forEach((revisar, i) => {
 				if (i != indice) revisar.classList.remove("activo");
@@ -155,16 +201,12 @@ window.addEventListener("load", async () => {
 			}
 			// Acciones si es la edición guardada
 			else if (versiones[indice] == "edicG") {
-				// Si la versión original no está aprobada, aborta la operación
-				if (versiones[indice] == "edicG" && orig_PendAprobar) {
-					console.log("es la edición guardada y la versión original no está aprobada");
-					return;
-				} else {
-					fetch("/producto/edicion/eliminar/?entidad=" + entidad + "&id=" + prodID);
-					datos.edicG = {};
-				}
+				fetch("/producto/edicion/eliminar/?entidad=" + entidad + "&id=" + prodID);
+				datos.edicG = {};
+				botonesActivar.classList.add("inactivoVersion");
+				botonesDescartar.classList.add("inactivoVersion");
 			}
-			if (versiones[indice] == versionActual) DE.reemplazaLosValores();
+			if (versiones[indice] == versionActual) DE.accionesPorCambioDeVersion();
 		});
 	});
 	botonGuardar.addEventListener("click", () => {
@@ -172,8 +214,25 @@ window.addEventListener("load", async () => {
 		if (botonGuardar.className.includes("inactivo")) e.preventDefault();
 	});
 
+	// Revisar campos en forma INDIVIDUAL
+	form.addEventListener("input", async (e) => {
+		// Acciones si no se cambió de versión
+		if (versionInput == "edicN") {
+			DE.obtieneLosValores();
+			DE.averiguarLosErrores();
+		} else versionInput = versionActual;
+	});
+	// Revisar campos COMBINADOS
+	form.addEventListener("change", async (e) => {});
+
 	// Startup
-	DE.reemplazaLosValores(versionActual);
+	// Completar los valores
+	DE.accionesPorCambioDeVersion(versionActual);
+	// Activar la botonera de edicG
+	if (edicG_existe) {
+		botonesActivar[1].classList.remove("inactivoVersion");
+		if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
+	}
 });
 let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 	return imagenActual
