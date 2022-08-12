@@ -18,9 +18,9 @@ module.exports = async (req, res, next) => {
 	let horarioFinal = funciones.nuevoHorario(1, capturado_en);
 	horarioFinal = funciones.horarioTexto(horarioFinal);
 
-	// No se debe capturar si se cumplen estas 2 condiciones:
-	// 	1. El registro está en status "creado"
-	//	2. Se quiere acceder desde una vista que no es de revisión (ej: Detalle)
+	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
+	// 	1. El registro no está en status "creado"
+	//	2. Se quiere acceder desde una vista de revisión
 	if (!registro.status_registro.creado|| urlBase == "/revision") {
 		// Activa la entidad y el usuario
 		let datos = {captura_activa: true, capturado_por_id: userID};
