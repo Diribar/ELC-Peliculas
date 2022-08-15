@@ -131,17 +131,16 @@ window.addEventListener("load", async () => {
 			});
 			return;
 		},
-		actualizarOpcionesSubcat: () => {
+		actualizaOpcionesSubcat: () => {
 			let categ = categoria.value;
 			subcategoriaOpciones.forEach((opcion) => {
 				if (opcion.className.includes(categ)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
 			});
 		},
-		actualizarPaises: () => {
-			let paisID = paisesSelect.value;
+		actualizaPaises: () => {
 			// Actualizar los ID del input
-
+			let paisID = paisesSelect.value;
 			// Verificar si figura en paisesID
 			if (paisID == "borrar") {
 				paisesSelect.value = "";
@@ -150,18 +149,17 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			let agregar = !paisesID.value.includes(paisID);
-			if (agregar) {
-				// Limita la cantidad máxima de países a 1 + 4 = 5
-				if (paisesID.value.length >= 2 * 1 + 3 * 4) return;
-				// Actualiza el input
-				paisesID.value += (paisesID.value ? " " : "") + paisID;
-			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim();
+			let aux = split(" ");
+			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
+			if (agregar) aux.push(paisID); // Agrega el país
+			else aux = aux.splice(aux.indexOf(paisID), 1); // Quita el país
+			paisesID.value = aux.join(" "); // Actualiza el input
 
 			// Actualizar los países a mostrar
 			let paisesNombre = [];
+			// Convertir 'IDs' en 'nombres'
 			if (paisesID.value) {
 				let paises_idArray = paisesID.value.split(" ");
-				// Convertir 'IDs' en 'nombres'
 				paises_idArray.forEach((pais_id) => {
 					let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 					if (paisNombre) paisesNombre.push(paisNombre);
@@ -250,23 +248,19 @@ window.addEventListener("load", async () => {
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
-		// 1. Definir los valores para 'campo' y 'valor'
-		if (e.target == paisesSelect) DE.actualizarPaises();
-		let campo = e.target == paisesSelect ? paisesID.name : e.target.name;
-		let valor = e.target == paisesSelect ? paisesID.value : e.target.value;
-		// Si se cambia la categoría --> actualiza subcategoría
-		if (campo == "categoria_id") {
-			DE.actualizarOpcionesSubcat();
-			subcategoria.value = "";
-		}
 		// Acciones si hubieron novedades dentro de EdicN
 		if (versionInput == "edicN") {
-			DE.obtieneLosValoresEdicN();
-			DE.muestraLosErrores();
+			// Si se cambia la categoría --> actualiza subcategoría
+			if (e.target == "categoria_id") {
+				subcategoria.value = "";
+				DE.actualizaOpcionesSubcat();
+			}
+			// Varios
+			if (e.target == paisesSelect) DE.actualizaPaises(); // Actualiza los paises
+			DE.obtieneLosValoresEdicN(); // Actualizar 'EdicN'
+			DE.muestraLosErrores(); // Muestra los errores
 		} else versionInput = versionActual;
 	});
-	// Revisar campos COMBINADOS
-	form.addEventListener("change", async (e) => {});
 
 	// Startup
 	// Obtiene los valores para EdicN
@@ -281,7 +275,7 @@ window.addEventListener("load", async () => {
 		if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
 	}
 	// Actualiza las opciones de Sub-categoría
-	DE.actualizarOpcionesSubcat();
+	DE.actualizaOpcionesSubcat();
 });
 let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 	return imagenActual
