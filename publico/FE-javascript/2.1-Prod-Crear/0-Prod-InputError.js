@@ -3,9 +3,12 @@ window.addEventListener("load", async () => {
 	// Averiguar el 'paso'
 	let url = window.location.pathname;
 	let paso = url.slice(url.lastIndexOf("/") + 1);
-	let PC = paso == "palabras-clave";
-	let DD = paso == "datos-duros";
-	let DP = paso == "datos-personalizados";
+	paso = {
+		paso,
+		PC: paso == "palabras-clave",
+		DD: paso == "datos-duros",
+		DP: paso == "datos-personalizados",
+	};
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
 	let submit = document.querySelector("#dataEntry #submit");
@@ -16,7 +19,7 @@ window.addEventListener("load", async () => {
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	if (PC) {
+	if (paso.PC) {
 		var resultado = document.querySelector("#dataEntry #resultado");
 		var rutaObtenerCantProds = (input) => {
 			let palabrasClave = input.trim();
@@ -83,7 +86,7 @@ window.addEventListener("load", async () => {
 			return;
 		};
 	}
-	if (DD) {
+	if (paso.DD) {
 		var entidad = document.querySelector("#dataEntry #entidad").innerHTML;
 		// Variables de país
 		var paisesSelect = document.querySelector("#paises_id select");
@@ -95,7 +98,7 @@ window.addEventListener("load", async () => {
 			});
 		}
 	}
-	if (DP) {
+	if (paso.DP) {
 		// Ayuda Sub-categoría
 		var iconoAyudaSubcat = document.querySelector("#ayudaSubcat .fa-circle-question");
 		var mensajesAyudaSubcat = document.querySelectorAll("#ayudaSubcat ul li");
@@ -116,7 +119,7 @@ window.addEventListener("load", async () => {
 		var opcionesHecho = document.querySelectorAll("select[name='hecho_id'] option.RCLV");
 	}
 	// Ruta
-	let rutaValidar = "/producto/agregar/api/validar/" + paso + "/?";
+	let rutaValidar = "/producto/agregar/api/validar/" + paso.paso + "/?";
 
 	// FUNCIONES *******************************************
 	let statusInicial = async (mostrarIconoError) => {
@@ -124,7 +127,7 @@ window.addEventListener("load", async () => {
 		let datosUrl = "";
 		inputs.forEach((input, i) => {
 			if (i) datosUrl += "&";
-			if (DD && input.name == "avatar") return;
+			if (paso.DD && input.name == "avatar") return;
 			datosUrl += input.name + "=";
 			datosUrl += encodeURIComponent(input.value);
 		});
@@ -152,7 +155,7 @@ window.addEventListener("load", async () => {
 	};
 	let activarInactivarBotonSubmit = () => {
 		// Detectar la cantidad de 'iconosOK' que no corresponden por motivos de RCLV
-		let OKs_innec = DP ? 2 : 0;
+		let OKs_innec = paso.DP ? 2 : 0;
 
 		// Detectar la cantidad de 'aciertos' ocultos
 		let OKs_ocultos = Array.from(iconosOK)
@@ -183,7 +186,7 @@ window.addEventListener("load", async () => {
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();
-		if (PC)
+		if (paso.PC)
 			if (submit.classList.contains("fa-circle-question")) {
 				if (!submit.classList.contains("inactivo")) {
 					submit.classList.add("inactivo");
@@ -197,8 +200,8 @@ window.addEventListener("load", async () => {
 		else if (submit.classList.contains("inactivo")) statusInicial(true);
 		else form.submit();
 	};
-	if (DD) {
-		var funcionDosCampos = async (datos, campo) => {
+	let DD = {
+		dosCampos: async function (datos, campo) {
 			let campo1 = datos.campo1;
 			let campo2 = datos.campo2;
 			let indice1 = campos.indexOf(campo1);
@@ -211,10 +214,10 @@ window.addEventListener("load", async () => {
 				inputs[indice2].value &&
 				!mensajesError[indice2].innerHTML
 			)
-				funcionCamposCombinados(camposComb, campo1);
+				this.camposCombinados(camposComb, campo1);
 			return;
-		};
-		var funcionCamposCombinados = async (camposComb, campo) => {
+		},
+		camposCombinados: async (camposComb, campo) => {
 			// Armado de la ruta
 			let datosUrl = "entidad=" + entidad;
 			let indice = [];
@@ -226,46 +229,44 @@ window.addEventListener("load", async () => {
 			await validarErrores(datosUrl, true);
 			activarInactivarBotonSubmit();
 			return;
-		};
-		var funcionPaises = () => {
+		},
+		actualizarPaises: () => {
 			let paisID = paisesSelect.value;
+			// Actualizar los ID del input
+
+			// Verificar si figura en paisesID
 			if (paisID == "borrar") {
 				paisesSelect.value = "";
 				paisesMostrar.value = "";
 				paisesID.value = "";
 				return;
 			}
-			// Verificar si figura en paisesID
 			let agregar = !paisesID.value.includes(paisID);
-			// Si no figura en paisesID, agregárselo
 			if (agregar) {
-				// Limita la cantidad máxima de países a 1+4 = 5, para permitir el mensaje de error
-				if (paisesID.value.length >= 2 * 1 + 4 * 4) return;
-				paisesID.value += !paisesID.value ? paisID : ", " + paisID;
-			} else {
-				// Si sí figura, quitárselo
-				let paises_idArray = paisesID.value.split(", ");
-				let indice = paises_idArray.indexOf(paisID);
-				paises_idArray.splice(indice, 1);
-				paisesID.value = paises_idArray.join(", ");
-			}
-			// Agregar los países a mostrar
+				// Limita la cantidad máxima de países a 1 + 4 = 5
+				if (paisesID.value.length >= 2 * 1 + 3 * 4) return;
+				// Actualiza el input
+				paisesID.value += (paisesID.value ? " " : "") + paisID;
+			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim();
+
+			// Actualizar los países a mostrar
 			let paisesNombre = "";
 			if (paisesID.value) {
-				let paises_idArray = paisesID.value.split(", ");
-				for (let pais_id of paises_idArray) {
+				let paises_idArray = paisesID.value.split(" ");
+				console.log(paises_idArray);
+				paises_idArray.forEach((pais_id) => {
 					let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 					paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
-				}
+				});
 			}
 			paisesMostrar.value = paisesNombre;
 			// Fin
 			return;
-		};
-	}
-	if (DP) {
+		},
+	};
+	let DP = {
 		// Actualizar la subcategoría
-		var actualizaOpsSubcat = () => {
+		actualizaOpsSubcat: () => {
 			if (categoriaSelect.value) {
 				// Actualiza las opciones de sub-categoría
 				for (let opcion of subcategoriaOpciones) {
@@ -292,9 +293,9 @@ window.addEventListener("load", async () => {
 			}
 			// Fin
 			return;
-		};
+		},
 		// RCLV
-		var limpiaInputsRCLV = () => {
+		limpiaInputsRCLV: () => {
 			// Borra el valor de los inputsRCLV
 			inputsRCLV.forEach((input, i) => {
 				input.value = "";
@@ -303,8 +304,8 @@ window.addEventListener("load", async () => {
 			});
 			// Fin
 			return;
-		};
-		var actualizaOpsRCLV = () => {
+		},
+		actualizaOpsRCLV: () => {
 			// Borra los iconosOK_RCLV y los iconosError_RCLV
 			for (let icono of iconosOK_RCLV) icono.classList.add("ocultar");
 			for (let icono of iconosError_RCLV) icono.classList.add("ocultar");
@@ -383,8 +384,8 @@ window.addEventListener("load", async () => {
 				for (let etiqueta of etiquetasRCLV) etiqueta.classList.add("invisible");
 			}
 			return;
-		};
-		var interaccionesApMar = (campo) => {
+		},
+		interaccionesApMar: (campo) => {
 			// Cambia el contenido del Personaje o Hecho
 			// Acciones si se cambia el personaje
 			if (campo == "personaje_id") {
@@ -406,8 +407,8 @@ window.addEventListener("load", async () => {
 				// Cambia el contenido del Personaje
 				inputsRCLV[0].value = id;
 			}
-		};
-		var verificaUnaSolaOpcionRCLV = () => {
+		},
+		verificaUnaSolaOpcionRCLV: () => {
 			// Rutina para los 2 tipos de RCLV
 			let opPer = Array.from(opcionesPersonaje).filter((n) => !n.classList.contains("ocultar"));
 			let opHec = Array.from(opcionesHecho).filter((n) => !n.classList.contains("ocultar"));
@@ -417,8 +418,8 @@ window.addEventListener("load", async () => {
 			if (opHec.length == 1) inputsRCLV[1].value = opHec[0].value;
 			// Fin
 			return;
-		};
-		var iconosEdicionRCLVs = () => {
+		},
+		iconosEdicionRCLVs: () => {
 			// Revisar todas las entidades RCLV
 			linksEdicion.forEach((link, i) => {
 				// Se muestra/oculta el ícono de editar el registro
@@ -427,8 +428,8 @@ window.addEventListener("load", async () => {
 					link.classList.remove("ocultar");
 				} else link.classList.add("ocultar");
 			});
-		};
-		var funcionAdicSubcat = (campo) => {
+		},
+		adicSubcat: (campo) => {
 			let adicSubcategoria = "";
 			if (campo != "subcategoria_id")
 				adicSubcategoria += "&subcategoria_id=" + subcategoriaSelect.value;
@@ -436,8 +437,8 @@ window.addEventListener("load", async () => {
 			if (campo != "hecho_id") adicSubcategoria += "&hecho_id=" + inputsRCLV[1].value;
 			if (campo != "valor_id") adicSubcategoria += "&valor_id=" + inputsRCLV[2].value;
 			return adicSubcategoria;
-		};
-	}
+		},
+	};
 
 	// ADD EVENT LISTENERS *********************************
 	// Averiguar si hubieron cambios
@@ -445,7 +446,7 @@ window.addEventListener("load", async () => {
 		// Definir los valores para 'campo' y 'valor'
 		let campo = e.target.name;
 		let valor = encodeURIComponent(e.target.value);
-		if (PC) {
+		if (paso.PC) {
 			// Cambiar submit por '?'
 			verificar();
 			// Borrar los resultados anteriores
@@ -456,64 +457,65 @@ window.addEventListener("load", async () => {
 			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor;
 		}
-		if (DD) {
+		if (paso.DD) {
 			if (e.target == paisesSelect) {
 				// Convierte los ID de los países elegidos, en un texto
-				funcionPaises();
+				DD.actualizarPaises();
 				// Definir los valores para 'campo' y 'valor'
 				campo = paisesID.name;
 				valor = paisesID.value;
 			}
 			var datosUrl = campo + "=" + valor;
 		}
-		if (DP) {
+		if (paso.DP) {
 			// Si se cambia la categoría --> actualiza subcategoría
 			if (campo == "categoria_id") {
 				subcategoriaSelect.value = "";
-				actualizaOpsSubcat();
-				limpiaInputsRCLV();
-				actualizaOpsRCLV();
+				DP.actualizaOpsSubcat();
+				DP.limpiaInputsRCLV();
+				DP.actualizaOpsRCLV();
 			}
 			// Si se cambia la subcategoría --> actualiza RCLV
 			if (campo == "subcategoria_id") {
-				limpiaInputsRCLV();
-				actualizaOpsRCLV();
-				verificaUnaSolaOpcionRCLV();
-				iconosEdicionRCLVs();
+				DP.limpiaInputsRCLV();
+				DP.actualizaOpsRCLV();
+				DP.verificaUnaSolaOpcionRCLV();
+				DP.iconosEdicionRCLVs();
 				subcategoriaSelect.value == "JSS"
 					? linkAltaJSS.classList.add("ocultar")
 					: linkAltaJSS.classList.remove("ocultar");
 			}
 			// Verificar interacción para RCLV
 			if (Array.from(e.target.classList).includes("RCLV")) {
-				if (subcategoriaSelect.value == "AMA" && valor != "1") interaccionesApMar(campo);
-				iconosEdicionRCLVs();
+				if (subcategoriaSelect.value == "AMA" && valor != "1") DP.interaccionesApMar(campo);
+				DP.iconosEdicionRCLVs();
 			}
 			// Para que incluya los datos de la subcategoría y RCLVs, por si se necesitan para validar RCLV
-			let adicSubcategoria = subcategoriaSelect.value ? funcionAdicSubcat(campo) : "";
+			let adicSubcategoria = subcategoriaSelect.value ? DP.adicSubcat(campo) : "";
 			// Prepara el datosUrl con los datos a validar
 			var datosUrl = campo + "=" + valor + adicSubcategoria;
 		}
+		// Validar errores
 		await validarErrores(datosUrl, true);
 		// Fin
 		activarInactivarBotonSubmit();
 	});
 	form.addEventListener("change", async (e) => {
-		if (DP) {
+		if (paso.DP) {
 			// Obtener el valor para 'campo'
 			let campo = e.target.name;
 			let datos;
 			// (Título original / castellano) + año lanzamiento
 			if (campo == "nombre_original" || campo == "nombre_castellano" || campo == "ano_estreno") {
 				datos = {campo1: "nombre_original", campo2: "ano_estreno"};
-				funcionDosCampos(datos, campo);
+				DD.dosCampos(datos, campo);
 				datos = {campo1: "nombre_castellano", campo2: "ano_estreno"};
-				funcionDosCampos(datos, campo);
+				DD.dosCampos(datos, campo);
 			}
 			// Año de lanzamiento + año de finalización
 			if ((campo == "ano_estreno" && campos.includes("ano_fin")) || campo == "ano_fin") {
 				datos = {campo1: "ano_estreno", campo2: "ano_fin"};
-				funcionDosCampos(datos, campo);
+				DD.dosCampos(datos, campo);
 			}
 		}
 	});
@@ -529,14 +531,14 @@ window.addEventListener("load", async () => {
 	});
 
 	// STATUS INICIAL *************************************
-	if (DP) {
+	if (paso.DP) {
 		// Rutinas de categoría / subcategoría
-		actualizaOpsSubcat();
-		if (subcategoriaSelect.value) actualizaOpsRCLV();
+		DP.actualizaOpsSubcat();
+		if (subcategoriaSelect.value) DP.actualizaOpsRCLV();
 		// Activar links RCLV
-		iconosEdicionRCLVs();
+		DP.iconosEdicionRCLVs();
 	}
 	// Errores y boton 'Submit'
-	let mostrarIconoError = DD;
+	let mostrarIconoError = paso.DD;
 	statusInicial(mostrarIconoError);
 });

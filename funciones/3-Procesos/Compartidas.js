@@ -301,18 +301,18 @@ module.exports = {
 	},
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en  'string de nombres'
-		let resultado = [];
+		let paisesNombre = [];
 		if (paises_id.length) {
 			let BD_paises = await BD_genericas.obtenerTodos("paises", "nombre");
-			let paises_idArray = paises_id.split(", ");
-			// Convertir 'array de ID' en 'string de nombres'
+			let paises_idArray = paises_id.split(" ");
+			// Convertir 'IDs' en 'nombres'
 			for (let pais_id of paises_idArray) {
-				let aux = BD_paises.find((n) => n.id == pais_id);
-				if (aux) resultado.push(aux.nombre);
+				let paisNombre = BD_paises.find((n) => n.id == pais_id).nombre;
+				if (paisNombre) paisesNombre.push(paisNombre);
 			}
 		}
-		resultado = resultado.length ? resultado.join(", ") : "";
-		return resultado;
+		// Fin
+		return paisesNombre.join(", ");
 	},
 
 	// Convertir letras

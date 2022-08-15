@@ -159,7 +159,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		// return res.send(prodCombinado)
+		// return res.send(paises)
 		return res.render("0-Estructura-CRUD", {
 			tema,
 			codigo,

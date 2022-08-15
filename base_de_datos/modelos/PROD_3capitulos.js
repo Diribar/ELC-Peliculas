@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		nombre_original: {type: dt.STRING(100)},
 		idioma_original_id: {type: dt.STRING(2)},
 		duracion: {type: dt.INTEGER},
-		paises_id: {type: dt.STRING(18)},
+		paises_id: {type: dt.STRING(14)},
 		ano_estreno: {type: dt.INTEGER},
 		direccion: {type: dt.STRING(100)},
 		guion: {type: dt.STRING(100)},
