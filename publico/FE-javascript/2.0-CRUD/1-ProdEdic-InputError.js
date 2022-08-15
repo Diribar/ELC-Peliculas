@@ -149,7 +149,7 @@ window.addEventListener("load", async () => {
 				return;
 			}
 			let agregar = !paisesID.value.includes(paisID);
-			let aux = split(" ");
+			let aux = paisesID.value.split(" ");
 			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
 			if (agregar) aux.push(paisID); // Agrega el país
 			else aux = aux.splice(aux.indexOf(paisID), 1); // Quita el país
