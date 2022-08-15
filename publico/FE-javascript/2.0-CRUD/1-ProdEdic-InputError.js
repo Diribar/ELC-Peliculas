@@ -22,7 +22,7 @@ window.addEventListener("load", async () => {
 	// Categoría y subcategoría
 	let categoria = document.querySelector("select[name='categoria_id']");
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
-	let subcategoriasOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
+	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Varios
 	let avatarVisible = document.querySelector(".input-error #avatarVisible");
 	let avatarNuevo = document.querySelector(".input-error #avatarNuevo");
@@ -133,7 +133,7 @@ window.addEventListener("load", async () => {
 		},
 		actualizarOpcionesSubcat: () => {
 			let categ = categoria.value;
-			subcategoriasOpciones.forEach((opcion) => {
+			subcategoriaOpciones.forEach((opcion) => {
 				if (opcion.className.includes(categ)) opcion.classList.remove("ocultar");
 				else opcion.classList.add("ocultar");
 			});
