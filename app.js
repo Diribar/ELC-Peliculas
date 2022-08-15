@@ -47,15 +47,15 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
 	path.resolve(__dirname, "./vistas/0-Compartido"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
-	path.resolve(__dirname, "./vistas/2.0-Prod-Crear"),
-	path.resolve(__dirname, "./vistas/2.0-Prod-Crear/Includes"),
-	path.resolve(__dirname, "./vistas/2.1-Familias-CRUD"),	
-	path.resolve(__dirname, "./vistas/2.2-Prod-RUD"),
-	path.resolve(__dirname, "./vistas/2.2-Prod-RUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD"),
-	path.resolve(__dirname, "./vistas/2.3-RCLV-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/2.4-Links-CRUD"),
-	path.resolve(__dirname, "./vistas/2.4-Links-CRUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),	
+	path.resolve(__dirname, "./vistas/2.1-Prod-Crear"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-Crear/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD"),
+	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
+	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-Revisar"),
 	path.resolve(__dirname, "./vistas/3-Revisar/Includes"),
 	path.resolve(__dirname, "./vistas/6-Productos"),
@@ -67,9 +67,9 @@ app.set("views", [
 // CRUD
 const rutaCRUD = require("./rutas_y_controladores/2.0-CRUD/Rutas");
 const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Crear/Rutas");
-const rutaProd_RUD = require("./rutas_y_controladores/2.2-Prod-RUD/Rutas");
-const rutaRCLV_CRUD = require("./rutas_y_controladores/2.3-RCLV-CRUD/Rutas");
-const rutaLinks_CRUD = require("./rutas_y_controladores/2.4-Links-CRUD/Rutas");
+const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
+const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
+const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
 app.use("/crud", rutaCRUD);
 app.use("/producto/agregar", rutaProd_Crear);
 app.use("/producto", rutaProd_RUD);
