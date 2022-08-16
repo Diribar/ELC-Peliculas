@@ -327,14 +327,10 @@ window.addEventListener("load", async () => {
 	});
 
 	// Startup
-	// Obtiene los valores para EdicN
-	DE.obtieneLosValoresEdicN();
-	// ActualizaBotones
-	DE.actualizaBotones();
-	// Actualiza las opciones de Sub-categoría
-	DE.actualizaOpcionesSubcat();
-	// Acciones varias
-	DE.accionesPorCambioDeVersion();
+	DE.obtieneLosValoresEdicN(); // Obtiene los valores para EdicN
+	DE.actualizaBotones(); // ActualizaBotones
+	DE.actualizaOpcionesSubcat(); // Actualiza las opciones de Sub-categoría
+	DE.accionesPorCambioDeVersion(); // Acciones varias
 });
 let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 	return imagenActual
