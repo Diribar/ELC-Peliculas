@@ -131,16 +131,17 @@ window.addEventListener("load", async () => {
 			datosUrl += encodeURIComponent(input.value);
 		});
 		// Consecuencias de las validaciones de errores
-		await validarErrores(datosUrl, mostrarIconoError);
+		await muestraLosErrores(datosUrl, mostrarIconoError);
 		actualizaBotonSubmit();
 		// Fin
 		return;
 	};
-	let validarErrores = async (datosUrl, mostrarIconoError) => {
+	let muestraLosErrores = async (datosUrl, mostrarIconoError) => {
 		let errores = await fetch(rutaValidar + datosUrl).then((n) => n.json());
 		campos.forEach((campo, indice) => {
 			if (errores[campo] !== undefined) {
 				mensajesError[indice].innerHTML = errores[campo];
+				// Acciones en función de si hay o no mensajes de error
 				errores[campo]
 					? iconosError[indice].classList.add("error")
 					: iconosError[indice].classList.remove("error");
@@ -196,19 +197,18 @@ window.addEventListener("load", async () => {
 				inputs[indice2].value &&
 				!mensajesError[indice2].innerHTML
 			)
-				this.camposCombinados(camposComb, campo1);
+				this.camposCombinados(camposComb);
 			return;
 		},
-		camposCombinados: async (camposComb, campo) => {
+		camposCombinados: async (camposComb) => {
 			// Armado de la ruta
 			let datosUrl = "entidad=" + entidad;
-			let indice = [];
 			for (let i = 0; i < camposComb.length; i++) {
-				indice.push(campos.indexOf(camposComb[i]));
-				datosUrl += "&" + camposComb[i] + "=" + inputs[indice[i]].value;
+				let indice = campos.indexOf(camposComb[i]);
+				datosUrl += "&" + camposComb[i] + "=" + inputs[indice].value;
 			}
 			// Obtener el mensaje para el campo
-			await validarErrores(datosUrl, true);
+			await muestraLosErrores(datosUrl, true);
 			actualizaBotonSubmit();
 			return;
 		},
@@ -228,7 +228,7 @@ window.addEventListener("load", async () => {
 			if (agregar) {
 				if (paisesID.value.length >= 2 * 1 + 3 * 4) return; // Limita la cantidad máxima de países a 1 + 4 = 5
 				paisesID.value += (paisesID.value ? " " : "") + paisID; // Actualiza el input
-			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim();// Quita el paisID solicitado
+			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim(); // Quita el paisID solicitado
 
 			// Actualizar los países a mostrar
 			let paisesNombre = "";
@@ -476,7 +476,7 @@ window.addEventListener("load", async () => {
 			var datosUrl = campo + "=" + valor + adicSubcategoria;
 		}
 		// Validar errores
-		await validarErrores(datosUrl, true);
+		await muestraLosErrores(datosUrl, true);
 		// Actualiza botón Submit
 		actualizaBotonSubmit();
 	});

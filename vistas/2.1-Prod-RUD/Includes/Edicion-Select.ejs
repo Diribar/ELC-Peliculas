@@ -1,16 +1,15 @@
 <% let campo = camposDP.find(n => n.nombreDelCampo == nombreDelCampo) %>
-<section class="label-input <% if (campo.grupo=="RCLV") { %> RCLV<% } %>">
+<section class="label-input">
 	<label><%= campo.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto' : '' %> <%- campo.grupo=="RCLV" ? 'RCLV' : '' %>">
+		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
 			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
 					<% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>
 					<% if (campo.nombreDelCampo == "subcategoria_id") { %>class="<%= (valor.cfc ? "CFC" : "") + " " + (valor.vpc ? "VPC" : "") %>"<% } %>
 					<% if (entidad != "colecciones" && (campo.nombreDelCampo == "en_castellano_id" || campo.nombreDelCampo == "en_color_id") && valor.id == 2) { %>class="ocultar"<% } %>
-					<% if (entidad != "colecciones" && campo.grupo=="RCLV" && valor.id == 2) { %>class="ocultar"<% } %>
 				>
 					<%= valor[nombre] %>
 				</option>
@@ -26,10 +25,5 @@
 		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
-		<!-- Link a Relación con la vida -->
-		<% if (campo.grupo=="RCLV") { %>
-			<i id="alta" class="fa-solid fa-circle-plus linkRCLV ocultar <%= campo.nombreDelCampo %>" title='Agregar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
-			<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= campo.nombreDelCampo %>" title='Editar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
-		<% } %>
 	</div>
 </section>
