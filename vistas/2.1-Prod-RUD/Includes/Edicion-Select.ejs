@@ -3,7 +3,7 @@
 	<label><%= campo.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
-		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto' : '' %> <%- campo.grupo=="RCLV" ? 'RCLV' : '' %>">
+		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %><%- campo.grupo=="RCLV" ? 'RCLV' : '' %>">
 			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
 			<% for (let valor of campo.valores) { %>
 				<option value="<%= valor.id %>" 
