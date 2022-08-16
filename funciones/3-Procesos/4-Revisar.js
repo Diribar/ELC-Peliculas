@@ -8,7 +8,7 @@ const validar = require("../4-Validaciones/RUD");
 
 module.exports = {
 	// ControladorVista (Tablero)
-	// Producto y Links
+	// Producto, RCLVs, Links
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
@@ -35,7 +35,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdEdics: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdic: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -48,8 +48,8 @@ module.exports = {
 		let gr_aprobado = [alta_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
-		// Obtener todas las ediciones de usuarios ajenos
-		let ediciones = await BD_especificas.tablero_obtenerProdEdics(userID, includes);
+		// Obtener todas las ediciones ajenas
+		let ediciones = await BD_especificas.tablero_obtenerEdicsDeProds(userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -100,10 +100,10 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerLinks: async (ahora, status, userID) => {
+	tablero_obtenerProdsConLink: async (ahora, status, userID) => {
 		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
 		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks(status);
+		let links = await BD_especificas.tablero_obtenerLinks_y_Edics(status);
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtener los links ajenos
@@ -156,7 +156,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, IP};
 	},
-	tablero_obtenerRCLVsEdics: async (ahora, status, userID) => {
+	tablero_obtenerRCLVsConEdic: async (ahora, status, userID) => {
 		// - edicRCLV ajena, pend. aprobar
 	},
 	prod_ProcesarCampos: (productos) => {
@@ -646,8 +646,8 @@ let usuario_CalidadAltas = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.cant_altas_aprob;
-	let cantRech = usuario.cant_altas_rech;
+	let cantAprob = usuario.prod_aprob;
+	let cantRech = usuario.prod_rech;
 	// 3. Precisión de altas
 	let cantAltas = cantAprob + cantRech;
 	let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
@@ -665,8 +665,8 @@ let usuario_CalidadEdic = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.cant_edic_aprob;
-	let cantRech = usuario.cant_edic_rech;
+	let cantAprob = usuario.edic_aprob;
+	let cantRech = usuario.edic_rech;
 	// 3. Precisión de ediciones
 	let cantEdics = cantAprob + cantRech;
 	let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";

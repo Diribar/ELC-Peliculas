@@ -1,10 +1,12 @@
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<section id="imagen" class="input-error">
-		<label for="inputImagen" id="imagenProducto">
+		<!-- Imagen que se ve en la vista -->
+		<label for="inputImagen" id="avatarVisible">
 			<img src="<%= avatar %>" class="pointer">
 		</label>
 		<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
-		<label id="imagenProducto2" class="ocultar">
+		<!-- Almacenaje de la imagen nueva -->
+		<label id="avatarNuevo" class="ocultar">
 			<img src="<%= avatar %>" class="ocultar">
 		</label>
 		<!-- Ayuda -->

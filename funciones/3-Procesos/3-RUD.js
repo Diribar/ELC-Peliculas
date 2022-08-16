@@ -19,14 +19,15 @@ module.exports = {
 			"personaje",
 			"hecho",
 			"valor",
-			// A partir de acá, van los campos exclusivos de 'Original'
-			"creado_por",
-			"status_registro",
 		];
-		if (entidad == "capitulos") includes.push("coleccion");
-		else if (entidad == "colecciones") includes.push("capitulos");
+		let includesOriginal = ["creado_por", "status_registro"];
+		if (entidad == "capitulos") includesOriginal.push("coleccion");
+		else if (entidad == "colecciones") includesOriginal.push("capitulos");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+			...includes,
+			...includesOriginal,
+		]);
 		// Obtener el producto EDITADO
 		let prodEditado = "";
 		let producto_id = funciones.obtenerEntidad_id(entidad);
@@ -34,16 +35,13 @@ module.exports = {
 			// Quitarle los campos 'null'
 			prodOriginal = funciones.quitarLosCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-			if (entidad != "peliculas") includes.pop();
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"prods_edicion",
 				{[producto_id]: prodID, editado_por_id: userID},
-				includes.slice(0, -2)
+				includes
 			);
-			if (prodEditado) {
-				// Quitarle los campos 'null'
-				prodEditado = funciones.quitarLosCamposSinContenido(prodEditado);
-			}
+			// Quitarle los campos 'null'
+			if (prodEditado) prodEditado = funciones.quitarLosCamposSinContenido(prodEditado);
 		}
 		return [prodOriginal, prodEditado];
 	},

@@ -16,6 +16,8 @@ const aptoDE = require("../../middlewares/captura/aptoDE");
 const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
+// Consolidados
+const todos = [soloAutInput, entidad, id, aptoDE, permReg, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs
@@ -29,17 +31,7 @@ router.get("/api/deshacer", API.deshacer);
 
 // Rutas de vistas
 // Links
-router.get(
-	"/abm",
-	soloAutInput,
-	entidad,
-	id,
-	aptoDE,
-	permReg,
-	permUserReg,
-	capturaActivar,
-	vista.linksForm
-);
+router.get("/abm", ...todos, vista.linksForm);
 
 // Fin
 module.exports = router;

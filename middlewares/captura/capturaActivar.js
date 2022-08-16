@@ -18,8 +18,10 @@ module.exports = async (req, res, next) => {
 	let horarioFinal = funciones.nuevoHorario(1, capturado_en);
 	horarioFinal = funciones.horarioTexto(horarioFinal);
 
-	// Captura
-	if (!registro.status_registro.gr_pend_aprob || urlBase == "/revision") {
+	// Se debe capturar únicamente si se cumple alguna de estas 2 condiciones:
+	// 	1. El registro no está en status "creado" (en status "creado" está reservado para el creador durante 1 hora, sin captura)
+	//	2. Se quiere acceder desde una vista de revisión
+	if (!registro.status_registro.creado || urlBase == "/revision") {
 		// Activa la entidad y el usuario
 		let datos = {captura_activa: true, capturado_por_id: userID};
 		// Fija la nueva hora de captura si corresponde

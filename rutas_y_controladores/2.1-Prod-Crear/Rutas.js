@@ -7,9 +7,11 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
-const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
 const aptoDE = require("../../middlewares/captura/aptoDE");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
+const todos = [soloAutInput, aptoDE, prodYaEnBD];
+const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
+const todosFA = [soloAutInput, aptoDE, autorizadoFA];
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 const multer = require("../../middlewares/varios/multer");
@@ -33,21 +35,21 @@ router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 
 // VISTAS
 router.get("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveForm);
-router.post("/palabras-clave", soloAutInput, vista.palabrasClaveGuardar);
+router.post("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveGuardar);
 router.get("/desambiguar", soloAutInput, aptoDE, vista.desambiguarForm);
-router.post("/desambiguar", soloAutInput, vista.desambiguarGuardar);
+router.post("/desambiguar", soloAutInput, aptoDE, vista.desambiguarGuardar);
 router.get("/tipo-producto", soloAutInput, aptoDE, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto-dd", soloAutInput, vista.tipoProd_Guardar);
-router.post("/tipo-producto-fa", soloAutInput, vista.copiarFA_Form);
-router.get("/copiar-fa", soloAutInput, aptoDE, autorizadoFA, vista.copiarFA_Form);
-router.post("/copiar-fa", soloAutInput, vista.copiarFA_Guardar);
+router.post("/tipo-producto-dd", soloAutInput, aptoDE, vista.tipoProd_Guardar);
+router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
+router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
+router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
 // Comienzo de "prodYaEnBD"
-router.get("/datos-duros", soloAutInput, aptoDE, prodYaEnBD, vista.datosDurosForm);
-router.post("/datos-duros", soloAutInput, prodYaEnBD, multer.single("avatar"), vista.datosDurosGuardar);
-router.get("/datos-personalizados", soloAutInput, aptoDE, prodYaEnBD, vista.datosPersForm);
-router.post("/datos-personalizados", soloAutInput, prodYaEnBD, vista.datosPersGuardar);
-router.get("/confirma", soloAutInput, aptoDE, prodYaEnBD, vista.confirmaForm);
-router.post("/confirma", soloAutInput, aptoDE, prodYaEnBD, vista.confirmaGuardar);
+router.get("/datos-duros", ...todos, vista.datosDurosForm);
+router.post("/datos-duros", ...todos, multer.single("avatar"), vista.datosDurosGuardar);
+router.get("/datos-personalizados", ...todos, vista.datosPersForm);
+router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
+router.get("/confirma", ...todos, vista.confirmaForm);
+router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", soloAutInput, entidad, id, vista.terminasteForm);
 

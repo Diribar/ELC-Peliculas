@@ -10,9 +10,9 @@ window.addEventListener("load", () => {
 	let mostrarMotivos = document.querySelectorAll("#contenido .fa-circle-xmark.mostrarMotivos");
 
 	// Motivos para borrar
+	let rechazar = document.querySelectorAll("#contenido .rechazar");
 	let menuMotivos = document.querySelectorAll("#contenido .motivos");
 	let motivoRechazos = document.querySelectorAll("#contenido .motivos select");
-	let rechazar = document.querySelectorAll("#contenido .rechazar");
 	let sinMotivo = rechazar.length - motivoRechazos.length;
 
 	// Bloque Ingresos
@@ -29,53 +29,8 @@ window.addEventListener("load", () => {
 	let campoNombres = Array.from(document.querySelectorAll("#contenido .campoNombre")).map(
 		(n) => n.innerHTML
 	);
-
-	// LISTENERS --------------------------------------------------------------------
-	// 'Listeners' de 'Aprobar'
-	for (let i = 0; i < casos; i++) {
-		// Aprobar el nuevo valor
-		aprobar[i].addEventListener("click", async () => {
-			// Ocultar la fila
-			filas[i].classList.add("ocultar");
-			// Actualizar el campo del producto
-			let ruta = "/revision/api/producto-edicion/?aprob=true&entidad=";
-			let [quedanCampos, statusAprobado] = await fetch(
-				ruta + entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=" + campoNombres[i]
-			).then((n) => n.json());
-			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprobado);
-		});
-
-		// Menú inactivar
-		if (i >= sinMotivo) {
-			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
-				menuMotivos[i - sinMotivo].classList.remove("ocultar");
-			});
-		}
-
-		// Rechazar el nuevo valor
-		rechazar[i].addEventListener("click", async () => {
-			let motivo = i >= sinMotivo ? motivoRechazos[i - sinMotivo].value : "";
-			// Ocultar la fila
-			filas[i].classList.add("ocultar");
-			// Actualizar el campo del producto
-			let ruta = "/revision/api/producto-edicion/?aprob=false&entidad=";
-			let [quedanCampos, statusAprobado] = await fetch(
-				ruta +
-					entidad +
-					"&id=" +
-					prodID +
-					"&edicion_id=" +
-					edicID +
-					"&campo=" +
-					campoNombres[i] +
-					"&motivo_id=" +
-					motivo
-			).then((n) => n.json());
-			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprobado);
-		});
-	}
+	let ruta =
+		"/revision/api/producto-edicion/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// FUNCIONES ----------------------------------------------------------------
 	let consecuenciasQC = (quedanCampos, statusAprobado) => {
@@ -84,6 +39,8 @@ window.addEventListener("load", () => {
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
 		// Averiguar si está todo oculto
 		let todoOculto = ingrsOculto && reempsOculto;
+		console.log(todoOculto);
+		console.log(quedanCampos,statusAprobado);
 		// 1. Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
 		// 2. Acciones si no quedan más campos en la edición
@@ -150,4 +107,39 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	};
+
+	// LISTENERS --------------------------------------------------------------------
+	for (let i = 0; i < casos; i++) {
+		// Aprobar el nuevo valor
+		aprobar[i].addEventListener("click", async () => {
+			// Ocultar la fila
+			filas[i].classList.add("ocultar");
+			// Actualizar el campo del producto
+			let [quedanCampos, statusAprobado] = await fetch(
+				ruta + "&aprob=true&campo=" + campoNombres[i]
+			).then((n) => n.json());
+			// Revisar el status
+			consecuenciasQC(quedanCampos, statusAprobado);
+		});
+
+		// Menú inactivar
+		if (i >= sinMotivo) {
+			mostrarMotivos[i - sinMotivo].addEventListener("click", () => {
+				menuMotivos[i - sinMotivo].classList.remove("ocultar");
+			});
+		}
+
+		// Rechazar el nuevo valor
+		rechazar[i].addEventListener("click", async () => {
+			let motivo = i >= sinMotivo ? motivoRechazos[i - sinMotivo].value : "";
+			// Ocultar la fila
+			filas[i].classList.add("ocultar");
+			// Actualizar el campo del producto
+			let [quedanCampos, statusAprobado] = await fetch(
+				ruta + "&campo=" + campoNombres[i] + "&motivo_id=" + motivo
+			).then((n) => n.json());
+			// Revisar el status
+			consecuenciasQC(quedanCampos, statusAprobado);
+		});
+	}
 });

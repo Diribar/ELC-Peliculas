@@ -59,22 +59,25 @@ module.exports = {
 		// Enviar los datos
 		return res.json([prodOriginal, prodEditado]);
 	},
-	enviarAReqSession: async (req, res) => {
-		if (req.query.avatar) delete req.query.avatar;
-		req.session.edicion = req.query;
-		res.cookie("edicion", req.query, {maxAge: unDia});
+	prod_EliminarEdic: async (req, res) => {
+		// Obtener los datos identificatorios del producto
+		let entidad = req.query.entidad;
+		let prodID = req.query.id;
+		let userID = req.session.usuario.id;
+
+		// Obtener los datos ORIGINALES y EDITADOS del producto
+		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		// No se puede eliminar la edición de un producto con status "gr_pend_aprob" y fue creado por el usuario
+		let condicion = !prodOriginal.status_registro.gr_pend_aprob || prodOriginal.creado_por_id != userID;
+		if (condicion && prodEditado) BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);
+		// Terminar
 		return res.json();
 	},
-	obtenerDeReqSession: async (req, res) => {
-		let {entidad, id} = req.query;
-		let edicion =
-			req.session.edicion && req.session.edicion.entidad == entidad && req.session.edicion.id == id
-				? req.session.edicion
-				: req.cookies.edicion &&
-				  req.cookies.edicion.entidad == entidad &&
-				  req.cookies.edicion.id == id
-				? req.cookies.edicion
-				: "";
-		return res.json(edicion);
+
+	enviarAReqSession: async (req, res) => {
+		if (req.query.avatar) delete req.query.avatar;
+		req.session.edicProd = req.query;
+		res.cookie("edicProd", req.query, {maxAge: unDia});
+		return res.json();
 	},
 };

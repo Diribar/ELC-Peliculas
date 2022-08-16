@@ -113,9 +113,9 @@ module.exports = {
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
 				res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 			} else if (origen == "ED") {
-				req.session.edicion = req.session.edicion ? req.session.edicion : req.cookies.edicion;
-				req.session.edicion = {...req.session.edicion, [entidad_id]: id};
-				res.cookie("edicion", req.session.edicion, {maxAge: unDia});
+				req.session.edicProd = req.session.edicProd ? req.session.edicProd : req.cookies.edicProd;
+				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
+				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
 		} else if (agregar_edicion == "edicion") {
 			// Obtener el registro original

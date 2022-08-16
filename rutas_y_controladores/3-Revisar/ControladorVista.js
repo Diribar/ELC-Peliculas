@@ -18,11 +18,11 @@ module.exports = {
 		const aprobado_id = status.find((n) => n.aprobado).id;
 		const ahora = funciones.ahora();
 		// Productos y Ediciones
-		let productos
+		let productos;
 		productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
-		productos.ED = await procesar.tablero_obtenerProdEdics(ahora, status, userID); //
+		productos.ED = await procesar.tablero_obtenerProdsConEdic(ahora, status, userID); //
 		// Obtener Links
-		productos.LK = await procesar.tablero_obtenerLinks(ahora, status, userID); //
+		productos.LK = await procesar.tablero_obtenerProdsConLink(ahora, status, userID); //
 		productos = procesar.prod_ProcesarCampos(productos);
 		// RCLV
 		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID); //
@@ -35,85 +35,7 @@ module.exports = {
 			titulo: "Revisar - Tablero de Control",
 			productos,
 			RCLVs,
-			status,
-			aprobado_id,
-			userID,
-			//haceUnaHora,
 		});
-	},
-	redireccionar: async (req, res) => {
-		// Variables
-		let entidad = req.query.entidad;
-		let prodID = req.query.id;
-		let edicID = req.query.edicion_id;
-		let userID = req.session.usuario.id;
-		let destino = funciones.obtenerFamiliaEnSingular(entidad);
-		let haceUnaHora = funciones.nuevoHorario(-1);
-		let datosEdicion = "";
-		// Obtener el producto
-		let registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");
-		// Obtener la sub-dirección de destino
-		if (destino == "producto") {
-			let subDestino = registro.status_registro.creado
-				? "/alta"
-				: registro.status_registro.alta_aprob || registro.status_registro.aprobado
-				? "/edicion"
-				: "/inactivos";
-			destino += subDestino;
-			if (subDestino == "/edicion") {
-				let producto_id = funciones.obtenerEntidad_id(entidad);
-				// Obtener el id de la edición
-				if (!edicID)
-					edicID = await BD_especificas.obtenerEdicionAjena(
-						producto_id,
-						prodID,
-						userID,
-						haceUnaHora
-					);
-				if (edicID) datosEdicion = "&edicion_id=" + edicID;
-				else {
-					// Averiguar sobre la edición
-					let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
-						[producto_id]: prodID,
-					});
-					// Liberar el producto original
-					BD_genericas.actualizarPorId(entidad, prodID, {captura_activa: 0});
-					// Generar la info del error
-					let informacion = {
-						mensajes:
-							edicion && edicion.editado_por_id == userID
-								? [
-										"Sólo encontramos una edición, realizada por vos.",
-										"Necesitamos que la revise otra persona.",
-								  ]
-								: [
-										"No encontramos ninguna edición para revisar",
-										"¿Querés hacerle vos una edición?",
-								  ],
-						iconos: [
-							{
-								nombre: "fa-spell-check ",
-								link:
-									"/inactivar-captura/?entidad=" +
-									entidad +
-									"&id=" +
-									prodID +
-									"&destino=tablero",
-								titulo: "Regresar al Tablero de Control",
-							},
-							{
-								nombre: "fa-pencil",
-								link: "/producto/edicion/?entidad=" + entidad + "&id=" + prodID,
-								titulo: "Ir a la vista de edición",
-							},
-						],
-					};
-					return res.render("Errores", {informacion});
-				}
-			}
-		}
-		// Redireccionar
-		return res.redirect("/revision/" + destino + "/?entidad=" + entidad + "&id=" + prodID + datosEdicion);
 	},
 	// Productos
 	prod_Alta: async (req, res) => {
@@ -124,22 +46,11 @@ module.exports = {
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		// 3. Redirigir hacia la colección
-		if (entidad == "capitulos") {
-			// Liberar la captura del capítulo
-			let datos = {capturado_por_id: null, capturado_en: null, captura_activa: null};
-			BD_genericas.actualizarPorId("capitulos", prodID, datos);
-			// Obtener el ID de la colección
-			let producto = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "coleccion");
-			let colecID = producto.coleccion.id;
-			// Redireccionar a la colección
-			return res.redirect("/revision/redireccionar/?entidad=colecciones&id=" + colecID);
-		}
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
+		if (entidad == "colecciones") includes.push("capitulos");
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
-		if (!prodOriginal.status_registro.creado)
-			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+		if (!prodOriginal.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtener avatar original
 		let avatar = prodOriginal.avatar
 			? (prodOriginal.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") +
@@ -173,14 +84,24 @@ module.exports = {
 	},
 	prod_Edicion: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
-		let codigo = "producto/edicion";
+		const tema = "revision";
+		const codigo = "producto/edicion";
 		// 2. Variables
-		let entidad = req.query.entidad;
-		let prodID = req.query.id;
+		const entidad = req.query.entidad;
+		const prodID = req.query.id;
+		const userID = req.session.usuario.id;
+		const producto_id = funciones.obtenerEntidad_id(entidad);
 		let edicID = req.query.edicion_id;
-		// VERIFICACION1: Si no existe edición --> redirecciona
-		if (!edicID) return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+
+		// VERIFICACION1: Si no existe edicID...
+		if (!edicID) {
+			edicID = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
+			if (!edicID) {
+				let informacion = await infoProdEdicion(producto_id, prodID, userID);
+				return res.render("Errores", {informacion});
+			} else return res.redirect(req.originalUrl + "&edicion_id=" + edicID); // Recargar la vista con el ID de la edición
+		}
+		// return res.send(req.query);
 		// Definir más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
@@ -202,9 +123,8 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
-		let producto_id = funciones.obtenerEntidad_id(entidad);
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
-			return res.redirect("/revision/redireccionar/?entidad=" + entidad + "&id=" + prodID);
+			return res.redirect("/inactivar-captura/?destino=tablero&entidad=" + entidad + "&id=" + prodID);
 		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
@@ -256,7 +176,7 @@ module.exports = {
 		let prodNombre = funciones.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
-		//return res.send([prodOriginal, prodEditado]);
+		return res.send([prodOriginal, prodEditado]);
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -396,6 +316,30 @@ module.exports = {
 	},
 };
 
+let infoProdEdicion = async (producto_id, prodID, userID) => {
+	// Averiguar sobre la edición
+	let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
+		[producto_id]: prodID,
+	});
+	// Generar la info del error
+	let informacion = {
+		mensajes:
+			edicion && edicion.editado_por_id == userID
+				? [
+						"Sólo encontramos una edición, realizada por vos.",
+						"Necesitamos que la revise otra persona.",
+				  ]
+				: ["No encontramos ninguna edición para revisar"],
+		iconos: [
+			{
+				nombre: "fa-spell-check ",
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&destino=tablero",
+				titulo: "Regresar al Tablero de Control",
+			},
+		],
+	};
+	return informacion;
+};
 let problemasLinks = (producto, urlAnterior) => {
 	// Variables
 	let informacion;

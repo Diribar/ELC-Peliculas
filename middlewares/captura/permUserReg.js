@@ -6,29 +6,30 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
-	const entidad_codigo = req.query.entidad;
-	const entidad_id = req.query.id;
+	const entidad = req.query.entidad;
+	const entidadID = req.query.id;
 	const haceUnaHora = funciones.nuevoHorario(-1);
 	const haceDosHoras = funciones.nuevoHorario(-2);
-	const userID = req.session.usuario.id;
-	const familia = funciones.obtenerFamiliaEnSingular(entidad_codigo);
+	const usuario = req.session.usuario;
+	const userID = usuario.id;
 	let informacion;
 	// Variables de url
 	const urlBase = req.baseUrl;
 	const url = req.url;
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
-	if (entidad_codigo == "capitulos") includes.push("coleccion");
-	const registro = await BD_genericas.obtenerPorIdConInclude(entidad_codigo, entidad_id, includes);
-	const creado_en = registro.creado_en;
+	if (entidad == "capitulos") includes.push("coleccion");
+	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
+	let creado_en = registro.creado_en;
+	if (creado_en) creado_en.setSeconds(0);
+	const horarioFinalCreado = funciones.horarioTexto(funciones.nuevoHorario(1, creado_en));
 	const capturado_en = registro.capturado_en;
-	const horarioFinal = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
+	const horarioFinalCaptura = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaInactivar = variables.vistaInactivar(req);
-	const vistaAnteriorInactivar = () => {
-		return [vistaAnterior, vistaInactivar];
-	};
+	const vistaAnteriorInactivar = () => [vistaAnterior, vistaInactivar];
+
 	const vistaTablero = variables.vistaTablero();
 	const vistaAnteriorTablero = () => {
 		let vista = [vistaAnterior];
@@ -39,15 +40,30 @@ module.exports = async (req, res, next) => {
 
 	// Creado por el usuario
 	let creadoPorElUsuario1 = registro.creado_por_id == userID;
-	let creadoPorElUsuario2 = entidad_codigo == "capitulos" && registro.coleccion.creado_por_id == userID;
+	let creadoPorElUsuario2 = entidad == "capitulos" && registro.coleccion.creado_por_id == userID;
 	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
 	// Fórmulas
 	let creadoHaceMenosDeUnaHora = () => {
-		// No rige para RCLV porque para ellos el status inicial es 'aprobado'
-		return creado_en > haceUnaHora && !creadoPorElUsuario && familia != "rclv"
+		return creado_en > haceUnaHora && !creadoPorElUsuario
 			? {
-					mensajes: ["Por ahora, el registro sólo está accesible para su creador"],
+					mensajes: [
+						"Por ahora, el registro sólo está accesible para su creador",
+						"Estará disponible para su revisión el " + horarioFinalCreado,
+					],
+					iconos: [vistaAnterior],
+			  }
+			: "";
+	};
+	let creadoHaceMasDeUnaHora = () => {
+		return creado_en < haceUnaHora && // creado hace más de una hora
+			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la vista no es de revisión
+				(registro.status_registro.alta_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
+			? {
+					mensajes: [
+						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
+						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+					],
 					iconos: [vistaAnterior],
 			  }
 			: "";
@@ -59,7 +75,7 @@ module.exports = async (req, res, next) => {
 						"El registro está capturado por " +
 							(registro.capturado_por ? registro.capturado_por.apodo : "") +
 							".",
-						"Estará liberado a más tardar el " + horarioFinal,
+						"Estará liberado a más tardar el " + horarioFinalCaptura,
 					],
 					iconos: vistaAnteriorInactivar(),
 			  }
@@ -71,7 +87,7 @@ module.exports = async (req, res, next) => {
 			registro.capturado_por_id == userID
 			? {
 					mensajes: [
-						"Esta captura terminó el " + horarioFinal,
+						"Esta captura terminó el " + horarioFinalCaptura,
 						"Quedó a disposición de los demás usuarios.",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
@@ -81,11 +97,7 @@ module.exports = async (req, res, next) => {
 	};
 	let otroRegistroCapturado = async () => {
 		let informacion;
-		let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(
-			entidad_codigo,
-			entidad_id,
-			userID
-		);
+		let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(entidad, entidadID, userID);
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidadCodigo = prodCapturado.entidad;
@@ -172,6 +184,10 @@ module.exports = async (req, res, next) => {
 	};
 	// 1. El registro fue creado hace menos de una hora por otro usuario
 	if (!informacion) informacion = creadoHaceMenosDeUnaHora();
+	// 2. El registro fue creado hace más de una hora
+	//    El registro está en status creado y la vista no es de revisión
+	//    El registro está en status altaAprob y el usuario no es revisor
+	if (!informacion) informacion = creadoHaceMasDeUnaHora();
 	// 2. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();
 	// 3. El usuario capturó la entidad hace más de una hora y menos de dos horas
