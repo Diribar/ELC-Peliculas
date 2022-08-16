@@ -16,7 +16,6 @@ window.addEventListener("load", async () => {
 	let inputs = document.querySelectorAll(".input-error .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	if (paso.PC) {
@@ -133,7 +132,7 @@ window.addEventListener("load", async () => {
 		});
 		// Consecuencias de las validaciones de errores
 		await validarErrores(datosUrl, mostrarIconoError);
-		activarInactivarBotonSubmit();
+		actualizaBotonSubmit();
 		// Fin
 		return;
 	};
@@ -143,8 +142,8 @@ window.addEventListener("load", async () => {
 			if (errores[campo] !== undefined) {
 				mensajesError[indice].innerHTML = errores[campo];
 				errores[campo]
-					? iconosOK[indice].classList.add("ocultar")
-					: iconosOK[indice].classList.remove("ocultar");
+					? iconosError[indice].classList.add("error")
+					: iconosError[indice].classList.remove("error")
 				errores[campo] && mostrarIconoError
 					? iconosError[indice].classList.remove("ocultar")
 					: iconosError[indice].classList.add("ocultar");
@@ -153,36 +152,19 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let activarInactivarBotonSubmit = () => {
-		// Detectar la cantidad de 'iconosOK' que no corresponden por motivos de RCLV
-		let OKs_innec = paso.DP ? 2 : 0;
-
-		// Detectar la cantidad de 'aciertos' ocultos
-		let OKs_ocultos = Array.from(iconosOK)
-			.map((n) => n.className)
-			.join(" ")
-			.split(" ")
-			.reduce((a, b) => {
-				return a[b] ? ++a[b] : (a[b] = 1), a;
-			}, {}).ocultar;
-
+	let actualizaBotonSubmit = () => {
 		// Detectar la cantidad de 'errores' ocultos
-		let errores_ocultos = Array.from(iconosError)
+		let hayErrores = Array.from(iconosError)
 			.map((n) => n.className)
 			.join(" ")
 			.split(" ")
 			.reduce((a, b) => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
-			}, {}).ocultar;
-
+			}, {}).error;
 		// Consecuencias
-		let OK = OKs_ocultos == OKs_innec || (!OKs_ocultos && !OKs_innec);
-		let error = errores_ocultos == iconosError.length || (!errores_ocultos && !iconosError.length);
-		OK && error ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
+		!hayErrores ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
 		// Pruebas
-		// console.log(OKs_ocultos, OKs_innec);
-		// console.log(errores_ocultos, iconosError.length);
-		// console.log(OK, error);
+		console.log(hayErrores);
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();
@@ -227,7 +209,7 @@ window.addEventListener("load", async () => {
 			}
 			// Obtener el mensaje para el campo
 			await validarErrores(datosUrl, true);
-			activarInactivarBotonSubmit();
+			actualizaBotonSubmit();
 			return;
 		},
 		actualizarPaises: () => {
@@ -497,8 +479,8 @@ window.addEventListener("load", async () => {
 		}
 		// Validar errores
 		await validarErrores(datosUrl, true);
-		// Fin
-		activarInactivarBotonSubmit();
+		// Actualiza botón Submit
+		actualizaBotonSubmit();
 	});
 	form.addEventListener("change", async (e) => {
 		if (paso.DP) {

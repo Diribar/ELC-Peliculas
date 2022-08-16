@@ -65,38 +65,47 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		accionesPorCambioDeVersion: function () {
+			// Declaración de funciones
+			let rutinasPorCampo = () => {
+				// Rutina para cada campo
+				campos.forEach((campo, i) => {
+					// Reemplaza los valores
+					if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
+					// Impide/permite que el usuario haga cambios en los datos de la versión
+					inputs[i].disabled = !estamosEnEdicNueva;
+					if (campo == "paises_id") {
+						paisesMostrar.disabled = !estamosEnEdicNueva;
+						paisesSelect.disabled = !estamosEnEdicNueva;
+					}
+				});
+				// Fin
+				return;
+			};
+			let actualizaIconosRCLV = () => {
+				let links = document.querySelectorAll(".input-error i.linkRCLV");
+				for (let link of links)
+					estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+				return;
+			};
+			let actualizaIconosAyuda = () => {
+				for (let iconoAyuda of iconosAyuda)
+					estamosEnEdicNueva
+						? iconoAyuda.classList.remove("inactivo")
+						: iconoAyuda.classList.add("inactivo");
+				return;
+			};
 			// Variables
 			let estamosEnEdicNueva = versionActual == "edicN";
-			// Rutina para cada campo
-			campos.forEach((campo, i) => {
-				// Reemplaza los valores
-				if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
-				// Impide/permite que el usuario haga cambios en los datos de la versión
-				inputs[i].disabled = !estamosEnEdicNueva;
-				if (campo == "paises_id") {
-					paisesMostrar.disabled = !estamosEnEdicNueva;
-					paisesSelect.disabled = !estamosEnEdicNueva;
-				}
-			});
-			// Activa/desactiva el mouse para el avatar
-			estamosEnEdicNueva
-				? avatarVisible.classList.add("pointer")
-				: avatarVisible.classList.remove("pointer");
-			// Reemplaza el avatar visible
-			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible);
-			// Señala las diferencias con la versión original
-			this.senalaLasDiferencias();
-			// Muestra/oculta los íconos para RCLV
-			let links = document.querySelectorAll(".input-error i.linkRCLV");
-			for (let link of links)
-				estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
-			// Muestra/oculta los íconos de ayuda
-			for (let iconoAyuda of iconosAyuda)
-				estamosEnEdicNueva
-					? iconoAyuda.classList.remove("inactivo")
-					: iconoAyuda.classList.add("inactivo");
-			// Muestra los errores
-			this.muestraLosErrores();
+			// Funciones
+			rutinasPorCampo();
+			if (estamosEnEdicNueva) this.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			this.actualizaPaises(); // Actualiza los paises
+			AV.actualizaMouse; // Activa/desactiva el mouse para el avatar
+			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible); // Reemplaza el avatar visible
+			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
+			actualizaIconosRCLV(); // Muestra/oculta los íconos para RCLV
+			actualizaIconosAyuda(); // Muestra/oculta los íconos de ayuda
+			this.muestraLosErrores(); // Muestra los errores
 			// Fin
 			return;
 		},
@@ -195,6 +204,14 @@ window.addEventListener("load", async () => {
 				this.actualizaVisible(avatar, avatarNuevo);
 			};
 		},
+		actualizaMouse: () => {
+			estamosEnEdicNueva
+				? avatarVisible.classList.add("pointer")
+				: avatarVisible.classList.remove("pointer");
+			// Fin
+			return;
+		},
+
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -250,11 +267,8 @@ window.addEventListener("load", async () => {
 	form.addEventListener("input", async (e) => {
 		// Acciones si hubieron novedades dentro de EdicN
 		if (versionInput == "edicN") {
-			// Si se cambia la categoría --> actualiza subcategoría
-			if (e.target == "categoria_id") {
-				subcategoria.value = "";
-				DE.actualizaOpcionesSubcat();
-			}
+			if (e.target == "categoria_id") DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			if (e.target == "categoria_id") subcategoria.value = ""; // Limpia la subcategoría
 			// Varios
 			if (e.target == paisesSelect) DE.actualizaPaises(); // Actualiza los paises
 			DE.obtieneLosValoresEdicN(); // Actualizar 'EdicN'

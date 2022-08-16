@@ -222,13 +222,12 @@ module.exports = {
 			? req.session.erroresDD
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
-		let paises = datosDuros.paises_id
-			? await funciones.paises_idToNombre(datosDuros.paises_id)
-			: await BD_genericas.obtenerTodos("paises", "nombre");
+		let paises = datosDuros.paises_id ? await funciones.paises_idToNombre(datosDuros.paises_id) : "";
+		let BD_paises = datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
-		//return res.send(datosDuros)
+		//return res.send(paises)
 		return res.render("0-Estructura-Gral", {
 			tema,
 			codigo,
@@ -238,6 +237,7 @@ module.exports = {
 			camposDD1: camposDD_vista.filter((n) => n.antesDePais),
 			camposDD2: camposDD_vista.filter((n) => !n.antesDePais),
 			paises,
+			BD_paises,
 			idiomas,
 			origen,
 			errores,

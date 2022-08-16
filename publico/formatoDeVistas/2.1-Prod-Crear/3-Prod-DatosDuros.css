@@ -18,8 +18,8 @@
 #dataEntry label {margin-top: 3px; margin-right: 25px; font-weight: bold;}
 #dataEntry label {margin-top: 3px; font-weight: bold;}
 #dataEntry .input-error {display: flex;}
-#dataEntry .input-error input.input, #dataEntry .input-error select[name="idioma_original_id"], #dataEntry .input-error #mostrarPaisesDisabled, #dataEntry .input-error textarea {align-self: center; width: 200px;}
-#dataEntry .input-error input.input, #dataEntry .input-error #mostrarPaisesDisabled, #dataEntry .input-error textarea {padding: 0px 5px;}
+#dataEntry .input-error input.input, #dataEntry .input-error select[name="idioma_original_id"], #dataEntry .input-error textarea {align-self: center; width: 200px;}
+#dataEntry .input-error input.input, #dataEntry .input-error textarea {padding: 0px 5px;}
 #dataEntry .input-error input.input.angosto {width: 90px;}
 #dataEntry .input-error textarea {padding: 0px 5px; resize:vertical; max-height: 100px; min-height: 18px;}
 

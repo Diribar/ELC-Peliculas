@@ -4,12 +4,12 @@
 		<select name="idioma_original_id" class="input">
 			<optgroup label="Más frecuentes">
 				<% for (let idioma of BD_idiomas.filter(n => n.mas_frecuente)) { %>
-					<option value="<%= idioma.id %>" <% if (idioma_id==idioma.id) { %>selected<% } %>><%= idioma.nombre %></option>
+					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
 				<% } %>	
 			</optgroup>
 			<optgroup label="Demás idiomas">
 				<% for (let idioma of BD_idiomas.filter(n => !n.mas_frecuente)) { %>
-					<option value="<%= idioma.id %>" <% if (idioma_id==idioma.id) { %>selected<% } %>><%= idioma.nombre %></option>
+					<option value="<%= idioma.id %>" <% if (idioma.id==idioma_id) { %>selected<% } %>><%= idioma.nombre %></option>
 				<% } %>	
 			</optgroup>
 		</select>
