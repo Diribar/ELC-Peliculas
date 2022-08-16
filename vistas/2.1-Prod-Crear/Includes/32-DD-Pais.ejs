@@ -4,7 +4,7 @@
 		<!-- Lugar donde almacenar los ID -->
 		<input name="paises_id" type="text" <% if (dataEntry.paises_id) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input">
 		<!-- Lugar donde mostrar los nombres -->
-		<input id="mostrarPaises" type="text" readonly tabindex="-1" <% if (dataEntry.paises_id) { %>value="<%= paises %>" disabled<% } %>>
+		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (dataEntry.paises_id) { %>disabled<% } %>>
 		<!-- Opciones de países -->
 		<% if (!dataEntry.paises_id) { %>
 			<select autofocus>
