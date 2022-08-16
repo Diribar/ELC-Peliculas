@@ -143,7 +143,7 @@ window.addEventListener("load", async () => {
 				mensajesError[indice].innerHTML = errores[campo];
 				errores[campo]
 					? iconosError[indice].classList.add("error")
-					: iconosError[indice].classList.remove("error")
+					: iconosError[indice].classList.remove("error");
 				errores[campo] && mostrarIconoError
 					? iconosError[indice].classList.remove("ocultar")
 					: iconosError[indice].classList.add("ocultar");
@@ -162,7 +162,7 @@ window.addEventListener("load", async () => {
 				return a[b] ? ++a[b] : (a[b] = 1), a;
 			}, {}).error;
 		// Consecuencias
-		!hayErrores ? submit.classList.remove("inactivo") : submit.classList.add("inactivo");
+		hayErrores ? submit.classList.add("inactivo") : submit.classList.remove("inactivo");
 		// Pruebas
 		console.log(hayErrores);
 	};
