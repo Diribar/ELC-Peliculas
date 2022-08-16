@@ -1,0 +1,16 @@
+- A la izquierda:
+	- Nombre
+	- Preguntas de contexto (solo PEL y HEC)
+	- Películas alusivas (con link)
+- A la derecha:
+	- Categoría: CFC/VPC (solo PEL y HEC)
+	- Subcategorías (solo PEL y HEC)
+	- Status
+	- Creado en
+	- Creado por
+	- Año de Nacimiento
+	- Fecha más representativa en el año
+	- Comparte fecha con (solo PEL y HEC)
+- Abajo:
+	- Salir
+	- Editar
