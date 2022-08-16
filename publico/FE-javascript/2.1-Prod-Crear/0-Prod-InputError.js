@@ -226,11 +226,9 @@ window.addEventListener("load", async () => {
 			// Verificar si figura en paisesID
 			let agregar = !paisesID.value.includes(paisID);
 			if (agregar) {
-				// Limita la cantidad máxima de países a 1 + 4 = 5
-				if (paisesID.value.length >= 2 * 1 + 3 * 4) return;
-				// Actualiza el input
-				paisesID.value += (paisesID.value ? " " : "") + paisID;
-			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim();
+				if (paisesID.value.length >= 2 * 1 + 3 * 4) return; // Limita la cantidad máxima de países a 1 + 4 = 5
+				paisesID.value += (paisesID.value ? " " : "") + paisID; // Actualiza el input
+			} else paisesID.value = paisesID.value.replace(paisID, "").replace("  ", " ").trim();// Quita el paisID solicitado
 
 			// Actualizar los países a mostrar
 			let paisesNombre = "";
