@@ -12,7 +12,6 @@ window.addEventListener("load", async () => {
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	let rutaValidar = "/producto/api/edicion/validar/?";
-
 	// Variables de país
 	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
@@ -27,7 +26,6 @@ window.addEventListener("load", async () => {
 	// Varios
 	let avatarVisible = document.querySelector(".input-error #avatarVisible");
 	let avatarNuevo = document.querySelector(".input-error #avatarNuevo");
-	let imgAvatar = document.querySelector(".input-error #avatarVisible img");
 	let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------
@@ -35,7 +33,7 @@ window.addEventListener("load", async () => {
 	let versiones = ["edicN", "edicG", "orig"];
 	let versionActual = "edicN";
 	let versionInput = versionActual;
-	let versionAnt;
+	let versionAnt; // Se usa más adelante, no se debe borrar
 	let datos = {};
 	let flechasDiferencia = document.querySelectorAll(".input-error .fa-arrow-right-long");
 	let rutaVersiones = "/producto/api/edicion/obtener-original-y-edicion/";
@@ -51,12 +49,10 @@ window.addEventListener("load", async () => {
 	datos.edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
 	let orig_PendAprobar = datos.orig.status_registro.gr_pend_aprob;
 	let edicG_existe = !!datos.edicG[producto_id];
-
 	// Botones
 	let botonesActivarVersion = document.querySelectorAll("#cuerpo #comandos .activar");
 	let botonesDescartar = document.querySelectorAll("#cuerpo #comandos .descartar");
 	let botonGuardar = document.querySelector("#cuerpo #comandos .guardar");
-	// Botones de la edición nueva
 
 	// Funciones Data-Entry
 	let DE = {
@@ -69,38 +65,47 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		accionesPorCambioDeVersion: function () {
+			// Declaración de funciones
+			let rutinasPorCampo = () => {
+				// Rutina para cada campo
+				campos.forEach((campo, i) => {
+					// Reemplaza los valores
+					if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
+					// Impide/permite que el usuario haga cambios en los datos de la versión
+					inputs[i].disabled = !estamosEnEdicNueva;
+					if (campo == "paises_id") {
+						paisesMostrar.disabled = !estamosEnEdicNueva;
+						paisesSelect.disabled = !estamosEnEdicNueva;
+					}
+				});
+				// Fin
+				return;
+			};
+			let actualizaIconosRCLV = () => {
+				let links = document.querySelectorAll(".input-error i.linkRCLV");
+				for (let link of links)
+					estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
+				return;
+			};
+			let actualizaIconosAyuda = () => {
+				for (let iconoAyuda of iconosAyuda)
+					estamosEnEdicNueva
+						? iconoAyuda.classList.remove("inactivo")
+						: iconoAyuda.classList.add("inactivo");
+				return;
+			};
 			// Variables
 			let estamosEnEdicNueva = versionActual == "edicN";
-			// Rutina para cada campo
-			campos.forEach((campo, i) => {
-				// Reemplaza los valores
-				if (campo != "avatar") inputs[i].value = datos[versionActual][campo];
-				// Impide/permite que el usuario haga cambios en los datos de la versión
-				inputs[i].disabled = !estamosEnEdicNueva;
-				if (campo == "paises_id") {
-					paisesMostrar.disabled = !estamosEnEdicNueva;
-					paisesSelect.disabled = !estamosEnEdicNueva;
-				}
-			});
-			// Activa/desactiva el mouse para el avatar
-			estamosEnEdicNueva
-				? avatarVisible.classList.add("pointer")
-				: avatarVisible.classList.remove("pointer");
-			// Reemplaza el avatar visible
-			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible);
-			// Señala las diferencias con la versión original
-			this.senalaLasDiferencias();
-			// Muestra/oculta los íconos para RCLV
-			let links = document.querySelectorAll(".input-error i.linkRCLV");
-			for (let link of links)
-				estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
-			// Muestra/oculta los íconos de ayuda
-			for (let iconoAyuda of iconosAyuda)
-				estamosEnEdicNueva
-					? iconoAyuda.classList.remove("inactivo")
-					: iconoAyuda.classList.add("inactivo");
-			// Muestra los errores
-			this.muestraLosErrores();
+			// Funciones
+			rutinasPorCampo();
+			if (estamosEnEdicNueva) this.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			this.actualizaPaises(); // Actualiza los paises
+			AV.actualizaMouse; // Activa/desactiva el mouse para el avatar
+			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible); // Reemplaza el avatar visible
+			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
+			actualizaIconosRCLV(); // Muestra/oculta los íconos para RCLV
+			actualizaIconosAyuda(); // Muestra/oculta los íconos de ayuda
+			this.muestraLosErrores(); // Muestra los errores
 			// Fin
 			return;
 		},
@@ -135,6 +140,45 @@ window.addEventListener("load", async () => {
 			});
 			return;
 		},
+		actualizaOpcionesSubcat: () => {
+			let categ = categoria.value;
+			subcategoriaOpciones.forEach((opcion) => {
+				if (opcion.className.includes(categ)) opcion.classList.remove("ocultar");
+				else opcion.classList.add("ocultar");
+			});
+		},
+		actualizaPaises: () => {
+			// Actualizar los ID del input
+			let paisID = paisesSelect.value;
+			// Verificar si figura en paisesID
+			if (paisID == "borrar") {
+				paisesSelect.value = "";
+				paisesMostrar.value = "";
+				paisesID.value = "";
+				return;
+			}
+			let agregar = !paisesID.value.includes(paisID);
+			let aux = paisesID.value.split(" ");
+			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
+			if (agregar) aux.push(paisID); // Agrega el país
+			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
+			paisesID.value = aux.join(" "); // Actualiza el input
+
+			// Actualizar los países a mostrar
+			let paisesNombre = [];
+			// Convertir 'IDs' en 'nombres'
+			if (paisesID.value) {
+				let paises_idArray = paisesID.value.split(" ");
+				paises_idArray.forEach((pais_id) => {
+					let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
+					if (paisNombre) paisesNombre.push(paisNombre);
+				});
+			}
+			// Convertir array en string
+			paisesMostrar.value = paisesNombre.join(", ");
+			// Fin
+			return;
+		},
 	};
 	// Funciones Avatar
 	let AV = {
@@ -160,6 +204,14 @@ window.addEventListener("load", async () => {
 				this.actualizaVisible(avatar, avatarNuevo);
 			};
 		},
+		actualizaMouse: () => {
+			estamosEnEdicNueva
+				? avatarVisible.classList.add("pointer")
+				: avatarVisible.classList.remove("pointer");
+			// Fin
+			return;
+		},
+
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -213,14 +265,16 @@ window.addEventListener("load", async () => {
 
 	// Revisar campos en forma INDIVIDUAL
 	form.addEventListener("input", async (e) => {
-		// Acciones si no se cambió de versión
+		// Acciones si hubieron novedades dentro de EdicN
 		if (versionInput == "edicN") {
-			DE.obtieneLosValoresEdicN();
-			DE.muestraLosErrores();
+			if (e.target == "categoria_id") DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
+			if (e.target == "categoria_id") subcategoria.value = ""; // Limpia la subcategoría
+			// Varios
+			if (e.target == paisesSelect) DE.actualizaPaises(); // Actualiza los paises
+			DE.obtieneLosValoresEdicN(); // Actualizar 'EdicN'
+			DE.muestraLosErrores(); // Muestra los errores
 		} else versionInput = versionActual;
 	});
-	// Revisar campos COMBINADOS
-	form.addEventListener("change", async (e) => {});
 
 	// Startup
 	// Obtiene los valores para EdicN
@@ -234,6 +288,8 @@ window.addEventListener("load", async () => {
 		// Descartar
 		if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
 	}
+	// Actualiza las opciones de Sub-categoría
+	DE.actualizaOpcionesSubcat();
 });
 let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 	return imagenActual

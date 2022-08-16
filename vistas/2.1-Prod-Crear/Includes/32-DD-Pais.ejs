@@ -1,34 +1,29 @@
 <section id="paises_id">
 	<label>País/es de origen</label>
 	<div class="input-error">
-		<% if (dataEntry.paises_id) { %>
-			<!-- Lugar donde almacenar los ID -->
-			<input name="paises_id" type="text" value="<%= dataEntry.paises_id %>" disabled class="input ocultar">
-			<!-- Lugar donde mostrar los nombres -->
-			<input id="mostrarPaisesDisabled" type="text" value="<%= paises %>" disabled>
-			<%- include("39-DD-Mensajes") %>
-		<% } else { %>
-			<!-- Lugar donde almacenar los ID -->
-			<input name="paises_id" type="text" class="ocultar input" >
-			<!-- Lugar donde mostrar los nombres -->
-			<input id="mostrarPaises" type="text" readonly tabindex="-1">
-			<!-- Opciones de países -->
+		<!-- Lugar donde almacenar los ID -->
+		<input name="paises_id" type="text" <% if (dataEntry.paises_id) { %>value="<%= dataEntry.paises_id %>" disabled<% } %> class="input">
+		<!-- Lugar donde mostrar los nombres -->
+		<input id="mostrarPaises" type="text" readonly tabindex="-1" value="<%= paises %>" <% if (dataEntry.paises_id) { %>disabled<% } %>>
+		<!-- Opciones de países -->
+		<% if (!dataEntry.paises_id) { %>
 			<select autofocus>
 				<option value="" selected class="ocultar">Elejí un país</option>
 				<option value="borrar">Borrar todo/s</option>
 				<% continentes = ["América", "Europa", "Africa", "Asia", "Oceanía"] %> 
 				<% for (let continente of continentes) { %>
 					<optgroup label="<%= continente %>">
-						<% for (let pais of paises.filter(n => n.continente == continente)) { %>
+						<% for (let pais of BD_paises.filter(n => n.continente == continente)) { %>
 							<option value="<%= pais.id %>"><%= pais.nombre %></option>
 						<% } %>	
 					</optgroup>
 				<% } %> 
 			</select>
+		<% } else { %>
+			<!-- Ayuda -->
+			<%- include("39-DD-Mensajes") %>
 		<% } %>
-		<i class="fa-solid fa-circle-xmark ocultar">
-			<span class="mensajeError"></span>
-		</i>
-		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
+		<!-- Errores -->
+		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 	</div>
 </section>
