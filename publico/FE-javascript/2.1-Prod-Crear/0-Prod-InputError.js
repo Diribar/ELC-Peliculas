@@ -234,7 +234,6 @@ window.addEventListener("load", async () => {
 			let paisesNombre = "";
 			if (paisesID.value) {
 				let paises_idArray = paisesID.value.split(" ");
-				console.log(paises_idArray);
 				paises_idArray.forEach((pais_id) => {
 					let paisNombre = paisesListado.find((n) => n.id == pais_id).nombre;
 					paisesNombre += (paisesNombre ? ", " : "") + paisNombre;
