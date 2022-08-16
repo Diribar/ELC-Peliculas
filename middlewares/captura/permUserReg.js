@@ -198,6 +198,6 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = verificacionesDeRevision();
 
 	// Continuar
-	if (informacion) return res.render("Errores", {informacion});
+	if (informacion) return res.render("CR9-Errores", {informacion});
 	next();
 };

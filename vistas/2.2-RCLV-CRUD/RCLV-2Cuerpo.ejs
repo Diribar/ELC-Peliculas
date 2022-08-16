@@ -1,0 +1,356 @@
+<section id="cuerpo">
+	<% if (codigo == "edicion") { %>
+		<%- include('TimerContador') %>
+		<%- include('Cartel') %>
+	<% } %>
+	<div id="tituloConAyuda">
+		<h1 id="titulo"><%= tituloCuerpo %> </h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>.</li>
+		</ul>	
+	</div>
+	<form action="<%= link %>" method="POST" id="dataEntry">
+		<!-- Nombre y Fechas -->
+		<section id="datos" class="flex-row space-between OK">
+			<!--Primera columna-->
+			<div id="primeraCol">
+				<!-- Nombre -->
+				<div class="input-error">
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Nombre</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<% if (entidad == "personajes") { %>
+									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+									<li>Primero el nombre, después el apellido.</li>
+								<% } %>
+								<li>La primera letra en mayúscula, sin puntos ni comas</li>
+							</ul>
+							<!-- Error/OK -->			
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
+							</i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+					<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
+				</div>
+				<!-- Fecha Representativa -->
+				<div class="borderTop flex-col input-error">
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Fecha más representativa</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<li>Usamos la fecha en que se lo recuerda.</li>
+								<li>Para los santos o beatos, es la fecha en el santoral.</li>
+								<li>Para los demás, suele ser la fecha de su muerte.</li>
+							</ul>
+							<!-- Error -->			
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
+							</i>
+							<!-- OK -->
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+					<!-- Valores -->
+					<div id="valoresFecha" class="flex-col space-between">
+						<!-- Meses -->
+						<div class="flexRowAlign">
+							<label style="width: 35px;">Mes:</label>
+							<select name="mes_id" class="input">
+								<option value="" class="ocultar" <% if (!dataEntry.mes_id) { %>selected<% } %>>Elegí</option>
+								<% for (let mes of meses) { %>
+									<option value="<%= mes.id %>" <% if (dataEntry.mes_id == mes.id) { %>selected<% } %>>
+										<%= mes.nombre %>
+									</option>
+								<% } %>
+							</select>
+							<a id="wiki" target="blank" class="ocultar" tabindex="-1">
+								<img src="/imagenes/0-Logos/BD-Wiki.jpg" title="Consultar en Wikipedia">
+							</a>
+							<a id="santopedia" target="blank" class="ocultar" tabindex="-1">
+								<img src="/imagenes/0-Base/Cruz.jpg" title="Consultar en Santopedia">
+							</a>
+						</div>
+						<!-- Días -->
+						<div class="flexRowAlign">
+							<label style="width: 35px;">Día:</label>
+							<select name="dia" class="input">
+								<option value="" class="ocultar" <% if (!dataEntry.dia) { %>selected<% } %>>Elegí</option>
+								<% for (let dia = 1; dia < 32; dia++) { %>
+									<option value="<%= dia %>" 
+										<% if (dia > 29) { %>class="ocultar"<% } %>
+										<% if (dataEntry.dia == dia) { %>selected<% } %>
+									>
+										<%= dia %>
+									</option>
+								<% } %>
+							</select>
+						</div>
+						<!-- Fecha desconocida -->
+						<div class="flexRowAlign">
+							<input id="desconocida" class="input" type="checkbox" name="desconocida" tabindex="-1" <% if (codigo == "edicion" && dataEntry && !dataEntry.dia_del_ano_id) { %>checked<% } %>>
+							<label for="desconocida">Sin fecha representativa</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--Segunda columna-->
+			<div id="segundaCol">
+				<!-- Repetidos -->
+				<div class="input-error">
+					<!-- Título, Ayuda y Error/OK -->
+					<div class="flex-row">
+						<div class="margenBottomTitulo relative">
+							<!-- Título -->
+							<h3>Nombres con esa fecha</h3>
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<li>Destildalos para controlar si no está ya en nuestra BD</li>
+							</ul>
+							<!-- Error/OK -->			
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
+							</i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+					<ul type="none" id="posiblesRepetidos"></ul>
+				</div>
+				<% if (entidad != "valores") { %>
+					<!-- Año de nacimiento u ocurrencia -->
+					<div class="borderTop flex-row input-error">
+						<div class="relative flex-row align-center">
+							<!-- Título -->
+							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
+							<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
+							<!-- Ayuda -->
+							<i class="fa-solid fa-circle-question"></i>
+							<ul type="dots" class="mensajeAyuda ocultar">
+								<li>Nos ayuda a ubicarlo cronológicamente.</li>
+								<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+								<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+							</ul>
+							<!-- Error/OK -->			
+							<i class="fa-solid fa-circle-xmark ocultar">
+								<span class="mensajeError"></span>
+							</i>
+							<i class="fa-solid fa-circle-check ocultar"></i>
+						</div>
+					</div>
+				<% } %>
+			</div>
+		</section>
+		<% if (entidad != "valores") { %>
+			<!-- Preguntas de contexto -->
+			<section id="preguntas" class="borderTop flex-col OK ocultar">
+				<!-- Título y Error/OK -->
+				<div class="flex-row margenBottomTitulo relative">
+					<!-- Título -->
+					<h3 class="">Preguntas de contexto</h3>
+					<!-- Error -->
+					<i class="fa-solid fa-circle-xmark ocultar">
+						<span class="mensajeError"></span>
+					</i>
+					<!-- OK -->
+					<i class="fa-solid fa-circle-check ocultar"></i>
+				</div>
+				<% if (entidad == "personajes") { %>
+					<div id="personajes">
+						<!-- CFC/VPC -->
+						<div class="flexRowAlign altoFila">
+							<label class="izquierda">¿Miembro de la Iglesia Católica o conocido por su relación con ella?</label>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="categoria_id" value="CFC" <% if (dataEntry.categoria_id=="CFC") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="categoria_id" value="VPC" <% if (dataEntry.categoria_id=="VPC") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+						</div>
+						<!-- Género y Rol en la Iglesia -->
+						<div id="sectorGeneroRol" class="flexRowAlign altoFila space-between ocultar cfc">
+							<!-- Genero -->
+							<div id="genero" class="flexRowAlign">
+								<label class="izquierda">Género:</label>
+								<div class="flexRowAlign">
+									<input type="radio" name="genero" value="V" id="V" <% if (dataEntry.genero=="V" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="V") { %>checked<% } %> class="RCLI">
+									<label for="V">Varón</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="genero" value="M" id="M" <% if (dataEntry.genero=="M" || dataEntry.rol_iglesia && dataEntry.rol_iglesia.sexo_id=="M") { %>checked<% } %> class="RCLI">
+									<label for="M">Mujer</label>
+								</div>
+							</div>						
+							<!-- Rol en la Iglesia -->
+							<div id="sectorRol_iglesia" class="flexRowAlign cfc">
+								<label for="rol_iglesia_id" class="izquierda">Rol en la Iglesia:</label>
+								<select name="rol_iglesia_id" class="RCLI">
+									<option value="" selected class="ocultar">Elejí una opción</option>
+									<% for (let rol_iglesia of roles_iglesia) { %>
+										<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %> selected <% } %><% if (rol_iglesia.id=="PC") {%> class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
+									<% } %> 
+								</select>
+							</div>
+						</div>
+						<!-- ¿En proceso de canonización? y status -->
+						<div id="sectorEnProceso" class="flexRowAlign altoFila space-between ocultar cfc">
+							<!-- ¿En proceso de canonización? -->
+							<div class="flexRowAlign">
+								<label id="santosanta" class="izquierda">¿Santo o en proceso de canonización?</label>
+								<div class="flexRowAlign siNo">
+									<div class="flexRowAlign">
+										<input type="radio" name="enProcCan" value="1" <% if (dataEntry.enProcCan==1 || dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
+										<label>SI</label>
+									</div>
+									<div class="flexRowAlign">
+										<input type="radio" name="enProcCan" value="0" <% if (dataEntry.enProcCan==0 || !dataEntry.proceso_id) { %>checked<% } %> class="RCLI">
+										<label>NO</label>
+									</div>
+								</div>
+							</div>
+							<!-- Status del proceso de canonización -->
+							<select name="proceso_id" class="ocultar RCLI cfc">
+									<option value="" selected class="ocultar">Elejí una opción</option>
+									<% for (let proceso of procesos_canonizacion) { %>
+										<option value="<%= proceso.id %>" <% if (dataEntry.proceso_id==proceso.id) { %> selected <% } %>><%= proceso.nombre %></option>
+									<% } %> 
+							</select>
+						</div>
+						<!-- Contemporáneo de Jesús -->
+						<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
+							<label class="izquierda">¿Es contemporáneo de Jesús o los Apóstoles, y los conoció?</label>
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1 || dataEntry.subcategoria_id=="CNT") { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0|| dataEntry.subcategoria_id && dataEntry.subcategoria_id!="CNT") { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+						</div>
+						<!-- Aparición Mariana -->
+						<div id="sectorApMar" class="flexRowAlign altoFila space-between ocultar cfc">
+							<div class="flexRowAlign">
+								<label class="izquierda">¿Participó en una aparición mariana?</label>
+								<div class="flexRowAlign siNo">
+									<div class="flexRowAlign">
+										<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1 || dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+										<label>SI</label>
+									</div>
+									<div class="flexRowAlign">
+										<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0 || !dataEntry.ap_mar_id) { %>checked<% } %> class="RCLI">
+										<label>NO</label>
+									</div>
+								</div>
+							</div>
+							<select name="ap_mar_id" id="ap_mar_id"  class="ocultar RCLI cfc">
+								<option value="" selected class="ocultar">Elejí una opción</option>
+								<% apariciones_marianas.forEach(aparicion => { %>
+									<option value="<%= aparicion.id %>" <% if (dataEntry.ap_mar_id==aparicion.id) { %>selected<% } %>><%= aparicion.nombre %></option>
+								<% }) %> 
+							</select>
+						</div>
+					</div>
+				<% } %>
+				<% if (entidad == "hechos") { %>
+					<div id="hechos">
+						<!-- Sólo CFC -->
+						<div class="flexRowAlign altoFila">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="solo_cfc" value="1" <% if (dataEntry.solo_cfc==1) { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="solo_cfc" value="0" <% if (dataEntry.solo_cfc==0) { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">¿Es un hecho específico de la historia de la Iglesia Católica?</label>
+						</div>
+						<!-- ¿Ocurrió durante la vida de Jesús? -->
+						<div id="sector_jss" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="jss" value="1" <% if (dataEntry.jss==1) { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="jss" value="0" <% if (dataEntry.jss==0) { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">Por favor confirmanos que ocurrió durante la vida terrenal de Jesús</label>
+						</div>
+						<!-- ¿Ocurrió durante la vida de los Apóstoles? -->
+						<div id="sector_cnt" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="1" <% if (dataEntry.cnt==1) { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="cnt" value="0" <% if (dataEntry.cnt==0) { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">Por favor confirmanos que ocurrió durante la vida de los Apóstoles</label>
+						</div>
+						<!-- Exclusivo -->
+						<div id="sectorExclusivo" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="exclusivo" value="1" <% if (dataEntry.exclusivo==1) { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="exclusivo" value="0" <% if (dataEntry.exclusivo==0) { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">¿Terminó en ese período de tiempo?</label>
+						</div>
+						<!-- Aparición Mariana -->
+						<div id="sectorApMar" class="flexRowAlign altoFila ocultar cfc">
+							<div class="flexRowAlign siNo">
+								<div class="flexRowAlign">
+									<input type="radio" name="ap_mar" value="1" <% if (dataEntry.ap_mar==1) { %>checked<% } %> class="RCLI">
+									<label>SI</label>
+								</div>
+								<div class="flexRowAlign">
+									<input type="radio" name="ap_mar" value="0" <% if (dataEntry.ap_mar==0) { %>checked<% } %> class="RCLI">
+									<label>NO</label>
+								</div>
+							</div>
+							<label class="derecha">¿Es una aparición mariana?</label>
+						</div>
+					</div>
+				<% } %>
+			</section>	
+		<% } %>
+		<!-- Flechas y Botón -->
+		<section id="flechas">
+			<i id="salir" class="fa-solid fa-circle-left" title="Salir"></i>
+			<i id="submit" class="fa-solid fa-circle-check inactivo" title="Guardar"></i>
+		</section>
+	</form>
+</section>

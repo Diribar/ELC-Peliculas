@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('GN1-Head') %>
+	<%- include('RV0-1Head') %>
+</head>
+<body>
+	<%- include('GN2-Header') %>
+	<main class="flex-row">
+		<section id="imagen-derecha">
+			<img src="<%= avatar %>" title="<%= prodOriginal.nombre_castellano %>">
+		</section>
+		<section id="cuerpo-y-footer">
+			<%- include('GN3-Footer') %>
+			<div id="cuerpo">
+				<%- codigo == "producto/alta" ? include("RV1-Prod-Alta") : "" %>
+				<%- codigo == "producto/edicion" ? include("RV1-Prod-EdicDemas") : "" %>
+				<%- codigo == "links" ? include("RV3-Links") : "" %>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

@@ -59,7 +59,7 @@ module.exports = {
 			);
 		// Ir a la vista
 		//return res.send(links);
-		return res.render("0-Estructura-CRUD", {
+		return res.render("CR0-0Estructura", {
 			tema,
 			codigo,
 			entidad: prodEntidad,

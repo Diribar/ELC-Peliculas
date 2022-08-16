@@ -1,0 +1,69 @@
+<div id="datos">
+	<section id="tituloConAyuda">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
+			<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+		</ul>	
+	</section>
+	<section id="datosLargos">
+		<div id="contenido">
+			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
+			<%- include("CR0-2Encabezado") %>
+			<!-- Sinopsis -->
+			<div id="sinopsis">
+				<nav><%= producto.sinopsis %></nav>
+				<!-- Ayuda -->
+				<i class="fa-solid fa-circle-question"></i>
+				<ul type="none" class="mensajeAyuda ocultar">
+					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+				</ul>
+			</div>
+			<!-- Demás Datos Duros -->
+			<% for (bloque of bloquesIzquierda) { %>
+				<div class="datosAdicionales">
+					<% for (campo of bloque) { %>
+						<strong><%= campo.titulo %>:</strong> <%= campo.valor %>. 
+					<% } %> 
+				</div>				
+			<% } %>
+		</div>
+		<!-- Comandos -->
+		<div id="comandos">
+			<i class="fa-solid fa-t" tabindex="-1" title="Ver el Trailer"></i>
+			<% if (entidad != "colecciones") { %>
+				<i class="fa-solid fa-p" tabindex="-1" title="Ver <%- entidad == "capitulos" ? "el" : "la" %> <%= prodNombre %>"></i>
+			<% } %>
+			<i class="fa-solid fa-user-graduate" tabindex="-1" title="Califica<%= (entidad=="capitulos" ? "lo" : "la") %>"></i>
+			<i class="fa-solid fa-heart" tabindex="-1" title="Mi interés en <%= (entidad=="capitulos" ? "el capítulo" : "la " + (entidad=="peliculas" ? "película" : "colección")) %>"></i>
+			<i class="fa-solid fa-book-open" tabindex="-1" title="Hacer o ver comentarios"></i>
+		</div>
+		<!-- Botones -->
+		<%- include("CR0-2Flechas") %>
+	</section>
+</div>
+<section id="datosBreves">
+	<div>
+		<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
+		<!-- <p>General: <span>77%</span> / Tuya: <span>78%</span></p> -->
+		<p id="calificacionesResultados"></p>
+	</div>
+	<div id="calificacionesGrafico"></div>
+	<div id="texto">
+		<% for (bloque of bloquesDerecha) { %>
+			<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
+				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+				<% if (bloque.RCLV_entidad) { %>
+					<% let destino = "destino=prodDetalle" %>
+					<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
+					<% let datosProd = "prodEntidad=" + entidad + "&prodID=" + prodID %> 
+					<a href="/rclv/edicion/?<%= destino %>&<%= datosRCLV %>&<%= datosProd %>">
+						<i class="fa-solid fa-square-pen"></i>
+					</a>
+				<% } %>
+			</p>
+		<% } %>
+	</div>
+</section>

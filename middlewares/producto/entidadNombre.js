@@ -30,6 +30,6 @@ module.exports = (req, res, next) => {
 			};
 	}
 	// Conclusiones
-	if (informacion) res.render("Errores", {informacion});
+	if (informacion) res.render("CR9-Errores", {informacion});
 	else next();
 };

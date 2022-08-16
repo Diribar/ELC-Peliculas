@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
 		};
 	}
 	// Si corresponde, mostrar el mensaje de error
-	if (informacion) return res.render("Errores", {informacion});
+	if (informacion) return res.render("CR9-Errores", {informacion});
 	// Fin
 	next();
 };

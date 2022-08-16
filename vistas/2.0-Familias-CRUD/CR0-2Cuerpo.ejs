@@ -1,0 +1,12 @@
+<section id="imagen">
+	<img alt="<%= producto.nombre_castellano %>" src="<%= avatar %>" title="<%= producto.nombre_castellano %>">
+</section>
+<section id="cuerpo-y-footer">
+	<%- include('GN3-Footer') %>
+	<!--**************************** CUERPO ************************-->
+	<div id="cuerpo">
+		<%- codigo == "detalle" ? include('PR1-Detalle') : "" %>
+		<%- codigo == "links" ? include('LK2-Cuerpo') : "" %>
+	</div>
+	<!--****************************** FIN *************************-->
+</section>
