@@ -321,6 +321,7 @@ window.addEventListener("load", async () => {
 				DE.actualizaPaisesNombre();
 			}
 			DE.obtieneLosValoresEdicN();
+			DE.senalaLasDiferencias();
 			DE.muestraLosErrores();
 			DE.actualizaBotones();
 		} else versionInput = versionActual;

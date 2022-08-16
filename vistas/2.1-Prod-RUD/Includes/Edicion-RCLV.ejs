@@ -1,0 +1,26 @@
+<% let campo = camposDP.find(n => n.nombreDelCampo == nombreDelCampo) %>
+<section class="label-input RCLV">
+	<label><%= campo.titulo %></label>
+	<div class="input-error">
+		<!-- Input -->
+		<select name="<%= campo.nombreDelCampo %>" class="input RCLV">
+			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí una opción</option>
+			<option value="1" <% if (producto[campo.nombreDelCampo] == 1) { %>selected<% } %>>Ninguno</option>
+			<% console.log(campo.nombreDelCampo) %>
+			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
+		</select>
+		<!-- Ayuda -->
+		<i class="fa-solid fa-circle-question"></i>
+		<ul type="dots" class="mensajeAyuda ocultar">
+			<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
+			<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
+		</ul>
+		<!-- Errores -->
+		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+		<!-- Aviso de cambio en el data-entry -->
+		<i class="fa-solid fa-arrow-right-long ocultar"></i>
+		<!-- Link a Relación con la vida -->
+		<i id="alta" class="fa-solid fa-circle-plus linkRCLV ocultar <%= campo.nombreDelCampo %>" title='Agregar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+		<i id="edicion" class="fa-solid fa-square-pen linkRCLV ocultar <%= campo.nombreDelCampo %>" title='Editar "<%= campo.titulo.toLowerCase() %>"' tabindex="-1"></i>
+	</div>
+</section>

@@ -5,8 +5,8 @@
 		<!-- Input -->
 		<select name="<%= campo %>" class="input RCLV" autofocus>
 			<option value="" class="ocultar">Elegí una opción</option>
-			<option value="1">Ninguno</option>
-			<% for (let valor of registro.valores) { if (valor.id > 1) { %>
+			<option value="1" <% if (dataEntry[campo] == valor.id) { %>selected<% } %>>Ninguno</option>
+			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
 					class="RCLV
 						<% // Datos para PERSONAJES %>
@@ -30,7 +30,7 @@
 				>
 					<%= valor.nombre %>
 				</option>
-			<% }} %>
+			<% } %>
 		</select>
 		<!-- Ayuda -->
 		<i class="fa-solid fa-circle-question"></i>
