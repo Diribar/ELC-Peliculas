@@ -212,17 +212,18 @@ window.addEventListener("load", async () => {
 			actualizaBotonSubmit();
 			return;
 		},
-		actualizarPaises: () => {
-			let paisID = paisesSelect.value;
+		actualizaPaises: () => {
 			// Actualizar los ID del input
-
-			// Verificar si figura en paisesID
+			// Variables
+			let paisID = paisesSelect.value;
+			// Si se eligió 'borrar', borra todo
 			if (paisID == "borrar") {
 				paisesSelect.value = "";
 				paisesMostrar.value = "";
 				paisesID.value = "";
 				return;
 			}
+			// Verificar si figura en paisesID
 			let agregar = !paisesID.value.includes(paisID);
 			if (agregar) {
 				// Limita la cantidad máxima de países a 1 + 4 = 5
