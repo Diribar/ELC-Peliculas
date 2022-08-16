@@ -31,7 +31,7 @@
 						<%- include("Links-2Condiciones", {link, cond}) %>
 						<%- include("Links-3Datos", {link, cond, fila}) %>
 						<% link.ediciones.forEach((edicion) => { %>
-							<%- cond.creado || cond.aprobado ? include("4-LinksEdicion", {link, cond, edicion, fila}) : "" %> 
+							<%- cond.creado || cond.aprobado ? include("3-LinksEdicion", {link, cond, edicion, fila}) : "" %> 
 						<% }) %>
 					<% }) %>
 				</tbody>
