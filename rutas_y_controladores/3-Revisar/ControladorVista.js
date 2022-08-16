@@ -146,7 +146,7 @@ module.exports = {
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
-			vista = "RV1-Prod-EdicAvatar";
+			vista = "RV1-Prod-Avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
