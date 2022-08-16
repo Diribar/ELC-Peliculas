@@ -13,8 +13,8 @@ window.addEventListener("load", async () => {
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	let rutaValidar = "/producto/api/edicion/validar/?";
 	// Variables de país
-	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
+	let paisesMostrar = document.querySelector("#paises_id #mostrarPaises"); // Lugar donde mostrar los nombres
 	let paisesSelect = document.querySelector("#paises_id select");
 	let paisesListado = Array.from(document.querySelectorAll("#paises_id option")).map((n) => {
 		return {id: n.value, nombre: n.innerHTML};
@@ -53,6 +53,10 @@ window.addEventListener("load", async () => {
 	let botonesActivarVersion = document.querySelectorAll("#cuerpo #comandos .activar");
 	let botonesDescartar = document.querySelectorAll("#cuerpo #comandos .descartar");
 	let botonGuardar = document.querySelector("#cuerpo #comandos .guardar");
+	let botones = {
+		edicN: document.querySelectorAll("#cuerpo #comandos .edicN"),
+		edicG: document.querySelectorAll("#cuerpo #comandos .edicG"),
+	};
 
 	// Funciones Data-Entry
 	let DE = {
@@ -99,7 +103,7 @@ window.addEventListener("load", async () => {
 			// Funciones
 			rutinasPorCampo();
 			if (estamosEnEdicNueva) this.actualizaOpcionesSubcat(); // Actualiza subcategoría
-			this.actualizaPaises(); // Actualiza los paises
+			this.actualizaPaisesNombre(); // Actualiza los nombres de país
 			AV.actualizaMouse; // Activa/desactiva el mouse para el avatar
 			AV.actualizaVisible(datos[versionActual].avatar, avatarVisible); // Reemplaza el avatar visible
 			this.senalaLasDiferencias(); // Señala las diferencias con la versión original
@@ -126,7 +130,7 @@ window.addEventListener("load", async () => {
 				if (input.name != "avatar") objeto += "&" + input.name + "=" + input.value;
 			// Averiguar los errores
 			let errores = await fetch(rutaValidar + objeto).then((n) => n.json());
-
+			// Actualiza los errores
 			campos.forEach((campo, i) => {
 				// Guarda el mensaje de error
 				let mensaje = errores[campo];
@@ -134,7 +138,10 @@ window.addEventListener("load", async () => {
 				let indice = campos.indexOf(campo);
 				mensajesError[indice].innerHTML = mensaje;
 				// Acciones en función de si hay o no mensajes de error
-				mensaje
+				errores[campo]
+					? iconosError[indice].classList.add("error")
+					: iconosError[indice].classList.remove("error");
+				errores[campo]
 					? iconosError[indice].classList.remove("ocultar")
 					: iconosError[indice].classList.add("ocultar");
 			});
@@ -147,8 +154,8 @@ window.addEventListener("load", async () => {
 				else opcion.classList.add("ocultar");
 			});
 		},
-		actualizaPaises: () => {
-			// Actualizar los ID del input
+		actualizaPaisesID: () => {
+			// Variables
 			let paisID = paisesSelect.value;
 			// Verificar si figura en paisesID
 			if (paisID == "borrar") {
@@ -163,8 +170,11 @@ window.addEventListener("load", async () => {
 			if (agregar) aux.push(paisID); // Agrega el país
 			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
 			paisesID.value = aux.join(" "); // Actualiza el input
-
-			// Actualizar los países a mostrar
+			// Fin
+			return;
+		},
+		actualizaPaisesNombre: () => {
+			// Actualiza los países a mostrar
 			let paisesNombre = [];
 			// Convertir 'IDs' en 'nombres'
 			if (paisesID.value) {
@@ -176,6 +186,43 @@ window.addEventListener("load", async () => {
 			}
 			// Convertir array en string
 			paisesMostrar.value = paisesNombre.join(", ");
+			// Fin
+			return;
+		},
+		actualizaBotones: () => {
+			// Acciones sobre la edición guardada
+			if (edicG_existe) {
+				// Versión
+				botonesActivarVersion[1].classList.remove("inactivoVersion");
+				// Descartar
+				if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
+			}
+			// Acciones sobre la edición nueva
+			// 1. Funciones
+			let actualizaBotonSubmit = () => {
+				// Detectar la cantidad de 'errores' ocultos
+				let hayErrores = Array.from(iconosError)
+					.map((n) => n.className)
+					.join(" ")
+					.split(" ")
+					.reduce((a, b) => {
+						return a[b] ? ++a[b] : (a[b] = 1), a;
+					}, {}).error;
+				// Fin
+				return hayErrores;
+			};
+			let averiguaSiLasEdicionesSonIguales = () => {
+				for (let campo of campos) if (datos.edicN[campo] != datos.edicG[campo]) return "";
+				return "Iguales";
+			};
+			// 2. Averigua si hay errores
+			let hayErrores = actualizaBotonSubmit();
+			// 3. Averigua si es igual a la edicion
+			let sonIguales = averiguaSiLasEdicionesSonIguales();
+			// Si se cumple alguna de las anteriores -> inactiva
+			// Else -> activa
+			if (hayErrores || sonIguales) botones.edicN.forEach((n) => n.classList.add("inactivoVersion"));
+			else botones.edicN.forEach((n) => n.classList.remove("inactivoVersion"));
 			// Fin
 			return;
 		},
@@ -211,7 +258,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-
 	};
 
 	// ADD EVENT LISTENERS --------------------------------------------------
@@ -249,11 +295,11 @@ window.addEventListener("load", async () => {
 			// Acciones si es la edición guardada
 			else if (versiones[indice] == "edicG") {
 				fetch("/producto/edicion/eliminar/?entidad=" + entidad + "&id=" + prodID);
-				datos.edicG = {};
+				datos.edicG = {...datos.orig};
 				datos.edicN = {...datos.orig};
-				botonActivarVersion[indice].classList.add("inactivoVersion");
-				boton.classList.add("inactivoVersion");
 			}
+			// Inactiva los botones de la versión
+			botones[versionActual].forEach((boton) => boton.classList.add("inactivoVersion"));
 			// Si se descartó la versión actual, recarga los valores
 			if (versiones[indice] == versionActual) DE.accionesPorCambioDeVersion();
 		});
@@ -270,26 +316,25 @@ window.addEventListener("load", async () => {
 			if (e.target == "categoria_id") DE.actualizaOpcionesSubcat(); // Actualiza subcategoría
 			if (e.target == "categoria_id") subcategoria.value = ""; // Limpia la subcategoría
 			// Varios
-			if (e.target == paisesSelect) DE.actualizaPaises(); // Actualiza los paises
-			DE.obtieneLosValoresEdicN(); // Actualizar 'EdicN'
-			DE.muestraLosErrores(); // Muestra los errores
+			if (e.target == paisesSelect) {
+				DE.actualizaPaisesID();
+				DE.actualizaPaisesNombre();
+			}
+			DE.obtieneLosValoresEdicN();
+			DE.muestraLosErrores();
+			DE.actualizaBotones();
 		} else versionInput = versionActual;
 	});
 
 	// Startup
 	// Obtiene los valores para EdicN
 	DE.obtieneLosValoresEdicN();
-	// Muestra los errores
-	DE.muestraLosErrores();
-	// Si corresponde, activa la botonera de edicG
-	if (edicG_existe) {
-		// Versión
-		botonesActivarVersion[1].classList.remove("inactivoVersion");
-		// Descartar
-		if (!orig_PendAprobar) botonesDescartar[1].classList.remove("inactivoVersion");
-	}
+	// ActualizaBotones
+	DE.actualizaBotones();
 	// Actualiza las opciones de Sub-categoría
 	DE.actualizaOpcionesSubcat();
+	// Acciones varias
+	DE.accionesPorCambioDeVersion();
 });
 let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 	return imagenActual
