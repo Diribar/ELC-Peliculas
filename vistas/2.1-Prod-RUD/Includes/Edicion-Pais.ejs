@@ -17,15 +17,8 @@
 				</optgroup>
 			<% } %> 
 		</select>
-		<!-- Ayuda -->
-		<%- include("39-DD-Mensajes") %>
-		<%- dataEntry.paises_id ? include("39-DD-Mensajes") : "" %>
-
 		<!-- Errores -->
-		<i class="fa-solid fa-circle-xmark ocultar">
-			<span class="mensajeError"></span>
-		</i>
-		<i class="fa-solid fa-circle-check ocultar"></i>
+		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
 		<!-- Aviso de cambio en el data-entry -->
 		<i class="fa-solid fa-arrow-right-long ocultar"></i>
 	</div>

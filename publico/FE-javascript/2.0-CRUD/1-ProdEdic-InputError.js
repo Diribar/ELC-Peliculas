@@ -161,7 +161,7 @@ window.addEventListener("load", async () => {
 			let aux = paisesID.value.split(" ");
 			if (agregar && aux.length >= 5) return; // Limita la cantidad máxima de países a 5
 			if (agregar) aux.push(paisID); // Agrega el país
-			else aux = aux.splice(aux.indexOf(paisID), 1); // Quita el país
+			else aux.splice(aux.indexOf(paisID), 1); // Quita el país
 			paisesID.value = aux.join(" "); // Actualiza el input
 
 			// Actualizar los países a mostrar
