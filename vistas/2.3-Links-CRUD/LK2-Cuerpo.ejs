@@ -1,5 +1,5 @@
-<%- include('TimerContador') %>
-<%- include('Cartel') %>
+<%- include('CMP-TimerContador') %>
+<%- include('CMP-Cartel') %>
 <section id="tituloConAyuda">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
@@ -29,13 +29,13 @@
 			<!-- Tabla -->
 			<table>
 				<!-- Títulos -->
-				<%- include("Links1-TituloTabla") %> 
+				<%- include("CMP-LK-TituloTabla") %> 
 				<tbody>
 					<!-- Filas para links existentes -->
 					<% links.forEach((link,fila)=> { %>
 						<% let cond = {} %>
-						<%- include("Links-2Condiciones", {link, cond}) %>
-						<%- include("Links-3Datos", {link, cond, fila}) %>
+						<%- include("CMP-LK-Condiciones", {link, cond}) %>
+						<%- include("CMP-LK-Datos", {link, cond, fila}) %>
 						<%- include("LK2-Edicion", {fila, link, cond}) %>
 					<% }) %>
 					<!-- Fila para nuevo link -->
