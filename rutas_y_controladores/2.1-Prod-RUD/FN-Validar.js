@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
 const variables = require("../../funciones/3-Procesos/Variables");
-const validar = require("../2.1-Prod-Agregar/FN-Validar");
+const validarProd = require("../2.1-Prod-Agregar/FN-Validar");
 
 module.exports = {
 	// ControllerAPI (validarEdicion_changes)
@@ -16,8 +16,8 @@ module.exports = {
 			campos = [...camposDD, ...camposDP].map((n) => n.nombreDelCampo);
 		}
 		// Averiguar si hay errores de validación DD y DP
-		let erroresDD = await validar.datosDuros(campos, datos);
-		let erroresDP = await validar.datosPers(campos, datos);
+		let erroresDD = await validarProd.datosDuros(campos, datos);
+		let erroresDP = await validarProd.datosPers(campos, datos);
 		// Terminar
 		let errores = {...erroresDD, ...erroresDP};
 		errores.hay = erroresDD.hay || erroresDP.hay;
