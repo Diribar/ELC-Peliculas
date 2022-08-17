@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 		informacion.iconos = [vistaAnterior];
 		if (usuario.rol_usuario.aut_gestion_prod && registro.creado_por_id != usuario.id)
 			informacion.iconos.push(vistaTablero);
-		return res.render("Errores", {informacion});
+		return res.render("CR9-Errores", {informacion});
 	}
 	next();
 };

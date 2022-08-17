@@ -1,0 +1,52 @@
+<% registro = camposDP.find(n => n.nombreDelCampo == campo) %>
+<section class="label-input invisible RCLV">
+	<label><%= registro.titulo %></label>
+	<div class="input-error">
+		<!-- Input -->
+		<select name="<%= campo %>" class="input RCLV" autofocus>
+			<option value="" class="ocultar">Elegí una opción</option>
+			<option value="1" <% if (dataEntry[campo] == 1) { %>selected<% } %>>Ninguno</option>
+			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
+				<option value="<%= valor.id %>" 
+					class="RCLV
+						<% // Datos para PERSONAJES %>
+						<% if (campo == "personaje_id") { %>
+							<% if (valor.categoria_id) { %><%= valor.categoria_id %><% } %>
+							<% if (valor.ap_mar_id) { %><%= 'AM AM'+valor.ap_mar_id %><% } %>
+							<% if (valor.subcategoria_id) { %><%= valor.subcategoria_id %><% } %>
+						<% } %>
+						<% // Datos para HECHOS %>
+						<% if (campo == "hecho_id") { %>
+							CFC
+							<% if (!valor.solo_cfc) { %><%= 'VPC' %><% } %>
+							<% if (valor.jss) { %><%= 'JSS' %><% } %>
+							<% if (valor.cnt) { %><%= 'CNT' %><% } %>
+							<% if (valor.exclusivo) { %><%= 'EXC' %><% } %>
+							<% if (valor.ap_mar) { %><%= 'AM' %><% } %>
+						<% } %>
+					"
+					<% // Agregar como selected si el valor de la opción coincide con el data-entry %> 
+					<% if (dataEntry[campo] == valor.id) { %>selected<% } %>
+				>
+					<%= valor.nombre %>
+				</option>
+			<% } %>
+		</select>
+		<!-- Ayuda -->
+		<i class="fa-solid fa-circle-question"></i>
+		<ul type="dots" class="mensajeAyuda ocultar">
+			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
+		</ul>
+		<!-- Errores -->
+		<i class="fa-solid fa-circle-xmark ocultar">
+			<span class="mensajeError"></span>
+		</i>
+		<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
+		<!-- Link a Relación con la vida -->
+		<% if (registro.grupo=="RCLV") { %>
+			<i class="linkRCLV fa-solid fa-circle-plus alta <%= campo %>" title='Agregar "<%= registro.titulo.toLowerCase() %>"'></i>
+			<i class="linkRCLV fa-solid fa-square-pen edicion ocultar <%= campo %>" title='Editar "<%= registro.titulo.toLowerCase() %>"'></i>
+		<% } %>
+	</div>
+</section>

@@ -3,7 +3,7 @@
 
 module.exports = {
 	home: async (req, res) => {
-		res.render("0-Estructura-Gral", {
+		res.render("GN0-Estructura", {
 			tema: "productos",
 			opcion: null,
 			titulo: "ELC-Películas",
@@ -20,7 +20,7 @@ module.exports = {
 		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
 		// Ir a la vista
 		// return res.send([tema, opcion, titulo, opciones, tipos, opcionCampos]);
-		res.render("0-Estructura-Gral", {
+		res.render("GN0-Estructura", {
 			tema: "productos",
 			opcion,
 			titulo: opcionElegida_titulo,
@@ -45,7 +45,7 @@ module.exports = {
 		);
 		// Ir a la vista
 		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
-		res.render("0-Estructura-Gral", {
+		res.render("GN0-Estructura", {
 			tema: "productos",
 			opcion,
 			titulo: opcionElegida_titulo,

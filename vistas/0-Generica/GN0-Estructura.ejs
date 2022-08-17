@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<!-- Head -->
+	<%- include('GN1-Head') %>
+	<% if (tema == "usuario") { %><%- include('US0-1Head') %><% } %>
+	<% if (tema == "prod_agregar") { %><%- include('PA0-1Head') %><% } %>
+	<% if (tema == "rclv") { %><%- include('RCLV-1Head') %><% } %>
+	<% if (tema == "revision") { %><%- include('RV0-1Head') %><% } %>
+	<% if (tema == "productos") { %><%- include('0-Productos-Head') %><% } %>
+	<% if (tema == "miscelaneas") { %><%- include('MI0-1Head') %><% } %>
+</head>
+<body>
+	<%- include('GN2-Header') %>
+	<main class="flex-row">
+		<%- include('CMP-ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
+		<section id="cuerpo-y-footer">
+			<%- include('GN3-Footer') %>
+			<!--**************************** CUERPO ******************************-->
+			<% if (tema == "usuario") { %><%- include('US0-2Cuerpo') %><% } %>
+			<% if (tema == "prod_agregar") { %><%- include('PA0-2Cuerpo') %><% } %>
+			<% if (tema == "rclv") { %><%- include('RCLV-2Cuerpo') %><% } %>
+			<% if (tema == "revision") { %><%- include('RV0-2Cuerpo') %><% } %>
+			<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
+			<% if (tema == "miscelaneas") { %><%- include("MI0-2Cuerpo") %><% } %>
+			<!--****************************** FIN *******************************-->
+		</section>
+	</main>
+</body>
+</html>

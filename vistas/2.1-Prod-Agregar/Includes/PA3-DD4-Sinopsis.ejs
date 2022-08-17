@@ -1,0 +1,13 @@
+<section style="margin-bottom: 0px;" class="label-input">
+	<label>Sinopsis</label>
+	<div class="input-error">
+		<textarea 
+			name="sinopsis" rows="1" class="input" placeholder="Ingresa aquí la sinopsis"
+			<% if (dataEntry.sinopsis && !errores.sinopsis) { %>disabled<% } %>
+		><%= dataEntry.sinopsis %></textarea>
+		<!-- Ayuda -->
+		<%- (dataEntry.sinopsis && !errores.sinopsis) ? include("PA3-DD9-Mensajes") : "" %>
+		<!-- Errores -->
+		<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
+	</div>
+</section>

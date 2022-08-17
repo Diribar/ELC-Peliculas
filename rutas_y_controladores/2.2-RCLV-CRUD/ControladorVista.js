@@ -9,10 +9,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
-		// 1. Variables
+		// 1. Tema y Código
+		let tema = "rclv";
 		let url = req.url.slice(1);
-		let agregar_edicion = url.slice(0, url.indexOf("/"));
-		let tema = "rclv_" + agregar_edicion;
+		let codigo = url.slice(0, url.indexOf("/"));
+		// 2. Variables
 		let entidad = req.query.entidad;
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
 		let dataEntry = req.session[entidad]
@@ -21,11 +22,11 @@ module.exports = {
 			? req.cookies[entidad]
 			: {};
 		let nombre = funciones.obtenerEntidadNombre(entidad);
-		let titulo = (agregar_edicion == "agregar" ? "Agregar - " : "Edición - ") + nombre;
+		let titulo = (codigo == "agregar" ? "Agregar - " : "Edición - ") + nombre;
 		let tituloCuerpo =
-			(agregar_edicion == "agregar" ? "Agregá un " + nombre + " a" : "Editá el " + nombre + " de") +
+			(codigo == "agregar" ? "Agregá un " + nombre + " a" : "Editá el " + nombre + " de") +
 			" nuestra Base de Datos";
-		// 2. Variables específicas para personajes
+		// 3. Variables específicas para personajes
 		if (entidad == "personajes") {
 			var procesos_canonizacion = await BD_genericas.obtenerTodos("procesos_canonizacion", "orden");
 			procesos_canonizacion = procesos_canonizacion.filter((m) => m.id.length == 3);
@@ -34,8 +35,8 @@ module.exports = {
 			var apariciones_marianas = await BD_genericas.obtenerTodos("hechos", "nombre");
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
 		}
-		// 3. Pasos exclusivos para edición
-		if (agregar_edicion == "edicion") {
+		// 4. Pasos exclusivos para edición
+		if (codigo == "edicion") {
 			let id = req.query.id;
 			let includes = entidad == "personajes" ? "rol_iglesia" : "";
 			dataEntry = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes); // Pisa el data entry de session
@@ -47,9 +48,10 @@ module.exports = {
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
 		}
-		// 4. Render
-		return res.render("0-Estructura-Gral", {
+		// 5. Render
+		return res.render("GN0-Estructura", {
 			tema,
+			codigo,
 			entidad: entidad,
 			titulo,
 			tituloCuerpo,
@@ -59,7 +61,6 @@ module.exports = {
 			roles_iglesia,
 			procesos_canonizacion,
 			apariciones_marianas,
-			agregar_edicion,
 		});
 	},
 
@@ -102,9 +103,9 @@ module.exports = {
 		for (let campo in datos) if (!camposUtiles.includes(campo)) delete datos[campo];
 		// Preparar la información a guardar
 		let url = req.url.slice(1);
-		let agregar_edicion = url.slice(0, url.indexOf("/"));
+		let codigo = url.slice(0, url.indexOf("/"));
 		// Guardar los cambios del RCLV
-		if (agregar_edicion == "agregar") {
+		if (codigo == "agregar") {
 			id = await procesar.crear_original(entidad, datos, userID);
 			// Agregar el RCLV a DP/ED
 			let entidad_id = funciones.obtenerEntidad_id(entidad);
@@ -117,7 +118,7 @@ module.exports = {
 				req.session.edicProd = {...req.session.edicProd, [entidad_id]: id};
 				res.cookie("edicProd", req.session.edicProd, {maxAge: unDia});
 			}
-		} else if (agregar_edicion == "edicion") {
+		} else if (codigo == "edicion") {
 			// Obtener el registro original
 			let RCLV_original = await BD_genericas.obtenerPorIdConInclude(entidad, id, "status_registro");
 			let RCLV_editado = datos;

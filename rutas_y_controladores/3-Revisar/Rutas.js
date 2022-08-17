@@ -27,11 +27,14 @@ router.get("/api/link-eliminar", soloGestionProd, API.linkAlta);
 
 // VISTAS --------------------------------------------------
 router.get("/tablero-de-control", soloGestionProd, vista.tableroControl);
+// Producto
 router.get("/producto/alta", ...todos, vista.prod_Alta);
 router.get("/producto/edicion", ...todos, vista.prod_Edicion);
 router.get("/producto/inactivar");
 router.get("/producto/recuperar");
-router.get("/rclv", ...todos, vista.RCLV_Alta);
+// RCLV
+router.get("/rclv/alta", ...todos, vista.RCLV_Alta);
+// Links
 router.get("/links", ...todos, vista.links);
 
 // Exportarlo **********************************************

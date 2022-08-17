@@ -1,0 +1,8 @@
+<section id="cuerpo">
+	<%- codigo == "mail" ? include("US1-Registro-Mail") : "" %>
+	<%- codigo == "perennes" ? include("US2-Registro-Perennes") : "" %>
+	<%- codigo == "editables" ? include("US3-Registro-Editables") : "" %>
+	<%- codigo == "detalle" ? include("US4-DetalleUsuario") : "" %>
+	<%- codigo == "edicion" ? include("edicion") : "" %>
+	<%- codigo == "login" ? include("US9-Login") : "" %>
+</section>

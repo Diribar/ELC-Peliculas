@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<!-- Head -->
+	<%- include('GN1-Head') %>
+	<link rel="stylesheet" href="/formatoDeVistas/9-Inicio/Inicio.css">
+</head>
+<body>
+	<%- include('GN2-Header') %>
+	<main class="flex-row">
+		<%- include('CMP-ImagenDerecha', {url: '/imagenes/8-Inicio/Inicio.jpg'}) %>
+		<section id="cuerpo-y-footer">
+			<%- include('GN3-Footer') %>
+			<!-- Inicio -->
+			<div id="cuerpo" class="flex-row">
+				<%- include("IN1-Cuerpo") %>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

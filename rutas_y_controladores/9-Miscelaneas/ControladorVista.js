@@ -8,7 +8,7 @@ module.exports = {
 	home: (req, res) => {
 		let tema = "miscelaneas";
 		let codigo = "inicio";
-		return res.render("0-InicioEstructura", {
+		return res.render("IN0-Estructura", {
 			tema,
 			codigo,
 			titulo: "Inicio",
@@ -17,7 +17,7 @@ module.exports = {
 	quienesSomos: (req, res) => {
 		let tema = "miscelaneas";
 		let codigo = "quienes-somos";
-		return res.render("0-Estructura-Gral", {
+		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
 			titulo: "Quiénes somos",

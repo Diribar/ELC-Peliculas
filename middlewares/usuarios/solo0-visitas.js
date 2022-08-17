@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
 			titulo: "Logout",
 			logout: true,
 		};
-		return res.render("Errores", {informacion});
+		return res.render("CR9-Errores", {informacion});
 	}
 	next();
 };

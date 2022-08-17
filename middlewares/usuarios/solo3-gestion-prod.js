@@ -19,10 +19,9 @@ module.exports = (req, res, next) => {
 				{nombre: "fa-circle-right", link: linkUsuarioAutProductos, titulo: "Solicitar el permiso"},
 			],
 		};
-		return res.render("Errores", {informacion});
 	}
 	// Si corresponde, mostrar el mensaje de error
-	if (informacion) return res.render("Errores", {informacion});
+	if (informacion) return res.render("CR9-Errores", {informacion});
 	// Fin
 	next();
 };

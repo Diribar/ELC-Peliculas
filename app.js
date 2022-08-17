@@ -43,17 +43,18 @@ app.listen(80, () => console.log("Servidor funcionando..."));
 app.set("view engine", "ejs"); // Terminación de los archivos de vista
 app.set("views", [
 	path.resolve(__dirname, "./vistas"),
-	path.resolve(__dirname, "./vistas/0-Estructura"),
-	path.resolve(__dirname, "./vistas/0-Estructura/menusHeader"),
+	path.resolve(__dirname, "./vistas/0-Generica"),
+	path.resolve(__dirname, "./vistas/0-Generica/menusHeader"),
 	path.resolve(__dirname, "./vistas/0-Compartido"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
-	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),	
-	path.resolve(__dirname, "./vistas/2.1-Prod-Crear"),
-	path.resolve(__dirname, "./vistas/2.1-Prod-Crear/Includes"),
+	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
+	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar"),
+	path.resolve(__dirname, "./vistas/2.1-Prod-Agregar/Includes"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD"),
-	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD/Includes"),
+
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-Revisar"),
@@ -66,7 +67,7 @@ app.set("views", [
 // ************************* Rutas ********************************
 // CRUD
 const rutaCRUD = require("./rutas_y_controladores/2.0-CRUD/Rutas");
-const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Crear/Rutas");
+const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas");
 const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
 const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
 const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
@@ -92,5 +93,5 @@ app.use((req, res) => {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 	};
-	res.status(404).render("Errores", {informacion});
+	res.status(404).render("CR9-Errores", {informacion});
 });

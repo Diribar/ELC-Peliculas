@@ -19,6 +19,6 @@ module.exports = async (req, res, next) => {
 	if (!registro) informacion = {mensajes: ["Registro no encontrado"], iconos: [vistaAnterior]};
 
 	// Conclusiones
-	if (informacion) return res.render("Errores", {informacion});
+	if (informacion) return res.render("CR9-Errores", {informacion});
 	else next();
 };
