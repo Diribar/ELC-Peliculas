@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const variables = require("./Variables");
+const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Procesos");
 
 // Exportar ------------------------------------
 module.exports = {
@@ -48,13 +49,13 @@ module.exports = {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
 		if (entidad == "links")
-			funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+			procesosLinks.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
 		if (entidad == "links")
-			funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+			procesosLinks.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
@@ -65,18 +66,18 @@ module.exports = {
 		// Preparar los datos
 		let datos = {
 			sugerido_por_id: userID,
-			sugerido_en: funciones.ahora(),
+			sugerido_en: funcionAhora(),
 			motivo_id,
 			status_registro_id: inactivarID,
 		};
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async (entidad, entidad_edicion, original, edicion, userID) => {
+	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID)  {
 		// Depurar para dejar solamente las novedades de la edición
-		edicion = funciones.quitarLasCoincidenciasConOriginal(original, edicion);
+		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
 		// Obtener el campo 'entidad_id'
-		let entidad_id = funciones.obtenerEntidad_id(entidad);
+		let entidad_id = this.obtenerEntidad_id(entidad);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);

@@ -1,8 +1,7 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
@@ -10,7 +9,7 @@ module.exports = {
 	obtenerLinksActualizados: async (entidad, prodID, userID) => {
 		// Obtiene para el usuario los links 'personalizados', es decir el original editado por él
 		// Variables
-		let producto_id = funciones.obtenerEntidad_id(entidad);
+		let producto_id = compartidas.obtenerEntidad_id(entidad);
 		let includes = ["tipo", "prov", "status_registro", "ediciones", "motivo"];
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Obtener los linksOriginales
