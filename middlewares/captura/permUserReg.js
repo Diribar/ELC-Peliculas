@@ -16,7 +16,6 @@ module.exports = async (req, res, next) => {
 	// Variables de url
 	const urlBase = req.baseUrl;
 	const url = req.url;
-	console.log(url);
 	// Variables - Registro
 	let includes = ["status_registro", "ediciones", "capturado_por"];
 	if (entidad == "capitulos") includes.push("coleccion");
