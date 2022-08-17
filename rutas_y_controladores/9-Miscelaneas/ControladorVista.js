@@ -1,6 +1,4 @@
 "use strict";
-// ************ Requires ************
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 // *********** Controlador ***********
 module.exports = {

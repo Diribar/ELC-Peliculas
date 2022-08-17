@@ -1,4 +1,6 @@
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
+	<%- include('CMP-TimerContador') %>
+	<%- include('CMP-Cartel') %>
 	<section id="imagen" class="input-error">
 		<!-- Imagen que se ve en la vista -->
 		<label for="inputImagen" id="avatarVisible">
@@ -27,8 +29,6 @@
 		<%- include('GN3-Footer') %>
 		<!--**************************** CUERPO ************************-->
 		<div id="cuerpo">
-			<%- include('CMP-TimerContador') %>
-			<%- include('CMP-Cartel') %>
 			<div id="tituloConAyuda">
 				<h1 id="titulo"><%= titulo %></h1>
 				<!-- Ayuda -->

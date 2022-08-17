@@ -4,7 +4,7 @@ const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesos = require("./Procesos");
+const procesos = require("./FN-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -56,12 +56,6 @@ module.exports = {
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo, 1);
 		// Penaliza al usuario si corresponde
 		if (datos.duracion) procesos.usuario_Penalizar(creador_ID, motivo, "prod_");
-		// Actualizar en RCLVs el campo 'prod_aprob'
-		if (
-			nuevoStatusID == status.find((n) => n.aprobado).id ||
-			nuevoStatusID == status.find((n) => n.inactivo).id
-		)
-			procesos.RCLV_ActualizarProdAprob(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -212,13 +206,10 @@ module.exports = {
 			procesos.prod_ActualizarRCLVs_ProdAprob(prodOriginal, status);
 		// Otras particularidades para el campo RCLV
 		if (
-			// Se cambió el campo RCLV, y el status está aprobado
-			(RCLV_ids.includes(campo) && aprobado && statusAprobado) ||
-			// El registro no estaba aprobado y ahora sí lo está
-			(!prodOriginal.status_registro.aprobado && statusAprobado)
+			(RCLV_ids.includes(campo) && aprobado && statusAprobado) || // Se cambió el campo RCLV, y el status está aprobado
+			(!prodOriginal.status_registro.aprobado && statusAprobado) // El registro no estaba aprobado y ahora sí lo está
 		)
-			// Actualizar en RCLVs el campo 'prod_aprob'
-			procesos.prod_ActualizarRCLVs_ProdAprob(producto, status);
+			procesos.RCLVs_ActualizarProdAprobOK(producto, status); // Actualizar en RCLVs el campo 'prod_aprob'
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
@@ -419,7 +410,8 @@ module.exports = {
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
 		if (!aprobado) procesos.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito") compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
+		if (campo == "gratuito")
+			compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
