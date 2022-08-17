@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procesar = require("../../funciones/3-Procesos/2-Agregar");
+const procesar = require("../../rutas_y_controladores/2.1-Prod-Agregar/FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables

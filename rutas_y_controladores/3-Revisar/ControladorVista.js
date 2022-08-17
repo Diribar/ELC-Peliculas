@@ -2,9 +2,9 @@
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const procesar = require("../../funciones/3-Procesos/4-Revisar");
+const procesos = require("./Procesos");
 
 module.exports = {
 	// Uso general
@@ -16,17 +16,17 @@ module.exports = {
 		// Definir variables
 		const status = req.session.status_registro;
 		const aprobado_id = status.find((n) => n.aprobado).id;
-		const ahora = funciones.ahora();
+		const ahora = compartidas.ahora();
 		// Productos y Ediciones
 		let productos;
-		productos = await procesar.tablero_obtenerProds(ahora, status, userID); //
-		productos.ED = await procesar.tablero_obtenerProdsConEdic(ahora, status, userID); //
+		productos = await procesos.tablero_obtenerProds(ahora, status, userID); //
+		productos.ED = await procesos.tablero_obtenerProdsConEdic(ahora, status, userID); //
 		// Obtener Links
-		productos.LK = await procesar.tablero_obtenerProdsConLink(ahora, status, userID); //
-		productos = procesar.prod_ProcesarCampos(productos);
+		productos.LK = await procesos.tablero_obtenerProdsConLink(ahora, status, userID); //
+		productos = procesos.tablero_prod_ProcesarCampos(productos);
 		// RCLV
-		let RCLVs = await procesar.tablero_obtenerRCLVs(ahora, status, userID); //
-		RCLVs = procesar.RCLV_ProcesarCampos(RCLVs);
+		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, status, userID); //
+		RCLVs = procesos.tablero_RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
 		// return res.send([productos,RCLVs]);
 		return res.render("GN0-Estructura", {
@@ -57,12 +57,12 @@ module.exports = {
 			  prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id ? await compartidas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesar.prod_BloquesAlta(prodOriginal, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.prod_BloquesAlta(prodOriginal, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -90,7 +90,7 @@ module.exports = {
 		const entidad = req.query.entidad;
 		const prodID = req.query.id;
 		const userID = req.session.usuario.id;
-		const producto_id = funciones.obtenerEntidad_id(entidad);
+		const producto_id = compartidas.obtenerEntidad_id(entidad);
 		let edicID = req.query.edicion_id;
 
 		// VERIFICACION1: Si no existe edicID...
@@ -125,11 +125,11 @@ module.exports = {
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/inactivar-captura/?destino=tablero&entidad=" + entidad + "&id=" + prodID);
-		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// VERIFICACION3: si no quedan campos de 'edicion' por procesos --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await procesar.prod_QuedanCampos(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
 		if (!quedanCampos) {
 			let informacion = {
 				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
@@ -161,7 +161,7 @@ module.exports = {
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = procesar.prod_ArmarComparac(prodOriginal, prodEditado);
+			[ingresos, reemplazos] = procesos.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
 			let imagen = prodOriginal.avatar;
 			avatar = imagen
@@ -169,11 +169,11 @@ module.exports = {
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await procesar.prod_BloqueEdic(prodOriginal, prodEditado);
+			bloqueDer = await procesos.prod_BloqueEdic(prodOriginal, prodEditado);
 			vista = "RV0-0Estructura";
 		}
 		// 7. Configurar el título de la vista
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
 		return res.send([prodOriginal, prodEditado]);
@@ -213,7 +213,7 @@ module.exports = {
 			dataEntry.mes_id = dia_del_ano.mes_id;
 		}
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
-		let nombre = funciones.obtenerEntidadNombre(entidad);
+		let nombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar - " + nombre;
 		let tituloCuerpo = "Revisá el " + nombre;
 		// 3. Variables específicas para personajes
@@ -251,7 +251,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Configurar el título
-		let prodNombre = funciones.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
 		let titulo = "Revisar los Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener el producto con sus links originales para verificar que los tenga
 		includes = ["links", "status_registro"];
@@ -261,7 +261,7 @@ module.exports = {
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
 		if (informacion) return res.render("CR9-Errores", {informacion});
 		// Obtener todos los links
-		let entidad_id = funciones.obtenerEntidad_id(prodEntidad);
+		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];
 		let links = await BD_genericas.obtenerTodosPorCamposConInclude(
 			"links",

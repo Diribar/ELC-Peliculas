@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const procesarProd = require("../3-Procesos/2-Agregar");
-const BD_especificas = require("../2-BD/Especificas");
-const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("../3-Procesos/Compartidas");
+const procesarProd = require("./FN-Procesos");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -87,7 +87,7 @@ module.exports = {
 			{nombre: "direccion", corto: 3, largo: 100},
 			{nombre: "guion", corto: 3, largo: 100},
 			{nombre: "produccion", corto: 3, largo: 100},
-			{nombre: "sinopsis", corto: 15, largo: 800},
+			{nombre: "sinopsis", corto: 15, largo: 900},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {

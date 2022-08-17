@@ -1,7 +1,4 @@
 "use strict";
-// Requires
-const usuarios = require("../../funciones/3-Procesos/8-Usuarios");
-
 module.exports = (req, res, next) => {
 	// Redireccionar si el usuario no está logueado
 	let usuario = req.session.usuario;

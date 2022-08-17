@@ -13,11 +13,10 @@ const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
 const aptoDE = require("../../middlewares/captura/aptoDE");
-const permReg = require("../../middlewares/captura/permReg");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 // Consolidados
-const todos = [soloAutInput, entidad, id, aptoDE, permReg, permUserReg, capturaActivar];
+const todos = [soloAutInput, entidad, id, aptoDE, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs

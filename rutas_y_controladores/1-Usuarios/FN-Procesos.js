@@ -1,8 +1,8 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("./Compartidas");
-const variables = require("./Variables");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// Controladora/Usuario/Login

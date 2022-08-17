@@ -688,7 +688,7 @@ CREATE TABLE prod_1peliculas (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(800) NULL,
+	sinopsis VARCHAR(900) NULL,
 	avatar VARCHAR(100) NULL,
 
 	en_castellano_id TINYINT UNSIGNED NULL,
@@ -788,8 +788,9 @@ CREATE TABLE prod_2colecciones (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(50) NULL,
-	sinopsis VARCHAR(800) NULL,
+	sinopsis VARCHAR(900) NULL,
 	avatar VARCHAR(100) NULL,
+	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
@@ -884,8 +885,9 @@ CREATE TABLE prod_3capitulos (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(800) NULL,
+	sinopsis VARCHAR(900) NULL,
 	avatar VARCHAR(100) NULL,
+	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,
@@ -1006,8 +1008,9 @@ CREATE TABLE prod_4edicion (
 	musica VARCHAR(100) NULL,
 	actuacion VARCHAR(500) NULL,
 	produccion VARCHAR(100) NULL,
-	sinopsis VARCHAR(800) NULL,
+	sinopsis VARCHAR(900) NULL,
 	avatar VARCHAR(100) NULL,
+	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
 	categoria_id VARCHAR(3) NULL,

@@ -1,14 +1,13 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
-const funciones = require("./Compartidas");
-const variables = require("./Variables");
-const validar = require("../4-Validaciones/RUD");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
+const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
-	// ControladorVista (Tablero)
-	// Producto, RCLVs, Links
+	// ControladorVista - Tablero
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
@@ -159,7 +158,7 @@ module.exports = {
 	tablero_obtenerRCLVsConEdic: async (ahora, status, userID) => {
 		// - edicRCLV ajena, pend. aprobar
 	},
-	prod_ProcesarCampos: (productos) => {
+	tablero_prod_ProcesarCampos: (productos) => {
 		// Procesar los registros
 		// Variables
 		const anchoMax = 40;
@@ -187,7 +186,7 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	RCLV_ProcesarCampos: (RCLVs) => {
+	tablero_RCLV_ProcesarCampos: (RCLVs) => {
 		// Procesar los registros
 		let anchoMax = 30;
 		const rubros = Object.keys(RCLVs);
@@ -210,7 +209,7 @@ module.exports = {
 		return RCLVs;
 	},
 
-	// ControladorVista (Analizar)
+	// ControladorVista - Productos Alta
 	prod_BloquesAlta: async (prodOriginal, paises) => {
 		// Definir el 'ahora'
 		let ahora = funciones.ahora().getTime();
@@ -247,6 +246,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
+	// ControladorVista - Productos Edición
 	prod_QuedanCampos: async (prodOriginal, prodEditado) => {
 		// Variables
 		let edicion = {...prodEditado};
@@ -347,7 +347,8 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	prod_ActualizarRCLVs_ProdAprob: async (producto, status) => {
+	// ControladorAPI - Producto Alta
+	RCLV_ActualizarProdAprob: async (producto, status) => {
 		// Variables
 		let aprobado = status.find((n) => n.aprobado).id;
 		let includes = ["peliculas", "colecciones", "capitulos"];
@@ -378,7 +379,7 @@ module.exports = {
 		}
 		return;
 	},
-	// Producto - ControladorAPI
+	// ControladorAPI - Producto Edición
 	prod_EdicValores: (aprobado, prodOriginal, prodEditado, campo) => {
 		// Definir los campos 'complicados'
 		let camposConVinculo = [
@@ -408,22 +409,7 @@ module.exports = {
 		return {valor_aceptado, valor_rechazado};
 	},
 
-	// RCLV
-	RCLV_tituloCanoniz: (datos) => {
-		let tituloCanoniz;
-		if (datos.entidad == "personajes") {
-			tituloCanoniz = datos.proceso_canonizacion.nombre;
-			if (
-				datos.proceso_canonizacion.nombre == "Santo" &&
-				!datos.nombre.startsWith("Domingo") &&
-				!datos.nombre.startsWith("Tomás") &&
-				!datos.nombre.startsWith("Tomé") &&
-				!datos.nombre.startsWith("Toribio")
-			)
-				tituloCanoniz = "San";
-		}
-		return tituloCanoniz;
-	},
+	// ControladorAPI - RCLV Alta
 	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
 		let ahora = funciones.ahora();
@@ -472,7 +458,7 @@ module.exports = {
 		return;
 	},
 
-	// Usuario
+	// ControladorAPI - Prod. Alta, Prod. Edición, Link Alta, Link Edición
 	usuario_Penalizar: async (userID, motivo, campo) => {
 		// Variables
 		let datos = {};

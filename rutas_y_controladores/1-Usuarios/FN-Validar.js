@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../2-BD/Especificas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 const path = require("path");
 
 module.exports = {

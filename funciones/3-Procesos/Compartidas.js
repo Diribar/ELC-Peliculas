@@ -9,44 +9,104 @@ const variables = require("./Variables");
 
 // Exportar ------------------------------------
 module.exports = {
-	// Gestión de archivos
-	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
-		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
-		let carpetaDestino = "./publico/imagenes/" + destino + "/";
-		let archivoDestino = carpetaDestino + nombre;
-		if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-		if (!fs.existsSync(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen);
-		else
-			fs.rename(archivoOrigen, archivoDestino, (error) => {
-				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-				else throw error;
-			});
+	// Entidades
+	quitarLosCamposSinContenido: (objeto) => {
+		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
+		return objeto;
 	},
-	borrarArchivo: (ruta, archivo) => {
-		let archivoImagen = path.join(ruta, archivo);
-		if (archivo && fs.existsSync(archivoImagen)) {
-			fs.unlinkSync(archivoImagen);
-			console.log("Archivo " + archivoImagen + " borrado");
-		} else console.log("Archivo " + archivoImagen + " no encontrado");
+	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
+		// Obtener los campos a comparar
+		let camposAComparar = variables["camposRevisar" + ent]().map((n) => n.nombreDelCampo);
+		// Quitar de edicion los campos que no se comparan
+		for (let campo in edicion) if (!camposAComparar.includes(campo)) delete edicion[campo];
+		// Fin
+		return edicion;
 	},
-	revisarImagen: (tipo, tamano) => {
-		let tamanoMaximo = 2;
-		return tipo.slice(0, 6) != "image/"
-			? "Necesitamos un archivo de imagen"
-			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
-			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
-			: "";
+	quitarLasCoincidenciasConOriginal: (original, edicion) => {
+		// Eliminar campo si:
+		// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
+		// - edición es estrictamente igual al original
+		for (let campo in edicion)
+			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
+				delete edicion[campo];
+		return edicion;
 	},
-	descargar: async (url, rutaYnombre) => {
-		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
-		let writer = fs.createWriteStream(rutaYnombre);
-		let response = await axios({method: "GET", url: url, responseType: "stream"});
-		response.data.pipe(writer);
-		return new Promise((resolve, reject) => {
-			writer.on("finish", () => resolve(console.log("Imagen guardada")));
-			writer.on("error", (error) => reject(error));
-		});
+	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
+		// Averiguar si queda algún campo
+		let quedanCampos = !!Object.keys(datos).length;
+		// Eliminar el registro de la edición
+		if (!quedanCampos) await BD_genericas.eliminarPorId(entidadEdic, entidadEdic_id);
+		return quedanCampos;
+	},
+	crear_registro: async (entidad, datos, userID) => {
+		datos.creado_por_id = userID;
+		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
+		if (entidad == "links") funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		return id;
+	},
+	actualizar_registro: async (entidad, id, datos) => {
+		await BD_genericas.actualizarPorId(entidad, id, datos);
+		if (entidad == "links") funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		return "Registro original actualizado";
+	},
+	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
+		// Obtener el status_id de 'inactivar'
+		let inactivarID = await BD_genericas.obtenerPorCampos("status_registro", {inactivar: true}).then(
+			(n) => n.id
+		);
+		// Preparar los datos
+		let datos = {
+			sugerido_por_id: userID,
+			sugerido_en: funciones.ahora(),
+			motivo_id,
+			status_registro_id: inactivarID,
+		};
+		// Actualiza el registro 'original' en la BD
+		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
+	},
+	guardar_edicion: async (entidad, entidad_edicion, original, edicion, userID) => {
+		// Depurar para dejar solamente las novedades de la edición
+		edicion = funciones.quitarLasCoincidenciasConOriginal(original, edicion);
+		// Obtener el campo 'entidad_id'
+		let entidad_id = funciones.obtenerEntidad_id(entidad);
+		// Si existe una edición de ese original y de ese usuario --> eliminarlo
+		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
+		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);
+		if (registroEdic) await BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
+		// Averiguar si hay algún campo con novedad
+		if (!Object.keys(edicion).length) return "Edición sin novedades respecto al original";
+		// Completar la información
+		edicion = {
+			...edicion,
+			[entidad_id]: original.id,
+			editado_por_id: userID,
+		};
+		// Agregar la nueva edición
+		await BD_genericas.agregarRegistro(entidad_edicion, edicion);
+		// Fin
+		return "Edición guardada";
+	},
+	obtenerLeadTime: (desde, hasta) => {
+		// Corregir domingo
+		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
+		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
+		// Corregir sábado
+		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
+		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
+		// Calcular la cantidad de horas
+		let diferencia = hasta - desde;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+		// Averiguar la cantidad de horas por fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		let horasFDS_por_semanas = semanas * 2 * 24;
+		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
+		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
+		// Resultado
+		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
+		leadTime = Math.min(96, leadTime);
+		// Fin
+		return leadTime;
 	},
 
 	// Conversión de nombres
@@ -111,129 +171,6 @@ module.exports = {
 			: "";
 	},
 
-	// Entidades
-	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
-		return objeto;
-	},
-	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
-		// Obtener los campos a comparar
-		let camposAComparar = variables["camposRevisar" + ent]().map((n) => n.nombreDelCampo);
-		// Quitar de edicion los campos que no se comparan
-		for (let campo in edicion) if (!camposAComparar.includes(campo)) delete edicion[campo];
-		// Fin
-		return edicion;
-	},
-	quitarLasCoincidenciasConOriginal: (original, edicion) => {
-		// Eliminar campo si:
-		// - edición tiene un valor significativo y coincide con el original (se usa '==' porque unos son texto y otros número)
-		// - edición es estrictamente igual al original
-		for (let campo in edicion)
-			if ((edicion[campo] && edicion[campo] == original[campo]) || edicion[campo] === original[campo])
-				delete edicion[campo];
-		return edicion;
-	},
-	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
-		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(datos).length;
-		// Eliminar el registro de la edición
-		if (!quedanCampos) await BD_genericas.eliminarPorId(entidadEdic, entidadEdic_id);
-		return quedanCampos;
-	},
-	actualizarProdConLinkGratuito: async function (prodEntidad, prodID) {
-		// Variables
-		let datos = {};
-		let entidad_id = this.obtenerEntidad_id(prodEntidad);
-		// Obtener el producto con include a links
-		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
-			"links_gratuitos_cargados",
-			"links_gratuitos_en_la_web",
-			"links",
-			"status_registro",
-		]);
-		// Obtener los links gratuitos de películas del producto
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
-			"status_registro",
-			"tipo",
-		])
-			.then((n) => (n.length ? n.filter((n) => n.gratuito) : ""))
-			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
-		// Obtener los links 'Aprobados' y 'TalVez'
-		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
-		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
-		if (linksActivos.length || linksTalVez.length) {
-			// Obtener los ID de si, no y TalVez
-			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
-			let si = si_no_parcial.find((n) => n.si).id;
-			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
-			let no = si_no_parcial.find((n) => n.no).id;
-			// Acciones para LINKS GRATUITOS EN LA WEB
-			datos.links_gratuitos_en_la_web_id = linksActivos.length
-				? si
-				: producto.links_gratuitos_en_la_web_id != no
-				? talVez
-				: no;
-			// Acciones para LINKS GRATUITOS CARGADOS
-			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
-			// Actualizar la BD
-			BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
-		}
-		return;
-	},
-
-	// Middleware/RevisarUsuario
-	buscaAlgunaCapturaVigenteDelUsuario: async (entidadActual, regID, userID) => {
-		// Se revisa solamente en la familia de entidades
-		// Asociaciones
-		let entidades = ["peliculas", "colecciones", "capitulos"].includes(entidadActual)
-			? ["peliculas", "colecciones", "capitulos"]
-			: ["personajes", "hechos", "valores"];
-		let asociaciones = [];
-		entidades.forEach((entidad) => {
-			asociaciones.push("captura_" + entidad);
-		});
-		// Variables
-		let ahora = funcionAhora();
-		let haceUnaHora = nuevoHorario(-1, ahora);
-		let haceDosHoras = nuevoHorario(-2, ahora);
-		let objeto = {capturado_en: null, capturado_por_id: null, captura_activa: null};
-		let resultado;
-		// Obtener el usuario con los includes
-		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
-		// Rutina por cada asociación
-		let i = 0;
-		for (let asociacion of asociaciones) {
-			if (usuario[asociacion].length) {
-				// Rutina por cada entidad dentro de la asociación
-				for (let registro of usuario[asociacion]) {
-					// Si fue capturado hace más de 2 horas y no es el registro actual, limpiar los tres campos
-					if (registro.capturado_en < haceDosHoras && registro.id != regID) {
-						BD_genericas.actualizarPorId(entidades[i], registro.id, objeto);
-						// Si fue capturado hace menos de 1 hora, informar el caso
-					} else if (
-						registro.capturado_en > haceUnaHora &&
-						registro.captura_activa &&
-						(entidades[i] != entidadActual || registro.id != regID)
-					) {
-						resultado = {
-							entidad: entidades[i],
-							id: registro.id,
-							capturado_en: registro.capturado_en,
-							nombre: registro.nombre,
-							nombre_castellano: registro.nombre_castellano,
-							nombre_original: registro.nombre_original,
-						};
-						break;
-					}
-				}
-			}
-			if (resultado) break;
-			else i++;
-		}
-		// Fin
-		return resultado;
-	},
-
 	// Fecha y Hora
 	ahora: () => {
 		return funcionAhora();
@@ -253,27 +190,45 @@ module.exports = {
 			"hs"
 		);
 	},
-	obtenerLeadTime: (desde, hasta) => {
-		// Corregir domingo
-		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
-		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
-		// Corregir sábado
-		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
-		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
-		// Calcular la cantidad de horas
-		let diferencia = hasta - desde;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / unaHora;
-		// Averiguar la cantidad de horas por fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
-		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
-		// Resultado
-		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
-		leadTime = Math.min(96, leadTime);
-		// Fin
-		return leadTime;
+
+	// Gestión de archivos
+	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
+		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
+		let carpetaDestino = "./publico/imagenes/" + destino + "/";
+		let archivoDestino = carpetaDestino + nombre;
+		if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+		if (!fs.existsSync(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen);
+		else
+			fs.rename(archivoOrigen, archivoDestino, (error) => {
+				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+				else throw error;
+			});
+	},
+	borrarArchivo: (ruta, archivo) => {
+		let archivoImagen = path.join(ruta, archivo);
+		if (archivo && fs.existsSync(archivoImagen)) {
+			fs.unlinkSync(archivoImagen);
+			console.log("Archivo " + archivoImagen + " borrado");
+		} else console.log("Archivo " + archivoImagen + " no encontrado");
+	},
+	revisarImagen: (tipo, tamano) => {
+		let tamanoMaximo = 2;
+		return tipo.slice(0, 6) != "image/"
+			? "Necesitamos un archivo de imagen"
+			: parseInt(tamano) > tamanoMaximo * Math.pow(10, 6)
+			? "El tamaño del archivo es superior a " + tamanoMaximo + " MB, necesitamos uno más pequeño"
+			: "";
+	},
+	descargar: async (url, rutaYnombre) => {
+		let ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+		let writer = fs.createWriteStream(rutaYnombre);
+		let response = await axios({method: "GET", url: url, responseType: "stream"});
+		response.data.pipe(writer);
+		return new Promise((resolve, reject) => {
+			writer.on("finish", () => resolve(console.log("Imagen guardada")));
+			writer.on("error", (error) => reject(error));
+		});
 	},
 
 	// Varios
@@ -314,8 +269,6 @@ module.exports = {
 		// Fin
 		return paisesNombre.join(", ");
 	},
-
-	// Convertir letras
 	convertirLetrasAlIngles: (resultado) => {
 		return resultado
 			.toLowerCase()

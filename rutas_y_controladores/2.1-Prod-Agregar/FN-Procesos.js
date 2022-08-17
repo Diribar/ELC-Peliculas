@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const detailsTMDB = require("../1-APIs_TMDB/2-Details");
-const creditsTMDB = require("../1-APIs_TMDB/3-Credits");
-const BD_genericas = require("../2-BD/Genericas");
-const BD_especificas = require("../2-BD/Especificas");
-const funciones = require("../3-Procesos/Compartidas");
+const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
+const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -227,7 +227,6 @@ module.exports = {
 					temporada: 1,
 					capitulo: numCapitulo,
 					creado_por_id: 2,
-					capturado_por_id: 2,
 				};
 				if (datosCol.en_castellano_id != 2) datosCap.en_castellano_id = datosCol.en_castellano_id;
 				if (datosCol.en_color_id != 2) datosCap.en_color_id = datosCol.en_color_id;
@@ -319,7 +318,7 @@ module.exports = {
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
-		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2, capturado_por_id: 2};
+		let datos = {entidad: "capitulos", fuente: "TMDB", creado_por_id: 2};
 
 		// Datos de la colección
 		datos.coleccion_id = datosCol.id;
