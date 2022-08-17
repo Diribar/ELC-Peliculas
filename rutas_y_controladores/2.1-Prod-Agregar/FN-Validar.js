@@ -3,7 +3,7 @@
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
-const procesar = require("./FN-Procesos");
+const procesos = require("./FN-Procesos");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -64,7 +64,7 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		let cantDatosObtenidos = datos.contenido ? procesar.contenidoFA(datos.contenido) : {};
+		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
 			: !Object.keys(cantDatosObtenidos).length
