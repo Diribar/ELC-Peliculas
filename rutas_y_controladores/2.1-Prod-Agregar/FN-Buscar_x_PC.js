@@ -4,13 +4,13 @@ const searchTMDB = require("../../funciones/1-APIs_TMDB/1-Search");
 const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// ControllerAPI (cantProductos)
 	// ControllerVista (palabrasClaveGuardar)
 	search: async (palabrasClave, mostrar) => {
-		palabrasClave = funciones.convertirLetrasAlIngles(palabrasClave);
+		palabrasClave = compartidas.convertirLetrasAlIngles(palabrasClave);
 		let lectura = [];
 		let datos = {resultados: []};
 		let entidadesTMDB = ["movie", "tv", "collection"];
@@ -98,11 +98,11 @@ let estandarizarNombres = (dato, TMDB_entidad) => {
 				desempate3 = m.release_date;
 			} else return;
 		// Definir el título sin "distractores", para encontrar duplicados
-		let desempate1 = funciones
+		let desempate1 = compartidas
 			.convertirLetrasAlIngles(nombre_original)
 			.replace(/ /g, "")
 			.replace(/'/g, "");
-		let desempate2 = funciones
+		let desempate2 = compartidas
 			.convertirLetrasAlIngles(nombre_castellano)
 			.replace(/ /g, "")
 			.replace(/'/g, "");
@@ -134,9 +134,9 @@ let eliminarSiPCinexistente = (dato, palabrasClave) => {
 		if (typeof m == "undefined" || m == null) return;
 		for (let palabra of palabras) {
 			if (
-				funciones.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
-				funciones.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
-				funciones.convertirLetrasAlIngles(m.comentario).includes(palabra)
+				compartidas.convertirLetrasAlIngles(m.nombre_original).includes(palabra) ||
+				compartidas.convertirLetrasAlIngles(m.nombre_castellano).includes(palabra) ||
+				compartidas.convertirLetrasAlIngles(m.comentario).includes(palabra)
 			)
 				return m;
 		}

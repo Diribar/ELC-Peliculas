@@ -4,7 +4,7 @@ const detailsTMDB = require("../../funciones/1-APIs_TMDB/2-Details");
 const creditsTMDB = require("../../funciones/1-APIs_TMDB/3-Credits");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// USO COMPARTIDO *********************
@@ -111,7 +111,7 @@ module.exports = {
 			// Cast
 			if (datosAPI.cast.length > 0) datos.actuacion = funcionCast(datosAPI.cast);
 		}
-		return funciones.convertirLetrasAlCastellano(datos);
+		return compartidas.convertirLetrasAlCastellano(datos);
 	},
 	averiguarColeccion: async (TMDB_id) => {
 		// Obtener la API
@@ -167,7 +167,7 @@ module.exports = {
 		let otrosDatos = await this.completarColeccion(datos);
 		datos = {...datos, ...otrosDatos};
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return compartidas.convertirLetrasAlCastellano(datos);
 	},
 	completarColeccion: async (datos) => {
 		// Definir variables
@@ -314,7 +314,7 @@ module.exports = {
 			datos.cant_temporadas = datosAPI.seasons.length;
 		}
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return compartidas.convertirLetrasAlCastellano(datos);
 	},
 	infoTMDBparaAgregarCapitulosDeTV: (datosCol, datosTemp, datosCap) => {
 		// Datos fijos
@@ -387,7 +387,7 @@ module.exports = {
 		// Obtener los campos del formulario
 		let {entidad, en_coleccion, direccion, avatar, contenido} = dato;
 		// Generar la información
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let FA_id = this.obtenerFA_id(direccion);
 		contenido = this.contenidoFA(contenido.split("\r\n"));
 		if (contenido.pais_nombre) {
@@ -405,7 +405,7 @@ module.exports = {
 			...contenido,
 		};
 		// Fin
-		return funciones.convertirLetrasAlCastellano(datos);
+		return compartidas.convertirLetrasAlCastellano(datos);
 	},
 	// Función validar (copiarFA)
 	// This (infoFAparaDD)
@@ -463,7 +463,7 @@ module.exports = {
 
 	// ConfirmarGuardar
 	guardar_cal_registros: (confirma, registro) => {
-		let producto_id = funciones.obtenerEntidad_id(confirma.entidad);
+		let producto_id = compartidas.obtenerEntidad_id(confirma.entidad);
 		let datos = {
 			entidad: "cal_registros",
 			usuario_id: registro.creado_por_id,

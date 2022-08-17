@@ -3,7 +3,7 @@
 const procesarProd = require("./FN-Procesos");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -265,7 +265,7 @@ let extensiones = (nombre) => {
 	return ![".jpg", ".png"].includes(ext);
 };
 let cartelRepetido = (datos) => {
-	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
+	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este/a " +
 		"<a href='/producto/detalle/?entidad=" +
