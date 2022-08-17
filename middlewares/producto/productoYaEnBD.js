@@ -1,7 +1,7 @@
 "use strict";
 // Requires
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procesar = require("../../rutas_y_controladores/2.1-Prod-Agregar/FN-Procesos");
+const procesos = require("../../rutas_y_controladores/2.1-Prod-Agregar/FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables
@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 		}
 	}
 	if (informacion) {
-		procesar.borrarSessionCookies(req, res, "borrarTodo");
+		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		return res.render("CR9-Errores", {informacion});
 	}
 	next();
