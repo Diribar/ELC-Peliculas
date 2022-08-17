@@ -61,7 +61,7 @@ module.exports = {
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 				await BD_genericas.eliminarPorId("links", link.id);
-				compartidas.prodActualizar_campoProdConLinkGratuito(prodEntidad, prodID);
+				compartidas.prodActualizar_campoProdLG(prodEntidad, prodID);
 			}
 			// El link existe y no tiene status 'aprobado'
 			else if (!link.status_registro.aprobado)
@@ -73,7 +73,7 @@ module.exports = {
 			else {
 				// Inactivar
 				await compartidas.inactivar_registro("links", link.id, userID, motivo_id);
-				compartidas.prodActualizar_campoProdConLinkGratuito(prodEntidad, prodID);
+				compartidas.prodActualizar_campoProdLG(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);

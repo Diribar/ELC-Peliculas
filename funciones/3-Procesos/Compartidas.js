@@ -25,7 +25,7 @@ module.exports = {
 
 		// Quitar de edicion los campos que no se comparan
 		for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
-		
+
 		// Fin
 		return edicion;
 	},
@@ -48,14 +48,12 @@ module.exports = {
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		if (entidad == "links")
-			procesosLinks.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		if (entidad == "links") procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
-		if (entidad == "links")
-			procesosLinks.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		if (entidad == "links") procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
@@ -73,7 +71,7 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID)  {
+	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID) {
 		// Depurar para dejar solamente las novedades de la edición
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
 		// Obtener el campo 'entidad_id'

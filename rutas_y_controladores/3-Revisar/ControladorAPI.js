@@ -339,7 +339,7 @@ module.exports = {
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (aprobado) compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
+		if (aprobado) compartidas.prodActualizar_campoProdLG(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -413,7 +413,7 @@ module.exports = {
 		if (!aprobado) procesos.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
 		if (campo == "gratuito")
-			compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
+			compartidas.prodActualizar_campoProdLG(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},

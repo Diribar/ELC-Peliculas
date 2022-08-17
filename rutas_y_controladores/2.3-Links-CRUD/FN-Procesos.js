@@ -33,7 +33,7 @@ module.exports = {
 		// Fin
 		return links;
 	},
-	prodActualizar_campoProdConLinkGratuito: async function (prodEntidad, prodID) {
+	prodActualizar_campoProdLG: async function (prodEntidad, prodID) {
 		// Variables
 		let datos = {};
 		let entidad_id = this.obtenerEntidad_id(prodEntidad);
