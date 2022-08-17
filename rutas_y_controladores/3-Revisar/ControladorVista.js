@@ -311,10 +311,10 @@ module.exports = {
 	},
 };
 
-let infoProdEdicion = async (entidad, id, producto_id, userID) => {
+let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
 	// Averiguar sobre la edición
 	let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
-		[producto_id]: id,
+		[producto_id]: prodID,
 	});
 	// Generar la info del error
 	let informacion = {
@@ -328,7 +328,7 @@ let infoProdEdicion = async (entidad, id, producto_id, userID) => {
 		iconos: [
 			{
 				nombre: "fa-spell-check ",
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + id + "&destino=tablero",
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&destino=tablero",
 				titulo: "Regresar al Tablero de Control",
 			},
 		],
