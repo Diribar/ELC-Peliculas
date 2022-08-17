@@ -16,9 +16,15 @@ module.exports = {
 	},
 	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
 		// Obtener los campos a comparar
-		let camposAComparar = variables["camposRevisar" + ent]().map((n) => n.nombreDelCampo);
+		let campos = [];
+		variables["camposRevisar" + ent]().forEach((campo) => {
+			campos.push(campo.nombreDelCampo);
+			if (campo.relac_include) campos.push(campo.relac_include);
+		});
+
 		// Quitar de edicion los campos que no se comparan
-		for (let campo in edicion) if (!camposAComparar.includes(campo)) delete edicion[campo];
+		for (let campo in edicion) if (!campos.includes(campo)) delete edicion[campo];
+		
 		// Fin
 		return edicion;
 	},
@@ -41,12 +47,14 @@ module.exports = {
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		if (entidad == "links") funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		if (entidad == "links")
+			funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
-		if (entidad == "links") funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
+		if (entidad == "links")
+			funciones.prodActualizar_campoProdConLinkGratuito(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {

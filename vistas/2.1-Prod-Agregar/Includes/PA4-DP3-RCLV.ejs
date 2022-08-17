@@ -6,6 +6,7 @@
 		<select name="<%= campo %>" class="input RCLV" autofocus>
 			<option value="" class="ocultar">Elegí una opción</option>
 			<option value="1" <% if (dataEntry[campo] == 1) { %>selected<% } %>>Ninguno</option>
+			<% console.log(campo) %>
 			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
 					class="RCLV

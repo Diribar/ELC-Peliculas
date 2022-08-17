@@ -13,7 +13,6 @@ module.exports = {
 		// Definir variables
 		let {entidad, id: prodID} = req.query;
 		let aprobado = req.query.aprob == "true";
-		let archivo = "historial_cambios_de_status";
 		let revisor_ID = req.session.usuario.id;
 		let ahora = compartidas.ahora();
 		// Obtener el nuevo status_id
@@ -37,20 +36,23 @@ module.exports = {
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(entidad, prodID);
 		let creador_ID = producto.creado_por_id;
+		let entidad_id = compartidas.obtenerEntidad_id(entidad);
 		datos = {
-			entidad: entidad,
-			entidad_id: prodID,
-			input_por_id: creador_ID,
-			input_en: producto.creado_en,
-			evaluado_por_id: revisor_ID,
-			evaluado_en: ahora,
+			[entidad_id]: prodID,
+			sugerido_por_id: creador_ID,
+			sugerido_en: producto.creado_en,
+			analizado_por_id: revisor_ID,
+			analizado_en: ahora,
+			status_original_id: status.find((n) => n.creado).id,
+			status_final_id: nuevoStatusID,
+			aprobado,
 		};
 		if (!aprobado) {
 			var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {info_erronea: true});
 			datos.motivo_id = motivo.id;
 			datos.duracion = motivo.duracion;
 		}
-		BD_genericas.agregarRegistro(archivo, datos);
+		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// Asienta la aprob/rech en el registro del usuario
 		let campo = aprobado ? "prod_aprob" : "prod_rech";
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo, 1);

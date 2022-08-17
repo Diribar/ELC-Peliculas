@@ -189,8 +189,6 @@ module.exports = {
 				where: {
 					// Que pertenezca al producto que nos interesa
 					[producto_id]: prodID,
-					// Que esté en condiciones de ser capturado
-					editado_en: {[Op.lt]: haceUnaHora},
 					// Que esté editado por otro usuario
 					editado_por_id: {[Op.ne]: userID},
 				},
