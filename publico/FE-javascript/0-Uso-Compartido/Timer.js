@@ -11,9 +11,10 @@ window.addEventListener("load", async () => {
 	let unMinuto = 60 * 1000;
 	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Horario Inicial
-	let horarioInicial = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID).then((n) =>
+	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID).then((n) =>
 		n.json()
 	);
+	let horarioInicial = datos.capturado_en ? datos.capturado_en : datos.creado_en;
 	// Configurar el horario final
 	let horarioFinal = new Date(horarioInicial);
 	horarioFinal.setHours(horarioFinal.getHours() + 1);
@@ -60,15 +61,18 @@ window.addEventListener("load", async () => {
 		gracias.classList.add("ocultar");
 		// Mensajes
 		let horarioFinalTexto = horarioTexto(horarioFinal);
-		let arrayMensajes = [
-			"Esta captura terminó el " +
-				horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" ")) +
-				" a las " +
-				horarioFinalTexto.slice(horarioFinalTexto.indexOf(" ")) +
-				"hs.. ",
-			"Quedó a disposición de los demás usuarios.",
-			"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
-		];
+		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
+		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
+		let arrayMensajes = datos.capturado_en
+			? [
+					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
+					"Quedó a disposición de los demás usuarios.",
+					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
+			  ]
+			: [
+					"Se cumplió el plazo de 1 hora desde que se creó el registro.",
+					"Estará disponible luego de ser revisado, en caso de ser aprobado.",
+			  ];
 		mensajes.innerHTML = "";
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
@@ -85,9 +89,9 @@ window.addEventListener("load", async () => {
 			  }
 			: codigo.startsWith("/rclv/edicion/")
 			? {
-				link: "/rclv/detalle/?entidad=" + entidad + "&id=" + prodID,
-				HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
-		  }
+					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + prodID,
+					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
+			  }
 			: {};
 		flechas.innerHTML = "";
 		flechas.innerHTML += "<a href='" + icono.link + "'>" + icono.HTML + "</a>";

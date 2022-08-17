@@ -2,7 +2,7 @@
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("../2.1-Prod-RUD/FN-Validar");
 
@@ -41,7 +41,7 @@ module.exports = {
 		// Y además los productos sean aptos p/captura y en status c/altaAprob o aprobados,
 
 		// Declarar las variables
-		const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
 		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
 		let gr_aprobado = [alta_aprob_id, aprobado_id];
@@ -212,7 +212,7 @@ module.exports = {
 	// ControladorVista - Productos Alta
 	prod_BloquesAlta: async (prodOriginal, paises) => {
 		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
+		let ahora = compartidas.ahora().getTime();
 		// Bloque izquierdo
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 		// Bloque 1
@@ -254,13 +254,13 @@ module.exports = {
 			editado_por_id: prodEditado.editado_por_id,
 			editado_en: prodEditado.editado_en,
 		};
-		let entidad = funciones.obtenerEntidad(prodEditado);
+		let entidad = compartidas.obtenerEntidad(prodEditado);
 		let statusAprobado = prodOriginal.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
-		edicion = funciones.quitarLosCamposSinContenido(edicion);
-		edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		let quedanCampos = funciones.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
+		edicion = compartidas.quitarLosCamposSinContenido(edicion);
+		edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Prod");
+		edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+		let quedanCampos = compartidas.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Averiguar si el original no tiene errores
@@ -273,8 +273,8 @@ module.exports = {
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
 				// Averiguar el Lead Time de creación en horas
-				let ahora = funciones.ahora();
-				let leadTime = funciones.obtenerLeadTime(prodOriginal.creado_en, ahora);
+				let ahora = compartidas.ahora();
+				let leadTime = compartidas.obtenerLeadTime(prodOriginal.creado_en, ahora);
 				// Cambiarle el status al producto y liberarlo
 				let datos = {
 					alta_terminada_en: ahora,
@@ -324,7 +324,7 @@ module.exports = {
 	},
 	prod_BloqueEdic: async (prodOriginal, prodEditado) => {
 		// Definir el 'ahora'
-		let ahora = funciones.ahora().getTime();
+		let ahora = compartidas.ahora().getTime();
 		// Bloque derecho
 		let bloque1 = [];
 		let fecha;
@@ -347,39 +347,20 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	// ControladorAPI - Producto Alta
-	RCLV_ActualizarProdAprob: async (producto, status) => {
+	// ControladorAPI - Producto Edición
+	RCLVs_ActualizarProdAprobOK: async (producto, status) => {
 		// Variables
-		let aprobado = status.find((n) => n.aprobado).id;
-		let includes = ["peliculas", "colecciones", "capitulos"];
 		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
 		for (let RCLV_entidad of RCLV_entidades) {
-			// Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
-			let campo = funciones.obtenerEntidad_id(RCLV_entidad);
-			// Obtener el RCLV_id
-			let RCLV_id = producto[campo];
-			// Si el RCLV_id no aplica (vacío o 1) => salir de la rutina
-			if (!RCLV_id || RCLV_id == 1) continue;
-			// Actualizar 'prod_aprob' en RCLV si corresponde
-			// Obtener el RCLV
-			let RCLV = await BD_genericas.obtenerPorIdConInclude(RCLV_entidad, RCLV_id, includes);
-			// Rutina sólo si el RCLV está aprobado, de lo contrario no vale la pena
-			if (RCLV.status_registro_id == aprobado) {
-				let prod_entidades = ["peliculas", "colecciones", "capitulos"];
-				// Calcular la cantidad de casos
-				let prod_aprob;
-				for (let entidad of prod_entidades) {
-					prod_aprob = RCLV[entidad].some((n) => n.status_registro_id == aprobado);
-					if (prod_aprob) break;
-				}
-				// Actualizar el RCLV
-				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob});
-			}
+			let campo = compartidas.obtenerEntidad_id(RCLV_entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let RCLV_id = producto[campo]; // Obtener el RCLV_id
+			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
+			if (RCLV_id && RCLV_id != 1)
+				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob: true});
 		}
 		return;
 	},
-	// ControladorAPI - Producto Edición
 	prod_EdicValores: (aprobado, prodOriginal, prodEditado, campo) => {
 		// Definir los campos 'complicados'
 		let camposConVinculo = [
@@ -412,7 +393,7 @@ module.exports = {
 	// ControladorAPI - RCLV Alta
 	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
-		let ahora = funciones.ahora();
+		let ahora = compartidas.ahora();
 		// Campos a comparar
 		let camposComparar = [
 			{campo: "nombre", titulo: "Nombre"},
@@ -483,7 +464,7 @@ module.exports = {
 		duracion = parseInt(duracion);
 		// Averiguar la nueva penalización_hasta
 		if (duracion) {
-			let ahora = funciones.ahora().setHours(0, 0, 0);
+			let ahora = compartidas.ahora().setHours(0, 0, 0);
 			let penalizado_desde =
 				usuario.penalizado_hasta && usuario.penalizado_hasta > ahora
 					? usuario.penalizado_hasta
@@ -563,8 +544,8 @@ let limpieza = (productos, status, ahora, userID) => {
 	// Variables
 	// Declarar las variables
 	const aprobado_id = status.find((n) => n.aprobado).id;
-	const haceUnaHora = funciones.nuevoHorario(-1, ahora);
-	const haceDosHoras = funciones.nuevoHorario(-2, ahora);
+	const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
+	const haceDosHoras = compartidas.nuevoHorario(-2, ahora);
 	// Dejar solamente los productos aprobados
 	productos = productos.filter((n) => n.status_registro_id == aprobado_id);
 	// Dejar solamente los productos creados hace más de una hora
@@ -595,7 +576,7 @@ let tablero_obtenerRegs = async (entidades, ahora, status, userID, fechaRef, aut
 	// Consolidar los resultados
 	let resultados = await Promise.all([...resultadosPorEntidad]).then(([a, b]) => [...a, ...b]);
 	// Eliminar los propuestos por el Revisor
-	const haceUnaHora = funciones.nuevoHorario(-1, ahora);
+	const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
 	if (resultados.length)
 		for (let i = resultados.length - 1; i >= 0; i--)
 			if (resultados[i][fechaRef] > haceUnaHora || resultados[i][autor_id] == userID)

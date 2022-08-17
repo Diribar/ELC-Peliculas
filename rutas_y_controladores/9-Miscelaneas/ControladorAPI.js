@@ -1,8 +1,8 @@
 "use strict";
+
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
 
 // Controlador
 module.exports = {
@@ -18,14 +18,17 @@ module.exports = {
 
 	horarioInicial: async (req, res) => {
 		// Variables
-		let {entidad: prodEntidad, id: prodID} = req.query;
-
+		let {entidad, id} = req.query;
 		// Obtener el registro
-		let registro = await BD_genericas.obtenerPorId(prodEntidad, prodID);
-		let horarioInicial = registro.capturado_en ? registro.capturado_en : registro.creado_en;
-		horarioInicial = horarioInicial ? horarioInicial : 0;
+		let registro = await BD_genericas.obtenerPorId(entidad, id);
+		let datos = {
+			creado_en: registro.creado_en,
+			creado_por_id: registro.creado_por_id,
+			capturado_en: registro.capturado_en,
+			capturado_por_id: registro.capturado_por_id,
+		};
 
 		// Fin
-		return res.json(horarioInicial);
+		return res.json(datos);
 	},
 };
