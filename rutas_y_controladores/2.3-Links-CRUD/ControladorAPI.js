@@ -1,9 +1,8 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesar = require("../../funciones/3-Procesos/3-RUD");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
-const validar = require("../../funciones/4-Validaciones/RUD");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -23,7 +22,7 @@ module.exports = {
 		let datos = req.query;
 		let userID = req.session.usuario.id;
 		// Completa la info
-		let producto_id = funciones.obtenerEntidad_id(datos.prodEntidad);
+		let producto_id = compartidas.obtenerEntidad_id(datos.prodEntidad);
 		datos[producto_id] = datos.prodID;
 		datos.prov_id = await obtenerProveedorID(datos.url);
 		// Obtiene el link
@@ -35,10 +34,10 @@ module.exports = {
 		// Obtiene el mensaje de la tarea realizada
 		let link_edicion = datos;
 		let mensaje = !link_original
-			? await procesar.crear_original("links", datos, userID) // El link_original no existe --> se lo debe crear
+			? await compartidas.crear_registro("links", datos, userID) // El link_original no existe --> se lo debe crear
 			: link_original.creado_por_id == userID && link_original.status_registro.creado // ¿Link propio en status creado?
-			? await procesar.actualizar_original("links", link_original.id, link_edicion) // Actualizar el link_original
-			: await procesar.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar o actualizar la edición
+			? await compartidas.actualizar_registro("links", link_original.id, link_edicion) // Actualizar el link_original
+			: await compartidas.guardar_edicion("links", "links_edicion", link_original, link_edicion, userID); // Guardar o actualizar la edición
 		// Fin
 		return res.json(mensaje);
 	},
@@ -62,7 +61,7 @@ module.exports = {
 			else if (link.status_registro.creado && link.creado_por_id == userID) {
 				respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};
 				await BD_genericas.eliminarPorId("links", link.id);
-				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+				compartidas.prodActualizar_campoProdConLinkGratuito(prodEntidad, prodID);
 			}
 			// El link existe y no tiene status 'aprobado'
 			else if (!link.status_registro.aprobado)
@@ -73,8 +72,8 @@ module.exports = {
 				respuesta = {mensaje: "Falta el motivo por el que se inactiva", reload: true};
 			else {
 				// Inactivar
-				await procesar.inactivar("links", link.id, userID, motivo_id);
-				funciones.actualizarProdConLinkGratuito(prodEntidad, prodID);
+				await compartidas.inactivar_registro("links", link.id, userID, motivo_id);
+				compartidas.prodActualizar_campoProdConLinkGratuito(prodEntidad, prodID);
 				respuesta = {mensaje: "El link fue inactivado con éxito", ocultar: true, pasivos: true};
 			}
 			return res.json(respuesta);

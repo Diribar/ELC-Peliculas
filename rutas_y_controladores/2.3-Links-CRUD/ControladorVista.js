@@ -2,8 +2,9 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procesar = require("../../funciones/3-Procesos/3-RUD");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const procesosProd = require("../2.1-Prod-RUD/FN-Procesos");
+const procesos = require("./FN-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(
+		let [prodOriginal, prodEditado] = await procesosProd.obtenerVersionesDelProducto(
 			prodEntidad,
 			prodID,
 			userID
@@ -33,12 +34,12 @@ module.exports = {
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
-		let links = await procesar.obtenerLinksActualizados(prodEntidad, prodID, userID);
+		let links = await procesos.obtenerLinksActualizados(prodEntidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");
 		// Separar entre 'gr_activos' y 'gr_inactivos'
 		// Configurar el producto, el título
-		let prodNombre = funciones.obtenerEntidadNombre(prodEntidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(prodEntidad);
 		let titulo = "ABM de Links de" + (prodEntidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos") {

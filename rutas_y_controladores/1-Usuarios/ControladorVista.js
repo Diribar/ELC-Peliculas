@@ -1,11 +1,11 @@
 "use strict";
 // Definir variables
+const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const usuarios = require("../../funciones/3-Procesos/8-Usuarios");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
-const validarUsuarios = require("../../funciones/4-Validaciones/Usuarios");
-const bcryptjs = require("bcryptjs");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const procesos = require("./FN-Procesos");
+const validar = require("./FN-Validar");
 
 module.exports = {
 	// Circuito de alta de usuario
@@ -26,7 +26,7 @@ module.exports = {
 	altaMailGuardar: async (req, res) => {
 		// Averiguar si hay errores de validación
 		let datos = req.body;
-		let errores = await validarUsuarios.registroMail(datos.email);
+		let errores = await validar.registroMail(datos.email);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
@@ -40,7 +40,7 @@ module.exports = {
 		//let contrasena = "123456789";
 		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		funciones.enviarMail(asunto, email, comentario).catch(console.error);
+		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		await BD_genericas.agregarRegistro("usuarios", {email, contrasena});
@@ -86,7 +86,7 @@ module.exports = {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
 		let datos = req.body;
-		let errores = await validarUsuarios.perennes(datos);
+		let errores = await validar.perennes(datos);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
@@ -134,10 +134,10 @@ module.exports = {
 		let usuario = req.session.usuario;
 		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
-		let errores = await validarUsuarios.editables(req.body);
+		let errores = await validar.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) compartidas.borrarArchivo(req.file.path, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
@@ -149,7 +149,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.file) funciones.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		if (req.file) compartidas.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
@@ -178,7 +178,7 @@ module.exports = {
 		// 1. Obtener los datos del usuario
 		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
 		// 2. Averiguar si hay errores de validación
-		let errores = await validarUsuarios.login(req.body);
+		let errores = await validar.login(req.body);
 		let contrasena = usuario ? usuario.contrasena : "";
 		errores.credencialesInvalidas =
 			!errores.email && !errores.contrasena
@@ -201,8 +201,8 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session["email"];
 		// 6. Notificar al contador de logins
-		let hoyAhora = funciones.ahora().toISOString().slice(0, 10);
-		usuarios.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
+		let hoyAhora = compartidas.ahora().toISOString().slice(0, 10);
+		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},

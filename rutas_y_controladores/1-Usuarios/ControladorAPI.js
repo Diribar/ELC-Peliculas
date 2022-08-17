@@ -1,6 +1,6 @@
 "use strict";
 // Definir variables
-const validarUsuarios = require("../../funciones/4-Validaciones/Usuarios");
+const validarUsuarios = require("./FN-Validar");
 
 module.exports = {
 	validarMail: async (req, res) => {

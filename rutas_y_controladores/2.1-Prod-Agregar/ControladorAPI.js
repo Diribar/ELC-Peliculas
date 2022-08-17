@@ -1,10 +1,10 @@
 "use strict";
 // Definir variables
-const buscar_x_PC = require("../../funciones/3-Procesos/1-Buscar_x_PC");
-const procesar = require("../../funciones/3-Procesos/2-Agregar");
-const validar = require("../../funciones/4-Validaciones/Agregar");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const buscar_x_PC = require("./FN-Buscar_x_PC");
+const procesos = require("./FN-Procesos");
+const validar = require("./FN-Validar");
 
 module.exports = {
 	// Vista (palabrasClave)
@@ -22,7 +22,7 @@ module.exports = {
 
 	// Vista (desambiguar)
 	averiguarColeccion: async (req, res) => {
-		let datos = await procesar.averiguarColeccion(req.query.TMDB_id);
+		let datos = await procesos.averiguarColeccion(req.query.TMDB_id);
 		return res.json(datos);
 	},
 
@@ -51,7 +51,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	obtenerFA_id: (req, res) => {
-		let FA_id = procesar.obtenerFA_id(req.query.direccion);
+		let FA_id = procesos.obtenerFA_id(req.query.direccion);
 		return res.json(FA_id);
 	},
 	obtenerELC_id: async (req, res) => {

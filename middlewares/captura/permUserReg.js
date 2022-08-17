@@ -1,15 +1,15 @@
 "use strict";
 // Requires
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
 	const entidad = req.query.entidad;
 	const entidadID = req.query.id;
-	const haceUnaHora = funciones.nuevoHorario(-1);
-	const haceDosHoras = funciones.nuevoHorario(-2);
+	const haceUnaHora = compartidas.nuevoHorario(-1);
+	const haceDosHoras = compartidas.nuevoHorario(-2);
 	const usuario = req.session.usuario;
 	const userID = usuario.id;
 	let informacion;
@@ -22,9 +22,9 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
-	const horarioFinalCreado = funciones.horarioTexto(funciones.nuevoHorario(1, creado_en));
+	const horarioFinalCreado = compartidas.horarioTexto(compartidas.nuevoHorario(1, creado_en));
 	const capturado_en = registro.capturado_en;
-	const horarioFinalCaptura = funciones.horarioTexto(funciones.nuevoHorario(1, capturado_en));
+	const horarioFinalCaptura = compartidas.horarioTexto(compartidas.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 	const vistaInactivar = variables.vistaInactivar(req);
@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
 	let creadoPorElUsuario2 = entidad == "capitulos" && registro.coleccion.creado_por_id == userID;
 	let creadoPorElUsuario = creadoPorElUsuario1 || creadoPorElUsuario2;
 
-	// Fórmulas
+	// Fórmulas de soporte
 	let creadoHaceMenosDeUnaHora = () => {
 		return creado_en > haceUnaHora && !creadoPorElUsuario
 			? {
@@ -97,11 +97,11 @@ module.exports = async (req, res, next) => {
 	};
 	let otroRegistroCapturado = async () => {
 		let informacion;
-		let prodCapturado = await funciones.buscaAlgunaCapturaVigenteDelUsuario(entidad, entidadID, userID);
+		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuario();
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidadCodigo = prodCapturado.entidad;
-			const pc_entidadNombre = funciones.obtenerEntidadNombre(pc_entidadCodigo);
+			const pc_entidadNombre = compartidas.obtenerEntidadNombre(pc_entidadCodigo);
 			const pc_entidadID = prodCapturado.id;
 			const originalUrl = encodeURIComponent(req.originalUrl);
 			const linkInactivar =
@@ -116,7 +116,7 @@ module.exports = async (req, res, next) => {
 				link: linkInactivar,
 				titulo: "Liberar automáticamente",
 			};
-			const horario = funciones.horarioTexto(prodCapturado.capturado_en);
+			const horario = compartidas.horarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
 				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"
@@ -182,6 +182,55 @@ module.exports = async (req, res, next) => {
 		}
 		return informacion;
 	};
+	// Fórmulas auxiliares
+	let buscaAlgunaCapturaVigenteDelUsuario = async () => {
+		// Se revisa solamente en la familia de entidades
+		// Asociaciones
+		let entidades = ["peliculas", "colecciones", "capitulos"].includes(entidad)
+			? ["peliculas", "colecciones", "capitulos"]
+			: ["personajes", "hechos", "valores"];
+		let asociaciones = [];
+		entidades.forEach((entidad) => asociaciones.push("captura_" + entidad));
+		// Variables
+		let objeto = {capturado_en: null, capturado_por_id: null, captura_activa: null};
+		let resultado;
+		// Obtener el usuario con los includes
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
+		// Rutina por cada asociación
+		let i = 0;
+		for (let asociacion of asociaciones) {
+			if (usuario[asociacion].length) {
+				// Rutina por cada entidad dentro de la asociación
+				for (let registro of usuario[asociacion]) {
+					// Si fue capturado hace más de 2 horas y no es el registro actual, limpiar los tres campos
+					if (registro.capturado_en < haceDosHoras && registro.id != entidadID) {
+						BD_genericas.actualizarPorId(entidades[i], registro.id, objeto);
+						// Si fue capturado hace menos de 1 hora, informar el caso
+					} else if (
+						registro.capturado_en > haceUnaHora &&
+						registro.captura_activa &&
+						(entidades[i] != entidad || registro.id != entidadID)
+					) {
+						resultado = {
+							entidad: entidades[i],
+							id: registro.id,
+							capturado_en: registro.capturado_en,
+							nombre: registro.nombre,
+							nombre_castellano: registro.nombre_castellano,
+							nombre_original: registro.nombre_original,
+						};
+						break;
+					}
+				}
+			}
+			if (resultado) break;
+			else i++;
+		}
+		// Fin
+		return resultado;
+	};
+
+	// CAMINO CRÍTICO
 	// 1. El registro fue creado hace menos de una hora por otro usuario
 	if (!informacion) informacion = creadoHaceMenosDeUnaHora();
 	// 2. El registro fue creado hace más de una hora
@@ -197,7 +246,7 @@ module.exports = async (req, res, next) => {
 	// Verificaciones exclusivas de las vistas de Revisión
 	if (!informacion) informacion = verificacionesDeRevision();
 
-	// Continuar
+	// Fin
 	if (informacion) return res.render("CR9-Errores", {informacion});
 	next();
 };

@@ -1,9 +1,9 @@
 "use strict";
 // Definir variables
-const procesarProd = require("../3-Procesos/2-Agregar");
-const BD_especificas = require("../2-BD/Especificas");
-const BD_genericas = require("../2-BD/Genericas");
-const funciones = require("../3-Procesos/Compartidas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const procesos = require("./FN-Procesos");
 
 module.exports = {
 	// ControllerAPI (validarPalabrasClave)
@@ -64,7 +64,7 @@ module.exports = {
 			? "Necesitamos que consigas el link de la imagen grande"
 			: "";
 		// Contenido
-		let cantDatosObtenidos = datos.contenido ? procesarProd.contenidoFA(datos.contenido) : {};
+		let cantDatosObtenidos = datos.contenido ? procesos.contenidoFA(datos.contenido) : {};
 		errores.contenido = !datos.contenido
 			? cartelCampoVacio
 			: !Object.keys(cantDatosObtenidos).length
@@ -87,7 +87,7 @@ module.exports = {
 			{nombre: "direccion", corto: 3, largo: 100},
 			{nombre: "guion", corto: 3, largo: 100},
 			{nombre: "produccion", corto: 3, largo: 100},
-			{nombre: "sinopsis", corto: 15, largo: 800},
+			{nombre: "sinopsis", corto: 15, largo: 900},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
@@ -265,7 +265,7 @@ let extensiones = (nombre) => {
 	return ![".jpg", ".png"].includes(ext);
 };
 let cartelRepetido = (datos) => {
-	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
+	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este/a " +
 		"<a href='/producto/detalle/?entidad=" +

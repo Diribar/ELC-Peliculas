@@ -1,9 +1,9 @@
 "use strict";
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesar = require("../../funciones/3-Procesos/3-RUD");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
-const validar = require("../../funciones/4-Validaciones/RUD");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const procesos = require("./FN-Procesos");
+const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
 		}
 		// Datos particulares
 		if (detalle) {
-			let producto_id = funciones.obtenerEntidad_id(entidad);
+			let producto_id = compartidas.obtenerEntidad_id(entidad);
 			datos = await BD_genericas.obtenerPorCampos("cal_registros", {
 				usuario_id: userID,
 				[producto_id]: prodID,
@@ -55,7 +55,7 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
 		return res.json([prodOriginal, prodEditado]);
 	},
@@ -66,7 +66,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_pend_aprob" y fue creado por el usuario
 		let condicion = !prodOriginal.status_registro.gr_pend_aprob || prodOriginal.creado_por_id != userID;
 		if (condicion && prodEditado) BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);

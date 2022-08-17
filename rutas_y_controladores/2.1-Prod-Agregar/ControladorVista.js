@@ -3,13 +3,14 @@
 const fs = require("fs");
 const path = require("path");
 const requestPromise = require("request-promise");
-const buscar_x_PC = require("../../funciones/3-Procesos/1-Buscar_x_PC");
-const procesar = require("../../funciones/3-Procesos/2-Agregar");
-const validar = require("../../funciones/4-Validaciones/Agregar");
+// Definir funciones
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const buscar_x_PC = require("./FN-Buscar_x_PC");
+const procesos = require("./FN-Procesos");
+const validar = require("./FN-Validar");
 
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
@@ -19,7 +20,7 @@ module.exports = {
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
-		procesar.borrarSessionCookies(req, res, "palabrasClave");
+		procesos.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
 		return res.render("GN0-Estructura", {
 			tema,
@@ -47,7 +48,7 @@ module.exports = {
 		let tema = "prod_agregar";
 		let codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesar.borrarSessionCookies(req, res, "desambiguar");
+		procesos.borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		if (!palabrasClave) return res.redirect("/producto/agregar/palabras-clave");
@@ -55,7 +56,7 @@ module.exports = {
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: await buscar_x_PC.search(palabrasClave, true);
-		let [prod_nuevos, prod_yaEnBD, mensaje] = procesar.prepararMensaje(desambiguar);
+		let [prod_nuevos, prod_yaEnBD, mensaje] = procesos.prepararMensaje(desambiguar);
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
@@ -73,17 +74,17 @@ module.exports = {
 
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		let infoTMDBparaDD = await procesar["infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
+		let infoTMDBparaDD = await procesos["infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validar.desambiguar(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
 		if (errores.mensaje == "agregarCapitulos") {
-			await procesar.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
+			await procesos.agregarCapitulosNuevos(errores.en_colec_id, errores.colec_TMDB_id);
 			return res.redirect("/producto/agregar/desambiguar");
 		}
 		// 4. Si es una película de una colección que no existe en la BD, cambiar la película por la colección
 		if (errores.mensaje == "agregarColeccion")
-			infoTMDBparaDD = await procesar.infoTMDBparaDD_collection({
+			infoTMDBparaDD = await procesos.infoTMDBparaDD_collection({
 				TMDB_id: errores.colec_TMDB_id,
 			});
 		// 5. Generar la session para la siguiente instancia
@@ -99,7 +100,7 @@ module.exports = {
 		let tema = "prod_agregar";
 		let codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesar.borrarSessionCookies(req, res, "tipoProducto");
+		procesos.borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 5. Render del formulario
@@ -119,7 +120,7 @@ module.exports = {
 		let tipoProd = {
 			...req.body,
 			fuente: "IM",
-			prodNombre: funciones.obtenerEntidadNombre(req.body.entidad),
+			prodNombre: compartidas.obtenerEntidadNombre(req.body.entidad),
 		};
 		req.session.tipoProd = tipoProd;
 		res.cookie("tipoProd", tipoProd, {maxAge: unDia});
@@ -139,10 +140,10 @@ module.exports = {
 		let tema = "prod_agregar";
 		let codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesar.borrarSessionCookies(req, res, "copiarFA");
+		procesos.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
 		if (req.body && req.body.entidad) {
-			req.body.prodNombre = funciones.obtenerEntidadNombre(req.body.entidad);
+			req.body.prodNombre = compartidas.obtenerEntidadNombre(req.body.entidad);
 			req.body.fuente = "FA";
 			req.session.copiarFA = req.body;
 			res.cookie("copiarFA", req.body, {maxAge: unDia});
@@ -172,7 +173,7 @@ module.exports = {
 		// 2.1. Averiguar si hay errores de validación
 		let errores = await validar.copiarFA(copiarFA);
 		// 2.2. Averiguar si el FA_id ya está en la BD
-		FA_id = await procesar.obtenerFA_id(req.body.direccion);
+		FA_id = await procesos.obtenerFA_id(req.body.direccion);
 		if (!errores.direccion) {
 			let elc_id = await BD_especificas.obtenerELC_id(copiarFA.entidad, {FA_id: FA_id});
 			if (elc_id) {
@@ -184,7 +185,7 @@ module.exports = {
 		// 2.3. Si hay errores de validación, redireccionar
 		if (errores.hay) return res.redirect("/producto/agregar/copiar-fa");
 		// 3. Si NO hay errores, generar la session para la siguiente instancia
-		req.session.datosDuros = await procesar.infoFAparaDD(copiarFA);
+		req.session.datosDuros = await procesos.infoFAparaDD(copiarFA);
 		res.cookie("datosDuros", req.session.datosDuros, {maxAge: unDia});
 		// 4. Completar la cookie datosOriginales con el FA_id
 		let cookie = req.cookies.datosOriginales;
@@ -200,9 +201,9 @@ module.exports = {
 		let codigo = "datosDuros";
 		// 2. Eliminar session y cookie posteriores, si existen
 		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
+			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
 		}
-		procesar.borrarSessionCookies(req, res, "datosDuros");
+		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
 		if (!datosDuros) return res.redirect("/producto/agregar/desambiguar");
@@ -222,7 +223,7 @@ module.exports = {
 			? req.session.erroresDD
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
-		let paises = datosDuros.paises_id ? await funciones.paises_idToNombre(datosDuros.paises_id) : "";
+		let paises = datosDuros.paises_id ? await compartidas.paises_idToNombre(datosDuros.paises_id) : "";
 		let BD_paises = datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
@@ -294,13 +295,13 @@ module.exports = {
 				rutaYnombre = "./publico/imagenes/9-Provisorio/" + nombre;
 			}
 			// Revisar errores nuevamente
-			errores.avatar = funciones.revisarImagen(tipo, tamano);
+			errores.avatar = compartidas.revisarImagen(tipo, tamano);
 			if (errores.avatar) errores.hay = true;
 		}
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			funciones.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
+			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
@@ -309,7 +310,7 @@ module.exports = {
 		let avatarBD = nombre;
 		// 8. Si la imagen venía de TMDB, entonces grabarla
 		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
-			funciones.descargar(datosDuros.avatar, rutaYnombre);
+			compartidas.descargar(datosDuros.avatar, rutaYnombre);
 			avatarDP = datosDuros.avatar;
 		}
 		// 9. Generar la session para la siguiente instancia
@@ -334,7 +335,7 @@ module.exports = {
 		let codigo = "datosPers";
 		let userID = req.session.usuario.id;
 		// 2. Eliminar session y cookie posteriores, si existen
-		procesar.borrarSessionCookies(req, res, "datosPers");
+		procesos.borrarSessionCookies(req, res, "datosPers");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
@@ -433,12 +434,11 @@ module.exports = {
 			...req.cookies.datosOriginales,
 			...objetoCalificacion,
 			creado_por_id: req.session.usuario.id,
-			capturado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
 		confirma.avatar = confirma.avatarBD;
-		let producto_id = funciones.obtenerEntidad_id(confirma.entidad);
+		let producto_id = compartidas.obtenerEntidad_id(confirma.entidad);
 		let edicion = {
 			// Datos de 'confirma'
 			...confirma,
@@ -447,20 +447,20 @@ module.exports = {
 			entidad: "prods_edicion",
 			[producto_id]: registro.id,
 		};
-		edicion = funciones.quitarLasCoincidenciasConOriginal(original, edicion);
+		edicion = compartidas.quitarLasCoincidenciasConOriginal(original, edicion);
 		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
-				? procesar.agregarCapitulosDeCollection({...confirma, ...registro})
-				: procesar.agregarCapitulosDeTV({...confirma, ...registro});
+				? procesos.agregarCapitulosDeCollection({...confirma, ...registro})
+				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
-		procesar.guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
+		procesos.guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		funciones.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
+		compartidas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
-		procesar.borrarSessionCookies(req, res, "borrarTodo");
+		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Redireccionar
 		return res.redirect(
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
@@ -494,7 +494,7 @@ module.exports = {
 		if (!registroProd.status_registro.gr_pend_aprob)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
 		// 5. Obtener el producto
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		// 6. Preparar la información sobre las imágenes de MUCHAS GRACIAS
 		let muchasGracias = fs.readdirSync("./publico/imagenes/8-Agregar/Muchas-gracias/");
 		let indice = parseInt(Math.random() * muchasGracias.length);

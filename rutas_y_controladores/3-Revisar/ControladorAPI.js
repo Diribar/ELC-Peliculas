@@ -1,10 +1,10 @@
 "use strict";
 // ************ Requires *************
-const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesar = require("../../funciones/3-Procesos/4-Revisar");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
 const path = require("path");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
+const procesos = require("./Procesos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 		let aprobado = req.query.aprob == "true";
 		let archivo = "historial_cambios_de_status";
 		let revisor_ID = req.session.usuario.id;
-		let ahora = funciones.ahora();
+		let ahora = compartidas.ahora();
 		// Obtener el nuevo status_id
 		const status = req.session.status_registro;
 		let nuevoStatusID = aprobado
@@ -55,13 +55,13 @@ module.exports = {
 		let campo = aprobado ? "prod_aprob" : "prod_rech";
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", creador_ID, campo, 1);
 		// Penaliza al usuario si corresponde
-		if (datos.duracion) procesar.usuario_Penalizar(creador_ID, motivo, "prod_");
+		if (datos.duracion) procesos.usuario_Penalizar(creador_ID, motivo, "prod_");
 		// Actualizar en RCLVs el campo 'prod_aprob'
 		if (
 			nuevoStatusID == status.find((n) => n.aprobado).id ||
 			nuevoStatusID == status.find((n) => n.inactivo).id
 		)
-			procesar.prod_ActualizarRCLVs_ProdAprob(producto, status);
+			procesos.RCLV_ActualizarProdAprob(producto, status);
 		// Fin
 		return res.json();
 	},
@@ -72,7 +72,7 @@ module.exports = {
 		let aprobado = req.query.aprob == "true";
 		let archivo = aprobado ? "edic_aprob" : "edic_rech";
 		let revisor_ID = req.session.usuario.id;
-		let ahora = funciones.ahora();
+		let ahora = compartidas.ahora();
 		let datos;
 		const status = req.session.status_registro;
 		let RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
@@ -106,13 +106,13 @@ module.exports = {
 					let ruta = prodOriginal.status_registro.alta_aprob
 						? "/imagenes/3-ProdRevisar/"
 						: "/imagenes/2-Productos/";
-					funciones.borrarArchivo(ruta, avatar);
+					compartidas.borrarArchivo(ruta, avatar);
 				}
 				// Mover el nuevo avatar a la carpeta definitiva
-				funciones.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
+				compartidas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 			} else {
 				// Eliminar el avatar editado
-				funciones.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
+				compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
 				// Acciones si el status es 'alta-aprobada'
 				if (prodOriginal.status_registro.alta_aprob) {
 					let avatar = prodOriginal.avatar;
@@ -123,12 +123,12 @@ module.exports = {
 						// Obtener la ruta con el nombre
 						let rutaYnombre = "./publico/imagenes/2-Productos/" + nombre;
 						// Convertir el url en un archivo
-						await funciones.descargar(prodOriginal.avatar, rutaYnombre);
+						await compartidas.descargar(prodOriginal.avatar, rutaYnombre);
 						// Actualizar el nombre del avatar en la BD
 						await BD_genericas.actualizarPorId(entidad, prodID, {avatar: nombre});
 					} else if (avatar)
 						// Mover el archivo avatar a la carpeta definitiva
-						funciones.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
+						compartidas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
 				}
 			}
 		}
@@ -137,7 +137,7 @@ module.exports = {
 			// El nuevo valor
 			datos = {[campo]: prodEditado[campo]};
 			// Obtener el Lead Time de Edición
-			let leadTime = funciones.obtenerLeadTime(prodEditado.editado_en, ahora);
+			let leadTime = compartidas.obtenerLeadTime(prodEditado.editado_en, ahora);
 
 			// Agregarle datos de la 'edición'
 			datos.editado_por_id = prodEditado.editado_por_id;
@@ -189,19 +189,19 @@ module.exports = {
 				datos.motivo_id = motivo.id;
 			}
 			// Obtener el valor de edición, cuando es un ID
-			let valores = await procesar.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
+			let valores = await procesos.prod_EdicValores(aprobado, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(archivo, datos);
 		}
 		// Actualiza la variable de 'edicion' quitándole el valor al campo
 		prodEditado[campo] = null;
-		// Averiguar si quedan campos por procesar
+		// Averiguar si quedan campos por procesos
 		// Elimina el registro de edición si ya no tiene más datos
 		// Actualiza el status del registro original, si corresponde
-		let [quedanCampos, , statusAprobado] = await procesar.prod_QuedanCampos(producto, prodEditado);
+		let [quedanCampos, , statusAprobado] = await procesos.prod_QuedanCampos(producto, prodEditado);
 		// Penalizar al usuario si corresponde
-		if (datos.duracion) procesar.usuario_Penalizar(editor_ID, motivo, "edic_");
+		if (datos.duracion) procesos.usuario_Penalizar(editor_ID, motivo, "edic_");
 		// Si el producto estaba aprobado y se cambió un campo RCLV, actualizar en el RCLV descartado el campo 'prod_aprob'
 		if (
 			RCLV_ids.includes(campo) &&
@@ -209,7 +209,7 @@ module.exports = {
 			prodOriginal.status_registro.aprobado &&
 			prodOriginal[campo] != 1
 		)
-			procesar.prod_ActualizarRCLVs_ProdAprob(prodOriginal, status);
+			procesos.prod_ActualizarRCLVs_ProdAprob(prodOriginal, status);
 		// Otras particularidades para el campo RCLV
 		if (
 			// Se cambió el campo RCLV, y el status está aprobado
@@ -218,7 +218,7 @@ module.exports = {
 			(!prodOriginal.status_registro.aprobado && statusAprobado)
 		)
 			// Actualizar en RCLVs el campo 'prod_aprob'
-			procesar.prod_ActualizarRCLVs_ProdAprob(producto, status);
+			procesos.prod_ActualizarRCLVs_ProdAprob(producto, status);
 		// Fin
 		return res.json([quedanCampos, statusAprobado]);
 	},
@@ -253,12 +253,12 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
 		// Obtener el campo 'prod_aprob'
-		let prod_aprob = await procesar.RCLV_averiguarSiTieneProdAprob(
+		let prod_aprob = await procesos.RCLV_averiguarSiTieneProdAprob(
 			{...RCLV_original, status_registro_id: aprobado_id},
 			status
 		);
 		// Preparar lead_time_creacion
-		let alta_analizada_en = funciones.ahora();
+		let alta_analizada_en = compartidas.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
 		// Preparar la información a ingresar
 		datos = {
@@ -272,13 +272,84 @@ module.exports = {
 		// Actualizar la versión original
 		await BD_genericas.actualizarPorId(datos.entidad, datos.id, datos);
 		// Actualizar la info de aprobados/rechazados
-		procesar.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
+		procesos.RCLV_BD_AprobRech(datos.entidad, RCLV_original, includes, req.session.usuario.id);
 
 		// Fin
 		return res.json("Resultado exitoso");
 	},
 
 	// Links
+	linkAlta: async (req, res) => {
+		// Variables
+		let api = req.query;
+		let userID = req.session.usuario.id;
+		let aprobado = api.aprobado == "SI";
+		let status = req.session.status_registro;
+		let st_aprobado = status.find((n) => n.aprobado).id;
+		let st_inactivo = status.find((n) => n.inactivo).id;
+		let ahora = compartidas.ahora();
+		let datos;
+		// Averiguar si no existe el 'url'
+		if (!api.url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
+		// Se obtiene el status original del link
+		let link = await BD_genericas.obtenerPorCamposConInclude("links", {url: api.url}, [
+			"status_registro",
+		]);
+		// El link no existe en la BD
+		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
+		// El link existe y no tiene status 'creado' o 'provisorio'
+		let creado = link.status_registro.creado;
+		let inactivar = link.status_registro.inactivar;
+		let recuperar = link.status_registro.recuperar;
+		let gr_provisorios = inactivar || recuperar;
+		if (!creado && !gr_provisorios)
+			return res.json({mensaje: "En este status no se puede procesos", reload: true});
+		// Variables
+		let decision = (!inactivar && aprobado) || (inactivar && !aprobado); // Obtener si la decisión valida al sugerido
+		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
+		let motivo_id = !creado || !aprobado ? (creado ? api.motivo_id : link.motivo_id) : null;
+		// USUARIO - Actualizaciones
+		let campo = "link_" + (decision ? "aprob" : "rech");
+		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
+		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
+		if (!inactivar && !aprobado) {
+			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
+			procesos.usuario_Penalizar(sugerido_por_id, motivo, "link_");
+		}
+		// LINK - Pasa a status aprobado/rechazado -
+		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
+		if (creado) {
+			// Datos para el link
+			datos.alta_analizada_por_id = userID;
+			datos.alta_analizada_en = compartidas.ahora();
+			datos.lead_time_creacion = 1;
+			if (!aprobado) {
+				datos.sugerido_por_id = userID;
+				datos.sugerido_en = ahora;
+				datos.motivo_id = motivo_id;
+			}
+		}
+		await BD_genericas.actualizarPorId("links", link.id, datos);
+		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
+		let duracion = motivo ? motivo.duracion : 0;
+		datos = {
+			link_id: link.id,
+			sugerido_por_id,
+			sugerido_en: creado ? link.creado_en : link.sugerido_en,
+			analizado_por_id: userID,
+			analizado_en: ahora,
+			status_original_id: link.status_registro_id,
+			status_final_id: aprobado ? st_aprobado : st_inactivo,
+			aprobado: decision,
+			motivo_id,
+			duracion,
+		};
+		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
+		// PRODUCTO - Actualizar si tiene links gratuitos
+		if (aprobado) compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
+		// Se recarga la vista
+		return res.json({mensaje: "Status actualizado", reload: true});
+	},
 	linkEdic: async (req, res) => {
 		// Variables
 		let api = req.query;
@@ -329,14 +400,14 @@ module.exports = {
 		let link = await BD_genericas.obtenerPorIdConInclude("links", link_id, ["ediciones"]);
 		link.ediciones.forEach(async (edicion) => {
 			// Se eliminan los campos sin contenido
-			edicion = funciones.quitarLosCamposSinContenido(edicion);
+			edicion = compartidas.quitarLosCamposSinContenido(edicion);
 			// Se eliminan los campos que no se comparan
 			let edicID = edicion.id;
-			edicion = funciones.quitarLosCamposQueNoSeComparan(edicion, "Links");
+			edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Links");
 			// Se eliminan los campos con el mismo valor que el original
-			if (aprobado) edicion = funciones.quitarLasCoincidenciasConOriginal(link, edicion);
+			if (aprobado) edicion = compartidas.quitarLasCoincidenciasConOriginal(link, edicion);
 			// Se eliminan los registros editados que quedan vacíos
-			let quedanCampos = await funciones.eliminarEdicionSiEstaVacio("links_edicion", edicID, edicion);
+			let quedanCampos = await compartidas.eliminarEdicionSiEstaVacio("links_edicion", edicID, edicion);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizarPorId("links_edicion", edicID, {
@@ -346,82 +417,10 @@ module.exports = {
 		});
 		// Actualizaciones en el USUARIO
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
-		if (!aprobado) procesar.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
+		if (!aprobado) procesos.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito") funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
+		if (campo == "gratuito") compartidas.prodActualizar_campoProdConLinkGratuito(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
-	},
-
-	linkAlta: async (req, res) => {
-		// Variables
-		let api = req.query;
-		let userID = req.session.usuario.id;
-		let aprobado = api.aprobado == "SI";
-		let status = req.session.status_registro;
-		let st_aprobado = status.find((n) => n.aprobado).id;
-		let st_inactivo = status.find((n) => n.inactivo).id;
-		let ahora = funciones.ahora();
-		let datos;
-		// Averiguar si no existe el 'url'
-		if (!api.url) return res.json({mensaje: "Falta el 'url' del link", reload: true});
-		// Se obtiene el status original del link
-		let link = await BD_genericas.obtenerPorCamposConInclude("links", {url: api.url}, [
-			"status_registro",
-		]);
-		// El link no existe en la BD
-		if (!link) return res.json({mensaje: "El link no existe en la base de datos", reload: true});
-		// El link existe y no tiene status 'creado' o 'provisorio'
-		let creado = link.status_registro.creado;
-		let inactivar = link.status_registro.inactivar;
-		let recuperar = link.status_registro.recuperar;
-		let gr_provisorios = inactivar || recuperar;
-		if (!creado && !gr_provisorios)
-			return res.json({mensaje: "En este status no se puede procesar", reload: true});
-		// Variables
-		let decision = (!inactivar && aprobado) || (inactivar && !aprobado); // Obtener si la decisión valida al sugerido
-		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
-		let motivo_id = !creado || !aprobado ? (creado ? api.motivo_id : link.motivo_id) : null;
-		// USUARIO - Actualizaciones
-		let campo = "link_" + (decision ? "aprob" : "rech");
-		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
-		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
-		if (!inactivar && !aprobado) {
-			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
-			procesar.usuario_Penalizar(sugerido_por_id, motivo, "link_");
-		}
-		// LINK - Pasa a status aprobado/rechazado -
-		datos = {status_registro_id: aprobado ? st_aprobado : st_inactivo};
-		if (creado) {
-			// Datos para el link
-			datos.alta_analizada_por_id = userID;
-			datos.alta_analizada_en = funciones.ahora();
-			datos.lead_time_creacion = 1;
-			if (!aprobado) {
-				datos.sugerido_por_id = userID;
-				datos.sugerido_en = ahora;
-				datos.motivo_id = motivo_id;
-			}
-		}
-		await BD_genericas.actualizarPorId("links", link.id, datos);
-		// HISTORIAL DE CAMBIOS DE STATUS - Se agrega un registro
-		let duracion = motivo ? motivo.duracion : 0;
-		datos = {
-			link_id: link.id,
-			sugerido_por_id,
-			sugerido_en: creado ? link.creado_en : link.sugerido_en,
-			analizado_por_id: userID,
-			analizado_en: ahora,
-			status_original_id: link.status_registro_id,
-			status_final_id: aprobado ? st_aprobado : st_inactivo,
-			aprobado: decision,
-			motivo_id,
-			duracion,
-		};
-		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
-		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (aprobado) funciones.actualizarProdConLinkGratuito(api.prodEntidad, api.prodID);
-		// Se recarga la vista
-		return res.json({mensaje: "Status actualizado", reload: true});
 	},
 };

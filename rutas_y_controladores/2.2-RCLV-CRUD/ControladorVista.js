@@ -1,10 +1,9 @@
 "use strict";
 // ************ Requires ************
-const validar = require("../../funciones/4-Validaciones/RCLV");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const procesar = require("../../funciones/3-Procesos/3-RUD");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
+const validar = require("./FN-Validar");
 
 module.exports = {
 	altaEdicForm: async (req, res) => {
@@ -21,7 +20,7 @@ module.exports = {
 			: req.cookies[entidad]
 			? req.cookies[entidad]
 			: {};
-		let nombre = funciones.obtenerEntidadNombre(entidad);
+		let nombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = (codigo == "agregar" ? "Agregar - " : "Edición - ") + nombre;
 		let tituloCuerpo =
 			(codigo == "agregar" ? "Agregá un " + nombre + " a" : "Editá el " + nombre + " de") +
@@ -106,9 +105,9 @@ module.exports = {
 		let codigo = url.slice(0, url.indexOf("/"));
 		// Guardar los cambios del RCLV
 		if (codigo == "agregar") {
-			id = await procesar.crear_original(entidad, datos, userID);
+			id = await compartidas.crear_registro(entidad, datos, userID);
 			// Agregar el RCLV a DP/ED
-			let entidad_id = funciones.obtenerEntidad_id(entidad);
+			let entidad_id = compartidas.obtenerEntidad_id(entidad);
 			if (origen == "DP") {
 				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
@@ -124,8 +123,8 @@ module.exports = {
 			let RCLV_editado = datos;
 			// Obtener el mensaje de la tarea realizada
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await procesar.actualizar_original(entidad, id, RCLV_editado) // Actualizar el registro original
-				: await procesar.guardar_edicion(
+				? await compartidas.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
+				: await compartidas.guardar_edicion(
 						entidad,
 						"rclv_edicion",
 						RCLV_original,

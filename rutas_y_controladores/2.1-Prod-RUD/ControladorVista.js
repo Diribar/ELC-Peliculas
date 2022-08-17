@@ -2,10 +2,10 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const procesar = require("../../funciones/3-Procesos/3-RUD");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
-const validar = require("../../funciones/4-Validaciones/RUD");
+const procesos = require("./FN-Procesos");
+const validar = require("./FN-Validar");
 
 // *********** Controlador ***********
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene el avatar y la versión más completa posible del producto
 		let avatar = prodEditado.avatar
 			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
@@ -31,14 +31,14 @@ module.exports = {
 			: "/imagenes/8-Agregar/IM.jpg";
 		let prodCombinado = {...prodOriginal, ...prodEditado, avatar, id: prodID};
 		// 5. Configura el título de la vista
-		let prodNombre = funciones.obtenerEntidadNombre(entidad);
+		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
 		// 6. Obtiene los países
-		let paises = prodOriginal.paises_id ? await funciones.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id ? await compartidas.paises_idToNombre(prodOriginal.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
 		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
@@ -189,7 +189,7 @@ module.exports = {
 		// Obtener el userID
 		let userID = req.session.usuario.id;
 		// Obtener el producto 'Original' y 'Editado'
-		let [prodOriginal, prodEditado] = await procesar.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar = req.file
 			? req.file.filename
@@ -201,26 +201,26 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.edicion("", {...prodCombinado, entidad});
 		if (errores.hay) {
-			if (req.file) funciones.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) compartidas.borrarArchivo(req.file.path, req.file.filename);
 		} else {
 			// Actualizar los archivos avatar
 			if (req.file) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				funciones.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "9-Provisorio", "3-ProdRevisar");
+				compartidas.moverImagenCarpetaDefinitiva(prodCombinado.avatar, "9-Provisorio", "3-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					funciones.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
+					compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
 			}
 			// Obtener la edición completa
 			let edicion = {...req.body, avatar};
 			// Quitar los coincidencias con el original
-			edicion = funciones.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
+			edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
 			// Si la edicion existía => se la elimina
 			let edicion_id = prodEditado ? prodEditado.id : null;
 			if (edicion_id) await BD_genericas.eliminarPorId("prods_edicion", edicion_id);
 			// Luego se agrega la nueva
 			// 1. Completa la información
-			let producto_id = funciones.obtenerEntidad_id(entidad);
+			let producto_id = compartidas.obtenerEntidad_id(entidad);
 			edicion = {
 				...edicion,
 				[producto_id]: prodID,

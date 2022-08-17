@@ -1,7 +1,7 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../2-BD/Especificas");
-const funciones = require("../3-Procesos/Compartidas");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	consolidado: async function (datos) {
@@ -21,7 +21,6 @@ module.exports = {
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
-
 	nombreExpress: (datos) => {
 		let {nombre} = datos;
 		return !nombre
@@ -34,7 +33,6 @@ module.exports = {
 			? cartelPrefijo
 			: "";
 	},
-
 	nombreCompleto: async function (datos) {
 		let {nombre} = datos;
 		if (nombre) var nombreExpress = this.nombreExpress(datos);
@@ -53,7 +51,6 @@ module.exports = {
 			? repetido
 			: "";
 	},
-
 	fecha: (datos) => {
 		let error = "";
 		if (datos.desconocida == "false" || !datos.desconocida) {
@@ -67,7 +64,6 @@ module.exports = {
 		}
 		return error;
 	},
-
 	ano: (datos) => {
 		let error;
 		if (!datos.ano) error = cartelCampoVacio;
@@ -84,7 +80,6 @@ module.exports = {
 		}
 		return error;
 	},
-
 	RCLI_personaje: (datos) => {
 		let respuesta;
 		if (false) {
@@ -107,7 +102,6 @@ module.exports = {
 		// Fin
 		return respuesta;
 	},
-
 	RCLI_hecho: (datos) => {
 		let respuesta;
 		if (false) {
@@ -131,6 +125,7 @@ module.exports = {
 	},
 };
 
+// Variables
 const cartelFechaIncompleta = "Falta elegir el mes y/o el día";
 const cartelCampoVacio = "Necesitamos que completes este campo";
 const cartelSupera = "El número de día y el mes elegidos son incompatibles";
@@ -139,6 +134,7 @@ const cartelCastellano = "Sólo se admiten letras del abecedario castellano";
 const cartelDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 const cartelPrefijo = "El nombre no debe tener ningún prefijo (San, Santa, Madre, Don, Papa, etc.).";
 
+// Funciones
 let validarLongitud = (dato, corto, largo) => {
 	return dato.length < corto
 		? "El nombre debe ser más largo"
@@ -146,7 +142,6 @@ let validarLongitud = (dato, corto, largo) => {
 		? "El nombre debe ser más corto"
 		: "";
 };
-
 let inicialMayuscula = (dato) => {
 	let formato = /^[A-ZÁÉÍÓÚÜÑ]/;
 	return !formato.test(dato);
@@ -155,7 +150,6 @@ let castellano = (dato) => {
 	let formato = /[A-ZÁÉÍÓÚÜÑa-z áéíóúüñ'/()\+-]+$/;
 	return !formato.test(dato);
 };
-
 let prefijo = (nombre) => {
 	return (
 		nombre.startsWith("San ") ||
@@ -174,9 +168,8 @@ let prefijo = (nombre) => {
 		nombre.startsWith("Papa ")
 	);
 };
-
 let cartelRepetido = (datos) => {
-	let prodNombre = funciones.obtenerEntidadNombre(datos.entidad);
+	let prodNombre = compartidas.obtenerEntidadNombre(datos.entidad);
 	return (
 		"Este " +
 		"<a href='/RCLV/detalle/?entidad=" +
