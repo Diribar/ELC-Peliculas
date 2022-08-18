@@ -177,8 +177,8 @@ module.exports = {
 				datos.motivo_id = motivo.id;
 			}
 			// Obtiene los valores aprob/rech de edición, cuando es un ID
-			let valores = await procesos.prod_EdicValores(edicAprob, prodOriginal, prodEditado, campo);
-			datos = {...datos, ...valores};
+			let valoresAprobRech = await procesos.prod_EdicValores(edicAprob, prodOriginal, prodEditado, campo);
+			datos = {...datos, ...valoresAprobRech};
 			// Actualizar la BD de 'edic_aprob' / 'edicion_rech'
 			BD_genericas.agregarRegistro(decision, datos);
 		}
