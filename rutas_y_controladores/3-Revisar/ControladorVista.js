@@ -186,6 +186,7 @@ module.exports = {
 			titulo,
 			prodOriginal,
 			prodEditado,
+			prodNombre,
 			ingresos,
 			reemplazos,
 			avatar,
@@ -193,7 +194,6 @@ module.exports = {
 			entidad,
 			id: prodID,
 			bloqueDer,
-			prodNombre,
 			vista,
 		});
 	},
