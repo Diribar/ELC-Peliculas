@@ -81,7 +81,7 @@ module.exports = {
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);
-		if (registroEdic) BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
+		if (registroEdic) await BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
 		// Completar la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agregar la nueva edición
