@@ -98,14 +98,14 @@ module.exports = {
 			if (aprobado) {
 				// Eliminar el avatar original (si es un archivo)
 				let avatar = prodOriginal.avatar;
-				if (avatar.slice(0, 4) != "http") {
+				if (!avatar.startsWith("http")) {
 					let ruta = prodOriginal.status_registro.alta_aprob
 						? "/imagenes/3-ProdRevisar/"
 						: "/imagenes/2-Productos/";
 					compartidas.borrarArchivo(ruta, avatar);
 				}
 				// Mover el nuevo avatar a la carpeta definitiva
-				compartidas.moverImagenCarpetaDefinitiva(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
+				compartidas.moverImagen(prodEditado.avatar, "3-ProdRevisar", "2-Productos");
 			} else {
 				// Eliminar el avatar editado
 				compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
@@ -113,7 +113,7 @@ module.exports = {
 				if (prodOriginal.status_registro.alta_aprob) {
 					let avatar = prodOriginal.avatar;
 					// Si el avatar original es un url, convertirlo a archivo en la carpeta '3-ProdRevisar'
-					if (avatar.slice(0, 4) == "http") {
+					if (avatar && avatar.startsWith("http")) {
 						// Obtener el nombre
 						let nombre = Date.now() + path.extname(prodOriginal.avatar);
 						// Obtener la ruta con el nombre
@@ -122,9 +122,7 @@ module.exports = {
 						await compartidas.descargar(prodOriginal.avatar, rutaYnombre);
 						// Actualizar el nombre del avatar en la BD
 						await BD_genericas.actualizarPorId(entidad, prodID, {avatar: nombre});
-					} else if (avatar)
-						// Mover el archivo avatar a la carpeta definitiva
-						compartidas.moverImagenCarpetaDefinitiva(avatar, "3-ProdRevisar", "2-Productos");
+					} else compartidas.moverImagen(avatar, "3-ProdRevisar", "2-Productos"); // Mover el archivo avatar a la carpeta definitiva
 				}
 			}
 		}
@@ -412,8 +410,7 @@ module.exports = {
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);
 		if (!aprobado) procesos.usuario_Penalizar(sugerido_por_id, motivo, "edic_");
 		// Actualizar si el producto tiene links gratuitos
-		if (campo == "gratuito")
-			compartidas.prodActualizar_campoProdLG(api.prodEntidad, api.prodID);
+		if (campo == "gratuito") compartidas.prodActualizar_campoProdLG(api.prodEntidad, api.prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},

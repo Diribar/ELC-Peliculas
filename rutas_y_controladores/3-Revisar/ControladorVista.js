@@ -52,9 +52,9 @@ module.exports = {
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		if (!prodOriginal.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtener avatar original
-		let avatar = prodOriginal.avatar
-			? (prodOriginal.avatar.slice(0, 4) != "http" ? "/imagenes/3-ProdRevisar/" : "") +
-			  prodOriginal.avatar
+		let avatar = prodOriginal.avatar;
+		avatar = avatar
+			? (!avatar.startsWith("http") ? "/imagenes/3-ProdRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -95,7 +95,7 @@ module.exports = {
 		const producto_id = compartidas.obtenerEntidad_id(entidad);
 		let edicID = req.query.edicion_id;
 
-		// VERIFICACION1: Si no existe edicID...
+		// VERIFICACION1: Si no existe edicID, lo averigua y recarga la vista
 		if (!edicID) {
 			edicID = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
 			if (!edicID) {
@@ -126,7 +126,7 @@ module.exports = {
 		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
 		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/inactivar-captura/?destino=tablero&entidad=" + entidad + "&id=" + prodID);
-		// VERIFICACION3: si no quedan campos de 'edicion' por procesos --> lo avisa
+		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
@@ -146,29 +146,29 @@ module.exports = {
 			return res.render("CR9-Errores", {informacion});
 		}
 		// 4. Acciones dependiendo de si está editado el avatar
-		//console.log(149,prodEditado);
-		if (prodEditado.avatar) {
+		if (prodEditado.avatar_archivo) {
 			// Vista 'Edición-Avatar'
 			vista = "RV1-Prod-Avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
-					? (prodOriginal.avatar.slice(0, 4) != "http"
+					? (!prodOriginal.avatar.startsWith("http")
 							? prodOriginal.status_registro.gr_pend_aprob
 								? "/imagenes/3-ProdRevisar/"
 								: "/imagenes/2-Productos/"
 							: "") + prodOriginal.avatar
 					: "/imagenes/8-Agregar/IM.jpg",
-				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar,
+				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar_archivo,
+				mostrarOriginal: !!prodEditado.avatar,
 			};
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
-			let imagen = prodOriginal.avatar;
-			avatar = imagen
-				? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+			let avatar = prodOriginal.avatar;
+			avatar = avatar
+				? (!avatar.startsWith("http") ? "/imagenes/2-Productos/" : "") + avatar
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
@@ -274,9 +274,9 @@ module.exports = {
 		links.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 		// return res.send(links)
 		// Información para la vista
-		let imagen = producto.avatar;
-		let avatar = imagen
-			? (imagen.slice(0, 4) != "http" ? "/imagenes/2-Productos/" : "") + imagen
+		let avatar = producto.avatar;
+		avatar = avatar
+			? (!avatar.startsWith("http") ? "/imagenes/2-Productos/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");

@@ -199,10 +199,11 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
 		let codigo = "datosDuros";
+		// Borrar archivo de imagen si existe
+		let aux = req.cookies.datosPers;
+		if (aux && aux.avatar_archivo)
+			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
 		// 2. Eliminar session y cookie posteriores, si existen
-		if (req.cookies.datosPers && req.cookies.datosPers.avatarDP) {
-			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", req.cookies.datosPers.avatarBD);
-		}
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
 		let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
@@ -278,21 +279,23 @@ module.exports = {
 			}
 		}
 		// 5. Si no hay errores de imagen, revisar el archivo de imagen
-		let rutaYnombre = req.file ? req.file.path : "";
-		let tipo, tamano, nombre;
+		let avatar_archivo, rutaYnombre, tipo, tamano;
 		if (!errores.avatar) {
 			if (req.file) {
 				// En caso de archivo por multer
 				tipo = req.file.mimetype;
 				tamano = req.file.size;
-				nombre = req.file.filename;
-			} else if (datosDuros.avatar) {
+				avatar_archivo = req.file.filename;
+				rutaYnombre = req.file.path;
+			} else {
 				// En caso de archivo sin multer
 				let datos = await requestPromise.head(datosDuros.avatar);
 				tipo = datos["content-type"];
 				tamano = datos["content-length"];
-				nombre = Date.now() + path.extname(datosDuros.avatar);
-				rutaYnombre = "./publico/imagenes/9-Provisorio/" + nombre;
+				avatar_archivo = Date.now() + path.extname(datosDuros.avatar);
+				rutaYnombre = "./publico/imagenes/9-Provisorio/" + avatar_archivo;
+				// Descargar
+				compartidas.descargar(datosDuros.avatar, rutaYnombre);
 			}
 			// Revisar errores nuevamente
 			errores.avatar = compartidas.revisarImagen(tipo, tamano);
@@ -301,30 +304,23 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", nombre);
+			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
-		}
-		// 7. Configurar los valores de la variable 'avatar'
-		let avatarDP = "/imagenes/9-Provisorio/" + nombre;
-		let avatarBD = nombre;
-		// 8. Si la imagen venía de TMDB, entonces grabarla
-		if (datosDuros.fuente == "TMDB" && datosDuros.avatar && !req.file) {
-			compartidas.descargar(datosDuros.avatar, rutaYnombre);
-			avatarDP = datosDuros.avatar;
 		}
 		// 9. Generar la session para la siguiente instancia
 		req.session.datosPers = {
 			...req.session.datosDuros,
-			avatarDP,
-			avatarBD,
+			avatar_archivo,
 		};
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
-		let cookie = req.cookies.datosOriginales;
-		if (datosDuros.fuente == "IM") cookie.nombre_original = datosDuros.nombre_original;
-		if (datosDuros.fuente == "IM") cookie.nombre_castellano = datosDuros.nombre_castellano;
-		res.cookie("datosOriginales", cookie, {maxAge: unDia});
+		if (datosDuros.fuente == "IM") {
+			let cookie = req.cookies.datosOriginales;
+			cookie.nombre_original = datosDuros.nombre_original;
+			cookie.nombre_castellano = datosDuros.nombre_castellano;
+			res.cookie("datosOriginales", cookie, {maxAge: unDia});
+		}
 		// 11. Redireccionar a la siguiente instancia
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
@@ -423,7 +419,7 @@ module.exports = {
 			),
 		]);
 		let calificacion = fe_valores * 0.5 + entretiene * 0.3 + calidad_tecnica * 0.2;
-		let objetoCalificacion = {
+		let calificaciones = {
 			fe_valores,
 			entretiene,
 			calidad_tecnica,
@@ -432,23 +428,18 @@ module.exports = {
 		// 3. Guardar los datos de 'Original'
 		let original = {
 			...req.cookies.datosOriginales,
-			...objetoCalificacion,
+			...calificaciones,
 			creado_por_id: req.session.usuario.id,
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		confirma.avatar = confirma.avatarBD;
-		let producto_id = compartidas.obtenerEntidad_id(confirma.entidad);
-		let edicion = {
-			// Datos de 'confirma'
-			...confirma,
-			editado_por_id: req.session.usuario.id,
-			// Datos varios
-			entidad: "prods_edicion",
-			[producto_id]: registro.id,
-		};
-		edicion = compartidas.quitarLasCoincidenciasConOriginal(original, edicion);
-		await BD_genericas.agregarRegistro(edicion.entidad, edicion);
+		await compartidas.guardar_edicion(
+			confirma.entidad,
+			"prods_edicion",
+			registro,
+			confirma,
+			req.session.usuario.id
+		);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
 		if (confirma.fuente == "TMDB" && confirma.TMDB_entidad != "movie") {
 			confirma.TMDB_entidad == "collection"
@@ -456,9 +447,9 @@ module.exports = {
 				: procesos.agregarCapitulosDeTV({...confirma, ...registro});
 		}
 		// 6. Guarda las calificaciones
-		procesos.guardar_cal_registros({...confirma, ...objetoCalificacion}, registro);
+		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		compartidas.moverImagenCarpetaDefinitiva(confirma.avatar, "9-Provisorio", "3-ProdRevisar");
+		compartidas.moverImagen(confirma.avatar_archivo, "9-Provisorio", "3-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Redireccionar

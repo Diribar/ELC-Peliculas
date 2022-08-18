@@ -24,13 +24,7 @@ module.exports = {
 			userID
 		);
 		// Obtener el avatar
-		let avatar = prodEditado.avatar
-			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
-			: prodOriginal.avatar
-			? !prodOriginal.avatar.startsWith("http")
-				? "/imagenes/2-Productos/" + prodOriginal.avatar
-				: prodOriginal.avatar
-			: "/imagenes/8-Agregar/IM.jpg";
+		let avatar = compartidas.nombreAvatar(prodOriginal,prodEditado)
 		// Combinar los datos Editados con la versión Original
 		let producto = {...prodOriginal, ...prodEditado};
 		// Obtener información de BD
