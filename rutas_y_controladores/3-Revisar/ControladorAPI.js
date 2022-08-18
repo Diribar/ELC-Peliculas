@@ -176,7 +176,7 @@ module.exports = {
 				datos.duracion = motivo.duracion;
 				datos.motivo_id = motivo.id;
 			}
-			// Obtener el valor de edición, cuando es un ID
+			// Obtiene los valores aprob/rech de edición, cuando es un ID
 			let valores = await procesos.prod_EdicValores(edicAprob, prodOriginal, prodEditado, campo);
 			datos = {...datos, ...valores};
 			// Actualizar la BD de 'edic_aprob' / 'edicion_rech'
@@ -359,7 +359,7 @@ module.exports = {
 			entidad_id: link_id,
 			campo: campo,
 			titulo: campo,
-			valor_aceptado: edicion[campo],
+			valor_aprob: edicion[campo],
 			input_por_id: sugerido_por_id,
 			input_en: edicion.editado_en,
 			evaluado_por_id: userID,

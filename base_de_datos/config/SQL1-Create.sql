@@ -221,7 +221,7 @@ CREATE TABLE edic_registros_aprob (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_aceptado VARCHAR(50) NULL,
+	valor_aprob VARCHAR(50) NULL,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
@@ -296,10 +296,9 @@ VALUES
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar)
 VALUES
-(21, 21, 0.1, 'La imagen original es más adecuada', 1),
-(22, 22, 10, 'La imagen no corresponde al producto', 1),
-(23, 23, 0.1, 'Imagen de poca nitidez', 1),
-(24, 24, 10, 'No es un archivo válido de imagen', 1)
+(21, 21, 10, 'La imagen no corresponde al producto', 1),
+(22, 22, 0.1, 'Imagen de poca nitidez', 1),
+(23, 23, 10, 'No es un archivo de imagen válido', 1)
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
@@ -309,8 +308,8 @@ CREATE TABLE edic_registros_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rechazado VARCHAR(50) NULL,
-	valor_aceptado VARCHAR(50) NULL,
+	valor_rech VARCHAR(50) NULL,
+	valor_aprob VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
@@ -1010,6 +1009,7 @@ CREATE TABLE prod_4edicion (
 	produccion VARCHAR(100) NULL,
 	sinopsis VARCHAR(900) NULL,
 	avatar VARCHAR(100) NULL,
+	avatar_archivo VARCHAR(17) NULL,
 	
 	en_castellano_id TINYINT UNSIGNED NULL,
 	en_color_id TINYINT UNSIGNED NULL,
@@ -1190,6 +1190,10 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	coleccion_id INT UNSIGNED NULL,
 	capitulo_id INT UNSIGNED NULL,
 
+	personaje_id SMALLINT UNSIGNED NULL,
+	hecho_id SMALLINT UNSIGNED NULL,
+	valor_id SMALLINT UNSIGNED NULL,
+	
 	link_id INT UNSIGNED NULL,
 
 	motivo_id TINYINT UNSIGNED NULL,
@@ -1210,7 +1214,13 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	FOREIGN KEY (pelicula_id) REFERENCES prod_1peliculas(id),
 	FOREIGN KEY (coleccion_id) REFERENCES prod_2colecciones(id),	
 	FOREIGN KEY (capitulo_id) REFERENCES prod_3capitulos(id),
+	
+	FOREIGN KEY (personaje_id) REFERENCES rclv_1personajes(id),
+	FOREIGN KEY (hecho_id) REFERENCES rclv_2hechos(id),
+	FOREIGN KEY (valor_id) REFERENCES rclv_3valores(id),
+	
 	FOREIGN KEY (link_id) REFERENCES links(id),
+
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),

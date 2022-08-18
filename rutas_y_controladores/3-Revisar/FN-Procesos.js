@@ -357,11 +357,11 @@ module.exports = {
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
 		if (valorOrig === null) valorOrig = "-";
-		// Obtiene los valores 'aceptado' y 'rechazado'
-		let valor_aceptado = aprobado ? valorEdic : valorOrig;
-		let valor_rechazado = !aprobado ? valorEdic : valorOrig;
+		// Obtiene los valores 'aprobado' y 'rechazado'
+		let valor_aprob = aprobado ? valorEdic : valorOrig;
+		let valor_rech = !aprobado ? valorEdic : valorOrig;
 		// Fin
-		return {valor_aceptado, valor_rechazado};
+		return {valor_aprob, valor_rech};
 	},
 
 	// ControladorAPI - RCLV Alta
@@ -393,14 +393,14 @@ module.exports = {
 				entidad_id: RCLV_original.id,
 				campo: campoComparar.campo,
 				titulo: campoComparar.titulo,
-				valor_aceptado: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
+				valor_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
 				input_por_id: RCLV_original.creado_por_id,
 				input_en: RCLV_original.creado_en,
 				evaluado_por_id: userID,
 				evaluado_en: ahora,
 			};
 			if (RCLV_original[campoComparar.campo] != RCLV_actual[campoComparar.campo]) {
-				datos.valor_rechazado = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
+				datos.valor_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
 				datos.motivo_id = motivoGenericoID;
 			}
 			// Guardar los registros
