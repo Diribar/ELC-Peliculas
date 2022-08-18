@@ -12,14 +12,14 @@
 #fichaTecnica div p {line-height: 1.5;}
 
 /* Partes específicas de las imágenes */
-#informacion #imgSugerida {display: flex; flex-direction: column; width: 40vw;}
-#informacion #imgSugerida h2 {background-color: var(--verde-oscuro); color: var(--celeste-claro);}
-#informacion #imgActual {display: flex; flex-direction: column; width: 20vw;}
-#informacion #imgActual {position: absolute; right: 0; top: 0; height: 50%;}
-#informacion #imgActual h2 {background-color: var(--rojo-oscuro); color: var(--celeste-claro);}
+#informacion #imgSugerida {width: 40vw;}
+#informacion #imgSugerida h2 {background-color: var(--verde-oscuro);}
+#informacion #imgActual {width: 20vw; position: absolute; right: 0; top: 0; height: 50%;}
+#informacion #imgActual h2 {background-color: var(--rojo-oscuro);}
 
 /* Partes comunes de las imágenes */
-#informacion .tituloMasImagen h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 10px; align-self: center;}
+#informacion .tituloMasImagen {display: flex; flex-direction: column;}
+#informacion .tituloMasImagen h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 10px; align-self: center; color: var(--celeste-claro);}
 #informacion .tituloMasImagen .contenedorImagen {position: relative; height: 100%; width: 100%;}
 #informacion .tituloMasImagen .contenedorImagen img {position: absolute; transform: translateX(-50%); left: 50%;}
 #informacion .tituloMasImagen .contenedorImagen img {border-radius: 10px; max-height: 100%; max-width: 100%;}
