@@ -130,7 +130,7 @@ module.exports = {
 						RCLV_original,
 						RCLV_editado,
 						userID
-				  ); // Guardar o actualizar la edición
+				  ); // Guarda la edición
 		}
 		// 8. Borrar session y cookies de RCLV
 		if (req.session[entidad]) delete req.session[entidad];

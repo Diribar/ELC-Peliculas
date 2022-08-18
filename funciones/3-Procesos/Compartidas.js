@@ -72,22 +72,18 @@ module.exports = {
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
 	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID) {
-		// Depurar para dejar solamente las novedades de la edición
+		// Quitar los coincidencias con el original
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
+		// Averiguar si hay algún campo con novedad
+		if (!Object.keys(edicion).length) return "Edición sin novedades respecto al original";
 		// Obtener el campo 'entidad_id'
 		let entidad_id = this.obtenerEntidad_id(entidad);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
 		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);
-		if (registroEdic) await BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
-		// Averiguar si hay algún campo con novedad
-		if (!Object.keys(edicion).length) return "Edición sin novedades respecto al original";
+		if (registroEdic) BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
 		// Completar la información
-		edicion = {
-			...edicion,
-			[entidad_id]: original.id,
-			editado_por_id: userID,
-		};
+		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agregar la nueva edición
 		await BD_genericas.agregarRegistro(entidad_edicion, edicion);
 		// Fin
@@ -199,7 +195,7 @@ module.exports = {
 	},
 
 	// Gestión de archivos
-	moverImagenCarpetaDefinitiva: (nombre, origen, destino) => {
+	moverImagen: (nombre, origen, destino) => {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";
 		let archivoDestino = carpetaDestino + nombre;
@@ -239,6 +235,15 @@ module.exports = {
 	},
 
 	// Varios
+	nombreAvatar: (prodOriginal, prodEditado) => {
+		return prodEditado.avatar
+			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
+			: prodOriginal.avatar
+			? !prodOriginal.avatar.startsWith("http")
+				? "/imagenes/2-Productos/" + prodOriginal.avatar
+				: prodOriginal.avatar
+			: "/imagenes/8-Agregar/IM.jpg";
+	},
 	enviarMail: async (asunto, mail, comentario) => {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({

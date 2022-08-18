@@ -287,6 +287,7 @@ module.exports = {
 	camposRevisarProd: () => {
 		return [
 			{nombreDelCampo: "avatar"},
+			{nombreDelCampo: "avatar_archivo"},
 			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
 			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},

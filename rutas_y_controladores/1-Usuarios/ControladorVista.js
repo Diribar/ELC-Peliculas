@@ -149,7 +149,7 @@ module.exports = {
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		// Mover el archivo a la carpeta definitiva
-		if (req.file) compartidas.moverImagenCarpetaDefinitiva(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		if (req.file) compartidas.moverImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
