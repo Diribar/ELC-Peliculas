@@ -131,7 +131,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesos.prod_Feedback(prodOriginal, prodEditado);
 		//return res.send(prodEditado)
 		if (!quedanCampos) {
 			let informacion = {

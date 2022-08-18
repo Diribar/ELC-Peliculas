@@ -1,6 +1,5 @@
 "use strict";
 // ************ Requires *************
-const path = require("path");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
@@ -103,7 +102,6 @@ module.exports = {
 			// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
 			datos = {avatar: prodEditado.avatar_archivo, avatar_archivo: null};
 			prodEditado = {...prodEditado, ...datos};
-			console.log(103, datos);
 			// Acciones si el avatarEdic fue aprobado
 			if (edicAprob) {
 				// Eliminar el avatar original (si es un archivo)
@@ -124,7 +122,7 @@ module.exports = {
 					let avatar = prodOriginal.avatar;
 					// Si el avatar original es un archivo, moverlo a su carpeta definitiva
 					if (avatar && !avatar.startsWith("http"))
-						compartidas.moverImagen(avatar, "3-ProdRevisar", "2-Productos"); // Mover el archivo avatar a la carpeta definitiva
+						compartidas.moverImagen(avatar, "3-ProdRevisar", "2-Productos");
 				}
 			}
 		}
@@ -192,7 +190,7 @@ module.exports = {
 		// 1. Averigua si quedan campos por procesar
 		// 2. Elimina el registro de edición si ya no tiene más datos
 		// 3. Actualiza el status del registro original, si corresponde
-		let [quedanCampos, , statusAprob] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
+		let [quedanCampos, , statusAprob] = await procesos.prod_Feedback(prodOriginal, prodEditado);
 		// Si el producto está aprobado y se cambió un campo RCLV, actualizar en el RCLV el campo 'prod_aprob'
 		if (
 			prodOriginal[campo] != 1 &&
@@ -380,22 +378,16 @@ module.exports = {
 		link.ediciones.forEach(async (edicion) => {
 			// Purga cada edición
 			let edicID = edicion.id;
-			[quedanCampos, prodEditado] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
-
-			// Se eliminan los campos sin contenido
-			//			edicion = compartidas.quitarLosCamposSinContenido(edicion);
-			// Se eliminan los campos que no se comparan
-			//			edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Links");
-			// Se eliminan los campos con el mismo valor que el original
-			//			if (aprobado) edicion = compartidas.quitarLasCoincidenciasConOriginal(link, edicion);
-			// Se eliminan los registros editados que quedan vacíos
-			//			let quedanCampos = await compartidas.quedanCamposEliminar("links_edicion", edicID, edicion);
+			[quedanCampos, edicion] = await compartidas.pulirEdicion(link, edicion);
 			// Si quedan campos, actualiza la edición
 			if (quedanCampos)
 				await BD_genericas.actualizarPorId("links_edicion", edicID, {
 					...camposVacios,
 					...edicion,
 				});
+			// Eliminar el registro de la edición
+			else await BD_genericas.eliminarPorId("links_edicion", edicID);
+
 		});
 		// Actualizaciones en el USUARIO
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, "edic" + decision, 1);

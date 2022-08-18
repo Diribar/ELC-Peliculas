@@ -246,20 +246,13 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// ControladorVista - Productos Edición
-	prod_QuedanCampos: async (prodOrig, prodEdic) => {
+	prod_Feedback: async (prodOrig, prodEdic) => {
 		// Variables
-		let edicion = {...prodEdic};
-		let datosPreservar = {
-			editado_por_id: prodEdic.editado_por_id,
-			editado_en: prodEdic.editado_en,
-		};
+		let datosEdicion = {editado_por_id: prodEdic.editado_por_id, editado_en: prodEdic.editado_en};
 		let entidadOrig = compartidas.obtenerEntidadOrig(prodEdic);
 		let statusAprob = prodOrig.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
-		edicion = compartidas.quitarLosCamposSinContenido(edicion);
-		edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOrig, edicion);
-		let quedanCampos = await compartidas.quedanCamposEliminar("prods_edicion", prodEdic.id, edicion);
+		[edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Averiguar si el original no tiene errores
@@ -291,7 +284,7 @@ module.exports = {
 					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
 				}
 			}
-		} else edicion = {...edicion, ...datosPreservar};
+		} else edicion = {...edicion, ...datosEdicion};
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
