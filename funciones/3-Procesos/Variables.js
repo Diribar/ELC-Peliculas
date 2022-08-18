@@ -130,7 +130,9 @@ module.exports = {
 				);
 				aux.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 				registrosRCLV[campo] = aux;
+				console.log(133, aux);
 			});
+		console.log(122, userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",
@@ -284,6 +286,7 @@ module.exports = {
 	// Entorno Revisiones
 	camposRevisarProd: () => {
 		return [
+			{nombreDelCampo: "avatar"},
 			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
 			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},
@@ -293,8 +296,8 @@ module.exports = {
 			{
 				titulo: "Idioma Original",
 				nombreDelCampo: "idioma_original_id",
-				asociacion1: "idioma_original.nombre",
-				asociacion2: "nombre",
+				relac_include: "idioma_original.nombre",
+				campo_include: "nombre",
 			},
 			{titulo: "Dirección", nombreDelCampo: "direccion", input: true},
 			{titulo: "Guión", nombreDelCampo: "guion", input: true},
@@ -305,54 +308,54 @@ module.exports = {
 			{
 				titulo: "Versión en castellano",
 				nombreDelCampo: "en_castellano_id",
-				asociacion1: "en_castellano",
-				asociacion2: "productos",
+				relac_include: "en_castellano",
+				campo_include: "productos",
 			},
 			{
 				titulo: "Es a Color",
 				nombreDelCampo: "en_color_id",
-				asociacion1: "en_color",
-				asociacion2: "productos",
+				relac_include: "en_color",
+				campo_include: "productos",
 			},
 			{
 				titulo: "Categoría",
 				nombreDelCampo: "categoria_id",
-				asociacion1: "categoria",
-				asociacion2: "nombre",
+				relac_include: "categoria",
+				campo_include: "nombre",
 			},
 			{
 				titulo: "Sub-categoría",
 				nombreDelCampo: "subcategoria_id",
-				asociacion1: "subcategoria",
-				asociacion2: "nombre",
+				relac_include: "subcategoria",
+				campo_include: "nombre",
 			},
 			{
 				titulo: "Público sugerido",
 				nombreDelCampo: "publico_sugerido_id",
-				asociacion1: "publico_sugerido",
-				asociacion2: "nombre",
+				relac_include: "publico_sugerido",
+				campo_include: "nombre",
 			},
 			{
 				titulo: "Personaje histórico",
 				nombreDelCampo: "personaje_id",
-				asociacion1: "personaje",
-				asociacion2: "nombre",
+				relac_include: "personaje",
+				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
 			{
 				titulo: "Hecho histórico",
 				nombreDelCampo: "hecho_id",
-				asociacion1: "hecho",
-				asociacion2: "nombre",
+				relac_include: "hecho",
+				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},
 			{
 				titulo: "Valor principal",
 				nombreDelCampo: "valor_id",
-				asociacion1: "valor",
-				asociacion2: "nombre",
+				relac_include: "valor",
+				campo_include: "nombre",
 				rclv: true,
 				input: true,
 			},

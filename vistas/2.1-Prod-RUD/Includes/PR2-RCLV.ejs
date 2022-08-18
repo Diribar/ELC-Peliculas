@@ -6,7 +6,7 @@
 		<select name="<%= campo.nombreDelCampo %>" class="input RCLV">
 			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí una opción</option>
 			<option value="1" <% if (producto[campo.nombreDelCampo] == 1) { %>selected<% } %>>Ninguno</option>
-			<% console.log(campo.nombreDelCampo) %>
+			<% console.log(campo) %>
 			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
 		</select>
 		<!-- Ayuda -->

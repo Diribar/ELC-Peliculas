@@ -165,7 +165,12 @@ window.addEventListener("load", async () => {
 		// Consecuencias
 		hayErrores ? submit.classList.add("inactivo") : submit.classList.remove("inactivo");
 		// Pruebas
-		// console.log(hayErrores);
+		console.log(hayErrores,
+			Array.from(iconosError)
+				.map((n) => n.className)
+				.join(" ")
+				.split(" ")
+		);
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();

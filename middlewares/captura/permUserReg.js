@@ -56,17 +56,22 @@ module.exports = async (req, res, next) => {
 			: "";
 	};
 	let creadoHaceMasDeUnaHora = () => {
-		return creado_en < haceUnaHora && // creado hace más de una hora
+		let informacion = "";
+		if (
+			creado_en < haceUnaHora && // creado hace más de una hora
 			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la vista no es de revisión
 				(registro.status_registro.alta_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
-			? {
-					mensajes: [
-						"Se cumplió el plazo de 1 hora desde que se creó el registro.",
-						"Estará disponible luego de ser revisado, en caso de ser aprobado.",
-					],
-					iconos: [vistaAnterior],
-			  }
-			: "";
+		) {
+			let mensajes = creadoPorElUsuario
+				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
+				: ["El registro todavía no está revisado."];
+			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.",)
+			informacion = {
+				mensajes,
+				iconos: [vistaAnterior],
+			};
+		}
+		return informacion;
 	};
 	let capturadoPorOtroUsuario = () => {
 		return capturado_en > haceUnaHora && registro.capturado_por_id != userID && registro.captura_activa
@@ -169,7 +174,8 @@ module.exports = async (req, res, next) => {
 				registro.ediciones &&
 				registro.ediciones.length == 1 &&
 				registro.ediciones[0].editado_por_id == userID &&
-				!url.startsWith("links/")
+				!url.startsWith("links/") &&
+				!url.startsWith("/producto/alta/")
 			) {
 				informacion = {
 					mensajes: [

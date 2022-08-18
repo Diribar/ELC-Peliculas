@@ -210,84 +210,83 @@ module.exports = {
 	},
 
 	// ControladorVista - Productos Alta
-	prod_BloquesAlta: async (prodOriginal, paises) => {
+	prod_BloquesAlta: async (prodOrig, paises) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque izquierdo
 		let [bloque1, bloque2, bloque3] = [[], [], []];
 		// Bloque 1
 		if (paises) bloque1.push({titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises});
-		if (prodOriginal.idioma_original)
-			bloque1.push({titulo: "Idioma original", valor: prodOriginal.idioma_original.nombre});
+		if (prodOrig.idioma_original)
+			bloque1.push({titulo: "Idioma original", valor: prodOrig.idioma_original.nombre});
 		// Bloque 2
-		if (prodOriginal.direccion) bloque2.push({titulo: "Dirección", valor: prodOriginal.direccion});
-		if (prodOriginal.guion) bloque2.push({titulo: "Guión", valor: prodOriginal.guion});
-		if (prodOriginal.musica) bloque2.push({titulo: "Música", valor: prodOriginal.musica});
-		if (prodOriginal.produccion) bloque2.push({titulo: "Producción", valor: prodOriginal.produccion});
+		if (prodOrig.direccion) bloque2.push({titulo: "Dirección", valor: prodOrig.direccion});
+		if (prodOrig.guion) bloque2.push({titulo: "Guión", valor: prodOrig.guion});
+		if (prodOrig.musica) bloque2.push({titulo: "Música", valor: prodOrig.musica});
+		if (prodOrig.produccion) bloque2.push({titulo: "Producción", valor: prodOrig.produccion});
 		// Bloque 3
-		if (prodOriginal.actuacion) bloque3.push({titulo: "Actuación", valor: prodOriginal.actuacion});
+		if (prodOrig.actuacion) bloque3.push({titulo: "Actuación", valor: prodOrig.actuacion});
 		// Bloque izquierdo consolidado
 		let izquierda = [bloque1, bloque2, bloque3];
 		// Bloque derecho
 		[bloque1, bloque2] = [[], []];
 		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
+		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
+		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		let fecha = obtenerLaFecha(prodOriginal.creado_en);
+		let fecha = obtenerLaFecha(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await usuario_Ficha(prodOriginal.creado_por_id, ahora);
+		let fichaDelUsuario = await usuario_Ficha(prodOrig.creado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
-		let calidadAltas = await usuario_CalidadAltas(prodOriginal.creado_por_id);
+		let calidadAltas = await usuario_CalidadAltas(prodOrig.creado_por_id);
 		// Bloque derecho consolidado
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
 	// ControladorVista - Productos Edición
-	prod_QuedanCampos: async (prodOriginal, prodEditado) => {
+	prod_QuedanCampos: async (prodOrig, prodEdic) => {
 		// Variables
-		let edicion = {...prodEditado};
+		let edicion = {...prodEdic};
 		let noSeComparan = {
-			editado_por_id: prodEditado.editado_por_id,
-			editado_en: prodEditado.editado_en,
+			editado_por_id: prodEdic.editado_por_id,
+			editado_en: prodEdic.editado_en,
 		};
-		let entidad = compartidas.obtenerEntidad(prodEditado);
-		let statusAprobado = prodOriginal.status_registro.aprobado;
+		let entidad = compartidas.obtenerEntidad(prodEdic);
+		let statusAprobado = prodOrig.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
 		edicion = compartidas.quitarLosCamposSinContenido(edicion);
 		edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOriginal, edicion);
-		let quedanCampos = compartidas.eliminarEdicionSiEstaVacio("prods_edicion", prodEditado.id, edicion);
+		edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOrig, edicion);
+		let quedanCampos = compartidas.eliminarEdicionSiEstaVacio("prods_edicion", prodEdic.id, edicion);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Averiguar si el original no tiene errores
-			let errores = await validar.edicion(null, {...prodOriginal, entidad});
+			let errores = await validar.edicion(null, {...prodOrig, entidad});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
 			// 1. Que no tenga errores
 			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOriginal.status_registro.alta_aprob) {
+			if (!errores.hay && prodOrig.status_registro.alta_aprob) {
 				statusAprobado = true;
 				// Obtener el 'id' del status 'aprobado'
 				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = compartidas.ahora();
-				let leadTime = compartidas.obtenerLeadTime(prodOriginal.creado_en, ahora);
+				let leadTime = compartidas.obtenerLeadTime(prodOrig.creado_en, ahora);
 				// Cambiarle el status al producto y liberarlo
 				let datos = {
 					alta_terminada_en: ahora,
 					lead_time_creacion: leadTime,
 					status_registro_id: aprobado_id,
 				};
-				await BD_genericas.actualizarPorId(entidad, prodOriginal.id, {...datos, captura_activa: 0});
+				await BD_genericas.actualizarPorId(entidad, prodOrig.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
 				if (entidad == "colecciones") {
 					// Ampliar los datos
 					datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora};
 					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOriginal.id};
+					let objeto = {coleccion_id: prodOrig.id};
 					// Actualizar el status de los capitulos
 					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
 				}
@@ -296,53 +295,53 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprobado];
 	},
-	prod_ArmarComparac: (prodOriginal, prodEditado) => {
-		let camposAComparar = variables.camposRevisarProd();
-		for (let i = camposAComparar.length - 1; i >= 0; i--) {
-			let campo = camposAComparar[i].nombreDelCampo;
-			if (!Object.keys(prodEditado).includes(campo)) camposAComparar.splice(i, 1);
+	prod_ArmarComparac: (prodOrig, prodEdic) => {
+		let campos = variables.camposRevisarProd();
+		for (let i = campos.length - 1; i >= 0; i--) {
+			let campoNombre = campos[i].nombreDelCampo;
+			// Deja solamente los campos comunes entre A REVISAR y EDICIÓN
+			if (!Object.keys(prodEdic).includes(campoNombre)) campos.splice(i, 1);
 			else {
 				// Variables
-				let verificar = !camposAComparar[i].rclv || prodOriginal[campo] != 1;
-				let asoc1 = camposAComparar[i].asociacion1;
-				let asoc2 = camposAComparar[i].asociacion2;
+				let include = campos[i].relac_include;
+				let campo = campos[i].campo_include;
+				let valido = !campos[i].rclv || prodOrig[campoNombre] != 1;
 				// Valores originales
-				camposAComparar[i].valorOrig = verificar ? prodOriginal[campo] : null;
-				camposAComparar[i].mostrarOrig =
-					camposAComparar[i].asociacion1 && prodOriginal[asoc1] && verificar
-						? prodOriginal[asoc1][asoc2]
-						: camposAComparar[i].valorOrig;
+				if (valido)
+					campos[i].mostrarOrig =
+						include && prodOrig[include] ? prodOrig[include][campo] : prodOrig[campoNombre];
 				// Valores editados
-				camposAComparar[i].valorEdic = prodEditado[campo];
-				camposAComparar[i].mostrarEdic = asoc1 ? prodEditado[asoc1][asoc2] : prodEditado[campo];
+				campos[i].valorEdic = prodEdic[campoNombre];
+				campos[i].mostrarEdic =
+					include && prodEdic[include] ? prodEdic[include][campo] : prodEdic[campoNombre];
 			}
 		}
-		// Ingresos de edición, sin valor en la versión original
-		let ingresos = camposAComparar.filter((n) => !n.valorOrig);
-		let reemplazos = camposAComparar.filter((n) => n.valorOrig);
+		// Separar los resultados entre ingresos y reemplazos
+		let ingresos = campos.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
+		let reemplazos = campos.filter((n) => n.mostrarOrig);
+		// Fin
 		return [ingresos, reemplazos];
 	},
-	prod_BloqueEdic: async (prodOriginal, prodEditado) => {
+	prod_BloqueEdic: async (prodOrig, prodEdic) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque derecho
 		let bloque1 = [];
 		let fecha;
 		// Bloque 1
-		if (prodOriginal.ano_estreno)
-			bloque1.push({titulo: "Año de estreno", valor: prodOriginal.ano_estreno});
-		if (prodOriginal.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOriginal.ano_fin});
-		if (prodOriginal.duracion) bloque1.push({titulo: "Duracion", valor: prodOriginal.duracion + " min."});
+		if (prodOrig.ano_estreno) bloque1.push({titulo: "Año de estreno", valor: prodOrig.ano_estreno});
+		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
+		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		fecha = obtenerLaFecha(prodOriginal.creado_en);
+		fecha = obtenerLaFecha(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// Obtener la fecha de edicion
-		fecha = obtenerLaFecha(prodEditado.editado_en);
+		fecha = obtenerLaFecha(prodEdic.editado_en);
 		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 		// 5. Obtener los datos del usuario
-		let fichaDelUsuario = await usuario_Ficha(prodEditado.editado_por_id, ahora);
+		let fichaDelUsuario = await usuario_Ficha(prodEdic.editado_por_id, ahora);
 		// 6. Obtener la calidad de las altas
-		let calidadEdic = await usuario_CalidadEdic(prodEditado.editado_por_id);
+		let calidadEdic = await usuario_CalidadEdic(prodEdic.editado_por_id);
 		// Bloque derecho consolidado
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
@@ -361,7 +360,7 @@ module.exports = {
 		}
 		return;
 	},
-	prod_EdicValores: (aprobado, prodOriginal, prodEditado, campo) => {
+	prod_EdicValores: (aprobado, prodOrig, prodEdic, campo) => {
 		// Definir los campos 'complicados'
 		let camposConVinculo = [
 			{campo: "en_castellano_id", vinculo: "en_castellano"},
@@ -378,10 +377,8 @@ module.exports = {
 		let campos = camposConVinculo.map((n) => n.campo);
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let indice = campos.indexOf(campo);
-		let valorOrig =
-			indice >= 0 ? prodValorVinculo(prodOriginal, camposConVinculo[indice]) : prodOriginal[campo];
-		let valorEdic =
-			indice >= 0 ? prodValorVinculo(prodEditado, camposConVinculo[indice]) : prodEditado[campo];
+		let valorOrig = indice >= 0 ? prodValorVinculo(prodOrig, camposConVinculo[indice]) : prodOrig[campo];
+		let valorEdic = indice >= 0 ? prodValorVinculo(prodEdic, camposConVinculo[indice]) : prodEdic[campo];
 		if (valorOrig === null) valorOrig = "-";
 		// Obtener los valores 'aceptado' y 'rechazado'
 		let valor_aceptado = aprobado ? valorEdic : valorOrig;

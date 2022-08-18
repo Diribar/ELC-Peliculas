@@ -94,7 +94,7 @@ module.exports = {
 			if (datosAPI.release_date) datos.ano_estreno = parseInt(datosAPI.release_date.slice(0, 4));
 			if (datosAPI.runtime != null) datos.duracion = datosAPI.runtime;
 			if (datosAPI.production_countries.length > 0)
-				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ");
+				datos.paises_id = datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ");
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
@@ -186,7 +186,7 @@ module.exports = {
 			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
 			// Paises_id
 			if (datosAPI.production_countries.length > 0)
-				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
+				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
 				produccion += consolidarValores(datosAPI.production_companies) + ", ";
@@ -289,7 +289,7 @@ module.exports = {
 			// año de estreno, año de fin, país de origen
 			if (datosAPI.first_air_date) datos.ano_estreno = parseInt(datosAPI.first_air_date.slice(0, 4));
 			if (datosAPI.last_air_date) datos.ano_fin = parseInt(datosAPI.last_air_date.slice(0, 4));
-			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(", ");
+			if (datosAPI.origin_country.length > 0) datos.paises_id = datosAPI.origin_country.join(" ");
 			// sinopsis, avatar
 			if (datosAPI.overview) datos.sinopsis = fuenteSinopsisTMDB(datosAPI.overview);
 			if (datosAPI.poster_path)
@@ -565,6 +565,6 @@ let paisNombreToId = async (pais_nombre) => {
 			aux ? resultado.push(aux.id) : "";
 		}
 	}
-	resultado = resultado.length ? resultado.join(", ") : "";
+	resultado = resultado.length ? resultado.join(" ") : "";
 	return resultado;
 };

@@ -45,11 +45,11 @@ module.exports = {
 		let codigo = url.slice(0, url.lastIndexOf("/"));
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
-		let prodID = req.query.id;
+		let id = req.query.id;
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		if (entidad == "colecciones") includes.push("capitulos");
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includes);
+		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 		if (!prodOriginal.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtener avatar original
 		let avatar = prodOriginal.avatar
@@ -60,7 +60,9 @@ module.exports = {
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOriginal.paises_id ? await compartidas.paises_idToNombre(prodOriginal.paises_id) : "";
+		let paises = prodOriginal.paises_id
+			? await compartidas.paises_idToNombre(prodOriginal.paises_id)
+			: "";
 		// 8. Info para la vista
 		let [bloqueIzq, bloqueDer] = await procesos.prod_BloquesAlta(prodOriginal, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
@@ -73,7 +75,7 @@ module.exports = {
 			codigo,
 			titulo,
 			entidad,
-			id: prodID,
+			id,
 			prodOriginal,
 			avatar,
 			bloqueIzq,
@@ -97,11 +99,10 @@ module.exports = {
 		if (!edicID) {
 			edicID = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
 			if (!edicID) {
-				let informacion = await infoProdEdicion(producto_id, prodID, userID);
+				let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
 				return res.render("CR9-Errores", {informacion});
 			} else return res.redirect(req.originalUrl + "&edicion_id=" + edicID); // Recargar la vista con el ID de la edición
 		}
-		// return res.send(req.query);
 		// Definir más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
 		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
@@ -130,6 +131,7 @@ module.exports = {
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
 		[quedanCampos, prodEditado] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
+		//return res.send(prodEditado)
 		if (!quedanCampos) {
 			let informacion = {
 				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
@@ -144,6 +146,7 @@ module.exports = {
 			return res.render("CR9-Errores", {informacion});
 		}
 		// 4. Acciones dependiendo de si está editado el avatar
+		//console.log(149,prodEditado);
 		if (prodEditado.avatar) {
 			// Vista 'Edición-Avatar'
 			vista = "RV1-Prod-Avatar";
@@ -176,7 +179,7 @@ module.exports = {
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
-		return res.send([prodOriginal, prodEditado]);
+		//return res.send([ingresos, reemplazos]);
 		return res.render(vista, {
 			tema,
 			codigo,
@@ -308,7 +311,7 @@ module.exports = {
 	},
 };
 
-let infoProdEdicion = async (producto_id, prodID, userID) => {
+let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
 	// Averiguar sobre la edición
 	let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
 		[producto_id]: prodID,
