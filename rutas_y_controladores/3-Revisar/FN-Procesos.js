@@ -255,6 +255,8 @@ module.exports = {
 		[edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
+			// Eliminar el registro de la edición
+			await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
 			// Averiguar si el original no tiene errores
 			let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
@@ -263,7 +265,7 @@ module.exports = {
 			if (!errores.hay && prodOrig.status_registro.alta_aprob) {
 				statusAprob = true;
 				// Obtener el 'id' del status 'aprobado'
-				let aprobado = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
+				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = compartidas.ahora();
 				let leadTime = compartidas.obtenerLeadTime(prodOrig.creado_en, ahora);
@@ -271,7 +273,7 @@ module.exports = {
 				let datos = {
 					alta_terminada_en: ahora,
 					lead_time_creacion: leadTime,
-					status_registro_id: aprobado.id,
+					status_registro_id: aprobado_id,
 				};
 				await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
