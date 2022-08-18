@@ -1,21 +1,43 @@
 #cuerpo-y-footer {display: flex; flex-direction: column-reverse;}
-#cuerpo-y-footer #cuerpo {background-color: transparent; height: 80vh;}
+#cuerpo-y-footer #cuerpo {background-color: transparent;}
 
-/* Imágenes */
-#cuerpo #imagenes {display: flex; flex-direction: row; align-self: center; justify-content: space-around;}
-#cuerpo #imagenes {height: 100%; padding-top: 20px; padding-bottom: 40px; width: 100%;}
-#cuerpo #imagenes #editada, #cuerpo #imagenes #original {position: relative;}
+/* Sección información */
+#cuerpo #informacion {display: flex; flex-direction: row; flex-grow: 1; position: relative;}
+#cuerpo #informacion {align-self: flex-start; justify-content: center; width: 100%;}
 
-#cuerpo #imagenes i#liberarSalir {position: absolute; bottom: 5%;}
-#cuerpo #imagenes i#liberarSalir {background-color: var(--celeste-claro); border-radius: 50%; font-size: 2rem;}
-#cuerpo #imagenes h2 {background-color: var(--verde-oscuro); color: var(--celeste-claro);}
-#cuerpo #imagenes h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 0 auto 5px;}
-#cuerpo #imagenes img {max-width: 30vw; height: 90%; border-radius: 10px;}
+/* Sección ficha técnica */
+#fichaTecnica {padding: 25px; position: absolute; left: 0; top: 50%; transform: translateY(-50%); max-width: 30vw;}
+#fichaTecnica div {background-color: var(--gris-claro);border: var(--gris-oscuro) 4px solid; box-shadow: 0px 0px 10px rgb(100, 100, 100);}
+#fichaTecnica div {padding: 15px 20px; border-radius: 20px;}
+#fichaTecnica div p {line-height: 1.5;}
 
-/* Scale */
-#cuerpo #imagenes i#liberarSalir, #cuerpo #imagenes img {transition: 500ms; cursor: pointer;}
-#cuerpo #imagenes i#liberarSalir:hover {transform: scale(1.3);}
-#cuerpo #imagenes img:hover {transform: scale(1.05);}
+/* Partes específicas de las imágenes */
+#informacion #imgSugerida {display: flex; flex-direction: column; width: 40vw;}
+#informacion #imgSugerida h2 {background-color: var(--verde-oscuro); color: var(--celeste-claro);}
+#informacion #imgActual {display: flex; flex-direction: column; width: 20vw;}
+#informacion #imgActual {position: absolute; right: 0; top: 0; height: 50%;}
+#informacion #imgActual h2 {background-color: var(--rojo-oscuro); color: var(--celeste-claro);}
+
+/* Partes comunes de las imágenes */
+#informacion .tituloMasImagen h2 {border-radius: 10px; padding: 3px 10px; font-weight: normal; margin: 10px; align-self: center;}
+#informacion .tituloMasImagen .contenedorImagen {position: relative; height: 100%; width: 100%;}
+#informacion .tituloMasImagen .contenedorImagen img {position: absolute; transform: translateX(-50%); left: 50%;}
+#informacion .tituloMasImagen .contenedorImagen img {border-radius: 10px; max-height: 100%; max-width: 100%;}
+
+/* Flechas */
+#flechas {align-self: center; padding: 15px;}
+#flechas i {background-color: var(--celeste-claro); border-radius: 50%; font-size: 2rem;}
+#flechas i {transition: 250ms; cursor: pointer;}
+#flechas i:hover {transform: scale(1.3);}
 
 /* Ayuda */
 #cuerpo #iconoAyuda {background-color: var(--gris-claro); border-radius: 50%;}
+
+/* Animaciones */
+@keyframes aparece {0% {opacity: 0} 50% {opacity: 0.2} 100% {opacity: 1}}
+.aparece {
+	animation-name: aparece;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-direction: normal;	
+}

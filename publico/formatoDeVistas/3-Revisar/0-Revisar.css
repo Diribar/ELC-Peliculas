@@ -41,4 +41,4 @@
 
 /* Flechas - Particularidades */
 #cuerpo #flechas i, #cuerpo #flechas .pack {margin: 0 15px;}
-#cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);}
+/* #cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);} */
