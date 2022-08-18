@@ -33,18 +33,16 @@ window.addEventListener("load", () => {
 		"/revision/api/producto-edicion/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuenciasQC = (quedanCampos, statusAprobado) => {
+	let consecuenciasQC = (quedanCampos, statusAprob) => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
 		// Averiguar si está todo oculto
 		let todoOculto = ingrsOculto && reempsOculto;
-		console.log(todoOculto);
-		console.log(quedanCampos,statusAprobado);
 		// 1. Si hay inconsistencias, recargar la página
 		if (todoOculto == quedanCampos) window.location.reload();
 		// 2. Acciones si no quedan más campos en la edición
-		if (!quedanCampos) cartelFin(statusAprobado);
+		if (!quedanCampos) cartelFin(statusAprob);
 		// Fin
 		return;
 	};
@@ -59,7 +57,7 @@ window.addEventListener("load", () => {
 		// Fin
 		return ocultarBloque;
 	};
-	let cartelFin = (statusAprobado) => {
+	let cartelFin = (statusAprob) => {
 		// Partes del cartel
 		let taparElFondo = document.querySelector("#tapar-el-fondo");
 		let cartel = document.querySelector("#cartel");
@@ -74,7 +72,7 @@ window.addEventListener("load", () => {
 		// Mensajes
 		let arrayMensajes = ["Gracias por completar la revisión."];
 		// Si el status se cambió a 'aprobado', comunicarlo
-		if (statusAprobado) {
+		if (statusAprob) {
 			// Texto en función de la entidad
 			let producto =
 				entidad == "peliculas"
@@ -115,11 +113,11 @@ window.addEventListener("load", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let [quedanCampos, statusAprobado] = await fetch(
+			let [quedanCampos, statusAprob] = await fetch(
 				ruta + "&aprob=true&campo=" + campoNombres[i]
 			).then((n) => n.json());
 			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprobado);
+			consecuenciasQC(quedanCampos, statusAprob);
 		});
 
 		// Menú inactivar
@@ -135,11 +133,11 @@ window.addEventListener("load", () => {
 			// Ocultar la fila
 			filas[i].classList.add("ocultar");
 			// Actualizar el campo del producto
-			let [quedanCampos, statusAprobado] = await fetch(
+			let [quedanCampos, statusAprob] = await fetch(
 				ruta + "&campo=" + campoNombres[i] + "&motivo_id=" + motivo
 			).then((n) => n.json());
 			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprobado);
+			consecuenciasQC(quedanCampos, statusAprob);
 		});
 	}
 });

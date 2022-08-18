@@ -10,15 +10,14 @@
 <% } else { %>
 	<!-- General para vistas distintas al tablero -->
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
+	<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
 	<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
 	<!-- Específicos para Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
 		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-Prod-Alta.css">
 		<script src="/FE-javascript/3-Revisar/1-Prod1_Alta.js"></script>
 	<!-- Específicos para Prod-Edicion -->
 	<% } else if (codigo == "producto/edicion") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
 		<% if (vista.includes("Avatar")) { %>
 			<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-Prod-EdicAvatar.css">
 			<script src="/FE-javascript/3-Revisar/1-Prod2_Avatar.js"></script>

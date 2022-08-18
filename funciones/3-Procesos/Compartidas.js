@@ -10,11 +10,12 @@ const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Pro
 
 // Exportar ------------------------------------
 module.exports = {
-	// Entidades
+	// Temas de Entidades
 	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
+		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
+	// Temas de Edición
 	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
 		// Obtener los campos a comparar
 		let campos = [];
@@ -38,7 +39,7 @@ module.exports = {
 				delete edicion[campo];
 		return edicion;
 	},
-	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
+	quedanCamposEliminar: async (entidadEdic, entidadEdic_id, datos) => {
 		// Averiguar si queda algún campo
 		let quedanCampos = !!Object.keys(datos).length;
 		// Eliminar el registro de la edición
@@ -72,6 +73,8 @@ module.exports = {
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
 	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID) {
+		// Corregir errores comunes de escritura
+		edicion = this.corregirErroresComunesDeEscritura(edicion)
 		// Quitar los coincidencias con el original
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
 		// Averiguar si hay algún campo con novedad
@@ -156,7 +159,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtenerEntidad: (entidad) => {
+	obtenerEntidadOrig: (entidad) => {
 		return entidad.pelicula_id
 			? "peliculas"
 			: entidad.coleccion_id

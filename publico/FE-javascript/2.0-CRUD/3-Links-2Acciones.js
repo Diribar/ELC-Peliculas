@@ -60,7 +60,6 @@ window.addEventListener("load", async () => {
 			// window.location.reload();
 			if (respuesta.ocultar) filasDatos[fila].classList.add("ocultar");
 			if (respuesta.activos) activos.innerHTML = "* Activos";
-			console.log(respuesta);
 		});
 	});
 	botonesDeshacer.forEach((botonDeshacer, fila) => {
@@ -80,7 +79,6 @@ window.addEventListener("load", async () => {
 				activos.innerHTML = "* Activos";
 			if (respuesta.pasivos && pasivos.classList.contains("traslucido"))
 				pasivos.innerHTML = "* Pasivos";
-			console.log(respuesta);
 		});
 	});
 });

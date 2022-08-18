@@ -47,7 +47,7 @@ module.exports = {
 		// Obtiene los campos
 		let campos = Object.keys(req.query);
 		// Averigua los errores solamente para esos campos
-		let errores = await validar.edicion(campos, req.query);
+		let errores = await validar.consolidado(campos, req.query);
 		// Devuelve el resultado
 		return res.json(errores);
 	},

@@ -249,28 +249,28 @@ module.exports = {
 	prod_QuedanCampos: async (prodOrig, prodEdic) => {
 		// Variables
 		let edicion = {...prodEdic};
-		let noSeComparan = {
+		let datosPreservar = {
 			editado_por_id: prodEdic.editado_por_id,
 			editado_en: prodEdic.editado_en,
 		};
-		let entidad = compartidas.obtenerEntidad(prodEdic);
-		let statusAprobado = prodOrig.status_registro.aprobado;
+		let entidadOrig = compartidas.obtenerEntidadOrig(prodEdic);
+		let statusAprob = prodOrig.status_registro.aprobado;
 		// Pulir la información a tener en cuenta
 		edicion = compartidas.quitarLosCamposSinContenido(edicion);
 		edicion = compartidas.quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		edicion = compartidas.quitarLasCoincidenciasConOriginal(prodOrig, edicion);
-		let quedanCampos = compartidas.eliminarEdicionSiEstaVacio("prods_edicion", prodEdic.id, edicion);
+		let quedanCampos = await compartidas.quedanCamposEliminar("prods_edicion", prodEdic.id, edicion);
 		// Si no quedan, eliminar el registro
 		if (!quedanCampos) {
 			// Averiguar si el original no tiene errores
-			let errores = await validar.edicion(null, {...prodOrig, entidad});
+			let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
 			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
 			// 1. Que no tenga errores
 			// 2. Que el status del original sea 'alta_aprob'
 			if (!errores.hay && prodOrig.status_registro.alta_aprob) {
-				statusAprobado = true;
+				statusAprob = true;
 				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
+				let aprobado = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
 				// Averiguar el Lead Time de creación en horas
 				let ahora = compartidas.ahora();
 				let leadTime = compartidas.obtenerLeadTime(prodOrig.creado_en, ahora);
@@ -278,11 +278,11 @@ module.exports = {
 				let datos = {
 					alta_terminada_en: ahora,
 					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
+					status_registro_id: aprobado.id,
 				};
-				await BD_genericas.actualizarPorId(entidad, prodOrig.id, {...datos, captura_activa: 0});
+				await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
 				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidad == "colecciones") {
+				if (entidadOrig == "colecciones") {
 					// Ampliar los datos
 					datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora};
 					// Generar el objeto para filtrar
@@ -291,9 +291,9 @@ module.exports = {
 					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
 				}
 			}
-		} else edicion = {...edicion, ...noSeComparan};
+		} else edicion = {...edicion, ...datosPreservar};
 		// Fin
-		return [quedanCampos, edicion, statusAprobado];
+		return [quedanCampos, edicion, statusAprob];
 	},
 	prod_ArmarComparac: (prodOrig, prodEdic) => {
 		let campos = variables.camposRevisarProd();
@@ -347,40 +347,24 @@ module.exports = {
 		return derecha;
 	},
 	// ControladorAPI - Producto Edición
-	RCLVs_ActualizarProdAprobOK: async (producto, status) => {
+	RCLVs_ActualizarProdAprobOK: async (producto) => {
 		// Variables
 		let RCLV_entidades = ["personajes", "hechos", "valores"];
 		// Rutina para cada entidad
-		for (let RCLV_entidad of RCLV_entidades) {
-			let campo = compartidas.obtenerEntidad_id(RCLV_entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+		for (let entidad of RCLV_entidades) {
+			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let RCLV_id = producto[campo]; // Obtener el RCLV_id
 			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
-			if (RCLV_id && RCLV_id != 1)
-				BD_genericas.actualizarPorId(RCLV_entidad, RCLV_id, {prod_aprob: true});
+			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
 		}
 		return;
 	},
 	prod_EdicValores: (aprobado, prodOrig, prodEdic, campo) => {
-		// Definir los campos 'complicados'
-		let camposConVinculo = [
-			{campo: "en_castellano_id", vinculo: "en_castellano"},
-			{campo: "en_color_id", vinculo: "en_color"},
-			{campo: "idioma_original_id", vinculo: "idioma_original"},
-			{campo: "categoria_id", vinculo: "categoria"},
-			{campo: "subcategoria_id", vinculo: "subcategoria"},
-			{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
-			{campo: "personaje_id", vinculo: "personaje"},
-			{campo: "hecho_id", vinculo: "hecho"},
-			{campo: "valor_id", vinculo: "valor"},
-		];
-		// Obtener el array de campos
-		let campos = camposConVinculo.map((n) => n.campo);
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
-		let indice = campos.indexOf(campo);
-		let valorOrig = indice >= 0 ? prodValorVinculo(prodOrig, camposConVinculo[indice]) : prodOrig[campo];
-		let valorEdic = indice >= 0 ? prodValorVinculo(prodEdic, camposConVinculo[indice]) : prodEdic[campo];
+		let valorOrig = valorDelCampo(prodOrig, campo);
+		let valorEdic = valorDelCampo(prodEdic, campo);
 		if (valorOrig === null) valorOrig = "-";
-		// Obtener los valores 'aceptado' y 'rechazado'
+		// Obtiene los valores 'aceptado' y 'rechazado'
 		let valor_aceptado = aprobado ? valorEdic : valorOrig;
 		let valor_rechazado = !aprobado ? valorEdic : valorOrig;
 		// Fin
@@ -443,19 +427,12 @@ module.exports = {
 		// Averiguar si el motivo amerita bloquear
 		if (motivo.bloquear_aut_input) {
 			// Obtener el rol de 'Consultas', sin permiso para Data Entry
-			rol_usuario_id = await BD_genericas.obtenerPorCampos("roles_usuarios", {aut_input: false}).then(
-				(n) => n.id
-			);
-			// Cambia el rol de usuario al de 'consultas' y le borra el historial de altas o ediciones
-			BD_genericas.actualizarPorId("usuarios", userID, {
-				rol_usuario_id,
-				[campo + "aprob"]: 0,
-				[campo + "rech"]: 0,
-			});
+			let rol_usuario = await BD_genericas.obtenerPorCampos("roles_usuarios", {aut_input: false});
+			datos.rol_usuario_id = rol_usuario.id;
 		}
-		// Obtener los datos del usuario
+		// Obtiene los datos del usuario
 		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
-		// Averiguar la nueva penalización acumulada y la duración
+		// Averigua la nueva penalización acumulada y la duración
 		let duracion = Number(usuario.penalizac_acum) + Number(motivo.duracion);
 		datos.penalizac_acum = duracion % 1;
 		duracion = parseInt(duracion);
@@ -484,13 +461,29 @@ let obtenerLaFecha = (fecha) => {
 	fecha = dia + "/" + mes + "/" + ano;
 	return fecha;
 };
-let prodValorVinculo = (producto, objeto) => {
-	let aux = producto[objeto.vinculo]
-		? objeto.campo == "en_castellano_id" || objeto.campo == "en_color_id"
-			? producto[objeto.vinculo].productos
-			: producto[objeto.vinculo].nombre
+let valorDelCampo = (producto, campo) => {
+	// Variables
+	let camposConVinculo = [
+		{campo: "en_castellano_id", vinculo: "en_castellano"},
+		{campo: "en_color_id", vinculo: "en_color"},
+		{campo: "idioma_original_id", vinculo: "idioma_original"},
+		{campo: "categoria_id", vinculo: "categoria"},
+		{campo: "subcategoria_id", vinculo: "subcategoria"},
+		{campo: "publico_sugerido_id", vinculo: "publico_sugerido"},
+		{campo: "personaje_id", vinculo: "personaje"},
+		{campo: "hecho_id", vinculo: "hecho"},
+		{campo: "valor_id", vinculo: "valor"},
+	];
+	let campos = camposConVinculo.map((n) => n.campo);
+	let indice = campos.indexOf(campo);
+	// Resultado
+	return indice < 0
+		? producto[campo]
+		: producto[camposConVinculo.vinculo]
+		? camposConVinculo.campo == "en_castellano_id" || camposConVinculo.campo == "en_color_id"
+			? producto[camposConVinculo.vinculo].productos
+			: producto[camposConVinculo.vinculo].nombre
 		: null;
-	return aux;
 };
 let RCLV_valorVinculo = (RCLV, campo) => {
 	return campo == "dia_del_ano_id"

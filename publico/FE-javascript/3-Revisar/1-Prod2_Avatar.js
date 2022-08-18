@@ -6,50 +6,50 @@ window.addEventListener("load", () => {
 	let edicID = new URL(window.location.href).searchParams.get("edicion_id");
 
 	// Opciones
-	let aprobar = document.querySelector("#imagenes #editada img");
-	let mostrarMenuMotivos = document.querySelector("#imagenes #original img");
+	let aprobar = document.querySelector("#flechas .fa-circle-check");
+	let mostrarMenuMotivos = document.querySelector("#flechas .fa-circle-xmark");
+	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
+	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
 
 	// Motivos para borrar
 	let taparElFondo = document.querySelector("#tapar-el-fondo");
-	let menuMotivosBorrar = document.querySelector("#motivosRechazo");
-	let motivosRechazo = document.querySelector("#motivosRechazo select");
-	let cancelar = document.querySelector("#comandosRechazar .fa-circle-left");
-	let rechazar = document.querySelector("#comandosRechazar .fa-circle-right");
+	let motivosRechazo = document.querySelector("#motivosRechazo");
+	let motivoRechazo = document.querySelector("#motivosRechazo select");
 	// Rutas
-	let rutaAprobRech = "/revision/api/producto-edicion/?entidad=";
-	rutaAprobRech += entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar";
-	let rutaReload = "/revision/producto/detalle/?entidad=";
-	rutaReload += entidad + "&id=" + prodID + "&edicion_id=" + edicID;
+	let rutaEvaluar = "/revision/api/producto-edicion/?entidad=";
+	rutaEvaluar += entidad + "&id=" + prodID + "&edicion_id=" + edicID + "&campo=avatar";
 
 	// Aprobar el nuevo avatar
 	aprobar.addEventListener("click", async () => {
+		if (aprobar.className.includes("inactivo")) return;
 		aprobar.style.transform = "scale(1)";
 		aprobar.style.cursor = "wait";
-		let ruta = "/revision/api/producto-edicion/?aprob=true&entidad=";
-		await fetch(rutaAprobRech + "&aprob=true");
-		window.location.href = rutaReload;
+		aprobar.classList.add("inactivo");
+		await fetch(rutaEvaluar + "&aprob=true").then((n) => n.json());
+		window.location.reload()
 	});
 
-	// Menú inactivar
+	// Menú mostrarMenuMotivos para inactivar
 	mostrarMenuMotivos.addEventListener("click", () => {
-		menuMotivosBorrar.classList.remove("ocultar");
 		taparElFondo.classList.remove("ocultar");
+		motivosRechazo.classList.remove("ocultar");
 	});
 
 	// Cancelar menú motivos para borrar
 	cancelar.addEventListener("click", () => {
-		menuMotivosBorrar.classList.add("ocultar");
+		motivosRechazo.classList.add("ocultar");
 		taparElFondo.classList.add("ocultar");
 	});
 
 	// Rechazar el nuevo avatar
 	rechazar.addEventListener("click", async () => {
-		let motivo = motivosRechazo.value;
-		if (motivo) {
+		let motivo = motivoRechazo.value;
+		if (motivo && !rechazar.className.includes("inactivo")) {
 			rechazar.style.transform = "scale(1)";
-			menuMotivosBorrar.style.cursor = "wait";
-			await fetch(rutaAprobRech + "&aprob=false&motivo_id=" + motivo);
-			window.location.href = rutaReload;
+			rechazar.classList.add("inactivo");
+			motivosRechazo.style.cursor = "wait";
+			await fetch(rutaEvaluar + "&aprob=false&motivo_id=" + motivo);
+			window.location.reload()
 		}
 	});
 });
