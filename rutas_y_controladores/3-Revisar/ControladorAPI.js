@@ -385,7 +385,7 @@ module.exports = {
 					...camposVacios,
 					...edicion,
 				});
-			// Eliminar el registro de la edición
+			// Si no quedan, elimina el registro de la edición
 			else await BD_genericas.eliminarPorId("links_edicion", edicID);
 
 		});
