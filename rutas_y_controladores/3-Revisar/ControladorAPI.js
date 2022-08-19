@@ -314,6 +314,42 @@ module.exports = {
 	},
 };
 
+let obtieneProdOrig = async (entidad, id, includes, edicAprob, prodEdic, campo) => {
+	// Obtiene el registro original
+	includes.push("status_registro");
+	let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+	// Guarda el dato de si el registro original está aprobado
+	statusOrigAprob = prodOrig.status_registro.aprobado;
+	// Particularidades para el campo 'avatar'
+	if (campo == "avatar") prodEdic = accionesSiElCampoEsAvatar(edicAprob, prodOrig, prodEdic);
+	// Fin
+	return [prodOrig, prodEdic];
+};
+let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
+	// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
+	let datos = {avatar: prodEdic.avatar_archivo, avatar_archivo: null};
+	prodEdic = {...prodEdic, ...datos};
+	// Acciones si el avatarEdic fue aprobado
+	if (edicAprob) {
+		// Mueve el 'avatar editado' a la carpeta definitiva
+		compartidas.moverImagen(prodEdic.avatar, "3-ProdRevisar", "2-Productos");
+		// Elimina el 'avatar original' (si es un archivo)
+		let avatar = prodOrig.avatar;
+		if (!avatar.startsWith("http")) {
+			let ruta = prodOrig.status_registro.alta_aprob
+				? "/imagenes/3-ProdRevisar/"
+				: "/imagenes/2-Productos/";
+			compartidas.borrarArchivo(ruta, avatar);
+		}
+	} else {
+		// Elimina el 'avatar editado'
+		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEdic.avatar);
+		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'altaAprob')
+		if (prodOrig.status_registro.alta_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
+			compartidas.moverImagen(prodOrig.avatar, "3-ProdRevisar", "2-Productos");
+	}
+	return prodEdic;
+};
 let actualizaElProdOriginal = async (id, edicion, campo) => {
 	// Variables
 	const ahora = compartidas.ahora();
@@ -381,40 +417,4 @@ let actualizaEdicAprobRech_Penalizaciones = async (req, original, edicion) => {
 	if (datos.duracion) procesos.usuario_Penalizar(edicion.editado_por_id, motivo);
 	// Fin
 	return;
-};
-let obtieneProdOrig = async (entidad, id, includes, edicAprob, prodEdic, campo) => {
-	// Obtiene el registro original
-	includes.push("status_registro");
-	let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
-	// Guarda el dato de si el registro original está aprobado
-	statusOrigAprob = prodOrig.status_registro.aprobado;
-	// Particularidades para el campo 'avatar'
-	if (campo == "avatar") prodEdic = accionesSiElCampoEsAvatar(edicAprob, prodOrig, prodEdic);
-	// Fin
-	return [prodOrig, prodEdic];
-};
-let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
-	// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
-	let datos = {avatar: prodEdic.avatar_archivo, avatar_archivo: null};
-	prodEdic = {...prodEdic, ...datos};
-	// Acciones si el avatarEdic fue aprobado
-	if (edicAprob) {
-		// Mueve el 'avatar editado' a la carpeta definitiva
-		compartidas.moverImagen(prodEdic.avatar, "3-ProdRevisar", "2-Productos");
-		// Elimina el 'avatar original' (si es un archivo)
-		let avatar = prodOrig.avatar;
-		if (!avatar.startsWith("http")) {
-			let ruta = prodOrig.status_registro.alta_aprob
-				? "/imagenes/3-ProdRevisar/"
-				: "/imagenes/2-Productos/";
-			compartidas.borrarArchivo(ruta, avatar);
-		}
-	} else {
-		// Elimina el 'avatar editado'
-		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEdic.avatar);
-		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'altaAprob')
-		if (prodOrig.status_registro.alta_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
-			compartidas.moverImagen(prodOrig.avatar, "3-ProdRevisar", "2-Productos");
-	}
-	return prodEdic;
 };
