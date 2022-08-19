@@ -79,17 +79,17 @@ module.exports = {
 			"hecho",
 			"valor",
 		];
-		let prodEdicion = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
+		let prodEdic = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includes);
 		// Verificación: averigua si existe la edición y el campo a analizar
-		let condicion1 = campo == "avatar" && prodEdicion && !prodEdicion.avatar_archivo;
-		let condicion2 = campo != "avatar" && prodEdicion && !prodEdicion[campo];
-		if (!prodEdicion || condicion1 || condicion2) return res.json("false");
-
+		let condicion1 = campo == "avatar" && prodEdic && !prodEdic.avatar_archivo;
+		let condicion2 = campo != "avatar" && prodEdic && !prodEdic[campo];
+		if (!prodEdic || condicion1 || condicion2) return res.json("false");
+		// Obtiene el producto original
+		obtieneProdOrig();
 		// Si la edición fue aprobada, actualiza el registro de 'original' *******************
-		if (edicAprob)
-			prodOriginal = await actualizaElProdOriginal(prodOriginal, prodEdicion, campo, includes);
+		if (edicAprob) prodOrig = await actualizaElProdOriginal(prodOrig, prodEdic, campo, includes);
 		// Asienta la decisión en el campo 'edic_aprob/edic_rech' del registro del usuario
-		let editado_por_id = prodEdicion.editado_por_id;
+		let editado_por_id = prodEdic.editado_por_id;
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", editado_por_id, decision, 1);
 		// Actualiza el registro de 'EDICIÓN' quitándole el valor al campo
 		let datos = {[campo]: null};
@@ -98,23 +98,23 @@ module.exports = {
 		// Si corresponde,
 		// 1. Agrega un registro en la tabla de 'edic_aprob/edic_rech'
 		// 2. Penaliza al usuario
-		actualizaEdicAprobRech_Penalizaciones(req, prodOriginal, prodEdicion);
+		actualizaEdicAprobRech_Penalizaciones(req, prodOrig, prodEdic);
 		// Realiza estas tareas:
 		// 1. Averigua si quedan campos por procesar
 		// 2. Elimina el registro de edición si ya no tiene más datos
 		// 3. Actualiza el status del registro original, si corresponde
-		prodEdicion[campo] = null;
-		let [quedanCampos, , statusAprob] = await procesos.prod_Feedback(prodOriginal, prodEdicion);
+		prodEdic[campo] = null;
+		let [quedanCampos, , statusAprob] = await procesos.prod_Feedback(prodOrig, prodEdic);
 		// Actualizar en RCLVs el campo 'prod_aprob', si ocurre (1) y (2 ó 3)
 		// 1. El valor del campo es distinto a 'Ninguno'
 		// 2. Se cambió un campo RCLV y el producto está aprobado
 		// 3. El registro no estaba aprobado y ahora sí lo está
 		const RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
 		if (
-			prodOriginal[campo] != 1 &&
+			prodOrig[campo] != 1 &&
 			((RCLV_ids.includes(campo) && edicAprob && statusAprob) || (!statusOrigAprob && statusAprob))
 		)
-			procesos.RCLVs_ActualizarProdAprobOK(prodOriginal, status);
+			procesos.RCLVs_ActualizarProdAprobOK(prodOrig, status);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
 	},
@@ -314,23 +314,10 @@ module.exports = {
 	},
 };
 
-let actualizaElProdOriginal = async (id, edicion, campo, includes) => {
+let actualizaElProdOriginal = async (id, edicion, campo) => {
 	// Variables
 	const ahora = compartidas.ahora();
 	const entidad = compartidas.obtieneLaEntidadOriginalDesdeLaEdicion(edicion);
-	const familia = obtenerFamiliaEnSingular(entidad);
-	let resultado={}
-
-	// Particularidades por entidad
-	if (familia == "producto") {
-		// Obtiene el registro original
-		includes.push("status_registro");
-		resultado.original = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
-		// Guarda el dato de si el registro original está aprobado
-		resultado.statusOrigAprob = prodOriginal.status_registro.aprobado;
-		// Particularidades para el campo 'avatar'
-		if (campo == "avatar") prodEdicion = accionesSiElCampoEsAvatar(edicAprob, prodOriginal, prodEdicion);
-	}
 
 	// Genera la información a actualizar
 	let datos = {
@@ -343,38 +330,34 @@ let actualizaElProdOriginal = async (id, edicion, campo, includes) => {
 	};
 	// Actualiza el registro ORIGINAL ***********************************************
 	await BD_genericas.actualizarPorId(entidad, original.id, datos);
-	// Fin
 	original = {...original, ...datos};
+	// Fin
 	return original;
 };
-let accionesSiElCampoEsAvatar = (edicAprob, original, edicion) => {
+let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 	// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
-	let datos = {avatar: edicion.avatar_archivo, avatar_archivo: null};
-	edicion = {...edicion, ...datos};
+	let datos = {avatar: prodEdic.avatar_archivo, avatar_archivo: null};
+	prodEdic = {...prodEdic, ...datos};
 	// Acciones si el avatarEdic fue aprobado
 	if (edicAprob) {
-		// Mueve el avatarEdic a la carpeta definitiva
-		compartidas.moverImagen(edicion.avatar, "3-ProdRevisar", "2-Productos");
-		// Elimina el avatar original (si es un archivo)
-		let avatar = original.avatar;
+		// Mueve el 'avatar editado' a la carpeta definitiva
+		compartidas.moverImagen(prodEdic.avatar, "3-ProdRevisar", "2-Productos");
+		// Elimina el 'avatar original' (si es un archivo)
+		let avatar = prodOrig.avatar;
 		if (!avatar.startsWith("http")) {
-			let ruta = original.status_registro.alta_aprob
+			let ruta = prodOrig.status_registro.alta_aprob
 				? "/imagenes/3-ProdRevisar/"
 				: "/imagenes/2-Productos/";
 			compartidas.borrarArchivo(ruta, avatar);
 		}
 	} else {
-		// Elimina el avatar editado
-		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", edicion.avatar);
-		// Acciones si el status es 'alta-aprobada'
-		if (original.status_registro.alta_aprob) {
-			let avatar = original.avatar;
-			// Si el avatar original es un archivo, moverlo a su carpeta definitiva
-			if (avatar && !avatar.startsWith("http"))
-				compartidas.moverImagen(original.avatar, "3-ProdRevisar", "2-Productos");
-		}
+		// Elimina el 'avatar editado'
+		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEdic.avatar);
+		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'altaAprob')
+		if (prodOrig.status_registro.alta_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
+			compartidas.moverImagen(prodOrig.avatar, "3-ProdRevisar", "2-Productos");
 	}
-	return edicion;
+	return prodEdic;
 };
 let actualizaEdicAprobRech_Penalizaciones = async (req, original, edicion) => {
 	// Variables
@@ -423,4 +406,15 @@ let actualizaEdicAprobRech_Penalizaciones = async (req, original, edicion) => {
 	if (datos.duracion) procesos.usuario_Penalizar(edicion.editado_por_id, motivo);
 	// Fin
 	return;
+};
+let obtieneProdOrig = async (entidad, id, includes, edicAprob, prodEdic, campo) => {
+	// Obtiene el registro original
+	includes.push("status_registro");
+	let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+	// Guarda el dato de si el registro original está aprobado
+	statusOrigAprob = prodOrig.status_registro.aprobado;
+	// Particularidades para el campo 'avatar'
+	if (campo == "avatar") prodEdic = accionesSiElCampoEsAvatar(edicAprob, prodOrig, prodEdic);
+	// Fin
+	return [prodOrig, prodEdic];
 };
