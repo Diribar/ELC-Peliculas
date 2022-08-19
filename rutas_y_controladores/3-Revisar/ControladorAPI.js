@@ -85,7 +85,9 @@ module.exports = {
 		let condicion2 = campo != "avatar" && prodEdic && !prodEdic[campo];
 		if (!prodEdic || condicion1 || condicion2) return res.json("false");
 		// Obtiene el producto original
-		obtieneProdOrig();
+		let prodOrig, statusOrigAprob;
+		datos = [entidad, id, includes, edicAprob, prodEdic, campo];
+		[prodOrig, prodEdic, statusOrigAprob] = await obtieneProdOrig(...datos);
 		// Si la edición fue aprobada, actualiza el registro de 'original' *******************
 		if (edicAprob) prodOrig = await actualizaElProdOriginal(prodOrig, prodEdic, campo, includes);
 		// Asienta la decisión en el campo 'edic_aprob/edic_rech' del registro del usuario
@@ -323,7 +325,7 @@ let obtieneProdOrig = async (entidad, id, includes, edicAprob, prodEdic, campo) 
 	// Particularidades para el campo 'avatar'
 	if (campo == "avatar") prodEdic = accionesSiElCampoEsAvatar(edicAprob, prodOrig, prodEdic);
 	// Fin
-	return [prodOrig, prodEdic];
+	return [prodOrig, prodEdic, statusOrigAprob];
 };
 let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 	// En 'edición', transfiere el valor de 'avatar_archivo' al campo 'avatar'
