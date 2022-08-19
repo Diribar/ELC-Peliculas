@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/cookies") &&
 		!actual.includes("/api/") &&
 		!actual.includes("/redireccionar/") &&
-		anterior != actual
+		anterior.slice(0, anterior.lastIndexOf("/")) != actual.slice(0, actual.lastIndexOf("/"))
 	) {
 		// Nuevas url en session y cookie
 		req.session.urlAnterior = anterior;

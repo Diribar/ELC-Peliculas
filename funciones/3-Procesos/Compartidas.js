@@ -47,7 +47,7 @@ module.exports = {
 		// Pulir la información a tener en cuenta
 		edicion = this.quitarLosCamposSinContenido(edicion);
 		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
+		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
 		let quedanCampos = this.quedanCampos(edicion);
 		// Fin
@@ -128,7 +128,7 @@ module.exports = {
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
 			: entidad == "links"
-			? "links"
+			? "link"
 			: "";
 	},
 	obtenerEntidadNombre: (entidad) => {
@@ -165,7 +165,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtenerEntidadOrig: (entidad) => {
+	obtieneLaEntidadOriginalDesdeLaEdicion: (entidad) => {
 		return entidad.pelicula_id
 			? "peliculas"
 			: entidad.coleccion_id

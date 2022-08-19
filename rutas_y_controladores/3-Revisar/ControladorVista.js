@@ -15,12 +15,11 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		// Definir variables
 		const status = req.session.status_registro;
-		const aprobado_id = status.find((n) => n.aprobado).id;
 		const ahora = compartidas.ahora();
 		// Productos y Ediciones
 		let productos;
 		productos = await procesos.tablero_obtenerProds(ahora, status, userID); //
-		productos.ED = await procesos.tablero_obtenerProdsConEdic(ahora, status, userID); //
+		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, status, userID); //
 		// Obtener Links
 		productos.LK = await procesos.tablero_obtenerProdsConLink(ahora, status, userID); //
 		productos = procesos.tablero_prod_ProcesarCampos(productos);
@@ -91,61 +90,74 @@ module.exports = {
 		// 2. Constantes
 		const entidad = req.query.entidad;
 		const prodID = req.query.id;
+		const edicID = req.query.edicion_id;
 		const userID = req.session.usuario.id;
 		const producto_id = compartidas.obtenerEntidad_id(entidad);
-		// 3. Variables
-		let edicID = req.query.edicion_id;
 
-		// VERIFICACION1: Si no existe edicID, lo averigua y recarga la vista
-		if (!edicID) {
-			edicID = await BD_especificas.obtenerEdicionAjena("prods_edicion", producto_id, prodID, userID);
-			if (!edicID) {
-				let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
-				return res.render("CR9-Errores", {informacion});
-			} else return res.redirect(req.originalUrl + "&edicion_id=" + edicID); // Recargar la vista con el ID de la edición
+		// Verificaciones ------------------------------------------
+		// Verificacion 1:
+		// 1. Averigua si se recibió el dato de 'edicID' y si existe la edición a analizar
+		// 2. Si no existe, averigua si existe otra ajena y recarga la vista
+		// 3. Si no existe, muestra el cartel de error
+		// Verificación paso 1: averigua si existe la edición a analizar
+		if (parseInt(edicID)) {
+			var includesEdic = [
+				"en_castellano",
+				"en_color",
+				"idioma_original",
+				"categoria",
+				"subcategoria",
+				"publico_sugerido",
+				"personaje",
+				"hecho",
+				"valor",
+			];
+			var prodEditado = await BD_genericas.obtenerPorIdConInclude(
+				"prods_edicion",
+				edicID,
+				includesEdic
+			);
 		}
-		// Definir más variables
-		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
-		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
-		// 3. Obtener ambas versiones
-		let includesEdic = [
-			"en_castellano",
-			"en_color",
-			"idioma_original",
-			"categoria",
-			"subcategoria",
-			"publico_sugerido",
-			"personaje",
-			"hecho",
-			"valor",
-		];
+		// Verificación paso 2: averigua si existe otra ajena y en caso afirmativo recarga la vista
+		if (!prodEditado) {
+			// Averigua si existe otra ajena
+			prodEditado = await BD_especificas.obtenerEdicionAjena(
+				"prods_edicion",
+				producto_id,
+				prodID,
+				userID
+			);
+			// En caso afirmativo recarga la vista con el ID de la nueva edición
+			if (prodEditado) {
+				let ruta = req.baseUrl + req.path;
+				let terminacion = "?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + prodEditado.id;
+				return res.redirect(ruta + terminacion);
+			}
+		}
+		// Verificación paso 3: muestra el cartel de error
+		if (!prodEditado) {
+			let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
+			return res.render("CR9-Errores", {informacion});
+		}
+		// 3. Obtiene la versión original
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
 		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
-		let prodEditado = await BD_genericas.obtenerPorIdConInclude("prods_edicion", edicID, includesEdic);
-		// VERIFICACION2: si la edición no se corresponde con el producto --> redirecciona
-		if (!prodEditado || !prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
+		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
 			return res.redirect("/inactivar-captura/?destino=tablero&entidad=" + entidad + "&id=" + prodID);
-		// VERIFICACION3: si no quedan campos de 'edicion' por procesar --> lo avisa
+		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
-		// 2. Actualiza el status del registro original, si corresponde
+		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEditado
 		[quedanCampos, prodEditado] = await procesos.prod_Feedback(prodOriginal, prodEditado);
-		//return res.send(prodEditado)
-		if (!quedanCampos) {
-			let informacion = {
-				mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
-				iconos: [
-					{
-						nombre: "fa-spell-check",
-						link: "/revision/tablero-de-control",
-						titulo: "Ir al 'Tablero de Control' de Revisiones",
-					},
-				],
-			};
-			return res.render("CR9-Errores", {informacion});
-		}
+		if (!quedanCampos) return res.render("CR9-Errores", cartelNoQuedanCampos());
+
+		// Acciones si se superan las verificaciones -------------------------------
+		// Declaración de más variables
+		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
+		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar_archivo) {
 			// Vista 'Edición-Avatar'
@@ -176,7 +188,7 @@ module.exports = {
 			bloqueDer = await procesos.prod_BloqueEdic(prodOriginal, prodEditado);
 			vista = "RV0-0Estructura";
 		}
-		// 7. Configurar el título de la vista
+		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// Ir a la vista
@@ -313,19 +325,9 @@ module.exports = {
 };
 
 let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
-	// Averiguar sobre la edición
-	let edicion = await BD_genericas.obtenerPorCampos("prods_edicion", {
-		[producto_id]: prodID,
-	});
 	// Generar la info del error
 	let informacion = {
-		mensajes:
-			edicion && edicion.editado_por_id == userID
-				? [
-						"Sólo encontramos una edición, realizada por vos.",
-						"Necesitamos que la revise otra persona.",
-				  ]
-				: ["No encontramos ninguna edición para revisar"],
+		mensajes: ["No encontramos ninguna edición ajena para revisar"],
 		iconos: [
 			{
 				nombre: "fa-spell-check ",
@@ -361,4 +363,16 @@ let problemasLinks = (producto, urlAnterior) => {
 
 	// Fin
 	return informacion;
+};
+let cartelNoQuedanCampos = () => {
+	return {
+		mensajes: ["La edición fue borrada porque no tenía novedades respecto al original"],
+		iconos: [
+			{
+				nombre: "fa-spell-check",
+				link: "/revision/tablero-de-control",
+				titulo: "Ir al 'Tablero de Control' de Revisiones",
+			},
+		],
+	};
 };

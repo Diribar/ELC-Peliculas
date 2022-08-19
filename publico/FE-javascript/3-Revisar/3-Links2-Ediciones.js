@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 			// Completar el url
 			url += "&edicion_id=" + ediciones_id[indiceEdicion].innerHTML;
 			url += "&campo=" + inputs[indiceEdicion].name;
-			url += "&aprobado=" + aprobado;
+			url += "&aprob=" + aprobado;
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
 			if (respuesta.reload) window.location.reload();
 		});

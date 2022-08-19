@@ -198,7 +198,7 @@ module.exports = async (req, res, next) => {
 		let asociaciones = [];
 		entidades.forEach((entidad) => asociaciones.push("captura_" + entidad));
 		// Variables
-		let objeto = {capturado_en: null, capturado_por_id: null, captura_activa: null};
+		let objetoNull = {capturado_en: null, capturado_por_id: null, captura_activa: null};
 		let resultado;
 		// Obtener el usuario con los includes
 		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, asociaciones);
@@ -210,7 +210,7 @@ module.exports = async (req, res, next) => {
 				for (let registro of usuario[asociacion]) {
 					// Si fue capturado hace más de 2 horas y no es el registro actual, limpiar los tres campos
 					if (registro.capturado_en < haceDosHoras && registro.id != entidadID) {
-						BD_genericas.actualizarPorId(entidades[i], registro.id, objeto);
+						BD_genericas.actualizarPorId(entidades[i], registro.id, objetoNull);
 						// Si fue capturado hace menos de 1 hora, informar el caso
 					} else if (
 						registro.capturado_en > haceUnaHora &&

@@ -34,7 +34,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsConEdic: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdicAjena: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -48,7 +48,7 @@ module.exports = {
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
-		let ediciones = await BD_especificas.tablero_obtenerEdicsDeProds(userID, includes);
+		let ediciones = await BD_especificas.tablero_obtenerEdicsAjenasDeProds(userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -67,11 +67,26 @@ module.exports = {
 			// Obtener los productos
 			ediciones.map((n) => {
 				if (n.pelicula_id)
-					peliculas.push({...n.pelicula, entidad: "peliculas", editado_en: n.editado_en});
-				if (n.coleccion_id)
-					colecciones.push({...n.coleccion, entidad: "colecciones", editado_en: n.editado_en});
-				if (n.capitulo_id)
-					capitulos.push({...n.capitulo, entidad: "capitulos", editado_en: n.editado_en});
+					peliculas.push({
+						...n.pelicula,
+						entidad: "peliculas",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.coleccion_id)
+					colecciones.push({
+						...n.coleccion,
+						entidad: "colecciones",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.capitulo_id)
+					capitulos.push({
+						...n.capitulo,
+						entidad: "capitulos",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
 			});
 			// Eliminar los repetidos
 			if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
@@ -174,13 +189,15 @@ module.exports = {
 					" (" +
 					n.ano_estreno +
 					")";
-				return {
+				let datos = {
 					id: n.id,
 					entidad: n.entidad,
 					nombre,
 					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
 				};
+				if (rubro == "ED") datos.edicion_id = n.edicion_id;
+				return datos;
 			});
 
 		// Fin
@@ -248,45 +265,17 @@ module.exports = {
 	// ControladorVista - Productos Edición
 	prod_Feedback: async (prodOrig, prodEdic) => {
 		// Variables
-		let datosEdicion = {editado_por_id: prodEdic.editado_por_id, editado_en: prodEdic.editado_en};
-		let entidadOrig = compartidas.obtenerEntidadOrig(prodEdic);
-		let statusAprob = prodOrig.status_registro.aprobado;
+		let datosEdicion = {
+			id: prodEdic.id,
+			editado_por_id: prodEdic.editado_por_id,
+			editado_en: prodEdic.editado_en,
+		};
 		// Pulir la información a tener en cuenta
-		[edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
-		// Si no quedan, eliminar el registro
-		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
-			// Averiguar si el original no tiene errores
-			let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
-			// 1. Que no tenga errores
-			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOrig.status_registro.alta_aprob) {
-				statusAprob = true;
-				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
-				// Averiguar el Lead Time de creación en horas
-				let ahora = compartidas.ahora();
-				let leadTime = compartidas.obtenerLeadTime(prodOrig.creado_en, ahora);
-				// Cambiarle el status al producto y liberarlo
-				let datos = {
-					alta_terminada_en: ahora,
-					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
-				};
-				await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
-				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidadOrig == "colecciones") {
-					// Ampliar los datos
-					datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora};
-					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOrig.id};
-					// Actualizar el status de los capitulos
-					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
-				}
-			}
-		} else edicion = {...edicion, ...datosEdicion};
+		let [edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
+		// Acciones si no quedan campos
+		let statusAprob = prodOrig.status_registro.aprobado;
+		if (!quedanCampos) statusAprob = accionesSiNoQuedanCampos(prodOrig, prodEdic);
+		else edicion = {...edicion, ...datosEdicion};
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
@@ -416,7 +405,7 @@ module.exports = {
 	},
 
 	// ControladorAPI - Prod. Alta, Prod. Edición, Link Alta, Link Edición
-	usuario_Penalizar: async (userID, motivo, campo) => {
+	usuario_Penalizar: async (userID, motivo) => {
 		// Variables
 		let datos = {};
 		// Averiguar si el motivo amerita bloquear
@@ -631,4 +620,32 @@ let usuario_CalidadEdic = async (userID) => {
 	};
 	// Fin
 	return enviar;
+};
+let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
+	// Variables
+	let statusAprob = false;
+	// 1. Elimina el registro de la edición
+	await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
+	// 2. Averigua si tiene errores
+	let entidadOrig = compartidas.obtieneLaEntidadOriginalDesdeLaEdicion(prodEdic);
+	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
+	// 2. Acciones si el original no tiene errores y está en status 'alta_aprob'
+	if (!errores.hay && prodOrig.status_registro.alta_aprob) {
+		// Genera la información a actualizar en el registro original
+		let datos = {
+			alta_terminada_en: compartidas.ahora(),
+			lead_time_creacion: compartidas.obtenerLeadTime(prodOrig.creado_en, ahora),
+			status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
+		};
+		// Cambia el status del producto e inactiva la captura
+		await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
+		// Si es una colección, le cambia el status también a los capítulos
+		if (entidadOrig == "colecciones") {
+			datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora}; // Amplía los datos
+			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos); // Actualiza el status de los capitulos
+		}
+		// Cambia el valor de la variable que se informará
+		statusAprob = true;
+	}
+	return statusAprob;
 };

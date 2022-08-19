@@ -48,7 +48,7 @@ module.exports = {
 	actualizarPorId: (entidad, id, datos) => {
 		return db[entidad].update(datos, {where: {id: id}});
 	},
-	actualizarPorCampos: (entidad, objeto, datos) => {
+	actualizarTodosPorCampos: (entidad, objeto, datos) => {
 		return db[entidad].update(datos, {where: objeto});
 	},
 	eliminarPorId: (entidad, id) => {
