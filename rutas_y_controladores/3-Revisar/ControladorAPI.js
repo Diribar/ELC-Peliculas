@@ -23,15 +23,14 @@ module.exports = {
 		// Obtiene el motivo si es un rechazo
 		if (!altaAprob) var {motivo_id} = req.query;
 		if (!altaAprob && !motivo_id) return res.json("false");
-		// Cambiar el status en el original, dejar la marca del usuario y fecha en que esto se realizó
+		// Amplía la info
 		let datos = {
 			status_registro_id: nuevoStatusID,
 			alta_analizada_por_id: userID,
 			alta_analizada_en: ahora,
+			captura_activa: 0,
 		};
-		// Liberar la captura
-		if (!altaAprob) datos.captura_activa = 0;
-		// Actualizar el status
+		// Actualiza el status
 		await BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
 		// Agrega el registro en altas-aprob/rech
 		let producto = await BD_genericas.obtenerPorId(prodEntidad, prodID);
