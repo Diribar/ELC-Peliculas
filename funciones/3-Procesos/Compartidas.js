@@ -57,12 +57,12 @@ module.exports = {
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prod_ActualizarCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
-		if (entidad == "links") procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
+		if (entidad == "links") procesosLinks.prod_ActualizarCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {

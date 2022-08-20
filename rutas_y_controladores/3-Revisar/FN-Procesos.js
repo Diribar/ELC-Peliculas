@@ -263,7 +263,16 @@ module.exports = {
 		return [izquierda, derecha];
 	},
 	// ControladorVista - Productos Edición
-	prod_Feedback: async (prodOrig, prodEdic) => {
+	prod_Feedback: async (prodOrig, prodEdic, campo) => {
+		// 1. Actualiza el registro de edición
+		// 2. Averigua si quedan campos por procesar
+		// 3. Elimina el registro de edición si ya no tiene más datos
+		// 4. Actualiza el status del registro original, si corresponde
+
+		let datos = {[campo]: null};
+		if (campo == "avatar") datos.avatar_archivo = null;
+		await BD_genericas.actualizarPorId("prods_edicion", edicID, datos);
+
 		// Variables
 		let datosEdicion = {
 			id: prodEdic.id,
@@ -275,7 +284,7 @@ module.exports = {
 		// Acciones si no quedan campos
 		let statusAprob = prodOrig.status_registro.aprobado;
 		if (!quedanCampos) statusAprob = accionesSiNoQuedanCampos(prodOrig, prodEdic);
-		else edicion = {...edicion, ...datosEdicion};
+		else edicion = {...edicion, ...datosEdicion, [campo]: null};
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
@@ -331,18 +340,6 @@ module.exports = {
 		return derecha;
 	},
 	// ControladorAPI - Producto Edición
-	RCLVs_ActualizarProdAprobOK: async (producto) => {
-		// Variables
-		let RCLV_entidades = ["personajes", "hechos", "valores"];
-		// Rutina para cada entidad
-		for (let entidad of RCLV_entidades) {
-			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
-			let RCLV_id = producto[campo]; // Obtener el RCLV_id
-			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
-			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
-		}
-		return;
-	},
 	prod_EdicValores: (aprobado, prodOrig, prodEdic, campo) => {
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
@@ -403,7 +400,58 @@ module.exports = {
 		}
 		return;
 	},
+	RCLVs_ActualizarProdAprobOK: async (producto) => {
+		// Variables
+		let RCLV_entidades = ["personajes", "hechos", "valores"];
+		// Rutina para cada entidad
+		for (let entidad of RCLV_entidades) {
+			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let RCLV_id = producto[campo]; // Obtener el RCLV_id
+			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
+			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
+		}
+		return;
+	},
+	RCLV_productosAprob: function (prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status) {
+		// Actualizar en RCLVs el campo 'prod_aprob', si ocurre (1) y (2 ó 3)
+		// 1. El valor del campo es distinto a 'Ninguno'
+		// 2. Se cambió un campo RCLV y el producto está aprobado
+		// 3. El registro no estaba aprobado y ahora sí lo está
+		const RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
+		if (
+			prodOrig[campo] != 1 &&
+			((RCLV_ids.includes(campo) && edicAprob && statusAprob) || (!statusOrigAprob && statusAprob))
+		)
+			this.RCLVs_ActualizarProdAprobOK(prodOrig, status);
+		// Fin
+		return;
+	},
 
+	// ControladorAPI - Links Edicion
+	links_LimpiarEdiciones: async (linkOrig) => {
+		// Limpia las ediciones
+		// 1. Obtiene el link con sus ediciones
+		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]); 
+		// Genera un objeto con valores null
+		let camposVacios = {};
+		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null)); 
+		// Purga cada edición
+		linkOrig.ediciones.forEach(async (linkEdic) => {
+			let edicID = linkEdic.id;
+			// La variable 'linkEdic' queda solamente con los camos con valor
+			[quedanCampos, linkEdic] = await compartidas.pulirEdicion(linkOrig, linkEdic);
+			// Si quedan campos, actualiza la edición
+			if (quedanCampos)
+				await BD_genericas.actualizarPorId("links_edicion", edicID, {
+					...camposVacios,
+					...linkEdic,
+				});
+			// Si no quedan, elimina el registro de la edición
+			else await BD_genericas.eliminarPorId("links_edicion", edicID);
+		});
+		// Fin
+		return
+	},
 	// ControladorAPI - Prod. Alta, Prod. Edición, Link Alta, Link Edición
 	usuario_Penalizar: async (userID, motivo) => {
 		// Variables
