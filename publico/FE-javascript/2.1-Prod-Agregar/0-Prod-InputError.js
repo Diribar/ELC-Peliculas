@@ -160,13 +160,6 @@ window.addEventListener("load", async () => {
 			.some((n) => n.includes("error"));
 		// Consecuencias
 		hayErrores ? submit.classList.add("inactivo") : submit.classList.remove("inactivo");
-		// Pruebas
-		console.log(
-			hayErrores,
-			Array.from(iconosError)
-				.map((n) => n.classList)
-				.filter((n) => n.value && n.value.includes("error"))
-		);
 	};
 	let submitForm = async (e) => {
 		e.preventDefault();

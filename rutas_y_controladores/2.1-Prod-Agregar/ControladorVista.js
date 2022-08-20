@@ -308,10 +308,15 @@ module.exports = {
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
+		// Armar campo 'mostrarAvatar'
+		let mostrarAvatar = datosDuros.avatar.startsWith("http")
+			? datosDuros.avatar
+			: "/imagenes/9-Provisorio/" + datosDuros.avatar_archivo;
 		// 9. Generar la session para la siguiente instancia
 		req.session.datosPers = {
 			...req.session.datosDuros,
 			avatar_archivo,
+			mostrarAvatar,
 		};
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		// 10. Si la fuente es "IM", guardar algunos datos en la cookie "datosOriginales"
