@@ -15,7 +15,7 @@ module.exports = {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	todos_todos_obtenerLeadTime: (desde, hasta) => {
+	todos_obtenerLeadTime: (desde, hasta) => {
 		// Corregir domingo
 		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
 		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
