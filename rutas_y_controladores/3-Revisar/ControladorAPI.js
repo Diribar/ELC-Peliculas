@@ -303,7 +303,7 @@ let obtieneCamposLinkEdic = (edicAprob, linkEdicion, campo) => {
 let actualizaOriginal = async (original, edicion, datos, userID) => {
 	// Variables
 	const ahora = compartidas.ahora();
-	const entidad = compartidas.obtieneLaEntidadOriginalDesdeLaEdicion(edicion);
+	const entidad = compartidas.obtieneEntidadOrigDesdeEdicion(edicion);
 
 	// Genera la información a actualizar
 	datos = {

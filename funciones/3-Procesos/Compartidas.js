@@ -166,7 +166,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtieneLaEntidadOriginalDesdeLaEdicion: (entidad) => {
+	obtieneEntidadOrigDesdeEdicion: (entidad) => {
 		return entidad.pelicula_id
 			? "peliculas"
 			: entidad.coleccion_id

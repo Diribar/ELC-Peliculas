@@ -686,7 +686,7 @@ let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
 	// 1. Elimina el registro de la edición
 	await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
 	// 2. Averigua si tiene errores
-	let entidadOrig = compartidas.obtieneLaEntidadOriginalDesdeLaEdicion(prodEdic);
+	let entidadOrig = compartidas.obtieneEntidadOrigDesdeEdicion(prodEdic);
 	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
 	// 2. Acciones si el original no tiene errores y está en status 'alta_aprob'
 	if (!errores.hay && prodOrig.status_registro.alta_aprob) {
