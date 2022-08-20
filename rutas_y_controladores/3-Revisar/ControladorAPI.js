@@ -222,7 +222,7 @@ module.exports = {
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (altaAprob) procesos.prod_ActualizarCampoLG_OK(prodEntidad, prodID);
+		if (altaAprob) compartidas.prod_ActualizarCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -249,7 +249,7 @@ module.exports = {
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) procesos.prod_ActualizarCampoLG_OK(prodEntidad, prodID, campo);
+		if (edicAprob) compartidas.prod_ActualizarCampoLG_OK(prodEntidad, prodID, campo);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
