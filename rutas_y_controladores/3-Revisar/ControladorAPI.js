@@ -222,7 +222,7 @@ module.exports = {
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (altaAprob) compartidas.prod_ActualizarCampoLG_OK(prodEntidad, prodID);
+		if (altaAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -249,7 +249,7 @@ module.exports = {
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) compartidas.prod_ActualizarCampoLG_OK(prodEntidad, prodID, campo);
+		if (edicAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID, campo);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
@@ -312,7 +312,7 @@ let actualizaOriginal = async (original, edicion, datos, userID) => {
 		editado_en: edicion.editado_en,
 		edic_analizada_por_id: userID,
 		edic_analizada_en: ahora,
-		lead_time_edicion: compartidas.obtenerLeadTime(edicion.editado_en, ahora),
+		lead_time_edicion: compartidas.todos_obtenerLeadTime(edicion.editado_en, ahora),
 	};
 	// Actualiza el registro ORIGINAL ***********************************************
 	await BD_genericas.actualizarPorId(entidad, original.id, datos);

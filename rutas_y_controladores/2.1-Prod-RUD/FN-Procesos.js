@@ -31,7 +31,7 @@ module.exports = {
 		let producto_id = compartidas.obtenerEntidad_id(entidad);
 		if (prodOriginal) {
 			// Quitarle los campos 'null'
-			prodOriginal = compartidas.quitarLosCamposSinContenido(prodOriginal);
+			prodOriginal = compartidas.todos_quitarCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
 			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
 				"prods_edicion",
@@ -39,7 +39,7 @@ module.exports = {
 				includes
 			);
 			// Quitarle los campos 'null'
-			if (prodEditado) prodEditado = compartidas.quitarLosCamposSinContenido(prodEditado);
+			if (prodEditado) prodEditado = compartidas.todos_quitarCamposSinContenido(prodEditado);
 		}
 		return [prodOriginal, prodEditado];
 	},

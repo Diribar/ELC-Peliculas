@@ -451,6 +451,17 @@ module.exports = {
 		// Fin
 		return
 	},
+	links_prodCampoLG_OK: async (prodEntidad, prodID, campo) => {
+		if (campo == "gratuito" && prodEntidad.gratuito) {
+			// Obtener los ID de si, no y TalVez
+			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si = si_no_parcial.find((n) => n.si).id;
+			BD_genericas.actualizarPorId("links", prodID, {
+				links_gratuitos_cargados_id: si,
+				links_gratuitos_en_la_web_id: si,
+			});
+		}
+	},
 
 	// Prod. Alta/Edición, Links Alta/Edición
 	usuario_Penalizar: async (userID, motivo) => {
@@ -682,7 +693,7 @@ let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
 		// Genera la información a actualizar en el registro original
 		let datos = {
 			alta_terminada_en: compartidas.ahora(),
-			lead_time_creacion: compartidas.obtenerLeadTime(prodOrig.creado_en, ahora),
+			lead_time_creacion: compartidas.todos_obtenerLeadTime(prodOrig.creado_en, ahora),
 			status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
 		};
 		// Cambia el status del producto e inactiva la captura

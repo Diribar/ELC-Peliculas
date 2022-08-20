@@ -11,62 +11,11 @@ const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Pro
 // Exportar ------------------------------------
 module.exports = {
 	// Temas de Entidades
-	quitarLosCamposSinContenido: (objeto) => {
+	todos_quitarCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
-	prod_ActualizarCampoLG: async (prodEntidad, prodID) => {
-		// Variables
-		let datos = {};
-		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
-		// Obtener el producto con include a links
-		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
-			"links_gratuitos_cargados",
-			"links_gratuitos_en_la_web",
-			"links",
-			"status_registro",
-		]);
-		// Obtener los links gratuitos de películas del producto
-		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
-			"status_registro",
-			"tipo",
-		])
-			.then((n) => (n.length ? n.filter((n) => n.gratuito) : ""))
-			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
-		// Obtener los links 'Aprobados' y 'TalVez'
-		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
-		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
-		if (linksActivos.length || linksTalVez.length) {
-			// Obtener los ID de si, no y TalVez
-			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
-			let si = si_no_parcial.find((n) => n.si).id;
-			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
-			let no = si_no_parcial.find((n) => n.no).id;
-			// Acciones para LINKS GRATUITOS EN LA WEB
-			datos.links_gratuitos_en_la_web_id = linksActivos.length
-				? si
-				: producto.links_gratuitos_en_la_web_id != no
-				? talVez
-				: no;
-			// Acciones para LINKS GRATUITOS CARGADOS
-			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
-			// Actualizar la BD
-			BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
-		}
-		return;
-	},
-	prod_ActualizarCampoLG_OK: async (prodEntidad, prodID, campo) => {
-		if (campo == "gratuito" && prodEntidad.gratuito) {
-			// Obtener los ID de si, no y TalVez
-			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
-			let si = si_no_parcial.find((n) => n.si).id;
-			BD_genericas.actualizarPorId("links", prodID, {
-				links_gratuitos_cargados_id: si,
-				links_gratuitos_en_la_web_id: si,
-			});
-		}
-	},
-	obtenerLeadTime: (desde, hasta) => {
+	todos_todos_obtenerLeadTime: (desde, hasta) => {
 		// Corregir domingo
 		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
 		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
@@ -119,7 +68,7 @@ module.exports = {
 	},
 	pulirEdicion: function (original, edicion) {
 		// Pulir la información a tener en cuenta
-		edicion = this.quitarLosCamposSinContenido(edicion);
+		edicion = this.todos_quitarCamposSinContenido(edicion);
 		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
 		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
@@ -131,12 +80,12 @@ module.exports = {
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		// if (entidad == "links" && datos.gratuito==1) this.prod_ActualizarCampoLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
-		// if (entidad == "links") this.prod_ActualizarCampoLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
