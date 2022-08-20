@@ -4,7 +4,6 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
-const procesosProd = require("../2.1-Prod-RUD/FN-Procesos");
 
 // *********** Controlador ***********
 module.exports = {
@@ -95,7 +94,7 @@ module.exports = {
 		// Actualizaciones en el USUARIO
 		accionesEnUsuario(req, prodOrig, prodEdic);
 		// Limpia la edición  y cambia el status del producto si corresponde
-		let [quedanCampos, , statusAprob] = await procesos.prod_Feedback(prodOrig, prodEdic);
+		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prod_aprob', si corresponde
 		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status);
 		// Fin
@@ -223,7 +222,7 @@ module.exports = {
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (altaAprob) procesosProd.prod_ActualizarCampoLG_OK(prodEntidad, prodID);
+		if (altaAprob) procesos.prod_ActualizarCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -248,9 +247,9 @@ module.exports = {
 		// Actualizaciones en el USUARIO
 		accionesEnUsuario(req, linkOrig, linkEdic);
 		// Limpia las ediciones
-		await links_LimpiarEdiciones(linkOrig);
+		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
-		if (edicAprob) procesosProd.prod_ActualizarCampoLG_OK(prodEntidad, prodID, campo);
+		if (edicAprob) procesos.prod_ActualizarCampoLG_OK(prodEntidad, prodID, campo);
 		// Se recarga la vista
 		return res.json({mensaje: "Campo eliminado de la edición", reload: true});
 	},
@@ -356,7 +355,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 			};
 		}
 		// Obtiene los valores aprob/rech de edición
-		let valoresAprobRech = await procesos.prod_EdicValores(edicAprob, original, edicion, campo);
+		let valoresAprobRech = await procesos.prodEdic_aprobRech(edicAprob, original, edicion, campo);
 		datos = {...datos, ...valoresAprobRech};
 		// Actualiza la BD de 'edic_aprob' / 'edicion_rech'
 		BD_genericas.agregarRegistro(decision, datos);

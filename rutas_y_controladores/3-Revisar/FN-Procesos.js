@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
-	// ControladorVista - Tablero
+	// Tablero
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
@@ -226,8 +226,8 @@ module.exports = {
 		return RCLVs;
 	},
 
-	// ControladorVista - Productos Alta
-	prod_BloquesAlta: async (prodOrig, paises) => {
+	// Productos Alta
+	prodAlta_ficha: async (prodOrig, paises) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque izquierdo
@@ -262,8 +262,8 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	// ControladorVista - Productos Edición
-	prod_Feedback: async (prodOrig, prodEdic, campo) => {
+	// Producto Edición
+	prodEdic_feedback: async (prodOrig, prodEdic, campo) => {
 		// 1. Actualiza el registro de edición
 		// 2. Averigua si quedan campos por procesar
 		// 3. Elimina el registro de edición si ya no tiene más datos
@@ -288,7 +288,7 @@ module.exports = {
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
-	prod_ArmarComparac: (prodOrig, prodEdic) => {
+	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
 		let campos = variables.camposRevisarProd();
 		for (let i = campos.length - 1; i >= 0; i--) {
 			let campoNombre = campos[i].nombreDelCampo;
@@ -315,7 +315,7 @@ module.exports = {
 		// Fin
 		return [ingresos, reemplazos];
 	},
-	prod_BloqueEdic: async (prodOrig, prodEdic) => {
+	prodEdic_ficha: async (prodOrig, prodEdic) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque derecho
@@ -339,8 +339,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	// ControladorAPI - Producto Edición
-	prod_EdicValores: (aprobado, prodOrig, prodEdic, campo) => {
+	prodEdic_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
@@ -351,8 +350,59 @@ module.exports = {
 		// Fin
 		return {valor_aprob, valor_rech};
 	},
+	prod_ActualizarCampoLG: async (prodEntidad, prodID) => {
+		// Variables
+		let datos = {};
+		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
+		// Obtener el producto con include a links
+		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
+			"links_gratuitos_cargados",
+			"links_gratuitos_en_la_web",
+			"links",
+			"status_registro",
+		]);
+		// Obtener los links gratuitos de películas del producto
+		let links = await BD_genericas.obtenerTodosPorCamposConInclude("links", {[entidad_id]: prodID}, [
+			"status_registro",
+			"tipo",
+		])
+			.then((n) => (n.length ? n.filter((n) => n.gratuito) : ""))
+			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
+		// Obtener los links 'Aprobados' y 'TalVez'
+		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
+		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
+		if (linksActivos.length || linksTalVez.length) {
+			// Obtener los ID de si, no y TalVez
+			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si = si_no_parcial.find((n) => n.si).id;
+			let talVez = si_no_parcial.find((n) => !n.si && !n.no).id;
+			let no = si_no_parcial.find((n) => n.no).id;
+			// Acciones para LINKS GRATUITOS EN LA WEB
+			datos.links_gratuitos_en_la_web_id = linksActivos.length
+				? si
+				: producto.links_gratuitos_en_la_web_id != no
+				? talVez
+				: no;
+			// Acciones para LINKS GRATUITOS CARGADOS
+			datos.links_gratuitos_cargados_id = linksActivos.length ? si : linksTalVez.length ? talVez : no;
+			// Actualizar la BD
+			BD_genericas.actualizarPorId(prodEntidad, prodID, datos);
+		}
+		return;
+	},
+	prod_ActualizarCampoLG_OK: async (prodEntidad, prodID, campo) => {
+		if (campo == "gratuito" && prodEntidad.gratuito) {
+			// Obtener los ID de si, no y TalVez
+			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si = si_no_parcial.find((n) => n.si).id;
+			BD_genericas.actualizarPorId("links", prodID, {
+				links_gratuitos_cargados_id: si,
+				links_gratuitos_en_la_web_id: si,
+			});
+		}
+	},
 
-	// ControladorAPI - RCLV Alta
+	// RCLV Alta
 	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
 		let ahora = compartidas.ahora();
@@ -427,8 +477,8 @@ module.exports = {
 		return;
 	},
 
-	// ControladorAPI - Links Edicion
-	links_LimpiarEdiciones: async (linkOrig) => {
+	// Links Edicion
+	linksEdic_LimpiarEdiciones: async (linkOrig) => {
 		// Limpia las ediciones
 		// 1. Obtiene el link con sus ediciones
 		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]); 
@@ -452,7 +502,8 @@ module.exports = {
 		// Fin
 		return
 	},
-	// ControladorAPI - Prod. Alta, Prod. Edición, Link Alta, Link Edición
+
+	// Prod. Alta/Edición, Links Alta/Edición
 	usuario_Penalizar: async (userID, motivo) => {
 		// Variables
 		let datos = {};

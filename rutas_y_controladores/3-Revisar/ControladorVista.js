@@ -63,7 +63,7 @@ module.exports = {
 			? await compartidas.paises_idToNombre(prodOriginal.paises_id)
 			: "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.prod_BloquesAlta(prodOriginal, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOriginal, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
@@ -151,7 +151,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEditado
-		[quedanCampos, prodEditado] = await procesos.prod_Feedback(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesos.prodEdic_feedback(prodOriginal, prodEditado);
 		if (!quedanCampos) return res.render("CR9-Errores", cartelNoQuedanCampos());
 
 		// Acciones si se superan las verificaciones -------------------------------
@@ -177,7 +177,7 @@ module.exports = {
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prod_ArmarComparac(prodOriginal, prodEditado);
+			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOriginal, prodEditado);
 			// Obtener el avatar
 			avatar = prodOriginal.avatar;
 			avatar = avatar
@@ -185,7 +185,7 @@ module.exports = {
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await procesos.prod_BloqueEdic(prodOriginal, prodEditado);
+			bloqueDer = await procesos.prodEdic_ficha(prodOriginal, prodEditado);
 			vista = "RV0-0Estructura";
 		}
 		// 5. Configurar el título de la vista
