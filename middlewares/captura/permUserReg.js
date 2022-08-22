@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
 		let informacion = "";
 		if (
 			creado_en < haceUnaHora && // creado hace más de una hora
-			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la vista no es de revisión
+			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión
 				(registro.status_registro.alta_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
 		) {
 			let mensajes = creadoPorElUsuario
@@ -169,7 +169,7 @@ module.exports = async (req, res, next) => {
 					],
 					iconos: vistaAnteriorTablero(),
 				};
-			// 3. El registro sólo tiene una sola edición y es del Revisor
+			// 3. El registro sólo tiene una edición y es del Revisor
 			else if (
 				registro.ediciones &&
 				registro.ediciones.length == 1 &&

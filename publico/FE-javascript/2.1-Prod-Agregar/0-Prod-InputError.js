@@ -272,7 +272,7 @@ window.addEventListener("load", async () => {
 		limpiaInputsRCLV: () => {
 			// Borra el valor de los inputsRCLV
 			inputsRCLV.forEach((input, i) => {
-				input.value = "";
+				input.value = "1";
 				iconosOK_RCLV[i].classList.add("ocultar");
 				iconosError_RCLV[1].classList.add("ocultar");
 			});
@@ -434,7 +434,7 @@ window.addEventListener("load", async () => {
 		if (paso.DD) {
 			if (e.target == paisesSelect) {
 				// Convierte los ID de los países elegidos, en un texto
-				DD.actualizarPaises();
+				DD.actualizaPaises();
 				// Definir los valores para 'campo' y 'valor'
 				campo = paisesID.name;
 				valor = paisesID.value;

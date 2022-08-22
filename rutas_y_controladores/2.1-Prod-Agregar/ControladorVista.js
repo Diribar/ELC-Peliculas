@@ -30,7 +30,6 @@ module.exports = {
 			palabrasClave,
 		});
 	},
-
 	palabrasClaveGuardar: async (req, res) => {
 		// 1. Guardar el data entry en session y cookie
 		let palabrasClave = req.body.palabrasClave;
@@ -42,7 +41,6 @@ module.exports = {
 		// 3. Redireccionar a la siguiente instancia
 		return res.redirect("/producto/agregar/desambiguar");
 	},
-
 	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -56,7 +54,7 @@ module.exports = {
 		let desambiguar = req.session.desambiguar
 			? req.session.desambiguar
 			: await buscar_x_PC.search(palabrasClave, true);
-		let [prod_nuevos, prod_yaEnBD, mensaje] = procesos.prepararMensaje(desambiguar);
+		let [prod_nuevos, prod_yaEnBD, mensaje] = procesos.DS_prepararMensaje(desambiguar);
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
@@ -71,10 +69,9 @@ module.exports = {
 			palabrasClave: desambiguar.palabrasClave,
 		});
 	},
-
 	desambiguarGuardar: async (req, res) => {
 		// 1. Obtener más información del producto
-		let infoTMDBparaDD = await procesos["infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
+		let infoTMDBparaDD = await procesos["DS_infoTMDBparaDD_" + req.body.TMDB_entidad](req.body);
 		// 2. Averiguar si hay errores de validación
 		let errores = await validar.desambiguar(infoTMDBparaDD);
 		// 3. Si la colección está creada, pero su capítulo NO, actualizar los capítulos y redireccionar
@@ -84,7 +81,7 @@ module.exports = {
 		}
 		// 4. Si es una película de una colección que no existe en la BD, cambiar la película por la colección
 		if (errores.mensaje == "agregarColeccion")
-			infoTMDBparaDD = await procesos.infoTMDBparaDD_collection({
+			infoTMDBparaDD = await procesos.DS_infoTMDBparaDD_collection({
 				TMDB_id: errores.colec_TMDB_id,
 			});
 		// 5. Generar la session para la siguiente instancia
@@ -94,7 +91,6 @@ module.exports = {
 		// 6. Redireccionar a la siguiente instancia
 		res.redirect("/producto/agregar/datos-duros");
 	},
-
 	tipoProd_Form: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -113,7 +109,6 @@ module.exports = {
 			autorizado_fa: req.session.usuario.autorizado_fa,
 		});
 	},
-
 	tipoProd_Guardar: async (req, res) => {
 		// 1. Preparar los datos a guardar
 		// 1. Guardar el data entry en session y cookie
@@ -134,7 +129,6 @@ module.exports = {
 		// 6. Redireccionar a la siguiente instancia
 		res.redirect("/producto/agregar/datos-duros");
 	},
-
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -161,7 +155,6 @@ module.exports = {
 			dataEntry: copiarFA,
 		});
 	},
-
 	copiarFA_Guardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
@@ -194,7 +187,6 @@ module.exports = {
 		// 4. Redireccionar a la siguiente instancia
 		return res.redirect("/producto/agregar/datos-duros");
 	},
-
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -225,11 +217,11 @@ module.exports = {
 			: await validar.datosDuros(camposDD_errores, datosDuros);
 		// 6. Preparar variables para la vista
 		let paises = datosDuros.paises_id ? await compartidas.paises_idToNombre(datosDuros.paises_id) : "";
-		let BD_paises = datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
+		let BD_paises = !datosDuros.paises_id ? await BD_genericas.obtenerTodos("paises", "nombre") : [];
 		let idiomas = await BD_genericas.obtenerTodos("idiomas", "nombre");
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
-		//return res.send(paises)
+		//return res.send(BD_paises)
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
@@ -245,7 +237,6 @@ module.exports = {
 			errores,
 		});
 	},
-
 	datosDurosGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
@@ -305,6 +296,8 @@ module.exports = {
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
 			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
+			// Guardar los errores en 'session' porque pueden ser muy específicos
+			req.session.erroresDD = errores;
 			// Redireccionar
 			return res.redirect("/producto/agregar/datos-duros");
 		}
@@ -329,7 +322,6 @@ module.exports = {
 		// 11. Redireccionar a la siguiente instancia
 		return res.redirect("/producto/agregar/datos-personalizados");
 	},
-
 	datosPersForm: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -352,7 +344,6 @@ module.exports = {
 			camposDP,
 		});
 	},
-
 	datosPersGuardar: async (req, res) => {
 		// 1. Si se perdió la info anterior, volver a esa instancia
 		let aux = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
@@ -363,7 +354,7 @@ module.exports = {
 		for (let campo in datosPers) {
 			if (!datosPers[campo]) delete datosPers[campo];
 		}
-		// 4. Guardar el data entry en session y cookie
+		// 4. Guarda el data entry en session y cookie
 		req.session.datosPers = datosPers;
 		res.cookie("datosPers", req.session.datosPers, {maxAge: unDia});
 		res.cookie("datosOriginales", req.cookies.datosOriginales, {maxAge: unDia});
@@ -380,7 +371,6 @@ module.exports = {
 		// 8. Redireccionar a la siguiente instancia
 		return res.redirect("/producto/agregar/confirma");
 	},
-
 	confirmaForm: (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -410,7 +400,6 @@ module.exports = {
 			actuacion,
 		});
 	},
-
 	confirmaGuardar: async (req, res) => {
 		// 1. Si se perdió la info, volver a la instancia anterior
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
@@ -438,11 +427,11 @@ module.exports = {
 		};
 		let registro = await BD_genericas.agregarRegistro(original.entidad, original);
 		// 4. Guardar los datos de 'Edición'
-		await compartidas.guardar_edicion(
+		compartidas.guardar_edicion(
 			confirma.entidad,
 			"prods_edicion",
 			registro,
-			confirma,
+			{...confirma}, // Se debe enviar así para preservar la variable de cambios
 			req.session.usuario.id
 		);
 		// 5. Si es una "collection" o "tv" (TMDB), agregar las partes en forma automática
@@ -462,7 +451,6 @@ module.exports = {
 			"/producto/agregar/terminaste/?entidad=" + confirma.entidad + "&id=" + registro.id
 		);
 	},
-
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "prod_agregar";
@@ -509,7 +497,6 @@ module.exports = {
 			ruta: "/producto/",
 		});
 	},
-
 	responsabilidad: (req, res) => {
 		let tema = "prod_agregar";
 		let codigo = "responsabilidad";

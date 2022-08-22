@@ -104,6 +104,8 @@ module.exports = {
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
 	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
+		// Variables
+		let quedanCampos
 		// Quitar los coincidencias con el original
 		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
 		// Averiguar si hay algún campo con novedad

@@ -141,7 +141,9 @@ module.exports = {
 				? "/producto/agregar/datos-personalizados"
 				: origen == "ED"
 				? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
-				: "";
+				: origen == "DT"
+				? "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID
+				: "/";
 		return res.redirect(destino);
 	},
 

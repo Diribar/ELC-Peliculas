@@ -3,10 +3,9 @@
 	<label><%= campo.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
+		<% if (!registro || !registro.valores || !Array.isArray(registro.valores)) console.log(6, campo, registro) %> 
 		<select name="<%= campo.nombreDelCampo %>" class="input RCLV">
-			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí una opción</option>
-			<option value="1" <% if (producto[campo.nombreDelCampo] == 1) { %>selected<% } %>>Ninguno</option>
-			<% console.log(campo) %>
+			<option value="1" <% if (!producto[campo.nombreDelCampo] || producto[campo.nombreDelCampo] == 1) { %>selected<% } %>>Ninguno</option>
 			<% for (let valor of campo.valores.filter(n => n.id > 1)) { %><option value="<%= valor.id %>" <% if (producto[campo.nombreDelCampo] == valor.id) { %>selected<% } %>><%= valor[nombre] %></option><% } %>
 		</select>
 		<!-- Ayuda -->
