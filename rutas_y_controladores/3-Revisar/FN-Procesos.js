@@ -346,9 +346,9 @@ module.exports = {
 		if (valorOrig === null) valorOrig = "-";
 		// Obtiene los valores 'aprobado' y 'rechazado'
 		let valor_aprob = aprobado ? valorEdic : valorOrig;
-		let valors_rech = !aprobado ? valorEdic : valorOrig;
+		let valor_rech = !aprobado ? valorEdic : valorOrig;
 		// Fin
-		return {valor_aprob, valors_rech};
+		return {valor_aprob, valor_rech};
 	},
 
 	// RCLV Alta
@@ -387,7 +387,7 @@ module.exports = {
 				evaluado_en: ahora,
 			};
 			if (RCLV_original[campoComparar.campo] != RCLV_actual[campoComparar.campo]) {
-				datos.valors_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
+				datos.valor_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
 				datos.motivo_id = motivoGenericoID;
 			}
 			// Guardar los registros
