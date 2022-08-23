@@ -6,7 +6,6 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const variables = require("./Variables");
-const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Procesos");
 
 // Exportar ------------------------------------
 module.exports = {
