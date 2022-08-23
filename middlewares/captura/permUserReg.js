@@ -102,7 +102,7 @@ module.exports = async (req, res, next) => {
 	};
 	let otroRegistroCapturado = async () => {
 		let informacion;
-		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuario();
+		let prodCapturado = await buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia();
 		if (prodCapturado) {
 			// Datos para el mensaje
 			const pc_entidadCodigo = prodCapturado.entidad;
@@ -189,7 +189,7 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 	// Fórmulas auxiliares
-	let buscaAlgunaCapturaVigenteDelUsuario = async () => {
+	let buscaAlgunaCapturaVigenteDelUsuarioParaEsaFamilia = async () => {
 		// Se revisa solamente en la familia de entidades
 		// Asociaciones
 		let entidades = ["peliculas", "colecciones", "capitulos"].includes(entidad)

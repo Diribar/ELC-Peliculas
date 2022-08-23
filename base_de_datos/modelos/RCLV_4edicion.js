@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "rclv_edicion";
+	const alias = "rclvs_edicion";
 	const columns = {
 		personaje_id: {type: dt.INTEGER},
 		hecho_id: {type: dt.INTEGER},

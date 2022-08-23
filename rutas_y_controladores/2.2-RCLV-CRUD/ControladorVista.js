@@ -126,7 +126,7 @@ module.exports = {
 				? await compartidas.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
 				: await compartidas.guardar_edicion(
 						entidad,
-						"rclv_edicion",
+						"rclvs_edicion",
 						RCLV_original,
 						RCLV_editado,
 						userID
