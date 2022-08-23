@@ -24,13 +24,13 @@ module.exports = (sequelize, dt) => {
 		editado_en: {type: dt.DATE},
 		status_registro_id: {type: dt.INTEGER},
 
-		prod_aprob: {type: dt.INTEGER},
+		prods_aprob: {type: dt.INTEGER},
 		prod_rech: {type: dt.INTEGER},
-		rclv_aprob: {type: dt.INTEGER},
+		rclvs_aprob: {type: dt.INTEGER},
 		rclv_rech: {type: dt.INTEGER},
-		link_aprob: {type: dt.INTEGER},
+		links_aprob: {type: dt.INTEGER},
 		link_rech: {type: dt.INTEGER},
-		edic_aprob: {type: dt.INTEGER},
+		edics_aprob: {type: dt.INTEGER},
 		edic_rech: {type: dt.INTEGER},
 
 		penalizac_acum: {type: dt.DECIMAL},

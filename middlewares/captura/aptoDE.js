@@ -70,21 +70,21 @@ module.exports = async (req, res, next) => {
 let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 	// Obtener la cantidad de aprobaciones
 	const aprob = producto
-		? usuario.altas_prod_aprob
+		? usuario.prods_aprob
 		: rclv
-		? usuario.altas_rclv_aprob
+		? usuario.rclvs_aprob
 		: links
-		? usuario.altas_link_aprob
+		? usuario.links_aprob
 		: edicion
-		? usuario.edic_aprob
+		? usuario.edics_aprob
 		: 0;
 	// Obtener la cantidad de rechazos
 	const rech = producto
-		? usuario.altas_prod_rech
+		? usuario.prod_rech
 		: rclv
-		? usuario.altas_rclv_rech
+		? usuario.rclv_rech
 		: links
-		? usuario.altas_link_rech
+		? usuario.link_rech
 		: edicion
 		? usuario.edic_rech
 		: 0;

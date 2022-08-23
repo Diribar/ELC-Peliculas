@@ -60,7 +60,7 @@ module.exports = async (req, res, next) => {
 		if (
 			creado_en < haceUnaHora && // creado hace más de una hora
 			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión
-				(registro.status_registro.alta_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
+				(registro.status_registro.creado_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
 		) {
 			let mensajes = creadoPorElUsuario
 				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
@@ -155,8 +155,8 @@ module.exports = async (req, res, next) => {
 	let verificacionesDeRevision = () => {
 		let informacion;
 		if (urlBase == "/revision" && !url.startsWith("/tablero-de-control")) {
-			// 1. El registro está en un status gr_pend_aprob, creado por el Revisor
-			if (registro.status_registro.gr_pend_aprob && creadoPorElUsuario)
+			// 1. El registro está en un status gr_pends_aprob, creado por el Revisor
+			if (registro.status_registro.gr_pends_aprob && creadoPorElUsuario)
 				informacion = {
 					mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
 					iconos: vistaAnteriorTablero(),

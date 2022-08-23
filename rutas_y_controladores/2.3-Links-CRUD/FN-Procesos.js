@@ -53,7 +53,7 @@ module.exports = {
 			.then((n) => (n.length ? n.filter((n) => n.tipo.pelicula) : ""));
 		// Obtener los links 'Aprobados' y 'TalVez'
 		let linksActivos = links.length ? links.filter((n) => n.status_registro.aprobado) : [];
-		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pend_aprob) : [];
+		let linksTalVez = links.length ? links.filter((n) => n.status_registro.gr_pends_aprob) : [];
 		if (linksActivos.length || linksTalVez.length) {
 			// Obtener los ID de si, no y TalVez
 			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");

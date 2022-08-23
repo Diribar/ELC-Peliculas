@@ -139,13 +139,13 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	prod_aprob SMALLINT DEFAULT 0,
+	prods_aprob SMALLINT DEFAULT 0,
 	prod_rech SMALLINT DEFAULT 0,
-	rclv_aprob SMALLINT DEFAULT 0,
+	rclvs_aprob SMALLINT DEFAULT 0,
 	rclv_rech SMALLINT DEFAULT 0,
-	link_aprob SMALLINT DEFAULT 0,
+	links_aprob SMALLINT DEFAULT 0,
 	link_rech SMALLINT DEFAULT 0,
-	edic_aprob SMALLINT DEFAULT 0,
+	edics_aprob SMALLINT DEFAULT 0,
 	edic_rech SMALLINT DEFAULT 0,
 
 	penalizac_acum DECIMAL(4,1) UNSIGNED DEFAULT 0,
@@ -195,21 +195,21 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	gr_pend_aprob BOOLEAN DEFAULT 0,
+	gr_pends_aprob BOOLEAN DEFAULT 0,
 	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_pasivos BOOLEAN DEFAULT 0,
 	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
-	alta_aprob BOOLEAN DEFAULT 0,
+	altas_aprob BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
 	inactivo BOOLEAN DEFAULT 0,
 	recuperar BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pends_aprob) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, altas_aprob, gr_pends_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
@@ -221,7 +221,7 @@ CREATE TABLE edic_registros_aprob (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_aprob VARCHAR(50) NULL,
+	valors_aprob VARCHAR(50) NULL,
 	
 	input_por_id INT UNSIGNED NOT NULL,
 	input_en DATETIME NULL,
@@ -309,7 +309,7 @@ CREATE TABLE edic_registros_rech (
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
 	valor_rech VARCHAR(50) NULL,
-	valor_aprob VARCHAR(50) NULL,
+	valors_aprob VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
@@ -455,7 +455,7 @@ CREATE TABLE rclv_1personajes (
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -531,7 +531,7 @@ CREATE TABLE rclv_2hechos (
 	exclusivo BOOLEAN DEFAULT 0, /* Jesús y Contemp: true o false, según corresponda  */
 	ap_mar BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -591,7 +591,7 @@ CREATE TABLE rclv_3valores (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	perenne BOOLEAN DEFAULT 0,
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,

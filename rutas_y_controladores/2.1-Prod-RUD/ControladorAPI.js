@@ -67,8 +67,8 @@ module.exports = {
 
 		// Obtener los datos ORIGINALES y EDITADOS del producto
 		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
-		// No se puede eliminar la edición de un producto con status "gr_pend_aprob" y fue creado por el usuario
-		let condicion = !prodOriginal.status_registro.gr_pend_aprob || prodOriginal.creado_por_id != userID;
+		// No se puede eliminar la edición de un producto con status "gr_pends_aprob" y fue creado por el usuario
+		let condicion = !prodOriginal.status_registro.gr_pends_aprob || prodOriginal.creado_por_id != userID;
 		if (condicion && prodEditado) BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);
 		// Terminar
 		return res.json();

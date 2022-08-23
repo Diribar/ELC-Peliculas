@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		campo: {type: dt.STRING(20)},
 		titulo: {type: dt.STRING(21)},
 		valor_rech: {type: dt.STRING(50)},
-		valor_aprob: {type: dt.STRING(50)},
+		valors_aprob: {type: dt.STRING(50)},
 
 		motivo_id: {type: dt.INTEGER},
 		duracion: {type: dt.DECIMAL},

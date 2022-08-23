@@ -17,9 +17,9 @@ module.exports = {
 		let creado_id = status.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
 		let PA = await tablero_obtenerRegs(...campos);
-		// - Obtener los resultados de status alta_aprob sin edición
-		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
-		campos = [entidades, ahora, alta_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+		// - Obtener los resultados de status altas_aprob sin edición
+		let altas_aprob_id = status.find((n) => n.altas_aprob).id;
+		campos = [entidades, ahora, altas_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 		let SE = await tablero_obtenerRegs(...campos);
 		SE = SE.filter((n) => !n.ediciones.length);
 		// - Obtener los resultados de status inactivar_id
@@ -42,9 +42,9 @@ module.exports = {
 
 		// Declarar las variables
 		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
-		let alta_aprob_id = status.find((n) => n.alta_aprob).id;
+		let altas_aprob_id = status.find((n) => n.altas_aprob).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		let gr_aprobado = [alta_aprob_id, aprobado_id];
+		let grs_aprobado = [altas_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
@@ -94,8 +94,8 @@ module.exports = {
 			if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
 			// Consolidar los productos
 			productos = [...peliculas, ...colecciones, ...capitulos];
-			// Dejar solamente los productos de gr_aprobado
-			productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
+			// Dejar solamente los productos de grs_aprobado
+			productos = productos.filter((n) => grs_aprobado.includes(n.status_registro_id));
 			// Dejar solamente los productos que no tengan problemas de captura
 			if (productos.length)
 				productos = productos.filter(
@@ -339,16 +339,16 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	prodEdic_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
+	prodEdics_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
 		if (valorOrig === null) valorOrig = "-";
 		// Obtiene los valores 'aprobado' y 'rechazado'
-		let valor_aprob = aprobado ? valorEdic : valorOrig;
+		let valors_aprob = aprobado ? valorEdic : valorOrig;
 		let valor_rech = !aprobado ? valorEdic : valorOrig;
 		// Fin
-		return {valor_aprob, valor_rech};
+		return {valors_aprob, valor_rech};
 	},
 
 	// RCLV Alta
@@ -380,7 +380,7 @@ module.exports = {
 				entidad_id: RCLV_original.id,
 				campo: campoComparar.campo,
 				titulo: campoComparar.titulo,
-				valor_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
+				valors_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
 				input_por_id: RCLV_original.creado_por_id,
 				input_en: RCLV_original.creado_en,
 				evaluado_por_id: userID,
@@ -393,7 +393,7 @@ module.exports = {
 			// Guardar los registros
 			let entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
-					? "edic_aprob"
+					? "edics_aprob"
 					: "edic_rech";
 			await BD_genericas.agregarRegistro(entidad, datos);
 		}
@@ -407,12 +407,12 @@ module.exports = {
 			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
 			let RCLV_id = producto[campo]; // Obtener el RCLV_id
 			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
-			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
+			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prods_aprob: true});
 		}
 		return;
 	},
 	RCLV_productosAprob: function (prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status) {
-		// Actualizar en RCLVs el campo 'prod_aprob', si ocurre (1) y (2 ó 3)
+		// Actualizar en RCLVs el campo 'prods_aprob', si ocurre (1) y (2 ó 3)
 		// 1. El valor del campo es distinto a 'Ninguno'
 		// 2. Se cambió un campo RCLV y el producto está aprobado
 		// 3. El registro no estaba aprobado y ahora sí lo está
@@ -646,7 +646,7 @@ let usuario_CalidadAltas = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.prod_aprob;
+	let cantAprob = usuario.prods_aprob;
 	let cantRech = usuario.prod_rech;
 	// 3. Precisión de altas
 	let cantAltas = cantAprob + cantRech;
@@ -665,7 +665,7 @@ let usuario_CalidadEdic = async (userID) => {
 	// 1. Obtener los datos del usuario
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
-	let cantAprob = usuario.edic_aprob;
+	let cantAprob = usuario.edics_aprob;
 	let cantRech = usuario.edic_rech;
 	// 3. Precisión de ediciones
 	let cantEdics = cantAprob + cantRech;
@@ -688,8 +688,8 @@ let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
 	// 2. Averigua si tiene errores
 	let entidadOrig = compartidas.obtieneEntidadOrigDesdeEdicion(prodEdic);
 	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-	// 2. Acciones si el original no tiene errores y está en status 'alta_aprob'
-	if (!errores.hay && prodOrig.status_registro.alta_aprob) {
+	// 2. Acciones si el original no tiene errores y está en status 'altas_aprob'
+	if (!errores.hay && prodOrig.status_registro.creado_aprob) {
 		// Genera la información a actualizar en el registro original
 		let datos = {
 			alta_terminada_en: compartidas.ahora(),

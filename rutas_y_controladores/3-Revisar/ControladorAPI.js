@@ -12,13 +12,13 @@ module.exports = {
 		// Variables
 		const {entidad: prodEntidad, id: prodID} = req.query;
 		const altaAprob = req.query.aprob == "true";
-		const decision = edicAprob ? "prod_aprob" : "prod_rech";
+		const decision = edicAprob ? "prods_aprob" : "prod_rech";
 		const userID = req.session.usuario.id;
 		const ahora = compartidas.ahora();
 		// Obtiene el nuevo status_id
 		const status = req.session.status_registro;
 		let nuevoStatusID = altaAprob
-			? status.find((n) => n.alta_aprob).id
+			? status.find((n) => n.altas_aprob).id
 			: status.find((n) => n.inactivo).id;
 		// Obtiene el motivo si es un rechazo
 		if (!altaAprob) var {motivo_id} = req.query;
@@ -94,7 +94,7 @@ module.exports = {
 		accionesEnUsuario(req, prodOrig, prodEdic);
 		// Limpia la edición  y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
-		// Actualiza en RCLVs el campo 'prod_aprob', si corresponde
+		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
 		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
@@ -129,8 +129,8 @@ module.exports = {
 			let dia_del_ano = await BD_genericas.obtenerPorCampos("dias_del_ano", objeto);
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
-		// Obtiene el campo 'prod_aprob'
-		let prod_aprob = await procesos.RCLV_averiguarSiTieneProdAprob(
+		// Obtiene el campo 'prods_aprob'
+		let prods_aprob = await procesos.RCLV_averiguarSiTieneProdAprob(
 			{...RCLV_original, status_registro_id: aprobado_id},
 			status
 		);
@@ -140,7 +140,7 @@ module.exports = {
 		// Preparar la información a ingresar
 		datos = {
 			...datos,
-			prod_aprob,
+			prods_aprob,
 			alta_analizada_por_id: req.session.usuario.id,
 			alta_analizada_en,
 			lead_time_creacion,
@@ -162,7 +162,7 @@ module.exports = {
 		const altaAprob = req.query.aprob == "true";
 		const userID = req.session.usuario.id;
 		const status = req.session.status_registro;
-		const st_aprobado = status.find((n) => n.aprobado).id;
+		const sts_aprobado = status.find((n) => n.aprobado).id;
 		const st_inactivo = status.find((n) => n.inactivo).id;
 		const ahora = compartidas.ahora();
 		let datos;
@@ -192,7 +192,7 @@ module.exports = {
 			procesos.usuario_Penalizar(sugerido_por_id, motivo);
 		}
 		// LINK - Pasa a status aprobado/rechazado -
-		datos = {status_registro_id: altaAprob ? st_aprobado : st_inactivo};
+		datos = {status_registro_id: altaAprob ? sts_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
@@ -214,7 +214,7 @@ module.exports = {
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: altaAprob ? st_aprobado : st_inactivo,
+			status_final_id: altaAprob ? sts_aprobado : st_inactivo,
 			aprobado: decision,
 			motivo_id,
 			duracion,
@@ -229,7 +229,7 @@ module.exports = {
 		// Variables
 		const {prodEntidad, prodID, edicion_id: edicID, campo} = req.query;
 		const edicAprob = req.query.aprob == "true";
-		const decision = edicAprob ? "edic_aprob" : "edic_rech";
+		const decision = edicAprob ? "edics_aprob" : "edic_rech";
 		const userID = req.session.usuario.id;
 		let datos;
 		// Obtiene el registro editado
@@ -276,7 +276,7 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 		// Elimina el 'avatar original' (si es un archivo)
 		let avatar = prodOrig.avatar;
 		if (!avatar.startsWith("http")) {
-			let ruta = prodOrig.status_registro.alta_aprob
+			let ruta = prodOrig.status_registro.creado_aprob
 				? "/imagenes/3-ProdRevisar/"
 				: "/imagenes/2-Productos/";
 			compartidas.borrarArchivo(ruta, avatar);
@@ -285,7 +285,7 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 		// Elimina el 'avatar editado'
 		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEdic.avatar);
 		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'altaAprob')
-		if (prodOrig.status_registro.alta_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
+		if (prodOrig.status_registro.creado_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
 			compartidas.moverImagen(prodOrig.avatar, "3-ProdRevisar", "2-Productos");
 	}
 	return prodEdic;
@@ -326,7 +326,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 
 	// Variables
 	const edicAprob = req.query.aprob == "true";
-	const decision = edicAprob ? "edic_aprob" : "edic_rech";
+	const decision = edicAprob ? "edics_aprob" : "edic_rech";
 	const {entidad, id, campo} = req.query;
 	const userID = req.session.usuario.id;
 	let datos;
@@ -354,9 +354,9 @@ let accionesEnUsuario = async (req, original, edicion) => {
 			};
 		}
 		// Obtiene los valores aprob/rech de edición
-		let valoresAprobRech = await procesos.prodEdic_aprobRech(edicAprob, original, edicion, campo);
+		let valoresAprobRech = await procesos.prodEdics_aprobRech(edicAprob, original, edicion, campo);
 		datos = {...datos, ...valoresAprobRech};
-		// Actualiza la BD de 'edic_aprob' / 'edicion_rech'
+		// Actualiza la BD de 'edics_aprob' / 'edicion_rech'
 		BD_genericas.agregarRegistro(decision, datos);
 		// Si corresponde, penaliza al usuario
 		if (datos.duracion) procesos.usuario_Penalizar(edicion.editado_por_id, motivo);
