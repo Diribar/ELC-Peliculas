@@ -308,7 +308,7 @@ CREATE TABLE edics_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valors_rech VARCHAR(50) NULL,
+	valor_rech VARCHAR(50) NULL,
 	valor_aprob VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
