@@ -44,7 +44,7 @@ module.exports = {
 		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
 		let creado_aprob_id = status.find((n) => n.creado_aprob).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		let grs_aprobado = [creado_aprob_id, aprobado_id];
+		let gr_aprobado = [creado_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
@@ -94,8 +94,8 @@ module.exports = {
 			if (capitulos.length) capitulos = eliminarRepetidos(capitulos);
 			// Consolidar los productos
 			productos = [...peliculas, ...colecciones, ...capitulos];
-			// Dejar solamente los productos de grs_aprobado
-			productos = productos.filter((n) => grs_aprobado.includes(n.status_registro_id));
+			// Dejar solamente los productos de gr_aprobado
+			productos = productos.filter((n) => gr_aprobado.includes(n.status_registro_id));
 			// Dejar solamente los productos que no tengan problemas de captura
 			if (productos.length)
 				productos = productos.filter(
