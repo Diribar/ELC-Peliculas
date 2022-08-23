@@ -1230,7 +1230,7 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 CREATE TABLE aux_historial_de_rclv_eliminados(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
-	nombres_rech VARCHAR(50) NULL,
+	nombre_rech VARCHAR(50) NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME NOT NULL,
