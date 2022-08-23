@@ -354,9 +354,9 @@ let accionesEnUsuario = async (req, original, edicion) => {
 			};
 		}
 		// Obtiene los valores aprob/rech de edición
-		let valoresAprobRech = await procesos.prodEdics_aprobRech(edicAprob, original, edicion, campo);
+		let valoresAprobRech = await procesos.prodEdic_aprobRech(edicAprob, original, edicion, campo);
 		datos = {...datos, ...valoresAprobRech};
-		// Actualiza la BD de 'edics_aprob' / 'edicions_rech'
+		// Actualiza la BD de 'edics_aprob' / 'edics_rech'
 		BD_genericas.agregarRegistro(decision, datos);
 		// Si corresponde, penaliza al usuario
 		if (datos.duracion) procesos.usuario_Penalizar(edicion.editado_por_id, motivo);
