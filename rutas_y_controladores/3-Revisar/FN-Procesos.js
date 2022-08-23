@@ -17,9 +17,9 @@ module.exports = {
 		let creado_id = status.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
 		let PA = await tablero_obtenerRegs(...campos);
-		// - Obtener los resultados de status altas_aprob sin edición
-		let altas_aprob_id = status.find((n) => n.altas_aprob).id;
-		campos = [entidades, ahora, altas_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
+		// - Obtener los resultados de status creado_aprob sin edición
+		let creado_aprob_id = status.find((n) => n.creado_aprob).id;
+		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 		let SE = await tablero_obtenerRegs(...campos);
 		SE = SE.filter((n) => !n.ediciones.length);
 		// - Obtener los resultados de status inactivar_id
@@ -42,9 +42,9 @@ module.exports = {
 
 		// Declarar las variables
 		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
-		let altas_aprob_id = status.find((n) => n.altas_aprob).id;
+		let creado_aprob_id = status.find((n) => n.creado_aprob).id;
 		let aprobado_id = status.find((n) => n.aprobado).id;
-		let grs_aprobado = [altas_aprob_id, aprobado_id];
+		let grs_aprobado = [creado_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
@@ -688,7 +688,7 @@ let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
 	// 2. Averigua si tiene errores
 	let entidadOrig = compartidas.obtieneEntidadOrigDesdeEdicion(prodEdic);
 	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-	// 2. Acciones si el original no tiene errores y está en status 'altas_aprob'
+	// 2. Acciones si el original no tiene errores y está en status 'creado_aprob'
 	if (!errores.hay && prodOrig.status_registro.creado_aprob) {
 		// Genera la información a actualizar en el registro original
 		let datos = {
