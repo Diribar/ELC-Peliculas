@@ -2,7 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "historial_rclv_eliminados";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
-		nombres_rech: {type: dt.STRING(50)},
+		nombre_rech: {type: dt.STRING(50)},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},
