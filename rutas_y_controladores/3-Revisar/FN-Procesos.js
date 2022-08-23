@@ -345,10 +345,10 @@ module.exports = {
 		let valorEdic = valorDelCampo(prodEdic, campo);
 		if (valorOrig === null) valorOrig = "-";
 		// Obtiene los valores 'aprobado' y 'rechazado'
-		let valors_aprob = aprobado ? valorEdic : valorOrig;
+		let valor_aprob = aprobado ? valorEdic : valorOrig;
 		let valor_rech = !aprobado ? valorEdic : valorOrig;
 		// Fin
-		return {valors_aprob, valor_rech};
+		return {valor_aprob, valor_rech};
 	},
 
 	// RCLV Alta
@@ -380,7 +380,7 @@ module.exports = {
 				entidad_id: RCLV_original.id,
 				campo: campoComparar.campo,
 				titulo: campoComparar.titulo,
-				valors_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
+				valor_aprob: RCLV_valorVinculo(RCLV_actual, campoComparar.campo),
 				input_por_id: RCLV_original.creado_por_id,
 				input_en: RCLV_original.creado_en,
 				evaluado_por_id: userID,
