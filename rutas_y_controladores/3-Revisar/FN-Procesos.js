@@ -346,9 +346,9 @@ module.exports = {
 		if (valorOrig === null) valorOrig = "-";
 		// Obtiene los valores 'aprobado' y 'rechazado'
 		let valor_aprob = aprobado ? valorEdic : valorOrig;
-		let valor_rech = !aprobado ? valorEdic : valorOrig;
+		let valors_rech = !aprobado ? valorEdic : valorOrig;
 		// Fin
-		return {valor_aprob, valor_rech};
+		return {valor_aprob, valors_rech};
 	},
 
 	// RCLV Alta
@@ -387,14 +387,14 @@ module.exports = {
 				evaluado_en: ahora,
 			};
 			if (RCLV_original[campoComparar.campo] != RCLV_actual[campoComparar.campo]) {
-				datos.valor_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
+				datos.valors_rech = RCLV_valorVinculo(RCLV_original, campoComparar.campo);
 				datos.motivo_id = motivoGenericoID;
 			}
 			// Guardar los registros
 			let entidad =
 				RCLV_original[campoComparar.campo] == RCLV_actual[campoComparar.campo]
 					? "edics_aprob"
-					: "edic_rech";
+					: "edics_rech";
 			await BD_genericas.agregarRegistro(entidad, datos);
 		}
 		return;
@@ -647,7 +647,7 @@ let usuario_CalidadAltas = async (userID) => {
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
 	let cantAprob = usuario.prods_aprob;
-	let cantRech = usuario.prod_rech;
+	let cantRech = usuario.prods_rech;
 	// 3. Precisión de altas
 	let cantAltas = cantAprob + cantRech;
 	let calidadInputs = cantAltas ? parseInt((cantAprob / cantAltas) * 100) + "%" : "-";
@@ -666,7 +666,7 @@ let usuario_CalidadEdic = async (userID) => {
 	let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 	// 2. Contar los casos aprobados y rechazados
 	let cantAprob = usuario.edics_aprob;
-	let cantRech = usuario.edic_rech;
+	let cantRech = usuario.edics_rech;
 	// 3. Precisión de ediciones
 	let cantEdics = cantAprob + cantRech;
 	let calidadInputs = cantEdics ? parseInt((cantAprob / cantEdics) * 100) + "%" : "-";

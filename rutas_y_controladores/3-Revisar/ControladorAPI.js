@@ -12,7 +12,7 @@ module.exports = {
 		// Variables
 		const {entidad: prodEntidad, id: prodID} = req.query;
 		const altaAprob = req.query.aprob == "true";
-		const decision = edicAprob ? "prods_aprob" : "prod_rech";
+		const decision = edicAprob ? "prods_aprob" : "prods_rech";
 		const userID = req.session.usuario.id;
 		const ahora = compartidas.ahora();
 		// Obtiene el nuevo status_id
@@ -229,7 +229,7 @@ module.exports = {
 		// Variables
 		const {prodEntidad, prodID, edicion_id: edicID, campo} = req.query;
 		const edicAprob = req.query.aprob == "true";
-		const decision = edicAprob ? "edics_aprob" : "edic_rech";
+		const decision = edicAprob ? "edics_aprob" : "edics_rech";
 		const userID = req.session.usuario.id;
 		let datos;
 		// Obtiene el registro editado
@@ -326,7 +326,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 
 	// Variables
 	const edicAprob = req.query.aprob == "true";
-	const decision = edicAprob ? "edics_aprob" : "edic_rech";
+	const decision = edicAprob ? "edics_aprob" : "edics_rech";
 	const {entidad, id, campo} = req.query;
 	const userID = req.session.usuario.id;
 	let datos;
@@ -356,7 +356,7 @@ let accionesEnUsuario = async (req, original, edicion) => {
 		// Obtiene los valores aprob/rech de edición
 		let valoresAprobRech = await procesos.prodEdics_aprobRech(edicAprob, original, edicion, campo);
 		datos = {...datos, ...valoresAprobRech};
-		// Actualiza la BD de 'edics_aprob' / 'edicion_rech'
+		// Actualiza la BD de 'edics_aprob' / 'edicions_rech'
 		BD_genericas.agregarRegistro(decision, datos);
 		// Si corresponde, penaliza al usuario
 		if (datos.duracion) procesos.usuario_Penalizar(edicion.editado_por_id, motivo);

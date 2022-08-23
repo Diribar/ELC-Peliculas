@@ -80,13 +80,13 @@ let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 		: 0;
 	// Obtener la cantidad de rechazos
 	const rech = producto
-		? usuario.prod_rech
+		? usuario.prods_rech
 		: rclv
-		? usuario.rclv_rech
+		? usuario.rclvs_rech
 		: links
-		? usuario.link_rech
+		? usuario.links_rech
 		: edicion
-		? usuario.edic_rech
+		? usuario.edics_rech
 		: 0;
 	// Preparar los parámetros
 	const cantMinima = parseInt(process.env.cantMinima);

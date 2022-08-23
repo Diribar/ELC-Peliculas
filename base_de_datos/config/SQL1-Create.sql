@@ -140,13 +140,13 @@ CREATE TABLE USUARIOS (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
 	prods_aprob SMALLINT DEFAULT 0,
-	prod_rech SMALLINT DEFAULT 0,
+	prods_rech SMALLINT DEFAULT 0,
 	rclvs_aprob SMALLINT DEFAULT 0,
-	rclv_rech SMALLINT DEFAULT 0,
+	rclvs_rech SMALLINT DEFAULT 0,
 	links_aprob SMALLINT DEFAULT 0,
-	link_rech SMALLINT DEFAULT 0,
+	links_rech SMALLINT DEFAULT 0,
 	edics_aprob SMALLINT DEFAULT 0,
-	edic_rech SMALLINT DEFAULT 0,
+	edics_rech SMALLINT DEFAULT 0,
 
 	penalizac_acum DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	penalizado_en DATETIME NULL,
@@ -308,7 +308,7 @@ CREATE TABLE edic_registros_rech (
 	entidad_id INT UNSIGNED NOT NULL,
 	campo VARCHAR(20) NOT NULL,
 	titulo VARCHAR(21) NOT NULL,
-	valor_rech VARCHAR(50) NULL,
+	valors_rech VARCHAR(50) NULL,
 	valor_aprob VARCHAR(50) NULL,
 	
 	motivo_id TINYINT UNSIGNED NOT NULL,
@@ -1230,7 +1230,7 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 CREATE TABLE aux_historial_de_rclv_eliminados(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
-	nombre_rech VARCHAR(50) NULL,
+	nombres_rech VARCHAR(50) NULL,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME NOT NULL,
