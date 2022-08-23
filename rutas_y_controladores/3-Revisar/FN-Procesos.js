@@ -339,7 +339,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	prodEdics_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
+	prodEdic_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
