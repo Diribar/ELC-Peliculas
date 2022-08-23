@@ -140,13 +140,13 @@ CREATE TABLE USUARIOS (
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
 	prods_aprob SMALLINT DEFAULT 0,
-	prodss_rech SMALLINT DEFAULT 0,
+	prods_rech SMALLINT DEFAULT 0,
 	rclvs_aprob SMALLINT DEFAULT 0,
-	rclvss_rech SMALLINT DEFAULT 0,
+	rclvs_rech SMALLINT DEFAULT 0,
 	links_aprob SMALLINT DEFAULT 0,
-	linkss_rech SMALLINT DEFAULT 0,
+	links_rech SMALLINT DEFAULT 0,
 	edics_aprob SMALLINT DEFAULT 0,
-	edicss_rech SMALLINT DEFAULT 0,
+	edics_rech SMALLINT DEFAULT 0,
 
 	penalizac_acum DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	penalizado_en DATETIME NULL,
@@ -235,7 +235,7 @@ CREATE TABLE edics_aprob (
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /* RECHAZO DE ALTAS */;
-CREATE TABLE altas_motivoss_rech (
+CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(41) NOT NULL,
@@ -246,25 +246,25 @@ CREATE TABLE altas_motivoss_rech (
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO altas_motivoss_rech (id, orden, duracion, comentario, prod, rclv, links)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, rclv, links)
 VALUES
 (100, 100, 0, 'Otro motivo', 1, 1, 1)
 ;
-INSERT INTO altas_motivoss_rech (id, orden, duracion, comentario, prod, bloquear_aut_input)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloquear_aut_input)
 VALUES
 (11, 1, 0.2, 'Producto duplicado', 1, 0),
 (12, 2, 1, 'Producto ajeno a nuestro perfil', 1, 0),
 (13, 3, 90, 'Producto ofensivo a nuestro perfil', 1, 1),
 (14, 4, 180, 'Producto ofensivo con pornografía', 1, 1)
 ;
-INSERT INTO altas_motivoss_rech (id, orden, duracion, comentario, links, bloquear_aut_input)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloquear_aut_input)
 VALUES
 (21, 1, 0, 'Link reemplazado por otro más acorde', 1, 0),
 (22, 2, 0.2, 'Link a video no disponible', 1, 0),
 (23, 3, 10, 'Link a video sin relación con el producto', 1, 0),
 (24, 4, 90, 'Link a video sin relación y ofensivo', 1, 1)
 ;
-INSERT INTO altas_motivoss_rech (id, orden, duracion, comentario, rclv)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES
 (31, 1, 0.2, 'Nombre mal escrito', 1),
 (32, 2, 1, 'Nombre spam', 1),
@@ -272,7 +272,7 @@ VALUES
 (34, 4, 0, 'En desuso', 1)
 ;
 /* RECHAZO DE EDICIONES */;
-CREATE TABLE edic_motivoss_rech (
+CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(40) NOT NULL,
@@ -286,23 +286,23 @@ CREATE TABLE edic_motivoss_rech (
 	generico BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO edic_motivoss_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar, prod, rclv, links, generico)
 VALUES (1, 1, 0.2, 'Es mejor la versión actual', 1, 1, 1, 1, 1);
-INSERT INTO edic_motivoss_rech (id, orden, duracion, comentario, prod, rclv, links, info_erronea)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, prod, rclv, links, info_erronea)
 VALUES
 (11, 11, 0.2, 'Ortografía, gramática, sintaxis', 1, 1, 0, 0),
 (12, 12, 0.2, 'Información errónea', 1, 1, 1, 1),
 (13, 13, 10, 'Spam', 1, 0, 0, 0)
 ;
-INSERT INTO edic_motivoss_rech (id, orden, duracion, comentario, avatar)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, avatar)
 VALUES
 (21, 21, 10, 'La imagen no corresponde al producto', 1),
 (22, 22, 0.1, 'Imagen de poca nitidez', 1),
 (23, 23, 10, 'No es un archivo de imagen válido', 1)
 ;
-INSERT INTO edic_motivoss_rech (id, orden, duracion, comentario, rclv)
+INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
-CREATE TABLE edicss_rech (
+CREATE TABLE edics_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
@@ -322,7 +322,7 @@ CREATE TABLE edicss_rech (
 	comunicado_en DATETIME NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (motivo_id) REFERENCES edic_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES edic_motivos_rech(id),
 	FOREIGN KEY (input_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (evaluado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -489,7 +489,7 @@ CREATE TABLE rclv_1personajes (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, creado_en, nombre) 
@@ -560,7 +560,7 @@ CREATE TABLE rclv_2hechos (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_2hechos (id, jss, cnt, creado_por_id, status_registro_id, creado_en, nombre)
@@ -619,7 +619,7 @@ CREATE TABLE rclv_3valores (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO rclv_3valores (id, creado_por_id, status_registro_id, creado_en, nombre)
@@ -749,7 +749,7 @@ CREATE TABLE prod_1peliculas (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -848,7 +848,7 @@ CREATE TABLE prod_2colecciones (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -947,7 +947,7 @@ CREATE TABLE prod_3capitulos (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	
 	FOREIGN KEY (links_gratuitos_cargados_id) REFERENCES prod_si_no_parcial(id),
@@ -1136,7 +1136,7 @@ CREATE TABLE links (
 
 	FOREIGN KEY (status_registro_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id)
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO links (id, pelicula_id, coleccion_id, capitulo_id, url, calidad, castellano, completo, parte, tipo_id, prov_id, gratuito, creado_por_id, creado_en, status_registro_id)
 VALUES 
@@ -1223,7 +1223,7 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 
 	FOREIGN KEY (sugerido_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (analizado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id),
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_original_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (status_final_id) REFERENCES aux_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1244,7 +1244,7 @@ CREATE TABLE aux_historial_de_rclv_eliminados(
 	PRIMARY KEY (id),
 	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (eliminado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivoss_rech(id)
+	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;
