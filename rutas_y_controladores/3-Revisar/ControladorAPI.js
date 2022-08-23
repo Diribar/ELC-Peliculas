@@ -11,18 +11,18 @@ module.exports = {
 	prodAlta: async (req, res) => {
 		// Variables
 		const {entidad: prodEntidad, id: prodID} = req.query;
-		const altaAprob = req.query.aprob == "true";
+		const creadoAprob = req.query.aprob == "true";
 		const decision = edicAprob ? "prods_aprob" : "prods_rech";
 		const userID = req.session.usuario.id;
 		const ahora = compartidas.ahora();
 		// Obtiene el nuevo status_id
 		const status = req.session.status_registro;
-		let nuevoStatusID = altaAprob
-			? status.find((n) => n.altas_aprob).id
+		let nuevoStatusID = creadoAprob
+			? status.find((n) => n.creado_aprob).id
 			: status.find((n) => n.inactivo).id;
 		// Obtiene el motivo si es un rechazo
-		if (!altaAprob) var {motivo_id} = req.query;
-		if (!altaAprob && !motivo_id) return res.json("false");
+		if (!creadoAprob) var {motivo_id} = req.query;
+		if (!creadoAprob && !motivo_id) return res.json("false");
 		// Amplía la info
 		let datos = {
 			status_registro_id: nuevoStatusID,
@@ -44,9 +44,9 @@ module.exports = {
 			analizado_en: ahora,
 			status_original_id: status.find((n) => n.creado).id,
 			status_final_id: nuevoStatusID,
-			aprobado: altaAprob,
+			aprobado: creadoAprob,
 		};
-		if (!altaAprob) {
+		if (!creadoAprob) {
 			var motivo = await BD_genericas.obtenerPorCampos("edic_motivos_rech", {info_erronea: true});
 			datos.motivo_id = motivo.id;
 			datos.duracion = motivo.duracion;
@@ -159,7 +159,7 @@ module.exports = {
 	linkAlta: async (req, res) => {
 		// Variables
 		const {prodEntidad, prodID, url, motivo_id} = req.query;
-		const altaAprob = req.query.aprob == "true";
+		const creadoAprob = req.query.aprob == "true";
 		const userID = req.session.usuario.id;
 		const status = req.session.status_registro;
 		const sts_aprobado = status.find((n) => n.aprobado).id;
@@ -180,25 +180,25 @@ module.exports = {
 		if (!creado && !gr_provisorios)
 			return res.json({mensaje: "En este status no se puede procesos", reload: true});
 		// Variables
-		let decision = (!inactivar && altaAprob) || (inactivar && !altaAprob); // Obtiene si la decisión valida al sugerido
+		let decision = (!inactivar && creadoAprob) || (inactivar && !creadoAprob); // Obtiene si la decisión valida al sugerido
 		let sugerido_por_id = creado ? link.creado_por_id : link.sugerido_por_id;
-		motivo_id = !creado || !altaAprob ? (creado ? motivo_id : link.motivo_id) : null;
+		motivo_id = !creado || !creadoAprob ? (creado ? motivo_id : link.motivo_id) : null;
 		// USUARIO - Actualizaciones
 		let campo = "link_" + (decision ? "aprob" : "rech");
 		BD_genericas.aumentarElValorDeUnCampo("usuarios", sugerido_por_id, campo, 1);
 		// USUARIO - Verifica la penalidad - sólo para 'creado/recuperar' + 'rechazado'
-		if (!inactivar && !altaAprob) {
+		if (!inactivar && !creadoAprob) {
 			var motivo = await BD_genericas.obtenerPorId("altas_motivos_rech", motivo_id);
 			procesos.usuario_Penalizar(sugerido_por_id, motivo);
 		}
 		// LINK - Pasa a status aprobado/rechazado -
-		datos = {status_registro_id: altaAprob ? sts_aprobado : st_inactivo};
+		datos = {status_registro_id: creadoAprob ? sts_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
 			datos.alta_analizada_en = compartidas.ahora();
 			datos.lead_time_creacion = 1;
-			if (!altaAprob) {
+			if (!creadoAprob) {
 				datos.sugerido_por_id = userID;
 				datos.sugerido_en = ahora;
 				datos.motivo_id = motivo_id;
@@ -214,14 +214,14 @@ module.exports = {
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: altaAprob ? sts_aprobado : st_inactivo,
+			status_final_id: creadoAprob ? sts_aprobado : st_inactivo,
 			aprobado: decision,
 			motivo_id,
 			duracion,
 		};
 		BD_genericas.agregarRegistro("historial_cambios_de_status", datos);
 		// PRODUCTO - Actualizar si tiene links gratuitos
-		if (altaAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
+		if (creadoAprob) procesos.links_prodCampoLG_OK(prodEntidad, prodID);
 		// Se recarga la vista
 		return res.json({mensaje: "Status actualizado", reload: true});
 	},
@@ -284,7 +284,7 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 	} else {
 		// Elimina el 'avatar editado'
 		compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEdic.avatar);
-		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'altaAprob')
+		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'creadoAprob')
 		if (prodOrig.status_registro.creado_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
 			compartidas.moverImagen(prodOrig.avatar, "3-ProdRevisar", "2-Productos");
 	}

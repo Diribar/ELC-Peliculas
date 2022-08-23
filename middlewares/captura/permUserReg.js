@@ -60,7 +60,7 @@ module.exports = async (req, res, next) => {
 		if (
 			creado_en < haceUnaHora && // creado hace más de una hora
 			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión
-				(registro.status_registro.creado_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status altaAprob y no es un usuario revisor
+				(registro.status_registro.creado_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status creadoAprob y no es un usuario revisor
 		) {
 			let mensajes = creadoPorElUsuario
 				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
@@ -241,7 +241,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = creadoHaceMenosDeUnaHora();
 	// 2. El registro fue creado hace más de una hora
 	//    El registro está en status creado y la vista no es de revisión
-	//    El registro está en status altaAprob y el usuario no es revisor
+	//    El registro está en status creadoAprob y el usuario no es revisor
 	if (!informacion) informacion = creadoHaceMasDeUnaHora();
 	// 2. El registro está capturado por otro usuario en forma 'activa'
 	if (!informacion) informacion = capturadoPorOtroUsuario();

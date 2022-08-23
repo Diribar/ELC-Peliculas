@@ -38,7 +38,7 @@ module.exports = {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
-		// Y además los productos sean aptos p/captura y en status c/altaAprob o aprobados,
+		// Y además los productos sean aptos p/captura y en status c/creadoAprob o aprobados,
 
 		// Declarar las variables
 		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
@@ -139,7 +139,7 @@ module.exports = {
 		// creado y creados ajeno,
 		//		PA: c/producto o edicProd
 		//		IN: s/producto o edicProd --> inactivarlo
-		// IP: inactivo c/prod --> a status altaAprob
+		// IP: inactivo c/prod --> a status creadoAprob
 		// - SP: aprobado, s/producto o edicProd
 
 		// Declarar las variables
