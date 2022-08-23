@@ -162,7 +162,7 @@ module.exports = {
 		const creadoAprob = req.query.aprob == "true";
 		const userID = req.session.usuario.id;
 		const status = req.session.status_registro;
-		const sts_aprobado = status.find((n) => n.aprobado).id;
+		const st_aprobado = status.find((n) => n.aprobado).id;
 		const st_inactivo = status.find((n) => n.inactivo).id;
 		const ahora = compartidas.ahora();
 		let datos;
@@ -192,7 +192,7 @@ module.exports = {
 			procesos.usuario_Penalizar(sugerido_por_id, motivo);
 		}
 		// LINK - Pasa a status aprobado/rechazado -
-		datos = {status_registro_id: creadoAprob ? sts_aprobado : st_inactivo};
+		datos = {status_registro_id: creadoAprob ? st_aprobado : st_inactivo};
 		if (creado) {
 			// Datos para el link
 			datos.alta_analizada_por_id = userID;
@@ -214,7 +214,7 @@ module.exports = {
 			analizado_por_id: userID,
 			analizado_en: ahora,
 			status_original_id: link.status_registro_id,
-			status_final_id: creadoAprob ? sts_aprobado : st_inactivo,
+			status_final_id: creadoAprob ? st_aprobado : st_inactivo,
 			aprobado: decision,
 			motivo_id,
 			duracion,
