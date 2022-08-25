@@ -195,7 +195,7 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	gr_pends_aprob BOOLEAN DEFAULT 0,
+	gr_creado BOOLEAN DEFAULT 0,
 	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_pasivos BOOLEAN DEFAULT 0,
@@ -208,8 +208,8 @@ CREATE TABLE aux_status_registro (
 	recuperar BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pends_aprob) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_pends_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_creado) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_creado) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);

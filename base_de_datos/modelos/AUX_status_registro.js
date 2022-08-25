@@ -3,7 +3,7 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(25)},
-		gr_pends_aprob: {type: dt.BOOLEAN},
+		gr_creado: {type: dt.BOOLEAN},
 		gr_estables: {type: dt.BOOLEAN},
 		gr_provisorios: {type: dt.BOOLEAN},
 		gr_pasivos: {type: dt.BOOLEAN},

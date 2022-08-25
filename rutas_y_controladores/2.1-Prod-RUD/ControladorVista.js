@@ -67,7 +67,7 @@ module.exports = {
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
-			let statusResumido = prodCombinado.status_registro.gr_pends_aprob
+			let statusResumido = prodCombinado.status_registro.gr_creado
 				? {id: 1, nombre: "Pend. Aprobac."}
 				: prodCombinado.status_registro.aprobado
 				? {id: 2, nombre: "Aprobado"}
