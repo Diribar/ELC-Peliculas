@@ -155,7 +155,7 @@ module.exports = {
 				prodCombinado.temporada
 			);
 		// Ir a la vista
-		// return res.send(paises)
+		//return res.send(bloquesDerecha)
 		return res.render("CR0-0Estructura", {
 			tema,
 			codigo,

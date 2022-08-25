@@ -3,10 +3,9 @@
 	<label><%= registro.titulo %></label>
 	<div class="input-error">
 		<!-- Input -->
+		<% if (!registro || !registro.valores || !Array.isArray(registro.valores)) console.log(6, campo, registro) %> 
 		<select name="<%= campo %>" class="input RCLV" autofocus>
-			<option value="" class="ocultar">Elegí una opción</option>
-			<option value="1" <% if (dataEntry[campo] == 1) { %>selected<% } %>>Ninguno</option>
-			<% console.log(campo) %>
+			<option value="1">Ninguno</option>
 			<% for (let valor of registro.valores.filter(n => n.id > 1)) { %>
 				<option value="<%= valor.id %>" 
 					class="RCLV

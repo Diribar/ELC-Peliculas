@@ -128,11 +128,11 @@ module.exports = {
 							(n.status_registro.creado && n.creado_por_id == userID)
 					)
 				);
+				if (!Array.isArray(aux)) console.log(131, campo, aux);
 				aux.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 				registrosRCLV[campo] = aux;
-				console.log(133, aux);
+				if (!Array.isArray(aux)) console.log(134, campo, aux);
 			});
-		console.log(135, userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",

@@ -29,7 +29,7 @@ router.get("/api/validar-sector", API.validarSector);
 router.get("/agregar", ...todosAgregar, vista.altaEdicForm);
 router.post("/agregar", ...todosAgregar, vista.altaEdicGrabar);
 router.get("/edicion", ...todos, vista.altaEdicForm);
-router.post("/edicion", ...todos, vista.altaEdicGrabar);
+router.post("/edicion", ...todos, capturaInactivar, vista.altaEdicGrabar);
 router.get("/detalle", entidad, id, capturaInactivar, vista.detalle);
 // router.get("/inactivar", ...todos, vista.inactivar);
 // router.get("/recuperar", ...todos, vista.recuperar);

@@ -27,7 +27,7 @@ module.exports = {
 		}
 	},
 	// ControllerVista (desambiguarForm)
-	prepararMensaje: (desambiguar) => {
+	DS_prepararMensaje: (desambiguar) => {
 		let prod_nuevos = desambiguar.resultados.filter((n) => !n.YaEnBD);
 		let prod_yaEnBD = desambiguar.resultados.filter((n) => n.YaEnBD);
 		let coincidencias = desambiguar.resultados.length;
@@ -49,7 +49,7 @@ module.exports = {
 
 	// MOVIES *****************************
 	// ControllerVista (desambiguarGuardar)
-	infoTMDBparaDD_movie: async (datos) => {
+	DS_infoTMDBparaDD_movie: async (datos) => {
 		// La entidad puede ser 'peliculas' o 'capitulos', y se agrega más adelante
 		datos = {...datos, fuente: "TMDB", TMDB_entidad: "movie"};
 		// Obtener las API
@@ -133,7 +133,7 @@ module.exports = {
 
 	// COLLECTIONS ************************
 	// ControllerVista (desambiguarGuardar)
-	infoTMDBparaDD_collection: async function (datos) {
+	DS_infoTMDBparaDD_collection: async function (datos) {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
@@ -186,7 +186,7 @@ module.exports = {
 			// Por cada capítulo, agregar un método de cada campo con sus valores sin repetir
 			// Paises_id
 			if (datosAPI.production_countries.length > 0)
-				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(" ") + ", ";
+				paises_id += datosAPI.production_countries.map((n) => n.iso_3166_1).join(", ") + ", ";
 			// Producción
 			if (datosAPI.production_companies.length > 0)
 				produccion += consolidarValores(datosAPI.production_companies) + ", ";
@@ -202,7 +202,7 @@ module.exports = {
 		}
 		// Procesar los resultados
 		let cantCapitulos = datos.capitulosTMDB_id.length;
-		if (paises_id) exportar.paises_id = datosColeccion(paises_id, cantCapitulos);
+		if (paises_id) exportar.paises_id = datosColeccion(paises_id, cantCapitulos).replace(/,/g, "");
 		if (produccion) exportar.produccion = datosColeccion(produccion, cantCapitulos);
 		if (direccion) exportar.direccion = datosColeccion(direccion, cantCapitulos);
 		if (guion) exportar.guion = datosColeccion(guion, cantCapitulos);
@@ -234,7 +234,7 @@ module.exports = {
 				datosCap.subcategoria_id = datosCol.subcategoria_id;
 				datosCap.publico_sugerido_id = datosCol.publico_sugerido_id;
 				// Guardar los datos del capítulo
-				await this.infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
+				await this.DS_infoTMDBparaDD_movie({TMDB_id: capituloTMDB_Id})
 					.then((n) => (n = {...n, ...datosCap}))
 					.then((n) => BD_genericas.agregarRegistro("capitulos", n));
 			}
@@ -254,7 +254,7 @@ module.exports = {
 
 	// TV *********************************
 	// ControllerVista (desambiguarGuardar)
-	infoTMDBparaDD_tv: async (datos) => {
+	DS_infoTMDBparaDD_tv: async (datos) => {
 		// Datos obtenidos sin la API
 		datos = {
 			...datos,
@@ -513,8 +513,10 @@ let datosColeccion = (datos, cantCapitulos) => {
 				delete repeticiones[indice];
 			}
 		}
-		// 1: Los máximos, siempre que sean más de uno
-		if (resultado.length > 1 && frecuencia == frecMaxima - 1) break;
+		// 1: Los máximos, siempre que:
+		//     - Sean más de uno y se hayan hecho por lo menos 2 ruedas
+		//     - Se haya hecho la primera de dos ruedas
+		if ((resultado.length > 1 && frecuencia == frecMaxima - 1) || frecMaxima == 2) break;
 		// 2: Los máximos tres
 		if (resultado.length > 2) break;
 		// 3: Si hay resultados y la frecuencia ya es muy baja, ¡STOP!

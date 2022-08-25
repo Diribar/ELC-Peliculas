@@ -143,15 +143,13 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
 				: longitud(datos.musica, 3, 100)
 				? longitud(datos.musica, 3, 100)
-				: letrasValidasCastellano(datos.musica)
-				? cartelCastellano
 				: "";
 		if (campos.includes("actuacion"))
 			errores.actuacion = !datos.actuacion
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 3, 500)
 				? longitud(datos.actuacion, 3, 500)
-				: letrasValidasCastellano(datos.actuacion)
+				: letrasValidasCastellanoActuacion(datos.actuacion)
 				? cartelCastellano
 				: "";
 		if (campos.includes("avatar"))
@@ -186,6 +184,12 @@ module.exports = {
 			if (datos.ano_estreno > datos.ano_fin)
 				errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
+		// Letras válidas castellano reducido
+		camposPosibles = ["direccion", "guion", "produccion", "musica"];
+		for (let campo of camposPosibles)
+			if (!errores[campo] && datos[campo] && letrasValidasCastellanoReducido(datos[campo]))
+				errores[campo] = cartelCastellano;
+
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
@@ -282,9 +286,18 @@ let cartelRepetido = (datos) => {
 	);
 };
 let letrasValidasCastellano = (dato) => {
-	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&$:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
 	// \d: any decimal
 	// \r: carriage return
 	// \n: new line
+	return !formato.test(dato);
+};
+let letrasValidasCastellanoActuacion = (dato) => {
+	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.'()\d]+$/;
+	return !formato.test(dato);
+};
+let letrasValidasCastellanoReducido = (dato) => {
+	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,']+$/;
+	console.log(!formato.test(dato));
 	return !formato.test(dato);
 };

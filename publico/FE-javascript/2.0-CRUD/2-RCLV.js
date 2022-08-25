@@ -1,11 +1,8 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Varieables que se obtienen del url
+	// Variables que se obtienen del url
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let id = new URL(window.location.href).searchParams.get("id");
-	let origen = new URL(window.location.href).searchParams.get("origen");
-	let prodEntidad = new URL(window.location.href).searchParams.get("prodEntidad");
-	let prodID = new URL(window.location.href).searchParams.get("prodID");
 	// Obtener la entidad en formato booleano
 	let personajes = entidad == "personajes";
 	let hechos = entidad == "hechos";
@@ -17,12 +14,6 @@ window.addEventListener("load", async () => {
 	// Rutas
 	let rutaValidacion = "/rclv/api/validar-sector/?sector=";
 	let rutaOtrosCasos = "/rclv/api/otros-casos/";
-	let rutaSalir =
-		origen == "DP"
-			? "/producto/agregar/datos-personalizados"
-			: origen == "ED"
-			? "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID
-			: "";
 
 	// Links a otros sitios
 	let wiki = document.querySelector("#dataEntry #wiki");
@@ -68,9 +59,6 @@ window.addEventListener("load", async () => {
 		var ap_mar_id = document.querySelector("select[name='ap_mar_id']");
 		var santosanta = document.querySelector("#dataEntry #santosanta");
 		// Para ocultar
-		var sectorGeneroRol = document.querySelector("#preguntas #sectorGeneroRol");
-		var sectorRol_iglesia = document.querySelector("#preguntas #sectorRol_iglesia");
-		var sectorEnProceso = document.querySelector("#preguntas #sectorEnProceso");
 		var sector_cnt = document.querySelector("#preguntas #sector_cnt");
 		var sectorAp_mar = document.querySelector("#preguntas #sectorApMar");
 	}
@@ -86,120 +74,121 @@ window.addEventListener("load", async () => {
 		// Para ocultar
 		var sector_jss = document.querySelector("#preguntas #sector_jss");
 		var sector_cnt = document.querySelector("#preguntas #sector_cnt");
-		var sectorExclusivo = document.querySelector("#preguntas #sectorExclusivo");
 		var sectorApMar = document.querySelector("#preguntas #sectorApMar");
 	}
 
 	// Funciones ************************
 	// Validaciones
-	let validarNombre = async (tipo) => {
-		// Verificar errores en el nombre
-		let params = "&nombre=" + nombre.value + "&entidad=" + entidad;
-		if (id) params += "&id=" + id;
-		errores.nombre = await fetch(rutaValidacion + "nombre" + tipo + params).then((n) => n.json());
-		// Consolidar la info
-		OK.nombre = !errores.nombre;
-		// Fin
-		return;
-	};
-	let validarFechas = async () => {
-		// Si se conoce la fecha...
-		if (!desconocida.checked) {
-			// Se averigua si hay un error con la fecha
-			let params = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
-			errores.fecha = await fetch(rutaValidacion + "fecha" + params).then((n) => n.json());
-			OK.fecha = !errores.fecha;
-			// Agregar los registros que tengan esa fecha
-			if (OK.fecha) {
-				errores.repetidos = await registrosConEsaFecha(mes_id.value, dia.value);
-				OK.repetidos = !errores.repetidos;
-			} else OK.repetidos = false;
-		} else {
-			// OK y Errores
-			errores.fecha = "";
-			errores.repetidos = "";
-			OK.fecha = true;
-			OK.repetidos = true;
-			// Limpia los valores de campos relacionados
-			mes_id.value = "";
-			dia.value = "";
-			posiblesRepetidos.innerHTML = "";
-		}
-		return;
-	};
-	let validarRepetido = () => {
-		let casos = document.querySelectorAll("#posiblesRepetidos li input");
-		errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
-		OK.repetidos = !errores.repetidos;
-		return;
-	};
-	let validarAno = async () => {
-		// Se averigua si hay un error con el año
-		let params = "&ano=" + ano.value;
-		errores.ano = await fetch(rutaValidacion + "ano" + params).then((n) => n.json());
-		OK.ano = !errores.ano;
-		//
-		if (OK.ano) {
-			if (personajes) {
-				// Contemporáneo de Jesús
-				if (ano.value < -50 || ano.value > 100) {
-					cnt[1].checked = true;
-					cnt[1].disabled = false;
-					cnt[0].disabled = true;
-					sector_cnt.classList.add("ocultarPorAno");
-				} else {
-					cnt[0].disabled = false;
-					sector_cnt.classList.remove("ocultarPorAno");
-				}
-				// Aparición Mariana
-				if (ano.value < 0) {
-					ap_mar[1].checked = true;
-					ap_mar[1].disabled = false;
-					ap_mar[0].disabled = true;
-					sectorAp_mar.classList.add("ocultarPorAno");
-				} else {
-					ap_mar[0].disabled = false;
-					sectorAp_mar.classList.remove("ocultarPorAno");
-				}
+	let validar = {
+		nombre: async (tipo) => {
+			// Verificar errores en el nombre
+			let params = "&nombre=" + nombre.value + "&entidad=" + entidad;
+			if (id) params += "&id=" + id;
+			errores.nombre = await fetch(rutaValidacion + "nombre" + tipo + params).then((n) => n.json());
+			// Consolidar la info
+			OK.nombre = !errores.nombre;
+			// Fin
+			return;
+		},
+		fechas: async () => {
+			// Si se conoce la fecha...
+			if (!desconocida.checked) {
+				// Se averigua si hay un error con la fecha
+				let params = "&mes_id=" + mes_id.value + "&dia=" + dia.value;
+				errores.fecha = await fetch(rutaValidacion + "fecha" + params).then((n) => n.json());
+				OK.fecha = !errores.fecha;
+				// Agregar los registros que tengan esa fecha
+				if (OK.fecha) {
+					errores.repetidos = await registrosConEsaFecha(mes_id.value, dia.value);
+					OK.repetidos = !errores.repetidos;
+				} else OK.repetidos = false;
+			} else {
+				// OK y Errores
+				errores.fecha = "";
+				errores.repetidos = "";
+				OK.fecha = true;
+				OK.repetidos = true;
+				// Limpia los valores de campos relacionados
+				mes_id.value = "";
+				dia.value = "";
+				posiblesRepetidos.innerHTML = "";
 			}
-			if (hechos) {
-				// Vida de Jesús
-				if (ano.value > 33) {
-					jss[1].checked = true;
-					jss[1].disabled = false;
-					jss[0].disabled = true;
-					sector_jss.classList.add("ocultarPorAno");
-				} else {
-					jss[0].disabled = false;
-					sector_jss.classList.remove("ocultarPorAno");
+			return;
+		},
+		repetido: () => {
+			let casos = document.querySelectorAll("#posiblesRepetidos li input");
+			errores.repetidos = Array.from(casos).some((n) => n.checked) ? cartelDuplicado : "";
+			OK.repetidos = !errores.repetidos;
+			return;
+		},
+		ano: async () => {
+			// Se averigua si hay un error con el año
+			let params = "&ano=" + ano.value;
+			errores.ano = await fetch(rutaValidacion + "ano" + params).then((n) => n.json());
+			OK.ano = !errores.ano;
+			//
+			if (OK.ano) {
+				if (personajes) {
+					// Contemporáneo de Jesús
+					if (ano.value < -50 || ano.value > 100) {
+						cnt[1].checked = true;
+						cnt[1].disabled = false;
+						cnt[0].disabled = true;
+						sector_cnt.classList.add("ocultarPorAno");
+					} else {
+						cnt[0].disabled = false;
+						sector_cnt.classList.remove("ocultarPorAno");
+					}
+					// Aparición Mariana
+					if (ano.value < 0) {
+						ap_mar[1].checked = true;
+						ap_mar[1].disabled = false;
+						ap_mar[0].disabled = true;
+						sectorAp_mar.classList.add("ocultarPorAno");
+					} else {
+						ap_mar[0].disabled = false;
+						sectorAp_mar.classList.remove("ocultarPorAno");
+					}
 				}
-				// Contemp. Jesús
-				if (ano.value > 100) {
-					cnt[1].checked = true;
-					cnt[1].disabled = false;
-					cnt[0].disabled = true;
-					sector_cnt.classList.add("ocultarPorAno");
-				} else {
-					cnt[0].disabled = false;
-					sector_cnt.classList.remove("ocultarPorAno");
+				if (hechos) {
+					// Vida de Jesús
+					if (ano.value > 33) {
+						jss[1].checked = true;
+						jss[1].disabled = false;
+						jss[0].disabled = true;
+						sector_jss.classList.add("ocultarPorAno");
+					} else {
+						jss[0].disabled = false;
+						sector_jss.classList.remove("ocultarPorAno");
+					}
+					// Contemp. Jesús
+					if (ano.value > 100) {
+						cnt[1].checked = true;
+						cnt[1].disabled = false;
+						cnt[0].disabled = true;
+						sector_cnt.classList.add("ocultarPorAno");
+					} else {
+						cnt[0].disabled = false;
+						sector_cnt.classList.remove("ocultarPorAno");
+					}
+					// Aparición Mariana
+					if (ano.value < 33) {
+						ap_mar[1].checked = true;
+						ap_mar[1].disabled = false;
+						ap_mar[0].disabled = true;
+						sectorApMar.classList.add("ocultarPorAno");
+					} else {
+						ap_mar[0].disabled = false;
+						sectorApMar.classList.remove("ocultarPorAno");
+					}
 				}
-				// Aparición Mariana
-				if (ano.value < 33) {
-					ap_mar[1].checked = true;
-					ap_mar[1].disabled = false;
-					ap_mar[0].disabled = true;
-					sectorApMar.classList.add("ocultarPorAno");
-				} else {
-					ap_mar[0].disabled = false;
-					sectorApMar.classList.remove("ocultarPorAno");
-				}
-			}
-			preguntas.classList.remove("ocultar");
-		} else preguntas.classList.add("ocultar");
+				preguntas.classList.remove("ocultar");
+			} else preguntas.classList.add("ocultar");
 
-		// Fin
-		await mostrarRCLI[entidad](false);
-		return;
+			// Fin
+			await mostrarRCLI[entidad](false);
+			return;
+		},
 	};
 	// Auxiliares
 	let diasDelMes = () => {
@@ -425,13 +414,13 @@ window.addEventListener("load", async () => {
 		},
 	};
 	let startUp = async () => {
-		if (nombre.value) await validarNombre("Completo");
+		if (nombre.value) await validar.nombre("Completo");
 		if (mes_id.value) diasDelMes(mes_id, dia);
 		if ((mes_id.value && dia.value) || desconocida.checked) {
-			await validarFechas();
-			validarRepetido();
+			await validar.fechas();
+			validar.repetido();
 		}
-		if (ano && ano.value) await validarAno();
+		if (ano && ano.value) await validar.ano();
 		if (!valores) {
 			if (personajes && categoria_id[0].checked) funcionGenero();
 			await mostrarRCLI[entidad](false);
@@ -478,7 +467,7 @@ window.addEventListener("load", async () => {
 			if (nombre.value.length > 30) nombre.value = nombre.value.slice(0, 30);
 			wiki.href = url_wiki + nombre.value;
 			santopedia.href = url_santopedia + nombre.value;
-			await validarNombre("Express");
+			await validar.nombre("Express");
 			feedback(OK, errores, true);
 		}
 		if (campo == "ano") {
@@ -491,29 +480,50 @@ window.addEventListener("load", async () => {
 	dataEntry.addEventListener("change", async (e) => {
 		let campo = e.target.name;
 		// Campos para todos los RCLV
-		if (campo == "nombre") await validarNombre("Completo");
+		if (campo == "nombre") await validar.nombre("Completo");
 		if (campo == "mes_id") diasDelMes();
 		if (
 			(campo == "mes_id" || campo == "dia" || campo == "desconocida") &&
 			((mes_id.value && dia.value) || desconocida.checked)
 		)
-			await validarFechas();
-		if (campo == "repetido") validarRepetido();
+			await validar.fechas();
+		if (campo == "repetido") validar.repetido();
 		// Campos para !valores
-		if (!valores && campo == "ano") await validarAno();
+		if (!valores && campo == "ano") await validar.ano();
 		// Campos RCLI
 		if (personajes && campo == "genero") funcionGenero();
 		if (!valores && camposRCLI.includes(campo)) await mostrarRCLI[entidad](false);
 		// Final de la rutina
 		feedback(OK, errores);
 	});
+	botonSalir.addEventListener("click", () => {
+		// Variables
+		let entidadID = "?entidad=" + entidad + "&id=" + id;
+		let origen = new URL(window.location.href).searchParams.get("origen");
+		let prodEntidad = new URL(window.location.href).searchParams.get("prodEntidad");
+		let prodID = new URL(window.location.href).searchParams.get("prodID");
+		let prodEntidadID = "&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
+		let rdp = "agregar/datos-personalizados";
+		let rutaOrigen = "/producto/" + (origen == "DP" ? rdp : origen == "ED" ? "edicion/" : "detalle/");
+		let vista = window.location.pathname;
+		vista = vista.slice(0, vista.lastIndexOf("/"));
+		// Ruta salir
+		let rutaSalir =
+			vista == "/rclv/agregar"
+				? // Ir a la vista de origen
+				  rutaOrigen + (origen != "DP" ? "?entidad=" + prodEntidad + "&id=" + prodID : "")
+				: // Inactivar e ir a la vista de origen
+				  "/inactivar-captura/" + entidadID + "&destino=" + origen + prodEntidadID;
+		// Ir a la vista de origen sin guardar cambios
+		window.location.href = rutaSalir;
+	});
 	botonSubmit.addEventListener("click", async (e) => {
 		if (botonSubmit.classList.contains("inactivo")) {
-			await validarNombre("Completo");
-			await validarFechas();
-			validarRepetido();
+			await validar.nombre("Completo");
+			await validar.fechas();
+			validar.repetido();
 			if (!valores) {
-				await validarAno();
+				await validar.ano();
 				await mostrarRCLI[entidad](true);
 			}
 			feedback(OK, errores);
@@ -521,10 +531,6 @@ window.addEventListener("load", async () => {
 			// Grabar cambios e ir a la vista de origen
 			dataEntry.submit();
 		}
-	});
-	botonSalir.addEventListener("click", () => {
-		// Ir a la vista de origen sin guardar cambios
-		window.location.href = rutaSalir;
 	});
 
 	// Status inicial
