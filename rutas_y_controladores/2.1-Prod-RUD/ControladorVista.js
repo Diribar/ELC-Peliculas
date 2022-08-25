@@ -191,7 +191,7 @@ module.exports = {
 		// Unir 'Edición' y 'Original'
 		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar_archivo, id: prodID};
 		// Averiguar si hay errores de validación
-		let errores = await validar.edicion("", {...prodCombinado, entidad});
+		let errores = await validar.consolidado("", {...prodCombinado, entidad});
 		if (errores.hay) {
 			if (req.file) compartidas.borrarArchivo(req.file.path, req.file.filename);
 		} else {

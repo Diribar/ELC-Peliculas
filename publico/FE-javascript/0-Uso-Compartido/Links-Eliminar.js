@@ -46,7 +46,6 @@ window.addEventListener("load", () => {
 				url += "&url=" + encodeURIComponent(links_url[fila].value);
 				url += "&motivo_id=" + motivo_id;
 				let respuesta = await fetch(ruta + url).then((n) => n.json());
-				console.log(respuesta);
 				if (respuesta.ocultar) filas_yaExistentes[fila].classList.add("ocultar");
 				if (respuesta.reload) window.location.reload();
 				if (respuesta.pasivos) pasivos.innerHTML = "* Pasivos";

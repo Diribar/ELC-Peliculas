@@ -88,11 +88,12 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "revision";
 		const codigo = "producto/edicion";
-		// 2. Variables
+		// 2. Constantes
 		const entidad = req.query.entidad;
 		const prodID = req.query.id;
 		const userID = req.session.usuario.id;
 		const producto_id = compartidas.obtenerEntidad_id(entidad);
+		// 3. Variables
 		let edicID = req.query.edicion_id;
 
 		// VERIFICACION1: Si no existe edicID, lo averigua y recarga la vista
@@ -130,7 +131,7 @@ module.exports = {
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Actualiza el status del registro original, si corresponde
-		[quedanCampos, prodEditado] = await procesos.prod_QuedanCampos(prodOriginal, prodEditado);
+		[quedanCampos, prodEditado] = await procesos.prod_Feedback(prodOriginal, prodEditado);
 		//return res.send(prodEditado)
 		if (!quedanCampos) {
 			let informacion = {
@@ -166,7 +167,7 @@ module.exports = {
 			// Obtener los ingresos y reemplazos
 			[ingresos, reemplazos] = procesos.prod_ArmarComparac(prodOriginal, prodEditado);
 			// Obtener el avatar
-			let avatar = prodOriginal.avatar;
+			avatar = prodOriginal.avatar;
 			avatar = avatar
 				? (!avatar.startsWith("http") ? "/imagenes/2-Productos/" : "") + avatar
 				: "/imagenes/8-Agregar/IM.jpg";

@@ -284,12 +284,10 @@ window.addEventListener("load", async () => {
 		boton.addEventListener("click", () => {
 			// Si está inactivo aborta la operación
 			if (boton.className.includes("inactivo")) {
-				console.log("está inactivo");
 				return;
 			}
 			// Acciones si es la edición nueva
 			else if (versiones[indice] == "edicN") {
-				console.log("eliminada");
 				datos.edicN = {...datos.orig, ...datos.edicG};
 			}
 			// Acciones si es la edición guardada

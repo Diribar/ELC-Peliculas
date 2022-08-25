@@ -10,11 +10,12 @@ const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Pro
 
 // Exportar ------------------------------------
 module.exports = {
-	// Entidades
+	// Temas de Entidades
 	quitarLosCamposSinContenido: (objeto) => {
-		for (let campo in objeto) if (objeto[campo] === null) delete objeto[campo];
+		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
+	// Temas de Edición
 	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
 		// Obtener los campos a comparar
 		let campos = [];
@@ -38,17 +39,25 @@ module.exports = {
 				delete edicion[campo];
 		return edicion;
 	},
-	eliminarEdicionSiEstaVacio: async (entidadEdic, entidadEdic_id, datos) => {
+	quedanCampos: (datos) => {
 		// Averiguar si queda algún campo
-		let quedanCampos = !!Object.keys(datos).length;
-		// Eliminar el registro de la edición
-		if (!quedanCampos) await BD_genericas.eliminarPorId(entidadEdic, entidadEdic_id);
-		return quedanCampos;
+		return !!Object.keys(datos).length;
 	},
+	pulirEdicion: function (original, edicion) {
+		// Pulir la información a tener en cuenta
+		edicion = this.quitarLosCamposSinContenido(edicion);
+		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
+		edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
+		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
+		let quedanCampos = this.quedanCampos(edicion);
+		// Fin
+		return [edicion, quedanCampos];
+	},
+	// ABM de registros
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		if (entidad == "links") procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
@@ -71,21 +80,21 @@ module.exports = {
 		// Actualiza el registro 'original' en la BD
 		await BD_genericas.actualizarPorId(entidad, entidad_id, datos);
 	},
-	guardar_edicion: async function (entidad, entidad_edicion, original, edicion, userID) {
+	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Quitar los coincidencias con el original
-		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
+		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
 		// Averiguar si hay algún campo con novedad
-		if (!Object.keys(edicion).length) return "Edición sin novedades respecto al original";
+		if (!quedanCampos) return "Edición sin novedades respecto al original";
 		// Obtener el campo 'entidad_id'
-		let entidad_id = this.obtenerEntidad_id(entidad);
+		let entidad_id = this.obtenerEntidad_id(entidadOrig);
 		// Si existe una edición de ese original y de ese usuario --> eliminarlo
 		let objeto = {[entidad_id]: original.id, editado_por_id: userID};
-		let registroEdic = await BD_genericas.obtenerPorCampos(entidad_edicion, objeto);
-		if (registroEdic) await BD_genericas.eliminarPorId(entidad_edicion, registroEdic.id);
+		let registroEdic = await BD_genericas.obtenerPorCampos(entidadEdic, objeto);
+		if (registroEdic) await BD_genericas.eliminarPorId(entidadEdic, registroEdic.id);
 		// Completar la información
 		edicion = {...edicion, [entidad_id]: original.id, editado_por_id: userID};
 		// Agregar la nueva edición
-		await BD_genericas.agregarRegistro(entidad_edicion, edicion);
+		await BD_genericas.agregarRegistro(entidadEdic, edicion);
 		// Fin
 		return "Edición guardada";
 	},
@@ -156,7 +165,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtenerEntidad: (entidad) => {
+	obtenerEntidadOrig: (entidad) => {
 		return entidad.pelicula_id
 			? "peliculas"
 			: entidad.coleccion_id

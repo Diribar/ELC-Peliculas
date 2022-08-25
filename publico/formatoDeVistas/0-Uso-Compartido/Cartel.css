@@ -1,5 +1,5 @@
 /* Formato general del cartel */
-#cartel {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 11;}
+#cartel {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12;}
 #cartel {padding: 20px; border-radius: 15px; border: 6px double white;}
 #cartel , #cartel * {color:var(--gris-claro)}
 #cartel {background-color: var(--rojo-oscuro);}

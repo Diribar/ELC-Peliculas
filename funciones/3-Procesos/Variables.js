@@ -132,7 +132,7 @@ module.exports = {
 				registrosRCLV[campo] = aux;
 				console.log(133, aux);
 			});
-		console.log(122, userID);
+		console.log(135, userID);
 		return [
 			{
 				titulo: "Existe una versión en castellano",
@@ -286,8 +286,8 @@ module.exports = {
 	// Entorno Revisiones
 	camposRevisarProd: () => {
 		return [
-			{nombreDelCampo: "avatar"},
-			{nombreDelCampo: "avatar_archivo"},
+			{titulo: "Avatar", nombreDelCampo: "avatar"},
+			{titulo: "Avatar (archivo)", nombreDelCampo: "avatar_archivo"},
 			{titulo: "Título original", nombreDelCampo: "nombre_original", input: true},
 			{titulo: "Título en castellano", nombreDelCampo: "nombre_castellano", input: true},
 			{titulo: "Año de estreno", nombreDelCampo: "ano_estreno", angosto: true, input: true},
