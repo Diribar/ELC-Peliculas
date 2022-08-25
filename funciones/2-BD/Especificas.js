@@ -158,10 +158,10 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()).map((o) => (o = {...o, entidad: entidad})) : []));
 	},
-	tablero_obtenerEdicsDeProds: (userID, includes) => {
+	tablero_obtenerEdicsAjenasDeProds: (userID, includes) => {
 		return db.prods_edicion
 			.findAll({
-				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creado por otro usuario
+				where: {editado_por_id: {[Op.ne]: userID}}, // Que esté creada por otro usuario
 				include: includes,
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
@@ -193,7 +193,7 @@ module.exports = {
 					editado_por_id: {[Op.ne]: userID},
 				},
 			})
-			.then((n) => (n ? n.toJSON().id : ""));
+			.then((n) => (n ? n.toJSON() : ""));
 	},
 
 	// USUARIOS ---------------------------------------------------------

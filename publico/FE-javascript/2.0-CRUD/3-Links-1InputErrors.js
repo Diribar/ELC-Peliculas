@@ -182,24 +182,14 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		activarInactivarbotonGuardar: (fila) => {
-			let OK =
-				Array.from(v.iconosOK)
-					.slice(fila * columnas, (fila + 1) * columnas)
-					.map((n) => n.className)
-					.join(" ")
-					.split(" ")
-					.reduce((acumulador, b) => {
-						return acumulador[b] ? acumulador[b]++ : (acumulador[b] = 1), acumulador;
-					}, {}).ocultar == undefined;
-			let error =
-				Array.from(v.iconosError)
-					.slice(fila * columnas, (fila + 1) * columnas)
-					.map((n) => n.className)
-					.join(" ")
-					.split(" ")
-					.reduce((acumulador, b) => {
-						return acumulador[b] ? acumulador[b]++ : (acumulador[b] = 1), acumulador;
-					}, {}).ocultar == columnas;
+			let OK = Array.from(v.iconosOK)
+				.slice(fila * columnas, (fila + 1) * columnas)
+				.map((n) => n.className)
+				.every((n) => !n.includes("ocultar"));
+			let error = Array.from(v.iconosError)
+				.slice(fila * columnas, (fila + 1) * columnas)
+				.map((n) => n.className)
+				.every((n) => n.includes("ocultar"));
 			OK && error
 				? v.guardar[fila].classList.remove("inactivo")
 				: v.guardar[fila].classList.add("inactivo");

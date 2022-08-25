@@ -15,8 +15,8 @@ window.addEventListener("load", () => {
 		inputs[i].addEventListener("change", async () => {
 			let campo = inputs[i].name;
 			let valor = inputs[i].value;
-			let errores = await fetch("/usuarios/api/validar-editables/?" + campo + "=" + valor).then(
-				(n) => n.json()
+			let errores = await fetch("/usuarios/api/validar-editables/?" + campo + "=" + valor).then((n) =>
+				n.json()
 			);
 			consecuenciaError(errores, campo, i);
 			botonGuardar(); // Activa/Desactiva el botón 'Guardar'
@@ -28,23 +28,13 @@ window.addEventListener("load", () => {
 
 	// FUNCIONES --------------------------------------------------------------
 	let botonGuardar = () => {
-		let OK =
-			Array.from(iconosOK)
-				.map((n) => n.className)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == undefined;
+		let OK = Array.from(iconosOK)
+			.map((n) => n.className)
+			.every((n) => !n.includes("ocultar"));
 		// < iconosOK.length;
-		let error =
-			Array.from(iconosError)
-				.map((n) => n.className)
-				.join(" ")
-				.split(" ")
-				.reduce((a, b) => {
-					return a[b] ? ++a[b] : (a[b] = 1), a;
-				}, {}).ocultar == iconosError.length;
+		let error = Array.from(iconosError)
+			.map((n) => n.className)
+			.every((n) => n.includes("ocultar"));
 		OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 	};
 	let consecuenciaError = (error, campo, indice) => {
@@ -56,11 +46,12 @@ window.addEventListener("load", () => {
 		mensaje
 			? iconosError[indice].classList.remove("ocultar")
 			: iconosError[indice].classList.add("ocultar");
-		if (indice < iconosOK.length) !mensaje
-			? iconosOK[indice].classList.remove("ocultar")
-			: iconosOK[indice].classList.add("ocultar");
+		if (indice < iconosOK.length)
+			!mensaje
+				? iconosOK[indice].classList.remove("ocultar")
+				: iconosOK[indice].classList.add("ocultar");
 	};
 
 	// STARTUP ----------------------------------------------------------------
-	botonGuardar()
+	botonGuardar();
 });

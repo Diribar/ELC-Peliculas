@@ -203,11 +203,7 @@ window.addEventListener("load", async () => {
 				// Detectar la cantidad de 'errores' ocultos
 				let hayErrores = Array.from(iconosError)
 					.map((n) => n.className)
-					.join(" ")
-					.split(" ")
-					.reduce((a, b) => {
-						return a[b] ? ++a[b] : (a[b] = 1), a;
-					}, {}).error;
+					.some((n) => n.includes("error"));
 				// Fin
 				return hayErrores;
 			};

@@ -33,10 +33,10 @@ module.exports = {
 		// Fin
 		return links;
 	},
-	prodActualizar_campoProdLG: async function (prodEntidad, prodID) {
+	prodCampoLG: async (prodEntidad, prodID) => {
 		// Variables
 		let datos = {};
-		let entidad_id = this.obtenerEntidad_id(prodEntidad);
+		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
 		// Obtener el producto con include a links
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, [
 			"links_gratuitos_cargados",
@@ -73,5 +73,4 @@ module.exports = {
 		}
 		return;
 	},
-
 };

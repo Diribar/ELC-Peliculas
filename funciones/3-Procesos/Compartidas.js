@@ -11,10 +11,33 @@ const procesosLinks = require("../../rutas_y_controladores/2.3-Links-CRUD/FN-Pro
 // Exportar ------------------------------------
 module.exports = {
 	// Temas de Entidades
-	quitarLosCamposSinContenido: (objeto) => {
+	todos_quitarCamposSinContenido: (objeto) => {
 		for (let campo in objeto) if (objeto[campo] === null || objeto[campo] === "") delete objeto[campo];
 		return objeto;
 	},
+	todos_obtenerLeadTime: (desde, hasta) => {
+		// Corregir domingo
+		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
+		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
+		// Corregir sábado
+		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
+		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
+		// Calcular la cantidad de horas
+		let diferencia = hasta - desde;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+		// Averiguar la cantidad de horas por fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		let horasFDS_por_semanas = semanas * 2 * 24;
+		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
+		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
+		// Resultado
+		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
+		leadTime = Math.min(96, leadTime);
+		// Fin
+		return leadTime;
+	},
+
 	// Temas de Edición
 	quitarLosCamposQueNoSeComparan: (edicion, ent) => {
 		// Obtener los campos a comparar
@@ -45,9 +68,9 @@ module.exports = {
 	},
 	pulirEdicion: function (original, edicion) {
 		// Pulir la información a tener en cuenta
-		edicion = this.quitarLosCamposSinContenido(edicion);
+		edicion = this.todos_quitarCamposSinContenido(edicion);
 		edicion = this.quitarLosCamposQueNoSeComparan(edicion, "Prod");
-		edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
+		//edicion = this.corregirErroresComunesDeEscritura(edicion); // Hacer
 		edicion = this.quitarLasCoincidenciasConOriginal(original, edicion);
 		let quedanCampos = this.quedanCampos(edicion);
 		// Fin
@@ -57,12 +80,12 @@ module.exports = {
 	crear_registro: async (entidad, datos, userID) => {
 		datos.creado_por_id = userID;
 		let id = await BD_genericas.agregarRegistro(entidad, datos).then((n) => n.id);
-		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links" && datos.gratuito==1) procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return id;
 	},
 	actualizar_registro: async (entidad, id, datos) => {
 		await BD_genericas.actualizarPorId(entidad, id, datos);
-		if (entidad == "links") procesosLinks.prodActualizar_campoProdLG(datos.prodEntidad, datos.prodID);
+		// if (entidad == "links") procesosLinks.prodCampoLG(datos.prodEntidad, datos.prodID);
 		return "Registro original actualizado";
 	},
 	inactivar_registro: async (entidad, entidad_id, userID, motivo_id) => {
@@ -98,28 +121,6 @@ module.exports = {
 		// Fin
 		return "Edición guardada";
 	},
-	obtenerLeadTime: (desde, hasta) => {
-		// Corregir domingo
-		if (desde.getDay() == 0) desde = (parseInt(desde / unDia) + 1) * unDia;
-		if (hasta.getDay() == 0) hasta = (parseInt(hasta / unDia) - 1) * unDia;
-		// Corregir sábado
-		if (desde.getDay() == 6) desde = (parseInt(desde / unDia) + 2) * unDia;
-		if (hasta.getDay() == 6) hasta = (parseInt(hasta / unDia) - 0) * unDia;
-		// Calcular la cantidad de horas
-		let diferencia = hasta - desde;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / unaHora;
-		// Averiguar la cantidad de horas por fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		let horasFDS_por_semanas = semanas * 2 * 24;
-		let horasFDS_en_semana = desde.getDay() >= hasta.getDay() ? 2 * 24 : 0;
-		let horasFDS = horasFDS_por_semanas + horasFDS_en_semana;
-		// Resultado
-		let leadTime = parseInt((horasDif - horasFDS) * 100) / 100;
-		leadTime = Math.min(96, leadTime);
-		// Fin
-		return leadTime;
-	},
 
 	// Conversión de nombres
 	obtenerFamiliaEnSingular: (entidad) => {
@@ -128,7 +129,7 @@ module.exports = {
 			: entidad == "personajes" || entidad == "hechos" || entidad == "valores"
 			? "rclv"
 			: entidad == "links"
-			? "links"
+			? "link"
 			: "";
 	},
 	obtenerEntidadNombre: (entidad) => {
@@ -165,7 +166,7 @@ module.exports = {
 			? "link_id"
 			: "";
 	},
-	obtenerEntidadOrig: (entidad) => {
+	obtieneEntidadOrigDesdeEdicion: (entidad) => {
 		return entidad.pelicula_id
 			? "peliculas"
 			: entidad.coleccion_id

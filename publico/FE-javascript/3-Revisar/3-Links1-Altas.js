@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 			let url = condiciones;
 			// Completar el url
 			url += "&url=" + encodeURIComponent(links_url[indice].value);
-			url += "&aprobado=SI";
+			url += "&aprob=SI";
 			let respuesta = await fetch(ruta + url).then((n) => n.json());
 			if (respuesta.reload) window.location.reload();
 		});

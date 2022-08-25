@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 		"/revision/api/producto-edicion/?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + edicID;
 
 	// FUNCIONES ----------------------------------------------------------------
-	let consecuenciasQC = (quedanCampos, statusAprob) => {
+	let consecuencias = (quedanCampos, statusAprob) => {
 		// Verificar si ocultar algún bloque
 		let ingrsOculto = filasIngrs.length ? verificarBloques(filasIngrs, bloqueIngrs) : true;
 		let reempsOculto = filasReemps.length ? verificarBloques(filasReemps, bloqueReemps) : true;
@@ -49,8 +49,7 @@ window.addEventListener("load", () => {
 	let verificarBloques = (filas, bloque) => {
 		// Averiguar el status
 		let ocultarBloque = Array.from(filas)
-			.map((n) => n.classList)
-			.map((n) => n.value)
+			.map((n) => n.className)
 			.every((n) => n.includes("ocultar"));
 		// Ocultar el bloque si corresponde
 		if (ocultarBloque) bloque.classList.add("ocultar");
@@ -117,7 +116,7 @@ window.addEventListener("load", () => {
 				ruta + "&aprob=true&campo=" + campoNombres[i]
 			).then((n) => n.json());
 			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprob);
+			consecuencias(quedanCampos, statusAprob);
 		});
 
 		// Menú inactivar
@@ -137,7 +136,7 @@ window.addEventListener("load", () => {
 				ruta + "&campo=" + campoNombres[i] + "&motivo_id=" + motivo
 			).then((n) => n.json());
 			// Revisar el status
-			consecuenciasQC(quedanCampos, statusAprob);
+			consecuencias(quedanCampos, statusAprob);
 		});
 	}
 });

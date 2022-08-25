@@ -215,6 +215,9 @@ module.exports = {
 			let subcategoria = await BD_genericas.obtenerPorId("subcategorias", datos.subcategoria_id);
 			let rclv_necesario = subcategoria.rclv_necesario;
 			// Relación con la vida
+			errores.personaje_id = "";
+			errores.hecho_id = "";
+			errores.valor_id = "";
 			if (rclv_necesario == "personaje")
 				errores.personaje_id =
 					!datos.personaje_id || datos.personaje_id == 1 ? cartelSelectVacio : "";

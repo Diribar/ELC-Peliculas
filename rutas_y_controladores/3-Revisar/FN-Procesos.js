@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
-	// ControladorVista - Tablero
+	// Tablero
 	tablero_obtenerProds: async (ahora, status, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
@@ -34,7 +34,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsConEdic: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdicAjena: async (ahora, status, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -48,7 +48,7 @@ module.exports = {
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
 		// Obtener todas las ediciones ajenas
-		let ediciones = await BD_especificas.tablero_obtenerEdicsDeProds(userID, includes);
+		let ediciones = await BD_especificas.tablero_obtenerEdicsAjenasDeProds(userID, includes);
 		// Eliminar las edicionesProd con RCLV no aprobado
 		if (ediciones.length)
 			for (let i = ediciones.length - 1; i >= 0; i--)
@@ -67,11 +67,26 @@ module.exports = {
 			// Obtener los productos
 			ediciones.map((n) => {
 				if (n.pelicula_id)
-					peliculas.push({...n.pelicula, entidad: "peliculas", editado_en: n.editado_en});
-				if (n.coleccion_id)
-					colecciones.push({...n.coleccion, entidad: "colecciones", editado_en: n.editado_en});
-				if (n.capitulo_id)
-					capitulos.push({...n.capitulo, entidad: "capitulos", editado_en: n.editado_en});
+					peliculas.push({
+						...n.pelicula,
+						entidad: "peliculas",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.coleccion_id)
+					colecciones.push({
+						...n.coleccion,
+						entidad: "colecciones",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
+				else if (n.capitulo_id)
+					capitulos.push({
+						...n.capitulo,
+						entidad: "capitulos",
+						editado_en: n.editado_en,
+						edicion_id: n.id,
+					});
 			});
 			// Eliminar los repetidos
 			if (peliculas.length) peliculas = eliminarRepetidos(peliculas);
@@ -174,13 +189,15 @@ module.exports = {
 					" (" +
 					n.ano_estreno +
 					")";
-				return {
+				let datos = {
 					id: n.id,
 					entidad: n.entidad,
 					nombre,
 					ano_estreno: n.ano_estreno,
 					abrev: n.entidad.slice(0, 3).toUpperCase(),
 				};
+				if (rubro == "ED") datos.edicion_id = n.edicion_id;
+				return datos;
 			});
 
 		// Fin
@@ -209,8 +226,8 @@ module.exports = {
 		return RCLVs;
 	},
 
-	// ControladorVista - Productos Alta
-	prod_BloquesAlta: async (prodOrig, paises) => {
+	// Productos Alta
+	prodAlta_ficha: async (prodOrig, paises) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque izquierdo
@@ -245,52 +262,33 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadAltas}];
 		return [izquierda, derecha];
 	},
-	// ControladorVista - Productos Edición
-	prod_Feedback: async (prodOrig, prodEdic) => {
+	// Producto Edición
+	prodEdic_feedback: async (prodOrig, prodEdic, campo) => {
+		// 1. Actualiza el registro de edición
+		// 2. Averigua si quedan campos por procesar
+		// 3. Elimina el registro de edición si ya no tiene más datos
+		// 4. Actualiza el status del registro original, si corresponde
+
+		let datos = {[campo]: null};
+		if (campo == "avatar") datos.avatar_archivo = null;
+		await BD_genericas.actualizarPorId("prods_edicion", edicID, datos);
+
 		// Variables
-		let datosEdicion = {editado_por_id: prodEdic.editado_por_id, editado_en: prodEdic.editado_en};
-		let entidadOrig = compartidas.obtenerEntidadOrig(prodEdic);
-		let statusAprob = prodOrig.status_registro.aprobado;
+		let datosEdicion = {
+			id: prodEdic.id,
+			editado_por_id: prodEdic.editado_por_id,
+			editado_en: prodEdic.editado_en,
+		};
 		// Pulir la información a tener en cuenta
-		[edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
-		// Si no quedan, eliminar el registro
-		if (!quedanCampos) {
-			// Eliminar el registro de la edición
-			await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
-			// Averiguar si el original no tiene errores
-			let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
-			// Si se cumple lo siguiente, cambiarle el status a 'aprobado'
-			// 1. Que no tenga errores
-			// 2. Que el status del original sea 'alta_aprob'
-			if (!errores.hay && prodOrig.status_registro.alta_aprob) {
-				statusAprob = true;
-				// Obtener el 'id' del status 'aprobado'
-				let aprobado_id = await BD_especificas.obtenerELC_id("status_registro", {aprobado: true});
-				// Averiguar el Lead Time de creación en horas
-				let ahora = compartidas.ahora();
-				let leadTime = compartidas.obtenerLeadTime(prodOrig.creado_en, ahora);
-				// Cambiarle el status al producto y liberarlo
-				let datos = {
-					alta_terminada_en: ahora,
-					lead_time_creacion: leadTime,
-					status_registro_id: aprobado_id,
-				};
-				await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
-				// Si es una colección, cambiarle el status también a los capítulos
-				if (entidadOrig == "colecciones") {
-					// Ampliar los datos
-					datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora};
-					// Generar el objeto para filtrar
-					let objeto = {coleccion_id: prodOrig.id};
-					// Actualizar el status de los capitulos
-					BD_genericas.actualizarPorCampos("capitulos", objeto, datos);
-				}
-			}
-		} else edicion = {...edicion, ...datosEdicion};
+		let [edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
+		// Acciones si no quedan campos
+		let statusAprob = prodOrig.status_registro.aprobado;
+		if (!quedanCampos) statusAprob = accionesSiNoQuedanCampos(prodOrig, prodEdic);
+		else edicion = {...edicion, ...datosEdicion, [campo]: null};
 		// Fin
 		return [quedanCampos, edicion, statusAprob];
 	},
-	prod_ArmarComparac: (prodOrig, prodEdic) => {
+	prodEdic_ingrReempl: (prodOrig, prodEdic) => {
 		let campos = variables.camposRevisarProd();
 		for (let i = campos.length - 1; i >= 0; i--) {
 			let campoNombre = campos[i].nombreDelCampo;
@@ -317,7 +315,7 @@ module.exports = {
 		// Fin
 		return [ingresos, reemplazos];
 	},
-	prod_BloqueEdic: async (prodOrig, prodEdic) => {
+	prodEdic_ficha: async (prodOrig, prodEdic) => {
 		// Definir el 'ahora'
 		let ahora = compartidas.ahora().getTime();
 		// Bloque derecho
@@ -341,20 +339,7 @@ module.exports = {
 		let derecha = [bloque1, {...fichaDelUsuario, ...calidadEdic}];
 		return derecha;
 	},
-	// ControladorAPI - Producto Edición
-	RCLVs_ActualizarProdAprobOK: async (producto) => {
-		// Variables
-		let RCLV_entidades = ["personajes", "hechos", "valores"];
-		// Rutina para cada entidad
-		for (let entidad of RCLV_entidades) {
-			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
-			let RCLV_id = producto[campo]; // Obtener el RCLV_id
-			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
-			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
-		}
-		return;
-	},
-	prod_EdicValores: (aprobado, prodOrig, prodEdic, campo) => {
+	prodEdic_aprobRech: (aprobado, prodOrig, prodEdic, campo) => {
 		// Averiguar si el campo es 'complicado' y en ese caso obtener su índice
 		let valorOrig = valorDelCampo(prodOrig, campo);
 		let valorEdic = valorDelCampo(prodEdic, campo);
@@ -366,7 +351,7 @@ module.exports = {
 		return {valor_aprob, valor_rech};
 	},
 
-	// ControladorAPI - RCLV Alta
+	// RCLV Alta
 	RCLV_BD_AprobRech: async (entidad, RCLV_original, includes, userID) => {
 		// Variables
 		let ahora = compartidas.ahora();
@@ -414,9 +399,72 @@ module.exports = {
 		}
 		return;
 	},
+	RCLVs_ActualizarProdAprobOK: async (producto) => {
+		// Variables
+		let RCLV_entidades = ["personajes", "hechos", "valores"];
+		// Rutina para cada entidad
+		for (let entidad of RCLV_entidades) {
+			let campo = compartidas.obtenerEntidad_id(entidad); // Obtener el campo a analizar (pelicula_id, etc.) y su valor en el producto
+			let RCLV_id = producto[campo]; // Obtener el RCLV_id
+			// Si el RCLV_id aplica (no es vacío ni 1) => actualiza el RCLV
+			if (RCLV_id && RCLV_id != 1) BD_genericas.actualizarPorId(entidad, RCLV_id, {prod_aprob: true});
+		}
+		return;
+	},
+	RCLV_productosAprob: function (prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status) {
+		// Actualizar en RCLVs el campo 'prod_aprob', si ocurre (1) y (2 ó 3)
+		// 1. El valor del campo es distinto a 'Ninguno'
+		// 2. Se cambió un campo RCLV y el producto está aprobado
+		// 3. El registro no estaba aprobado y ahora sí lo está
+		const RCLV_ids = ["personaje_id", "hecho_id", "valor_id"];
+		if (
+			prodOrig[campo] != 1 &&
+			((RCLV_ids.includes(campo) && edicAprob && statusAprob) || (!statusOrigAprob && statusAprob))
+		)
+			this.RCLVs_ActualizarProdAprobOK(prodOrig, status);
+		// Fin
+		return;
+	},
 
-	// ControladorAPI - Prod. Alta, Prod. Edición, Link Alta, Link Edición
-	usuario_Penalizar: async (userID, motivo, campo) => {
+	// Links Edicion
+	linksEdic_LimpiarEdiciones: async (linkOrig) => {
+		// Limpia las ediciones
+		// 1. Obtiene el link con sus ediciones
+		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]); 
+		// Genera un objeto con valores null
+		let camposVacios = {};
+		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null)); 
+		// Purga cada edición
+		linkOrig.ediciones.forEach(async (linkEdic) => {
+			let edicID = linkEdic.id;
+			// La variable 'linkEdic' queda solamente con los camos con valor
+			[quedanCampos, linkEdic] = await compartidas.pulirEdicion(linkOrig, linkEdic);
+			// Si quedan campos, actualiza la edición
+			if (quedanCampos)
+				await BD_genericas.actualizarPorId("links_edicion", edicID, {
+					...camposVacios,
+					...linkEdic,
+				});
+			// Si no quedan, elimina el registro de la edición
+			else await BD_genericas.eliminarPorId("links_edicion", edicID);
+		});
+		// Fin
+		return
+	},
+	links_prodCampoLG_OK: async (prodEntidad, prodID, campo) => {
+		if (campo == "gratuito" && prodEntidad.gratuito) {
+			// Obtener los ID de si, no y TalVez
+			let si_no_parcial = await BD_genericas.obtenerTodos("si_no_parcial", "id");
+			let si = si_no_parcial.find((n) => n.si).id;
+			BD_genericas.actualizarPorId("links", prodID, {
+				links_gratuitos_cargados_id: si,
+				links_gratuitos_en_la_web_id: si,
+			});
+		}
+	},
+
+	// Prod. Alta/Edición, Links Alta/Edición
+	usuario_Penalizar: async (userID, motivo) => {
 		// Variables
 		let datos = {};
 		// Averiguar si el motivo amerita bloquear
@@ -631,4 +679,32 @@ let usuario_CalidadEdic = async (userID) => {
 	};
 	// Fin
 	return enviar;
+};
+let accionesSiNoQuedanCampos = async (prodOrig, prodEdic) => {
+	// Variables
+	let statusAprob = false;
+	// 1. Elimina el registro de la edición
+	await BD_genericas.eliminarPorId("prod_edicion", prodEdic.id);
+	// 2. Averigua si tiene errores
+	let entidadOrig = compartidas.obtieneEntidadOrigDesdeEdicion(prodEdic);
+	let errores = await validar.consolidado(null, {...prodOrig, entidad: entidadOrig});
+	// 2. Acciones si el original no tiene errores y está en status 'alta_aprob'
+	if (!errores.hay && prodOrig.status_registro.alta_aprob) {
+		// Genera la información a actualizar en el registro original
+		let datos = {
+			alta_terminada_en: compartidas.ahora(),
+			lead_time_creacion: compartidas.todos_obtenerLeadTime(prodOrig.creado_en, ahora),
+			status_registro_id: await BD_especificas.obtenerELC_id("status_registro", {aprobado: 1}),
+		};
+		// Cambia el status del producto e inactiva la captura
+		await BD_genericas.actualizarPorId(entidadOrig, prodOrig.id, {...datos, captura_activa: 0});
+		// Si es una colección, le cambia el status también a los capítulos
+		if (entidadOrig == "colecciones") {
+			datos = {...datos, alta_analizada_por_id: 2, alta_analizada_en: ahora}; // Amplía los datos
+			BD_genericas.actualizarTodosPorCampos("capitulos", {coleccion_id: prodOrig.id}, datos); // Actualiza el status de los capitulos
+		}
+		// Cambia el valor de la variable que se informará
+		statusAprob = true;
+	}
+	return statusAprob;
 };
