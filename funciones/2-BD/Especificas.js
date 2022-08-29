@@ -73,7 +73,7 @@ module.exports = {
 
 		// Ordenar el resultado
 		resultado.sort((a, b) =>
-			a[campoOrden] < b[campoOrden] ? -1 : a[campoOrden] > b[campoOrden] ? 1 : 0
+			a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0
 		);
 		// Enviar el resultado
 		return resultado;
