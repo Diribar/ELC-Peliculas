@@ -8,12 +8,31 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 module.exports = {
 	// Quick Search
 	quickSearch: async (req, res) => {
-		// Obtener las condiciones
-		let condiciones = BD_especificas.quickSearchCondiciones(req.query.palabras);
-		// Obtener los productos que cumplen las condiciones
-		let productos = await BD_especificas.quickSearchProductos(condiciones);
+		// Declaración de variables
+		let campos = [["nombre_original", "nombre_castellano"], ["nombre"]];
+		let entidades = [
+			["peliculas", "colecciones", "capitulos"],
+			["personajes", "hechos", "valores"],
+		];
+		let campoOrden = ["nombre_castellano", "nombre"];
+		let familias = ["producto", "rclv"];
+		let condiciones;
+		let resultados = [];
+		// Rutina
+		for (let i = 0; i < entidades.length; i++) {
+			// Obtiene las condiciones
+			condiciones = BD_especificas.quickSearchCondiciones(req.query.palabras, campos[i]);
+			// Obtiene los registros que cumplen las condiciones
+			let resultado = await BD_especificas.quickSearchRegistros(
+				condiciones,
+				campoOrden[i],
+				entidades[i],
+				familias[i]
+			);
+			resultados.push(...resultado);
+		}
 		// Enviar la info al FE
-		return res.json(productos);
+		return res.json(resultados);
 	},
 
 	horarioInicial: async (req, res) => {

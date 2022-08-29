@@ -18,69 +18,54 @@ module.exports = {
 		return db[datos.entidad].findOne({where: objeto}).then((n) => (n ? n.id : false));
 	},
 	// Header
-	quickSearchCondiciones: (palabras) => {
+	quickSearchCondiciones: (palabras, campos) => {
+		//Convertir las palabras en un array
 		palabras = palabras.split(" ");
-		// Definir los campos en los cuales buscar
-		let campos = ["nombre_original", "nombre_castellano"];
 		// Crear el objeto literal con los valores a buscar
 		let valoresOR = [];
 		for (let campo of campos) {
-			let CondicionesDeCampo = [];
+			let condicionesDeCampo = [];
 			for (let palabra of palabras) {
-				let CondiciondePalabra = {
+				let condicionDePalabra = {
 					[Op.or]: [
 						{[campo]: {[Op.like]: "% " + palabra + "%"}},
 						{[campo]: {[Op.like]: palabra + "%"}},
 					],
 				};
-				CondicionesDeCampo.push(CondiciondePalabra);
+				// Se fija que la palabra esté en el campo
+				condicionesDeCampo.push(condicionDePalabra);
 			}
-			let ResumenDeCampo = {[Op.and]: CondicionesDeCampo};
-			valoresOR.push(ResumenDeCampo);
+			// Condición: se fija que cada palabra esté en el campo
+			let resumenDeCampo = {[Op.and]: condicionesDeCampo};
+			// Almacena la condición en una matriz
+			valoresOR.push(resumenDeCampo);
 		}
+		// Se fija que la condición se cumpla en alguno de los 2 campos
 		let condiciones = {[Op.or]: valoresOR};
+		// Fin
 		return condiciones;
 	},
-	quickSearchProductos: async (condiciones) => {
-		// Obtener las películas
-		let peliculas = db.peliculas
-			.findAll({where: condiciones, limit: 10})
-			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) =>
-				n.map((m) => {
-					return {...m, entidad: "peliculas"};
-				})
-			);
-		// Obtener las colecciones
-		let colecciones = db.colecciones
-			.findAll({where: condiciones, limit: 5})
-			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) =>
-				n.map((m) => {
-					return {...m, entidad: "colecciones"};
-				})
-			);
-		// Obtener los capítulos
-		let capitulos = db.capitulos
-			.findAll({where: condiciones, limit: 10})
-			.then((n) => n.map((m) => m.toJSON()))
-			.then((n) =>
-				n.map((m) => {
-					return {...m, entidad: "capitulos"};
-				})
-			);
+	quickSearchRegistros: async (condiciones, campoOrden, entidades, familia) => {
+		// Variables
+		let resultados = [];
+		// Obtener los registros
+		entidades.forEach((entidad) => {
+			let registros = db[entidad]
+				.findAll({where: condiciones, limit: 10})
+				.then((n) => n.map((m) => m.toJSON()))
+				.then((n) =>
+					n.map((m) => {
+						return {...m, nombreComun: m[campoOrden], entidad, familia};
+					})
+				);
+			resultados.push(registros);
+		});
 		// Consolidar los hallazgos
-		let resultado = await Promise.all([peliculas, colecciones, capitulos]).then(([a, b, c]) => {
-			return [...a, ...b, ...c];
-		});
+		let resultado = await Promise.all([...resultados]).then(([a, b, c]) => [...a, ...b, ...c]);
 		// Ordenar el resultado
-		resultado.sort((a, b) => {
-			return a.nombre_castellano < b.nombre_castellano
-				? -1
-				: a.nombre_castellano > b.nombre_castellano
-				? 1
-				: 0;
-		});
+		resultado.sort((a, b) =>
+			a[campoOrden] < b[campoOrden] ? -1 : a[campoOrden] > b[campoOrden] ? 1 : 0
+		);
 		// Enviar el resultado
 		return resultado;
 	},
