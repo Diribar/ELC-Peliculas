@@ -36,18 +36,8 @@ window.addEventListener("load", () => {
 		// Busca los productos
 		palabras = palabras.join(" ");
 		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
-		if (resultados.length) {
-			resultados = resultados.map((n) => {
-				return {
-					id: n.id,
-					nombre: n.nombreComun,
-					ano_estreno: n.ano_estreno,
-					entidad: n.entidad,
-					familia: n.familia,
-				};
-			});
-			agregarHallazgos(resultados);
-		} else agregarHallazgos("- No encontramos coincidencias -");
+		if (resultados.length) agregarHallazgos(resultados);
+		else agregarHallazgos("- No encontramos coincidencias -");
 	});
 
 	let agregarHallazgos = (registros) => {
@@ -65,30 +55,29 @@ window.addEventListener("load", () => {
 
 			// Crea las filas y celdas
 			for (let registro of registros) {
+				// Variables
+				let {familia, entidad, id, ano, nombre} = registro;
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				let anchor = document.createElement("a");
-				anchor.href =
-					"/" + registro.familia + "/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
-
+				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 				// Prepara las variables de la fila
 				let anchoMax = 30;
-				let nombre =
-					registro.nombre.length > anchoMax
-						? registro.nombre.slice(0, anchoMax - 1) + "…"
-						: registro.nombre;
-				if (registro.familia == "producto") nombre += " (" + registro.ano_estreno + ")";
-				let entidad = registro.entidad.slice(0, 3).toUpperCase();
-				let datos = [nombre, entidad];
+				let nom = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
+				if (familia == "producto") nombre += " (" + ano + ")";
+				let ent = entidad.slice(0, 3).toUpperCase();
+				let datos = [nom, ent];
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
 					let celda = document.createElement("td");
 					let textoCelda = document.createTextNode(datos[i]);
-					// Agrega el texto al 'anchor' (celda nombre) o a la celda (entidad)
 					if (i == 0) {
+						// Agrega el texto al 'anchor' (celda nombre)
 						anchor.appendChild(textoCelda);
 						celda.appendChild(anchor);
-					} else celda.appendChild(textoCelda);
+					}
+					// Agrega el texto a la celda (entidad)
+					else celda.appendChild(textoCelda);
 					// Agrega la celda a la fila
 					fila.appendChild(celda);
 				}

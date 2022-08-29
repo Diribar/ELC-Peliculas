@@ -56,7 +56,13 @@ module.exports = {
 				.then((n) => n.map((m) => m.toJSON()))
 				.then((n) =>
 					n.map((m) => {
-						return {...m, nombreComun: m[campoOrden], entidad, familia};
+						return {
+							id: m.id,
+							ano: m.ano_estreno,
+							nombre: m[campoOrden],
+							entidad,
+							familia,
+						};
 					})
 				);
 			hallazgos.push(registros);
