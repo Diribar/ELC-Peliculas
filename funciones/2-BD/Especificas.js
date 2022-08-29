@@ -40,7 +40,7 @@ module.exports = {
 			// Almacena la condición en una matriz
 			valoresOR.push(resumenDeCampo);
 		}
-		// Se fija que la condición se cumpla en alguno de los 2 campos
+		// Se fija que la condición se cumpla en alguno de los campos
 		let condiciones = {[Op.or]: valoresOR};
 		// Fin
 		return condiciones;
