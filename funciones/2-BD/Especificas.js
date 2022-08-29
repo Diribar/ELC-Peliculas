@@ -47,7 +47,8 @@ module.exports = {
 	},
 	quickSearchRegistros: async (condiciones, campoOrden, entidades, familia) => {
 		// Variables
-		let resultados = [];
+		let hallazgos = [];
+		let resultado = [];
 		// Obtener los registros
 		entidades.forEach((entidad) => {
 			let registros = db[entidad]
@@ -58,10 +59,12 @@ module.exports = {
 						return {...m, nombreComun: m[campoOrden], entidad, familia};
 					})
 				);
-			resultados.push(registros);
+			hallazgos.push(registros);
 		});
 		// Consolidar los hallazgos
-		let resultado = await Promise.all([...resultados]).then(([a, b, c]) => [...a, ...b, ...c]);
+		hallazgos = await Promise.all([...hallazgos]);
+		hallazgos.forEach((hallazgo) => resultado.push(...hallazgo));
+
 		// Ordenar el resultado
 		resultado.sort((a, b) =>
 			a[campoOrden] < b[campoOrden] ? -1 : a[campoOrden] > b[campoOrden] ? 1 : 0
