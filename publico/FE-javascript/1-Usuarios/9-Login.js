@@ -40,27 +40,13 @@ window.addEventListener("load", async () => {
 			iconoOK[i].classList.remove("ocultar");
 			let sinErrores = true;
 			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar") ||
-				!resultadoInvalido.classList.contains("ocultar")
+				iconoOK[j].classList.contains("ocultar") || !resultadoInvalido.classList.contains("ocultar")
 					? (sinErrores = false)
 					: "";
 			}
-			sinErrores
-				? button.classList.remove("inactivo")
-				: button.classList.add("inactivo");
+			sinErrores ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 		}
 	};
-
-
-	// Status inicial
-	if (statusInicial) {
-		let errores = await averiguarErrores();
-		// Revisa los errores en los inputs
-		for (let i = 0; i < inputs.length; i++) {
-			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
-		}
-		statusInicial = false;
-	}
 
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
@@ -76,4 +62,14 @@ window.addEventListener("load", async () => {
 	form.addEventListener("submit", (e) => {
 		if (button.classList.contains("inactivo")) e.preventDefault();
 	});
+
+	// Status inicial
+	if (statusInicial) {
+		let errores = await averiguarErrores();
+		// Revisa los errores en los inputs
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].value != "" ? accionesSiHayErrores(i, errores) : "";
+		}
+		statusInicial = false;
+	}
 });
