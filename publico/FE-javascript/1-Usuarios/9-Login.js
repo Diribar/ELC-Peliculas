@@ -11,16 +11,17 @@ window.addEventListener("load", async () => {
 	let resultadoInvalido = document.querySelector("#resultadoInvalido");
 
 	// Fórmulas ----------------------------------------------------
-	// Revisa todos los inputs y devuelve todos los errores
-	let averiguarErrores = () => {
-		let url = "?";
-		for (let i = 0; i < inputs.length; i++) {
-			if (i > 0) url += "&";
-			url += inputs[i].name;
-			url += "=";
-			url += encodeURIComponent(inputs[i].value);
-		}
-		return fetch("/usuarios/api/validar-login/" + url).then((n) => n.json());
+	// Devuelve todos los errores
+	let averiguarErrores =async () => {
+		let url;
+		inputs.forEach((input, i) => {
+			if (i) url += "&";
+			url += inputs[i].name + "=" + encodeURIComponent(inputs[i].value);
+		});
+		// Obtener los errores
+		let errores=await fetch("/usuarios/api/validar-login/?" + url).then((n) => n.json());
+		// Fin
+		return 
 	};
 
 	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
