@@ -33,14 +33,14 @@ module.exports = {
 	// Miscelaneas
 	redireccionar: async (req, res) => {
 		// Variables
-		let {destino, prodEntidad, prodID} = req.query;
+		let {origen, prodEntidad, prodID} = req.query;
 		// Si es 'tablero', ir a tablero
-		if (destino == "DP") destino = "/producto/agregar/datos-personalizados";
-		if (destino == "ED") destino = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
-		if (destino == "DT") destino = "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID;
-		if (destino == "tablero") destino = "/revision/tablero-de-control";
-		if (!destino) destino = "/";
+		if (origen == "DP") origen = "/producto/agregar/datos-personalizados";
+		if (origen == "ED") origen = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
+		if (origen == "DT") origen = "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID;
+		if (origen == "tablero") origen = "/revision/tablero-de-control";
+		if (!origen) origen = "/";
 		// Redireccionar a la vista que corresponda
-		return res.redirect(destino);
+		return res.redirect(origen);
 	},
 };

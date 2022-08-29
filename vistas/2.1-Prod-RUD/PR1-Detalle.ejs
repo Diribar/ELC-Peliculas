@@ -56,7 +56,7 @@
 			<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
 				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 				<% if (bloque.RCLV_entidad) { %>
-					<% let destino = "destino=prodDetalle" %>
+					<% let destino = "origen=DT" %>
 					<% let datosRCLV = "entidad=" + bloque.RCLV_entidad + "&id=" + bloque.RCLV_id %>
 					<% let datosProd = "prodEntidad=" + entidad + "&prodID=" + prodID %> 
 					<a href="/rclv/edicion/?<%= destino %>&<%= datosRCLV %>&<%= datosProd %>">

@@ -114,7 +114,7 @@ module.exports = async (req, res, next) => {
 				pc_entidadCodigo +
 				"&id=" +
 				pc_entidadID +
-				"&destino=" +
+				"&origen=" +
 				originalUrl;
 			const liberar = {
 				nombre: "fa-circle-check",

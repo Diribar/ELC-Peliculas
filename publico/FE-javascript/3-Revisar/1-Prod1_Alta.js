@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 
 	// ruta
 	let rutaAprobRech = "/revision/api/producto-alta/?entidad=" + prodEntidad + "&id=" + prodID + "&aprob=";
-	let rutaInactivarCaptura = "/inactivar-captura/?destino=tablero&entidad=" + prodEntidad + "&id=" + prodID;
+	let rutaInactivarCaptura = "/inactivar-captura/?origen=tablero&entidad=" + prodEntidad + "&id=" + prodID;
 
 	// Aprobar el alta
 	aprobar.addEventListener("click", async () => {

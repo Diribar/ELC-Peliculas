@@ -513,8 +513,9 @@ window.addEventListener("load", async () => {
 				? // Ir a la vista de origen
 				  rutaOrigen + (origen != "DP" ? "?entidad=" + prodEntidad + "&id=" + prodID : "")
 				: // Inactivar e ir a la vista de origen
-				  "/inactivar-captura/" + entidadID + "&destino=" + origen + prodEntidadID;
+				  "/inactivar-captura/" + entidadID + "&origen=" + origen + prodEntidadID;
 		// Ir a la vista de origen sin guardar cambios
+		console.log(rutaSalir,origen);
 		window.location.href = rutaSalir;
 	});
 	botonSubmit.addEventListener("click", async (e) => {
