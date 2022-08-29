@@ -72,9 +72,7 @@ module.exports = {
 		hallazgos.forEach((hallazgo) => resultado.push(...hallazgo));
 
 		// Ordenar el resultado
-		resultado.sort((a, b) =>
-			a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0
-		);
+		resultado.sort((a, b) => (a.nombre < b.nombre ? -1 : a.nombre > b.nombre ? 1 : 0));
 		// Enviar el resultado
 		return resultado;
 	},
