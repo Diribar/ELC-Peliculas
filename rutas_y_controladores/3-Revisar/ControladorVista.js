@@ -166,7 +166,7 @@ module.exports = {
 			avatar = {
 				original: prodOriginal.avatar
 					? (!prodOriginal.avatar.startsWith("http")
-							? prodOriginal.status_registro.gr_pend_aprob
+							? prodOriginal.status_registro.gr_pends_aprob
 								? "/imagenes/3-ProdRevisar/"
 								: "/imagenes/2-Productos/"
 							: "") + prodOriginal.avatar

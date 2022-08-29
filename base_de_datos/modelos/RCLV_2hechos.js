@@ -14,7 +14,7 @@ module.exports = (sequelize, dt) => {
 		exclusivo: {type: dt.BOOLEAN},
 		ap_mar: {type: dt.BOOLEAN},
 		
-		prod_aprob: {type: dt.BOOLEAN},
+		prods_aprob: {type: dt.BOOLEAN},
 
 		creado_por_id: {type: dt.INTEGER},
 		creado_en: {type: dt.DATE},

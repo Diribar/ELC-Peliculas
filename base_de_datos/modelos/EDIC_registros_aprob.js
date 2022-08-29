@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "edic_aprob";
+	const alias = "edics_aprob";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
@@ -15,7 +15,7 @@ module.exports = (sequelize, dt) => {
 		comunicado_en: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "edic_registros_aprob",
+		tableName: "edics_aprob",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

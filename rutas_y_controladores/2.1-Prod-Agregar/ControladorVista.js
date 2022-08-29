@@ -475,7 +475,7 @@ module.exports = {
 			return res.render("CR9-Errores", {informacion});
 		}
 		// Problema: PRODUCTO YA REVISADO
-		if (!registroProd.status_registro.gr_pend_aprob)
+		if (!registroProd.status_registro.gr_pends_aprob)
 			return res.redirect("/producto/detalle/?entidad=" + entidad + "&id=" + id);
 		// 5. Obtener el producto
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);

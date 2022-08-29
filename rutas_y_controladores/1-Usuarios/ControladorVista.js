@@ -199,7 +199,7 @@ module.exports = {
 		// 5. Iniciar la sesión
 		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
 		res.cookie("email", req.body.email, {maxAge: unDia});
-		delete req.session["email"];
+		delete req.session.email;
 		// 6. Notificar al contador de logins
 		let hoyAhora = compartidas.ahora().toISOString().slice(0, 10);
 		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);

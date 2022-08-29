@@ -108,9 +108,9 @@ INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes
 VALUES 
 (1, 1, 'Mail a validar', 0, 0, 0, 0), 
 (2, 2, 'Mail validado', 1, 0, 0, 0), 
-(3, 3, 'Datos perennes OK', 1, 1, 0, 0), 
-(4, 4, 'Datos editables OK', 1, 1, 1, 0),
-(5, 5, 'Documento OK', 1, 1, 1, 1)
+(3, 3, 'Datos perennes', 1, 1, 0, 0), 
+(4, 4, 'Datos editables', 1, 1, 1, 0),
+(5, 5, 'DNI', 1, 1, 1, 1)
 ;
 
 /* USUARIOS */;
@@ -139,14 +139,14 @@ CREATE TABLE USUARIOS (
 	editado_en DATETIME NULL,
 	status_registro_id TINYINT UNSIGNED DEFAULT 1,
 	
-	prod_aprob SMALLINT DEFAULT 0,
-	prod_rech SMALLINT DEFAULT 0,
-	rclv_aprob SMALLINT DEFAULT 0,
-	rclv_rech SMALLINT DEFAULT 0,
-	link_aprob SMALLINT DEFAULT 0,
-	link_rech SMALLINT DEFAULT 0,
-	edic_aprob SMALLINT DEFAULT 0,
-	edic_rech SMALLINT DEFAULT 0,
+	prods_aprob SMALLINT DEFAULT 0,
+	prods_rech SMALLINT DEFAULT 0,
+	rclvs_aprob SMALLINT DEFAULT 0,
+	rclvs_rech SMALLINT DEFAULT 0,
+	links_aprob SMALLINT DEFAULT 0,
+	links_rech SMALLINT DEFAULT 0,
+	edics_aprob SMALLINT DEFAULT 0,
+	edics_rech SMALLINT DEFAULT 0,
 
 	penalizac_acum DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	penalizado_en DATETIME NULL,
@@ -195,27 +195,27 @@ CREATE TABLE aux_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(25) NOT NULL UNIQUE,
-	gr_pend_aprob BOOLEAN DEFAULT 0,
+	gr_pends_aprob BOOLEAN DEFAULT 0,
 	gr_estables BOOLEAN DEFAULT 0,
 	gr_provisorios BOOLEAN DEFAULT 0,
 	gr_pasivos BOOLEAN DEFAULT 0,
 	gr_inactivos BOOLEAN DEFAULT 0,
 	creado BOOLEAN DEFAULT 0,
-	alta_aprob BOOLEAN DEFAULT 0,
+	creado_aprob BOOLEAN DEFAULT 0,
 	aprobado BOOLEAN DEFAULT 0,
 	inactivar BOOLEAN DEFAULT 0,
 	inactivo BOOLEAN DEFAULT 0,
 	recuperar BOOLEAN DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pend_aprob) VALUES (1, 1, 'Creado',1,1);
-INSERT INTO aux_status_registro (id, orden, nombre, alta_aprob, gr_pend_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado, gr_pends_aprob) VALUES (1, 1, 'Creado',1,1);
+INSERT INTO aux_status_registro (id, orden, nombre, creado_aprob, gr_pends_aprob) VALUES (2, 2, 'Alta-aprobada',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, aprobado, gr_estables) VALUES (3, 3, 'Aprobado',1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivar, gr_inactivos, gr_provisorios, gr_pasivos) VALUES (4, 4, 'Inactivar',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, inactivo, gr_estables, gr_pasivos, gr_inactivos) VALUES (5, 5, 'Inactivo',1,1,1,1);
 INSERT INTO aux_status_registro (id, orden, nombre, recuperar, gr_provisorios, gr_pasivos) VALUES (6, 6, 'Recuperar',1,1,1);
 /* APROBACION DE ALTAS/EDICIONES */;
-CREATE TABLE edic_registros_aprob (
+CREATE TABLE edics_aprob (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
@@ -302,7 +302,7 @@ VALUES
 ;
 INSERT INTO edic_motivos_rech (id, orden, duracion, comentario, rclv)
 VALUES (31, 31, 5, 'Datos fáciles sin completar', 1);
-CREATE TABLE edic_registros_rech (
+CREATE TABLE edics_rech (
 	id INT UNSIGNED UNIQUE AUTO_INCREMENT,
 	entidad VARCHAR(20) NOT NULL,
 	entidad_id INT UNSIGNED NOT NULL,
@@ -455,7 +455,7 @@ CREATE TABLE rclv_1personajes (
 	proceso_id VARCHAR(3) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 	
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -531,7 +531,7 @@ CREATE TABLE rclv_2hechos (
 	exclusivo BOOLEAN DEFAULT 0, /* Jesús y Contemp: true o false, según corresponda  */
 	ap_mar BOOLEAN DEFAULT 0, /* true sólo para Aparición Mariana */
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
@@ -591,7 +591,7 @@ CREATE TABLE rclv_3valores (
 	dia_del_ano_id SMALLINT UNSIGNED NULL,
 	perenne BOOLEAN DEFAULT 0,
 
-	prod_aprob BOOLEAN DEFAULT 0,
+	prods_aprob BOOLEAN DEFAULT 0,
 
 	creado_por_id INT UNSIGNED NOT NULL,
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,

@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 	datos.edicG.avatar = avatarAgregarLaRutaAlNombre(datos.edicG.avatar, "edicion", datos.orig.avatar);
 	datos.edicN = {...datos.edicG};
 	datos.edicN.avatar = document.querySelector("#avatarNuevo img").getAttribute("src");
-	let orig_PendAprobar = datos.orig.status_registro.gr_pend_aprob;
+	let orig_PendAprobar = datos.orig.status_registro.gr_pends_aprob;
 	let edicG_existe = !!datos.edicG[producto_id];
 	// Botones
 	let botonesActivarVersion = document.querySelectorAll("#cuerpo #comandos .activar");
