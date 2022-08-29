@@ -515,7 +515,6 @@ window.addEventListener("load", async () => {
 				: // Inactivar e ir a la vista de origen
 				  "/inactivar-captura/" + entidadID + "&origen=" + origen + prodEntidadID;
 		// Ir a la vista de origen sin guardar cambios
-		console.log(rutaSalir,origen);
 		window.location.href = rutaSalir;
 	});
 	botonSubmit.addEventListener("click", async (e) => {
