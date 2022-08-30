@@ -58,8 +58,8 @@ window.addEventListener("load", async () => {
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
+			// Averiguar los errores
 			await averiguaLosErrores();
-			console.log(errores);
 			// Realiza acciones sobre el input cambiado
 			consecuenciaDeError(i);
 		});
