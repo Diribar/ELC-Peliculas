@@ -350,15 +350,13 @@ let problemasLinks = (producto, urlAnterior) => {
 				"El producto no está en status 'Aprobado'",
 				"Su status es " + producto.status_registro.nombre,
 			],
-			iconos: [vistaAnterior, vistaTablero],
 		};
 
 	// El producto no posee links
 	if (!informacion && !producto.links.length)
-		informacion = {
-			mensajes: ["Este producto no tiene links en nuestra Base de Datos"],
-			iconos: [vistaAnterior, vistaTablero],
-		};
+		informacion = {mensajes: ["Este producto no tiene links en nuestra Base de Datos"]};
+	// Agregar los íconos
+	if (informacion) informacion.iconos = [vistaAnterior, vistaTablero];
 
 	// Fin
 	return informacion;
