@@ -36,16 +36,8 @@ window.addEventListener("load", () => {
 		// Busca los productos
 		palabras = palabras.join(" ");
 		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
-		resultados = resultados.map((n) => {
-			return {
-				id: n.id,
-				nombre_castellano: n.nombre_castellano,
-				ano_estreno: n.ano_estreno,
-				entidad: n.entidad,
-			};
-		});
-		let datos = resultados.length ? resultados : "- No encontramos coincidencias -";
-		agregarHallazgos(datos);
+		if (resultados.length) agregarHallazgos(resultados);
+		else agregarHallazgos("- No encontramos coincidencias -");
 	});
 
 	let agregarHallazgos = (registros) => {
@@ -56,37 +48,36 @@ window.addEventListener("load", () => {
 		display.classList.remove("ocultar");
 
 		// Rutinas en función del tipo de variable que sea 'registros'
-		if (typeof registros == "object") {
+		if (Array.isArray(registros)) {
 			// Crea la tabla y el cuerpo
 			let tabla = document.createElement("table");
 			let tblBody = document.createElement("tbody");
 
 			// Crea las filas y celdas
 			for (let registro of registros) {
+				// Variables
+				let {familia, entidad, id, ano, nombre} = registro;
 				// Crea una fila y el anchor del registro
 				let fila = document.createElement("tr");
 				let anchor = document.createElement("a");
-				let id = registro.id;
-				anchor.href = "/producto/detalle/?entidad=" + registro.entidad + "&id=" + registro.id;
-
+				anchor.href = "/" + familia + "/detalle/?entidad=" + entidad + "&id=" + id;
 				// Prepara las variables de la fila
 				let anchoMax = 30;
-				let nombre =
-					registro.nombre_castellano.length > anchoMax
-						? registro.nombre_castellano.slice(0, anchoMax - 1) + "…"
-						: registro.nombre_castellano;
-				nombre += " (" + registro.ano_estreno + ")";
-				let entidad = registro.entidad.slice(0, 3).toUpperCase();
-				let datos = [nombre, entidad];
+				let nom = nombre.length > anchoMax ? nombre.slice(0, anchoMax - 1) + "…" : nombre;
+				if (familia == "producto") nombre += " (" + ano + ")";
+				let ent = entidad.slice(0, 3).toUpperCase();
+				let datos = [nom, ent];
 				// Crea las celdas
 				for (let i = 0; i < datos.length; i++) {
 					let celda = document.createElement("td");
 					let textoCelda = document.createTextNode(datos[i]);
-					// Agrega el texto al 'anchor' (celda nombre_castellano) o a la celda (entidad)
 					if (i == 0) {
+						// Agrega el texto al 'anchor' (celda nombre)
 						anchor.appendChild(textoCelda);
 						celda.appendChild(anchor);
-					} else celda.appendChild(textoCelda);
+					}
+					// Agrega el texto a la celda (entidad)
+					else celda.appendChild(textoCelda);
 					// Agrega la celda a la fila
 					fila.appendChild(celda);
 				}
