@@ -205,8 +205,10 @@ module.exports = {
 		}
 		// 5. Si corresponde, actualizar el Status del Usuario
 		if (!usuario.status_registro.mail_validado) {
-			let filtros = {mail_validado: true, datos_perennes: false};
-			let mail_validado_id = await BD_genericas.obtenerPorCampos("usuarios", filtros).then((n) => n.id);
+			let mail_validado_id = await BD_genericas.obtenerPorCampos("status_registro_us", {
+				mail_validado: true,
+				datos_perennes: false,
+			}).then((n) => n.id);
 			BD_genericas.actualizarPorId("usuarios", usuario.id, {status_registro_id: mail_validado_id});
 			usuario.status_registro_id = mail_validado_id;
 		}
