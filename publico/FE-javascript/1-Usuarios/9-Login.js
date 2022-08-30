@@ -4,8 +4,8 @@ window.addEventListener("load", async () => {
 	let form = document.querySelector("#dataEntry");
 	let inputs = document.querySelectorAll("#dataEntry .input");
 	// Variables de errores
-	let iconoError = document.querySelectorAll(".fa-circle-xmark");
-	let iconoOK = document.querySelectorAll(".fa-circle-check");
+	let iconosError = document.querySelectorAll(".fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".fa-circle-check");
 	let resultadoInvalido = document.querySelector(".resultadoInvalido");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	// Varias
@@ -33,50 +33,34 @@ window.addEventListener("load", async () => {
 		let mensaje = errores[campo];
 		mensajesError[i].innerHTML = mensaje;
 		// IconosError
-		mensaje ? iconoError[i].classList.remove("ocultar") : iconoError[i].classList.add("ocultar");
+		mensaje ? iconosError[i].classList.remove("ocultar") : iconosError[i].classList.add("ocultar");
 		// IconosOK
-		mensaje ? iconoOK[i].classList.add("ocultar") : iconoOK[i].classList.remove("ocultar");
+		mensaje ? iconosOK[i].classList.add("ocultar") : iconosOK[i].classList.remove("ocultar");
 		// Fin
-		actualizaBotonSubmit();
 		return;
 	};
-	// Anula/activa el botón 'Submit'
 	let actualizaBotonSubmit = () => {
-		if (errores.hay || !resultadoInvalido.className.includes("ocultar")) {
-			botonSubmit.classList.add("inactivo");
-			submit.classList.add("inactivo");
-		} else {
+		if (iconosError[0].className.includes("ocultar") && iconosError[1].className.includes("ocultar"))
 			botonSubmit.classList.remove("inactivo");
-			submit.classList.remove("inactivo");
-		}
-		return;
+		else botonSubmit.classList.add("inactivo");
 	};
 
-	// Desactiva el cartel de 'credenciales inválidas'
-	form.addEventListener("input", () => resultadoInvalido.classList.add("ocultar"));
+	// Submit
+	form.addEventListener("submit", async (e) => {
+		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
+	});
 
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
-			// Averiguar los errores
+			// Desactiva el cartel de 'credenciales inválidas'
+			resultadoInvalido.classList.add("ocultar");
+			// Averigua los errores
 			await averiguaLosErrores();
 			// Realiza acciones sobre el input cambiado
 			consecuenciaDeError(i);
+			// Actualiza el botón submit
+			actualizaBotonSubmit();
 		});
-	}
-
-	// Submit
-	form.addEventListener("submit", async (e) => {
-		await averiguaLosErrores();
-		if (!errores.hay) e.preventDefault();
-		else return;
-	});
-
-	// Status inicial
-	// Revisa los errores en los inputs
-	await averiguaLosErrores();
-	// Consecuencia de los errores
-	for (let i = 0; i < inputs.length; i++) {
-		if (inputs[i].value) consecuenciaDeError(i);
 	}
 });
