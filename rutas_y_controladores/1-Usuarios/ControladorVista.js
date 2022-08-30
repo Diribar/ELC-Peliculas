@@ -178,7 +178,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
-			urlSalir: req.session.urlAnterior,
+			urlSalir: req.session.urlSinUsuario,
 			variables,
 		});
 	},

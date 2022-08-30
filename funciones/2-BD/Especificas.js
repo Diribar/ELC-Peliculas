@@ -87,11 +87,11 @@ module.exports = {
 	},
 
 	// RUD - Usuario habilitado
-	registrosConStatusARevisar: async (userID, status, entidades) => {
+	registrosConStatusARevisar: async (userID, entidades) => {
 		// Variables
-		const creado_id = status.find((n) => n.creado).id;
-		const inactivar_id = status.find((n) => n.inactivar).id;
-		const recuperar_id = status.find((n) => n.recuperar).id;
+		const creado_id = status_registro.find((n) => n.creado).id;
+		const inactivar_id = status_registro.find((n) => n.inactivar).id;
+		const recuperar_id = status_registro.find((n) => n.recuperar).id;
 		let contarRegistros = 0;
 		// Rutina para contar
 		let condiciones = {
@@ -157,9 +157,9 @@ module.exports = {
 			})
 			.then((n) => (n ? n.map((m) => m.toJSON()) : []));
 	},
-	tablero_obtenerLinks_y_Edics: async (status) => {
+	tablero_obtenerLinks_y_Edics: async () => {
 		// Variables
-		let gr_estables = status.filter((n) => !n.gr_estables).map((n) => n.id);
+		let gr_estables = status_registro.filter((n) => !n.gr_estables).map((n) => n.id);
 		let includes = ["pelicula", "coleccion", "capitulo"];
 		// Obtener los links en status 'a revisar'
 		let originales = db.links

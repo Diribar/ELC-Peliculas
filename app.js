@@ -5,6 +5,12 @@ global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
+
+(async () => {
+	const BD_genericas = require("./funciones/2-BD/Genericas");
+	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
+})();
+
 const path = require("path");
 // Para usar propiedades de express
 const express = require("express");

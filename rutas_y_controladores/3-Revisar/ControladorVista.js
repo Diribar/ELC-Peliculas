@@ -14,17 +14,16 @@ module.exports = {
 		let codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
-		const status = req.session.status_registro;
 		const ahora = compartidas.ahora();
 		// Productos y Ediciones
 		let productos;
-		productos = await procesos.tablero_obtenerProds(ahora, status, userID); //
-		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, status, userID); //
+		productos = await procesos.tablero_obtenerProds(ahora, userID); //
+		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, userID); //
 		// Obtener Links
-		productos.LK = await procesos.tablero_obtenerProdsConLink(ahora, status, userID); //
+		productos.LK = await procesos.tablero_obtenerProdsConLink(ahora, userID); //
 		productos = procesos.tablero_prod_ProcesarCampos(productos);
 		// RCLV
-		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, status, userID); //
+		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, userID); //
 		RCLVs = procesos.tablero_RCLV_ProcesarCampos(RCLVs);
 		// Ir a la vista
 		// return res.send([productos,RCLVs]);

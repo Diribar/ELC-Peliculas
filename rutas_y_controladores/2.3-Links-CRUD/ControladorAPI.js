@@ -86,7 +86,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Completar la info
-		let recuperar_id = req.session.status_registro.find((n) => n.recuperar).id;
+		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		// Obtener el link
 		let link = await BD_genericas.obtenerPorCamposConInclude(
 			"links",
@@ -115,8 +115,8 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let respuesta = {};
 		// Completar la info
-		let aprobado_id = req.session.status_registro.find((n) => n.aprobado).id;
-		let inactivo_id = req.session.status_registro.find((n) => n.inactivo).id;
+		let aprobado_id = status_registro.find((n) => n.aprobado).id;
+		let inactivo_id = status_registro.find((n) => n.inactivo).id;
 		// Obtener el link
 		let link = await BD_genericas.obtenerPorCamposConInclude(
 			"links",

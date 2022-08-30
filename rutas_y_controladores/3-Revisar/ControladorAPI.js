@@ -16,10 +16,9 @@ module.exports = {
 		const userID = req.session.usuario.id;
 		const ahora = compartidas.ahora();
 		// Obtiene el nuevo status_id
-		const status = req.session.status_registro;
 		let nuevoStatusID = creadoAprob
-			? status.find((n) => n.creado_aprob).id
-			: status.find((n) => n.inactivo).id;
+			? status_registro.find((n) => n.creado_aprob).id
+			: status_registro.find((n) => n.inactivo).id;
 		// Obtiene el motivo si es un rechazo
 		if (!creadoAprob) var {motivo_id} = req.query;
 		if (!creadoAprob && !motivo_id) return res.json("false");
@@ -42,7 +41,7 @@ module.exports = {
 			sugerido_en: producto.creado_en,
 			analizado_por_id: userID,
 			analizado_en: ahora,
-			status_original_id: status.find((n) => n.creado).id,
+			status_original_id: status_registro.find((n) => n.creado).id,
 			status_final_id: nuevoStatusID,
 			aprobado: creadoAprob,
 		};
@@ -62,9 +61,8 @@ module.exports = {
 	// Revisar la edición
 	prodEdic: async (req, res) => {
 		// Variables
-		const {entidad: prodEntidad, id: prodID, edicion_id: edicID, campo} = req.query;
+		const {entidad, id, edicion_id: edicID, campo} = req.query;
 		const edicAprob = req.query.aprob == "true";
-		const status = req.session.status_registro;
 		const userID = req.session.usuario.id;
 		// Obtiene el registro editado
 		let includes = [
@@ -95,7 +93,7 @@ module.exports = {
 		// Limpia la edición  y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
-		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status);
+		procesos.RCLV_productosAprob(prodOrig, campo, edicAprob, statusOrigAprob, statusAprob);
 		// Fin
 		return res.json([quedanCampos, statusAprob]);
 	},
@@ -115,9 +113,8 @@ module.exports = {
 			...includes,
 		]);
 		// Obtiene los status
-		const status = req.session.status_registro;
-		let creado_id = status.find((n) => n.creado).id;
-		let aprobado_id = status.find((n) => n.aprobado).id;
+		let creado_id = status_registro.find((n) => n.creado).id;
+		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		// PROBLEMA 1: Registro no encontrado
 		if (!RCLV_original) return res.json("Registro no encontrado");
 		// PROBLEMA 2: El registro no está en status creado
@@ -131,8 +128,8 @@ module.exports = {
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
 		// Obtiene el campo 'prods_aprob'
 		let prods_aprob = await procesos.RCLV_averiguarSiTieneProdAprob(
-			{...RCLV_original, status_registro_id: aprobado_id},
-			status
+			{...RCLV_original, status_registro_id: aprobado_id}
+			
 		);
 		// Preparar lead_time_creacion
 		let alta_analizada_en = compartidas.ahora();
@@ -161,9 +158,8 @@ module.exports = {
 		const {prodEntidad, prodID, url, motivo_id} = req.query;
 		const creadoAprob = req.query.aprob == "true";
 		const userID = req.session.usuario.id;
-		const status = req.session.status_registro;
-		const st_aprobado = status.find((n) => n.aprobado).id;
-		const st_inactivo = status.find((n) => n.inactivo).id;
+		const st_aprobado = status_registro.find((n) => n.aprobado).id;
+		const st_inactivo = status_registro.find((n) => n.inactivo).id;
 		const ahora = compartidas.ahora();
 		let datos;
 		// Averiguar si no existe el 'url'
