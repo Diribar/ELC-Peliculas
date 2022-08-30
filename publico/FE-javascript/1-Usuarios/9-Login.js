@@ -45,11 +45,6 @@ window.addEventListener("load", async () => {
 		else botonSubmit.classList.add("inactivo");
 	};
 
-	// Submit
-	form.addEventListener("submit", async (e) => {
-		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
-	});
-
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async () => {
@@ -63,4 +58,9 @@ window.addEventListener("load", async () => {
 			actualizaBotonSubmit();
 		});
 	}
+
+	// Submit
+	form.addEventListener("submit", async (e) => {
+		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
+	});
 });
