@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 	}
 
 	// Submit
-	form.addEventListener("submit", async (e) => {
+	form.addEventListener("submit", (e) => {
 		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
 	});
 });
