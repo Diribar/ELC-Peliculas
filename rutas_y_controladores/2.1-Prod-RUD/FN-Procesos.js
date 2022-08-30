@@ -33,11 +33,13 @@ module.exports = {
 			// Quitarle los campos 'null'
 			prodOriginal = compartidas.todos_quitarCamposSinContenido(prodOriginal);
 			// Obtener los datos EDITADOS del producto
-			prodEditado = await BD_genericas.obtenerPorCamposConInclude(
-				"prods_edicion",
-				{[producto_id]: prodID, editado_por_id: userID},
-				includes
-			);
+			prodEditado = userID
+				? await BD_genericas.obtenerPorCamposConInclude(
+						"prods_edicion",
+						{[producto_id]: prodID, editado_por_id: userID},
+						includes
+				  )
+				: {};
 			// Quitarle los campos 'null'
 			if (prodEditado) prodEditado = compartidas.todos_quitarCamposSinContenido(prodEditado);
 		}

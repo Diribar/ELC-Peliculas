@@ -160,11 +160,17 @@ module.exports = {
 		let tema = "usuario";
 		let codigo = "login";
 		// 2. Data Entry propio y errores
-		let dataEntry = req.session.email
-			? {email: req.session.email, contrasena: req.session.contrasena}
-			: null;
+		let dataEntry =
+			req.session.email !== undefined || req.session.contrasena !== undefined
+				? {email: req.session.email, contrasena: req.session.contrasena}
+				: "";
 		let errores = req.session.errores ? req.session.errores : false;
-		// 3. Render del formulario
+		// 3. Variables para la vista
+		let variables = [
+			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
+			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
+		];
+		// 4. Render del formulario
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
@@ -172,38 +178,48 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
+			urlSalir: req.session.urlAnterior,
+			variables,
 		});
 	},
 	loginGuardar: async (req, res) => {
-		// 1. Obtener los datos del usuario
-		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
-		// 2. Averiguar si hay errores de validación
+		// 1. Averiguar si hay errores de data-entry
 		let errores = await validar.login(req.body);
-		let contrasena = usuario ? usuario.contrasena : "";
-		errores.credencialesInvalidas =
-			!errores.email && !errores.contrasena
-				? !contrasena || !bcryptjs.compareSync(req.body.contrasena, contrasena)
-				: false;
-		errores.credencialesInvalidas ? (errores.hay = true) : "";
-		// 3. Si hay errores de validación, redireccionar
+		if (!errores.hay) {
+			// 2. Si no hay error => averigua el usuario
+			var usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
+			// 3. Si existe el usuario => averigua si la contraseña es válida
+			if (usuario) {
+				errores.credenciales = !bcryptjs.compareSync(req.body.contrasena, usuario.contrasena);
+				if (errores.credenciales) errores.hay = true;
+			}
+			// Si el usuario no existe => Credenciales Inválidas
+			else errores = {credenciales: true, hay: true};
+		}
+		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
 			req.session.email = req.body.email;
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// 4. Si corresponde, actualizar el Status del Usuario
-		if (usuario.status_registro_id == 1) {
-			await BD_genericas.actualizarPorId("usuarios", usuario.id, {status_registro_id: 2});
+		// 5. Si corresponde, actualizar el Status del Usuario
+		if (!usuario.status_registro.mail_validado) {
+			let mail_validado_id = await BD_genericas.obtenerPorCampos("status_registro_us", {
+				mail_validado: true,
+				datos_perennes: false,
+			}).then((n) => n.id);
+			BD_genericas.actualizarPorId("usuarios", usuario.id, {status_registro_id: mail_validado_id});
+			usuario.status_registro_id = mail_validado_id;
 		}
-		// 5. Iniciar la sesión
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
+		// 6. Iniciar la sesión
+		req.session.usuario = usuario;
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session.email;
-		// 6. Notificar al contador de logins
-		let hoyAhora = compartidas.ahora().toISOString().slice(0, 10);
+		// 7. Notificar al contador de logins
+		let hoyAhora = compartidas.ahora();
 		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
-		// Redireccionar
+		// 8. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
 	logout: (req, res) => {

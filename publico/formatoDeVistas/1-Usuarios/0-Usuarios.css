@@ -19,21 +19,16 @@
 #cuerpo #eye {right: 10px; position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 
 /* Íconos y Mensajes de error */
-.mensajeError, .mensajeError::before, 
-.mensajeAyuda, .mensajeAyuda::before,
-.fa-circle-check, .fa-circle-question, 
-.fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
+.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
+.input-error .fa-circle-check, .input-error .fa-circle-xmark,
+.fa-circle-question {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #cuerpo .input-error {position: relative;}
 #cuerpo .input-error .fa-circle-check, #cuerpo .input-error .fa-circle-xmark {left: -20px;}
 #cuerpo .mensajeError {left: 20px; max-width: 200px;}
 #cuerpo .mensajeError::before {left: -12px;}
 
-/* Botones */
-#cuerpo form #buttons {margin: 15px auto 5px;}
-#cuerpo form #buttons {padding-top: 5px; justify-content: space-evenly;}
-#cuerpo form #buttons button {padding: 2px 5px;}
-#cuerpo form #buttons button {font-size: 1rem;font-weight: bold; color: white;}
-#cuerpo form #buttons button {border: solid 2px var(--amarillo-claro); border-radius: 7px;}
-#cuerpo form #buttons button[type="submit"] {background-color: var(--verde-oscuro);}
-#cuerpo form #buttons button[type="button"] {background-color: var(--azul-oscuro);}
-#cuerpo form #buttons button#cancelar {background-color: var(--rojo-oscuro);}
+/* Flechas */
+#cuerpo form #flechas {margin: 15px auto 5px; padding-top: 5px; display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;}
+#cuerpo form #flechas * {border-radius: 50%;}
+#cuerpo form #flechas .icono {font-size: 1.75rem; border: solid 2px var(--amarillo-claro); background-color: var(--gris-claro);}
+#cuerpo form #flechas button.inactivo {cursor: default;}

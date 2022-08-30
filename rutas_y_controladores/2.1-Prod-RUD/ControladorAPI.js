@@ -10,7 +10,7 @@ module.exports = {
 	// Detalle
 	obtenerCalificaciones: async (req, res) => {
 		let {entidad, id: prodID, detalle} = req.query;
-		let userID = req.session.usuario.id;
+		let userID = req.session.usuario ? req.session.usuario.id : "";
 		let datos;
 		let calificaciones = [];
 		// Datos generales
