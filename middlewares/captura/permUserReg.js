@@ -155,8 +155,8 @@ module.exports = async (req, res, next) => {
 	let verificacionesDeRevision = () => {
 		let informacion;
 		if (urlBase == "/revision" && !url.startsWith("/tablero-de-control")) {
-			// 1. El registro está en un status gr_pends_aprob, creado por el Revisor
-			if (registro.status_registro.gr_pends_aprob && creadoPorElUsuario)
+			// 1. El registro está en un status gr_creado, creado por el Revisor
+			if (registro.status_registro.gr_creado && creadoPorElUsuario)
 				informacion = {
 					mensajes: ["El registro debe ser revisado por otro revisor, no por su creador"],
 					iconos: vistaAnteriorTablero(),

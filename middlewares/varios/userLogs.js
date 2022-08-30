@@ -17,12 +17,18 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/session") &&
 		!actual.startsWith("/cookies") &&
 		!actual.includes("/api/") &&
-		!actual.includes("/redireccionar/") &&
-		anterior.slice(0, anterior.lastIndexOf("/")) != actual.slice(0, actual.lastIndexOf("/"))
+		!actual.includes("/redireccionar/")
 	) {
 		// Nuevas url en session y cookie
-		req.session.urlAnterior = anterior;
-		res.cookie("urlAnterior", anterior, {maxAge: unDia});
+		// La url 'anterior' debe ser una que no tenga capturas
+		if (
+			!anterior.includes("/edicion/") ||
+			!anterior.includes("/links/abm") ||
+			anterior.includes("/revision/tablero-de-control")
+		) {
+			req.session.urlAnterior = anterior;
+			res.cookie("urlAnterior", anterior, {maxAge: unDia});
+		}
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
 	}
