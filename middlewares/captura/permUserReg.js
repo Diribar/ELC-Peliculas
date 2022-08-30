@@ -26,9 +26,9 @@ module.exports = async (req, res, next) => {
 	const capturado_en = registro.capturado_en;
 	const horarioFinalCaptura = compartidas.horarioTexto(compartidas.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
-	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
+	const vistaAnterior = variables.vistaAnterior(req.session.urlSinCaptura);
 	const vistaInactivar = variables.vistaInactivar(req);
-	const vistaAnteriorInactivar = () => [vistaAnterior, vistaInactivar];
+	const vistaAnteriorInactivar = [vistaAnterior, vistaInactivar];
 
 	const vistaTablero = variables.vistaTablero();
 	const vistaAnteriorTablero = () => {
@@ -82,7 +82,7 @@ module.exports = async (req, res, next) => {
 							".",
 						"Estará liberado a más tardar el " + horarioFinalCaptura,
 					],
-					iconos: vistaAnteriorInactivar(),
+					iconos: vistaAnteriorInactivar,
 			  }
 			: "";
 	};
@@ -96,7 +96,7 @@ module.exports = async (req, res, next) => {
 						"Quedó a disposición de los demás usuarios.",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
-					iconos: vistaAnteriorInactivar(),
+					iconos: vistaAnteriorInactivar,
 			  }
 			: "";
 	};

@@ -8,8 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Definir variables
 	const usuario = await BD_genericas.obtenerPorId("usuarios", req.session.usuario.id);
-	const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
-	const vistaInicio = variables.vistaInicio();
+	const vistaAnterior = variables.vistaAnterior(req.session.urlSinUsuario);
 	let informacion;
 
 	// Fórmulas
@@ -26,7 +25,7 @@ module.exports = async (req, res, next) => {
 					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa.",
 					"Podrás volver a ingresar información el día " + fecha + ".",
 				],
-				iconos: [vistaAnterior, vistaInicio],
+				iconos: [vistaAnterior],
 			};
 		}
 		return informacion;
@@ -36,7 +35,6 @@ module.exports = async (req, res, next) => {
 		let informacion;
 		// Obtener datos del url
 		const originalUrl = req.originalUrl;
-		const status = req.session.status_registro;
 		// Obtener la tarea
 		const producto = originalUrl.startsWith("/producto/agregar/");
 		const edicion = originalUrl.startsWith("/producto/edicion/");
@@ -45,13 +43,13 @@ module.exports = async (req, res, next) => {
 		// Obtener su nivel de confianza
 		const nivelDeConfianza = nivel_de_confianza(usuario, producto, rclv, links, edicion);
 		// Contar registros
-		const contarRegistros = contar_registros(usuario, producto, rclv, links, edicion, status);
+		const contarRegistros = contar_registros(usuario, producto, rclv, links, edicion);
 
 		// Si la cantidad de registros es mayor o igual que el nivel de confianza --> Error
 		if (contarRegistros >= nivelDeConfianza)
 			informacion = {
 				mensajes: mensajes(edicion),
-				iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
+				iconos: [vistaAnterior],
 			};
 		// Fin
 		return informacion;
@@ -97,7 +95,7 @@ let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
 	// Fin
 	return nivelDeConfianza;
 };
-let contar_registros = async (usuario, producto, rclv, links, edicion, status) => {
+let contar_registros = async (usuario, producto, rclv, links, edicion) => {
 	// Contar registros
 	let contarRegistros = 0;
 	// Contar registros con status 'a revisar'
@@ -106,7 +104,7 @@ let contar_registros = async (usuario, producto, rclv, links, edicion, status) =
 	else if (rclv) entidades = ["personajes", "hechos", "valores"];
 	else if (links) entidades = ["links"];
 	if (entidades)
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, status, entidades);
+		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
 	// Contar registros de edición
 	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
 	// Fin
