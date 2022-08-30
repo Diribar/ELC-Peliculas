@@ -18,7 +18,7 @@ module.exports = {
 		// 2. Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;
-		let userID = req.session.usuario.id;
+		let userID = req.session.usuario ? req.session.usuario.id : "";
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene el avatar y la versión más completa posible del producto

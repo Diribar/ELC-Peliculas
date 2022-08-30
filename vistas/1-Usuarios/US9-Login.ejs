@@ -1,36 +1,31 @@
 <div id="tapar-el-fondo"></div>
 <form action="<%= link %>" method="POST" id="dataEntry">
 	<h1>Login</h1>
-	<!--Mail y Contraseña-->
-	<div class="label-input flex-row">  <!--Mail-->
-		<label for="email">E-Mail</label>
-		<div class="input-error">
-			<input type="text" class="input" name="email" placeholder="Correo Electrónico"
-				value="<%= dataEntry ? dataEntry.email : null %>">
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
-			<i class="fa-solid fa-circle-check ocultar"></i>
-		</div>
+	<!-- Rutina -->
+	<section id="rutina">
+		<% for (variable of variables) { %>
+			<div class="label-input flex-row">  
+				<label for="<%= variable.name %>"><%= variable.titulo %></label>
+				<div class="input-error">
+					<input value="<%= dataEntry ? dataEntry[variable.name] : '' %>" type="<%= variable.type %>" class="input" name="<%= variable.name %>" placeholder="<%= variable.placeholder %>" autofocus>
+					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
+					<!-- Errores -->
+					<i class="fa-solid fa-circle-xmark <%- !errores || !errores[variable.name] ? 'ocultar' : '' %>">
+						<span class="mensajeError"><%= errores[variable.name] %></span>
+					</i>
+					<i class="fa-solid fa-circle-check ocultar"></i>
+				</div>
+			</div>
+		<% } %>
+	</section>
+	<!--Credenciales Inválidas-->
+	<div class="flex-col">
+		<p class="resultadoInvalido <%- !errores || !errores.credenciales ? 'ocultar' : '' %>">Credenciales inválidas</p>
 	</div>
-	<div class="label-input flex-row">  <!--Contraseña-->
-		<label for="contrasena">Contraseña</label>
-		<div class="input-error">
-			<input type="password" class="input" name="contrasena"
-				value="<%= dataEntry ? dataEntry.contrasena : null %>" placeholder="Contraseña"
-			>
-			<i class="fa-solid fa-eye-slash" id="eye"></i>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar"><span class="mensajeError"></span></i>
-			<i class="fa-solid fa-circle-check ocultar"></i>
-		</div>
-	</div>
-	<br>
-	<div class="flex-col">   <!--Credenciales Inválidas-->
-		<p id="resultadoInvalido" class="<%- !errores.credencialesInvalidas ? 'ocultar' : '' %>">Credenciales inválidas</p>
-	</div>
-	<div id="buttons" class="flex-row"><!--Botones-->
-		<button type="submit" autofocus>Aceptar</button>
-		<a href="/"><button type="button" id="cancelar">Cancelar</button></a>
-		<a href="#"><button type="button">Olvidé mi contraseña</button></a>
+	<!--Botones-->
+	<div id="flechas">
+		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
+		<button type="submit" class=""><i class="fa-solid fa-circle-check icono" title="Login"></i></button>
+		<a href="#" tabindex="-1"><i class="fa-solid fa-circle-xmark icono" title="Olvidé mi contraseña"></i></a>
 	</div>
 </form>

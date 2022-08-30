@@ -2,31 +2,33 @@
 window.addEventListener("load", async () => {
 	// Variables generales
 	let form = document.querySelector("#dataEntry");
-	let inputs = document.querySelectorAll("#dataEntry input");
+	let inputs = document.querySelectorAll("#dataEntry .input");
 	// Variables de errores
 	let iconoError = document.querySelectorAll(".fa-circle-xmark");
 	let iconoOK = document.querySelectorAll(".fa-circle-check");
-	let resultadoInvalido = document.querySelector("#resultadoInvalido");
+	let resultadoInvalido = document.querySelector(".resultadoInvalido");
 	let mensajesError = document.querySelectorAll(".mensajeError");
 	// Varias
-	let button = document.querySelector("form button[type='submit']");
-	let errores;
+	let botonSubmit = document.querySelector("form button[type='submit']");
+	let submit = document.querySelector("form button[type='submit'] .icono");
+	let errores = {};
 
 	// Fórmulas ----------------------------------------------------
 	// Devuelve todos los errores
 	let averiguaLosErrores = async () => {
-		let url;
-		inputs.forEach((input, i) => {
-			if (i) url += "&";
-			url += inputs[i].name + "=" + encodeURIComponent(inputs[i].value);
+		let datos = "";
+		inputs.forEach((input) => {
+			// console.log(input.value);
+			if (datos) datos += "&";
+			datos += input.name + "=" + encodeURIComponent(input.value);
 		});
 		// Obtener los errores
-		errores = await fetch("/usuarios/api/validar-login/?" + url).then((n) => n.json());
+		errores = await fetch("/usuarios/api/validar-login/?" + datos).then((n) => n.json());
 		// Fin
 		return;
 	};
-	// Anula/activa el botón 'Submit', muestra el ícono de error/acierto
-	let consecuenciasDeErrores = (i, errores) => {
+	// Muestra el ícono de error/acierto
+	let consecuenciaDeError = (i) => {
 		// Averiguar si hay un error
 		let campo = inputs[i].name;
 		let mensaje = errores[campo];
@@ -35,42 +37,47 @@ window.addEventListener("load", async () => {
 		mensaje ? iconoError[i].classList.remove("ocultar") : iconoError[i].classList.add("ocultar");
 		// IconosOK
 		mensaje ? iconoOK[i].classList.add("ocultar") : iconoOK[i].classList.remove("ocultar");
+		// Fin
+		actualizaBotonSubmit();
+		return;
 	};
-	let botonSubmit = () => {
-		// En caso de error
-		if (mensaje) {
-			button.classList.add("inactivo");
+	// Anula/activa el botón 'Submit'
+	let actualizaBotonSubmit = () => {
+		if (errores.hay || !resultadoInvalido.className.includes("ocultar")) {
+			botonSubmit.classList.add("inactivo");
+			submit.classList.add("inactivo");
 		} else {
-			// En caso de que no haya error
-			let sinErrores = true;
-			for (let j = 0; j < inputs.length; j++) {
-				iconoOK[j].classList.contains("ocultar") || !resultadoInvalido.classList.contains("ocultar")
-					? (sinErrores = false)
-					: "";
-			}
-			sinErrores ? button.classList.remove("inactivo") : button.classList.add("inactivo");
+			botonSubmit.classList.remove("inactivo");
+			submit.classList.remove("inactivo");
 		}
+		return;
 	};
+
+	// Desactiva el cartel de 'credenciales inválidas'
+	form.addEventListener("input", () => resultadoInvalido.classList.add("ocultar"));
 
 	// Revisa el data-entry modificado y comunica si está OK o no
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("change", async () => {
-			resultadoInvalido.classList.add("ocultar");
-			let errores = await averiguaLosErrores();
+		inputs[i].addEventListener("input", async () => {
+			await averiguaLosErrores();
+			console.log(errores);
 			// Realiza acciones sobre el input cambiado
-			consecuenciasDeErrores(i, errores);
+			consecuenciaDeError(i);
 		});
 	}
 
 	// Submit
-	form.addEventListener("submit", (e) => {
-		if (button.classList.contains("inactivo")) e.preventDefault();
+	form.addEventListener("submit", async (e) => {
+		await averiguaLosErrores();
+		if (!errores.hay) e.preventDefault();
+		else return;
 	});
 
 	// Status inicial
-	await averiguaLosErrores();
 	// Revisa los errores en los inputs
+	await averiguaLosErrores();
+	// Consecuencia de los errores
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].value != "" ? consecuenciasDeErrores(i, errores) : "";
+		if (inputs[i].value) consecuenciaDeError(i);
 	}
 });

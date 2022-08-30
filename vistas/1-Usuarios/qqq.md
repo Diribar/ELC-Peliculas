@@ -1,0 +1,1 @@
+<% if (dataEntry && dataEntry[variable.name]) { %> value="<%= dataEntry[variable.name] %>" <% } %>
