@@ -18,7 +18,6 @@ window.addEventListener("load", async () => {
 	let averiguaLosErrores = async () => {
 		let datos = "";
 		inputs.forEach((input) => {
-			// console.log(input.value);
 			if (datos) datos += "&";
 			datos += input.name + "=" + encodeURIComponent(input.value);
 		});
