@@ -26,7 +26,7 @@
 	</div>
 	<br>
 	<div class="flex-col">   <!--Credenciales Inválidas-->
-		<p class="resultadoInvalido<%- !errores.credencialesInvalidas ? ' ocultar' : '' %>">Credenciales inválidas</p>
+		<p id="resultadoInvalido" class="<%- !errores.credencialesInvalidas ? 'ocultar' : '' %>">Credenciales inválidas</p>
 	</div>
 	<div id="buttons" class="flex-row"><!--Botones-->
 		<button type="submit" autofocus>Aceptar</button>

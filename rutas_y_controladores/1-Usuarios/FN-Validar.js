@@ -17,15 +17,16 @@ module.exports = {
 		return errores;
 	},
 
-	login: (login) => {
+	login: (datos) => {
+		// Variables
+		let {email, contrasena} = datos;
 		let errores = {};
-		errores.email = !login.email ? cartelMailVacio : formatoMail(login.email) ? cartelMailFormato : "";
-		errores.contrasena = !login.contrasena
-			? cartelContrasenaVacia
-			: largoContrasena(login.contrasena)
-			? largoContrasena(login.contrasena)
-			: "";
+		let largoContr = largoContrasena(contrasena);
+		// Verificar errores
+		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
 		errores.hay = Object.values(errores).some((n) => !!n);
+		// Fin
 		return errores;
 	},
 
