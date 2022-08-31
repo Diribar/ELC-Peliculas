@@ -33,9 +33,6 @@ app.use(usuario);
 // Para tener el rastro de los últimos url
 const userLogs = require("./middlewares/varios/userLogs");
 app.use(userLogs);
-// Para tener siempre a mano las opciones de status_registro
-const status_registro = require("./middlewares/varios/status_registro");
-app.use(status_registro);
 
 // Para saber el recorrido del proyecto
 // let morgan = require('morgan');
