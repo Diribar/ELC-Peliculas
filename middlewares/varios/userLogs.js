@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
 	if (!req.session.urlActual)
 		req.session.urlActual = req.cookies && req.cookies.urlActual ? req.cookies.urlActual : "/";
 	// Variables
-	let anterior = req.session.urlActual;
+	// Si se retrocedió, la ruta anterior pasa a ser 'home'
+	let anterior = req.session.urlAnterior != req.originalUrl ? req.session.urlActual : "/";
 	let actual = req.originalUrl;
 	// Condición
 	if (
@@ -17,18 +18,36 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/session") &&
 		!actual.startsWith("/cookies") &&
 		!actual.includes("/api/") &&
-		!actual.includes("/redireccionar/")
+		!actual.includes("/redireccionar/") &&
+		anterior != actual
 	) {
-		// Nuevas url en session y cookie
-		// La url 'anterior' debe ser una que no tenga capturas
+		// 1. url sin usuario
+		// No tiene agregar ni edición
+		// No tiene links
+		// No tiene revisión
 		if (
-			!anterior.includes("/edicion/") ||
-			!anterior.includes("/links/abm") ||
-			anterior.includes("/revision/tablero-de-control")
-		) {
-			req.session.urlAnterior = anterior;
-			res.cookie("urlAnterior", anterior, {maxAge: unDia});
-		}
+			!anterior.includes("/agregar/") &&
+			!anterior.includes("/edicion/") &&
+			!anterior.startsWith("/links/") &&
+			!anterior.startsWith("/revision/")
+		)
+			req.session.urlSinUsuario = anterior;
+		// 2. url sin captura
+		// No tiene agregar ni edición
+		// No tiene links
+		// No tiene revisión, salvo el tablero
+		if (
+			!anterior.includes("/agregar/") &&
+			!anterior.includes("/edicion/") &&
+			!anterior.startsWith("/links/") &&
+			(!anterior.startsWith("/revision/") || anterior == "/revision/tablero-de-control")
+		)
+			req.session.urlSinCaptura = anterior;
+		// Actualiza en session la url 'anterior'
+		req.session.urlAnterior = anterior;
+		res.cookie("urlAnterior", anterior, {maxAge: unDia});
+
+		// Actualiza en session la url 'actual'
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
 	}

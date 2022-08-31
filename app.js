@@ -5,6 +5,12 @@ global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
+
+(async () => {
+	const BD_genericas = require("./funciones/2-BD/Genericas");
+	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
+})();
+
 const path = require("path");
 // Para usar propiedades de express
 const express = require("express");
@@ -71,7 +77,7 @@ const rutaProd_Crear = require("./rutas_y_controladores/2.1-Prod-Agregar/Rutas")
 const rutaProd_RUD = require("./rutas_y_controladores/2.1-Prod-RUD/Rutas");
 const rutaRCLV_CRUD = require("./rutas_y_controladores/2.2-RCLV-CRUD/Rutas");
 const rutaLinks_CRUD = require("./rutas_y_controladores/2.3-Links-CRUD/Rutas");
-app.use("/crud", rutaCRUD);
+app.use("/crud/api", rutaCRUD);
 app.use("/producto/agregar", rutaProd_Crear);
 app.use("/producto", rutaProd_RUD);
 app.use("/rclv", rutaRCLV_CRUD);

@@ -7,10 +7,10 @@ const API = require("./ControladorAPI");
 //************************ Rutas ****************************
 // Rutas de APIs
 // Tridente: Detalle, Edición, Links
-router.get("/api/obtener-col-cap", API.obtenerColCap);
-router.get("/api/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
-router.get("/api/obtener-cap-id", API.obtenerCapID);
-router.get("/api/averiguar-capitulos", API.obtenerCapitulos);
+router.get("/obtener-col-cap", API.obtenerColCap);
+router.get("/obtener-cap-ant-y-post", API.obtenerCapAntPostID);
+router.get("/obtener-cap-id", API.obtenerCapID);
+router.get("/averiguar-capitulos", API.obtenerCapitulos);
 
 // Fin
 module.exports = router;

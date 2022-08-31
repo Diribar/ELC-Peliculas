@@ -178,7 +178,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
-			urlSalir: req.session.urlAnterior,
+			urlSalir: req.session.urlSinUsuario,
 			variables,
 		});
 	},
@@ -268,7 +268,7 @@ module.exports = {
 	autInputForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 		};
 		// Fin
 		return res.render("CR9-Errores", {informacion});
@@ -276,7 +276,7 @@ module.exports = {
 	autRevisionForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 		};
 		// Fin
 		return res.render("CR9-Errores", {informacion});

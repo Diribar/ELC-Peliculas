@@ -8,33 +8,33 @@ const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero
-	tablero_obtenerProds: async (ahora, status, userID) => {
+	tablero_obtenerProds: async (ahora, userID) => {
 		// Obtener productos en status no estables
 		// Declarar las variables
 		let entidades = ["peliculas", "colecciones"];
 		let campos;
 		// - Obtener los resultados de status creado_id
-		let creado_id = status.find((n) => n.creado).id;
+		let creado_id = status_registro.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", ""];
 		let PA = await tablero_obtenerRegs(...campos);
 		// - Obtener los resultados de status creado_aprob sin edición
-		let creado_aprob_id = status.find((n) => n.creado_aprob).id;
+		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
 		campos = [entidades, ahora, creado_aprob_id, userID, "creado_en", "creado_por_id", "ediciones"];
 		let SE = await tablero_obtenerRegs(...campos);
 		SE = SE.filter((n) => !n.ediciones.length);
 		// - Obtener los resultados de status inactivar_id
-		let inactivar_id = status.find((n) => n.inactivar).id;
+		let inactivar_id = status_registro.find((n) => n.inactivar).id;
 		campos = [entidades, ahora, inactivar_id, userID, "sugerido_en", "sugerido_por_id", ""];
 		let IN = await tablero_obtenerRegs(...campos);
 		// - Obtener los resultados de status recuperar_id
-		let recuperar_id = status.find((n) => n.recuperar).id;
+		let recuperar_id = status_registro.find((n) => n.recuperar).id;
 		campos = [entidades, ahora, recuperar_id, userID, "sugerido_en", "sugerido_por_id", ""];
 		let RC = await tablero_obtenerRegs(...campos);
 
 		// Fin
 		return {PA, IN, RC, SE};
 	},
-	tablero_obtenerProdsConEdicAjena: async (ahora, status, userID) => {
+	tablero_obtenerProdsConEdicAjena: async (ahora, userID) => {
 		// Obtener los productos que tengan alguna edición que cumpla con:
 		// - Ediciones ajenas
 		// - Sin RCLV no aprobados
@@ -42,8 +42,8 @@ module.exports = {
 
 		// Declarar las variables
 		const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
-		let creado_aprob_id = status.find((n) => n.creado_aprob).id;
-		let aprobado_id = status.find((n) => n.aprobado).id;
+		let creado_aprob_id = status_registro.find((n) => n.creado_aprob).id;
+		let aprobado_id = status_registro.find((n) => n.aprobado).id;
 		let gr_aprobado = [creado_aprob_id, aprobado_id];
 		let includes = ["pelicula", "coleccion", "capitulo", "personaje", "hecho", "valor"];
 		let productos = [];
@@ -114,10 +114,10 @@ module.exports = {
 		// Fin
 		return productos;
 	},
-	tablero_obtenerProdsConLink: async (ahora, status, userID) => {
+	tablero_obtenerProdsConLink: async (ahora, userID) => {
 		// Obtener todos los productos aprobados, con algún link ajeno en status no estable
 		// Obtener los links 'a revisar'
-		let links = await BD_especificas.tablero_obtenerLinks_y_Edics(status);
+		let links = await BD_especificas.tablero_obtenerLinks_y_Edics();
 		// Si no hay => salir
 		if (!links.length) return [];
 		// Obtener los links ajenos
@@ -130,11 +130,11 @@ module.exports = {
 				(!n.status_registro && n.editado_por_id != userID)
 		);
 		// Obtener los productos
-		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, status, ahora, userID) : [];
+		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
 		// Fin
 		return productos;
 	},
-	tablero_obtenerRCLVs: async (ahora, status, userID) => {
+	tablero_obtenerRCLVs: async (ahora, userID) => {
 		// Obtener los siguients RCLVs:
 		// creado y creados ajeno,
 		//		PA: c/producto o edicProd
@@ -150,7 +150,7 @@ module.exports = {
 		let IN = [];
 		let IP = [];
 		// - Obtener los resultados de status creado_id
-		let creado_id = status.find((n) => n.creado).id;
+		let creado_id = status_registro.find((n) => n.creado).id;
 		campos = [entidades, ahora, creado_id, userID, "creado_en", "creado_por_id", includes];
 		regs = await tablero_obtenerRegs(...campos);
 		// Separar entre c/prod y s/prod
@@ -161,7 +161,7 @@ module.exports = {
 			});
 		}
 		// - Obtener los resultados de status inactivo_id
-		let inactivo_id = status.find((n) => n.inactivo).id;
+		let inactivo_id = status_registro.find((n) => n.inactivo).id;
 		campos = [entidades, ahora, inactivo_id, userID, "sugerido_por_id", "sugerido_en", includes];
 		regs = await tablero_obtenerRegs(...campos);
 		// Filtrar por c/prod
@@ -170,7 +170,7 @@ module.exports = {
 		// Fin
 		return {PA, IN, IP};
 	},
-	tablero_obtenerRCLVsConEdic: async (ahora, status, userID) => {
+	tablero_obtenerRCLVsConEdic: async (ahora, userID) => {
 		// - edicRCLV ajena, pend. aprobar
 	},
 	tablero_prod_ProcesarCampos: (productos) => {
@@ -411,7 +411,7 @@ module.exports = {
 		}
 		return;
 	},
-	RCLV_productosAprob: function (prodOrig, campo, edicAprob, statusOrigAprob, statusAprob, status) {
+	RCLV_productosAprob: function (prodOrig, campo, edicAprob, statusOrigAprob, statusAprob) {
 		// Actualizar en RCLVs el campo 'prods_aprob', si ocurre (1) y (2 ó 3)
 		// 1. El valor del campo es distinto a 'Ninguno'
 		// 2. Se cambió un campo RCLV y el producto está aprobado
@@ -421,7 +421,7 @@ module.exports = {
 			prodOrig[campo] != 1 &&
 			((RCLV_ids.includes(campo) && edicAprob && statusAprob) || (!statusOrigAprob && statusAprob))
 		)
-			this.RCLVs_ActualizarProdAprobOK(prodOrig, status);
+			this.RCLVs_ActualizarProdAprobOK(prodOrig);
 		// Fin
 		return;
 	},
@@ -543,7 +543,7 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 			: ""
 		: RCLV[campo];
 };
-let obtenerProdsDeLinks = (links, status, ahora, userID) => {
+let obtenerProdsDeLinks = (links, ahora, userID) => {
 	// Variables
 	let peliculas = [];
 	let colecciones = [];
@@ -561,7 +561,7 @@ let obtenerProdsDeLinks = (links, status, ahora, userID) => {
 	// Consolidar
 	let productos = [...peliculas, ...colecciones, ...capitulos];
 	// Depurar los productos que no cumplen ciertas condiciones
-	productos = limpieza(productos, status, ahora, userID);
+	productos = limpieza(productos, ahora, userID);
 	// Fin
 	return productos;
 };
@@ -573,10 +573,10 @@ let eliminarRepetidos = (productos) => {
 	}
 	return productos;
 };
-let limpieza = (productos, status, ahora, userID) => {
+let limpieza = (productos, ahora, userID) => {
 	// Variables
 	// Declarar las variables
-	const aprobado_id = status.find((n) => n.aprobado).id;
+	const aprobado_id = status_registro.find((n) => n.aprobado).id;
 	const haceUnaHora = compartidas.nuevoHorario(-1, ahora);
 	const haceDosHoras = compartidas.nuevoHorario(-2, ahora);
 	// Dejar solamente los productos aprobados
