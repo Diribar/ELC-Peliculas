@@ -5,7 +5,8 @@ global.meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "
 
 // REQUIRES Y MIDDLEWARES DE APLICACIÓN ------------------------------------------
 require("dotenv").config(); // Para usar el archivo '.env'
-
+// Variable status_registro
+// Se requiere el acceso a la BD, por eso el 'dotenv' va antes
 (async () => {
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
@@ -96,5 +97,5 @@ app.use((req, res) => {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 	};
-	res.status(404).render("MI9-Errores", {informacion});
+	res.status(404).render("MI9-Cartel", {informacion});
 });

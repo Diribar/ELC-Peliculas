@@ -459,4 +459,7 @@ module.exports = {
 			titulo: "Ir al 'Tablero de Control' de Revisiones",
 		};
 	},
+	vistaEntendido: (url) => {
+		return {nombre: "fa-thumbs-up", link: url ? url : "/", titulo: "Entendido"};
+	},
 };

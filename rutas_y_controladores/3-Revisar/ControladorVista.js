@@ -136,7 +136,7 @@ module.exports = {
 		// Verificación paso 3: muestra el cartel de error
 		if (!prodEditado) {
 			let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
-			return res.render("MI9-Errores", {informacion});
+			return res.render("MI9-Cartel", {informacion});
 		}
 		// 3. Obtiene la versión original
 		let includesOrig = [...includesEdic, "status_registro"];
@@ -151,7 +151,7 @@ module.exports = {
 		// 1. Elimina el registro de edición si ya no tiene más datos
 		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEditado
 		[quedanCampos, prodEditado] = await procesos.prodEdic_feedback(prodOriginal, prodEditado);
-		if (!quedanCampos) return res.render("MI9-Errores", cartelNoQuedanCampos());
+		if (!quedanCampos) return res.render("MI9-Cartel", cartelNoQuedanCampos());
 
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
@@ -274,7 +274,7 @@ module.exports = {
 		let producto = await BD_genericas.obtenerPorIdConInclude(prodEntidad, prodID, includes);
 		// RESUMEN DE PROBLEMAS A VERIFICAR
 		let informacion = problemasLinks(producto, req.session.urlAnterior);
-		if (informacion) return res.render("MI9-Errores", {informacion});
+		if (informacion) return res.render("MI9-Cartel", {informacion});
 		// Obtener todos los links
 		let entidad_id = compartidas.obtenerEntidad_id(prodEntidad);
 		includes = ["status_registro", "ediciones", "prov", "tipo", "motivo"];

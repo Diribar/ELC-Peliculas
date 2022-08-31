@@ -8,7 +8,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 module.exports = async (req, res, next) => {
 	// Definir variables
 	const usuario = await BD_genericas.obtenerPorId("usuarios", req.session.usuario.id);
-	const vistaAnterior = variables.vistaAnterior(req.session.urlSinUsuario);
+	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 
 	// Fórmulas
@@ -61,7 +61,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Continuar
-	if (informacion) return res.render("MI9-Errores", {informacion});
+	if (informacion) return res.render("MI9-Cartel", {informacion});
 	next();
 };
 

@@ -32,17 +32,18 @@ module.exports = {
 
 	perennes: (datos) => {
 		let errores = {};
+		let largoPerenne = longitud(datos.nombre, 2, 30);
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
-			: longitud(datos.nombre, 2, 30)
-			? longitud(datos.nombre, 2, 30)
+			: largoPerenne
+			? largoPerenne
 			: castellano(datos.nombre)
 			? cartelCastellano
 			: "";
 		errores.apellido = !datos.apellido
 			? cartelCampoVacio
-			: longitud(datos.apellido, 2, 30)
-			? longitud(datos.apellido, 2, 30)
+			: largoPerenne
+			? largoPerenne
 			: castellano(datos.apellido)
 			? cartelCastellano
 			: "";
@@ -58,21 +59,23 @@ module.exports = {
 
 	editables: (datos) => {
 		let errores = {};
+		let longApodo = longitud(datos.apodo, 2, 30);
 		errores.apodo = !datos.apodo
 			? cartelCampoVacio
-			: longitud(datos.apodo, 2, 30)
-			? longitud(datos.apodo, 2, 30)
+			: longApodo
+			? longApodo
 			: castellano(datos.apodo)
 			? cartelCastellano
 			: "";
 		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
 		errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
+		let extAvatar = extension(datos.avatar);
 		errores.avatar = !datos.avatar
 			? ""
-			: extension(datos.avatar)
+			: extAvatar
 			? "Usaste un archivo con la extensión " +
-			  extension(datos.avatar).slice(1).toUpperCase() +
-			  ". Las extensiones de archivo válidas son JPG y PNG"
+			  extAvatar.slice(1).toUpperCase() +
+			  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
 			: datos.tamano > 1100000
 			? "El archivo es de " +
 			  parseInt(datos.tamano / 10000) / 100 +
@@ -101,9 +104,9 @@ let largoContrasena = (dato) => {
 };
 
 let longitud = (dato, corto, largo) => {
-	return dato.length < corto
+	return dato && dato.length < corto
 		? "El nombre debe ser más largo"
-		: dato.length > largo
+		: dato && dato.length > largo
 		? "El nombre debe ser más corto"
 		: "";
 };
@@ -116,7 +119,7 @@ let castellano = (dato) => {
 let extension = (nombre) => {
 	if (!nombre) return false;
 	let ext = path.extname(nombre);
-	return ![".jpg", ".png"].includes(ext) ? ext : false;
+	return ![".jpg", ".png", ".jpeg"].includes(ext) ? ext : false;
 };
 
 let fechaRazonable = (dato) => {

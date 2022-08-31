@@ -50,9 +50,11 @@
 			</i>
 		</div>
 	</section>
-	<!--Buttons-->
-	<section id="buttons" class="flex-row">
-		<button type="submit">Aceptar</button>
-		<a href="/"><button type="button">Cancelar</button></a>
+	<!--Flechas-->
+	<section id="flechas">
+		<!-- Salir -->
+		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
+		<!-- Submit -->
+		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
 	</section>
 </form>

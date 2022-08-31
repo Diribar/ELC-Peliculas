@@ -54,7 +54,7 @@ module.exports = async (req, res, next) => {
 			mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 		};
-		return res.render("MI9-Errores", {informacion});
+		return res.render("MI9-Cartel", {informacion});
 	}
 
 	// Continuar

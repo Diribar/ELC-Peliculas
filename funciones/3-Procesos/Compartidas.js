@@ -274,8 +274,8 @@ module.exports = {
 			html: comentario.replace(/\r/g, "<br>").replace(/\n/g, "<br>"),
 		};
 		await transporter.sendMail(datos);
-		datos.to = "diegoiribarren2015@gmail.com";
-		await transporter.sendMail(datos);
+		// datos.to = "diegoiribarren2015@gmail.com";
+		// await transporter.sendMail(datos);
 	},
 	paises_idToNombre: async (paises_id) => {
 		// Función para convertir 'string de ID' en  'string de nombres'
