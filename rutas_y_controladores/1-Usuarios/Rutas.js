@@ -20,11 +20,12 @@ router.get("/api/validar-editables", API.validarEditables);
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
 router.post("/login", soloVisitas, vista.loginGuardar);
-router.get("/pre-logout", soloVisitas, vista.logout);
+// Logout
+router.get("/pre-logout", soloUsuarios, vista.preLogout);
 router.get("/logout", soloUsuarios, vista.logout);
-router.get("/olvido-contrasena", soloUsuarios, vista.logout);
-router.post("/olvido-contrasena", soloUsuarios, vista.logout);
-
+// Olvido contraseña
+router.get("/olvido-contrasena", soloVisitas, vista.olvidoContr);
+router.post("/olvido-contrasena", soloVisitas, vista.olvidoContr);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
@@ -38,11 +39,9 @@ router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.alt
 router.get("/autorizado-input/solicitud", soloUsuarios, vista.autInputForm);
 router.get("/autorizado-revisor/solicitud", soloUsuarios, vista.autRevisionForm);
 
-
 // Rutas RUD
-router.get("/detalle", soloUsuarios, vista.detalle);
-router.get("/edicion", soloUsuarios, vista.editarForm);
-router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.editarGuardar); //Validar mail y editables
+router.get("/edicion", soloUsuarios, vista.edicionForm);
+router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
 router.delete("/eliminar", soloUsuarios, vista.baja);
 
 module.exports = router;

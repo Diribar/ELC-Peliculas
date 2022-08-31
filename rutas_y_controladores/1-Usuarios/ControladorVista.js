@@ -76,15 +76,34 @@ module.exports = {
 		// 8. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
+	preLogout: (req, res) => {
+		// Variables
+		let usuario = req.session.usuario;
+		let informacion = {
+			mensajes: [
+				"¿Estás segur" + (usuario.sexo_id == "M" ? "a" : "o") + " de que te querés desloguear?",
+			],
+			iconos: [
+				{nombre: "fa-circle-left", link: req.session.urlActual, titulo: "Cancelar"},
+				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
+			],
+			titulo: "Logout",
+			logout: true,
+		};
+		return res.render("MI9-Errores", {informacion});
+	},
 	logout: (req, res) => {
 		let url = req.session.urlActual
 			? req.session.urlActual
 			: req.session.urlAnterior
 			? req.session.urlAnterior
 			: "/";
-		res.clearCookie("email");
 		req.session.destroy();
+		res.clearCookie("email");
 		return res.redirect(url);
+	},
+	olvidoContr:(req,res)=>{
+		return res.send("olvidó contraseña")
 	},
 
 	// Circuito de alta de usuario
@@ -233,27 +252,18 @@ module.exports = {
 		return res.redirect("/usuarios/redireccionar");
 	},
 
-	// Detalle y Edición
-	detalle: async (req, res) => {
-		let tema = "usuario";
-		let codigo = "detalle";
-		res.render("GN0-Estructura", {
-			tema,
-			codigo,
-			titulo: "Detalle de Usuario",
-			usuario: req.session.usuario,
-		});
-	},
-	editarForm: async (req, res) => {
+	// Edición
+	edicionForm: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "edicion";
 		res.render("GN0-Estructura", {
 			tema,
 			codigo,
+			titulo: "Edición de Usuario",
 			usuario: req.session.usuario,
 		});
 	},
-	editarGuardar: (req, res) => {
+	edicionGuardar: (req, res) => {
 		res.send("/edicion/guardar");
 	},
 
@@ -271,7 +281,7 @@ module.exports = {
 			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 		};
 		// Fin
-		return res.render("CR9-Errores", {informacion});
+		return res.render("MI9-Errores", {informacion});
 	},
 	autRevisionForm: (req, res) => {
 		let informacion = {
@@ -279,6 +289,6 @@ module.exports = {
 			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 		};
 		// Fin
-		return res.render("CR9-Errores", {informacion});
+		return res.render("MI9-Errores", {informacion});
 	},
 };

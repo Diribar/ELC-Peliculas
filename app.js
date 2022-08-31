@@ -96,5 +96,5 @@ app.use((req, res) => {
 		mensajes: ["No tenemos esa dirección de url en nuestro sitio"],
 		iconos: [variables.vistaAnterior(req.session.urlAnterior), variables.vistaInicio()],
 	};
-	res.status(404).render("CR9-Errores", {informacion});
+	res.status(404).render("MI9-Errores", {informacion});
 });
