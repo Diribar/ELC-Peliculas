@@ -102,8 +102,8 @@ module.exports = {
 		res.clearCookie("email");
 		return res.redirect(url);
 	},
-	olvidoContr:(req,res)=>{
-		return res.send("olvidó contraseña")
+	olvidoContr: (req, res) => {
+		return res.send("olvidó contraseña");
 	},
 
 	// Circuito de alta de usuario
