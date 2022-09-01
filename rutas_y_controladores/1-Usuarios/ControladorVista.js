@@ -260,21 +260,20 @@ module.exports = {
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) compartidas.moverImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
-		return res.redirect("/usuarios/redireccionar");
+		return res.redirect("/usuarios/bienvenido");
 	},
 	bienvenido: (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
+		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [
-				"Estimad" +
-					(usuario.sexo_id == "M" ? "a " : "o ") +
-					usuario.apodo +
-					", completaste el alta satisfactoriamente.",
+				"Estimad" + letra + usuario.apodo + ", completaste el alta satisfactoriamente.",
+				"Bienvenid" + letra + "a la familia de usuarios de ELC",
 				"Ya podés personalizar tu perfil.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
-			titulo: "Bienvenida al usuario",
+			titulo: "Bienvenid" + letra + "a la familia ELC",
 			colorFondo: "verde",
 		};
 		// Fin
