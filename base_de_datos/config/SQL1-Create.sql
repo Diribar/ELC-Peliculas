@@ -45,16 +45,16 @@ CREATE TABLE aux_roles_iglesia (
 INSERT INTO aux_roles_iglesia (id, orden, nombre, usuario, personaje, sexo_id)
 VALUES 
 ('PC', 0, 'Computadora', 0, 0, 'O'),
-('LS', 1, 'Laico soltero', 1, 1, 'O'),
+('LS', 1, 'Laico soltero', 1, 1, 'P'),
 ('LSV', 1, 'Laico soltero', 1, 1, 'V'),
 ('LSM', 1, 'Laica soltera', 1, 1, 'M'),
-('LC', 2, 'Laico casado', 0, 1, '-'),
+('LC', 2, 'Laico casado', 1, 1, 'P'),
 ('LCV', 2, 'Laico casado', 1, 1, 'V'),
 ('LCM', 2, 'Laica casada', 1, 1, 'M'),
-('RC', 3, 'Religioso consagrado', 0, 1, '-'),
+('RC', 3, 'Religioso consagrado', 1, 1, 'P'),
 ('RCV', 3, 'Religioso consagrado', 1, 1, 'V'),
 ('RCM', 3, 'Religiosa consagrada', 1, 1, 'M'),
-('SC', 4, 'Sacerdote', 0, 1, '-'),
+('SC', 4, 'Sacerdote', 1, 1, 'P'),
 ('SCV', 4, 'Sacerdote', 1, 1, 'V'),
 ('PP', 5, 'Papa', 0, 1, '-'),
 ('PPV', 5, 'Papa', 0, 1, 'V'),
@@ -127,7 +127,7 @@ CREATE TABLE USUARIOS (
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
-	rol_usuario_id TINYINT UNSIGNED DEFAULT 2,
+	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
@@ -137,7 +137,7 @@ CREATE TABLE USUARIOS (
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
-	status_registro_id TINYINT UNSIGNED DEFAULT 1,
+	status_registro_id TINYINT UNSIGNED NOT NULL,
 	
 	prods_aprob SMALLINT DEFAULT 0,
 	prods_rech SMALLINT DEFAULT 0,
@@ -1226,25 +1226,6 @@ CREATE TABLE aux_historial_de_cambios_de_status(
 	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id),
 	FOREIGN KEY (status_original_id) REFERENCES aux_status_registro(id),
 	FOREIGN KEY (status_final_id) REFERENCES aux_status_registro(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-CREATE TABLE aux_historial_de_rclv_eliminados(
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	entidad VARCHAR(20) NOT NULL,
-	nombre_rech VARCHAR(50) NULL,
-
-	creado_por_id INT UNSIGNED NOT NULL,
-	creado_en DATETIME NOT NULL,
-	eliminado_por_id INT UNSIGNED NOT NULL,
-	eliminado_en DATETIME NOT NULL,
-	motivo_id TINYINT UNSIGNED NULL,
-
-	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
-	comunicado_en DATETIME NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (creado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (eliminado_por_id) REFERENCES usuarios(id),
-	FOREIGN KEY (motivo_id) REFERENCES altas_motivos_rech(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* ENTORNO DE CALIFICACIONES */;
