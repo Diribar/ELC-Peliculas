@@ -132,14 +132,18 @@ module.exports = {
 		// Enviar la contraseña por mail
 		let asunto = "Contraseña para ELC";
 		let email = req.body.email;
-		//let contrasena = "123456789";
+		// Genera la contraseña
 		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
+		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
-		// Guardar el registro
-		contrasena = bcryptjs.hashSync(contrasena, 10);
-		let status_registro_id = status_registro_us.find((n) => !n.mail_validado).id;
-		await BD_genericas.agregarRegistro("usuarios", {email, contrasena, status_registro_id});
+		// Genera el registro
+		req.body.contrasena = bcryptjs.hashSync(contrasena, 10);
+		let status_mail_validado = status_registro_us.find((n) => !n.mail_validado).id;
+		await BD_genericas.agregarRegistro("usuarios", {
+			...req.body,
+			status_registro_id: status_mail_validado,
+		});
 		// Obtener los datos del usuario
 		req.session.email = email;
 		//req.session.contrasena = "";
