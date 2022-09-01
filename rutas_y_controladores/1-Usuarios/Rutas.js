@@ -22,6 +22,9 @@ router.get("/login", soloVisitas, vista.loginForm);
 router.post("/login", soloVisitas, vista.loginGuardar);
 router.get("/pre-logout", soloVisitas, vista.logout);
 router.get("/logout", soloUsuarios, vista.logout);
+router.get("/olvido-contrasena", soloUsuarios, vista.logout);
+router.post("/olvido-contrasena", soloUsuarios, vista.logout);
+
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
@@ -31,16 +34,10 @@ router.get("/datos-perennes", soloUsuarios, vista.altaPerennesForm);
 router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
-// router.get("/alta-terminada", soloUsuarios, vista.terminado);
+
 router.get("/autorizado-input/solicitud", soloUsuarios, vista.autInputForm);
-// router.post("/autorizado-input/solicitud", soloUsuarios, vista.autInput_solicitudGuardar);
-// router.get("/autorizado-input/revision", soloUsuarios, vista.autInput_revisionForm);
-router.get("/autorizado-revision/solicitud", soloUsuarios, vista.autRevisionForm);
-// router.post("/autorizado-revision/solicitud", soloUsuarios, vista.productos_solicitudGuardar);
-// router.get("/autorizado-revision/revision", soloUsuarios, vista.productos_revisionForm);
-// router.get("/autorizado-usuarios/solicitud", soloUsuarios, vista.usuarios_solicitudForm);
-// router.post("/autorizado-usuarios/solicitud", soloUsuarios, vista.usuarios_solicitudGuardar);
-// router.get("/autorizado-usuarios/revision", soloUsuarios, vista.usuarios_revisionForm);
+router.get("/autorizado-revisor/solicitud", soloUsuarios, vista.autRevisionForm);
+
 
 // Rutas RUD
 router.get("/detalle", soloUsuarios, vista.detalle);
