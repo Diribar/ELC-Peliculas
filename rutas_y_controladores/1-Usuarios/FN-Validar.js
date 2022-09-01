@@ -32,13 +32,18 @@ module.exports = {
 	},
 
 	validadMailContrasena_y_ObtieneUsuario: async function (datos) {
+		// Variables
+		let usuario
+		// Averiguar los errores
 		let errores = await this.login(datos);
+		// Acciones si no hay errores
 		if (!errores.hay) {
-			// 2. Si no hay error => averigua el usuario
-			var usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
-			// 3. Si existe el usuario => averigua si la contraseña es válida
+			// Si no hay error => averigua el usuario
+			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
+			// Si existe el usuario => averigua si la contraseña es válida
 			if (usuario) {
 				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
+				// Si la contraseña no es válida => Credenciales Inválidas
 				if (errores.credenciales) errores.hay = true;
 			}
 			// Si el usuario no existe => Credenciales Inválidas
