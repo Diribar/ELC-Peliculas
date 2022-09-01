@@ -3,18 +3,13 @@
 const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
 	registroMail: async (email) => {
 		let errores = {};
-		errores.email = !email
-			? cartelMailVacio
-			: formatoMail(email)
-			? cartelMailFormato
-			: (await BD_especificas.obtenerELC_id("usuarios", {email: email}))
-			? "Esta dirección de email ya figura en nuestra base de datos"
-			: "";
-		errores.hay = Object.values(errores).some((n) => !!n);
+		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+		errores.hay = !!errores.email;
 		return errores;
 	},
 
@@ -33,7 +28,7 @@ module.exports = {
 
 	validadMailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
-		let usuario
+		let usuario;
 		// Averiguar los errores
 		let errores = await this.login(datos);
 		// Acciones si no hay errores
@@ -106,6 +101,48 @@ module.exports = {
 			: "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
+	},
+
+	olvidoContrFE: (email) => {
+		let errores = {};
+		errores.email = !email
+			? cartelMailVacio
+			: formatoMail(email)
+			? cartelMailFormato
+			: usuario && ahora == fecha
+			? "El mail fue enviado el " + fechaHorario + ", y se permite un sólo envío por día."
+			: "";
+		errores.hay = !!errores.email;
+		// Fin
+		return errores;
+	},
+
+	olvidoContrBE: async (email) => {
+		// Variables
+		let errores = {};
+		let usuario = await BD_especificas.obtenerELC_id("usuarios", {email: email});
+		if (usuario) var fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
+		// Verifica si el usuario existe en la BD
+		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
+		// Verifica si la dirección de mail fue validada
+		else if (!usuario.status_registro.mail_validado)
+			errores = {
+				email:
+					"Esta dirección de email no está validada. Ya se envió un mail con la contraseña el día " +
+					fechaHorario,
+			};
+		// Verifica si ya se envió un mail en el día
+		else {
+			let ahora = compartidas.fechaTexto(compartidas.ahora());
+			let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
+			if (ahora == fecha)
+				errores = {
+					email: "El mail fue enviado el " + fechaHorario + ", y se permite un sólo envío por día.",
+				};
+		}
+		errores.hay = !!errores.email;
+		// Fin
+		return [errores, usuario];
 	},
 };
 

@@ -101,70 +101,86 @@ module.exports = {
 		res.clearCookie("email");
 		return res.redirect(url);
 	},
-	olvidoContr: (req, res) => {
-		return res.send("olvidó contraseña");
+	olvidoContrGuardar: async (req, res) => {
+		// Averigua si hay errores de validación
+		let datos = req.body;
+		let errores = await validar.olvidoContrFE(datos.email);
+		let usuario;
+		// Si no hay errores 'superficiales', verifica otros más 'profundos'
+		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(datos.email);
+		// Redireccionar si hubo algún error de validación
+		if (errores.hay) {
+			req.session.email = req.body;
+			req.session.errores = errores;
+			return res.redirect(req.originalUrl);
+		}
+		// Si no hubieron errores de validación...
+		let {ahora, contrasena} = enviaMailConContrasena(req);
+		await BD_genericas.actualizarPorId("usuarios",usuario.id, {
+			contrasena,
+			fecha_contrasena: ahora,
+		});
+		// Guarda el mail en 'session'
+		req.session.email = email;
+		// Datos para la vista
+		let codigo = req.path.slice(1);
+		let informacion = procesos.cartelInformacion(codigo);
+		// Redireccionar
+		return res.render("MI9-Cartel", {informacion});
 	},
 
 	// Circuito de alta de usuario
 	altaMailForm: (req, res) => {
+		// Tema y código
 		let tema = "usuario";
-		let codigo = "mail";
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		let codigo = req.path.slice(1);
+		let titulo =
+			codigo == "mail"
+				? "Registro de Mail"
+				: codigo == "olvido-contrasena"
+				? "Olvido de Contraseña"
+				: "";
+		// Obtener el e-mail de session
+		let email = req.session.email ? req.session.email : "";
+		// Errores
 		let errores = req.session.errores ? req.session.errores : false;
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Registro de Mail",
+			titulo,
 			link: req.originalUrl,
-			dataEntry,
+			email,
 			errores,
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
 	altaMailGuardar: async (req, res) => {
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let datos = req.body;
 		let errores = await validar.registroMail(datos.email);
+		// Si no hay errores, verificar si ya existe en la BD
+		if (!errores.hay && (await BD_especificas.obtenerELC_id("usuarios", {email: email})))
+			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.dataEntry = req.body;
+			req.session.email = req.body;
 			req.session.errores = errores;
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
-		// Enviar la contraseña por mail
-		let asunto = "Contraseña para ELC";
-		let email = req.body.email;
-		// Genera la contraseña
-		let contrasena = Math.round(Math.random() * Math.pow(10, 10)).toString();
-		// Envía el mail al usuario con la contraseña
-		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
-		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
-		// Obtiene el horario de envío de mail
-		let ahora = compartidas.ahora().setSeconds(0); // Descarta los segundos en el horario
-		// Genera el registro
-		req.body.contrasena = bcryptjs.hashSync(contrasena, 10);
+		let {ahora, contrasena} = enviaMailConContrasena(req);
 		let status_mail_validado = status_registro_us.find((n) => !n.mail_validado).id;
 		await BD_genericas.agregarRegistro("usuarios", {
-			...req.body,
-			status_registro_id: status_mail_validado,
+			contrasena,
 			fecha_contrasena: ahora,
+			email: req.body.email,
+			status_registro_id: status_mail_validado,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
-		// Genera el cookie del mail
-		res.cookie("email", email, {maxAge: unDia});
 		// Datos para la vista
-		let informacion = {
-			mensajes: [
-				"Te hemos enviado una contraseña por mail.",
-				"Usala para ingresar al login.",
-				"Luego de terminar el alta de usuario, podrás cambiarla.",
-			],
-			iconos: [variables.vistaEntendido("/usuarios/login")],
-			titulo: "Alta de mail exitosa",
-			colorFondo: "verde",
-		};
+		let codigo = req.path.slice(1);
+		let informacion = procesos.cartelInformacion(codigo);
 		// Redireccionar
 		return res.render("MI9-Cartel", {informacion});
 	},

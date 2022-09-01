@@ -22,4 +22,10 @@ module.exports = {
 		let errores = await validarUsuarios.editables(req.query);
 		return res.json(errores);
 	},
+
+	validarOlvidoContr: async (req, res) => {
+		let errores = await validarUsuarios.olvidoContrFE(req.query.email);
+		return res.json(errores);
+	},
+
 };

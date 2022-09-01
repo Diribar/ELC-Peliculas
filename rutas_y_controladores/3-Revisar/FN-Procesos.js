@@ -252,7 +252,7 @@ module.exports = {
 		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		let fecha = obtenerLaFecha(prodOrig.creado_en);
+		let fecha = compartidas.fechaTexto(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// 5. Obtener los datos del usuario
 		let fichaDelUsuario = await usuario_Ficha(prodOrig.creado_por_id, ahora);
@@ -326,10 +326,10 @@ module.exports = {
 		if (prodOrig.ano_fin) bloque1.push({titulo: "Año de fin", valor: prodOrig.ano_fin});
 		if (prodOrig.duracion) bloque1.push({titulo: "Duracion", valor: prodOrig.duracion + " min."});
 		// Obtener la fecha de alta
-		fecha = obtenerLaFecha(prodOrig.creado_en);
+		fecha = compartidas.fechaTexto(prodOrig.creado_en);
 		bloque1.push({titulo: "Fecha de Alta", valor: fecha});
 		// Obtener la fecha de edicion
-		fecha = obtenerLaFecha(prodEdic.editado_en);
+		fecha = compartidas.fechaTexto(prodEdic.editado_en);
 		bloque1.push({titulo: "Fecha de Edic.", valor: fecha});
 		// 5. Obtener los datos del usuario
 		let fichaDelUsuario = await usuario_Ficha(prodEdic.editado_por_id, ahora);
@@ -497,13 +497,6 @@ module.exports = {
 };
 
 // Funciones ----------------------------
-let obtenerLaFecha = (fecha) => {
-	let dia = fecha.getDate();
-	let mes = meses[fecha.getMonth()];
-	let ano = fecha.getFullYear().toString().slice(-2);
-	fecha = dia + "/" + mes + "/" + ano;
-	return fecha;
-};
 let valorDelCampo = (producto, campo) => {
 	// Variables
 	let camposConVinculo = [
