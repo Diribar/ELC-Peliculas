@@ -16,8 +16,11 @@ module.exports = (sequelize, dt) => {
 		autorizado_fa: {type: dt.BOOLEAN},
 
 		dias_login: {type: dt.INTEGER},
-		fecha_ultimo_login: {type: dt.DATE},
 		version_elc_ultimo_login: {type: dt.STRING(4)},
+
+		fecha_ultimo_login: {type: dt.DATE},
+		fecha_contrasena: {type: dt.DATE},
+		fecha_feedback_revisores: {type: dt.DATE},
 
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},

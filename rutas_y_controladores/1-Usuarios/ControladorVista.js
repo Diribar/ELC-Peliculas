@@ -140,12 +140,15 @@ module.exports = {
 		// Envía el mail al usuario con la contraseña
 		let comentario = "La contraseña del mail " + email + " es: " + contrasena;
 		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
+		// Obtiene el horario de envío de mail
+		let ahora = compartidas.ahora().setSeconds(0); // Descarta los segundos en el horario
 		// Genera el registro
 		req.body.contrasena = bcryptjs.hashSync(contrasena, 10);
 		let status_mail_validado = status_registro_us.find((n) => !n.mail_validado).id;
 		await BD_genericas.agregarRegistro("usuarios", {
 			...req.body,
 			status_registro_id: status_mail_validado,
+			fecha_contrasena: ahora,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
