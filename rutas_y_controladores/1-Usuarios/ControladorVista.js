@@ -56,7 +56,6 @@ module.exports = {
 		let {errores, usuario} = await validar.validadMailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
-			req.session.errores = errores;
 			req.session.email = req.body.email;
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
