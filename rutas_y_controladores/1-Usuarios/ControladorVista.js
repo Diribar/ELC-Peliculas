@@ -28,12 +28,9 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "usuario";
 		let codigo = "login";
-		// Obtiene el mail
-		req.session.email = req.session.email
-			? req.session.email
-			: req.cookies && req.cookies.email
-			? req.cookies.email
-			: undefined;
+		// Toma el mail desde cookies, si no está en session. Esto sirve para complementar el alta de usuario.
+		if (!req.session.email)
+			req.session.email = req.cookies && req.cookies.email ? req.cookies.email : undefined;
 		// 2. Obtiene el Data Entry ya realizado
 		let dataEntry =
 			req.session.email !== undefined || req.session.contrasena !== undefined
