@@ -52,6 +52,4 @@ window.addEventListener("load", () => {
 				: iconosOK[indice].classList.add("ocultar");
 	};
 
-	// STARTUP ----------------------------------------------------------------
-	botonGuardar();
 });

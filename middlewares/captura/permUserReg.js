@@ -253,6 +253,6 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = verificacionesDeRevision();
 
 	// Fin
-	if (informacion) return res.render("MI9-Errores", {informacion});
+	if (informacion) return res.render("MI9-Cartel", {informacion});
 	next();
 };

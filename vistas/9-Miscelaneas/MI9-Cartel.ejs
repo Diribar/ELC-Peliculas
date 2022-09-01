@@ -14,7 +14,7 @@
 			<%- include('GN3-Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<section id="tapar-el-fondo"></section>
-			<section id="cartel" class="<% if (informacion.logout) { %><%= 'logout' %><% } %>">
+			<section id="cartel" class="<%- informacion.colorFondo ? informacion.colorFondo : '' %>">
 				<i id="error" class="fa-solid fa-triangle-exclamation"></i>
 				<% if (informacion.mensajes.length > 1) { %>
 					<ul id="mensajes">

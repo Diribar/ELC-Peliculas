@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
@@ -32,7 +33,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
-			urlSalir: req.session.urlSinUsuario,
+			urlSalir: req.session.urlSinLogin,
 			variables,
 		});
 	},
@@ -88,9 +89,10 @@ module.exports = {
 				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
 			],
 			titulo: "Logout",
-			logout: true,
+			colorFondo: "gris",
 		};
-		return res.render("MI9-Errores", {informacion});
+		// Fin
+		return res.render("MI9-Cartel", {informacion});
 	},
 	logout: (req, res) => {
 		let url = req.session.urlActual
@@ -119,6 +121,7 @@ module.exports = {
 			link: req.originalUrl,
 			dataEntry,
 			errores,
+			urlSalir: req.session.urlSinLogin,
 		});
 	},
 	altaMailGuardar: async (req, res) => {
@@ -129,7 +132,7 @@ module.exports = {
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/redireccionar");
+			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
 		// Enviar la contraseña por mail
@@ -144,21 +147,33 @@ module.exports = {
 		await BD_genericas.agregarRegistro("usuarios", {email, contrasena});
 		// Obtener los datos del usuario
 		req.session.email = email;
+		// Datos para la vista
+		let informacion = {
+			mensajes: [
+				"Te hemos enviado una contraseña por mail.",
+				"Usala para ingresar al login.",
+				"Luego de terminar el alta de usuario, podrás cambiarla.",
+			],
+			iconos: [variables.vistaEntendido("/usuarios/login")],
+			titulo: "Alta de mail exitosa",
+			colorFondo: "verde",
+		};
 		// Redireccionar
-		return res.redirect("/usuarios/redireccionar");
+		return res.render("MI9-Cartel", {informacion});
 	},
 	redireccionar: async (req, res) => {
-		let status_registro = req.session.usuario.status_registro;
+		let status_registro_usuario = req.session.usuario.status_registro;
 		// Redireccionar
-		status_registro.datos_editables
+		console.log(167, status_registro_usuario);
+		status_registro_usuario.datos_editables
 			? req.session.urlActual
 				? res.redirect(req.session.urlActual)
 				: req.session.urlAnterior
 				? res.redirect(req.session.urlAnterior)
 				: res.redirect("/")
-			: status_registro.datos_perennes
+			: status_registro_usuario.datos_perennes
 			? res.redirect("/usuarios/datos-editables")
-			: status_registro.mail_validado
+			: status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/datos-perennes")
 			: res.redirect("/usuarios/login");
 	},
@@ -177,6 +192,7 @@ module.exports = {
 			dataEntry,
 			errores,
 			sexos,
+			urlSalir: req.session.urlSinLogin,
 		});
 	},
 	altaPerennesGuardar: async (req, res) => {
@@ -226,6 +242,7 @@ module.exports = {
 			hablaNoHispana,
 			roles_iglesia,
 			avatar,
+			urlSalir: req.session.urlSinLogin,
 		});
 	},
 	altaEditablesGuardar: async (req, res) => {
@@ -250,6 +267,24 @@ module.exports = {
 		if (req.file) compartidas.moverImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redireccionar
 		return res.redirect("/usuarios/redireccionar");
+	},
+	bienvenido: (req, res) => {
+		// Variables
+		let usuario = req.session.usuario;
+		let informacion = {
+			mensajes: [
+				"Estimad" +
+					(usuario.sexo_id == "M" ? "a " : "o ") +
+					usuario.apodo +
+					", completaste el alta satisfactoriamente.",
+				"Ya podés personalizar tu perfil.",
+			],
+			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
+			titulo: "Bienvenida al usuario",
+			colorFondo: "verde",
+		};
+		// Fin
+		return res.render("MI9-Cartel", {informacion});
 	},
 
 	// Edición
@@ -281,14 +316,15 @@ module.exports = {
 			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
 		};
 		// Fin
-		return res.render("MI9-Errores", {informacion});
+		return res.render("MI9-Cartel", {informacion});
 	},
 	autRevisionForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
 			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
+			colorFondo: "gris",
 		};
 		// Fin
-		return res.render("MI9-Errores", {informacion});
+		return res.render("MI9-Cartel", {informacion});
 	},
 };

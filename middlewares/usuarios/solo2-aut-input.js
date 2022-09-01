@@ -1,8 +1,11 @@
 "use strict";
 module.exports = (req, res, next) => {
-	// Redireccionar si el usuario no está logueado
 	let usuario = req.session.usuario;
+	// Redireccionar si el usuario no está logueado
 	if (!usuario) return res.redirect("/usuarios/login");
+	// Redirecciona si el usuario no completó el alta de su usuario
+	if (!usuario.status_registro.datos_editables && !req.originalUrl.startsWith("/usuarios"))
+		return res.redirect("/usuarios/redireccionar");
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
 	if (!usuario.rol_usuario.aut_input) {
@@ -15,10 +18,11 @@ module.exports = (req, res, next) => {
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
 				{nombre: "fa-circle-right", link: linkUsuarioAutInput, titulo: "Solicitar el permiso"},
 			],
+			colorFondo: "gris",
 		};
 	}
 	// Si corresponde, mostrar el mensaje de error
-	if (informacion) return res.render("MI9-Errores", {informacion});
+	if (informacion) return res.render("MI9-Cartel", {informacion});
 	// Fin
 	next();
 };
