@@ -31,7 +31,7 @@ router.post("/olvido-contrasena", soloVisitas, vista.olvidoContr);
 router.get("/mail", soloVisitas, vista.altaMailForm);
 router.post("/mail", soloVisitas, vista.altaMailGuardar);
 router.get("/redireccionar", vista.redireccionar);
-router.get("/datos-perennes",  vista.altaPerennesForm);
+router.get("/datos-perennes", soloUsuarios, vista.altaPerennesForm);
 router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
