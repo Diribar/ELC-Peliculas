@@ -71,7 +71,7 @@ module.exports = {
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		// 8. Notificar al contador de logins
 		let hoyAhora = compartidas.ahora();
-		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
+		procesos.actualizarElContadorDeLogins(usuario, hoyAhora);
 		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
