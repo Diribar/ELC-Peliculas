@@ -7,13 +7,22 @@
 			<div class="label-input flex-row">  
 				<label for="<%= variable.name %>"><%= variable.titulo %></label>
 				<div class="input-error">
-					<input value="<%= dataEntry ? dataEntry[variable.name] : '' %>" type="<%= variable.type %>" class="input" name="<%= variable.name %>" placeholder="<%= variable.placeholder %>" autofocus>
+					<!-- Input -->
+					<input class="input" 
+						value="<%= dataEntry ? dataEntry[variable.name] : '' %>" 
+						type="<%= variable.type %>" 
+						name="<%= variable.name %>" 
+						placeholder="<%= variable.placeholder %>" 
+						<% if (dataEntry && errores[variable.name]) { %>autofocus<% } %> 
+						<% if (dataEntry) { %>autocomplete= 'new-password'<% } %>
+					>
+					<!-- Ojito contraseña -->
 					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 					<!-- Errores -->
 					<i class="fa-solid fa-circle-xmark <%- !errores || !errores[variable.name] ? 'ocultar' : '' %>">
-						<span class="mensajeError"><%= errores[variable.name] %></span>
+						<span class="mensajeError"><%= errores && errores[variable.name] %></span>
 					</i>
-					<i class="fa-solid fa-circle-check ocultar"></i>
+					<i class="fa-solid fa-circle-check <%- !errores || errores[variable.name] ? 'ocultar' : '' %>"></i>
 				</div>
 			</div>
 		<% } %>

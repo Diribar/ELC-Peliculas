@@ -7,7 +7,6 @@ const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
-const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");

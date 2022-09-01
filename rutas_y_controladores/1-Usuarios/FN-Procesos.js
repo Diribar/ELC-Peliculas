@@ -1,10 +1,23 @@
 "use strict";
 // Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
-const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
+	actualizaElUsuario: async (statusDeseado, statusPosterior, usuario, novedades) => {
+		// Obtiene el nuevo status
+		let statusNuevo = status_registro_us.find((n) => n[statusDeseado] && !n[statusPosterior]);
+		// Genera la info a actualizar
+		novedades = {
+			...novedades,
+			status_registro_id: statusNuevo.id,
+			status_registro: statusNuevo,
+		};
+		// Actualiza la info
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, novedades);
+		usuario = {...usuario, ...novedades};
+		// Fin
+		return usuario;
+	},
 	// Controladora/Usuario/Login
 	actualizarElContadorDeLogins: (usuario, hoyAhora) => {
 		let hoyUsuario = usuario.fecha_ultimo_login;

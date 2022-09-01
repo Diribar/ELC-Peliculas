@@ -1,7 +1,8 @@
 "use strict";
 // Definir variables
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const path = require("path");
+const bcryptjs = require("bcryptjs");
+const BD_especificas = require("../../funciones/2-BD/Especificas");
 
 module.exports = {
 	registroMail: async (email) => {
@@ -21,7 +22,7 @@ module.exports = {
 		// Variables
 		let {email, contrasena} = datos;
 		let errores = {};
-		let largoContr = largoContrasena(contrasena);
+		if (contrasena) var largoContr = largoContrasena(contrasena);
 		// Verificar errores
 		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
@@ -30,9 +31,31 @@ module.exports = {
 		return errores;
 	},
 
+	validadMailContrasena_y_ObtieneUsuario: async function (datos) {
+		// Variables
+		let usuario
+		// Averiguar los errores
+		let errores = await this.login(datos);
+		// Acciones si no hay errores
+		if (!errores.hay) {
+			// Si no hay error => averigua el usuario
+			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
+			// Si existe el usuario => averigua si la contraseña es válida
+			if (usuario) {
+				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
+				// Si la contraseña no es válida => Credenciales Inválidas
+				if (errores.credenciales) errores.hay = true;
+			}
+			// Si el usuario no existe => Credenciales Inválidas
+			else errores = {credenciales: true, hay: true};
+		}
+		// Fin
+		return {errores, usuario};
+	},
+
 	perennes: (datos) => {
 		let errores = {};
-		let largoPerenne = longitud(datos.nombre, 2, 30);
+		if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
 			: largoPerenne
@@ -59,7 +82,7 @@ module.exports = {
 
 	editables: (datos) => {
 		let errores = {};
-		let longApodo = longitud(datos.apodo, 2, 30);
+		if (datos.apodo) var longApodo = longitud(datos.apodo, 2, 30);
 		errores.apodo = !datos.apodo
 			? cartelCampoVacio
 			: longApodo
