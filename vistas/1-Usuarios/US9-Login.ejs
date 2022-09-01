@@ -19,10 +19,10 @@
 					<!-- Ojito contraseña -->
 					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
 					<!-- Errores -->
-					<i class="fa-solid fa-circle-xmark <%- dataEntry && !errores[variable.name] ? 'ocultar' : '' %>">
-						<span class="mensajeError"><%= dataEntry && errores[variable.name] %></span>
+					<i class="fa-solid fa-circle-xmark <%- !errores || !errores[variable.name] ? 'ocultar' : '' %>">
+						<span class="mensajeError"><%= errores && errores[variable.name] %></span>
 					</i>
-					<i class="fa-solid fa-circle-check <%- dataEntry && errores[variable.name] ? 'ocultar' : '' %>"></i>
+					<i class="fa-solid fa-circle-check <%- !errores || errores[variable.name] ? 'ocultar' : '' %>"></i>
 				</div>
 			</div>
 		<% } %>
