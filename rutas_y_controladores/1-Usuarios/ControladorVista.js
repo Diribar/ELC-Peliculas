@@ -1,7 +1,6 @@
 "use strict";
 // Definir variables
 const bcryptjs = require("bcryptjs");
-const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
@@ -9,8 +8,23 @@ const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
 
 module.exports = {
+	redireccionar: async (req, res) => {
+		let status_registro_usuario = req.session.usuario.status_registro;
+		//return res.send(status_registro_usuario);
+		// Redireccionar
+		!status_registro_usuario.mail_validado
+			? res.redirect("/usuarios/login")
+			: !status_registro_usuario.datos_perennes
+			? res.redirect("/usuarios/datos-perennes")
+			: !status_registro_usuario.datos_editables
+			? res.redirect("/usuarios/datos-editables")
+			: req.session.urlSinUsuario
+			? res.redirect(req.session.urlSinUsuario)
+			: res.redirect("/");
+	},
+
 	// Login
-	loginForm: (req, res) => {
+	loginForm: async (req, res) => {
 		// 1. Tema y Código
 		let tema = "usuario";
 		let codigo = "login";
@@ -19,7 +33,7 @@ module.exports = {
 			req.session.email !== undefined || req.session.contrasena !== undefined
 				? {email: req.session.email, contrasena: req.session.contrasena}
 				: "";
-		let errores = req.session.errores ? req.session.errores : false;
+		let {errores} = dataEntry ? await validar.validadMailContrasena_y_ObtieneUsuario(dataEntry) : "";
 		// 3. Variables para la vista
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
@@ -39,18 +53,7 @@ module.exports = {
 	},
 	loginGuardar: async (req, res) => {
 		// 1. Averiguar si hay errores de data-entry
-		let errores = await validar.login(req.body);
-		if (!errores.hay) {
-			// 2. Si no hay error => averigua el usuario
-			var usuario = await BD_especificas.obtenerUsuarioPorMail(req.body.email);
-			// 3. Si existe el usuario => averigua si la contraseña es válida
-			if (usuario) {
-				errores.credenciales = !bcryptjs.compareSync(req.body.contrasena, usuario.contrasena);
-				if (errores.credenciales) errores.hay = true;
-			}
-			// Si el usuario no existe => Credenciales Inválidas
-			else errores = {credenciales: true, hay: true};
-		}
+		let {errores, usuario} = await validar.validadMailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.errores = errores;
@@ -58,23 +61,18 @@ module.exports = {
 			req.session.contrasena = req.body.contrasena;
 			return res.redirect("/usuarios/login");
 		}
-		// 5. Si corresponde, actualizar el Status del Usuario
-		if (!usuario.status_registro.mail_validado) {
-			let mail_validado_id = await BD_genericas.obtenerPorCampos("status_registro_us", {
-				mail_validado: true,
-				datos_perennes: false,
-			}).then((n) => n.id);
-			BD_genericas.actualizarPorId("usuarios", usuario.id, {status_registro_id: mail_validado_id});
-			usuario.status_registro_id = mail_validado_id;
-		}
-		// 6. Iniciar la sesión
+		// 5. Si corresponde, le cambia el status a 'mail_validado'
+		if (!usuario.status_registro.mail_validado)
+			usuario = await procesos.actualizaElUsuario("mail_validado", "datos_perennes", usuario);
+		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
+		// 7. Guarda el mail en cookie
 		res.cookie("email", req.body.email, {maxAge: unDia});
 		delete req.session.email;
-		// 7. Notificar al contador de logins
+		// 8. Notificar al contador de logins
 		let hoyAhora = compartidas.ahora();
 		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
-		// 8. Redireccionar
+		// 9. Redireccionar
 		return res.redirect("/usuarios/redireccionar");
 	},
 	preLogout: (req, res) => {
@@ -85,7 +83,7 @@ module.exports = {
 				"¿Estás segur" + (usuario.sexo_id == "M" ? "a" : "o") + " de que te querés desloguear?",
 			],
 			iconos: [
-				{nombre: "fa-circle-left", link: req.session.urlActual, titulo: "Cancelar"},
+				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Cancelar"},
 				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
 			],
 			titulo: "Logout",
@@ -95,11 +93,7 @@ module.exports = {
 		return res.render("MI9-Cartel", {informacion});
 	},
 	logout: (req, res) => {
-		let url = req.session.urlActual
-			? req.session.urlActual
-			: req.session.urlAnterior
-			? req.session.urlAnterior
-			: "/";
+		let url = req.session.urlSinLogin;
 		req.session.destroy();
 		res.clearCookie("email");
 		return res.redirect(url);
@@ -144,9 +138,12 @@ module.exports = {
 		compartidas.enviarMail(asunto, email, comentario).catch(console.error);
 		// Guardar el registro
 		contrasena = bcryptjs.hashSync(contrasena, 10);
-		await BD_genericas.agregarRegistro("usuarios", {email, contrasena});
+		let status_registro_id = status_registro_us.find((n) => !n.mail_validado).id;
+		await BD_genericas.agregarRegistro("usuarios", {email, contrasena, status_registro_id});
 		// Obtener los datos del usuario
 		req.session.email = email;
+		//req.session.contrasena = "";
+		res.cookie("email", email, {maxAge: unDia});
 		// Datos para la vista
 		let informacion = {
 			mensajes: [
@@ -160,22 +157,6 @@ module.exports = {
 		};
 		// Redireccionar
 		return res.render("MI9-Cartel", {informacion});
-	},
-	redireccionar: async (req, res) => {
-		let status_registro_usuario = req.session.usuario.status_registro;
-		// Redireccionar
-		console.log(167, status_registro_usuario);
-		status_registro_usuario.datos_editables
-			? req.session.urlActual
-				? res.redirect(req.session.urlActual)
-				: req.session.urlAnterior
-				? res.redirect(req.session.urlAnterior)
-				: res.redirect("/")
-			: status_registro_usuario.datos_perennes
-			? res.redirect("/usuarios/datos-editables")
-			: status_registro_usuario.mail_validado
-			? res.redirect("/usuarios/datos-perennes")
-			: res.redirect("/usuarios/login");
 	},
 	altaPerennesForm: async (req, res) => {
 		let tema = "usuario";
@@ -198,33 +179,37 @@ module.exports = {
 	altaPerennesGuardar: async (req, res) => {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		let usuario = req.session.usuario;
-		// Averiguar si hay errores de validación
+		// Averigua si hay errores de validación
 		let datos = req.body;
 		let errores = await validar.perennes(datos);
-		// Redireccionar si hubo algún error de validación
+		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
 		}
-		// Si no hubieron errores de validación...
-		// Actualizar el registro
-		req.body.status_registro_id = 3;
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Redireccionar
+		// Actualiza el usuario
+		req.session.usuario = await procesos.actualizaElUsuario(
+			"datos_perennes",
+			"datos_editables",
+			usuario,
+			req.body
+		);
+		// Redirecciona
 		return res.redirect("/usuarios/redireccionar");
 	},
 	altaEditablesForm: async (req, res) => {
 		let tema = "usuario";
 		let codigo = "editables";
+		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
-		let roles_iglesia = await BD_genericas.obtenerTodos("roles_iglesia", "orden").then((n) =>
-			n.filter((m) => m.sexo_id == req.session.usuario.sexo_id && m.usuario)
-		);
 		let errores = req.session.errores ? req.session.errores : false;
+		// Roles de Iglesia
+		let condicionesRolIglesia = {sexo_id: req.session.usuario.sexo_id, usuario: true};
+		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", condicionesRolIglesia);
+		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let avatar = dataEntry.avatar
@@ -257,15 +242,17 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
 		}
-		// Si no hubieron errores de validación...
-		// Grabar novedades en el usuario
-		req.body.status_registro_id = 4;
+		// Actualiza el usuario
 		req.body.avatar = req.file ? req.file.filename : "-";
-		await BD_genericas.actualizarPorId("usuarios", usuario.id, req.body);
-		req.session.usuario = await BD_especificas.obtenerUsuarioPorID(usuario.id);
-		// Mover el archivo a la carpeta definitiva
+		req.session.usuario = await procesos.actualizaElUsuario(
+			"datos_editables",
+			"documento",
+			usuario,
+			req.body
+		);
+		// Mueve el archivo a la carpeta definitiva
 		if (req.file) compartidas.moverImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
-		// Redireccionar
+		// Redirecciona
 		return res.redirect("/usuarios/redireccionar");
 	},
 	bienvenido: (req, res) => {

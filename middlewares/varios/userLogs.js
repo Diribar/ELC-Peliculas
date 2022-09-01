@@ -5,6 +5,9 @@ module.exports = (req, res, next) => {
 	// Datos originales
 	if (!req.session.urlSinLogin)
 		req.session.urlSinLogin = req.cookies && req.cookies.urlSinLogin ? req.cookies.urlSinLogin : "/";
+	if (!req.session.urlSinUsuario)
+		req.session.urlSinUsuario =
+			req.cookies && req.cookies.urlSinUsuario ? req.cookies.urlSinUsuario : "/";
 	if (!req.session.urlSinCaptura)
 		req.session.urlSinCaptura =
 			req.cookies && req.cookies.urlSinCaptura ? req.cookies.urlSinCaptura : "/";
@@ -13,7 +16,6 @@ module.exports = (req, res, next) => {
 	if (!req.session.urlActual)
 		req.session.urlActual = req.cookies && req.cookies.urlActual ? req.cookies.urlActual : "/";
 	// Variables
-	// Si se retrocedió, la ruta anterior pasa a ser 'home'
 	let anterior = req.session.urlActual;
 	let actual = req.originalUrl;
 	// Condición
