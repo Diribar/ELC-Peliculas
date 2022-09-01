@@ -105,13 +105,7 @@ module.exports = {
 
 	olvidoContrFE: (email) => {
 		let errores = {};
-		errores.email = !email
-			? cartelMailVacio
-			: formatoMail(email)
-			? cartelMailFormato
-			: usuario && ahora == fecha
-			? "El mail fue enviado el " + fechaHorario + ", y se permite un sólo envío por día."
-			: "";
+		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.hay = !!errores.email;
 		// Fin
 		return errores;
