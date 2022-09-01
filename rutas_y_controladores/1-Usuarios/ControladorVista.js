@@ -28,13 +28,15 @@ module.exports = {
 		// 1. Tema y Código
 		let tema = "usuario";
 		let codigo = "login";
-		// 2. Data Entry propio y errores
+		// 2. Obtiene el Data Entry ya realizado
 		let dataEntry =
 			req.session.email !== undefined || req.session.contrasena !== undefined
 				? {email: req.session.email, contrasena: req.session.contrasena}
 				: "";
-		let {errores} = dataEntry ? await validar.validadMailContrasena_y_ObtieneUsuario(dataEntry) : "";
+		delete req.session.email;
+		delete req.session.email;
 		// 3. Variables para la vista
+		let {errores} = dataEntry ? await validar.validadMailContrasena_y_ObtieneUsuario(dataEntry) : "";
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
@@ -67,7 +69,6 @@ module.exports = {
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookie
 		res.cookie("email", req.body.email, {maxAge: unDia});
-		delete req.session.email;
 		// 8. Notificar al contador de logins
 		let hoyAhora = compartidas.ahora();
 		procesos.actualizarElContadorDeLogins(req.session.usuario, hoyAhora);
