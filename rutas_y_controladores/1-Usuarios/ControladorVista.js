@@ -144,9 +144,9 @@ module.exports = {
 			...req.body,
 			status_registro_id: status_mail_validado,
 		});
-		// Obtener los datos del usuario
+		// Guarda el mail en 'session'
 		req.session.email = email;
-		//req.session.contrasena = "";
+		// Genera el cookie del mail
 		res.cookie("email", email, {maxAge: unDia});
 		// Datos para la vista
 		let informacion = {
