@@ -23,9 +23,4 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	validarOlvidoContr: async (req, res) => {
-		let errores = await validarUsuarios.olvidoContrFE(req.query.email);
-		return res.json(errores);
-	},
-
 };

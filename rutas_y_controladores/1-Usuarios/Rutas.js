@@ -16,7 +16,6 @@ router.get("/api/validar-login", API.validarLogin);
 router.get("/api/validar-mail", API.validarMail);
 router.get("/api/validar-perennes", API.validarPerennes);
 router.get("/api/validar-editables", API.validarEditables);
-router.get("/api/validar-olvido-contrasena", API.validarOlvidoContr);
 
 // Login
 router.get("/login", soloVisitas, vista.loginForm);

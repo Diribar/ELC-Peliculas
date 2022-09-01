@@ -26,7 +26,7 @@ module.exports = {
 		return errores;
 	},
 
-	validadMailContrasena_y_ObtieneUsuario: async function (datos) {
+	mailContrasena_y_ObtieneUsuario: async function (datos) {
 		// Variables
 		let usuario;
 		// Averiguar los errores
@@ -100,14 +100,6 @@ module.exports = {
 			  " MB. Necesitamos que no supere 1 MB"
 			: "";
 		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
-	},
-
-	olvidoContrFE: (email) => {
-		let errores = {};
-		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
-		errores.hay = !!errores.email;
-		// Fin
 		return errores;
 	},
 

@@ -4,13 +4,9 @@
 	<script src="/FE-javascript/1-Usuarios/ojitoContrasena.js"></script>
 	<script src="/FE-javascript/1-Usuarios/8-Login.js"></script>
 <% } else %>
-<% if (codigo == "mail") { %>
+<% if (codigo == "mail" || codigo == "olvido-contrasena") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-Registro-Mail.css">
 	<script src="/FE-javascript/1-Usuarios/1-Mail.js"></script>
-<% } else %>
-<% if (codigo == "olvido-contrasena") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-Registro-Mail.css">
-	<script src="/FE-javascript/1-Usuarios/9-OlvidoContr.js"></script>
 <% } else %>
 <% if (codigo == "perennes") { %>
 	<script src="/FE-javascript/1-Usuarios/2-Perennes.js"></script>

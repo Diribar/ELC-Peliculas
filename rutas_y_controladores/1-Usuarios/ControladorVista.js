@@ -39,7 +39,7 @@ module.exports = {
 		delete req.session.email;
 		delete req.session.contrasena;
 		// 3. Variables para la vista
-		let {errores} = dataEntry ? await validar.validadMailContrasena_y_ObtieneUsuario(dataEntry) : "";
+		let {errores} = dataEntry ? await validar.mailContrasena_y_ObtieneUsuario(dataEntry) : "";
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
@@ -58,7 +58,7 @@ module.exports = {
 	},
 	loginGuardar: async (req, res) => {
 		// 1. Averiguar si hay errores de data-entry
-		let {errores, usuario} = await validar.validadMailContrasena_y_ObtieneUsuario(req.body);
+		let {errores, usuario} = await validar.mailContrasena_y_ObtieneUsuario(req.body);
 		// 4. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			req.session.email = req.body.email;
@@ -104,7 +104,7 @@ module.exports = {
 	olvidoContrGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let datos = req.body;
-		let errores = await validar.olvidoContrFE(datos.email);
+		let errores = await validar.registroMail(datos.email);
 		let usuario;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
 		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(datos.email);
