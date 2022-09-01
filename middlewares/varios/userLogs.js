@@ -3,6 +3,10 @@
 
 module.exports = (req, res, next) => {
 	// Datos originales
+	if (!req.session.urlSinUsuario)
+		req.session.urlSinUsuario = req.cookies && req.cookies.urlSinUsuario ? req.cookies.urlSinUsuario : "/";
+	if (!req.session.urlSinCaptura)
+		req.session.urlSinCaptura = req.cookies && req.cookies.urlSinCaptura ? req.cookies.urlSinCaptura : "/";
 	if (!req.session.urlAnterior)
 		req.session.urlAnterior = req.cookies && req.cookies.urlAnterior ? req.cookies.urlAnterior : "/";
 	if (!req.session.urlActual)
@@ -30,8 +34,10 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/") &&
 			!anterior.startsWith("/revision/")
-		)
+		) {
 			req.session.urlSinUsuario = anterior;
+			res.cookie("urlSinUsuario", anterior, {maxAge: unDia});
+		}
 		// 2. url sin captura
 		// No tiene agregar ni edición
 		// No tiene links
@@ -41,8 +47,10 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/") &&
 			(!anterior.startsWith("/revision/") || anterior == "/revision/tablero-de-control")
-		)
+		) {
 			req.session.urlSinCaptura = anterior;
+			res.cookie("urlSinCaptura", anterior, {maxAge: unDia});
+		}
 		// Actualiza en session la url 'anterior'
 		req.session.urlAnterior = anterior;
 		res.cookie("urlAnterior", anterior, {maxAge: unDia});

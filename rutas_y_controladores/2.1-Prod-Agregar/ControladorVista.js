@@ -475,7 +475,7 @@ module.exports = {
 					},
 				],
 			};
-			return res.render("CR9-Errores", {informacion});
+			return res.render("MI9-Errores", {informacion});
 		}
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.gr_creado)

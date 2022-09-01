@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	}
 	if (informacion) {
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
-		return res.render("CR9-Errores", {informacion});
+		return res.render("MI9-Errores", {informacion});
 	}
 	next();
 };
