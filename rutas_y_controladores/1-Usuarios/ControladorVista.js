@@ -34,7 +34,7 @@ module.exports = {
 				? {email: req.session.email, contrasena: req.session.contrasena}
 				: "";
 		delete req.session.email;
-		delete req.session.email;
+		delete req.session.contrasena;
 		// 3. Variables para la vista
 		let {errores} = dataEntry ? await validar.validadMailContrasena_y_ObtieneUsuario(dataEntry) : "";
 		let variables = [
