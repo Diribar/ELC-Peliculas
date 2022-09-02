@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
 	}
 	if (informacion) {
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
-		return res.render("MI9-Cartel", {informacion});
+		return res.render("MI-Cartel", {informacion});
 	}
 	next();
 };

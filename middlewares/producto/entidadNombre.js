@@ -30,6 +30,6 @@ module.exports = (req, res, next) => {
 			};
 	}
 	// Conclusiones
-	if (informacion) res.render("MI9-Cartel", {informacion});
+	if (informacion) res.render("MI-Cartel", {informacion});
 	else next();
 };
