@@ -131,8 +131,11 @@ CREATE TABLE USUARIOS (
 	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
-	fecha_ultimo_login DATE DEFAULT UTC_DATE,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
+	
+	fecha_ultimo_login DATE DEFAULT UTC_DATE,
+	fecha_contrasena DATETIME DEFAULT UTC_TIMESTAMP,
+	fecha_feedback_revisores DATETIME NULL,
 
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
