@@ -110,18 +110,18 @@ module.exports = {
 		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(datos.email);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.email = req.body;
+			req.session.email = req.body.email;
 			req.session.errores = errores;
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
-		let {ahora, contrasena} = enviaMailConContrasena(req);
+		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
 		await BD_genericas.actualizarPorId("usuarios",usuario.id, {
 			contrasena,
 			fecha_contrasena: ahora,
 		});
 		// Guarda el mail en 'session'
-		req.session.email = email;
+		req.session.email = req.body.email;
 		// Datos para la vista
 		let codigo = req.path.slice(1);
 		let informacion = procesos.cartelInformacion(codigo);
@@ -168,7 +168,7 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
-		let {ahora, contrasena} = enviaMailConContrasena(req);
+		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
 		let status_mail_validado = status_registro_us.find((n) => !n.mail_validado).id;
 		await BD_genericas.agregarRegistro("usuarios", {
 			contrasena,
