@@ -53,8 +53,5 @@ router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
 router.get("/terminaste", soloAutInput, entidad, id, vista.terminasteForm);
 
-// Rutas de vistas auxiliares
-router.get("/responsabilidad", vista.responsabilidad);
-
 // Fin
 module.exports = router;

@@ -26,6 +26,7 @@ router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);
+router.get("/responsabilidad", soloUsuarios, vista.responsab);
 router.get("/autorizado-input", soloUsuarios, vista.autInputForm);
 router.get("/revisor-entidades", soloUsuarios, vista.autRevisionForm);
 router.get("/revisor-usuarios", soloUsuarios, vista.autRevisionForm);

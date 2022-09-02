@@ -121,13 +121,14 @@ CREATE TABLE USUARIOS (
 	nombre VARCHAR(30) NULL,
 	apellido VARCHAR(30) NULL,
 	apodo VARCHAR(30) NULL,
-	numero_documento INT UNSIGNED UNIQUE NULL,
 	avatar VARCHAR(100) DEFAULT '-',
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	numero_documento VARCHAR(15) UNIQUE NULL,
+	avatar_documento VARCHAR(18) DEFAULT NULL,
 	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
@@ -169,9 +170,9 @@ VALUES
 ;
 INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.',   '0',        '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '21072001', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', '1',        '',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', 'AR-21072001', '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',           '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', null,          '1662056805460.jpg',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;

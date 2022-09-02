@@ -500,10 +500,4 @@ module.exports = {
 			ruta: "/producto/",
 		});
 	},
-	responsabilidad: (req, res) => {
-		let tema = "prod_agregar";
-		let codigo = "responsabilidad";
-		let titulo = "Agregar - Responsabilidad";
-		return res.render("GN0-Estructura", {tema, codigo, titulo});
-	},
 };
