@@ -1,4 +1,4 @@
-<div id="icono-usuario" class="scale">
+<div id="icono-usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
 		<% if (usuario.avatar != "-") { %>
 			<div id="imagenUsuario">
