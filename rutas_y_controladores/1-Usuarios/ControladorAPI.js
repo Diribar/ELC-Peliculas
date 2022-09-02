@@ -22,5 +22,4 @@ module.exports = {
 		let errores = await validarUsuarios.editables(req.query);
 		return res.json(errores);
 	},
-
 };
