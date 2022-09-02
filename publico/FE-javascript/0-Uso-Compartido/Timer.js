@@ -27,7 +27,7 @@ window.addEventListener("load", async () => {
 	let segundosDispon = Math.round((minutosDispon % 1) * 60);
 
 	// FUNCIONES -------------------------------------------------------------
-	let horarioTexto = (horario) => {
+	let fechaHorarioTexto = (horario) => {
 		return (
 			horario.getDate() +
 			"/" +
@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 		cartel.style.backgroundColor = "var(--rojo-oscuro)";
 		gracias.classList.add("ocultar");
 		// Mensajes
-		let horarioFinalTexto = horarioTexto(horarioFinal);
+		let horarioFinalTexto = fechaHorarioTexto(horarioFinal);
 		let dia = horarioFinalTexto.slice(0, horarioFinalTexto.indexOf(" "));
 		let hora = horarioFinalTexto.slice(horarioFinalTexto.indexOf(" "));
 		let arrayMensajes = datos.capturado_en

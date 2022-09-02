@@ -104,7 +104,7 @@ module.exports = {
 	},
 	guardar_edicion: async function (entidadOrig, entidadEdic, original, edicion, userID) {
 		// Variables
-		let quedanCampos
+		let quedanCampos;
 		// Quitar los coincidencias con el original
 		[edicion, quedanCampos] = this.pulirEdicion(original, edicion);
 		// Averiguar si hay algún campo con novedad
@@ -192,7 +192,14 @@ module.exports = {
 	nuevoHorario: (delay, horario) => {
 		return nuevoHorario(delay, horario);
 	},
-	horarioTexto: (horario) => {
+	fechaTexto: (fecha) => {
+		let dia = fecha.getDate();
+		let mes = meses[fecha.getMonth()];
+		let ano = fecha.getFullYear().toString().slice(-2);
+		fecha = dia + "/" + mes + "/" + ano;
+		return fecha;
+	},
+	fechaHorarioTexto: (horario) => {
 		return (
 			horario.getDate() +
 			"/" +

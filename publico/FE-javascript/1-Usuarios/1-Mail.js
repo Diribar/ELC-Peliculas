@@ -5,10 +5,9 @@ window.addEventListener("load", () => {
 	let button = document.querySelector("form button[type='submit']");
 	let input = document.querySelector(".input-error .input");
 	let iconoError = document.querySelector(".input-error .fa-circle-xmark");
+	let iconoOK = document.querySelector(".input-error .fa-circle-check");
 	let mensajes = document.querySelector(".input-error .mensajeError");
 
-	// Anular 'submit' si hay algún error
-	if (!iconoError.classList.contains("ocultar")) button.classList.add("inactivo");
 	// Acciones si se realizan cambios
 	input.addEventListener("input", async () => {
 		let campo = input.name;
@@ -18,15 +17,22 @@ window.addEventListener("load", () => {
 		mensajes.innerHTML = mensaje;
 		if (mensaje) {
 			iconoError.classList.remove("ocultar");
+			iconoOK.classList.add("ocultar");
 			button.classList.add("inactivo");
 		} else {
 			iconoError.classList.add("ocultar");
+			iconoOK.classList.remove("ocultar");
 			button.classList.remove("inactivo");
 		}
 	});
 
+	// Submit
 	form.addEventListener("submit", (e) => {
 		if (button.classList.contains("inactivo")) e.preventDefault();
 		button.classList.add("inactivo");
 	});
+
+	// Start-up: anular 'submit' si hay algún error
+	if (!iconoError.classList.contains("ocultar")) button.classList.add("inactivo");
+
 });

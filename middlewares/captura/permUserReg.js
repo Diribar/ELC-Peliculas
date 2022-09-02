@@ -22,9 +22,9 @@ module.exports = async (req, res, next) => {
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
 	if (creado_en) creado_en.setSeconds(0);
-	const horarioFinalCreado = compartidas.horarioTexto(compartidas.nuevoHorario(1, creado_en));
+	const horarioFinalCreado = compartidas.fechaHorarioTexto(compartidas.nuevoHorario(1, creado_en));
 	const capturado_en = registro.capturado_en;
-	const horarioFinalCaptura = compartidas.horarioTexto(compartidas.nuevoHorario(1, capturado_en));
+	const horarioFinalCaptura = compartidas.fechaHorarioTexto(compartidas.nuevoHorario(1, capturado_en));
 	// Variables - Vistas
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinCaptura);
 	const vistaInactivar = variables.vistaInactivar(req);
@@ -121,7 +121,7 @@ module.exports = async (req, res, next) => {
 				link: linkInactivar,
 				titulo: "Liberar automáticamente",
 			};
-			const horario = compartidas.horarioTexto(prodCapturado.capturado_en);
+			const horario = compartidas.fechaHorarioTexto(prodCapturado.capturado_en);
 			// Preparar la información
 			const terminacion =
 				pc_entidadCodigo == "peliculas" || pc_entidadCodigo == "colecciones"

@@ -1,12 +1,16 @@
 <div id="tapar-el-fondo"></div>
 <form action="<%= link %>" method="POST">
-	<h1>Registro de Mail</h1>
-	<section class="label-input flex-row">  <!--E-Mail-->
+	<h1><%= titulo %> </h1>
+	<!--E-Mail-->
+	<section class="label-input flex-row">
 		<div class="input-error">
-			<input type="text" class="input" name="email" placeholder="Ingresá tu Correo Electrónico" value="" autofocus>
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.email) ? 'ocultar' : '' %> ">
+			<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= email %>" autofocus>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores || !errores.email ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.email) ? errores.email : "" %></span>
 			</i>
+			<!-- OK -->
+			<i class="fa-solid fa-circle-check <%- !errores || errores.email ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Flechas-->
@@ -16,6 +20,8 @@
 		<!-- Submit -->
 		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
 		<!-- Olvido de contraseña -->
-		<a href="/usuarios/olvido-contrasena" tabindex="-1"><i class="fa-solid fa-circle-xmark icono" title="Olvidé mi contraseña"></i></a>
+		<% if (codigo == "mail") { %>
+			<a href="/usuarios/olvido-contrasena" tabindex="-1"><i class="fa-solid fa-circle-xmark icono" title="Olvidé mi contraseña"></i></a>
+		<% } %>
 	</section>
 </form>

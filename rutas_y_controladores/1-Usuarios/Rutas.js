@@ -24,8 +24,8 @@ router.post("/login", soloVisitas, vista.loginGuardar);
 router.get("/pre-logout", soloUsuarios, vista.preLogout);
 router.get("/logout", soloUsuarios, vista.logout);
 // Olvido contraseña
-router.get("/olvido-contrasena", soloVisitas, vista.olvidoContr);
-router.post("/olvido-contrasena", soloVisitas, vista.olvidoContr);
+router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
+router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
