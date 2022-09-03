@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
 	if (!usuario.rol_usuario.aut_gestion_prod) {
-		let linkUsuarioAutProductos = "/usuarios/autorizado-revision/solicitud";
+		let linkUsuarioAutProductos = "/usuarios/autorizado-revision";
 		informacion = {
 			mensajes: [
 				"Se requiere un permiso especial para revisar la información ingresada a nuestro sistema. Si estás interesado/a, lo podés solicitar haciendo click abajo, en la flecha hacia la derecha.",

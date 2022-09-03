@@ -3,6 +3,7 @@
 const path = require("path");
 const bcryptjs = require("bcryptjs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
@@ -106,7 +107,7 @@ module.exports = {
 	olvidoContrBE: async (email) => {
 		// Variables
 		let errores = {};
-		let usuario = await BD_especificas.obtenerELC_id("usuarios", {email: email});
+		let usuario = await BD_genericas.obtenerPorCamposConInclude("usuarios", {email}, "status_registro");
 		if (usuario) var fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};

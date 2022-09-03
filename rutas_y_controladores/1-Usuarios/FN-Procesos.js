@@ -3,6 +3,7 @@
 const bcryptjs = require("bcryptjs");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// ControladorVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar

@@ -2,19 +2,17 @@
 // Requires
 
 module.exports = (req, res, next) => {
+	// Funciones
+	let activarSessionCookie = (url) => {
+		req.session[url] = anterior;
+		res.cookie(url, anterior, {maxAge: unDia});
+	};
+
 	// Datos originales
-	if (!req.session.urlSinLogin)
-		req.session.urlSinLogin = req.cookies && req.cookies.urlSinLogin ? req.cookies.urlSinLogin : "/";
-	if (!req.session.urlSinUsuario)
-		req.session.urlSinUsuario =
-			req.cookies && req.cookies.urlSinUsuario ? req.cookies.urlSinUsuario : "/";
-	if (!req.session.urlSinCaptura)
-		req.session.urlSinCaptura =
-			req.cookies && req.cookies.urlSinCaptura ? req.cookies.urlSinCaptura : "/";
-	if (!req.session.urlAnterior)
-		req.session.urlAnterior = req.cookies && req.cookies.urlAnterior ? req.cookies.urlAnterior : "/";
-	if (!req.session.urlActual)
-		req.session.urlActual = req.cookies && req.cookies.urlActual ? req.cookies.urlActual : "/";
+	let urls = ["urlSinLogin", "urlSinUsuario", "urlSinCaptura", "urlAnterior", "urlActual"];
+	urls.forEach((url) => {
+		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
+	});
 	// Variables
 	let anterior = req.session.urlActual;
 	let actual = req.originalUrl;
@@ -25,6 +23,7 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/cookies") &&
 		!actual.includes("/redireccionar") &&
 		!actual.includes("/api/") &&
+		actual != "/imagenes/1-Usuarios/" &&
 		anterior != actual
 	) {
 		// 1. url sin login
@@ -37,16 +36,13 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/") &&
 			!anterior.startsWith("/revision/")
-		) {
-			req.session.urlSinLogin = anterior;
-			res.cookie("urlSinLogin", anterior, {maxAge: unDia});
-		}
+		)
+			activarSessionCookie("urlSinLogin");
+
 		// 2. url sin usuario
 		// No tiene usuario
-		if (!anterior.startsWith("/usuarios/")) {
-			req.session.urlSinUsuario = anterior;
-			res.cookie("urlSinUsuario", anterior, {maxAge: unDia});
-		}
+		if (!anterior.startsWith("/usuarios/")) activarSessionCookie("urlSinUsuario");
+
 		// 3. url sin captura
 		// No tiene edición
 		// No tiene links
@@ -56,17 +52,13 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/") &&
 			(!anterior.startsWith("/revision/") || anterior == "/revision/tablero-de-control")
-		) {
-			req.session.urlSinCaptura = anterior;
-			res.cookie("urlSinCaptura", anterior, {maxAge: unDia});
-		}
-		// Actualiza en session la url 'anterior'
-		req.session.urlAnterior = anterior;
-		res.cookie("urlAnterior", anterior, {maxAge: unDia});
+		)
+			activarSessionCookie("urlSinCaptura");
 
+		// Actualiza en session la url 'anterior'
+		activarSessionCookie("urlAnterior");
 		// Actualiza en session la url 'actual'
-		req.session.urlActual = actual;
-		res.cookie("urlActual", actual, {maxAge: unDia});
+		activarSessionCookie("urlActual");
 	}
 	next();
 };

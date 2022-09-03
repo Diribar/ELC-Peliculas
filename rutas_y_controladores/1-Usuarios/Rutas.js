@@ -37,9 +37,11 @@ router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);
 // Autorizado Input
-router.get("/autorizado-input/solicitud", soloUsuarios, vista.autInputForm);
-// Autorizado Revisor
-router.get("/autorizado-revisor/solicitud", soloUsuarios, vista.autRevisionForm);
+router.get("/autorizado-input", soloUsuarios, vista.autInputForm);
+// Autorizado Revisor de Entidades
+router.get("/revisor-entidades", soloUsuarios, vista.autRevisionForm);
+// Autorizado Revisor de Usuarios
+router.get("/revisor-usuarios", soloUsuarios, vista.autRevisionForm);
 
 // Rutas RUD
 router.get("/edicion", soloUsuarios, vista.edicionForm);

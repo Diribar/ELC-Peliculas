@@ -12,19 +12,30 @@
 			<%- include("GN2-2MenuBusqueda") %>
 		</div>
 		<!-- Agregar un Producto -->
-		<div class="grupos">
+		<div class="grupos" style="margin-right: 40px;">
 			<a href="/producto/agregar/confirma" tabindex="-1">
 				<div id="crear-prod-icono" class="scale" title="Agregar un Producto">
 					<i class="fa-solid fa-video iconos"></i>
-					<i class="fa-solid fa-plus iconos"></i>
+					<i class="fa-solid fa-plus iconos adentro"></i>
 				</div>
 			</a>
 		</div>
+		<!-- Revisar Entidades -->
 		<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_prod) { %>
-			<!-- Revisar Altas y Ediciones -->
 			<div class="grupos">
 				<a href="/revision/tablero-de-control" tabindex="-1">
-					<i class="fa-solid fa-spell-check scale iconos" title="Revisar Altas y Ediciones"></i>
+					<div id="crear-prod-icono" class="scale" title="Revisar Entidades">
+						<i class="fa-solid fa-video iconos revision"></i>
+						<i class="fa-solid fa-check iconos adentro"></i>
+					</div>
+				</a>
+			</div>
+		<% } %>
+		<!-- Revisar Usuarios -->
+		<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_us) { %>
+			<div class="grupos">
+				<a href="/usuarios/tablero-de-control" tabindex="-1">
+					<i class="fa-solid fa-user-check scale iconos revision" title="Revisar Usuarios"></i>
 				</a>
 			</div>
 		<% } %>
