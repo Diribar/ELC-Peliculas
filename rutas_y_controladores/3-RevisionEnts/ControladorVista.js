@@ -68,7 +68,7 @@ module.exports = {
 		);
 		// Ir a la vista
 		//return res.send(prodOriginal)
-		return res.render("RV0-0Estructura", {
+		return res.render("RE0-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -160,7 +160,7 @@ module.exports = {
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar_archivo) {
 			// Vista 'Edición-Avatar'
-			vista = "RV1-Prod-Avatar";
+			vista = "RE1-Prod-Avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
@@ -185,7 +185,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOriginal, prodEditado);
-			vista = "RV0-0Estructura";
+			vista = "RE0-0Estructura";
 		}
 		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -302,7 +302,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Ir a la vista
 		//return res.send(links)
-		return res.render("RV0-0Estructura", {
+		return res.render("RE0-0Estructura", {
 			tema,
 			codigo,
 			titulo,
