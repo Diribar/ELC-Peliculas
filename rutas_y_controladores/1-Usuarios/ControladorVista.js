@@ -151,7 +151,7 @@ module.exports = {
 	},
 	altaEditablesGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
-		req.body.avatar = req.file ? req.file.filename : "-";
+		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
 		let errores = await validar.editables(req.body);
 		if (errores.hay) {
@@ -162,6 +162,7 @@ module.exports = {
 			return res.redirect("/usuarios/redireccionar");
 		}
 		// Actualiza el usuario
+		req.body.avatar = req.file ? req.file.filename : "-";
 		req.session.usuario = await procesos.actualizaElUsuario(
 			"datos_editables",
 			"documento",
