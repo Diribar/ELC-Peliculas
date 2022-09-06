@@ -52,7 +52,7 @@ module.exports = {
 					return {id: m.id, comentario: m.comentario};
 				})
 			);
-		// Ir a la vista
+		// Va a la vista
 		//return res.send(links);
 		return res.render("CR0-0Estructura", {
 			tema,

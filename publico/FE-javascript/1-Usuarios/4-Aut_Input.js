@@ -19,8 +19,8 @@ window.addEventListener("load", () => {
 			...errores,
 			...(await fetch("/usuarios/api/validar-autInput/?" + campo + "=" + valor).then((n) => n.json())),
 		};
-	}
-	let mensajes=(indice)=>{
+	};
+	let mensajes = (indice) => {
 		let campo = inputs[indice].name;
 		// Guarda el mensaje de error
 		let mensaje = errores[campo];
@@ -57,7 +57,7 @@ window.addEventListener("load", () => {
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("change", async () => {
 			await erroresAciertos(i);
-			mensajes(i)
+			mensajes(i);
 			botonGuardar(); // Activa/Desactiva el botón 'Guardar'
 		});
 	}
@@ -68,9 +68,9 @@ window.addEventListener("load", () => {
 			// Bloquear el 'submit'
 			e.preventDefault();
 			// Continuar
-			startUp();
+			await startUp();
 			for (let i = 0; i < inputs.length; i++) {
-				mensajes(i)
+				mensajes(i);
 			}
 		}
 	});

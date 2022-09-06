@@ -25,7 +25,7 @@ module.exports = {
 		// RCLV
 		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, userID); //
 		RCLVs = procesos.tablero_RCLV_ProcesarCampos(RCLVs);
-		// Ir a la vista
+		// Va a la vista
 		// return res.send([productos,RCLVs]);
 		return res.render("GN0-Estructura", {
 			tema,
@@ -66,7 +66,7 @@ module.exports = {
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
-		// Ir a la vista
+		// Va a la vista
 		//return res.send(prodOriginal)
 		return res.render("RE0-0Estructura", {
 			tema,
@@ -190,7 +190,7 @@ module.exports = {
 		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar la Edición de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
-		// Ir a la vista
+		// Va a la vista
 		//return res.send([ingresos, reemplazos]);
 		return res.render(vista, {
 			tema,
@@ -300,7 +300,7 @@ module.exports = {
 				})
 			);
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
-		// Ir a la vista
+		// Va a la vista
 		//return res.send(links)
 		return res.render("RE0-0Estructura", {
 			tema,

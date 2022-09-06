@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+const fs = require("fs");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
@@ -140,10 +141,8 @@ module.exports = {
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		let avatar = dataEntry.avatar
-			? "/imagenes/9-Provisorio/" + dataEntry.avatar
-			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
-		// Ir a la vista
+		let avatar = "/imagenes/0-Base/AvatarGenericoUsuario.png";
+		// Va a la vista
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
@@ -201,7 +200,7 @@ module.exports = {
 		return res.render("MI-Cartel", {informacion});
 	},
 	responsab: async (req, res) => {
-		// Ir a la vista
+		// Va a la vista
 		return res.render("GN0-Estructura", {
 			tema: "usuario",
 			codigo: "responsabilidad",
@@ -219,16 +218,17 @@ module.exports = {
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
-		let avatar = dataEntry.avatar
-			? "/imagenes/9-Provisorio/" + dataEntry.avatar
-			: "/imagenes/0-Base/dni.jpg";
-		// Ir a la vista
+		let avatar = "/imagenes/0-Base/documento.jpg";
+		// Crear la carpeta si no existe
+		const ruta="./publico/imagenes/9-Provisorio"
+		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
+		// Va a la vista
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
 			titulo: "Solicitud de ABM en nuestra BD",
 			link: req.originalUrl,
-			dataEntry: {},
+			dataEntry,
 			errores,
 			hablaHispana,
 			hablaNoHispana,
@@ -256,7 +256,7 @@ module.exports = {
 		// Mueve el archivo a la carpeta definitiva
 		compartidas.moverImagen(datos.avatar_documento, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona
-		return res.redirect("/usuarios/dni-recibido");
+		return res.redirect("/usuarios/documento-recibido");
 	},
 	documentoRecibido: (req, res) => {
 		// Variables

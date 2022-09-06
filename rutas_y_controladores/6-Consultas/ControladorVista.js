@@ -18,7 +18,7 @@ module.exports = {
 		// Obtener datos en función de la opción elegida
 		let opcionElegida_campos = req.session.menuOpciones.find((n) => n.url == opcion);
 		let opcionElegida_titulo = "Películas - " + opcionElegida_campos.titulo;
-		// Ir a la vista
+		// Va a la vista
 		// return res.send([tema, opcion, titulo, opciones, tipos, opcionCampos]);
 		res.render("GN0-Estructura", {
 			tema: "productos",
@@ -43,7 +43,7 @@ module.exports = {
 		let subOpcionElegida_campos = req.session.menuSubOpciones_algunas.find(
 			(n) => n.url == opcionSubOpcion
 		);
-		// Ir a la vista
+		// Va a la vista
 		//return res.send([tema, titulo, opciones, tipos, opcionElegida, tipoElegido]);
 		res.render("GN0-Estructura", {
 			tema: "productos",

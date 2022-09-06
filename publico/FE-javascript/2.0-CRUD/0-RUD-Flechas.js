@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
 		let detalle = document.querySelector("#cuerpo #flechas .fa-circle-info");
 		detalle.addEventListener("click", () => {
 			if (!detalle.classList.contains("inactivo")) {
-				// Ir a la vista 'detalle'
+				// Va a la vista 'detalle'
 				window.location.href =
 					"/producto/detalle/?entidad=" + entidad + "&id=" + producto_id;
 			}
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 		let edicion = document.querySelector("#cuerpo #flechas .fa-pen");
 		edicion.addEventListener("click", () => {
 			if (!edicion.classList.contains("inactivo")) {
-				// Ir a la vista 'edicion'
+				// Va a la vista 'edicion'
 				window.location.href =
 					"/producto/edicion/?entidad=" + entidad + "&id=" + producto_id;
 			}
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 		let links = document.querySelector("#cuerpo #flechas .fa-link");
 		links.addEventListener("click", () => {
 			if (!links.classList.contains("inactivo")) {
-				// Ir a la vista 'links'
+				// Va a la vista 'links'
 				window.location.href = "/links/abm/?entidad=" + entidad + "&id=" + producto_id;
 			}
 		});

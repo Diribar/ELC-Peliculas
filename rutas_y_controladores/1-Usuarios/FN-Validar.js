@@ -70,22 +70,36 @@ module.exports = {
 	},
 
 	autInput: (datos) => {
+		// Variables
 		let errores = {};
-		if (datos.numero_documento) var longNumero = longitud(datos.apodo, 2, 15);
-		errores.numero_documento = !datos.numero_documento ? cartelCampoVacio : longNumero ? longNumero : "";
-		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
-		let extAvatar = extension(datos.avatar);
-		errores.avatar = !datos.avatar
-			? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
-			: extAvatar
-			? "Usaste un archivo con la extensión " +
-			  extAvatar.slice(1).toUpperCase() +
-			  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
-			: datos.tamano > 1100000
-			? "El archivo es de " +
-			  parseInt(datos.tamano / 10000) / 100 +
-			  " MB. Necesitamos que no supere 1 MB"
-			: "";
+		let campos = Object.keys(datos);
+		// Revisar 'numero_documento'
+		if (campos.includes("numero_documento")) {
+			if (datos.numero_documento) var longNumero = longitud(datos.apodo, 2, 15);
+			errores.numero_documento = !datos.numero_documento
+				? cartelCampoVacio
+				: longNumero
+				? longNumero
+				: "";
+		}
+		// Revisar 'pais_id'
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		// Revisar 'avatar'
+		if (campos.includes("avatar")) {
+			let extAvatar = extension(datos.avatar);
+			errores.avatar = !datos.avatar
+				? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
+				: extAvatar
+				? "Usaste un archivo con la extensión " +
+				  extAvatar.slice(1).toUpperCase() +
+				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
+				: datos.tamano > 1100000
+				? "El archivo es de " +
+				  parseInt(datos.tamano / 10000) / 100 +
+				  " MB. Necesitamos que no supere 1 MB"
+				: "";
+		}
+		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
@@ -148,7 +162,7 @@ module.exports = {
 				// Verifica si ya se envió un mail en el día
 				let ahora = compartidas.fechaTexto(compartidas.ahora());
 				let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
-				if (ahora == fecha) 
+				if (ahora == fecha)
 					errores = {
 						email:
 							"El mail fue enviado el " +
