@@ -276,15 +276,6 @@ module.exports = {
 		// Fin
 		return res.render("MI-Cartel", {informacion});
 	},
-	autRevisionForm: (req, res) => {
-		let informacion = {
-			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
-			colorFondo: "gris",
-		};
-		// Fin
-		return res.render("MI-Cartel", {informacion});
-	},
 	// Edición
 	edicionForm: async (req, res) => {
 		const tema = "usuario";
@@ -298,20 +289,6 @@ module.exports = {
 	},
 	edicionGuardar: (req, res) => {
 		res.send("/edicion/guardar");
-	},
-
-	// Revisión
-	tablero:(req,res)=>{
-		// Tema y Código
-		const tema = "revisarUsuario";
-		const codigo = "tableroControl";
-		let userID = req.session.usuario.id;
-		// Ir a la vista
-		return res.render("GN0-Estructura", {
-			tema,
-			codigo,
-			titulo: "Usuarios - Tablero de Control",
-		});
 	},
 
 	// Login
