@@ -1,0 +1,72 @@
+<div id="tapar-el-fondo"></div>
+<form action="<%= link %>" method="POST" enctype="multipart/form-data">
+	<h1><%= titulo %></h1>
+	<!--Número de Documento-->
+	<section class="label-input flex-row">
+		<label for="numero_documento">Número de Documento</label>
+		<div class="input-error">
+			<input type="text" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.numero_documento ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.numero_documento ? errores.numero_documento : "" %></span>
+			</i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || !errores.numero_documento) ? 'ocultar' : '' %>"></i>
+		</div>
+	</section>
+	<!--Expedido en qué país-->
+	<section class="label-input flex-row">
+		<label for="pais">Expedido en qué país</label>
+		<div class="input-error">
+			<select name="pais_id" class="input">
+				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
+				<optgroup label="América (habla hispana)">
+					<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
+						<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<%= pais.nombre %>
+						</option>
+					<% } %>	
+				</optgroup>
+				<optgroup label="Europa/África (habla hispana)">
+					<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
+						<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<%= pais.nombre %>
+						</option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Países de habla no hispana">
+					<% for (let pais of hablaNoHispana) { %>
+						<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<%= pais.nombre %>
+						</option>
+					<% } %>
+				</optgroup>
+			</select>
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
+			</i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || !errores.pais_id) ? 'ocultar' : '' %>"></i>
+		</div>
+	</section>
+	<!--Imagen del documento-->
+	<section class="label-input flex-row">
+		<label>Imagen del documento</label>
+		<div class="input-error flex-col" id="divImagen">
+			<label for="inputImagen" id="preview">
+				<img src="<%= avatar %>">
+			</label>
+			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
+			<!-- Errores -->
+			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
+				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
+			</i>
+		</div>
+	</section>
+	<!--Flechas-->
+	<section id="flechas" class="flex-row">
+		<!-- Salir -->
+		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
+		<!-- Submit -->
+		<button type="submit" class="<%- errores ? 'inactvo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
+	</section>
+</form>

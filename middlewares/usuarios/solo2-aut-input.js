@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
 	if (!usuario.rol_usuario.aut_input) {
-		let linkUsuarioAutInput = "/usuarios/autorizado-input";
+		let linkResponsab = "/usuarios/responsabilidad";
 		informacion = {
 			mensajes: [
 				"Para ingresar información, se requiere aumentar el nivel de confianza.", 
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
 			],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Ir a la vista anterior"},
-				{nombre: "fa-circle-right", link: linkUsuarioAutInput, titulo: "Solicitar el permiso"},
+				{nombre: "fa-circle-right", link: linkResponsab, titulo: "Solicitar el permiso"},
 			],
 			colorFondo: "gris",
 		};

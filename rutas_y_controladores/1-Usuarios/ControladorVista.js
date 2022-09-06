@@ -191,6 +191,51 @@ module.exports = {
 		// Fin
 		return res.render("MI-Cartel", {informacion});
 	},
+	responsab: async (req, res) => {
+		// Ir a la vista
+		return res.render("GN0-Estructura", {
+			tema: "usuario",
+			codigo: "responsabilidad",
+			titulo: "Responsabilidad con nuestra BD",
+			urlSalir: req.session.urlSinLogin,
+		});
+	},
+	autInputForm: async (req, res) => {
+		let tema = "usuario";
+		let codigo = "autInput";
+		// Variables
+		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+		let errores = req.session.errores ? req.session.errores : false;
+		// Generar la info para la vista
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
+		let avatar = dataEntry.avatar
+			? "/imagenes/9-Provisorio/" + dataEntry.avatar
+			: "/imagenes/0-Base/dni.jpg";
+		// Ir a la vista
+		return res.render("GN0-Estructura", {
+			tema,
+			codigo,
+			titulo: "Solicitud p/ABM en nuestra BD",
+			link: req.originalUrl,
+			dataEntry:{},
+			errores,
+			hablaHispana,
+			hablaNoHispana,
+			avatar,
+			urlSalir: req.session.urlSinLogin,
+		});
+	},
+	autRevisionForm: (req, res) => {
+		let informacion = {
+			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
+			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
+			colorFondo: "gris",
+		};
+		// Fin
+		return res.render("MI-Cartel", {informacion});
+	},
 	// Edición
 	edicionForm: async (req, res) => {
 		let tema = "usuario";
@@ -210,24 +255,6 @@ module.exports = {
 		req.session.destroy();
 		guardar(ruta_nombre, nuevaBD);
 		res.redirect("/");
-	},
-	// Actualización de roles
-	autInputForm: (req, res) => {
-		let informacion = {
-			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
-		};
-		// Fin
-		return res.render("MI-Cartel", {informacion});
-	},
-	autRevisionForm: (req, res) => {
-		let informacion = {
-			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
-			iconos: [variables.vistaAnterior(req.session.urlAnterior)],
-			colorFondo: "gris",
-		};
-		// Fin
-		return res.render("MI-Cartel", {informacion});
 	},
 	// Login
 	loginForm: async (req, res) => {
