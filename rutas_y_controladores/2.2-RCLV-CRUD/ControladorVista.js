@@ -9,7 +9,7 @@ module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Tema y Código
-		let tema = "rclv";
+		const tema = "rclv";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.indexOf("/"));
 		// 2. Variables

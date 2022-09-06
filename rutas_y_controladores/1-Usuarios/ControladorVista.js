@@ -25,7 +25,7 @@ module.exports = {
 	// Circuito de alta de usuario
 	altaMailForm: async (req, res) => {
 		// Tema y código
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = req.path.slice(1);
 		let titulo =
 			codigo == "mail"
@@ -87,7 +87,7 @@ module.exports = {
 		return res.render("MI-Cartel", {informacion});
 	},
 	altaPerennesForm: async (req, res) => {
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = "perennes";
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
@@ -127,7 +127,7 @@ module.exports = {
 		return res.redirect("/usuarios/redireccionar");
 	},
 	altaEditablesForm: async (req, res) => {
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = "editables";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
@@ -210,7 +210,7 @@ module.exports = {
 		});
 	},
 	autInputForm: async (req, res) => {
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = "autInput";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
@@ -287,7 +287,7 @@ module.exports = {
 	},
 	// Edición
 	edicionForm: async (req, res) => {
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = "edicion";
 		res.render("GN0-Estructura", {
 			tema,
@@ -303,7 +303,7 @@ module.exports = {
 	// Revisión
 	tablero:(req,res)=>{
 		// Tema y Código
-		let tema = "revisarUsuario";
+		const tema = "revisarUsuario";
 		let codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Ir a la vista
@@ -317,7 +317,7 @@ module.exports = {
 	// Login
 	loginForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "usuario";
+		const tema = "usuario";
 		let codigo = "login";
 		// Toma el mail desde cookies, si no está en session. Esto sirve para complementar el alta de usuario.
 		if (!req.session.email)

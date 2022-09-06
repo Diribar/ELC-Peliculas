@@ -10,7 +10,7 @@ module.exports = {
 	// Uso general
 	tableroControl: async (req, res) => {
 		// Tema y Código
-		let tema = "revision";
+		const tema = "revisionEnts";
 		let codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
@@ -38,7 +38,7 @@ module.exports = {
 	// Productos
 	prod_Alta: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
+		const tema = "revisionEnts";
 		let url = req.url.slice(1);
 		let codigo = url.slice(0, url.lastIndexOf("/"));
 		// 2. Obtener los datos identificatorios del producto
@@ -84,7 +84,7 @@ module.exports = {
 	},
 	prod_Edicion: async (req, res) => {
 		// 1. Tema y Código
-		const tema = "revision";
+		const tema = "revisionEnts";
 		const codigo = "producto/edicion";
 		// 2. Constantes
 		const entidad = req.query.entidad;
@@ -212,7 +212,7 @@ module.exports = {
 	// RCLV
 	RCLV_Alta: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
+		const tema = "revisionEnts";
 		let codigo = "rclv/alta";
 		// 2. Variables
 		let entidad = req.query.entidad;
@@ -258,7 +258,7 @@ module.exports = {
 	// Links
 	links: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
+		const tema = "revisionEnts";
 		let codigo = "links";
 		// Otras variables
 		let includes;

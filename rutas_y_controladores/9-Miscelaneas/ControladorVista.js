@@ -4,7 +4,7 @@
 module.exports = {
 	// Vistas de vistas - Institucional
 	home: (req, res) => {
-		let tema = "miscelaneas";
+		const tema = "miscelaneas";
 		let codigo = "inicio";
 		return res.render("IN0-Estructura", {
 			tema,
@@ -13,7 +13,7 @@ module.exports = {
 		});
 	},
 	quienesSomos: (req, res) => {
-		let tema = "miscelaneas";
+		const tema = "miscelaneas";
 		let codigo = "quienes-somos";
 		return res.render("GN0-Estructura", {
 			tema,

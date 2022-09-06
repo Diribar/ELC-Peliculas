@@ -12,6 +12,6 @@
 <% cond.propio = cond.creadoPropio || cond.provPropio %>
 <% cond.ajeno = (cond.creado&&link.creado_por_id != userID) || (cond.provisorio&&link.sugerido_por_id != userID) %>
 <% cond.rud = tema == "links_crud" %>
-<% cond.revision = tema == "revision" %>
+<% cond.revision = tema == "revisionEnts" %>
 <% cond.inactivos = cond.rud&&link.status_registro.gr_inactivos || cond.revision&&cond.inactivo %>
 

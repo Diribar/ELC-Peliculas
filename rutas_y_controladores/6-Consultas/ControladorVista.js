@@ -58,7 +58,7 @@ module.exports = {
 	},
 
 	filtros: (req, res) => {
-		let tema = "productos";
+		const tema = "productos";
 		return res.send("Filtros");
 		//	let user_entry = req.query;
 		//	let results = [];

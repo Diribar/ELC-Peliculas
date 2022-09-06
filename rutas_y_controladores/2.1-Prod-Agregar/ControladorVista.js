@@ -15,7 +15,7 @@ const validar = require("./FN-Validar");
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
@@ -43,7 +43,7 @@ module.exports = {
 	},
 	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "desambiguar");
@@ -93,7 +93,7 @@ module.exports = {
 	},
 	tipoProd_Form: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "tipoProducto");
@@ -131,7 +131,7 @@ module.exports = {
 	},
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "copiarFA");
@@ -189,7 +189,7 @@ module.exports = {
 	},
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "datosDuros";
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
@@ -324,7 +324,7 @@ module.exports = {
 	},
 	datosPersForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "datosPers";
 		let userID = req.session.usuario.id;
 		// 2. Eliminar session y cookie posteriores, si existen
@@ -373,7 +373,7 @@ module.exports = {
 	},
 	confirmaForm: (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "confirma";
 		let maximo, indice;
 		// 2. Si se perdió la info anterior, volver a esa instancia
@@ -456,7 +456,7 @@ module.exports = {
 	},
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
+		const tema = "prod_agregar";
 		let codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
 		let entidad = req.query.entidad;
