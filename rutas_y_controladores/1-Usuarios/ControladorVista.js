@@ -26,7 +26,7 @@ module.exports = {
 	altaMailForm: async (req, res) => {
 		// Tema y código
 		const tema = "usuario";
-		let codigo = req.path.slice(1);
+		const codigo = req.path.slice(1);
 		let titulo =
 			codigo == "mail"
 				? "Registro de Mail"
@@ -81,14 +81,14 @@ module.exports = {
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
-		let codigo = req.path.slice(1);
+		const codigo = req.path.slice(1);
 		let informacion = procesos.cartelInformacion(codigo);
 		// Redireccionar
 		return res.render("MI-Cartel", {informacion});
 	},
 	altaPerennesForm: async (req, res) => {
 		const tema = "usuario";
-		let codigo = "perennes";
+		const codigo = "perennes";
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		let errores = req.session.errores ? req.session.errores : "";
@@ -128,7 +128,7 @@ module.exports = {
 	},
 	altaEditablesForm: async (req, res) => {
 		const tema = "usuario";
-		let codigo = "editables";
+		const codigo = "editables";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
@@ -211,7 +211,7 @@ module.exports = {
 	},
 	autInputForm: async (req, res) => {
 		const tema = "usuario";
-		let codigo = "autInput";
+		const codigo = "autInput";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		// Generar la info para la vista
@@ -288,7 +288,7 @@ module.exports = {
 	// Edición
 	edicionForm: async (req, res) => {
 		const tema = "usuario";
-		let codigo = "edicion";
+		const codigo = "edicion";
 		res.render("GN0-Estructura", {
 			tema,
 			codigo,
@@ -304,7 +304,7 @@ module.exports = {
 	tablero:(req,res)=>{
 		// Tema y Código
 		const tema = "revisarUsuario";
-		let codigo = "tableroControl";
+		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Ir a la vista
 		return res.render("GN0-Estructura", {
@@ -318,7 +318,7 @@ module.exports = {
 	loginForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "usuario";
-		let codigo = "login";
+		const codigo = "login";
 		// Toma el mail desde cookies, si no está en session. Esto sirve para complementar el alta de usuario.
 		if (!req.session.email)
 			req.session.email = req.cookies && req.cookies.email ? req.cookies.email : undefined;
@@ -416,7 +416,7 @@ module.exports = {
 		// Borra los errores
 		req.session.errores = "";
 		// Datos para la vista
-		let codigo = req.path.slice(1);
+		const codigo = req.path.slice(1);
 		let informacion = procesos.cartelInformacion(codigo);
 		// Redireccionar
 		return res.render("MI-Cartel", {informacion});

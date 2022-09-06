@@ -5,7 +5,7 @@ module.exports = {
 	// Vistas de vistas - Institucional
 	home: (req, res) => {
 		const tema = "miscelaneas";
-		let codigo = "inicio";
+		const codigo = "inicio";
 		return res.render("IN0-Estructura", {
 			tema,
 			codigo,
@@ -14,7 +14,7 @@ module.exports = {
 	},
 	quienesSomos: (req, res) => {
 		const tema = "miscelaneas";
-		let codigo = "quienes-somos";
+		const codigo = "quienes-somos";
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,

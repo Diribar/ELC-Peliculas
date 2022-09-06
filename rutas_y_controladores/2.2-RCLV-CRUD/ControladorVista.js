@@ -11,7 +11,7 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "rclv";
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.indexOf("/"));
+		const codigo = url.slice(0, url.indexOf("/"));
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let meses = await BD_genericas.obtenerTodos("meses", "id");
@@ -102,7 +102,7 @@ module.exports = {
 		for (let campo in datos) if (!camposUtiles.includes(campo)) delete datos[campo];
 		// Preparar la información a guardar
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.indexOf("/"));
+		const codigo = url.slice(0, url.indexOf("/"));
 		// Guardar los cambios del RCLV
 		if (codigo == "agregar") {
 			id = await compartidas.crear_registro(entidad, datos, userID);
