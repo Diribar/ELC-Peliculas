@@ -134,9 +134,8 @@ module.exports = {
 			"status_registro"
 		);
 		// Verifica si el usuario existe en la BD
-		if (!usuario) {
-			errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
-		} else {
+		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
+		else {
 			// Verifica si la dirección de mail fue validada
 			let fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
 			if (!usuario.status_registro.mail_validado) {
