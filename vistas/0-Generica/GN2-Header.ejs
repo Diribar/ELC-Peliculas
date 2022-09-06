@@ -21,7 +21,7 @@
 			</a>
 		</div>
 		<!-- Revisar Entidades -->
-		<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_prod) { %>
+		<% if (locals.usuario && locals.usuario.rol_usuario.revisor_ents) { %>
 			<div class="grupos">
 				<a href="/revision/tablero-de-control" tabindex="-1">
 					<div id="crear-prod-icono" class="scale" title="Revisar Entidades">
@@ -32,9 +32,9 @@
 			</div>
 		<% } %>
 		<!-- Revisar Usuarios -->
-		<% if (locals.usuario && locals.usuario.rol_usuario.aut_gestion_us) { %>
+		<% if (locals.usuario && locals.usuario.rol_usuario.revisor_us) { %>
 			<div class="grupos">
-				<a href="/usuarios/tablero-de-control" tabindex="-1">
+				<a href="/revision/usuarios/tablero-de-control" tabindex="-1">
 					<i class="fa-solid fa-user-check scale iconos revision" title="Revisar Usuarios"></i>
 				</a>
 			</div>

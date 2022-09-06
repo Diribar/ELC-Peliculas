@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 	if (!usuario) return res.redirect("/usuarios/login");
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
-	if (!usuario.rol_usuario.aut_gestion_us) {
+	if (!usuario.rol_usuario.revisor_us) {
 		let linkUsuarioAutProductos = "/usuarios/autorizado-revision";
 		informacion = {
 			mensajes: ["Se requiere un permiso especial para acceder a esta vista."],

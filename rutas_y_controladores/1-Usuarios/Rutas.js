@@ -48,7 +48,4 @@ router.get("/logout", soloUsuarios, vista.logout);
 router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
 router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
 
-// Revisión
-router.get("/tablero-de-control", soloGestionUs, vista.tablero);
-
 module.exports = router;
