@@ -11,7 +11,7 @@ module.exports = {
 	// Revisión
 	tableroControl:(req,res)=>{
 		// Tema y Código
-		const tema = "revisarUsuario";
+		const tema = "revisionUs";
 		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Ir a la vista
