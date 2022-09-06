@@ -11,7 +11,7 @@
 				<span class="mensajeError"><%- errores.numero_documento ? errores.numero_documento : "" %></span>
 			</i>
 			<!-- OK -->
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || !errores.numero_documento) ? 'ocultar' : '' %>"></i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || errores.numero_documento) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Expedido en qué país-->
@@ -47,7 +47,7 @@
 				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
 			</i>
 			<!-- OK -->
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || !errores.pais_id) ? 'ocultar' : '' %>"></i>
+			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || errores.pais_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Imagen del documento-->
@@ -63,7 +63,7 @@
 				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 			</i>
 		<!-- OK -->
-		<i class="fa-solid fa-circle-check <%- (!dataEntry.avatar || !errores.avatar) ? 'ocultar' : '' %>"></i>
+		<i class="fa-solid fa-circle-check <%- (!dataEntry.avatar || errores.avatar) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Flechas-->

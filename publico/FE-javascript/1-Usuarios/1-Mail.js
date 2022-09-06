@@ -3,28 +3,59 @@ window.addEventListener("load", () => {
 	// Variables generales
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let input = document.querySelector(".input-error .input");
-	let iconoError = document.querySelector(".input-error .fa-circle-xmark");
-	let iconoOK = document.querySelector(".input-error .fa-circle-check");
-	let mensajes = document.querySelector(".input-error .mensajeError");
+	let email = document.querySelector(".input-error .input[name='email']");
+	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
+	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
+	let mensajes = document.querySelectorAll(".input-error .mensajeError");
+
+	// Funciones -----------------------------
+	let mostrarIconos = (mensaje, i) => {
+		mensajes[i].innerHTML = mensaje;
+		if (mensaje) {
+			iconosError[i].classList.remove("ocultar");
+			iconosOK[i].classList.add("ocultar");
+		} else {
+			iconosError[i].classList.add("ocultar");
+			iconosOK[i].classList.remove("ocultar");
+		}
+		// Botón Submit
+		botonSubmit();
+		// Fin
+		return;
+	};
+	let botonSubmit = () => {
+		let OK = Array.from(iconosOK)
+			.map((n) => n.className)
+			.every((n) => !n.includes("ocultar"));
+		// < iconosOK.length;
+		let error = Array.from(iconosError)
+			.map((n) => n.className)
+			.every((n) => n.includes("ocultar"));
+		OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
+	};
 
 	// Acciones si se realizan cambios
-	input.addEventListener("input", async () => {
-		let campo = input.name;
-		let valor = input.value;
+	email.addEventListener("input", async () => {
+		let campo = email.name;
+		let valor = email.value;
 		let errores = await fetch("/usuarios/api/validar-mail/?" + campo + "=" + valor).then((n) => n.json());
 		let mensaje = errores[campo];
-		mensajes.innerHTML = mensaje;
-		if (mensaje) {
-			iconoError.classList.remove("ocultar");
-			iconoOK.classList.add("ocultar");
-			button.classList.add("inactivo");
-		} else {
-			iconoError.classList.add("ocultar");
-			iconoOK.classList.remove("ocultar");
-			button.classList.remove("inactivo");
-		}
+		mostrarIconos(mensaje, 0);
 	});
+	let numero_documento = document.querySelector(".input-error .input#numero_documento");
+	let pais_id = document.querySelector(".input-error .input#pais_id");
+	if (numero_documento && pais_id) {
+		numero_documento.addEventListener("input", () => {
+			// Impide los caracteres que no son válidos
+			numero_documento.value = numero_documento.value.toUpperCase().replace(/[^A-Z\d]/g, "");
+			let mensaje = !numero_documento.value ? "Necesitamos que completes este campo" : "";
+			mostrarIconos(mensaje, 1);
+		});
+		pais_id.addEventListener("input", () => {
+			let mensaje = !pais_id.value ? "Necesitamos que elijas un país" : "";
+			mostrarIconos(mensaje, 2);
+		});
+	}
 
 	// Submit
 	form.addEventListener("submit", (e) => {
@@ -33,6 +64,5 @@ window.addEventListener("load", () => {
 	});
 
 	// Start-up: anular 'submit' si hay algún error
-	if (!iconoError.classList.contains("ocultar")) button.classList.add("inactivo");
-
+	botonSubmit();
 });

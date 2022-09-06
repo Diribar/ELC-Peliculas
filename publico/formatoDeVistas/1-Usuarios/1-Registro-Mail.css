@@ -1,2 +1,3 @@
 #cuerpo form .label-input {justify-content: center;}
 #cuerpo form .input {width: 260px;}
+#cuerpo form .input[name="numero_documento"], #cuerpo form .input[name="pais_id"] {width: 160px;}
