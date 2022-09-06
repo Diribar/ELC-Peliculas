@@ -1,16 +1,16 @@
 <!-- Uso compartido -->
 <link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-Revision.css">
-<script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
+<script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
 
 <!-- Específicos para el tablero -->
 <% if (codigo == "tableroControl") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/TableroControl.css">
-	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
+	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/TableroControl.css">
+	<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 <% } else { %>
 	<!-- General para vistas distintas al tablero -->
-	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
+	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Cartel.css">
 	<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-MotivosRechazar.css">
-	<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
+	<script src="/FE-javascript/0-Compartido/Timer.js"></script>
 	<!-- Específicos para Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
 		<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/1-Prod-Alta.css">
@@ -26,18 +26,18 @@
 		<% } %>
 	<!-- Específicos para RCLV-Altas -->
 	<% } else if (codigo == "rclv/alta") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/RCLV.css">
-		<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
+		<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RCLV.css">
+		<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 		<script src="/FE-javascript/2.0-CRUD/2-RCLV.js"></script>
 
 	<!-- Específicos para Links -->
 	<% } else if (codigo == "links") { %>
 		<!-- Uso compartido -->
-		<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Links.css">
-		<script src="/FE-javascript/0-Uso-Compartido/Links-PeliTrailer.js"></script>
-		<script src="/FE-javascript/0-Uso-Compartido/Links-ActivosInactivos.js"></script>
-		<script src="/FE-javascript/0-Uso-Compartido/Links-Eliminar.js"></script>
-		<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
+		<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Links.css">
+		<script src="/FE-javascript/0-Compartido/Links-PeliTrailer.js"></script>
+		<script src="/FE-javascript/0-Compartido/Links-ActivosInactivos.js"></script>
+		<script src="/FE-javascript/0-Compartido/Links-Eliminar.js"></script>
+		<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 		<!-- Específico -->
 		<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/3-Links.css">
 		<script src="/FE-javascript/3-RevisionEnts/3-Links1-Altas.js"></script>
