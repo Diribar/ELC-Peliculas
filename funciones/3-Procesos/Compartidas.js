@@ -200,9 +200,7 @@ module.exports = {
 		return fecha;
 	},
 	fechaHorarioTexto: (horario) => {
-		console.log(horario,!!horario);
 		horario = horario ? new Date(horario) : funcionAhora();
-		console.log(horario);
 		return (
 			horario.getDate() +
 			"/" +
