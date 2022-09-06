@@ -39,7 +39,7 @@ let tablero_obtenerPermInput = async (userID) => {
 		rol_usuario_id: roles_no_aut_input,
 	};
 	// let includes = [];
-	let usuarios = await BD_especificas.obtenerUsuarioDistintoIdMasFiltros(userID,campos);
+	let usuarios = await BD_especificas.obtenerUsuarioDistintoIdMasFiltros(userID, campos);
 	// Fin
 	return usuarios;
 };
