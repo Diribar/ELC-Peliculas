@@ -299,11 +299,19 @@ module.exports = {
 	edicionGuardar: (req, res) => {
 		res.send("/edicion/guardar");
 	},
-	// Baja
-	baja: (req, res) => {
-		req.session.destroy();
-		guardar(ruta_nombre, nuevaBD);
-		res.redirect("/");
+
+	// Revisión
+	tablero:(req,res)=>{
+		// Tema y Código
+		let tema = "revisarUsuario";
+		let codigo = "tableroControl";
+		let userID = req.session.usuario.id;
+		// Ir a la vista
+		return res.render("GN0-Estructura", {
+			tema,
+			codigo,
+			titulo: "Usuarios - Tablero de Control",
+		});
 	},
 
 	// Login

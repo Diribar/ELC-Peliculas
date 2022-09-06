@@ -1,9 +1,13 @@
 <section id="cuerpo">
+	<!-- Alta -->
 	<%- (codigo == "mail" || codigo == "olvido-contrasena") ? include("US1-Registro-Mail") : "" %>
 	<%- codigo == "perennes" ? include("US2-Registro-Perennes") : "" %>
 	<%- codigo == "editables" ? include("US3-Registro-Editables") : "" %>
 	<%- codigo == "responsabilidad" ? include("US4-1Responsab") : "" %>
 	<%- codigo == "autInput" ? include("US4-2Registro-AutInput") : "" %>
-	<%- codigo == "edicion" ? include("US8-Edicion") : "" %>
+	<%- codigo == "edicion" ? include("US5-Edicion") : "" %>
+	<!-- Revisar -->
+	<%- codigo == "tableroControl" ? include("US6-Tablero-Control") : "" %>
+	<!-- Login -->
 	<%- codigo == "login" ? include("US9-Login") : "" %>
 </section>
