@@ -18,7 +18,7 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Usuarios - Tablero de Control",
+			titulo: "Revisión - Tablero de Usuarios",
 		});
 	},
 
