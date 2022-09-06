@@ -8,7 +8,7 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const soloGestionUs = require("../../middlewares/usuarios/solo4-gestion-us");
+const soloGestionUs = require("../../middlewares/usuarios/solo4-revisor-us");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
