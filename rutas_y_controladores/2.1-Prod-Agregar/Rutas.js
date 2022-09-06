@@ -6,12 +6,14 @@ const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
 
 //************************ Middlewares ******************************
+const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
 const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
 const aptoDE = require("../../middlewares/captura/aptoDE");
 const prodYaEnBD = require("../../middlewares/producto/productoYaEnBD");
-const todos = [soloAutInput, aptoDE, prodYaEnBD];
 const autorizadoFA = require("../../middlewares/usuarios/autorizadoFA");
-const todosFA = [soloAutInput, aptoDE, autorizadoFA];
+const algunos = [soloUsuarios, soloAutInput, aptoDE];
+const todos = [...algunos, prodYaEnBD];
+const todosFA = [...algunos, autorizadoFA];
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 const multer = require("../../middlewares/varios/multer");
@@ -34,12 +36,12 @@ router.get("/api/obtener-subcategorias", API.obtenerSubcategorias);
 router.get("/api/guardar-datos-pers/", API.guardarDatosPers);
 
 // VISTAS
-router.get("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveForm);
-router.post("/palabras-clave", soloAutInput, aptoDE, vista.palabrasClaveGuardar);
-router.get("/desambiguar", soloAutInput, aptoDE, vista.desambiguarForm);
-router.post("/desambiguar", soloAutInput, aptoDE, vista.desambiguarGuardar);
-router.get("/tipo-producto", soloAutInput, aptoDE, autorizadoFA, vista.tipoProd_Form);
-router.post("/tipo-producto-dd", soloAutInput, aptoDE, vista.tipoProd_Guardar);
+router.get("/palabras-clave", ...algunos, vista.palabrasClaveForm);
+router.post("/palabras-clave", ...algunos, vista.palabrasClaveGuardar);
+router.get("/desambiguar", ...algunos, vista.desambiguarForm);
+router.post("/desambiguar", ...algunos, vista.desambiguarGuardar);
+router.get("/tipo-producto", ...algunos, autorizadoFA, vista.tipoProd_Form);
+router.post("/tipo-producto-dd", ...algunos, vista.tipoProd_Guardar);
 router.post("/tipo-producto-fa", ...todosFA, vista.copiarFA_Form);
 router.get("/copiar-fa", ...todosFA, vista.copiarFA_Form);
 router.post("/copiar-fa", ...todosFA, vista.copiarFA_Guardar);
@@ -51,7 +53,7 @@ router.post("/datos-personalizados", ...todos, vista.datosPersGuardar);
 router.get("/confirma", ...todos, vista.confirmaForm);
 router.post("/confirma", ...todos, vista.confirmaGuardar);
 // Fin de "prodYaEnBD"
-router.get("/terminaste", soloAutInput, entidad, id, vista.terminasteForm);
+router.get("/terminaste", ...algunos, entidad, id, vista.terminasteForm);
 
 // Fin
 module.exports = router;

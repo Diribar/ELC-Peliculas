@@ -156,7 +156,7 @@ module.exports = {
 		let errores = await validar.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) compartidas.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
@@ -197,7 +197,7 @@ module.exports = {
 			tema: "usuario",
 			codigo: "responsabilidad",
 			titulo: "Responsabilidad con nuestra BD",
-			urlSalir: req.session.urlSinLogin,
+			urlSalir: req.session.urlSinAutInput,
 		});
 	},
 	autInputForm: async (req, res) => {
@@ -217,9 +217,9 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Solicitud p/ABM en nuestra BD",
+			titulo: "Solicitud de ABM en nuestra BD",
 			link: req.originalUrl,
-			dataEntry:{},
+			dataEntry: {},
 			errores,
 			hablaHispana,
 			hablaNoHispana,
@@ -227,6 +227,49 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
+	autInputGuardar: async (req, res) => {
+		let usuario = req.session.usuario;
+		// Averiguar si hay errores de validación
+		console.log(req.body);
+		let errores = await validar.autInput({...req.body, avatar: req.file.filename});
+		if (errores.hay) {
+			console.log(errores);
+			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
+			req.session.dataEntry = req.body;
+			req.session.errores = errores;
+			return res.redirect("/usuarios/autorizado-input");
+		}
+		// Actualiza el usuario
+		let datos = {
+			numero_documento: req.body.pais_id + "-" + req.body.numero_documento,
+			avatar_documento: req.file.filename,
+			fecha_feedback_revisores: compartidas.ahora(),
+		};
+		req.session.usuario = await procesos.actualizaElUsuario("documento", "nada", usuario, datos);
+		// Mueve el archivo a la carpeta definitiva
+		compartidas.moverImagen(datos.avatar_documento, "9-Provisorio", "2-DocsUsuarios");
+		// Redirecciona
+		return res.redirect("/usuarios/dni-recibido");
+	},
+	documentoRecibido: (req, res) => {
+		// Variables
+		let usuario = req.session.usuario;
+		let letra = usuario.sexo_id == "M" ? "a " : "o ";
+		let informacion = {
+			mensajes: [
+				"Estimad" + letra + usuario.apodo + ", gracias por completar tu solicitud.",
+				"Queda en manos del equipo de Revisores validar tus datos.",
+				"Luego de la validación, recibirás un mail de feedback.",
+				"En caso de estar aprobado, podrás ingresar información.",
+			],
+			iconos: [variables.vistaEntendido(req.session.urlSinAutInput)],
+			titulo: "Solicitud de ABM exitosa",
+			colorFondo: "verde",
+		};
+		// Fin
+		return res.render("MI-Cartel", {informacion});
+	},
+
 	autRevisionForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],

@@ -200,6 +200,7 @@ module.exports = {
 		return fecha;
 	},
 	fechaHorarioTexto: (horario) => {
+		horario = horario ? new Date(horario) : funcionAhora();
 		return (
 			horario.getDate() +
 			"/" +
@@ -255,10 +256,10 @@ module.exports = {
 	// Varios
 	nombreAvatar: (prodOriginal, prodEditado) => {
 		return prodEditado.avatar
-			? "/imagenes/3-ProdRevisar/" + prodEditado.avatar
+			? "/imagenes/4-ProdRevisar/" + prodEditado.avatar
 			: prodOriginal.avatar
 			? !prodOriginal.avatar.startsWith("http")
-				? "/imagenes/2-Productos/" + prodOriginal.avatar
+				? "/imagenes/3-Productos/" + prodOriginal.avatar
 				: prodOriginal.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 	},

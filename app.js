@@ -33,7 +33,7 @@ app.use(cookies());
 const usuario = require("./middlewares/usuarios/loginConCookie");
 app.use(usuario);
 // Para tener el rastro de los últimos url
-const userLogs = require("./middlewares/varios/userLogs");
+const userLogs = require("./middlewares/usuarios/userLogs");
 app.use(userLogs);
 
 // Para saber el recorrido del proyecto

@@ -14,41 +14,6 @@ module.exports = {
 		return errores;
 	},
 
-	login: (datos) => {
-		// Variables
-		let {email, contrasena} = datos;
-		let errores = {};
-		if (contrasena) var largoContr = largoContrasena(contrasena);
-		// Verificar errores
-		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
-		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
-		errores.hay = Object.values(errores).some((n) => !!n);
-		// Fin
-		return errores;
-	},
-
-	mailContrasena_y_ObtieneUsuario: async function (datos) {
-		// Variables
-		let usuario;
-		// Averiguar los errores
-		let errores = await this.login(datos);
-		// Acciones si no hay errores
-		if (!errores.hay) {
-			// Si no hay error => averigua el usuario
-			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
-			// Si existe el usuario => averigua si la contraseña es válida
-			if (usuario) {
-				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
-				// Si la contraseña no es válida => Credenciales Inválidas
-				if (errores.credenciales) errores.hay = true;
-			}
-			// Si el usuario no existe => Credenciales Inválidas
-			else errores = {credenciales: true, hay: true};
-		}
-		// Fin
-		return {errores, usuario};
-	},
-
 	perennes: (datos) => {
 		let errores = {};
 		if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
@@ -102,6 +67,66 @@ module.exports = {
 			: "";
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
+	},
+
+	autInput: (datos) => {
+		let errores = {};
+		if (datos.numero_documento) var longNumero = longitud(datos.apodo, 2, 15);
+		errores.numero_documento = !datos.numero_documento
+			? cartelCampoVacio
+			: longNumero
+			? longNumero
+			: "";
+		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		let extAvatar = extension(datos.avatar);
+		errores.avatar = !datos.avatar
+			? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
+			: extAvatar
+			? "Usaste un archivo con la extensión " +
+			  extAvatar.slice(1).toUpperCase() +
+			  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
+			: datos.tamano > 1100000
+			? "El archivo es de " +
+			  parseInt(datos.tamano / 10000) / 100 +
+			  " MB. Necesitamos que no supere 1 MB"
+			: "";
+		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores;
+	},
+
+	login: (datos) => {
+		// Variables
+		let {email, contrasena} = datos;
+		let errores = {};
+		if (contrasena) var largoContr = largoContrasena(contrasena);
+		// Verificar errores
+		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
+		errores.contrasena = !contrasena ? cartelContrasenaVacia : largoContr ? largoContr : "";
+		errores.hay = Object.values(errores).some((n) => !!n);
+		// Fin
+		return errores;
+	},
+
+	mailContrasena_y_ObtieneUsuario: async function (datos) {
+		// Variables
+		let usuario;
+		// Averiguar los errores
+		let errores = await this.login(datos);
+		// Acciones si no hay errores
+		if (!errores.hay) {
+			// Si no hay error => averigua el usuario
+			usuario = await BD_especificas.obtenerUsuarioPorMail(datos.email);
+			// Si existe el usuario => averigua si la contraseña es válida
+			if (usuario) {
+				errores.credenciales = !bcryptjs.compareSync(datos.contrasena, usuario.contrasena);
+				// Si la contraseña no es válida => Credenciales Inválidas
+				if (errores.credenciales) errores.hay = true;
+			}
+			// Si el usuario no existe => Credenciales Inválidas
+			else errores = {credenciales: true, hay: true};
+		}
+		// Fin
+		return {errores, usuario};
 	},
 
 	olvidoContrBE: async (email) => {
