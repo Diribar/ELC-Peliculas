@@ -83,11 +83,13 @@ app.use("/rclv", rutaRCLV_CRUD);
 app.use("/links", rutaLinks_CRUD);
 // Demás
 const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-const rutaRevisar = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
+const rutaRevisarUs = require("./rutas_y_controladores/4-RevisionUs/Rutas");
+const rutaRevisarEnts = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
 const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);
-app.use("/revision", rutaRevisar);
+app.use("/revision/usuarios", rutaRevisarUs);
+app.use("/revision", rutaRevisarEnts);
 app.use("/consultas", rutaConsultas);
 app.use("/", rutaMiscelaneas);
 
