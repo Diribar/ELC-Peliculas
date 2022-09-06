@@ -68,7 +68,6 @@ window.addEventListener("load", () => {
 			// Bloquear el 'submit'
 			e.preventDefault();
 			// Continuar
-			console.log("si");
 			startUp();
 			for (let i = 0; i < inputs.length; i++) {
 				mensajes(i)

@@ -23,7 +23,7 @@ module.exports = {
 			: res.redirect("/");
 	},
 	// Circuito de alta de usuario
-	altaMailForm: (req, res) => {
+	altaMailForm: async (req, res) => {
 		// Tema y código
 		let tema = "usuario";
 		let codigo = req.path.slice(1);
@@ -34,16 +34,25 @@ module.exports = {
 				? "Olvido de Contraseña"
 				: "";
 		// Obtener el e-mail de session
-		let email = req.session.email ? req.session.email : "";
+		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
 		let errores = req.session.errores ? req.session.errores : false;
+		// Generar la info para la vista
+		if (errores.documento) {
+			let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+			var hablaHispana = paises.filter((n) => n.idioma == "Spanish");
+			var hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
+		}
+		// Vista
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
 			titulo,
 			link: req.originalUrl,
-			email,
+			dataEntry,
 			errores,
+			hablaHispana,
+			hablaNoHispana,
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
@@ -56,7 +65,7 @@ module.exports = {
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.email = req.body;
+			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect(req.originalUrl);
 		}
@@ -205,10 +214,10 @@ module.exports = {
 		let codigo = "autInput";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
-		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let avatar = dataEntry.avatar
 			? "/imagenes/9-Provisorio/" + dataEntry.avatar
@@ -230,10 +239,8 @@ module.exports = {
 	autInputGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
-		console.log(req.body);
 		let errores = await validar.autInput({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
-			console.log(errores);
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
@@ -269,7 +276,6 @@ module.exports = {
 		// Fin
 		return res.render("MI-Cartel", {informacion});
 	},
-
 	autRevisionForm: (req, res) => {
 		let informacion = {
 			mensajes: ["Vista pendiente de contrucción, prevista para más adelante"],
@@ -299,6 +305,7 @@ module.exports = {
 		guardar(ruta_nombre, nuevaBD);
 		res.redirect("/");
 	},
+
 	// Login
 	loginForm: async (req, res) => {
 		// 1. Tema y Código
@@ -379,14 +386,14 @@ module.exports = {
 	},
 	olvidoContrGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
-		let email = req.body.email;
-		let errores = await validar.registroMail(email);
+		let dataEntry = req.body;
+		let errores = await validar.registroMail(dataEntry.email);
 		let usuario;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
-		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(email);
+		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(dataEntry);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
-			req.session.email = req.body.email;
+			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect(req.originalUrl);
 		}
@@ -398,6 +405,8 @@ module.exports = {
 		});
 		// Guarda el mail en 'session'
 		req.session.email = req.body.email;
+		// Borra los errores
+		req.session.errores = "";
 		// Datos para la vista
 		let codigo = req.path.slice(1);
 		let informacion = procesos.cartelInformacion(codigo);

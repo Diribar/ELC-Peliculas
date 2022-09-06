@@ -4,7 +4,7 @@
 	<!--E-Mail-->
 	<section class="label-input flex-row">
 		<div class="input-error">
-			<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= email %>" autofocus>
+			<input type="text" class="input" name="email" placeholder="Ingresá tu dirección de Correo Electrónico" value="<%= dataEntry.email %>" autofocus>
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark <%- !errores || !errores.email ? 'ocultar' : '' %> ">
 				<span class="mensajeError"><%- (errores && errores.email) ? errores.email : "" %></span>
@@ -13,6 +13,64 @@
 			<i class="fa-solid fa-circle-check <%- !errores || errores.email ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
+	<!--Número de Documento y País-->
+	<% if (errores.documento) { %>
+		<!--Número de Documento-->
+		<section class="label-input flex-row">
+			<label for="numero_documento">
+				Número de<br>
+				Documento
+			</label>
+			<div class="input-error">
+				<input type="text" id="numero_documento" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
+				<!-- Errores -->
+				<i class="fa-solid fa-circle-xmark <%- !errores.numero_documento ? 'ocultar' : '' %>">
+					<span class="mensajeError"><%- errores.numero_documento ? errores.numero_documento : "" %></span>
+				</i>
+				<!-- OK -->
+				<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || errores.numero_documento) ? 'ocultar' : '' %>"></i>
+			</div>
+		</section>
+		<!--Expedido en qué país-->
+		<section class="label-input flex-row">
+			<label for="pais_id">
+				Expedido<br>
+				en qué país
+			</label>
+			<div class="input-error">
+				<select id="pais_id" name="pais_id" class="input">
+					<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
+					<optgroup label="América (habla hispana)">
+						<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
+							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>	
+					</optgroup>
+					<optgroup label="Europa/África (habla hispana)">
+						<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
+							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+					<optgroup label="Países de habla no hispana">
+						<% for (let pais of hablaNoHispana) { %>
+							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+								<%= pais.nombre %>
+							</option>
+						<% } %>
+					</optgroup>
+				</select>
+				<!-- Errores -->
+				<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
+					<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
+				</i>
+				<!-- OK -->
+				<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || errores.pais_id) ? 'ocultar' : '' %>"></i>
+			</div>
+		</section>
+	<% } %>
 	<!--Flechas-->
 	<section id="flechas">
 		<!-- Salir -->

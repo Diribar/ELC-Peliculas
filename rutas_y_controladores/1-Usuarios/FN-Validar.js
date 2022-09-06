@@ -72,11 +72,7 @@ module.exports = {
 	autInput: (datos) => {
 		let errores = {};
 		if (datos.numero_documento) var longNumero = longitud(datos.apodo, 2, 15);
-		errores.numero_documento = !datos.numero_documento
-			? cartelCampoVacio
-			: longNumero
-			? longNumero
-			: "";
+		errores.numero_documento = !datos.numero_documento ? cartelCampoVacio : longNumero ? longNumero : "";
 		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
 		let extAvatar = extension(datos.avatar);
 		errores.avatar = !datos.avatar
@@ -129,31 +125,57 @@ module.exports = {
 		return {errores, usuario};
 	},
 
-	olvidoContrBE: async (email) => {
+	olvidoContrBE: async (datos) => {
 		// Variables
 		let errores = {};
-		let usuario = await BD_genericas.obtenerPorCamposConInclude("usuarios", {email}, "status_registro");
-		if (usuario) var fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
+		let usuario = await BD_genericas.obtenerPorCamposConInclude(
+			"usuarios",
+			{email: datos.email},
+			"status_registro"
+		);
 		// Verifica si el usuario existe en la BD
 		if (!usuario) errores = {email: "Esta dirección de email no figura en nuestra base de datos."};
-		// Verifica si la dirección de mail fue validada
-		else if (!usuario.status_registro.mail_validado)
-			errores = {
-				email:
-					"Esta dirección de email no está validada. Ya se envió un mail con la contraseña el día " +
-					fechaHorario,
-			};
-		// Verifica si ya se envió un mail en el día
 		else {
-			let ahora = compartidas.fechaTexto(compartidas.ahora());
-			let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
-			if (ahora == fecha)
+			// Verifica si la dirección de mail fue validada
+			let fechaHorario = compartidas.fechaHorarioTexto(usuario.fecha_contrasena);
+			if (!usuario.status_registro.mail_validado) {
 				errores = {
-					email: "El mail fue enviado el " + fechaHorario + ", y se permite un sólo envío por día.",
+					email:
+						"Esta dirección de email no está validada. Ya se envió un mail con la contraseña el día " +
+						fechaHorario,
 				};
+			} else {
+				// Verifica si ya se envió un mail en el día
+				let ahora = compartidas.fechaTexto(compartidas.ahora());
+				let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
+				if (ahora == fecha) 
+					errores = {
+						email:
+							"El mail fue enviado el " +
+							fechaHorario +
+							", y se permite un sólo envío por día.",
+					};
+				// Verifica si tiene status de 'documento'
+				else if (usuario.status_registro.documento) {
+					let numero_documento = usuario.numero_documento.slice(3);
+					let pais_id = usuario.numero_documento.slice(0, 2);
+					// Verifica los posibles errores
+					errores.numero_documento = !datos.numero_documento
+						? cartelCampoVacio
+						: datos.numero_documento != numero_documento
+						? "El número de documento no coincide con el de nuestra Base de Datos"
+						: "";
+					errores.pais_id = !datos.pais_id
+						? cartelElejiUnValor
+						: datos.pais_id != pais_id
+						? "El país no coincide con el de nuestra Base de Datos"
+						: "";
+					errores.documento = !!errores.numero_documento || !!errores.pais_id;
+				}
+			}
 		}
-		errores.hay = !!errores.email;
 		// Fin
+		errores.hay = Object.values(errores).some((n) => !!n);
 		return [errores, usuario];
 	},
 };

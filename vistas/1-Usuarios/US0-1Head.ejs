@@ -1,9 +1,5 @@
 <link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/0-Usuarios.css">
-<% if (codigo == "login") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/8-Login.css">
-	<script src="/FE-javascript/1-Usuarios/ojitoContrasena.js"></script>
-	<script src="/FE-javascript/1-Usuarios/8-Login.js"></script>
-<% } else if (codigo == "mail" || codigo == "olvido-contrasena") { %>
+<% if (codigo == "mail" || codigo == "olvido-contrasena") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-Registro-Mail.css">
 	<script src="/FE-javascript/1-Usuarios/1-Mail.js"></script>
 <% } else if (codigo == "perennes") { %>
@@ -19,4 +15,8 @@
 	<script src="/FE-javascript/0-Uso-Compartido/Mostrar-imagen.js"></script>
 	<script src="/FE-javascript/1-Usuarios/4-Aut_Input.js"></script>
 <% } else if (codigo == "detalle") { %>
+<% } else if (codigo == "login") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/8-Login.css">
+	<script src="/FE-javascript/1-Usuarios/ojitoContrasena.js"></script>
+	<script src="/FE-javascript/1-Usuarios/8-Login.js"></script>
 <% } %>
