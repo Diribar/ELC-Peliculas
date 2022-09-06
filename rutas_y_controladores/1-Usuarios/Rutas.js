@@ -16,6 +16,7 @@ router.get("/api/validar-login", API.validarLogin);
 router.get("/api/validar-mail", API.validarMail);
 router.get("/api/validar-perennes", API.validarPerennes);
 router.get("/api/validar-editables", API.validarEditables);
+router.get("/api/validar-autInput", API.validarAutInput);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
@@ -28,6 +29,9 @@ router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.alt
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);
 router.get("/responsabilidad", soloUsuarios, vista.responsab);
 router.get("/autorizado-input", soloUsuarios, vista.autInputForm);
+router.post("/autorizado-input", soloUsuarios, multer.single("avatar"), vista.autInputGuardar);
+router.get("/documento-recibido", soloUsuarios, vista.documentoRecibido);
+
 router.get("/revisor-entidades", soloUsuarios, vista.autRevisionForm);
 router.get("/revisor-usuarios", soloUsuarios, vista.autRevisionForm);
 

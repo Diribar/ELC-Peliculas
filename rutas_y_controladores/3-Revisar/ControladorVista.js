@@ -52,7 +52,7 @@ module.exports = {
 		// 5. Obtener avatar original
 		let avatar = prodOriginal.avatar;
 		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/3-ProdRevisar/" : "") + avatar
+			? (!avatar.startsWith("http") ? "/imagenes/4-ProdRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -166,11 +166,11 @@ module.exports = {
 				original: prodOriginal.avatar
 					? (!prodOriginal.avatar.startsWith("http")
 							? prodOriginal.status_registro.gr_creado
-								? "/imagenes/3-ProdRevisar/"
-								: "/imagenes/2-Productos/"
+								? "/imagenes/4-ProdRevisar/"
+								: "/imagenes/3-Productos/"
 							: "") + prodOriginal.avatar
 					: "/imagenes/8-Agregar/IM.jpg",
-				edicion: "/imagenes/3-ProdRevisar/" + prodEditado.avatar_archivo,
+				edicion: "/imagenes/4-ProdRevisar/" + prodEditado.avatar_archivo,
 				mostrarOriginal: !!prodEditado.avatar,
 			};
 			motivos = motivos.filter((m) => m.avatar);
@@ -180,7 +180,7 @@ module.exports = {
 			// Obtener el avatar
 			avatar = prodOriginal.avatar;
 			avatar = avatar
-				? (!avatar.startsWith("http") ? "/imagenes/2-Productos/" : "") + avatar
+				? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
@@ -288,7 +288,7 @@ module.exports = {
 		// Información para la vista
 		let avatar = producto.avatar;
 		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/2-Productos/" : "") + avatar
+			? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
 		let linksTipos = await BD_genericas.obtenerTodos("links_tipos", "id");

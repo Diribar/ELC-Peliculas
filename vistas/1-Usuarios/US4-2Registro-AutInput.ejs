@@ -2,22 +2,23 @@
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<h1><%= titulo %></h1>
 	<!--Número de Documento-->
-	<section class="label-input flex-row">
+	<section class="label-input flex-row">	
 		<label for="numero_documento">Número de Documento</label>
 		<div class="input-error">
-			<input type="text" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
+			<input type="text" id="numero_documento" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
 			<!-- Errores -->
 			<i class="fa-solid fa-circle-xmark <%- !errores.numero_documento ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.numero_documento ? errores.numero_documento : "" %></span>
 			</i>
+			<!-- OK -->
 			<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || !errores.numero_documento) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Expedido en qué país-->
 	<section class="label-input flex-row">
-		<label for="pais">Expedido en qué país</label>
+		<label for="pais_id">Expedido en qué país</label>
 		<div class="input-error">
-			<select name="pais_id" class="input">
+			<select id="pais_id" name="pais_id" class="input">
 				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
 					<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
@@ -45,6 +46,7 @@
 			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
 			</i>
+			<!-- OK -->
 			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || !errores.pais_id) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
@@ -60,6 +62,8 @@
 			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
 				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
 			</i>
+		<!-- OK -->
+		<i class="fa-solid fa-circle-check <%- (!dataEntry.avatar || !errores.avatar) ? 'ocultar' : '' %>"></i>
 		</div>
 	</section>
 	<!--Flechas-->
@@ -67,6 +71,6 @@
 		<!-- Salir -->
 		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
 		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactvo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
+		<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
 	</section>
 </form>

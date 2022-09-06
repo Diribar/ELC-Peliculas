@@ -193,15 +193,15 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.consolidado("", {...prodCombinado, entidad});
 		if (errores.hay) {
-			if (req.file) compartidas.borrarArchivo(req.file.path, req.file.filename);
+			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 		} else {
 			// Actualizar los archivos avatar
 			if (avatar_archivo) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				compartidas.moverImagen(prodCombinado.avatar_archivo, "9-Provisorio", "3-ProdRevisar");
+				compartidas.moverImagen(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEditado.avatar)
-					compartidas.borrarArchivo("./publico/imagenes/3-ProdRevisar", prodEditado.avatar);
+					compartidas.borrarArchivo("./publico/imagenes/4-ProdRevisar", prodEditado.avatar);
 			}
 			// Actualiza la edición
 			let edicion = {...req.body, avatar_archivo};

@@ -55,10 +55,24 @@ module.exports = (req, res, next) => {
 		)
 			activarSessionCookie("urlSinCaptura");
 
+		// 4. url sin autInput
+		// No tiene agregar ni edición
+		// No tiene links
+		if (
+			!anterior.startsWith("/usuarios/") &&
+			!anterior.includes("/agregar/") &&
+			!anterior.includes("/edicion/") &&
+			!anterior.startsWith("/links/")
+		)
+			activarSessionCookie("urlSinAutInput");
+
 		// Actualiza en session la url 'anterior'
 		activarSessionCookie("urlAnterior");
 		// Actualiza en session la url 'actual'
-		activarSessionCookie("urlActual");
+		req.session.urlActual = actual;
+		res.cookie("urlActual", actual, {maxAge: unDia});
+
 	}
+	
 	next();
 };
