@@ -1,28 +1,28 @@
 <!-- Uso compartido -->
-<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-Revisar.css">
+<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-Revisar.css">
 <script src="/FE-javascript/0-Uso-Compartido/AyudaTitulo.js"></script>
 
 <!-- Específicos para el tablero -->
 <% if (codigo == "tableroControl") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-TableroControl.css">
+	<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-TableroControl.css">
 	<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 <% } else { %>
 	<!-- General para vistas distintas al tablero -->
 	<link rel="stylesheet" href="/formatoDeVistas/0-Uso-Compartido/Cartel.css">
-	<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/0-MotivosRechazar.css">
+	<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-MotivosRechazar.css">
 	<script src="/FE-javascript/0-Uso-Compartido/Timer.js"></script>
 	<!-- Específicos para Prod-Altas -->
 	<% if (codigo == "producto/alta") { %>
-		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-Prod-Alta.css">
-		<script src="/FE-javascript/3-Revisar/1-Prod1_Alta.js"></script>
+		<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/1-Prod-Alta.css">
+		<script src="/FE-javascript/3-RevisionEnts/1-Prod1_Alta.js"></script>
 	<!-- Específicos para Prod-Edicion -->
 	<% } else if (codigo == "producto/edicion") { %>
 		<% if (vista.includes("Avatar")) { %>
-			<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-Prod-EdicAvatar.css">
-			<script src="/FE-javascript/3-Revisar/1-Prod2_Avatar.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/1-Prod-EdicAvatar.css">
+			<script src="/FE-javascript/3-RevisionEnts/1-Prod2_Avatar.js"></script>
 		<% } else { %>
-			<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/1-Prod-EdicDemas.css">
-			<script src="/FE-javascript/3-Revisar/1-Prod3_Edicion.js"></script>
+			<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/1-Prod-EdicDemas.css">
+			<script src="/FE-javascript/3-RevisionEnts/1-Prod3_Edicion.js"></script>
 		<% } %>
 	<!-- Específicos para RCLV-Altas -->
 	<% } else if (codigo == "rclv/alta") { %>
@@ -39,8 +39,8 @@
 		<script src="/FE-javascript/0-Uso-Compartido/Links-Eliminar.js"></script>
 		<script src="/FE-javascript/0-Uso-Compartido/AyudaDatos.js"></script>
 		<!-- Específico -->
-		<link rel="stylesheet" href="/formatoDeVistas/3-Revisar/3-Links.css">
-		<script src="/FE-javascript/3-Revisar/3-Links1-Altas.js"></script>
-		<script src="/FE-javascript/3-Revisar/3-Links2-Ediciones.js"></script>
+		<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/3-Links.css">
+		<script src="/FE-javascript/3-RevisionEnts/3-Links1-Altas.js"></script>
+		<script src="/FE-javascript/3-RevisionEnts/3-Links2-Ediciones.js"></script>
 		<% } %>
 <% } %>

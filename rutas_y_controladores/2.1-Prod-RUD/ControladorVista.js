@@ -12,9 +12,9 @@ module.exports = {
 	prod_Form: async (req, res) => {
 		// DETALLE - EDICIÓN
 		// 1. Tema y Código
-		let tema = "prod_rud";
+		const tema = "prod_rud";
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.lastIndexOf("/"));
+		const codigo = url.slice(0, url.lastIndexOf("/"));
 		// 2. Obtiene los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let prodID = req.query.id;

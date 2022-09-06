@@ -15,8 +15,8 @@ const validar = require("./FN-Validar");
 module.exports = {
 	palabrasClaveForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "palabrasClave";
+		const tema = "prod_agregar";
+		const codigo = "palabrasClave";
 		// 2. Data Entry propio y errores
 		let palabrasClave = req.session.palabrasClave ? req.session.palabrasClave : req.cookies.palabrasClave;
 		// 3. Eliminar session y cookie posteriores, si existen
@@ -43,8 +43,8 @@ module.exports = {
 	},
 	desambiguarForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "desambiguar";
+		const tema = "prod_agregar";
+		const codigo = "desambiguar";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "desambiguar");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -93,8 +93,8 @@ module.exports = {
 	},
 	tipoProd_Form: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "tipoProducto";
+		const tema = "prod_agregar";
+		const codigo = "tipoProducto";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "tipoProducto");
 		// 3. Data Entry propio
@@ -131,8 +131,8 @@ module.exports = {
 	},
 	copiarFA_Form: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "copiarFA";
+		const tema = "prod_agregar";
+		const codigo = "copiarFA";
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "copiarFA");
 		// 3. Generar la cookie de datosOriginales
@@ -189,8 +189,8 @@ module.exports = {
 	},
 	datosDurosForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "datosDuros";
+		const tema = "prod_agregar";
+		const codigo = "datosDuros";
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
 		if (aux && aux.avatar_archivo)
@@ -324,8 +324,8 @@ module.exports = {
 	},
 	datosPersForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "datosPers";
+		const tema = "prod_agregar";
+		const codigo = "datosPers";
 		let userID = req.session.usuario.id;
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosPers");
@@ -373,8 +373,8 @@ module.exports = {
 	},
 	confirmaForm: (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "confirma";
+		const tema = "prod_agregar";
+		const codigo = "confirma";
 		let maximo, indice;
 		// 2. Si se perdió la info anterior, volver a esa instancia
 		let confirma = req.session.confirma ? req.session.confirma : req.cookies.confirma;
@@ -456,8 +456,8 @@ module.exports = {
 	},
 	terminasteForm: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "prod_agregar";
-		let codigo = "terminaste";
+		const tema = "prod_agregar";
+		const codigo = "terminaste";
 		// 2. Obtener los datos clave del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;

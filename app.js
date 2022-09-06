@@ -62,8 +62,8 @@ app.set("views", [
 
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
-	path.resolve(__dirname, "./vistas/3-Revisar"),
-	path.resolve(__dirname, "./vistas/3-Revisar/Includes"),
+	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
+	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
 	path.resolve(__dirname, "./vistas/6-Productos"),
 	path.resolve(__dirname, "./vistas/9-Inicio"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
@@ -83,7 +83,7 @@ app.use("/rclv", rutaRCLV_CRUD);
 app.use("/links", rutaLinks_CRUD);
 // Demás
 const rutaUsuarios = require("./rutas_y_controladores/1-Usuarios/Rutas");
-const rutaRevisar = require("./rutas_y_controladores/3-Revisar/Rutas");
+const rutaRevisar = require("./rutas_y_controladores/3-RevisionEnts/Rutas");
 const rutaConsultas = require("./rutas_y_controladores/6-Consultas/Rutas");
 const rutaMiscelaneas = require("./rutas_y_controladores/9-Miscelaneas/Rutas");
 app.use("/usuarios", rutaUsuarios);

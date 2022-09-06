@@ -11,7 +11,7 @@
 <section id="contenido">
 	<div id="datos">
 		<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-		<%- include("RV0-2Encabezado") %>
+		<%- include("RE0-2Encabezado") %>
 		<select id="tipoLink">
 			<option value="TR">Trailer</option>
 			<option value="PL">Película</option>
@@ -31,7 +31,7 @@
 						<%- include("CMP-LK-Condiciones", {link, cond}) %>
 						<%- include("CMP-LK-Datos", {link, cond, fila}) %>
 						<% link.ediciones.forEach((edicion) => { %>
-							<%- cond.creado || cond.aprobado ? include("RV3-LinksEdicion", {link, cond, edicion, fila}) : "" %> 
+							<%- cond.creado || cond.aprobado ? include("RE3-LinksEdicion", {link, cond, edicion, fila}) : "" %> 
 						<% }) %>
 					<% }) %>
 				</tbody>

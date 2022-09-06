@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	// Otras variables
-	let codigo = new URL(window.location.href).pathname;
+	const codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
 	// Temas de horario y fechas
 	let unMinuto = 60 * 1000;

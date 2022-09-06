@@ -14,7 +14,7 @@
 		<!-- Encabezado y Contenido -->
 		<div>
 			<!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-			<%- include("RV0-2Encabezado") %>
+			<%- include("RE0-2Encabezado") %>
 			<!-- Ingresos -->
 			<div id="contenido">
 				<% if (ingresos.length) { %>
@@ -24,7 +24,7 @@
 							<tbody>
 								<% for (campo of ingresos) { %>
 									<tr class="fila">
-										<%- include("RV1-ProdEdic-Ingresos", {campo}) %> 
+										<%- include("RE1-ProdEdic-Ingresos", {campo}) %> 
 									</tr>
 								<% } %>
 							</tbody>
@@ -36,7 +36,7 @@
 						<h2>Información a reemplazar</h2>
 						<% for (campo of reemplazos) { %>
 							<div class="fila">
-								<%- include("RV1-ProdEdic-Reemplazos", {campo}) %>
+								<%- include("RE1-ProdEdic-Reemplazos", {campo}) %>
 							</div>
 						<% } %>
 					</div>

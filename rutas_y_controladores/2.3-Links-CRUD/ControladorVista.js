@@ -11,8 +11,8 @@ module.exports = {
 	linksForm: async (req, res) => {
 		// DETALLE - ABM
 		// Tema y Código
-		let tema = "links_crud";
-		let codigo = "links";
+		const tema = "links_crud";
+		const codigo = "links";
 		// Obtener los datos identificatorios del producto y del usuario
 		let prodEntidad = req.query.entidad;
 		let prodID = req.query.id;

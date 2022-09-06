@@ -10,8 +10,8 @@ module.exports = {
 	// Uso general
 	tableroControl: async (req, res) => {
 		// Tema y Código
-		let tema = "revision";
-		let codigo = "tableroControl";
+		const tema = "revisionEnts";
+		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Definir variables
 		const ahora = compartidas.ahora();
@@ -38,9 +38,9 @@ module.exports = {
 	// Productos
 	prod_Alta: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
+		const tema = "revisionEnts";
 		let url = req.url.slice(1);
-		let codigo = url.slice(0, url.lastIndexOf("/"));
+		const codigo = url.slice(0, url.lastIndexOf("/"));
 		// 2. Obtener los datos identificatorios del producto
 		let entidad = req.query.entidad;
 		let id = req.query.id;
@@ -68,7 +68,7 @@ module.exports = {
 		);
 		// Ir a la vista
 		//return res.send(prodOriginal)
-		return res.render("RV0-0Estructura", {
+		return res.render("RE0-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -84,7 +84,7 @@ module.exports = {
 	},
 	prod_Edicion: async (req, res) => {
 		// 1. Tema y Código
-		const tema = "revision";
+		const tema = "revisionEnts";
 		const codigo = "producto/edicion";
 		// 2. Constantes
 		const entidad = req.query.entidad;
@@ -160,7 +160,7 @@ module.exports = {
 		// 4. Acciones dependiendo de si está editado el avatar
 		if (prodEditado.avatar_archivo) {
 			// Vista 'Edición-Avatar'
-			vista = "RV1-Prod-Avatar";
+			vista = "RE1-Prod-Avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
 				original: prodOriginal.avatar
@@ -185,7 +185,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOriginal, prodEditado);
-			vista = "RV0-0Estructura";
+			vista = "RE0-0Estructura";
 		}
 		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -212,8 +212,8 @@ module.exports = {
 	// RCLV
 	RCLV_Alta: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
-		let codigo = "rclv/alta";
+		const tema = "revisionEnts";
+		const codigo = "rclv/alta";
 		// 2. Variables
 		let entidad = req.query.entidad;
 		let id = req.query.id;
@@ -258,8 +258,8 @@ module.exports = {
 	// Links
 	links: async (req, res) => {
 		// 1. Tema y Código
-		let tema = "revision";
-		let codigo = "links";
+		const tema = "revisionEnts";
+		const codigo = "links";
 		// Otras variables
 		let includes;
 		let prodEntidad = req.query.entidad;
@@ -302,7 +302,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Ir a la vista
 		//return res.send(links)
-		return res.render("RV0-0Estructura", {
+		return res.render("RE0-0Estructura", {
 			tema,
 			codigo,
 			titulo,

@@ -22,11 +22,11 @@
 				</ol>
 			</div>
 			<% let rp = "revision/producto/" %>
-			<%- include("RV0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
-			<%- include("RV0-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
-			<%- include("RV0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
-			<%- include("RV0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
-			<%- include("RV0-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
+			<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
+			<%- include("RE0-Registros", {titulo: "Sugeridos para Recuperar", regs: productos.RC, url: rp + "recuperar"}) %>
+			<%- include("RE0-Registros", {titulo: "Altas sin Edición", regs: productos.SE, url: "producto/edicion"}) %>
+			<%- include("RE0-Registros", {titulo: "Ediciones Pend. Aprobar", regs: productos.ED, url: rp + "edicion"}) %>
+			<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: productos.PA, url: rp + "alta"}) %>
 		</div>
 	</div>
 	<div id="segundaColumna">
@@ -46,7 +46,7 @@
 			<% let rr = "revision/rclv/" %>
 			<!-- Ediciones Pend. Aprobar -->
 			<!-- Aprobar el Alta -->
-			<%- include("RV0-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: rr + "alta"}) %>
+			<%- include("RE0-Registros", {titulo: "Altas Pend. Aprobar", regs: RCLVs.PA, url: rr + "alta"}) %>
 		</div>
 		<!-- Links -->
 		<div class="bloques">
@@ -60,7 +60,7 @@
 					<li>Tienen algún link cuya novedad es ajena a vos.</li>
 				</ol>
 			</div>				
-			<%- include("RV0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LK, url: "links"}) %>
+			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LK, url: "links"}) %>
 		</div>
 	</div>
 </section>
