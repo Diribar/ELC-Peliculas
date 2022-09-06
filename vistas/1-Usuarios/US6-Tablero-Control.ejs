@@ -1,0 +1,59 @@
+<div id="tituloConAyuda">
+	<h1 id="titulo"><%= titulo %></h1>
+	<!-- Ayuda -->
+	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+	<ul class="mensajeAyuda ocultar" type="dots">
+		<li>Estos registros están pendientes de revisar.</li>
+		<li>Se necesita revisarlos a todos.</li>
+		<li>Las tareas figuran por orden de criticidad.</li>
+	</ul>	
+</div>
+<!-- Datos -->
+<section id="familias">
+	<!-- Productos -->
+	<div id="primeraColumna">
+		<div class="bloques">
+			<div id="datos">
+				<h2>PRODUCTOS</h2>
+				<!-- Ayuda -->
+				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+				<ol class="mensajeAyuda ocultar" type="dots">
+					<ul>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</ul>
+				</ol>
+			</div>
+			<% let rp = "revision/producto/" %>
+		</div>
+	</div>
+	<div id="segundaColumna">
+		<!-- RCLV -->
+		<div class="bloques">
+			<div id="datos">
+				<h2>RCLV</h2>
+				<!-- Ayuda -->
+				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+				<ol class="mensajeAyuda ocultar" type="dots">
+					<p>Los <u>RCLV</u> cumplen estas condiciones:</p>
+					<li>Las <u>altas</u> a analizar, fueron creadas por otro usuario y están relacionadas con un producto aprobado.</li>
+					<li>Las <u>ediciones</u> a revisar son de algún RCLV aprobado.</li>
+					<li>Los registros a <u>inactivar</u> no tienen asociado ningún producto creado o aprobado.</li>
+				</ol>
+			</div>
+			<% let rr = "revision/rclv/" %>
+			<!-- Ediciones Pend. Aprobar -->
+			<!-- Aprobar el Alta -->
+		</div>
+		<!-- Links -->
+		<div class="bloques">
+			<div id="datos">
+				<h2>LINKS</h2>
+				<!-- Ayuda -->
+				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+				<ol class="mensajeAyuda ocultar" type="dots">
+					<p>Los <u>productos</u> cumplen todas estas condiciones:</p>
+					<li>Están aprobados.</li>
+					<li>Tienen algún link cuya novedad es ajena a vos.</li>
+				</ol>
+			</div>				
+		</div>
+	</div>
+</section>

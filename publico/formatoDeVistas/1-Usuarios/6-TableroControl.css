@@ -1,0 +1,43 @@
+/* Cuerpo */
+#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
+#cuerpo {position: relative; justify-content: flex-start; align-items: unset;}
+
+/* Título */
+#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
+#cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
+/* Título - Ayuda */
+#cuerpo .mensajeAyuda {max-width: 350px;}
+#cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
+#cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
+#cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%);}
+
+/* Imagen */
+#imagen-derecha {width: 30vw; height: 100%; position: relative; background-color: var(--gris-claro);}
+#imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
+
+/* Ayuda */
+.mensajeAyuda {padding: 7px 10px; z-index: 2;}
+.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
+
+/* Comandos y Flechas */
+#cuerpo #comandos, #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto; }
+
+/* Comandos - Particularidades */
+
+#cuerpo #comandos {padding: 7px 5px; border-radius: 15px;}
+#cuerpo #comandos i {color: white; font-size: 1.25rem; cursor: pointer;}
+
+/* Flechas - Particularidades */
+#cuerpo #flechas i, #cuerpo #flechas .pack {margin: 0 15px;}
+/* #cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);} */
+
+/* Entidades */
+main #familias {display: flex; flex-direction: row; justify-content: space-around; padding: 40px 0px 20px 0px;}
+main #familias .bloques:nth-child(n+2) {margin-top: 20px;}
+
+main #familias .bloques #datos {position: relative; min-width: 270px;}
+
+main #familias .bloques  #datos h2 {padding: 5px 15px; border-radius: 15px; text-align: center; background-color: var(--verde-oscuro); color: var(--gris-claro);}
+main #familias .bloques  #datos .mensajeAyuda p {font-size: 1.15rem; margin-bottom: 3px; color: var(--amarillo-claro);}
+main #familias .bloques .contenido {padding: 10px 10px 0;}
+main #familias .bloques .contenido h3 {margin-bottom: 2px;}

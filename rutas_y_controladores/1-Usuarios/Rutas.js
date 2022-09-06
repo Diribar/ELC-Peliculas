@@ -8,6 +8,7 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const soloGestionUs = require("../../middlewares/usuarios/solo4-gestion-us");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -38,7 +39,6 @@ router.get("/revisor-usuarios", soloUsuarios, vista.autRevisionForm);
 // Rutas RUD
 router.get("/edicion", soloUsuarios, vista.edicionForm);
 router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
-router.delete("/eliminar", soloUsuarios, vista.baja);
 
 // Login
 router.get("/login", soloVisitas, vista.loginForm);
@@ -47,5 +47,8 @@ router.get("/pre-logout", soloUsuarios, vista.preLogout);
 router.get("/logout", soloUsuarios, vista.logout);
 router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
 router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
+
+// Revisión
+router.get("/tablero-de-control", soloGestionUs, vista.tablero);
 
 module.exports = router;
