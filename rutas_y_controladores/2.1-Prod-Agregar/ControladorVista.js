@@ -475,7 +475,7 @@ module.exports = {
 					},
 				],
 			};
-			return res.render("MI9-Cartel", {informacion});
+			return res.render("MI-Cartel", {informacion});
 		}
 		// Problema: PRODUCTO YA REVISADO
 		if (!registroProd.status_registro.gr_creado)
