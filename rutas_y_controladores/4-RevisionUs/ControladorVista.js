@@ -39,7 +39,7 @@ let tablero_obtenerPermInput = async () => {
 		rol_usuario_id: roles_no_aut_input,
 	};
 	// let includes = [];
-	let usuarios = BD_genericas.obtenerTodosPorCampos("usuarios", campos);
+	let usuarios = await BD_genericas.obtenerTodosPorCampos("usuarios", campos);
 	// Fin
 	return usuarios;
 };
