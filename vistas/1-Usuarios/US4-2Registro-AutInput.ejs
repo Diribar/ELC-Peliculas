@@ -2,7 +2,7 @@
 <form action="<%= link %>" method="POST" enctype="multipart/form-data">
 	<h1><%= titulo %></h1>
 	<!--Número de Documento-->
-	<section class="label-input flex-row">	
+	<section class="label-input flex-row">
 		<label for="numero_documento">Número de Documento</label>
 		<div class="input-error">
 			<input type="text" id="numero_documento" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
