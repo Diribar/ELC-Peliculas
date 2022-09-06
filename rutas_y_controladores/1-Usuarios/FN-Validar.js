@@ -148,14 +148,13 @@ module.exports = {
 				// Verifica si ya se envió un mail en el día
 				let ahora = compartidas.fechaTexto(compartidas.ahora());
 				let fecha = compartidas.fechaTexto(usuario.fecha_contrasena);
-				if (ahora == fecha) {
+				if (ahora == fecha) 
 					errores = {
 						email:
 							"El mail fue enviado el " +
 							fechaHorario +
 							", y se permite un sólo envío por día.",
 					};
-				}
 				// Verifica si tiene status de 'documento'
 				else if (usuario.status_registro.documento) {
 					let numero_documento = usuario.numero_documento.slice(3);
