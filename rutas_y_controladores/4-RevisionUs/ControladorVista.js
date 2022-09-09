@@ -15,18 +15,19 @@ module.exports = {
 		const codigo = "tableroControl";
 		let userID = req.session.usuario.id;
 		// Obtiene las solicitudes de Permiso de Input
-		let usuarios = await tablero_obtenerPermInput(userID);
+		let autInputs = await tablero_obtenerAutInput(userID);
 		// Va a la vista
-		return res.send(usuarios);
+		// return res.send(autInputs);
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
 			titulo: "Revisión - Tablero de Usuarios",
+			autInputs,
 		});
 	},
 };
 
-let tablero_obtenerPermInput = async (userID) => {
+let tablero_obtenerAutInput = async (userID) => {
 	// Rol no Revisor
 	let roles_no_aut_input = await BD_genericas.obtenerTodosPorCampos("roles_usuarios", {
 		aut_input: false,
@@ -38,8 +39,16 @@ let tablero_obtenerPermInput = async (userID) => {
 		status_registro_id: status_documento,
 		rol_usuario_id: roles_no_aut_input,
 	};
+	// Obtener el usuario
 	// let includes = [];
 	let usuarios = await BD_especificas.obtenerUsuarioDistintoIdMasFiltros(userID, campos);
+	usuarios = formatoUsuarios(usuarios, "fecha_feedback_revisores");
 	// Fin
 	return usuarios;
+};
+let formatoUsuarios = (usuarios, campoFecha) => {
+	return usuarios.map((n) => {
+		let fecha = compartidas.fechaHorarioTexto(n[campoFecha]).replace("a las", "-");
+		return {id: n.id, apodo: n.apodo, fecha};
+	});
 };
