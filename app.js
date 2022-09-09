@@ -59,11 +59,12 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD"),
 	path.resolve(__dirname, "./vistas/2.1-Prod-RUD/Includes"),
 	path.resolve(__dirname, "./vistas/2.2-RCLV-CRUD"),
-
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD"),
 	path.resolve(__dirname, "./vistas/2.3-Links-CRUD/Includes"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts"),
 	path.resolve(__dirname, "./vistas/3-RevisionEnts/Includes"),
+	path.resolve(__dirname, "./vistas/4-RevisionUs"),
+	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
 	path.resolve(__dirname, "./vistas/6-Productos"),
 	path.resolve(__dirname, "./vistas/9-Inicio"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),

@@ -30,7 +30,7 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Revisar - Tablero de Control",
+			titulo: "Revisión - Tablero de Entidades",
 			productos,
 			RCLVs,
 		});

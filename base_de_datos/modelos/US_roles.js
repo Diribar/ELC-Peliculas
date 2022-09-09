@@ -4,8 +4,8 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(20)},
 		aut_input: {type: dt.BOOLEAN},
-		aut_gestion_prod: {type: dt.BOOLEAN},
-		aut_gestion_us: {type: dt.BOOLEAN},
+		revisor_ents: {type: dt.BOOLEAN},
+		revisor_us: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "us_roles",

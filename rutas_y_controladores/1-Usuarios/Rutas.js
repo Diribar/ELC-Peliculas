@@ -33,9 +33,6 @@ router.get("/autorizado-input", soloUsuarios, vista.autInputForm);
 router.post("/autorizado-input", soloUsuarios, multer.single("avatar"), vista.autInputGuardar);
 router.get("/documento-recibido", soloUsuarios, vista.documentoRecibido);
 
-router.get("/revisor-entidades", soloUsuarios, vista.autRevisionForm);
-router.get("/revisor-usuarios", soloUsuarios, vista.autRevisionForm);
-
 // Rutas RUD
 router.get("/edicion", soloUsuarios, vista.edicionForm);
 router.put("/edicion", soloUsuarios, multer.single("avatar"), vista.edicionGuardar); //Validar mail y editables
@@ -47,8 +44,5 @@ router.get("/pre-logout", soloUsuarios, vista.preLogout);
 router.get("/logout", soloUsuarios, vista.logout);
 router.get("/olvido-contrasena", soloVisitas, vista.altaMailForm);
 router.post("/olvido-contrasena", soloVisitas, vista.olvidoContrGuardar);
-
-// Revisión
-router.get("/tablero-de-control", soloGestionUs, vista.tablero);
 
 module.exports = router;

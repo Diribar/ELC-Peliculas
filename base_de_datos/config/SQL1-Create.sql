@@ -82,11 +82,11 @@ CREATE TABLE us_roles (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
 	aut_input BOOLEAN NOT NULL,
-	aut_gestion_prod BOOLEAN NOT NULL,
-	aut_gestion_us BOOLEAN NOT NULL,
+	revisor_ents BOOLEAN NOT NULL,
+	revisor_us BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_roles (id, orden, nombre, aut_input, aut_gestion_prod, aut_gestion_us)
+INSERT INTO us_roles (id, orden, nombre, aut_input, revisor_ents, revisor_us)
 VALUES 
 (1, 1, 'Consultas', 0, 0, 0),
 (2, 2, 'Autorizado p/Inputs', 1, 0, 0),

@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 	if (!usuario) return res.redirect("/usuarios/login");
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
-	if (!usuario.rol_usuario.aut_gestion_prod) {
+	if (!usuario.rol_usuario.revisor_ents) {
 		let linkUsuarioAutProductos = "/usuarios/autorizado-revision";
 		informacion = {
 			mensajes: [

@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 	const vistaAnteriorTablero = () => {
 		let vista = [vistaAnterior];
 		let usuario = req.session.usuario;
-		if (usuario.rol_usuario.aut_gestion_prod) vista.push(vistaTablero);
+		if (usuario.rol_usuario.revisor_ents) vista.push(vistaTablero);
 		return vista;
 	};
 
@@ -60,7 +60,7 @@ module.exports = async (req, res, next) => {
 		if (
 			creado_en < haceUnaHora && // creado hace más de una hora
 			((registro.status_registro.creado && urlBase != "/revision") || // en status creado y la ruta no es de revisión
-				(registro.status_registro.creado_aprob && !usuario.rol_usuario.aut_gestion_prod)) // en status creadoAprob y no es un usuario revisor
+				(registro.status_registro.creado_aprob && !usuario.rol_usuario.revisor_ents)) // en status creadoAprob y no es un usuario revisor
 		) {
 			let mensajes = creadoPorElUsuario
 				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
