@@ -1,0 +1,7 @@
+<% if (regs.length) { %>
+	<div class="contenido">
+		<% for (let reg of regs) { %>
+			<a href="/<%= url %>/?id=<%= reg.id %>"><%= reg.fecha %> - <%= reg.apodo %></a>
+		<% } %>	
+	</div>
+<% } %>
