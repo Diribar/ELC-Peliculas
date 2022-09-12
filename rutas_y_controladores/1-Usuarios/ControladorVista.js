@@ -15,9 +15,9 @@ module.exports = {
 		// Redireccionar
 		!status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/login")
-			: !status_registro_usuario.datos_perennes
+			: !status_registro_usuario.perennes_validado
 			? res.redirect("/usuarios/datos-perennes")
-			: !status_registro_usuario.datos_editables
+			: !status_registro_usuario.editables_validado
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
@@ -119,8 +119,8 @@ module.exports = {
 		}
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"datos_perennes",
-			"datos_editables",
+			"perennes_validado",
+			"editables_validado",
 			usuario,
 			req.body
 		);
@@ -172,7 +172,7 @@ module.exports = {
 		// Actualiza el usuario
 		req.body.avatar = req.file ? req.file.filename : "-";
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"datos_editables",
+			"editables_validado",
 			"documento",
 			usuario,
 			req.body
@@ -335,7 +335,7 @@ module.exports = {
 		}
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
 		if (!usuario.status_registro.mail_validado)
-			usuario = await procesos.actualizaElUsuario("mail_validado", "datos_perennes", usuario);
+			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_validado", usuario);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookie

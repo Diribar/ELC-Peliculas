@@ -99,13 +99,13 @@ CREATE TABLE us_status_registro (
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL,
 	mail_validado BOOLEAN NULL,
-	datos_perennes BOOLEAN NULL,
-	datos_editables BOOLEAN NULL,
+	perennes_validado BOOLEAN NULL,
+	editables_validado BOOLEAN NULL,
 	docum_revisar BOOLEAN NULL,
 	ident_validada BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes, datos_editables, docum_revisar, ident_validada)
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado, perennes_validado, editables_validado, docum_revisar, ident_validada)
 VALUES 
 (1, 1, 'Mail a validar', 0, 0, 0, 0, 0), 
 (2, 2, 'Mail validado', 1, 0, 0, 0, 0), 

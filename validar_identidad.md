@@ -12,7 +12,7 @@ Rechazos a Validar Identidad
 - La imagen es ilegible o está truncada
 	- Status: Datos editables
 - Los datos no coinciden
-	- Status: mail validado
+	- Status: mail validado o perennes
 
 Identidad validada
 	- Status: ident_validada
