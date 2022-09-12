@@ -71,7 +71,6 @@ module.exports = (req, res, next) => {
 		// Actualiza en session la url 'actual'
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
-
 	}
 	
 	next();

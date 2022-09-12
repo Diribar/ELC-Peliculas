@@ -468,9 +468,9 @@ module.exports = {
 		// Variables
 		let datos = {};
 		// Averiguar si el motivo amerita bloquear
-		if (motivo.bloquear_aut_input) {
+		if (motivo.bloquear_perm_inputs) {
 			// Obtener el rol de 'Consultas', sin permiso para Data Entry
-			let rol_usuario = await BD_genericas.obtenerPorCampos("roles_usuarios", {aut_input: false});
+			let rol_usuario = await BD_genericas.obtenerPorCampos("roles_usuarios", {perm_inputs: false});
 			datos.rol_usuario_id = rol_usuario.id;
 		}
 		// Obtiene los datos del usuario

@@ -250,7 +250,7 @@ module.exports = {
 		let datos = {
 			numero_documento: req.body.pais_id + "-" + req.body.numero_documento,
 			avatar_documento: req.file.filename,
-			fecha_feedback_revisores: compartidas.ahora(),
+			fecha_revisores: compartidas.ahora(),
 		};
 		req.session.usuario = await procesos.actualizaElUsuario("documento", "nada", usuario, datos);
 		// Mueve el archivo a la carpeta definitiva

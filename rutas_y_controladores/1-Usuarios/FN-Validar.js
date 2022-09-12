@@ -170,7 +170,7 @@ module.exports = {
 							", y se permite un sólo envío por día.",
 					};
 				// Verifica si tiene status de 'documento'
-				else if (usuario.status_registro.documento) {
+				else if (usuario.status_registro.docum_revisar) {
 					let numero_documento = usuario.numero_documento.slice(3);
 					let pais_id = usuario.numero_documento.slice(0, 2);
 					// Verifica los posibles errores

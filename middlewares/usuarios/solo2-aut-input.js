@@ -9,8 +9,8 @@ module.exports = (req, res, next) => {
 	if (!usuario) return res.redirect("/usuarios/login");
 	// Redireccionar si el usuario no tiene el permiso necesario
 	let informacion;
-	if (!usuario.rol_usuario.aut_input)
-		if (!usuario.status_registro.documento)
+	if (!usuario.rol_usuario.perm_inputs)
+		if (!usuario.status_registro.docum_revisar)
 			informacion = {
 				mensajes: [
 					"Para ingresar información, se requiere aumentar el nivel de confianza.",
@@ -36,7 +36,7 @@ module.exports = (req, res, next) => {
 				mensajes: [
 					"Para ingresar información, se requiere un permiso que ya nos solicitaste.",
 					"Nos lo pediste el " +
-						compartidas.fechaHorarioTexto(usuario.fecha_feedback_revisores) +
+						compartidas.fechaHorarioTexto(usuario.fecha_revisores) +
 						".",
 					"Tenés que esperar a que el equipo de Revisores valide tus datos personales con tu documento.",
 					"Luego de la validación, recibirás un mail de feedback.",
