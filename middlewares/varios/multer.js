@@ -3,6 +3,7 @@
 const path = require("path");
 const multer = require("multer");
 
+// Variables
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, "./publico/imagenes/9-Provisorio");
@@ -14,4 +15,5 @@ const storage = multer.diskStorage({
 	},
 });
 
+// Guardar la imagen
 module.exports = multer({storage});

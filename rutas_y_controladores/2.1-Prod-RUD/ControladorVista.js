@@ -154,7 +154,7 @@ module.exports = {
 				prodCombinado.coleccion_id,
 				prodCombinado.temporada
 			);
-		// Ir a la vista
+		// Va a la vista
 		//return res.send(bloquesDerecha)
 		return res.render("CR0-0Estructura", {
 			tema,

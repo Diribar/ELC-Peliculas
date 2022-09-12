@@ -194,6 +194,18 @@ module.exports = {
 			.findByPk(id, {include: ["rol_usuario", "status_registro"]})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
+	obtenerUsuarioDistintoIdMasFiltros: (userID, filtros) => {
+		return db.usuarios
+			.findAll({
+				where: {
+					// Filtros
+					...filtros,
+					// Otro usuario
+					id: {[Op.ne]: userID},
+				},
+			})
+			.then((n) => n.map((m) => m.toJSON()));
+	},
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {
 		return db.usuarios

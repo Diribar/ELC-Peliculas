@@ -510,11 +510,11 @@ window.addEventListener("load", async () => {
 		// Ruta salir
 		let rutaSalir =
 			vista == "/rclv/agregar"
-				? // Ir a la vista de origen
+				? // Va a la vista de origen
 				  rutaOrigen + (origen != "DP" ? "?entidad=" + prodEntidad + "&id=" + prodID : "")
 				: // Inactivar e ir a la vista de origen
 				  "/inactivar-captura/" + entidadID + "&origen=" + origen + prodEntidadID;
-		// Ir a la vista de origen sin guardar cambios
+		// Va a la vista de origen sin guardar cambios
 		window.location.href = rutaSalir;
 	});
 	botonSubmit.addEventListener("click", async (e) => {
