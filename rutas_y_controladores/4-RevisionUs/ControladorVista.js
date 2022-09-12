@@ -16,7 +16,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let usuarios = {};
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.autInputs = await procesos.tablero_obtenerAutInput(userID);
+		usuarios.autInputs = await procesos.tablero_obtenerPermInput(userID);
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("GN0-Estructura", {

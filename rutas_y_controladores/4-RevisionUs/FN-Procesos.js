@@ -8,7 +8,7 @@ const validar = require("../2.1-Prod-RUD/FN-Validar");
 
 module.exports = {
 	// Tablero
-	tablero_obtenerAutInput: async function (userID) {
+	tablero_obtenerPermInput: async function (userID) {
 		// Rol no Revisor
 		let roles_no_perm_inputs = await BD_genericas.obtenerTodosPorCampos("roles_usuarios", {
 			perm_inputs: false,
