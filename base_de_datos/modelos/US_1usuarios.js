@@ -12,7 +12,7 @@ module.exports = (sequelize, dt) => {
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 		rol_usuario_id: {type: dt.INTEGER},
-		sin_inputs_perpetuo: {type: dt.BOOLEAN},
+		perm_inputs_bloqueado: {type: dt.BOOLEAN},
 		autorizado_fa: {type: dt.BOOLEAN},
 		numero_documento: {type: dt.STRING(15)},
 		avatar_documento: {type: dt.STRING(18)},

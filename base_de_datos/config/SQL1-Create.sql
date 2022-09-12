@@ -129,7 +129,7 @@ CREATE TABLE usuarios (
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
-	sin_inputs_perpetuo BOOLEAN DEFAULT 0,
+	perm_inputs_bloqueado BOOLEAN DEFAULT 0,
 	autorizado_fa BOOLEAN DEFAULT 0,
 	numero_documento VARCHAR(15) UNIQUE NULL,
 	avatar_documento VARCHAR(18) DEFAULT NULL,

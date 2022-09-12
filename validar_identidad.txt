@@ -8,7 +8,7 @@ Usuario
 Rechazos a Validar Identidad
 - La imagen no es un documento
 	- Status: Consultas
-	- Usuario: sin_inputs_perpetuo = true
+	- Usuario: perm_inputs_bloqueado = true
 - La imagen es ilegible o está truncada
 	- Status: Datos editables
 - Los datos no coinciden
