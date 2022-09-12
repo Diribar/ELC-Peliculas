@@ -97,20 +97,22 @@ VALUES
 CREATE TABLE us_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
 	mail_validado BOOLEAN NULL,
 	datos_perennes BOOLEAN NULL,
 	datos_editables BOOLEAN NULL,
-	documento BOOLEAN NULL,
+	docum_revisar BOOLEAN NULL,
+	ident_validada BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes, datos_editables, documento)
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes, datos_editables, docum_revisar, ident_validada)
 VALUES 
-(1, 1, 'Mail a validar', 0, 0, 0, 0), 
-(2, 2, 'Mail validado', 1, 0, 0, 0), 
-(3, 3, 'Datos perennes', 1, 1, 0, 0), 
-(4, 4, 'Datos editables', 1, 1, 1, 0),
-(5, 5, 'Docum. validado', 1, 1, 1, 1)
+(1, 1, 'Mail a validar', 0, 0, 0, 0, 0), 
+(2, 2, 'Mail validado', 1, 0, 0, 0, 0), 
+(3, 3, 'Datos perennes', 1, 1, 0, 0, 0), 
+(4, 4, 'Datos editables', 1, 1, 1, 0, 0),
+(5, 5, 'Documento a revisar', 1, 1, 1, 1, 0),
+(6, 6, 'Identidad validada', 1, 1, 1, 1, 1)
 ;
 
 /* USUARIOS */;
@@ -127,9 +129,10 @@ CREATE TABLE usuarios (
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	sin_inputs_perpetuo BOOLEAN DEFAULT 0,
+	autorizado_fa BOOLEAN DEFAULT 0,
 	numero_documento VARCHAR(15) UNIQUE NULL,
 	avatar_documento VARCHAR(18) DEFAULT NULL,
-	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
