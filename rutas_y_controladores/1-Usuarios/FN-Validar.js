@@ -7,7 +7,7 @@ const BD_genericas = require("../../funciones/2-BD/Genericas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = {
-	registroMail: async (email) => {
+	altaMail: async (email) => {
 		let errores = {};
 		errores.email = !email ? cartelMailVacio : formatoMail(email) ? cartelMailFormato : "";
 		errores.hay = !!errores.email;
@@ -69,7 +69,7 @@ module.exports = {
 		return errores;
 	},
 
-	validarIdentidad: (datos) => {
+	documento: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);

@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
 		let valor = inputs[indice].value;
 		errores = {
 			...errores,
-			...(await fetch("/usuarios/api/validar-validarIdentidad/?" + campo + "=" + valor).then((n) => n.json())),
+			...(await fetch("/usuarios/api/validar-documento/?" + campo + "=" + valor).then((n) => n.json())),
 		};
 	};
 	let mensajes = (indice) => {

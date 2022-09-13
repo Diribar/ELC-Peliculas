@@ -60,7 +60,7 @@ module.exports = {
 	altaMailGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let email = req.body.email;
-		let errores = await validar.registroMail(email);
+		let errores = await validar.altaMail(email);
 		// Si no hay errores, verificar si ya existe en la BD
 		if (!errores.hay && (await BD_especificas.obtenerELC_id("usuarios", {email})))
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
@@ -87,7 +87,7 @@ module.exports = {
 		// Redireccionar
 		return res.render("MI-Cartel", {informacion});
 	},
-	altaPerennesForm: async (req, res) => {
+	perennesForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "perennes";
 		// Preparar datos para la vista
@@ -105,7 +105,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	altaPerennesGuardar: async (req, res) => {
+	perennesGuardar: async (req, res) => {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		let usuario = req.session.usuario;
 		// Averigua si hay errores de validación
@@ -127,7 +127,7 @@ module.exports = {
 		// Redirecciona
 		return res.redirect("/usuarios/redireccionar");
 	},
-	altaEditablesForm: async (req, res) => {
+	editablesForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "editables";
 		// Variables
@@ -157,7 +157,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	altaEditablesGuardar: async (req, res) => {
+	editablesGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
@@ -199,15 +199,6 @@ module.exports = {
 		// Fin
 		return res.render("MI-Cartel", {informacion});
 	},
-	responsab: async (req, res) => {
-		// Va a la vista
-		return res.render("GN0-Estructura", {
-			tema: "usuario",
-			codigo: "responsabilidad",
-			titulo: "Responsabilidad con nuestra BD",
-			urlSalir: req.session.urlSinPermInput,
-		});
-	},
 	documentoForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";
@@ -239,7 +230,7 @@ module.exports = {
 	documentoGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
-		let errores = await validar.validarIdentidad({...req.body, avatar: req.file.filename});
+		let errores = await validar.documento({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
@@ -264,7 +255,7 @@ module.exports = {
 		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [
-				"Estimad" + letra + usuario.apodo + ", gracias por completar tu solicitud.",
+				"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
 				"Queda en manos del equipo de Revisores validar tus datos.",
 				"Luego de la validación, recibirás un mail de feedback.",
 				"En caso de estar aprobado, podrás ingresar información.",

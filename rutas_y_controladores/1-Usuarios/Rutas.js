@@ -17,16 +17,16 @@ router.get("/api/validar-login", API.validarLogin);
 router.get("/api/validar-mail", API.validarMail);
 router.get("/api/validar-perennes", API.validarPerennes);
 router.get("/api/validar-editables", API.validarEditables);
-router.get("/api/documento", API.validarIdentidad);
+router.get("/api/documento", API.validarDocumento);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
 router.post("/mail", soloVisitas, vista.altaMailGuardar);
 router.get("/redireccionar", vista.redireccionar);
-router.get("/datos-perennes", soloUsuarios, vista.altaPerennesForm);
-router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
-router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
-router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
+router.get("/datos-perennes", soloUsuarios, vista.perennesForm);
+router.post("/datos-perennes", soloUsuarios, vista.perennesGuardar);
+router.get("/datos-editables", soloUsuarios, vista.editablesForm);
+router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);
 // router.get("/responsabilidad", soloUsuarios, vista.responsab);
 router.get("/documento", soloUsuarios, vista.documentoForm);
