@@ -55,12 +55,12 @@ module.exports = async (req, res, next) => {
 					titulo: "Aviso",
 					colorFondo: "verde",
 				};
-			else
+			else if (!usuario.status_registro.ident_validada)
 				informacion = {
 					mensajes: [
-						"Para ingresar información, se requiere un permiso que ya nos solicitaste.",
-						"Nos lo pediste el " + compartidas.fechaHorarioTexto(usuario.fecha_revisores) + ".",
-						"Tenés que esperar a que el equipo de Revisores valide tus datos personales con tu documento.",
+						"Para ingresar información, se requiere tener tus datos validados.",
+						"Nos informaste tu documento el " + compartidas.fechaHorarioTexto(usuario.fecha_revisores) + ".",
+						"Tenés que esperar a que el equipo de Revisores haga la validación.",
 						"Luego de la validación, recibirás un mail de feedback.",
 						"En caso de estar aprobado, podrás ingresarnos información.",
 					],
