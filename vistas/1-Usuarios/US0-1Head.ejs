@@ -1,19 +1,17 @@
 <link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/0-Usuarios.css">
 <% if (codigo == "mail" || codigo == "olvido-contrasena") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-Registro-Mail.css">
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/1-Alta-Mail.css">
 	<script src="/FE-javascript/1-Usuarios/1-Mail.js"></script>
 <% } else if (codigo == "perennes") { %>
 	<script src="/FE-javascript/1-Usuarios/2-Perennes.js"></script>
 <% } else if (codigo == "editables") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-Registro-Editables.css">
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-Datos-Editables.css">
 	<script src="/FE-javascript/0-Compartido/Mostrar-imagen.js"></script>
 	<script src="/FE-javascript/1-Usuarios/3-Editables.js"></script>
-<% } else if (codigo == "responsabilidad") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/4-Responsab.css">
-<% } else if (codigo == "validarIdentidad") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-Registro-Editables.css">
+<% } else if (codigo == "documento") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/3-Datos-Editables.css">
 	<script src="/FE-javascript/0-Compartido/Mostrar-imagen.js"></script>
-	<script src="/FE-javascript/1-Usuarios/4-Perm_Inputs.js"></script>
+	<script src="/FE-javascript/1-Usuarios/4-Documento.js"></script>
 <% } else if (codigo == "detalle") { %>
 <% } else if (codigo == "tableroControl") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/1-Usuarios/6-TableroControl.css">

@@ -17,7 +17,7 @@ router.get("/api/validar-login", API.validarLogin);
 router.get("/api/validar-mail", API.validarMail);
 router.get("/api/validar-perennes", API.validarPerennes);
 router.get("/api/validar-editables", API.validarEditables);
-router.get("/api/validar-identidad", API.validarIdentidad);
+router.get("/api/documento", API.validarIdentidad);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);
@@ -28,9 +28,9 @@ router.post("/datos-perennes", soloUsuarios, vista.altaPerennesGuardar);
 router.get("/datos-editables", soloUsuarios, vista.altaEditablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.altaEditablesGuardar);
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);
-router.get("/responsabilidad", soloUsuarios, vista.responsab);
-router.get("/validar-identidad", soloUsuarios, vista.validarIdentidadForm);
-router.post("/validar-identidad", soloUsuarios, multer.single("avatar"), vista.validarIdentidadGuardar);
+// router.get("/responsabilidad", soloUsuarios, vista.responsab);
+router.get("/documento", soloUsuarios, vista.documentoForm);
+router.post("/documento", soloUsuarios, multer.single("avatar"), vista.documentoGuardar);
 router.get("/documento-recibido", soloUsuarios, vista.documentoRecibido);
 
 // Rutas RUD

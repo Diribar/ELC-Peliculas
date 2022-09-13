@@ -208,9 +208,9 @@ module.exports = {
 			urlSalir: req.session.urlSinPermInput,
 		});
 	},
-	validarIdentidadForm: async (req, res) => {
+	documentoForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "validarIdentidad";
+		const codigo = "documento";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		// Generar la info para la vista
@@ -226,7 +226,7 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Solicitud de ABM en nuestra BD",
+			titulo: "Datos del Documento",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -236,7 +236,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	validarIdentidadGuardar: async (req, res) => {
+	documentoGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
 		let errores = await validar.validarIdentidad({...req.body, avatar: req.file.filename});
@@ -244,7 +244,7 @@ module.exports = {
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/validar-identidad");
+			return res.redirect("/usuarios/documento");
 		}
 		// Actualiza el usuario
 		let datos = {
