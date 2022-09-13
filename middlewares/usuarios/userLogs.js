@@ -64,7 +64,7 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/")
 		)
-			activarSessionCookie("urlSinAutInput");
+			activarSessionCookie("urlSinPermInput");
 
 		// Actualiza en session la url 'anterior'
 		activarSessionCookie("urlAnterior");

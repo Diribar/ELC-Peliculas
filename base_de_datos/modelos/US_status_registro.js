@@ -4,8 +4,8 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
 		mail_validado: {type: dt.BOOLEAN},
-		perennes_validado: {type: dt.BOOLEAN},
-		editables_validado: {type: dt.BOOLEAN},
+		perennes_ok: {type: dt.BOOLEAN},
+		editables_ok: {type: dt.BOOLEAN},
 		docum_revisar: {type: dt.BOOLEAN},
 		ident_validada: {type: dt.BOOLEAN},
 	};

@@ -193,6 +193,7 @@ module.exports = {
 		return nuevoHorario(delay, horario);
 	},
 	fechaTexto: (fecha) => {
+		fecha = new Date(fecha);
 		let dia = fecha.getDate();
 		let mes = meses[fecha.getMonth()];
 		let ano = fecha.getFullYear().toString().slice(-2);

@@ -15,9 +15,9 @@ module.exports = {
 		// Redireccionar
 		!status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/login")
-			: !status_registro_usuario.perennes_validado
+			: !status_registro_usuario.perennes_ok
 			? res.redirect("/usuarios/datos-perennes")
-			: !status_registro_usuario.editables_validado
+			: !status_registro_usuario.editables_ok
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
@@ -119,8 +119,8 @@ module.exports = {
 		}
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"perennes_validado",
-			"editables_validado",
+			"perennes_ok",
+			"editables_ok",
 			usuario,
 			req.body
 		);
@@ -172,7 +172,7 @@ module.exports = {
 		// Actualiza el usuario
 		req.body.avatar = req.file ? req.file.filename : "-";
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"editables_validado",
+			"editables_ok",
 			"documento",
 			usuario,
 			req.body
@@ -205,12 +205,12 @@ module.exports = {
 			tema: "usuario",
 			codigo: "responsabilidad",
 			titulo: "Responsabilidad con nuestra BD",
-			urlSalir: req.session.urlSinAutInput,
+			urlSalir: req.session.urlSinPermInput,
 		});
 	},
-	autInputForm: async (req, res) => {
+	validarIdentidadForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "autInput";
+		const codigo = "validarIdentidad";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		// Generar la info para la vista
@@ -236,15 +236,15 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	autInputGuardar: async (req, res) => {
+	validarIdentidadGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
-		let errores = await validar.autInput({...req.body, avatar: req.file.filename});
+		let errores = await validar.validarIdentidad({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/autorizado-input");
+			return res.redirect("/usuarios/validar-identidad");
 		}
 		// Actualiza el usuario
 		let datos = {
@@ -269,7 +269,7 @@ module.exports = {
 				"Luego de la validación, recibirás un mail de feedback.",
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
-			iconos: [variables.vistaEntendido(req.session.urlSinAutInput)],
+			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 			titulo: "Solicitud de ABM exitosa",
 			colorFondo: "verde",
 		};
@@ -335,7 +335,7 @@ module.exports = {
 		}
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
 		if (!usuario.status_registro.mail_validado)
-			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_validado", usuario);
+			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_ok", usuario);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookie

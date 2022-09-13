@@ -69,7 +69,7 @@ module.exports = {
 		return errores;
 	},
 
-	autInput: (datos) => {
+	validarIdentidad: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);

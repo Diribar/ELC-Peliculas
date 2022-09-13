@@ -18,8 +18,8 @@ module.exports = {
 		return res.json(errores);
 	},
 
-	validarAutInput: async (req, res) => {
-		let errores = await validarUsuarios.autInput(req.query);
+	validarIdentidad: async (req, res) => {
+		let errores = await validarUsuarios.validarIdentidad(req.query);
 		return res.json(errores);
 	},
 

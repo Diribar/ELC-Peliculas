@@ -16,7 +16,7 @@ module.exports = {
 		let userID = req.session.usuario.id;
 		let usuarios = {};
 		// Obtiene las solicitudes de Permiso de Input
-		usuarios.autInputs = await procesos.tablero_obtenerPermInput(userID);
+		usuarios.validarIdentidades = await procesos.tablero_validarIdentidades(userID);
 		// Va a la vista
 		// return res.send(autInputs);
 		return res.render("GN0-Estructura", {
@@ -27,10 +27,10 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	permisoInputs: async (req, res) => {
+	validarIdentidad: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionUs";
-		const codigo = "permInputs";
+		const codigo = "validarIdentidad";
 		// 2. Obtener el ID del usuario
 		let id = req.query.id;
 		// 3. Obtener el usuario
@@ -40,7 +40,7 @@ module.exports = {
 		return res.render("CMP-RV-Estructura", {
 			tema,
 			codigo,
-			titulo: "Permiso Inputs",
+			titulo: "Validar la Identidad",
 			user,
 			avatar,
 			title: "",
