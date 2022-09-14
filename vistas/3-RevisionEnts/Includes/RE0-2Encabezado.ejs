@@ -1,31 +1,31 @@
 <section id="encabezado">
 	<div id="nombres">
-		<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= prodOriginal.id %>" target="_blank">
-			<h1><%= prodOriginal.nombre_castellano %></h1>
+		<a href="/producto/detalle/?entidad=<%= entidad %>&id=<%= prodOrig.id %>" target="_blank">
+			<h1><%= prodOrig.nombre_castellano %></h1>
 		</a>
-		<% if (prodOriginal.nombre_original) { %>
-			<h2><em><%= prodOriginal.nombre_original %></em></h2>
+		<% if (prodOrig.nombre_original) { %>
+			<h2><em><%= prodOrig.nombre_original %></em></h2>
 		<% } %>
 	</div>
 	<div id="colCap">
 		<!-- Cantidad de Temporadas y de Capítulos -->
 		<% if (entidad == "colecciones") { %>
 			<div id="colecciones">
-				<p><strong>Cant. de Temporadas:</strong> <%= prodOriginal.cant_temporadas ? prodOriginal.cant_temporadas : "Sin temporada" %></p>
-				<p><strong>Cant. de Capítulos:</strong> <%= prodOriginal.capitulos.length %></p>
+				<p><strong>Cant. de Temporadas:</strong> <%= prodOrig.cant_temporadas ? prodOrig.cant_temporadas : "Sin temporada" %></p>
+				<p><strong>Cant. de Capítulos:</strong> <%= prodOrig.capitulos.length %></p>
 			</div>
 			<% } %>
 		<!-- Colección a la que pertenece -->
 		<% if (entidad == "capitulos") { %>
 			<p id="tempCapI">
 				<strong>De la colección:</strong>
-				<a href="/producto/detalle/?entidad=colecciones&id=<%= prodOriginal.coleccion.id %>" target="_blank">
-					<span><%= prodOriginal.coleccion.nombre_castellano %></span>
+				<a href="/producto/detalle/?entidad=colecciones&id=<%= prodOrig.coleccion.id %>" target="_blank">
+					<span><%= prodOrig.coleccion.nombre_castellano %></span>
 				</a>
 			</p>
 			<div id="tempCapS">
-				<p id="temporada">Temporada: <%= prodOriginal.temporada %></p>
-				<p id="capitulo">Capítulo: <%= prodOriginal.capitulo %></p>
+				<p id="temporada">Temporada: <%= prodOrig.temporada %></p>
+				<p id="capitulo">Capítulo: <%= prodOrig.capitulo %></p>
 			</div>
 		<% } %>
 	</div>

@@ -271,7 +271,8 @@ module.exports = {
 
 		let datos = {[campo]: null};
 		if (campo == "avatar") datos.avatar_archivo = null;
-		await BD_genericas.actualizarPorId("prods_edicion", edicID, datos);
+		console.log(prodEdic.id,campo);
+		if (campo) await BD_genericas.actualizarPorId("prods_edicion", prodEdic.id, datos);
 
 		// Variables
 		let datosEdicion = {
@@ -279,7 +280,7 @@ module.exports = {
 			editado_por_id: prodEdic.editado_por_id,
 			editado_en: prodEdic.editado_en,
 		};
-		// Pulir la información a tener en cuenta
+		// Pule la información a tener en cuenta
 		let [edicion, quedanCampos] = compartidas.pulirEdicion(prodOrig, prodEdic);
 		// Acciones si no quedan campos
 		let statusAprob = prodOrig.status_registro.aprobado;

@@ -47,10 +47,10 @@ module.exports = {
 		// 4. Obtener los datos ORIGINALES del producto
 		let includes = ["status_registro"];
 		if (entidad == "colecciones") includes.push("capitulos");
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
-		if (!prodOriginal.status_registro.creado) return res.redirect("/revision/tablero-de-control");
+		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
+		if (!prodOrig.status_registro.creado) return res.redirect("/revision/tablero-de-control");
 		// 5. Obtener avatar original
-		let avatar = prodOriginal.avatar;
+		let avatar = prodOrig.avatar;
 		avatar = avatar
 			? (!avatar.startsWith("http") ? "/imagenes/4-ProdRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
@@ -58,29 +58,29 @@ module.exports = {
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo = "Revisar el Alta de" + (entidad == "capitulos" ? "l " : " la ") + prodNombre;
 		// 7. Obtener los países
-		let paises = prodOriginal.paises_id
-			? await compartidas.paises_idToNombre(prodOriginal.paises_id)
+		let paises = prodOrig.paises_id
+			? await compartidas.paises_idToNombre(prodOrig.paises_id)
 			: "";
 		// 8. Info para la vista
-		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOriginal, paises);
+		let [bloqueIzq, bloqueDer] = await procesos.prodAlta_ficha(prodOrig, paises);
 		let motivosRechazo = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden").then((n) =>
 			n.filter((m) => m.prod)
 		);
 		// Va a la vista
-		//return res.send(prodOriginal)
+		//return res.send(prodOrig)
 		return res.render("CMP-RV-Estructura", {
 			tema,
 			codigo,
 			titulo,
 			entidad,
 			id,
-			prodOriginal,
+			prodOrig,
 			avatar,
 			bloqueIzq,
 			bloqueDer,
 			motivosRechazo,
 			prodNombre,
-			title: prodOriginal.nombre_castellano,
+			title: prodOrig.nombre_castellano,
 		});
 	},
 	prod_Edicion: async (req, res) => {
@@ -112,30 +112,30 @@ module.exports = {
 				"hecho",
 				"valor",
 			];
-			var prodEditado = await BD_genericas.obtenerPorIdConInclude(
+			var prodEdic = await BD_genericas.obtenerPorIdConInclude(
 				"prods_edicion",
 				edicID,
 				includesEdic
 			);
 		}
 		// Verificación paso 2: averigua si existe otra ajena y en caso afirmativo recarga la vista
-		if (!prodEditado) {
+		if (!prodEdic) {
 			// Averigua si existe otra ajena
-			prodEditado = await BD_especificas.obtenerEdicionAjena(
+			prodEdic = await BD_especificas.obtenerEdicionAjena(
 				"prods_edicion",
 				producto_id,
 				prodID,
 				userID
 			);
 			// En caso afirmativo recarga la vista con el ID de la nueva edición
-			if (prodEditado) {
+			if (prodEdic) {
 				let ruta = req.baseUrl + req.path;
-				let terminacion = "?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + prodEditado.id;
+				let terminacion = "?entidad=" + entidad + "&id=" + prodID + "&edicion_id=" + prodEdic.id;
 				return res.redirect(ruta + terminacion);
 			}
 		}
 		// Verificación paso 3: muestra el cartel de error
-		if (!prodEditado) {
+		if (!prodEdic) {
 			let informacion = await infoProdEdicion(entidad, prodID, producto_id, userID);
 			return res.render("MI-Cartel", {informacion});
 		}
@@ -143,49 +143,50 @@ module.exports = {
 		let includesOrig = [...includesEdic, "status_registro"];
 		if (entidad == "capitulos") includesOrig.push("coleccion");
 		if (entidad == "colecciones") includesOrig.push("capitulos");
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
+		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
-		if (!prodEditado[producto_id] || prodEditado[producto_id] != prodID)
+		if (!prodEdic[producto_id] || prodEdic[producto_id] != prodID)
 			return res.redirect("/inactivar-captura/?origen=tablero&entidad=" + entidad + "&id=" + prodID);
 		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
-		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEditado
-		[quedanCampos, prodEditado] = await procesos.prodEdic_feedback(prodOriginal, prodEditado);
+		// 2. Averigua si quedan campos y obtiene la versión mínima de prodEdic
+		let quedanCampos
+		[quedanCampos, prodEdic] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		if (!quedanCampos) return res.render("MI-Cartel", cartelNoQuedanCampos());
 
 		// Acciones si se superan las verificaciones -------------------------------
 		// Declaración de más variables
 		let motivos = await BD_genericas.obtenerTodos("edic_motivos_rech", "orden");
-		let vista, avatar, ingresos, reemplazos, quedanCampos, bloqueDer;
+		let vista, avatar, ingresos, reemplazos, bloqueDer;
 		// 4. Acciones dependiendo de si está editado el avatar
-		if (prodEditado.avatar_archivo) {
+		if (prodEdic.avatar_archivo) {
 			// Vista 'Edición-Avatar'
 			vista = "RE1-Prod-Avatar";
 			// Ruta y nombre del archivo 'avatar'
 			avatar = {
-				original: prodOriginal.avatar
-					? (!prodOriginal.avatar.startsWith("http")
-							? prodOriginal.status_registro.gr_creado
+				original: prodOrig.avatar
+					? (!prodOrig.avatar.startsWith("http")
+							? prodOrig.status_registro.gr_creado
 								? "/imagenes/4-ProdRevisar/"
 								: "/imagenes/3-Productos/"
-							: "") + prodOriginal.avatar
+							: "") + prodOrig.avatar
 					: "/imagenes/8-Agregar/IM.jpg",
-				edicion: "/imagenes/4-ProdRevisar/" + prodEditado.avatar_archivo,
-				mostrarOriginal: !!prodEditado.avatar,
+				edicion: "/imagenes/4-ProdRevisar/" + prodEdic.avatar_archivo,
+				mostrarOriginal: !!prodEdic.avatar,
 			};
 			motivos = motivos.filter((m) => m.avatar);
 		} else {
 			// Obtener los ingresos y reemplazos
-			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOriginal, prodEditado);
+			[ingresos, reemplazos] = procesos.prodEdic_ingrReempl(prodOrig, prodEdic);
 			// Obtener el avatar
-			avatar = prodOriginal.avatar;
+			avatar = prodOrig.avatar;
 			avatar = avatar
 				? (!avatar.startsWith("http") ? "/imagenes/3-Productos/" : "") + avatar
 				: "/imagenes/8-Agregar/IM.jpg";
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
-			bloqueDer = await procesos.prodEdic_ficha(prodOriginal, prodEditado);
+			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
 			vista = "CMP-RV-Estructura";
 		}
 		// 5. Configurar el título de la vista
@@ -197,8 +198,8 @@ module.exports = {
 			tema,
 			codigo,
 			titulo,
-			prodOriginal,
-			prodEditado,
+			prodOrig,
+			prodEdic,
 			prodNombre,
 			ingresos,
 			reemplazos,
@@ -208,7 +209,7 @@ module.exports = {
 			id: prodID,
 			bloqueDer,
 			vista,
-			title: prodOriginal.nombre_castellano,
+			title: prodOrig.nombre_castellano,
 		});
 	},
 	// RCLV

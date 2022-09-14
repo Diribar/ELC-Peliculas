@@ -20,10 +20,10 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario ? req.session.usuario.id : "";
 		// 3. Obtiene el producto 'Original' y 'Editado'
-		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene el avatar y la versión más completa posible del producto
-		let avatar = compartidas.nombreAvatar(prodOriginal, prodEditado);
-		let prodCombinado = {...prodOriginal, ...prodEditado, avatar, id: prodID};
+		let avatar = compartidas.nombreAvatar(prodOrig, prodEdic);
+		let prodCombinado = {...prodOrig, ...prodEdic, avatar, id: prodID};
 		// 5. Configura el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
 		let titulo =
@@ -32,8 +32,8 @@ module.exports = {
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
 		// 6. Obtiene los países
-		let paises = prodOriginal.paises_id
-			? await compartidas.paises_idToNombre(prodOriginal.paises_id)
+		let paises = prodOrig.paises_id
+			? await compartidas.paises_idToNombre(prodOrig.paises_id)
 			: "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
@@ -185,11 +185,11 @@ module.exports = {
 		// Obtener el userID
 		let userID = req.session.usuario.id;
 		// Obtener el producto 'Original' y 'Editado'
-		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar_archivo = req.file ? req.file.filename : "";
 		// Unir 'Edición' y 'Original'
-		let prodCombinado = {...prodOriginal, ...prodEditado, ...req.body, avatar_archivo, id: prodID};
+		let prodCombinado = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
 		// Averiguar si hay errores de validación
 		let errores = await validar.consolidado("", {...prodCombinado, entidad});
 		if (errores.hay) {
@@ -200,12 +200,12 @@ module.exports = {
 				// Mover el archivo actual a su ubicación para ser revisado
 				compartidas.moverImagen(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
-				if (prodEditado.avatar)
-					compartidas.borrarArchivo("./publico/imagenes/4-ProdRevisar", prodEditado.avatar);
+				if (prodEdic.avatar)
+					compartidas.borrarArchivo("./publico/imagenes/4-ProdRevisar", prodEdic.avatar);
 			}
 			// Actualiza la edición
 			let edicion = {...req.body, avatar_archivo};
-			await compartidas.guardar_edicion(entidad, "prods_edicion", prodOriginal, edicion, userID);
+			await compartidas.guardar_edicion(entidad, "prods_edicion", prodOrig, edicion, userID);
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

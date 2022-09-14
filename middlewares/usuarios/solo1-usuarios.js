@@ -9,7 +9,8 @@ module.exports = (req, res, next) => {
 		!usuario.status_registro.editables_ok &&
 		((!url.startsWith("/usuarios/datos-perennes") && !url.startsWith("/usuarios/datos-editables")) ||
 			(url.startsWith("/usuarios/datos-perennes") && usuario.status_registro.perennes_ok) ||
-			(url.startsWith("/usuarios/datos-editables") && usuario.status_registro.editables_ok))
+			(url.startsWith("/usuarios/datos-editables") && usuario.status_registro.editables_ok) ||
+			(url.startsWith("/usuarios/documento") && usuario.status_registro.docum_revisar))
 	)
 		return res.redirect("/usuarios/redireccionar");
 

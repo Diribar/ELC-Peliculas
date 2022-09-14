@@ -55,9 +55,9 @@ module.exports = {
 		let {entidad, id: prodID} = req.query;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// Enviar los datos
-		return res.json([prodOriginal, prodEditado]);
+		return res.json([prodOrig, prodEdic]);
 	},
 	prod_EliminarEdic: async (req, res) => {
 		// Obtener los datos identificatorios del producto
@@ -66,10 +66,10 @@ module.exports = {
 		let userID = req.session.usuario.id;
 
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
+		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// No se puede eliminar la edición de un producto con status "gr_creado" y fue creado por el usuario
-		let condicion = !prodOriginal.status_registro.gr_creado || prodOriginal.creado_por_id != userID;
-		if (condicion && prodEditado) BD_genericas.eliminarPorId("prods_edicion", prodEditado.id);
+		let condicion = !prodOrig.status_registro.gr_creado || prodOrig.creado_por_id != userID;
+		if (condicion && prodEdic) BD_genericas.eliminarPorId("prods_edicion", prodEdic.id);
 		// Terminar
 		return res.json();
 	},

@@ -255,13 +255,13 @@ module.exports = {
 	},
 
 	// Varios
-	nombreAvatar: (prodOriginal, prodEditado) => {
-		return prodEditado.avatar
-			? "/imagenes/4-ProdRevisar/" + prodEditado.avatar
-			: prodOriginal.avatar
-			? !prodOriginal.avatar.startsWith("http")
-				? "/imagenes/3-Productos/" + prodOriginal.avatar
-				: prodOriginal.avatar
+	nombreAvatar: (prodOrig, prodEdic) => {
+		return prodEdic.avatar
+			? "/imagenes/4-ProdRevisar/" + prodEdic.avatar
+			: prodOrig.avatar
+			? !prodOrig.avatar.startsWith("http")
+				? "/imagenes/3-Productos/" + prodOrig.avatar
+				: prodOrig.avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 	},
 	enviarMail: async (asunto, mail, comentario) => {
