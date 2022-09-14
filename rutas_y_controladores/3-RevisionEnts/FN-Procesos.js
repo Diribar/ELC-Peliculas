@@ -271,7 +271,6 @@ module.exports = {
 
 		let datos = {[campo]: null};
 		if (campo == "avatar") datos.avatar_archivo = null;
-		console.log(prodEdic.id,campo);
 		if (campo) await BD_genericas.actualizarPorId("prods_edicion", prodEdic.id, datos);
 
 		// Variables
