@@ -4,9 +4,10 @@ module.exports = (sequelize, dt) => {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
 		mail_validado: {type: dt.BOOLEAN},
-		datos_perennes: {type: dt.BOOLEAN},
-		datos_editables: {type: dt.BOOLEAN},
-		documento: {type: dt.BOOLEAN},
+		perennes_validado: {type: dt.BOOLEAN},
+		editables_validado: {type: dt.BOOLEAN},
+		docum_revisar: {type: dt.BOOLEAN},
+		ident_validada: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "us_status_registro",

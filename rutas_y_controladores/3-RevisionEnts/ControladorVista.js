@@ -68,7 +68,7 @@ module.exports = {
 		);
 		// Va a la vista
 		//return res.send(prodOriginal)
-		return res.render("RE0-0Estructura", {
+		return res.render("CMP-RV-Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -80,6 +80,7 @@ module.exports = {
 			bloqueDer,
 			motivosRechazo,
 			prodNombre,
+			title: prodOriginal.nombre_castellano,
 		});
 	},
 	prod_Edicion: async (req, res) => {
@@ -185,7 +186,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOriginal, prodEditado);
-			vista = "RE0-0Estructura";
+			vista = "CMP-RV-Estructura";
 		}
 		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -207,6 +208,7 @@ module.exports = {
 			id: prodID,
 			bloqueDer,
 			vista,
+			title: prodOriginal.nombre_castellano,
 		});
 	},
 	// RCLV
@@ -302,7 +304,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Va a la vista
 		//return res.send(links)
-		return res.render("RE0-0Estructura", {
+		return res.render("CMP-RV-Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -313,12 +315,12 @@ module.exports = {
 			provs,
 			links_tipos: linksTipos,
 			avatar,
-			prodOriginal: producto,
 			motivos,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			mostrar: null,
 			userID,
 			camposARevisar,
+			title: producto.nombre_castellano,
 		});
 	},
 };

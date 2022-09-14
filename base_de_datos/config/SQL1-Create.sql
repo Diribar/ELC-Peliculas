@@ -81,15 +81,15 @@ CREATE TABLE us_roles (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(30) NOT NULL,
-	aut_input BOOLEAN NOT NULL,
+	perm_inputs BOOLEAN NOT NULL,
 	revisor_ents BOOLEAN NOT NULL,
 	revisor_us BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_roles (id, orden, nombre, aut_input, revisor_ents, revisor_us)
+INSERT INTO us_roles (id, orden, nombre, perm_inputs, revisor_ents, revisor_us)
 VALUES 
 (1, 1, 'Consultas', 0, 0, 0),
-(2, 2, 'Autorizado p/Inputs', 1, 0, 0),
+(2, 2, 'Permiso Inputs', 1, 0, 0),
 (3, 3, 'Gestor de Productos', 1, 1, 0),
 (4, 4, 'Gestor de Usuarios', 1, 0, 1),
 (5, 5, 'Omnipotente', 1, 1, 1)
@@ -97,24 +97,26 @@ VALUES
 CREATE TABLE us_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
-	nombre VARCHAR(50) NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
 	mail_validado BOOLEAN NULL,
-	datos_perennes BOOLEAN NULL,
-	datos_editables BOOLEAN NULL,
-	documento BOOLEAN NULL,
+	perennes_validado BOOLEAN NULL,
+	editables_validado BOOLEAN NULL,
+	docum_revisar BOOLEAN NULL,
+	ident_validada BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre, mail_validado, datos_perennes, datos_editables, documento)
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado, perennes_validado, editables_validado, docum_revisar, ident_validada)
 VALUES 
-(1, 1, 'Mail a validar', 0, 0, 0, 0), 
-(2, 2, 'Mail validado', 1, 0, 0, 0), 
-(3, 3, 'Datos perennes', 1, 1, 0, 0), 
-(4, 4, 'Datos editables', 1, 1, 1, 0),
-(5, 5, 'DNI', 1, 1, 1, 1)
+(1, 1, 'Mail a validar', 0, 0, 0, 0, 0), 
+(2, 2, 'Mail validado', 1, 0, 0, 0, 0), 
+(3, 3, 'Datos perennes', 1, 1, 0, 0, 0), 
+(4, 4, 'Datos editables', 1, 1, 1, 0, 0),
+(5, 5, 'Documento a revisar', 1, 1, 1, 1, 0),
+(6, 6, 'Identidad validada', 1, 1, 1, 1, 1)
 ;
 
 /* USUARIOS */;
-CREATE TABLE USUARIOS (
+CREATE TABLE usuarios (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL UNIQUE,
 	contrasena VARCHAR(100) NOT NULL,
@@ -127,21 +129,21 @@ CREATE TABLE USUARIOS (
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
+	perm_inputs_bloqueado BOOLEAN DEFAULT 0,
+	autorizado_fa BOOLEAN DEFAULT 0,
 	numero_documento VARCHAR(15) UNIQUE NULL,
 	avatar_documento VARCHAR(18) DEFAULT NULL,
-	autorizado_fa BOOLEAN DEFAULT 0,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
 	
 	fecha_ultimo_login DATE DEFAULT UTC_DATE,
 	fecha_contrasena DATETIME DEFAULT UTC_TIMESTAMP,
-	fecha_feedback_revisores DATETIME NULL,
+	fecha_revisores DATETIME NULL,
 
 	creado_en DATETIME DEFAULT UTC_TIMESTAMP,
 	completado_en DATETIME NULL,
 	editado_en DATETIME NULL,
-	status_registro_id TINYINT UNSIGNED NOT NULL,
 	
 	prods_aprob SMALLINT DEFAULT 0,
 	prods_rech SMALLINT DEFAULT 0,
@@ -156,19 +158,26 @@ CREATE TABLE USUARIOS (
 	penalizado_en DATETIME NULL,
 	penalizado_hasta DATETIME NULL,
 
+	capturado_por_id INT UNSIGNED NULL,
+	capturado_en DATETIME NULL,
+	captura_activa BOOLEAN NULL,
+
+	status_registro_id TINYINT UNSIGNED NOT NULL,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (sexo_id) REFERENCES aux_sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES aux_paises(id),
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
+	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
 	FOREIGN KEY (status_registro_id) REFERENCES us_status_registro(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO USUARIOS (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
+INSERT INTO usuarios (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
 VALUES 
 (1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO USUARIOS (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
+INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
 (10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', 'AR-21072001', '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',           '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
@@ -243,7 +252,7 @@ CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(41) NOT NULL,
-	bloquear_aut_input BOOLEAN DEFAULT 0,
+	bloquear_perm_inputs BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
@@ -254,14 +263,14 @@ INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, rclv, lin
 VALUES
 (100, 100, 0, 'Otro motivo', 1, 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloquear_aut_input)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloquear_perm_inputs)
 VALUES
 (11, 1, 0.2, 'Producto duplicado', 1, 0),
 (12, 2, 1, 'Producto ajeno a nuestro perfil', 1, 0),
 (13, 3, 90, 'Producto ofensivo a nuestro perfil', 1, 1),
 (14, 4, 180, 'Producto ofensivo con pornografía', 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloquear_aut_input)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloquear_perm_inputs)
 VALUES
 (21, 1, 0, 'Link reemplazado por otro más acorde', 1, 0),
 (22, 2, 0.2, 'Link a video no disponible', 1, 0),
@@ -280,7 +289,7 @@ CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(40) NOT NULL,
-	bloquear_aut_input BOOLEAN DEFAULT 0,
+	bloquear_perm_inputs BOOLEAN DEFAULT 0,
 	avatar BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,

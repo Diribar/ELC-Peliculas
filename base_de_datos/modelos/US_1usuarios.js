@@ -12,21 +12,21 @@ module.exports = (sequelize, dt) => {
 		pais_id: {type: dt.STRING(2)},
 		rol_iglesia_id: {type: dt.STRING(3)},
 		rol_usuario_id: {type: dt.INTEGER},
+		perm_inputs_bloqueado: {type: dt.BOOLEAN},
+		autorizado_fa: {type: dt.BOOLEAN},
 		numero_documento: {type: dt.STRING(15)},
 		avatar_documento: {type: dt.STRING(18)},
-		autorizado_fa: {type: dt.BOOLEAN},
 
 		dias_login: {type: dt.INTEGER},
 		version_elc_ultimo_login: {type: dt.STRING(4)},
 
 		fecha_ultimo_login: {type: dt.DATE},
 		fecha_contrasena: {type: dt.DATE},
-		fecha_feedback_revisores: {type: dt.DATE},
+		fecha_revisores: {type: dt.DATE},
 
 		creado_en: {type: dt.DATE},
 		completado_en: {type: dt.DATE},
 		editado_en: {type: dt.DATE},
-		status_registro_id: {type: dt.INTEGER},
 
 		prods_aprob: {type: dt.INTEGER},
 		prods_rech: {type: dt.INTEGER},
@@ -40,6 +40,12 @@ module.exports = (sequelize, dt) => {
 		penalizac_acum: {type: dt.DECIMAL},
 		penalizado_en: {type: dt.DATE},
 		penalizado_hasta: {type: dt.DATE},
+
+		capturado_por_id: {type: dt.INTEGER},
+		capturado_en: {type: dt.DATE},
+		captura_activa: {type: dt.BOOLEAN},
+
+		status_registro_id: {type: dt.INTEGER},
 	};
 	const config = {
 		tableName: "usuarios",
@@ -66,6 +72,8 @@ module.exports = (sequelize, dt) => {
 
 		entidad.hasMany(n.cal_registros, {as: "calificaciones", foreignKey: "usuario_id"});
 		entidad.hasMany(n.interes_en_prod, {as: "interes_en_prod", foreignKey: "usuario_id"});
+
+		entidad.belongsTo(n.usuarios, {as: "capturado_por", foreignKey: "capturado_por_id"});
 	};
 	return entidad;
 };
