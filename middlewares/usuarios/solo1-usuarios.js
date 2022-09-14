@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 			(url.startsWith("/usuarios/datos-perennes") && usuario.status_registro.perennes_ok) ||
 			(url.startsWith("/usuarios/datos-editables") && usuario.status_registro.editables_ok))
 	)
-		return res.redirect("/");
+		return res.redirect("/usuarios/redireccionar");
 
 	// Fin
 	next();
