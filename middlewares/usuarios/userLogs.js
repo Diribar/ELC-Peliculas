@@ -9,7 +9,14 @@ module.exports = (req, res, next) => {
 	};
 
 	// Datos originales
-	let urls = ["urlSinLogin", "urlSinUsuario", "urlSinCaptura", "urlAnterior", "urlActual"];
+	let urls = [
+		"urlSinLogin",
+		"urlSinUsuario",
+		"urlSinCaptura",
+		"urlSinPermInput",
+		"urlAnterior",
+		"urlActual",
+	];
 	urls.forEach((url) => {
 		if (!req.session[url]) req.session[url] = req.cookies && req.cookies[url] ? req.cookies[url] : "/";
 	});
@@ -55,7 +62,7 @@ module.exports = (req, res, next) => {
 		)
 			activarSessionCookie("urlSinCaptura");
 
-		// 4. url sin autInput
+		// 4. url sin permInput
 		// No tiene agregar ni edición
 		// No tiene links
 		if (
@@ -64,7 +71,7 @@ module.exports = (req, res, next) => {
 			!anterior.includes("/edicion/") &&
 			!anterior.startsWith("/links/")
 		)
-			activarSessionCookie("urlSinAutInput");
+			activarSessionCookie("urlSinPermInput");
 
 		// Actualiza en session la url 'anterior'
 		activarSessionCookie("urlAnterior");
@@ -72,6 +79,6 @@ module.exports = (req, res, next) => {
 		req.session.urlActual = actual;
 		res.cookie("urlActual", actual, {maxAge: unDia});
 	}
-	
+
 	next();
 };

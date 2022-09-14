@@ -15,9 +15,9 @@ module.exports = {
 		// Redireccionar
 		!status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/login")
-			: !status_registro_usuario.perennes_validado
+			: !status_registro_usuario.perennes_ok
 			? res.redirect("/usuarios/datos-perennes")
-			: !status_registro_usuario.editables_validado
+			: !status_registro_usuario.editables_ok
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
@@ -60,7 +60,7 @@ module.exports = {
 	altaMailGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let email = req.body.email;
-		let errores = await validar.registroMail(email);
+		let errores = await validar.altaMail(email);
 		// Si no hay errores, verificar si ya existe en la BD
 		if (!errores.hay && (await BD_especificas.obtenerELC_id("usuarios", {email})))
 			errores = {email: "Esta dirección de email ya figura en nuestra base de datos", hay: true};
@@ -87,7 +87,7 @@ module.exports = {
 		// Redireccionar
 		return res.render("MI-Cartel", {informacion});
 	},
-	altaPerennesForm: async (req, res) => {
+	perennesForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "perennes";
 		// Preparar datos para la vista
@@ -105,7 +105,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	altaPerennesGuardar: async (req, res) => {
+	perennesGuardar: async (req, res) => {
 		!req.session.usuario ? res.redirect("/usuarios/login") : "";
 		let usuario = req.session.usuario;
 		// Averigua si hay errores de validación
@@ -119,15 +119,15 @@ module.exports = {
 		}
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"perennes_validado",
-			"editables_validado",
+			"perennes_ok",
+			"editables_ok",
 			usuario,
 			req.body
 		);
 		// Redirecciona
 		return res.redirect("/usuarios/redireccionar");
 	},
-	altaEditablesForm: async (req, res) => {
+	editablesForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "editables";
 		// Variables
@@ -157,7 +157,7 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	altaEditablesGuardar: async (req, res) => {
+	editablesGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
@@ -172,7 +172,7 @@ module.exports = {
 		// Actualiza el usuario
 		req.body.avatar = req.file ? req.file.filename : "-";
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"editables_validado",
+			"editables_ok",
 			"documento",
 			usuario,
 			req.body
@@ -199,18 +199,9 @@ module.exports = {
 		// Fin
 		return res.render("MI-Cartel", {informacion});
 	},
-	responsab: async (req, res) => {
-		// Va a la vista
-		return res.render("GN0-Estructura", {
-			tema: "usuario",
-			codigo: "responsabilidad",
-			titulo: "Responsabilidad con nuestra BD",
-			urlSalir: req.session.urlSinAutInput,
-		});
-	},
-	autInputForm: async (req, res) => {
+	documentoForm: async (req, res) => {
 		const tema = "usuario";
-		const codigo = "autInput";
+		const codigo = "documento";
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		// Generar la info para la vista
@@ -226,7 +217,7 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Solicitud de ABM en nuestra BD",
+			titulo: "Datos del Documento",
 			link: req.originalUrl,
 			dataEntry,
 			errores,
@@ -236,15 +227,15 @@ module.exports = {
 			urlSalir: req.session.urlSinLogin,
 		});
 	},
-	autInputGuardar: async (req, res) => {
+	documentoGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
-		let errores = await validar.autInput({...req.body, avatar: req.file.filename});
+		let errores = await validar.documento({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
-			return res.redirect("/usuarios/autorizado-input");
+			return res.redirect("/usuarios/documento");
 		}
 		// Actualiza el usuario
 		let datos = {
@@ -264,12 +255,12 @@ module.exports = {
 		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [
-				"Estimad" + letra + usuario.apodo + ", gracias por completar tu solicitud.",
+				"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
 				"Queda en manos del equipo de Revisores validar tus datos.",
 				"Luego de la validación, recibirás un mail de feedback.",
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
-			iconos: [variables.vistaEntendido(req.session.urlSinAutInput)],
+			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
 			titulo: "Solicitud de ABM exitosa",
 			colorFondo: "verde",
 		};
@@ -335,7 +326,7 @@ module.exports = {
 		}
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
 		if (!usuario.status_registro.mail_validado)
-			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_validado", usuario);
+			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_ok", usuario);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookie

@@ -8,18 +8,17 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 // Login y Roles de Usuario
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const soloAutInput = require("../../middlewares/usuarios/solo2-aut-input");
+const aptoInput = require("../../middlewares/usuarios/aptoInput");
 // Existen la entidad y el producto
 const entidad = require("../../middlewares/producto/entidadNombre");
 const id = require("../../middlewares/producto/entidadID");
 // Temas de captura
-const aptoDE = require("../../middlewares/captura/aptoDE");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
 const capturaInactivar = require("../../middlewares/captura/capturaInactivar");
 // Varios
 const multer = require("../../middlewares/varios/multer");
-const todos = [soloUsuarios, soloAutInput, aptoDE, entidad, id, permUserReg, capturaActivar];
+const todos = [soloUsuarios, aptoInput, entidad, id, permUserReg, capturaActivar];
 
 //************************ Rutas ****************************
 // Rutas de APIs

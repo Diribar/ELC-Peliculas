@@ -1,13 +1,13 @@
 "use strict";
-// Requires
+// Definir variables
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const funciones = require("../../funciones/3-Procesos/Compartidas");
+const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
-	// Definir variables
-	const usuario = await BD_genericas.obtenerPorId("usuarios", req.session.usuario.id);
+	// Variables
+	const usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
 
@@ -16,10 +16,8 @@ module.exports = async (req, res, next) => {
 		// Variables
 		let informacion;
 		// Proceso
-		if (usuario.penalizado_hasta && usuario.penalizado_hasta > funciones.ahora()) {
-			let hasta = new Date(usuario.penalizado_hasta);
-			let fecha =
-				hasta.getDate() + "/" + meses[hasta.getMonth()] + "/" + String(hasta.getFullYear()).slice(-2);
+		if (usuario.penalizado_hasta && usuario.penalizado_hasta > compartidas.ahora()) {
+			let fecha = compartidas.fechaTexto(usuario.penalizado_hasta);
 			informacion = {
 				mensajes: [
 					"Necesitamos que la información que nos brindes esté más alineada con nuestro perfil y sea precisa.",
@@ -28,6 +26,50 @@ module.exports = async (req, res, next) => {
 				iconos: [vistaAnterior],
 			};
 		}
+		return informacion;
+	};
+	let permisoInputs = () => {
+		let informacion;
+		if (!usuario.rol_usuario.perm_inputs) {
+			if (!usuario.status_registro.docum_revisar)
+				informacion = {
+					mensajes: [
+						"El ingreso de información para otras personas, requiere responsabilidad.",
+						"Para asegurarnos eso, cada persona debe tener un sólo usuario cuya reputación debe cuidar.",
+						"Por eso, necesitamos validar tu identidad con tu documento.",
+						"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
+					],
+					iconos: [
+						{
+							nombre: "fa-circle-left",
+							link: req.session.urlSinPermInput,
+							titulo: "Ir a la vista anterior",
+						},
+						{
+							nombre: "fa-circle-right",
+							// link: "/usuarios/responsabilidad",
+							link:"/usuarios/documento",
+							titulo: "Ir a 'Documento'",
+						},
+					],
+					titulo: "Aviso",
+					colorFondo: "verde",
+				};
+			else if (!usuario.status_registro.ident_validada)
+				informacion = {
+					mensajes: [
+						"Para ingresar información, se requiere tener tus datos validados.",
+						"Nos informaste tu documento el " + compartidas.fechaHorarioTexto(usuario.fecha_revisores) + ".",
+						"Tenés que esperar a que el equipo de Revisores haga la validación.",
+						"Luego de la validación, recibirás un mail de feedback.",
+						"En caso de estar aprobado, podrás ingresarnos información.",
+					],
+					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+					titulo: "Aviso",
+					colorFondo: "gris",
+				};
+		}
+		// Fin
 		return informacion;
 	};
 	let compararRegistrosConNivelDeConfianza = async () => {
@@ -50,19 +92,26 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				mensajes: mensajes(edicion),
 				iconos: [vistaAnterior],
+				colorFondo: "gris",
 			};
 		// Fin
 		return informacion;
 	};
 
-	// VERIFICACIÓN1: Usuario penalizado
+	// VERIFICACIÓN: Redirecciona si el usuario no está logueado
+	if (!usuario) return res.redirect("/usuarios/login");
+	// VERIFICACIÓN: Redirecciona si el usuario no completó el alta de usuario
+	if (!usuario.status_registro.editables_ok) return res.redirect("/usuarios/redireccionar");
+	// VERIFICACIÓN: Usuario penalizado
 	if (!informacion) informacion = detectarUsuarioPenalizado();
-	// VERIFICACIÓN2: Registros a revisar >= Nivel de Confianza
+	// VERIFICACIÓN: Permiso input
+	if (!informacion) informacion = permisoInputs();
+	// VERIFICACIÓN: Registros a revisar >= Nivel de Confianza
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
-	// Continuar
+	// Fin
 	if (informacion) return res.render("MI-Cartel", {informacion});
-	next();
+	else next();
 };
 
 let nivel_de_confianza = (usuario, producto, rclv, links, edicion) => {
@@ -103,8 +152,7 @@ let contar_registros = async (usuario, producto, rclv, links, edicion) => {
 	if (producto) entidades = ["peliculas", "colecciones", "capitulos"];
 	else if (rclv) entidades = ["personajes", "hechos", "valores"];
 	else if (links) entidades = ["links"];
-	if (entidades)
-		contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
+	if (entidades) contarRegistros = await BD_especificas.registrosConStatusARevisar(usuario.id, entidades);
 	// Contar registros de edición
 	else if (edicion) contarRegistros = await BD_especificas.registrosConEdicion(usuario.id);
 	// Fin
