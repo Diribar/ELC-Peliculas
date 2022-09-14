@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
 	let usuario = req.session.usuario;
 	// Redireccionar si el usuario no está logueado
 	if (!usuario) return res.redirect("/usuarios/login");
-	// Rutinas si el usuario no completó su data-entry
+	// Rutinas si el usuario no completó el alta de usuario
 	let url = req.originalUrl;
 	if (
 		!usuario.status_registro.editables_ok &&
