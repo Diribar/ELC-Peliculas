@@ -31,11 +31,21 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "revisionUs";
 		const codigo = "validarIdentidad";
-		// 2. Obtener el ID del usuario
+		// 2. Variables
 		let id = req.query.id;
-		// 3. Obtener el usuario
 		let user = await BD_especificas.obtenerUsuarioPorID(id);
 		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
+		let documento = user.numero_documento;
+		let pais_id = documento.slice(0, 2);
+		let numero_documento = documento.slice(4);
+		let campos = [
+			{titulo: "Nombre", nombre: "nombre", valor: user.nombre},
+			{titulo: "Apellido", nombre: "apellido", valor: user.apellido},
+			{titulo: "Número de Documento", nombre: "numero_documento", valor: numero_documento},
+			{titulo: "País de Expedición", nombre: "pais_id", valor: pais_id},
+			{titulo: "Fecha de Nacimiento", nombre: "fecha_nacimiento", valor: user.fecha_nacimiento},
+			{titulo: "Sexo", nombre: "sexo_id", valor: user.sexo_id},
+		];
 		// 4. Va a la vista
 		return res.render("CMP-RV-Estructura", {
 			tema,
@@ -43,7 +53,8 @@ module.exports = {
 			titulo: "Validar la Identidad",
 			user,
 			avatar,
-			title: "",
+			title: user.apodo,
+			campos,
 		});
 	},
 };

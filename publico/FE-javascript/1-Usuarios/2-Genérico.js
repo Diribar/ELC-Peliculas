@@ -9,21 +9,31 @@ window.addEventListener("load", () => {
 	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
-	let errores;
+	// Varias
+	let login = window.location.pathname.includes("login");
+	let ruta_api =
+		"/usuarios/api/validar-" +
+		(login
+			? "login"
+			: window.location.pathname.includes("perennes")
+			? "perennes"
+			: window.location.pathname.includes("editables")
+			? "editables"
+			: window.location.pathname.includes("documento")
+			? "documento"
+			: "");
 
-	// FUNCIONES ---------------------------------------------
-	let erroresAciertos = async (indice) => {
-		let campo = inputs[indice].name;
-		let valor = inputs[indice].value;
-		errores = {
-			...errores,
-			...(await fetch("/usuarios/api/validar-documento/?" + campo + "=" + valor).then((n) => n.json())),
-		};
+	// FUNCIONES --------------------------------------------------------------
+	let detectaErrores = async (i) => {
+		let campo = inputs[i].name;
+		let valor = inputs[i].value;
+		let errores = await fetch(ruta_api + "/?" + campo + "=" + valor).then((n) => n.json());
+		// Fin
+		return [errores, campo];
 	};
-	let mensajes = (indice) => {
-		let campo = inputs[indice].name;
+	let consecuenciaError = (error, campo, indice) => {
 		// Guarda el mensaje de error
-		let mensaje = errores[campo];
+		let mensaje = error[campo];
 		// Reemplaza el mensaje
 		mensajesError[indice].innerHTML = mensaje;
 		// Acciones en función de si hay o no mensajes de error
@@ -45,36 +55,28 @@ window.addEventListener("load", () => {
 			.every((n) => n.includes("ocultar"));
 		OK && error ? button.classList.remove("inactivo") : button.classList.add("inactivo");
 	};
-	let startUp = async () => {
-		// Mostrar todos los errores y aciertos
-		for (let i = 0; i < inputs.length; i++) {
-			await erroresAciertos(i);
-		}
-		botonGuardar();
-	};
 
 	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("change", async () => {
-			await erroresAciertos(i);
-			mensajes(i);
-			botonGuardar(); // Activa/Desactiva el botón 'Guardar'
+			// Desactiva el cartel de 'credenciales inválidas'
+			if (login) document.querySelector(".resultadoInvalido").classList.add("ocultar");
+			// Detecta si hay errores
+			let [errores, campo] = await detectaErrores(i);
+			// Comunica los aciertos y errores
+			consecuenciaError(errores, campo, i);
+			// Activa/Desactiva el botón 'Guardar'
+			botonGuardar();
 		});
 	}
-
 	form.addEventListener("submit", async (e) => {
-		//e.preventDefault();
 		if (button.classList.contains("inactivo")) {
-			// Bloquear el 'submit'
 			e.preventDefault();
-			// Continuar
-			await startUp();
 			for (let i = 0; i < inputs.length; i++) {
-				mensajes(i);
+				let [errores, campo] = await detectaErrores(i);
+				consecuenciaError(errores, campo, i);
 			}
+			botonGuardar();
 		}
 	});
-
-	// Start-up
-	startUp();
 });

@@ -7,9 +7,7 @@
 		<div class="input-error">
 			<% nombre = dataEntry ? dataEntry.nombre : "" %>
 			<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.nombre) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.nombre) ? errores.nombre : "" %></span>
-			</i>
+			<%- include("iconosErrorOK", {campo: "nombre"}) %> 
 		</div>
 	</section>
 	<!--Apellido-->
@@ -18,9 +16,7 @@
 		<div class="input-error">
 			<% apellido = dataEntry ? dataEntry.apellido : "" %>
 			<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.apellido) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.apellido) ? errores.apellido : "" %></span>
-			</i>
+			<%- include("iconosErrorOK", {campo: "apellido"}) %> 
 		</div>
 	</section>
 	<!--Sexo-->
@@ -34,9 +30,7 @@
 					<option value="<%= sexo.id %> " <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 				<% } %> 
 			</select>
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.sexo_id) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.sexo_id) ? errores.sexo_id : "" %></span>
-			</i>
+			<%- include("iconosErrorOK", {campo: "sexo_id"}) %> 
 		</div>
 	</section>
 	<!--Fecha de Nacimiento-->
@@ -45,9 +39,7 @@
 		<div class="input-error">
 			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 			<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-			<i class="fa-solid fa-circle-xmark <%- !(errores && errores.fecha_nacimiento) ? 'ocultar' : '' %> ">
-				<span class="mensajeError"><%- (errores && errores.fecha_nacimiento) ? errores.fecha_nacimiento : "" %></span>
-			</i>
+			<%- include("iconosErrorOK", {campo: "fecha_nacimiento"}) %> 
 		</div>
 	</section>
 	<!--Flechas-->
@@ -55,6 +47,6 @@
 		<!-- Salir -->
 		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
 		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactivo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
+		<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
 	</section>
 </form>

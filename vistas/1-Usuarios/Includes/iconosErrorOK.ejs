@@ -1,0 +1,4 @@
+<i class="fa-solid fa-circle-xmark <%- !errores[campo] ? 'ocultar' : '' %> ">
+	<span class="mensajeError"><%- errores[campo] ? errores[campo] : "" %></span>
+</i>
+<i class="fa-solid fa-circle-check <%- (!dataEntry[campo] || errores[campo]) ? 'ocultar' : '' %>"></i>
