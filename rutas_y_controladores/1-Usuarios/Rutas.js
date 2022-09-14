@@ -8,7 +8,6 @@ const vista = require("./ControladorVista");
 //************************ Middlewares ******************************
 const soloVisitas = require("../../middlewares/usuarios/solo0-visitas");
 const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
-const soloGestionUs = require("../../middlewares/usuarios/solo4-revisor-us");
 const multer = require("../../middlewares/varios/multer");
 
 //************************ Rutas ****************************
@@ -17,7 +16,7 @@ router.get("/api/validar-login", API.validarLogin);
 router.get("/api/validar-mail", API.validarMail);
 router.get("/api/validar-perennes", API.validarPerennes);
 router.get("/api/validar-editables", API.validarEditables);
-router.get("/api/documento", API.validarDocumento);
+router.get("/api/validar-documento", API.validarDocumento);
 
 // Rutas de Altas
 router.get("/mail", soloVisitas, vista.altaMailForm);

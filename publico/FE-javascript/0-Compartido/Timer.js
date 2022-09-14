@@ -4,6 +4,7 @@ window.addEventListener("load", async () => {
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
+	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
 	// Otras variables
 	const codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
