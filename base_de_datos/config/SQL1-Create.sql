@@ -146,7 +146,7 @@ CREATE TABLE usuarios (
 	pais_id VARCHAR(2) NULL,
 	rol_iglesia_id VARCHAR(3) NULL,
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
-	perm_inputs_bloq BOOLEAN DEFAULT 0,
+	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	autorizado_fa BOOLEAN DEFAULT 0,
 	documento_numero VARCHAR(15) UNIQUE NULL,
 	documento_avatar VARCHAR(18) DEFAULT NULL,
