@@ -5,7 +5,6 @@
 	<link rel="stylesheet" href="/formatoDeVistas/4-RevisionUs/0-Revision.css">
 <% } %>
 <script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
-
 <!-- Específicos para el tablero -->
 <% if (codigo == "tableroControl") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/TableroControl.css">
@@ -33,7 +32,6 @@
 		<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RCLV.css">
 		<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 		<script src="/FE-javascript/2.0-CRUD/2-RCLV.js"></script>
-
 	<!-- Específicos para Links -->
 	<% } else if (codigo == "links") { %>
 		<!-- Uso compartido -->
@@ -47,7 +45,8 @@
 		<script src="/FE-javascript/3-RevisionEnts/3-Links1-Altas.js"></script>
 		<script src="/FE-javascript/3-RevisionEnts/3-Links2-Ediciones.js"></script>
 	<% } else if (codigo == "validarIdentidad") { %>
-
+		<link rel="stylesheet" href="/formatoDeVistas/4-RevisionUs/1-ValidarIdentidad.css">
+		<script src="/FE-javascript/4-RevisionUs/1-ValidarIdentidad.js"></script>
 	<% } %>
 	
 <% } %>

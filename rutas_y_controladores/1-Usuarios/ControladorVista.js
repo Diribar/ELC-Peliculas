@@ -243,7 +243,7 @@ module.exports = {
 			avatar_documento: req.file.filename,
 			fecha_revisores: compartidas.ahora(),
 		};
-		req.session.usuario = await procesos.actualizaElUsuario("documento", "nada", usuario, datos);
+		req.session.usuario = await procesos.actualizaElUsuario("docum_revisar", "ident_validada", usuario, datos);
 		// Mueve el archivo a la carpeta definitiva
 		compartidas.moverImagen(datos.avatar_documento, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona

@@ -1,44 +1,46 @@
-<div id="tituloConAyuda">
-	<h1 id="titulo"><%= titulo %></h1>
-	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-	<ul class="mensajeAyuda ocultar" type="dots">
-		<li>Estos registros están pendientes de revisar.</li>
-		<li>Se necesita revisarlos a todos.</li>
-		<li>Las tareas figuran por orden de criticidad.</li>
-	</ul>	
-</div>
-<!-- Datos -->
-<section id="familias" class="input-error">
-	<!-- Permiso Inputs -->
-	<div id="primeraColumna">
-		<div class="bloques">
-			<div id="datos">
-				<h2>PERMISO INPUTS</h2>
-				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ol class="mensajeAyuda ocultar" type="dots">
-					<ul>Son los usuarios interesados en aportar información a nuestra Base de Datos.</ul>
-				</ol>
-			</div>
-			<% let rev = "revision/usuarios/" %>
-			<%- include("RU0-Registros", {regs: usuarios.validarIdentidades, url: rev + "validar-identidad"}) %>
-		</div>
+<section id="cuerpo">
+	<div id="tituloConAyuda">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>Estos registros están pendientes de revisar.</li>
+			<li>Se necesita revisarlos a todos.</li>
+			<li>Las tareas figuran por orden de criticidad.</li>
+		</ul>	
 	</div>
-	<div id="segundaColumna">
-		<!-- Sancionados -->
-		<div class="bloques">
-			<div id="datos">
-				<h2>USUARIOS SANCIONADOS</h2>
-				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ol class="mensajeAyuda ocultar" type="dots">
-					<li>Son usuarios con sanciones vigentes.</li>
-				</ol>
+	<!-- Datos -->
+	<div id="familias" class="input-error">
+		<!-- Permiso Inputs -->
+		<div id="primeraColumna">
+			<div class="bloques">
+				<div id="datos">
+					<h2>PERMISO INPUTS</h2>
+					<!-- Ayuda -->
+					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+					<ol class="mensajeAyuda ocultar" type="dots">
+						<ul>Son los usuarios interesados en aportar información a nuestra Base de Datos.</ul>
+					</ol>
+				</div>
+				<% let rev = "revision/usuarios/" %>
+				<%- include("RU0-Registros", {regs: usuarios.validarIdentidades, url: rev + "validar-identidad"}) %>
 			</div>
-			<% let rr = "revision/rclv/" %>
-			<!-- Ediciones Pend. Aprobar -->
-			<!-- Aprobar el Alta -->
+		</div>
+		<div id="segundaColumna">
+			<!-- Sancionados -->
+			<div class="bloques">
+				<div id="datos">
+					<h2>USUARIOS SANCIONADOS</h2>
+					<!-- Ayuda -->
+					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+					<ol class="mensajeAyuda ocultar" type="dots">
+						<li>Son usuarios con sanciones vigentes.</li>
+					</ol>
+				</div>
+				<% let rr = "revision/rclv/" %>
+				<!-- Ediciones Pend. Aprobar -->
+				<!-- Aprobar el Alta -->
+			</div>
 		</div>
 	</div>
 </section>
