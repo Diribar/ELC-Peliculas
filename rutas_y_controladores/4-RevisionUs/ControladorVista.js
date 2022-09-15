@@ -27,7 +27,7 @@ module.exports = {
 		});
 	},
 	// Revisar Permiso Data-Entry
-	validarIdentidad: async (req, res) => {
+	validarIdentidadForm: async (req, res) => {
 		// 1. Tema y Código
 		const tema = "revisionUs";
 		const codigo = "validarIdentidad";
@@ -59,5 +59,8 @@ module.exports = {
 			campos,
 			id,
 		});
+	},
+	validarIdentidadGuardar: async (req, res) => {
+		return res.send(req.query)
 	},
 };

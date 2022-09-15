@@ -21,7 +21,8 @@ module.exports = async (req, res, next) => {
 	const urlBase = req.baseUrl;
 	const url = req.url;
 	// Variables - Registro
-	let includes = ["status_registro", "ediciones", "capturado_por"];
+	let includes = ["status_registro", "capturado_por"];
+	if (entidad != "usuarios") includes.push("ediciones");
 	if (entidad == "capitulos") includes.push("coleccion");
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
