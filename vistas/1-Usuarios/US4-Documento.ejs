@@ -6,12 +6,7 @@
 		<label for="numero_documento">Número de Documento</label>
 		<div class="input-error">
 			<input type="text" id="numero_documento" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.numero_documento ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.numero_documento ? errores.numero_documento : "" %></span>
-			</i>
-			<!-- OK -->
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.numero_documento || errores.numero_documento) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "numero_documento"}) %>
 		</div>
 	</section>
 	<!--Expedido en qué país-->
@@ -42,12 +37,7 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
-			</i>
-			<!-- OK -->
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || errores.pais_id) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "pais_id"}) %>
 		</div>
 	</section>
 	<!--Imagen del documento-->
@@ -58,12 +48,7 @@
 				<img src="<%= avatar %>">
 			</label>
 			<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.avatar ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.avatar ? errores.avatar : "" %></span>
-			</i>
-		<!-- OK -->
-		<i class="fa-solid fa-circle-check <%- (!dataEntry.avatar || errores.avatar) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "avatar"}) %>
 		</div>
 	</section>
 	<!--Flechas-->

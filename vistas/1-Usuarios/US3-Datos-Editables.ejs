@@ -6,11 +6,7 @@
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="input-error">
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.apodo ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.apodo ? errores.apodo : "" %></span>
-			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.apodo || !errores.apodo) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "apodo"}) %>
 		</div>
 	</section>
 	<!--Pais de residencia-->
@@ -41,11 +37,7 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.pais_id ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.pais_id ? errores.pais_id : "" %></span>
-			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.pais_id || !errores.pais_id) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "pais_id"}) %>
 		</div>
 	</section>
 	<!--Rol en la iglesia-->
@@ -58,11 +50,7 @@
 					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %>
 			</select>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark <%- !errores.rol_iglesia_id ? 'ocultar' : '' %>">
-				<span class="mensajeError"><%- errores.rol_iglesia_id ? errores.rol_iglesia_id : "" %></span>
-			</i>
-			<i class="fa-solid fa-circle-check <%- (!dataEntry.rol_iglesia_id || !errores.rol_iglesia_id) ? 'ocultar' : '' %>"></i>
+			<%- include("iconosErrorOK", {campo: "rol_iglesia_id"}) %>
 		</div>
 	</section>
 	<!--Imagen de perfil-->
@@ -84,6 +72,6 @@
 		<!-- Salir -->
 		<a href="<%= urlSalir %>" tabindex="-1"><i class="fa-solid fa-circle-left icono" title="Salir"></i></a>
 		<!-- Submit -->
-		<button type="submit" class="<%- errores ? 'inactvo' : '' %>"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
+		<button type="submit" class="inactivo"><i class="fa-solid fa-circle-check icono" title="Aceptar"></i></button>
 	</section>
 </form>

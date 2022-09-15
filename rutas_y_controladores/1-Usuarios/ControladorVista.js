@@ -11,7 +11,7 @@ const validar = require("./FN-Validar");
 module.exports = {
 	redireccionar: async (req, res) => {
 		let status_registro_usuario = req.session.usuario.status_registro;
-		//return res.send(status_registro_usuario);
+		// return res.send(status_registro_usuario);
 		// Redireccionar
 		!status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/login")
@@ -92,7 +92,7 @@ module.exports = {
 		const codigo = "perennes";
 		// Preparar datos para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
-		let errores = req.session.errores ? req.session.errores : "";
+		let errores = req.session.errores ? req.session.errores : false;
 		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
 		return res.render("GN0-Estructura", {
 			tema,
@@ -256,7 +256,7 @@ module.exports = {
 		let informacion = {
 			mensajes: [
 				"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
-				"Queda en manos del equipo de Revisores validar tus datos.",
+				"Queda en manos del equipo de Revisores validarlos.",
 				"Luego de la validación, recibirás un mail de feedback.",
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
