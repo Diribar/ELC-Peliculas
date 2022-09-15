@@ -146,7 +146,7 @@ module.exports = {
 		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, includesOrig);
 		// Verificacion 2: si la edición no se corresponde con el producto --> redirecciona
 		if (!prodEdic[producto_id] || prodEdic[producto_id] != prodID)
-			return res.redirect("/inactivar-captura/?origen=tablero&entidad=" + entidad + "&id=" + prodID);
+			return res.redirect("/inactivar-captura/?origen=tableroEnts&entidad=" + entidad + "&id=" + prodID);
 		// Verificacion 3: si no quedan campos de 'edicion' por procesar --> lo avisa
 		// La consulta también tiene otros efectos:
 		// 1. Elimina el registro de edición si ya no tiene más datos
@@ -333,7 +333,7 @@ let infoProdEdicion = async (entidad, prodID, producto_id, userID) => {
 		iconos: [
 			{
 				nombre: "fa-spell-check ",
-				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tablero",
+				link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
 				titulo: "Regresar al Tablero de Control",
 			},
 		],

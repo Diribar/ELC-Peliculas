@@ -435,7 +435,7 @@ module.exports = {
 						req.query.entidad +
 						"&id=" +
 						req.query.id +
-						"&origen=tablero",
+						"&origen=tableroEnts",
 					titulo: "Ir al 'Tablero de Control' de Revisiones",
 			  }
 			: req.originalUrl.startsWith("/producto/edicion/") || req.originalUrl.startsWith("/links/abm/")
