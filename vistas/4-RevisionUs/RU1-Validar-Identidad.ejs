@@ -18,11 +18,11 @@
 					<!-- Aprobar y Rechazar -->
 					<div id="<%= campo.nombre %>" class="iconos">
 						<label for="<%= campo.nombre %>-SI">
-							<i class="fa-solid opacity fa-circle-check"></i>
+							<i class="fa-solid sinDecision fa-circle-check"></i>
 						</label>
 						<input id="<%= campo.nombre %>-SI" type="radio" name="<%= campo.nombre %>" value="SI" class="ocultar">
 						<label for="<%= campo.nombre %>-NO">
-							<i class="fa-solid opacity fa-circle-xmark"></i>
+							<i class="fa-solid sinDecision fa-circle-xmark"></i>
 						</label>
 						<input id="<%= campo.nombre %>-NO" type="radio" name="<%= campo.nombre %>" value="SI" class="ocultar">
 					</div>
@@ -34,13 +34,14 @@
 			<!-- Aprobar y Rechazar -->
 			<div id="<%= campo.nombre %>" class="iconos">
 				<label for="avatar_documento-SI">
-					<i class="fa-solid opacity fa-circle-check"></i>
+					<i class="fa-solid sinDecision fa-circle-check"></i>
 				</label>
 				<input id="avatar_documento-SI" type="radio" name="avatar_documento" value="SI" class="ocultar">
 				<label for="avatar_documento-NO">
-					<i class="fa-solid opacity fa-circle-xmark"></i>
+					<i class="fa-solid sinDecision fa-circle-xmark"></i>
 				</label>
 				<input id="avatar_documento-NO" type="radio" name="avatar_documento" value="SI" class="ocultar">
+				
 			</div>
 		</div>
 	</div>

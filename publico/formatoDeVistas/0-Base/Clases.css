@@ -22,9 +22,9 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 /* Específicos */
 .mensajeError::before {content: ""; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
 .mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; padding: 3px 7px; display: none;}
-.fa-circle-xmark {color: var(--rojo-oscuro);}
 .fa-circle-xmark:hover .mensajeError {display: inline;}
-.fa-circle-check {color: var(--verde-oscuro);}
+.fa-circle-xmark {color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
+.fa-circle-check {color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 .fa-circle-question {color: var(--gris-oscuro);}
 .fa-solid {cursor: pointer;}
 

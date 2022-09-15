@@ -6,7 +6,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
-	const entidad = req.query.entidad;
+	const entidad = req.query.entidad
+		? req.query.entidad
+		: req.originalUrl.startsWith("/revision/usuarios")
+		? "usuarios"
+		: "";
 	const entidadID = req.query.id;
 	const haceUnaHora = compartidas.nuevoHorario(-1);
 	const haceDosHoras = compartidas.nuevoHorario(-2);

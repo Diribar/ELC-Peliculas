@@ -4,12 +4,12 @@ const funciones = require("../../funciones/3-Procesos/Compartidas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 
 module.exports = async (req, res, next) => {
-	// Si el usuario no está logueado => return
-	if (!req.session.usuario) next();
-	if (!req.session.usuario) return;
-	
 	// Variables - Generales
-	const entidad = req.query.entidad;
+	const entidad = req.query.entidad
+		? req.query.entidad
+		: req.originalUrl.startsWith("/revision/usuarios")
+		? "usuarios"
+		: "";
 	const id = req.query.id;
 	const userID = req.session.usuario.id;
 

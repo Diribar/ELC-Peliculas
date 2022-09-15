@@ -17,7 +17,8 @@
 #subcuerpo #datos .iconos {position: absolute; top: 45%; transform: translateY(-50%);}
 #subcuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #subcuerpo #datos .iconos {border-radius: 10px; padding: 5px; left: -50px; width: 45px;}
-#subcuerpo #datos .iconos .fa-solid.opacity {opacity: 50%;}
+#subcuerpo #datos .iconos .fa-solid {border: 1px solid;}
+#subcuerpo #datos .iconos .fa-solid.sinDecision {color: wheat; background-color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
 
 /* Flechas */
 #subcuerpo #flechas .fa-thumbs-up {color: var(--verde-oscuro);}
