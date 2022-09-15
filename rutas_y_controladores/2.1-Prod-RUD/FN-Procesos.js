@@ -22,18 +22,18 @@ module.exports = {
 		if (entidad == "capitulos") includesOriginal.push("coleccion");
 		else if (entidad == "colecciones") includesOriginal.push("capitulos");
 		// Obtener el producto ORIGINAL
-		let prodOriginal = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
+		let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, [
 			...includes,
 			...includesOriginal,
 		]);
 		// Obtener el producto EDITADO
-		let prodEditado = "";
+		let prodEdic = "";
 		let producto_id = compartidas.obtenerEntidad_id(entidad);
-		if (prodOriginal) {
+		if (prodOrig) {
 			// Quitarle los campos 'null'
-			prodOriginal = compartidas.todos_quitarCamposSinContenido(prodOriginal);
+			prodOrig = compartidas.todos_quitarCamposSinContenido(prodOrig);
 			// Obtener los datos EDITADOS del producto
-			prodEditado = userID
+			prodEdic = userID
 				? await BD_genericas.obtenerPorCamposConInclude(
 						"prods_edicion",
 						{[producto_id]: prodID, editado_por_id: userID},
@@ -41,8 +41,8 @@ module.exports = {
 				  )
 				: {};
 			// Quitarle los campos 'null'
-			if (prodEditado) prodEditado = compartidas.todos_quitarCamposSinContenido(prodEditado);
+			if (prodEdic) prodEdic = compartidas.todos_quitarCamposSinContenido(prodEdic);
 		}
-		return [prodOriginal, prodEditado];
+		return [prodOrig, prodEdic];
 	},
 };

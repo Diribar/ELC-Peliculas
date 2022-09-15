@@ -18,15 +18,15 @@ module.exports = {
 		let prodID = req.query.id;
 		let userID = req.session.usuario.id;
 		// Obtener los datos ORIGINALES y EDITADOS del producto
-		let [prodOriginal, prodEditado] = await procesosProd.obtenerVersionesDelProducto(
+		let [prodOrig, prodEdic] = await procesosProd.obtenerVersionesDelProducto(
 			prodEntidad,
 			prodID,
 			userID
 		);
 		// Obtener el avatar
-		let avatar = compartidas.nombreAvatar(prodOriginal,prodEditado)
+		let avatar = compartidas.nombreAvatar(prodOrig,prodEdic)
 		// Combinar los datos Editados con la versión Original
-		let producto = {...prodOriginal, ...prodEditado};
+		let producto = {...prodOrig, ...prodEdic};
 		// Obtener información de BD
 		let links = await procesos.obtenerLinksActualizados(prodEntidad, prodID, userID);
 		let provs = await BD_genericas.obtenerTodos("links_provs", "orden");
@@ -38,11 +38,11 @@ module.exports = {
 		// Obtener datos para la vista
 		if (prodEntidad == "capitulos") {
 			let coleccion_id =
-				prodEditado && prodEditado.coleccion_id
-					? prodEditado.coleccion_id
-					: prodOriginal.coleccion_id;
+				prodEdic && prodEdic.coleccion_id
+					? prodEdic.coleccion_id
+					: prodOrig.coleccion_id;
 			let temporada =
-				prodEditado && prodEditado.temporada ? prodEditado.temporada : prodOriginal.temporada;
+				prodEdic && prodEdic.temporada ? prodEdic.temporada : prodOrig.temporada;
 			producto.capitulos = await BD_especificas.obtenerCapitulos(coleccion_id, temporada);
 		}
 		let motivos = await BD_genericas.obtenerTodos("altas_motivos_rech", "orden")
