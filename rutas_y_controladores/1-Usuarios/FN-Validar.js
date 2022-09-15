@@ -250,7 +250,6 @@ let castellano = (dato) => {
 
 let mayuscula = (dato) => {
 	let formato = /^[A-Z]/;
-	console.log(!formato.test(dato));
 	return !formato.test(dato);
 };
 
