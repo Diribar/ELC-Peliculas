@@ -7,7 +7,7 @@
 		<div class="input-error">
 			<% nombre = dataEntry ? dataEntry.nombre : "" %>
 			<input type="text" class="input" name="nombre" placeholder="Nombre" value="<%= nombre %>">
-			<%- include("iconosErrorOK", {campo: "nombre"}) %> 
+			<%- include("CMP-errorOK_visible", {campo: "nombre"}) %> 
 		</div>
 	</section>
 	<!--Apellido-->
@@ -16,7 +16,7 @@
 		<div class="input-error">
 			<% apellido = dataEntry ? dataEntry.apellido : "" %>
 			<input type="text" class="input" name="apellido" placeholder="Apellido" value="<%= apellido %>">
-			<%- include("iconosErrorOK", {campo: "apellido"}) %> 
+			<%- include("CMP-errorOK_visible", {campo: "apellido"}) %> 
 		</div>
 	</section>
 	<!--Sexo-->
@@ -30,7 +30,7 @@
 					<option value="<%= sexo.id %> " <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 				<% } %> 
 			</select>
-			<%- include("iconosErrorOK", {campo: "sexo_id"}) %> 
+			<%- include("CMP-errorOK_visible", {campo: "sexo_id"}) %> 
 		</div>
 	</section>
 	<!--Fecha de Nacimiento-->
@@ -39,7 +39,7 @@
 		<div class="input-error">
 			<% fecha_nacimiento = dataEntry ? dataEntry.fecha_nacimiento : "" %>
 			<input type="date" name="fecha_nacimiento" class="input" value="<%= fecha_nacimiento %>">
-			<%- include("iconosErrorOK", {campo: "fecha_nacimiento"}) %> 
+			<%- include("CMP-errorOK_visible", {campo: "fecha_nacimiento"}) %> 
 		</div>
 	</section>
 	<!--Flechas-->

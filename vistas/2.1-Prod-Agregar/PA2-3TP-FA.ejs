@@ -31,11 +31,7 @@
 						<li>Pegala en el casillero de la izquierda</li>
 					</ul>
 				</i>
-				<!-- Errores -->
-				<i class="fa-solid fa-circle-xmark ocultar">
-					<span class="mensajeError"></span>
-				</i>
-				<i class="fa-solid fa-circle-check ocultar"></i>
+				<%- include("CMP-errorOK_oculto", {display: true}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
 			<div class="input-error">
@@ -53,11 +49,7 @@
 						<li>En el menú que aparece, hacé <strong><em>click izquierdo</em></strong> sobre la opción <em>"Copiar dirección de la imagen"</em> y pegala en el casillero de la izquierda.</li>
 					</ul>
 				</i>
-				<!-- Errores -->
-				<i class="fa-solid fa-circle-xmark ocultar">
-					<span class="mensajeError"></span>
-				</i>
-				<i class="fa-solid fa-circle-check ocultar"></i>
+				<%- include("CMP-errorOK_oculto", {display: true}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
 			<div class="input-error">
@@ -75,11 +67,7 @@
 						<li>Pegalo en el casillero de la izquierda.</li>
 					</ul>
 				</i>
-				<!-- Errores -->
-				<i class="fa-solid fa-circle-xmark ocultar">
-					<span class="mensajeError"></span>
-				</i>
-				<i class="fa-solid fa-circle-check ocultar"></i>
+				<%- include("CMP-errorOK_oculto", {display: false}) %>
 			</div>
 			<div id="resultado"><br></div>
 		</section>

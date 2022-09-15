@@ -1,1 +1,7 @@
-#datos {border: red 1px solid;}
+#subcuerpo, #datos, #flechas, #documento {border: red 1px solid;}
+#subcuerpo {flex-grow: 1; justify-content: space-around;}
+#subcuerpo #datos {margin: 25px 50px; background-color: var(--gris-intermedio); height: 70%;}
+#subcuerpo #datos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#subcuerpo #datos #texto {display: flex; flex-direction: column; padding: 0 20px;}
+#subcuerpo #datos #documento {width: 60%; height: 100%; position: relative;}
+#subcuerpo #datos #documento img {height: 100%; width: 100%; object-fit: contain; position: absolute; }

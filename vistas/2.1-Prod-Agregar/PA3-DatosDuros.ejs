@@ -72,11 +72,8 @@
 				<% } %>
 				<!-- Rutina para todos los casos -->
 				<input name="avatar" id="imagen" type="file" accept="image/*" class="ocultar input">
-				<!-- Errores -->
-				<i class="fa-solid fa-circle-xmark">
-					<span class="mensajeError"></span>
-				</i>
-				<i class="fa-solid fa-circle-check ocultar" style="display: none"></i>
+				<!-- Errores/OK -->
+				<%- include("CMP-errorOK_oculto", {display: false}) %>
 			<% } %>
 		</div>	
 	</section>
