@@ -33,13 +33,13 @@ module.exports = {
 		const codigo = "validarIdentidad";
 		// 2. Variables
 		let id = req.query.id;
-		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", id,"sexo");
+		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", id, "sexo");
 		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
 		let documento = user.numero_documento;
 		let pais_id = documento.slice(0, 2);
 		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
 		let numero_documento = documento.slice(4);
-		let fecha_nacimiento=compartidas.fechaTexto(user.fecha_nacimiento)
+		let fecha_nacimiento = compartidas.fechaTexto(user.fecha_nacimiento);
 		let campos = [
 			{titulo: "Nombre", nombre: "nombre", valor: user.nombre},
 			{titulo: "Apellido", nombre: "apellido", valor: user.apellido},
