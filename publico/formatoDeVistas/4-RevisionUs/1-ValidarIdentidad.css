@@ -2,6 +2,7 @@
 #subcuerpo {flex-grow: 1; justify-content: space-evenly;}
 #subcuerpo #datos {margin: 0 50px; background-color: var(--gris-intermedio); height: 70%;}
 #subcuerpo #datos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+#subcuerpo #datos {padding: 20px; border-radius: 20px;}
 #subcuerpo #datos * {line-height: 1;}
 
 /* Datos a validar */
@@ -12,15 +13,16 @@
 /* Documento */
 #subcuerpo #datos #documento {width: 60%; height: 100%; position: relative;}
 #subcuerpo #datos #documento img {height: 100%; width: 100%; object-fit: contain; position: absolute; }
+#subcuerpo #datos #documento select {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);}
 
 /* Íconos */
-#subcuerpo #datos .iconos {position: absolute; top: 45%; transform: translateY(-50%);}
+#subcuerpo #datos .iconos {position: absolute; top: 50%; transform: translateY(-57%);}
 #subcuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #subcuerpo #datos .iconos {border-radius: 10px; padding: 5px; left: -50px; width: 45px;}
 #subcuerpo #datos .iconos .fa-solid {border: 1px solid;}
 #subcuerpo #datos .iconos .fa-solid.sinDecision {color: wheat; background-color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
 
 /* Flechas */
-#subcuerpo #flechas .fa-thumbs-up {color: var(--verde-oscuro);}
+#subcuerpo #flechas button {border: none;}
 
 /* #subcuerpo #datos .iconos {border: red 1px solid;} */

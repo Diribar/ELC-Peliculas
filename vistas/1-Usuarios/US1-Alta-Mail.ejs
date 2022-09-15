@@ -12,13 +12,13 @@
 	<% if (errores.documento) { %>
 		<!--Número de Documento-->
 		<div class="label-input flex-row">
-			<label for="numero_documento">
+			<label for="documento_numero">
 				Número de<br>
 				Documento
 			</label>
 			<div class="input-error">
-				<input type="text" id="numero_documento" class="input" name="numero_documento" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.numero_documento : "" %>">
-				<%- include("CMP-errorOK_visible", {campo: "numero_documento"}) %> 
+				<input type="text" id="documento_numero" class="input" name="documento_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.documento_numero : "" %>">
+				<%- include("CMP-errorOK_visible", {campo: "documento_numero"}) %> 
 			</div>
 		</div>
 		<!--Expedido en qué país-->

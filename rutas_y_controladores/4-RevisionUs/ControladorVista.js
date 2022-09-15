@@ -32,13 +32,13 @@ module.exports = {
 		const tema = "revisionUs";
 		const codigo = "validarIdentidad";
 		// 2. Variables
-		let id = req.query.id;
-		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", id, "sexo");
+		let userID = req.query.id;
+		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, "sexo");
 		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
-		let documento = user.numero_documento;
+		let documento = user.documento_numero;
 		let pais_id = documento.slice(0, 2);
 		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
-		let numero_documento = documento.slice(4);
+		let documento_numero = documento.slice(4);
 		let fecha_nacimiento = compartidas.fechaTexto(user.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "pais_id", valor: pais},
@@ -46,8 +46,9 @@ module.exports = {
 			{titulo: "Nombre", nombre: "nombre", valor: user.nombre},
 			{titulo: "Sexo", nombre: "sexo_id", valor: user.sexo.nombre},
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
-			{titulo: "N° de Documento", nombre: "numero_documento", valor: numero_documento},
+			{titulo: "N° de Documento", nombre: "documento_numero", valor: documento_numero},
 		];
+		let motivos_rech_docum=await BD_genericas.obtenerTodos("motivos_rech_docum","orden")
 		// 4. Va a la vista
 		return res.render("CMP-RV-Estructura", {
 			tema,
@@ -57,7 +58,8 @@ module.exports = {
 			avatar,
 			title: user.apodo,
 			campos,
-			id,
+			userID,
+			motivos_rech_docum,
 		});
 	},
 	validarIdentidadGuardar: async (req, res) => {

@@ -10,18 +10,17 @@ window.addEventListener("load", () => {
 	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
 	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
 	// Varias
-	let login = window.location.pathname.includes("login");
-	let ruta_api =
-		"/usuarios/api/validar-" +
-		(login
-			? "login"
-			: window.location.pathname.includes("perennes")
-			? "perennes"
-			: window.location.pathname.includes("editables")
-			? "editables"
-			: window.location.pathname.includes("documento")
-			? "documento"
-			: "");
+	let tarea = window.location.pathname;
+	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
+	let tareas = {
+		login: {ruta: "login", evento: "input"},
+		"datos-perennes": {ruta: "perennes", evento: "input"},
+		"datos-editables": {ruta: "editables", evento: "input"},
+		documento: {ruta: "documento", evento: "input"},
+	};
+	if (!tareas[tarea]) return;
+	let ruta_api = "/usuarios/api/validar-" + tareas[tarea].ruta;
+	let evento = tareas[tarea].evento;
 
 	// FUNCIONES --------------------------------------------------------------
 	let detectaErrores = async (i) => {
@@ -58,9 +57,9 @@ window.addEventListener("load", () => {
 
 	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("change", async () => {
+		inputs[i].addEventListener(evento, async () => {
 			// Desactiva el cartel de 'credenciales inválidas'
-			if (login) document.querySelector(".resultadoInvalido").classList.add("ocultar");
+			if (tarea == "login") document.querySelector(".resultadoInvalido").classList.add("ocultar");
 			// Detecta si hay errores
 			let [errores, campo] = await detectaErrores(i);
 			// Comunica los aciertos y errores

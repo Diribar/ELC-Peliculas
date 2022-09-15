@@ -24,8 +24,7 @@
 #cuerpo #encabezado #colCap #tempCapS #capitulo {margin-left: 5px;}
 
 /* Imagen */
-#imagen-derecha {width: 30vw; height: 100%; position: relative; background-color: var(--gris-claro);}
-#imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
+#imagen-derecha {background-color: var(--gris-intermedio);}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}

@@ -131,8 +131,8 @@ CREATE TABLE usuarios (
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	perm_inputs_bloqueado BOOLEAN DEFAULT 0,
 	autorizado_fa BOOLEAN DEFAULT 0,
-	numero_documento VARCHAR(15) UNIQUE NULL,
-	avatar_documento VARCHAR(18) DEFAULT NULL,
+	documento_numero VARCHAR(15) UNIQUE NULL,
+	documento_avatar VARCHAR(18) DEFAULT NULL,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
@@ -177,7 +177,7 @@ VALUES
 (1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       numero_documento, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
+INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       documento_numero, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
 (10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', 'AR-21072001', '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
 (11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',           '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
@@ -252,7 +252,7 @@ CREATE TABLE altas_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(41) NOT NULL,
-	bloquear_perm_inputs BOOLEAN DEFAULT 0,
+	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,
 	links BOOLEAN DEFAULT 0,
@@ -263,14 +263,14 @@ INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, rclv, lin
 VALUES
 (100, 100, 0, 'Otro motivo', 1, 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloquear_perm_inputs)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, prod, bloqueo_perm_inputs)
 VALUES
 (11, 1, 0.2, 'Producto duplicado', 1, 0),
 (12, 2, 1, 'Producto ajeno a nuestro perfil', 1, 0),
 (13, 3, 90, 'Producto ofensivo a nuestro perfil', 1, 1),
 (14, 4, 180, 'Producto ofensivo con pornografía', 1, 1)
 ;
-INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloquear_perm_inputs)
+INSERT INTO altas_motivos_rech (id, orden, duracion, comentario, links, bloqueo_perm_inputs)
 VALUES
 (21, 1, 0, 'Link reemplazado por otro más acorde', 1, 0),
 (22, 2, 0.2, 'Link a video no disponible', 1, 0),
@@ -289,7 +289,7 @@ CREATE TABLE edic_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	comentario VARCHAR(40) NOT NULL,
-	bloquear_perm_inputs BOOLEAN DEFAULT 0,
+	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	avatar BOOLEAN DEFAULT 0,
 	prod BOOLEAN DEFAULT 0,
 	rclv BOOLEAN DEFAULT 0,

@@ -5,6 +5,7 @@ window.addEventListener("load", async () => {
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
+	const tipoUsuario = window.location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 	// Otras variables
 	const codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
@@ -67,7 +68,7 @@ window.addEventListener("load", async () => {
 		let arrayMensajes = datos.capturado_en
 			? [
 					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
-					"Quedó a disposición de los demás usuarios.",
+					"Quedó a disposición de los demás " + tipoUsuario + ".",
 					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 			  ]
 			: [
