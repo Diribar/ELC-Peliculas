@@ -293,7 +293,7 @@ let letrasValidasCastellano = (dato) => {
 	return !formato.test(dato);
 };
 let letrasValidasCastellanoActuacion = (dato) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.'()\-]+$/;
+	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.'()\-\d]+$/;
 	return !formato.test(dato);
 };
 let letrasValidasCastellanoReducido = (dato) => {
