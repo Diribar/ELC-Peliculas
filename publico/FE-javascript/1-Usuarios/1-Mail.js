@@ -42,13 +42,13 @@ window.addEventListener("load", () => {
 		let mensaje = errores[campo];
 		mostrarIconos(mensaje, 0);
 	});
-	let numero_documento = document.querySelector(".input-error .input#numero_documento");
+	let documento_numero = document.querySelector(".input-error .input#documento_numero");
 	let pais_id = document.querySelector(".input-error .input#pais_id");
-	if (numero_documento && pais_id) {
-		numero_documento.addEventListener("input", () => {
+	if (documento_numero && pais_id) {
+		documento_numero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos
-			numero_documento.value = numero_documento.value.toUpperCase().replace(/[^A-Z\d]/g, "");
-			let mensaje = !numero_documento.value ? "Necesitamos que completes este campo" : "";
+			documento_numero.value = documento_numero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
+			let mensaje = !documento_numero.value ? "Necesitamos que completes este campo" : "";
 			mostrarIconos(mensaje, 1);
 		});
 		pais_id.addEventListener("input", () => {

@@ -16,7 +16,7 @@ module.exports = {
 		return res.json(errores);
 	},
 	validarDocumento: async (req, res) => {
-		let errores = await validarUsuarios.documento(req.query);
+		let errores = await validarUsuarios.documentoFE(req.query);
 		return res.json(errores);
 	},
 	validarLogin: async (req, res) => {

@@ -28,9 +28,9 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/inactivar-captura/") &&
 		!actual.startsWith("/session") &&
 		!actual.startsWith("/cookies") &&
+		!actual.startsWith("/imagenes/") &&
 		!actual.includes("/redireccionar") &&
 		!actual.includes("/api/") &&
-		actual != "/imagenes/1-Usuarios/" &&
 		anterior != actual
 	) {
 		// 1. url sin login

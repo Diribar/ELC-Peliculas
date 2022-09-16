@@ -16,6 +16,7 @@ module.exports = async (req, res, next) => {
 	const haceDosHoras = compartidas.nuevoHorario(-2);
 	const usuario = req.session.usuario;
 	const userID = usuario.id;
+	const tipoUsuario = req.originalUrl.startsWith("/revision/") ? "revisores" : "usuarios";
 	let informacion;
 	// Variables de url
 	const urlBase = req.baseUrl;
@@ -70,7 +71,7 @@ module.exports = async (req, res, next) => {
 			let mensajes = creadoPorElUsuario
 				? ["Se cumplió el plazo de 1 hora desde que se creó el registro."]
 				: ["El registro todavía no está revisado."];
-			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.",)
+			mensajes.push("Estará disponible luego de ser revisado, en caso de ser aprobado.");
 			informacion = {
 				mensajes,
 				iconos: [vistaAnterior],
@@ -98,7 +99,7 @@ module.exports = async (req, res, next) => {
 			? {
 					mensajes: [
 						"Esta captura terminó el " + horarioFinalCaptura,
-						"Quedó a disposición de los demás usuarios.",
+						"Quedó a disposición de los demás " + tipoUsuario + ".",
 						"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 					],
 					iconos: vistaAnteriorInactivar,
@@ -243,7 +244,7 @@ module.exports = async (req, res, next) => {
 
 	// CAMINO CRÍTICO
 	// 1. El registro fue creado hace menos de una hora por otro usuario
-	if (!informacion) informacion = creadoHaceMenosDeUnaHora();
+	if (!informacion && entidad != "usuarios") informacion = creadoHaceMenosDeUnaHora();
 	// 2. El registro fue creado hace más de una hora
 	//    El registro está en status creado y la vista no es de revisión
 	//    El registro está en status creadoAprob y el usuario no es revisor

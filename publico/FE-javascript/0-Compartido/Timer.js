@@ -3,8 +3,9 @@ window.addEventListener("load", async () => {
 	// VARIABLES -------------------------------------------------------------------------
 	// Pointer del producto
 	let entidad = new URL(window.location.href).searchParams.get("entidad");
-	let prodID = new URL(window.location.href).searchParams.get("id");
+	let entID = new URL(window.location.href).searchParams.get("id");
 	if (!entidad && location.pathname.includes("/revision/usuarios")) entidad = "usuarios";
+	const tipoUsuario = window.location.pathname.startsWith("/revision/") ? "revisores" : "usuarios";
 	// Otras variables
 	const codigo = new URL(window.location.href).pathname;
 	let timer = document.querySelector("#timer");
@@ -12,7 +13,7 @@ window.addEventListener("load", async () => {
 	let unMinuto = 60 * 1000;
 	let meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 	// Horario Inicial
-	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + prodID).then((n) =>
+	let datos = await fetch("/api/horario-inicial/?entidad=" + entidad + "&id=" + entID).then((n) =>
 		n.json()
 	);
 	let horarioInicial = datos.capturado_en ? datos.capturado_en : datos.creado_en;
@@ -67,7 +68,7 @@ window.addEventListener("load", async () => {
 		let arrayMensajes = datos.capturado_en
 			? [
 					"Esta captura terminó el " + dia + " a las " + hora + "hs.. ",
-					"Quedó a disposición de los demás usuarios.",
+					"Quedó a disposición de los demás " + tipoUsuario + ".",
 					"Si nadie lo captura hasta 1 hora después de ese horario, podrás volver a capturarlo.",
 			  ]
 			: [
@@ -80,22 +81,22 @@ window.addEventListener("load", async () => {
 		// Flechas
 		let icono = codigo.startsWith("/revision/usuarios")
 			? {
-					link: "/inactivar-captura/?entidad=usuarios&id=" + prodID + "&origen=tableroUs",
+					link: "/inactivar-captura/?entidad=usuarios&id=" + entID + "&origen=tableroUs",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/revision/")
 			? {
-					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
+					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + entID + "&origen=tableroEnts",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/producto/edicion/") || codigo.startsWith("/links/abm/")
 			? {
-					link: "/producto/detalle/?entidad=" + entidad + "&id=" + prodID,
+					link: "/producto/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  }
 			: codigo.startsWith("/rclv/edicion/")
 			? {
-					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + prodID,
+					link: "/rclv/detalle/?entidad=" + entidad + "&id=" + entID,
 					HTML: '<i class="fa-solid fa-circle-info" title="Ir a Detalle"></i>',
 			  }
 			: {};

@@ -12,8 +12,7 @@
 #cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%);}
 
 /* Imagen */
-#imagen-derecha {width: 30vw; height: 100%; position: relative; background-color: var(--gris-claro);}
-#imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
+#imagen-derecha {background-color: var(--gris-intermedio);}
 
 /* Ayuda */
 .mensajeAyuda {padding: 7px 10px; z-index: 2;}
@@ -23,5 +22,5 @@
 #cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto; }
 
 /* Flechas - Particularidades */
-#cuerpo #flechas i {margin: 0 15px; font-size: 2rem;}
+#cuerpo #flechas i {margin: 0 25px; font-size: 2rem;}
 /* #cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);} */

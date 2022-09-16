@@ -211,7 +211,7 @@ module.exports = {
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : false;
 		let avatar = "/imagenes/0-Base/documento.jpg";
 		// Crear la carpeta si no existe
-		const ruta="./publico/imagenes/9-Provisorio"
+		const ruta = "./publico/imagenes/9-Provisorio";
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 		// Va a la vista
 		return res.render("GN0-Estructura", {
@@ -230,7 +230,7 @@ module.exports = {
 	documentoGuardar: async (req, res) => {
 		let usuario = req.session.usuario;
 		// Averiguar si hay errores de validación
-		let errores = await validar.documento({...req.body, avatar: req.file.filename});
+		let errores = await validar.documentoBE({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
 			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
@@ -239,13 +239,18 @@ module.exports = {
 		}
 		// Actualiza el usuario
 		let datos = {
-			numero_documento: req.body.pais_id + "-" + req.body.numero_documento,
-			avatar_documento: req.file.filename,
+			documento_numero: req.body.pais_id + "-" + req.body.documento_numero,
+			documento_avatar: req.file.filename,
 			fecha_revisores: compartidas.ahora(),
 		};
-		req.session.usuario = await procesos.actualizaElUsuario("docum_revisar", "ident_validada", usuario, datos);
+		req.session.usuario = await procesos.actualizaElUsuario(
+			"docum_revisar",
+			"ident_validada",
+			usuario,
+			datos
+		);
 		// Mueve el archivo a la carpeta definitiva
-		compartidas.moverImagen(datos.avatar_documento, "9-Provisorio", "2-DocsUsuarios");
+		compartidas.moverImagen(datos.documento_avatar, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
@@ -298,7 +303,7 @@ module.exports = {
 		delete req.session.email;
 		delete req.session.contrasena;
 		// 3. Variables para la vista
-		let {errores} = dataEntry ? await validar.mailContrasena_y_ObtieneUsuario(dataEntry) : "";
+		let {errores} = dataEntry ? await validar.mailContrasena_y_ObtieneUsuario(dataEntry) : {errores: ""};
 		let variables = [
 			{titulo: "E-Mail", type: "text", name: "email", placeholder: "Correo Electrónico"},
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},

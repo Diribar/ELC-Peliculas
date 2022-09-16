@@ -19,17 +19,21 @@ module.exports = {
 		if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
 		errores.nombre = !datos.nombre
 			? cartelCampoVacio
-			: largoPerenne
-			? largoPerenne
 			: castellano(datos.nombre)
 			? cartelCastellano
+			: mayuscula(datos.nombre)
+			? cartelMayuscula
+			: largoPerenne
+			? largoPerenne
 			: "";
 		errores.apellido = !datos.apellido
 			? cartelCampoVacio
-			: largoPerenne
-			? largoPerenne
 			: castellano(datos.apellido)
 			? cartelCastellano
+			: mayuscula(datos.apellido)
+			? cartelMayuscula
+			: largoPerenne
+			? largoPerenne
 			: "";
 		errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
 		errores.fecha_nacimiento = !datos.fecha_nacimiento
@@ -43,13 +47,15 @@ module.exports = {
 
 	editables: (datos) => {
 		let errores = {};
-		if (datos.apodo) var longApodo = longitud(datos.apodo, 2, 30);
+		if (datos.apodo) var largoApodo = longitud(datos.apodo, 2, 30);
 		errores.apodo = !datos.apodo
 			? cartelCampoVacio
-			: longApodo
-			? longApodo
 			: castellano(datos.apodo)
 			? cartelCastellano
+			: mayuscula(datos.apodo)
+			? cartelMayuscula
+			: largoApodo
+			? largoApodo
 			: "";
 		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
 		errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
@@ -69,17 +75,17 @@ module.exports = {
 		return errores;
 	},
 
-	documento: (datos) => {
+	documentoFE: (datos) => {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
-		// Revisar 'numero_documento'
-		if (campos.includes("numero_documento")) {
-			if (datos.numero_documento) var longNumero = longitud(datos.apodo, 2, 15);
-			errores.numero_documento = !datos.numero_documento
+		// Revisar 'documento_numero'
+		if (campos.includes("documento_numero")) {
+			if (datos.documento_numero) var largoNumero = longitud(datos.apodo, 2, 15);
+			errores.documento_numero = !datos.documento_numero
 				? cartelCampoVacio
-				: longNumero
-				? longNumero
+				: largoNumero
+				? largoNumero
 				: "";
 		}
 		// Revisar 'pais_id'
@@ -101,6 +107,24 @@ module.exports = {
 		}
 		// Fin
 		errores.hay = Object.values(errores).some((n) => !!n);
+		return errores;
+	},
+	documentoBE: async function (datos) {
+		// Averiguar los errores
+		let errores = await this.documentoFE(datos);
+		// Acciones si no hay errores
+		if (!errores.hay) {
+			// Verifica que el documento no exista ya en la Base de Datos
+			let documento_numero = datos.pais_id + "-" + datos.documento_numero;
+			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {documento_numero});
+			if (averiguar)
+				errores = {
+					documento_numero:
+						"Ya tenemos ingresado ese número de documento en nuestra Base de Datos.",
+					hay: true,
+				};
+		}
+		// Fin
 		return errores;
 	},
 
@@ -171,12 +195,12 @@ module.exports = {
 					};
 				// Verifica si tiene status de 'documento'
 				else if (usuario.status_registro.docum_revisar) {
-					let numero_documento = usuario.numero_documento.slice(3);
-					let pais_id = usuario.numero_documento.slice(0, 2);
+					let documento_numero = usuario.documento_numero.slice(3);
+					let pais_id = usuario.documento_numero.slice(0, 2);
 					// Verifica los posibles errores
-					errores.numero_documento = !datos.numero_documento
+					errores.documento_numero = !datos.documento_numero
 						? cartelCampoVacio
-						: datos.numero_documento != numero_documento
+						: datos.documento_numero != documento_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
 					errores.pais_id = !datos.pais_id
@@ -184,7 +208,7 @@ module.exports = {
 						: datos.pais_id != pais_id
 						? "El país no coincide con el de nuestra Base de Datos"
 						: "";
-					errores.documento = !!errores.numero_documento || !!errores.pais_id;
+					errores.documento = !!errores.documento_numero || !!errores.pais_id;
 				}
 			}
 		}
@@ -198,8 +222,8 @@ let cartelMailVacio = "Necesitamos que escribas un correo electrónico";
 let cartelMailFormato = "Debes escribir un formato de correo válido";
 let cartelContrasenaVacia = "Necesitamos que escribas una contraseña";
 let cartelCampoVacio = "Necesitamos que completes este campo";
-let cartelCastellano =
-	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
+let cartelMayuscula = "La primera letra debe ser en mayúscula";
 let cartelElejiUnValor = "Necesitamos que elijas un valor";
 
 let formatoMail = (email) => {
@@ -220,7 +244,12 @@ let longitud = (dato, corto, largo) => {
 };
 
 let castellano = (dato) => {
-	let formato = /^[A-Z][A-Za-z ,.:áéíóúüñ'/()\d+-]+$/;
+	let formato = /[A-Za-z áéíóúüñ'/()\d+-]+$/;
+	return !formato.test(dato);
+};
+
+let mayuscula = (dato) => {
+	let formato = /^[A-Z]/;
 	return !formato.test(dato);
 };
 
