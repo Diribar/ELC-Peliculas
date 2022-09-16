@@ -60,7 +60,6 @@ window.addEventListener("load", () => {
 
 	// Frenar el submit si el botonSubmit está inactivo
 	form.addEventListener("submit", (e) => {
-		console.log("SI");
 		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
 	});
 });
