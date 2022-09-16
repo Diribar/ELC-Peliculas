@@ -1,4 +1,8 @@
 "use strict";
+// Si el mouse entra al ícono, se despliega el menú
+// Si el mouse sale del menú, se cierra
+// Si se hace 'click' en cualquier parte, se cierran todos los menús menos donde se haya hecho 'click'
+
 window.addEventListener("load", () => {
 	// Definir variables
 	let iconos = document.querySelectorAll("header .iconoMenu");
@@ -19,10 +23,9 @@ window.addEventListener("load", () => {
 	// Funciones --------------------------------------------------------------------
 	let toggleMenus = (e) => {
 		if (e.target != inputBusquedaRapida)
-			for (let i = 0; i < menus.length; i++) {
+			for (let i = 0; i < menus.length; i++)
 				e.target == iconos[i]
 					? menus[i].classList.toggle("ocultar")
 					: menus[i].classList.add("ocultar");
-			}
 	};
 });

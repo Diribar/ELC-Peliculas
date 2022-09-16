@@ -1,6 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
+	let form = document.querySelector("form#subCuerpo");
 	let botonSubmit = document.querySelector("#submit");
 	let iconos = document.querySelectorAll("#datos .iconos");
 	let cantCampos = iconos.length;
@@ -57,5 +58,9 @@ window.addEventListener("load", () => {
 		botonSubmitActivoInactivo();
 	});
 
-	
+	// Frenar el submit si el botonSubmit está inactivo
+	form.addEventListener("submit", (e) => {
+		console.log("SI");
+		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
+	});
 });

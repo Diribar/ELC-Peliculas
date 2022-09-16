@@ -161,7 +161,7 @@ module.exports = {
 		let errores = await validar.editables(req.body);
 		if (errores.hay) {
 			if (req.file) delete req.body.avatar;
-			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
+			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
@@ -175,7 +175,7 @@ module.exports = {
 			req.body
 		);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.moverImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		if (req.file) compartidas.mueveUnArchivo(req.body.avatar, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
@@ -228,7 +228,7 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.documentoBE({...req.body, avatar: req.file.filename});
 		if (errores.hay) {
-			if (req.file) compartidas.borrarArchivo(req.file.destination, req.file.filename);
+			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
 			return res.redirect("/usuarios/documento");
@@ -246,7 +246,7 @@ module.exports = {
 			datos
 		);
 		// Mueve el archivo a la carpeta definitiva
-		compartidas.moverImagen(datos.documento_avatar, "9-Provisorio", "2-DocsUsuarios");
+		compartidas.mueveUnArchivo(datos.documento_avatar, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},

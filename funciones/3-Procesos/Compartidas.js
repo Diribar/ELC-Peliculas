@@ -217,22 +217,27 @@ module.exports = {
 	},
 
 	// Gestión de archivos
-	moverImagen: (nombre, origen, destino) => {
+	averiguaSiExisteUnArchivo: (archivo) => {
+		return archivo && fs.existsSync(archivo);
+	},
+	mueveUnArchivo: function (nombre, origen, destino) {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";
 		let archivoDestino = carpetaDestino + nombre;
-		if (!fs.existsSync(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-		if (!fs.existsSync(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen);
+		if (!this.averiguaSiExisteUnArchivo(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+		if (!this.averiguaSiExisteUnArchivo(archivoOrigen))
+			console.log("No se encuentra el archivo " + archivoOrigen);
 		else
 			fs.rename(archivoOrigen, archivoDestino, (error) => {
 				if (!error) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
 				else throw error;
 			});
 	},
-	borrarArchivo: (ruta, archivo) => {
+	borraUnArchivo: function (ruta, archivo) {
+		// Arma el nombre del archivo
 		let archivoImagen = path.join(ruta, archivo);
 		// Se fija si encuentra el archivo
-		if (archivo && fs.existsSync(archivoImagen)) {
+		if (this.averiguaSiExisteUnArchivo) {
 			// Borra el archivo
 			fs.unlinkSync(archivoImagen);
 			// Avisa que lo borra

@@ -31,11 +31,36 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "revisionUs";
 		const codigo = "validarIdentidad";
-		// 2. Variables
+		// 2. Temas del usuario
 		let userID = req.query.id;
-		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, "sexo");
+		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, [
+			"sexo",
+			"rol_usuario",
+			"status_registro",
+		]);
 		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
 		let documento = user.documento_numero;
+		// Validaciones antes de avanzar
+		console.log(compartidas.averiguaSiExisteUnArchivo(44, archivoImagen));
+		console.log(compartidas.averiguaSiExisteUnArchivo(45, "./publico" + archivoImagen));
+		if (
+			!user.status_registro.docum_revisar ||
+			user.status_registro.ident_validada ||
+			user.rol_usuario.perm_inputs ||
+			!avatar ||
+			!compartidas.averiguaSiExisteUnArchivo(archivoImagen) ||
+			!documento
+		)
+			return res.send(
+				!user.status_registro.docum_revisar,
+				user.status_registro.ident_validada,
+				user.rol_usuario.perm_inputs,
+				!avatar,
+				!compartidas.averiguaSiExisteUnArchivo(archivoImagen),
+				!documento
+			);
+		// return res.redirect("/revision/usuarios/tablero-de-control");
+		// 3. Otras variables
 		let pais_id = documento.slice(0, 2);
 		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
 		let documento_numero = documento.slice(4);
@@ -65,7 +90,8 @@ module.exports = {
 		});
 	},
 	validarIdentidadGuardar: async (req, res) => {
-		// return res.send({...req.query,...req.body})
+		// Verifica que se hayan respondido todos los campos
+		if (Object.keys(req.body).length != 8) return res.redirect(req.originalUrl);
 		// Variables
 		let datos = {...req.query, ...req.body};
 		let revID = req.session.usuario.id;
@@ -80,7 +106,7 @@ module.exports = {
 		// Campo 'documento_avatar'
 		if (datos.documento_avatar == "NO" && usuario.documento_avatar) {
 			// Elimina el archivo 'avatar'
-			compartidas.borrarArchivo("/imagenes/2-DocsUsuarios", usuario.documento_avatar);
+			compartidas.borraUnArchivo("/imagenes/2-DocsUsuarios", usuario.documento_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			status_registro_id = valIdentidad("documento_avatar", st_editables_ID, usuario, revID, motivo);

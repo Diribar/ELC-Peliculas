@@ -1,5 +1,5 @@
-<div class="menuOpciones menuFondo ocultar" id="menu-usuario">
-	<% if (locals.usuario) { %>
+<% if (locals.usuario) { %>
+	<div class="menuOpciones menuFondo ocultar" id="menu-usuario">
 		<!-- Mi interés en algunos productos -->
 		<a href="#">
 			<div class="flex-row align-center inactivo">
@@ -44,19 +44,5 @@
 				<div>Logout</div>
 			</div>
 		</a>
-	<% } else { %>
-		<a href="/usuarios/login">
-			<div class="flex-row align-center">
-				<div class="icono"><i class="fa-solid fa-right-to-bracket"></i></div>
-				<div>Login</div>
-			</div>
-		</a>
-		<a href="/usuarios/mail">
-			<div class="flex-row align-center">
-				<div class="icono"><i class="fa-solid fa-user-plus"></i></div>
-				<div>Registrarse</div>
-			</div>
-		</a>
-	<% } %>
-
-</div>
+	</div>
+<% } %>
