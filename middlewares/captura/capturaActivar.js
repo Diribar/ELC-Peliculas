@@ -5,7 +5,11 @@ const compartidas = require("../../funciones/3-Procesos/Compartidas");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
-	const entidad = req.query.entidad;
+	const entidad = req.query.entidad
+		? req.query.entidad
+		: req.originalUrl.startsWith("/revision/usuarios")
+		? "usuarios"
+		: "";
 	const prodID = req.query.id;
 	const userID = req.session.usuario.id;
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, prodID, "status_registro");

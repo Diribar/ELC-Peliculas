@@ -78,9 +78,14 @@ window.addEventListener("load", async () => {
 		for (let mensaje of arrayMensajes) mensajes.innerHTML += "<li>" + mensaje + "</li>";
 
 		// Flechas
-		let icono = codigo.startsWith("/revision/")
+		let icono = codigo.startsWith("/revision/usuarios")
 			? {
-					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tablero",
+					link: "/inactivar-captura/?entidad=usuarios&id=" + prodID + "&origen=tableroUs",
+					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
+			  }
+			: codigo.startsWith("/revision/")
+			? {
+					link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "&origen=tableroEnts",
 					HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
 			  }
 			: codigo.startsWith("/producto/edicion/") || codigo.startsWith("/links/abm/")

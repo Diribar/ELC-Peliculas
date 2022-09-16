@@ -6,26 +6,29 @@ const API = require("./ControladorAPI");
 const vista = require("./ControladorVista");
 
 // Middlewares ***********************************************
+const soloUsuarios = require("../../middlewares/usuarios/solo1-usuarios");
+const aptoInput = require("../../middlewares/usuarios/aptoInput");
 const soloRevisorEnts = require("../../middlewares/usuarios/solo3-revisor-ents");
 const entidad = require("../../middlewares/producto/entidadNombre");
-const id = require("../../middlewares/producto/entidadID");
+const entidadID = require("../../middlewares/producto/entidadID");
 const permUserReg = require("../../middlewares/captura/permUserReg");
 const capturaActivar = require("../../middlewares/captura/capturaActivar");
-const todos = [soloRevisorEnts, entidad, id, permUserReg, capturaActivar];
+const algunos = [soloUsuarios, aptoInput, soloRevisorEnts];
+const todos = [...algunos, entidad, entidadID, permUserReg, capturaActivar];
 
 // APIs -------------------------------------------------
 // Producto
-router.get("/api/producto-alta", soloRevisorEnts, API.prodAlta);
-router.get("/api/producto-edicion", soloRevisorEnts, API.prodEdic);
+router.get("/api/producto-alta", ...algunos, API.prodAlta);
+router.get("/api/producto-edicion", ...algunos, API.prodEdic);
 // RCLV-Alta
-router.get("/api/rclv-alta", soloRevisorEnts, API.RCLV_Alta);
+router.get("/api/rclv-alta", ...algunos, API.RCLV_Alta);
 // Links
-router.get("/api/link-alta", soloRevisorEnts, API.linkAlta);
-router.get("/api/link-edicion", soloRevisorEnts, API.linkEdic);
-router.get("/api/link-eliminar", soloRevisorEnts, API.linkAlta);
+router.get("/api/link-alta", ...algunos, API.linkAlta);
+router.get("/api/link-edicion", ...algunos, API.linkEdic);
+router.get("/api/link-eliminar", ...algunos, API.linkAlta);
 
 // VISTAS --------------------------------------------------
-router.get("/tablero-de-control", soloRevisorEnts, vista.tableroControl);
+router.get("/tablero-de-control", ...algunos, vista.tableroControl);
 // Producto
 router.get("/producto/alta", ...todos, vista.prod_Alta);
 router.get("/producto/edicion", ...todos, vista.prod_Edicion);

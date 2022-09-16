@@ -92,7 +92,7 @@ window.addEventListener("load", () => {
 		// Flechas
 		let icono = {
 			HTML: '<i class="fa-solid fa-thumbs-up" title="Entendido"></i>',
-			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tablero",
+			link: "/inactivar-captura/?entidad=" + entidad + "&id=" + prodID + "origen=tableroEnts",
 		};
 		flechas.innerHTML = "";
 		flechas.innerHTML += "<a href='" + icono.link + "' autofocus>" + icono.HTML + "</a>";

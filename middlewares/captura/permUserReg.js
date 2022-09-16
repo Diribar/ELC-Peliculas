@@ -6,7 +6,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables - Generales
-	const entidad = req.query.entidad;
+	const entidad = req.query.entidad
+		? req.query.entidad
+		: req.originalUrl.startsWith("/revision/usuarios")
+		? "usuarios"
+		: "";
 	const entidadID = req.query.id;
 	const haceUnaHora = compartidas.nuevoHorario(-1);
 	const haceDosHoras = compartidas.nuevoHorario(-2);
@@ -17,7 +21,8 @@ module.exports = async (req, res, next) => {
 	const urlBase = req.baseUrl;
 	const url = req.url;
 	// Variables - Registro
-	let includes = ["status_registro", "ediciones", "capturado_por"];
+	let includes = ["status_registro", "capturado_por"];
+	if (entidad != "usuarios") includes.push("ediciones");
 	if (entidad == "capitulos") includes.push("coleccion");
 	const registro = await BD_genericas.obtenerPorIdConInclude(entidad, entidadID, includes);
 	let creado_en = registro.creado_en;
