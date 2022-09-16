@@ -1,5 +1,4 @@
 "use strict";
-const {DATE} = require("sequelize");
 // Definir variables
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const BD_genericas = require("../../funciones/2-BD/Genericas");
