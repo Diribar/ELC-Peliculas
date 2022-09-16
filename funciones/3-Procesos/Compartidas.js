@@ -231,7 +231,7 @@ module.exports = {
 	},
 	borrarArchivo: (ruta, archivo) => {
 		let archivoImagen = path.join(ruta, archivo);
-		// Se fija siencuentra el archivo
+		// Se fija si encuentra el archivo
 		if (archivo && fs.existsSync(archivoImagen)) {
 			// Borra el archivo
 			fs.unlinkSync(archivoImagen);
