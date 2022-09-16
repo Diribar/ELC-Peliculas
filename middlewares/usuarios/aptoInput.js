@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
 	let permisoInputs = () => {
 		let informacion;
 		if (!usuario.rol_usuario.perm_inputs) {
-			if (!usuario.status_registro.docum_revisar)
+			if (!usuario.status_registro.ident_a_validar)
 				informacion = {
 					mensajes: [
 						"El ingreso de información para otras personas, requiere responsabilidad.",

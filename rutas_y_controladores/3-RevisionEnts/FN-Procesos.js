@@ -430,10 +430,10 @@ module.exports = {
 	linksEdic_LimpiarEdiciones: async (linkOrig) => {
 		// Limpia las ediciones
 		// 1. Obtiene el link con sus ediciones
-		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]); 
+		linkOrig = await BD_genericas.obtenerPorIdConInclude("links", linkOrig.id, ["ediciones"]);
 		// Genera un objeto con valores null
 		let camposVacios = {};
-		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null)); 
+		variables.camposRevisarLinks().forEach((campo) => (camposVacios[campo.nombreDelCampo] = null));
 		// Purga cada edición
 		linkOrig.ediciones.forEach(async (linkEdic) => {
 			let edicID = linkEdic.id;
@@ -449,7 +449,7 @@ module.exports = {
 			else await BD_genericas.eliminarPorId("links_edicion", edicID);
 		});
 		// Fin
-		return
+		return;
 	},
 	links_prodCampoLG_OK: async (prodEntidad, prodID, campo) => {
 		if (campo == "gratuito" && prodEntidad.gratuito) {
@@ -470,8 +470,8 @@ module.exports = {
 		// Averiguar si el motivo amerita bloquear
 		if (motivo.bloqueo_perm_inputs) {
 			// Obtener el rol de 'Consultas', sin permiso para Data Entry
-			let rol_usuario = await BD_genericas.obtenerPorCampos("roles_usuarios", {perm_inputs: false});
-			datos.rol_usuario_id = rol_usuario.id;
+			let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+			datos.rol_usuario_id = rol_usuario_id;
 		}
 		// Obtiene los datos del usuario
 		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);

@@ -244,7 +244,7 @@ module.exports = {
 			fecha_revisores: compartidas.ahora(),
 		};
 		req.session.usuario = await procesos.actualizaElUsuario(
-			"docum_revisar",
+			"ident_a_validar",
 			"ident_validada",
 			usuario,
 			datos

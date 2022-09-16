@@ -3,6 +3,7 @@
 #subcuerpo #datos {margin: 0 50px; background-color: var(--gris-intermedio); height: 70%;}
 #subcuerpo #datos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #subcuerpo #datos {padding: 20px; border-radius: 20px;}
+#subcuerpo #datos {border: var(--gris-oscuro) 7px solid; box-shadow: 0px 0px 10px rgb(100 100 100);}
 #subcuerpo #datos * {line-height: 1;}
 
 /* Datos a validar */
@@ -18,9 +19,10 @@
 /* Íconos */
 #subcuerpo #datos .iconos {position: absolute; top: 50%; transform: translateY(-57%);}
 #subcuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
-#subcuerpo #datos .iconos {border-radius: 10px; padding: 5px; left: -50px; width: 45px;}
-#subcuerpo #datos .iconos .fa-solid {border: 1px solid;}
+#subcuerpo #datos .iconos {border-radius: 10px; left: -55px; width: 45px;}
+#subcuerpo #datos .iconos .fa-solid {border: 1.5px solid; font-weight: bold;}
 #subcuerpo #datos .iconos .fa-solid.sinDecision {color: wheat; background-color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
+/* #subcuerpo #datos #motivo_rech_docum {} */
 
 /* Flechas */
 #subcuerpo #flechas button {border: none;}

@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		mail_validado: {type: dt.BOOLEAN},
 		perennes_ok: {type: dt.BOOLEAN},
 		editables_ok: {type: dt.BOOLEAN},
-		docum_revisar: {type: dt.BOOLEAN},
+		ident_a_validar: {type: dt.BOOLEAN},
 		ident_validada: {type: dt.BOOLEAN},
 	};
 	const config = {

@@ -9,16 +9,14 @@ const validar = require("../2.1-Prod-RUD/FN-Validar");
 module.exports = {
 	// Tablero
 	tablero_validarIdentidades: async function (userID) {
-		// Rol no Revisor
-		let roles_no_perm_inputs = await BD_genericas.obtenerTodosPorCampos("roles_usuarios", {
-			perm_inputs: false,
-		}).then((n) => n.map((m) => m.id));
+		// Rol no permInputs
+		let rol_consultas_id = roles_us.find((n) => !n.perm_inputs).id;
 		// Status Documento
-		let status_docum_revisar = status_registro_us.find((n) => n.docum_revisar && !n.ident_validada).id;
+		let status_docum_revisar_id = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
 		// Campos para filtrar
 		let campos = {
-			status_registro_id: status_docum_revisar,
-			rol_usuario_id: roles_no_perm_inputs,
+			rol_usuario_id: rol_consultas_id,
+			status_registro_id: status_docum_revisar_id,
 		};
 		// Obtener el usuario
 		// let includes = [];

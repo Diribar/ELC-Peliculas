@@ -148,6 +148,8 @@ module.exports = {
 			? "Valor"
 			: entidad == "links"
 			? "Links"
+			: entidad == "usuarios"
+			? "Usuarios"
 			: "";
 	},
 	obtenerEntidad_id: (entidad) => {
@@ -229,10 +231,17 @@ module.exports = {
 	},
 	borrarArchivo: (ruta, archivo) => {
 		let archivoImagen = path.join(ruta, archivo);
+		// Se fija si encuentra el archivo
 		if (archivo && fs.existsSync(archivoImagen)) {
+			// Borra el archivo
 			fs.unlinkSync(archivoImagen);
-			console.log("Archivo " + archivoImagen + " borrado");
-		} else console.log("Archivo " + archivoImagen + " no encontrado");
+			// Avisa que lo borra
+			console.log("Archivo '" + archivoImagen + "' borrado");
+		}
+		// Mensaje si no lo encuentra
+		else console.log("Archivo " + archivoImagen + " no encontrado");
+		// Fin
+		return;
 	},
 	revisarImagen: (tipo, tamano) => {
 		let tamanoMaximo = 2;
