@@ -42,10 +42,10 @@
 				<input id="documento_avatar-NO" type="radio" name="documento_avatar" value="NO" class="ocultar">
 			</div>
 			<!-- Motivos de rechazo -->
-			<select name="motivo_docum" id="motivo_docum" class="ocultar">
+			<select name="motivo_docum_id" id="motivo_docum" class="ocultar">
 				<option value="" selected class="ocultar">Elegí un motivo de rechazo</option>
 				<% for (motivo of motivos_docum) { %>
-					<option value="<%= motivo.descripcion %>"><%= motivo.descripcion %></option>
+					<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
 				<% } %>
 			</select>
 		</div>

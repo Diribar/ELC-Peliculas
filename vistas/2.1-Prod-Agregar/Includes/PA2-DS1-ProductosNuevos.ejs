@@ -1,6 +1,6 @@
 <% for (let prod_nuevo of prod_nuevos) { %>
 <li>
-	<form action="<%= link %>" method="POST">
+	<form method="POST">
 		<!-- Campos para luego enviar a Datos Duros -->
 		<input class="ocultar" type="text" name="TMDB_entidad" value="<%= prod_nuevo.TMDB_entidad %>">
 		<input class="ocultar" type="text" name="TMDB_id" value="<%= prod_nuevo.TMDB_id %>">

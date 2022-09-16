@@ -82,7 +82,7 @@ module.exports = {
 			// Elimina el archivo 'avatar'
 			compartidas.borrarArchivo("/imagenes/2-DocsUsuarios", usuario.documento_avatar);
 			// Rutinas para el campo
-			let motivo = motivos.find((n) => n.id == datos.motivo_rech_ID);
+			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			status_registro_id = valIdentidad("documento_avatar", st_editables_ID, usuario, revID, motivo);
 		}
 		// Rutinas para el n° de documento

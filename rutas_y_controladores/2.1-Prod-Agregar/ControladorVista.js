@@ -26,7 +26,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Palabras Clave",
-			link: req.originalUrl,
 			palabrasClave,
 		});
 	},
@@ -62,7 +61,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
-			link: req.originalUrl,
 			prod_nuevos,
 			prod_yaEnBD,
 			mensaje,
@@ -104,7 +102,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Tipo de Producto",
-			link: req.originalUrl,
 			dataEntry: tipoProd,
 			autorizado_fa: req.session.usuario.autorizado_fa,
 		});
@@ -151,7 +148,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Copiar FA",
-			link: "/producto/agregar/copiar-fa",
 			dataEntry: copiarFA,
 		});
 	},
@@ -226,7 +222,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Duros",
-			link: req.originalUrl,
 			dataEntry: datosDuros,
 			camposDD1: camposDD_vista.filter((n) => n.antesDePais),
 			camposDD2: camposDD_vista.filter((n) => !n.antesDePais),
@@ -339,7 +334,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
-			link: req.originalUrl,
 			dataEntry: datosPers,
 			camposDP,
 		});
@@ -394,7 +388,6 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Agregar - Confirma",
-			link: req.originalUrl,
 			dataEntry: confirma,
 			direccion,
 			actuacion,

@@ -250,7 +250,6 @@ module.exports = {
 			entidad: entidad,
 			titulo,
 			tituloCuerpo,
-			link: req.originalUrl,
 			dataEntry,
 			meses,
 			roles_iglesia,
