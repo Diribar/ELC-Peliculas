@@ -11,6 +11,7 @@ require("dotenv").config(); // Para usar el archivo '.env'
 	const BD_genericas = require("./funciones/2-BD/Genericas");
 	global.status_registro = await BD_genericas.obtenerTodos("status_registro", "orden");
 	global.status_registro_us = await BD_genericas.obtenerTodos("status_registro_us", "orden");
+	global.roles_us=await BD_genericas.obtenerTodos("roles_usuarios", "orden");
 })();
 
 const path = require("path");

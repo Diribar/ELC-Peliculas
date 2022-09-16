@@ -97,8 +97,15 @@ module.exports = {
 
 		// Actualizar el status del usuario
 		if (!status_registro_id) status_registro_id = st_ident_validada_ID;
-		let objeto = {status_registro_id, fecha_revisores: compartidas.ahora()};
+		// Si el usuario validó sus datos y tiene rol de 'Consultas', actualizarlo a 'permInput'
+		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
+		if (status_registro_id == st_ident_validada_ID && !usuario.rol_usuario.perm_inputs) {
+			rol_usuario_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents).id;
+		}
+		// Actualizar el usuario
+		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: compartidas.ahora()};
 		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
+
 		// Liberar y volver al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
 	},
