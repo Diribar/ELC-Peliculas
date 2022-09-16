@@ -72,7 +72,7 @@ module.exports = {
 		let usuario = await BD_genericas.obtenerPorId("usuarios", datos.id);
 		let status_registro_id;
 		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado && !n.perennes_ok).id;
-		let st_editables_ID = status_registro_us.find((n) => n.editables_ok && !n.docum_revisar).id;
+		let st_editables_ID = status_registro_us.find((n) => n.editables_ok && !n.ident_a_validar).id;
 		let st_ident_validada_ID = status_registro_us.find((n) => n.ident_validada).id;
 		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
 		let motivo = motivos.find((n) => !n.mostrar_para_docum);

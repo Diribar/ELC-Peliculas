@@ -12,11 +12,11 @@ module.exports = {
 		// Rol no permInputs
 		let rol_consultas_id = roles_us.find((n) => !n.perm_inputs).id;
 		// Status Documento
-		let status_docum_revisar_id = status_registro_us.find((n) => n.docum_revisar && !n.ident_validada).id;
+		let status_docum_revisar_id = status_registro_us.find((n) => n.ident_a_validar && !n.ident_validada).id;
 		// Campos para filtrar
 		let campos = {
-			status_registro_id: status_docum_revisar_id,
 			rol_usuario_id: rol_consultas_id,
+			status_registro_id: status_docum_revisar_id,
 		};
 		// Obtener el usuario
 		// let includes = [];

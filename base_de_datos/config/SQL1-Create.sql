@@ -101,11 +101,11 @@ CREATE TABLE us_status_registro (
 	mail_validado BOOLEAN NULL,
 	perennes_ok BOOLEAN NULL,
 	editables_ok BOOLEAN NULL,
-	docum_revisar BOOLEAN NULL,
+	ident_a_validar BOOLEAN NULL,
 	ident_validada BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre, mail_validado, perennes_ok, editables_ok, docum_revisar, ident_validada)
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado, perennes_ok, editables_ok, ident_a_validar, ident_validada)
 VALUES 
 (1, 1, 'Mail a validar', 0, 0, 0, 0, 0), 
 (2, 2, 'Mail validado', 1, 0, 0, 0, 0), 
