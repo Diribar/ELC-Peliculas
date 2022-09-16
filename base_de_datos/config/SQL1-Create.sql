@@ -114,21 +114,21 @@ VALUES
 (5, 5, 'Documento a revisar', 1, 1, 1, 1, 0),
 (6, 6, 'Identidad validada', 1, 1, 1, 1, 1)
 ;
-CREATE TABLE us_motivos_rech_docum (
+CREATE TABLE us_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	descripcion VARCHAR(42) NOT NULL,
 	duracion DECIMAL(4,1) UNSIGNED DEFAULT 0,
 	bloqueo_perm_inputs BOOLEAN NULL,
-	status_id TINYINT UNSIGNED NULL,
+	mostrar_para_docum BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_motivos_rech_docum (id, orden, status_id, bloqueo_perm_inputs, duracion, descripcion)
+INSERT INTO us_motivos_rech (id, orden, bloqueo_perm_inputs, duracion, mostrar_para_docum, descripcion)
 VALUES
-(11, 1, 4,    0,  90, 'La imagen no es un documento'),
-(12, 2, 4,    0, 180, 'La imagen no es un documento y es agresiva'),
-(13, 3, 4, NULL, 0.5, 'La imagen es ilegible o está truncada'),
-(14, 4, 2, NULL, 0.5, 'Los datos no coinciden')
+(11, 1,    0,  90, 1, 'La imagen no es un documento'),
+(12, 2,    0, 180, 1, 'La imagen no es un documento y es agresiva'),
+(13, 3, NULL, 0.5, 1, 'La imagen es ilegible o está truncada'),
+(14, 4, NULL, 0.5, 0, 'Valor distinto al del documento')
 ;
 
 
