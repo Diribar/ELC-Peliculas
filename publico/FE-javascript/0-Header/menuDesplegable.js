@@ -1,8 +1,4 @@
 "use strict";
-// Si el mouse entra al ícono, se despliega el menú
-// Si el mouse sale del menú, se cierra
-// Si se hace 'click' en cualquier parte, se cierran todos los menús menos donde se haya hecho 'click'
-
 window.addEventListener("load", () => {
 	// Definir variables
 	let iconos = document.querySelectorAll("header .iconoMenu");
