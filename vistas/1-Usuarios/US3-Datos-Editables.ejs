@@ -6,7 +6,7 @@
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
 		<div class="input-error">
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
-			<%- include("iconosErrorOK", {campo: "apodo"}) %>
+			<%- include("CMP-errorOK_visible", {campo: "apodo"}) %>
 		</div>
 	</section>
 	<!--Pais de residencia-->
@@ -37,7 +37,7 @@
 					<% } %>
 				</optgroup>
 			</select>
-			<%- include("iconosErrorOK", {campo: "pais_id"}) %>
+			<%- include("CMP-errorOK_visible", {campo: "pais_id"}) %>
 		</div>
 	</section>
 	<!--Rol en la iglesia-->
@@ -50,7 +50,7 @@
 					<option value="<%= rol_iglesia.id %>" <% if (dataEntry.rol_iglesia_id==rol_iglesia.id) { %>selected <% } %><% if (rol_iglesia.id=="PP" || rol_iglesia.id=="PC") {%>class="ocultar" <% } %>><%= rol_iglesia.nombre %></option>
 				<% } %>
 			</select>
-			<%- include("iconosErrorOK", {campo: "rol_iglesia_id"}) %>
+			<%- include("CMP-errorOK_visible", {campo: "rol_iglesia_id"}) %>
 		</div>
 	</section>
 	<!--Imagen de perfil-->

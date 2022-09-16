@@ -18,12 +18,8 @@
 					>
 					<!-- Ojito contraseña -->
 					<% if (variable.name == "contrasena") { %><i id="eye" class="fa-solid fa-eye-slash"></i><% } %>
-					<!-- Errores -->
-					<i class="fa-solid fa-circle-xmark <%- !errores || !errores[variable.name] ? 'ocultar' : '' %>">
-						<span class="mensajeError"><%= errores && errores[variable.name] %></span>
-					</i>
-					<!-- OK -->
-					<i class="fa-solid fa-circle-check <%- !errores || errores[variable.name] ? 'ocultar' : '' %>"></i>
+					<!-- Error/OK -->
+					<%- include("CMP-errorOK_visible", {campo: variable.name}) %>
 				</div>
 			</div>
 		<% } %>

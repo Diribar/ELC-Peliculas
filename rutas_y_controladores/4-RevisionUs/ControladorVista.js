@@ -33,18 +33,20 @@ module.exports = {
 		const codigo = "validarIdentidad";
 		// 2. Variables
 		let id = req.query.id;
-		let user = await BD_especificas.obtenerUsuarioPorID(id);
+		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", id, "sexo");
 		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
 		let documento = user.numero_documento;
 		let pais_id = documento.slice(0, 2);
+		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
 		let numero_documento = documento.slice(4);
+		let fecha_nacimiento = compartidas.fechaTexto(user.fecha_nacimiento);
 		let campos = [
 			{titulo: "Nombre", nombre: "nombre", valor: user.nombre},
 			{titulo: "Apellido", nombre: "apellido", valor: user.apellido},
+			{titulo: "Fecha de Nacimiento", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
+			{titulo: "Sexo", nombre: "sexo_id", valor: user.sexo.nombre},
 			{titulo: "Número de Documento", nombre: "numero_documento", valor: numero_documento},
-			{titulo: "País de Expedición", nombre: "pais_id", valor: pais_id},
-			{titulo: "Fecha de Nacimiento", nombre: "fecha_nacimiento", valor: user.fecha_nacimiento},
-			{titulo: "Sexo", nombre: "sexo_id", valor: user.sexo_id},
+			{titulo: "País de Expedición", nombre: "pais_id", valor: pais},
 		];
 		// 4. Va a la vista
 		return res.render("CMP-RV-Estructura", {

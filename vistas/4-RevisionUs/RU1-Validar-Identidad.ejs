@@ -9,6 +9,19 @@
 		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
 	</ul>	
 </section>
-<section id="datos">
-	
+<section id="subcuerpo" class="flex-col">
+	<div id="datos">
+		<div id="texto">
+			<% for (campo of campos) { %>
+				<p><%= campo.titulo %>: <%= campo.valor %> </p>
+				
+			<% } %>
+		</div>
+		<div id="documento">
+			<img src="/imagenes/2-DocsUsuarios/<%= user.avatar_documento %>" alt="documento" title="Documento">
+		</div>
+	</div>
+	<div id="flechas">
+		<p>flechas</p>
+	</div>
 </section>

@@ -18,11 +18,7 @@
 				<li>Sólo palabras del <strong><u>Título</u></strong>, en el idioma <strong><em>original</em></strong> o en <strong><em>castellano</em></strong>.</li>
 				<li>Escribí de manera precisa todas las palabras que sepas.</li>
 			</ul>
-			<!-- Errores -->
-			<i class="fa-solid fa-circle-xmark ocultar">
-				<span class="mensajeError"></span>
-			</i>
-			<i class="fa-solid fa-circle-check ocultar" style="display: none;"></i>
+			<%- include("CMP-errorOK_oculto", {display: false}) %>
 		</div>
 		<i id="submit" class="fa-solid fa-circle-question naranja inactivo" title="Verificar"></i>
 	</section>
