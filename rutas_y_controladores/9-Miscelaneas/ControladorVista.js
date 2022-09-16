@@ -38,7 +38,7 @@ module.exports = {
 		if (origen == "DP") origen = "/producto/agregar/datos-personalizados";
 		if (origen == "ED") origen = "/producto/edicion/?entidad=" + prodEntidad + "&id=" + prodID;
 		if (origen == "DT") origen = "/producto/detalle/?entidad=" + prodEntidad + "&id=" + prodID;
-		if (origen == "tableroUs") origen = "/revision/tablero-de-control/usuarios";
+		if (origen == "tableroUs") origen = "/revision/usuarios/tablero-de-control";
 		if (origen == "tableroEnts") origen = "/revision/tablero-de-control";
 		if (!origen) origen = "/";
 		// Redireccionar a la vista que corresponda

@@ -5,17 +5,17 @@
 	<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
 	<ul class="mensajeAyuda ocultar" type="dots">
 		<li>Necesitamos que nos digas si los datos coinciden con el documento.</li>
-		<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
+		<li>Si el documento no corresponde, te vamos a pedir que nos digas el motivo.</li>
 	</ul>	
 </section>
-<form action="" id="subcuerpo" class="flex-col">
+<form method="POST" id="subcuerpo" class="flex-col">
 	<div id="datos">
 		<div id="texto">
 			<% for (campo of campos) { %>
 				<div class="campos">
 					<p><em><%= campo.titulo %></em>: <strong><%= campo.valor %></strong></p>
 					<!-- Aprobar y Rechazar -->
-					<div id="<%= campo.nombre %>" class="iconos">
+					<div class="iconos">
 						<label for="<%= campo.nombre %>-SI">
 							<i class="fa-solid sinDecision fa-circle-check"></i>
 						</label>
@@ -23,7 +23,7 @@
 						<label for="<%= campo.nombre %>-NO">
 							<i class="fa-solid sinDecision fa-circle-xmark"></i>
 						</label>
-						<input id="<%= campo.nombre %>-NO" type="radio" name="<%= campo.nombre %>" value="SI" class="ocultar">
+						<input id="<%= campo.nombre %>-NO" type="radio" name="<%= campo.nombre %>" value="NO" class="ocultar">
 					</div>
 				</div>
 			<% } %>
@@ -31,7 +31,7 @@
 		<div id="documento">
 			<img src="/imagenes/2-DocsUsuarios/<%= user.documento_avatar %>" alt="documento" title="Documento">
 			<!-- Aprobar y Rechazar -->
-			<div id="<%= campo.nombre %>" class="iconos">
+			<div class="iconos">
 				<label for="documento_avatar-SI">
 					<i class="fa-solid sinDecision fa-circle-check"></i>
 				</label>
@@ -39,13 +39,13 @@
 				<label for="documento_avatar-NO">
 					<i class="fa-solid sinDecision fa-circle-xmark"></i>
 				</label>
-				<input id="documento_avatar-NO" type="radio" name="documento_avatar" value="SI" class="ocultar">
+				<input id="documento_avatar-NO" type="radio" name="documento_avatar" value="NO" class="ocultar">
 			</div>
 			<!-- Motivos de rechazo -->
-			<select name="" id="">
+			<select name="motivo_docum" id="motivo_docum" class="ocultar">
 				<option value="" selected class="ocultar">Elegí un motivo de rechazo</option>
-				<% for (motivo of motivos_rech_docum) { %>
-					<option value="<%= motivo.id %>"><%= motivo.descripcion %></option>
+				<% for (motivo of motivos_docum) { %>
+					<option value="<%= motivo.descripcion %>"><%= motivo.descripcion %></option>
 				<% } %>
 			</select>
 		</div>
