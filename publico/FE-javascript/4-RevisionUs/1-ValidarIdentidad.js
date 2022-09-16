@@ -39,7 +39,9 @@ window.addEventListener("load", () => {
 			if (i < cantCampos - 1) iconosError[i].classList.remove("sinDecision");
 			// Muestra los motivos de rechazo del documento
 			else {
+				// Si se hace 'click' sobre el último ícono de Error, se muestran los motivos
 				motivo_docum.classList.remove("ocultar");
+				// Si ya se había elegido algún motivo, activa el ícono de Error
 				if (motivo_docum.value) iconosErrorDocum.classList.remove("sinDecision");
 			}
 			// Actualiza el botón submit
