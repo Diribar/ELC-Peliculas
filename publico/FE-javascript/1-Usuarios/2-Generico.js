@@ -69,6 +69,7 @@ window.addEventListener("load", () => {
 			botonGuardar();
 		});
 	}
+	
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
