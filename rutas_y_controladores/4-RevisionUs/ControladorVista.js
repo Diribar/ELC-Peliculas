@@ -72,13 +72,16 @@ module.exports = {
 	},
 	validarIdentidadGuardar: async (req, res) => {
 		// return res.send(req.body)
-		// Tomalos datos del formulario
+		// Toma los datos del formulario
 		let datos = {...req.query, ...req.body};
+		
 		// Si no se respondió algún campo necesario, reenvía al formulario
+		let redireccionar = false;
 		if (datos.motivo_docum_id == "0") {
 			let campos = ["pais_id", "apellido", "nombre", "sexo_id", "fecha_nacimiento", "documento_numero"];
-			for (campo of campos) if (!req.body.includes(campo)) return res.redirect(req.originalUrl);
-		} else if (!datos.motivo_docum_id) return res.redirect(req.originalUrl);
+			for (campo of campos) if (!req.body.includes(campo)) redireccionar = true;
+		} else if (!datos.motivo_docum_id) redireccionar = true;
+		if (redireccionar) return res.redirect(req.originalUrl);
 
 		// Variables de usuarios
 		let usuario = await BD_genericas.obtenerPorId("usuarios", datos.id);
