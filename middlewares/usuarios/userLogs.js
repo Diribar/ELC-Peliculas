@@ -29,6 +29,7 @@ module.exports = (req, res, next) => {
 		!actual.startsWith("/session") &&
 		!actual.startsWith("/cookies") &&
 		!actual.startsWith("/imagenes/") &&
+		!actual.startsWith("/favicon.ico") &&		
 		!actual.includes("/redireccionar") &&
 		!actual.includes("/api/") &&
 		anterior != actual

@@ -31,45 +31,26 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "revisionUs";
 		const codigo = "validarIdentidad";
-		// 2. Temas del usuario
+		// Temas del usuario
 		let userID = req.query.id;
-		let user = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, [
+		let usuario = await BD_genericas.obtenerPorIdConInclude("usuarios", userID, [
 			"sexo",
 			"rol_usuario",
 			"status_registro",
 		]);
-		let avatar = "/imagenes/1-Usuarios/" + user.avatar;
-		let documento = user.documento_numero;
 		// Validaciones antes de avanzar
-		console.log(compartidas.averiguaSiExisteUnArchivo(44, archivoImagen));
-		console.log(compartidas.averiguaSiExisteUnArchivo(45, "./publico" + archivoImagen));
-		if (
-			!user.status_registro.docum_revisar ||
-			user.status_registro.ident_validada ||
-			user.rol_usuario.perm_inputs ||
-			!avatar ||
-			!compartidas.averiguaSiExisteUnArchivo(archivoImagen) ||
-			!documento
-		)
-			return res.send(
-				!user.status_registro.docum_revisar,
-				user.status_registro.ident_validada,
-				user.rol_usuario.perm_inputs,
-				!avatar,
-				!compartidas.averiguaSiExisteUnArchivo(archivoImagen),
-				!documento
-			);
-		// return res.redirect("/revision/usuarios/tablero-de-control");
+		if (rutinasIdentForm(usuario)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
+		let documento = usuario.documento_numero;
 		let pais_id = documento.slice(0, 2);
 		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
-		let documento_numero = documento.slice(4);
-		let fecha_nacimiento = compartidas.fechaTexto(user.fecha_nacimiento);
+		let documento_numero = documento.slice(3);
+		let fecha_nacimiento = compartidas.fechaTexto(usuario.fecha_nacimiento);
 		let campos = [
 			{titulo: "País de Expedición", nombre: "pais_id", valor: pais},
-			{titulo: "Apellido", nombre: "apellido", valor: user.apellido},
-			{titulo: "Nombre", nombre: "nombre", valor: user.nombre},
-			{titulo: "Sexo", nombre: "sexo_id", valor: user.sexo.nombre},
+			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
+			{titulo: "Nombre", nombre: "nombre", valor: usuario.nombre},
+			{titulo: "Sexo", nombre: "sexo_id", valor: usuario.sexo.nombre},
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
 			{titulo: "N° de Documento", nombre: "documento_numero", valor: documento_numero},
 		];
@@ -81,62 +62,113 @@ module.exports = {
 			tema,
 			codigo,
 			titulo: "Validación de Identidad",
-			user,
-			avatar,
-			title: user.apodo,
+			usuario,
+			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
+			title: usuario.apodo,
 			campos,
 			userID,
 			motivos_docum,
 		});
 	},
 	validarIdentidadGuardar: async (req, res) => {
-		// Verifica que se hayan respondido todos los campos
-		if (Object.keys(req.body).length != 8) return res.redirect(req.originalUrl);
-		// Variables
+		// return res.send(req.body)
+		// Tomalos datos del formulario
 		let datos = {...req.query, ...req.body};
-		let revID = req.session.usuario.id;
+		// Si no se respondió algún campo necesario, reenvía al formulario
+		if (datos.motivo_docum_id == "0") {
+			let campos = ["pais_id", "apellido", "nombre", "sexo_id", "fecha_nacimiento", "documento_numero"];
+			for (campo of campos) if (!req.body.includes(campo)) return res.redirect(req.originalUrl);
+		} else if (!datos.motivo_docum_id) return res.redirect(req.originalUrl);
+
+		// Variables de usuarios
 		let usuario = await BD_genericas.obtenerPorId("usuarios", datos.id);
-		let status_registro_id;
+		let revID = req.session.usuario.id;
+		// Variables de motivos
+		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
+		let penalidad = 0;
+		// Variables de 'status de registro'
 		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado && !n.perennes_ok).id;
 		let st_editables_ID = status_registro_us.find((n) => n.editables_ok && !n.ident_a_validar).id;
 		let st_ident_validada_ID = status_registro_us.find((n) => n.ident_validada).id;
-		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
-		let motivo = motivos.find((n) => !n.mostrar_para_docum);
+		let status_registro_id;
 
-		// Campo 'documento_avatar'
-		if (datos.documento_avatar == "NO" && usuario.documento_avatar) {
+		// Acciones en función de lo que haya respondido sobre la imagen del documento
+		if (datos.motivo_docum_id == "0") {
+			// Motivo genérico
+			let motivo_generico = motivos.find((n) => !n.mostrar_para_docum);
+			// Rutinas para el n° de documento --> lleva al status 'editables_OK'
+			if (datos.pais_id == "NO" || datos.documento_numero == "NO") {
+				rutinasIdentGuardar("documento_numero", usuario, revID, motivo_generico);
+				status_registro_id = st_editables_ID;
+				penalidad += motivo_generico.duracion;
+			}
+			// Rutinas para los demás campos --> lleva al status 'mail_validado'
+			campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
+			for (let campo of campos)
+				if (datos[campo] == "NO") {
+					rutinasIdentGuardar(campo, usuario, revID, motivo_generico);
+					status_registro_id = st_mail_validado_id;
+					penalidad += motivo_generico.duracion;
+				}
+		} else {
 			// Elimina el archivo 'avatar'
-			compartidas.borraUnArchivo("/imagenes/2-DocsUsuarios", usuario.documento_avatar);
+			compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios", usuario.documento_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
-			status_registro_id = valIdentidad("documento_avatar", st_editables_ID, usuario, revID, motivo);
+			rutinasIdentGuardar("documento_avatar", usuario, revID, motivo);
+			status_registro_id = st_editables_ID;
+			penalidad += motivo.duracion;
 		}
-		// Rutinas para el n° de documento
-		if ((datos.pais_id == "NO" || datos.documento_numero == "NO") && usuario.documento_numero)
-			status_registro_id = valIdentidad("documento_numero", st_editables_ID, usuario, revID, motivo);
-		// Rutinas para los demás campos
-		let campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
-		for (let campo of campos)
-			if (datos[campo] == "NO" && usuario[campo])
-				status_registro_id = valIdentidad(campo, st_mail_validado_id, usuario, revID, motivo);
-
-		// Actualizar el status del usuario
+		// Actualiza el status del usuario
 		if (!status_registro_id) status_registro_id = st_ident_validada_ID;
-		// Si el usuario validó sus datos y tiene rol de 'Consultas', actualizarlo a 'permInput'
-		let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
-		if (status_registro_id == st_ident_validada_ID && !usuario.rol_usuario.perm_inputs) {
-			rol_usuario_id = roles_us.find((n) => n.perm_inputs && !n.revisor_ents).id;
-		}
-		// Actualizar el usuario
+		// Le asigna al usuario el rol que le corresponda ('Consultas' o 'permInput')
+		let rol_usuario_id =
+			// Se fija que la identidad esté validada,
+			status_registro_id == st_ident_validada_ID
+				? // Asigna el rol 'permInputs'
+				  roles_us.find((n) => n.perm_inputs && !n.revisor_ents && !n.revisor_us).id
+				: // Asigna el rol 'consultas'
+				  roles_us.find((n) => !n.perm_inputs).id;
+
+		// Actualiza el usuario
 		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: compartidas.ahora()};
 		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
+		if (penalidad)
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", penalidad);
 
-		// Liberar y volver al tablero
+		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
 	},
 };
 
-let valIdentidad = (campo, status_registro_id, usuario, revID, motivo) => {
+let rutinasIdentForm = (usuario) => {
+	// Variables
+	let redireccionar;
+	let campos = [
+		"apellido",
+		"nombre",
+		"sexo_id",
+		"fecha_nacimiento",
+		"documento_numero",
+		"documento_avatar",
+	];
+	let ruta = "./publico/imagenes/2-DocsUsuarios/";
+	// Valida que todos los campos necesarios de 'usuario' tengan valor
+	for (let campo of campos) if (!usuario[campo]) redireccionar = true;
+	// Hace otras validaciones
+	// 1. Que el usuario esté en status 'identidad a validar'
+	// 2. Que exista el archivo 'avatar'
+	if (
+		redireccionar ||
+		!usuario.status_registro.ident_a_validar ||
+		usuario.status_registro.ident_validada ||
+		!compartidas.averiguaSiExisteUnArchivo(ruta + usuario.documento_avatar)
+	)
+		redireccionar = true;
+	// Fin
+	return redireccionar;
+};
+let rutinasIdentGuardar = (campo, usuario, revID, motivo) => {
 	// Limpia en 'usuarios' el campo que corresponda
 	BD_genericas.actualizarPorId("usuarios", usuario.id, {[campo]: null});
 	// Alimenta la tabla 'edics_rech'
@@ -159,5 +191,5 @@ let valIdentidad = (campo, status_registro_id, usuario, revID, motivo) => {
 	BD_genericas.agregarRegistro("edics_rech", datos);
 
 	// Fin
-	return status_registro_id;
+	return;
 };

@@ -7,24 +7,27 @@
 #subCuerpo #datos * {line-height: 1;}
 
 /* Datos a validar */
-#subCuerpo #datos #texto {display: flex; flex-direction: column; padding: 0 20px;}
-#subCuerpo #datos #texto .campos {margin: 10px 0; margin-left: 40px; position: relative;}
-#subCuerpo #datos #texto .campos p {font-size: 1.2rem;}
+#subCuerpo #datos #feedback {display: flex; flex-direction: column; padding: 0 20px;}
+#subCuerpo #datos #feedback h2 {font-size: 1.5rem; text-decoration: underline;margin-bottom: 5px;}
+#subCuerpo #datos #feedback select {margin-bottom: 15px;}
+#subCuerpo #datos #feedback select option {font-style: italic;}
+#subCuerpo #datos #feedback #texto {display: flex; flex-direction: column;}
+#subCuerpo #datos #feedback #texto .campos {margin: 5px 0; margin-left: 52px; position: relative;}
+#subCuerpo #datos #feedback #texto .campos p {font-size: 1.2rem;}
 
 /* Documento */
 #subCuerpo #datos #documento {width: 60%; height: 100%; position: relative;}
 #subCuerpo #datos #documento img {height: 100%; width: 100%; object-fit: contain; position: absolute; }
-#subCuerpo #datos #documento select {position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);}
 
 /* Íconos */
 #subCuerpo #datos .iconos {position: absolute; top: 50%; transform: translateY(-57%);}
 #subCuerpo #datos .iconos {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
 #subCuerpo #datos .iconos {border-radius: 10px; left: -55px; width: 45px;}
-#subCuerpo #datos .iconos .fa-solid {border: 1.5px solid; font-weight: bold;}
-#subCuerpo #datos .iconos .fa-solid.sinDecision {color: wheat; background-color: var(--gris-oscuro); border-color: var(--gris-oscuro);}
+#subCuerpo #datos .iconos .fa-solid {font-weight: bold; font-size: 1.15rem;}
+#subCuerpo #datos .iconos .fa-solid.sinDecision {font-size: 1rem; color: white; background-color: var(--gris-oscuro); border: 1.5px solid var(--gris-oscuro);}
 /* #subCuerpo #datos #motivo_rech_docum {} */
 
 /* Flechas */
 #subCuerpo #flechas button {border: none;}
 
-/* #subCuerpo #datos .iconos {border: red 1px solid;} */
+.bordeRojo {border: red 1px solid;}

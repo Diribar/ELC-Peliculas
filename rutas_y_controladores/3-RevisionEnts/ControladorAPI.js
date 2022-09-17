@@ -127,10 +127,10 @@ module.exports = {
 			datos.dia_del_ano_id = dia_del_ano.id;
 		} else if (datos.desconocida) datos.dia_del_ano_id = null;
 		// Obtiene el campo 'prods_aprob'
-		let prods_aprob = await procesos.RCLV_averiguarSiTieneProdAprob(
-			{...RCLV_original, status_registro_id: aprobado_id}
-			
-		);
+		let prods_aprob = await procesos.RCLV_averiguarSiTieneProdAprob({
+			...RCLV_original,
+			status_registro_id: aprobado_id,
+		});
 		// Preparar lead_time_creacion
 		let alta_analizada_en = compartidas.ahora();
 		let lead_time_creacion = (alta_analizada_en - RCLV_original.creado_en) / unaHora;
@@ -272,10 +272,8 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 		// Elimina el 'avatar original' (si es un archivo)
 		let avatar = prodOrig.avatar;
 		if (!avatar.startsWith("http")) {
-			let ruta = prodOrig.status_registro.creado_aprob
-				? "/imagenes/4-ProdRevisar/"
-				: "/imagenes/3-Productos/";
-			compartidas.borraUnArchivo(ruta, avatar);
+			let ruta = prodOrig.status_registro.creado_aprob ? "4-ProdRevisar/" : "3-Productos/";
+			compartidas.borraUnArchivo("./publico/imagenes/" + ruta, avatar);
 		}
 	} else {
 		// Elimina el 'avatar editado'
