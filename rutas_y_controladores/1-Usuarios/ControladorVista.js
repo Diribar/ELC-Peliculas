@@ -263,7 +263,7 @@ module.exports = {
 			datos
 		);
 		// Mueve el archivo a la carpeta definitiva
-		compartidas.mueveUnArchivoImagen(datos.docum_avatar, "9-Provisorio", "2-DocsUsuarios");
+		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
