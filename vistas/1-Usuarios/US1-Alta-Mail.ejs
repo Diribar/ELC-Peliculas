@@ -12,47 +12,47 @@
 	<% if (errores.documento) { %>
 		<!--Número de Documento-->
 		<div class="label-input flex-row">
-			<label for="documento_numero">
+			<label for="docum_numero">
 				Número de<br>
 				Documento
 			</label>
 			<div class="input-error">
-				<input type="text" id="documento_numero" class="input" name="documento_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.documento_numero : "" %>">
-				<%- include("CMP-errorOK_visible", {campo: "documento_numero"}) %> 
+				<input type="text" id="docum_numero" class="input" name="docum_numero" placeholder="Número de Documento" value="<%= dataEntry ? dataEntry.docum_numero : "" %>">
+				<%- include("CMP-errorOK_visible", {campo: "docum_numero"}) %> 
 			</div>
 		</div>
 		<!--Expedido en qué país-->
 		<div class="label-input flex-row">
-			<label for="pais_id">
+			<label for="docum_pais_id">
 				Expedido<br>
 				en qué país
 			</label>
 			<div class="input-error">
-				<select id="pais_id" name="pais_id" class="input">
-					<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
+				<select id="docum_pais_id" name="docum_pais_id" class="input">
+					<option value="" <% if (!dataEntry.docum_pais_id) {%>selected <%}%>class="ocultar">Elejí un país</option>
 					<optgroup label="América (habla hispana)">
 						<% for (let pais of hablaHispana.filter(n => n.continente == "América")) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>	
 					</optgroup>
 					<optgroup label="Europa/África (habla hispana)">
 						<% for (let pais of hablaHispana.filter(n => n.continente != "América")) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>
 					</optgroup>
 					<optgroup label="Países de habla no hispana">
 						<% for (let pais of hablaNoHispana) { %>
-							<option  value="<%= pais.id %>" <% if (dataEntry.pais_id==pais.id) { %>selected <% } %>>
+							<option  value="<%= pais.id %>" <% if (dataEntry.docum_pais_id==pais.id) { %>selected <% } %>>
 								<%= pais.nombre %>
 							</option>
 						<% } %>
 					</optgroup>
 				</select>
-				<%- include("CMP-errorOK_visible", {campo: "pais_id"}) %> 
+				<%- include("CMP-errorOK_visible", {campo: "docum_pais_id"}) %> 
 			</div>
 		</div>
 	<% } %>

@@ -79,21 +79,18 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
-		// Revisar 'documento_numero'
-		if (campos.includes("documento_numero")) {
-			if (datos.documento_numero) var largoNumero = longitud(datos.apodo, 2, 15);
-			errores.documento_numero = !datos.documento_numero
-				? cartelCampoVacio
-				: largoNumero
-				? largoNumero
-				: "";
+		// Revisar 'docum_numero'
+		if (campos.includes("docum_numero")) {
+			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
+			errores.docum_numero = !datos.docum_numero ? cartelCampoVacio : largoNumero ? largoNumero : "";
 		}
-		// Revisar 'pais_id'
-		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		// Revisar 'docum_pais_id'
+		if (campos.includes("docum_pais_id"))
+			errores.docum_pais_id = !datos.docum_pais_id ? cartelElejiUnValor : "";
 		// Revisar 'avatar'
-		if (campos.includes("avatar")) {
-			let extAvatar = extension(datos.avatar);
-			errores.avatar = !datos.avatar
+		if (campos.includes("docum_avatar")) {
+			let extAvatar = extension(datos.docum_avatar);
+			errores.docum_avatar = !datos.docum_avatar
 				? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
 				: extAvatar
 				? "Usaste un archivo con la extensión " +
@@ -110,17 +107,18 @@ module.exports = {
 		return errores;
 	},
 	documentoBE: async function (datos) {
+		// console.log(110,datos);
 		// Averiguar los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
 			// Verifica que el documento no exista ya en la Base de Datos
-			let documento_numero = datos.pais_id + "-" + datos.documento_numero;
-			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {documento_numero});
-			if (averiguar)
+			let docum_numero = datos.docum_numero;
+			let docum_pais_id = datos.docum_pais_id;
+			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {docum_numero, docum_pais_id});
+			if (averiguar && averiguar.id != datos.id)
 				errores = {
-					documento_numero:
-						"Ya tenemos ingresado ese número de documento en nuestra Base de Datos.",
+					credenciales: true,
 					hay: true,
 				};
 		}
@@ -195,20 +193,18 @@ module.exports = {
 					};
 				// Verifica si tiene status de 'documento'
 				else if (usuario.status_registro.ident_a_validar) {
-					let documento_numero = usuario.documento_numero.slice(3);
-					let pais_id = usuario.documento_numero.slice(0, 2);
 					// Verifica los posibles errores
-					errores.documento_numero = !datos.documento_numero
+					errores.docum_numero = !datos.docum_numero
 						? cartelCampoVacio
-						: datos.documento_numero != documento_numero
+						: datos.docum_numero != usuario.docum_numero
 						? "El número de documento no coincide con el de nuestra Base de Datos"
 						: "";
-					errores.pais_id = !datos.pais_id
+					errores.docum_pais_id = !datos.docum_pais_id
 						? cartelElejiUnValor
-						: datos.pais_id != pais_id
+						: datos.docum_pais_id != usuario.docum_pais_id
 						? "El país no coincide con el de nuestra Base de Datos"
 						: "";
-					errores.documento = !!errores.documento_numero || !!errores.pais_id;
+					errores.documento = !!errores.docum_numero || !!errores.docum_pais_id;
 				}
 			}
 		}

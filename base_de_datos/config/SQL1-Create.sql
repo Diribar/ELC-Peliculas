@@ -111,7 +111,7 @@ VALUES
 (2, 2, 'Mail validado', 1, 0, 0, 0, 0), 
 (3, 3, 'Perennes OK', 1, 1, 0, 0, 0), 
 (4, 4, 'Editables OK', 1, 1, 1, 0, 0),
-(5, 5, 'Documento a revisar', 1, 1, 1, 1, 0),
+(5, 5, 'Identidad a validar', 1, 1, 1, 1, 0),
 (6, 6, 'Identidad validada', 1, 1, 1, 1, 1)
 ;
 CREATE TABLE us_motivos_rech (
@@ -125,9 +125,9 @@ CREATE TABLE us_motivos_rech (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_motivos_rech (id, orden, bloqueo_perm_inputs, duracion, mostrar_para_docum, descripcion)
 VALUES
-(11, 1,    0,  90, 1, 'La imagen no es un documento'),
-(12, 2,    0, 180, 1, 'La imagen no es un documento y es agresiva'),
-(13, 3, NULL, 0.5, 1, 'La imagen es ilegible o está truncada'),
+(12, 1,    0,  90, 1, 'No corresponde a un documento nacional'),
+(13, 2,    0, 180, 1, 'No corresponde a un documento'),
+(11, 3, NULL, 0.5, 1, 'Es ilegible o está truncada'),
 (14, 4, NULL, 0.5, 0, 'Valor distinto al del documento')
 ;
 
@@ -148,8 +148,9 @@ CREATE TABLE usuarios (
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	autorizado_fa BOOLEAN DEFAULT 0,
-	documento_numero VARCHAR(15) UNIQUE NULL,
-	documento_avatar VARCHAR(18) DEFAULT NULL,
+	docum_numero VARCHAR(15) UNIQUE NULL,
+	docum_pais_id VARCHAR(2) NULL,
+	docum_avatar VARCHAR(18) DEFAULT NULL,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
@@ -184,6 +185,7 @@ CREATE TABLE usuarios (
 	PRIMARY KEY (id),
 	FOREIGN KEY (sexo_id) REFERENCES aux_sexos(id),
 	FOREIGN KEY (pais_id) REFERENCES aux_paises(id),
+	FOREIGN KEY (docum_pais_id) REFERENCES aux_paises(id),	
 	FOREIGN KEY (rol_usuario_id) REFERENCES us_roles(id),
 	FOREIGN KEY (rol_iglesia_id) REFERENCES aux_roles_iglesia(id),
 	FOREIGN KEY (capturado_por_id) REFERENCES usuarios(id),
@@ -194,11 +196,11 @@ VALUES
 (1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       documento_numero, avatar,        fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
+INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       docum_numero, docum_pais_id, avatar,         fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', 'AR-21072001', '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',           '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', null,          '1662056805460.jpg',                  '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', '21072001',       'AR',             '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',              null,             '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', null,             null,             '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;

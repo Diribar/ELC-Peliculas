@@ -42,17 +42,17 @@ window.addEventListener("load", () => {
 		let mensaje = errores[campo];
 		mostrarIconos(mensaje, 0);
 	});
-	let documento_numero = document.querySelector(".input-error .input#documento_numero");
-	let pais_id = document.querySelector(".input-error .input#pais_id");
-	if (documento_numero && pais_id) {
-		documento_numero.addEventListener("input", () => {
+	let docum_numero = document.querySelector(".input-error .input#docum_numero");
+	let docum_pais_id = document.querySelector(".input-error .input#docum_pais_id");
+	if (docum_numero && docum_pais_id) {
+		docum_numero.addEventListener("input", () => {
 			// Impide los caracteres que no son válidos
-			documento_numero.value = documento_numero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
-			let mensaje = !documento_numero.value ? "Necesitamos que completes este campo" : "";
+			docum_numero.value = docum_numero.value.toUpperCase().replace(/[^A-Z\d]/g, "");
+			let mensaje = !docum_numero.value ? "Necesitamos que completes este campo" : "";
 			mostrarIconos(mensaje, 1);
 		});
-		pais_id.addEventListener("input", () => {
-			let mensaje = !pais_id.value ? "Necesitamos que elijas un país" : "";
+		docum_pais_id.addEventListener("input", () => {
+			let mensaje = !docum_pais_id.value ? "Necesitamos que elijas un país" : "";
 			mostrarIconos(mensaje, 2);
 		});
 	}

@@ -197,7 +197,7 @@ module.exports = {
 			// Actualizar los archivos avatar
 			if (avatar_archivo) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				compartidas.mueveUnArchivo(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
+				compartidas.mueveUnArchivoImagen(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEdic.avatar)
 					compartidas.borraUnArchivo("./publico/imagenes/4-ProdRevisar/", prodEdic.avatar);
