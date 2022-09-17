@@ -2,8 +2,8 @@
 window.addEventListener("load", () => {
 	// Variables
 	let form = document.querySelector("form#subCuerpo");
-	let botonSubmit = document.querySelector("form #submit");
 	let texto = document.querySelector("form #texto");
+	let botonSubmit = document.querySelector("form #submit");
 	// Íconos
 	let iconos = document.querySelectorAll("#datos .iconos");
 	let cantCampos = iconos.length;
