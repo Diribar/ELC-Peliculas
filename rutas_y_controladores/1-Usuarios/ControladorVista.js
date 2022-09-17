@@ -163,6 +163,7 @@ module.exports = {
 		// Averiguar si hay errores de validación
 		let errores = await validar.editables(req.body);
 		if (errores.hay) {
+			if (req.file) delete req.body.avatar;
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body;
 			req.session.errores = errores;
