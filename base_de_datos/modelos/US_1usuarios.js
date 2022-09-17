@@ -14,8 +14,9 @@ module.exports = (sequelize, dt) => {
 		rol_usuario_id: {type: dt.INTEGER},
 		bloqueo_perm_inputs: {type: dt.BOOLEAN},
 		autorizado_fa: {type: dt.BOOLEAN},
-		documento_numero: {type: dt.STRING(15)},
-		documento_avatar: {type: dt.STRING(18)},
+		docum_numero: {type: dt.STRING(15)},
+		docum_pais_id: {type: dt.STRING(2)},
+		docum_avatar: {type: dt.STRING(18)},
 
 		dias_login: {type: dt.INTEGER},
 		version_elc_ultimo_login: {type: dt.STRING(4)},
@@ -58,6 +59,7 @@ module.exports = (sequelize, dt) => {
 		entidad.belongsTo(n.roles_usuarios, {as: "rol_usuario", foreignKey: "rol_usuario_id"});
 		entidad.belongsTo(n.roles_iglesia, {as: "rol_iglesia", foreignKey: "rol_iglesia_id"});
 		entidad.belongsTo(n.status_registro_us, {as: "status_registro", foreignKey: "status_registro_id"});
+		entidad.belongsTo(n.paises, {as: "docum_pais", foreignKey: "docum_pais_id"});
 
 		entidad.hasMany(n.peliculas, {as: "peliculas", foreignKey: "creado_por_id"});
 		entidad.hasMany(n.colecciones, {as: "colecciones", foreignKey: "creado_por_id"});

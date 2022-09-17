@@ -220,7 +220,7 @@ module.exports = {
 	averiguaSiExisteUnArchivo: (archivo) => {
 		return archivo && fs.existsSync(archivo);
 	},
-	mueveUnArchivo: function (nombre, origen, destino) {
+	mueveUnArchivoImagen: function (nombre, origen, destino) {
 		let archivoOrigen = "./publico/imagenes/" + origen + "/" + nombre;
 		let carpetaDestino = "./publico/imagenes/" + destino + "/";
 		let archivoDestino = carpetaDestino + nombre;

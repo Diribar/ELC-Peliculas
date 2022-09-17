@@ -41,18 +41,15 @@ module.exports = {
 		// Validaciones antes de avanzar
 		if (rutinasIdentForm(usuario)) return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
-		let documento = usuario.documento_numero;
-		let pais_id = documento.slice(0, 2);
-		let pais = await BD_genericas.obtenerPorId("paises", pais_id).then((n) => n.nombre);
-		let documento_numero = documento.slice(3);
+		let pais = await BD_genericas.obtenerPorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
 		let fecha_nacimiento = compartidas.fechaTexto(usuario.fecha_nacimiento);
 		let campos = [
-			{titulo: "País de Expedición", nombre: "pais_id", valor: pais},
+			{titulo: "País de Expedición", nombre: "docum_pais_id", valor: pais},
 			{titulo: "Apellido", nombre: "apellido", valor: usuario.apellido},
 			{titulo: "Nombre", nombre: "nombre", valor: usuario.nombre},
 			{titulo: "Sexo", nombre: "sexo_id", valor: usuario.sexo.nombre},
 			{titulo: "Fecha de Nacim.", nombre: "fecha_nacimiento", valor: fecha_nacimiento},
-			{titulo: "N° de Documento", nombre: "documento_numero", valor: documento_numero},
+			{titulo: "N° de Documento", nombre: "docum_numero", valor: usuario.docum_numero},
 		];
 		let motivos_rech = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
 		let motivos_docum = motivos_rech.filter((n) => n.mostrar_para_docum);
@@ -74,12 +71,19 @@ module.exports = {
 		// return res.send(req.body)
 		// Toma los datos del formulario
 		let datos = {...req.query, ...req.body};
-		
+
 		// Si no se respondió algún campo necesario, reenvía al formulario
 		let redireccionar = false;
 		if (datos.motivo_docum_id == "0") {
-			let campos = ["pais_id", "apellido", "nombre", "sexo_id", "fecha_nacimiento", "documento_numero"];
-			for (campo of campos) if (!req.body.includes(campo)) redireccionar = true;
+			let campos = [
+				"docum_pais_id",
+				"apellido",
+				"nombre",
+				"sexo_id",
+				"fecha_nacimiento",
+				"docum_numero",
+			];
+			for (let campo of campos) if (!Object.keys(req.body).includes(campo)) redireccionar = true;
 		} else if (!datos.motivo_docum_id) redireccionar = true;
 		if (redireccionar) return res.redirect(req.originalUrl);
 
@@ -98,27 +102,29 @@ module.exports = {
 		// Acciones en función de lo que haya respondido sobre la imagen del documento
 		if (datos.motivo_docum_id == "0") {
 			// Motivo genérico
-			let motivo_generico = motivos.find((n) => !n.mostrar_para_docum);
-			// Rutinas para el n° de documento --> lleva al status 'editables_OK'
-			if (datos.pais_id == "NO" || datos.documento_numero == "NO") {
-				rutinasIdentGuardar("documento_numero", usuario, revID, motivo_generico);
-				status_registro_id = st_editables_ID;
-				penalidad += motivo_generico.duracion;
-			}
+			let motivo = motivos.find((n) => !n.mostrar_para_docum);
 			// Rutinas para los demás campos --> lleva al status 'mail_validado'
+			let campos;
+			campos = ["docum_pais_id", "docum_numero"];
+			for (let campo of campos)
+				if (datos[campo] == "NO") {
+					rutinasIdentGuardar(campo, usuario, revID, motivo);
+					status_registro_id = st_editables_ID;
+					penalidad += motivo.duracion;
+				}
 			campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
-					rutinasIdentGuardar(campo, usuario, revID, motivo_generico);
+					rutinasIdentGuardar(campo, usuario, revID, motivo);
 					status_registro_id = st_mail_validado_id;
-					penalidad += motivo_generico.duracion;
+					penalidad += motivo.duracion;
 				}
 		} else {
 			// Elimina el archivo 'avatar'
-			compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios", usuario.documento_avatar);
+			compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios", usuario.docum_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
-			rutinasIdentGuardar("documento_avatar", usuario, revID, motivo);
+			rutinasIdentGuardar("docum_avatar", usuario, revID, motivo);
 			status_registro_id = st_editables_ID;
 			penalidad += motivo.duracion;
 		}
@@ -147,14 +153,7 @@ module.exports = {
 let rutinasIdentForm = (usuario) => {
 	// Variables
 	let redireccionar;
-	let campos = [
-		"apellido",
-		"nombre",
-		"sexo_id",
-		"fecha_nacimiento",
-		"documento_numero",
-		"documento_avatar",
-	];
+	let campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];
 	let ruta = "./publico/imagenes/2-DocsUsuarios/";
 	// Valida que todos los campos necesarios de 'usuario' tengan valor
 	for (let campo of campos) if (!usuario[campo]) redireccionar = true;
@@ -165,7 +164,7 @@ let rutinasIdentForm = (usuario) => {
 		redireccionar ||
 		!usuario.status_registro.ident_a_validar ||
 		usuario.status_registro.ident_validada ||
-		!compartidas.averiguaSiExisteUnArchivo(ruta + usuario.documento_avatar)
+		!compartidas.averiguaSiExisteUnArchivo(ruta + usuario.docum_avatar)
 	)
 		redireccionar = true;
 	// Fin

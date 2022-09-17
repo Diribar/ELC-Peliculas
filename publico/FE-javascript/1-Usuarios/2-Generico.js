@@ -13,20 +13,19 @@ window.addEventListener("load", () => {
 	let tarea = window.location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
 	let tareas = {
-		login: {ruta: "login", evento: "input"},
-		"datos-perennes": {ruta: "perennes", evento: "input"},
-		"datos-editables": {ruta: "editables", evento: "input"},
-		documento: {ruta: "documento", evento: "input"},
+		login: "login",
+		"datos-perennes": "perennes",
+		"datos-editables": "editables",
+		documento: "documento",
 	};
 	if (!tareas[tarea]) return;
-	let ruta_api = "/usuarios/api/validar-" + tareas[tarea].ruta;
-	let evento = tareas[tarea].evento;
+	let ruta_api = "/usuarios/api/validar-" + tareas[tarea] + "/?";
 
 	// FUNCIONES --------------------------------------------------------------
 	let detectaErrores = async (i) => {
 		let campo = inputs[i].name;
 		let valor = inputs[i].value;
-		let errores = await fetch(ruta_api + "/?" + campo + "=" + valor).then((n) => n.json());
+		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
 		return [errores, campo];
 	};
@@ -57,9 +56,10 @@ window.addEventListener("load", () => {
 
 	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener(evento, async () => {
+		inputs[i].addEventListener("input", async () => {
 			// Desactiva el cartel de 'credenciales inválidas'
-			if (tarea == "login") document.querySelector(".resultadoInvalido").classList.add("ocultar");
+			if (tarea == "login" || tarea == "documento")
+				document.querySelector(".resultadoInvalido").classList.add("ocultar");
 			// Detecta si hay errores
 			let [errores, campo] = await detectaErrores(i);
 			// Comunica los aciertos y errores

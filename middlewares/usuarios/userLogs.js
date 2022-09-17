@@ -23,13 +23,14 @@ module.exports = (req, res, next) => {
 	// Variables
 	let anterior = req.session.urlActual;
 	let actual = req.originalUrl;
+	
 	// Condición
+	let rutasAceptadas = ["/producto", "/rclv", "/links", "/usuarios", "/revision", "/consultas"];
+	let rutaAceptada = rutasAceptadas.some((n) => actual.startsWith(n)) || actual == "/";
+
+	// Asignar urls
 	if (
-		!actual.startsWith("/inactivar-captura/") &&
-		!actual.startsWith("/session") &&
-		!actual.startsWith("/cookies") &&
-		!actual.startsWith("/imagenes/") &&
-		!actual.startsWith("/favicon.ico") &&		
+		rutaAceptada &&
 		!actual.includes("/redireccionar") &&
 		!actual.includes("/api/") &&
 		anterior != actual

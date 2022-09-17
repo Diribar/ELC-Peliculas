@@ -14,11 +14,10 @@ module.exports = {
 		novedades = {
 			...novedades,
 			status_registro_id: statusNuevo.id,
-			status_registro: statusNuevo,
 		};
 		// Actualiza la info
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, novedades);
-		usuario = {...usuario, ...novedades};
+		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
 		// Fin
 		return usuario;
 	},

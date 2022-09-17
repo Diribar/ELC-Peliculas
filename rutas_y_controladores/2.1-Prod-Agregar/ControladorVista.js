@@ -436,7 +436,7 @@ module.exports = {
 		// 6. Guarda las calificaciones
 		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		compartidas.mueveUnArchivo(confirma.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
+		compartidas.mueveUnArchivoImagen(confirma.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
