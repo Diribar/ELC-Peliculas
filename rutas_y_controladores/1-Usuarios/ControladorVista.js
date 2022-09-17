@@ -184,7 +184,7 @@ module.exports = {
 			req.body
 		);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.body.avatar, "9-Provisorio", "1-Usuarios");
+		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
 		return res.redirect("/usuarios/bienvenido");
 	},
