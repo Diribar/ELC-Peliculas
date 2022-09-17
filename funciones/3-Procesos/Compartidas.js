@@ -235,16 +235,17 @@ module.exports = {
 	},
 	borraUnArchivo: function (ruta, archivo) {
 		// Arma el nombre del archivo
-		let archivoImagen = path.join(ruta, archivo);
+		let rutaArchivo = path.join(ruta, archivo);
+		
 		// Se fija si encuentra el archivo
-		if (this.averiguaSiExisteUnArchivo) {
+		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
 			// Borra el archivo
-			fs.unlinkSync(archivoImagen);
+			fs.unlinkSync(rutaArchivo);
 			// Avisa que lo borra
-			console.log("Archivo '" + archivoImagen + "' borrado");
+			console.log("Archivo '" + archivo + "' borrado");
 		}
 		// Mensaje si no lo encuentra
-		else console.log("Archivo " + archivoImagen + " no encontrado");
+		else console.log("Archivo " + archivo + " no encontrado");
 		// Fin
 		return;
 	},

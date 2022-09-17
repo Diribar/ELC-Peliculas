@@ -2,14 +2,15 @@
 window.addEventListener("load", () => {
 	// Variables
 	let form = document.querySelector("form#subCuerpo");
-	let botonSubmit = document.querySelector("#submit");
+	let texto = document.querySelector("form #texto");
+	let botonSubmit = document.querySelector("form #submit");
+	// Íconos
 	let iconos = document.querySelectorAll("#datos .iconos");
 	let cantCampos = iconos.length;
 	let iconosOK = document.querySelectorAll("#datos .iconos .fa-circle-check");
 	let iconosError = document.querySelectorAll("#datos .iconos .fa-circle-xmark");
 	// Variables del documento
-	let iconosErrorDocum = document.querySelector("#datos #documento .fa-circle-xmark");
-	let motivo_docum = document.querySelector("#datos #documento select#motivo_docum");
+	let motivo_docum = document.querySelector("#datos select#motivo_docum");
 
 	// Si se eligió un ícono para cada caso, se activa el botón submit
 	let botonSubmitActivoInactivo = () => {
@@ -18,7 +19,8 @@ window.addEventListener("load", () => {
 			...Array.from(iconosError).map((n) => n.className),
 		];
 		let sinDecision = clases.filter((n) => n.includes("sinDecision"));
-		if (sinDecision.length == cantCampos) botonSubmit.classList.remove("inactivo");
+		if (sinDecision.length == cantCampos || (motivo_docum.value && motivo_docum.value != "0"))
+			botonSubmit.classList.remove("inactivo");
 		else botonSubmit.classList.add("inactivo");
 	};
 
@@ -28,38 +30,39 @@ window.addEventListener("load", () => {
 			// Actualizar los íconos y el botón submit
 			iconosOK[i].classList.remove("sinDecision");
 			iconosError[i].classList.add("sinDecision");
-			// Oculta los motivos de rechazo del documento
-			if (i == cantCampos - 1) motivo_docum.classList.add("ocultar");
-			// Actualiza el botón submit
+			iconos[i].classList.remove("bordeRojo");
 			botonSubmitActivoInactivo();
 		});
 		iconosError[i].addEventListener("click", () => {
-			// Actualizar los íconos OK
+			// Actualizar los íconos y el botón submit
 			iconosOK[i].classList.add("sinDecision");
-			// Actualizar los íconos Error
-			if (i < cantCampos - 1) iconosError[i].classList.remove("sinDecision");
-			// Muestra los motivos de rechazo del documento
-			else {
-				// Si se hace 'click' sobre el último ícono de Error, se muestran los motivos
-				motivo_docum.classList.remove("ocultar");
-				// Si ya se había elegido algún motivo, activa el ícono de Error
-				if (motivo_docum.value) iconosErrorDocum.classList.remove("sinDecision");
-			}
-			// Actualiza el botón submit
+			iconosError[i].classList.remove("sinDecision");
+			iconos[i].classList.remove("bordeRojo");
 			botonSubmitActivoInactivo();
 		});
 	}
 
 	// Si cambia el 'select', se activa el ícono de error en el Documento
 	motivo_docum.addEventListener("change", () => {
-		// Actualizar el ícono Error de 'documento'
-		iconosErrorDocum.classList.remove("sinDecision");
+		// Muestra u oculta las opciones de texto
+		if (motivo_docum.value == "0") texto.classList.remove("invisible");
+		else texto.classList.add("invisible");
 		// Actualiza el botón submit
 		botonSubmitActivoInactivo();
 	});
 
 	// Frenar el submit si el botonSubmit está inactivo
 	form.addEventListener("submit", (e) => {
-		if (botonSubmit.className.includes("inactivo")) e.preventDefault();
+		if (botonSubmit.className.includes("inactivo")) {
+			e.preventDefault();
+			if (motivo_docum.value == "0")
+				for (let i = 0; i < cantCampos; i++) {
+					if (
+						iconosOK[i].className.includes("sinDecision") &&
+						iconosError[i].className.includes("sinDecision")
+					)
+						iconos[i].classList.add("bordeRojo");
+				}
+		}
 	});
 });

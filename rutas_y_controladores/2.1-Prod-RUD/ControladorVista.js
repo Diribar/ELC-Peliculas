@@ -200,7 +200,7 @@ module.exports = {
 				compartidas.mueveUnArchivo(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEdic.avatar)
-					compartidas.borraUnArchivo("./publico/imagenes/4-ProdRevisar", prodEdic.avatar);
+					compartidas.borraUnArchivo("./publico/imagenes/4-ProdRevisar/", prodEdic.avatar);
 			}
 			// Actualiza la edición
 			let edicion = {...req.body, avatar_archivo};

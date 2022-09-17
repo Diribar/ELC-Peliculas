@@ -1,6 +1,6 @@
 <div id="icono-usuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
 	<% if (locals.usuario) { %>
-		<% if (usuario.avatar != "-") { %>
+		<% if (usuario.avatar != "-" && !usuario.avatar_archivo_existe) { %>
 			<div id="imagenUsuario">
 				<img src="/imagenes/1-Usuarios/<%= usuario.avatar %>" class="iconoMenu">
 			</div>
@@ -13,7 +13,7 @@
 		<% } %>
 	<% } else { %>
 		<a href="/usuarios/login">
-			<i class="fa-solid fa-circle-question iconoMenu iconos" title="Login"></i>
+			<i class="fa-solid fa-circle-question iconoMenu iconos" title="Login/Registrarse"></i>
 		</a>
 	<% } %>
 </div>
