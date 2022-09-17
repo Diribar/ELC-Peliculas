@@ -60,7 +60,7 @@
 			<% if (dataEntry.avatar && dataEntry.fuente == "TMDB") { %>
 				<img src="<%= dataEntry.avatar %>" alt="afiche">
 			<% } else { %>
-				<label for="imagen" id="preview"></label>
+				<label for="inputImagen" id="preview"></label>
 				<!-- Si existe una imagen que no viene de TMDB -->
 				<% if (dataEntry.avatar && dataEntry.fuente != "TMDB") { %>
 					<button type="button">Hacé <em>click</em> acá y luego<br>pegá con <em>Ctrl + V</em></button>
@@ -71,7 +71,7 @@
 					<button type="button">Elegí una imagen<br>(puede ser una URL)</button>
 				<% } %>
 				<!-- Rutina para todos los casos -->
-				<input name="avatar" id="imagen" type="file" accept="image/*" class="ocultar input">
+				<input name="avatar" id="inputImagen" type="file" accept="image/*" class="ocultar input">
 				<!-- Errores/OK -->
 				<%- include("CMP-errorOK_oculto", {display: false}) %>
 			<% } %>

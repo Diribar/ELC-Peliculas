@@ -4,11 +4,11 @@ window.addEventListener("load", () => {
 	// Datos del formulario
 	let form = document.querySelector("form");
 	let button = document.querySelector("form button[type='submit']");
-	let inputs = document.querySelectorAll(".input-error .input");
+	let inputs = document.querySelectorAll("form .input-error .input");
 	// OK/Errores
-	let iconosOK = document.querySelectorAll(".input-error .fa-circle-check");
-	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	let iconosOK = document.querySelectorAll("form .input-error .fa-circle-check");
+	let iconosError = document.querySelectorAll("form .input-error .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll("form .input-error .mensajeError");
 	// Varias
 	let tarea = window.location.pathname;
 	tarea = tarea.slice(tarea.lastIndexOf("/") + 1);
@@ -22,9 +22,13 @@ window.addEventListener("load", () => {
 	let ruta_api = "/usuarios/api/validar-" + tareas[tarea] + "/?";
 
 	// FUNCIONES --------------------------------------------------------------
-	let detectaErrores = async (i) => {
+	let detectaErrores = async (i, e) => {
 		let campo = inputs[i].name;
-		let valor = inputs[i].value;
+		let valor = encodeURIComponent(inputs[i].value);
+		if (campo.includes("avatar") && e) {
+			valor += "&tamano=" + e.target.files[0].size;
+			console.log(valor);
+		}
 		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
 		return [errores, campo];
@@ -56,12 +60,12 @@ window.addEventListener("load", () => {
 
 	// EVENT LISTENERS ---------------------------------------
 	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].addEventListener("input", async () => {
+		inputs[i].addEventListener("input", async (e) => {
 			// Desactiva el cartel de 'credenciales inválidas'
 			if (tarea == "login" || tarea == "documento")
 				document.querySelector(".resultadoInvalido").classList.add("ocultar");
 			// Detecta si hay errores
-			let [errores, campo] = await detectaErrores(i);
+			let [errores, campo] = await detectaErrores(i, e);
 			// Comunica los aciertos y errores
 			consecuenciaError(errores, campo, i);
 			// Activa/Desactiva el botón 'Guardar'
@@ -73,6 +77,7 @@ window.addEventListener("load", () => {
 			e.preventDefault();
 			for (let i = 0; i < inputs.length; i++) {
 				let [errores, campo] = await detectaErrores(i);
+				if (campo.includes("avatar")) console.log(errores);
 				consecuenciaError(errores, campo, i);
 			}
 			botonGuardar();
