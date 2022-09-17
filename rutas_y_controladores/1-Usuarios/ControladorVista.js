@@ -25,6 +25,7 @@ module.exports = {
 	},
 	// Circuito de alta de usuario
 	altaMailForm: async (req, res) => {
+		// Sirve también para olvido de contraseña
 		// Tema y código
 		const tema = "usuario";
 		const codigo = req.path.slice(1);
@@ -38,7 +39,7 @@ module.exports = {
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
 		let errores = req.session.errores ? req.session.errores : false;
-		// Generar la info para la vista
+		// Generar la info para la vista 'olvido de contraseña'
 		if (errores.documento) {
 			let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 			var hablaHispana = paises.filter((n) => n.idioma == "Spanish");
