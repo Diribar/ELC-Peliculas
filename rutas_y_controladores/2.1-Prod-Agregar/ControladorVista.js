@@ -190,7 +190,7 @@ module.exports = {
 		// Borrar archivo de imagen si existe
 		let aux = req.cookies.datosPers;
 		if (aux && aux.avatar_archivo)
-			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
+			compartidas.borraUnArchivo("./publico/imagenes/9-Provisorio/", aux.avatar_archivo);
 		// 2. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "datosDuros");
 		// 3. Si se perdió la info anterior, volver a esa instancia
@@ -290,7 +290,7 @@ module.exports = {
 		// 6. Si hay errores de validación, redireccionar
 		if (errores.hay) {
 			// Si se había grabado una archivo de imagen, borrarlo
-			compartidas.borrarArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
+			compartidas.borraUnArchivo("./publico/imagenes/9-Provisorio/", avatar_archivo);
 			// Guardar los errores en 'session' porque pueden ser muy específicos
 			req.session.erroresDD = errores;
 			// Redireccionar
@@ -436,7 +436,7 @@ module.exports = {
 		// 6. Guarda las calificaciones
 		procesos.guardar_cal_registros({...confirma, ...calificaciones}, registro);
 		// 7. Mueve el avatar de 'provisorio' a 'revisar'
-		compartidas.moverImagen(confirma.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
+		compartidas.mueveUnArchivo(confirma.avatar_archivo, "9-Provisorio", "4-ProdRevisar");
 		// 8. Elimina todas las session y cookie del proceso AgregarProd
 		procesos.borrarSessionCookies(req, res, "borrarTodo");
 		// 9. Borra la vista actual para que no vaya a vistaAnterior
