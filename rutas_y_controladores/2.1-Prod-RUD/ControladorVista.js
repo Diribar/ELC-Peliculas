@@ -173,7 +173,6 @@ module.exports = {
 			BD_idiomas,
 			camposDP,
 			vista: req.baseUrl + req.path,
-			link: req.originalUrl,
 			paises,
 			prodNombre,
 		});
