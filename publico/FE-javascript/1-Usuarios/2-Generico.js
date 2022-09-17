@@ -25,10 +25,7 @@ window.addEventListener("load", () => {
 	let detectaErrores = async (i, e) => {
 		let campo = inputs[i].name;
 		let valor = encodeURIComponent(inputs[i].value);
-		if (campo.includes("avatar") && e) {
-			valor += "&tamano=" + e.target.files[0].size;
-			console.log(valor);
-		}
+		if (campo.includes("avatar") && e) valor += "&tamano=" + e.target.files[0].size;
 		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
 		return [errores, campo];
