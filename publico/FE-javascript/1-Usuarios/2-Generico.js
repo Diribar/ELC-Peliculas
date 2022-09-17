@@ -69,13 +69,12 @@ window.addEventListener("load", () => {
 			botonGuardar();
 		});
 	}
-	
+
 	form.addEventListener("submit", async (e) => {
 		if (button.classList.contains("inactivo")) {
 			e.preventDefault();
 			for (let i = 0; i < inputs.length; i++) {
 				let [errores, campo] = await detectaErrores(i);
-				if (campo.includes("avatar")) console.log(errores);
 				consecuenciaError(errores, campo, i);
 			}
 			botonGuardar();
