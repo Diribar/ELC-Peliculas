@@ -168,7 +168,7 @@ module.exports = {
 			datos.avatar = req.file.filename;
 		}
 		// Averiguar si hay errores de validación
-		let errores = await validar.editables(req.body);
+		let errores = await validar.editables(datos);
 		if (errores.hay) {
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el avatar
