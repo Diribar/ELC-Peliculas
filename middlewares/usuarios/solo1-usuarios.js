@@ -6,9 +6,9 @@ module.exports = (req, res, next) => {
 	// Rutinas si el usuario no completó su alta
 	let url = req.originalUrl;
 	if (
-		(url.startsWith("/usuarios/login") &&usuario.status_registro.mail_validado) ||
-		(url.startsWith("/usuarios/datos-editables") && usuario.status_registro.editables) ||
-		(url.startsWith("/usuarios/documento") && usuario.status_registro.ident_a_validar)
+		(!url.startsWith("/usuarios") && !usuario.status_registro.editables) ||
+		(url.startsWith("/usuarios/datos-editables") && !usuario.status_registro.mail_validado) ||
+		(url.startsWith("/usuarios/documento") && !usuario.status_registro.editables)
 	)
 		return res.redirect("/usuarios/redireccionar");
 
