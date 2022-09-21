@@ -13,11 +13,9 @@ module.exports = {
 		let status_registro_usuario = req.session.usuario.status_registro;
 		// return res.send(status_registro_usuario);
 		// Redireccionar
-		!status_registro_usuario.mail_validado
+		status_registro_usuario.mail_a_validar
 			? res.redirect("/usuarios/login")
-			: !status_registro_usuario.perennes_ok
-			? res.redirect("/usuarios/datos-perennes")
-			: !status_registro_usuario.editables_ok
+			: status_registro_usuario.mail_validado
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
@@ -30,7 +28,7 @@ module.exports = {
 		const tema = "usuario";
 		const codigo = req.path.slice(1);
 		let titulo =
-			codigo == "mail"
+			codigo == "alta-mail"
 				? "Registro de Mail"
 				: codigo == "olvido-contrasena"
 				? "Olvido de Contraseña"
@@ -71,60 +69,29 @@ module.exports = {
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
+		// Envía un mail con la contraseña
 		let {ahora, contrasena} = procesos.enviaMailConContrasena(req);
-		let status_mail_validado = status_registro_us.find((n) => !n.mail_validado).id;
 		await BD_genericas.agregarRegistro("usuarios", {
 			contrasena,
 			fecha_contrasena: ahora,
 			email,
-			status_registro_id: status_mail_validado,
+			status_registro_id: status_registro_us.find((n) => n.mail_a_validar).id,
 		});
 		// Guarda el mail en 'session'
 		req.session.email = email;
 		// Datos para la vista
-		const codigo = req.path.slice(1);
-		let informacion = procesos.cartelInformacion(codigo);
+		let informacion = {
+			mensajes: [
+				"La generación de una nueva contraseña fue exitosa.",
+				"Te la hemos enviado por mail.",
+				"Usala para ingresar al login.",
+			],
+			iconos: [variables.vistaEntendido("/usuarios/login")],
+			titulo: "Generación de contraseña",
+			colorFondo: "verde",
+		};
 		// Redireccionar
 		return res.render("MI-Cartel", {informacion});
-	},
-	perennesForm: async (req, res) => {
-		const tema = "usuario";
-		const codigo = "perennes";
-		// Preparar datos para la vista
-		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
-		let errores = req.session.errores ? req.session.errores : false;
-		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
-		return res.render("GN0-Estructura", {
-			tema,
-			codigo,
-			titulo: "Registro de Datos Perennes",
-			dataEntry,
-			errores,
-			sexos,
-			urlSalir: req.session.urlSinLogin,
-		});
-	},
-	perennesGuardar: async (req, res) => {
-		!req.session.usuario ? res.redirect("/usuarios/login") : "";
-		let usuario = req.session.usuario;
-		// Averigua si hay errores de validación
-		let datos = req.body;
-		let errores = await validar.perennes(datos);
-		// Redirecciona si hubo algún error de validación
-		if (errores.hay) {
-			req.session.dataEntry = req.body;
-			req.session.errores = errores;
-			return res.redirect("/usuarios/redireccionar");
-		}
-		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario(
-			"perennes_ok",
-			"editables_ok",
-			usuario,
-			req.body
-		);
-		// Redirecciona
-		return res.redirect("/usuarios/redireccionar");
 	},
 	editablesForm: async (req, res) => {
 		const tema = "usuario";
@@ -136,8 +103,7 @@ module.exports = {
 		let errores = req.session.errores ? req.session.errores : false;
 		let usuario = req.session.usuario;
 		// Roles de Iglesia
-		let condicionesRolIglesia = {sexo_id: req.session.usuario.sexo_id, usuario: true};
-		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", condicionesRolIglesia);
+		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", {usuario: true});
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
 		// Generar la info para la vista
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : req.session.usuario;
@@ -148,7 +114,7 @@ module.exports = {
 		return res.render("GN0-Estructura", {
 			tema,
 			codigo,
-			titulo: "Registro de Datos Editables",
+			titulo: "Datos Editables",
 			dataEntry,
 			errores,
 			hablaHispana,
@@ -182,12 +148,7 @@ module.exports = {
 			req.body.avatar = req.file.filename;
 		}
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario(
-			"editables_ok",
-			"documento",
-			usuario,
-			req.body
-		);
+		req.session.usuario = await procesos.actualizaElUsuario("editables", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "1-Usuarios");
 		// Redirecciona
@@ -196,15 +157,13 @@ module.exports = {
 	bienvenido: (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
-		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [
-				"Estimad" + letra + usuario.apodo + ", completaste el alta satisfactoriamente.",
-				"Bienvenid" + letra + "a la familia de usuarios de ELC",
-				"Ya podés personalizar tu perfil.",
+				"Estimado/a " + usuario.apodo + ", completaste el alta satisfactoriamente.",
+				"Bienvenido/a a la familia de usuarios de ELC",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinUsuario)],
-			titulo: "Bienvenid" + letra + "a la familia ELC",
+			titulo: "Bienvenido/a a la familia ELC",
 			colorFondo: "verde",
 		};
 		// Fin
@@ -214,8 +173,10 @@ module.exports = {
 		const tema = "usuario";
 		const codigo = "documento";
 		// Variables
-		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let usuario = req.session.usuario;
+		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
+		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
+		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
 		// Generar la info para la vista
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
@@ -239,12 +200,13 @@ module.exports = {
 			hablaNoHispana,
 			docum_avatar,
 			urlSalir: req.session.urlSinLogin,
+			sexos,
 		});
 	},
 	documentoGuardar: async (req, res) => {
 		// Variables
 		let usuario = req.session.usuario;
-		// Averiguar si hay errores de validación
+		// Obtiene los datos
 		let datos = {
 			...req.body,
 			docum_avatar: req.file ? req.file.filename : usuario.docum_avatar,
@@ -252,7 +214,9 @@ module.exports = {
 		};
 		if (req.file) datos.tamano = req.file.size;
 		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/2-DocsUsuarios/";
+		// Averiguar si hay errores de validación
 		let errores = await validar.documentoBE(datos);
+		// Redirecciona si hubo algún error de validación
 		if (errores.hay) {
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
@@ -269,12 +233,7 @@ module.exports = {
 		// Prepara la información a actualizar
 		req.body.fecha_revisores = compartidas.ahora();
 		// Actualiza el usuario
-		req.session.usuario = await procesos.actualizaElUsuario(
-			"ident_a_validar",
-			"ident_validada",
-			usuario,
-			req.body
-		);
+		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "2-DocsUsuarios");
 		// Redirecciona
@@ -356,7 +315,7 @@ module.exports = {
 		}
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
 		if (!usuario.status_registro.mail_validado)
-			usuario = await procesos.actualizaElUsuario("mail_validado", "perennes_ok", usuario);
+			usuario = await procesos.actualizaElUsuario("mail_validado", usuario);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
 		// 7. Guarda el mail en cookie

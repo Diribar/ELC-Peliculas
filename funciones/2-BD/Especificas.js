@@ -209,7 +209,10 @@ module.exports = {
 	// Middleware/Usuario/loginConCookie - Controladora/Usuario/Login
 	obtenerUsuarioPorMail: (email) => {
 		return db.usuarios
-			.findOne({where: {email: email}, include: ["rol_usuario", "status_registro", "sexo"]})
+			.findOne({
+				where: {email: email},
+				include: ["rol_usuario", "rol_iglesia", "status_registro", "sexo"],
+			})
 			.then((n) => (n ? n.toJSON() : ""));
 	},
 	// Middleware/Usuario/autorizadoFA

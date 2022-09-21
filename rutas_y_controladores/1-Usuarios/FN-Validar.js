@@ -14,63 +14,40 @@ module.exports = {
 		return errores;
 	},
 
-	perennes: (datos) => {
-		let errores = {};
-		if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
-		errores.nombre = !datos.nombre
-			? cartelCampoVacio
-			: castellano(datos.nombre)
-			? cartelCastellano
-			: mayuscula(datos.nombre)
-			? cartelMayuscula
-			: largoPerenne
-			? largoPerenne
-			: "";
-		errores.apellido = !datos.apellido
-			? cartelCampoVacio
-			: castellano(datos.apellido)
-			? cartelCastellano
-			: mayuscula(datos.apellido)
-			? cartelMayuscula
-			: largoPerenne
-			? largoPerenne
-			: "";
-		errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
-		errores.fecha_nacimiento = !datos.fecha_nacimiento
-			? "Necesitamos que ingreses la fecha"
-			: fechaRazonable(datos.fecha_nacimiento)
-			? "¿Estás seguro de que introdujiste la fecha correcta?"
-			: "";
-		errores.hay = Object.values(errores).some((n) => !!n);
-		return errores;
-	},
-
 	editables: (datos) => {
+		// Variables
 		let errores = {};
-		if (datos.apodo) var largoApodo = longitud(datos.apodo, 2, 30);
-		errores.apodo = !datos.apodo
-			? cartelCampoVacio
-			: castellano(datos.apodo)
-			? cartelCastellano
-			: mayuscula(datos.apodo)
-			? cartelMayuscula
-			: largoApodo
-			? largoApodo
-			: "";
-		errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
-		errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
-		let extAvatar = extension(datos.avatar);
-		errores.avatar = !datos.avatar
-			? ""
-			: extAvatar
-			? "Usaste un archivo con la extensión " +
-			  extAvatar.slice(1).toUpperCase() +
-			  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
-			: datos.tamano > 1100000
-			? "El archivo es de " +
-			  parseInt(datos.tamano / 10000) / 100 +
-			  " MB. Necesitamos que no supere 1 MB"
-			: "";
+		let campos = Object.keys(datos);
+		// Validaciones
+		if (campos.includes("apodo")) {
+			if (datos.apodo) var largoApodo = longitud(datos.apodo, 2, 30);
+			errores.apodo = !datos.apodo
+				? cartelCampoVacio
+				: castellano(datos.apodo)
+				? cartelCastellano
+				: mayuscula(datos.apodo)
+				? cartelMayuscula
+				: largoApodo
+				? largoApodo
+				: "";
+		}
+		if (campos.includes("pais_id")) errores.pais_id = !datos.pais_id ? cartelElejiUnValor : "";
+		if (campos.includes("rol_iglesia_id"))
+			errores.rol_iglesia_id = !datos.rol_iglesia_id ? cartelElejiUnValor : "";
+		if (campos.includes("avatar")) {
+			if (datos.avatar) var extAvatar = extension(datos.avatar);
+			errores.avatar = !datos.avatar
+				? ""
+				: extAvatar
+				? "Usaste un archivo con la extensión " +
+				  extAvatar.slice(1).toUpperCase() +
+				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
+				: datos.tamano > 1100000
+				? "El archivo es de " +
+				  parseInt(datos.tamano / 10000) / 100 +
+				  " MB. Necesitamos que no supere 1 MB"
+				: "";
+		}
 		errores.hay = Object.values(errores).some((n) => !!n);
 		return errores;
 	},
@@ -79,6 +56,37 @@ module.exports = {
 		// Variables
 		let errores = {};
 		let campos = Object.keys(datos);
+		// Validaciones
+		if (campos.includes("nombre")) {
+			if (datos.nombre) var largoPerenne = longitud(datos.nombre, 2, 30);
+			errores.nombre = !datos.nombre
+				? cartelCampoVacio
+				: castellano(datos.nombre)
+				? cartelCastellano
+				: mayuscula(datos.nombre)
+				? cartelMayuscula
+				: largoPerenne
+				? largoPerenne
+				: "";
+		}
+		if (campos.includes("apellido"))
+			errores.apellido = !datos.apellido
+				? cartelCampoVacio
+				: castellano(datos.apellido)
+				? cartelCastellano
+				: mayuscula(datos.apellido)
+				? cartelMayuscula
+				: largoPerenne
+				? largoPerenne
+				: "";
+		if (campos.includes("sexo_id"))
+			errores.sexo_id = !datos.sexo_id ? "Necesitamos que elijas un valor" : "";
+		if (campos.includes("fecha_nacimiento"))
+			errores.fecha_nacimiento = !datos.fecha_nacimiento
+				? "Necesitamos que ingreses la fecha"
+				: fechaRazonable(datos.fecha_nacimiento)
+				? "¿Estás seguro de que introdujiste la fecha correcta?"
+				: "";
 		// Revisar 'docum_numero'
 		if (campos.includes("docum_numero")) {
 			if (datos.docum_numero) var largoNumero = longitud(datos.apodo, 2, 15);
@@ -91,7 +99,8 @@ module.exports = {
 		if (campos.includes("docum_avatar")) {
 			// Variables
 			if (datos.docum_avatar) var extAvatar = extension(datos.docum_avatar);
-			let tamano = datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
+			if (datos.docum_avatar)
+				var tamano = datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
 			// Validaciones
 			errores.docum_avatar = !datos.docum_avatar
 				? ""
@@ -108,7 +117,6 @@ module.exports = {
 		return errores;
 	},
 	documentoBE: async function (datos) {
-		// console.log(110,datos);
 		// Averiguar los errores
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores

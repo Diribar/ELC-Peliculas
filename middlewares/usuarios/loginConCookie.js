@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 		// Obtiene los datos del usuario
 		let usuario = await BD_especificas.obtenerUsuarioPorMail(req.cookies.email);
 		// Si existe el usuario y ya confirmó el mail, pasa los datos del usuario a session
-		if (usuario && usuario.status_registro.mail_validado) req.session.usuario = usuario;
+		if (usuario && !usuario.status_registro.mail_a_validar) req.session.usuario = usuario;
 	}
 	// Graba a Locals los datos del usuario
 	if (req.session.usuario && !res.locals.usuario) res.locals.usuario = req.session.usuario;

@@ -1,5 +1,6 @@
 "use strict";
 // Definir variables
+const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
@@ -12,7 +13,21 @@ module.exports = async (req, res, next) => {
 	let informacion;
 
 	// Fórmulas
-	let detectarUsuarioPenalizado = () => {
+	let penalidadAcum = async () => {
+		let datos = {};
+		let penalizac_acum = parseInt(Number(usuario.penalizac_acum));
+		if (penalizac_acum) {
+			// Variables
+			let ahora = compartidas.ahora().setHours(0, 0, 0);
+			// Agregar valores en datos
+			datos.penalizado_hasta = Math.max(ahora, usuario.penalizado_hasta) + penalizac_acum * unDia;
+			datos.penalizado_en = ahora;
+			datos.penalizac_acum -= penalizac_acum;
+		}
+		// Actualizar el registro
+		await BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
+	};
+	let usuarioPenalizado = () => {
 		// Variables
 		let informacion;
 		// Proceso
@@ -28,10 +43,28 @@ module.exports = async (req, res, next) => {
 		}
 		return informacion;
 	};
-	let permisoInputs = () => {
+	let identidadValidada = () => {
 		let informacion;
-		if (!usuario.rol_usuario.perm_inputs) {
-			if (!usuario.status_registro.ident_a_validar)
+		// Verifica si la identidad está validada
+		if (!usuario.status_registro.ident_validada) {
+			// Status: identidad a validar
+			if (usuario.status_registro.ident_a_validar)
+				informacion = {
+					mensajes: [
+						"Para ingresar información, se requiere tener tus datos validados.",
+						"Nos informaste tu documento el " +
+							compartidas.fechaHorarioTexto(usuario.fecha_revisores) +
+							".",
+						"Tenés que esperar a que el equipo de Revisores haga la validación.",
+						"Luego de la validación, recibirás un mail de feedback.",
+						"En caso de estar aprobado, podrás ingresarnos información.",
+					],
+					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+					titulo: "Aviso",
+					colorFondo: "gris",
+				};
+			// Status: editables
+			if (usuario.status_registro.editables)
 				informacion = {
 					mensajes: [
 						"El ingreso de información para otras personas, requiere responsabilidad.",
@@ -47,7 +80,6 @@ module.exports = async (req, res, next) => {
 						},
 						{
 							nombre: "fa-circle-right",
-							// link: "/usuarios/responsabilidad",
 							link: "/usuarios/documento",
 							titulo: "Ir a 'Documento'",
 						},
@@ -55,21 +87,23 @@ module.exports = async (req, res, next) => {
 					titulo: "Aviso",
 					colorFondo: "verde",
 				};
-			else if (!usuario.status_registro.ident_validada)
-				informacion = {
-					mensajes: [
-						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tu documento el " +
-							compartidas.fechaHorarioTexto(usuario.fecha_revisores) +
-							".",
-						"Tenés que esperar a que el equipo de Revisores haga la validación.",
-						"Luego de la validación, recibirás un mail de feedback.",
-						"En caso de estar aprobado, podrás ingresarnos información.",
-					],
-					iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
-					titulo: "Aviso",
-					colorFondo: "gris",
-				};
+		}
+
+		// Fin
+		return informacion;
+	};
+	let permInputs = () => {
+		let informacion;
+		if (!usuario.rol_usuario.perm_inputs) {
+			informacion = {
+				mensajes: [
+					"Por alguna razón no tenés este permiso a pesar de que tenés validad tu identidad.",
+					"Seguramente se te explicó el motivo vía mail.",
+				],
+				iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
+				titulo: "Aviso",
+				colorFondo: "gris",
+			};
 		}
 		// Fin
 		return informacion;
@@ -100,15 +134,15 @@ module.exports = async (req, res, next) => {
 		return informacion;
 	};
 
-	// VERIFICACIÓN: Redirecciona si el usuario no está logueado
-	if (!usuario) return res.redirect("/usuarios/login");
-	// VERIFICACIÓN: Redirecciona si el usuario no completó el alta de usuario
-	if (!usuario.status_registro.editables_ok) return res.redirect("/usuarios/redireccionar");
-	// VERIFICACIÓN: Usuario penalizado
-	if (!informacion) informacion = detectarUsuarioPenalizado();
-	// VERIFICACIÓN: Permiso input
-	if (!informacion) informacion = permisoInputs();
-	// VERIFICACIÓN: Registros a revisar >= Nivel de Confianza
+	// VERIFICACIÓN 1: Penalidad acumulada
+	penalidadAcum();
+	// VERIFICACIÓN 2: Usuario penalizado
+	if (!informacion) informacion = usuarioPenalizado();
+	// VERIFICACIÓN 3: Tiene identidad validada
+	if (!informacion) informacion = identidadValidada();
+	// VERIFICACIÓN 4: Permiso input
+	if (!informacion) informacion = permInputs();
+	// VERIFICACIÓN 5: Registros a revisar >= Nivel de Confianza
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Fin

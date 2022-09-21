@@ -1,6 +1,6 @@
 <section id="cuerpo">
 	<!-- Alta -->
-	<%- (codigo == "mail" || codigo == "olvido-contrasena") ? include("US1-Alta-Mail") : "" %>
+	<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US1-Alta-Mail") : "" %>
 	<%- codigo == "perennes" ? include("US2-Datos-Perennes") : "" %>
 	<%- codigo == "editables" ? include("US3-Datos-Editables") : "" %>
 	<%- codigo == "documento" ? include("US4-Documento") : "" %>

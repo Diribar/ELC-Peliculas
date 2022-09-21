@@ -3,9 +3,9 @@ module.exports = (sequelize, dt) => {
 	const columns = {
 		orden: {type: dt.INTEGER},
 		nombre: {type: dt.STRING(50)},
+		mail_a_validar: {type: dt.BOOLEAN},
 		mail_validado: {type: dt.BOOLEAN},
-		perennes_ok: {type: dt.BOOLEAN},
-		editables_ok: {type: dt.BOOLEAN},
+		editables: {type: dt.BOOLEAN},
 		ident_a_validar: {type: dt.BOOLEAN},
 		ident_validada: {type: dt.BOOLEAN},
 	};
