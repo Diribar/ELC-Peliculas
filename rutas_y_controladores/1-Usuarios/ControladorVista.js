@@ -159,24 +159,29 @@ module.exports = {
 		});
 	},
 	editablesGuardar: async (req, res) => {
+		// Variables
 		let usuario = req.session.usuario;
-		if (req.file) req.body.avatar = req.file.filename;
 		// Averiguar si hay errores de validación
-		let errores = await validar.editables(req.body);
+		let datos = {...req.body};
+		if (req.file) {
+			datos.tamano = req.file.size;
+			datos.avatar = req.file.filename;
+		}
+		// Averiguar si hay errores de validación
+		let errores = await validar.editables(datos);
 		if (errores.hay) {
-			if (req.file) delete req.body.avatar;
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
-			req.session.dataEntry = req.body;
+			req.session.dataEntry = req.body; // No guarda el avatar
 			req.session.errores = errores;
 			return res.redirect("/usuarios/redireccionar");
 		}
-		// Actualiza el usuario
 		if (req.file) {
 			// Elimina el archivo 'avatar' anterior
 			if (usuario.avatar) compartidas.borraUnArchivo("./publico/imagenes/1-Usuarios/", usuario.avatar);
 			// Agrega el campo 'avatar' a los datos
 			req.body.avatar = req.file.filename;
 		}
+		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario(
 			"editables_ok",
 			"documento",
@@ -245,6 +250,8 @@ module.exports = {
 			docum_avatar: req.file ? req.file.filename : usuario.docum_avatar,
 			id: usuario.id,
 		};
+		if (req.file) datos.tamano = req.file.size;
+		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/2-DocsUsuarios/";
 		let errores = await validar.documentoBE(datos);
 		if (errores.hay) {
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
@@ -252,16 +259,21 @@ module.exports = {
 			req.session.errores = errores;
 			return res.redirect("/usuarios/documento");
 		}
-		// Elimina el archivo 'avatar' anterior
-		if (req.file && usuario.docum_avatar)
-			compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios/", usuario.docum_avatar);
+		if (req.file) {
+			// Elimina el archivo 'docum_avatar' anterior
+			if (usuario.docum_avatar)
+				compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios/", usuario.docum_avatar);
+			// Agrega el campo 'docum_avatar' a los datos
+			req.body.docum_avatar = req.file.filename;
+		}
 		// Prepara la información a actualizar
-		datos.fecha_revisores = compartidas.ahora();
+		req.body.fecha_revisores = compartidas.ahora();
+		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario(
 			"ident_a_validar",
 			"ident_validada",
 			usuario,
-			datos
+			req.body
 		);
 		// Mueve el archivo a la carpeta definitiva
 		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "2-DocsUsuarios");

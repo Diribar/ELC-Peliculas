@@ -89,17 +89,18 @@ module.exports = {
 			errores.docum_pais_id = !datos.docum_pais_id ? cartelElejiUnValor : "";
 		// Revisar 'avatar'
 		if (campos.includes("docum_avatar")) {
-			let extAvatar = extension(datos.docum_avatar);
+			// Variables
+			if (datos.docum_avatar) var extAvatar = extension(datos.docum_avatar);
+			let tamano = datos.tamano ? parseInt(Number(datos.tamano) / 10000) / 100 : 0;
+			// Validaciones
 			errores.docum_avatar = !datos.docum_avatar
-				? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
+				? ""
 				: extAvatar
 				? "Usaste un archivo con la extensión " +
 				  extAvatar.slice(1).toUpperCase() +
 				  ". Las extensiones de archivo válidas son JPG, JPEG y PNG"
-				: datos.tamano > 1100000
-				? "El archivo es de " +
-				  parseInt(datos.tamano / 10000) / 100 +
-				  " MB. Necesitamos que no supere 1 MB"
+				: tamano > 1.1
+				? "El archivo es de " + tamano + " MB. Necesitamos que no supere 1 MB"
 				: "";
 		}
 		// Fin
@@ -121,6 +122,15 @@ module.exports = {
 					credenciales: true,
 					hay: true,
 				};
+			// Verifica el docum_avatar
+			errores.docum_avatar =
+				// Que tenga nombre
+				!datos.docum_avatar
+					? "Necesitamos que ingreses una imagen de tu documento. La usaremos para verificar tus datos."
+					: // Que exista el archivo
+					!compartidas.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
+					? "El archivo de imagen no existe"
+					: "";
 		}
 		// Fin
 		return errores;

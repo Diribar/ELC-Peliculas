@@ -1,12 +1,12 @@
 "use strict";
 // Definir variables
-const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
 const compartidas = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables
+	req.session.usuario = await BD_especificas.obtenerUsuarioPorID(req.session.usuario.id);
 	const usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
@@ -48,7 +48,7 @@ module.exports = async (req, res, next) => {
 						{
 							nombre: "fa-circle-right",
 							// link: "/usuarios/responsabilidad",
-							link:"/usuarios/documento",
+							link: "/usuarios/documento",
 							titulo: "Ir a 'Documento'",
 						},
 					],
@@ -59,7 +59,9 @@ module.exports = async (req, res, next) => {
 				informacion = {
 					mensajes: [
 						"Para ingresar información, se requiere tener tus datos validados.",
-						"Nos informaste tu documento el " + compartidas.fechaHorarioTexto(usuario.fecha_revisores) + ".",
+						"Nos informaste tu documento el " +
+							compartidas.fechaHorarioTexto(usuario.fecha_revisores) +
+							".",
 						"Tenés que esperar a que el equipo de Revisores haga la validación.",
 						"Luego de la validación, recibirás un mail de feedback.",
 						"En caso de estar aprobado, podrás ingresarnos información.",

@@ -53,7 +53,7 @@
 			<label for="inputImagen" id="preview">
 				<img src="<%= docum_avatar %>">
 			</label>
-			<input name="docum_avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
+			<input name="docum_avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar" value="<%= dataEntry ? dataEntry.docum_avatar : "" %>">
 			<%- include("CMP-errorOK_visible", {campo: "docum_avatar"}) %>
 		</div>
 	</section>
