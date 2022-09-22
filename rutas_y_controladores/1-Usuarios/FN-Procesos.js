@@ -7,14 +7,11 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = {
 	// ControladorVista: loginGuardar, altaPerennesGuardar, altaEditablesGuardar
-	actualizaElUsuario: async (statusDeseado, statusPosterior, usuario, novedades) => {
+	actualizaElUsuario: async (status, usuario, novedades) => {
 		// Obtiene el nuevo status
-		let statusNuevo = status_registro_us.find((n) => n[statusDeseado] && !n[statusPosterior]);
+		let statusNuevo = status_registro_us.find((n) => n[status]);
 		// Genera la info a actualizar
-		novedades = {
-			...novedades,
-			status_registro_id: statusNuevo.id,
-		};
+		novedades = {...novedades, status_registro_id: statusNuevo.id};
 		// Actualiza la info
 		await BD_genericas.actualizarPorId("usuarios", usuario.id, novedades);
 		usuario = {...usuario, ...novedades, status_registro: statusNuevo};
@@ -48,7 +45,7 @@ module.exports = {
 		return {ahora, contrasena};
 	},
 	// Genera el cartel de información
-	cartelInformacion: (codigo) => {
+	cartelInformacion: () => {
 		// Datos para la vista
 		let informacion = {
 			mensajes: ["Te hemos enviado una contraseña por mail.", "Usala para ingresar al login."],
@@ -56,14 +53,6 @@ module.exports = {
 			titulo: "La generación de una nueva contraseña fue exitosa",
 			colorFondo: "verde",
 		};
-		// Agrega un mensaje
-		let agregarMensaje =
-			codigo == "mail"
-				? "Luego de terminar el alta de usuario, podrás cambiarla."
-				: codigo == "olvido-contrasena"
-				? "Podrás editarla luego del login."
-				: "";
-		informacion.mensajes.push(agregarMensaje);
 		// Fin
 		return informacion;
 	},

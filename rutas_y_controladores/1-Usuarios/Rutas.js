@@ -19,11 +19,9 @@ router.get("/api/validar-editables", API.validarEditables);
 router.get("/api/validar-documento", API.validarDocumento);
 
 // Rutas de Altas
-router.get("/mail", soloVisitas, vista.altaMailForm);
-router.post("/mail", soloVisitas, vista.altaMailGuardar);
 router.get("/redireccionar", vista.redireccionar);
-router.get("/datos-perennes", soloUsuarios, vista.perennesForm);
-router.post("/datos-perennes", soloUsuarios, vista.perennesGuardar);
+router.get("/alta-mail", soloVisitas, vista.altaMailForm);
+router.post("/alta-mail", soloVisitas, vista.altaMailGuardar);
 router.get("/datos-editables", soloUsuarios, vista.editablesForm);
 router.post("/datos-editables", soloUsuarios, multer.single("avatar"), vista.editablesGuardar);
 router.get("/bienvenido", soloUsuarios, vista.bienvenido);

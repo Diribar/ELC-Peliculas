@@ -5,7 +5,8 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(100)},
 		usuario: {type: dt.BOOLEAN},
 		personaje: {type: dt.BOOLEAN},
-		sexo_id: {type: dt.STRING(1)},
+		varon: {type: dt.BOOLEAN},
+		mujer: {type: dt.BOOLEAN},
 	};
 	const config = {
 		tableName: "aux_roles_iglesia",

@@ -469,28 +469,16 @@ module.exports = {
 		let datos = {};
 		// Averiguar si el motivo amerita bloquear
 		if (motivo.bloqueo_perm_inputs) {
-			// Obtener el rol de 'Consultas', sin permiso para Data Entry
+			// Obtener el rol de 'Consultas', sin permiso para Inputs
 			let rol_usuario_id = roles_us.find((n) => !n.perm_inputs).id;
 			datos.rol_usuario_id = rol_usuario_id;
 		}
 		// Obtiene los datos del usuario
 		let usuario = await BD_genericas.obtenerPorId("usuarios", userID);
 		// Averigua la nueva penalización acumulada y la duración
-		let duracion = Number(usuario.penalizac_acum) + Number(motivo.duracion);
-		datos.penalizac_acum = duracion % 1;
-		duracion = parseInt(duracion);
-		// Averiguar la nueva penalización_hasta
-		if (duracion) {
-			let ahora = compartidas.ahora().setHours(0, 0, 0);
-			let penalizado_desde =
-				usuario.penalizado_hasta && usuario.penalizado_hasta > ahora
-					? usuario.penalizado_hasta
-					: ahora;
-			if (penalizado_desde == ahora) datos.penalizado_en = ahora;
-			datos.penalizado_hasta = penalizado_desde + duracion * unDia;
-		}
+		datos.penalizac_acum = Number(usuario.penalizac_acum) + Number(motivo.duracion);
 		// Actualizar el registro
-		BD_genericas.actualizarPorId("usuarios", usuario.id, datos);
+		await BD_genericas.actualizarPorId("usuarios", userID, datos);
 		// Fin
 		return;
 	},

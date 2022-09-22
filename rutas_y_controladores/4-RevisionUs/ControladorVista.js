@@ -94,8 +94,8 @@ module.exports = {
 		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
 		let penalidad = 0;
 		// Variables de 'status de registro'
-		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado && !n.perennes_ok).id;
-		let st_editables_ID = status_registro_us.find((n) => n.editables_ok && !n.ident_a_validar).id;
+		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado).id;
+		let st_editables_ID = status_registro_us.find((n) => n.editables).id;
 		let st_ident_validada_ID = status_registro_us.find((n) => n.ident_validada).id;
 		let status_registro_id;
 
