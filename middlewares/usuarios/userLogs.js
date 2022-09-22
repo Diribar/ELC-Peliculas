@@ -69,9 +69,10 @@ module.exports = (req, res, next) => {
 		// No tiene links
 		if (
 			!anterior.startsWith("/usuarios/") &&
+			!anterior.startsWith("/links/") &&
+			!anterior.startsWith("/revision/") &&
 			!anterior.includes("/agregar/") &&
-			!anterior.includes("/edicion/") &&
-			!anterior.startsWith("/links/")
+			!anterior.includes("/edicion/") 
 		)
 			activarSessionCookie("urlSinPermInput");
 

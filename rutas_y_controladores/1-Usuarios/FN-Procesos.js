@@ -48,8 +48,12 @@ module.exports = {
 	cartelInformacion: () => {
 		// Datos para la vista
 		let informacion = {
-			mensajes: ["Te hemos enviado una contraseña por mail.", "Usala para ingresar al login."],
-			iconos: [variables.vistaEntendido("/usuarios/login")],
+			mensajes: [
+				"Te hemos enviado una contraseña por mail.",
+				"Por favor, usala para ingresar al login.",
+				"Haciendo click abajo de este mensaje, vas al Login.",
+			],
+			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 			titulo: "La generación de una nueva contraseña fue exitosa",
 			colorFondo: "verde",
 		};

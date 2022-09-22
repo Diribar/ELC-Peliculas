@@ -333,7 +333,7 @@ let avatarAgregarLaRutaAlNombre = (imagenActual, status, imagenBackup) => {
 				? ""
 				: status == "original"
 				? "/imagenes/3-Productos/"
-				: "/imagenes/4-ProdRevisar/") + imagenActual
+				: "/imagenes/4-ProdsRevisar/") + imagenActual
 		: imagenBackup
 		? imagenBackup
 		: "/imagenes/8-Agregar/IM.jpg";

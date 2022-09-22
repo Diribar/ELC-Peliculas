@@ -1,9 +1,8 @@
 <section id="cuerpo">
 	<!-- Alta -->
 	<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US1-Alta-Mail") : "" %>
-	<%- codigo == "perennes" ? include("US2-Datos-Perennes") : "" %>
-	<%- codigo == "editables" ? include("US3-Datos-Editables") : "" %>
-	<%- codigo == "documento" ? include("US4-Documento") : "" %>
+	<%- codigo == "editables" ? include("US2-Datos-Editables") : "" %>
+	<%- codigo == "documento" ? include("US3-Documento") : "" %>
 	<%- codigo == "edicion" ? include("US5-Edicion") : "" %>
 	<!-- Revisar -->
 	<%- codigo == "tableroControl" ? include("US6-Tablero-Control") : "" %>

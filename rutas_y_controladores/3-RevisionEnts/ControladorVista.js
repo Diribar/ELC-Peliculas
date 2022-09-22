@@ -52,7 +52,7 @@ module.exports = {
 		// 5. Obtener avatar original
 		let avatar = prodOrig.avatar;
 		avatar = avatar
-			? (!avatar.startsWith("http") ? "/imagenes/4-ProdRevisar/" : "") + avatar
+			? (!avatar.startsWith("http") ? "/imagenes/4-ProdsRevisar/" : "") + avatar
 			: "/imagenes/8-Agregar/IM.jpg";
 		// 6. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -168,11 +168,11 @@ module.exports = {
 				original: prodOrig.avatar
 					? (!prodOrig.avatar.startsWith("http")
 							? prodOrig.status_registro.gr_creado
-								? "/imagenes/4-ProdRevisar/"
+								? "/imagenes/4-ProdsRevisar/"
 								: "/imagenes/3-Productos/"
 							: "") + prodOrig.avatar
 					: "/imagenes/8-Agregar/IM.jpg",
-				edicion: "/imagenes/4-ProdRevisar/" + prodEdic.avatar_archivo,
+				edicion: "/imagenes/4-ProdsRevisar/" + prodEdic.avatar_archivo,
 				mostrarOriginal: !!prodEdic.avatar,
 			};
 			motivos = motivos.filter((m) => m.avatar);

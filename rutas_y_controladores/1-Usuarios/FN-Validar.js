@@ -121,16 +121,13 @@ module.exports = {
 		let errores = await this.documentoFE(datos);
 		// Acciones si no hay errores
 		if (!errores.hay) {
-			// Verifica que el documento no exista ya en la Base de Datos
+			// 1. Verifica que el documento no exista ya en la Base de Datos
 			let docum_numero = datos.docum_numero;
 			let docum_pais_id = datos.docum_pais_id;
 			let averiguar = await BD_genericas.obtenerPorCampos("usuarios", {docum_numero, docum_pais_id});
-			if (averiguar && averiguar.id != datos.id)
-				errores = {
-					credenciales: true,
-					hay: true,
-				};
-			// Verifica el docum_avatar
+			if (averiguar && averiguar.id != datos.id) errores.credenciales = true;
+
+			// 2. Verifica el docum_avatar
 			errores.docum_avatar =
 				// Que tenga nombre
 				!datos.docum_avatar
@@ -139,6 +136,9 @@ module.exports = {
 					!compartidas.averiguaSiExisteUnArchivo(datos.ruta + datos.docum_avatar)
 					? "El archivo de imagen no existe"
 					: "";
+
+			// 3. Resumen
+			if (errores.credenciales || errores.docum_avatar) errores.hay = true;
 		}
 		// Fin
 		return errores;
@@ -275,8 +275,10 @@ let extension = (nombre) => {
 
 let fechaRazonable = (dato) => {
 	// Verificar que la fecha sea razonable
-	let ano = parseInt(dato.slice(0, 4));
-	let max = new Date().getFullYear() - 5;
-	let min = new Date().getFullYear() - 100;
-	return ano > max || ano < min ? true : false;
+	let fecha = new Date(dato);
+	let max = compartidas.ahora();
+	let min = compartidas.ahora();
+	max.setFullYear(max.getFullYear() - 5);
+	min.setFullYear(min.getFullYear() - 100);
+	return fecha > max || fecha < min ? true : false;
 };

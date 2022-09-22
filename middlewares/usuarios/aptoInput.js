@@ -7,7 +7,7 @@ const variables = require("../../funciones/3-Procesos/Variables");
 
 module.exports = async (req, res, next) => {
 	// Variables
-	req.session.usuario = await BD_especificas.obtenerUsuarioPorID(req.session.usuario.id);
+	req.session.usuario = await BD_especificas.obtenerUsuarioPorMail(req.session.usuario.email);
 	const usuario = req.session.usuario;
 	const vistaAnterior = variables.vistaAnterior(req.session.urlSinLogin);
 	let informacion;
@@ -68,7 +68,7 @@ module.exports = async (req, res, next) => {
 				informacion = {
 					mensajes: [
 						"El ingreso de información para otras personas, requiere responsabilidad.",
-						"Para asegurarnos eso, cada persona debe tener un sólo usuario cuya reputación debe cuidar.",
+						"Para asegurarnos eso, cada persona debe tener un único usuario de por vida, cuya reputación debe cuidar.",
 						"Por eso, necesitamos validar tu identidad con tu documento.",
 						"Podés iniciar el trámite haciendo click en la flecha hacia la derecha.",
 					],
@@ -82,6 +82,7 @@ module.exports = async (req, res, next) => {
 							nombre: "fa-circle-right",
 							link: "/usuarios/documento",
 							titulo: "Ir a 'Documento'",
+							autofocus: true,
 						},
 					],
 					titulo: "Aviso",
