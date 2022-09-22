@@ -36,12 +36,11 @@ window.addEventListener("load", () => {
 	let consecuenciaError = (error, campo, indice) => {
 		// Guarda el mensaje de error
 		let mensaje = error[campo];
+		// Reemplaza el mensaje, con particularidad para 'avatar'
 		mensaje =
 			campo != "docum_avatar" || mensaje || inputs[indice].value
 				? mensaje
 				: mensajesError[indice].innerHTML;
-		// Reemplaza el mensaje, con particularidad para 'avatar'
-		// console.log(campo, campo != "docum_avatar", mensajesError[indice].innerHTML);
 		mensajesError[indice].innerHTML = mensaje;
 
 		// Acciones en función de si hay o no mensajes de error
