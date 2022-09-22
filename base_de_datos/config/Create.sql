@@ -112,10 +112,11 @@ CREATE TABLE us_motivos_rech (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_motivos_rech (id, orden, bloqueo_perm_inputs, duracion, mostrar_para_docum, descripcion)
 VALUES
-(12, 1,    0,  90, 1, 'No corresponde a un documento nacional'),
-(13, 2,    0, 180, 1, 'No corresponde a un documento'),
-(11, 3, NULL, 0.5, 1, 'Es ilegible o está truncada'),
-(14, 4, NULL, 0.5, 0, 'Valor distinto al del documento')
+(11, 1, NULL, 0.5, 1, 'Es ilegible o está truncada'),
+(12, 2,    0,  30, 1, 'No es un documento nacional'),
+(13, 3,    0,  90, 1, 'No es un documento'),
+(14, 4,    0, 180, 1, 'No es un documento y además es ofensiva'),
+(15, 5, NULL, 0.5, 0, 'Valor distinto al del documento')
 ;
 
 

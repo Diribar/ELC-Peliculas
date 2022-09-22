@@ -143,7 +143,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion) informacion = identidadValidada();
 	// VERIFICACIÓN 4: Permiso input
 	if (!informacion) informacion = permInputs();
-	// VERIFICACIÓN 5: Registros a revisar >= Nivel de Confianza
+	// VERIFICACIÓN 5: Nivel de Confianza
 	if (!informacion) informacion = await compararRegistrosConNivelDeConfianza();
 
 	// Fin
