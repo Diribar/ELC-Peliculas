@@ -272,7 +272,7 @@ module.exports = {
 	// Varios
 	nombreAvatar: (prodOrig, prodEdic) => {
 		return prodEdic.avatar
-			? "/imagenes/4-ProdRevisar/" + prodEdic.avatar
+			? "/imagenes/4-ProdsRevisar/" + prodEdic.avatar
 			: prodOrig.avatar
 			? !prodOrig.avatar.startsWith("http")
 				? "/imagenes/3-Productos/" + prodOrig.avatar

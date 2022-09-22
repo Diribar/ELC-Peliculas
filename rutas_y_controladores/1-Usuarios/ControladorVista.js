@@ -10,12 +10,13 @@ const validar = require("./FN-Validar");
 
 module.exports = {
 	redireccionar: async (req, res) => {
-		let status_registro_usuario = req.session.usuario.status_registro;
-		// return res.send(status_registro_usuario);
+		// Enviar a Login si no está logueado
+		if (!req.session.usuario) return res.redirect("/usuarios/login");
 		// Redireccionar
-		status_registro_usuario.mail_a_validar
+		let status_usuario = req.session.usuario.status_registro;
+		status_usuario.mail_a_validar
 			? res.redirect("/usuarios/login")
-			: status_registro_usuario.mail_validado
+			: status_usuario.mail_validado
 			? res.redirect("/usuarios/datos-editables")
 			: req.session.urlSinUsuario
 			? res.redirect(req.session.urlSinUsuario)
@@ -36,7 +37,12 @@ module.exports = {
 		// Obtener el e-mail de session
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : "";
 		// Errores
-		let errores = req.session.errores ? req.session.errores : false;
+		let errores =
+			codigo == "alta-mail"
+				? {...req.session.erroresAM}
+				: codigo == "olvido-contrasena"
+				? {...req.session.erroresOC}
+				: false;
 		// Generar la info para la vista 'olvido de contraseña'
 		if (errores.documento) {
 			let paises = await BD_genericas.obtenerTodos("paises", "nombre");
@@ -65,7 +71,7 @@ module.exports = {
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
-			req.session.errores = errores;
+			req.session.erroresAM = errores;
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...
@@ -84,9 +90,10 @@ module.exports = {
 			mensajes: [
 				"La generación de una nueva contraseña fue exitosa.",
 				"Te la hemos enviado por mail.",
-				"Usala para ingresar al login.",
+				"Por favor, usala para ingresar al login.",
+				"Haciendo click abajo de este mensaje, vas al Login.",
 			],
-			iconos: [variables.vistaEntendido("/usuarios/login")],
+			iconos: [{...variables.vistaEntendido("/usuarios/login"), titulo: "Entendido e ir al Login"}],
 			titulo: "Generación de contraseña",
 			colorFondo: "verde",
 		};
@@ -96,12 +103,14 @@ module.exports = {
 	editablesForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "editables";
+		// Redireccionar si corresponde
+		let usuario = req.session.usuario;
+		if (!usuario.status_registro.mail_validado) return res.redirect("/usuarios/redireccionar");
 		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let hablaHispana = paises.filter((n) => n.idioma == "Spanish");
 		let hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		let errores = req.session.errores ? req.session.errores : false;
-		let usuario = req.session.usuario;
 		// Roles de Iglesia
 		let roles_iglesia = await BD_genericas.obtenerTodosPorCampos("roles_iglesia", {usuario: true});
 		roles_iglesia.sort((a, b) => (a.orden < b.orden ? -1 : a.orden > b.orden ? 1 : 0));
@@ -172,8 +181,10 @@ module.exports = {
 	documentoForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "documento";
-		// Variables
+		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
+		if (!usuario.status_registro.editables) return res.redirect("/usuarios/redireccionar");
+		// Variables
 		let paises = await BD_genericas.obtenerTodos("paises", "nombre");
 		let sexos = await BD_genericas.obtenerTodos("sexos", "orden");
 		if (!usuario.rol_iglesia.mujer) sexos = sexos.filter((n) => n.letra_final == "o");
@@ -184,8 +195,8 @@ module.exports = {
 		let dataEntry = req.session.dataEntry ? req.session.dataEntry : usuario;
 		dataEntry.docum_avatar = usuario.docum_avatar;
 		let docum_avatar = usuario.docum_avatar
-			? "/imagenes/2-DocsUsuarios/" + usuario.docum_avatar
-			: "/imagenes/0-Base/documento.jpg";
+			? "/imagenes/5-DocsRevisar/" + usuario.docum_avatar
+			: "/imagenes/0-Base/AvatarGenericoDocum.jpg";
 		// Crear la carpeta si no existe
 		const ruta = "./publico/imagenes/9-Provisorio";
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
@@ -213,7 +224,7 @@ module.exports = {
 			id: usuario.id,
 		};
 		if (req.file) datos.tamano = req.file.size;
-		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/2-DocsUsuarios/";
+		datos.ruta = req.file ? "./publico/imagenes/9-Provisorio/" : "./publico/imagenes/5-DocsRevisar/";
 		// Averiguar si hay errores de validación
 		let errores = await validar.documentoBE(datos);
 		// Redirecciona si hubo algún error de validación
@@ -226,7 +237,7 @@ module.exports = {
 		if (req.file) {
 			// Elimina el archivo 'docum_avatar' anterior
 			if (usuario.docum_avatar)
-				compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios/", usuario.docum_avatar);
+				compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar/", usuario.docum_avatar);
 			// Agrega el campo 'docum_avatar' a los datos
 			req.body.docum_avatar = req.file.filename;
 		}
@@ -235,19 +246,21 @@ module.exports = {
 		// Actualiza el usuario
 		req.session.usuario = await procesos.actualizaElUsuario("ident_a_validar", usuario, req.body);
 		// Mueve el archivo a la carpeta definitiva
-		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "2-DocsUsuarios");
+		if (req.file) compartidas.mueveUnArchivoImagen(req.file.filename, "9-Provisorio", "5-DocsRevisar");
 		// Redirecciona
 		return res.redirect("/usuarios/documento-recibido");
 	},
 	documentoRecibido: (req, res) => {
-		// Variables
+		// Redireccionar si corresponde
 		let usuario = req.session.usuario;
+		if (!usuario.status_registro.ident_a_validar) return res.redirect("/usuarios/redireccionar");
+		// Variables
 		let letra = usuario.sexo_id == "M" ? "a " : "o ";
 		let informacion = {
 			mensajes: [
 				"Estimad" + letra + usuario.apodo + ", gracias por completar tus datos.",
-				"Queda en manos del equipo de Revisores validarlos.",
-				"Luego de la validación, recibirás un mail de feedback.",
+				"Ahora, queda a cargo del equipo de Revisores la tarea de revisarlos.",
+				"Luego de la revisión, recibirás un mail de feedback.",
 				"En caso de estar aprobado, podrás ingresar información.",
 			],
 			iconos: [variables.vistaEntendido(req.session.urlSinPermInput)],
@@ -314,7 +327,7 @@ module.exports = {
 			return res.redirect("/usuarios/login");
 		}
 		// 5. Si corresponde, le cambia el status a 'mail_validado'
-		if (!usuario.status_registro.mail_validado)
+		if (usuario.status_registro.mail_a_validar)
 			usuario = await procesos.actualizaElUsuario("mail_validado", usuario);
 		// 6. Inicia la sesión del usuario
 		req.session.usuario = usuario;
@@ -335,7 +348,7 @@ module.exports = {
 			],
 			iconos: [
 				{nombre: "fa-circle-left", link: req.session.urlAnterior, titulo: "Cancelar"},
-				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout"},
+				{nombre: "fa-circle-right", link: "/usuarios/logout", titulo: "Logout", autofocus: true},
 			],
 			titulo: "Logout",
 			colorFondo: "gris",
@@ -352,14 +365,14 @@ module.exports = {
 	olvidoContrGuardar: async (req, res) => {
 		// Averigua si hay errores de validación
 		let dataEntry = req.body;
-		let errores = await validar.registroMail(dataEntry.email);
+		let errores = await validar.altaMail(dataEntry.email);
 		let usuario;
 		// Si no hay errores 'superficiales', verifica otros más 'profundos'
 		if (!errores.hay) [errores, usuario] = await validar.olvidoContrBE(dataEntry);
 		// Redireccionar si hubo algún error de validación
 		if (errores.hay) {
 			req.session.dataEntry = req.body;
-			req.session.errores = errores;
+			req.session.erroresOC = errores;
 			return res.redirect(req.originalUrl);
 		}
 		// Si no hubieron errores de validación...

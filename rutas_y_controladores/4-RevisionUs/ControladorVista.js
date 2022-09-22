@@ -38,8 +38,10 @@ module.exports = {
 			"rol_usuario",
 			"status_registro",
 		]);
-		// Validaciones antes de avanzar
-		if (rutinasIdentForm(usuario)) return res.redirect("/revision/usuarios/tablero-de-control");
+		// Redireccionar si no existe el usuario o el avatar
+		let docum_avatar = usuario ? "./publico/imagenes/5-DocsRevisar/" + usuario.docum_avatar : false;
+		if (validarContenidoIF(usuario, docum_avatar))
+			return res.redirect("/revision/usuarios/tablero-de-control");
 		// 3. Otras variables
 		let pais = await BD_genericas.obtenerPorId("paises", usuario.docum_pais_id).then((n) => n.nombre);
 		let fecha_nacimiento = compartidas.fechaTexto(usuario.fecha_nacimiento);
@@ -61,6 +63,7 @@ module.exports = {
 			titulo: "Validación de Identidad",
 			usuario,
 			avatar: "/imagenes/0-Base/ImagenDerecha.jpg",
+			docum_avatar: "/imagenes/5-DocsRevisar/" + usuario.docum_avatar,
 			title: usuario.apodo,
 			campos,
 			userID,
@@ -92,7 +95,7 @@ module.exports = {
 		let revID = req.session.usuario.id;
 		// Variables de motivos
 		let motivos = await BD_genericas.obtenerTodos("us_motivos_rech", "orden");
-		let penalidad = 0;
+		let durac_penalidad = 0;
 		// Variables de 'status de registro'
 		let st_mail_validado_id = status_registro_us.find((n) => n.mail_validado).id;
 		let st_editables_ID = status_registro_us.find((n) => n.editables).id;
@@ -110,26 +113,31 @@ module.exports = {
 				if (datos[campo] == "NO") {
 					rutinasIdentGuardar(campo, usuario, revID, motivo);
 					status_registro_id = st_editables_ID;
-					penalidad += motivo.duracion;
+					durac_penalidad += motivo.duracion;
 				}
 			campos = ["nombre", "apellido", "sexo_id", "fecha_nacimiento"];
 			for (let campo of campos)
 				if (datos[campo] == "NO") {
 					rutinasIdentGuardar(campo, usuario, revID, motivo);
 					status_registro_id = st_mail_validado_id;
-					penalidad += motivo.duracion;
+					durac_penalidad += motivo.duracion;
 				}
 		} else {
 			// Elimina el archivo 'avatar'
-			compartidas.borraUnArchivo("./publico/imagenes/2-DocsUsuarios", usuario.docum_avatar);
+			compartidas.borraUnArchivo("./publico/imagenes/5-DocsRevisar", usuario.docum_avatar);
 			// Rutinas para el campo
 			let motivo = motivos.find((n) => n.id == datos.motivo_docum_id);
 			rutinasIdentGuardar("docum_avatar", usuario, revID, motivo);
 			status_registro_id = st_editables_ID;
-			penalidad += motivo.duracion;
+			durac_penalidad += motivo.duracion;
 		}
-		// Actualiza el status del usuario
-		if (!status_registro_id) status_registro_id = st_ident_validada_ID;
+		// Acciones si se aprueba la validación
+		if (!status_registro_id) {
+			// Actualiza el status del usuario
+			status_registro_id = st_ident_validada_ID;
+			// Mueve la imagen del documento a su carpeta definitiva
+			compartidas.mueveUnArchivoImagen(usuario.docum_avatar, "5-DocsRevisar", "2-DocsUsuarios");
+		}
 		// Le asigna al usuario el rol que le corresponda ('Consultas' o 'permInput')
 		let rol_usuario_id =
 			// Se fija que la identidad esté validada,
@@ -142,19 +150,19 @@ module.exports = {
 		// Actualiza el usuario
 		let objeto = {status_registro_id, rol_usuario_id, fecha_revisores: compartidas.ahora()};
 		await BD_genericas.actualizarPorId("usuarios", datos.id, objeto);
-		if (penalidad)
-			BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", penalidad);
+		// Aplica la durac_penalidad
+		if (durac_penalidad)
+			BD_genericas.aumentarElValorDeUnCampo("usuarios", datos.id, "penalizac_acum", durac_penalidad);
 
 		// Libera y vuelve al tablero
 		return res.redirect("/inactivar-captura/?entidad=usuarios&id=" + usuario.id + "&origen=tableroUs");
 	},
 };
 
-let rutinasIdentForm = (usuario) => {
+let validarContenidoIF = (usuario, avatar) => {
 	// Variables
 	let redireccionar;
 	let campos = ["apellido", "nombre", "sexo_id", "fecha_nacimiento", "docum_numero", "docum_avatar"];
-	let ruta = "./publico/imagenes/2-DocsUsuarios/";
 	// Valida que todos los campos necesarios de 'usuario' tengan valor
 	for (let campo of campos) if (!usuario[campo]) redireccionar = true;
 	// Hace otras validaciones
@@ -164,7 +172,8 @@ let rutinasIdentForm = (usuario) => {
 		redireccionar ||
 		!usuario.status_registro.ident_a_validar ||
 		usuario.status_registro.ident_validada ||
-		!compartidas.averiguaSiExisteUnArchivo(ruta + usuario.docum_avatar)
+		!avatar ||
+		!compartidas.averiguaSiExisteUnArchivo(avatar)
 	)
 		redireccionar = true;
 	// Fin

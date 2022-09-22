@@ -39,28 +39,19 @@ CREATE TABLE aux_roles_iglesia (
 	nombre VARCHAR(100) NOT NULL,
 	usuario BOOLEAN NOT NULL,
 	personaje BOOLEAN NOT NULL,
-	sexo_id VARCHAR(1) NOT NULL,
+	varon BOOLEAN NOT NULL,
+	mujer BOOLEAN NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO aux_roles_iglesia (id, orden, nombre, usuario, personaje, sexo_id)
+INSERT INTO aux_roles_iglesia (id, orden, nombre, usuario, personaje, varon, mujer)
 VALUES 
-('PC', 0, 'Computadora', 0, 0, 'O'),
-('LS', 1, 'Laico soltero', 1, 1, 'P'),
-('LSV', 1, 'Laico soltero', 1, 1, 'V'),
-('LSM', 1, 'Laica soltera', 1, 1, 'M'),
-('LC', 2, 'Laico casado', 1, 1, 'P'),
-('LCV', 2, 'Laico casado', 1, 1, 'V'),
-('LCM', 2, 'Laica casada', 1, 1, 'M'),
-('RC', 3, 'Religioso consagrado', 1, 1, 'P'),
-('RCV', 3, 'Religioso consagrado', 1, 1, 'V'),
-('RCM', 3, 'Religiosa consagrada', 1, 1, 'M'),
-('SC', 4, 'Sacerdote', 1, 1, 'P'),
-('SCV', 4, 'Sacerdote', 1, 1, 'V'),
-('PP', 5, 'Papa', 0, 1, '-'),
-('PPV', 5, 'Papa', 0, 1, 'V'),
-('AP', 6, 'Apóstata', 0, 1, '-'),
-('APV', 6, 'Apóstata', 0, 1, 'V'),
-('APM', 6, 'Apóstata', 0, 1, 'M')
+('PC', 0, 'Computadora', 0, 0, 0, 0),
+('LC', 1, 'Laico/a'    , 1, 1, 1, 1),
+('RE', 2, 'Religioso/a', 1, 1, 1, 1),
+('SC', 3, 'Sacerdote'  , 1, 1, 1, 0),
+('PP', 4, 'Papa'       , 0, 1, 1, 0),
+('AP', 5, 'Apóstata'   , 0, 1, 1, 1),
+('NN', 6, 'Ninguno'    , 1, 0, 1, 1)
 ;
 CREATE TABLE aux_sexos (
 	id VARCHAR(1) NOT NULL,
@@ -72,8 +63,7 @@ CREATE TABLE aux_sexos (
 INSERT INTO aux_sexos (id, orden, nombre, letra_final)
 VALUES 
 ('M', 1, 'Mujer', 'a'), 
-('V', 2, 'Varón', 'o'),
-('P', 3, 'Prefiero no decirlo', 'o')
+('V', 2, 'Varón', 'o')
 ;
 
 /* TABLAS AUXILIARES PARA USUARIOS */;
@@ -98,22 +88,19 @@ CREATE TABLE us_status_registro (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
 	nombre VARCHAR(20) NOT NULL,
+	mail_a_validar BOOLEAN NULL,
 	mail_validado BOOLEAN NULL,
-	perennes_ok BOOLEAN NULL,
-	editables_ok BOOLEAN NULL,
+	editables BOOLEAN NULL,
 	ident_a_validar BOOLEAN NULL,
 	ident_validada BOOLEAN NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO us_status_registro (id, orden, nombre, mail_validado, perennes_ok, editables_ok, ident_a_validar, ident_validada)
-VALUES 
-(1, 1, 'Mail a validar', 0, 0, 0, 0, 0), 
-(2, 2, 'Mail validado', 1, 0, 0, 0, 0), 
-(3, 3, 'Perennes OK', 1, 1, 0, 0, 0), 
-(4, 4, 'Editables OK', 1, 1, 1, 0, 0),
-(5, 5, 'Identidad a validar', 1, 1, 1, 1, 0),
-(6, 6, 'Identidad validada', 1, 1, 1, 1, 1)
-;
+INSERT INTO us_status_registro (id, orden, nombre, mail_a_validar) VALUES (1, 1, 'Mail a validar', 1);
+INSERT INTO us_status_registro (id, orden, nombre, mail_validado) VALUES (2, 2, 'Mail validado', 1);
+INSERT INTO us_status_registro (id, orden, nombre, editables) VALUES (3, 3, 'Editables', 1);
+INSERT INTO us_status_registro (id, orden, nombre, ident_a_validar) VALUES (4, 4, 'Identidad a validar', 1);
+INSERT INTO us_status_registro (id, orden, nombre, ident_validada) VALUES (5, 5, 'Identidad validada', 1);
+
 CREATE TABLE us_motivos_rech (
 	id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	orden TINYINT UNSIGNED NOT NULL,
@@ -140,7 +127,7 @@ CREATE TABLE usuarios (
 	nombre VARCHAR(30) NULL,
 	apellido VARCHAR(30) NULL,
 	apodo VARCHAR(30) NULL,
-	avatar VARCHAR(100) DEFAULT '-',
+	avatar VARCHAR(100) DEFAULT NULL,
 	fecha_nacimiento DATE NULL,
 	sexo_id VARCHAR(1) NULL,
 	pais_id VARCHAR(2) NULL,
@@ -148,9 +135,9 @@ CREATE TABLE usuarios (
 	rol_usuario_id TINYINT UNSIGNED DEFAULT 1,
 	bloqueo_perm_inputs BOOLEAN DEFAULT 0,
 	autorizado_fa BOOLEAN DEFAULT 0,
-	docum_numero VARCHAR(15) UNIQUE NULL,
+	docum_numero VARCHAR(15) NULL,
 	docum_pais_id VARCHAR(2) NULL,
-	docum_avatar VARCHAR(18) DEFAULT NULL,
+	docum_avatar VARCHAR(18) NULL,
 
 	dias_login SMALLINT UNSIGNED DEFAULT 1,
 	version_elc_ultimo_login VARCHAR(4) DEFAULT '1.0',
@@ -196,11 +183,11 @@ VALUES
 (1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
 (2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
 ;
-INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,       docum_numero, docum_pais_id, avatar,         fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
+INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,     docum_numero, docum_pais_id, avatar,         fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
 VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Junior',    'Diego jr.', '21072001',       'AR',             '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',     '0',              null,             '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', '-',         'Consultas', null,             null,             '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LCV',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0')
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',     '23198601',        'AR',    '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LC',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',   '21072001',        null,    '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LC',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', 'Varias',    'Consultas', null,            null,    '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LC',          1,             2,                  '2021-01-01', '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;
@@ -529,19 +516,19 @@ INSERT INTO rclv_1personajes (id, creado_por_id, status_registro_id, creado_en, 
 VALUES (1, 1, 3, '2022-03-16 23:25:20', 'Ninguno');
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
-(11, NULL,   0, 'CFC', 'JSS',  NULL,  NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús'),
-(12, NULL, -15, 'CFC', 'CNT', 'STM', 'LCM', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús'),
-(13,   79, -20, 'CFC', 'CNT', 'STV', 'LCV', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús')
+(11, NULL,   0, 'CFC', 'JSS', NULL, NULL, 2, 3, '2022-03-16 23:25:20', 'Jesús'),
+(12, NULL, -15, 'CFC', 'CNT', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'María, madre de Jesús'),
+(13,   79, -20, 'CFC', 'CNT', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'José, padre de Jesús')
 ;
 INSERT INTO rclv_1personajes (id, dia_del_ano_id, ano, categoria_id, subcategoria_id, proceso_id, rol_iglesia_id, creado_por_id, status_registro_id, creado_en, nombre)
 VALUES 
-(21, 249, 1910, 'CFC', 'HAG', 'STM', 'RCM', 2, 3, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
-(22, 285, 1958, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan XXIII'),
-(23,  31, 1815, 'CFC', 'HAG', 'STV', 'RCV', 2, 3, '2022-03-16 23:25:20', 'Juan Bosco'),
-(24, 296, 1920, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Juan Pablo II'),
-(25, 107, 1844, 'CFC', 'HAG', 'STV', 'PPV', 2, 3, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
-(26, 305, 1483, 'CFC', 'HIG',  null, 'APV', 2, 3, '2022-03-16 23:25:20', 'Martín Lutero'),
-(27,  51, 1844, 'CFC', 'HAG', 'STV', 'LSV', 2, 3, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
+(21, 249, 1910, 'CFC', 'HAG', 'ST', 'RE', 2, 3, '2022-03-16 23:25:20', 'Teresa de Calcuta'),
+(22, 285, 1958, 'CFC', 'HAG', 'ST', 'PP', 2, 3, '2022-03-16 23:25:20', 'Juan XXIII'),
+(23,  31, 1815, 'CFC', 'HAG', 'ST', 'SC', 2, 3, '2022-03-16 23:25:20', 'Juan Bosco'),
+(24, 296, 1920, 'CFC', 'HAG', 'ST', 'PP', 2, 3, '2022-03-16 23:25:20', 'Juan Pablo II'),
+(25, 107, 1844, 'CFC', 'HAG', 'ST', 'RE', 2, 3, '2022-03-16 23:25:20', 'Bernadette Soubirous'),
+(26, 305, 1483, 'CFC', 'HIG', null, 'AP', 2, 3, '2022-03-16 23:25:20', 'Martín Lutero'),
+(27,  51, 1844, 'CFC', 'HAG', 'ST', 'LC', 2, 3, '2022-03-16 23:25:20', 'Pastorcitos de Fátima')
 ;
 UPDATE rclv_1personajes SET ap_mar_id=16 WHERE id=25;
 UPDATE rclv_1personajes SET ap_mar_id=17 WHERE id=27;

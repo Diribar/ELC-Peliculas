@@ -23,9 +23,12 @@ window.addEventListener("load", () => {
 
 	// FUNCIONES --------------------------------------------------------------
 	let detectaErrores = async (i, e) => {
+		// Variables
 		let campo = inputs[i].name;
 		let valor = encodeURIComponent(inputs[i].value);
+		// Particularidad para 'avatar'
 		if (campo.includes("avatar") && e) valor += "&tamano=" + e.target.files[0].size;
+		// Averiguar los errores
 		let errores = await fetch(ruta_api + campo + "=" + valor).then((n) => n.json());
 		// Fin
 		return [errores, campo];
@@ -33,8 +36,13 @@ window.addEventListener("load", () => {
 	let consecuenciaError = (error, campo, indice) => {
 		// Guarda el mensaje de error
 		let mensaje = error[campo];
-		// Reemplaza el mensaje
+		// Reemplaza el mensaje, con particularidad para 'avatar'
+		mensaje =
+			campo != "docum_avatar" || mensaje || inputs[indice].value
+				? mensaje
+				: mensajesError[indice].innerHTML;
 		mensajesError[indice].innerHTML = mensaje;
+
 		// Acciones en función de si hay o no mensajes de error
 		mensaje
 			? iconosError[indice].classList.remove("ocultar")
@@ -59,10 +67,17 @@ window.addEventListener("load", () => {
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].addEventListener("input", async (e) => {
 			// Desactiva el cartel de 'credenciales inválidas'
-			if (tarea == "login" || tarea == "documento")
-				document.querySelector(".resultadoInvalido").classList.add("ocultar");
+			if (tarea == "login") document.querySelector(".resultadoInvalido").classList.add("ocultar");
+			let campo = inputs[i].name;
+			if (
+				tarea == "documento" &&
+				(campo == "docum_numero" || campo == "docum_pais_id") &&
+				document.querySelector("#credencialesInvalidas")
+			)
+				document.querySelector("#credencialesInvalidas").classList.add("ocultar");
 			// Detecta si hay errores
-			let [errores, campo] = await detectaErrores(i, e);
+			let errores;
+			[errores, campo] = await detectaErrores(i, e);
 			// Comunica los aciertos y errores
 			consecuenciaError(errores, campo, i);
 			// Activa/Desactiva el botón 'Guardar'

@@ -268,19 +268,19 @@ let accionesSiElCampoEsAvatar = (edicAprob, prodOrig, prodEdic) => {
 	// Acciones si el avatarEdic fue aprobado
 	if (edicAprob) {
 		// Mueve el 'avatar editado' a la carpeta definitiva
-		compartidas.mueveUnArchivoImagen(prodEdic.avatar, "4-ProdRevisar", "3-Productos");
+		compartidas.mueveUnArchivoImagen(prodEdic.avatar, "4-ProdsRevisar", "3-Productos");
 		// Elimina el 'avatar original' (si es un archivo)
 		let avatar = prodOrig.avatar;
 		if (!avatar.startsWith("http")) {
-			let ruta = prodOrig.status_registro.creado_aprob ? "4-ProdRevisar/" : "3-Productos/";
+			let ruta = prodOrig.status_registro.creado_aprob ? "4-ProdsRevisar/" : "3-Productos/";
 			compartidas.borraUnArchivo("./publico/imagenes/" + ruta, avatar);
 		}
 	} else {
 		// Elimina el 'avatar editado'
-		compartidas.borraUnArchivo("./publico/imagenes/4-ProdRevisar", prodEdic.avatar);
+		compartidas.borraUnArchivo("./publico/imagenes/4-ProdsRevisar", prodEdic.avatar);
 		// Mueve el 'avatar original' a la carpeta definitiva (si es un archivo y está en status 'creadoAprob')
 		if (prodOrig.status_registro.creado_aprob && prodOrig.avatar && !prodOrig.avatar.startsWith("http"))
-			compartidas.mueveUnArchivoImagen(prodOrig.avatar, "4-ProdRevisar", "3-Productos");
+			compartidas.mueveUnArchivoImagen(prodOrig.avatar, "4-ProdsRevisar", "3-Productos");
 	}
 	return prodEdic;
 };

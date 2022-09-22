@@ -1,10 +1,21 @@
 <div id="tapar-el-fondo"></div>
 <form method="POST" enctype="multipart/form-data">
-	<h1><%= titulo %></h1>
+	<div id="tituloConAyuda">
+		<h1><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i class="fa-solid fa-circle-question">
+			<span class="mensajeAyuda ocultar">
+				<ul class="" type="dots">
+					<li>Por favor brindanos los datos que figuran en tu Documento <em><u>Nacional</u></em> de Identidad.</li>
+					<li>La fidelidad de los datos es condición necesaria para validar tu identidad.</li>
+				</ul>
+			</span>
+		</i>
+	</div>
 	<!-- Datos -->
 	<section class="flex-row">
 		<!-- Varios -->
-		<div>
+		<div id="columna1">
 			<!--Nombre-->
 			<div class="label-input flex-col">
 				<label for="nombre">Nombre</label>
@@ -29,9 +40,9 @@
 				<div class="input-error">
 					<% sexo_id = dataEntry ? dataEntry.sexo_id : "" %>
 					<select name="sexo_id" class="input">
-						<option value=""  <% if (sexo_id=="")  {%>selected<% } %> style="display: none;">Elegí una opción</option>
+						<option value=""  <% if (sexo_id=="") { %>selected<% } %> class="ocultar">Elegí una opción</option>
 						<% for (let sexo of sexos) { %>
-							<option value="<%= sexo.id %> " <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
+							<option value="<%= sexo.id %>" <% if (sexo.id == sexo_id) {%>selected<% } %>><%= sexo.nombre %></option>
 						<% } %> 
 					</select>
 					<%- include("CMP-errorOK_visible", {campo: "sexo_id"}) %> 
@@ -48,7 +59,7 @@
 			</div>
 		</div>
 		<!-- Documento -->
-		<div>
+		<div id="columna2">
 			<!--Número de Documento-->
 			<div class="label-input flex-col">
 				<label for="docum_numero">Número de Documento</label>
@@ -89,11 +100,16 @@
 				</div>
 			</div>
 			<!--Credenciales Inválidas-->
-			<div class="flex-col">
-				<p class="resultadoInvalido <%- !errores || !errores.credenciales ? 'ocultar' : '' %>">
-					Ya tenemos ingresada esa combinación de <strong><u>Número <br> de Documento</u></strong> y <strong><u>País</u></strong> en nuestra Base de Datos.
-				</p>
-			</div>
+			<% if (errores && errores.credenciales) { %>
+				<div id="credencialesInvalidas" class="input-error">
+					<p class="resultadoInvalido">
+						Credenciales inválidas
+					</p>
+					<i class="fa-solid fa-circle-question">
+						<span class="mensajeAyuda ocultar">Ya tenemos ingresada esa combinación de <em>Número de Documento</em> y <em>País</em> en nuestra Base de Datos.</span>
+					</i>
+				</div>
+			<% } %>
 			<!--Imagen del documento-->
 			<div class="label-input flex-col">
 				<label>Imagen del documento</label>

@@ -1,0 +1,23 @@
+/* Temas comunes */
+#cuerpo #tituloConAyuda, #columna2 #credencialesInvalidas {display: flex; flex-direction: row; justify-content: center;}
+#cuerpo .fa-circle-question {border-radius: 50%; border: 1px solid var(--amarillo-claro); background-color: var(--amarillo-claro);}
+#cuerpo .fa-circle-question {position: relative; top: auto; transform: none; align-self: flex-end;}
+#cuerpo .fa-circle-question .mensajeAyuda {right: -5px; transform: translate(100%,-50%);}
+#cuerpo .fa-circle-question .mensajeAyuda {padding: 3px 5px; max-width: 310px;}
+#cuerpo .fa-circle-question .mensajeAyuda {background-color: var(--gris-mas-oscuro);}
+
+/* Título */
+#cuerpo #tituloConAyuda {margin-bottom: 10px;}
+#cuerpo #tituloConAyuda h1 {margin-bottom: 0;}
+#cuerpo #tituloConAyuda .fa-circle-question {margin-left: 7px;}
+
+#cuerpo form label {margin-right: 0; align-self: flex-start; margin-bottom: 3px;}
+#cuerpo form #columna1 .input {width: 150px}
+#cuerpo form #columna2 {margin-left: 20px;}
+
+#columna2 #credencialesInvalidas {align-items: center;}
+#columna2 #credencialesInvalidas.ocultar {display: none;}
+#columna2 #credencialesInvalidas .resultadoInvalido {margin: 0; margin-top: 15px;}
+#columna2 .fa-circle-question {margin-bottom: 3px; margin-left: 5px;}
+
+#columna2 .fa-circle-question {color: var(--rojo-oscuro);}
