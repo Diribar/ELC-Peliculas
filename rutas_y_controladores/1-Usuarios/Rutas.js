@@ -28,7 +28,7 @@ router.get("/bienvenido", soloUsuarios, vista.bienvenido);
 // router.get("/responsabilidad", soloUsuarios, vista.responsab);
 router.get("/documento", soloUsuarios, vista.documentoForm);
 router.post("/documento", soloUsuarios, multer.single("docum_avatar"), vista.documentoGuardar);
-router.get("/documento-recibido", vista.documentoRecibido);
+router.get("/documento-recibido", soloUsuarios, vista.documentoRecibido);
 
 // Rutas RUD
 router.get("/edicion", soloUsuarios, vista.edicionForm);
