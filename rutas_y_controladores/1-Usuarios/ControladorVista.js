@@ -231,7 +231,6 @@ module.exports = {
 		if (errores.hay) {
 			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
 			req.session.dataEntry = req.body; // No guarda el docum_avatar
-			// return res.send(req.session.dataEntry)
 			req.session.errores = errores;
 			return res.redirect("/usuarios/documento");
 		}
