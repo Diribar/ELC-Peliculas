@@ -1,13 +1,14 @@
 <!-- Uso compartido -->
+<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RV-General.css">
+<script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
 <% if (tema == "revisionEnts") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/3-RevisionEnts/0-Revision.css">
-<% } if (tema == "revisionUs") { %>
+<% } else if (tema == "revisionUs") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/4-RevisionUs/0-Revision.css">
 <% } %>
-<script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
 <!-- Específicos para el tablero -->
 <% if (codigo == "tableroControl") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/TableroControl.css">
+	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RV-TableroControl.css">
 	<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 <% } else { %>
 	<!-- General para vistas distintas al tablero -->
