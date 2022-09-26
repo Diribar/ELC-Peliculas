@@ -11,20 +11,22 @@ module.exports = async (req, res, next) => {
 		? "usuarios"
 		: "";
 	const id = req.query.id;
-	const userID = req.session.usuario.id;
+	if (req.session.usuario) {
 
-	// Funciones --------------------------------------------------------
-	let registro = await BD_genericas.obtenerPorId(entidad, id);
-	// Verificar que tenga una captura activa del usuario
-	if (
-		registro &&
-		registro.capturado_en &&
-		registro.capturado_por_id &&
-		registro.capturado_por_id == userID &&
-		registro.captura_activa
-	) {
-		// En caso afirmativo, actualizarlo inactivando la captura
-		await BD_genericas.actualizarPorId(entidad, id, {captura_activa: false});
+		// Obtener el registro de la entidad
+		let registro = await BD_genericas.obtenerPorId(entidad, id);
+		
+		// Verificar que tenga una captura activa del usuario
+		if (
+			registro &&
+			registro.capturado_en &&
+			registro.capturado_por_id &&
+			registro.capturado_por_id == req.session.usuario.id &&
+			registro.captura_activa
+		) {
+			// En caso afirmativo, inactivar la captura
+			await BD_genericas.actualizarPorId(entidad, id, {captura_activa: false});
+		}
 	}
 	// Fin
 	next();
