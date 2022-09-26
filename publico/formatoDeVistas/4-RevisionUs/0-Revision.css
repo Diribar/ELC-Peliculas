@@ -1,26 +1,6 @@
-/* Cuerpo */
-#cuerpo {background-color: var(--gris-claro); display: flex; flex-direction: column; flex-grow: 1;}
-#cuerpo {position: relative;}
-
-/* Título */
-#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
-#cuerpo #tituloConAyuda #titulo {background-color: var(--gris-oscuro); color: var(--gris-claro); border-bottom-right-radius: 10px;}
 /* Título - Ayuda */
-#cuerpo .mensajeAyuda {max-width: 350px;}
-#cuerpo #iconoAyuda, #cuerpo .mensajeAyuda {position: absolute;}
-#cuerpo #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%);}
-#cuerpo .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%);}
-
-/* Imagen */
-#imagen-derecha {background-color: var(--gris-intermedio);}
-
-/* Ayuda */
-.mensajeAyuda {padding: 7px 10px; z-index: 2;}
-.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro);}
-
-/* Comandos y Flechas */
-#cuerpo #flechas {display: flex; flex-direction: row; justify-content: space-between; margin: 0 auto; }
+#cuerpo .mensajeAyuda {max-width: 270px;}
+#cuerpo .mensajeAyuda li {margin-left: 0;}
 
 /* Flechas - Particularidades */
 #cuerpo #flechas i {margin: 0 25px; font-size: 2rem;}
-/* #cuerpo #flechas .fa-circle-left {color: var(--gris-oscuro);} */
