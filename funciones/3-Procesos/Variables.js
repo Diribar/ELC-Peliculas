@@ -277,6 +277,7 @@ module.exports = {
 		return [
 			{nombre: "Gloria TV", url: "gloria.tv"},
 			{nombre: "Cuevana", url: "cuevana"},
+			{nombre: "Google Drive", url: "drive.google.com/"}
 		];
 	},
 	provsListaNegra: () => {
