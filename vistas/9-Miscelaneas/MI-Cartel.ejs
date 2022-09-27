@@ -9,7 +9,7 @@
 <body>
 	<%- include('CMP-2Header') %>
 	<main class="flex-row">
-		<%- include('CMP-ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
+		<section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
 		<section id="cuerpo-y-footer">
 			<%- include('CMP-3Footer') %>
 			<!--**************************** CUERPO ******************************-->

@@ -12,7 +12,7 @@
 			<%- include("CMP-2MenuBusqueda") %>
 		</div>
 		<!-- Agregar un Producto -->
-		<div class="grupos" style="margin-right: 40px;">
+		<div class="grupos margenDerecho">
 			<a href="/producto/agregar/confirma" tabindex="-1">
 				<div id="crear-prod-icono" class="scale" title="Agregar un Producto">
 					<i class="fa-solid fa-video iconos"></i>
@@ -20,6 +20,16 @@
 				</div>
 			</a>
 		</div>
+		<!-- Mantenimiento -->
+		<% if (locals.usuario && !locals.usuario.rol_usuario.revisor_ents) { %>
+			<div class="grupos">
+				<a href="/revision/mantenimiento" tabindex="-1">
+					<div id="crear-prod-icono" class="scale" title="Mantenimiento de Entidades">
+						<i class="fa-solid fa-tools iconos revision"></i>
+					</div>
+				</a>
+			</div>
+		<% } %>
 		<!-- Revisar Entidades -->
 		<% if (locals.usuario && locals.usuario.rol_usuario.revisor_ents) { %>
 			<div class="grupos">
