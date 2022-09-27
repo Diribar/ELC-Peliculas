@@ -4,7 +4,6 @@
 	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
 	<!-- Heads personalizados -->
-	<% if (!tema) { %><link rel="stylesheet" href="/formatoDeVistas/9-Inicio/Inicio.css"><% } %>
 	<% if (tema == "usuario") { %><%- include("US0-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA0-1Head") %><% } %>
 	<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-1Head") %><% } %>	
