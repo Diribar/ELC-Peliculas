@@ -134,6 +134,27 @@ module.exports = {
 		// Fin
 		return productos;
 	},
+	tablero_obtenerProdsSinLink: async (ahora, userID) => {
+		// Obtener todos los productos aprobados, sin ningún link
+		return []
+		// Obtener los links 'a revisar'
+		let links = await BD_especificas.tablero_obtenerLinks_y_Edics();
+		// Si no hay => salir
+		if (!links.length) return [];
+		// Obtener los links ajenos
+		let linksAjenos = links.filter(
+			(n) =>
+				(n.status_registro &&
+					((n.status_registro.creado && n.creado_por_id != userID) ||
+						((n.status_registro.inactivar || n.status_registro.recuperar) &&
+							n.sugerido_por_id != userID))) ||
+				(!n.status_registro && n.editado_por_id != userID)
+		);
+		// Obtener los productos
+		let productos = linksAjenos.length ? obtenerProdsDeLinks(linksAjenos, ahora, userID) : [];
+		// Fin
+		return productos;
+	},
 	tablero_obtenerRCLVs: async (ahora, userID) => {
 		// Obtener los siguients RCLVs:
 		// creado y creados ajeno,

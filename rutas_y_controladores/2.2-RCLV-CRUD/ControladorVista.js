@@ -150,6 +150,13 @@ module.exports = {
 		// 1. Tema y Código
 		const tema = "rclv";
 		const codigo = "detalle";
-		return res.send(req.query);
+		// 2. Variables
+		let entidad = req.query.entidad;
+		let nombre = compartidas.obtenerEntidadNombre(entidad);
+		return res.render("CMP-0Estructura", {
+			tema,
+			codigo,
+			titulo: "Detalle de " + nombre,
+		});
 	},
 };

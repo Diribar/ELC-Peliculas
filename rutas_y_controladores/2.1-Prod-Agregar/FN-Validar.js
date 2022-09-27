@@ -20,6 +20,7 @@ module.exports = {
 	// ControllerAPI (validarPalabrasClave)
 	desambiguar: (dato) => {
 		// Detectar si es una película, que pertenece a una colección y cuya colección no está en la BD
+		// Variables
 		let errores = {hay: false};
 		// Si es una película y está en una colección
 		if (dato.TMDB_entidad == "movie" && dato.en_coleccion) {
@@ -91,13 +92,16 @@ module.exports = {
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
-			if (campos.includes(campo.nombre))
-				errores[campo.nombre] = !datos[campo.nombre]
+			let nombre = campo.nombre;
+			if (campos.includes(nombre))
+				errores[nombre] = !datos[nombre]
 					? cartelCampoVacio
-					: longitud(datos[campo.nombre], campo.corto, campo.largo)
-					? longitud(datos[campo.nombre], campo.corto, campo.largo)
-					: letrasValidasCastellano(datos[campo.nombre])
+					: longitud(datos[nombre], campo.corto, campo.largo)
+					? longitud(datos[nombre], campo.corto, campo.largo)
+					: castellanoAmplio(datos[nombre])
 					? cartelCastellano
+					: inicialMayuscula(datos[nombre])
+					? cartelMayuscula
 					: "";
 		}
 		// ***** CAMPOS INDIVIDUALES PARTICULARES *******
@@ -149,8 +153,10 @@ module.exports = {
 				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
 				: longitud(datos.actuacion, 3, 500)
 				? longitud(datos.actuacion, 3, 500)
-				: letrasValidasCastellanoActuacion(datos.actuacion)
+				: castellanoIntermedio(datos.actuacion)
 				? cartelCastellano
+				: inicialMayuscula(datos.actuacion)
+				? cartelMayuscula
 				: "";
 		if (campos.includes("avatar"))
 			errores.avatar = !datos.avatar
@@ -184,10 +190,13 @@ module.exports = {
 			if (datos.ano_estreno > datos.ano_fin)
 				errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
+		// Letras válidas castellano intermedio
+		if (!errores.produccion && datos.produccion && castellanoIntermedio(datos.produccion))
+			errores.produccion = cartelCastellano;
 		// Letras válidas castellano reducido
-		camposPosibles = ["direccion", "guion", "produccion", "musica"];
+		camposPosibles = ["direccion", "guion", "musica"];
 		for (let campo of camposPosibles)
-			if (!errores[campo] && datos[campo] && letrasValidasCastellanoReducido(datos[campo]))
+			if (!errores[campo] && datos[campo] && castellanoReducido(datos[campo]))
 				errores[campo] = cartelCastellano;
 
 		// ***** RESUMEN *******
@@ -243,8 +252,9 @@ module.exports = {
 
 // Variables **************************
 let cartelCampoVacio = "Necesitamos que completes esta información";
-let cartelCastellano =
-	"Sólo se admiten letras del abecedario castellano, y la primera letra debe ser en mayúscula";
+let cartelCastellano = "Sólo se admiten letras del abecedario castellano";
+let cartelMayuscula = "La primera letra debe ser en mayúscula";
+
 let cartelSelectVacio = "Necesitamos que elijas una opción";
 
 let longitud = (dato, corto, largo) => {
@@ -285,18 +295,20 @@ let cartelRepetido = (datos) => {
 		" ya se encuentra en nuestra base de datos"
 	);
 };
-let letrasValidasCastellano = (dato) => {
-	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&$:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
-	// \d: any decimal
-	// \r: carriage return
-	// \n: new line
+let castellanoAmplio = (dato) => {
+	let formato = /^[a-záéíóúüñ ,.&$:;…"°'¿?¡!+/()\d\r\n\-]+$/i;
+	// Original:  /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&$:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
 	return !formato.test(dato);
 };
-let letrasValidasCastellanoActuacion = (dato) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.'()\-\d]+$/;
+let castellanoIntermedio = (dato) => {
+	let formato = /^[a-záéíóúüñ ,.'"()\d\-]+$/i;
 	return !formato.test(dato);
 };
-let letrasValidasCastellanoReducido = (dato) => {
-	let formato = /^[A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,']+$/;
+let castellanoReducido = (dato) => {
+	let formato = /^[a-záéíóúüñ -,']+$/i;
+	return !formato.test(dato);
+};
+let inicialMayuscula = (dato) => {
+	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d]/;
 	return !formato.test(dato);
 };
