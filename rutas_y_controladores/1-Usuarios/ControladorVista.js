@@ -50,7 +50,7 @@ module.exports = {
 			var hablaNoHispana = paises.filter((n) => n.idioma != "Spanish");
 		}
 		// Vista
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -120,7 +120,7 @@ module.exports = {
 			? "/imagenes/1-Usuarios/" + usuario.avatar
 			: "/imagenes/0-Base/AvatarGenericoUsuario.png";
 		// Va a la vista
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Datos Editables",
@@ -201,7 +201,7 @@ module.exports = {
 		const ruta = "./publico/imagenes/9-Provisorio";
 		if (!fs.existsSync(ruta)) fs.mkdirSync(ruta);
 		// Va a la vista
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Datos del Documento",
@@ -274,7 +274,7 @@ module.exports = {
 	edicionForm: async (req, res) => {
 		const tema = "usuario";
 		const codigo = "edicion";
-		res.render("GN0-Estructura", {
+		res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Edición de Usuario",
@@ -307,7 +307,7 @@ module.exports = {
 			{titulo: "Contraseña", type: "password", name: "contrasena", placeholder: "Contraseña"},
 		];
 		// 4. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Login",

@@ -48,7 +48,7 @@ module.exports = {
 			}
 		}
 		// 5. Render
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			entidad: entidad,

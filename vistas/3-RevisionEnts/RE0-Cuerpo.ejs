@@ -1,5 +1,7 @@
 <section id="cuerpo">
 	<%- codigo == "tableroControl" ? include("RE0-Tablero-Control") : "" %>
+	<%- codigo == "producto/alta" ? include("RE1-Prod-Alta") : "" %>
+	<%- codigo == "producto/edicion" ? include("RE1-Prod-Demas") : "" %>
 	<%- codigo == "RCLV" ? include("RE2-RCLV") : "" %>
 	<%- codigo == "links" ? include("RE3-Links") : "" %>
 </section>

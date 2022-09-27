@@ -15,7 +15,7 @@ module.exports = {
 	quienesSomos: (req, res) => {
 		const tema = "miscelaneas";
 		const codigo = "quienes-somos";
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Quiénes somos",

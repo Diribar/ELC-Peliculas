@@ -19,7 +19,7 @@ module.exports = {
 		usuarios.validarIdentidades = await procesos.tablero_validarIdentidades(userID);
 		// Va a la vista
 		// return res.send(autInputs);
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Revisión - Tablero de Usuarios",
@@ -57,7 +57,7 @@ module.exports = {
 		let motivos_docum = motivos_rech.filter((n) => n.mostrar_para_docum);
 		// 4. Va a la vista
 		// return res.send(motivos_docum)
-		return res.render("CMP-RV-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Validación de Identidad",
