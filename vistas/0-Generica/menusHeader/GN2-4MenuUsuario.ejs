@@ -11,25 +11,34 @@
 		<a href="#">
 			<div class="flex-row align-center inactivo">
 				<div class="icono"><i class="fa-solid fa-film"></i></div>
-				<div>Mi historial</div>
+				<div>Mi historial de películas</div>
 			</div>
 		</a>
 		<hr />
-		<!-- Status de Productos agregados por mí -->
-		<a href="#">
-			<div class="flex-row align-center inactivo">
-				<div class="icono"><i class="fa-solid fa-chart-pie"></i></div>
-				<div>Status de mis agregados</div>
-			</div>
-		</a>
-		<!-- % de entidades aprobadas / presentadas -->
-		<a href="#">
-			<div class="flex-row align-center inactivo">
-				<div class="icono"><i class="fa-solid fa-thumbs-up"></i></div>
-				<div>Mi precisión de inputs</div>
-			</div>
-		</a>
-		<hr />
+		<% if (locals.usuario && locals.usuario.rol_usuario.perm_inputs) { %>
+			<!-- Status de Productos agregados por mí -->
+			<a href="#">
+				<div class="flex-row align-center inactivo">
+					<div class="icono"><i class="fa-solid fa-chart-pie"></i></div>
+					<div>Status de mis agregados</div>
+				</div>
+			</a>
+			<!-- % de entidades aprobadas / presentadas -->
+			<a href="#">
+				<div class="flex-row align-center inactivo">
+					<div class="icono"><i class="fa-solid fa-thumbs-up"></i></div>
+					<div>Mi precisión de inputs</div>
+				</div>
+			</a>
+			<!-- Historial de penalizaciones -->
+			<a href="#">
+				<div class="flex-row align-center inactivo">
+					<div class="icono"><i class="fa-solid fa-thumbs-up"></i></div>
+					<div>Historial de penalizaciones</div>
+				</div>
+			</a>
+			<hr />
+		<% } %>
 		<!-- Detalle del usuario -->
 		<a href="/usuarios/edicion">
 			<div class="flex-row align-center inactivo">

@@ -112,10 +112,11 @@ CREATE TABLE us_motivos_rech (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO us_motivos_rech (id, orden, bloqueo_perm_inputs, duracion, mostrar_para_docum, descripcion)
 VALUES
-(12, 1,    0,  90, 1, 'No corresponde a un documento nacional'),
-(13, 2,    0, 180, 1, 'No corresponde a un documento'),
-(11, 3, NULL, 0.5, 1, 'Es ilegible o está truncada'),
-(14, 4, NULL, 0.5, 0, 'Valor distinto al del documento')
+(11, 1, NULL, 0.5, 1, 'Es ilegible o está truncada'),
+(12, 2,    0,  30, 1, 'No es un documento nacional'),
+(13, 3,    0,  90, 1, 'No es un documento'),
+(14, 4,    0, 180, 1, 'No es un documento y además es ofensiva'),
+(15, 5, NULL, 0.5, 0, 'Valor distinto al del documento')
 ;
 
 
@@ -180,14 +181,13 @@ CREATE TABLE usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO usuarios (id, email, contrasena, apodo, rol_usuario_id, status_registro_id, creado_en, completado_en)
 VALUES 
-(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 4, '2021-01-01','2021-01-02'),
-(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 4, '2021-01-01','2021-01-02')
+(1, 'sinMail1', 'sinContraseña', 'Configuración inicial', 2, 3, '2021-01-01','2021-01-02'),
+(2, 'sinMail2', 'sinContraseña', 'Datos de start-up', 2, 3, '2021-01-01','2021-01-02')
 ;
-INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo,     docum_numero, docum_pais_id, avatar,         fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en,    completado_en, version_elc_ultimo_login)
-VALUES 
-(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',     '23198601',        'AR',    '1617370359746.jpg', '1969-08-16',     'V',     'AR',    3,              'LC',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego',   '21072001',        null,    '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LC',          1,             4,                  '2021-01-01', '2021-01-02',  '1.0'),
-(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', 'Varias',    'Consultas', null,            null,    '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LC',          1,             2,                  '2021-01-01', '2021-01-02',  '1.0')
+INSERT INTO usuarios (id, email,     contrasena,                                                     nombre,      apellido,    apodo, docum_numero, docum_pais_id, docum_avatar,        avatar,          fecha_nacimiento, sexo_id, pais_id, rol_usuario_id, rol_iglesia_id, autorizado_fa, status_registro_id, creado_en, completado_en, version_elc_ultimo_login) VALUES
+(10, 'diegoiribarren2015@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Inés',      'Crespín',   'Ine',   '23198601',          'AR', null,                '1617370359746.jpg', '1969-08-16',     'V',     'AR',    2,              'LC',          1,             3,            '2021-01-01',  '2021-01-02',  '1.0'),
+(11, 'diegoiribarren2021@gmail.com', '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Diego',     'Iribarren', 'Diego', '21072001',          null, '1617370359747.jpg', '1632959816163.jpg', '1969-08-16',     'V',     'AR',    5,              'LC',          1,             5,            '2021-01-01',  '2021-01-02',  '1.0'),
+(12, 'sp2015w@gmail.com',            '$2a$10$HgYM70RzhLepP5ypwI4LYOyuQRd.Cb3NON2.K0r7hmNkbQgUodTRm', 'Consultas', 'Varias',    'Consultas',   null,          null, null,                '1662056805460.jpg', '1969-08-16',     'V',     'AR',    1,              'LC',          1,             3,            '2021-01-01',  '2021-01-02',  '1.0')
 ;
 
 /* TABLAS QUE DEPENDEN DE USUARIO */;

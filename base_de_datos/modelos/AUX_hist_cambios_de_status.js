@@ -1,15 +1,8 @@
 module.exports = (sequelize, dt) => {
 	const alias = "historial_cambios_de_status";
 	const columns = {
-		pelicula_id: {type: dt.INTEGER},
-		coleccion_id: {type: dt.INTEGER},
-		capitulo_id: {type: dt.INTEGER},
-
-		personaje_id: {type: dt.INTEGER},
-		hecho_id: {type: dt.INTEGER},
-		valor_id: {type: dt.INTEGER},
-
-		link_id: {type: dt.INTEGER},
+		entidad_id: {type: dt.INTEGER},
+		entidad: {type: dt.STRING(11)},
 
 		sugerido_por_id: {type: dt.INTEGER},
 		sugerido_en: {type: dt.DATE},
@@ -31,16 +24,6 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.peliculas, {as: "pelicula", foreignKey: "pelicula_id"});
-		entidad.belongsTo(n.colecciones, {as: "coleccion", foreignKey: "coleccion_id"});
-		entidad.belongsTo(n.capitulos, {as: "capitulo", foreignKey: "capitulo_id"});
-
-		entidad.belongsTo(n.personajes, {as: "personaje", foreignKey: "personaje_id"});
-		entidad.belongsTo(n.hechos, {as: "hecho", foreignKey: "hecho_id"});
-		entidad.belongsTo(n.valores, {as: "valor", foreignKey: "valor_id"});
-
-		entidad.belongsTo(n.links, {as: "link", foreignKey: "link_id"});
-
 		entidad.belongsTo(n.usuarios, {as: "sugerido_por", foreignKey: "sugerido_por_id"});
 		entidad.belongsTo(n.usuarios, {as: "analizado_por", foreignKey: "analizado_por_id"});
 
