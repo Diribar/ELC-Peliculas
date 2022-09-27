@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+	<!-- Head genérico -->
 	<%- include('CMP-1Head') %>
+	<!-- Heads personalizados -->
+	<% if (!tema) { %><link rel="stylesheet" href="/formatoDeVistas/9-Inicio/Inicio.css"><% } %>
 	<% if (tema == "usuario") { %><%- include("US0-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA0-1Head") %><% } %>
+	<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-1Head") %><% } %>	
 	<% if (tema == "rclv") { %><%- include("RCLV-1Head") %><% } %>
 	<% if (tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
 	<% if (tema == "productos") { %><%- include("0-Productos-Head") %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include("MI-1Head") %><% } %>
 </head>
 <body>
+	<!-- Header genérico -->
 	<%- include('CMP-2Header') %>
 	<main class="flex-row">
-		<% if (tema.startsWith("revision")) { %><%- include('CMP-Cartel') %><% } %>
-		<section id="imagen-derecha"><img src="<%= avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= title ? title : '' %>"></section>
-		<section id="cuerpo-y-footer">
-			<%- include('CMP-3Footer') %>
-			<!--**************************** CUERPO ******************************-->
-			<% if (tema == "usuario") { %><%- include("US0-2Cuerpo") %><% } %>
-			<% if (tema == "prod_agregar") { %><%- include("PA0-2Cuerpo") %><% } %>
-			<% if (tema == "rclv") { %><%- include("RCLV-2Cuerpo") %><% } %>
-			<% if (tema == "revisionEnts") { %><%- include("RE0-Cuerpo") %><% } %>
-			<% if (tema == "revisionUs") { %><%- include("RU0-Cuerpo") %><% } %>
-			<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
-			<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
-		</section>
+		<!-- Cartel -->
+		<% if ((tema.startsWith("revision") && codigo != "tableroControl") || (tema == "links_crud" && codigo == "links") || (tema == "prod_rud" && codigo == "edicion")) { %><%- include('CMP-Cartel') %><% } %>
+		<!-- Vista Edición Producto -->
+		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion-Avatar') %>
+		<!-- Vista Detalle RCLV -->
+		<% } else if (tema == "rclv" && codigo == "detalle") { %><% let qqq %>
+		<!-- Demás vistas -->
+		<% } else { %>
+			<section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
+			<section id="cuerpo-y-footer">
+				<%- include('CMP-3Footer') %>
+				<!--**************************** CUERPO ******************************-->
+				<% if (!tema) { %><%- include("MI-Inicio") %><% } %>
+				<% if (tema == "usuario") { %><%- include("US0-2Cuerpo") %><% } %>
+				<% if (tema == "prod_agregar") { %><%- include("PA0-2Cuerpo") %><% } %>
+				<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-2Cuerpo") %><% } %>
+				<% if (tema == "rclv") { %><%- include("RCLV-2Cuerpo") %><% } %>
+				<% if (tema == "revisionEnts") { %><%- include("RE0-Cuerpo") %><% } %>
+				<% if (tema == "revisionUs") { %><%- include("RU0-Cuerpo") %><% } %>
+				<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
+				<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
+			</section>
+		<% } %>
 	</main>
 </body>
 </html>

@@ -147,6 +147,9 @@ module.exports = {
 	},
 
 	detalle: async (req, res) => {
+		// 1. Tema y Código
+		const tema = "rclv";
+		const codigo = "detalle";
 		return res.send(req.query);
 	},
 };

@@ -6,3 +6,6 @@
 <% if (entidad != "peliculas") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarColCap.js"></script><% } %>
 <!-- Capítulos -->
 <% if (entidad == "capitulos") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarTempCap.js"></script><% } %>
+<!-- Otros -->
+<%- tema == "prod_rud" ? include('PR0-1Head') : "" %>
+<%- tema == "links_crud" ? include('LK1-Head') : "" %>

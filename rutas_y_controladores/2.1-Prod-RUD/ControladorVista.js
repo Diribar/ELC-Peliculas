@@ -156,7 +156,7 @@ module.exports = {
 			);
 		// Va a la vista
 		//return res.send(bloquesDerecha)
-		return res.render("CR0-0Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -164,6 +164,7 @@ module.exports = {
 			prodID,
 			producto: prodCombinado,
 			avatar,
+			title: prodCombinado.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
 			camposDD1,

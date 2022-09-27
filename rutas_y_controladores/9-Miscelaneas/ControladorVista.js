@@ -6,10 +6,11 @@ module.exports = {
 	home: (req, res) => {
 		const tema = "miscelaneas";
 		const codigo = "inicio";
-		return res.render("IN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Inicio",
+			avatar: "/imagenes/8-Inicio/Inicio.jpg",
 		});
 	},
 	quienesSomos: (req, res) => {
