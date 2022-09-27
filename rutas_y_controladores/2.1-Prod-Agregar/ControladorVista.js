@@ -22,7 +22,7 @@ module.exports = {
 		// 3. Eliminar session y cookie posteriores, si existen
 		procesos.borrarSessionCookies(req, res, "palabrasClave");
 		// 4. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Palabras Clave",
@@ -57,7 +57,7 @@ module.exports = {
 		// Conservar la información en session para no tener que procesarla de nuevo
 		req.session.desambiguar = desambiguar;
 		// 5. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Desambiguar",
@@ -98,7 +98,7 @@ module.exports = {
 		// 3. Data Entry propio
 		let tipoProd = req.session.tipoProd ? req.session.tipoProd : req.cookies.tipoProd;
 		// 5. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Tipo de Producto",
@@ -144,7 +144,7 @@ module.exports = {
 		let copiarFA = req.session.copiarFA ? req.session.copiarFA : req.cookies.copiarFA;
 		if (!copiarFA) return res.redirect("/producto/agregar/tipo-producto");
 		// 5. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Copiar FA",
@@ -218,7 +218,7 @@ module.exports = {
 		let camposDD_vista = camposDD.filter((n) => !n.omitirRutinaVista);
 		// 7. Render del formulario
 		//return res.send(BD_paises)
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Duros",
@@ -329,8 +329,9 @@ module.exports = {
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 5. Preparar variables para la vista
 		let camposDP = await variables.camposDP(userID);
+		console.log(camposDP);
 		// 6. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Datos Personalizados",
@@ -384,7 +385,7 @@ module.exports = {
 		indice = actuacion.lastIndexOf(",") != -1 ? actuacion.lastIndexOf(",") : maximo;
 		actuacion = actuacion.slice(0, indice);
 		// 5. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Confirma",
@@ -481,7 +482,7 @@ module.exports = {
 		if (indice == muchasGracias.length) indice--;
 		let imagenMuchasGracias = "/imagenes/8-Agregar/Muchas-gracias/" + muchasGracias[indice];
 		// 4. Render del formulario
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Agregar - Terminaste",

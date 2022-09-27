@@ -3,15 +3,15 @@
 <head>
 	<!-- Head -->
 	<% let titulo = informacion.titulo ? informacion.titulo: "Error" %>
-	<%- include('GN1-Head', {titulo}) %>
+	<%- include('CMP-1Head', {titulo}) %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Cartel.css">
 </head>
 <body>
-	<%- include('GN2-Header') %>
+	<%- include('CMP-2Header') %>
 	<main class="flex-row">
 		<%- include('CMP-ImagenDerecha', {url: '/imagenes/0-Base/ImagenDerecha.jpg'}) %>
 		<section id="cuerpo-y-footer">
-			<%- include('GN3-Footer') %>
+			<%- include('CMP-3Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<section id="tapar-el-fondo"></section>
 			<section id="cartel" class="<%- informacion.colorFondo ? informacion.colorFondo : '' %>">

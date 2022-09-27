@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%- include("GN1-Head") %>
+	<%- include('CMP-1Head') %>
 	<% if (tema == "usuario") { %><%- include("US0-1Head") %><% } %>
 	<% if (tema == "prod_agregar") { %><%- include("PA0-1Head") %><% } %>
 	<% if (tema == "rclv") { %><%- include("RCLV-1Head") %><% } %>
-	<% if (tema == "revisionEnts") { %><%- include("CMP-RV-Head") %><% } %>
-	<% if (tema == "revisionUs") { %><%- include("CMP-RV-Head") %><% } %>
+	<% if (tema.startsWith("revision")) { %><%- include("CMP-RV-Head") %><% } %>
 	<% if (tema == "productos") { %><%- include("0-Productos-Head") %><% } %>
 	<% if (tema == "miscelaneas") { %><%- include("MI-1Head") %><% } %>
 </head>
 <body>
-	<%- include("GN2-Header") %>
+	<%- include('CMP-2Header') %>
 	<main class="flex-row">
-		<%- include("CMP-ImagenDerecha", {url: "/imagenes/0-Base/ImagenDerecha.jpg"}) %>
+		<% if (tema.startsWith("revision")) { %><%- include('CMP-Cartel') %><% } %>
+		<section id="imagen-derecha"><img src="<%= avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= title ? title : '' %>"></section>
 		<section id="cuerpo-y-footer">
-			<%- include("GN3-Footer") %>
+			<%- include('CMP-3Footer') %>
 			<!--**************************** CUERPO ******************************-->
 			<% if (tema == "usuario") { %><%- include("US0-2Cuerpo") %><% } %>
 			<% if (tema == "prod_agregar") { %><%- include("PA0-2Cuerpo") %><% } %>
 			<% if (tema == "rclv") { %><%- include("RCLV-2Cuerpo") %><% } %>
-			<% if (tema == "revisionEnts") { %><%- include("RE0-2Cuerpo") %><% } %>
-			<% if (tema == "revisionUs" && codigo == "tableroControl") { %><%- include("RU0-Tablero-Control") %><% } %>
+			<% if (tema == "revisionEnts") { %><%- include("RE0-Cuerpo") %><% } %>
+			<% if (tema == "revisionUs") { %><%- include("RU0-Cuerpo") %><% } %>
 			<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
 			<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
-			<!--****************************** FIN *******************************-->
 		</section>
 	</main>
 </body>

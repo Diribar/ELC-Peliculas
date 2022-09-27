@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%- include('GN1-Head') %>
+	<%- include('CMP-1Head') %>
 	<%- include("CR0-1Head") %>
 	<%- tema == "prod_rud" ? include('PR0-1Head') : "" %>
 	<%- tema == "links_crud" ? include('LK1-Head') : "" %>
 </head>
 <body>
-	<%- include('GN2-Header') %>
+	<%- include('CMP-2Header') %>
 	<main class="flex-row">
 		<%- (tema == "prod_rud" && codigo == "detalle") ? include('CR0-2Cuerpo') : "" %>
 		<%- (tema == "prod_rud" && codigo == "edicion") ? include('PR2-Edicion-Avatar') : "" %>

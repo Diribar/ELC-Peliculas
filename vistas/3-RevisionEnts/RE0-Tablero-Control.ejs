@@ -59,8 +59,9 @@
 					<li>Están aprobados.</li>
 					<li>Tienen algún link cuya novedad es ajena a vos.</li>
 				</ol>
-			</div>				
-			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LK, url: "links"}) %>
+			</div>
+			<%- include("RE0-Registros", {titulo: "Productos con Links a Revisar", regs: productos.LR, url: "links"}) %>
+			<%- include("RE0-Registros", {titulo: "Productos sin Links", regs: productos.SL, url: "links"}) %>
 		</div>
 	</div>
 </section>

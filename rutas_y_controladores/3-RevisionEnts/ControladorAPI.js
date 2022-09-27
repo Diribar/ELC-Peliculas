@@ -83,13 +83,13 @@ module.exports = {
 		if (!prodEdic || condicion1 || condicion2) return res.json("false");
 		// Obtiene el producto original
 		let prodOrig, statusOrigAprob;
-		datos = [entidad, id, includes, edicAprob, prodEdic, campo];
+		let datos = [entidad, id, includes, edicAprob, prodEdic, campo];
 		[prodOrig, prodEdic, statusOrigAprob] = await obtieneProdOrig(...datos);
 		// Si la edición fue aprobada, actualiza el registro 'original' *******************
 		datos = {[campo]: prodEdic[campo]};
 		if (edicAprob) prodOrig = await actualizaOriginal(prodOrig, prodEdic, datos, userID);
 		// Actualizaciones en el USUARIO
-		accionesEnUsuario(req, prodOrig, prodEdic);
+		await accionesEnUsuario(req, prodOrig, prodEdic);
 		// Limpia la edición  y cambia el status del producto si corresponde
 		let [quedanCampos, , statusAprob] = await procesos.prodEdic_feedback(prodOrig, prodEdic);
 		// Actualiza en RCLVs el campo 'prods_aprob', si corresponde
@@ -240,7 +240,7 @@ module.exports = {
 		let linkOrig = {id: linkID};
 		if (edicAprob) linkOrig = await actualizaOriginal(linkOrig, linkEdic, campos, userID);
 		// Actualizaciones en el USUARIO
-		accionesEnUsuario(req, linkOrig, linkEdic);
+		await accionesEnUsuario(req, linkOrig, linkEdic);
 		// Limpia las ediciones
 		await linksEdic_LimpiarEdiciones(linkOrig);
 		// Actualiza si el producto tiene links gratuitos
@@ -255,7 +255,7 @@ let obtieneProdOrig = async (entidad, id, includes, edicAprob, prodEdic, campo) 
 	includes.push("status_registro");
 	let prodOrig = await BD_genericas.obtenerPorIdConInclude(entidad, id, includes);
 	// Guarda el dato de si el registro original está aprobado
-	statusOrigAprob = prodOrig.status_registro.aprobado;
+	let statusOrigAprob = prodOrig.status_registro.aprobado;
 	// Particularidades para el campo 'avatar'
 	if (campo == "avatar") prodEdic = accionesSiElCampoEsAvatar(edicAprob, prodOrig, prodEdic);
 	// Fin

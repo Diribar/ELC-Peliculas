@@ -17,17 +17,18 @@ module.exports = {
 		const ahora = compartidas.ahora();
 		// Productos y Ediciones
 		let productos;
-		productos = await procesos.tablero_obtenerProds(ahora, userID); //
-		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, userID); //
+		productos = await procesos.tablero_obtenerProds(ahora, userID);
+		productos.ED = await procesos.tablero_obtenerProdsConEdicAjena(ahora, userID);
 		// Obtener Links
-		productos.LK = await procesos.tablero_obtenerProdsConLink(ahora, userID); //
+		productos.LR = await procesos.tablero_obtenerProdsConLink(ahora, userID);
+		productos.SL = await procesos.tablero_obtenerProdsSinLink(ahora, userID);
 		productos = procesos.tablero_prod_ProcesarCampos(productos);
 		// RCLV
-		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, userID); //
+		let RCLVs = await procesos.tablero_obtenerRCLVs(ahora, userID);
 		RCLVs = procesos.tablero_RCLV_ProcesarCampos(RCLVs);
 		// Va a la vista
 		// return res.send([productos,RCLVs]);
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Revisión - Tablero de Entidades",
@@ -68,7 +69,7 @@ module.exports = {
 		);
 		// Va a la vista
 		//return res.send(prodOrig)
-		return res.render("CMP-RV-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
@@ -187,7 +188,7 @@ module.exports = {
 			// Variables
 			motivos = motivos.filter((m) => m.prod);
 			bloqueDer = await procesos.prodEdic_ficha(prodOrig, prodEdic);
-			vista = "CMP-RV-Estructura";
+			vista = "CMP-0Estructura";
 		}
 		// 5. Configurar el título de la vista
 		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
@@ -244,7 +245,7 @@ module.exports = {
 			apariciones_marianas = apariciones_marianas.filter((n) => n.ap_mar);
 		}
 		// 4. Render
-		return res.render("GN0-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			entidad: entidad,
@@ -304,7 +305,7 @@ module.exports = {
 		let camposARevisar = variables.camposRevisarLinks().map((n) => n.nombreDelCampo);
 		// Va a la vista
 		//return res.send(links)
-		return res.render("CMP-RV-Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo,
