@@ -82,23 +82,29 @@ module.exports = {
 	datosDuros: async (campos, datos) => {
 		// Definir variables
 		let errores = {};
+		let cartelMusica = cartelCampoVacio + '. Si no tiene música, poné "No tiene música"';
+		let cartelActuacion =
+			cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"';
 		let camposPosibles = [
-			{nombre: "nombre_original", corto: 3, largo: 50},
-			{nombre: "nombre_castellano", corto: 3, largo: 50},
-			{nombre: "direccion", corto: 3, largo: 100},
-			{nombre: "guion", corto: 3, largo: 100},
-			{nombre: "produccion", corto: 3, largo: 100},
-			{nombre: "sinopsis", corto: 15, largo: 900},
+			{nombre: "nombre_original", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 50},
+			{nombre: "nombre_castellano", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 50},
+			{nombre: "direccion", idioma: "basico", cartel: cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "guion", idioma: "basico", cartel: cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "musica", idioma: "basico", cartel: cartelMusica, corto: 3, largo: 100},
+			{nombre: "produccion", idioma: "medio", cartel: cartelCampoVacio, corto: 3, largo: 100},
+			{nombre: "actuacion", idioma: "medio", cartel: cartelActuacion, corto: 3, largo: 500},
+			{nombre: "sinopsis", idioma: "amplio", cartel: cartelCampoVacio, corto: 15, largo: 900},
 		];
 		// ***** CAMPOS INDIVIDUALES ESTÁNDAR *******
 		for (let campo of camposPosibles) {
 			let nombre = campo.nombre;
+			let idioma = campo.idioma;
 			if (campos.includes(nombre))
 				errores[nombre] = !datos[nombre]
-					? cartelCampoVacio
+					? campo.cartel
 					: longitud(datos[nombre], campo.corto, campo.largo)
 					? longitud(datos[nombre], campo.corto, campo.largo)
-					: castellanoAmplio(datos[nombre])
+					: castellano[idioma](datos[nombre])
 					? cartelCastellano
 					: inicialMayuscula(datos[nombre])
 					? cartelMayuscula
@@ -142,22 +148,6 @@ module.exports = {
 		if (campos.includes("idioma_original_id"))
 			errores.idioma_original_id = !datos.idioma_original_id ? cartelCampoVacio : "";
 		// Personas
-		if (campos.includes("musica"))
-			errores.musica = !datos.musica
-				? cartelCampoVacio + '. Si no tiene música, poné "No tiene música"'
-				: longitud(datos.musica, 3, 100)
-				? longitud(datos.musica, 3, 100)
-				: "";
-		if (campos.includes("actuacion"))
-			errores.actuacion = !datos.actuacion
-				? cartelCampoVacio + '. Si no tiene actuacion (ej. un Documental), poné "No tiene actuacion"'
-				: longitud(datos.actuacion, 3, 500)
-				? longitud(datos.actuacion, 3, 500)
-				: castellanoIntermedio(datos.actuacion)
-				? cartelCastellano
-				: inicialMayuscula(datos.actuacion)
-				? cartelMayuscula
-				: "";
 		if (campos.includes("avatar"))
 			errores.avatar = !datos.avatar
 				? "Necesitamos que agregues una imagen"
@@ -171,10 +161,10 @@ module.exports = {
 			!errores.nombre_original &&
 			datos.ano_estreno &&
 			!errores.ano_estreno &&
-			datos.entidad
+			datos.entidad &&
+			(await BD_especificas.validarRepetidos(["nombre_original", "ano_estreno"], datos))
 		)
-			if (await BD_especificas.validarRepetidos(["nombre_original", "ano_estreno"], datos))
-				errores.nombre_original = cartelRepetido(datos);
+			errores.nombre_original = cartelRepetido(datos);
 		// Nombre Castellano y Año de Estreno
 		if (
 			datos.nombre_castellano &&
@@ -190,14 +180,6 @@ module.exports = {
 			if (datos.ano_estreno > datos.ano_fin)
 				errores.ano_estreno = "El año de estreno debe ser menor o igual que el año de finalización";
 		}
-		// Letras válidas castellano intermedio
-		if (!errores.produccion && datos.produccion && castellanoIntermedio(datos.produccion))
-			errores.produccion = cartelCastellano;
-		// Letras válidas castellano reducido
-		camposPosibles = ["direccion", "guion", "musica"];
-		for (let campo of camposPosibles)
-			if (!errores[campo] && datos[campo] && castellanoReducido(datos[campo]))
-				errores[campo] = cartelCastellano;
 
 		// ***** RESUMEN *******
 		errores.hay = Object.values(errores).some((n) => !!n);
@@ -295,18 +277,20 @@ let cartelRepetido = (datos) => {
 		" ya se encuentra en nuestra base de datos"
 	);
 };
-let castellanoAmplio = (dato) => {
-	let formato = /^[a-záéíóúüñ ,.&$:;…"°'¿?¡!+/()\d\r\n\-]+$/i;
-	// Original:  /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&$:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
-	return !formato.test(dato);
-};
-let castellanoIntermedio = (dato) => {
-	let formato = /^[a-záéíóúüñ ,.'"()\d\-]+$/i;
-	return !formato.test(dato);
-};
-let castellanoReducido = (dato) => {
-	let formato = /^[a-záéíóúüñ -,']+$/i;
-	return !formato.test(dato);
+let castellano = {
+	amplio: (dato) => {
+		let formato = /^[a-záéíóúüñ ,.&$:;…"°'¿?¡!+/()\d\r\n\-]+$/i;
+		// Original:  /^[¡¿A-ZÁÉÍÓÚÜÑ"\d][A-ZÁÉÍÓÚÜÑa-záéíóúüñ ,.&$:;…"°'¿?¡!+-/()\d\r\n\#]+$/;
+		return !formato.test(dato);
+	},
+	medio: (dato) => {
+		let formato = /^[a-záéíóúüñ ,.'"()\d\-]+$/i;
+		return !formato.test(dato);
+	},
+	basico: (dato) => {
+		let formato = /^[a-záéíóúüñ -,']+$/i;
+		return !formato.test(dato);
+	},
 };
 let inicialMayuscula = (dato) => {
 	let formato = /^[¡¿A-ZÁÉÍÓÚÜÑ"\d]/;
