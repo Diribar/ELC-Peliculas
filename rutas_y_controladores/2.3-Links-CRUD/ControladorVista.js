@@ -54,7 +54,7 @@ module.exports = {
 			);
 		// Va a la vista
 		//return res.send(links);
-		return res.render("CR0-0Estructura", {
+		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			entidad: prodEntidad,
@@ -67,6 +67,7 @@ module.exports = {
 			links_tipos: linksTipos,
 			vista: req.baseUrl + req.path,
 			avatar,
+			title: producto.nombre_castellano,
 			calidades: [144, 240, 360, 480, 720, 1080],
 			motivos,
 		});

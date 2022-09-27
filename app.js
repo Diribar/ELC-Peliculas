@@ -49,9 +49,8 @@ app.listen(80, () => console.log("Servidor funcionando..."));
 app.set("view engine", "ejs"); // Terminación de los archivos de vista
 app.set("views", [
 	path.resolve(__dirname, "./vistas"),
-	path.resolve(__dirname, "./vistas/0-Generica"),
-	path.resolve(__dirname, "./vistas/0-Generica/menusHeader"),
 	path.resolve(__dirname, "./vistas/0-Compartido"),
+	path.resolve(__dirname, "./vistas/0-Compartido/menusHeader"),
 	path.resolve(__dirname, "./vistas/1-Usuarios"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD"),
 	path.resolve(__dirname, "./vistas/2.0-Familias-CRUD/Includes"),
@@ -67,7 +66,6 @@ app.set("views", [
 	path.resolve(__dirname, "./vistas/4-RevisionUs"),
 	path.resolve(__dirname, "./vistas/4-RevisionUs/Includes"),
 	path.resolve(__dirname, "./vistas/6-Productos"),
-	path.resolve(__dirname, "./vistas/9-Inicio"),
 	path.resolve(__dirname, "./vistas/9-Miscelaneas"),
 ]);
 
