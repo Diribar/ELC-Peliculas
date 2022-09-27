@@ -21,14 +21,13 @@
 		<!-- Vista Edición Producto -->
 		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion-Avatar') %>
 		<!-- Vista Detalle RCLV -->
-		<% } else if (tema == "rclv" && codigo == "detalle") { %><% let qqq %>
+		<% } else if (tema == "rclv" && codigo == "detalle") { %><%- include('RCLV-2Cuerpo') %>
 		<!-- Demás vistas -->
 		<% } else { %>
 			<section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
 			<section id="cuerpo-y-footer">
 				<%- include('CMP-3Footer') %>
 				<!--**************************** CUERPO ******************************-->
-				<% if (!tema) { %><%- include("MI-Inicio") %><% } %>
 				<% if (tema == "usuario") { %><%- include("US0-2Cuerpo") %><% } %>
 				<% if (tema == "prod_agregar") { %><%- include("PA0-2Cuerpo") %><% } %>
 				<% if (tema == "prod_rud" || tema == "links_crud") { %><%- include("CR0-2Cuerpo") %><% } %>
