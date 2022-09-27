@@ -329,6 +329,7 @@ module.exports = {
 		if (!datosPers) return res.redirect("/producto/agregar/datos-duros");
 		// 5. Preparar variables para la vista
 		let camposDP = await variables.camposDP(userID);
+		console.log(camposDP);
 		// 6. Render del formulario
 		return res.render("GN0-Estructura", {
 			tema,
