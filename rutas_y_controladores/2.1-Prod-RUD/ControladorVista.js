@@ -101,14 +101,9 @@ module.exports = {
 				{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
 				{titulo: "Sub-categoría", valor: comp.valorNombre(prodComb.subcategoria, "Sin datos")},
 			];
-			let RCLVs = (campo, titulo, RCLV_entidad, relacion) => {
-				if (prodComb[campo] != 1)
-					bloquesDerecha.push({
-						titulo,
-						RCLV_entidad,
-						valor: prodComb[relacion].nombre,
-						RCLV_id: prodComb[relacion].id,
-					});
+			let RCLVs = (campo, titulo, RCLV_entidad, rel) => {
+				let datos = {titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id};
+				if (prodComb[campo] != 1) bloquesDerecha.push(datos);
 				return;
 			};
 			RCLVs("personaje_id", "Personaje Histórico", "personajes", "personaje");
