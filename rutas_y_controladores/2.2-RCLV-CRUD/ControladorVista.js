@@ -47,7 +47,7 @@ module.exports = {
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
 		}
-		// 5. Render
+		// 5. Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -152,11 +152,59 @@ module.exports = {
 		const codigo = "detalle";
 		// 2. Variables
 		let entidad = req.query.entidad;
+		let RCLV_id = req.query.id;
 		let nombre = compartidas.obtenerEntidadNombre(entidad);
+		// Obtener RCLV con produtos
+		let includes = ["peliculas", "colecciones", "capitulos", "status_registro"];
+		includes.push("creado_por", "alta_analizada_por");
+		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
+		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
+		// Bloque Derecha
+		let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
+		let dia = diaDelAno.dia;
+		let mes = meses[diaDelAno.mes_id - 1];
+		let bloqueDerecha = [
+			{titulo: "Nombre", valor: RCLV.nombre},
+			{titulo: "Día del año", valor: dia + "/" + mes},
+		];
+		if (entidad == "personajes" && RCLV.categoria_id == "CFC")
+			bloqueDerecha.push(
+				{titulo: "Proceso Canoniz.", valor: compartidas.valorNombre(RCLV.proc_canoniz, "Ninguno")},
+				{titulo: "Rol en la Iglesia", valor: compartidas.valorNombre(RCLV.rol_iglesia, "Ninguno")},
+				{titulo: "Aparición Mariana", valor: compartidas.valorNombre(RCLV.ap_mar, "Ninguno")}
+			);
+		let fechas = [
+			RCLV.creado_en,
+			RCLV.alta_analizada_en,
+			RCLV.editado_en,
+			RCLV.edic_analizada_en,
+			RCLV.sugerido_en,
+		];
+		let ultimaActualizacion = compartidas.fechaTexto(new Date(Math.max(...fechas)));
+		let status = RCLV.status_registro.gr_creado
+			? "creado"
+			: RCLV.status_registro.aprobado
+			? "aprobado"
+			: "inactivo";
+		bloqueDerecha.push(
+			{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
+			{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
+			{titulo: "Última actualización", valor: ultimaActualizacion},
+			{titulo: "Status del registro", valor: RCLV.status_registro.nombre, status}
+		);
+		// 5. Ir a la vista
+		// return res.send(bloqueDerecha);
+		return res.send(RCLV);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Detalle de " + nombre,
+			bloqueDerecha,
 		});
 	},
+};
+
+// Funcion
+let valorNombreApellido = (valor) => {
+	return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
 };

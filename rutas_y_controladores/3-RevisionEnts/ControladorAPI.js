@@ -106,7 +106,7 @@ module.exports = {
 		let asociaciones = ["peliculas", "colecciones", "capitulos"];
 		// Campos en el Include
 		let includes = ["dia_del_ano"];
-		if (datos.entidad == "personajes") includes.push("proceso_canonizacion", "rol_iglesia");
+		if (datos.entidad == "personajes") includes.push("proc_canoniz", "rol_iglesia");
 		// Obtiene el RCLV_original
 		let RCLV_original = await BD_genericas.obtenerPorIdConInclude(datos.entidad, datos.id, [
 			...asociaciones,

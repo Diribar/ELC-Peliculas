@@ -1,8 +1,8 @@
 <!-- Uso compartido -->
 <script src="/FE-javascript/0-Compartido/AyudaTitulo.js"></script>
+<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RCLV.css">
 
 <% if (codigo == "agregar" || codigo == "edicion") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/RCLV.css">
 	<script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 	<script src="/FE-javascript/2.0-CRUD/2-RCLV.js"></script>
 <% } %> 
@@ -11,4 +11,7 @@
 <% if (codigo == "edicion") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Cartel.css">
 	<script src="/FE-javascript/0-Compartido/Timer.js"></script>
+<% } %>
+<% if (codigo == "detalle") { %>
+	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/2-RCLV-Detalle.css">	
 <% } %>

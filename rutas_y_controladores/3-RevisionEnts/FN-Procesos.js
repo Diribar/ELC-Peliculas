@@ -536,8 +536,8 @@ let RCLV_valorVinculo = (RCLV, campo) => {
 			? RCLV.dia_del_ano.dia + "/" + meses[RCLV.dia_del_ano.mes_id - 1]
 			: RCLV.dia_del_ano
 		: campo == "proceso_id"
-		? RCLV.proceso_canonizacion
-			? RCLV.proceso_canonizacion.nombre
+		? RCLV.proc_canoniz
+			? RCLV.proc_canoniz.nombre
 			: ""
 		: campo == "rol_iglesia_id"
 		? RCLV.rol_iglesia

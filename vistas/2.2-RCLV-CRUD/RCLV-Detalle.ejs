@@ -1,0 +1,25 @@
+<div id="cuerpo">
+	<section id="tituloConAyuda">
+		<h1 id="titulo"><%= titulo %></h1>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+		<ul class="mensajeAyuda ocultar" type="dots">
+			<li>.</li>
+		</ul>	
+	</section>
+	<section id="datosLargos">
+		<div id="contenido">
+		</div>
+		<!-- Comandos -->
+		<div id="comandos">
+		</div>
+		<!-- Botones -->
+	</section>
+</div>
+<section id="datosBreves">
+	<% for (bloque of bloqueDerecha) { %>
+		<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status_<%= bloque.status %>"<% } %>>
+			<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+		</p>
+	<% } %>
+</section>

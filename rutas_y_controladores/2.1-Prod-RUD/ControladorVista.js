@@ -2,7 +2,7 @@
 // ************ Requires *************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
 const BD_especificas = require("../../funciones/2-BD/Especificas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const procesos = require("./FN-Procesos");
 const validar = require("./FN-Validar");
@@ -22,38 +22,34 @@ module.exports = {
 		// 3. Obtiene el producto 'Original' y 'Editado'
 		let [prodOrig, prodEdic] = await procesos.obtenerVersionesDelProducto(entidad, prodID, userID);
 		// 4. Obtiene el avatar y la versión más completa posible del producto
-		let avatar = compartidas.nombreAvatar(prodOrig, prodEdic);
-		let prodCombinado = {...prodOrig, ...prodEdic, avatar, id: prodID};
+		let avatar = comp.nombreAvatar(prodOrig, prodEdic);
+		let prodComb = {...prodOrig, ...prodEdic, avatar, id: prodID};
 		// 5. Configura el título de la vista
-		let prodNombre = compartidas.obtenerEntidadNombre(entidad);
+		let prodNombre = comp.obtenerEntidadNombre(entidad);
 		let titulo =
 			(codigo == "detalle" ? "Detalle" : codigo == "edicion" ? "Edición" : "") +
 			" de" +
 			(entidad == "capitulos" ? "l " : " la ") +
 			prodNombre;
 		// 6. Obtiene los países
-		let paises = prodOrig.paises_id
-			? await compartidas.paises_idToNombre(prodOrig.paises_id)
-			: "";
+		let paises = prodOrig.paises_id ? await comp.paises_idToNombre(prodOrig.paises_id) : "";
 		// 7. Info para la vista de Edicion o Detalle
 		let bloquesIzquierda, bloquesDerecha;
 		let camposDD1, camposDD2, camposDD3, camposDP, BD_paises, BD_idiomas;
 		if (codigo == "edicion") {
 			// Obtiene los datos de session/cookie y luego los elimina
-			let edicion =
-				req.session.edicProd &&
-				req.session.edicProd.entidad == entidad &&
-				req.session.edicProd.id == prodID
-					? req.session.edicProd
-					: req.cookies.edicProd &&
-					  req.cookies.edicProd.entidad == entidad &&
-					  req.cookies.edicProd.id == prodID
-					? req.cookies.edicProd
-					: "";
+			let verificarReq = (dato) => {
+				return req[dato] && req[dato].entidad == entidad && req[dato].id == prodID;
+			};
+			let edicion = verificarReq("session.edicProd")
+				? req.session.edicProd
+				: verificarReq("cookies.edicProd")
+				? req.cookies.edicProd
+				: "";
 			req.session.edicProd = "";
 			res.clearCookie("edicProd");
-			// Actualiza el producto prodCombinado
-			prodCombinado = {...prodCombinado, ...edicion};
+			// Actualiza el producto prodComb
+			prodComb = {...prodComb, ...edicion};
 			// Variables de 'Edición'
 			let camposDD = variables
 				.camposDD()
@@ -67,80 +63,61 @@ module.exports = {
 			camposDP = await variables.camposDP(userID).then((n) => n.filter((m) => m.grupo != "calificala"));
 		} else {
 			// Variables de 'Detalle'
-			let statusResumido = prodCombinado.status_registro.gr_creado
+			let statusResumido = prodComb.status_registro.gr_creado
 				? {id: 1, nombre: "Pend. Aprobac."}
-				: prodCombinado.status_registro.aprobado
+				: prodComb.status_registro.aprobado
 				? {id: 2, nombre: "Aprobado"}
 				: {id: 3, nombre: "Inactivado"};
 			let bloque1 = [
 				{titulo: "País" + (paises.includes(",") ? "es" : ""), valor: paises ? paises : "Sin datos"},
 				{
 					titulo: "Idioma original",
-					valor: prodCombinado.idioma_original ? prodCombinado.idioma_original.nombre : "Sin datos",
+					valor: prodComb.idioma_original ? prodComb.idioma_original.nombre : "Sin datos",
 				},
 				{
 					titulo: "En castellano",
-					valor: prodCombinado.en_castellano ? prodCombinado.en_castellano.productos : "Sin datos",
+					valor: prodComb.en_castellano ? prodComb.en_castellano.productos : "Sin datos",
 				},
 				{
 					titulo: "Es a color",
-					valor: prodCombinado.en_color ? prodCombinado.en_color.productos : "Sin datos",
+					valor: prodComb.en_color ? prodComb.en_color.productos : "Sin datos",
 				},
 			];
 			let bloque2 = [
-				{titulo: "Dirección", valor: prodCombinado.direccion ? prodCombinado.direccion : "Sin datos"},
-				{titulo: "Guión", valor: prodCombinado.guion ? prodCombinado.guion : "Sin datos"},
-				{titulo: "Música", valor: prodCombinado.musica ? prodCombinado.musica : "Sin datos"},
+				{titulo: "Dirección", valor: prodComb.direccion ? prodComb.direccion : "Sin datos"},
+				{titulo: "Guión", valor: prodComb.guion ? prodComb.guion : "Sin datos"},
+				{titulo: "Música", valor: prodComb.musica ? prodComb.musica : "Sin datos"},
 				{
 					titulo: "Producción",
-					valor: prodCombinado.produccion ? prodCombinado.produccion : "Sin datos",
+					valor: prodComb.produccion ? prodComb.produccion : "Sin datos",
 				},
 			];
 			let bloque3 = [
-				{titulo: "Actuación", valor: prodCombinado.actuacion ? prodCombinado.actuacion : "Sin datos"},
+				{titulo: "Actuación", valor: prodComb.actuacion ? prodComb.actuacion : "Sin datos"},
 			];
 			bloquesIzquierda = [bloque1, bloque2, bloque3];
 			bloquesDerecha = [
-				{
-					titulo: "Público Sugerido",
-					valor: prodCombinado.publico_sugerido
-						? prodCombinado.publico_sugerido.nombre
-						: "Sin datos",
-				},
-				{
-					titulo: "Categoría",
-					valor: prodCombinado.categoria ? prodCombinado.categoria.nombre : "Sin datos",
-				},
-				{
-					titulo: "Sub-categoría",
-					valor: prodCombinado.subcategoria ? prodCombinado.subcategoria.nombre : "Sin datos",
-				},
+				{titulo: "Público Sugerido", valor: comp.valorNombre(prodComb.publico_sugerido, "Sin datos")},
+				{titulo: "Categoría", valor: comp.valorNombre(prodComb.categoria, "Sin datos")},
+				{titulo: "Sub-categoría", valor: comp.valorNombre(prodComb.subcategoria, "Sin datos")},
 			];
-			if (prodCombinado.personaje_id != 1)
-				bloquesDerecha.push({
-					titulo: "Personaje Histórico",
-					valor: prodCombinado.personaje.nombre,
-					RCLV_entidad: "personajes",
-					RCLV_id: prodCombinado.personaje.id,
-				});
-			if (prodCombinado.hecho_id != 1)
-				bloquesDerecha.push({
-					titulo: "Hecho Histórico",
-					valor: prodCombinado.hecho.nombre,
-					RCLV_entidad: "hechos",
-					RCLV_id: prodCombinado.hecho.id,
-				});
-			if (prodCombinado.valor_id != 1)
-				bloquesDerecha.push({
-					titulo: "Valor",
-					valor: prodCombinado.valor.nombre,
-					RCLV_entidad: "valores",
-					RCLV_id: prodCombinado.valor.id,
-				});
-			bloquesDerecha.push({titulo: "Año de estreno", valor: prodCombinado.ano_estreno});
+			let RCLVs = (campo, titulo, RCLV_entidad, relacion) => {
+				if (prodComb[campo] != 1)
+					bloquesDerecha.push({
+						titulo,
+						RCLV_entidad,
+						valor: prodComb[relacion].nombre,
+						RCLV_id: prodComb[relacion].id,
+					});
+				return;
+			};
+			RCLVs("personaje_id", "Personaje Histórico", "personajes", "personaje");
+			RCLVs("hecho_id", "Hecho Histórico", "hechos", "hecho");
+			RCLVs("valor_id", "Valor", "valores", "valor");
+			bloquesDerecha.push({titulo: "Año de estreno", valor: prodComb.ano_estreno});
 			if (entidad == "colecciones")
-				bloquesDerecha.push({titulo: "Año de fin", valor: prodCombinado.ano_fin});
-			else bloquesDerecha.push({titulo: "Duracion", valor: prodCombinado.duracion + " min."});
+				bloquesDerecha.push({titulo: "Año de fin", valor: prodComb.ano_fin});
+			else bloquesDerecha.push({titulo: "Duracion", valor: prodComb.duracion + " min."});
 			bloquesDerecha.push({
 				titulo: "Status",
 				valor: statusResumido.nombre,
@@ -150,9 +127,9 @@ module.exports = {
 		}
 		// Obtener datos para la vista
 		if (entidad == "capitulos")
-			prodCombinado.capitulos = await BD_especificas.obtenerCapitulos(
-				prodCombinado.coleccion_id,
-				prodCombinado.temporada
+			prodComb.capitulos = await BD_especificas.obtenerCapitulos(
+				prodComb.coleccion_id,
+				prodComb.temporada
 			);
 		// Va a la vista
 		//return res.send(bloquesDerecha)
@@ -162,9 +139,9 @@ module.exports = {
 			titulo,
 			entidad,
 			prodID,
-			producto: prodCombinado,
+			producto: prodComb,
 			avatar,
-			title: prodCombinado.nombre_castellano,
+			title: prodComb.nombre_castellano,
 			bloquesIzquierda,
 			bloquesDerecha,
 			camposDD1,
@@ -190,23 +167,23 @@ module.exports = {
 		// Obtener el 'avatar' --> prioridades: data-entry, edición, original
 		let avatar_archivo = req.file ? req.file.filename : "";
 		// Unir 'Edición' y 'Original'
-		let prodCombinado = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
+		let prodComb = {...prodOrig, ...prodEdic, ...req.body, avatar_archivo, id: prodID};
 		// Averiguar si hay errores de validación
-		let errores = await validar.consolidado("", {...prodCombinado, entidad});
+		let errores = await validar.consolidado("", {...prodComb, entidad});
 		if (errores.hay) {
-			if (req.file) compartidas.borraUnArchivo(req.file.destination, req.file.filename);
+			if (req.file) comp.borraUnArchivo(req.file.destination, req.file.filename);
 		} else {
 			// Actualizar los archivos avatar
 			if (avatar_archivo) {
 				// Mover el archivo actual a su ubicación para ser revisado
-				compartidas.mueveUnArchivoImagen(prodCombinado.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
+				comp.mueveUnArchivoImagen(prodComb.avatar_archivo, "9-Provisorio", "4-ProdsRevisar");
 				// Eliminar el anterior archivo de imagen
 				if (prodEdic.avatar)
-					compartidas.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
+					comp.borraUnArchivo("./publico/imagenes/4-ProdsRevisar/", prodEdic.avatar);
 			}
 			// Actualiza la edición
 			let edicion = {...req.body, avatar_archivo};
-			await compartidas.guardar_edicion(entidad, "prods_edicion", prodOrig, edicion, userID);
+			await comp.guardar_edicion(entidad, "prods_edicion", prodOrig, edicion, userID);
 		}
 		return res.redirect("/producto/edicion/?entidad=" + entidad + "&id=" + prodID);
 	},

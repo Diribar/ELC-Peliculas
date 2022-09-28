@@ -18,11 +18,10 @@
 	<main class="flex-row">
 		<!-- Cartel -->
 		<% if (locals.cartel) { %><%- include('CMP-Cartel') %><% } %>
-		<!-- Vista Edición Producto -->
-		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion-Avatar') %>
-		<!-- Vista Detalle RCLV -->
+		<!-- Vistas fuera de estándar -->
+		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion') %>
 		<% } else if (tema == "rclv" && codigo == "detalle") { %><%- include('RCLV-2Cuerpo') %>
-		<!-- Demás vistas -->
+		<!-- Vistas estándar -->
 		<% } else { %>
 			<section id="imagen-derecha"><img src="<%= locals.avatar ? avatar : '/imagenes/0-Base/ImagenDerecha.jpg' %>" title="<%= locals.title ? title : '' %>"></section>
 			<section id="cuerpo-y-footer">

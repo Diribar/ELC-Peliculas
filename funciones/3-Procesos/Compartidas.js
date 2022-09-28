@@ -387,6 +387,9 @@ module.exports = {
 		}
 		return resultado;
 	},
+	valorNombre: (valor,alternativa) => {
+		return valor ? valor.nombre : alternativa;
+	},	
 };
 
 // Funciones
