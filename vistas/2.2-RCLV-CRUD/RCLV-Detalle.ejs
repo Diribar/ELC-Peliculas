@@ -17,9 +17,9 @@
 	</section>
 </div>
 <section id="datosBreves">
-	<% for (bloque of bloqueDerecha) { %>
-		<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status_<%= bloque.status %>"<% } %>>
-			<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
+	<% for (campo of resumen) { %>
+		<p <% if (campo.titulo.startsWith("Status")) { %>class="status" id="status_<%= campo.status %>"<% } %>>
+			<strong><%= campo.titulo %>:</strong> <span><%= campo.valor %></span>
 		</p>
 	<% } %>
 </section>
