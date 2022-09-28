@@ -1,18 +1,21 @@
-<!-- Uso Compartido -->
+<!-- Flechas -->
+<script src="/FE-javascript/2.0-CRUD/0-RUD-Flechas.js"></script>
+<!-- Colecciones y Capítulos -->
+<% if (entidad != "peliculas") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarColCap.js"></script><% } %>
+<!-- Capítulos -->
+<% if (entidad == "capitulos") { %><script src="/FE-javascript/2.0-CRUD/0-RUD-AlternarTempCap.js"></script><% } %>
+<!-- AyudaDatos -->
 <script src="/FE-javascript/0-Compartido/AyudaDatos.js"></script>
 
-<!-- Detalle -->
+<!-- Detalle para Producto -->
 <% if (codigo == "detalle") { %>
-	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/1-Prod-1Detalles.css">
+	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/1-Prod-1Detalle.css">
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="/FE-javascript/2.0-CRUD/1-ProdDetalle-Grafico.js"></script>
 <% } %>
 
 <!-- Edición -->
 <% if (codigo == "edicion") { %>
-	<!-- Compartido -->
-	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Cartel.css">
-	<script src="/FE-javascript/0-Compartido/Timer.js"></script>
 	<!-- Particular -->
 	<link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/1-Prod-2Edicion.css">
 	<script src="/FE-javascript/2.0-CRUD/1-ProdEdic-InputError.js"></script>

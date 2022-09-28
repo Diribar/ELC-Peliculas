@@ -1,45 +1,45 @@
 <!-- Tipo de Producto, Temporada, Capítulo, Colección -->
-<%- include("CR0-2Encabezado") %>
+<%- include("CR-Encabezado") %>
 <!-- Datos -->
 <section id="datos">
 	<!-- Datos generales -->
 	<div id="primeraColumna">
 		<h3>Datos generales</h3>
 		<!-- Primeros campos -->
-		<% for (let campo of camposDD1) { %><%- include("PR2-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD1) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- País -->
-		<%- include("PR2-Pais") %>
+		<%- include("PR-Pais") %>
 		<!-- Idioma original -->
-		<%- include("PR2-Idioma", {idioma_id: producto.idioma_original_id}) %>
+		<%- include("PR-Idioma", {idioma_id: producto.idioma_original_id}) %>
 		<!--Existe una versión en castellano-->
-		<%- include("PR2-Select", {nombreDelCampo: "en_castellano_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_castellano_id", nombre: "productos"}) %>
 		<!--Es a Color-->
-		<%- include("PR2-Select", {nombreDelCampo: "en_color_id", nombre: "productos"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "en_color_id", nombre: "productos"}) %>
 		<!-- Producción -->
-		<% for (let campo of camposDD3) { %><%- include("PR2-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD3) { %><%- include("PR-Input", {campo}) %><% } %>
 		<h3>Datos Subjetivos</h3>
 		<!--Categoría-->
-		<%- include("PR2-Select", {nombreDelCampo: "categoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "categoria_id", nombre: "nombre"}) %>
 		<!--Sub-categoría-->
-		<%- include("PR2-Select", {nombreDelCampo: "subcategoria_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "subcategoria_id", nombre: "nombre"}) %>
 		<!--Público sugerido-->
-		<%- include("PR2-Select", {nombreDelCampo: "publico_sugerido_id", nombre: "nombre"}) %>
+		<%- include("PR-Select", {nombreDelCampo: "publico_sugerido_id", nombre: "nombre"}) %>
 	</div>
 	<div id="segundaColumna">
 		<!-- Personas -->
 		<h3>Personas</h3>
-		<% for (let campo of camposDD2) { %><%- include("PR2-Input", {campo}) %><% } %>
+		<% for (let campo of camposDD2) { %><%- include("PR-Input", {campo}) %><% } %>
 		<!-- Relación con la vida -->
 		<h3>Relación con la vida</h3>
 		<!--Personaje histórico-->
-		<%- include("PR2-RCLV", {nombreDelCampo: "personaje_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "personaje_id", nombre: "nombre"}) %>
 		<!--Hecho histórico-->
-		<%- include("PR2-RCLV", {nombreDelCampo: "hecho_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "hecho_id", nombre: "nombre"}) %>
 		<!--Valor-->
-		<%- include("PR2-RCLV", {nombreDelCampo: "valor_id", nombre: "nombre"}) %>
+		<%- include("PR-RCLV", {nombreDelCampo: "valor_id", nombre: "nombre"}) %>
 		<h3>Sinopsis</h3>
 		<!--Sinopsis-->
-		<%- include("PR2-Sinopsis") %>
+		<%- include("PR-Sinopsis") %>
 	</div>
 </section>
 <!-- Comandos -->
@@ -71,4 +71,4 @@
 	</div>
 </section>
 <!-- Botones -->
-<%- include("CR0-2Flechas") %> 
+<%- include("CR-Flechas") %> 

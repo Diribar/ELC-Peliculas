@@ -147,7 +147,7 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
-			cartel: true,
+			cartel: codigo == "edicion",
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {

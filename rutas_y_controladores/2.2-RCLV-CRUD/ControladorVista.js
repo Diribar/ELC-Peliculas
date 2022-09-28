@@ -9,7 +9,7 @@ module.exports = {
 	altaEdicForm: async (req, res) => {
 		// Puede venir de agregarProd o edicionProd
 		// 1. Tema y Código
-		const tema = "rclv";
+		const tema = "rclv_crud";
 		let url = req.url.slice(1);
 		const codigo = url.slice(0, url.indexOf("/"));
 		// 2. Variables
@@ -148,7 +148,7 @@ module.exports = {
 
 	detalle: async (req, res) => {
 		// 1. Tema y Código
-		const tema = "rclv";
+		const tema = "rclv_crud";
 		const codigo = "detalle";
 		// 2. Variables
 		let entidad = req.query.entidad;
@@ -198,14 +198,15 @@ let funcionResumen = async (RCLV) => {
 	];
 	if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
 		resumen.push(
-			{titulo: "Proceso Canoniz.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
+			{titulo: "Proceso Canonizac.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
 			{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
 			{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
 		);
 	resumen.push(
 		{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
+		{titulo: "Registro creado en", valor: comp.fechaTexto(RCLV.creado_en)},
 		{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
-		{titulo: "Última actualización", valor: ultimaActualizacion},
+		{titulo: "Última actualizac.", valor: ultimaActualizacion},
 		{titulo: "Status del registro", valor: RCLV.status_registro.nombre, status}
 	);
 	// Fin
