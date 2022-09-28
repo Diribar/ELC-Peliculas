@@ -236,7 +236,7 @@ module.exports = {
 	borraUnArchivo: function (ruta, archivo) {
 		// Arma el nombre del archivo
 		let rutaArchivo = path.join(ruta, archivo);
-		
+
 		// Se fija si encuentra el archivo
 		if (this.averiguaSiExisteUnArchivo(rutaArchivo)) {
 			// Borra el archivo
@@ -387,9 +387,9 @@ module.exports = {
 		}
 		return resultado;
 	},
-	valorNombre: (valor,alternativa) => {
+	valorNombre: (valor, alternativa) => {
 		return valor ? valor.nombre : alternativa;
-	},	
+	},
 };
 
 // Funciones
