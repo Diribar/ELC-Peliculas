@@ -3,13 +3,13 @@
 <link rel="stylesheet" href="/formatoDeVistas/2.0-CRUD/0-RUD.css">
 
 <!-- Cartel + Timer -->
-<% if (codigo == "edicion" || tema == "links_crud) { %>
+<% if (codigo == "edicion" || tema == "links_crud") { %>
 	<link rel="stylesheet" href="/formatoDeVistas/0-Compartido/Cartel.css">
 	<script src="/FE-javascript/0-Compartido/Timer.js"></script>
 <% } %>
 
 <!-- Personalizados -->
 <% if (tema == "prod_rud") { %><%- include('PR-1Head') %>
-<% } else if (tema == "rclv_rud") { %><%- include("RCLV-1Head") %>
+<% } else if (tema == "rclv_crud") { %><%- include("RCLV-1Head") %>
 <% } else if (tema == "links_crud") { %><%- include('LK-1Head') %>
 <% } %>
