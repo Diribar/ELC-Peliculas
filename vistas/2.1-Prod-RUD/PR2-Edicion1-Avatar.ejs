@@ -1,0 +1,21 @@
+<section id="imagen" class="input-error">
+	<!-- Imagen que se ve en la vista -->
+	<label for="inputImagen" id="avatarVisible">
+		<img src="<%= avatar %>" class="pointer">
+	</label>
+	<input name="avatar" type="file" id="inputImagen" accept="image/*" class="input ocultar">
+	<!-- Almacenaje de la imagen nueva -->
+	<label id="avatarNuevo" class="ocultar">
+		<img src="<%= avatar %>" class="ocultar">
+	</label>
+	<!-- Ayuda -->
+	<i class="fa-solid fa-circle-question"></i>
+	<ul type="dots" class="mensajeAyuda ocultar">
+		<li>Haciendo <em>click</em> en la imagen podés reemplazarla por otra.</li>
+		<li>La extensión de la imagen debe ser <em><strong>JPG</strong></em> o <em><strong>PNG</strong></em></li>
+	</ul>		
+	<!-- Errores/OK -->
+	<%- include("CMP-errorOK_oculto", {display: true}) %>
+	<!-- Aviso de cambio en el data-entry -->
+	<i class="fa-solid fa-arrow-right-long ocultar"></i>
+</section>

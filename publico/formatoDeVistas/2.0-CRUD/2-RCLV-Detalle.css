@@ -1,0 +1,37 @@
+/* Cuerpo */
+#cuerpo {flex-direction: row;}
+
+/* Datos */
+#datos {display: flex; flex-direction: column; flex-grow: 1;}
+
+/* Datos Largos */
+#datosLargos {display: flex; flex-direction: column; justify-content: space-around; padding: 20px 40px 20px; flex-grow: 1;}
+#datosLargos #contenido .datosAdicionales {margin-top: 10px;}
+
+/* Sinopsis - General y Texto*/
+#datosLargos #contenido #sinopsis {border: var(--gris-oscuro) 5px solid; box-shadow: 0px 0px 10px rgb(100 100 100); position: relative;}
+#datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
+#datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px; overflow-y: scroll;}
+/* Sinopsis - Ayuda */
+#sinopsis .fa-circle-question, #sinopsis .mensajeAyuda, #sinopsis .mensajeAyuda::before {position: absolute; z-index: 2;}
+#sinopsis .fa-circle-question {top: 25px; right: -25px; transform: translateY(-50%);}
+#sinopsis .mensajeAyuda {top: 25px; right: -32px; width: 200px; transform: translate(100%, -50%);}
+#sinopsis .mensajeAyuda::before {left: -10px; top: 50%; transform: translateY(-50%);}
+#sinopsis .mensajeAyuda::before {border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent; content: "";}
+/* Sinopsis - Ocultar la 'side-bar' */
+#datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
+#datosLargos #contenido #sinopsis nav {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}
+
+/* Datos Breves */
+#datosBreves {display: flex; flex-direction: column; justify-content: center; width: max-content; }
+#datosBreves #calificacionesGrafico {width:180px;}
+#datosBreves #texto {margin-right: 15px;}
+#datosBreves #texto p {margin-top: 10px;}
+#datosBreves #texto p.status span {padding: 2px 5px; margin-left: 2px; border-radius: 5px; font-weight: bold;}
+#datosBreves #texto p#status1 span {background-color: var(--naranja-oscuro); color: snow;}
+#datosBreves #texto p#status2 span {background-color: var(--verde-oscuro); color: snow;}
+#datosBreves #texto p#status3 span {background-color: var(--rojo-oscuro); color: snow;}
+
+
+/* Comandos - Particularidades */
+#cuerpo #comandos i {margin: 0 15px;}

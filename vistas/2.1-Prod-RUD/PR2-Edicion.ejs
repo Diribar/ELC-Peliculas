@@ -1,0 +1,23 @@
+<form method="POST" enctype="multipart/form-data">
+	<%- include("PR2-Edicion1-Avatar") %> 
+	<section id="cuerpo-y-footer">
+		<%- include('CMP-3Footer') %>
+		<!--**************************** CUERPO ************************-->
+		<div id="cuerpo">
+			<%- include('CMP-TimerContador') %>
+			<div id="tituloConAyuda">
+				<h1 id="titulo"><%= titulo %></h1>
+				<!-- Ayuda -->
+				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
+				<ul class="mensajeAyuda ocultar" type="dots">
+					<li>Al terminar, es importante que vayas a la vista <em>Detalle de Producto</em> para liberarlo y ver el resultado de tu edición.</li>
+					<li>Sólo se pueden eliminar ediciones de productos aprobados.</li>
+				</ul>	
+			</div>
+			<div id="edicionForm">
+				<%- include('PR2-Edicion2-Datos') %>
+			</div>
+		</div>
+		<!--****************************** FIN *************************-->
+	</section>
+</form>

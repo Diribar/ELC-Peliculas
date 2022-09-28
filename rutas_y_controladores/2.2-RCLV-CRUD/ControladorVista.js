@@ -1,7 +1,7 @@
 "use strict";
 // ************ Requires ************
 const BD_genericas = require("../../funciones/2-BD/Genericas");
-const compartidas = require("../../funciones/3-Procesos/Compartidas");
+const comp = require("../../funciones/3-Procesos/Compartidas");
 const variables = require("../../funciones/3-Procesos/Variables");
 const validar = require("./FN-Validar");
 
@@ -20,7 +20,7 @@ module.exports = {
 			: req.cookies[entidad]
 			? req.cookies[entidad]
 			: {};
-		let nombre = compartidas.obtenerEntidadNombre(entidad);
+		let nombre = comp.obtenerEntidadNombre(entidad);
 		let titulo = (codigo == "agregar" ? "Agregar - " : "Edición - ") + nombre;
 		let tituloCuerpo =
 			(codigo == "agregar" ? "Agregá un " + nombre + " a" : "Editá el " + nombre + " de") +
@@ -47,7 +47,7 @@ module.exports = {
 				dataEntry.mes_id = dia_del_ano.mes_id;
 			}
 		}
-		// 5. Render
+		// 5. Ir a la vista
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
@@ -104,9 +104,9 @@ module.exports = {
 		const codigo = url.slice(0, url.indexOf("/"));
 		// Guardar los cambios del RCLV
 		if (codigo == "agregar") {
-			id = await compartidas.crear_registro(entidad, datos, userID);
+			id = await comp.crear_registro(entidad, datos, userID);
 			// Agregar el RCLV a DP/ED
-			let entidad_id = compartidas.obtenerEntidad_id(entidad);
+			let entidad_id = comp.obtenerEntidad_id(entidad);
 			if (origen == "DP") {
 				req.session.datosPers = req.session.datosPers ? req.session.datosPers : req.cookies.datosPers;
 				req.session.datosPers = {...req.session.datosPers, [entidad_id]: id};
@@ -122,8 +122,8 @@ module.exports = {
 			let RCLV_editado = datos;
 			// Obtener el mensaje de la tarea realizada
 			RCLV_original.creado_por_id == userID && RCLV_original.status_registro.creado // ¿Registro propio en status creado?
-				? await compartidas.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
-				: await compartidas.guardar_edicion(
+				? await comp.actualizar_registro(entidad, id, RCLV_editado) // Actualizar el registro original
+				: await comp.guardar_edicion(
 						entidad,
 						"rclvs_edicion",
 						RCLV_original,
@@ -152,11 +152,62 @@ module.exports = {
 		const codigo = "detalle";
 		// 2. Variables
 		let entidad = req.query.entidad;
-		let nombre = compartidas.obtenerEntidadNombre(entidad);
+		let RCLV_id = req.query.id;
+		let nombre = comp.obtenerEntidadNombre(entidad);
+		// Obtener RCLV con produtos
+		let includes = ["peliculas", "colecciones", "capitulos", "status_registro"];
+		includes.push("creado_por", "alta_analizada_por");
+		if (entidad == "personajes") includes.push("ap_mar", "proc_canoniz", "rol_iglesia");
+		let RCLV = await BD_genericas.obtenerPorIdConInclude(entidad, RCLV_id, includes);
+		// Bloque Derecha
+		let resumen = await funcionResumen({...RCLV,entidad});
+		// 5. Ir a la vista
+		// return res.send(resumen);
+		// return res.send(RCLV);
 		return res.render("CMP-0Estructura", {
 			tema,
 			codigo,
 			titulo: "Detalle de " + nombre,
+			resumen,
 		});
 	},
+};
+
+// Funcion
+let valorNombreApellido = (valor) => {
+	return valor ? valor.nombre + " " + valor.apellido : "Ninguno";
+};
+let funcionResumen = async (RCLV) => {
+	// Variable fecha
+	let diaDelAno = await BD_genericas.obtenerPorId("dias_del_ano", RCLV.dia_del_ano_id);
+	let dia = diaDelAno.dia;
+	let mes = meses[diaDelAno.mes_id - 1];
+	let fecha = dia + "/" + mes;
+	// Variable ultimaActualizacion
+	let fechas = [RCLV.creado_en, RCLV.alta_analizada_en, RCLV.editado_en];
+	fechas.push(RCLV.edic_analizada_en, RCLV.sugerido_en);
+	let ultimaActualizacion = comp.fechaTexto(new Date(Math.max(...fechas)));
+	// Variable status
+	let creado = RCLV.status_registro.gr_creado;
+	let aprobado = RCLV.status_registro.aprobado;
+	let status = creado ? "creado" : aprobado ? "aprobado" : "inactivo";
+	// Comenzar a armar el resumen
+	let resumen = [
+		{titulo: "Nombre", valor: RCLV.nombre},
+		{titulo: "Día del año", valor: fecha},
+	];
+	if (RCLV.entidad == "personajes" && RCLV.categoria_id == "CFC")
+		resumen.push(
+			{titulo: "Proceso Canoniz.", valor: comp.valorNombre(RCLV.proc_canoniz, "Ninguno")},
+			{titulo: "Rol en la Iglesia", valor: comp.valorNombre(RCLV.rol_iglesia, "Ninguno")},
+			{titulo: "Aparición Mariana", valor: comp.valorNombre(RCLV.ap_mar, "Ninguno")}
+		);
+	resumen.push(
+		{titulo: "Registro creado por", valor: valorNombreApellido(RCLV.creado_por)},
+		{titulo: "Alta analizada por", valor: valorNombreApellido(RCLV.alta_analizada_por)},
+		{titulo: "Última actualización", valor: ultimaActualizacion},
+		{titulo: "Status del registro", valor: RCLV.status_registro.nombre, status}
+	);
+	// Fin
+	return resumen
 };

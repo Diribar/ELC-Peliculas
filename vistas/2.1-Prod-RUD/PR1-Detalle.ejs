@@ -44,15 +44,17 @@
 	</section>
 </div>
 <section id="datosBreves">
+	<!-- Calificaciones -->
 	<div>
 		<p><strong><u style="font-size: 1.1rem;">Calificaciones</u></strong></p>
-		<!-- <p>General: <span>77%</span> / Tuya: <span>78%</span></p> -->
+		<p>General: <span>77%</span> / Tuya: <span>78%</span></p>
 		<p id="calificacionesResultados"></p>
 	</div>
 	<div id="calificacionesGrafico"></div>
+	<!-- Texto -->
 	<div id="texto">
 		<% for (bloque of bloquesDerecha) { %>
-			<p <%- bloque.titulo.startsWith("Status") ? ('class="status" id="status' + bloque.id + '"') : "" %>>
+			<p <% if (bloque.titulo.startsWith("Status")) { %>class="status" id="status<%= bloque.id %>"<% } %>>
 				<strong><%= bloque.titulo %>:</strong> <span><%= bloque.valor %></span>
 				<% if (bloque.RCLV_entidad) { %>
 					<% let destino = "origen=DT" %>
