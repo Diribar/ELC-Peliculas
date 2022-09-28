@@ -357,7 +357,7 @@ module.exports = {
 		return res.render("MI-Cartel", {informacion});
 	},
 	logout: (req, res) => {
-		let url = req.session.urlSinLogin;
+		let url = req.session.urlSinUsuario;
 		req.session.destroy();
 		res.clearCookie("email");
 		return res.redirect(url);

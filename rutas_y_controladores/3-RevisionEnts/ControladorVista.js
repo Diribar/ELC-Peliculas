@@ -82,6 +82,7 @@ module.exports = {
 			motivosRechazo,
 			prodNombre,
 			title: prodOrig.nombre_castellano,
+			cartel: true,
 		});
 	},
 	prod_Edicion: async (req, res) => {
@@ -211,6 +212,7 @@ module.exports = {
 			bloqueDer,
 			vista,
 			title: prodOrig.nombre_castellano,
+			cartel: true,
 		});
 	},
 	// RCLV
@@ -256,6 +258,7 @@ module.exports = {
 			roles_iglesia,
 			procesos_canonizacion,
 			apariciones_marianas,
+			cartel: true,
 		});
 	},
 	// Links
@@ -322,6 +325,7 @@ module.exports = {
 			userID,
 			camposARevisar,
 			title: producto.nombre_castellano,
+			cartel: true,
 		});
 	},
 };

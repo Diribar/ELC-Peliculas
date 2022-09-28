@@ -17,7 +17,7 @@
 	<%- include('CMP-2Header') %>
 	<main class="flex-row">
 		<!-- Cartel -->
-		<% if ((tema.startsWith("revision") && codigo != "tableroControl") || (tema == "links_crud" && codigo == "links") || (tema == "prod_rud" && codigo == "edicion")) { %><%- include('CMP-Cartel') %><% } %>
+		<% if (locals.cartel) { %><%- include('CMP-Cartel') %><% } %>
 		<!-- Vista Edición Producto -->
 		<% if (tema == "prod_rud" && codigo == "edicion") { %><%- include('PR2-Edicion-Avatar') %>
 		<!-- Vista Detalle RCLV -->

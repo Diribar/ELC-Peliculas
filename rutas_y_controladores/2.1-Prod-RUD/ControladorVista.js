@@ -176,6 +176,7 @@ module.exports = {
 			vista: req.baseUrl + req.path,
 			paises,
 			prodNombre,
+			cartel: true,
 		});
 	},
 	prod_GuardarEdic: async (req, res) => {

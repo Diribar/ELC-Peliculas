@@ -1,7 +1,6 @@
-Productos sin links gratuitos
-	- links_gratuitos_cargados_id: no
-	- links_gratuitos_en_la_web_id: tal vez
-
-Productos declarados "sin links gratuitos"
-Productos en status "inactivado"
-RCLV aprob s/productos
+PI: Productos con Datos Pend.
+PI: Productos sin links
+PI: Productos sin links gratuitos
+OM: Productos declarados "sin links gratuitos"
+OM: Productos en status "inactivo"
+OM: Resto del Tablero

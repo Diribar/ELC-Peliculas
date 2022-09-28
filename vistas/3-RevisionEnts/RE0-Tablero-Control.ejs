@@ -17,9 +17,10 @@
 				<h2>PRODUCTOS</h2>
 				<!-- Ayuda -->
 				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ol class="mensajeAyuda ocultar" type="dots">
-					<ul>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</ul>
-				</ol>
+				<ul class="mensajeAyuda ocultar" type="dots">
+					<li>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</li>
+					<li>Las columnas son: <em>Tipo de Prod.</em> (Colección, Película, Capítulo), <em>Nombre</em>, <em>Apodo</em> de quien propuso la novedad, y <em>Fecha</em> de la novedad</li>
+				</ul>
 			</div>
 			<% let rp = "revision/producto/" %>
 			<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>

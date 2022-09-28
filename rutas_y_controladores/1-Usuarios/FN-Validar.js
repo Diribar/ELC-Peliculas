@@ -241,7 +241,7 @@ let cartelMayuscula = "La primera letra debe ser en mayúscula";
 let cartelElejiUnValor = "Necesitamos que elijas un valor";
 
 let formatoMail = (email) => {
-	let formato = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	let formato = /^\w+([\.-_]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return !formato.test(email);
 };
 
