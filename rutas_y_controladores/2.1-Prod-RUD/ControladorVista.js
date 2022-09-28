@@ -104,7 +104,6 @@ module.exports = {
 			let RCLVs = (campo, titulo, RCLV_entidad, rel) => {
 				let datos = {titulo, RCLV_entidad, valor: prodComb[rel].nombre, RCLV_id: prodComb[rel].id};
 				if (prodComb[campo] != 1) bloquesDerecha.push(datos);
-				return;
 			};
 			RCLVs("personaje_id", "Personaje Histórico", "personajes", "personaje");
 			RCLVs("hecho_id", "Hecho Histórico", "hechos", "hecho");
