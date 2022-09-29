@@ -1,15 +1,15 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let linksAlta = document.querySelectorAll(".input-error i.linkRCLV#alta");
-	let linksEdicion = document.querySelectorAll(".input-error i.linkRCLV#edicion");
-	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let linksAlta = document.querySelectorAll(".inputError i.linkRCLV#alta");
+	let linksEdicion = document.querySelectorAll(".inputError i.linkRCLV#edicion");
+	let inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
 	// Variables para el ruteo del origen
 	let prodEntidad = new URL(window.location.href).searchParams.get("entidad");
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	let paramsOrigen = "&origen=ED&prodEntidad=" + prodEntidad + "&prodID=" + prodID;
 	// Variables para guardar los datos
-	let inputs = document.querySelectorAll(".input-error .input");
+	let inputs = document.querySelectorAll(".inputError .input");
 	let rutaRQ = "/producto/api/edicion/enviar-a-req-session/";
 
 	// FUNCIONES

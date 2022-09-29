@@ -16,7 +16,7 @@
 		<!--Primera columna-->
 		<div id="primeraCol">
 			<!-- Nombre -->
-			<div class="input-error">
+			<div class="inputError">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
 					<div class="margenBottomTitulo relative">
@@ -39,7 +39,7 @@
 				<input type="text" name="nombre" class="input" value="<%= dataEntry.nombre %>" autofocus autocomplete="off">
 			</div>
 			<!-- Fecha Representativa -->
-			<div class="borderTop flex-col input-error">
+			<div class="borderTop flex-col .inputError">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
 					<div class="margenBottomTitulo relative">
@@ -102,7 +102,7 @@
 		<!--Segunda columna-->
 		<div id="segundaCol">
 			<!-- Repetidos -->
-			<div class="input-error">
+			<div class="inputError">
 				<!-- Título, Ayuda y Error/OK -->
 				<div class="flex-row">
 					<div class="margenBottomTitulo relative">
@@ -121,7 +121,7 @@
 			</div>
 			<% if (entidad != "valores") { %>
 				<!-- Año de nacimiento u ocurrencia -->
-				<div class="borderTop flex-row input-error">
+				<div class="borderTop flex-row .inputError">
 					<div class="relative flex-row align-center">
 						<!-- Título -->
 						<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>

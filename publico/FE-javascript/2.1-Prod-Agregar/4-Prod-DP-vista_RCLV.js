@@ -1,15 +1,15 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables generales
-	let linksAlta = document.querySelectorAll(".input-error .linkRCLV.alta");
-	let linksEdicion = document.querySelectorAll(".input-error .linkRCLV.edicion");
-	let inputsRCLV = document.querySelectorAll(".input-error .input.RCLV");
+	let linksAlta = document.querySelectorAll(".inputError .linkRCLV.alta");
+	let linksEdicion = document.querySelectorAll(".inputError .linkRCLV.edicion");
+	let inputsRCLV = document.querySelectorAll(".inputError .input.RCLV");
 	let rutaGuardarDatosPers = "/producto/agregar/api/guardar-datos-pers/";
 
 	// FUNCIONES
 	// Función para guardar los valores del formulario
 	let guardarLosValoresEnSessionCookies = () => {
-		let inputs = document.querySelectorAll(".input-error .input");
+		let inputs = document.querySelectorAll(".inputError .input");
 		let params = "";
 		inputs.forEach((input) => {
 			if (input.value) params += "&" + input.name + "=" + encodeURIComponent(input.value);

@@ -1,7 +1,7 @@
 <% registro = camposDP.find(n => n.nombreDelCampo == campo) %>
 <section class="label-input invisible RCLV">
 	<label><%= registro.titulo %></label>
-	<div class="input-error">
+	<div class="inputError">
 		<!-- Input -->
 		<% if (!registro || !registro.valores || !Array.isArray(registro.valores)) console.log(6, campo, registro) %> 
 		<select name="<%= campo %>" class="input RCLV" autofocus>

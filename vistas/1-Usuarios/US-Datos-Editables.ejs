@@ -4,7 +4,7 @@
 	<!--Apodo-->
 	<section class="label-input flex-row">
 		<label for="apodo">¿Cómo querés que<br>te llamemos?</label>
-		<div class="input-error">
+		<div class="inputError">
 			<input type="text" class="input" name="apodo" placeholder="Sobrenombre" value="<%= dataEntry ? dataEntry.apodo : "" %>">
 			<%- include("CMP-errorOK_visible", {campo: "apodo"}) %>
 		</div>
@@ -12,7 +12,7 @@
 	<!--Pais de residencia-->
 	<section class="label-input flex-row">
 		<label for="pais">País de residencia</label>
-		<div class="input-error">
+		<div class="inputError">
 			<select name="pais_id" class="input">
 				<option value="" <% if (dataEntry.pais_id=="") {%>selected <%}%>class="ocultar">Elejí un país</option>
 				<optgroup label="América (habla hispana)">
@@ -43,7 +43,7 @@
 	<!--Rol en la iglesia-->
 	<section class="label-input flex-row">
 		<label for="rol_iglesia_id">Rol en la iglesia</label>
-		<div class="input-error">
+		<div class="inputError">
 			<select name="rol_iglesia_id" class="input">
 				<option value="" <% if (dataEntry.rol_iglesia_id=="") { %>selected <% } %>class="ocultar">Elejí un rol en la Iglesia</option>
 				<% for (let rol_iglesia of roles_iglesia) { %>
@@ -56,7 +56,7 @@
 	<!--Imagen de perfil-->
 	<section class="label-input flex-row">
 		<label>Imagen personal <br>(opcional)</label>
-		<div class="input-error flex-col" id="divImagen">
+		<div class="inputError flex-col" id="divImagen">
 			<label for="inputImagen" id="preview">
 				<img src="<%= avatar %>">
 			</label>

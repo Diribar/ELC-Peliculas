@@ -1,7 +1,7 @@
 <% registro = camposDP.find(n => n.nombreDelCampo == "subcategoria_id") %>
 <section class="label-input">
 	<label><%= registro.titulo %></label>
-	<div id="ayudaSubcat" class="input-error">
+	<div id="ayudaSubcat" class="inputError">
 		<!-- Input -->
 		<select name="subcategoria_id" class="input <%- registro.angosto ? 'angosto' : '' %>" autofocus>
 			<option value="" class="ocultar" <% if (!dataEntry.subcategoria_id) { %>selected<% } %>>Elegí<%- !registro.angosto ? ' una opción' : '' %></option>

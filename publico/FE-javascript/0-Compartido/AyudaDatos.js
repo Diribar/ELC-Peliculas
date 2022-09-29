@@ -1,8 +1,8 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	let iconosAyuda = document.querySelectorAll("main .input-error .fa-circle-question");
-	let mensajesAyuda = document.querySelectorAll("main .input-error .mensajeAyuda");
+	let iconosAyuda = document.querySelectorAll("main .inputError .fa-circle-question");
+	let mensajesAyuda = document.querySelectorAll("main .inputError .mensajeAyuda");
 
 	// Mensajes de ayuda
 	window.addEventListener("click", (e) => {

@@ -12,7 +12,7 @@
 #dataEntry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
 	padding: 5px 10px; border-radius: 10px;}
 #dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
-#dataEntry .input-error {position: relative;}
+#dataEntry .inputError {position: relative;}
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}

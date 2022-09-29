@@ -1,7 +1,7 @@
 <section class="label-input">
 	<label><%= registro.titulo %></label>
 	<!-- Data-entry y Errores -->
-	<div class="input-error">
+	<div class="inputError">
 		<input type="text" class="input" name="<%= registro.nombreDelCampo %>" autocomplete="off"
 			value="<%= dataEntry[registro.nombreDelCampo] %>"
 			<% if (registro.numero) { %>id="numero" placeholder="sólo números"<% } %>

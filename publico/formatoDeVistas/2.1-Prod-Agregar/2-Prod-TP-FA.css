@@ -6,7 +6,7 @@
 #dataEntry #datos textarea, #dataEntry input {width: 250px; padding: 2px 5px; }
 
 /* Mensajes de error */
-#dataEntry .input-error {position: relative; display: flex;}
+#dataEntry .inputError {position: relative; display: flex;}
 #dataEntry .mensajeAyuda {max-width: 300px;}
 #dataEntry .mensajeError {max-width: 300px;}
 

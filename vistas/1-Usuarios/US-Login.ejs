@@ -6,7 +6,7 @@
 		<% for (variable of variables) { %>
 			<div class="label-input flex-row">  
 				<label for="<%= variable.name %>"><%= variable.titulo %></label>
-				<div class="input-error">
+				<div class="inputError">
 					<!-- Input -->
 					<input class="input" 
 						value="<%= dataEntry ? dataEntry[variable.name] : '' %>" 

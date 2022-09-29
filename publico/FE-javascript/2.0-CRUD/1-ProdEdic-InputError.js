@@ -6,11 +6,11 @@ window.addEventListener("load", async () => {
 	let prodID = new URL(window.location.href).searchParams.get("id");
 	// Datos del formulario
 	let form = document.querySelector("form");
-	let inputs = document.querySelectorAll(".input-error .input");
+	let inputs = document.querySelectorAll(".inputError .input");
 	let campos = Array.from(inputs).map((n) => n.name);
 	// OK/Errores
-	let iconosError = document.querySelectorAll(".input-error .fa-circle-xmark");
-	let mensajesError = document.querySelectorAll(".input-error .mensajeError");
+	let iconosError = document.querySelectorAll(".inputError .fa-circle-xmark");
+	let mensajesError = document.querySelectorAll(".inputError .mensajeError");
 	let rutaValidar = "/producto/api/edicion/validar/?";
 	// Variables de país
 	let paisesID = document.querySelector("#paises_id input[name='paises_id']"); // Lugar donde almacenar los ID
@@ -24,8 +24,8 @@ window.addEventListener("load", async () => {
 	let subcategoria = document.querySelector("select[name='subcategoria_id']");
 	let subcategoriaOpciones = document.querySelectorAll("select[name='subcategoria_id'] option");
 	// Varios
-	let avatarVisible = document.querySelector(".input-error #avatarVisible");
-	let avatarNuevo = document.querySelector(".input-error #avatarNuevo");
+	let avatarVisible = document.querySelector(".inputError #avatarVisible");
+	let avatarNuevo = document.querySelector(".inputError #avatarNuevo");
 	let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 	let versionInput = versionActual;
 	let versionAnt; // Se usa más adelante, no se debe borrar
 	let datos = {};
-	let flechasDiferencia = document.querySelectorAll(".input-error .fa-arrow-right-long");
+	let flechasDiferencia = document.querySelectorAll(".inputError .fa-arrow-right-long");
 	let rutaVersiones = "/producto/api/edicion/obtener-original-y-edicion/";
 	rutaVersiones += "?entidad=" + entidad + "&id=" + prodID;
 	let producto_id =
@@ -86,7 +86,7 @@ window.addEventListener("load", async () => {
 				return;
 			};
 			let actualizaIconosRCLV = () => {
-				let links = document.querySelectorAll(".input-error i.linkRCLV");
+				let links = document.querySelectorAll(".inputError i.linkRCLV");
 				for (let link of links)
 					estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
 				return;

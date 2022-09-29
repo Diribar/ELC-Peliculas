@@ -10,7 +10,7 @@
 		<!-- Datos a completar -->
 		<section id="datos">
 			<h3>Ingresá la dirección de la página</h3>
-			<div class="input-error">
+			<div class="inputError">
 				<!-- Data Entry -->
 				<input name="direccion" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.direccion : null %>"
@@ -34,7 +34,7 @@
 				<%- include("CMP-errorOK_oculto", {display: true}) %>
 			</div>
 			<h3>Ingresá la dirección de la imagen grande</h3>
-			<div class="input-error">
+			<div class="inputError">
 				<input name="avatar" type="text" class="input"
 					value="<%= dataEntry ? dataEntry.avatar : null %>"
 					placeholder="Pegá acá la dirección"
@@ -52,7 +52,7 @@
 				<%- include("CMP-errorOK_oculto", {display: true}) %>
 			</div>
 			<h3>Ingresá el contenido del cuerpo de la página</h3>
-			<div class="input-error">
+			<div class="inputError">
 				<textarea name="contenido" placeholder="Pegá acá el contenido" autocomplete="off" rows="1" class="input"><%- dataEntry ? dataEntry.contenido : "" %></textarea>
 				<!-- Ayuda -->
 				<i class="fa-solid fa-circle-question relative">

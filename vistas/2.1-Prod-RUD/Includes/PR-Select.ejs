@@ -1,7 +1,7 @@
 <% let campo = camposDP.find(n => n.nombreDelCampo == nombreDelCampo) %>
 <section class="label-input">
 	<label><%= campo.titulo %></label>
-	<div class="input-error">
+	<div class="inputError">
 		<!-- Input -->
 		<select name="<%= campo.nombreDelCampo %>" class="input <%= campo.angosto ? 'angosto ' : '' %>">
 			<option value="" class="ocultar" <% if (!producto[campo.nombreDelCampo]) { %>selected<% } %>>Elejí<% if (!campo.angosto) { %> una opción<% } %></option>
