@@ -1,13 +1,18 @@
 /* Formato de Menús */
-header section .grupos a {color: var(--azul-oscuro);}
-header section .grupos .menuOpciones {position: absolute; top: 42px; border: 1px solid rgba(0,0,0,.15);}
-header section .grupos .menuFondo {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro); z-index: 1;}
-header section .grupos .menuFondo a {padding: 4px 16px; display: block;}
+header .menu_mostrar {position: absolute; z-index: 1;}
+header .menu_mostrar {border: 1px solid rgba(0,0,0,.15); width: max-content;}
+header .menu_mostrar.menuFondo {padding: 4px 0; border-radius: 10px; background-color: var(--gris-claro);}
+
+/* Opciones */
+header .menu_mostrar .menu_opcion {display: flex; flex-direction: row; align-items: center;}
+header .menu_mostrar .menu_opcion {padding: 4px 16px;}
 
 /* Íconos que acompañan al menú */
-header .menuOpciones .icono {margin-right: 10px; width: 18px; display: flex; justify-content: center; align-items: center;}
-header .menuOpciones .icono i, header .menuOpciones .icono#ELC {font-weight: bold;}
-header .menuOpciones .icono#ELC {background-color: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
+header .menu_mostrar .menu_opcion .icono {width: 18px; margin-right: 10px; font-weight: bold;}
+header .menu_mostrar .menu_opcion .icono {display: flex; justify-content: center; align-items: center;}
+
+/* Ícono ELC */
+header .menu_mostrar .menu_opcion .icono#ELC {background-color: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
 
 /* Específico del Menú de Usuario */
-header #menu-usuario {right: 30px;}
+header #menu-usuario {right: 0px;}
