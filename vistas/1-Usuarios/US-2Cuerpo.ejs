@@ -1,11 +1,9 @@
-<section id="cuerpo">
-	<!-- Alta -->
-	<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US-Alta-Mail") : "" %>
-	<%- codigo == "editables" ? include("US-Datos-Editables") : "" %>
-	<%- codigo == "documento" ? include("US-Documento") : "" %>
-	<%- codigo == "edicion" ? include("US5-Edicion") : "" %>
-	<!-- Revisar -->
-	<%- codigo == "tableroControl" ? include("US6-Tablero-Control") : "" %>
-	<!-- Login -->
-	<%- codigo == "login" ? include("US-Login") : "" %>
-</section>
+<!-- Alta -->
+<%- (codigo == "alta-mail" || codigo == "olvido-contrasena") ? include("US-Alta-Mail") : "" %>
+<%- codigo == "editables" ? include("US-Datos-Editables") : "" %>
+<%- codigo == "documento" ? include("US-Documento") : "" %>
+<%- codigo == "edicion" ? include("US5-Edicion") : "" %>
+<!-- Revisar -->
+<%- codigo == "tableroControl" ? include("US6-Tablero-Control") : "" %>
+<!-- Login -->
+<%- codigo == "login" ? include("US-Login") : "" %>

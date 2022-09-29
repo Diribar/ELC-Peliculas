@@ -3,9 +3,6 @@
 #cuerpo #tituloPrincipal {align-self: flex-start;}
 #cuerpo #tituloPrincipal #titulo {background-color: var(--amarillo-claro); border-bottom-right-radius: 10px;}
 
-/* Formato del título principal y ayuda */
-#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
-
 /* Formato del formulario */
 #cuerpo #dataEntry {margin: auto;}
 #cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}

@@ -25,16 +25,17 @@
 			<!-- Vistas estándar -->
 			<section id="cuerpo-y-footer">
 				<%- include('CMP-3Footer') %>
-				<!--**************************** CUERPO ******************************-->
-				<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
-				<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
-				<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>
-				<% if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %><% } %>
-				<% if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %><% } %>
-				<% if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %><% } %>
-				<% if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %><% } %>
-				<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
-				<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
+				<section id="cuerpo">
+					<% if (tema == "usuario") { %><%- include("US-2Cuerpo") %><% } %>
+					<% if (tema == "prod_agregar") { %><%- include("PA-2Cuerpo") %><% } %>
+					<% if (tema == "prod_rud") { %><%- include("PR-2Cuerpo") %><% } %>
+					<% if (tema == "rclv_crud") { %><%- include("RCLV-2Cuerpo") %><% } %>
+					<% if (tema == "links_crud") { %><%- include("LK-2Cuerpo") %><% } %>
+					<% if (tema == "revisionEnts") { %><%- include("RE-2Cuerpo") %><% } %>
+					<% if (tema == "revisionUs") { %><%- include("RU-2Cuerpo") %><% } %>
+					<% if (tema == "productos") { %><%- include("0-Productos-Cuerpo") %><% } %>
+					<% if (tema == "miscelaneas") { %><%- include("MI-2Cuerpo") %><% } %>
+				</section>
 			</section>
 		<% } %>
 	</main>
