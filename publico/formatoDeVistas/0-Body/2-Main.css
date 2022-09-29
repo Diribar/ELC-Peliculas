@@ -1,16 +1,20 @@
-/* CONFIGURAR SECCIONES */
+/* Main */
 main {height: 91vh;}
 
-/* ESTILOS Y CLASES */
+/* Headings */
 main h1 {font-size: 1.25rem;}
 main h2 {font-size: 1.20rem;}
 main h3 {font-size: 1.15rem;}
 
-/* CONFIGURAR IMAGEN */
+/* Imagen Derecha */
 main #imagen-derecha {width: 30vw; height: 100%; position: relative;}
 main #imagen-derecha img {height: 100%; width: 100%; object-fit: contain; position: absolute;}
 
-/* FOOTER */
+/* Ayuda */
+main #cuerpo-y-footer #cuerpo .fa-circle-question {color: var(--gris-oscuro);}
+main #cuerpo-y-footer #cuerpo .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
+
+/* Footer */
 main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse; justify-content: space-between;}
 main #cuerpo-y-footer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpo-y-footer footer {justify-content: space-around;}
