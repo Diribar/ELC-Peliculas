@@ -41,18 +41,8 @@
 #dataEntry #posiblesRepetidos li input {margin-right: 5px;}
 #dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
-/* Todos los mensajes */
-#dataEntry .mensajeError, #dataEntry .mensajeAyuda {z-index: 1; line-height: 1.2rem;}
-
-/* Mensajes de ayuda */
-#dataEntry .fa-circle-question {right: -20px; color: var(--gris-oscuro);}
-#dataEntry .mensajeAyuda {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); max-width: 350px;}
-
 /*  Mensajes de error*/
-#dataEntry .fa-circle-xmark, 
-#dataEntry .fa-circle-check {left: -20px;}
-#dataEntry .fa-circle-xmark {z-index: 1;}
-#dataEntry .mensajeError {max-width: 200px;}
+#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {left: -20px;}
 
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row; justify-content: space-evenly;}
@@ -60,22 +50,3 @@
 #dataEntry #flechas i {font-size: 2rem;}
 /* #dataEntry #flechas i {color: var(--gris-oscuro)} */
 #dataEntry #flechas #submit {position: static; transform: none;}
-
-/* Resultados */
-/* Todos */
-.mensajeError, .mensajeError::before, .mensajeAyuda, .mensajeAyuda::before,
-.fa-circle-check, .fa-circle-question, .fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
-/* Exito */
-.fa-circle-check {color: var(--verde-oscuro); cursor: default;}
-/* Neutro */
-.link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
-/* .mensajeAyuda, .mensajeAyuda * {background-color: var(--gris-oscuro); color: var(--gris-claro);} */
-/* .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;} */
-
-/* Error */
-.fa-circle-xmark {color: var(--rojo-oscuro);}
-.fa-circle-xmark:hover .mensajeError {display: inline;}
-.mensajeError {display: none; color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; left: 20px; padding: 3px 7px;}
-.mensajeError::before {content: ""; left: -12px; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}

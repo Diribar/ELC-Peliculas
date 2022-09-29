@@ -8,11 +8,12 @@
 			<div id="tituloConAyuda">
 				<h1 id="titulo"><%= titulo %></h1>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<li>Al terminar, es importante que vayas a la vista <em>Detalle de Producto</em> para liberarlo y ver el resultado de tu edición.</li>
-					<li>Sólo se pueden eliminar ediciones de productos aprobados.</li>
-				</ul>	
+				<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
+					<ul class="mensajeAyuda ocultar despl_mostrar" type="dots">
+						<li>Al terminar, es importante que vayas a la vista <em>Detalle de Producto</em> para liberarlo y ver el resultado de tu edición.</li>
+						<li>Sólo se pueden eliminar ediciones de productos aprobados.</li>
+					</ul>	
+				</i>
 			</div>
 			<div id="edicionForm">
 				<%- include('PR-Edicion2-Datos') %>
