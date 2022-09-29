@@ -1,16 +1,6 @@
 /* Formato del cuerpo */
 #cuerpo {display: flex; flex-direction: column; flex-grow: 1; position: relative;}
 
-/* Formato del título */
-#cuerpo #tituloConAyuda {position: relative; align-self: flex-start;}
-#cuerpo #tituloConAyuda #titulo {border-bottom-right-radius: 10px; background-color: var(--amarillo-claro);}
-
-/* Título - Ayuda */
-#cuerpo #tituloConAyuda #iconoAyuda, #cuerpo #tituloConAyuda .mensajeAyuda {position: absolute;}
-#cuerpo #tituloConAyuda #iconoAyuda {right: -5px; top: 50%; transform: translate(100%,-50%); color: var(--amarillo-claro); background-color: var(--gris-oscuro); border-radius: 50%; display: none;}
-#cuerpo #tituloConAyuda .mensajeAyuda {max-width: 350px;}
-#cuerpo #tituloConAyuda .mensajeAyuda {right: -25px; top: 5px; transform: translateX(100%); border: 1px var(--amarillo-claro) solid;}
-
 /* Temas generales del formulario */
 #cuerpo #dataEntry {margin: auto;}
 #cuerpo #dataEntry {padding: 30px 40px; border-radius: 20px;}
@@ -81,8 +71,9 @@
 .fa-circle-check {color: var(--verde-oscuro); cursor: default;}
 /* Neutro */
 .link {background-color: var(--gris-oscuro); color: var(--gris-claro); text-align: center; border-radius: 50%; font-weight: bold; line-height: 1; padding: 1px; }
-.mensajeAyuda, .mensajeAyuda u {background-color: var(--gris-oscuro); color: var(--gris-claro);}
-.mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
+/* .mensajeAyuda, .mensajeAyuda * {background-color: var(--gris-oscuro); color: var(--gris-claro);} */
+/* .mensajeAyuda::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;} */
+
 /* Error */
 .fa-circle-xmark {color: var(--rojo-oscuro);}
 .fa-circle-xmark:hover .mensajeError {display: inline;}
