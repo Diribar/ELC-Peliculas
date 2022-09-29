@@ -14,20 +14,6 @@
 main #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
-/* Mensajes */
-/* Estandarizaciones */
-.mensajeError, .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
-.resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; text-align: center;}
-.resultadoExitoso {background-color: var(--verde-oscuro); font-weight: bold;}
-.resultadoInvalido {background-color: var(--rojo-oscuro);}
-.fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
-/* Específicos */
-.mensajeError::before {content: ""; border: 5px solid; border-color: transparent var(--rojo-oscuro) transparent transparent;}
-.mensajeError {color: var(--azul-oscuro); background-color: var(--amarillo-claro); border: var(--rojo-oscuro) solid 2px; padding: 3px 7px; display: none;}
-.fa-circle-xmark:hover .mensajeError {display: inline;}
-.fa-circle-xmark {color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
-.fa-circle-check {color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
-.fa-circle-question {color: var(--gris-oscuro);}
 .fa-solid {cursor: pointer;}
 
 /* Otras */
