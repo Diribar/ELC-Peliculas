@@ -5,15 +5,15 @@
 				<img src="/imagenes/1-Usuarios/<%= usuario.avatar %>" class="despl_click">
 			</div>
 		<% } else if (usuario.nombre != null) { %>
-			<i id="letraInicial" class="despl_click iconos">
+			<i id="letraInicial" class="despl_click iconoHeader">
 				<%= usuario.nombre.slice(0,1).toUpperCase() %>
 			</i>
 		<% } else { %>
-			<i class="fa-solid fa-circle-user despl_click iconos"></i>
+			<i class="fa-solid fa-circle-user despl_click iconoHeader"></i>
 		<% } %>
 	<% } else { %>
 		<a href="/usuarios/login">
-			<i class="fa-solid fa-circle-question despl_click iconos" title="Login/Registrarse"></i>
+			<i class="fa-solid fa-circle-question despl_click iconoHeader" title="Login/Registrarse"></i>
 		</a>
 	<% } %>
 </div>
