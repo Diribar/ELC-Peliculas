@@ -1,45 +1,11 @@
 "use strict";
 window.addEventListener("load", () => {
 	// DOM
-	let input = document.querySelector("#busquedaRapida .menuOpciones input");
-	let display = document.querySelector("#busquedaRapida .menuOpciones #displayResultados");
-	let escribiMas = document.querySelector("#busquedaRapida .menuOpciones #escribiMas");
+	let input = document.querySelector("#busquedaRapida .despl_mostrar input");
+	let display = document.querySelector("#busquedaRapida .despl_mostrar #displayResultados");
+	let escribiMas = document.querySelector("#busquedaRapida .despl_mostrar #escribiMas");
 
-	// Variables
-	let teclasValidas = /^[a-z áéíóúüñ\d]+$/;
-
-	input.addEventListener("input", async () => {
-		// Impide los caracteres que no son válidos
-		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
-		let dataEntry = input.value;
-
-		// Elimina palabras repetidas
-		let palabras = dataEntry.split(" ");
-		for (let i = palabras.length - 1; i > 0; i--) {
-			if (
-				palabras.filter((x) => x == palabras[i]).length > 1 ||
-				palabras.filter((x) => x == "").length
-			) {
-				palabras.splice(i, 1);
-			}
-		}
-		let pasaNoPasa = palabras.join("");
-
-		// Termina el proceso si la palabra tiene menos de 4 caracteres significativos
-		if (pasaNoPasa.length < 4) {
-			input.style.borderRadius = "5px";
-			display.classList.add("ocultar");
-			escribiMas.classList.remove("ocultar");
-			return;
-		} else escribiMas.classList.add("ocultar");
-
-		// Busca los productos
-		palabras = palabras.join(" ");
-		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
-		if (resultados.length) agregarHallazgos(resultados);
-		else agregarHallazgos("- No encontramos coincidencias -");
-	});
-
+	// Funciones
 	let agregarHallazgos = (registros) => {
 		// Generar las condiciones para que se pueda mostrar el 'display'
 		input.style.borderBottomLeftRadius = 0;
@@ -95,4 +61,37 @@ window.addEventListener("load", () => {
 			display.appendChild(parrafo);
 		}
 	};
+
+	// Add Event Listener
+	input.addEventListener("input", async () => {
+		// Impide los caracteres que no son válidos
+		input.value = input.value.replace(/[^a-záéíóúüñ\d\s]/gi, "").replace(/ +/g, " ");
+		let dataEntry = input.value;
+
+		// Elimina palabras repetidas
+		let palabras = dataEntry.split(" ");
+		for (let i = palabras.length - 1; i > 0; i--) {
+			if (
+				palabras.filter((x) => x == palabras[i]).length > 1 ||
+				palabras.filter((x) => x == "").length
+			) {
+				palabras.splice(i, 1);
+			}
+		}
+		let pasaNoPasa = palabras.join("");
+
+		// Termina el proceso si la palabra tiene menos de 4 caracteres significativos
+		if (pasaNoPasa.length < 4) {
+			input.style.borderRadius = "5px";
+			display.classList.add("ocultar");
+			escribiMas.classList.remove("ocultar");
+			return;
+		} else escribiMas.classList.add("ocultar");
+
+		// Busca los productos
+		palabras = palabras.join(" ");
+		let resultados = await fetch("/api/quick-search/?palabras=" + palabras).then((n) => n.json());
+		if (resultados.length) agregarHallazgos(resultados);
+		else agregarHallazgos("- No encontramos coincidencias -");
+	});
 });
