@@ -18,7 +18,7 @@ header section .grupos #crear-prod-icono {position: relative;}
 header section .grupos #crear-prod-icono .adentro {font-size: 1rem; top:48%; left: 3px; transform: translateY(-50%); color: var(--azul-oscuro); z-index: 1; position: absolute;}
 
 /* Formato del Título */
-header p#titulo {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
+header #tituloHeader {font-family: Monotype Corsiva; color: var(--amarillo-claro); font-size: 3rem; position: absolute; left: 50%; transform: translateX(-50%);}
 
 /* Íconos de usuario */
 header #icono-usuario {border-radius: 50%; overflow: hidden; }
