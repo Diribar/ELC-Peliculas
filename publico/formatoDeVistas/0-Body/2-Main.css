@@ -13,6 +13,9 @@ main #imagen-derecha img {height: 100%; width: 100%; object-fit: contain; positi
 /* Ayuda */
 main #cuerpo-y-footer #cuerpo .fa-circle-question {color: var(--gris-oscuro);}
 main #cuerpo-y-footer #cuerpo .mensajeAyuda {font-weight: normal; width: max-content; border-radius: 6px;}
+main #cuerpo-y-footer #cuerpo .mensajeAyuda, 
+main #cuerpo-y-footer #cuerpo .mensajeAyuda::before,
+main #cuerpo-y-footer #cuerpo .fa-circle-question {position: absolute; font-size: 1rem;}
 
 /* Footer */
 main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-reverse; justify-content: space-between;}
