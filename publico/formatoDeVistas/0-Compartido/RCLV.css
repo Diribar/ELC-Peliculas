@@ -41,9 +41,6 @@
 #dataEntry #posiblesRepetidos li input {margin-right: 5px;}
 #dataEntry .sinCasos {justify-content: center; align-items: center; color: var(--verde-oscuro); font-weight: bold;}
 
-/*  Mensajes de error*/
-#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {left: -20px;}
-
 /* Submit button */
 #dataEntry #flechas {margin-top: 20px; display: flex; flex-direction: row; justify-content: space-evenly;}
 #dataEntry #flechas .flechaSinLink {color: var(--celeste-oscuro); cursor: default;}

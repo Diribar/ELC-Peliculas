@@ -69,7 +69,6 @@
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
-#datos tbody tr td .fa-solid.inactivo {cursor: default;}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}

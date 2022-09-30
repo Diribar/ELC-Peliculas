@@ -18,6 +18,5 @@
 .ocultar, .inactivo_ocultar, .ocultarTipo {display: none}
 .invisible {visibility: hidden;}
 .bloqueado {background-color: var(--celeste-oscuro);}
-.inactivo, .inactivo * {cursor: default;}
 .inactivo {opacity: .5; border-color: transparent;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}

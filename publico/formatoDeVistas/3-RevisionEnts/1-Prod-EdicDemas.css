@@ -21,9 +21,6 @@
 #datosLargos #contenido #ingrs tr:nth-of-type(even) {background-color: var(--amarillo-claro);}
 #datosLargos #contenido #ingrs tr .campoTitulo {width: 150px;}
 #datosLargos #contenido #ingrs tr .infoMostrar {position: relative; width: fit-content; padding: 0 10px 0 50px;}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-solid {position: absolute; top: 50%; transform: translateY(-50%);}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-check {left: 0}
-#datosLargos #contenido #ingrs tr .infoMostrar .fa-circle-xmark {left: 25px}
 #datosLargos #contenido #ingrs tr .motivos select {background-color: inherit;}
 
 /* Datos Largos - Reemplazos */
