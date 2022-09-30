@@ -1,5 +1,5 @@
 /* Título - Ayuda */
-#cuerpo .mensajeAyuda {max-width: 350px;}
+#cuerpo .ayudaMostrar {max-width: 350px;}
 
 /* Encabezado */
 #cuerpo #encabezado {display: flex; flex-direction: row; justify-content: space-between; align-items: center;}

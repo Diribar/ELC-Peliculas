@@ -1,6 +1,6 @@
 /* Título - Ayuda */
-#cuerpo .mensajeAyuda {max-width: 270px;}
-#cuerpo .mensajeAyuda li {margin-left: 0;}
+#cuerpo .ayudaMostrar {max-width: 270px;}
+#cuerpo .ayudaMostrar li {margin-left: 0;}
 
 /* Flechas - Particularidades */
 #cuerpo #flechas i {margin: 0 25px; font-size: 2rem;}

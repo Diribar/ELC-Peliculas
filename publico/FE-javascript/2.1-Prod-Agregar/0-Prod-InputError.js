@@ -99,7 +99,7 @@ window.addEventListener("load", async () => {
 	}
 	if (paso.DP) {
 		// Ayuda Sub-categoría
-		var iconoAyudaSubcat = document.querySelector("#ayudaSubcat .fa-circle-question");
+		var iconoAyudaSubcat = document.querySelector("#ayudaSubcat .ayudaClick");
 		var mensajesAyudaSubcat = document.querySelectorAll("#ayudaSubcat ul li");
 		// Categoría y subcategoría
 		var categoriaSelect = document.querySelector("select[name='categoria_id']");

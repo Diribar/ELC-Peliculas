@@ -1,5 +1,5 @@
-<i class="fa-solid fa-circle-question despl_click">
-	<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+<i class="fa-solid fa-circle-question ayudaClick despl_click">
+	<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 		<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
 		<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
 	</ul>

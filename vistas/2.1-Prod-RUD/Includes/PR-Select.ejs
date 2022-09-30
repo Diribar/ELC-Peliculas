@@ -16,8 +16,8 @@
 			<% } %>
 		</select>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question despl_click">
-			<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+		<i class="fa-solid fa-circle-question ayudaClick despl_click">
+			<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 				<% if (!campo.mensajes) {campo.mensajes = (campo.entidad == "peliculas") ? campo.mensajePeli : campo.mensajeColec} %>
 				<% for (let mensaje of campo.mensajes) { %><li><%= mensaje %></li><% } %> 
 			</ul>

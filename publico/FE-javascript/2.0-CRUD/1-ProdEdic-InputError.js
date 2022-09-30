@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 	// Varios
 	let avatarVisible = document.querySelector(".inputError #avatarVisible");
 	let avatarNuevo = document.querySelector(".inputError #avatarNuevo");
-	let iconosAyuda = document.querySelectorAll("main .fa-circle-question");
+	let iconosAyuda = document.querySelectorAll("main .ayudaClick");
 
 	// VERSIONES DE DATOS -------------------------------------------------------------
 	// Variables

@@ -5,8 +5,8 @@
 <div id="tituloPrincipal">
 	<h1 id="titulo"><%= tituloCuerpo %> </h1>
 	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
-		<ul class="mensajeAyuda ocultar despl_mostrar" type="dots">
+	<i class="fa-solid fa-circle-question ayudaClick despl_click">
+		<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
 			<li>.</li>
 		</ul>
 	</i>
@@ -24,8 +24,8 @@
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<% if (entidad == "personajes") { %>
 									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
@@ -48,8 +48,8 @@
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<li>Usamos la fecha en que se lo recuerda.</li>
 								<li>Para los santos o beatos, es la fecha en el santoral.</li>
 								<li>Para los demás, suele ser la fecha de su muerte.</li>
@@ -112,8 +112,8 @@
 						<!-- Título -->
 						<h3>Nombres con esa fecha</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<li>Destildalos para controlar si no está ya en nuestra BD</li>
 							</ul>
 						</i>
@@ -131,8 +131,8 @@
 						<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 						<input type="text" name="ano" class="input" value="<%= dataEntry.ano %>" autofocus autocomplete="off">
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<li>Nos ayuda a ubicarlo cronológicamente.</li>
 								<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 								<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>

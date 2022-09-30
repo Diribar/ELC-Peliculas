@@ -2,8 +2,8 @@
 <section id="tituloPrincipal">
 	<h1 id="titulo"><%= titulo %></h1>
 	<!-- Ayuda -->
-	<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
-		<ul class="mensajeAyuda ocultar despl_mostrar" type="dots">
+	<i class="fa-solid fa-circle-question ayudaClick despl_click">
+		<ul class="ayudaMostrar ocultar despl_mostrar" type="dots">
 			<li>Necesitamos que nos digas si estás de acuerdo con la información editada.</li>
 			<li>Si considerás que no, te vamos a pedir que nos digas el motivo.</li>
 		</ul>
@@ -21,8 +21,8 @@
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<% if (entidad == "personajes") { %>
 									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
 									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
@@ -42,8 +42,8 @@
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question despl_click">
-							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+						<i class="fa-solid fa-circle-question ayudaClick despl_click">
+							<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 								<li>Usamos la fecha en que se lo recuerda.</li>
 								<li>Para los santos o beatos, es la fecha en el santoral.</li>
 								<li>Para los demás, suele ser la fecha de su muerte.</li>
@@ -105,8 +105,8 @@
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= RCLV_original.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
-							<i class="fa-solid fa-circle-question despl_click">
-								<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+							<i class="fa-solid fa-circle-question ayudaClick despl_click">
+								<ul type="dots" class="ayudaMostrar ocultar despl_mostrar">
 									<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
 									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
 									<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
