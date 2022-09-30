@@ -57,24 +57,19 @@
 #datos table .alta select::-ms-expand, #datos table .edicion select::-ms-expand {display: none;}
 #datos table .alta select, #datos table .edicion select {-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: '';}
 
+#datos .inputError {padding-left: 10px; padding-right: 10px;}
 /* Quitar flechas del input - Chrome, Safari, Edge, Opera */
 #datos table .inputError input[type='number']::-webkit-outer-spin-button, #datos table .inputError input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none; margin: 0;}
 /* Quitar flechas del input - Firefox */
 #datos table .inputError input[type=number] {-moz-appearance: textfield;}
 
+/* Ayuda particular */
+#cuerpo .ayudaMostrar {right: 20px; transform: translate(0%, -50%)}
+
 /* Íconos en la tabla */
 #datos tbody tr.yaExistentes td .fa-trash-can {color: var(--rojo-oscuro);}
 #datos tbody tr td .fa-floppy-disk {color: var(--verde-oscuro);}
 #datos tbody tr td .fa-solid.inactivo {cursor: default;}
-
-/* Errores */
-#datos .inputError {position: relative; padding-left: 10px; padding-right: 10px;}
-.mensajeError, .mensajeError::before, .inputError .fa-solid {position: absolute; transform: translate(100%,-50%); top: 50%;}
-#datos .inputError .mensajeError {max-width: 200px; right: -5px; line-height: 1.2rem; text-align: left; z-index: 100;}
-#datos .inputError .mensajeError::before {left: -22px;}
-
-/* Ayuda para la Acción */
-#datos .yaExistentes .ayudaMostrar {right: 20px; transform: translate(0%, -50%)}
 
 /* Comandos - Particularidades */
 #cuerpo #comandos {align-items: center;}

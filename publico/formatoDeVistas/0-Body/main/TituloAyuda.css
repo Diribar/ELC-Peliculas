@@ -1,0 +1,38 @@
+/* Formato del título */
+#cuerpo #tituloPrincipal {align-self: flex-start; display: flex; flex-direction: row; align-items: center;}
+#cuerpo #tituloPrincipal #titulo {background-color: var(--gris-oscuro); color: var(--colorAyuda);}
+#cuerpo #tituloPrincipal #titulo {font-family: var(--Arial); font-weight: bold;}
+#cuerpo #tituloPrincipal #titulo {padding: 8px 10px; margin: 0; line-height: 1rem;}
+#cuerpo #tituloPrincipal #titulo {border-bottom-right-radius: 10px; border-style: none;}
+
+/* Formato del ícono compartido */
+#cuerpo .ayudaClick {position: relative; z-index: 2;}
+#cuerpo .ayudaClick {font-size: 1rem; border-radius: 50%;}
+#cuerpo .ayudaClick {background-color: var(--colorAyuda); color: var(--backgroundAyuda); border: 1px solid var(--colorAyuda);}
+
+/* Formato del ícono del tituloPrincipal */
+#cuerpo #tituloPrincipal .ayudaClick {margin-left: 10px;}
+
+/* Formato del ícono fuera del tituloPrincipal */
+#columna2 .ayudaClick {margin-left: 5px;}
+
+/* Formato del mensaje compartido */
+#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; z-index: 2;}
+#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar * {background-color: var(--backgroundAyuda); color: var(--colorAyuda);}
+#cuerpo .ayudaMostrar {right: -5px; width: max-content; padding: 3px 5px;}
+#cuerpo .ayudaMostrar {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
+#cuerpo .ayudaMostrar {border-radius: 6px; border: 1px var(--colorAyuda) solid;}
+#cuerpo .ayudaMostrar::before {border-color: transparent var(--backgroundAyuda) transparent transparent;}
+#cuerpo .ayudaMostrar ul li {list-style-position: outside; margin-left: 15px;}
+#cuerpo .ayudaMostrar li {padding: 3px 0;}
+
+/* Formato del mensaje del tituloPrincipal */
+#cuerpo #tituloPrincipal .ayudaMostrar {top: -5px; transform: translateX(100%); max-width: 350px;}
+#cuerpo #tituloPrincipal .ayudaMostrar::before {top: 5px;}
+
+/* Formato del mensaje fuera del tituloPrincipal */
+#cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {top: 50%;}
+#cuerpo .ayudaMostrar {transform: translate(100%, -50%); max-width: 200px;}
+#cuerpo .ayudaMostrar::before {transform: translateY(-50%);}
+
+/* ******************************************* */
