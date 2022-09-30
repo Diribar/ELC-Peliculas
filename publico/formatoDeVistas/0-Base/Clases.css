@@ -10,10 +10,6 @@
 .justify-center {justify-content: center;}
 .wrap {flex-wrap: wrap;}
 
-/* Tapar el fondo */
-main #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
-main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
-
 .fa-solid {cursor: pointer;}
 
 /* Otras */
@@ -26,5 +22,3 @@ main #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height:
 .bloqueado {background-color: var(--celeste-oscuro);}
 .inactivo {opacity: .5; border-color: transparent; cursor: default;}
 .rojo {color: var(--rojo-oscuro); font-weight: bold;}
-.mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro); border: 1px var(--amarillo-claro) solid;}
-.mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
