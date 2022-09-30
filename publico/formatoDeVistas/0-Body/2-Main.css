@@ -20,19 +20,6 @@ main #cuerpo-y-footer {display: flex; flex-grow: 1; flex-direction: column-rever
 main #cuerpo-y-footer #tapar-el-fondo {position: absolute; left: 0px; top: 0px; z-index: 10;}
 main #cuerpo-y-footer #tapar-el-fondo {background-color: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
 
-/* Ícono Ayuda */
-main #cuerpo-y-footer #cuerpo .fa-circle-question {margin-left: 20px;}
-main #cuerpo-y-footer #cuerpo .fa-circle-question {color: var(--gris-oscuro); font-size: 1rem;}
-
-/* Mensajes de ayuda */
-main #cuerpo-y-footer #cuerpo .mensajeAyuda, 
-main #cuerpo-y-footer #cuerpo .mensajeAyuda::before {position: absolute; z-index: 1;}
-main #cuerpo-y-footer #cuerpo .mensajeAyuda {right: -5px; transform: translate(100%, -50%);}
-main #cuerpo-y-footer #cuerpo .mensajeAyuda {width: max-content; max-width: 350px; padding: 7px 10px; border-radius: 6px;}
-main #cuerpo-y-footer #cuerpo .mensajeAyuda {font-size: 1rem; font-weight: normal; line-height: 1.2rem;}
-main #cuerpo-y-footer #cuerpo .mensajeAyuda {background-color: var(--gris-oscuro); color: var(--gris-claro); border: 1px var(--amarillo-claro) solid;}
-main #cuerpo-y-footer #cuerpo .mensajeAyuda li {list-style-position: outside; margin-left: 15px; padding: 3px 0;}
-
 /* Footer */
 main #cuerpo-y-footer footer {padding: .25em 5px; border-top: 2px solid var(--azul-frances);}
 main #cuerpo-y-footer footer {justify-content: space-around;}

@@ -3,8 +3,15 @@
 </div>
 <form method="POST" class="flex-col" id="dataEntry">
 	<!-- Título sin Ayuda -->
-	<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
-	<h3>Ingresá palabras del Título de la Película</h3>
+	<div id="tituloSecundario">
+		<h2>Paso 1 de 5: Ingresá Palabras Clave</h2>
+		<!-- Ayuda -->
+		<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
+			<ul class="mensajeAyuda ocultar despl_mostrar" type="dots">
+				<li>Ingresá palabras del Título de la Película.</li>
+			</ul>	
+		</i>
+	</div>
 	<!-- Datos -->
 	<section  id="datos" class="flex-row space-between">
 		<div class="inputError">
