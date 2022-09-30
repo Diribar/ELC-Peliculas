@@ -15,11 +15,7 @@
 			<% } %>
 		</select>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question"></i>
-		<ul type="dots" class="mensajeAyuda ocultar">
-			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
-			<% for (let mensaje of registro.mensajes) { %><li><%= mensaje %></li><% } %> 
-		</ul>
+		<%- include("PA4-DP9-Ayuda") %>
 		<!-- Errores -->
 		<%- include("CMP-errorOK_oculto", {display: false}) %>
 	</div>

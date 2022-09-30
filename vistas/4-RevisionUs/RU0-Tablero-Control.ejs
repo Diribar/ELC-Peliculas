@@ -18,10 +18,11 @@
 				<div class="datos">
 					<h2>IDENTIDAD DE USUARIO</h2>
 					<!-- Ayuda -->
-					<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-					<ul type="none" class="mensajeAyuda ocultar" type="dots">
-						<li>Son los usuarios interesados en aportar información a nuestra Base de Datos.</li>
-					</ul>
+					<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
+						<ul type="none" class="mensajeAyuda ocultar despl_mostrar" type="dots">
+							<li>Son los usuarios interesados en aportar información a nuestra Base de Datos.</li>
+						</ul>
+					</i>
 				</div>
 				<% let rev = "revision/usuarios/" %>
 				<%- include("RU0-Registros", {regs: usuarios.validarIdentidades, url: rev + "validar-identidad"}) %>

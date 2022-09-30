@@ -24,15 +24,16 @@
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<% if (entidad == "personajes") { %>
-								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-								<li>Primero el nombre, después el apellido.</li>
-							<% } %>
-							<li>La primera letra en mayúscula, sin puntos ni comas</li>
-						</ul>
+						<i class="fa-solid fa-circle-question despl_click">
+							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+								<% if (entidad == "personajes") { %>
+									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+									<li>Primero el nombre, después el apellido.</li>
+								<% } %>
+								<li>La primera letra en mayúscula, sin puntos ni comas</li>
+							</ul>
+						</i>
 						<!-- Errores/OK -->
 						<%- include("CMP-errorOK_oculto", {display: true}) %>
 					</div>
@@ -110,10 +111,11 @@
 						<!-- Título -->
 						<h3>Nombres con esa fecha</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Destildalos para controlar si no está ya en nuestra BD</li>
-						</ul>
+						<i class="fa-solid fa-circle-question despl_click">
+							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+								<li>Destildalos para controlar si no está ya en nuestra BD</li>
+							</ul>
+						</i>
 						<!-- Errores/OK -->
 						<%- include("CMP-errorOK_oculto", {display: true}) %>
 					</div>

@@ -15,11 +15,12 @@
 			<% } %>
 		</select>
 		<!-- Ayuda -->
-		<i class="fa-solid fa-circle-question inactivo"></i>
-		<ul type="dots" class="mensajeAyuda ocultar">
-			<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
-			<% for (let mensaje of registro.mensajes) { %><li class="<%= mensaje.categ %>"><%= mensaje.texto %></li><% } %> 
-		</ul>
+		<i class="fa-solid fa-circle-question inactivo despl_click">
+			<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+				<% if (!registro.mensajes) {registro.mensajes = (dataEntry.entidad == "peliculas") ? registro.mensajePeli : registro.mensajeColec} %>
+				<% for (let mensaje of registro.mensajes) { %><li class="<%= mensaje.categ %>"><%= mensaje.texto %></li><% } %> 
+			</ul>
+		</i>
 		<!-- Errores -->
 		<%- include("CMP-errorOK_oculto", {display: false}) %>
 	</div>

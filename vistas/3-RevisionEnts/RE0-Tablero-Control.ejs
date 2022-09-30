@@ -17,11 +17,12 @@
 			<div class="datos">
 				<h2>PRODUCTOS</h2>
 				<!-- Ayuda -->
-				<i id="iconoAyuda" class="fa-solid fa-circle-question"></i>
-				<ul class="mensajeAyuda ocultar" type="dots">
-					<li>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</li>
-					<li>Las columnas son: <em>Tipo de Prod.</em> (Colección, Película, Capítulo), <em>Nombre</em>, <em>Apodo</em> de quien propuso la novedad, y <em>Fecha</em> de la novedad</li>
-				</ul>
+				<i id="iconoAyuda" class="fa-solid fa-circle-question despl_click">
+					<ul class="mensajeAyuda ocultar despl_mostrar" type="dots">
+						<li>Para cada <u>producto</u>, la novedad fue propuesta por otro usuario hace más de una hora.</li>
+						<li>Las columnas son: <em>Tipo de Prod.</em> (Colección, Película, Capítulo), <em>Nombre</em>, <em>Apodo</em> de quien propuso la novedad, y <em>Fecha</em> de la novedad</li>
+					</ul>
+				</i>
 			</div>
 			<% let rp = "revision/producto/" %>
 			<%- include("RE0-Registros", {titulo: "Sugeridos para Inactivar", regs: productos.IN, url: rp + "inactivar"}) %>
