@@ -21,14 +21,15 @@
 						<!-- Título -->
 						<h3>Nombre</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<% if (entidad == "personajes") { %>
-								<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
-								<li>Si la persona cambió su nombre, se usa el más conocido.</li>
-							<% } %>
-							<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
-						</ul>
+						<i class="fa-solid fa-circle-question despl_click">
+							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+								<% if (entidad == "personajes") { %>
+									<li>El nombre sin prefijo (San, Santa, Madre, Don, Papa).</li>
+									<li>Si la persona cambió su nombre, se usa el más conocido.</li>
+								<% } %>
+								<li>Si querés editar los datos de un registro existente, escribí el nombre.</li>
+							</ul>
+						</i>
 						<!-- Error/OK -->
 						<%- include("CMP-errorOK_visible", {campo: "nombre"}) %>
 					</div>
@@ -41,12 +42,13 @@
 						<!-- Título -->
 						<h3>Fecha más representativa</h3>
 						<!-- Ayuda -->
-						<i class="fa-solid fa-circle-question"></i>
-						<ul type="dots" class="mensajeAyuda ocultar">
-							<li>Usamos la fecha en que se lo recuerda.</li>
-							<li>Para los santos o beatos, es la fecha en el santoral.</li>
-							<li>Para los demás, suele ser la fecha de su muerte.</li>
-						</ul>
+						<i class="fa-solid fa-circle-question despl_click">
+							<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+								<li>Usamos la fecha en que se lo recuerda.</li>
+								<li>Para los santos o beatos, es la fecha en el santoral.</li>
+								<li>Para los demás, suele ser la fecha de su muerte.</li>
+							</ul>
+						</i>
 						<!-- Error/OK -->
 						<%- include("CMP-errorOK_visible", {campo: "fecha"}) %>
 					</div>
@@ -103,12 +105,13 @@
 							<h3>Año de <%= entidad == "personajes" ? "Nacimiento" : "Ocurrencia" %></h3>
 							<input type="number" name="ano" class="input" value="<%= RCLV_original.ano %>" autofocus autocomplete="off">
 							<!-- Ayuda -->
-							<i class="fa-solid fa-circle-question"></i>
-							<ul type="dots" class="mensajeAyuda ocultar">
-								<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
-								<li>Si es anterior a Cristo, elegí un valor negativo.</li>
-								<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
-							</ul>
+							<i class="fa-solid fa-circle-question despl_click">
+								<ul type="dots" class="mensajeAyuda ocultar despl_mostrar">
+									<li>Nos ayuda a ubicar cronológicamente al <%= RCLV_original.producto_RCLV %>.</li>
+									<li>Si es anterior a Cristo, elegí un valor negativo.</li>
+									<li>Si no se conoce el año exacto, por favor hacé tu mejor estimación.</li>
+								</ul>
+							</i>
 							<!-- Error/OK -->
 							<%- include("CMP-errorOK_visible", {campo: "ano"}) %>
 						</div>

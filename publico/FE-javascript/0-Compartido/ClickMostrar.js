@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
 	// Variables
 	let clicks = document.querySelectorAll(".despl_click");
 	let mostrar = document.querySelectorAll(".despl_mostrar");
-	//console.log(clicks,mostrar);
+	console.log(clicks,mostrar);
 	// Otras variables
 	let busquedaRapida_mostrar = document.querySelector("header #busquedaRapida .despl_mostrar");
 	let busquedaRapida_input = document.querySelector("header #busquedaRapida .despl_mostrar input");

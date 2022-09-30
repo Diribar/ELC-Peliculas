@@ -16,10 +16,11 @@
 			<div id="sinopsis">
 				<nav><%= producto.sinopsis %></nav>
 				<!-- Ayuda -->
-				<i class="fa-solid fa-circle-question"></i>
-				<ul type="none" class="mensajeAyuda ocultar">
-					<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
-				</ul>
+				<i class="fa-solid fa-circle-question despl_click">
+					<ul type="none" class="mensajeAyuda ocultar despl_mostrar">
+						<li>Si el contenido de la sinopsis excede el recuadro, podés deslizarlo con la ruedita del mouse</li>
+					</ul>
+				</i>
 			</div>
 			<!-- Demás Datos Duros -->
 			<% for (bloque of bloquesIzquierda) { %>
