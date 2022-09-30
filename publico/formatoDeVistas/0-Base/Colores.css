@@ -17,5 +17,8 @@ body {
 	--naranja-oscuro: #F57C00;
 	--rojo-oscuro: rgb(209, 65, 40);
 	--verde-oscuro:rgb(79,98,40);
-	--verde-ingles: #009879
+	--verde-ingles: #009879;
+
+	--backgroundAyuda: var(--verde-oscuro);
+	--colorAyuda: var(--verde-claro);
 }
