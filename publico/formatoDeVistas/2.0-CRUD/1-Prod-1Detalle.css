@@ -13,11 +13,7 @@
 #datosLargos #contenido #sinopsis {margin: 10px 15px 5px; padding: 15px 20px; border-radius: 15px; background-color: var(--amarillo-claro);}
 #datosLargos #contenido #sinopsis nav {font-size: 1.1rem; max-height: 125px; overflow-y: scroll;}
 /* Sinopsis - Ayuda */
-#sinopsis .ayudaClick, #sinopsis .ayudaMostrar, #sinopsis .ayudaMostrar::before {position: absolute; z-index: 2;}
-#sinopsis .ayudaClick {top: 25px; right: -25px; transform: translateY(-50%);}
-#sinopsis .ayudaMostrar {top: 25px; right: -32px; width: 200px; transform: translate(100%, -50%);}
-#sinopsis .ayudaMostrar::before {left: -10px; top: 50%; transform: translateY(-50%);}
-#sinopsis .ayudaMostrar::before {border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent; content: "";}
+#sinopsis .ayudaMostrar {top: 25px; right: -32px; transform: translate(100%, -50%);}
 /* Sinopsis - Ocultar la 'side-bar' */
 #datosLargos #contenido #sinopsis nav::-webkit-scrollbar {display: none;  /* Safari and Chrome */}
 #datosLargos #contenido #sinopsis nav {-ms-overflow-style: none; /* Internet Explorer 10+ */scrollbar-width: none; /* Firefox */}

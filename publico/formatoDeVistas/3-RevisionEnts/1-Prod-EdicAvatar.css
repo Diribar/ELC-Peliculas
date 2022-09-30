@@ -31,7 +31,7 @@
 #flechas i:hover {transform: scale(1.3);}
 
 /* Ayuda */
-#cuerpo #iconoAyuda {background-color: var(--gris-claro); border-radius: 50%;}
+#cuerpo .ayudaClick {background-color: var(--gris-claro); border-radius: 50%;}
 
 /* Animaciones */
 @keyframes aparece {0% {opacity: 0} 50% {opacity: 0.2} 100% {opacity: 1}}
