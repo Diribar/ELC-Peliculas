@@ -10,7 +10,7 @@ main form #cuerpo #edicionForm {justify-content: space-between; padding: 15px 70
 form #imagen .fa-solid, form #imagen .mensajeError, form #imagen .ayudaMostrar {left: 50%; }
 form #imagen .fa-solid {font-size: 2rem; background-color: white; border-radius: 50%; transform: translate(-50%,-50%);}
 form #imagen .ayudaMostrar {top: 53%; transform: translateX(-50%);}
-form #imagen .mensajeError {top: 120%; transform: translateX(-50%);}
+form #imagen .mensajeError {bottom: -20%; transform: translateX(-50%);}
 form #imagen .mensajeError::before {border-color: transparent transparent var(--rojo-oscuro) transparent;}
 form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX(-50%);}
 
@@ -56,25 +56,8 @@ form #imagen .mensajeError::before {left: 50%; top: -12px; transform: translateX
 #datos #segundaColumna #sinopsis textarea {width: 100%; height: 84px; padding: 5px 10px; resize: none;}
 #datos #segundaColumna #sinopsis textarea.input::-webkit-scrollbar {display: none;}
 
-/* Todos los mensajes */
-.mensajeError, .mensajeError::before, 
-.ayudaMostrar, .ayudaMostrar::before {z-index: 1; line-height: 1.2rem;}
-.mensajeError, .mensajeError::before, .ayudaMostrar, .ayudaMostrar::before, .inputError .fa-solid, 
 .linkRCLV {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
 #edicion.linkRCLV {font-size: 1.15rem;}
-.mensajeError {max-width: 200px; left: 20px;}
-.ayudaMostrar {max-width: 300px;}
-.mensajeError::before {left: -12px;}
-.ayudaMostrar::before {left: -20px;}
-
-/* Mensajes de ayuda */
-#datos .ayudaClick {right: -20px;}
-#datos .ayudaMostrar {right: -25px; transform: translate(100%, -50%);}
-
-/*  Mensajes de error*/
-#datos .mensajeError {left: 20px; }
-#datos .fa-circle-xmark, #datos .fa-circle-check {right: -20px;}
-#datos .fa-circle-xmark {z-index: 1;}
 
 /* Mensajes de aviso de cambio de data-entry */
 .inputError .fa-arrow-right-long {left: -5px; position: absolute; transform: translate(-100%, -50%); color: var(--verde-oscuro);}

@@ -19,7 +19,7 @@
 /* Formato del mensaje compartido */
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar::before {position: absolute; z-index: 2;}
 #cuerpo .ayudaMostrar, #cuerpo .ayudaMostrar * {background-color: var(--backgroundAyuda); color: var(--colorAyuda);}
-#cuerpo .ayudaMostrar {right: -5px; width: max-content; padding: 3px 5px;}
+#cuerpo .ayudaMostrar {right: -5px; width: max-content; padding: 7px 10px;}
 #cuerpo .ayudaMostrar {font-weight: normal; font-size: 1rem; line-height: 1.2rem; text-align: left;}
 #cuerpo .ayudaMostrar {border-radius: 6px; border: 1px var(--colorAyuda) solid;}
 #cuerpo .ayudaMostrar::before {border-color: transparent var(--backgroundAyuda) transparent transparent;}

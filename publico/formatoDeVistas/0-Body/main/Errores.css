@@ -1,22 +1,20 @@
-/* Errores */
 #datos .inputError {padding-left: 10px; padding-right: 10px;}
 
 /* Mensajes */
-/* Estandarizaciones */
 .resultadoExitoso, .resultadoInvalido {padding: 3px 10px; color: white; text-align: center;}
 .resultadoExitoso {background-color: var(--verde-oscuro); font-weight: bold;}
 .resultadoInvalido {background-color: var(--rojo-oscuro);}
+.resultadoEnEspera {background-color: var(--gris-oscuro);}
+.resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold;}
+/* resultadoClick */
 .fa-circle-check, .fa-circle-xmark {background-color: var(--gris-claro); border-radius: 50%;}
-/* Específicos */
-#dataEntry .fa-circle-xmark {z-index: 1;}
+.fa-circle-check, .fa-circle-xmark {font-size: 1rem;}
+.fa-circle-xmark {z-index: 1;}
 .fa-circle-xmark {color: var(--rojo-oscuro); border-color: var(--rojo-oscuro);}
 .fa-circle-check {color: var(--verde-oscuro); border-color: var(--verde-oscuro);}
 .fa-circle-check {color: var(--verde-oscuro); cursor: default;}
 .fa-circle-xmark:hover .ayudaMostrar {display: inline;}
 
-.fa-circle-check, 
-.fa-circle-xmark
-	{position: absolute; transform: translateY(-50%); font-size: 1rem;}
 
 /* Resultados */
 /* Todos */
@@ -32,3 +30,5 @@
 .mensajeError::before {transform: translateY(-50%);}
 .mensajeError::before {border-color: transparent var(--rojo-oscuro) transparent transparent;}
 
+/* ********************************* */
+/*  Mensajes de error*/

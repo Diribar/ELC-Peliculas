@@ -1,7 +1,5 @@
 /* Formato del cuerpo */
 #cuerpo {display: flex; flex-direction: column; flex-grow: 1;}
-#cuerpo #tituloPrincipal {align-self: flex-start;}
-#cuerpo #tituloPrincipal #titulo {background-color: var(--amarillo-claro); border-bottom-right-radius: 10px;}
 
 /* Formato del formulario */
 #cuerpo #dataEntry {margin: auto;}
@@ -12,41 +10,14 @@
 #dataEntry h2 {align-self: flex-start; color: white; background-color: var(--azul-oscuro); 
 	padding: 5px 10px; border-radius: 10px;}
 #dataEntry h3 {margin: 15px 0 3px;  align-self: flex-start;}
-#dataEntry .inputError {position: relative;}
 #dataEntry input, #dataEntry textArea, #dataEntry select {border-width: .7px; border-radius: 5px;}
 #dataEntry input:disabled, #dataEntry select:disabled, #dataEntry textarea:disabled {background-color: var(--amarillo-claro); opacity: 1;}
 #dataEntry input, #dataEntry select, #dataEntry textarea {background-color: white;}
 #dataEntry textarea {resize:vertical; max-height: 100px; min-height: 22px;}
 
-/* Todos los mensajes */
-#dataEntry .mensajeError, #dataEntry .ayudaMostrar {z-index: 1; line-height: 1.2rem;}
-
-/* Mensajes de ayuda */
-#dataEntry .ayudaClick {right: -20px;}
-#dataEntry .ayudaMostrar {right: -25px; padding: 7px 10px; transform: translate(100%, -50%); z-index: 2;}
-
-/*  Mensajes de error*/
-#dataEntry .fa-circle-xmark, #dataEntry .fa-circle-check {right: -20px;}
-#dataEntry .fa-circle-xmark {z-index: 1;}
-
 /* Procesando información */
 #dataEntry #resultado {margin-top: 5px; padding-top: 3px; padding-bottom: 3px; width: fit-content;}
 #dataEntry #resultado {font-style: normal; border-radius: 10px;}
-
-/* Resultados */
-/* Todos */
-.mensajeError, .mensajeError::before, 
-.ayudaMostrar, .ayudaMostrar::before,
-.fa-circle-check, .fa-circle-question, 
-.fa-circle-xmark {position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;}
-.resultadoEnEspera, .sinResultado {padding: 3px 10px; color: white; font-weight: bold;}
-/* Exito */
-/* Neutro */
-.resultadoEnEspera {background-color: var(--gris-oscuro);}
-.ayudaMostrar::before {content: ""; left: -10px; border: 5px solid; border-color: transparent var(--gris-oscuro) transparent transparent;}
-/* Error */
-.mensajeError {left: 20px;}
-.mensajeError::before {left: -12px;}
 
 /* Botones */
 #dataEntry button, #dataEntry input[type="submit"] {color: white; background-color: var(--verde-oscuro); padding: 3px 10px; border-radius: 10px; font-weight: bold;}
